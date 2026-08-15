@@ -1,0 +1,309 @@
+//! lotus/stereo_expand.rye — ALES159: the downward expander carried into stereo, the gate's linked DECISION fused with the compressor's linked GAIN — completing the core stereo dynamics quartet. ALES60 named `expand`:
+//! a sample at or above a magnitude threshold passes byte for byte, a sample below it has its DEFICIT (threshold − m) widened by a ratio and the sample rewritten sign(x)·max(0, threshold − deficit·num/den) — the
+//! compressor mirrored under the threshold, deepening the quiet (the space between phrases opened wider, the room tone under a pause lowered), continuous at the threshold, the gate its hardest limit. That is a mono edit.
+//! Carried into stereo it must fuse the two linking laws this family has proven: it links the DECISION like the gate (ALES156) AND the GAIN like the compressor (ALES157).
+//!
+//! Two truths meet. Its decision must be linked, like the gate: the expander pushes down the quiet, and expanding each channel by whether it alone is below threshold would push the quiet right down while the loud left
+//! plays — the image tears, exactly the gate's bug. So a pair is expanded ONLY when both channels are below threshold (key = max(|left|, |right|) < threshold). Its gain must be linked, like the compressor: the expander's
+//! gain factor max(0, threshold − deficit·ratio)/magnitude is magnitude-dependent, so expanding each channel by its own deficit gives different gains and shifts the image. So the one gain is computed from the linked key
+//! and applied to both.
+//!
+//! The rule, stated once: refuse BadThreshold (a threshold outside [1, sample_max]), BadRatio (a ratio below one or with a zero denominator), and BadRange (a span past the shared length) BEFORE any write. Otherwise walk
+//! the span one sample-PAIR at a time with key = max(|left|, |right|): key >= threshold leaves the pair playing — both pass byte for byte (continuous at the threshold). key == 0 leaves the pair silent — both stay zero
+//! (silence stays silence, no divide by zero). 0 < key < threshold expands — new_key = max(0, threshold − (threshold − key)·num/den), exactly as ALES60 would for the louder channel, then scale BOTH channels by the
+//! single fraction new_key/key: the peak-holding (louder-quiet) channel lands on new_key, the quieter channel scaled by the identical fraction. A ratio large enough drives the whole quiet pair to silence — the gate
+//! reached from within.
+//!
+//! The crux — five laws. THE LINKED DECISION + GAIN LAW (the stereo crux): a pair is expanded iff BOTH channels are below the threshold, and where expanded both are scaled by the SAME fraction new_key/key — so the
+//! louder-quiet channel equals ALES60's mono expand byte for byte (a left-always-peak master has left' == mono expand(left)), the independent lift genuinely differing. THE IMAGE LAW: the shared gain preserves the L:R
+//! ratio — an out-of-phase quiet pair returns still out of phase, no magnitude expands, no sign flips. THE AT-THRESHOLD LAW: a pair whose linked key is at or above the threshold passes byte for byte — continuous at the
+//! threshold. THE KNOB LAWS: unit ratio the identity everywhere on both, a higher ratio expands at least as hard (monotone), a ratio far past the threshold drives a quiet pair exactly to silence (the gate within). THE
+//! SILENCE / BALANCE / ATOMICITY / DEGENERATE LAW: a both-silent pair stays silent (the key = 0 guard), left.len == right.len after, a refusal leaving both channels untouched and balanced, count = 0 the identity on both.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES159.
+//! Design read: active-designing/20260815-063651_fill-ales159-lotus-stereo-expand.md
+//! Stands on: lotus/expand.rye (ALES60) — the mono downward expander, its `expand` and `ExpandError` reused whole (the louder-quiet-channel proof and the fault set); lotus/stereo_gate.rye (ALES156) — the linked-DECISION
+//! law this fuses; lotus/stereo_compress.rye (ALES157) — the linked-GAIN law this fuses; lotus/pan.rye (ALES10) — the StereoClip and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, buf/len/samples, sample_max.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only — one comparison of the linked key and at most one multiply-then-
+//! divide per channel per sample (in i64, |sample|·new_key <= 32768·32768 never overflowing), memoryless (no attack, hold, or release; those are later rungs), never a length. The threshold is a magnitude in sample units,
+//! not decibels; the ratio a plain fraction. Nothing on the audio path can overflow — the widened result is floored at zero and new_key <= key, so every scaled magnitude is at most its input's, which already fits i16. No
+//! real sample rate, no anti-aliasing, no network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_expand.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const expand = @import("expand.rye");
+
+pub const stereo_expand_version = "20260815.063651";
+
+/// Stereo expansion's faults are exactly ALES60's own `ExpandError` — `BadThreshold` (a threshold outside [1, sample_max]), `BadRatio` (a ratio below one or with a zero denominator), `BadRange` (a span past the samples) —
+/// reused by name, since the linked lift adds no new fault: it validates one shared threshold, one shared ratio, and one span, then decides and scales per pair from both channels together.
+pub const StereoExpandError = expand.ExpandError;
+
+/// Expand `count` sample-pairs starting at `start` in the stereo master `sc`, below the magnitude `threshold` by the ratio `ratio_num/ratio_den` (at least one), fusing a LINKED DECISION with a LINKED GAIN. For each index
+/// the detector key is `max(|left|, |right|)`: at or above the threshold the pair passes byte for byte (continuous at the threshold); a both-silent pair (key == 0) stays zero; otherwise where the pair is below the
+/// threshold the widened master `new_key = max(0, threshold − (threshold − key)·num/den)` is computed once (exactly ALES60's mono expand of the louder channel) and BOTH channels are scaled by the single fraction
+/// `new_key/key`, so the louder-quiet channel lands on `new_key` and the quieter one is scaled by the identical fraction — the L:R ratio preserved. After the call every written magnitude is at most its input's (reduction,
+/// never boost) and no sign is changed. Unit ratio is the identity everywhere. Validates threshold, ratio, and span ONCE before any write — a refusal leaves both channels untouched and balanced. Values only — never length.
+pub fn stereo_expand(
+    sc: *pan.StereoClip,
+    start: u32,
+    count: u32,
+    threshold: i32,
+    ratio_num: u32,
+    ratio_den: u32,
+) StereoExpandError!void {
+    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the linked gain preserves.
+    assert(sc.left.len == sc.right.len);
+
+    // invariant: the threshold is a legal magnitude — at least one sample unit and no greater than the i16 rail. Refused before any write, mirroring ALES60 exactly.
+    if (threshold < 1) return error.BadThreshold;
+    if (threshold > @as(i32, timeline.sample_max)) return error.BadThreshold;
+    // invariant: the ratio is at least one (num >= den) with a nonzero denominator — a ratio below one would NARROW the deficit (an upward gesture), a zero denominator would divide by zero. An expander only ever widens.
+    if (ratio_den == 0) return error.BadRatio;
+    if (ratio_num < ratio_den) return error.BadRatio;
+    // invariant: the span lies wholly within the SHARED length — checked once, without underflow, so it holds identically for both channels and a refusal never expands one channel and leaves the other torn.
+    const len: u32 = sc.left.len;
+    if (start > len) return error.BadRange;
+    if (count > len - start) return error.BadRange;
+
+    const thr: i64 = @as(i64, threshold);
+    const num: i64 = @as(i64, ratio_num);
+    const den: i64 = @as(i64, ratio_den);
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        const xl: i16 = sc.left.buf[start + i];
+        const xr: i16 = sc.right.buf[start + i];
+        const ml: i64 = if (xl < 0) -@as(i64, xl) else @as(i64, xl); // |left| — safe in i64 (|sample_min| = 32768 fits)
+        const mr: i64 = if (xr < 0) -@as(i64, xr) else @as(i64, xr); // |right|
+        // The LINKED detector: the louder of the two channels decides for the pair. Below the threshold the whole pair is quiet and is pushed down together; at or above, the pair plays and is left whole.
+        const key: i64 = if (ml >= mr) ml else mr;
+        if (key < thr and key > 0) {
+            const deficit: i64 = thr - key; // strictly positive below the threshold
+            // The widened master — exactly ALES60's mono expand of the louder-quiet channel: widen the deficit by the ratio and push the threshold down by it, floored at silence. divTrunc of positives is floor; the ratio
+            // >= 1 makes the widened deficit >= deficit, so new_key <= key, and a wide enough deficit drives new_key to 0 (the gate within).
+            const widened: i64 = @divTrunc(deficit * num, den);
+            const raw: i64 = thr - widened;
+            const new_key: i64 = if (raw < 0) 0 else raw;
+            // invariant: the widened master reduces toward silence and never below zero — the single gain new_key/key is a fraction in [0, 1).
+            assert(new_key <= key and new_key >= 0);
+            // ONE shared gain across both channels: scale each magnitude by new_key/key. The louder-quiet channel (|x| == key) lands exactly on new_key; the quieter channel lands proportionally, the L:R ratio kept to
+            // within one LSB. |x|·new_key <= 32768·32768 fits i64; the quotient is <= |x| since new_key <= key, so it fits i16 and never flips sign.
+            const nl: i64 = @divTrunc(ml * new_key, key);
+            const nr: i64 = @divTrunc(mr * new_key, key);
+            // invariant: the shared gain reduces, never boosts, and never falls below zero, on each channel.
+            assert(nl <= ml and nl >= 0 and nr <= mr and nr >= 0);
+            const yl: i16 = @intCast(if (xl < 0) -nl else nl); // safe: 0 <= nl <= ml <= sample_max
+            const yr: i16 = @intCast(if (xr < 0) -nr else nr);
+            sc.left.buf[start + i] = yl;
+            sc.right.buf[start + i] = yr;
+            // invariant: each written sample holds its input's sign (magnitude only shrank), zero being sign-neutral.
+            assert((xl >= 0 and yl >= 0) or (xl <= 0 and yl <= 0));
+            assert((xr >= 0 and yr >= 0) or (xr <= 0 and yr <= 0));
+        }
+        // key >= threshold: the pair plays — both left exactly as they were (continuous at the threshold). key == 0: the pair is already silent — both already zero, left untouched (silence stays silence, no divide by zero).
+    }
+
+    // invariant: an expander changes sample values only — each channel holds its starting length and the channels leave balanced, the stereo image aligned in time.
+    assert(sc.left.len == len and sc.right.len == len);
+    assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
+}
+
+// --- selftest: THE LINKED DECISION + GAIN LAW — a left-always-peak master has left' == ALES60's mono expand(left) byte for byte, the right scaled by the same fraction, the independent lift differing; THE IMAGE LAW — no
+//     magnitude expands, no sign flips, an out-of-phase quiet pair returns still out of phase; THE AT-THRESHOLD LAW — a pair whose linked key reaches the threshold passes byte for byte on both; THE KNOB LAWS — unit ratio
+//     the identity everywhere, a higher ratio expands at least as hard, a huge ratio drives a quiet pair to silence; THE SILENCE / BALANCE / ATOMICITY / DEGENERATE LAW — a both-silent pair stays silent, length held, each
+//     refusal leaving both channels untouched and balanced, count = 0 the identity on both -----------------------------------------------------------------------------------------------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try timeline.splice(&sc.left, 0, l);
+    try timeline.splice(&sc.right, 0, r);
+}
+
+fn abs16(v: i16) i32 {
+    return if (v < 0) -@as(i32, v) else @as(i32, v);
+}
+
+fn run_selftest() !u8 {
+    // 1. THE LINKED DECISION + GAIN LAW — the stereo crux. A master where the LEFT always holds the peak (|left| >= |right| everywhere), thr 1000, ratio 2:1: the louder-quiet left equals ALES60's mono expand(left) byte
+    //    for byte, and the right is scaled by the SAME fraction new_key/key — a different, image-preserving result than expanding the right on its own.
+    {
+        const ll = [_]i16{ 500, -800, 2000, -300 }; // index 2 is at/above the threshold on the left — that pair plays
+        const rr = [_]i16{ 200, -400, 1500, -100 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &ll, &rr);
+        try stereo_expand(&sc, 0, 4, 1000, 2, 1);
+
+        // the louder-quiet left equals ALES60's mono expand of it, proven against the mono tool directly.
+        var mono_l = timeline.Clip{};
+        try timeline.splice(&mono_l, 0, &ll);
+        try expand.expand(&mono_l, 0, 4, 1000, 2, 1);
+        if (!eq(sc.left.samples(), mono_l.samples())) return error.PeakLeftNotMono;
+        // by hand: 500→0 (deficit500·2=1000, thr−1000=0), 800→600 (deficit200·2=400, 1000−400=600), 2000 plays→2000, 300→0 (deficit700·2=1400, floored).
+        if (!eq(sc.left.samples(), &[_]i16{ 0, -600, 2000, 0 })) return error.PeakLeftHandWrong;
+
+        // the right scaled by the SAME fraction: idx0 key500 new_key0 → 0; idx1 key800 new_key600 → 400·600/800 = 300; idx2 key2000>=thr → pass 1500; idx3 key300 new_key0 → 0.
+        if (!eq(sc.right.samples(), &[_]i16{ 0, -300, 1500, 0 })) return error.LinkedRightWrong;
+
+        // the INDEPENDENT lift genuinely differs — mono expand of the right alone pushes its own (deeper) deficit, an image-shifting result.
+        var mono_r = timeline.Clip{};
+        try timeline.splice(&mono_r, 0, &rr);
+        try expand.expand(&mono_r, 0, 4, 1000, 2, 1); // 200→0, 400→0 (deficit600·2=1200 floored), 1500 plays→1500, 100→0
+        if (eq(sc.right.samples(), mono_r.samples())) return error.IndependentDidNotDiffer;
+        if (!eq(mono_r.samples(), &[_]i16{ 0, 0, 1500, 0 })) return error.IndependentExpandWrong;
+    }
+
+    // 2. THE IMAGE LAW — the shared gain preserves the L:R ratio. Over a mixed master no output magnitude exceeds its input's and no sign flips; and an out-of-phase QUIET pair (right = −left, both below threshold) comes
+    //    back STILL out of phase, both scaled by the identical fraction.
+    {
+        const il = [_]i16{ 900, -700, 5000, -400 }; // index 2 is loud (>= thr) — that pair plays on both
+        const ir = [_]i16{ -400, 600, -3000, 200 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &il, &ir);
+        try stereo_expand(&sc, 0, 4, 1000, 3, 1);
+        const l = sc.left.samples();
+        const r = sc.right.samples();
+        var i: u32 = 0;
+        while (i < 4) : (i += 1) {
+            if (abs16(l[i]) > abs16(il[i]) or abs16(r[i]) > abs16(ir[i])) return error.MagnitudeExpanded;
+            if ((il[i] > 0 and l[i] < 0) or (il[i] < 0 and l[i] > 0)) return error.LeftSignFlipped;
+            if ((ir[i] > 0 and r[i] < 0) or (ir[i] < 0 and r[i] > 0)) return error.RightSignFlipped;
+        }
+        if (l[2] != 5000 or r[2] != -3000) return error.LoudPairNotIdentity; // the loud pair passed whole
+
+        // out-of-phase quiet pair: right = −left, both below 1000 → both scaled by the same fraction, antisymmetry kept.
+        var op = pan.StereoClip{};
+        try load_stereo(&op, &[_]i16{ 800, -600, 900, -400 }, &[_]i16{ -800, 600, -900, 400 });
+        try stereo_expand(&op, 0, 4, 1000, 2, 1);
+        const ol = op.left.samples();
+        const orr = op.right.samples();
+        var j: u32 = 0;
+        while (j < 4) : (j += 1) {
+            if (@as(i32, orr[j]) != -@as(i32, ol[j])) return error.OutOfPhaseNotPreserved;
+        }
+        // by hand 2:1: 800→600 (deficit200·2=400), 600→200 (deficit400·2=800), 900→800 (deficit100·2=200), 400→0 (deficit600·2=1200 floored).
+        if (!eq(ol, &[_]i16{ 600, -200, 800, 0 })) return error.OutOfPhaseMagnitudeWrong;
+    }
+
+    // 3. THE AT-THRESHOLD LAW — a master whose every linked key reaches the threshold passes byte for byte on both (the expander is continuous at the threshold).
+    {
+        const ll = [_]i16{ 5000, -9000, 1000, -1200 };
+        const rr = [_]i16{ 3000, -80, 40, -1000 }; // even where the right is quiet (idx1,2) the left is at/above thr, so the pair plays
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &ll, &rr);
+        try stereo_expand(&sc, 0, 4, 1000, 8, 1); // threshold equals the quietest peak — inclusive, still passes
+        if (!eq(sc.left.samples(), &ll) or !eq(sc.right.samples(), &rr)) return error.AtThresholdNotIdentity;
+    }
+
+    // 4a. UNIT RATIO IS THE IDENTITY EVERYWHERE on both — num == den makes new_key == key, so the fraction is 1 and every below-threshold pair passes byte for byte too.
+    {
+        const ql = [_]i16{ 300, -800, 20, -900 };
+        const qr = [_]i16{ -50, 400, -700, 80 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &ql, &qr);
+        try stereo_expand(&sc, 0, 4, 1000, 3, 3); // unit ratio 3:3
+        if (!eq(sc.left.samples(), &ql) or !eq(sc.right.samples(), &qr)) return error.UnitRatioNotIdentity;
+    }
+
+    // 4b. A HIGHER RATIO EXPANDS AT LEAST AS HARD (monotone) and a ratio far past the threshold drives a QUIET pair to SILENCE (the gate within). One quiet pair (both below 1000): 8:1 pushes at least as far down as 2:1,
+    //     and a huge ratio drives both to exactly zero.
+    {
+        const one_l = [_]i16{800};
+        const one_r = [_]i16{-500};
+        var soft = pan.StereoClip{};
+        try load_stereo(&soft, &one_l, &one_r);
+        try stereo_expand(&soft, 0, 1, 1000, 2, 1); // 2:1
+        var hard = pan.StereoClip{};
+        try load_stereo(&hard, &one_l, &one_r);
+        try stereo_expand(&hard, 0, 1, 1000, 8, 1); // 8:1
+        if (abs16(hard.left.samples()[0]) > abs16(soft.left.samples()[0])) return error.LeftRatioNotMonotone;
+        if (abs16(hard.right.samples()[0]) > abs16(soft.right.samples()[0])) return error.RightRatioNotMonotone;
+        var shut = pan.StereoClip{};
+        try load_stereo(&shut, &one_l, &one_r);
+        try stereo_expand(&shut, 0, 1, 1000, 100000, 1); // ratio >> deficit — new_key floored to 0, both to silence
+        if (shut.left.samples()[0] != 0 or shut.right.samples()[0] != 0) return error.HighRatioNotSilent;
+    }
+
+    // 5a. THE SILENCE LAW — a both-silent pair stays silent (the key == 0 guard prevents any divide by zero); an all-silent master expands to all zeros.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 0, 0, 0, 0 }, &[_]i16{ 0, 0, 0, 0 });
+        try stereo_expand(&sc, 0, 4, 1000, 4, 1);
+        const zeros = [_]i16{ 0, 0, 0, 0 };
+        if (!eq(sc.left.samples(), &zeros) or !eq(sc.right.samples(), &zeros)) return error.SilenceWrong;
+    }
+
+    // 5b. THE BALANCE / LENGTH LAW — the channels stay equal length and each holds its starting length; an expander writes values only.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 500, -800, 200, -900, 100 }, &[_]i16{ -400, 300, -700, 500, -50 });
+        try stereo_expand(&sc, 0, 5, 1000, 4, 1);
+        if (sc.left.len != sc.right.len) return error.Unbalanced;
+        if (sc.left.len != 5) return error.LengthChanged;
+    }
+
+    // 5c. THE ATOMICITY LAW — a bad threshold, a sub-unity ratio, a zero denominator, and an out-of-range span each refuse by name with BOTH channels byte for byte untouched and still balanced.
+    {
+        const tl = [_]i16{ 5, -6, 7 };
+        const tr = [_]i16{ -7, 6, -5 };
+
+        var a = pan.StereoClip{};
+        try load_stereo(&a, &tl, &tr);
+        if (stereo_expand(&a, 0, 3, 0, 4, 1)) |_| return error.ZeroThresholdSlipped else |e| if (e != error.BadThreshold) return error.WrongZeroThreshold;
+        if (!eq(a.left.samples(), &tl) or !eq(a.right.samples(), &tr) or a.left.len != a.right.len) return error.ThresholdRefusalMutated;
+
+        var b = pan.StereoClip{};
+        try load_stereo(&b, &tl, &tr);
+        if (stereo_expand(&b, 0, 3, 1000, 1, 2)) |_| return error.SubUnitySlipped else |e| if (e != error.BadRatio) return error.WrongSubUnity;
+        if (!eq(b.left.samples(), &tl) or !eq(b.right.samples(), &tr) or b.left.len != b.right.len) return error.SubUnityRefusalMutated;
+
+        var c = pan.StereoClip{};
+        try load_stereo(&c, &tl, &tr);
+        if (stereo_expand(&c, 0, 3, 1000, 4, 0)) |_| return error.ZeroDenSlipped else |e| if (e != error.BadRatio) return error.WrongZeroDen;
+        if (!eq(c.left.samples(), &tl) or !eq(c.right.samples(), &tr) or c.left.len != c.right.len) return error.ZeroDenRefusalMutated;
+
+        var d = pan.StereoClip{};
+        try load_stereo(&d, &tl, &tr);
+        if (stereo_expand(&d, 1, 3, 1000, 4, 1)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(d.left.samples(), &tl) or !eq(d.right.samples(), &tr) or d.left.len != d.right.len) return error.BadRangeRefusalMutated;
+    }
+
+    // 5d. THE DEGENERATE LAW — count = 0 (an empty span in the middle) is the identity on both channels; no pair to expand.
+    {
+        var noop = pan.StereoClip{};
+        try load_stereo(&noop, &[_]i16{ 500, -500, 900 }, &[_]i16{ -50, 60, -70 });
+        try stereo_expand(&noop, 1, 0, 1000, 4, 1); // empty span — identity
+        if (!eq(noop.left.samples(), &[_]i16{ 500, -500, 900 })) return error.ZeroCountLeftChanged;
+        if (!eq(noop.right.samples(), &[_]i16{ -50, 60, -70 })) return error.ZeroCountRightChanged;
+    }
+
+    print("GREEN ales-stereo-expand: the DOWNWARD EXPANDER CARRIED INTO STEREO, the gate's linked DECISION fused with the compressor's linked GAIN — completing the core stereo dynamics quartet. Expand a span of sample-" ++
+        "PAIRS in a master below a magnitude threshold by a ratio, the detector key per pair being max(|left|, |right|). ALES60 named the mono expander: a sample at or above the threshold passes byte for byte, a sample " ++
+        "below has its deficit widened by the ratio and rewritten sign(x)·max(0, threshold − deficit·num/den) — the compressor mirrored under the threshold, deepening the quiet. Carried into stereo it fuses the two " ++
+        "linking laws: it links the DECISION like the gate (a pair is expanded iff BOTH channels are below the threshold — expanding one while its partner plays would tear the image) AND the GAIN like the compressor (the " ++
+        "widened factor is magnitude-dependent, so one gain from the linked key is applied to both). THE LINKED DECISION + GAIN LAW (the crux): a pair is expanded iff both below the threshold, and where expanded both are " ++
+        "scaled by the same fraction new_key/key — the louder-quiet channel equals ALES60's mono expand byte for byte (a left-always-peak master has left' == mono expand(left)), the independent lift genuinely differing. " ++
+        "THE IMAGE LAW: the shared gain preserves the L:R ratio, an out-of-phase quiet pair returns still out of phase, no magnitude expands, no sign flips. THE AT-THRESHOLD LAW: a pair whose linked key reaches the " ++
+        "threshold passes byte for byte — continuous at the threshold. THE KNOB LAWS: unit ratio the identity everywhere, a higher ratio expands at least as hard (monotone), a ratio far past the threshold drives a quiet " ++
+        "pair to silence (the gate within). THE SILENCE / BALANCE / ATOMICITY / DEGENERATE LAW: a both-silent pair stays silent (the key = 0 guard, no divide by zero), left.len == right.len after, each refusal leaving " ++
+        "both channels untouched and balanced, count = 0 the identity on both. Purely local — two bounded i16 Clips expanded by one linked gain, one comparison and at most one multiply-then-divide per channel per sample " ++
+        "(in i64, no overflow), memoryless, never a length; no real sample rate, no anti-aliasing, no network, no keys, no funds, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
