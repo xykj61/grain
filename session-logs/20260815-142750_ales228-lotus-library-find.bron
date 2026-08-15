@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260815.142750
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — EDT (America/New_York) — this session in ai-jail
+title ALES228 — Lotus library_find: resolve an album by name in a catalog
+prompt Read REMEMBER + the 1024-round itinerary + the six-season double-seat; take the next agent-doable lap Lindy-first crux-first, approve my own design round, send each finished increment, stop at custody gates.
+think Walked the road: the Lotus album/library family stands whole through ALES227 — bundle, album, library, each with a content-address manifest and a readable sheet. REMEMBER names the next Lotus crux explicitly as the signed carry that names who made it — a crypto seam gated on Keaton's word. That is a custody gate, not agent-doable, so I looked for the next non-gated crux.
+think Lindy-first crux-first: the manifest and the sheet both WALK the catalog in order; nothing yet REACHES into it by name. Every later workflow (open, compare, publish THIS album) begins by resolving a name to the record it points at. A resolve is the smallest move that opens the rest — the index primitive the album/compare/publish rungs stand on. That is the crux that advances the level without touching a gate.
+think The find / name_of lookup idiom is already proven one level down in rack.rye (ALES30, ?u32 optional). Lifted it whole from a rack of clips to a catalog of records, unchanged in shape — find(lm, name) ?u32, name_of, digest_of. A miss is an honest null (absence is an answer, not a fault), so a caller tells absent from malformed without an error path; the manifest was already proven whole by open_library_manifest.
+think Wrote the self-approved design round, then lotus/library_find.rye, then tools/ales_library_find_witness.rish mirroring the ALES227 witness shape. First build RED: local i0 shadowed a Zig primitive integer type; renamed the three locals idx0/idx1/idx2. Second build GREEN on metal.
+obs Four laws proven: the resolve law (a present name resolves to its index in order, digest_of hands back the exact digest the manifest holds); the absence law (a missing name and a prefix of a present name both return null, never a wrong index, never a fault); the first-match law (a null answer means every album was compared — an ordered total pass); the empty law (a zero-album catalog returns null for any name).
+obs No new frame, no new hash, no error union — a pure read over fields the seal already proved whole. Software only, purely local; content-addressing on the handle it returns, never a signature. No custody gate. The signed carry remains the later crypto seam on Keaton's word — I did not cross it.
+obs tame_style_check bans clean; the lotus README does not enumerate modules, so no doc-sync row was owed. The library level now carries its full working set: content address, readable page, and resolve.
+loom witness=ales_library_find_witness result=GREEN laws=4 build_reds=1
+file active-designing/20260815-142750_fill-ales228-lotus-library-find.md the self-approved design round naming the crux and the four laws
+file lotus/library_find.rye ALES228 — find/name_of/digest_of over an opened library manifest, the rack.rye lookup idiom one level up
+file tools/ales_library_find_witness.rish the on-metal witness, GREEN
+recommend keep-going the next Lotus rung the library level opens — a resolve-then-open or a catalog compare — stays agent-doable and non-gated; the signed carry stays the custody gate for Keaton's word
