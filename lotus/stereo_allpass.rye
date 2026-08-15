@@ -1,0 +1,229 @@
+//! lotus/stereo_allpass.rye — ALES185: the ALLPASS filter carried into stereo — ALES184's Schroeder diffusion stage run on BOTH channels
+//! with the SAME delay and gain, each channel reading through ITS OWN buffer — the diffusion primitive the stereo reverb stands on. ALES184
+//! added the mono allpass (the one missing primitive above the wing: y[n] = -g·x[n] + x[n-d] + g·y[n-d], the delayed DRY read against the
+//! delayed OUTPUT); a stereo reverb diffuses each channel through its own allpass chain, so carrying the allpass into stereo is the natural
+//! next rung, exactly as the stereo comb (echo, ALES181) and the stereo multi-tap (ALES183) were carried before it.
+//!
+//! The crux — the SAME delay and gain on BOTH channels, each read through ITS OWN buffer, is the linked stereo allpass: both diffuse tails
+//! settle in lockstep, the image held in time. A delay is a sample count and a gain a named fraction the caller NAMES, not scalars measured
+//! across the field, so the same knobs on each channel preserve the stereo image. Mono `allpass` snapshots the dry prefix of its OWN clip
+//! for the delayed INPUT and reads its OWN buffer for the delayed OUTPUT, so run once per channel the left reads the left's audio and the
+//! right the right's, never crossed — NO cross-channel read.
+//!
+//! HONESTLY NOTED — like the feedback echo (ALES181) and the flanger (ALES180), and UNLIKE the snapshot rungs (vibrato, chorus, multi-tap),
+//! the allpass reads its delayed OUTPUT y[n-d] through a `@divTrunc` gain, so an exact panned integer ratio does NOT survive (the feedback
+//! truncation drifts it by ones). The image law proven here is therefore the identical-channel one — a centred master staying identical
+//! through the allpass, the sense a mix cares about — not the stronger both-cases ratio the linear snapshot rungs earn.
+//!
+//! The rule, stated once: refuse BadDelay (a delay of zero or wider than max_clip), BadGain (a gain at or above unity or a zero
+//! denominator), and BadRange (a span past the shared length) BEFORE either channel is touched — the delay, gain, and span validated ONCE
+//! against the shared length up front (ALES184's own `precheck`), so a refusal never diffuses one channel and leaves the other torn; then
+//! run ALES184's `allpass` on each channel with the SAME delay and gain. A gain strictly below unity keeps each channel's pole inside the
+//! unit circle so both diffuse tails settle; g = 0 is a pure delay of the dry on both.
+//!
+//! The crux — three laws. THE STEREO ALLPASS LAW: each channel equals ALES184's mono `allpass` with the SAME delay and gain over the same
+//! span byte for byte, proven side by side with genuinely different per-channel content — the left diffused by the left's samples, the
+//! right by the right's, never crossed. THE IDENTICAL-CHANNEL IMAGE LAW: a centred master (both channels equal) stays identical through the
+//! allpass. THE PURE-DELAY / SILENCE / BALANCE / ATOMICITY / DEGENERATE LAW: a zero-gain stereo allpass is a pure delay of each channel's
+//! dry (not the identity); an all-silent master diffuses to silence on both; left.len == right.len after; a bad delay, a bad gain, and an
+//! out-of-range span each refuse by name with BOTH channels byte for byte untouched and still balanced; count = 0 the identity on both.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES185.
+//! Design read: active-designing/20260815-091646_fill-ales184-lotus-allpass.md (ALES184's read; this is its stereo carry)
+//! Stands on: lotus/allpass.rye (ALES184) — the mono allpass run once per channel, its AllpassError reused whole and its `precheck` reused
+//! for the up-front atomic validation; lotus/pan.rye (ALES10) — the StereoClip and its balance invariant; lotus/timeline.rye (ALES2) — the
+//! Clip and the one true saturate the mono allpass reuses.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right), each diffused through ALES184's own bounded
+//! allpass — one frozen dry snapshot and one in-place delayed-output read per sample, run in i64 and saturated once, siloed to lotus/. It
+//! changes sample VALUES only, never a length; the two channels leave balanced. A delay is a count of sample INDICES, not milliseconds
+//! against a clock (a real-time twin through the ALES5 clock is a later rung, exactly as stereo_echo_time followed stereo_echo); the gain is
+//! a named fraction, not a diffusion coefficient in seconds. No cross-channel read, no real sample rate, no network, no keys, no funds, no
+//! real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_allpass.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const allpass = @import("allpass.rye");
+
+pub const stereo_allpass_version = "20260815.092337";
+
+/// The stereo allpass's faults are exactly ALES184's own `AllpassError` — `BadDelay`, `BadGain`, and `BadRange` — reused by name, since
+/// carrying the allpass into stereo adds no new fault: it validates one shared delay, gain, and span against the shared length, then runs
+/// the same mono allpass on each channel.
+pub const StereoAllpassError = allpass.AllpassError;
+
+/// Apply an allpass filter over `count` samples starting at `start` in BOTH channels of `sc` with the SAME delay and gain — each output
+/// Schroeder's y[n] = saturate(-g·x[n] + x[n-delay] + g·y[n-delay]) — by running ALES184's proven mono `allpass` on each channel. The shared
+/// delay and gain preserve the stereo image: a centred master stays identical through the allpass (an exact panned ratio does NOT survive —
+/// the feedback truncation drifts it, like the echo and flanger). Each channel snapshots and reads its OWN audio — no cross-channel read.
+/// Validates the delay, gain, and span ONCE against the shared length before either channel is snapshotted (ALES184's `precheck`): refuses
+/// BadDelay, BadGain, and BadRange, both channels untouched. Values only — never the length; the two channels leave balanced.
+pub fn stereo_allpass(
+    sc: *pan.StereoClip,
+    start: u32,
+    count: u32,
+    delay: u32,
+    num: u32,
+    den: u32,
+) StereoAllpassError!void {
+    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the shared knobs preserve.
+    assert(sc.left.len == sc.right.len);
+    // invariant: the delay, gain, and span are legal against the SHARED length — checked before any write, so a refusal never diffuses one channel and leaves the other torn.
+    const len: u32 = sc.left.len;
+    try allpass.precheck(len, start, count, delay, num, den);
+
+    // Every check passed and holds identically for both channels (same delay, same gain, same span, shared length), so each mono allpass is
+    // pre-validated to succeed — no refusal can land between the two channel edits. The SAME delay and gain on each channel, each
+    // snapshotting and reading its OWN audio, never the other's.
+    try allpass.allpass(&sc.left, start, count, delay, num, den);
+    try allpass.allpass(&sc.right, start, count, delay, num, den);
+
+    // invariant: the channels leave balanced — an allpass writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
+    assert(sc.left.len == len and sc.right.len == len);
+    assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
+}
+
+// --- selftest: THE STEREO ALLPASS LAW — each channel equals ALES184's mono allpass with the SAME delay and gain byte for byte, different
+//     per-channel content; THE IDENTICAL-CHANNEL IMAGE LAW — a centred master stays identical; THE PURE-DELAY / SILENCE / BALANCE /
+//     ATOMICITY / DEGENERATE LAW — a zero-gain stereo allpass a pure delay of each dry, silence to silence, balanced, each of three
+//     refusals untouched, count 0 identity
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try timeline.splice(&sc.left, 0, l);
+    try timeline.splice(&sc.right, 0, r);
+}
+
+fn run_selftest() !u8 {
+    // 1. THE STEREO ALLPASS LAW — each channel equals ALES184's mono allpass with the SAME delay and gain, proven side by side over one span
+    //    with genuinely different per-channel content: the left diffused by the left's samples, the right by the right's, never crossed.
+    {
+        const ll = [_]i16{ 8000, 0, 0, 0, 0, 0, 0, 0 };
+        const rr = [_]i16{ 0, 0, 6000, 0, 0, 0, 0, 0 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &ll, &rr);
+        try stereo_allpass(&sc, 0, 8, 2, 1, 2);
+
+        var ml = timeline.Clip{};
+        try timeline.splice(&ml, 0, &ll);
+        try allpass.allpass(&ml, 0, 8, 2, 1, 2);
+        var mr = timeline.Clip{};
+        try timeline.splice(&mr, 0, &rr);
+        try allpass.allpass(&mr, 0, 8, 2, 1, 2);
+
+        if (!eq(sc.left.samples(), ml.samples())) return error.LeftAllpassNotMono;
+        if (!eq(sc.right.samples(), mr.samples())) return error.RightAllpassNotMono;
+        // the two channels genuinely differ — the left is not the right rung, proving no crossing
+        if (eq(sc.left.samples(), sc.right.samples())) return error.ChannelsDidNotDiffer;
+    }
+
+    // 2. THE IDENTICAL-CHANNEL IMAGE LAW — a centred master (both channels equal) stays identical through the allpass. Honestly noted: an
+    //    exact panned ratio does NOT survive (the delayed-output @divTrunc drifts it, like the echo and flanger), so only the centred
+    //    image is claimed — the sense a mix cares about.
+    {
+        const same = [_]i16{ 8000, -3000, 0, 2000, 0, 0, -1000, 0 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &same, &same);
+        try stereo_allpass(&sc, 0, 8, 2, 1, 2);
+        if (!eq(sc.left.samples(), sc.right.samples())) return error.IdentityChannelsSplit;
+    }
+
+    // 3. THE PURE-DELAY LAW — a zero-gain (num = 0) stereo allpass is a pure delay of each channel's OWN dry by `delay`, silence before it —
+    //    not the identity (an allpass with no diffusion is a delay line), and each channel delayed by its own samples, never crossed.
+    {
+        const ll = [_]i16{ 100, 200, 300, 400, 500, 600 };
+        const rr = [_]i16{ -10, -20, -30, -40, -50, -60 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &ll, &rr);
+        try stereo_allpass(&sc, 0, 6, 3, 0, 4); // g = 0/4 — a pure delay of 3
+        const wl = [_]i16{ 0, 0, 0, 100, 200, 300 };
+        const wr = [_]i16{ 0, 0, 0, -10, -20, -30 };
+        if (!eq(sc.left.samples(), &wl)) return error.ZeroGainLeftWrong;
+        if (!eq(sc.right.samples(), &wr)) return error.ZeroGainRightWrong;
+    }
+
+    // 4a. THE SILENCE / BALANCE / LENGTH LAW — an all-silent master diffuses to silence on both; the channels stay equal length and each
+    //     holds its starting length.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 0, 0, 0, 0, 0, 0, 0, 0 }, &[_]i16{ 0, 0, 0, 0, 0, 0, 0, 0 });
+        try stereo_allpass(&sc, 0, 8, 2, 1, 3);
+        const zeros = [_]i16{ 0, 0, 0, 0, 0, 0, 0, 0 };
+        if (!eq(sc.left.samples(), &zeros) or !eq(sc.right.samples(), &zeros)) return error.SilenceWrong;
+
+        var bc = pan.StereoClip{};
+        try load_stereo(&bc, &[_]i16{ 8000, -8000, 200, -9000, 3000, -3000, 100, -100 }, &[_]i16{ -400, 3000, -700, 5000, 600, -600, 800, -800 });
+        try stereo_allpass(&bc, 0, 8, 3, 1, 2);
+        if (bc.left.len != bc.right.len) return error.Unbalanced;
+        if (bc.left.len != 8) return error.LengthChanged;
+    }
+
+    // 4b. THE ATOMICITY LAW — a bad delay (zero), a bad gain (at unity), and an out-of-range span each refuse by name with BOTH channels
+    //     byte for byte untouched and still balanced.
+    {
+        const tl = [_]i16{ 5, -6, 7, -8 };
+        const tr = [_]i16{ -7, 6, -5, 4 };
+
+        var d = pan.StereoClip{};
+        try load_stereo(&d, &tl, &tr);
+        if (stereo_allpass(&d, 0, 4, 0, 1, 2)) |_| return error.ZeroDelaySlipped else |e| if (e != error.BadDelay) return error.WrongZeroDelay;
+        if (!eq(d.left.samples(), &tl) or !eq(d.right.samples(), &tr) or d.left.len != d.right.len) return error.DelayRefusalMutated;
+
+        var g = pan.StereoClip{};
+        try load_stereo(&g, &tl, &tr);
+        if (stereo_allpass(&g, 0, 4, 1, 4, 4)) |_| return error.UnityGainSlipped else |e| if (e != error.BadGain) return error.WrongUnityGain; // 4/4 — a pole on the unit circle, refused
+        if (!eq(g.left.samples(), &tl) or !eq(g.right.samples(), &tr) or g.left.len != g.right.len) return error.GainRefusalMutated;
+
+        var r = pan.StereoClip{};
+        try load_stereo(&r, &tl, &tr);
+        if (stereo_allpass(&r, 1, 4, 1, 1, 2)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange; // start 1 + count 4 > len 4
+        if (!eq(r.left.samples(), &tl) or !eq(r.right.samples(), &tr) or r.left.len != r.right.len) return error.RangeRefusalMutated;
+    }
+
+    // 4c. THE DEGENERATE LAW — count = 0 (an empty span in the middle) is the identity on both channels; no sample to diffuse.
+    {
+        var noop = pan.StereoClip{};
+        try load_stereo(&noop, &[_]i16{ 8000, -8000, 4000 }, &[_]i16{ -50, 60, -70 });
+        try stereo_allpass(&noop, 1, 0, 2, 1, 2); // empty span — identity
+        if (!eq(noop.left.samples(), &[_]i16{ 8000, -8000, 4000 })) return error.ZeroCountLeftChanged;
+        if (!eq(noop.right.samples(), &[_]i16{ -50, 60, -70 })) return error.ZeroCountRightChanged;
+    }
+
+    print("GREEN ales-stereo-allpass: the ALLPASS filter CARRIED INTO STEREO — ALES184's Schroeder diffusion stage " ++
+        "(y[n] = saturate(-g·x[n] + x[n-delay] + g·y[n-delay])) run on BOTH channels with the SAME delay and gain, each channel reading " ++
+        "through ITS OWN buffer, the diffusion primitive the stereo reverb stands on. ALES184 added the mono allpass — the delayed DRY " ++
+        "read against the delayed OUTPUT; a stereo reverb diffuses each channel through its own allpass chain, so this is the natural " ++
+        "carry, exactly as the stereo comb and the stereo multi-tap were carried before it. The same delay and gain on both channels, " ++
+        "each read through its own buffer, is the linked stereo allpass: both diffuse tails settle in lockstep, the image held; a delay " ++
+        "is a sample count and a gain a named fraction the caller names, so the same knobs on each channel preserve the image; mono " ++
+        "allpass snapshots and reads its own clip, so run once per channel the left reads the left's audio and the right the right's, " ++
+        "never crossed — no cross-channel read. Honestly noted: like the feedback echo and the flanger and unlike the snapshot rungs, the " ++
+        "allpass reads its delayed OUTPUT through a @divTrunc gain, so an exact panned ratio does NOT survive; the image law proven is " ++
+        "the identical-channel one. It validates the delay, gain, and span once against the shared length before either channel is " ++
+        "snapshotted (BadDelay, BadGain, BadRange; ALES184's precheck reused), so a refusal never diffuses one channel and leaves the " ++
+        "other torn; AllpassError reused whole. THE STEREO ALLPASS LAW: each channel equals ALES184's mono allpass with the same delay " ++
+        "and gain byte for byte, the channels genuinely differing. THE IDENTICAL-CHANNEL IMAGE LAW: a centred master staying identical. " ++
+        "THE PURE-DELAY / SILENCE / BALANCE / ATOMICITY / DEGENERATE LAW: a zero-gain allpass a pure delay of each dry (not the identity), " ++
+        "silence to silence on both, left.len == right.len after, a bad delay / a bad gain / an out-of-range span each refusing by name " ++
+        "with both channels untouched and balanced, count = 0 the identity on both. Purely local — two bounded i16 Clips, each diffused " ++
+        "through the proven mono allpass, the delay a count of sample indices not milliseconds and the gain a named fraction not a " ++
+        "coefficient in seconds; no cross-channel read, no real sample rate, no network, no keys, no funds, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

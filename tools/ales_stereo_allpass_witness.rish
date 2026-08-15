@@ -1,0 +1,39 @@
+# tools/ales_stereo_allpass_witness.rish — the allpass filter carried into stereo: Schroeder's diffusion stage on both channels (ALES185).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES185.
+# Design read: active-designing/20260815-091646_fill-ales184-lotus-allpass.md (ALES184's read; this is its stereo carry).
+# Stands on: lotus/allpass.rye (ALES184 — the mono allpass run once per channel, its AllpassError and precheck reused); lotus/pan.rye
+# (ALES10 — the StereoClip and its balance invariant); lotus/timeline.rye (ALES2 — the Clip and the one true saturate the mono allpass reuses).
+#
+# lotus/stereo_allpass.rye carries ALES184's Schroeder diffusion stage into stereo — the same delay and gain on both channels, each read
+# through its own buffer, the diffusion primitive the stereo reverb stands on. y[n] = saturate(-g·x[n] + x[n-delay] + g·y[n-delay]) on each
+# channel. The selftest proves: the stereo allpass law (each channel equal to ALES184's mono allpass with the same delay and gain byte for
+# byte, the channels genuinely differing); the identical-channel image law (a centred master staying identical — an exact panned ratio does
+# NOT survive, honestly noted, because the delayed-output @divTrunc drifts it, like the echo and flanger); and the pure-delay / silence /
+# balance / atomicity / degenerate law (a zero-gain allpass a pure delay of each channel's own dry not the identity, silence to silence on
+# both, left.len == right.len after, a bad delay / a bad gain / an out-of-range span each refusing by name with both channels untouched and
+# balanced, count 0 the identity). Purely local — the delay counted in sample indices not milliseconds, no cross-channel read, no network,
+# no keys, no funds, no real device, no sample rate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_stereo_allpass_witness.rish
+
+say "ales-stereo-allpass: Language EN — ALES184 added the mono allpass, the one missing primitive above the time-based wing (the delayed DRY read against the delayed OUTPUT). A stereo reverb diffuses each channel through its OWN allpass chain, so carrying the allpass into stereo is the natural next rung, exactly as the stereo comb (echo ALES181) and the stereo multi-tap (ALES183) were carried before it — the diffusion primitive the stereo reverb stands on."
+say "ales-stereo-allpass: Style Radiant — the law is stated positively: the same delay and gain on both channels, each read through its own buffer, is the linked stereo allpass — both diffuse tails settle in lockstep, the image held; a delay is a sample count and a gain a named fraction the caller names, so the same knobs on each channel preserve the image, and mono allpass reads only its own clip so the left reads the left's audio and the right the right's, never crossed. Honestly noted: like the echo and flanger and unlike the snapshot rungs, the delayed-output gain drifts an exact panned ratio, so the identical-channel image law is the one claimed."
+say "ales-stereo-allpass: Lens TAME — two bounded i16 Clips (left, right), a u32 span, a u32 delay and a plain u32/u32 gain; each channel diffused through ALES184's own bounded allpass (one frozen dry snapshot and one in-place delayed-output read per sample, run in i64 and saturated once); the delay, gain, and span validated ONCE against the shared length before either channel is snapshotted (BadDelay, BadGain, BadRange; ALES184's precheck reused), so a refusal never diffuses one channel and leaves the other torn, AllpassError reused whole; it writes values only and the two channels leave balanced; siloed to lotus/, no cross-channel read, no network, no keys, no funds, no device, no sample rate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_allpass"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_allpass.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-allpass: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_allpass.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-allpass: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-allpass: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-allpass' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-allpass: selftest did not print the GREEN ales-stereo-allpass line"

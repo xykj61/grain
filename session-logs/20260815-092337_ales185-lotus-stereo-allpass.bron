@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260815.092337
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title ALES185 — Lotus's stereo_allpass: the allpass carried into stereo, the diffusion primitive the stereo reverb stands on
+prompt autonomous climb — take the next agent-doable lap Lindy-first crux-first, send each finished increment as its own signed round; ALES184 (mono allpass) landed and sent, continue
+think ALES184 added the mono allpass and sent GREEN. The established recent cadence is a mono primitive then its stereo carry; a stereo reverb diffuses each channel through its own allpass chain, so carrying the allpass into stereo is the faithful, low-risk next rung, exactly as the stereo comb (echo ALES181) and stereo multi-tap (ALES183) were carried.
+think Templated it on stereo_taps.rye: precheck once against the shared length (allpass.precheck), then run mono allpass on each channel with the same delay and gain, StereoAllpassError = allpass.AllpassError reused whole.
+obs The image law: the allpass reads its delayed OUTPUT y[n-d] through a @divTrunc gain, so it is a feedback structure like the echo (ALES181) and flanger (ALES180) — an exact panned integer ratio does NOT survive. So I proved only the identical-channel image law (a centred master staying identical), stated the limitation plainly in doc, module, and witness, mirroring the flanger's own honest RED-caught lesson rather than over-claiming.
+obs Proved the pure-delay law per channel (g=0 delays each channel's own dry, never crossed), silence, balance, three atomic refusals (BadDelay, BadGain at unity, BadRange), and count=0 identity — the full stereo-carry law set.
+loom witness=ales_stereo_allpass_witness result=GREEN cases=7 stereo_law=1 image_identical=1 faults=3
+file lotus/stereo_allpass.rye ALES185 — the allpass on both channels, shared knobs, own-buffer reads, identical-channel image law honestly bounded
+file tools/ales_stereo_allpass_witness.rish the on-metal witness proving each channel equals the mono allpass byte for byte
+file session-logs/20260815-092337_ales185-lotus-stereo-allpass.bron this record
+recommend keep-going the reverb — parallel combs (echo) diffused through series allpasses (allpass), now both a stereo pair — is the wing's keystone crux
