@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260815.132120
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (VPS) — Eastern (EDT) time convention
+title ALES218 — Lotus stereo render, the effect chain widened to two channels
+prompt recur the road Lindy-first crux-first; take the next agent-doable lap, self-approve design rounds, send each increment, stop at custody gates
+think ALES217 named the honest next crux: a stereo render, the same chain over two channels into stereo_wav. Lindy-first: the render family completes only when it matches the mono→stereo pairing the whole suite (reverb, width, pan) already closed across both channels.
+think A Lotus master is a pan.StereoClip (ALES10) — two mono Clips, left+right, whose defining invariant is equal length. So stereo render is a pure composition: reuse ALES217's Step, check_step, and apply_step verbatim, apply each proven step to both channels, encode interleaved via stereo_wav.encode.
+think Made render.check_step and render.apply_step public so stereo_render reuses them per channel rather than re-deriving — one definition of what a step means, so mono and stereo renders can never drift. StereoRenderError = render.RenderError || stereo_wav.StereoWavError.
+think The balanced promise rides on the same length invariant: both channels enter equal-length and gain/fade/invert preserve length, so the whole request is checkable against the one shared length before a sample moves, and a faulty chain leaves BOTH channels byte-for-byte unchanged.
+obs GREEN on the first metal pass. Seven laws proven: stereo-render (byte-for-byte on each channel to a hand-applied chain), independent-channel (a stereo render is two mono renders sharing one container — proven by comparing each decoded channel against the per-channel hand render), balance (channels leave equal length), empty-chain, atomic-fault (both channels unchanged), output-border/step-bound/bad-rate, empty-clip.
+obs The ALES217 render witness re-run GREEN after making its two helpers public — no regression. tame_style_check bans clean; width-check exit 0. Honest scope: byte container only, no real file/DAC/acoustic fact, no network/keys/funds. No custody gate.
+loom witness=ales_stereo_render_witness result=GREEN laws=7 channels=2 chain_effects=3 frame_bytes=4
+file lotus/stereo_render.rye the stereo render rung — an ordered chain over both channels of a StereoClip encodes to a canonical interleaved stereo .wav, atomically
+file lotus/render.rye check_step and apply_step made public so stereo render reuses them per channel
+file tools/ales_stereo_render_witness.rish the on-metal witness, GREEN
+file active-designing/20260815-132120_fill-ales218-lotus-stereo-render.md self-approved design round for ALES218
+recommend keep-going the render family stands whole (mono + stereo); a named preset chain a keeper loads by name (a Step[] from a small catalog) is the honest next crux
