@@ -55,6 +55,27 @@ pub const VibratoError = error{
     BadRange,
 };
 
+/// Validate a vibrato's LFO and span against a clip length ONCE, before any write — factored out of `vibrato` so the stereo lift
+/// (`stereo_vibrato`, ALES178) can refuse against the shared length before either channel is snapshotted, mirroring ALES75's `ring_mod.precheck`.
+/// Refuses a period that is not a positive multiple of four (or wider than max_clip) BadPeriod, a negative depth or a swing dipping below one
+/// whole sample BadDepth, a swing top past the widest clip BadDelay, and a span outside `clip_len` BadRange. There is no BadLevel — the vibrato
+/// is heard wet-only and carries no mix level.
+pub fn precheck(clip_len: u32, start: u32, count: u32, centre_scaled: i64, depth_scaled: i64, period: u32) VibratoError!void {
+    // invariant: the period is a positive multiple of four (the triangle's quarter anchors need P/4 whole) and no wider than the widest
+    // clip, so the LFO is bounded. Checked at the edge before any read.
+    if (period == 0 or period % 4 != 0) return error.BadPeriod;
+    if (period > timeline.max_clip) return error.BadPeriod;
+    // invariant: the depth is non-negative and the swing's bottom stays at or above one whole sample — below that there is no `far`
+    // neighbour to interpolate toward before the clip, and the delay is meaningless.
+    if (depth_scaled < 0) return error.BadDepth;
+    if (centre_scaled - depth_scaled < glide.glide_scale) return error.BadDepth;
+    // invariant: the swing's top whole delay fits the widest clip, so the reach is bounded.
+    if (@divTrunc(centre_scaled + depth_scaled, glide.glide_scale) > @as(i64, timeline.max_clip)) return error.BadDelay;
+    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
+    if (start > clip_len) return error.BadRange;
+    if (count > clip_len - start) return error.BadRange;
+}
+
 /// Apply a vibrato over `count` samples starting at `start` in place in `clip`: a triangle LFO of `depth_scaled` round `centre_scaled` over
 /// `period` samples drives the scaled delay (ALES71's `triangle_delay_at`), each sample read by LINEAR INTERPOLATION of the two dry
 /// neighbours straddling its fractional delay (ALES70's read), and the delayed voice is written ALONE — y[i] = interp(dry, i, d_s(i)), no
@@ -70,19 +91,9 @@ pub fn vibrato(
     depth_scaled: i64,
     period: u32,
 ) VibratoError!void {
-    // invariant: the period is a positive multiple of four (the triangle's quarter anchors need P/4 whole) and no wider than the widest
-    // clip, so the LFO is bounded. Checked at the edge before any read.
-    if (period == 0 or period % 4 != 0) return error.BadPeriod;
-    if (period > timeline.max_clip) return error.BadPeriod;
-    // invariant: the depth is non-negative and the swing's bottom stays at or above one whole sample — below that there is no `far`
-    // neighbour to interpolate toward before the clip, and the delay is meaningless.
-    if (depth_scaled < 0) return error.BadDepth;
-    if (centre_scaled - depth_scaled < glide.glide_scale) return error.BadDepth;
-    // invariant: the swing's top whole delay fits the widest clip, so the reach is bounded.
-    if (@divTrunc(centre_scaled + depth_scaled, glide.glide_scale) > @as(i64, timeline.max_clip)) return error.BadDelay;
-    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
-    if (start > clip.len) return error.BadRange;
-    if (count > clip.len - start) return error.BadRange;
+    // invariant: the LFO and span are legal — the four faults refused before any read, so a refusal never half-writes. ALES178's stereo lift
+    // reuses this same `precheck` against the shared length.
+    try precheck(clip.len, start, count, centre_scaled, depth_scaled, period);
 
     const end: u32 = start + count;
     // Snapshot the dry prefix [0, end) BEFORE any write, so every interpolated read is of the ORIGINAL audio — the ALES68/ALES70/ALES71
