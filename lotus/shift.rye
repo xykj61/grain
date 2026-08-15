@@ -1,0 +1,222 @@
+//! lotus/shift.rye — ALES108: shift — slide the whole clip by `by` samples and DROP the samples that fall off the edge, filling the vacated end with silence, the honest
+//! twin of ALES106's rotate. Where rotate WRAPS the samples that fall off the front back onto the tail (a permutation, exact and invertible), shift lets them GO and writes
+//! silence where they stood. This is the grid nudge every editor and DAW ships — move a clip a few samples earlier or later so it lands on the beat, so a stereo pair
+//! aligns, so a doubled take sits behind the lead. Naming it beside rotate teaches the one distinction that matters about translating a bounded signal: WRAP or DROP.
+//!
+//! The rule, stated once: `by` is a signed shift — negative slides the clip LEFT (earlier), positive slides it RIGHT (later). Clamp the magnitude to the length (a shift at
+//! or past the length pushes the whole clip out of frame), move the surviving samples in place in the safe direction (a right shift copies back to front, a left shift front
+//! to back, so no live sample is overwritten before it is read), then write silence into the vacated span. One in-place pass bounded by len, no allocation, no second buffer.
+//!
+//! The crux — four laws. THE SHIFT LAW: after shift(clip, k>0), sample j holds original[j-k] for j in [k,len) and 0 for j in [0,k); for k<0 (m=-k), sample j holds
+//! original[j+m] for j in [0,len-m) and 0 for j in [len-m,len); length unchanged, checked against hand-shifted vectors both directions. THE ROTATE-CONTRAST LAW: shift(-k)
+//! and ALES106's rotate_left(k) AGREE exactly on the len-k samples that stay in frame and DIFFER only at the vacated k-sample tail — rotate wrapping the original head, shift
+//! writing silence. THE COMPOSITION-LOSS LAW, HONEST: shift is NOT invertible — shift(k) then shift(-k) returns the leading k samples as silence, not their bytes, since the
+//! dropped samples are gone; only a clip whose shifted-off region was already silence round-trips. THE MAGNITUDE / SILENCE LAW: shift replaces dropped samples with silence,
+//! so the peak magnitude (re-measured through ALES13) is non-increasing; a shift that drops only zeros leaves it unchanged; shift by 0 is the identity, |by| >= len is all
+//! silence, and the empty clip is its own shift.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES108.
+//! Design read: active-designing/20260815-005300_fill-ales108-lotus-shift.md
+//! Stands on: lotus/timeline.rye (ALES2) — the Clip and its buf/len/samples; lotus/rotate.rye (ALES106) — the cyclic shift, imported by the selftest to prove the
+//! wrap-vs-drop contrast; lotus/meter.rye (ALES13) — the peak/RMS meter, used only by the witness to prove that dropping samples never raises the peak.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. It reseats existing samples and fills the vacated end
+//! with SILENCE (zero) — the one thing it writes that was not already there, and silence is the honest content of an edge a clip was nudged away from; it invents no
+//! non-zero sample, changes no length, and reads no byte past len. No real sample rate, no network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/shift.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const rotate = @import("rotate.rye");
+const meter = @import("meter.rye");
+
+pub const shift_version = "20260815.005300";
+
+/// Slide `clip` by `by` samples in place, dropping the samples that fall off the edge and filling the vacated end with silence. Negative `by` shifts left (earlier),
+/// positive shifts right (later). The magnitude is clamped to the length, so a shift at or past the length leaves an all-silent clip. Total on any legal Clip: it names no
+/// out-of-range span, so it can raise no fault; the length is left exactly as it is.
+pub fn shift(clip: *timeline.Clip, by: i32) void {
+    // invariant: the length never claims more samples than the buffer holds — every seat we move or clear is inside the buffer.
+    assert(clip.len <= clip.buf.len);
+
+    const len: u32 = clip.len;
+    if (len == 0 or by == 0) {
+        // invariant: an empty clip and a zero shift are each their own shift — nothing moves, nothing clears.
+        assert(clip.len == len and clip.len <= clip.buf.len);
+        return;
+    }
+
+    // The move distance is the magnitude of `by`, clamped to the length: a shift at or past the length pushes every sample out of frame, leaving all silence.
+    const magnitude: u32 = @intCast(if (by < 0) -@as(i64, by) else @as(i64, by));
+    const k: u32 = if (magnitude > len) len else magnitude;
+    // invariant: k is a legal sub-range of the clip, so the vacated span [0,k) or [len-k,len) is always in bounds.
+    assert(k <= len);
+
+    if (by > 0) {
+        // Shift RIGHT by k: sample j gets original[j-k]. Copy BACK TO FRONT so a source is read before its destination overwrites it, then silence the leading k.
+        var j: u32 = len;
+        while (j > k) {
+            j -= 1;
+            assert(j >= k and j < len);
+            clip.buf[j] = clip.buf[j - k];
+        }
+        var f: u32 = 0;
+        // invariant: the leading k seats vacated by a right shift are filled with silence, never left holding a stale copy.
+        while (f < k) : (f += 1) clip.buf[f] = 0;
+    } else {
+        // Shift LEFT by k: sample j gets original[j+k]. Copy FRONT TO BACK so a source is read before its destination overwrites it, then silence the trailing k.
+        var j: u32 = 0;
+        while (j + k < len) : (j += 1) {
+            assert(j < len and j + k < len);
+            clip.buf[j] = clip.buf[j + k];
+        }
+        var t: u32 = len - k;
+        // invariant: the trailing k seats vacated by a left shift are filled with silence, never left holding a stale copy.
+        while (t < len) : (t += 1) clip.buf[t] = 0;
+    }
+
+    // invariant: shift reseats samples and fills silence, never the count — the length and its bound are exactly what they were.
+    assert(clip.len == len);
+    assert(clip.len <= clip.buf.len);
+}
+
+// --- selftest: THE SHIFT LAW — shift lands a hand-shifted vector both directions, the vacated end silent; THE ROTATE-CONTRAST LAW — shift(-k) and ALES106's rotate_left(k)
+//     agree on the in-frame samples and differ only at the vacated tail (silence vs wrap); THE COMPOSITION-LOSS LAW — shift(k) then shift(-k) zeros the leading k, and a
+//     pre-silent region round-trips; THE MAGNITUDE / SILENCE LAW — the peak (re-measured through ALES13) is non-increasing, shift by 0 is the identity, |by|>=len is all
+//     silence, and the empty clip is its own shift ----------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+/// The clip's current peak magnitude, re-measured through ALES13 — the reader the magnitude law checks the result against.
+fn clip_peak(clip: *const timeline.Clip) !u32 {
+    const m = try meter.measure(clip);
+    return meter.peak(&m);
+}
+
+fn run_selftest() !u8 {
+    // 1. THE SHIFT LAW — shift lands exactly the hand-shifted vector both directions: the surviving samples slide by k and the vacated end goes silent, the length unchanged.
+    {
+        var right = timeline.Clip{};
+        try load_clip(&right, &[_]i16{ 10, 20, 30, 40, 50 });
+        shift(&right, 2); // right by 2: two zeros in front, the last two (40, 50) drop off the end
+        if (!eq(right.samples(), &[_]i16{ 0, 0, 10, 20, 30 })) return error.ShiftRightWrong;
+
+        var left = timeline.Clip{};
+        try load_clip(&left, &[_]i16{ 10, 20, 30, 40, 50 });
+        shift(&left, -2); // left by 2: the first two (10, 20) drop off the front, two zeros at the end
+        if (!eq(left.samples(), &[_]i16{ 30, 40, 50, 0, 0 })) return error.ShiftLeftWrong;
+    }
+
+    // 2. THE ROTATE-CONTRAST LAW — shift(-k) and rotate_left(k) agree exactly on the len-k samples that stay in frame, and differ ONLY at the vacated k-sample tail: rotate
+    //    wraps the original head there, shift writes silence. Proven on one clip at k = 2.
+    {
+        const src = [_]i16{ 11, 22, 33, 44, 55, 66 };
+        const k: u32 = 2;
+
+        var rot = timeline.Clip{};
+        try load_clip(&rot, &src);
+        rotate.rotate_left(&rot, k); // -> 33 44 55 66 | 11 22 (the head wraps to the tail)
+
+        var shf = timeline.Clip{};
+        try load_clip(&shf, &src);
+        shift(&shf, -@as(i32, @intCast(k))); // -> 33 44 55 66 | 0 0 (the head drops, silence fills)
+
+        const rs = rot.samples();
+        const ss = shf.samples();
+        if (rs.len != ss.len) return error.ContrastLenWrong;
+        // The in-frame interior [0, len-k) is identical.
+        var i: u32 = 0;
+        while (i < src.len - k) : (i += 1) if (rs[i] != ss[i]) return error.ContrastInteriorDiffers;
+        // The vacated tail [len-k, len) is the original head under rotate, silence under shift.
+        if (!eq(rs[src.len - k ..], &[_]i16{ 11, 22 })) return error.ContrastRotateTailWrong;
+        if (!eq(ss[src.len - k ..], &[_]i16{ 0, 0 })) return error.ContrastShiftTailWrong;
+    }
+
+    // 3a. THE COMPOSITION-LOSS LAW — shift is NOT invertible: shift(k) then shift(-k) returns the leading k samples as SILENCE, not their bytes, since the dropped tail is
+    //     gone. Here shift right 2 then left 2: the original 10,20 are gone, the leading two land as the shifted-in zeros slid back, and the tail is silence.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 10, 20, 30, 40, 50 });
+        shift(&clip, 2); // -> 0 0 10 20 30
+        shift(&clip, -2); // -> 10 20 30 0 0   (30 survived at index 2; 40,50 were dropped by the right shift and cannot return)
+        if (!eq(clip.samples(), &[_]i16{ 10, 20, 30, 0, 0 })) return error.CompositionLossWrong;
+    }
+
+    // 3b. THE COMPOSITION-LOSS LAW, the recovering case — a clip whose shifted-off region is already silence round-trips exactly, because nothing non-zero is lost.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 10, 20, 30, 0, 0 });
+        shift(&clip, -2); // -> 30 0 0 0 0   (the two trailing zeros dropped cost nothing)
+        shift(&clip, 2); // -> 0 0 30 0 0
+        if (!eq(clip.samples(), &[_]i16{ 0, 0, 30, 0, 0 })) return error.PreSilentRoundTripWrong;
+    }
+
+    // 4a. THE MAGNITUDE / SILENCE LAW — shift replaces dropped samples with silence, so the peak re-measured through ALES13 is non-increasing. Here the loudest sample (the
+    //     -30000 at the front) is dropped by a left shift, so the peak strictly falls; a right shift that drops only the quiet tail keeps the peak.
+    {
+        var drop_peak = timeline.Clip{};
+        try load_clip(&drop_peak, &[_]i16{ -30000, 100, -200, 300 });
+        const before = try clip_peak(&drop_peak);
+        shift(&drop_peak, -1); // drops -30000 off the front
+        const after = try clip_peak(&drop_peak);
+        if (!(after <= before)) return error.PeakRose;
+        if (!(after < before)) return error.PeakShouldHaveFallen;
+
+        var keep_peak = timeline.Clip{};
+        try load_clip(&keep_peak, &[_]i16{ -30000, 100, -200, 0 });
+        const kb = try clip_peak(&keep_peak);
+        shift(&keep_peak, 1); // shifts right, dropping only the trailing 0 — the loud -30000 stays in frame
+        if (try clip_peak(&keep_peak) != kb) return error.KeepPeakMoved;
+    }
+
+    // 4b. THE MAGNITUDE / SILENCE LAW, the degenerate cases — shift by 0 is the identity, a shift with |by| >= len is all silence, and the empty clip is its own shift.
+    {
+        var idc = timeline.Clip{};
+        try load_clip(&idc, &[_]i16{ 7, 8, 9 });
+        shift(&idc, 0);
+        if (!eq(idc.samples(), &[_]i16{ 7, 8, 9 })) return error.ZeroShiftMoved;
+
+        var out_right = timeline.Clip{};
+        try load_clip(&out_right, &[_]i16{ 7, 8, 9 });
+        shift(&out_right, 3); // exactly len — every sample pushed out of frame
+        if (!eq(out_right.samples(), &[_]i16{ 0, 0, 0 })) return error.WholeClipNotSilenced;
+
+        var out_far = timeline.Clip{};
+        try load_clip(&out_far, &[_]i16{ 7, 8, 9 });
+        shift(&out_far, -99); // far past len — clamped, still all silence
+        if (!eq(out_far.samples(), &[_]i16{ 0, 0, 0 })) return error.FarShiftNotSilenced;
+
+        var empty = timeline.Clip{};
+        shift(&empty, 5);
+        if (empty.len != 0) return error.EmptyChanged;
+    }
+
+    print("GREEN ales-shift: SHIFT — slide the whole clip by `by` samples and DROP what falls off the edge, filling the vacated end with silence, the honest twin of " ++
+        "ALES106's rotate (where rotate WRAPS the fallen samples, shift lets them GO). This is the grid nudge every editor ships — move a clip earlier or later so it lands " ++
+        "on the beat. The rule: clamp the magnitude to len, move the survivors in place in the safe direction (right copies back to front, left front to back), then write " ++
+        "silence into the vacated span; no second buffer. The crux is four laws. THE SHIFT LAW: shift lands the hand-shifted vector both directions, the vacated end silent. " ++
+        "THE ROTATE-CONTRAST LAW: shift(-k) and rotate_left(k) agree on the in-frame samples and differ only at the vacated tail — rotate wrapping the head, shift writing " ++
+        "silence. THE COMPOSITION-LOSS LAW, HONEST: shift is NOT invertible — shift(k) then shift(-k) returns the leading k as silence, not their bytes; only a pre-silent " ++
+        "region round-trips. THE MAGNITUDE / SILENCE LAW: the peak (re-measured through ALES13) is non-increasing, shift by 0 is the identity, |by|>=len is all silence, and " ++
+        "the empty clip is its own shift. Purely local — it reseats existing samples and fills the vacated end with silence, inventing no non-zero sample, changing no " ++
+        "length, reading no byte past len; no real sample rate, no network, no keys, no funds, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
