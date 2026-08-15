@@ -1,0 +1,40 @@
+# tools/ales_decimate_witness.rish — the sample-rate decimator: hold each sample across a run, crushing time rather than amplitude (ALES83).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES83.
+# Design read: active-designing/20260814-213107_fill-ales83-lotus-sample-rate-decimator.md
+# Stands on: lotus/crush.rye (ALES81 — the bit-crush this rung mirrors: crush lowers RESOLUTION on the value axis, decimate lowers RATE on the time
+# axis); lotus/timeline.rye (ALES2 — the Clip, sample_min/max, max_clip). A keeper who wants a boosted, clipped, or bit-crushed decimation composes
+# this with ALES78's drive, ALES82's tube, or ALES81's crush over the same span — all in-place span maps that compose.
+#
+# lotus/decimate.rye partitions the span into runs of `hold` samples anchored at start and pins every sample in a run to the run's FIRST (its anchor) —
+# a zero-order hold. hold = 1 is the identity; the last run may be PARTIAL. It is the DRIVE family's FIRST map that is not memoryless PER SAMPLE (an
+# output equals its run's anchor, a neighbor) yet memoryless PER RUN (each run depends only on its own anchor, so a run-aligned block decimation equals
+# the whole), and it is IDEMPOTENT. The selftest proves it: hold = 1 is the identity; the zero-order hold by hand at hold 3 over [10,20,30,40,50,60,70]
+# gives [10,10,10,40,40,40,70] (last run partial); every sample equals its run anchor and the map is idempotent; a hold wider than the span holds the
+# whole span at the first sample; the rail is preserved (a decimation only COPIES existing samples); the span discipline holds; a zero or over-wide
+# hold refuses BadHold, a span past the end BadRange, each leaving the clip untouched. The decimator writes only values that already live in the clip,
+# so no saturate is owed. Purely local — one divide, one copy per sample; no delay line, no interpolation, no anti-aliasing, no network, no keys, no
+# funds, no real device, no real sample rate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_decimate_witness.rish
+
+say "ales-decimate: Language EN — the bit-crusher (ALES81) drops the low bits, lowering a sample's RESOLUTION while every sample keeps its own moment in time. The decimator shapes the OTHER axis — it holds one sample across a whole run, so a stream that entered at the full rate leaves at half, a quarter, or a sixteenth: the aliased, stepped, sample-and-hold voice of an early converter read too slow. The bit-crush and the decimator are twins — one crushes the value axis, the other the time axis, and together they name the two ways a converter goes coarse."
+say "ales-decimate: Style Radiant — the law is stated positively as a recognition: A DECIMATION BY `hold` IS A ZERO-ORDER HOLD — partition the span into runs of `hold` anchored at start and pin every sample in a run to its FIRST. hold = 1 is the identity; a hold wider than the span holds the whole span at the first sample. It is the family's first map that is not memoryless per sample (an output equals its run's anchor, a neighbor), yet memoryless per run — each run depends only on its own anchor, so a run-aligned block decimation equals the whole — and idempotent, a held run holding to the same anchor."
+say "ales-decimate: Lens TAME — one mono clip of i16 PCM decimated in place over a span; anchor = start + divTrunc(k, hold)·hold ≤ i, y[i] = x[anchor], a copy of an existing sample so the output is a legal i16 BY CONSTRUCTION and no saturate is owed; safe in place left to right (the anchor is written to itself before any later index in its run reads it); a zero or over-wide hold refuses BadHold, a span outside the samples BadRange, each before any write, the clip untouched on refusal; siloed to lotus/, the `hold` a sample count (unity = 1), no interpolation, no anti-aliasing, no snapshot, no network, no keys, no funds, no device, no speaker, no sample rate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/decimate"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/decimate.rye -femit-bin=${bin}"]
+assert build.ok else "ales-decimate: build failed — ${build.err}"
+
+let outfile = "lotus/bin/decimate.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-decimate: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-decimate: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-decimate' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-decimate: selftest did not print the GREEN ales-decimate line"

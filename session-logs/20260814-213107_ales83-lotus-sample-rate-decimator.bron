@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260814.213107
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (cloud pier) — Eastern (EDT) time convention
+title ALES83 — Lotus's sample-rate decimator, the bit-crush's twin on the time axis
+prompt recur baton — take the next agent-doable Lindy-first crux-first lap on the road, send each finished increment, stop at custody gates
+think REMEMBER named DREY as the living edge, yet git HEAD is ALES82 (lotus tube drive) — the loop climbs the Lotus DSP suite one signed module per round, faster than the card refreshes; the true next crux is git-current, not card-current.
+think ALES81 (bit-crush) and ALES82 (tube) both name the sample-rate decimator as the DRIVE family's remaining rung — the bit-crush's twin on the OTHER axis (crush lowers resolution on the value axis; decimate lowers rate on the time axis). Self-approved, no custody gate.
+think The decimator is a zero-order hold: partition the span into runs of `hold` anchored at start, pin every sample in a run to its first (the anchor). hold=1 is the identity; the last run may be partial. It writes only existing samples (a copy), so the output is a legal i16 by construction and no saturate is owed.
+think Honestly named the family's first map that is not memoryless PER SAMPLE (an output equals its run's anchor, a neighbor) yet memoryless PER RUN — a run-aligned block decimation equals the whole — and idempotent. In-place safe left to right: anchor <= i and the anchor is written to itself before any later index in its run reads it.
+obs Followed the sibling pattern exactly (crush.rye, tube.rye, ales_tube_witness.rish): module + design doc + witness + README status-line sync + session log, one signed commit. Six laws + fault law proven in the selftest; witness GREEN; tame_style_check clean.
+loom witness=ales_decimate_witness selftest=GREEN laws=7 module_lines=207
+file lotus/decimate.rye the zero-order-hold decimator, seven laws proven in its selftest
+file tools/ales_decimate_witness.rish builds the module, runs the selftest, asserts the single GREEN ales-decimate line
+file active-designing/20260814-213107_fill-ales83-lotus-sample-rate-decimator.md the self-approved design read naming the crux and its laws
+file lotus/README.md front-door status line synced with ALES83 and re-stamped
+recommend keep-going the DRIVE waveshaper family is whole (six shapes); the next Lotus crux steps outside it (spectral or spatial) — the loop names it as its own next design round
