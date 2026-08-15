@@ -1,0 +1,182 @@
+//! lotus/library_diff.rye — ALES229: what changed between two catalog versions. ALES228 let a keeper reach into one catalog by name;
+//! yet a body of work grows — a keeper reseals their library the day they finish a record, retire a demo, or remaster an old one, and
+//! the honest question the next morning is what changed since yesterday's catalog. This rung names it: a bounded classification of two
+//! opened library manifests, a BEFORE and an AFTER, into three verdicts — added, removed, changed — every other album unchanged.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES229.
+//! Design read: active-designing/20260815-143152_fill-ales229-lotus-library-diff.md
+//! Stands on: lotus/library_find.rye (ALES228) — the find / digest_of resolve this composes on; lotus/library_manifest.rye (ALES226)
+//! — the two opened LibraryManifest values this compares. The first Lotus rung to stand ON another catalog primitive rather than
+//! beside it — the shape the level grows in. No new hash, no new frame.
+//!
+//! THE CRUX — a diff composes on the resolve, it does not re-walk from scratch. Each classification is a find into the other catalog:
+//! name present or absent, digest same or different. The digest IS the whole comparison — content-addressing already proved two
+//! matching digests mean identical bytes and two differing digests mean the record moved, so a diff needs no byte compare and no new
+//! hash, only the handles the manifests already carry.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A bounded classification over in-process fields already proven whole by
+//! open_library_manifest, siloed to lotus/. Content-addressing on every handle it reports, never a signature: it names what moved, not
+//! who made it — the signed carry remains a later crypto seam on Keaton's word. No real file, no DAC, no acoustic or electrical fact,
+//! no network, no funds, no real device.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/library_diff.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const library_manifest = @import("library_manifest.rye");
+const library_find = @import("library_find.rye");
+
+pub const library_diff_version = "20260815.143152";
+
+/// One album present in BOTH catalogs whose content-address digest moved — the same record, resealed. Both digests are slices into
+/// their respective opened manifest bodies.
+pub const Change = struct {
+    name: []const u8,
+    old_digest: []const u8,
+    new_digest: []const u8,
+};
+
+/// The whole verdict of comparing a before-catalog to an after-catalog. Every list is bounded by the manifest's own album ceiling, so
+/// the classification can never overflow and always terminates. `same_count` counts albums present in both with an identical digest —
+/// they need no line, only a tally.
+pub const Diff = struct {
+    added: [library_manifest.max_albums]library_manifest.Entry = undefined,
+    added_count: u32 = 0,
+    removed: [library_manifest.max_albums]library_manifest.Entry = undefined,
+    removed_count: u32 = 0,
+    changed: [library_manifest.max_albums]Change = undefined,
+    changed_count: u32 = 0,
+    same_count: u32 = 0,
+};
+
+/// Classify every album of `before` and `after` into added / removed / changed / same. For each album in `after`, find it in
+/// `before`: absent means added, present-with-a-different-digest means changed, present-and-equal means counted same. For each album
+/// in `before`, absent from `after` means removed. One ordered pass over each catalog — both bounded on open, so the walk is total and
+/// the verdict infallible.
+pub fn classify(before: *const library_manifest.LibraryManifest, after: *const library_manifest.LibraryManifest) Diff {
+    // invariant: neither catalog names more albums than the shared bound — open_library_manifest already proved it, re-asserted here.
+    assert(before.count <= library_manifest.max_albums and after.count <= library_manifest.max_albums);
+    var d: Diff = .{};
+
+    // Added and changed: walk the after against the before.
+    var i: u32 = 0;
+    while (i < after.count) : (i += 1) {
+        const a = after.entries[i];
+        if (library_find.find(before, a.name)) |bi| {
+            // present in both — same digest is unchanged, a different digest is a reseal.
+            if (std.mem.eql(u8, library_find.digest_of(before, bi), a.digest)) {
+                d.same_count += 1;
+            } else {
+                d.changed[d.changed_count] = .{ .name = a.name, .old_digest = library_find.digest_of(before, bi), .new_digest = a.digest };
+                d.changed_count += 1;
+            }
+        } else {
+            d.added[d.added_count] = a;
+            d.added_count += 1;
+        }
+    }
+
+    // Removed: walk the before against the after — an album the after no longer holds.
+    var j: u32 = 0;
+    while (j < before.count) : (j += 1) {
+        const b = before.entries[j];
+        if (library_find.find(after, b.name) == null) {
+            d.removed[d.removed_count] = b;
+            d.removed_count += 1;
+        }
+    }
+
+    // invariant: every after-album landed in exactly one of added / changed / same — the three tallies account for the whole after.
+    assert(d.added_count + d.changed_count + d.same_count == after.count);
+    // invariant: no list overflowed its bound — each is at most one catalog's worth of albums.
+    assert(d.added_count <= after.count and d.removed_count <= before.count and d.changed_count <= after.count);
+    return d;
+}
+
+// --- selftest: THE ADDED LAW — an after-only album appears once as added with its digest; THE REMOVED LAW — a before-only album
+//     appears once as removed with its digest; THE CHANGED LAW — a name in both with a moved digest appears once as changed carrying
+//     both digests, an unchanged name appears in no list and is counted same; THE IDENTITY LAW — a catalog against itself yields all
+//     zeros and same_count equal to the album count -------------------------------------------------------------------------------
+
+/// Seal a small library over stand-in album manifests into `out`, returning its length — the content address a keeper holds for a
+/// whole catalog. Any bytes serve as an album manifest here; the library addresses their OUTPUT bytes.
+fn make_library(out: []u8, names: []const []const u8, manifests: []const []const u8) !u32 {
+    // invariant: a witness helper builds a small, well-formed catalog — the two arrays run in lockstep.
+    assert(names.len == manifests.len);
+    var albums: [8]library_manifest.AlbumIn = undefined;
+    var i: u32 = 0;
+    while (i < names.len) : (i += 1) albums[i] = .{ .name = names[i], .album_manifest = manifests[i] };
+    return library_manifest.seal_library_manifest(out, albums[0..names.len]);
+}
+
+fn run_selftest() !u8 {
+    // Stand-in album-manifest bytes. m1b shares m1's NAME ("sequel") but different bytes — a reseal, so a changed verdict.
+    const m0 = "first album manifest bytes.....\x01\x02\x03";
+    const m1 = "second album manifest bytes....\x04\x05\x06";
+    const m1b = "second album manifest RESEALED.\x04\x05\x07";
+    const m2 = "third album manifest bytes.....\x07\x08\x09";
+
+    // before: {debut, sequel}. after: {debut (same), sequel (resealed → changed), finale (new → added)}. debut is same; sequel
+    // changed; finale added; nothing removed here — a removal is proven in its own block below.
+    var before_rec: [library_manifest.max_library_manifest_bytes]u8 = undefined;
+    var after_rec: [library_manifest.max_library_manifest_bytes]u8 = undefined;
+    const bn = try make_library(before_rec[0..], &.{ "debut", "sequel" }, &.{ m0, m1 });
+    const an = try make_library(after_rec[0..], &.{ "debut", "sequel", "finale" }, &.{ m0, m1b, m2 });
+    const before = try library_manifest.open_library_manifest(before_rec[0..bn]);
+    const after = try library_manifest.open_library_manifest(after_rec[0..an]);
+
+    // 1. THE ADDED & CHANGED LAWS — finale added once with its digest; sequel changed once carrying old and new; debut unchanged,
+    //    counted same and in no list.
+    {
+        const d = classify(&before, &after);
+        if (d.added_count != 1) return error.AddedCountWrong;
+        if (!std.mem.eql(u8, d.added[0].name, "finale")) return error.AddedNameWrong;
+        if (!std.mem.eql(u8, d.added[0].digest, library_find.digest_of(&after, library_find.find(&after, "finale").?))) return error.AddedDigestWrong;
+
+        if (d.changed_count != 1) return error.ChangedCountWrong;
+        if (!std.mem.eql(u8, d.changed[0].name, "sequel")) return error.ChangedNameWrong;
+        if (!std.mem.eql(u8, d.changed[0].old_digest, library_find.digest_of(&before, library_find.find(&before, "sequel").?))) return error.OldDigestWrong;
+        if (!std.mem.eql(u8, d.changed[0].new_digest, library_find.digest_of(&after, library_find.find(&after, "sequel").?))) return error.NewDigestWrong;
+        if (std.mem.eql(u8, d.changed[0].old_digest, d.changed[0].new_digest)) return error.ChangeNotMoved;
+
+        if (d.same_count != 1) return error.SameCountWrong; // debut
+        if (d.removed_count != 0) return error.RemovedLeaked;
+    }
+
+    // 2. THE REMOVED LAW — retire sequel: after holds only {debut}. sequel appears once as removed, with its before-digest.
+    {
+        var small_rec: [library_manifest.max_library_manifest_bytes]u8 = undefined;
+        const sn = try make_library(small_rec[0..], &.{"debut"}, &.{m0});
+        const smaller = try library_manifest.open_library_manifest(small_rec[0..sn]);
+        const d = classify(&before, &smaller);
+        if (d.removed_count != 1) return error.RemovedCountWrong;
+        if (!std.mem.eql(u8, d.removed[0].name, "sequel")) return error.RemovedNameWrong;
+        if (!std.mem.eql(u8, d.removed[0].digest, library_find.digest_of(&before, library_find.find(&before, "sequel").?))) return error.RemovedDigestWrong;
+        if (d.added_count != 0 or d.changed_count != 0) return error.RemovedLeakedOther;
+        if (d.same_count != 1) return error.RemovedSameWrong; // debut still same
+    }
+
+    // 3. THE IDENTITY LAW — a catalog diffed against itself: nothing added, removed, or changed; same_count is the album count.
+    {
+        const d = classify(&before, &before);
+        if (d.added_count != 0 or d.removed_count != 0 or d.changed_count != 0) return error.IdentityMoved;
+        if (d.same_count != before.count) return error.IdentitySameWrong;
+    }
+
+    print("GREEN ales-library-diff: what changed between two catalog versions — classify(before, after) sorts every album into " ++
+        "added, removed, changed, or same. THE CRUX: a diff composes on the ALES228 resolve, it does not re-walk from scratch — each " ++
+        "verdict is a find into the other catalog, and the content-address digest IS the whole comparison (no byte compare, no new " ++
+        "hash). THE ADDED LAW: an after-only album appears once as added with its digest. THE REMOVED LAW: a before-only album " ++
+        "appears once as removed with its digest. THE CHANGED LAW: a name in both with a moved digest appears once carrying old and " ++
+        "new, an unchanged name appears in no list and is counted same. THE IDENTITY LAW: a catalog against itself yields all zeros " ++
+        "and same_count equal to the album count. The first Lotus rung to stand ON another catalog primitive; content-addressing on " ++
+        "every handle, not a signature — no real file, no DAC, no network, no keys, no funds, no real device\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
