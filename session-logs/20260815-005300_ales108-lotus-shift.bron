@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260815.005300
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title ALES108 — Lotus's shift, the grid nudge, rotate's honest drop-and-zero-fill twin
+prompt recur the itinerary Lindy-first crux-first; after ALES107 sent, take the next agent-doable Lotus lap, self-approve, prove GREEN, send as its own signed round; STOP at custody gates
+think ALES106 (rotate) slides the whole clip and WRAPS the samples that fall off the edge — a permutation, exact and invertible. Its honest twin is shift, which slides the clip and DROPS the fallen samples, filling the vacated end with silence — the grid nudge every DAW ships (move a clip earlier/later so it lands on the beat, so a stereo pair aligns). No shift/delay/nudge module existed (echo/multitap/glide SUM a delayed copy; none is a pure structural translate). Naming shift beside rotate teaches the one distinction about translating a bounded signal: wrap or drop.
+think Shape: shift(clip, by), by a signed i32 — negative = left/earlier, positive = right/later. Clamp the magnitude to len (a shift at or past len pushes the whole clip out of frame). Move the survivors in place in the SAFE direction: a right shift copies back to front, a left shift front to back, so no live sample is overwritten before it is read. Then zero-fill the vacated span. One in-place pass bounded by len, no allocation, no second buffer; the @intCast at the i32->u32 magnitude seam is the only width cast, asserted in bound.
+think Four laws, all provable: the SHIFT law (hand-shifted vectors both directions, the vacated end silent); the ROTATE-CONTRAST law (shift(-k) and ALES106's rotate_left(k) agree on the len-k in-frame samples and differ only at the vacated tail — rotate wrapping the head, shift writing silence — proven on one clip at k=2 by importing rotate into the selftest, exactly as invert imports the meter); the COMPOSITION-LOSS law, honest (shift is NOT invertible — shift(k) then shift(-k) zeros the leading k since the dropped tail is gone; a pre-silent region round-trips, the only recovering case); the MAGNITUDE / SILENCE law (dropping a loud sample strictly lowers the peak re-measured through ALES13, dropping only silence keeps it; shift by 0 the identity, |by|>=len all silence, empty clip its own shift).
+obs Witness GREEN on the first pass — all four law-sections and the degenerate cases. The safe copy-direction is the crux of correctness: choosing back-to-front for a right shift and front-to-back for a left shift means a single in-place pass never clobbers a source. TAME style bans clean (ratchet zero-assert count unchanged at 11); >=2 asserts per fn, invariants stated positively including the in-bounds guard on the @intCast magnitude seam; width-check clean; the Clip, ALES106 rotate, and ALES13 meter all reused whole, no new arithmetic. Honest scope: the one thing shift writes that was not already there is silence at the vacated edge — no non-zero sample invented.
+loom witness=ales_shift_witness green=1 laws=4 rung=ALES108
+file lotus/shift.rye the ALES108 rung — shift, rotate's drop-and-zero-fill twin, four laws proven in-file
+file tools/ales_shift_witness.rish the on-metal witness — build, selftest, GREEN-line assert
+file active-designing/20260815-005300_fill-ales108-lotus-shift.md the self-approved design read for the rung
+file lotus/README.md front door synced — Status-line short entry and the long per-rung paragraph both carry ALES108
+recommend keep-going the position/value family continues; the loop stays Lindy-first crux-first; STOP remains at REMEMBER's custody gates
