@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260815.132711
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (VPS) — Eastern (EDT) time convention
+title ALES219 — Lotus preset, a named effect chain a keeper loads by name
+prompt recur the road Lindy-first crux-first; take the next agent-doable lap, self-approve design rounds, send each increment, stop at custody gates
+think ALES218's log named the honest next crux plainly: a named preset chain a keeper loads by name — a Step[] from a small catalog. Lindy-first: the render family completes toward the keeper, not toward another effect; every one of the 200-plus effects already reaches render, so the durable next thing is the front the keeper actually touches.
+think The raw Step[] cannot make two promises a catalog can: LOAD BY NAME (from_name maps a plain string to a Preset, refusing UnknownPreset) and TOTAL OVER CLIP LENGTH (build clamps every span to the clip, so render never refuses a preset for BadRange whatever the length). Those two promises are the whole value of the rung.
+think Composed only render's three proven StepKinds — gain, fade, invert — so preset adds sequencing and naming, no new acoustic fact. The Chain result mirrors the Frame/Audio idiom (a fixed bounded buffer plus a len, slice() reads exactly what was built). build is total (no error) because presets are legal by construction; only from_name carries UnknownPreset.
+think The bookend fades clamp edge_samples to the clip length, so a short clip fades its whole self in and the head/tail spans simply overlap — still legal, since overlapping spans are sequential gestures. Proved this by rendering every preset at three lengths: shorter than the edge, longer than the edge, and empty.
+obs GREEN on the first metal pass. Five laws proven: name (from_name round-trips every catalog word and refuses a stranger and the empty string), legal-chain (every preset renders at short/long/empty with no BadRange), hand (gentle_master decodes byte-for-byte to the same halve-and-ease gestures by hand), distinct (half and phase_flip render one clip to two files), bound (no preset exceeds max_preset_steps).
+obs tame_style_check bans clean; width-check exit 0. Honest scope: byte container only, no real file/DAC/acoustic fact, no network/keys/funds. No custody gate. Self-approved design round under the loop's filling law.
+loom witness=ales_preset_witness result=GREEN laws=5 presets=4 max_preset_steps=4 clip_lengths_proven=3
+file lotus/preset.rye the preset rung — a small catalog of named chains (phase_flip · half · bookend_fades · gentle_master), loaded by name, clamped to the clip
+file tools/ales_preset_witness.rish the on-metal witness, GREEN
+file active-designing/20260815-132711_fill-ales219-lotus-preset.md self-approved design round for ALES219
+recommend keep-going the catalog stands; carrying a preset over both channels of a StereoClip, growing the catalog, or letting a keeper save their own chain as a named preset are each honest next cruxes
