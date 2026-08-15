@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260815.144122
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title ALES231 — Lotus album_find: resolve a track by name in a record
+prompt Take the next agent-doable lap Lindy-first crux-first past ALES230; keep double-seating; send each finished increment as its own signed round; stop at custody gates.
+think Read REMEMBER (gates), the 1024-round itinerary, and the six-season double-seat. Living edge is the Lotus ALES ladder (Season C). Git nib sits at ALES230 (library_diff_sheet); the card narrative lags at ALES227.
+think The catalog family is whole at the LIBRARY level — manifest · sheet · find · diff · diff_sheet. The ALBUM level, one down, carries only manifest (ALES224) and sheet (ALES225). Lindy-first crux-first: bring the album to parity, and the first rung of that parity is the resolve — album_find — mirroring library_find (ALES228) exactly one level down.
+think The next NAMED Lotus crux (a signed carry that names who made a catalog) is the crypto seam — a custody gate on Keaton's word. album_find is squarely non-gated: a bounded read over fields open_album_manifest already proved whole.
+think Confirmed the toolchain GREEN by running the library_find witness first. Wrote the design read, the module, and the witness mirroring library_find's shape over album_manifest.AlbumManifest.
+obs First draft named the TrackIn type off album_manifest; it belongs to render_album. Added the render_album import and used render_album.TrackIn — the same source album_manifest itself imports. GREEN on the first metal pass after that fix.
+obs No new frame, no new hash, no error union — a pure lookup. find returns ?u32 (an honest null miss), matching the library.find / rack.find idiom; absence and malformation stay different answers.
+loom witness=ales_album_find_witness result=GREEN laws=4 rung=ALES231
+file active-designing/20260815-144122_fill-ales231-lotus-album-find.md the self-approved design read naming the crux and the four laws
+file lotus/album_find.rye the module — name_of · digest_of · find over an opened AlbumManifest, ≥2 asserts per fn
+file tools/ales_album_find_witness.rish builds and runs the selftest on metal, asserts the GREEN line
+recommend keep-going ALES232 brings the rest of album parity — album_diff (what changed between two record versions, at track granularity), then its readable page — each non-gated; the signed carry stays the crypto seam gated on Keaton's word.
