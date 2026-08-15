@@ -1,0 +1,298 @@
+//! lotus/reverb_early_late.rye — ALES206: THE EARLY/LATE BALANCE — the first reflections against the diffuse wash. ALES205 closed the tone
+//! axis whole (mono and stereo, plain darkness and full two-band shelf). The tone axis rests; the reverb opens a FRESH axis ALES205 named
+//! next: the ratio of a room's EARLY reflections (the few discrete echoes off the near walls that tell the ear how big and how close the room
+//! is) to its LATE reverberation (the dense diffuse tail that tells it how live the room is). A reverb carrying only the wash sounds distant
+//! and washed; carrying both, balanced, is how a plate sits bright and immediate while a hall breathes around it.
+//!
+//! The crux is the family's signature: THIS INVENTS NO NEW AUDIO ARITHMETIC. Lotus already holds both halves, each proven byte for byte. The
+//! EARLY reflections are exactly what ALES68's multi-tap was built to voice — its own banner names it "the discrete early-reflection pattern."
+//! The LATE wash is ALES190's named-room reverb preset. So this rung is a clean CROSSFADE between the two, at the same linear balance ALES192
+//! proved for wet/dry, now dialing early ↔ late:
+//!   out[i] = saturate((den - num)·early[i]/den + num·late[i]/den)
+//! summed in i64 and saturated ONCE (ALES3's one true saturation) so a loud blend pins rather than wraps. The two edges are exact and provable:
+//! at balance = 0 the span equals the multi-tap over the room's early bank byte for byte (fully toward early is exactly the first reflections),
+//! and at balance = den it equals reverb_preset over the span byte for byte (fully toward late is exactly the diffuse wash). Between, each
+//! sample is the honest weighted average. The early bank and the late preset are the SAME named room, so one word chooses both.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES206.
+//! Design read: active-designing/20260815-113645_fill-ales206-lotus-reverb-early-late.md
+//! Stands on: lotus/multitap_time.rye (ALES69) — the timed multi-tap voicing the early reflections, run over a copy of the dry, its
+//! MultitapTimeError forwarded whole; lotus/reverb_preset.rye (ALES190) — the named-room late wash, run over the span unchanged, its
+//! ReverbPresetError forwarded whole; lotus/taps.rye (ALES68) — the max_taps bound each early bank stays within; lotus/clock.rye (ALES5) — the
+//! sample clock, its samples_for converting the span (the SAME conversion both stages use, so the spans match); lotus/timeline.rye (ALES2) —
+//! the Clip, its max_clip bounding the early copy and its saturate clamping the blend; lotus/reverb_mix.rye (ALES192) — the same linear blend.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM in one clip, a validated clock, ALES190's fixed reverb banks and this
+//! rung's fixed early-tap banks, and one bounded full-clip copy for the early signal (the width the reverb itself carries per comb), siloed to
+//! lotus/. The one arithmetic is the linear blend — a weighted average of two i16 spans summed in i64 and saturated once, so it can never wrap.
+//! The early banks are named in MILLISECONDS, so one room sounds the same at any sample rate; the balance is a named fraction, not a decibel. No
+//! socket, no network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/reverb_early_late.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const clock = @import("clock.rye");
+const taps = @import("taps.rye");
+const multitap_time = @import("multitap_time.rye");
+const reverb_preset = @import("reverb_preset.rye");
+
+pub const reverb_early_late_version = "20260815.113645";
+
+/// The named rooms are ALES190's own — reused whole, so the early/late balance and the presets name the same tunings and cannot drift apart.
+pub const Room = reverb_preset.Room;
+
+// The three rooms' EARLY-REFLECTION banks — a handful of discrete taps of the dry, named in MILLISECONDS, each an attenuated copy (num/den at
+// or below unity). Each bank stays within taps.max_taps (asserted in early_bank_for). Published so the witness can prove the early edge IS the
+// multi-tap over the room's bank, byte for byte. A room's early reflections are close and quick; a hall's are later and wider; a plate's are
+// dense and many — the same character its ALES190 late wash carries, now voiced as the first reflections.
+
+/// ROOM — a small room: four close early reflections (5..13 ms), a quick near pattern.
+pub const room_early = [_]multitap_time.TapMs{
+    .{ .delay_ms = 5, .num = 1, .den = 2 },
+    .{ .delay_ms = 7, .num = 2, .den = 5 },
+    .{ .delay_ms = 11, .num = 1, .den = 3 },
+    .{ .delay_ms = 13, .num = 1, .den = 4 },
+};
+
+/// HALL — a large hall: four later, wider early reflections (13..29 ms), a spacious near pattern off distant walls.
+pub const hall_early = [_]multitap_time.TapMs{
+    .{ .delay_ms = 13, .num = 1, .den = 2 },
+    .{ .delay_ms = 19, .num = 2, .den = 5 },
+    .{ .delay_ms = 23, .num = 1, .den = 3 },
+    .{ .delay_ms = 29, .num = 1, .den = 4 },
+};
+
+/// PLATE — a plate: five dense close early reflections (3..11 ms), a bright metallic near pattern.
+pub const plate_early = [_]multitap_time.TapMs{
+    .{ .delay_ms = 3, .num = 1, .den = 2 },
+    .{ .delay_ms = 5, .num = 2, .den = 5 },
+    .{ .delay_ms = 7, .num = 1, .den = 3 },
+    .{ .delay_ms = 9, .num = 3, .den = 10 },
+    .{ .delay_ms = 11, .num = 1, .den = 4 },
+};
+
+/// The early/late balance's faults: this rung's own `BadBalance` (a zero denominator or a numerator past it), beside ALES69's
+/// MultitapTimeError (the clock's DurationTooLong and the multi-tap's edges, forwarded from the early half) and ALES190's ReverbPresetError
+/// (the clock's DurationTooLong and the reverb's edges, forwarded from the late half). The two halves' clock faults share one name; the union
+/// dedupes them. Each refuses by name before any write.
+pub const ReverbEarlyLateError = multitap_time.MultitapTimeError || reverb_preset.ReverbPresetError || error{BadBalance};
+
+/// The published early-reflection bank for a named room — the single source of truth this rung and the witness both read. The early edge IS
+/// this bank: `reverb_early_late(clip, clk, room, ..., 0, den)` equals `multitap_ms(clip, clk, ..., early_bank_for(room))` byte for byte.
+pub fn early_bank_for(room: Room) []const multitap_time.TapMs {
+    const bank: []const multitap_time.TapMs = switch (room) {
+        .room => room_early[0..],
+        .hall => hall_early[0..],
+        .plate => plate_early[0..],
+    };
+    // invariant: every early bank carries at least one tap and stays within the multi-tap's bound — a bank can never be empty or overflow.
+    assert(bank.len >= 1 and bank.len <= taps.max_taps);
+    return bank;
+}
+
+/// Balance `count_ms` of `clip` from `start_ms` for a NAMED ROOM between its EARLY reflections and its LATE diffuse wash. Compute the early
+/// signal on a full copy of the original clip (ALES69's `multitap_ms` over the room's fixed early bank), compute the late signal in place (
+/// ALES190's `reverb_preset`, unchanged), then blend each sample:
+///   out[i] = saturate((balance_den - balance_num)·early[i]/balance_den + balance_num·late[i]/balance_den).
+/// At `balance_num = 0` the span equals the multi-tap over the early bank (fully early); at `balance_num = balance_den` it equals `reverb_preset`
+/// byte for byte (fully late). Refuses BadBalance on a bad fraction, then forwards ALES69's and ALES190's faults (DurationTooLong on a span past
+/// the clip, BadRange on an out-of-range span) before any write; on refusal the clip is untouched. Values only — never a length.
+pub fn reverb_early_late(
+    clip: *timeline.Clip,
+    clk: clock.Clock,
+    room: Room,
+    start_ms: u32,
+    count_ms: u32,
+    balance_num: u32,
+    balance_den: u32,
+) ReverbEarlyLateError!void {
+    // invariant: the clock is valid — the balance is spoken against it, and both halves assert the same.
+    assert(clk.rate >= 1 and clk.rate <= clock.max_rate);
+    // invariant: the balance is a real fraction in [0, 1] — a zero denominator or a numerator past it is no balance at all.
+    if (balance_den == 0 or balance_num > balance_den) return error.BadBalance;
+
+    // The EARLY signal, on a full COPY of the original clip — the diffuse late (written next into the real clip) never feeds the early
+    // reflections. multitap_ms prechecks before any write, so a span or bank fault surfaces here with the REAL clip still untouched.
+    var early_clip: timeline.Clip = clip.*;
+    const bank = early_bank_for(room);
+    try multitap_time.multitap_ms(&early_clip, clk, start_ms, count_ms, bank);
+
+    // The LATE signal, in place on the real clip — ALES190's reverb_preset, unchanged. It prechecks before any write, so a reverb fault here
+    // leaves the clip dry (and the early copy is discarded, no write survives).
+    try reverb_preset.reverb_preset(clip, clk, room, start_ms, count_ms);
+
+    // Convert the span with the SAME clock both halves used, so the blend covers exactly the span they wrote. Both halves already succeeded
+    // above against this span, so these conversions and bounds hold — assert them rather than re-raise.
+    const start = clock.samples_for(clk, start_ms) catch unreachable;
+    const count = clock.samples_for(clk, count_ms) catch unreachable;
+    // invariant: the span the two halves wrote lies wholly within the clip — proven by their own success just above.
+    assert(start <= clip.len and count <= clip.len - start);
+    assert(start + count <= early_clip.len);
+
+    const den: i64 = @intCast(balance_den);
+    const num: i64 = @intCast(balance_num);
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        const e: i64 = @intCast(early_clip.buf[start + i]);
+        const l: i64 = @intCast(clip.buf[start + i]);
+        // invariant: the two weights are the balance and its complement, so together they carry exactly one whole sample's worth.
+        assert(num >= 0 and num <= den);
+        clip.buf[start + i] = timeline.saturate(@divTrunc((den - num) * e, den) + @divTrunc(num * l, den));
+    }
+    // invariant: the blend wrote only within the span; the clip keeps its length.
+    assert(start + count <= clip.len);
+    assert(clip.len <= clip.buf.len);
+}
+
+// --- selftest: THE EARLY EDGE (balance = 0) — equals the multi-tap over the room's early bank byte for byte; THE LATE EDGE (balance = den) —
+//     equals reverb_preset over the span byte for byte; THE BLEND IS BETWEEN — a half balance differs from both and each sample is the honest
+//     weighted average; THE ROOMS DIFFER — room, hall, and plate early edges are three different reflection patterns; SILENCE STAYS SILENCE;
+//     and the faults forward — a bad fraction BadBalance, a span past the clip DurationTooLong, an out-of-range span BadRange, the clip untouched
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn run_selftest() !u8 {
+    const c = try clock.make(1000); // 1 sample per ms — each ms delay is one sample, the bench legible
+    const impulse = blk: {
+        var b: [1024]i16 = [_]i16{0} ** 1024;
+        b[0] = 12000;
+        break :blk b;
+    };
+
+    // 1. THE EARLY EDGE — balance_num = 0 leaves the span equal to ALES69's multi-tap over the room's published early bank, byte for byte. Fully
+    //    toward early is exactly the discrete first reflections; the late reverb ran on a copy that no write survives.
+    {
+        var by_balance = timeline.Clip{};
+        try load_clip(&by_balance, &impulse);
+        try reverb_early_late(&by_balance, c, .hall, 0, 1024, 0, 4);
+
+        var by_taps = timeline.Clip{};
+        try load_clip(&by_taps, &impulse);
+        try multitap_time.multitap_ms(&by_taps, c, 0, 1024, early_bank_for(.hall));
+
+        if (!eq(by_balance.samples(), by_taps.samples())) return error.EarlyEdgeNotMultitap;
+    }
+
+    // 2. THE LATE EDGE — balance_num = balance_den equals ALES190's reverb_preset over the span, byte for byte. Fully toward late is exactly the
+    //    diffuse wash.
+    {
+        var balanced = timeline.Clip{};
+        try load_clip(&balanced, &impulse);
+        try reverb_early_late(&balanced, c, .hall, 0, 1024, 4, 4);
+
+        var preset = timeline.Clip{};
+        try load_clip(&preset, &impulse);
+        try reverb_preset.reverb_preset(&preset, c, .hall, 0, 1024);
+
+        if (!eq(balanced.samples(), preset.samples())) return error.LateEdgeNotPreset;
+    }
+
+    // 3. THE BLEND IS BETWEEN — a half balance (num = 1, den = 2) differs from both edges, and each sample is the honest weighted average of the
+    //    early and the late: out[i] == saturate(early[i]/2 + late[i]/2), proven against the two edges computed side by side at the same den.
+    {
+        var early = timeline.Clip{};
+        try load_clip(&early, &impulse); // balance 0 leaves the early
+        try reverb_early_late(&early, c, .hall, 0, 1024, 0, 2);
+
+        var late = timeline.Clip{};
+        try load_clip(&late, &impulse);
+        try reverb_early_late(&late, c, .hall, 0, 1024, 2, 2); // balance den is the pure late
+
+        var half = timeline.Clip{};
+        try load_clip(&half, &impulse);
+        try reverb_early_late(&half, c, .hall, 0, 1024, 1, 2);
+
+        // the half blend is neither edge
+        if (eq(half.samples(), early.samples())) return error.HalfEqualsEarly;
+        if (eq(half.samples(), late.samples())) return error.HalfEqualsLate;
+        // and each sample is the weighted average of the two edges, byte for byte
+        const hs = half.samples();
+        const es = early.samples();
+        const ls = late.samples();
+        var i: u32 = 0;
+        while (i < hs.len) : (i += 1) {
+            const want = timeline.saturate(@divTrunc(@as(i64, es[i]), 2) + @divTrunc(@as(i64, ls[i]), 2));
+            if (hs[i] != want) return error.BlendNotWeightedAverage;
+        }
+    }
+
+    // 4. THE ROOMS DIFFER — the early edge for room, hall, and plate produce genuinely different reflections: the named early banks are real, not
+    //    three names for one bank.
+    {
+        var r = timeline.Clip{};
+        try load_clip(&r, &impulse);
+        try reverb_early_late(&r, c, .room, 0, 1024, 0, 4);
+        var h = timeline.Clip{};
+        try load_clip(&h, &impulse);
+        try reverb_early_late(&h, c, .hall, 0, 1024, 0, 4);
+        var p = timeline.Clip{};
+        try load_clip(&p, &impulse);
+        try reverb_early_late(&p, c, .plate, 0, 1024, 0, 4);
+        if (eq(r.samples(), h.samples())) return error.RoomEqualsHall;
+        if (eq(r.samples(), p.samples())) return error.RoomEqualsPlate;
+        if (eq(h.samples(), p.samples())) return error.HallEqualsPlate;
+    }
+
+    // 5. SILENCE STAYS SILENCE — an all-zero clip at any balance stays all zeros; both halves add nothing to nothing and the blend of two
+    //    silences is silence.
+    {
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &[_]i16{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+        try reverb_early_late(&clip, c, .plate, 0, 16, 1, 3);
+        const zeros = [_]i16{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
+    }
+
+    // 6. THE FAULTS FORWARD, ATOMIC — a bad balance fraction refuses BadBalance, a span past the clip DurationTooLong, an out-of-range span
+    //    BadRange, each by name with the clip untouched. The early multi-tap runs on a copy and the late preset prechecks, so no refusal ever
+    //    half-writes the clip.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        // a zero denominator is no balance — BadBalance, before any conversion or write.
+        if (reverb_early_late(&clip, c, .room, 0, 3, 1, 0)) |_| return error.BadBalanceSlipped else |e| if (e != error.BadBalance) return error.WrongBadBalance;
+        if (!eq(clip.samples(), &three)) return error.RefusedBadBalanceMutated;
+        // a numerator past the denominator is past full late — BadBalance.
+        if (reverb_early_late(&clip, c, .room, 0, 3, 5, 4)) |_| return error.OverBalanceSlipped else |e| if (e != error.BadBalance) return error.WrongOverBalance;
+        if (!eq(clip.samples(), &three)) return error.RefusedOverBalanceMutated;
+        // a count past max_clip converts past the clip bound — DurationTooLong from the clock (raised by the early multi-tap on the copy).
+        if (reverb_early_late(&clip, c, .room, 0, timeline.max_clip + 1, 1, 2)) |_| return error.LongSpanSlipped else |e| if (e != error.DurationTooLong) return error.WrongLongSpan;
+        if (!eq(clip.samples(), &three)) return error.RefusedLongSpanMutated;
+        // an out-of-range span (2 ms start, 5 ms count past a 3-sample clip) refuses BadRange before the real clip is written.
+        if (reverb_early_late(&clip, c, .room, 2, 5, 1, 2)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(clip.samples(), &three)) return error.RefusedRangeMutated;
+    }
+
+    print("GREEN ales-reverb-early-late: THE EARLY/LATE BALANCE — the first reflections against the diffuse wash, the reverb's fresh axis after " ++
+        "the tone axis closed. The EARLY reflections are ALES68's multi-tap (its own 'discrete early-reflection pattern'); the LATE wash is " ++
+        "ALES190's named-room preset; this rung CROSSFADES the two at the same linear balance ALES192 proved for wet/dry, inventing NO new audio " ++
+        "arithmetic — out[i] = saturate((den-num)·early[i]/den + num·late[i]/den), summed in i64 and saturated once so a loud blend pins never " ++
+        "wraps. The two edges are exact and proven: at balance = 0 the span equals the multi-tap over the room's published early bank byte for " ++
+        "byte (fully early is exactly the first reflections), and at balance = den it equals reverb_preset over the span byte for byte (fully " ++
+        "late is exactly the diffuse wash); a half balance differs from both and each sample is the honest weighted average of the two, byte for " ++
+        "byte; the rooms differ (room, hall, and plate early edges are three real reflection patterns); silence stays silence; and the faults " ++
+        "forward atomic — a bad fraction BadBalance, a span past the clip DurationTooLong, an out-of-range span BadRange — each leaving the clip " ++
+        "untouched (the early multi-tap on a copy, the late preset prechecked). The early banks are named in MILLISECONDS, so one room sounds the " ++
+        "same at any sample rate; the balance a named fraction, not a decibel; siloed to lotus/, no network, no keys, no funds, no real device, " ++
+        "no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
