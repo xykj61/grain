@@ -1,0 +1,39 @@
+# tools/ales_top_tail_witness.rish — the top-and-tail trimmer: segment the clip through ALES95, then cut ONLY the leading and trailing silence, keeping every internal pause (ALES98).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES98.
+# Design read: active-designing/20260814-234106_fill-ales98-lotus-top-tail-trimmer.md
+# Stands on: lotus/segment.rye (ALES95 — the voice-activity segmenter), lotus/trim_silence.rye (ALES96 — the full silence stripper, the length-bracket twin), lotus/
+# split_silence.rye (ALES97 — the auto-splitter, the outer-boundary twin), lotus/timeline.rye (ALES2 — the Clip and cut), lotus/voiced.rye (ALES94 — the .silent verdict).
+# ALES96 removes EVERY silent run and closes ranks; ALES97 cuts AT every silence and keeps each region apart. Between them lives the most-used silence gesture of all —
+# TOP AND TAIL — trim only the dead air at the START and the END, and leave every pause INSIDE the recording exactly where the speaker left it.
+#
+# lotus/top_tail.rye segments [0, clip.len) into frames of frame_len samples through ALES95, finds the FIRST and LAST non-silent runs, then cuts the trailing silence
+# (tail first, so the leading index stays valid) and the leading silence through ALES2's cut, leaving every silent run BETWEEN them untouched. The crux is two laws.
+# THE SPAN LAW: the trimmed clip equals the original over [first_nonsilent.start, last_nonsilent.end) byte for byte — the original narrowed to its living span, internal
+# silence kept. THE BRACKET LAW: it equals the original bracketed by ALES97's outer takes byte for byte, and trim_silence.len <= top_and_tail.len <= original.len — top-
+# tail keeps every sample ALES96's full trimmer keeps PLUS the internal silences, equal only when there is no interior gap. The selftest proves both, plus: the interior
+# pause is KEPT (strictly longer than the full trim on a gapped clip); an all-silent clip trims to empty; a no-silent clip is unchanged; a head-silent clip loses only its
+# head, a tail-silent clip only its tail; an empty clip, a ragged frame length, an inverted band, and an illegal floor each refuse by name, the clip untouched.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_top_tail_witness.rish
+
+say "ales-top-tail: Language EN — ALES96 removes EVERY silent run and closes ranks; ALES97 cuts AT every silence and keeps each region apart. Between them lives the single most-used silence gesture in every recorder, DAW, and voice-memo app: TOP AND TAIL — trim only the dead air at the START and the END, and leave every pause INSIDE the recording exactly where the speaker left it. A podcaster clears the throat, waits, speaks with a natural breath between sentences, then reaches for the button — top-and-tail drops the ums at the ends and keeps the breath, because the breath is the performance and the dead air is not."
+say "ales-top-tail: Style Radiant — the rule is stated positively: segment [0, clip.len) into frames, find the FIRST and LAST non-silent runs, then cut the trailing silence (tail first, so the leading index stays valid) and the leading silence through ALES2's cut, leaving every silent run BETWEEN them untouched. The crux stands out as two laws: the span law (the trimmed clip equals the original over [first_nonsilent.start, last_nonsilent.end) byte for byte) and the bracket law (it equals the original bracketed by ALES97's outer takes, and trim_silence.len <= top_and_tail.len <= original.len)."
+say "ales-top-tail: Lens TAME — one mono clip of i16 PCM segmented through ALES95 (all its validation — precheck for band/range, the floor ceiling, the dividing frame length, the empty-clip BadFrame — runs before any cut); it edits only by removing whole classified-silent frames at the two ends through ALES2's own cut, fabricating no sample and reordering nothing, never touching a sample between the first and last non-silent runs; the error vocabulary is the segmenter's SegmentError and the editor's EditError reused by name; siloed to lotus/, not a transcript or a real adaptive VAD, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/top_tail"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/top_tail.rye -femit-bin=${bin}"]
+assert build.ok else "ales-top-tail: build failed — ${build.err}"
+
+let outfile = "lotus/bin/top_tail.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-top-tail: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-top-tail: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-top-tail' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-top-tail: selftest did not print the GREEN ales-top-tail line"
