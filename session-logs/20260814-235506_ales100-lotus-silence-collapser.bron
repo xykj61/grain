@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260814.235506
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title ALES100 — Lotus's silence collapser, cap every silent run to a maximum
+prompt recur the itinerary Lindy-first crux-first; after ALES99 sent, take the next agent-doable Lotus lap, self-approve, prove GREEN, send as its own signed round; STOP at custody gates
+think ALES96 removes every silent sample — right for a sample library, wrong for a spoken take, where stripping all the pauses runs a conversation together, breathless. ALES98/99 handled the ends; the interior was still unhandled. The gesture every podcast editor reaches for is truncate silence — keep the pauses, cap only the long ones. Lindy-first, capping a pause is as old as splicing tape and leaving a beat; crux-first, it is the decisive generalization of ALES96 — the full strip is exactly max_silence=0, every larger cap keeping that many samples of each silent run back, bounded by how long each run is. One parameter turns the total strip into the trim a human take wants.
+think Correctness is composition against ALES96. The zero-cap law: collapse_silence(max=0) equals ALES96's trim_silence byte for byte — run both, compare, so the two tools can never disagree at the boundary they share. The cap law: the result equals a hand-built concatenation where each silent run keeps its first min(count, max_silence) samples and each non-silent run keeps all of its — an independent segment scan, so the kept head of each pause is provably exactly min(count, max_silence); a cap past the longest run leaves the clip unchanged (identity cap), monotone in max_silence.
+think Same segment-then-cut shape as ALES96, walking runs back to front so a suffix cut never shifts an earlier run's index. For each over-long silent run, keep its first max_silence samples and cut the excess [run.start + max_silence, count - max_silence]. max_silence is a plain u32 count with no illegal value, so no new error — CollapseError is just ALES96's TrimError reused. The all-silent case is cleaner than ALES98's flat empty: the segmenter coalesces a wholly-silent clip into one run, so it caps to min(clip.len, max_silence) — empty at 0, unchanged past its length.
+obs First witness run GREEN on the first pass — zero-cap grid (8 frame lengths x 4 floors x 3 splits) against ALES96, cap-law grid (8 caps) against the hand-built capped concatenation, a known cap keeping exactly the named samples (24 -> 18 at cap 2), identity cap unchanged, monotone in max, all-silent capped three ways, no-silent unchanged, and four named refusals. TAME style bans clean; width-check clean on the new module.
+obs No custody gate reached — software only, local; no funds, keys, network, device, or real speaker. It edits only by removing whole excess-silent frames from within each pause through ALES2's cut, never a non-silent sample or the kept head of any pause.
+loom witness=ales_collapse_silence_witness green=1 laws=8 zero_cap_grid=96 cap_grid=8 module_bytes=17k
+file lotus/collapse_silence.rye ALES100 — collapse_silence() keeping min(count, max_silence) of each silent run and cutting only the excess through ALES2's cut, back to front.
+file tools/ales_collapse_silence_witness.rish the witness — builds, runs the selftest, asserts the GREEN line.
+file active-designing/20260814-235506_fill-ales100-lotus-silence-collapser.md the self-approved design read naming the zero-cap law, the cap law, and the min(count, max_silence) clamp.
+file lotus/README.md front door — the ALES100 rung and status roster synced.
+recommend keep-going — the next Lotus crux still builds on the silence family (a min-region-length filter that drops too-short non-silent runs as spurious, a fade over the kept margin so the ends taper rather than jump, or a normalize-across-takes pass), each its own self-approved round; no custody gate reached.
