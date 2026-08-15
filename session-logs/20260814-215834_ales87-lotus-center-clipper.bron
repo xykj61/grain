@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260814.215834
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (cloud pier) — Eastern (EDT) time convention
+title ALES87 — Lotus's center clipper, the static-curve sibling of the noise gate
+prompt recur baton prin — take the next agent-doable Lindy-first crux-first lap, approve my own design round, send the finished increment to origin and xykj61, stop at custody gates
+think The rectifier family closed at ALES86. Reading the DRIVE family for the next crux-first move: ALES78's hard clip caps the LOUD extremes at a ceiling but nothing yet silences the QUIET middle. The plain mirror is the center clipper — y = if |x| ≤ t then 0 else x — a dead zone carved out of the middle. Lindy (the classic hiss/crosstalk remover of Dolby/dbx and the exact model of crossover distortion in a class-B amp); crux-first (the DRIVE family's opener names its static-curve complement, and it keeps the recent memoryless-and-exact aesthetic the rectifiers set).
+think Weighed a DC blocker (y = x − x₁ + R·y₁) as the alternative crux — highly Lindy, the companion the rectifier family's DC offset invites — yet its fractional feedback is a meatier, riskier round in integer PCM and the house already has a carried one-pole high-pass (ALES45). The center clipper is genuinely new, exact, memoryless, and self-contained: the cleaner crux for one signed round. Booked the DC blocker as a later self-approved round.
+think The distinction from the noise gate (ALES51) is the teaching: the gate silences the whole wave when its LEVEL falls below a threshold — a dynamic decision with memory that opens and closes over time; the center clipper makes that same silencing STATIC and PER-SAMPLE, a fixed memoryless nonlinearity. The gate is a dynamics processor; the center clipper is a distortion curve. Exact for every i16 with no rail edge and no saturate — the only values written are 0 and the untouched input. The magnitude is taken in i32 so |sample_min| = 32768 is representable (the care the full-wave rectifier owed).
+obs Followed the parametric-waveshaper pattern exactly (drive.rye): module + design doc + witness + README status-line sync and re-stamp + session log, one signed commit. Eight laws proven; the bracket reading pairs it with ALES78 (one caps the loud, one hollows the quiet). Postcondition split into two single asserts (out == 0 or out == dry; and the inclusive-boundary map). Witness GREEN on the first run; tame_style_check bans clean; width exit 0.
+loom witness=ales_center_clip_witness selftest=GREEN laws=8 module_lines=173
+file lotus/center_clip.rye the center clipper, y = if |x| ≤ t then 0 else x, exact for every i16 with no rail edge, eight laws proven
+file tools/ales_center_clip_witness.rish builds the module, runs the selftest, asserts the single GREEN ales-center-clip line
+file active-designing/20260814-215834_fill-ales87-lotus-center-clipper.md the self-approved design read naming the crux, the bracket, and the eight laws
+file lotus/README.md front-door status line synced with ALES87 and re-stamped
+recommend keep-going the DRIVE family now brackets the wave from both sides (the hard clip caps the loud, the center clip hollows the quiet); the loop names its own next Lotus crux — a soft dead-zone that subtracts the threshold rather than silencing to zero, or the booked DC blocker, or a fresh DSP family — as its own self-approved design round

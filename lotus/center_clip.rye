@@ -1,0 +1,219 @@
+//! lotus/center_clip.rye — ALES87: the center clipper — silence the quiet middle, pass the loud, y = if |x| ≤ t then 0 else x. The hard-clip drive
+//! (ALES78) opened the DRIVE family by capping the LOUD extremes at a ceiling (a value past ±ceil is pinned to the ceiling, its flat top the harmonic
+//! voice); this rung is its plain mirror, silencing the QUIET middle below a floor. Where the clipper flattens everything past ±ceil, the center clipper
+//! zeros everything within ±t and passes the rest UNCHANGED. One caps the top, the other hollows the middle: run together they keep only the band
+//! t < |x| ≤ ceil.
+//!
+//! The center clipper is the noise gate (ALES51) made STATIC and PER-SAMPLE. The gate silences the whole wave when its LEVEL falls below a threshold — a
+//! dynamic decision with memory that opens and closes over time; the center clipper makes that same silencing a fixed nonlinearity, a memoryless
+//! waveshaper that hollows out the low-amplitude core of every wave sample by sample. That is the crux: the gate is a dynamics processor, the center
+//! clipper is a distortion curve. Lindy, it is the classic hiss-and-crosstalk remover of telephony and tape noise reduction (Dolby, dbx), and the exact
+//! model of CROSSOVER DISTORTION in a class-B amplifier — the small signal near zero falling into the dead zone between two conducting halves.
+//!
+//! The crux is EXACT for every i16 with NO rail edge and NO saturate: a sample inside the dead zone becomes 0, a sample outside it passes byte-for-byte,
+//! and the only values written are 0 and the untouched input. The magnitude is taken in i32 because |sample_min| is 32768, one past the positive rail (the
+//! same care the full-wave rectifier owed). The map is MEMORYLESS — every output depends only on its own input, so the in-place read-then-write touches
+//! nothing another step needs. It is IDEMPOTENT — a silenced 0 stays 0 and a passed sample stays passed, so center_clip(center_clip(x)) = center_clip(x).
+//! And it is ODD — |−x| = |x|, so a symmetric input yields a symmetric output: odd harmonics, the same honesty the hard clip carries.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES87.
+//! Design read: active-designing/20260814-215834_fill-ales87-lotus-center-clipper.md
+//! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/max. It carries ONE parameter, the threshold magnitude, and names two faults; a keeper
+//! who wants only the band between the noise floor and the ceiling runs this center_clip and ALES78's drive over the same span, one silencing the quiet,
+//! the other capping the loud.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket, no network, no keys, no
+//! funds, no real device, no real sample rate — the shape is a static dead-zone threshold on instantaneous magnitude, memoryless (no attack/release, no
+//! envelope, no anti-aliasing). One magnitude and one compare per sample; no saturate is needed, since the only values written are 0 and the legal input.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/center_clip.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+
+pub const center_clip_version = "20260814.215834";
+
+/// The center clipper's faults, one consistent name each. BadRange coincides by name with the drives, the rectifiers, and ALES2's timeline (Zig merges
+/// error sets by name), so a composer sees one consistent span fault. BadThreshold reads ALES78's drive ceiling bound as a floor: the drive refuses a
+/// ceiling outside [1, sample_max]; the center clipper refuses a threshold outside [0, sample_max] — zero is the legal identity (a floor at silence
+/// removes nothing), negative is impossible for a magnitude, and above the rail is a floor no positive sample could clear.
+pub const CenterClipError = error{
+    /// A threshold below zero (a magnitude is never negative) or above sample_max (a floor nothing could clear) — refused, no write.
+    BadThreshold,
+    /// A span outside the current samples — refused, no write.
+    BadRange,
+};
+
+/// Center-clip `count` samples starting at `start` in place in `clip`: each sample whose magnitude is at most `thresh` becomes `0` (the quiet middle
+/// silenced), and every louder sample passes byte-for-byte unchanged — y = if |x| ≤ thresh then 0 else x. Exact for EVERY i16 — the only values written
+/// are `0` and the untouched input, so there is no rail edge and no saturate. After the call every written sample is either `0` or exactly its input, and
+/// depends only on its own input (the center clipper is memoryless). Refuses BadThreshold on a threshold outside [0, sample_max] and BadRange on a span
+/// outside the samples — each BEFORE any write, so an illegal call leaves the clip exactly as it was. Values only — never the length.
+pub fn center_clip(clip: *timeline.Clip, start: u32, count: u32, thresh: i32) CenterClipError!void {
+    // invariant: the threshold is a legal magnitude — at least zero (a magnitude is never negative; zero is the identity floor) and no greater than the
+    // i16 rail (a floor nothing could clear is not a floor). ALES78's drive ceiling bound read as a floor. Checked BEFORE any write.
+    if (thresh < 0) return error.BadThreshold;
+    if (thresh > @as(i32, timeline.sample_max)) return error.BadThreshold;
+    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder), exactly as the drives.
+    if (start > clip.len) return error.BadRange;
+    if (count > clip.len - start) return error.BadRange;
+
+    var k: u32 = 0;
+    while (k < count) : (k += 1) {
+        const i: u32 = start + k;
+        const dry: i16 = clip.buf[i];
+        // invariant: the sample read is a legal i16 — it is audio, never a wide intermediate.
+        assert(dry >= timeline.sample_min and dry <= timeline.sample_max);
+        // The magnitude in i32 so |sample_min| = 32768 is representable (one past the positive rail — the care the full-wave rectifier owed).
+        const mag: i32 = if (dry < 0) -@as(i32, dry) else @as(i32, dry);
+        // invariant: the magnitude is non-negative and no wider than one past the rail — |x| ≤ 32768 for every legal i16.
+        assert(mag >= 0 and mag <= @as(i32, timeline.sample_max) + 1);
+        // The center-clip map: silence the quiet middle, pass the loud through untouched. No wide intermediate and no saturate — the only outputs are 0
+        // (a legal i16) and the untouched dry (already a legal i16).
+        const out: i16 = if (mag <= thresh) 0 else dry;
+        // invariant: the output is either silence or exactly the input — the center clipper never alters a passed sample, and never emits a value the
+        // input did not already hold, so the map only silences, never colours.
+        assert(out == 0 or out == dry);
+        // invariant: a silenced output means the input was inside the dead zone, and a passed output means it was outside — the inclusive boundary at
+        // |x| = thresh silences, exactly as the ≤ states.
+        assert(if (mag <= thresh) out == 0 else out == dry);
+        clip.buf[i] = out;
+    }
+    // invariant: a center clip changes sample values only, never the clip's length or bound.
+    assert(start + count <= clip.len);
+    assert(clip.len <= clip.buf.len);
+}
+
+// --- selftest: A ZERO THRESHOLD IS THE IDENTITY (the degenerate that proves the map adds nothing without a floor); THE QUIET MIDDLE IS SILENCED and THE
+//     LOUD PASS UNCHANGED read by hand; THE THRESHOLD BOUNDARY IS INCLUSIVE (|x| = t silences, |x| = t+1 passes) on both signs; the map is IDEMPOTENT and
+//     ODD (center_clip(−x) = −center_clip(x)); a RAIL THRESHOLD silences all but the deepest sample (sample_min alone clears sample_max); the span
+//     discipline holds; and each fault — BadThreshold (negative, over-rail), BadRange (span past the end) — refuses by name, the clip untouched ---
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn run_selftest() !u8 {
+    // 1. A ZERO THRESHOLD IS THE IDENTITY — only x = 0 satisfies |x| ≤ 0, and it is already 0, so the whole clip passes byte-for-byte. The center
+    //    clipper adds nothing until a threshold carves out the middle; this proves it, the mirror of the hard drive's unity-gain identity.
+    {
+        const sig = [_]i16{ 500, -900, 1000, -1000, 32767, timeline.sample_min, 250, 0 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try center_clip(&clip, 0, clip.len, 0);
+        if (!eq(clip.samples(), &sig)) return error.ZeroNotIdentity;
+    }
+
+    // 2. THE QUIET MIDDLE IS SILENCED, THE LOUD PASS UNCHANGED — at t = 1000, every sample with |x| ≤ 1000 drops to 0 and every louder sample passes
+    //    byte-for-byte. 500→0, -1000→0 (equal to t, silenced by the ≤), 999→0; 1001→1001, -5000→-5000, 32767→32767 pass.
+    {
+        const sig = [_]i16{ 500, -1000, 999, 1001, -5000, 32767, -300, 2000 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try center_clip(&clip, 0, clip.len, 1000);
+        const want = [_]i16{ 0, 0, 0, 1001, -5000, 32767, 0, 2000 };
+        if (!eq(clip.samples(), &want)) return error.MiddleWrong;
+    }
+
+    // 3. THE THRESHOLD BOUNDARY IS INCLUSIVE — at t = 3000, exactly |x| = 3000 silences (the ≤) on BOTH signs, and |x| = 3001 passes on both. The
+    //    boundary is read by hand: 3000→0, -3000→0, 3001→3001, -3001→-3001.
+    {
+        const sig = [_]i16{ 3000, -3000, 3001, -3001, 2999, -2999 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try center_clip(&clip, 0, clip.len, 3000);
+        const want = [_]i16{ 0, 0, 3001, -3001, 0, 0 };
+        if (!eq(clip.samples(), &want)) return error.BoundaryWrong;
+    }
+
+    // 4. THE MAP IS IDEMPOTENT AND ODD — a second center clip changes nothing (a silenced 0 has |0| ≤ t so it stays 0, a passed sample still clears t so
+    //    it stays); and center_clip(−x) = −center_clip(x), since |−x| = |x|, so a ± symmetric input yields a ± symmetric output (odd harmonics).
+    {
+        const sig = [_]i16{ 800, -800, 4000, -4000, 20, -20 }; // symmetric pairs
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try center_clip(&clip, 0, clip.len, 1000);
+        const once = clip.samples();
+        // ODD: out[0] = −out[1], out[2] = −out[3], out[4] = −out[5] (the last pair both silenced, 0 = −0).
+        if (once[0] != -once[1] or once[2] != -once[3] or once[4] != -once[5]) return error.NotOddSymmetric;
+        // IDEMPOTENT: a second pass over the already-clipped clip changes nothing.
+        var again = timeline.Clip{};
+        try load_clip(&again, once);
+        try center_clip(&again, 0, again.len, 1000);
+        if (!eq(again.samples(), once)) return error.NotIdempotent;
+    }
+
+    // 5. A RAIL THRESHOLD SILENCES ALL BUT THE DEEPEST SAMPLE — at t = sample_max (32767), every sample is silenced except sample_min (−32768), whose
+    //    magnitude 32768 alone exceeds the floor. The far edge of the family: a center clip at the rail is nearly a mute, saving only the single
+    //    deepest sample.
+    {
+        const sig = [_]i16{ 32767, -32767, 0, timeline.sample_min, 20000, -20000 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try center_clip(&clip, 0, clip.len, timeline.sample_max);
+        const want = [_]i16{ 0, 0, 0, timeline.sample_min, 0, 0 }; // only sample_min clears the rail floor
+        if (!eq(clip.samples(), &want)) return error.RailThresholdWrong;
+    }
+
+    // 6. THE SPAN DISCIPLINE — center-clipping a sub-span leaves the samples outside [start, count) exactly as they were, the in-place discipline the
+    //    whole suite keeps. Clip the middle two of six at t = 1000; the first and last two are untouched, quiet ones among them preserved.
+    {
+        const sig = [_]i16{ 100, 200, 500, 5000, 300, 400 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try center_clip(&clip, 2, 2, 1000); // indices 2,3 only: 500→0, 5000 passes
+        const want = [_]i16{ 100, 200, 0, 5000, 300, 400 };
+        if (!eq(clip.samples(), &want)) return error.SpanLeaked;
+    }
+
+    // 7a. A NEGATIVE THRESHOLD refuses BadThreshold (a magnitude is never negative); an OVER-RAIL threshold refuses BadThreshold (a floor nothing could
+    //     clear) — each before any write, the clip untouched.
+    {
+        const sig = [_]i16{ 1, -2, 3, -4 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        if (center_clip(&clip, 0, clip.len, -1)) |_| return error.NegThreshSlipped else |e| if (e != error.BadThreshold) return error.WrongNegThresh;
+        if (!eq(clip.samples(), &sig)) return error.RefusedNegThreshTouched;
+        if (center_clip(&clip, 0, clip.len, @as(i32, timeline.sample_max) + 1)) |_| return error.OverThreshSlipped else |e| if (e != error.BadThreshold) return error.WrongOverThresh;
+        if (!eq(clip.samples(), &sig)) return error.RefusedOverThreshTouched;
+    }
+
+    // 7b. A SPAN past the end refuses BadRange — before any write, the clip untouched.
+    {
+        const sig = [_]i16{ 9, -10, 11 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        if (center_clip(&clip, 1, 3, 1000)) |_| return error.OverRangeSlipped else |e| if (e != error.BadRange) return error.WrongOverRange;
+        if (!eq(clip.samples(), &sig)) return error.RefusedOverRangeTouched;
+    }
+
+    print("GREEN ales-center-clip: the CENTER CLIPPER — silence the quiet middle, pass the loud, y = if |x| ≤ t then 0 else x. The hard-clip drive " ++
+        "(ALES78) caps the LOUD extremes at a ceiling; this rung is its mirror, silencing the QUIET middle below a floor — one caps the top, the other " ++
+        "hollows the middle, and run together they keep only the band t < |x| ≤ ceil. It is the noise gate (ALES51) made STATIC and PER-SAMPLE: the gate " ++
+        "silences the wave when its LEVEL falls below a threshold (a dynamic decision with memory); the center clipper is that same silencing as a fixed " ++
+        "memoryless nonlinearity — the crossover distortion of a class-B amp, the hiss remover of Dolby/dbx. The crux is EXACT for every i16 with NO " ++
+        "rail edge and NO saturate: the only values written are 0 and the untouched input; the magnitude is taken in i32 so |sample_min| = 32768 is " ++
+        "representable. A zero threshold is the identity; the quiet middle is silenced and the loud pass unchanged; the threshold boundary is inclusive " ++
+        "(|x| = t silences, |x| = t+1 passes) on both signs; the map is IDEMPOTENT and ODD (center_clip(−x) = −center_clip(x), a symmetric input to a " ++
+        "symmetric output — odd harmonics); a rail threshold silences all but the deepest sample (sample_min alone clears sample_max); the span " ++
+        "discipline holds; a negative or over-rail threshold refuses BadThreshold and a span past the end refuses BadRange, each leaving the clip " ++
+        "untouched. The map is MEMORYLESS; one magnitude and one compare per sample; no gain, no ceiling, no saturate, no delay line, no envelope, no " ++
+        "anti-aliasing, no socket, no network, no keys, no funds, no real device, no real sample rate. The DRIVE family now brackets the wave from both " ++
+        "sides — the hard clip caps the loud, the center clip hollows the quiet\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

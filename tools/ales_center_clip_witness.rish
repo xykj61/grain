@@ -1,0 +1,40 @@
+# tools/ales_center_clip_witness.rish — the center clipper: silence the quiet middle, pass the loud, y = if |x| ≤ t then 0 else x (ALES87).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES87.
+# Design read: active-designing/20260814-215834_fill-ales87-lotus-center-clipper.md
+# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/max). The hard-clip drive (ALES78) caps the LOUD extremes at a ceiling; this rung is its
+# mirror — it silences the QUIET middle below a floor. One caps the top, the other hollows the middle; run together they keep only the band t < |x| ≤ ceil.
+# A keeper who wants only the band between the noise floor and the ceiling runs this center_clip and ALES78's drive over the same span.
+#
+# lotus/center_clip.rye maps each sample to 0 when |x| ≤ thresh and passes it unchanged otherwise — the noise gate (ALES51) made STATIC and PER-SAMPLE.
+# The gate silences the wave when its LEVEL falls below a threshold (a dynamic decision with memory); the center clipper is that same silencing as a fixed
+# memoryless nonlinearity — the crossover distortion of a class-B amp, the hiss remover of Dolby/dbx. The crux is EXACT for every i16 with NO rail edge
+# and NO saturate (the only values written are 0 and the untouched input); the magnitude is taken in i32 so |sample_min| = 32768 is representable. The map
+# is MEMORYLESS, IDEMPOTENT (a silenced 0 stays 0, a passed sample stays passed), and ODD (center_clip(−x) = −center_clip(x)). The selftest proves it: a
+# zero threshold is the identity; the quiet middle is silenced and the loud pass unchanged; the threshold boundary is inclusive (|x| = t silences,
+# |x| = t+1 passes) on both signs; the map is idempotent and odd; a rail threshold silences all but the deepest sample; the span discipline holds; a
+# negative or over-rail threshold refuses BadThreshold and a span past the end refuses BadRange, the clip untouched. Purely local — one magnitude and one
+# compare per sample; no gain, no ceiling, no saturate, no delay line, no envelope, no anti-aliasing, no network, no keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_center_clip_witness.rish
+
+say "ales-center-clip: Language EN — the hard-clip drive (ALES78) caps the LOUD extremes at a ceiling. This rung is its mirror: it silences the QUIET middle below a floor — y = if |x| ≤ t then 0 else x. One caps the top, the other hollows the middle; run together they keep only the band t < |x| ≤ ceil. It is the noise gate (ALES51) made STATIC and PER-SAMPLE — a fixed memoryless nonlinearity, the crossover distortion of a class-B amp, the hiss remover of Dolby/dbx."
+say "ales-center-clip: Style Radiant — the law is stated positively: the loud is kept WHOLE, the quiet middle SILENCED. The crux is EXACT for every i16 with NO rail edge and NO saturate — the only values written are 0 and the untouched input; the magnitude is taken in i32 so |sample_min| = 32768 is representable (the care the full-wave rectifier owed). The map is MEMORYLESS, IDEMPOTENT (a silenced 0 stays 0, a passed sample stays passed), and ODD (|−x| = |x|, so a symmetric input yields a symmetric output — odd harmonics)."
+say "ales-center-clip: Lens TAME — one mono clip of i16 PCM center-clipped in place over a span; y = (if |x| ≤ thresh then 0 else x) with no wide intermediate and no saturate; the map is memoryless (every output depends only on its own input); a threshold outside [0, sample_max] refuses BadThreshold and a span outside the samples refuses BadRange, each before any write, the clip untouched on refusal; siloed to lotus/, no gain, no ceiling, no saturate, no delay line, no envelope, no anti-aliasing, no snapshot, no network, no keys, no funds, no device, no speaker, no sample rate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/center_clip"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/center_clip.rye -femit-bin=${bin}"]
+assert build.ok else "ales-center-clip: build failed — ${build.err}"
+
+let outfile = "lotus/bin/center_clip.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-center-clip: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-center-clip: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-center-clip' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-center-clip: selftest did not print the GREEN ales-center-clip line"
