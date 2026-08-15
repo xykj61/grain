@@ -33,6 +33,34 @@ pub const ShelfError = tone.ToneError || error{
     BadGain,
 };
 
+/// Validate a shelf setting against a span WITHOUT writing — the coefficient in (0, 1], neither band denominator zero, and the
+/// span wholly inside the samples — refusing the SAME named faults `shelf` raises (BadCoeff, BadGain, BadRange). Shared so a
+/// composer (ALES204's reverb_shelf) can validate the shelf BEFORE it writes its wet, rather than letting a legal wet mutate
+/// the span before an illegal shelf refuses — the atomicity crux. Same rules, same errors as the shelf call itself.
+pub fn precheck(
+    clip_len: u32,
+    start: u32,
+    count: u32,
+    coeff_num: i32,
+    coeff_den: u32,
+    bass_num: i32,
+    bass_den: u32,
+    treble_num: i32,
+    treble_den: u32,
+) ShelfError!void {
+    _ = bass_num;
+    _ = treble_num;
+    // invariant: the filter coefficient is a legal fraction in (0, 1] — den nonzero, num in [1, den] (ALES40's own law).
+    if (coeff_den == 0) return error.BadCoeff;
+    if (coeff_num < 1) return error.BadCoeff;
+    if (@as(i64, coeff_num) > @as(i64, coeff_den)) return error.BadCoeff;
+    // invariant: neither band gain divides by zero.
+    if (bass_den == 0 or treble_den == 0) return error.BadGain;
+    // invariant: the span lies wholly within the current samples (checked without underflow — count vs the remainder).
+    if (start > clip_len) return error.BadRange;
+    if (count > clip_len - start) return error.BadRange;
+}
+
 /// Shelve `count` samples starting at `start` in place: split the span into a low band (a one-pole low-pass, ALES40) and its
 /// exact high band (input minus low), scale each by its own gain (bass_num/bass_den, treble_num/treble_den), and write the sum
 /// saturated ONCE over the true wide-domain total. Unity on both bands (bass = bass_den, treble = treble_den) reconstructs the
@@ -50,15 +78,9 @@ pub fn shelf(
     treble_num: i32,
     treble_den: u32,
 ) ShelfError!void {
-    // invariant: the filter coefficient is a legal fraction in (0, 1] — den nonzero, num in [1, den] (ALES40's own law).
-    if (coeff_den == 0) return error.BadCoeff;
-    if (coeff_num < 1) return error.BadCoeff;
-    if (@as(i64, coeff_num) > @as(i64, coeff_den)) return error.BadCoeff;
-    // invariant: neither band gain divides by zero.
-    if (bass_den == 0 or treble_den == 0) return error.BadGain;
-    // invariant: the span lies wholly within the current samples (checked without underflow — count vs the remainder).
-    if (start > clip.len) return error.BadRange;
-    if (count > clip.len - start) return error.BadRange;
+    // invariant: the setting is legal — coefficient in (0, 1], neither band denominator zero, the span inside the samples. One
+    // law, shared with the public precheck, so the shelf and a composer that prechecks it can never drift.
+    try precheck(clip.len, start, count, coeff_num, coeff_den, bass_num, bass_den, treble_num, treble_den);
 
     // The low band lives in a scratch copy of the span so the original samples (the high band's minuend) stay intact until the
     // combine writes them. The span always fits the scratch — both share timeline.max_clip.

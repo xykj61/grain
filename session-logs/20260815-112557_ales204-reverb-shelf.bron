@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260815.112557
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title ALES204 — Lotus's reverberant tone shelf, the reverb's two-band EQ
+prompt recur loop — take the next Lotus/ALES lap Lindy-first crux-first, each finished rung its own signed round pushed to origin and xykj61, stop at the custody gates
+think ALES203 closed the gate axis whole (mono/stereo, static/shaped). The thin axis left is TONE: ALES198's reverb_tone was a plain first-order high-cut — one direction only, the tail could darken but never brighten and the low wash could never be lifted or trimmed. The crux-first tone rung is the proper SHELVING EQ a keeper actually turns: two knobs, bass and treble, each boosting OR cutting its own band independently. It composes cleanly from proven stages — ALES190's named-room wet, then ALES41's two-band shelf — so no new audio arithmetic, matching the family's own discipline.
+think Chose the shelf over the doc-named freeze/width/early-late axes precisely because those want a new primitive (feedback=1 hold, an M/S width stage, early-reflection separation) with no clean rational identity edge, while the shelf reuses ALES41 whole and keeps THE IDENTITY EDGE law exact (bass==unity AND treble==unity reconstructs the wet byte for byte). To hold the atomicity crux I added a pub precheck to shelf.rye mirroring tone.precheck, and refactored shelf() to call it — one law, shared, so the shelf and a composer that prechecks it cannot drift; ALES41's own witness re-runs GREEN. reverb_shelf then prechecks the shelf BEFORE reverb_preset writes the wet, so a bad setting leaves the clip dry.
+obs Witness GREEN on the first metal pass — no RED to book. Six laws on a 1024-sample impulse bench: the identity edge (flat EQ equals reverb_preset byte for byte), composition-is-exact (reverb_shelf equals reverb_preset then shelf.shelf byte for byte, and the shelved tail differs from its wet), the treble-cut-darkens law (roughness strictly below the wet's — ALES198's direction), the bass-boost-lifts law (total energy strictly above the wet's — the colour the high-cut could never reach), silence stays silence, and faults forward atomic (BadCoeff / BadGain with the clip still dry, DurationTooLong, BadRange). ALES190 preset, ALES41 shelf, and ALES198 darkness knob all re-run GREEN beside it; TAME bans clean. The one-clock guess of 113600 was corrected to the read clock 112557 before commit (never fabricate a stamp).
+loom witness=ales_reverb_shelf_witness selftest=GREEN laws=6 max_clip=4096 bench_samples=1024 coeff=1/4 bass=2/1 treble=1/2
+file active-designing/20260815-112557_fill-ales204-lotus-reverb-shelf.md the self-approved design round naming the crux, shape, and six laws
+file lotus/shelf.rye ALES41 grows a pub precheck (mirroring tone.precheck) and shelf() calls it — one shared law for a legal shelf, additive
+file lotus/reverb_shelf.rye the rung — the reverb's two-band EQ, ALES41 shelf over ALES190 wet, the shelf prechecked before the wet is written
+file tools/ales_reverb_shelf_witness.rish the witness proving six laws and re-proving ALES190/ALES41/ALES198 green beside it
+recommend keep-going — the thin twin stereo_reverb_shelf (the same two-band shelf over both channels, one shared bass/treble/split, the image held) closes the tone axis whole; then a fresh reverb axis — width, freeze, or early/late balance.
