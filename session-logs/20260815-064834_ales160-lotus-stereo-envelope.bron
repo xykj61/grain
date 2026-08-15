@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260815.064834
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) time convention · ai-jail
+title ALES160 — Lotus's stereo_envelope: the envelope follower carried into stereo, one linked detector
+prompt Take the next agent-doable lap Lindy-first crux-first on the Lotus (ALES) ladder; approve my own design round; send each finished increment as its own signed round; stop at the custody gates.
+think Read REMEMBER (living edge), the 1,024-round itinerary, and the six-season double-seat. The living ALES ladder (Season C, Lotus) fills one DSP function per signed round; ALES159 (stereo_expand) completed the stereo MEMORYLESS dynamics quartet (gate · compress · limit · expand).
+think Lindy-first crux-first: the mono family crossed the same seam at ALES52 — the envelope follower, the time base that opened attack/release dynamics. The next durable rung is its stereo lift, and every stereo *_env rung to come will read it. So the crux is stereo_envelope — one LINKED detector.
+think The single stereo truth: the detector is SHARED. The envelope steps toward the linked peak max(|left|, |right|) clamped to the rail (the louder channel decides), and the one curve is written to BOTH channels, so left == right after — the detector aligned across the field. Following each channel by its own magnitude would give two curves and pump the image, the dynamic twin of the ALES129 bug.
+think Faithful reuse: stereo_env_step computes the clamped linked key and DELEGATES to ALES52's proven env_step, so the forced-unit-step exact-reach guarantee and the attack/release asymmetry are reused whole. StereoEnvelopeError = envelope.EnvelopeError (BadCoeff, BadRange) reused whole; the linked detector adds no fault.
+obs Six laws proven on metal: the linked-detector law (both channels equal ALES52's mono follow of a synthetic per-sample linked-key clip byte for byte, and equal to each other, the independent per-channel follow genuinely differing); balance (left == right, length held); instantaneous (unit attack+release = the linked peak, |-32768| clamped to 32767); convergence (a steady 8000 reached exactly and monotone from silence, a 10000→2000 linked peak eased down to exactly 2000, both tracking); faster-attack monotone; carry (split == whole on both); silence / atomicity (four refusals leave both channels untouched and balanced) / degenerate (count 0 identity).
+obs Purely local, siloed to lotus/. One shared i64 envelope bounded in [0, sample_max] which fits i16 — nothing on the path overflows. The curve is not yet routed into a gain; wiring the linked envelope into the stereo compressor/gate/limiter/expander is the next rung. No custody gate reached — a self-approved design round.
+loom witness=ales_stereo_envelope_witness green=1 module=lotus/stereo_envelope.rye laws=6
+file active-designing/20260815-064459_fill-ales160-lotus-stereo-envelope.md the self-approved design round naming the crux and the six laws
+file lotus/stereo_envelope.rye the linked stereo envelope follower — stereo_env_step, stereo_follow_carry, stereo_follow
+file tools/ales_stereo_envelope_witness.rish the trilingual witness (EN · Radiant · TAME), build + selftest GREEN gate
+recommend keep-going — the next ALES rung wires the linked envelope into a stereo attack/release dynamics rung (stereo_compress_env), the mechanical continuation of the time-varying family; single-module, policy written, no seam.

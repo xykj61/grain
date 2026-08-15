@@ -1,0 +1,339 @@
+//! lotus/stereo_envelope.rye — ALES160: the ENVELOPE FOLLOWER carried into stereo — one LINKED detector, the time base the whole stereo time-varying dynamics family waits for. ALES52 named the mono follower: a running
+//! estimate of how loud a signal is right now, rising quickly toward a new peak (the attack) and falling slowly after it (the release), rendered as a magnitude curve so the attack/release limiter, compressor, gate, and
+//! expander all read one proven time base. The stereo memoryless quartet (gate ALES156, compressor ALES157, limiter ALES158, expander ALES159) each act on a pair the instant they see it, with no memory of the sound a
+//! moment ago. This is the crux that opens time-varying stereo dynamics — and it must be LINKED.
+//!
+//! One truth: the detector is SHARED. The key is the linked peak — at each index the one envelope steps toward max(|left|, |right|) clamped to the rail, the louder channel deciding the shared loudness exactly as the stereo
+//! gate/compressor/expander read their per-pair key. Following each channel by its own magnitude would give two envelopes that lean in and ease off on different samples; a later gain read from two curves would pump the
+//! image. So the one curve is written to BOTH channels — left == right after, the detector aligned in time across the stereo field, one time base a stereo dynamics rung reads once.
+//!
+//! The rule, stated once: refuse BadCoeff (an attack or release fraction outside (0, 1]) and BadRange (a span past the shared length) BEFORE any write. Otherwise walk the span one sample-PAIR at a time, advancing ONE i64
+//! envelope toward key = max(|left|, |right|) clamped to sample_max by ALES52's proven env_step (the attack fraction when rising, the release when falling, a forced unit step when the fractional step truncates to zero yet
+//! the gap remains — a held level reached EXACTLY in finite steps, never overshooting), and writing the returned magnitude into BOTH channels.
+//!
+//! The crux — six laws. THE LINKED DETECTOR LAW (the stereo crux): the shared curve equals ALES52's mono follow of the per-sample linked key (a synthetic clip of max(|left|, |right|) clamped) byte for byte, and both output
+//! channels equal that shared curve — while an independent per-channel follow genuinely differs (the image-pumping bug this prevents). THE BALANCE LAW: left == right byte for byte after, left.len == right.len, the detector
+//! aligned across the field. THE INSTANTANEOUS LAW: unit attack and unit release make the shared envelope the linked peak every sample — a follower with no smoothing is the rectified louder channel. THE CONVERGENCE LAWS: a
+//! constant linked input is reached exactly and monotonically from below (attack) and from above (release), never overshooting; a faster attack rises at least as fast (monotone). THE CARRY LAW: a span followed in two pieces
+//! (the second continuing the first's ending envelope) equals following the whole once, byte for byte on both — the seam invisible, so the coming dynamics can span and automate. THE SILENCE / ATOMICITY / DEGENERATE LAW: an
+//! all-silent master follows to all zeros on both, an illegal coefficient and an out-of-range span each refuse by name with both channels untouched and balanced, count = 0 the identity on both.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES160.
+//! Design read: active-designing/20260815-064459_fill-ales160-lotus-stereo-envelope.md
+//! Stands on: lotus/envelope.rye (ALES52) — the mono envelope follower, its `env_step`, `coeff_ok`, and `EnvelopeError` reused whole (the forced-unit-step exact-reach guarantee and the attack/release asymmetry, and the
+//! per-sample proof that both channels equal the mono follow of the linked key); lotus/stereo_gate.rye (ALES156) — the linked-DECISION law whose linked key (max of the two magnitudes) this shares; lotus/pan.rye (ALES10) —
+//! the StereoClip and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, buf/len/samples, sample_max.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) carrying one shared i64 envelope on one bench, siloed to lotus/. One comparison for the linked key and at most one multiply-then-
+//! divide per sample (ALES52's proven step), the envelope bounded in [0, sample_max] which fits i16, so nothing on the path can overflow. The attack and release are fractions per sample index, not milliseconds against a
+//! clock; the follower renders the linked magnitude curve rather than routing it into a gain yet (wiring the linked envelope into the stereo compressor, gate, limiter, and expander is the next rung). No real sample rate,
+//! no anti-aliasing, no network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_envelope.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const envelope = @import("envelope.rye");
+
+pub const stereo_envelope_version = "20260815.064459";
+
+/// The linked follower's faults are exactly ALES52's own `EnvelopeError` — `BadCoeff` (an attack or release fraction outside (0, 1]) and `BadRange` (a span past the samples) — reused by name, since the linked detector adds
+/// no new fault: it validates the one shared attack, the one shared release, and one span, then advances a single envelope from both channels together and writes the shared value to both.
+pub const StereoEnvelopeError = envelope.EnvelopeError;
+
+/// Advance the ONE shared envelope by one sample toward the LINKED peak of the pair `(xl, xr)` and return the new envelope value. The key is `max(|xl|, |xr|)` clamped to `sample_max` — the louder channel decides the shared
+/// loudness. It delegates to ALES52's proven `env_step` on that key, so the attack/release asymmetry and the forced-unit-step exact-reach guarantee are reused whole rather than restated. Public so a stereo dynamics tool
+/// that reads this time base advances the same proven envelope one pair at a time.
+pub fn stereo_env_step(
+    env: *i64,
+    xl: i16,
+    xr: i16,
+    attack_num: u32,
+    attack_den: u32,
+    release_num: u32,
+    release_den: u32,
+) i16 {
+    // invariant: both coefficients reaching this step are already legal fractions in (0, 1] — coeff_ok ran at the edge.
+    assert(envelope.coeff_ok(attack_num, attack_den) and envelope.coeff_ok(release_num, release_den));
+    const ml: i64 = if (xl < 0) -@as(i64, xl) else @as(i64, xl); // |left| — safe in i64 (|sample_min| = 32768 fits)
+    const mr: i64 = if (xr < 0) -@as(i64, xr) else @as(i64, xr); // |right|
+    const key: i64 = if (ml >= mr) ml else mr; // the LINKED peak — the louder channel decides
+    const rail: i64 = @as(i64, timeline.sample_max);
+    // Clamp the linked peak to the positive rail so it fits i16 for the reused env_step; a full-scale negative peak (|sample_min| = 32768) reads at the rail, exactly as ALES52's own target clamp does. The sign is immaterial
+    // — env_step reads only the magnitude.
+    const clamped: i16 = @intCast(if (key > rail) rail else key);
+    // invariant: the clamped key is a legal i16 magnitude — nonnegative, no greater than the rail — so env_step's own target equals this key exactly.
+    assert(clamped >= 0);
+    return envelope.env_step(env, clamped, attack_num, attack_den, release_num, release_den);
+}
+
+/// Follow `count` sample-pairs starting at `start` in the stereo master `sc`, CONTINUING from the caller's shared `env` rather than from silence — the carried-state form (ALES43's lesson). The caller owns the one i64
+/// envelope across calls, so following a span in two pieces (the second carrying the first's ending envelope) equals following the whole span once: no fresh transient at the seam. A fresh `env` of 0 follows from silence.
+/// The one envelope steps toward `max(|left|, |right|)` per pair and the shared value is written into BOTH channels, so the detector is aligned in time across the stereo field (`left == right` after). Refuses BadCoeff on an
+/// illegal coefficient and BadRange on a span outside the SHARED samples, before any write; on refusal `env` and both channels are left untouched. Values only — never the length, and the channels leave balanced.
+pub fn stereo_follow_carry(
+    sc: *pan.StereoClip,
+    start: u32,
+    count: u32,
+    env: *i64,
+    attack_num: u32,
+    attack_den: u32,
+    release_num: u32,
+    release_den: u32,
+) StereoEnvelopeError!void {
+    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the shared detector keeps.
+    assert(sc.left.len == sc.right.len);
+    // invariant: both coefficients are legal fractions in (0, 1] — checked before any write, by the one rule ALES52 proves.
+    if (!envelope.coeff_ok(attack_num, attack_den)) return error.BadCoeff;
+    if (!envelope.coeff_ok(release_num, release_den)) return error.BadCoeff;
+    // invariant: the span lies wholly within the SHARED length — checked once, without underflow, so it holds identically for both channels and a refusal never follows one channel and leaves the other torn.
+    const len: u32 = sc.left.len;
+    if (start > len) return error.BadRange;
+    if (count > len - start) return error.BadRange;
+
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        // Read both channels at this index, advance the ONE shared envelope toward their linked peak, and write the shared value to both — the detector rendered identically across the field.
+        const v: i16 = stereo_env_step(env, sc.left.buf[start + i], sc.right.buf[start + i], attack_num, attack_den, release_num, release_den);
+        sc.left.buf[start + i] = v;
+        sc.right.buf[start + i] = v;
+        // invariant: the shared detector wrote the identical value to both channels at this index — the linked-detector alignment, held sample by sample.
+        assert(sc.left.buf[start + i] == sc.right.buf[start + i]);
+    }
+
+    // invariant: a follower changes sample values only — each channel holds its starting length and the channels leave balanced, the stereo image aligned in time.
+    assert(sc.left.len == len and sc.right.len == len);
+    assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
+}
+
+/// Follow `count` sample-pairs starting at `start` in the stereo master `sc`, from a zero initial shared envelope (from silence), by the attack and release coefficients. A fresh `env` of 0 is exactly this from-silence form —
+/// one implementation, so the two forms cannot drift. Refuses BadCoeff on an illegal coefficient and BadRange on a span outside the shared samples, before any write.
+pub fn stereo_follow(
+    sc: *pan.StereoClip,
+    start: u32,
+    count: u32,
+    attack_num: u32,
+    attack_den: u32,
+    release_num: u32,
+    release_den: u32,
+) StereoEnvelopeError!void {
+    var env: i64 = 0;
+    return stereo_follow_carry(sc, start, count, &env, attack_num, attack_den, release_num, release_den);
+}
+
+// --- selftest: THE LINKED DETECTOR LAW — the shared curve equals ALES52's mono follow of the per-sample linked key byte for byte and both channels equal it, the independent per-channel follow differing; THE BALANCE LAW —
+//     left == right after, length held; THE INSTANTANEOUS LAW — unit attack and release make the shared envelope the linked peak every sample; THE CONVERGENCE LAWS — a constant reached exactly and monotonically from below
+//     (attack) and above (release), a faster attack no slower; THE CARRY LAW — a span followed in two pieces equals the whole once on both; THE SILENCE / ATOMICITY / DEGENERATE LAW — an all-silent master to zero on both,
+//     an illegal coefficient and an out-of-range span each refusing with both channels untouched and balanced, count = 0 the identity on both -----------------------------------------------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try timeline.splice(&sc.left, 0, l);
+    try timeline.splice(&sc.right, 0, r);
+}
+
+fn abs16(v: i16) i32 {
+    return if (v < 0) -@as(i32, v) else @as(i32, v);
+}
+
+// Build the synthetic mono "linked key" clip for a pair of channels: keyclip[i] = min(max(|l[i]|, |r[i]|), sample_max), the exact input ALES52's env_step sees each sample through the shared detector.
+fn load_keyclip(clip: *timeline.Clip, l: []const i16, r: []const i16) !void {
+    var buf: [64]i16 = undefined;
+    var i: u32 = 0;
+    while (i < l.len) : (i += 1) {
+        const ml: i32 = abs16(l[i]);
+        const mr: i32 = abs16(r[i]);
+        const key: i32 = if (ml >= mr) ml else mr;
+        const rail: i32 = @as(i32, timeline.sample_max);
+        buf[i] = @intCast(if (key > rail) rail else key);
+    }
+    try timeline.splice(clip, 0, buf[0..l.len]);
+}
+
+fn run_selftest() !u8 {
+    // 1. THE LINKED DETECTOR LAW — the stereo crux. Over a mixed master the shared curve equals ALES52's mono follow of the per-sample linked key (max of the two magnitudes, clamped) byte for byte, and BOTH channels equal
+    //    that curve; an INDEPENDENT per-channel follow (each channel by its own magnitude) genuinely differs — the image-pumping bug the linked detector prevents.
+    {
+        const ll = [_]i16{ 3000, -14000, 2000, -500, 9000, -300, 500, -100 };
+        const rr = [_]i16{ -400, 6000, -1000, 12000, -700, 800, -50, 60 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &ll, &rr);
+        try stereo_follow(&sc, 0, 8, 1, 3, 1, 5);
+
+        // the shared curve equals the mono follow of the linked key, proven against the mono tool directly.
+        var keyclip = timeline.Clip{};
+        try load_keyclip(&keyclip, &ll, &rr);
+        try envelope.follow(&keyclip, 0, 8, 1, 3, 1, 5);
+        if (!eq(sc.left.samples(), keyclip.samples())) return error.LeftNotLinkedKey;
+        if (!eq(sc.right.samples(), keyclip.samples())) return error.RightNotLinkedKey;
+        // and both channels are equal to each other — the detector aligned across the field.
+        if (!eq(sc.left.samples(), sc.right.samples())) return error.ChannelsNotEqual;
+
+        // the INDEPENDENT lift genuinely differs — following the right by its OWN magnitude gives a different curve (it would pump the image).
+        var indep_r = timeline.Clip{};
+        try load_stereo(&sc, &ll, &rr); // reset not needed for indep; build a fresh clip of |right|
+        try timeline.splice(&indep_r, 0, &rr);
+        try envelope.follow(&indep_r, 0, 8, 1, 3, 1, 5);
+        if (eq(indep_r.samples(), keyclip.samples())) return error.IndependentDidNotDiffer;
+    }
+
+    // 2. THE INSTANTANEOUS LAW — unit attack AND unit release make the shared envelope the linked peak every sample: both channels become max(|left|, |right|) clamped, byte for byte.
+    {
+        const ll = [_]i16{ 5000, -9000, 0, -32768, 32767, -400 };
+        const rr = [_]i16{ -400, 3000, 0, 100, -50, 32767 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &ll, &rr);
+        try stereo_follow(&sc, 0, 6, 1, 1, 1, 1); // unit attack, unit release
+        const want = [_]i16{ 5000, 9000, 0, 32767, 32767, 32767 }; // per-sample max magnitude, |-32768| -> 32767
+        if (!eq(sc.left.samples(), &want) or !eq(sc.right.samples(), &want)) return error.UnitNotLinkedPeak;
+    }
+
+    // 3. THE CONVERGENCE LAWS — a constant LINKED input is reached exactly and monotonically. Where the left holds a constant peak above the right, the shared envelope rises from silence to exactly that peak, monotone,
+    //    never overshooting; both channels track it.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &([_]i16{8000} ** 64), &([_]i16{ -2000, 3000 } ** 32)); // left is the louder, steady peak
+        try stereo_follow(&sc, 0, 64, 1, 4, 1, 8); // attack 1:4
+        const l = sc.left.samples();
+        const r = sc.right.samples();
+        var i: u32 = 1;
+        while (i < 64) : (i += 1) {
+            if (l[i] < l[i - 1]) return error.AttackNotMonotone; // never falls while chasing a higher target
+            if (l[i] > 8000) return error.AttackOvershot; // never overshoots the linked peak
+            if (l[i] != r[i]) return error.ConvergenceChannelsDiffer; // both track the one curve
+        }
+        if (l[0] <= 0) return error.AttackDidNotRise;
+        if (l[63] != 8000) return error.AttackNotExact; // reached the linked peak exactly
+    }
+
+    // 4. THE RELEASE — a constant-then-quieter LINKED input falls to the new level exactly via the release, monotonically, from above.
+    {
+        // linked peak 10000 for one sample (instant attack seats it), then the linked peak holds 2000 — the release eases DOWN to exactly 2000.
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &([_]i16{10000} ++ ([_]i16{2000} ** 63)), &([_]i16{ -50 } ** 64)); // left carries the linked peak throughout
+        try stereo_follow(&sc, 0, 64, 1, 1, 1, 3); // instant attack, slow release 1:3
+        const l = sc.left.samples();
+        if (l[0] != 10000) return error.ReleaseAttackWrong;
+        var i: u32 = 2;
+        while (i < 64) : (i += 1) {
+            if (l[i] > l[i - 1]) return error.ReleaseNotMonotone; // never rises while falling
+            if (l[i] < 2000) return error.ReleaseUndershot;
+        }
+        if (l[63] != 2000) return error.ReleaseNotExact;
+        if (!eq(sc.left.samples(), sc.right.samples())) return error.ReleaseChannelsDiffer;
+    }
+
+    // 5. A FASTER ATTACK RISES AT LEAST AS FAST — for the same rising linked target, 1:2 reaches a magnitude no less than 1:8 at every sample (the attack knob is monotone).
+    {
+        const ll = [_]i16{ 12000, 12000, 12000, 12000, 12000, 12000 };
+        const rr = [_]i16{ 100, -200, 300, -400, 500, -600 };
+        var slow = pan.StereoClip{};
+        try load_stereo(&slow, &ll, &rr);
+        try stereo_follow(&slow, 0, 6, 1, 8, 1, 8); // slow attack 1:8
+        var fast = pan.StereoClip{};
+        try load_stereo(&fast, &ll, &rr);
+        try stereo_follow(&fast, 0, 6, 1, 2, 1, 8); // fast attack 1:2
+        var i: u32 = 0;
+        while (i < 6) : (i += 1) {
+            if (fast.left.samples()[i] < slow.left.samples()[i]) return error.AttackNotFaster;
+        }
+    }
+
+    // 6. THE CARRY LAW — following a span in two pieces (the second continuing the first's ending shared envelope) equals following the whole span once, byte for byte on BOTH channels.
+    {
+        const ll = [_]i16{ 3000, -14000, 14000, -2000, 9000, -9000, 500, -500 };
+        const rr = [_]i16{ -400, 6000, -1000, 12000, -700, 800, -50, 60 };
+        var whole = pan.StereoClip{};
+        try load_stereo(&whole, &ll, &rr);
+        try stereo_follow(&whole, 0, 8, 1, 3, 1, 5);
+
+        var split = pan.StereoClip{};
+        try load_stereo(&split, &ll, &rr);
+        var env: i64 = 0;
+        try stereo_follow_carry(&split, 0, 3, &env, 1, 3, 1, 5); // first piece
+        try stereo_follow_carry(&split, 3, 5, &env, 1, 3, 1, 5); // second continues the shared state
+        if (!eq(split.left.samples(), whole.left.samples())) return error.CarryLeftNotEqual;
+        if (!eq(split.right.samples(), whole.right.samples())) return error.CarryRightNotEqual;
+    }
+
+    // 7a. THE SILENCE LAW — an all-silent master follows to all zeros on both (the linked key is 0 every sample).
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 0, 0, 0, 0 }, &[_]i16{ 0, 0, 0, 0 });
+        try stereo_follow(&sc, 0, 4, 1, 4, 1, 8);
+        const zeros = [_]i16{ 0, 0, 0, 0 };
+        if (!eq(sc.left.samples(), &zeros) or !eq(sc.right.samples(), &zeros)) return error.SilenceWrong;
+    }
+
+    // 7b. THE BALANCE / LENGTH LAW — the channels stay equal length and each holds its starting length; a follower writes values only.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 500, -800, 200, -900, 100 }, &[_]i16{ -400, 300, -700, 500, -50 });
+        try stereo_follow(&sc, 0, 5, 1, 4, 1, 8);
+        if (sc.left.len != sc.right.len) return error.Unbalanced;
+        if (sc.left.len != 5) return error.LengthChanged;
+    }
+
+    // 7c. THE ATOMICITY LAW — an illegal attack coefficient (numerator past the denominator), an illegal release, a zero denominator, and an out-of-range span each refuse by name with BOTH channels byte for byte untouched
+    //     and still balanced.
+    {
+        const tl = [_]i16{ 5, -6, 7 };
+        const tr = [_]i16{ -7, 6, -5 };
+
+        var a = pan.StereoClip{};
+        try load_stereo(&a, &tl, &tr);
+        if (stereo_follow(&a, 0, 3, 5, 4, 1, 8)) |_| return error.BadAttackSlipped else |e| if (e != error.BadCoeff) return error.WrongBadAttack;
+        if (!eq(a.left.samples(), &tl) or !eq(a.right.samples(), &tr) or a.left.len != a.right.len) return error.AttackRefusalMutated;
+
+        var b = pan.StereoClip{};
+        try load_stereo(&b, &tl, &tr);
+        if (stereo_follow(&b, 0, 3, 1, 4, 0, 8)) |_| return error.ZeroReleaseNumSlipped else |e| if (e != error.BadCoeff) return error.WrongZeroReleaseNum;
+        if (!eq(b.left.samples(), &tl) or !eq(b.right.samples(), &tr) or b.left.len != b.right.len) return error.ReleaseRefusalMutated;
+
+        var c = pan.StereoClip{};
+        try load_stereo(&c, &tl, &tr);
+        if (stereo_follow(&c, 0, 3, 1, 0, 1, 8)) |_| return error.ZeroAttackDenSlipped else |e| if (e != error.BadCoeff) return error.WrongZeroAttackDen;
+        if (!eq(c.left.samples(), &tl) or !eq(c.right.samples(), &tr) or c.left.len != c.right.len) return error.ZeroDenRefusalMutated;
+
+        var d = pan.StereoClip{};
+        try load_stereo(&d, &tl, &tr);
+        if (stereo_follow(&d, 1, 3, 1, 4, 1, 8)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(d.left.samples(), &tl) or !eq(d.right.samples(), &tr) or d.left.len != d.right.len) return error.BadRangeRefusalMutated;
+    }
+
+    // 7d. THE DEGENERATE LAW — count = 0 (an empty span in the middle) is the identity on both channels; no pair to follow.
+    {
+        var noop = pan.StereoClip{};
+        try load_stereo(&noop, &[_]i16{ 500, -500, 900 }, &[_]i16{ -50, 60, -70 });
+        try stereo_follow(&noop, 1, 0, 1, 4, 1, 8); // empty span — identity
+        if (!eq(noop.left.samples(), &[_]i16{ 500, -500, 900 })) return error.ZeroCountLeftChanged;
+        if (!eq(noop.right.samples(), &[_]i16{ -50, 60, -70 })) return error.ZeroCountRightChanged;
+    }
+
+    print("GREEN ales-stereo-envelope: the ENVELOPE FOLLOWER CARRIED INTO STEREO — one LINKED detector, the time base the whole stereo time-varying dynamics family waits for. Follow a span of sample-PAIRS in a master by an " ++
+        "attack and a release fraction, advancing ONE shared envelope toward the linked peak max(|left|, |right|) clamped to the rail and writing the shared value into BOTH channels. ALES52 named the mono follower: a running " ++
+        "estimate of loudness rising quickly toward a new peak (attack) and falling slowly after it (release), rendered as a magnitude curve so the attack/release dynamics read one proven time base. Carried into stereo the " ++
+        "detector is SHARED: the louder channel decides the shared loudness (following each channel by its own magnitude would pump the image), and the one curve is written to both so left == right after — the detector " ++
+        "aligned across the field. THE LINKED DETECTOR LAW (the crux): the shared curve equals ALES52's mono follow of the per-sample linked key byte for byte and both channels equal it, the independent per-channel follow " ++
+        "genuinely differing. THE BALANCE LAW: left == right after, left.len == right.len. THE INSTANTANEOUS LAW: unit attack and release make the shared envelope the linked peak every sample. THE CONVERGENCE LAWS: a " ++
+        "constant linked input reached exactly and monotonically from below (attack) and above (release), never overshooting, a faster attack no slower. THE CARRY LAW: a span followed in two pieces equals the whole once on " ++
+        "both. THE SILENCE / ATOMICITY / DEGENERATE LAW: an all-silent master to zero on both, an illegal coefficient and an out-of-range span each refusing by name with both channels untouched and balanced, count = 0 the " ++
+        "identity on both. Purely local — two bounded i16 Clips carrying one shared i64 envelope, one comparison and at most one multiply-then-divide per sample (ALES52's proven step), the envelope bounded in [0, sample_max] " ++
+        "so no overflow; the attack and release fractions per sample index, the curve not yet routed into a gain (the next rung); no real sample rate, no anti-aliasing, no network, no keys, no funds, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
