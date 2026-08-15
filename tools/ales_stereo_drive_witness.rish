@@ -1,0 +1,39 @@
+# tools/ales_stereo_drive_witness.rish — stereo_drive: the hard-clip drive carried into stereo with ONE SHARED MAP, both channels in lockstep, opening the stereo NONLINEAR class (ALES132).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES132.
+# Design read: active-designing/20260815-032122_fill-ales132-lotus-stereo-drive.md
+# Stands on: lotus/drive.rye (ALES78 — the mono hard-clip drive run once per channel, itself ALES6's i64 gain into ALES49's ceiling law), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right,
+# and its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, sample_min/max). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same
+# length. This rung opens the stereo nonlinear class on ALES78's hard-clip drive — the DRIVE family's root, a pre-gain into a ceiling where the clipped flat top is the harmonic voice. It states the
+# amplitude class's lesson (ALES129/130/131 — a shared quantity preserves the stereo image because scaling is linear) in reverse, honestly: a drive is NOT linear, so the same map does NOT hold the
+# inter-channel ratio; each channel clips against the same ceiling by its own level, a louder channel clipping harder, the ratio compressing. What the shared map keeps, per channel, is the ceiling and
+# sign discipline, and an identical-channel master stays identical.
+#
+# lotus/stereo_drive.rye validates both channels once against the shared parameters and length before either is mutated (BadGain on a zero denominator / below-unity gain / oversized numerator, BadCeiling
+# on a ceiling outside [1, sample_max], BadRange on a span outside the samples), then drives both channels through ALES78's drive; DriveError reused whole. The crux is four laws. THE STEREO DRIVE LAW:
+# each channel equals ALES78's mono drive with the same params byte for byte. THE BALANCE / LENGTH LAW: left.len == right.len after, both holding their starting length. THE PER-CHANNEL NONLINEAR LAW: the
+# ceiling and sign hold per channel, a 1:2 master's ratio compresses under a hard drive, an identical-channel master staying identical. THE ATOMICITY / DEGENERATE LAW: a refusal leaves both channels
+# untouched and balanced, a unity drive at the rail the identity, count 0 the identity.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_stereo_drive_witness.rish
+
+say "ales-stereo-drive: Language EN — stereo_drive drives a span in both channels of a stereo master by the same gain into the same ceiling, the same map on each, so an overdrive lands on both speakers together. A Lotus master is two Clips heard together, one per speaker, whose defining invariant is that left and right hold the same length so the two channels stay aligned in time. This rung opens the stereo nonlinear class on ALES78's hard-clip drive, carrying it into stereo by running the proven mono drive on each channel with the same rational gain and ceiling, validated once against the shared parameters and length before either channel is mutated so a refusal never drives one channel and leaves the other dry."
+say "ales-stereo-drive: Style Radiant — the nonlinear class states the amplitude class's lesson in reverse, honestly: where normalize, fade, and crossfade shared a quantity that preserved the stereo image because scaling is linear, a drive is not linear, so the same map does not hold the inter-channel ratio — each channel clips against the same ceiling by its own level, a louder channel clipping harder, the ratio compressing; that is what a stereo drive is, not a bug to design around. The rule is stated positively: refuse BadGain, BadCeiling, and BadRange before either channel is mutated (the gain and ceiling checks depend only on the shared parameters, the span check on the shared length, so each is made once up front), else drive both channels over the span by num/den into ceil through ALES78's drive. It reuses ALES78's DriveError by name and ALES78's drive for the arithmetic, inventing no new fault and no new primitive. The crux stands out as four laws: the stereo drive law (each channel equals ALES78's mono drive with the same params byte for byte, a boosted sample within the ceiling passing at its boosted value and one past pinning to the sign-held ceiling), the balance / length law (left.len == right.len after the edit and both hold their starting length, a drive writing values only), the per-channel nonlinear law (the ceiling and sign discipline hold per channel, a 1:2 master's ratio compressing under a hard drive where the linear amplitude class would have held it, and an identical-channel master staying identical), and the atomicity / degenerate law (any refusal leaves both channels byte for byte untouched and still balanced, a unity drive at the rail the identity on both, count 0 the identity on both)."
+say "ales-stereo-drive: Lens TAME — two bounded i16 Clips (left, right) driven in lockstep by one shared nonlinear map; the balance invariant is asserted on entry and exit, the gain, ceiling, and span are bound-checked once before any write, and because those checks hold identically for both channels each mono drive is pre-validated to succeed so no refusal can land between the two channel edits; drive walks the span once per channel, boosting each sample by num/den in an i64 accumulator so the pre-gain never overflows before ALES49's ceiling pin lands every output in the i16 rail by construction, the sign held (a hard clipper is odd), never touching a byte past len, so the length holds exactly; it reuses ALES78's drive per channel over its public API and ALES78's DriveError whole, inventing no new primitive; the stereo drive law is proven against ALES78's own drive run per channel, the per-channel nonlinear law proves the ceiling and sign hold on both channels and that a 1:2 field's ratio compresses to the rail (the honest opposite of the amplitude class), the three refusals leave both channels byte-for-byte untouched, and a unity drive at the rail is the identity; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_drive"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_drive.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-drive: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_drive.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-drive: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-drive: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-drive' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-drive: selftest did not print the GREEN ales-stereo-drive line"

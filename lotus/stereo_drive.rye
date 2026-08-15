@@ -1,0 +1,228 @@
+//! lotus/stereo_drive.rye — ALES132: the hard-clip drive carried into stereo, ONE SHARED MAP, opening the stereo NONLINEAR class. ALES78 named `drive` — a pre-gain into ALES49's ceiling, y[i] =
+//! pin(x[i]·num/den, ±ceil), the DRIVE family's root where a clipped wave's flat top is its harmonic voice (the grit of an overdriven amp, the crunch of a fuzz) — for a mono Clip. Yet a Lotus master is
+//! a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and RIGHT hold the SAME length. This rung carries drive into stereo the plain way: run ALES78's proven mono
+//! `drive` on each channel with the SAME gain and ceiling, so an overdrive lands on BOTH speakers together.
+//!
+//! The nonlinear class states the amplitude class's lesson (ALES129 normalize · ALES130 fade · ALES131 crossfade — a shared quantity preserves the stereo image because scaling is LINEAR) in reverse,
+//! honestly: a drive is NOT linear, so applying the same map to both channels does NOT preserve the inter-channel ratio in general — each channel clips against the same ceiling by its OWN level, so a
+//! louder channel clips harder and the ratio compresses. That is not a bug to design around; it is what a stereo drive IS. What the shared map DOES keep, per channel, is the ceiling and sign discipline;
+//! and an identical-channel master still drives to an identical-channel output.
+//!
+//! The rule, stated once: refuse BadGain (a zero denominator, a below-unity gain, an oversized numerator), BadCeiling (a ceiling outside [1, sample_max]), and BadRange (a span outside the samples) BEFORE
+//! either channel is mutated — BadGain and BadCeiling depend only on the shared parameters and BadRange only on the shared length, so every check is made ONCE up front, and a refusal never drives one
+//! channel and leaves the other dry; otherwise drive both channels over [start, start+count) by num/den into ceil through ALES78's `drive`. DriveError reused whole.
+//!
+//! The crux — four laws. THE STEREO DRIVE LAW: each channel equals ALES78's mono `drive` with the same (num, den, ceil) over the same span byte for byte — a boosted sample within the ceiling passing at
+//! its boosted value, one past pinning to sign(x)·ceil, per channel. THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their starting length (a drive writes values only). THE
+//! PER-CHANNEL NONLINEAR LAW: a drive is nonlinear, so a shared map does NOT hold the inter-channel ratio (a 1:2 master driven hard clips both toward the ceiling, the ratio compressing) — unlike the
+//! linear amplitude class; yet the ceiling and sign discipline hold per channel (every output magnitude at most ceil, every sign matching its input), and an identical-channel master stays identical. THE
+//! ATOMICITY / DEGENERATE LAW: any refusal (BadGain, BadCeiling, BadRange) leaves BOTH channels byte for byte untouched and still balanced; a unity drive at the rail is the identity on both, count = 0 the
+//! identity on both.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES132.
+//! Design read: active-designing/20260815-032122_fill-ales132-lotus-stereo-drive.md
+//! Stands on: lotus/drive.rye (ALES78) — the mono hard-clip drive run once per channel, itself ALES6's i64 gain into ALES49's ceiling law; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips,
+//! left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, sample_min/max.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only through ALES78's own drive, never a length,
+//! never a byte fabricated; the drive gain is a rational num/den (unity = 1/1), the ceiling a magnitude in sample units NOT decibels, the clip instantaneous (no attack/release, no anti-aliasing). No real
+//! sample rate, no network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_drive.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const drive = @import("drive.rye");
+
+pub const stereo_drive_version = "20260815.032122";
+
+/// Stereo drive's faults are exactly ALES78's own `DriveError` — `BadGain` (zero denominator, below-unity gain, oversized numerator), `BadCeiling` (a ceiling outside [1, sample_max]), and `BadRange` (a
+/// span outside the samples) — reused by name, since the stereo lift adds no new fault: it only runs the same drive on each channel after one shared validation.
+pub const StereoDriveError = drive.DriveError;
+
+/// Drive `[start, start+count)` in BOTH channels of `sc` by the rational gain `num`/`den` (at least unity) into the magnitude `ceil`, the SAME map on each, running ALES78's proven mono `drive`. A boosted
+/// sample within the ceiling passes at its boosted value, one past pins to sign(x)·ceil (the harmonic flat top). Validates both channels once against the shared parameters and length before either is
+/// mutated: refuses `BadGain` / `BadCeiling` / `BadRange`, both channels untouched. Values only — never the length; the two channels leave balanced.
+pub fn stereo_drive(sc: *pan.StereoClip, start: u32, count: u32, num: u32, den: u32, ceil: i32) StereoDriveError!void {
+    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the edit preserves.
+    assert(sc.left.len == sc.right.len);
+
+    // invariant: the gain, ceiling, and span are legal — refused by name before any write, so a refusal never drives one channel and leaves the other dry. The gain and ceiling checks depend only on the
+    // shared parameters; the span check on the shared length. These mirror ALES78's own guards exactly, so each mono drive below is pre-validated to succeed.
+    if (den == 0) return error.BadGain;
+    if (num < den) return error.BadGain;
+    if (num > drive.max_drive_num) return error.BadGain;
+    if (ceil < 1) return error.BadCeiling;
+    if (ceil > @as(i32, timeline.sample_max)) return error.BadCeiling;
+    const len: u32 = sc.left.len;
+    if (start > len) return error.BadRange;
+    if (count > len - start) return error.BadRange;
+
+    // Every check passed and holds identically for both channels, so each mono drive is pre-validated to succeed — no refusal can land between the two channel edits. The SAME map on each.
+    try drive.drive(&sc.left, start, count, num, den, ceil);
+    try drive.drive(&sc.right, start, count, num, den, ceil);
+
+    // invariant: the channels leave balanced — a drive writes values only, so each channel holds its starting length and the stereo image stays aligned.
+    assert(sc.left.len == sc.right.len);
+    assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
+}
+
+// --- selftest: THE STEREO DRIVE LAW — each channel equals ALES78's mono drive with the same params byte for byte; THE BALANCE / LENGTH LAW — left.len == right.len after, both holding their starting
+//     length; THE PER-CHANNEL NONLINEAR LAW — the ceiling and sign hold per channel, a 1:2 master's ratio COMPRESSES under a hard drive (nonlinear, unlike the amplitude class), an identical-channel
+//     master staying identical; THE ATOMICITY / DEGENERATE LAW — each refusal leaves both channels untouched and balanced, a unity drive at the rail the identity, count = 0 the identity ----------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try timeline.splice(&sc.left, 0, l);
+    try timeline.splice(&sc.right, 0, r);
+}
+
+fn run_selftest() !u8 {
+    // 1. THE STEREO DRIVE LAW — each channel equals ALES78's mono drive with the same params, proven side by side over one span with different per-channel samples; a ×4 drive into a low ceiling passes
+    //    the small samples scaled and pins the loud ones to ±ceil, per channel.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 300, -300, 1000, -2000 }, &[_]i16{ 100, -50, 5000, -6000 });
+        try stereo_drive(&sc, 0, 4, 4, 1, 1500); // ×4 into 1500
+
+        var ml = timeline.Clip{};
+        try timeline.splice(&ml, 0, &[_]i16{ 300, -300, 1000, -2000 });
+        try drive.drive(&ml, 0, 4, 4, 1, 1500);
+        var mr = timeline.Clip{};
+        try timeline.splice(&mr, 0, &[_]i16{ 100, -50, 5000, -6000 });
+        try drive.drive(&mr, 0, 4, 4, 1, 1500);
+
+        if (!eq(sc.left.samples(), ml.samples())) return error.LeftChannelWrong;
+        if (!eq(sc.right.samples(), mr.samples())) return error.RightChannelWrong;
+        // Concretely: left 300·4=1200 passes, 1000·4 pins to 1500; right 100·4=400 passes, 5000·4 pins to 1500.
+        if (!eq(sc.left.samples(), &[_]i16{ 1200, -1200, 1500, -1500 })) return error.LeftDriveWrong;
+        if (!eq(sc.right.samples(), &[_]i16{ 400, -200, 1500, -1500 })) return error.RightDriveWrong;
+    }
+
+    // 2. THE BALANCE / LENGTH LAW — the channels stay equal length and each holds its starting length; a drive writes values only. Proven at an even and an odd length.
+    {
+        var even = pan.StereoClip{};
+        try load_stereo(&even, &[_]i16{ 100, 200, 300, 400 }, &[_]i16{ 400, 300, 200, 100 });
+        try stereo_drive(&even, 0, 4, 2, 1, 500);
+        if (even.left.len != even.right.len) return error.EvenUnbalanced;
+        if (even.left.len != 4) return error.EvenLength;
+
+        var odd = pan.StereoClip{};
+        try load_stereo(&odd, &[_]i16{ 100, 200, 300 }, &[_]i16{ 300, 200, 100 });
+        try stereo_drive(&odd, 0, 3, 3, 2, 250);
+        if (odd.left.len != odd.right.len) return error.OddUnbalanced;
+        if (odd.left.len != 3) return error.OddLength;
+    }
+
+    // 3a. THE PER-CHANNEL NONLINEAR LAW — the ceiling and sign discipline hold per channel: every output magnitude is at most the ceiling and every sign matches the input, on BOTH channels, under a hard
+    //     boost. This is the drive's honest promise (contrast the linear amplitude class, which preserved a ratio).
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 800, -4000, 20 }, &[_]i16{ -30000, 7, -900 });
+        const ceil: i16 = 1200;
+        try stereo_drive(&sc, 0, 3, 5, 2, ceil); // ×2.5 into 1200
+        const l = sc.left.samples();
+        const r = sc.right.samples();
+        const li = [_]i16{ 800, -4000, 20 };
+        const ri = [_]i16{ -30000, 7, -900 };
+        var i: u32 = 0;
+        while (i < 3) : (i += 1) {
+            if (l[i] > ceil or l[i] < -ceil) return error.LeftCeilingCrossed;
+            if (r[i] > ceil or r[i] < -ceil) return error.RightCeilingCrossed;
+            if (!((li[i] >= 0 and l[i] >= 0) or (li[i] <= 0 and l[i] <= 0))) return error.LeftSignFlipped;
+            if (!((ri[i] >= 0 and r[i] >= 0) or (ri[i] <= 0 and r[i] <= 0))) return error.RightSignFlipped;
+        }
+    }
+
+    // 3b. THE PER-CHANNEL NONLINEAR LAW, the ratio COMPRESSES — a 1:2 master (right twice left) driven hard does NOT keep its 1:2 ratio, because a drive is nonlinear: both channels are boosted past the
+    //     same ceiling and pin to it, so the loud right no longer stands twice the left. The honest opposite of ALES130/ALES131's shared-ratio image law.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 1000, 1000, 1000 }, &[_]i16{ 2000, 2000, 2000 });
+        try stereo_drive(&sc, 0, 3, 8, 1, 3000); // ×8: left 8000→pins 3000, right 16000→pins 3000
+        const l = sc.left.samples();
+        const r = sc.right.samples();
+        // both pin to the ceiling, so right is NO LONGER twice left — the ratio compressed to 1:1 at the rail.
+        if (l[0] != 3000 or r[0] != 3000) return error.NonlinearPinWrong;
+        if (@as(i32, r[0]) == 2 * @as(i32, l[0])) return error.RatioUnexpectedlyHeld; // the linear law does NOT hold here — that is the point
+    }
+
+    // 3c. an identical-channel master stays identical through the drive — a shared map on equal inputs gives equal outputs (a mono-in-stereo signal never splits, even under a nonlinear map).
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 500, -3000, 500, -3000 }, &[_]i16{ 500, -3000, 500, -3000 });
+        try stereo_drive(&sc, 0, 4, 4, 1, 1000);
+        if (!eq(sc.left.samples(), sc.right.samples())) return error.IdentityChannelsSplit;
+    }
+
+    // 4a. THE ATOMICITY LAW, bad gain — a below-unity gain refuses BadGain, both channels byte for byte untouched and still balanced.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 100, -200, 300 }, &[_]i16{ -50, 60, -70 });
+        if (stereo_drive(&sc, 0, 3, 1, 2, 1000)) |_| return error.BadGainSlipped else |e| if (e != error.BadGain) return error.WrongBadGain;
+        if (!eq(sc.left.samples(), &[_]i16{ 100, -200, 300 })) return error.BadGainLeftMutated;
+        if (!eq(sc.right.samples(), &[_]i16{ -50, 60, -70 })) return error.BadGainRightMutated;
+        if (sc.left.len != sc.right.len) return error.BadGainUnbalanced;
+    }
+
+    // 4b. THE ATOMICITY LAW, bad ceiling — a zero ceiling refuses BadCeiling, both channels untouched.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 1, 2, 3 }, &[_]i16{ 3, 2, 1 });
+        if (stereo_drive(&sc, 0, 3, 2, 1, 0)) |_| return error.BadCeilingSlipped else |e| if (e != error.BadCeiling) return error.WrongBadCeiling;
+        if (!eq(sc.left.samples(), &[_]i16{ 1, 2, 3 })) return error.BadCeilingLeftMutated;
+        if (!eq(sc.right.samples(), &[_]i16{ 3, 2, 1 })) return error.BadCeilingRightMutated;
+    }
+
+    // 4c. THE ATOMICITY LAW, bad span — a span past the samples refuses BadRange, both channels untouched.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 5, 6, 7 }, &[_]i16{ 7, 6, 5 });
+        if (stereo_drive(&sc, 1, 3, 2, 1, 1000)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(sc.left.samples(), &[_]i16{ 5, 6, 7 })) return error.BadRangeLeftMutated;
+        if (!eq(sc.right.samples(), &[_]i16{ 7, 6, 5 })) return error.BadRangeRightMutated;
+    }
+
+    // 4d. THE DEGENERATE LAW — a unity drive at the rail is the identity on both channels (nothing boosted past the ceiling), and count = 0 is the identity on both.
+    {
+        var rail = pan.StereoClip{};
+        try load_stereo(&rail, &[_]i16{ 500, -900, 32767 }, &[_]i16{ -32767, 250, -500 });
+        try stereo_drive(&rail, 0, 3, 1, 1, timeline.sample_max); // unity at the rail
+        if (!eq(rail.left.samples(), &[_]i16{ 500, -900, 32767 })) return error.UnityLeftChanged;
+        if (!eq(rail.right.samples(), &[_]i16{ -32767, 250, -500 })) return error.UnityRightChanged;
+
+        var noop = pan.StereoClip{};
+        try load_stereo(&noop, &[_]i16{ 7, -8, 9 }, &[_]i16{ -7, 8, -9 });
+        try stereo_drive(&noop, 1, 0, 4, 1, 1000); // empty span — identity
+        if (!eq(noop.left.samples(), &[_]i16{ 7, -8, 9 })) return error.ZeroCountLeftChanged;
+        if (!eq(noop.right.samples(), &[_]i16{ -7, 8, -9 })) return error.ZeroCountRightChanged;
+    }
+
+    print("GREEN ales-stereo-drive: the HARD-CLIP DRIVE CARRIED INTO STEREO, ONE SHARED MAP, opening the stereo NONLINEAR class — drive a span in both channels of a master by the same gain into the " ++
+        "same ceiling, running ALES78's proven mono drive on each, so an overdrive lands on both speakers together. A Lotus master is a StereoClip (ALES10) whose defining invariant is that left and " ++
+        "right hold the same length. The nonlinear class states the amplitude class's lesson (ALES129/130/131 — a shared quantity preserves the image because scaling is linear) in reverse, honestly: " ++
+        "a drive is NOT linear, so the same map does NOT hold the inter-channel ratio — each channel clips against the same ceiling by its own level, a louder channel clipping harder, the ratio " ++
+        "compressing; that is what a stereo drive IS. What the shared map keeps, per channel, is the ceiling and sign discipline, and an identical-channel master stays identical. It validates both " ++
+        "channels once against the shared parameters and length before either is mutated (BadGain, BadCeiling, BadRange), so a refusal never drives one channel and leaves the other dry; DriveError " ++
+        "reused whole. The crux is four laws. THE STEREO DRIVE LAW: each channel equals ALES78's mono drive with the same params byte for byte. THE BALANCE / LENGTH LAW: left.len == right.len after " ++
+        "and both hold their starting length. THE PER-CHANNEL NONLINEAR LAW: the ceiling and sign hold per channel, a 1:2 master's ratio compresses under a hard drive, an identical-channel master " ++
+        "staying identical. THE ATOMICITY / DEGENERATE LAW: a refusal leaves both channels untouched and balanced, a unity drive at the rail the identity, count = 0 the identity. Purely local — two " ++
+        "bounded i16 Clips driven through the proven mono drive, the gain a rational num/den and the ceiling a sample magnitude not decibels; no real sample rate, no network, no keys, no funds, no " ++
+        "real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
