@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260815.003935
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title ALES106 — Lotus's rotate, cyclic left-shift, the third pure rearrangement beside reverse and invert
+prompt recur the itinerary Lindy-first crux-first; after ALES105 sent, take the next agent-doable Lotus lap, self-approve, prove GREEN, send as its own signed round; STOP at custody gates
+think ALES104 (reverse) and ALES105 (invert) named the two exact mirrors — position and value. The position family's other pure rearrangement is rotate, the cyclic shift behind every rotate-the-loop-to-the-downbeat, phase-aligned wavetable, and circular-buffer-at-an-offset read. No rotate/shift/swap module existed. It stays perfectly exact (a permutation), so it keeps the ALES ladder's exact-law discipline, and it composes — rotations add and each has an inverse — which gives it richer laws than a one-shot edit.
+think Shape: rotate_left(clip, by), by any u32 reduced modulo len so an over-long shift is the equivalent short one. Implemented by the classic three-reversal identity — reverse [0,k), reverse [k,len), reverse [0,len) — through a private reverse_range helper that is the same swap-from-both-ends primitive ALES104's reverse is built from. No second buffer, no allocation; it stands on proven ground. Empty/single-sample clips and any shift reducing to zero return untouched.
+think Four laws plus fixpoints, all provable: the SHIFT law (result[j] = original[(j+k) mod len], hand-checked at offsets 1/2/3 on a 5-clip); the MODULAR law (rotate by 0, by len, by 2·len all identity, and rotate(3) equals rotate(3+len)); the COMPOSITION-AND-INVERSE law (rotate(3) then rotate(2) equals rotate(5); rotate(3) then rotate(len-3) returns to the byte); the PERMUTATION law (length and peak re-measured through ALES13 unchanged, the i16 minimum riding along); fixpoint on empty and single-sample for any shift.
+obs Witness GREEN on the first pass — all five sections. The three-reversal rotate is the reason no temp buffer is needed: reverse the front block, reverse the tail block, reverse the whole, and each block lands upright in its swapped seat. TAME style bans clean (ratchet zero-assert count unchanged at 11); >=2 asserts per fn (reverse_range and rotate_left both), invariants stated positively; the Clip and the ALES13 meter reused whole, no new arithmetic beyond the modulo reduction.
+obs No custody gate reached — software only, local; it reseats existing samples cyclically and fabricates none, changes no length, reads no byte past len; no funds, keys, network, device, or real speaker.
+loom witness=ales_rotate_witness green=1 laws=4 method=three_reversal module_bytes=9k allocs=0
+file lotus/rotate.rye ALES106 — rotate_left() reduces by mod len then reverses [0,k), [k,len), [0,len) in place via reverse_range; postcondition asserts the length is unchanged.
+file tools/ales_rotate_witness.rish the witness — builds, runs the selftest, asserts the GREEN line.
+file active-designing/20260815-003935_fill-ales106-lotus-rotate.md the self-approved design read naming the shift, modular, composition-and-inverse, and permutation laws.
+file lotus/README.md front door — the ALES106 rung added to the roster status line and a full bullet beside ALES105's mirror.
+recommend keep-going — the position/value rearrangement trio is complete; the next Lotus crux stays exact and structural: a per-region reverse or invert over an ALES23 selection (compose the proven edit with the proven span), or a swap-halves (a named rotate by len/2); each its own self-approved round, no custody gate reached.
