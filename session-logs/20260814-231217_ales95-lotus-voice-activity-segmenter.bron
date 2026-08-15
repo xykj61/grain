@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260814.231217
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title ALES95 — Lotus's voice-activity segmenter, ALES94's classifier read across a whole clip frame by frame
+prompt recur the itinerary Lindy-first crux-first; after ALES94 sent, take the next agent-doable Lotus lap, self-approve, prove GREEN, send as its own signed round; STOP at custody gates
+think ALES94's own scope note named the next rung: a real voice-activity detector adds hysteresis over TIME. Lindy-first that is the segmenter — every silence trimmer, VAD gate, and auto-splitter in a century of audio editing is this loop. Crux-first it is the decisive move from a single-window classifier to a whole-clip reader, the first ANALYSIS rung to produce a run-length sequence rather than one label.
+think The whole correctness is composition again: the segmentation must equal a hand-built loop of ALES94 classify calls coalesced — the segmenter is the SEQUENCING rule, not a fourth reader that could disagree. Crux law checks it across a grid of frame lengths, floors, and splits over a 24-sample signal that mixes loud-periodic, loud-noisy, and quiet regions.
+think Chose a clean frame-length law over a ragged-tail policy: frame_len must be ≥1, ≤count, and divide count evenly, else BadFrame — so every frame carries equal weight and the runs tile the span exactly. A coverage helper checks the tiling as data (contiguous, summing to count, no two adjacent runs sharing a verdict).
+think Out-pointer for Segments (max_segments = timeline.max_clip = 4096) rather than a by-value return, matching splice/feed discipline — no 48KB struct copied. Refuse into a fresh out.len=0 so a reused buffer never shows a half-written mix. Error union is voiced.ClassifyError reused by name plus BadFrame and an honest unreachable SegmentsFull.
+obs First build and first witness run both GREEN — the composition-of-a-proven-reader pattern (ALES93→ALES94→ALES95) keeps each rung provably its predecessor read a new way, so bugs have nowhere to hide.
+obs Read-only kept as the strongest span discipline — every frame classified, none written; a sub-span law puts loud samples outside the window and proves only [start, count) reached the verdict.
+obs Scope honest — a run-length label sequence over one clip, not a transcript or diarization; adaptive floors and smoothing hysteresis named as later rungs, not faked. No custody gate reached (software only, local, read-only).
+loom witness=ales_segment_witness green=1 laws=11 module_bytes=15k
+file lotus/segment.rye ALES95 — the Segment/Segments types + segment(), sequencing ALES94's classify across frames and coalescing runs through an out-pointer, read-only.
+file tools/ales_segment_witness.rish the witness — builds, runs the selftest, asserts the GREEN line.
+file active-designing/20260814-231217_fill-ales95-lotus-voice-activity-segmenter.md the self-approved design read naming the sequencing rule and the coverage/coalescing/crux invariants.
+recommend keep-going — the next Lotus crux each build on ALES95 (a silence trimmer that drops the .silent runs, a voice-activity gate opening ALES65 on the voiced runs, or a crossing-rate-in-Hz once a real sample rate lands), each its own self-approved round; no custody gate reached.
