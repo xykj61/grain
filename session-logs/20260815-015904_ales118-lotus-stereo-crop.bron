@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260815.015904
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title ALES118 — Lotus's stereo_crop, Trim to Selection carried into stereo, both channels in lockstep
+prompt recur the itinerary Lindy-first crux-first; keep taking agent-doable Lotus laps, self-approve, prove GREEN, send each as its own signed round; STOP at custody gates
+think ALES117 lifted cut (remove a span) into stereo. Its exact complement, crop (keep a span, drop the rest — Trim to Selection), is the natural pair. Chosen crux-first because naming the stereo keep-twin beside the stereo remove-twin closes the one distinction a keeper draws around a selection on a master — remove it, or keep only it — before stereo_move (a compose of both cut and splice) is worth naming. The complement pair is higher-Lindy than the compose.
+think Shape: stereo_crop(sc, start, count) runs ALES111's proven mono crop on each channel with the same start and count, no new primitive. Same validate-both-before-either discipline as ALES117: mono crop can fault ONLY with BadRange, both channels enter equal-length, so the shared span is checked ONCE against the common length up front (start against len, count against the remainder, without underflow). A second postcondition assert — left.len == count — records that both channels become exactly the kept span.
+think Four laws: the STEREO CROP law (left equals mono crop(left,...) and right equals mono crop(right,...), byte for byte, plus the concrete kept middle); the BALANCE / INVARIANT law (left.len == right.len == count after, mid/head/tail); the COMPLEMENT law — the teaching crux — stereo_crop keeps what stereo_cut removes per channel, proven by cutting the head-plus-tail and splicing the crop back at start to reconstruct the source on each channel (kept the module standing on timeline.cut/splice per channel rather than importing stereo_cut, so the complement is proven against ALES2's own primitives); the ATOMICITY / DEGENERATE law (a refusal leaves both channels untouched and balanced; crop(0,len) the identity on both, crop(start,0) the empty pair).
+obs GREEN on the first pass — no build red. All four laws pass on metal. The complement law is the crux: it proves crop and cut partition a stereo timeline exactly the way ALES111's mono complement law proves it for one channel, now per channel with differing left/right samples. Reuses ALES111's crop and ALES2's EditError whole, invents no primitive and no error. >=2 positive-invariant asserts per fn (enter-balanced, leave-balanced, leave-exactly-count, plus the span guards); width-check exit 0; TAME style bans clean, ratchet zero-assert count unchanged. No custody gate touched — two pure-Rye local i16 Clips, siloed to lotus/.
+loom witness=ales_stereo_crop_witness green=1 laws=4 rung=ALES118
+file lotus/stereo_crop.rye the ALES118 rung — stereo_crop, ALES111's mono crop lifted to the StereoClip, validate-both-before-either, four laws proven in-file
+file tools/ales_stereo_crop_witness.rish the on-metal witness — build, selftest, GREEN-line assert, three-lens say head
+file active-designing/20260815-015904_fill-ales118-lotus-stereo-crop.md the self-approved design read for the rung
+file lotus/README.md front door synced — Status-line short entry and the long per-rung paragraph both carry ALES118, stamp refreshed
+recommend keep-going stereo_move (the relocate-twin of ALES113, a stereo cut-then-splice) is the natural next rung to close the stereo edit family; the loop stays Lindy-first crux-first; STOP remains at REMEMBER's custody gates
