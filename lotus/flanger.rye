@@ -67,16 +67,12 @@ pub const FlangerError = error{
 /// no snapshot. Feedback below unity decays; a constructive sum past the rail saturates once. `fb_num == 0` is the dry identity, and a
 /// zero-depth flanger equals ALES66's echo at its centre byte-for-byte. Refuses BadPeriod, BadDepth, BadDelay, BadFeedback, and BadRange
 /// before any write; on refusal the clip is untouched. Values only — never a length.
-pub fn flanger(
-    clip: *timeline.Clip,
-    start: u32,
-    count: u32,
-    centre_scaled: i64,
-    depth_scaled: i64,
-    period: u32,
-    fb_num: u32,
-    fb_den: u32,
-) FlangerError!void {
+/// Validate a flanger's LFO, feedback, and span against a clip length ONCE, before any write — factored out of `flanger` so the stereo lift
+/// (`stereo_flanger`, ALES180) can refuse against the shared length before either channel is touched, mirroring ALES71's `chorus.precheck`,
+/// ALES72's `vibrato.precheck`, and ALES75's `ring_mod.precheck`. Refuses a period not a positive multiple of four (or wider than max_clip)
+/// BadPeriod, a negative depth or a swing dipping below one whole sample BadDepth, a swing top past the widest clip BadDelay, a zero denominator
+/// or a feedback at or above unity (a runaway) BadFeedback, and a span outside `clip_len` BadRange.
+pub fn precheck(clip_len: u32, start: u32, count: u32, centre_scaled: i64, depth_scaled: i64, period: u32, fb_num: u32, fb_den: u32) FlangerError!void {
     // invariant: the period is a positive multiple of four (the triangle's quarter anchors need P/4 whole) and no wider than the widest
     // clip, so the LFO is bounded. Checked at the edge before any read.
     if (period == 0 or period % 4 != 0) return error.BadPeriod;
@@ -92,8 +88,23 @@ pub fn flanger(
     if (fb_den == 0) return error.BadFeedback;
     if (fb_num >= fb_den) return error.BadFeedback;
     // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
-    if (start > clip.len) return error.BadRange;
-    if (count > clip.len - start) return error.BadRange;
+    if (start > clip_len) return error.BadRange;
+    if (count > clip_len - start) return error.BadRange;
+}
+
+pub fn flanger(
+    clip: *timeline.Clip,
+    start: u32,
+    count: u32,
+    centre_scaled: i64,
+    depth_scaled: i64,
+    period: u32,
+    fb_num: u32,
+    fb_den: u32,
+) FlangerError!void {
+    // invariant: the LFO, feedback, and span are all legal — the five faults refused before any read, so a refusal never half-writes.
+    // ALES180's stereo lift reuses this same `precheck` against the shared length.
+    try precheck(clip.len, start, count, centre_scaled, depth_scaled, period, fb_num, fb_den);
 
     const scale: i64 = glide.glide_scale;
     const num: i64 = @as(i64, fb_num);
