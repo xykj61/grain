@@ -1,0 +1,35 @@
+# tools/ales_reverse_witness.rish — reverse: turn the whole clip end for end, the plainest EXACT edit on the timeline (ALES104).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES104.
+# Design read: active-designing/20260815-002711_fill-ales104-lotus-reverse.md
+# Stands on: lotus/timeline.rye (ALES2 — the Clip and its buf/len/samples), lotus/meter.rye (ALES13 — the peak/RMS meter, used only to prove a permutation moves no
+# loudness). Reverse is the "Reverse" menu item every editor and DAW ships, and it carries real creative charge: the reversed cymbal swell, the backwards reverb, the
+# pre-echo lifted before a downbeat. Where ALES103's normalize changes every VALUE and no position, reverse changes every POSITION and no value — its exact mirror.
+#
+# lotus/reverse.rye walks the clip from both ends inward, swapping buf[i] with buf[len-1-i] until they meet — one in-place pass of len/2 swaps, no allocation. The crux is
+# four laws. THE ORDER LAW: reverse lands a hand-reversed vector exactly, the first sample becoming the last. THE INVOLUTION LAW: reverse twice is the identity for any
+# clip, so a mistaken reverse reverses back to the byte. THE PERMUTATION LAW: the length and the peak magnitude (re-measured through ALES13) are unchanged, since no
+# value moves, only its seat. THE FIXPOINT LAW: an empty clip, a single-sample clip, and a palindrome are each their own reverse. The selftest proves all four.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_reverse_witness.rish
+
+say "ales-reverse: Language EN — reverse is the Reverse menu item every editor and DAW ships: turn the whole clip end for end. It carries real creative charge — the reversed cymbal swell, the backwards reverb, the pre-echo lifted before a downbeat. Sample i and sample len-1-i trade seats, the first becoming the last, until the two ends meet in the middle."
+say "ales-reverse: Style Radiant — the rule is stated positively: swap from both ends inward until they meet; the middle of an odd clip never moves; the length is untouched. Where ALES103's normalize changes every value and no position, reverse changes every position and no value — its exact mirror. The crux stands out as four laws: the order law (reverse lands the hand-reversed vector exactly), the involution law (reverse twice is the identity), the permutation law (length and peak unchanged), and the fixpoint law (empty, single, and palindrome each their own reverse)."
+say "ales-reverse: Lens TAME — one mono clip of i16 PCM turned end for end in one in-place pass of len/2 swaps, no allocation and no second buffer; it rearranges existing samples and fabricates none, changes no length, and reads no byte past len; it names no span, so it forwards no EditError — total on any legal Clip; the permutation law is checked through ALES13's read-only meter (peak before equals peak after); siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/reverse"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/reverse.rye -femit-bin=${bin}"]
+assert build.ok else "ales-reverse: build failed — ${build.err}"
+
+let outfile = "lotus/bin/reverse.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-reverse: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-reverse: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-reverse' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-reverse: selftest did not print the GREEN ales-reverse line"

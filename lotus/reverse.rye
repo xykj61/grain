@@ -1,0 +1,177 @@
+//! lotus/reverse.rye — ALES104: reverse — turn the whole clip end for end, the plainest EXACT edit on the timeline. Sample i and sample len-1-i trade seats, the first
+//! becoming the last, until the two ends meet in the middle. This is the "Reverse" menu item every editor and DAW ships, and it carries real creative charge: the
+//! reversed cymbal swell, the backwards reverb, the pre-echo lifted before a downbeat. Where ALES103's normalize changes every VALUE and no position, reverse changes
+//! every POSITION and no value — its exact mirror.
+//!
+//! The rule, stated once: walk the clip from both ends inward, swapping buf[i] with buf[len-1-i] until i meets the far index. The middle sample of an odd-length clip is
+//! its own mirror and never moves; the length is untouched; the buffer past len is never read or written. One in-place pass of len/2 swaps, no allocation, no second
+//! buffer — the tightest edit the timeline owns.
+//!
+//! The crux — four laws. THE ORDER LAW: after reverse, sample i holds what sample len-1-i held before — the first becomes the last, exactly, checked against a hand-
+//! reversed vector. THE INVOLUTION LAW: reverse twice is the identity for any clip — the swap is its own inverse, so a keeper who reverses by mistake reverses back to
+//! the byte. THE PERMUTATION LAW: reverse is a pure rearrangement — the length is unchanged and the multiset of samples is unchanged, so every order-blind metric is
+//! invariant; witnessed through ALES13, the peak magnitude before and after a reverse is identical, because no value ever changes, only its seat. THE FIXPOINT LAW: an
+//! empty clip, a single-sample clip, and a palindrome are each their own reverse — the degenerate cases land on themselves, no special-casing.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES104.
+//! Design read: active-designing/20260815-002711_fill-ales104-lotus-reverse.md
+//! Stands on: lotus/timeline.rye (ALES2) — the Clip and its buf/len/samples; lotus/meter.rye (ALES13) — the peak/RMS meter, used only by the witness to prove a
+//! permutation moves no loudness.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/. It rearranges existing samples and fabricates
+//! none; it changes no length and reads no byte past len. No real sample rate, no network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/reverse.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const meter = @import("meter.rye");
+
+pub const reverse_version = "20260815.002711";
+
+/// Turn `clip` end for end in place: sample i and sample len-1-i trade seats, the first becoming the last, until the two ends meet in the middle. The middle sample of an
+/// odd-length clip is its own mirror and never moves. Total on any legal Clip — it names no span, so it can raise no fault; the length and the samples-past-len are
+/// left exactly as they are.
+pub fn reverse(clip: *timeline.Clip) void {
+    // invariant: the length never claims more samples than the buffer holds — the seat we mirror to is always inside the buffer.
+    assert(clip.len <= clip.buf.len);
+
+    const original_len: u32 = clip.len;
+    if (original_len < 2) {
+        // invariant: an empty or single-sample clip is its own reverse — nothing to swap, and the loop below would do nothing anyway.
+        assert(clip.len == original_len);
+        return;
+    }
+
+    var lo: u32 = 0;
+    var hi: u32 = original_len - 1;
+    // invariant: lo and hi close in from the two ends and never cross — every swap moves a still-unvisited pair, and the loop stops the instant they meet.
+    while (lo < hi) : (lo += 1) {
+        assert(lo < original_len and hi < original_len);
+        const tmp = clip.buf[lo];
+        clip.buf[lo] = clip.buf[hi];
+        clip.buf[hi] = tmp;
+        hi -= 1;
+    }
+
+    // invariant: reverse moves seats, never the count — the length and its bound are exactly what they were.
+    assert(clip.len == original_len);
+    assert(clip.len <= clip.buf.len);
+}
+
+// --- selftest: THE ORDER LAW — reverse lands a hand-reversed vector, sample i holding what len-1-i held; THE INVOLUTION LAW — reverse twice is the identity across many
+//     clips including odd and even lengths; THE PERMUTATION LAW — the length is unchanged and the peak magnitude (re-measured through ALES13) is unchanged, since no
+//     value moves, only its seat; THE FIXPOINT LAW — an empty clip, a single-sample clip, and a palindrome are each their own reverse ------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+/// The clip's current peak magnitude, re-measured through ALES13 — the reader the permutation law checks the result against.
+fn clip_peak(clip: *const timeline.Clip) !u32 {
+    const m = try meter.measure(clip);
+    return meter.peak(&m);
+}
+
+fn run_selftest() !u8 {
+    // 1. THE ORDER LAW — reverse lands exactly the hand-reversed vector: the first sample becomes the last, and each i holds what len-1-i held. An even and an odd length
+    //    both checked; the odd one's middle sample stays put.
+    {
+        var even = timeline.Clip{};
+        try load_clip(&even, &[_]i16{ 10, 20, 30, 40 });
+        reverse(&even);
+        if (!eq(even.samples(), &[_]i16{ 40, 30, 20, 10 })) return error.OrderEvenWrong;
+
+        var odd = timeline.Clip{};
+        try load_clip(&odd, &[_]i16{ 1, 2, 3, 4, 5 });
+        reverse(&odd);
+        if (!eq(odd.samples(), &[_]i16{ 5, 4, 3, 2, 1 })) return error.OrderOddWrong; // the 3 in the middle never moved
+    }
+
+    // 2. THE INVOLUTION LAW — reverse twice is the identity, for any clip: the swap is its own inverse, so a mistaken reverse reverses back to the byte.
+    {
+        const clips = [_][]const i16{
+            &[_]i16{ 10, 20, 30, 40 },
+            &[_]i16{ 1, 2, 3, 4, 5 },
+            &[_]i16{ -32768, 32767, 0, 100, -100, 7 },
+            &[_]i16{ 42 },
+            &[_]i16{},
+        };
+        var ci: u32 = 0;
+        while (ci < clips.len) : (ci += 1) {
+            var clip = timeline.Clip{};
+            try load_clip(&clip, clips[ci]);
+            var twice = timeline.Clip{};
+            try load_clip(&twice, clips[ci]);
+            reverse(&twice);
+            reverse(&twice);
+            if (!eq(twice.samples(), clip.samples())) return error.NotInvolution;
+        }
+    }
+
+    // 3. THE PERMUTATION LAW — reverse is a pure rearrangement: the length is unchanged and the peak magnitude, re-measured through ALES13, is unchanged, because no
+    //    sample's value ever changes, only its seat. The i16 minimum (magnitude 32768) is included so the meter's domain ceiling rides along.
+    {
+        const clips = [_][]const i16{
+            &[_]i16{ 4000, -8000, 2000, 100 },
+            &[_]i16{ -32768, 5, -5, 30000 },
+            &[_]i16{ 1, -1, 1, -1, 1 },
+        };
+        var ci: u32 = 0;
+        while (ci < clips.len) : (ci += 1) {
+            var clip = timeline.Clip{};
+            try load_clip(&clip, clips[ci]);
+            const len_before = clip.len;
+            const peak_before = try clip_peak(&clip);
+            reverse(&clip);
+            if (clip.len != len_before) return error.LengthChanged;
+            if (try clip_peak(&clip) != peak_before) return error.PeakMoved;
+        }
+    }
+
+    // 4. THE FIXPOINT LAW — an empty clip, a single-sample clip, and a palindrome are each their own reverse: the degenerate cases land on themselves, no special-casing.
+    {
+        var empty = timeline.Clip{};
+        reverse(&empty);
+        if (empty.len != 0) return error.EmptyChanged;
+
+        var one = timeline.Clip{};
+        try load_clip(&one, &[_]i16{ 777 });
+        reverse(&one);
+        if (!eq(one.samples(), &[_]i16{ 777 })) return error.SingleChanged;
+
+        var palindrome = timeline.Clip{};
+        try load_clip(&palindrome, &[_]i16{ 3, 8, 8, 3 });
+        reverse(&palindrome);
+        if (!eq(palindrome.samples(), &[_]i16{ 3, 8, 8, 3 })) return error.PalindromeChanged;
+
+        var zeros = timeline.Clip{};
+        try load_clip(&zeros, &[_]i16{ 0, 0, 0, 0 });
+        reverse(&zeros);
+        if (!eq(zeros.samples(), &[_]i16{ 0, 0, 0, 0 })) return error.ZerosChanged;
+    }
+
+    print("GREEN ales-reverse: REVERSE — turn the whole clip end for end, the plainest EXACT edit on the timeline (the Reverse menu item every editor ships: the reversed " ++
+        "cymbal, the backwards reverb). The rule: swap buf[i] with buf[len-1-i] from both ends inward until they meet; the middle of an odd clip never moves; the length " ++
+        "is untouched. The crux is four laws. THE ORDER LAW: reverse lands the hand-reversed vector exactly, the first sample becoming the last. THE INVOLUTION LAW: " ++
+        "reverse twice is the identity for any clip, so a mistaken reverse reverses back to the byte. THE PERMUTATION LAW: length and peak magnitude (re-measured " ++
+        "through ALES13) are unchanged, since no value moves, only its seat. THE FIXPOINT LAW: an empty clip, a single-sample clip, and a palindrome are each their own " ++
+        "reverse. Purely local — it rearranges existing samples and fabricates none, changes no length, reads no byte past len; no real sample rate, no network, no " ++
+        "keys, no funds, no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
