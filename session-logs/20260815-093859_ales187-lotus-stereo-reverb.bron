@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260815.093859
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title ALES187 — Lotus's stereo_reverb: Schroeder's network carried into stereo, the SAME bank on BOTH channels, each channel through ITS OWN network
+prompt Continue the recursion loop on the ALES / Lotus edge, Lindy-first crux-first; send each finished increment to origin and xykj61 as its own signed round; stop at custody gates.
+think ALES186 seated the mono reverb this same session. A reverb is heard in a room and a room has two ears, so the honest next crux is the stereo reverb — the same faithful stereo carry the wing has proven for the echo (ALES181), the multi-tap (ALES183), and the allpass (ALES185): run the proven mono stage on both channels with one shared set of knobs, validated once against the shared length.
+think Factored a pub `precheck` out of ALES186's `reverb` (the validation block moved verbatim into precheck, reverb now calls it) so the stereo carry can validate the whole bank and span once against the shared length before touching either channel — mirroring how ALES181/185 factored echo/allpass precheck. Additive refactor: re-ran the mono ales-reverb witness GREEN after the change.
+think stereo_reverb runs ALES186's mono reverb on sc.left then sc.right with the same combs and allpasses; StereoReverbError = ReverbError reused whole, no new fault. Each channel reverberates its own audio — mono reverb copies and snapshots its own clip, so nothing crosses.
+think Proved three laws side by side against the mono primitive: the stereo reverb law (each channel == mono reverb byte for byte with genuinely different per-channel content, channels differing); the identical-channel image law (a centred master staying identical, an exact panned ratio honestly NOT claimed because the reverb's delayed-output @divTrunc recirculation drifts it, exactly as the echo/flanger/allpass note); and the silence/balance/atomicity/degenerate law (silence to silence, left.len==right.len, all five refusals — NoCombs, TooManyStages, BadDelay, BadGain, BadRange — leaving both channels untouched and balanced, count 0 the identity).
+obs GREEN on the first metal pass, TAME bans clean, width exit 0. With the stereo reverb standing, the time-based wing is whole in mono and stereo. Purely local, siloed to lotus/; no cross-channel read, no network, keys, funds, device, or sample rate — no custody gate reached, a self-approved design round.
+loom witness=ales_stereo_reverb_witness result=green cases=8 channels=2 mono_rerun=green
+file active-designing/20260815-093859_fill-ales187-lotus-stereo-reverb.md the self-approved design read choosing the stereo reverb crux
+file lotus/reverb.rye ALES186 — factored a pub precheck out of reverb for the stereo carry's up-front validation (additive; mono witness re-run GREEN)
+file lotus/stereo_reverb.rye ALES187 — the reverb on both channels with the same bank, each channel through its own network
+file tools/ales_stereo_reverb_witness.rish the witness — build, selftest, and the GREEN ales-stereo-reverb assertion on metal
+file session-logs/README.md prepended the newest-first ALES187 index row
+file work-in-progress/REMEMBER.md refreshed the git nib in the same work commit
+recommend keep-going a real-time stereo face (reverb_ms / stereo_reverb_ms through the ALES5 clock) or a named-room preset over the proven reverb is the next agent-doable ALES crux, Lindy-first; no custody gate reached
