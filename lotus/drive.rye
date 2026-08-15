@@ -1,0 +1,267 @@
+//! lotus/drive.rye — ALES78: the hard-clip drive — a pre-gain into ALES49's ceiling. The modulation family closed at ALES77 (delay,
+//! amplitude, position, each turned by a triangle LFO under both pan laws). This rung opens the DRIVE family, which turns SHAPE rather than
+//! frequency (the EQ family), level over time (the dynamics family), or the stereo field (modulation). A drive boosts a signal hard and lets a
+//! ceiling catch what overflows: the clipped overflow is not an error to be prevented but the VOICE itself — the flat top of a clipped wave is
+//! where its harmonics are born, the grit of an overdriven amp and the crunch of a fuzz. Hard clip first, because every richer drive — a soft
+//! knee, a wavefolder, an asymmetric tube — rests on the plain recognition this rung states.
+//!
+//! The crux is that DRIVE IS PRE-GAIN INTO ALES49's CEILING. It is the mirror of ALES74's tremolo: where the tremolo FORBIDS the gain from
+//! crossing unity (a boost above glide_scale could push a loud sample past the rail, so its saturate stays a proven no-op), the drive INVITES
+//! the gain past unity and lets the ceiling catch what overflows — and that caught overflow IS the harmonic voice. Each sample is a plain
+//! y[i] = pin(x[i]·num/den, ±ceil): ALES6's i64 gain (num/den, the fader's own arithmetic) forces the sample up, and ALES49's ceiling law pins
+//! everything past ±ceil to the ceiling with its sign held. A drive gain is at least unity (num ≥ den ≥ 1) — a drive boosts, it never
+//! attenuates (that is the fader's job); a gain below unity is refused BadGain, the tremolo's own boundary read in reverse.
+//!
+//! Unlike the tremolo, the ceiling here is a GENUINE clip, not a no-op: the whole point is that the boosted sample crosses it. Yet the write is
+//! still safe by construction — the pin lands every output in [−ceil, ceil] ⊆ [sample_min, sample_max] BEFORE the write, so the saturate that
+//! follows is a documented no-op over the already-pinned value (the clip is the pin, not the saturate). Each output depends only on its own input
+//! sample — the drive is MEMORYLESS, so the in-place read-then-write at one index touches nothing another step needs. The hard clipper is an ODD
+//! function, drive(−x) = −drive(x), so a symmetric input drives to a symmetric output: odd harmonics, the honest character of a symmetric clip.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES78.
+//! Design read: active-designing/20260814-204949_fill-ales78-lotus-hard-clip-drive.md
+//! Stands on: lotus/limit.rye (ALES49) — the ceiling law `pin to sign(x)·ceil`, reused here over the BOOSTED sample rather than the dry one;
+//! lotus/fader.rye (ALES6/ALES8) — the num/den gain in the i64 accumulator, the drive's pre-gain; lotus/tremolo.rye (ALES74) — the amplitude kin
+//! whose unity boundary this rung reads in reverse; lotus/timeline.rye (ALES2) — the Clip, sample_min/max, the one true saturate.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket, no network, no
+//! keys, no funds, no real device, no real sample rate — the drive gain is a rational num/den (unity = 1/1), the ceiling a magnitude in sample
+//! units (not decibels), and the clip is instantaneous (no attack/release, no anti-aliasing — the harmonics a hard clip generates fold in the
+//! i16 domain exactly as they would in any integer clipper). One multiply, one divide, and at most one sign-carried pin per sample; the gain
+//! runs in i64 so it never overflows before the pin, and the pinned value fits the i16 rail by construction.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/drive.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+
+pub const drive_version = "20260814.204949";
+
+/// The widest drive numerator. A drive gain is num/den with num ≥ den ≥ 1, so den ≤ num ≤ max_drive_num bounds BOTH terms. The bound keeps the
+/// pre-gain product x·num safely inside i64: |x| ≤ 32768 and num ≤ 2^20, so |x·num| ≤ 2^35, far below the i64 rail. 2^20 (about a million-fold
+/// boost) is far past any musical drive, yet a named, checked ceiling rather than an implicit one.
+pub const max_drive_num: u32 = 1 << 20;
+
+/// The drive's faults, one consistent name each. BadGain reads ALES74's tremolo boundary in reverse: the tremolo refuses a gain ABOVE unity,
+/// the drive refuses a gain BELOW unity (a drive boosts, it never attenuates — that is the fader's job), and it also refuses a numerator past
+/// the safe bound or a zero denominator. BadCeiling and BadRange coincide by name with ALES49's limiter — Zig merges error sets by name — so a
+/// composer sees one consistent fault whether a ceiling or span is refused here or by the limiter.
+pub const DriveError = error{
+    /// A zero denominator, a gain below unity (num < den — a drive boosts, never attenuates), or a numerator past max_drive_num — refused, no write.
+    BadGain,
+    /// A ceiling of zero (would silence, not drive) or above sample_max (nothing boosted could ever be pinned there) — refused, no write.
+    BadCeiling,
+    /// A span outside the current samples — refused, no write.
+    BadRange,
+};
+
+/// Drive `count` samples starting at `start` in place in `clip`: each sample is boosted by the rational gain `num`/`den` (at least unity) and
+/// then pinned to the magnitude `ceil` — y[i] = pin(x[i]·num/den, ±ceil), ALES6's i64 gain into ALES49's ceiling. A boosted sample within the
+/// ceiling passes at its boosted value; one past the ceiling is pinned to sign(x)·ceil, its flat top the harmonic voice. After the call every
+/// written sample's magnitude is at most `ceil`, its sign matches the input's, and every output depends only on its own input (the drive is
+/// memoryless). Refuses BadGain on a zero denominator / a below-unity gain / a numerator past max_drive_num, BadCeiling on a ceiling outside
+/// [1, sample_max], and BadRange on a span outside the samples — each BEFORE any write, so an illegal call leaves the clip exactly as it was.
+/// Values only — never the length.
+pub fn drive(clip: *timeline.Clip, start: u32, count: u32, num: u32, den: u32, ceil: i32) DriveError!void {
+    // invariant: the denominator is nonzero, so the gain divide is well-defined. Checked BEFORE any write.
+    if (den == 0) return error.BadGain;
+    // invariant: the gain is at least unity — a drive BOOSTS, it never attenuates. This is ALES74's tremolo boundary read in reverse: the
+    // tremolo forbids num/den above unity, the drive forbids it below. A gain below unity is a fader, not a drive.
+    if (num < den) return error.BadGain;
+    // invariant: the numerator stays within the safe bound, so the pre-gain product x·num cannot overflow i64. Since num ≥ den, this bounds den
+    // too (den ≤ num ≤ max_drive_num).
+    if (num > max_drive_num) return error.BadGain;
+    // invariant: the ceiling is a legal magnitude — at least one sample unit (a zero ceiling would silence) and no greater than the i16 rail
+    // (a ceiling nothing could reach is not a ceiling). Reuses ALES49's exact bound.
+    if (ceil < 1) return error.BadCeiling;
+    if (ceil > @as(i32, timeline.sample_max)) return error.BadCeiling;
+    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder), exactly as ALES49.
+    if (start > clip.len) return error.BadRange;
+    if (count > clip.len - start) return error.BadRange;
+
+    const ceiling: i64 = @as(i64, ceil); // safe: 1 <= ceil <= sample_max, proven by the two checks above
+    const n: i64 = @as(i64, num);
+    const d: i64 = @as(i64, den);
+    // invariant: the gain terms are both bounded and positive — num ≥ den ≥ 1 and num ≤ max_drive_num — so the pre-gain below is a positive
+    // scale that never overflows i64.
+    assert(n >= d and d >= 1 and n <= @as(i64, max_drive_num));
+    var k: u32 = 0;
+    while (k < count) : (k += 1) {
+        const i: u32 = start + k;
+        const dry: i64 = @as(i64, clip.buf[i]);
+        // invariant: the sample read is a legal i16 — it is audio, never a wide intermediate.
+        assert(dry >= @as(i64, timeline.sample_min) and dry <= @as(i64, timeline.sample_max));
+        // The pre-gain: dry boosted by num/den in i64, @divTrunc toward zero exactly as ALES6's fader. |dry| ≤ 32768 and num ≤ 2^20, so the
+        // product fits i64 with vast headroom and the boosted value carries dry's sign (num, den both positive).
+        const boosted: i64 = @divTrunc(dry * n, d);
+        // invariant: the pre-gain product stayed within the bound the numerator ceiling promises, so no i64 overflow could have occurred.
+        assert(dry * n >= -(@as(i64, timeline.sample_max) + 1) * @as(i64, max_drive_num) and
+            dry * n <= (@as(i64, timeline.sample_max) + 1) * @as(i64, max_drive_num));
+        // ALES49's ceiling law over the BOOSTED sample rather than the dry one: a value past ±ceil is pinned to the ceiling with its sign held;
+        // one within passes at its boosted value. This is the genuine clip — the flat top where the harmonics are born.
+        const pinned: i64 = if (boosted > ceiling) ceiling else if (boosted < -ceiling) -ceiling else boosted;
+        // invariant: the pinned value lands within [−ceil, ceil] ⊆ [sample_min, sample_max], so the write fits the i16 rail BY CONSTRUCTION —
+        // the clip is the pin above, and the saturate that follows is a documented no-op over an already-pinned value.
+        assert(pinned >= -ceiling and pinned <= ceiling);
+        // invariant: the sign is held — a hard clipper is an odd function, so the driven sample carries the dry's sign (a symmetric input
+        // drives to a symmetric output: odd harmonics, never an even-order asymmetry the plain clip does not make).
+        assert((dry >= 0 and pinned >= 0) or (dry <= 0 and pinned <= 0));
+        clip.buf[i] = timeline.saturate(pinned);
+    }
+    // invariant: a drive changes sample values only, never the clip's length or bound.
+    assert(start + count <= clip.len);
+    assert(clip.len <= clip.buf.len);
+}
+
+// --- selftest: A UNITY DRIVE AT THE RAIL IS THE IDENTITY (the degenerate that proves the drive adds nothing without a boost that crosses the
+//     ceiling); THE CEILING IS NEVER CROSSED AND THE SIGN IS HELD under a hard boost (the crux — the harmonic voice born at the flat top); a
+//     hand-computed drive matches exactly (some samples pass scaled, some pin); the hard clipper is ODD, drive(−x) = −drive(x); an EXTREME drive
+//     squares the wave (every non-zero sample pins, zeros stay zero); the span discipline holds (only [start, count) changes); and each fault —
+//     BadGain (zero den, below-unity gain, numerator past the bound), BadCeiling (zero, over-rail), BadRange (span past the end) — refuses by
+//     name, the clip untouched ---
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn run_selftest() !u8 {
+    // 1. A UNITY DRIVE AT THE RAIL IS THE IDENTITY — num/den = 1/1 and ceil = sample_max: nothing is boosted past the ceiling, so the clip
+    //    passes byte-for-byte. The signal spans the SYMMETRIC rail [−sample_max, sample_max]: sample_min (−32768) has magnitude 32768 > the
+    //    largest legal ceiling, so a symmetric ceiling pins it to −sample_max by design (exactly as ALES49's limiter) — the identity is over
+    //    the symmetric rail, not the asymmetric corner. The drive adds nothing until the gain forces a sample into the ceiling; this proves it.
+    {
+        const sig = [_]i16{ 500, -900, 1000, -1000, 32767, -32767, 250, -500 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try drive(&clip, 0, clip.len, 1, 1, timeline.sample_max);
+        if (!eq(clip.samples(), &sig)) return error.UnityNotIdentity;
+    }
+
+    // 2. THE CEILING IS NEVER CROSSED, AND THE SIGN IS HELD — the crux. A signal driven ×4 into a low ceiling clips: every output magnitude is
+    //    at most the ceiling, every sign matches the input, and each boosted-past-ceiling sample lands exactly on ±ceil (the harmonic flat top).
+    {
+        const sig = [_]i16{ 300, -300, 1000, -2000, 5000, -6000, 100, -50 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        const ceil: i16 = 1500;
+        try drive(&clip, 0, clip.len, 4, 1, ceil); // ×4 gain, hard ceiling
+        const out = clip.samples();
+        var i: u32 = 0;
+        while (i < out.len) : (i += 1) {
+            if (out[i] > ceil or out[i] < -ceil) return error.CeilingCrossed; // impossible — proves the ceiling holds
+            const s = sig[i];
+            if (!((s >= 0 and out[i] >= 0) or (s <= 0 and out[i] <= 0))) return error.SignFlipped;
+        }
+        // 300·4 = 1200 < 1500 passes; 1000·4 = 4000 pins to 1500; the small tail passes scaled.
+        const want = [_]i16{ 1200, -1200, 1500, -1500, 1500, -1500, 400, -200 };
+        if (!eq(out, &want)) return error.HardDriveWrong;
+    }
+
+    // 3. A HAND-COMPUTED DRIVE — ×3/2 gain into a ceiling of 900 over a steady mix of pass-through and pinned samples. 400·3/2 = 600 (passes),
+    //    -700·3/2 = -1050 pins to -900, 1000·3/2 = 1500 pins to 900, -100·3/2 = -150 passes. @divTrunc toward zero, exactly as the fader.
+    {
+        const sig = [_]i16{ 400, -700, 1000, -100 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try drive(&clip, 0, clip.len, 3, 2, 900);
+        const want = [_]i16{ 600, -900, 900, -150 };
+        if (!eq(clip.samples(), &want)) return error.HandComputedWrong;
+    }
+
+    // 4. THE HARD CLIPPER IS ODD — drive(−x) = −drive(x). A ± symmetric input drives to a ± symmetric output at any gain and ceiling, so the
+    //    drive generates ODD harmonics and never an even-order asymmetry: out[0] = −out[1], out[2] = −out[3], out[4] = −out[5].
+    {
+        const sig = [_]i16{ 800, -800, 4000, -4000, 20, -20 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try drive(&clip, 0, clip.len, 5, 2, 1200); // ×2.5 into 1200
+        const out = clip.samples();
+        if (out[0] != -out[1] or out[2] != -out[3] or out[4] != -out[5]) return error.NotOddSymmetric;
+    }
+
+    // 5. AN EXTREME DRIVE SQUARES THE WAVE — a very high gain pins every non-zero sample to ±ceil (the square-wave limit of hard clipping),
+    //    while a zero sample stays silent (0·gain = 0, within any ceiling). This is the far edge of the family: infinite drive is a squarer.
+    {
+        const sig = [_]i16{ 1, -1, 30000, -30000, 0, 7, -7 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        const ceil: i16 = 2000;
+        try drive(&clip, 0, clip.len, max_drive_num, 1, ceil); // the maximum boost
+        const want = [_]i16{ 2000, -2000, 2000, -2000, 0, 2000, -2000 };
+        if (!eq(clip.samples(), &want)) return error.SquareWrong;
+    }
+
+    // 6. THE SPAN DISCIPLINE — driving a sub-span leaves the samples outside [start, count) exactly as they were, the in-place discipline the
+    //    tremolo and limiter keep. Drive the middle two of six; the first and last two are untouched.
+    {
+        const sig = [_]i16{ 100, 200, 5000, -5000, 300, 400 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try drive(&clip, 2, 2, 4, 1, 1000); // drive indices 2,3 only
+        const want = [_]i16{ 100, 200, 1000, -1000, 300, 400 };
+        if (!eq(clip.samples(), &want)) return error.SpanLeaked;
+    }
+
+    // 7a. A ZERO DENOMINATOR refuses BadGain; a BELOW-UNITY gain (num < den) refuses BadGain; a NUMERATOR past the bound refuses BadGain — each
+    //     before any write, the clip untouched.
+    {
+        const sig = [_]i16{ 1, 2, 3, 4 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        if (drive(&clip, 0, clip.len, 2, 0, 1000)) |_| return error.ZeroDenSlipped else |e| if (e != error.BadGain) return error.WrongZeroDen;
+        if (!eq(clip.samples(), &sig)) return error.RefusedZeroDenTouched;
+        if (drive(&clip, 0, clip.len, 1, 2, 1000)) |_| return error.BelowUnitySlipped else |e| if (e != error.BadGain) return error.WrongBelowUnity;
+        if (!eq(clip.samples(), &sig)) return error.RefusedBelowUnityTouched;
+        if (drive(&clip, 0, clip.len, max_drive_num + 1, 1, 1000)) |_| return error.WideNumSlipped else |e| if (e != error.BadGain) return error.WrongWideNum;
+        if (!eq(clip.samples(), &sig)) return error.RefusedWideNumTouched;
+    }
+
+    // 7b. A ZERO CEILING refuses BadCeiling; an OVER-RAIL ceiling refuses BadCeiling — before any write, the clip untouched.
+    {
+        const sig = [_]i16{ 5, 6, 7, 8 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        if (drive(&clip, 0, clip.len, 2, 1, 0)) |_| return error.ZeroCeilSlipped else |e| if (e != error.BadCeiling) return error.WrongZeroCeil;
+        if (!eq(clip.samples(), &sig)) return error.RefusedZeroCeilTouched;
+        if (drive(&clip, 0, clip.len, 2, 1, @as(i32, timeline.sample_max) + 1)) |_| return error.OverCeilSlipped else |e| if (e != error.BadCeiling) return error.WrongOverCeil;
+        if (!eq(clip.samples(), &sig)) return error.RefusedOverCeilTouched;
+    }
+
+    // 7c. A SPAN past the end refuses BadRange — before any write, the clip untouched.
+    {
+        const sig = [_]i16{ 9, 10, 11 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        if (drive(&clip, 1, 3, 2, 1, 1000)) |_| return error.OverRangeSlipped else |e| if (e != error.BadRange) return error.WrongOverRange;
+        if (!eq(clip.samples(), &sig)) return error.RefusedOverRangeTouched;
+    }
+
+    print("GREEN ales-drive: the HARD-CLIP DRIVE — a pre-gain into ALES49's ceiling, opening the DRIVE family (harmonic generation) beside the " ++
+        "EQ, dynamics, and modulation families. DRIVE IS PRE-GAIN INTO ALES49's CEILING: it is ALES74's tremolo read in reverse — where the " ++
+        "tremolo FORBIDS the gain past unity so its saturate stays a no-op, the drive INVITES it past unity and lets the ceiling catch the " ++
+        "overflow, and that caught overflow IS the harmonic voice (y[i] = pin(x[i]·num/den, ±ceil), ALES6's i64 gain into ALES49's pin). A " ++
+        "unity drive at the rail is the identity; a ×4 drive into a low ceiling clips so the ceiling is never crossed and every sign is held " ++
+        "(the flat top where harmonics are born); a hand-computed ×3/2 drive matches exactly; the clipper is ODD, drive(−x) = −drive(x), so a " ++
+        "symmetric input yields odd harmonics; an EXTREME drive squares the wave (every non-zero sample pins, zeros stay silent); the span " ++
+        "discipline holds (only [start, count) changes); a zero denominator / below-unity gain / oversized numerator refuses BadGain, a zero " ++
+        "or over-rail ceiling BadCeiling, a span past the end BadRange, each leaving the clip untouched. The pin lands every output in " ++
+        "[−ceil, ceil] ⊆ the i16 rail BEFORE the write, so the clip is the pin and the saturate a documented no-op; one multiply, one divide, " ++
+        "one sign-carried pin per sample; no delay line, no snapshot, no anti-aliasing, no socket, no network, no keys, no funds, no real " ++
+        "device, no real sample rate. Hard clip first — every richer drive (a soft knee, a wavefolder, an asymmetric tube) rests on it\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

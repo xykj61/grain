@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260814.204949
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title ALES78 — Lotus's hard-clip drive: a pre-gain into ALES49's ceiling, the DRIVE family opens
+prompt Read REMEMBER and the 1024-round itinerary and six-season double-seat; take the next agent-doable lap Lindy-first crux-first, approve my own design round, send each finished increment to origin and xykj61, stop at custody gates.
+think Read the itinerary and double-seat docs; REMEMBER's nib text still describes DREY6, yet git log shows the living edge is ALES77 (Lotus creative suite, Season C thread, waymark ALES). The bench climbs faster than REMEMBER's prose — the ALES ladder is the honest living edge.
+think Studied the pattern: each ALES rung is one self-contained lotus/*.rye effect with a selftest, a tools/ales_*_witness.rish that builds and runs it, a design-read doc, a README status-line entry, and a session log — committed as one signed round, pushed to origin and xykj61.
+think Lindy-first crux-first: ALES77 closed the modulation family (delay · amplitude · position, each turned by a triangle LFO under both pan laws). The next durable move is to open the next FAMILY, not accrete one more modulation rung. A creative suite most owes a musician, after EQ · dynamics · modulation, the DRIVE family — harmonic generation. Crux-first, a family opens cleanest at its simplest member whose one law every richer member refines, exactly as the dynamics family opened at the brickwall limiter (ALES49). The drive family's floor is the hard clip.
+think The crux is one recognition, the twin of ALES74's tremolo boundary read in reverse: the tremolo FORBIDS its gain past unity so its saturate stays a no-op; the drive INVITES the gain past unity and lets ALES49's ceiling catch what overflows — and the caught overflow IS the harmonic voice. So y[i] = pin(x[i]·num/den, ±ceil): ALES6's fader gain (num/den, verbatim) into ALES49's ceiling pin (verbatim). No new gain arithmetic and no new clip law; only the ceiling now falls over the boosted sample rather than the dry one.
+think Matched the mono-effect idiom (in-place over start/count, like tremolo/ring_mod/limit) rather than the mono→stereo render (auto_pan). Bounded the numerator by max_drive_num = 1<<20 so the pre-gain x·num stays well inside i64. Faults reuse names: BadGain (zero den / below-unity gain / oversized numerator), BadCeiling and BadRange coinciding with ALES49's by name.
+obs First build hit RED UnityNotIdentity — my test 1 signal included sample_min (−32768, magnitude 32768 > sample_max), which a symmetric ceiling at sample_max legitimately pins to −32767, exactly as ALES49's limiter does. The code was correct; the test's expectation was wrong. Fixed the test to span the SYMMETRIC rail and documented why. This is the two's-complement asymmetry ALES75's ring modulator already taught, surfacing again on the clip side.
+obs The genuine departure from the tremolo is real, not a restatement: the drive's ceiling is a GENUINE clip (the boosted sample crosses it), yet the write is still safe by construction — the pin lands every output in [−ceil, ceil] ⊆ the i16 rail BEFORE the write, so the clip is the pin and the saturate a documented no-op over an already-pinned value. The clipper is ODD (drive(−x) = −drive(x)) → odd harmonics; memoryless → in-place with no snapshot.
+obs GREEN across all seven laws after the one test fix: unity-at-rail identity, the ceiling never crossed with sign held (the crux), a hand-computed ×3/2 drive, odd symmetry, the extreme-drive square wave, the span discipline, and each fault refusing by name with the clip untouched. tame_style_check clean.
+loom witness=ales_drive_witness laws=7 result=green build=first_after_one_test_fix
+file lotus/drive.rye ALES78 — the hard-clip drive, pre-gain into ALES49's ceiling; opens the DRIVE family.
+file tools/ales_drive_witness.rish builds and runs the selftest, asserts the single GREEN ales-drive line.
+file active-designing/20260814-204949_fill-ales78-lotus-hard-clip-drive.md the self-approved design read for the rung.
+file lotus/README.md status line synced (ALES78 added, stamp refreshed) — front door current.
+recommend keep-going ALES79 the DRIVE family's next rung — a soft-clip / overdrive with a knee, the smooth curve into the ceiling that this hard clip is the floor of. Mechanical, single-module, policy already written; no custody gate.
