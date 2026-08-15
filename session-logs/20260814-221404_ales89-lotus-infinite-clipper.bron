@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260814.221404
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (cloud pier) — Eastern (EDT) time convention
+title ALES89 — Lotus's infinite clipper, the infinite-gain limit that closes the dead-zone trilogy
+prompt recur baton prin — continue the next agent-doable Lindy-first crux-first lap, send each finished increment to origin and xykj61, stop at custody gates
+think The two center clippers (ALES87, ALES88) read one axis — the survivor's fate — two ways: the hard center clip PASSES the survivor at its own value (a jump at the boundary), the soft center clip SHIFTS it toward zero by the threshold (continuous from zero). That axis has a third and last reading, the loudest: PIN the survivor to the rail. Crux-first within tier, ALES89 is that reading — y = if |x| ≤ t then 0 else sign(x)·sample_max, the infinite-gain limit of the whole clip family, a sine into a square, keeping only the sign (the zero-crossings).
+think Chose the infinite clipper over the booked DC blocker again for this lap: it is exact, memoryless, and low-risk (high confidence of GREEN), and it CLOSES the dead-zone trilogy (pass · shift · pin) opened by ALES87/88 — a clean, self-contained crux with no state design, where the DC blocker's fractional feedback stays a meatier booked round. Confirmed the comparator is genuinely new: the 1-bit crush (ALES81) floors the signed value to 0 / sample_min (an even, DC-heavy pair), while the infinite clip's rails are ±sample_max about zero (odd) — the witness proves the two differ sample for sample.
+think The one-LSB rail care: the negative survivor pins to −sample_max (−32767), NOT sample_min (−32768), so the map is EXACTLY odd for every i16 including the deepest sample (sample_min → −sample_max = −infinite_clip(sample_max)). Idempotence is honest — it holds for every threshold below the rail (a pinned rail has magnitude 32767 > t for t ≤ 32766), and only at t = sample_max does the pinned survivor fall back into its own dead zone; the design and invariants state that boundary rather than claiming a symmetry the rail threshold lacks. No saturate is owed: only −sample_max, 0, or sample_max is ever written.
+obs Followed the parametric-waveshaper pattern exactly (soft_center_clip.rye / center_clip.rye): module + design doc + witness + README status-line sync + session log, one signed commit. Nine laws proven; the witness imports ALES88 (same dead zone) and ALES81 (the crush contrast) and proves both bonds beside it. Witness GREEN on the first run; tame_style_check bans clean and the new module carries no ratchet debt (many asserts, snake_case, no @memcpy). BadThreshold / BadRange refuse before any write.
+loom witness=ales_infinite_clip_witness selftest=GREEN laws=9 module_lines=232
+file lotus/infinite_clip.rye the infinite clipper, y = if |x| ≤ t then 0 else sign(x)·sample_max, exact for every i16 with no rail edge, exactly odd, nine laws proven
+file tools/ales_infinite_clip_witness.rish builds the module, runs the selftest, asserts the single GREEN ales-infinite-clip line
+file active-designing/20260814-221404_fill-ales89-lotus-infinite-clipper.md the self-approved design read naming the crux, the pass·shift·pin trilogy, and the nine laws
+file lotus/README.md front-door status line synced with ALES89
+recommend keep-going the dead-zone trilogy is closed (pass · shift · pin); the loop names its own next Lotus crux — the booked DC blocker that removes the offset the rectifiers and the 1-bit crush introduce, a hysteresis comparator that gives this rung a memory against chatter, or a fresh DSP family — as its own self-approved design round

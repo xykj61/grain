@@ -1,0 +1,41 @@
+# tools/ales_infinite_clip_witness.rish — the infinite clipper: silence the quiet middle and pin the loud to the rail, y = if |x| ≤ t then 0 else
+# sign(x)·sample_max (ALES89).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES89.
+# Design read: active-designing/20260814-221404_fill-ales89-lotus-infinite-clipper.md
+# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/max) and lotus/soft_center_clip.rye (ALES88 — the soft center clip whose dead zone this rung
+# shares and whose survivors this rung pins to the rail instead of shifting toward zero). The two center clippers read the survivor's fate two ways — pass
+# (ALES87) and shift (ALES88); this rung reads it the third and loudest way — pin to ±sample_max, the infinite-gain limit that keeps only the sign.
+#
+# lotus/infinite_clip.rye maps each sample to 0 when |x| ≤ thresh and to sign(x)·sample_max otherwise. The crux is EXACT for every i16 with NO rail edge
+# and NO saturate: only −sample_max, 0, or sample_max is ever written; the negative survivor pins to −sample_max (not sample_min) so the map is EXACTLY ODD,
+# the deepest sample included; the magnitude is taken in i32 so |sample_min| = 32768 is representable. The map is MEMORYLESS, ODD, and IDEMPOTENT below the
+# rail (a pinned rail survives its own dead zone for every t ≤ sample_max − 1). The selftest proves it: the pure comparator (t = 0) pins every nonzero
+# sample to the rail; the dead-band comparator silences the quiet middle and rails the loud; the boundary is the infinite-gain jump (|x| = t → 0, |x| = t+1
+# → ±sample_max, against ALES88's continuous ±1); the map is odd; it is idempotent below the rail; only three values ever appear; it silences the same dead
+# zone as ALES88, yet its odd rail pair is not the 1-bit crush's floored 0/sample_min pair; the span discipline holds; a negative or over-rail threshold
+# refuses BadThreshold and a span past the end refuses BadRange, the clip untouched. Purely local — one magnitude, one compare, one signed constant per
+# sample; no gain, no ceiling, no saturate, no delay line, no envelope, no hysteresis, no anti-aliasing, no network, no keys, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_infinite_clip_witness.rish
+
+say "ales-infinite-clip: Language EN — the two center clippers read one axis (the survivor's fate) two ways: the hard center clip (ALES87) lets the survivor PASS at its own value, the soft center clip (ALES88) SHIFTS it toward zero by the threshold. This rung reads that axis its third and loudest way: it PINS every survivor all the way to ±sample_max — y = if |x| ≤ t then 0 else sign(x)·sample_max. The infinite-gain limit of the whole clip family: a sine in becomes a square out, keeping only the SIGN (the zero-crossings) — the harshest fuzz, the comparator of every zero-crossing detector."
+say "ales-infinite-clip: Style Radiant — the law is stated positively: the loud is slammed to the rail, the quiet middle SILENCED. The crux is EXACT for every i16 with NO rail edge and NO saturate — only −sample_max, 0, or sample_max is ever written. The negative survivor pins to −sample_max (not sample_min) on purpose, so the map is EXACTLY ODD for every i16, the deepest sample included; the one-LSB rail care is stated plainly and the odd symmetry kept, exactly as the full-wave rectifier and the soft center clipper handle the same two's-complement corner. The map is MEMORYLESS and ODD; it is IDEMPOTENT below the rail (a pinned rail clears its own dead zone for every t ≤ sample_max − 1)."
+say "ales-infinite-clip: Lens TAME — one mono clip of i16 PCM infinite-clipped in place over a span; y = (if |x| ≤ thresh then 0 else sign(x)·sample_max) landing on the rail by construction (no saturate); the map is memoryless (every output depends only on its own input); a threshold outside [0, sample_max] refuses BadThreshold and a span outside the samples refuses BadRange, each before any write, the clip untouched on refusal; siloed to lotus/, no gain, no ceiling, no saturate, no delay line, no envelope, no hysteresis, no anti-aliasing, no snapshot, no network, no keys, no funds, no device, no speaker, no sample rate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/infinite_clip"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/infinite_clip.rye -femit-bin=${bin}"]
+assert build.ok else "ales-infinite-clip: build failed — ${build.err}"
+
+let outfile = "lotus/bin/infinite_clip.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-infinite-clip: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-infinite-clip: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-infinite-clip' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-infinite-clip: selftest did not print the GREEN ales-infinite-clip line"

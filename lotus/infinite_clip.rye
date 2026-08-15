@@ -1,0 +1,277 @@
+//! lotus/infinite_clip.rye — ALES89: the infinite clipper — silence the quiet middle AND pin the loud to the rail, y = if |x| ≤ t then 0 else
+//! sign(x)·sample_max. The two center clippers read one axis — the survivor's fate — two ways: the hard center clip (ALES87) lets the survivor PASS at its
+//! own value (a jump at the boundary), the soft center clip (ALES88) SHIFTS it toward zero by the threshold (continuous from zero). This rung reads that
+//! axis its third and loudest way: it PINS every survivor all the way to ±sample_max, the infinite-gain limit of the whole clip family. Where the hard clip
+//! (ALES78) pins only the wave above its ceiling and passes the rest linearly, the infinite clip discards every trace of amplitude and keeps only the
+//! SIGN — the zero-crossings. A sine in becomes a square out: the harshest fuzz there is, the comparator of every zero-crossing detector, the square-wave
+//! voice of odd harmonics.
+//!
+//! The crux is EXACT for every i16 with NO rail edge and NO saturate: only three values are ever written — −sample_max, 0, sample_max — each a legal i16 by
+//! construction. The negative survivor pins to −sample_max (−32767), NOT sample_min (−32768), on purpose: with −sample_max the map is EXACTLY ODD for every
+//! i16, the deepest sample included (sample_min → −sample_max = −infinite_clip(sample_max)). Choosing sample_min would buy one LSB of negative swing at the
+//! cost of the odd symmetry the DRIVE family prizes; the rung states the one-LSB rail care plainly and keeps the symmetry, exactly as the full-wave
+//! rectifier and the soft center clipper handle the same two's-complement corner. The magnitude is taken in i32 so |sample_min| = 32768 is representable.
+//!
+//! The map is MEMORYLESS — every output depends only on its own input. It is ODD — sign(−x) flips with the sign, so a symmetric input yields a symmetric
+//! output (odd harmonics). It is IDEMPOTENT for every threshold BELOW the rail: a pinned survivor has magnitude sample_max = 32767, which clears any
+//! threshold t ≤ 32766, so a second pass leaves it at the rail; only at t = sample_max does the pinned survivor itself fall back into the dead zone
+//! (32767 ≤ 32767) and drop to 0 — so idempotence holds precisely on [0, sample_max − 1], stated rather than dressed in a symmetry it lacks at the rail.
+//! The pure comparator is the degenerate t = 0: every nonzero sample pins to the rail, only exact silence survives as 0.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES89.
+//! Design read: active-designing/20260814-221404_fill-ales89-lotus-infinite-clipper.md
+//! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/max; lotus/soft_center_clip.rye (ALES88) — the soft center clip whose dead zone this rung
+//! shares and whose survivors this rung pins to the rail instead of shifting toward zero.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket, no network, no keys, no
+//! funds, no real device, no real sample rate — the shape is a static dead-zone comparator on instantaneous magnitude, memoryless (no attack/release, no
+//! envelope, no hysteresis, no anti-aliasing). One magnitude, one compare, one signed constant per sample; no saturate is needed, since every output is a
+//! legal i16 by construction.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/infinite_clip.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+
+pub const infinite_clip_version = "20260814.221404";
+
+/// The infinite clipper's faults, one consistent name each — the same two as the center clippers (ALES87, ALES88), so a composer sees one consistent pair.
+/// BadThreshold coincides with the center clips' floor bound: a threshold outside [0, sample_max] is refused (zero is the legal identity of the dead band,
+/// negative is impossible for a magnitude, above the rail is a floor no positive sample could clear). BadRange coincides by name with the drives, the
+/// rectifiers, the center clippers, and ALES2's timeline (Zig merges error sets by name).
+pub const InfiniteClipError = error{
+    /// A threshold below zero (a magnitude is never negative) or above sample_max (a floor nothing could clear) — refused, no write.
+    BadThreshold,
+    /// A span outside the current samples — refused, no write.
+    BadRange,
+};
+
+/// Infinite-clip `count` samples starting at `start` in place in `clip`: each sample whose magnitude is at most `thresh` becomes `0` (the quiet middle
+/// silenced), and every louder sample is pinned to `sign(x)·sample_max` — y = if |x| ≤ thresh then 0 else sign(x)·sample_max, the survivor slammed to the
+/// rail (the infinite-gain limit; a sine becomes a square). Exact for EVERY i16 — only −sample_max, 0, or sample_max is ever written, so there is no rail
+/// edge and no saturate. The negative survivor pins to −sample_max (not sample_min) so the map is exactly odd. After the call every written sample is one
+/// of those three values and depends only on its own input (the infinite clipper is memoryless). Refuses BadThreshold on a threshold outside [0,
+/// sample_max] and BadRange on a span outside the samples — each BEFORE any write, so an illegal call leaves the clip exactly as it was. Values only —
+/// never the length.
+pub fn infinite_clip(clip: *timeline.Clip, start: u32, count: u32, thresh: i32) InfiniteClipError!void {
+    // invariant: the threshold is a legal magnitude — at least zero (a magnitude is never negative; zero is the pure-comparator identity of the dead band)
+    // and no greater than the i16 rail (a floor nothing could clear is not a floor). The center clips' bound. Checked BEFORE any write.
+    if (thresh < 0) return error.BadThreshold;
+    if (thresh > @as(i32, timeline.sample_max)) return error.BadThreshold;
+    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder), exactly as the center clippers.
+    if (start > clip.len) return error.BadRange;
+    if (count > clip.len - start) return error.BadRange;
+
+    var k: u32 = 0;
+    while (k < count) : (k += 1) {
+        const i: u32 = start + k;
+        const dry: i16 = clip.buf[i];
+        // invariant: the sample read is a legal i16 — it is audio, never a wide intermediate.
+        assert(dry >= timeline.sample_min and dry <= timeline.sample_max);
+        // The magnitude in i32 so |sample_min| = 32768 is representable (one past the positive rail — the care the full-wave rectifier owed).
+        const mag: i32 = if (dry < 0) -@as(i32, dry) else @as(i32, dry);
+        // invariant: the magnitude is non-negative and no wider than one past the rail — |x| ≤ 32768 for every legal i16.
+        assert(mag >= 0 and mag <= @as(i32, timeline.sample_max) + 1);
+        var out: i16 = 0;
+        if (mag > thresh) {
+            // The infinite-clip map on a survivor: pin to the rail, sign held. A positive x pins to +sample_max, a negative x to −sample_max — the negative
+            // rail chosen as −sample_max (not sample_min) so infinite_clip(−x) = −infinite_clip(x) for every i16, the deepest sample included.
+            out = if (dry > 0) timeline.sample_max else -timeline.sample_max;
+            // invariant: a pinned survivor keeps its sign and lands exactly on the rail magnitude — no saturate is owed, the write is one of two constants.
+            assert((dry > 0 and out == timeline.sample_max) or (dry < 0 and out == -timeline.sample_max));
+        }
+        // invariant: the output is silence in the dead zone, or a same-sign survivor pinned to the rail — the map only silences or rails, never a middle
+        // value, never a sign flip, never a lift out of exact silence.
+        assert(if (mag <= thresh) out == 0 else ((dry > 0 and out == timeline.sample_max) or (dry < 0 and out == -timeline.sample_max)));
+        clip.buf[i] = out;
+    }
+    // invariant: an infinite clip changes sample values only, never the clip's length or bound.
+    assert(start + count <= clip.len);
+    assert(clip.len <= clip.buf.len);
+}
+
+// --- selftest: THE PURE COMPARATOR (t = 0 pins every nonzero sample to the rail, exact silence stays 0) read by hand on both signs and the deepest rail;
+//     THE DEAD-BAND COMPARATOR silences the quiet middle and rails the loud; THE BOUNDARY IS THE INFINITE-GAIN JUMP (|x| = t → 0, |x| = t+1 → ±sample_max,
+//     against ALES88's continuous ±1); the map is EXACTLY ODD (infinite_clip(−x) = −infinite_clip(x), sample_min included); it is IDEMPOTENT BELOW THE
+//     RAIL (a mid threshold twice equals once); ONLY THREE VALUES ever appear; the SAME DEAD ZONE as ALES88 (and the odd rail pair is NOT the 1-bit crush's
+//     floored 0/sample_min pair); the span discipline holds; and each fault — BadThreshold (negative, over-rail), BadRange (span past the end) — refuses by
+//     name, the clip untouched ---
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn run_selftest() !u8 {
+    const soft_center_clip = @import("soft_center_clip.rye"); // ALES88 — the soft center clip whose dead zone this rung shares
+    const crush = @import("crush.rye"); // ALES81 — the 1-bit crush, the other two-level map, floored rather than odd
+
+    // 1. THE PURE COMPARATOR — at t = 0, |x| ≤ 0 only for x = 0 (stays 0); every nonzero sample pins to the rail with its sign held. The deepest sample
+    //    sample_min pins to −sample_max, not sample_min, so the map is odd even at the rail. Read by hand on both signs.
+    {
+        const sig = [_]i16{ 1, -1, 500, -900, 32767, timeline.sample_min, 0, 20000 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try infinite_clip(&clip, 0, clip.len, 0);
+        const want = [_]i16{ 32767, -32767, 32767, -32767, 32767, -32767, 0, 32767 };
+        if (!eq(clip.samples(), &want)) return error.PureComparatorWrong;
+    }
+
+    // 2. THE DEAD-BAND COMPARATOR — at t = 1000, every sample with |x| ≤ 1000 drops to 0 and every survivor pins to ±32767. 500→0, 1000→0 (the ≤),
+    //    1500→+max, 3000→+max, −1500→−max, −3000→−max, −1000→0, 250→0.
+    {
+        const sig = [_]i16{ 500, 1000, 1500, 3000, -1500, -3000, -1000, 250 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try infinite_clip(&clip, 0, clip.len, 1000);
+        const want = [_]i16{ 0, 0, 32767, 32767, -32767, -32767, 0, 0 };
+        if (!eq(clip.samples(), &want)) return error.DeadBandWrong;
+    }
+
+    // 3. THE BOUNDARY IS THE INFINITE-GAIN JUMP — at t = 3000, |x| = 3000 silences (the ≤) and |x| = 3001 leaps straight to ±sample_max (NOT ±1 the way
+    //    ALES88's soft center clip rises continuously). The survivor slams to the rail — the whole point of infinite gain. Read on both signs.
+    {
+        const sig = [_]i16{ 3000, -3000, 3001, -3001, 3002, -3002 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try infinite_clip(&clip, 0, clip.len, 3000);
+        const want = [_]i16{ 0, 0, 32767, -32767, 32767, -32767 }; // the infinite-gain jump: nothing between 0 and the rail
+        if (!eq(clip.samples(), &want)) return error.BoundaryNotRail;
+    }
+
+    // 4. THE MAP IS EXACTLY ODD — infinite_clip(−x) = −infinite_clip(x), the sign held through the pin. A ± symmetric input yields a ± symmetric output,
+    //    the deepest pair sample_min/sample_max included (sample_min → −max, sample_max → +max). out[0] = −out[1], out[2] = −out[3], out[4] = −out[5].
+    {
+        const sig = [_]i16{ 800, -800, timeline.sample_min, 32767, 20, -20 }; // symmetric pairs but for the honest rail pair, which the odd map still balances
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try infinite_clip(&clip, 0, clip.len, 100);
+        const out = clip.samples();
+        if (out[0] != -out[1] or out[2] != -out[3] or out[4] != -out[5]) return error.NotOddSymmetric;
+    }
+
+    // 5. IDEMPOTENT BELOW THE RAIL — at a mid threshold (t = 5000), applying the infinite clip twice equals applying it once: a pinned survivor has
+    //    magnitude 32767 > 5000, so it clears its own dead zone on the second pass and stays at the rail; a silenced sample stays 0. Prove it.
+    {
+        const sig = [_]i16{ 200, -200, 9000, -9000, 6000, -6000, 5000, 32767 };
+        const t: i32 = 5000;
+        var once = timeline.Clip{};
+        try load_clip(&once, &sig);
+        try infinite_clip(&once, 0, once.len, t);
+        var twice = timeline.Clip{};
+        try load_clip(&twice, &sig);
+        try infinite_clip(&twice, 0, twice.len, t);
+        try infinite_clip(&twice, 0, twice.len, t);
+        if (!eq(twice.samples(), once.samples())) return error.NotIdempotent;
+    }
+
+    // 6. ONLY THREE VALUES EVER APPEAR — every output is −sample_max, 0, or sample_max, whatever the input and threshold. Run a wide signal and check every
+    //    written sample lands on one of the three rails.
+    {
+        const sig = [_]i16{ 1, -1, 12345, -6789, 0, 32767, timeline.sample_min, 30000, -30000, 4, -4 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try infinite_clip(&clip, 0, clip.len, 7);
+        const out = clip.samples();
+        var i: u32 = 0;
+        while (i < out.len) : (i += 1) {
+            if (out[i] != -timeline.sample_max and out[i] != 0 and out[i] != timeline.sample_max) return error.NotThreeValued;
+        }
+    }
+
+    // 7. THE SAME DEAD ZONE AS ALES88, AND NOT THE 1-BIT CRUSH'S PAIR — the infinite clip and the soft center clip (ALES88) silence exactly the same
+    //    samples at one threshold (a survivor is nonzero in both). And the infinite clip's two rails are ±sample_max about zero (odd), unlike the 1-bit
+    //    crush (ALES81), whose two floored levels are 0 (for x ≥ 0) and sample_min (for x < 0) — an even, DC-heavy pair. Prove both over one signal.
+    {
+        const sig = [_]i16{ 300, -300, 1200, -1200, 5000, -5000, 900, -900 };
+        const t: i32 = 1000;
+        var inf = timeline.Clip{};
+        try load_clip(&inf, &sig);
+        try infinite_clip(&inf, 0, inf.len, t);
+        var soft = timeline.Clip{};
+        try load_clip(&soft, &sig);
+        try soft_center_clip.soft_center_clip(&soft, 0, soft.len, t);
+        var i: u32 = 0;
+        while (i < sig.len) : (i += 1) {
+            const s = soft.samples()[i];
+            const f = inf.samples()[i];
+            // same dead zone: a sample is silent in one exactly when it is silent in the other
+            if ((s == 0) != (f == 0)) return error.DeadZoneDiffers;
+            // where it survives, the infinite clip sits on the rail with the sign of the input
+            if (f != 0) {
+                if (!((sig[i] > 0 and f == timeline.sample_max) or (sig[i] < 0 and f == -timeline.sample_max))) return error.SurvivorNotRailed;
+            }
+        }
+        // and the odd rail pair is NOT the 1-bit crush's floored pair: a bare negative sample rails to −max here, floors to sample_min under the crush.
+        var one = timeline.Clip{};
+        const neg = [_]i16{-5000};
+        try load_clip(&one, &neg);
+        try crush.crush(&one, 0, one.len, 1); // 1-bit crush floors −5000 to sample_min
+        var railed = timeline.Clip{};
+        try load_clip(&railed, &neg);
+        try infinite_clip(&railed, 0, railed.len, 0); // infinite clip rails −5000 to −sample_max
+        if (one.samples()[0] != timeline.sample_min) return error.CrushAssumptionWrong;
+        if (railed.samples()[0] != -timeline.sample_max) return error.RailAssumptionWrong;
+        if (one.samples()[0] == railed.samples()[0]) return error.OddEvenBondWrong; // −32768 ≠ −32767: the two maps are honestly different
+    }
+
+    // 8. THE SPAN DISCIPLINE — infinite-clipping a sub-span leaves the samples outside [start, count) exactly as they were. Clip the middle two of six at
+    //    t = 1000; the first and last two are untouched.
+    {
+        const sig = [_]i16{ 100, 200, 500, 5000, 300, 400 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try infinite_clip(&clip, 2, 2, 1000); // indices 2,3 only: 500→0, 5000→+max
+        const want = [_]i16{ 100, 200, 0, 32767, 300, 400 };
+        if (!eq(clip.samples(), &want)) return error.SpanLeaked;
+    }
+
+    // 9a. A NEGATIVE THRESHOLD refuses BadThreshold; an OVER-RAIL threshold refuses BadThreshold — each before any write, the clip untouched.
+    {
+        const sig = [_]i16{ 1, -2, 3, -4 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        if (infinite_clip(&clip, 0, clip.len, -1)) |_| return error.NegThreshSlipped else |e| if (e != error.BadThreshold) return error.WrongNegThresh;
+        if (!eq(clip.samples(), &sig)) return error.RefusedNegThreshTouched;
+        if (infinite_clip(&clip, 0, clip.len, @as(i32, timeline.sample_max) + 1)) |_| return error.OverThreshSlipped else |e| if (e != error.BadThreshold) return error.WrongOverThresh;
+        if (!eq(clip.samples(), &sig)) return error.RefusedOverThreshTouched;
+    }
+
+    // 9b. A SPAN past the end refuses BadRange — before any write, the clip untouched.
+    {
+        const sig = [_]i16{ 9, -10, 11 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        if (infinite_clip(&clip, 1, 3, 1000)) |_| return error.OverRangeSlipped else |e| if (e != error.BadRange) return error.WrongOverRange;
+        if (!eq(clip.samples(), &sig)) return error.RefusedOverRangeTouched;
+    }
+
+    print("GREEN ales-infinite-clip: the INFINITE CLIPPER — silence the quiet middle AND pin the loud to the rail, y = if |x| ≤ t then 0 else " ++
+        "sign(x)·sample_max. The two center clippers read the survivor's fate two ways — the hard center clip (ALES87) PASSES it at its own value, the " ++
+        "soft center clip (ALES88) SHIFTS it toward zero; this rung reads it the third and loudest way — it PINS the survivor to ±sample_max, the " ++
+        "infinite-gain limit that keeps only the SIGN (a sine becomes a square, the harshest fuzz, the comparator of a zero-crossing detector). The crux " ++
+        "is EXACT for every i16 with NO rail edge and NO saturate: only −sample_max, 0, or sample_max is ever written; the negative survivor pins to " ++
+        "−sample_max (not sample_min) so the map is EXACTLY ODD, the deepest sample included; the magnitude is taken in i32 so |sample_min| = 32768 is " ++
+        "representable. The pure comparator is t = 0 (every nonzero sample to the rail); the dead-band comparator silences the quiet middle and rails the " ++
+        "loud; the boundary is the infinite-gain jump (|x| = t → 0, |x| = t+1 → ±sample_max, against ALES88's continuous ±1); the map is odd; it is " ++
+        "IDEMPOTENT below the rail (a mid threshold twice equals once); only three values ever appear; it silences the SAME dead zone as ALES88, yet its " ++
+        "odd rail pair (±sample_max) is NOT the 1-bit crush's floored 0/sample_min pair; the span discipline holds; a negative or over-rail threshold " ++
+        "refuses BadThreshold and a span past the end refuses BadRange, each leaving the clip untouched. The map is MEMORYLESS; one magnitude, one " ++
+        "compare, one signed constant per sample; no gain, no ceiling, no saturate, no delay line, no envelope, no hysteresis, no anti-aliasing, no " ++
+        "socket, no network, no keys, no funds, no real device, no real sample rate. The dead-zone trilogy is closed — pass, shift, pin\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
