@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260815.191048
+editor Claude Code
+model claude-opus-4-8
+voice Kyri
+host Vultr SEA NixOS VPS (SGP · AMD 2vCPU/4GB shared) — ai-jail pier; hand Daylight DC-1
+title Kumara crypto re-grounded off Lindy onto structure; host, Puddle, Brix seated
+prompt Keaton pushed back that Lindy is the wrong metaphor for security (past does not guarantee future when compute has never been more powerful); asked me to be confident in the decision; cleared me to key and bootstrap fake Puddle Kumara identities; offered a sudo nixos-rebuild if needed; asked to put Brix configuration in season planning with Brix code and docs molting; asked to update the host to Vultr SEA NixOS and make Claude Code the core software instead of Zed
+think Agreed the Lindy metaphor was wrong for crypto and re-justified the SLH-DSA choice on a forward-looking threat model instead: the attacks that are actually rising (Oct 2025 lattice sieving, CRYPTO 2026 sign-based key recovery, AI-assisted cryptanalysis) exploit algebraic structure, and hashes are engineered to have none — so SLH-DSA has minimal exploitable structure, only a Grover quadratic dent from quantum (256-bit output covers it), and adds no new assumption since Grain already relies on the hash everywhere (seals, receipts, Merkle catalogs).
+think Confirmed there is no mature independent signature family to hybridize with — code-based and multivariate broken, isogeny young, lattice eroding, symmetric/MPC not independent from the hash — so a second leg would be shakier than the floor; deferring it (agility kept) adds no risk. Stated confidence plainly and pinned the parameter set SLH-DSA-SHAKE-256s (NIST category 5).
+think This is not a Lindy appeal — it is the smallest, best-understood attack surface with no added assumption, immune to the structural attacks that are climbing. The decision stands with a stronger justification.
+obs Recorded Keaton's clearance to key and bootstrap fake/test Kumara identities in the constel/Puddle sandbox (consonant-only, non-@p-valid per placeholder-ship-names and FORA); the maintainer's real Kumara key stays the custody gate. This unblocks building and witnessing the crypto with real keypairs in the sandbox.
+obs Seated Brix configuration into season planning (Brix code + Brix docs molt, riding the docs-compression round) in the decision-wave doc.
+obs Updated GLOW_PROFILE.bron (gitignored, local source of truth): editor Claude Code, model claude-opus-4-8, voice Kyri, host Vultr SEA NixOS VPS, hand Daylight DC-1 (was Android Termux); new logs record editor Claude Code. Past dated logs keep their recorded editor/host, never rewritten.
+obs No nixos-rebuild needed yet — the SHA-3 and SLH-DSA rounds are pure Rye plus Zig std.crypto/NIST KATs; will flag if SLH-DSA parity wants vendored FIPS 205 KAT vectors or a toolchain bump.
+loom stamp=20260815.191048 head=5e9b1718de param_set=slh_dsa_shake_256s regrounded=lindy_to_structure host=vultr_sea_nixos editor=claude_code
+file active-designing/20260815-184832_sha3-preference-and-post-quantum-kumara.md added the re-grounding section (minimal exploitable structure, no new assumption, confidence, 256s param)
+file active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md seated a Brix-configuration thread (code + docs molt)
+file work-in-progress/REMEMBER.md refinement note — re-grounding, Puddle identity clearance, Brix, host update
+file GLOW_PROFILE.bron local host source of truth updated to Claude Code / Vultr SEA NixOS / Daylight DC-1 (gitignored, not sent)
+recommend keep-going the crypto decision is confident and re-grounded; the loop can key fake Puddle identities and build SHA3-512/SHAKE-256 then SLH-DSA-256s in Rye, real keypairs in the sandbox, the identity key held at the gate

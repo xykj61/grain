@@ -102,6 +102,48 @@ SLH-DSA + ML-DSA hybrid:
   would weld a wobbling assumption to the root for near-zero marginal
   forgery-resistance, since the hash floor already carries the security.
 
+### The re-grounding — "Lindy" was the wrong frame; here is the right one
+
+**Refined `20260815.191048` on Keaton's word.** Keaton rightly pushed back: past
+durability is no guarantee of future security, because computing has never been
+more materially powerful — quantum, raw scale, and AI-assisted cryptanalysis are
+all climbing at once. "It survived, so it will survive" is a weak argument for a
+century-long key. The choice stands, yet the *justification* is not Lindy at all
+— it is a forward-looking threat-model argument:
+
+- **Minimal exploitable structure.** The attacks that are actually accelerating —
+  the Oct 2025 lattice sieving, the CRYPTO 2026 sign-based key recovery, and
+  AI-assisted cryptanalysis in general — all work by exploiting **algebraic
+  structure**. Lattices, curves, multivariate systems, and isogenies each carry
+  rich structure; that structure *is* the attacker's handle. A hash function is
+  engineered to have **none** — SLH-DSA's only attack is brute-force
+  preimage/collision search, which offers no structural shortcut for algebra or a
+  learning machine to find. We are choosing the primitive the rising attacks
+  cannot get a grip on.
+- **Quantum is only a quadratic dent.** Against that brute-force search Grover
+  gives merely a square-root speedup — parameterized away with a 256-bit output —
+  not the exponential Shor break that kills curves and threatens structured
+  problems.
+- **No new assumption.** Grain already depends on a secure hash everywhere —
+  content addresses, seals, Kyri receipts, the Lotus Merkle catalogs. A lattice
+  or curve signature adds a **second, independent hard-problem bet on top** of
+  that hash. Hash-based signing adds **zero** new attack surface: if SHAKE-256
+  ever falls, every seal and receipt in Grain falls with it, so we are already
+  betting on it — Kumara simply declines to add a second, shakier bet beside it.
+- **No mature independent family to hybridize with.** Code-based and multivariate
+  signature schemes have been broken; isogeny signing (post-SIDH) is young;
+  lattice is the family currently eroding; symmetric/MPC-in-the-head schemes
+  reduce to the hash or a cipher anyway, so they are not independent. A hybrid's
+  second leg would therefore be *shakier* than the hash floor — adding attack
+  surface, not removing it. That is the honest reason to defer it, agility kept.
+
+**Confidence — stated plainly.** I am confident. This is not a bet that the past
+predicts the future; it is the choice with the smallest, best-understood attack
+surface, that adds no assumption Grain does not already carry, and that is immune
+to the structural attacks that are actually rising. **Parameter set: SLH-DSA-
+SHAKE-256s** — the 256-bit security level (NIST category 5), small-signature
+variant, since Kumara signs infrequently and margin outranks speed here.
+
 Choosing the algorithm every Kumara identity signs with is foundational and
 custody-adjacent — it defines how everyone's keys work. Breaking OpenSSH interop
 is accepted; Kumara is a from-scratch civic identity, not an SSH replacement.
