@@ -1,0 +1,37 @@
+# tools/ales_stereo_replace_witness.rish — stereo_replace: the general span-edit carried into stereo, both channels in lockstep, validate-both-before-either (ALES116).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES116.
+# Design read: active-designing/20260815-014739_fill-ales116-lotus-stereo-replace.md
+# Stands on: lotus/replace.rye (ALES115 — the mono general span-edit run once per channel), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance
+# invariant), lotus/timeline.rye (ALES2 — the Clip and the EditError reused whole), lotus/meter.rye (ALES13 — the peak/RMS meter). A Lotus master is a StereoClip whose defining
+# invariant is that left and right hold the same length so the channels stay aligned in time; a keeper who pastes a corrected take over a selection pastes it into both channels at
+# once. This rung carries ALES115's replace into stereo the way ALES29 carried the insert-join: run the proven mono replace on each channel with the same at and count.
+#
+# lotus/stereo_replace.rye removes [at, at+count) from both channels and inserts left_src into the left and right_src into the right, validating BOTH channels before either is
+# mutated (the payloads must name the same span length, BadRange otherwise; the mono preconditions checked against the shared length up front; ClipFull on an overflow) so a refusal
+# never desynchronises the channels. The crux is four laws. THE STEREO REPLACE LAW: each channel equals ALES115's mono replace on that channel byte for byte. THE BALANCE / INVARIANT
+# LAW: left.len == right.len after the edit. THE ATOMICITY LAW: any refusal leaves both channels byte for byte untouched. THE DEGENERATE / GENERALIZATION LAW: empty payloads count 0
+# the identity on both channels, and per channel it inherits ALES115's three faces (cut · splice · paste_over).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_stereo_replace_witness.rish
+
+say "ales-stereo-replace: Language EN — stereo_replace removes the count samples starting at at from both channels of a StereoClip and inserts left_src into the left and right_src into the right, so the general span-edit ALES115 named for a mono clip now lands on a real stereo master. A Lotus master is two Clips heard together, one per speaker, whose defining invariant is that left and right hold the same length so the two channels stay aligned in time; a keeper who pastes a corrected take over a selection pastes it into both channels at once. It carries ALES115's proven mono replace into stereo the way ALES29 carried the insert-join — the same at and count on each channel — so the edit lands identically in both and the stereo image stays balanced."
+say "ales-stereo-replace: Style Radiant — the rule is stated positively: run the mono replace per channel over its public API, validating both channels before either is mutated (the two payloads must name the same span length, else BadRange; the mono preconditions checked against the shared length up front; ClipFull on a result past the buffer), so a refusal never leaves one channel edited and the other not. The crux stands out as four laws: the stereo replace law (each channel equals ALES115's mono replace on that channel byte for byte), the balance / invariant law (left.len == right.len after the edit, the stereo image staying aligned), the atomicity law (any refusal leaves both channels byte for byte untouched), and the degenerate / generalization law (empty payloads count 0 the identity on both channels, and per channel it inherits the three faces cut, splice, and paste_over)."
+say "ales-stereo-replace: Lens TAME — two bounded i16 Clips (left, right) whose named span is removed and refilled in lockstep; the stereo payload names one span across both channels, so its two sides must be the same length (an unequal pair naming inconsistent spans, refused BadRange before any write); the payload is bounded once against max_clip before it is @intCast to u32 at the std seam, the removed span is checked without underflow against the shared channel length, and the ClipFull headroom check lands before either channel mutates a single sample, so every refusal comes by name before any write and the channels can never desynchronise; it reuses ALES2's EditError whole and ALES115's replace per channel over its public API, inventing no new primitive; the stereo replace law is proven against ALES115's own replace run per channel; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_replace"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_replace.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-replace: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_replace.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-replace: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-replace: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-replace' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-replace: selftest did not print the GREEN ales-stereo-replace line"
