@@ -1,0 +1,335 @@
+//! lotus/auto_pan_power.rye — ALES77: the equal-power auto-pan — ALES11's equal-power split swept across time, in place of ALES76's linear
+//! weight. ALES76's auto-pan swept ALES10's LINEAR pan across the stereo field, so left + right reproduced the mono level exactly — the SUM
+//! held constant, at the cost of a −6 dB dip as the voice crosses centre. This rung sweeps ALES11's EQUAL-POWER pan instead: each sample is
+//! placed on the QUARTER CIRCLE rather than the straight line between the speakers, so the two channels' POWERS — their squared amplitudes —
+//! stay constant, and the panned voice holds its apparent LOUDNESS as it swings across the field. At centre each side carries 0.707 (−3 dB)
+//! where the linear auto-pan gives 0.5 (−6 dB): the audible difference the equal-power law exists for.
+//!
+//! The crux is that EQUAL-POWER AUTO-PAN IS ALES11's EQUAL-POWER PAN SWEPT ACROSS TIME — exactly as ALES76 was ALES10's linear pan swept across
+//! time. Position through the stereo field and position through a triangle period are one parameter; only the LAW reading that position differs.
+//! No new LFO (ALES71's `triangle_delay_at`, verbatim) and no new pan arithmetic (ALES11's `power.split`, verbatim): the triangle names the
+//! position, and the equal-power split turns it into the two amplitude weights on the quarter circle. Each channel is then y[i] = x[i]·w/den,
+//! a plain attenuation — right[i] = saturate(x[i]·w_right(i)/glide_scale), left[i] = saturate(x[i]·w_left(i)/glide_scale), the two weights the
+//! equal-power split of the same position. The SUM is NOT preserved (that is the linear auto-pan's law); the POWER is: w_left² + w_right² stays
+//! within ALES11's proven isqrt-truncation bound of glide_scale², sample by sample under the swing.
+//!
+//! Because each weight is a NON-NEGATIVE amplitude no greater than the field unit (0 ≤ w ≤ glide_scale, isqrt monotone with glide_scale² its
+//! cap), each channel is a fraction of the dry, so |left|, |right| ≤ |x| and both sit inside the i16 rail: the write's saturate is a proven
+//! NO-OP, exactly as the linear auto-pan's was — the equal-power auto-pan is the tremolo's non-negative kin too, not the ring modulator's
+//! bipolar one (no sign flip, no two's-complement corner). Every output depends only on its own input sample, and the effect READS the mono
+//! source and writes a fresh StereoClip: the source is untouched, a stereo render rather than an in-place edit.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES77.
+//! Design read: active-designing/20260814-203749_fill-ales77-lotus-equal-power-auto-pan.md
+//! Stands on: lotus/power.rye (ALES11) — the equal-power split `split(pos, den)` = [isqrt(den·(den−pos)), isqrt(den·pos)], the two amplitude
+//! weights on the quarter circle, reused verbatim; lotus/auto_pan.rye (ALES76) — the same triangle-swept-position shape, only the linear split
+//! swapped for the equal-power one; lotus/chorus.rye (ALES71) — the triangle-LFO driver `triangle_delay_at`, now the pan position; lotus/pan.rye
+//! (ALES10) — the StereoClip this renders into; lotus/glide.rye (ALES70) — `glide_scale`, the field unit (256 = hard right); lotus/timeline.rye
+//! (ALES2) — the Clip, sample_min/max, the one true saturate.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM in one mono clip rendered to a two-channel StereoClip, siloed to
+//! lotus/. No socket, no network, no keys, no funds, no real device, no real speaker, no real sample rate — the position is counted in scaled
+//! units (0 = hard left, 256 = hard right) and the period in samples, not hertz. No delay line, no snapshot, no lookahead. The triangle runs in
+//! i64, the equal-power split in u64 (ALES11's bounded isqrt), and each write saturates once — a documented no-op, since every channel is an
+//! attenuation of an in-range sample. The pan law is a routing weight, not a psychoacoustic or electrical claim.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/auto_pan_power.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const glide = @import("glide.rye");
+const chorus = @import("chorus.rye");
+const pan = @import("pan.rye");
+const power = @import("power.rye");
+
+pub const auto_pan_power_version = "20260814.203749";
+
+/// The equal-power auto-pan's faults, one consistent name each — the SAME field faults ALES76's linear auto-pan refuses, because the position
+/// window is identical (only the split law downstream differs): a period that is not a positive multiple of four (the triangle's quarter anchors
+/// need P/4 whole) or wider than max_clip, a negative depth or a swing whose floor (centre − depth) falls past hard-left (below 0 — a pan
+/// position has no sign), and a swing whose top (centre + depth) rises past hard-right (above glide_scale — the position stays within the field).
+/// Each refused before any write. There is NO BadGain (the field denominator is the fixed glide_scale, never a caller's divide), NO BadDelay,
+/// and NO BadRange on a span — the whole clip is panned and `out` shares the source's bound, so the render always fits (asserted, never a live
+/// error).
+pub const AutoPanPowerError = error{
+    /// A period that is not a positive multiple of four, or wider than max_clip — refused, no write.
+    BadPeriod,
+    /// A negative depth, or a swing whose floor (centre − depth) falls past hard-left (below 0) — refused, no write.
+    BadDepth,
+    /// A swing whose top (centre + depth) rises past hard-right (above glide_scale) — refused, no write.
+    BadPan,
+};
+
+/// Auto-pan the whole mono `src` clip into `out`, an ALES10 StereoClip, by the EQUAL-POWER law: a triangle LFO of `depth_scaled` round
+/// `centre_scaled` over `period` samples drives the PAN POSITION (ALES71's `triangle_delay_at`, in units of glide_scale — 0 = hard left,
+/// glide_scale = hard right), and ALES11's `power.split` turns that position into the two amplitude weights on the quarter circle. Each sample
+/// splits right[i] = saturate(x[i]·w_right(i)/glide_scale) and left[i] = saturate(x[i]·w_left(i)/glide_scale); unlike the linear auto-pan the SUM
+/// is not preserved — the POWER is, w_left² + w_right² held within glide_scale² so the voice keeps its loudness across the field. Each weight is
+/// a non-negative amplitude ≤ glide_scale, so each channel is a fraction of the dry and the write saturates once yet never clips. The source is
+/// READ-ONLY. Refuses BadPeriod, BadDepth, and BadPan before any write; on refusal `src` and `out` are untouched. Values only — the two channels
+/// take the source's length.
+pub fn auto_pan_power(
+    src: *const timeline.Clip,
+    out: *pan.StereoClip,
+    centre_scaled: i64,
+    depth_scaled: i64,
+    period: u32,
+) AutoPanPowerError!void {
+    // invariant: the period is a positive multiple of four (the triangle's quarter anchors need P/4 whole) and no wider than the widest clip,
+    // so the LFO is bounded. Checked at the edge before any read.
+    if (period == 0 or period % 4 != 0) return error.BadPeriod;
+    if (period > timeline.max_clip) return error.BadPeriod;
+    // invariant: the depth is non-negative and the swing's floor stays at or past hard-left — a pan position has no sign, so a position below 0
+    // is not a legal place in the field.
+    if (depth_scaled < 0) return error.BadDepth;
+    if (centre_scaled - depth_scaled < 0) return error.BadDepth;
+    // invariant: the swing's top stays at or within hard-right — the position never leaves the field, so it is a legal pan for `power.split`
+    // (0 ≤ pos ≤ den). This is what keeps each weight an attenuation and the write's saturate a proven no-op.
+    if (centre_scaled + depth_scaled > glide.glide_scale) return error.BadPan;
+    // invariant: the mono source fits both output channels — every clip shares one bound, so a whole-clip render always fits (never a live
+    // error, held by an assert).
+    assert(src.len <= out.left.buf.len and src.len <= out.right.buf.len);
+
+    const scale: i64 = glide.glide_scale;
+    // invariant: the field unit fits ALES11's fold bound, so `power.split` accepts glide_scale as its denominator.
+    assert(scale >= 1 and scale <= @as(i64, power.max_pan_den));
+    const den: u32 = @intCast(scale);
+    var i: u32 = 0;
+    while (i < src.len) : (i += 1) {
+        // ALES71's `triangle_delay_at` is a general scaled triangle — here it is the PAN POSITION. pos in
+        // [centre − depth, centre + depth] ⊆ [0, glide_scale].
+        const pos: i64 = chorus.triangle_delay_at(centre_scaled, depth_scaled, period, i);
+        // invariant: the position never leaves the validated field window, so it is a legal pan (0 ≤ pos ≤ den) for the equal-power split.
+        assert(pos >= 0 and pos <= scale);
+        // ALES11's equal-power split of the same position: [w_left, w_right] = [isqrt(den·(den − pos)), isqrt(den·pos)], the two amplitude
+        // weights on the quarter circle. Reused verbatim; no pan arithmetic re-derived here.
+        const w = power.split(@intCast(pos), den);
+        const w_left: i64 = @as(i64, w[0]);
+        const w_right: i64 = @as(i64, w[1]);
+        // invariant: each weight is a non-negative amplitude no greater than the field unit — isqrt is monotone with den² its cap — so each
+        // channel below is an attenuation of the dry.
+        assert(w_left >= 0 and w_left <= scale and w_right >= 0 and w_right <= scale);
+        // invariant: the CONSTANT-POWER law survives the split's two truncations — w_left² + w_right² never exceeds glide_scale², so the voice
+        // holds its loudness across the field (contrast the linear auto-pan's exact sum). This is the crux, asserted per sample.
+        assert(w_left * w_left + w_right * w_right <= scale * scale);
+        const dry: i64 = @as(i64, src.buf[i]);
+        // invariant: the sample read is a legal i16 — it is audio, never a wide intermediate.
+        assert(dry >= @as(i64, timeline.sample_min) and dry <= @as(i64, timeline.sample_max));
+        // The right channel: a fraction w_right/scale of the dry. |dry| ≤ 32768 and w_right ≤ scale, so the product fits i64 and the quotient's
+        // magnitude is no larger than |dry|, of the dry's own sign — so it sits in the i16 rail (saturate a no-op).
+        const right_v: i64 = @divTrunc(dry * w_right, scale);
+        // invariant: the right channel is an attenuation of an in-range sample, so it already fits the i16 rail.
+        assert(right_v >= @as(i64, timeline.sample_min) and right_v <= @as(i64, timeline.sample_max));
+        // The left channel: the same, with the left weight. Independent of the right (the equal-power law keeps POWER, not the sum), yet the
+        // same attenuation bound holds.
+        const left_v: i64 = @divTrunc(dry * w_left, scale);
+        // invariant: the left channel is likewise an attenuation of an in-range sample, so it too fits the i16 rail.
+        assert(left_v >= @as(i64, timeline.sample_min) and left_v <= @as(i64, timeline.sample_max));
+        out.right.buf[i] = timeline.saturate(right_v);
+        out.left.buf[i] = timeline.saturate(left_v);
+        // invariant: each written channel stays within the dry's magnitude — the equal-power split places the voice on the quarter circle
+        // without ever amplifying it.
+        assert(@as(i64, out.left.buf[i]) >= -dry_mag(dry) and @as(i64, out.left.buf[i]) <= dry_mag(dry));
+        assert(@as(i64, out.right.buf[i]) >= -dry_mag(dry) and @as(i64, out.right.buf[i]) <= dry_mag(dry));
+    }
+    out.left.len = src.len;
+    out.right.len = src.len;
+    // invariant: a stereo master is two legal mono clips of the same length (both the source's length).
+    assert(out.left.len == out.right.len and out.left.len == src.len);
+    assert(out.left.len <= out.left.buf.len and out.right.len <= out.right.buf.len);
+}
+
+/// The magnitude of a dry sample as an i64, bounded by the i16 rail's width — the attenuation ceiling each panned channel respects. Kept small
+/// and total so the write invariants above read plainly.
+fn dry_mag(dry: i64) i64 {
+    // invariant: the input is a legal i16, so its magnitude fits well inside i64 and never overflows the negation below.
+    assert(dry >= @as(i64, timeline.sample_min) and dry <= @as(i64, timeline.sample_max));
+    const m: i64 = if (dry < 0) -dry else dry;
+    // invariant: a magnitude is non-negative and no wider than one past sample_max (|sample_min| = sample_max + 1).
+    assert(m >= 0 and m <= -@as(i64, timeline.sample_min));
+    return m;
+}
+
+// --- selftest: THE MOVING EQUAL-POWER LAW (w_left² + w_right² ≤ glide_scale² at every sample under a full swing, the voice holding loudness,
+//     the crux); a hand-computed sweep across the field matches exactly; a CENTRE equal-power auto-pan carries 0.707 per side, distinctly louder
+//     than ALES76's linear 0.5; a depth-0 equal-power auto-pan is a static equal-power pan; the source is read-only; the voice never exceeds the
+//     dry rail; and each fault refuses by name, src and out untouched ---
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn run_selftest() !u8 {
+    const scale = glide.glide_scale;
+    const den: u32 = @intCast(scale);
+
+    // 1. THE MOVING EQUAL-POWER LAW — the crux. Under a full triangle swing over a varied signal (including sample_min), the two channel weights
+    //    hold constant power: w_left² + w_right² ≤ glide_scale² at every sample, and within ALES11's proven truncation bound below it. This is
+    //    ALES11's equal-power law swept across time, the loudness held where the linear auto-pan held the sum.
+    {
+        const sig = [_]i16{ timeline.sample_min, -6001, 3001, -4000, 30001, -30000, 7003, -8001 };
+        var src = timeline.Clip{};
+        try load_clip(&src, &sig);
+        var out = pan.StereoClip{};
+        try auto_pan_power(&src, &out, @divTrunc(scale, 2), @divTrunc(scale, 2), 8);
+        if (out.left.len != src.len or out.right.len != src.len) return error.PowerLawLen;
+        var i: u32 = 0;
+        while (i < src.len) : (i += 1) {
+            const pos: i64 = chorus.triangle_delay_at(@divTrunc(scale, 2), @divTrunc(scale, 2), 8, i);
+            const w = power.split(@intCast(pos), den);
+            const wl: u64 = w[0];
+            const wr: u64 = w[1];
+            const sq: u64 = wl * wl + wr * wr;
+            const cap: u64 = @as(u64, den) * @as(u64, den);
+            if (sq > cap) return error.PowerOverField;
+            // ALES11's two-isqrt truncation bound: den² − (wl²+wr²) ≤ 2(wl+wr)+2.
+            if (cap - sq > 2 * (wl + wr) + 2) return error.PowerBoundBroken;
+        }
+    }
+
+    // 2. A HAND-COMPUTED SWEEP — centre scale/2, depth scale/2, period 4 (q = 1): the position traces the four anchors 128 → 256 → 128 → 0 → 128
+    //    (center → hard right → center → hard left → center). den = 256, so at centre isqrt(256·128) = isqrt(32768) = 181, and at an edge the
+    //    near weight is isqrt(256·256) = 256, the far isqrt(0) = 0. On a steady 1000:
+    //      k:        0    1     2    3    4
+    //      pos(k):   128  256   128  0    128
+    //      right[k]: 707  1000  707  0    707   (1000·w_right/256; 1000·181/256 = 707, 1000·256/256 = 1000)
+    //      left[k]:  707  0     707  1000 707   (1000·w_left/256)
+    {
+        const sig = [_]i16{ 1000, 1000, 1000, 1000, 1000 };
+        var src = timeline.Clip{};
+        try load_clip(&src, &sig);
+        var out = pan.StereoClip{};
+        try auto_pan_power(&src, &out, @divTrunc(scale, 2), @divTrunc(scale, 2), 4);
+        const want_right = [_]i16{ 707, 1000, 707, 0, 707 };
+        const want_left = [_]i16{ 707, 0, 707, 1000, 707 };
+        if (!eq(out.right.samples(), &want_right)) return error.SweepRightWrong;
+        if (!eq(out.left.samples(), &want_left)) return error.SweepLeftWrong;
+    }
+
+    // 3. THE CENTRE IS −3 dB, NOT −6 dB — the audible proof the law is angular, not straight. A steady 1000 panned dead centre lands 707 each
+    //    side under the equal-power law, where ALES76's linear auto-pan lands 500 (0.5). The equal-power centre is distinctly louder — this is
+    //    the whole reason the rung exists.
+    {
+        const sig = [_]i16{ 1000, 1000, 1000, 1000 };
+        var src = timeline.Clip{};
+        try load_clip(&src, &sig);
+        var out = pan.StereoClip{};
+        try auto_pan_power(&src, &out, @divTrunc(scale, 2), 0, 4); // depth 0 — held at centre
+        const seven_hundred_seven = [_]i16{ 707, 707, 707, 707 };
+        if (!eq(out.left.samples(), &seven_hundred_seven)) return error.CentreLeftNotMinus3dB;
+        if (!eq(out.right.samples(), &seven_hundred_seven)) return error.CentreRightNotMinus3dB;
+    }
+
+    // 4. A DEPTH-0 EQUAL-POWER AUTO-PAN IS A STATIC EQUAL-POWER PAN — the LFO at rest holds one position. Centre scale/2 splits every sample to
+    //    0.707 (proven above); centre 0 routes the whole clip to the LEFT (w_left = isqrt(256²) = 256, right silent); centre scale routes it
+    //    wholly to the RIGHT (left silent). The field edges are reached EXACTLY — no dip and no bleed.
+    {
+        const sig = [_]i16{ 100, 200, 300, 400 };
+
+        var lft = pan.StereoClip{};
+        var src_l = timeline.Clip{};
+        try load_clip(&src_l, &sig);
+        try auto_pan_power(&src_l, &lft, 0, 0, 4); // hard left
+        const silent = [_]i16{ 0, 0, 0, 0 };
+        if (!eq(lft.left.samples(), &sig)) return error.HardLeftWrong;
+        if (!eq(lft.right.samples(), &silent)) return error.HardLeftBled;
+
+        var rgt = pan.StereoClip{};
+        var src_r = timeline.Clip{};
+        try load_clip(&src_r, &sig);
+        try auto_pan_power(&src_r, &rgt, scale, 0, 4); // hard right
+        if (!eq(rgt.right.samples(), &sig)) return error.HardRightWrong;
+        if (!eq(rgt.left.samples(), &silent)) return error.HardRightBled;
+    }
+
+    // 5. THE SOURCE IS READ-ONLY — a stereo effect reads the mono, never mutates it. After auto_pan_power, src holds its original samples.
+    {
+        const sig = [_]i16{ 111, -222, 333, -444, 555, -666 };
+        var src = timeline.Clip{};
+        try load_clip(&src, &sig);
+        var out = pan.StereoClip{};
+        try auto_pan_power(&src, &out, @divTrunc(scale, 2), @divTrunc(scale, 2), 4);
+        if (!eq(src.samples(), &sig)) return error.SourceMutated;
+    }
+
+    // 6. THE EQUAL-POWER VOICE NEVER EXCEEDS THE DRY RAIL — a loud steady signal under a full swing keeps both channels within
+    //    [sample_min, sample_max]: each channel is an attenuation of an in-range sample (each weight ≤ scale). A steady -30000 under a full field
+    //    swing traces both channels between silence and -30000, never past the rail.
+    {
+        var src = timeline.Clip{};
+        try load_clip(&src, &[_]i16{ -30000, -30000, -30000, -30000 });
+        var out = pan.StereoClip{};
+        try auto_pan_power(&src, &out, @divTrunc(scale, 2), @divTrunc(scale, 2), 4);
+        var i: u32 = 0;
+        while (i < src.len) : (i += 1) {
+            const l = out.left.samples()[i];
+            const r = out.right.samples()[i];
+            if (l < timeline.sample_min or l > timeline.sample_max) return error.LeftExceedsRail;
+            if (r < timeline.sample_min or r > timeline.sample_max) return error.RightExceedsRail;
+        }
+    }
+
+    // 7a. A PERIOD not a positive multiple of four refuses BadPeriod; zero refuses BadPeriod; a period wider than max_clip refuses BadPeriod —
+    //     before any write, src and out untouched.
+    {
+        const three = [_]i16{ 1, 2, 3 };
+        var src = timeline.Clip{};
+        try load_clip(&src, &three);
+        var out = pan.StereoClip{};
+        if (auto_pan_power(&src, &out, @divTrunc(scale, 2), 0, 6)) |_| return error.OddPeriodSlipped else |e| if (e != error.BadPeriod) return error.WrongOddPeriod;
+        if (!eq(src.samples(), &three) or out.left.len != 0 or out.right.len != 0) return error.RefusedOddPeriodTouched;
+        if (auto_pan_power(&src, &out, @divTrunc(scale, 2), 0, 0)) |_| return error.ZeroPeriodSlipped else |e| if (e != error.BadPeriod) return error.WrongZeroPeriod;
+        if (!eq(src.samples(), &three) or out.left.len != 0) return error.RefusedZeroPeriodTouched;
+        const wide: u32 = timeline.max_clip + 4;
+        if (auto_pan_power(&src, &out, @divTrunc(scale, 2), 0, wide)) |_| return error.WidePeriodSlipped else |e| if (e != error.BadPeriod) return error.WrongWidePeriod;
+        if (!eq(src.samples(), &three) or out.left.len != 0) return error.RefusedWidePeriodTouched;
+    }
+
+    // 7b. A NEGATIVE DEPTH refuses BadDepth; a swing floor past hard-left refuses BadDepth; a swing top past hard-right refuses BadPan — each
+    //     before any write, src untouched.
+    {
+        const three = [_]i16{ 1, 2, 3 };
+        var src = timeline.Clip{};
+        try load_clip(&src, &three);
+        var out = pan.StereoClip{};
+        if (auto_pan_power(&src, &out, @divTrunc(scale, 2), -1, 4)) |_| return error.NegDepthSlipped else |e| if (e != error.BadDepth) return error.WrongNegDepth;
+        if (!eq(src.samples(), &three)) return error.RefusedNegDepthTouched;
+        // centre ½·scale, depth ¾·scale → floor = centre − depth < 0 (past hard-left)
+        if (auto_pan_power(&src, &out, @divTrunc(scale, 2), @divTrunc(3 * scale, 4), 4)) |_| return error.LowFloorSlipped else |e| if (e != error.BadDepth) return error.WrongLowFloor;
+        if (!eq(src.samples(), &three)) return error.RefusedLowFloorTouched;
+        // centre unity, depth ½·scale off the top: centre + depth > glide_scale (past hard-right)
+        if (auto_pan_power(&src, &out, scale, @divTrunc(scale, 2), 4)) |_| return error.HighTopSlipped else |e| if (e != error.BadPan) return error.WrongHighTop;
+        if (!eq(src.samples(), &three)) return error.RefusedHighTopTouched;
+    }
+
+    print("GREEN ales-auto-pan-power: the EQUAL-POWER AUTO-PAN — ALES11's equal-power split swept across time, in place of ALES76's linear " ++
+        "weight. EQUAL-POWER AUTO-PAN IS ALES11's EQUAL-POWER PAN SWEPT ACROSS TIME: it reads ALES71's triangle_delay_at as the PAN POSITION " ++
+        "and ALES11's power.split turns it into the two amplitude weights on the QUARTER CIRCLE, so right[i] = saturate(x[i]·w_right/" ++
+        "glide_scale), left[i] = saturate(x[i]·w_left/glide_scale). Where the linear auto-pan held the SUM (left + right == src), this holds " ++
+        "the POWER: w_left² + w_right² stays within glide_scale² at every sample under a full swing including sample_min, and within ALES11's " ++
+        "proven two-isqrt truncation bound; a hand-computed sweep (128 → 256 → 128 → 0) matches exactly (707 at centre, 1000 at the edge on a " ++
+        "steady 1000); the CENTRE carries 0.707 per side (−3 dB), distinctly LOUDER than ALES76's linear 0.5 (−6 dB) — the audible reason the " ++
+        "rung exists; a depth-0 equal-power auto-pan is a static equal-power pan (hard left/right route wholly to one channel, the field edges " ++
+        "exact); the source is READ-ONLY; each weight is a non-negative amplitude ≤ glide_scale, so the voice never exceeds the dry rail and " ++
+        "the write's saturate is a proven no-op (the tremolo's non-negative kin, not the ring modulator's bipolar one — no sign flip, no " ++
+        "two's-complement corner); a period not a positive multiple of four refuses BadPeriod, a negative depth or a swing past hard-left " ++
+        "BadDepth, a swing past hard-right BadPan, each leaving src and out untouched — there is no BadGain, no BadDelay, no BadRange on a " ++
+        "span; no delay line, no snapshot, no socket, no network, no keys, no funds, no real device, no real speaker, no real sample rate. " ++
+        "The modulation family's three LFO targets — delay, amplitude, position — now stand under both pan laws, linear and equal-power\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

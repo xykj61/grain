@@ -1,0 +1,43 @@
+# tools/ales_auto_pan_power_witness.rish — the equal-power auto-pan: ALES11's equal-power split swept across the stereo field (ALES77).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES77.
+# Design read: active-designing/20260814-203749_fill-ales77-lotus-equal-power-auto-pan.md
+# Stands on: lotus/power.rye (ALES11 — the equal-power split `split(pos, den)`, reused verbatim); lotus/auto_pan.rye (ALES76 — the same
+# triangle-swept-position shape, only the linear split swapped for the equal-power one); lotus/chorus.rye (ALES71 — the triangle-LFO driver
+# `triangle_delay_at`, now the pan position); lotus/pan.rye (ALES10 — the StereoClip); lotus/glide.rye (ALES70 — `glide_scale`, 256 = hard
+# right); lotus/timeline.rye (ALES2 — the Clip, sample_min/max, the one true saturate).
+#
+# lotus/auto_pan_power.rye sweeps ALES11's EQUAL-POWER pan across time, in place of ALES76's linear weight. EQUAL-POWER AUTO-PAN IS ALES11's
+# EQUAL-POWER PAN SWEPT ACROSS TIME: the triangle names the position, and `power.split` turns it into the two amplitude weights on the QUARTER
+# CIRCLE, so right[i] = saturate(x[i]·w_right/glide_scale), left[i] = saturate(x[i]·w_left/glide_scale). Where the linear auto-pan held the SUM,
+# this holds the POWER: w_left² + w_right² stays within glide_scale² at every sample. The selftest proves the crux under a full swing including
+# sample_min (and within ALES11's proven two-isqrt truncation bound); a hand-computed sweep (128 → 256 → 128 → 0) matches exactly; the CENTRE
+# carries 0.707 per side (−3 dB), distinctly louder than ALES76's linear 0.5 (−6 dB); a depth-0 equal-power auto-pan is a static equal-power pan
+# (hard left/right route wholly to one channel, the field edges exact); the source is read-only; each weight is a non-negative amplitude ≤
+# glide_scale, so the voice never exceeds the dry rail (saturate a no-op — the tremolo's non-negative kin, no sign flip, no two's-complement
+# corner); a period not a positive multiple of four refuses BadPeriod, a negative depth or a swing past hard-left BadDepth, a swing past
+# hard-right BadPan. Purely local — no delay line, no snapshot, no lookahead, no network, no keys, no funds, no real device, no real speaker,
+# no sample rate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_auto_pan_power_witness.rish
+
+say "ales-auto-pan-power: Language EN — ALES76's auto-pan swept ALES10's LINEAR pan across the stereo field, so the panned voice dipped −6 dB as it crossed centre. This rung sweeps ALES11's EQUAL-POWER pan instead: each sample is placed on the QUARTER CIRCLE, so the two channels' POWERS stay constant and the voice holds its LOUDNESS as it swings across the field — 0.707 per side at centre where the linear law gave 0.5."
+say "ales-auto-pan-power: Style Radiant — the law is stated positively as a recognition: EQUAL-POWER AUTO-PAN IS ALES11's EQUAL-POWER PAN SWEPT ACROSS TIME, exactly as ALES76 was ALES10's linear pan swept across time. No new LFO (ALES71's triangle_delay_at, verbatim) and no new pan arithmetic (ALES11's power.split, verbatim); only the LAW reading the swept position differs. Where the linear auto-pan held the SUM, this holds the POWER — w_left² + w_right² within glide_scale² at every sample."
+say "ales-auto-pan-power: Lens TAME — one mono clip of i16 PCM rendered to a two-channel StereoClip, the scaled non-negative position centre/depth, and a u32 period; each weight is a non-negative amplitude ≤ glide_scale (isqrt monotone, glide_scale² its cap), so the triangle runs in i64, the equal-power split in u64 (ALES11's bounded isqrt), and each write saturates once — a proven no-op, since every channel is an attenuation of an in-range sample (the tremolo's non-negative kin, not the ring modulator's bipolar one); a period not a positive multiple of four (or past max_clip) refuses BadPeriod, a negative depth or a swing floor past hard-left BadDepth, a swing top past hard-right BadPan, all before any write, src and out untouched on refusal; there is NO BadGain, NO BadDelay, NO BadRange on a span; the source is READ-ONLY; siloed to lotus/, the position in scaled units and the period in samples, no delay line, no snapshot, no lookahead, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/auto_pan_power"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/auto_pan_power.rye -femit-bin=${bin}"]
+assert build.ok else "ales-auto-pan-power: build failed — ${build.err}"
+
+let outfile = "lotus/bin/auto_pan_power.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-auto-pan-power: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-auto-pan-power: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-auto-pan-power' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-auto-pan-power: selftest did not print the GREEN ales-auto-pan-power line"
