@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260815.133213
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (VPS) — Eastern (EDT) time convention
+title ALES220 — Lotus stereo preset, a named chain carried over both channels
+prompt recur the road Lindy-first crux-first; take the next agent-doable lap, self-approve design rounds, send each increment, stop at custody gates
+think Second lap this turn. ALES219's log named growing the preset surface across both channels as an honest next crux. Lindy-first: the preset surface owes its mono→stereo twin exactly as reverb, width, pan, and render each closed theirs whole; a real Lotus master is a stereo pair, so the named preset over one mono Clip is only half the gesture.
+think Pure composition, inventing nothing: render_preset builds the preset's chain against the master's shared length and runs ALES218's render_stereo; render_named from_names the string first. Because preset.build is total over the length (spans clamped), no BadRange can originate here — only the container's own faults remain, so the atomic promise carries over unchanged.
+think StereoPresetError = preset.PresetError || stereo_render.StereoRenderError — the honest union of the naming half and the render half. Proved the independent-channel law against render.render on each channel, so a stereo named preset is provably two mono renders sharing one interleaved container.
+obs GREEN on the first metal pass. Six laws: named-stereo (byte-for-byte on each channel to a hand render, decoded), independent-channel (each stereo channel equals a mono render.render with the same built chain), unknown (a stranger name refuses UnknownPreset before the master is read, both channels untouched), balance (equal length after), atomic (a small container refuses OutputTooSmall, both untouched), empty-clip (a valid 44-byte stereo header).
+obs tame_style_check bans clean; width-check exit 0. Honest scope: byte container only, no real file/DAC/acoustic fact, no network/keys/funds. No custody gate. The render+preset family now stands whole for mono and stereo.
+loom witness=ales_stereo_preset_witness result=GREEN laws=6 presets=4 channels=2 frame_bytes=4
+file lotus/stereo_preset.rye the stereo preset rung — a named chain built against the shared length and rendered over both channels, verify-before-trust
+file tools/ales_stereo_preset_witness.rish the on-metal witness, GREEN
+file active-designing/20260815-133213_fill-ales220-lotus-stereo-preset.md self-approved design round for ALES220
+recommend keep-going the render+preset family stands whole for mono and stereo; letting a keeper save their own chain as a named preset, or growing the catalog with more real gestures, is the honest next crux

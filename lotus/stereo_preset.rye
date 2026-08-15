@@ -1,0 +1,185 @@
+//! lotus/stereo_preset.rye — ALES220: a named preset carried over both channels of a stereo master. ALES219 let a keeper load a
+//! named effect chain by name and rendered it over one mono Clip; a Lotus master is a StereoClip (ALES10), two mono Clips heard
+//! together whose defining invariant is that LEFT and RIGHT hold the same length. This rung is the mono→stereo twin of the preset
+//! surface: load a chain by name, build it against the master's shared length, and render it over BOTH channels through ALES218's
+//! stereo render. It invents no new effect, no new check, and no new name — it only widens the named preset to the second
+//! channel, exactly as stereo_render widened the raw chain.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES220.
+//! Design read: active-designing/20260815-133213_fill-ales220-lotus-stereo-preset.md
+//! Stands on: lotus/preset.rye (ALES219) — from_name and build, reused verbatim; lotus/stereo_render.rye (ALES218) — the balanced
+//! render over both channels; lotus/pan.rye (ALES10) — the StereoClip and its equal-length invariant.
+//!
+//! THE BALANCED PROMISE carries over unchanged. The preset is TOTAL over the clip length — build clamps every span to the shared
+//! length — so a named preset never refuses a stereo render for BadRange, and both channels leave equal-length by construction.
+//! A named preset over a stereo master is exactly two mono renders of that preset sharing one interleaved container.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. The same as ALES218 and ALES219, joined. No real file, no DAC, no acoustic or
+//! electrical fact, no network, no keys, no funds, no real device. Siloed to lotus/.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_preset.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const render = @import("render.rye");
+const preset = @import("preset.rye");
+const stereo_render = @import("stereo_render.rye");
+const stereo_wav = @import("stereo_wav.rye");
+
+pub const stereo_preset_version = "20260815.133213";
+
+/// The stereo preset joins ALES219's naming and ALES218's balanced render, so its error set is the union of theirs: from_name's
+/// UnknownPreset plus the stereo render's chain and container faults. build itself is total, so no BadRange can originate here.
+pub const StereoPresetError = preset.PresetError || stereo_render.StereoRenderError;
+
+/// Render an already-loaded preset over BOTH channels of a stereo master: build the chain against the shared length, then run
+/// ALES218's balanced render. Because build is total over the length, the returned chain is always legal — the only faults are
+/// the container's (OutputTooSmall, BadSampleRate), each refusing before a sample moves and leaving both channels unchanged.
+pub fn render_preset(sample_rate: u32, p: preset.Preset, sc: *pan.StereoClip, out: []u8) stereo_render.StereoRenderError!u32 {
+    // invariant: the master enters balanced — the ground the render preserves.
+    assert(sc.left.len == sc.right.len);
+    const chain = preset.build(p, sc.left.len);
+    // invariant: a built preset never exceeds the render's own chain bound, so the render's step-count gate cannot fire here.
+    assert(chain.len <= render.max_steps);
+    return stereo_render.render_stereo(sample_rate, sc, chain.slice(), out);
+}
+
+/// Load a preset BY NAME and render it over both channels — the literal keeper gesture: type a name, hear it over the master. An
+/// unknown name refuses UnknownPreset before the master is read, so both channels stay byte-for-byte unchanged.
+pub fn render_named(sample_rate: u32, preset_name: []const u8, sc: *pan.StereoClip, out: []u8) StereoPresetError!u32 {
+    // invariant: the master enters balanced.
+    assert(sc.left.len == sc.right.len);
+    const p = try preset.from_name(preset_name);
+    return render_preset(sample_rate, p, sc, out);
+}
+
+// --- selftest: THE NAMED-STEREO LAW — render_named over both channels equals building that preset and rendering by hand,
+//     byte-for-byte on each channel; THE UNKNOWN LAW — a stranger name refuses UnknownPreset, both channels untouched; THE
+//     INDEPENDENT-CHANNEL LAW — a named stereo preset is the same preset rendered mono per channel; THE BALANCE LAW — the two
+//     channels leave equal length; THE ATOMIC LAW — a small output refuses, both channels untouched -------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try load_clip(&sc.left, l);
+    try load_clip(&sc.right, r);
+}
+
+/// The widest stereo container this selftest renders — header plus the whole clip bound of frames. One frame is two i16 = 4 bytes.
+const test_cap: u32 = stereo_wav.header_len + timeline.max_clip * stereo_wav.frame_bytes;
+
+fn run_selftest() !u8 {
+    const rate: u32 = 48_000;
+    // Distinct left/right, longer than the bookend edge so a fade touches only its own span — the two channels differ, so a
+    // channel-crossing bug would show.
+    var left_src: [preset.edge_samples * 2 + 4]i16 = undefined;
+    var right_src: [preset.edge_samples * 2 + 4]i16 = undefined;
+    var g: u32 = 0;
+    while (g < left_src.len) : (g += 1) {
+        left_src[g] = @as(i16, @intCast((g % 7) * 900)) - 2700;
+        right_src[g] = @as(i16, @intCast((g % 5) * 1100)) - 2200;
+    }
+
+    // 1. THE NAMED-STEREO LAW + 2. THE INDEPENDENT-CHANNEL LAW — render each catalog preset by name over the master, then prove
+    //    each decoded channel equals the SAME preset chain applied to that channel alone (a mono render's output).
+    {
+        const names = [_][]const u8{ "phase_flip", "half", "bookend_fades", "gentle_master" };
+        var n: u32 = 0;
+        while (n < names.len) : (n += 1) {
+            var sc = pan.StereoClip{};
+            try load_stereo(&sc, &left_src, &right_src);
+            var file: [test_cap]u8 = undefined;
+            const wrote = try render_named(rate, names[n], &sc, &file);
+
+            // The same preset rendered mono per channel — build once against the shared length, render each channel alone.
+            const chain = preset.build(try preset.from_name(names[n]), @intCast(left_src.len));
+            var mono_l = timeline.Clip{};
+            try load_clip(&mono_l, &left_src);
+            var lf: [test_cap]u8 = undefined;
+            _ = try render.render(rate, &mono_l, chain.slice(), &lf);
+            var mono_r = timeline.Clip{};
+            try load_clip(&mono_r, &right_src);
+            var rf: [test_cap]u8 = undefined;
+            _ = try render.render(rate, &mono_r, chain.slice(), &rf);
+
+            // The rendered stereo channels match the mono renders sample-for-sample.
+            if (!eq(sc.left.samples(), mono_l.samples())) return error.NamedLeftWrong;
+            if (!eq(sc.right.samples(), mono_r.samples())) return error.NamedRightWrong;
+
+            // And the decoded stereo .wav matches on each channel, the rate preserved.
+            var back_l: [left_src.len]i16 = undefined;
+            var back_r: [right_src.len]i16 = undefined;
+            const got = try stereo_wav.decode(file[0..wrote], &back_l, &back_r);
+            if (got.sample_rate != rate) return error.NamedRateWrong;
+            if (!eq(back_l[0..got.frames], mono_l.samples())) return error.NamedDecodeLeftWrong;
+            if (!eq(back_r[0..got.frames], mono_r.samples())) return error.NamedDecodeRightWrong;
+
+            // 4. THE BALANCE LAW — the render left the two channels equal length.
+            if (sc.left.len != sc.right.len) return error.BalanceBroken;
+        }
+    }
+
+    // 3. THE UNKNOWN LAW — a name the catalog does not hold refuses UnknownPreset before the master is read, both channels
+    //    byte-for-byte unchanged.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &left_src, &right_src);
+        var file: [test_cap]u8 = undefined;
+        if (render_named(rate, "no_such_preset", &sc, &file)) |_| return error.UnknownSlipped else |e| if (e != error.UnknownPreset) return error.WrongUnknown;
+        if (!eq(sc.left.samples(), &left_src)) return error.UnknownLeftMutated;
+        if (!eq(sc.right.samples(), &right_src)) return error.UnknownRightMutated;
+    }
+
+    // 5. THE ATOMIC LAW — a container too small refuses OutputTooSmall before any effect runs, both channels untouched. (build is
+    //    total, so BadRange can never originate from a preset; the container fault is the one that remains.)
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &left_src, &right_src);
+        var tiny: [stereo_wav.header_len]u8 = undefined; // header only, no room for frames
+        if (render_preset(rate, .gentle_master, &sc, &tiny)) |_| return error.SmallSlipped else |e| if (e != error.OutputTooSmall) return error.WrongSmall;
+        if (!eq(sc.left.samples(), &left_src)) return error.SmallLeftMutated;
+        if (!eq(sc.right.samples(), &right_src)) return error.SmallRightMutated;
+    }
+
+    // 6. THE EMPTY-CLIP LAW — a zero-frame master renders every preset to a valid 44-byte stereo header (the preset is legal at
+    //    length zero, the balanced promise holds at the edge).
+    {
+        var sc = pan.StereoClip{};
+        var file: [test_cap]u8 = undefined;
+        const wrote = try render_named(rate, "gentle_master", &sc, &file);
+        if (wrote != stereo_wav.header_len) return error.EmptyClipSize;
+        var bl: [1]i16 = undefined;
+        var br: [1]i16 = undefined;
+        const got = try stereo_wav.decode(file[0..wrote], &bl, &br);
+        if (got.frames != 0) return error.EmptyClipFrames;
+    }
+
+    print("GREEN ales-stereo-preset: a keeper loads a named effect chain by name and hears it over BOTH channels of a stereo " ++
+        "master, reusing ALES219's from_name and build and ALES218's balanced render verbatim. THE NAMED-STEREO LAW: each " ++
+        "catalog preset (phase_flip · half · bookend_fades · gentle_master) rendered by name decodes byte-for-byte on each " ++
+        "channel to the same preset chain applied by hand. THE INDEPENDENT-CHANNEL LAW: a named stereo preset is the same " ++
+        "preset rendered mono per channel, sharing one interleaved container. THE UNKNOWN LAW: a stranger name refuses " ++
+        "UnknownPreset before the master is read, both channels byte-for-byte unchanged. THE BALANCE LAW: every render leaves " ++
+        "the two channels equal length. THE ATOMIC LAW: a small container refuses OutputTooSmall, both channels untouched — " ++
+        "build is total, so no preset ever refuses for BadRange. An empty master renders a valid 44-byte stereo header. " ++
+        "Software only — no real file, no DAC, no acoustic fact, no network, no keys, no funds, no real device\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
