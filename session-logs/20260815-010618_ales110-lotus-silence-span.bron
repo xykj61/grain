@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260815.010618
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title ALES110 — Lotus's silence_span, the length-preserving third of the trim/open/overwrite trio
+prompt recur the itinerary Lindy-first crux-first; after ALES109 sent, take the next agent-doable Lotus lap, self-approve, prove GREEN, send as its own signed round; STOP at custody gates
+think ALES2's cut removes a span and SHRINKS the clip; ALES109's insert_silence opens a gap and GROWS the clip. Between them sits the third and last way a span meets silence: OVERWRITE it in place. Silence Audio Selection is the button every editor ships — drop a cough, mute a bleed, clear a region to quiet without moving anything around it. Where cut changes the length by shrinking and insert-silence by growing, silence-span leaves the length exactly as it is and only zeroes the values inside the span. Naming it beside the two teaches the one distinction: remove, open, or overwrite.
+think Shape: silence_span(clip, start, count) writes zero into the count samples at start, leaving everything outside the span and the length exactly as they were. It reuses timeline.EditError — BadRange when start > len or count > len - start, checked without underflow (count against the remainder), refused before any write. One in-place pass bounded by count, no allocation, no second buffer.
+think Four laws: the SILENCE law (the span all zero and the rest byte for byte, the length untouched, checked at mid/head/tail); the TRIO / LENGTH law (the same span [1,1+2) meets silence three ways in one selftest — silence_span keeps len, ALES2's cut shrinks it by 2, ALES109's insert_silence grows it by 2 — one span, three lengths, imported side by side); the IDEMPOTENCE / PEAK law (silencing twice equals once, and the peak re-measured through ALES13 is non-increasing — silencing the span that holds -30000 strictly lowers it, silencing an already-silent span holds it); the DEGENERATE / REFUSAL law (count 0 the identity, silence_span(0, len) all silence, the empty clip its own silence, a start past the samples or a count past the remainder BadRange).
+obs Witness GREEN on the first pass — all four laws and both refusal branches, the clip verified untouched after each refused call. The trio law is the crux of the teaching: proving the SAME span keeps/shrinks/grows the length side by side makes cut·insert_silence·silence_span read as one closed family rather than three unrelated edits. Moved the insert_silence import to top-level to match the codebase idiom (imports are never inside a fn here). TAME style bans clean (ratchet zero-assert count unchanged at 11); >=2 positive-invariant asserts per fn; width-check clean; no new arithmetic invented; timeline.EditError reused whole.
+loom witness=ales_silence_span_witness green=1 laws=4 rung=ALES110
+file lotus/silence_span.rye the ALES110 rung — silence_span, the length-preserving third of the trim/open/overwrite trio, four laws proven in-file
+file tools/ales_silence_span_witness.rish the on-metal witness — build, selftest, GREEN-line assert
+file active-designing/20260815-010618_fill-ales110-lotus-silence-span.md the self-approved design read for the rung
+file lotus/README.md front door synced — Status-line short entry and the long per-rung paragraph both carry ALES110
+recommend keep-going the span/silence family continues; the loop stays Lindy-first crux-first; STOP remains at REMEMBER's custody gates
