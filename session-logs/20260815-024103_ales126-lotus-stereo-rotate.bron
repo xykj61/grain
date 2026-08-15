@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260815.024103
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (Eastern EDT convention)
+title ALES126 — Lotus's stereo_rotate: the cyclic turn of a master, both channels in lockstep, total (no refusal)
+prompt Continue the recurring baton (prin recur) on the ALES/Lotus edge, Lindy-first crux-first; approve my own design rounds; send each finished increment as its own signed round; stop at custody gates.
+think Read REMEMBER (Git nib narrative), the 1024-round itinerary, and the six-season double-seat; the living edge is the ALES/Lotus ladder and its recurring crux is lifting mono edits to stereo. ALES125 opened the pure-rearrangement class with stereo_reverse and named the three still-to-lift: invert (value-mirror), rotate (cyclic shift), nyquist_flip (parity flip). Rotate is the closest companion to reverse and the crux this lap.
+think Read rotate.rye (mono rotate_left, void, total: reduces the shift modulo len then reseats by three range-reversals, no second buffer; empty/single/zero-shift return untouched) and stereo_shift.rye (the parameterized total lift pattern). Like reverse and shift, the lift runs mono rotate_left per channel with the same `by`; total and length-holding, so balance is preserved trivially and no fault forwards — void, no try.
+think Wrote the design read, module (void, no try, `by: u32`), and witness. Four laws proven on metal: stereo rotate law (each channel == ALES106 byte for byte, result[j]=original[(j+by) mod len]), balance/length law (left.len == right.len, both hold length), modular/composition-and-inverse law (0/len/full-turn identity, rotate(k)==rotate(k mod len), rotate(k1) then rotate(k2)==rotate(k1+k2), rotate(k) then rotate(len-k) the identity), permutation/fixpoint law (each channel's peak through ALES13 unchanged, empty/single pairs their own rotation).
+obs Second lift of the rearrangement class; the composition-and-inverse keystone means a keeper who over-rotates a master rotates the rest of the way home on both speakers. invert (ALES105, value-mirror) and nyquist_flip (ALES107, parity flip) are the natural next two lifts to complete the class. Witness GREEN first run. No custody gate reached — purely local software, self-approved design round.
+loom witness=ales_stereo_rotate_witness result=GREEN laws=4 channels=2
+file lotus/stereo_rotate.rye ALES126 — stereo_rotate lifts ALES106's total mono rotate_left to a StereoClip, no validation needed, four laws.
+file tools/ales_stereo_rotate_witness.rish the witness — builds, runs selftest, asserts the GREEN ales-stereo-rotate line.
+file active-designing/20260815-024103_fill-ales126-lotus-stereo-rotate.md the self-approved design read for this rung.
+file lotus/README.md front door synced — ALES126 roster entry and stamp.
+recommend keep-going stereo_invert (ALES105 value-mirror) then stereo_nyquist_flip (ALES107 parity flip) complete the pure-rearrangement class; no gate reached.

@@ -1,0 +1,38 @@
+# tools/ales_stereo_rotate_witness.rish — stereo_rotate: the cyclic turn of a master, both channels in lockstep, total (no refusal) (ALES126).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES126.
+# Design read: active-designing/20260815-024103_fill-ales126-lotus-stereo-rotate.md
+# Stands on: lotus/rotate.rye (ALES106 — the mono cyclic left-shift run once per channel), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant),
+# lotus/timeline.rye (ALES2 — the Clip and its buf/len/samples), lotus/meter.rye (ALES13 — the peak/RMS meter). A Lotus master is a StereoClip whose defining invariant is that left and right hold
+# the same length so the channels stay aligned in time; rotating the loop to the downbeat swings both speakers by the same amount at once. This rung carries ALES106's rotate into stereo the way
+# ALES125 carried reverse: run the proven mono rotate_left on each channel with the same shift. It is the second lift of the stereo suite's pure rearrangement class (every position changing, no
+# value); like reverse it is total and needs no validation.
+#
+# lotus/stereo_rotate.rye cyclic-left-shifts both channels by the same `by`, reusing ALES106's mono rotate_left per channel; because mono rotate reduces the shift modulo each channel's length and
+# holds each length, the balance invariant is preserved trivially and there is no EditError to forward. The crux is four laws. THE STEREO ROTATE LAW: each channel equals ALES106's mono rotate_left
+# on that channel byte for byte, result[j] = original[(j+by) mod len]. THE BALANCE / LENGTH LAW: left.len == right.len after, both holding their starting length. THE MODULAR /
+# COMPOSITION-AND-INVERSE LAW: rotate by 0/len/full-turn the identity, rotate(k) equals rotate(k mod len), rotate(k1) then rotate(k2) equals rotate(k1+k2), rotate(k) then rotate(len-k) the identity.
+# THE PERMUTATION / FIXPOINT LAW: each channel's peak unchanged, an empty pair and a single-sample pair their own rotation.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_stereo_rotate_witness.rish
+
+say "ales-stereo-rotate: Language EN — stereo_rotate cyclic-left-shifts both channels of a StereoClip by the same amount, so the Rotate gesture ALES106 named for a mono clip now lands on a real stereo master. A Lotus master is two Clips heard together, one per speaker, whose defining invariant is that left and right hold the same length so the two channels stay aligned in time; rotating the loop to the downbeat, aligning a wavetable's phase, reading a circular buffer at an offset all swing both speakers by the same amount at once. It is the second lift of the stereo suite's pure rearrangement class — where every position changes and no value does — beside the end-for-end turn (reverse), the value-mirror (invert), and the parity flip (nyquist_flip) still to lift. It carries ALES106's proven mono rotate into stereo — the same cyclic shift on each channel — so the rotation lands identically in both and the stereo image stays balanced; like reverse it is total and needs no validation."
+say "ales-stereo-rotate: Style Radiant — the rule is stated positively: run the mono rotate_left per channel over its public API; because mono rotate reduces the shift modulo each channel's length (an over-long shift is the equivalent short one, so it names no out-of-range span and raises no fault) and holds each channel's length, the balance invariant is preserved trivially — both channels enter equal-length, both reduce the same `by` against the same length, both reseat in place, both hold their length, so they leave equal-length, and there is no fault to forward. The crux stands out as four laws: the stereo rotate law (each channel equals ALES106's mono rotate_left on that channel byte for byte against a hand-rotated vector, result index j holding original (j+by) mod len, the front `by` moving to the tail), the balance / length law (left.len == right.len after the edit and both hold their starting length, the stereo image staying aligned), the modular / composition-and-inverse law (rotate by 0, len, or a full turn is the identity, rotate(k) equals rotate(k mod len), rotate(k1) then rotate(k2) equals rotate(k1+k2), and rotate(k) then rotate(len-k) returns both channels to the byte), and the permutation / fixpoint law (rotate is a pure rearrangement, so each channel's peak re-measured through ALES13 is unchanged, an empty pair and a single-sample pair each their own rotation for any shift)."
+say "ales-stereo-rotate: Lens TAME — two bounded i16 Clips (left, right) reseated cyclically in lockstep; the balance invariant is asserted on entry and exit, and because mono rotate is total (void, no EditError) and holds the length, the assertion can never fail and no refusal can land between the two channel edits; rotate reduces the shift modulo len then reseats by three range-reversals in place, no second buffer, reading no byte past len, so the length holds exactly; it reuses ALES106's rotate_left per channel over its public API, inventing no new primitive; the stereo rotate law is proven against ALES106's own rotate run per channel, and the permutation law reads each channel's peak through ALES13 so a pure rearrangement is shown to move no loudness; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_rotate"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_rotate.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-rotate: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_rotate.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-rotate: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-rotate: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-rotate' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-rotate: selftest did not print the GREEN ales-stereo-rotate line"
