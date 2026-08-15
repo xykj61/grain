@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260815.072727
+editor Zed
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) time convention · ai-jail
+title ALES167 — Lotus's stereo_gate_env_hold: the attack/hold/release noise gate carried into stereo, the linked held envelope driving one linked gate over time — the second spender of the held time base
+prompt Take the next agent-doable lap Lindy-first crux-first; approve my own design rounds and make progress before checking in; send each finished increment as its own signed round; stop at the custody gates.
+think ALES166 spent the held time base for the first time (the compressor); this rung spends it for the gate — the stereo mirror of ALES57 (mono held gate = mono breathing gate ALES54 driven from the held mono follower ALES56).
+think The un-held stereo gate ALES162 chatters the whole field on a brief dip between two loud samples; the shared hold pins the peak so the gate stays open through the dip. Because the detector is one shared held envelope, the two channels never re-open on different samples — the fix that stops the chatter also keeps the image aligned.
+think The shape composes two proofs over public APIs, adding only the hold knob: stereo_hold_env.stereo_env_step_hold advances the one shared held envelope; where the held envelope falls below the threshold, ALES51's silenced floor gat = e·den/num on the ENVELOPE yields one gain gat/e to BOTH raw samples. The e==0 branch asserts both channels silent this pair (the held step forces a unit step toward any nonzero peak and the hold only ever pins), so no divide by zero.
+obs GREEN first run. Six laws GREEN on metal: the zero-hold law (hold=0 reduces to ALES162's stereo_gate_env byte for byte on both, run against the real tool); the linked-gate-over-time law (a left-always-peak master has left' == ALES57's mono gate_env_hold(left), the right scaled by the same fraction gat/e, the independent per-channel differing); the image law (out-of-phase pair returns still out of phase, no expand, no sign flip); the knob/no-chatter laws (unit ratio identity, a nonzero hold keeping the gate open across a dip where the un-held chatters — held no smaller everywhere, strictly louder at the dip); the carry law (split mid-hold == whole once on both, env AND hold_left carrying); the above-threshold/silence/balance/atomicity(five refusals incl BadHold)/degenerate law.
+obs StereoGateEnvHoldError = gate_env_hold.GateEnvHoldError (BadThreshold, BadRatio, BadCoeff, BadHold, BadRange) reused whole; the fusion adds no fault. Purely local, siloed to lotus/; gain gat/e in [0,1], i64 no overflow. No custody gate reached — a self-approved design round. TAME bans clean; the module carries asserts.
+loom witness=ales_stereo_gate_env_hold_witness green=1 module=lotus/stereo_gate_env_hold.rye laws=6
+file active-designing/20260815-072727_fill-ales167-lotus-stereo-gate-env-hold.md the self-approved design round naming the crux and the six laws
+file lotus/stereo_gate_env_hold.rye the linked held stereo gate — stereo_gate_hold_follow_carry, stereo_gate_hold_follow
+file tools/ales_stereo_gate_env_hold_witness.rish the trilingual witness (EN · Radiant · TAME), build + selftest GREEN gate
+recommend keep-going — two of the four held spenders are proven (compress, gate); the next crux is stereo_limit_env_hold (the brickwall at infinite ratio, mirror of the held mono limiter) then stereo_expand_env_hold, closing the stereo held-dynamics quartet, single-module, policy written, no seam.

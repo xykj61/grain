@@ -1,0 +1,385 @@
+//! lotus/stereo_gate_env_hold.rye — ALES167: the ATTACK/HOLD/RELEASE NOISE GATE carried into stereo — the LINKED HELD envelope (ALES165) driving ONE LINKED gate decision (ALES156) over time, the second spender of the held
+//! time base. ALES162 carried the breathing gate into stereo: one shared envelope opening as a sound arrives and closing gently as it falls away, one silenced gain applied to both channels so the image never lurches. Yet an
+//! un-held gate still slams shut and re-opens on a brief DIP between two loud samples — it chatters, and the ear hears the door swing on the whole field at once. A real gate carries a HOLD knob for exactly this: on a fall away
+//! from a peak, it pins the peak for a little while before the release begins, so the gate stays open through the dip and the passage stays whole. ALES165 built that hold stage INSIDE the linked follower and proved it once.
+//! This rung spends that proof: it drives ALES51's silenced floor from the LINKED HELD envelope rather than the plain linked one — the same stereo gate, now with the patience that keeps it from chattering the image.
+//!
+//! Two proofs fused, held. The DETECTOR is the linked HELD follower (ALES165): one shared envelope steps toward the linked peak max(|left|, |right|), the ONE shared hold countdown pinning that peak across a fall so the two
+//! channels never re-open on different samples. The GATE is linked (ALES156): where the held envelope falls below the threshold its whole magnitude is divided by the ratio (ALES51's silenced floor, gat = e·den/num, computed
+//! on the ENVELOPE not the bare sample) and the single gain gat/e is applied to BOTH raw samples. The gain math is not re-invented (it is ALES51's), and the time base is not re-invented (it is ALES165's linked held env_step);
+//! this rung is exactly their composition over public APIs, adding only the hold knob to the stereo breathing gate. It is the stereo mirror of ALES57's held mono gate.
+//!
+//! The rule, stated once: refuse BadThreshold (outside [1, sample_max]), BadRatio (below one or a zero denominator), BadCoeff (an attack or release outside (0, 1]), BadHold (a hold longer than the widest clip), and BadRange
+//! (a span past the shared length) BEFORE any write. Otherwise walk the span one sample-PAIR at a time, advancing ONE i64 envelope with ONE u32 hold countdown toward the linked peak by ALES165's stereo_env_step_hold:
+//! envelope at or above the threshold leaves the pair playing (both pass byte for byte); envelope below the threshold applies the one silenced gain gat/e to both raw samples. A shared held envelope of exactly zero arises only
+//! when both channels are silent this pair, so nothing to gate and no divide by zero.
+//!
+//! The crux — six laws. THE ZERO-HOLD LAW (the crux link): a hold of zero makes the linked held follower the plain linked follower, so this equals ALES162's stereo_gate_env byte for byte on both — the held rung's no-hold
+//! limit is exactly the un-held rung already proven. THE LINKED-GATE-OVER-TIME LAW: a left-always-peak master has left' equal to ALES57's mono gate_env_hold(left) byte for byte, the right scaled by the same fraction gat/e,
+//! the independent per-channel gate_env_hold genuinely differing. THE IMAGE LAW: the shared gain preserves the L:R ratio, an out-of-phase pair returning still out of phase, no magnitude expanding, no sign flipping. THE KNOB /
+//! NO-CHATTER LAWS: unit ratio the identity everywhere, and a NONZERO HOLD keeping the gate open across a brief dip (it does not chatter, the held magnitude no smaller than the un-held one and strictly louder at the dip).
+//! THE CARRY LAW: a span gated in two pieces (the split mid-hold) equals the whole once on both, env AND hold_left carrying. THE ABOVE-THRESHOLD / SILENCE / BALANCE / ATOMICITY / DEGENERATE LAW: a master whose linked held
+//! envelope never falls below the threshold passing byte for byte, silence staying silence, left.len == right.len after, each of the five refusals leaving both channels untouched and balanced, count = 0 the identity on both.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES167.
+//! Design read: active-designing/20260815-072727_fill-ales167-lotus-stereo-gate-env-hold.md
+//! Stands on: lotus/stereo_hold_env.rye (ALES165) — the LINKED HELD follower, its stereo_env_step_hold advancing the one shared envelope with the one shared hold countdown toward the linked peak, reused whole;
+//! lotus/stereo_gate_env.rye (ALES162) — the un-held linked breathing gate this reduces to at a hold of zero, re-proven beside it as the zero-hold limit; lotus/gate_env_hold.rye (ALES57) — the mono attack/hold/release gate,
+//! its GateEnvHoldError reused whole and its output the left-always-peak comparison; lotus/gate.rye (ALES51) — the silenced floor gat = e·den/num; lotus/pan.rye (ALES10) — the StereoClip; lotus/timeline.rye (ALES2) — the
+//! Clip, sample_max, max_clip.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) carrying one shared i64 envelope and one shared u32 hold countdown, siloed to lotus/. One linked-peak comparison and at most one
+//! multiply-then-divide for the envelope step plus one per channel for the gain, all in i64 (|sample|·gat <= 32768·32767 never overflowing), the gain gat/e in [0, 1] so every scaled magnitude is at most its input's and fits
+//! i16. The threshold is a magnitude in sample units, the ratio a plain fraction, the attack, release, and hold counted in sample INDICES rather than milliseconds against a clock. No real sample rate, no anti-aliasing, no
+//! network, no keys, no funds, no real device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_gate_env_hold.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const envelope = @import("envelope.rye");
+const stereo_hold_env = @import("stereo_hold_env.rye");
+const stereo_gate_env = @import("stereo_gate_env.rye");
+const gate_env_hold = @import("gate_env_hold.rye");
+const gate = @import("gate.rye");
+
+pub const stereo_gate_env_hold_version = "20260815.072727";
+
+/// The linked attack/hold/release gate's faults are exactly ALES57's own `GateEnvHoldError` — `BadThreshold`, `BadRatio`, `BadCoeff`, `BadHold`, `BadRange` — reused by name, since fusing the linked held detector with the
+/// linked gate adds no new fault: it validates one shared threshold, one shared ratio, one shared attack, one shared release, one shared hold, and one span, then advances a single held envelope and applies one gain per pair
+/// to both channels together.
+pub const StereoGateEnvHoldError = gate_env_hold.GateEnvHoldError;
+
+/// Gate `count` sample-PAIRS starting at `start` in the stereo master `sc` below the magnitude `threshold` by the ratio `ratio_num/ratio_den`, the ONE downward push FOLLOWING the LINKED HELD envelope that CONTINUES from the
+/// caller's shared `env` and `hold_left` rather than from silence — the carried-state form (ALES43's lesson), now carrying BOTH the shared envelope and the shared hold countdown so the hold survives across a call boundary.
+/// Each pair advances ALES165's linked held follower one step toward the linked peak `max(|left|, |right|)` (attack while rising and rearming the shared hold, the peak pinned while the countdown lasts, release once it expires);
+/// where the held envelope sits at or above the threshold the gate is open and both channels pass byte for byte, and where it falls below, the envelope's whole magnitude is divided by the ratio (`gat = e·den/num`, ALES51's
+/// silenced floor on the linked held envelope) and the single gain `gat/e` applied to BOTH raw samples — one detector, one hold, one gate, the image held. Refuses BadThreshold, BadRatio, BadCoeff, BadHold, and BadRange before
+/// any write; on refusal `env`, `hold_left`, and both channels are untouched. Values only — never the length, and the channels leave balanced.
+pub fn stereo_gate_hold_follow_carry(
+    sc: *pan.StereoClip,
+    start: u32,
+    count: u32,
+    env: *i64,
+    hold_left: *u32,
+    threshold: i32,
+    ratio_num: u32,
+    ratio_den: u32,
+    attack_num: u32,
+    attack_den: u32,
+    release_num: u32,
+    release_den: u32,
+    hold_samples: u32,
+) StereoGateEnvHoldError!void {
+    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the shared gate preserves.
+    assert(sc.left.len == sc.right.len);
+    // invariant: the threshold is a legal magnitude — at least one sample unit and no greater than the i16 rail. Before any write.
+    if (threshold < 1) return error.BadThreshold;
+    if (threshold > @as(i32, timeline.sample_max)) return error.BadThreshold;
+    // invariant: the ratio is at least one (num >= den) with a nonzero denominator — a ratio below one would boost the quiet (a different tool), a zero denominator would divide by zero. A gate only ever leans down.
+    if (ratio_den == 0) return error.BadRatio;
+    if (ratio_num < ratio_den) return error.BadRatio;
+    // invariant: both attack and release coefficients are legal fractions in (0, 1] — checked by the follower's one proven rule.
+    if (!envelope.coeff_ok(attack_num, attack_den)) return error.BadCoeff;
+    if (!envelope.coeff_ok(release_num, release_den)) return error.BadCoeff;
+    // invariant: the hold is bounded by the widest clip — a longer hold could never expire within any span. Before any write.
+    if (hold_samples > timeline.max_clip) return error.BadHold;
+    // invariant: the span lies wholly within the SHARED length — checked once, without underflow, so it holds identically for both channels and a refusal never gates one channel and leaves the other torn.
+    const len: u32 = sc.left.len;
+    if (start > len) return error.BadRange;
+    if (count > len - start) return error.BadRange;
+
+    const thr: i64 = @as(i64, threshold);
+    const num: i64 = @as(i64, ratio_num);
+    const den: i64 = @as(i64, ratio_den);
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        const xl: i16 = sc.left.buf[start + i];
+        const xr: i16 = sc.right.buf[start + i];
+        // Advance the ONE shared linked HELD follower toward the pair's linked peak (ALES165's proven step); e is the smoothed-and-held linked magnitude, in [0, sample_max].
+        _ = stereo_hold_env.stereo_env_step_hold(env, hold_left, xl, xr, attack_num, attack_den, release_num, release_den, hold_samples);
+        const e: i64 = env.*;
+        // invariant: the linked held envelope stays a legal magnitude — never negative, never past the rail (the held step's own guarantee).
+        assert(e >= 0 and e <= @as(i64, timeline.sample_max));
+        if (e < thr) {
+            if (e == 0) {
+                // The held linked detector reads exact silence. stereo_env_step_hold forces at least a unit step toward any nonzero linked peak and the hold only ever PINS a peak (it never lowers the envelope), so a zero
+                // envelope can only arise when this pair's linked peak is zero — both channels are silent this sample, nothing to gate, and no divide by zero.
+                assert(xl == 0 and xr == 0);
+            } else {
+                // The gated envelope target — ALES51's silenced floor computed on the LINKED HELD envelope, not the bare sample. Divided by the ratio (den/num <= 1), so gat sits in [0, e]; the gain gat/e is in [0, 1]. e·den
+                // fits i64 (e <= 32767).
+                const gat: i64 = @divTrunc(e * den, num);
+                // invariant: the gated envelope sits within [0, envelope] — the single gain gat/e is in [0, 1].
+                assert(gat >= 0 and gat <= e);
+                const ml: i64 = if (xl < 0) -@as(i64, xl) else @as(i64, xl); // |left| — safe in i64 (|sample_min| = 32768 fits)
+                const mr: i64 = if (xr < 0) -@as(i64, xr) else @as(i64, xr); // |right|
+                // ONE shared gain gat/e across both channels: m·gat <= 32768·32767 fits i64; divTrunc keeps each quotient at most its m.
+                const nl: i64 = @divTrunc(ml * gat, e);
+                const nr: i64 = @divTrunc(mr * gat, e);
+                // invariant: the shared gain reduces, never boosts, and never below zero, on each channel — a smoothed gate only ever leans down.
+                assert(nl <= ml and nl >= 0 and nr <= mr and nr >= 0);
+                const yl: i16 = @intCast(if (xl < 0) -nl else nl); // safe: 0 <= nl <= ml <= sample_max
+                const yr: i16 = @intCast(if (xr < 0) -nr else nr);
+                sc.left.buf[start + i] = yl;
+                sc.right.buf[start + i] = yr;
+                // invariant: each written sample holds its input's sign (magnitude only shrank), zero being sign-neutral.
+                assert((xl >= 0 and yl >= 0) or (xl <= 0 and yl <= 0));
+                assert((xr >= 0 and yr >= 0) or (xr <= 0 and yr <= 0));
+            }
+        }
+        // held envelope at or above the threshold: the pair plays — both left exactly as they were; the hold keeping the pinned peak above the threshold is what keeps the gate open through a brief dip rather than chattering.
+    }
+
+    // invariant: a gate changes sample values only — each channel holds its starting length and the channels leave balanced, the stereo image aligned in time.
+    assert(sc.left.len == len and sc.right.len == len);
+    assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
+}
+
+/// Gate `count` sample-pairs starting at `start` in the stereo master `sc`, the one downward push following a LINKED HELD envelope that begins FROM SILENCE (a fresh shared env of 0 with the hold unarmed) — one implementation
+/// shared with the carried form, so the two cannot drift. Refuses BadThreshold, BadRatio, BadCoeff, BadHold, and BadRange before any write.
+pub fn stereo_gate_hold_follow(
+    sc: *pan.StereoClip,
+    start: u32,
+    count: u32,
+    threshold: i32,
+    ratio_num: u32,
+    ratio_den: u32,
+    attack_num: u32,
+    attack_den: u32,
+    release_num: u32,
+    release_den: u32,
+    hold_samples: u32,
+) StereoGateEnvHoldError!void {
+    var env: i64 = 0;
+    var hold_left: u32 = 0;
+    return stereo_gate_hold_follow_carry(sc, start, count, &env, &hold_left, threshold, ratio_num, ratio_den, attack_num, attack_den, release_num, release_den, hold_samples);
+}
+
+// --- selftest: THE ZERO-HOLD LAW — a hold of zero reduces to ALES162's stereo_gate_env byte for byte on both; THE LINKED-GATE-OVER-TIME LAW — a left-always-peak master has left' == ALES57's mono gate_env_hold(left), the
+//     right scaled by the same fraction, the independent push differing; THE IMAGE LAW — no magnitude expands, no sign flips, an out-of-phase pair returns still out of phase; THE KNOB / NO-CHATTER LAWS — unit ratio the
+//     identity, a nonzero hold keeping the gate open across a dip; THE CARRY LAW — a span in two pieces (split mid-hold) equals the whole once on both; THE ABOVE-THRESHOLD / SILENCE / BALANCE / ATOMICITY / DEGENERATE LAW -----
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try timeline.splice(&sc.left, 0, l);
+    try timeline.splice(&sc.right, 0, r);
+}
+
+fn abs16(v: i16) i32 {
+    return if (v < 0) -@as(i32, v) else @as(i32, v);
+}
+
+fn run_selftest() !u8 {
+    // 1. THE ZERO-HOLD LAW — the crux link. With hold_samples == 0 the linked held follower's fall branch never pins, so every pair moves through ALES165's step exactly as ALES162's un-held stereo_gate_env does: the held
+    //    stereo gate with no hold IS the ALES162 stereo gate, byte-for-byte by construction. Proven by running BOTH tools on the same master and demanding equality on both channels (the no-hold limit).
+    {
+        const ll = [_]i16{ 800, -800, 5000, -600, 200, -9000, 400, -400 };
+        const rr = [_]i16{ -400, 300, -1200, 500, -50, 12000, -250, 250 };
+        var held = pan.StereoClip{};
+        try load_stereo(&held, &ll, &rr);
+        try stereo_gate_hold_follow(&held, 0, 8, 1000, 4, 1, 1, 3, 1, 5, 0); // hold of zero, real attack/release
+        var plain = pan.StereoClip{};
+        try load_stereo(&plain, &ll, &rr);
+        try stereo_gate_env.stereo_gate_follow(&plain, 0, 8, 1000, 4, 1, 1, 3, 1, 5); // the proven ALES162 un-held linked gate
+        if (!eq(held.left.samples(), plain.left.samples())) return error.ZeroHoldLeftNotPlain;
+        if (!eq(held.right.samples(), plain.right.samples())) return error.ZeroHoldRightNotPlain;
+    }
+
+    // 2. THE LINKED-GATE-OVER-TIME LAW — the stereo crux. A master where the LEFT always holds the peak (|left| >= |right| everywhere) makes the shared held envelope equal the mono held envelope of the left, so left' equals
+    //    ALES57's mono gate_env_hold(left) byte for byte, and the right is scaled by the SAME fraction gat/e — a different, image-preserving result than gating the right on its own.
+    {
+        const ll = [_]i16{ 12000, 200, 200, 200, 200, 200, 6000, -6000 }; // the left holds the peak; a loud head, then a quiet tail, then loud again
+        const rr = [_]i16{ -3000, 50, -40, 30, -50, 40, -1500, 1500 }; // |right| <= |left| everywhere
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &ll, &rr);
+        try stereo_gate_hold_follow(&sc, 0, 8, 1000, 4, 1, 1, 1, 1, 2, 2); // instant attack, release 1:2, hold 2
+
+        // the peak-holding left equals ALES57's mono gate_env_hold of it, proven against the mono tool directly.
+        var mono_l = timeline.Clip{};
+        try timeline.splice(&mono_l, 0, &ll);
+        try gate_env_hold.gate_hold_follow(&mono_l, 0, 8, 1000, 4, 1, 1, 1, 1, 2, 2);
+        if (!eq(sc.left.samples(), mono_l.samples())) return error.PeakLeftNotMono;
+
+        // the INDEPENDENT push genuinely differs — mono gate_env_hold of the right alone follows the right's own (quieter) held envelope, an image-shifting result.
+        var mono_r = timeline.Clip{};
+        try timeline.splice(&mono_r, 0, &rr);
+        try gate_env_hold.gate_hold_follow(&mono_r, 0, 8, 1000, 4, 1, 1, 1, 1, 2, 2);
+        if (eq(sc.right.samples(), mono_r.samples())) return error.IndependentDidNotDiffer;
+    }
+
+    // 3. THE IMAGE LAW — the shared gain preserves the L:R ratio. Over a mixed master no output magnitude exceeds its input's and no sign flips; and an out-of-phase pair (right = −left) comes back STILL out of phase, both
+    //    scaled by the identical time-smoothed-and-held fraction.
+    {
+        const il = [_]i16{ 900, -700, 5000, -400, 300, -300 };
+        const ir = [_]i16{ -400, 600, -3000, 200, -250, 250 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &il, &ir);
+        try stereo_gate_hold_follow(&sc, 0, 6, 1000, 4, 1, 1, 2, 1, 6, 2);
+        const l = sc.left.samples();
+        const r = sc.right.samples();
+        var i: u32 = 0;
+        while (i < 6) : (i += 1) {
+            if (abs16(l[i]) > abs16(il[i]) or abs16(r[i]) > abs16(ir[i])) return error.MagnitudeExpanded;
+            if ((il[i] > 0 and l[i] < 0) or (il[i] < 0 and l[i] > 0)) return error.LeftSignFlipped;
+            if ((ir[i] > 0 and r[i] < 0) or (ir[i] < 0 and r[i] > 0)) return error.RightSignFlipped;
+        }
+
+        var op = pan.StereoClip{};
+        try load_stereo(&op, &[_]i16{ 600, -800, 400, -200 }, &[_]i16{ -600, 800, -400, 200 });
+        try stereo_gate_hold_follow(&op, 0, 4, 1000, 4, 1, 1, 2, 1, 6, 2);
+        const ol = op.left.samples();
+        const orr = op.right.samples();
+        var j: u32 = 0;
+        while (j < 4) : (j += 1) {
+            if (@as(i32, orr[j]) != -@as(i32, ol[j])) return error.OutOfPhaseNotPreserved;
+        }
+    }
+
+    // 4a. UNIT RATIO IS THE IDENTITY EVERYWHERE on both — ratio_num == ratio_den makes gat == e, so the gain is exactly one at every sample regardless of smoothing or hold: the whole master passes byte for byte, even below threshold.
+    {
+        const ll = [_]i16{ 300, -300, 500, -900, 20, -400 };
+        const rr = [_]i16{ -400, 600, -700, 200, -50, 100 };
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &ll, &rr);
+        try stereo_gate_hold_follow(&sc, 0, 6, 1000, 3, 3, 1, 4, 1, 8, 4); // unit ratio 3:3, real attack/release, hold 4
+        if (!eq(sc.left.samples(), &ll) or !eq(sc.right.samples(), &rr)) return error.UnitRatioNotIdentity;
+    }
+
+    // 4b. A NONZERO HOLD KEEPS THE GATE OPEN ACROSS A DIP — a loud pair, one quiet dip below the threshold, then loud again, the left holding the linked peak. With INSTANT attack and release and NO hold the dip drops the
+    //     envelope below the threshold and is attenuated (the gate slammed shut — chatter). With a hold that spans the dip the pinned peak stays above the threshold so the gate stays open and the dip passes byte-for-byte. So
+    //     the held magnitude is no SMALLER than the un-held one at every sample (the hold only keeps the gate OPEN, monotone), and strictly LOUDER at the dip (the chatter avoided).
+    {
+        const dl = [_]i16{ 15000, 300, 15000 }; // loud, a quiet dip below threshold, loud again — the left holds the linked peak
+        const dr = [_]i16{ -400, 50, -400 };
+        const thr: i32 = 1000;
+        var none = pan.StereoClip{};
+        try load_stereo(&none, &dl, &dr);
+        try stereo_gate_hold_follow(&none, 0, 3, thr, 4, 1, 1, 1, 1, 1, 0); // instant attack, instant release, no hold
+        var held = pan.StereoClip{};
+        try load_stereo(&held, &dl, &dr);
+        try stereo_gate_hold_follow(&held, 0, 3, thr, 4, 1, 1, 1, 1, 1, 1); // same, hold of 1 spans the single dip sample
+        var i: u32 = 0;
+        while (i < 3) : (i += 1) {
+            if (abs16(held.left.samples()[i]) < abs16(none.left.samples()[i])) return error.HoldGatedMore;
+        }
+        // the dip sample (index 1): the held gate reads the pinned peak above threshold and lets it pass, the un-held gate has already dropped below threshold and attenuates it — the gate held open through the dip.
+        if (abs16(held.left.samples()[1]) <= abs16(none.left.samples()[1])) return error.HoldDidNotSurvive;
+    }
+
+    // 5. THE CARRY LAW — the shared state carries, env AND hold_left both — so gating a span in two pieces (the split falling MID-HOLD, the second continuing the first's ending shared envelope and countdown) equals gating the
+    //    whole span once, byte for byte on BOTH channels.
+    {
+        const ll = [_]i16{ 12000, 12000, 400, 400, 300, 300, 9000, 200 };
+        const rr = [_]i16{ -3000, 2000, -100, 90, -80, 70, -1500, 50 };
+        var whole = pan.StereoClip{};
+        try load_stereo(&whole, &ll, &rr);
+        try stereo_gate_hold_follow(&whole, 0, 8, 1000, 4, 1, 1, 1, 1, 6, 2);
+
+        var split = pan.StereoClip{};
+        try load_stereo(&split, &ll, &rr);
+        var env: i64 = 0;
+        var hold_left: u32 = 0;
+        try stereo_gate_hold_follow_carry(&split, 0, 3, &env, &hold_left, 1000, 4, 1, 1, 1, 1, 6, 2); // first piece — split at index 3 mid-hold
+        try stereo_gate_hold_follow_carry(&split, 3, 5, &env, &hold_left, 1000, 4, 1, 1, 1, 1, 6, 2); // second continues env AND hold_left
+        if (!eq(split.left.samples(), whole.left.samples())) return error.CarryLeftNotEqual;
+        if (!eq(split.right.samples(), whole.right.samples())) return error.CarryRightNotEqual;
+    }
+
+    // 6a. THE ABOVE-THRESHOLD LAW — a master whose linked held envelope never falls below the threshold passes byte for byte on both (the gate never closes).
+    {
+        const ll = [_]i16{ 5000, -9000, 1200, -1000, 8000 };
+        const rr = [_]i16{ 3000, -80, 40, -1000, -50 }; // even where the right is quiet the left is loud, so the linked envelope stays at or above threshold
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &ll, &rr);
+        try stereo_gate_hold_follow(&sc, 0, 5, 1000, 4, 1, 1, 1, 1, 8, 3); // instant attack seats the loud head, the envelope never dips below 1000
+        if (!eq(sc.left.samples(), &ll) or !eq(sc.right.samples(), &rr)) return error.AboveThresholdNotIdentity;
+    }
+
+    // 6b. THE SILENCE / BALANCE / LENGTH LAW — an all-silent master gates to zero on both; the channels stay equal length and each holds its starting length.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 0, 0, 0, 0 }, &[_]i16{ 0, 0, 0, 0 });
+        try stereo_gate_hold_follow(&sc, 0, 4, 1000, 4, 1, 1, 4, 1, 8, 3);
+        const zeros = [_]i16{ 0, 0, 0, 0 };
+        if (!eq(sc.left.samples(), &zeros) or !eq(sc.right.samples(), &zeros)) return error.SilenceWrong;
+
+        var bc = pan.StereoClip{};
+        try load_stereo(&bc, &[_]i16{ 500, -800, 200, -900, 100 }, &[_]i16{ -400, 300, -700, 500, -50 });
+        try stereo_gate_hold_follow(&bc, 0, 5, 1000, 4, 1, 1, 4, 1, 8, 3);
+        if (bc.left.len != bc.right.len) return error.Unbalanced;
+        if (bc.left.len != 5) return error.LengthChanged;
+    }
+
+    // 6c. THE ATOMICITY LAW — a bad threshold, a sub-unity ratio, an illegal coefficient, a hold past max_clip, and an out-of-range span each refuse by name with BOTH channels byte for byte untouched and still balanced.
+    {
+        const tl = [_]i16{ 5, -6, 7 };
+        const tr = [_]i16{ -7, 6, -5 };
+
+        var a = pan.StereoClip{};
+        try load_stereo(&a, &tl, &tr);
+        if (stereo_gate_hold_follow(&a, 0, 3, 0, 4, 1, 1, 4, 1, 8, 2)) |_| return error.ZeroThresholdSlipped else |e| if (e != error.BadThreshold) return error.WrongZeroThreshold;
+        if (!eq(a.left.samples(), &tl) or !eq(a.right.samples(), &tr) or a.left.len != a.right.len) return error.ThresholdRefusalMutated;
+
+        var b = pan.StereoClip{};
+        try load_stereo(&b, &tl, &tr);
+        if (stereo_gate_hold_follow(&b, 0, 3, 1000, 1, 2, 1, 4, 1, 8, 2)) |_| return error.SubUnitySlipped else |e| if (e != error.BadRatio) return error.WrongSubUnity;
+        if (!eq(b.left.samples(), &tl) or !eq(b.right.samples(), &tr) or b.left.len != b.right.len) return error.SubUnityRefusalMutated;
+
+        var c = pan.StereoClip{};
+        try load_stereo(&c, &tl, &tr);
+        if (stereo_gate_hold_follow(&c, 0, 3, 1000, 4, 1, 5, 4, 1, 8, 2)) |_| return error.BadAttackSlipped else |e| if (e != error.BadCoeff) return error.WrongBadAttack;
+        if (!eq(c.left.samples(), &tl) or !eq(c.right.samples(), &tr) or c.left.len != c.right.len) return error.AttackRefusalMutated;
+
+        var d = pan.StereoClip{};
+        try load_stereo(&d, &tl, &tr);
+        if (stereo_gate_hold_follow(&d, 0, 3, 1000, 4, 1, 1, 4, 1, 8, timeline.max_clip + 1)) |_| return error.BadHoldSlipped else |e| if (e != error.BadHold) return error.WrongBadHold;
+        if (!eq(d.left.samples(), &tl) or !eq(d.right.samples(), &tr) or d.left.len != d.right.len) return error.HoldRefusalMutated;
+
+        var f = pan.StereoClip{};
+        try load_stereo(&f, &tl, &tr);
+        if (stereo_gate_hold_follow(&f, 1, 3, 1000, 4, 1, 1, 4, 1, 8, 2)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(f.left.samples(), &tl) or !eq(f.right.samples(), &tr) or f.left.len != f.right.len) return error.BadRangeRefusalMutated;
+    }
+
+    // 6d. THE DEGENERATE LAW — count = 0 (an empty span in the middle) is the identity on both channels; no pair to gate.
+    {
+        var noop = pan.StereoClip{};
+        try load_stereo(&noop, &[_]i16{ 300, -300, 200 }, &[_]i16{ -50, 60, -70 });
+        try stereo_gate_hold_follow(&noop, 1, 0, 1000, 4, 1, 1, 4, 1, 8, 2); // empty span — identity
+        if (!eq(noop.left.samples(), &[_]i16{ 300, -300, 200 })) return error.ZeroCountLeftChanged;
+        if (!eq(noop.right.samples(), &[_]i16{ -50, 60, -70 })) return error.ZeroCountRightChanged;
+    }
+
+    // silence the unused import in builds that trim it — gate is named in the doc lineage; touch it so the reference stays honest.
+    _ = gate.gate_version;
+
+    print("GREEN ales-stereo-gate-env-hold: the ATTACK/HOLD/RELEASE NOISE GATE CARRIED INTO STEREO — the LINKED HELD envelope driving ONE LINKED gate over time, the second spender of the held time base. Gate a span of " ++
+        "sample-PAIRS in a master below a magnitude threshold by a ratio, the one downward push following the shared LINKED HELD envelope (max(|left|, |right|), attack while rising and rearming the shared hold, the peak " ++
+        "pinned while the countdown lasts, release once it expires): at or above the threshold both pass byte for byte, below it the silenced floor gat = e·den/num (ALES51's floor on the linked held envelope) yields one gain " ++
+        "gat/e applied to both raw samples. ALES162 built the un-held stereo breathing gate; ALES165 built the linked held time base; this fuses them — one detector, one hold, one gate, the image held the whole time, the " ++
+        "hold keeping the gate open across a dip rather than chattering the field. THE ZERO-HOLD LAW (the crux link): a hold of zero reduces to ALES162's stereo_gate_env byte for byte on both. THE LINKED-GATE-OVER-TIME LAW: a " ++
+        "left-always-peak master has left' == ALES57's mono gate_env_hold(left), the right scaled by the same fraction, the independent per-channel gate_env_hold genuinely differing. THE IMAGE LAW: the shared gain preserves " ++
+        "the L:R ratio, an out-of-phase pair returns still out of phase, no magnitude expands, no sign flips. THE KNOB / NO-CHATTER LAWS: unit ratio the identity everywhere, a nonzero hold keeping the gate open across a brief " ++
+        "dip (it does not chatter, the knob monotone). THE CARRY LAW: a span gated in two pieces (the split mid-hold) equals the whole once on both, env and hold_left carrying. THE ABOVE-THRESHOLD / SILENCE / BALANCE / " ++
+        "ATOMICITY / DEGENERATE LAW: a master whose linked held envelope never falls below the threshold passing byte for byte, silence staying silence, left.len == right.len after, each of the five refusals leaving both " ++
+        "channels untouched and balanced, count = 0 the identity on both. Purely local — two bounded i16 Clips carrying one shared i64 envelope and one shared u32 hold countdown, at most one multiply-then-divide for the step " ++
+        "plus one per channel for the gain (in i64, no overflow), the gain gat/e in [0, 1]; the attack, release, and hold per sample index; no real sample rate, no anti-aliasing, no network, no keys, no funds, no real " ++
+        "speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
