@@ -1,0 +1,40 @@
+# tools/ales_fold_witness.rish — the wavefolder: the excess past the ceiling reflects back, a mirror not a wall (ALES80).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES80.
+# Design read: active-designing/20260814-210615_fill-ales80-lotus-wavefolder.md
+# Stands on: lotus/drive.rye (ALES78 — the pre-gain reused verbatim, and the ceiling the fold reflects at rather than pins to); lotus/fader.rye
+# (ALES6 — the num/den gain in i64); lotus/timeline.rye (ALES2 — the Clip, sample_min/max, the one true saturate).
+#
+# lotus/fold.rye mirrors ALES78's clipping ceiling. A HARD CLIP IS A WALL, A WAVEFOLDER IS A MIRROR: the two rungs agree exactly below the ceiling
+# (a wavefolder IS the hard clip until the signal first touches the ceiling) and diverge above it — the clip PINS the excess, the fold REFLECTS it
+# back down (p = m mod 2·ceil; folded = p if p ≤ ceil else 2·ceil − p), a triangle wave that reaches SILENCE at 2·ceil and folds back to the
+# ceiling at 3·ceil. The selftest proves it: below the ceiling the fold reproduces ALES78's hard drive byte-for-byte (against the real hard clip);
+# the single fold reflects by hand (1200→800, 1500→500, 2000→0); the double fold continues the triangle (2500→500, 3000→1000, 4000→0); the fold
+# NULLS at every even multiple of the ceiling (the voice a clip can never make); the output never leaves [−ceil, ceil] under a heavy ×8 drive; the
+# shape is ODD, wavefold(−x) = −wavefold(x); the span discipline holds; a zero den / below-unity gain / oversized numerator refuses BadGain, a zero
+# or over-rail ceiling BadCeiling, a span past the end BadRange, each leaving the clip untouched. The triangle lands every output in [−ceil, ceil] ⊆
+# the i16 rail BEFORE the write, so the shape does the bounding and the saturate is a documented no-op. Purely local — one multiply, one divide, one
+# modulo and one compare per sample; no delay line, no anti-aliasing, no network, no keys, no funds, no real device, no real sample rate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ales_fold_witness.rish
+
+say "ales-fold: Language EN — ALES78's hard clip and ALES79's overdrive both treat the ceiling as a WALL: a boosted sample that reaches it stops there. The wavefolder treats it as a MIRROR — the part above the ceiling reflects back down into the field, and a strong boost folds the wave again and again. Folding multiplies harmonics far past what a clip makes: the bright, metallic, bell-like voice of a West-Coast synth and a fuzz pushed past sanity."
+say "ales-fold: Style Radiant — the law is stated positively as a recognition: A HARD CLIP IS A WALL, A WAVEFOLDER IS A MIRROR. The two rungs agree exactly below the ceiling — a wavefolder IS the hard clip until the signal first touches it — and diverge above: the clip pins the excess, the fold reflects it back down, a triangle wave in the boosted magnitude with period 2·ceil. No new pre-gain (ALES78's, verbatim); only the shape past the ceiling is new, and the wavefolder adds no new fault name (no knee)."
+say "ales-fold: Lens TAME — one mono clip of i16 PCM wavefolded in place over a span; the shape is a triangle map on the boosted magnitude with the sign carried (odd, so odd harmonics), p = m mod 2·ceil then folded = p if p ≤ ceil else 2·ceil − p, exact over non-negative integers; the folded magnitude sits in [0, ceil] so the output lands in [−ceil, ceil] ⊆ [sample_min, sample_max] BEFORE the write, the saturate a documented no-op; a zero denominator / below-unity gain / oversized numerator refuses BadGain, a ceiling outside [1, sample_max] BadCeiling, a span outside the samples BadRange, all before any write, the clip untouched on refusal; the shape is MEMORYLESS (every output depends only on its own input); siloed to lotus/, the gain a rational and the ceiling a magnitude in sample units, no delay line, no snapshot, no anti-aliasing, no network, no keys, no funds, no device, no speaker, no sample rate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/fold"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/fold.rye -femit-bin=${bin}"]
+assert build.ok else "ales-fold: build failed — ${build.err}"
+
+let outfile = "lotus/bin/fold.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-fold: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-fold: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-fold' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-fold: selftest did not print the GREEN ales-fold line"

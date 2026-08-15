@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260814.210615
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title ALES80 — Lotus's wavefolder: the excess past the ceiling reflects back, a mirror not a wall
+prompt Continue the autonomous loop — the next agent-doable lap Lindy-first crux-first, self-approve the design round, send each finished increment to origin and xykj61, stop at custody gates.
+think ALES79 (the soft-clip overdrive) named ALES80 by name in its own recommend line: a wavefolder, where the excess past the ceiling reflects back rather than pinning. Honoring the loop's own named successor keeps the compass harmony — Lindy-first crux-first, that is the next durable DRIVE-family rung.
+think The crux is one recognition read against the clip already in the tree: A HARD CLIP IS A WALL, A WAVEFOLDER IS A MIRROR. The two rungs agree EXACTLY below the ceiling (a wavefolder IS the hard clip until the signal first touches it) and diverge above — the clip PINS the excess, the fold REFLECTS it back down.
+think Shape: pre-gain ALES78's verbatim, then a triangle map on the boosted magnitude with the sign carried — p = m mod 2·ceil; folded = p if p ≤ ceil else 2·ceil − p. A triangle wave in m with period 2·ceil that reaches SILENCE at 2·ceil and folds back to the ceiling at 3·ceil. Every term exact over non-negative integers. No knee, so NO new fault name — the simplest DRIVE map; BadGain/BadCeiling/BadRange coincide with ALES78's by name.
+obs Safe by construction exactly as the hard clip: the folded magnitude sits in [0, ceil] for every m, so the write lands in [−ceil, ceil] ⊆ the i16 rail BEFORE the write and the saturate is a documented no-op. The map is ODD (magnitude folded, sign carried) → odd harmonics richly multiplied; MEMORYLESS → in place, no snapshot.
+obs One RED then GREEN across all eight laws. The RED was a wrong TEST arithmetic in the span law: 5000·4 = 20000 folded at ceil 800 (period 1600) lands at 20000 mod 1600 = 800 (the triangle peak), not the 400 I first wrote — the code was correct, the expected value fixed. The strongest law proves the family bond directly: below the ceiling the wavefold reproduces the REAL ALES78 hard drive byte-for-byte (both tools run in the one selftest), and the fold NULLS at every even multiple of the ceiling — the voice a clip can never make. tame_style_check clean.
+loom witness=ales_fold_witness laws=8 result=green build=second reds=1
+file lotus/fold.rye ALES80 — the wavefolder, ALES78's pre-gain into a triangle that reflects the excess at the ceiling.
+file tools/ales_fold_witness.rish builds and runs the selftest (re-proving ALES78 beside it), asserts the GREEN ales-fold line.
+file active-designing/20260814-210615_fill-ales80-lotus-wavefolder.md the self-approved design read for the rung.
+file lotus/README.md status line synced (ALES80 added, stamp refreshed) — front door current.
+recommend keep-going ALES81 the DRIVE family's next shape — an asymmetric / tube drive, a different knee per sign so even harmonics arise. Mechanical, single-module, policy already written; no custody gate.

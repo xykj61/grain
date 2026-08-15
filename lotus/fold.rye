@@ -1,0 +1,276 @@
+//! lotus/fold.rye — ALES80: the wavefolder — the excess past the ceiling reflects back, a mirror not a wall. The hard-clip drive (ALES78) and
+//! the overdrive (ALES79) both treat the ceiling as a WALL: a boosted sample that reaches it stops there, pinned flat. The wavefolder treats the
+//! ceiling as a MIRROR — the part of the boosted signal above the ceiling REFLECTS back down into the field, and if the boost is strong enough the
+//! wave folds again and again. Folding multiplies harmonics far past what a clip makes: the bright, metallic, bell-like voice of a West-Coast
+//! synth's timbre and a fuzz pushed past sanity.
+//!
+//! The crux is that A HARD CLIP IS A WALL, A WAVEFOLDER IS A MIRROR — the two rungs agree EXACTLY below the ceiling and diverge above it. For a
+//! boosted magnitude m = |boosted| and a ceiling ceil: m ≤ ceil passes clean (a wavefolder IS the hard clip until the signal first touches the
+//! ceiling); above the ceiling the hard clip PINS to ceil, and the wavefolder REFLECTS — the excess folds back down, reaches SILENCE at 2·ceil,
+//! folds back up to the ceiling at 3·ceil, and so on: a triangle wave in m with period 2·ceil. The fold is one exact integer expression on the
+//! non-negative magnitude, the sign carried: p = m mod (2·ceil); folded = p if p ≤ ceil else 2·ceil − p. Every term is exact over non-negative
+//! integers (@mod of a non-negative magnitude by a positive period is the ordinary remainder). The pre-gain is ALES78's verbatim (ALES6's num/den
+//! into i64); only the shape past the ceiling is new.
+//!
+//! The folded magnitude sits in [0, ceil] for every m — the triangle never rises above its peak — so the write lands in [−ceil, ceil] ⊆ the i16
+//! rail BEFORE the write, exactly as the hard clip: the saturate that follows is a documented no-op, the shape does the bounding. The map is ODD,
+//! wavefold(−x) = −wavefold(x) (the magnitude is folded, the sign carried through), so a symmetric input yields a symmetric output — odd
+//! harmonics, richly multiplied. It is MEMORYLESS: every output depends only on its own input, so the in-place read-then-write touches nothing
+//! another step needs.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES80.
+//! Design read: active-designing/20260814-210615_fill-ales80-lotus-wavefolder.md
+//! Stands on: lotus/drive.rye (ALES78) — the pre-gain, reused verbatim, and the ceiling the fold reflects at rather than pins to; lotus/fader.rye
+//! (ALES6) — the num/den gain in i64; lotus/timeline.rye (ALES2) — the Clip, sample_min/max, the one true saturate.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Bounded in-process i16 PCM buffers on one bench, siloed to lotus/. No socket, no network, no keys,
+//! no funds, no real device, no real sample rate — the gain is a rational num/den (unity = 1/1), the ceiling a magnitude in sample units (not
+//! decibels), and the shape a triangle waveshaper, instantaneous (no attack/release, no anti-aliasing — folding is a heavy harmonic generator,
+//! and the harmonics fold in the i16 domain exactly as any integer waveshaper's). One multiply, one divide, one modulo and one compare per sample;
+//! the gain runs in i64 so it never overflows before the fold, and the folded value fits the i16 rail by construction.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/fold.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const drive = @import("drive.rye");
+
+pub const fold_version = "20260814.210615";
+
+/// The wavefolder's faults, one consistent name each. BadGain, BadCeiling, and BadRange coincide by name with ALES78's hard drive (and through it
+/// ALES49's limiter) — Zig merges error sets by name — so a composer sees one consistent fault whichever drive refuses. The wavefolder has NO
+/// knee, so it adds no new fault name: it is the simplest DRIVE-family map, one triangle over the boosted magnitude.
+pub const FoldError = error{
+    /// A zero denominator, a gain below unity (num < den — a drive boosts, never attenuates), or a numerator past drive.max_drive_num — no write.
+    BadGain,
+    /// A ceiling of zero, or above sample_max (nothing boosted could ever be folded there) — refused, no write.
+    BadCeiling,
+    /// A span outside the current samples — refused, no write.
+    BadRange,
+};
+
+/// The triangle fold on one non-negative boosted magnitude `m`: below `ceil` it passes clean; above `ceil` the excess reflects back down, reaching
+/// zero at `2·ceil`, rising again to `ceil` at `3·ceil`, a triangle wave in `m` with period `2·ceil`. Returns a magnitude in [0, ceil]. Total and
+/// small so the per-sample loop reads plainly; the sign is carried by the caller.
+fn fold_magnitude(m: i64, ceil: i64) i64 {
+    // invariant: the inputs are legal magnitudes — 0 ≤ m and 1 ≤ ceil ≤ sample_max — so the period is positive and the modulo is the ordinary
+    // non-negative remainder.
+    assert(m >= 0 and ceil >= 1 and ceil <= @as(i64, timeline.sample_max));
+    const period: i64 = 2 * ceil; // the triangle's period; safe — 2·32767 is far inside i64
+    // @mod of a non-negative magnitude by a positive period is the ordinary remainder in [0, period).
+    const p: i64 = @mod(m, period);
+    // invariant: the remainder lands in [0, 2·ceil), so exactly one of the two triangle branches applies below.
+    assert(p >= 0 and p < period);
+    const folded: i64 = if (p <= ceil) p else period - p;
+    // invariant: a folded value sits in [0, ceil] — the near branch is p ≤ ceil, the far branch is 2·ceil − p with ceil < p < 2·ceil so
+    // 0 < 2·ceil − p < ceil. The triangle never rises above its peak.
+    assert(folded >= 0 and folded <= ceil);
+    return folded;
+}
+
+/// Wavefold `count` samples starting at `start` in place in `clip`: each sample is boosted by the rational gain `num`/`den` (at least unity) and
+/// then folded through the ceiling — clean below `ceil`, the excess reflecting back down above it, a triangle wave in the boosted magnitude with
+/// period `2·ceil`. A hard clip pins that same excess; this rung mirrors it. After the call every written sample's magnitude is at most `ceil`, its
+/// sign matches the input's, and every output depends only on its own input (the shape is memoryless). Refuses BadGain, BadCeiling, and BadRange —
+/// each BEFORE any write, so an illegal call leaves the clip exactly as it was. Values only — never the length.
+pub fn wavefold(clip: *timeline.Clip, start: u32, count: u32, num: u32, den: u32, ceil: i32) FoldError!void {
+    // invariant: the gain is legal exactly as ALES78's hard drive — nonzero denominator, at least unity, numerator within the safe bound. The
+    // same three checks, so the same three faults, before any write.
+    if (den == 0) return error.BadGain;
+    if (num < den) return error.BadGain;
+    if (num > drive.max_drive_num) return error.BadGain;
+    // invariant: the ceiling is a legal magnitude — at least one sample unit, no greater than the i16 rail (ALES49's exact bound).
+    if (ceil < 1) return error.BadCeiling;
+    if (ceil > @as(i32, timeline.sample_max)) return error.BadCeiling;
+    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
+    if (start > clip.len) return error.BadRange;
+    if (count > clip.len - start) return error.BadRange;
+
+    const ceiling: i64 = @as(i64, ceil); // safe: 1 <= ceil <= sample_max
+    const n: i64 = @as(i64, num);
+    const d: i64 = @as(i64, den);
+    // invariant: the gain terms are bounded and positive, so the pre-gain never overflows i64 and the fold's period is well-formed.
+    assert(n >= d and d >= 1 and n <= @as(i64, drive.max_drive_num) and ceiling >= 1 and ceiling <= @as(i64, timeline.sample_max));
+    var k: u32 = 0;
+    while (k < count) : (k += 1) {
+        const i: u32 = start + k;
+        const dry: i64 = @as(i64, clip.buf[i]);
+        // invariant: the sample read is a legal i16 — it is audio, never a wide intermediate.
+        assert(dry >= @as(i64, timeline.sample_min) and dry <= @as(i64, timeline.sample_max));
+        // The pre-gain, ALES78's verbatim: dry boosted by num/den in i64, @divTrunc toward zero exactly as ALES6's fader.
+        const boosted: i64 = @divTrunc(dry * n, d);
+        // Fold the MAGNITUDE and carry the sign — the waveshaper is odd, so a symmetric input maps to a symmetric output.
+        const mag: i64 = if (boosted < 0) -boosted else boosted;
+        const folded_mag: i64 = fold_magnitude(mag, ceiling);
+        const folded: i64 = if (boosted < 0) -folded_mag else folded_mag;
+        // invariant: the folded value lands within [−ceil, ceil] ⊆ [sample_min, sample_max], so the write fits the i16 rail BY CONSTRUCTION — the
+        // triangle does the bounding, and the saturate that follows is a documented no-op over an already-bounded value.
+        assert(folded >= -ceiling and folded <= ceiling);
+        // invariant: the sign is held — the magnitude is folded and the boosted sign carried, so an odd waveshaper never flips a sample.
+        assert((boosted >= 0 and folded >= 0) or (boosted <= 0 and folded <= 0));
+        clip.buf[i] = timeline.saturate(folded);
+    }
+    // invariant: a wavefold changes sample values only, never the clip's length or bound.
+    assert(start + count <= clip.len);
+    assert(clip.len <= clip.buf.len);
+}
+
+// --- selftest: BELOW THE CEILING THE FOLD IS THE HARD CLIP (a gain too low to reach the ceiling reproduces ALES78's hard drive byte-for-byte —
+//     both pass clean, proven against the real hard drive); the SINGLE FOLD reflects (ceil = 1000: 1200→800, 1500→500, 2000→0); the DOUBLE FOLD
+//     continues the triangle (2500→500, 3000→1000); the FOLD REACHES ZERO at even multiples of the ceiling (the null a clip can never make); the
+//     OUTPUT NEVER LEAVES [−ceil, ceil] under a heavy drive, its sign held; the shape is ODD, wavefold(−x) = −wavefold(x); the span discipline
+//     holds; and each fault — BadGain, BadCeiling, BadRange — refuses by name, the clip untouched ---
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+fn run_selftest() !u8 {
+    // 1. BELOW THE CEILING THE FOLD IS THE HARD CLIP — the crux's clean half. With a ×1/1 gain into a ceiling no boosted sample reaches, the
+    //    wavefold reproduces ALES78's hard drive byte-for-byte (both pass the signal clean). Proven against the REAL ALES78 (both run). Every
+    //    sample stays well within ±1500, so both maps are the identity here — the two shapes are indistinguishable until the signal touches the
+    //    ceiling.
+    {
+        const sig = [_]i16{ 500, -900, 1000, -1000, 250, -500, 100, -50 };
+        var a = timeline.Clip{};
+        try load_clip(&a, &sig);
+        var b = timeline.Clip{};
+        try load_clip(&b, &sig);
+        try wavefold(&a, 0, a.len, 1, 1, 1500); // nothing reaches 1500 — clean pass
+        try drive.drive(&b, 0, b.len, 1, 1, 1500); // ALES78's hard clip, same clean pass
+        if (!eq(a.samples(), b.samples())) return error.BelowCeilNotHard;
+        if (!eq(a.samples(), &sig)) return error.BelowCeilNotIdentity;
+    }
+
+    // 2. THE SINGLE FOLD REFLECTS — a hand computation. ceil = 1000 (period 2000), gain ×1/1 so the boosted value is the input. 800 passes
+    //    (clean); 1000 passes (at the peak); 1200 → 2000 − 1200 = 800; 1500 → 2000 − 1500 = 500; 2000 → mod 2000 = 0 (the fold touches silence).
+    //    Signs carried on the negatives.
+    {
+        const sig = [_]i16{ 800, -1000, 1200, -1500, 2000, -800 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try wavefold(&clip, 0, clip.len, 1, 1, 1000);
+        const want = [_]i16{ 800, -1000, 800, -500, 0, -800 };
+        if (!eq(clip.samples(), &want)) return error.SingleFoldWrong;
+    }
+
+    // 3. THE DOUBLE FOLD CONTINUES THE TRIANGLE — past 2·ceil the wave folds back up. ceil = 1000 (period 2000): 2500 → mod 2000 = 500 (≤ 1000,
+    //    near branch); 3000 → mod 2000 = 1000 (the second peak); 3500 → mod 2000 = 1500 (> 1000, far branch) → 2000 − 1500 = 500; 4000 → mod 2000
+    //    = 0 (the second null). The triangle is unbroken across folds.
+    {
+        const sig = [_]i16{ 2500, -3000, 3500, -4000 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try wavefold(&clip, 0, clip.len, 1, 1, 1000);
+        const want = [_]i16{ 500, -1000, 500, 0 };
+        if (!eq(clip.samples(), &want)) return error.DoubleFoldWrong;
+    }
+
+    // 4. THE FOLD REACHES ZERO AT EVEN MULTIPLES OF THE CEILING — where a hard clip would pin loudest (m ≫ ceil), the wavefolder NULLS at every
+    //    2·ceil. ceil = 600 (period 1200): 1200 → 0, 2400 → 0, 3600 → 0. The distinctive fold voice a clip can never make.
+    {
+        const sig = [_]i16{ 1200, -2400, 3600 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try wavefold(&clip, 0, clip.len, 1, 1, 600);
+        const want = [_]i16{ 0, 0, 0 };
+        if (!eq(clip.samples(), &want)) return error.NullWrong;
+    }
+
+    // 5. THE OUTPUT NEVER LEAVES [−ceil, ceil] — under a heavy ×8 drive every folded output magnitude stays at or below the ceiling, its sign
+    //    held. The triangle caps at its peak, so no folded value can cross the rail.
+    {
+        const sig = [_]i16{ 100, -100, 4000, -4000, 20000, -20000, 5, -5 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        const ceil: i16 = 1200;
+        try wavefold(&clip, 0, clip.len, 8, 1, ceil);
+        const out = clip.samples();
+        var i: u32 = 0;
+        while (i < out.len) : (i += 1) {
+            if (out[i] > ceil or out[i] < -ceil) return error.CeilingCrossed;
+            const s = sig[i];
+            if (!((s >= 0 and out[i] >= 0) or (s <= 0 and out[i] <= 0))) return error.SignFlipped;
+        }
+    }
+
+    // 6. THE SHAPE IS ODD — wavefold(−x) = −wavefold(x). A ± symmetric input maps to a ± symmetric output at any gain and ceiling: out[0] =
+    //    −out[1], out[2] = −out[3], out[4] = −out[5] — the fold shapes the magnitude and carries the sign, so only odd harmonics arise.
+    {
+        const sig = [_]i16{ 700, -700, 3000, -3000, 60, -60 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try wavefold(&clip, 0, clip.len, 3, 1, 900);
+        const out = clip.samples();
+        if (out[0] != -out[1] or out[2] != -out[3] or out[4] != -out[5]) return error.NotOddSymmetric;
+    }
+
+    // 7. THE SPAN DISCIPLINE — wavefolding a sub-span leaves samples outside [start, count) exactly as they were, the in-place discipline the whole
+    //    suite keeps. Fold the middle two of six; the first and last two are untouched.
+    {
+        const sig = [_]i16{ 100, 200, 5000, -5000, 300, 400 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        try wavefold(&clip, 2, 2, 4, 1, 800); // indices 2,3 only; 5000·4 = 20000, folded; ceil 800 period 1600, 20000 mod 1600 = 800 (at the peak)
+        const want = [_]i16{ 100, 200, 800, -800, 300, 400 };
+        if (!eq(clip.samples(), &want)) return error.SpanLeaked;
+    }
+
+    // 8a. A ZERO DENOMINATOR / BELOW-UNITY GAIN / OVERSIZED NUMERATOR each refuse BadGain — before any write, the clip untouched (ALES78's gain
+    //     faults, verbatim).
+    {
+        const sig = [_]i16{ 1, 2, 3, 4 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        if (wavefold(&clip, 0, clip.len, 2, 0, 1000)) |_| return error.ZeroDenSlipped else |e| if (e != error.BadGain) return error.WrongZeroDen;
+        if (!eq(clip.samples(), &sig)) return error.RefusedZeroDenTouched;
+        if (wavefold(&clip, 0, clip.len, 1, 2, 1000)) |_| return error.BelowUnitySlipped else |e| if (e != error.BadGain) return error.WrongBelowUnity;
+        if (!eq(clip.samples(), &sig)) return error.RefusedBelowUnityTouched;
+        if (wavefold(&clip, 0, clip.len, drive.max_drive_num + 1, 1, 1000)) |_| return error.WideNumSlipped else |e| if (e != error.BadGain) return error.WrongWideNum;
+        if (!eq(clip.samples(), &sig)) return error.RefusedWideNumTouched;
+    }
+
+    // 8b. A ZERO / OVER-RAIL CEILING refuses BadCeiling; a SPAN past the end refuses BadRange — before any write, the clip untouched.
+    {
+        const sig = [_]i16{ 9, 10, 11 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        if (wavefold(&clip, 0, clip.len, 2, 1, 0)) |_| return error.ZeroCeilSlipped else |e| if (e != error.BadCeiling) return error.WrongZeroCeil;
+        if (!eq(clip.samples(), &sig)) return error.RefusedZeroCeilTouched;
+        if (wavefold(&clip, 0, clip.len, 2, 1, @as(i32, timeline.sample_max) + 1)) |_| return error.OverCeilSlipped else |e| if (e != error.BadCeiling) return error.WrongOverCeil;
+        if (!eq(clip.samples(), &sig)) return error.RefusedOverCeilTouched;
+        if (wavefold(&clip, 1, 3, 2, 1, 1000)) |_| return error.OverRangeSlipped else |e| if (e != error.BadRange) return error.WrongOverRange;
+        if (!eq(clip.samples(), &sig)) return error.RefusedOverRangeTouched;
+    }
+
+    print("GREEN ales-fold: the WAVEFOLDER — the excess past the ceiling reflects back, a MIRROR not a WALL. A HARD CLIP IS A WALL, A WAVEFOLDER " ++
+        "IS A MIRROR: the two rungs agree exactly below the ceiling (a wavefolder IS the hard clip until the signal first touches the ceiling) " ++
+        "and diverge above it — the clip PINS the excess, the fold REFLECTS it back down (p = m mod 2·ceil; folded = p if p ≤ ceil else " ++
+        "2·ceil − p), a triangle wave in the boosted magnitude that reaches SILENCE at 2·ceil and folds back to the ceiling at 3·ceil. The " ++
+        "pre-gain is ALES78's verbatim (ALES6's num/den into i64). Below the ceiling the fold reproduces ALES78's hard drive byte-for-byte " ++
+        "(proven against the real hard clip); the single fold reflects by hand (800,1000 clean; 1200→800; 1500→500; 2000→0); the double fold " ++
+        "continues the triangle (2500→500; 3000→1000; 3500→500; 4000→0); the fold NULLS at every even multiple of the ceiling (1200,2400,3600→0 " ++
+        "at ceil 600 — the voice a clip can never make); the output never leaves [−ceil, ceil] under a heavy ×8 drive, every sign held; the " ++
+        "shape is ODD, wavefold(−x) = −wavefold(x), so a symmetric input yields odd harmonics richly multiplied; the span discipline holds; a " ++
+        "zero den / below-unity gain / oversized numerator refuses BadGain, a zero or over-rail ceiling BadCeiling, a span past the end " ++
+        "BadRange, each leaving the clip untouched. The triangle lands every output in [−ceil, ceil] ⊆ the i16 rail BEFORE the write, so the " ++
+        "shape does the bounding and the saturate is a documented no-op; one multiply, one divide, one modulo and one compare per sample; no " ++
+        "delay line, no anti-aliasing, no socket, no network, no keys, no funds, no real device, no real sample rate. The DRIVE family now holds " ++
+        "three shapes — the wall, the rounded shoulder, and the mirror; an asymmetric tube and a bit-crush are the next\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
