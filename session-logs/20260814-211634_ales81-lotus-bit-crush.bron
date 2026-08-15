@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260814.211634
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title ALES81 — Lotus's bit-crusher: drop the low bits, the first DRIVE map that is not odd
+prompt Continue the autonomous loop — the next agent-doable lap Lindy-first crux-first, self-approve the design round, send each finished increment to origin and xykj61, stop at custody gates.
+think ALES80's wavefolder (and ALES78's hard clip before it) named the bit-crush / decimator as a next member of the DRIVE family. All three seated members — hard clip, overdrive, wavefolder — shape AMPLITUDE while holding RESOLUTION: every one of the 65,536 i16 codes still crosses. The bit-crusher shapes the other axis, dropping the low bits, so it is the durable, crux-shaped next rung and no custody gate.
+think The crux is a genuine departure, not a restatement: dropping the low 16−bits bits of a two's-complement integer is flooring toward −∞ onto the grid of step 2^(16−bits) — q = divFloor(x, step)·step. Every prior DRIVE map is ODD (it shapes the magnitude and carries the sign); this one floors the SIGNED value, so crush(−100,8) = −256 while crush(100,8) = 0. The bit-crush is the DRIVE family's FIRST map that is NOT odd, and that faint downward DC offset is bit reduction's honest fingerprint — stated positively rather than dressed in a symmetry it lacks.
+think Kept it the purest DRIVE member: no pre-gain, no ceiling — just resolution. A keeper who wants a boosted crush runs ALES78's drive then crush over the same span (both in-place span maps that compose), the way ALES4's fade composes with ALES3's mix into a crossfade. Faults: BadBits (a resolution outside [1,16]), BadRange (the shared span law). bits = 16 is the identity (a shift of zero).
+obs Safe by construction: the grid of step 2^s (s ≤ 15) includes sample_min = −2^15 (a multiple of every such step) and every reachable grid point sits at or below x, so q lands in [sample_min, sample_max] BEFORE the write and the saturate is a documented no-op. The map is IDEMPOTENT (a grid point crushes to itself → crush(crush(x)) = crush(x)) and MEMORYLESS (in place, no snapshot).
+obs One RED then GREEN across all eight laws. The RED was a Zig compile error, not a logic fault: the GREEN print string held a literal brace pair naming the one-bit output, which Zig read as a format placeholder ("too few arguments") — rephrased to plain words, no code change. Chose @divFloor over @divTrunc deliberately: @divTrunc would round toward zero and keep the map odd, but the literal low-bit drop of a two's-complement DAC floors toward −∞, so @divFloor is the honest operation and the non-oddness is the teaching point. tame_style_check clean.
+loom witness=ales_crush_witness laws=8 result=green build=second reds=1
+file lotus/crush.rye ALES81 — the bit-crusher, low bits floored onto the grid of step 2^(16−bits), the first non-odd DRIVE map.
+file tools/ales_crush_witness.rish builds and runs the selftest, asserts the GREEN ales-crush line.
+file active-designing/20260814-211634_fill-ales81-lotus-bit-crush.md the self-approved design read for the rung.
+file lotus/README.md status line synced (ALES81 added) — front door current.
+recommend keep-going ALES82 the DRIVE family's next shape — an asymmetric / tube drive (a different knee per sign, so even harmonics arise), or a sample-rate decimator (crush time rather than amplitude). Mechanical, single-module, policy already written; no custody gate.
