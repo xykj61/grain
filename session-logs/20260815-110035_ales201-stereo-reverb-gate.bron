@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260815.110035
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title ALES201 — Lotus's stereo gated reverb, the gate axis whole
+prompt recur loop — continue the Lotus/ALES ladder Lindy-first crux-first, each finished rung its own signed round
+think ALES200 gave the mono reverb its gate (the classic gated-reverb tail); the ladder always closes the mono/stereo pair, so the thin twin is stereo_reverb_gate — the same downward gate over both channels of a StereoClip, one shared threshold and ratio, the image held. Mirrored the stereo_reverb_tone (ALES199) shape exactly.
+think Reverberate the master wet through ALES191 stereo_reverb_preset unchanged; precheck the gate's threshold and ratio inline (the same guards ALES49's gate raises — gate.rye has no precheck helper) BEFORE the wet is written so a bad gate leaves both channels dry and balanced (atomicity); then gate each channel with the same threshold and ratio, no cross-channel read so the image is held. StereoReverbGateError = stereo_reverb_preset.StereoReverbPresetError || BadThreshold || BadRatio.
+obs Witness GREEN on the first metal pass — no RED to book. Six laws: the identity edge on both channels, each channel equals its composition byte for byte, each channel gated (total energy strictly reduced), the image held (centred identical, stereo distinct), channels balanced + silence, faults forward atomic (BadThreshold/BadRatio both channels dry, DurationTooLong, BadRange). ALES191 stereo preset and ALES200 mono gate re-run GREEN beside it; TAME bans clean, width exit 0.
+loom witness=ales_stereo_reverb_gate_witness selftest=GREEN laws=6 channels=2 max_clip=4096 bench_samples=1024 ratio=8:1 threshold=2000
+file active-designing/20260815-110035_fill-ales201-lotus-stereo-reverb-gate.md the self-approved design round naming the crux, shape, and six laws
+file lotus/stereo_reverb_gate.rye the rung — the stereo wet-tail gate, ALES49 gate per ear over ALES191 wet, threshold and ratio prechecked
+file tools/ales_stereo_reverb_gate_witness.rish the witness proving six laws and re-proving ALES191/ALES200 green beside it
+recommend keep-going — the gate axis stands whole for mono and stereo; the richer horizon is a shaped envelope-gate (an attack/hold/release opening on the transient and closing over the decay, a true new primitive), or a fresh reverb axis (width, freeze, early/late balance).
