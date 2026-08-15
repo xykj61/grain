@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260815.194215
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) — this session in ai-jail
+title Season G seventh rung — the edwards25519 group law in pure Rye
+prompt Keep climbing the Rye-first crypto-parity wave Lindy-first crux-first; send each finished increment as its own signed round; stop only at custody gates.
+think With fe25519 GREEN and sent (sixth rung, HEAD 348c9e04f7 / amend d25c8e5570), the direct next crux toward Ed25519 is the group law — point add and double over the proven field. Non-gated: a curve point is arithmetic, not a key or a signature.
+think Crux-first scoping: the full Ed25519 wants scalar multiplication and point decode too, but the tractable keystone is add + double + neg + sub + compression, composed purely over fe25519's public API. Point decode (sqrt-based) and the scalar ladder become their own later rounds.
+think Avoided needing my own point decode this round by loading test points from Zig's Edwards25519 coordinates through each coordinate's canonical byte form (from_zig), so parity compares two independent group laws on the same projective representative. Compression (the only inversion) I do build, since it is just fe.invert + fe.mul + a sign bit.
+think Derived the curve constant 2d in our own field arithmetic — d = mul(neg(121665), invert(121666)), then d+d — so no borrowed Zig/Monocypher limb literal enters the tree. Clean-room honest.
+think Wrote crypto/ed25519_group.rye: Point{x,y,z,t}, fe_zero/fe_one/fe_neg/fe_sq2 helpers, edwards_d2, dbl and add (RFC 8032 §5.1.4 extended-coordinate formulas), neg, sub, to_bytes (compression). Every fn asserts positive contracts.
+obs GREEN on the first metal pass — no build fix needed. The Zig-Edwards25519 parity net would flag any wrong formula term across dbl/add/sub/neg and did not.
+obs Algebraic known-answers all held: base point compresses to its published encoding, identity to Y=1, B+B=2B, and B+(-B)=identity — group-theoretic checks independent of the byte-parity net.
+obs tame_style_check bans clean; the new file lands in none of the ratchet lists. Composes entirely over fe25519 — no new field math, no new std.crypto call.
+obs Honest scope held: no key, no signing, no network, no funds, no real device — no custody gate crossed. Ed25519's signing with an identity key stays its own gated round; even the scalar-multiplication ladder is a later non-gated round. Monocypher-source parity stays the held-fetch horizon; constant-time timing-safety a separate named horizon.
+loom witness=crypto_ed25519_group_witness parity_points=5 ops=4 known_answers=4 result=GREEN
+file crypto/ed25519_group.rye the edwards25519 group law in pure Rye, composed over fe25519, parity-GREEN
+file tools/crypto_ed25519_group_witness.rish the witness that builds, runs selftest, asserts the GREEN line
+file work-in-progress/REMEMBER.md living edge updated to SEVEN primitives GREEN; git nib refreshed
+recommend keep-going scalar multiplication (double-and-add over dbl/add) then point decode (sqrt via the field's pow_(p+3)/8) are the next two non-gated rounds; after them Ed25519 sign/verify parity vs RFC 8032 / Monocypher KATs — signing with the identity key stays the custody gate.
