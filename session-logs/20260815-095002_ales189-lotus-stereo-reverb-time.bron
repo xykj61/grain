@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260815.095002
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title ALES189 — Lotus's stereo_reverb_ms: ALES187's linked stereo Schroeder network spoken in MILLISECONDS, a thin twin fusing reverb_ms's two-bank conversion with stereo_echo_time's stereo delegation
+prompt Continue the recursion loop on the ALES / Lotus edge, Lindy-first crux-first; send each finished increment to origin and xykj61 as its own signed round; stop at custody gates.
+think ALES188 (reverb_ms) landed the mono timed reverb this same loop; stereo_reverb.rye's own header named the stereo timed twin as the road ahead ("a real-time stereo twin through the ALES5 clock is a later rung, exactly as stereo_echo_time followed stereo_echo"). Lindy-first crux-first: this thin twin completes the timed reverb family, so the reverb speaks the keeper's own units on both channels.
+think stereo_reverb_ms fuses two proven patterns: the two-bank conversion of ALES188's reverb_ms (check bank counts first, convert each comb/allpass delay_ms through clock.samples_for into an index-named bank) and the stereo delegation of ALES182's stereo_echo_ms (one shared conversion feeds both channels, then delegate to the proven stereo tool). It REUSES ALES188's CombSpecMs/AllpassSpecMs as the timed spec types — one source of truth for the millisecond-named reverb stage, no redefinition.
+think StereoReverbTimeError = clock.ClockError || reverb.ReverbError, no new fault. The balance invariant is asserted on entry and exit; the shared conversion holds the image for free. delegated to stereo_reverb which validates the whole bank once against the shared length before either channel is touched, so a refusal never reverbs one channel and tears the other.
+think Proved six laws: the clock adds only units (both channels == ALES187's index-named stereo reverb byte for byte, both tools run, channels genuinely differing); a real 48 kHz rate converts 1 ms to 48 samples on both, the first recirculation exactly there (left 10000->5000, right 6000->3000); the identical-channel image law (a centred master staying identical, the panned ratio honestly NOT claimed — inherited from ALES187's @divTrunc recirculation note); a sub-sample comb refuses BadDelay; an allpass delay past the clip refuses DurationTooLong with a valid comb ahead of it; the reverb's bank faults forward (NoCombs, BadGain, BadRange), each leaving both channels untouched and balanced, count_ms 0 the identity.
+obs GREEN on the FIRST metal pass, TAME bans clean, width exit 0, ALES187 stereo reverb re-run GREEN beside it. The timed reverb family now stands whole in mono and stereo. Purely local, siloed to lotus/; no cross-channel read, socket, network, keys, funds, device, or hardware clock claim — no custody gate reached, a self-approved design round.
+loom witness=ales_stereo_reverb_time_witness result=green cases=6 channels=2 stages_max=16 stereo_reverb_rerun=green
+file active-designing/20260815-095002_fill-ales189-lotus-stereo-reverb-in-real-time.md the self-approved design read choosing the stereo_reverb_ms crux and naming its six laws
+file lotus/stereo_reverb_time.rye ALES189 — the stereo reverb named in milliseconds: two bank conversions through the ALES5 clock, then ALES187's stereo_reverb unchanged, ALES188's spec types reused
+file tools/ales_stereo_reverb_time_witness.rish the witness — build, selftest, and the GREEN ales-stereo-reverb-time assertion on metal, ALES187 re-proven beside it
+file session-logs/README.md prepended the newest-first ALES189 index row
+file work-in-progress/REMEMBER.md refreshed the git nib in the same work commit
+recommend keep-going a named-room preset (a curated hall/room/plate bank of CombSpecMs/AllpassSpecMs a keeper reaches for by name, e.g. reverb_preset(clip, clk, .hall)) is the higher-Lindy next ALES crux, turning the raw network into a musician's instrument; no custody gate reached
