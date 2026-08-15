@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260815.073957
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) time convention — this session in ai-jail
+title ALES169 — Lotus's stereo_limit_env_hold: the attack/HOLD/release brickwall limiter carried into stereo, the LINKED HELD envelope driving ONE LINKED ceiling over time — the fourth spender of the held time base, the stereo held quartet made whole
+prompt Autonomous loop lap after ALES168: take the next agent-doable crux Lindy-first crux-first, self-approve the design round, send each finished increment to origin and xykj61 as its own signed round, STOP at custody gates.
+think After ALES168 (stereo_expand_env_hold) the last missing stereo held-dynamics sibling was the limiter — stereo_limit_env_hold. Its mono form (limit_env_hold ALES59) and its un-held linked form (stereo_limit_env ALES163) both stand, so this rung is exactly their composition; building it closes the stereo held quartet the way ALES168's expander closed the mono held quartet's stereo carry.
+think Composed the module as the quartet siblings do: detector = stereo_hold_env.stereo_env_step_hold (ALES165's linked held follower), gain = ALES49's ceiling — where the held envelope e > ceil, one gain ceil/e in (0,1) applied to both raw samples, the divide always safe since e > ceil >= 1. A limiter has no ratio knob (the compressor at an infinite ratio), so StereoLimitEnvHoldError = limit_env_hold.LimitEnvHoldError carries only BadCeiling, BadCoeff, BadHold, BadRange — no BadRatio.
+think Proved the six laws against the real tools: zero-hold reduces to ALES163 stereo_limit_env byte for byte on both; left-always-peak master's left' equals ALES59 mono limit_env_hold(left), right scaled by the same fraction, the independent reduction differing; image law; knob/no-pump (below the ceiling the identity, a nonzero hold keeping the reduction engaged across a duck an un-held limiter would pump — the held magnitude no larger and strictly quieter at the duck, the monotone reversed from the gate/expander since the limiter leans DOWN when engaged); carry (split mid-hold == whole once, env AND hold_left carrying); sub-ceiling/silence/balance/atomicity/degenerate.
+obs No custody gate reached — pure local i16 DSP siloed to lotus/, a self-approved design round. Built and ran on metal; witness GREEN, TAME clean. The stereo held-dynamics quartet (compressor ALES166 · gate ALES167 · expander ALES168 · limiter ALES169) is now whole, each reading ALES165's one proven linked held follower.
+loom witness=ales_stereo_limit_env_hold_witness selftest=GREEN laws=6 channels=2 quartet=whole
+file active-designing/20260815-073957_fill-ales169-lotus-stereo-limit-env-hold.md the self-approved design read
+file lotus/stereo_limit_env_hold.rye the module — one linked held envelope, one ceiling, over time
+file tools/ales_stereo_limit_env_hold_witness.rish the witness proving it GREEN on metal
+recommend keep-going the stereo held quartet is whole; next crux is the stereo sidechain/key family or the held-follower's remaining spenders — survey the mono/stereo gap for the next Lindy-first rung
