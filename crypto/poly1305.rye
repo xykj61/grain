@@ -62,8 +62,10 @@ pub const Poly1305Error = error{
 
 /// The Poly1305 running state: the clamped coefficient r in five 26-bit limbs, the ×5 folds of r[1..5] precomputed (s_fold, so the
 /// mod-2^130−5 reduction is a multiply-add rather than a division), the accumulator h in five 26-bit limbs, and the pad s in four 32-bit
-/// words added at the very end. All state is derived from the one-time key; none of it is a long-lived secret.
-const State = struct {
+/// words added at the very end. All state is derived from the one-time key; none of it is a long-lived secret. Exposed with its
+/// block-level operators (init · absorb · finalize) so a composer — the ChaCha20-Poly1305 AEAD — can feed the MAC block by block over
+/// several already-padded regions without allocating the whole concatenated buffer; the single-shot `mac` below is the same three steps.
+pub const State = struct {
     r: [5]u32,
     s_fold: [4]u32,
     h: [5]u32,
@@ -73,7 +75,7 @@ const State = struct {
 /// Clamp the key's r half and load the pad, producing a fresh state with a zero accumulator (RFC 8439 §2.5). Clamping clears the specific
 /// bits the RFC names so the limb schedule can never overflow; the four r limbs are masked with the RFC's clamp constants as they are cut
 /// from the little-endian key words.
-fn init(key: *const [key_bytes]u8) State {
+pub fn init(key: *const [key_bytes]u8) State {
     const t0 = std.mem.readInt(u32, key[0..4], .little);
     const t1 = std.mem.readInt(u32, key[4..8], .little);
     const t2 = std.mem.readInt(u32, key[8..12], .little);
@@ -109,7 +111,7 @@ fn init(key: *const [key_bytes]u8) State {
 /// 2^130 − 5, and store the reduced limbs back. `full` is true for a whole 16-byte block (the marker bit 2^128 is set) and false for the
 /// final partial block, whose 0x01 marker byte already sits inside the padded buffer. The multiply carries products in 64-bit words —
 /// the arithmetic genuinely needs 64 bits (two 26-bit limbs multiply to ~52 bits, summed across five terms), not a wire width.
-fn absorb(st: *State, blk: *const [block_bytes]u8, full: bool) void {
+pub fn absorb(st: *State, blk: *const [block_bytes]u8, full: bool) void {
     const hibit: u32 = if (full) (1 << 24) else 0;
 
     const m0 = std.mem.readInt(u32, blk[0..4], .little);
@@ -173,7 +175,7 @@ fn absorb(st: *State, blk: *const [block_bytes]u8, full: bool) void {
 
 /// Finalize: fully carry the accumulator, conditionally subtract the prime 2^130 − 5 once (so h is the true residue), fold the five
 /// 26-bit limbs into four 32-bit words, add the pad s mod 2^128, and serialize the 16-byte tag little-endian (RFC 8439 §2.5.1).
-fn finalize(st: *State, tag: *[tag_bytes]u8) void {
+pub fn finalize(st: *State, tag: *[tag_bytes]u8) void {
     var h0 = st.h[0];
     var h1 = st.h[1];
     var h2 = st.h[2];

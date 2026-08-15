@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260815.192402
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Season G fifth rung — the ChaCha20-Poly1305 AEAD in pure Rye
+prompt Take the next agent-doable lap Lindy-first crux-first on the road past BUHR (1024-round itinerary · six-season double-seat · Rye-first crypto decision wave); Rye prioritized, Glow on green-witnessed Rye; send each finished increment; stop at custody gates.
+think Read REMEMBER (via the git-nib living-edge line — the file is 157k tokens), the three itinerary/design docs, and the Season G session logs. The living edge is Season G (Cryptography): BLAKE2b, SHA-512, ChaCha20, Poly1305 all GREEN. The named next crux, stated in the poly1305 log and the decision-wave doc, is the ChaCha20-Poly1305 AEAD assembled from the two GREEN halves — Ed25519's edwards25519 field math is explicitly deferred to its own design round.
+think Lindy-first crux-first confirms the choice: the AEAD serves every module that will ever seal a record (Lotus signed carry, Vault, Comlink), so it is the highest-Lindy new thread; and it is the tractable crux (Ed25519 is the harder move that wants its own round). No custody gate — an AEAD authenticates under a shared key, it does not sign with an identity, so no key is held and no signature is made.
+think Composition without a giant buffer: RFC 8439 §2.8's MAC message is always a whole number of 16-byte blocks (each region padded to 16, the lengths block exactly 16), so Poly1305 can be fed block by block over already-padded regions. Exposed poly1305's State/init/absorb/finalize as pub (reusing the exact pieces the single-shot mac already uses) so the AEAD feeds the MAC with only 16-byte scratch — no concatenation materialized. Re-ran the poly1305 witness: still GREEN after the visibility change.
+think Wrote crypto/aead.rye: poly_key_gen (ChaCha20 block 0 → 32-byte one-time key), seal (encipher from counter 1, tag over aad ‖ pad16 ‖ ct ‖ pad16 ‖ le64 lens), open (recompute tag, constant-time compare, decipher only on match). Contract asserts on every function, named bounds (max_message_bytes 1<<16, max_aad_bytes 1<<10), named errors refused at the edge.
+obs Parity is triple-anchored: the RFC 8439 §2.8.2 known-answer (ciphertext AND tag, hex for hex, opening round-trip — my transcribed vectors were correct on first run), Zig's independent std.crypto ChaCha20Poly1305 byte-for-byte on both ciphertext and tag across block edges and aad lengths 0/12/16/40, and a tamper suite where a flipped tag, ciphertext, aad, or nonce each refuses with AuthFailed revealing no plaintext. Monocypher-source parity stays an honest horizon behind the held vendor fetch; constant-time timing-safety a separate named horizon.
+obs No custody gate crossed — no real key, no signature, no network, no funds, no device. The Rye-native authenticated-encryption stack now stands whole; the Lotus signed carry is unblocked the moment Ed25519 earns its own gated design round.
+loom witness=crypto_aead_witness result=GREEN rfc_kat=green zig_parity_sizes=8 aad_lengths=4 tamper_cases=4
+file crypto/aead.rye the ChaCha20-Poly1305 AEAD (RFC 8439 §2.8) composed from the two GREEN halves
+file crypto/poly1305.rye State/init/absorb/finalize exposed pub so the AEAD feeds the MAC block by block; witness still GREEN
+file tools/crypto_aead_witness.rish the witness: builds, selftests, asserts the GREEN crypto-aead line
+recommend keep-going Season G continues — assemble no more from these halves; the next crux is Ed25519's edwards25519 field/group arithmetic, which wants its own design round, and signing-with-identity-key stays the custody gate.
