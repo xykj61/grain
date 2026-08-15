@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260815.195644
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) — this session in ai-jail
+title Season G ninth rung — point decompression on edwards25519 in pure Rye
+prompt Keep climbing the Rye-first crypto-parity wave Lindy-first crux-first; Rye prioritized, Glow on green-witnessed Rye; send each finished increment as its own signed round; stop only at custody gates. baton prin recur.
+think With scalar multiplication GREEN and sent (eighth rung, HEAD b0035dc0ea), the remaining non-gated arithmetic rung before Ed25519 verify is point decode — the inverse of the group law's compression. Non-gated: decoding a public encoding is arithmetic, no key and no signature.
+think Read Zig's std.crypto.ecc.Edwards25519.fromBytes to confirm the standard division-free form x = (u*v)^((p-5)/8)*u with the +-sqrt(-1) root branch and the sign fix-up, then authored the same well-known RFC 8032 5.1.3 algorithm in my own Rye over fe25519's public API — clean-room from the public mathematics, not a copied line.
+think Derived every constant myself so no borrowed literal enters the tree: d = -121665/121666 by field arithmetic, sqrt(-1) = 2^((p-1)/4) by a fixed exponent ladder, and both exponents by hand from p = 2^255-19 — (p-5)/8 = 2^252-3 = {fd, ff x30, 0f} and (p-1)/4 = 2^253-5 = {fb, ff x30, 1f}. Added an internal check that sqrt(-1) squared is -1 so a wrong exponent byte would fail loudly.
+think Parity net three-anchored: the sqrt(-1)^2 = -1 identity, a compression round-trip (decode then compress returns the original bytes, using the GREEN compression as the independent oracle), and Zig's fromBytes matched byte-for-byte on the recovered affine coordinates over the base point and its multiples plus accept/reject verdict parity across 48 encodings. Guarded the spread with a SpreadTooNarrow assert so the verdict test cannot pass by trivially accepting or rejecting everything.
+obs GREEN on the first metal pass — no build fix needed. The verdict spread genuinely exercised both branches (accepted and rejected both nonzero), and the recovered coordinates matched Zig exactly.
+obs Matched Zig's fromBytes behavior deliberately rather than RFC's stricter x==0-with-sign rejection, since Zig is the byte-parity oracle this round; the whole-signature constant-time posture stays the same named Season horizon (the ladders here are data-independent over public data anyway).
+obs tame_style bans clean; the new file lands in none of the ratchet lists. Composes entirely over fe25519's proven public API and the group law's public to_bytes — no new field math, no new std.crypto call. Honest scope held: no key, no signing, no network, no funds, no real device — no custody gate crossed.
+loom witness=crypto_ed25519_decode_witness roundtrip_points=5 verdict_spread=48 identities=1 result=GREEN
+file crypto/ed25519_decode.rye point decompression on edwards25519 in pure Rye, the inverse of compression, parity-GREEN
+file tools/crypto_ed25519_decode_witness.rish the witness that builds, runs selftest, asserts the GREEN line
+file work-in-progress/REMEMBER.md living edge updated to NINE primitives GREEN; git nib refreshed in this work commit
+recommend keep-going Ed25519 sign/verify is now a composition over SHA-512, the scalar ladder, decode, and compression — the sign/verify assembly parity vs RFC 8032 / Monocypher KATs is the next crux; verifying and signing the RFC's published test vectors is non-gated arithmetic, while signing with the maintainer's own identity key stays the custody gate.

@@ -1,0 +1,45 @@
+# tools/crypto_ed25519_decode_witness.rish — point decompression on edwards25519 authored in pure Rye, the inverse of the GREEN group law's
+# compression (crypto/ed25519_group.rye), composed entirely over the GREEN base field (crypto/fe25519.rye): Season G's ninth rung, recovering
+# a full curve point from its 32-byte encoding, proven against an algebraic identity + compression round-trip and byte-for-byte against an
+# independent implementation (Season G · Cryptography).
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus unblock,
+# point decode the last piece of curve arithmetic the verify equation needs).
+# Kin: crypto/ed25519_group.rye (compression, the inverse of this decode, GREEN) · crypto/ed25519_scalarmul.rye (the ladder, GREEN) ·
+# crypto/fe25519.rye (the base field, GREEN). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line — our own
+# composition, studied clean-room from the public mathematics of twisted Edwards curves and RFC 8032 (.claude/rules/gratitude-licenses.md).
+#
+# crypto/ed25519_decode.rye reads y from an encoding's low 255 bits and the sign of x from the top bit (RFC 8032 §5.1.2), recovers x from the
+# curve equation x² = (y² − 1)/(d·y² + 1) by the standard division-free square root x = (u·v)^((p−5)/8)·u, corrects the root branch with
+# √−1 = 2^((p−1)/4), fixes the sign, and refuses NotOnCurve when the encoding names no curve point. The curve constant d = −121665/121666 and
+# √−1 are both derived in our own field arithmetic, never copied literals; the two exponents (p−5)/8 and (p−1)/4 are derived by hand from
+# p = 2^255 − 19. The primitive calls no std.crypto. Parity is proven at selftest against an algebraic identity (√−1 squared is −1) with a
+# round-trip through the GREEN compression, and Zig's own std.crypto.ecc.Edwards25519.fromBytes as an independent implementation, byte-for-byte
+# on the recovered coordinates over the base point and its multiples and matching its accept/reject verdict across a spread of encodings that
+# names both curve points and non-points. The vendored Monocypher source is a held network fetch, so Monocypher-source parity is an honest
+# horizon rung. Purely local — decoding a public encoding is arithmetic, not a secret and not a signature: no real key, no signing (Ed25519's
+# signing stays its own gated round), no network, no funds, no real device; constant-time timing-safety a separate named horizon.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_ed25519_decode_witness.rish
+
+say "crypto-ed25519-decode: Language EN — Season G's ninth rung: point decompression on edwards25519 authored in pure Rye, the inverse of the GREEN group law's compression (crypto/ed25519_group.rye), composed entirely over the GREEN base field (crypto/fe25519.rye). Ed25519 verification — the far side of the Lotus signed carry, Kumara identity, Vault, Comlink — receives a public key A and a commitment R as 32 bytes each and must turn them back into points before it can check a signature; this rung authors exactly that inverse. It is pure arithmetic — no key, no signature, no identity, no custody gate — so compression and decompression now stand as a matched pair, and Ed25519 verify becomes a composition over decode, the scalar ladder, and SHA-512."
+say "crypto-ed25519-decode: Style Radiant — the law is stated positively: a 32-byte encoding carries y in its low 255 bits and the sign of x in the top bit (RFC 8032 §5.1.2); decode recovers x from the curve equation x² = (y² − 1)/(d·y² + 1) by the standard division-free square root x = (u·v)^((p−5)/8)·u, corrects the root branch with √−1 = 2^((p−1)/4), fixes the sign, and refuses NotOnCurve when the encoding names no curve point. The curve constant d = −121665/121666 and √−1 are both derived in our own field arithmetic, and the two exponents (p−5)/8 = 2^252 − 3 and (p−1)/4 = 2^253 − 5 are derived by hand from p = 2^255 − 19 — never copied literals."
+say "crypto-ed25519-decode: Lens TAME — the primitive calls no std.crypto; it composes over the base field's proven public API, asserts its contracts on every function, and its fixed exponentiation ladders run over public encoding data, so they are data-independent by construction. Parity holds against an algebraic identity (√−1 squared is −1) with a compression round-trip AND Zig's independent std.crypto.ecc.Edwards25519.fromBytes byte-for-byte on the recovered coordinates over the base point and its multiples, matching its accept/reject verdict across a spread that names both curve points and non-points. Monocypher-source parity is a named horizon behind the held vendor fetch. Purely local — decoding a public encoding is not a secret and not a signature, so no real key, no signing, no network, no funds, no device; constant-time timing-safety a separate named horizon."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/ed25519_decode"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/ed25519_decode.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-ed25519-decode: build failed — ${build.err}"
+
+let outfile = "crypto/bin/ed25519_decode.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-ed25519-decode: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-ed25519-decode: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-ed25519-decode' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-ed25519-decode: selftest did not print the GREEN crypto-ed25519-decode line"
