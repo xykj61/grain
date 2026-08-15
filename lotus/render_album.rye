@@ -1,0 +1,306 @@
+//! lotus/render_album.rye — ALES223: a whole record as one saveable artifact. ALES222 joined a render's manifest and its .wav
+//! into one bundle — the durable unit a single publish saves. Yet a record is rarely one track: a keeper who masters an album, a
+//! podcaster who finishes a season, a filmmaker who cuts a reel holds MANY bundles, and once again they travel apart — a folder to
+//! keep together, to order, to name. This rung gathers them: a bounded byte frame carrying an ordered, named catalog of bundles,
+//! opened verify-before-trust.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES223.
+//! Design read: active-designing/20260815-135313_fill-ales223-lotus-render-album.md
+//! Stands on: lotus/render_bundle.rye (ALES222) — pack/unpack and the whole verify-before-trust the album inherits per track;
+//! through it, lotus/render_manifest.rye (ALES221) — the seal each bundle carries. No new hash, no new grammar — only a catalog
+//! frame over frames.
+//!
+//! THE CRUX: the album needs NO NEW SEAL — one level up from ALES222. Each bundle it carries already self-binds (its manifest
+//! binds its own text, its wav_digest binds the audio it names), so an album that lays bundles side by side under a small length
+//! frame is ALREADY fully verify-before-trust: tamper any track's audio and that bundle refuses WavDigestMismatch, tamper any
+//! track's manifest and it refuses DigestMismatch, corrupt a length header and the slices shift into one of those or BadAlbum. The
+//! rung's whole job is a bounded catalog frame plus the proof that every track binds its own whole.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A bounded catalog frame over in-process byte slices, siloed to lotus/. It proves a
+//! COLLECTION of renders arrived whole, NOT who made it — no signature, no key. No real file, no DAC, no acoustic or electrical
+//! fact, no network, no funds, no real device.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/render_album.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const render_bundle = @import("render_bundle.rye");
+const render_manifest = @import("render_manifest.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const render_album_version = "20260815.135313";
+
+/// The album's kind marker — eight bytes at the head, so a stranger container refuses before any length is trusted. Not text, not
+/// a seal: a single fixed tag naming this frame's shape, distinct from the bundle's own `LOTUSBND`.
+pub const album_magic = "LOTUSALB";
+
+/// The fixed frame preamble: the 8-byte magic, then one u32 little-endian track count. Named so the one place the first entry's
+/// offset is computed reads from a single source.
+pub const album_header_len: u32 = 8 + 4;
+
+/// Each entry's own preamble: two u32 little-endian lengths (the track name bytes · the bundle bytes), ahead of the name and the
+/// bundle themselves.
+pub const entry_header_len: u32 = 4 + 4;
+
+/// The most tracks one album carries — a named ceiling so the count is bounded, the fixed track array cannot overflow, and the
+/// walk always terminates. Sixty-four clears a long record or a full podcast season with headroom.
+pub const max_tracks: u32 = 64;
+
+/// The longest track name the album carries — a single display token, so it holds no newline that would smuggle a second line.
+/// A name past this refuses BadAlbum rather than overrunning; matches the manifest's own name bound.
+pub const max_track_name: u32 = 24;
+
+/// A sane ceiling on one framed bundle, reused from the bundle's own part bound so the two agree — well above a real bundle (a
+/// manifest of a few hundred bytes plus a bounded .wav). A bundle length past this refuses BadAlbum.
+pub const max_bundle_bytes: u32 = render_bundle.max_part_bytes;
+
+/// A whole-album ceiling, so every offset in the walk stays inside u32 as lengths are summed. The worst case — the header plus
+/// max_tracks maximal entries — fits u32 with room to spare, and any input larger than this refuses BadAlbum before it is walked.
+pub const max_album_bytes: u32 = album_header_len + max_tracks * (entry_header_len + max_track_name + max_bundle_bytes);
+
+/// The album's faults: the bundle's whole set (seal + grammar + content + frame), plus the catalog's own. BadAlbum is a malformed
+/// catalog frame — a wrong magic, an illegal track name, or lengths that do not tile the buffer. AlbumFull is a count past the
+/// bound.
+pub const AlbumError = render_bundle.BundleError || error{
+    /// The catalog frame is malformed — too short for the header, a wrong magic, an illegal track name, or a length that does not
+    /// tile the buffer exactly (a trailing byte or a shortfall). Refused rather than parsing a partial or padded catalog.
+    BadAlbum,
+    /// The track count is past max_tracks — refused before the fixed track array could overflow.
+    AlbumFull,
+};
+
+/// A track to pack: a display name and the already-framed bundle bytes (an ALES222 `LOTUSBND` artifact). pack copies both into the
+/// album verbatim; it never re-seals a bundle, since the bundle already binds its own whole.
+pub const TrackIn = struct {
+    name: []const u8,
+    bundle: []const u8,
+};
+
+/// One verified track in an opened album: its name and its unpacked, verify-before-trust bundle, both slices INTO the input bytes
+/// (the caller owns no copy).
+pub const Track = struct {
+    name: []const u8,
+    bundle: render_bundle.Bundle,
+};
+
+/// A verified album: the ordered catalog of tracks, each already unpacked verify-before-trust, and how many are live. unpack
+/// returns this ONLY after every track's bundle passes its own gates. Lives only as long as the bytes it was opened from.
+pub const Album = struct {
+    tracks: [max_tracks]Track = undefined,
+    count: u32 = 0,
+};
+
+/// True when `name` is a single legal display token: non-empty, within the bound, and free of the newline the display line
+/// reserves. A name that fails this can never be written, so pack refuses before it touches the buffer.
+fn name_ok(name: []const u8) bool {
+    if (name.len == 0 or name.len > max_track_name) return false;
+    var i: u32 = 0;
+    while (i < name.len) : (i += 1) {
+        if (name[i] == '\n') return false;
+    }
+    return true;
+}
+
+/// Pack an ordered catalog of tracks into one framed album in `out`: the magic, the track count, then each track's two lengths,
+/// name, and bundle bytes copied in order. Returns the total length. Refuses AlbumFull past the bound, BadAlbum for an illegal
+/// name or over-large bundle, and Overflow rather than writing past the buffer.
+pub fn pack(out: []u8, tracks: []const TrackIn) AlbumError!u32 {
+    // invariant: the catalog stays within its bound, so the count fits u32 and the walk terminates.
+    if (tracks.len > max_tracks) return error.AlbumFull;
+    const count: u32 = @intCast(tracks.len);
+
+    // invariant: the buffer holds at least the fixed preamble before any entry is written.
+    if (out.len < album_header_len) return error.Overflow;
+    tally_copy.copy_disjoint(u8, out[0..album_magic.len], album_magic);
+    std.mem.writeInt(u32, out[8..12], count, .little);
+
+    var cursor: u32 = album_header_len;
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        const t = tracks[i];
+        // invariant: each track name is a single legal token and each bundle stays within the frame's bound.
+        if (!name_ok(t.name)) return error.BadAlbum;
+        if (t.bundle.len > max_bundle_bytes) return error.BadAlbum;
+        const name_len: u32 = @intCast(t.name.len);
+        const bundle_len: u32 = @intCast(t.bundle.len);
+
+        const entry_total: u32 = entry_header_len + name_len + bundle_len;
+        // invariant: the entry fits what remains of the buffer — refused, never truncated.
+        if (cursor > out.len or entry_total > out.len - cursor) return error.Overflow;
+
+        std.mem.writeInt(u32, out[cursor..][0..4], name_len, .little);
+        std.mem.writeInt(u32, out[cursor + 4 ..][0..4], bundle_len, .little);
+        const body_at = cursor + entry_header_len;
+        tally_copy.copy_disjoint(u8, out[body_at .. body_at + name_len], t.name);
+        tally_copy.copy_disjoint(u8, out[body_at + name_len .. cursor + entry_total], t.bundle);
+        cursor += entry_total;
+    }
+
+    // invariant: the returned length never runs past the caller's buffer.
+    assert(cursor <= out.len);
+    return cursor;
+}
+
+/// Unpack a framed album — the integrity gate BEFORE trust. The magic must match, the count must be within bound, and each entry's
+/// two lengths must keep its name and bundle inside the buffer; every bundle slice is unpacked verify-before-trust, and the whole
+/// frame must tile exactly. A malformed frame refuses BadAlbum / AlbumFull; a tampered track refuses the bundle's own
+/// DigestMismatch / WavDigestMismatch before the album is trusted.
+pub fn unpack(bytes: []const u8) AlbumError!Album {
+    // invariant: the input stays within the whole-album ceiling, so every offset below stays inside u32.
+    if (bytes.len > max_album_bytes) return error.BadAlbum;
+    // invariant: an album is at least its own header — a shorter input can carry no catalog.
+    if (bytes.len < album_header_len) return error.BadAlbum;
+    if (!std.mem.eql(u8, bytes[0..album_magic.len], album_magic)) return error.BadAlbum;
+
+    const count = std.mem.readInt(u32, bytes[8..12], .little);
+    if (count > max_tracks) return error.AlbumFull;
+
+    var album: Album = .{ .count = count };
+    var cursor: u32 = album_header_len;
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        // each entry must carry its two length headers within what remains of the buffer.
+        if (cursor > bytes.len or bytes.len - cursor < entry_header_len) return error.BadAlbum;
+        const name_len = std.mem.readInt(u32, bytes[cursor..][0..4], .little);
+        const bundle_len = std.mem.readInt(u32, bytes[cursor + 4 ..][0..4], .little);
+        if (name_len > max_track_name or bundle_len > max_bundle_bytes) return error.BadAlbum;
+
+        const body_at = cursor + entry_header_len;
+        // the name run must stay inside the buffer.
+        if (name_len > bytes.len - body_at) return error.BadAlbum;
+        const name = bytes[body_at .. body_at + name_len];
+        if (!name_ok(name)) return error.BadAlbum;
+
+        const bundle_at = body_at + name_len;
+        // the bundle run must stay inside the buffer.
+        if (bundle_len > bytes.len - bundle_at) return error.BadAlbum;
+        const bundle_bytes = bytes[bundle_at .. bundle_at + bundle_len];
+
+        // invariant: each bundle is verified whole BEFORE the track is trusted.
+        const b = try render_bundle.unpack(bundle_bytes);
+        album.tracks[i] = .{ .name = name, .bundle = b };
+        cursor = bundle_at + bundle_len;
+    }
+
+    // invariant: the whole frame is consumed exactly — a trailing byte is a malformed album, not a padded one.
+    if (cursor != bytes.len) return error.BadAlbum;
+    return album;
+}
+
+// --- selftest: THE ROUND-TRIP LAW — pack then unpack recovers every track name, manifest field, and exact .wav in order; THE
+//     SELF-BINDING LAW — a flipped byte in any track's .wav refuses WavDigestMismatch, in any manifest DigestMismatch, no new seal
+//     needed; THE FRAME LAW — a wrong magic, a count past the bound, and a length that does not tile refuse BadAlbum / AlbumFull;
+//     THE ATOMIC LAW — a small buffer refuses Overflow; THE EMPTY LAW — a zero-track album round-trips to an empty catalog -------
+
+/// Build a real ALES222 bundle for `wav` under `preset_name` into `out`, returning its length — exactly what a keeper would save.
+fn make_bundle(out: []u8, preset_name: []const u8, wav: []const u8) !u32 {
+    var man: [render_manifest.max_manifest_bytes]u8 = undefined;
+    const man_n = try render_manifest.seal_manifest(man[0..], preset_name, 48_000, 2, 4, wav);
+    return render_bundle.pack(out, man[0..man_n], wav);
+}
+
+fn run_selftest() !u8 {
+    const wav_a = "RIFF....WAVEfmt ........data....\x01\x00\x02\x00\x03\x00\x04\x00";
+    const wav_b = "RIFF....WAVEfmt ........data....\x09\x00\x08\x00\x07\x00\x06\x00";
+    const wav_c = "RIFF....WAVEfmt ........data....\x11\x00\x12\x00\x13\x00\x14\x00";
+
+    var buf_a: [512]u8 = undefined;
+    var buf_b: [512]u8 = undefined;
+    var buf_c: [512]u8 = undefined;
+    const na = try make_bundle(buf_a[0..], "gentle_master", wav_a);
+    const nb = try make_bundle(buf_b[0..], "phase_flip", wav_b);
+    const nc = try make_bundle(buf_c[0..], "bookend_fades", wav_c);
+    const tracks = [_]TrackIn{
+        .{ .name = "opener", .bundle = buf_a[0..na] },
+        .{ .name = "middle", .bundle = buf_b[0..nb] },
+        .{ .name = "closer", .bundle = buf_c[0..nc] },
+    };
+
+    // 1. THE ROUND-TRIP LAW — pack, unpack, recover every track name, manifest field, and exact .wav, in order.
+    {
+        var out: [2048]u8 = undefined;
+        const n = try pack(out[0..], tracks[0..]);
+        const al = try unpack(out[0..n]);
+        if (al.count != 3) return error.CountWrong;
+        if (!std.mem.eql(u8, al.tracks[0].name, "opener")) return error.Name0Wrong;
+        if (!std.mem.eql(u8, al.tracks[1].name, "middle")) return error.Name1Wrong;
+        if (!std.mem.eql(u8, al.tracks[2].name, "closer")) return error.Name2Wrong;
+        if (!std.mem.eql(u8, al.tracks[0].bundle.wav, wav_a)) return error.Wav0Wrong;
+        if (!std.mem.eql(u8, al.tracks[1].bundle.wav, wav_b)) return error.Wav1Wrong;
+        if (!std.mem.eql(u8, al.tracks[2].bundle.wav, wav_c)) return error.Wav2Wrong;
+        if (!std.mem.eql(u8, al.tracks[1].bundle.manifest.preset_name, "phase_flip")) return error.PresetWrong;
+        if (al.tracks[2].bundle.manifest.channels != 2) return error.ChannelsWrong;
+    }
+
+    // 2. THE SELF-BINDING LAW — a flipped byte in the middle track's .wav refuses WavDigestMismatch; a flipped byte in the closer
+    //    track's manifest refuses DigestMismatch. The album needs no new seal — each track binds its own whole.
+    {
+        var out: [2048]u8 = undefined;
+        const n = try pack(out[0..], tracks[0..]);
+        // The middle track's .wav is the last bytes of its bundle; flip the byte just before the third entry begins. Simpler and
+        // exact: rebuild, then corrupt the last byte of the whole album, which lies inside the closer track's .wav.
+        out[n - 1] ^= 0x01;
+        if (unpack(out[0..n])) |_| return error.WavTamperSlipped else |e| if (e != error.WavDigestMismatch) return error.WrongWavTamper;
+
+        var out2: [2048]u8 = undefined;
+        const n2 = try pack(out2[0..], tracks[0..]);
+        // A byte inside the FIRST track's manifest BODY — after the album header, the opener's entry header and 6-byte name, and the
+        // bundle header, then near the end of the sealed manifest (just before the .wav begins), so the seal digest catches it
+        // rather than the header line. The opener's bundle starts here and its .wav is its last wav_a.len bytes.
+        const first_body = album_header_len + entry_header_len + 6; // "opener" is 6 bytes → start of the opener's bundle
+        out2[first_body + na - wav_a.len - 2] ^= 0x01; // two bytes before the .wav → inside the manifest body
+        if (unpack(out2[0..n2])) |_| return error.ManTamperSlipped else |e| if (e != error.DigestMismatch) return error.WrongManTamper;
+    }
+
+    // 3. THE FRAME LAW — a wrong magic refuses BadAlbum; a count past max_tracks refuses AlbumFull; a length that does not tile the
+    //    buffer refuses BadAlbum.
+    {
+        var out: [2048]u8 = undefined;
+        const n = try pack(out[0..], tracks[0..]);
+        out[0] = 'X'; // corrupt the magic
+        if (unpack(out[0..n])) |_| return error.MagicSlipped else |e| if (e != error.BadAlbum) return error.WrongMagic;
+
+        var out2: [2048]u8 = undefined;
+        const n2 = try pack(out2[0..], tracks[0..]);
+        std.mem.writeInt(u32, out2[8..12], max_tracks + 1, .little); // a nonsense count past the bound
+        if (unpack(out2[0..n2])) |_| return error.FullSlipped else |e| if (e != error.AlbumFull) return error.WrongFull;
+
+        var out3: [2048]u8 = undefined;
+        const n3 = try pack(out3[0..], tracks[0..]);
+        if (unpack(out3[0 .. n3 - 1])) |_| return error.TileSlipped else |e| if (e != error.BadAlbum) return error.WrongTile; // one byte short
+    }
+
+    // 4. THE ATOMIC LAW — a buffer too small for even one entry refuses Overflow rather than writing past its end.
+    {
+        var tiny: [16]u8 = undefined; // room for the header, not the first entry
+        if (pack(tiny[0..], tracks[0..])) |_| return error.OverflowSlipped else |e| if (e != error.Overflow) return error.WrongOverflow;
+    }
+
+    // 5. THE EMPTY LAW — a zero-track album packs and unpacks cleanly to an empty catalog; an opening record is still a real,
+    //    verifiable artifact rather than a special case.
+    {
+        var out: [64]u8 = undefined;
+        const empty = [_]TrackIn{};
+        const n = try pack(out[0..], empty[0..]);
+        if (n != album_header_len) return error.EmptyLenWrong;
+        const al = try unpack(out[0..n]);
+        if (al.count != 0) return error.EmptyCountWrong;
+    }
+
+    print("GREEN ales-render-album: a whole record as one saveable artifact — a `LOTUSALB` frame (magic · count · per track: " ++
+        "name_len · bundle_len · name · bundle) packs an ordered catalog of ALES222 bundles and unpacks it verify-before-trust. " ++
+        "THE CRUX: the album needs NO NEW SEAL — each bundle already self-binds, so THE SELF-BINDING LAW holds (a flipped byte in " ++
+        "any track's .wav refuses WavDigestMismatch, in any manifest DigestMismatch). THE ROUND-TRIP LAW: pack then unpack " ++
+        "recovers every track name, manifest field, and exact .wav in order. THE FRAME LAW: a wrong magic and a bad tile refuse " ++
+        "BadAlbum, a count past the bound AlbumFull. THE ATOMIC LAW: a small buffer refuses Overflow. THE EMPTY LAW: a zero-track " ++
+        "album round-trips to an empty catalog. It proves a collection arrived whole, not who made it — no real file, no DAC, no " ++
+        "network, no keys, no funds, no real device\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
