@@ -75,8 +75,10 @@ pub fn precheck(clip_len: u32, start: u32, count: u32, t_low: i32, t_high: i32) 
 /// Advance the Schmitt trigger by one sample and return its output rail. `high` holds the one bit of state — the rail the output currently rides. When low, a
 /// sample at or above `t_high` flips it high (a rise past the upper threshold); when high, a sample at or below `t_low` flips it low (a fall past the lower);
 /// a sample strictly between the two holds the rail — the hysteresis. The output is +sample_max on the high rail, −sample_max on the low, so no saturate is
-/// owed. The comparison is in i32 so a threshold at the deep rail (sample_min) is representable.
-fn schmitt_step(high: *bool, x: i16, t_low: i32, t_high: i32) i16 {
+/// owed. The comparison is in i32 so a threshold at the deep rail (sample_min) is representable. Public because it is the one-sample comparator the whole family
+/// shares: the in-place trigger below writes its return, and ALES93's read-only zero-crossing counter (lotus/zero_cross.rye) reads its rail flips — one
+/// implementation, so the counter can never drift from the trigger it counts.
+pub fn schmitt_step(high: *bool, x: i16, t_low: i32, t_high: i32) i16 {
     // invariant: the band reaching this step is already ordered inside the rails — check() ran at the edge.
     assert(t_low <= t_high);
     const xi: i32 = @as(i32, x);

@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260814.225557
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title ALES93 — Lotus's zero-crossing counter, the first analysis rung on the comparator
+prompt recur the 1024-round itinerary Lindy-first crux-first; take the next agent-doable Lotus lap, self-approve the design, prove it GREEN, send it as its own signed round; stop only at REMEMBER custody gates
+think Read REMEMBER (living edge on the ALES ladder, Lotus / Season C double-seat, nib at ALES92 Schmitt trigger) and both itinerary docs; the ALES92 doc named its own next cruxes, first among them a zero-crossing counter reading the trigger's flips as a pitch estimate.
+think Lindy-first crux-first: a zero-crossing count is the oldest activity/pitch estimate there is and reads true for a decade; crux-first it is the suite's FIRST analysis rung (reads, never writes) and the first to carry split-equals-whole for a DERIVED quantity (the count), not the samples.
+think Composition over reimplementation: exposed ALES92's private schmitt_step as pub (one-sample comparator), so the counter reads the exact same step the in-place trigger writes — one implementation, cannot drift. Validation reuses ALES92's public precheck and its SchmittError by name, so the band-and-span law is the trigger's own.
+think The crux is the seam: a flip can land exactly between two pieces, so ZeroCounter carries both the trigger rail AND the previous output rail; a span counted in two pieces equals the whole counted once (seam flip counted exactly once). Chose a split index landing a flip on the seam so the test would catch a per-piece restart.
+obs Read-only is the strongest span discipline — law 8 checks the source clip is byte-for-byte unchanged; the counter advances the trigger rail but writes its returned sample nowhere.
+obs Scope kept honest: the count is a pure sample count of rail flips, NOT a pitch in Hz — no real sample rate exists in the suite, so pitch conversion is named as a later rung rather than faked.
+obs First build red: two unused local constants (M, L) in the analysis selftest — analysis reads counts, not rails; removed them. Second build GREEN.
+loom witness=ales_zero_cross_witness green=1 laws=10 module_bytes=13k
+file lotus/zero_cross.rye ALES93 — the ZeroCounter struct + count_crossings convenience, composing ALES92's schmitt_step and precheck, read-only.
+file lotus/schmitt.rye widened schmitt_step to pub — the shared one-sample comparator both the trigger and the counter use, one implementation.
+file tools/ales_zero_cross_witness.rish the witness — builds, runs the selftest, asserts the GREEN line.
+file active-designing/20260814-225557_fill-ales93-lotus-zero-crossing-counter.md the self-approved design read naming the crux and the ten laws.
+recommend keep-going — the next Lotus crux the ALES93 doc names (crossing-rate to pitch once a real sample rate exists, an onset/activity counter, or a voiced/unvoiced classifier reading this count against the meter's RMS), each its own self-approved round; no custody gate reached.

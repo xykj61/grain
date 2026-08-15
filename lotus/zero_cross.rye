@@ -1,0 +1,318 @@
+//! lotus/zero_cross.rye — ALES93: the zero-crossing counter — the suite's first ANALYSIS rung, reading ALES92's flips as a count without writing one sample.
+//! Every Lotus rung so far WRITES: it edits a clip in place. This one READS: it walks a span, counts how many times the Schmitt trigger flips rail, and returns
+//! that number — the clip untouched. A zero crossing in the hysteresis sense is exactly a rail flip, so counting flips reads how many times the signal GENUINELY
+//! crossed — past the noise the band already suppresses. It is the oldest activity/pitch estimate there is, the front of voiced/unvoiced detection, of onset
+//! and tempo counting, of the cheapest pitch tracker. It is the rung the ALES92 doc booked in as many words: a zero-crossing counter that reads this trigger's
+//! flips.
+//!
+//! The crux: split-equals-whole carried up ONE LEVEL, from the samples to a DERIVED count. A flip can land exactly at the SEAM between the last sample of one
+//! piece and the first of the next; a counter that restarted per piece would miss that seam flip and undercount. So the counter carries TWO things across a
+//! call — the trigger's rail (ALES92's hysteresis state) AND the previous output rail (the memory a crossing is measured against). A span counted in two pieces,
+//! the second continuing the first's ending rail and its previous-rail memory, equals the whole counted ONCE: the seam flip counted exactly once, never missed
+//! and never doubled. That is what makes ALES93 the analysis SIBLING of ALES92 rather than a re-implementation — it composes ALES92's public one-sample
+//! comparator (schmitt_step), the SAME step the in-place trigger writes, and reads its flips instead of writing its rails. One comparator implementation, two
+//! readers; the counter can never drift from the trigger it counts.
+//!
+//! The counting convention: for N samples there are at most N−1 crossings. The FIRST fed sample establishes the initial rail and counts as no crossing (no prior
+//! sample to differ from); every later sample counts one crossing when its output rail differs from the sample before it. The standard zero-crossing-count
+//! definition, stated plainly so the carried and from-silence forms cannot drift.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES93.
+//! Design read: active-designing/20260814-225557_fill-ales93-lotus-zero-crossing-counter.md
+//! Stands on: lotus/schmitt.rye (ALES92) — the hysteresis comparator whose flips this counts, composed over its public schmitt_step and its public precheck (so
+//! the band-and-span law and the named errors are the trigger's own, not a second copy); lotus/timeline.rye (ALES2) — the Clip, sample_min/max; the read-only
+//! analysis shape is meter's (lotus/meter.rye) — a struct that accumulates, accessors that report.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, and READ-ONLY. A bounded in-process buffer of i16 PCM on one bench, siloed to lotus/, never mutated by this rung.
+//! The count is a pure sample count of rail flips, NOT a pitch in Hz: a real pitch is crossings / (2 · duration · sample_rate), and there is no real sample rate
+//! in the suite yet — so this rung reports the raw honest count and names the pitch conversion as a later rung. The "zero crossing" is over the trigger's
+//! hysteresis band, not a raw sign change, so the count already resists the chatter a raw zero-cross would miscount; no anti-aliasing, no windowing, no real
+//! device, no real speaker, no network, no keys, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/zero_cross.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const schmitt = @import("schmitt.rye");
+
+pub const zero_cross_version = "20260814.225557";
+
+/// The most crossings one counter will accumulate before it refuses. A crossing needs at least one sample, and the widest clip is timeline.max_clip samples, so
+/// a single span can never overflow this; the bound guards a keeper who feeds span after span forever. Named so the accumulation is bounded at construction, the
+/// TAME reflex — count is u32 and this ceiling sits far below its top, so the guard fires long before any wrap.
+pub const max_crossings: u32 = 1 << 30;
+
+/// The zero-crossing counter's faults are ALES92's own band-and-span faults, reused by name (BadThreshold, BadRange), plus one of its own for the accumulation
+/// bound. Reusing SchmittError means the counter validates through the exact same precheck the trigger uses — one law, not a second copy.
+pub const ZeroCrossError = schmitt.SchmittError || error{
+    /// The accumulated count would exceed max_crossings — refused before overcounting, the count left exactly at its bound. A guard for an unbounded stream of
+    /// feeds, never reached by a single clip-wide span.
+    CountFull,
+};
+
+/// A zero-crossing counter a keeper holds beside a clip — the ALES92/meter idiom. It carries the Schmitt trigger (rail + the two thresholds, ALES92's hysteresis
+/// state), the running count, the previous output rail, and whether any sample has been fed yet. `feed` advances it over a span WITHOUT writing the clip;
+/// `crossings` reports the count; `reset` returns it to silence. A fresh ZeroCounter (rail low, count zero, unstarted) fed one span is exactly the from-silence
+/// count_crossings — one implementation, so the carried and from-silence forms cannot drift.
+pub const ZeroCounter = struct {
+    /// The Schmitt trigger this counter reads — its rail is the one bit of hysteresis state, its thresholds the band. The counter never writes a clip through
+    /// it; it advances the trigger's rail with the shared one-sample comparator and counts the flips.
+    trigger: schmitt.SchmittTrigger,
+    /// The crossings counted so far — bounded by max_crossings.
+    count: u32 = 0,
+    /// The previous fed sample's output rail — the memory a crossing is measured against. Meaningful only once `started` is true.
+    prev_high: bool = false,
+    /// Whether any sample has been fed yet. The first fed sample sets the rail and counts no crossing; only from the second on can a rail differ from its
+    /// predecessor. Carried across `feed` calls so a flip at a seam is counted exactly once.
+    started: bool = false,
+
+    /// Count the rail flips over `count` samples starting at `start`, CONTINUING from this counter's rail and previous-rail memory — the carried form. Reads the
+    /// clip only; writes not one sample. Validates the band and span through ALES92's own precheck (BadThreshold on an illegal band, BadRange on a span outside
+    /// the samples) before touching a sample; on refusal the count and state are untouched. Refuses CountFull rather than exceed max_crossings.
+    pub fn feed(self: *ZeroCounter, clip: *const timeline.Clip, start: u32, count: u32) ZeroCrossError!void {
+        // invariant: the band and span are the trigger's own law — one precheck shared with ALES92, so the counter can never validate differently than the
+        // trigger it counts.
+        try schmitt.precheck(clip.len, start, count, self.trigger.t_low, self.trigger.t_high);
+        // invariant: this span cannot by itself overflow the bound — a clip holds at most timeline.max_clip samples, far below max_crossings.
+        assert(count <= timeline.max_clip);
+        const samples = clip.samples();
+        var i: u32 = 0;
+        while (i < count) : (i += 1) {
+            const before = self.trigger.high;
+            // Advance the SHARED one-sample comparator — the exact step ALES92's in-place trigger writes — updating the rail. We read the rail; we do not write
+            // its returned sample anywhere, so the source clip stays untouched (the analysis, not the edit).
+            _ = schmitt.schmitt_step(&self.trigger.high, samples[start + i], self.trigger.t_low, self.trigger.t_high);
+            const after = self.trigger.high;
+            if (self.started and after != self.prev_high) {
+                if (self.count >= max_crossings) return error.CountFull;
+                self.count += 1;
+            }
+            self.prev_high = after;
+            self.started = true;
+            _ = before;
+        }
+        // invariant: the count never exceeds its bound, and reading a clip never changed its length.
+        assert(self.count <= max_crossings);
+        assert(clip.len <= clip.buf.len);
+    }
+
+    /// The crossings counted so far — a pure sample count of rail flips, not a pitch in Hz (no real sample rate exists yet).
+    pub fn crossings(self: *const ZeroCounter) u32 {
+        // invariant: the reported count is within its bound.
+        assert(self.count <= max_crossings);
+        return self.count;
+    }
+
+    /// Return the counter to silence — count zero, rail low, unstarted — so the next `feed` counts from silence rather than continuing a prior rail. The
+    /// deliberate re-open a keeper asks for when a new region should begin fresh.
+    pub fn reset(self: *ZeroCounter) void {
+        self.trigger.reset();
+        self.count = 0;
+        self.prev_high = false;
+        self.started = false;
+        // invariant: reset restores exactly the from-silence state — a feed after reset equals count_crossings.
+        assert(self.count == 0 and self.started == false and self.trigger.high == false);
+    }
+};
+
+/// Count the rail flips over `count` samples starting at `start`, from SILENCE (rail low, count zero) — the from-silence convenience. A fresh ZeroCounter fed one
+/// span; one implementation, so the carried and from-silence forms can never drift. Reads the clip only. Refuses BadThreshold on an illegal band, BadRange on a
+/// span outside the samples, CountFull only in the impossible case a single span exceeds max_crossings (a clip is far too small).
+pub fn count_crossings(clip: *const timeline.Clip, start: u32, count: u32, t_low: i32, t_high: i32) ZeroCrossError!u32 {
+    var zc = ZeroCounter{ .trigger = .{ .t_low = t_low, .t_high = t_high } };
+    try zc.feed(clip, start, count);
+    return zc.crossings();
+}
+
+// --- selftest: the convenience equals a fresh counter fed once; it counts exactly ALES92's flips; a span counted in two pieces with carried rail and prev-rail
+//     equals the whole counted once (the crux, seam flip counted once); hysteresis suppresses chatter counting; a known signal counts its known flips; silence
+//     and in-band-only count zero; reset re-opens from silence; the source clip is byte-for-byte unchanged (read-only); an illegal band and an out-of-range span
+//     each refuse by name -----------------------------------------------------------------------------------------------------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+/// Count adjacent rail transitions in a ±sample_max output by hand — the independent reader the counter is checked against in law 2.
+fn count_transitions(out: []const i16) u32 {
+    if (out.len == 0) return 0;
+    var flips: u32 = 0;
+    var i: u32 = 1;
+    while (i < out.len) : (i += 1) if (out[i] != out[i - 1]) {
+        flips += 1;
+    };
+    return flips;
+}
+
+fn run_selftest() !u8 {
+    // 1. THE CONVENIENCE EQUALS A FRESH COUNTER FED ONCE — count_crossings is exactly a ZeroCounter fed one span (one implementation, cannot drift).
+    {
+        const src = [_]i16{ 100, 700, -200, 800, -900, 300, 1200, -1300, 50, 900, -50, 1100 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &src);
+
+        const via_fn = try count_crossings(&clip, 0, clip.len, -500, 500);
+
+        var zc = ZeroCounter{ .trigger = .{ .t_low = -500, .t_high = 500 } };
+        try zc.feed(&clip, 0, clip.len);
+        if (via_fn != zc.crossings()) return error.ConvenienceDrifted;
+    }
+
+    // 2. IT COUNTS EXACTLY ALES92'S FLIPS — run schmitt into a SCRATCH clip, count the adjacent rail transitions in its ±max output by hand, and the counter
+    //    (reading the SAME comparator without writing) agrees. This binds the rung to ALES92 rather than to an independent comparator.
+    {
+        const src = [_]i16{ 200, 900, -300, 850, -950, 400, 1100, -1200, 100, 950, -100, 1050, -1400, 1300 };
+        // scratch: the in-place trigger writes its rails here
+        var scratch = timeline.Clip{};
+        try load_clip(&scratch, &src);
+        try schmitt.schmitt(&scratch, 0, scratch.len, -800, 800);
+        const by_hand = count_transitions(scratch.samples());
+
+        // source: the counter reads this, never writes it
+        var source = timeline.Clip{};
+        try load_clip(&source, &src);
+        const counted = try count_crossings(&source, 0, source.len, -800, 800);
+
+        if (counted != by_hand) return error.CountDisagreesWithFlips;
+    }
+
+    // 3. THE CRUX — a span counted in TWO PIECES, the second carrying the first's rail AND previous-rail memory, equals the whole counted once. The split index
+    //    is chosen so a flip lands exactly at the seam: the sample before the split ends on one rail and the sample at the split flips the other way, so a
+    //    per-piece counter would MISS that seam flip. The carried counter counts it exactly once.
+    {
+        // rails at band [−800, 800] from silence: 900→H, −900→L, 900→H, −900→L, 900→H, −900→L, 900→H, −900→L  → alternating, a flip at every step
+        const src = [_]i16{ 900, -900, 900, -900, 900, -900, 900, -900 };
+        var whole = timeline.Clip{};
+        try load_clip(&whole, &src);
+        const whole_count = try count_crossings(&whole, 0, whole.len, -800, 800);
+
+        var pieces = timeline.Clip{};
+        try load_clip(&pieces, &src);
+        var zc = ZeroCounter{ .trigger = .{ .t_low = -800, .t_high = 800 } };
+        const split: u32 = 4; // seam between index 3 (rail L) and index 4 (rail H) — a flip lands exactly here
+        try zc.feed(&pieces, 0, split); // first piece: 900,-900,900,-900 → flips at 1,2,3 = 3 crossings, ends on L
+        try zc.feed(&pieces, split, pieces.len - split); // second piece continues from rail L and prev L: 900 flips at the seam
+        if (zc.crossings() != whole_count) return error.SplitNotWhole;
+        if (whole_count != 7) return error.WholeCountWrong; // 8 alternating samples → 7 crossings
+    }
+
+    // 4. HYSTERESIS SUPPRESSES CHATTER COUNTING — the reason it is built on the trigger. After a rise past t_high, a dither wholly INSIDE the band adds zero
+    //    crossings. A single-threshold sign comparator on the same dither would count many.
+    {
+        const t_low: i32 = -1000;
+        const t_high: i32 = 1000;
+        const sig = [_]i16{ 2000, 800, -800, 500, -500, 900, -900 }; // triggers high once, then dithers inside the band
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        const counted = try count_crossings(&clip, 0, clip.len, t_low, t_high);
+        if (counted != 0) return error.HysteresisMiscounted; // once high, the dither never flips → zero crossings
+
+        // contrast: a raw sign comparator at 0 chatters on the same dither — several transitions.
+        var cmp: u32 = 0;
+        var prev: bool = @as(i32, sig[0]) >= 0;
+        var i: u32 = 1;
+        while (i < sig.len) : (i += 1) {
+            const cur: bool = @as(i32, sig[i]) >= 0;
+            if (cur != prev) cmp += 1;
+            prev = cur;
+        }
+        if (cmp == 0) return error.ComparatorAssumptionWrong; // the memoryless comparator DOES chatter where hysteresis counts zero
+    }
+
+    // 5. A KNOWN SIGNAL COUNTS ITS KNOWN FLIPS — band [−1000, 1000], from silence. Read the rails by hand, then check the count.
+    {
+        const sig = [_]i16{ 0, 1000, 500, -1000, -500, 2000, 999, -1000 };
+        // rails: 0→hold L; 1000→H (flip); 500→hold H; −1000→L (flip); −500→hold L; 2000→H (flip); 999→hold H; −1000→L (flip) → 4 crossings
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &sig);
+        const counted = try count_crossings(&clip, 0, clip.len, -1000, 1000);
+        if (counted != 4) return error.KnownCountWrong;
+    }
+
+    // 6. SILENCE AND IN-BAND-ONLY COUNT ZERO — a span that never leaves the band [−1000, 1000] yields no crossings (it never triggers off the low rail).
+    {
+        const inside = [_]i16{ 0, 500, -500, 999, -999, 100, -100 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &inside);
+        const counted = try count_crossings(&clip, 0, clip.len, -1000, 1000);
+        if (counted != 0) return error.InBandNotZero;
+    }
+
+    // 7. RESET RE-OPENS FROM SILENCE — after a run leaves a count and a high rail, reset returns the count to zero and the rail to low, so a next run over an
+    //    in-band signal counts zero rather than carrying the prior rail.
+    {
+        const rise = [_]i16{ 100, 2000, -2000, 2000 }; // several flips, ends high... check then reset
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &rise);
+        var zc = ZeroCounter{ .trigger = .{ .t_low = -1000, .t_high = 1000 } };
+        try zc.feed(&clip, 0, clip.len);
+        if (zc.crossings() == 0) return error.ExpectedSomeCrossings;
+
+        zc.reset();
+        if (zc.crossings() != 0) return error.ResetDidNotZero;
+        const inside = [_]i16{ 0, 500, -500 }; // strictly inside the band
+        var fresh = timeline.Clip{};
+        try load_clip(&fresh, &inside);
+        try zc.feed(&fresh, 0, fresh.len);
+        if (zc.crossings() != 0) return error.ResetDidNotReopen;
+    }
+
+    // 8. READ-ONLY (the span discipline in its strongest form) — the source clip is byte-for-byte UNCHANGED after counting; not one sample is written.
+    {
+        const src = [_]i16{ 111, 900, -900, 222, 1500, -1500, 333 };
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &src);
+        _ = try count_crossings(&clip, 0, clip.len, -800, 800);
+        if (!eq(clip.samples(), &src)) return error.CountingWrote; // reading must not mutate
+    }
+
+    // 9a. AN INVERTED BAND — t_low above t_high — refuses BadThreshold, the count and state untouched (through ALES92's own precheck).
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        var zc = ZeroCounter{ .trigger = .{ .t_low = 1000, .t_high = -1000 } };
+        if (zc.feed(&clip, 0, clip.len)) |_| return error.InvertedSlipped else |e| if (e != error.BadThreshold) return error.WrongInverted;
+        if (zc.crossings() != 0 or zc.started != false) return error.RefusedMovedState;
+        if (!eq(clip.samples(), &three)) return error.RefusedMutatedClip;
+    }
+
+    // 9b. AN OUT-OF-RANGE SPAN refuses BadRange before any read, the count untouched.
+    {
+        var clip = timeline.Clip{};
+        const three = [_]i16{ 1, 2, 3 };
+        try load_clip(&clip, &three);
+        var zc = ZeroCounter{ .trigger = .{ .t_low = -1000, .t_high = 1000 } };
+        if (zc.feed(&clip, 2, 5)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (zc.crossings() != 0) return error.RefusedMovedCount;
+        if (!eq(clip.samples(), &three)) return error.RefusedMutatedClipRange;
+    }
+
+    print("GREEN ales-zero_cross: the ZERO-CROSSING COUNTER — the suite's first ANALYSIS rung, reading ALES92's flips as a count without writing one sample. A " ++
+        "zero crossing in the hysteresis sense is a rail flip, so counting flips reads how many times the signal GENUINELY crossed, past the noise the band " ++
+        "already suppresses. It composes ALES92's public one-sample comparator (schmitt_step) — the SAME step the in-place trigger writes — and reads its " ++
+        "flips instead of writing its rails, so it can never drift from the trigger it counts. The crux: split-equals-whole carried up one level, from the " ++
+        "samples to a DERIVED count — a span counted in two pieces (the second carrying the first's rail and previous-rail memory) equals the whole counted " ++
+        "ONCE, the seam flip counted exactly once, never missed and never doubled. The convenience equals a fresh counter fed once; it counts exactly the " ++
+        "trigger's flips (checked against a by-hand transition count of schmitt's own output); hysteresis suppresses chatter counting (zero crossings across a " ++
+        "dither a sign comparator chatters on); a known signal counts its known flips; silence and in-band-only count zero; reset re-opens from silence; the " ++
+        "source clip is byte-for-byte unchanged (read-only); an inverted band refuses BadThreshold and an out-of-range span refuses BadRange with the count " ++
+        "and clip untouched. Purely local, read-only — the count a pure sample count of rail flips, NOT a pitch in Hz (no real sample rate yet); no device, no " ++
+        "network, no keys, no funds\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
