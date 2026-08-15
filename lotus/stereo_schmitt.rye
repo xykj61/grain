@@ -1,0 +1,376 @@
+//! lotus/stereo_schmitt.rye — ALES144: the Schmitt trigger carried into stereo, ONE SHARED BAND, TWO INDEPENDENT RAILS — the first STATE-CARRYING member of the comparator class lifted to stereo. ALES92 named `schmitt`
+//! — a HYSTERESIS comparator that gives ALES89's memoryless square a MEMORY against chatter: flip HIGH on a rise past t_high, flip LOW on a fall past t_low, HOLD between, so the band [t_low, t_high] is a dead zone the
+//! noise cannot rattle. Where the stereo dead-zone family just closed (hard center clip ALES141 · soft ALES142 · infinite clip ALES143) is MEMORYLESS — each sample judged on its own — this rung is the class's
+//! state-carrying sibling: it carries one bit per channel, which rail am I on, so a signal riding near the level triggers on the EVENT rather than chattering on the noise.
+//!
+//! Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and RIGHT hold the SAME length. This rung carries the trigger into stereo the plain way: run ALES92's proven
+//! mono `schmitt` on each channel with the SAME band, so one dead zone lands on BOTH speakers together. It offers the same TWO forms ALES92 offers, mirrored: `stereo_schmitt` runs each channel from silence (the low
+//! rail), and `StereoSchmitt` holds each channel's SchmittTrigger so a keeper carries the two rails beside the master.
+//!
+//! The honest signature of a state-carrying member in stereo: EACH channel remembers its OWN rail, both opened from the SAME low-rail convention, so the two rails advance INDEPENDENTLY. An identical-channel master
+//! (left = right) stays identical — the two rails track together, a mono-in-stereo signal never splits. Yet an OUT-OF-PHASE master (right the exact negation of left) does NOT in general come back out of phase, and this
+//! is where the state-carrying member honestly PARTS from the memoryless family: the from-silence convention opens BOTH channels on the LOW rail (`high = false`), so the map is not odd about the band — the antisymmetry
+//! the three clips held (an out-of-phase master staying out of phase, because their maps are odd) is a property of a MEMORYLESS odd map, not of a comparator that remembers a shared low start. Each channel simply
+//! remembers its own crossing history. This is stated plainly so the memoryless family's antisymmetry and this member's per-channel memory can never be confused.
+//!
+//! The crux — carried state across a seam, in stereo. Because each channel carries its own one bit, a stereo span run in TWO PIECES through `StereoSchmitt` (each channel's second piece continuing THAT channel's ending
+//! rail) equals the whole run ONCE, byte for byte on both channels — no spurious flip at the seam on either speaker, the false trigger a per-span restart would invent on each. That split-equals-whole property is ALES92's
+//! own crux (the ALES91 shape, one bit per channel) carried faithfully into stereo, and it is the whole reason `StereoSchmitt` holds two SchmittTriggers rather than restarting from silence each call.
+//!
+//! The rule, stated once: the trigger writes ONLY the two rails ±sample_max (both legal i16 by construction, so no saturate is owed) and never a length. It carries ONE band, two signed thresholds, and names TWO faults.
+//! Refuse BadThreshold (a band that is not two ordered thresholds inside the rails: sample_min ≤ t_low ≤ t_high ≤ sample_max, t_low = t_high the legal zero-width band, the plain comparator) and BadRange (a span outside
+//! the samples) BEFORE either channel is touched — each fault depends only on the shared band or the shared length, so each check is made ONCE up front and a refusal never triggers one channel, or advances one rail, and
+//! leaves the other whole. SchmittError reused whole — the stereo lift adds no fault.
+//!
+//! The crux — four laws. THE STEREO SCHMITT LAW: each channel equals ALES92's mono `schmitt` (from silence) with the same band over the same span byte for byte — the same hysteresis on each. THE BALANCE / LENGTH LAW:
+//! left.len == right.len after the edit and both hold their starting length (a trigger writes values only). THE INDEPENDENT-RAIL LAW: each channel carries its own one bit from the shared low-rail convention, so an
+//! identical-channel master stays identical while the two rails otherwise advance independently (an out-of-phase master NOT held out of phase — the honest parting from the memoryless family's odd antisymmetry), and the
+//! zero-width band is the plain comparator on both. THE CARRIED-STATE / ATOMICITY / DEGENERATE LAW: `StereoSchmitt` carries each channel's rail so a two-piece run equals the whole once byte for byte on both (no seam
+//! flip); any refusal (BadThreshold, BadRange) leaves BOTH channels byte for byte untouched, both rails untouched, and the pair balanced; count = 0 the identity on both.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES144.
+//! Design read: active-designing/20260815-044135_fill-ales144-lotus-stereo-schmitt.md
+//! Stands on: lotus/schmitt.rye (ALES92) — the mono Schmitt trigger run once per channel, its from-silence `schmitt`, its carried `SchmittTrigger`, its `precheck` band-and-span law, and its SchmittError, all reused
+//! whole; lotus/stereo_infinite_clip.rye (ALES143) — the memoryless comparator whose odd antisymmetry this state-carrying member honestly parts from; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right)
+//! and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, sample_min/max.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only through ALES92's own schmitt, each output one of two rails
+//! (−sample_max, sample_max), never a length; the shape is a static two-threshold hysteresis band over instantaneous sample amplitude carrying one bit of rail state per channel, with no time constant and no debounce
+//! interval (the band is over amplitude, not time — a timed debounce is a later rung). No saturate is owed — every output is a legal i16 by construction. No real sample rate, no network, no keys, no funds, no real
+//! device, no real speaker.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/stereo_schmitt.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const pan = @import("pan.rye");
+const schmitt = @import("schmitt.rye");
+
+pub const stereo_schmitt_version = "20260815.044135";
+
+/// Stereo schmitt's faults are exactly ALES92's own `SchmittError` — `BadThreshold` (a band that is not two ordered thresholds inside the rails) and `BadRange` (a span outside the samples) — reused by name, since the
+/// stereo lift adds no new fault: it only runs the same schmitt on each channel after one shared validation.
+pub const StereoSchmittError = schmitt.SchmittError;
+
+/// Schmitt-trigger `[start, start+count)` in BOTH channels of `sc` with the same band, each channel FROM SILENCE (its own low rail), running ALES92's proven mono `schmitt`. On each channel, a sample at or above `t_high`
+/// flips the rail high, a sample at or below `t_low` flips it low, and a sample strictly between holds it — the hysteresis, the band [t_low, t_high] a dead zone the noise cannot rattle. The output is +sample_max on the
+/// high rail and −sample_max on the low, so no saturate is owed. Validates the shared band and length ONCE against ALES92's own `precheck` before either channel is mutated — because both channels are balanced, one check
+/// covers both — so a refusal never triggers one channel and leaves the other whole: refuses `BadThreshold` / `BadRange`, both channels untouched. Values only — never the length; the two channels leave balanced.
+pub fn stereo_schmitt(sc: *pan.StereoClip, start: u32, count: u32, t_low: i32, t_high: i32) StereoSchmittError!void {
+    // invariant: the two channels enter balanced — the defining StereoClip invariant, the ground the edit preserves.
+    assert(sc.left.len == sc.right.len);
+
+    // invariant: the band and span are legal — refused by name before any write, so a refusal never triggers one channel and leaves the other whole. The band check depends only on the shared thresholds, the span check on
+    // the shared length; because the two channels are balanced, one `precheck` on the shared length validates both, and mirrors ALES92's own guard exactly, so each mono schmitt below is pre-validated to succeed.
+    try schmitt.precheck(sc.left.len, start, count, t_low, t_high);
+
+    // Every check passed and holds identically for both channels, so each mono schmitt is pre-validated to succeed — no refusal can land between the two channel edits. The SAME band on each, each channel from its own low rail.
+    try schmitt.schmitt(&sc.left, start, count, t_low, t_high);
+    try schmitt.schmitt(&sc.right, start, count, t_low, t_high);
+
+    // invariant: the channels leave balanced — a trigger writes values only, so each channel holds its starting length and the stereo image stays aligned in time.
+    assert(sc.left.len == sc.right.len);
+    assert(sc.left.len <= sc.left.buf.len and sc.right.len <= sc.right.buf.len);
+}
+
+/// A stereo Schmitt trigger that holds BOTH channels' rails across calls — ALES92's `SchmittTrigger` idiom, mirrored per channel. It carries no buffer, only the two one-bit rails and the shared band (as two mono
+/// SchmittTriggers built with the same thresholds), so a keeper holds it beside a StereoClip as a tiny value. A fresh StereoSchmitt (both rails low) run over a whole span is exactly the from-silence `stereo_schmitt`; `run`
+/// continues EACH channel from its OWN carried rail so a stereo span compared piece by piece has no spurious flip at a seam on either channel; `reset` returns both rails to low so the next run re-opens the from-silence low
+/// rail on both deliberately. The two rails advance independently — the honest signature of a state-carrying member in stereo.
+pub const StereoSchmitt = struct {
+    /// The left channel's trigger — its own one bit of rail state and its copy of the shared band.
+    left: schmitt.SchmittTrigger,
+    /// The right channel's trigger — its own one bit of rail state and its copy of the shared band. Both triggers hold the SAME band by construction (see `init`).
+    right: schmitt.SchmittTrigger,
+
+    /// Build a StereoSchmitt over a shared band, both channels opening on the low rail (from silence). The single `init` is the one place the band is shared, so left and right can never drift to different thresholds.
+    pub fn init(t_low: i32, t_high: i32) StereoSchmitt {
+        return .{
+            .left = .{ .t_low = t_low, .t_high = t_high },
+            .right = .{ .t_low = t_low, .t_high = t_high },
+        };
+    }
+
+    /// Schmitt-trigger `[start, start+count)` in both channels of `sc`, CONTINUING each channel from its OWN carried rail and updating it. The seam between two runs is invisible on each channel because that channel's
+    /// second run opens on its own ending rail rather than on silence. Validates the shared band and length ONCE up front (via ALES92's `precheck`) before either channel's rail advances, so a refusal never triggers one
+    /// channel, or advances one rail, and leaves the other whole; on refusal both rails are untouched.
+    pub fn run(self: *StereoSchmitt, sc: *pan.StereoClip, start: u32, count: u32) StereoSchmittError!void {
+        // invariant: the two channels enter balanced.
+        assert(sc.left.len == sc.right.len);
+        // invariant: the two triggers hold the SAME band — `init` is the only constructor and shares it, so the shared-band claim holds through every run.
+        assert(self.left.t_low == self.right.t_low and self.left.t_high == self.right.t_high);
+
+        // Validate once up front against the shared length and band, so a refusal advances NEITHER rail — the atomicity the carried form owes across two independent bits.
+        try schmitt.precheck(sc.left.len, start, count, self.left.t_low, self.left.t_high);
+
+        // Pre-validated to succeed on both — each channel continues its own rail through ALES92's SchmittTrigger.run over the matching channel.
+        try self.left.run(&sc.left, start, count);
+        try self.right.run(&sc.right, start, count);
+
+        // invariant: the channels leave balanced — a trigger writes values only.
+        assert(sc.left.len == sc.right.len);
+    }
+
+    /// Return both rails to low, so the next `run` re-opens the from-silence low rail on both channels — the deliberate re-open a keeper asks for when a new region should begin untriggered on both speakers.
+    pub fn reset(self: *StereoSchmitt) void {
+        self.left.reset();
+        self.right.reset();
+        // invariant: reset restores exactly the from-silence rail on both — a run after reset equals the from-silence stereo_schmitt.
+        assert(self.left.high == false and self.right.high == false);
+    }
+};
+
+// --- selftest: THE STEREO SCHMITT LAW — each channel equals ALES92's mono schmitt (from silence) with the same band over the same span byte for byte; THE BALANCE / LENGTH LAW — left.len == right.len after, both holding
+//     their starting length; THE INDEPENDENT-RAIL LAW — an identical-channel master staying identical (the two rails track together), an OUT-OF-PHASE master NOT held out of phase (the honest parting from the memoryless
+//     family's odd antisymmetry, since the from-silence convention opens both channels on the low rail), the two rails otherwise independent, the zero-width band the plain comparator on both; THE CARRIED-STATE / ATOMICITY
+//     / DEGENERATE LAW — a two-piece StereoSchmitt run equals the whole once byte for byte on both channels (no seam flip), reset re-opening both low rails, the fresh-StereoSchmitt from-silence equivalence, each refusal
+//     leaving both channels and both rails untouched, count = 0 the identity ----
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_stereo(sc: *pan.StereoClip, l: []const i16, r: []const i16) !void {
+    try timeline.splice(&sc.left, 0, l);
+    try timeline.splice(&sc.right, 0, r);
+}
+
+fn run_selftest() !u8 {
+    const M: i16 = timeline.sample_max; // +32767, the high rail
+    const L: i16 = -timeline.sample_max; // −32767, the low rail (two-valued output, both legal i16)
+
+    // 1. THE STEREO SCHMITT LAW — each channel equals ALES92's mono schmitt (from silence) with the same band, proven side by side over one span with different per-channel samples. The hysteresis on each speaker is
+    //    exactly ALES92's, run twice with one shared band.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 100, 700, -200, 800, -900, 300, 1200, -1300, 50 }, &[_]i16{ -1500, 900, -300, 1600, -100, 400, -1700, 200, 1550 });
+        try stereo_schmitt(&sc, 0, 9, -500, 500);
+
+        var ml = timeline.Clip{};
+        try timeline.splice(&ml, 0, &[_]i16{ 100, 700, -200, 800, -900, 300, 1200, -1300, 50 });
+        try schmitt.schmitt(&ml, 0, 9, -500, 500);
+        var mr = timeline.Clip{};
+        try timeline.splice(&mr, 0, &[_]i16{ -1500, 900, -300, 1600, -100, 400, -1700, 200, 1550 });
+        try schmitt.schmitt(&mr, 0, 9, -500, 500);
+
+        if (!eq(sc.left.samples(), ml.samples())) return error.LeftChannelWrong;
+        if (!eq(sc.right.samples(), mr.samples())) return error.RightChannelWrong;
+        // by hand, band [−500,500] from silence (low): left 100 hold L; 700≥500 high M; −200 hold M; 800 hold M; −900≤−500 low L; 300 hold L; 1200 high M; −1300 low L; 50 hold L.
+        if (!eq(sc.left.samples(), &[_]i16{ L, M, M, M, L, L, M, L, L })) return error.LeftHandWrong;
+        // right −1500 low L; 900 high M; −300 hold M; 1600 hold M; −100 hold M; 400 hold M; −1700 low L; 200 hold L; 1550 high M.
+        if (!eq(sc.right.samples(), &[_]i16{ L, M, M, M, M, M, L, L, M })) return error.RightHandWrong;
+    }
+
+    // 2. THE BALANCE / LENGTH LAW — the channels stay equal length and each holds its starting length; a trigger writes values only. Proven at an even and an odd length.
+    {
+        var even = pan.StereoClip{};
+        try load_stereo(&even, &[_]i16{ 100, -2000, 3000, -4000 }, &[_]i16{ -400, 3000, -200, 5000 });
+        try stereo_schmitt(&even, 0, 4, -1000, 1000);
+        if (even.left.len != even.right.len) return error.EvenUnbalanced;
+        if (even.left.len != 4) return error.EvenLength;
+
+        var odd = pan.StereoClip{};
+        try load_stereo(&odd, &[_]i16{ 100, -2000, 3000 }, &[_]i16{ 3000, -200, 100 });
+        try stereo_schmitt(&odd, 0, 3, -500, 500);
+        if (odd.left.len != odd.right.len) return error.OddUnbalanced;
+        if (odd.left.len != 3) return error.OddLength;
+    }
+
+    // 3a. THE INDEPENDENT-RAIL LAW, an IDENTICAL-CHANNEL master stays identical — a shared band on equal inputs gives equal outputs, the two rails tracking together (a mono-in-stereo signal never splits).
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 200, 1500, -300, 1200, -1600, 400 }, &[_]i16{ 200, 1500, -300, 1200, -1600, 400 });
+        try stereo_schmitt(&sc, 0, 6, -1000, 1000);
+        if (!eq(sc.left.samples(), sc.right.samples())) return error.IdentityChannelsSplit;
+    }
+
+    // 3b. THE INDEPENDENT-RAIL LAW, the honest PARTING from the memoryless family — an out-of-phase master (right the exact negation of left) is NOT held out of phase, because the from-silence convention opens BOTH
+    //     channels on the LOW rail, so the map is not odd about the band. Where the three memoryless clips (ALES141–143) held right = −left, this state-carrying member remembers each channel's own crossing history from the
+    //     shared low start. Proven positively: identical low starts, so the two channels agree at the first in-band sample rather than negating.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 0, 1000, 500 }, &[_]i16{ 0, -1000, -500 }); // right = −left
+        try stereo_schmitt(&sc, 0, 3, -1000, 1000);
+        const l = sc.left.samples();
+        const r = sc.right.samples();
+        // by hand from silence (low): left 0 hold L; 1000≥t_high high M; 500 hold M → {L,M,M}. right 0 hold L; −1000≤t_low low L (already low); −500 hold L → {L,L,L}.
+        if (!eq(l, &[_]i16{ L, M, M })) return error.PartingLeftWrong;
+        if (!eq(r, &[_]i16{ L, L, L })) return error.PartingRightWrong;
+        // the antisymmetry the memoryless family held does NOT hold here: at index 0 both channels open on the SAME low rail (right = −left would demand r[0] = −l[0] = M, yet r[0] = L). Stated as the positive fact —
+        // both channels remember the same low start, the state-carrying signature that parts from the memoryless odd map.
+        if (r[0] != l[0]) return error.LowStartNotShared; // both open low, not negated
+        if (@as(i32, r[0]) == -@as(i32, l[0])) return error.OddAntisymmetryHeldWrongly; // −l[0] = −L = M ≠ L = r[0]: the odd relation is broken at the shared low start
+    }
+
+    // 3c. THE INDEPENDENT-RAIL LAW, the two rails advance INDEPENDENTLY — a sample that flips one channel's rail need not flip the other's at the same index, because each carries its own bit. Constructed so left flips high
+    //     at an index where right holds low.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 1500, 0 }, &[_]i16{ 0, 0 }); // left rises past t_high at index 0; right never leaves the band
+        try stereo_schmitt(&sc, 0, 2, -1000, 1000);
+        const l = sc.left.samples();
+        const r = sc.right.samples();
+        if (l[0] != M) return error.LeftDidNotFlip; // left flipped high
+        if (r[0] != L) return error.RightFlippedWrongly; // right held its own low rail — independence
+        if (l[1] != M) return error.LeftRailNotHeld; // left holds high (0 in band)
+        if (r[1] != L) return error.RightRailNotHeld; // right holds low
+    }
+
+    // 3d. THE ZERO-WIDTH BAND is the plain comparator on both channels — t_low = t_high = 0 reduces to a memoryless sign comparator away from exact zero, on each speaker (x > 0 → +max, x < 0 → −max).
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 5, -5, 3, -3, 100 }, &[_]i16{ -7, 8, -2, 90, -90 });
+        try stereo_schmitt(&sc, 0, 5, 0, 0);
+        if (!eq(sc.left.samples(), &[_]i16{ M, L, M, L, M })) return error.ZeroWidthLeftWrong;
+        if (!eq(sc.right.samples(), &[_]i16{ L, M, L, M, L })) return error.ZeroWidthRightWrong;
+    }
+
+    // 4a. THE CARRIED-STATE LAW, the CRUX — a stereo span run in TWO PIECES through StereoSchmitt (each channel's second piece continuing THAT channel's ending rail) equals the whole run once, byte for byte on both
+    //     channels. The seam at the split index carries no spurious flip on either speaker. This carries ALES92's own crux (the ALES91 shape, one bit per channel) into stereo.
+    {
+        const li = [_]i16{ 200, 900, -300, 850, -950, 400, 1100, -1200, 100, 950, -100, 1050 };
+        const ri = [_]i16{ -1500, 300, 1600, -200, 1400, -1700, 250, 1550, -1600, 350, 1500, -1550 };
+        var whole = pan.StereoClip{};
+        try load_stereo(&whole, &li, &ri);
+        var sw = StereoSchmitt.init(-800, 800);
+        try sw.run(&whole, 0, whole.left.len);
+
+        var pieces = pan.StereoClip{};
+        try load_stereo(&pieces, &li, &ri);
+        var sp = StereoSchmitt.init(-800, 800);
+        const split: u32 = 5;
+        try sp.run(&pieces, 0, split); // first piece, both channels
+        try sp.run(&pieces, split, pieces.left.len - split); // second piece continues each channel's carried rail
+
+        if (!eq(pieces.left.samples(), whole.left.samples())) return error.LeftSplitNotWhole;
+        if (!eq(pieces.right.samples(), whole.right.samples())) return error.RightSplitNotWhole;
+    }
+
+    // 4b. THE FROM-SILENCE EQUIVALENCE — a fresh StereoSchmitt (both rails low) run over the whole span equals the from-silence `stereo_schmitt`, so the carried form's default case IS the from-silence case per channel
+    //     (one implementation, they cannot drift).
+    {
+        const li = [_]i16{ 100, 1200, -200, 900, -1300, 300 };
+        const ri = [_]i16{ -1400, 200, 1500, -300, 1300, -1600 };
+        var carried = pan.StereoClip{};
+        try load_stereo(&carried, &li, &ri);
+        var sf = StereoSchmitt.init(-1000, 1000);
+        try sf.run(&carried, 0, carried.left.len);
+
+        var fresh = pan.StereoClip{};
+        try load_stereo(&fresh, &li, &ri);
+        try stereo_schmitt(&fresh, 0, 6, -1000, 1000);
+
+        if (!eq(carried.left.samples(), fresh.left.samples())) return error.CarriedLeftNotFromSilence;
+        if (!eq(carried.right.samples(), fresh.right.samples())) return error.CarriedRightNotFromSilence;
+    }
+
+    // 4c. RESET RE-OPENS BOTH LOW RAILS — after a run leaves the triggers high, reset returns both to the low rail, so a next run over a signal starting inside the band holds low on both.
+    {
+        const rise_l = [_]i16{ 100, 2000, 1500 }; // ends high
+        const rise_r = [_]i16{ 200, 1800, 1600 }; // ends high
+        var up = pan.StereoClip{};
+        try load_stereo(&up, &rise_l, &rise_r);
+        var f = StereoSchmitt.init(-1000, 1000);
+        try f.run(&up, 0, up.left.len);
+        if (up.left.samples()[2] != M or up.right.samples()[2] != M) return error.NotHighBeforeReset;
+
+        f.reset();
+        const inside = [_]i16{ 0, 500, -500 }; // strictly inside the band
+        var fresh = pan.StereoClip{};
+        try load_stereo(&fresh, &inside, &inside);
+        try f.run(&fresh, 0, fresh.left.len); // after reset both low rails hold through the in-band run
+        if (!eq(fresh.left.samples(), &[_]i16{ L, L, L })) return error.ResetLeftDidNotReopen;
+        if (!eq(fresh.right.samples(), &[_]i16{ L, L, L })) return error.ResetRightDidNotReopen;
+    }
+
+    // 4d. THE SPAN DISCIPLINE — triggering a sub-span leaves samples outside [start, count) exactly as they were on both channels (the in-place discipline the whole suite keeps).
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 111, 222, 1500, -1500, 1500, 444 }, &[_]i16{ -111, -222, 1500, -1500, 1500, -444 });
+        try stereo_schmitt(&sc, 2, 3, -1000, 1000); // indices 2,3,4 both: 1500→high M, −1500→low L, 1500→high M
+        if (!eq(sc.left.samples(), &[_]i16{ 111, 222, M, L, M, 444 })) return error.LeftSpanLeaked;
+        if (!eq(sc.right.samples(), &[_]i16{ -111, -222, M, L, M, -444 })) return error.RightSpanLeaked;
+    }
+
+    // 5a. THE ATOMICITY LAW, an inverted band (t_low > t_high) refuses BadThreshold, both channels byte for byte untouched and still balanced; through StereoSchmitt, both rails are left untouched too.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 1, -2, 3 }, &[_]i16{ -3, 2, -1 });
+        if (stereo_schmitt(&sc, 0, 3, 1000, -1000)) |_| return error.InvertedSlipped else |e| if (e != error.BadThreshold) return error.WrongInverted;
+        if (!eq(sc.left.samples(), &[_]i16{ 1, -2, 3 })) return error.InvertedLeftMutated;
+        if (!eq(sc.right.samples(), &[_]i16{ -3, 2, -1 })) return error.InvertedRightMutated;
+        if (sc.left.len != sc.right.len) return error.InvertedUnbalanced;
+
+        var carried = pan.StereoClip{};
+        try load_stereo(&carried, &[_]i16{ 1, -2, 3 }, &[_]i16{ -3, 2, -1 });
+        var f = StereoSchmitt.init(1000, -1000);
+        if (f.run(&carried, 0, 3)) |_| return error.InvertedCarriedSlipped else |e| if (e != error.BadThreshold) return error.WrongInvertedCarried;
+        if (f.left.high != false or f.right.high != false) return error.InvertedMovedRail; // both rails untouched
+        if (!eq(carried.left.samples(), &[_]i16{ 1, -2, 3 })) return error.InvertedCarriedLeftMutated;
+    }
+
+    // 5b. THE ATOMICITY LAW, a band edge outside the rails refuses BadThreshold — a t_low below the floor and a t_high above the ceiling, both channels untouched.
+    {
+        var under = pan.StereoClip{};
+        try load_stereo(&under, &[_]i16{ 1, 2, 3 }, &[_]i16{ 3, 2, 1 });
+        if (stereo_schmitt(&under, 0, 3, @as(i32, timeline.sample_min) - 1, 1000)) |_| return error.LowUnderFloorSlipped else |e| if (e != error.BadThreshold) return error.WrongLowUnderFloor;
+        if (!eq(under.left.samples(), &[_]i16{ 1, 2, 3 })) return error.LowUnderFloorMutated;
+
+        var over = pan.StereoClip{};
+        try load_stereo(&over, &[_]i16{ 1, 2, 3 }, &[_]i16{ 3, 2, 1 });
+        if (stereo_schmitt(&over, 0, 3, -1000, @as(i32, timeline.sample_max) + 1)) |_| return error.HighOverCeilingSlipped else |e| if (e != error.BadThreshold) return error.WrongHighOverCeiling;
+        if (!eq(over.right.samples(), &[_]i16{ 3, 2, 1 })) return error.HighOverCeilingMutated;
+    }
+
+    // 5c. THE ATOMICITY LAW, bad span — a span past the samples refuses BadRange, both channels untouched.
+    {
+        var sc = pan.StereoClip{};
+        try load_stereo(&sc, &[_]i16{ 5, -6, 7 }, &[_]i16{ -7, 6, -5 });
+        if (stereo_schmitt(&sc, 1, 3, -1000, 1000)) |_| return error.BadRangeSlipped else |e| if (e != error.BadRange) return error.WrongBadRange;
+        if (!eq(sc.left.samples(), &[_]i16{ 5, -6, 7 })) return error.BadRangeLeftMutated;
+        if (!eq(sc.right.samples(), &[_]i16{ -7, 6, -5 })) return error.BadRangeRightMutated;
+    }
+
+    // 5d. THE DEGENERATE LAW — count = 0 is the identity on both channels (an empty span triggers nothing), and it leaves both rails untouched through StereoSchmitt.
+    {
+        var noop = pan.StereoClip{};
+        try load_stereo(&noop, &[_]i16{ 7, -8, 9 }, &[_]i16{ -7, 8, -9 });
+        try stereo_schmitt(&noop, 1, 0, -1000, 1000); // empty span — identity
+        if (!eq(noop.left.samples(), &[_]i16{ 7, -8, 9 })) return error.ZeroCountLeftChanged;
+        if (!eq(noop.right.samples(), &[_]i16{ -7, 8, -9 })) return error.ZeroCountRightChanged;
+
+        var carried = pan.StereoClip{};
+        try load_stereo(&carried, &[_]i16{ 7, -8, 9 }, &[_]i16{ -7, 8, -9 });
+        var f = StereoSchmitt.init(-1000, 1000);
+        try f.run(&carried, 1, 0); // empty span — rails untouched
+        if (f.left.high != false or f.right.high != false) return error.ZeroCountMovedRail;
+    }
+
+    print("GREEN ales-stereo-schmitt: the SCHMITT TRIGGER CARRIED INTO STEREO, ONE SHARED BAND, TWO INDEPENDENT RAILS — the first STATE-CARRYING member of the comparator class lifted to stereo. On each channel a rise " ++
+        "past t_high flips the rail high, a fall past t_low flips it low, a sample between HOLDS — the hysteresis, the band [t_low, t_high] a dead zone the noise cannot rattle — running ALES92's proven mono schmitt on " ++
+        "each channel with the same band, so one dead zone lands on both speakers together. It offers ALES92's two forms mirrored: stereo_schmitt runs each channel from silence, StereoSchmitt holds each channel's " ++
+        "SchmittTrigger so a keeper carries the two rails beside the master. Where the stereo dead-zone family just closed (hard ALES141, soft ALES142, infinite ALES143) is MEMORYLESS, this rung carries one bit per " ++
+        "channel. Each channel remembers its OWN rail, both opened from the shared low-rail convention, so the two rails advance INDEPENDENTLY: an identical-channel master stays identical (the two rails track " ++
+        "together), yet an out-of-phase master is NOT held out of phase — the honest parting from the memoryless family, whose odd maps held the antisymmetry; the from-silence convention opens both channels low, so the " ++
+        "map is not odd, and each channel simply remembers its own crossing history. The crux: because each channel carries its own bit, a two-piece StereoSchmitt run (each channel's second piece continuing that " ++
+        "channel's ending rail) equals the whole run once, byte for byte on both — no seam flip on either speaker, ALES92's own crux (the ALES91 shape, one bit per channel) carried into stereo. It writes only the two " ++
+        "rails ±sample_max (no saturate), never a length; the zero-width band is the plain comparator on both. It validates the shared band and length once via ALES92's precheck before either channel is touched " ++
+        "(BadThreshold on a band not two ordered thresholds inside the rails, BadRange on a span past the samples), so a refusal never triggers one channel or advances one rail and leaves the other whole; SchmittError " ++
+        "reused whole. The crux is four laws. THE STEREO SCHMITT LAW: each channel equals ALES92's mono schmitt with the same band byte for byte. THE BALANCE / LENGTH LAW: left.len == right.len after and both hold their " ++
+        "starting length. THE INDEPENDENT-RAIL LAW: an identical master staying identical, an out-of-phase master not held out of phase, the two rails independent, the zero-width band the comparator on both. THE " ++
+        "CARRIED-STATE / ATOMICITY / DEGENERATE LAW: a two-piece run equals the whole once byte for byte on both, a refusal leaves both channels and both rails untouched and balanced, count = 0 the identity. Purely " ++
+        "local — two bounded i16 Clips triggered through the proven mono schmitt, one bit of rail state per channel over a static amplitude band, memoryless in time; no real sample rate, no network, no keys, no funds, " ++
+        "no real speaker\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
