@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260815.080752
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) time convention — this session in ai-jail
+title ALES174 — Lotus's stereo_bell: the parametric bell (peaking EQ) carried into stereo, the SAME two cutoffs and one gain on BOTH channels — the fifth rung of the stereo EQ / filter class, the surgical everyday EQ
+prompt Autonomous loop lap after ALES173: take the next agent-doable crux Lindy-first crux-first, self-approve the design round, send each finished increment to origin and xykj61 as its own signed round, STOP at custody gates.
+think ALES172/173 carried the band-pass (isolate the middle) and notch (drop the middle) into stereo. The gesture a mixer reaches for more than any other is the bell (peaking EQ): TURN the middle by a chosen gain while the edges stay exactly as they were. Mono ALES48 rests on the tone stack's lesson — the middle is the exact residual M = x − L − H, so gaining only the middle never disturbs the edges; the bell is the fixed-EQ family at three gains (unity=identity, zero=notch, larger=boost). The natural fifth stereo EQ rung, and the everyday one.
+think Stateless like the shelf and notch (fresh filters each call), so composed stereo_bell mirroring stereo_shelf/stereo_notch: StereoBellError = bell.BellError (ToneError + BadGain) reused whole; validate two cutoffs + gain denominator + span once against the shared length before either channel writes (atomic), then bell.bell on each channel with the same cutoffs and gain. Tidied to import tone as a top-level const rather than an inline @import for TAME cleanliness.
+think Proved four laws against the real ALES48 tool: stereo bell law (each channel == mono bell byte for byte, channels genuinely differing); three-gain law (unity=identity on both, zero-gain == ALES173's stereo notch on both proven by running notch.notch per channel, a settled constant surviving at a boosting gain per channel as the mid band is zero at DC); image law (identical-channel master stays identical); balance/silence/atomicity/degenerate (four refusals — BadCoeff low, BadCoeff high, BadGain, BadRange — each leaving both channels untouched and balanced).
+obs No custody gate reached — pure local i16 DSP siloed to lotus/, a self-approved design round. Built and ran on metal; witness GREEN through Rishi, TAME clean (opening triad, ≥2 asserts/fn with // invariant, no @memcpy, named errors with try, i64 scale-then-clamp-once per channel). Fifth EQ rung landed; the stereo EQ class now holds tone, shelf, band-pass, notch, and bell — the fixed-EQ family whole in stereo.
+loom witness=ales_stereo_bell_witness selftest=GREEN laws=4 channels=2 class=eq-filter-rung-5
+file active-designing/20260815-080752_fill-ales174-lotus-stereo-bell.md the self-approved design read
+file lotus/stereo_bell.rye the module — the same two cutoffs and one gain on both channels, turn the middle hold the edges
+file tools/ales_stereo_bell_witness.rish the witness proving it GREEN on metal
+recommend keep-going the stereo EQ class holds tone, shelf, band-pass, notch, and bell — the fixed-EQ family whole; the next Lindy rungs carry the remaining mono filters (the carried filter ALES43, the deesser) or open the stereo modulation class
