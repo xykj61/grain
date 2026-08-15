@@ -49,6 +49,24 @@ pub const EchoError = error{
     BadRange,
 };
 
+/// Validate an echo's delay, feedback, and span against a clip length WITHOUT touching a sample — the same three invariants `echo`
+/// enforced inline, factored out so a stereo carry can validate one shared delay, feedback, and span against both channels' shared
+/// length before either channel is mutated (mirroring ALES71/72/73/75's own precheck refactors). Refuses BadDelay (a delay of zero or
+/// wider than max_clip), BadFeedback (a zero denominator or a feedback at or above unity — a runaway), and BadRange (a span past the
+/// clip's samples), each before any write. Takes a plain length rather than a clip, so it reads no buffer.
+pub fn precheck(clip_len: u32, start: u32, count: u32, delay: u32, fb_num: u32, fb_den: u32) EchoError!void {
+    // invariant: the delay is at least one sample (no self-feedback) and no wider than the widest clip. Before any write.
+    if (delay == 0) return error.BadDelay;
+    if (delay > timeline.max_clip) return error.BadDelay;
+    // invariant: the feedback is a legal fraction strictly below unity — a nonzero denominator, and a numerator under it so each echo
+    // is strictly smaller than the last and the loop always decays. fb_num == 0 (the dry identity) is legal.
+    if (fb_den == 0) return error.BadFeedback;
+    if (fb_num >= fb_den) return error.BadFeedback;
+    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
+    if (start > clip_len) return error.BadRange;
+    if (count > clip_len - start) return error.BadRange;
+}
+
 /// Echo `count` samples starting at `start` in place in `clip`: each sample becomes the dry input plus a fraction `fb_num/fb_den` of the
 /// OUTPUT one `delay` earlier — y[i] = saturate(x[i] + fb·y[i-delay]). The delay line is the clip buffer itself: applied in place, left
 /// to right, `buf[i-delay]` for i-delay inside the span already holds the output written earlier this pass (true feedback), for i-delay
@@ -65,16 +83,9 @@ pub fn echo(
     fb_num: u32,
     fb_den: u32,
 ) EchoError!void {
-    // invariant: the delay is at least one sample (no self-feedback) and no wider than the widest clip. Before any write.
-    if (delay == 0) return error.BadDelay;
-    if (delay > timeline.max_clip) return error.BadDelay;
-    // invariant: the feedback is a legal fraction strictly below unity — a nonzero denominator, and a numerator under it so each echo
-    // is strictly smaller than the last and the loop always decays. fb_num == 0 (the dry identity) is legal.
-    if (fb_den == 0) return error.BadFeedback;
-    if (fb_num >= fb_den) return error.BadFeedback;
-    // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
-    if (start > clip.len) return error.BadRange;
-    if (count > clip.len - start) return error.BadRange;
+    // invariant: the delay, feedback, and span are all legal against this clip's length — checked before any write, so on refusal the
+    // clip is untouched (the same three invariants, now shared with the stereo carry through `precheck`).
+    try precheck(clip.len, start, count, delay, fb_num, fb_den);
 
     const num: i64 = @as(i64, fb_num);
     const den: i64 = @as(i64, fb_den);
