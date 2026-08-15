@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260815.083200
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) time convention — this session in ai-jail
+title ALES177 — Lotus's stereo_ring_mod: the ring modulator (bipolar triangle carrier on amplitude) carried into stereo, the SAME carrier on BOTH channels — the second rung of the stereo MODULATION class, the tremolo's sibling
+prompt Autonomous loop lap after ALES176: take the next agent-doable crux Lindy-first crux-first, self-approve the design round, send each finished increment to origin and xykj61 as its own signed round, STOP at custody gates.
+think ALES176 opened the stereo modulation class with the tremolo (carrier held to an attenuation, never crossing zero). Crux-first within the class: its named sibling the ring modulator (ALES75) is the same thin per-sample rung with ONE bound widened — the bipolar carrier may cross zero and flip the sample's sign, scattering the spectrum into metallic sum-and-difference tones. A ring modulator whose carrier never goes negative is EXACTLY the tremolo, so it is the natural second rung and it binds directly to ALES176.
+think Composed stereo_ring_mod mirroring stereo_tremolo: StereoRingModError = ring_mod.RingModError reused whole; validate ONCE up front. ring_mod's four checks were inline, so factored them into a shared pub precheck (mirroring the ALES176 tremolo refactor and tone.precheck) and had mono ring_mod call it; the mono ales_ring_mod_witness re-runs GREEN. Carried the honest asymmetric-rail subtlety: −32768·−1 = 32768 saturates to 32767 per channel, the one place the ring modulator's saturate earns its keep unlike the tremolo's no-op.
+think Proved four laws: stereo ring law (each channel == mono ring_mod byte for byte, channels genuinely differing); tremolo-sibling law (a non-negative carrier == ALES176's stereo tremolo on both proven by running tremolo.tremolo per channel, a bipolar carrier genuinely diverging); image law (identical-channel master stays identical AND a right-is-half-left pan keeps its L:R ratio sample for sample THROUGH the sign flips — both sides times the same c(k)); balance/silence/atomicity/degenerate (four refusals — BadPeriod, BadDepth, BadCarrier, BadRange — each leaving both channels untouched and balanced, count 0 the identity).
+obs No custody gate reached — pure local i16 DSP siloed to lotus/, a self-approved design round. Built and ran on metal; witness GREEN through Rishi, TAME clean (opening triad, ≥2 asserts/fn with // invariant, no @memcpy, named errors with try, triangle+multiply in i64, saturate honest at the lone corner), width exit 0. The stereo modulation class now holds tremolo and ring modulator (the amplitude pair); the next rungs carry the delay-line modulations (chorus, vibrato, flanger — each channel keeping its own delay-line snapshot) or auto_pan.
+loom witness=ales_stereo_ring_mod_witness selftest=GREEN laws=4 channels=2 class=modulation-rung-2
+file active-designing/20260815-083200_fill-ales177-lotus-stereo-ring-mod.md the self-approved design read
+file lotus/stereo_ring_mod.rye the module — the same bipolar carrier on both channels, the linked clang holding the image
+file lotus/ring_mod.rye precheck factored out pub (additive) for the up-front atomic validation
+file tools/ales_stereo_ring_mod_witness.rish the witness proving it GREEN on metal
+recommend keep-going the stereo modulation class holds the amplitude pair (tremolo, ring modulator); the next Lindy rungs carry the delay-line modulations (chorus, vibrato, flanger — each channel keeping its own delay-line snapshot, the harder crux) or the auto_pan
