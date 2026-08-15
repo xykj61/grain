@@ -63,14 +63,12 @@ pub const RingModError = error{
 /// carrier is unit-bounded (|c| ≤ glide_scale), so the voice is never louder than the dry; the write saturates once — a no-op except the lone
 /// sample_min-inverted corner (−32768·−1 = 32768 clamped to 32767). A non-negative carrier makes this EXACTLY the tremolo. Refuses BadPeriod,
 /// BadDepth, BadCarrier, and BadRange before any write; on refusal the clip is untouched. Values only — never a length.
-pub fn ring_mod(
-    clip: *timeline.Clip,
-    start: u32,
-    count: u32,
-    centre_scaled: i64,
-    depth_scaled: i64,
-    period: u32,
-) RingModError!void {
+/// Validate a ring modulator's period, carrier swing, and span together, before any sample is touched — the four faults refused up front so a
+/// caller (the mono `ring_mod`, or a stereo lift running the same carrier on each channel) can prove atomicity once against the shared length.
+/// The period must be a positive multiple of four (the triangle's quarter anchors need P/4 whole) and no wider than max_clip; the depth
+/// non-negative; the carrier's swing within ±unity in BOTH directions (|centre| + depth ≤ glide_scale — the two-sided magnitude bound that keeps
+/// |y| ≤ |x|); and the span wholly within the samples. Refuses BadPeriod, BadDepth, BadCarrier, and BadRange.
+pub fn precheck(clip_len: u32, start: u32, count: u32, centre_scaled: i64, depth_scaled: i64, period: u32) RingModError!void {
     // invariant: the period is a positive multiple of four (the triangle's quarter anchors need P/4 whole) and no wider than the widest
     // clip, so the carrier is bounded. Checked at the edge before any read.
     if (period == 0 or period % 4 != 0) return error.BadPeriod;
@@ -82,8 +80,20 @@ pub fn ring_mod(
     if (centre_scaled + depth_scaled > glide.glide_scale) return error.BadCarrier;
     if (centre_scaled - depth_scaled < -glide.glide_scale) return error.BadCarrier;
     // invariant: the span lies wholly within the current samples — checked without underflow (count vs the remainder).
-    if (start > clip.len) return error.BadRange;
-    if (count > clip.len - start) return error.BadRange;
+    if (start > clip_len) return error.BadRange;
+    if (count > clip_len - start) return error.BadRange;
+}
+
+pub fn ring_mod(
+    clip: *timeline.Clip,
+    start: u32,
+    count: u32,
+    centre_scaled: i64,
+    depth_scaled: i64,
+    period: u32,
+) RingModError!void {
+    // invariant: the period, carrier swing, and span are all legal — the four faults refused before any read, so a refusal never half-writes.
+    try precheck(clip.len, start, count, centre_scaled, depth_scaled, period);
 
     const scale: i64 = glide.glide_scale;
     var k: u32 = 0;
