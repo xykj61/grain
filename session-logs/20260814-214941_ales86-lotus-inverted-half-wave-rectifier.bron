@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260814.214941
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (cloud pier) — Eastern (EDT) time convention
+title ALES86 — Lotus's inverted half-wave rectifier, the mirror that closes the family
+prompt recur baton prin — continue the next agent-doable Lindy-first crux-first lap, send each finished increment, stop at custody gates
+think ALES85's own doc named the inverted half-wave rectifier as its plain sibling. Lindy (decomposing a signal into positive and negative parts is a foundational move); crux-first (min(x, 0) is exact for every i16 with no rail edge — the mirror of ALES85, with sample_min now the sample that passes through rather than the one that silences).
+think The genuine edge is again an absence: min(x, 0) never leaves [sample_min, 0], so no saturate and no wide intermediate. sample_min passes THROUGH untouched (it is already a legal i16), the mirror of ALES85 where sample_max passed. The full-wave rectifier had to saturate sample_min because its magnitude 32768 overflowed the positive rail; neither half-wave rectifier ever leaves the rail.
+think The teaching this rung adds is the partition law, proven sample for sample in the selftest: max(x, 0) + min(x, 0) = x (the two half-waves reconstruct the dry wave) and max(x, 0) − min(x, 0) = |x| (their difference is the full-wave). Harmonically min(x, 0) = (x − |x|)/2 — the same even+odd mix as ALES85, sign-flipped, DC pointing below zero. Memoryless, idempotent, always non-positive.
+obs Followed the sibling pattern exactly (halve.rye): module + design doc + witness + README status-line sync + session log, one signed commit. Seven laws proven; the partition law folds ALES85 into ALES86 in one selftest case. Witness GREEN; tame_style_check bans clean; width exit 0. Postcondition split into two single asserts (out <= 0; and the exact map).
+loom witness=ales_halve_neg_witness selftest=GREEN laws=7 module_lines=204
+file lotus/halve_neg.rye the inverted half-wave rectifier, y = min(x, 0), exact for every i16 with no rail edge, seven laws proven
+file tools/ales_halve_neg_witness.rish builds the module, runs the selftest, asserts the single GREEN ales-halve-neg line
+file active-designing/20260814-214941_fill-ales86-lotus-inverted-half-wave-rectifier.md the self-approved design read naming the crux, the partition law, and the laws
+file lotus/README.md front-door status line synced with ALES86 and re-stamped
+recommend keep-going the rectifier family now stands whole (full-wave pure-even; positive and inverted half-wave, the even+odd mix that partitions the wave); the loop names its own next Lotus crux — a precision rectifier with an offset threshold, or a fresh DSP family — as its own self-approved design round
