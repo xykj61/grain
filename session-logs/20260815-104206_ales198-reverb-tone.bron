@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260815.104206
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title ALES198 — Lotus's reverb tone, the darkness knob
+prompt recur loop — continue the Lotus/ALES ladder Lindy-first crux-first, each finished rung its own signed round
+think ALES197 closed the pre-delay axis whole (mono·stereo, wet-domain·dry-composed); its own recommend line named the next genuinely new primitive: a darkening knob, a high-frequency roll-off on the reverberant tail so the room absorbs highs the way a real space does. By Lindy-first crux-first that is the highest-Lindy tractable move — a new expressive axis (spectrum, not time or level), a clean composition of two proven pieces.
+think The reverb builds its combs via echo.echo, so a true in-loop Freeverb damping wants a damped-comb primitive — a bigger architectural rung. The honest first step that stands purely on proven primitives is a WET-TAIL tone: reverberate the span wet through ALES190 reverb_preset unchanged, then roll the treble off the wet with ALES40 tone.low_pass. tone_num==tone_den is identity; a smaller fraction darkens. I named the in-loop damping as a separate horizon rather than claiming it.
+think Atomicity crux: reverb_preset writes the wet FIRST, so a bad tone coefficient checked afterward would leave a half-reverbed clip. I pre-check the tone coefficient through ALES40 tone.precheck BEFORE reverberating, so a BadTone leaves the clip DRY. ReverbToneError = reverb_preset.ReverbPresetError || BadTone (ALES40 BadCoeff renamed).
+obs Witness GREEN on the first metal pass — no RED to book. Five laws: the identity edge (tone_num==tone_den equals reverb_preset byte for byte), it equals its composition (reverb_preset then tone.low_pass byte for byte, and the darkened tail differs from the wet), the tail darkens (summed first-difference roughness strictly less than the wet's), silence stays silence, and the faults forward atomic (BadTone with the clip still dry, DurationTooLong, BadRange). ALES190 preset and ALES40 low-pass re-run GREEN beside it; TAME bans clean, width exit 0.
+loom witness=ales_reverb_tone_witness selftest=GREEN laws=5 max_clip=4096 bench_samples=1024
+file active-designing/20260815-104206_fill-ales198-lotus-reverb-tone.md the self-approved design round naming the crux, shape, and five laws
+file lotus/reverb_tone.rye the rung — the wet-tail darkness knob, ALES40 low-pass over ALES190 wet, prechecked before any write
+file tools/ales_reverb_tone_witness.rish the witness proving five laws and re-proving ALES190/ALES40 green beside it
+recommend keep-going — the thin twin is stereo_reverb_tone (the same high-cut over both channels, one shared coefficient, the image held), exactly as ALES195 followed ALES194; beyond it, a true in-loop damped-comb primitive is the richer horizon.
