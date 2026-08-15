@@ -1,0 +1,287 @@
+//! lotus/preset.rye — ALES219: a named effect chain a keeper loads by name. The render family (ALES217 mono, ALES218 stereo)
+//! runs an ordered chain of the tree's own proven effects — yet a keeper does not want to hand-assemble a chain of Step records
+//! and compute each span against their clip's length. This rung seats a small, bounded CATALOG of named chains: say the name,
+//! receive a chain already legal for your clip. Every effect it composes is one render already proves (gain · fade · invert);
+//! preset adds only sequencing and naming, never a new acoustic fact.
+//!
+//! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES219.
+//! Design read: active-designing/20260815-132711_fill-ales219-lotus-preset.md
+//! Stands on: lotus/render.rye (ALES217) — the Step, StepKind, and check_step/render this catalog feeds verbatim.
+//!
+//! TWO PROMISES the raw Step[] cannot make alone:
+//!   1. LOAD BY NAME — from_name maps a plain string to a Preset, refusing UnknownPreset for a stranger; name gives the word
+//!      back. The literal "a keeper loads by name" gesture.
+//!   2. TOTAL OVER CLIP LENGTH — build(preset, clip_len) returns a Chain whose spans are already CLAMPED to the clip, so render
+//!      never refuses a preset chain for BadRange, whatever the length (short, long, or empty). The preset owns the span
+//!      arithmetic; the keeper never computes a span.
+//!
+//! HONEST SCOPE — software only, purely LOCAL. A Step[] catalog over the bounded i16 Clip; the returned chain feeds render.render
+//! (mono) or stereo_render.stereo_render (both channels) unchanged. No real file, no DAC, no acoustic or electrical fact, no
+//! network, no keys, no funds, no real device. Siloed to lotus/.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run lotus/preset.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const timeline = @import("timeline.rye");
+const fade = @import("fade.rye");
+const invert = @import("invert.rye");
+const wav = @import("wav.rye");
+const render = @import("render.rye");
+
+pub const preset_version = "20260815.132711";
+
+/// The widest chain any preset in this catalog builds — a small named ceiling, well under render.max_steps, so a Chain's fixed
+/// buffer is tiny and every preset is checked against one bound. A larger arrangement is many presets in sequence; this rung
+/// proves the bounded, single-preset case.
+pub const max_preset_steps: u32 = 4;
+
+/// How many samples a bookend fade eases at each edge, before clamping to the clip. A named constant so the head and tail fades
+/// read from one source of truth; a short clip clamps this to its own length, so the two fades simply overlap — still legal,
+/// since overlapping spans are sequential gestures, not a conflict.
+pub const edge_samples: u32 = 64;
+
+/// The catalog: which named chain a keeper loads. Each maps to a real gesture built only from effects render already proves.
+pub const Preset = enum(u8) {
+    /// Flip the whole clip's phase — one invert.
+    phase_flip = 1,
+    /// Halve the whole clip's level — one gain ×1/2.
+    half = 2,
+    /// Ease the clip in and out — a fade-in over the head edge, a fade-out over the tail edge.
+    bookend_fades = 3,
+    /// A small master — halve the level, then ease in and out.
+    gentle_master = 4,
+};
+
+pub const PresetError = error{
+    /// A name that matches no catalog entry — refused rather than guessing at a chain the keeper did not name.
+    UnknownPreset,
+};
+
+/// A built chain: a bounded Step buffer and the count actually written into it. `slice()` reads back exactly the steps this
+/// preset produced — never a stale tail — and feeds render.render or stereo_render.stereo_render verbatim.
+pub const Chain = struct {
+    steps: [max_preset_steps]render.Step = [_]render.Step{.{ .kind = .invert }} ** max_preset_steps,
+    len: u32 = 0,
+
+    /// The steps this preset built, in order, exactly `len` of them.
+    pub fn slice(self: *const Chain) []const render.Step {
+        // invariant: the count never claims more steps than the fixed buffer holds.
+        assert(self.len <= self.steps.len);
+        return self.steps[0..self.len];
+    }
+};
+
+/// The plain word for a preset — the name a keeper types, the name from_name reads back. One place the catalog's words live.
+pub fn name(p: Preset) []const u8 {
+    return switch (p) {
+        .phase_flip => "phase_flip",
+        .half => "half",
+        .bookend_fades => "bookend_fades",
+        .gentle_master => "gentle_master",
+    };
+}
+
+/// Load a preset by its plain name, refusing UnknownPreset for anything the catalog does not hold. The single place a string
+/// becomes a Preset — the literal "a keeper loads by name" gesture. A bounded walk of the fixed catalog, no allocation.
+pub fn from_name(s: []const u8) PresetError!Preset {
+    const all = [_]Preset{ .phase_flip, .half, .bookend_fades, .gentle_master };
+    // invariant: the catalog walked here is the whole enum — every Preset has a name and is reachable by it.
+    assert(all.len == 4);
+    var i: u32 = 0;
+    while (i < all.len) : (i += 1) {
+        if (std.mem.eql(u8, s, name(all[i]))) return all[i];
+    }
+    return error.UnknownPreset;
+}
+
+/// The head-edge span: from the clip's start, `edge_samples` clamped to the clip's own length. A clip shorter than the edge
+/// fades its whole self in.
+fn head_edge(clip_len: u32) u32 {
+    return if (clip_len < edge_samples) clip_len else edge_samples;
+}
+
+/// Build a preset's chain, already legal for a clip of `clip_len` samples. TOTAL over the length: every span is clamped to the
+/// clip, so render never refuses the returned chain for BadRange. No allocation — a fixed Chain filled and returned by value.
+pub fn build(p: Preset, clip_len: u32) Chain {
+    // invariant: the clip length is within the editable bound — a preset is built for a real Clip, never a wild length.
+    assert(clip_len <= timeline.max_clip);
+    var out = Chain{};
+    const edge = head_edge(clip_len);
+    // The tail span starts `edge` samples before the end; clamped `edge` guarantees no underflow (edge <= clip_len).
+    assert(edge <= clip_len);
+    const tail_start = clip_len - edge;
+    switch (p) {
+        .phase_flip => {
+            out.steps[0] = .{ .kind = .invert };
+            out.len = 1;
+        },
+        .half => {
+            out.steps[0] = .{ .kind = .gain, .start = 0, .count = clip_len, .num0 = 1, .den = 2 };
+            out.len = 1;
+        },
+        .bookend_fades => {
+            out.steps[0] = .{ .kind = .fade, .start = 0, .count = edge, .num0 = 0, .num1 = 1, .den = 1 };
+            out.steps[1] = .{ .kind = .fade, .start = tail_start, .count = edge, .num0 = 1, .num1 = 0, .den = 1 };
+            out.len = 2;
+        },
+        .gentle_master => {
+            out.steps[0] = .{ .kind = .gain, .start = 0, .count = clip_len, .num0 = 1, .den = 2 };
+            out.steps[1] = .{ .kind = .fade, .start = 0, .count = edge, .num0 = 0, .num1 = 1, .den = 1 };
+            out.steps[2] = .{ .kind = .fade, .start = tail_start, .count = edge, .num0 = 1, .num1 = 0, .den = 1 };
+            out.len = 3;
+        },
+    }
+    // invariant: the built chain fits the catalog bound — no preset ever overruns its own ceiling.
+    assert(out.len <= max_preset_steps);
+    return out;
+}
+
+// --- selftest: THE NAME LAW — from_name round-trips every catalog name and refuses a stranger; THE LEGAL-CHAIN LAW — every
+//     preset builds a chain render accepts at three clip lengths (short, long, empty); THE HAND LAW — a preset renders
+//     byte-for-byte to the same gestures by hand; THE DISTINCT LAW — two presets render one clip to two files; THE BOUND LAW —
+//     no preset exceeds max_preset_steps -----------------------------------------------------------------------------------
+
+fn eq(got: []const i16, want: []const i16) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < want.len) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
+    try timeline.splice(clip, 0, src);
+}
+
+/// The widest container this selftest renders — header plus the whole clip bound, sized once so no stack buffer guesses.
+const test_cap: u32 = wav.header_len + timeline.max_clip * wav.sample_bytes;
+
+fn run_selftest() !u8 {
+    const rate: u32 = 44_100;
+
+    // 1. THE NAME LAW — every catalog name loads back to the same Preset, and an unknown name refuses UnknownPreset.
+    {
+        const all = [_]Preset{ .phase_flip, .half, .bookend_fades, .gentle_master };
+        var i: u32 = 0;
+        while (i < all.len) : (i += 1) {
+            const got = try from_name(name(all[i]));
+            assert(got == all[i]);
+        }
+        if (from_name("no_such_preset")) |_| return error.UnknownSlipped else |e| if (e != error.UnknownPreset) return error.WrongUnknown;
+        // The empty string names nothing either.
+        if (from_name("")) |_| return error.EmptySlipped else |e| if (e != error.UnknownPreset) return error.WrongEmpty;
+    }
+
+    // 2. THE LEGAL-CHAIN LAW — every preset builds a chain render accepts, at a clip SHORTER than the edge, LONGER than the edge,
+    //    and EMPTY. The tone is distinct signed values so the render is a real edit, not a no-op.
+    {
+        const short_tone = [_]i16{ 100, -200, 300, -400 }; // 4 samples, under edge_samples (64)
+        var long_tone: [edge_samples * 2 + 8]i16 = undefined; // well over the edge
+        var g: u32 = 0;
+        while (g < long_tone.len) : (g += 1) long_tone[g] = @as(i16, @intCast((g % 7) * 1000)) - 3000;
+
+        const all = [_]Preset{ .phase_flip, .half, .bookend_fades, .gentle_master };
+        var p: u32 = 0;
+        while (p < all.len) : (p += 1) {
+            // short clip
+            {
+                var clip = timeline.Clip{};
+                try load_clip(&clip, &short_tone);
+                const chain = build(all[p], clip.len);
+                var file: [test_cap]u8 = undefined;
+                _ = render.render(rate, &clip, chain.slice(), &file) catch return error.ShortChainRefused;
+            }
+            // long clip
+            {
+                var clip = timeline.Clip{};
+                try load_clip(&clip, &long_tone);
+                const chain = build(all[p], clip.len);
+                var file: [test_cap]u8 = undefined;
+                _ = render.render(rate, &clip, chain.slice(), &file) catch return error.LongChainRefused;
+            }
+            // empty clip — build against length zero, render a valid header
+            {
+                var clip = timeline.Clip{};
+                const chain = build(all[p], clip.len);
+                var file: [test_cap]u8 = undefined;
+                const wrote = render.render(rate, &clip, chain.slice(), &file) catch return error.EmptyChainRefused;
+                if (wrote != wav.header_len) return error.EmptyChainSize;
+            }
+        }
+    }
+
+    // 3. THE HAND LAW — the gentle_master preset over a real clip renders byte-for-byte to the same three gestures applied by
+    //    hand (halve the whole clip, fade-in the head edge, fade-out the tail edge).
+    {
+        var tone: [edge_samples * 2]i16 = undefined; // longer than the edge so head and tail fades do not overlap
+        var g: u32 = 0;
+        while (g < tone.len) : (g += 1) tone[g] = @as(i16, @intCast((g % 11) * 500)) - 2500;
+
+        var clip = timeline.Clip{};
+        try load_clip(&clip, &tone);
+        const chain = build(.gentle_master, clip.len);
+        var file: [test_cap]u8 = undefined;
+        const wrote = try render.render(rate, &clip, chain.slice(), &file);
+
+        // The same gestures by hand on a fresh clip.
+        var hand = timeline.Clip{};
+        try load_clip(&hand, &tone);
+        const edge = head_edge(@intCast(tone.len));
+        const tail_start = @as(u32, @intCast(tone.len)) - edge;
+        try timeline.gain(&hand, 0, @intCast(tone.len), 1, 2);
+        try fade.fade(&hand, 0, edge, 0, 1, 1);
+        try fade.fade(&hand, tail_start, edge, 1, 0, 1);
+
+        var back: [tone.len]i16 = undefined;
+        const got = try wav.decode(file[0..wrote], &back);
+        if (got.count != tone.len) return error.HandCountWrong;
+        if (!eq(back[0..got.count], hand.samples())) return error.HandLawWrong;
+    }
+
+    // 4. THE DISTINCT LAW — two different presets render one clip to two different files: the name selects the work. half (×1/2)
+    //    and phase_flip (invert) disagree on any non-zero sample.
+    {
+        const tone = [_]i16{ 1000, -2000, 3000, -4000 };
+        var a_clip = timeline.Clip{};
+        try load_clip(&a_clip, &tone);
+        const a_chain = build(.half, a_clip.len);
+        var a_file: [test_cap]u8 = undefined;
+        const aw = try render.render(rate, &a_clip, a_chain.slice(), &a_file);
+
+        var b_clip = timeline.Clip{};
+        try load_clip(&b_clip, &tone);
+        const b_chain = build(.phase_flip, b_clip.len);
+        var b_file: [test_cap]u8 = undefined;
+        const bw = try render.render(rate, &b_clip, b_chain.slice(), &b_file);
+
+        if (aw != bw) return error.DistinctLengthDiffered; // same clip length → same file length
+        if (eq(a_clip.samples(), b_clip.samples())) return error.DistinctLawWrong;
+    }
+
+    // 5. THE BOUND LAW — no preset builds a chain past max_preset_steps.
+    {
+        const all = [_]Preset{ .phase_flip, .half, .bookend_fades, .gentle_master };
+        var p: u32 = 0;
+        while (p < all.len) : (p += 1) {
+            const chain = build(all[p], 128);
+            if (chain.len > max_preset_steps) return error.BoundLawWrong;
+        }
+    }
+
+    print("GREEN ales-preset: a keeper loads a named effect chain from a small catalog (phase_flip · half · bookend_fades · " ++
+        "gentle_master) and receives a chain already legal for their clip. THE NAME LAW: from_name round-trips every catalog " ++
+        "name and refuses UnknownPreset for a stranger or the empty string. THE LEGAL-CHAIN LAW: every preset builds a chain " ++
+        "render accepts at a clip shorter than the edge, longer than the edge, and empty — the spans are clamped so render " ++
+        "never refuses a preset for BadRange. THE HAND LAW: gentle_master renders byte-for-byte to the same halve-and-ease " ++
+        "gestures applied by hand. THE DISTINCT LAW: half and phase_flip render one clip to two different files — the name " ++
+        "selects the work. THE BOUND LAW: no preset exceeds max_preset_steps. Only gain · fade · invert composed; no new " ++
+        "acoustic fact. Software only — no real file, no DAC, no network, no keys, no funds, no real device\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
