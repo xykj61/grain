@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260816.073849
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud bench — Eastern (EDT) time convention
+title crypto: PBKDF2-HMAC-SHA-512 in Rye, parity-GREEN — the stone BIP-39 stands on
+prompt Take the next agent-doable lap Lindy-first crux-first — Rye prioritized, Glow on green-witnessed Rye — approve own design rounds, send each finished increment as its own signed round, stop at the custody gates. baton prin recur.
+think First finished the pending, uncommitted BIP-32 public-tree round: neuter + ckd_pub (watch-only derivation, K_child = point(I_L) + K_par over the GREEN secp256k1 group law, HardenedFromPublic refused). Witness GREEN against BIP-32 Test Vector 1 (every node's neuter reproduces the spec's xpub; each normal transition reaches it through CKDpub from the neutered parent alone); tame_style_check clean. Committed as its own signed round and pushed origin + xykj61, git nib pinned in the same work commit per the pin rule.
+think Next crux, Lindy-first: the REMEMBER card named the wallet arc — BIP-39 mnemonic→seed, then BIP-44. BIP-39 folds a mnemonic and passphrase into a 512-bit seed via PBKDF2-HMAC-SHA-512 (2048 rounds). The tree held pbkdf2_sha256 but not the SHA-512 PRF. Crux-first: author the reusable stone first (pbkdf2_sha512), then BIP-39 becomes a thin composition on it. The stone is reusable beyond BIP-39 (LUKS, PGP) — higher Lindy than embedding a one-off loop inside bip39.
+think Mirrored crypto/pbkdf2_sha256.rye exactly, swapping the PRF to the GREEN crypto/hmac_sha512.rye (tag_len 64) and the hash to sha512. Same RFC 8018 §5.2 iterate-and-XOR, same bound set (password/salt within HMAC's own bounds, iterations cap, output cap), same contract asserts. Authored no new cryptography — only the RFC composition over a MAC already proven on metal.
+obs Parity chosen the no-fabricated-constant way crypto/secp256k1_pubkey.rye favours: byte-for-byte against Zig's independent std.crypto.pwhash.pbkdf2 with HmacSha512 across four shapes (single iteration, the BIP-39 2048-round depth over a "mnemonic"‖passphrase salt, a multi-block 150-byte key, a partial 37-byte tail), plus a transitive tie to the GREEN HMAC-SHA-512 (a single-iteration block is exactly HMAC(P, S‖INT_32_BE(1))). The world-bound published KAT for this PRF is BIP-39's own Trezor vector — it arrives with the BIP-39 rung this stone unblocks, honestly deferred rather than fabricated now.
+obs Count guard bijection kept: registered the witness in the suite after pbkdf2_sha256, updated the suite say line and both front-door docs (crypto/README.md, docs/CRYPTO.md) plus crypto/CONSTANT_TIME.md from 45→46 files (34→35 primitives + 11 compositions). crypto_count_guard_witness prints 46; tame_style_check bans clean.
+loom witness=crypto_pbkdf2_sha512_witness green=1 shapes=4 iterations_max=4096 bip39_depth=2048
+file crypto/pbkdf2_sha512.rye the PBKDF2-HMAC-SHA-512 primitive, the reusable stone BIP-39 folds a mnemonic and passphrase into a seed with
+file tools/crypto_pbkdf2_sha512_witness.rish per-file witness — build + selftest, GREEN line asserted
+file tools/crypto_suite_witness.rish registered the new witness after pbkdf2_sha256; count 46, 35 primitives
+file crypto/README.md front-door count 45→46 and the pbkdf2_sha512 KDF row
+file docs/CRYPTO.md audit shelf count 45→46 and the rung-table row
+file crypto/CONSTANT_TIME.md added pbkdf2_sha512 to the data-independent KDF row
+recommend keep-going the next wallet-arc rung is BIP-39 mnemonic→seed (a thin composition over this stone, carrying BIP-39's Trezor published known-answer), then BIP-44 paths over the GREEN BIP-32; signing with a real identity key stays the custody gate

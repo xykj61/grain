@@ -1,6 +1,6 @@
 # Crypto — the Season G audit front door
 
-*A Rye-native, parity-checked cryptography library — thirty-four primitives and eleven compositions, each GREEN on metal.*
+*A Rye-native, parity-checked cryptography library — thirty-five primitives and eleven compositions, each GREEN on metal.*
 
 **Status:** Checkable — Season G operator + auditor guide
 **Depth:** guide
@@ -32,7 +32,7 @@ vectors — never a copied line ([`gratitude-licenses.md`](../.claude/rules/grat
 
 ---
 
-## Rung table — forty-five files, dependency order
+## Rung table — forty-six files, dependency order
 
 Each rung stands on the GREEN rungs beneath it; none authors cryptography a lower
 rung had not already proven. Every file carries a per-file witness
@@ -60,6 +60,7 @@ rung had not already proven. Every file carries a per-file witness
 | `hkdf_sha256.rye` | HKDF-SHA-256 extract-then-expand — the schedule TLS 1.3 · Noise · Signal run, proven against RFC 5869's own SHA-256 vectors | RFC 5869 |
 | `argon2.rye` | Argon2d · Argon2i · Argon2id memory-hard password KDF — the stone Vault stands on | RFC 9106 |
 | `pbkdf2_sha256.rye` | PBKDF2-HMAC-SHA-256 iteration-hard password KDF — WPA2/WPA3 · LUKS · 1Password; Argon2's iteration-hard counterpart | RFC 8018 · RFC 7914 §11 |
+| `pbkdf2_sha512.rye` | PBKDF2-HMAC-SHA-512 iteration-hard password KDF — the SHA-512 PRF; the exact stretch BIP-39 folds a mnemonic and passphrase into a 512-bit wallet seed with (2048 rounds); the stone the coming BIP-39 rung stands on | RFC 8018 · BIP-39 |
 
 ### The ChaCha / Poly line
 
@@ -128,7 +129,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 
 [`crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) rebuilds each
 `crypto/<name>.rye` fresh from source to the gitignored `crypto/bin/` and runs all
-forty-five per-file witnesses in the dependency order above, refusing whole —
+forty-six per-file witnesses in the dependency order above, refusing whole —
 naming the file that stopped it — the moment any one goes RED. A GREEN suite means
 every claim here is re-provable by tooling, not trusted from a commit message
 alone (measurement beats memory). It then runs the **count guard**
