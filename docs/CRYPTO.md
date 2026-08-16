@@ -1,6 +1,6 @@
 # Crypto — the Season G audit front door
 
-*A Rye-native, parity-checked cryptography library — thirty-three primitives and four compositions, each GREEN on metal.*
+*A Rye-native, parity-checked cryptography library — thirty-two primitives and four compositions, each GREEN on metal.*
 
 **Status:** Checkable — Season G operator + auditor guide
 **Depth:** guide
@@ -32,7 +32,7 @@ vectors — never a copied line ([`gratitude-licenses.md`](../.claude/rules/grat
 
 ---
 
-## Rung table — thirty-seven files, dependency order
+## Rung table — thirty-six files, dependency order
 
 Each rung stands on the GREEN rungs beneath it; none authors cryptography a lower
 rung had not already proven. Every file carries a per-file witness
@@ -119,7 +119,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 
 [`crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) rebuilds each
 `crypto/<name>.rye` fresh from source to the gitignored `crypto/bin/` and runs all
-thirty-seven per-file witnesses in the dependency order above, refusing whole —
+thirty-six per-file witnesses in the dependency order above, refusing whole —
 naming the file that stopped it — the moment any one goes RED. A GREEN suite means
 every claim here is re-provable by tooling, not trusted from a commit message
 alone (measurement beats memory).

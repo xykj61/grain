@@ -19,7 +19,7 @@ a message: **Kumara** identity, **Vault** sealed storage, **Comlink** sessions, 
 the **Lotus** signed carry. It authors the mathematics once, in the open, so a hand
 placing trust in it can read exactly what it does.
 
-## The thirty files — twenty-six primitives and four compositions
+## The thirty-six files — thirty-two primitives and four compositions
 
 Built in dependency order: each rung stands on the GREEN rungs beneath it, none
 authoring cryptography a lower rung had not already proven.
@@ -76,6 +76,16 @@ authoring cryptography a lower rung had not already proven.
 | [`x25519.rye`](x25519.rye) | X25519 elliptic-curve Diffie-Hellman (Montgomery ladder) | RFC 7748 |
 | [`ed25519_to_x25519.rye`](ed25519_to_x25519.rye) | The birational Edwards↔Montgomery key conversion — one Ed25519 identity key made usable for X25519 agreement, and back | RFC 7748 §4.1 |
 
+### The secp256k1 curve (the Bitcoin/Ethereum curve)
+
+| File | What it is | Reference |
+|---|---|---|
+| [`fe_secp256k1.rye`](fe_secp256k1.rye) | The base field GF(2²⁵⁶ − 2³² − 977), eight 32-bit limbs — the durable stone the whole secp256k1 tower stands on. Not in Monocypher, so parity is by-hand known-answers plus Zig's independent `std.crypto.ecc.Secp256k1.Fe` | secp256k1 (SEC 2) |
+| [`secp256k1_group.rye`](secp256k1_group.rye) | The group law — point add, double, negate in complete homogeneous projective coordinates, exception-free for every pair. Parity is algebraic known-answers plus Zig's `std.crypto.ecc.Secp256k1` on affine coordinates | RCB eprint 2015/1060 (a = 0) |
+| [`secp256k1_scalarmul.rye`](secp256k1_scalarmul.rye) | Scalar multiplication k·P over the group law (double-and-add) — variable-time; a constant-time ladder for secret scalars is the named horizon. Parity against Zig's `std.crypto.ecc.Secp256k1.mul` | double-and-add over RCB |
+| [`secp256k1_scalar.rye`](secp256k1_scalar.rye) | Arithmetic modulo the group order n — reduce, multiply, invert (Fermat), is_canonical; n built from its defining form, never a pasted limb. Parity against Zig's `std.crypto.ecc.Secp256k1.scalar` | secp256k1 (SEC 2) · Fermat |
+| [`secp256k1_ecdsa.rye`](secp256k1_ecdsa.rye) | ECDSA signature **verification** — the scheme Bitcoin and Ethereum sign with, composed over the tower above, with an added on-curve check that refuses an off-curve key. Every value is public, so verification is non-gated; signing stays the custody gate. Parity against Zig's `std.crypto.sign.ecdsa.EcdsaSecp256k1Sha256`, true-for-true and false-for-false | SEC 1 · secp256k1 (SEC 2) |
+
 ### Compositions (no new cryptography — proven stones assembled)
 
 | File | What it answers | Composes |
@@ -98,7 +108,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 ```
 
 [`../tools/crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) runs all
-thirty per-file witnesses in the dependency order above, rebuilding and reproving
+thirty-six per-file witnesses in the dependency order above, rebuilding and reproving
 each from source, and refuses whole — naming the file that stopped it — the moment
 any one goes RED. A GREEN suite means every claim in this library is re-provable by
 tooling, not trusted from a commit message alone.

@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260816.031919
+editor Claude Code
+model Fable 5
+voice Kyri
+host cloud bench — Eastern (EDT) time convention
+title crypto file-count docs sync — 36/32, secp256k1 section restored to README
+prompt Read REMEMBER and the three road-ahead design docs; take the next agent-doable lap Lindy-first crux-first, Rye-prioritized; send each finished increment as its own signed round; stop at custody gates. baton prin recur.
+think Walked the wave doc — Season G Cryptography is the highest-Lindy new thread; the docs pass that feeds the seed is a named crux. The secp256k1 tower (fe · group · scalarmul · scalar · ecdsa) is already GREEN through ECDSA verify.
+think Read the two crypto front doors. docs/CRYPTO.md lists the full secp256k1 tower; crypto/README.md does NOT — it says thirty files · twenty-six primitives and omits the whole secp256k1 section. A live docs-implementation-sync drift on the audit front door, Lindy-first, agent-doable, no custody gate.
+think Measured the ground truth before correcting any claim: ls crypto/*.rye | wc -l = 36, and the suite witnesses array = 36 per-file entries. My first grep read 37 only because the suite Kin comment self-references tools/crypto_suite_witness.rish — an inflated grep, not a 37th file.
+think So the count drifted THREE ways at once: README says 30/26 (and omits secp256k1), docs/CRYPTO.md and the suite prose both say 37/33 — off by one over the true 36/32. Same class as REDS #77 (eighteen-vs-sixteen), recurred.
+obs Ran crypto_suite_witness GREEN (exit 0) before touching a claim; re-ran after editing the suite prose to confirm it still parses and greens on metal.
+obs Fix applied to the three LIVING docs only: crypto/README.md heading 36/32 + restored secp256k1 section (5 rows) + thirty-six per-file witnesses; docs/CRYPTO.md subtitle 32, rung-table 36, witnesses 36; tools/crypto_suite_witness.rish comment + two say-lines to 36/32. The dated .bron logs carry the inflated counts and stay immutable under the one-clock law — not touched.
+obs Recorded REDS #80 (recurrence of #77) with three fields and booked the loom the reds-first law names: a count guard asserting the witnesses array length equals ls crypto/*.rye | wc -l, printing the computed count rather than a typed word — its own next round.
+loom witness=crypto_suite_witness files=36 primitives=32 compositions=4 result=GREEN
+file crypto/README.md heading count fixed to 36/32; secp256k1 section (5 files) restored; witness count 36
+file docs/CRYPTO.md off-by-one corrected — subtitle 32, rung table 36, witnesses 36
+file tools/crypto_suite_witness.rish prose corrected to 36/32 (comment + two say-lines), re-GREEN on metal
+file work-in-progress/REDS.md row 80 seated — the recurrence, and the count-guard loom booked
+recommend keep-going — next mechanical lap builds the booked count-guard loom (REDS #80) as its own signed round; no seam, policy written
