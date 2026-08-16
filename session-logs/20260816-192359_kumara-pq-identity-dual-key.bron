@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260816.192359
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host cloud bench — Eastern (EDT) time convention
+title The dual-key post-quantum identity front door — one phrase, two lattice keys, GREEN
+prompt Take the next agent-doable lap Lindy-first crux-first; approve my own design rounds and make progress before checking in; send each finished increment as its own signed round; STOP at the custody gates.
+think The prior round's log recommended a Claude check-in before this construction, yet the standing loop word is to approve my own design rounds and make progress. The design note active-designing/20260816-192400 already decided the shape (a post-quantum identity is dual-key), so the seam it flagged is a documented decision, not an open question. The construction is gate-free — pure composition over GREEN rungs, TEST vectors only, no real key, no network, no funds. So I built it.
+think Crux-first: the post-quantum identity itself is the keystone that opens the sealed-to-identity door after it, so I built the identity and left the sealed-to-identity door as the next rung (finishing edge — one keystone per round). The identity carries two keys: mldsa_identity (signing half) and mlkem_sealed's own keypair (agreement half), grown from one phrase via bip39_seed → HKDF-SHA512 with three domain-separated labels (ml-dsa-sign/v1, ml-kem-agree/d/v1, ml-kem-agree/z/v1). One extract, three expands — RFC 5869's own multi-key pattern, so the two keys are provably independent key material from one remembered phrase.
+think The load-bearing proof is the learned discovery made checkable: the derived ξ, d, z are asserted pairwise distinct (both at the door as a postcondition and in the selftest), so the module demonstrates the two keys are genuinely two, not one wearing two hats. Test 6 (both halves at once) seals a frame to a recipient's ML-KEM half and signs the whole frame with the sender's ML-DSA half, then opens for confidentiality and verifies for provenance, a tamper breaking the signature — the dual-key identity delivering exactly what the design note promised, and proving the identity plugs straight into crypto/mlkem_sealed.rye with no adapter.
+think No new std.crypto oracle: each half is already doubly-oracle-proven one rung down (mldsa_identity against newKeyFromSeed + Signature.verify, mlkem_sealed against std.crypto ml_kem decaps), so the honest composition proof is no-drift + both-halves-real + two-keys-distinct. Stated that plainly rather than duplicating the rungs' oracles.
+obs Count guard is the reds-first loom for the crypto library (booked REDS #80) — it enforces a strict bijection between crypto/*.rye files and suite registrations, so a new module is not GREEN until its witness is written AND registered. Wired tools/crypto_kumara_pq_identity_witness.rish into tools/crypto_suite_witness.rish; guard moved 74 → 75. Synced the spelled counts and added the rung row in crypto/README.md and docs/CRYPTO.md in the same round (docs-implementation-sync), seventy-four → seventy-five, twenty-four → twenty-five compositions.
+loom witness=crypto_kumara_pq_identity_witness green=1 tiers=3 crypto_files=75 composed_rungs=4
+file crypto/kumara_pq_identity.rye the dual-key post-quantum identity front door — one phrase → ML-DSA signing key + ML-KEM agreement key, GREEN over three tiers
+file tools/crypto_kumara_pq_identity_witness.rish the on-metal witness for the new door, registered in the suite
+file tools/crypto_suite_witness.rish registered the new witness so the count-guard bijection holds
+file crypto/README.md rung row added, count synced seventy-four → seventy-five
+file docs/CRYPTO.md rung row added, count synced seventy-four → seventy-five
+recommend keep-going the next crux is the post-quantum sealed-TO-identity door (kumara_pq_sealed) — seal to an identity's ML-KEM half, optionally sign the frame with its ML-DSA half; this identity is already sealing-ready, so it is the natural next rung, gate-free and composable

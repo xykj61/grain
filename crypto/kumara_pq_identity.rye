@@ -1,0 +1,397 @@
+//! crypto/kumara_pq_identity.rye — Season G (Cryptography), the POST-QUANTUM identity FRONT DOOR: the one composition that grows a keeper's whole
+//! quantum-resistant identity from a single backup phrase. Where crypto/kumara_identity.rye renders a phrase to the ONE Ed25519 key every classical
+//! Grain module signs and agrees with, this renders a phrase to the TWO lattice keys a post-quantum identity must carry — an ML-DSA signing key and
+//! an ML-KEM key-agreement key — because the lattice schemes share no curve for one key to do both jobs (active-designing/20260816-192400 — "a
+//! post-quantum Kumara identity carries TWO keys … never one key doing both"). The classical single-key convenience does not survive the pivot; this
+//! module honors that structural fact from its first line, growing both keys deterministically from one phrase so a keeper still remembers a single secret.
+//!
+//! It authors NO new cryptography. The signing half is crypto/mldsa_identity.rye (itself the ML-DSA ladder tied into one door); the agreement half is
+//! crypto/mlkem_sealed.rye's own keypair (the ML-KEM ladder); the one-phrase-to-two-keys derivation composes crypto/bip39_seed.rye (the mnemonic→seed
+//! fold every Kumara identity already uses) and crypto/hkdf_sha512.rye (RFC 5869 — the standard "turn one secret into as many independent keys as a
+//! protocol needs" primitive). One HKDF extract over the 512-bit BIP-39 seed yields one pseudorandom key; three domain-separated expansions carve it
+//! into the ML-DSA seed ξ and the ML-KEM seeds d and z — so a break in the derivation of one half cannot reach the other, and the two keys are provably
+//! independent key material drawn from one remembered phrase.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, audit-ready). This double-seats BESIDE crypto/kumara_identity.rye,
+//! which stays exactly the correct CLASSICAL identity for the Ed25519 world it names; nothing already GREEN moves.
+//! Design read: active-designing/20260816-192400_post-quantum-identity-is-dual-key.md — the learned discovery this module is the construction of.
+//! Kin: crypto/mldsa_identity.rye (the signing half, GREEN) · crypto/mlkem_sealed.rye (the agreement half's keypair + the sealed door it plugs into,
+//! GREEN) · crypto/bip39_seed.rye (the mnemonic→seed fold, GREEN) · crypto/hkdf_sha512.rye (the domain-separated key expansion, GREEN) ·
+//! crypto/kumara_identity.rye (the classical Ed25519 identity this is the post-quantum sibling of). Clean-room: BIP-39, RFC 5869, FIPS 203/204 are
+//! public standards studied through their specs (.claude/rules/gratitude-licenses.md); no line is copied.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. Every identity here is a TEST identity from a published-vector
+//! mnemonic; the module's own functions call no std.crypto (the halves beneath are each doubly-oracle-proven against Zig's std.crypto one rung down,
+//! so this composition needs no new oracle — it proves NO DRIFT, that both halves are REAL working keys, and that the two keys are DISTINCT). The
+//! derived ML-DSA and ML-KEM secret keys are secrets the caller keeps in their own jail; constant-time timing-safety stays crypto/CONSTANT_TIME.md's
+//! named horizon. Growing a REAL post-quantum identity from the maintainer's OWN phrase — either half — and signing or agreeing with it stays the
+//! custody gate, exactly as the classical Kumara identity's real key does.
+//!
+//! Parity is proven at selftest over every parameter set with no fabricated constant: (1) the BIP-39 half is anchored to a REAL published answer —
+//! the Trezor vector mnemonic folds to the spec's own 512-bit seed byte-for-byte; (2) NO DRIFT — from_mnemonic equals hand-deriving the three seeds
+//! then composing mldsa_identity.from_seed and mlkem_sealed.keypair, and from_seed reaches the identical identity; (3) THE TWO KEYS ARE DISTINCT —
+//! the derived ξ, d, z are pairwise different, so the signing key and the agreement key are independent key material, the whole point of the dual-key
+//! shape; (4) THE SIGNING HALF WORKS — it signs a message verify ACCEPTS while a flipped message byte, a flipped signature byte, and a different
+//! identity's public key each REFUSE; (5) THE AGREEMENT HALF WORKS AND THE IDENTITY IS SEALING-READY — a message sealed to the identity's ML-KEM half
+//! opens with its dk, while a different identity's key fails OpenFailed; (6) BOTH HALVES AT ONCE — a frame sealed to a recipient's agreement half and
+//! signed by the sender's signing half is opened for confidentiality AND verified for provenance, the two halves delivering together what one lattice
+//! key cannot; (7) DETERMINISM and DISTINCTNESS close the proof.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/kumara_pq_identity.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const mldsa = @import("mldsa_identity.rye");
+const mldsa_keygen = @import("mldsa_keygen.rye");
+const mldsa_sign = @import("mldsa_sign.rye");
+const mldsa_verify = @import("mldsa_verify.rye");
+const mlkem = @import("mlkem_sealed.rye");
+const bip39 = @import("bip39_seed.rye");
+const hkdf = @import("hkdf_sha512.rye");
+
+pub const kumara_pq_identity_version = "20260816.192359";
+
+/// The width of each lattice seed this door derives — 32 bytes for the ML-DSA seed ξ and each ML-KEM seed (d, z). The three schemes agree on this
+/// width, asserted at comptime below so the derivation buffers cannot silently mis-size.
+pub const seed_bytes: u32 = 32;
+
+comptime {
+    // invariant: the composed halves take exactly the seed width this door derives, so a [seed_bytes]u8 buffer feeds each without a cast.
+    assert(mldsa.seed_bytes == seed_bytes);
+    assert(mlkem.seed_bytes == seed_bytes);
+}
+
+/// The HKDF salt and the three domain-separation labels. One extract over the BIP-39 seed keys a single pseudorandom key; each label carves an
+/// independent 32-byte seed from it, so the signing key and the agreement key are drawn from disjoint expansions of one phrase. The labels are fixed
+/// ASCII, versioned, so a future derivation revision is a new label rather than a silent change.
+const hkdf_salt = "grain-pq-identity/v1";
+const info_sign = "ml-dsa-sign/v1"; // → ξ, the ML-DSA signing seed
+const info_agree_d = "ml-kem-agree/d/v1"; // → d, the ML-KEM key-generation seed
+const info_agree_z = "ml-kem-agree/z/v1"; // → z, the ML-KEM implicit-rejection seed
+
+/// One post-quantum identity parameter set: the ML-DSA parameter set for the signing half and the ML-KEM parameter set for the agreement half, paired
+/// by security tier. A PqParams value names a whole dual-key identity shape so from_mnemonic / sign / verify each cite one bundle.
+pub const PqParams = struct {
+    dsa: mldsa.Params,
+    kem: mlkem.Params,
+};
+
+/// The smallest tier: ML-DSA-44 (NIST category 2) signing, ML-KEM-512 (category 1) agreement. The fastest keys, the lightest frames.
+pub const pq_small = PqParams{ .dsa = mldsa.ml_dsa_44, .kem = mlkem.mlkem_512 };
+
+/// The balanced default: ML-DSA-65 (NIST category 3) signing, ML-KEM-768 (category 3) agreement. The tier a keeper's name wants for decades.
+pub const pq_default = PqParams{ .dsa = mldsa.ml_dsa_65, .kem = mlkem.mlkem_768 };
+
+/// The largest tier: ML-DSA-87 (NIST category 5) signing, ML-KEM-1024 (category 5) agreement. The highest security margin.
+pub const pq_large = PqParams{ .dsa = mldsa.ml_dsa_87, .kem = mlkem.mlkem_1024 };
+
+/// The default parameter set for a post-quantum Kumara identity: the balanced category-3 tier.
+pub const default = pq_default;
+
+// ---- re-exported widths, so a caller sizes buffers from this one door ---------------------------------------------------------------
+
+/// sign_public_len — the ML-DSA public key width for a set (the key that names the signing half).
+pub fn sign_public_len(comptime p: PqParams) u32 {
+    return mldsa.pk_len(p.dsa);
+}
+
+/// sign_secret_len — the ML-DSA secret key width (a secret the caller keeps in their own jail).
+pub fn sign_secret_len(comptime p: PqParams) u32 {
+    return mldsa.sk_len(p.dsa);
+}
+
+/// sig_len — the ML-DSA signature width a signing-half signature carries.
+pub fn sig_len(comptime p: PqParams) u32 {
+    return mldsa.sig_len(p.dsa);
+}
+
+/// agree_public_len — the ML-KEM encapsulation-key (ek) width a sender seals to (the public agreement half).
+pub fn agree_public_len(comptime p: PqParams) u32 {
+    return mlkem.ek_len(p.kem);
+}
+
+/// agree_secret_len — the ML-KEM decapsulation-key (dk) width the identity opens sealed frames with (a secret held in the caller's own jail).
+pub fn agree_secret_len(comptime p: PqParams) u32 {
+    return mlkem.dk_len(p.kem);
+}
+
+/// IdentityType — one derived post-quantum identity for a parameter set: the ML-DSA signing half ({public_key, secret_key}) and the ML-KEM agreement
+/// half ({ek, dk}). The signing half makes and verifies signatures; the agreement half is what crypto/mlkem_sealed.rye seals to and opens with, so an
+/// identity value plugs straight into the post-quantum sealed door. public_key and ek are public; secret_key and dk are secrets.
+pub fn IdentityType(comptime p: PqParams) type {
+    return struct {
+        sign: mldsa.IdentityType(p.dsa),
+        agree: mlkem.KeypairType(p.kem),
+    };
+}
+
+/// The error union from_seed / from_mnemonic surface — every named error of a composed rung, honored honestly rather than flattened.
+pub const PqIdentityError = hkdf.HkdfError || mldsa_keygen.KeyGenError || mlkem.MlkemSealedError;
+
+/// derive_seeds — carve the three 32-byte lattice seeds (ξ for ML-DSA, d and z for ML-KEM) from a master secret, RFC 5869's way: one extract over the
+/// secret keys a single pseudorandom key; three domain-separated expansions draw disjoint, independent seeds from it. Exposed because the derivation
+/// is a pure, testable fact — the selftest proves the three seeds are distinct through exactly this call. TEST secrets only.
+pub fn derive_seeds(
+    secret: []const u8,
+    xi_out: *[seed_bytes]u8,
+    d_out: *[seed_bytes]u8,
+    z_out: *[seed_bytes]u8,
+) hkdf.HkdfError!void {
+    // invariant (precondition): the master secret fits HKDF's ikm bound, so extract keys on it without refusal.
+    if (secret.len > hkdf.max_ikm_bytes) return error.IkmTooLong;
+    // One PRK, three independent expansions — the standard multi-key derivation, so the halves cannot share key material.
+    const prk = try hkdf.extract(hkdf_salt, secret);
+    try hkdf.expand(xi_out[0..], prk, info_sign);
+    try hkdf.expand(d_out[0..], prk, info_agree_d);
+    try hkdf.expand(z_out[0..], prk, info_agree_z);
+    // invariant (postcondition): three distinct labels expanded one PRK, so the seeds are independent by construction (proven equal-under-replay,
+    // pairwise-distinct in the selftest).
+    assert(!bytes_eq(xi_out[0..], d_out[0..]));
+    assert(!bytes_eq(xi_out[0..], z_out[0..]));
+    assert(!bytes_eq(d_out[0..], z_out[0..]));
+}
+
+/// from_seed — grow a whole post-quantum identity from a master secret (a BIP-39 seed, or any HKDF-admissible byte string): derive the three lattice
+/// seeds, then compose crypto/mldsa_identity.rye's signing half and crypto/mlkem_sealed.rye's agreement half. The mathematics is all in the rungs
+/// beneath; this is the wiring plus the guard that both halves are real. TEST secrets only — a real secret reaches the custody gate.
+pub fn from_seed(comptime p: PqParams, secret: []const u8) PqIdentityError!IdentityType(p) {
+    var xi: [seed_bytes]u8 = undefined;
+    var d: [seed_bytes]u8 = undefined;
+    var z: [seed_bytes]u8 = undefined;
+    try derive_seeds(secret, &xi, &d, &z);
+
+    var id: IdentityType(p) = undefined;
+    id.sign = try mldsa.from_seed(p.dsa, &xi);
+    id.agree = try mlkem.keypair(p.kem, &d, &z);
+
+    // invariant (postcondition): both halves hold real, non-trivial public keys — an all-zero half would mean a composed rung silently failed.
+    assert(!all_zero(id.sign.public_key[0..]));
+    assert(!all_zero(id.agree.ek[0..]));
+    // invariant (postcondition): the two public halves are genuinely two keys, never one buffer reused — the dual-key guarantee, checked at the door.
+    assert(!buffers_share(id.sign.public_key[0..], id.agree.ek[0..]));
+    return id;
+}
+
+/// from_mnemonic — the whole post-quantum identity arc in one call: fold a mnemonic (and optional passphrase) to a 512-bit seed with
+/// crypto/bip39_seed.rye, then grow the dual-key identity from it. The one-phrase-to-two-keys door a keeper actually reaches for. TEST mnemonics only.
+pub fn from_mnemonic(
+    comptime p: PqParams,
+    mnemonic: []const u8,
+    passphrase: []const u8,
+) (bip39.Bip39Error || PqIdentityError)!IdentityType(p) {
+    var seed_buf: [bip39.seed_len]u8 = undefined;
+    try bip39.seed(&seed_buf, mnemonic, passphrase);
+    return from_seed(p, seed_buf[0..]);
+}
+
+/// sign — make an ML-DSA signature with the identity's signing half, the thin wrapper that lets a caller reach a post-quantum signature through this
+/// one door. Deterministic; reads the secret key; the signature it returns is public.
+pub fn sign(comptime p: PqParams, id: *const IdentityType(p), msg: []const u8) mldsa_sign.SignError!Signature(p) {
+    return mldsa.sign(p.dsa, &id.sign, msg);
+}
+
+/// verify — read the verdict of a signature against an identity's signing public key, the public counterpart of sign so a peer need hold only the
+/// public half. Returns true iff the signature is a genuine ML-DSA signature of msg under public_key.
+pub fn verify(
+    comptime p: PqParams,
+    sign_public: *const [sign_public_len(p)]u8,
+    msg: []const u8,
+    sig: *const [sig_len(p)]u8,
+) mldsa_verify.VerifyError!bool {
+    return mldsa.verify(p.dsa, sign_public, msg, sig);
+}
+
+/// Sign* type aliases so sign's return and verify's argument stay one name.
+fn Signature(comptime p: PqParams) type {
+    return [sig_len(p)]u8;
+}
+
+// ---- shared helpers -----------------------------------------------------------------------------------------------------------------
+
+/// all_zero — true iff every byte of a buffer is zero, the guard that refuses a trivial key as proof of nothing.
+fn all_zero(buf: []const u8) bool {
+    var i: u32 = 0;
+    // invariant (bound): read exactly buf.len bytes, one per turn.
+    while (i < buf.len) : (i += 1) if (buf[i] != 0) return false;
+    return true;
+}
+
+/// bytes_eq — true iff two buffers hold identical bytes.
+fn bytes_eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    // invariant (bound): read exactly a.len bytes, one per turn.
+    while (i < a.len) : (i += 1) if (a[i] != b[i]) return false;
+    return true;
+}
+
+/// buffers_share — true iff two byte slices are the very same memory (same base, same length). The two identity halves must be distinct storage; this
+/// is the cheap structural check behind the dual-key postcondition, catching a wiring mistake that aliased one buffer as both keys.
+fn buffers_share(a: []const u8, b: []const u8) bool {
+    return a.ptr == b.ptr and a.len == b.len;
+}
+
+// ---- selftest ----------------------------------------------------------------------------------------------------------------------
+
+fn nibble(c: u8) u8 {
+    if (c >= '0' and c <= '9') return c - '0';
+    // invariant: the vector hex uses only lowercase a–f beyond the digits.
+    assert(c >= 'a' and c <= 'f');
+    return c - 'a' + 10;
+}
+
+/// eq_hex — compare a raw byte buffer against its lowercase-hex spelling, the replayable check the anchored BIP-39 seed faces.
+fn eq_hex(raw: []const u8, hex: []const u8) bool {
+    if (raw.len * 2 != hex.len) return false;
+    var i: u32 = 0;
+    while (i < raw.len) : (i += 1) {
+        if (raw[i] != nibble(hex[i * 2]) * 16 + nibble(hex[i * 2 + 1])) return false;
+    }
+    return true;
+}
+
+// BIP-39's own published Trezor vector 1 — a REAL published answer anchoring the mnemonic→seed half of the arc, exactly as crypto/kumara_identity.rye
+// anchors its own. TEST vector, never a real phrase.
+const trezor_mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";
+const trezor_passphrase = "TREZOR";
+const trezor_seed_hex = "c55257c360c07c72029aebc1b53c05ed0362ada38ead3e3e9efa3708e53495531f09a6987599d18264c1e1c92f2cf141630c7a3c4ab7c81b2f001698e7463b04";
+
+/// check_param — prove the dual-key post-quantum identity for one parameter set: no drift from the composed halves, the two keys distinct, both halves
+/// real working keys, and the identity sealing-ready with both halves delivering confidentiality and provenance at once.
+fn check_param(comptime p: PqParams) !void {
+    // 0. Anchor the BIP-39 half on a real published answer, so the phrase→seed fold this identity grows from stands on a fact, not a claim.
+    var anchored_seed: [bip39.seed_len]u8 = undefined;
+    try bip39.seed(&anchored_seed, trezor_mnemonic, trezor_passphrase);
+    if (!eq_hex(anchored_seed[0..], trezor_seed_hex)) return error.Bip39SeedAnchorMismatch;
+
+    // 1. NO DRIFT. from_mnemonic must equal hand-deriving the three seeds then composing the two halves by hand — the front door adds no surprise.
+    const id = try from_mnemonic(p, trezor_mnemonic, trezor_passphrase);
+    var xi: [seed_bytes]u8 = undefined;
+    var d: [seed_bytes]u8 = undefined;
+    var z: [seed_bytes]u8 = undefined;
+    try derive_seeds(anchored_seed[0..], &xi, &d, &z);
+    const sign_hand = try mldsa.from_seed(p.dsa, &xi);
+    const agree_hand = try mlkem.keypair(p.kem, &d, &z);
+    if (!bytes_eq(id.sign.public_key[0..], sign_hand.public_key[0..])) return error.SignPublicDrift;
+    if (!bytes_eq(id.sign.secret_key[0..], sign_hand.secret_key[0..])) return error.SignSecretDrift;
+    if (!bytes_eq(id.agree.ek[0..], agree_hand.ek[0..])) return error.AgreeEkDrift;
+    if (!bytes_eq(id.agree.dk[0..], agree_hand.dk[0..])) return error.AgreeDkDrift;
+    // from_seed over the same seed reaches the identical identity — the two entry points agree.
+    const id_by_seed = try from_seed(p, anchored_seed[0..]);
+    if (!bytes_eq(id.sign.public_key[0..], id_by_seed.sign.public_key[0..])) return error.SeedEntrySignDrift;
+    if (!bytes_eq(id.agree.ek[0..], id_by_seed.agree.ek[0..])) return error.SeedEntryAgreeDrift;
+
+    // 2. THE TWO KEYS ARE DISTINCT — the learned discovery, proven: the derived ξ, d, z are pairwise different, so the signing key and the agreement
+    //    key are independent key material, never one key doing both. This is the whole reason a post-quantum identity is a pair.
+    if (bytes_eq(xi[0..], d[0..])) return error.SeedsSignAgreeCollide;
+    if (bytes_eq(xi[0..], z[0..])) return error.SeedsSignRejectCollide;
+    if (bytes_eq(d[0..], z[0..])) return error.SeedsAgreeRejectCollide;
+
+    // 3. DETERMINISM. The same phrase reaches an identical identity, both halves.
+    const again = try from_mnemonic(p, trezor_mnemonic, trezor_passphrase);
+    if (!bytes_eq(id.sign.public_key[0..], again.sign.public_key[0..])) return error.SignNotDeterministic;
+    if (!bytes_eq(id.sign.secret_key[0..], again.sign.secret_key[0..])) return error.SignSecretNotDeterministic;
+    if (!bytes_eq(id.agree.ek[0..], again.agree.ek[0..])) return error.AgreeNotDeterministic;
+    if (!bytes_eq(id.agree.dk[0..], again.agree.dk[0..])) return error.AgreeSecretNotDeterministic;
+
+    // 4. THE SIGNING HALF WORKS. It signs a message this door's verify ACCEPTS; a flipped message byte, a flipped signature byte, and a different
+    //    identity's public key each REFUSE.
+    const message = "Grain — one phrase, two keys: one holds off the forger, the other the eavesdropper.";
+    const sig = try sign(p, &id, message);
+    if (!try verify(p, &id.sign.public_key, message, &sig)) return error.GenuineRejected;
+    {
+        var msg_bad: [message.len]u8 = undefined;
+        var k: u32 = 0;
+        // invariant (bound): copy exactly message.len bytes, one per turn.
+        while (k < message.len) : (k += 1) msg_bad[k] = message[k];
+        msg_bad[5] ^= 0x01;
+        if (try verify(p, &id.sign.public_key, msg_bad[0..], &sig)) return error.TamperMsgAccepted;
+    }
+    {
+        var sig_bad = sig;
+        sig_bad[0] ^= 0x01; // the commitment c~ — a flip here breaks the recomputed-commitment equality
+        if (try verify(p, &id.sign.public_key, message, &sig_bad)) return error.TamperSigAccepted;
+    }
+
+    // A DIFFERENT identity (a changed passphrase) is a different signing key and refuses this signature.
+    const other = try from_mnemonic(p, trezor_mnemonic, "OTHER");
+    if (bytes_eq(id.sign.public_key[0..], other.sign.public_key[0..])) return error.SignSiblingCollision;
+    if (bytes_eq(id.agree.ek[0..], other.agree.ek[0..])) return error.AgreeSiblingCollision;
+    if (try verify(p, &other.sign.public_key, message, &sig)) return error.WrongKeyAccepted;
+
+    // 5. THE AGREEMENT HALF WORKS AND THE IDENTITY IS SEALING-READY. A message sealed to the identity's ML-KEM half opens with its dk; a DIFFERENT
+    //    identity's key fails OpenFailed. The identity plugs straight into crypto/mlkem_sealed.rye — no adapter, no reshaping.
+    var frame_buf: [mlkem.max_frame_bytes(p.kem)]u8 = undefined;
+    var out_buf: [mlkem.max_plain_bytes]u8 = undefined;
+    var m: [seed_bytes]u8 = undefined; // TEST KEM message — fresh randomness in real use
+    var mk: u32 = 0;
+    while (mk < seed_bytes) : (mk += 1) m[mk] = @as(u8, @truncate(mk *% 7 +% 3));
+    m[0] |= 1;
+    const secret_note = "sealed to a name, not a bare key";
+    {
+        const flen = try mlkem.seal(p.kem, &id.agree.ek, &m, secret_note, frame_buf[0..]);
+        const opened = try mlkem.open(p.kem, &id.agree.dk, &id.agree.ek, frame_buf[0..flen], out_buf[0..]);
+        if (!bytes_eq(opened.plain, secret_note)) return error.SealedPlainWrong;
+        // The other identity cannot open a frame sealed to this one.
+        if (mlkem.open(p.kem, &other.agree.dk, &other.agree.ek, frame_buf[0..flen], out_buf[0..])) |_| {
+            return error.WrongRecipientOpened;
+        } else |e| if (e != error.OpenFailed) return error.WrongRecipientWrongError;
+    }
+
+    // 6. BOTH HALVES AT ONCE — confidentiality AND provenance from the two halves composed, exactly what one lattice key cannot give. The sender is
+    //    identity `other`; it seals a note to the recipient `id`'s agreement half and signs the whole sealed frame with its own signing half. The
+    //    recipient opens with its dk (confidentiality) and verifies the frame under the sender's signing public key (provenance).
+    {
+        const note = "two halves, one name";
+        const flen = try mlkem.seal(p.kem, &id.agree.ek, &m, note, frame_buf[0..]);
+        // invariant: the sealed frame stays within the signer's message bound, so the whole frame can be signed (every set's frame here is far under
+        // mldsa_sign's max_msg_bytes — the largest, ML-KEM-1024 with this note, is ~1.6 KiB).
+        assert(flen <= mldsa_sign.max_msg_bytes);
+        const frame_sig = try sign(p, &other, frame_buf[0..flen]);
+        // Recipient: open for confidentiality, then verify for provenance.
+        const opened = try mlkem.open(p.kem, &id.agree.dk, &id.agree.ek, frame_buf[0..flen], out_buf[0..]);
+        if (!bytes_eq(opened.plain, note)) return error.BothHalvesPlainWrong;
+        if (!try verify(p, &other.sign.public_key, frame_buf[0..flen], &frame_sig)) return error.BothHalvesProvenanceRejected;
+        // A tampered frame breaks the provenance signature — the sender's signature covers exactly what was sent.
+        frame_buf[mlkem.header_len(p.kem)] ^= 0x01;
+        if (try verify(p, &other.sign.public_key, frame_buf[0..flen], &frame_sig)) return error.BothHalvesTamperAccepted;
+    }
+}
+
+fn run_selftest() !u8 {
+    try check_param(pq_small);
+    try check_param(pq_default);
+    try check_param(pq_large);
+
+    print("GREEN crypto-kumara-pq-identity: the POST-QUANTUM identity FRONT DOOR authored in pure Rye — one backup phrase grown into the TWO lattice " ++
+        "keys a quantum-resistant identity must carry: an ML-DSA signing key AND an ML-KEM key-agreement key, never one key doing both, because the " ++
+        "lattice schemes share no curve the way Ed25519's edwards and montgomery halves do (the learned discovery this module is the construction of). " ++
+        "The post-quantum sibling of crypto/kumara_identity.rye, double-seated beside it: where that renders a phrase to the one Ed25519 key the " ++
+        "classical world signs and agrees with, this renders a phrase to the two keys the quantum day demands. Authors NO new cryptography — the " ++
+        "signing half is crypto/mldsa_identity, the agreement half is crypto/mlkem_sealed's own keypair, and the one-phrase-to-two-keys derivation " ++
+        "composes crypto/bip39_seed (the mnemonic→seed fold every Kumara identity uses) and crypto/hkdf_sha512 (RFC 5869): one extract over the " ++
+        "512-bit BIP-39 seed, three domain-separated expansions carving the ML-DSA seed ξ and the ML-KEM seeds d and z, so a keeper still remembers " ++
+        "ONE phrase yet holds two independent keys. Proven GREEN on metal over every tier (small ML-DSA-44/ML-KEM-512, default ML-DSA-65/ML-KEM-768, " ++
+        "large ML-DSA-87/ML-KEM-1024) with no fabricated constant: (1) the BIP-39 half anchored to a REAL published answer — the Trezor vector " ++
+        "mnemonic folds to the spec's own 512-bit seed byte-for-byte; (2) NO DRIFT — from_mnemonic equals hand-deriving the three seeds then composing " ++
+        "mldsa_identity.from_seed and mlkem_sealed.keypair, and from_seed reaches the identical identity; (3) THE TWO KEYS ARE DISTINCT — ξ, d, z " ++
+        "pairwise different, so the signing key and the agreement key are independent key material, the whole point of the pair; (4) THE SIGNING HALF " ++
+        "WORKS — it signs a message verify ACCEPTS while a flipped message byte, a flipped signature byte, and a different identity's public key each " ++
+        "REFUSE; (5) THE AGREEMENT HALF WORKS AND THE IDENTITY IS SEALING-READY — a message sealed to the identity's ML-KEM half opens with its dk, a " ++
+        "different identity fails OpenFailed, the identity plugging straight into the post-quantum sealed door; (6) BOTH HALVES AT ONCE — a frame " ++
+        "sealed to a recipient's agreement half and signed by the sender's signing half is opened for confidentiality AND verified for provenance, a " ++
+        "tampered frame breaking the signature — the two halves delivering together what one lattice key cannot; (7) DETERMINISM and DISTINCTNESS " ++
+        "close the proof. The module's own functions call no std.crypto — each half is doubly-oracle-proven one rung down, so this composition needs " ++
+        "no new oracle. Purely local — TEST identities from published vectors, no real key held, no network, no funds, no real device; growing a REAL " ++
+        "post-quantum identity from the maintainer's own phrase and signing or agreeing with it stays the custody gate, constant-time timing-safety " ++
+        "the named horizon. With this rung the post-quantum identity stands whole and reachable through one door: phrase → ξ · d · z → an ML-DSA " ++
+        "signing key beside an ML-KEM agreement key — one name, two keys, both directions guarded at once.\n", .{});
+    return 0;
+}
+
+pub fn main(init_args: std.process.Init) !u8 {
+    _ = init_args;
+    return run_selftest();
+}
