@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260816.172102
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+title ML-KEM decapsulation rung, KEM round-trip GREEN
+prompt Continue the loop Lindy-first crux-first on the crypto arc; Rye prioritized; send each finished increment; stop at custody gates.
+think With encaps GREEN and sent, the next Lindy-first crux is decapsulation — it closes the KEM round-trip (keygen → encaps → decaps) and composes the GREEN encaps for the Fujisaki–Okamoto re-encryption verify. Read Zig std.crypto ml_kem InnerSk.decrypt (m = v − InvNTT(s_hat ∘ NTT(u)), compress(1)) and SecretKey.decaps (G(m'‖H(pk)), re-encrypt, cmov to rejection secret K̄ = SHAKE256(z‖c) on ciphertext mismatch) to author the standard-domain equivalent.
+think Authored crypto/mlkem_decaps.rye: k_pke_decrypt (decompress u and v from the ciphertext segments, decode s_hat from dk_pke, w = v − InvNTT(s_hat ∘ NTT(u)) via canonical (v+q−x)%q subtraction, m = ByteEncode_1(Compress_1(w))) and decaps (parse dk into dk_pke/ek/H(ek)/z, decrypt to m', G-derive (K',r'), re-encrypt through encaps.k_pke_encrypt, accept K' on byte-equal c else K̄). Wrote the branch plainly since inputs are public test vectors and timing-safety is a measured horizon, noted in the module head.
+think The selftest proves BOTH branches against Zig's SecretKey.decaps: honest ciphertext must recover exactly the encaps shared secret K AND equal Zig; a one-byte-flipped ciphertext must equal Zig's derived rejection secret AND differ from K (proving the reject branch actually fired). Refused trivial all-zero and non-distinct secrets.
+obs GREEN on the FIRST build across all three parameter sets over 8 seeds each, both branches — the full KEM keygen → encaps → decaps round-trip now agrees with the independent Zig implementation end to end, including the implicit-rejection path that makes ML-KEM CCA-secure.
+obs TAME style bans clean; every function carries contract asserts. README synced same round with the sixth ML-KEM rung row.
+loom witness=crypto_mlkem_decaps_witness param_sets=3 seeds_per_set=8 branches=2 wall_note=GREEN-first-build
+file crypto/mlkem_decaps.rye the decapsulation rung — K-PKE.Decrypt wrapped by ML-KEM.Decaps with the FO re-encryption verify and implicit rejection
+file tools/crypto_mlkem_decaps_witness.rish the witness — builds the binary and asserts the GREEN parity line on both branches
+file crypto/README.md synced — the sixth ML-KEM rung row, round-trip closed
+recommend keep-going the ML-KEM ladder is whole (keygen · encaps · decaps GREEN); the next crux is a whole-KEM composition witness or opening the ML-DSA (FIPS 204) signature ladder on the same doubled-oracle discipline
