@@ -1,6 +1,6 @@
 # Crypto — the Season G audit front door
 
-*A Rye-native, parity-checked cryptography library — thirty-five primitives and seventeen compositions, each GREEN on metal.*
+*A Rye-native, parity-checked cryptography library — thirty-five primitives and eighteen compositions, each GREEN on metal.*
 
 **Status:** Checkable — Season G operator + auditor guide
 **Depth:** guide
@@ -32,7 +32,7 @@ vectors — never a copied line ([`gratitude-licenses.md`](../.claude/rules/grat
 
 ---
 
-## Rung table — fifty-two files, dependency order
+## Rung table — fifty-three files, dependency order
 
 Each rung stands on the GREEN rungs beneath it; none authors cryptography a lower
 rung had not already proven. Every file carries a per-file witness
@@ -124,6 +124,7 @@ rung had not already proven. Every file carries a per-file witness
 | `slip10_ed25519.rye` | SLIP-0010 HD keys over the **ed25519** curve — the identity arc's HD rung, the bridge from a BIP-39 seed to Grain's OWN ed25519 identity keys (Kumara signs with ed25519). BIP-32's additive child law does not fit ed25519, so SLIP-0010 takes the child key as `I_L` directly and derives **hardened-only**: `master_from_seed` runs the `"ed25519 seed"` HMAC; `ckd_priv` derives a hardened child via `I = HMAC-SHA-512(c_par, 0x00‖ser256(k_par)‖ser32(i))`; `public_key` emits `0x00‖ed25519_public(I_L)`; `derive` walks a hardened index list. Authors no new cryptography — composes the GREEN `hmac_sha512.rye` and `ed25519_sign.rye`. Parity against SLIP-0010's own ed25519 Test Vectors 1 and 2: every chain node's private key, chain code, AND 33-byte public key reproduce EXACTLY the spec's bytes; a non-hardened index refuses `NotHardened`, an over-deep path `DepthTooDeep`. TEST keys only; a real Kumara signature stays the custody gate | HMAC-SHA-512 · Ed25519 |
 | `kumara_path.rye` | The **Kumara identity path** — the ed25519 sibling of `bip44.rye`: the convention giving `slip10_ed25519.rye`'s ed25519 HD tree its named shape `m/44'/coin_type'/account'/index'`, so a keeper's Kumara identity is reached the same way from the same phrase on any device. ed25519 admits only hardened derivation, so `parse_path` REQUIRES a `'`/`h`/`H` marker on every level (a bare index refused `NotHardened`); `derive_path`/`derive_identity` walk `slip10_ed25519.rye`'s `ckd_priv` down the all-hardened list. Authors no new cryptography. Parity against SLIP-0010's own ed25519 Test Vectors 1 and 2: all six nodes of each, walked **by their human path strings**, reproduce EXACTLY the spec's private key, chain code, AND 33-byte public key, no external fetch; `m/44'/0'/0'/0'` parses to `[44+H, 0+H, 0+H, 0+H]`, `derive_identity` and `derive_path` agree byte-for-byte, malformed paths refused. A registered Grain SLIP-44 coin type is a named horizon. TEST keys only; a real Kumara signature stays the custody gate | SLIP-0010 (Test Vectors 1·2) |
 | `kumara_identity.rye` | The **identity arc's front door** — the one composition tying the arc into a single answer: `from_mnemonic` folds a mnemonic to a 512-bit seed through the GREEN `bip39_seed.rye`, walks `kumara_path.rye`'s `m/44'/coin'/account'/index'` over the GREEN `slip10_ed25519.rye` HD tree, and reads off the raw 32-byte ed25519 public key (Kumara's identity form — the SLIP-0010 33-byte public with its `0x00` tag stripped); `sign`/`verify` are thin wrappers over `ed25519_sign.rye`+`ed25519_verify.rye` so a caller reaches identity through one door. The identity-arc sibling of `eth_address.rye`/`bitcoin_address.rye`: where those render a key to its address, this renders a phrase to the signing identity every module (Kumara, Vault, Comlink, Lotus) reaches through. Authors no new cryptography. Proven three ways: the bip39 half anchored to BIP-39's own Trezor vector seed byte-for-byte; the arc drift-free (`from_mnemonic` = hand-wiring `bip39_seed`→`kumara_path.derive_identity`, public key = slip10's public form = ed25519_sign's `derive_public`, all three agreeing, the ed25519 half proven one rung down); the derived key a real signing key by a sign→verify round-trip with three refusals (flipped message, flipped signature, wrong key). TEST identities only; a real Kumara identity and signature stays the custody gate | BIP-39 · SLIP-0010 · Ed25519 |
+| `kumara_carry.rye` | **Did THIS keeper make this record?** — a record sealed AS a named Kumara identity, tying the identity front door to the signed carry so provenance answers not merely "is this a valid signature from someone" but "did this keeper make it." Authors no new cryptography and adds no new frame — a Kumara carry IS a `signed_carry.rye` frame sealed under a `kumara_identity.rye`'s own secret seed; because the carry's signer field is `derive_public(seed)` and the identity's public key is `derive_public(that same seed)`, the sealed frame carries exactly that identity's public key as its signer, asserted equal by construction. The value it adds is the **binding**: `open_as` runs signed_carry's verify-before-trust and then refuses, with `UnexpectedSigner`, any frame whose verified signer is not the identity the reader named; `seal_from_mnemonic` folds phrase → identity → sealed record in one call. Proven three ways: bound to a real identity (the frame a keeper derived from BIP-39's Trezor vector mnemonic carries that identity's public key as its signer byte-for-byte, agreeing with an independent `signed_carry.open`); the binding refuses the wrong keeper (a valid carry sealed by a different identity, opened while expecting the first, fails `UnexpectedSigner` while the true keeper still opens it); the whole arc round-trips across seven payload lengths with determinism and the inherited `DigestMismatch`/`BadSignature` guards. TEST identities only; sealing a real record with the maintainer's own Kumara identity stays the custody gate | Kumara identity · signed carry |
 
 ---
 
@@ -135,7 +136,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 
 [`crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) rebuilds each
 `crypto/<name>.rye` fresh from source to the gitignored `crypto/bin/` and runs all
-fifty-two per-file witnesses in the dependency order above, refusing whole —
+fifty-three per-file witnesses in the dependency order above, refusing whole —
 naming the file that stopped it — the moment any one goes RED. A GREEN suite means
 every claim here is re-provable by tooling, not trusted from a commit message
 alone (measurement beats memory). It then runs the **count guard**

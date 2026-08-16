@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260816.095614
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title crypto/kumara_carry.rye — the eighteenth composition: a record sealed AS a named Kumara identity
+prompt recursion baton prin recur — take the next agent-doable lap Lindy-first crux-first, Rye first, Glow on green-witnessed Rye, send often, stop at custody gates
+think Read the wave docs (1024-round itinerary, six-season double-seat, rye-first crypto-parity decision wave) and the crypto front doors. Season G crypto is the high-Lindy live thread; the identity arc closed 20260816 with kumara_identity as the seventeenth composition (front door). The previous log's named next door: a signed_carry sealed under a kumara_identity (build+verify only).
+think Lindy-first crux-first: the Lotus "who made this record" unblock is the highest-Lindy payoff of the whole identity arc — it serves every module that will ever record provenance (Lotus, Vault, Comlink, Season 2 Journey 6's chain of custody). The crux is binding identity to the carry frame: not just "a valid signature" but "signed by THIS keeper." Chose it over BIP-49/84 wallet paths (a narrower wallet-family add).
+think Read both source files. signed_carry.seal derives its signer field as derive_public(seed); kumara_identity.public_key is derive_public(that same secret_seed). So a carry sealed under an identity's secret seed carries exactly that identity's public key as its signer — the two rungs agree by construction. Confirmed both GREEN on metal before composing (measurement before narrative).
+think Authored crypto/kumara_carry.rye authoring NO new cryptography and adding NO new frame: seal_as (postcondition asserts the frame's signer equals the identity's public key), open_as (runs signed_carry verify-before-trust then refuses UnexpectedSigner if the verified signer is not the expected identity), seal_from_mnemonic (the one-call phrase→identity→sealed-record arc returning the sealed identity's public key). TAME: opening triad, u32/u64 widths, named errors, invariants ≥2 per fn, bounds re-exported from signed_carry, snake_case, no @memcpy.
+obs Proof shape, three replayable ways with no fabricated constant: (1) bound to a real identity from BIP-39's Trezor vector — the frame's signer equals the identity's public key byte-for-byte, agreeing with an independent signed_carry.open; (2) the binding refuses the wrong keeper — a valid carry sealed by a different identity, opened while expecting the first, fails UnexpectedSigner while the true keeper still opens it, and a genuinely-forged-provenance attempt (sealed by the other, expecting the keeper) is refused too; (3) the arc round-trips across seven payload lengths with determinism and the inherited DigestMismatch/BadSignature guards. GREEN on the first metal pass.
+obs Registered the witness in crypto_suite_witness (after kumara_identity) and bumped the authoritative counts 52→53 files, 17→18 compositions in the suite header + final line, crypto/README.md (heading, witness count, new composition row), and docs/CRYPTO.md (subtitle, rung-table heading, witness count, new rung row). Count guard GREEN at 53 (bijection: every crypto/*.rye registered, every registration a real file). Full suite GREEN — all 53 files rebuilt fresh in dependency order.
+loom witness=crypto_kumara_carry_witness result=GREEN payload_lengths=7 max_payload_bytes=65536
+loom witness=crypto_count_guard_witness result=GREEN files=53
+loom witness=crypto_suite_witness result=GREEN files=53 primitives=35 compositions=18
+file crypto/kumara_carry.rye the eighteenth composition — a record sealed as a named Kumara identity, the Lotus provenance binding
+file tools/crypto_kumara_carry_witness.rish its per-file witness, three-way parity, registered in the suite
+file tools/crypto_suite_witness.rish registered the new witness and bumped counts 52→53 / 17→18
+file crypto/README.md heading, witness count, and the new composition row synced 52→53
+file docs/CRYPTO.md subtitle, rung-table heading, witness count, and the new rung row synced 52→53
+file work-in-progress/REMEMBER.md git nib front-door description advanced to the new living edge, identity front door demoted to prior edge
+file session-logs/20260816-095614_crypto-kumara-carry.bron this record
+recommend keep-going — next agent-doable crypto crux is a per-record subkey carry (a hardened child of the identity node so a record signs with a derived, not the root, key), a Comlink/Vault composition reaching identity through this door, or BIP-49/84 script-type wallet paths reusing bip44's parser; sealing a REAL record with the maintainer's own Kumara identity stays the custody gate

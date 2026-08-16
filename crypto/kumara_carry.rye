@@ -1,0 +1,292 @@
+//! crypto/kumara_carry.rye — Season G (Cryptography), the EIGHTEENTH composition: a record sealed AS a named Kumara identity. Where
+//! crypto/signed_carry.rye answers "who made this record" with a bare Ed25519 key, and crypto/kumara_identity.rye answers "what is this
+//! keeper's signing identity from their phrase," this rung ties the two into the one gesture Lotus and Season 2's chain of custody actually
+//! reach for: a keeper seals a record with THEIR identity, and a reader opens it bound to a NAMED identity — so provenance answers not merely
+//! "is this a valid signature from someone" but "did THIS keeper make it." It is the identity end of the signed carry: phrase → identity →
+//! sealed record → verified-as-that-keeper.
+//!
+//! It authors NO new cryptography, and adds NO new frame — a Kumara carry IS a Grain Signed Carry v1 frame (crypto/signed_carry.rye), sealed
+//! under a Kumara identity's own secret seed. Because signed_carry's own signer field is derive_public(seed) and a Kumara identity's public key
+//! is derive_public(that same secret seed), the frame a Kumara identity seals carries EXACTLY that identity's public key as its signer — the two
+//! rungs agree by construction, and this module asserts it. The value this rung adds is the BINDING: open_as() opens the carry and then refuses,
+//! with a named error, any frame whose verified signer is not the identity the reader expected. A cryptographically valid signature from the
+//! wrong keeper is caught here, rather than mistaken for the right one.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G, "the library that serves Kumara
+//! identity, Vault, Comlink, and the Lotus signed carry." The 1,024-round itinerary, Season 2 Journey 6 (Provenance): "a real document carries a
+//! Kumara-signed, content-addressed chain of custody end to end." This rung stands both ends of that chain in one door: the identity that seals,
+//! and the binding that verifies the seal came from exactly that identity.
+//! Kin: crypto/signed_carry.rye (the frame this seals, GREEN) · crypto/kumara_identity.rye (the identity this seals as, GREEN) ·
+//! crypto/bip39_seed.rye · crypto/kumara_path.rye · crypto/slip10_ed25519.rye (the phrase→identity rungs seal_from_mnemonic composes, GREEN).
+//! Clean-room: the standards beneath are public specs studied through their own text (.claude/rules/gratitude-licenses.md); no line is copied.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. Every identity here is a TEST identity from a published
+//! test-vector mnemonic; this module calls no std.crypto. Sealing a REAL record with the maintainer's OWN Kumara identity stays the custody gate
+//! (#3/#4) — this library seals and verifies a TEST identity's records; it never holds the maintainer's key. Constant-time timing-safety of the
+//! signing it composes stays crypto/CONSTANT_TIME.md's named horizon, unchanged here.
+//!
+//! Parity is proven at selftest three replayable ways, no fabricated constant: (1) the seal is bound to a REAL identity — the frame a Kumara
+//! identity (from BIP-39's own Trezor vector mnemonic) seals carries that identity's public key as its signer byte-for-byte, agreeing with an
+//! independent crypto/signed_carry.rye open; (2) the binding refuses the wrong keeper — a cryptographically valid carry sealed by a DIFFERENT
+//! identity, opened while expecting the first, fails UnexpectedSigner before its payload is trusted; (3) the whole arc round-trips — seal_from_
+//! mnemonic seals and open_as verifies-as-that-keeper across a spread of payload lengths, determinism holds (same identity + payload → identical
+//! frame), and the frame's inherited guards (a flipped payload byte, a flipped signature byte) refuse with signed_carry's own named errors.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/kumara_carry.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const carry = @import("signed_carry.rye");
+const identity = @import("kumara_identity.rye");
+const bip39 = @import("bip39_seed.rye");
+const kumara_path = @import("kumara_path.rye");
+const slip10 = @import("slip10_ed25519.rye");
+
+pub const kumara_carry_version = "20260816.101500";
+
+/// A Kumara carry adds no frame of its own — it re-exports signed_carry's bounds so a caller sizes buffers by one name. A frame is the exact
+/// Grain Signed Carry v1 layout (crypto/signed_carry.rye), sealed under a Kumara identity's secret seed.
+pub const max_payload_bytes: u32 = carry.max_payload_bytes; // 64 KiB
+pub const max_frame_bytes: u32 = carry.max_frame_bytes;
+pub const frame_overhead: u32 = carry.frame_overhead;
+
+/// The 32-byte raw ed25519 public key that names the Kumara identity a carry is opened against — the same width and meaning as
+/// crypto/kumara_identity.rye's public_key.
+pub const public_len: u32 = identity.public_len; // 32
+
+pub const KumaraCarryError = error{
+    /// open_as verified a valid carry, yet its signer is not the identity the reader named — a real signature from the wrong keeper, refused
+    /// before the payload is trusted. This is the binding this composition adds over a bare signed carry.
+    UnexpectedSigner,
+} || carry.SignedCarryError;
+
+/// The whole phrase→identity→seal arc's error union: deriving the identity may raise a BIP-39 / path / SLIP-0010 error, and sealing may raise a
+/// signed-carry error. Named once so seal_from_mnemonic states its contract honestly.
+pub const KumaraSealError =
+    bip39.Bip39Error || kumara_path.KumaraPathError || slip10.Slip10Error || carry.SignedCarryError;
+
+/// What seal_from_mnemonic hands back: the length of the frame it wrote into the caller's buffer, and the public key of the identity it sealed
+/// as — so a reader (or a peer) can later open_as against exactly that identity without re-deriving it.
+pub const Sealed = struct {
+    frame_len: u32,
+    public_key: [public_len]u8,
+};
+
+/// Constant-time-independent byte compare of two equal-meaning public keys. The keys and the frame are public, so a data-independent compare is
+/// not required — the secret-bearing gate is the signature, which lives in the verify primitive crypto/signed_carry.rye already ran.
+fn keys_eq(a: *const [public_len]u8, b: *const [public_len]u8) bool {
+    var i: u32 = 0;
+    while (i < public_len) : (i += 1) {
+        if (a[i] != b[i]) return false;
+    }
+    return true;
+}
+
+/// Seal an opaque payload AS a derived Kumara identity, writing a Grain Signed Carry v1 frame into `out` and returning its length. The frame's
+/// signer field is the identity's own public key by construction — signed_carry derives the signer from the same secret seed the identity holds.
+/// Reads the identity's secret seed (through signed_carry); the frame it produces is entirely public.
+pub fn seal_as(id: *const identity.Identity, payload: []const u8, out: []u8) carry.SignedCarryError!u32 {
+    // invariant: a Kumara identity's secret seed is the exact 32-byte width signed_carry seals under (both are the ed25519 signing seed).
+    assert(identity.secret_len == carry.signer_len);
+    const frame_len = try carry.seal(&id.secret_seed, payload, out);
+
+    // invariant: the frame's embedded signer is exactly this identity's public key — the two rungs agree by construction. A reader opening this
+    // carry and expecting this identity will find them equal; asserting it here catches any drift between the identity and carry rungs at once.
+    const embedded_signer = out[carry.magic_len..][0..carry.signer_len];
+    var k: u32 = 0;
+    while (k < public_len) : (k += 1) assert(embedded_signer[k] == id.public_key[k]);
+    return frame_len;
+}
+
+/// Open a Kumara carry and BIND it to a named identity: run signed_carry's verify-before-trust (magic → length → digest → signature), then
+/// refuse, with UnexpectedSigner, any frame whose verified signer is not `expected_public`. Only a valid carry sealed by exactly the expected
+/// identity returns a payload. Reads only public bytes; holds no key.
+pub fn open_as(frame: []const u8, expected_public: *const [public_len]u8) KumaraCarryError!carry.Opened {
+    const opened = try carry.open(frame);
+    // invariant: signed_carry.open already proved the embedded signer signed this exact content address; the binding below only asks WHICH
+    // identity that verified signer is — a cryptographic check has passed before we ever compare names.
+    if (!keys_eq(&opened.signer, expected_public)) return error.UnexpectedSigner;
+    // invariant: the returned signer is now known to be the expected identity, so the payload is trustworthy AS that keeper's record.
+    assert(keys_eq(&opened.signer, expected_public));
+    return opened;
+}
+
+/// The whole arc in one call: fold a mnemonic to a Kumara identity (crypto/kumara_identity.rye) and seal a payload as it, returning the frame
+/// length and the identity's public key. This is the Lotus "who made this record" story end to end — a keeper with only a backup phrase seals a
+/// record that anyone holding their public key can later verify-as-them. TEST mnemonics only — the maintainer's own phrase reaches the custody gate.
+pub fn seal_from_mnemonic(
+    mnemonic: []const u8,
+    passphrase: []const u8,
+    coin_type: u32,
+    account: u32,
+    index: u32,
+    payload: []const u8,
+    out: []u8,
+) KumaraSealError!Sealed {
+    const id = try identity.from_mnemonic(mnemonic, passphrase, coin_type, account, index);
+    const frame_len = try seal_as(&id, payload, out);
+    // invariant: the returned public key names the identity that sealed this frame, so a later open_as against it can only accept this keeper.
+    return Sealed{ .frame_len = frame_len, .public_key = id.public_key };
+}
+
+// ---- selftest ----------------------------------------------------------------------------------------------------------------------
+
+/// Fill a buffer with a deterministic spread of test bytes — the sibling primitives' generator shape, seeded so each value differs and the first
+/// byte is nonzero. Used for TEST payloads only.
+fn fill_test(buf: []u8, seed: u8) void {
+    var i: u32 = 0;
+    while (i < buf.len) : (i += 1) buf[i] = @as(u8, @truncate(@as(u32, i) *% (@as(u32, seed) | 1) +% @as(u32, seed) +% 7));
+    if (buf.len > 0) buf[0] |= 1;
+}
+
+fn bytes_eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) if (a[i] != b[i]) return false;
+    return true;
+}
+
+// BIP-39's own published Trezor vector 1 — a REAL published phrase, so the identity a carry is sealed as stands on a standard's own answer.
+const trezor_mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";
+const trezor_passphrase = "TREZOR";
+
+fn run_selftest() !u8 {
+    const test_coin: u32 = 7; // a registered Grain SLIP-44 coin type is a named horizon; the tests pass an explicit slot.
+
+    var frame_buf: [max_frame_bytes]u8 = undefined;
+    var frame_buf2: [max_frame_bytes]u8 = undefined;
+
+    // The keeper who seals — a TEST identity from the published Trezor mnemonic. NOT a real Kumara identity.
+    const keeper = try identity.from_mnemonic(trezor_mnemonic, trezor_passphrase, test_coin, 0, 0);
+    // A DIFFERENT keeper — a different account under the same phrase, so its public key is genuinely distinct.
+    const other = try identity.from_mnemonic(trezor_mnemonic, trezor_passphrase, test_coin, 1, 0);
+    if (bytes_eq(keeper.public_key[0..], other.public_key[0..])) return error.KeepersCollide;
+
+    // 1. BOUND TO A REAL IDENTITY. Seal a payload as the keeper; the frame's signer field is exactly the keeper's public key, and an independent
+    //    signed_carry.open reads back that same signer — the identity and carry rungs agree byte-for-byte, checked from outside seal_as.
+    {
+        var payload_buf: [200]u8 = undefined;
+        fill_test(payload_buf[0..], 5);
+        const flen = try seal_as(&keeper, payload_buf[0..], frame_buf[0..]);
+        const embedded_signer = frame_buf[carry.magic_len..][0..carry.signer_len];
+        if (!bytes_eq(embedded_signer, keeper.public_key[0..])) return error.SignerNotIdentity;
+        const raw = try carry.open(frame_buf[0..flen]);
+        if (!bytes_eq(raw.signer[0..], keeper.public_key[0..])) return error.RawOpenSignerDrift;
+    }
+
+    // 2. VERIFY-AS-THE-KEEPER round-trips across a spread of payload lengths, including the empty payload and the maximum. open_as returns the
+    //    payload only when it is bound to the keeper's own public key.
+    {
+        const lengths = [_]u32{ 0, 1, 44, 127, 1000, 4096, max_payload_bytes };
+        for (lengths) |plen| {
+            var payload_buf: [max_payload_bytes]u8 = undefined;
+            const payload = payload_buf[0..plen];
+            fill_test(payload, @truncate(plen +% 3));
+            const flen = try seal_as(&keeper, payload, frame_buf[0..]);
+            const opened = try open_as(frame_buf[0..flen], &keeper.public_key);
+            if (!bytes_eq(opened.signer[0..], keeper.public_key[0..])) return error.OpenedSignerWrong;
+            if (!bytes_eq(opened.payload, payload)) return error.OpenedPayloadWrong;
+        }
+    }
+
+    // 3. THE BINDING REFUSES THE WRONG KEEPER. The keeper's own valid carry, opened while EXPECTING the other keeper, fails UnexpectedSigner —
+    //    the signature is cryptographically valid, yet it is the wrong identity, and the binding catches that before the payload is trusted.
+    {
+        var payload_buf: [64]u8 = undefined;
+        fill_test(payload_buf[0..], 11);
+        const flen = try seal_as(&keeper, payload_buf[0..], frame_buf[0..]);
+        if (open_as(frame_buf[0..flen], &other.public_key)) |_| return error.WrongKeeperAccepted else |e| {
+            if (e != error.UnexpectedSigner) return error.WrongKeeperWrongError;
+        }
+        // ...and the keeper themselves still open it — the binding accepts exactly one identity.
+        _ = try open_as(frame_buf[0..flen], &keeper.public_key);
+    }
+
+    // 4. A FORGED-PROVENANCE ATTEMPT. A carry genuinely sealed by the OTHER keeper, opened while expecting the keeper, is refused
+    //    UnexpectedSigner — a valid signature from the wrong hand is never mistaken for the right one.
+    {
+        var payload_buf: [64]u8 = undefined;
+        fill_test(payload_buf[0..], 13);
+        const flen = try seal_as(&other, payload_buf[0..], frame_buf[0..]);
+        if (open_as(frame_buf[0..flen], &keeper.public_key)) |_| return error.ForgedSignerAccepted else |e| {
+            if (e != error.UnexpectedSigner) return error.ForgedSignerWrongError;
+        }
+    }
+
+    // 5. DETERMINISM. Ed25519 is deterministic, so sealing the same identity + payload twice yields byte-identical frames.
+    {
+        var payload_buf: [128]u8 = undefined;
+        fill_test(payload_buf[0..], 17);
+        const f1 = try seal_as(&keeper, payload_buf[0..], frame_buf[0..]);
+        const f2 = try seal_as(&keeper, payload_buf[0..], frame_buf2[0..]);
+        if (f1 != f2) return error.DeterminismLenWrong;
+        if (!bytes_eq(frame_buf[0..f1], frame_buf2[0..f2])) return error.DeterminismBytesWrong;
+    }
+
+    // 6. INHERITED GUARDS. A Kumara carry IS a signed carry, so signed_carry's own verify-before-trust still fires through open_as: a flipped
+    //    payload byte fails DigestMismatch (before the signature is consulted), and a flipped signature byte fails BadSignature — the two paths
+    //    stay distinct, reached through the identity door.
+    {
+        var payload_buf: [128]u8 = undefined;
+        fill_test(payload_buf[0..], 19);
+        const flen = try seal_as(&keeper, payload_buf[0..], frame_buf[0..]);
+        frame_buf[carry.header_len + 3] ^= 0x01; // flip one payload byte
+        if (open_as(frame_buf[0..flen], &keeper.public_key)) |_| return error.TamperPayloadAccepted else |e| {
+            if (e != error.DigestMismatch) return error.TamperPayloadWrongError;
+        }
+    }
+    {
+        var payload_buf: [128]u8 = undefined;
+        fill_test(payload_buf[0..], 23);
+        const flen = try seal_as(&keeper, payload_buf[0..], frame_buf[0..]);
+        const sig_off = carry.header_len + 128 + carry.digest_len;
+        frame_buf[sig_off + 10] ^= 0x80; // flip one signature byte
+        if (open_as(frame_buf[0..flen], &keeper.public_key)) |_| return error.TamperSigAccepted else |e| {
+            if (e != error.BadSignature) return error.TamperSigWrongError;
+        }
+    }
+
+    // 7. THE WHOLE ARC IN ONE CALL. seal_from_mnemonic folds a phrase to an identity and seals in one gesture, returning the public key it sealed
+    //    as; open_as against that returned key verifies the record as that keeper — phrase → sealed record → verified-as-keeper, end to end.
+    {
+        var payload_buf: [256]u8 = undefined;
+        fill_test(payload_buf[0..], 29);
+        const sealed = try seal_from_mnemonic(trezor_mnemonic, trezor_passphrase, test_coin, 0, 0, payload_buf[0..], frame_buf[0..]);
+        // The one-call arc seals as exactly the same identity the front door derives.
+        if (!bytes_eq(sealed.public_key[0..], keeper.public_key[0..])) return error.OneCallIdentityDrift;
+        const opened = try open_as(frame_buf[0..sealed.frame_len], &sealed.public_key);
+        if (!bytes_eq(opened.payload, payload_buf[0..])) return error.OneCallPayloadWrong;
+        // Expecting a different keeper still refuses, even through the one-call arc.
+        if (open_as(frame_buf[0..sealed.frame_len], &other.public_key)) |_| return error.OneCallWrongKeeperAccepted else |e| {
+            if (e != error.UnexpectedSigner) return error.OneCallWrongKeeperWrongError;
+        }
+    }
+
+    print("GREEN crypto-kumara-carry: the EIGHTEENTH composition authored in pure Rye — a record sealed AS a named Kumara identity, tying the " ++
+        "identity front door (crypto/kumara_identity) to the signed carry frame (crypto/signed_carry) so provenance answers not merely 'is this a " ++
+        "valid signature from someone' but 'did THIS keeper make it.' Authors NO new cryptography and adds NO new frame — a Kumara carry IS a Grain " ++
+        "Signed Carry v1 frame, sealed under a Kumara identity's own secret seed; because the carry's signer field is derive_public(seed) and the " ++
+        "identity's public key is derive_public(that same seed), the sealed frame carries EXACTLY that identity's public key as its signer, and this " ++
+        "module asserts the two rungs agree by construction. The value it adds is the BINDING: open_as runs signed_carry's verify-before-trust " ++
+        "(magic → length → digest → signature) and then refuses, with UnexpectedSigner, any frame whose verified signer is not the identity the " ++
+        "reader named — a cryptographically valid signature from the wrong keeper is caught, never mistaken for the right one. Proven GREEN on metal " ++
+        "three replayable ways with no fabricated constant: (1) bound to a REAL identity — the frame a keeper derived from BIP-39's own Trezor vector " ++
+        "mnemonic seals carries that identity's public key as its signer byte-for-byte, agreeing with an independent signed_carry.open; (2) the " ++
+        "binding refuses the wrong keeper — a valid carry sealed by a DIFFERENT identity, opened while expecting the first, fails UnexpectedSigner " ++
+        "before its payload is trusted, while the true keeper still opens it; (3) the whole arc round-trips — seal_from_mnemonic seals and open_as " ++
+        "verifies-as-that-keeper across seven payload lengths (empty through 64 KiB), determinism holds (same identity + payload → identical frame), " ++
+        "and the inherited guards refuse a flipped payload byte with DigestMismatch and a flipped signature byte with BadSignature, the two paths " ++
+        "distinct. Purely local — TEST identities from published vectors, no real identity key, no network, no funds, no real device; sealing a REAL " ++
+        "record with the maintainer's own Kumara identity stays the custody gate, and constant-time timing-safety stays the Season's named horizon. " ++
+        "This is the Lotus 'who made this record' unblock standing whole: phrase → identity → sealed record → verified-as-that-keeper, through one " ++
+        "door.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

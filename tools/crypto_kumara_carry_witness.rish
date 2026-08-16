@@ -1,0 +1,42 @@
+# tools/crypto_kumara_carry_witness.rish — the Kumara carry, Season G's EIGHTEENTH composition: a record sealed AS a named Kumara identity,
+# tying the identity front door (crypto/kumara_identity.rye) to the signed carry frame (crypto/signed_carry.rye) so provenance answers not
+# merely "is this a valid signature from someone" but "did THIS keeper make it" (Season G · Cryptography).
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names the signed carry as the
+# Lotus "who made this record" unblock; this rung stands the identity end of Season 2 Journey 6's content-addressed chain of custody).
+# Kin: crypto/signed_carry.rye (the frame this seals, GREEN) · crypto/kumara_identity.rye (the identity this seals as, GREEN) ·
+# crypto/bip39_seed.rye · crypto/kumara_path.rye · crypto/slip10_ed25519.rye (the phrase→identity rungs seal_from_mnemonic composes, GREEN).
+# Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET of the primitives beneath, never a copied line — our own composition,
+# studied clean-room (.claude/rules/gratitude-licenses.md).
+#
+# crypto/kumara_carry.rye authors NO new cryptography and adds NO new frame — a Kumara carry IS a Grain Signed Carry v1 frame, sealed under a
+# Kumara identity's own secret seed. Because signed_carry's signer field is derive_public(seed) and a Kumara identity's public key is
+# derive_public(that same seed), the sealed frame carries EXACTLY that identity's public key as its signer; the value this rung adds is the
+# BINDING: open_as runs signed_carry's verify-before-trust and then refuses, with UnexpectedSigner, any frame whose verified signer is not the
+# identity the reader named. Purely local over TEST identities from published vectors — no real identity key, no network, no funds, no real
+# device; sealing a real record with the maintainer's own Kumara identity stays the custody gate, and constant-time timing-safety stays the
+# named horizon.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_kumara_carry_witness.rish
+
+say "crypto-kumara-carry: Language EN — Season G's EIGHTEENTH composition: a record sealed AS a named Kumara identity. Where crypto/signed_carry.rye answers 'who made this record' with a bare Ed25519 key and crypto/kumara_identity.rye answers 'what is this keeper's identity from their phrase,' this rung ties the two so provenance answers 'did THIS keeper make it.' It authors no new cryptography and adds no new frame — a Kumara carry IS a Grain Signed Carry v1 frame sealed under a Kumara identity's own secret seed. This is the Lotus 'who made this record' unblock standing whole: phrase → identity → sealed record → verified-as-that-keeper."
+say "crypto-kumara-carry: Style Radiant — the seal and the name agree by construction: signed_carry derives the signer from the secret seed, a Kumara identity's public key is derived from that same seed, so the frame a keeper seals carries exactly their public key as its signer. The value this rung adds is the binding — open_as verifies the carry before trust, then asks WHICH verified identity signed it, and returns a payload only when it is the keeper the reader named. A valid signature from the wrong hand is caught, never mistaken for the right one."
+say "crypto-kumara-carry: Lens TAME — the composition authors no new cryptography; it binds a proven identity to a proven carry, re-exports signed_carry's payload bound, and asserts its contracts (the identity seed and carry signer share one width; the sealed frame's signer equals the identity's public key; the opened signer equals the expected key). GREEN on metal three replayable ways: bound to a REAL identity from BIP-39's own Trezor vector mnemonic (the frame's signer equals the identity's public key byte-for-byte, agreeing with an independent signed_carry.open); the binding refuses the wrong keeper (a valid carry sealed by a different identity, opened while expecting the first, fails UnexpectedSigner while the true keeper still opens it); and the whole arc round-trips across seven payload lengths with determinism and the inherited DigestMismatch / BadSignature guards. Purely local — TEST identities only, no real identity key, no network, no funds, no device; sealing a real record with the maintainer's own Kumara identity stays the custody gate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/kumara_carry"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/kumara_carry.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-kumara-carry: build failed — ${build.err}"
+
+let outfile = "crypto/bin/kumara_carry.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-kumara-carry: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-kumara-carry: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-kumara-carry' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-kumara-carry: selftest did not print the GREEN crypto-kumara-carry line"
