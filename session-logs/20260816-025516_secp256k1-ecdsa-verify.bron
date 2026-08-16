@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260816.025516
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title secp256k1 ECDSA verify in Rye, parity-GREEN
+prompt take the next agent-doable lap Lindy-first crux-first; Rye prioritized, Glow on green-witnessed Rye; send often; stop at custody gates
+think Read REMEMBER head, the 1024-round itinerary, the six-season double-seat, and the decision wave — Season G (Cryptography) is the highest-Lindy active thread, and the git log shows the secp256k1 tower climbing rung by rung (base field, group law, scalarmul, scalar field mod n).
+think The docs and every secp256k1 header name the same next crux: ECDSA verification — the last composition over the four GREEN rungs, unblocking Kumara identity against a Bitcoin/Ethereum key and every module that must CHECK a secp256k1 signature. Verification is the non-gated half; signing stays the custody gate.
+think Studied the scalar (little-endian reduce/mul/invert/is_canonical), scalarmul (double-and-add ladder), group (complete RCB add/dbl/affine_x), and base field (from_bytes/to_bytes big-endian, square/mul/add/invert) APIs, plus Zig's std.crypto.sign.ecdsa verifyPrehashed for exact parity of the hash-to-scalar reduction.
+think Authored crypto/secp256k1_ecdsa.rye: SEC 1 verify — range gate [1,n-1], hash mod n, w = s^-1, u1 = z·w, u2 = r·w, R = u1·G + u2·Q, refuse infinity, accept iff affine_x(R) mod n == r. Base point G is the SEC 2 generator parsed through the proven field, never raw limbs. Added an on-curve check (y²=x³+7) beyond the reference's verify path, since it takes affine coords directly.
+obs Two build reds, both mechanical: u1/u2 shadow Zig primitive type names (renamed u1_le/u2_le), and I initially pasted n's limbs in the malleability test helper — replaced with the reference's own scalar.neg so no order-n pattern is pasted anywhere, honoring the same discipline the scalar field keeps for n.
+obs Parity: our verdict equals Zig's EcdsaSecp256k1Sha256 true-for-true and false-for-false across 8 deterministic key pairs × 5 messages, plus algebraic tampers (r, s, hash, coordinate), out-of-range zero r/s refused, off-curve key refused, and the (r, n−s) malleability fact holds.
+obs crypto/README.md is stale independent of this round — it predates all four earlier secp256k1 rungs (wrong "thirty files" count, no secp256k1 section). Left for its own sync round; docs/CRYPTO.md is the current compressed front door and carries the correct thirty-seven-file count and the new ECDSA row.
+loom witness=crypto_secp256k1_ecdsa_witness green=1 keypairs=8 messages=5 tamper_checks=6
+file crypto/secp256k1_ecdsa.rye the ECDSA verify primitive, pure Rye, no std.crypto
+file tools/crypto_secp256k1_ecdsa_witness.rish per-file witness asserting GREEN crypto-secp256k1-ecdsa
+file tools/crypto_suite_witness.rish registers the new rung in dependency order
+file docs/CRYPTO.md rung table row + counts to thirty-seven files
+file crypto/CONSTANT_TIME.md ECDSA verify posture: public-only, signing the named horizon
+file active-designing/20260816-025516_secp256k1-ecdsa-verify.md the rung's claim and parity plan
+recommend keep-going the secp256k1 tower now verifies; public-key recovery (ecrecover) is the next tractable secp256k1 rung, and Kumara-identity-against-a-Bitcoin/Ethereum-key becomes buildable over this GREEN verifier
