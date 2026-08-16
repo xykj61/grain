@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260816.023743
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (Linux) — Eastern (EDT) time convention
+title secp256k1 scalar field mod n — reduce · mul · invert · is_canonical, parity-GREEN
+prompt Read the road-ahead cards and itineraries; take the next agent-doable lap Lindy-first crux-first; Rye first, Glow on green Rye; approve own design rounds; send each finished increment as its own signed round; stop at custody gates.
+think Third crypto lap. The just-landed secp256k1_scalarmul closing line, docs/CRYPTO.md, and REMEMBER all named the same next non-gated rung: ECDSA verify needs a SECOND field, the integers modulo the group order n. Lindy-first crux-first: this scalar field is the hardest-solvable stone that opens ECDSA verify and public-key recovery for the whole Bitcoin/Ethereum tower — the highest-Lindy secp256k1 move left.
+think Mirrored the sibling crypto/ed25519_scalar.rye (reduce + is_canonical mod L) and extended it: ECDSA also needs mul and invert. Reused the ed25519_scalar limb machinery (ge5, sub5, shl8_add, load32, store32) over five 64-bit limbs; mul is reduce over a schoolbook 256×256→512 product; invert is Fermat a^(n−2) mod n by left-to-right binary exponentiation, every step a mul.
+think n derived not pasted, matching the ed25519 discipline: n = 2^256 − δ, δ = 2^128 + 0x4551231950b75fc4402da1732fc9bebf, δ's remainder carried as a u128, the 2^128 bit placed, then sub5(2^256, δ). Confirmed the four LE limbs reproduce the published n byte-for-byte via the parity checks.
+think One red the selftest caught: SpreadTooNarrow. n's top byte is 0xff, so my is_canonical spread never produced a value above n. First fix set bytes 23..31 to 0xff — still too narrow because n's byte 16 (LE) is 0xfe and lower bytes are large. Fixed by forcing odd seeds to all-ones (2^256−1 > n), guaranteeing non-canonical encodings. GREEN after.
+obs Parity is byte-for-byte and verdict-for-verdict against Zig's four independent scalar operations (reduce64, mul, Scalar.invert, rejectNonCanonical), plus algebraic known-answers (0→0, n→0, a·1=a, a·a⁻¹=1). Whole crypto_suite_witness GREEN across all thirty-six files in dependency order after registering the new rung. TAME bans clean.
+obs CONSTANT_TIME.md was behind — missing the secp256k1 group and scalarmul rows entirely; added all three (group public-only, scalarmul + scalar deliberately variable-time over public verify values, constant-time for secret scalars the named horizon). Docs-implementation-sync: tightened where already open.
+loom witness=crypto_suite_witness files=36 primitives=32 compositions=4 result=GREEN
+loom witness=crypto_secp256k1_scalar_witness result=GREEN parity=zig-std-crypto-secp256k1-scalar reds_caught=1
+file crypto/secp256k1_scalar.rye the new rung — reduce · mul · invert · is_canonical mod n, pure Rye, no std.crypto
+file tools/crypto_secp256k1_scalar_witness.rish per-file witness asserting GREEN crypto-secp256k1-scalar against known-answers and Zig std.crypto
+file tools/crypto_suite_witness.rish registered the rung in dependency order after scalarmul; counts 32/36
+file docs/CRYPTO.md scalar row in the secp256k1 table, counts corrected to thirty-two/thirty-six
+file crypto/CONSTANT_TIME.md added the group, scalarmul, and scalar posture rows
+file active-designing/20260816-023743_secp256k1-scalar-the-order-field.md the design capture / claim for this rung
+file work-in-progress/REMEMBER.md living edge repointed to secp256k1_scalar; scalarmul demoted to prior edge
+recommend keep-going ECDSA verification (u1·G + u2·Q over the ladder, r-check mod n) is now a pure composition over this scalar field, the point ladder, and the base field — the next non-gated crux; ECDSA signing stays the custody gate.

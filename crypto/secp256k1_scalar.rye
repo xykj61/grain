@@ -1,0 +1,418 @@
+//! crypto/secp256k1_scalar.rye — Season G (Cryptography): scalar arithmetic modulo the group order n authored in pure Rye. Every secp256k1 rung
+//! so far worked over the base field GF(p) and the group of points; this one works in the SECOND field ECDSA needs — the integers modulo n, the
+//! prime order of the base point G. On every verification ECDSA computes the modular inverse s⁻¹ mod n, then the two scalars u1 = z·s⁻¹ and
+//! u2 = r·s⁻¹ (both mod n), and finally checks that the affine x-coordinate of u1·G + u2·Q, itself reduced mod n, equals r. This file authors
+//! exactly that arithmetic — reduce, multiply, invert, is_canonical — so ECDSA verification and public-key recovery become pure compositions
+//! over it and the GREEN point ladder above it (crypto/secp256k1_scalarmul.rye). It is the exact sibling of crypto/ed25519_scalar.rye over the
+//! edwards25519 group, richer only in that ECDSA also needs mul and invert where Ed25519 verify needed reduce and is_canonical alone.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
+//! Design read: active-designing/20260816-023743_secp256k1-scalar-the-order-field.md (this rung's claim) and
+//! active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the priority spine: Rye first, Glow on green Rye).
+//! Kin: crypto/secp256k1_scalarmul.rye (the point ladder these scalars multiply, GREEN) · crypto/secp256k1_group.rye (the group beneath it,
+//! GREEN) · crypto/ed25519_scalar.rye (the sibling scalar field mod L). secp256k1 is not in Monocypher, so its source parity is not a rung here;
+//! the reference known-answers plus Zig's independent std.crypto.ecc.Secp256k1.scalar are the two witnesses.
+//!
+//! THE CRUX — the group order n, in the SEC 2 closed form, is n = 2^256 − δ with δ = 2^128 + 0x4551231950b75fc4402da1732fc9bebf. n is BUILT from
+//! that defining form — δ's sub-2^128 remainder carried as a u128, the 2^128 bit placed by a limb, subtracted from 2^256 — never pasted as a limb
+//! pattern, the same discipline ed25519_scalar.rye keeps for L. reduce folds a 64-byte little-endian value modulo n by bytewise Horner from the
+//! most significant byte down, keeping the running residue below n by a run of subtractions proven to number fewer than 256 per byte (with the
+//! residue below n, acc·256 + byte < 256·n). mul is reduce over a wide product: a schoolbook 256×256→512-bit multiply into eight 64-bit limbs,
+//! serialized to 64 little-endian bytes, then folded by the same reduce — no new modular machinery. invert is a⁻¹ mod n by Fermat's little
+//! theorem, a^(n−2) mod n, via left-to-right binary exponentiation over the 256 bits of the fixed exponent n−2, a named 256-round bound with
+//! every step a mul. is_canonical is the same limbwise comparison reduce runs, without the arithmetic.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity. A scalar is an integer, not a secret and not a
+//! signature: this file holds no key, signs nothing, and calls no std.crypto in the primitive. In ECDSA VERIFICATION every value here — r, s, z,
+//! and the inverse — is PUBLIC, so the variable-time reduction and exponentiation leak no secret, the same posture the point ladder carries; a
+//! constant-time scalar field for secret scalars (ECDSA signing, gate #3/#4) stays the Season's named horizon. Parity is proven at selftest
+//! against algebraic known-answers anyone can check (0 reduces to 0, n reduces to 0, a·1 = a, a·a⁻¹ = 1), and against Zig's own
+//! std.crypto.ecc.Secp256k1.scalar — reduce64, mul, Scalar.invert, rejectNonCanonical — byte-for-byte and verdict-for-verdict across a spread.
+//!
+//! Run from the repository root:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/secp256k1_scalar.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const secp256k1_scalar_version = "20260816.023743";
+
+/// The two fixed widths this rung works between: a 32-byte canonical scalar (the width secp256k1 scalars encode) and the 64-byte wide value a
+/// 256×256-bit product or a double-width hash occupies. Named so the array bounds are stated constants rather than literals buried in the walk.
+pub const scalar_bytes: u32 = 32;
+pub const wide_bytes: u32 = 64;
+
+/// The most times n can be subtracted from a single Horner step. Because the running residue stays below n before each step, acc·256 + byte stays
+/// below 256·n, so fewer than 256 subtractions restore acc below n. Named so the inner loop carries a proven bound rather than trusting a while to
+/// terminate.
+pub const max_reduce_subtractions: u32 = 256;
+
+/// The number of bits the Fermat exponentiation walks — a full 256-bit exponent n−2. Named so the ladder bound is a stated constant.
+pub const exponent_bits: u32 = 256;
+
+/// True when the 320-bit little-endian value a is greater than or equal to b, compared limb by limb from the most significant down.
+fn ge5(a: [5]u64, b: [5]u64) bool {
+    var i: u32 = 5;
+    while (i > 0) {
+        i -= 1;
+        if (a[i] != b[i]) return a[i] > b[i];
+    }
+    return true; // exactly equal
+}
+
+/// The little-endian difference a − b for a ≥ b, across five 64-bit limbs with a borrow. Callers subtract only when ge5 already holds, so no
+/// underflow escapes the width.
+fn sub5(a: [5]u64, b: [5]u64) [5]u64 {
+    // invariant: subtraction is called only when a ≥ b, so the final borrow is zero (asserted below).
+    assert(ge5(a, b));
+    var r = [_]u64{ 0, 0, 0, 0, 0 };
+    var borrow: u64 = 0;
+    var i: u32 = 0;
+    while (i < 5) : (i += 1) {
+        const bi: u128 = @as(u128, b[i]) + borrow;
+        if (@as(u128, a[i]) >= bi) {
+            r[i] = @truncate(@as(u128, a[i]) - bi);
+            borrow = 0;
+        } else {
+            r[i] = @truncate((@as(u128, 1) << 64) + @as(u128, a[i]) - bi);
+            borrow = 1;
+        }
+    }
+    // invariant: no borrow survives the top limb, so the difference fits five limbs exactly.
+    assert(borrow == 0);
+    return r;
+}
+
+/// The group order n = 2^256 − δ, δ = 2^128 + 0x4551231950b75fc4402da1732fc9bebf (secp256k1 / SEC 2), as five little-endian 64-bit limbs (the
+/// fifth limb is zero — n is a 256-bit number). δ's sub-2^128 remainder is carried as a u128 and split into the low two limbs; the 2^128 bit is
+/// placed as the third limb; n is then 2^256 minus that δ. Derived from n's defining form in our own arithmetic, never copied as a limb pattern.
+fn order_n() [5]u64 {
+    const rem: u128 = 0x4551231950b75fc4402da1732fc9bebf; // the sub-2^128 part of δ
+    var delta = [_]u64{ 0, 0, 0, 0, 0 };
+    delta[0] = @truncate(rem);
+    delta[1] = @truncate(rem >> 64);
+    delta[2] = 1; // the 2^128 bit of δ
+    // 2^256 placed as a single set bit in the fifth limb (bit 256 = 64·4 + 0), the minuend n is subtracted from.
+    const two256 = [_]u64{ 0, 0, 0, 0, 1 };
+    const n = sub5(two256, delta);
+    // invariant: n is built from δ, and δ is exactly the u128 remainder plus the placed 2^128 bit — n is derived, not pasted.
+    assert(delta[0] == @as(u64, @truncate(rem)) and delta[2] == 1);
+    // invariant: the fifth limb of n is zero — n is a 256-bit number and never occupies the 320-bit top limb.
+    assert(n[4] == 0);
+    return n;
+}
+
+/// One Horner step: acc·256 + byte across five little-endian limbs. The running residue stays below n (< 2^256), so the shifted value stays below
+/// 2^264 and the fifth limb absorbs the top bits with no carry escaping the width.
+fn shl8_add(a: [5]u64, byte: u8) [5]u64 {
+    var r = [_]u64{ 0, 0, 0, 0, 0 };
+    var carry: u64 = byte;
+    var i: u32 = 0;
+    while (i < 5) : (i += 1) {
+        const v: u128 = (@as(u128, a[i]) << 8) + carry;
+        r[i] = @truncate(v);
+        carry = @truncate(v >> 64);
+    }
+    // invariant: with acc below n the product fits five limbs, so nothing carries past the top limb.
+    assert(carry == 0);
+    return r;
+}
+
+/// Read a 32-byte little-endian encoding into five 64-bit limbs (the top limb always zero — a 32-byte value never reaches the fifth limb).
+fn load32(s: *const [32]u8) [5]u64 {
+    var l = [_]u64{ 0, 0, 0, 0, 0 };
+    var i: u32 = 0;
+    while (i < scalar_bytes) : (i += 1) {
+        // invariant: the destination limb index stays inside the four low limbs and the shift fits within a limb.
+        assert((i >> 3) < 4 and (i & 7) <= 7);
+        l[i >> 3] |= @as(u64, s[i]) << @intCast((i & 7) * 8);
+    }
+    return l;
+}
+
+/// Serialize the four low limbs of a value below n into a 32-byte little-endian scalar (the fifth limb is zero for any residue below n).
+fn store32(l: [5]u64) [32]u8 {
+    // invariant: only values below n are serialized, so the top limb is empty and the low four limbs hold the whole scalar.
+    assert(l[4] == 0);
+    var s = [_]u8{0} ** 32;
+    var i: u32 = 0;
+    while (i < scalar_bytes) : (i += 1) {
+        s[i] = @truncate(l[i >> 3] >> @intCast((i & 7) * 8));
+    }
+    return s;
+}
+
+/// Reduce a 64-byte little-endian value modulo n into a canonical 32-byte scalar. Bytewise Horner from the most significant byte down, keeping the
+/// running residue below n at every step by a bounded run of subtractions. This is the fold ECDSA runs on the PUBLIC hash-derived value and the
+/// public wide product; it holds no secret.
+pub fn reduce(wide: *const [64]u8) [32]u8 {
+    const n = order_n();
+    var acc = [_]u64{ 0, 0, 0, 0, 0 };
+    var i: u32 = wide_bytes;
+    while (i > 0) {
+        i -= 1;
+        // invariant: the source index stays inside the 64-byte value throughout the walk.
+        assert(i < wide_bytes);
+        acc = shl8_add(acc, wide[i]);
+        var guard: u32 = 0;
+        while (ge5(acc, n)) {
+            acc = sub5(acc, n);
+            guard += 1;
+            // invariant: the residue returns below n within the proven bound — the loop cannot run away.
+            assert(guard <= max_reduce_subtractions);
+        }
+    }
+    // invariant: the final residue is strictly below n — a canonical scalar, exactly what the point ladder wants.
+    assert(!ge5(acc, n));
+    return store32(acc);
+}
+
+/// The schoolbook 256×256 → 512-bit product of two canonical scalars, serialized to 64 little-endian bytes ready for reduce. Each input is four
+/// 64-bit limbs; the product is eight, accumulated with u128 partials so no column overflows. No modular arithmetic yet — that is reduce's job.
+fn mul_wide(a: *const [32]u8, b: *const [32]u8) [64]u8 {
+    const al = load32(a);
+    const bl = load32(b);
+    var r = [_]u64{ 0, 0, 0, 0, 0, 0, 0, 0 };
+    var i: u32 = 0;
+    while (i < 4) : (i += 1) {
+        var carry: u128 = 0;
+        var j: u32 = 0;
+        while (j < 4) : (j += 1) {
+            // invariant: the column index stays inside the eight product limbs.
+            assert((i + j) < 8);
+            const t: u128 = @as(u128, al[i]) * @as(u128, bl[j]) + @as(u128, r[i + j]) + carry;
+            r[i + j] = @truncate(t);
+            carry = t >> 64;
+        }
+        // invariant: the row carry is a single limb (each column sum stays below 2^128), and it lands on an empty column not yet written.
+        assert(carry <= 0xffffffffffffffff and r[i + 4] == 0);
+        r[i + 4] = @truncate(carry);
+    }
+    var out = [_]u8{0} ** 64;
+    var k: u32 = 0;
+    while (k < wide_bytes) : (k += 1) {
+        out[k] = @truncate(r[k >> 3] >> @intCast((k & 7) * 8));
+    }
+    return out;
+}
+
+/// Multiply two canonical scalars modulo n: the wide product folded by reduce. Both operands must already be below n (asserted); the result is the
+/// canonical representative of a·b mod n.
+pub fn mul(a: *const [32]u8, b: *const [32]u8) [32]u8 {
+    // invariant: multiplication takes canonical operands — a and b are already the representative below n.
+    assert(is_canonical(a) and is_canonical(b));
+    const w = mul_wide(a, b);
+    return reduce(&w);
+}
+
+/// The fixed exponent n − 2, as a 32-byte little-endian scalar — the power Fermat's little theorem raises a to for a⁻¹ mod n. n's low byte is
+/// 0x41, so subtracting 2 touches only the least byte with no borrow; the exponent is derived from our own order_n, never pasted.
+fn exponent_n_minus_2() [32]u8 {
+    var e = store32(order_n());
+    // invariant: n's least byte is 0x41 (≥ 2), so n − 2 borrows nowhere above the low byte.
+    assert(e[0] == 0x41);
+    e[0] -= 2;
+    return e;
+}
+
+/// True when bit index i (0 = least significant) of a 32-byte little-endian scalar is set. Named so the exponentiation reads the exponent plainly.
+fn bit_at(s: *const [32]u8, i: u32) u1 {
+    // invariant: the bit index stays inside the 256-bit scalar so the byte and shift are in range.
+    assert(i < exponent_bits and (i >> 3) < 32);
+    return @intCast((s[i >> 3] >> @intCast(i & 7)) & 1);
+}
+
+/// The modular inverse a⁻¹ mod n by Fermat's little theorem: a^(n−2) mod n, computed by left-to-right binary exponentiation over the 256 bits of
+/// n − 2, squaring the accumulator at every bit and multiplying by a where the bit is set. A named 256-round bound; every step is a mul mod n.
+/// Correct for any non-zero canonical a; invert(0) returns 0 (0 has no inverse), matching the reference.
+pub fn invert(a: *const [32]u8) [32]u8 {
+    // invariant: inversion takes a canonical operand below n.
+    assert(is_canonical(a));
+    const e = exponent_n_minus_2();
+    var one = [_]u8{0} ** 32;
+    one[0] = 1; // the multiplicative identity as a little-endian scalar
+    var r = one;
+    var i: u32 = exponent_bits;
+    while (i > 0) {
+        i -= 1;
+        // invariant: the bit index stays inside the exponent throughout the walk.
+        assert(i < exponent_bits);
+        r = mul(&r, &r);
+        if (bit_at(&e, i) == 1) {
+            r = mul(&r, a);
+        }
+    }
+    // invariant: the result is canonical — mul returns the representative below n, so the inverse is too.
+    assert(is_canonical(&r));
+    return r;
+}
+
+/// True when a 32-byte encoding is already the canonical scalar below n. ECDSA refuses an r or s not in [1, n−1]; this is the below-n half of that
+/// check, the same limbwise comparison reduce runs, without the arithmetic.
+pub fn is_canonical(s: *const [32]u8) bool {
+    return !ge5(load32(s), order_n());
+}
+
+// ---- selftest ----------------------------------------------------------------------------------------------------------------------
+
+fn bytes_eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) {
+        if (a[i] != b[i]) return false;
+    }
+    return true;
+}
+
+/// n itself as 32 little-endian bytes — the canonical boundary, built from our own order_n so the known-answer tests quote no external limb.
+fn n_bytes() [32]u8 {
+    return store32(order_n());
+}
+
+/// A deterministic spread of 64-byte values — the same generator shape the other crypto selftests use, seeded so each differs and each is large
+/// enough to genuinely exceed n, giving the reduction something real to fold.
+fn wide_bytes_seed(seed: u8) [64]u8 {
+    var w: [64]u8 = undefined;
+    var i: u32 = 0;
+    while (i < wide_bytes) : (i += 1) w[i] = @truncate(@as(u32, i) *% (@as(u32, seed) | 1) +% @as(u32, seed) +% 13);
+    return w;
+}
+
+/// A deterministic canonical scalar below n from a seed — folded through reduce so it is always a valid, non-trivial operand for mul and invert.
+fn canon_scalar_seed(seed: u8) [32]u8 {
+    return reduce(&wide_bytes_seed(seed));
+}
+
+/// A deterministic spread of 32-byte encodings for the canonical verdict — seeded so both answers appear. n's most significant nine bytes are
+/// 0xff…0xff 0xfe, so a value below n needs a low top byte (even seeds keep byte 31 at 0), while setting the top nine bytes to 0xff forces a value
+/// above n regardless of the rest (odd seeds), guaranteeing is_canonical has both answers to disagree on if it were wrong.
+fn scalar_bytes_seed(seed: u8) [32]u8 {
+    var s: [32]u8 = undefined;
+    var i: u32 = 0;
+    while (i < scalar_bytes) : (i += 1) s[i] = @truncate(@as(u32, i) *% (@as(u32, seed) | 1) +% @as(u32, seed) +% 5);
+    if (seed & 1 == 1) {
+        // Odd seed: all-ones is 2^256 − 1, strictly above n — non-canonical, whatever a generator would have placed.
+        var j: u32 = 0;
+        while (j < 32) : (j += 1) s[j] = 0xff;
+    } else {
+        // Even seed: keep the top byte low so the value stays safely below n — canonical.
+        s[31] = 0;
+    }
+    return s;
+}
+
+/// Independent reference: Zig's own std.crypto secp256k1 scalar field, used ONLY inside the selftest. The primitive above never calls it.
+const ZScalar = std.crypto.ecc.Secp256k1.scalar;
+
+fn run_selftest() !u8 {
+    // 1. Algebraic known-answers anyone can check.
+    {
+        // 0 reduces to 0.
+        const zero_wide = [_]u8{0} ** 64;
+        if (!bytes_eq(&reduce(&zero_wide), &([_]u8{0} ** 32))) return error.ZeroReduceMismatch;
+
+        // n reduces to 0 — embed our own n bytes in the low half of a 64-byte value.
+        var n_wide = [_]u8{0} ** 64;
+        const nb = n_bytes();
+        var i: u32 = 0;
+        while (i < 32) : (i += 1) n_wide[i] = nb[i];
+        if (!bytes_eq(&reduce(&n_wide), &([_]u8{0} ** 32))) return error.OrderReduceMismatch;
+
+        // 0 is canonical (below n); n itself is not.
+        if (!is_canonical(&([_]u8{0} ** 32))) return error.ZeroNotCanonical;
+        if (is_canonical(&nb)) return error.OrderCanonical;
+
+        // a · 1 = a for a spread of canonical scalars.
+        var one = [_]u8{0} ** 32;
+        one[0] = 1;
+        var seed: u8 = 1;
+        while (seed <= 16) : (seed += 1) {
+            const a = canon_scalar_seed(seed);
+            if (!bytes_eq(&mul(&a, &one), &a)) return error.MulIdentityMismatch;
+        }
+
+        // a · a⁻¹ = 1 for a spread of non-zero canonical scalars — the inverse round-trips against multiply.
+        seed = 1;
+        while (seed <= 16) : (seed += 1) {
+            const a = canon_scalar_seed(seed);
+            if (bytes_eq(&a, &([_]u8{0} ** 32))) continue; // 0 has no inverse
+            const inv = invert(&a);
+            if (!bytes_eq(&mul(&a, &inv), &one)) return error.InverseRoundTripMismatch;
+        }
+    }
+
+    // 2. Independent-implementation parity for reduce: our bytewise Horner equals Zig's std.crypto reduce64 byte-for-byte across a spread of
+    //    64-byte values, plus the all-ones extreme.
+    {
+        var seed: u8 = 1;
+        while (seed <= 64) : (seed += 1) {
+            const w = wide_bytes_seed(seed);
+            if (!bytes_eq(&reduce(&w), &ZScalar.reduce64(w, .little))) return error.RefReduceMismatch;
+        }
+        const ones = [_]u8{0xff} ** 64;
+        if (!bytes_eq(&reduce(&ones), &ZScalar.reduce64(ones, .little))) return error.RefReduceOnesMismatch;
+    }
+
+    // 3. Independent-implementation parity for mul: our wide-product-then-reduce equals Zig's std.crypto scalar.mul byte-for-byte across a spread
+    //    of canonical operand pairs.
+    {
+        var seed: u8 = 1;
+        while (seed <= 32) : (seed += 1) {
+            const a = canon_scalar_seed(seed);
+            const b = canon_scalar_seed(seed +% 97);
+            if (!bytes_eq(&mul(&a, &b), &(try ZScalar.mul(a, b, .little)))) return error.RefMulMismatch;
+        }
+    }
+
+    // 4. Independent-implementation parity for invert: our Fermat exponentiation equals Zig's Scalar.invert byte-for-byte across a spread of
+    //    non-zero canonical scalars.
+    {
+        var seed: u8 = 1;
+        while (seed <= 32) : (seed += 1) {
+            const a = canon_scalar_seed(seed);
+            if (bytes_eq(&a, &([_]u8{0} ** 32))) continue;
+            const zs = try ZScalar.Scalar.fromBytes(a, .little);
+            if (!bytes_eq(&invert(&a), &zs.invert().toBytes(.little))) return error.RefInvertMismatch;
+        }
+    }
+
+    // 5. Independent-implementation parity for is_canonical: our verdict matches Zig's rejectNonCanonical across a spread, and the spread
+    //    genuinely exercises both answers so the check is not trivially constant.
+    {
+        var seed: u8 = 1;
+        var canon: u32 = 0;
+        var noncanon: u32 = 0;
+        while (seed <= 64) : (seed += 1) {
+            const s = scalar_bytes_seed(seed);
+            const ours = is_canonical(&s);
+            const theirs = if (ZScalar.rejectNonCanonical(s, .little)) |_| true else |_| false;
+            if (ours != theirs) return error.RefCanonicalMismatch;
+            if (ours) canon += 1 else noncanon += 1;
+        }
+        // invariant: the spread named both a canonical and a non-canonical encoding — the verdict is not trivially one-sided.
+        if (canon == 0 or noncanon == 0) return error.SpreadTooNarrow;
+    }
+
+    print("GREEN crypto-secp256k1-scalar: scalar arithmetic modulo the group order n authored in pure Rye — Season G's second secp256k1 field, " ++
+        "the arithmetic ECDSA verification runs beside the point ladder. n = 2^256 − δ, δ = 2^128 + 0x4551231950b75fc4402da1732fc9bebf " ++
+        "(secp256k1 / SEC 2), BUILT from that defining form — δ's sub-2^128 remainder as a u128, the 2^128 bit placed, subtracted from 2^256 — " ++
+        "never pasted as a limb pattern. reduce folds a 64-byte little-endian value modulo n by bytewise Horner from the most significant byte " ++
+        "down, keeping the residue below n by a run of subtractions proven fewer than 256 per byte; mul is reduce over a schoolbook 256×256→512 " ++
+        "product; invert is a⁻¹ mod n by Fermat's little theorem, a^(n−2) mod n over a named 256-round binary exponentiation, every step a mul; " ++
+        "is_canonical answers whether a 32-byte encoding is already the representative below n. The primitive calls no std.crypto. Parity holds " ++
+        "against algebraic known-answers (0 reduces to 0, n reduces to 0, a·1 = a, a·a⁻¹ = 1), and our authored Rye equals Zig's independent " ++
+        "std.crypto.ecc.Secp256k1.scalar — reduce64, mul, Scalar.invert, rejectNonCanonical — byte-for-byte and verdict-for-verdict across a " ++
+        "spread that names both canonical and non-canonical encodings. secp256k1 is not in Monocypher, so the two witnesses are the reference " ++
+        "known-answers and Zig's std.crypto. Purely local arithmetic — in ECDSA verification r, s, z, and the inverse are all PUBLIC, so the " ++
+        "variable-time reduction and exponentiation leak no secret; a constant-time scalar field for secret scalars (ECDSA signing) stays a " ++
+        "separate named horizon. No real key, no signing, no network, no funds, no real device. With reduce, mul, invert, and is_canonical " ++
+        "GREEN, every arithmetic piece ECDSA verification needs now stands, and verify becomes a composition over this scalar field, the point " ++
+        "ladder, and the base field — the reach the Bitcoin/Ethereum address arc was always climbing toward.\n", .{});
+    return 0;
+}
+
+pub fn main(init_args: std.process.Init) !u8 {
+    _ = init_args;
+    return run_selftest();
+}
