@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260815.212900
+editor Claude Code
+model claude-opus-4-8
+voice Kyri
+host Vultr SEA NixOS VPS (SGP · AMD 2vCPU/4GB shared) — ai-jail pier
+title tigerbeetle source clone and full submodule audit
+prompt Keaton approved the tigerbeetle network source clone, asked whether any other submodules need a network fetch, then to confirm the recursion prompt is still satisfactory
+think read the tree state: HEAD had climbed to 16c177e10 crypto index README while compacted, tree clean, the loop working
+think surveyed .gitmodules against the actual index gitlinks mode 160000: fourteen submodule URLs are declared, yet only two carry a real gitlink pin in HEAD
+think gratitude/tigerbeetle was the one uninitialized gitlink; vendor/monocypher already fetched at 4.0.3 for crypto parity
+think the other twelve .gitmodules entries zig urbit dvui sui sixos and the rest have no gitlink in the current tree, so there is nothing to network-fetch for them and nothing pending
+obs answer to the question is clean: only tigerbeetle and monocypher are gitlinked; monocypher was already here, so tigerbeetle was the single fetch, and no other submodule source is needed
+obs tigerbeetle checked out at 97c7a8ef38, 10 entries, Apache-2.0 LICENSE, permissive per gratitude-licenses; study reference for the TAME alignment study, no prompt change wanted
+obs recursion prompt reran GREEN, unchanged: it already points at the decision-wave doc, Rye-first, Brushstroke pause, and the full custody gate list including the seed force-push
+file session-logs/20260815-212900_tigerbeetle-clone-submodule-audit.bron this log, recording the submodule audit and the tigerbeetle fetch
+recommend keep-going the loop can climb the crypto crux now that tigerbeetle and monocypher are both on disk for study and parity; no other submodule fetch pending
