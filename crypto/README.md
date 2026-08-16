@@ -19,7 +19,7 @@ a message: **Kumara** identity, **Vault** sealed storage, **Comlink** sessions, 
 the **Lotus** signed carry. It authors the mathematics once, in the open, so a hand
 placing trust in it can read exactly what it does.
 
-## The forty-two files — thirty-four primitives and eight compositions
+## The forty-three files — thirty-four primitives and nine compositions
 
 Built in dependency order: each rung stands on the GREEN rungs beneath it, none
 authoring cryptography a lower rung had not already proven.
@@ -100,6 +100,7 @@ authoring cryptography a lower rung had not already proven.
 | [`eth_personal_sign.rye`](eth_personal_sign.rye) | *Who signed this message?* — the EIP-191 `personal_sign` digest (`"\x19Ethereum Signed Message:\n"` framing, the 0x19 sentinel that can never begin a valid transaction) and `recover_signer`, which reads the twenty-byte sender address out of a 65-byte `r‖s‖v` signature: "Sign in with Ethereum," end to end | Keccak-256 · ecrecover · eth_address |
 | [`eip712.rye`](eip712.rye) | *Who signed this typed message, for this app, on this chain?* — the EIP-712 typed-structured-data digest a wallet shows before it signs "typed data" (EIP-2612 permits, DeFi orders, gasless meta-transactions, typed Sign-in-with-Ethereum). Where EIP-191 frames a flat string, EIP-712 hashes a *tree* of typed fields (`type_hash` · `hash_struct` · `eip712_domain_separator`) against a domain separator into `keccak256(0x19 0x01 ‖ domain_separator ‖ struct_hash)`, so a signature for one contract on one chain can never be replayed against another, and `recover_typed_signer` reads the sender back out. Proven three ways runnable now — the EIP-712 spec's own canonical Ether Mail example recovered by the spec's own published signature to Cow's published wallet, an independent Zig-Keccak construction byte-for-byte, and a full TEST-key round-trip | Keccak-256 · ecrecover · eth_address |
 | [`eip155_tx.rye`](eip155_tx.rye) | *What does a key sign before every on-chain send, and who signed it?* — the EIP-155 legacy Ethereum transaction digest: `keccak256(rlp([nonce, gasPrice, gas, to, value, data, chainId, 0, 0]))`, the exact bytes a wallet signs. Where `eip712` hashes a *tree* of typed fields off-chain, `eip155_tx` hashes the *flat* nine-field list of an on-chain transaction; the chain id folded into the preimage is replay protection, and `v = recovery_id + 2·chainId + 35` carries it back out, so `recover_sender` reads the twenty-byte sender out of the sighash and signature. Proven three ways anyone can replay — the EIP-155 spec's own canonical example hashes byte-for-byte to the spec's stated sighash `0xdaf5a779…4c8e53`, an independent Zig-Keccak construction over the same RLP gives the identical digest, and the spec's published `(v=37, r, s)` recovers to exactly the example's published sender `0x9d8a62f6…855a4f` | RLP · Keccak-256 · ecrecover · eth_address |
+| [`eip1559_tx.rye`](eip1559_tx.rye) | *What does a key sign before every modern (type-2) send, and who signed it?* — the EIP-1559 typed-transaction digest: `keccak256(0x02 ‖ rlp([chainId, nonce, maxPriorityFeePerGas, maxFeePerGas, gasLimit, to, value, data, accessList]))`, the exact bytes a wallet signs since the London fork. Where `eip155_tx` hashes the flat legacy list, `eip1559_tx` prepends the EIP-2718 type byte `0x02` and carries the dynamic-fee market (a tip ceiling and a fee ceiling in place of one gasPrice); the signed wire form appends `[yParity, r, s]` for twelve fields, the recovery bit a plain `yParity` because the chain id already lives in the signed list, and `recover_sender` reads the twenty-byte sender back out. Proven three ways anyone can replay, with no fabricated constant — the example test key `0x4646…46` derives through our secp256k1 + eth_address to exactly the address EIP-155 publishes, `0x9d8a62f6…855a4f`; an independent Zig-Keccak construction over the same type-prefixed RLP gives the identical digest; and deterministically signing the sighash with that test key then recovering returns exactly that derived address | RLP · Keccak-256 · ecdsa_sign · ecrecover · eth_address |
 
 ## Proving it — witnesses on metal
 
@@ -114,7 +115,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 ```
 
 [`../tools/crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) runs all
-forty-two per-file witnesses in the dependency order above, rebuilding and reproving
+forty-three per-file witnesses in the dependency order above, rebuilding and reproving
 each from source, and refuses whole — naming the file that stopped it — the moment
 any one goes RED, and then runs the **count guard**
 ([`../tools/crypto_count_guard_witness.rish`](../tools/crypto_count_guard_witness.rish)) —
