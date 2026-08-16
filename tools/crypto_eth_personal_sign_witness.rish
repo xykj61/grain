@@ -1,0 +1,43 @@
+# tools/crypto_eth_personal_sign_witness.rish — the Ethereum EIP-191 personal_sign digest and its signer recovery, authored in pure Rye as a
+# composition over three already-GREEN rungs: the Keccak-256 (crypto/keccak256.rye), the ECDSA public-key recovery (crypto/secp256k1_ecrecover.rye),
+# and the address derivation (crypto/eth_address.rye). This is "Sign in with Ethereum" — a wallet signs the Keccak-256 of
+# "\x19Ethereum Signed Message:\n" ++ decimal(len) ++ message (the EIP-191 0x45 framing whose leading 0x19 can never begin a valid RLP
+# transaction), and recover_signer reads the twenty-byte SENDER address back out of a 65-byte r‖s‖v signature (crypto · Season G · Cryptography).
+#
+# Season: crypto — Season G (the Six-Season double-seat). This rung authors NO new cryptography: it frames a message with the EIP-191 prefix,
+# hashes it with the GREEN Keccak-256, recovers the public key with the GREEN ecrecover, and resolves it to an address with the GREEN eth_address —
+# the composition crypto/secp256k1_ecrecover.rye's own note named next, unblocking a Kumara login against an Ethereum key (the Dimeroll receipt).
+# Design read: active-designing/20260816-042627_eth-personal-sign.md (this rung's claim) and
+# active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+# Clean-room: EIP-191 is Ethereum's own public standard; the composition is ours, standing on our own parity-GREEN rungs, never a copied line
+# (.claude/rules/gratitude-licenses.md).
+#
+# personal_hash frames the message and returns its Keccak-256; recover_signer splits the 65-byte signature, takes that digest as the ECDSA z,
+# recovers the key, and derives its address. Parity is proven at selftest two ways runnable now: an independent framing check (personal_hash equals
+# Zig's std.fmt + std.crypto Keccak-256 construction byte-for-byte across message lengths 0, 5, 11, 100, 9001) AND a full round-trip (our GREEN
+# prehashed signer signs the personal digest with a TEST key, the correct v recovers, recover_signer returns exactly that key's own Ethereum
+# address, and a one-byte message tamper never recovers the true signer). A short signature refuses BadSignatureLength, a bad recovery byte
+# BadRecoveryByte. Purely local — no key, no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_eth_personal_sign_witness.rish
+
+say "crypto-eth-personal-sign: Language EN — a wallet never signs a raw message: it signs the Keccak-256 of \"\\x19Ethereum Signed Message:\\n\" ++ decimal(len) ++ message, the EIP-191 personal_sign framing. That leading 0x19 byte can never begin a valid RLP transaction, so a signed login can never be replayed as a transaction. Given the message and a 65-byte signature (r ‖ s ‖ v), recover_signer reads the twenty-byte SENDER address back out — the operation behind every EIP-191 authentication and every Sign-in-with-Ethereum session. This module composes three already-GREEN rungs and authors none of its own cryptography."
+say "crypto-eth-personal-sign: Style Radiant — the law is stated positively: personal_hash frames the message with the fixed prefix and its base-ten length and hashes it with the GREEN Keccak-256; recover_signer takes that digest as the ECDSA z, recovers the public key with the GREEN ecrecover, and resolves it to an address with the GREEN eth_address — so the same message and signature always name the same signer, and a tampered message names a different one or none."
+say "crypto-eth-personal-sign: Lens TAME — no new cryptography: every hash is the GREEN crypto/keccak256.rye, every recovery the GREEN crypto/secp256k1_ecrecover.rye, every address the GREEN crypto/eth_address.rye. Fixed shapes (prefix 26, digest 32, signature 65, address 20), a named message cap, contract asserts on every function, the recovery byte checked before recovery. Parity holds against an independent framing (Zig's std.fmt + std.crypto Keccak-256, byte-for-byte across five lengths) AND a full sign→recover→address round-trip through the GREEN prehashed signer, with a one-byte tamper refused; a short signature refuses BadSignatureLength, a bad recovery byte BadRecoveryByte. In recovery every value is PUBLIC — no secret leaks; signing with a real identity key stays the custody gate (#3/#4). Purely local — no key, no network, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/eth_personal_sign"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/eth_personal_sign.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-eth-personal-sign: build failed — ${build.err}"
+
+let outfile = "crypto/bin/eth_personal_sign.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-eth-personal-sign: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-eth-personal-sign: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-eth-personal-sign' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-eth-personal-sign: selftest did not print the GREEN crypto-eth-personal-sign line"

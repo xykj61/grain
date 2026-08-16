@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260816.044200
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title crypto/eth_personal_sign.rye — EIP-191 personal_sign digest and signer recovery, parity-GREEN
+prompt take the next agent-doable lap Lindy-first crux-first on the road ahead — Rye prioritized, Glow on green-witnessed Rye; send each finished increment; stop at custody gates
+think After sending ecrecover, the secp256k1 tower can read a public key out of a signature, but a real Sign-in-with-Ethereum never signs a bare hash — it signs the Keccak-256 of the EIP-191 framed message. The ecrecover design doc named this composition as the door it unblocks (a Kumara login against an Ethereum key / Dimeroll receipt). Lindy-first crux-first: it serves every EIP-191 and SIWE authentication, stands entirely on GREEN rungs, adds no new cryptography.
+think Studied the public APIs to compose: ecr.recover(hash, r, s, id) -> PubKey{qx,qy}; eth.address_from_pubkey(pub64); keccak.hash256; and — crucially for a self-contained round-trip — sign.sign_prehashed(d, hash) and sign.derive_public(d), so I can sign the personal digest directly rather than re-hashing a message.
+think Wrote crypto/eth_personal_sign.rye as the fifth composition: personal_hash frames "\x19Ethereum Signed Message:\n" ++ ascii_decimal(len) ++ message into a bounded stack buffer (max 16 KiB message, named caps) and Keccak-256s it; recover_signer splits the 65-byte r‖s‖v signature, maps v (27/28 or 0/1) to a recovery id, recovers the key, packs x‖y, and derives the address. TAME: opening triad, ≥2 positive invariants per fn, named errors, no @memcpy (explicit byte loops), unqualified assert.
+think The only arithmetic of its own is the base-ten length rendering (write_decimal), so I gave it an independent witness: personal_hash equals Zig's std.fmt + std.crypto Keccak-256 construction byte-for-byte across lengths 0, 5, 11, 100, 9001 — not circular, it cross-checks my digit loop and byte layout against Zig's formatter. The second witness is the full sign→recover→address round-trip with a one-byte tamper refused.
+obs GREEN on the first metal build and the first selftest run — nothing new to get wrong over three proven stones and one small decimal loop. Witness GREEN, count guard GREEN at 39 (bijection whole), TAME bans clean and the new file is not in the zero-assert list. The whole suite rebuild confirms all 39 files GREEN.
+obs Custody: EIP-191 recovery touches no secret — message, signature, recovery byte, recovered address all public — so it sits non-gated beside verify and ecrecover. It answers who signed this message?, never sign this; signing a login with the maintainer's own identity key stays the custody gate (#3/#4). This unblocks the crypto wave's named Kumara-against-Ethereum login without ever holding a key.
+loom witness=crypto_eth_personal_sign_witness green=1 keys=6 messages=4 framing_lengths=5 parity=zig_stdfmt_keccak_and_round_trip
+loom witness=crypto_count_guard_witness files=39 bijection=whole green=1
+loom witness=crypto_suite_witness files=39 primitives=34 compositions=5 green=1
+file crypto/eth_personal_sign.rye the composition — personal_hash framing + recover_signer over keccak256 · ecrecover · eth_address
+file tools/crypto_eth_personal_sign_witness.rish the per-file witness asserting GREEN crypto-eth-personal-sign, framing + round-trip
+file tools/crypto_suite_witness.rish registered the fifth composition after ecrecover; prose counts synced 34/39, five compositions
+file active-designing/20260816-042627_eth-personal-sign.md the rung's claim, self-approved design round
+file docs/CRYPTO.md front-door counts 34/39 and the personal_sign composition row
+file crypto/README.md counts 34/39, five compositions, the personal_sign row
+file crypto/CONSTANT_TIME.md the personal_sign row — public-only, non-gated, a data-independent composition
+recommend keep-going the secp256k1 / Ethereum arc now authenticates a signed login end to end; the next Lindy-first crux is EIP-712 typed-data hashing (the structured sibling of EIP-191) or the constant-time timing horizon named across the secret-flow rows

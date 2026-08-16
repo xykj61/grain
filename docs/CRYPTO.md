@@ -1,6 +1,6 @@
 # Crypto — the Season G audit front door
 
-*A Rye-native, parity-checked cryptography library — thirty-four primitives and four compositions, each GREEN on metal.*
+*A Rye-native, parity-checked cryptography library — thirty-four primitives and five compositions, each GREEN on metal.*
 
 **Status:** Checkable — Season G operator + auditor guide
 **Depth:** guide
@@ -32,7 +32,7 @@ vectors — never a copied line ([`gratitude-licenses.md`](../.claude/rules/grat
 
 ---
 
-## Rung table — thirty-eight files, dependency order
+## Rung table — thirty-nine files, dependency order
 
 Each rung stands on the GREEN rungs beneath it; none authors cryptography a lower
 rung had not already proven. Every file carries a per-file witness
@@ -110,6 +110,7 @@ rung had not already proven. Every file carries a per-file witness
 | `sealed_session.rye` | *Only you can read this* — a seal-to-a-public-key box | X25519 · BLAKE2b-512 · ChaCha20-Poly1305 |
 | `vault_seal.rye` | *Only your password can open this* — a password-sealed box | Argon2id · XChaCha20-Poly1305 |
 | `eth_address.rye` | *What Ethereum address is this key?* — the low 20 bytes of Keccak-256(pubkey), EIP-55 mixed-case checksum | Keccak-256 |
+| `eth_personal_sign.rye` | *Who signed this message?* — the EIP-191 `personal_sign` digest and `recover_signer`, reading the sender address out of a 65-byte `r‖s‖v` signature: "Sign in with Ethereum" | Keccak-256 · ecrecover · eth_address |
 
 ---
 
@@ -121,7 +122,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 
 [`crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) rebuilds each
 `crypto/<name>.rye` fresh from source to the gitignored `crypto/bin/` and runs all
-thirty-eight per-file witnesses in the dependency order above, refusing whole —
+thirty-nine per-file witnesses in the dependency order above, refusing whole —
 naming the file that stopped it — the moment any one goes RED. A GREEN suite means
 every claim here is re-provable by tooling, not trusted from a commit message
 alone (measurement beats memory). It then runs the **count guard**
