@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260816.023000
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (Linux) — Eastern (EDT) time convention
+title secp256k1 scalar multiplication k·P — the double-and-add ladder, parity-GREEN
+prompt Read the road-ahead cards and itineraries; take the next agent-doable lap Lindy-first crux-first; Rye first, Glow on green Rye; approve own design rounds; send each finished increment as its own signed round; stop at custody gates.
+think Second lap of the loop. The just-landed secp256k1 group law's own closing GREEN line named the next non-gated rung plainly: scalar multiplication k·P is a composition over dbl and add, the last arithmetic step before ECDSA verify and public-key recovery. Lindy-first crux-first agrees — ECDSA computes Q = d·G once and u1·G + u2·Q on every verification, all scalar multiplications.
+think Mirrored the sibling crypto/ed25519_scalarmul.rye exactly: a double-and-add ladder walking the 32-byte little-endian scalar high bit to low, doubling the accumulator each bit and adding P where set, starting from the group identity. For secp256k1 the identity is the point at infinity (X=0, Y=1, Z=0) — Z=0, unlike Ed25519's Z=1 — and because the RCB formulas beneath are complete/exception-free, the ladder needs no special case for the identity accumulator or for adding a point to itself.
+think Parity target: Zig's std.crypto.ecc.Secp256k1.mul walks the raw scalar (no reduction mod n) and rejects only the identity RESULT, so passing the same little-endian bytes with endian=.little makes both compute the same k·P. Compared on affine coordinates (the canonical form) so the two projective representatives need not match.
+obs GREEN on the FIRST metal run again — the ladder over the proven complete group law needs no field or curve math of its own, so there was nothing new to get wrong. Parity holds byte-for-byte against Zig's mul on the affine coordinates of k·P across eight small scalars plus one large scalar, over both the base point and 3·G, plus algebraic known-answers (0·G is the point at infinity with Z packing to zero, 1·G is G, 2·G is dbl(G), (k+1)·G is k·G + G).
+obs Deliberately variable-time — the ladder branches on scalar bits, correct but not timing-safe; a constant-time ladder for secret scalars stays the Season's named horizon, unchanged. No secret scalar flows here yet: a test scalar is not a key. ECDSA signing with a real private d stays the custody gate (#3/#4).
+loom witness=crypto_secp256k1_scalarmul_witness parity_scalars=9 points=2 ops=k*P result=GREEN
+loom witness=crypto_suite_witness files=35 primitives=31 compositions=4 result=GREEN
+file crypto/secp256k1_scalarmul.rye scalar multiplication k·P (double-and-add) over the GREEN group law, parity-GREEN
+file tools/crypto_secp256k1_scalarmul_witness.rish the per-file witness — builds and asserts GREEN crypto-secp256k1-scalarmul
+file tools/crypto_suite_witness.rish registers the new rung after the group law; narrative counts refreshed to 35 files
+file docs/CRYPTO.md adds the scalarmul row; counts corrected to thirty-five files, thirty-one primitives
+recommend keep-going ECDSA verification (u1·G + u2·Q over this ladder, plus the scalar field mod n) and public-key recovery are the next non-gated rungs — the reach eth_address was climbing toward; signing with a real key stays the custody gate

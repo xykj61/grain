@@ -1,6 +1,6 @@
 # Crypto — the Season G audit front door
 
-*A Rye-native, parity-checked cryptography library — thirty primitives and four compositions, each GREEN on metal.*
+*A Rye-native, parity-checked cryptography library — thirty-one primitives and four compositions, each GREEN on metal.*
 
 **Status:** Checkable — Season G operator + auditor guide
 **Depth:** guide
@@ -32,7 +32,7 @@ vectors — never a copied line ([`gratitude-licenses.md`](../.claude/rules/grat
 
 ---
 
-## Rung table — thirty-four files, dependency order
+## Rung table — thirty-five files, dependency order
 
 Each rung stands on the GREEN rungs beneath it; none authors cryptography a lower
 rung had not already proven. Every file carries a per-file witness
@@ -96,6 +96,7 @@ rung had not already proven. Every file carries a per-file witness
 |------|------------|-----------|
 | `fe_secp256k1.rye` | The base field GF(2²⁵⁶ − 2³² − 977), eight 32-bit limbs — the durable stone the whole secp256k1 tower (group law, ECDSA verify, public-key recovery) will stand on; the crux the address arc above (Keccak-256 · RIPEMD-160 · Base58Check · Bech32 · EIP-55) was climbing toward. Not in Monocypher, so parity is by-hand known-answers plus Zig's independent `std.crypto.ecc.Secp256k1.Fe` | secp256k1 (SEC 2) |
 | `secp256k1_group.rye` | The group law over the field above — point add, double, negate in complete homogeneous projective coordinates (x = X/Z, y = Y/Z), exception-free for every pair; the composition a scalar-multiplication ladder repeats, the last step before ECDSA verify and public-key recovery. Parity is algebraic known-answers plus Zig's independent `std.crypto.ecc.Secp256k1` on affine coordinates | RCB eprint 2015/1060 (a = 0) |
+| `secp256k1_scalarmul.rye` | Scalar multiplication k·P over the group law — the double-and-add ladder ECDSA repeats for Q = d·G and for u1·G + u2·Q on every verify; variable-time (a constant-time ladder for secret scalars is the named horizon). Parity is algebraic known-answers plus Zig's `std.crypto.ecc.Secp256k1.mul` on affine coordinates | double-and-add over RCB |
 
 ### Compositions (no new cryptography — proven stones assembled)
 
@@ -116,7 +117,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 
 [`crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) rebuilds each
 `crypto/<name>.rye` fresh from source to the gitignored `crypto/bin/` and runs all
-thirty-four per-file witnesses in the dependency order above, refusing whole —
+thirty-five per-file witnesses in the dependency order above, refusing whole —
 naming the file that stopped it — the moment any one goes RED. A GREEN suite means
 every claim here is re-provable by tooling, not trusted from a commit message
 alone (measurement beats memory).
