@@ -1,0 +1,53 @@
+# encoding — Rye-native, parity-checked binary-to-text serialization
+
+**Language:** EN · **Voice:** Kyri · **Style:** Radiant · **Status:** Living
+**Kin:** [`../crypto/README.md`](../crypto/README.md) — the mathematics that produces the bytes this module renders
+**Design read:** [`../active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md`](../active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md)
+**Clean-room law:** [`../.claude/rules/gratitude-licenses.md`](../.claude/rules/gratitude-licenses.md)
+
+The crypto library authors the mathematics that produces bytes — hashes, signatures,
+sealed boxes. This module authors the **text those bytes travel in**: the armor a
+key, a signature, a content address, or a sealed frame wears when it crosses a channel
+that passes only printable characters — a Bron field, a URL, a note pasted between two
+hands. Both keep one discipline: authored **from the standard**, calling **no
+`std`-provided codec** in the primitive, and proven **byte-for-byte** against a
+reference runnable now.
+
+## The rungs
+
+Built in the same measurement-first spirit as `crypto/`: each file authored from its
+standard, each proven against a public known-answer *and* Zig's independent `std`
+implementation.
+
+| File | What it is | Reference |
+|---|---|---|
+| [`base64.rye`](base64.rye) | Base64 — standard (padded, `+ /`) and URL-safe (unpadded, `- _`) alphabets, encode and decode | RFC 4648 |
+
+**Natural next rungs** (named, not yet built): **base58** (the alphabet Solana
+addresses and content identifiers wear — no `std` parity, proven against published
+vectors and a round-trip), **base32** (RFC 4648, the case-insensitive form), and a
+shared **hex** primitive to retire the per-file `to_hex` each crypto witness now
+hand-rolls.
+
+## Proving it — witnesses on metal
+
+Each file carries a per-file witness under [`../tools/`](../tools/) named
+`encoding_<name>_witness.rish`, which builds `encoding/<name>.rye` fresh to the
+gitignored `encoding/bin/` and asserts its `GREEN encoding-<name>` line against the
+standard's known-answers and Zig's independent `std` implementation:
+
+```
+rishi/bin/rishi run tools/encoding_base64_witness.rish
+```
+
+## Honest scope
+
+Purely **local** — no key, no network, no funds, no real device. These primitives
+transform bytes to text and back; they hold no secret and make no timing claim. The
+cryptography that produces the bytes, and the custody of the keys those bytes may
+carry, stays in `crypto/` and behind the maintainer's own hand.
+
+---
+
+*May every key, seal, and content address that travels as text arrive exactly as it
+left — and may a hand reading these forms find a door it can read all the way down.*
