@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260816.124253
+editor Zed
+model Claude Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title crypto — Monocypher-source parity for X25519 (RFC 7748 §6.1), GREEN
+prompt take the next agent-doable lap Lindy-first crux-first; Rye prioritized; send often as its own signed round; approve your own design rounds; stop at custody gates; baton prin recur
+think With the Monocypher-source parity pattern proven on BLAKE2b, extended it to the highest-value next primitive: X25519. It is exactly the key agreement crypto/kumara_sealed.rye's confidentiality door rests on (the door I built and sent this session), so proving it against the actual audit target hardens that door directly — Lindy-first (every sealed message ever) and crux-first (the one primitive the whole sealed arc agrees with).
+think Reused the proven shape: a C harness linking the unmodified vendored Monocypher through zig cc, a Rye harness over the GREEN crypto/x25519.rye (reached via tools/x25519.rye + tools/fe25519.rye symlinks, since Rye resolves imports beside the file), both printing the same four values, diffed byte-for-byte by the witness. Chose RFC 7748 §6.1's own Alice/Bob exchange as the world anchor: Alice public, Bob public, and the shared secret reached from each side — four lines, three published constants asserted.
+think Both our x25519 and Monocypher clamp the scalar internally per RFC 7748 §5, so each is fed the raw published scalar; the Diffie-Hellman symmetry (Alice-side shared == Bob-side shared == RFC) is checked inside the same four lines.
+obs GREEN on the first full pass: byte-identical X25519 across all four values, all three published constants matched. Gate-free and purely local — no key of ours, no seed, no network, no funds, no device. Count guard untouched (harness Rye in tools/, not crypto/). Clean-room held — Monocypher linked, never copied.
+obs Synced the now-closed horizon in crypto/x25519.rye (a header comment and the GREEN print) and tools/crypto_x25519_witness.rye's Lens line — all three had named Monocypher-source parity as a held-fetch horizon; re-witnessed x25519 GREEN after the prose change.
+loom witness=crypto_monocypher_x25519_parity_witness result=GREEN values=4 impls=rye+monocypher_c anchor=rfc7748_6.1
+file tools/crypto_monocypher_x25519_parity_witness.rish the witness — builds both harnesses, diffs byte-for-byte, anchors to RFC 7748 §6.1
+file tools/fixtures/monocypher_x25519_harness.c Monocypher's printing harness over the RFC exchange, links the unmodified vendored source
+file tools/monocypher_x25519_parity.rye our authored printing harness over the same exchange
+file tools/x25519.rye symlink → ../crypto/x25519.rye so the tools harness can import the GREEN primitive
+file tools/fe25519.rye symlink → ../crypto/fe25519.rye the base field x25519 stands on
+file crypto/x25519.rye header + GREEN-print prose synced — Monocypher-source parity closed
+file tools/crypto_x25519_witness.rish Lens prose synced to the closed horizon
+recommend keep-going — the parity pattern now covers a hash and a key agreement; next durable crux is Ed25519 sign/verify parity against Monocypher's optional module (monocypher-ed25519.c) and the ChaCha/Poly line, closing the four primitives the decision wave named; check-in (Claude) is the honest alternative if the Comlink-over-wire seam is preferred next
