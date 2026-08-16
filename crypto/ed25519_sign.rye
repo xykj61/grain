@@ -1,0 +1,262 @@
+//! crypto/ed25519_sign.rye — Season G (Cryptography), the thirteenth rung: Ed25519 SIGNING authored in pure Rye, the near side of the Lotus signed
+//! carry. Verification (the eleventh rung) reads only public values; signing is its mirror — given a 32-byte secret seed and a message, it produces
+//! the 64-byte signature R ‖ S that verify accepts. With the scalar multiply-add GREEN (crypto/ed25519_muladd.rye, the twelfth rung), every
+//! arithmetic piece signing needs now stands, and this rung writes NO new mathematics: it composes the GREEN SHA-512, the GREEN scalar reduction
+//! mod L, the GREEN scalar ladder over the derived base point, the GREEN point compression, and the GREEN multiply-add into the exact procedure
+//! RFC 8032 §5.1.6 defines. A Rye-native Ed25519 keypair-and-signature now stands whole beside the verifier — the signing side of Kumara identity,
+//! Vault, Comlink, and the Lotus "who made this record" carry, all with no std.crypto and no C library.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus unblock;
+//! "once a Rye signing primitive is parity-GREEN, Lotus's signed carry becomes buildable — the library is engineering").
+//! Kin: crypto/ed25519_muladd.rye (S = (r + k·a) mod L, GREEN) · crypto/ed25519_scalar.rye (reduce, GREEN) · crypto/ed25519_scalarmul.rye (the
+//! ladder, GREEN) · crypto/ed25519_group.rye (point compression, GREEN) · crypto/ed25519_decode.rye (base-point derivation, GREEN) ·
+//! crypto/sha512.rye (GREEN) · crypto/ed25519_verify.rye (the mirror this rung round-trips through, GREEN). Monocypher (vendor/monocypher,
+//! CC0/BSD-dual) is the parity TARGET, never a copied line — our own composition, studied clean-room from RFC 8032 (.claude/rules/gratitude-licenses.md).
+//!
+//! THE CRUX — the RFC 8032 §5.1.6 signing procedure, composed. Expand the seed once through SHA-512: the low 32 bytes CLAMP into the secret scalar
+//! a (clear the low three bits, clear the top bit, set the second-top — the standard cofactor-and-range clamp), the high 32 bytes are the prefix.
+//! The public key is A = compress([a]B). To sign a message M: derive the per-message nonce r = SHA-512(prefix ‖ M) mod L, form the commitment
+//! R = compress([r]B), derive the challenge k = SHA-512(R ‖ A ‖ M) mod L, and set S = (r + k·a) mod L over the GREEN multiply-add. The signature is
+//! R ‖ S. The base point B is DERIVED (decode of the canonical encoding of y = 4/5, even x), never a pasted literal — the same derivation the
+//! verifier uses. Signing is deterministic: the same seed and message always yield the same signature.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. This rung DOES hold a secret scalar and DOES sign — but only
+//! over TEST seeds a selftest generates or the caller supplies; a test seed is not the maintainer's identity key. Signing with the maintainer's own
+//! identity key stays its own separate, GATED round (gate #3/#4): this file never reads a real key, never touches the network, and the design's own
+//! word is that "the library is engineering" while "signing with the maintainer's own identity key stays the custody gate." The secret scalar makes
+//! the whole path timing-sensitive: this rung is authored for correctness and PARITY first — a constant-time signing path (constant-time ladder,
+//! reduction, and multiply-add over secret data) is the Season's named timing-safety HORIZON, wanting measurement rather than a claim, exactly the
+//! posture the ladder, reduce, and multiply-add each already carry. Parity is proven at selftest against Zig's own std.crypto.sign.Ed25519 as an
+//! independent RFC 8032 implementation — across a spread of deterministic seeds and messages, our derived public key equals Zig's byte-for-byte and
+//! our signature equals Zig's byte-for-byte — and by round-tripping every signature back through our own GREEN verifier (genuine accepts, a one-byte
+//! tamper is refused), and by confirming signing is deterministic. Monocypher-source parity stays the same held-fetch horizon the other primitives
+//! carry.
+//!
+//! Run from the repository root:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/ed25519_sign.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const fe = @import("fe25519.rye");
+const pt = @import("ed25519_group.rye");
+const dec = @import("ed25519_decode.rye");
+const sm = @import("ed25519_scalarmul.rye");
+const sc = @import("ed25519_scalar.rye");
+const ma = @import("ed25519_muladd.rye");
+const sha512 = @import("sha512.rye");
+const ver = @import("ed25519_verify.rye");
+
+pub const ed25519_sign_version = "20260816.000000";
+
+/// The largest message this signer hashes in one call. Signing hashes prefix ‖ M for the nonce and R ‖ A ‖ M for the challenge, each held in one
+/// bounded buffer, so the message is capped at a named maximum rather than an open size — the same bound the verifier carries. A streaming hash for
+/// larger payloads is a separate, later rung; 64 KiB covers every signed record this stack produces near-term.
+pub const max_sign_message_bytes: u32 = 1 << 16;
+
+/// The ways signing can refuse. A message longer than the named bound is refused before any hashing — the only edge failure a total signing
+/// procedure has, since every scalar and point operation below is defined for all inputs.
+pub const SignError = error{
+    /// The message exceeds max_sign_message_bytes — refused before hashing.
+    MessageTooLong,
+};
+
+/// The edwards25519 base point B, DERIVED from its defining form: B has y = 4/5 and the even (sign-bit-clear) x, so decoding the canonical encoding
+/// of y = 4/5 recovers exactly B in our own arithmetic. Identical to the verifier's derivation — no borrowed base-point literal enters the tree.
+fn base_point() pt.Point {
+    const four = fe.Field{ .l = .{ 4, 0, 0, 0, 0 } };
+    const five = fe.Field{ .l = .{ 5, 0, 0, 0, 0 } };
+    const y = fe.mul(four, fe.invert(five)); // 4/5 mod p
+    var enc = fe.to_bytes(y); // y < p < 2^255, so the top (sign) bit is already clear — the even-x branch
+    // invariant: the encoding's sign bit is clear, so decode recovers the even-x base point, not its negation.
+    assert((enc[31] & 0x80) == 0);
+    const b = dec.decode(&enc) catch unreachable;
+    // invariant: the recovered point is affine (Z = 1), the shape the ladder and group law expect.
+    assert(b.z.l[0] == 1);
+    return b;
+}
+
+/// The secret material a seed expands into: the clamped secret scalar a (the low SHA-512 half) and the prefix (the high half) that seeds the nonce.
+pub const Expanded = struct {
+    a: [32]u8,
+    prefix: [32]u8,
+};
+
+/// Expand a 32-byte seed into (clamped secret scalar, prefix) by one SHA-512, exactly as RFC 8032 §5.1.5 specifies. The clamp clears the low three
+/// bits (a multiple of the cofactor 8), clears the top bit and sets the second-top (range), so [a]B lands in the prime-order subgroup. Holds secret
+/// material — the timing-safety horizon covers this path.
+fn expand(seed: *const [32]u8) Expanded {
+    // SHA-512 of a 32-byte seed is far within sha512's own bound, so the hash cannot refuse here.
+    const h = sha512.hash(seed) catch unreachable;
+    var e: Expanded = undefined;
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) {
+        e.a[i] = h[i];
+        e.prefix[i] = h[32 + i];
+    }
+    // The standard Ed25519 clamp: clear the low three bits, clear bit 255, set bit 254.
+    e.a[0] &= 248;
+    e.a[31] &= 127;
+    e.a[31] |= 64;
+    // invariant: the clamp cleared the low three bits, so a is a multiple of the cofactor 8.
+    assert((e.a[0] & 7) == 0);
+    // invariant: the clamp fixed the top two bits — bit 255 clear, bit 254 set — so a lies in the intended range.
+    assert((e.a[31] & 0xc0) == 0x40);
+    return e;
+}
+
+/// Derive the 32-byte Ed25519 public key A = compress([a]B) from a 32-byte secret seed. Reads a secret seed; produces only the public key, which is
+/// safe to publish. The signing timing horizon covers the secret ladder here.
+pub fn derive_public(seed: *const [32]u8) [32]u8 {
+    const e = expand(seed);
+    const a_point = sm.scalarmul(base_point(), &e.a);
+    const a_bytes = pt.to_bytes(a_point);
+    // invariant: derivation is a pure function of the seed — re-deriving yields the identical key.
+    assert(bytes_eq(&a_bytes, &pt.to_bytes(sm.scalarmul(base_point(), &e.a))));
+    // invariant: a clamped nonzero scalar times the prime-order base point is never the identity, so the key names a real point (identity
+    // compresses to y = 1, the encoding 01 00…00).
+    var ident = [_]u8{0} ** 32;
+    ident[0] = 1;
+    assert(!bytes_eq(&a_bytes, &ident));
+    return a_bytes;
+}
+
+/// Sign a message under a 32-byte secret seed, producing the 64-byte Ed25519 signature R ‖ S by the RFC 8032 §5.1.6 procedure. Deterministic: the
+/// same seed and message always yield the same signature. Holds a secret scalar — the constant-time signing path is the Season's named horizon.
+pub fn sign(seed: *const [32]u8, msg: []const u8) SignError![64]u8 {
+    // invariant: the message fits the named bound, so each hash buffer holds its whole prefix-plus-message.
+    if (msg.len > max_sign_message_bytes) return error.MessageTooLong;
+    const mlen: u32 = @intCast(msg.len);
+    // invariant: the bounded cast lost nothing — mlen names exactly the message bytes.
+    assert(mlen == msg.len);
+
+    const e = expand(seed);
+    const a_bytes = pt.to_bytes(sm.scalarmul(base_point(), &e.a)); // A = compress([a]B)
+
+    // r = SHA-512(prefix ‖ M) mod L — the per-message nonce, over one bounded buffer.
+    var rin: [32 + max_sign_message_bytes]u8 = undefined;
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) rin[i] = e.prefix[i];
+    i = 0;
+    while (i < mlen) : (i += 1) rin[32 + i] = msg[i];
+    const rdig = sha512.hash(rin[0 .. 32 + mlen]) catch unreachable;
+    const r = sc.reduce(&rdig);
+
+    // R = compress([r]B) — the commitment.
+    const r_bytes = pt.to_bytes(sm.scalarmul(base_point(), &r));
+
+    // k = SHA-512(R ‖ A ‖ M) mod L — the challenge, over one bounded buffer.
+    var kin: [64 + max_sign_message_bytes]u8 = undefined;
+    i = 0;
+    while (i < 32) : (i += 1) kin[i] = r_bytes[i];
+    i = 0;
+    while (i < 32) : (i += 1) kin[32 + i] = a_bytes[i];
+    i = 0;
+    while (i < mlen) : (i += 1) kin[64 + i] = msg[i];
+    const kdig = sha512.hash(kin[0 .. 64 + mlen]) catch unreachable;
+    const k = sc.reduce(&kdig);
+
+    // S = (r + k·a) mod L over the GREEN multiply-add.
+    const s_bytes = ma.mul_add(&k, &e.a, &r);
+    // invariant: S is the canonical scalar below L, exactly the form verify demands of a signature's high half.
+    assert(sc.is_canonical(&s_bytes));
+
+    var sig: [64]u8 = undefined;
+    i = 0;
+    while (i < 32) : (i += 1) {
+        sig[i] = r_bytes[i];
+        sig[32 + i] = s_bytes[i];
+    }
+    return sig;
+}
+
+// ---- selftest ----------------------------------------------------------------------------------------------------------------------
+
+fn bytes_eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) {
+        if (a[i] != b[i]) return false;
+    }
+    return true;
+}
+
+/// Independent reference: Zig's own std.crypto Ed25519, an independent RFC 8032 implementation, used ONLY inside the selftest to cross-check the
+/// derived public key and the signature byte-for-byte. The primitive above never calls it.
+const ZSig = std.crypto.sign.Ed25519;
+
+fn run_selftest() !u8 {
+    const messages = [_][]const u8{
+        "",
+        "a",
+        "The quick brown fox jumps over the lazy dog",
+        "grain — a personal server for whoever runs the software",
+        "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+    };
+
+    // 1. Independent-implementation parity: across a spread of deterministic seeds and messages, our derived public key equals Zig's byte-for-byte
+    //    and our signature equals Zig's byte-for-byte — Zig being an independent RFC 8032 implementation.
+    var seed_n: u8 = 1;
+    while (seed_n <= 8) : (seed_n += 1) {
+        const seed = [_]u8{seed_n} ** 32;
+
+        const kp = ZSig.KeyPair.generateDeterministic(seed) catch return error.KeyGenFailed;
+        const zpk = kp.public_key.toBytes();
+        const ours_pk = derive_public(&seed);
+        if (!bytes_eq(&ours_pk, &zpk)) return error.PublicKeyMismatch;
+
+        for (messages) |m| {
+            const zsig = (kp.sign(m, null) catch return error.SignFailed).toBytes();
+            const ours = sign(&seed, m) catch return error.OurSignFailed;
+
+            // Byte-for-byte agreement with the independent implementation.
+            if (!bytes_eq(&ours, &zsig)) return error.SignatureMismatch;
+
+            // Round-trip through our own GREEN verifier: the genuine signature accepts under our derived key.
+            ver.verify(&ours, m, &ours_pk) catch return error.OwnVerifyRejected;
+
+            // A one-byte tamper of our signature is refused by our own verifier.
+            var bad = ours;
+            bad[20] ^= 0x08;
+            if (ver.verify(&bad, m, &ours_pk)) |_| return error.TamperAccepted else |_| {}
+
+            // Signing is deterministic: the same seed and message yield the identical bytes.
+            const again = sign(&seed, m) catch return error.OurSignFailed;
+            if (!bytes_eq(&ours, &again)) return error.NotDeterministic;
+        }
+    }
+
+    // 2. The named message bound is enforced before hashing — a message one byte past the maximum is refused with the named error.
+    {
+        const seed = [_]u8{9} ** 32;
+        var big: [max_sign_message_bytes + 1]u8 = undefined;
+        var i: u32 = 0;
+        while (i < big.len) : (i += 1) big[i] = 0;
+        if (sign(&seed, big[0..])) |_| return error.OversizeAccepted else |err| {
+            if (err != error.MessageTooLong) return error.WrongOversizeError;
+        }
+    }
+
+    print("GREEN crypto-ed25519-sign: Ed25519 signing authored in pure Rye — Season G's thirteenth rung, the near side of the Lotus signed carry. " ++
+        "Given a 32-byte secret seed and a message, sign produces the 64-byte signature R ‖ S the verifier accepts, by the RFC 8032 §5.1.6 " ++
+        "procedure: expand the seed through SHA-512 into the clamped secret scalar a and the prefix, publish A = compress([a]B), derive the nonce " ++
+        "r = SHA-512(prefix ‖ M) mod L, form R = compress([r]B), derive the challenge k = SHA-512(R ‖ A ‖ M) mod L, and set S = (r + k·a) mod L " ++
+        "over the GREEN multiply-add. It writes no new mathematics — it composes the GREEN SHA-512, scalar reduction mod L, scalar ladder, point " ++
+        "compression, and multiply-add. The base point B is DERIVED (decode of the canonical encoding of y = 4/5), never a pasted literal, the " ++
+        "same derivation the verifier uses. Signing is deterministic. The primitive calls no std.crypto. Parity holds against Zig's independent " ++
+        "std.crypto.sign.Ed25519 — across a spread of deterministic seeds and messages, our derived public key equals Zig's byte-for-byte and our " ++
+        "signature equals Zig's byte-for-byte — every signature round-trips through our own GREEN verifier (genuine accepts, a one-byte tamper is " ++
+        "refused), signing is confirmed deterministic, and a message past the named bound is refused. Monocypher's own signing passes the same " ++
+        "mathematics — its vendored source is a held fetch, so Monocypher-source parity is an honest horizon rung. This rung holds a secret scalar " ++
+        "and signs, so a constant-time signing path is the Season's named timing HORIZON, wanting measurement not a claim. Purely local — it signs " ++
+        "only TEST seeds, never the network, never funds, never a real device; signing with the maintainer's own identity key stays its own " ++
+        "separate, GATED round. A Rye-native Ed25519 keypair-and-signature now stands whole beside the verifier — Kumara identity, Vault, Comlink, " ++
+        "and the Lotus signed carry can sign and verify with no std.crypto or C library, the maintainer's own key awaiting only its gate.\n", .{});
+    return 0;
+}
+
+pub fn main(init_args: std.process.Init) !u8 {
+    _ = init_args;
+    return run_selftest();
+}
