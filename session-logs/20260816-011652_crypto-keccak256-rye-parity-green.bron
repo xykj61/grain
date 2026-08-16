@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260816.011652
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host cloud pier (Linux) — Eastern (EDT) time convention
+title crypto: Keccak-256 in Rye, parity-GREEN
+prompt read REMEMBER + the itinerary/double-seat/decision-wave, take the next agent-doable lap Lindy-first crux-first, Rye-first crypto parity; send each finished increment; stop at custody gates
+think Walked the road-ahead docs — the priority spine is Rye first, Glow on green-witnessed Rye, and Season G (Cryptography) is the highest-Lindy new thread; the crux is one decisive, tractable move that opens the rest.
+think Surveyed crypto/ (27 files) and encoding/ (7 rungs). The natural Lindy-first crux-first rung is Keccak-256 — the Ethereum-family hash — because it serves every EVM surface (account addresses, EVM selectors, EIP-191/712 digests) and unblocks Ethereum address derivation once secp256k1 lands, yet is small and fully parity-checkable now.
+think Keccak-256 differs from the already-GREEN SHA3-256 in exactly one byte: the domain-separation delimiter is the original Keccak 0x01 rather than FIPS 202's 0x06. So the honest, DRY design is a composition over the proven sponge, authoring no new cryptography.
+think Refactored crypto/sha3.rye: made keccak_sponge take a delim: u8 and pub, added pub const keccak_delim=0x01, hash256/hash512 now pass sha3_delim explicitly. Re-ran crypto_sha3_witness — stayed GREEN (behavior identical, delimiter still 0x06).
+think Wrote crypto/keccak256.rye composing sha3.keccak_sponge(rate_256, keccak_delim, ...), with contract asserts, bounded input, to_hex, and a selftest proving parity three ways.
+obs Confirmed vendor zig std ships std.crypto.hash.sha3.Keccak256 (delim 0x01) with published KATs — a genuine independent cross-check, matching base64/hex's std-parity discipline rather than only a known-answer.
+obs Parity proven against the canonical Keccak-256 known-answers (empty, "abc" — distinct from SHA3-256 of the same inputs, proof the 0x01 marker is carried), Zig std.crypto Keccak256 byte-for-byte across padding edges (135/136/137/400), and the real-world ERC-20 selector Keccak-256("transfer(address,uint256)")[0..4] == 0xa9059cbb.
+obs Registered in crypto_suite_witness (dependency order, right after sha3); whole suite now twenty-eight files (twenty-five primitives + three compositions) GREEN. tame_style_check bans clean.
+loom witness=crypto_keccak256_witness green=1 padding_edges=135,136,137,400 kats=2 std_parity=1 selector=a9059cbb
+loom witness=crypto_suite_witness files=28 green=1
+file crypto/keccak256.rye Keccak-256 authored in Rye as a composition over the GREEN sha3 sponge, parity-GREEN
+file crypto/sha3.rye keccak_sponge generalized with a delim param and made pub so keccak256 stands on the proven permutation
+file tools/crypto_keccak256_witness.rish per-file witness building fresh and asserting GREEN crypto-keccak256
+file tools/crypto_suite_witness.rish keccak256 registered in dependency order; counts updated to twenty-eight
+file crypto/README.md Keccak-256 row added under Hashes; file/witness counts updated to twenty-eight
+recommend keep-going next Season-G/encoding rung — secp256k1 (the curve that pairs with Keccak-256 for full Ethereum-family address derivation) or the EIP-55 mixed-case checksum in encoding/, both agent-doable and parity-checkable

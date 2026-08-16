@@ -48,6 +48,11 @@ const rounds: u32 = 24;
 /// first padding byte before the pad10*1 rule fills the block.
 const sha3_delim: u8 = 0x06;
 
+/// The original Keccak submission's domain-separation marker — the single `1` bit before pad10*1. Ethereum kept this pre-FIPS delimiter,
+/// so Keccak-256 (the hash an Ethereum address and an EVM function selector are derived with) differs from SHA3-256 in exactly this byte.
+/// Named here so the shared sponge reads its delimiter from one source, and crypto/keccak256.rye names the same constant.
+pub const keccak_delim: u8 = 0x01;
+
 /// The largest message this primitive hashes in one call. Generous for the test vectors and any in-process artifact (an Aurora blob, a
 /// boot image), yet named so the block loop cites a maximum — the TAME reflex that every loop and every count declares its ceiling.
 pub const max_message_bytes: u32 = 1 << 20;
@@ -146,14 +151,19 @@ fn absorb_block(st: *[lanes]u64, block: []const u8) void {
     }
 }
 
-/// The sponge: absorb the message rate bytes at a time, apply SHA3 padding to the final block, then squeeze out_len bytes out of the
-/// leading lanes. This one function serves both SHA3-256 and SHA3-512 — only the rate and the digest length differ.
-fn keccak_sponge(rate: u32, msg: []const u8, out: []u8) void {
+/// The sponge: absorb the message rate bytes at a time, apply the pad10*1 padding to the final block, then squeeze out_len bytes out of
+/// the leading lanes. This one function serves SHA3-256, SHA3-512, and legacy Keccak-256 — only the rate, the digest length, and the
+/// domain-separation delimiter differ. The delimiter is 0x06 for FIPS 202 SHA3 and 0x01 for the original Keccak submission (the form
+/// Ethereum hashes an address and an EVM selector with); everything else in the sponge is identical, so exposing it here lets the Keccak
+/// rung compose the proven permutation rather than re-author one byte of it. Pub so crypto/keccak256.rye stands on this exact machinery.
+pub fn keccak_sponge(rate: u32, delim: u8, msg: []const u8, out: []u8) void {
     // invariant: the rate is one of SHA3's two, a lane multiple that leaves room for the pad, and the output fits within one rate so a
-    // single squeeze block suffices for both digest sizes Grain uses.
+    // single squeeze block suffices for every digest size these siblings use.
     assert(rate == rate_256 or rate == rate_512);
     assert(rate % 8 == 0 and rate <= state_bytes);
     assert(out.len <= rate);
+    // invariant: the delimiter is one of the two the standards define — SHA3's 0x06 or original Keccak's 0x01.
+    assert(delim == sha3_delim or delim == keccak_delim);
 
     var st = [_]u64{0} ** lanes;
     const total: u32 = @intCast(msg.len);
@@ -174,7 +184,7 @@ fn keccak_sponge(rate: u32, msg: []const u8, out: []u8) void {
     var block = [_]u8{0} ** state_bytes;
     var j: u32 = 0;
     while (j < rem) : (j += 1) block[j] = msg[offset + j];
-    block[rem] = sha3_delim;
+    block[rem] = delim;
     block[rate - 1] |= 0x80;
     absorb_block(&st, block[0..rate]);
     keccak_f(&st);
@@ -196,7 +206,7 @@ pub fn hash256(msg: []const u8) Sha3Error![digest_256]u8 {
     comptime assert(digest_256 == 32 and rate_256 == state_bytes - 2 * digest_256);
     if (msg.len > max_message_bytes) return error.MessageTooLong;
     var out: [digest_256]u8 = undefined;
-    keccak_sponge(rate_256, msg, &out);
+    keccak_sponge(rate_256, sha3_delim, msg, &out);
     return out;
 }
 
@@ -206,7 +216,7 @@ pub fn hash512(msg: []const u8) Sha3Error![digest_512]u8 {
     comptime assert(digest_512 == 64 and rate_512 == state_bytes - 2 * digest_512);
     if (msg.len > max_message_bytes) return error.MessageTooLong;
     var out: [digest_512]u8 = undefined;
-    keccak_sponge(rate_512, msg, &out);
+    keccak_sponge(rate_512, sha3_delim, msg, &out);
     return out;
 }
 
