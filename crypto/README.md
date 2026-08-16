@@ -19,7 +19,7 @@ a message: **Kumara** identity, **Vault** sealed storage, **Comlink** sessions, 
 the **Lotus** signed carry. It authors the mathematics once, in the open, so a hand
 placing trust in it can read exactly what it does.
 
-## The sixty-one files — thirty-nine primitives and twenty-two compositions
+## The sixty-two files — forty primitives and twenty-two compositions
 
 Built in dependency order: each rung stands on the GREEN rungs beneath it, none
 authoring cryptography a lower rung had not already proven.
@@ -108,6 +108,7 @@ independent `std.crypto` ml_kem/ml_dsa — that the pivot decision names
 | File | What it is | Reference |
 |---|---|---|
 | [`mlkem_ring.rye`](mlkem_ring.rye) | *The ring every ML-KEM operation lives in.* — the base ring `R_q = Z_q[X]/(X²⁵⁶ + 1)`, prime modulus `q = 3329`, the post-quantum arc's first rung and the lattice counterpart to `fe25519.rye`. Authors modular add/sub/mul mod 3329, the forward and inverse **Number Theoretic Transform** (FIPS 203 Algorithms 9 and 10 — seven Cooley–Tukey butterfly layers under the primitive 256th root `ζ = 17`), and the pointwise multiply in the NTT domain (Algorithm 11 over the Algorithm 12 base case, 128 degree-1 products under the `γᵢ` twiddles), the arithmetic the ML-KEM encode/sample/keygen/encaps rungs compose next. The twiddle tables `zetas[k] = ζ^BitRev7(k)` and `gammas[i] = ζ^(2·BitRev7(i)+1)` are computed at compile time from the field, never a pasted limb. **Honest parity boundary:** FIPS specifies standard-domain arithmetic while Zig's `std.crypto` computes internally in Montgomery domain, so byte-for-byte parity against Zig is taken at the encoded boundary at the keygen rung; here correctness is proven by **self-consistency** with no external dependency — the primitive-root anchors (`ζ²⁵⁶ = 1`, `ζ¹²⁸ = −1`, `128·3303 = 1 mod q`), the NTT round-trip `inv_ntt(ntt(f)) = f` over 64 non-trivial polynomials, and the decisive one, that `inv_ntt(ntt(f) ∘ ntt(g))` equals schoolbook negacyclic convolution `f ⊛ g` in `R_q` over 64 pairs, the pattern `elligator.rye`'s round-trip identity stood on where Zig shipped nothing to diff | ML-KEM / CRYSTALS-Kyber (NIST FIPS 203) |
+| [`mlkem_encode.rye`](mlkem_encode.rye) | *The serialization every ML-KEM key, ciphertext, and message crosses.* — the post-quantum arc's second rung, standing on `mlkem_ring.rye`. Authors **ByteEncode/ByteDecode** (FIPS 203 Algorithms 5·6 — the LSB-first bit-packing that lays 256 `d`-bit coefficients into `32·d` bytes and reads them back, reducing mod `q` at the raw width `d = 12`) and **Compress/Decompress** (FIPS 203 §4.2.1 — the lossy rounding `round(2^d·x/q)` that shortens a ciphertext and the round `round(q·y/2^d)` that lifts it back into `[0, q)`). Serialization is its own inverse, so it proves by **self-consistency** with no external dependency: a fixed LSB-first bit-packing known-answer (encode `[0xABC, 0xDEF]` at `d = 12` gives bytes `BC FA DE`), the encode/decode round-trip `ByteDecode_d(ByteEncode_d(F)) = F` over every width `1..12` on non-trivial polynomials, the message-width known-answers (`Decompress_1(1) = 1665`), the exact identity `Compress_d(Decompress_d(y)) = y` over the whole domain of every compression width (1, 4, 5, 10, 11), and the FIPS 203 §4.2.1 compression bound — the centered round-trip error is at most `round(q/2^(d+1))` for every `x` in `[0, q)`. Purely local — no key, no network, no funds, no device; constant-time timing-safety the named horizon | ML-KEM / CRYSTALS-Kyber (NIST FIPS 203) |
 
 ### Compositions (no new cryptography — proven stones assembled)
 
@@ -148,7 +149,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 ```
 
 [`../tools/crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) runs all
-sixty-one per-file witnesses in the dependency order above, rebuilding and reproving
+sixty-two per-file witnesses in the dependency order above, rebuilding and reproving
 each from source, and refuses whole — naming the file that stopped it — the moment
 any one goes RED, and then runs the **count guard**
 ([`../tools/crypto_count_guard_witness.rish`](../tools/crypto_count_guard_witness.rish)) —
