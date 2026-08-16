@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260815.225820
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title crypto: SHA3-256/512 over Keccak-f[1600] in Rye
+prompt Kyri, read REMEMBER and the three road docs, take the next agent-doable lap Lindy-first crux-first, Rye prioritized, send each finished increment; stop at custody gates.
+think Read the 1024-round itinerary, the six-season double-seat, and the rye-first crypto parity wave. Season G (Cryptography) is the active Lindy-first crux and recent commits climb it one primitive per round.
+think Verified the whole crypto suite GREEN across twenty-two files — Season G is a completed capstone. Sought the next crux: a primitive the tree already depends on yet the library still lacks.
+think Found it — seed/aurora/src/posted.rye names content with std.crypto SHA3-512 and seed/aurora/src/deciding.rye carries a std.crypto SHA3-256 boot-image digest, yet crypto/ had SHA-512 and BLAKE2b but no SHA-3/Keccak. Highest-Lindy missing primitive: content-addressing is a forever-read invariant, and this lets Aurora stand on our own crypto.
+think Authored crypto/sha3.rye — Keccak-f[1600] (24 rounds theta·rho·pi·chi·iota, FIPS 202 round constants + rho/pi schedule) and the sponge for SHA3-256 (rate 136) and SHA3-512 (rate 72), 0x06 domain byte + 0x80 pad. Matched the established sha512.rye shape: opening triad, bounded max_message_bytes, named Sha3Error, contract asserts, wrapping arithmetic, hex known-answer plus std.crypto parity.
+think GREEN on first metal pass — FIPS 202 known-answers (empty and "abc") at both sizes hex-for-hex, and byte-for-byte parity vs std.crypto SHA3-256/512 across the padding edges (rate-1 collide byte, exact-rate extra block, multi-block) both rates.
+obs Wrote tools/crypto_sha3_witness.rish, registered it after blake2b in crypto_suite_witness (three hashes now), refreshed counts to twenty primitives / twenty-three files across the suite and crypto/README.md. tame_style bans clean; whole-suite GREEN across twenty-three files.
+obs Custody gates untouched — TEST vectors only, no key, no network, no funds, no device. Constant-time and Monocypher-source parity stay named horizons, exactly as the sibling primitives hold them.
+loom witness=crypto_suite_witness files=23 result=GREEN
+file crypto/sha3.rye the SHA3-256/512 primitive over Keccak-f[1600], FIPS 202, std.crypto parity-GREEN
+file tools/crypto_sha3_witness.rish per-file witness building and proving crypto/sha3.rye
+file tools/crypto_suite_witness.rish registered sha3 with the hashes; counts to twenty primitives / twenty-three files
+file crypto/README.md added sha3.rye to the hashes table; refreshed the file and witness counts
+recommend keep-going the Aurora content-address seam can now migrate SHA3 onto crypto/sha3.rye off std.crypto — a clean next Rye-first rung, no gate

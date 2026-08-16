@@ -1,0 +1,40 @@
+# tools/crypto_sha3_witness.rish — SHA3-256 and SHA3-512 authored in pure Rye over Keccak-f[1600]: the FIPS 202 hash Aurora's
+# content-addressed store already names content with, proven against the FIPS 202 known-answers and byte-for-byte against an
+# independent implementation (Season G · Cryptography).
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+# Kin: crypto/sha512.rye and crypto/blake2b.rye (the other two hashes, GREEN). Monocypher (vendor/monocypher, CC0/BSD-dual) is the
+# parity TARGET, never a copied line — our own arithmetic, studied clean-room from the public FIPS 202 standard
+# (.claude/rules/gratitude-licenses.md).
+#
+# crypto/sha3.rye authors SHA3 from the standard — the twenty-four Keccak-f round constants, the rho rotation offsets and pi lane
+# permutation, the theta·rho·pi·chi·iota round, and the sponge with SHA3's 0x06 domain-separation byte and 0x80 pad. The primitive
+# calls no std.crypto. Parity is proven at selftest against two references runnable now: the FIPS 202 known-answers for the empty
+# message and "abc" at both digest sizes (hex for hex), and Zig's own std.crypto SHA3-256 and SHA3-512 as independent implementations,
+# byte-for-byte across the padding edges (the rate-1 collide byte, the exact-rate extra-block edge, and multi-block inputs). The
+# vendored Monocypher source is a held network fetch, so Monocypher-source parity is an honest horizon rung. An over-long message
+# refuses MessageTooLong before a byte is absorbed. Purely local arithmetic — no key, no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_sha3_witness.rish
+
+say "crypto-sha3: Language EN — Season G's third hash: SHA3-256 and SHA3-512 (FIPS 202), the hash Aurora's content-addressed store already names content with. seed/aurora/src/posted.rye hashes each ciphertext to a SHA3-512 content-name and seed/aurora/src/deciding.rye carries a SHA3-256 boot-image digest; today both call std.crypto, and this primitive lets that content-addressing stand on our own Rye-native, parity-checked crypto instead."
+say "crypto-sha3: Style Radiant — the law is stated positively: twenty-four rounds of theta·rho·pi·chi·iota fold a twenty-five-lane 1600-bit state, the sponge absorbs 136 bytes per block for SHA3-256 and 72 for SHA3-512, the final block carries the 0x06 SHA3 marker and the 0x80 high-bit pad, and one squeeze reads the digest from the leading lanes — so the same bytes always fold to the same digest anyone can replay against the standard."
+say "crypto-sha3: Lens TAME — the primitive calls no std.crypto; it is authored from FIPS 202, bounded input (max_message_bytes), contract asserts on every function. Parity holds against the FIPS 202 known-answers AND Zig's independent std.crypto SHA3-256/SHA3-512 byte-for-byte across the padding edges — the rate-1 collide byte, the exact-rate extra-block edge, and multi-block inputs; an over-long message refuses MessageTooLong before a byte is absorbed. Monocypher-source parity is a named horizon behind the held vendor fetch. Purely local — no key, no network, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/sha3"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/sha3.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-sha3: build failed — ${build.err}"
+
+let outfile = "crypto/bin/sha3.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-sha3: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-sha3: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-sha3' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-sha3: selftest did not print the GREEN crypto-sha3 line"

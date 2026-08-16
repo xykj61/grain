@@ -1,0 +1,346 @@
+//! crypto/sha3.rye — Season G (Cryptography): SHA3-256 and SHA3-512 authored in pure Rye over the Keccak-f[1600] permutation. This is
+//! the hash Aurora, Grain's content-addressed store, already names content with — seed/aurora/src/posted.rye hashes each ciphertext to
+//! a SHA3-512 content-name, and seed/aurora/src/deciding.rye carries a SHA3-256 digest of the next verified boot image. Today both call
+//! std.crypto.hash.sha3; this primitive lets that content-addressing stand on our own Rye-native, parity-checked crypto instead, the
+//! same way the rest of Season G stands on its own arithmetic. FIPS 202 is a bounded loop of 64-bit lane operations, so it is genuinely
+//! buildable in authored Rye and provable against a neutral public reference.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+//! Kin: crypto/sha512.rye and crypto/blake2b.rye (the other two hashes, GREEN on metal). Monocypher (vendor/monocypher, CC0/BSD-dual)
+//! is the parity discipline's TARGET, never a copied line — our own arithmetic, studied clean-room from the public standard FIPS 202
+//! and the well-known Keccak reference structure (.claude/rules/gratitude-licenses.md).
+//!
+//! THE CRUX — Keccak-f[1600] holds a 5×5 array of twenty-five 64-bit lanes and folds it through twenty-four rounds of the five step
+//! mappings theta, rho, pi, chi, iota — each a fixed pattern of XOR, lane rotation, and one round constant. The sponge absorbs the
+//! message rate bytes at a time (136 bytes for SHA3-256, 72 for SHA3-512), XORing each little-endian 64-bit word into a lane and
+//! permuting; the final block carries SHA3's 0x06 domain-separation byte and a 0x80 high-bit pad, then one squeeze reads the digest out
+//! of the leading lanes. Every operation is a fixed rotation or XOR anyone can replay against FIPS 202 — no claim about a device.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no key, no network, no funds, no real device. The primitive calls no std.crypto; it is
+//! authored from the standard. Parity is proven at selftest against two references runnable now — the FIPS 202 known-answers for the
+//! empty message and "abc" (both digest sizes), and Zig's own std.crypto SHA3-256 and SHA3-512 as independent implementations,
+//! byte-for-byte across the padding edges (the rate-1 length where the 0x06 marker and the 0x80 pad collide into one 0x86 byte, the
+//! exact-rate length that forces a whole extra padding block, and multi-block inputs). Monocypher's Keccak passes the same standard
+//! vectors — its vendored source is a held network fetch — so Monocypher-source parity is an honest HORIZON rung, added later without
+//! changing a byte. Constant-time timing-safety is a separate named horizon.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/sha3.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const sha3_version = "20260815.225820";
+
+/// SHA3's fixed shapes. The two digest sizes Grain uses, and the sponge rate (block) each absorbs at — rate + capacity = 200 bytes
+/// (1600 bits) for every SHA3 instance, so a larger digest means a smaller rate. Named so every bound cites one rather than a bare
+/// number.
+pub const digest_256: u32 = 32;
+pub const digest_512: u32 = 64;
+pub const rate_256: u32 = 136; // 1600 bits − 2·256 bits of capacity, in bytes
+pub const rate_512: u32 = 72; //  1600 bits − 2·512 bits of capacity, in bytes
+pub const state_bytes: u32 = 200; // the whole Keccak state, 25 lanes × 8 bytes
+const lanes: u32 = 25;
+const rounds: u32 = 24;
+
+/// SHA3's domain-separation marker: the two bits `01` that distinguish SHA3 from raw Keccak and SHAKE, sitting in the low bits of the
+/// first padding byte before the pad10*1 rule fills the block.
+const sha3_delim: u8 = 0x06;
+
+/// The largest message this primitive hashes in one call. Generous for the test vectors and any in-process artifact (an Aurora blob, a
+/// boot image), yet named so the block loop cites a maximum — the TAME reflex that every loop and every count declares its ceiling.
+pub const max_message_bytes: u32 = 1 << 20;
+
+/// The one fault this primitive can raise: a message longer than max_message_bytes, refused before a single byte is absorbed.
+pub const Sha3Error = error{
+    /// A message whose length exceeds max_message_bytes — refused at the edge, before absorption begins.
+    MessageTooLong,
+};
+
+/// The twenty-four Keccak-f round constants (FIPS 202 §3.2.5, Algorithm 6) — each the iota lane-0 XOR for one round. A single wrong
+/// entry breaks parity against the standard at once, which the selftest proves it does not.
+const rc = [rounds]u64{
+    0x0000000000000001, 0x0000000000008082, 0x800000000000808a, 0x8000000080008000,
+    0x000000000000808b, 0x0000000080000001, 0x8000000080008081, 0x8000000000008009,
+    0x000000000000008a, 0x0000000000000088, 0x0000000080008009, 0x000000008000000a,
+    0x000000008000808b, 0x800000000000008b, 0x8000000000008089, 0x8000000000008003,
+    0x8000000000008002, 0x8000000000000080, 0x000000000000800a, 0x800000008000000a,
+    0x8000000080008081, 0x8000000000008080, 0x0000000080000001, 0x8000000080008008,
+};
+
+/// The rho rotation offsets in the order the rho/pi lane walk applies them (FIPS 202 §3.2.2–3.2.3, the standard 24-step schedule). Each
+/// offset is the left-rotation, mod 64, applied to the lane the walk currently holds.
+const rho = [rounds]u6{
+    1,  3,  6,  10, 15, 21, 28, 36, 45, 55, 2,  14,
+    27, 41, 56, 8,  25, 43, 62, 18, 39, 61, 20, 44,
+};
+
+/// The pi lane-permutation destinations paired with rho above — step i moves the walked lane to index piln[i]. Together rho and piln
+/// are the fixed FIPS 202 schedule for the combined rho·pi mapping.
+const piln = [rounds]u32{
+    10, 7,  11, 17, 18, 3, 5,  16, 8,  21, 24, 4,
+    15, 23, 19, 13, 12, 2, 20, 14, 22, 9,  6,  1,
+};
+
+/// The Keccak-f[1600] permutation, in place over twenty-five 64-bit lanes. Each of the twenty-four rounds folds the state through
+/// theta (column parity XOR), rho·pi (lane rotation and permutation), chi (row non-linear mix), and iota (one round constant into lane
+/// zero) — the fixed pattern FIPS 202 defines.
+fn keccak_f(st: *[lanes]u64) void {
+    // invariant: the permutation runs the twenty-four rounds the standard defines, over its twenty-five lanes.
+    comptime assert(rounds == 24 and lanes == 25);
+
+    var round: u32 = 0;
+    while (round < rounds) : (round += 1) {
+        // Theta: fold each column's five-lane parity into a per-column mask, then XOR each lane with its neighbours' masks.
+        var c: [5]u64 = undefined;
+        var i: u32 = 0;
+        while (i < 5) : (i += 1) {
+            c[i] = st[i] ^ st[i + 5] ^ st[i + 10] ^ st[i + 15] ^ st[i + 20];
+        }
+        i = 0;
+        while (i < 5) : (i += 1) {
+            const d = c[(i + 4) % 5] ^ std.math.rotl(u64, c[(i + 1) % 5], @as(u6, 1));
+            var j: u32 = 0;
+            while (j < lanes) : (j += 5) {
+                st[j + i] ^= d;
+            }
+        }
+
+        // Rho and Pi: carry one lane along the fixed 24-step walk, rotating it by rho[i] and dropping it at piln[i].
+        var t = st[1];
+        i = 0;
+        while (i < rounds) : (i += 1) {
+            const dst = piln[i];
+            const held = st[dst];
+            st[dst] = std.math.rotl(u64, t, rho[i]);
+            t = held;
+        }
+
+        // Chi: in each of the five rows, mix each lane with the non-linear (~next & next-next) of its row neighbours.
+        var row: u32 = 0;
+        while (row < lanes) : (row += 5) {
+            var r: [5]u64 = undefined;
+            i = 0;
+            while (i < 5) : (i += 1) r[i] = st[row + i];
+            i = 0;
+            while (i < 5) : (i += 1) {
+                st[row + i] ^= (~r[(i + 1) % 5]) & r[(i + 2) % 5];
+            }
+        }
+
+        // Iota: break the round's symmetry with one constant into lane zero.
+        st[0] ^= rc[round];
+    }
+}
+
+/// Absorb one rate-sized block (a whole number of 64-bit lanes) into the state by XORing each little-endian word into its lane. The
+/// block length is a multiple of eight for every SHA3 rate, so the lane count is exact.
+fn absorb_block(st: *[lanes]u64, block: []const u8) void {
+    // invariant: a SHA3 rate is a whole number of 8-byte lanes and never exceeds the state.
+    assert(block.len % 8 == 0 and block.len <= state_bytes);
+    const words: u32 = @intCast(block.len / 8);
+    var i: u32 = 0;
+    while (i < words) : (i += 1) {
+        st[i] ^= std.mem.readInt(u64, block[i * 8 ..][0..8], .little);
+    }
+}
+
+/// The sponge: absorb the message rate bytes at a time, apply SHA3 padding to the final block, then squeeze out_len bytes out of the
+/// leading lanes. This one function serves both SHA3-256 and SHA3-512 — only the rate and the digest length differ.
+fn keccak_sponge(rate: u32, msg: []const u8, out: []u8) void {
+    // invariant: the rate is one of SHA3's two, a lane multiple that leaves room for the pad, and the output fits within one rate so a
+    // single squeeze block suffices for both digest sizes Grain uses.
+    assert(rate == rate_256 or rate == rate_512);
+    assert(rate % 8 == 0 and rate <= state_bytes);
+    assert(out.len <= rate);
+
+    var st = [_]u64{0} ** lanes;
+    const total: u32 = @intCast(msg.len);
+
+    // Absorb every full rate-byte block of the message proper.
+    var offset: u32 = 0;
+    while (total - offset >= rate) : (offset += rate) {
+        absorb_block(&st, msg[offset..][0..rate]);
+        keccak_f(&st);
+    }
+
+    // The tail is 0..rate-1 leftover bytes. Build the single padded final block: the tail, the 0x06 SHA3 marker, zeros, and the 0x80
+    // high-bit pad in the last byte. When the tail already fills all but the last byte, the marker and the pad share it as one 0x86.
+    const rem = total - offset;
+    // invariant: the leftover is strictly less than a whole rate — every full block was absorbed above.
+    assert(rem < rate);
+
+    var block = [_]u8{0} ** state_bytes;
+    var j: u32 = 0;
+    while (j < rem) : (j += 1) block[j] = msg[offset + j];
+    block[rem] = sha3_delim;
+    block[rate - 1] |= 0x80;
+    absorb_block(&st, block[0..rate]);
+    keccak_f(&st);
+
+    // Squeeze: read out.len bytes from the leading lanes, little-endian within each lane. out.len ≤ rate, so one squeeze block covers
+    // both SHA3-256 (32 bytes) and SHA3-512 (64 bytes).
+    const out_len: u32 = @intCast(out.len);
+    var k: u32 = 0;
+    while (k < out_len) : (k += 1) {
+        const lane = st[k / 8];
+        const shift: u6 = @intCast((k % 8) * 8);
+        out[k] = @truncate(lane >> shift);
+    }
+}
+
+/// Hash a message to its 32-byte SHA3-256 digest (FIPS 202) — the digest Aurora's boot chain carries for the next verified image.
+pub fn hash256(msg: []const u8) Sha3Error![digest_256]u8 {
+    // invariant: SHA3-256's shapes are the standard's own — 32-byte digest, 136-byte rate summing to the 200-byte state.
+    comptime assert(digest_256 == 32 and rate_256 == state_bytes - 2 * digest_256);
+    if (msg.len > max_message_bytes) return error.MessageTooLong;
+    var out: [digest_256]u8 = undefined;
+    keccak_sponge(rate_256, msg, &out);
+    return out;
+}
+
+/// Hash a message to its 64-byte SHA3-512 digest (FIPS 202) — the digest Aurora names content with.
+pub fn hash512(msg: []const u8) Sha3Error![digest_512]u8 {
+    // invariant: SHA3-512's shapes are the standard's own — 64-byte digest, 72-byte rate summing to the 200-byte state.
+    comptime assert(digest_512 == 64 and rate_512 == state_bytes - 2 * digest_512);
+    if (msg.len > max_message_bytes) return error.MessageTooLong;
+    var out: [digest_512]u8 = undefined;
+    keccak_sponge(rate_512, msg, &out);
+    return out;
+}
+
+/// Render a digest as lowercase hex, for comparison against the standard's own hex form. Bounded to the 64-byte digest, so it serves
+/// both sizes through a slice.
+pub fn to_hex(digest: []const u8, out: []u8) void {
+    const alphabet = "0123456789abcdef";
+    // invariant: each input byte renders to exactly two hex characters.
+    assert(out.len == digest.len * 2);
+    var i: u32 = 0;
+    const n: u32 = @intCast(digest.len);
+    while (i < n) : (i += 1) {
+        out[i * 2] = alphabet[digest[i] >> 4];
+        out[i * 2 + 1] = alphabet[digest[i] & 0x0f];
+    }
+}
+
+// The FIPS 202 known-answers — the neutral public references our Rye must reproduce, hex for hex.
+const kat_256_empty = "a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a";
+const kat_256_abc = "3a985da74fe225b2045c172d6bd390bd855f086e3e9d525b46bfe24511431532";
+const kat_512_empty = "a69f73cca23a9ac5c8b567dc185a756e97c982164fe25859e0d1dcc1475c80a615b2123af1f5f94c11e3e9402c3ac558f500199d95b6d3e301758586281dcd26";
+const kat_512_abc = "b751850b1a57168a5693cd924b6b096e08f621827444f70d884f5d0240d2712e10e116e9192af3c91a7ec57647e3934057340b4cf408d5a56592f8274eec53f0";
+
+/// Independent reference: Zig's own std.crypto SHA3, used ONLY inside the selftest as a second implementation to prove our authored
+/// primitive matches byte-for-byte. The primitives above never call this.
+fn ref_256(msg: []const u8) [digest_256]u8 {
+    var out: [digest_256]u8 = undefined;
+    std.crypto.hash.sha3.Sha3_256.hash(msg, &out, .{});
+    return out;
+}
+
+fn ref_512(msg: []const u8) [digest_512]u8 {
+    var out: [digest_512]u8 = undefined;
+    std.crypto.hash.sha3.Sha3_512.hash(msg, &out, .{});
+    return out;
+}
+
+fn hex_eq(got: []const u8, want: []const u8) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    const n: u32 = @intCast(got.len);
+    while (i < n) : (i += 1) if (got[i] != want[i]) return false;
+    return true;
+}
+
+fn bytes_eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    const n: u32 = @intCast(a.len);
+    while (i < n) : (i += 1) if (a[i] != b[i]) return false;
+    return true;
+}
+
+fn parity_256(msg: []const u8) !void {
+    const ours = try hash256(msg);
+    if (!bytes_eq(&ours, &ref_256(msg))) return error.Ref256Mismatch;
+}
+
+fn parity_512(msg: []const u8) !void {
+    const ours = try hash512(msg);
+    if (!bytes_eq(&ours, &ref_512(msg))) return error.Ref512Mismatch;
+}
+
+fn run_selftest() !u8 {
+    // 1. The FIPS 202 known-answers: SHA3-256 and SHA3-512 of the empty message and "abc" equal the published digests, hex for hex.
+    {
+        const a = try hash256("");
+        var ah: [digest_256 * 2]u8 = undefined;
+        to_hex(&a, &ah);
+        if (!hex_eq(&ah, kat_256_empty)) return error.Kat256EmptyMismatch;
+
+        const b = try hash256("abc");
+        to_hex(&b, &ah);
+        if (!hex_eq(&ah, kat_256_abc)) return error.Kat256AbcMismatch;
+
+        const c = try hash512("");
+        var ch: [digest_512 * 2]u8 = undefined;
+        to_hex(&c, &ch);
+        if (!hex_eq(&ch, kat_512_empty)) return error.Kat512EmptyMismatch;
+
+        const d = try hash512("abc");
+        to_hex(&d, &ch);
+        if (!hex_eq(&ch, kat_512_abc)) return error.Kat512AbcMismatch;
+    }
+
+    // 2. Independent-implementation parity across the padding edges. For SHA3-256 (rate 136): the empty message, "abc", 135 bytes (the
+    //    rate-1 edge where the 0x06 marker and the 0x80 pad collide into one 0x86 byte), 136 bytes (a full block forcing a whole extra
+    //    padding block), 137 bytes, and a 400-byte multi-block input. For SHA3-512 (rate 72): the same edges at 71, 72, 73, and 300.
+    {
+        try parity_256("");
+        try parity_256("abc");
+
+        const lengths_256 = [_]u32{ 135, 136, 137, 400 };
+        for (lengths_256) |len| {
+            var buf: [400]u8 = undefined;
+            var i: u32 = 0;
+            while (i < len) : (i += 1) buf[i] = @truncate(i *% 7 +% 1);
+            try parity_256(buf[0..len]);
+        }
+
+        try parity_512("");
+        try parity_512("abc");
+
+        const lengths_512 = [_]u32{ 71, 72, 73, 300 };
+        for (lengths_512) |len| {
+            var buf: [300]u8 = undefined;
+            var i: u32 = 0;
+            while (i < len) : (i += 1) buf[i] = @truncate(i *% 5 +% 3);
+            try parity_512(buf[0..len]);
+        }
+    }
+
+    // 3. The bound refuses an over-long message before any byte is absorbed.
+    {
+        const oversize: []const u8 = @as([*]const u8, @ptrFromInt(0x1000))[0 .. max_message_bytes + 1];
+        if (hash256(oversize)) |_| return error.OversizeSlipped else |err| if (err != error.MessageTooLong) return error.WrongOversize;
+    }
+
+    print("GREEN crypto-sha3: SHA3-256 and SHA3-512 authored in pure Rye over the Keccak-f[1600] permutation — the FIPS 202 hash Aurora " ++
+        "already names content with (seed/aurora/src/posted.rye SHA3-512 content-names, seed/aurora/src/deciding.rye SHA3-256 boot-image " ++
+        "digest), now standing on our own arithmetic rather than std.crypto. Twenty-four rounds of theta·rho·pi·chi·iota fold a 25-lane " ++
+        "1600-bit state; the sponge absorbs 136 bytes (SHA3-256) or 72 bytes (SHA3-512) per block, pads the final block with the 0x06 " ++
+        "SHA3 marker and the 0x80 high bit, and squeezes the digest from the leading lanes. Parity holds against two references runnable " ++
+        "now: the FIPS 202 known-answers for the empty message AND \"abc\" match hex for hex at both sizes, and our authored Rye equals " ++
+        "Zig's independent std.crypto SHA3-256 and SHA3-512 byte-for-byte across the padding edges — the rate-1 length where the marker " ++
+        "and the pad collide into one 0x86 byte, the exact-rate length that forces a whole extra padding block, and multi-block inputs. " ++
+        "Monocypher's Keccak passes the same standard vectors — its vendored source is a held fetch, so Monocypher-source parity is an " ++
+        "honest horizon rung. An over-long message refuses MessageTooLong before a byte is absorbed. Purely local arithmetic — the " ++
+        "primitive calls no std.crypto, no key, no network, no funds, no real device; constant-time timing-safety stays a separate named " ++
+        "horizon. The three-hash foundation now stands whole: SHA-512, BLAKE2b, and SHA3.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
