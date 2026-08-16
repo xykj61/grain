@@ -1,0 +1,513 @@
+//! encoding/bech32.rye — Bech32 (BIP-173) and Bech32m (BIP-350) authored in pure Rye. Bech32 is the checksummed binary-to-text form a
+//! modern address wears: a human-readable prefix (the "hrp" — bc for Bitcoin mainnet, npub for a Nostr identity key, cosmos for a Cosmos
+//! account), a '1' separator, the payload rendered in a case-safe 32-character alphabet, and a six-symbol BCH checksum so a single mistyped
+//! character is caught. Where Base58Check catches a mistype with a truncated double-SHA-256, Bech32 catches it with a genuine error-detecting
+//! code that also localizes small errors — the form segwit outputs, Nostr npub/nsec keys, and Cosmos-family accounts all travel in. The
+//! crypto library proves the key bytes; this module renders them to the checksummed alphabet and back, byte-for-byte.
+//!
+//! Season: encoding — the serialization sibling of Season G (Cryptography), beside base64.rye, base58.rye, base58check.rye, base32.rye, and
+//! hex.rye. Both keep one discipline: authored from the standard, calling no std codec in the primitive, proven byte-for-byte against a
+//! reference runnable now. Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+//! Clean-room: the alphabet, the generator, and the checksum law are BIP-173 and BIP-350's own; the arithmetic is ours
+//! (.claude/rules/gratitude-licenses.md). Composes with crypto/ed25519_*.rye — a proven 32-byte public key becomes an npub the moment it wears
+//! this armor.
+//!
+//! THE CRUX — Bech32 squashes the payload into 5-bit groups over the alphabet "qpzry9x8gf2tvdw0s3jn54khce6mua7l", then appends six checksum
+//! symbols computed by a BCH code over GF(32): a polymod folds the hrp (expanded high bits, a zero, then low bits), the data, and six trailing
+//! zeros through a five-term generator, XORs a spec constant (1 for Bech32, 0x2bc830a3 for Bech32m), and reads the residue out as six symbols.
+//! Decoding recomputes the polymod over the whole data-plus-checksum and demands the constant back. The two specs differ ONLY in that constant,
+//! so a Bech32 string is refused under Bech32m and vice versa — exactly the version-binding BIP-350 introduced. Every step is a bounded loop
+//! over small integers.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no key, no network, no funds, no real device. The primitive calls no std bech32 (Zig ships
+//! none) and no std.crypto. Parity is proven at selftest against two references runnable now: the BIP-173 §Test-vectors and BIP-350 valid
+//! checksums (round-tripped byte-for-byte and cross-refused across specs), the canonical BIP-173 segwit example
+//! (bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 → witness v0, program 751e76e8199196d454941c45d1b3a323f1433bd6), and a second, INDEPENDENT
+//! polymod authored here that folds the same residue through a precomputed 32-entry generator table rather than the primary's per-bit loop.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run encoding/bech32.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const bech32_version = "20260816.050000";
+
+/// The Bech32 alphabet (BIP-173): one glyph per 5-bit value, ordered so no glyph collides with another read aloud, and excluding '1', 'b',
+/// 'i', 'o' — the characters most often mistyped. encode and decode read the symbol map from this one source.
+pub const alphabet = "qpzry9x8gf2tvdw0s3jn54khce6mua7l";
+const separator: u8 = '1';
+
+/// The two checksum specifications. They share every rule but the constant XORed into the residue: Bech32 uses 1, Bech32m uses 0x2bc830a3.
+/// A witness-version-0 segwit output uses Bech32; every other witness version, and every non-segwit use that adopts BIP-350, uses Bech32m.
+pub const Spec = enum(u8) { bech32, bech32m };
+
+fn spec_constant(spec: Spec) u32 {
+    // invariant: exactly the two BIP-defined constants, nothing else.
+    return switch (spec) {
+        .bech32 => 1,
+        .bech32m => 0x2bc830a3,
+    };
+}
+
+/// The largest human-readable part this module accepts — BIP-173's own ceiling.
+pub const max_hrp_len: u32 = 83;
+/// The largest 5-bit data run (payload symbols plus the six checksum symbols) this module encodes or decodes in one call.
+pub const max_data_len: u32 = 4096;
+/// The largest whole Bech32 string: hrp, the separator, and the data run.
+pub const max_string_len: u32 = max_hrp_len + 1 + max_data_len;
+/// The largest raw byte payload encode_bytes accepts, generous for any key, program, or content id a real address carries.
+pub const max_payload_bytes: u32 = 2048;
+
+/// The BCH generator over GF(32) (BIP-173): five coefficients, one per bit of the top five bits folded each step.
+const gen = [_]u32{ 0x3b6a57b2, 0x26508e6d, 0x1ea119fa, 0x3d4233dd, 0x2a1462b3 };
+
+/// The faults this module can raise, each refused at the edge before a partial result escapes.
+pub const Bech32Error = error{
+    /// An hrp, data run, or string longer than its named bound — refused before a symbol is written.
+    TooLong,
+    /// The caller's destination buffer is smaller than the exact output — refused before the first write.
+    DestTooSmall,
+    /// An empty hrp, which Bech32 forbids.
+    HrpEmpty,
+    /// An hrp character outside the printable range 33..126 Bech32 permits.
+    HrpBadChar,
+    /// A decode input with no '1' separator, or whose data part is shorter than the six-symbol checksum.
+    BadLength,
+    /// A data character outside the 32-symbol alphabet.
+    BadChar,
+    /// A decode input mixing upper- and lower-case, which Bech32 forbids (the whole string is one case or the other).
+    MixedCase,
+    /// A decode input whose checksum does not verify under the requested spec.
+    BadChecksum,
+    /// A convertbits regrouping left non-zero padding bits, or a data symbol wider than its source group.
+    BadPadding,
+};
+
+/// Fold one 5-bit value into the running polymod residue (BIP-173's inner step): shift the low 25 bits up by five, mix the value, then XOR
+/// each generator coefficient whose corresponding top bit was set.
+fn polymod_step(chk: u32, value: u8) u32 {
+    // invariant: every folded value is a legal 5-bit symbol.
+    assert(value < 32);
+    const top: u32 = chk >> 25;
+    var next: u32 = ((chk & 0x1ffffff) << 5) ^ @as(u32, value);
+    var g: u32 = 0;
+    while (g < 5) : (g += 1) {
+        if (((top >> @as(u5, @intCast(g))) & 1) != 0) next ^= gen[g];
+    }
+    return next;
+}
+
+/// The residue over the whole checksummed message: the hrp expanded (high bits · a zero · low bits), the data, then tail_zeros trailing
+/// zeros. verify passes tail_zeros = 0; create passes tail_zeros = 6, then reads the six checksum symbols out of the residue.
+fn message_polymod(hrp: []const u8, data: []const u8, tail_zeros: u32) u32 {
+    // invariant: both runs fit their named bounds, so every loop below is bounded.
+    assert(hrp.len <= max_hrp_len);
+    assert(data.len <= max_data_len);
+    var chk: u32 = 1;
+    var i: u32 = 0;
+    while (i < hrp.len) : (i += 1) chk = polymod_step(chk, @intCast(hrp[i] >> 5));
+    chk = polymod_step(chk, 0);
+    i = 0;
+    while (i < hrp.len) : (i += 1) chk = polymod_step(chk, @intCast(hrp[i] & 31));
+    i = 0;
+    while (i < data.len) : (i += 1) chk = polymod_step(chk, data[i]);
+    i = 0;
+    while (i < tail_zeros) : (i += 1) chk = polymod_step(chk, 0);
+    return chk;
+}
+
+/// Build the 256-entry reverse lookup: each alphabet symbol maps to its 0..31 value, every other byte to the sentinel 0xFF.
+fn reverse_table() [256]u8 {
+    // invariant: the alphabet is the 32 symbols the table inverts.
+    assert(alphabet.len == 32);
+    var table = [_]u8{0xFF} ** 256;
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) table[alphabet[i]] = @as(u8, @intCast(i));
+    return table;
+}
+
+/// The exact string length an hrp and an n-symbol data payload encode to: hrp, the separator, the data, and the six checksum symbols.
+pub fn encoded_len(hrp_len: u32, data_len: u32) u32 {
+    // invariant: both parts fit their bounds, so the sum never overflows u32.
+    assert(hrp_len <= max_hrp_len);
+    assert(data_len <= max_data_len);
+    return hrp_len + 1 + data_len + 6;
+}
+
+/// Encode an hrp and 5-bit data payload as a Bech32 (or Bech32m) string. The hrp must be non-empty, within bound, printable (33..126), and
+/// already the case the output wants (Bech32 forbids mixing case). Each data symbol must be a legal 0..31 value. Returns the exact written slice.
+pub fn encode(dest: []u8, hrp: []const u8, data: []const u8, spec: Spec) Bech32Error![]const u8 {
+    if (hrp.len == 0) return error.HrpEmpty;
+    if (hrp.len > max_hrp_len) return error.TooLong;
+    if (data.len > max_data_len) return error.TooLong;
+
+    const hn: u32 = @intCast(hrp.len);
+    const dn: u32 = @intCast(data.len);
+    // invariant: the bounded casts named exactly the input lengths.
+    assert(hn == hrp.len and dn == data.len);
+
+    var hi: u32 = 0;
+    while (hi < hn) : (hi += 1) {
+        if (hrp[hi] < 33 or hrp[hi] > 126) return error.HrpBadChar;
+    }
+    var di_check: u32 = 0;
+    while (di_check < dn) : (di_check += 1) {
+        if (data[di_check] >= 32) return error.BadChar;
+    }
+
+    const want = encoded_len(hn, dn);
+    if (dest.len < want) return error.DestTooSmall;
+
+    // The checksum: fold the message with six trailing zeros, XOR the spec constant, read six symbols from the top down.
+    const pm = message_polymod(hrp, data, 6) ^ spec_constant(spec);
+
+    var di: u32 = 0;
+    var i: u32 = 0;
+    while (i < hn) : (i += 1) {
+        dest[di] = hrp[i];
+        di += 1;
+    }
+    dest[di] = separator;
+    di += 1;
+    i = 0;
+    while (i < dn) : (i += 1) {
+        dest[di] = alphabet[data[i]];
+        di += 1;
+    }
+    i = 0;
+    while (i < 6) : (i += 1) {
+        const shift: u5 = @intCast(5 * (5 - i));
+        dest[di] = alphabet[@as(u8, @intCast((pm >> shift) & 31))];
+        di += 1;
+    }
+
+    // invariant: exactly the predicted number of characters was written.
+    assert(di == want);
+    return dest[0..di];
+}
+
+/// The result of a decode: the lowercased hrp and the 5-bit data payload (checksum already stripped), each a slice of the caller's buffers.
+pub const Decoded = struct { hrp: []const u8, data: []const u8 };
+
+/// Decode a Bech32 (or Bech32m) string under the requested spec into the caller's hrp and data buffers. Refuses mixed case, a missing
+/// separator, an out-of-range hrp, an out-of-alphabet symbol, and a checksum that does not verify — each with its named error. Returns the
+/// lowercased hrp and the data payload with the six checksum symbols removed.
+pub fn decode(hrp_dest: []u8, data_dest: []u8, source: []const u8, spec: Spec) Bech32Error!Decoded {
+    if (source.len > max_string_len) return error.TooLong;
+    const n: u32 = @intCast(source.len);
+    // invariant: the bounded cast named exactly the source length.
+    assert(n == source.len);
+
+    // Case discipline: the whole string is one case. Scan once, refuse a mix, and remember whether to lowercase on copy.
+    var has_lower = false;
+    var has_upper = false;
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const c = source[i];
+        if (c >= 'a' and c <= 'z') has_lower = true;
+        if (c >= 'A' and c <= 'Z') has_upper = true;
+    }
+    if (has_lower and has_upper) return error.MixedCase;
+
+    // The separator is the LAST '1' (the hrp may not contain the alphabet's symbols, and '1' is not in the alphabet).
+    var sep: u32 = 0;
+    var found = false;
+    i = n;
+    while (i > 0) {
+        i -= 1;
+        if (to_lower(source[i]) == separator) {
+            sep = i;
+            found = true;
+            break;
+        }
+    }
+    if (!found) return error.BadLength;
+    if (sep == 0) return error.HrpEmpty;
+    if (sep > max_hrp_len) return error.TooLong;
+
+    const data_chars = n - sep - 1;
+    if (data_chars < 6) return error.BadLength;
+    const data_payload = data_chars - 6;
+    if (data_chars > max_data_len) return error.TooLong;
+    if (hrp_dest.len < sep) return error.DestTooSmall;
+    if (data_dest.len < data_payload) return error.DestTooSmall;
+
+    // Lowercase the hrp into the caller's buffer and range-check it.
+    i = 0;
+    while (i < sep) : (i += 1) {
+        const c = to_lower(source[i]);
+        if (c < 33 or c > 126) return error.HrpBadChar;
+        hrp_dest[i] = c;
+    }
+    const hrp = hrp_dest[0..sep];
+
+    // Map every data character (including the checksum) to its 5-bit value into a bounded work buffer.
+    var work: [max_data_len]u8 = undefined;
+    const table = reverse_table();
+    i = 0;
+    while (i < data_chars) : (i += 1) {
+        const v = table[to_lower(source[sep + 1 + i])];
+        if (v == 0xFF) return error.BadChar;
+        work[i] = v;
+    }
+    const all = work[0..data_chars];
+
+    // The checksum verifies exactly when the residue over hrp + data + checksum equals the spec constant.
+    if (message_polymod(hrp, all, 0) != spec_constant(spec)) return error.BadChecksum;
+
+    // Copy the payload (everything but the trailing six checksum symbols) to the caller's data buffer.
+    i = 0;
+    while (i < data_payload) : (i += 1) data_dest[i] = work[i];
+
+    return Decoded{ .hrp = hrp, .data = data_dest[0..data_payload] };
+}
+
+fn to_lower(c: u8) u8 {
+    return if (c >= 'A' and c <= 'Z') c + 32 else c;
+}
+
+/// Regroup a run of `frombits`-wide symbols into `tobits`-wide symbols, big-endian within the stream (BIP-173 convertbits). With pad=true it
+/// flushes a final partial group with zero bits (encoding bytes to 5-bit symbols); with pad=false it refuses any leftover or non-zero padding
+/// (decoding 5-bit symbols back to whole bytes). Returns the number of output symbols written.
+pub fn convertbits(dest: []u8, source: []const u8, frombits: u32, tobits: u32, pad: bool) Bech32Error!u32 {
+    // invariant: the group widths are the small values this module ever uses (5 and 8), so the accumulator never exceeds a u32.
+    assert(frombits >= 1 and frombits <= 8);
+    assert(tobits >= 1 and tobits <= 8);
+    var acc: u32 = 0;
+    var bits: u32 = 0;
+    var di: u32 = 0;
+    const maxv: u32 = (@as(u32, 1) << @as(u5, @intCast(tobits))) - 1;
+    var i: u32 = 0;
+    while (i < source.len) : (i += 1) {
+        const value = source[i];
+        // A source symbol wider than its declared group is a malformed input.
+        if ((@as(u32, value) >> @as(u5, @intCast(frombits))) != 0) return error.BadChar;
+        acc = (acc << @as(u5, @intCast(frombits))) | @as(u32, value);
+        bits += frombits;
+        while (bits >= tobits) {
+            bits -= tobits;
+            if (di >= dest.len) return error.DestTooSmall;
+            dest[di] = @intCast((acc >> @as(u5, @intCast(bits))) & maxv);
+            di += 1;
+        }
+    }
+    if (pad) {
+        if (bits > 0) {
+            if (di >= dest.len) return error.DestTooSmall;
+            dest[di] = @intCast((acc << @as(u5, @intCast(tobits - bits))) & maxv);
+            di += 1;
+        }
+    } else {
+        // No padding is allowed to survive: fewer than a whole source group of leftover bits, and those bits all zero.
+        if (bits >= frombits) return error.BadPadding;
+        if (((acc << @as(u5, @intCast(tobits - bits))) & maxv) != 0) return error.BadPadding;
+    }
+    return di;
+}
+
+/// Encode raw bytes as a Bech32 string: regroup the bytes into 5-bit symbols (padded), then check-and-render them under `hrp` and `spec`. The
+/// high-level door a caller uses to turn a 32-byte public key into an npub, or a program into an address. Returns the exact written slice.
+pub fn encode_bytes(dest: []u8, hrp: []const u8, payload: []const u8, spec: Spec) Bech32Error![]const u8 {
+    if (payload.len > max_payload_bytes) return error.TooLong;
+    var five: [max_data_len]u8 = undefined;
+    const dn = try convertbits(&five, payload, 8, 5, true);
+    return encode(dest, hrp, five[0..dn], spec);
+}
+
+/// Decode a Bech32 string back to its raw bytes: verify the checksum and hrp, then regroup the 5-bit payload back into whole bytes (refusing
+/// any non-zero padding). Returns the hrp slice and the byte payload written into `bytes_dest`.
+pub const DecodedBytes = struct { hrp: []const u8, bytes: []const u8 };
+
+pub fn decode_bytes(hrp_dest: []u8, bytes_dest: []u8, source: []const u8, spec: Spec) Bech32Error!DecodedBytes {
+    var data: [max_data_len]u8 = undefined;
+    const d = try decode(hrp_dest, &data, source, spec);
+    const bn = try convertbits(bytes_dest, d.data, 5, 8, false);
+    return DecodedBytes{ .hrp = d.hrp, .bytes = bytes_dest[0..bn] };
+}
+
+// ---- selftest: parity against the BIP-173 and BIP-350 vectors, the segwit known-answer, and a second, independent polymod ----
+
+// BIP-173 valid Bech32 checksums (spec .bech32): each round-trips to itself lowercased and is REFUSED under Bech32m.
+const bech32_valid = [_][]const u8{
+    "A12UEL5L",
+    "a12uel5l",
+    "abcdef1qpzry9x8gf2tvdw0s3jn54khce6mua7lmqqqxw",
+    "11qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqc8247j",
+    "split1checkupstagehandshakeupstreamerranterredcaperred2y9e3w",
+    "?1ezyfcl",
+};
+
+// BIP-350 valid Bech32m checksums (spec .bech32m): each round-trips to itself lowercased and is REFUSED under Bech32.
+const bech32m_valid = [_][]const u8{
+    "A1LQFN3A",
+    "a1lqfn3a",
+    "abcdef1l7aum6echk45nj3s0wdvt2fg8x9yrzpqzd3ryx",
+    "11llllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllludsr8",
+    "split1checkupstagehandshakeupstreamerranterredcaperredlc445v",
+    "?1v759aa",
+};
+
+fn slice_eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) {
+        if (a[i] != b[i]) return false;
+    }
+    return true;
+}
+
+fn lowered_eq(got: []const u8, original: []const u8) bool {
+    if (got.len != original.len) return false;
+    var i: u32 = 0;
+    while (i < got.len) : (i += 1) {
+        if (got[i] != to_lower(original[i])) return false;
+    }
+    return true;
+}
+
+/// Independent reference polymod: the same residue folded through a precomputed 32-entry generator table (indexed by the top five bits) rather
+/// than the primary's per-bit conditional loop — a genuinely different structure, used ONLY inside the selftest since Zig ships no std bech32.
+fn ref_message_polymod(hrp: []const u8, data: []const u8, tail_zeros: u32) u32 {
+    // Precompute gen_table[b] = XOR of gen[i] for each set bit i of b, for all 32 values of the top five bits.
+    var gen_table = [_]u32{0} ** 32;
+    var b: u32 = 0;
+    while (b < 32) : (b += 1) {
+        var acc: u32 = 0;
+        var i: u32 = 0;
+        while (i < 5) : (i += 1) {
+            if (((b >> @as(u5, @intCast(i))) & 1) != 0) acc ^= gen[i];
+        }
+        gen_table[b] = acc;
+    }
+    var chk: u32 = 1;
+    var i: u32 = 0;
+    while (i < hrp.len) : (i += 1) chk = ref_step(chk, @intCast(hrp[i] >> 5), &gen_table);
+    chk = ref_step(chk, 0, &gen_table);
+    i = 0;
+    while (i < hrp.len) : (i += 1) chk = ref_step(chk, @intCast(hrp[i] & 31), &gen_table);
+    i = 0;
+    while (i < data.len) : (i += 1) chk = ref_step(chk, data[i], &gen_table);
+    i = 0;
+    while (i < tail_zeros) : (i += 1) chk = ref_step(chk, 0, &gen_table);
+    return chk;
+}
+
+fn ref_step(chk: u32, value: u8, gen_table: *const [32]u32) u32 {
+    const top: u32 = chk >> 25;
+    return (((chk & 0x1ffffff) << 5) ^ @as(u32, value)) ^ gen_table[top];
+}
+
+fn run_selftest() !u8 {
+    var sbuf: [128]u8 = undefined;
+    var hbuf: [128]u8 = undefined;
+    var dbuf: [128]u8 = undefined;
+
+    // 1. BIP-173 valid Bech32: each decodes under .bech32, re-encodes to itself lowercased, and is REFUSED under .bech32m.
+    {
+        var i: u32 = 0;
+        while (i < bech32_valid.len) : (i += 1) {
+            const s = bech32_valid[i];
+            const d = try decode(&hbuf, &dbuf, s, .bech32);
+            const re = try encode(&sbuf, d.hrp, d.data, .bech32);
+            if (!lowered_eq(re, s)) return error.Bech32RoundtripMismatch;
+            if (decode(&hbuf, &dbuf, s, .bech32m)) |_| return error.SpecCrossSlipped else |err| if (err != error.BadChecksum) return error.WrongSpecCross;
+        }
+    }
+
+    // 2. BIP-350 valid Bech32m: each decodes under .bech32m, re-encodes to itself lowercased, and is REFUSED under .bech32.
+    {
+        var i: u32 = 0;
+        while (i < bech32m_valid.len) : (i += 1) {
+            const s = bech32m_valid[i];
+            const d = try decode(&hbuf, &dbuf, s, .bech32m);
+            const re = try encode(&sbuf, d.hrp, d.data, .bech32m);
+            if (!lowered_eq(re, s)) return error.Bech32mRoundtripMismatch;
+            if (decode(&hbuf, &dbuf, s, .bech32)) |_| return error.SpecCrossSlipped else |err| if (err != error.BadChecksum) return error.WrongSpecCross;
+        }
+    }
+
+    // 3. The canonical BIP-173 segwit example: decode, witness version 0 in the first symbol, the rest convertbits'd 5→8 to the 20-byte program.
+    {
+        const addr = "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4";
+        const d = try decode(&hbuf, &dbuf, addr, .bech32);
+        if (!slice_eq(d.hrp, "bc")) return error.SegwitHrpMismatch;
+        if (d.data.len < 1 or d.data[0] != 0) return error.SegwitVersionMismatch;
+        var program: [40]u8 = undefined;
+        const pn = try convertbits(&program, d.data[1..], 5, 8, false);
+        const want = [_]u8{ 0x75, 0x1e, 0x76, 0xe8, 0x19, 0x91, 0x96, 0xd4, 0x54, 0x94, 0x1c, 0x45, 0xd1, 0xb3, 0xa3, 0x23, 0xf1, 0x43, 0x3b, 0xd6 };
+        if (!slice_eq(program[0..pn], &want)) return error.SegwitProgramMismatch;
+    }
+
+    // 4. Independent-polymod parity: our per-bit residue equals the second table-driven residue byte-for-byte, over every vector's message.
+    {
+        var i: u32 = 0;
+        while (i < bech32_valid.len) : (i += 1) {
+            const s = bech32_valid[i];
+            const d = try decode(&hbuf, &dbuf, s, .bech32);
+            if (message_polymod(d.hrp, d.data, 6) != ref_message_polymod(d.hrp, d.data, 6)) return error.RefPolymodMismatch;
+        }
+    }
+
+    // 5. Bytes round-trip (the npub / segwit-program case): a raw payload encodes to a Bech32m string and decodes back byte-for-byte, for
+    //    payloads 0..64 bytes under a real-shaped hrp.
+    {
+        var big: [64]u8 = undefined;
+        var n: u32 = 0;
+        while (n <= 64) : (n += 1) {
+            var k: u32 = 0;
+            while (k < n) : (k += 1) big[k] = @as(u8, @truncate(k *% 41 +% 7));
+            const payload = big[0..n];
+            var estr: [256]u8 = undefined;
+            const enc = try encode_bytes(&estr, "npub", payload, .bech32m);
+            var hb: [16]u8 = undefined;
+            var bb: [128]u8 = undefined;
+            const dec = try decode_bytes(&hb, &bb, enc, .bech32m);
+            if (!slice_eq(dec.hrp, "npub")) return error.BytesHrpMismatch;
+            if (!slice_eq(dec.bytes, payload)) return error.BytesRoundtripMismatch;
+        }
+    }
+
+    // 6. The edges refuse: a flipped checksum, mixed case, a missing separator, an out-of-alphabet symbol, an empty hrp, and a too-small
+    //    destination each raise their named error before a partial result escapes.
+    {
+        // Flip the last character of a valid vector — the checksum must fail.
+        var flipped: [16]u8 = undefined;
+        const base = "a12uel5l";
+        var i: u32 = 0;
+        while (i < base.len) : (i += 1) flipped[i] = base[i];
+        flipped[base.len - 1] = if (flipped[base.len - 1] == 'l') 'k' else 'l';
+        if (decode(&hbuf, &dbuf, flipped[0..base.len], .bech32)) |_| return error.BadChecksumSlipped else |err| if (err != error.BadChecksum) return error.WrongBadChecksum;
+
+        if (decode(&hbuf, &dbuf, "A12Uel5L", .bech32)) |_| return error.MixedCaseSlipped else |err| if (err != error.MixedCase) return error.WrongMixedCase;
+        if (decode(&hbuf, &dbuf, "abcdefghij", .bech32)) |_| return error.NoSepSlipped else |err| if (err != error.BadLength) return error.WrongNoSep;
+        // 'b' is not in the alphabet — a data symbol out of range.
+        if (decode(&hbuf, &dbuf, "a1bcdef2xxx", .bech32)) |_| return error.BadCharSlipped else |err| if (err != error.BadChar) return error.WrongBadChar;
+        if (decode(&hbuf, &dbuf, "1qqqqqqx", .bech32)) |_| return error.HrpEmptySlipped else |err| if (err != error.HrpEmpty) return error.WrongHrpEmpty;
+
+        var tiny: [4]u8 = undefined;
+        const d = try decode(&hbuf, &dbuf, "a12uel5l", .bech32);
+        if (encode(&tiny, d.hrp, d.data, .bech32)) |_| return error.DestSlipped else |err| if (err != error.DestTooSmall) return error.WrongDest;
+    }
+
+    print("GREEN encoding-bech32: Bech32 (BIP-173) and Bech32m (BIP-350) authored in pure Rye — the checksummed binary-to-text form a modern " ++
+        "address wears: a human-readable prefix, a '1' separator, the payload in the case-safe 32-symbol alphabet " ++
+        "\"qpzry9x8gf2tvdw0s3jn54khce6mua7l\", and a six-symbol BCH checksum that catches a single mistyped character where Base58Check catches " ++
+        "it with a truncated double-SHA-256. The polymod folds the expanded hrp, the data, and six trailing zeros through a five-term generator " ++
+        "over GF(32) and XORs a spec constant — 1 for Bech32, 0x2bc830a3 for Bech32m — so a v0 segwit output and a BIP-350 payload are bound to " ++
+        "distinct constants and each is refused under the other's spec. Parity holds against three references runnable now: the BIP-173 and " ++
+        "BIP-350 valid checksums (round-tripped to themselves lowercased and cross-refused across specs), the canonical segwit example " ++
+        "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 decoding to witness v0 and the 20-byte program 751e76e8199196d454941c45d1b3a323f1433bd6, " ++
+        "and a second, independent table-driven polymod matching the per-bit residue byte-for-byte over every vector. Raw bytes round-trip " ++
+        "through encode_bytes / decode_bytes under an npub-shaped hrp for payloads 0..64 bytes. A flipped checksum refuses BadChecksum, mixed " ++
+        "case MixedCase, a missing separator or short data BadLength, an out-of-alphabet symbol BadChar, an empty hrp HrpEmpty, a too-small " ++
+        "destination DestTooSmall — each before a partial result escapes. Purely local arithmetic — no std bech32 (Zig ships none), no key, no " ++
+        "network, no funds, no real device. The checksummed address armor now stands in our own Rye, beside Base64, Base58, Base58Check, " ++
+        "Base32, and hex in the Season G serialization siblings, ready to dress a proven Ed25519 key as an npub the moment a surface asks.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
