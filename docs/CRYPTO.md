@@ -200,7 +200,7 @@ caller-supplied seed — a test seed is not the maintainer's identity key.
 
 **Monocypher-source parity is landed:** the vendored `vendor/monocypher`
 (CC0/BSD-dual, unmodified) is compiled fresh and diffed byte-for-byte against our
-authored Rye over the published vectors — fourteen rungs GREEN (BLAKE2b, X25519,
+authored Rye over the published vectors — sixteen rungs GREEN (BLAKE2b, X25519,
 Ed25519, the ChaCha20-Poly1305 AEAD, Argon2 across all three modes, the
 XChaCha20-Poly1305 flagship `crypto_aead_lock`, the Edwards↔Montgomery
 conversion `crypto_eddsa_to_x25519` / `crypto_x25519_to_eddsa` that unifies one
@@ -227,7 +227,19 @@ without the key can forge, proving `blake2b.rye`'s `hash_keyed` over six
 (output-length, key, message) triples under keys of 1..64 bytes, the mode Grain's
 per-record authentication and key derivation reach for, its oracle three
 independent implementations agreeing byte-for-byte since RFC 7693 publishes only
-the unkeyed answer), each also
+the unkeyed answer), the constant-time equality primitive
+`crypto_verify16/32/64` — the compare every MAC, tag, and signature-equality
+check rests on, proving `verify.rye`'s verdict against the vendored Monocypher
+over equal, one-bit-differing, and all-differing inputs at all three widths under
+Monocypher's 0-for-equal / -1-for-differing contract, the constant-time corner of
+the timing-safety horizon correct by structure rather than measurement, and
+HKDF-SHA-512 `crypto_sha512_hkdf` — the extract-then-expand key-derivation
+function the sealed session, the per-record subkey, and every future vault key
+ladder fold their shared secret through, proving `hkdf_sha512.rye` over RFC
+5869's Test Case 1, 2, and 3 input structures plus a two-block-crossing request,
+its oracle a second real implementation agreeing byte-for-byte since RFC 5869
+publishes no SHA-512 known-answer, the key-derivation counterpart to the
+HMAC-SHA-512 rung beneath it), each also
 anchored to its RFC or published known-answer. One horizon stays honest beside it:
 **constant-time** waits on measurement as above.
 
