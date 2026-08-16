@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260816.032941
+editor Claude Code
+model Fable 5
+voice Kyri
+host cloud bench — Eastern (EDT) time convention
+title crypto count-guard loom — the recurring file-count red turned into a witness
+prompt Continue the loop: take the next agent-doable lap Lindy-first crux-first, send each finished increment as its own signed round. (Second round after the docs sync; builds the loom booked in REDS #80.)
+think REDS #80 booked the loom the reds-first law demands — a file-count claim drifted from memory twice (#77, then #80), and a lantern that fires twice becomes a loom. This round builds it: a witness that computes the count rather than trusting a typed word.
+think First cut used shell brace-variables inside run ["sh" "-c" ...]; Rishi ate ${n}/${w} as its own interpolation → UndefinedName. Rewrote the bijection with sorted lists and grep -Fxv into gitignored crypto/bin/ temp files, and sed with : delimiters to avoid backslash escapes Rishi may also mangle.
+think Made it a real bijection, not a bare tally: every crypto/<name>.rye must be registered in the suite, and every suite registration (excluding the suite itself and this guard) must have its .rye — then the two counts must be one number. A bare count could pass while a wrong file hid a missing one.
+obs Proved the RED path fires before trusting the GREEN: doctored the temp lists — dropping one registration named xchacha20 and showed 36≠35; an injected ghost_primitive registration was named as an orphan. The guard genuinely catches both bijection breaks.
+obs Wired the guard into crypto_suite_witness after the per-file loop (not into the counted array), so the one-command whole-library proof now also enforces the count; full suite re-GREEN on metal, 36 files, guard confirms.
+obs Added a discoverability line to both front-door docs (crypto/README.md, docs/CRYPTO.md) naming the guard — docs and the new tool stay synced in the same round.
+loom witness=crypto_count_guard files=36 registrations=36 result=GREEN
+loom witness=crypto_suite_witness files=36 primitives=32 compositions=4 guard=GREEN result=GREEN
+file tools/crypto_count_guard_witness.rish the loom — bijection files<->suite registrations, prints the computed count
+file tools/crypto_suite_witness.rish runs the count guard after the per-file loop; GREEN line notes it
+file crypto/README.md proving section names the count guard
+file docs/CRYPTO.md proving section names the count guard and cites REDS #80
+recommend keep-going — REDS #80's loom is closed with a witness on metal; the next Lindy-first crux-first crypto rung (public-key recovery / ecrecover over the GREEN secp256k1 tower, non-gated) is the next mechanical lap
