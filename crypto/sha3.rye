@@ -40,6 +40,8 @@ pub const digest_256: u32 = 32;
 pub const digest_512: u32 = 64;
 pub const rate_256: u32 = 136; // 1600 bits − 2·256 bits of capacity, in bytes
 pub const rate_512: u32 = 72; //  1600 bits − 2·512 bits of capacity, in bytes
+pub const rate_shake128: u32 = 168; // 1600 bits − 2·128 bits of capacity — the SHAKE128 rate (crypto/shake.rye stands on this)
+pub const rate_shake256: u32 = rate_256; // 1600 bits − 2·256 bits — SHAKE256 shares SHA3-256's 136-byte rate exactly
 pub const state_bytes: u32 = 200; // the whole Keccak state, 25 lanes × 8 bytes
 const lanes: u32 = 25;
 const rounds: u32 = 24;
@@ -52,6 +54,11 @@ const sha3_delim: u8 = 0x06;
 /// so Keccak-256 (the hash an Ethereum address and an EVM function selector are derived with) differs from SHA3-256 in exactly this byte.
 /// Named here so the shared sponge reads its delimiter from one source, and crypto/keccak256.rye names the same constant.
 pub const keccak_delim: u8 = 0x01;
+
+/// SHAKE's domain-separation marker: the four bits `1111` before pad10*1 (FIPS 202 §6.2). SHAKE is SHA3's extendable-output sibling —
+/// the same Keccak-f[1600] permutation and pad, one differing delimiter and an output squeezed to any length rather than a fixed digest.
+/// Named here so crypto/shake.rye reads its delimiter from one source, exactly as keccak256.rye reads keccak_delim.
+pub const shake_delim: u8 = 0x1f;
 
 /// The largest message this primitive hashes in one call. Generous for the test vectors and any in-process artifact (an Aurora blob, a
 /// boot image), yet named so the block loop cites a maximum — the TAME reflex that every loop and every count declares its ceiling.
@@ -151,19 +158,21 @@ fn absorb_block(st: *[lanes]u64, block: []const u8) void {
     }
 }
 
-/// The sponge: absorb the message rate bytes at a time, apply the pad10*1 padding to the final block, then squeeze out_len bytes out of
-/// the leading lanes. This one function serves SHA3-256, SHA3-512, and legacy Keccak-256 — only the rate, the digest length, and the
-/// domain-separation delimiter differ. The delimiter is 0x06 for FIPS 202 SHA3 and 0x01 for the original Keccak submission (the form
-/// Ethereum hashes an address and an EVM selector with); everything else in the sponge is identical, so exposing it here lets the Keccak
-/// rung compose the proven permutation rather than re-author one byte of it. Pub so crypto/keccak256.rye stands on this exact machinery.
+/// The sponge: absorb the message rate bytes at a time, apply the pad10*1 padding to the final block, then squeeze out.len bytes out —
+/// one rate-sized block at a time, permuting again whenever a fixed digest fits in one read yet an extendable output wants more. This one
+/// function serves SHA3-256, SHA3-512, legacy Keccak-256, AND the SHAKE128/SHAKE256 extendable-output functions — only the rate, the
+/// output length, and the domain-separation delimiter differ. The delimiter is 0x06 for FIPS 202 SHA3, 0x01 for the original Keccak
+/// submission (the form Ethereum hashes an address and an EVM selector with), and 0x1f for SHAKE; everything else in the sponge is
+/// identical, so exposing it here lets each rung compose the proven permutation rather than re-author one byte of it. Pub so
+/// crypto/keccak256.rye and crypto/shake.rye both stand on this exact machinery.
 pub fn keccak_sponge(rate: u32, delim: u8, msg: []const u8, out: []u8) void {
-    // invariant: the rate is one of SHA3's two, a lane multiple that leaves room for the pad, and the output fits within one rate so a
-    // single squeeze block suffices for every digest size these siblings use.
-    assert(rate == rate_256 or rate == rate_512);
+    // invariant: the rate is one the standards define, a lane multiple that leaves room for the pad. A fixed-digest caller reads within one
+    // rate; a SHAKE caller squeezes across as many rate-sized blocks as its output needs.
+    assert(rate == rate_256 or rate == rate_512 or rate == rate_shake128);
     assert(rate % 8 == 0 and rate <= state_bytes);
-    assert(out.len <= rate);
-    // invariant: the delimiter is one of the two the standards define — SHA3's 0x06 or original Keccak's 0x01.
-    assert(delim == sha3_delim or delim == keccak_delim);
+    assert(out.len > 0);
+    // invariant: the delimiter is one of the three the standards define — SHA3's 0x06, original Keccak's 0x01, or SHAKE's 0x1f.
+    assert(delim == sha3_delim or delim == keccak_delim or delim == shake_delim);
 
     var st = [_]u64{0} ** lanes;
     const total: u32 = @intCast(msg.len);
@@ -189,14 +198,21 @@ pub fn keccak_sponge(rate: u32, delim: u8, msg: []const u8, out: []u8) void {
     absorb_block(&st, block[0..rate]);
     keccak_f(&st);
 
-    // Squeeze: read out.len bytes from the leading lanes, little-endian within each lane. out.len ≤ rate, so one squeeze block covers
-    // both SHA3-256 (32 bytes) and SHA3-512 (64 bytes).
+    // Squeeze: emit rate bytes from the leading lanes (little-endian within each lane), and whenever the caller wants more than one block
+    // holds, permute again and read the next block — the pad10*1 sponge's own extendable-output rule. A fixed digest (SHA3-256/512,
+    // Keccak-256) fits in the first block and never permutes again; a SHAKE output of any length walks as many blocks as it needs.
     const out_len: u32 = @intCast(out.len);
-    var k: u32 = 0;
-    while (k < out_len) : (k += 1) {
-        const lane = st[k / 8];
-        const shift: u6 = @intCast((k % 8) * 8);
-        out[k] = @truncate(lane >> shift);
+    var produced: u32 = 0;
+    while (produced < out_len) {
+        var b: u32 = 0;
+        while (b < rate and produced < out_len) : (b += 1) {
+            // invariant: rate ≤ state_bytes means b/8 indexes a real lane (b ≤ rate−1 ≤ 167, so lane ≤ 20 < 25).
+            const lane = st[b / 8];
+            const shift: u6 = @intCast((b % 8) * 8);
+            out[produced] = @truncate(lane >> shift);
+            produced += 1;
+        }
+        if (produced < out_len) keccak_f(&st);
     }
 }
 
