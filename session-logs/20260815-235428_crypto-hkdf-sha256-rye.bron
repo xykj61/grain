@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260815.235428
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Season G — HKDF-SHA-256 authored in pure Rye
+prompt continue the loop: next agent-doable lap Lindy-first crux-first, Rye prioritized; send each finished increment as its own signed round; stop at custody gates
+think My prior round's recommend named HKDF-SHA-256 as the next crux — it stands directly on the HMAC-SHA-256 just landed, the way hkdf_sha512 stood on hmac_sha512. It is the extract-then-expand key schedule TLS 1.3, Noise, and Signal actually run, so it is high-Lindy and genuinely-needed. Agent-doable, witness-provable, no custody crossed.
+think The 256-bit instantiation carries a gift the 512-bit sibling could not: RFC 5869 publishes its Appendix A known-answer vectors over SHA-256, so hkdf_sha256 is proven against the STANDARD's OWN published PRK and OKM — Test Cases 1, 2, and 3 hex for hex — not only against Zig. I authored a small hex-nibble comparator (nibble/eq_hex) used solely in selftest to check our output against the published hex, and verified TC1/TC2/TC3 published PRK and OKM directly.
+think Authored crypto/hkdf_sha256.rye as the 256-bit sibling of the GREEN crypto/hkdf_sha512.rye: extract(salt, ikm) = HMAC(salt, ikm) → 32-byte PRK (empty salt keyed on HashLen zeros), expand(PRK, info, L) walks T(i) = HMAC(PRK, T(i-1) ‖ info ‖ byte(i)) up to 255 blocks. Composes the already-GREEN hmac_sha256, calling no std.crypto in the primitive. max_okm_bytes = 255*32 = 8160 (RFC's own 255-block cap).
+obs GREEN on the first metal pass — I caught one honesty gap before committing: my GREEN string claimed TC1/TC2/TC3 published vectors but I had only wired TC1 and TC3, so I added the TC2 published PRK/OKM check (its inputs are the counting ramps ikm=0x00..0x4f, salt=0x60..0xaf, info=0xb0..0xff) to honor the claim. tame_style_check bans clean.
+obs Registered after hkdf_sha512 (KDF family kept together) in crypto_suite_witness.rish — whole-suite GREEN across all twenty-six files (twenty-three primitives + three compositions), exit 0.
+obs Docs synced same round (docs-implementation-sync): crypto/README.md KDF table + counts, docs/CRYPTO.md rung table + counts, crypto/CONSTANT_TIME.md posture map (folded into the HKDF/Argon2 data-independent row), suite witness summary strings.
+obs Non-gated — TEST inputs, no real identity key, no network, no funds, no device. Constant-time discipline stays the HMAC layer's named horizon.
+loom witness=crypto_hkdf_sha256_witness green=1 refs=3 rfc=RFC-5869-AppA-TC1-2-3 parity=std.crypto.HkdfSha256 max_okm=8160
+loom witness=crypto_suite_witness files=26 primitives=23 compositions=3 green=1 exit=0
+file crypto/hkdf_sha256.rye the new key-derivation rung, HKDF-SHA-256 in pure Rye over the GREEN HMAC-SHA-256, RFC 5869 own vectors
+file tools/crypto_hkdf_sha256_witness.rish per-file witness, RFC 5869 Appendix A + std.crypto parity, GREEN
+file tools/crypto_suite_witness.rish registers the new rung after hkdf_sha512; counts and order strings synced
+file crypto/README.md KDF table row, file/witness counts to twenty-six
+file docs/CRYPTO.md rung table row and counts synced on the audit front door
+file crypto/CONSTANT_TIME.md hkdf_sha256 folded into the HKDF/Argon2 data-independent row
+recommend keep-going the SHA-256 HMAC/HKDF pair now stands beside the SHA-512 pair; a natural next crux is either PBKDF2-HMAC-SHA-256 (RFC 6070 vectors) or bringing the incremental/streaming hash horizon the bounded one-shots keep naming

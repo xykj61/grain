@@ -48,7 +48,7 @@ timing measurement.
 |---|---|---|---|
 | `sha512.rye` · `blake2b.rye` · `sha3.rye` | message data (may be secret) | data-independent by construction — fixed rounds per block; block count follows the public length | fixed-round compression, no secret-driven branch |
 | `hmac_sha512.rye` · `hmac_sha256.rye` | the HMAC key | data-independent — the key enters only as block-XOR and hash input | key XOR is unconditional |
-| `hkdf_sha512.rye` · `argon2.rye` | the input keying material / password | data-independent — HKDF is HMAC calls; Argon2's memory addressing is data-independent for the `i`/`id` (indexing) passes it is used through | `argon2.rye` header scope note |
+| `hkdf_sha512.rye` · `hkdf_sha256.rye` · `argon2.rye` | the input keying material / password | data-independent — HKDF is HMAC calls; Argon2's memory addressing is data-independent for the `i`/`id` (indexing) passes it is used through | `argon2.rye` header scope note |
 | `chacha20.rye` · `poly1305.rye` | the key / one-time key | data-independent by construction — the ChaCha quarter-round and the Poly1305 limb schedule are fixed arithmetic, no secret branch | fixed arithmetic; no secret-driven control flow |
 | `aead.rye` · `xchacha20.rye` | the key; **the tag compare** | data-independent — **the tag verify accumulates the byte difference with OR and tests once at the end, never returning early on the first mismatch** | `aead.rye:126` — the constant-time equality |
 | `fe25519.rye` | field elements derived from secret scalars | data-independent by construction — reduction rides in the carry not a branch (`fe25519.rye:81`); the inversion ladder is fixed-shape (`fe25519.rye:243`) | `fe25519.rye:81`, `:243` |
