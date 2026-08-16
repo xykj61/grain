@@ -1,0 +1,244 @@
+//! crypto/ed25519_verify.rye — Season G (Cryptography), the eleventh rung: Ed25519 signature VERIFICATION authored in pure Rye, the far side of
+//! the Lotus signed carry, Kumara identity, Vault, and Comlink. Every prior curve rung built one arithmetic piece; this rung composes them all
+//! into the check RFC 8032 §5.1.7 defines: given a 32-byte public key A, a message M, and a 64-byte signature R ‖ S, recompute the challenge
+//! k = SHA-512(R ‖ A ‖ M) mod L and confirm the group equation [S]B = R + [k]A. It writes no new mathematics — it is a composition over the
+//! GREEN point decode (crypto/ed25519_decode.rye), the GREEN scalar ladder (crypto/ed25519_scalarmul.rye), the GREEN group law
+//! (crypto/ed25519_group.rye), the GREEN scalar reduction mod L (crypto/ed25519_scalar.rye), and GREEN SHA-512 (crypto/sha512.rye). With this,
+//! a Rye-native verifier stands whole: a hand can prove a record was signed by a named key without trusting any std.crypto or any C library.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus unblock;
+//! verify is the composition every prior rung was building toward).
+//! Kin: crypto/ed25519_decode.rye · crypto/ed25519_scalarmul.rye · crypto/ed25519_group.rye · crypto/ed25519_scalar.rye · crypto/sha512.rye
+//! (all GREEN). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line — our own composition, studied
+//! clean-room from the public mathematics of RFC 8032 (.claude/rules/gratitude-licenses.md).
+//!
+//! THE CRUX — cofactorless verification, the exact equation [S]B = R + [k]A (RFC 8032 §5.1.7, the form Zig's verifyStrict checks and the form
+//! sign() always satisfies). Read S from the signature's high 32 bytes and refuse it unless it is already the canonical scalar below L; decode
+//! the public key A into a curve point and refuse a key that names no point; recompute k by reducing SHA-512(R ‖ A ‖ M) modulo L; then form
+//! R' = [S]B − [k]A over the group law and accept only when R' compresses to exactly the signature's R bytes. The base point B is DERIVED, not
+//! pasted: B is the point whose y is 4/5 with even x, so decoding the canonical encoding of y = 4/5 (sign bit clear) recovers it in our own
+//! arithmetic — no borrowed base-point literal enters the tree.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity held. VERIFICATION reads only PUBLIC values —
+//! the public key, the message, and the signature — so it holds no secret and its variable-time composition leaks nothing; a constant-time
+//! posture belongs to signing, not verifying. This file SIGNS NOTHING and holds no key: producing a signature needs a secret scalar, and
+//! signing with the maintainer's own identity key stays its own separate, GATED round (gate #3/#4). Verifying the RFC's published test vectors
+//! and signatures produced by an independent library is arithmetic anyone can replay. Parity is proven at selftest against RFC 8032 §7.1
+//! known-answer vectors (TEST 1 and TEST 2 accept; a one-bit tamper of each is refused) and against Zig's own std.crypto.sign.Ed25519 as an
+//! independent implementation — signatures it produces over a spread of messages all accept, a one-byte tamper of each is refused, and our
+//! accept/reject verdict matches its verifyStrict across the spread. Monocypher-source parity stays the same held-fetch horizon the other
+//! primitives carry. The message this verifier hashes is bounded by a named maximum; a streaming hash for larger payloads is a later rung.
+//!
+//! Run from the repository root:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/ed25519_verify.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const fe = @import("fe25519.rye");
+const pt = @import("ed25519_group.rye");
+const dec = @import("ed25519_decode.rye");
+const sm = @import("ed25519_scalarmul.rye");
+const sc = @import("ed25519_scalar.rye");
+const sha512 = @import("sha512.rye");
+
+pub const ed25519_verify_version = "20260815.200457";
+
+/// The largest message this verifier hashes in one call. Verification prepends R ‖ A (64 bytes) to the message before SHA-512, and holds the
+/// whole prehash in one bounded buffer, so the message is capped at a named maximum rather than an open size. A streaming hash for larger
+/// payloads is a separate, later rung; 64 KiB covers every signed record this stack produces near-term.
+pub const max_verify_message_bytes: u32 = 1 << 16;
+
+/// The ways verify can refuse, each surfaced before any accept — verify-before-trust made explicit. A signature that fails the group equation is
+/// BadSignature; the others name a malformed input caught at the edge.
+pub const VerifyError = error{
+    /// The signature's S component is not the canonical scalar below L (RFC 8032 §5.1.7 refuses a non-reduced S).
+    NonCanonicalS,
+    /// The 32-byte public key names no point on edwards25519.
+    InvalidPublicKey,
+    /// The message exceeds max_verify_message_bytes — refused before hashing.
+    MessageTooLong,
+    /// The group equation [S]B = R + [k]A did not hold — the signature is invalid for this key and message.
+    BadSignature,
+};
+
+/// The edwards25519 base point B, DERIVED from its defining form: B has y = 4/5 and the even (sign-bit-clear) x, so decoding the canonical
+/// encoding of y = 4/5 recovers exactly B in our own arithmetic. No borrowed base-point literal enters the tree.
+fn base_point() pt.Point {
+    const four = fe.Field{ .l = .{ 4, 0, 0, 0, 0 } };
+    const five = fe.Field{ .l = .{ 5, 0, 0, 0, 0 } };
+    const y = fe.mul(four, fe.invert(five)); // 4/5 mod p
+    var enc = fe.to_bytes(y); // y < p < 2^255, so the top (sign) bit is already clear — the even-x branch
+    // invariant: the encoding's sign bit is clear, so decode recovers the even-x base point, not its negation.
+    assert((enc[31] & 0x80) == 0);
+    // decode of the canonical y-encoding cannot fail — 4/5 names a genuine curve point (B itself).
+    const b = dec.decode(&enc) catch unreachable;
+    // invariant: the recovered point is affine (Z = 1), the shape the ladder and group law expect.
+    assert(b.z.l[0] == 1);
+    return b;
+}
+
+/// True when two byte spans of equal length are identical. Used only to compare the recomputed commitment against the signature's R bytes;
+/// verification compares public values, so an early return leaks nothing secret.
+fn bytes_eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) {
+        if (a[i] != b[i]) return false;
+    }
+    return true;
+}
+
+/// Verify a 64-byte Ed25519 signature (R ‖ S) over a message under a 32-byte public key, by the cofactorless equation [S]B = R + [k]A. Returns
+/// on success, or a named error naming exactly why the signature is refused. Reads only public values; signs nothing and holds no key.
+pub fn verify(sig: *const [64]u8, msg: []const u8, pubkey: *const [32]u8) VerifyError!void {
+    // invariant: the message fits the named bound, so the prehash buffer holds R ‖ A ‖ M whole.
+    if (msg.len > max_verify_message_bytes) return error.MessageTooLong;
+
+    const r_bytes = sig[0..32];
+    const s_bytes = sig[32..64];
+
+    // S must be the canonical scalar below L.
+    if (!sc.is_canonical(s_bytes)) return error.NonCanonicalS;
+
+    // Decode the public key into a curve point, or refuse a key that names no point.
+    const a_point = dec.decode(pubkey) catch return error.InvalidPublicKey;
+
+    // Recompute the challenge k = SHA-512(R ‖ A ‖ M) mod L over one bounded prehash buffer.
+    var prehash: [64 + max_verify_message_bytes]u8 = undefined;
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) prehash[i] = r_bytes[i];
+    i = 0;
+    while (i < 32) : (i += 1) prehash[32 + i] = pubkey[i];
+    const mlen: u32 = @intCast(msg.len);
+    // invariant: the bounded cast lost nothing — mlen names exactly the message bytes.
+    assert(mlen == msg.len);
+    i = 0;
+    while (i < mlen) : (i += 1) prehash[64 + i] = msg[i];
+
+    // SHA-512 over a message within max_verify_message_bytes + 64 cannot exceed sha512's own bound, so hash cannot refuse here.
+    const digest = sha512.hash(prehash[0 .. 64 + mlen]) catch unreachable;
+    const k = sc.reduce(&digest);
+
+    // Form R' = [S]B − [k]A and accept only when it compresses to exactly the signature's R bytes.
+    const sb = sm.scalarmul(base_point(), s_bytes);
+    const ka = sm.scalarmul(a_point, &k);
+    const r_prime = pt.sub(sb, ka);
+    const r_prime_bytes = pt.to_bytes(r_prime);
+    // invariant: the equation is decided on canonical 32-byte encodings, so equal encodings mean equal points.
+    if (!bytes_eq(&r_prime_bytes, r_bytes)) return error.BadSignature;
+}
+
+// ---- selftest ----------------------------------------------------------------------------------------------------------------------
+
+/// Parse a compile-time hex string into its bytes — a small selftest helper for the RFC 8032 known-answer vectors, which the standard prints
+/// as hex. Never used by the primitive.
+fn hex_to_bytes(comptime hex: []const u8) [hex.len / 2]u8 {
+    comptime assert(hex.len % 2 == 0);
+    var out: [hex.len / 2]u8 = undefined;
+    var i: u32 = 0;
+    while (i < out.len) : (i += 1) {
+        const hi = std.fmt.charToDigit(hex[i * 2], 16) catch unreachable;
+        const lo = std.fmt.charToDigit(hex[i * 2 + 1], 16) catch unreachable;
+        out[i] = (@as(u8, hi) << 4) | @as(u8, lo);
+    }
+    return out;
+}
+
+/// Independent reference: Zig's own std.crypto Ed25519, used ONLY inside the selftest to generate genuine signatures and to cross-check the
+/// accept/reject verdict. The primitive above never calls it.
+const ZSig = std.crypto.sign.Ed25519;
+const ZEd = std.crypto.ecc.Edwards25519;
+
+fn run_selftest() !u8 {
+    // 0. The derived base point equals the standard's base point, byte-for-byte — the derivation, not a pasted literal, is correct.
+    {
+        if (!bytes_eq(&pt.to_bytes(base_point()), &ZEd.basePoint.toBytes())) return error.BasePointMismatch;
+    }
+
+    // 1. RFC 8032 §7.1 known-answer vectors — TEST 1 (empty message) and TEST 2 (one byte) accept; a one-bit tamper of each is refused.
+    {
+        const pk1 = hex_to_bytes("d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a");
+        const sig1 = hex_to_bytes("e5564300c360ac729086e2cc806e828a84877f1eb8e5d974d873e065224901555fb8821590a33bacc61e39701cf9b46bd25bf5f0595bbe24655141438e7a100b");
+        const msg1 = [_]u8{};
+        verify(&sig1, &msg1, &pk1) catch return error.Test1ShouldAccept;
+        var bad1 = sig1;
+        bad1[0] ^= 0x01;
+        if (verify(&bad1, &msg1, &pk1)) |_| return error.Test1TamperAccepted else |_| {}
+
+        const pk2 = hex_to_bytes("3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c");
+        const sig2 = hex_to_bytes("92a009a9f0d4cab8720e820b5f642540a2b27b5416503f8fb3762223ebdb69da085ac1e43e15996e458f3613d0f11d8c387b2eaeb4302aeeb00d291612bb0c00");
+        const msg2 = [_]u8{0x72};
+        verify(&sig2, &msg2, &pk2) catch return error.Test2ShouldAccept;
+        var bad2 = sig2;
+        bad2[63] ^= 0x01;
+        if (verify(&bad2, &msg2, &pk2)) |_| return error.Test2TamperAccepted else |_| {}
+    }
+
+    // 2. Independent-implementation parity: signatures Zig produces over a spread of messages all accept under our verify; a one-byte tamper of
+    //    each is refused; and our verdict matches Zig's verifyStrict on both the genuine and the tampered form.
+    {
+        const messages = [_][]const u8{
+            "",
+            "a",
+            "The quick brown fox jumps over the lazy dog",
+            "grain — a personal server for whoever runs the software",
+            "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        };
+        var seed_n: u8 = 1;
+        while (seed_n <= 5) : (seed_n += 1) {
+            const seed = [_]u8{seed_n} ** 32;
+            const kp = ZSig.KeyPair.generateDeterministic(seed) catch return error.KeyGenFailed;
+            const pk = kp.public_key.toBytes();
+            for (messages) |m| {
+                const zsig = kp.sign(m, null) catch return error.SignFailed;
+                const sb = zsig.toBytes();
+
+                // Genuine: our verify accepts, and Zig's verifyStrict also accepts — verdicts agree.
+                const ours_ok = if (verify(&sb, m, &pk)) |_| true else |_| false;
+                const theirs_ok = if (zsig.verifyStrict(m, kp.public_key)) |_| true else |_| false;
+                if (!ours_ok) return error.GenuineRejected;
+                if (ours_ok != theirs_ok) return error.GenuineVerdictMismatch;
+
+                // Tampered: flip one signature byte; our verify refuses, and Zig's verifyStrict — asked the same question over the tampered
+                // bytes — also refuses, so the verdicts agree on rejection.
+                var bad = sb;
+                bad[16] ^= 0x40;
+                const ours_bad = if (verify(&bad, m, &pk)) |_| true else |_| false;
+                const zbad = ZSig.Signature.fromBytes(bad);
+                const theirs_bad = if (zbad.verifyStrict(m, kp.public_key)) |_| true else |_| false;
+                if (ours_bad) return error.TamperAccepted;
+                if (ours_bad != theirs_bad) return error.TamperVerdictMismatch;
+
+                // Wrong-message: the genuine signature must not verify against a different message.
+                if (!bytes_eq(m, "a")) {
+                    const ours_wrong = if (verify(&sb, "a", &pk)) |_| true else |_| false;
+                    if (ours_wrong) return error.WrongMessageAccepted;
+                }
+            }
+        }
+    }
+
+    print("GREEN crypto-ed25519-verify: Ed25519 signature verification authored in pure Rye — Season G's eleventh rung, the composition every " ++
+        "prior curve rung was building toward. Given a public key A, a message M, and a signature R ‖ S, verify recomputes the challenge " ++
+        "k = SHA-512(R ‖ A ‖ M) mod L and confirms the cofactorless group equation [S]B = R + [k]A: refuse S unless it is the canonical " ++
+        "scalar below L, decode A or refuse a key that names no point, form R' = [S]B − [k]A over the GREEN group law, and accept only when R' " ++
+        "compresses to exactly the signature's R bytes. It writes no new mathematics — it composes the GREEN point decode, scalar ladder, " ++
+        "group law, scalar reduction mod L, and SHA-512. The base point B is DERIVED (decode of the canonical encoding of y = 4/5), never a " ++
+        "pasted literal, and matches the standard base point byte-for-byte. The primitive calls no std.crypto. Parity holds against RFC 8032 " ++
+        "§7.1 known-answers (TEST 1 and TEST 2 accept, a one-bit tamper of each refused) and against Zig's independent " ++
+        "std.crypto.sign.Ed25519 — signatures it produces over a spread of messages all accept, a one-byte tamper of each is refused, our " ++
+        "wrong-message check refuses, and our accept verdict matches its verifyStrict. Monocypher's own verify passes the same mathematics — " ++
+        "its vendored source is a held fetch, so Monocypher-source parity is an honest horizon rung. Purely local — verification reads only " ++
+        "PUBLIC values (public key, message, signature), so it holds no secret and signs nothing; producing a signature needs a secret " ++
+        "scalar, and signing with the maintainer's own identity key stays its own separate, GATED round. No real key, no signing, no network, " ++
+        "no funds, no real device; no custody gate crossed. A Rye-native Ed25519 verifier now stands whole — the Lotus signed carry, Kumara " ++
+        "identity, Vault, and Comlink can check a signature without any std.crypto or C library, the signing side awaiting only its gate.\n", .{});
+    return 0;
+}
+
+pub fn main(init_args: std.process.Init) !u8 {
+    _ = init_args;
+    return run_selftest();
+}

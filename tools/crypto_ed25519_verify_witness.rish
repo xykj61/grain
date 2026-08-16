@@ -1,0 +1,45 @@
+# tools/crypto_ed25519_verify_witness.rish — Ed25519 signature verification authored in pure Rye: Season G's eleventh rung, the composition of
+# every prior curve rung. Given a public key A, a message M, and a 64-byte signature R ‖ S, verify recomputes k = SHA-512(R ‖ A ‖ M) mod L and
+# confirms the cofactorless group equation [S]B = R + [k]A. Proven against RFC 8032 §7.1 known-answers and byte-for-byte-verdict against an
+# independent implementation (Season G · Cryptography).
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus unblock;
+# verify is the composition every prior rung was building toward).
+# Kin: crypto/ed25519_decode.rye · crypto/ed25519_scalarmul.rye · crypto/ed25519_group.rye · crypto/ed25519_scalar.rye · crypto/sha512.rye (all
+# GREEN). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line — our own composition, studied clean-room from
+# RFC 8032 (.claude/rules/gratitude-licenses.md).
+#
+# crypto/ed25519_verify.rye reads S from the signature's high 32 bytes and refuses it unless it is the canonical scalar below L, decodes the
+# public key A or refuses a key that names no point, recomputes k by reducing SHA-512(R ‖ A ‖ M) modulo L, forms R' = [S]B − [k]A over the GREEN
+# group law, and accepts only when R' compresses to exactly the signature's R bytes. The base point B is DERIVED (decode of the canonical
+# encoding of y = 4/5), never a pasted literal, and matches the standard base point byte-for-byte. The primitive calls no std.crypto. Parity is
+# proven at selftest against RFC 8032 §7.1 known-answers (TEST 1 and TEST 2 accept, a one-bit tamper of each refused) and Zig's own
+# std.crypto.sign.Ed25519 as an independent implementation — signatures it produces over a spread of messages all accept, a one-byte tamper of
+# each is refused, our wrong-message check refuses, and our accept/reject verdict matches its verifyStrict. The vendored Monocypher source is a
+# held network fetch, so Monocypher-source parity is an honest horizon rung. Purely local — verification reads only public values (public key,
+# message, signature), so it holds no secret and SIGNS NOTHING: no real key, no signing (signing with the maintainer's own identity key stays its
+# own gated round), no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_ed25519_verify_witness.rish
+
+say "crypto-ed25519-verify: Language EN — Season G's eleventh rung: Ed25519 signature verification authored in pure Rye, the far side of the Lotus signed carry, Kumara identity, Vault, and Comlink. Given a public key A, a message M, and a 64-byte signature R ‖ S, verify recomputes the challenge k = SHA-512(R ‖ A ‖ M) mod L and confirms the group equation [S]B = R + [k]A. It writes no new mathematics — it composes the GREEN point decode, scalar ladder, group law, scalar reduction mod L, and SHA-512. Verification reads only public values, so it holds no secret and signs nothing; producing a signature needs a secret scalar, and signing with the maintainer's own identity key stays its own separate, GATED round — no custody gate is crossed here."
+say "crypto-ed25519-verify: Style Radiant — the law is stated positively as the cofactorless equation [S]B = R + [k]A (RFC 8032 §5.1.7): refuse S unless it is the canonical scalar below L, decode A or refuse a key that names no point, recompute k by reducing SHA-512(R ‖ A ‖ M) mod L, form R' = [S]B − [k]A over the group law, and accept only when R' compresses to exactly the signature's R bytes. The base point B is DERIVED (decode of the canonical encoding of y = 4/5), never a pasted literal, and matches the standard base point byte-for-byte."
+say "crypto-ed25519-verify: Lens TAME — the primitive calls no std.crypto; it asserts its contracts on every function, surfaces each refusal as a named error before any accept (verify-before-trust), and bounds the message it hashes by a named maximum. Parity holds against RFC 8032 §7.1 known-answers (TEST 1 and TEST 2 accept, a one-bit tamper of each refused) AND Zig's independent std.crypto.sign.Ed25519 — signatures it produces over a spread of messages all accept, a one-byte tamper of each is refused, our wrong-message check refuses, and our accept/reject verdict matches its verifyStrict. Monocypher-source parity is a named horizon behind the held vendor fetch. Purely local — verification reads only public values, so nothing secret is timed; a constant-time posture belongs to signing, a separate named horizon."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/ed25519_verify"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/ed25519_verify.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-ed25519-verify: build failed — ${build.err}"
+
+let outfile = "crypto/bin/ed25519_verify.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-ed25519-verify: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-ed25519-verify: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-ed25519-verify' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-ed25519-verify: selftest did not print the GREEN crypto-ed25519-verify line"
