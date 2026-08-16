@@ -28,6 +28,7 @@ implementation.
 | [`hex.rye`](hex.rye) | Base16 / hex — two lowercase characters per byte, the plainest form a digest, a key, or a wire frame wears; decode accepts either case. Proven byte-for-byte against Zig's own `std.fmt` hex | RFC 4648 |
 | [`bech32.rye`](bech32.rye) | Bech32 · Bech32m — the checksummed form a modern address wears: a human-readable prefix, a `1` separator, the payload in the case-safe 32-symbol alphabet, and a six-symbol BCH checksum that localizes a mistype where Base58Check only detects one. The form segwit outputs, Nostr `npub`/`nsec` keys, and Cosmos-family accounts travel in; `encode_bytes`/`decode_bytes` dress a proven Ed25519 key as an `npub` directly | BIP-173 · BIP-350 |
 | [`pem.rye`](pem.rye) | PEM — the labelled armor a key, certificate, or signed carry wears as text: a `-----BEGIN LABEL-----` line, the payload in standard Base64 wrapped at 64 characters a line, and a `-----END LABEL-----` line. The exact form an Ed25519 key or a signature is pasted into a config file, mailed between two hands, or committed beside its code — the shape `openssl` prints and every TLS stack reads. A composition over `base64.rye`, adding only the framing and the wrap; `decode` refuses `BadLabel` when a block does not claim the requested label | RFC 7468 |
+| [`rlp.rye`](rlp.rye) | RLP (Recursive Length Prefix) — the one serialization the whole Ethereum world stands on: every transaction, account, receipt, and trie node is an RLP-encoded byte string or list. Two shapes only — a byte string and a list of items — with a canonical minimal encoding decode enforces, so one transaction can never wear two hashes. `encode_bytes`/`encode_list_header` are the exact operation transaction signing performs (encode each field as a string, wrap them in a list); `encode_item`/`decode_bytes`/`decode_list_header` handle the general recursive form. Not binary-to-text but binary-to-binary — the frame the Ethereum-family primitives in `crypto/` (keccak256, secp256k1 sign/recover, eth_address, eip712) sign over | Ethereum Yellow Paper Appendix B |
 
 **Natural next rungs** (named, not yet built): a ratchet migration of the per-file
 `to_hex` each crypto witness hand-rolls onto the proven `hex.rye` (its own round,
@@ -50,6 +51,17 @@ against the canonical BIP-173 segwit example
 (`bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4` → witness v0, program
 `751e76e8199196d454941c45d1b3a323f1433bd6`), and against a second, independent
 table-driven polymod matching the per-bit residue byte-for-byte.
+
+RLP carries no `std` codec (Zig ships none), so its parity is proven the way the
+standard is trusted: against the Ethereum Yellow Paper's own published
+known-answers (`dog` → `83646f67`, `[cat,dog]` → `c88363617483646f67`, the empty
+string → `80`, the empty list → `c0`, `1024` → `820400`, the set-theoretic three
+→ `c7c0c1c0c3c0c1c0`, and the 56-byte Lorem long-string form `b838…`)
+byte-for-byte, *and* against a second, independent path — a decoder that reads
+the length prefixes back (a genuinely different algorithm from the encoder that
+writes them), round-tripping every vector and a nine-field transaction-shaped
+list to exactly its own bytes. Canonical minimality is enforced, so the same data
+never wears two encodings.
 
 Hex is the one rung with a runnable `std` cross-check — Zig ships `std.fmt`'s hex
 codec, so `hex.rye` is proven byte-for-byte against it, the way `base64.rye` is
