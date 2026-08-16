@@ -1,0 +1,57 @@
+# tools/crypto_monocypher_blake2b_keyed_parity_witness.rish — Monocypher-source parity for KEYED BLAKE2b (hash_keyed), the MAC mode the unkeyed
+# BLAKE2b rungs never exercised: a message tag no one without the key can forge, the primitive Monocypher exposes as crypto_blake2b_keyed and the
+# mode Grain's per-record authentication and key derivation reach for. Our authored crypto/blake2b.rye's hash_keyed and the vendored Monocypher's own
+# crypto_blake2b_keyed (vendor/monocypher, CC0/BSD-dual), each compiled fresh and asked for the same six keyed digests, diffed byte-for-byte. The
+# FOURTEENTH rung of the real Monocypher-source parity pattern (BLAKE2b full-digest · X25519 · Ed25519 · IETF AEAD · Argon2 · XChaCha20-Poly1305
+# flagship · Edwards↔Montgomery · standalone Poly1305 · standalone ChaCha20 · standalone SHA-512 · HMAC-SHA-512 · standalone HChaCha20 · variable-length
+# BLAKE2b came before). Season G · Cryptography.
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
+# proving Rye output equals Monocypher output byte-for-byte." The BLAKE2b rungs so far proved the UNKEYED hash — the 64-byte full digest and every
+# variable output length — yet BLAKE2b's keyed mode is a distinct capability: it folds a secret key through a leading 128-byte block and carries the
+# key length in its parameter block, turning the hash into a keyed authenticator. This rung proves that keyed core STANDALONE against Monocypher's own
+# crypto_blake2b_keyed, the MAC counterpart to the way the variable-length rung proved the length-parameterized core in its own right.
+# Kin: crypto/blake2b.rye (our authored BLAKE2b + hash_keyed, GREEN against Zig's std.crypto keyed BLAKE2b-512 and the RFC 7693 unkeyed anchors) ·
+# tools/monocypher_blake2b_keyed_parity.rye (our printing harness) · tools/fixtures/monocypher_blake2b_keyed_harness.c (Monocypher's printing harness) ·
+# tools/crypto_monocypher_blake2b_var_parity_witness.rish (the variable-length rung — together they prove BLAKE2b unkeyed at every width AND keyed).
+# Monocypher stays the parity TARGET, vendored and unmodified, never a copied line, studied clean-room (.claude/rules/gratitude-licenses.md).
+#
+# Honest anchor: RFC 7693 Appendix A publishes only the UNKEYED "abc" known-answer, so keyed BLAKE2b carries no hand-entered public constant here — a
+# fabricated keyed KAT would be a red. Instead the oracle is independent implementations agreeing byte-for-byte: this witness diffs our authored Rye
+# against the vendored Monocypher C over six keyed digests, and crypto/blake2b.rye's own selftest independently proves the same hash_keyed matches
+# Zig's std.crypto keyed BLAKE2b-512 — three separate implementations, one set of (key, message) inputs, one set of bytes. Purely local — no key of
+# ours (the test keys are deterministic public bytes), no network, no funds, no device; constant-time timing-safety stays the Season's named horizon.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_monocypher_blake2b_keyed_parity_witness.rish
+
+say "crypto-monocypher-blake2b-keyed-parity: Language EN — Monocypher-source parity for KEYED BLAKE2b (hash_keyed), the MAC mode the unkeyed BLAKE2b rungs never exercised: a message tag no one without the key can forge, folding a secret key through a leading 128-byte block and carrying the key length in the parameter block. This fourteenth rung proves that keyed core STANDALONE against the ACTUAL vendored Monocypher C over six keyed digests at output lengths 64/64/32/16/48/64 under keys of length 64/8/32/64/10/1, byte-for-byte."
+say "crypto-monocypher-blake2b-keyed-parity: Style Radiant — like against like. Our authored hash_keyed and the unmodified vendored Monocypher each compile fresh and each print, in order, six keyed BLAKE2b digests over identical (output-length, key, message) triples: a full 64-byte key over 'abc'; a short key over the empty message; a 32-byte key over a 200-byte multi-block input; the full key over the fox pangram; a ten-byte key over one full 128-byte block; and a one-byte key over 'abc'. Two independent implementations, one set of inputs; the parity is that the six digests agree hex for hex."
+say "crypto-monocypher-blake2b-keyed-parity: Lens TAME — no fabricated constant is trusted: RFC 7693 publishes only the unkeyed 'abc' answer, so the oracle here is independent implementations agreeing, never a hand-typed keyed KAT. The witness diffs the six Monocypher lines against the six Rye lines byte-for-byte, and crypto/blake2b.rye's selftest separately proves the same hash_keyed matches Zig's std.crypto keyed BLAKE2b-512 — a third independent implementation. Monocypher is linked, never copied. Purely local — no key of ours, no network, no funds, no device; constant-time timing-safety stays the named horizon."
+
+let zig = "vendor/zig-toolchain/zig"
+let cbin = "crypto/bin/monocypher_blake2b_keyed"
+let cout = "crypto/bin/monocypher_blake2b_keyed.out"
+let rout = "crypto/bin/rye_blake2b_keyed.out"
+
+# 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_blake2b_keyed_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
+assert cbuild.ok else "crypto-monocypher-blake2b-keyed-parity: Monocypher C harness build failed — ${cbuild.err}"
+
+# 2. Run the Monocypher C harness — six keyed digest hex lines.
+let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]
+assert crun.ok else "crypto-monocypher-blake2b-keyed-parity: Monocypher C harness exited non-zero — see ${cout}"
+
+# 3. Run our authored Rye harness — six keyed digest hex lines over the identical inputs.
+let rrun = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run tools/monocypher_blake2b_keyed_parity.rye > ${rout} 2>&1"]
+assert rrun.ok else "crypto-monocypher-blake2b-keyed-parity: Rye harness exited non-zero — see ${rout}"
+
+# 4. Byte-for-byte parity: the two six-line outputs must be identical.
+let diff = run ["sh" "-c" "diff ${cout} ${rout} > /dev/null && echo same"]
+assert (trim diff.out) == "same" else "crypto-monocypher-blake2b-keyed-parity: Monocypher and Rye keyed digests disagree — Monocypher:\n$(cat ${cout})\nRye:\n$(cat ${rout})"
+
+let shown = run ["sh" "-c" "cat ${cout}"]
+say "crypto-monocypher-blake2b-keyed-parity: the six keyed digests, agreed by both implementations:\n${shown.out}"
+
+say "GREEN crypto-monocypher-blake2b-keyed-parity: our authored crypto/blake2b.rye's hash_keyed and the vendored Monocypher's own crypto_blake2b_keyed, each compiled fresh, produce byte-for-byte identical keyed BLAKE2b digests over six deterministic (output-length, key, message) triples at output lengths 64/64/32/16/48/64 under keys of length 64/8/32/64/10/1. The FOURTEENTH real Monocypher-SOURCE parity rung, proving BLAKE2b's keyed MAC mode — the authenticator Grain's per-record signing and key derivation reach for — in its own right, the MAC counterpart to the variable-length rung. crypto/blake2b.rye's selftest independently agrees against Zig's std.crypto keyed BLAKE2b-512, a third implementation. Monocypher stays vendored and unmodified, linked never copied. Purely local, no key of ours, no network, no funds, no device; constant-time timing-safety stays the named horizon."

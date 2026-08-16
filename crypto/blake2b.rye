@@ -51,6 +51,9 @@ pub const Blake2bError = error{
     /// A variable-length request of zero bytes or more than digest_len (64) — refused before hash_var mixes a byte. BLAKE2b's own
     /// parameter block carries the output length in a single byte 1..64, so a request outside that range is not a BLAKE2b digest at all.
     BadOutputLen,
+    /// A key longer than digest_len (64) — refused before hash_keyed mixes a byte. BLAKE2b's parameter block carries the key length in a
+    /// single byte 0..64, and the key is folded through one 128-byte block, so a key beyond 64 bytes is not a BLAKE2b key at all.
+    BadKeyLen,
 };
 
 /// The BLAKE2b initialization vector — the eight 64-bit words that seed the chaining value (identical to SHA-512's IV). Named as a
@@ -239,6 +242,73 @@ pub fn hash_var(out: []u8, msg: []const u8) Blake2bError!void {
     assert(k == out_len);
 }
 
+/// Hash a message under a secret key to a variable-length digest of 1..64 bytes — keyed BLAKE2b, the MAC mode that makes BLAKE2b a keyed
+/// authenticator (a message tag no one without the key can forge) as well as a hash. It is the primitive Monocypher exposes as
+/// crypto_blake2b_keyed, and the shape Grain's own key-derivation and per-record authentication will reach for. The only two differences
+/// from hash_var: the parameter block also carries the key length in its second byte (0x01010000 | key_len<<8 | out_len), and the key —
+/// zero-padded to one full 128-byte block — is prepended to the message stream, its block counted as a full block by the counter. An empty
+/// key (key.len == 0) is exactly the unkeyed hash_var, so this defers to it; the algorithm and its parity are identical there.
+pub fn hash_keyed(out: []u8, key: []const u8, msg: []const u8) Blake2bError!void {
+    // invariant: BLAKE2b carries its output length in one parameter byte, so a variable request is meaningful only for 1..64 bytes.
+    if (out.len == 0 or out.len > digest_len) return error.BadOutputLen;
+    // invariant: BLAKE2b carries its key length in one parameter byte and folds the key through a single block, so a key spans 0..64 bytes.
+    if (key.len > digest_len) return error.BadKeyLen;
+    // invariant: the message fits the named bound, so its length casts to u32 losslessly and the counter never overflows the loop.
+    if (msg.len > max_message_bytes) return error.MessageTooLong;
+
+    const out_len: u32 = @intCast(out.len);
+    const key_len: u32 = @intCast(key.len);
+    // An empty key is unkeyed BLAKE2b exactly — one code path, so keyed and unkeyed can never drift apart.
+    if (key_len == 0) return hash_var(out, msg);
+
+    const total: u32 = @intCast(msg.len);
+    // invariant: the u32 count names exactly the message bytes — the bounded cast lost nothing.
+    assert(total == msg.len);
+
+    var h: [8]u64 = iv;
+    // The parameter block for a keyed out_len-byte digest: 0x01010000 (depth/fanout one), xor the key length into byte one, xor the output length.
+    h[0] ^= 0x0000000001010000 ^ (@as(u64, key_len) << 8) ^ @as(u64, out_len);
+
+    // The key, zero-padded to one full 128-byte block, is prepended to the message and folded in first; the counter treats it as a full block.
+    var key_block = [_]u8{0} ** block_bytes;
+    var kk: u32 = 0;
+    while (kk < key_len) : (kk += 1) key_block[kk] = key[kk];
+    // invariant: the whole key was copied into the leading block, no more and no less.
+    assert(kk == key_len);
+
+    if (total == 0) {
+        // No message: the key block is the only and final block, its counter the full 128-byte block length.
+        compress(&h, &key_block, @as(u128, block_bytes), true);
+    } else {
+        // The key block folds in with last = false; its counter is one full block, ahead of every message byte.
+        compress(&h, &key_block, @as(u128, block_bytes), false);
+        var offset: u32 = 0;
+        // Every FULL message block that is not the last folds in with last = false; the counter names the key block plus bytes-through-this-block.
+        while (total - offset > block_bytes) : (offset += block_bytes) {
+            compress(&h, msg[offset..][0..block_bytes], @as(u128, block_bytes + offset + block_bytes), false);
+        }
+        // The final message block: the remaining 1..128 bytes, zero-padded, counter at the key block plus the total message length, last = true.
+        const rem = total - offset;
+        // invariant: the tail is a non-empty block-sized-or-smaller span — the loop above consumed every earlier full block.
+        assert(rem > 0 and rem <= block_bytes);
+        var last_block = [_]u8{0} ** block_bytes;
+        var j: u32 = 0;
+        while (j < rem) : (j += 1) last_block[j] = msg[offset + j];
+        compress(&h, &last_block, @as(u128, block_bytes + total), true);
+    }
+
+    // Serialize the whole eight-word state little-endian, then emit exactly the first out_len bytes — BLAKE2b's own truncation rule.
+    var digest: [digest_len]u8 = undefined;
+    var i: u32 = 0;
+    while (i < 8) : (i += 1) {
+        std.mem.writeInt(u64, digest[i * 8 ..][0..8], h[i], .little);
+    }
+    var c: u32 = 0;
+    while (c < out_len) : (c += 1) out[c] = digest[c];
+    // invariant: the emit filled exactly the requested length, no more and no less.
+    assert(c == out_len);
+}
+
 /// Render a 64-byte digest as 128 lowercase hex characters, so a selftest or a keeper can compare against the RFC's own hex form.
 pub fn to_hex(digest: [digest_len]u8) [hex_len]u8 {
     const alphabet = "0123456789abcdef";
@@ -264,6 +334,14 @@ const rfc_empty_hex = "786a02f742015903c6c6fd852552d272912f4740e15847618a86e217f
 fn ref_hash512(msg: []const u8) [digest_len]u8 {
     var out: [digest_len]u8 = undefined;
     std.crypto.hash.blake2.Blake2b512.hash(msg, &out, .{});
+    return out;
+}
+
+/// Independent reference: Zig's own std.crypto keyed BLAKE2b-512, used ONLY inside the selftest as a second implementation to prove our
+/// authored hash_keyed matches byte-for-byte at the full 64-byte width. The primitive above never calls this.
+fn ref_hash_keyed(key: []const u8, msg: []const u8) [digest_len]u8 {
+    var out: [digest_len]u8 = undefined;
+    std.crypto.hash.blake2.Blake2b512.hash(msg, &out, .{ .key = key });
     return out;
 }
 
@@ -323,6 +401,38 @@ fn run_selftest() !u8 {
         if (!bytes_eq(mb, ref_hash512(&multi))) return error.RefMultiMismatch;
     }
 
+    // 3b. Keyed parity: our authored hash_keyed equals Zig's independent std.crypto keyed BLAKE2b-512 byte-for-byte across a spread of
+    //     (key, message) pairs — a full 64-byte key, a short key, the empty message, and a multi-block message. The standalone Monocypher
+    //     rung (tools/crypto_monocypher_blake2b_keyed_parity_witness.rish) proves the same against the vendored C at every output length.
+    {
+        // A full 64-byte key (byte i = i) over "abc".
+        var full_key: [64]u8 = undefined;
+        var ki: u32 = 0;
+        while (ki < 64) : (ki += 1) full_key[ki] = @as(u8, @truncate(ki));
+        var got: [digest_len]u8 = undefined;
+        try hash_keyed(&got, &full_key, "abc");
+        if (!bytes_eq(got, ref_hash_keyed(&full_key, "abc"))) return error.RefKeyedFullMismatch;
+
+        // A short 8-byte key over the empty message — the key block folds in as the final block.
+        const short_key = "keybytes";
+        try hash_keyed(&got, short_key, "");
+        if (!bytes_eq(got, ref_hash_keyed(short_key, ""))) return error.RefKeyedEmptyMismatch;
+
+        // A 32-byte key over a 200-byte multi-block message — the key block, one full message block, then a partial final block.
+        var mid_key: [32]u8 = undefined;
+        ki = 0;
+        while (ki < 32) : (ki += 1) mid_key[ki] = @as(u8, @truncate(ki *% 3 +% 5));
+        var multi: [200]u8 = undefined;
+        ki = 0;
+        while (ki < 200) : (ki += 1) multi[ki] = @as(u8, @truncate(ki *% 7 +% 1));
+        try hash_keyed(&got, &mid_key, &multi);
+        if (!bytes_eq(got, ref_hash_keyed(&mid_key, &multi))) return error.RefKeyedMultiMismatch;
+
+        // An empty key is unkeyed BLAKE2b exactly — hash_keyed must reproduce hash512 there.
+        try hash_keyed(&got, "", "abc");
+        if (!bytes_eq(got, try hash512("abc"))) return error.KeyedEmptyKeyMismatch;
+    }
+
     // 4. The bound refuses an over-long message before any byte is mixed. A zero-length slice at the ceiling proves only the length
     //    check; we assert the error surfaces by name using a slice whose declared length exceeds the bound.
     {
@@ -338,7 +448,9 @@ fn run_selftest() !u8 {
         "and our authored Rye equals Zig's independent std.crypto BLAKE2b byte-for-byte over the empty message, \"abc\", an exact-128-byte " ++
         "boundary block, and a 200-byte multi-block input. The vendored Monocypher is now a SECOND independent target: " ++
         "tools/crypto_monocypher_parity_witness.rish compiles vendor/monocypher and proves our Rye equals its C byte-for-byte over the same " ++
-        "four messages — the audit's parity target, closed on metal. An over-long message refuses " ++
+        "four messages — the audit's parity target, closed on metal. Keyed BLAKE2b (hash_keyed, the MAC mode) matches Zig's independent " ++
+        "std.crypto keyed BLAKE2b-512 byte-for-byte across a full 64-byte key, a short key over the empty message, and a 32-byte key over " ++
+        "a 200-byte multi-block input, and reproduces the unkeyed digest when the key is empty. An over-long message refuses " ++
         "MessageTooLong before a byte is mixed. Purely local arithmetic — the primitive calls no std.crypto, no key, no signature, no " ++
         "network, no funds, no real device; constant-time timing-safety stays a separate named horizon.\n", .{});
     return 0;

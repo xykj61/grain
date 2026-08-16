@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260816.142253
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Monocypher-parity for keyed BLAKE2b MAC, GREEN
+prompt read REMEMBER + the three itinerary docs; take the next agent-doable lap Lindy-first crux-first, Rye-first, send each increment as its own signed round; stop at custody gates
+think Walked REMEMBER's git nib and the decision-wave doc. Season G (Cryptography · Rye-native, Monocypher-parity) is the active double-seat and the highest-Lindy new thread — it serves every module that signs or verifies. The prior lap's session log named the crux-first next rung outright: keyed BLAKE2b (Monocypher's crypto_blake2b_keyed), unimplemented in Rye, the MAC mode the unkeyed BLAKE2b rungs never exercised.
+think Rye-first: crypto/blake2b.rye exposed hash512 and hash_var (both unkeyed) but no keyed mode, so the mathematics lands first. Added hash_keyed(out, key, msg): the parameter block also carries the key length in its second byte (0x01010000 | key_len<<8 | out_len), and the key zero-padded to one full 128-byte block prepends the message stream, its block counted as a full block by the counter. An empty key defers to hash_var, so keyed and unkeyed can never drift. Added a BadKeyLen error refused at the edge for a key beyond 64 bytes.
+think Proved it three ways. In-module selftest: hash_keyed equals Zig's independent std.crypto keyed BLAKE2b-512 byte-for-byte across a full 64-byte key, a short key over the empty message, a 32-byte key over a 200-byte multi-block input, and reproduces the unkeyed digest when the key is empty. Then the fourteenth Monocypher-source parity rung as the established three-file pattern: a C harness linking the unmodified vendored Monocypher's crypto_blake2b_keyed, a Rye printing harness over hash_keyed through the tools/blake2b.rye symlink, and a witness diffing six keyed digests byte-for-byte at output lengths 64/64/32/16/48/64 under keys of length 64/8/32/64/10/1.
+think Honest anchor: RFC 7693 Appendix A publishes only the UNKEYED "abc" known-answer, so a hand-entered keyed KAT would be a fabricated constant — a red. Named that plainly in the witness and rested the keyed parity on three independent implementations agreeing (our Rye, the vendored Monocypher C, Zig's std.crypto), one set of deterministic public (key, message) inputs, one set of bytes.
+obs GREEN first pass — Monocypher and Rye agree hex-for-hex across all six keyed digests, and the selftest's Zig cross-check holds. Gate-free and purely local: deterministic public test keys, no real key of ours, no signature, no network, no funds, no device. Constant-time timing-safety stays the Season's one named horizon.
+obs Count guard GREEN — 56 crypto/*.rye files unchanged (this lap modified the existing crypto/blake2b.rye rather than adding a file; the three new files live in tools/ and tools/fixtures/). TAME style check GREEN (bans clean); the authored Rye carries the opening triad and ≥2 invariant-commented asserts per fn, bounded buffers at construction.
+obs Docs synced same round: crypto/README.md and docs/CRYPTO.md moved from thirteen rungs to fourteen with the keyed BLAKE2b MAC entry, noting the three-implementation oracle since RFC 7693 gives only the unkeyed answer.
+loom witness=crypto_monocypher_blake2b_keyed_parity digests=6 out_lens=64,64,32,16,48,64 key_lens=64,8,32,64,10,1 parity=byte-for-byte oracle=rye+monocypher+zig result=GREEN
+file crypto/blake2b.rye added hash_keyed (keyed MAC mode) + BadKeyLen error + keyed selftest against Zig std.crypto
+file tools/fixtures/monocypher_blake2b_keyed_harness.c the vendored Monocypher's keyed crypto_blake2b_keyed harness (parity target, unmodified)
+file tools/monocypher_blake2b_keyed_parity.rye our authored hash_keyed printing harness over the six identical triples
+file tools/crypto_monocypher_blake2b_keyed_parity_witness.rish the fourteenth Monocypher-source parity witness, diff + honest three-implementation oracle
+file crypto/README.md rung count thirteen → fourteen; keyed BLAKE2b MAC entry
+file docs/CRYPTO.md rung count thirteen → fourteen; keyed BLAKE2b MAC entry
+recommend keep-going the standalone-core sweep continues honestly — Monocypher's constant-time crypto_verify16/32/64 equality primitives, or the BLAKE2b incremental (init/update/final) streaming interface, are the next natural Rye-first rungs, each worth its own lap
