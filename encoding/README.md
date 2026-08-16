@@ -25,11 +25,18 @@ implementation.
 | [`base58.rye`](base58.rye) | Base58 — the Bitcoin alphabet (no `0 O I l`, no `+ /`, no padding) an address, a public key, or a content id wears when a human reads or types it, encode and decode | Bitcoin Core convention |
 | [`base58check.rye`](base58check.rye) | Base58Check — a version byte, the payload, and a four-byte double-SHA-256 checksum rendered in Base58, the self-verifying form a real address wears (a mistyped character fails the check). Composition, no new cryptography | Bitcoin convention |
 | [`base32.rye`](base32.rye) | Base32 — the case-safe, punctuation-free alphabet (A–Z 2–7) a TOTP secret, an onion address, or a CIDv1 content id wears; five bytes into eight symbols, `=` padding, encode and decode | RFC 4648 |
+| [`hex.rye`](hex.rye) | Base16 / hex — two lowercase characters per byte, the plainest form a digest, a key, or a wire frame wears; decode accepts either case. Proven byte-for-byte against Zig's own `std.fmt` hex | RFC 4648 |
 
-**Natural next rungs** (named, not yet built): a shared **hex** primitive to
-retire the per-file `to_hex` each crypto witness now hand-rolls, and the
-lowercase / no-pad Base32 variants (RFC 4648 §6 and the CIDv1 form) when a
-surface needs them.
+**Natural next rungs** (named, not yet built): a ratchet migration of the per-file
+`to_hex` each crypto witness hand-rolls onto the proven `hex.rye` (its own round,
+grepped and repointed), and the lowercase / no-pad Base32 variants (RFC 4648 §6 and
+the CIDv1 form) when a surface needs them.
+
+Hex is the one rung with a runnable `std` cross-check — Zig ships `std.fmt`'s hex
+codec, so `hex.rye` is proven byte-for-byte against it, the way `base64.rye` is
+proven against `std.base64`. Base58 and Base32 carry no `std` codec (Zig ships
+none), so each is proven against published known-answers and a second, independent
+implementation written inside its own selftest.
 
 Base58 carries no independent `std` codec to check against (Zig ships none), so
 its parity is proven the way the standard itself is trusted: against the canonical
