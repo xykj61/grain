@@ -19,7 +19,7 @@ a message: **Kumara** identity, **Vault** sealed storage, **Comlink** sessions, 
 the **Lotus** signed carry. It authors the mathematics once, in the open, so a hand
 placing trust in it can read exactly what it does.
 
-## The twenty-nine files — twenty-five primitives and four compositions
+## The thirty files — twenty-six primitives and four compositions
 
 Built in dependency order: each rung stands on the GREEN rungs beneath it, none
 authoring cryptography a lower rung had not already proven.
@@ -34,6 +34,7 @@ authoring cryptography a lower rung had not already proven.
 | [`sha256.rye`](sha256.rye) | SHA-256 (the hash Tablecloth keys content with, and the Mycelium consensus spine places worlds and seeds constel identities by) | FIPS 180-4 |
 | [`keccak256.rye`](keccak256.rye) | Keccak-256 — the Ethereum-family hash (an account address is the low 20 bytes of the Keccak-256 of a public key, an EVM function dispatches on the first 4 bytes of the Keccak-256 of its signature, every EIP-191/712 digest is a Keccak-256). NOT SHA3-256: same permutation, one differing byte — the original Keccak `0x01` delimiter rather than FIPS 202's `0x06`. Composes the GREEN `sha3.rye` sponge; authors no new cryptography | original Keccak · FIPS 202 |
 | [`ripemd160.rye`](ripemd160.rye) | RIPEMD-160 — the 160-bit hash that completes Bitcoin's HASH160 = RIPEMD-160(SHA-256(x)), the address-derivation step [`../encoding/base58check.rye`](../encoding/base58check.rye) and [`../encoding/bech32.rye`](../encoding/bech32.rye) encode. Two parallel eighty-step lines over a five-word state, little-endian. Zig ships no RIPEMD reference, so proven against the RIPEMD-160 authors' published known-answer suite; HASH160 composes live over the GREEN `sha256.rye` | RIPEMD-160 (Dobbertin·Bosselaers·Preneel) |
+| [`shake.rye`](shake.rye) | SHAKE128 · SHAKE256 — the SHA-3 extendable-output functions (any-length output rather than a fixed digest): the XOF inside Ed448 and SPHINCS+, seeding ML-KEM (Kyber) and ML-DSA (Dilithium), and the base of cSHAKE / KMAC. Same permutation and pad10\*1 rule as SHA3, one differing byte — the `0x1f` delimiter — and a squeeze that walks across as many rate blocks as the output needs. Composes the GREEN `sha3.rye` sponge (whose squeeze this rung generalized to multi-block); authors no new cryptography | FIPS 202 §6.2 |
 
 ### Keyed hash and key derivation
 
@@ -97,7 +98,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 ```
 
 [`../tools/crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) runs all
-twenty-nine per-file witnesses in the dependency order above, rebuilding and reproving
+thirty per-file witnesses in the dependency order above, rebuilding and reproving
 each from source, and refuses whole — naming the file that stopped it — the moment
 any one goes RED. A GREEN suite means every claim in this library is re-provable by
 tooling, not trusted from a commit message alone.

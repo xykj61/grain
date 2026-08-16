@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260816.015750
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title SHAKE128/SHAKE256 in Rye, parity-GREEN
+prompt take the next agent-doable lap Lindy-first crux-first on the crypto-parity wave; Rye prioritized, Glow on green-witnessed Rye; send each finished increment as its own signed round; stop at custody gates
+think Read the decision-wave design doc — Season G (Cryptography) is the living edge, Rye-first, each rung a parity-GREEN witness composed over lower GREEN stones; living edge was crypto/eth_address.rye
+think Weighed the crux — secp256k1 field is the biggest Lindy but a multi-round journey whose one-round field slice does not close cleanly against an independent reference; SHAKE128/256 is the crux that closes in one clean witness-first round, composes the already-GREEN Keccak-f[1600] sponge, and its parity checks against Zig std.crypto
+think The decisive extension SHAKE needs is the sponge's generality — squeeze rate bytes, permute, read again — which also opens SHA3-224/384, cSHAKE, KMAC, and the post-quantum XOFs; generalized crypto/sha3.rye keccak_sponge to multi-block squeeze, keeping every fixed-digest caller byte-identical (out.len ≤ rate reads one block, unchanged)
+think Added shake_delim 0x1f and rate_shake128 168 (SHAKE256 shares SHA3-256's 136) to sha3.rye as the one source of truth; crypto/shake.rye composes them exactly as keccak256.rye composes keccak_delim
+obs GREEN on first metal pass — both canonical empty-message KATs (SHAKE128→32B, SHAKE256→64B) match hex-for-hex, and parity against Zig std.crypto Shake128/Shake256 holds byte-for-byte across the absorb padding edges AND the squeeze block edges (504- and 408-byte outputs span three rate blocks, proving multi-block squeeze); XOF prefix property and both edge-bounds proven
+obs sha3.rye and keccak256.rye re-run GREEN after the sponge generalization — no regression; TAME style bans clean; full thirty-file crypto_suite_witness.rish GREEN end-to-end
+obs docs/CRYPTO.md already lags several rungs (says twenty-four primitives) — left for the planned docs-molt round rather than sweeping unrelated drift this lap; crypto/README.md and the suite runner counts (now thirty files, twenty-six primitives) updated in this round
+loom witness=crypto_suite_witness green_files=30 shake_parity_cases=14 shake_multiblock_out_bytes=504
+file crypto/shake.rye SHAKE128/SHAKE256 XOF in pure Rye, composed over the GREEN sha3 sponge, parity-GREEN
+file crypto/sha3.rye sponge squeeze generalized to multi-block; shake_delim 0x1f and rate_shake128 seated; fixed-digest callers byte-identical
+file tools/crypto_shake_witness.rish per-file GREEN witness for SHAKE, registered in the suite runner
+file tools/crypto_suite_witness.rish shake witness registered; counts moved to thirty files / twenty-six primitives
+file crypto/README.md SHAKE table row added; file and primitive counts refreshed
+recommend keep-going next crux rung: SHA3-224/SHA3-384 (trivial siblings now the squeeze is general) or begin secp256k1 base field — both agent-doable, Rye-first, witness-first
