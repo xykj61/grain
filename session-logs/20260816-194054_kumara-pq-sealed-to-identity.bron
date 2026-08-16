@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260816.194054
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host cloud bench — Eastern (EDT) time convention
+title The post-quantum sealed-to-identity door — sealed and signed, GREEN
+prompt Continue the loop; take the next crux Lindy-first crux-first; approve my own design rounds; send each finished increment as its own signed round; STOP at the custody gates.
+think With the dual-key post-quantum identity landed the round before, the crux it named as next is the sealed-TO-identity door — the post-quantum sibling of crypto/kumara_sealed.rye. The identity is already sealing-ready, so this is the natural completion: the identity now both signs and seals through one dual-key name. Gate-free, pure composition over GREEN rungs, so I approved the round myself and built it.
+think The valuable shape one lattice key cannot give: a message sealed TO a named identity's ML-KEM half AND signed BY a named identity's ML-DSA half — confidentiality and provenance in one frame. The classical kumara_sealed is anonymous by construction; this door binds the sender, mirroring kumara_carry's provenance binding. Envelope: magic GQS1, sender ML-DSA public key, sender ML-DSA signature, then the inner mlkem_sealed frame to the end — fixed-width header first so open locates the trailing inner frame without a nested length parse.
+think First metal run panicked: at the large tier (ML-KEM-1024) the inner frame with a 500-byte plaintext is ~2096 bytes, past ML-DSA's 2048-byte max_msg_bytes, so signing the whole frame tripped the signer's own precondition assert. The fix is the standard one — sign a BLAKE2b-512 digest of the inner frame rather than the frame itself, so the signed message is a fixed 64 bytes at every plaintext length, bound to the exact ciphertext by the hash's collision resistance. GREEN after that change.
+think Open is verify-before-trust in the honest order: check the named sender equals the reader's expectation (UnexpectedSigner, before any decapsulation), verify the ML-DSA signature over the recomputed digest (BadSignature), THEN decapsulate the inner frame with the recipient's ML-KEM half (OpenFailed). A forgery or wrong sender is refused before the recipient's secret key is ever touched.
+obs Proven at all three tiers: a confidential-and-authenticated round-trip across five plaintext lengths recovering both plaintext and verified sender, the message not the plaintext, and four refusals (wrong recipient, wrong expected sender, tampered ciphertext, tampered signature) plus bad magic and truncation. Count guard 75 → 76 (fifty primitives + twenty-six compositions); witness registered in crypto_suite_witness; README, docs/CRYPTO.md synced same round; TAME clean, width exit 0.
+loom witness=crypto_kumara_pq_sealed_witness green=1 tiers=3 crypto_files=76 composed_rungs=3
+file crypto/kumara_pq_sealed.rye the post-quantum sealed-to-identity door — sealed to the ML-KEM half, signed by the ML-DSA half, GREEN over three tiers
+file tools/crypto_kumara_pq_sealed_witness.rish the on-metal witness, registered in the suite
+file tools/crypto_suite_witness.rish registered the new witness so the count-guard bijection holds
+file crypto/README.md rung row added, count synced seventy-five → seventy-six
+file docs/CRYPTO.md rung row added, count synced seventy-five → seventy-six
+recommend keep-going the post-quantum identity now both signs (mldsa_identity), seals confidentially (mlkem_sealed), and seals-and-signs to a named identity (this) — a whole quantum-resistant identity surface; the natural next crux is a hybrid identity (classical Ed25519 beside the two lattice keys, the transition-years default the design note named) or a per-record post-quantum subkey, both gate-free
