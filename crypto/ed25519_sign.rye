@@ -48,7 +48,7 @@ const ma = @import("ed25519_muladd.rye");
 const sha512 = @import("sha512.rye");
 const ver = @import("ed25519_verify.rye");
 
-pub const ed25519_sign_version = "20260816.000000";
+pub const ed25519_sign_version = "20260816.104452";
 
 /// The largest message this signer hashes in one call. Signing hashes prefix ‖ M for the nonce and R ‖ A ‖ M for the challenge, each held in one
 /// bounded buffer, so the message is capped at a named maximum rather than an open size — the same bound the verifier carries. A streaming hash for
@@ -120,6 +120,20 @@ pub fn derive_public(seed: *const [32]u8) [32]u8 {
     ident[0] = 1;
     assert(!bytes_eq(&a_bytes, &ident));
     return a_bytes;
+}
+
+/// secret_scalar — the 32-byte clamped Ed25519 secret scalar a = clamp(SHA-512(seed)[0..32]), the value RFC 8032 §5.1.5 folds a seed into before
+/// [a]B. It is ALSO exactly the X25519 secret key libsodium's crypto_sign_ed25519_sk_to_curve25519 (and Zig's X25519.KeyPair.fromEd25519) derive
+/// from an Ed25519 seed, so one identity key agrees as well as signs — crypto/ed25519_to_x25519.rye names this the secret half of its map. Reads
+/// secret material and returns it, so a caller holds the raw scalar: the signing timing horizon covers this path, and deriving from a real seed
+/// reaches the custody gate.
+pub fn secret_scalar(seed: *const [32]u8) [32]u8 {
+    const e = expand(seed);
+    // invariant (postcondition): the clamp cleared the low three bits, so the scalar is a multiple of the cofactor 8.
+    assert((e.a[0] & 7) == 0);
+    // invariant (postcondition): the clamp fixed the top two bits — bit 255 clear, bit 254 set — so the scalar lies in the intended range.
+    assert((e.a[31] & 0xc0) == 0x40);
+    return e.a;
 }
 
 /// Sign a message under a 32-byte secret seed, producing the 64-byte Ed25519 signature R ‖ S by the RFC 8032 §5.1.6 procedure. Deterministic: the
