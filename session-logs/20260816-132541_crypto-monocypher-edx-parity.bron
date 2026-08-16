@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260816.132541
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title crypto — Monocypher-source parity for the Edwards↔Montgomery conversion, GREEN
+prompt Take the next agent-doable lap Lindy-first crux-first on the crypto-parity / decision-wave road; Rye prioritized; send each finished increment; stop at custody gates
+think Read REMEMBER (too large to load whole — grepped gates + git nib), the 1024-round itinerary, the six-season double-seat, and the Rye-first crypto-parity decision wave; nib was six Monocypher-source parity rungs GREEN (BLAKE2b, X25519, Ed25519, IETF AEAD, Argon2, XChaCha20-Poly1305 flagship)
+think Lindy-first crux-first: the crypto library serves every module that signs, verifies, or agrees — highest-Lindy new thread. Crux hunt found a real gap the module itself named: crypto/ed25519_to_x25519.rye is GREEN against Zig std.crypto but explicitly names Monocypher-SOURCE parity as an unproven held horizon; Monocypher exposes exactly crypto_eddsa_to_x25519 / crypto_x25519_to_eddsa, the identity-unification map that lets ONE Ed25519 key both sign (Ed25519) and agree (X25519) — the one-key story crypto/kumara_sealed.rye rests on
+think Mirrored the proven parity pattern: a C harness over the unmodified vendored source, a Rye printing harness over the GREEN module via a new tools/ed25519_to_x25519.rye symlink, a Rishi witness diffing byte-for-byte and anchoring to published values. Chose three lines with two published anchors — eddsa_to_x25519(Edwards base)=u=9 (RFC 7748 §4.1) and x25519_to_eddsa(u=9)=sign-0 Edwards base 5866…66 — plus RFC 8032 §7.1 Test 1's real public key forward-mapped as the second-implementation oracle
+obs GREEN on the first full pass — Monocypher's crypto_eddsa_to_x25519 / crypto_x25519_to_eddsa and our crypto/ed25519_to_x25519.rye produce byte-identical output over all three conversions; line 1 = 0900…00, line 2 = d85e07ec…f6b62e, line 3 = 5866…66, both published anchors asserted
+obs Count guard untouched: added only tools/ files plus one tools/ed25519_to_x25519.rye symlink, so crypto/*.rye stays 56 (guard GREEN). Gate-free and purely local — published/test keys, no real identity key, no signature, no network, no funds, no device; constant-time timing-safety stays the one named horizon
+obs Docs synced in the same round: crypto/README.md and docs/CRYPTO.md moved Monocypher-source parity from six rungs to seven, naming the Edwards↔Montgomery conversion and why it matters (one identity key for both signing and agreement)
+loom witness=crypto_monocypher_edx_parity_witness result=green primitive=ed25519_to_x25519 conversions=3 anchors=2 count_guard=56
+file tools/fixtures/monocypher_edx_harness.c Monocypher C harness over the unmodified vendored crypto_eddsa_to_x25519 / crypto_x25519_to_eddsa, prints three conversion lines
+file tools/monocypher_edx_parity.rye Rye printing harness over the GREEN crypto/ed25519_to_x25519.rye, same three hex lines
+file tools/crypto_monocypher_edx_parity_witness.rish builds both, diffs byte-for-byte, anchors both RFC 7748 §4.1 base-point directions
+file tools/ed25519_to_x25519.rye symlink so the Rye harness resolves the crypto module beside it
+file crypto/README.md parity note moved six rungs to seven, Edwards↔Montgomery conversion named
+file docs/CRYPTO.md same seven-rung sync, one-identity-key wording
+recommend keep-going — the eighth parity rung (a further Monocypher one-shot such as crypto_verify16/32/64 constant-time compare, or the raw XChaCha20 stream) is mechanical and gate-free; crypto stays the highest-Lindy thread until an audit surface or the Lotus signing gate calls
