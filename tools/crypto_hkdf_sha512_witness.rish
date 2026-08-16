@@ -1,0 +1,42 @@
+# tools/crypto_hkdf_sha512_witness.rish — HKDF-SHA-512 authored in pure Rye: Season G's key-derivation rung, the extract-then-expand
+# key schedule every handshake, sealed box, and vault key ladder stands on, proven against Zig's independent std.crypto HKDF-SHA-512 and
+# tied transitively back through its two HMAC steps to the RFC-4231-anchored HMAC beneath (Season G · Cryptography).
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+# Kin: crypto/hmac_sha512.rye (the keyed hash beneath it, GREEN) · crypto/sha512.rye (the hash beneath that). Monocypher
+# (vendor/monocypher, CC0/BSD-dual) is the parity discipline target, never a copied line — our own Rye, studied clean-room from the
+# public standards (.claude/rules/gratitude-licenses.md).
+#
+# crypto/hkdf_sha512.rye composes the GREEN crypto/hmac_sha512.rye through RFC 5869's two steps — extract(salt, ikm) = HMAC(salt, ikm)
+# yields the 64-byte PRK (an empty salt keyed on HashLen zeros), and expand(PRK, info, L) walks T(i) = HMAC(PRK, T(i-1) ‖ info ‖ byte(i))
+# up to 255 blocks and returns the first L bytes — authoring no new cryptography. The primitive calls no std.crypto. RFC 5869 publishes
+# its known-answer vectors over SHA-256 and SHA-1, so this SHA-512 instantiation is proven at selftest against two references runnable
+# now: Zig's own std.crypto HKDF-SHA-512 as an independent implementation, byte-for-byte across the RFC's salt-and-info, longer-inputs,
+# and zero-salt-and-info shapes plus a full 255-block request; AND the RFC-4231-anchored HMAC beneath it — extract reproduces mac(ikm,
+# salt) exactly and the first expand block reproduces mac(info ‖ 0x01, prk), so both HKDF steps tie transitively back to the published
+# HMAC known-answer. An over-long info, salt, ikm, or request refuses its named error before a byte is mixed. Purely local — TEST inputs,
+# no real identity key, no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_hkdf_sha512_witness.rish
+
+say "crypto-hkdf-sha512: Language EN — Season G's key-derivation rung: HKDF-SHA-512 (RFC 5869), the standard 'turn one shared secret into as many independent keys as a protocol needs' primitive and the extract-then-expand schedule every handshake, sealed box, and vault key ladder stands on. It authors no new cryptography — it composes the GREEN crypto/hmac_sha512.rye through the RFC's own two steps, so it is genuinely buildable this round and ties transitively back to the published HMAC known-answer beneath it."
+say "crypto-hkdf-sha512: Style Radiant — the law is stated positively: extract(salt, ikm) = HMAC(salt, ikm) yields the 64-byte PRK (an absent salt is HashLen zero bytes), and expand(PRK, info, L) returns the first L bytes of T(1) ‖ T(2) ‖ … where T(0) is empty and T(i) = HMAC(PRK, T(i-1) ‖ info ‖ byte(i)), so the same salt, ikm, info, and length always fold to the same key material anyone can replay against an independent HKDF."
+say "crypto-hkdf-sha512: Lens TAME — the primitive calls no std.crypto; it composes an already-GREEN HMAC, bounded ikm/salt/info (max_ikm_bytes · max_salt_bytes · max_info_bytes) and a bounded request (max_okm_bytes = RFC 5869's 255-block cap), contract asserts on every function, each HMAC call provably within its own message and key bounds so its error is unreachable and asserted rather than swallowed. RFC 5869 publishes its known-answers over SHA-256 and SHA-1, so this SHA-512 instantiation is proven against Zig's independent std.crypto HKDF-SHA-512 byte-for-byte across the RFC's three input shapes plus a full 255-block request, AND against the RFC-4231-anchored HMAC beneath — extract reproduces mac(ikm, salt) and the first expand block reproduces mac(info ‖ 0x01, prk). An over-long info, salt, ikm, or request refuses its named error before a byte is mixed. Constant-time discipline stays the HMAC layer's named horizon. Purely local — TEST inputs, no real identity key, no network, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/hkdf_sha512"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/hkdf_sha512.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-hkdf-sha512: build failed — ${build.err}"
+
+let outfile = "crypto/bin/hkdf_sha512.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-hkdf-sha512: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-hkdf-sha512: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-hkdf-sha512' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-hkdf-sha512: selftest did not print the GREEN crypto-hkdf-sha512 line"

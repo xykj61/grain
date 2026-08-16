@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260815.220644
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS (HP AMD 2vCPU/4GB shared) — EDT (America/New_York) — this session in ai-jail
+title Season G nineteenth rung — HKDF-SHA-512 in pure Rye
+prompt take the next agent-doable lap Lindy-first crux-first on the crypto/six-season road; Rye prioritized, Glow on green Rye; send each finished increment; stop at custody gates
+think Read REMEMBER (living edge: Season G eighteen rungs GREEN, HMAC just landed as "the HKDF stone") and the three itinerary docs — the 1024-round calendar, the six-season double-seat, and the decision-wave (Season G crypto, Rye-first spine).
+think Lindy-first crux-first: the last commit laid HMAC-SHA-512 and named it the HKDF stone; HKDF (RFC 5869) is the highest-Lindy next rung — the key-derivation schedule Kumara, Vault, Comlink, and the Lotus sealed carry all stand on, and it composes purely on the GREEN HMAC. A non-gated library round (TEST inputs), no key crossed.
+think Studied crypto/hmac_sha512.rye and its witness for the exact pattern (opening triad, bounded buffers, contract asserts, RFC-KAT + Zig std.crypto parity, GREEN line, per-file witness, suite registration).
+think Honest vector scope: RFC 5869 publishes its known-answers over SHA-256/SHA-1, not SHA-512. So the SHA-512 instantiation is proven two ways runnable now — byte-for-byte vs Zig's independent std.crypto.kdf.hkdf.HkdfSha512 across the RFC's three input shapes plus a full 255-block request, AND transitively back to the RFC-4231-anchored HMAC (extract reproduces mac(ikm,salt); the first expand block reproduces mac(info||0x01,prk)). No fabricated vector.
+think Bounded everything: max_ikm/salt/info_bytes and max_okm_bytes = 255*64 (RFC's own 255-block cap, so the counter never overflows a byte); each HMAC call provably within its message/key bounds so catch unreachable is asserted, not swallowed; four named refusals at the edge.
+obs GREEN on the first metal pass — no RED, no transcription fix needed. tame_style bans clean, new file in none of the ratchet lists. Whole-suite witness GREEN across all nineteen files (seventeen primitives + two compositions), each rebuilt fresh.
+obs Updated crypto/README.md (nineteen files, new key-derivation row), the suite witness counts and dependency-order prose, and the REMEMBER living edge + git nib in the same work commit per the pin-same-commit rule.
+loom witness=crypto_suite_witness files=19 result=GREEN
+file crypto/hkdf_sha512.rye the HKDF-SHA-512 primitive: extract-then-expand over the GREEN HMAC, RFC 5869
+file tools/crypto_hkdf_sha512_witness.rish per-file witness — build fresh, assert the GREEN crypto-hkdf-sha512 line
+file tools/crypto_suite_witness.rish registered HKDF after HMAC; counts to nineteen files / seventeen primitives
+file crypto/README.md nineteen-file table, new keyed-hash-and-key-derivation row, suite count
+file work-in-progress/REMEMBER.md living edge to the HKDF rung, HMAC demoted to prior rung, git nib refreshed
+recommend keep-going the next Season G crux is a Rye-native constant-time MAC/tag verify helper (the horizon every composer names) or SHA3/SHAKE toward the seated Kumara PQ path; signing/keying with the maintainer's own identity key stays the custody gate
