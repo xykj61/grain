@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260816.093531
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title crypto/README.md — heal the dropped secp256k1_pubkey row, front door back in sync
+prompt recursion baton prin recur — take the next agent-doable lap Lindy-first crux-first, Rye first, send often, stop at custody gates
+think Read the wave docs — the 1024-round itinerary, the six-season double-seat, the rye-first crypto-parity decision wave. Season G crypto is the high-Lindy live thread; the identity arc just closed with kumara_identity as the seventeenth composition (front door).
+think Ran the count guard: GREEN, 52 crypto/*.rye files (5 of the 57 on disk are import-seam symlinks). Then compared the on-disk roster to the README table links — exactly one real, GREEN, counted file was missing a table row: secp256k1_pubkey.rye (SEC1 pubkey serialization).
+think This is a docs-implementation-sync red on the library's most-read, most-Lindy page — an audit front door that omits a real primitive the account model stands on. Lindy-first (a README read thousands of times), crux-first (the one true drift), fully agent-doable, no custody gate. Took it over opening a new primitive.
+think Confirmed the primitive is GREEN on metal via crypto_secp256k1_pubkey_witness.rish, and read the file's own witness prose: it is a composition (authoring no new cryptography over the GREEN derive_public + decompress). The README compositions table showed 16 rows while its own header claimed seventeen — so the intended 17th row was simply dropped at the pubkey round (commit 2ec4931237), and every later round's synced-N prose counted a phantom.
+think docs/CRYPTO.md already carried pubkey and already claimed the correct 35 primitives + 17 compositions = 52; only crypto/README.md lagged. Restoring the row brings the front door back into agreement with docs/CRYPTO.md and the GREEN count guard both.
+obs Placed the new row in the Compositions table just before the eth_address/bitcoin_address address family that stands on it — dependency-honest grouping (seal-family compositions, then the secp256k1 serialization feeding the address/wallet family). README now reads 35 primitive rows + 17 composition rows = 52, matching header, count guard, and docs/CRYPTO.md.
+obs No code changed and no witness re-authored — a pure front-door sync; the count guard already proved the true 52.
+loom witness=crypto_count_guard_witness result=GREEN files=52
+loom witness=crypto_secp256k1_pubkey_witness result=GREEN scalars=8
+file crypto/README.md restored the dropped secp256k1_pubkey.rye composition row; table now 35+17=52, matching the count guard and docs/CRYPTO.md
+file session-logs/20260816-093531_crypto-readme-pubkey-row-sync.bron this record
+recommend keep-going — next agent-doable crypto crux is a signed_carry sealed under a kumara_identity (build+verify only), or BIP-49/84 script-type paths reusing bip44's parser; the real Kumara identity + signature stays the custody gate
