@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260816.134746
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) time convention — this session in ai-jail
+title crypto — Monocypher-source parity for standalone SHA-512, GREEN
+prompt Read REMEMBER and the three road docs; take the next agent-doable lap Lindy-first crux-first, Rye prioritized, send each finished increment as its own signed round; stop at custody gates.
+think Walked the road: REMEMBER's git nib and the last nine session-log rows show Season G's Monocypher-SOURCE parity pattern climbing one rung per round — BLAKE2b, X25519, Ed25519, IETF AEAD, Argon2, XChaCha20 flagship, Edwards↔Montgomery, standalone Poly1305, standalone ChaCha20. Nine rungs GREEN.
+think Lindy-first crux-first over the candidates: the ChaCha20 log named a tenth as "a ChaCha20 djb variant or crypto_verify16/32/64." Chose SHA-512 instead — strictly higher-Lindy: it is the hash Ed25519 SIGNS with, and the hash every HMAC-SHA512, HKDF-SHA512, and BIP32 seed derivation folds through. It had been proven only EMBEDDED inside Ed25519 signing, never standalone against Monocypher's own crypto_sha512 — the exact hash-cipher counterpart to the standalone ChaCha20/Poly1305 rungs.
+think crypto/sha512.rye's own selftest named Monocypher-source parity as an honest held horizon ("its vendored source is a held fetch"); the fetch is on disk, so this rung closes a horizon the module itself named — the same shape every prior rung took.
+think Monocypher's SHA-512 lives in its OPTIONAL module (src/optional/monocypher-ed25519.c, crypto_sha512), the same source the Ed25519 rung already links — so the C harness links vendored core + optional, zig cc, like meets like.
+think Mirrored the proven trio: tools/fixtures/monocypher_sha512_harness.c (Monocypher printing), tools/monocypher_sha512_parity.rye (over the GREEN module via the existing tools/sha512.rye symlink), tools/crypto_monocypher_sha512_parity_witness.rish (diff byte-for-byte, plus anchor line 1 to FIPS 180-4 SHA-512 of empty and line 2 to SHA-512 of "abc"). Five lines: empty, "abc", and the {111,112,300}-byte edges (length-fits-block, forces-second-block, multi-block) — the same coverage the selftest uses.
+obs GREEN on the first full pass — Monocypher's C and our authored Rye produce byte-identical SHA-512 over all five inputs; both published anchors matched. No crux-on-metal surprise this round (the Ed25519 rung had already taught that the RFC path is the optional module).
+obs Gate-free and purely local: public FIPS vectors and deterministic buffers — no key, no signature, no network, no funds, no device. Constant-time timing-safety stays the one named horizon. Custody gates never approached.
+obs Count guard untouched — the three new files live in tools/ and tools/fixtures/, not crypto/, so crypto/*.rye is unchanged.
+obs Docs synced same round: crypto/README.md and docs/CRYPTO.md moved nine rungs → ten and named the standalone SHA-512 rung; crypto/sha512.rye's header note and GREEN selftest line moved from "held horizon" to "landed."
+loom witness=crypto_monocypher_sha512_parity_witness lines=5 result=GREEN first_pass=true
+file tools/fixtures/monocypher_sha512_harness.c the vendored Monocypher's optional crypto_sha512, compiled fresh, printing five digests
+file tools/monocypher_sha512_parity.rye our authored crypto/sha512.rye printing the same five digests over identical inputs
+file tools/crypto_monocypher_sha512_parity_witness.rish diffs the two byte-for-byte and anchors the two FIPS 180-4 known-answers — GREEN
+file crypto/sha512.rye header note and GREEN selftest line moved Monocypher-source parity from held horizon to landed
+file crypto/README.md the Monocypher-source parity list moved nine rungs → ten, naming standalone SHA-512
+file docs/CRYPTO.md the parity paragraph moved nine rungs → ten, naming standalone SHA-512
+recommend keep-going — an eleventh Monocypher one-shot (HMAC-SHA512 via crypto_sha512_hmac, or a crypto_verify16/32/64 constant-time-compare rung), or the docs-compression molt that feeds the seed; all gate-free and agent-doable.
