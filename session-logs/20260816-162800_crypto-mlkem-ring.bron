@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260816.162800
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) time convention — this session in ai-jail
+title crypto — the ML-KEM base ring, NTT self-consistency GREEN
+prompt Take the next agent-doable lap Lindy-first crux-first on the road ahead; Rye prioritized, send often as signed rounds, approve own design rounds, stop only at custody gates. (Continues the post-quantum pivot seated this session.)
+think The pivot doc named the arc's first rung: the ML-KEM base ring on the doubled oracle. Read FIPS 203's ring — R_q = Z_q[X]/(X^256+1), q=3329, primitive 256th root zeta=17 — and Zig's std/crypto/ml_kem.zig to confirm the parity boundary (Zig computes Montgomery-domain internally; FIPS is standard-domain; they agree only at the encoded byte boundary). So the ring authors the SPEC's standard domain, and this first rung proves itself by self-consistency, exactly where elligator.rye's round-trip stood when Zig shipped nothing to diff.
+think Authored crypto/mlkem_ring.rye: modular add/sub/mul mod 3329 (products < q^2 < 2^24 fit u32), the forward NTT (Algorithm 9, seven Cooley–Tukey butterfly layers, i walking 127 twiddles), the inverse NTT (Algorithm 10, twiddles in reverse then scale by 128^-1 = 3303), and multiply_ntts (Algorithm 11 over the Algorithm 12 base case, 128 degree-1 products under gammas[i] = zeta^(2*BitRev7(i)+1)). The zetas and gammas tables are computed at comptime from the field by square-and-multiply — never a pasted limb — which needed @setEvalBranchQuota(100000) to clear Zig's default 1000-branch comptime budget (the only build hiccup, fixed first try after).
+obs GREEN on the first metal pass. The decisive oracle is negacyclic-convolution self-consistency: inv_ntt(ntt(f) o ntt(g)) equals the schoolbook O(n^2) convolution where a degree>=256 term wraps with a MINUS sign (X^256 = -1) — the definition of the ring, slow and obviously correct — over 64 deterministic pairs, plus the NTT round-trip over 64 non-trivial polys and the primitive-root anchors (zeta^256=1, zeta^128=q-1, 128*3303=1 mod q). Each test refuses a trivial (all-zero) witness. This one property proves the forward transform, the pointwise multiply and its gammas, and the inverse transform all together, with no external dependency.
+obs New crypto/*.rye tripped the count-guard bijection. Registered crypto_mlkem_ring_witness in the suite and bumped counts to 39 primitives + 22 compositions, 60->61 files (a PRIMITIVE — it authors new arithmetic). Also reconciled two stale suite narration lines that still read 38/21/59 from before the prior round. Count guard GREEN at 61; TAME style bans clean (the module carries plenty of contract asserts); crypto/README.md gained a new "Post-quantum" section and docs/CRYPTO.md the rung row, counts synced same round (docs-implementation-sync).
+loom witness=crypto_mlkem_ring result=GREEN round_trip_polys=64 convolution_pairs=64 property=inv_ntt_multiply_eq_negacyclic_schoolbook
+loom witness=crypto_count_guard result=GREEN crypto_files=61
+file crypto/mlkem_ring.rye the ML-KEM base ring in pure Rye — mod-q arithmetic, forward/inverse NTT, NTT-domain multiply, twiddles computed at comptime
+file tools/crypto_mlkem_ring_witness.rish the ring's build+selftest witness, registered in the suite
+file tools/crypto_suite_witness.rish registered the new witness, narration synced to 61 files / 39 primitives / 22 compositions (reconciled two stale lines)
+file crypto/README.md added a Post-quantum section with the mlkem_ring rung, header and suite counts synced to 61
+file docs/CRYPTO.md added the rung row and synced counts on the audit front door
+file work-in-progress/REMEMBER.md git nib + prior nib refreshed to the first post-quantum rung
+recommend keep-going the post-quantum ring stands GREEN; the next Rye-first crux Lindy-first is mlkem_encode.rye — FIPS 203 ByteEncode/ByteDecode and Compress/Decompress over this ring, proven by the encode/decode round-trip, still gate-free and local.
