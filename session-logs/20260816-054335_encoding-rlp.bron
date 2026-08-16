@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260816.054335
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title encoding/rlp.rye — Recursive Length Prefix in pure Rye, parity-GREEN
+prompt take the next agent-doable lap Lindy-first crux-first on the crypto/Rye-first road; Rye prioritized, Glow on green Rye; send each finished increment as its own signed round; stop at custody gates
+think Read the decision-wave design and the six-season double-seat; the crypto suite sits at 41 files GREEN (count guard prints 41), and the git nib names the next crux as either the constant-time timing horizon (wants measurement — a horizon, not a clean agent lap) or a further Ethereum/Bitcoin transaction-encoding rung.
+think Chose the transaction-encoding rung. RLP is the Lindy-first crux-first move: it is the one serialization every Ethereum transaction, account, receipt, and trie node stands on — read thousands of times over years — self-contained, parity-checkable against published vectors, authors no cryptography, and it is the prerequisite that opens the Ethereum transaction-signing rung over the GREEN keccak256 + secp256k1.
+think Placed it in encoding/ beside base58check and bech32 (chain-specific serializations already home there), not crypto/, so the crypto count guard stays 41 untouched. RLP is binary-to-binary rather than binary-to-text, the one such sibling in the encoding shelf.
+think Authored encode_bytes / encode_list_header (the exact two-step transaction signing performs) plus the general recursive encode_item over a str|list union, with a two-pass measure-then-write list encoder so no allocation is needed; bounded by max_item_bytes, max_depth, max_children, every function carrying contract asserts.
+think Parity has no std RLP to lean on (Zig ships none), so proven the base58/bech32 way: the Yellow Paper's own published known-answers byte-for-byte (dog, [cat,dog], empty string/list, 0x00, 1024, the set-theoretic three, the 56-byte Lorem long-string boundary) AND a second independent decoder that reads the length prefixes back — a genuinely different algorithm — round-tripping every vector plus a nine-field transaction-shaped list. Canonical minimality enforced (a wrapped low byte and an over-long length each refuse NonMinimal).
+think One mechanical red: my first transaction vector used single-byte r/s stand-ins, so the 44-byte payload took the short-form list header and the long-form assertion fired TxNotLongForm. Fixed by using realistic 32-byte signature scalars, which genuinely exercises the long-form list header (payload 108 bytes, tag 0xf8) — the right test, not a weakened one.
+obs GREEN on metal on the second build; TAME style bans clean; the new file is not in the zero-assert ratchet list. crypto count guard unaffected (RLP lives in encoding/), so 41 stands.
+obs Signing itself stays the custody gate — RLP is pure public serialization, no key, no signature, no network, no funds, no device. This rung builds the frame a transaction is signed over; a real signature with the maintainer's identity remains gate #3/#4.
+loom witness=encoding_rlp_witness green=1 vectors=8 tx_fields=9 payload_bytes=108
+file encoding/rlp.rye the RLP encoder+decoder authored from Yellow Paper Appendix B, parity two ways
+file tools/encoding_rlp_witness.rish the per-file witness building fresh to encoding/bin and asserting GREEN encoding-rlp
+file encoding/README.md rlp row added to the rungs table and a parity paragraph naming the published known-answers
+recommend keep-going — the natural next rung is the Ethereum legacy-transaction digest (EIP-155): RLP-encode the nine fields, keccak256 the frame, ready for the GREEN secp256k1 signer with a TEST key; signing with a real identity key stays the custody gate
