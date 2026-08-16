@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260816.001751
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title encoding/base64.rye — Base64 authored in pure Rye, parity-GREEN
+prompt Take the next agent-doable lap Lindy-first crux-first past the crypto arc; Rye prioritized, Glow on green Rye; approve your own design rounds; send each finished increment as its own signed round; stop at custody gates.
+think Read the road: REMEMBER (too large to open whole), the 1,024-round itinerary, the six-season double-seat, and the rye-first crypto parity wave. The whole Season G crypto suite runs GREEN — twenty-seven files, verified by tools/crypto_suite_witness.rish this pass — so the seated crypto crux rungs are landed.
+think Lindy-first crux-first past a landed foundation: the highest-Lindy blind spot is that crypto/ hand-rolls a private to_hex in every file and has no shared binary-to-text serialization, yet Kumara identity, Tablecloth content addresses, signed_carry frames, vault_seal blobs, and the recorded Solana base58 address all need one. A self-approved design round seats an encoding/ module, the serialization sibling of Season G, keeping the same parity discipline.
+think First rung chosen crux-first: Base64 (RFC 4648) — universal, bounded, and provable against a reference runnable now (Zig std.base64) exactly as the crypto stack proves against std.crypto. Authored the standard and URL-safe alphabets, the '=' padding law, encode and decode, from RFC 4648 directly; the primitive calls no std.base64.
+obs Parity GREEN two ways: RFC 4648 §10 known-answers ("" · "f" · "fo" · "foo" · "foob" · "fooba" · "foobar") match text-for-text and round-trip back, and our Rye equals Zig's independent std.base64 byte-for-byte across every remainder class for payloads 0..64 bytes, both alphabets. Edges refuse their named errors (BadChar, BadLength, DestTooSmall) before a partial result escapes.
+obs TAME kept: bounded inputs (max_decoded_bytes, max_encoded_bytes), contract asserts on every function, buffer length checked before the first write, unqualified assert, no tame_style bans. Purely local — no key, no network, no funds, no device; no custody gate reached.
+obs Natural next rungs named in the README, not built this round: base58 (Solana/CID alphabet, proven against published vectors + round-trip), base32, and a shared hex to retire the per-file to_hex.
+loom witness=encoding_base64_witness payloads=65 alphabets=2 rfc_vectors=7 result=GREEN
+file encoding/base64.rye the Base64 primitive, authored from RFC 4648, no std.base64 in the primitive
+file tools/encoding_base64_witness.rish the per-file witness, builds fresh and asserts GREEN encoding-base64
+file encoding/README.md the module front door — the serialization sibling of crypto/, next rungs named
+file .gitignore ignore /encoding/bin/ as /crypto/bin/ is ignored
+recommend keep-going next encoding rung is base58 (Solana/CID) or a shared hex; both agent-doable, parity-provable, no gate
