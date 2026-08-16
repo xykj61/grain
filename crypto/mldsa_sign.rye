@@ -1,0 +1,625 @@
+//! crypto/mldsa_sign.rye — Season G (Cryptography): the ML-DSA signing rung, the FIFTH stone of the ML-DSA ladder and the crux of the whole ladder.
+//! FIPS 204 ML-DSA.Sign_internal, authored in pure Rye: it decodes a secret key sk = rho ‖ K ‖ tr ‖ BitPack(s1) ‖ BitPack(s2) ‖ BitPack(t0), computes
+//! mu = H(tr ‖ 0x00 ‖ 0x00 ‖ M) and rho'' = H(K ‖ rnd ‖ mu) (rnd = 32 zero bytes for the deterministic variant), and runs the rejection loop: draw the
+//! mask y = ExpandMask(rho'', kappa), form w = NTT⁻¹(Â ∘ NTT(y)), commit to c~ = H(mu ‖ w1Encode(HighBits(w))), draw the sparse challenge
+//! c = SampleInBall(c~), and answer z = y + c·s1. A signature is emitted only when ‖z‖∞ < γ1−β, ‖LowBits(w) − c·s2‖∞ < γ2−β, ‖c·t0‖∞ < γ2, and the
+//! hint weight ≤ ω all hold; otherwise kappa advances by l and the loop tries again. The signature is sigma = c~ ‖ BitPack(z) ‖ HintBitPack(h). It
+//! composes only GREEN rungs — the base ring (crypto/mldsa_ring.rye), the serialization and rounding (crypto/mldsa_encode.rye), the samplers
+//! (crypto/mldsa_sample.rye), and SHAKE (crypto/shake.rye) — and holds no key of its own: every seed is a public test vector.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
+//! Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — the ML-DSA ladder's signing rung, the door a Kumara identity signs
+//! its name through once the old curves fall.
+//! Kin: crypto/mldsa_keygen.rye (the keypair this signs under, GREEN) · crypto/mldsa_ring.rye (NTT · pointwise multiply, GREEN) · crypto/mldsa_encode.rye
+//! (BitPack · Decompose · HighBits · LowBits · MakeHint, GREEN) · crypto/mldsa_sample.rye (RejNTTPoly · RejBoundedPoly · SampleInBall, GREEN) ·
+//! crypto/shake.rye (SHAKE256). The parity TARGET is Zig's std.crypto sign.mldsa (MLDSA44/65/87), studied clean-room — never a copied line
+//! (.claude/rules/gratitude-licenses.md).
+//!
+//! THE DOUBLED ORACLE — ML-DSA signing is DETERMINISTIC once rnd is fixed (the FIPS deterministic variant sets rnd = 0): the rejection loop walks the
+//! same attempts every run, so exactly one signature answers a given (sk, M). This rung authors the spec's standard-domain signing and proves the
+//! encoded signature byte-for-byte against Zig's newKeyFromSeed(ξ) → sk.signer(null) → finalize → toBytes over several deterministic seeds and messages
+//! at all three parameter sets (ML-DSA-44/65/87). FIPS specifies standard-domain arithmetic while Zig computes internally in Montgomery domain, yet both
+//! normalize to the canonical residue before packing, so the two agree at the published boundary — the encoded signature — exactly as the keygen rung's
+//! keys agree. Two strangers confirming one answer is the discipline the whole library rests on.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. The sign FUNCTION calls no std.crypto — it composes our own GREEN
+//! rungs; only the SELFTEST invokes Zig's std.crypto as the parity oracle to diff against. Every seed and message is a public test vector; signing with
+//! the maintainer's OWN post-quantum identity key stays the custody gate. Constant-time timing-safety stays the Season's named horizon — this rung proves
+//! CORRECTNESS.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/mldsa_sign.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const ring = @import("mldsa_ring.rye");
+const encode = @import("mldsa_encode.rye");
+const sample = @import("mldsa_sample.rye");
+const shake = @import("shake.rye");
+
+pub const mldsa_sign_version = "20260816.171050";
+
+/// ML-DSA's prime modulus and ring degree, borrowed from the base ring so every rung cites one number.
+pub const q: u32 = ring.q;
+pub const n: u32 = ring.n;
+
+/// The largest module dimensions ML-DSA uses (k ≤ 8, l ≤ 7). Every fixed-size buffer is sized for these ceilings so a smaller parameter set simply
+/// uses a prefix; named so the matrix and vectors cite one bound.
+pub const max_k: u32 = 8;
+pub const max_l: u32 = 7;
+
+/// The two FIPS 204 low-bit granularities: γ₂ = (q−1)/88 for ML-DSA-44, (q−1)/32 for ML-DSA-65/87. Borrowed from the encode rung's own named constants.
+pub const gamma2_88: u32 = encode.gamma2_88;
+pub const gamma2_32: u32 = encode.gamma2_32;
+
+/// The dropped-bit count d = 13 (t0 rides 13 bits per coefficient), borrowed from the encode rung so one number is cited.
+pub const power2_d: u32 = encode.power2_d;
+
+/// Fixed FIPS widths: seed/key are 32 bytes, tr 64, rho 32; the deterministic-variant randomness rnd is 32 zero bytes; mu is 64.
+pub const rho_bytes: u32 = 32;
+pub const key_bytes: u32 = 32;
+pub const tr_bytes: u32 = 64;
+pub const rnd_bytes: u32 = 32;
+pub const mu_bytes: u32 = 64;
+
+/// The bytes one packed t0 polynomial produces: 32·13 = 416.
+pub const t0_packed_bytes: u32 = 416;
+
+/// The largest message this rung signs in one call — bounded so the mu-hash input buffer names a maximum rather than reaching for an allocator.
+pub const max_msg_bytes: u32 = 2048;
+
+/// The faults this rung can raise. Every one is either a composed rung's honest error surfaced or a selftest proof that failed — never a normal runtime
+/// outcome once the parity is GREEN.
+pub const SignError = error{
+    /// A composed SHAKE256 call reported a bad length — impossible for our fixed inputs, honored honestly.
+    HashFailed,
+    /// A composed sampler (RejNTTPoly / RejBoundedPoly / SampleInBall) surfaced its own error — impossible for our fixed widths, honored honestly.
+    SampleFailed,
+    /// The rejection loop ran past its (6/7)⁵⁷⁶ < 2⁻¹²⁸ bound without an acceptable signature — never expected for a valid key.
+    RejectExhausted,
+    /// The Zig std.crypto reference signer reported an error in the selftest — never expected for a valid key and message.
+    OracleFailed,
+    /// Our signature length did not match Zig's toBytes length — a parameter-set width was computed wrong.
+    SizeMismatch,
+    /// Our signature disagreed with Zig's byte-for-byte — the mask, challenge, response, or hint diverged from FIPS 204.
+    SigMismatch,
+    /// A produced signature came out all-zero, so a passing parity would prove nothing — the selftest refuses a trivial witness.
+    TrivialWitness,
+};
+
+/// eta_packed_bytes — the bytes one small-secret polynomial packs into: 32·bitlen(2η). η = 2 packs 3 bits per coefficient (96 bytes); η = 4 packs 4 bits
+/// (128 bytes). Matches the keygen rung's own width.
+fn eta_packed_bytes(eta: u32) u32 {
+    // invariant (precondition): eta is one ML-DSA uses.
+    assert(eta == 2 or eta == 4);
+    // invariant (postcondition): the width matches FIPS 204's BitPack(w, η, η) output size.
+    return if (eta == 2) 96 else 128;
+}
+
+/// w1_bit_width — the bits SimpleBitPack lays each HighBits coefficient into: 6 bits at γ₂ = (q−1)/88 (values in [0, 43]), 4 bits at (q−1)/32 (values in
+/// [0, 15]). This is bitlen((q−1)/(2γ₂) − 1), the width w1Encode uses.
+fn w1_bit_width(gamma2: u32) u32 {
+    // invariant (precondition): a FIPS 204 low-bit granularity.
+    assert(gamma2 == gamma2_88 or gamma2 == gamma2_32);
+    return if (gamma2 == gamma2_88) 6 else 4;
+}
+
+/// res_from_centered — lift a centered integer in (−q, q) back to its canonical residue in [0, q). A negative value wraps by one modulus.
+fn res_from_centered(c: i32) u32 {
+    // invariant (precondition): the value is a small centered integer, never as large as the modulus.
+    assert(c > -@as(i32, @intCast(q)) and c < @as(i32, @intCast(q)));
+    if (c < 0) return @as(u32, @intCast(c + @as(i32, @intCast(q))));
+    return @as(u32, @intCast(c));
+}
+
+/// center_small — the centered representative of a residue known to be small (|value| < q/2), used to present z to BitPack. A residue above the midpoint
+/// is really a small negative.
+fn center_small(r: u32) i32 {
+    // invariant (precondition): a canonical residue.
+    assert(r < q);
+    const half: u32 = (q - 1) / 2;
+    if (r <= half) return @as(i32, @intCast(r));
+    return @as(i32, @intCast(r)) - @as(i32, @intCast(q));
+}
+
+/// norm_exceeds — does any coefficient's centered infinity norm reach the bound? The centered norm of a residue r is (q−1)/2 − |((q−1)/2) − r|, the same
+/// symmetric measure ML-DSA's rejection tests use; the predicate returns true (reject) the instant one coefficient reaches `bound`.
+fn norm_exceeds(cs: *const [n]u32, bound: u32) bool {
+    const half: i32 = @as(i32, @intCast((q - 1) / 2));
+    var i: u32 = 0;
+    // invariant (bound): exactly n = 256 coefficients examined, one per turn.
+    while (i < n) : (i += 1) {
+        const x: i32 = half - @as(i32, @intCast(cs[i]));
+        const abs_x: i32 = if (x < 0) -x else x;
+        // invariant: |x| ≤ (q−1)/2 for any residue, so the norm sits in [0, (q−1)/2] and the cast to u32 is safe.
+        assert(abs_x <= half);
+        const norm: u32 = @as(u32, @intCast(half - abs_x));
+        if (norm >= bound) return true;
+    }
+    return false;
+}
+
+/// make_hint_bit — the one hint bit for a coefficient: given the accumulated low part z0 = LowBits(w − c·s2 + c·t0) as a residue and the committed high
+/// part r1 = HighBits(w), a hint is needed unless z0 sits inside the centered γ₂ window (with the single boundary case z0 = q − γ₂ excused only when
+/// r1 = 0). This is FIPS 204's MakeHint expressed on the accumulated residue, the form ML-DSA's signer carries.
+fn make_hint_bit(z0: u32, r1: u32, gamma2: u32) u32 {
+    // invariant (precondition): a canonical residue and a FIPS granularity.
+    assert(z0 < q);
+    assert(gamma2 == gamma2_88 or gamma2 == gamma2_32);
+    const cond1: u32 = if (z0 <= gamma2) 1 else 0;
+    const cond2: u32 = if (z0 > q - gamma2) 1 else 0;
+    const cond3: u32 = if (z0 == q - gamma2 and r1 == 0) 1 else 0;
+    const any: u32 = cond1 | cond2 | cond3;
+    // invariant (postcondition): the result is a single bit.
+    return 1 - any;
+}
+
+/// expand_mask_poly — FIPS 204 ExpandMask (Algorithm 34) for one polynomial: SHAKE256 over rho'' ‖ IntegerToBytes(nonce, 2) yields 32·(γ₁-bits + 1)
+/// bytes, which BitUnpack reads back into coefficients in (−γ₁, γ₁]; the residue form is returned for the NTT. Composes the GREEN SHAKE and encode rungs.
+fn expand_mask_poly(rho_pp: *const [64]u8, nonce: u16, gamma1_bits: u32) SignError!ring.Poly {
+    const gamma1: u32 = @as(u32, 1) << @as(u5, @intCast(gamma1_bits));
+    var iv: [66]u8 = undefined;
+    var t: u32 = 0;
+    // invariant (bound): copy exactly the 64-byte rho'' prefix, one per turn.
+    while (t < 64) : (t += 1) iv[t] = rho_pp[t];
+    iv[64] = @as(u8, @intCast(nonce & 0xFF));
+    iv[65] = @as(u8, @intCast(nonce >> 8));
+
+    const packed_len: u32 = 32 * (gamma1_bits + 1);
+    var pk: encode.Packed = .{ .bytes = [_]u8{0} ** encode.max_bytes, .len = packed_len };
+    shake.shake256(iv[0..], pk.bytes[0..packed_len]) catch return error.HashFailed;
+
+    const signed = encode.bit_unpack(&pk, gamma1 - 1, gamma1);
+    var out: ring.Poly = .{ .cs = [_]u32{0} ** n };
+    var i: u32 = 0;
+    // invariant (bound): exactly n = 256 coefficients lifted to residue form, one per turn.
+    while (i < n) : (i += 1) out.cs[i] = res_from_centered(signed[i]);
+    return out;
+}
+
+/// packed_from — copy a byte slice into an encode.Packed scratch (the fixed-capacity carrier the bit-unpackers read), recording its true length. Bounded
+/// by the carrier's own 640-byte ceiling.
+fn packed_from(src: []const u8) encode.Packed {
+    // invariant (precondition): the slice fits the carrier and is a whole-byte packing.
+    assert(src.len <= encode.max_bytes);
+    var p: encode.Packed = .{ .bytes = [_]u8{0} ** encode.max_bytes, .len = @as(u32, @intCast(src.len)) };
+    var i: u32 = 0;
+    // invariant (bound): exactly src.len bytes copied, one per turn.
+    while (i < src.len) : (i += 1) p.bytes[i] = src[i];
+    return p;
+}
+
+/// decode_poly_ntt — read one packed secret polynomial (s1/s2 at η, or t0 at 2¹²±) into its NTT-domain form: BitUnpack to centered coefficients, lift to
+/// residues, forward-NTT. The cached ŝ the rejection loop multiplies the challenge against.
+fn decode_poly_ntt(src: []const u8, a: u32, b: u32) ring.Poly {
+    const p = packed_from(src);
+    const signed = encode.bit_unpack(&p, a, b);
+    var poly: ring.Poly = .{ .cs = [_]u32{0} ** n };
+    var i: u32 = 0;
+    // invariant (bound): exactly n = 256 coefficients lifted, one per turn.
+    while (i < n) : (i += 1) poly.cs[i] = res_from_centered(signed[i]);
+    return ring.ntt(&poly);
+}
+
+/// c_mul — the NTT-domain product invNTT(ĉ ∘ x̂), the standard-domain polynomial c·x. Composes the GREEN pointwise multiply and inverse NTT.
+fn c_mul(c_hat: *const ring.Poly, x_hat: *const ring.Poly) ring.Poly {
+    const prod = ring.multiply_ntts(c_hat, x_hat);
+    return ring.inv_ntt(&prod);
+}
+
+/// accum_row — one row of w = Â ∘ ŷ folded and returned to the standard domain: Σ_j Â[i][j] ∘ ŷ[j], each addend a canonical residue, then invNTT. The
+/// same composition the keygen rung's computeT used for t.
+fn accum_row(a_row: *const [max_l]ring.Poly, y_hat: *const [max_l]ring.Poly, l: u32) ring.Poly {
+    var acc: ring.Poly = .{ .cs = [_]u32{0} ** n };
+    var j: u32 = 0;
+    // invariant (bound): exactly l pointwise products accumulated, never unbounded.
+    while (j < l) : (j += 1) {
+        const prod = ring.multiply_ntts(&a_row[j], &y_hat[j]);
+        var c: u32 = 0;
+        // invariant (bound): exactly n = 256 coefficients folded, one per turn.
+        while (c < n) : (c += 1) {
+            // invariant: both addends are canonical residues, so the sum stays below 2q before the single reduction.
+            assert(acc.cs[c] < q and prod.cs[c] < q);
+            acc.cs[c] = (acc.cs[c] + prod.cs[c]) % q;
+        }
+    }
+    return ring.inv_ntt(&acc);
+}
+
+/// hint_bit_pack — FIPS 204 HintBitPack (Algorithm 20): the ω + k signature tail. The first ω bytes hold the positions of the set hint bits, laid poly
+/// by poly in increasing order; byte ω + i records the running count after polynomial i; any unused position bytes are zero. Assumes the total weight is
+/// already ≤ ω (the caller rejected otherwise).
+fn hint_bit_pack(hint: *const [max_k][n]u32, k: u32, omega: u32, out: []u8) void {
+    // invariant (precondition): the tail is exactly ω + k bytes.
+    assert(out.len == omega + k);
+    var idx: u32 = 0;
+    var i: u32 = 0;
+    // invariant (bound): exactly k polynomials, each contributing its set positions then a boundary byte.
+    while (i < k) : (i += 1) {
+        var j: u32 = 0;
+        // invariant (bound): exactly n = 256 positions scanned, one per turn.
+        while (j < n) : (j += 1) {
+            if (hint[i][j] != 0) {
+                // invariant: the total weight is ≤ ω, so idx never overruns the ω-byte position region.
+                assert(idx < omega);
+                out[idx] = @as(u8, @intCast(j));
+                idx += 1;
+            }
+        }
+        out[omega + i] = @as(u8, @intCast(idx));
+    }
+    // invariant (bound): zero-fill the unused position bytes, one per turn.
+    while (idx < omega) : (idx += 1) out[idx] = 0;
+}
+
+/// sign — FIPS 204 ML-DSA.Sign_internal, parameterized by the module dimensions k, l, the noise η, the mask width γ₁-bits, the low-bit granularity γ₂,
+/// the challenge weight τ, the hint budget ω, and the commitment size ctilde. Writes the encoded signature (ctilde + 32·(γ₁-bits+1)·l + ω + k bytes) into
+/// sig_out. The deterministic variant fixes rnd = 0. Composes only GREEN rungs; every seed and message is a public test vector, never a real identity.
+pub fn sign(
+    comptime k: u32,
+    comptime l: u32,
+    comptime eta: u32,
+    comptime gamma1_bits: u32,
+    comptime gamma2: u32,
+    comptime tau: u32,
+    comptime omega: u32,
+    comptime ctilde: u32,
+    sk_bytes: []const u8,
+    msg: []const u8,
+    sig_out: []u8,
+) SignError!void {
+    // invariant (precondition): a valid parameter set, a bounded message, and buffers of exactly the FIPS sizes.
+    assert(k >= 4 and k <= max_k);
+    assert(l >= 4 and l <= max_l);
+    assert(eta == 2 or eta == 4);
+    assert(gamma1_bits == 17 or gamma1_bits == 19);
+    assert(gamma2 == gamma2_88 or gamma2 == gamma2_32);
+    assert(msg.len <= max_msg_bytes);
+    const gamma1: u32 = @as(u32, 1) << @as(u5, @intCast(gamma1_bits));
+    const beta: u32 = tau * eta;
+    const eta_bytes: u32 = eta_packed_bytes(eta);
+    const w1_bits: u32 = w1_bit_width(gamma2);
+    const w1_poly_bytes: u32 = 32 * w1_bits;
+    const z_poly_bytes: u32 = 32 * (gamma1_bits + 1);
+    const sk_len: u32 = rho_bytes + key_bytes + tr_bytes + eta_bytes * (l + k) + t0_packed_bytes * k;
+    const sig_len: u32 = ctilde + z_poly_bytes * l + omega + k;
+    assert(sk_bytes.len == sk_len);
+    assert(sig_out.len == sig_len);
+
+    // ---- decode the secret key: rho ‖ K ‖ tr ‖ BitPack(s1) ‖ BitPack(s2) ‖ BitPack(t0) ----
+    var rho: [rho_bytes]u8 = undefined;
+    var key: [key_bytes]u8 = undefined;
+    var tr: [tr_bytes]u8 = undefined;
+    var off: u32 = 0;
+    var t: u32 = 0;
+    // invariant (bound): copy the 32-byte rho.
+    while (t < rho_bytes) : (t += 1) rho[t] = sk_bytes[off + t];
+    off += rho_bytes;
+    t = 0;
+    // invariant (bound): copy the 32-byte K.
+    while (t < key_bytes) : (t += 1) key[t] = sk_bytes[off + t];
+    off += key_bytes;
+    t = 0;
+    // invariant (bound): copy the 64-byte tr.
+    while (t < tr_bytes) : (t += 1) tr[t] = sk_bytes[off + t];
+    off += tr_bytes;
+
+    // ŝ1[j] = NTT(BitUnpack(s1[j], η, η)) for j in 0..l.
+    var s1_hat: [max_l]ring.Poly = undefined;
+    var i: u32 = 0;
+    // invariant (bound): exactly l secret polynomials decoded.
+    while (i < l) : (i += 1) {
+        s1_hat[i] = decode_poly_ntt(sk_bytes[off .. off + eta_bytes], eta, eta);
+        off += eta_bytes;
+    }
+    // ŝ2[i] = NTT(BitUnpack(s2[i], η, η)) for i in 0..k.
+    var s2_hat: [max_k]ring.Poly = undefined;
+    i = 0;
+    // invariant (bound): exactly k secret polynomials decoded.
+    while (i < k) : (i += 1) {
+        s2_hat[i] = decode_poly_ntt(sk_bytes[off .. off + eta_bytes], eta, eta);
+        off += eta_bytes;
+    }
+    // t̂0[i] = NTT(BitUnpack(t0[i], 2¹²−1, 2¹²)) for i in 0..k.
+    const t0_a: u32 = (@as(u32, 1) << @as(u5, @intCast(power2_d - 1))) - 1; // 2¹² − 1 = 4095
+    const t0_b: u32 = @as(u32, 1) << @as(u5, @intCast(power2_d - 1)); // 2¹² = 4096
+    var t0_hat: [max_k]ring.Poly = undefined;
+    i = 0;
+    // invariant (bound): exactly k low-part polynomials decoded.
+    while (i < k) : (i += 1) {
+        t0_hat[i] = decode_poly_ntt(sk_bytes[off .. off + t0_packed_bytes], t0_a, t0_b);
+        off += t0_packed_bytes;
+    }
+    // invariant (postcondition): every secret-key byte was consumed exactly once.
+    assert(off == sk_len);
+
+    // Â[i][j] = RejNTTPoly(rho, j, i) — the same public matrix keygen drew, recomputed from rho (a signer never stores A).
+    var a_hat: [max_k][max_l]ring.Poly = undefined;
+    i = 0;
+    // invariant (bound): exactly k rows, each with exactly l columns.
+    while (i < k) : (i += 1) {
+        var j: u32 = 0;
+        while (j < l) : (j += 1) {
+            a_hat[i][j] = sample.rej_ntt_poly(&rho, @as(u8, @intCast(j)), @as(u8, @intCast(i))) catch return error.SampleFailed;
+        }
+    }
+
+    // ---- mu = H(tr ‖ 0x00 ‖ 0x00 ‖ M) and rho'' = H(K ‖ rnd ‖ mu), rnd = 0 (the deterministic variant) ----
+    var mu_in: [tr_bytes + 2 + max_msg_bytes]u8 = undefined;
+    t = 0;
+    // invariant (bound): copy the 64-byte tr prefix of the mu input.
+    while (t < tr_bytes) : (t += 1) mu_in[t] = tr[t];
+    mu_in[tr_bytes] = 0; // domain separator: 0 for pure ML-DSA
+    mu_in[tr_bytes + 1] = 0; // context length: 0 (no context)
+    t = 0;
+    // invariant (bound): copy exactly msg.len message bytes.
+    while (t < msg.len) : (t += 1) mu_in[tr_bytes + 2 + t] = msg[t];
+    const mu_used: u32 = tr_bytes + 2 + @as(u32, @intCast(msg.len));
+    var mu: [mu_bytes]u8 = undefined;
+    shake.shake256(mu_in[0..mu_used], mu[0..]) catch return error.HashFailed;
+
+    var rp_in: [key_bytes + rnd_bytes + mu_bytes]u8 = undefined;
+    t = 0;
+    // invariant (bound): copy the 32-byte K.
+    while (t < key_bytes) : (t += 1) rp_in[t] = key[t];
+    t = 0;
+    // invariant (bound): the 32-byte rnd is all zero for the deterministic variant.
+    while (t < rnd_bytes) : (t += 1) rp_in[key_bytes + t] = 0;
+    t = 0;
+    // invariant (bound): copy the 64-byte mu.
+    while (t < mu_bytes) : (t += 1) rp_in[key_bytes + rnd_bytes + t] = mu[t];
+    var rho_pp: [64]u8 = undefined;
+    shake.shake256(rp_in[0..], rho_pp[0..]) catch return error.HashFailed;
+
+    // ---- the rejection loop: kappa advances by l each attempt, bounded by (6/7)⁵⁷⁶ < 2⁻¹²⁸ so the loop always terminates ----
+    var attempt: u32 = 0;
+    // invariant (bound): at most 576 attempts, never unbounded — an unacceptable run past the bound is an honest RejectExhausted.
+    while (attempt < 576) : (attempt += 1) {
+        const kappa: u32 = attempt * l;
+
+        // y[i] = ExpandMask(rho'', kappa + i); ŷ[i] = NTT(y[i]). Keep the residue-domain y for z and the NTT-domain ŷ for w.
+        var y_res: [max_l]ring.Poly = undefined;
+        var y_hat: [max_l]ring.Poly = undefined;
+        var idx: u32 = 0;
+        // invariant (bound): exactly l mask polynomials drawn, nonces kappa..kappa+l−1.
+        while (idx < l) : (idx += 1) {
+            y_res[idx] = try expand_mask_poly(&rho_pp, @as(u16, @intCast(kappa + idx)), gamma1_bits);
+            y_hat[idx] = ring.ntt(&y_res[idx]);
+        }
+
+        // w[i] = invNTT(Σ_j Â[i][j] ∘ ŷ[j]); (w1[i], w0[i]) = (HighBits, LowBits) of w[i], coefficient by coefficient.
+        var w1: [max_k][n]u32 = undefined;
+        var w0_res: [max_k][n]u32 = undefined;
+        i = 0;
+        // invariant (bound): exactly k rows decomposed.
+        while (i < k) : (i += 1) {
+            const w_row = accum_row(&a_hat[i], &y_hat, l);
+            var c: u32 = 0;
+            // invariant (bound): exactly n coefficients split, one per turn.
+            while (c < n) : (c += 1) {
+                const split = encode.decompose(w_row.cs[c], gamma2);
+                w1[i][c] = split.r1;
+                w0_res[i][c] = res_from_centered(split.r0);
+            }
+        }
+
+        // c~ = H(mu ‖ w1Encode(w1)); c = SampleInBall(c~); ĉ = NTT(c).
+        var ct_in: [mu_bytes + max_k * 32 * 6]u8 = undefined;
+        t = 0;
+        // invariant (bound): copy the 64-byte mu prefix of the commitment input.
+        while (t < mu_bytes) : (t += 1) ct_in[t] = mu[t];
+        i = 0;
+        // invariant (bound): exactly k packed w1 polynomials laid end to end.
+        while (i < k) : (i += 1) {
+            const w1_packed = encode.simple_bit_pack(&w1[i], w1_bits);
+            var b: u32 = 0;
+            // invariant (bound): exactly w1_poly_bytes per polynomial.
+            while (b < w1_poly_bytes) : (b += 1) ct_in[mu_bytes + w1_poly_bytes * i + b] = w1_packed.bytes[b];
+        }
+        const ct_used: u32 = mu_bytes + w1_poly_bytes * k;
+        var c_tilde: [64]u8 = undefined;
+        shake.shake256(ct_in[0..ct_used], c_tilde[0..ctilde]) catch return error.HashFailed;
+
+        const c_poly = sample.sample_in_ball(c_tilde[0..ctilde], tau) catch return error.SampleFailed;
+        const c_hat = ring.ntt(&c_poly);
+
+        // z[i] = y[i] + c·s1[i]; reject if ‖z‖∞ ≥ γ1 − β.
+        var z: [max_l][n]u32 = undefined;
+        var reject: bool = false;
+        i = 0;
+        // invariant (bound): exactly l response polynomials formed, one per turn.
+        while (i < l and !reject) : (i += 1) {
+            const cs1 = c_mul(&c_hat, &s1_hat[i]);
+            var c: u32 = 0;
+            // invariant (bound): exactly n coefficients summed, one per turn.
+            while (c < n) : (c += 1) {
+                // invariant: both addends are canonical residues, so their sum stays below 2q before the single reduction.
+                assert(y_res[i].cs[c] < q and cs1.cs[c] < q);
+                z[i][c] = (y_res[i].cs[c] + cs1.cs[c]) % q;
+            }
+            if (norm_exceeds(&z[i], gamma1 - beta)) reject = true;
+        }
+        if (reject) continue;
+
+        // r0[i] = LowBits(w) − c·s2[i]; ct0[i] = c·t0[i]; hint[i] = MakeHint(−ct0, r0 + ct0) vs w1. Reject on the r0, ct0, and hint-weight bounds.
+        var ct0: [max_k][n]u32 = undefined;
+        var w0mcs2: [max_k][n]u32 = undefined;
+        i = 0;
+        // invariant (bound): exactly k rows for the r0 and ct0 checks, one per turn.
+        while (i < k and !reject) : (i += 1) {
+            const cs2 = c_mul(&c_hat, &s2_hat[i]);
+            const ct0_row = c_mul(&c_hat, &t0_hat[i]);
+            var c: u32 = 0;
+            // invariant (bound): exactly n coefficients per row, one per turn.
+            while (c < n) : (c += 1) {
+                assert(w0_res[i][c] < q and cs2.cs[c] < q);
+                // w0_res − cs2 in (−q, q); add q to land in (0, 2q) then a single reduction gives the canonical residue.
+                const diff: u32 = w0_res[i][c] + q - cs2.cs[c];
+                w0mcs2[i][c] = diff % q;
+                ct0[i][c] = ct0_row.cs[c];
+            }
+            if (norm_exceeds(&w0mcs2[i], gamma2 - beta)) reject = true;
+            if (!reject and norm_exceeds(&ct0[i], gamma2)) reject = true;
+        }
+        if (reject) continue;
+
+        // hint[i][c] = MakeHint(−ct0, (w0 − c·s2) + ct0) committed against w1; reject if the total weight exceeds ω.
+        var hint: [max_k][n]u32 = undefined;
+        var weight: u32 = 0;
+        i = 0;
+        // invariant (bound): exactly k rows of hints computed, one per turn.
+        while (i < k) : (i += 1) {
+            var c: u32 = 0;
+            // invariant (bound): exactly n coefficients per row, one per turn.
+            while (c < n) : (c += 1) {
+                const z0: u32 = (w0mcs2[i][c] + ct0[i][c]) % q;
+                const h = make_hint_bit(z0, w1[i][c], gamma2);
+                hint[i][c] = h;
+                weight += h;
+            }
+        }
+        if (weight > omega) continue;
+
+        // ---- accept: sigma = c~ ‖ BitPack(z, γ1−1, γ1) ‖ HintBitPack(hint) ----
+        var so: u32 = 0;
+        t = 0;
+        // invariant (bound): copy the ctilde-byte commitment.
+        while (t < ctilde) : (t += 1) sig_out[so + t] = c_tilde[t];
+        so += ctilde;
+        i = 0;
+        // invariant (bound): exactly l packed response polynomials.
+        while (i < l) : (i += 1) {
+            var z_signed: [n]i32 = undefined;
+            var c: u32 = 0;
+            // invariant (bound): exactly n coefficients centered before packing, one per turn.
+            while (c < n) : (c += 1) z_signed[c] = center_small(z[i][c]);
+            const z_packed = encode.bit_pack(&z_signed, gamma1 - 1, gamma1);
+            var b: u32 = 0;
+            // invariant (bound): exactly z_poly_bytes per polynomial.
+            while (b < z_poly_bytes) : (b += 1) sig_out[so + b] = z_packed.bytes[b];
+            so += z_poly_bytes;
+        }
+        hint_bit_pack(&hint, k, omega, sig_out[so .. so + omega + k]);
+        so += omega + k;
+        // invariant (postcondition): every signature byte was written exactly once.
+        assert(so == sig_len);
+        return;
+    }
+    return error.RejectExhausted;
+}
+
+// ---- selftest ----------------------------------------------------------------------------------------------------------------------
+
+/// bytes_from_seed — fill a byte buffer deterministically from a seed with the same tiny LCG the ring, encode, sample, and keygen rungs use, so a failing
+/// run always reruns identically without any std.crypto.
+fn bytes_from_seed(seed: u32, buf: []u8) void {
+    var state: u32 = seed *% 2654435761 +% 1013904223;
+    var i: u32 = 0;
+    // invariant (bound): exactly buf.len bytes written, one per turn.
+    while (i < buf.len) : (i += 1) {
+        state = state *% 1664525 +% 1013904223;
+        buf[i] = @as(u8, @intCast((state >> 8) & 0xFF));
+    }
+}
+
+/// all_zero — is a byte slice entirely zero? A produced signature that is must not pass a parity check, or the witness would prove nothing.
+fn all_zero(buf: []const u8) bool {
+    var i: u32 = 0;
+    // invariant (bound): exactly buf.len bytes examined, one per turn.
+    while (i < buf.len) : (i += 1) {
+        if (buf[i] != 0) return false;
+    }
+    return true;
+}
+
+/// check_param — the doubled oracle for one parameter set: our pure-Rye deterministic sign versus Zig's std.crypto reference, byte-for-byte over one seed
+/// and one message. Dsa is the Zig type (mldsa.MLDSA44/65/87); the remaining arguments name our matching parameters. Zig's newKeyFromSeed gives the sk we
+/// diff against; sk.signer(null) is the deterministic (rnd = 0) signer whose finalize().toBytes() is exactly the FIPS signature.
+fn check_param(
+    comptime Dsa: type,
+    comptime k: u32,
+    comptime l: u32,
+    comptime eta: u32,
+    comptime gamma1_bits: u32,
+    comptime gamma2: u32,
+    comptime tau: u32,
+    comptime omega: u32,
+    comptime ctilde: u32,
+    xi: *const [32]u8,
+    msg: []const u8,
+) SignError!void {
+    var kp = Dsa.newKeyFromSeed(xi);
+    const sk_ref = kp.sk.toBytes();
+
+    var st = kp.sk.signer(null) catch return error.OracleFailed;
+    st.update(msg);
+    const sig = st.finalize();
+    const sig_ref = sig.toBytes();
+
+    const z_poly_bytes: u32 = 32 * (gamma1_bits + 1);
+    const sig_len: u32 = ctilde + z_poly_bytes * l + omega + k;
+    // invariant: our width arithmetic must match Zig's own encoded signature length for this parameter set.
+    if (sig_ref.len != sig_len) return error.SizeMismatch;
+
+    var sig_mine: [4627]u8 = undefined; // the largest ML-DSA signature (ML-DSA-87) — every set uses a prefix.
+    try sign(k, l, eta, gamma1_bits, gamma2, tau, omega, ctilde, sk_ref[0..], msg, sig_mine[0..sig_len]);
+
+    // A signature that is all zero would make a byte match meaningless — refuse the trivial witness before the diff.
+    if (all_zero(sig_mine[0..sig_len])) return error.TrivialWitness;
+
+    var b: u32 = 0;
+    // invariant (bound): compare exactly sig_len bytes, one per turn.
+    while (b < sig_len) : (b += 1) {
+        if (sig_mine[b] != sig_ref[b]) return error.SigMismatch;
+    }
+}
+
+fn run_selftest() !u8 {
+    const mldsa = std.crypto.sign.mldsa;
+
+    // Over a deterministic spread of seeds and messages, our pure-Rye ML-DSA.Sign_internal must match Zig's std.crypto deterministic signer
+    // byte-for-byte at every parameter set. This is the ML-DSA ladder's crux: the ExpandMask draw, the w = A·y product, the c~ commitment, the
+    // SampleInBall challenge, the z = y + c·s1 response, the r0/ct0/hint rejection bounds, and the signature serialization all meet Zig's independent
+    // implementation at once. A single wrong stone fails the diff. The signature is deterministic (rnd = 0), so the rejection loop walks identically.
+    {
+        var seed: u32 = 1;
+        // invariant (bound): exactly six deterministic seeds, one per turn.
+        while (seed <= 6) : (seed += 1) {
+            var xi: [32]u8 = undefined;
+            bytes_from_seed(seed, xi[0..]);
+            // Two messages per seed: a short one and a longer one, both public test vectors.
+            var msg_a: [3]u8 = undefined;
+            bytes_from_seed(seed *% 7 +% 1, msg_a[0..]);
+            var msg_b: [96]u8 = undefined;
+            bytes_from_seed(seed *% 13 +% 5, msg_b[0..]);
+
+            // ML-DSA-44: k=4 l=4 η=2 γ1-bits=17 γ2=(q-1)/88 τ=39 ω=80 ctilde=32.
+            try check_param(mldsa.MLDSA44, 4, 4, 2, 17, gamma2_88, 39, 80, 32, &xi, msg_a[0..]);
+            try check_param(mldsa.MLDSA44, 4, 4, 2, 17, gamma2_88, 39, 80, 32, &xi, msg_b[0..]);
+            // ML-DSA-65: k=6 l=5 η=4 γ1-bits=19 γ2=(q-1)/32 τ=49 ω=55 ctilde=48.
+            try check_param(mldsa.MLDSA65, 6, 5, 4, 19, gamma2_32, 49, 55, 48, &xi, msg_a[0..]);
+            try check_param(mldsa.MLDSA65, 6, 5, 4, 19, gamma2_32, 49, 55, 48, &xi, msg_b[0..]);
+            // ML-DSA-87: k=8 l=7 η=2 γ1-bits=19 γ2=(q-1)/32 τ=60 ω=75 ctilde=64.
+            try check_param(mldsa.MLDSA87, 8, 7, 2, 19, gamma2_32, 60, 75, 64, &xi, msg_a[0..]);
+            try check_param(mldsa.MLDSA87, 8, 7, 2, 19, gamma2_32, 60, 75, 64, &xi, msg_b[0..]);
+        }
+    }
+
+    print("GREEN crypto-mldsa-sign: the ML-DSA signing rung (FIPS 204 ML-DSA.Sign_internal), authored in pure Rye as the ML-DSA ladder's crux. It " ++
+        "decodes the secret key, computes mu = H(tr then 0x00 0x00 then M) and rho'' = H(K then rnd then mu) with rnd = 0 (the deterministic variant), " ++
+        "and runs the rejection loop: draw the mask y = ExpandMask(rho'', kappa), form w = invNTT(A pointwise-multiply NTT(y)), commit to " ++
+        "c~ = H(mu then w1Encode(HighBits(w))), draw the sparse challenge c = SampleInBall(c~), answer z = y + c*s1, and emit only when the z, r0, ct0, " ++
+        "and hint-weight bounds all hold. The signature c~ then BitPack(z) then HintBitPack(h) is proven byte-for-byte against Zig's independent " ++
+        "std.crypto sign.mldsa deterministic signer at ALL THREE parameter sets (ML-DSA-44, ML-DSA-65, ML-DSA-87) over 6 deterministic seeds and 2 " ++
+        "messages each: our standard-domain arithmetic and Zig's Montgomery-domain arithmetic agree at the published signature boundary because ML-DSA " ++
+        "signing is deterministic once rnd is fixed. The sign function composes only GREEN rungs and calls no std.crypto; only this selftest invokes " ++
+        "Zig as the parity oracle. Purely local — every seed and message a public test vector, no key held, no network, no funds, no real device; " ++
+        "signing with the maintainer's own post-quantum key stays the custody gate, constant-time timing-safety the named horizon.\n", .{});
+    return 0;
+}
+
+pub fn main(init_args: std.process.Init) !u8 {
+    _ = init_args;
+    return run_selftest();
+}
