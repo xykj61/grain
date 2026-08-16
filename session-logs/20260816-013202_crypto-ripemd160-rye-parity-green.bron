@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260816.013202
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host cloud pier — Eastern (EDT) time convention
+title crypto/ripemd160.rye — RIPEMD-160 in pure Rye, parity-GREEN
+prompt Keaton's recursion baton: take the next agent-doable lap Lindy-first crux-first, Rye prioritized, send each finished increment as its own signed round; stop at custody gates.
+think Read REMEMBER + the 1024-round itinerary + the six-season double-seat + the rye-first-crypto-parity wave; the living edge is Season G (Cryptography), each round one Rye primitive parity-witnessed and sent on its own. Recent rungs: sha256, hmac/hkdf/pbkdf2, base64/58/58check/32/hex/bech32/pem, keccak256.
+think Lindy-first crux-first among the open crypto/encoding blind spots: RIPEMD-160. Base58Check and Bech32 (the Bitcoin address encoders) landed in the last few commits and Keccak-256 opened the Ethereum side, yet the hash that completes Bitcoin's HASH160 = RIPEMD-160(SHA-256(x)) was missing. A hash primitive is maximally Lindy; RIPEMD-160 is the crux that turns the just-landed encoders into real addresses over the already-GREEN sha256.rye.
+think Authored from the specification directly: five-word initial state, two parallel eighty-step lines with mirrored nonlinear functions (right line reads f in reverse), mirrored message schedules rl/rr, mirrored rotations sl/sr, own round constants kl/kr, little-endian words, 64-bit little-endian bit length, wrapping +% for mod 2^32. Modeled the file/witness shape on crypto/sha256.rye exactly.
+think Zig's std.crypto ships no RIPEMD reference (confirmed in vendor/zig-toolchain), so parity follows the base58 discipline: the RIPEMD-160 authors' published known-answer suite — empty, "a", "abc", "message digest", the alphabet, the 56-byte "abcdbcde…" boundary (forces a second padding block), a 62-byte alphanumeric string, eight "1234567890" (80 bytes, multi-block), one million "a" (thousands of blocks) — plus HASH160 composed live over crypto/sha256.rye.
+obs One red the metal caught, not a re-read: the first selftest failed only on "abc", off by the final nibble, while empty/"a"/"message digest"/alphabet all matched the published values exactly. A one-nibble error on a single input is impossible for a real algorithm bug, so the constant was suspect — a WebFetch of the KU Leuven RIPEMD-160 page confirmed the canonical RIPEMD-160("abc") ends in fc, not ff; the ff was the common misremembering carried into my hardcoded vector. Fixed the constant; the implementation was correct all along. Measurement beat memory both ways — the metal caught the bad constant, and an authoritative source settled it rather than my recollection.
+obs Registered ripemd160 in crypto_suite_witness after sha256 (dependency order); the whole suite now proves twenty-nine files (twenty-six primitives + three compositions), GREEN re-run confirmed. Seated in crypto/README.md under Hashes and docs/CRYPTO.md.
+loom witness=crypto_ripemd160_witness vectors=9 million_a_bytes=1000000 digest_bytes=20 result=GREEN
+loom witness=crypto_suite_witness files=29 primitives=26 compositions=3 result=GREEN
+file crypto/ripemd160.rye the primitive — RIPEMD-160 authored from the specification, two parallel lines, parity against the published KAT suite
+file tools/crypto_ripemd160_witness.rish per-file witness — builds fresh to crypto/bin and asserts the GREEN crypto-ripemd160 line
+file tools/crypto_suite_witness.rish registered ripemd160 after sha256; counts bumped to twenty-nine files / twenty-six primitives
+file crypto/README.md seats RIPEMD-160 under Hashes, naming the HASH160 pipeline and the downstream encoders
+file docs/CRYPTO.md audit front door — RIPEMD-160 row added under the hash table
+recommend keep-going — the next Lindy crux is secp256k1 (the curve that, with RIPEMD-160 + HASH160 + Base58Check/Bech32 and Keccak-256, closes both Bitcoin and Ethereum address derivation in authored Rye); non-gated, agent-doable.

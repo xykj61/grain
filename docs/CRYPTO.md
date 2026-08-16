@@ -46,6 +46,7 @@ rung had not already proven. Every file carries a per-file witness
 | `blake2b.rye` | BLAKE2b-512 — Monocypher's hash · the key-derivation hash | RFC 7693 |
 | `sha3.rye` | SHA3-256 · SHA3-512 over Keccak-f[1600] — the hash Aurora names content with | FIPS 202 |
 | `sha256.rye` | SHA-256 — the hash Tablecloth keys content with, and Mycelium places and seeds by | FIPS 180-4 |
+| `ripemd160.rye` | RIPEMD-160 — the second half of Bitcoin's HASH160 = RIPEMD-160(SHA-256(x)), the address step Base58Check and Bech32 encode; composes over the GREEN `sha256.rye` | RIPEMD-160 (Dobbertin·Bosselaers·Preneel) |
 
 ### Keyed hash and key derivation
 

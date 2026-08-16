@@ -33,6 +33,7 @@ authoring cryptography a lower rung had not already proven.
 | [`sha3.rye`](sha3.rye) | SHA3-256 · SHA3-512 over Keccak-f[1600] (the hash Aurora's content-addressed store names content with) | FIPS 202 |
 | [`sha256.rye`](sha256.rye) | SHA-256 (the hash Tablecloth keys content with, and the Mycelium consensus spine places worlds and seeds constel identities by) | FIPS 180-4 |
 | [`keccak256.rye`](keccak256.rye) | Keccak-256 — the Ethereum-family hash (an account address is the low 20 bytes of the Keccak-256 of a public key, an EVM function dispatches on the first 4 bytes of the Keccak-256 of its signature, every EIP-191/712 digest is a Keccak-256). NOT SHA3-256: same permutation, one differing byte — the original Keccak `0x01` delimiter rather than FIPS 202's `0x06`. Composes the GREEN `sha3.rye` sponge; authors no new cryptography | original Keccak · FIPS 202 |
+| [`ripemd160.rye`](ripemd160.rye) | RIPEMD-160 — the 160-bit hash that completes Bitcoin's HASH160 = RIPEMD-160(SHA-256(x)), the address-derivation step [`../encoding/base58check.rye`](../encoding/base58check.rye) and [`../encoding/bech32.rye`](../encoding/bech32.rye) encode. Two parallel eighty-step lines over a five-word state, little-endian. Zig ships no RIPEMD reference, so proven against the RIPEMD-160 authors' published known-answer suite; HASH160 composes live over the GREEN `sha256.rye` | RIPEMD-160 (Dobbertin·Bosselaers·Preneel) |
 
 ### Keyed hash and key derivation
 

@@ -1,0 +1,40 @@
+# tools/crypto_ripemd160_witness.rish — RIPEMD-160 authored in pure Rye: Season G's 160-bit hash, the second half of Bitcoin's HASH160
+# = RIPEMD-160(SHA-256(x)), proven against the RIPEMD-160 authors' published known-answer suite (Season G · Cryptography).
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats Season G).
+# Kin: crypto/sha256.rye (HASH160's first hash, GREEN), encoding/base58check.rye and encoding/bech32.rye (the address encoders
+# downstream). Monocypher ships no RIPEMD-160 and Zig's std.crypto ships no RIPEMD codec, so this hash is authored from the specification
+# directly, our own arithmetic, clean-room (.claude/rules/gratitude-licenses.md).
+#
+# crypto/ripemd160.rye authors RIPEMD-160 from the standard — the five-word initial state, the two parallel eighty-step lines with their
+# mirrored nonlinear functions, message schedules, rotations, and round constants, little-endian words and a 64-bit little-endian bit
+# length. The primitive calls no std.crypto. Zig ships no RIPEMD reference, so parity is proven at selftest against the RIPEMD-160
+# authors' published known-answers: the empty message, "a", "abc", "message digest", the lowercase alphabet, the 56-byte "abcdbcde…"
+# boundary (the edge that forces a second all-padding block), a 62-byte alphanumeric string, eight "1234567890" repetitions (80 bytes,
+# multi-block), and one million "a" (thousands of blocks) — each matched hex for hex. HASH160 = RIPEMD-160(SHA-256(x)) composes live over
+# the GREEN crypto/sha256.rye. An over-long message refuses MessageTooLong before a byte is mixed. Purely local — no key, no signature,
+# no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_ripemd160_witness.rish
+
+say "crypto-ripemd160: Language EN — Season G's 160-bit hash: RIPEMD-160 (Dobbertin·Bosselaers·Preneel, 1996), the second half of Bitcoin's HASH160 = RIPEMD-160(SHA-256(x)) — the address-derivation step the tree's just-landed Base58Check (encoding/base58check.rye) and Bech32 (encoding/bech32.rye) both encode. SHA-256 already stands in our own GREEN Rye; this rung adds the second hash of that pipeline, so a public key can travel all the way to a Bitcoin address in authored Grain arithmetic."
+say "crypto-ripemd160: Style Radiant — the law is stated positively: each 64-byte block folds through two parallel eighty-step lines over a five-word state, the left line reading the five nonlinear functions in order and the right line reading them mirrored, with mirrored message schedules, mirrored rotations, and their own round constants, every word little-endian, every add mod 2^32, the message padded with a 0x80 marker and a 64-bit little-endian bit length so the same bytes always fold to the same 20-byte digest anyone can replay against the standard."
+say "crypto-ripemd160: Lens TAME — the primitive calls no std.crypto; it is authored from the specification, bounded input (max_message_bytes), contract asserts on every function, wrapping +% where the math is mod 2^32. Zig ships no RIPEMD reference, so parity holds against the RIPEMD-160 authors' published known-answer suite — the empty message, \"a\", \"abc\", \"message digest\", the alphabet, the 56-byte boundary vector, a 62-byte alphanumeric string, eight \"1234567890\" repetitions, and one million \"a\" — each hex for hex; HASH160 composes live over the GREEN crypto/sha256.rye; an over-long message refuses MessageTooLong before a byte is mixed. Purely local — no key, no signature, no network, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/ripemd160"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/ripemd160.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-ripemd160: build failed — ${build.err}"
+
+let outfile = "crypto/bin/ripemd160.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-ripemd160: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-ripemd160: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-ripemd160' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-ripemd160: selftest did not print the GREEN crypto-ripemd160 line"
