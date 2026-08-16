@@ -1,0 +1,316 @@
+//! encoding/base32.rye — Base32 (RFC 4648) authored in pure Rye. Base32 is the binary-to-text form that survives a channel even harsher
+//! than Base64's: a single case, no punctuation, and an alphabet (A–Z 2–7) chosen so no symbol collides with another read aloud or typed on
+//! a phone keypad. It is the form a TOTP secret is shared in, the form an onion address and a CIDv1 content id wear, the form a value is
+//! written when it must be dictated over a voice call. The crypto library proves the bytes; this module renders them to text and back,
+//! byte-for-byte, so a hand can carry a key or a seal through a case-folding, punctuation-stripping channel and recover it exactly.
+//!
+//! Season: encoding — the serialization sibling of Season G (Cryptography), beside base64.rye, base58.rye, and base58check.rye. Both keep
+//! the same discipline: authored from the standard, calling no std codec in the primitive, proven byte-for-byte against a reference runnable now.
+//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
+//! Clean-room: the alphabet and the padding law are RFC 4648's own; the arithmetic is ours (.claude/rules/gratitude-licenses.md).
+//!
+//! THE CRUX — Base32 packs five 8-bit bytes into eight 5-bit symbols, each symbol an index into a 32-character alphabet (A–Z 2–7). A short
+//! final group pads with '=' so the text length is always a multiple of eight; the legal pad counts are exactly 0, 1, 3, 4, or 6 '='
+//! characters, one count per remainder class (5, 4, 3, 2, 1 leftover bytes). Decoding inverts the map, refusing any character outside the
+//! alphabet and any padding shape that cannot come from whole bytes. Every step is a bounded loop over small integers.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no key, no network, no funds, no real device. The primitive calls no std base32 (Zig ships
+//! none) and no std.crypto. Parity is proven at selftest against two references runnable now: the RFC 4648 §10 known-answer vectors
+//! ("" · "f" · "fo" · "foo" · "foob" · "fooba" · "foobar"), and a second, INDEPENDENT implementation authored here that packs each 5-byte
+//! group through a native u64 — byte-for-byte across every remainder class, plus a round-trip on random-shaped inputs.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run encoding/base32.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const base32_version = "20260816.003259";
+
+/// The RFC 4648 base32 alphabet: A–Z then 2–7, one glyph per 5-bit value. encode and decode read the symbol map from this one source.
+pub const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+const pad_char: u8 = '=';
+
+/// The largest binary payload this module encodes, or the largest decode it produces in one call. Generous for a key, a secret, a content
+/// id, or any in-process artifact — named so every buffer bound and every loop cites a maximum, the TAME reflex that a count declares its
+/// ceiling before it grows.
+pub const max_decoded_bytes: u32 = 1 << 20;
+
+/// The largest text this module encodes to, and the largest input it decodes: eight base32 symbols per five payload bytes, rounded up to a
+/// whole eight-symbol block.
+pub const max_encoded_bytes: u32 = ((max_decoded_bytes + 4) / 5) * 8;
+
+/// The faults this module can raise, each refused at the edge before a partial result escapes.
+pub const Base32Error = error{
+    /// An input larger than max_decoded_bytes (encode) or max_encoded_bytes (decode) — refused before a symbol is written.
+    TooLong,
+    /// The caller's destination buffer is smaller than the exact output length — refused before the first write.
+    DestTooSmall,
+    /// A decode input whose length is not a multiple of eight, or whose pad count is not a legal RFC 4648 count (0, 1, 3, 4, or 6).
+    BadLength,
+    /// A decode input carrying a character outside the alphabet (and not the pad).
+    BadChar,
+};
+
+/// The exact number of base32 symbols an n-byte payload encodes to: always filled to a multiple of eight with '=' padding.
+pub fn encoded_len(n: u32) u32 {
+    // invariant: the payload fits the named bound, so the multiply never overflows u32.
+    assert(n <= max_decoded_bytes);
+    return ((n + 4) / 5) * 8;
+}
+
+// The number of pad characters for each leftover-byte count (index 0..4 = 0,1,2,3,4 leftover bytes). 5 leftover bytes is a whole group
+// (0 pads); a 1-byte tail writes 2 symbols + 6 pads, 2 bytes → 4 symbols + 4 pads, 3 bytes → 5 symbols + 3 pads, 4 bytes → 7 symbols + 1 pad.
+const pads_for_rem = [_]u32{ 0, 6, 4, 3, 1 };
+const symbols_for_rem = [_]u32{ 0, 2, 4, 5, 7 };
+
+/// Encode source as base32 (RFC 4648, padded). Returns the exact written slice of dest. The primitive calls no std codec — it maps five
+/// bits at a time straight from the alphabet, accumulating bits in a small integer.
+pub fn encode(dest: []u8, source: []const u8) Base32Error![]const u8 {
+    if (source.len > max_decoded_bytes) return error.TooLong;
+    const n: u32 = @intCast(source.len);
+    // invariant: the bounded cast named exactly the source bytes.
+    assert(n == source.len);
+
+    const want = encoded_len(n);
+    if (dest.len < want) return error.DestTooSmall;
+
+    var di: u32 = 0;
+    var si: u32 = 0;
+    // Whole 5-byte groups → 8 symbols each, via a 40-bit accumulator.
+    while (n - si >= 5) : (si += 5) {
+        var acc: u64 = 0;
+        var b: u32 = 0;
+        while (b < 5) : (b += 1) acc = (acc << 8) | @as(u64, source[si + b]);
+        var s: u32 = 0;
+        while (s < 8) : (s += 1) {
+            const shift: u6 = @intCast((7 - s) * 5);
+            dest[di] = alphabet[@as(u8, @intCast((acc >> shift) & 0x1f))];
+            di += 1;
+        }
+    }
+
+    const rem = n - si;
+    // invariant: the leftover is 0..4 bytes — every whole group was consumed above.
+    assert(rem < 5);
+    if (rem > 0) {
+        var acc: u64 = 0;
+        var b: u32 = 0;
+        while (b < rem) : (b += 1) acc = (acc << 8) | @as(u64, source[si + b]);
+        // Left-align the partial group to the top of a 40-bit field so the symbols read from the high bits.
+        acc = acc << @as(u6, @intCast((5 - rem) * 8));
+        const nsym = symbols_for_rem[rem];
+        var s: u32 = 0;
+        while (s < nsym) : (s += 1) {
+            const shift: u6 = @intCast((7 - s) * 5);
+            dest[di] = alphabet[@as(u8, @intCast((acc >> shift) & 0x1f))];
+            di += 1;
+        }
+        var p: u32 = 0;
+        while (p < pads_for_rem[rem]) : (p += 1) {
+            dest[di] = pad_char;
+            di += 1;
+        }
+    }
+
+    // invariant: exactly the predicted number of symbols was written.
+    assert(di == want);
+    return dest[0..di];
+}
+
+/// Build the 256-entry reverse lookup: each symbol maps to its 0..31 value, every other byte to the sentinel 0xFF.
+fn reverse_table() [256]u8 {
+    // invariant: the alphabet is the 32 symbols the table inverts.
+    assert(alphabet.len == 32);
+    var table = [_]u8{0xFF} ** 256;
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) table[alphabet[i]] = @as(u8, @intCast(i));
+    return table;
+}
+
+// The number of payload bytes recovered from a group carrying this many pad characters (index by pad count; 0xFF marks an illegal count).
+const bytes_for_pads = [_]u8{ 5, 4, 0xFF, 3, 2, 0xFF, 1, 0xFF };
+
+/// Decode base32 text back to its bytes. The input must be a multiple of eight and end in a legal RFC 4648 pad count. Returns the exact
+/// written slice. Inverts encode: eight 5-bit symbols accumulate back into five bytes.
+pub fn decode(dest: []u8, source: []const u8) Base32Error![]const u8 {
+    if (source.len > max_encoded_bytes) return error.TooLong;
+    const table = reverse_table();
+    const enc_len: u32 = @intCast(source.len);
+    // invariant: the bounded cast named exactly the source length.
+    assert(enc_len == source.len);
+    if (enc_len % 8 != 0) return error.BadLength;
+    if (enc_len == 0) return dest[0..0];
+
+    // Count trailing pad characters (only the last group may carry them) and map the count to a leftover-byte count.
+    var pads: u32 = 0;
+    while (pads < 8 and source[enc_len - 1 - pads] == pad_char) pads += 1;
+    if (pads > 6) return error.BadLength;
+    const last_bytes = bytes_for_pads[pads];
+    if (last_bytes == 0xFF) return error.BadLength;
+
+    const full_groups = (enc_len / 8) - 1;
+    const out_len = full_groups * 5 + last_bytes;
+    if (dest.len < out_len) return error.DestTooSmall;
+
+    var gi: u32 = 0;
+    var di: u32 = 0;
+    // Whole groups (all but the last) always yield five bytes.
+    while (gi < full_groups) : (gi += 1) {
+        const base = gi * 8;
+        var acc: u64 = 0;
+        var s: u32 = 0;
+        while (s < 8) : (s += 1) {
+            const v = table[source[base + s]];
+            if (v == 0xFF) return error.BadChar;
+            acc = (acc << 5) | @as(u64, v);
+        }
+        var b: u32 = 0;
+        while (b < 5) : (b += 1) {
+            const shift: u6 = @intCast((4 - b) * 8);
+            dest[di] = @as(u8, @intCast((acc >> shift) & 0xff));
+            di += 1;
+        }
+    }
+
+    // The last group: read its non-pad symbols into the high bits, then emit exactly last_bytes bytes.
+    {
+        const base = full_groups * 8;
+        // A full final group (0 pads → 5 bytes) reads all eight symbols; a padded tail reads the count for its leftover bytes.
+        const nsym = if (last_bytes == 5) @as(u32, 8) else symbols_for_rem[last_bytes];
+        var acc: u64 = 0;
+        var s: u32 = 0;
+        while (s < nsym) : (s += 1) {
+            const v = table[source[base + s]];
+            if (v == 0xFF) return error.BadChar;
+            acc = (acc << 5) | @as(u64, v);
+        }
+        // Left-align to a 40-bit field so the high bytes are the recovered payload.
+        acc = acc << @as(u6, @intCast((8 - nsym) * 5));
+        var b: u32 = 0;
+        while (b < last_bytes) : (b += 1) {
+            const shift: u6 = @intCast((4 - b) * 8);
+            dest[di] = @as(u8, @intCast((acc >> shift) & 0xff));
+            di += 1;
+        }
+    }
+
+    // invariant: exactly the predicted number of bytes was written.
+    assert(di == out_len);
+    return dest[0..di];
+}
+
+// The RFC 4648 §10 known-answer vectors for base32 — the neutral public reference our Rye must reproduce exactly.
+const rfc_inputs = [_][]const u8{ "", "f", "fo", "foo", "foob", "fooba", "foobar" };
+const rfc_outputs = [_][]const u8{ "", "MY======", "MZXQ====", "MZXW6===", "MZXW6YQ=", "MZXW6YTB", "MZXW6YTBOI======" };
+
+fn slice_eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) {
+        if (a[i] != b[i]) return false;
+    }
+    return true;
+}
+
+/// Independent reference: a second base32 encoder that packs each 5-byte group into a native u64 and reads the eight symbols out, written
+/// as a genuinely different structure from the primary above (whole-group u64 packing rather than the primary's shared accumulator loop).
+/// Used ONLY inside the selftest, since Zig ships no std base32 to check against. Returns the exact written slice of dest.
+fn ref_encode(dest: []u8, source: []const u8) []const u8 {
+    var di: u32 = 0;
+    var si: u32 = 0;
+    while (si < source.len) {
+        const rem_all = source.len - si;
+        const take = if (rem_all >= 5) @as(u32, 5) else @as(u32, @intCast(rem_all));
+        var group: u64 = 0;
+        var b: u32 = 0;
+        while (b < 5) : (b += 1) {
+            const byte: u64 = if (b < take) @as(u64, source[si + b]) else 0;
+            group = (group << 8) | byte;
+        }
+        const nsym = symbols_for_rem[if (take == 5) @as(u32, 0) else take];
+        const symbols = if (take == 5) @as(u32, 8) else nsym;
+        var s: u32 = 0;
+        while (s < symbols) : (s += 1) {
+            const shift: u6 = @intCast((7 - s) * 5);
+            dest[di] = alphabet[@as(u8, @intCast((group >> shift) & 0x1f))];
+            di += 1;
+        }
+        const pads = if (take == 5) @as(u32, 0) else pads_for_rem[take];
+        var p: u32 = 0;
+        while (p < pads) : (p += 1) {
+            dest[di] = pad_char;
+            di += 1;
+        }
+        si += take;
+    }
+    return dest[0..di];
+}
+
+fn run_selftest() !u8 {
+    var ebuf: [128]u8 = undefined;
+    var dbuf: [128]u8 = undefined;
+
+    // 1. The RFC 4648 §10 known-answers: each input encodes to the published text, and that text decodes back to the input.
+    {
+        var i: u32 = 0;
+        while (i < rfc_inputs.len) : (i += 1) {
+            const got = try encode(&ebuf, rfc_inputs[i]);
+            if (!slice_eq(got, rfc_outputs[i])) return error.RfcVectorMismatch;
+            const back = try decode(&dbuf, rfc_outputs[i]);
+            if (!slice_eq(back, rfc_inputs[i])) return error.RfcRoundtripMismatch;
+        }
+    }
+
+    // 2. Independent-implementation parity across every remainder class and a round-trip: our authored encoder equals the second u64-group
+    //    reference byte-for-byte, and decode recovers the original exactly, for payloads 0..64 bytes.
+    {
+        var big: [64]u8 = undefined;
+        var n: u32 = 0;
+        while (n <= 64) : (n += 1) {
+            var k: u32 = 0;
+            while (k < n) : (k += 1) big[k] = @as(u8, @truncate(k *% 37 +% 11));
+            const src = big[0..n];
+
+            var ours: [128]u8 = undefined;
+            var refb: [128]u8 = undefined;
+            const o = try encode(&ours, src);
+            const r = ref_encode(&refb, src);
+            if (!slice_eq(o, r)) return error.RefEncodeMismatch;
+
+            var round: [128]u8 = undefined;
+            const b = try decode(&round, o);
+            if (!slice_eq(b, src)) return error.RoundtripMismatch;
+        }
+    }
+
+    // 3. The edges refuse: a bad character, a bad length, a bad pad count, and a too-small destination each raise their named error before a
+    //    partial result escapes.
+    {
+        var junk: [16]u8 = undefined;
+        if (decode(&junk, "MZXW6YT1")) |_| return error.BadCharSlipped else |err| if (err != error.BadChar) return error.WrongBadChar;
+        if (decode(&junk, "MZXW6")) |_| return error.BadLengthSlipped else |err| if (err != error.BadLength) return error.WrongBadLength;
+        // Five pads is not a legal RFC 4648 count (only 0,1,3,4,6 are legal).
+        if (decode(&junk, "MZX=====")) |_| return error.BadPadSlipped else |err| if (err != error.BadLength) return error.WrongBadPad;
+        var tiny: [1]u8 = undefined;
+        if (encode(&tiny, "foobar")) |_| return error.DestSlipped else |err| if (err != error.DestTooSmall) return error.WrongDest;
+    }
+
+    print("GREEN encoding-base32: Base32 (RFC 4648) authored in pure Rye — the binary-to-text form that survives a case-folding, " ++
+        "punctuation-stripping channel: a single case, no punctuation, an alphabet (A–Z 2–7) chosen so no symbol confuses another read " ++
+        "aloud or typed on a keypad — the form a TOTP secret, an onion address, or a CIDv1 content id wears. Five payload bytes pack into " ++
+        "eight five-bit symbols indexed from the alphabet; a short final group pads with '=' to a multiple of eight, the legal pad counts " ++
+        "exactly 0, 1, 3, 4, or 6. Decoding inverts the map and refuses any symbol outside the alphabet and any pad shape that cannot come " ++
+        "from whole bytes. Parity holds against two references runnable now: the RFC 4648 §10 known-answers (\"\" · \"f\" · \"fo\" · " ++
+        "\"foo\" · \"foob\" · \"fooba\" · \"foobar\") match text for text and round-trip back, and our authored Rye equals a second, " ++
+        "independent u64-group implementation byte-for-byte across every remainder class for payloads 0..64 bytes. A bad character refuses " ++
+        "BadChar, a bad length or illegal pad count refuses BadLength, a too-small destination refuses DestTooSmall — each before a " ++
+        "partial result escapes. Purely local arithmetic — no std base32 (Zig ships none), no key, no network, no funds, no real device. " ++
+        "The case-safe text armor now stands in our own Rye, beside Base64 and Base58 in the Season G serialization siblings.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

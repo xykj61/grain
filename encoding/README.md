@@ -24,10 +24,12 @@ implementation.
 | [`base64.rye`](base64.rye) | Base64 — standard (padded, `+ /`) and URL-safe (unpadded, `- _`) alphabets, encode and decode | RFC 4648 |
 | [`base58.rye`](base58.rye) | Base58 — the Bitcoin alphabet (no `0 O I l`, no `+ /`, no padding) an address, a public key, or a content id wears when a human reads or types it, encode and decode | Bitcoin Core convention |
 | [`base58check.rye`](base58check.rye) | Base58Check — a version byte, the payload, and a four-byte double-SHA-256 checksum rendered in Base58, the self-verifying form a real address wears (a mistyped character fails the check). Composition, no new cryptography | Bitcoin convention |
+| [`base32.rye`](base32.rye) | Base32 — the case-safe, punctuation-free alphabet (A–Z 2–7) a TOTP secret, an onion address, or a CIDv1 content id wears; five bytes into eight symbols, `=` padding, encode and decode | RFC 4648 |
 
-**Natural next rungs** (named, not yet built): **base32** (RFC 4648, the
-case-insensitive form) and a shared **hex** primitive to retire the per-file
-`to_hex` each crypto witness now hand-rolls.
+**Natural next rungs** (named, not yet built): a shared **hex** primitive to
+retire the per-file `to_hex` each crypto witness now hand-rolls, and the
+lowercase / no-pad Base32 variants (RFC 4648 §6 and the CIDv1 form) when a
+surface needs them.
 
 Base58 carries no independent `std` codec to check against (Zig ships none), so
 its parity is proven the way the standard itself is trusted: against the canonical

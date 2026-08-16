@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260816.003712
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS cloud pier — Eastern (EDT) time convention
+title encoding/base32.rye — Base32 (RFC 4648) in pure Rye, parity-GREEN
+prompt recur the road ahead Lindy-first crux-first, Rye prioritized; send each finished increment as its own signed round; stop at custody gates
+think Third encoding lap. base32 is the RFC 4648 case-safe form a TOTP secret, an onion address, and a CIDv1 content id wear — genuinely useful, and it completes the near-term encoding rung set (base64, base58, base58check, base32), leaving only the hex consolidation.
+think Mirrored base64's shape: RFC 4648 §10 known-answers, an independent second implementation for byte-for-byte parity (Zig ships no std base32), edge refusals. Primary packs five bytes into a 40-bit accumulator and reads eight 5-bit symbols; the reference packs each 5-byte group into a u64 by a different structure, so agreement is a real cross-check.
+think One red, caught and booked (REDS-first): the first metal run panicked index-out-of-bounds — a full final group (0 pads => last_bytes 5) indexed symbols_for_rem[5] on a length-5 table. What caught it: the selftest itself, on the round-trip of 5/10/... byte inputs whose last group is full. What it taught: the leftover-byte tables are indexed 0..4 for PADDED tails only; a full final group is the 8-symbol case and must be special-cased. Fixed with an explicit nsym = if (last_bytes == 5) 8 else symbols_for_rem[last_bytes]; GREEN on the re-run.
+obs GREEN on the second metal pass; the RFC §10 vectors matched text-for-text and round-tripped, independent u64-group parity matched 0..64 bytes, BadChar / BadLength (bad length and illegal pad count 5) / DestTooSmall all refused. tame_style_check bans clean.
+obs No custody gate touched — purely local arithmetic, no key, no network, no funds, no device. The address/text-armor arc now stands whole in our own Rye beside Season G.
+loom witness=encoding_base32_witness green=1 rfc_vectors=7 independent_parity_bytes=0..64 roundtrip=all reds=1_caught
+file encoding/base32.rye Base32 encode/decode in pure Rye, RFC 4648, parity-proven
+file tools/encoding_base32_witness.rish per-file witness building fresh and asserting the GREEN line
+file encoding/README.md seats base32 in the rung table; next rungs trimmed to hex and the base32 variants
+recommend keep-going a shared hex primitive to retire the per-file to_hex across the crypto witnesses is the last named encoding rung; agent-doable, touches many files, no gate
