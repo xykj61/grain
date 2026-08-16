@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260816.131831
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title crypto — Monocypher-source parity for XChaCha20-Poly1305 flagship, GREEN
+prompt Take the next agent-doable lap Lindy-first crux-first on the crypto-parity / decision-wave road; Rye prioritized; send each finished increment; stop at custody gates
+think Read REMEMBER (too large to load whole), the 1024-round itinerary, the six-season double-seat, and the Rye-first crypto-parity decision wave; recent nib is five Monocypher-source parity rungs GREEN (BLAKE2b, X25519, Ed25519, ChaCha20-Poly1305 AEAD, Argon2)
+think Lindy-first crux-first: the crypto library serves every module that signs or verifies — highest-Lindy new thread. Crux hunt found a real gap: the AEAD rung proved only the IETF 12-byte-nonce path (crypto_aead_init_ietf); Monocypher's FLAGSHIP crypto_aead_lock is XChaCha20-Poly1305 (24-byte nonce, HChaCha20 subkey), the API Lotus/Vault/Comlink actually call, and it had NO Monocypher-source parity — only crypto/xchacha20.rye self-test
+think crypto/xchacha20.rye already implements exactly the crypto_aead_lock construction (HChaCha20 subkey + RFC 8439 AEAD, draft-irtf-cfrg-xchacha §2.3); mirrored the proven parity pattern: C harness over the unmodified vendored source, Rye printing harness over the GREEN module, Rishi witness diffing byte-for-byte and anchoring to a published KAT
+think Reused the published known-answer already in xchacha20.rye's selftest (Zig std.crypto neutral vector: key 0x45x32, nonce 0x2ax24, aad 'Additional data', RFC 114-byte plaintext) so the anchor is a real second implementation, never a recited constant
+obs GREEN on the first full pass — Monocypher's crypto_aead_lock and our crypto/xchacha20.rye produce byte-identical ciphertext (994d2dd3…bde9aaf) and tag (5a94b8f2…e234), both matching the published KAT
+obs Count guard untouched: added only tools/ files plus one tools/xchacha20.rye symlink, so crypto/*.rye stays 56 (guard GREEN). Gate-free and purely local — published test vector, no real key, no signature, no network, no funds, no device
+obs Docs synced in the same round: crypto/README.md and docs/CRYPTO.md moved Monocypher-source parity from five rungs to six, naming the XChaCha20-Poly1305 flagship and why it matters (the API the higher modules reach for)
+loom witness=crypto_monocypher_xaead_parity_witness result=green primitive=xchacha20_poly1305 aead_lock=1 msg_bytes=114 tag_bytes=16 count_guard=56
+file tools/fixtures/monocypher_xaead_harness.c Monocypher C harness over the unmodified vendored crypto_aead_lock, prints ciphertext then tag
+file tools/monocypher_xaead_parity.rye Rye printing harness over the GREEN crypto/xchacha20.rye seal, same two hex lines
+file tools/crypto_monocypher_xaead_parity_witness.rish builds both, diffs byte-for-byte, anchors both to the published KAT
+file tools/xchacha20.rye symlink so the Rye harness resolves the crypto module beside it
+file crypto/README.md parity note moved five rungs to six, XChaCha20-Poly1305 flagship named
+file docs/CRYPTO.md same six-rung sync, RFC-or-published known-answer wording
+recommend keep-going — the seventh parity rung (a further Monocypher one-shot such as crypto_verify or the raw XChaCha20 stream) is mechanical and gate-free; crypto stays the highest-Lindy thread until an audit surface or the Lotus signing gate calls
