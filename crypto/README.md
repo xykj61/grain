@@ -19,7 +19,7 @@ a message: **Kumara** identity, **Vault** sealed storage, **Comlink** sessions, 
 the **Lotus** signed carry. It authors the mathematics once, in the open, so a hand
 placing trust in it can read exactly what it does.
 
-## The fifty-eight files — thirty-seven primitives and twenty-one compositions
+## The fifty-nine files — thirty-eight primitives and twenty-one compositions
 
 Built in dependency order: each rung stands on the GREEN rungs beneath it, none
 authoring cryptography a lower rung had not already proven.
@@ -83,6 +83,7 @@ authoring cryptography a lower rung had not already proven.
 | File | What it is | Reference |
 |---|---|---|
 | [`elligator.rye`](elligator.rye) | Elligator 2 over Curve25519 — the map that hides an X25519 public key as a **uniformly random 32-byte string** and reads it back, the primitive an obfuscated handshake (Comlink's random-looking first packet) reaches for. `map` takes a 254-bit representative to a Montgomery u-coordinate (square it, fold through w = −A / (1 + 2·r²), select the square or non-square branch by one shared `invsqrt`); `rev` takes a representable u-coordinate back to a representative under a random tweak, reporting failure for the ~half of points that are not representable. Adds no new field — a new use of the GREEN [`fe25519.rye`](fe25519.rye), its three constants derived from the field (A = 486662, A² = A·A, ufactor = −2·√(−1)) with √(−1) the one embedded value, verified equal to Monocypher's own. Zig ships no Elligator, so parity is Monocypher's OWN published `elligator_dir`/`elligator_inv` vectors quoted byte-for-byte (both branches; an unrepresentable point) plus the round-trip identity `map(rev(map(h))) = map(h)`; the inverse map's one representability test is deliberately variable-time (keys tried at random), constant-time timing-safety the named horizon | Elligator 2 (Bernstein·Hamburg·Krasnova·Lange) · Monocypher `crypto_elligator_map`/`rev` |
+| [`x25519_dirty.rye`](x25519_dirty.rye) | The **dirty** X25519 public key — the piece that makes the Elligator hiding above actually uniform. A CLEAN X25519 public key always lands in the prime-order subgroup, so hiding it with Elligator would leak that structure to an observer who knows the trick; the dirty key leaves the cofactor component **in**, ranging over the whole curve, so its representative is genuinely indistinguishable from noise — the key `crypto_elligator_key_pair` and Comlink's obfuscated first packet reach for. Three steps over the GREEN Montgomery ladder, no new field mathematics: trim the secret scalar the EdDSA way (clear the low three cofactor bits, clear bit 255, set bit 254), add the main factor of those bits back as `(secret_key[0] mod 8)·L` modulo 2²⁵⁶ (the `add_xl` eight-word add over the group order L, derived here from its RFC 8032 defining form, never a pasted limb), then run the FULL 256-bit ladder — **unclamped**, the one difference from [`x25519.rye`](x25519.rye)'s clean ladder — against a fixed order-8·L base point (Monocypher's documented public curve constant). Zig ships no dirty X25519, so parity is doubled Monocypher-source: our `dirty_small` equals BOTH Monocypher's `crypto_x25519_dirty_small` AND `crypto_x25519_dirty_fast` byte-for-byte over sixteen keys (its two paths agree by design, so the key we reproduce is canonical); constant-time timing-safety the named horizon, and a dirty public key is not itself a secret | Curve25519 (Bernstein) · Monocypher `crypto_x25519_dirty_small`/`fast` |
 
 ### The secp256k1 curve (the Bitcoin/Ethereum curve)
 
@@ -135,7 +136,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 ```
 
 [`../tools/crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) runs all
-fifty-eight per-file witnesses in the dependency order above, rebuilding and reproving
+fifty-nine per-file witnesses in the dependency order above, rebuilding and reproving
 each from source, and refuses whole — naming the file that stopped it — the moment
 any one goes RED, and then runs the **count guard**
 ([`../tools/crypto_count_guard_witness.rish`](../tools/crypto_count_guard_witness.rish)) —

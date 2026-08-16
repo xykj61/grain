@@ -1,6 +1,6 @@
 # Crypto — the Season G audit front door
 
-*A Rye-native, parity-checked cryptography library — thirty-seven primitives and twenty-one compositions, each GREEN on metal.*
+*A Rye-native, parity-checked cryptography library — thirty-eight primitives and twenty-one compositions, each GREEN on metal.*
 
 **Status:** Checkable — Season G operator + auditor guide
 **Depth:** guide
@@ -32,7 +32,7 @@ vectors — never a copied line ([`gratitude-licenses.md`](../.claude/rules/grat
 
 ---
 
-## Rung table — fifty-eight files, dependency order
+## Rung table — fifty-nine files, dependency order
 
 Each rung stands on the GREEN rungs beneath it; none authors cryptography a lower
 rung had not already proven. Every file carries a per-file witness
@@ -92,6 +92,7 @@ rung had not already proven. Every file carries a per-file witness
 | `x25519.rye` | X25519 ECDH (Montgomery ladder) | RFC 7748 |
 | `ed25519_to_x25519.rye` | The birational Edwards↔Montgomery key conversion — one identity key both signs and agrees | RFC 7748 §4.1 |
 | `elligator.rye` | Elligator 2 over Curve25519 — hides an X25519 public key as a uniformly random 32-byte string and reads it back (the obfuscated-handshake primitive). `map` (254-bit representative → u-coordinate) and `rev` (representable u-coordinate → representative under a random tweak, failing for ~half of points), over one shared `invsqrt` and the GREEN `fe25519.rye`; parity is Monocypher's OWN Elligator vectors byte-for-byte plus the round-trip identity, the inverse map's representability test deliberately variable-time | Elligator 2 · Monocypher `crypto_elligator_map`/`rev` |
+| `x25519_dirty.rye` | The **dirty** X25519 public key — makes the Elligator hiding above uniform. A clean X25519 key sits in the prime-order subgroup (structure an observer could spot); the dirty key leaves the cofactor component in, ranging over the whole curve, so its representative is indistinguishable from noise (the key `crypto_elligator_key_pair` and Comlink's obfuscated first packet reach for). Three steps over the GREEN Montgomery ladder: trim the scalar the EdDSA way, add the cofactor back as `(sk[0] mod 8)·L` mod 2²⁵⁶ (`add_xl`, L derived from its RFC 8032 form), then run the full 256-bit ladder **unclamped** against an order-8·L base point. Zig ships none, so parity is doubled Monocypher-source: our `dirty_small` equals BOTH `crypto_x25519_dirty_small` AND `crypto_x25519_dirty_fast` byte-for-byte | Curve25519 · Monocypher `crypto_x25519_dirty_small`/`fast` |
 
 ### The secp256k1 base field (the Bitcoin/Ethereum curve)
 
@@ -141,7 +142,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 
 [`crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) rebuilds each
 `crypto/<name>.rye` fresh from source to the gitignored `crypto/bin/` and runs all
-fifty-eight per-file witnesses in the dependency order above, refusing whole —
+fifty-nine per-file witnesses in the dependency order above, refusing whole —
 naming the file that stopped it — the moment any one goes RED. A GREEN suite means
 every claim here is re-provable by tooling, not trusted from a commit message
 alone (measurement beats memory). It then runs the **count guard**

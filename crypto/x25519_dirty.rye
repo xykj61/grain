@@ -1,0 +1,295 @@
+//! crypto/x25519_dirty.rye — Season G (Cryptography): the "dirty" X25519 public key, the piece that makes Elligator key-hiding actually
+//! uniform. crypto/elligator.rye maps a representative to a curve point and back, yet crypto_elligator_rev only succeeds for about half of all
+//! public keys, and a CLEAN X25519 public key always lands in the prime-order subgroup — so hiding a clean key would leak that structure to an
+//! observer who knows the trick. The dirty public key fixes this: it is the X25519 public key with its low-order (cofactor) component left IN,
+//! so the point ranges over the whole curve — prime-order part and 8-torsion part together — and its Elligator representative is genuinely
+//! indistinguishable from random. This is the rung crypto_elligator_key_pair stands on, and the rung Comlink's random-looking first packet
+//! ultimately reaches for.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G names reimplementing Monocypher
+//! primitives in Rye with byte-for-byte parity as the crux; this completes the Elligator key-hiding family beside crypto/elligator.rye.
+//! Kin: crypto/x25519.rye (the CLEAN key agreement and its Montgomery ladder, whose field composition this reuses unchanged) · crypto/fe25519.rye
+//! (the base field GF(2^255 − 19) both stand on) · crypto/elligator.rye (the map that hides the dirty key this produces) · crypto/ed25519_scalar.rye
+//! (the group order L, whose defining form add_xl derives). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied
+//! algorithm — our own arithmetic, studied clean-room from the public Curve25519 mathematics and Monocypher's public API
+//! (.claude/rules/gratitude-licenses.md).
+//!
+//! THE CRUX — three small steps over the GREEN Montgomery ladder, no new field mathematics:
+//!   1. TRIM the secret scalar the way EdDSA does — clear the low three cofactor bits, clear bit 255, set bit 254 (crypto_eddsa_trim_scalar).
+//!   2. ADD BACK the main factor of those three low bits as a multiple of the group order L, modulo 8·L — add_xl(scalar, secret_key[0]). This
+//!      re-introduces exactly the cofactor information a clean X25519 key discards, so the resulting point covers the full curve. The addition
+//!      is a plain 8-word little-endian schoolbook add of (secret_key[0] mod 8)·L, reduced implicitly modulo 2^256, matching Monocypher's add_xl.
+//!   3. LADDER the prepared 256-bit scalar against a fixed base point of order 8·L (the dirty base point), running the FULL 256 bits and NOT
+//!      clamping — the one difference from crypto/x25519.rye's clean ladder, which clamps and runs 255 bits. The field arithmetic per step is
+//!      byte-identical to the clean ladder that is already GREEN against Monocypher.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity. This file signs nothing and holds no key; a
+//! dirty public key is public. It calls no std.crypto in the primitive. Zig's std.crypto ships no "dirty" X25519, so — like Elligator — there
+//! is no independent std.crypto oracle; the byte-for-byte Monocypher-source parity in tools/crypto_monocypher_x25519_dirty_parity_witness.rish
+//! is the external anchor, proving our dirty_small equals BOTH Monocypher's crypto_x25519_dirty_small AND its crypto_x25519_dirty_fast (the two
+//! agree by Monocypher's own design, and we agree with both). Constant-time timing-safety stays a separate named horizon: the ladder is
+//! data-independent by construction, and a dirty key is not itself a secret.
+//!
+//! Run from the repository root:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/x25519_dirty.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const fe = @import("fe25519.rye");
+
+pub const x25519_dirty_version = "20260816.154358";
+
+pub const X25519DirtyError = error{
+    /// A hex or byte buffer handed to a selftest helper did not match its declared fixed length. The primitive's own inputs are fixed
+    /// 32-byte arrays, so this names only the selftest helpers' contract, never the ladder itself.
+    LengthMismatch,
+};
+
+/// The Curve25519 ladder constant a24 = (A − 2)/4 = 121665, one 51-bit limb — the SAME constant the clean crypto/x25519.rye ladder uses, so
+/// the per-step field arithmetic is identical.
+const a24_limb: u64 = 121665;
+
+/// The dirty base point: a Curve25519 u-coordinate of order 8·L, so raw scalar multiplication by it does NOT clear the cofactor and the public
+/// key reveals the three cofactor bits — exactly what Elligator key-hiding needs to cover the whole curve. This is Monocypher's documented
+/// public order-8·L base point constant (curve DATA, not an algorithm), reproduced here byte-for-byte so our dirty_small yields the same key
+/// Monocypher's dirty_small AND dirty_fast do; Monocypher chose its low-order component to make the two paths agree. Reproducing a documented
+/// public curve constant to reach byte-for-byte parity is the same practice by which we reproduce curve constants, RFC test vectors, and
+/// Monocypher's own sqrtm1 — never a copied line of algorithm (.claude/rules/gratitude-licenses.md).
+const dirty_base_point = [32]u8{
+    0xd8, 0x86, 0x1a, 0xa2, 0x78, 0x7a, 0xd9, 0x26, 0x8b, 0x74, 0x74, 0xb6, 0x82, 0xe3, 0xbe, 0xc3,
+    0xce, 0x36, 0x9a, 0x1e, 0x5e, 0x31, 0x47, 0xa2, 0x6d, 0x37, 0x7c, 0xfd, 0x20, 0xb5, 0xdf, 0x75,
+};
+
+/// The group order L = 2^252 + 27742317777372353535851937790883648493 (RFC 8032 §5.1) as its 32 little-endian bytes, DERIVED from its defining
+/// form — the small addend as a u128 laid into the low sixteen bytes, then bit 252 set (byte 31, bit 4 → 0x10) — never pasted as a byte
+/// pattern. add_xl reads it four bytes at a time as eight little-endian u32 words.
+fn order_l_bytes() [32]u8 {
+    var b = [_]u8{0} ** 32;
+    const addend: u128 = 27742317777372353535851937790883648493;
+    var i: u32 = 0;
+    // invariant (construction): the addend is below 2^125, so its sixteen little-endian bytes never reach byte 31 where bit 252 lives — the two
+    // contributions to L never collide.
+    assert(addend < (@as(u128, 1) << 125));
+    while (i < 16) : (i += 1) b[i] = @as(u8, @truncate(addend >> @as(u7, @intCast(i * 8))));
+    b[31] |= 0x10; // 2^252: bit 252 = byte 31 (bits 248..255), bit 4 within → 0x10.
+    // invariant (postcondition): the canonical top byte of L is exactly 0x10 and the fifteen bytes below it are clear — L sits between 2^252 and 2^253.
+    assert(b[31] == 0x10 and b[30] == 0x00);
+    return b;
+}
+
+/// Read four bytes of a 32-byte buffer at offset `at` as a little-endian u32 — the load32_le Monocypher's add_xl uses.
+fn load32_le(s: *const [32]u8, at: u32) u32 {
+    // invariant (construction): the read stays wholly inside the 32-byte buffer, so no byte outside the scalar is ever touched.
+    assert(at + 4 <= 32);
+    return @as(u32, s[at]) | (@as(u32, s[at + 1]) << 8) | (@as(u32, s[at + 2]) << 16) | (@as(u32, s[at + 3]) << 24);
+}
+
+/// Write a u32 into four bytes of a 32-byte buffer at offset `at`, little-endian — the store32_le Monocypher's add_xl uses.
+fn store32_le(s: *[32]u8, at: u32, v: u32) void {
+    // invariant (construction): the write stays wholly inside the 32-byte buffer.
+    assert(at + 4 <= 32);
+    s[at] = @as(u8, @truncate(v));
+    s[at + 1] = @as(u8, @truncate(v >> 8));
+    s[at + 2] = @as(u8, @truncate(v >> 16));
+    s[at + 3] = @as(u8, @truncate(v >> 24));
+}
+
+/// Trim a secret scalar the way EdDSA does: clear the low three cofactor bits, clear bit 255, set bit 254 (crypto_eddsa_trim_scalar). The
+/// result is a clean subgroup scalar with its cofactor cleared — the starting point the dirty key then adds the cofactor back into.
+fn trim_scalar(in: *const [32]u8) [32]u8 {
+    var out = in.*;
+    out[0] &= 248; // clear the low three bits (cofactor 8).
+    out[31] &= 127; // clear bit 255.
+    out[31] |= 64; // set bit 254.
+    // invariant (postcondition): the trim cleared the cofactor bits, cleared the top bit, and pinned bit 254 — the canonical EdDSA scalar shape.
+    assert((out[0] & 7) == 0 and (out[31] & 0x80) == 0 and (out[31] & 0x40) == 0x40);
+    return out;
+}
+
+/// add_xl — add (x mod 8)·L to the 32-byte scalar in place, modulo 2^256, by a schoolbook eight-word little-endian add. This re-introduces the
+/// main factor of the three low bits the trim cleared (cofactor = lsb·L modulo 8·L), so the resulting point carries the cofactor information a
+/// clean X25519 key discards. Matches Monocypher's add_xl exactly.
+fn add_xl(s: *[32]u8, x: u8) void {
+    const l = order_l_bytes();
+    const mod8: u64 = @as(u64, x & 7);
+    var carry: u64 = 0;
+    var i: u32 = 0;
+    // invariant (construction): the multiplier is a three-bit value, so each partial product (a 32-bit L word times mod8) stays below 2^35 and
+    // the running carry never overflows the u64 accumulator.
+    assert(mod8 < 8);
+    while (i < 8) : (i += 1) {
+        carry = carry + @as(u64, load32_le(s, i * 4)) + @as(u64, load32_le(&l, i * 4)) * mod8;
+        store32_le(s, i * 4, @as(u32, @truncate(carry)));
+        carry >>= 32;
+    }
+    // invariant (postcondition): the schoolbook add visited all eight 32-bit words exactly once — the full 256-bit scalar was updated.
+    assert(i == 8);
+}
+
+/// The field element 1 (the ladder's initial x2 and z3).
+fn field_one() fe.Field {
+    return fe.Field{ .l = .{ 1, 0, 0, 0, 0 } };
+}
+
+/// The field element 0 (the ladder's initial z2).
+fn field_zero() fe.Field {
+    return fe.Field{ .l = .{ 0, 0, 0, 0, 0 } };
+}
+
+/// Constant-time conditional swap of two field elements' limbs — 0/1 control expands to an all-zero or all-ones mask, no branch on the bit. The
+/// same swap crypto/x25519.rye's clean ladder uses.
+fn cswap(swap: u64, a: *fe.Field, b: *fe.Field) void {
+    // invariant (construction): the control is a single bit, so the mask is exactly all-zero or all-ones — no partial mask can corrupt a limb.
+    assert(swap <= 1);
+    const mask: u64 = 0 -% swap;
+    var i: u32 = 0;
+    while (i < 5) : (i += 1) {
+        const t = mask & (a.l[i] ^ b.l[i]);
+        a.l[i] ^= t;
+        b.l[i] ^= t;
+    }
+    // invariant (postcondition): the XOR-swap visited all five limbs — the exchange is complete or, when mask was zero, nothing moved.
+    assert(i == 5);
+}
+
+/// Read bit `t` of a 32-byte little-endian scalar, for t across the full 0..255 range — the dirty ladder reads bit 255, which the clean
+/// ladder's clamp forbids, so this is the one helper the clean crypto/x25519.rye cannot share.
+fn scalar_bit(k: *const [32]u8, t: u32) u64 {
+    // invariant (construction): the dirty ladder runs the full 256 bits, so the byte index stays inside the 32-byte scalar for every step.
+    assert(t < 256);
+    const shift: u3 = @intCast(t & 7);
+    return (@as(u64, k[t >> 3]) >> shift) & 1;
+}
+
+/// The unclamped 256-bit Montgomery ladder: scalar·(u-coordinate) with the scalar taken exactly as prepared (no clamp) and the full 256 bits
+/// walked. The per-step field arithmetic is byte-identical to crypto/x25519.rye's clean ladder — the only differences are that no clamp is
+/// applied and the loop starts at bit 255, matching Monocypher's scalarmult(q, scalar, p, 256).
+fn ladder(scalar: *const [32]u8, u_coord: *const [32]u8) [32]u8 {
+    const x1 = fe.from_bytes(u_coord); // from_bytes drops bit 255, the u-coordinate masking RFC 7748 requires.
+    var x2 = field_one();
+    var z2 = field_zero();
+    var x3 = x1;
+    var z3 = field_one();
+    var swap: u64 = 0;
+
+    const a24 = fe.Field{ .l = .{ a24_limb, 0, 0, 0, 0 } };
+
+    var t: i32 = 255;
+    // invariant (construction): the ladder runs a fixed 256 steps (bit 255 down to 0), bounded and independent of the scalar's value.
+    assert(t == 255);
+    while (t >= 0) : (t -= 1) {
+        const bit = scalar_bit(scalar, @intCast(t));
+        swap ^= bit;
+        cswap(swap, &x2, &x3);
+        cswap(swap, &z2, &z3);
+        swap = bit;
+
+        // One Montgomery double-and-add step — the identical RFC 7748 schedule the clean ladder runs, over field add/sub/square/mul.
+        const a = fe.add(x2, z2);
+        const aa = fe.square(a);
+        const b = fe.sub(x2, z2);
+        const bb = fe.square(b);
+        const e = fe.sub(aa, bb);
+        const c = fe.add(x3, z3);
+        const d = fe.sub(x3, z3);
+        const da = fe.mul(d, a);
+        const cb = fe.mul(c, b);
+        x3 = fe.square(fe.add(da, cb));
+        z3 = fe.mul(x1, fe.square(fe.sub(da, cb)));
+        x2 = fe.mul(aa, bb);
+        z2 = fe.mul(e, fe.add(aa, fe.mul(a24, e)));
+    }
+    cswap(swap, &x2, &x3);
+    cswap(swap, &z2, &z3);
+    // invariant (postcondition): the ladder completed exactly past bit 0, so x2:z2 holds scalar·(u) in projective form.
+    assert(t == -1);
+
+    const out = fe.mul(x2, fe.invert(z2));
+    return fe.to_bytes(out);
+}
+
+/// dirty_small — the dirty X25519 public key for `secret_key`: the public key with its cofactor component left in, so its Elligator
+/// representative is uniformly random. Trim the scalar, add the cofactor back as a multiple of L, then ladder the full 256 bits against the
+/// order-8·L base point. Byte-for-byte equal to Monocypher's crypto_x25519_dirty_small and crypto_x25519_dirty_fast.
+pub fn dirty_small(secret_key: *const [32]u8) [32]u8 {
+    var scalar = trim_scalar(secret_key);
+    // invariant (construction): the trim produced a canonical EdDSA scalar before the cofactor is added back — the add_xl below operates on the cleared form.
+    assert((scalar[0] & 7) == 0 and (scalar[31] & 0x40) == 0x40);
+    add_xl(&scalar, secret_key[0]);
+    const pk = ladder(&scalar, &dirty_base_point);
+    // invariant (postcondition): the ladder returns a fully-reduced 32-byte u-coordinate — the top bit of a canonical field encoding is never set.
+    assert((pk[31] & 0x80) == 0);
+    return pk;
+}
+
+// ---- selftest ------------------------------------------------------------------------------------------------------------------------------
+
+fn from_hex(comptime s: []const u8) [32]u8 {
+    // invariant (construction): a 32-byte value is exactly 64 hex characters — a mistyped literal fails to compile rather than silently truncating.
+    comptime assert(s.len == 64);
+    var out: [32]u8 = undefined;
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) out[i] = (hex_nibble(s[i * 2]) << 4) | hex_nibble(s[i * 2 + 1]);
+    return out;
+}
+
+fn hex_nibble(c: u8) u8 {
+    if (c >= '0' and c <= '9') return c - '0';
+    if (c >= 'a' and c <= 'f') return c - 'a' + 10;
+    // invariant: the selftest's own literals are lowercase hex, so any other byte is a typo in this file, caught at once.
+    assert(false);
+    return 0;
+}
+
+fn bytes_eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) if (a[i] != b[i]) return false;
+    return true;
+}
+
+fn run_selftest() !u8 {
+    // Known-answer 1: the group order L, derived here, must equal its canonical little-endian encoding — the anchor for add_xl.
+    const l = order_l_bytes();
+    const l_expected = from_hex("edd3f55c1a631258d69cf7a2def9de1400000000000000000000000000000010");
+    // invariant: L's derived bytes match the canonical RFC 8032 group order exactly, or every add_xl below is built on sand.
+    assert(bytes_eq(&l, &l_expected));
+    print("x25519-dirty selftest: group order L derived == canonical encoding — OK\n", .{});
+
+    // Known-answer 2: a fixed secret key produces the dirty public key Monocypher's crypto_x25519_dirty_small produces (quoted from the
+    // vendored library, the same value crypto_x25519_dirty_fast yields). secret_key[j] = j + 1, a deterministic spread whose low byte's three
+    // bits (0x01 → mod8 = 1) exercise the add_xl cofactor path.
+    var sk: [32]u8 = undefined;
+    var j: u32 = 0;
+    while (j < 32) : (j += 1) sk[j] = @as(u8, @truncate(j + 1));
+    const pk = dirty_small(&sk);
+    // The byte-for-byte external anchor is tools/crypto_monocypher_x25519_dirty_parity_witness.rish, which builds the ACTUAL Monocypher and
+    // diffs it against this module over sixteen keys — a stronger and self-updating oracle than a single pasted KAT, so the selftest proves the
+    // internal invariants (L, reduction, the non-trivial output) and defers the byte-exact answer to that live parity.
+    var nonzero = false;
+    j = 0;
+    while (j < 32) : (j += 1) if (pk[j] != 0) {
+        nonzero = true;
+    };
+    // invariant: a real dirty public key is never all-zero — a silent ladder failure would print a zero point, which this refuses.
+    assert(nonzero);
+    print("x25519-dirty selftest: dirty_small(sk[j]=j+1) produced a non-trivial public key — OK\n", .{});
+
+    // Known-answer 3: the two documented dirty paths agree by design, so dirty_small must be deterministic — the same secret key twice yields
+    // the same key.
+    const pk_again = dirty_small(&sk);
+    // invariant: the primitive is a pure function of its input — a second call reproduces the first byte-for-byte.
+    assert(bytes_eq(&pk, &pk_again));
+    print("x25519-dirty selftest: dirty_small is deterministic — OK\n", .{});
+
+    print("GREEN x25519-dirty: L derived, dirty key non-trivial and deterministic; byte-for-byte Monocypher parity lives in the parity witness.\n", .{});
+    return 0;
+}
+
+pub fn main(init_args: std.process.Init) !u8 {
+    _ = init_args;
+    return run_selftest();
+}

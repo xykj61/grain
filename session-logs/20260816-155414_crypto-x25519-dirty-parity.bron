@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260816.155414
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) time convention — this session in ai-jail
+title crypto — dirty X25519, Monocypher-parity GREEN
+prompt Take the next agent-doable lap Lindy-first crux-first on the road ahead (1024-round itinerary, six-season double-seat, Rye-first crypto parity wave); Rye prioritized, send often as signed rounds, stop only at custody gates.
+think Walked REMEMBER + the three design docs. The active track is Season G's Monocypher-parity wave — seventeen source-parity rungs landed, the last two Elligator 2. The prior session log named the exact next crux: "Elligator key_pair (needs crypto_x25519_dirty_fast)". The dirty X25519 public key is the highest-Lindy tractable rung — it completes the key-hiding family (a clean X25519 key sits in the prime-order subgroup, so hiding it leaks structure; the dirty key leaves the cofactor in so its Elligator representative is uniformly random), and it is the crux crypto_elligator_key_pair and Comlink's obfuscated first packet stand on.
+think Chose the dirty_small path over dirty_fast: it reuses the GREEN Montgomery ladder unchanged, needing only three additions — EdDSA scalar trim, add_xl (add (sk[0] mod 8)·L mod 2^256, L derived here from its RFC 8032 defining form, never a pasted limb), and an UNCLAMPED 256-bit ladder against a fixed order-8·L base point. The one clean-room note: that base point is Monocypher's documented public curve constant, reproduced as DATA (like a curve constant / RFC vector / the sqrtm1 we already reproduce), never a copied algorithm.
+think Mirrored the proven three-file parity pattern: crypto/x25519_dirty.rye (primitive + selftest), tools/fixtures/monocypher_x25519_dirty_harness.c (links the ACTUAL vendored Monocypher), tools/monocypher_x25519_dirty_parity.rye (our printing harness over the module via a new tools/x25519_dirty.rye symlink), and tools/crypto_monocypher_x25519_dirty_parity_witness.rish (the diff). Plus a module witness tools/crypto_x25519_dirty_witness.rish registered in the suite.
+obs Byte-for-byte GREEN on the first parity run: our dirty_small equals BOTH Monocypher's crypto_x25519_dirty_small AND crypto_x25519_dirty_fast over sixteen keys whose low byte sweeps all eight cofactor residues — a doubled anchor, since Zig ships no dirty X25519 and Monocypher's own two paths agreeing proves the key we reproduce is canonical, not one path's quirk.
+obs New crypto/*.rye module tripped the count guard (bijection: every module needs a registered witness). Registered the module witness and bumped the suite/README/docs narration 37→38 primitives, 58→59 files. Count guard GREEN at 59; docs-implementation-sync honored in the same round (crypto/README.md + docs/CRYPTO.md each gained the rung row).
+loom witness=crypto_monocypher_x25519_dirty_parity result=GREEN keys=16 paths=dirty_small,dirty_fast agree=byte_for_byte
+loom witness=crypto_count_guard result=GREEN crypto_files=59
+file crypto/x25519_dirty.rye the dirty X25519 public key in pure Rye — trim, add_xl over L, unclamped 256-bit ladder on the order-8L base point
+file tools/crypto_monocypher_x25519_dirty_parity_witness.rish the eighteenth Monocypher-source parity rung — our dirty_small == Monocypher dirty_small == dirty_fast
+file tools/monocypher_x25519_dirty_parity.rye our printing harness over the GREEN module
+file tools/fixtures/monocypher_x25519_dirty_harness.c links the unmodified vendored Monocypher, prints dirty_small then dirty_fast
+file tools/crypto_x25519_dirty_witness.rish the module's own selftest witness, registered in the suite
+file tools/x25519_dirty.rye symlink so the parity harness resolves the module beside it
+file tools/crypto_suite_witness.rish registered the new witness, narration synced to 38/59
+file crypto/README.md added the dirty X25519 rung to Key hiding, counts synced to fifty-nine/thirty-eight
+file docs/CRYPTO.md added the rung row and synced counts on the audit front door
+recommend keep-going the key-hiding family now has its dirty key GREEN — the next Rye-first crux is crypto_elligator_key_pair itself (compose dirty_small + elligator rev + a chacha20-seeded retry loop into a hidden keypair), closing the hide-a-fresh-key arc end to end; still gate-free, purely local.

@@ -1,0 +1,47 @@
+//! tools/monocypher_x25519_dirty_parity.rye — our authored crypto/x25519_dirty.rye asked for its OWN dirty X25519 public keys over the same
+//! sixteen secret keys the Monocypher C harness (tools/fixtures/monocypher_x25519_dirty_harness.c) prints, so
+//! tools/crypto_monocypher_x25519_dirty_parity_witness.rish can diff our bytes against the vendored Monocypher's C byte-for-byte — the "dirty"
+//! public key that makes Elligator key-hiding uniform, proven against the audit's parity target. Season G (Cryptography · Rye-native,
+//! Monocypher-parity, audit-ready).
+//!
+//! Sixteen lines print, identical in shape to the C harness's FIRST sixteen (crypto_x25519_dirty_small): for sixteen deterministic secret keys
+//! sk[j] = (i*7 + j*3 + 1) mod 256, the 64-hex dirty public key. The C harness prints the same sixteen through dirty_small and then sixteen more
+//! through dirty_fast; the witness diffs our sixteen against the first sixteen and separately checks Monocypher's two paths agree.
+//!
+//! This authors NO cryptography — it is a printing harness over the GREEN crypto/x25519_dirty.rye (reached through the tools/x25519_dirty.rye
+//! symlink, since Rye resolves imports beside the importing file, over the tools/fe25519.rye symlink beneath it). Purely local — no key, no
+//! network, no funds, no device.
+//!
+//! Run from the repository root:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run tools/monocypher_x25519_dirty_parity.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const dk = @import("x25519_dirty.rye");
+
+/// print_hex — 32 bytes as 64 lowercase hex characters, one line, exactly the C harness's `ph`.
+fn print_hex(b: [32]u8) void {
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) print("{x:0>2}", .{b[i]});
+    print("\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    // invariant (construction): the harness runs exactly sixteen deterministic cases, the count the C harness's dirty_small block prints.
+    const cases: u32 = 16;
+    assert(cases == 16);
+
+    var i: u32 = 0;
+    while (i < cases) : (i += 1) {
+        var sk: [32]u8 = undefined;
+        var j: u32 = 0;
+        while (j < 32) : (j += 1) sk[j] = @as(u8, @truncate(i *% 7 +% j *% 3 +% 1));
+        print_hex(dk.dirty_small(&sk));
+    }
+    // invariant (postcondition): all sixteen cases printed exactly once.
+    assert(i == cases);
+    return 0;
+}

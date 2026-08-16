@@ -1,0 +1,49 @@
+# tools/crypto_x25519_dirty_witness.rish — the dirty X25519 public key (crypto_x25519_dirty_small / crypto_x25519_dirty_fast) authored in pure
+# Rye: Season G's rung completing the Elligator key-hiding family. A CLEAN X25519 public key always lands in the prime-order subgroup, so
+# hiding it with Elligator would leak that structure; the DIRTY public key leaves the cofactor component in, ranging over the whole curve, so
+# its Elligator representative is genuinely indistinguishable from random noise — the key crypto_elligator_key_pair and Comlink's obfuscated
+# first packet reach for (Season G · Cryptography).
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names reimplementing Monocypher
+# primitives in Rye with byte-for-byte parity as the crux; this completes the key-hiding family beside crypto/elligator.rye).
+# Kin: crypto/x25519.rye (the CLEAN ladder whose field composition this reuses unchanged) · crypto/elligator.rye (the map that hides the dirty
+# key) · crypto/fe25519.rye (the base field both stand on) · crypto/ed25519_scalar.rye (the group order L, whose defining form add_xl derives).
+# Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied algorithm — our own arithmetic, studied clean-room from the
+# public Curve25519 mathematics and Monocypher's public API (.claude/rules/gratitude-licenses.md).
+#
+# crypto/x25519_dirty.rye authors dirty_small(secret_key) in three steps over the GREEN Montgomery ladder, adding no new field mathematics:
+# trim the secret scalar the EdDSA way (clear the low three cofactor bits, clear bit 255, set bit 254), add the main factor of those three bits
+# back as (secret_key[0] mod 8)·L modulo 2^256 (the add_xl schoolbook eight-word add over the group order L, derived here from its RFC 8032
+# defining form), then run the FULL 256-bit ladder — unclamped, the one difference from the clean ladder — against a fixed order-8·L base point.
+# The per-step field arithmetic is byte-identical to crypto/x25519.rye's clean ladder that is already GREEN against Monocypher. The selftest
+# proves three internal invariants: L's derived bytes equal the canonical RFC 8032 group-order encoding, dirty_small produces a non-trivial
+# (never all-zero) key, and the primitive is a pure deterministic function of its input. The byte-for-byte external anchor lives in
+# tools/crypto_monocypher_x25519_dirty_parity_witness.rish, which builds the ACTUAL vendored Monocypher and proves our dirty_small equals BOTH
+# its crypto_x25519_dirty_small AND crypto_x25519_dirty_fast over sixteen keys. Purely local — no key, no network, no funds, no device;
+# constant-time timing-safety stays a separate named horizon, and a dirty public key is not itself a secret.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_x25519_dirty_witness.rish
+
+say "crypto-x25519-dirty: Language EN — the dirty X25519 public key authored in pure Rye, the rung that completes the Elligator key-hiding family. A clean X25519 public key sits in the prime-order subgroup, so hiding it would leak that structure to an observer who knows the trick; the dirty public key leaves the cofactor component in, ranging over the whole curve, so its Elligator representative is uniformly random — the key crypto_elligator_key_pair and Comlink's random-looking first packet reach for."
+say "crypto-x25519-dirty: Style Radiant — the law is stated positively as three steps over the GREEN ladder: trim the secret scalar the EdDSA way, add the cofactor back as a multiple of the group order L, then run the full 256-bit ladder — unclamped, the one difference from the clean ladder — against an order-8·L base point. The per-step field arithmetic is byte-identical to the clean X25519 already GREEN against Monocypher, so the same secret key always yields the same dirty key anyone can replay against the vendored library."
+say "crypto-x25519-dirty: Lens TAME — the primitive calls no std.crypto; it reuses our own GREEN base-field ladder, derives the group order L from its RFC 8032 defining form rather than pasting a limb pattern, and asserts its contracts on every function. The selftest proves L's derivation, a non-trivial key, and determinism; the byte-for-byte Monocypher-source parity in tools/crypto_monocypher_x25519_dirty_parity_witness.rish is the external anchor, doubled by Monocypher's own dirty_small and dirty_fast agreeing. Monocypher is the parity target, linked never copied. Purely local — no key, no network, no funds, no device; constant-time timing-safety stays the named horizon."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/x25519_dirty"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/x25519_dirty.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-x25519-dirty: build failed — ${build.err}"
+
+let outfile = "crypto/bin/x25519_dirty.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-x25519-dirty: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-x25519-dirty: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN x25519-dirty' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-x25519-dirty: selftest did not print the GREEN x25519-dirty line"
+
+say "GREEN crypto-x25519-dirty: crypto/x25519_dirty.rye builds and its selftest proves L's derivation, a non-trivial deterministic dirty key, and the Elligator key-hiding family complete; the byte-for-byte Monocypher-source parity stands in tools/crypto_monocypher_x25519_dirty_parity_witness.rish. Purely local — no key, no network, no funds, no device; constant-time timing-safety stays the named horizon."
