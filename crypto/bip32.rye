@@ -28,9 +28,11 @@
 //! spec's published xprv AND xpub base58 strings, character for character — so a one-bit error anywhere in the HMAC, the modular add, the
 //! compression, the fingerprint, or the envelope would break the match. No fabricated constant: the answers are the spec's own.
 //!
-//! What this rung does NOT yet do — named honestly as the next rung, not claimed: CKDpub (deriving a public child directly from a public parent by
-//! point addition, without the private key). Every published xpub here is reached by NEUTERING the private chain; the public-only derivation path
-//! is a distinct capability and earns its own witnessed round over the GREEN secp256k1 group law.
+//! The public tree, too: neuter turns an extended private key into an extended PUBLIC key (its private scalar replaced by serP(point(k))), and
+//! ckd_pub derives a normal child directly from a public parent — K_child = point(parse256(I_L)) + K_par over the complete secp256k1 group law —
+//! so a watch-only wallet carries an xpub and derives the same public addresses without ever holding a private key. A hardened index is refused
+//! from a public parent (hardening needs the private key it does not hold). Proven both ways against Test Vector 1: every node's neuter reproduces
+//! the spec's xpub, and for each normal index CKDpub reaches that node's xpub from the neutered parent alone.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/bip32.rye selftest
 
@@ -41,6 +43,8 @@ const print = std.debug.print;
 const hmac = @import("hmac_sha512.rye");
 const pk = @import("secp256k1_pubkey.rye");
 const sc = @import("secp256k1_scalar.rye");
+const pt = @import("secp256k1_group.rye");
+const fe = @import("fe_secp256k1.rye");
 const bc = @import("bitcoin_address.rye");
 const sha256 = @import("sha256.rye");
 const ripemd = @import("ripemd160.rye");
@@ -83,6 +87,9 @@ pub const Bip32Error = error{
     InvalidSeed,
     /// A child derivation whose I_L is ≥ n, or whose resulting scalar is zero — BIP-32 declares such an index invalid (a caller proceeds to i+1).
     InvalidChild,
+    /// A public parent asked to derive a HARDENED child (index ≥ 2³¹) — impossible, because hardening feeds the private key the public parent
+    /// does not hold (BIP-32 §CKDpub).
+    HardenedFromPublic,
     /// A serialization destination buffer too small for the Base58Check text.
     DestTooSmall,
 } || hmac.HmacError || pk.PubkeyError || b58c.Base58CheckError || sha256.Sha256Error || ripemd.Ripemd160Error;
@@ -325,6 +332,131 @@ pub fn serialize_xpub(dest: []u8, ext: *const ExtKey) Bip32Error![]const u8 {
     return base58_frame(dest, &frame);
 }
 
+/// An extended PUBLIC key node: the neutered form of an ExtKey. It carries the compressed public key serP(K) instead of the private scalar, and
+/// derives the same public tree over NORMAL indices without ever holding a private key — the whole point of an "xpub" a watch-only wallet imports.
+pub const ExtPub = struct {
+    depth: u8,
+    parent_fp: [fingerprint_bytes]u8,
+    child_num: [4]u8, // big-endian
+    chain_code: [key_bytes]u8,
+    pubkey: [key_data_bytes]u8, // compressed serP(K), 33 bytes
+};
+
+/// Neuter an extended private key to its extended public key — same tree position, the private scalar replaced by serP(point(k)). This is what
+/// `serialize_xpub` serializes; `neuter` exposes the node so a public-only party can carry and derive from it.
+pub fn neuter(ext: *const ExtKey) Bip32Error!ExtPub {
+    const pub_key = try serialize_public(&ext.key);
+    return ExtPub{
+        .depth = ext.depth,
+        .parent_fp = ext.parent_fp,
+        .child_num = ext.child_num,
+        .chain_code = ext.chain_code,
+        .pubkey = pub_key,
+    };
+}
+
+/// The four-byte fingerprint of an extended PUBLIC key: the first four bytes of HASH160 of its compressed public key. The public sibling of
+/// `fingerprint`, reading the pubkey it already holds rather than deriving one.
+pub fn fingerprint_pub(ext: *const ExtPub) Bip32Error![fingerprint_bytes]u8 {
+    const h = try bc.hash160(&ext.pubkey);
+    var out: [fingerprint_bytes]u8 = undefined;
+    var i: u32 = 0;
+    while (i < fingerprint_bytes) : (i += 1) {
+        assert(i < fingerprint_bytes);
+        out[i] = h[i];
+    }
+    return out;
+}
+
+/// The field element 1 — the Z coordinate that lifts an affine point (x, y) into projective (x : y : 1) for the group law.
+fn fe_one() fe.Field {
+    var one_be = [_]u8{0} ** key_bytes;
+    one_be[key_bytes - 1] = 1;
+    return fe.from_bytes(&one_be);
+}
+
+/// Lift an affine public key (x, y) big-endian into the projective Point the group law adds, with Z = 1.
+fn lift_affine(x_be: *const [key_bytes]u8, y_be: *const [key_bytes]u8) pt.Point {
+    return pt.Point{ .x = fe.from_bytes(x_be), .y = fe.from_bytes(y_be), .z = fe_one() };
+}
+
+/// Derive a public child (CKDpub) — the public tree without the private half. For a NORMAL index i, K_child = point(parse256(I_L)) + K_par, where
+/// I = HMAC-SHA-512(c_par, serP(K_par) ‖ ser32(i)); the child chain code is I_R. A hardened index is impossible from a public parent, and an
+/// I_L ≥ n or an infinite child point is refused (BIP-32 §CKDpub). Composes only GREEN stones: the HMAC, the public-key derivation and parse,
+/// the complete group-law addition, and the SEC1 compression — authoring no new cryptography.
+pub fn ckd_pub(parent: *const ExtPub, index: u32) Bip32Error!ExtPub {
+    // invariant: a public parent cannot derive a hardened child — hardening needs the private key it does not hold.
+    if (index >= hardened_offset) return error.HardenedFromPublic;
+    // invariant: depth never wraps.
+    if (parent.depth == 255) return error.InvalidChild;
+
+    var data: [ckd_data_bytes]u8 = undefined;
+    var j: u32 = 0;
+    while (j < key_data_bytes) : (j += 1) {
+        assert(j < key_data_bytes);
+        data[j] = parent.pubkey[j];
+    }
+    const idx = ser32(index);
+    j = 0;
+    while (j < 4) : (j += 1) {
+        assert((key_data_bytes + j) < ckd_data_bytes);
+        data[key_data_bytes + j] = idx[j];
+    }
+
+    const i = try hmac.mac(&data, &parent.chain_code);
+    var il: [key_bytes]u8 = undefined;
+    var ir: [key_bytes]u8 = undefined;
+    var k: u32 = 0;
+    while (k < key_bytes) : (k += 1) {
+        assert(k < key_bytes and (key_bytes + k) < i_bytes);
+        il[k] = i[k];
+        ir[k] = i[key_bytes + k];
+    }
+
+    // invariant: I_L must be a canonical scalar (< n); BIP-32 refuses I_L ≥ n rather than reducing it.
+    const il_le = reverse32(&il);
+    if (!sc.is_canonical(&il_le)) return error.InvalidChild;
+
+    // point(I_L) = I_L·G, obtained by deriving its public key and parsing back to affine coordinates (composing the GREEN rungs, no raw ladder).
+    const il_pub = try pk.from_private_compressed(&il);
+    const il_point_aff = try pk.parse(&il_pub);
+    const parent_point_aff = try pk.parse(&parent.pubkey);
+
+    // K_child = point(I_L) + K_par over the complete group law.
+    const sum = pt.add(lift_affine(&il_point_aff.x, &il_point_aff.y), lift_affine(&parent_point_aff.x, &parent_point_aff.y));
+
+    // invariant: the child point is not the identity — an infinite child key is refused, not serialized (its Z packs to all zero).
+    const z_bytes = fe.to_bytes(sum.z);
+    if (is_zero32(&z_bytes)) return error.InvalidChild;
+
+    const cx = pt.affine_x(sum);
+    const cy = pt.affine_y(sum);
+    const child_pubkey = pk.compress_xy(&cx, &cy);
+
+    const fp = try fingerprint_pub(parent);
+    return ExtPub{
+        .depth = parent.depth + 1,
+        .parent_fp = fp,
+        .child_num = idx,
+        .chain_code = ir,
+        .pubkey = child_pubkey,
+    };
+}
+
+/// Serialize an extended PUBLIC key as its "xpub…" text — the same envelope `serialize_xpub` writes, over a node that never held a private key.
+pub fn serialize_ext_pub(dest: []u8, ext: *const ExtPub) Bip32Error![]const u8 {
+    // The ExtKey and ExtPub share every serialized field but the key body; reuse the frame layout by mapping the shared fields.
+    const shim = ExtKey{
+        .depth = ext.depth,
+        .parent_fp = ext.parent_fp,
+        .child_num = ext.child_num,
+        .chain_code = ext.chain_code,
+        .key = undefined, // unused — key_data below carries the public body
+    };
+    const frame = frame_bytes(&shim, &version_xpub, &ext.pubkey);
+    return base58_frame(dest, &frame);
+}
+
 fn slice_eq(a: []const u8, b: []const u8) bool {
     if (a.len != b.len) return false;
     var i: u32 = 0;
@@ -373,21 +505,47 @@ fn run_selftest() !u8 {
 
     var xprv_buf: [128]u8 = undefined;
     var xpub_buf: [128]u8 = undefined;
+    var neuter_buf: [128]u8 = undefined;
+    var ckdpub_buf: [128]u8 = undefined;
 
     // Node 0 is the master; nodes 1..5 each derive from the previous by the matching index.
     const indices = [_]u32{ hardened_offset + 0, 1, hardened_offset + 2, 2, 1000000000 };
 
     var step: u32 = 0;
     while (step < paths.len) : (step += 1) {
-        if (step > 0) node = try ckd_priv(&node, indices[step - 1]);
+        if (step > 0) {
+            const index = indices[step - 1];
+            const parent_node = node;
+            node = try ckd_priv(&node, index);
+
+            // CKDpub: for a NORMAL index, the neutered parent reaches the SAME child public key with no private key — the watch-only path. Its
+            // serialized xpub must equal the spec's published xpub for this node, proving point(I_L) + K_par over the group law is correct.
+            if (index < hardened_offset) {
+                const parent_pub = try neuter(&parent_node);
+                const child_pub = try ckd_pub(&parent_pub, index);
+                const got_ckdpub = try serialize_ext_pub(&ckdpub_buf, &child_pub);
+                if (!slice_eq(got_ckdpub, paths[step].xpub)) return error.CkdPubMismatch;
+            }
+        }
 
         const got_xprv = try serialize_xprv(&xprv_buf, &node);
         const got_xpub = try serialize_xpub(&xpub_buf, &node);
         if (!slice_eq(got_xprv, paths[step].xprv)) return error.XprvMismatch;
         if (!slice_eq(got_xpub, paths[step].xpub)) return error.XpubMismatch;
 
+        // Neuter: the neutered node serialized as an ExtPub reproduces the very same xpub the private node's serialize_xpub does.
+        const npub = try neuter(&node);
+        const got_neuter = try serialize_ext_pub(&neuter_buf, &npub);
+        if (!slice_eq(got_neuter, paths[step].xpub)) return error.NeuterMismatch;
+
         // invariant: the neutered public serialization agrees with the private node's own depth and fingerprint — the two forms are one node.
         assert(node.depth == @as(u8, @intCast(step)));
+    }
+
+    // A public parent cannot derive a hardened child — CKDpub refuses HardenedFromPublic before touching the HMAC.
+    {
+        const npub = try neuter(&master);
+        if (ckd_pub(&npub, hardened_offset + 0)) |_| return error.HardenedSlipped else |err| if (err != error.HardenedFromPublic) return error.WrongHardenedErr;
     }
 
     // Edge refusals: a seed too short and a seed too long each raise BadSeedLength before the HMAC runs.
@@ -404,12 +562,14 @@ fn run_selftest() !u8 {
         "scalar reduction modulo n (crypto/secp256k1_scalar.rye, finishing (I_L + k_par) mod n), HASH160 (crypto/bitcoin_address.rye, the parent " ++
         "fingerprint), and Base58Check (encoding/base58check.rye, the xprv/xpub envelope) — authoring no new cryptography. master_from_seed runs " ++
         "the fixed \"Bitcoin seed\" HMAC, ckd_priv derives both hardened (0x00‖ser256(k_par)‖ser32(i)) and normal (serP(point(k_par))‖ser32(i)) " ++
-        "children, and serialize_xprv/serialize_xpub wrap any node. Parity holds the replayable way, against BIP-32's own published Test Vector " ++
-        "1: from the published seed 000102…0f, all six chain nodes (m, m/0H, m/0H/1, m/0H/1/2H, m/0H/1/2H/2, m/0H/1/2H/2/1000000000) serialize to " ++
-        "EXACTLY the spec's published xprv AND xpub strings, character for character — a one-bit error in the HMAC, the modular add, the " ++
-        "compression, the fingerprint, or the envelope would break the match. A too-short and a too-long seed each refuse BadSeedLength. Purely " ++
-        "local — every scalar is a TEST key from the spec's own seed, no network, no funds; signing with a real identity key stays the custody " ++
-        "gate, and public-only CKDpub is the named next rung.\n", .{});
+        "children, neuter/ckd_pub derive the public tree (K_child = point(I_L) + K_par over the complete group law) without a private key, and " ++
+        "serialize_xprv/serialize_xpub/serialize_ext_pub wrap any node. Parity holds the replayable way, against BIP-32's own published Test " ++
+        "Vector 1: from the published seed 000102…0f, all six chain nodes (m, m/0H, m/0H/1, m/0H/1/2H, m/0H/1/2H/2, m/0H/1/2H/2/1000000000) " ++
+        "serialize to EXACTLY the spec's published xprv AND xpub strings, character for character; each node's NEUTER reproduces the same xpub, " ++
+        "and for every normal index CKDpub reaches that node's xpub from the neutered parent alone — a one-bit error in the HMAC, the modular add, " ++
+        "the point addition, the compression, the fingerprint, or the envelope would break a match. A too-short and a too-long seed each refuse " ++
+        "BadSeedLength, and a hardened index from a public parent refuses HardenedFromPublic. Purely local — every scalar is a TEST key from the " ++
+        "spec's own seed, no network, no funds; signing with a real identity key stays the custody gate.\n", .{});
     return 0;
 }
 
