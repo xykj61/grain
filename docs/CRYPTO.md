@@ -122,7 +122,11 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 thirty-six per-file witnesses in the dependency order above, refusing whole —
 naming the file that stopped it — the moment any one goes RED. A GREEN suite means
 every claim here is re-provable by tooling, not trusted from a commit message
-alone (measurement beats memory).
+alone (measurement beats memory). It then runs the **count guard**
+([`crypto_count_guard_witness.rish`](../tools/crypto_count_guard_witness.rish)) — a
+bijection asserting the suite registers exactly the `crypto/*.rye` files on disk and
+printing the computed count, so the spelled number above can never silently drift
+from the files again (booked by [`REDS`](../work-in-progress/REDS.md) #80).
 
 To prove one rung alone, run its witness — for example:
 
