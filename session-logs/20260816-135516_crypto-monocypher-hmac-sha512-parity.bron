@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260816.135516
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) time convention — this session in ai-jail
+title crypto — Monocypher-source parity for HMAC-SHA-512, GREEN
+prompt Autonomous loop, same round: after the tenth (SHA-512) parity rung landed and sent, keep making progress — take the next agent-doable Monocypher-parity lap and send it as its own signed round.
+think Lindy-first crux-first over the eleventh candidates named by the SHA-512 log (HMAC-SHA512 via crypto_sha512_hmac, or a crypto_verify constant-time-compare rung). Chose HMAC-SHA-512: it is the keyed MAC the HKDF-SHA512 expander and the BIP32 seed derivation are both built on — higher-Lindy than a compare helper, and it rests directly on the SHA-512 hash just proven standalone (the natural next stone up).
+think crypto/hmac_sha512.rye names Monocypher as its parity target and proved parity only against Zig std.crypto + RFC 4231; Monocypher's crypto_sha512_hmac lives in the same optional module the SHA-512 and Ed25519 rungs already link. So the proven trio carried over cleanly.
+think Anchored twice to the world: RFC 4231 Test Case 1 (key 0x0b*20, "Hi There") and Test Case 2 (key "Jefe", "what do ya want for nothing?") — both published HMAC-SHA-512 tags. Lines 3-5 exercise the exact-block-length key, the longer-than-block key (the hash-the-key path), and the empty message, with a second real implementation as oracle.
+think Added the tools/hmac_sha512.rye symlink so the printing harness resolves the module (which imports sha512.rye beside it, already symlinked).
+obs GREEN on the first full pass — Monocypher's C and our authored Rye produce byte-identical HMAC-SHA-512 over all five inputs; both RFC 4231 anchors matched. No crux-on-metal surprise.
+obs Gate-free and purely local: RFC public test keys — no real identity key, no signature, no network, no funds, no device. Constant-time tag comparison stays the named horizon, supplied by the composer that verifies a MAC. Custody gates never approached.
+obs Count guard untouched — the three new files and one symlink live in tools/ and tools/fixtures/, not crypto/.
+obs Docs synced same round: crypto/README.md and docs/CRYPTO.md moved ten rungs → eleven and named the HMAC-SHA-512 rung; crypto/hmac_sha512.rye's header note and GREEN selftest line record Monocypher-source parity as landed.
+loom witness=crypto_monocypher_hmac_sha512_parity_witness lines=5 result=GREEN first_pass=true
+file tools/hmac_sha512.rye new symlink → ../crypto/hmac_sha512.rye so the harness resolves the module
+file tools/fixtures/monocypher_hmac_sha512_harness.c the vendored Monocypher's optional crypto_sha512_hmac, compiled fresh, printing five tags
+file tools/monocypher_hmac_sha512_parity.rye our authored crypto/hmac_sha512.rye printing the same five tags over identical inputs
+file tools/crypto_monocypher_hmac_sha512_parity_witness.rish diffs the two byte-for-byte and anchors RFC 4231 Test Cases 1 and 2 — GREEN
+file crypto/hmac_sha512.rye header note and GREEN selftest line record Monocypher-source parity as landed
+file crypto/README.md the Monocypher-source parity list moved ten rungs → eleven, naming HMAC-SHA-512
+file docs/CRYPTO.md the parity paragraph moved ten rungs → eleven, naming HMAC-SHA-512
+recommend keep-going — a twelfth Monocypher one-shot (a crypto_verify16/32/64 constant-time-compare rung, or the raw ChaCha20 djb 64-bit-counter stream), or the docs-compression molt that feeds the seed; all gate-free and agent-doable.
