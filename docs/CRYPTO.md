@@ -199,9 +199,10 @@ caller-supplied seed — a test seed is not the maintainer's identity key.
 
 **Monocypher-source parity is landed:** the vendored `vendor/monocypher`
 (CC0/BSD-dual, unmodified) is compiled fresh and diffed byte-for-byte against our
-authored Rye over the published vectors — five rungs GREEN (BLAKE2b, X25519,
-Ed25519, the ChaCha20-Poly1305 AEAD, and Argon2 across all three modes), each also
-anchored to its RFC known-answer. One horizon stays honest beside it:
+authored Rye over the published vectors — six rungs GREEN (BLAKE2b, X25519,
+Ed25519, the ChaCha20-Poly1305 AEAD, Argon2 across all three modes, and the
+XChaCha20-Poly1305 flagship `crypto_aead_lock`), each also
+anchored to its RFC or published known-answer. One horizon stays honest beside it:
 **constant-time** waits on measurement as above.
 
 ---
