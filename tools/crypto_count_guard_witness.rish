@@ -21,8 +21,10 @@ say "crypto-count-guard: Lens TAME — every crypto/<name>.rye is asserted regis
 let mk = run ["sh" "-c" "mkdir -p crypto/bin"]
 assert mk.ok else "crypto-count-guard: could not make crypto/bin — ${mk.err}"
 
-# The crypto/<name>.rye source names, one per line, sorted.
-let list_files = run ["sh" "-c" "ls crypto/*.rye | sed 's:.*/::; s:.rye$::' | sort > crypto/bin/.cc_files.txt"]
+# The crypto/<name>.rye source names, one per line, sorted. Real files only (-type f): a cross-directory composition like
+# crypto/bitcoin_address.rye imports encoding/ modules through flat-named symlink shims that live in crypto/ (rye resolves nested
+# imports relative to the importing path), and those shims are not primitives the suite proves — counting them would break the bijection.
+let list_files = run ["sh" "-c" "find crypto -maxdepth 1 -name '*.rye' -type f | sed 's:.*/::; s:.rye$::' | sort > crypto/bin/.cc_files.txt"]
 assert list_files.ok else "crypto-count-guard: could not list crypto/*.rye — ${list_files.err}"
 
 # The per-file witnesses the suite registers, one name per line, sorted, excluding the suite and this guard.

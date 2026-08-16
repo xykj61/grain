@@ -19,7 +19,7 @@ a message: **Kumara** identity, **Vault** sealed storage, **Comlink** sessions, 
 the **Lotus** signed carry. It authors the mathematics once, in the open, so a hand
 placing trust in it can read exactly what it does.
 
-## The forty files — thirty-four primitives and six compositions
+## The forty-one files — thirty-four primitives and seven compositions
 
 Built in dependency order: each rung stands on the GREEN rungs beneath it, none
 authoring cryptography a lower rung had not already proven.
@@ -96,6 +96,7 @@ authoring cryptography a lower rung had not already proven.
 | [`sealed_session.rye`](sealed_session.rye) | *Only you can read this* — an anonymous seal-to-a-public-key box | X25519 · BLAKE2b-512 · ChaCha20-Poly1305 |
 | [`vault_seal.rye`](vault_seal.rye) | *Only your password can open this* — a password-sealed box, so the key need never live on the device | Argon2id · XChaCha20-Poly1305 |
 | [`eth_address.rye`](eth_address.rye) | *What is this key's Ethereum address?* — the low twenty bytes of the Keccak-256 of a public key, and its EIP-55 mixed-case checksum, the self-verifying human form (the Ethereum sibling of `../encoding/base58check.rye`) | Keccak-256 |
+| [`bitcoin_address.rye`](bitcoin_address.rye) | *What is this key's Bitcoin address?* — HASH160 = RIPEMD-160(SHA-256(public key)) wrapped in a self-checking envelope: the legacy Base58Check "1…" address (P2PKH, under a version byte) or the SegWit v0 Bech32 "bc1…" address (P2WPKH, under witness version 0). The Bitcoin sibling of `eth_address.rye`; proven against the canonical Bitcoin-wiki P2PKH worked example (whose HASH160 is the very payload `../encoding/base58check.rye`'s own known-answer wraps) and the BIP-173 P2WPKH vector, both round-tripping back to their HASH160 | SHA-256 · RIPEMD-160 · Base58Check · Bech32 |
 | [`eth_personal_sign.rye`](eth_personal_sign.rye) | *Who signed this message?* — the EIP-191 `personal_sign` digest (`"\x19Ethereum Signed Message:\n"` framing, the 0x19 sentinel that can never begin a valid transaction) and `recover_signer`, which reads the twenty-byte sender address out of a 65-byte `r‖s‖v` signature: "Sign in with Ethereum," end to end | Keccak-256 · ecrecover · eth_address |
 | [`eip712.rye`](eip712.rye) | *Who signed this typed message, for this app, on this chain?* — the EIP-712 typed-structured-data digest a wallet shows before it signs "typed data" (EIP-2612 permits, DeFi orders, gasless meta-transactions, typed Sign-in-with-Ethereum). Where EIP-191 frames a flat string, EIP-712 hashes a *tree* of typed fields (`type_hash` · `hash_struct` · `eip712_domain_separator`) against a domain separator into `keccak256(0x19 0x01 ‖ domain_separator ‖ struct_hash)`, so a signature for one contract on one chain can never be replayed against another, and `recover_typed_signer` reads the sender back out. Proven three ways runnable now — the EIP-712 spec's own canonical Ether Mail example recovered by the spec's own published signature to Cow's published wallet, an independent Zig-Keccak construction byte-for-byte, and a full TEST-key round-trip | Keccak-256 · ecrecover · eth_address |
 
@@ -112,7 +113,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 ```
 
 [`../tools/crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) runs all
-forty per-file witnesses in the dependency order above, rebuilding and reproving
+forty-one per-file witnesses in the dependency order above, rebuilding and reproving
 each from source, and refuses whole — naming the file that stopped it — the moment
 any one goes RED, and then runs the **count guard**
 ([`../tools/crypto_count_guard_witness.rish`](../tools/crypto_count_guard_witness.rish)) —
