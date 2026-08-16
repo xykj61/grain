@@ -1,6 +1,6 @@
 # Crypto — the Season G audit front door
 
-*A Rye-native, parity-checked cryptography library — forty-nine primitives and twenty-two compositions, each GREEN on metal.*
+*A Rye-native, parity-checked cryptography library — fifty primitives and twenty-two compositions, each GREEN on metal.*
 
 **Status:** Checkable — Season G operator + auditor guide
 **Depth:** guide
@@ -32,7 +32,7 @@ vectors — never a copied line ([`gratitude-licenses.md`](../.claude/rules/grat
 
 ---
 
-## Rung table — sixty-two files, dependency order
+## Rung table — seventy-two files, dependency order
 
 Each rung stands on the GREEN rungs beneath it; none authors cryptography a lower
 rung had not already proven. Every file carries a per-file witness
@@ -143,6 +143,7 @@ rung had not already proven. Every file carries a per-file witness
 | `mldsa_sample.rye` | **The step that turns a short seed into ML-DSA's ring elements.** — the third rung, on `mldsa_ring.rye` and `shake.rye`. Authors **RejNTTPoly** (Algorithm 30 — the uniform matrix sampler), **RejBoundedPoly** (Algorithm 31 — the small-secret sampler, `η ∈ {2,4}`), and **SampleInBall** (Algorithm 29 — the sparse ±1 challenge, `τ ∈ {39,49,60}`). Proven by **self-consistency** — RejNTTPoly against an independent bit-reader byte-for-byte, RejBoundedPoly's known-answers and range, SampleInBall's exact `τ`-weight; byte-boundary parity against Zig arrives at the keygen rung. Purely local — no key, no network, no funds, no device | ML-DSA / CRYSTALS-Dilithium (NIST FIPS 204) |
 | `mldsa_keygen.rye` | **The whole signing keypair, and the signature ladder's first external witness.** — the fourth rung and its **first doubled oracle**, composing ring · encode · sample · `shake.rye`, the post-quantum successor to Kumara's Ed25519 identity keypair. Authors **ML-DSA.KeyGen_internal** (FIPS 204 Algorithm 6): expand `ξ` through SHAKE256 into `(rho, rho', K)`, draw `Â`, `s1`, `s2`, form `t = InvNTT(Â ∘ NTT(s1)) + s2`, split with Power2Round, serialize `pk`/`sk` with `tr = H(pk)`. Proven by a **doubled oracle** — byte-for-byte against Zig's `newKeyFromSeed(seed) → toBytes` at all three sets (44/65/87) over 8 seeds each, a trivial key refused. Purely local — every seed a public test vector, no key held, no network, no funds, no device; the maintainer's own key stays the custody gate | ML-DSA / CRYSTALS-Dilithium (NIST FIPS 204) |
 | `mldsa_sign.rye` | **The signature itself — the ladder's crux, the door a Kumara name signs through once the curves fall.** — the fifth rung, composing every GREEN rung beneath it and the keygen rung's secret key. Authors **ML-DSA.Sign_internal** (FIPS 204 Algorithm 7): decode `sk`, compute `mu = H(tr ‖ 0x00 ‖ 0x00 ‖ M)` and `rho'' = H(K ‖ rnd ‖ mu)` with `rnd = 0` (the deterministic variant), and run the rejection loop — mask `y = ExpandMask(rho'', κ)`, `w = InvNTT(Â ∘ NTT(y))`, commit `c~ = H(mu ‖ w1Encode(HighBits(w)))`, challenge `c = SampleInBall(c~)`, answer `z = y + c·s1`, emitting `σ = c~ ‖ BitPack(z) ‖ HintBitPack(h)` only when the `z`, `r0`, `ct0`, and hint-weight bounds all hold. Proven by a **doubled oracle**, and deterministic signing makes the whole rejection walk diffable — byte-for-byte against Zig's `sk.signer(null) → finalize → toBytes` at all three sets (44/65/87) over 6 seeds and 2 messages each, a trivial signature refused. Purely local — every seed and message a public test vector, no key held, no network, no funds, no device; signing with the maintainer's own key stays the custody gate | ML-DSA / CRYSTALS-Dilithium (NIST FIPS 204) |
+| `mldsa_verify.rye` | **The verdict — the ladder's closing stone, the door a peer reads a Kumara name through once the curves fall.** — the sixth and final rung, composing every GREEN rung beneath it (ring · encode · sample · `shake.rye`). Authors **ML-DSA.Verify_internal** (FIPS 204 Algorithm 8): decode `pk = rho ‖ SimpleBitPack(t1)` and `σ = c~ ‖ BitPack(z) ‖ HintBitPack(h)`, refusing a malformed hint or an over-large `z` before any arithmetic; recompute `tr = H(pk)` and `mu = H(tr ‖ 0x00 ‖ 0x00 ‖ M)`; draw `c = SampleInBall(c~)`; rebuild `w'_approx = A·z − c·t1·2ᵈ`; recover `w1' = UseHint(h, w'_approx)`; accept **iff** `‖z‖∞ < γ1−β` **and** `c~' = H(mu ‖ w1Encode(w1'))` equals the signature's `c~`. Proven by a **doubled oracle** — a verifier's answer is a boolean, so parity is agreement on the verdict: our verify **accepts** the exact signature Zig's deterministic signer produced and **rejects** every single-byte mutation of the commitment, response, hint, message, and public key, with Zig's own `Signature.verify` agreeing, at all three sets (44/65/87) over 5 seeds and 2 messages each. Purely local — every seed, message, and signature a public test vector, no key held, no network, no funds, no device; the maintainer's own key stays the custody gate. **The ML-DSA ladder — ring · encode · sample · keygen · sign · verify — is complete end to end** | ML-DSA / CRYSTALS-Dilithium (NIST FIPS 204) |
 
 ---
 
@@ -154,7 +155,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 
 [`crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) rebuilds each
 `crypto/<name>.rye` fresh from source to the gitignored `crypto/bin/` and runs all
-sixty-two per-file witnesses in the dependency order above, refusing whole —
+seventy-two per-file witnesses in the dependency order above, refusing whole —
 naming the file that stopped it — the moment any one goes RED. A GREEN suite means
 every claim here is re-provable by tooling, not trusted from a commit message
 alone (measurement beats memory). It then runs the **count guard**
