@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260816.002751
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS cloud pier — Eastern (EDT) time convention
+title encoding/base58.rye — Base58 in pure Rye, parity-GREEN
+prompt read the road ahead (REMEMBER · 1024-round itinerary · six-season double-seat · rye-first crypto decision wave); take the next agent-doable lap Lindy-first crux-first, Rye prioritized; send each finished increment as its own signed round; stop at custody gates
+think The living edge is Season G (Cryptography) with its serialization sibling encoding/. base64.rye landed as the only encoding rung; the encoding README named three next rungs — base58, base32, hex.
+think Lindy-first crux-first among the three: base58 is the encoding Grain's own identity keys, content addresses, and the .sol/.sui reserve all wear (Kumara, Solana). It is also the hardest-solvable — arbitrary-length base conversion, and Zig ships no std base58 so there is no std cross-check the way base64 enjoys. Highest durable payoff, hardest tractable move — the crux.
+think Mirrored base64.rye's shape exactly: opening triad, bounded max_decoded_bytes / max_encoded_bytes, named Base58Error, contract asserts (>=2/fn) each with a positive // invariant, edge refusals before any partial write.
+think Solved the missing-std-parity honestly: authored a SECOND, independent encoder over Zig's native u128 integer inside the selftest (for payloads <=15 bytes = 120 bits), so parity is a genuine cross-implementation check, not a self-check. Anchored the real-world shapes on the canonical Bitcoin Core encode/decode known-answers, including the leading-zero and all-zero cases, plus a round-trip at every length.
+think Primary algorithm is byte-array long division (base-256 folded into base-58 and back); the u128 reference is a different arithmetic path — agreement across both plus the published vectors is real evidence, not memory.
+obs GREEN on the first metal pass: all twelve Bitcoin Core vectors matched text-for-text and round-tripped, u128 parity matched 0..15 bytes, BadChar / DestTooSmall refused at the edge. tame_style_check bans clean; base58.rye carries asserts (not on the zero-assert ratchet list).
+obs Kept the rung atomic per the finishing edge — one file, one witness, README seated. base58check (payload + double-SHA-256 checksum) is now buildable on the GREEN crypto/sha256.rye and is named as the natural next composition, not started this round.
+obs No custody gate touched — purely local arithmetic, no key, no network, no funds, no device.
+loom witness=encoding_base58_witness green=1 kat_vectors=12 u128_parity_bytes=0..15 roundtrip=all
+file encoding/base58.rye Base58 encode/decode in pure Rye, Bitcoin alphabet, parity-proven
+file tools/encoding_base58_witness.rish per-file witness building fresh to encoding/bin and asserting the GREEN line
+file encoding/README.md seats base58 in the rung table; trims next-rungs to base32/hex; names base58check on GREEN sha256
+recommend keep-going base32 (RFC 4648) or the base58check composition on GREEN sha256 is the next encoding rung; both agent-doable, no gate

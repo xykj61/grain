@@ -1,0 +1,321 @@
+//! encoding/base58.rye — Base58 (Bitcoin alphabet) authored in pure Rye. Base58 is the binary-to-text armor an address, a public key,
+//! or a content identifier wears when a human has to read it, type it, or copy it by hand: no 0/O and no I/l to confuse an eye, no + or /
+//! to break a double-click, no padding to trip a URL. It is the form a Solana address, a Bitcoin address, and an IPFS content id are
+//! written in. The crypto library proves the bytes; this module renders them to the alphabet a hand can carry, and recovers them exactly.
+//!
+//! Season: encoding — the serialization sibling of Season G (Cryptography), beside encoding/base64.rye. Where crypto/ authors the
+//! mathematics that produces bytes (hashes, signatures, sealed boxes), encoding/ authors the text those bytes travel in. Both keep the
+//! same discipline: authored from the standard, calling no std codec in the primitive, proven byte-for-byte against a reference runnable now.
+//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
+//! Clean-room: the 58-character alphabet and the leading-zero law are Bitcoin's own public convention; the arithmetic is ours
+//! (.claude/rules/gratitude-licenses.md). Monocypher does not ship base58; the reference is the world's published vectors and a second,
+//! independent implementation written here.
+//!
+//! THE CRUX — Base58 reads the whole payload as one big-endian integer and writes it in base 58, most-significant digit first, then
+//! restores every leading zero byte as a leading '1'. There is no fixed block size the way Base64 packs three bytes into four symbols;
+//! the length is data-dependent (about 1.3657 characters per byte). Encoding is repeated division of the big number by 58, each remainder
+//! a digit; decoding is the inverse, multiplying an accumulator by 58 and adding each digit. Both run as bounded long division over a
+//! small byte array — no arbitrary-precision library, no std codec, every loop naming its ceiling.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no key, no network, no funds, no real device. The primitive calls no std base58 (Zig ships
+//! none) and no std.crypto. Parity is proven at selftest against two references runnable now: the canonical Bitcoin Core base58 encode/
+//! decode known-answers (including the leading-zero and all-zero cases), and a second, INDEPENDENT implementation authored here over Zig's
+//! native u128 integer for payloads that fit it — byte-for-byte, plus a round-trip on every shape. The u128 reference stands in for the
+//! std cross-check Base64 enjoys, since no std base58 exists to check against.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run encoding/base58.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const base58_version = "20260816.002751";
+
+/// The Bitcoin base58 alphabet, in ascending digit-value order: '1' is 0, 'z' is 57. It omits the four glyphs an eye confuses —
+/// 0 (zero), O (capital o), I (capital i), and l (lower L) — so a value read aloud or typed by hand survives the trip. encode and decode
+/// read the symbol map from this one source of truth.
+pub const alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+
+/// The largest binary payload this module encodes, or the largest decode it produces in one call. Generous for an address, a public key,
+/// a content id, or any in-process artifact — a value named so every buffer bound and every loop cites a maximum, the TAME reflex that a
+/// count declares its ceiling before it grows. Base58 long division is O(n²) in the payload length; this bound keeps the worst case small.
+pub const max_decoded_bytes: u32 = 1 << 10;
+
+/// The largest base58 text an encode produces (and the largest an encode's internal long-division buffer needs): base58 expands a payload
+/// by at most log(256)/log(58) ≈ 1.3657 characters per byte. 138/100 is that ratio rounded up in integer arithmetic; +2 covers the rounding
+/// and a possible all-'1' input. This also bounds the decode input length.
+pub const max_encoded_bytes: u32 = ((max_decoded_bytes * 138) / 100) + 2;
+
+/// The faults this module can raise, each refused at the edge before a partial result escapes.
+pub const Base58Error = error{
+    /// An input larger than max_decoded_bytes (encode) or max_encoded_bytes (decode) — refused before a symbol is written.
+    TooLong,
+    /// The caller's destination buffer is smaller than the exact output length — refused before the first write.
+    DestTooSmall,
+    /// A decode input carrying a character outside the 58-symbol alphabet — refused before a byte is written.
+    BadChar,
+};
+
+/// Build the 256-entry reverse lookup for the alphabet: each of the 58 symbols maps to its 0..57 value, every other byte to the sentinel
+/// 0xFF so a stray character is caught the moment it is read.
+fn reverse_table() [256]u8 {
+    // invariant: the alphabet is exactly the 58 symbols base58 indexes.
+    assert(alphabet.len == 58);
+    var table = [_]u8{0xFF} ** 256;
+    var i: u32 = 0;
+    while (i < 58) : (i += 1) table[alphabet[i]] = @as(u8, @intCast(i));
+    return table;
+}
+
+/// Encode source as base58, most-significant digit first, restoring each leading zero byte as a leading '1'. Returns the exact written
+/// slice of dest. The primitive calls no std codec — it is repeated long division of the payload (read as one big-endian integer) by 58.
+pub fn encode(dest: []u8, source: []const u8) Base58Error![]const u8 {
+    if (source.len > max_decoded_bytes) return error.TooLong;
+    const n: u32 = @intCast(source.len);
+    // invariant: the bounded cast named exactly the source bytes.
+    assert(n == source.len);
+
+    // Leading zero bytes carry no magnitude yet must be preserved — each becomes one '1' at the front of the output.
+    var zeros: u32 = 0;
+    while (zeros < n and source[zeros] == 0) : (zeros += 1) {}
+
+    // The long-division digit buffer, base-58 digits held big-end-first. size upper-bounds how many digits the payload can produce.
+    var b58 = [_]u8{0} ** max_encoded_bytes;
+    const size: u32 = ((n * 138) / 100) + 1;
+    // invariant: the digit buffer holds the whole worst-case expansion.
+    assert(size <= max_encoded_bytes);
+
+    // Inject each non-zero-region byte into the big number: carry = byte, then sweep the buffer tail-to-head, folding base-256 into base-58.
+    var i: u32 = zeros;
+    while (i < n) : (i += 1) {
+        var carry: u32 = source[i];
+        var k: u32 = size;
+        while (k > 0) {
+            k -= 1;
+            // carry stays well under u32: 256 * 57 + 255 = 14847, far below the u32 ceiling.
+            carry += 256 * @as(u32, b58[k]);
+            b58[k] = @as(u8, @intCast(carry % 58));
+            carry = carry / 58;
+        }
+        // invariant: a full sweep of a buffer sized for the worst case absorbs the carry completely.
+        assert(carry == 0);
+    }
+
+    // Skip the buffer's leading zero digits; the rest are the significant base58 digits, high digit first.
+    var lead: u32 = 0;
+    while (lead < size and b58[lead] == 0) : (lead += 1) {}
+
+    const out_len = zeros + (size - lead);
+    if (dest.len < out_len) return error.DestTooSmall;
+
+    var di: u32 = 0;
+    while (di < zeros) : (di += 1) dest[di] = alphabet[0];
+    var j: u32 = lead;
+    while (j < size) : (j += 1) {
+        dest[di] = alphabet[b58[j]];
+        di += 1;
+    }
+
+    // invariant: exactly the predicted number of characters was written.
+    assert(di == out_len);
+    return dest[0..di];
+}
+
+/// Decode base58 text back to its bytes, restoring each leading '1' as a leading zero byte. Returns the exact written slice. Inverts
+/// encode: an accumulator multiplied by 58 and added to for each digit, run as bounded long division over a base-256 byte buffer.
+pub fn decode(dest: []u8, source: []const u8) Base58Error![]const u8 {
+    if (source.len > max_encoded_bytes) return error.TooLong;
+    const table = reverse_table();
+    const m: u32 = @intCast(source.len);
+    // invariant: the bounded cast named exactly the source length.
+    assert(m == source.len);
+
+    // Leading '1' characters are the base58 zero digit — each restores one leading zero byte.
+    var zeros: u32 = 0;
+    while (zeros < m and source[zeros] == alphabet[0]) : (zeros += 1) {}
+
+    // The base-256 accumulator, bytes held big-end-first. size upper-bounds the output length: base58 shrinks by log(58)/log(256) ≈ 0.7327.
+    var b256 = [_]u8{0} ** max_decoded_bytes;
+    const size: u32 = ((m * 733) / 1000) + 1;
+    // invariant: the accumulator holds the whole worst-case output.
+    assert(size <= max_decoded_bytes);
+
+    // Fold each digit into the big number: carry = digit value, then sweep tail-to-head, folding base-58 into base-256.
+    var i: u32 = zeros;
+    while (i < m) : (i += 1) {
+        const v = table[source[i]];
+        if (v == 0xFF) return error.BadChar;
+        var carry: u32 = v;
+        var k: u32 = size;
+        while (k > 0) {
+            k -= 1;
+            // carry stays well under u32: 58 * 255 + 57 = 14847, far below the u32 ceiling.
+            carry += 58 * @as(u32, b256[k]);
+            b256[k] = @as(u8, @intCast(carry % 256));
+            carry = carry / 256;
+        }
+        // invariant: a full sweep of a buffer sized for the worst case absorbs the carry completely.
+        assert(carry == 0);
+    }
+
+    // Skip the accumulator's leading zero bytes; the rest are the significant payload, high byte first.
+    var lead: u32 = 0;
+    while (lead < size and b256[lead] == 0) : (lead += 1) {}
+
+    const out_len = zeros + (size - lead);
+    if (dest.len < out_len) return error.DestTooSmall;
+
+    var di: u32 = 0;
+    while (di < zeros) : (di += 1) dest[di] = 0;
+    var j: u32 = lead;
+    while (j < size) : (j += 1) {
+        dest[di] = b256[j];
+        di += 1;
+    }
+
+    // invariant: exactly the predicted number of bytes was written.
+    assert(di == out_len);
+    return dest[0..di];
+}
+
+// The canonical Bitcoin Core base58 encode/decode known-answers — the neutral public reference our Rye must reproduce exactly, including
+// the leading-zero cases (a leading zero byte is a '1') and the all-zero case (ten zero bytes are ten '1's).
+const kat_inputs = [_][]const u8{
+    &[_]u8{},
+    &[_]u8{0x61},
+    &[_]u8{ 0x62, 0x62, 0x62 },
+    &[_]u8{ 0x63, 0x63, 0x63 },
+    &[_]u8{ 0x73, 0x69, 0x6d, 0x70, 0x6c, 0x79, 0x20, 0x61, 0x20, 0x6c, 0x6f, 0x6e, 0x67, 0x20, 0x73, 0x74, 0x72, 0x69, 0x6e, 0x67 },
+    &[_]u8{ 0x51, 0x6b, 0x6f, 0xcd, 0x0f },
+    &[_]u8{ 0xbf, 0x4f, 0x89, 0x00, 0x1e, 0x67, 0x02, 0x74, 0xdd },
+    &[_]u8{ 0x57, 0x2e, 0x47, 0x94 },
+    &[_]u8{ 0xec, 0xac, 0x89, 0xca, 0xd9, 0x39, 0x23, 0xc0, 0x23, 0x21 },
+    &[_]u8{ 0x10, 0xc8, 0x51, 0x1e },
+    &[_]u8{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+    &[_]u8{ 0x00, 0x61 },
+};
+const kat_outputs = [_][]const u8{
+    "",
+    "2g",
+    "a3gV",
+    "aPEr",
+    "2cFupjhnEsSn59qHXstmK2ffpLv2",
+    "ABnLTmg",
+    "3SEo3LWLoPntC",
+    "3EFU7m",
+    "EJDM8drfXA6uyA",
+    "Rt5zm",
+    "1111111111",
+    "12g",
+};
+
+fn slice_eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) {
+        if (a[i] != b[i]) return false;
+    }
+    return true;
+}
+
+/// Independent reference: a second base58 encoder authored over Zig's native u128 integer, used ONLY inside the selftest as a genuinely
+/// different implementation to prove our authored long-division encoder matches byte-for-byte. Where Base64 checks against std.base64, no
+/// std base58 exists — so this native-integer path is the independent second implementation. It handles payloads that fit in a u128
+/// (≤ 15 bytes = 120 bits); the published vectors above cover the longer, real-world shapes. Returns the exact written slice of dest.
+fn ref_encode_u128(dest: []u8, source: []const u8) []const u8 {
+    // invariant: the reference only runs where the whole payload fits a u128.
+    assert(source.len <= 15);
+    var zeros: u32 = 0;
+    while (zeros < source.len and source[zeros] == 0) : (zeros += 1) {}
+
+    var value: u128 = 0;
+    var i: u32 = 0;
+    while (i < source.len) : (i += 1) value = value * 256 + @as(u128, source[i]);
+
+    // Emit base-58 digits low-to-high into a scratch, then reverse them after the leading '1's.
+    var scratch: [32]u8 = undefined;
+    var ti: u32 = 0;
+    while (value > 0) {
+        scratch[ti] = alphabet[@as(u8, @intCast(value % 58))];
+        value = value / 58;
+        ti += 1;
+    }
+
+    var di: u32 = 0;
+    while (di < zeros) : (di += 1) dest[di] = alphabet[0];
+    var k: u32 = ti;
+    while (k > 0) {
+        k -= 1;
+        dest[di] = scratch[k];
+        di += 1;
+    }
+    return dest[0..di];
+}
+
+fn run_selftest() !u8 {
+    var ebuf: [128]u8 = undefined;
+    var dbuf: [128]u8 = undefined;
+
+    // 1. The canonical Bitcoin Core known-answers: each input encodes to the published text, and that text decodes back to the input.
+    {
+        var i: u32 = 0;
+        while (i < kat_inputs.len) : (i += 1) {
+            const got = try encode(&ebuf, kat_inputs[i]);
+            if (!slice_eq(got, kat_outputs[i])) return error.KatVectorMismatch;
+            const back = try decode(&dbuf, kat_outputs[i]);
+            if (!slice_eq(back, kat_inputs[i])) return error.KatRoundtripMismatch;
+        }
+    }
+
+    // 2. Independent-implementation parity and a round-trip: for payloads 0..15 bytes (every shape the native-integer reference can hold),
+    //    our authored long-division encoder equals the u128 reference byte-for-byte, and decode recovers the original exactly. Leading
+    //    zero bytes are swept through so the '1'-prefix law is exercised at every length.
+    {
+        var big: [15]u8 = undefined;
+        var n: u32 = 0;
+        while (n <= 15) : (n += 1) {
+            // Fill with a mixing pattern, then force a leading zero on the odd lengths so the leading-'1' path is covered too.
+            var k: u32 = 0;
+            while (k < n) : (k += 1) big[k] = @as(u8, @truncate(k *% 37 +% 11));
+            if (n > 0 and (n % 2) == 1) big[0] = 0;
+            const src = big[0..n];
+
+            var ours: [32]u8 = undefined;
+            var refb: [32]u8 = undefined;
+            const o = try encode(&ours, src);
+            const r = ref_encode_u128(&refb, src);
+            if (!slice_eq(o, r)) return error.RefEncodeMismatch;
+
+            var round: [32]u8 = undefined;
+            const b = try decode(&round, o);
+            if (!slice_eq(b, src)) return error.RoundtripMismatch;
+        }
+    }
+
+    // 3. The edges refuse: a character outside the alphabet raises BadChar, and a too-small destination raises DestTooSmall — each before a
+    //    partial result escapes. '0', 'O', 'I', and 'l' are exactly the glyphs base58 omits, so each is a genuine bad character.
+    {
+        var junk: [8]u8 = undefined;
+        if (decode(&junk, "2g0")) |_| return error.BadCharSlipped else |err| if (err != error.BadChar) return error.WrongBadChar;
+        if (decode(&junk, "2gO")) |_| return error.BadCharSlipped2 else |err| if (err != error.BadChar) return error.WrongBadChar2;
+        var tiny: [1]u8 = undefined;
+        if (encode(&tiny, "foobar")) |_| return error.DestSlipped else |err| if (err != error.DestTooSmall) return error.WrongDest;
+    }
+
+    print("GREEN encoding-base58: Base58 (Bitcoin alphabet) authored in pure Rye — the binary-to-text armor an address, a public key, or a " ++
+        "content id wears when a human must read, type, or copy it: no 0/O/I/l to confuse an eye, no + / to break a double-click, no " ++
+        "padding to trip a URL. The whole payload reads as one big-endian integer written in base 58, high digit first, every leading " ++
+        "zero byte restored as a leading '1'. Encoding is repeated long division by 58; decoding inverts it — both bounded loops over a " ++
+        "small byte array, calling no std codec (Zig ships no base58). Parity holds against two references runnable now: the canonical " ++
+        "Bitcoin Core known-answers (including the leading-zero and all-zero cases) match text for text and round-trip back, and our " ++
+        "authored long division equals a second, independent u128-integer implementation byte-for-byte across payloads 0..15 bytes with a " ++
+        "round-trip at every length. A character outside the 58-symbol alphabet refuses BadChar, a too-small destination refuses " ++
+        "DestTooSmall — each before a partial result escapes. Purely local arithmetic — no key, no network, no funds, no real device. The " ++
+        "alphabet a hand can carry now stands in our own Rye, beside Base64, the serialization siblings of the Season G crypto stack.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
