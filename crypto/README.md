@@ -3,6 +3,7 @@
 **Language:** EN · **Voice:** Kyri · **Style:** Radiant · **Status:** Living
 **Chapter:** G — Cryptography (the Six-Chapter double-seat)
 **Design read:** [`../active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md`](../active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md)
+**Compressed guide:** [`../docs/CRYPTO.md`](../docs/CRYPTO.md) — the Chapter G audit front door on the docs shelf
 **Clean-room law:** [`../.claude/rules/gratitude-licenses.md`](../.claude/rules/gratitude-licenses.md)
 
 Grain will face a security audit, and building our own cryptography in the open —
