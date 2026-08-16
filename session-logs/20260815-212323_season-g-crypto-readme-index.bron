@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260815.212323
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Season G — the crypto module index README, the audit front door
+prompt Take the next agent-doable lap Lindy-first crux-first past BUHR — Rye prioritized, Glow on green-witnessed Rye; send each finished increment to origin and xykj61; stop at custody gates.
+think Eighth lap. The crypto arc now has sixteen parity-GREEN files, a per-file witness for each, and a whole-suite witness. The recommend named the front-door crux: a crypto/README.md index that names each primitive, its RFC/parity reference, and the suite witness — the highest-Lindy remaining crypto thread, since a README is read thousands of times over years and this one is how an auditor first meets the stack. It also feeds the docs-compression pass and the public seed.
+think Design (self-approved): a Radiant front door under TAME framing — what the library is and why (audit honesty, no std.crypto, byte-for-byte parity vs RFC + Zig std.crypto, Monocypher the target not a copied line), the sixteen files in five dependency tiers as reference tables (hashes · ChaCha/Poly · field+curve · key agreement · compositions), the witness story (per-file + the one-command suite), and the honest horizons (constant-time timing-safety, Monocypher-source parity) plus the custody gate (keys stay the maintainer's hand). A README front door earns a radiant wish, per radiant-wishes-ending.md.
+think docs-implementation-sync: every claim is checkable and checked — sixteen files (ls confirmed), each with a per-file witness (confirmed this loop), the suite witness GREEN across all sixteen (run this loop), the RFC references drawn from each file's own GREEN print. No behavioral claim written from memory.
+obs living_docs_lint (advisory) prints no broken-link or orphan flag against crypto/README.md — its relative links to the sixteen .rye files and the two tools all resolve. The lint never fails; the orphans it lists (glow/README.md, session-logs/README.md) are pre-existing and unrelated.
+obs Honest scope: pure documentation, no code, no custody. The README names the custody gate and the two horizons truthfully rather than claiming timing-safety or Monocypher-source parity the tree has not yet proven.
+loom doc=crypto/README.md files_indexed=16 tiers=5 witness_cited=crypto_suite_witness lint=advise-clean
+file crypto/README.md the crypto library's front door — what it is, the sixteen files by dependency tier with RFC/parity references, the per-file and whole-suite witnesses, the horizons, and the custody gate; closes on a radiant wish
+file session-logs/README.md newest-first row for this front-door lap
+recommend check-in (Claude) — the Season G crypto arc now stands whole and self-proving (sixteen parity-GREEN files · per-file witnesses · a one-command suite · an audit-ready index README that feeds the seed). The next Lindy-first cruxes cross into broader design: the docs-compression molt + README-links-to-root-leaves weave that precedes the deep seed refresh (a seed force-push is custody gate #6), or opening Season G's Brix identity-wiring strand. A good checkpoint to confirm direction before crossing into the seed/docs seam.
