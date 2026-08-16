@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260815.231115
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (Linux) — Eastern (EDT) time convention
+title Season G — the constant-time discipline note, a named crux rung earned
+prompt Take the next agent-doable lap Lindy-first crux-first on the crypto/Rye road; Rye prioritized, Glow on green-witnessed Rye; approve own design rounds; send each finished increment; stop at custody gates.
+think Read REMEMBER head, the 1024-round itinerary, the six-season double-seat, and the Rye-first crypto-parity decision wave. Season G (Cryptography) is the highest-Lindy new thread and the live edge.
+think Surveyed crypto/: 23 .rye files (20 primitives + 3 compositions), all wired into tools/crypto_suite_witness.rish including the newest SHA3. Ran the whole-suite witness on metal — GREEN across all twenty-three files. The primitive set the README designs is complete and re-proven, not trusted from a commit line.
+think The Rye-first decision-wave doc names an explicit unbuilt crux rung of Season G: a constant-time discipline note, timing-safety as a named horizon since it wants measurement not a claim. Confirmed no such note exists — only per-file mentions scattered across the .rye headers. That is the next Lindy-first crux: an auditor reads it for years (Lindy), and the honest tractable move is scoping what must be measured without faking a measurement (crux).
+think Gathered the real per-primitive constant-time reasoning from the code so the note cites metal, not memory: x25519.rye:67 branchless XOR-mask conditional swap (data-independent by construction); fe25519.rye:81/:243 carry-not-branch reduction and fixed-shape inversion; aead.rye:126 constant-time OR-accumulate tag compare; vault_seal.rye:159 best-effort key wipe explicitly not a timing claim; and the sharp asymmetry — ed25519_scalarmul.rye:27/:67 and ed25519_sign.rye:28 are DELIBERATELY VARIABLE-TIME, branching on the secret scalar.
+obs The load-bearing honest fact an auditor must have: X25519 key agreement is branchless by construction, while Ed25519 signing is deliberately variable-time and not yet timing-safe. Named in daylight, tied to why the signing custody gate is the right posture and not only a policy.
+obs Refused to fabricate any timing claim. The note claims no measurement; it names the three postures (public-only, data-independent by construction, deliberately variable-time), maps every file to one with a code citation, and books the dudect-style differential-timing measurement round on metal as the horizon that would earn a claim. Wall-clock timing in a witness would be noise wearing a proof's clothes.
+obs Pure documentation standing on the GREEN library — no new code, no custody touched. Wired CONSTANT_TIME.md into the crypto README horizons section as its front door.
+loom witness=crypto_suite_witness result=GREEN files=23 primitives=20 compositions=3
+file crypto/CONSTANT_TIME.md the new constant-time discipline note — the named Season G crux rung, auditor-facing, measurement scoped as horizon
+file crypto/README.md horizons section now points at CONSTANT_TIME.md
+recommend keep-going — the next crypto crux is the constant-time Ed25519 signing ladder (rewrite scalarmul branchless), or the docs-compression pass that feeds the seed; both agent-doable, no gate.

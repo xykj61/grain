@@ -98,7 +98,11 @@ tooling, not trusted from a commit message alone.
 
 - **Constant-time timing-safety** is a named **horizon**, not a claim — it wants
   measurement on metal, not an assertion. The primitives that touch a secret scalar
-  (signing, key agreement) are correct before they are proven timing-safe.
+  (signing, key agreement) are correct before they are proven timing-safe. The whole
+  posture is gathered in one auditor-facing place — which files touch a secret, which
+  are data-independent by construction, and the one path (Ed25519 signing) that is
+  **deliberately variable-time** — in [`CONSTANT_TIME.md`](CONSTANT_TIME.md), the
+  Season's constant-time discipline note.
 - **Monocypher-source parity** is a **horizon** behind the held `vendor/monocypher`
   network fetch; today's parity is proven against the RFC vectors and Zig's
   `std.crypto`, both runnable now.
