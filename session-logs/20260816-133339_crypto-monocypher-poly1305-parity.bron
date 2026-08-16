@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260816.133339
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title crypto — Monocypher-source parity for standalone Poly1305, GREEN
+prompt Take the next agent-doable lap Lindy-first crux-first on the crypto-parity / decision-wave road; Rye prioritized; approve own design rounds; send each finished increment; stop at custody gates
+think Read REMEMBER (too large to load whole — grepped gates + git nib), the 1024-round itinerary, the six-season double-seat, and the Rye-first crypto-parity decision wave; nib was seven Monocypher-source parity rungs GREEN (BLAKE2b, X25519, Ed25519, IETF AEAD, Argon2, XChaCha20-Poly1305 flagship, Edwards↔Montgomery)
+think Lindy-first crux-first: the crypto library serves every module that signs, verifies, agrees, or seals — highest-Lindy new thread. Crux hunt found a real gap the module named itself: crypto/poly1305.rye's own selftest says Monocypher-source parity is a held horizon ("its vendored source is a held fetch"), and Poly1305 was only ever proven EMBEDDED in the AEAD flagship, never standalone against Monocypher's own crypto_poly1305 — yet it is the MAC every Vault, Comlink, and Lotus sealed carry rests on
+think Mirrored the proven parity pattern: a C harness over the unmodified vendored crypto_poly1305, a Rye printing harness over the GREEN crypto/poly1305.rye via the existing tools/poly1305.rye symlink, a Rishi witness diffing byte-for-byte and anchoring to the published tag. Chose eight tags: seven over deterministic messages of block-edge sizes {0,1,15,16,17,34,256} (empty · sub-block · exact block · one over · RFC length · multi-block) with a second real implementation as oracle, plus the RFC 8439 §2.5.2 canonical message "Cryptographic Forum Research Group" anchored to the published a8061dc1305136c6c22b8baf0c0127a9
+obs GREEN on the first full pass — Monocypher's crypto_poly1305 and our crypto/poly1305.rye produce byte-identical tags over all eight inputs; the eighth line equals the published RFC 8439 §2.5.2 tag, so the block-edge oracle is a second real implementation and the anchor is the standard itself
+obs Count guard untouched: added only tools/ files (C harness, Rye harness, Rishi witness) and reused the existing tools/poly1305.rye symlink, so crypto/*.rye stays 56 real (61 with the 5 encoding symlinks). Gate-free and purely local — RFC public one-time key, no real secret, no signature, no network, no funds, no device; constant-time timing-safety stays the one named horizon
+obs Docs synced in the same round: crypto/README.md and docs/CRYPTO.md moved Monocypher-source parity from seven rungs to eight, naming standalone Poly1305 and why it matters (proven in its own right, not merely embedded in the AEAD); crypto/poly1305.rye's selftest text updated from "held horizon" to "landed", citing the new witness
+loom witness=crypto_monocypher_poly1305_parity_witness result=green primitive=poly1305 tags=8 block_edges=7 anchor=rfc8439_2.5.2 count_guard=56
+file tools/fixtures/monocypher_poly1305_harness.c Monocypher C harness over the unmodified vendored crypto_poly1305, prints eight tags (seven block-edge sizes plus RFC canonical message)
+file tools/monocypher_poly1305_parity.rye Rye printing harness over the GREEN crypto/poly1305.rye, same eight hex tags over identical inputs
+file tools/crypto_monocypher_poly1305_parity_witness.rish builds both, diffs byte-for-byte, anchors the eighth tag to RFC 8439 §2.5.2's published authenticator
+file crypto/poly1305.rye selftest text moved from "Monocypher-source parity is a held horizon" to "landed", citing the new witness
+file crypto/README.md parity note moved seven rungs to eight, standalone Poly1305 named
+file docs/CRYPTO.md same eight-rung sync, "proven in its own right" wording
+recommend keep-going — the ninth parity rung (the raw ChaCha20 djb 64-bit-counter stream, or crypto_verify16/32/64 constant-time compare) is mechanical and gate-free; crypto stays the highest-Lindy thread until an audit surface or the Lotus signing gate calls
