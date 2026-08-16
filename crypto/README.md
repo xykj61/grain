@@ -19,7 +19,7 @@ a message: **Kumara** identity, **Vault** sealed storage, **Comlink** sessions, 
 the **Lotus** signed carry. It authors the mathematics once, in the open, so a hand
 placing trust in it can read exactly what it does.
 
-## The sixty files — thirty-eight primitives and twenty-two compositions
+## The sixty-one files — thirty-nine primitives and twenty-two compositions
 
 Built in dependency order: each rung stands on the GREEN rungs beneath it, none
 authoring cryptography a lower rung had not already proven.
@@ -98,6 +98,17 @@ authoring cryptography a lower rung had not already proven.
 | [`secp256k1_ecdsa_sign.rye`](secp256k1_ecdsa_sign.rye) | ECDSA signature **signing** — the rung that completes the scheme, deriving a deterministic per-message nonce (Zig's null-noise RFC 6979 DRBG, reproduced exactly) and emitting (r, s) **byte-identical** to Zig's. Signs only with a caller-supplied **test** key; the maintainer's identity key stays the custody gate, constant-time signing the named horizon. Parity is an algebraic round-trip through the verifier plus Zig's `EcdsaSecp256k1Sha256` signature byte-for-byte | RFC 6979 · SEC 1 · secp256k1 (SEC 2) |
 | [`secp256k1_ecrecover.rye`](secp256k1_ecrecover.rye) | ECDSA public-key **recovery** — the Ethereum `ecrecover` primitive (the EVM precompile at address `0x01`) that reads the **sender** back out of a signature: the operation behind every Sign-in-with-Ethereum, every EIP-191/712 authentication, and every transaction-sender derivation the account model rests on. Given (r, s), a recovery id of 0 or 1, and the hash, it recovers Q = r⁻¹·(s·R − z·G), adding exactly one new base-field arithmetic — a square root √a = a^((p+1)/4) for point decompression, valid because p ≡ 3 (mod 4). Recovery touches only public values, so it is non-gated; it answers *who signed this?*, never *sign this*. Parity is an algebraic round-trip (each key recovers back from its own signature at exactly one recovery id) plus Zig's `Secp256k1.fromSec1` decompression byte-for-byte | SEC 1 §4.1.6 · secp256k1 (SEC 2) · EIP-191/712 |
 
+### Post-quantum (ML-KEM · ML-DSA, the lattice standards)
+
+The arc that outlives the day a large quantum computer breaks the elliptic
+curves above. Built on the doubled oracle — the FIPS known-answer *and* Zig's
+independent `std.crypto` ml_kem/ml_dsa — that the pivot decision names
+([`../active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md`](../active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md)).
+
+| File | What it is | Reference |
+|---|---|---|
+| [`mlkem_ring.rye`](mlkem_ring.rye) | *The ring every ML-KEM operation lives in.* — the base ring `R_q = Z_q[X]/(X²⁵⁶ + 1)`, prime modulus `q = 3329`, the post-quantum arc's first rung and the lattice counterpart to `fe25519.rye`. Authors modular add/sub/mul mod 3329, the forward and inverse **Number Theoretic Transform** (FIPS 203 Algorithms 9 and 10 — seven Cooley–Tukey butterfly layers under the primitive 256th root `ζ = 17`), and the pointwise multiply in the NTT domain (Algorithm 11 over the Algorithm 12 base case, 128 degree-1 products under the `γᵢ` twiddles), the arithmetic the ML-KEM encode/sample/keygen/encaps rungs compose next. The twiddle tables `zetas[k] = ζ^BitRev7(k)` and `gammas[i] = ζ^(2·BitRev7(i)+1)` are computed at compile time from the field, never a pasted limb. **Honest parity boundary:** FIPS specifies standard-domain arithmetic while Zig's `std.crypto` computes internally in Montgomery domain, so byte-for-byte parity against Zig is taken at the encoded boundary at the keygen rung; here correctness is proven by **self-consistency** with no external dependency — the primitive-root anchors (`ζ²⁵⁶ = 1`, `ζ¹²⁸ = −1`, `128·3303 = 1 mod q`), the NTT round-trip `inv_ntt(ntt(f)) = f` over 64 non-trivial polynomials, and the decisive one, that `inv_ntt(ntt(f) ∘ ntt(g))` equals schoolbook negacyclic convolution `f ⊛ g` in `R_q` over 64 pairs, the pattern `elligator.rye`'s round-trip identity stood on where Zig shipped nothing to diff | ML-KEM / CRYSTALS-Kyber (NIST FIPS 203) |
+
 ### Compositions (no new cryptography — proven stones assembled)
 
 | File | What it answers | Composes |
@@ -137,7 +148,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 ```
 
 [`../tools/crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) runs all
-sixty per-file witnesses in the dependency order above, rebuilding and reproving
+sixty-one per-file witnesses in the dependency order above, rebuilding and reproving
 each from source, and refuses whole — naming the file that stopped it — the moment
 any one goes RED, and then runs the **count guard**
 ([`../tools/crypto_count_guard_witness.rish`](../tools/crypto_count_guard_witness.rish)) —
