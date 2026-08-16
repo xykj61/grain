@@ -1,0 +1,302 @@
+//! crypto/bip44.rye — Season G (Cryptography), the wallet arc's account-path rung: BIP-44's "Multi-Account Hierarchy". Where crypto/bip32.rye
+//! turns one seed into a whole TREE of keys and derives a child by a bare index, BIP-44 is the CONVENTION that gives that tree its five-level
+//! shape — m / purpose' / coin_type' / account' / change / address_index — so every wallet in the world reaches the same address for the same
+//! phrase. This rung is the parser and the walker of that path: parse_path reads the human "m/44'/60'/0'/0/0" text a keeper copies from a wallet
+//! into the exact 32-bit index list (with the hardening bit set where a ' or h marks it); derive_path and derive_bip44 walk crypto/bip32.rye's
+//! ckd_priv down that list from the master to the account key a real address is read off.
+//!
+//! It authors NO new cryptography. Every scalar, every HMAC, every modular add lives one rung down in the already-GREEN crypto/bip32.rye; this
+//! module contributes only the path grammar — decimal-index parsing with an overflow-safe bound, the hardened marker, and the fixed BIP-44
+//! purpose/coin/change convention named rather than scattered as magic numbers. The recipe (BIP-44 §"Path levels"):
+//!   m / 44' / coin_type' / account' / change / address_index
+//! with 44' the purpose fixed by BIP-43, coin_type' the SLIP-44 registry (Bitcoin 0, Ethereum 60), account' a hardened account number, change 0
+//! for the external (receiving) chain and 1 for the internal (change) chain, and address_index the leaf. The three top levels are hardened; the
+//! two below are normal, so a watch-only xpub at the account level can still derive every receiving address.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave — the
+//! wallet arc's named next rung after BIP-39 entropy↔mnemonic).
+//! Kin: crypto/bip32.rye (the HD tree this walks, GREEN on metal) · crypto/bip39_seed.rye (the seed that grows the master) ·
+//! crypto/bip39_mnemonic.rye (the phrase the seed comes from). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity DISCIPLINE target for
+//! the primitives beneath; the BIP-44 convention and its test vectors are public standards, studied clean-room (.claude/rules/gratitude-licenses.md).
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. Every key walked here is a TEST key derived from BIP-32's
+//! own published Test Vector 1 seed; this module calls no std.crypto. Constant-time discipline does not arise: a derivation path is public
+//! structure (a wallet shows it), not a secret; only the keys it reaches are secret, and their timing-safety is crypto/bip32.rye's horizon, not
+//! this parser's. Generating a real wallet and signing with its key stays the custody gate (#3/#4) — the agent builds and verifies, never holds a key.
+//!
+//! Parity is proven at selftest the replayable way the tree favours, against BIP-32's OWN published Test Vector 1 (the spec's own known-answer,
+//! quoted character for character, never fabricated): walking each of the six nodes BY ITS HUMAN PATH STRING ("m", "m/0'", … "m/0'/1/2'/2/
+//! 1000000000") reproduces EXACTLY the spec's published xprv AND xpub for that node — so the path parser, the hardened marker, and the walk are
+//! all proven against a real standard answer without a single external fetch. The BIP-44 convention itself is proven: "m/44'/60'/0'/0/0" parses
+//! to the exact hardened index list, derive_bip44 and derive_path agree byte-for-byte, and a malformed path (no master, a non-digit index, an
+//! index at or above 2³¹, a too-deep path, a trailing slash) each raises its named error.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/bip44.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const bip32 = @import("bip32.rye");
+
+pub const bip44_version = "20260816.140000";
+
+/// The fixed BIP-44 path levels, named rather than scattered as magic numbers. The purpose is fixed by BIP-43; the coin types are the SLIP-44
+/// registry (only the two this tree touches are named); change is the external (receiving) or internal (change) chain.
+pub const purpose: u32 = 44;
+pub const coin_type_bitcoin: u32 = 0;
+pub const coin_type_ethereum: u32 = 60;
+pub const change_external: u32 = 0;
+pub const change_internal: u32 = 1;
+
+/// A generous ceiling on a parsed path's depth. BIP-44 is exactly five levels below the master and BIP-32's own Test Vector 1 is five; sixteen
+/// bounds the parser well above any real derivation while staying far under BIP-32's own 255-level depth limit.
+pub const max_path_depth: u32 = 16;
+
+/// The largest decimal an index string may carry (ten digits), so the parse loop is bounded and a wildly long token is refused early.
+const max_index_digits: u32 = 10;
+
+/// The faults this rung can raise, each refused at the edge before a wrong index or a malformed path walks the tree.
+pub const Bip44Error = error{
+    /// A path that is empty, does not begin with the master 'm', has a missing or misplaced separator, an empty index token, or a trailing slash.
+    BadPath,
+    /// A bare index at or above 2³¹ (the hardened offset) — a normal index must stay below it, and the hardening bit is set by a ' or h marker.
+    IndexTooLarge,
+    /// A path deeper than max_path_depth levels — refused before the walk overruns its bound.
+    PathTooDeep,
+};
+
+/// Parse a BIP-32/44 derivation path ("m", "m/44'/60'/0'/0/0", "m/0'/1/2'") into `out` as the exact 32-bit index list, returning the depth. A
+/// level suffixed by ' or h or H is HARDENED — the hardened offset (2³¹) is added to its value; a bare level is a normal index. "m" alone yields
+/// zero indices (the master itself). No cryptography here: pure text over a bounded decimal.
+pub fn parse_path(out: *[max_path_depth]u32, path: []const u8) Bip44Error!u32 {
+    // invariant: a path names the master first — an empty path or one not rooted at 'm' cannot describe a node.
+    if (path.len == 0) return error.BadPath;
+    if (path[0] != 'm') return error.BadPath;
+
+    var i: u32 = 1;
+    var count: u32 = 0;
+    while (i < path.len) {
+        // Each level after the master opens with a single '/' separator.
+        if (path[i] != '/') return error.BadPath;
+        i += 1;
+
+        // At least one decimal digit must follow the separator — no empty token, no trailing slash.
+        if (i >= path.len or path[i] < '0' or path[i] > '9') return error.BadPath;
+
+        var value: u32 = 0;
+        var digits: u32 = 0;
+        while (i < path.len and path[i] >= '0' and path[i] <= '9') : (i += 1) {
+            // invariant: an index token never runs past ten digits — a u32 index needs at most ten, and this bounds the loop.
+            if (digits >= max_index_digits) return error.IndexTooLarge;
+            digits += 1;
+            const d: u32 = path[i] - '0';
+            // Overflow-safe accumulation kept entirely in u32: guard before the multiply and before the add so a bare index can never wrap or
+            // reach the hardened offset. A valid bare index is 0..2³¹-1; the ' marker (below) is the only way the hardening bit is ever set.
+            if (value > (bip32.hardened_offset - 1) / 10) return error.IndexTooLarge;
+            value = value * 10;
+            if (value > bip32.hardened_offset - 1 - d) return error.IndexTooLarge;
+            value += d;
+        }
+
+        // An optional hardening marker (' or h or H) sets the hardened bit; BIP-44 hardens the top three levels.
+        var hardened = false;
+        if (i < path.len and (path[i] == '\'' or path[i] == 'h' or path[i] == 'H')) {
+            hardened = true;
+            i += 1;
+        }
+
+        // invariant: the parsed depth stays within its named ceiling before another level is recorded.
+        if (count >= max_path_depth) return error.PathTooDeep;
+        out[count] = if (hardened) value + bip32.hardened_offset else value;
+        count += 1;
+    }
+    // invariant: a "m"-only path yields zero levels; every other path yields at least one and never more than the ceiling.
+    assert(count <= max_path_depth);
+    return count;
+}
+
+/// Derive the extended key at `path` from `seed`: parse the human path, grow the master from the seed, then walk ckd_priv down each parsed
+/// index. Composes crypto/bip32.rye entirely — the mathematics is proven there; here is only the walk.
+pub fn derive_path(seed: []const u8, path: []const u8) (Bip44Error || bip32.Bip32Error)!bip32.ExtKey {
+    var indices: [max_path_depth]u32 = undefined;
+    const count = try parse_path(&indices, path);
+    var node = try bip32.master_from_seed(seed);
+    var k: u32 = 0;
+    while (k < count) : (k += 1) {
+        // invariant: the walk never steps past the parsed depth.
+        assert(k < max_path_depth);
+        node = try bip32.ckd_priv(&node, indices[k]);
+    }
+    return node;
+}
+
+/// Derive a BIP-44 account leaf m/44'/coin_type'/account'/change/address_index directly from the five level values, without a path string. The
+/// top three levels are hardened here by adding the hardened offset; change and address_index stay normal, so an account-level xpub can still
+/// reach every receiving address. This is the ergonomic heart of "BIP-44 account paths".
+pub fn derive_bip44(
+    seed: []const u8,
+    coin_type: u32,
+    account: u32,
+    change: u32,
+    address_index: u32,
+) (Bip44Error || bip32.Bip32Error)!bip32.ExtKey {
+    // invariant: the hardened levels stay below 2³¹ before the hardening bit is added — a value at or above it would collide with the offset.
+    if (coin_type >= bip32.hardened_offset or account >= bip32.hardened_offset) return error.IndexTooLarge;
+    // invariant: change is BIP-44's external (0) or internal (1) chain; nothing else names a real chain.
+    if (change > 1) return error.BadPath;
+    // invariant: the leaf index is a normal (non-hardened) index below 2³¹.
+    if (address_index >= bip32.hardened_offset) return error.IndexTooLarge;
+
+    var node = try bip32.master_from_seed(seed);
+    node = try bip32.ckd_priv(&node, purpose + bip32.hardened_offset);
+    node = try bip32.ckd_priv(&node, coin_type + bip32.hardened_offset);
+    node = try bip32.ckd_priv(&node, account + bip32.hardened_offset);
+    node = try bip32.ckd_priv(&node, change);
+    node = try bip32.ckd_priv(&node, address_index);
+    return node;
+}
+
+fn slices_eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) if (a[i] != b[i]) return false;
+    return true;
+}
+
+fn nibble(c: u8) u8 {
+    if (c >= '0' and c <= '9') return c - '0';
+    // invariant: the vector hex uses only lowercase a–f beyond the digits.
+    assert(c >= 'a' and c <= 'f');
+    return c - 'a' + 10;
+}
+
+fn from_hex(out: []u8, hex: []const u8) u32 {
+    // invariant: two hex chars name one byte, so the buffer must hold half the hex length.
+    assert(hex.len % 2 == 0 and out.len * 2 >= hex.len);
+    var i: u32 = 0;
+    while (i < hex.len / 2) : (i += 1) out[i] = nibble(hex[i * 2]) * 16 + nibble(hex[i * 2 + 1]);
+    return @intCast(hex.len / 2);
+}
+
+// BIP-32's OWN published Test Vector 1 — the spec's own known-answer, quoted character for character; nothing here is fabricated. The seed and
+// the six nodes' xprv/xpub are the spec's, and each node is named BY ITS HUMAN PATH STRING so the parser and the walk are proven together.
+const v1_seed_hex = "000102030405060708090a0b0c0d0e0f";
+const v1_paths = [_][]const u8{
+    "m",
+    "m/0'",
+    "m/0'/1",
+    "m/0'/1/2'",
+    "m/0'/1/2'/2",
+    "m/0'/1/2'/2/1000000000",
+};
+const v1_xprv = [_][]const u8{
+    "xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi",
+    "xprv9uHRZZhk6KAJC1avXpDAp4MDc3sQKNxDiPvvkX8Br5ngLNv1TxvUxt4cV1rGL5hj6KCesnDYUhd7oWgT11eZG7XnxHrnYeSvkzY7d2bhkJ7",
+    "xprv9wTYmMFdV23N2TdNG573QoEsfRrWKQgWeibmLntzniatZvR9BmLnvSxqu53Kw1UmYPxLgboyZQaXwTCg8MSY3H2EU4pWcQDnRnrVA1xe8fs",
+    "xprv9z4pot5VBttmtdRTWfWQmoH1taj2axGVzFqSb8C9xaxKymcFzXBDptWmT7FwuEzG3ryjH4ktypQSAewRiNMjANTtpgP4mLTj34bhnZX7UiM",
+    "xprvA2JDeKCSNNZky6uBCviVfJSKyQ1mDYahRjijr5idH2WwLsEd4Hsb2Tyh8RfQMuPh7f7RtyzTtdrbdqqsunu5Mm3wDvUAKRHSC34sJ7in334",
+    "xprvA41z7zogVVwxVSgdKUHDy1SKmdb533PjDz7J6N6mV6uS3ze1ai8FHa8kmHScGpWmj4WggLyQjgPie1rFSruoUihUZREPSL39UNdE3BBDu76",
+};
+const v1_xpub = [_][]const u8{
+    "xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJoCu1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8",
+    "xpub68Gmy5EdvgibQVfPdqkBBCHxA5htiqg55crXYuXoQRKfDBFA1WEjWgP6LHhwBZeNK1VTsfTFUHCdrfp1bgwQ9xv5ski8PX9rL2dZXvgGDnw",
+    "xpub6ASuArnXKPbfEwhqN6e3mwBcDTgzisQN1wXN9BJcM47sSikHjJf3UFHKkNAWbWMiGj7Wf5uMash7SyYq527Hqck2AxYysAA7xmALppuCkwQ",
+    "xpub6D4BDPcP2GT577Vvch3R8wDkScZWzQzMMUm3PWbmWvVJrZwQY4VUNgqFJPMM3No2dFDFGTsxxpG5uJh7n7epu4trkrX7x7DogT5Uv6fcLW5",
+    "xpub6FHa3pjLCk84BayeJxFW2SP4XRrFd1JYnxeLeU8EqN3vDfZmbqBqaGJAyiLjTAwm6ZLRQUMv1ZACTj37sR62cfN7fe5JnJ7dh8zL4fiyLHV",
+    "xpub6H1LXWLaKsWFhvm6RVpEL9P4KfRZSW7abD2ttkWP3SSQvnyA8FSVqNTEcYFgJS2UaFcxupHiYkro49S8yGasTvXEYBVPamhGW6cFJodrTHy",
+};
+
+fn run_selftest() !u8 {
+    var seed: [32]u8 = undefined;
+    const seed_len = from_hex(seed[0..], v1_seed_hex);
+
+    // 1. BIP-32 Test Vector 1, walked BY HUMAN PATH STRING: each of the six nodes, reached through parse_path + derive_path from its path text,
+    //    serializes to EXACTLY the spec's published xprv AND xpub. This proves the path grammar (the hardened ' marker, the separators, the
+    //    decimal indices including the ten-digit 1000000000) and the walk together, against a real standard answer, with no external fetch.
+    {
+        var xprv_buf: [128]u8 = undefined;
+        var xpub_buf: [128]u8 = undefined;
+        var pi: u32 = 0;
+        while (pi < v1_paths.len) : (pi += 1) {
+            const node = try derive_path(seed[0..seed_len], v1_paths[pi]);
+            const got_xprv = try bip32.serialize_xprv(&xprv_buf, &node);
+            const got_xpub = try bip32.serialize_xpub(&xpub_buf, &node);
+            if (!slices_eq(got_xprv, v1_xprv[pi])) return error.XprvMismatch;
+            if (!slices_eq(got_xpub, v1_xpub[pi])) return error.XpubMismatch;
+        }
+    }
+
+    // 2. The BIP-44 convention parses to the exact hardened index list: m/44'/60'/0'/0/0 → [44+H, 60+H, 0+H, 0, 0], the Ethereum receiving leaf,
+    //    and m/44'/0'/0'/1/5 → [44+H, 0+H, 0+H, 1, 5], a Bitcoin change address. "m" alone yields zero levels (the master itself).
+    {
+        const h = bip32.hardened_offset;
+        var idx: [max_path_depth]u32 = undefined;
+
+        const eth = try parse_path(&idx, "m/44'/60'/0'/0/0");
+        if (eth != 5) return error.Bip44DepthWrong;
+        if (idx[0] != purpose + h or idx[1] != coin_type_ethereum + h or idx[2] != 0 + h or idx[3] != change_external or idx[4] != 0)
+            return error.Bip44IndicesWrong;
+
+        const btc = try parse_path(&idx, "m/44'/0'/0'/1/5");
+        if (btc != 5) return error.Bip44DepthWrong;
+        if (idx[0] != purpose + h or idx[1] != coin_type_bitcoin + h or idx[2] != 0 + h or idx[3] != change_internal or idx[4] != 5)
+            return error.Bip44IndicesWrong;
+
+        const root = try parse_path(&idx, "m");
+        if (root != 0) return error.MasterDepthWrong;
+
+        // The h/H markers harden exactly as ' does — a wallet that writes m/44h is the same path as m/44'.
+        const alt = try parse_path(&idx, "m/44h/0H/0'/0/0");
+        if (alt != 5 or idx[0] != purpose + h or idx[1] != coin_type_bitcoin + h or idx[2] != 0 + h) return error.Bip44IndicesWrong;
+    }
+
+    // 3. derive_bip44 and derive_path reach the SAME account leaf byte-for-byte, and the leaf serializes to a well-formed "xprv" — the direct
+    //    five-value helper and the path-string walk agree, proving neither drifts from the other.
+    {
+        var a_buf: [128]u8 = undefined;
+        var b_buf: [128]u8 = undefined;
+        const by_helper = try derive_bip44(seed[0..seed_len], coin_type_bitcoin, 0, change_external, 0);
+        const by_path = try derive_path(seed[0..seed_len], "m/44'/0'/0'/0/0");
+        const a = try bip32.serialize_xprv(&a_buf, &by_helper);
+        const b = try bip32.serialize_xprv(&b_buf, &by_path);
+        if (!slices_eq(a, b)) return error.HelperPathDisagree;
+        // invariant: a private extended key always dresses as "xprv…".
+        if (a.len < 4 or !slices_eq(a[0..4], "xprv")) return error.NotXprv;
+    }
+
+    // 4. The edges refuse, each with its named error: an empty path, a path not rooted at the master, a non-digit index token, an index at the
+    //    hardened offset (2³¹, one past the largest legal bare index), a path deeper than the ceiling, and a trailing slash.
+    {
+        var idx: [max_path_depth]u32 = undefined;
+        if (parse_path(&idx, "")) |_| return error.EmptySlipped else |err| if (err != error.BadPath) return error.WrongEmpty;
+        if (parse_path(&idx, "x/0")) |_| return error.NoMasterSlipped else |err| if (err != error.BadPath) return error.WrongNoMaster;
+        if (parse_path(&idx, "m/0'/1/nope")) |_| return error.BadIndexSlipped else |err| if (err != error.BadPath) return error.WrongBadIndex;
+        if (parse_path(&idx, "m/2147483648")) |_| return error.TooLargeSlipped else |err| if (err != error.IndexTooLarge) return error.WrongTooLarge;
+        // 2147483647 is the largest legal bare index (2³¹-1) — it must parse, one below the hardened offset.
+        if (parse_path(&idx, "m/2147483647")) |_| {} else |_| return error.MaxIndexRejected;
+        if (parse_path(&idx, "m/0/")) |_| return error.TrailingSlashSlipped else |err| if (err != error.BadPath) return error.WrongTrailing;
+        // A path of seventeen levels is one past the sixteen-level ceiling.
+        const too_deep = "m/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0";
+        if (parse_path(&idx, too_deep)) |_| return error.TooDeepSlipped else |err| if (err != error.PathTooDeep) return error.WrongTooDeep;
+    }
+
+    print("GREEN crypto-bip44: BIP-44 account paths authored in pure Rye — the wallet arc's account-path rung, the CONVENTION that gives crypto/" ++
+        "bip32's HD tree its five-level shape m/44'/coin_type'/account'/change/address_index so every wallet reaches the same address for the " ++
+        "same phrase. Authors NO new cryptography: parse_path reads the human path text into the exact 32-bit index list (the ' / h / H marker " ++
+        "setting the hardened bit, decimal indices bounded overflow-safe below 2³¹), and derive_path / derive_bip44 walk crypto/bip32's ckd_priv " ++
+        "down it from the master. Parity holds the replayable way, against BIP-32's OWN published Test Vector 1 (quoted character for character, " ++
+        "never fabricated): all six nodes, each walked BY ITS HUMAN PATH STRING ('m' … 'm/0'/1/2'/2/1000000000'), serialize to EXACTLY the spec's " ++
+        "published xprv AND xpub — proving the parser, the hardened marker, and the walk against a real answer with no external fetch. The BIP-44 " ++
+        "convention itself is proven: m/44'/60'/0'/0/0 parses to [44+H, 60+H, 0+H, 0, 0], derive_bip44 and derive_path agree byte-for-byte, and a " ++
+        "malformed path (no master, a non-digit index, an index at 2³¹, a too-deep path, a trailing slash) each raises its named error. Purely " ++
+        "local — TEST keys from the spec's own seed, no real identity key, no network, no funds, no real device; a real wallet's signature stays " ++
+        "the custody gate. With this rung the wallet arc reaches an account leaf a real address is read off: mnemonic → seed → HD tree → account.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

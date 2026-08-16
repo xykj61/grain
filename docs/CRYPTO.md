@@ -1,6 +1,6 @@
 # Crypto — the Season G audit front door
 
-*A Rye-native, parity-checked cryptography library — thirty-five primitives and thirteen compositions, each GREEN on metal.*
+*A Rye-native, parity-checked cryptography library — thirty-five primitives and fourteen compositions, each GREEN on metal.*
 
 **Status:** Checkable — Season G operator + auditor guide
 **Depth:** guide
@@ -32,7 +32,7 @@ vectors — never a copied line ([`gratitude-licenses.md`](../.claude/rules/grat
 
 ---
 
-## Rung table — forty-eight files, dependency order
+## Rung table — forty-nine files, dependency order
 
 Each rung stands on the GREEN rungs beneath it; none authors cryptography a lower
 rung had not already proven. Every file carries a per-file witness
@@ -120,6 +120,7 @@ rung had not already proven. Every file carries a per-file witness
 | `bip32.rye` | *From one seed, the whole tree of a wallet's keys.* — BIP-32 hierarchical-deterministic keys: a child private key is `(parse256(I_L) + k_par) mod n` where `I = HMAC-SHA-512(c_par, D)` splits into the offset `I_L` and the child chain code `I_R`; `D` is `0x00‖ser256(k_par)‖ser32(i)` for a hardened child or `serP(point(k_par))‖ser32(i)` for a normal one. `master_from_seed` runs the fixed `"Bitcoin seed"` HMAC, `ckd_priv` derives both kinds, `neuter`/`ckd_pub` derive the public tree from an xpub alone (`K_child = point(I_L) + K_par` over the complete group law, a hardened index refused from a public parent), and `serialize_xprv`/`serialize_xpub`/`serialize_ext_pub` wrap any node in the 78-byte version‖depth‖fingerprint‖index‖chain-code‖key body under Base58Check. The rung a wallet's whole account model stands on — one backup phrase, one seed, the ladder of addresses beneath it, watch-only or spending. Parity against BIP-32's own published Test Vector 1: from the published seed `000102…0f`, all six chain nodes serialize to EXACTLY the spec's published xprv AND xpub strings, character for character; each node's neuter reproduces the same xpub, and every normal index reaches it through CKDpub from the neutered parent alone | HMAC-SHA-512 · secp256k1 pubkey · group law · scalar reduce · HASH160 · Base58Check |
 | `bip39_mnemonic.rye` | BIP-39 entropy↔mnemonic — the wallet arc's other half: `from_entropy` makes the twelve-to-twenty-four English words a keeper writes down, `to_entropy` reads a phrase back to its entropy **and verifies the checksum**, catching a mistyped backup word. A `CS = ENT/32` checksum from the GREEN `sha256.rye` plus 11-bit bit-packing over BIP-39's fixed 2048-word list; the list is the canonical bitcoin/bips `english.txt`, embedded and proven authentic (SHA-256 = `2f5eed53…3b24dbda`). Proven against BIP-39's own Trezor vectors across ENT 128/192/256 both extremes, encode and decode byte-for-byte, a flipped word refused; entropy generation a named horizon | SHA-256 · BIP-39 |
 | `bip39_seed.rye` | BIP-39 mnemonic→seed — the wallet arc's bridge from a human backup phrase to the 512-bit seed `bip32.rye` grows the HD tree from. One recipe over the GREEN `pbkdf2_sha512.rye`: `seed = PBKDF2-HMAC-SHA-512(mnemonic, "mnemonic"‖passphrase, 2048, 64)`. Proven against BIP-39's own published Trezor vectors byte-for-byte; NFKD normalization a documented precondition, entropy→mnemonic a separate rung | PBKDF2-HMAC-SHA-512 · BIP-39 |
+| `bip44.rye` | BIP-44 account paths — the convention giving `bip32.rye`'s HD tree its five-level shape `m/44'/coin_type'/account'/change/address_index`, so every wallet reaches the same address for the same phrase. `parse_path` reads the human path text (the `'`/`h`/`H` hardened marker, decimal indices bounded overflow-safe below 2³¹) into the exact 32-bit index list; `derive_path`/`derive_bip44` walk `bip32.rye`'s `ckd_priv` down it to the account leaf. Authors no new cryptography. Parity against BIP-32's own Test Vector 1: all six nodes walked **by their human path strings** serialize to EXACTLY the spec's published xprv AND xpub, no external fetch; `m/44'/60'/0'/0/0` parses to the exact hardened index list, `derive_bip44` and `derive_path` agree byte-for-byte, malformed paths refused. TEST keys only; a real signature stays the custody gate | BIP-32 |
 
 ---
 
@@ -131,7 +132,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 
 [`crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) rebuilds each
 `crypto/<name>.rye` fresh from source to the gitignored `crypto/bin/` and runs all
-forty-eight per-file witnesses in the dependency order above, refusing whole —
+forty-nine per-file witnesses in the dependency order above, refusing whole —
 naming the file that stopped it — the moment any one goes RED. A GREEN suite means
 every claim here is re-provable by tooling, not trusted from a commit message
 alone (measurement beats memory). It then runs the **count guard**
