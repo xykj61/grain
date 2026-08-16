@@ -1,0 +1,223 @@
+//! crypto/hybrid_identity.rye — Season G (Cryptography), the HYBRID identity: one backup phrase grown into all THREE keys the transition years want —
+//! the classical Ed25519 signing key every Grain module uses today, AND the two lattice keys a post-quantum identity carries (an ML-DSA signing key and
+//! an ML-KEM key-agreement key). It is the safe-by-default identity the dual-key discovery named: during the years between "the curves are fine" and
+//! "a quantum computer broke the curves," the strongest identity carries BOTH families, so a break in either one — a surprise lattice attack, or the
+//! quantum day for the elliptic curves — still leaves the identity standing on the other (active-designing/20260816-192400 — "hybrid, not either-or, is
+//! the safe default … a break in either family still leaves the identity standing on the other").
+//!
+//! It authors NO new cryptography and no new derivation. The classical half is crypto/kumara_identity.rye (phrase → Ed25519 identity through the BIP-39
+//! seed and the SLIP-0010 HD path); the post-quantum half is crypto/kumara_pq_identity.rye (the same phrase → the two lattice keys through BIP-39 and
+//! HKDF domain separation). Both halves grow from the SAME mnemonic and passphrase yet by INDEPENDENT derivations — the classical through a hardened
+//! SLIP-0010 path, the lattice keys through domain-separated HKDF labels — so the three keys are independent key material a keeper still reaches with
+//! one remembered phrase. This module contributes only the pairing and the hybrid signature: a signature is genuine only when BOTH the Ed25519 and the
+//! ML-DSA halves verify, so a forger must break BOTH families, not one.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, audit-ready). Double-seats BESIDE the classical and post-quantum
+//! identities, retiring neither — a keeper who wants only one family uses that door directly; the hybrid door is for the keeper who wants both at once.
+//! Design read: active-designing/20260816-192400_post-quantum-identity-is-dual-key.md — the hybrid decision this module is the construction of.
+//! Kin: crypto/kumara_identity.rye (the classical Ed25519 half, GREEN) · crypto/kumara_pq_identity.rye (the dual-key post-quantum half, GREEN) ·
+//! crypto/kumara_pq_sealed.rye (the post-quantum sealed-to-identity door the lattice half plugs into). Clean-room: BIP-39, SLIP-0010, RFC 5869, FIPS
+//! 203/204 are public standards studied through their specs; the composition is our own Rye wiring over our own GREEN rungs (.claude/rules/gratitude-licenses.md).
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. Every identity here is a TEST identity from a published-vector
+//! mnemonic; the module's own functions call no std.crypto (each half is proven one rung down). The three secret keys are secrets the caller keeps in
+//! their own jail; constant-time timing-safety stays crypto/CONSTANT_TIME.md's named horizon. Growing a REAL hybrid identity from the maintainer's OWN
+//! phrase — any half — and signing with it stays the custody gate, exactly as each single-family identity's real key does.
+//!
+//! Parity is proven at selftest over every parameter set with no fabricated constant: (1) NO DRIFT — the hybrid's classical half equals
+//! crypto/kumara_identity.rye's own from_mnemonic output, and its post-quantum half equals crypto/kumara_pq_identity.rye's own, byte-for-byte; (2) THREE
+//! DISTINCT KEYS — the Ed25519 public key, the ML-DSA public key, and the ML-KEM ek are pairwise different key material; (3) THE HYBRID SIGNATURE
+//! REQUIRES BOTH — a hybrid signature verifies iff BOTH halves verify, so a signature with only the Ed25519 half valid (the ML-DSA half tampered) is
+//! REJECTED, and symmetrically a valid-ML-DSA/tampered-Ed25519 signature is REJECTED — a forger who breaks one family alone is still caught; (4)
+//! DETERMINISM and DISTINCTNESS close the proof.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/hybrid_identity.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const classical = @import("kumara_identity.rye");
+const pq = @import("kumara_pq_identity.rye");
+
+pub const hybrid_identity_version = "20260816.194500";
+
+/// The Ed25519 signature width the classical half produces — 64 bytes.
+pub const ed_sig_len: u32 = 64;
+
+/// HybridType — one hybrid identity for a parameter set: the classical Ed25519 identity and the dual-key post-quantum identity, both grown from one
+/// phrase. The classical half signs and agrees with Ed25519 (through the Ed25519→X25519 map its own sealed door uses); the post-quantum half signs with
+/// ML-DSA and agrees with ML-KEM. All public keys are public; all secret keys are secrets held in the caller's own jail.
+pub fn HybridType(comptime p: pq.PqParams) type {
+    return struct {
+        classical: classical.Identity,
+        post_quantum: pq.IdentityType(p),
+    };
+}
+
+/// HybridSig — a hybrid signature: the Ed25519 signature beside the ML-DSA signature, both over the same message. A verifier accepts only when BOTH
+/// verify, so the signature is as strong as the stronger family and survives a break in either.
+pub fn HybridSig(comptime p: pq.PqParams) type {
+    return struct {
+        ed: [ed_sig_len]u8,
+        mldsa: [pq.sig_len(p)]u8,
+    };
+}
+
+/// from_mnemonic — grow a whole hybrid identity from one mnemonic and passphrase: the classical Ed25519 identity through crypto/kumara_identity.rye's
+/// SLIP-0010 path, and the dual-key post-quantum identity through crypto/kumara_pq_identity.rye's HKDF derivation — the same phrase, two independent
+/// derivations, three keys. TEST mnemonics only — a real phrase reaches the custody gate.
+pub fn from_mnemonic(
+    comptime p: pq.PqParams,
+    mnemonic: []const u8,
+    passphrase: []const u8,
+    coin_type: u32,
+    account: u32,
+    index: u32,
+) !HybridType(p) {
+    var h: HybridType(p) = undefined;
+    h.classical = try classical.from_mnemonic(mnemonic, passphrase, coin_type, account, index);
+    h.post_quantum = try pq.from_mnemonic(p, mnemonic, passphrase);
+    // invariant (postcondition): the three public keys are genuinely three keys — no half aliases another's storage.
+    assert(!buffers_share(h.classical.public_key[0..], h.post_quantum.sign.public_key[0..]));
+    assert(!buffers_share(h.post_quantum.sign.public_key[0..], h.post_quantum.agree.ek[0..]));
+    return h;
+}
+
+/// sign — make a hybrid signature over `msg`: the Ed25519 signature from the classical half and the ML-DSA signature from the post-quantum half. Both
+/// read secret keys; the signatures returned are public. A caller reaches both families through one call.
+pub fn sign(comptime p: pq.PqParams, h: *const HybridType(p), msg: []const u8) !HybridSig(p) {
+    var s: HybridSig(p) = undefined;
+    s.ed = try classical.sign(&h.classical, msg);
+    s.mldsa = try pq.sign(p, &h.post_quantum, msg);
+    return s;
+}
+
+/// verify — read the verdict of a hybrid signature against the two public keys: true iff BOTH the Ed25519 signature verifies under `ed_public` AND the
+/// ML-DSA signature verifies under `mldsa_public`. A signature with only one half genuine is refused, so an attacker must break BOTH families. A
+/// verifier that trusts only one family (because the other broke) can still call each half directly through the single-family doors.
+pub fn verify(
+    comptime p: pq.PqParams,
+    ed_public: *const [classical.public_len]u8,
+    mldsa_public: *const [pq.sign_public_len(p)]u8,
+    msg: []const u8,
+    sig: *const HybridSig(p),
+) bool {
+    // The Ed25519 half: verify returns void and throws on a bad signature — a throw means this half failed.
+    classical.verify(ed_public, msg, &sig.ed) catch return false;
+    // The ML-DSA half: verify returns a bool (or an error on a malformed input, treated as a failed verdict).
+    const ml_ok = pq.verify(p, mldsa_public, msg, &sig.mldsa) catch return false;
+    // invariant (postcondition): the verdict is the conjunction — both halves genuine, or the whole is refused.
+    return ml_ok;
+}
+
+// ---- shared helpers -----------------------------------------------------------------------------------------------------------------
+
+/// buffers_share — true iff two byte slices are the very same memory. The three identity halves must be distinct storage; this catches a wiring
+/// mistake that aliased one buffer as two keys.
+fn buffers_share(a: []const u8, b: []const u8) bool {
+    return a.ptr == b.ptr and a.len == b.len;
+}
+
+fn bytes_eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    // invariant (bound): read exactly a.len bytes, one per turn.
+    while (i < a.len) : (i += 1) if (a[i] != b[i]) return false;
+    return true;
+}
+
+// ---- selftest ----------------------------------------------------------------------------------------------------------------------
+
+// BIP-39's own published Trezor vector 1 — a TEST phrase, never a real one.
+const trezor_mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";
+const trezor_passphrase = "TREZOR";
+
+/// check_param — prove the hybrid identity for one parameter set: no drift from either composed door, three distinct keys, and the hybrid signature
+/// requiring BOTH halves (a forger who breaks one family alone is caught).
+fn check_param(comptime p: pq.PqParams) !void {
+    const test_coin: u32 = 7;
+    const h = try from_mnemonic(p, trezor_mnemonic, trezor_passphrase, test_coin, 0, 0);
+
+    // 1. NO DRIFT. The hybrid's classical half equals kumara_identity's own from_mnemonic, and its post-quantum half equals kumara_pq_identity's own.
+    const classical_hand = try classical.from_mnemonic(trezor_mnemonic, trezor_passphrase, test_coin, 0, 0);
+    if (!bytes_eq(h.classical.public_key[0..], classical_hand.public_key[0..])) return error.ClassicalDrift;
+    if (!bytes_eq(h.classical.secret_seed[0..], classical_hand.secret_seed[0..])) return error.ClassicalSecretDrift;
+    const pq_hand = try pq.from_mnemonic(p, trezor_mnemonic, trezor_passphrase);
+    if (!bytes_eq(h.post_quantum.sign.public_key[0..], pq_hand.sign.public_key[0..])) return error.PqSignDrift;
+    if (!bytes_eq(h.post_quantum.agree.ek[0..], pq_hand.agree.ek[0..])) return error.PqAgreeDrift;
+
+    // 2. THREE DISTINCT KEYS. The Ed25519 public key, the ML-DSA public key, and the ML-KEM ek are pairwise different key material.
+    if (bytes_eq(h.classical.public_key[0..], h.post_quantum.sign.public_key[0 .. h.classical.public_key.len])) return error.EdMlDsaCollide;
+    if (bytes_eq(h.classical.public_key[0..], h.post_quantum.agree.ek[0 .. h.classical.public_key.len])) return error.EdMlKemCollide;
+    // (the ML-DSA/ML-KEM distinctness is proven in kumara_pq_identity; here the classical key joins them.)
+
+    // 3. THE HYBRID SIGNATURE REQUIRES BOTH HALVES.
+    const message = "Grain — in the transition years, a name stands on both keys, and falls only when both fall.";
+    const sig = try sign(p, &h, message);
+    if (!verify(p, &h.classical.public_key, &h.post_quantum.sign.public_key, message, &sig)) return error.GenuineRejected;
+
+    // A forger who breaks ONLY the lattice family (a valid Ed25519 half, a tampered ML-DSA half) is still refused.
+    {
+        var sig_bad = sig;
+        sig_bad.mldsa[0] ^= 0x01;
+        if (verify(p, &h.classical.public_key, &h.post_quantum.sign.public_key, message, &sig_bad)) return error.TamperMlDsaAccepted;
+    }
+    // A forger who breaks ONLY the classical family (a tampered Ed25519 half, a valid ML-DSA half) is still refused.
+    {
+        var sig_bad = sig;
+        sig_bad.ed[0] ^= 0x01;
+        if (verify(p, &h.classical.public_key, &h.post_quantum.sign.public_key, message, &sig_bad)) return error.TamperEdAccepted;
+    }
+    // A flipped message no longer verifies under either half.
+    {
+        var msg_bad: [message.len]u8 = undefined;
+        var k: u32 = 0;
+        // invariant (bound): copy exactly message.len bytes, one per turn.
+        while (k < message.len) : (k += 1) msg_bad[k] = message[k];
+        msg_bad[3] ^= 0x01;
+        if (verify(p, &h.classical.public_key, &h.post_quantum.sign.public_key, msg_bad[0..], &sig)) return error.TamperMsgAccepted;
+    }
+
+    // 4. DETERMINISM and DISTINCTNESS. The same phrase reaches an identical hybrid identity; a changed passphrase reaches a different one on every half.
+    const again = try from_mnemonic(p, trezor_mnemonic, trezor_passphrase, test_coin, 0, 0);
+    if (!bytes_eq(h.classical.public_key[0..], again.classical.public_key[0..])) return error.ClassicalNotDeterministic;
+    if (!bytes_eq(h.post_quantum.sign.public_key[0..], again.post_quantum.sign.public_key[0..])) return error.PqNotDeterministic;
+
+    const other = try from_mnemonic(p, trezor_mnemonic, "OTHER", test_coin, 0, 0);
+    if (bytes_eq(h.classical.public_key[0..], other.classical.public_key[0..])) return error.ClassicalSiblingCollision;
+    if (bytes_eq(h.post_quantum.sign.public_key[0..], other.post_quantum.sign.public_key[0..])) return error.PqSignSiblingCollision;
+    if (bytes_eq(h.post_quantum.agree.ek[0..], other.post_quantum.agree.ek[0..])) return error.PqAgreeSiblingCollision;
+    // The genuine hybrid signature is refused under the other identity's keys.
+    if (verify(p, &other.classical.public_key, &other.post_quantum.sign.public_key, message, &sig)) return error.WrongIdentityAccepted;
+}
+
+fn run_selftest() !u8 {
+    try check_param(pq.pq_small);
+    try check_param(pq.pq_default);
+    try check_param(pq.pq_large);
+
+    print("GREEN crypto-hybrid-identity: the HYBRID identity authored in pure Rye — one backup phrase grown into all THREE keys the transition years " ++
+        "want: the classical Ed25519 signing key every Grain module uses today, AND the two lattice keys a post-quantum identity carries (an ML-DSA " ++
+        "signing key and an ML-KEM key-agreement key). The safe-by-default identity the dual-key discovery named — during the years between 'the curves " ++
+        "are fine' and 'a quantum computer broke the curves,' the strongest identity carries BOTH families, so a break in either one still leaves the " ++
+        "identity standing on the other. Authors NO new cryptography and no new derivation: the classical half is crypto/kumara_identity (phrase → " ++
+        "Ed25519 through BIP-39 + SLIP-0010), the post-quantum half is crypto/kumara_pq_identity (the same phrase → the two lattice keys through BIP-39 " ++
+        "+ HKDF) — the SAME mnemonic, two INDEPENDENT derivations, three keys reached with one remembered phrase. The hybrid signature carries both an " ++
+        "Ed25519 and an ML-DSA signature and verifies iff BOTH verify, so a forger must break BOTH families, not one. Proven GREEN on metal over every " ++
+        "tier (small ML-DSA-44/ML-KEM-512, default ML-DSA-65/ML-KEM-768, large ML-DSA-87/ML-KEM-1024) with no fabricated constant: (1) NO DRIFT — the " ++
+        "classical half equals kumara_identity's own from_mnemonic byte-for-byte, the post-quantum half equals kumara_pq_identity's own; (2) THREE " ++
+        "DISTINCT KEYS — the Ed25519 public key, the ML-DSA public key, and the ML-KEM ek are pairwise different; (3) THE HYBRID SIGNATURE REQUIRES " ++
+        "BOTH — a genuine signature verifies, while a signature with only the Ed25519 half valid (the ML-DSA half tampered) is REJECTED, and " ++
+        "symmetrically a valid-ML-DSA/tampered-Ed25519 signature is REJECTED, and a flipped message is refused — a forger who breaks one family alone " ++
+        "is still caught; (4) DETERMINISM and DISTINCTNESS close the proof. The module's own functions call no std.crypto — each half is proven one " ++
+        "rung down. Purely local — TEST identities from published vectors, no real key held, no network, no funds, no real device; growing a real " ++
+        "hybrid identity from the maintainer's own phrase and signing with it stays the custody gate, constant-time timing-safety the named horizon. " ++
+        "With this rung a keeper's name stands on both worlds at once — the forger held off by two families, and the phrase remembered still only one.\n", .{});
+    return 0;
+}
+
+pub fn main(init_args: std.process.Init) !u8 {
+    _ = init_args;
+    return run_selftest();
+}

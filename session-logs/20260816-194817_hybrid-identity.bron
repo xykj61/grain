@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260816.194817
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host cloud bench — Eastern (EDT) time convention
+title The hybrid identity — one phrase, both worlds, GREEN
+prompt Continue the loop; take the next crux Lindy-first crux-first; approve my own design rounds; send each finished increment as its own signed round; STOP at the custody gates.
+think With the dual-key post-quantum identity and its sealed-to-identity door landed, the highest-Lindy remaining crypto crux is the hybrid identity the dual-key design note explicitly named as the safe transition-years default: carry the classical Ed25519 key AND the two lattice keys, so a break in either family leaves the identity standing on the other. Gate-free, pure composition over GREEN rungs, so I approved the round myself and built it — the crowning rung of the whole post-quantum identity arc.
+think crypto/hybrid_identity.rye composes kumara_identity (classical Ed25519 through BIP-39 + SLIP-0010) and kumara_pq_identity (the two lattice keys through BIP-39 + HKDF) from ONE mnemonic by two independent derivations, so three keys are reached with one remembered phrase. The value one family alone cannot give: a hybrid signature carrying both an Ed25519 and an ML-DSA signature, verifying iff BOTH verify — a forger must break both families, not one. The security statement is checkable and the module makes it so.
+think The load-bearing proof is the break-resilience test: a signature with only the Ed25519 half valid (ML-DSA half tampered) is REJECTED, and symmetrically a valid-ML-DSA/tampered-Ed25519 signature is REJECTED. So a forger who breaks one family alone is caught — the whole point of hybrid. No-drift ties each half to its own single-family door byte-for-byte; the three public keys are asserted pairwise distinct.
+obs GREEN on the first metal run after removing an unused error-type declaration and two unused imports. Count guard 76 → 77 (fifty primitives + twenty-seven compositions); witness registered in crypto_suite_witness; README, docs/CRYPTO.md synced same round; TAME clean, width exit 0. This is the third signed post-quantum increment of the turn, each sent to origin and xykj61 as its own round.
+loom witness=crypto_hybrid_identity_witness green=1 tiers=3 crypto_files=77 composed_rungs=2
+file crypto/hybrid_identity.rye the hybrid identity — Ed25519 + ML-DSA + ML-KEM from one phrase, a hybrid signature requiring both families, GREEN
+file tools/crypto_hybrid_identity_witness.rish the on-metal witness, registered in the suite
+file tools/crypto_suite_witness.rish registered the new witness so the count-guard bijection holds
+file crypto/README.md rung row added, count synced seventy-six → seventy-seven
+file docs/CRYPTO.md rung row added, count synced seventy-six → seventy-seven
+recommend keep-going the post-quantum identity arc now stands whole — dual-key identity, sealed-to-identity door, and the hybrid transition-years default; a natural next crux is hybrid sealing (a message opened only by a holder of both the classical and lattice agreement keys, so confidentiality survives a break in either), or a per-record post-quantum subkey — both gate-free; the loop continues
