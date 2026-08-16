@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260815.205737
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Season G — the X25519 witness runner, closing a tooling-parity gap
+prompt Take the next agent-doable lap Lindy-first crux-first past BUHR — Rye prioritized, Glow on green-witnessed Rye; read REMEMBER, the 1024-round itinerary, the six-season double-seat, and the rye-first crypto parity wave; send each finished increment to origin and xykj61; stop at custody gates.
+think Third lap of this loop. The prior two laps landed the signed carry and the sealed session — the two compositions. Surveying the crypto module for the next Lindy-first crux, I found a tooling-parity gap: every crypto primitive carries a tools/crypto_<name>_witness.rish runner EXCEPT three GREEN-claimed files — x25519, signed_carry, sealed_session. Their proof rests only on the embedded fn main; the reproducible runner the rest of the suite shares was never committed.
+think Lindy-first crux-first: a witness runner is high-Lindy — it is run for years, by CI, by the seed, by any hand that wants to re-prove the claim without trusting a commit message (measurement beats memory). Of the three, X25519 is the most foundational primitive: Comlink session keys, Vault sealed storage, the sealed_session composition all reach for it first. So its runner lands first, its own signed round, followed by signed_carry and sealed_session as their own rounds.
+think Non-gated: the runner builds crypto/x25519.rye to the gitignored crypto/bin/ and runs its selftest over TEST scalars — no real key, no network, no funds, no device. The x25519 main ignores args and runs run_selftest() directly (the selftest arg is passed for shape-parity with the aead runner, harmlessly ignored).
+obs GREEN on the first run — the runner builds, runs the selftest, and asserts the 'GREEN crypto-x25519' line prints. Modeled byte-for-shape on tools/crypto_aead_witness.rish: three say lines (Language EN · Style Radiant · Lens TAME), then build, selftest to crypto/bin/x25519.out, grep the GREEN token. The x25519 parity story is unchanged (RFC 7748 §5.2 KAT plus byte-for-byte vs Zig std.crypto.dh.X25519 across 24 scalars/u-coords, DH round-trip); this lap adds the runner that re-proves it on demand, not new mathematics.
+obs Honest scope: this closes one of three tooling-parity gaps. signed_carry and sealed_session still want their runners — the next two natural kg laps, each its own signed round. No custody gate touched.
+loom witness=crypto_x25519_witness references=RFC7748_5.2 parity=zig_std.crypto.dh.X25519 scalars=24 result=GREEN
+file tools/crypto_x25519_witness.rish the reproducible on-metal runner for the X25519 primitive — builds crypto/x25519.rye, runs its selftest, asserts GREEN; matches the pattern every other crypto primitive already carries
+file session-logs/README.md newest-first row for this lap
+recommend keep-going — two tooling-parity gaps remain (signed_carry, sealed_session); write each its own witness runner as its own signed round, then the crypto module earns a whole-suite runner and an index doc that can ride into the seed.
