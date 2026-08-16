@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260815.211215
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title REDS — fold rows 58–73 to archive, seat row 77 (the crypto file-count red)
+prompt Reds-first: the crypto file-count miscount (booked in 20260815-210520_reds-crypto-file-count-errata.bron) wanted a formal ledger row, but the living pin sat 141 bytes from its 24576 cap — so fold a closed range first, then seat the row.
+think The correction log recorded the red three-field and booked row 75; running the monotone witness corrected that — it reads across archives + living, saw rows=76, expect_next=77 (the ledger had already grown past its own stale 'Rows: 73' summary). So the real next row is 77, not 75.
+think The living pin (24435 B) is 141 B under its 24576 cap — no room for a new row. Precedent (rows 1–24, 25–57) folds a closed range to work-in-progress/archive/. I folded rows 58–73 (the self-work-and-Yield arc, 20260801.145854–20260812.191206) to archive/REDS-self-work-yield-rows-58-73.md, keeping the three most recent living rows (74–76) plus the new 77.
+think REDS #67's own lesson governs this: the monotone scan takes an explicit file list (not a glob), so a fold that adds an archive file must teach the witness the new file in the same act, or the 1..N spine breaks. I added archive/REDS-self-work-yield-rows-58-73.md to reds_ledger_monotone_witness.rish's argument list between the 25-57 archive and the living pin.
+obs GREEN after the fold: reds-ledger verdict=ok (bytes 24435 -> 12073, well under 24576, every row three-field), reds-monotone rows=77 expect_next=78 gaps_or_dupes=0. reds-first and reds-ledger-negative also GREEN.
+obs Row 77 seats the crypto file-count red with its three fields (wrote eighteen, sixteen true; the shell caught it; measure before claiming even the obvious). The stale 'Rows: 73' summary corrected to 'Rows: 77 ... rows 1–24, 25–57, and 58–73 folded to archive/, living rows 74–77 above.'
+obs A pre-existing, UNRELATED red surfaced while running the equinox_reds_choir_witness (which bundles a SAFE-list elder): fascia_metric_v0.rye now prints 'no live shred' while tools/fixtures/safe_list_census.sh still greps for 'no shred', so SHRED_RED reads no and the census verdict goes thin — a wording-drift kin to #67. Fails at clean HEAD too (git stash confirmed), so not from this fold. Diagnosed, named, and fixed as its own next round with its own ledger row rather than mixed into this fold.
+loom reds_bytes_before=24435 reds_bytes_after=12073 reds_cap=24576 rows=77 folded=58-73 archive_files=3
+file work-in-progress/archive/REDS-self-work-yield-rows-58-73.md new fold archive holding rows 58–73, header matching the 25-57 pattern, every byte kept
+file work-in-progress/REDS.md rows 58–73 removed, fold pointer added, row 77 seated, stale summary corrected to 77
+file tools/gen/season/reds_ledger_monotone_witness.rish taught the new archive file in its scan argument list (REDS #67's lesson) so the 1..N spine still spans every fold
+file session-logs/README.md newest-first row for this fold lap
+recommend keep-going — fix the SAFE-census wording-drift red (widen its grep to match fascia_metric_v0's 'no live shred'), seat it as REDS row 78, re-run the choir GREEN, its own signed round; then return to the whole-suite crypto witness crux.
