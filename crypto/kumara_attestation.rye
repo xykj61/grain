@@ -1,0 +1,464 @@
+//! crypto/kumara_attestation.rye — Season G (Cryptography), the TWENTIETH composition: the parent→subkey attestation, a signed delegation.
+//! crypto/kumara_subkey.rye left one honest boundary as its named next rung: ed25519/SLIP-0010 admits only HARDENED derivation, so a subkey's
+//! public key CANNOT be derived from the parent identity's public key alone. A verifier who holds only the identity's public key therefore cannot,
+//! on their own, prove that a per-record subkey descends from it. This rung closes that boundary the one honest way it can be closed — not by new
+//! mathematics, but by the identity SIGNING a short, domain-separated statement: "the subkey named here, at this record, is mine." A verifier
+//! checks that signature against the identity's public key and learns the subkey a record was sealed with, without ever needing to derive it.
+//!
+//! It authors NO new cryptography. The signature is crypto/ed25519_sign.rye's own sign / crypto/ed25519_verify.rye's own verify, already GREEN
+//! against RFC 8032; this module contributes only the CERTIFICATE — a flat, self-describing statement the identity signs, and the binding that
+//! refuses any certificate whose issuer is not the identity the reader named. It is the exact shape crypto/kumara_carry.rye already established for
+//! a sealed record (magic → named-key binding → verify-before-trust), lifted from "who sealed this record" to "who vouches this subkey is theirs,"
+//! so the two compose into one chain: identity → attested subkey → sealed record, verifiable end to end holding only the identity's public key.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G, "the library that serves Kumara
+//! identity, Vault, Comlink, and the Lotus signed carry." crypto/kumara_subkey.rye names this rung outright: "The attestation that binds a subkey
+//! to its parent (the identity SIGNING a short 'this subkey is mine at record r' statement, which a verifier then checks against the identity's
+//! public key) is the named next rung — a signed delegation over exactly the door crypto/kumara_carry.rye already opens." The 1,024-round
+//! itinerary, Season 2 Journey 6 (Provenance): "a real document carries a Kumara-signed, content-addressed chain of custody end to end" — an
+//! attested subkey is how that chain reaches from one identity, through many per-record keys, to a record a stranger can trust to the identity.
+//! Kin: crypto/kumara_subkey.rye (the subkey this attests, GREEN) · crypto/kumara_identity.rye (the identity that issues the attestation, GREEN) ·
+//! crypto/ed25519_sign.rye + crypto/ed25519_verify.rye (the signature over the statement, GREEN) · crypto/kumara_carry.rye (the record-open door
+//! this chains to, GREEN). Clean-room: the certificate shape is our own; the standards beneath are public specs studied through their own text
+//! (.claude/rules/gratitude-licenses.md); no line is copied.
+//!
+//! THE CERTIFICATE — a Kumara attestation is a flat, fixed-length byte string laid out so a reader deframes it with no ambiguity and no allocation:
+//!
+//!   magic     4 bytes   "GKA1"  (Grain Kumara Attestation, version 1) — refuses a buffer that is not one of ours before any parse
+//!   issuer   32 bytes   the identity's Ed25519 public key — WHO vouches
+//!   record    8 bytes   u64 big-endian — the record index the subkey belongs to (u64 because a record index is a wire-persistent quantity)
+//!   subkey   32 bytes   the subkey's Ed25519 public key — WHAT is vouched for
+//!   sig      64 bytes   Ed25519 signature by the ISSUER over (magic ‖ issuer ‖ record ‖ subkey) — binds the identity to that exact statement
+//!
+//! The statement is the whole certificate less its signature, so the signature commits to the issuer, the record, and the subkey together — a
+//! forger cannot move the subkey to a record the identity never attested, nor lend one identity's signature to another's statement.
+//!
+//! VERIFY BEFORE TRUST — verify_attestation() checks magic, then BINDS the certificate to the identity the reader named (refusing a valid
+//! certificate from a different issuer with UnexpectedIssuer, exactly as crypto/kumara_carry.rye refuses the wrong keeper), then verifies the
+//! signature over the statement, and only then returns the attested subkey. open_record_as_subkey_of() chains that to crypto/kumara_carry.rye's
+//! own open_as: it proves the identity vouches for a subkey, then proves the record was sealed by exactly that subkey — one call, one chain.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. Every identity and subkey here is a TEST key from a published
+//! test-vector mnemonic; this module calls no std.crypto. Issuing a REAL attestation with the maintainer's OWN Kumara identity — a real signed
+//! delegation — stays the custody gate (#3/#4): this library issues and verifies a TEST identity's attestations; it never holds the maintainer's
+//! key. Constant-time timing-safety of the signing it composes stays crypto/CONSTANT_TIME.md's named horizon, unchanged here.
+//!
+//! Parity is proven at selftest with no fabricated constant: (1) anchored — an identity from BIP-39's own Trezor vector mnemonic attests its own
+//! subkey; verify_attestation returns exactly that subkey's public key, and an independent crypto/ed25519_verify.rye over the reconstructed
+//! statement agrees; (2) THE WHOLE POINT — the attestation carries a subkey public key a verifier holding only the identity's public key could not
+//! have derived (ed25519 admits no non-hardened public derivation), and the certificate is what bridges that gap; (3) the binding refuses the wrong
+//! issuer, a flipped statement byte, a flipped signature byte, bad magic, and a bad length, each by its own named error; (4) the CHAIN — a record
+//! sealed by an attested subkey opens through open_record_as_subkey_of, while a record sealed by a SIBLING subkey the certificate does not cover is
+//! refused UnexpectedSigner, and a valid certificate from a DIFFERENT identity is refused UnexpectedIssuer before the frame is ever opened;
+//! (5) determinism — attesting the same identity + subkey twice yields byte-identical certificates.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/kumara_attestation.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const identity = @import("kumara_identity.rye");
+const subkey_mod = @import("kumara_subkey.rye");
+const signer = @import("ed25519_sign.rye");
+const verifier = @import("ed25519_verify.rye");
+const carry = @import("signed_carry.rye");
+const kumara_carry = @import("kumara_carry.rye");
+const bip32 = @import("bip32.rye");
+
+pub const kumara_attestation_version = "20260816.102041";
+
+/// The four magic bytes that open every Grain Kumara Attestation v1 certificate. A buffer that does not start with these is refused before any
+/// field is read — the same cheap, unambiguous "this is not one of ours" gate crypto/signed_carry.rye uses for a sealed record.
+pub const magic: [4]u8 = .{ 'G', 'K', 'A', '1' };
+
+/// Field widths, named once so issue and verify agree on the layout by construction rather than by matching two hand-counted offsets.
+pub const magic_len: u32 = 4;
+pub const public_len: u32 = identity.public_len; // 32 — both issuer and subkey are raw ed25519 public keys
+pub const record_field_len: u32 = 8; // u64 big-endian
+pub const sig_len: u32 = 64; // Ed25519 R ‖ S
+
+/// The statement the issuer signs (magic ‖ issuer ‖ record ‖ subkey) and the whole certificate (statement ‖ sig). Both fixed — a Kumara
+/// attestation is always exactly cert_len bytes, so a reader checks one length and knows every field's offset.
+pub const statement_len: u32 = magic_len + public_len + record_field_len + public_len; // 76
+pub const cert_len: u32 = statement_len + sig_len; // 140
+
+pub const KumaraAttestationError = error{
+    /// A buffer whose length is not exactly cert_len — a truncated or over-long certificate, refused before any field is trusted.
+    CertBadLength,
+    /// The first four bytes are not the GKA1 magic — this is not a Kumara attestation.
+    BadMagic,
+    /// verify_attestation was handed a certificate whose issuer is not the identity the reader named — a valid attestation from a DIFFERENT
+    /// identity, refused before its statement is trusted. This is the binding this composition adds, the sibling of kumara_carry's UnexpectedSigner.
+    UnexpectedIssuer,
+    /// The issuer's Ed25519 signature does not verify over the statement — the certificate is forged, tampered, or names the wrong issuer key.
+    BadAttestation,
+    /// The certificate names a record at or above the hardened offset (2³¹) — no well-formed Kumara subkey has such a record, so a certificate
+    /// carrying one is malformed even if its signature verifies.
+    RecordOutOfRange,
+    /// out buffer handed to attest is too small to hold the whole certificate — refused before any byte is written.
+    OutTooSmall,
+};
+
+/// What verify_attestation hands back once every check has passed: the issuer identity it was bound to, the record the subkey belongs to, and the
+/// subkey public key the issuer vouches for. All three are public.
+pub const Attestation = struct {
+    issuer: [public_len]u8,
+    record: u32,
+    subkey_public: [public_len]u8,
+};
+
+/// What open_record_as_subkey_of hands back: the whole verified chain in one value — the issuer identity, the record, and the opened record itself
+/// (whose signer field is the attested subkey and whose payload is the verified record bytes). A caller holding this knows the record descends from
+/// the named identity, through a subkey that identity attested is its own.
+pub const Chained = struct {
+    issuer: [public_len]u8,
+    record: u32,
+    opened: carry.Opened,
+};
+
+/// The chain's error union: verifying the attestation may raise a KumaraAttestationError, and opening the record against the attested subkey may
+/// raise a KumaraCarryError (UnexpectedSigner or an inherited signed-carry error). Named once so open_record_as_subkey_of states its contract.
+pub const ChainError = KumaraAttestationError || kumara_carry.KumaraCarryError;
+
+/// Write a u64 as 8 big-endian bytes into `dst`. Big-endian keeps the record field byte-order-stable across targets, exactly as the signed carry
+/// writes its own length field.
+fn write_u64_be(dst: *[8]u8, v: u64) void {
+    var i: u32 = 0;
+    while (i < 8) : (i += 1) {
+        // Most-significant byte first: byte i holds bits [56-8i .. 63-8i].
+        dst[i] = @intCast((v >> @intCast(56 - 8 * i)) & 0xff);
+    }
+    // invariant: the round-trip through read_u64_be recovers the value exactly — the encoding is total and reversible.
+    assert(read_u64_be(dst) == v);
+}
+
+/// Read 8 big-endian bytes as a u64. The inverse of write_u64_be.
+fn read_u64_be(src: *const [8]u8) u64 {
+    var v: u64 = 0;
+    var i: u32 = 0;
+    while (i < 8) : (i += 1) v = (v << 8) | @as(u64, src[i]);
+    // invariant: exactly eight bytes were folded in, so every bit of the u64 came from the buffer.
+    assert(i == 8);
+    return v;
+}
+
+/// Constant-time-independent byte compare of two equal-meaning public keys. The keys and the certificate are public, so a data-independent compare
+/// is not required — the secret-bearing gate is the signature, which lives in the verify primitive crypto/ed25519_verify.rye already runs.
+fn keys_eq(a: *const [public_len]u8, b: *const [public_len]u8) bool {
+    var i: u32 = 0;
+    while (i < public_len) : (i += 1) {
+        if (a[i] != b[i]) return false;
+    }
+    return true;
+}
+
+/// Write the statement (magic ‖ issuer ‖ record ‖ subkey) into the first statement_len bytes of `dst`. Shared by attest (which then signs it) and
+/// verify_attestation (which reads it), so the two cannot disagree on the layout the signature commits to.
+fn write_statement(dst: []u8, issuer: *const [public_len]u8, record: u32, subkey_public: *const [public_len]u8) void {
+    // invariant: the destination holds the whole statement — every field below writes within bounds.
+    assert(dst.len >= statement_len);
+    var i: u32 = 0;
+    while (i < magic_len) : (i += 1) dst[i] = magic[i];
+
+    var j: u32 = 0;
+    while (j < public_len) : (j += 1) dst[magic_len + j] = issuer[j];
+
+    var lenbuf: [8]u8 = undefined;
+    write_u64_be(&lenbuf, @as(u64, record));
+    var k: u32 = 0;
+    while (k < record_field_len) : (k += 1) dst[magic_len + public_len + k] = lenbuf[k];
+
+    var m: u32 = 0;
+    while (m < public_len) : (m += 1) dst[magic_len + public_len + record_field_len + m] = subkey_public[m];
+}
+
+/// Issue an attestation: the identity SIGNS "the subkey named here, at this record, is mine," writing a Grain Kumara Attestation v1 certificate
+/// into `out` and returning its length. Before signing, the identity RE-DERIVES the subkey at the given record and asserts it matches the subkey it
+/// was handed — so an identity never signs a delegation for a subkey that is not actually its own. Reads the identity's secret seed (through the
+/// signing primitive) and the subkey's public key; the certificate it produces is entirely public. TEST identities only — a real attestation
+/// reaches the custody gate.
+pub fn attest(id: *const identity.Identity, subkey: *const subkey_mod.Subkey, out: []u8) KumaraAttestationError!u32 {
+    // invariant: the certificate fits the caller's buffer — checked at the edge before a single byte is written.
+    if (out.len < cert_len) return error.OutTooSmall;
+    // invariant: the record stays a legal Kumara subkey record (below the hardened offset), so the u64 field can never collide with the offset.
+    if (subkey.record >= bip32.hardened_offset) return error.RecordOutOfRange;
+
+    // The identity re-derives the subkey it is about to vouch for and confirms it matches — an identity signs a delegation only for a subkey it can
+    // itself reproduce from its own node. A mismatch here would mean the caller handed a subkey from a different identity; catch it before signing.
+    const rederived = subkey_mod.derive_subkey(id, subkey.record) catch return error.RecordOutOfRange;
+    // invariant: the handed subkey is exactly the identity's own subkey at this record — the attestation is honest by construction.
+    assert(keys_eq(&rederived.public_key, &subkey.public_key));
+
+    // --- statement: magic ‖ issuer ‖ record ‖ subkey ---------------------------------------------------------------------------------------
+    write_statement(out, &id.public_key, subkey.record, &subkey.public_key);
+
+    // --- signature: Ed25519 by the issuer over the statement -------------------------------------------------------------------------------
+    // The statement is a fixed 76 bytes, far inside the signing bound, so signing cannot refuse here — catch unreachable is honest.
+    assert(statement_len <= signer.max_sign_message_bytes);
+    const sig = signer.sign(&id.secret_seed, out[0..statement_len]) catch unreachable;
+    var s: u32 = 0;
+    while (s < sig_len) : (s += 1) out[statement_len + s] = sig[s];
+
+    // invariant: the certificate's embedded issuer and subkey are exactly the keys we signed over — a reader will find them and the signature agree.
+    const embedded_issuer = out[magic_len..][0..public_len];
+    var e: u32 = 0;
+    while (e < public_len) : (e += 1) assert(embedded_issuer[e] == id.public_key[e]);
+    return cert_len;
+}
+
+/// Verify an attestation and BIND it to a named issuer: check magic, refuse (UnexpectedIssuer) any certificate whose issuer is not
+/// `expected_issuer`, then verify the issuer's signature over the statement. Only a valid certificate issued by exactly the expected identity
+/// returns an Attestation. Reads only public bytes; holds no key.
+pub fn verify_attestation(cert: []const u8, expected_issuer: *const [public_len]u8) KumaraAttestationError!Attestation {
+    // invariant: a Kumara attestation is always exactly cert_len bytes — any other length is malformed.
+    if (cert.len != cert_len) return error.CertBadLength;
+
+    // 1. Magic — refuse anything that is not one of ours before touching another field.
+    if (!keys_eq_slice(cert[0..magic_len], magic[0..])) return error.BadMagic;
+
+    // 2. Binding: the certificate's embedded issuer must be exactly the identity the reader named. A valid attestation from a different identity is
+    //    refused here, before its signature is even consulted — the sibling of kumara_carry's wrong-keeper refusal.
+    var embedded_issuer: [public_len]u8 = undefined;
+    var i: u32 = 0;
+    while (i < public_len) : (i += 1) embedded_issuer[i] = cert[magic_len + i];
+    if (!keys_eq(&embedded_issuer, expected_issuer)) return error.UnexpectedIssuer;
+
+    // 3. Signature: the issuer must have signed this exact statement. Only after this passes is the attested subkey returned.
+    var sig: [64]u8 = undefined;
+    var s: u32 = 0;
+    while (s < sig_len) : (s += 1) sig[s] = cert[statement_len + s];
+    verifier.verify(&sig, cert[0..statement_len], expected_issuer) catch return error.BadAttestation;
+
+    // 4. Read the attested record and subkey now that the statement is proven. A record at or above the hardened offset is malformed even when
+    //    signed — no well-formed subkey carries one.
+    const record_u64 = read_u64_be(cert[magic_len + public_len ..][0..8]);
+    if (record_u64 >= @as(u64, bip32.hardened_offset)) return error.RecordOutOfRange;
+    const record: u32 = @intCast(record_u64);
+
+    var subkey_public: [public_len]u8 = undefined;
+    var m: u32 = 0;
+    while (m < public_len) : (m += 1) subkey_public[m] = cert[magic_len + public_len + record_field_len + m];
+
+    // invariant: the returned issuer is now known to be the expected identity, whose signature covered exactly this record and subkey.
+    assert(keys_eq(&embedded_issuer, expected_issuer));
+    return Attestation{ .issuer = embedded_issuer, .record = record, .subkey_public = subkey_public };
+}
+
+/// Byte-compare two equal-length slices — used only for the fixed magic field. Returns false on any length or byte difference.
+fn keys_eq_slice(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) if (a[i] != b[i]) return false;
+    return true;
+}
+
+/// The whole chain in one call: prove the named identity vouches for a subkey (verify_attestation), then prove the record was sealed by exactly
+/// that subkey (crypto/kumara_carry.rye's open_as). Returns the issuer, the record, and the opened record. A caller holding only the identity's
+/// public key learns, from `frame` and `cert` alone, that this record descends from that identity — through a subkey the identity attested is its
+/// own — even though ed25519 would never let them derive the subkey's public key from the identity's. Reads only public bytes; holds no key.
+pub fn open_record_as_subkey_of(frame: []const u8, cert: []const u8, expected_issuer: *const [public_len]u8) ChainError!Chained {
+    const att = try verify_attestation(cert, expected_issuer);
+    // invariant: the attestation is proven, so att.subkey_public is a key the expected identity vouched for at att.record.
+    const opened = try kumara_carry.open_as(frame, &att.subkey_public);
+    // invariant: the record's verified signer is exactly the attested subkey — the chain identity → subkey → record holds end to end.
+    assert(keys_eq_slice(opened.signer[0..], att.subkey_public[0..]));
+    return Chained{ .issuer = att.issuer, .record = att.record, .opened = opened };
+}
+
+// ---- selftest ----------------------------------------------------------------------------------------------------------------------
+
+/// Fill a buffer with a deterministic spread of test bytes — the sibling compositions' generator shape, seeded so each value differs and the first
+/// byte is nonzero. Used for TEST payloads only.
+fn fill_test(buf: []u8, seed: u8) void {
+    var i: u32 = 0;
+    while (i < buf.len) : (i += 1) buf[i] = @as(u8, @truncate(@as(u32, i) *% (@as(u32, seed) | 1) +% @as(u32, seed) +% 7));
+    if (buf.len > 0) buf[0] |= 1;
+}
+
+fn bytes_eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) if (a[i] != b[i]) return false;
+    return true;
+}
+
+// BIP-39's own published Trezor vector 1 — a REAL published phrase, so the identity that issues an attestation stands on a standard's own answer.
+const trezor_mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";
+const trezor_passphrase = "TREZOR";
+
+fn run_selftest() !u8 {
+    const test_coin: u32 = 7; // a registered Grain SLIP-44 coin type is a named horizon; the tests pass an explicit slot.
+
+    var cert_buf: [cert_len]u8 = undefined;
+    var cert_buf2: [cert_len]u8 = undefined;
+    var frame_buf: [subkey_mod.max_frame_bytes]u8 = undefined;
+
+    // The keeper who issues attestations — a TEST identity from the published Trezor mnemonic. NOT a real Kumara identity.
+    const id = try identity.from_mnemonic(trezor_mnemonic, trezor_passphrase, test_coin, 0, 0);
+    // A DIFFERENT keeper — a different account under the same phrase, so its public key is genuinely distinct.
+    const other = try identity.from_mnemonic(trezor_mnemonic, trezor_passphrase, test_coin, 1, 0);
+    if (bytes_eq(id.public_key[0..], other.public_key[0..])) return error.IdentitiesCollide;
+
+    const sub0 = try subkey_mod.derive_subkey(&id, 0);
+    const sib1 = try subkey_mod.derive_subkey(&id, 1);
+
+    // 1. ANCHORED. The identity attests its own subkey; verify_attestation, bound to that identity, returns exactly sub0's public key and record 0,
+    //    and an INDEPENDENT ed25519_verify over the reconstructed statement agrees — the certificate is a real signature, checked from outside.
+    {
+        const clen = try attest(&id, &sub0, cert_buf[0..]);
+        if (clen != cert_len) return error.CertLenWrong;
+        const att = try verify_attestation(cert_buf[0..], &id.public_key);
+        if (!bytes_eq(att.issuer[0..], id.public_key[0..])) return error.AttIssuerWrong;
+        if (att.record != 0) return error.AttRecordWrong;
+        if (!bytes_eq(att.subkey_public[0..], sub0.public_key[0..])) return error.AttSubkeyWrong;
+
+        // Independent cross-check: rebuild the statement by hand and verify the embedded signature over it with the primitive verifier directly.
+        var statement: [statement_len]u8 = undefined;
+        write_statement(statement[0..], &id.public_key, 0, &sub0.public_key);
+        if (!bytes_eq(statement[0..], cert_buf[0..statement_len])) return error.StatementDrift;
+        var sig: [64]u8 = undefined;
+        var s: u32 = 0;
+        while (s < sig_len) : (s += 1) sig[s] = cert_buf[statement_len + s];
+        verifier.verify(&sig, statement[0..], &id.public_key) catch return error.IndependentVerifyFailed;
+    }
+
+    // 2. THE WHOLE POINT. ed25519 admits no non-hardened public derivation, so a verifier holding only id.public_key could NOT compute sub0's
+    //    public key on their own — the attestation is what carries it. Prove the certificate delivers exactly the key the holder could not derive.
+    {
+        const att = try verify_attestation(cert_buf[0..], &id.public_key);
+        // The subkey the certificate delivers equals the real subkey (which a public-only holder cannot reconstruct) — the delegation bridges the gap.
+        if (!bytes_eq(att.subkey_public[0..], sub0.public_key[0..])) return error.DelegationBridgeBroken;
+        // ...and it is genuinely NOT the identity's own key, so this is a real delegation to a distinct key, not a self-reference.
+        if (bytes_eq(att.subkey_public[0..], id.public_key[0..])) return error.SubkeyEqualsIssuer;
+    }
+
+    // 3. THE BINDING REFUSES THE WRONG ISSUER. The identity's own valid certificate, verified while EXPECTING the other identity, fails
+    //    UnexpectedIssuer — the signature is valid, yet it names the wrong issuer, and the binding catches that before the statement is trusted.
+    {
+        if (verify_attestation(cert_buf[0..], &other.public_key)) |_| return error.WrongIssuerAccepted else |e| {
+            if (e != error.UnexpectedIssuer) return error.WrongIssuerWrongError;
+        }
+    }
+
+    // 4. TAMPER AND MALFORMATION, each by its own named error.
+    {
+        // A flipped statement byte (inside the record field) breaks the signature → BadAttestation.
+        _ = try attest(&id, &sub0, cert_buf[0..]);
+        cert_buf[magic_len + public_len + 7] ^= 0x01; // last byte of the record field
+        if (verify_attestation(cert_buf[0..], &id.public_key)) |_| return error.TamperStmtAccepted else |e| {
+            if (e != error.BadAttestation) return error.TamperStmtWrongError;
+        }
+        // A flipped signature byte → BadAttestation.
+        _ = try attest(&id, &sub0, cert_buf[0..]);
+        cert_buf[statement_len + 10] ^= 0x80;
+        if (verify_attestation(cert_buf[0..], &id.public_key)) |_| return error.TamperSigAccepted else |e| {
+            if (e != error.BadAttestation) return error.TamperSigWrongError;
+        }
+        // Bad magic → BadMagic, before any field is parsed.
+        _ = try attest(&id, &sub0, cert_buf[0..]);
+        cert_buf[0] = 'X';
+        if (verify_attestation(cert_buf[0..], &id.public_key)) |_| return error.BadMagicAccepted else |e| {
+            if (e != error.BadMagic) return error.BadMagicWrongError;
+        }
+        // A wrong length → CertBadLength.
+        _ = try attest(&id, &sub0, cert_buf[0..]);
+        if (verify_attestation(cert_buf[0 .. cert_len - 1], &id.public_key)) |_| return error.ShortAccepted else |e| {
+            if (e != error.CertBadLength) return error.ShortWrongError;
+        }
+        // attest refuses an out buffer too small.
+        {
+            var small: [cert_len - 1]u8 = undefined;
+            if (attest(&id, &sub0, small[0..])) |_| return error.SmallOutAccepted else |e| {
+                if (e != error.OutTooSmall) return error.SmallOutWrongError;
+            }
+        }
+    }
+
+    // 5. THE CHAIN. A record sealed by the attested subkey opens through open_record_as_subkey_of; a record sealed by a SIBLING subkey the
+    //    certificate does not cover is refused UnexpectedSigner; a valid certificate from a DIFFERENT identity is refused UnexpectedIssuer.
+    {
+        const clen = try attest(&id, &sub0, cert_buf[0..]); // certificate vouches sub0
+        var payload_buf: [200]u8 = undefined;
+        fill_test(payload_buf[0..], 5);
+
+        // A record genuinely sealed by sub0 → the whole chain accepts, and the opened signer is exactly the attested subkey.
+        const flen0 = try subkey_mod.seal_as(&sub0, payload_buf[0..], frame_buf[0..]);
+        const chained = try open_record_as_subkey_of(frame_buf[0..flen0], cert_buf[0..clen], &id.public_key);
+        if (!bytes_eq(chained.issuer[0..], id.public_key[0..])) return error.ChainIssuerWrong;
+        if (chained.record != 0) return error.ChainRecordWrong;
+        if (!bytes_eq(chained.opened.signer[0..], sub0.public_key[0..])) return error.ChainSignerWrong;
+        if (!bytes_eq(chained.opened.payload, payload_buf[0..])) return error.ChainPayloadWrong;
+
+        // A record sealed by the SIBLING subkey, opened against sub0's certificate → the attestation passes (it is a valid sub0 cert) but the
+        // record's signer is sib1, not the attested sub0, so open_as refuses UnexpectedSigner.
+        const flen1 = try subkey_mod.seal_as(&sib1, payload_buf[0..], frame_buf[0..]);
+        if (open_record_as_subkey_of(frame_buf[0..flen1], cert_buf[0..clen], &id.public_key)) |_| return error.SiblingRecordAccepted else |e| {
+            if (e != error.UnexpectedSigner) return error.SiblingRecordWrongError;
+        }
+
+        // A valid sub0 record, but the reader expects the OTHER identity as issuer → UnexpectedIssuer, before the frame is opened at all.
+        if (open_record_as_subkey_of(frame_buf[0..flen0], cert_buf[0..clen], &other.public_key)) |_| return error.ChainWrongIssuerAccepted else |e| {
+            if (e != error.UnexpectedIssuer) return error.ChainWrongIssuerWrongError;
+        }
+    }
+
+    // 6. A FORGED DELEGATION. The OTHER identity attests its OWN subkey — a certificate valid under `other`. Verified while expecting `id`, it is
+    //    refused UnexpectedIssuer: one identity can never pass off another's subkey as descending from it, even with a perfectly valid signature.
+    {
+        const other_sub0 = try subkey_mod.derive_subkey(&other, 0);
+        const clen = try attest(&other, &other_sub0, cert_buf[0..]);
+        // Valid under its true issuer...
+        _ = try verify_attestation(cert_buf[0..clen], &other.public_key);
+        // ...refused when the reader expects `id`.
+        if (verify_attestation(cert_buf[0..clen], &id.public_key)) |_| return error.ForgedDelegationAccepted else |e| {
+            if (e != error.UnexpectedIssuer) return error.ForgedDelegationWrongError;
+        }
+    }
+
+    // 7. DETERMINISM. Ed25519 is deterministic, so attesting the same identity + subkey twice yields byte-identical certificates.
+    {
+        const c1 = try attest(&id, &sub0, cert_buf[0..]);
+        const c2 = try attest(&id, &sub0, cert_buf2[0..]);
+        if (c1 != c2) return error.DeterminismLenWrong;
+        if (!bytes_eq(cert_buf[0..c1], cert_buf2[0..c2])) return error.DeterminismBytesWrong;
+    }
+
+    // 8. DISTINCTNESS. A certificate for record 0's subkey differs from one for record 1's — the record and subkey both change, and each is bound
+    //    into the signed statement, so no certificate can be reused across records.
+    {
+        _ = try attest(&id, &sub0, cert_buf[0..]);
+        _ = try attest(&id, &sib1, cert_buf2[0..]);
+        if (bytes_eq(cert_buf[0..cert_len], cert_buf2[0..cert_len])) return error.RecordsNotSeparated;
+        const att1 = try verify_attestation(cert_buf2[0..], &id.public_key);
+        if (att1.record != 1) return error.SiblingRecordFieldWrong;
+        if (!bytes_eq(att1.subkey_public[0..], sib1.public_key[0..])) return error.SiblingSubkeyWrong;
+    }
+
+    print("GREEN crypto-kumara-attestation: the TWENTIETH composition authored in pure Rye — the parent→subkey attestation, a signed delegation " ++
+        "that closes crypto/kumara_subkey's one honest boundary. ed25519/SLIP-0010 admits only HARDENED derivation, so a subkey's public key " ++
+        "cannot be derived from the parent identity's public key alone; a verifier holding only the identity's public key therefore cannot, on " ++
+        "their own, prove a subkey descends from it. This rung closes that the one honest way — the identity SIGNS a domain-separated statement " ++
+        "'the subkey named here, at this record, is mine,' and a verifier checks it against the identity's public key. Authors NO new cryptography " ++
+        "— the signature is crypto/ed25519_sign/verify (GREEN against RFC 8032); this module adds the CERTIFICATE (magic 'GKA1' ‖ issuer ‖ record " ++
+        "u64 BE ‖ subkey ‖ Ed25519 signature-over-statement) and the BINDING that refuses any certificate whose issuer is not the identity the " ++
+        "reader named, then chains to crypto/kumara_carry's open_as so identity → attested subkey → sealed record verifies end to end. Proven " ++
+        "GREEN on metal with no fabricated constant: (1) anchored — an identity from BIP-39's Trezor vector attests its own subkey, verify_" ++
+        "attestation returns exactly that subkey's public key at record 0, and an independent ed25519_verify over the reconstructed statement " ++
+        "agrees; (2) the whole point — the certificate delivers a subkey public key a public-only holder could not have derived; (3) the binding " ++
+        "refuses the wrong issuer, a flipped statement byte, a flipped signature byte, bad magic, a bad length, and an undersized out buffer, each " ++
+        "by its own named error; (4) the chain — a record sealed by the attested subkey opens, while a SIBLING subkey's record is refused " ++
+        "UnexpectedSigner and a DIFFERENT identity's expectation is refused UnexpectedIssuer before the frame is opened; (5) a forged delegation " ++
+        "(one identity attesting another's subkey) is refused UnexpectedIssuer; (6) determinism holds and certificates are distinct per record. " ++
+        "Purely local — TEST identities from published vectors, no real identity key, no network, no funds, no real device; issuing a REAL " ++
+        "attestation with the maintainer's own identity stays the custody gate, and constant-time timing-safety stays the Season's named horizon. " ++
+        "With this rung the identity arc's provenance chain stands whole: one identity, many per-record subkeys, each provably its own to anyone " ++
+        "holding only the identity's public key.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260816.103509
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title crypto: parent→subkey attestation, GREEN
+prompt take the next agent-doable lap Lindy-first crux-first on the road past REMEMBER / the 1024-round itinerary / the six-season double-seat / the rye-first crypto parity wave; Rye first, Glow on green-witnessed Rye; send each finished increment; stop at custody gates
+think Read REMEMBER's git nib line, the 1,024-round itinerary, the six-season double-seat, and the rye-first crypto parity wave. The nib named the crux outright: crypto/kumara_subkey.rye (the NINETEENTH composition) left ONE honest boundary as its named next rung — the parent→subkey ATTESTATION, a signed delegation over exactly the kumara_carry door. Highest-Lindy, agent-doable (TEST identities only), crux-first.
+think Studied the pattern across kumara_subkey / kumara_carry / signed_carry / kumara_identity and ed25519_sign/verify. The attestation closes the boundary the one honest way ed25519 allows: a subkey's public key cannot be derived from the parent's public alone (hardened-only), so the identity SIGNS a domain-separated statement and a verifier checks it against the identity's public key.
+think Authored crypto/kumara_attestation.rye — the TWENTIETH composition. A fixed 140-byte certificate: magic 'GKA1' ‖ issuer(32) ‖ record(u64 BE) ‖ subkey(32) ‖ Ed25519 sig-over-statement. attest re-derives the subkey before signing (an identity never vouches for a key not its own); verify_attestation binds to a named issuer (UnexpectedIssuer) then verifies (BadAttestation); open_record_as_subkey_of chains to kumara_carry.open_as so identity → attested subkey → sealed record verifies end to end.
+think Authors NO new cryptography — signature is ed25519_sign/verify (GREEN against RFC 8032). Contracts asserted (issuer re-derive match, statement write-one-way/read-same-way, returned issuer is expected). Bounds named; widths u32 in-memory, u64 wire for the record field.
+obs GREEN on the FIRST metal pass — the selftest proves anchored (Trezor-vector identity attests its own subkey, independent ed25519_verify agrees), the whole point (certificate delivers a subkey public a public-only holder could not derive), the binding (wrong issuer / flipped statement / flipped sig / bad magic / bad length / small out — each its own named error), the chain (attested subkey opens; sibling record refused UnexpectedSigner; wrong issuer refused before the frame is opened), a forged delegation refused, determinism, per-record distinctness.
+obs Suite grows 54→55 files (35 primitives + 20 compositions). Count-guard loom GREEN (bijection holds, computes 55), TAME style bans clean, full crypto_suite_witness GREEN across all fifty-five in dependency order. Registered the witness in the suite; updated spelled counts in the suite header, crypto/README.md, docs/CRYPTO.md, each with a new twentieth row.
+obs Non-gated: TEST identities from published vectors only — no real identity key, no signature with the maintainer's identity, no network, no funds, no provisioning, no seed force-push. Issuing a REAL attestation stays custody gate #3/#4; constant-time timing-safety stays the Season's named horizon.
+loom witness=crypto_suite_witness files=55 primitives=35 compositions=20 result=GREEN
+loom witness=crypto_kumara_attestation_witness cert_bytes=140 result=GREEN
+file crypto/kumara_attestation.rye the TWENTIETH composition — the parent→subkey attestation, a signed delegation, GREEN
+file tools/crypto_kumara_attestation_witness.rish its per-file witness, registered in the suite choir
+file tools/crypto_suite_witness.rish registers the new witness; spelled counts 54→55, 19→20
+file crypto/README.md front-door count 54→55, 19→20 compositions; new attestation row
+file docs/CRYPTO.md audit front-door count 54→55, 19→20 compositions; new attestation row
+recommend keep-going — the identity arc's provenance chain now stands whole (identity → subkey → attested record); next Lindy-first crux is the loop's own choice among the wave's open cruxes (Brix config for the crypto/Kumara wiring, or the docs-compression molt that feeds the seed)
