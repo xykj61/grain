@@ -1,0 +1,387 @@
+//! crypto/mldsa_keygen.rye — Season G (Cryptography): the ML-DSA key-generation rung, the FOURTH stone of the ML-DSA ladder and the first ML-DSA rung
+//! carrying a DOUBLED oracle. FIPS 204 ML-DSA.KeyGen_internal, authored in pure Rye: it expands a 32-byte seed ξ through SHAKE256 into (rho, rho', K),
+//! draws the public matrix A with RejNTTPoly, the small secrets s1, s2 with RejBoundedPoly, forms t = NTT⁻¹(Â ∘ NTT(s1)) + s2, splits it with
+//! Power2Round into (t1, t0), and serializes the public key pk = rho ‖ SimpleBitPack(t1) and the secret key sk = rho ‖ K ‖ tr ‖ BitPack(s1) ‖
+//! BitPack(s2) ‖ BitPack(t0), where tr = H(pk, 64). It composes only GREEN rungs — the base ring (crypto/mldsa_ring.rye), the serialization
+//! (crypto/mldsa_encode.rye), the sampling (crypto/mldsa_sample.rye), and SHAKE (crypto/shake.rye) — and holds no key of its own: every seed is a
+//! public test vector.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
+//! Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — the sixth rung of the ladder ("mldsa_ring.rye … its front door is
+//! the post-quantum successor to Kumara's Ed25519 identity"), the ML-DSA sibling of the ML-KEM keygen rung.
+//! Kin: crypto/mldsa_ring.rye (NTT · pointwise multiply, GREEN) · crypto/mldsa_encode.rye (SimpleBitPack · BitPack · Power2Round, GREEN) ·
+//! crypto/mldsa_sample.rye (RejNTTPoly · RejBoundedPoly, GREEN) · crypto/shake.rye (SHAKE256 for H). The parity TARGET is Zig's std.crypto
+//! sign.mldsa (MLDSA44/65/87), studied clean-room — never a copied line (.claude/rules/gratitude-licenses.md).
+//!
+//! THE DOUBLED ORACLE — FIPS 204 specifies standard-domain arithmetic; Zig's std.crypto computes internally in Montgomery domain for speed, yet both
+//! normalize to the canonical standard-domain residue before packing, so the two agree byte-for-byte at the PUBLISHED boundary — the encoded pk and sk.
+//! This rung authors the spec's standard-domain keygen and proves it against Zig's newKeyFromSeed(ξ) → toBytes over several deterministic seeds at all
+//! three parameter sets (ML-DSA-44/65/87). Two strangers confirming one answer is the discipline the whole library rests on.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. The keygen FUNCTION calls no std.crypto — it composes our own
+//! GREEN rungs; only the SELFTEST invokes Zig's std.crypto as the parity oracle to diff against. Every seed is a public test vector; generating or
+//! signing with the maintainer's OWN post-quantum identity key stays the custody gate. Constant-time timing-safety stays the Season's named horizon —
+//! this rung proves CORRECTNESS.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/mldsa_keygen.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const ring = @import("mldsa_ring.rye");
+const encode = @import("mldsa_encode.rye");
+const sample = @import("mldsa_sample.rye");
+const shake = @import("shake.rye");
+
+pub const mldsa_keygen_version = "20260816.161537";
+
+/// ML-DSA's prime modulus and ring degree, borrowed from the base ring so every rung cites one number.
+pub const q: u32 = ring.q;
+pub const n: u32 = ring.n;
+
+/// The largest module dimensions ML-DSA uses (ML-DSA-87 has k = 8, ML-DSA-65 has l = 5, ML-DSA-87 has l = 7). Every fixed-size buffer is sized for
+/// these ceilings so a smaller parameter set simply uses a prefix; named so the matrix and vectors cite one bound.
+pub const max_k: u32 = 8;
+pub const max_l: u32 = 7;
+
+/// The seed ξ and the signature-randomness seed K are each 32 bytes; rho (the matrix seed) is 32 and rho' (the secret seed) is 64 — exactly FIPS 204's
+/// widths. tr, the collision-resistant hash of the public key folded into the secret key, is 64 bytes.
+pub const seed_bytes: u32 = 32;
+pub const rho_bytes: u32 = 32;
+pub const rho_prime_bytes: u32 = 64;
+pub const key_bytes: u32 = 32;
+pub const tr_bytes: u32 = 64;
+
+/// The 128-byte expansion H(ξ ‖ k ‖ l) splits into rho (32) ‖ rho' (64) ‖ K (32).
+pub const expanded_bytes: u32 = rho_bytes + rho_prime_bytes + key_bytes;
+
+/// The dropped-bit count d = 13 and the t1 packing width (bitlen(q−1) − d = 23 − 13 = 10 bits), borrowed from the encode rung so one number is cited.
+pub const power2_d: u32 = encode.power2_d;
+pub const t1_bits: u32 = 10;
+
+/// Bytes one packed polynomial produces: t1 is 32·10 = 320; t0 is 32·13 = 416; a small secret is 32·bitlen(2η) = 96 (η = 2) or 128 (η = 4). Named so
+/// the pk/sk offsets cite them.
+pub const t1_packed_bytes: u32 = 32 * t1_bits;
+pub const t0_packed_bytes: u32 = 416;
+
+/// The largest public and secret keys: pk = 32 + 320·k, sk = 128 + η_packed·(l + k) + 416·k. ML-DSA-87 gives the largest pk (k = 8 → 2592) and the
+/// largest sk (η = 2, l + k = 15 → 4896). Named so the selftest's scratch buffers cite one ceiling.
+pub const pk_max_bytes: u32 = rho_bytes + t1_packed_bytes * max_k;
+pub const sk_max_bytes: u32 = 4896;
+
+/// The faults this rung can raise. Every one is either a composed rung's honest error surfaced or a selftest proof that failed — never a normal runtime
+/// outcome once the parity is GREEN.
+pub const KeyGenError = error{
+    /// A composed SHAKE256 call reported a bad length — impossible for our fixed inputs, honored honestly.
+    HashFailed,
+    /// A composed sampler (RejNTTPoly / RejBoundedPoly) surfaced its own error — impossible for our fixed widths, honored honestly.
+    SampleFailed,
+    /// The Zig std.crypto reference keygen reported an error in the selftest — never expected for a valid 32-byte seed.
+    OracleFailed,
+    /// Our encoded key length did not match Zig's toBytes length — a parameter-set width was computed wrong.
+    SizeMismatch,
+    /// Our public key disagreed with Zig's byte-for-byte — the ring ordering, matrix indexing, Power2Round, or t1 packing diverged from FIPS 204.
+    PkMismatch,
+    /// Our secret key disagreed with Zig's byte-for-byte — the secret encoding, tr = H(pk), or t0 packing diverged from FIPS 204.
+    SkMismatch,
+    /// A generated key came out all-zero, so a passing parity would prove nothing — the selftest refuses a trivial witness.
+    TrivialWitness,
+};
+
+/// eta_packed_bytes — the bytes one small-secret polynomial packs into: 32·bitlen(2η). η = 2 packs 3 bits per coefficient (96 bytes); η = 4 packs 4
+/// bits (128 bytes). Matches Zig's polyLeqEtaPackedSize.
+fn eta_packed_bytes(eta: u32) u32 {
+    // invariant (precondition): eta is one ML-DSA uses.
+    assert(eta == 2 or eta == 4);
+    // invariant (postcondition): the width matches FIPS 204's BitPack(w, η, η) output size.
+    return if (eta == 2) 96 else 128;
+}
+
+/// to_signed_eta — lift a small-secret coefficient from its residue form (0..η or q−η..q−1) back to the centered integer in [−η, η] that BitPack wants.
+/// RejBoundedPoly stores the value η − r ∈ [−η, η] as (q + that) mod q, so a residue above η is really a small negative.
+fn to_signed_eta(c: u32, eta: u32) i32 {
+    // invariant (precondition): the coefficient is a canonical residue that lies in the two small windows a bounded sample can produce.
+    assert(c < q);
+    assert(c <= eta or c >= q - eta);
+    // invariant: a residue at or below η is already the nonnegative value; one at or above q−η is the negative wrap.
+    if (c <= eta) return @as(i32, @intCast(c));
+    return @as(i32, @intCast(c)) - @as(i32, @intCast(q));
+}
+
+/// keygen — FIPS 204 ML-DSA.KeyGen_internal, parameterized by the module dimensions k, l and the noise parameter eta. Writes the public key into
+/// pk_out (32 + 320·k bytes) and the secret key into sk_out (128 + η_packed·(l + k) + 416·k bytes). Composes only GREEN rungs; the seed ξ is a public
+/// test vector, never a real identity key.
+pub fn keygen(comptime k: u32, comptime l: u32, comptime eta: u32, xi: *const [seed_bytes]u8, pk_out: []u8, sk_out: []u8) KeyGenError!void {
+    // invariant (precondition): the parameter set is one ML-DSA names and the buffers hold exactly the FIPS sizes.
+    assert(k >= 4 and k <= max_k);
+    assert(l >= 4 and l <= max_l);
+    assert(eta == 2 or eta == 4);
+    const eta_bytes: u32 = eta_packed_bytes(eta);
+    const pk_len: u32 = rho_bytes + t1_packed_bytes * k;
+    const sk_len: u32 = rho_bytes + key_bytes + tr_bytes + eta_bytes * (l + k) + t0_packed_bytes * k;
+    assert(pk_out.len == pk_len);
+    assert(sk_out.len == sk_len);
+
+    // H(ξ ‖ IntegerToBytes(k, 1) ‖ IntegerToBytes(l, 1)) = SHAKE256 → 128 bytes → (rho, rho', K). The rank bytes give the three parameter sets
+    // domain separation.
+    var h_in: [seed_bytes + 2]u8 = undefined;
+    var t: u32 = 0;
+    // invariant (bound): copy exactly the 32 seed bytes, one per turn.
+    while (t < seed_bytes) : (t += 1) h_in[t] = xi[t];
+    h_in[seed_bytes] = @as(u8, @intCast(k));
+    h_in[seed_bytes + 1] = @as(u8, @intCast(l));
+    var expanded: [expanded_bytes]u8 = undefined;
+    shake.shake256(h_in[0..], expanded[0..]) catch return error.HashFailed;
+
+    var rho: [rho_bytes]u8 = undefined;
+    var rho_prime: [rho_prime_bytes]u8 = undefined;
+    var key: [key_bytes]u8 = undefined;
+    t = 0;
+    // invariant (bound): copy the 32-byte rho prefix.
+    while (t < rho_bytes) : (t += 1) rho[t] = expanded[t];
+    t = 0;
+    // invariant (bound): copy the 64-byte rho' middle.
+    while (t < rho_prime_bytes) : (t += 1) rho_prime[t] = expanded[rho_bytes + t];
+    t = 0;
+    // invariant (bound): copy the 32-byte K tail.
+    while (t < key_bytes) : (t += 1) key[t] = expanded[rho_bytes + rho_prime_bytes + t];
+
+    // Â[i][j] = RejNTTPoly(rho ‖ IntegerToBytes(j, 1) ‖ IntegerToBytes(i, 1)) — the domain bytes are (j, i), i the row (k), j the column (l), so the
+    // matrix is A and t[i] = Σ_j A[i][j] ∘ ŝ1[j].
+    var a_hat: [max_k][max_l]ring.Poly = undefined;
+    var i: u32 = 0;
+    // invariant (bound): exactly k rows, each with exactly l columns — k ≤ max_k and l ≤ max_l, never unbounded.
+    while (i < k) : (i += 1) {
+        var j: u32 = 0;
+        while (j < l) : (j += 1) {
+            a_hat[i][j] = sample.rej_ntt_poly(&rho, @as(u8, @intCast(j)), @as(u8, @intCast(i))) catch return error.SampleFailed;
+        }
+    }
+
+    // s1[j] = RejBoundedPoly(rho', nonce = j) for j in 0..l; ŝ1[j] = NTT(s1[j]). Keep the residue-domain s1 for encoding and the NTT-domain ŝ1 for
+    // computeT.
+    var s1: [max_l]ring.Poly = undefined;
+    var s1_hat: [max_l]ring.Poly = undefined;
+    i = 0;
+    // invariant (bound): exactly l secret polynomials, nonces 0..l−1.
+    while (i < l) : (i += 1) {
+        s1[i] = sample.rej_bounded_poly(&rho_prime, @as(u16, @intCast(i)), eta) catch return error.SampleFailed;
+        s1_hat[i] = ring.ntt(&s1[i]);
+    }
+
+    // s2[i] = RejBoundedPoly(rho', nonce = l + i) for i in 0..k. Kept in residue form for both the t = As1 + s2 add and the secret-key encoding.
+    var s2: [max_k]ring.Poly = undefined;
+    i = 0;
+    // invariant (bound): exactly k secret polynomials, nonces l..l+k−1.
+    while (i < k) : (i += 1) {
+        s2[i] = sample.rej_bounded_poly(&rho_prime, @as(u16, @intCast(l + i)), eta) catch return error.SampleFailed;
+    }
+
+    // t[i] = NTT⁻¹(Σ_j Â[i][j] ∘ ŝ1[j]) + s2[i], each coefficient a canonical residue. Then (t1[i], t0[i]) = Power2Round(t[i]) coefficient by
+    // coefficient — t1 the published high part, t0 the secret low part.
+    var t1: [max_k][n]u32 = undefined;
+    var t0: [max_k][n]i32 = undefined;
+    i = 0;
+    // invariant (bound): exactly k rows produced.
+    while (i < k) : (i += 1) {
+        var acc: ring.Poly = .{ .cs = [_]u32{0} ** n };
+        var j: u32 = 0;
+        // invariant (bound): exactly l pointwise products accumulated per row.
+        while (j < l) : (j += 1) {
+            const prod = ring.multiply_ntts(&a_hat[i][j], &s1_hat[j]);
+            var c: u32 = 0;
+            // invariant (bound): exactly n = 256 coefficients folded in, one per turn.
+            while (c < n) : (c += 1) {
+                // invariant: both addends are canonical residues, so the sum stays below 2q before the single reduction.
+                assert(acc.cs[c] < q and prod.cs[c] < q);
+                acc.cs[c] = (acc.cs[c] + prod.cs[c]) % q;
+            }
+        }
+        const t_reg = ring.inv_ntt(&acc);
+        var c2: u32 = 0;
+        // invariant (bound): exactly n coefficients split, one per turn.
+        while (c2 < n) : (c2 += 1) {
+            // invariant: both addends are canonical residues, so their sum stays below 2q before the single reduction.
+            assert(t_reg.cs[c2] < q and s2[i].cs[c2] < q);
+            const ti: u32 = (t_reg.cs[c2] + s2[i].cs[c2]) % q;
+            const split = encode.power2round(ti);
+            t1[i][c2] = split.r1;
+            t0[i][c2] = split.r0;
+        }
+    }
+
+    // pk = rho ‖ SimpleBitPack(t1[0..k], 10).
+    t = 0;
+    // invariant (bound): the 32-byte rho prefix of pk.
+    while (t < rho_bytes) : (t += 1) pk_out[t] = rho[t];
+    i = 0;
+    // invariant (bound): exactly k packed t1 polynomials laid end to end.
+    while (i < k) : (i += 1) {
+        const bytes_out = encode.simple_bit_pack(&t1[i], t1_bits);
+        var b: u32 = 0;
+        // invariant (bound): exactly 320 bytes per polynomial.
+        while (b < t1_packed_bytes) : (b += 1) pk_out[rho_bytes + t1_packed_bytes * i + b] = bytes_out.bytes[b];
+    }
+
+    // tr = H(pk, 64) = SHAKE256(pk) squeezed to 64 bytes — the collision-resistant hash of the public key that binds the secret key to it.
+    var tr: [tr_bytes]u8 = undefined;
+    shake.shake256(pk_out[0..pk_len], tr[0..]) catch return error.HashFailed;
+
+    // sk = rho ‖ K ‖ tr ‖ BitPack(s1, η, η) ‖ BitPack(s2, η, η) ‖ BitPack(t0, 2¹²−1, 2¹²).
+    var off: u32 = 0;
+    t = 0;
+    // invariant (bound): the 32-byte rho.
+    while (t < rho_bytes) : (t += 1) sk_out[off + t] = rho[t];
+    off += rho_bytes;
+    t = 0;
+    // invariant (bound): the 32-byte K.
+    while (t < key_bytes) : (t += 1) sk_out[off + t] = key[t];
+    off += key_bytes;
+    t = 0;
+    // invariant (bound): the 64-byte tr.
+    while (t < tr_bytes) : (t += 1) sk_out[off + t] = tr[t];
+    off += tr_bytes;
+
+    // BitPack(s1[j], η, η) for j in 0..l — each small secret coefficient lifted to its centered value before packing.
+    i = 0;
+    // invariant (bound): exactly l packed s1 polynomials.
+    while (i < l) : (i += 1) {
+        var signed: [n]i32 = undefined;
+        var c: u32 = 0;
+        // invariant (bound): exactly n coefficients centered, one per turn.
+        while (c < n) : (c += 1) signed[c] = to_signed_eta(s1[i].cs[c], eta);
+        const bytes_out = encode.bit_pack(&signed, eta, eta);
+        var b: u32 = 0;
+        // invariant (bound): exactly η_packed bytes per polynomial.
+        while (b < eta_bytes) : (b += 1) sk_out[off + b] = bytes_out.bytes[b];
+        off += eta_bytes;
+    }
+
+    // BitPack(s2[i], η, η) for i in 0..k.
+    i = 0;
+    // invariant (bound): exactly k packed s2 polynomials.
+    while (i < k) : (i += 1) {
+        var signed: [n]i32 = undefined;
+        var c: u32 = 0;
+        // invariant (bound): exactly n coefficients centered, one per turn.
+        while (c < n) : (c += 1) signed[c] = to_signed_eta(s2[i].cs[c], eta);
+        const bytes_out = encode.bit_pack(&signed, eta, eta);
+        var b: u32 = 0;
+        // invariant (bound): exactly η_packed bytes per polynomial.
+        while (b < eta_bytes) : (b += 1) sk_out[off + b] = bytes_out.bytes[b];
+        off += eta_bytes;
+    }
+
+    // BitPack(t0[i], 2¹²−1, 2¹²) for i in 0..k — the secret low part, 13 bits per coefficient.
+    const t0_a: u32 = (@as(u32, 1) << @as(u5, @intCast(power2_d - 1))) - 1; // 2¹² − 1 = 4095
+    const t0_b: u32 = @as(u32, 1) << @as(u5, @intCast(power2_d - 1)); // 2¹² = 4096
+    i = 0;
+    // invariant (bound): exactly k packed t0 polynomials.
+    while (i < k) : (i += 1) {
+        const bytes_out = encode.bit_pack(&t0[i], t0_a, t0_b);
+        var b: u32 = 0;
+        // invariant (bound): exactly 416 bytes per polynomial.
+        while (b < t0_packed_bytes) : (b += 1) sk_out[off + b] = bytes_out.bytes[b];
+        off += t0_packed_bytes;
+    }
+
+    // invariant (postcondition): every sk byte was written exactly once.
+    assert(off == sk_len);
+}
+
+// ---- selftest ----------------------------------------------------------------------------------------------------------------------
+
+/// bytes_from_seed — fill a byte buffer deterministically from a seed with the same tiny LCG the ring, encode, and sample rungs use, so a failing run
+/// always reruns identically without any std.crypto.
+fn bytes_from_seed(seed: u32, buf: []u8) void {
+    var state: u32 = seed *% 2654435761 +% 1013904223;
+    var i: u32 = 0;
+    // invariant (bound): exactly buf.len bytes written, one per turn.
+    while (i < buf.len) : (i += 1) {
+        state = state *% 1664525 +% 1013904223;
+        buf[i] = @as(u8, @intCast((state >> 8) & 0xFF));
+    }
+}
+
+/// all_zero — is a byte slice entirely zero? A generated key that is must not pass a parity check, or the witness would prove nothing.
+fn all_zero(buf: []const u8) bool {
+    var i: u32 = 0;
+    // invariant (bound): exactly buf.len bytes examined, one per turn.
+    while (i < buf.len) : (i += 1) {
+        if (buf[i] != 0) return false;
+    }
+    return true;
+}
+
+/// check_param — the doubled oracle for one parameter set: our pure-Rye keygen versus Zig's std.crypto reference, byte-for-byte over one seed. Dsa is
+/// the Zig type (mldsa.MLDSA44/65/87); k, l, eta name our matching parameters. Zig's newKeyFromSeed takes the 32-byte ξ; toBytes on the public and
+/// secret keys yields exactly the FIPS pk and sk.
+fn check_param(comptime Dsa: type, comptime k: u32, comptime l: u32, comptime eta: u32, xi: *const [seed_bytes]u8) KeyGenError!void {
+    const kp = Dsa.newKeyFromSeed(xi);
+    const pk_ref = kp.pk.toBytes();
+    const sk_ref = kp.sk.toBytes();
+
+    const eta_bytes: u32 = eta_packed_bytes(eta);
+    const pk_len: u32 = rho_bytes + t1_packed_bytes * k;
+    const sk_len: u32 = rho_bytes + key_bytes + tr_bytes + eta_bytes * (l + k) + t0_packed_bytes * k;
+    // invariant: our width arithmetic must match Zig's own encoded_length for this parameter set.
+    if (pk_ref.len != pk_len or sk_ref.len != sk_len) return error.SizeMismatch;
+
+    var pk_mine: [pk_max_bytes]u8 = undefined;
+    var sk_mine: [sk_max_bytes]u8 = undefined;
+    try keygen(k, l, eta, xi, pk_mine[0..pk_len], sk_mine[0..sk_len]);
+
+    // A key that is all zero would make a byte match meaningless — refuse the trivial witness before the diff.
+    if (all_zero(pk_mine[0..pk_len]) or all_zero(sk_mine[0..sk_len])) return error.TrivialWitness;
+
+    var b: u32 = 0;
+    // invariant (bound): compare exactly pk_len bytes, one per turn.
+    while (b < pk_len) : (b += 1) {
+        if (pk_mine[b] != pk_ref[b]) return error.PkMismatch;
+    }
+    b = 0;
+    // invariant (bound): compare exactly sk_len bytes, one per turn.
+    while (b < sk_len) : (b += 1) {
+        if (sk_mine[b] != sk_ref[b]) return error.SkMismatch;
+    }
+}
+
+fn run_selftest() !u8 {
+    const mldsa = std.crypto.sign.mldsa;
+
+    // Over a deterministic spread of seeds, our pure-Rye ML-DSA.KeyGen_internal must match Zig's std.crypto reference byte-for-byte at every parameter
+    // set. This is the ML-DSA ladder's FIRST external oracle: the ring's coefficient ordering, the matrix indexing (j, i), the RejBoundedPoly nonce
+    // sequence, Power2Round, and the pk/sk serialization all meet Zig's independent implementation at once. A single wrong stone fails the diff.
+    {
+        var seed: u32 = 1;
+        // invariant (bound): exactly eight deterministic seeds, one per turn.
+        while (seed <= 8) : (seed += 1) {
+            var xi: [seed_bytes]u8 = undefined;
+            bytes_from_seed(seed, xi[0..]);
+            // ML-DSA-44: k = 4, l = 4, eta = 2.
+            try check_param(mldsa.MLDSA44, 4, 4, 2, &xi);
+            // ML-DSA-65: k = 6, l = 5, eta = 4.
+            try check_param(mldsa.MLDSA65, 6, 5, 4, &xi);
+            // ML-DSA-87: k = 8, l = 7, eta = 2.
+            try check_param(mldsa.MLDSA87, 8, 7, 2, &xi);
+        }
+    }
+
+    print("GREEN crypto-mldsa-keygen: the ML-DSA key-generation rung (FIPS 204 ML-DSA.KeyGen_internal), authored in pure Rye as the ML-DSA ladder's " ++
+        "first rung with a DOUBLED oracle. It expands a 32-byte seed through SHAKE256 into (rho, rho', K), draws the public matrix A with RejNTTPoly " ++
+        "and the small secrets s1, s2 with RejBoundedPoly, forms t = invNTT(A pointwise-multiply NTT(s1)) + s2, splits it with Power2Round into " ++
+        "(t1, t0), and serializes pk = rho then SimpleBitPack(t1) and sk = rho then K then tr then BitPack(s1) then BitPack(s2) then BitPack(t0), " ++
+        "with tr = H(pk). Proven byte-for-byte against Zig's independent std.crypto sign.mldsa newKeyFromSeed(seed) at ALL THREE parameter sets " ++
+        "(ML-DSA-44 k=4 l=4 eta=2, ML-DSA-65 k=6 l=5 eta=4, ML-DSA-87 k=8 l=7 eta=2) over 8 deterministic seeds each: our standard-domain " ++
+        "arithmetic and Zig's Montgomery-domain arithmetic agree at the published byte boundary. The keygen function composes only GREEN rungs and " ++
+        "calls no std.crypto; only this selftest invokes Zig as the parity oracle. Purely local — every seed a public test vector, no key held, no " ++
+        "network, no funds, no real device; signing with the maintainer's own post-quantum key stays the custody gate, constant-time " ++
+        "timing-safety the named horizon.\n", .{});
+    return 0;
+}
+
+pub fn main(init_args: std.process.Init) !u8 {
+    _ = init_args;
+    return run_selftest();
+}

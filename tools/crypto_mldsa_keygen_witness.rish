@@ -1,0 +1,42 @@
+# tools/crypto_mldsa_keygen_witness.rish — the ML-DSA key-generation rung: FIPS 204 ML-DSA.KeyGen_internal, authored in pure Rye and proven
+# byte-for-byte against Zig's independent std.crypto sign.mldsa. This is the ML-DSA ladder's fourth rung and its FIRST with a DOUBLED oracle — it
+# composes the GREEN base ring (crypto/mldsa_ring.rye), serialization (crypto/mldsa_encode.rye), and sampling (crypto/mldsa_sample.rye) into a whole
+# keypair, and confirms that whole against a second, independent implementation (Season G · Cryptography).
+#
+# Season: crypto — the ML-DSA ladder's key stone, the post-quantum successor to Kumara's Ed25519 identity. The keygen function holds no key: every seed
+# is a public test vector. Every ML-DSA identity a keeper's name will one day rest on is exactly these bytes, so this witness proves the whole
+# composition agrees with the NIST-standard reference to the byte.
+# Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md ("the ML-DSA ladder … proven against Zig's std.crypto ML-DSA-44/65/87
+# and the FIPS-204 KAT. Its front door is the post-quantum successor to Kumara's Ed25519 identity").
+# Rye-first spine: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+# Clean-room: the ML-DSA.KeyGen algorithm, the H/ExpandA/ExpandS wiring, and the pk/sk serialization are the public NIST standard's own; the arithmetic
+# is our own Rye composed over our own GREEN rungs, with Zig's std.crypto read only as the reference to diff against — never a copied line
+# (.claude/rules/gratitude-licenses.md).
+#
+# crypto/mldsa_keygen.rye proves itself by a DOUBLED oracle — the discipline the whole library rests on. FIPS 204 specifies standard-domain arithmetic;
+# Zig's std.crypto computes internally in Montgomery domain, yet both normalize to the canonical residue before packing, so the two agree byte-for-byte
+# at the published boundary (pk and sk). This rung diffs our pure-Rye keygen against Zig's newKeyFromSeed then toBytes at all three parameter sets over
+# eight deterministic seeds each. Purely local — no key held, no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_mldsa_keygen_witness.rish
+
+say "crypto-mldsa-keygen: Language EN — the ML-DSA key-generation rung: FIPS 204 ML-DSA.KeyGen_internal. It expands a 32-byte seed through SHAKE256 into (rho, rho', K), draws the public matrix A with RejNTTPoly and the small secrets s1, s2 with RejBoundedPoly, forms t = invNTT(A pointwise-multiply NTT(s1)) + s2, splits it with Power2Round into (t1, t0), and serializes the public key pk and the secret key sk. This is the ML-DSA ladder's fourth rung and its FIRST with a doubled oracle, composing the GREEN ring, encode, and sample rungs into a whole keypair — the post-quantum successor to Kumara's Ed25519 identity."
+say "crypto-mldsa-keygen: Style Radiant — the law is stated positively as byte parity. FIPS 204 specifies standard-domain arithmetic; Zig's std.crypto computes in Montgomery domain, yet both normalize to the canonical residue before packing, so the two agree byte-for-byte at the published boundary. Our pure-Rye keygen must equal Zig's newKeyFromSeed then toBytes, pk and sk, at every parameter set. Two strangers confirming one answer is the discipline the whole library rests on."
+say "crypto-mldsa-keygen: Lens TAME — bounded loops (k rows, l columns, 256 coefficients, l+k secret polynomials), contract asserts on every function, canonical residues in [0, q) throughout, small secrets lifted to their centered [-eta, eta] value before packing. Correctness proven by a DOUBLED oracle: our standard-domain composition versus Zig's independent Montgomery-domain std.crypto sign.mldsa, byte-for-byte at ML-DSA-44 (k=4 l=4 eta=2), ML-DSA-65 (k=6 l=5 eta=4), and ML-DSA-87 (k=8 l=7 eta=2) over 8 deterministic seeds each, a trivial all-zero key refused. The keygen function calls no std.crypto; only the selftest invokes Zig as the parity oracle. Every seed is a public test vector — no key held, no network, no funds, no device; signing with the maintainer's own post-quantum key stays the custody gate, constant-time timing-safety the named horizon."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/mldsa_keygen"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/mldsa_keygen.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-mldsa-keygen: build failed — ${build.err}"
+
+let outfile = "crypto/bin/mldsa_keygen.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-mldsa-keygen: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-mldsa-keygen: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-mldsa-keygen' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-mldsa-keygen: selftest did not print the GREEN crypto-mldsa-keygen line"
