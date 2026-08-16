@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260816.022000
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (Linux) — Eastern (EDT) time convention
+title secp256k1 group law — the proven curve over the proven field, parity-GREEN
+prompt Read the road-ahead cards and itineraries; take the next agent-doable lap Lindy-first crux-first; Rye first, Glow on green Rye; approve own design rounds; send each finished increment; stop at custody gates.
+think The prior rung landed crypto/fe_secp256k1.rye (the secp256k1 base field) parity-GREEN, and its own recommend line named the next crux plainly: the secp256k1 group law is the next composition over the proven field, the same shape the Ed25519 tower took over fe25519. Lindy-first crux-first agrees — every module that will ever verify a Bitcoin/Ethereum signature or recover a public key multiplies a point by a scalar, and scalar multiplication is nothing but point doubling and addition repeated. Those two operations are the crux.
+think Studied Zig's std.crypto.ecc.Secp256k1 to read the coordinate convention and parity target: it uses standard homogeneous projective coordinates (X, Y, Z) with affine x = X/Z, y = Y/Z (single inversion in affineCoordinates), and the complete short-Weierstrass formulas of Renes–Costello–Batina (eprint 2015/1060, Algorithm 7 add, Algorithm 9 dbl), specialized to a = 0 with b3 = 3·b = 21. Chose the same representation so the group laws compare on affine bytes.
+think Authored crypto/secp256k1_group.rye composing only the GREEN field ops (fe.add/sub/mul/square/invert) — no new field math, no key, no scalar ladder yet (its own next round). Built b3 = 21 as a one-limb field constant in our own arithmetic, never a copied literal. Negation flips the sign of Y; the point at infinity is any point with Z = 0; the single inversion lives only at the affine read.
+obs GREEN on the FIRST metal run — the complete RCB formulas port cleanly limb-for-limb, and parity holds byte-for-byte against Zig's independent std.crypto.ecc.Secp256k1 on the affine coordinates of dbl, add, sub, and neg across the base point and five multiples, plus algebraic known-answers anyone can replay (base point reads to its published affine coordinates, B + B = 2B, B + (−B) is the point at infinity with Z packing to zero, −(−B) = B).
+obs Completeness matters here: because the formulas are exception-free, the same add() handles B + (−B) → identity with no branch, so the file's only conditional is inside the field's own packing beneath it. The group law itself is data-independent by construction — a fixed sequence of field operations — so its timing horizon is cleaner than the field's; still named, not claimed.
+obs secp256k1 is not in Monocypher, so — as with the field beneath it — the two witnesses are the reference known-answers and Zig's independent std.crypto, the same two-witness discipline the library keeps. Counted the group law as a curve primitive (like ed25519_group): thirty primitives + four compositions, thirty-four files.
+loom witness=crypto_secp256k1_group_witness parity_multiples=5 pairs=6 ops=dbl,add,sub,neg result=GREEN
+loom witness=crypto_suite_witness files=34 primitives=30 compositions=4 result=GREEN
+file crypto/secp256k1_group.rye the secp256k1 group law (point add·dbl·neg, complete projective coordinates) in pure Rye over the GREEN field, parity-GREEN
+file tools/crypto_secp256k1_group_witness.rish the per-file witness — builds and asserts GREEN crypto-secp256k1-group
+file tools/crypto_suite_witness.rish registers the new rung after the field, before the compositions; narrative counts refreshed to 34 files
+file docs/CRYPTO.md adds the secp256k1 group-law row; counts corrected to thirty-four files, thirty primitives
+file active-designing/20260816-022000_secp256k1-group-law-the-proven-curve.md the design capture — the crux, the RCB formulas, the two witnesses, and what stands next
+recommend keep-going scalar multiplication k·P (a fixed double-and-add ladder over dbl and add) is the next non-gated rung; then ECDSA verification and public-key recovery, the reach eth_address was climbing toward

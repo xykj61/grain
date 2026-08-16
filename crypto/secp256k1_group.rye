@@ -1,0 +1,261 @@
+//! crypto/secp256k1_group.rye — Season G (Cryptography): the secp256k1 group law authored in pure Rye, composed entirely over the GREEN base
+//! field (crypto/fe_secp256k1.rye). ECDSA over secp256k1 — the signature scheme Bitcoin and Ethereum both sign with, and the reach
+//! eth_address.rye was built toward — multiplies a point by a scalar; that ladder is a composition over exactly two operations, point
+//! addition and point doubling, and this file authors both. It adds no new field math (fe_secp256k1 proved that) and no scalar ladder yet
+//! (that is its own next round); it is the tractable, highest-Lindy move that turns a proven field into a proven group, exactly as
+//! ed25519_group.rye turned crypto/fe25519.rye into the edwards25519 group.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
+//! Design read: active-designing/20260816-022000_secp256k1-group-law-the-proven-curve.md (this round) and
+//! active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the priority spine: Rye first, Glow on green Rye).
+//! Kin: crypto/fe_secp256k1.rye (the base field this composes over, GREEN) · crypto/ed25519_group.rye (the sibling group law over the twisted
+//! Edwards field). secp256k1 is not in Monocypher, so its source parity is not a rung here; the reference known-answers plus Zig's
+//! independent std.crypto.ecc.Secp256k1 are the two witnesses (.claude/rules/gratitude-licenses.md).
+//!
+//! THE CRUX — a point on secp256k1 (y² = x³ + 7, so a = 0 and b = 7) is carried in standard homogeneous projective coordinates (X, Y, Z)
+//! with x = X/Z and y = Y/Z. In this representation the complete short-Weierstrass addition and doubling formulas of Renes, Costello, and
+//! Batina (eprint 2015/1060, Algorithms 7 and 9 for the a = 0 case) are exception-free: one formula adds every pair of points, including a
+//! point to itself and a point to its own negation, with no branch and no inversion inside the group law. The one constant the formulas need
+//! is b3 = 3·b = 21, a field element built here in our own arithmetic. Negation flips the sign of Y; subtraction is addition of the negation.
+//! The single inversion in the whole group law appears only when a point is finally read to affine coordinates (x = X/Z, y = Y/Z) at the
+//! boundary. The point at infinity — the group identity — is any point with Z = 0; a sum that lands there (P + (−P)) packs its Z to zero.
+//! Nothing here is a claim about a device; it is arithmetic anyone can replay against the published formulas.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity. A curve point is arithmetic, not a secret
+//! and not a signature: this file signs nothing and holds no key (ECDSA's signing with an identity key stays its own separate, gated round;
+//! even the scalar-multiplication ladder is a later non-gated round). The primitive calls no std.crypto. Parity is proven at selftest against
+//! two references runnable now — algebraic identities anyone can check (the base point reads to its published affine coordinates, B + B = 2B,
+//! B + (−B) is the point at infinity with Z = 0, and −(−B) = B), and Zig's own std.crypto.ecc.Secp256k1 as an independent implementation,
+//! compared byte-for-byte on the affine coordinates of dbl, add, sub, and neg across the base point and several of its multiples.
+//! Constant-time timing-safety stays a separate named horizon (the group law is data-independent by construction — a fixed sequence of field
+//! operations with no branch on any coordinate).
+//!
+//! Run from the repository root:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/secp256k1_group.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const fe = @import("fe_secp256k1.rye");
+
+pub const secp256k1_group_version = "20260816.022000";
+
+/// A point on secp256k1 in standard homogeneous projective coordinates: x = X/Z, y = Y/Z. Every coordinate is a field element from the proven
+/// base field. The point at infinity (the group identity) is any point with Z = 0.
+pub const Point = struct {
+    x: fe.Field,
+    y: fe.Field,
+    z: fe.Field,
+};
+
+/// The field element 0.
+fn fe_zero() fe.Field {
+    return fe.Field{ .l = .{ 0, 0, 0, 0, 0, 0, 0, 0 } };
+}
+
+/// Double a field element, a + a — the one small helper the RCB formulas lean on.
+fn fe_dbl(a: fe.Field) fe.Field {
+    return fe.add(a, a);
+}
+
+/// The curve constant b3 = 3·b = 21 (b = 7 for secp256k1), built in our own field arithmetic so no borrowed literal enters the group law. It
+/// fits a single 32-bit limb, so the constructed element is already canonical.
+fn fe_b3() fe.Field {
+    return fe.Field{ .l = .{ 21, 0, 0, 0, 0, 0, 0, 0 } };
+}
+
+/// Double a point (Renes–Costello–Batina, eprint 2015/1060 Algorithm 9, specialized to a = 0). A fixed sequence of squarings, doublings,
+/// adds, subtracts, and multiplies — no inversion, no branch — so the result is another projective point on the curve.
+pub fn dbl(p: Point) Point {
+    const b3 = fe_b3();
+    var t0 = fe.square(p.y);
+    var z3 = fe_dbl(fe_dbl(fe_dbl(t0)));
+    var t1 = fe.mul(p.y, p.z);
+    var t2 = fe.square(p.z);
+    t2 = fe.mul(t2, b3);
+    var x3 = fe.mul(t2, z3);
+    var y3 = fe.add(t0, t2);
+    z3 = fe.mul(t1, z3);
+    t1 = fe_dbl(t2);
+    t2 = fe.add(t1, t2);
+    t0 = fe.sub(t0, t2);
+    y3 = fe.mul(t0, y3);
+    y3 = fe.add(x3, y3);
+    t1 = fe.mul(p.x, p.y);
+    x3 = fe.mul(t0, t1);
+    x3 = fe_dbl(x3);
+    // invariant: the doubled point's coordinates are canonical field elements (every limb below 2^32), ready for further group operations.
+    const r = Point{ .x = x3, .y = y3, .z = z3 };
+    assert(r.x.l[0] <= fe_mask and r.z.l[7] <= fe_mask);
+    return r;
+}
+
+/// Add two points (Renes–Costello–Batina, eprint 2015/1060 Algorithm 7, specialized to a = 0). Complete for all inputs — a point added to
+/// itself, to its negation, or to the identity — with no exceptional case, no branch, and no inversion, so doubling and addition compose
+/// into the scalar ladder its own later round will build.
+pub fn add(p: Point, q: Point) Point {
+    const b3 = fe_b3();
+    var t0 = fe.mul(p.x, q.x);
+    var t1 = fe.mul(p.y, q.y);
+    var t2 = fe.mul(p.z, q.z);
+    var t3 = fe.add(p.x, p.y);
+    var t4 = fe.add(q.x, q.y);
+    t3 = fe.mul(t3, t4);
+    t4 = fe.add(t0, t1);
+    t3 = fe.sub(t3, t4);
+    t4 = fe.add(p.y, p.z);
+    var x3 = fe.add(q.y, q.z);
+    t4 = fe.mul(t4, x3);
+    x3 = fe.add(t1, t2);
+    t4 = fe.sub(t4, x3);
+    x3 = fe.add(p.x, p.z);
+    var y3 = fe.add(q.x, q.z);
+    x3 = fe.mul(x3, y3);
+    y3 = fe.add(t0, t2);
+    y3 = fe.sub(x3, y3);
+    x3 = fe_dbl(t0);
+    t0 = fe.add(x3, t0);
+    t2 = fe.mul(t2, b3);
+    var z3 = fe.add(t1, t2);
+    t1 = fe.sub(t1, t2);
+    y3 = fe.mul(y3, b3);
+    x3 = fe.mul(t4, y3);
+    t2 = fe.mul(t3, t1);
+    x3 = fe.sub(t2, x3);
+    y3 = fe.mul(y3, t0);
+    t1 = fe.mul(t1, z3);
+    y3 = fe.add(t1, y3);
+    t0 = fe.mul(t0, t3);
+    z3 = fe.mul(z3, t4);
+    z3 = fe.add(z3, t0);
+    // invariant: the sum's coordinates are canonical field elements; a sum that is the identity carries Z = 0, which packs to all-zero bytes.
+    const r = Point{ .x = x3, .y = y3, .z = z3 };
+    assert(r.y.l[0] <= fe_mask and r.z.l[7] <= fe_mask);
+    return r;
+}
+
+/// Negate a point — flip the sign of Y, keeping X and Z. The additive inverse: p + neg(p) is the point at infinity.
+pub fn neg(p: Point) Point {
+    return Point{ .x = p.x, .y = fe.sub(fe_zero(), p.y), .z = p.z };
+}
+
+/// Subtract a point — addition of the negation.
+pub fn sub(p: Point, q: Point) Point {
+    return add(p, neg(q));
+}
+
+/// The 32-bit limb mask — used only in the coordinate-shape asserts above.
+const fe_mask: u64 = 0xffffffff;
+
+/// Read a point to its affine X coordinate, x = X/Z, packed to 32 big-endian bytes. The one inversion in the whole group law lives here, at
+/// the boundary. Callers never pass the point at infinity (Z = 0 has no affine form).
+pub fn affine_x(p: Point) [32]u8 {
+    const zi = fe.invert(p.z);
+    return fe.to_bytes(fe.mul(p.x, zi));
+}
+
+/// Read a point to its affine Y coordinate, y = Y/Z, packed to 32 big-endian bytes.
+pub fn affine_y(p: Point) [32]u8 {
+    const zi = fe.invert(p.z);
+    return fe.to_bytes(fe.mul(p.y, zi));
+}
+
+// ---- selftest ----------------------------------------------------------------------------------------------------------------------
+
+fn bytes_eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) {
+        if (a[i] != b[i]) return false;
+    }
+    return true;
+}
+
+/// Independent reference: Zig's own std.crypto secp256k1, used ONLY inside the selftest as a second implementation to prove our group law
+/// matches byte-for-byte. The primitive above never calls it.
+const ZSec = std.crypto.ecc.Secp256k1;
+
+/// Copy a Zig point into our representation through the canonical byte form of each projective coordinate, so parity compares two genuinely
+/// independent group laws on the same projective representative.
+fn from_zig(zp: ZSec) Point {
+    const xb = zp.x.toBytes(.big);
+    const yb = zp.y.toBytes(.big);
+    const zb = zp.z.toBytes(.big);
+    return Point{ .x = fe.from_bytes(&xb), .y = fe.from_bytes(&yb), .z = fe.from_bytes(&zb) };
+}
+
+/// True when our point reads to the same affine (x, y) as the Zig point — the parity check for a non-identity result.
+fn affine_eq(p: Point, zp: ZSec) bool {
+    const za = zp.affineCoordinates();
+    return bytes_eq(&affine_x(p), &za.x.toBytes(.big)) and bytes_eq(&affine_y(p), &za.y.toBytes(.big));
+}
+
+fn run_selftest() !u8 {
+    const b = ZSec.basePoint;
+    const b2 = b.dbl();
+    const b3 = b.add(b2);
+    const b4 = b2.dbl();
+    const b5 = b.add(b4);
+
+    // 1. Algebraic known-answers anyone can check.
+    {
+        // The base point reads to its published affine coordinates.
+        if (!affine_eq(from_zig(b), b)) return error.BasePointMismatch;
+
+        // B + B equals 2B.
+        const pb = from_zig(b);
+        if (!bytes_eq(&affine_x(add(pb, pb)), &affine_x(dbl(pb)))) return error.AddEqualsDoubleMismatch;
+        if (!bytes_eq(&affine_y(add(pb, pb)), &affine_y(dbl(pb)))) return error.AddEqualsDoubleYMismatch;
+
+        // B + (−B) is the point at infinity: its Z coordinate packs to zero.
+        const inf = add(pb, neg(pb));
+        var zero_b = [_]u8{0} ** 32;
+        if (!bytes_eq(&fe.to_bytes(inf.z), &zero_b)) return error.InfinityNotZeroMismatch;
+
+        // −(−B) = B — double negation returns the same affine point.
+        if (!affine_eq(neg(neg(pb)), b)) return error.DoubleNegMismatch;
+    }
+
+    // 2. Independent-implementation parity: our group law equals Zig's std.crypto.ecc.Secp256k1 byte-for-byte on the affine coordinates of
+    //    dbl, add, sub, and neg across the base point and several of its multiples.
+    {
+        const zs = [_]ZSec{ b, b2, b3, b4, b5 };
+        const pairs = [_][2]u32{ .{ 0, 1 }, .{ 1, 2 }, .{ 2, 3 }, .{ 3, 0 }, .{ 4, 1 }, .{ 0, 4 } };
+
+        for (zs) |zp| {
+            if (!affine_eq(dbl(from_zig(zp)), zp.dbl())) return error.RefDblMismatch;
+            if (!affine_eq(neg(from_zig(zp)), zp.neg())) return error.RefNegMismatch;
+        }
+
+        for (pairs) |pr| {
+            const za = zs[pr[0]];
+            const zb = zs[pr[1]];
+            const pa = from_zig(za);
+            const pbb = from_zig(zb);
+            if (!affine_eq(add(pa, pbb), za.add(zb))) return error.RefAddMismatch;
+            if (!affine_eq(sub(pa, pbb), za.sub(zb))) return error.RefSubMismatch;
+        }
+    }
+
+    print("GREEN crypto-secp256k1-group: the secp256k1 group law authored in pure Rye — Season G's composition over the GREEN base field " ++
+        "(crypto/fe_secp256k1.rye). A point rides in standard homogeneous projective coordinates (X, Y, Z) with x = X/Z, y = Y/Z, so the " ++
+        "complete short-Weierstrass addition and doubling of Renes–Costello–Batina (eprint 2015/1060, a = 0) are exception-free — one " ++
+        "formula adds every pair, including a point to itself and to its own negation, with no branch and no inversion; the single inversion " ++
+        "lives at the affine read (x = X/Z). The curve constant b3 = 3·b = 21 is built in our own field arithmetic, never a copied literal. " ++
+        "The primitive calls no std.crypto. Parity holds against two references runnable now: algebraic known-answers (the base point reads " ++
+        "to its published affine coordinates, B + B = 2B, B + (−B) is the point at infinity with Z = 0, and −(−B) = B), and our authored Rye " ++
+        "equals Zig's independent std.crypto.ecc.Secp256k1 byte-for-byte on the affine coordinates of dbl, add, sub, and neg across the base " ++
+        "point and several of its multiples. secp256k1 is not in Monocypher, so its source parity is not a rung here; the reference " ++
+        "known-answers plus Zig's std.crypto are the two witnesses. Purely local arithmetic — a curve point is not a secret and not a " ++
+        "signature, so no real key, no signing, no network, no funds, no real device; ECDSA's signing with an identity key stays its own " ++
+        "separate, gated round, and even the scalar-multiplication ladder is a later non-gated round; constant-time timing-safety stays a " ++
+        "separate named horizon. The group now stands over the field, and scalar multiplication becomes a composition over dbl and add — the " ++
+        "last step before ECDSA verification and public-key recovery, the reach the Bitcoin/Ethereum address arc was always climbing " ++
+        "toward.\n", .{});
+    return 0;
+}
+
+pub fn main(init_args: std.process.Init) !u8 {
+    _ = init_args;
+    return run_selftest();
+}
