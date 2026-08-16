@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260816.084930
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+title crypto/slip10_ed25519.rye — SLIP-0010 HD ed25519 keys, parity-GREEN against the spec's own vectors
+prompt Read REMEMBER + the 1024-round itinerary + the six-season double-seat + the rye-first crypto parity wave; take the next agent-doable lap Lindy-first crux-first, Rye prioritized, Glow on green-witnessed Rye; send often as signed increments; stop at the custody gates. baton prin recur
+think Read the crypto parity wave doc: Season G is the highest-Lindy new thread, serving every module that signs or verifies (Kumara, Vault, Comlink, Lotus). Rye-first law stands.
+think Confirmed state: no open reds (REDS all closed, #80 the count-guard loom), count guard GREEN at 49, the wallet arc (BIP-32/39/44, secp256k1) complete for Bitcoin/Ethereum. The itinerary hands the loop authority to open its own next honest journey.
+think Chose the crux Lindy-first: SLIP-0010 ed25519 HD derivation. BIP-32's additive child law does NOT fit ed25519 (an ed25519 key is a 32-byte seed hashed+clamped, not an addable scalar). SLIP-0010 is the bridge from the already-GREEN BIP-39 seed to Grain's OWN ed25519 identity keys — Kumara signs with ed25519. Highest-Lindy because it turns the wallet arc toward Grain's own identity, not more coin coverage; agent-doable (public vectors, TEST keys, no custody gate); composes GREEN stones only.
+think Verified the stones exist: hmac.mac(msg,key)->[64]u8 (HMAC-SHA-512), ed25519_sign.derive_public(seed)->[32]u8 (SHA-512+clamp+scalarmul+compress, exactly SLIP-0010's public form), bip32.hardened_offset. Authors NO new cryptography — only the tree grammar (master/child HMAC data forms, ser32 index).
+think Crypto discipline: fetched the ed25519 test vectors byte-exact from canonical satoshilabs/slips slip-0010.md via WebFetch (never recited). Both Test Vector 1 (seed 000102..0f) and Test Vector 2 (64-byte seed), every chain node: chain code, private key, 33-byte public key.
+obs GREEN on the FIRST metal build, no reds. Both vectors walk every node hardened; at each node I_L, I_R, and 0x00-prefixed public key reproduce EXACTLY the spec's bytes — proving master HMAC, hardened child HMAC, ser32, and ed25519 public derivation together. derive walker agrees with step-by-step byte-for-byte; a non-hardened index refuses NotHardened, an over-deep path DepthTooDeep.
+obs ed25519 admits ONLY hardened derivation (no public-parent normal child) and takes I_L DIRECTLY — no canonicality retry, unlike bip32's secp256k1 master. Named that distinction in the module head so a reader sees why it diverges from bip32.
+obs Registered after bip44 in crypto_suite_witness; count-guard bijection now GREEN at 50 (thirty-five primitives + fifteen compositions — a fifteenth composition). Synced crypto/README.md, docs/CRYPTO.md, and both suite prose lines 49->50 / 14->15 compositions with a new rung row. TAME style bans clean.
+loom witness=crypto_slip10_ed25519_witness build=green vectors=2 nodes=12 count_guard=50
+file crypto/slip10_ed25519.rye the SLIP-0010 ed25519 HD derivation, composes hmac_sha512 + ed25519_sign, no new cryptography
+file tools/crypto_slip10_ed25519_witness.rish the per-file witness, builds fresh and asserts GREEN against both spec vectors
+file tools/crypto_suite_witness.rish registered the new witness; synced spelled counts 49->50, compositions 14->15
+file crypto/README.md heading + rung row + witness-count synced to fifty files, fifteen compositions
+file docs/CRYPTO.md front-door count, rung-table heading + row, witness count synced to fifty
+recommend keep-going next crypto crux: SLIP-0044 coin-type constants for an ed25519 identity path convention, or a Kumara identity-key composition over this HD tree (build+verify only; real key stays the custody gate); non-gated, Rye-first

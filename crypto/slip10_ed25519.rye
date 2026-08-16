@@ -1,0 +1,346 @@
+//! crypto/slip10_ed25519.rye — Season G (Cryptography), the identity arc's HD rung: SLIP-0010 hierarchical-deterministic keys over the ed25519
+//! curve. Where crypto/bip32.rye grows a TREE of secp256k1 keys for a Bitcoin/Ethereum wallet, BIP-32's additive child-key law does NOT work for
+//! ed25519 — an ed25519 private key is a 32-byte seed hashed and clamped into a scalar, not a scalar you can add an offset to. SLIP-0010 is the
+//! standard that answers exactly this: from one BIP-39 seed, a whole tree of ed25519 identity keys, each child derived hardened-only through the
+//! same HMAC-SHA-512 PRF, the private key taken as I_L DIRECTLY (no modular add, no canonicality retry). This is the bridge from the already-GREEN
+//! wallet seed (crypto/bip39_seed.rye) to Grain's OWN identity keys — Kumara signs with ed25519, and this rung grows a Kumara key tree from a
+//! single backup phrase the same way BIP-44 grows a Bitcoin one.
+//!
+//! It authors NO new cryptography. Every byte is HMAC-SHA-512 (crypto/hmac_sha512.rye, the same derivation PRF BIP-32 uses) and the ed25519
+//! public-key derivation already proven in crypto/ed25519_sign.rye (derive_public: SHA-512 the seed, clamp, scalar-multiply the base point,
+//! compress). SLIP-0010 for ed25519 contributes only the tree grammar (SLIP-0010 §"Master key generation" and §"Child key derivation"):
+//!   master:  I = HMAC-SHA-512(Key = "ed25519 seed", Data = seed);  I_L = key,  I_R = chain code
+//!   child:   I = HMAC-SHA-512(Key = c_par, Data = 0x00 ‖ ser256(k_par) ‖ ser32(i));  I_L = child key,  I_R = child chain code   (hardened i only)
+//!   public:  0x00 ‖ ed25519_public(I_L)                                              (the 33-byte SLIP-0010 public form, the 0x00 a domain tag)
+//! ed25519 admits ONLY hardened derivation — a normal (non-hardened) index has no defined public-parent child and is refused NotHardened.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave — the library
+//! that serves Kumara identity, Vault, Comlink, and the Lotus signed carry; this rung is the wallet arc turned toward Grain's OWN ed25519 identity).
+//! Kin: crypto/bip32.rye (the secp256k1 HD sibling) · crypto/bip39_seed.rye (the seed this grows a master from) · crypto/ed25519_sign.rye (the
+//! public-key derivation this composes) · crypto/hmac_sha512.rye (the PRF). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity DISCIPLINE
+//! target for the primitives beneath; SLIP-0010 and its test vectors are public standards, studied clean-room (.claude/rules/gratitude-licenses.md).
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. Every key derived here is a TEST key from SLIP-0010's OWN
+//! published seeds; this module calls no std.crypto. Constant-time discipline: the derivation touches secret key material (I_L and the HMAC over
+//! it), so its timing-safety inherits crypto/hmac_sha512.rye's and crypto/ed25519_sign.rye's horizon — a named horizon wanting measurement, not a
+//! claim (crypto/CONSTANT_TIME.md). Growing a REAL Kumara identity tree and signing with its key stays the custody gate (#3/#4): the agent builds
+//! and verifies the derivation, never holds the maintainer's key.
+//!
+//! Parity is proven at selftest the replayable way the tree favours, against SLIP-0010's OWN published ed25519 test vectors (the spec's own
+//! known-answers, quoted character for character, fetched byte-exact from the canonical satoshilabs/slips slip-0010.md, never fabricated): both
+//! Test Vector 1 (seed 000102…0f) and Test Vector 2 (the 64-byte seed) walk EVERY chain node hardened, and at each node the private key I_L, the
+//! chain code I_R, AND the 33-byte public key 0x00‖ed25519_public(I_L) reproduce EXACTLY the spec's published bytes — proving the master HMAC, the
+//! hardened child HMAC, the ser32 index encoding, and the ed25519 public derivation together against a real standard answer. The edges refuse: a
+//! non-hardened index raises NotHardened, a walk past the depth ceiling raises DepthTooDeep.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/slip10_ed25519.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const hmac = @import("hmac_sha512.rye");
+const ed25519 = @import("ed25519_sign.rye");
+const bip32 = @import("bip32.rye");
+
+pub const slip10_ed25519_version = "20260816.084930";
+
+/// The two 32-byte halves of every HMAC-SHA-512 output: I_L (the private key seed) and I_R (the chain code).
+pub const key_len: u32 = 32;
+pub const chain_code_len: u32 = 32;
+
+/// The SLIP-0010 public key is 33 bytes: a 0x00 domain tag ahead of the 32-byte compressed ed25519 public key, so it never collides with a
+/// secp256k1 SEC1 compressed point (which begins 0x02/0x03) at a shared boundary.
+pub const public_len: u32 = 33;
+
+/// The HMAC-SHA-512 key that seeds the ed25519 master, fixed by SLIP-0010 §"Master key generation" — the curve name, not a secret.
+const ed25519_seed_key = "ed25519 seed";
+
+/// The width of the child HMAC data, 0x00 ‖ ser256(k_par) ‖ ser32(i): one tag byte, the 32-byte parent key, and the 4-byte big-endian index.
+const ckd_data_len: u32 = 1 + key_len + 4;
+
+/// A generous ceiling on tree depth. SLIP-0010's own vectors reach depth five; thirty-two bounds any real identity path well above it while
+/// staying far under any width concern.
+pub const max_depth: u32 = 32;
+
+/// The faults this rung raises, each refused at the edge before a wrong index or an overrun walk derives a key.
+pub const Slip10Error = error{
+    /// A non-hardened index — ed25519 admits only hardened derivation (SLIP-0010 §"Child key derivation": the public-parent path is undefined).
+    NotHardened,
+    /// A walk deeper than max_depth levels — refused before the depth counter passes its named ceiling.
+    DepthTooDeep,
+};
+
+/// One node of the ed25519 HD tree: the private key seed I_L, the chain code I_R, and the depth below the master. The public key is derived on
+/// demand (public_key) rather than stored, since it is a pure function of the key.
+pub const Node = struct {
+    key: [key_len]u8,
+    chain_code: [chain_code_len]u8,
+    depth: u32,
+};
+
+/// Split a 64-byte HMAC-SHA-512 output into a node at `depth`: the low 32 bytes are I_L (the key), the high 32 bytes are I_R (the chain code).
+/// ed25519 takes I_L DIRECTLY — unlike secp256k1 there is no "< n" canonicality check and no retry, because an ed25519 key is any 32 bytes,
+/// hashed and clamped into a scalar downstream (SLIP-0010 §"Master key generation" note).
+fn node_from_i(i: *const [hmac.tag_len]u8, depth: u32) Node {
+    // invariant: HMAC-SHA-512 gives exactly the two 32-byte halves this split needs.
+    comptime assert(hmac.tag_len == key_len + chain_code_len);
+    var node = Node{ .key = undefined, .chain_code = undefined, .depth = depth };
+    var k: u32 = 0;
+    while (k < key_len) : (k += 1) {
+        // invariant: each half stays within the 64-byte output — the key from the low 32, the chain code from the high 32.
+        assert(k < key_len and (key_len + k) < hmac.tag_len);
+        node.key[k] = i[k];
+        node.chain_code[k] = i[key_len + k];
+    }
+    return node;
+}
+
+/// Grow the master node from `seed`: I = HMAC-SHA-512(Key = "ed25519 seed", Data = seed), then split. The seed is a BIP-39 seed (or any byte
+/// string SLIP-0010 admits); no length check beyond the HMAC's own message bound, since SLIP-0010 places none on the ed25519 master seed.
+pub fn master_from_seed(seed: []const u8) hmac.HmacError!Node {
+    const i = try hmac.mac(seed, ed25519_seed_key);
+    // invariant: the master sits at depth zero — the root every child counts down from.
+    const node = node_from_i(&i, 0);
+    assert(node.depth == 0);
+    return node;
+}
+
+/// Serialize a 32-bit index big-endian (ser32) into `out` — the wire form SLIP-0010 folds into the child HMAC data.
+fn ser32(out: *[4]u8, index: u32) void {
+    out[0] = @intCast((index >> 24) & 0xff);
+    out[1] = @intCast((index >> 16) & 0xff);
+    out[2] = @intCast((index >> 8) & 0xff);
+    out[3] = @intCast(index & 0xff);
+}
+
+/// Derive a hardened child (CKDpriv for ed25519). The HMAC data is 0x00 ‖ ser256(k_par) ‖ ser32(i); the child key is I_L directly and the child
+/// chain code is I_R. A non-hardened index is refused — ed25519 has no public-parent normal child. Composes crypto/hmac_sha512.rye entirely.
+pub fn ckd_priv(parent: *const Node, index: u32) Slip10Error!Node {
+    // invariant: ed25519 admits only hardened derivation — an index below the hardened offset names a normal child that does not exist here.
+    if (index < bip32.hardened_offset) return error.NotHardened;
+    // invariant: the child depth stays within the named ceiling before the walk records it.
+    if (parent.depth >= max_depth) return error.DepthTooDeep;
+
+    var data: [ckd_data_len]u8 = undefined;
+    // 0x00 tag, then the 32-byte parent key, then the 4-byte big-endian index.
+    data[0] = 0x00;
+    var k: u32 = 0;
+    while (k < key_len) : (k += 1) {
+        assert(k < key_len and (1 + k) < ckd_data_len);
+        data[1 + k] = parent.key[k];
+    }
+    var idx_be: [4]u8 = undefined;
+    ser32(&idx_be, index);
+    k = 0;
+    while (k < 4) : (k += 1) {
+        assert((1 + key_len + k) < ckd_data_len);
+        data[1 + key_len + k] = idx_be[k];
+    }
+
+    // HMAC over the parent chain code cannot fail on our bounded 37-byte data / 32-byte key, yet the error is carried honestly through.
+    const i = hmac.mac(data[0..], parent.chain_code[0..]) catch unreachable;
+    // invariant: the child sits exactly one level below its parent.
+    const child = node_from_i(&i, parent.depth + 1);
+    assert(child.depth == parent.depth + 1);
+    return child;
+}
+
+/// The 33-byte SLIP-0010 public key of a node: 0x00 ‖ ed25519_public(I_L). The private key seed is run through the ed25519 public derivation
+/// already proven in crypto/ed25519_sign.rye — this rung adds only the 0x00 domain tag.
+pub fn public_key(node: *const Node) [public_len]u8 {
+    var out: [public_len]u8 = undefined;
+    out[0] = 0x00;
+    const pk = ed25519.derive_public(&node.key);
+    var k: u32 = 0;
+    while (k < key_len) : (k += 1) {
+        // invariant: the 32-byte compressed public key sits after the single 0x00 tag byte.
+        assert((1 + k) < public_len);
+        out[1 + k] = pk[k];
+    }
+    return out;
+}
+
+/// Walk a list of hardened indices from `seed` to a leaf node — the ergonomic derive, the ed25519 sibling of crypto/bip44.rye's derive_path.
+pub fn derive(seed: []const u8, indices: []const u32) (Slip10Error || hmac.HmacError)!Node {
+    // invariant: a path never exceeds the depth ceiling before the walk begins.
+    if (indices.len > max_depth) return error.DepthTooDeep;
+    var node = try master_from_seed(seed);
+    var k: u32 = 0;
+    while (k < indices.len) : (k += 1) {
+        // invariant: the walk never steps past the supplied depth.
+        assert(k < max_depth);
+        node = try ckd_priv(&node, indices[k]);
+    }
+    return node;
+}
+
+fn nibble(c: u8) u8 {
+    if (c >= '0' and c <= '9') return c - '0';
+    // invariant: the vector hex uses only lowercase a–f beyond the digits.
+    assert(c >= 'a' and c <= 'f');
+    return c - 'a' + 10;
+}
+
+/// Compare a raw byte buffer against its lowercase-hex spelling — the replayable check every node's I_L, I_R, and public key face.
+fn eq_hex(raw: []const u8, hex: []const u8) bool {
+    if (raw.len * 2 != hex.len) return false;
+    var i: u32 = 0;
+    while (i < raw.len) : (i += 1) {
+        if (raw[i] != nibble(hex[i * 2]) * 16 + nibble(hex[i * 2 + 1])) return false;
+    }
+    return true;
+}
+
+fn from_hex(out: []u8, hex: []const u8) u32 {
+    // invariant: two hex chars name one byte, so the buffer must hold half the hex length.
+    assert(hex.len % 2 == 0 and out.len * 2 >= hex.len);
+    var i: u32 = 0;
+    while (i < hex.len / 2) : (i += 1) out[i] = nibble(hex[i * 2]) * 16 + nibble(hex[i * 2 + 1]);
+    return @intCast(hex.len / 2);
+}
+
+// SLIP-0010's OWN published ed25519 test vectors — the spec's own known-answers, quoted character for character from the canonical
+// satoshilabs/slips slip-0010.md; nothing here is fabricated. Each row is a chain node reached by walking from the seed through the hardened
+// indices, and its expected chain code, private key, and public key (0x00-prefixed) are the spec's.
+
+const v1_seed_hex = "000102030405060708090a0b0c0d0e0f";
+// The hardened indices walked in turn: m, m/0H, m/0H/1H, m/0H/1H/2H, m/0H/1H/2H/2H, m/0H/1H/2H/2H/1000000000H.
+const v1_indices = [_]u32{ 0, 1, 2, 2, 1000000000 };
+const v1_chain = [_][]const u8{
+    "90046a93de5380a72b5e45010748567d5ea02bbf6522f979e05c0d8d8ca9fffb",
+    "8b59aa11380b624e81507a27fedda59fea6d0b779a778918a2fd3590e16e9c69",
+    "a320425f77d1b5c2505a6b1b27382b37368ee640e3557c315416801243552f14",
+    "2e69929e00b5ab250f49c3fb1c12f252de4fed2c1db88387094a0f8c4c9ccd6c",
+    "8f6d87f93d750e0efccda017d662a1b31a266e4a6f5993b15f5c1f07f74dd5cc",
+    "68789923a0cac2cd5a29172a475fe9e0fb14cd6adb5ad98a3fa70333e7afa230",
+};
+const v1_priv = [_][]const u8{
+    "2b4be7f19ee27bbf30c667b642d5f4aa69fd169872f8fc3059c08ebae2eb19e7",
+    "68e0fe46dfb67e368c75379acec591dad19df3cde26e63b93a8e704f1dade7a3",
+    "b1d0bad404bf35da785a64ca1ac54b2617211d2777696fbffaf208f746ae84f2",
+    "92a5b23c0b8a99e37d07df3fb9966917f5d06e02ddbd909c7e184371463e9fc9",
+    "30d1dc7e5fc04c31219ab25a27ae00b50f6fd66622f6e9c913253d6511d1e662",
+    "8f94d394a8e8fd6b1bc2f3f49f5c47e385281d5c17e65324b0f62483e37e8793",
+};
+const v1_pub = [_][]const u8{
+    "00a4b2856bfec510abab89753fac1ac0e1112364e7d250545963f135f2a33188ed",
+    "008c8a13df77a28f3445213a0f432fde644acaa215fc72dcdf300d5efaa85d350c",
+    "001932a5270f335bed617d5b935c80aedb1a35bd9fc1e31acafd5372c30f5c1187",
+    "00ae98736566d30ed0e9d2f4486a64bc95740d89c7db33f52121f8ea8f76ff0fc1",
+    "008abae2d66361c879b900d204ad2cc4984fa2aa344dd7ddc46007329ac76c429c",
+    "003c24da049451555d51a7014a37337aa4e12d41e485abccfa46b47dfb2af54b7a",
+};
+
+const v2_seed_hex = "fffcf9f6f3f0edeae7e4e1dedbd8d5d2cfccc9c6c3c0bdbab7b4b1aeaba8a5a29f9c999693908d8a8784817e7b7875726f6c696663605d5a5754514e4b484542";
+// m, m/0H, m/0H/2147483647H, .../1H, .../2147483646H, .../2H.
+const v2_indices = [_]u32{ 0, 2147483647, 1, 2147483646, 2 };
+const v2_chain = [_][]const u8{
+    "ef70a74db9c3a5af931b5fe73ed8e1a53464133654fd55e7a66f8570b8e33c3b",
+    "0b78a3226f915c082bf118f83618a618ab6dec793752624cbeb622acb562862d",
+    "138f0b2551bcafeca6ff2aa88ba8ed0ed8de070841f0c4ef0165df8181eaad7f",
+    "73bd9fff1cfbde33a1b846c27085f711c0fe2d66fd32e139d3ebc28e5a4a6b90",
+    "0902fe8a29f9140480a00ef244bd183e8a13288e4412d8389d140aac1794825a",
+    "5d70af781f3a37b829f0d060924d5e960bdc02e85423494afc0b1a41bbe196d4",
+};
+const v2_priv = [_][]const u8{
+    "171cb88b1b3c1db25add599712e36245d75bc65a1a5c9e18d76f9f2b1eab4012",
+    "1559eb2bbec5790b0c65d8693e4d0875b1747f4970ae8b650486ed7470845635",
+    "ea4f5bfe8694d8bb74b7b59404632fd5968b774ed545e810de9c32a4fb4192f4",
+    "3757c7577170179c7868353ada796c839135b3d30554bbb74a4b1e4a5a58505c",
+    "5837736c89570de861ebc173b1086da4f505d4adb387c6a1b1342d5e4ac9ec72",
+    "551d333177df541ad876a60ea71f00447931c0a9da16f227c11ea080d7391b8d",
+};
+const v2_pub = [_][]const u8{
+    "008fe9693f8fa62a4305a140b9764c5ee01e455963744fe18204b4fb948249308a",
+    "0086fab68dcb57aa196c77c5f264f215a112c22a912c10d123b0d03c3c28ef1037",
+    "005ba3b9ac6e90e83effcd25ac4e58a1365a9e35a3d3ae5eb07b9e4d90bcf7506d",
+    "002e66aa57069c86cc18249aecf5cb5a9cebbfd6fadeab056254763874a9352b45",
+    "00e33c0f7d81d843c572275f287498e8d408654fdf0d1e065b84e2e6f157aab09b",
+    "0047150c75db263559a70d5778bf36abbab30fb061ad69f69ece61a72b0cfa4fc0",
+};
+
+/// Walk one published vector: the master, then each hardened child, checking I_L, I_R, and the 33-byte public key at EVERY node against the
+/// spec's bytes. `indices` are the bare (non-hardened) values; the hardened offset is added here so the vector table reads as the spec writes it.
+fn check_vector(
+    seed_hex: []const u8,
+    indices: []const u32,
+    chain: []const []const u8,
+    priv: []const []const u8,
+    pub_hex: []const []const u8,
+) !void {
+    // invariant: a vector names one node for the master and one per child index — the four arrays move in lockstep.
+    assert(chain.len == indices.len + 1 and priv.len == chain.len and pub_hex.len == chain.len);
+
+    var seed: [64]u8 = undefined;
+    const seed_len = from_hex(seed[0..], seed_hex);
+
+    var node = try master_from_seed(seed[0..seed_len]);
+    var level: u32 = 0;
+    while (true) {
+        const pk = public_key(&node);
+        if (!eq_hex(node.chain_code[0..], chain[level])) return error.ChainCodeMismatch;
+        if (!eq_hex(node.key[0..], priv[level])) return error.PrivMismatch;
+        if (!eq_hex(pk[0..], pub_hex[level])) return error.PubMismatch;
+        if (level >= indices.len) break;
+        node = try ckd_priv(&node, indices[level] + bip32.hardened_offset);
+        level += 1;
+    }
+}
+
+fn run_selftest() !u8 {
+    // 1. SLIP-0010 Test Vector 1 (seed 000102…0f): every node's private key, chain code, and 0x00-prefixed public key reproduces EXACTLY the
+    //    spec's published bytes, master through the 1000000000-hardened leaf — proving the master HMAC, the hardened child HMAC with its ser32
+    //    index, and the ed25519 public derivation together against a real standard answer.
+    try check_vector(v1_seed_hex, v1_indices[0..], v1_chain[0..], v1_priv[0..], v1_pub[0..]);
+
+    // 2. SLIP-0010 Test Vector 2 (the 64-byte seed): the same three-way check across its five hardened children, including the 2147483647- and
+    //    2147483646-hardened indices whose ser32 exercises the high bits of the index encoding.
+    try check_vector(v2_seed_hex, v2_indices[0..], v2_chain[0..], v2_priv[0..], v2_pub[0..]);
+
+    // 3. The `derive` walker reaches the SAME leaf as the step-by-step walk, byte-for-byte — the ergonomic helper does not drift from ckd_priv.
+    {
+        var seed: [32]u8 = undefined;
+        const seed_len = from_hex(seed[0..], v1_seed_hex);
+        const h = bip32.hardened_offset;
+        const path = [_]u32{ 0 + h, 1 + h, 2 + h, 2 + h, 1000000000 + h };
+        const leaf = try derive(seed[0..seed_len], path[0..]);
+        if (!eq_hex(leaf.key[0..], v1_priv[5])) return error.DeriveLeafMismatch;
+        const pk = public_key(&leaf);
+        if (!eq_hex(pk[0..], v1_pub[5])) return error.DeriveLeafPubMismatch;
+    }
+
+    // 4. The edges refuse, each with its named error: a non-hardened index (ed25519 has no normal child), and a path past the depth ceiling.
+    {
+        var seed: [32]u8 = undefined;
+        const seed_len = from_hex(seed[0..], v1_seed_hex);
+        const master = try master_from_seed(seed[0..seed_len]);
+        // A bare index 0 is below the hardened offset — refused NotHardened, unlike secp256k1 which would derive a normal child.
+        if (ckd_priv(&master, 0)) |_| return error.NotHardenedSlipped else |err| if (err != error.NotHardened) return error.WrongNotHardened;
+        // A path of max_depth + 1 hardened indices overruns the ceiling before it walks.
+        var deep: [max_depth + 1]u32 = undefined;
+        var k: u32 = 0;
+        while (k < deep.len) : (k += 1) deep[k] = bip32.hardened_offset;
+        if (derive(seed[0..seed_len], deep[0..])) |_| return error.TooDeepSlipped else |err| if (err != error.DepthTooDeep) return error.WrongTooDeep;
+    }
+
+    print("GREEN crypto-slip10-ed25519: SLIP-0010 hierarchical-deterministic ed25519 keys authored in pure Rye — the identity arc's HD rung, the " ++
+        "bridge from a BIP-39 wallet seed to a whole tree of Grain's OWN ed25519 identity keys (Kumara signs with ed25519). Where crypto/bip32's " ++
+        "additive child law fits secp256k1, SLIP-0010 takes the child key as I_L DIRECTLY and derives hardened-only: master I = HMAC-SHA-512(\"" ++
+        "ed25519 seed\", seed), child I = HMAC-SHA-512(c_par, 0x00 ‖ ser256(k_par) ‖ ser32(i)), public 0x00 ‖ ed25519_public(I_L). Authors NO new " ++
+        "cryptography — every byte is the GREEN crypto/hmac_sha512 PRF and crypto/ed25519_sign's public derivation; this rung adds only the tree " ++
+        "grammar. Parity holds the replayable way, against SLIP-0010's OWN published ed25519 test vectors (quoted character for character from " ++
+        "satoshilabs/slips, never fabricated): both Test Vector 1 (seed 000102…0f) and Test Vector 2 (the 64-byte seed) walk EVERY chain node " ++
+        "hardened, and at each node the private key I_L, the chain code I_R, AND the 33-byte public key reproduce EXACTLY the spec's bytes — the " ++
+        "master HMAC, the hardened child HMAC, the ser32 index, and the ed25519 public derivation all proven against a real answer. The `derive` " ++
+        "walker agrees with the step-by-step walk byte-for-byte; a non-hardened index refuses NotHardened and an over-deep path refuses " ++
+        "DepthTooDeep. Purely local — TEST keys from the spec's own seeds, no real identity key, no network, no funds, no real device; growing a " ++
+        "REAL Kumara tree and signing with its key stays the custody gate. With this rung the identity arc stands: phrase → seed → ed25519 HD tree.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
