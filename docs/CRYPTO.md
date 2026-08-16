@@ -32,7 +32,7 @@ vectors — never a copied line ([`gratitude-licenses.md`](../.claude/rules/grat
 
 ---
 
-## Rung table — fifty-six files, dependency order
+## Rung table — fifty-seven files, dependency order
 
 Each rung stands on the GREEN rungs beneath it; none authors cryptography a lower
 rung had not already proven. Every file carries a per-file witness
@@ -70,6 +70,7 @@ rung had not already proven. Every file carries a per-file witness
 | `poly1305.rye` | Poly1305 one-time authenticator | RFC 8439 |
 | `aead.rye` | ChaCha20-Poly1305 authenticated encryption | RFC 8439 §2.8 |
 | `xchacha20.rye` | HChaCha20 · XChaCha20-Poly1305 extended-nonce AEAD (safe random nonces) | draft-irtf-cfrg-xchacha-03 |
+| `verify.rye` | Constant-time byte-string equality (Monocypher's `crypto_verify16/32/64`) — the compare every MAC, tag, and signature-equality check rests on, whose time never leaks where two strings first differ; the piece the HMAC modules named as an open horizon. Proven against Zig's `std.crypto.timing_safe.eql` across every single-bit difference and byte-for-byte against Monocypher | Monocypher `crypto_verify` · `std.crypto.timing_safe` |
 
 ### The Curve25519 base field and the edwards25519 curve
 

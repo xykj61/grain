@@ -19,7 +19,7 @@ a message: **Kumara** identity, **Vault** sealed storage, **Comlink** sessions, 
 the **Lotus** signed carry. It authors the mathematics once, in the open, so a hand
 placing trust in it can read exactly what it does.
 
-## The fifty-six files — thirty-five primitives and twenty-one compositions
+## The fifty-seven files — thirty-six primitives and twenty-one compositions
 
 Built in dependency order: each rung stands on the GREEN rungs beneath it, none
 authoring cryptography a lower rung had not already proven.
@@ -56,6 +56,7 @@ authoring cryptography a lower rung had not already proven.
 | [`poly1305.rye`](poly1305.rye) | Poly1305 one-time authenticator | RFC 8439 |
 | [`aead.rye`](aead.rye) | ChaCha20-Poly1305 authenticated encryption | RFC 8439 §2.8 |
 | [`xchacha20.rye`](xchacha20.rye) | HChaCha20 · XChaCha20-Poly1305 extended-nonce AEAD (safe random nonces) | draft-irtf-cfrg-xchacha-03 |
+| [`verify.rye`](verify.rye) | Constant-time byte-string equality (Monocypher's `crypto_verify16/32/64`) — the compare every MAC, tag, and signature-equality check rests on, whose running time does not leak WHERE two strings first differ; the piece [`hmac_sha512.rye`](hmac_sha512.rye) and [`hmac_sha256.rye`](hmac_sha256.rye) each named as an open horizon ("verifying a MAC wants a constant-time compare, which the composer supplies"). Two strings are equal iff the OR of their byte-wise XORs is zero; the fold visits every byte with no early exit, so the loop count depends on the public length and never on the possibly-secret contents. Proven against Zig's independent `std.crypto.timing_safe.eql` across every single-bit difference at all three widths, and byte-for-byte against Monocypher's own `crypto_verify16/32/64` | Monocypher `crypto_verify` · `std.crypto.timing_safe` |
 
 ### The Curve25519 base field and the edwards25519 curve
 
@@ -148,7 +149,7 @@ is re-provable by tooling, not trusted from a commit message alone.
   Season's constant-time discipline note.
 - **Monocypher-source parity** is **landed**: the vendored `vendor/monocypher`
   (CC0/BSD-dual, unmodified) is compiled fresh and diffed byte-for-byte against our
-  authored Rye over the published vectors. Fourteen rungs stand GREEN — **BLAKE2b**,
+  authored Rye over the published vectors. Fifteen rungs stand GREEN — **BLAKE2b**,
   **X25519**, **Ed25519**, the **ChaCha20-Poly1305 AEAD**, **Argon2** (all three
   modes), the **XChaCha20-Poly1305 flagship** (Monocypher's `crypto_aead_lock`,
   the 24-byte extended-nonce AEAD Lotus's signed carry, Vault, and Comlink reach for),
@@ -184,7 +185,15 @@ is re-provable by tooling, not trusted from a commit message alone.
   bytes, the mode Grain's per-record authentication and key derivation reach for,
   the keyed-MAC counterpart to the unkeyed BLAKE2b rungs; since RFC 7693 publishes
   only the unkeyed answer, its oracle is three independent implementations agreeing
-  byte-for-byte — our Rye, the vendored Monocypher, and Zig's `std.crypto`)
+  byte-for-byte — our Rye, the vendored Monocypher, and Zig's `std.crypto`),
+  and **constant-time equality** (Monocypher's `crypto_verify16/32/64`, the compare
+  every MAC, tag, and signature-equality check rests on and the piece the two HMAC
+  modules named as an open horizon — proving `verify.rye`'s verdict against the
+  vendored Monocypher over equal, one-bit-differing, and all-differing inputs at all
+  three widths, matching Monocypher's 0-for-equal / -1-for-differing contract; its
+  correctness oracle beside the parity is Zig's independent `std.crypto.timing_safe.eql`
+  across every single-bit difference, the constant-time corner of the Season's
+  timing-safety horizon that is correct by structure rather than by measurement)
   — each also anchored to its RFC or published known-answer, so the oracle is a real
   second implementation. Parity against Zig's `std.crypto` still holds beside it.
 - **The keys stay the maintainer's hand.** Every witness runs over **TEST** keys and

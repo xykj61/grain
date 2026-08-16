@@ -1,0 +1,200 @@
+//! crypto/verify.rye — Season G (Cryptography): constant-time byte-string equality, Monocypher's crypto_verify16/32/64. Every module that
+//! checks a MAC, a tag, or a signature-equality answer needs ONE thing the naive `==` cannot give: a comparison whose running time does not
+//! depend on WHERE two byte strings first differ. A left-to-right compare that returns on the first mismatch leaks, through its timing, how
+//! many leading bytes an attacker already guessed right — enough, over many tries, to forge a tag one byte at a time. This primitive removes
+//! that leak by construction: it folds every byte difference into one accumulator with no early exit and no data-dependent branch, then reads
+//! the accumulator as a single equal / not-equal answer. It is the piece hmac_sha512.rye and hmac_sha256.rye each named as an open horizon —
+//! "verifying a MAC wants a constant-time compare, which the composer that uses this primitive supplies." This module is that supplier.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name the primitive,
+//! the parity witness, and "a constant-time discipline note (timing-safety as a named horizon)." This primitive is the one corner of that
+//! horizon that is correct by STRUCTURE rather than by measurement: its control flow visits every byte regardless of contents, so no branch
+//! depends on the compared data. crypto/CONSTANT_TIME.md, the Season's constant-time note, is its natural home in the auditor's reading.
+//! Kin: crypto/poly1305.rye (whose tag every AEAD open checks) · crypto/hmac_sha512.rye · crypto/hmac_sha256.rye (which named this horizon) ·
+//! crypto/aead.rye · crypto/xchacha20.rye (whose seal/open verify a tag before trusting a plaintext). Monocypher (vendor/monocypher,
+//! CC0/BSD-dual) is the parity TARGET, never a copied line — our own arithmetic, studied clean-room from the public API and Zig's own
+//! std.crypto.timing_safe (.claude/rules/gratitude-licenses.md).
+//!
+//! THE CRUX — two byte strings are equal iff the OR of their byte-wise XORs is zero. We accumulate `diff |= a[i] ^ b[i]` across the whole
+//! length, never breaking early, so the loop count depends on the LENGTH (public) and never on the CONTENTS (secret). The final "is the
+//! accumulator zero?" is itself branch-free: `(x | -x) >> 7` sets its low bit exactly when x is nonzero, folding any difference — high bit or
+//! low — into one flag. Monocypher's crypto_verify returns 0 for equal, -1 for differing; we return a plain bool (true == equal) and let the
+//! parity harness render Monocypher's int form, so a composer reads the clear word and the auditor still sees byte-for-byte parity.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. This primitive holds no key and signs nothing; it decides
+//! equality. It calls no std.crypto in the primitive path (Zig's std.crypto.timing_safe.eql is used ONLY inside the selftest, as an independent
+//! second implementation to prove our answer correct). Parity is proven at selftest by exhaustively flipping EVERY single bit of EVERY byte at
+//! all three Monocypher widths (16, 32, 64) and asserting our answer both is correct and equals Zig's independent constant-time compare, plus
+//! the length-mismatch and over-long guards. Constant-time timing-safety stays the Season's named horizon: the byte loop is data-independent by
+//! construction, yet a timing CLAIM wants measurement on metal, so this module proves CORRECTNESS here and leaves the timing measurement to the
+//! horizon rather than boasting one.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/verify.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const verify_version = "20260816.143039";
+
+/// Monocypher's three fixed comparison widths, named so every bound below cites one rather than a bare number. 16 authenticates a Poly1305
+/// tag or a truncated MAC; 32 a full BLAKE2b/SHA-256 digest or an X25519 shared secret; 64 a SHA-512 digest or an Ed25519 signature half.
+pub const bytes16: u32 = 16;
+pub const bytes32: u32 = 32;
+pub const bytes64: u32 = 64;
+
+/// The largest span this primitive compares in one call. Generous for any tag, digest, or key, yet named so the fold loop and its byte-count
+/// cast both cite a maximum — the TAME reflex that every loop and every count declares its ceiling.
+pub const max_compare_bytes: u32 = 1 << 16;
+
+/// The faults this primitive can raise, refused before any byte is folded.
+pub const VerifyError = error{
+    /// The two spans are not the same length — a compare of unequal-length strings is a caller error, not "not equal", refused at the edge.
+    LengthMismatch,
+    /// A span longer than max_compare_bytes — refused at the edge, before the fold begins.
+    TooLong,
+};
+
+/// ct_is_zero — is a folded accumulator zero, branch-free? `(x | -x) >> 7` sets bit 0 exactly when x is nonzero (two's complement negation
+/// lifts any set bit into the sign position), so this reads "every compared byte agreed" without a data-dependent branch on the accumulator.
+fn ct_is_zero(x: u8) bool {
+    // invariant (precondition): the accumulator is a single byte — the fold ORs byte differences, so one byte holds the whole verdict.
+    const nz: u8 = (x | (@as(u8, 0) -% x)) >> 7;
+    // invariant (postcondition): nz is exactly 0 or 1 — a flag, never a wider value, so the bool below is a clean equal/not-equal answer.
+    assert(nz == 0 or nz == 1);
+    return nz == 0;
+}
+
+/// ct_equal_core — constant-time equality of two equal-length byte spans, the shared engine both the generic and fixed-width doors call.
+fn ct_equal_core(a: []const u8, b: []const u8) bool {
+    // invariant (precondition): the spans share one length — the caller's edge already refused a mismatch, so the fold reads both in step.
+    assert(a.len == b.len);
+    // invariant (precondition): the length is bounded, so the fold loop declares its ceiling.
+    assert(a.len <= max_compare_bytes);
+    var diff: u8 = 0;
+    var i: u32 = 0;
+    const n: u32 = @intCast(a.len);
+    // The fold visits every byte with no early exit — the loop count depends on n (public length), never on the byte contents (possible secret).
+    while (i < n) : (i += 1) diff |= a[i] ^ b[i];
+    return ct_is_zero(diff);
+}
+
+/// ct_equal — constant-time equality of two byte spans, refusing a length mismatch and an over-long compare at the edge. Returns true iff
+/// every byte agreed. This is the door a composer with runtime-length strings (an HMAC tag against a received tag) reaches for.
+pub fn ct_equal(a: []const u8, b: []const u8) VerifyError!bool {
+    // invariant (precondition): unequal lengths are a caller error, not a "not equal" answer — refused before any byte is read.
+    if (a.len != b.len) return error.LengthMismatch;
+    // invariant (precondition): the compare is bounded before the fold begins.
+    if (a.len > max_compare_bytes) return error.TooLong;
+    return ct_equal_core(a, b);
+}
+
+/// verify16 — constant-time equality of two 16-byte spans (Monocypher's crypto_verify16). The Poly1305-tag width.
+pub fn verify16(a: *const [bytes16]u8, b: *const [bytes16]u8) bool {
+    // invariant (precondition): fixed 16-byte spans are equal-length and within bound by construction, so no runtime edge check is needed.
+    assert(a.len == bytes16 and b.len == bytes16);
+    return ct_equal_core(a, b);
+}
+
+/// verify32 — constant-time equality of two 32-byte spans (Monocypher's crypto_verify32). The digest / shared-secret width.
+pub fn verify32(a: *const [bytes32]u8, b: *const [bytes32]u8) bool {
+    // invariant (precondition): fixed 32-byte spans are equal-length and within bound by construction.
+    assert(a.len == bytes32 and b.len == bytes32);
+    return ct_equal_core(a, b);
+}
+
+/// verify64 — constant-time equality of two 64-byte spans (Monocypher's crypto_verify64). The SHA-512-digest / Ed25519-signature width.
+pub fn verify64(a: *const [bytes64]u8, b: *const [bytes64]u8) bool {
+    // invariant (precondition): fixed 64-byte spans are equal-length and within bound by construction.
+    assert(a.len == bytes64 and b.len == bytes64);
+    return ct_equal_core(a, b);
+}
+
+/// check_width — the selftest's per-width proof: at a Monocypher width n, equal spans compare equal, and flipping EVERY single bit of EVERY
+/// byte compares unequal, with our answer matching Zig's independent std.crypto.timing_safe.eql in every one of those cases.
+fn check_width(comptime n: u32) !void {
+    // invariant (precondition): the width is one of Monocypher's three published comparison sizes.
+    assert(n == bytes16 or n == bytes32 or n == bytes64);
+
+    var a: [n]u8 = undefined;
+    var b: [n]u8 = undefined;
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        a[i] = @as(u8, @truncate(i *% 7 +% 1));
+        b[i] = a[i];
+    }
+
+    // Equal case: identical spans compare equal, and agree with Zig's independent constant-time compare.
+    if (ct_equal_core(&a, &b) != true) return error.EqualFailed;
+    if (ct_equal_core(&a, &b) != std.crypto.timing_safe.eql([n]u8, a, b)) return error.RefMismatch;
+
+    // Difference case: flip every single bit of every byte — each flip must compare unequal and agree with Zig.
+    var p: u32 = 0;
+    while (p < n) : (p += 1) {
+        var bit: u3 = 0;
+        while (true) : (bit += 1) {
+            b[p] = a[p] ^ (@as(u8, 1) << bit);
+            const ours = ct_equal_core(&a, &b);
+            const theirs = std.crypto.timing_safe.eql([n]u8, a, b);
+            // invariant: any single-bit difference is caught — a flipped bit can never read as equal.
+            if (ours != false) return error.DiffSlipped;
+            // invariant: our answer equals the independent reference for this exact input.
+            if (ours != theirs) return error.RefMismatch;
+            if (bit == 7) break;
+        }
+        b[p] = a[p]; // restore before the next position, so exactly one bit differs per check.
+    }
+}
+
+fn run_selftest() !u8 {
+    // 1. Exhaustive per-width parity against Zig's independent constant-time compare, across every single-bit difference.
+    try check_width(bytes16);
+    try check_width(bytes32);
+    try check_width(bytes64);
+
+    // 2. The fixed-width doors agree with the generic engine on a known equal and a known unequal input.
+    {
+        var a: [bytes32]u8 = undefined;
+        var b: [bytes32]u8 = undefined;
+        var i: u32 = 0;
+        while (i < bytes32) : (i += 1) {
+            a[i] = @as(u8, @truncate(i *% 11 +% 3));
+            b[i] = a[i];
+        }
+        if (verify32(&a, &b) != true) return error.FixedEqualFailed;
+        b[17] ^= 0x20;
+        if (verify32(&a, &b) != false) return error.FixedDiffSlipped;
+    }
+
+    // 3. The generic edge refuses a length mismatch and an over-long compare before any byte is folded.
+    {
+        const short = "abc";
+        const long = "abcd";
+        if (ct_equal(short, long)) |_| return error.MismatchSlipped else |err| if (err != error.LengthMismatch) return error.WrongMismatch;
+
+        const oversize_a: []const u8 = @as([*]const u8, @ptrFromInt(0x2000))[0 .. max_compare_bytes + 1];
+        const oversize_b: []const u8 = @as([*]const u8, @ptrFromInt(0x4000))[0 .. max_compare_bytes + 1];
+        if (ct_equal(oversize_a, oversize_b)) |_| return error.OversizeSlipped else |err| if (err != error.TooLong) return error.WrongOversize;
+    }
+
+    print("GREEN crypto-verify: constant-time byte-string equality (Monocypher's crypto_verify16/32/64) authored in pure Rye — Season G's " ++
+        "constant-time comparison primitive, the piece hmac_sha512.rye and hmac_sha256.rye each named as an open horizon (\"verifying a MAC " ++
+        "wants a constant-time compare, which the composer supplies\"). Two byte strings are equal iff the OR of their byte-wise XORs is " ++
+        "zero; the fold `diff |= a[i] ^ b[i]` visits every byte with no early exit, so the loop count depends on the public length and never " ++
+        "on the possibly-secret contents, and the final zero-test `(x | -x) >> 7` reads any difference — high bit or low — as one flag " ++
+        "branch-free. The primitive calls no std.crypto. Correctness holds against Zig's independent std.crypto.timing_safe.eql: at all " ++
+        "three Monocypher widths (16, 32, 64) an equal span compares equal and flipping EVERY single bit of EVERY byte compares unequal, our " ++
+        "answer matching Zig's in every one of those cases; the fixed-width doors agree with the generic engine, and the edge refuses a " ++
+        "length mismatch and an over-long compare before a byte is folded. Monocypher-source parity is landed: " ++
+        "tools/crypto_monocypher_verify_parity_witness.rish compiles the vendored Monocypher fresh and diffs its crypto_verify16/32/64 return " ++
+        "against this primitive over equal and one-bit-differing inputs at every width. Purely local — no key, no signature, no network, no " ++
+        "funds, no real device; the byte loop is data-independent by construction, and constant-time timing-safety stays the Season's named " ++
+        "horizon, correctness proven here rather than a timing claim boasted.\n", .{});
+    return 0;
+}
+
+pub fn main(init_args: std.process.Init) !u8 {
+    _ = init_args;
+    return run_selftest();
+}

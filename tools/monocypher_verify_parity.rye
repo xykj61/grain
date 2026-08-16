@@ -1,0 +1,121 @@
+//! tools/monocypher_verify_parity.rye — our authored crypto/verify.rye asked for its OWN constant-time equality verdict over the same fifteen
+//! (width, a, b) cases the Monocypher C harness (tools/fixtures/monocypher_verify_harness.c) prints, so
+//! tools/crypto_monocypher_verify_parity_witness.rish can diff our bytes against the vendored Monocypher's C byte-for-byte — the constant-time
+//! compare every MAC, tag, and signature-equality check rests on, proven against the audit's parity target. Season G (Cryptography · Rye-native,
+//! Monocypher-parity, audit-ready).
+//!
+//! Monocypher's crypto_verify16/32/64 return 0 for equal and -1 for differing; this harness renders our bool verdict in that exact int form, one
+//! per line, so the witness compares like against like. Fifteen lines print — for each of Monocypher's three widths {16, 32, 64}, five cases in
+//! order: equal (b = a) → 0, one-bit difference at byte 0 → -1, one-bit difference at the last byte → -1, all-bytes-differ (b = a ^ 0xff) → -1,
+//! and equal again over a second deterministic pattern → 0. The base pattern is a[i] = (i*7 + 1) mod 256; the second-equal pattern is
+//! (i*13 + 5) mod 256 — the same generation the C harness uses.
+//!
+//! This authors NO cryptography — it is a printing harness over the GREEN crypto/verify.rye (reached through the tools/verify.rye symlink, since
+//! Rye resolves imports beside the importing file). Purely local — no key, no network, no funds, no device.
+//!
+//! Run from the repository root:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run tools/monocypher_verify_parity.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const v = @import("verify.rye");
+
+/// mono — render our bool verdict in Monocypher's int form: 0 for equal, -1 for differing, exactly what crypto_verify16/32/64 return.
+fn mono(equal: bool) i32 {
+    // invariant (postcondition): the rendered value is exactly one of Monocypher's two returns, never a wider int.
+    const r: i32 = if (equal) 0 else -1;
+    assert(r == 0 or r == -1);
+    return r;
+}
+
+/// emit16 — the five parity cases at Monocypher's 16-byte width, printed as five int lines.
+fn emit16() void {
+    var a: [v.bytes16]u8 = undefined;
+    var i: u32 = 0;
+    while (i < v.bytes16) : (i += 1) a[i] = @as(u8, @truncate(i *% 7 +% 1));
+
+    // Case 1: equal.
+    var b = a;
+    print("{d}\n", .{mono(v.verify16(&a, &b))});
+    // Case 2: one-bit difference at byte 0.
+    b = a;
+    b[0] ^= 0x01;
+    print("{d}\n", .{mono(v.verify16(&a, &b))});
+    // Case 3: one-bit difference at the last byte.
+    b = a;
+    b[v.bytes16 - 1] ^= 0x80;
+    print("{d}\n", .{mono(v.verify16(&a, &b))});
+    // Case 4: every byte differs.
+    b = a;
+    i = 0;
+    while (i < v.bytes16) : (i += 1) b[i] = a[i] ^ 0xff;
+    print("{d}\n", .{mono(v.verify16(&a, &b))});
+    // Case 5: equal again over the second deterministic pattern.
+    var c: [v.bytes16]u8 = undefined;
+    i = 0;
+    while (i < v.bytes16) : (i += 1) c[i] = @as(u8, @truncate(i *% 13 +% 5));
+    var d = c;
+    print("{d}\n", .{mono(v.verify16(&c, &d))});
+}
+
+/// emit32 — the five parity cases at Monocypher's 32-byte width.
+fn emit32() void {
+    var a: [v.bytes32]u8 = undefined;
+    var i: u32 = 0;
+    while (i < v.bytes32) : (i += 1) a[i] = @as(u8, @truncate(i *% 7 +% 1));
+
+    var b = a;
+    print("{d}\n", .{mono(v.verify32(&a, &b))});
+    b = a;
+    b[0] ^= 0x01;
+    print("{d}\n", .{mono(v.verify32(&a, &b))});
+    b = a;
+    b[v.bytes32 - 1] ^= 0x80;
+    print("{d}\n", .{mono(v.verify32(&a, &b))});
+    b = a;
+    i = 0;
+    while (i < v.bytes32) : (i += 1) b[i] = a[i] ^ 0xff;
+    print("{d}\n", .{mono(v.verify32(&a, &b))});
+    var c: [v.bytes32]u8 = undefined;
+    i = 0;
+    while (i < v.bytes32) : (i += 1) c[i] = @as(u8, @truncate(i *% 13 +% 5));
+    var d = c;
+    print("{d}\n", .{mono(v.verify32(&c, &d))});
+}
+
+/// emit64 — the five parity cases at Monocypher's 64-byte width.
+fn emit64() void {
+    var a: [v.bytes64]u8 = undefined;
+    var i: u32 = 0;
+    while (i < v.bytes64) : (i += 1) a[i] = @as(u8, @truncate(i *% 7 +% 1));
+
+    var b = a;
+    print("{d}\n", .{mono(v.verify64(&a, &b))});
+    b = a;
+    b[0] ^= 0x01;
+    print("{d}\n", .{mono(v.verify64(&a, &b))});
+    b = a;
+    b[v.bytes64 - 1] ^= 0x80;
+    print("{d}\n", .{mono(v.verify64(&a, &b))});
+    b = a;
+    i = 0;
+    while (i < v.bytes64) : (i += 1) b[i] = a[i] ^ 0xff;
+    print("{d}\n", .{mono(v.verify64(&a, &b))});
+    var c: [v.bytes64]u8 = undefined;
+    i = 0;
+    while (i < v.bytes64) : (i += 1) c[i] = @as(u8, @truncate(i *% 13 +% 5));
+    var d = c;
+    print("{d}\n", .{mono(v.verify64(&c, &d))});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    // invariant (construction): the three widths are Monocypher's published comparison sizes.
+    assert(v.bytes16 == 16 and v.bytes32 == 32 and v.bytes64 == 64);
+    emit16();
+    emit32();
+    emit64();
+    return 0;
+}
