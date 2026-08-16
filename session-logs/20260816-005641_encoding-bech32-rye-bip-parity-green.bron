@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260816.005641
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS cloud pier — Eastern (EDT) time convention
+title encoding/bech32.rye — Bech32 · Bech32m in pure Rye, BIP-parity-GREEN
+prompt recur the road ahead Lindy-first crux-first, Rye prioritized, Glow on green-witnessed Rye; send each finished increment as its own signed round; stop at custody gates
+think The crypto suite (27 files) and the five named encoding rungs (base64/58/58check/32/hex) all stand GREEN. The README named two next rungs — a to_hex ratchet and Base32 variants — yet the real blind spot for modern addresses is higher-Lindy: base58check dresses legacy addresses, but segwit, Nostr npub/nsec, and Cosmos accounts all wear Bech32/Bech32m, which the tree had no door for. That is the crux — it composes directly with the already-GREEN Ed25519 keys.
+think Authored bech32.rye from BIP-173 and BIP-350: the "qpzry9x8gf2tvdw0s3jn54khce6mua7l" alphabet, the BCH polymod over GF(32) with its five-term generator, the two spec constants (1, 0x2bc830a3) that version-bind a v0 segwit output apart from a BIP-350 payload, hrp expansion, convertbits regrouping, and high-level encode_bytes/decode_bytes so a 32-byte key becomes an npub in one call. Streamed the polymod over hrp-high · zero · hrp-low · data · tail-zeros rather than building an array, keeping every loop bounded.
+think Two transcription reds caught by the metal, not by re-reading: the two max-length vectors were short (70 q's / 63 l's instead of 82) so their published checksums did not verify — fixed by generating the exact 90-char canonical strings. Then the two 83-character-HRP vectors I typed from memory carried an out-of-alphabet 'o' in the bech32m data region — a genuine mistranscription — so I dropped both rather than fabricate a vector I could not verify; the max-HRP path is already covered by the bounds and the 90-char max-data vectors.
+think Parity landed three honest ways since Zig ships no std bech32: the BIP-173/BIP-350 valid checksums (round-tripped to themselves lowercased and cross-refused across specs — the exact version-binding BIP-350 introduced), the canonical segwit example bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 decoding to witness v0 and the 20-byte program 751e76e8199196d454941c45d1b3a323f1433bd6, and a second, independent table-driven polymod matching the per-bit residue byte-for-byte over every vector.
+obs GREEN on the metal after the two vector-length fixes. Bytes round-trip through encode_bytes/decode_bytes under an npub-shaped hrp for payloads 0..64 bytes; a flipped checksum refuses BadChecksum, mixed case MixedCase, a missing separator BadLength, an out-of-alphabet symbol BadChar, an empty hrp HrpEmpty, a too-small destination DestTooSmall — each before a partial result escapes. tame_style_check bans clean; bech32.rye carries asserts throughout (not in the zero-assert ratchet).
+obs Non-gated — purely local arithmetic, no key, no network, no funds, no real device. The encoding module now stands at six rungs, and the crypto stack has, for the first time, a checksummed address door for the modern (segwit / Nostr / Cosmos) world beside the legacy Base58Check one.
+loom witness=encoding_bech32_witness green=1 bip173_vectors=6 bip350_vectors=6 segwit_known_answer=1 bytes_roundtrip=0..64 independent_polymod=1
+file encoding/bech32.rye Bech32/Bech32m encode/decode + convertbits + encode_bytes/decode_bytes in pure Rye, BIP-173/350 parity
+file tools/encoding_bech32_witness.rish per-file witness building fresh and asserting the GREEN encoding-bech32 line
+file encoding/README.md seats bech32 as the sixth rung; notes its three parity references
+recommend keep-going the to_hex ratchet migration onto hex.rye (grep the crypto witnesses, repoint each), or dress a real crypto/ed25519 public key as an npub end-to-end via encode_bytes — both agent-doable, no gate
