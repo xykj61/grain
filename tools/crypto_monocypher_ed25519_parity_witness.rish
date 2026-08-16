@@ -1,0 +1,65 @@
+# tools/crypto_monocypher_ed25519_parity_witness.rish — Monocypher-source parity for Ed25519, the SIGNING primitive the Lotus signed carry and every
+# Kumara-signed record rest on. Our authored crypto/ed25519_sign.rye and the vendored Monocypher's own C (vendor/monocypher, CC0/BSD-dual), each
+# compiled fresh and asked for their Ed25519 public key and signatures over RFC 8032 §7.1 TEST 2's seed and message plus one longer message, diffed
+# byte-for-byte. The third rung of the real Monocypher-source parity pattern (tools/crypto_monocypher_parity_witness.rish opened it on BLAKE2b,
+# tools/crypto_monocypher_x25519_parity_witness.rish carried it to X25519). Season G · Cryptography.
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
+# proving Rye output equals Monocypher output byte-for-byte," and "once a Rye signing primitive is parity-GREEN, Lotus's signed carry becomes
+# buildable — the library is engineering." The Ed25519 sign witness (tools/crypto_ed25519_sign_witness.rish) already proved RFC 8032 parity against
+# Zig's std.crypto and named Monocypher-SOURCE parity an honest horizon behind a held vendor fetch; the vendored source is now present, so this rung
+# closes that horizon against the very library Grain's audit names.
+# Kin: crypto/ed25519_sign.rye (our authored signer, GREEN against Zig's std.crypto) · tools/monocypher_ed25519_parity.rye (our printing harness) ·
+# tools/fixtures/monocypher_ed25519_harness.c (Monocypher's printing harness) · tools/crypto_monocypher_x25519_parity_witness.rish (the X25519
+# sibling) · tools/crypto_monocypher_parity_witness.rish (the BLAKE2b sibling). Monocypher stays the parity TARGET, vendored and unmodified, never a
+# copied line — our own Rye, studied clean-room (.claude/rules/gratitude-licenses.md).
+#
+# The RFC 8032 Ed25519 (SHA-512) variant is Monocypher's OPTIONAL crypto_ed25519_* module (src/optional/monocypher-ed25519.c); the core crypto_eddsa_*
+# uses BLAKE2b, a different, non-RFC EdDSA. The harness links the optional SHA-512 module so like meets like. The three lines are the public key
+# derived from the seed, the signature over message 0x72 (RFC 8032 §7.1 TEST 2), and the signature over a longer deterministic message ("grain crypto
+# parity"). Purely local — it signs only a TEST seed: no key of ours, no network, no funds, no device; signing with the maintainer's own identity key
+# stays its own gated round, and constant-time signing stays the Season's named timing horizon.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_monocypher_ed25519_parity_witness.rish
+
+say "crypto-monocypher-ed25519-parity: Language EN — Monocypher-source parity for Ed25519, the signing primitive the Lotus signed carry and every Kumara-signed record rest on. The BLAKE2b and X25519 siblings opened the pattern; this rung proves our authored crypto/ed25519_sign.rye against the ACTUAL vendored Monocypher C over RFC 8032 §7.1 TEST 2's seed and message plus a longer message, so the signature that will one day carry the maintainer's identity agrees, byte-for-byte, with the very library Grain's audit names. It signs only a TEST seed — signing with the maintainer's own identity key stays its own separate, GATED round; no custody gate is crossed here."
+say "crypto-monocypher-ed25519-parity: Style Radiant — like against like. Our authored Ed25519 and the unmodified vendored Monocypher each compile fresh and each print, in order, the public key derived from the seed, the signature over the RFC's 1-byte message, and the signature over a longer deterministic message that exercises the multi-block path. Two independent implementations, one RFC-published vector; the parity is that the two outputs agree hex for hex, and that the public key and first signature equal RFC 8032 §7.1 TEST 2's published values. Monocypher's RFC 8032 SHA-512 variant is its optional crypto_ed25519_* module, linked so like truly meets like — its core crypto_eddsa_* uses BLAKE2b, a different EdDSA."
+say "crypto-monocypher-ed25519-parity: Lens TAME — no fabricated constant is trusted: the oracle is a second real implementation, and the vector is anchored to RFC 8032 §7.1 TEST 2's published public key and signature. The witness diffs the three Monocypher lines against the three Rye lines byte-for-byte AND asserts the two published values. Monocypher is linked, never copied. Purely local — no key of ours, no network, no funds, no device; a constant-time signing path stays the Season's named timing horizon, wanting measurement not a claim."
+
+let zig = "vendor/zig-toolchain/zig"
+let cbin = "crypto/bin/monocypher_ed25519"
+let cout = "crypto/bin/monocypher_ed25519.out"
+let rout = "crypto/bin/rye_ed25519.out"
+
+# 1. Build the Monocypher C harness, linking the unmodified vendored core AND the optional RFC 8032 (SHA-512) Ed25519 module with zig cc.
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src -I vendor/monocypher/src/optional tools/fixtures/monocypher_ed25519_harness.c vendor/monocypher/src/monocypher.c vendor/monocypher/src/optional/monocypher-ed25519.c -o ${cbin}"]
+assert cbuild.ok else "crypto-monocypher-ed25519-parity: Monocypher C harness build failed — ${cbuild.err}"
+
+# 2. Run the Monocypher C harness — three Ed25519 hex lines.
+let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]
+assert crun.ok else "crypto-monocypher-ed25519-parity: Monocypher C harness exited non-zero — see ${cout}"
+
+# 3. Run our authored Rye harness — three Ed25519 hex lines over the identical seed and messages.
+let rrun = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run tools/monocypher_ed25519_parity.rye > ${rout} 2>&1"]
+assert rrun.ok else "crypto-monocypher-ed25519-parity: Rye harness exited non-zero — see ${rout}"
+
+# 4. Byte-for-byte parity: the two three-line outputs must be identical.
+let diff = run ["sh" "-c" "diff ${cout} ${rout} > /dev/null && echo same"]
+assert (trim diff.out) == "same" else "crypto-monocypher-ed25519-parity: Monocypher and Rye Ed25519 disagree — Monocypher:\n$(cat ${cout})\nRye:\n$(cat ${rout})"
+
+# 5. Anchor to the world: RFC 8032 §7.1 TEST 2's published public key (line 1) and signature over 0x72 (line 2).
+let rfc_public = "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c"
+let rfc_sig = "92a009a9f0d4cab8720e820b5f642540a2b27b5416503f8fb3762223ebdb69da085ac1e43e15996e458f3613d0f11d8c387b2eaeb4302aeeb00d291612bb0c00"
+
+let got_public = run ["sh" "-c" "sed -n '1p' ${cout}"]
+assert (trim got_public.out) == rfc_public else "crypto-monocypher-ed25519-parity: public key is not the RFC 8032 §7.1 TEST 2 published value"
+
+let got_sig = run ["sh" "-c" "sed -n '2p' ${cout}"]
+assert (trim got_sig.out) == rfc_sig else "crypto-monocypher-ed25519-parity: signature over 0x72 is not the RFC 8032 §7.1 TEST 2 published value"
+
+let shown = run ["sh" "-c" "cat ${cout}"]
+say "crypto-monocypher-ed25519-parity: the RFC 8032 §7.1 TEST 2 vector, plus a longer message, agreed by both implementations:\n${shown.out}"
+
+say "GREEN crypto-monocypher-ed25519-parity: our authored crypto/ed25519_sign.rye and the vendored Monocypher's own C (optional RFC 8032 SHA-512 module), each compiled fresh, produce byte-for-byte identical Ed25519 — the public key derived from the seed, the signature over RFC 8032 §7.1 TEST 2's message, and the signature over a longer message all match, and the public key and RFC signature match the RFC's published values. The third real Monocypher-SOURCE parity rung, closing the horizon the sign witness named and hardening the signing primitive the Lotus signed carry rests on — no recited constant, the oracle a second real implementation. Monocypher stays vendored and unmodified, linked never copied. Purely local, no key of ours, no network, no funds, no device; signing with the maintainer's own identity key stays its own gated round, and constant-time signing stays the named timing horizon."
