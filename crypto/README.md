@@ -155,7 +155,7 @@ is re-provable by tooling, not trusted from a commit message alone.
   Season's constant-time discipline note.
 - **Monocypher-source parity** is **landed**: the vendored `vendor/monocypher`
   (CC0/BSD-dual, unmodified) is compiled fresh and diffed byte-for-byte against our
-  authored Rye over the published vectors. Sixteen rungs stand GREEN — **BLAKE2b**,
+  authored Rye over the published vectors. Seventeen rungs stand GREEN — **BLAKE2b**,
   **X25519**, **Ed25519**, the **ChaCha20-Poly1305 AEAD**, **Argon2** (all three
   modes), the **XChaCha20-Poly1305 flagship** (Monocypher's `crypto_aead_lock`,
   the 24-byte extended-nonce AEAD Lotus's signed carry, Vault, and Comlink reach for),
@@ -208,9 +208,20 @@ is re-provable by tooling, not trusted from a commit message alone.
   known-answer, its oracle is a second real implementation agreeing byte-for-byte,
   with the module independently tying its extract and first expand block back to the
   RFC-4231-anchored HMAC in its own selftest, the key-derivation counterpart to the
-  HMAC-SHA-512 rung beneath it)
+  HMAC-SHA-512 rung beneath it),
+  and **Elligator 2** (Monocypher's `crypto_elligator_map` / `crypto_elligator_rev`,
+  the map that hides an X25519 public key as a uniformly random 32-byte string and
+  reads it back — the obfuscated-handshake primitive — proving `elligator.rye` over
+  sixteen direct representative→u-coordinate answers and sixteen inverse
+  point+tweak→representative-or-fail answers, the failures failing together and the
+  representatives matching to the byte; the first rung for a primitive Zig's
+  `std.crypto` does not ship at all, so the second real implementation agreeing is the
+  external anchor, standing beside the round-trip identity and Monocypher's own
+  published `elligator_dir`/`elligator_inv` vectors proven in the module's own witness)
   — each also anchored to its RFC or published known-answer, so the oracle is a real
-  second implementation. Parity against Zig's `std.crypto` still holds beside it.
+  second implementation. Parity against Zig's `std.crypto` still holds beside it (save
+  Elligator, which Zig does not implement — there the vendored Monocypher and the
+  round-trip identity are the anchor).
 - **The keys stay the maintainer's hand.** Every witness runs over **TEST** keys and
   the RFC's public vectors — no real identity key, no network, no funds, no real
   device. Signing a record, or agreeing a session, with the maintainer's **own**

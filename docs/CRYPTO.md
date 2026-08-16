@@ -201,7 +201,7 @@ caller-supplied seed — a test seed is not the maintainer's identity key.
 
 **Monocypher-source parity is landed:** the vendored `vendor/monocypher`
 (CC0/BSD-dual, unmodified) is compiled fresh and diffed byte-for-byte against our
-authored Rye over the published vectors — sixteen rungs GREEN (BLAKE2b, X25519,
+authored Rye over the published vectors — seventeen rungs GREEN (BLAKE2b, X25519,
 Ed25519, the ChaCha20-Poly1305 AEAD, Argon2 across all three modes, the
 XChaCha20-Poly1305 flagship `crypto_aead_lock`, the Edwards↔Montgomery
 conversion `crypto_eddsa_to_x25519` / `crypto_x25519_to_eddsa` that unifies one
@@ -240,9 +240,17 @@ ladder fold their shared secret through, proving `hkdf_sha512.rye` over RFC
 5869's Test Case 1, 2, and 3 input structures plus a two-block-crossing request,
 its oracle a second real implementation agreeing byte-for-byte since RFC 5869
 publishes no SHA-512 known-answer, the key-derivation counterpart to the
-HMAC-SHA-512 rung beneath it), each also
+HMAC-SHA-512 rung beneath it), and Elligator 2
+`crypto_elligator_map` / `crypto_elligator_rev` — the map that hides an X25519
+public key as a uniformly random 32-byte string and reads it back, proving
+`elligator.rye` over sixteen direct representative→u-coordinate answers and sixteen
+inverse point+tweak→representative-or-fail answers, the first rung for a primitive
+Zig's `std.crypto` does not ship (so the vendored Monocypher agreeing, beside the
+round-trip identity and Monocypher's own `elligator_dir`/`elligator_inv` vectors, is
+the anchor)), each also
 anchored to its RFC or published known-answer. One horizon stays honest beside it:
-**constant-time** waits on measurement as above.
+**constant-time** waits on measurement as above (the inverse map's one representability
+test is deliberately variable-time by design, keys tried at random).
 
 ---
 

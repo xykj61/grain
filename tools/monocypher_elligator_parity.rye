@@ -1,0 +1,59 @@
+//! tools/monocypher_elligator_parity.rye — our authored crypto/elligator.rye asked for its OWN Elligator 2 answers over the same thirty-two
+//! cases the Monocypher C harness (tools/fixtures/monocypher_elligator_harness.c) prints, so
+//! tools/crypto_monocypher_elligator_parity_witness.rish can diff our bytes against the vendored Monocypher's C byte-for-byte — the map that
+//! hides an X25519 public key as a uniformly random string, proven against the audit's parity target. Season G (Cryptography · Rye-native,
+//! Monocypher-parity, audit-ready).
+//!
+//! Thirty-two lines print, identical in shape to the C harness. The DIRECT map prints, for sixteen deterministic representatives
+//! hidden[j] = (i*7 + j*3 + 1) mod 256, the 64-hex Montgomery u-coordinate. The INVERSE map prints, for sixteen deterministic points
+//! pubkey[j] = (i*11 + j*5 + 2) mod 256 under tweak (i*13 + 7) mod 256, either the word "fail" (the point is not representable) or the 64-hex
+//! representative. The same generation the C harness uses, so the witness compares like against like across both success and failure.
+//!
+//! This authors NO cryptography — it is a printing harness over the GREEN crypto/elligator.rye (reached through the tools/elligator.rye
+//! symlink, since Rye resolves imports beside the importing file, over the tools/fe25519.rye symlink beneath it). Purely local — no key, no
+//! network, no funds, no device.
+//!
+//! Run from the repository root:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run tools/monocypher_elligator_parity.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const el = @import("elligator.rye");
+
+/// print_hex — 32 bytes as 64 lowercase hex characters, one line, exactly the C harness's `ph`.
+fn print_hex(b: [32]u8) void {
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) print("{x:0>2}", .{b[i]});
+    print("\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    // invariant (construction): both maps run exactly sixteen deterministic cases, the count the C harness prints.
+    const cases: u32 = 16;
+    assert(cases == 16);
+
+    // Direct map: sixteen representatives to their u-coordinates.
+    var i: u32 = 0;
+    while (i < cases) : (i += 1) {
+        var hidden: [32]u8 = undefined;
+        var j: u32 = 0;
+        while (j < 32) : (j += 1) hidden[j] = @as(u8, @truncate(i *% 7 +% j *% 3 +% 1));
+        print_hex(el.map(&hidden));
+    }
+
+    // Inverse map: sixteen points under a per-point tweak, printing the representative or "fail".
+    i = 0;
+    while (i < cases) : (i += 1) {
+        var pubkey: [32]u8 = undefined;
+        var j: u32 = 0;
+        while (j < 32) : (j += 1) pubkey[j] = @as(u8, @truncate(i *% 11 +% j *% 5 +% 2));
+        const tweak = @as(u8, @truncate(i *% 13 +% 7));
+        const r = el.rev(&pubkey, tweak);
+        // invariant: a failed inverse never leaks a representative; only the "fail" marker prints.
+        if (r.ok) print_hex(r.hidden) else print("fail\n", .{});
+    }
+    return 0;
+}

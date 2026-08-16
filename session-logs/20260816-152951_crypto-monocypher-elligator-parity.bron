@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260816.152951
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) time convention — this session in ai-jail
+title crypto — Monocypher-source parity for Elligator 2, GREEN
+prompt Continue the Season G Rye-first crypto crux, send often; the round after landing Elligator 2 in Rye is its Monocypher-source parity rung.
+think Round 1 landed crypto/elligator.rye GREEN against Monocypher's own published vectors and the round-trip identity. The established cadence closes each new primitive with a byte-for-byte Monocypher-SOURCE parity rung (a C harness linking the vendored library + a Rye harness over the module, diffed). This is the SEVENTEENTH such rung.
+think Mirrored the proven three-file pattern: tools/fixtures/monocypher_elligator_harness.c links the unmodified vendored crypto_elligator_map / crypto_elligator_rev through zig cc; tools/monocypher_elligator_parity.rye runs our GREEN module via the tools/elligator.rye symlink (over the tools/fe25519.rye symlink beneath it). Both print the same thirty-two lines: sixteen direct representative→u-coordinate answers (hidden[j] = (i*7 + j*3 + 1) mod 256) then sixteen inverse point+tweak→representative-or-fail answers (pubkey[j] = (i*11 + j*5 + 2) mod 256, tweak (i*13 + 7) mod 256).
+think Chose inputs that force the mix — roughly half the points are unrepresentable, so the run exercises both the success (a 64-hex representative) and failure (the word "fail") paths of the inverse map. tools/crypto_monocypher_elligator_parity_witness.rish diffs the two thirty-two-line outputs byte-for-byte AND asserts at least one fail and one hex line appear, so a harness that silently printed one outcome for all cases cannot pass.
+obs GREEN on the first full pass — the failures fail together and every representative matches to the byte. This is the first parity rung for a primitive Zig's std.crypto does not ship at all, so unlike the hash/cipher rungs there is no independent std.crypto oracle beside the parity; the second real implementation (Monocypher) agreeing IS the external anchor, standing beside the round-trip identity and Monocypher's own vectors proven in the module's own witness the round before.
+obs This lap added only tools/ files — no crypto/*.rye change — so the count guard stays 58 and the crypto suite is unaffected (parity witnesses run standalone, not in the suite list). Docs synced same round: crypto/README.md and docs/CRYPTO.md moved the Monocypher-source parity count from sixteen rungs to seventeen and named Elligator the one rung whose only oracles are Monocypher and the round-trip identity, since Zig implements no Elligator.
+obs Clean-room held — Monocypher linked, never copied. Gate-free and purely local — no key, no signature, no network, no funds, no device; the inverse map's one representability test is deliberately variable-time by design (keys tried at random), constant-time timing-safety the named horizon.
+loom witness=crypto_monocypher_elligator_parity_witness result=GREEN lines=32 direct=16 inverse=16 both_outcomes=true crypto_files=58
+file tools/fixtures/monocypher_elligator_harness.c the vendored-Monocypher C harness printing map/rev answers
+file tools/monocypher_elligator_parity.rye the Rye harness over the GREEN module printing the same answers
+file tools/crypto_monocypher_elligator_parity_witness.rish the witness diffing both byte-for-byte, both outcomes asserted
+file crypto/README.md moved Monocypher-source parity from sixteen rungs to seventeen, added the Elligator clause
+file docs/CRYPTO.md moved the parity count to seventeen, added the Elligator clause
+recommend keep-going Elligator is whole in Rye and parity-proven; the next Rye-first crux is Elligator key_pair (needs crypto_x25519_dirty_fast — a fresh primitive over the edwards group) closing the hide-a-fresh-key arc, or the higher strategic crux SLH-DSA-SHAKE-256s (post-quantum Kumara) which is gated on vendored FIPS 205 KAT vectors — a check-in, since it may want a network fetch or toolchain bump Keaton already flagged.
