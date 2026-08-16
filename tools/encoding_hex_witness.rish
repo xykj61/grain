@@ -1,0 +1,39 @@
+# tools/encoding_hex_witness.rish — Base16 / hexadecimal (RFC 4648) authored in pure Rye: the plainest binary-to-text armor a digest, a key,
+# or a wire frame wears, proven against a set of known-answers and byte-for-byte against Zig's independent std.fmt hex (encoding · the
+# serialization sibling of Season G · Cryptography).
+#
+# Season: encoding — the text-form sibling of the crypto library, beside base64.rye, base58.rye, base58check.rye, and base32.rye. Where
+# crypto/ authors the mathematics that produces bytes, encoding/ authors the text those bytes travel in, keeping the same parity discipline:
+# authored from the standard, calling no std codec in the primitive, proven byte-for-byte against a reference runnable now.
+# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
+# Clean-room: the alphabet is RFC 4648's own; the arithmetic is ours (.claude/rules/gratitude-licenses.md).
+#
+# encoding/hex.rye authors Base16 from the alphabet directly — two lowercase characters per byte, high nibble first, never padded; decode
+# accepts either case and refuses an odd length or a non-hex character. Unlike base32/base58, Zig's std DOES ship a hex codec, so this rung
+# earns a genuine std cross-check: at selftest a set of known-answers ("" · 00 · ff · deadbeef · 666f6f626172) match text for text and round-
+# trip, and our authored Rye equals Zig's std.fmt bytesToHex / hexToBytes byte-for-byte across payloads 0..64 bytes both directions, with a
+# mixed-case decode agreeing. A bad character refuses BadChar, an odd length BadLength, a too-small destination DestTooSmall. Purely local
+# arithmetic — no key, no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/encoding_hex_witness.rish
+
+say "encoding-hex: Language EN — Base16 / hexadecimal is the plainest binary-to-text form: each byte becomes two characters, high nibble then low, from 0–9 a–f. It is the form a digest is printed in, a key is dumped in, a wire frame is inspected in — the armor a value wears when a human wants to read every bit of it, unambiguously, one byte at a time. Every crypto witness in the tree hand-rolls a private to_hex for exactly this; this module authors it once, parity-checked, so the tree renders bytes to hex through one proven door."
+say "encoding-hex: Style Radiant — the law is stated positively: each byte's two nibbles map to two alphabet symbols, the output always exactly twice the input, never padded; decode inverts the map, accepting either case, so the same bytes always render to the same text and the same text always recovers the same bytes."
+say "encoding-hex: Lens TAME — the primitive calls no std hex; it is authored from the alphabet, bounded input (max_decoded_bytes, max_encoded_bytes), contract asserts on every function, buffer-length checked before the first write. Parity holds against a set of known-answers AND Zig's independent std.fmt hex (bytesToHex / hexToBytes) byte-for-byte across payloads 0..64 bytes both directions, with a mixed-case decode agreeing; a bad character refuses BadChar, an odd length refuses BadLength, a too-small destination refuses DestTooSmall — each before a partial result escapes. Purely local — no key, no network, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "encoding/bin/hex"
+
+let build = run ["sh" "-c" "mkdir -p encoding/bin && env RYE_ZIG=${zig} rye/bin/rye build encoding/hex.rye -femit-bin=${bin}"]
+assert build.ok else "encoding-hex: build failed — ${build.err}"
+
+let outfile = "encoding/bin/hex.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "encoding-hex: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "encoding-hex: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN encoding-hex' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "encoding-hex: selftest did not print the GREEN encoding-hex line"

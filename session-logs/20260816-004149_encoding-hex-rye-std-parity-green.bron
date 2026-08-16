@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260816.004149
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS cloud pier — Eastern (EDT) time convention
+title encoding/hex.rye — Base16 in pure Rye, std-parity-GREEN
+prompt recur the road ahead Lindy-first crux-first, Rye prioritized; send each finished increment as its own signed round; stop at custody gates
+think Fourth encoding lap, the last named encoding rung: a shared hex (Base16) primitive. It is the plainest binary-to-text form and the one every crypto witness in the tree hand-rolls as a private to_hex — authoring it once, parity-checked, gives the tree one proven door.
+think This rung earns something base58/base32 could not: a genuine std cross-check. Zig's std ships a hex codec, so hex.rye is proven byte-for-byte against std.fmt (the way base64 is proven against std.base64), not just against an independent implementation of our own.
+think Build constraint met and solved: std.fmt.bytesToHex needs a comptime-known length (return type [input.len*2]u8), so it cannot take a runtime slice. Rendered the whole 64-byte buffer once (comptime array length) and compared prefixes — hex is byte-independent, so the first n*2 characters are exactly the hex of the first n bytes — and used the runtime std.fmt.hexToBytes to anchor the decode direction.
+think Kept the finishing edge: built the primitive + witness this lap; the ratchet migration of the ~two-dozen per-file to_hex sites onto hex.rye is named as its own grep-and-repoint round, not folded in here.
+obs GREEN on the second metal pass (first failed only on the comptime-length bytesToHex, fixed by the whole-buffer-prefix approach). Known-answers, std parity both directions across 0..64 bytes, mixed-case decode, and BadChar/BadLength/DestTooSmall refusals all pass. tame_style_check bans clean.
+obs No custody gate touched — purely local. The encoding module now stands whole at five rungs: base64, base58, base58check, base32, hex — the serialization siblings of the whole-GREEN Season G crypto suite, each parity-proven.
+loom witness=encoding_hex_witness green=1 std_parity_bytes=0..64 both_directions=1 mixed_case=1
+file encoding/hex.rye Base16 encode/decode in pure Rye, proven byte-for-byte against std.fmt hex
+file tools/encoding_hex_witness.rish per-file witness building fresh and asserting the GREEN line
+file encoding/README.md seats hex; names the to_hex ratchet migration as its own round; notes which rungs carry std parity
+recommend keep-going the to_hex ratchet migration onto hex.rye (grep the crypto witnesses, repoint each) or base32 lowercase/CIDv1 variants; both agent-doable, no gate

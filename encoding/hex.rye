@@ -1,0 +1,203 @@
+//! encoding/hex.rye — Base16 / hexadecimal (RFC 4648) authored in pure Rye. Hex is the plainest binary-to-text form: each byte becomes two
+//! characters, high nibble then low, from the sixteen-symbol alphabet 0–9 a–f. It is the form a digest is printed in, a key is dumped in, a
+//! wire frame is inspected in — the armor a value wears when a human wants to read every bit of it, unambiguously, one byte at a time. Every
+//! crypto witness in the tree hand-rolls a private to_hex for exactly this; this module authors it once, parity-checked, so the tree renders
+//! bytes to hex through one proven door.
+//!
+//! Season: encoding — the serialization sibling of Season G (Cryptography), beside base64.rye, base58.rye, base58check.rye, and base32.rye.
+//! Both keep the same discipline: authored from the standard, calling no std codec in the primitive, proven byte-for-byte against a reference.
+//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
+//! Clean-room: the alphabet is RFC 4648's own; the arithmetic is ours (.claude/rules/gratitude-licenses.md).
+//!
+//! THE CRUX — encode maps each byte's two nibbles to two alphabet symbols; the output is always exactly twice the input length, never
+//! padded. decode inverts it, refusing an odd-length input and any character outside 0–9 a–f A–F (decode accepts either case; encode emits
+//! lowercase, the tree's convention). Every step is a bounded loop over small integers — a table lookup, a shift, and a mask.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no key, no network, no funds, no real device. The primitive calls no std hex; it is authored
+//! from the alphabet directly. Parity is proven at selftest two ways runnable now: a small set of known-answers, and Zig's own std.fmt hex
+//! (bytesToHex / hexToBytes) as an independent implementation, byte-for-byte across payloads 0..64 bytes with a round-trip and a mixed-case
+//! decode.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run encoding/hex.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const hex_version = "20260816.003712";
+
+/// The lowercase base16 alphabet — the case encode emits, and the tree's convention for a rendered digest or key.
+pub const lower_alphabet = "0123456789abcdef";
+
+/// The largest binary payload this module encodes, or the largest decode it produces in one call. Generous for a digest, a key, or a wire
+/// frame — named so every buffer bound and every loop cites a maximum, the TAME reflex that a count declares its ceiling before it grows.
+pub const max_decoded_bytes: u32 = 1 << 20;
+
+/// The largest text this module encodes to, and the largest input it decodes: exactly two hex characters per payload byte.
+pub const max_encoded_bytes: u32 = max_decoded_bytes * 2;
+
+/// The faults this module can raise, each refused at the edge before a partial result escapes.
+pub const HexError = error{
+    /// An input larger than max_decoded_bytes (encode) or max_encoded_bytes (decode) — refused before a symbol is written.
+    TooLong,
+    /// The caller's destination buffer is smaller than the exact output length — refused before the first write.
+    DestTooSmall,
+    /// A decode input whose length is odd — hex always comes in whole-byte pairs.
+    BadLength,
+    /// A decode input carrying a character outside 0–9 a–f A–F.
+    BadChar,
+};
+
+/// Encode source as lowercase hex into dest — two characters per byte, high nibble first, never padded. Returns the exact written slice.
+pub fn encode(dest: []u8, source: []const u8) HexError![]const u8 {
+    if (source.len > max_decoded_bytes) return error.TooLong;
+    const n: u32 = @intCast(source.len);
+    // invariant: the bounded cast named exactly the source bytes.
+    assert(n == source.len);
+
+    const want = n * 2;
+    if (dest.len < want) return error.DestTooSmall;
+
+    var di: u32 = 0;
+    var si: u32 = 0;
+    while (si < n) : (si += 1) {
+        const byte = source[si];
+        dest[di] = lower_alphabet[byte >> 4];
+        dest[di + 1] = lower_alphabet[byte & 0x0f];
+        di += 2;
+    }
+
+    // invariant: exactly two characters per byte were written.
+    assert(di == want);
+    return dest[0..di];
+}
+
+/// Map one hex character to its 0..15 value, or 0xFF if it is outside 0–9 a–f A–F. Decode accepts either case.
+fn nibble(c: u8) u8 {
+    if (c >= '0' and c <= '9') return c - '0';
+    if (c >= 'a' and c <= 'f') return c - 'a' + 10;
+    if (c >= 'A' and c <= 'F') return c - 'A' + 10;
+    return 0xFF;
+}
+
+/// Decode hex text back to its bytes — two characters per byte, either case accepted. Returns the exact written slice. Refuses an odd
+/// length and any non-hex character before a byte is written.
+pub fn decode(dest: []u8, source: []const u8) HexError![]const u8 {
+    if (source.len > max_encoded_bytes) return error.TooLong;
+    const enc_len: u32 = @intCast(source.len);
+    // invariant: the bounded cast named exactly the source length.
+    assert(enc_len == source.len);
+    if (enc_len % 2 != 0) return error.BadLength;
+
+    const out_len = enc_len / 2;
+    if (dest.len < out_len) return error.DestTooSmall;
+
+    var si: u32 = 0;
+    var di: u32 = 0;
+    while (si < enc_len) : (si += 2) {
+        const hi = nibble(source[si]);
+        const lo = nibble(source[si + 1]);
+        if ((hi | lo) == 0xFF) return error.BadChar;
+        dest[di] = (hi << 4) | lo;
+        di += 1;
+    }
+
+    // invariant: exactly one byte per character pair was written.
+    assert(di == out_len);
+    return dest[0..di];
+}
+
+// A small set of known-answers — the neutral reference the encoder must reproduce exactly, covering the empty input, the nibble edges
+// (0x00, 0xff), and a multi-byte value.
+const kat_inputs = [_][]const u8{ "", &[_]u8{0x00}, &[_]u8{0xff}, &[_]u8{ 0xde, 0xad, 0xbe, 0xef }, "foobar" };
+const kat_outputs = [_][]const u8{ "", "00", "ff", "deadbeef", "666f6f626172" };
+
+fn slice_eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) {
+        if (a[i] != b[i]) return false;
+    }
+    return true;
+}
+
+fn run_selftest() !u8 {
+    var ebuf: [160]u8 = undefined;
+    var dbuf: [160]u8 = undefined;
+
+    // 1. The known-answers: each input encodes to the expected text, and that text decodes back to the input.
+    {
+        var i: u32 = 0;
+        while (i < kat_inputs.len) : (i += 1) {
+            const got = try encode(&ebuf, kat_inputs[i]);
+            if (!slice_eq(got, kat_outputs[i])) return error.KatVectorMismatch;
+            const back = try decode(&dbuf, kat_outputs[i]);
+            if (!slice_eq(back, kat_inputs[i])) return error.KatRoundtripMismatch;
+        }
+    }
+
+    // 2. Independent-implementation parity across payloads 0..64 bytes: our authored Rye equals Zig's own std.fmt hex byte-for-byte, both
+    //    directions, plus a round-trip. std.fmt.bytesToHex needs a comptime length, so the whole 64-byte buffer is rendered once and its
+    //    prefixes are the reference (hex is byte-independent, so the first n*2 characters are exactly the hex of the first n bytes);
+    //    std.fmt.hexToBytes parses back at runtime.
+    {
+        var big: [64]u8 = undefined;
+        var f: u32 = 0;
+        while (f < 64) : (f += 1) big[f] = @as(u8, @truncate(f *% 37 +% 11));
+        const ref_full = std.fmt.bytesToHex(big, .lower);
+
+        var n: u32 = 0;
+        while (n <= 64) : (n += 1) {
+            const src = big[0..n];
+
+            var ours: [128]u8 = undefined;
+            const o = try encode(&ours, src);
+            if (!slice_eq(o, ref_full[0 .. n * 2])) return error.StdEncodeMismatch;
+
+            // Our decode recovers the bytes std rendered.
+            var round: [64]u8 = undefined;
+            const b = try decode(&round, o);
+            if (!slice_eq(b, src)) return error.RoundtripMismatch;
+
+            // And std.fmt.hexToBytes agrees on parsing our output back to the same bytes.
+            var ref_back: [64]u8 = undefined;
+            const rb = try std.fmt.hexToBytes(&ref_back, o);
+            if (!slice_eq(rb, src)) return error.StdDecodeMismatch;
+        }
+    }
+
+    // 3. A mixed-case decode: uppercase and lowercase hex both parse to the same bytes.
+    {
+        var lo: [4]u8 = undefined;
+        var up: [4]u8 = undefined;
+        const a = try decode(&lo, "deadbeef");
+        const b = try decode(&up, "DEADBEEF");
+        if (!slice_eq(a, b)) return error.MixedCaseMismatch;
+    }
+
+    // 4. The edges refuse: a bad character, an odd length, and a too-small destination each raise their named error before a partial result
+    //    escapes.
+    {
+        var junk: [8]u8 = undefined;
+        if (decode(&junk, "deadbeeg")) |_| return error.BadCharSlipped else |err| if (err != error.BadChar) return error.WrongBadChar;
+        if (decode(&junk, "abc")) |_| return error.BadLengthSlipped else |err| if (err != error.BadLength) return error.WrongBadLength;
+        var tiny: [1]u8 = undefined;
+        if (encode(&tiny, "foobar")) |_| return error.DestSlipped else |err| if (err != error.DestTooSmall) return error.WrongDest;
+    }
+
+    print("GREEN encoding-hex: Base16 / hexadecimal (RFC 4648) authored in pure Rye — the plainest binary-to-text armor, two characters per " ++
+        "byte from the alphabet 0–9 a–f, high nibble first, never padded: the form a digest is printed in, a key is dumped in, a wire frame " ++
+        "is read one byte at a time. encode maps each nibble to a symbol; decode inverts it, accepting either case, refusing an odd length " ++
+        "and any character outside 0–9 a–f A–F. Parity holds two ways runnable now: a set of known-answers (\"\" · 00 · ff · deadbeef · " ++
+        "666f6f626172) match text for text and round-trip back, and our authored Rye equals Zig's independent std.fmt hex (bytesToHex / " ++
+        "hexToBytes) byte-for-byte across payloads 0..64 bytes, both directions, with a mixed-case decode agreeing. A bad character refuses " ++
+        "BadChar, an odd length refuses BadLength, a too-small destination refuses DestTooSmall — each before a partial result escapes. " ++
+        "Purely local arithmetic — no key, no network, no funds, no real device. The tree's per-file to_hex now has one proven door, the " ++
+        "fifth serialization sibling of the Season G crypto stack.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}
