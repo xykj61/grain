@@ -18,7 +18,7 @@ a message: **Kumara** identity, **Vault** sealed storage, **Comlink** sessions, 
 the **Lotus** signed carry. It authors the mathematics once, in the open, so a hand
 placing trust in it can read exactly what it does.
 
-## The twenty-one files — eighteen primitives and three compositions
+## The twenty-two files — nineteen primitives and three compositions
 
 Built in dependency order: each rung stands on the GREEN rungs beneath it, none
 authoring cryptography a lower rung had not already proven.
@@ -65,6 +65,7 @@ authoring cryptography a lower rung had not already proven.
 | File | What it is | Reference |
 |---|---|---|
 | [`x25519.rye`](x25519.rye) | X25519 elliptic-curve Diffie-Hellman (Montgomery ladder) | RFC 7748 |
+| [`ed25519_to_x25519.rye`](ed25519_to_x25519.rye) | The birational Edwards↔Montgomery key conversion — one Ed25519 identity key made usable for X25519 agreement, and back | RFC 7748 §4.1 |
 
 ### Compositions (no new cryptography — proven stones assembled)
 
@@ -87,7 +88,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 ```
 
 [`../tools/crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) runs all
-twenty-one per-file witnesses in the dependency order above, rebuilding and reproving
+twenty-two per-file witnesses in the dependency order above, rebuilding and reproving
 each from source, and refuses whole — naming the file that stopped it — the moment
 any one goes RED. A GREEN suite means every claim in this library is re-provable by
 tooling, not trusted from a commit message alone.

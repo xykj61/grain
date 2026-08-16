@@ -1,0 +1,190 @@
+//! crypto/ed25519_to_x25519.rye — Season G (Cryptography): the birational Edwards↔Montgomery key conversion authored in pure Rye. One
+//! keeper's identity is a single Ed25519 key; signing wants that key on the twisted-Edwards curve, and agreeing a shared secret wants it as
+//! an X25519 (Montgomery) key. Curve25519 and edwards25519 are the SAME curve in two coordinate systems, birationally equivalent, so one
+//! identity key can do both — this rung is the bridge. eddsa_to_x25519 turns an Ed25519 public key into its X25519 public key; x25519_to_eddsa
+//! turns a Montgomery u-coordinate back into an Edwards y-encoding. It adds NO new field mathematics: both maps are one add, one subtract, and
+//! one inverse-multiply over the GREEN base field (crypto/fe25519.rye).
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave). The map
+//! is the identity-unification crux: Kumara's one key both signs (Ed25519, crypto/ed25519_sign.rye) and agrees (X25519, crypto/x25519.rye),
+//! so the sealed session need not carry a second, separate key.
+//! Kin: crypto/fe25519.rye (the base field beneath both maps, GREEN) · crypto/x25519.rye (the key agreement the forward map feeds) ·
+//! crypto/ed25519_sign.rye (the signing the same key serves). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET — its
+//! crypto_eddsa_to_x25519 / crypto_x25519_to_eddsa compute the same maps — never a copied line, studied clean-room from RFC 7748 §4.1 and
+//! Monocypher's public API (.claude/rules/gratitude-licenses.md).
+//!
+//! THE CRUX — RFC 7748 §4.1 fixes the birational map between the Montgomery u-coordinate and the Edwards y-coordinate: u = (1 + y)/(1 − y) and
+//! its inverse y = (u − 1)/(u + 1). An Ed25519 public key encodes y in its low 255 bits with the sign of x in bit 255; the forward map drops
+//! that sign bit (from_bytes already masks bit 255), lifts y to Montgomery u, and packs the 32-byte X25519 public key. The reverse map lifts a
+//! Montgomery u back to y and packs it with sign bit 0, the canonical form Monocypher returns. The classic checkpoint: the Edwards base point
+//! has y = 4/5, and (1 + 4/5)/(1 − 4/5) = 9 — exactly the X25519 base u-coordinate, so eddsa_to_x25519(base) is 9 on the nose.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity. The maps run over TEST keys only and call no
+//! std.crypto in the primitive itself. Parity is proven at selftest against references runnable now: the published RFC 7748 §4.1 base-point
+//! relationship (Edwards base ↔ u = 9), and Zig's own std.crypto — an Edwards public key from std.crypto.ecc.Edwards25519.basePoint.clampedMul
+//! and the X25519 public key from std.crypto.dh.X25519.recoverPublicKey, both over the identical clamped scalar, must satisfy
+//! eddsa_to_x25519(ed_pub) = x25519_pub byte-for-byte across a deterministic spread of scalars — two independent implementations pinning the
+//! map. A round-trip proves the reverse map inverts the forward one. Monocypher-source parity stays the same held-fetch horizon the other
+//! primitives carry. Converting with the maintainer's own identity key stays the custody gate; constant-time timing-safety stays the named
+//! horizon.
+//!
+//! Run from the repository root:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/ed25519_to_x25519.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const fe = @import("fe25519.rye");
+
+pub const ed25519_to_x25519_version = "20260816.000000";
+
+pub const ConvertError = error{
+    /// A hex or byte buffer handed to a selftest helper did not match its declared fixed length. The maps' own inputs are fixed 32-byte
+    /// arrays, so this names the selftest helpers' contract, never a map itself.
+    LengthMismatch,
+};
+
+/// The field element 1 — the additive identity's partner used on both sides of each map (1 + y, 1 − y, u − 1, u + 1).
+fn field_one() fe.Field {
+    return fe.Field{ .l = .{ 1, 0, 0, 0, 0 } };
+}
+
+/// Compare two 32-byte values. Used for the field-relationship postconditions and the selftest parity checks; equality here is a value check,
+/// not a timing-safe compare (this file makes no timing claim).
+fn same32(a: *const [32]u8, b: *const [32]u8) bool {
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) {
+        if (a[i] != b[i]) return false;
+    }
+    return true;
+}
+
+/// Is a canonical 32-byte field value all zero? Names the one degenerate input each map cannot invert (y = 1 for the forward map, u = −1 for
+/// the reverse), so the exactness postcondition is asserted only where the inverse is defined.
+fn is_zero32(b: *const [32]u8) bool {
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) {
+        if (b[i] != 0) return false;
+    }
+    return true;
+}
+
+/// eddsa_to_x25519 — map an Ed25519 public key to its X25519 public key. The low 255 bits carry the Edwards y-coordinate (from_bytes drops the
+/// sign bit in bit 255), and RFC 7748 §4.1 lifts it to the Montgomery u-coordinate u = (1 + y)/(1 − y). The result is the same 32-byte X25519
+/// public key the same secret scalar would produce through crypto/x25519.rye — one identity key, now usable for key agreement.
+pub fn eddsa_to_x25519(ed_pub: *const [32]u8) [32]u8 {
+    const one = field_one();
+    // invariant (construction): the field one is canonical — a single low limb set — so the numerator and denominator start from an exact 1.
+    assert(one.l[0] == 1 and one.l[1] == 0 and one.l[2] == 0 and one.l[3] == 0 and one.l[4] == 0);
+
+    const y = fe.from_bytes(ed_pub); // from_bytes masks bit 255, so the Ed25519 sign bit never enters the map.
+    const num = fe.add(one, y); // 1 + y
+    const den = fe.sub(one, y); // 1 − y
+    const u = fe.mul(num, fe.invert(den));
+
+    const den_bytes = fe.to_bytes(den);
+    // invariant (postcondition): for every point but the degenerate y = 1 (den = 0), the inverse is exact — u·(1 − y) = 1 + y — so the map
+    // is verified against the field, not assumed. The reduce-through-to_bytes makes both sides canonical before the value compare.
+    assert(is_zero32(&den_bytes) or same32(&fe.to_bytes(fe.mul(u, den)), &fe.to_bytes(num)));
+    return fe.to_bytes(u);
+}
+
+/// x25519_to_eddsa — map an X25519 u-coordinate back to an Edwards y-encoding. RFC 7748 §4.1's inverse y = (u − 1)/(u + 1); the result is
+/// packed with sign bit 0 (bit 255 clear), the canonical encoding Monocypher's crypto_x25519_to_eddsa returns. A caller who needs a specific
+/// x-sign restores it separately; the y-coordinate here is exact.
+pub fn x25519_to_eddsa(u_coord: *const [32]u8) [32]u8 {
+    const one = field_one();
+    // invariant (construction): the field one is canonical, so u − 1 and u + 1 start from an exact 1.
+    assert(one.l[0] == 1 and one.l[1] == 0 and one.l[2] == 0 and one.l[3] == 0 and one.l[4] == 0);
+
+    const u = fe.from_bytes(u_coord);
+    const num = fe.sub(u, one); // u − 1
+    const den = fe.add(u, one); // u + 1
+    const y = fe.mul(num, fe.invert(den));
+
+    const den_bytes = fe.to_bytes(den);
+    // invariant (postcondition): for every u but the degenerate u = −1 (den = 0), the inverse is exact — y·(u + 1) = u − 1 — so the reverse
+    // map is verified against the field. to_bytes reduces canonically, leaving bit 255 clear (y < p), the sign-0 encoding.
+    assert(is_zero32(&den_bytes) or same32(&fe.to_bytes(fe.mul(y, den)), &fe.to_bytes(num)));
+    return fe.to_bytes(y);
+}
+
+// ---- selftest ----------------------------------------------------------------------------------------------------------------------
+
+/// A deterministic spread of test bytes — the same generator shape the sibling primitives use, seeded so each 32-byte scalar differs and none
+/// is all-zero.
+fn test_bytes(seed: u8) [32]u8 {
+    var s: [32]u8 = undefined;
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) s[i] = @as(u8, @truncate(@as(u32, i) *% (@as(u32, seed) | 1) +% @as(u32, seed) +% 7));
+    s[0] |= 1; // guarantee a nonzero scalar
+    return s;
+}
+
+/// Independent references: Zig's own edwards25519 and X25519. Used ONLY inside the selftest as second implementations to pin the maps. The
+/// maps above never call std.crypto.
+const ZEd = std.crypto.ecc.Edwards25519;
+const ZX = std.crypto.dh.X25519;
+
+fn run_selftest() !u8 {
+    // 1. Published RFC 7748 §4.1 base-point relationship: the Edwards base point has y = 4/5, and (1 + 4/5)/(1 − 4/5) = 9 — exactly the X25519
+    //    base u-coordinate. So eddsa_to_x25519(Edwards base) must be 9 on the nose, and x25519_to_eddsa(9) must recover the base's y.
+    {
+        const base_bytes = ZEd.basePoint.toBytes();
+        var nine = [_]u8{0} ** 32;
+        nine[0] = 9;
+        if (!same32(&eddsa_to_x25519(&base_bytes), &nine)) return error.BasePointNotNine;
+
+        // The base's y-encoding with the sign bit cleared is exactly what the reverse map returns for u = 9.
+        var base_y = base_bytes;
+        base_y[31] &= 0x7f;
+        if (!same32(&x25519_to_eddsa(&nine), &base_y)) return error.ReverseBaseMismatch;
+    }
+
+    // 2. Independent-implementation parity across a deterministic spread of scalars. For each scalar the Edwards public key and the X25519
+    //    public key are the SAME identity in two coordinate systems (both from Zig, both clamped identically), so the forward map must bridge
+    //    them byte-for-byte — two independent implementations pinning eddsa_to_x25519.
+    {
+        var seed: u8 = 1;
+        while (seed <= 24) : (seed += 1) {
+            const sk = test_bytes(seed);
+            const ed_pub = (try ZEd.basePoint.clampedMul(sk)).toBytes(); // s·B on the Edwards curve, same clamp X25519 uses.
+            const x_pub = try ZX.recoverPublicKey(sk); // s over the Montgomery base 9, the X25519 public key.
+
+            // The forward map turns the one identity's Edwards key into its X25519 key.
+            if (!same32(&eddsa_to_x25519(&ed_pub), &x_pub)) return error.ForwardParityMismatch;
+
+            // The reverse map recovers the Edwards y-coordinate (sign bit cleared) from the X25519 key.
+            var ed_y = ed_pub;
+            ed_y[31] &= 0x7f;
+            if (!same32(&x25519_to_eddsa(&x_pub), &ed_y)) return error.ReverseParityMismatch;
+
+            // Round-trip: reverse then forward returns the original u byte-for-byte (the forward map ignores the sign bit, so the recovered
+            // y-encoding lifts back to exactly the starting u).
+            const back = x25519_to_eddsa(&x_pub);
+            if (!same32(&eddsa_to_x25519(&back), &x_pub)) return error.RoundTripMismatch;
+        }
+    }
+
+    print("GREEN crypto-ed25519-to-x25519: the birational Edwards↔Montgomery key conversion authored in pure Rye — one Ed25519 identity key " ++
+        "made usable for X25519 key agreement, and back. Curve25519 and edwards25519 are the same curve in two coordinate systems, so RFC " ++
+        "7748 §4.1's map u = (1 + y)/(1 − y) and its inverse y = (u − 1)/(u + 1) let one identity both sign and agree. eddsa_to_x25519 drops " ++
+        "the Ed25519 sign bit, lifts y to the Montgomery u, and packs the 32-byte X25519 public key; x25519_to_eddsa lifts u back to a " ++
+        "sign-0 Edwards y-encoding — each just one add, one subtract, and one inverse-multiply over the GREEN base field (crypto/fe25519.rye), " ++
+        "no new field mathematics, and each verifies its own inverse against the field (u·(1 − y) = 1 + y) as a postcondition. The maps call " ++
+        "no std.crypto. Parity holds against references runnable now: the published RFC 7748 §4.1 base-point relationship (the Edwards base's " ++
+        "y = 4/5 maps to u = 9 exactly, and back), and our authored maps bridge Zig's independent std.crypto.ecc.Edwards25519 public key and " ++
+        "std.crypto.dh.X25519 public key byte-for-byte across twenty-four deterministic clamped scalars, with a reverse-then-forward " ++
+        "round-trip recovering each u exactly. Monocypher's own crypto_eddsa_to_x25519 / crypto_x25519_to_eddsa compute the same maps — its " ++
+        "vendored source is a held fetch, so Monocypher-source parity is an honest horizon rung. Purely local over TEST keys — no real " ++
+        "identity key, no network, no funds, no real device; constant-time timing-safety stays a named horizon, and converting the " ++
+        "maintainer's own identity key stays the custody gate. Kumara's one key now both signs and agrees.\n", .{});
+    return 0;
+}
+
+pub fn main(init_args: std.process.Init) !u8 {
+    _ = init_args;
+    return run_selftest();
+}
