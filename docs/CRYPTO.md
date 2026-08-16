@@ -1,6 +1,6 @@
 # Crypto — the Season G audit front door
 
-*A Rye-native, parity-checked cryptography library — thirty-five primitives and twenty-one compositions, each GREEN on metal.*
+*A Rye-native, parity-checked cryptography library — thirty-seven primitives and twenty-one compositions, each GREEN on metal.*
 
 **Status:** Checkable — Season G operator + auditor guide
 **Depth:** guide
@@ -32,7 +32,7 @@ vectors — never a copied line ([`gratitude-licenses.md`](../.claude/rules/grat
 
 ---
 
-## Rung table — fifty-seven files, dependency order
+## Rung table — fifty-eight files, dependency order
 
 Each rung stands on the GREEN rungs beneath it; none authors cryptography a lower
 rung had not already proven. Every file carries a per-file witness
@@ -91,6 +91,7 @@ rung had not already proven. Every file carries a per-file witness
 |------|------------|-----------|
 | `x25519.rye` | X25519 ECDH (Montgomery ladder) | RFC 7748 |
 | `ed25519_to_x25519.rye` | The birational Edwards↔Montgomery key conversion — one identity key both signs and agrees | RFC 7748 §4.1 |
+| `elligator.rye` | Elligator 2 over Curve25519 — hides an X25519 public key as a uniformly random 32-byte string and reads it back (the obfuscated-handshake primitive). `map` (254-bit representative → u-coordinate) and `rev` (representable u-coordinate → representative under a random tweak, failing for ~half of points), over one shared `invsqrt` and the GREEN `fe25519.rye`; parity is Monocypher's OWN Elligator vectors byte-for-byte plus the round-trip identity, the inverse map's representability test deliberately variable-time | Elligator 2 · Monocypher `crypto_elligator_map`/`rev` |
 
 ### The secp256k1 base field (the Bitcoin/Ethereum curve)
 
@@ -140,7 +141,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 
 [`crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) rebuilds each
 `crypto/<name>.rye` fresh from source to the gitignored `crypto/bin/` and runs all
-fifty-six per-file witnesses in the dependency order above, refusing whole —
+fifty-eight per-file witnesses in the dependency order above, refusing whole —
 naming the file that stopped it — the moment any one goes RED. A GREEN suite means
 every claim here is re-provable by tooling, not trusted from a commit message
 alone (measurement beats memory). It then runs the **count guard**

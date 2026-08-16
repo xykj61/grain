@@ -19,7 +19,7 @@ a message: **Kumara** identity, **Vault** sealed storage, **Comlink** sessions, 
 the **Lotus** signed carry. It authors the mathematics once, in the open, so a hand
 placing trust in it can read exactly what it does.
 
-## The fifty-seven files — thirty-six primitives and twenty-one compositions
+## The fifty-eight files — thirty-seven primitives and twenty-one compositions
 
 Built in dependency order: each rung stands on the GREEN rungs beneath it, none
 authoring cryptography a lower rung had not already proven.
@@ -78,6 +78,12 @@ authoring cryptography a lower rung had not already proven.
 | [`x25519.rye`](x25519.rye) | X25519 elliptic-curve Diffie-Hellman (Montgomery ladder) | RFC 7748 |
 | [`ed25519_to_x25519.rye`](ed25519_to_x25519.rye) | The birational Edwards↔Montgomery key conversion — one Ed25519 identity key made usable for X25519 agreement, and back | RFC 7748 §4.1 |
 
+### Key hiding (Elligator 2)
+
+| File | What it is | Reference |
+|---|---|---|
+| [`elligator.rye`](elligator.rye) | Elligator 2 over Curve25519 — the map that hides an X25519 public key as a **uniformly random 32-byte string** and reads it back, the primitive an obfuscated handshake (Comlink's random-looking first packet) reaches for. `map` takes a 254-bit representative to a Montgomery u-coordinate (square it, fold through w = −A / (1 + 2·r²), select the square or non-square branch by one shared `invsqrt`); `rev` takes a representable u-coordinate back to a representative under a random tweak, reporting failure for the ~half of points that are not representable. Adds no new field — a new use of the GREEN [`fe25519.rye`](fe25519.rye), its three constants derived from the field (A = 486662, A² = A·A, ufactor = −2·√(−1)) with √(−1) the one embedded value, verified equal to Monocypher's own. Zig ships no Elligator, so parity is Monocypher's OWN published `elligator_dir`/`elligator_inv` vectors quoted byte-for-byte (both branches; an unrepresentable point) plus the round-trip identity `map(rev(map(h))) = map(h)`; the inverse map's one representability test is deliberately variable-time (keys tried at random), constant-time timing-safety the named horizon | Elligator 2 (Bernstein·Hamburg·Krasnova·Lange) · Monocypher `crypto_elligator_map`/`rev` |
+
 ### The secp256k1 curve (the Bitcoin/Ethereum curve)
 
 | File | What it is | Reference |
@@ -129,7 +135,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 ```
 
 [`../tools/crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) runs all
-fifty-five per-file witnesses in the dependency order above, rebuilding and reproving
+fifty-eight per-file witnesses in the dependency order above, rebuilding and reproving
 each from source, and refuses whole — naming the file that stopped it — the moment
 any one goes RED, and then runs the **count guard**
 ([`../tools/crypto_count_guard_witness.rish`](../tools/crypto_count_guard_witness.rish)) —
