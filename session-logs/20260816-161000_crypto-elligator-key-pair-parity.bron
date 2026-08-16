@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20260816.161000
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) time convention — this session in ai-jail
+title crypto — hidden keypair, Monocypher-parity GREEN
+prompt Take the next agent-doable lap Lindy-first crux-first on the road ahead (1024-round itinerary, six-season double-seat, Rye-first crypto parity wave); Rye prioritized, Glow on green-witnessed Rye, send often as signed rounds, stop only at custody gates.
+think Walked REMEMBER + the three design docs. The active track is Season G's Monocypher-parity wave — eighteen source-parity rungs landed, the last two Elligator 2 and dirty X25519. The prior session log named the exact next crux: crypto_elligator_key_pair, composing dirty_small + elligator rev + a chacha20-seeded retry loop into a hidden keypair. It is the highest-Lindy tractable rung — it closes the key-hiding family end to end and is the key Comlink's obfuscated first packet carries — and it is gate-free, purely local, Rye-first.
+think Read Monocypher's crypto_elligator_key_pair: a 64-byte buffer whose high half seeds ChaCha20-djb (key=high half, counter 0, zero nonce), the low half becoming a candidate secret and the high half a fresh value; take crypto_x25519_dirty_fast of the low half; try crypto_elligator_rev under the high half's first byte as tweak; loop while unrepresentable, the failed try's fresh ChaCha bytes seeding the next. On success the representative overwrites the high half. Reproduced the loop step for step over our GREEN dirty_small (== dirty_fast byte-for-byte) and elligator.rev.
+think The one clean reuse: Monocypher calls ChaCha20-DJB (8-byte nonce, 64-bit counter); our chacha20.rye is IETF (12-byte nonce, 32-bit counter). At counter 0 with an all-zero nonce the two state layouts COINCIDE — words 12..15 are zero either way — so a single 64-byte block is byte-identical. Documented as an invariant and PROVEN by the parity witness (which links the real DJB call), not merely asserted in a comment.
+obs Byte-for-byte GREEN on the first parity run: our key_pair equals Monocypher's crypto_elligator_key_pair over sixteen seeds on BOTH the secret key and the representative (thirty-two lines). The selftest adds an internal proof no external vector gives — the composition is CLOSED: map(hidden) == dirty_small(secret) across twenty-four seeds, so the two halves of the result truly belong together. Bounded the retry loop at a named maximum (64, ~2^-64 exhaustion) with a named error rather than an unbounded wait.
+obs New crypto/*.rye module tripped the count guard bijection. Registered the module witness in the suite and bumped the narration 59→60 files, twenty-one→twenty-two compositions (a composition, not a primitive — it authors no new arithmetic). Count guard GREEN at 60; crypto/README.md + docs/CRYPTO.md each gained the rung row and synced counts, same round (docs-implementation-sync). TAME style check clean.
+loom witness=crypto_monocypher_elligator_key_pair_parity result=GREEN seeds=16 fields=secret_key,hidden agree=byte_for_byte
+loom witness=crypto_elligator_key_pair result=GREEN closed_seeds=24 property=map_hidden_eq_dirty_small_secret
+loom witness=crypto_count_guard result=GREEN crypto_files=60
+file crypto/elligator_key_pair.rye the hidden keypair in pure Rye — ChaCha-seed a candidate, dirty public key, Elligator-hide with bounded retry
+file tools/crypto_monocypher_elligator_key_pair_parity_witness.rish the nineteenth Monocypher-source parity rung — our keypair == Monocypher's over sixteen seeds, both halves
+file tools/monocypher_elligator_key_pair_parity.rye our printing harness over the GREEN module
+file tools/fixtures/monocypher_elligator_key_pair_harness.c links the unmodified vendored Monocypher, prints secret_key then hidden per seed
+file tools/crypto_elligator_key_pair_witness.rish the module's own selftest witness, registered in the suite
+file tools/elligator_key_pair.rye symlink so the parity harness resolves the module beside it
+file tools/crypto_suite_witness.rish registered the new witness, narration synced to 60 files / 22 compositions
+file crypto/README.md added the hidden-keypair rung to Key hiding, counts synced to sixty / twenty-two compositions
+file docs/CRYPTO.md added the rung row and synced counts on the audit front door
+file work-in-progress/REMEMBER.md git nib + prior nib refreshed to the nineteenth parity rung
+recommend keep-going the key-hiding family is now closed end to end (elligator · dirty X25519 · hidden keypair all GREEN). The next Rye-first crypto crux Lindy-first is the Kumara PQ path the card seated — SLH-DSA (SPHINCS+) on SHAKE-256 — beginning with its SHAKE-based hash-tree pieces on the GREEN shake.rye; still gate-free until a real key is generated, which stays the custody gate.

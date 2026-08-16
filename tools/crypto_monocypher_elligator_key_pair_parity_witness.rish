@@ -1,0 +1,64 @@
+# tools/crypto_monocypher_elligator_key_pair_parity_witness.rish — Monocypher-source parity for the hidden keypair (crypto_elligator_key_pair),
+# the composition that closes the Elligator key-hiding arc: from a seed, a fresh X25519 secret key and the uniformly random representative of its
+# dirty public key — the key Comlink's obfuscated first packet carries. Our authored crypto/elligator_key_pair.rye and the vendored Monocypher's
+# own C (vendor/monocypher, CC0/BSD-dual), each compiled fresh and asked for the keypair of the same sixteen seeds, diffed byte-for-byte. The
+# NINETEENTH rung of the real Monocypher-source parity pattern (BLAKE2b · X25519 · Ed25519 · IETF AEAD · Argon2 · XChaCha20-Poly1305 flagship ·
+# Edwards↔Montgomery · Poly1305 · ChaCha20 · SHA-512 · HMAC-SHA-512 · HChaCha20 · variable BLAKE2b · keyed BLAKE2b · constant-time verify ·
+# HKDF-SHA-512 · Elligator 2 · dirty X25519 came before). Season G · Cryptography.
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux names "the parity witness
+# proving Rye output equals Monocypher output byte-for-byte." Like the Elligator and dirty-X25519 rungs beneath it, this is a piece Zig's
+# std.crypto does not ship, so there is no independent std.crypto oracle beside the parity — the byte-for-byte agreement with the actual vendored
+# library IS the external anchor. This rung anchors a whole COMPOSITION: the parity proves not one primitive but the exact loop that marries
+# ChaCha20, dirty X25519, and Elligator rev into one keypair, including the one clean reuse (our IETF ChaCha block at counter 0 with a zero nonce
+# equals Monocypher's DJB block, which its C actually calls).
+# Kin: crypto/elligator_key_pair.rye (our authored composition) · crypto/elligator.rye (the map/rev it drives) · crypto/x25519_dirty.rye (the
+# dirty key it hides) · crypto/chacha20.rye (the keystream it seeds with) · tools/monocypher_elligator_key_pair_parity.rye (our printing harness) ·
+# tools/fixtures/monocypher_elligator_key_pair_harness.c (Monocypher's printing harness) · crypto/fe25519.rye (the field all stand on). Monocypher
+# stays the parity TARGET, vendored and unmodified, never a copied line, studied clean-room (.claude/rules/gratitude-licenses.md).
+#
+# The thirty-two lines from each side: for each of sixteen deterministic seeds seed[j] = (i*7 + j*3 + 1) mod 256, the 64-hex secret_key then the
+# 64-hex hidden (representative). The witness asserts our thirty-two equal Monocypher's thirty-two byte-for-byte. Because crypto_elligator_key_pair
+# is a deterministic function of its seed (the retry loop's every branch is determined by the seed), the two must agree exactly or the composition
+# has drifted. Purely local — no key, no network, no funds, no device; constant-time timing-safety stays the Season's named horizon (this proves
+# the keypair's byte-for-byte correctness, not a timing claim).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_monocypher_elligator_key_pair_parity_witness.rish
+
+say "crypto-monocypher-elligator-key-pair-parity: Language EN — Monocypher-source parity for the hidden keypair (crypto_elligator_key_pair), the composition that closes the Elligator key-hiding arc: from a seed, a fresh X25519 secret key and the uniformly random representative of its dirty public key. This nineteenth rung proves our authored crypto/elligator_key_pair.rye against the ACTUAL vendored Monocypher C over sixteen seeds, byte-for-byte on both the secret key and the representative."
+say "crypto-monocypher-elligator-key-pair-parity: Style Radiant — like against like. Our authored composition and the unmodified vendored Monocypher each compile fresh and print, for the same sixteen seeds, the secret_key then the hidden. The parity is that all thirty-two lines match to the byte — proving not one primitive but the whole loop that marries ChaCha20, dirty X25519, and Elligator rev, including our clean reuse of the IETF ChaCha block where it coincides with Monocypher's DJB block at counter 0."
+say "crypto-monocypher-elligator-key-pair-parity: Lens TAME — Zig ships no Elligator keypair, so the oracle is the second real implementation (Monocypher) agreeing byte-for-byte. Monocypher is linked, never copied — our Rye composes three of our own GREEN rungs. The keypair is a deterministic function of its seed, so agreement is exact or it is drift. Purely local — no key, no network, no funds, no device; constant-time timing-safety stays the named horizon."
+
+let zig = "vendor/zig-toolchain/zig"
+let cbin = "crypto/bin/monocypher_elligator_key_pair"
+let cout = "crypto/bin/monocypher_elligator_key_pair.out"
+let rout = "crypto/bin/rye_elligator_key_pair.out"
+
+# 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_elligator_key_pair_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
+assert cbuild.ok else "crypto-monocypher-elligator-key-pair-parity: Monocypher C harness build failed — ${cbuild.err}"
+
+# 2. Run the Monocypher C harness — thirty-two lines (secret_key, hidden) for each of sixteen seeds.
+let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]
+assert crun.ok else "crypto-monocypher-elligator-key-pair-parity: Monocypher C harness exited non-zero — see ${cout}"
+
+# 3. Run our authored Rye harness — thirty-two lines over the identical seeds.
+let rrun = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run tools/monocypher_elligator_key_pair_parity.rye > ${rout} 2>&1"]
+assert rrun.ok else "crypto-monocypher-elligator-key-pair-parity: Rye harness exited non-zero — see ${rout}"
+
+# 4. Primary parity: our thirty-two lines must equal Monocypher's thirty-two byte-for-byte.
+let diff = run ["sh" "-c" "diff ${cout} ${rout} > /dev/null && echo same"]
+assert (trim diff.out) == "same" else "crypto-monocypher-elligator-key-pair-parity: Rye and Monocypher disagree — Monocypher:\n$(cat ${cout})\nRye:\n$(cat ${rout})"
+
+# 5. Shape guard: thirty-two 64-hex lines, no all-zero (silent-failure) key or representative.
+let n_hex = run ["sh" "-c" "grep -cE '^[0-9a-f]{64}$' ${rout} || true"]
+assert (trim n_hex.out) == "32" else "crypto-monocypher-elligator-key-pair-parity: expected thirty-two 64-hex lines, got ${n_hex.out}"
+let n_zero = run ["sh" "-c" "grep -c '^0\\{64\\}$' ${rout} || true"]
+assert (trim n_zero.out) == "0" else "crypto-monocypher-elligator-key-pair-parity: an all-zero key or representative appeared — a silent composition failure"
+
+let shown = run ["sh" "-c" "cat ${rout}"]
+say "crypto-monocypher-elligator-key-pair-parity: the sixteen hidden keypairs (secret_key, representative), agreed by both implementations:\n${shown.out}"
+
+say "GREEN crypto-monocypher-elligator-key-pair-parity: our authored crypto/elligator_key_pair.rye and the vendored Monocypher's own C, each compiled fresh, produce byte-for-byte identical hidden keypairs — the same X25519 secret key and the same uniformly random representative — over sixteen seeds. The NINETEENTH real Monocypher-SOURCE parity rung, standing on the Elligator 2 and dirty X25519 rungs and closing the key-hiding family end to end: the exact loop that marries ChaCha20, dirty X25519, and Elligator rev into the keypair Comlink's obfuscated first packet carries. Monocypher stays vendored and unmodified, linked never copied; our Rye composes three of our own GREEN rungs, reusing the IETF ChaCha block where it coincides with Monocypher's DJB block at counter 0. Purely local, no key, no network, no funds, no device; constant-time timing-safety stays the named horizon."
