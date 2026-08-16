@@ -1,6 +1,6 @@
 # Crypto — the Season G audit front door
 
-*A Rye-native, parity-checked cryptography library — thirty-four primitives and six compositions, each GREEN on metal.*
+*A Rye-native, parity-checked cryptography library — thirty-four primitives and seven compositions, each GREEN on metal.*
 
 **Status:** Checkable — Season G operator + auditor guide
 **Depth:** guide
@@ -32,7 +32,7 @@ vectors — never a copied line ([`gratitude-licenses.md`](../.claude/rules/grat
 
 ---
 
-## Rung table — forty files, dependency order
+## Rung table — forty-one files, dependency order
 
 Each rung stands on the GREEN rungs beneath it; none authors cryptography a lower
 rung had not already proven. Every file carries a per-file witness
@@ -110,6 +110,7 @@ rung had not already proven. Every file carries a per-file witness
 | `sealed_session.rye` | *Only you can read this* — a seal-to-a-public-key box | X25519 · BLAKE2b-512 · ChaCha20-Poly1305 |
 | `vault_seal.rye` | *Only your password can open this* — a password-sealed box | Argon2id · XChaCha20-Poly1305 |
 | `eth_address.rye` | *What Ethereum address is this key?* — the low 20 bytes of Keccak-256(pubkey), EIP-55 mixed-case checksum | Keccak-256 |
+| `bitcoin_address.rye` | *What Bitcoin address is this key?* — HASH160 = RIPEMD-160(SHA-256(pubkey)) wrapped as a Base58Check "1…" address (P2PKH) or a SegWit v0 Bech32 "bc1…" address (P2WPKH). Parity: the canonical Bitcoin-wiki P2PKH worked example (its HASH160 the very payload `base58check.rye`'s own known-answer wraps) and the BIP-173 P2WPKH vector, both round-tripping back to their HASH160 | SHA-256 · RIPEMD-160 · Base58Check · Bech32 |
 | `eth_personal_sign.rye` | *Who signed this message?* — the EIP-191 `personal_sign` digest and `recover_signer`, reading the sender address out of a 65-byte `r‖s‖v` signature: "Sign in with Ethereum" | Keccak-256 · ecrecover · eth_address |
 | `eip712.rye` | *Who signed this typed message, for this app, on this chain?* — the EIP-712 typed-structured-data digest a wallet shows before signing "typed data" (EIP-2612 permits, DeFi orders, gasless meta-transactions, typed Sign-in-with-Ethereum). Hashes a tree of typed fields (`type_hash`, `hash_struct`, `eip712_domain_separator`) into `keccak256(0x19 0x01 ‖ domain_separator ‖ struct_hash)`, so a signature for one contract on one chain never replays against another; `recover_typed_signer` reads the sender back out. Parity three ways: the EIP-712 spec's own canonical Ether Mail example recovered by the spec's own published signature to Cow's published wallet, an independent Zig-Keccak construction byte-for-byte, and a full TEST-key round-trip | Keccak-256 · ecrecover · eth_address |
 
@@ -123,7 +124,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 
 [`crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) rebuilds each
 `crypto/<name>.rye` fresh from source to the gitignored `crypto/bin/` and runs all
-forty per-file witnesses in the dependency order above, refusing whole —
+forty-one per-file witnesses in the dependency order above, refusing whole —
 naming the file that stopped it — the moment any one goes RED. A GREEN suite means
 every claim here is re-provable by tooling, not trusted from a commit message
 alone (measurement beats memory). It then runs the **count guard**

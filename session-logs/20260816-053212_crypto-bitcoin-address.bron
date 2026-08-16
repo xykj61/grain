@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260816.053212
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title crypto/bitcoin_address.rye — HASH160 Bitcoin address, parity-GREEN
+prompt recur the loop past the crypto EIP-712 nib — take the next agent-doable Lindy-first crux-first lap, Rye-first, send it as its own signed round, stop at the custody gates
+think Read REMEMBER's living-edge note and the three road docs (1024-round itinerary, six-season double-seat, rye-first crypto parity wave). REMEMBER named the next Lindy-first crux outright: a Bitcoin-side address composition over the GREEN HASH160, with the constant-time timing horizon as a horizon (wants measurement, not a claim).
+think Chose the Bitcoin address as the crux — highest-Lindy agent-doable rung, the Bitcoin sibling of crypto/eth_address.rye, all public values so no custody gate. It composes GREEN stones only (SHA-256, RIPEMD-160 = HASH160; Base58Check for P2PKH; Bech32 for P2WPKH SegWit v0) and authors no new cryptography.
+think Cross-dir imports: rye resolves nested @import relative to the importing path, so base58check.rye reached from crypto/ needs its own shims (crypto_sha256.rye, base58.rye) in crypto/ too, matching the seated encoding/crypto_sha256.rye symlink pattern. Added four flat-named symlinks in crypto/.
+think Parity three ways, all published and replayable: the canonical Bitcoin-wiki P2PKH worked example (uncompressed pubkey 0450863A…82BA6 → HASH160 010966…273BEE — the very payload base58check.rye's own KAT wraps → 16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM); the BIP-173 P2WPKH vector (compressed secp256k1 generator → witness program 751e76e8…33bd6 → bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4); and both addresses decoding back to exactly their HASH160.
+obs The count guard globbed crypto/*.rye with ls, which caught the four new import-shim symlinks and would break the bijection. Fixed it to count real files only (find -type f) — a correct, necessary ratchet now that crypto compositions import cross-directory. Guard prints 41, bijection holds.
+obs Kept accrete-never-break: no primitive renamed, eth_address untouched, the suite order places bitcoin_address right after its Ethereum sibling. Synced all three docs (README, docs/CRYPTO.md, CONSTANT_TIME.md) and both hardcoded suite prose lines from 40/6 to 41/7 in the same round.
+loom witness=crypto_bitcoin_address_witness green=1 files_proven=41 primitives=34 compositions=7 count_guard=41
+file crypto/bitcoin_address.rye the HASH160 Bitcoin address composition (P2PKH Base58Check + P2WPKH Bech32), pure Rye, no new cryptography
+file tools/crypto_bitcoin_address_witness.rish per-file witness, GREEN against the Bitcoin-wiki and BIP-173 published vectors
+file tools/crypto_suite_witness.rish registers the new witness after eth_address; closing prose synced to 41/7
+file tools/crypto_count_guard_witness.rish counts real files only (find -type f) so import-shim symlinks never break the bijection
+file crypto/README.md front-door table + counts synced to forty-one files, thirty-four primitives + seven compositions
+file docs/CRYPTO.md audit front door synced to 41/7 with a bitcoin_address rung-table row
+file crypto/CONSTANT_TIME.md bitcoin_address row — public data, data-independent, non-gated beside eth_address
+recommend keep-going the next Lindy-first crux is the constant-time timing horizon (wants measurement) or a further Ethereum/Bitcoin transaction-encoding rung; the crypto tower stays non-gated, keys the maintainer's hand

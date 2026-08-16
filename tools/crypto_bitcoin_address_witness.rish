@@ -1,0 +1,40 @@
+# tools/crypto_bitcoin_address_witness.rish — the Bitcoin address, authored in pure Rye as a composition over three already-GREEN stones —
+# SHA-256 and RIPEMD-160 (HASH160 = RIPEMD-160(SHA-256(pubkey))), Base58Check (the legacy P2PKH "1…" envelope), and Bech32 (the SegWit v0
+# P2WPKH "bc1…" encoder). It is the Bitcoin sibling of crypto/eth_address.rye (crypto · Season G · Cryptography).
+#
+# Season: crypto — Season G (the Six-Season double-seat). This rung authors NO new cryptography: it composes stones already proven byte-for-byte
+# on metal — SHA-256, RIPEMD-160, Base58Check, and Bech32 — into the two Bitcoin address forms the crypto wave's REMEMBER note named next:
+# "a Bitcoin-side address composition over the GREEN HASH160."
+# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+# Clean-room: the HASH160 rule, the P2PKH version byte, and the SegWit v0 address construction are Bitcoin's own public standards (the Bitcoin
+# wiki, BIP-141, BIP-173); the composition is ours, standing on our own parity-GREEN stones, never a copied line (.claude/rules/gratitude-licenses.md).
+#
+# crypto/bitcoin_address.rye derives both address forms from a serialized public key. Parity is proven at selftest against published references
+# anyone can replay: the canonical Bitcoin-wiki worked example (uncompressed public key 0450863A…82BA6 → HASH160 010966…273BEE → P2PKH address
+# 16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM, the very HASH160 encoding/base58check.rye's own known-answer wraps), the BIP-173 P2WPKH vector (the
+# compressed secp256k1 generator point → witness program 751e76e8…33bd6 → bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4), and a full round-trip
+# (each address decodes back to exactly its HASH160), plus the guard: a public key of any length but 33 or 65 refuses BadPubkeyLength. Purely
+# local — no key, no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_bitcoin_address_witness.rish
+
+say "crypto-bitcoin-address: Language EN — a Bitcoin address is HASH160 = RIPEMD-160(SHA-256(public key)) wrapped in a self-checking envelope. The legacy Pay-to-Public-Key-Hash form renders those twenty bytes as a Base58Check '1…' address under a version byte; the SegWit v0 Pay-to-Witness-Public-Key-Hash form renders them as a Bech32 'bc1…' address under witness version 0. Both envelopes carry a checksum, so a mistyped address is refused before a value is ever sent to a wrong destination. This module composes stones already GREEN and authors none of its own arithmetic."
+say "crypto-bitcoin-address: Style Radiant — the law is stated positively: hash160 composes SHA-256 then RIPEMD-160; p2pkh_address wraps the result in the Base58Check envelope under a version byte; p2wpkh_address emits the SegWit v0 Bech32 address, witness version 0 as one 5-bit symbol then the twenty bytes regrouped 8→5. The same public key always renders the same address, and each address decodes back to exactly its HASH160."
+say "crypto-bitcoin-address: Lens TAME — no new cryptography: every hash is the GREEN crypto/sha256.rye and crypto/ripemd160.rye, every base conversion the GREEN encoding/base58check.rye and encoding/bech32.rye, each already proven on metal. Fixed shapes (pubkey 33 or 65, HASH160 20, SegWit program 32 symbols), contract asserts on every function, destination length checked by the composed encoders before the first write. Parity holds against the canonical Bitcoin-wiki P2PKH worked example AND the BIP-173 P2WPKH vector, both round-tripping back to their HASH160; a public key of any other length refuses BadPubkeyLength before hashing. Purely local — no key, no network, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/bitcoin_address"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/bitcoin_address.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-bitcoin-address: build failed — ${build.err}"
+
+let outfile = "crypto/bin/bitcoin_address.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-bitcoin-address: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-bitcoin-address: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-bitcoin-address' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-bitcoin-address: selftest did not print the GREEN crypto-bitcoin-address line"
