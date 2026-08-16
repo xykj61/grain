@@ -1,0 +1,215 @@
+//! encoding/base58check.rye — Base58Check authored in pure Rye as a composition, no new cryptography. Base58Check is the form a real
+//! address wears: a one-byte version, the payload, and a four-byte checksum — the first four bytes of the double SHA-256 of everything
+//! before it — all rendered together in Base58. The checksum is what makes an address self-verifying: a single mistyped character almost
+//! always fails the check before a value is ever sent to a wrong destination. This module composes two already-GREEN rungs — the
+//! double SHA-256 from crypto/sha256.rye and the Base58 rendering from encoding/base58.rye — and authors none of its own arithmetic.
+//!
+//! Season: encoding — the serialization sibling of Season G (Cryptography), beside base64.rye and base58.rye. Where base58.rye renders raw
+//! bytes, this rung adds the version-and-checksum envelope that a human-facing address carries, so a keeper reading or typing one is caught
+//! before a slip becomes a loss. It is the exact "guard the address" shape the identity and commerce surfaces will reach for.
+//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
+//! Clean-room: the version+checksum envelope and the double-SHA-256 checksum rule are Bitcoin's own public convention; the composition is
+//! ours, standing on our own parity-GREEN primitives (.claude/rules/gratitude-licenses.md).
+//!
+//! THE CRUX — encode lays out version ‖ payload ‖ checksum, where checksum = SHA-256(SHA-256(version ‖ payload))[0..4], then Base58-encodes
+//! the whole. decode inverts it: Base58-decode, split off the trailing four bytes, recompute the double-SHA-256 checksum over the rest, and
+//! refuse BadChecksum if it does not match — so a corrupted address is rejected rather than silently returning wrong bytes. No new hashing,
+//! no new base conversion: every stone beneath this is already proven on metal.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no key, no network, no funds, no real device. The primitive calls no std codec and no
+//! std.crypto: the hash is crypto/sha256.rye (FIPS 180-4, parity-GREEN against std.crypto), the rendering is encoding/base58.rye (parity-GREEN
+//! against the Bitcoin Core known-answers). Parity is proven at selftest against the canonical Bitcoin wiki Base58Check worked example, plus a
+//! round-trip and a corrupted-character check on every shape.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run encoding/base58check.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+// crypto_sha256.rye is an in-directory symlink to ../crypto/sha256.rye — the Rye build restricts imports to the module path, so the GREEN
+// hash is reached through a symlink the way linengrow reaches tally/copy.rye. The parity-GREEN primitive itself is unchanged.
+const sha256 = @import("crypto_sha256.rye");
+const base58 = @import("base58.rye");
+
+pub const base58check_version = "20260816.002751";
+
+/// The checksum is the first four bytes of the double SHA-256 — Bitcoin's own convention. Named so every buffer bound cites it.
+pub const checksum_len: u32 = 4;
+
+/// The largest payload this module wraps: the Base58 payload budget less the one version byte and the four checksum bytes, so the framed
+/// value always fits the Base58 primitive beneath. Generous for a 20-byte hash160, a 32-byte public key, or any address-shaped value.
+pub const max_payload_bytes: u32 = base58.max_decoded_bytes - 1 - checksum_len;
+
+/// The faults this module can raise, each refused at the edge before a partial result escapes.
+pub const Base58CheckError = error{
+    /// A payload larger than max_payload_bytes (encode), or a decoded frame too short to hold a version and a checksum (decode).
+    BadLength,
+    /// The caller's destination buffer is smaller than the exact output length — refused before the first write.
+    DestTooSmall,
+    /// A decode input carrying a character outside the Base58 alphabet — surfaced from the Base58 primitive beneath.
+    BadChar,
+    /// A decoded frame whose recomputed double-SHA-256 checksum does not match its trailing four bytes — a corrupted or mistyped address.
+    BadChecksum,
+};
+
+/// Compute the four-byte Base58Check checksum of data: the first four bytes of SHA-256(SHA-256(data)). Composes the GREEN crypto/sha256.rye
+/// twice, authoring no hashing of its own.
+fn checksum(data: []const u8) [checksum_len]u8 {
+    const first = sha256.hash(data) catch unreachable;
+    const second = sha256.hash(&first) catch unreachable;
+    var out: [checksum_len]u8 = undefined;
+    var i: u32 = 0;
+    // invariant: the checksum is exactly the leading four bytes of the second digest.
+    assert(checksum_len <= sha256.digest_len);
+    while (i < checksum_len) : (i += 1) out[i] = second[i];
+    return out;
+}
+
+/// Encode version ‖ payload ‖ checksum as Base58Check into dest. Returns the exact written slice. Composes the double-SHA-256 checksum and
+/// the Base58 rendering — no new cryptography.
+pub fn encode(dest: []u8, version: u8, payload: []const u8) Base58CheckError![]const u8 {
+    if (payload.len > max_payload_bytes) return error.BadLength;
+    const plen: u32 = @intCast(payload.len);
+    // invariant: the bounded cast named exactly the payload bytes.
+    assert(plen == payload.len);
+
+    // Lay out version ‖ payload ‖ checksum in a bounded frame, then hand the whole frame to the Base58 primitive.
+    var frame: [base58.max_decoded_bytes]u8 = undefined;
+    frame[0] = version;
+    var i: u32 = 0;
+    while (i < plen) : (i += 1) frame[1 + i] = payload[i];
+
+    const body_len = 1 + plen;
+    const sum = checksum(frame[0..body_len]);
+    var k: u32 = 0;
+    while (k < checksum_len) : (k += 1) frame[body_len + k] = sum[k];
+
+    const total = body_len + checksum_len;
+    // invariant: the framed value fits the Base58 payload budget it was sized against.
+    assert(total <= base58.max_decoded_bytes);
+    return base58.encode(dest, frame[0..total]) catch |err| switch (err) {
+        error.TooLong => error.BadLength,
+        error.DestTooSmall => error.DestTooSmall,
+        error.BadChar => error.BadChar,
+    };
+}
+
+/// Decode Base58Check text into dest, verifying the checksum. On success dest[0] is the version byte and the rest is the payload; the
+/// returned slice is version ‖ payload (the checksum stripped). A mismatched checksum refuses BadChecksum before any value is trusted.
+pub fn decode(dest: []u8, source: []const u8) Base58CheckError![]const u8 {
+    var raw: [base58.max_decoded_bytes]u8 = undefined;
+    const decoded = base58.decode(&raw, source) catch |err| switch (err) {
+        error.TooLong => return error.BadLength,
+        error.DestTooSmall => return error.BadLength,
+        error.BadChar => return error.BadChar,
+    };
+    const rlen: u32 = @intCast(decoded.len);
+    // invariant: the bounded cast named exactly the decoded length.
+    assert(rlen == decoded.len);
+
+    // A frame must hold at least a version byte and a four-byte checksum.
+    if (rlen < 1 + checksum_len) return error.BadLength;
+    const body_len = rlen - checksum_len;
+
+    const sum = checksum(decoded[0..body_len]);
+    var i: u32 = 0;
+    while (i < checksum_len) : (i += 1) {
+        if (decoded[body_len + i] != sum[i]) return error.BadChecksum;
+    }
+
+    if (dest.len < body_len) return error.DestTooSmall;
+    var k: u32 = 0;
+    while (k < body_len) : (k += 1) dest[k] = decoded[k];
+    // invariant: exactly the version-and-payload bytes were written, the checksum stripped.
+    assert(k == body_len);
+    return dest[0..body_len];
+}
+
+fn slice_eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) {
+        if (a[i] != b[i]) return false;
+    }
+    return true;
+}
+
+// The canonical Bitcoin wiki Base58Check worked example: version byte 0x00 and the 20-byte payload
+// 010966776006953D5567439E5E39F86A0D273BEE encode to the address below, its four-byte checksum D61967F6 the leading bytes of the
+// double SHA-256 — the neutral public reference our composition must reproduce exactly.
+const kat_version: u8 = 0x00;
+const kat_payload = [_]u8{ 0x01, 0x09, 0x66, 0x77, 0x60, 0x06, 0x95, 0x3D, 0x55, 0x67, 0x43, 0x9E, 0x5E, 0x39, 0xF8, 0x6A, 0x0D, 0x27, 0x3B, 0xEE };
+const kat_address = "16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM";
+
+fn run_selftest() !u8 {
+    var ebuf: [128]u8 = undefined;
+    var dbuf: [128]u8 = undefined;
+
+    // 1. The canonical Bitcoin wiki known-answer: version ‖ payload encodes to the published address, and that address decodes back to
+    //    version ‖ payload with a passing checksum.
+    {
+        const got = try encode(&ebuf, kat_version, &kat_payload);
+        if (!slice_eq(got, kat_address)) return error.KatVectorMismatch;
+
+        const back = try decode(&dbuf, kat_address);
+        if (back.len != 1 + kat_payload.len) return error.KatLenMismatch;
+        if (back[0] != kat_version) return error.KatVersionMismatch;
+        if (!slice_eq(back[1..], &kat_payload)) return error.KatPayloadMismatch;
+    }
+
+    // 2. Round-trip across versions and payload lengths: every framed value encodes and decodes back exactly, checksum passing, for
+    //    payloads 0..48 bytes under a sweep of version bytes.
+    {
+        var payload: [48]u8 = undefined;
+        var n: u32 = 0;
+        while (n <= 48) : (n += 1) {
+            var j: u32 = 0;
+            while (j < n) : (j += 1) payload[j] = @as(u8, @truncate(j *% 53 +% 7));
+            const ver: u8 = @as(u8, @truncate(n *% 17 +% 5));
+
+            var enc: [96]u8 = undefined;
+            const addr = try encode(&enc, ver, payload[0..n]);
+
+            var dec: [96]u8 = undefined;
+            const body = try decode(&dec, addr);
+            if (body.len != 1 + n) return error.RoundtripLenMismatch;
+            if (body[0] != ver) return error.RoundtripVersionMismatch;
+            if (!slice_eq(body[1..], payload[0..n])) return error.RoundtripPayloadMismatch;
+        }
+    }
+
+    // 3. The checksum guards: flip one character of the canonical address and decode must refuse BadChecksum, never return wrong bytes; a
+    //    character outside the alphabet refuses BadChar; a too-small destination refuses DestTooSmall — each before a partial result escapes.
+    {
+        var corrupt: [64]u8 = undefined;
+        var i: u32 = 0;
+        while (i < kat_address.len) : (i += 1) corrupt[i] = kat_address[i];
+        // Flip the last character to another valid alphabet symbol so the length and charset stay legal but the checksum breaks.
+        corrupt[kat_address.len - 1] = if (kat_address[kat_address.len - 1] == 'A') 'B' else 'A';
+        var junk: [64]u8 = undefined;
+        if (decode(&junk, corrupt[0..kat_address.len])) |_| return error.BadChecksumSlipped else |err| if (err != error.BadChecksum) return error.WrongBadChecksum;
+
+        if (decode(&junk, "16UwLL9Risc3QfPqBUvKofHmBQ7wMtjv0")) |_| return error.BadCharSlipped else |err| if (err != error.BadChar) return error.WrongBadChar;
+
+        var tiny: [4]u8 = undefined;
+        if (decode(&tiny, kat_address)) |_| return error.DestSlipped else |err| if (err != error.DestTooSmall) return error.WrongDest;
+    }
+
+    print("GREEN encoding-base58check: Base58Check authored in pure Rye as a composition — the self-verifying envelope a real address wears: " ++
+        "a one-byte version, the payload, and a four-byte checksum (the leading bytes of the double SHA-256 of everything before it), all " ++
+        "rendered in Base58. encode lays out version ‖ payload ‖ checksum and Base58-encodes the whole; decode inverts it, recomputes the " ++
+        "checksum, and refuses a corrupted address rather than returning wrong bytes. No new cryptography: the double SHA-256 is the GREEN " ++
+        "crypto/sha256.rye and the rendering is the GREEN encoding/base58.rye, so every stone beneath this is already proven on metal. " ++
+        "Parity holds against the canonical Bitcoin wiki worked example (version 0x00, payload 010966…273BEE, checksum D61967F6, address " ++
+        "16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM) matching character for character and round-tripping back, plus a round-trip across versions and " ++
+        "payloads 0..48 bytes; a single flipped character refuses BadChecksum, a bad character BadChar, a too-small destination DestTooSmall " ++
+        "— each before a partial result escapes. Purely local — no key, no network, no funds, no real device. The self-verifying address now " ++
+        "stands in our own Rye, composing the Season G crypto and encoding stacks.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

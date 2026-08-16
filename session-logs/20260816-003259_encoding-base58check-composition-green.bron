@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260816.003259
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS cloud pier — Eastern (EDT) time convention
+title encoding/base58check.rye — Base58Check composition, GREEN
+prompt recur the road ahead Lindy-first crux-first, Rye prioritized; send each finished increment as its own signed round; stop at custody gates
+think After base58 landed, the crux-first next rung was base58check — the self-verifying envelope a real address wears (version byte, payload, four-byte double-SHA-256 checksum, all Base58-rendered). It composes two already-GREEN stones and authors no new cryptography, so it is high-Lindy and low-risk: the exact "guard the address" shape identity and commerce surfaces reach for.
+think Hit a real build constraint: the Rye build restricts @import to the module path, so encoding/ cannot import ../crypto/sha256.rye directly (error: import of file outside module path). Followed the established linengrow precedent (linengrow/tally_copy.rye -> ../tally/copy.rye) and created an in-directory symlink encoding/crypto_sha256.rye -> ../crypto/sha256.rye, importing the GREEN primitive through it unchanged.
+think Anchored parity on the canonical Bitcoin wiki worked example — version 0x00, payload 010966776006953D5567439E5E39F86A0D273BEE, checksum D61967F6, address 16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM. Reproducing that one address exactly jointly validates base58, the double-SHA-256, and the composition, since a bug in any layer would break the string.
+think Guards proven: a single flipped character refuses BadChecksum (never returns wrong bytes), a bad character BadChar, a too-small destination DestTooSmall — plus a round-trip across versions and payloads 0..48 bytes.
+obs GREEN on the second metal pass (first failed only on the cross-dir import, fixed by the symlink). tame_style_check bans clean. No custody gate touched — purely local, no key, no network, no funds, no device.
+obs This closes the address-armor arc the decision wave pointed at: base64 (general text armor), base58 (human-readable raw), base58check (self-verifying address) all stand in our own Rye, parity-proven, beside the whole-GREEN Season G crypto suite.
+loom witness=encoding_base58check_witness green=1 kat=bitcoin-wiki-16UwLL9 roundtrip=versions*payloads_0..48
+file encoding/base58check.rye Base58Check encode/decode as a composition over GREEN sha256 + base58
+file encoding/crypto_sha256.rye symlink to ../crypto/sha256.rye (module-path import reach, linengrow precedent)
+file tools/encoding_base58check_witness.rish per-file witness building fresh and asserting the GREEN line
+file encoding/README.md seats base58check in the rung table; next rungs trimmed to base32/hex
+recommend keep-going base32 (RFC 4648) or a shared hex primitive is the next encoding rung; both agent-doable, no gate

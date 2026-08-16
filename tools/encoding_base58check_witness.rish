@@ -1,0 +1,40 @@
+# tools/encoding_base58check_witness.rish — Base58Check authored in pure Rye as a composition: the self-verifying envelope a real address
+# wears (version ‖ payload ‖ four-byte double-SHA-256 checksum, rendered in Base58), proven against the canonical Bitcoin wiki worked example
+# with a round-trip and a corrupted-character check (encoding · the serialization sibling of Season G · Cryptography).
+#
+# Season: encoding — the text-form sibling of the crypto library, beside base64.rye and base58.rye. This rung authors NO new cryptography:
+# it composes two already-GREEN stones — the double SHA-256 from crypto/sha256.rye (FIPS 180-4, parity-GREEN against std.crypto) and the
+# Base58 rendering from encoding/base58.rye (parity-GREEN against the Bitcoin Core known-answers) — into the version-and-checksum envelope a
+# human-facing address carries, so a mistyped character is caught before a value is ever sent to a wrong destination.
+# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
+# Clean-room: the version+checksum envelope and double-SHA-256 checksum rule are Bitcoin's own public convention; the composition is ours,
+# standing on our own parity-GREEN primitives (.claude/rules/gratitude-licenses.md).
+#
+# encoding/base58check.rye lays out version ‖ payload ‖ checksum where checksum = SHA-256(SHA-256(version ‖ payload))[0..4], then Base58-
+# encodes the whole; decode inverts it, recomputes the checksum, and refuses BadChecksum on a corrupted address rather than returning wrong
+# bytes. Parity is proven at selftest against the canonical Bitcoin wiki example (version 0x00, payload 010966…273BEE → 16UwLL9Risc3Qf…),
+# a round-trip across versions and payloads 0..48 bytes, and the guards: a flipped character refuses BadChecksum, a bad character BadChar, a
+# too-small destination DestTooSmall. Purely local — no key, no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/encoding_base58check_witness.rish
+
+say "encoding-base58check: Language EN — Base58Check is the form a real address wears: a one-byte version, the payload, and a four-byte checksum (the leading bytes of the double SHA-256 of everything before it), all rendered in Base58. The checksum is what makes an address self-verifying — a single mistyped character almost always fails the check before a value is ever sent to a wrong destination. This module composes two already-GREEN rungs and authors none of its own arithmetic."
+say "encoding-base58check: Style Radiant — the law is stated positively: encode lays out version ‖ payload ‖ checksum and Base58-encodes the whole; decode inverts it, recomputes the double-SHA-256 checksum over everything but the trailing four bytes, and returns version ‖ payload only when the checksum matches — so the same value always renders to the same address and a corrupted address is refused rather than trusted."
+say "encoding-base58check: Lens TAME — no new cryptography: the hash is the GREEN crypto/sha256.rye, the rendering is the GREEN encoding/base58.rye, every stone beneath already proven on metal. Bounded payload (max_payload_bytes), contract asserts on every function, buffer-length checked before the first write. Parity holds against the canonical Bitcoin wiki worked example AND a round-trip across versions and payloads 0..48 bytes; a flipped character refuses BadChecksum, a bad character BadChar, a too-small destination DestTooSmall — each before a partial result escapes. Purely local — no key, no network, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "encoding/bin/base58check"
+
+let build = run ["sh" "-c" "mkdir -p encoding/bin && env RYE_ZIG=${zig} rye/bin/rye build encoding/base58check.rye -femit-bin=${bin}"]
+assert build.ok else "encoding-base58check: build failed — ${build.err}"
+
+let outfile = "encoding/bin/base58check.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "encoding-base58check: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "encoding-base58check: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN encoding-base58check' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "encoding-base58check: selftest did not print the GREEN encoding-base58check line"
