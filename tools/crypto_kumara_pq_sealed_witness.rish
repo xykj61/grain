@@ -1,0 +1,42 @@
+# tools/crypto_kumara_pq_sealed_witness.rish — the POST-QUANTUM sealed-to-identity door: a message sealed TO a named post-quantum identity AND signed
+# BY a named post-quantum identity, so one frame carries both confidentiality and provenance, hardened against the quantum day. The post-quantum sibling
+# of crypto/kumara_sealed.rye, double-seated beside it. It composes only GREEN rungs (crypto/mlkem_sealed.rye for the confidentiality,
+# crypto/kumara_pq_identity.rye for the provenance, crypto/blake2b.rye for the signed digest), authoring no new cryptography (Season G).
+#
+# Season: crypto — where the classical door seals to an Ed25519 identity through the Ed25519→X25519 map (one key doing two jobs), this seals to the
+# identity's ML-KEM half and signs with the sender's ML-DSA half — the two lattice keys crypto/kumara_pq_identity.rye carries. Where the classical
+# sealed box is anonymous, this door adds what the dual-key shape makes reachable and one lattice key cannot: a message only the named recipient can
+# read, provably from the named sender. Opened verify-before-trust: the sender's signature over a BLAKE2b-512 digest of the inner sealed frame is
+# checked, and refused unless it is the sender the reader named, before the ciphertext is ever decapsulated.
+# Design read: active-designing/20260816-192400_post-quantum-identity-is-dual-key.md ("the coming kumara_pq_sealed seals to the identity's ML-KEM half,
+# and — where provenance is also wanted — signs the frame with the identity's ML-DSA key"). Clean-room: FIPS 203/204 are public NIST standards; the
+# framing is our own Rye wiring over our own GREEN rungs, no line copied (.claude/rules/gratitude-licenses.md).
+#
+# crypto/kumara_pq_sealed.rye is proven at every tier (small ML-DSA-44/ML-KEM-512, default ML-DSA-65/ML-KEM-768, large ML-DSA-87/ML-KEM-1024): a
+# confidential-and-authenticated round-trip across five plaintext lengths recovering both the plaintext and the verified sender, the message provably
+# not the plaintext, and four refusals — a wrong recipient (OpenFailed), a wrong expected sender (UnexpectedSigner, before any decapsulation), a
+# tampered inner ciphertext (BadSignature), and a tampered signature (BadSignature) — plus bad magic and truncation. Each composed half is
+# doubly-oracle-proven one rung down. Purely local — no key held, no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_kumara_pq_sealed_witness.rish
+
+say "crypto-kumara-pq-sealed: Language EN — the post-quantum sealed-to-identity door: a message sealed to a named post-quantum identity and signed by a named post-quantum identity, so one frame carries both confidentiality and provenance. It seals to the recipient's ML-KEM half with crypto/mlkem_sealed.rye and signs a BLAKE2b-512 digest of the sealed frame with the sender's ML-DSA half through crypto/kumara_pq_identity.rye, wrapping them in a signed envelope opened verify-before-trust. The post-quantum sibling of crypto/kumara_sealed.rye, composing only GREEN rungs, authoring no new cryptography."
+say "crypto-kumara-pq-sealed: Style Radiant — the law is stated positively as a message only the named recipient can read, provably from the named sender, and that a future quantum adversary can neither read nor forge. Where the classical sealed box is anonymous, the dual-key identity lets this door bind provenance too: the sender's signature is checked and refused unless it is the sender the reader named, before the ciphertext is ever decapsulated — a valid signature from the wrong keeper caught, never mistaken for the right one."
+say "crypto-kumara-pq-sealed: Lens TAME — contract asserts on every function (the whole envelope written and nothing past it, the header located without a nested length parse, both provenance and confidentiality held before returning), bounded loops (exactly the public-key, signature, and copy lengths), named errors for every refusal (OutTooSmall, PayloadTooLong, FrameTooShort, BadMagic, UnexpectedSigner, BadSignature, OpenFailed, ComposedFailed). Correctness proven end to end at all three tiers: a confidential-and-authenticated round-trip across five plaintext lengths, the message not the plaintext, and four refusals — a wrong recipient, a wrong expected sender, a tampered ciphertext, and a tampered signature — plus bad magic and truncation. The module's own functions call no std.crypto; each composed half is doubly-oracle-proven one rung down. Every identity is a TEST identity from a published-vector mnemonic — no key held, no network, no funds, no device; the KEM message must be fresh randomness in real use, constant-time timing-safety the named horizon, and sealing to or signing as the maintainer's own post-quantum identity the custody gate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/kumara_pq_sealed"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/kumara_pq_sealed.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-kumara-pq-sealed: build failed — ${build.err}"
+
+let outfile = "crypto/bin/kumara_pq_sealed.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-kumara-pq-sealed: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-kumara-pq-sealed: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-kumara-pq-sealed' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-kumara-pq-sealed: selftest did not print the GREEN crypto-kumara-pq-sealed line"
