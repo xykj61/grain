@@ -148,7 +148,7 @@ is re-provable by tooling, not trusted from a commit message alone.
   Season's constant-time discipline note.
 - **Monocypher-source parity** is **landed**: the vendored `vendor/monocypher`
   (CC0/BSD-dual, unmodified) is compiled fresh and diffed byte-for-byte against our
-  authored Rye over the published vectors. Eleven rungs stand GREEN — **BLAKE2b**,
+  authored Rye over the published vectors. Twelve rungs stand GREEN — **BLAKE2b**,
   **X25519**, **Ed25519**, the **ChaCha20-Poly1305 AEAD**, **Argon2** (all three
   modes), the **XChaCha20-Poly1305 flagship** (Monocypher's `crypto_aead_lock`,
   the 24-byte extended-nonce AEAD Lotus's signed carry, Vault, and Comlink reach for),
@@ -166,7 +166,13 @@ is re-provable by tooling, not trusted from a commit message alone.
   in Ed25519 signing, the hash-cipher counterpart to the ChaCha20 and Poly1305 rungs),
   and **HMAC-SHA-512** (Monocypher's optional `crypto_sha512_hmac`, the keyed MAC
   HKDF-SHA512 and BIP32 key derivation are built on — the keyed-MAC counterpart to
-  the standalone SHA-512 hash it rests on, anchored to RFC 4231's published tags)
+  the standalone SHA-512 hash it rests on, anchored to RFC 4231's published tags),
+  and the **standalone HChaCha20** subkey-derivation core (Monocypher's
+  `crypto_chacha20_h`, the XChaCha nonce-extension every random-nonce sealed message —
+  Vault, Comlink, the Lotus signed carry — folds a 24-byte nonce through before
+  enciphering, proven in its own right rather than only inside the XChaCha20-Poly1305
+  flagship, the nonce-extension counterpart to the standalone ChaCha20 and Poly1305
+  rungs, anchored to draft-irtf-cfrg-xchacha-03 §2.2.1's published subkey)
   — each also anchored to its RFC or published known-answer, so the oracle is a real
   second implementation. Parity against Zig's `std.crypto` still holds beside it.
 - **The keys stay the maintainer's hand.** Every witness runs over **TEST** keys and

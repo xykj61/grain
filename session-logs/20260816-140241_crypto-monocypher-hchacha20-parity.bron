@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260816.140241
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title crypto — Monocypher-source parity for standalone HChaCha20, GREEN
+prompt Take the next agent-doable lap Lindy-first crux-first; Rye prioritized, Glow on green-witnessed Rye; send each finished increment; stop only at custody gates.
+think Read REMEMBER (head via grep — 338KB), the 1024-round itinerary, the six-season double-seat, and the crypto-parity decision wave. Recent commits show eleven Monocypher-source parity rungs GREEN; the active crux is Season G's parity ladder.
+think Lindy-first crux-first among remaining Monocypher primitives: the established pattern proves each shared core "in its own right, not merely embedded in the AEAD" (ChaCha20, Poly1305, SHA-512 each earned a standalone rung). The one XChaCha-line core not yet proven standalone against Monocypher source is HChaCha20 — Monocypher exposes crypto_chacha20_h (monocypher.h:250), the nonce-extension every random-nonce sealed message (Vault, Comlink, Lotus signed carry) folds a 24-byte nonce through. Highest-Lindy remaining standalone core; the twelfth rung.
+think Our crypto/xchacha20.rye:88 already exposes pub fn hchacha20, proven against draft-irtf-cfrg-xchacha-03 §2.2.1 (draft_subkey_hex 82413b42…d3ecdc) and inside the AEAD flagship — yet never standalone against crypto_chacha20_h. tools/xchacha20.rye symlink already present from the xaead rung.
+think Mirrored the proven sibling shape exactly: a C harness (tools/fixtures/monocypher_hchacha20_harness.c) linking the unmodified vendored core through zig cc; a Rye harness (tools/monocypher_hchacha20_parity.rye) printing over the GREEN module; the witness (tools/crypto_monocypher_hchacha20_parity_witness.rish) diffing six subkeys byte-for-byte and asserting the draft §2.2.1 anchor. Six lines: the published KAT plus five deterministic (key, input) pairs where the oracle is a second real implementation.
+obs GREEN on the first full pass — line 1 equals the draft §2.2.1 published subkey 82413b42…d3ecdc, all six subkeys agree hex for hex. Gate-free and purely local (draft public vector and deterministic test inputs — no real key, no signature, no network, no funds, no device).
+obs Count guard untouched — crypto/*.rye unchanged; the three new files live in tools/. Docs synced same round: crypto/README.md eleven→twelve rungs and docs/CRYPTO.md eleven→twelve, each naming HChaCha20 the nonce-extension core the flagship folds through. Clean-room held — Monocypher linked, never copied; constant-time timing-safety stays the one named horizon.
+loom witness=crypto_monocypher_hchacha20_parity_witness subkeys=6 anchor=draft_xchacha_v03_2.2.1 result=GREEN
+file tools/fixtures/monocypher_hchacha20_harness.c the vendored Monocypher (crypto_chacha20_h) printing six subkeys, linked never copied
+file tools/monocypher_hchacha20_parity.rye our crypto/xchacha20.rye hchacha20 printing the same six subkeys over identical inputs
+file tools/crypto_monocypher_hchacha20_parity_witness.rish builds both, diffs byte-for-byte, asserts the draft §2.2.1 anchor — GREEN
+file crypto/README.md Monocypher-source parity roster moved eleven→twelve, HChaCha20 appended
+file docs/CRYPTO.md the audit front door moved eleven→twelve, HChaCha20 named
+recommend keep-going a thirteenth Monocypher one-shot (crypto_verify16/32/64 constant-time compare, or the raw ChaCha20 djb 64-bit-nonce stream), or the docs-compression molt that feeds the seed
