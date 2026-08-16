@@ -1,0 +1,403 @@
+//! crypto/secp256k1_ecrecover.rye — Season G (Cryptography): ECDSA public-key RECOVERY on secp256k1 authored in pure Rye — the Ethereum
+//! `ecrecover` primitive, which reads the SENDER of a signature back out of it. Given a message hash z, a signature (r, s), and a one-bit
+//! recovery id, it returns the public key that signed — the exact operation the EVM precompile at address 0x01 performs, and the operation
+//! behind every "Sign in with Ethereum", every EIP-191 personal_sign / EIP-712 typed-data authentication, and the transaction-sender
+//! derivation the whole account model rests on. It composes entirely over the GREEN rungs beneath it — the base field
+//! (crypto/fe_secp256k1.rye), the group law (crypto/secp256k1_group.rye), the scalar ladder (crypto/secp256k1_scalarmul.rye), and the scalar
+//! field modulo the group order n (crypto/secp256k1_scalar.rye) — and adds exactly one new piece of base-field arithmetic: a square root, the
+//! point decompression that lifts R's x back to a curve point. secp256k1 has p ≡ 3 (mod 4), so √a = a^((p+1)/4) by the same fixed
+//! square-and-multiply ladder crypto/fe_secp256k1.rye's inverse walks, over a public exponent. It composes the eth_address rung
+//! (crypto/eth_address.rye) at selftest to show the full ecrecover → sender-address chain.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
+//! Design read: active-designing/20260816-040220_secp256k1-ecrecover.md (this rung's claim) and
+//! active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the priority spine: Rye first, Glow on green Rye).
+//! Kin: crypto/secp256k1_ecdsa.rye (the verifier — recovery is verification run backward, GREEN) · crypto/secp256k1_ecdsa_sign.rye (the
+//! signer whose (r, s) this reads a key out of, GREEN) · crypto/eth_address.rye (the address the recovered key resolves to, GREEN) ·
+//! crypto/fe_secp256k1.rye (the base field whose square root this rung adds, GREEN). secp256k1 is not in Monocypher, so its source parity is
+//! not a rung here; an algebraic round-trip plus Zig's independent std.crypto are the two witnesses (.claude/rules/gratitude-licenses.md).
+//!
+//! THE CRUX — SEC 1 §4.1.6 recovery, exactly. Given (r, s), a message hash z, and a recovery id in {0, 1}: reject unless r and s both lie in
+//! [1, n−1]; take R's x-coordinate to be r (r < n < p, so r is always a canonical field element — no x-overflow case is possible in the
+//! Ethereum domain, and the j = 1 overflow ids 2 and 3 are outside v = 27/28 and refused, exactly as the EVM precompile refuses them);
+//! decompress R by solving y² = x³ + 7 for y and picking the root whose low bit matches the recovery id; fold the hash to a scalar z mod n;
+//! compute r⁻¹ mod n; and recover the public key Q = r⁻¹·(s·R − z·G) over the GREEN ladder and complete group law. The base point G is the
+//! SEC 2 generator, entered as its published big-endian coordinate bytes and parsed through the proven base field, never raw limbs, with
+//! Z = 1. Byte order is the only product with the outside world — the ecosystem encodes r, s, z, and coordinates big-endian while the scalar
+//! field and the ladder walk little-endian, so this file reverses at its boundary and keeps the arithmetic native.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity. In ECDSA RECOVERY every value — r, s, z,
+//! the recovery id, and the recovered key — is PUBLIC (recovery reconstructs a public key from public data; it touches no secret scalar), so
+//! the variable-time square root, inversion, and double-and-add ladder leak nothing that is not already public. This file holds no key and
+//! calls no std.crypto in the primitive. It answers "who signed this?" — never "sign this": signing with a real identity key stays the
+//! custody gate (#3/#4). Parity is proven at selftest against two references runnable now — an algebraic round-trip (for each of Zig's
+//! deterministic key pairs, the (r, s) it signs recovers back to exactly that public key at exactly one recovery id, and the other id does
+//! not; a one-bit tamper of the hash recovers a different key; and the recovered key's Ethereum address matches the key's own) — and Zig's
+//! own std.crypto.ecc.Secp256k1.fromSec1 as an independent point-decompression, byte-for-byte on R's recovered y-coordinate.
+//!
+//! Run from the repository root:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/secp256k1_ecrecover.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const fe = @import("fe_secp256k1.rye");
+const pt = @import("secp256k1_group.rye");
+const mul_pt = @import("secp256k1_scalarmul.rye");
+const sc = @import("secp256k1_scalar.rye");
+const eth = @import("eth_address.rye");
+
+pub const secp256k1_ecrecover_version = "20260816.040220";
+
+/// The one fixed width this rung works in: a 32-byte coordinate, scalar, or hash — the width every secp256k1 value encodes. Named so the
+/// array bounds are a stated constant rather than a literal buried in the walk.
+pub const field_bytes: u32 = 32;
+
+/// The number of bits in the base-field square-root exponent (p+1)/4 — one full 256-bit word walk, most significant bit first.
+pub const sqrt_exponent_bits: u32 = 256;
+
+/// The errors recovery can name — a recovery id outside the supported {0, 1}, an r or s outside [1, n−1], an x with no curve point above it
+/// (the signature's r decompresses to nothing), and the probability-zero recovered point at infinity. Named so a caller reads a word.
+pub const RecoverError = error{
+    UnsupportedRecoveryId,
+    InvalidR,
+    InvalidS,
+    NoPoint,
+    RecoveredInfinity,
+};
+
+/// A recovered public key: the affine coordinates (Qx, Qy), each 32 bytes big-endian — the ecosystem's uncompressed key body (the 64 bytes
+/// after the 0x04 tag), ready to hand to crypto/eth_address.rye or to compare against a claimed key.
+pub const PubKey = struct {
+    qx: [field_bytes]u8,
+    qy: [field_bytes]u8,
+};
+
+/// The x-coordinate of the SEC 2 base point G, big-endian — the published generator of secp256k1's prime-order group, a defining curve
+/// parameter entered as bytes and parsed through the proven base field, never raw limbs.
+const g_x_be = [32]u8{
+    0x79, 0xbe, 0x66, 0x7e, 0xf9, 0xdc, 0xbb, 0xac, 0x55, 0xa0, 0x62, 0x95, 0xce, 0x87, 0x0b, 0x07,
+    0x02, 0x9b, 0xfc, 0xdb, 0x2d, 0xce, 0x28, 0xd9, 0x59, 0xf2, 0x81, 0x5b, 0x16, 0xf8, 0x17, 0x98,
+};
+
+/// The y-coordinate of the SEC 2 base point G, big-endian — the second published generator coordinate, parsed through the proven base field.
+const g_y_be = [32]u8{
+    0x48, 0x3a, 0xda, 0x77, 0x26, 0xa3, 0xc4, 0x65, 0x5d, 0xa4, 0xfb, 0xfc, 0x0e, 0x11, 0x08, 0xa8,
+    0xfd, 0x17, 0xb4, 0x48, 0xa6, 0x85, 0x54, 0x19, 0x9c, 0x47, 0xd0, 0x8f, 0xfb, 0x10, 0xd4, 0xb8,
+};
+
+/// The base-field square-root exponent (p+1)/4 for p = 2²⁵⁶ − 2³² − 977, as eight 32-bit words LOW word first — the same layout
+/// crypto/fe_secp256k1.rye's inverse exponent uses. Because p ≡ 3 (mod 4), √a = a^((p+1)/4) whenever a is a quadratic residue, and
+/// (p+1)/4 = 2²⁵⁴ − 2³⁰ − 244 = 0x3FFFFFFF_FFFFFFFF_FFFFFFFF_FFFFFFFF_FFFFFFFF_FFFFFFFF_FFFFFFFF_BFFFFF0C. Derived from p's defining form,
+/// a public curve constant, never a secret.
+const sqrt_exp = [8]u32{ 0xBFFFFF0C, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x3FFFFFFF };
+
+/// The field element 1 — the projective Z of an affine point (x, y) lifted to (X : Y : 1).
+fn fe_one() fe.Field {
+    return fe.Field{ .l = .{ 1, 0, 0, 0, 0, 0, 0, 0 } };
+}
+
+/// The field element 0 — the additive identity, used to negate a field element as 0 − a = p − a (the other square root).
+fn fe_zero() fe.Field {
+    return fe.Field{ .l = .{ 0, 0, 0, 0, 0, 0, 0, 0 } };
+}
+
+/// The base point G in projective coordinates (Gx : Gy : 1), built from its published big-endian coordinate bytes through the proven base
+/// field. G is a finite generator, so Z = 1 ≠ 0 — the ladder never sees infinity from this seed.
+fn base_point() pt.Point {
+    const g = pt.Point{ .x = fe.from_bytes(&g_x_be), .y = fe.from_bytes(&g_y_be), .z = fe_one() };
+    // invariant: the base point is finite — its projective Z is exactly 1, never the point at infinity.
+    assert(g.z.l[0] == 1 and g.z.l[7] == 0);
+    return g;
+}
+
+/// Reverse a 32-byte encoding between big-endian (the ecosystem convention for r, s, z, and coordinates) and little-endian (the order the
+/// scalar field and the ladder walk). The boundary courtesy this file keeps so the arithmetic stays in its native order.
+fn reverse32(s: *const [32]u8) [32]u8 {
+    var r: [32]u8 = undefined;
+    var i: u32 = 0;
+    while (i < field_bytes) : (i += 1) {
+        // invariant: source and mirror index both stay inside the 32-byte width.
+        assert(i < field_bytes and (field_bytes - 1 - i) < field_bytes);
+        r[i] = s[field_bytes - 1 - i];
+    }
+    return r;
+}
+
+/// True when a 32-byte encoding is all zero — the below-1 half of the [1, n−1] range gate, and the point-at-infinity test on a packed Z.
+fn is_zero32(s: *const [32]u8) bool {
+    var acc: u8 = 0;
+    var i: u32 = 0;
+    while (i < field_bytes) : (i += 1) acc |= s[i];
+    return acc == 0;
+}
+
+/// True when two 32-byte encodings are equal, compared without an early return so the compare is data-independent.
+fn eq32(a: *const [32]u8, b: *const [32]u8) bool {
+    var diff: u8 = 0;
+    var i: u32 = 0;
+    while (i < field_bytes) : (i += 1) diff |= a[i] ^ b[i];
+    return diff == 0;
+}
+
+/// Fold a big-endian 32-byte value modulo the group order n into a canonical little-endian scalar — the hash-to-scalar step, the same
+/// reduction the verifier and signer run. The big-endian value is reversed into the low 32 bytes of a 64-byte little-endian buffer, then reduced.
+fn hash_to_scalar(be: *const [32]u8) [32]u8 {
+    const le = reverse32(be);
+    var wide = [_]u8{0} ** 64;
+    var i: u32 = 0;
+    while (i < field_bytes) : (i += 1) {
+        // invariant: the reversed value lands entirely in the low half of the wide buffer.
+        assert(i < 64);
+        wide[i] = le[i];
+    }
+    return sc.reduce(&wide);
+}
+
+/// The base-field square root √a = a^((p+1)/4), by the fixed square-and-multiply ladder over the public exponent, MSB→LSB — the same walk
+/// crypto/fe_secp256k1.rye's inverse uses for a^(p−2). For a quadratic residue a this returns a genuine root (its own negation is the other);
+/// for a non-residue it returns a value whose square is −a, which the caller checks and rejects. Composes only the GREEN base-field mul/square.
+fn fe_sqrt(a: fe.Field) fe.Field {
+    var r = fe_one();
+    var word: i32 = 7;
+    // invariant: the outer loop walks all eight 32-bit words of the exponent, most significant first.
+    while (word >= 0) : (word -= 1) {
+        var bit: i32 = 31;
+        while (bit >= 0) : (bit -= 1) {
+            r = fe.square(r);
+            const set = (sqrt_exp[@as(u32, @intCast(word))] >> @as(u5, @intCast(bit))) & 1;
+            if (set == 1) r = fe.mul(r, a);
+        }
+    }
+    return r;
+}
+
+/// Decompress the curve point above x with the given low-bit parity: solve y² = x³ + 7 in the base field, take a square root, verify it, and
+/// return the root whose canonical big-endian low bit equals `y_parity`. Returns error.NoPoint when x lifts to no curve point (the candidate
+/// root squares to something other than x³ + 7). x arrives big-endian; the returned y is big-endian. This is the one new base-field arithmetic
+/// this rung adds, and it is public: x is a signature's r, never a secret.
+pub fn decompress(x_be: *const [32]u8, y_parity: u8) RecoverError![field_bytes]u8 {
+    const x = fe.from_bytes(x_be);
+    const b7 = fe.Field{ .l = .{ 7, 0, 0, 0, 0, 0, 0, 0 } }; // the curve constant b = 7
+    const alpha = fe.add(fe.mul(fe.square(x), x), b7); // x³ + 7
+    const beta = fe_sqrt(alpha);
+    // invariant: a genuine root satisfies beta² = alpha; if it does not, x is not an abscissa on the curve.
+    if (!eq32(&fe.to_bytes(fe.square(beta)), &fe.to_bytes(alpha))) return error.NoPoint;
+    const beta_be = fe.to_bytes(beta);
+    // The two roots are beta and p − beta, of opposite parity. Pick the one whose low bit matches the requested parity.
+    if ((beta_be[field_bytes - 1] & 1) == (y_parity & 1)) return beta_be;
+    return fe.to_bytes(fe.sub(fe_zero(), beta)); // p − beta, the opposite-parity root
+}
+
+/// Recover the public key that produced an ECDSA signature (r, s) over a message hash, given a recovery id in {0, 1} (the low bit of R's
+/// y-coordinate — Ethereum's v = 27 → 0, v = 28 → 1). Every argument is big-endian. Returns the affine public key Q = r⁻¹·(s·R − z·G).
+/// Composes only the GREEN base field, point ladder, group law, and scalar field, plus this file's base-field square root — no std.crypto,
+/// no secret, no new curve cryptography beyond the decompression.
+pub fn recover(
+    hash_be: *const [32]u8,
+    r_be: *const [32]u8,
+    s_be: *const [32]u8,
+    recovery_id: u8,
+) RecoverError!PubKey {
+    // invariant: only the Ethereum-valid recovery ids 0 and 1 are supported; the j = 1 overflow ids 2 and 3 are outside v = 27/28 and refused.
+    if (recovery_id > 1) return error.UnsupportedRecoveryId;
+
+    const r_le = reverse32(r_be);
+    const s_le = reverse32(s_be);
+    // r and s must lie in [1, n−1], exactly as verification requires — a signature out of range recovers nothing.
+    if (!sc.is_canonical(&r_le) or is_zero32(&r_le)) return error.InvalidR;
+    if (!sc.is_canonical(&s_le) or is_zero32(&s_le)) return error.InvalidS;
+
+    // R has x-coordinate r (r < n < p, so r is a canonical field element) and the y-parity named by the recovery id.
+    const ry_be = try decompress(r_be, recovery_id);
+    const r_point = pt.Point{ .x = fe.from_bytes(r_be), .y = fe.from_bytes(&ry_be), .z = fe_one() };
+
+    // z = hash mod n; r⁻¹ mod n.
+    const z_le = hash_to_scalar(hash_be);
+    const r_inv = sc.invert(&r_le);
+
+    // Q = r⁻¹·(s·R − z·G) — the two ladder points subtracted over the complete group law, then scaled by r⁻¹.
+    const s_r = mul_pt.scalarmul(r_point, &s_le);
+    const z_g = mul_pt.scalarmul(base_point(), &z_le);
+    const diff = pt.sub(s_r, z_g);
+    const q = mul_pt.scalarmul(diff, &r_inv);
+
+    // A recovered point at infinity has no affine coordinates — refused before the affine read (which would invert Z = 0).
+    const z_bytes = fe.to_bytes(q.z);
+    if (is_zero32(&z_bytes)) return error.RecoveredInfinity;
+
+    // invariant: Q is finite here, so both affine reads are well-defined single inversions of the same Z.
+    return PubKey{ .qx = pt.affine_x(q), .qy = pt.affine_y(q) };
+}
+
+// ---- selftest ----------------------------------------------------------------------------------------------------------------------
+
+/// Independent references: Zig's own std.crypto ECDSA over secp256k1 with SHA-256 (the ground-truth signer and key), the curve itself (for an
+/// independent point decompression via fromSec1), and SHA-256. Used ONLY inside the selftest; the primitive above never calls them.
+const ZEcdsa = std.crypto.sign.ecdsa.EcdsaSecp256k1Sha256;
+const ZCurve = std.crypto.ecc.Secp256k1;
+const Sha256 = std.crypto.hash.sha2.Sha256;
+
+fn pubkey_eq(a: *const PubKey, qx: *const [32]u8, qy: *const [32]u8) bool {
+    return eq32(&a.qx, qx) and eq32(&a.qy, qy);
+}
+
+fn run_selftest() !u8 {
+    // 0. Unsupported recovery ids are refused: only 0 and 1 are Ethereum-valid.
+    {
+        const any = [_]u8{1} ** 32;
+        if (recover(&any, &any, &any, 2)) |_| return error.RecoveryId2Accepted else |err| {
+            if (err != error.UnsupportedRecoveryId) return error.WrongRecoveryIdError;
+        }
+    }
+
+    // 1. Independent point-decompression parity: for each of Zig's deterministic public keys, decompress its own x at its own y-parity and
+    //    match Zig's fromSec1 byte-for-byte — the direct witness of this rung's new base-field square root.
+    {
+        var seed_byte: u8 = 1;
+        while (seed_byte <= 8) : (seed_byte += 1) {
+            const seed = [_]u8{seed_byte} ** 32;
+            const kp = try ZEcdsa.KeyPair.generateDeterministic(seed);
+            const aff = kp.public_key.p.affineCoordinates();
+            const qx = aff.x.toBytes(.big);
+            const qy = aff.y.toBytes(.big);
+            const parity: u8 = qy[31] & 1;
+
+            const ours_y = try decompress(&qx, parity);
+            if (!eq32(&ours_y, &qy)) return error.DecompressYMismatch;
+
+            // Zig's independent decompression from the SEC1 compressed encoding (0x02 even / 0x03 odd || x).
+            var sec1: [33]u8 = undefined;
+            sec1[0] = if (parity == 0) 0x02 else 0x03;
+            var j: u32 = 0;
+            while (j < 32) : (j += 1) sec1[1 + j] = qx[j];
+            const zp = try ZCurve.fromSec1(&sec1);
+            const zaff = zp.affineCoordinates();
+            if (!eq32(&ours_y, &zaff.y.toBytes(.big))) return error.DecompressRefMismatch;
+
+            // The opposite parity yields the other root, p − y, never the same y.
+            const other_y = try decompress(&qx, parity ^ 1);
+            if (eq32(&other_y, &qy)) return error.OppositeParitySameRoot;
+        }
+    }
+
+    // 2. Full recovery round-trip: for each Zig deterministic key pair and message, the (r, s) Zig signs recovers back to exactly that public
+    //    key at exactly one recovery id, the other id does not, a tampered hash recovers a different key, and the recovered key's Ethereum
+    //    address matches the key's own.
+    {
+        const messages = [_][]const u8{
+            "",
+            "a",
+            "secp256k1 ecrecover parity",
+            "The quick brown fox jumps over the lazy dog",
+            "Grain — reading the sender back out of a signature, in the open",
+        };
+
+        var seed_byte: u8 = 1;
+        while (seed_byte <= 8) : (seed_byte += 1) {
+            const seed = [_]u8{seed_byte} ** 32;
+            const kp = try ZEcdsa.KeyPair.generateDeterministic(seed);
+            const aff = kp.public_key.p.affineCoordinates();
+            const qx = aff.x.toBytes(.big);
+            const qy = aff.y.toBytes(.big);
+
+            for (messages) |msg| {
+                const sig = try kp.sign(msg, null); // deterministic signature
+                const sb = sig.toBytes(); // r || s, big-endian
+                var r_be: [32]u8 = undefined;
+                var s_be: [32]u8 = undefined;
+                var j: u32 = 0;
+                while (j < 32) : (j += 1) {
+                    r_be[j] = sb[j];
+                    s_be[j] = sb[32 + j];
+                }
+
+                var h: [32]u8 = undefined;
+                Sha256.hash(msg, &h, .{});
+
+                // Exactly one recovery id recovers the true public key.
+                var matches: u32 = 0;
+                var found_id: u8 = 0;
+                var id: u8 = 0;
+                while (id <= 1) : (id += 1) {
+                    if (recover(&h, &r_be, &s_be, id)) |q| {
+                        if (pubkey_eq(&q, &qx, &qy)) {
+                            matches += 1;
+                            found_id = id;
+                        }
+                    } else |_| {}
+                }
+                if (matches != 1) return error.RecoveryIdNotUnique;
+
+                // The other recovery id does not recover the true key.
+                const other_id: u8 = found_id ^ 1;
+                if (recover(&h, &r_be, &s_be, other_id)) |q2| {
+                    if (pubkey_eq(&q2, &qx, &qy)) return error.WrongIdRecoveredTrueKey;
+                } else |_| {}
+
+                // A one-bit tamper of the hash recovers a different key (or none) — never the true signer.
+                {
+                    var th = h;
+                    th[0] ^= 1;
+                    if (recover(&th, &r_be, &s_be, found_id)) |qt| {
+                        if (pubkey_eq(&qt, &qx, &qy)) return error.TamperedHashRecoveredTrueKey;
+                    } else |_| {}
+                }
+
+                // The recovered key resolves to the same Ethereum address as the key itself — the ecrecover → sender chain, end to end.
+                {
+                    const q = try recover(&h, &r_be, &s_be, found_id);
+                    var pub64: [64]u8 = undefined;
+                    var t: u32 = 0;
+                    while (t < 32) : (t += 1) {
+                        pub64[t] = q.qx[t];
+                        pub64[32 + t] = q.qy[t];
+                    }
+                    var true64: [64]u8 = undefined;
+                    t = 0;
+                    while (t < 32) : (t += 1) {
+                        true64[t] = qx[t];
+                        true64[32 + t] = qy[t];
+                    }
+                    const rec_addr = try eth.address_from_pubkey(&pub64);
+                    const true_addr = try eth.address_from_pubkey(&true64);
+                    if (!eq32_addr(&rec_addr, &true_addr)) return error.RecoveredAddressMismatch;
+                }
+            }
+        }
+    }
+
+    print("GREEN crypto-secp256k1-ecrecover: ECDSA public-key RECOVERY on secp256k1 authored in pure Rye — the Ethereum ecrecover primitive, " ++
+        "the EVM precompile at 0x01 that reads the SENDER back out of a signature (every Sign-in-with-Ethereum, every EIP-191/712 " ++
+        "authentication, every transaction-sender derivation). Given a message hash z, a signature (r, s), and a recovery id of 0 or 1, it " ++
+        "refuses unless r and s lie in [1, n−1], takes R's x to be r (r < n < p, always canonical — the j = 1 overflow ids 2 and 3 are " ++
+        "outside v = 27/28 and refused exactly as the precompile refuses them), decompresses R by solving y² = x³ + 7 and picking the root " ++
+        "whose low bit matches the recovery id, folds the hash to a scalar mod n, computes r⁻¹ mod n, and recovers Q = r⁻¹·(s·R − z·G) over " ++
+        "the GREEN ladder and complete group law. Composed over the GREEN base field (crypto/fe_secp256k1.rye), group law " ++
+        "(crypto/secp256k1_group.rye), scalar ladder (crypto/secp256k1_scalarmul.rye), and scalar field (crypto/secp256k1_scalar.rye), it " ++
+        "adds exactly one new base-field arithmetic — a square root √a = a^((p+1)/4), valid because p ≡ 3 (mod 4), by the same fixed " ++
+        "square-and-multiply ladder the base field's inverse walks over a public exponent. The base point G is the SEC 2 generator parsed " ++
+        "through the proven base field, never raw limbs. The primitive calls no std.crypto. Parity holds against an algebraic round-trip " ++
+        "(each of Zig's deterministic key pairs recovers back from its own (r, s) at exactly one recovery id and not the other; a one-bit " ++
+        "tamper of the hash recovers a different key; the recovered key's Ethereum address matches the key's own) AND our authored base-field " ++
+        "decompression equals Zig's independent std.crypto.ecc.Secp256k1.fromSec1 byte-for-byte on R's recovered y across eight deterministic " ++
+        "keys. secp256k1 is not in Monocypher, so the two witnesses are the round-trip and Zig's std.crypto. Purely local — in RECOVERY every " ++
+        "value (r, s, z, the recovery id, the recovered key) is PUBLIC, so the variable-time arithmetic leaks no secret; it answers 'who " ++
+        "signed this?', never 'sign this' — signing with a real identity key stays the custody gate (#3/#4). No real key, no signing, no " ++
+        "network, no funds, no real device. The secp256k1 tower now makes, checks, AND reads the sender out of a signature — the whole " ++
+        "Ethereum account model's foundation, authored in the open and checked against the world.\n", .{});
+    return 0;
+}
+
+/// True when two 20-byte Ethereum addresses are equal, without an early return.
+fn eq32_addr(a: *const [20]u8, b: *const [20]u8) bool {
+    var diff: u8 = 0;
+    var i: u32 = 0;
+    while (i < 20) : (i += 1) diff |= a[i] ^ b[i];
+    return diff == 0;
+}
+
+pub fn main(init_args: std.process.Init) !u8 {
+    _ = init_args;
+    return run_selftest();
+}

@@ -19,7 +19,7 @@ a message: **Kumara** identity, **Vault** sealed storage, **Comlink** sessions, 
 the **Lotus** signed carry. It authors the mathematics once, in the open, so a hand
 placing trust in it can read exactly what it does.
 
-## The thirty-seven files — thirty-three primitives and four compositions
+## The thirty-eight files — thirty-four primitives and four compositions
 
 Built in dependency order: each rung stands on the GREEN rungs beneath it, none
 authoring cryptography a lower rung had not already proven.
@@ -86,6 +86,7 @@ authoring cryptography a lower rung had not already proven.
 | [`secp256k1_scalar.rye`](secp256k1_scalar.rye) | Arithmetic modulo the group order n — reduce, multiply, invert (Fermat), is_canonical; n built from its defining form, never a pasted limb. Parity against Zig's `std.crypto.ecc.Secp256k1.scalar` | secp256k1 (SEC 2) · Fermat |
 | [`secp256k1_ecdsa.rye`](secp256k1_ecdsa.rye) | ECDSA signature **verification** — the scheme Bitcoin and Ethereum sign with, composed over the tower above, with an added on-curve check that refuses an off-curve key. Every value is public, so verification is non-gated; signing stays the custody gate. Parity against Zig's `std.crypto.sign.ecdsa.EcdsaSecp256k1Sha256`, true-for-true and false-for-false | SEC 1 · secp256k1 (SEC 2) |
 | [`secp256k1_ecdsa_sign.rye`](secp256k1_ecdsa_sign.rye) | ECDSA signature **signing** — the rung that completes the scheme, deriving a deterministic per-message nonce (Zig's null-noise RFC 6979 DRBG, reproduced exactly) and emitting (r, s) **byte-identical** to Zig's. Signs only with a caller-supplied **test** key; the maintainer's identity key stays the custody gate, constant-time signing the named horizon. Parity is an algebraic round-trip through the verifier plus Zig's `EcdsaSecp256k1Sha256` signature byte-for-byte | RFC 6979 · SEC 1 · secp256k1 (SEC 2) |
+| [`secp256k1_ecrecover.rye`](secp256k1_ecrecover.rye) | ECDSA public-key **recovery** — the Ethereum `ecrecover` primitive (the EVM precompile at address `0x01`) that reads the **sender** back out of a signature: the operation behind every Sign-in-with-Ethereum, every EIP-191/712 authentication, and every transaction-sender derivation the account model rests on. Given (r, s), a recovery id of 0 or 1, and the hash, it recovers Q = r⁻¹·(s·R − z·G), adding exactly one new base-field arithmetic — a square root √a = a^((p+1)/4) for point decompression, valid because p ≡ 3 (mod 4). Recovery touches only public values, so it is non-gated; it answers *who signed this?*, never *sign this*. Parity is an algebraic round-trip (each key recovers back from its own signature at exactly one recovery id) plus Zig's `Secp256k1.fromSec1` decompression byte-for-byte | SEC 1 §4.1.6 · secp256k1 (SEC 2) · EIP-191/712 |
 
 ### Compositions (no new cryptography — proven stones assembled)
 
@@ -109,7 +110,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 ```
 
 [`../tools/crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) runs all
-thirty-six per-file witnesses in the dependency order above, rebuilding and reproving
+thirty-eight per-file witnesses in the dependency order above, rebuilding and reproving
 each from source, and refuses whole — naming the file that stopped it — the moment
 any one goes RED, and then runs the **count guard**
 ([`../tools/crypto_count_guard_witness.rish`](../tools/crypto_count_guard_witness.rish)) —
