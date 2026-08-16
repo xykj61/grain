@@ -1,0 +1,222 @@
+//! crypto/eth_address.rye — Season G (Cryptography): the Ethereum address and its EIP-55 mixed-case checksum, authored in pure Rye as a
+//! composition over the GREEN Keccak-256 in crypto/keccak256.rye. This is the thing Keccak-256 exists for in the Ethereum world: an account
+//! address is the low twenty bytes of the Keccak-256 of an uncompressed secp256k1 public key, and the human-facing form of that address is
+//! EIP-55 — the same forty hex characters, but with each letter upper- or lower-cased by a bit of the Keccak-256 of the lowercase address
+//! string, so a mistyped or corrupted address almost always fails the case pattern before a value is ever sent to a wrong destination.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready). This rung authors NO new
+//! cryptography: it composes one already-GREEN stone — Keccak-256 proven in crypto/keccak256.rye against the canonical known-answers and
+//! Zig's independent std.crypto — into the address derivation and the EIP-55 checksum, the natural next rung crypto/keccak256.rye's own note
+//! named. It is the Ethereum sibling of encoding/base58check.rye, which wears the self-verifying envelope for the Bitcoin world.
+//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+//! Kin: crypto/keccak256.rye (the hash this composes) · encoding/base58check.rye (the Bitcoin-world self-verifying address). Clean-room: the
+//! address rule and the EIP-55 checksum algorithm are Ethereum's own public standard; the composition is ours, standing on our own
+//! parity-GREEN Keccak-256, never a copied line (.claude/rules/gratitude-licenses.md).
+//!
+//! THE CRUX — address_from_pubkey hashes the 64-byte public key (x‖y) with the GREEN Keccak-256 and keeps the low twenty bytes; to_checksummed
+//! renders those twenty bytes as forty lowercase hex characters, hashes that lowercase string with the same Keccak-256, and uppercases every
+//! hex LETTER whose corresponding hash nibble is 8 or greater. Digits never change case; the "0x" prefix is fixed. No arithmetic of our own —
+//! every hash is the permutation crypto/keccak256.rye already proved on metal.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no key, no network, no funds, no real device. The composition calls no std.crypto; it stands on
+//! our own GREEN keccak256.rye. Parity is proven at selftest against published references anyone can replay: the four canonical EIP-55
+//! reference addresses from the standard, an all-caps-eligible and an all-lower-eligible mix among them, plus the end-to-end Mastering
+//! Ethereum worked example — the 64-byte public key 6e145c…32ccd0 derives the address 001d3f…ba0f9 and checksums to
+//! 0x001d3F1ef827552Ae1114027BD3ECF1f086bA0F9, character for character. Constant-time timing-safety stays a separate named horizon (an address
+//! and its checksum are public data, data-independent by construction; the note lives in crypto/CONSTANT_TIME.md).
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/eth_address.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const keccak = @import("keccak256.rye");
+
+pub const eth_address_version = "20260816.000000";
+
+/// The fixed shapes of the Ethereum address world. A public key is 64 bytes (the x‖y affine coordinates, the 0x04 uncompressed prefix
+/// already stripped); an address is 20 bytes; the checksummed text form is "0x" plus 40 hex characters = 42 bytes.
+pub const pubkey_bytes: u32 = 64;
+pub const address_bytes: u32 = 20;
+pub const checksummed_bytes: u32 = 42;
+
+/// The faults this composition can raise, each refused at the edge before a partial result escapes.
+pub const EthAddressError = error{
+    /// A public key whose length is not exactly 64 bytes — refused before hashing.
+    BadPubkeyLength,
+    /// An address whose length is not exactly 20 bytes — refused before rendering.
+    BadAddressLength,
+    /// A destination buffer smaller than the 42-byte checksummed form — refused before the first write.
+    OutTooSmall,
+};
+
+/// Derive the 20-byte Ethereum address from a 64-byte uncompressed public key: the low twenty bytes of its Keccak-256. Composes the GREEN
+/// crypto/keccak256.rye; authors no hash of its own.
+pub fn address_from_pubkey(pubkey: []const u8) EthAddressError![address_bytes]u8 {
+    // invariant: an address is derived from exactly the 64-byte public key (x‖y), the 0x04 uncompressed prefix already stripped.
+    if (pubkey.len != pubkey_bytes) return error.BadPubkeyLength;
+    // invariant: 64 bytes is far below the hash's own maximum, so the digest cannot fail the length bound — the catch is unreachable.
+    comptime assert(pubkey_bytes <= keccak.max_message_bytes);
+    const digest = keccak.hash256(pubkey) catch unreachable;
+    // invariant: the address is the LOW twenty bytes of the 32-byte digest — bytes 12..32, not the high twenty.
+    comptime assert(keccak.digest_256 == 32 and address_bytes == 20);
+    var out: [address_bytes]u8 = undefined;
+    var i: u32 = 0;
+    while (i < address_bytes) : (i += 1) out[i] = digest[12 + i];
+    return out;
+}
+
+/// Render a 20-byte address in EIP-55 mixed-case checksummed form into out (which must hold at least 42 bytes): "0x" followed by forty hex
+/// characters, each letter cased by a nibble of the Keccak-256 of the lowercase address string. Composes the GREEN crypto/keccak256.rye.
+pub fn to_checksummed(addr: []const u8, out: []u8) EthAddressError!void {
+    // invariant: an Ethereum address is exactly twenty bytes.
+    if (addr.len != address_bytes) return error.BadAddressLength;
+    // invariant: the checksummed form is "0x" + forty hex characters = forty-two bytes; refuse a short destination before any write.
+    if (out.len < checksummed_bytes) return error.OutTooSmall;
+
+    const hexchars = "0123456789abcdef";
+
+    // Lay out the forty lowercase hex characters of the address — the exact string EIP-55 hashes for its case mask.
+    var lower: [address_bytes * 2]u8 = undefined;
+    var i: u32 = 0;
+    while (i < address_bytes) : (i += 1) {
+        lower[i * 2] = hexchars[addr[i] >> 4];
+        lower[i * 2 + 1] = hexchars[addr[i] & 0x0f];
+    }
+
+    // invariant: the case mask is the Keccak-256 of the forty-character lowercase string; forty bytes is within the hash bound.
+    comptime assert(address_bytes * 2 <= keccak.max_message_bytes);
+    const mask = keccak.hash256(&lower) catch unreachable;
+
+    out[0] = '0';
+    out[1] = 'x';
+    i = 0;
+    while (i < address_bytes * 2) : (i += 1) {
+        var c = lower[i];
+        // The i-th nibble of the mask: the high nibble of mask[i/2] on even i, the low nibble on odd i.
+        const nibble: u8 = if (i & 1 == 0) (mask[i / 2] >> 4) else (mask[i / 2] & 0x0f);
+        // EIP-55: uppercase a hex LETTER (a..f) whose mask nibble is 8 or greater; digits and the prefix never change.
+        if (c >= 'a' and c <= 'f' and nibble >= 8) c = c - 32;
+        out[2 + i] = c;
+    }
+    // invariant: the prefix is written and the full forty-two bytes are populated.
+    assert(out[0] == '0' and out[1] == 'x');
+}
+
+// ---- selftest references: published values anyone with a Keccak-256 can replay ----
+
+// The four canonical EIP-55 reference addresses from the standard, in their checksummed form (without the "0x" prefix). Each is its own
+// known-answer: hashing the lowercase of these forty characters and applying the case rule must reproduce them character for character.
+const eip55_vectors = [_][]const u8{
+    "5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed",
+    "fB6916095ca1df60bB79Ce92cE3Ea74c37c5d359",
+    "dbF03B407c01E7cD3CBea99509d93f8DDDC8C6FB",
+    "D1220A0cf47c7B9Be7A2E6BA89F429762e7b9aDb",
+};
+
+// The end-to-end Mastering Ethereum worked example: a 64-byte public key, the 20-byte address it derives, and that address in EIP-55 form.
+const me_pubkey_hex = "6e145ccef1033dea239875dd00dfb4fee6e3348b84985c92f103444683bae07b83b5c38e5e2b0c8529d7fa3f64d46daa1ece2d9ac14cab9477d042c84c32ccd0";
+const me_address_lower = "001d3f1ef827552ae1114027bd3ecf1f086ba0f9";
+const me_checksummed = "0x001d3F1ef827552Ae1114027BD3ECF1f086bA0F9";
+
+/// Decode a lowercase-or-mixed hex string into out (out.len == hex.len / 2). Selftest-only helper.
+fn hex_decode(hex: []const u8, out: []u8) void {
+    // invariant: two hex characters render one byte.
+    assert(out.len * 2 == hex.len);
+    var i: u32 = 0;
+    const n: u32 = @intCast(out.len);
+    while (i < n) : (i += 1) {
+        out[i] = (nib(hex[i * 2]) << 4) | nib(hex[i * 2 + 1]);
+    }
+}
+
+fn nib(c: u8) u8 {
+    if (c >= '0' and c <= '9') return c - '0';
+    if (c >= 'a' and c <= 'f') return c - 'a' + 10;
+    if (c >= 'A' and c <= 'F') return c - 'A' + 10;
+    return 0;
+}
+
+/// Compare two byte spans for exact equality.
+fn bytes_eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    const n: u32 = @intCast(a.len);
+    while (i < n) : (i += 1) if (a[i] != b[i]) return false;
+    return true;
+}
+
+/// Lowercase a hex character (a..f/A..F), leaving digits untouched — used to build the EIP-55 input from a checksummed vector.
+fn to_lower(c: u8) u8 {
+    if (c >= 'A' and c <= 'F') return c + 32;
+    return c;
+}
+
+fn run_selftest() !u8 {
+    // 1. The four canonical EIP-55 reference addresses: lowercasing each, decoding to twenty bytes, and re-checksumming must reproduce the
+    //    published mixed-case string character for character.
+    {
+        for (eip55_vectors) |want| {
+            var lower_hex: [40]u8 = undefined;
+            var j: u32 = 0;
+            while (j < 40) : (j += 1) lower_hex[j] = to_lower(want[j]);
+            var addr: [address_bytes]u8 = undefined;
+            hex_decode(&lower_hex, &addr);
+            var got: [checksummed_bytes]u8 = undefined;
+            try to_checksummed(&addr, &got);
+            // got holds "0x" + 40 checksummed characters; compare the 40 against the published vector.
+            if (!bytes_eq(got[2..checksummed_bytes], want)) return error.Eip55Mismatch;
+        }
+    }
+
+    // 2. The end-to-end Mastering Ethereum example: the 64-byte public key derives the expected 20-byte address, and that address checksums
+    //    to the published EIP-55 string — proof address_from_pubkey and to_checksummed compose correctly over Keccak-256.
+    {
+        var pubkey: [pubkey_bytes]u8 = undefined;
+        hex_decode(me_pubkey_hex, &pubkey);
+        const addr = try address_from_pubkey(&pubkey);
+
+        var want_addr: [address_bytes]u8 = undefined;
+        hex_decode(me_address_lower, &want_addr);
+        if (!bytes_eq(&addr, &want_addr)) return error.AddressMismatch;
+
+        var got: [checksummed_bytes]u8 = undefined;
+        try to_checksummed(&addr, &got);
+        if (!bytes_eq(&got, me_checksummed)) return error.ChecksummedMismatch;
+    }
+
+    // 3. The bounds refuse malformed inputs before any partial result escapes: a short public key, a wrong-length address, a too-small
+    //    destination buffer.
+    {
+        var short: [pubkey_bytes - 1]u8 = undefined;
+        if (address_from_pubkey(&short)) |_| return error.ShortPubkeySlipped else |err| if (err != error.BadPubkeyLength) return error.WrongPubkeyErr;
+
+        var badaddr: [address_bytes + 1]u8 = undefined;
+        var big: [checksummed_bytes]u8 = undefined;
+        if (to_checksummed(&badaddr, &big)) |_| return error.BadAddrSlipped else |err| if (err != error.BadAddressLength) return error.WrongAddrErr;
+
+        var okaddr: [address_bytes]u8 = undefined;
+        var tiny: [checksummed_bytes - 1]u8 = undefined;
+        if (to_checksummed(&okaddr, &tiny)) |_| return error.SmallOutSlipped else |err| if (err != error.OutTooSmall) return error.WrongOutErr;
+    }
+
+    print("GREEN crypto-eth-address: the Ethereum address and its EIP-55 mixed-case checksum, authored in pure Rye as a composition over the " ++
+        "GREEN Keccak-256 in crypto/keccak256.rye — the thing that hash exists for in the Ethereum world. address_from_pubkey keeps the low " ++
+        "twenty bytes of the Keccak-256 of the 64-byte public key; to_checksummed renders those bytes as forty lowercase hex characters, " ++
+        "hashes that string with the same Keccak-256, and uppercases every hex LETTER whose corresponding hash nibble is 8 or greater, so a " ++
+        "corrupted address almost always breaks the case pattern before a value is sent to a wrong destination. This rung authors no new " ++
+        "cryptography: every hash is the permutation crypto/keccak256.rye already proved on metal. Parity holds against published references " ++
+        "anyone can replay: the four canonical EIP-55 reference addresses from the standard reproduce character for character, and the " ++
+        "end-to-end Mastering Ethereum worked example — the 64-byte public key 6e145c…32ccd0 derives address 001d3f…ba0f9 and checksums to " ++
+        "0x001d3F1ef827552Ae1114027BD3ECF1f086bA0F9. A short public key refuses BadPubkeyLength, a wrong-length address BadAddressLength, a " ++
+        "too-small destination OutTooSmall — each before a partial result escapes. Purely local — no std.crypto in the composition, no key, " ++
+        "no network, no funds, no real device; constant-time timing-safety stays a separate named horizon. Season G's Ethereum address now " ++
+        "stands in our own Rye, beside the Bitcoin-world self-verifying address of encoding/base58check.rye.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

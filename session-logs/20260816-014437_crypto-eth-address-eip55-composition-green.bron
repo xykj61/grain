@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260816.014437
+editor Zed
+model Fable 5
+voice Kyri
+host cloud bench — Eastern (EDT) time convention
+title crypto/eth_address.rye — Ethereum address + EIP-55 checksum, composition, parity-GREEN
+prompt read REMEMBER + the three road docs; take the next agent-doable lap Lindy-first crux-first, Rye-first; approve own design rounds; send each finished increment as its own signed round; stop only at custody gates
+think Read the three road docs. Season G (Cryptography) is the actively-climbed thread — one primitive/encoding per signed round, each parity-GREEN in pure Rye. The 1024-round itinerary and the decision-wave both order by Lindy-first crux-first; Rye is prioritized, Glow stands on green-witnessed Rye.
+think Crux choice: keccak256.rye landed but nothing yet USES it for its primary Ethereum purpose. crypto/keccak256.rye's own banner names EIP-55 mixed-case checksum as the natural next rung. An Ethereum address = low 20 bytes of Keccak-256(pubkey); its human form is EIP-55. Pure composition over one GREEN stone, no new cryptography, canonical vectors exist — the crux that proves keccak256 does its job.
+think Placed in crypto/ (a composition, like signed_carry/sealed_session/vault_seal) rather than encoding/, so keccak256.rye is a natural sibling import — no cross-dir symlink cascade (keccak256 imports sha3, both in crypto/).
+think address_from_pubkey keeps digest[12..32]; to_checksummed renders 40 lowercase hex, hashes that string with the same Keccak-256, uppercases each hex LETTER whose i-th mask nibble (high on even i, low on odd) is >= 8. Digits and the 0x prefix never change.
+obs GREEN on the first metal build — both the four canonical EIP-55 reference addresses AND the end-to-end Mastering Ethereum worked example (pubkey 6e145c…32ccd0 -> address 001d3f…ba0f9 -> 0x001d3F1ef827552Ae1114027BD3ECF1f086bA0F9) verified, which independently confirms the recalled vectors were correct.
+obs Bounds refuse BadPubkeyLength / BadAddressLength / OutTooSmall before any partial result escapes; contract asserts and // invariant: on every function; no new @memcpy; opening triad present.
+obs Registered in crypto_suite_witness after vault_seal; corrected the suite's hardcoded split to twenty-five primitives + four compositions (29 files). crypto/README.md count 28->29, compositions table +eth_address, suite-witness narrative updated. Whole crypto_suite_witness GREEN across 29 files. tame_style_check bans clean.
+loom witness=crypto_eth_address_witness result=GREEN files_in_suite=29
+file crypto/eth_address.rye the Ethereum address + EIP-55 checksum composition, pure Rye over GREEN Keccak-256
+file tools/crypto_eth_address_witness.rish per-file witness — builds fresh, asserts GREEN crypto-eth-address against the canonical EIP-55 vectors and the Mastering Ethereum example
+file tools/crypto_suite_witness.rish registered the new rung; corrected the primitive/composition split to 25+4
+file crypto/README.md seats eth_address under Compositions; count 28->29, 29 witnesses
+recommend keep-going non-gated, purely local — no key, no network, no funds, no device; constant-time stays the named horizon, signing with the maintainer's own identity key stays the custody gate. Next Lindy crux: secp256k1 (the curve that produces the pubkey this address derives from), or an Ethereum-message digest (EIP-191/712) over the same Keccak-256.
