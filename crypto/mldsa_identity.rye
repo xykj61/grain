@@ -1,0 +1,301 @@
+//! crypto/mldsa_identity.rye — Season G (Cryptography), the POST-QUANTUM identity FRONT DOOR: the one composition that ties the whole ML-DSA
+//! ladder into a single answer — from a 32-byte seed to a keeper's quantum-resistant signing identity, and the signature it makes. Where the
+//! rungs beneath authored each piece (crypto/mldsa_ring folds the polynomial arithmetic mod q = 8380417, crypto/mldsa_encode packs the keys and
+//! signature, crypto/mldsa_sample draws the matrix and challenge on SHAKE, crypto/mldsa_keygen grows the seed ξ into a (pk, sk) pair,
+//! crypto/mldsa_sign makes the signature, crypto/mldsa_verify checks it), this rung COMPOSES them so a caller reaches a post-quantum identity
+//! through one door: seed → keypair → signature → verdict. It is the ML-DSA sibling of crypto/kumara_identity.rye — where that renders a backup
+//! phrase to the Ed25519 identity every Grain module signs with today, this renders a seed to the ML-DSA identity a keeper's name wants on the
+//! morning a large quantum computer breaks the old elliptic curves (active-designing/20260816-161537 — "its front door is the post-quantum
+//! successor to Kumara's Ed25519 identity").
+//!
+//! It authors NO new cryptography. Every NTT, sample, pack, and reduction lives in an already-GREEN rung beneath; this module contributes only the
+//! wiring — the one call that turns a seed into a keypair, and the two thin wrappers (sign / verify) that let a caller sign with the derived key and
+//! a peer read its verdict without reaching past this door. The three parameter sets ML-DSA names — ML-DSA-44, ML-DSA-65, ML-DSA-87 — are each a
+//! Params value here; ml_dsa_65 (NIST category 3) is named the default, the balanced choice for an identity meant to last decades. Each set's public
+//! key, secret key, and signature widths are computed from FIPS 204's own formulas so a smaller set simply produces smaller keys through the same door.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, doubled-oracle parity, audit-ready).
+//! Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — the ML-DSA ladder's front door, the post-quantum successor to
+//! Kumara's Ed25519 identity. Rye-first spine: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+//! Kin: crypto/mldsa_keygen.rye (the seed→keypair, GREEN) · crypto/mldsa_sign.rye (the deterministic signer, GREEN) · crypto/mldsa_verify.rye (the
+//! verdict, GREEN) · crypto/kumara_identity.rye (the classical Ed25519 identity front door this is the post-quantum sibling of). Clean-room: FIPS 204
+//! is a public NIST standard studied through its spec; Zig's std.crypto is read only as the reference to diff against, never a copied line
+//! (.claude/rules/gratitude-licenses.md).
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. Every identity derived here is a TEST identity from a
+//! deterministic public-vector seed; the module's own functions call no std.crypto (only the selftest invokes Zig as the parity oracle). The derived
+//! secret key is a secret the caller keeps in their own jail, exactly as Kumara's own keypair does; constant-time timing-safety of the arithmetic it
+//! composes stays crypto/CONSTANT_TIME.md's named horizon, not introduced here. Growing a REAL post-quantum identity from the maintainer's OWN seed,
+//! and signing a real record with it, stays the custody gate — this library derives and verifies a TEST identity; it never holds the maintainer's key.
+//!
+//! Parity is proven at selftest, no fabricated constant, over every parameter set and a spread of deterministic seeds: (1) NO DRIFT — from_seed
+//! composes keygen exactly, its public and secret keys equal to keygen's own output over the same seed; (2) DETERMINISM — the same seed reaches an
+//! identical identity, and a changed seed a different public key; (3) THE DERIVED KEY IS A REAL WORKING SIGNING KEY — it signs a message that verify
+//! ACCEPTS, while a flipped message byte, a flipped signature byte, and a DIFFERENT identity's public key each REFUSE; (4) THE DOUBLED ORACLE — the
+//! identity's public key equals Zig's independent std.crypto newKeyFromSeed public key byte-for-byte, and Zig's own Signature.verify ACCEPTS the
+//! signature this front door produced. Two strangers confirming one identity is the discipline the whole library rests on.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/mldsa_identity.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const keygen = @import("mldsa_keygen.rye");
+const signer = @import("mldsa_sign.rye");
+const verifier = @import("mldsa_verify.rye");
+
+pub const mldsa_identity_version = "20260816.190000";
+
+/// ML-DSA's prime modulus and ring degree, borrowed through the keygen rung so every rung cites one number.
+pub const q: u32 = keygen.q;
+pub const n: u32 = keygen.n;
+
+/// The 32-byte seed ξ an ML-DSA identity grows from — the public test vector here, the caller's own secret in real use. The same width Zig's
+/// newKeyFromSeed takes.
+pub const seed_bytes: u32 = keygen.seed_bytes;
+
+/// One ML-DSA parameter set: the module dimensions k, l, the noise η, the mask width γ₁-bits, the low-bit granularity γ₂, the challenge weight τ, the
+/// hint budget ω, and the commitment size ctilde. Every one is a FIPS 204 constant; a Params value names a whole parameter set so the front door's
+/// from_seed / sign / verify each cite one bundle rather than eight loose numbers.
+pub const Params = struct {
+    k: u32,
+    l: u32,
+    eta: u32,
+    gamma1_bits: u32,
+    gamma2: u32,
+    tau: u32,
+    omega: u32,
+    ctilde: u32,
+};
+
+/// ML-DSA-44 (NIST category 2): k=4 l=4 η=2 γ₁-bits=17 γ₂=(q−1)/88 τ=39 ω=80 ctilde=32. The smallest keys and fastest signatures.
+pub const ml_dsa_44 = Params{ .k = 4, .l = 4, .eta = 2, .gamma1_bits = 17, .gamma2 = signer.gamma2_88, .tau = 39, .omega = 80, .ctilde = 32 };
+
+/// ML-DSA-65 (NIST category 3): k=6 l=5 η=4 γ₁-bits=19 γ₂=(q−1)/32 τ=49 ω=55 ctilde=48. The balanced default — the set this front door names for an
+/// identity meant to last decades.
+pub const ml_dsa_65 = Params{ .k = 6, .l = 5, .eta = 4, .gamma1_bits = 19, .gamma2 = signer.gamma2_32, .tau = 49, .omega = 55, .ctilde = 48 };
+
+/// ML-DSA-87 (NIST category 5): k=8 l=7 η=2 γ₁-bits=19 γ₂=(q−1)/32 τ=60 ω=75 ctilde=64. The largest keys, the highest security margin.
+pub const ml_dsa_87 = Params{ .k = 8, .l = 7, .eta = 2, .gamma1_bits = 19, .gamma2 = signer.gamma2_32, .tau = 60, .omega = 75, .ctilde = 64 };
+
+/// The default parameter set for a Kumara post-quantum identity: ML-DSA-65, NIST category 3, the balanced durable choice.
+pub const default = ml_dsa_65;
+
+/// eta_packed_bytes — the bytes one small-secret polynomial packs into: 96 at η = 2, 128 at η = 4 (FIPS 204's 32·bitlen(2η)). Named so the secret-key
+/// width cites one number, matching crypto/mldsa_keygen.rye's own eta_packed_bytes.
+fn eta_packed_bytes(eta: u32) u32 {
+    // invariant (precondition): eta is one ML-DSA uses.
+    assert(eta == 2 or eta == 4);
+    // invariant (postcondition): the width matches FIPS 204's BitPack(w, η, η) output size.
+    return if (eta == 2) 96 else 128;
+}
+
+/// pk_len — the encoded public-key length for a parameter set: 32 + 320·k (rho ‖ SimpleBitPack(t1)), matching crypto/mldsa_keygen.rye.
+pub fn pk_len(comptime p: Params) u32 {
+    // invariant (postcondition): the width is FIPS 204's pk size for this set.
+    return 32 + 320 * p.k;
+}
+
+/// sk_len — the encoded secret-key length: 128 + η_packed·(l + k) + 416·k (rho ‖ K ‖ tr ‖ BitPack(s1) ‖ BitPack(s2) ‖ BitPack(t0)).
+pub fn sk_len(comptime p: Params) u32 {
+    // invariant (postcondition): the width is FIPS 204's sk size for this set.
+    return 128 + eta_packed_bytes(p.eta) * (p.l + p.k) + 416 * p.k;
+}
+
+/// sig_len — the encoded signature length: ctilde + 32·(γ₁-bits+1)·l + ω + k (c~ ‖ BitPack(z) ‖ HintBitPack(h)).
+pub fn sig_len(comptime p: Params) u32 {
+    // invariant (postcondition): the width is FIPS 204's signature size for this set.
+    return p.ctilde + 32 * (p.gamma1_bits + 1) * p.l + p.omega + p.k;
+}
+
+/// IdentityType — one derived ML-DSA identity for a parameter set: the public key that names it and the secret key a signature is made with.
+/// public_key is public; secret_key is a secret the caller keeps in their own jail. The buffers are sized exactly for the set, so the type carries no
+/// slack and no ambiguous length.
+pub fn IdentityType(comptime p: Params) type {
+    return struct {
+        public_key: [pk_len(p)]u8,
+        secret_key: [sk_len(p)]u8,
+    };
+}
+
+/// from_seed — grow an ML-DSA identity from a 32-byte seed ξ for a parameter set, composing crypto/mldsa_keygen.rye's ML-DSA.KeyGen_internal. The
+/// mathematics is all one rung down; this is the wiring. TEST seeds only — a real seed reaches the custody gate.
+pub fn from_seed(comptime p: Params, xi: *const [seed_bytes]u8) keygen.KeyGenError!IdentityType(p) {
+    var id: IdentityType(p) = undefined;
+    try keygen.keygen(p.k, p.l, p.eta, xi, id.public_key[0..], id.secret_key[0..]);
+    // invariant (postcondition): a real key was written — an all-zero public key would mean keygen silently failed.
+    assert(!all_zero(id.public_key[0..]));
+    // invariant (postcondition): the encoded widths match the parameter set exactly.
+    assert(id.public_key.len == pk_len(p) and id.secret_key.len == sk_len(p));
+    return id;
+}
+
+/// sign — make an ML-DSA signature with a derived identity's secret key, the thin wrapper that lets a caller reach a post-quantum signature through
+/// this one door rather than into crypto/mldsa_sign.rye. Deterministic (rnd = 0), so the same identity and message reach the same signature. Reads
+/// the secret key; the signature it returns is public.
+pub fn sign(comptime p: Params, id: *const IdentityType(p), msg: []const u8) signer.SignError![sig_len(p)]u8 {
+    // invariant (precondition): the message stays within the signer's bound.
+    assert(msg.len <= signer.max_msg_bytes);
+    var sig: [sig_len(p)]u8 = undefined;
+    try signer.sign(p.k, p.l, p.eta, p.gamma1_bits, p.gamma2, p.tau, p.omega, p.ctilde, id.secret_key[0..], msg, sig[0..]);
+    // invariant (postcondition): a real signature was written, never an all-zero buffer.
+    assert(!all_zero(sig[0..]));
+    return sig;
+}
+
+/// verify — read the verdict of a signature against an identity's public key, the public counterpart of sign so a peer need hold only the public key.
+/// Returns true iff the signature is a genuine ML-DSA signature of msg under public_key. Composes crypto/mldsa_verify.rye's ML-DSA.Verify_internal.
+pub fn verify(comptime p: Params, public_key: *const [pk_len(p)]u8, msg: []const u8, sig: *const [sig_len(p)]u8) verifier.VerifyError!bool {
+    // invariant (precondition): the message stays within the verifier's bound.
+    assert(msg.len <= verifier.max_msg_bytes);
+    return verifier.verify(p.k, p.l, p.eta, p.gamma1_bits, p.gamma2, p.tau, p.omega, p.ctilde, public_key[0..], msg, sig[0..]);
+}
+
+// ---- shared helpers -----------------------------------------------------------------------------------------------------------------
+
+/// all_zero — true iff every byte of a buffer is zero, the guard that refuses a trivial key or signature as proof of nothing.
+fn all_zero(buf: []const u8) bool {
+    var i: u32 = 0;
+    // invariant (bound): read exactly buf.len bytes, one per turn.
+    while (i < buf.len) : (i += 1) if (buf[i] != 0) return false;
+    return true;
+}
+
+/// bytes_eq — true iff two buffers hold identical bytes.
+fn bytes_eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    // invariant (bound): read exactly a.len bytes, one per turn.
+    while (i < a.len) : (i += 1) if (a[i] != b[i]) return false;
+    return true;
+}
+
+// ---- selftest ----------------------------------------------------------------------------------------------------------------------
+
+/// bytes_from_seed — fill a buffer with a deterministic pseudo-random byte stream from a u32 seed, so the selftest draws replayable test seeds and
+/// messages without a fabricated constant. A small LCG; correctness of the sampling it feeds is proven in the rungs beneath, so any full-period walk
+/// serves as a public test vector here.
+fn bytes_from_seed(seed: u32, out: []u8) void {
+    var x: u32 = seed *% 2654435761 +% 1013904223;
+    var i: u32 = 0;
+    // invariant (bound): fill exactly out.len bytes, one per turn.
+    while (i < out.len) : (i += 1) {
+        x = x *% 1664525 +% 1013904223;
+        out[i] = @as(u8, @intCast((x >> 24) & 0xff));
+    }
+}
+
+/// check_param — prove the front door for one parameter set against a deterministic seed and message, four ways: no drift from keygen, a real working
+/// signing key with tamper refused, distinctness across seeds, and the doubled oracle (Zig's std.crypto agreeing on the public key and accepting the
+/// signature). Dsa is the Zig type (mldsa.MLDSA44/65/87); p names our matching parameter set.
+fn check_param(comptime Dsa: type, comptime p: Params, seed: u32, msg: []const u8) !void {
+    var xi: [seed_bytes]u8 = undefined;
+    bytes_from_seed(seed, xi[0..]);
+
+    // 1. NO DRIFT. from_seed composes keygen — the identity's keys equal keygen's own output over the same seed, byte-for-byte.
+    const id = try from_seed(p, &xi);
+    var pk_hand: [pk_len(p)]u8 = undefined;
+    var sk_hand: [sk_len(p)]u8 = undefined;
+    try keygen.keygen(p.k, p.l, p.eta, &xi, pk_hand[0..], sk_hand[0..]);
+    if (!bytes_eq(id.public_key[0..], pk_hand[0..])) return error.PublicDrift;
+    if (!bytes_eq(id.secret_key[0..], sk_hand[0..])) return error.SecretDrift;
+
+    // 2. DETERMINISM. The same seed reaches an identical identity.
+    const again = try from_seed(p, &xi);
+    if (!bytes_eq(id.public_key[0..], again.public_key[0..])) return error.NotDeterministic;
+    if (!bytes_eq(id.secret_key[0..], again.secret_key[0..])) return error.SecretNotDeterministic;
+
+    // 3. THE DERIVED KEY IS A REAL WORKING SIGNING KEY. It signs a message this door's verify ACCEPTS.
+    const sig = try sign(p, &id, msg);
+    const genuine = try verify(p, &id.public_key, msg, &sig);
+    if (!genuine) return error.GenuineRejected;
+
+    // A flipped message byte no longer verifies.
+    {
+        var msg_bad: [128]u8 = undefined;
+        // invariant: the selftest's messages never exceed 128 bytes, so the scratch holds any of them.
+        assert(msg.len <= 128 and msg.len > 0);
+        var c: u32 = 0;
+        // invariant (bound): copy exactly msg.len bytes, one per turn.
+        while (c < msg.len) : (c += 1) msg_bad[c] = msg[c];
+        msg_bad[0] ^= 0x01;
+        if (try verify(p, &id.public_key, msg_bad[0..msg.len], &sig)) return error.TamperMsgAccepted;
+    }
+    // A flipped signature byte no longer verifies.
+    {
+        var sig_bad = sig;
+        sig_bad[0] ^= 0x01; // the commitment c~ — a flip here breaks the recomputed-commitment equality
+        if (try verify(p, &id.public_key, msg, &sig_bad)) return error.TamperSigAccepted;
+    }
+
+    // 4a. DISTINCTNESS. A different seed's identity is a different public key, and it refuses this signature.
+    {
+        var xi_other: [seed_bytes]u8 = undefined;
+        bytes_from_seed(seed *% 31 +% 7, xi_other[0..]);
+        const other = try from_seed(p, &xi_other);
+        if (bytes_eq(id.public_key[0..], other.public_key[0..])) return error.SeedCollision;
+        if (try verify(p, &other.public_key, msg, &sig)) return error.WrongKeyAccepted;
+    }
+
+    // 4b. THE DOUBLED ORACLE. Zig's independent std.crypto grows the same seed to the same public key, and its own Signature.verify accepts the
+    //     signature this front door produced — two strangers confirming one identity.
+    {
+        var kp = Dsa.newKeyFromSeed(&xi);
+        const pk_ref = kp.pk.toBytes();
+        if (pk_ref.len != pk_len(p)) return error.OracleWidthMismatch;
+        if (!bytes_eq(id.public_key[0..], pk_ref[0..])) return error.OraclePublicMismatch;
+
+        const pk_obj = @TypeOf(kp.pk).fromBytes(pk_ref) catch return error.OracleFailed;
+        const SigType = Dsa.Signature;
+        var sig_fixed: [SigType.encoded_length]u8 = undefined;
+        var c: u32 = 0;
+        // invariant (bound): copy exactly sig_len bytes into the fixed oracle buffer, one per turn.
+        while (c < sig_len(p)) : (c += 1) sig_fixed[c] = sig[c];
+        const sig_obj = SigType.fromBytes(sig_fixed) catch return error.OracleFailed;
+        sig_obj.verify(msg, pk_obj) catch return error.OracleRejectedGenuine;
+    }
+}
+
+fn run_selftest() !u8 {
+    const mldsa = std.crypto.sign.mldsa;
+
+    var seed: u32 = 1;
+    // invariant (bound): exactly four deterministic seeds, one per turn.
+    while (seed <= 4) : (seed += 1) {
+        // Two messages per seed: a short one and a longer one, both public test vectors.
+        var msg_a: [5]u8 = undefined;
+        bytes_from_seed(seed *% 7 +% 1, msg_a[0..]);
+        var msg_b: [96]u8 = undefined;
+        bytes_from_seed(seed *% 13 +% 5, msg_b[0..]);
+
+        try check_param(mldsa.MLDSA44, ml_dsa_44, seed, msg_a[0..]);
+        try check_param(mldsa.MLDSA44, ml_dsa_44, seed, msg_b[0..]);
+        try check_param(mldsa.MLDSA65, ml_dsa_65, seed, msg_a[0..]);
+        try check_param(mldsa.MLDSA65, ml_dsa_65, seed, msg_b[0..]);
+        try check_param(mldsa.MLDSA87, ml_dsa_87, seed, msg_a[0..]);
+        try check_param(mldsa.MLDSA87, ml_dsa_87, seed, msg_b[0..]);
+    }
+
+    print("GREEN crypto-mldsa-identity: the POST-QUANTUM identity FRONT DOOR authored in pure Rye — the one composition that ties the whole ML-DSA " ++
+        "ladder (ring, encode, sample, keygen, sign, verify) into a single answer: seed ξ → keypair → signature → verdict, reached through one door. " ++
+        "The ML-DSA sibling of crypto/kumara_identity.rye: where that renders a backup phrase to the Ed25519 identity every Grain module signs with " ++
+        "today, this renders a seed to the ML-DSA identity a keeper's name wants on the morning the old elliptic curves fall. Authors NO new " ++
+        "cryptography — from_seed composes crypto/mldsa_keygen's ML-DSA.KeyGen_internal, sign and verify are thin wrappers over crypto/mldsa_sign and " ++
+        "crypto/mldsa_verify, sized exactly per parameter set (ML-DSA-44 category 2, ML-DSA-65 category 3 the default, ML-DSA-87 category 5). Proven " ++
+        "GREEN on metal over every parameter set and four deterministic seeds with two messages each, four ways with no fabricated constant: (1) NO " ++
+        "DRIFT — from_seed's keys equal keygen's own output byte-for-byte; (2) DETERMINISM — the same seed reaches an identical identity, a changed " ++
+        "seed a different public key; (3) A REAL WORKING SIGNING KEY — it signs a message verify ACCEPTS, while a flipped message byte, a flipped " ++
+        "signature byte, and a different identity's public key each REFUSE; (4) THE DOUBLED ORACLE — the identity's public key equals Zig's " ++
+        "independent std.crypto newKeyFromSeed public key byte-for-byte, and Zig's own Signature.verify ACCEPTS the signature this front door " ++
+        "produced. The module's own functions call no std.crypto; only this selftest invokes Zig as the parity oracle. Purely local — every seed, " ++
+        "message, and signature a public test vector, no key held, no network, no funds, no real device; growing a REAL post-quantum identity from " ++
+        "the maintainer's own seed and signing a real record with it stays the custody gate, constant-time timing-safety the named horizon. With " ++
+        "this rung the post-quantum identity stands whole and reachable through one door: seed → ML-DSA keypair → the signing identity itself.\n", .{});
+    return 0;
+}
+
+pub fn main(init_args: std.process.Init) !u8 {
+    _ = init_args;
+    return run_selftest();
+}
