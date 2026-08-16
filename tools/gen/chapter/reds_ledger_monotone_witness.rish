@@ -18,7 +18,7 @@ say "reds-monotone: Language EN — a ledger grows by accretion."
 say "reds-monotone: Style Radiant — name the gap; refuse silent rewrite."
 say "reds-monotone: Lens TAME — indices span the fold archives and the living pin."
 
-let scan = run ["sh" "tools/fixtures/reds_ledger_monotone_scan.sh" "work-in-progress/archive/REDS-voice-season-rows-1-24.md" "work-in-progress/archive/REDS-voice-season-rows-25-57.md" "work-in-progress/REDS.md"]
+let scan = run ["sh" "tools/fixtures/reds_ledger_monotone_scan.sh" "work-in-progress/archive/REDS-voice-season-rows-1-24.md" "work-in-progress/archive/REDS-voice-season-rows-25-57.md" "work-in-progress/archive/REDS-self-work-yield-rows-58-73.md" "work-in-progress/REDS.md"]
 say scan.out
 assert scan.out contains "verdict=ok" else "reds-monotone: row indices are not 1..N monotone across the fold archives and the living pin"
 assert scan.ok else "reds-monotone: the verdict reads ok while the status fails — they must agree"
