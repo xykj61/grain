@@ -18,7 +18,7 @@ a message: **Kumara** identity, **Vault** sealed storage, **Comlink** sessions, 
 the **Lotus** signed carry. It authors the mathematics once, in the open, so a hand
 placing trust in it can read exactly what it does.
 
-## The seventeen files — fifteen primitives and two compositions
+## The eighteen files — sixteen primitives and two compositions
 
 Built in dependency order: each rung stands on the GREEN rungs beneath it, none
 authoring cryptography a lower rung had not already proven.
@@ -29,6 +29,12 @@ authoring cryptography a lower rung had not already proven.
 |---|---|---|
 | [`sha512.rye`](sha512.rye) | SHA-512 | FIPS 180-4 · RFC 8032 (the hash Ed25519 signs with) |
 | [`blake2b.rye`](blake2b.rye) | BLAKE2b-512 | RFC 7693 (Monocypher's hash · the key-derivation hash) |
+
+### Keyed hash
+
+| File | What it is | Reference |
+|---|---|---|
+| [`hmac_sha512.rye`](hmac_sha512.rye) | HMAC-SHA-512 keyed message authentication (the HKDF / PRF stone) | RFC 2104 · FIPS 198-1 · RFC 4231 (vectors) |
 
 ### The ChaCha / Poly line
 
@@ -78,7 +84,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 ```
 
 [`../tools/crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) runs all
-seventeen per-file witnesses in the dependency order above, rebuilding and reproving
+eighteen per-file witnesses in the dependency order above, rebuilding and reproving
 each from source, and refuses whole — naming the file that stopped it — the moment
 any one goes RED. A GREEN suite means every claim in this library is re-provable by
 tooling, not trusted from a commit message alone.

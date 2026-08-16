@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260815.215504
+editor Claude Code
+model Fable 5
+voice Kyri
+host Vultr SEA NixOS VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) time convention — this session in ai-jail
+title Season G rung — HMAC-SHA-512 in pure Rye
+prompt take the next agent-doable lap Lindy-first crux-first past the crypto parity wave; Rye prioritized, Glow on green Rye; send each finished increment as its own signed round; stop at the custody gates
+think Read the three road-ahead docs. Season G (Cryptography) is the active living edge, seventeen rungs GREEN, Rye-native, parity-checked. Lindy-first crux-first inside it: the highest-Lindy, agent-doable, non-gated next rung.
+think HMAC-SHA-512 (RFC 2104 / FIPS 198-1) is the crux: it composes the already-GREEN crypto/sha512.rye through the HMAC construction, authoring no new cryptography, carries a published RFC 4231 known-answer, and has Zig std.crypto for independent parity. It is the stone HKDF (RFC 5869) and every protocol PRF stand on — serves Kumara, Vault, Comlink, not one module. No key held, no gate crossed.
+think Mirrored the library convention exactly: doc banner, bounded message (max_message_bytes) and bounded key (max_key_bytes), contract asserts on every fn, the two SHA-512 calls beneath provably within bound so their error is unreachable-and-asserted rather than swallowed, RFC known-answer + std.crypto parity across key-length and message-length edges, a bounds-refusal block, one GREEN line.
+think Wired the new witness into crypto_suite_witness.rish in dependency order right after the two hashes, and bumped every seventeen/fifteen count to eighteen/sixteen across the suite witness and crypto/README.md.
+obs GREEN on the first metal pass; the whole crypto_suite_witness re-proves all eighteen files green together; tame_style bans clean, new file in none of the ratchet lists (it carries asserts).
+obs Scoped the round to one keystone: one new primitive file plus its witness, self-contained. A larger message than the stack buffer allows wants an incremental SHA-512, named as a horizon rather than reached for here.
+loom witness=crypto_hmac_sha512_witness result=GREEN files=1 primitive=hmac_sha512 references=rfc4231_tc2,std.crypto.HmacSha512
+loom witness=crypto_suite_witness result=GREEN files=18 primitives=16 compositions=2
+file crypto/hmac_sha512.rye the HMAC-SHA-512 primitive, pure Rye, RFC 4231 + std.crypto parity
+file tools/crypto_hmac_sha512_witness.rish the per-file witness proving its GREEN line
+file tools/crypto_suite_witness.rish added the hmac witness in dependency order, bumped counts to eighteen
+file crypto/README.md added the keyed-hash row and bumped the file count
+file work-in-progress/REMEMBER.md prepended the HMAC rung to the living-edge line, bumped to eighteen rungs, refreshed the git nib
+recommend keep-going the next Season G crux is HKDF-SHA-512 (RFC 5869) standing on this HMAC stone, or an incremental SHA-512 to lift the HMAC message bound — both agent-doable, non-gated; signing/agreeing with the maintainer's own key stays the custody gate
