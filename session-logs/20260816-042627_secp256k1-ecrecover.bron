@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260816.042627
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title crypto/secp256k1_ecrecover.rye — ECDSA public-key recovery in pure Rye, parity-GREEN
+prompt take the next agent-doable lap Lindy-first crux-first on the road ahead — Rye prioritized, Glow on green-witnessed Rye; send each finished increment; stop at custody gates
+think Read REMEMBER (too large to load whole), the 1024-round itinerary, the six-season double-seat, and the Rye-first crypto decision wave. The secp256k1 tower stands base field · group law · scalar ladder · scalar field mod n · ECDSA verify · ECDSA sign, all GREEN. The prior lap authored ecrecover — the Ethereum recovery primitive the sign log named as next — but left it uncommitted with its witness and the four synced docs.
+think My lap is the send: verify the uncommitted work runs GREEN on metal, then ship it as its own signed round so GitHub follows the progress. This is the finishing edge — one real thing shipped before naming the next.
+think Ran the ecrecover per-file witness GREEN: the algebraic round-trip (each of Zig's deterministic keys recovers back from its own (r,s) at exactly one recovery id and not the other, a one-bit hash tamper recovers a different key, the recovered key's Ethereum address matches through the GREEN eth_address.rye) AND our authored base-field square root equals Zig's std.crypto.ecc.Secp256k1.fromSec1 byte-for-byte on R's recovered y across eight keys.
+think Ran the count guard GREEN (38 files, bijection whole) and the whole crypto_suite_witness GREEN — all thirty-eight files rebuilt fresh from source and proven in dependency order, ecrecover registered after eth_address. The four doc edits (CONSTANT_TIME.md, README.md, docs/CRYPTO.md, suite prose) all synced to 38 files / 34 primitives.
+obs Custody: recovery touches no secret — r, s, z, the recovery id, and the returned public key are all public by construction, so the one new arithmetic (a variable-time base-field square root a^((p+1)/4), valid because p ≡ 3 mod 4) leaks nothing. It answers who signed this?, never sign this; signing with the maintainer's own identity key stays the custody gate (#3/#4). This rung sits with verify on the non-gated side.
+obs The secp256k1 tower now makes, checks, AND reads the sender out of a signature — the whole Ethereum account model's foundation (every Sign-in-with-Ethereum, every EIP-191/712 authentication, every transaction-sender derivation), authored in the open and checked against the world.
+loom witness=crypto_secp256k1_ecrecover_witness green=1 keys=8 parity=round_trip_and_zig_fromSec1
+loom witness=crypto_suite_witness files=38 primitives=34 compositions=4 green=1
+loom witness=crypto_count_guard_witness files=38 bijection=whole green=1
+file crypto/secp256k1_ecrecover.rye the recovery primitive — decompress R, recover Q = r⁻¹·(s·R − z·G), one new base-field square root
+file tools/crypto_secp256k1_ecrecover_witness.rish the per-file witness asserting GREEN crypto-secp256k1-ecrecover, round-trip + Zig fromSec1
+file tools/crypto_suite_witness.rish registered ecrecover after eth_address; prose counts synced 34/38
+file active-designing/20260816-040220_secp256k1-ecrecover.md the rung's claim, self-approved design round
+file docs/CRYPTO.md front-door counts 34/38 and the ecrecover rung row
+file crypto/README.md counts 34/38 and the recovery rung row
+file crypto/CONSTANT_TIME.md the recovery row — public-only, non-gated, sits with verify
+recommend keep-going the secp256k1 tower is complete end to end (make · check · recover); the next Lindy-first crux is the constant-time timing horizon named across the secp256k1 secret-flow rows, or a fresh primitive the wave points to
