@@ -1,0 +1,43 @@
+# tools/crypto_mlkem_encaps_witness.rish — the ML-KEM encapsulation rung: FIPS 203 K-PKE.Encrypt wrapped by ML-KEM.Encaps, authored in pure Rye and
+# proven byte-for-byte against Zig's independent std.crypto ml_kem. This is the post-quantum arc's FIFTH rung and the SECOND with a DOUBLED oracle —
+# it composes the GREEN base ring (crypto/mlkem_ring.rye), serialization (crypto/mlkem_encode.rye), sampling (crypto/mlkem_sample.rye), and keygen
+# (crypto/mlkem_keygen.rye) into a whole encapsulation, and confirms both outputs against a second, independent implementation (Season G · Cryptography).
+#
+# Season: crypto — Season G's fifth post-quantum stone, rung 5 of the ML-KEM ladder the pivot doc seats. The encaps function holds no key: every
+# message and seed is a public test vector. Every ML-KEM sealed session and Comlink door will one day rest on exactly these bytes, so this witness
+# proves the whole composition — the transposed matrix, the InvNTT, the message decompression, the compression widths, and G's split — agrees with the
+# NIST-standard reference to the byte, for BOTH the ciphertext and the shared secret.
+# Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md (rung 5 — the encapsulation rung whose ciphertext and shared secret
+# meet Zig's std.crypto ML-KEM-512/768/1024 encapsDeterministic byte-for-byte).
+# Rye-first spine: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+# Clean-room: the K-PKE.Encrypt algorithm, the G/PRF/H hash wiring, and the compressed-ciphertext serialization are the public NIST standard's own; the
+# arithmetic is our own Rye composed over our own GREEN rungs, with Zig's std.crypto read only as the reference to diff against — never a copied line
+# (.claude/rules/gratitude-licenses.md).
+#
+# crypto/mlkem_encaps.rye proves itself by a DOUBLED oracle — the discipline the whole library rests on. FIPS 203 specifies standard-domain arithmetic;
+# Zig's std.crypto computes internally in Montgomery domain and cancels the factor in InvNTT, yet both agree byte-for-byte at the published boundary
+# (the compressed ciphertext and the 32-byte shared secret). This rung diffs our pure-Rye encaps against Zig's encapsDeterministic at all three
+# parameter sets over eight deterministic (key seed, message) pairs each. Purely local — no key held, no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_mlkem_encaps_witness.rish
+
+say "crypto-mlkem-encaps: Language EN — the ML-KEM encapsulation rung: FIPS 203 K-PKE.Encrypt wrapped by ML-KEM.Encaps. It parses the encapsulation key ek into (t_hat, rho), regenerates the transposed public matrix A^T with SampleNTT, draws the randomness r and blinds e1, e2 with SamplePolyCBD, forms u = InvNTT(A^T NTT-multiply r_hat) + e1 and v = InvNTT(t_hat NTT-multiply r_hat) + e2 + Decompress_1(m), and serializes the compressed ciphertext c = c1 then c2; ML-KEM.Encaps derives (K, r) = G(m then H(ek)) and rides the shared secret K out beside c. This is the post-quantum arc's fifth rung and the SECOND with a doubled oracle, composing the GREEN ring, encode, sample, and keygen rungs into a whole encapsulation."
+say "crypto-mlkem-encaps: Style Radiant — the law is stated positively as byte parity, for BOTH outputs. FIPS 203 specifies standard-domain arithmetic; Zig's std.crypto computes in Montgomery domain and cancels the factor in InvNTT, yet both agree byte-for-byte at the published boundary. Our pure-Rye encaps must equal Zig's encapsDeterministic — the ciphertext AND the shared secret — at every parameter set. For ML-KEM the shared secret is G's first half verbatim, so a matching ciphertext and a matching K together witness the whole path."
+say "crypto-mlkem-encaps: Lens TAME — bounded loops (k rows, k columns, 256 coefficients, 64-eta PRF blocks, 32-d compression bytes per polynomial), contract asserts on every function, canonical residues in [0, q) throughout. Correctness proven by a DOUBLED oracle: our standard-domain composition versus Zig's independent Montgomery-domain std.crypto ml_kem encapsDeterministic, byte-for-byte at ML-KEM-512 (k=2 eta1=3 du=10 dv=4), ML-KEM-768 (k=3 eta1=2 du=10 dv=4), and ML-KEM-1024 (k=4 eta1=2 du=11 dv=5) over 8 deterministic (key seed, message) pairs each, a trivial all-zero output refused. The encaps function calls no std.crypto; only the selftest invokes Zig as the parity oracle. Every message and seed is a public test vector — no key held, no network, no funds, no device; encapsulating to the maintainer's own post-quantum key stays the custody gate, constant-time timing-safety the named horizon."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/mlkem_encaps"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/mlkem_encaps.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-mlkem-encaps: build failed — ${build.err}"
+
+let outfile = "crypto/bin/mlkem_encaps.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-mlkem-encaps: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-mlkem-encaps: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-mlkem-encaps' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-mlkem-encaps: selftest did not print the GREEN crypto-mlkem-encaps line"

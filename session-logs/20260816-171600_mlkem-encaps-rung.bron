@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260816.171600
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+title ML-KEM encapsulation rung, doubled oracle GREEN
+prompt Take the next agent-doable lap Lindy-first crux-first on the road ahead; Rye prioritized, Glow on green-witnessed Rye; send each finished increment; stop at custody gates.
+think Read the decision-wave, the 1,024-round itinerary, and the six-season double-seat. The live crux is Season G (Cryptography): the ML-KEM arc in pure Rye, parity-checked against Zig std.crypto. Recent commits landed ring, encode, sample, and keygen (rung 4, first doubled oracle). The Lindy-first crux-first next rung is encapsulation — the highest-durability still-tractable move, unblocking the sealed-session and Comlink paths and the Lotus signed carry.
+think Studied crypto/mlkem_keygen.rye for the established pattern (comptime params, prf_fill, doubled-oracle selftest, all-zero refusal) and the composed rungs: ring (ntt/inv_ntt/multiply_ntts/Poly), encode (byte_encode/byte_decode/compress/decompress/Encoded), sample (sample_ntt/sample_cbd). Read Zig std.crypto ml_kem.zig for the oracle: encapsDeterministic(pk, seed) returns {shared_secret, ciphertext}; encapsInner does (K,r)=G(m‖H(pk)), c=innerEncrypt(pk,m,r), K=K' for ml_kem. Confirmed the parameter table du/dv/eta2 and that the encrypt matrix is A^T with byte order (i,j), the transpose of keygen's (j,i).
+think Authored crypto/mlkem_encaps.rye: k_pke_encrypt (parse ek, regenerate A^T via SampleNTT, draw r_hat NTT-domain and standard-domain blinds e1/e2, u = InvNTT(A^T ∘ r_hat)+e1, mu = Decompress_1(ByteDecode_1(m)), v = InvNTT(t_hat ∘ r_hat)+e2+mu, compress+ByteEncode) and encaps (G(m‖H(ek)) split into K and r, then encrypt). Composes only GREEN rungs; only the selftest invokes Zig.
+obs Built and ran GREEN on the FIRST build — byte-for-byte parity holds for BOTH the ciphertext AND the 32-byte shared secret at all three parameter sets (ML-KEM-512/768/1024) over 8 deterministic (key seed, message) pairs each. The transpose byte order (i,j) and the standard-domain-vs-Montgomery agreement at the compressed boundary both held exactly as the keygen rung foretold.
+obs TAME style bans clean; the new file carries contract asserts on every function so it is absent from the zero-assert ratchet. README synced same round with the fifth rung row.
+loom witness=crypto_mlkem_encaps_witness param_sets=3 seeds_per_set=8 outputs_checked=2 wall_note=GREEN-first-build
+file crypto/mlkem_encaps.rye the encapsulation rung — K-PKE.Encrypt wrapped by ML-KEM.Encaps, pure Rye over GREEN rungs, doubled oracle
+file tools/crypto_mlkem_encaps_witness.rish the witness — builds the binary and asserts the GREEN parity line
+file crypto/README.md synced — the fifth ML-KEM rung row, ciphertext and shared secret both parity-proven
+recommend keep-going the sixth rung is decapsulation (K-PKE.Decrypt wrapped by ML-KEM.Decaps, including the implicit-rejection path), the natural next crux composing this GREEN encaps

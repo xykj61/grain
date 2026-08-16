@@ -1,0 +1,401 @@
+//! crypto/mlkem_encaps.rye — Season G (Cryptography): the ML-KEM encapsulation rung, the FIFTH stone of the post-quantum arc and the SECOND with a
+//! doubled oracle. FIPS 203 K-PKE.Encrypt wrapped by ML-KEM.Encaps, authored in pure Rye: it parses an encapsulation key ek into (t_hat, rho),
+//! regenerates the transposed public matrix A^T with SampleNTT, draws the encryption randomness r and the blinds e1, e2 with SamplePolyCBD, forms
+//! u = InvNTT(A^T ∘ r_hat) + e1 and v = InvNTT(t_hat ∘ r_hat) + e2 + Decompress_1(m), then compresses and serializes the ciphertext c = c1 ‖ c2.
+//! ML-KEM.Encaps wraps it: (K, r) = G(m ‖ H(ek)), c = K-PKE.Encrypt(ek, m, r), and the shared secret K rides out beside c. It composes only GREEN
+//! rungs — the base ring (crypto/mlkem_ring.rye) for InvNTT and pointwise multiply, the serialization (crypto/mlkem_encode.rye) for ByteDecode /
+//! Compress / ByteEncode, the sampling (crypto/mlkem_sample.rye) for SampleNTT and SamplePolyCBD, and the SHA-3 / SHAKE family (crypto/sha3.rye,
+//! crypto/shake.rye) — and holds no key of its own: every seed and message here is a public test vector.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
+//! Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — rung 5 of the ML-KEM ladder, the encapsulation rung whose
+//! ciphertext and shared secret meet Zig's independent std.crypto ML-KEM byte-for-byte.
+//! Rye-first spine: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+//! Kin: crypto/mlkem_keygen.rye (the fourth rung, ek/dk GREEN) · crypto/mlkem_ring.rye (NTT · InvNTT · pointwise multiply, GREEN) ·
+//! crypto/mlkem_encode.rye (ByteDecode · Compress · ByteEncode, GREEN) · crypto/mlkem_sample.rye (SampleNTT · SamplePolyCBD, GREEN) ·
+//! crypto/sha3.rye (SHA3-512 for G, SHA3-256 for H) · crypto/shake.rye (SHAKE256 for the PRF). The parity TARGET is Zig's std.crypto ml_kem
+//! (nist.MLKem512/768/1024) encapsDeterministic, studied clean-room — never a copied line (.claude/rules/gratitude-licenses.md).
+//!
+//! THE DOUBLED ORACLE — this rung authors the spec's standard-domain encryption and proves both the ciphertext AND the shared secret against Zig's
+//! encapsDeterministic(pk, m) → {ciphertext, shared_secret} over several deterministic (key seed, message) pairs at all three parameter sets
+//! (ML-KEM-512 du=10 dv=4, ML-KEM-768 du=10 dv=4, ML-KEM-1024 du=11 dv=5). Zig computes the matrix product in Montgomery domain and cancels the
+//! factor in InvNTT; we compute in standard domain throughout; both agree at the PUBLISHED byte boundary — the compressed ciphertext and the 32-byte
+//! shared key. For ML-KEM the shared secret K is exactly G's first half, so a matching ciphertext AND a matching K together witness the whole path.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. The encaps FUNCTION calls no std.crypto — it composes our own
+//! GREEN rungs; only the SELFTEST invokes Zig's std.crypto as the parity oracle to diff against. Every message and seed is a public test vector;
+//! encapsulating to the maintainer's OWN post-quantum identity key stays the custody gate. Constant-time timing-safety stays the Season's named
+//! horizon — this rung proves CORRECTNESS.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/mlkem_encaps.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const ring = @import("mlkem_ring.rye");
+const encode = @import("mlkem_encode.rye");
+const sample = @import("mlkem_sample.rye");
+const sha3 = @import("sha3.rye");
+const shake = @import("shake.rye");
+const keygen = @import("mlkem_keygen.rye");
+
+pub const mlkem_encaps_version = "20260816.161537";
+
+/// ML-KEM's prime modulus and ring degree, borrowed so every rung cites one number.
+pub const q: u32 = ring.q;
+pub const n: u32 = ring.n;
+
+/// The largest module rank ML-KEM uses (ML-KEM-1024 has k = 4). Every fixed-size buffer here is sized for this ceiling; a smaller parameter set uses a
+/// prefix. Borrowed from keygen so the whole arc cites one bound.
+pub const max_k: u32 = keygen.max_k;
+
+/// The bytes one degree-12 ByteEncode of a single polynomial produces (256 × 12 ÷ 8 = 384), and the 32-byte seed / secret width. Borrowed from keygen.
+pub const poly_encoded_bytes: u32 = keygen.poly_encoded_bytes;
+pub const seed_half_bytes: u32 = keygen.seed_half_bytes;
+
+/// The second noise parameter, eta2 = 2 for every ML-KEM set — the width of the encryption blinds e1 and e2 (FIPS 203 Table 2). eta1 (the secret and
+/// r width) is passed per parameter set.
+pub const eta2: u32 = 2;
+
+/// The widest compression widths ML-KEM uses: du ≤ 11 for the u vector, dv ≤ 5 for the v polynomial (ML-KEM-1024). Named so buffers cite one ceiling.
+pub const max_du: u32 = 11;
+pub const max_dv: u32 = 5;
+
+/// The largest ciphertext (ML-KEM-1024): 32·du·k + 32·dv = 32·11·4 + 32·5 = 1568 bytes. Named so the selftest's scratch buffer cites one ceiling.
+pub const ct_max_bytes: u32 = 32 * max_du * max_k + 32 * max_dv;
+
+/// The shared secret width — 32 bytes, exactly FIPS 203's shared-key size; for ML-KEM it is G's first half verbatim.
+pub const shared_bytes: u32 = 32;
+
+/// The faults this rung can raise. Every one is either a composed rung's honest error surfaced (impossible on our fixed widths, yet honored) or a
+/// selftest proof that failed — never a normal runtime outcome once the parity is GREEN.
+pub const EncapsError = error{
+    /// A composed SHA-3 call (G = SHA3-512, H = SHA3-256) reported a bad length — impossible for our fixed inputs, honored honestly.
+    HashFailed,
+    /// A composed sampler (SampleNTT / SamplePolyCBD) surfaced its own error — impossible for our fixed widths, honored honestly.
+    SampleFailed,
+    /// A composed SHAKE256 PRF reported a bad length — impossible for our fixed 33-byte input and 64·eta output, honored honestly.
+    PrfFailed,
+    /// The Zig std.crypto reference reported an error building the public key or encapsulating — never expected for a valid ek and 32-byte message.
+    OracleFailed,
+    /// Our ciphertext or shared-secret length did not match Zig's for this parameter set — a width was computed wrong.
+    SizeMismatch,
+    /// Our ciphertext disagreed with Zig's byte-for-byte — the matrix transpose, InvNTT, compression, or serialization diverged from FIPS 203.
+    CiphertextMismatch,
+    /// Our shared secret disagreed with Zig's — G's split or the message handling diverged from FIPS 203.
+    SharedMismatch,
+    /// A produced ciphertext or shared secret came out all-zero, so a passing parity would prove nothing — the selftest refuses a trivial witness.
+    TrivialWitness,
+};
+
+/// prf_fill — FIPS 203's PRF_eta: SHAKE256(seed ‖ nonce) squeezed to 64·eta bytes, the byte block SamplePolyCBD draws a noise polynomial from. One
+/// nonce byte separates each draw. The same shape keygen's prf_fill uses, over the encryption seed r rather than sigma.
+fn prf_fill(seed: *const [seed_half_bytes]u8, nonce: u8, out: []u8) EncapsError!void {
+    // invariant (precondition): the output is exactly 64·eta bytes for eta in {2, 3} — the only widths SamplePolyCBD accepts.
+    assert(out.len == 64 * sample.eta_min or out.len == 64 * sample.eta_max);
+    var input: [seed_half_bytes + 1]u8 = undefined;
+    var t: u32 = 0;
+    // invariant (bound): copy exactly the 32 seed bytes, one per turn.
+    while (t < seed_half_bytes) : (t += 1) input[t] = seed[t];
+    input[seed_half_bytes] = nonce;
+    shake.shake256(input[0..], out) catch return error.PrfFailed;
+}
+
+/// draw_cbd — PRF the seed at one nonce and SamplePolyCBD it into a standard-domain noise polynomial. The shared helper behind r, e1, and e2.
+fn draw_cbd(seed: *const [seed_half_bytes]u8, nonce: u8, eta: u32) EncapsError!ring.Poly {
+    // invariant (precondition): eta is one ML-KEM uses, so the PRF block is 64·eta ≤ 192 bytes.
+    assert(eta == sample.eta_min or eta == sample.eta_max);
+    var prf: [64 * 3]u8 = undefined;
+    const plen: u32 = 64 * eta;
+    try prf_fill(seed, nonce, prf[0..plen]);
+    return sample.sample_cbd(prf[0..plen], eta) catch return error.SampleFailed;
+}
+
+/// compress_encode_poly — Compress each coefficient of one polynomial to d bits, then ByteEncode_d the result into 32·d bytes, laid at offset off in
+/// c_out. The ciphertext's per-polynomial serialization, shared by the du-wide u vector and the dv-wide v polynomial.
+fn compress_encode_poly(p: *const ring.Poly, d: u32, c_out: []u8, off: u32) void {
+    // invariant (precondition): a compression width ML-KEM uses (4, 5, 10, or 11) and room for the whole 32·d block.
+    assert(d >= 1 and d <= max_du);
+    assert(off + 32 * d <= c_out.len);
+    var comp: [n]u32 = undefined;
+    var c: u32 = 0;
+    // invariant (bound): exactly n = 256 coefficients compressed, one per turn.
+    while (c < n) : (c += 1) {
+        // invariant: every coefficient is a canonical residue before compression, so Compress_d stays in range.
+        assert(p.cs[c] < q);
+        comp[c] = encode.compress(p.cs[c], d);
+    }
+    const enc = encode.byte_encode(&comp, d);
+    var b: u32 = 0;
+    // invariant (bound): exactly 32·d bytes copied into the ciphertext, one per turn.
+    while (b < 32 * d) : (b += 1) c_out[off + b] = enc.bytes[b];
+}
+
+/// k_pke_encrypt — FIPS 203 K-PKE.Encrypt: encrypt a 32-byte message m under the encapsulation key ek with encryption randomness r, writing the
+/// compressed ciphertext c = ByteEncode_du(Compress_du(u)) ‖ ByteEncode_dv(Compress_dv(v)) into c_out. Standard-domain throughout; composes only GREEN
+/// rungs. k, eta1, du, dv name the parameter set.
+pub fn k_pke_encrypt(comptime k: u32, comptime eta1: u32, comptime du: u32, comptime dv: u32, ek: []const u8, m: *const [seed_half_bytes]u8, r: *const [seed_half_bytes]u8, c_out: []u8) EncapsError!void {
+    // invariant (precondition): the parameter set is one ML-KEM names and the buffers hold exactly the FIPS sizes.
+    assert(k >= 2 and k <= max_k);
+    assert(eta1 == sample.eta_min or eta1 == sample.eta_max);
+    assert(du >= 1 and du <= max_du and dv >= 1 and dv <= max_dv);
+    const ek_len: u32 = poly_encoded_bytes * k + seed_half_bytes;
+    const ct_len: u32 = 32 * du * k + 32 * dv;
+    assert(ek.len == ek_len);
+    assert(c_out.len == ct_len);
+
+    // Parse ek: t_hat[i] = ByteDecode12(ek[384i .. 384i+384]); rho = ek[384k .. 384k+32]. The public value comes back exactly as keygen serialized it.
+    var t_hat: [max_k]ring.Poly = undefined;
+    var i: u32 = 0;
+    // invariant (bound): exactly k encoded polynomials decoded, one per turn.
+    while (i < k) : (i += 1) {
+        var block: encode.Encoded = .{ .bytes = [_]u8{0} ** encode.max_bytes, .len = poly_encoded_bytes };
+        var b: u32 = 0;
+        // invariant (bound): exactly 384 bytes read for this polynomial.
+        while (b < poly_encoded_bytes) : (b += 1) block.bytes[b] = ek[poly_encoded_bytes * i + b];
+        t_hat[i] = .{ .cs = encode.byte_decode(&block, encode.max_d) };
+    }
+    var rho: [seed_half_bytes]u8 = undefined;
+    var tt: u32 = 0;
+    // invariant (bound): the 32-byte rho tail of ek.
+    while (tt < seed_half_bytes) : (tt += 1) rho[tt] = ek[poly_encoded_bytes * k + tt];
+
+    // A^T[i][j] = SampleNTT(rho, i, j) — the transpose of keygen's matrix, so u[i] = Σ_j A[j][i] ∘ r_hat[j]. Keygen sampled A[i][j] with domain bytes
+    // (j, i); the transpose swaps them to (i, j).
+    var at: [max_k][max_k]ring.Poly = undefined;
+    i = 0;
+    // invariant (bound): exactly k rows, each with exactly k columns.
+    while (i < k) : (i += 1) {
+        var j: u32 = 0;
+        while (j < k) : (j += 1) {
+            at[i][j] = sample.sample_ntt(&rho, @as(u8, @intCast(i)), @as(u8, @intCast(j))) catch return error.SampleFailed;
+        }
+    }
+
+    // r_hat[j] = NTT(SamplePolyCBD(PRF(r, j), eta1)) — the encryption randomness, in the NTT domain, nonces 0..k−1.
+    var r_hat: [max_k]ring.Poly = undefined;
+    i = 0;
+    // invariant (bound): exactly k randomness polynomials.
+    while (i < k) : (i += 1) {
+        const r_poly = try draw_cbd(r, @as(u8, @intCast(i)), eta1);
+        r_hat[i] = ring.ntt(&r_poly);
+    }
+
+    // e1[i] = SamplePolyCBD(PRF(r, k + i), eta2) — the u blind, standard domain (never NTT), nonces k..2k−1.
+    var e1: [max_k]ring.Poly = undefined;
+    i = 0;
+    // invariant (bound): exactly k blind polynomials.
+    while (i < k) : (i += 1) e1[i] = try draw_cbd(r, @as(u8, @intCast(k + i)), eta2);
+
+    // e2 = SamplePolyCBD(PRF(r, 2k), eta2) — the v blind, standard domain, nonce 2k.
+    const e2 = try draw_cbd(r, @as(u8, @intCast(2 * k)), eta2);
+
+    // u[i] = InvNTT(Σ_j A^T[i][j] ∘ r_hat[j]) + e1[i], each coefficient reduced mod q. The pointwise sum stays canonical (k products < k·q < 2¹⁶),
+    // then InvNTT lands standard domain, then one addition and one reduction.
+    var u_vec: [max_k]ring.Poly = undefined;
+    i = 0;
+    // invariant (bound): exactly k output polynomials.
+    while (i < k) : (i += 1) {
+        var acc: ring.Poly = .{ .cs = [_]u32{0} ** n };
+        var j: u32 = 0;
+        // invariant (bound): exactly k pointwise products accumulated per row.
+        while (j < k) : (j += 1) {
+            const prod = ring.multiply_ntts(&at[i][j], &r_hat[j]);
+            var c: u32 = 0;
+            // invariant (bound): exactly n = 256 coefficients folded in, one per turn.
+            while (c < n) : (c += 1) {
+                // invariant: both addends are canonical residues, so the sum stays below 2q before the single reduction.
+                assert(acc.cs[c] < q and prod.cs[c] < q);
+                acc.cs[c] = (acc.cs[c] + prod.cs[c]) % q;
+            }
+        }
+        var iu = ring.inv_ntt(&acc);
+        var c2: u32 = 0;
+        // invariant (bound): add the standard-domain blind e1[i], one coefficient per turn.
+        while (c2 < n) : (c2 += 1) {
+            assert(iu.cs[c2] < q and e1[i].cs[c2] < q);
+            iu.cs[c2] = (iu.cs[c2] + e1[i].cs[c2]) % q;
+        }
+        u_vec[i] = iu;
+    }
+
+    // mu = Decompress_1(ByteDecode_1(m)) — the message lifted to the ring: each bit becomes 0 or round(q/2) = 1665.
+    var m_block: encode.Encoded = .{ .bytes = [_]u8{0} ** encode.max_bytes, .len = seed_half_bytes };
+    var mb: u32 = 0;
+    // invariant (bound): exactly 32 message bytes read.
+    while (mb < seed_half_bytes) : (mb += 1) m_block.bytes[mb] = m[mb];
+    const m_bits = encode.byte_decode(&m_block, 1);
+    var mu: ring.Poly = .{ .cs = [_]u32{0} ** n };
+    var mc: u32 = 0;
+    // invariant (bound): exactly n = 256 message bits decompressed.
+    while (mc < n) : (mc += 1) {
+        assert(m_bits[mc] < 2);
+        mu.cs[mc] = encode.decompress(m_bits[mc], 1);
+    }
+
+    // v = InvNTT(Σ_j t_hat[j] ∘ r_hat[j]) + e2 + mu, each coefficient reduced mod q.
+    var vacc: ring.Poly = .{ .cs = [_]u32{0} ** n };
+    var vj: u32 = 0;
+    // invariant (bound): exactly k pointwise products accumulated.
+    while (vj < k) : (vj += 1) {
+        const prod = ring.multiply_ntts(&t_hat[vj], &r_hat[vj]);
+        var c: u32 = 0;
+        // invariant (bound): exactly n = 256 coefficients folded in.
+        while (c < n) : (c += 1) {
+            assert(vacc.cs[c] < q and prod.cs[c] < q);
+            vacc.cs[c] = (vacc.cs[c] + prod.cs[c]) % q;
+        }
+    }
+    var v_poly = ring.inv_ntt(&vacc);
+    var vc: u32 = 0;
+    // invariant (bound): add e2 then mu, one coefficient per turn, one reduction each.
+    while (vc < n) : (vc += 1) {
+        assert(v_poly.cs[vc] < q and e2.cs[vc] < q and mu.cs[vc] < q);
+        v_poly.cs[vc] = (((v_poly.cs[vc] + e2.cs[vc]) % q) + mu.cs[vc]) % q;
+    }
+
+    // c = c1 ‖ c2 = ByteEncode_du(Compress_du(u)) ‖ ByteEncode_dv(Compress_dv(v)).
+    i = 0;
+    // invariant (bound): exactly k compressed u polynomials, each 32·du bytes.
+    while (i < k) : (i += 1) compress_encode_poly(&u_vec[i], du, c_out, 32 * du * i);
+    compress_encode_poly(&v_poly, dv, c_out, 32 * du * k);
+    // invariant (postcondition): the two segments exactly fill the ciphertext.
+    assert(32 * du * k + 32 * dv == ct_len);
+}
+
+/// encaps — FIPS 203 ML-KEM.Encaps, parameterized by k, eta1, du, dv. Derives (K, r) = G(m ‖ H(ek)), encrypts m under ek with r, and writes the shared
+/// secret K (32 bytes) into k_out and the ciphertext into c_out. For ML-KEM the shared secret is G's first half verbatim. The message m is a public
+/// test vector here — encapsulating to a real identity key stays the custody gate.
+pub fn encaps(comptime k: u32, comptime eta1: u32, comptime du: u32, comptime dv: u32, ek: []const u8, m: *const [seed_half_bytes]u8, k_out: *[shared_bytes]u8, c_out: []u8) EncapsError!void {
+    // invariant (precondition): the parameter set is one ML-KEM names and ek/c_out hold exactly the FIPS sizes.
+    assert(k >= 2 and k <= max_k);
+    const ek_len: u32 = poly_encoded_bytes * k + seed_half_bytes;
+    assert(ek.len == ek_len);
+    assert(c_out.len == 32 * du * k + 32 * dv);
+
+    // (K, r) = G(m ‖ H(ek)): H = SHA3-256 over the whole ek, then G = SHA3-512 over m ‖ H(ek); the 64-byte output splits into K (first 32) and r (last 32).
+    const hek = sha3.hash256(ek) catch return error.HashFailed;
+    var g_in: [seed_half_bytes + seed_half_bytes]u8 = undefined;
+    var t: u32 = 0;
+    // invariant (bound): copy the 32 message bytes, one per turn.
+    while (t < seed_half_bytes) : (t += 1) g_in[t] = m[t];
+    t = 0;
+    // invariant (bound): copy the 32 H(ek) bytes after the message.
+    while (t < seed_half_bytes) : (t += 1) g_in[seed_half_bytes + t] = hek[t];
+    const kr = sha3.hash512(g_in[0..]) catch return error.HashFailed;
+
+    var r: [seed_half_bytes]u8 = undefined;
+    t = 0;
+    // invariant (bound): K is the first 32 bytes of G, r the last 32.
+    while (t < seed_half_bytes) : (t += 1) {
+        k_out[t] = kr[t];
+        r[t] = kr[seed_half_bytes + t];
+    }
+
+    try k_pke_encrypt(k, eta1, du, dv, ek, m, &r, c_out);
+}
+
+// ---- selftest ----------------------------------------------------------------------------------------------------------------------
+
+/// bytes_from_seed — fill a byte buffer deterministically from a seed with the same tiny LCG the whole ML-KEM arc uses, so a failing run reruns
+/// identically without any std.crypto.
+fn bytes_from_seed(seed: u32, buf: []u8) void {
+    var state: u32 = seed *% 2654435761 +% 1013904223;
+    var i: u32 = 0;
+    while (i < buf.len) : (i += 1) {
+        state = state *% 1664525 +% 1013904223;
+        buf[i] = @as(u8, @intCast((state >> 8) & 0xFF));
+    }
+}
+
+/// all_zero — is a byte slice entirely zero? A ciphertext or shared secret that is must not pass a parity check, or the witness would prove nothing.
+fn all_zero(buf: []const u8) bool {
+    var i: u32 = 0;
+    while (i < buf.len) : (i += 1) {
+        if (buf[i] != 0) return false;
+    }
+    return true;
+}
+
+/// check_param — the doubled oracle for one parameter set: our pure-Rye keygen+encaps versus Zig's std.crypto reference, byte-for-byte over one
+/// (key seed, message) pair, for BOTH the ciphertext and the shared secret. Kem is the Zig type; k/eta1/du/dv name our matching parameters.
+fn check_param(comptime Kem: type, comptime k: u32, comptime eta1: u32, comptime du: u32, comptime dv: u32, d: *const [seed_half_bytes]u8, z: *const [seed_half_bytes]u8, m: *const [seed_half_bytes]u8) EncapsError!void {
+    const ek_len: u32 = poly_encoded_bytes * k + seed_half_bytes;
+    const dk_len: u32 = 2 * poly_encoded_bytes * k + 3 * seed_half_bytes;
+    const ct_len: u32 = 32 * du * k + 32 * dv;
+
+    // Build the key with our own GREEN keygen — ek is the public value both sides encapsulate to.
+    var ek_mine: [keygen.ek_max_bytes]u8 = undefined;
+    var dk_scratch: [keygen.dk_max_bytes]u8 = undefined;
+    keygen.keygen(k, eta1, d, z, ek_mine[0..ek_len], dk_scratch[0..dk_len]) catch return error.OracleFailed;
+
+    // Our encapsulation.
+    var k_mine: [shared_bytes]u8 = undefined;
+    var c_mine: [ct_max_bytes]u8 = undefined;
+    try encaps(k, eta1, du, dv, ek_mine[0..ek_len], m, &k_mine, c_mine[0..ct_len]);
+
+    // Zig's reference: rebuild the public key from our ek bytes, then encapsulate to the same message m.
+    const pk = Kem.PublicKey.fromBytes(ek_mine[0..ek_len]) catch return error.OracleFailed;
+    const es = pk.encapsDeterministic(m);
+    const c_ref = es.ciphertext;
+    const k_ref = es.shared_secret;
+
+    // invariant: our width arithmetic must match Zig's own lengths for this parameter set.
+    if (c_ref.len != ct_len or k_ref.len != shared_bytes) return error.SizeMismatch;
+
+    // A trivial all-zero output would make a byte match meaningless — refuse it before the diff.
+    if (all_zero(c_mine[0..ct_len]) or all_zero(k_mine[0..])) return error.TrivialWitness;
+
+    var b: u32 = 0;
+    while (b < ct_len) : (b += 1) {
+        if (c_mine[b] != c_ref[b]) return error.CiphertextMismatch;
+    }
+    b = 0;
+    while (b < shared_bytes) : (b += 1) {
+        if (k_mine[b] != k_ref[b]) return error.SharedMismatch;
+    }
+}
+
+fn run_selftest() !u8 {
+    const mlkem = std.crypto.kem.ml_kem;
+
+    // Over a deterministic spread of (key seed, message) pairs, our pure-Rye ML-KEM.Encaps must match Zig's std.crypto encapsDeterministic
+    // byte-for-byte at every parameter set, for BOTH outputs — the compressed ciphertext and the 32-byte shared secret. This is the arc's SECOND
+    // external oracle: the transposed matrix, the InvNTT, the message decompression, the compression widths, and G's split all meet Zig's independent
+    // implementation at once. A single wrong stone fails a diff.
+    {
+        var seed: u32 = 1;
+        while (seed <= 8) : (seed += 1) {
+            var d: [seed_half_bytes]u8 = undefined;
+            var z: [seed_half_bytes]u8 = undefined;
+            var m: [seed_half_bytes]u8 = undefined;
+            bytes_from_seed(seed, d[0..]);
+            bytes_from_seed(seed *% 2654435761 +% 7, z[0..]);
+            bytes_from_seed(seed *% 40503 +% 13, m[0..]);
+            // ML-KEM-512: k = 2, eta1 = 3, du = 10, dv = 4.
+            try check_param(mlkem.MLKem512, 2, 3, 10, 4, &d, &z, &m);
+            // ML-KEM-768: k = 3, eta1 = 2, du = 10, dv = 4.
+            try check_param(mlkem.MLKem768, 3, 2, 10, 4, &d, &z, &m);
+            // ML-KEM-1024: k = 4, eta1 = 2, du = 11, dv = 5.
+            try check_param(mlkem.MLKem1024, 4, 2, 11, 5, &d, &z, &m);
+        }
+    }
+
+    print("GREEN crypto-mlkem-encaps: the ML-KEM encapsulation rung (FIPS 203 K-PKE.Encrypt wrapped by ML-KEM.Encaps), authored in pure Rye as " ++
+        "Season G's fifth post-quantum rung and the SECOND with a DOUBLED oracle. It parses ek into (t_hat, rho), regenerates the transposed matrix " ++
+        "A^T with SampleNTT, draws r/e1/e2 with SamplePolyCBD, forms u = InvNTT(A^T NTT-multiply r_hat) + e1 and v = InvNTT(t_hat NTT-multiply r_hat) " ++
+        "+ e2 + Decompress_1(m), and serializes c = ByteEncode_du(Compress_du(u)) then ByteEncode_dv(Compress_dv(v)); ML-KEM.Encaps derives (K, r) = " ++
+        "G(m then H(ek)) and rides K out beside c. Proven byte-for-byte against Zig's independent std.crypto ml_kem encapsDeterministic at ALL THREE " ++
+        "parameter sets (ML-KEM-512 du=10 dv=4, ML-KEM-768 du=10 dv=4, ML-KEM-1024 du=11 dv=5) over 8 deterministic (key seed, message) pairs each, " ++
+        "for BOTH the ciphertext AND the shared secret: our standard-domain arithmetic and Zig's Montgomery-domain arithmetic agree at the published " ++
+        "byte boundary. The encaps function composes only GREEN rungs and calls no std.crypto; only this selftest invokes Zig as the parity oracle. " ++
+        "Purely local — every message and seed a public test vector, no key held, no network, no funds, no real device; encapsulating to the " ++
+        "maintainer's own post-quantum key stays the custody gate, constant-time timing-safety the named horizon.\n", .{});
+    return 0;
+}
+
+pub fn main(init_args: std.process.Init) !u8 {
+    _ = init_args;
+    return run_selftest();
+}
