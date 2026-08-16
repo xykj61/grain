@@ -1,0 +1,43 @@
+# tools/crypto_ed25519_muladd_witness.rish — scalar multiply-add modulo the group order L authored in pure Rye: Season G's twelfth rung, the last
+# arithmetic piece Ed25519 signing needs. mul_add returns (a·b + c) mod L — the signing arithmetic S = (r + k·a) mod L in one call — by forming the
+# full 512-bit product-plus-addend and composing the GREEN reduce over it. Proven against algebraic known-answers and byte-for-byte against an
+# independent implementation (Season G · Cryptography).
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus unblock;
+# signing's S = (r + k·a) mod L is the multiply-add this rung authors, the piece between the GREEN reduce and the signing composition).
+# Kin: crypto/ed25519_scalar.rye (reduce / is_canonical, GREEN — mul_add composes reduce over its own 512-bit product) · crypto/sha512.rye ·
+# crypto/ed25519_scalarmul.rye (all GREEN). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line — our own
+# composition, studied clean-room from RFC 8032 (.claude/rules/gratitude-licenses.md).
+#
+# crypto/ed25519_muladd.rye forms a·b + c from three 32-byte little-endian scalars into an exact 64-byte little-endian value (a·b + c < 2^512, so
+# it fits with no carry past the top — proven and asserted), by bytewise schoolbook: 32·32 byte-products into 64 bounded column sums, the addend
+# folded into the low columns, one carry pass into bytes; that 64-byte value goes straight into the GREEN reduce. The primitive calls no std.crypto.
+# Parity is proven at selftest against algebraic known-answers (1·1+0 = 1, 0·x+c = c mod L, a·1+0 = a mod L) and Zig's own
+# std.crypto.ecc.Edwards25519.scalar.mulAdd as an independent implementation — byte-for-byte across a spread of scalar triples naming both below-L
+# and above-L operands, including the all-ones extreme that maximally exercises the 512-bit carry. The vendored Monocypher source is a held network
+# fetch, so Monocypher-source parity is an honest horizon rung. Purely local arithmetic — this file holds no key and SIGNS NOTHING: no real key, no
+# signing (signing with the maintainer's own identity key stays its own gated round), no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_ed25519_muladd_witness.rish
+
+say "crypto-ed25519-muladd: Language EN — Season G's twelfth rung: scalar multiply-add modulo the group order L authored in pure Rye, the last arithmetic piece Ed25519 signing needs. mul_add returns (a·b + c) mod L for three 32-byte little-endian scalars — the signing arithmetic S = (r + k·a) mod L in one call. It holds no key and signs nothing; when signing calls it the secret scalar makes a constant-time multiply-add the Season's named timing horizon. Producing a signature stays its own separate, GATED round — no custody gate is crossed here."
+say "crypto-ed25519-muladd: Style Radiant — the law is stated positively as (a·b + c) mod L: two scalars below 2^256 have a product below 2^512, and a third addend below 2^256 keeps the sum below 2^512, so a·b + c fits EXACTLY in 64 little-endian bytes with no carry past the top. The 512-bit product is formed by bytewise schoolbook, then the 64-byte value goes straight into the GREEN reduce — this rung writes no new reduction, it composes the one already proven."
+say "crypto-ed25519-muladd: Lens TAME — the primitive calls no std.crypto; it asserts its contracts on every function (the 512-bit width proven, the result canonical below L, the reduction a fixed point), and bounds every column sum well below 2^64. Parity holds against algebraic known-answers (1·1+0 = 1, 0·x+c = c mod L, a·1+0 = a mod L) AND Zig's independent std.crypto.ecc.Edwards25519.scalar.mulAdd — byte-for-byte across a spread of scalar triples naming both below-L and above-L operands, including the all-ones extreme. Monocypher-source parity is a named horizon behind the held vendor fetch. Purely local; the secret-scalar timing posture belongs to signing, a separate named horizon."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/ed25519_muladd"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/ed25519_muladd.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-ed25519-muladd: build failed — ${build.err}"
+
+let outfile = "crypto/bin/ed25519_muladd.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-ed25519-muladd: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-ed25519-muladd: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-ed25519-muladd' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-ed25519-muladd: selftest did not print the GREEN crypto-ed25519-muladd line"
