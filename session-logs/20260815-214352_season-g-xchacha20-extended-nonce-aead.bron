@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260815.214352
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu cloud pier — Eastern (EDT) time convention
+title Season G — HChaCha20 and the XChaCha20-Poly1305 extended-nonce AEAD, parity-GREEN
+prompt Take the next agent-doable lap Lindy-first crux-first; Rye prioritized, Glow on green-witnessed Rye; approve your own design rounds and make progress before checking in; send each finished increment; stop at the custody gates.
+think Read the three road docs (1024-round itinerary, six-season double-seat, decision wave) and the crypto module. Living edge is Season G Cryptography, sixteen rungs GREEN. Priority spine: Rye first, crypto is the highest-Lindy new thread — it serves every module that signs, verifies, agrees a key, or seals.
+think Lindy-first crux-first: the next durable, tractable rung is XChaCha20-Poly1305 — the extended-nonce AEAD. The IETF 12-byte nonce is too small to draw at random without a birthday collision; a 24-byte nonce makes random per-message nonces safe — exactly what Vault sealed storage and a long-lived Comlink session want, and the construction Monocypher's own crypto_aead_lock uses. It stands entirely on GREEN stones: one new small core (HChaCha20) plus the proven ChaCha20-Poly1305 AEAD.
+think Confirmed Zig exposes std.crypto.aead.chacha_poly.XChaCha20Poly1305 and read its extend(): subkey = HChaCha20(nonce[0..16], key); subnonce = 0x00000000 ‖ nonce[16..24]. HChaCha20 is ChaCha20's permutation stopped one step early — same state fill, same twenty rounds, but NO feed-forward, serializing only words 0..3 and 12..15 into a 256-bit subkey.
+think Authored crypto/xchacha20.rye in the house style (opening triad, bounded loops, ≥2 invariant-commented asserts per fn, named errors, no @memcpy, no std.crypto in the primitive path — it composes our own aead) and its witness runner tools/crypto_xchacha20_witness.rish.
+obs First run RED — my hardcoded draft §2.2.1 HChaCha20 subkey hex was mis-transcribed: our output matched the published prefix (82413b42…a877d73) but diverged in the tail. Reds-first instinct: verify before assuming a code bug. Ran Zig's exact hchacha20 logic standalone on the draft input — it produced our value byte-for-byte (…a0f9e4d58a74a853c12ec41326d3ecdc), and the full-AEAD parity against Zig's real library already passed. So the implementation was correct; the literal was wrong. Fixed the KAT to the true value.
+obs Strengthened the anchor rather than trusting a self-derived value: added a published EXTERNAL known-answer from Zig's own std.crypto xchacha20 test (RFC plaintext, key 0x45×32, nonce 0x2a×24, aad "Additional data" → published ciphertext+tag). Three independent references now: draft HChaCha20 subkey KAT, published Zig AEAD KAT, and byte-for-byte parity vs Zig across sizes and aad lengths. Plus nonce-separation, four tamper refusals, and bounds refusals.
+obs Registered the file in the suite (dependency order, right after aead) and updated counts everywhere: seventeen files, fifteen primitives + two compositions. crypto/README.md table row added. tame_style_check GREEN (bans clean). Whole-suite witness GREEN across all seventeen files, each rebuilt fresh from source.
+loom witness=crypto_xchacha20_witness green=1 references=3 primitives=1 parity_sizes=8 aad_sizes=4 tamper_refusals=4
+loom witness=crypto_suite_witness green=1 files=17 rebuilt_fresh=17
+file crypto/xchacha20.rye HChaCha20 core + XChaCha20-Poly1305 extended-nonce AEAD, pure Rye, three-reference parity-GREEN
+file tools/crypto_xchacha20_witness.rish per-file on-metal witness, asserts the GREEN crypto-xchacha20 line
+file tools/crypto_suite_witness.rish registers xchacha20 in dependency order after aead; counts now seventeen/fifteen
+file crypto/README.md adds the xchacha20 row and updates the file counts to seventeen
+recommend keep-going Season G has a clean next crux — a Rye-native passphrase KDF (Argon2i, Monocypher's crypto_argon2) for Vault unlock, or the constant-time timing horizon; each its own signed round. No custody gate reached — TEST vectors only, no real key, no network, no funds.

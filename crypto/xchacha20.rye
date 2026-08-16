@@ -1,0 +1,391 @@
+//! crypto/xchacha20.rye — Season G (Cryptography), the seventeenth file: HChaCha20 (the subkey-derivation core) and the XChaCha20-Poly1305
+//! extended-nonce AEAD (draft-irtf-cfrg-xchacha-03), authored in pure Rye. This is the rung that lets a keeper choose a nonce at RANDOM and
+//! stay safe: the IETF AEAD's 12-byte nonce is too small to draw at random without a birthday collision, and a repeated nonce breaks both
+//! the cipher and the one-time tag. XChaCha20 widens the nonce to 24 bytes by first folding sixteen of those bytes and the key through
+//! HChaCha20 into a fresh 256-bit subkey, then running the proven ChaCha20-Poly1305 AEAD under that subkey and the remaining eight nonce
+//! bytes. With a 192-bit nonce, a random draw per message is safe — exactly what Vault sealed storage and a long-lived Comlink session want,
+//! and exactly the construction Monocypher's own crypto_aead_lock uses. It adds one small new core (HChaCha20) and composes the GREEN AEAD
+//! beneath it; it authors no new field math and no new authenticator.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave; the
+//! sealed session named the extended nonce a keeper really wants for random-nonce sealing).
+//! Kin: crypto/aead.rye (the ChaCha20-Poly1305 AEAD this runs under the derived subkey, GREEN) · crypto/chacha20.rye (the quarter-round
+//! HChaCha20 shares) · crypto/sealed_session.rye (the composition whose per-message nonce this hardens). Monocypher (vendor/monocypher,
+//! CC0/BSD-dual) is the parity TARGET, never a copied line — our own core, studied clean-room from the public draft and Monocypher's public
+//! API (.claude/rules/gratitude-licenses.md).
+//!
+//! THE CRUX — HChaCha20 (draft §2.2) is ChaCha20's own permutation stopped one step early. It fills the sixteen-word state exactly as
+//! ChaCha20 does — four "expand 32-byte k" constants, eight key words — but places the 16-byte input directly in the last four words (where
+//! ChaCha20 keeps its counter and nonce), folds the state through the same twenty rounds of the quarter-round, and then, crucially, does NOT
+//! add the initial state back: it serializes only the first four and the last four words, giving a 256-bit subkey. XChaCha20-Poly1305 (draft
+//! §2.3) then derives subkey = HChaCha20(key, nonce[0..16]) and subnonce = 0x00000000 ‖ nonce[16..24], and hands both to the RFC 8439 AEAD.
+//! Because the subkey depends on the whole 128-bit nonce prefix, two distinct 24-byte nonces yield unrelated keystreams even under one key —
+//! so a random nonce per message is safe. Nothing here is a claim about a device; it is arithmetic anyone can replay against the draft.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity. The key and nonces are public test
+//! vectors, never a real secret; this AEAD holds no long-lived key and signs nothing (it authenticates a message under a shared key — it does
+//! not sign with an identity, which is Ed25519's separate, gated round). It calls no std.crypto in the primitive path; it composes our own
+//! AEAD. Parity is proven at selftest against two references runnable now — the draft's own HChaCha20 known-answer (the 32-byte subkey for
+//! the published key and 16-byte input, hex for hex), and Zig's own std.crypto XChaCha20Poly1305 as an independent implementation,
+//! byte-for-byte on both ciphertext and tag across the empty message, sub-block and multi-block inputs, and several associated-data lengths
+//! including none. A round-trip opens back to the plaintext; distinct nonces on one key give distinct ciphertext; and a tampered tag,
+//! ciphertext, aad, or nonce each makes open refuse without revealing a plaintext byte. Monocypher's crypto_aead_lock is the same XChaCha20
+//! construction — its vendored source is a held network fetch — so Monocypher-source parity is an honest HORIZON rung, added later without
+//! changing a byte. Constant-time timing-safety is a separate named horizon: HChaCha20's data flow is data-independent by construction, yet a
+//! timing claim wants measurement, not a boast, so it stays a horizon.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/xchacha20.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const aead = @import("aead.rye");
+
+pub const xchacha20_version = "20260815.213251";
+
+/// XChaCha20's fixed shapes. key_bytes the 32-byte key; xnonce_bytes the 24-byte extended nonce; subkey_bytes the 256-bit HChaCha20 output;
+/// tag_bytes the 16-byte Poly1305 tag inherited from the AEAD beneath. state_words the sixteen 32-bit words HChaCha20 folds; hinput_bytes the
+/// 16-byte HChaCha20 input; rounds the twenty it runs. Named so every bound below cites one rather than a bare number.
+pub const key_bytes: u32 = aead.key_bytes;
+pub const xnonce_bytes: u32 = 24;
+pub const subkey_bytes: u32 = 32;
+pub const tag_bytes: u32 = aead.tag_bytes;
+const state_words: u32 = 16;
+const hinput_bytes: u32 = 16;
+const rounds: u32 = 20;
+
+/// The AEAD's own bounds carry through — the extended nonce widens the nonce, not the message. Named so a caller reads one source of truth.
+pub const max_message_bytes: u32 = aead.max_message_bytes;
+pub const max_aad_bytes: u32 = aead.max_aad_bytes;
+
+/// The faults this AEAD can raise are exactly the AEAD's beneath it — the extend step never fails, so seal and open forward the same set.
+pub const XAeadError = aead.AeadError;
+
+/// The four ChaCha20 constant words — the ASCII of "expand 32-byte k" as four little-endian 32-bit words (draft §2.2, RFC 8439 §2.3). Named
+/// once so the HChaCha20 state builder reads from one source of truth.
+const sigma = [4]u32{ 0x61707865, 0x3320646e, 0x79622d32, 0x6b206574 };
+
+/// The ChaCha20 quarter-round (RFC 8439 §2.1): four wrapping adds, four XORs, four fixed left-rotations. HChaCha20 uses the same mixing as
+/// the stream cipher; this is a local copy so the proven crypto/chacha20.rye witness stays untouched by this rung.
+fn quarter_round(s: *[state_words]u32, a: u32, b: u32, c: u32, d: u32) void {
+    // invariant: the four indices address distinct words within the sixteen-word state.
+    assert(a < state_words and b < state_words and c < state_words and d < state_words);
+    s[a] +%= s[b];
+    s[d] = std.math.rotl(u32, s[d] ^ s[a], 16);
+    s[c] +%= s[d];
+    s[b] = std.math.rotl(u32, s[b] ^ s[c], 12);
+    s[a] +%= s[b];
+    s[d] = std.math.rotl(u32, s[d] ^ s[a], 8);
+    s[c] +%= s[d];
+    s[b] = std.math.rotl(u32, s[b] ^ s[c], 7);
+}
+
+/// HChaCha20 (draft §2.2): derive a 256-bit subkey from a 256-bit key and a 128-bit input. The state is filled like ChaCha20 — four sigma
+/// constants, eight key words — but the 16-byte input occupies the last four words (ChaCha20's counter-and-nonce slots), and the initial
+/// state is NOT added back after the rounds. Only the first four and last four words are serialized, giving 32 bytes.
+pub fn hchacha20(key: *const [key_bytes]u8, input: *const [hinput_bytes]u8) [subkey_bytes]u8 {
+    // invariant: the state carries exactly sixteen 32-bit words.
+    comptime assert(state_words == 16);
+    // invariant: twenty rounds run as ten double-rounds — an even count.
+    comptime assert(rounds == 20 and rounds % 2 == 0);
+
+    var state: [state_words]u32 = undefined;
+    state[0] = sigma[0];
+    state[1] = sigma[1];
+    state[2] = sigma[2];
+    state[3] = sigma[3];
+    var i: u32 = 0;
+    while (i < 8) : (i += 1) {
+        state[4 + i] = std.mem.readInt(u32, key[i * 4 ..][0..4], .little);
+    }
+    i = 0;
+    while (i < 4) : (i += 1) {
+        state[12 + i] = std.mem.readInt(u32, input[i * 4 ..][0..4], .little);
+    }
+
+    var r: u32 = 0;
+    while (r < rounds) : (r += 2) {
+        // Column round.
+        quarter_round(&state, 0, 4, 8, 12);
+        quarter_round(&state, 1, 5, 9, 13);
+        quarter_round(&state, 2, 6, 10, 14);
+        quarter_round(&state, 3, 7, 11, 15);
+        // Diagonal round.
+        quarter_round(&state, 0, 5, 10, 15);
+        quarter_round(&state, 1, 6, 11, 12);
+        quarter_round(&state, 2, 7, 8, 13);
+        quarter_round(&state, 3, 4, 9, 14);
+    }
+
+    // No feed-forward: HChaCha20 serializes the first four and last four post-permutation words directly (this is the whole difference from
+    // the ChaCha20 keystream block, which adds the initial state back first).
+    var out: [subkey_bytes]u8 = undefined;
+    i = 0;
+    while (i < 4) : (i += 1) std.mem.writeInt(u32, out[i * 4 ..][0..4], state[i], .little);
+    i = 0;
+    while (i < 4) : (i += 1) std.mem.writeInt(u32, out[16 + i * 4 ..][0..4], state[12 + i], .little);
+    return out;
+}
+
+/// Derive the IETF-AEAD (subkey, subnonce) pair from the extended nonce (draft §2.3): subkey = HChaCha20(key, nonce[0..16]); subnonce is four
+/// zero bytes followed by nonce[16..24]. Named as its own step so seal and open share exactly one derivation.
+fn extend(key: *const [key_bytes]u8, nonce: *const [xnonce_bytes]u8, subkey: *[subkey_bytes]u8, subnonce: *[aead.nonce_bytes]u8) void {
+    // invariant: the AEAD nonce is 12 bytes — four zero bytes plus the trailing eight of the extended nonce.
+    comptime assert(aead.nonce_bytes == 12);
+    subkey.* = hchacha20(key, nonce[0..16]);
+    subnonce[0] = 0;
+    subnonce[1] = 0;
+    subnonce[2] = 0;
+    subnonce[3] = 0;
+    var i: u32 = 0;
+    while (i < 8) : (i += 1) subnonce[4 + i] = nonce[16 + i];
+}
+
+/// Seal: derive the subkey and subnonce from the 24-byte extended nonce, then run the proven ChaCha20-Poly1305 AEAD (draft §2.3). Writes the
+/// ciphertext (same length as the plaintext) and the 16-byte tag. With a 192-bit nonce a random draw per message is safe.
+pub fn seal(cipher: []u8, tag: *[tag_bytes]u8, plain: []const u8, aad: []const u8, key: *const [key_bytes]u8, nonce: *const [xnonce_bytes]u8) XAeadError!void {
+    var subkey: [subkey_bytes]u8 = undefined;
+    var subnonce: [aead.nonce_bytes]u8 = undefined;
+    extend(key, nonce, &subkey, &subnonce);
+    // invariant: the derived subkey is a full 256 bits — the AEAD requires a 32-byte key.
+    comptime assert(subkey_bytes == aead.key_bytes);
+    try aead.seal(cipher, tag, plain, aad, &subkey, &subnonce);
+}
+
+/// Open: derive the same subkey and subnonce, then verify and decipher through the AEAD beneath (draft §2.3). On any authentication failure it
+/// returns AuthFailed without writing a plaintext byte — a forged or altered message reveals nothing.
+pub fn open(plain: []u8, cipher: []const u8, tag: *const [tag_bytes]u8, aad: []const u8, key: *const [key_bytes]u8, nonce: *const [xnonce_bytes]u8) XAeadError!void {
+    var subkey: [subkey_bytes]u8 = undefined;
+    var subnonce: [aead.nonce_bytes]u8 = undefined;
+    extend(key, nonce, &subkey, &subnonce);
+    try aead.open(plain, cipher, tag, aad, &subkey, &subnonce);
+}
+
+/// Render bytes as lowercase hex, for comparison against the draft's own hex form. Bounded by a named maximum on the input length.
+const max_hex_input: u32 = 256;
+fn to_hex(bytes: []const u8, out: *[max_hex_input * 2]u8) u32 {
+    const alphabet = "0123456789abcdef";
+    // invariant: the input fits the hex buffer — two hex characters per byte.
+    assert(bytes.len <= max_hex_input);
+    var i: u32 = 0;
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = alphabet[bytes[i] >> 4];
+        out[i * 2 + 1] = alphabet[bytes[i] & 0x0f];
+    }
+    return @as(u32, @intCast(bytes.len)) * 2;
+}
+
+// The draft-irtf-cfrg-xchacha-03 §2.2.1 HChaCha20 known-answer — public, never a real secret. The key 0x00..0x1f and the 16-byte input
+// 00:00:00:09:00:00:00:4a:00:00:00:00:31:41:59:27 derive exactly this 32-byte subkey. A single wrong constant, rotation, or the mistaken
+// feed-forward would break it at once, which the selftest proves it does not.
+const draft_key = [key_bytes]u8{
+    0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
+    0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f,
+};
+const draft_hinput = [hinput_bytes]u8{ 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00, 0x4a, 0x00, 0x00, 0x00, 0x00, 0x31, 0x41, 0x59, 0x27 };
+const draft_subkey_hex = "82413b4227b27bfed30e42508a877d73a0f9e4d58a74a853c12ec41326d3ecdc";
+
+// A published external XChaCha20-Poly1305 AEAD known-answer, drawn from Zig's own std.crypto neutral test suite (the "xchacha20" test in
+// lib/std/crypto/chacha20.zig) — an independent, published anchor for the WHOLE construction, HChaCha20 subkey derivation included. Key
+// 0x45 repeated, nonce 0x2a repeated, the RFC's own 114-byte plaintext, and the associated data "Additional data" seal to exactly this
+// ciphertext and tag. A single wrong step anywhere in the extended-nonce path breaks it at once.
+const kat_key = [_]u8{69} ** key_bytes;
+const kat_nonce = [_]u8{42} ** xnonce_bytes;
+const kat_aad = "Additional data";
+const kat_plaintext = "Ladies and Gentlemen of the class of '99: If I could offer you only one tip for the future, sunscreen would be it.";
+const kat_cipher_hex = "994d2dd32333f48e53650c02c7a2abb8e018b0836d7175aec779f52e961780768f815c58f1aa52d211498db89b9216763f569c9433a6bbfcefb4d4a49387a4c5207fbb3b5a92b5941294df30588c6740d39dc16fa1f0e634f7246cf7cdcb978e44347d89381b7a74eb7084f754b90bde9aaf";
+const kat_tag_hex = "5a94b8f2a85efd0b50692ae2d425e234";
+
+/// Independent reference: Zig's own std.crypto XChaCha20Poly1305, used ONLY inside the selftest as a second implementation to prove our
+/// composed extended-nonce AEAD matches byte-for-byte on both ciphertext and tag. The seal/open above never call this.
+fn ref_seal(cipher: []u8, tag: *[tag_bytes]u8, plain: []const u8, aad: []const u8, key: [key_bytes]u8, nonce: [xnonce_bytes]u8) void {
+    std.crypto.aead.chacha_poly.XChaCha20Poly1305.encrypt(cipher, tag, plain, aad, nonce, key);
+}
+
+fn hex_eq(got: []const u8, want: []const u8) bool {
+    if (got.len != want.len) return false;
+    var i: u32 = 0;
+    while (i < got.len) : (i += 1) {
+        if (got[i] != want[i]) return false;
+    }
+    return true;
+}
+
+fn bytes_eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) {
+        if (a[i] != b[i]) return false;
+    }
+    return true;
+}
+
+fn run_selftest() !u8 {
+    var hexbuf: [max_hex_input * 2]u8 = undefined;
+
+    // 1a. draft §2.2.1 HChaCha20 known-answer: the published key and 16-byte input derive exactly the published 32-byte subkey, hex for hex.
+    {
+        const sk = hchacha20(&draft_key, &draft_hinput);
+        const n = to_hex(&sk, &hexbuf);
+        if (!hex_eq(hexbuf[0..n], draft_subkey_hex)) return error.HChaChaVectorMismatch;
+    }
+
+    // 1b. A published external XChaCha20-Poly1305 AEAD known-answer (Zig's own std.crypto neutral test vector): the RFC plaintext, the aad
+    //     "Additional data", key 0x45×32, and nonce 0x2a×24 seal to exactly the published ciphertext and tag, hex for hex, and open
+    //     round-trips. This anchors the WHOLE extended-nonce construction — HChaCha20 subkey derivation included — to an independent value.
+    {
+        var cipher: [kat_plaintext.len]u8 = undefined;
+        var tag: [tag_bytes]u8 = undefined;
+        try seal(&cipher, &tag, kat_plaintext, kat_aad, &kat_key, &kat_nonce);
+
+        const cn = to_hex(&cipher, &hexbuf);
+        if (!hex_eq(hexbuf[0..cn], kat_cipher_hex)) return error.KatCipherMismatch;
+        const tn = to_hex(&tag, &hexbuf);
+        if (!hex_eq(hexbuf[0..tn], kat_tag_hex)) return error.KatTagMismatch;
+
+        var back: [kat_plaintext.len]u8 = undefined;
+        try open(&back, &cipher, &tag, kat_aad, &kat_key, &kat_nonce);
+        if (!bytes_eq(&back, kat_plaintext)) return error.KatRoundTripMismatch;
+    }
+
+    // 2. Independent-implementation parity: our composed XChaCha20-Poly1305 equals Zig's std.crypto XChaCha20Poly1305 byte-for-byte on both
+    //    ciphertext and tag across message sizes at the block edges and several associated-data lengths (including no aad), and our own open
+    //    round-trips back to the plaintext.
+    {
+        const key = draft_key;
+        const nonce = [xnonce_bytes]u8{
+            0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b,
+            0x4c, 0x4d, 0x4e, 0x4f, 0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57,
+        };
+        const sizes = [_]u32{ 0, 1, 16, 17, 63, 64, 65, 200 };
+        const aad_sizes = [_]u32{ 0, 12, 16, 40 };
+        for (aad_sizes) |asz| {
+            var ad: [40]u8 = undefined;
+            var k: u32 = 0;
+            while (k < asz) : (k += 1) ad[k] = @as(u8, @truncate(k *% 5 +% 2));
+            for (sizes) |sz| {
+                var msg: [200]u8 = undefined;
+                var i: u32 = 0;
+                while (i < sz) : (i += 1) msg[i] = @as(u8, @truncate(i *% 13 +% 7));
+
+                var ours_ct: [200]u8 = undefined;
+                var ours_tag: [tag_bytes]u8 = undefined;
+                try seal(ours_ct[0..sz], &ours_tag, msg[0..sz], ad[0..asz], &key, &nonce);
+
+                var theirs_ct: [200]u8 = undefined;
+                var theirs_tag: [tag_bytes]u8 = undefined;
+                ref_seal(theirs_ct[0..sz], &theirs_tag, msg[0..sz], ad[0..asz], key, nonce);
+
+                if (!bytes_eq(ours_ct[0..sz], theirs_ct[0..sz])) return error.RefCipherMismatch;
+                if (!bytes_eq(&ours_tag, &theirs_tag)) return error.RefTagMismatch;
+
+                var recovered: [200]u8 = undefined;
+                try open(recovered[0..sz], ours_ct[0..sz], &ours_tag, ad[0..asz], &key, &nonce);
+                if (!bytes_eq(recovered[0..sz], msg[0..sz])) return error.RoundTripMismatch;
+            }
+        }
+    }
+
+    // 3. The extended-nonce property: two DIFFERENT 24-byte nonces on the same key and plaintext yield different ciphertext (so a random
+    //    nonce per message is safe), and each opens back to the same plaintext. This is the whole reason for the wider nonce.
+    {
+        const key = draft_key;
+        const msg = "the wide nonce lets a keeper draw at random and never collide";
+        var nonce_a = [_]u8{0} ** xnonce_bytes;
+        var nonce_b = [_]u8{0} ** xnonce_bytes;
+        var i: u32 = 0;
+        while (i < xnonce_bytes) : (i += 1) {
+            nonce_a[i] = @as(u8, @truncate(i *% 3 +% 1));
+            nonce_b[i] = @as(u8, @truncate(i *% 3 +% 1));
+        }
+        nonce_b[0] ^= 0x01; // a single differing nonce byte in the HChaCha20 prefix
+
+        var ct_a: [msg.len]u8 = undefined;
+        var tag_a: [tag_bytes]u8 = undefined;
+        try seal(&ct_a, &tag_a, msg, "", &key, &nonce_a);
+        var ct_b: [msg.len]u8 = undefined;
+        var tag_b: [tag_bytes]u8 = undefined;
+        try seal(&ct_b, &tag_b, msg, "", &key, &nonce_b);
+
+        if (bytes_eq(&ct_a, &ct_b)) return error.NonceSeparationFailed;
+
+        var back_a: [msg.len]u8 = undefined;
+        try open(&back_a, &ct_a, &tag_a, "", &key, &nonce_a);
+        if (!bytes_eq(&back_a, msg)) return error.RoundTripMismatch;
+    }
+
+    // 4. Tamper detection: a flipped tag byte, a flipped ciphertext byte, altered aad, and a changed nonce byte each make open refuse with
+    //    AuthFailed — and none reveals a plaintext byte.
+    {
+        const key = draft_key;
+        const nonce = [_]u8{0x11} ** xnonce_bytes;
+        const aad = [_]u8{ 0xaa, 0xbb, 0xcc, 0xdd };
+        const msg = "seal me under a wide nonce and prove a single altered byte is caught";
+        var cipher: [msg.len]u8 = undefined;
+        var tag: [tag_bytes]u8 = undefined;
+        try seal(&cipher, &tag, msg, &aad, &key, &nonce);
+        var out: [msg.len]u8 = undefined;
+
+        var bad_tag = tag;
+        bad_tag[0] ^= 0x01;
+        if (open(&out, &cipher, &bad_tag, &aad, &key, &nonce)) |_| return error.TamperTagSlipped else |err| if (err != error.AuthFailed) return error.WrongTamperTag;
+
+        var bad_cipher = cipher;
+        bad_cipher[3] ^= 0x80;
+        if (open(&out, &bad_cipher, &tag, &aad, &key, &nonce)) |_| return error.TamperCipherSlipped else |err| if (err != error.AuthFailed) return error.WrongTamperCipher;
+
+        var bad_aad = aad;
+        bad_aad[0] ^= 0x01;
+        if (open(&out, &cipher, &tag, &bad_aad, &key, &nonce)) |_| return error.TamperAadSlipped else |err| if (err != error.AuthFailed) return error.WrongTamperAad;
+
+        var bad_nonce = nonce;
+        bad_nonce[20] ^= 0x01;
+        if (open(&out, &cipher, &tag, &aad, &key, &bad_nonce)) |_| return error.TamperNonceSlipped else |err| if (err != error.AuthFailed) return error.WrongTamperNonce;
+    }
+
+    // 5. The bounds refuse malformed calls before work begins — inherited from the AEAD beneath, surfaced here so a caller sees them at the
+    //    extended-nonce edge too.
+    {
+        const key = draft_key;
+        const nonce = [_]u8{0x22} ** xnonce_bytes;
+        var small: [8]u8 = undefined;
+        var wrong: [4]u8 = undefined;
+        var tag: [tag_bytes]u8 = undefined;
+        if (seal(&small, &tag, &wrong, "", &key, &nonce)) |_| return error.LenSlipped else |err| if (err != error.LengthMismatch) return error.WrongLen;
+
+        const oversize_in: []const u8 = @as([*]const u8, @ptrFromInt(0x2000))[0 .. max_message_bytes + 1];
+        const oversize_out: []u8 = @as([*]u8, @ptrFromInt(0x4000))[0 .. max_message_bytes + 1];
+        if (seal(oversize_out, &tag, oversize_in, "", &key, &nonce)) |_| return error.OversizeSlipped else |err| if (err != error.MessageTooLong) return error.WrongOversize;
+
+        const big_aad: []const u8 = @as([*]const u8, @ptrFromInt(0x6000))[0 .. max_aad_bytes + 1];
+        var tiny: [1]u8 = undefined;
+        var tiny_in = [_]u8{0};
+        if (seal(&tiny, &tag, &tiny_in, big_aad, &key, &nonce)) |_| return error.AadSlipped else |err| if (err != error.AadTooLong) return error.WrongAad;
+    }
+
+    print("GREEN crypto-xchacha20: HChaCha20 and the XChaCha20-Poly1305 extended-nonce AEAD (draft-irtf-cfrg-xchacha-03) authored in pure " ++
+        "Rye — Season G's seventeenth file, the construction Monocypher's crypto_aead_lock uses. HChaCha20 fills ChaCha20's state (four " ++
+        "\"expand 32-byte k\" constants, eight key words, the 16-byte input in the last four words), folds it through twenty rounds of the " ++
+        "quarter-round, and — unlike the keystream block — serializes the first four and last four words WITHOUT adding the initial state " ++
+        "back, giving a 256-bit subkey; XChaCha20-Poly1305 derives subkey = HChaCha20(key, nonce[0..16]) and subnonce = 0x00000000 ‖ " ++
+        "nonce[16..24], then runs our own GREEN ChaCha20-Poly1305 AEAD. The wider 192-bit nonce makes a random draw per message safe — what " ++
+        "Vault sealed storage and a long-lived Comlink session want. Parity holds against three references runnable now: the draft §2.2.1 " ++
+        "HChaCha20 known-answer (the 32-byte subkey for the published key and input) matches hex for hex; a published external " ++
+        "XChaCha20-Poly1305 AEAD known-answer (Zig's own std.crypto test vector — the RFC plaintext under key 0x45×32, nonce 0x2a×24, aad " ++
+        "\"Additional data\") seals to exactly the published ciphertext and tag and opens round-trip; and our composed AEAD equals " ++
+        "Zig's independent std.crypto XChaCha20Poly1305 byte-for-byte on both ciphertext and tag across the empty message, sub-block and " ++
+        "multi-block inputs, and associated-data lengths of 0, 12, 16, and 40 bytes, opening round-trip. Two distinct nonces on one key give " ++
+        "distinct ciphertext; a flipped tag, ciphertext, aad, or nonce each makes open refuse with AuthFailed and reveals no plaintext; " ++
+        "malformed and over-long calls refuse before work begins. Monocypher's crypto_aead_lock is the same construction — its vendored " ++
+        "source is a held fetch, so Monocypher-source parity is an honest horizon rung. Purely local — the key and nonces are public test " ++
+        "vectors, no real secret, no signature, no network, no funds, no real device; constant-time timing-safety stays a separate named " ++
+        "horizon. Random-nonce sealing now stands on proven stones.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

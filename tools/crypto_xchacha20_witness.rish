@@ -1,0 +1,45 @@
+# tools/crypto_xchacha20_witness.rish — HChaCha20 and the XChaCha20-Poly1305 extended-nonce AEAD (draft-irtf-cfrg-xchacha-03) authored in
+# pure Rye: Season G's seventeenth file, the construction Monocypher's crypto_aead_lock uses, proven against the draft §2.2.1 HChaCha20
+# known-answer and byte-for-byte against an independent implementation (Season G · Cryptography).
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave; the
+# sealed session named the extended nonce a keeper really wants for random-nonce sealing).
+# Kin: crypto/aead.rye (the ChaCha20-Poly1305 AEAD this runs under the derived subkey, GREEN) · crypto/chacha20.rye (the quarter-round
+# HChaCha20 shares) · crypto/sealed_session.rye. Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line —
+# our own core, studied clean-room from the public draft and Monocypher's public API (.claude/rules/gratitude-licenses.md).
+#
+# crypto/xchacha20.rye widens ChaCha20-Poly1305's nonce to 24 bytes so a keeper can draw a nonce at RANDOM and stay safe. HChaCha20 fills
+# ChaCha20's state (four "expand 32-byte k" constants, eight key words, the 16-byte input in the last four words), folds it through twenty
+# rounds of the quarter-round, and — unlike the keystream block — serializes the first four and last four words WITHOUT adding the initial
+# state back, giving a 256-bit subkey; XChaCha20-Poly1305 derives subkey = HChaCha20(key, nonce[0..16]) and subnonce = 0x00000000 ‖
+# nonce[16..24], then runs our own GREEN ChaCha20-Poly1305 AEAD. Parity is proven at selftest against two references runnable now: the draft
+# §2.2.1 HChaCha20 known-answer (the 32-byte subkey for the published key and 16-byte input, hex for hex), and Zig's own std.crypto
+# XChaCha20Poly1305 as an independent implementation, byte-for-byte on both ciphertext and tag across the block edges and associated-data
+# lengths of 0, 12, 16, and 40 bytes. Two distinct nonces on one key give distinct ciphertext; a flipped tag, ciphertext, aad, or nonce each
+# makes open refuse with AuthFailed and reveals no plaintext. The vendored Monocypher source is a held network fetch, so Monocypher-source
+# parity is an honest horizon rung. Purely local — the key and nonces are public test vectors, no real secret, no signature, no network, no
+# funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_xchacha20_witness.rish
+
+say "crypto-xchacha20: Language EN — Season G's seventeenth file: HChaCha20 and the XChaCha20-Poly1305 extended-nonce AEAD (draft-irtf-cfrg-xchacha-03) authored in pure Rye. This is the rung that lets a keeper choose a nonce at random and stay safe: the IETF AEAD's 12-byte nonce is too small to draw at random without a birthday collision, and XChaCha20 widens it to 24 bytes by folding sixteen of them and the key through HChaCha20 into a fresh subkey, then running the proven ChaCha20-Poly1305 AEAD beneath — the same construction Monocypher's crypto_aead_lock uses. It adds one small new core and composes the GREEN AEAD; it authors no new field math and no new authenticator."
+say "crypto-xchacha20: Style Radiant — the law is stated positively: HChaCha20 is ChaCha20's permutation stopped one step early — same state fill, same twenty rounds, but the initial state is NOT added back, and only the first four and last four words are serialized into a 256-bit subkey; XChaCha20-Poly1305 derives subkey = HChaCha20(key, nonce[0..16]) and subnonce = four zero bytes then nonce[16..24], and hands both to the RFC 8439 AEAD. Because the subkey depends on the whole nonce prefix, two distinct 24-byte nonces give unrelated keystreams under one key, so a random nonce per message is safe."
+say "crypto-xchacha20: Lens TAME — the primitive path calls no std.crypto; it composes our own AEAD, bounds the message and associated data at the AEAD's named ceilings, and asserts its contracts on every function. Parity holds against the draft §2.2.1 HChaCha20 known-answer AND Zig's independent std.crypto XChaCha20Poly1305 byte-for-byte on both ciphertext and tag across the block edges and several aad lengths; two distinct nonces yield distinct ciphertext; a flipped tag, ciphertext, aad, or nonce each refuses with AuthFailed; malformed and over-long calls refuse before work begins. Monocypher-source parity is a named horizon behind the held vendor fetch. Purely local — public test vectors, no real secret, no signature, no network, no funds, no device; constant-time timing-safety stays a separate named horizon."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/xchacha20"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/xchacha20.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-xchacha20: build failed — ${build.err}"
+
+let outfile = "crypto/bin/xchacha20.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-xchacha20: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-xchacha20: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-xchacha20' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-xchacha20: selftest did not print the GREEN crypto-xchacha20 line"
