@@ -1,0 +1,26 @@
+format session-log-v1
+stamp 20260816.050115
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title crypto/eip712.rye — EIP-712 typed-structured-data hashing in pure Rye, parity-GREEN
+prompt take the next agent-doable lap Lindy-first crux-first on the road ahead — Rye prioritized, Glow on green-witnessed Rye; approve my own design rounds; send each finished increment; stop at custody gates
+think Read REMEMBER (git nib at secp256k1 ecrecover / EIP-191 personal_sign), the 1,024-round itinerary, the six-season double-seat, and the Rye-first crypto wave. The living edge is Season G crypto — the highest-Lindy new thread by the wave's own priority spine. The personal_sign design doc named its own next crux: EIP-712 typed-data hashing, the structured sibling of the flat EIP-191 login.
+think Lindy-first crux-first: EIP-712 is the digest behind every EIP-2612 permit, every DeFi order, every gasless meta-tx, every typed Sign-in-with-Ethereum — read millions of times across the Ethereum world. It composes proven stones (keccak256, ecrecover, eth_address) and authors no new cryptography, so it is a clean agent-doable composition round, exactly the pattern the prior five compositions followed.
+think Fetched the EIP-712 spec for the canonical Ether Mail example. The spec gave the published 65-byte signature verbatim (0x4355…c9d ‖ 0729…62 ‖ 1c) and Cow's wallet 0xCD2a…D826. That is the strongest world-binding: if my encoding is off by one bit, ecrecover on the published signature will not return the published signer — no need to hardcode a possibly-misremembered intermediate digest constant.
+think Wrote crypto/eip712.rye as the sixth composition with general building blocks any typed message uses: type_hash, word_from_address, word_from_u64, encode_string, hash_struct (keccak256(type_hash ‖ fields), bounded max_struct_fields), eip712_domain_separator, eip712_digest (keccak256(0x1901 ‖ ds ‖ struct_hash)), recover_typed_signer. TAME: opening triad, ≥2 positive invariants/fn, named errors, explicit byte loops (no @memcpy), unqualified assert, named caps on the type string and field count.
+think Three parity proofs runnable now: (1) PUBLISHED — assemble the canonical Ether Mail digest from the blocks, and the spec's own signature recovers exactly Cow's published wallet; (2) INDEPENDENT — our digest equals a second built entirely from Zig's std.crypto Keccak-256 byte-for-byte; (3) ROUND-TRIP — our GREEN prehashed signer signs a typed Permit digest with a TEST key across six keys, the correct v recovers, recover_typed_signer returns that key's own address, a one-byte tamper never recovers the true signer. Plus five edge refusals.
+obs GREEN after one mechanical red the compiler caught (array-repeat needs [_]u8{x} ** 20, not [20]u8{x} ** 20). The published Ether Mail signature recovered Cow's published wallet — the encoding is byte-perfect against Ethereum's own reference. Witness GREEN, count guard GREEN at 40 (bijection whole), TAME bans clean, full suite rebuild confirms all 40 files GREEN (34 primitives + 6 compositions).
+obs Custody: EIP-712 recovery touches no secret — typed data, domain, signature, recovery byte, recovered address all public — so it sits non-gated beside verify, ecrecover, and personal_sign. It answers who signed this typed message, for this app, on this chain?, never sign this; signing with the maintainer's own identity key stays the custody gate (#3/#4). Widens the Kumara-against-Ethereum door from flat logins to the typed data the Ethereum world actually signs.
+loom witness=crypto_eip712_witness green=1 keys=6 published_vector=ether_mail parity=published_signature_and_zig_keccak_and_round_trip
+loom witness=crypto_count_guard_witness files=40 bijection=whole green=1
+loom witness=crypto_suite_witness files=40 primitives=34 compositions=6 green=1
+file crypto/eip712.rye the sixth composition — EIP-712 type_hash · hash_struct · domain_separator · digest · recover_typed_signer over keccak256 · ecrecover · eth_address
+file tools/crypto_eip712_witness.rish the per-file witness asserting GREEN crypto-eip712, published + independent + round-trip parity
+file tools/crypto_suite_witness.rish registered the sixth composition after eth_personal_sign; prose counts synced 34/40, six compositions
+file active-designing/20260816-050115_eip712-typed-data.md the rung's claim, self-approved design round
+file docs/CRYPTO.md front-door counts 34/40 and the eip712 composition row
+file crypto/README.md counts 34/40, six compositions, the eip712 row
+file crypto/CONSTANT_TIME.md the eip712 row — public-only, non-gated, a data-independent composition
+recommend keep-going the secp256k1 / Ethereum arc now authenticates typed structured data end to end; the next Lindy-first crux is the constant-time timing horizon named across the secret-flow rows, or a Bitcoin-side composition (P2PKH/P2WPKH address from the GREEN HASH160 · base58check · bech32)

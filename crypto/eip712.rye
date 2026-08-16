@@ -1,0 +1,569 @@
+//! crypto/eip712.rye — Season G (Cryptography): the Ethereum EIP-712 typed-structured-data hashing scheme, authored in pure Rye as a composition
+//! over the already-GREEN Keccak-256 (crypto/keccak256.rye), the ECDSA public-key recovery (crypto/secp256k1_ecrecover.rye), and the address
+//! derivation (crypto/eth_address.rye). EIP-712 is the digest a wallet shows a human before it signs "typed data": every token approval
+//! (EIP-2612 `permit`), every DeFi order (0x, Seaport, Permit2), every gasless meta-transaction, and every typed "Sign in with Ethereum" runs
+//! through this exact construction. Where EIP-191 personal_sign (crypto/eth_personal_sign.rye) frames a flat string, EIP-712 hashes a *tree* of
+//! typed fields against a domain separator, so a signature for one contract on one chain can never be replayed against another.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready). This rung authors NO new
+//! cryptography: every hash is the GREEN Keccak-256, every recovery the GREEN ecrecover, every address the GREEN eth_address. It contributes only
+//! the EIP-712 *encoding* — the type hash, the struct hash, the domain separator, and the 0x1901 digest framing — over stones already proven on
+//! metal beneath it. Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity
+//! wave, the Kumara-login / Dimeroll-receipt door this widens from flat messages to typed structured data).
+//! Kin: crypto/eth_personal_sign.rye (the EIP-191 flat-message sibling, GREEN) · crypto/keccak256.rye (the hash of every EIP-712 word, GREEN) ·
+//! crypto/secp256k1_ecrecover.rye (the recovery a typed signature is read back through, GREEN) · crypto/eth_address.rye (the address the recovered
+//! key resolves to, GREEN) · crypto/secp256k1_ecdsa_sign.rye (the prehashed signer the round-trip signs the typed digest with, GREEN). Clean-room:
+//! EIP-712 is Ethereum's own public standard; the encoding is ours, standing on our own parity-GREEN rungs, never a copied line
+//! (.claude/rules/gratitude-licenses.md).
+//!
+//! THE CRUX — EIP-712 hashes a struct S of typed fields as hash_struct(S) = keccak256(type_hash(S) ‖ encode(field₀) ‖ … ‖ encode(fieldₙ)), where
+//! type_hash is the Keccak-256 of the canonical type string, an atomic field encodes to its 32-byte big-endian word (an address left-padded, a
+//! uint256 as its word), a dynamic string/bytes field encodes to keccak256(value), and a nested struct field encodes to its own hash_struct. The
+//! signing digest is keccak256(0x19 0x01 ‖ domain_separator ‖ hash_struct(message)) — the 0x19 sentinel that can never begin a valid RLP
+//! transaction, and 0x01 the EIP-712 version byte. The domain_separator is itself the hash_struct of the fixed EIP712Domain struct (name, version,
+//! chainId, verifyingContract), binding a signature to one app on one chain at one contract. This file provides the general building blocks —
+//! type_hash, word_from_address, word_from_u64, hash_struct, eip712_domain_separator, eip712_digest — a caller assembles for any typed message,
+//! plus recover_typed_signer, which reads the twenty-byte sender back out of a 65-byte r‖s‖v signature over such a digest.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no key, no network, no funds, no real device, no identity. In EIP-712 recovery every value — the
+//! typed data, the digest, the signature, the recovered key and address — is PUBLIC (recovery reconstructs a public key from public data; it
+//! touches no secret scalar), so the composed variable-time arithmetic leaks nothing already public. This file holds no key and calls no
+//! std.crypto in the primitive. It answers "who signed this typed message, for this app, on this chain?" — never "sign this": signing with a real
+//! identity key stays the custody gate (#3/#4). Parity is proven at selftest three ways runnable now — (1) a PUBLISHED known-answer bound to the
+//! world: the EIP-712 spec's own canonical "Ether Mail" example (Cow → Bob) is assembled from these building blocks, and the spec's own published
+//! 65-byte signature recovers exactly Cow's published wallet address 0xCD2a…D826 through our GREEN ecrecover — if our encoding were off by a single
+//! bit the recovered address would not match; (2) an INDEPENDENT construction: our eip712_digest equals a second digest built entirely from Zig's
+//! own std.crypto Keccak-256, byte-for-byte; and (3) a full ROUND-TRIP: our GREEN prehashed signer signs the typed digest with a TEST key, the
+//! correct v recovers, recover_typed_signer returns exactly that key's own Ethereum address, and a one-byte tamper of any field never recovers the
+//! true signer.
+//!
+//! Run from the repository root:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/eip712.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const keccak = @import("keccak256.rye");
+const ecr = @import("secp256k1_ecrecover.rye");
+const eth = @import("eth_address.rye");
+const sign = @import("secp256k1_ecdsa_sign.rye");
+
+pub const eip712_version = "20260816.120000";
+
+/// The fixed shapes of the EIP-712 world. Every encoded value is a 32-byte word; an address is 20 bytes; a signing digest and a struct hash are
+/// each 32 bytes; a signature is 65 bytes (r ‖ s ‖ v).
+pub const word_bytes: u32 = 32;
+pub const address_bytes: u32 = 20;
+pub const digest_bytes: u32 = 32;
+pub const signature_bytes: u32 = 65;
+
+/// The largest canonical type string this rung hashes — a nested EIP-712 type (with its sorted referenced-type tail) stays well under a kilobyte
+/// in every real schema; 4 KiB is generous while keeping the type_hash input inside Keccak-256's own million-byte bound.
+pub const max_encode_type_bytes: u32 = 1 << 12;
+
+/// The largest field count a single struct hash_struct assembles — EIP-712 structs are small by construction; 32 fields covers every real schema
+/// while keeping the concatenation buffer (type hash + fields) modest on the stack.
+pub const max_struct_fields: u32 = 32;
+pub const max_struct_bytes: u32 = word_bytes + max_struct_fields * word_bytes;
+
+/// The EIP-712 digest preamble: the 0x19 sentinel (never a valid RLP transaction leader) and the 0x01 EIP-712 version byte, ahead of the domain
+/// separator and the message struct hash.
+pub const digest_preamble_bytes: u32 = 2;
+pub const digest_input_bytes: u32 = digest_preamble_bytes + word_bytes + word_bytes; // 0x1901 ‖ domain_separator(32) ‖ struct_hash(32)
+
+/// The canonical EIP712Domain type string this rung hashes for the standard four-field domain (name, version, chainId, verifyingContract) — the
+/// domain every wallet builds unless an app declares a custom one.
+pub const eip712_domain_type =
+    "EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)";
+
+/// The faults this composition can raise, each refused at the edge before a partial result escapes.
+pub const Eip712Error = error{
+    /// A canonical type string longer than the named cap — refused before hashing rather than overrunning the type buffer.
+    TypeStringTooLong,
+    /// An address whose length is not exactly 20 bytes — refused before left-padding.
+    BadAddressLength,
+    /// A struct with more fields than the named cap — refused before concatenation.
+    TooManyFields,
+    /// A domain separator, struct hash, or digest whose length is not exactly 32 bytes — refused before framing.
+    BadWordLength,
+    /// A signature whose length is not exactly 65 bytes (r ‖ s ‖ v) — refused before splitting.
+    BadSignatureLength,
+    /// A recovery byte that is neither 27/28 nor 0/1 — refused before recovery.
+    BadRecoveryByte,
+} || keccak.Keccak256Error || ecr.RecoverError || eth.EthAddressError;
+
+/// The Keccak-256 of a canonical EIP-712 type string — the "type hash" that leads every struct hash. Composes the GREEN crypto/keccak256.rye.
+pub fn type_hash(encode_type: []const u8) Eip712Error![word_bytes]u8 {
+    // invariant: the type string stays within the named cap, so it lands wholly inside the hash's own bound.
+    if (encode_type.len > max_encode_type_bytes) return error.TypeStringTooLong;
+    comptime assert(max_encode_type_bytes <= keccak.max_message_bytes);
+    return keccak.hash256(encode_type);
+}
+
+/// Encode a dynamic string or bytes field: its EIP-712 word is the Keccak-256 of the value. Composes the GREEN crypto/keccak256.rye.
+pub fn encode_string(value: []const u8) Eip712Error![word_bytes]u8 {
+    // invariant: the value is hashed under the same bounded Keccak-256 every other word passes through.
+    comptime assert(word_bytes == keccak.digest_256);
+    return keccak.hash256(value);
+}
+
+/// Encode a 20-byte Ethereum address as its EIP-712 word: the address right-aligned in a 32-byte word, the leading twelve bytes zero.
+pub fn word_from_address(addr: []const u8) Eip712Error![word_bytes]u8 {
+    // invariant: an address is exactly twenty bytes — anything else is refused before padding.
+    if (addr.len != address_bytes) return error.BadAddressLength;
+    var out = [_]u8{0} ** word_bytes;
+    // invariant: the twenty address bytes land in the low twenty positions, leaving the high twelve zero.
+    comptime assert(word_bytes - address_bytes == 12);
+    var i: u32 = 0;
+    while (i < address_bytes) : (i += 1) {
+        assert(word_bytes - address_bytes + i < word_bytes);
+        out[word_bytes - address_bytes + i] = addr[i];
+    }
+    return out;
+}
+
+/// Encode a u64 quantity (a uint256 field whose value fits in 64 bits — every real chain id, nonce, deadline, and amount-in-wei-that-fits) as its
+/// EIP-712 word: big-endian in the low eight bytes, the high twenty-four zero. A uint256 wider than u64 is passed as a pre-built 32-byte word.
+pub fn word_from_u64(value: u64) [word_bytes]u8 {
+    var out = [_]u8{0} ** word_bytes;
+    // invariant: eight big-endian bytes fill the low eight positions, most-significant first, leaving the high twenty-four zero.
+    comptime assert(word_bytes == 32);
+    var i: u32 = 0;
+    while (i < 8) : (i += 1) {
+        // invariant: byte i counts from the least-significant end, landing at the word's tail.
+        assert(word_bytes - 1 - i < word_bytes);
+        out[word_bytes - 1 - i] = @intCast((value >> @intCast(i * 8)) & 0xff);
+    }
+    return out;
+}
+
+/// The EIP-712 hash of a struct: keccak256(type_hash ‖ field₀ ‖ … ‖ fieldₙ), each field already a 32-byte encoded word. This is the one assembly
+/// every EIP-712 hash — the domain separator, each nested struct, the message — is built from. Composes the GREEN crypto/keccak256.rye.
+pub fn hash_struct(type_hash_word: []const u8, fields: []const [word_bytes]u8) Eip712Error![word_bytes]u8 {
+    // invariant: the type hash is exactly one 32-byte word, and the field count stays within the named cap.
+    if (type_hash_word.len != word_bytes) return error.BadWordLength;
+    if (fields.len > max_struct_fields) return error.TooManyFields;
+
+    var buf: [max_struct_bytes]u8 = undefined;
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < word_bytes) : (i += 1) {
+        buf[n] = type_hash_word[i];
+        n += 1;
+    }
+    const field_count: u32 = @intCast(fields.len);
+    var f: u32 = 0;
+    while (f < field_count) : (f += 1) {
+        // invariant: each field is one full word, so f words land within the buffer's named cap.
+        assert(n + word_bytes <= max_struct_bytes);
+        var j: u32 = 0;
+        while (j < word_bytes) : (j += 1) {
+            buf[n] = fields[f][j];
+            n += 1;
+        }
+    }
+    // invariant: the assembled length is exactly the type hash plus one word per field.
+    assert(n == word_bytes + field_count * word_bytes and n <= max_struct_bytes);
+    return keccak.hash256(buf[0..n]);
+}
+
+/// The EIP712Domain separator for the standard four-field domain — the hash that binds a signature to one app (name, version) on one chain
+/// (chainId) at one contract (verifyingContract). A convenience over hash_struct for the domain every wallet builds.
+pub fn eip712_domain_separator(
+    name: []const u8,
+    version: []const u8,
+    chain_id: u64,
+    verifying_contract: []const u8,
+) Eip712Error![word_bytes]u8 {
+    // invariant: the verifying contract is a twenty-byte address — checked here before the word encoding, so a malformed domain never hashes.
+    if (verifying_contract.len != address_bytes) return error.BadAddressLength;
+    const th = try type_hash(eip712_domain_type);
+    const fields = [_][word_bytes]u8{
+        try encode_string(name),
+        try encode_string(version),
+        word_from_u64(chain_id),
+        try word_from_address(verifying_contract),
+    };
+    return hash_struct(&th, &fields);
+}
+
+/// The EIP-712 signing digest: keccak256(0x19 0x01 ‖ domain_separator ‖ struct_hash). The value a wallet actually signs — and the value
+/// recover_typed_signer reads a signer back out of. Composes the GREEN crypto/keccak256.rye.
+pub fn eip712_digest(domain_separator: []const u8, struct_hash: []const u8) Eip712Error![digest_bytes]u8 {
+    // invariant: both inputs are exactly one 32-byte word — refused before framing rather than truncating the preimage.
+    if (domain_separator.len != word_bytes or struct_hash.len != word_bytes) return error.BadWordLength;
+
+    var buf: [digest_input_bytes]u8 = undefined;
+    buf[0] = 0x19;
+    buf[1] = 0x01;
+    var n: u32 = digest_preamble_bytes;
+    var i: u32 = 0;
+    while (i < word_bytes) : (i += 1) {
+        buf[n] = domain_separator[i];
+        n += 1;
+    }
+    i = 0;
+    while (i < word_bytes) : (i += 1) {
+        buf[n] = struct_hash[i];
+        n += 1;
+    }
+    // invariant: the preimage is exactly 0x1901 ‖ 32 ‖ 32 = 66 bytes, the fixed EIP-712 digest input.
+    assert(n == digest_input_bytes);
+    return keccak.hash256(buf[0..n]);
+}
+
+/// Map an Ethereum recovery byte to a recovery id in {0, 1}: v is 27/28 (the EVM convention) or 0/1 (the raw id). Anything else is refused.
+fn recovery_id_from_v(v: u8) Eip712Error!u8 {
+    // invariant: only the four Ethereum-valid recovery bytes are accepted; every other value is refused before recovery.
+    if (v == 27 or v == 28) return v - 27;
+    if (v == 0 or v == 1) return v;
+    return error.BadRecoveryByte;
+}
+
+/// Recover the twenty-byte Ethereum address that signed an EIP-712 digest, given the digest and a 65-byte signature r ‖ s ‖ v. Composes the GREEN
+/// ecrecover and address derivation — no arithmetic of its own beyond splitting the signature.
+pub fn recover_typed_signer(digest: []const u8, sig: []const u8) Eip712Error![address_bytes]u8 {
+    // invariant: an EIP-712 digest is exactly 32 bytes and its signature exactly 65 (32 r, 32 s, 1 v) — both refused otherwise before recovery.
+    if (digest.len != digest_bytes) return error.BadWordLength;
+    if (sig.len != signature_bytes) return error.BadSignatureLength;
+
+    var r_be: [32]u8 = undefined;
+    var s_be: [32]u8 = undefined;
+    var z: [32]u8 = undefined;
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) {
+        // invariant: r occupies [0,32) and s [32,64) of the signature; the digest fills z whole.
+        assert(i < signature_bytes and 32 + i < signature_bytes);
+        r_be[i] = sig[i];
+        s_be[i] = sig[32 + i];
+        z[i] = digest[i];
+    }
+    const recovery_id = try recovery_id_from_v(sig[64]);
+
+    const q = try ecr.recover(&z, &r_be, &s_be, recovery_id);
+
+    // Pack the recovered key as the 64-byte uncompressed body (x ‖ y) the address derivation expects.
+    var pub64: [eth.pubkey_bytes]u8 = undefined;
+    // invariant: the packed body is exactly the two 32-byte coordinates, filling the 64-byte public-key width.
+    comptime assert(eth.pubkey_bytes == 64);
+    i = 0;
+    while (i < 32) : (i += 1) {
+        pub64[i] = q.qx[i];
+        pub64[32 + i] = q.qy[i];
+    }
+    return eth.address_from_pubkey(&pub64);
+}
+
+// ---- selftest ------------------------------------------------------------------------------------------------------------------------
+
+/// Independent reference used ONLY inside the selftest; the primitive above never calls it. Zig's own Keccak-256 gives a second, independent
+/// construction of the EIP-712 digest, cross-checking this file's own framing.
+const ZKeccak = std.crypto.hash.sha3.Keccak256;
+
+fn eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    const n: u32 = @intCast(a.len);
+    while (i < n) : (i += 1) if (a[i] != b[i]) return false;
+    return true;
+}
+
+/// Build the EIP-712 digest a second way — every Keccak entirely Zig's std.crypto — as an independent witness of this file's own encoding and
+/// 0x1901 framing over the canonical Ether Mail example.
+fn zig_ether_mail_digest(
+    addr_cow: *const [20]u8,
+    addr_bob: *const [20]u8,
+    addr_verifying: *const [20]u8,
+    out: *[32]u8,
+) void {
+    // A local Keccak-256 of a byte slice, Zig's own.
+    const z = struct {
+        fn h(msg: []const u8, o: *[32]u8) void {
+            ZKeccak.hash(msg, o, .{});
+        }
+    };
+
+    // Right-align a 20-byte address into a 32-byte word.
+    var word_cow = [_]u8{0} ** 32;
+    var word_bob = [_]u8{0} ** 32;
+    var word_verifying = [_]u8{0} ** 32;
+    var k: usize = 0; // seam-only: std array indices; bounded by 20
+    while (k < 20) : (k += 1) {
+        word_cow[12 + k] = addr_cow[k];
+        word_bob[12 + k] = addr_bob[k];
+        word_verifying[12 + k] = addr_verifying[k];
+    }
+    var word_chain = [_]u8{0} ** 32;
+    word_chain[31] = 1; // chainId = 1
+
+    // Domain separator = keccak(domainTypeHash ‖ keccak(name) ‖ keccak(version) ‖ chainWord ‖ verifyingWord).
+    var domain_th: [32]u8 = undefined;
+    z.h(eip712_domain_type, &domain_th);
+    var k_name: [32]u8 = undefined;
+    var k_version: [32]u8 = undefined;
+    z.h("Ether Mail", &k_name);
+    z.h("1", &k_version);
+    var dbuf: [32 * 5]u8 = undefined;
+    var n: usize = 0;
+    for (domain_th) |b| {
+        dbuf[n] = b;
+        n += 1;
+    }
+    for (k_name) |b| {
+        dbuf[n] = b;
+        n += 1;
+    }
+    for (k_version) |b| {
+        dbuf[n] = b;
+        n += 1;
+    }
+    for (word_chain) |b| {
+        dbuf[n] = b;
+        n += 1;
+    }
+    for (word_verifying) |b| {
+        dbuf[n] = b;
+        n += 1;
+    }
+    var domain_sep: [32]u8 = undefined;
+    z.h(dbuf[0..n], &domain_sep);
+
+    // Person type hash, and each person's struct hash = keccak(personTypeHash ‖ keccak(name) ‖ walletWord).
+    var person_th: [32]u8 = undefined;
+    z.h("Person(string name,address wallet)", &person_th);
+    const person_hash = struct {
+        fn go(pth: *const [32]u8, name: []const u8, wallet_word: *const [32]u8, o: *[32]u8) void {
+            var name_hash: [32]u8 = undefined;
+            ZKeccak.hash(name, &name_hash, .{});
+            var b: [32 * 3]u8 = undefined;
+            var m: usize = 0;
+            for (pth.*) |x| {
+                b[m] = x;
+                m += 1;
+            }
+            for (name_hash) |x| {
+                b[m] = x;
+                m += 1;
+            }
+            for (wallet_word.*) |x| {
+                b[m] = x;
+                m += 1;
+            }
+            ZKeccak.hash(b[0..m], o, .{});
+        }
+    };
+    var from_hash: [32]u8 = undefined;
+    var to_hash: [32]u8 = undefined;
+    person_hash.go(&person_th, "Cow", &word_cow, &from_hash);
+    person_hash.go(&person_th, "Bob", &word_bob, &to_hash);
+
+    // Mail type hash includes the referenced Person type appended (EIP-712 encodeType), then mail struct hash.
+    var mail_th: [32]u8 = undefined;
+    z.h("Mail(Person from,Person to,string contents)Person(string name,address wallet)", &mail_th);
+    var contents_hash: [32]u8 = undefined;
+    z.h("Hello, Bob!", &contents_hash);
+    var mbuf: [32 * 4]u8 = undefined;
+    n = 0;
+    for (mail_th) |b| {
+        mbuf[n] = b;
+        n += 1;
+    }
+    for (from_hash) |b| {
+        mbuf[n] = b;
+        n += 1;
+    }
+    for (to_hash) |b| {
+        mbuf[n] = b;
+        n += 1;
+    }
+    for (contents_hash) |b| {
+        mbuf[n] = b;
+        n += 1;
+    }
+    var mail_hash: [32]u8 = undefined;
+    z.h(mbuf[0..n], &mail_hash);
+
+    // Digest = keccak(0x1901 ‖ domain_sep ‖ mail_hash).
+    var fbuf: [66]u8 = undefined;
+    fbuf[0] = 0x19;
+    fbuf[1] = 0x01;
+    n = 2;
+    for (domain_sep) |b| {
+        fbuf[n] = b;
+        n += 1;
+    }
+    for (mail_hash) |b| {
+        fbuf[n] = b;
+        n += 1;
+    }
+    z.h(fbuf[0..n], out);
+}
+
+/// Assemble the canonical Ether Mail digest through THIS file's own building blocks, returning the digest.
+fn our_ether_mail_digest(
+    addr_cow: *const [20]u8,
+    addr_bob: *const [20]u8,
+    addr_verifying: *const [20]u8,
+) Eip712Error![32]u8 {
+    const domain_sep = try eip712_domain_separator("Ether Mail", "1", 1, addr_verifying);
+
+    const person_th = try type_hash("Person(string name,address wallet)");
+    const from_fields = [_][32]u8{ try encode_string("Cow"), try word_from_address(addr_cow) };
+    const to_fields = [_][32]u8{ try encode_string("Bob"), try word_from_address(addr_bob) };
+    const from_hash = try hash_struct(&person_th, &from_fields);
+    const to_hash = try hash_struct(&person_th, &to_fields);
+
+    const mail_th = try type_hash("Mail(Person from,Person to,string contents)Person(string name,address wallet)");
+    const mail_fields = [_][32]u8{ from_hash, to_hash, try encode_string("Hello, Bob!") };
+    const mail_hash = try hash_struct(&mail_th, &mail_fields);
+
+    return eip712_digest(&domain_sep, &mail_hash);
+}
+
+fn run_selftest() !u8 {
+    // The EIP-712 spec's own canonical "Ether Mail" example, verbatim.
+    const addr_cow = [20]u8{ 0xCD, 0x2a, 0x3d, 0x9F, 0x93, 0x8E, 0x13, 0xCD, 0x94, 0x7E, 0xc0, 0x5A, 0xbC, 0x7F, 0xE7, 0x34, 0xDf, 0x8D, 0xD8, 0x26 };
+    const addr_bob = [_]u8{0xbB} ** 20; // 0xbBbBBB…BBbB — twenty 0xbb bytes
+    const addr_verifying = [_]u8{0xCc} ** 20; // 0xCcCC…ccC — twenty 0xcc bytes
+
+    // 1. PUBLISHED known-answer bound to the world: assemble the canonical digest from our building blocks, then the EIP-712 spec's OWN published
+    //    65-byte signature must recover exactly Cow's OWN published wallet address through our GREEN ecrecover. A one-bit encoding error breaks it.
+    {
+        const digest = try our_ether_mail_digest(&addr_cow, &addr_bob, &addr_verifying);
+
+        // The spec's published signature 0x4355…c9d ‖ 0729…62 ‖ 1c (r ‖ s ‖ v), verbatim.
+        const r = [32]u8{ 0x43, 0x55, 0xc4, 0x7d, 0x63, 0x92, 0x4e, 0x8a, 0x72, 0xe5, 0x09, 0xb6, 0x50, 0x29, 0x05, 0x2e, 0xb6, 0xc2, 0x99, 0xd5, 0x3a, 0x04, 0xe1, 0x67, 0xc5, 0x77, 0x5f, 0xd4, 0x66, 0x75, 0x1c, 0x9d };
+        const s = [32]u8{ 0x07, 0x29, 0x99, 0x36, 0xd3, 0x04, 0xc1, 0x53, 0xf6, 0x44, 0x3d, 0xfa, 0x05, 0xf4, 0x0f, 0xf0, 0x07, 0xd7, 0x29, 0x11, 0xb6, 0xf7, 0x23, 0x07, 0xf9, 0x96, 0x23, 0x16, 0x05, 0xb9, 0x15, 0x62 };
+        var sig65: [65]u8 = undefined;
+        var t: u32 = 0;
+        while (t < 32) : (t += 1) {
+            sig65[t] = r[t];
+            sig65[32 + t] = s[t];
+        }
+        sig65[64] = 0x1c; // v = 28
+
+        const recovered = try recover_typed_signer(&digest, &sig65);
+        if (!eq(&recovered, &addr_cow)) return error.PublishedSignerMismatch;
+    }
+
+    // 2. INDEPENDENT construction: our digest equals a second digest built entirely from Zig's own std.crypto Keccak-256, byte-for-byte — a direct
+    //    witness that our type hashing, word encoding, struct concatenation, and 0x1901 framing match an independent implementation.
+    {
+        const ours = try our_ether_mail_digest(&addr_cow, &addr_bob, &addr_verifying);
+        var theirs: [32]u8 = undefined;
+        zig_ether_mail_digest(&addr_cow, &addr_bob, &addr_verifying, &theirs);
+        if (!eq(&ours, &theirs)) return error.DigestMismatch;
+    }
+
+    // 3. Full ROUND-TRIP through every GREEN rung: our prehashed signer signs the typed digest with a TEST key, the correct v recovers, and
+    //    recover_typed_signer returns exactly that key's own Ethereum address — the EIP-712 authentication chain, end to end.
+    {
+        var seed_byte: u8 = 1;
+        while (seed_byte <= 6) : (seed_byte += 1) {
+            const d = [_]u8{seed_byte} ** 32;
+            const q = try sign.derive_public(&d);
+            var pub64: [64]u8 = undefined;
+            var t: u32 = 0;
+            while (t < 32) : (t += 1) {
+                pub64[t] = q.qx[t];
+                pub64[32 + t] = q.qy[t];
+            }
+            const true_addr = try eth.address_from_pubkey(&pub64);
+
+            // A distinct typed message per key: a Permit-shaped struct with the key's own seed as the nonce, so each digest differs.
+            const permit_th = try type_hash("Permit(address owner,uint256 nonce)");
+            const owner_word = try word_from_address(true_addr[0..]);
+            const permit_fields = [_][32]u8{ owner_word, word_from_u64(@as(u64, seed_byte)) };
+            const permit_hash = try hash_struct(&permit_th, &permit_fields);
+            const domain_sep = try eip712_domain_separator("Grain", "1", 1, &addr_verifying);
+            const digest = try eip712_digest(&domain_sep, &permit_hash);
+
+            const sig = try sign.sign_prehashed(&d, &digest);
+
+            var found_v: u8 = 0;
+            var found = false;
+            var id: u8 = 0;
+            while (id <= 1) : (id += 1) {
+                if (ecr.recover(&digest, &sig.r, &sig.s, id)) |qc| {
+                    if (eq(&qc.qx, &q.qx) and eq(&qc.qy, &q.qy)) {
+                        found_v = 27 + id;
+                        found = true;
+                    }
+                } else |_| {}
+            }
+            if (!found) return error.NoRecoveryId;
+
+            var sig65: [65]u8 = undefined;
+            t = 0;
+            while (t < 32) : (t += 1) {
+                sig65[t] = sig.r[t];
+                sig65[32 + t] = sig.s[t];
+            }
+            sig65[64] = found_v;
+
+            const recovered = try recover_typed_signer(&digest, &sig65);
+            if (!eq(&recovered, &true_addr)) return error.SignerAddressMismatch;
+
+            // A one-byte tamper of the digest recovers a different address (or none) — never the true signer.
+            var tampered = digest;
+            tampered[0] ^= 1;
+            if (recover_typed_signer(&tampered, &sig65)) |bad| {
+                if (eq(&bad, &true_addr)) return error.TamperedDigestRecoveredSigner;
+            } else |_| {}
+        }
+    }
+
+    // 4. Edge refusals: a short signature, a short digest, an out-of-range recovery byte, a bad address, and an over-long type string — each
+    //    refused before a partial result escapes.
+    {
+        const dummy_digest = [_]u8{0} ** 32;
+        const short_sig = [_]u8{0} ** 64;
+        if (recover_typed_signer(&dummy_digest, &short_sig)) |_| return error.ShortSigAccepted else |err| {
+            if (err != error.BadSignatureLength) return error.WrongShortSigError;
+        }
+        const short_digest = [_]u8{0} ** 31;
+        const ok_sig = [_]u8{1} ** 65;
+        if (recover_typed_signer(&short_digest, &ok_sig)) |_| return error.ShortDigestAccepted else |err| {
+            if (err != error.BadWordLength) return error.WrongShortDigestError;
+        }
+        var bad_v = [_]u8{1} ** 65;
+        bad_v[64] = 99;
+        if (recover_typed_signer(&dummy_digest, &bad_v)) |_| return error.BadVAccepted else |err| {
+            if (err != error.BadRecoveryByte) return error.WrongBadVError;
+        }
+        const short_addr = [_]u8{0} ** 19;
+        if (word_from_address(&short_addr)) |_| return error.ShortAddrAccepted else |err| {
+            if (err != error.BadAddressLength) return error.WrongShortAddrError;
+        }
+        var long_type: [max_encode_type_bytes + 1]u8 = undefined;
+        for (&long_type) |*b| b.* = 'x';
+        if (type_hash(&long_type)) |_| return error.LongTypeAccepted else |err| {
+            if (err != error.TypeStringTooLong) return error.WrongLongTypeError;
+        }
+    }
+
+    print("GREEN crypto-eip712: the Ethereum EIP-712 typed-structured-data hashing scheme authored in pure Rye as a composition — the digest every " ++
+        "wallet shows before it signs \"typed data\" (EIP-2612 permits, DeFi orders, gasless meta-transactions, typed Sign-in-with-Ethereum). " ++
+        "type_hash hashes a canonical type string; word_from_address and word_from_u64 encode atomic fields; encode_string hashes a dynamic field; " ++
+        "hash_struct concatenates keccak256(type_hash ‖ fields); eip712_domain_separator binds a signature to one app on one chain at one contract; " ++
+        "eip712_digest frames keccak256(0x19 0x01 ‖ domain_separator ‖ struct_hash); recover_typed_signer reads the twenty-byte signer back out of " ++
+        "a 65-byte r‖s‖v signature — authoring NO new cryptography, only the EIP-712 encoding over the GREEN Keccak-256, ecrecover, and eth_address " ++
+        "beneath it. Parity holds three ways: (1) a PUBLISHED known-answer bound to the world — the EIP-712 spec's own canonical Ether Mail example " ++
+        "(Cow → Bob), assembled from these building blocks, is recovered by the spec's own published signature to exactly Cow's published wallet " ++
+        "0xCD2a…D826; (2) an INDEPENDENT construction — our digest equals a second built entirely from Zig's std.crypto Keccak-256, byte-for-byte; " ++
+        "and (3) a full ROUND-TRIP — our GREEN prehashed signer signs a typed Permit digest with a TEST key across six deterministic keys, the " ++
+        "correct v recovers, recover_typed_signer returns exactly that key's own Ethereum address, and a one-byte tamper never recovers the true " ++
+        "signer. A short signature refuses BadSignatureLength, a short digest BadWordLength, a bad recovery byte BadRecoveryByte, a short address " ++
+        "BadAddressLength, an over-long type string TypeStringTooLong — each before a partial result escapes. In EIP-712 recovery every value is " ++
+        "PUBLIC, so the composed variable-time arithmetic leaks no secret; it answers \"who signed this typed message, for this app, on this " ++
+        "chain?\", never \"sign this\" — signing with a real identity key stays the custody gate (#3/#4). Purely local — no key, no network, no " ++
+        "funds, no real device. The secp256k1 tower now authenticates typed structured data end to end: the permit / typed-login door the crypto " ++
+        "wave named.\n", .{});
+    return 0;
+}
+
+pub fn main(init_args: std.process.Init) !u8 {
+    _ = init_args;
+    return run_selftest();
+}
