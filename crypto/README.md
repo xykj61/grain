@@ -149,7 +149,7 @@ is re-provable by tooling, not trusted from a commit message alone.
   Season's constant-time discipline note.
 - **Monocypher-source parity** is **landed**: the vendored `vendor/monocypher`
   (CC0/BSD-dual, unmodified) is compiled fresh and diffed byte-for-byte against our
-  authored Rye over the published vectors. Fifteen rungs stand GREEN — **BLAKE2b**,
+  authored Rye over the published vectors. Sixteen rungs stand GREEN — **BLAKE2b**,
   **X25519**, **Ed25519**, the **ChaCha20-Poly1305 AEAD**, **Argon2** (all three
   modes), the **XChaCha20-Poly1305 flagship** (Monocypher's `crypto_aead_lock`,
   the 24-byte extended-nonce AEAD Lotus's signed carry, Vault, and Comlink reach for),
@@ -193,7 +193,16 @@ is re-provable by tooling, not trusted from a commit message alone.
   three widths, matching Monocypher's 0-for-equal / -1-for-differing contract; its
   correctness oracle beside the parity is Zig's independent `std.crypto.timing_safe.eql`
   across every single-bit difference, the constant-time corner of the Season's
-  timing-safety horizon that is correct by structure rather than by measurement)
+  timing-safety horizon that is correct by structure rather than by measurement),
+  and **HKDF-SHA-512** (Monocypher's optional `crypto_sha512_hkdf`, the
+  extract-then-expand key-derivation function the sealed session, the per-record
+  subkey, and every future vault key ladder fold their shared secret through —
+  proving `hkdf_sha512.rye` over RFC 5869's Test Case 1, 2, and 3 input structures
+  plus a two-block-crossing request; since RFC 5869 publishes no SHA-512
+  known-answer, its oracle is a second real implementation agreeing byte-for-byte,
+  with the module independently tying its extract and first expand block back to the
+  RFC-4231-anchored HMAC in its own selftest, the key-derivation counterpart to the
+  HMAC-SHA-512 rung beneath it)
   — each also anchored to its RFC or published known-answer, so the oracle is a real
   second implementation. Parity against Zig's `std.crypto` still holds beside it.
 - **The keys stay the maintainer's hand.** Every witness runs over **TEST** keys and

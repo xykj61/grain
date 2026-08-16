@@ -1,0 +1,79 @@
+//! tools/monocypher_hkdf_sha512_parity.rye — our authored crypto/hkdf_sha512.rye asked for its OWN HKDF-SHA-512 output over the same four inputs the
+//! Monocypher C harness (tools/fixtures/monocypher_hkdf_sha512_harness.c) prints, so tools/crypto_monocypher_hkdf_sha512_parity_witness.rish can diff
+//! our bytes against the vendored Monocypher's C byte-for-byte — the extract-then-expand key-derivation function every handshake, sealed box, and vault
+//! key schedule stands on (RFC 5869), proven against the audit's parity target. Season G (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//!
+//! crypto/hkdf_sha512.rye proves itself against Zig's std.crypto HKDF-SHA-512 and transitively against the RFC-4231-anchored HMAC beneath it; this
+//! harness lets the witness add Monocypher-source parity. Four lines print, in order: RFC 5869 Test Case 1 structure (13-byte salt 0x00..0x0c, 22-byte
+//! ikm 0x0b*22, 10-byte info 0xf0..0xf9, 42 bytes), Test Case 2 structure (80-byte salt, ikm, and info, 82 bytes), Test Case 3 structure (zero-length
+//! salt and info, 42 bytes), and a two-block-crossing 100-byte request — the same shapes crypto/hkdf_sha512.rye's selftest uses.
+//!
+//! This authors NO cryptography — it is a printing harness over the GREEN crypto/hkdf_sha512.rye (reached through the tools/hkdf_sha512.rye symlink,
+//! which itself imports hmac_sha512.rye and sha512.rye beside it). Purely local — no key of ours, no network, no funds, no device.
+//!
+//! Run from the repository root:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run tools/monocypher_hkdf_sha512_parity.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const hkdf = @import("hkdf_sha512.rye");
+
+const hex_alphabet = "0123456789abcdef";
+
+/// print_okm — derive out.len bytes through crypto/hkdf_sha512.rye and print them as one line of lowercase hex.
+fn print_okm(out: []u8, salt: []const u8, ikm: []const u8, info: []const u8) !void {
+    // invariant: the request stays within RFC 5869's 255-block cap, so hkdf cannot fault on this bounded output buffer.
+    assert(out.len <= hkdf.max_okm_bytes);
+    try hkdf.hkdf(out, salt, ikm, info);
+    // invariant: every derived byte renders to exactly two hex characters, so the printed line is 2·out.len characters.
+    var i: u32 = 0;
+    while (i < out.len) : (i += 1) {
+        print("{c}{c}", .{ hex_alphabet[out[i] >> 4], hex_alphabet[out[i] & 0x0f] });
+    }
+    print("\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+
+    // invariant (construction): the module reports HKDF-SHA-512's fixed shapes — a 64-byte PRK and 64-byte expand block.
+    assert(hkdf.prk_len == 64 and hkdf.block_len == 64);
+
+    // 1. RFC 5869 Test Case 1 structure — 13-byte salt 0x00..0x0c, 22-byte ikm 0x0b*22, 10-byte info 0xf0..0xf9, 42 output bytes.
+    var salt1: [13]u8 = undefined;
+    var i: u32 = 0;
+    while (i < 13) : (i += 1) salt1[i] = @as(u8, @truncate(i));
+    var ikm1: [22]u8 = undefined;
+    i = 0;
+    while (i < 22) : (i += 1) ikm1[i] = 0x0b;
+    var info1: [10]u8 = undefined;
+    i = 0;
+    while (i < 10) : (i += 1) info1[i] = @as(u8, @truncate(0xf0 + i));
+    var out1: [42]u8 = undefined;
+    try print_okm(&out1, &salt1, &ikm1, &info1);
+
+    // 2. RFC 5869 Test Case 2 structure — 80-byte salt, ikm, and info, 82 output bytes spanning several blocks.
+    var ikm2: [80]u8 = undefined;
+    var salt2: [80]u8 = undefined;
+    var info2: [80]u8 = undefined;
+    i = 0;
+    while (i < 80) : (i += 1) {
+        ikm2[i] = @as(u8, @truncate(i));
+        salt2[i] = @as(u8, @truncate(0x60 + i));
+        info2[i] = @as(u8, @truncate(0xb0 + i));
+    }
+    var out2: [82]u8 = undefined;
+    try print_okm(&out2, &salt2, &ikm2, &info2);
+
+    // 3. RFC 5869 Test Case 3 structure — zero-length salt and info (the salt becomes HashLen zeros), 42 output bytes.
+    var out3: [42]u8 = undefined;
+    try print_okm(&out3, "", &ikm1, "");
+
+    // 4. A two-block-crossing request — short salt, ikm, info, 100 output bytes (one whole 64-byte block plus a 36-byte tail).
+    var out4: [100]u8 = undefined;
+    try print_okm(&out4, "ceiling salt", "ceiling ikm", "ceiling info");
+
+    return 0;
+}

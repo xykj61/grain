@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260816.145822
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title crypto: Monocypher-parity for HKDF-SHA-512
+prompt Take the next agent-doable lap Lindy-first crux-first on the road ahead; Rye-first, send each finished increment as its own signed round; stop at custody gates
+think Read REMEMBER (gates), the 1024-round itinerary, the six-season double-seat, and the Rye-first crypto-parity wave — the active spine is Season G, Rye-native crypto proven byte-for-byte against vendored Monocypher, each primitive its own signed round.
+think Enumerated the Monocypher public API (main + optional headers) against the fifteen source-parity witnesses already landed. HKDF-SHA-512 stood out Lindy-first crux-first: crypto/hkdf_sha512.rye already exists (proven against Zig std.crypto), Monocypher supplies crypto_sha512_hkdf directly to check against, and HKDF is the key ladder the sealed session, per-record subkey, and every future vault key derivation rest on — the highest-Lindy uncovered rung, standing on last round's HMAC-SHA-512 parity.
+think Replicated the established three-file pattern from the HMAC-SHA-512 rung: tools/hkdf_sha512.rye symlink → crypto/hkdf_sha512.rye; a C harness linking the unmodified vendored core + optional module through zig cc; a Rye printing harness over the GREEN module; a witness that builds both, diffs the outputs byte-for-byte.
+think Chose four input shapes matching the module's own selftest — RFC 5869 Test Case 1/2/3 structures plus a two-block-crossing 100-byte request. RFC 5869 publishes no SHA-512 known-answer, so the anchor is the second real implementation agreeing; the module independently ties its extract and first expand block to the RFC-4231 HMAC in its selftest.
+obs GREEN — Monocypher's own C and our Rye produce byte-for-byte identical HKDF-SHA-512 output over all four shapes. The sixteenth real Monocypher-source parity rung. No new crypto/*.rye file (module already counted), so the count guard is untouched — an embedded-mode rung. TAME style check GREEN; the authored Rye harness carries the opening triad and ≥2 invariant-commented asserts per fn.
+obs Gate-free and purely local — the primitive holds no key and signs nothing; no network, no funds, no device. Constant-time timing-safety stays the HMAC layer's named horizon, correctness proven here rather than a timing claim.
+loom witness=crypto_monocypher_hkdf_sha512_parity lines=4 shapes=4 parity=byte-for-byte result=GREEN
+file tools/crypto_monocypher_hkdf_sha512_parity_witness.rish the sixteenth Monocypher-source parity witness — builds both harnesses, diffs byte-for-byte
+file tools/fixtures/monocypher_hkdf_sha512_harness.c Monocypher's own crypto_sha512_hkdf printing harness, unmodified vendored source linked
+file tools/monocypher_hkdf_sha512_parity.rye our authored printing harness over crypto/hkdf_sha512.rye via the tools symlink
+file tools/hkdf_sha512.rye symlink to crypto/hkdf_sha512.rye so the Rye harness imports the module beside its dependencies
+recommend keep-going the next uncovered Monocypher primitive (HKDF-SHA-256, Ed25519ph prehashed, or Elligator) is the next Lindy-first crux-first parity rung
