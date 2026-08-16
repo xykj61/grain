@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260816.033541
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title crypto/secp256k1_ecdsa_sign.rye — ECDSA signing in pure Rye, byte-for-byte parity-GREEN
+prompt take the next agent-doable lap Lindy-first crux-first on the road ahead — Rye prioritized, Glow on green-witnessed Rye; send each finished increment; stop at custody gates
+think Read the wave doc, itinerary, and CRYPTO.md front door — the secp256k1 tower stands base field · group law · scalar ladder · scalar field mod n · ECDSA verify, all GREEN. The Lindy-first crux-first next rung is ECDSA signing: it completes the signature scheme Bitcoin/Ethereum use, parallels ed25519_sign, and stands on already-GREEN HMAC-SHA-256 plus the scalar field.
+think Studied Zig's std/crypto/ecdsa.zig deterministicScalar — it is NOT strict RFC 6979 but the "Deterministic ECDSA with Additional Randomness" DRBG: an extra 32-byte zero noise block sits between the domain byte and the key, and the raw SHA-256 digest feeds the DRBG rather than RFC 6979's bits2octets(h1 mod n). To claim the strongest parity — byte-identical signatures — I reproduced Zig's DRBG exactly rather than textbook 6979.
+think Signing math: k from the DRBG, R = k·G over the GREEN ladder, r = affine x of R mod n, s = k⁻¹·(z + r·d) mod n, no low-s normalization (Zig does none). The scalar module exports reduce·mul·invert·is_canonical but no modular add, so z + r·d is a carry-add into a 64-byte little-endian buffer folded by sc.reduce.
+think Custody check: signing touches a secret, yet exactly like ed25519_sign it signs only with a caller-supplied TEST key (Zig's deterministic key pairs in the selftest), never the maintainer's identity key — so this is not a custody gate. Signing a real identity stays gate #3/#4.
+obs GREEN on metal: our authored Rye signature equals Zig's std.crypto.sign.ecdsa.EcdsaSecp256k1Sha256 signature byte-for-byte across eight deterministic key pairs × five messages, derive_public matches Zig's public key, the signature round-trips through our own GREEN verifier, signing is deterministic, a tampered message fails, a zero key is refused. Two compiler-free first-build passes after fixing a temporary-address (&sha.hash(...)) into a bound local.
+obs Constant-time honesty: signing is the sharpest secp256k1 horizon — the k·G ladder and k⁻¹ inversion branch on the secret; correct and parity-GREEN yet NOT timing-safe. Recorded in CONSTANT_TIME.md beside ed25519_sign; the fe/scalarmul/scalar rows updated from "public today, signing a later round" to "a secret now flows, active timing horizon."
+loom witness=crypto_secp256k1_ecdsa_sign_witness green=1 keypairs=8 messages=5 parity=byte_for_byte
+loom witness=crypto_suite_witness files=37 primitives=33 compositions=4 green=1
+loom witness=crypto_count_guard_witness files=37 bijection=whole green=1
+file crypto/secp256k1_ecdsa_sign.rye the signing primitive — deterministic nonce, R = k·G, s = k⁻¹(z + r·d) mod n, byte-identical to Zig
+file tools/crypto_secp256k1_ecdsa_sign_witness.rish the per-file witness asserting GREEN crypto-secp256k1-ecdsa-sign
+file tools/crypto_suite_witness.rish registered the signer after the verifier; prose counts synced 33/37 and the tower description gains signing
+file active-designing/20260816-033541_secp256k1-ecdsa-sign.md the rung's claim, self-approved design round
+file docs/CRYPTO.md front-door counts 33/37 and the ECDSA signing rung row
+file crypto/README.md counts 33/37 and the signing rung row
+file crypto/CONSTANT_TIME.md the signing row and the refreshed secp256k1 secret-flow horizons
+recommend keep-going public-key recovery (ecrecover) is the next tractable secp256k1 rung — Ethereum's core operation, standing on the same GREEN tower

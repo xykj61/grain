@@ -1,6 +1,6 @@
 # Crypto — the Season G audit front door
 
-*A Rye-native, parity-checked cryptography library — thirty-two primitives and four compositions, each GREEN on metal.*
+*A Rye-native, parity-checked cryptography library — thirty-three primitives and four compositions, each GREEN on metal.*
 
 **Status:** Checkable — Season G operator + auditor guide
 **Depth:** guide
@@ -32,7 +32,7 @@ vectors — never a copied line ([`gratitude-licenses.md`](../.claude/rules/grat
 
 ---
 
-## Rung table — thirty-six files, dependency order
+## Rung table — thirty-seven files, dependency order
 
 Each rung stands on the GREEN rungs beneath it; none authors cryptography a lower
 rung had not already proven. Every file carries a per-file witness
@@ -99,6 +99,7 @@ rung had not already proven. Every file carries a per-file witness
 | `secp256k1_scalarmul.rye` | Scalar multiplication k·P over the group law — the double-and-add ladder ECDSA repeats for Q = d·G and for u1·G + u2·Q on every verify; variable-time (a constant-time ladder for secret scalars is the named horizon). Parity is algebraic known-answers plus Zig's `std.crypto.ecc.Secp256k1.mul` on affine coordinates | double-and-add over RCB |
 | `secp256k1_scalar.rye` | Arithmetic modulo the group order n — reduce, multiply, invert (Fermat a^(n−2)), and is_canonical, the second field ECDSA needs beside the base field: verification computes s⁻¹ mod n, then u1 = z·s⁻¹ and u2 = r·s⁻¹, and checks the affine x of u1·G + u2·Q reduced mod n against r. n = 2²⁵⁶ − δ is built from its defining form, never a pasted limb. Parity is algebraic known-answers plus Zig's `std.crypto.ecc.Secp256k1.scalar` (reduce64 · mul · invert · rejectNonCanonical) | secp256k1 (SEC 2) · Fermat |
 | `secp256k1_ecdsa.rye` | ECDSA signature **verification** — the assembly the whole secp256k1 tower was climbing toward, the scheme Bitcoin and Ethereum sign with. Given a public key Q = (Qx, Qy), a message hash z, and a signature (r, s), it refuses unless r, s ∈ [1, n−1], folds z mod n, computes w = s⁻¹, u1 = z·w, u2 = r·w, forms R = u1·G + u2·Q, refuses infinity, and accepts iff the affine x of R reduced mod n equals r. The base point G is the SEC 2 generator parsed through the proven base field, never raw limbs; one strengthening beyond the reference is an on-curve check (y² = x³ + 7) that refuses an off-curve key. Every value is public, so verification is the non-gated rung — signing stays the custody gate. Parity is algebraic known-answers plus Zig's independent `std.crypto.sign.ecdsa.EcdsaSecp256k1Sha256`, true-for-true and false-for-false | SEC 1 · secp256k1 (SEC 2) |
+| `secp256k1_ecdsa_sign.rye` | ECDSA signature **signing** — the rung that completes the scheme the verifier could only check. Given a private scalar d ∈ [1, n−1] and a message, it derives a per-message nonce k **deterministically** from d and the raw SHA-256 hash (no randomness, so the same key and message always sign to the same bytes), forms R = k·G, takes r = affine x of R mod n (refusing r = 0), computes s = k⁻¹·(z + r·d) mod n (refusing s = 0), and emits (r, s) big-endian. The nonce reproduces Zig's null-noise "Deterministic ECDSA with Additional Randomness" DRBG — RFC 6979's HMAC-DRBG with a 32-byte zero noise block and the raw digest — so the whole signature is **byte-identical** to Zig's. Signing touches a secret, so it signs only with a caller-supplied **test** key: the maintainer's own identity key stays the custody gate (#3/#4), and constant-time signing arithmetic stays the named horizon. Parity is an algebraic round-trip through the GREEN verifier plus Zig's independent `EcdsaSecp256k1Sha256` signature byte-for-byte across a spread of deterministic key pairs and messages | RFC 6979 · SEC 1 · secp256k1 (SEC 2) |
 
 ### Compositions (no new cryptography — proven stones assembled)
 
