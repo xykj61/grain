@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260815.211900
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Season G — the whole-suite crypto witness, one command greens all sixteen
+prompt Take the next agent-doable lap Lindy-first crux-first past BUHR — Rye prioritized, Glow on green-witnessed Rye; send each finished increment to origin and xykj61; stop at custody gates. (Reds 77 and 78 closed; the reds allocation is released, so this returns to the crux the runners' recommend named.)
+think With every crypto file now carrying a per-file witness runner (the three-gap sub-arc closed earlier this loop), the next Lindy-first crux is the capstone: one runner that greens the WHOLE library. High-Lindy — a keeper, CI, or the public seed re-proves the entire Rye-native, Monocypher-parity crypto stack with a single command, measurement over memory.
+think Design (self-approved): a choir over the sixteen per-file witnesses, in the dependency order the stack was built — the two hashes, the ChaCha/Poly stream-and-MAC line and their AEAD, the base field and the edwards25519 curve (group, decode, scalar arithmetic, both ladders, verify, sign), X25519 key agreement, then the signed carry and the sealed session compositions. Each per-file witness rebuilds its crypto/<name>.rye and asserts its GREEN line, so the choir compiles and proves the whole stack fresh, not from stale binaries.
+think Rishi shape: proved for-each accepts an inline (run [...]).ok assert with an interpolated ${w} in the else, so the choir is a compact for-each over a list of the sixteen witness paths rather than sixteen linear blocks — it refuses whole and names the file that stopped it the moment any one goes RED.
+obs GREEN — the choir builds all sixteen crypto Rye files fresh and each prints its own GREEN crypto-<name> line, ending on 'GREEN: crypto-suite — all sixteen ... in dependency order'. The uniform token rule held (crypto- + stem with underscores as hyphens), though the choir leans on each witness's own grep rather than deriving tokens itself.
+obs Honest scope: purely local — TEST keys and the RFC's public vectors, no real identity key, no network, no funds, no device. Constant-time timing-safety stays the Season's named horizon; signing or agreeing with the maintainer's own identity key stays the custody gate. No gate crossed.
+loom witness=crypto_suite files_proven=16 primitives=14 compositions=2 order=dependency result=GREEN
+file tools/crypto_suite_witness.rish the whole-suite choir — runs every per-file crypto witness in dependency order, refuses whole naming the file that stops it, GREEN across all sixteen
+file session-logs/README.md newest-first row for this capstone
+recommend keep-going — the crypto library is whole and re-provable end to end; the next Lindy-first crux is a crypto/ module index doc (a README naming each primitive, its RFC/parity reference, and the suite witness) that rides into the public seed with the docs-compression pass, so a reader meets the audit-ready stack the way an auditor would.

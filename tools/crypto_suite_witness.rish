@@ -1,0 +1,30 @@
+# tools/crypto_suite_witness.rish — the whole Season G crypto library, greened by one command. A choir that runs every per-file crypto
+# witness in dependency order and refuses unless each prints its own GREEN line, so a keeper, CI, or the public seed can re-prove the entire
+# Rye-native, Monocypher-parity crypto stack — fourteen primitives and two compositions, sixteen files — without trusting any commit
+# message (Season G · Cryptography · measurement beats memory).
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+# Kin: every tools/crypto_<name>_witness.rish this choir runs; each builds its crypto/<name>.rye and asserts its GREEN crypto-<name> line.
+# Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET of the primitives beneath, never a copied line — our own Rye,
+# studied clean-room (.claude/rules/gratitude-licenses.md).
+#
+# The order below is the dependency order the library was built in: the two hashes first, then the ChaCha/Poly stream-and-MAC line and
+# their AEAD, then the Curve25519 base field and the edwards25519 curve (group, decode, scalar arithmetic, the two ladders, verify, sign),
+# then X25519 key agreement, and last the two compositions (the signed carry and the sealed session) that stand on the primitives above.
+# Running a witness rebuilds its crypto/<name>.rye to the gitignored crypto/bin/ and runs its selftest, so this choir compiles and proves
+# the whole stack fresh. Purely local — TEST keys and the RFC's public vectors, no real identity key, no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_suite_witness.rish
+
+say "crypto-suite: Language EN — the whole Season G crypto library greened by one command: fourteen Rye-native, Monocypher-parity primitives and the two compositions that stand on them, each re-proven fresh from source in dependency order. This is the measurement-beats-memory capstone — every GREEN claim in crypto/ re-provable by tooling, not trusted from a commit message alone."
+say "crypto-suite: Style Radiant — the order is the order the stack was built: the two hashes, then the ChaCha/Poly stream-and-MAC line and their AEAD, then the base field and the edwards25519 curve, then X25519 key agreement, and last the signed carry and the sealed session — each rung standing on the GREEN rungs beneath it, none authoring cryptography a lower rung had not already proven."
+say "crypto-suite: Lens TAME — each per-file witness rebuilds its crypto/<name>.rye and asserts its own GREEN crypto-<name> line against the RFC known-answers and Zig's independent std.crypto; this choir refuses whole the moment any one goes RED, naming the file that stopped it. Purely local — TEST keys and public RFC vectors, no real identity key, no network, no funds, no real device; constant-time timing-safety stays the Season's named horizon, and signing or agreeing with the maintainer's own identity key stays the custody gate."
+
+# Dependency order: hashes, then the ChaCha/Poly line, then field/curve, then key agreement, then the two compositions.
+let witnesses = [ "tools/crypto_sha512_witness.rish" "tools/crypto_blake2b_witness.rish" "tools/crypto_chacha20_witness.rish" "tools/crypto_poly1305_witness.rish" "tools/crypto_aead_witness.rish" "tools/crypto_fe25519_witness.rish" "tools/crypto_ed25519_group_witness.rish" "tools/crypto_ed25519_decode_witness.rish" "tools/crypto_ed25519_scalar_witness.rish" "tools/crypto_ed25519_scalarmul_witness.rish" "tools/crypto_ed25519_muladd_witness.rish" "tools/crypto_ed25519_verify_witness.rish" "tools/crypto_ed25519_sign_witness.rish" "tools/crypto_x25519_witness.rish" "tools/crypto_signed_carry_witness.rish" "tools/crypto_sealed_session_witness.rish" ]
+
+for-each witnesses as w do assert (run ["rishi/bin/rishi" "run" w]).ok else "crypto-suite: a per-file witness went RED — ${w}"
+
+say "GREEN: crypto-suite — all sixteen Season G crypto files (fourteen primitives + two compositions) built fresh and proven, each its own GREEN line, in dependency order"
