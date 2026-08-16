@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260816.092831
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title crypto/kumara_identity.rye — the identity arc's front door in pure Rye, GREEN
+prompt Read REMEMBER + the 1024-round itinerary, the six-season double-seat, and the rye-first crypto parity wave; take the next agent-doable lap Lindy-first crux-first, Rye prioritized, send often, stop at custody gates. baton prin recur
+think Read the crypto README, design wave, and the two itineraries. The staged-but-unsent kumara_path lap was complete and its witness GREEN — so the first move was to send it as its own signed round to origin and xykj61 (send often).
+think For the next crux: the identity arc reached its account-path leaf (kumara_path) but had NO composition tying the whole arc together. kumara/README.md shows a Kumara identity begins with an ed25519 keypair from a 32-byte seed. The highest-Lindy front door is the one composition phrase → seed → path → keypair → signature — the identity-arc sibling of eth_address/bitcoin_address, what Kumara, Vault, Comlink, and the Lotus signed carry all reach identity through. Fully agent-doable over TEST seeds; the real key stays the custody gate.
+think Studied signed_carry.rye for composition house style and confirmed the compose surface: bip39_seed.seed(out,mnemonic,passphrase); kumara_path.derive_identity(seed,coin,account,index)->Node; slip10.public_key(node)->33-byte 0x00-prefixed; ed25519_sign.derive_public/sign; ed25519_verify.verify. slip10.public_key IS ed25519.derive_public prefixed with 0x00, so the identity's raw 32-byte public key = slip10 form minus tag = ed25519_sign.derive_public — a strong internal consistency invariant to assert.
+think Wrote crypto/kumara_identity.rye: from_seed and from_mnemonic (sharing identity_from_node so the two entry points cannot drift), plus sign/verify thin wrappers. One mechanical red — from_seed's error union named bip39.HmacError, which does not exist; imported hmac_sha512 and used hmac.HmacError. Then GREEN on metal.
+think Proof three replayable ways, no fabricated constant: (1) the bip39 half anchored to BIP-39's OWN published Trezor vector seed byte-for-byte; (2) the arc proven drift-free (from_mnemonic = hand-wiring bip39_seed→kumara_path.derive_identity, from_seed reaches the identical identity, three-way public-key agreement, the ed25519 half proven one rung down against SLIP-0010's own vectors); (3) the derived key a real working signing key by a sign→verify round-trip with three refusals (flipped message, flipped signature, wrong key). Determinism, distinctness, and the hardened-offset edge close it.
+obs Registered the new witness in the suite; the count guard went from 51 to 52 files GREEN (35 primitives + 17 compositions). Synced crypto/README.md, docs/CRYPTO.md, and the suite's spelled counts 51→52; tame_style_check bans clean.
+obs Non-gated: TEST identities only from published vectors, no network, no funds, no device. Growing a REAL Kumara identity from the maintainer's own phrase and signing a real record with it stays the custody gate (#3/#4) — this library derives and verifies a test identity; it never holds the key.
+loom witness=crypto_kumara_identity_witness green=1 files=52 primitives=35 compositions=17
+file crypto/kumara_identity.rye the identity arc's front-door composition — phrase → seed → path → keypair → signature, authoring no new cryptography
+file tools/crypto_kumara_identity_witness.rish the per-file witness building it fresh and asserting the GREEN crypto-kumara-identity line
+file tools/crypto_suite_witness.rish registers the new rung; suite counts synced 51→52 (35 primitives + 17 compositions)
+file crypto/README.md compositions table gains the kumara_identity row; header count 51→52
+file docs/CRYPTO.md rung table + header count synced 51→52 for the audit front door
+file work-in-progress/REMEMBER.md git nib promoted kumara_identity to the living edge, kumara_path demoted to prior edge
+recommend keep-going next a signed_carry sealed under a kumara_identity (end-to-end Lotus provenance over a derived identity), or BIP-49/84 script-type wallet paths reusing bip44's parser
