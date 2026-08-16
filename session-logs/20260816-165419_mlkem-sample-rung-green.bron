@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260816.165419
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) time convention — this session in ai-jail
+title ML-KEM sampling rung GREEN — SampleNTT and SamplePolyCBD
+prompt Take the next agent-doable lap Lindy-first crux-first on the crypto arc; Rye-first, send often, stop only at custody gates
+think Read REMEMBER (living edge crypto/mlkem_encode.rye, rung 2 GREEN) and the three road docs plus the ML-KEM/ML-DSA pivot; the pivot's rung ladder names rung 3 as mlkem_sample.rye — SampleNTT uniform rejection and SamplePolyCBD, driven by the GREEN shake.rye.
+think Lindy-first crux-first: sampling is the last pure-math rung before keygen; every ML-KEM key's public matrix A and every ciphertext's noise flow through it, so it serves all later rungs — highest-Lindy, still purely local and gate-free.
+think Confirmed the toolchain by running the GREEN ring witness first; studied mlkem_ring.rye and mlkem_encode.rye for the house style (opening triad, comptime tables, named-error selftest, LCG deterministic inputs) and shake.rye's public shape (shake128(msg, out)).
+think Oracle chosen honestly, matching the pivot doc's hand-run reference: SampleNTT proven against a structurally independent 12-bit LSB bit-reader over the same GREEN SHAKE stream (byte-group vs bit-oriented — two codes, one proven stream), plus canonical range and a wide-span non-trivial guard; SamplePolyCBD proven by the all-zeros/all-ones known-answers, the decisive bit-complement negation identity SampleCBD(~B) = -SampleCBD(B), and the centered range [-eta, eta].
+obs Pre-squeezing a bounded 1344-byte (8 SHAKE128 blocks) prefix is byte-identical to FIPS's block-by-block streaming because shake.rye proves the XOF prefix property; SampleExhausted guards the bound so the sampler can never read past it (never observed).
+obs Kept the parity boundary honest: no byte-for-byte Zig diff here (std.crypto does not expose the sampled A); that parity arrives at the keygen rung that composes these draws, exactly as the ring and encode rungs deferred it. TAME style bans clean; both new files carry contract asserts.
+loom witness=crypto_mlkem_sample_witness green=1 seeds_ntt=24 cbd_inputs=32 eta=2,3 xof_prefix_bytes=1344
+file crypto/mlkem_sample.rye the sampling rung — SampleNTT rejection + SamplePolyCBD, pure Rye on the GREEN ring and SHAKE
+file tools/crypto_mlkem_sample_witness.rish the witness that builds and runs the selftest, asserting the GREEN line
+file crypto/README.md the post-quantum table gains the rung-3 row, docs synced with the code in the same round
+recommend keep-going the next rung is mlkem_keygen.rye (K-PKE + ML-KEM.KeyGen) — the first DOUBLED oracle, byte-for-byte against Zig std.crypto ML-KEM AND the FIPS-203 KAT; still gate-free and agent-doable

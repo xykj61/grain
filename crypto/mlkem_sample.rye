@@ -1,0 +1,347 @@
+//! crypto/mlkem_sample.rye — Season G (Cryptography): the ML-KEM sampling rung, the third stone of the post-quantum arc. Two operations turn a
+//! short seed into ring elements: SampleNTT (FIPS 203 Algorithm 7) draws a uniform polynomial in the NTT domain by rejection-sampling a SHAKE128
+//! stream — the public matrix A of a key is nothing but 256-coefficient uniform draws — and SamplePolyCBD (Algorithm 8) draws the small secret and
+//! error noise from a centered binomial distribution over a SHAKE-derived byte block. This module authors both in pure Rye, standing on the GREEN
+//! base ring (crypto/mlkem_ring.rye) and the GREEN extendable-output function (crypto/shake.rye): it holds no key and runs no protocol — it turns
+//! entropy into ring elements, deterministically, the way the encode rung turned ring elements into bytes.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
+//! Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — rung 3 of the ML-KEM ladder (SampleNTT uniform rejection and
+//! SamplePolyCBD, driven by the GREEN shake.rye). Rye-first spine: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+//! Kin: crypto/mlkem_ring.rye (the base ring these draws land in, GREEN) · crypto/mlkem_encode.rye (the serialization sibling, GREEN) ·
+//! crypto/shake.rye (the XOF this rung drives, GREEN). The parity TARGET is Zig's std.crypto ml_kem and the FIPS 203 known-answers, studied
+//! clean-room — never a copied line (.claude/rules/gratitude-licenses.md).
+//!
+//! THE ORACLE — sampling is a deterministic function of a proven stream, so no new external dependency is needed here, exactly as the ring and
+//! encode rungs stood on self-consistency. SampleNTT reads the SHAKE128 stream as successive 12-bit little-endian values and keeps those below q;
+//! the selftest re-derives the same draw a SECOND, structurally independent way (a bit-oriented 12-bit reader over the same GREEN SHAKE bytes) and
+//! confirms byte-for-byte agreement — the doubled-path discipline the whole library rests on. SamplePolyCBD carries a decisive algebraic identity:
+//! complementing every input bit negates every coefficient (Compress under bit-flip), because (eta - x) - (eta - y) = -(x - y). That identity, the
+//! centered range [-eta, eta], and the all-zeros / all-ones known-answers pin the noise sampler without a single pasted limb.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. This module holds no key and signs nothing; it samples ring
+//! elements from a seed. It calls no std.crypto directly — it composes our own GREEN shake.rye. SampleNTT's control flow (which candidates it keeps)
+//! depends on the PUBLIC seed's stream, never on a secret, so it is data-independent for its use (A is public); SamplePolyCBD's loop bounds depend
+//! only on the public eta. Constant-time timing-safety stays the Season's named horizon — this rung proves CORRECTNESS.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/mlkem_sample.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const ring = @import("mlkem_ring.rye");
+const shake = @import("shake.rye");
+
+pub const mlkem_sample_version = "20260816.161537";
+
+/// ML-KEM's prime modulus, borrowed from the base ring so every rung cites one number. A uniform draw keeps only values in [0, q); a CBD draw lands
+/// every coefficient in the centered band around 0.
+pub const q: u32 = ring.q;
+
+/// The ring degree — 256 coefficients per polynomial, borrowed from the base ring so both samplers fill exactly one Poly.
+pub const n: u32 = ring.n;
+
+/// The seed length SampleNTT absorbs: a 32-byte rho plus two domain-separation index bytes, exactly FIPS 203's XOF input (rho ‖ i ‖ j). Named so the
+/// input buffer cites one width.
+pub const ntt_seed_bytes: u32 = 34;
+
+/// The bounded SHAKE128 prefix SampleNTT squeezes before rejection. FIPS 203 streams the XOF block by block; a squeezed prefix is byte-identical to
+/// that stream (crypto/shake.rye proves the XOF prefix property), so pre-squeezing a long-enough buffer is faithful. SampleNTT needs 256 accepted
+/// 12-bit values, each kept with probability q/4096 ≈ 0.813, so it consumes ~472 bytes on average; 1344 bytes (eight SHAKE128 rate blocks of 168)
+/// makes running out astronomically unlikely, and the sampler raises SampleExhausted rather than read past it. Named so the buffer cites one ceiling.
+pub const ntt_xof_bytes: u32 = 8 * 168;
+
+/// The centered-binomial parameters ML-KEM uses: eta is 2 or 3. Every SamplePolyCBD input is exactly 64·eta bytes (2·eta bits per coefficient, 256
+/// coefficients), and every output coefficient lands in [-eta, eta] lifted into [0, q). Named so the samplers reject any other width at the edge.
+pub const eta_min: u32 = 2;
+pub const eta_max: u32 = 3;
+
+/// The faults this rung can raise. SampleExhausted is the one genuine runtime guard (the squeezed prefix ran dry before 256 uniform values were
+/// accepted — never observed, guarded so it can never read out of bounds); the rest are proofs that failed in the selftest, never runtime paths.
+pub const SampleError = error{
+    /// The squeezed SHAKE128 prefix was exhausted before SampleNTT accepted 256 values — the bound above was somehow too small. Guarded, never read
+    /// past. A proof-adjacent guard, not a normal outcome.
+    SampleExhausted,
+    /// A CBD coefficient left the centered range [-eta, eta] (lifted into [0, q)) — the small-noise distribution was broken.
+    CbdRangeError,
+    /// A SampleNTT coefficient was not a canonical residue in [0, q) — rejection sampling admitted a value it must have rejected.
+    NttRangeError,
+    /// The structurally independent re-derivation disagreed with SampleNTT — the module wires the SHAKE stream and the 12-bit rejection rule wrong.
+    ReDerivationMismatch,
+    /// The bit-complement negation identity SamplePolyCBD(~B) = −SamplePolyCBD(B) failed — the centered-binomial symmetry was broken.
+    NegationMismatch,
+    /// A fixed FIPS 203 known-answer (an all-zeros or all-ones CBD input) did not match — a wrong bit direction or sum.
+    KnownAnswerMismatch,
+    /// A draw came out identically zero (or spanning too narrow a range), so a passing check would prove nothing — the selftest refuses a trivial witness.
+    TrivialWitness,
+};
+
+/// bit_at — read bit k of a byte slice, LSB-first within each byte: bit(B, k) = (B[k/8] >> (k mod 8)) & 1. The shared primitive both samplers read
+/// their input through, so the bit order matches FIPS 203 exactly in one place.
+fn bit_at(bytes: []const u8, k: u32) u32 {
+    // invariant (precondition): the bit index addresses a byte that exists in the slice.
+    assert((k >> 3) < bytes.len);
+    const byte: u32 = bytes[k >> 3];
+    const b: u32 = (byte >> @as(u3, @intCast(k & 7))) & 1;
+    // invariant (postcondition): a single bit is 0 or 1.
+    assert(b <= 1);
+    return b;
+}
+
+/// sample_ntt — FIPS 203 Algorithm 7: draw a uniform polynomial in the NTT domain by rejection-sampling a SHAKE128 stream seeded with rho and two
+/// index bytes. Reads successive 12-bit little-endian values (two per three stream bytes) and keeps each that lands below q, until 256 are accepted.
+/// The caller supplies the two domain-separation bytes (b0, b1) in whatever order the composing rung fixes for A[i][j]; this rung only samples.
+pub fn sample_ntt(rho: *const [32]u8, b0: u8, b1: u8) SampleError!ring.Poly {
+    var input: [ntt_seed_bytes]u8 = undefined;
+    var t: u32 = 0;
+    // invariant (bound): copy exactly the 32 rho bytes, one per turn — the seed's fixed prefix.
+    while (t < 32) : (t += 1) input[t] = rho[t];
+    input[32] = b0;
+    input[33] = b1;
+
+    var xof: [ntt_xof_bytes]u8 = undefined;
+    // shake128 raises only on a bad length; our fixed input and output widths are in range, yet we honor the error union honestly.
+    shake.shake128(input[0..], xof[0..]) catch return error.SampleExhausted;
+
+    var a: ring.Poly = .{ .cs = [_]u32{0} ** n };
+    var pos: u32 = 0;
+    var j: u32 = 0;
+    var guard: u32 = 0;
+    // invariant (bound): each turn consumes three stream bytes; the buffer holds ntt_xof_bytes, so the loop runs at most ntt_xof_bytes/3 times.
+    while (j < n) : (guard += 1) {
+        assert(guard <= ntt_xof_bytes / 3);
+        // invariant: never read past the squeezed prefix — raise rather than run off the end.
+        if (pos + 3 > ntt_xof_bytes) return error.SampleExhausted;
+        const c0: u32 = xof[pos];
+        const c1: u32 = xof[pos + 1];
+        const c2: u32 = xof[pos + 2];
+        pos += 3;
+        // Two 12-bit little-endian values packed across three bytes (FIPS 203 Algorithm 7): the low 12 bits, then the high 12 bits.
+        const d1: u32 = c0 + 256 * (c1 & 0x0F);
+        const d2: u32 = (c1 >> 4) + 16 * c2;
+        if (d1 < q) {
+            a.cs[j] = d1;
+            j += 1;
+        }
+        if (d2 < q and j < n) {
+            a.cs[j] = d2;
+            j += 1;
+        }
+    }
+    // invariant (postcondition): exactly n coefficients were accepted, each already checked below q by the rejection rule.
+    assert(j == n);
+    return a;
+}
+
+/// sample_cbd — FIPS 203 Algorithm 8: draw a polynomial from the centered binomial distribution over 64·eta input bytes. For each coefficient it
+/// reads 2·eta bits, sums the first eta into x and the next eta into y, and lands (x − y) mod q — a small value in [-eta, eta] lifted into [0, q).
+/// This is the secret-and-error noise ML-KEM keys and ciphertexts carry; the input is itself a SHAKE-derived block the keygen rung will supply.
+pub fn sample_cbd(bytes: []const u8, eta: u32) SampleError!ring.Poly {
+    // invariant (precondition): eta is one ML-KEM uses (2 or 3), and the input carries exactly 2·eta bits per coefficient over 256 coefficients.
+    assert(eta >= eta_min and eta <= eta_max);
+    assert(bytes.len == 64 * eta);
+    var f: ring.Poly = .{ .cs = [_]u32{0} ** n };
+    var i: u32 = 0;
+    // invariant (bound): exactly n = 256 coefficients drawn, one per turn.
+    while (i < n) : (i += 1) {
+        const base: u32 = 2 * i * eta;
+        var x: u32 = 0;
+        var y: u32 = 0;
+        var b: u32 = 0;
+        // invariant (bound): exactly eta bits summed into each half, eta ≤ 3, never unbounded.
+        while (b < eta) : (b += 1) {
+            x += bit_at(bytes, base + b);
+            y += bit_at(bytes, base + eta + b);
+        }
+        // x and y each land in [0, eta]; (x + q − y) mod q lifts (x − y) into the canonical residue [0, q) without unsigned underflow.
+        const v: u32 = (x + q - y) % q;
+        // invariant (postcondition): every coefficient is a canonical residue.
+        assert(v < q);
+        f.cs[i] = v;
+    }
+    return f;
+}
+
+// ---- selftest ----------------------------------------------------------------------------------------------------------------------
+
+/// bytes_from_seed — fill a byte buffer deterministically from a seed with the same tiny LCG the ring and encode rungs use, so a failing run always
+/// reruns identically without any std.crypto.
+fn bytes_from_seed(seed: u32, buf: []u8) void {
+    var state: u32 = seed *% 2654435761 +% 1013904223;
+    var i: u32 = 0;
+    while (i < buf.len) : (i += 1) {
+        state = state *% 1664525 +% 1013904223;
+        buf[i] = @as(u8, @intCast((state >> 8) & 0xFF));
+    }
+}
+
+/// poly_eq — do two ring elements match coefficient for coefficient?
+fn poly_eq(a: *const ring.Poly, b: *const ring.Poly) bool {
+    var j: u32 = 0;
+    while (j < n) : (j += 1) {
+        if (a.cs[j] != b.cs[j]) return false;
+    }
+    return true;
+}
+
+/// negate_poly — the coefficient-wise additive inverse mod q, (q − c) mod q, the right-hand side of the CBD bit-complement identity.
+fn negate_poly(a: *const ring.Poly) ring.Poly {
+    var r: ring.Poly = .{ .cs = [_]u32{0} ** n };
+    var j: u32 = 0;
+    while (j < n) : (j += 1) {
+        r.cs[j] = (q - a.cs[j]) % q;
+    }
+    return r;
+}
+
+/// sample_ntt_bitreader_reference — the structurally independent re-derivation of SampleNTT for the selftest: read the SAME GREEN SHAKE128 prefix as
+/// a stream of 12-bit little-endian values through bit_at (a bit-oriented reader, where sample_ntt uses a byte-group reader), keep those below q.
+/// Two different codes reading one proven stream must agree; a transcription slip in either is caught.
+fn sample_ntt_bitreader_reference(rho: *const [32]u8, b0: u8, b1: u8) SampleError!ring.Poly {
+    var input: [ntt_seed_bytes]u8 = undefined;
+    var t: u32 = 0;
+    while (t < 32) : (t += 1) input[t] = rho[t];
+    input[32] = b0;
+    input[33] = b1;
+    var xof: [ntt_xof_bytes]u8 = undefined;
+    shake.shake128(input[0..], xof[0..]) catch return error.SampleExhausted;
+
+    var a: ring.Poly = .{ .cs = [_]u32{0} ** n };
+    var bitpos: u32 = 0;
+    var j: u32 = 0;
+    var guard: u32 = 0;
+    while (j < n) : (guard += 1) {
+        assert(guard <= (ntt_xof_bytes * 8) / 12);
+        if (bitpos + 12 > ntt_xof_bytes * 8) return error.SampleExhausted;
+        var v: u32 = 0;
+        var bi: u32 = 0;
+        // read 12 bits, LSB-first — the little-endian 12-bit value FIPS 203 packs across the byte group.
+        while (bi < 12) : (bi += 1) {
+            v |= bit_at(xof[0..], bitpos + bi) << @as(u4, @intCast(bi));
+        }
+        bitpos += 12;
+        if (v < q) {
+            a.cs[j] = v;
+            j += 1;
+        }
+    }
+    return a;
+}
+
+/// poly_range — the smallest and largest coefficient of a ring element, so the selftest can refuse a stuck sampler (a uniform draw must span a wide
+/// slice of [0, q); a trivial one clusters).
+fn poly_range(a: *const ring.Poly, lo: *u32, hi: *u32) void {
+    var mn: u32 = q;
+    var mx: u32 = 0;
+    var j: u32 = 0;
+    while (j < n) : (j += 1) {
+        if (a.cs[j] < mn) mn = a.cs[j];
+        if (a.cs[j] > mx) mx = a.cs[j];
+    }
+    lo.* = mn;
+    hi.* = mx;
+}
+
+fn run_selftest() !u8 {
+    // 1. SampleNTT re-derivation: over a deterministic spread of seeds, the byte-group sampler and the structurally independent 12-bit bit-reader
+    //    read the same GREEN SHAKE128 stream and must produce the identical uniform polynomial — the doubled-path oracle. Each draw is also proven
+    //    canonical (every coefficient below q) and non-trivial (spanning a wide slice of [0, q), so a stuck sampler cannot pass).
+    {
+        var seed: u32 = 1;
+        while (seed <= 24) : (seed += 1) {
+            var rho: [32]u8 = undefined;
+            bytes_from_seed(seed, rho[0..]);
+            const b0: u8 = @as(u8, @intCast(seed & 0xFF));
+            const b1: u8 = @as(u8, @intCast((seed >> 3) & 0xFF));
+            const a = try sample_ntt(&rho, b0, b1);
+            const ref = try sample_ntt_bitreader_reference(&rho, b0, b1);
+            if (!poly_eq(&a, &ref)) return error.ReDerivationMismatch;
+
+            var j: u32 = 0;
+            while (j < n) : (j += 1) {
+                if (a.cs[j] >= q) return error.NttRangeError;
+            }
+            var lo: u32 = 0;
+            var hi: u32 = 0;
+            poly_range(&a, &lo, &hi);
+            // A uniform draw over [0, q) spans widely; require it to reach below q/4 and above 3q/4, which a stuck or trivial sampler cannot.
+            if (lo >= q / 4 or hi <= (3 * q) / 4) return error.TrivialWitness;
+        }
+    }
+
+    // 2. SamplePolyCBD known-answers: the all-zeros input gives the zero polynomial (x = y = 0), and the all-ones input ALSO gives the zero
+    //    polynomial (x = y = eta), across both eta = 2 and eta = 3. A wrong sum or bit direction fails here before any random input.
+    {
+        var eta: u32 = eta_min;
+        while (eta <= eta_max) : (eta += 1) {
+            const len: u32 = 64 * eta;
+            var zeros: [64 * eta_max]u8 = [_]u8{0} ** (64 * eta_max);
+            const fz = try sample_cbd(zeros[0..len], eta);
+            var j: u32 = 0;
+            while (j < n) : (j += 1) {
+                if (fz.cs[j] != 0) return error.KnownAnswerMismatch;
+            }
+            var ones: [64 * eta_max]u8 = [_]u8{0xFF} ** (64 * eta_max);
+            const fo = try sample_cbd(ones[0..len], eta);
+            j = 0;
+            while (j < n) : (j += 1) {
+                if (fo.cs[j] != 0) return error.KnownAnswerMismatch;
+            }
+        }
+    }
+
+    // 3. The decisive SamplePolyCBD identity: complementing every input bit negates every coefficient, because (eta − x) − (eta − y) = −(x − y).
+    //    Over a deterministic spread of non-trivial inputs and both eta, SamplePolyCBD(~B) must equal −SamplePolyCBD(B) coefficient for coefficient,
+    //    and the original must land every coefficient in the centered band [-eta, eta] (i.e. [0, eta] ∪ [q−eta, q−1]). A non-trivial draw is required.
+    {
+        var eta: u32 = eta_min;
+        while (eta <= eta_max) : (eta += 1) {
+            const len: u32 = 64 * eta;
+            var seed: u32 = 1;
+            while (seed <= 16) : (seed += 1) {
+                var buf: [64 * eta_max]u8 = undefined;
+                bytes_from_seed(seed *% (eta + 7), buf[0..len]);
+                const f = try sample_cbd(buf[0..len], eta);
+
+                // The complemented input.
+                var inv: [64 * eta_max]u8 = undefined;
+                var k: u32 = 0;
+                while (k < len) : (k += 1) inv[k] = ~buf[k];
+                const fi = try sample_cbd(inv[0..len], eta);
+
+                const neg = negate_poly(&f);
+                if (!poly_eq(&fi, &neg)) return error.NegationMismatch;
+
+                // Centered range and a non-trivial witness (at least one coefficient nonzero over a random input).
+                var any_nonzero: bool = false;
+                var j: u32 = 0;
+                while (j < n) : (j += 1) {
+                    const c = f.cs[j];
+                    const centered_ok = (c <= eta) or (c >= q - eta);
+                    if (!centered_ok) return error.CbdRangeError;
+                    if (c != 0) any_nonzero = true;
+                }
+                if (!any_nonzero) return error.TrivialWitness;
+            }
+        }
+    }
+
+    print("GREEN crypto-mlkem-sample: the ML-KEM sampling rung (FIPS 203 SampleNTT and SamplePolyCBD), authored in pure Rye as Season G's third " ++
+        "post-quantum rung, standing on the GREEN base ring and the GREEN SHAKE128 XOF. SampleNTT rejection-samples a SHAKE128 stream into a " ++
+        "uniform NTT-domain polynomial (two 12-bit little-endian values per three stream bytes, each kept when below q = 3329); SamplePolyCBD " ++
+        "draws centered-binomial noise from 64*eta bytes ((x - y) mod q over eta-bit sums). Proven by SELF-CONSISTENCY with no external " ++
+        "dependency, exactly where the ring and encode rungs stood: SampleNTT matches a structurally independent 12-bit bit-reader over the same " ++
+        "GREEN SHAKE stream byte-for-byte across 24 seeds, each draw canonical and spanning a wide slice of [0, q); SamplePolyCBD carries the " ++
+        "all-zeros and all-ones known-answers (both the zero polynomial), the decisive bit-complement identity SampleCBD(~B) = -SampleCBD(B) over " ++
+        "16 inputs at eta 2 and 3, and the centered range [-eta, eta] on every coefficient. The byte-boundary parity against Zig std.crypto " ++
+        "arrives at the keygen rung, which composes exactly these draws; here the sampling proves itself. Purely local — no key, no network, no " ++
+        "funds, no real device; SampleNTT reads only the public seed's stream and SamplePolyCBD's bounds depend only on the public eta, " ++
+        "constant-time timing-safety the Season's named horizon.\n", .{});
+    return 0;
+}
+
+pub fn main(init_args: std.process.Init) !u8 {
+    _ = init_args;
+    return run_selftest();
+}
