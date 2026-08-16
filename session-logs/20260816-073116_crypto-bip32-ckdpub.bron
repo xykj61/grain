@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260816.073116
+editor Zed
+model Fable 5
+voice Kyri
+host cloud bench — Eastern (EDT) time convention
+title crypto/bip32.rye — CKDpub and neuter complete the HD derivation surface, parity-GREEN
+prompt continue the autonomous crypto-parity recursion; take the next agent-doable lap Lindy-first crux-first; Rye prioritized; send each finished increment as its own signed round; stop at custody gates
+think The prior round shipped BIP-32 master + ckd_priv + neuter-serialization, and named public-only CKDpub the next rung. This round takes exactly that rung — deriving a public child from a public parent, no private key, the watch-only-wallet path.
+think CKDpub needed no new stone: point(I_L) is from_private_compressed(I_L) then parse back to affine (composing the GREEN pubkey rungs, no raw base-point ladder in bip32); the point addition K_child = point(I_L) + K_par is the GREEN secp256k1_group complete addition; lifting affine (x,y) into a projective Point uses fe.from_bytes with Z = 1 (fe_one built from a big-endian 1).
+think Added an ExtPub type (the neutered node carrying the 33-byte compressed pubkey), neuter (ExtKey → ExtPub), fingerprint_pub, ckd_pub (normal-only, hardened refused), and serialize_ext_pub. serialize_ext_pub reuses the private frame layout through a shim ExtKey with the shared fields and the public key_data.
+obs The infinity guard is honest: a child point whose Z packs to all-zero is refused InvalidChild rather than divided through affine_x's inversion. A hardened index from a public parent refuses HardenedFromPublic before the HMAC runs.
+obs GREEN on the first metal build after the additions. Parity strengthened three new ways against Test Vector 1: every node's neuter reproduces the spec's xpub, and for each of the three NORMAL transitions (index 1, index 2, index 1000000000) CKDpub reaches that child's published xpub from the neutered parent alone — so the point addition, the lift, and the compression are all proven against the world, not just internally consistent.
+obs No new file — CKDpub extends the existing crypto/bip32.rye, so the count guard stays 45. Synced the two front-door doc rows (crypto/README.md, docs/CRYPTO.md) and the witness narration, which had named CKDpub the next rung.
+loom witness=crypto_bip32_witness build=green ckdpub_transitions=3 neuter_checks=6 files_total=45
+file crypto/bip32.rye added ExtPub · neuter · fingerprint_pub · ckd_pub · serialize_ext_pub; selftest exercises CKDpub and neuter against Test Vector 1
+file tools/crypto_bip32_witness.rish narration synced — CKDpub/neuter now included, HardenedFromPublic edge named
+file crypto/README.md bip32 composition row — CKDpub/neuter now part of the rung, group law added to the Composes column
+file docs/CRYPTO.md bip32 rung row — same sync
+recommend keep-going the wallet-derivation arc continues: BIP-39 mnemonic→seed (PBKDF2-HMAC-SHA-512 over a wordlist) then BIP-44 structured paths, each its own parity-GREEN send; or the constant-time timing horizon (wants measurement, not a claim)
