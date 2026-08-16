@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20260816.125254
+editor Zed
+model Claude Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title crypto — Monocypher-source parity for Ed25519 (RFC 8032 §7.1 TEST 2), GREEN
+prompt take the next agent-doable lap Lindy-first crux-first; Rye prioritized; send often as its own signed round; approve your own design rounds; stop at custody gates; baton prin recur
+think With Monocypher-source parity proven on BLAKE2b and X25519, the highest-Lindy remaining primitive was Ed25519 — the SIGNING primitive the Lotus signed carry and every Kumara-signed record rest on. Both the X25519 REMEMBER nib and the sign witness itself named it next: the sign witness proves RFC 8032 parity against Zig's std.crypto but calls Monocypher-SOURCE parity an honest horizon behind a held vendor fetch. The fetch is present (vendor/monocypher used by the two prior parity rungs), so this rung closes that named horizon against the actual audit target.
+think Reused the proven shape: a C harness linking the unmodified vendored Monocypher through zig cc, a Rye printing harness over the GREEN crypto/ed25519_sign.rye. ed25519_sign pulls a tree of eight sibling crypto modules, so I added eight symlinks in tools/ (ed25519_sign/verify/group/decode/scalarmul/scalar/muladd, sha512) beside the already-present fe25519. Chose RFC 8032 §7.1 TEST 2 (seed → public key, message 0x72 → signature) as the world anchor, plus a longer deterministic message ("grain crypto parity") to exercise the multi-block SHA-512 message path — three lines, diffed byte-for-byte, the public key and RFC signature asserted against RFC 8032's published values.
+think THE CRUX found on metal: the first build disagreed on the public key. Monocypher's core crypto_eddsa_* uses BLAKE2b as its hash — a DIFFERENT, non-RFC EdDSA. The RFC 8032 SHA-512 Ed25519 lives in Monocypher's OPTIONAL crypto_ed25519_* module (src/optional/monocypher-ed25519.c). Switched the harness to crypto_ed25519_key_pair/crypto_ed25519_sign and linked the optional .c; then like truly met like.
+obs GREEN once linked right: byte-identical Ed25519 across all three lines, both anchored lines matching RFC 8032 §7.1 TEST 2 (public 3d4017c3…f4660c, signature 92a009a9…bb0c00). Gate-free and purely local — TEST seed only, no key of ours, no network, no funds, no device. Count guard untouched (harness Rye in tools/, so crypto/*.rye stays 56); the monocypher parity witnesses stand outside the suite, as the X25519 and BLAKE2b siblings do. Clean-room held — Monocypher linked, never copied.
+obs This is a genuine learned discovery worth recording: Monocypher's headline EdDSA is not RFC 8032 by default; RFC compatibility requires the optional SHA-512 module. Any future Ed25519 parity or interop against Monocypher must link monocypher-ed25519.c, never rely on crypto_eddsa_*.
+loom witness=crypto_monocypher_ed25519_parity_witness result=GREEN values=3 impls=rye+monocypher_c anchor=rfc8032_7.1_test2
+file tools/crypto_monocypher_ed25519_parity_witness.rish the witness — builds both harnesses (linking the optional SHA-512 module), diffs byte-for-byte, anchors to RFC 8032 §7.1 TEST 2
+file tools/fixtures/monocypher_ed25519_harness.c Monocypher's printing harness over the RFC vector, links the unmodified vendored core + optional crypto_ed25519 module
+file tools/monocypher_ed25519_parity.rye our authored printing harness over the same seed and messages
+file tools/ed25519_sign.rye symlink → ../crypto/ed25519_sign.rye so the tools harness can import the GREEN signer
+file tools/ed25519_verify.rye symlink → ../crypto/ed25519_verify.rye sibling import of ed25519_sign
+file tools/ed25519_group.rye symlink → ../crypto/ed25519_group.rye Edwards group arithmetic
+file tools/ed25519_decode.rye symlink → ../crypto/ed25519_decode.rye point decompression
+file tools/ed25519_scalarmul.rye symlink → ../crypto/ed25519_scalarmul.rye scalar multiplication
+file tools/ed25519_scalar.rye symlink → ../crypto/ed25519_scalar.rye scalar reduction mod L
+file tools/ed25519_muladd.rye symlink → ../crypto/ed25519_muladd.rye the S = (r + k·a) multiply-add
+file tools/sha512.rye symlink → ../crypto/sha512.rye the hash the whole Ed25519 procedure folds through
+file work-in-progress/REMEMBER.md Git nib head advanced to the Ed25519 parity edge, X25519 demoted to prior edge
+recommend keep-going — the parity pattern now covers a hash, a key agreement, and the signing primitive; next durable crux is extending Monocypher-source parity to the ChaCha/Poly line, closing the four primitives the decision wave named; check-in (Claude) is the honest alternative if the Comlink-over-wire seam is preferred next
