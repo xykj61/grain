@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260816.173533
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+title ML-DSA encode rung, pack + rounding self-consistency GREEN
+prompt Continue the loop Lindy-first crux-first on the crypto arc; Rye prioritized; send each finished increment; stop at custody gates.
+think With the ML-DSA ring GREEN and sent, the next Lindy-first crux is rung 2 of the signature ladder — the serialization and rounding layer, the parallel to mlkem_encode.rye. FIPS 204's encode layer bundles the bit-packing (SimpleBitPack/BitPack §7.1) with the coefficient rounding (Power2Round, Decompose, HighBits/LowBits, MakeHint/UseHint §7.4), the way ML-KEM's second rung bundled ByteEncode with Compress/Decompress — the same rung shape, a different lossy map, because a signature hides its low bits behind a one-bit hint rather than truncating a ciphertext.
+think Authored crypto/mldsa_encode.rye: simple_bit_pack/unpack (LSB-first, any width to 20 bits, generalizing ML-KEM's ByteEncode), bit_pack/unpack (signed [-a,b] ridden on the packing via b-w), power2round (exact split at 2^13 for the pk-size halving), decompose (split at 2*gamma2 mod q with the top-step borrow), high_bits/low_bits, and the make_hint/use_hint pair. Kept the low parts signed as i32 so the reconstruction identities and range checks read straight from FIPS 204; used i64 only where reconstruction crosses the modulus.
+think Fixed a convoluted power2round r1 expression to a clean @divExact in i64 before building. The selftest proves each op by its own inverse or reconstruction: LSB-first known-answer (pack [0xABC,0xDEF] at 12 bits = BC FA DE), SimpleBitPack round-trip over widths {1,4,6,10,20}, BitPack round-trip over the real signed ranges (eta 2/4, t0 at 2^12, z at gamma1 2^17 and 2^19), Power2Round exact reconstruction over 64 spreads, Decompose reconstruction mod q at both gamma2, and THE decisive hint round-trip use_hint(make_hint(z,r),r) = high_bits(r+z) for every |z| <= gamma2 at both gamma2.
+obs GREEN on the build (after the one power2round fix) across every width, range, and both gamma2 — the hint round-trip, the fact ML-DSA's verify ultimately rests on, holds over 64*256*2 cases. No external oracle needed; byte parity against Zig arrives at the keygen rung.
+obs TAME style bans clean; every function carries contract asserts, every loop cites n=256 or a public width, i64 confined to modular reconstruction. README synced same round with the second ML-DSA rung row.
+loom witness=crypto_mldsa_encode_witness pack_widths=5 signed_ranges=5 round_trip_spreads=64 gamma2_values=2 wall_note=GREEN-after-one-fix
+file crypto/mldsa_encode.rye the encode rung — SimpleBitPack/BitPack §7.1 and Power2Round/Decompose/HighBits/LowBits/MakeHint/UseHint §7.4
+file tools/crypto_mldsa_encode_witness.rish the witness — builds the binary and asserts the GREEN self-consistency line
+file crypto/README.md synced — the second ML-DSA rung row
+recommend keep-going the ML-DSA encode is GREEN; the next crux is mldsa_sample.rye (FIPS 204 RejNTTPoly / RejBoundedPoly / SampleInBall on the GREEN shake.rye) before keygen's doubled oracle
