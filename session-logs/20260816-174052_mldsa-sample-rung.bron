@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260816.174052
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+title ML-DSA sample rung, three samplers self-consistency GREEN
+prompt Continue the loop Lindy-first crux-first on the crypto arc; Rye prioritized; send each finished increment; stop at custody gates.
+think With the ML-DSA ring and encode GREEN and sent, the next Lindy-first crux is rung 3 — the sampling layer, the parallel to mlkem_sample.rye. FIPS 204 needs three samplers, one more than ML-KEM: RejNTTPoly (uniform A from SHAKE128), RejBoundedPoly (small secret s1/s2 in [-eta,eta] from SHAKE256 via CoefFromHalfByte), and SampleInBall (the sparse challenge c of exactly tau +/-1 coefficients). Read the vendored Zig ml_dsa expandA/expandS/sampleInBall to fix CoefFromThreeBytes (23-bit mask), the eta=2 mod-5 reduction and eta=4 bound, and the Fisher-Yates ball placement with the 8-byte sign word.
+think Authored crypto/mldsa_sample.rye composing our own GREEN shake.rye: each sampler pre-squeezes a bounded prefix (the XOF prefix property proven in shake.rye makes this byte-identical to FIPS's block streaming) and raises SampleExhausted rather than overrun. rej_ntt_poly reads one 23-bit value per three bytes; rej_bounded_poly reads two nibbles per byte through coef_accept/coef_from_half_byte; sample_in_ball reads a 64-bit sign word then rejection-samples position bytes b<=i, moving c[i]<-c[b] and planting +/-1 (represented 1 and q-1).
+think The selftest proves each without an external oracle: RejNTTPoly matches a structurally independent 24-bit bit-reader (masked to 23) over the same GREEN SHAKE stream byte-for-byte across 24 seeds, canonical and wide-range; RejBoundedPoly carries CoefFromHalfByte known-answers (nibble 0->eta, 3->q-1 at eta2; 8->q-4 at eta4), the centered range at both eta, and determinism; and THE decisive SampleInBall invariant — exactly tau nonzero coefficients each in {1,q-1}, a Hamming weight of tau, deterministic, across tau 39/49/60.
+obs GREEN on the FIRST build across all three samplers. The weight-tau ball invariant is the sharp structural check a challenge must satisfy, and it holds exactly; the uniform and bounded draws prove canonical and centered. Byte parity against Zig arrives at the keygen rung that composes these.
+obs TAME style bans clean; every function carries contract asserts, every squeeze buffer names a ceiling and guards overrun. README synced same round with the third ML-DSA rung row.
+loom witness=crypto_mldsa_sample_witness ntt_seeds=24 bounded_seeds=16 eta_values=2 tau_values=3 wall_note=GREEN-first-build
+file crypto/mldsa_sample.rye the sample rung — RejNTTPoly, RejBoundedPoly (CoefFromHalfByte), and SampleInBall (Fisher-Yates weight-tau ball)
+file tools/crypto_mldsa_sample_witness.rish the witness — builds the binary and asserts the GREEN self-consistency line
+file crypto/README.md synced — the third ML-DSA rung row
+recommend keep-going the ML-DSA ring, encode, and sample are GREEN; the next crux is mldsa_keygen.rye — the first ML-DSA DOUBLED-oracle rung, ek/dk byte-for-byte against Zig std.crypto ml_dsa generateDeterministic across ML-DSA-44/65/87

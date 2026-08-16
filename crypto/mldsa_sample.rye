@@ -1,0 +1,425 @@
+//! crypto/mldsa_sample.rye — Season G (Cryptography): the ML-DSA sampling rung, the third stone of the post-quantum SIGNATURE ladder. Three
+//! operations turn a short seed into ring elements FIPS 204 needs: RejNTTPoly (Algorithm 30) draws a uniform NTT-domain polynomial by
+//! rejection-sampling a SHAKE128 stream — the public matrix A is nothing but 256-coefficient uniform draws; RejBoundedPoly (Algorithm 31) draws the
+//! small secret vectors s1, s2 in [−η, η] from a SHAKE256 stream; and SampleInBall (Algorithm 29) draws the challenge polynomial c — exactly τ
+//! coefficients of ±1, the rest zero — the sparse "ball" a signature commits to. This module authors all three in pure Rye, standing on the GREEN
+//! base ring (crypto/mldsa_ring.rye) and the GREEN extendable-output function (crypto/shake.rye). It is the signature-side counterpart to
+//! crypto/mlkem_sample.rye: it turns entropy into ring elements, deterministically, the way ML-KEM's SampleNTT/SamplePolyCBD did — with one new
+//! shape, the weight-τ ball no KEM needs.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
+//! Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — rung 3 of the ML-DSA ladder. Rye-first spine:
+//! active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+//! Kin: crypto/mldsa_ring.rye (the base ring these draws land in, GREEN) · crypto/mldsa_encode.rye (the serialization sibling, GREEN) ·
+//! crypto/mlkem_sample.rye (the KEM-side sampler) · crypto/shake.rye (the XOF this rung drives, GREEN). The parity TARGET is Zig's std.crypto
+//! ml_dsa and the FIPS 204 known-answers, studied clean-room — never a copied line (.claude/rules/gratitude-licenses.md).
+//!
+//! THE ORACLE — sampling is a deterministic function of a proven stream, so no new external dependency is needed here, exactly as ML-KEM's sampler
+//! stood on self-consistency. RejNTTPoly reads the SHAKE128 stream as successive 23-bit little-endian values and keeps those below q; the selftest
+//! re-derives the same draw a SECOND, structurally independent way (a bit-oriented 24-bit reader masked to 23 bits over the same GREEN SHAKE bytes)
+//! and confirms byte-for-byte agreement. RejBoundedPoly proves the centered range [−η, η] on every coefficient at both η, its CoefFromHalfByte
+//! known-answers, and determinism. And SampleInBall proves the decisive STRUCTURAL invariant a challenge must satisfy: exactly τ nonzero
+//! coefficients, each ±1 (a value in {1, q−1}), the rest zero — a Hamming weight of exactly τ — plus determinism, over all three τ.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. This module holds no key and signs nothing; it samples ring
+//! elements from a seed. It calls no std.crypto directly — it composes our own GREEN shake.rye. RejNTTPoly's control flow depends only on the PUBLIC
+//! seed's stream (A is public); the secret samplers' loop bounds depend only on the public η or τ. Constant-time timing-safety stays the Season's
+//! named horizon — this rung proves CORRECTNESS.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/mldsa_sample.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const ring = @import("mldsa_ring.rye");
+const shake = @import("shake.rye");
+
+pub const mldsa_sample_version = "20260816.172505";
+
+/// ML-DSA's prime modulus, borrowed from the base ring so every rung cites one number. q = 8380417. A uniform draw keeps values in [0, q); a bounded
+/// draw lands in the centered band around 0; a ball coefficient is 0, 1, or q−1 (±1).
+pub const q: u32 = ring.q;
+
+/// The ring degree — 256 coefficients per polynomial, borrowed from the base ring so every sampler fills exactly one Poly.
+pub const n: u32 = ring.n;
+
+/// The seed length RejNTTPoly absorbs: a 32-byte rho plus two domain-separation index bytes, exactly FIPS 204's XOF input for A's entries. Named so
+/// the input buffer cites one width.
+pub const ntt_seed_bytes: u32 = 34;
+
+/// The bounded SHAKE128 prefix RejNTTPoly squeezes before rejection. A squeezed prefix is byte-identical to FIPS 204's block-by-block stream
+/// (crypto/shake.rye proves the XOF prefix property). RejNTTPoly needs 256 accepted 23-bit values, each kept with probability q/2²³ ≈ 0.9987, so it
+/// consumes ~769 bytes on average; 1344 bytes makes running out astronomically unlikely, and the sampler raises SampleExhausted rather than read past it.
+pub const ntt_xof_bytes: u32 = 8 * 168;
+
+/// The seed length the secret samplers absorb: a 64-byte rho' plus a two-byte little-endian nonce, exactly FIPS 204's ExpandS/ExpandMask input.
+pub const bounded_seed_bytes: u32 = 66;
+
+/// The bounded SHAKE256 prefix RejBoundedPoly squeezes. It needs 256 accepted nibbles, each kept with probability (2η+1)/16 — worst case η = 2 gives
+/// 5/16 ≈ 0.31, so ~1652 nibbles ≈ 826 bytes on average; 1632 bytes (twelve SHAKE256 rate blocks of 136) is a wide margin, guarded against overrun.
+pub const bounded_xof_bytes: u32 = 12 * 136;
+
+/// The bounded SHAKE256 prefix SampleInBall squeezes: 8 sign bytes plus ~τ rejection-sampled position bytes (τ ≤ 60, each accepted with growing
+/// probability), well under 1088 bytes (eight SHAKE256 rate blocks), guarded against overrun.
+pub const ball_xof_bytes: u32 = 8 * 136;
+
+/// The centered-bound parameters ML-DSA uses for the secret: η is 2 (ML-DSA-65/87) or 4 (ML-DSA-44). Every RejBoundedPoly coefficient lands in
+/// [−η, η] lifted into [0, q).
+pub const eta_2: u32 = 2;
+pub const eta_4: u32 = 4;
+
+/// The three challenge weights ML-DSA uses: τ = 39 (ML-DSA-44), 49 (ML-DSA-65), 60 (ML-DSA-87). SampleInBall places exactly this many ±1 coefficients.
+pub const tau_44: u32 = 39;
+pub const tau_65: u32 = 49;
+pub const tau_87: u32 = 60;
+
+/// The faults this rung can raise. SampleExhausted is the one genuine runtime guard (a squeezed prefix ran dry — never observed, guarded so it can
+/// never read out of bounds); the rest are proofs that failed in the selftest, never runtime paths.
+pub const SampleError = error{
+    /// A squeezed prefix was exhausted before enough values were accepted — a bound above was somehow too small. Guarded, never read past.
+    SampleExhausted,
+    /// A RejNTTPoly coefficient was not a canonical residue in [0, q) — rejection sampling admitted a value it must have rejected.
+    NttRangeError,
+    /// The structurally independent re-derivation disagreed with RejNTTPoly — the module wires the SHAKE stream or the 23-bit rejection rule wrong.
+    ReDerivationMismatch,
+    /// A RejBoundedPoly coefficient left the centered range [−η, η] (lifted into [0, q)) — the small-secret distribution was broken.
+    BoundedRangeError,
+    /// A fixed FIPS 204 known-answer (a CoefFromHalfByte mapping, or an all-nonzero-count) did not match — a wrong reduction or bit direction.
+    KnownAnswerMismatch,
+    /// SampleInBall did not produce exactly τ nonzero coefficients, or one was not ±1 — the challenge ball's defining structure was broken.
+    BallWeightMismatch,
+    /// Two draws from the same seed disagreed — the sampler is not deterministic, which every FIPS sampler must be.
+    DeterminismMismatch,
+    /// A draw came out identically zero (or spanning too narrow a range), so a passing check would prove nothing — the selftest refuses a trivial witness.
+    TrivialWitness,
+};
+
+/// rej_ntt_poly — FIPS 204 Algorithm 30: draw a uniform polynomial in the NTT domain by rejection-sampling a SHAKE128 stream seeded with rho and two
+/// index bytes. Reads successive 23-bit little-endian values (one per three stream bytes, top bit masked off) and keeps each below q, until 256 are
+/// accepted. The caller supplies the two domain-separation bytes in whatever order the composing rung fixes for A[r][s]; this rung only samples.
+pub fn rej_ntt_poly(rho: *const [32]u8, b0: u8, b1: u8) SampleError!ring.Poly {
+    var input: [ntt_seed_bytes]u8 = undefined;
+    var t: u32 = 0;
+    // invariant (bound): copy exactly the 32 rho bytes, one per turn — the seed's fixed prefix.
+    while (t < 32) : (t += 1) input[t] = rho[t];
+    input[32] = b0;
+    input[33] = b1;
+
+    var xof: [ntt_xof_bytes]u8 = undefined;
+    shake.shake128(input[0..], xof[0..]) catch return error.SampleExhausted;
+
+    var a: ring.Poly = .{ .cs = [_]u32{0} ** n };
+    var pos: u32 = 0;
+    var j: u32 = 0;
+    var guard: u32 = 0;
+    // invariant (bound): each turn consumes three stream bytes; the buffer holds ntt_xof_bytes, so the loop runs at most ntt_xof_bytes/3 times.
+    while (j < n) : (guard += 1) {
+        assert(guard <= ntt_xof_bytes / 3);
+        // invariant: never read past the squeezed prefix — raise rather than run off the end.
+        if (pos + 3 > ntt_xof_bytes) return error.SampleExhausted;
+        const c0: u32 = xof[pos];
+        const c1: u32 = xof[pos + 1];
+        const c2: u32 = xof[pos + 2];
+        pos += 3;
+        // One 23-bit little-endian value across three bytes (FIPS 204 CoefFromThreeBytes): the top bit of the third byte is masked off.
+        const d: u32 = (c0 | (c1 << 8) | (c2 << 16)) & 0x7FFFFF;
+        if (d < q) {
+            a.cs[j] = d;
+            j += 1;
+        }
+    }
+    // invariant (postcondition): exactly n coefficients were accepted, each already checked below q by the rejection rule.
+    assert(j == n);
+    return a;
+}
+
+/// rej_bounded_poly — FIPS 204 Algorithm 31: draw a polynomial with every coefficient in [−η, η] from a SHAKE256 stream seeded with a 64-byte rho'
+/// and a two-byte nonce. Each stream byte gives two nibbles; CoefFromHalfByte keeps a nibble below the η-dependent bound and maps it to a centered
+/// value: for η = 2, reject nibbles above 14 then reduce mod 5 to [0, 4] and take η − that; for η = 4, keep nibbles ≤ 8 and take η − that. This is
+/// the small secret s1, s2 a key carries; the coefficient lands lifted into [0, q).
+pub fn rej_bounded_poly(rho_prime: *const [64]u8, nonce: u16, eta: u32) SampleError!ring.Poly {
+    // invariant (precondition): eta is one ML-DSA uses (2 or 4).
+    assert(eta == eta_2 or eta == eta_4);
+    var input: [bounded_seed_bytes]u8 = undefined;
+    var t: u32 = 0;
+    while (t < 64) : (t += 1) input[t] = rho_prime[t];
+    input[64] = @as(u8, @intCast(nonce & 0xFF));
+    input[65] = @as(u8, @intCast((nonce >> 8) & 0xFF));
+
+    var xof: [bounded_xof_bytes]u8 = undefined;
+    shake.shake256(input[0..], xof[0..]) catch return error.SampleExhausted;
+
+    var f: ring.Poly = .{ .cs = [_]u32{0} ** n };
+    var pos: u32 = 0;
+    var i: u32 = 0;
+    var guard: u32 = 0;
+    // invariant (bound): each turn consumes one byte (two nibbles); the loop runs at most bounded_xof_bytes times.
+    while (i < n) : (guard += 1) {
+        assert(guard <= bounded_xof_bytes);
+        if (pos >= bounded_xof_bytes) return error.SampleExhausted;
+        const byte: u32 = xof[pos];
+        pos += 1;
+        const z0: u32 = byte & 0x0F;
+        const z1: u32 = byte >> 4;
+        if (coef_accept(z0, eta)) {
+            f.cs[i] = coef_from_half_byte(z0, eta);
+            i += 1;
+        }
+        if (i < n and coef_accept(z1, eta)) {
+            f.cs[i] = coef_from_half_byte(z1, eta);
+            i += 1;
+        }
+    }
+    // invariant (postcondition): exactly n coefficients drawn.
+    assert(i == n);
+    return f;
+}
+
+/// coef_accept — the CoefFromHalfByte rejection rule: a nibble is kept when it is below 15 for η = 2, or at most 8 (= 2η) for η = 4.
+fn coef_accept(z: u32, eta: u32) bool {
+    // invariant (precondition): a nibble and a valid eta.
+    assert(z < 16 and (eta == eta_2 or eta == eta_4));
+    if (eta == eta_2) return z < 15;
+    return z <= 8;
+}
+
+/// coef_from_half_byte — the CoefFromHalfByte value map for an accepted nibble: η − (z mod 5) for η = 2, η − z for η = 4, lifted into [0, q).
+fn coef_from_half_byte(z: u32, eta: u32) u32 {
+    // invariant (precondition): an accepted nibble for this eta.
+    assert(coef_accept(z, eta));
+    if (eta == eta_2) {
+        const r5: u32 = z - ((205 * z) >> 10) * 5; // z mod 5, in [0, 4]
+        return (q + eta - r5) % q;
+    }
+    return (q + eta - z) % q;
+}
+
+/// sample_in_ball — FIPS 204 Algorithm 29: draw the challenge c with exactly τ coefficients of ±1 and the rest zero, from a SHAKE256 stream seeded
+/// with the commitment hash. The first 8 stream bytes give τ sign bits; then a Fisher–Yates placement walks i from n−τ to n−1, rejection-sampling a
+/// position byte b ≤ i, moving c[i] ← c[b] and setting c[b] ← ±1 by the next sign bit. The result is the sparse ball a signature proves knowledge against.
+pub fn sample_in_ball(seed: []const u8, tau: u32) SampleError!ring.Poly {
+    // invariant (precondition): a valid challenge weight and a nonempty seed.
+    assert(tau == tau_44 or tau == tau_65 or tau == tau_87);
+    assert(seed.len >= 1 and seed.len <= 64);
+
+    var xof: [ball_xof_bytes]u8 = undefined;
+    shake.shake256(seed, xof[0..]) catch return error.SampleExhausted;
+
+    var c: ring.Poly = .{ .cs = [_]u32{0} ** n };
+    // the first 8 bytes are the sign bits, LSB-first across the 64-bit word (only τ of them are consumed).
+    var signs: u64 = 0;
+    var s: u32 = 0;
+    while (s < 8) : (s += 1) {
+        signs |= @as(u64, xof[s]) << @as(u6, @intCast(s * 8));
+    }
+    var pos: u32 = 8;
+    var i: u32 = n - tau;
+    var guard: u32 = 0;
+    // invariant (bound): exactly τ placements; each rejection-samples at most a few bytes, guarded against the prefix's end.
+    while (i < n) : (i += 1) {
+        var b: u32 = 0;
+        var inner: u32 = 0;
+        // rejection-sample a position b ≤ i.
+        while (true) : (inner += 1) {
+            assert(inner <= ball_xof_bytes);
+            if (pos >= ball_xof_bytes) return error.SampleExhausted;
+            b = xof[pos];
+            pos += 1;
+            if (b <= i) break;
+        }
+        // Fisher–Yates: carry the value already at i down to b, then plant ±1 at b by the next sign bit (1 → +1, 0 → −1 = q−1).
+        c.cs[i] = c.cs[b];
+        const sign_bit: u32 = @as(u32, @intCast(signs & 1));
+        signs >>= 1;
+        c.cs[b] = if (sign_bit == 1) q - 1 else 1;
+        guard += 1;
+    }
+    // invariant (postcondition): exactly τ placements were made.
+    assert(guard == tau);
+    return c;
+}
+
+// ---- selftest ----------------------------------------------------------------------------------------------------------------------
+
+/// bytes_from_seed — fill a byte buffer deterministically from a seed with the same tiny LCG the ring/encode rungs use, so a failing run reruns
+/// identically without any std.crypto.
+fn bytes_from_seed(seed: u32, buf: []u8) void {
+    var state: u32 = seed *% 2654435761 +% 1013904223;
+    var i: u32 = 0;
+    while (i < buf.len) : (i += 1) {
+        state = state *% 1664525 +% 1013904223;
+        buf[i] = @as(u8, @intCast((state >> 8) & 0xFF));
+    }
+}
+
+/// poly_eq — do two ring elements match coefficient for coefficient?
+fn poly_eq(a: *const ring.Poly, b: *const ring.Poly) bool {
+    var j: u32 = 0;
+    while (j < n) : (j += 1) {
+        if (a.cs[j] != b.cs[j]) return false;
+    }
+    return true;
+}
+
+/// bit_at — read bit k of a byte slice, LSB-first within each byte, the shared primitive the independent RejNTTPoly re-reader uses.
+fn bit_at(bytes: []const u8, k: u32) u32 {
+    assert((k >> 3) < bytes.len);
+    const byte: u32 = bytes[k >> 3];
+    return (byte >> @as(u3, @intCast(k & 7))) & 1;
+}
+
+/// rej_ntt_bitreader_reference — the structurally independent re-derivation of RejNTTPoly for the selftest: read the SAME GREEN SHAKE128 prefix as a
+/// stream of 24-bit little-endian values through bit_at (a bit-oriented reader, where rej_ntt_poly uses a byte-group reader), mask to 23 bits, keep
+/// those below q. Two different codes reading one proven stream must agree.
+fn rej_ntt_bitreader_reference(rho: *const [32]u8, b0: u8, b1: u8) SampleError!ring.Poly {
+    var input: [ntt_seed_bytes]u8 = undefined;
+    var t: u32 = 0;
+    while (t < 32) : (t += 1) input[t] = rho[t];
+    input[32] = b0;
+    input[33] = b1;
+    var xof: [ntt_xof_bytes]u8 = undefined;
+    shake.shake128(input[0..], xof[0..]) catch return error.SampleExhausted;
+
+    var a: ring.Poly = .{ .cs = [_]u32{0} ** n };
+    var bitpos: u32 = 0;
+    var j: u32 = 0;
+    var guard: u32 = 0;
+    while (j < n) : (guard += 1) {
+        assert(guard <= (ntt_xof_bytes * 8) / 24);
+        if (bitpos + 24 > ntt_xof_bytes * 8) return error.SampleExhausted;
+        var v: u32 = 0;
+        var bi: u32 = 0;
+        while (bi < 24) : (bi += 1) {
+            v |= bit_at(xof[0..], bitpos + bi) << @as(u5, @intCast(bi));
+        }
+        bitpos += 24;
+        v &= 0x7FFFFF;
+        if (v < q) {
+            a.cs[j] = v;
+            j += 1;
+        }
+    }
+    return a;
+}
+
+/// poly_range — the smallest and largest coefficient, so the selftest can refuse a stuck uniform sampler (a real draw spans a wide slice of [0, q)).
+fn poly_range(a: *const ring.Poly, lo: *u32, hi: *u32) void {
+    var mn: u32 = q;
+    var mx: u32 = 0;
+    var j: u32 = 0;
+    while (j < n) : (j += 1) {
+        if (a.cs[j] < mn) mn = a.cs[j];
+        if (a.cs[j] > mx) mx = a.cs[j];
+    }
+    lo.* = mn;
+    hi.* = mx;
+}
+
+fn run_selftest() !u8 {
+    // 1. RejNTTPoly re-derivation: over a deterministic spread of seeds, the byte-group sampler and the structurally independent 24-bit bit-reader
+    //    read the same GREEN SHAKE128 stream and must produce the identical uniform polynomial — the doubled-path oracle. Each draw is proven
+    //    canonical (every coefficient below q) and non-trivial (spanning a wide slice of [0, q)).
+    {
+        var seed: u32 = 1;
+        while (seed <= 24) : (seed += 1) {
+            var rho: [32]u8 = undefined;
+            bytes_from_seed(seed, rho[0..]);
+            const b0: u8 = @as(u8, @intCast(seed & 0xFF));
+            const b1: u8 = @as(u8, @intCast((seed >> 3) & 0xFF));
+            const a = try rej_ntt_poly(&rho, b0, b1);
+            const ref = try rej_ntt_bitreader_reference(&rho, b0, b1);
+            if (!poly_eq(&a, &ref)) return error.ReDerivationMismatch;
+
+            var j: u32 = 0;
+            while (j < n) : (j += 1) {
+                if (a.cs[j] >= q) return error.NttRangeError;
+            }
+            var lo: u32 = 0;
+            var hi: u32 = 0;
+            poly_range(&a, &lo, &hi);
+            if (lo >= q / 4 or hi <= (3 * q) / 4) return error.TrivialWitness;
+        }
+    }
+
+    // 2. RejBoundedPoly: the CoefFromHalfByte known-answers pin the value map — for η = 2, nibble 0 → η = 2, nibble 5 → 2 (5 mod 5 = 0), nibble 3 → −1
+    //    (q−1); for η = 4, nibble 0 → 4, nibble 8 → −4 (q−4). Then, over a deterministic spread at both η, every coefficient must land in the centered
+    //    range [−η, η] and the draw must be non-trivial, and a repeat of the same (rho', nonce) must reproduce it exactly (determinism).
+    {
+        if (coef_from_half_byte(0, eta_2) != 2) return error.KnownAnswerMismatch;
+        if (coef_from_half_byte(5, eta_2) != 2) return error.KnownAnswerMismatch;
+        if (coef_from_half_byte(3, eta_2) != q - 1) return error.KnownAnswerMismatch;
+        if (coef_from_half_byte(0, eta_4) != 4) return error.KnownAnswerMismatch;
+        if (coef_from_half_byte(8, eta_4) != q - 4) return error.KnownAnswerMismatch;
+
+        const etas = [_]u32{ eta_2, eta_4 };
+        for (etas) |eta| {
+            var seed: u32 = 1;
+            while (seed <= 16) : (seed += 1) {
+                var rp: [64]u8 = undefined;
+                bytes_from_seed(seed *% (eta + 5), rp[0..]);
+                const nonce: u16 = @as(u16, @intCast(seed & 0xFF));
+                const f = try rej_bounded_poly(&rp, nonce, eta);
+                const again = try rej_bounded_poly(&rp, nonce, eta);
+                if (!poly_eq(&f, &again)) return error.DeterminismMismatch;
+
+                var any_nonzero: bool = false;
+                var j: u32 = 0;
+                while (j < n) : (j += 1) {
+                    const cc = f.cs[j];
+                    const centered_ok = (cc <= eta) or (cc >= q - eta);
+                    if (!centered_ok) return error.BoundedRangeError;
+                    if (cc != 0) any_nonzero = true;
+                }
+                if (!any_nonzero) return error.TrivialWitness;
+            }
+        }
+    }
+
+    // 3. THE decisive SampleInBall invariant: the challenge has EXACTLY τ nonzero coefficients, each ±1 (a value in {1, q−1}), the rest zero — a
+    //    Hamming weight of exactly τ — and the same seed reproduces it (determinism), across all three τ. A misplaced or mis-signed coefficient, or a
+    //    wrong count, fails here.
+    {
+        const taus = [_]u32{ tau_44, tau_65, tau_87 };
+        for (taus) |tau| {
+            var seed: u32 = 1;
+            while (seed <= 16) : (seed += 1) {
+                var sd: [32]u8 = undefined;
+                bytes_from_seed(seed *% (tau + 3), sd[0..]);
+                const c = try sample_in_ball(sd[0..], tau);
+                const again = try sample_in_ball(sd[0..], tau);
+                if (!poly_eq(&c, &again)) return error.DeterminismMismatch;
+
+                var count: u32 = 0;
+                var j: u32 = 0;
+                while (j < n) : (j += 1) {
+                    const cc = c.cs[j];
+                    if (cc == 0) continue;
+                    if (cc != 1 and cc != q - 1) return error.BallWeightMismatch;
+                    count += 1;
+                }
+                if (count != tau) return error.BallWeightMismatch;
+            }
+        }
+    }
+
+    print("GREEN crypto-mldsa-sample: the ML-DSA sampling rung (FIPS 204 RejNTTPoly, RejBoundedPoly, and SampleInBall), authored in pure Rye as " ++
+        "Season G's third post-quantum SIGNATURE rung, standing on the GREEN base ring and the GREEN SHAKE XOF. RejNTTPoly rejection-samples a " ++
+        "SHAKE128 stream into a uniform NTT-domain polynomial (one 23-bit little-endian value per three stream bytes, each kept when below " ++
+        "q = 8380417); RejBoundedPoly draws the small secret in [-eta, eta] from a SHAKE256 stream via CoefFromHalfByte (eta 2 and 4); " ++
+        "SampleInBall draws the challenge c with exactly tau coefficients of +/-1 by a sign word and Fisher-Yates placement (tau 39, 49, 60). " ++
+        "Proven by SELF-CONSISTENCY with no external dependency, exactly where ML-KEM's sampler stood: RejNTTPoly matches a structurally " ++
+        "independent 24-bit bit-reader over the same GREEN SHAKE stream byte-for-byte across 24 seeds, each draw canonical and spanning a wide " ++
+        "slice of [0, q); RejBoundedPoly carries the CoefFromHalfByte known-answers, the centered range [-eta, eta] on every coefficient at both " ++
+        "eta, and determinism over 16 seeds; and the decisive one, SampleInBall produces exactly tau nonzero coefficients each +/-1 (Hamming " ++
+        "weight tau), deterministic, across all three tau. The byte-boundary parity against Zig std.crypto arrives at the keygen rung, which " ++
+        "composes exactly these draws; here the sampling proves itself. Purely local — no key, no network, no funds, no real device; RejNTTPoly " ++
+        "reads only the public seed's stream, the secret samplers' bounds depend only on the public eta or tau, constant-time timing-safety the " ++
+        "Season's named horizon.\n", .{});
+    return 0;
+}
+
+pub fn main(init_args: std.process.Init) !u8 {
+    _ = init_args;
+    return run_selftest();
+}
