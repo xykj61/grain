@@ -1,0 +1,212 @@
+//! crypto/hmac_sha256.rye — Season G (Cryptography), a keyed-hash rung: HMAC-SHA-256 authored in pure Rye. HMAC (RFC 2104 /
+//! FIPS 198-1) turns a hash and a secret key into a message authentication code — the standard "does this message come from someone
+//! who holds the key, unaltered?" primitive — and HMAC-SHA-256 is the exact one the deployed world reaches for first: TLS 1.3's PRF,
+//! JWT's HS256, TOTP one-time codes, the Bitcoin/Signal HKDF. It authors no new hashing: it composes the GREEN crypto/sha256.rye
+//! through the HMAC construction, so it is buildable this round and provable against a neutral public reference.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+//! Kin: crypto/sha256.rye (the hash beneath it, GREEN on metal) · crypto/hmac_sha512.rye (its 512-bit sibling, same construction).
+//! Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity DISCIPLINE target — our own Rye, studied clean-room from the public
+//! standards and the RFC 4231 vectors (.claude/rules/gratitude-licenses.md).
+//!
+//! THE CRUX — HMAC(K, m) = H((K0 XOR opad) ‖ H((K0 XOR ipad) ‖ m)), where K0 is the key brought to the 64-byte SHA-256 block: a key
+//! longer than the block is first hashed to 32 bytes, then either case is zero-padded to a whole block. ipad is the byte 0x36 repeated,
+//! opad the byte 0x5c repeated. Two SHA-256 passes and two XORs — no new cryptography, only the RFC's own composition over a hash a
+//! lower rung already proved. The same key and bytes always fold to the same 32-byte tag anyone can replay against RFC 4231.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, TEST keys and the RFC's public vectors, no real identity key, no network, no funds, no
+//! real device. The module calls no std.crypto in the primitive; parity is proven at selftest against two references runnable now — the
+//! RFC 4231 Test Case 2 known-answer (key "Jefe", "what do ya want for nothing?") AND Zig's own std.crypto HMAC-SHA-256 as an
+//! independent implementation, byte-for-byte across a short key, a block-length key, a key longer than the block (the hash-the-key
+//! path), the empty message, and a multi-block message. Constant-time timing-safety of a tag comparison stays the Season's named
+//! horizon — verifying a MAC wants a constant-time compare, which the composer that uses this primitive supplies; this module returns
+//! the tag.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/hmac_sha256.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const sha256 = @import("sha256.rye");
+
+pub const hmac_sha256_version = "20260816.000000";
+
+/// HMAC-SHA-256's fixed shapes, all inherited from the hash beneath so a single source of truth names them. tag_len is the 32-byte
+/// output; block_bytes is SHA-256's 64-byte compression block, the width the key is brought to.
+pub const tag_len: u32 = sha256.digest_len;
+pub const block_bytes: u32 = sha256.block_bytes;
+pub const hex_len: u32 = tag_len * 2;
+
+/// The two HMAC pad bytes (RFC 2104): the inner pad 0x36 and the outer pad 0x5c, each XORed byte-for-byte across the block-sized key.
+const ipad: u8 = 0x36;
+const opad: u8 = 0x5c;
+
+/// The largest message this primitive authenticates in one call. HMAC's own uses — HKDF extract/expand, TLS transcripts, TOTP counters,
+/// short records — sit far below this; the bound is named so the inner buffer and the SHA-256 call beneath both cite a ceiling. A larger
+/// message wants the incremental SHA-256 that is a named horizon, rather than a stack buffer that grows without limit.
+pub const max_message_bytes: u32 = 1 << 16;
+
+/// The largest key this primitive accepts. A key longer than the block is hashed to 32 bytes first, so any key up to this bound is well
+/// within SHA-256's own reach; the bound is named so the key-hash path cites a ceiling of its own.
+pub const max_key_bytes: u32 = 1 << 16;
+
+/// The two faults this primitive can raise, each refused at the edge before a byte is mixed.
+pub const HmacError = error{
+    /// A message longer than max_message_bytes — refused before the inner buffer is filled.
+    MessageTooLong,
+    /// A key longer than max_key_bytes — refused before the key is brought to block width.
+    KeyTooLong,
+};
+
+/// Bring the key to the 64-byte block width per RFC 2104: a key longer than the block is hashed to its 32-byte digest and the rest
+/// left zero; a key at or under the block is copied and zero-padded. Returns the block-sized K0 the two pads XOR against.
+fn block_key(key: []const u8) HmacError![block_bytes]u8 {
+    // invariant: the key fits the named bound, so hashing it (when long) stays within SHA-256's own reach.
+    if (key.len > max_key_bytes) return error.KeyTooLong;
+
+    var k0 = [_]u8{0} ** block_bytes;
+    if (key.len > block_bytes) {
+        // The key exceeds one block: replace it with its SHA-256 digest. The bound above guarantees this hash cannot fault, so the
+        // error is unreachable — asserted, not silently swallowed.
+        const kh = sha256.hash(key) catch unreachable;
+        var i: u32 = 0;
+        while (i < sha256.digest_len) : (i += 1) k0[i] = kh[i];
+    } else {
+        const n: u32 = @intCast(key.len);
+        // invariant: the short-key length cast lost nothing — it is at most the block width.
+        assert(n <= block_bytes);
+        var i: u32 = 0;
+        while (i < n) : (i += 1) k0[i] = key[i];
+    }
+    return k0;
+}
+
+/// Compute the 32-byte HMAC-SHA-256 tag of msg under key. Two SHA-256 passes over the RFC 2104 construction: the inner pass hashes
+/// (K0 XOR ipad) ‖ msg, the outer pass hashes (K0 XOR opad) ‖ inner-digest.
+pub fn mac(msg: []const u8, key: []const u8) HmacError![tag_len]u8 {
+    // invariant: HMAC-SHA-256's shapes are the hash's own — 32-byte tag, 64-byte block. Proven at compile time.
+    comptime assert(tag_len == 32 and block_bytes == 64);
+    // invariant: the message fits the named bound, so the inner buffer holds (block + msg) and the SHA-256 call cannot fault below.
+    if (msg.len > max_message_bytes) return error.MessageTooLong;
+
+    const k0 = try block_key(key);
+
+    // Inner pass: H((K0 XOR ipad) ‖ msg). The buffer holds one block for the padded key, then the message bytes.
+    var inner_buf: [block_bytes + max_message_bytes]u8 = undefined;
+    var i: u32 = 0;
+    while (i < block_bytes) : (i += 1) inner_buf[i] = k0[i] ^ ipad;
+    const mlen: u32 = @intCast(msg.len);
+    // invariant: the message length cast lost nothing — it is bounded by max_message_bytes above.
+    assert(mlen == msg.len);
+    var j: u32 = 0;
+    while (j < mlen) : (j += 1) inner_buf[block_bytes + j] = msg[j];
+    // invariant: the inner input is block + msg bytes, at most block + max_message_bytes, well within SHA-256's own bound; its hash
+    // cannot fault, so the error is unreachable.
+    const inner = sha256.hash(inner_buf[0 .. block_bytes + mlen]) catch unreachable;
+
+    // Outer pass: H((K0 XOR opad) ‖ inner-digest). A fixed 96-byte buffer — one block for the padded key, then the 32-byte inner tag.
+    var outer_buf: [block_bytes + tag_len]u8 = undefined;
+    i = 0;
+    while (i < block_bytes) : (i += 1) outer_buf[i] = k0[i] ^ opad;
+    i = 0;
+    while (i < tag_len) : (i += 1) outer_buf[block_bytes + i] = inner[i];
+    // invariant: the outer input is exactly block + tag bytes, a fixed small size within SHA-256's bound; its hash cannot fault.
+    return sha256.hash(&outer_buf) catch unreachable;
+}
+
+// The RFC 4231 Test Case 2 known-answer — the neutral public reference our Rye must reproduce. Key is the ASCII "Jefe" (4 bytes, so the
+// short-key path), the message the ASCII "what do ya want for nothing?", the tag the RFC's published 32-byte HMAC-SHA-256.
+const rfc_key = "Jefe";
+const rfc_msg = "what do ya want for nothing?";
+const rfc_tag_hex = "5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843";
+
+/// Independent reference: Zig's own std.crypto HMAC-SHA-256, used ONLY inside the selftest as a second implementation to prove our
+/// authored composition matches byte-for-byte. The primitive above never calls this.
+fn ref_mac(msg: []const u8, key: []const u8) [tag_len]u8 {
+    var out: [tag_len]u8 = undefined;
+    std.crypto.auth.hmac.sha2.HmacSha256.create(&out, msg, key);
+    return out;
+}
+
+fn hex_eq(got: [hex_len]u8, want: []const u8) bool {
+    if (want.len != hex_len) return false;
+    var i: u32 = 0;
+    while (i < hex_len) : (i += 1) {
+        if (got[i] != want[i]) return false;
+    }
+    return true;
+}
+
+fn bytes_eq(a: [tag_len]u8, b: [tag_len]u8) bool {
+    var i: u32 = 0;
+    while (i < tag_len) : (i += 1) {
+        if (a[i] != b[i]) return false;
+    }
+    return true;
+}
+
+fn ref_parity(msg: []const u8, key: []const u8) !void {
+    const ours = try mac(msg, key);
+    if (!bytes_eq(ours, ref_mac(msg, key))) return error.RefMismatch;
+}
+
+fn run_selftest() !u8 {
+    // 1. The RFC 4231 Test Case 2 known-answer: HMAC-SHA-256 of "what do ya want for nothing?" under the key "Jefe" equals the
+    //    published tag, hex for hex.
+    {
+        const t = try mac(rfc_msg, rfc_key);
+        if (!hex_eq(sha256.to_hex(t), rfc_tag_hex)) return error.RfcVectorMismatch;
+    }
+
+    // 2. Independent-implementation parity across the key-length edges and the message-length edges: a short key, a key exactly one
+    //    block long, a key longer than the block (the hash-the-key path), the empty message, and a multi-block message. Our authored
+    //    Rye equals Zig's std.crypto HMAC-SHA-256 byte-for-byte.
+    {
+        try ref_parity("", "short-key");
+        try ref_parity("a single-block message", "short-key");
+
+        var blockkey: [block_bytes]u8 = undefined;
+        var i: u32 = 0;
+        while (i < block_bytes) : (i += 1) blockkey[i] = @as(u8, @truncate(i *% 3 +% 1));
+        try ref_parity("keyed at exactly the block length", &blockkey);
+
+        var longkey: [block_bytes + 37]u8 = undefined;
+        i = 0;
+        while (i < block_bytes + 37) : (i += 1) longkey[i] = @as(u8, @truncate(i *% 5 +% 2));
+        try ref_parity("this key is longer than one SHA-256 block", &longkey);
+
+        var multi: [400]u8 = undefined;
+        i = 0;
+        while (i < 400) : (i += 1) multi[i] = @as(u8, @truncate(i *% 7 +% 3));
+        try ref_parity(&multi, "key over a multi-block message");
+    }
+
+    // 3. The bounds refuse an over-long message and an over-long key before a byte is mixed.
+    {
+        const oversize_msg: []const u8 = @as([*]const u8, @ptrFromInt(0x1000))[0 .. max_message_bytes + 1];
+        if (mac(oversize_msg, "k")) |_| return error.OversizeMsgSlipped else |err| if (err != error.MessageTooLong) return error.WrongOversizeMsg;
+
+        const oversize_key: []const u8 = @as([*]const u8, @ptrFromInt(0x1000))[0 .. max_key_bytes + 1];
+        if (mac("m", oversize_key)) |_| return error.OversizeKeySlipped else |err| if (err != error.KeyTooLong) return error.WrongOversizeKey;
+    }
+
+    print("GREEN crypto-hmac-sha256: HMAC-SHA-256 authored in pure Rye — Season G's keyed-hash rung (RFC 2104 / FIPS 198-1), the " ++
+        "message-authentication and key-derivation stone the deployed world reaches for first: TLS 1.3's PRF, JWT's HS256, TOTP codes, " ++
+        "the Signal / Bitcoin HKDF. It composes the GREEN crypto/sha256.rye through the HMAC construction: the key is brought to the " ++
+        "64-byte block (hashed first when it exceeds a block, then zero-padded), the inner pass hashes (K0 XOR 0x36) followed by the " ++
+        "message, the outer pass hashes (K0 XOR 0x5c) followed by the inner digest — two SHA-256 passes, no new cryptography. Parity " ++
+        "holds against two references runnable now: the RFC 4231 Test Case 2 known-answer (key \"Jefe\", \"what do ya want for " ++
+        "nothing?\") matches hex for hex, and our authored Rye equals Zig's independent std.crypto HMAC-SHA-256 byte-for-byte across a " ++
+        "short key, a block-length key, a key longer than the block (the hash-the-key path), the empty message, and a multi-block " ++
+        "message. An over-long message refuses MessageTooLong and an over-long key refuses KeyTooLong before a byte is mixed. Purely " ++
+        "local — TEST keys and the RFC's public vectors, no real identity key, no network, no funds, no real device; constant-time tag " ++
+        "comparison stays the Season's named horizon, supplied by the composer that verifies a MAC. HKDF-SHA-256 now has its stone.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

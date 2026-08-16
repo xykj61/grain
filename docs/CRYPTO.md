@@ -1,6 +1,6 @@
 # Crypto — the Season G audit front door
 
-*A Rye-native, parity-checked cryptography library — twenty-one primitives and three compositions, each GREEN on metal.*
+*A Rye-native, parity-checked cryptography library — twenty-two primitives and three compositions, each GREEN on metal.*
 
 **Status:** Checkable — Season G operator + auditor guide
 **Depth:** guide
@@ -32,7 +32,7 @@ vectors — never a copied line ([`gratitude-licenses.md`](../.claude/rules/grat
 
 ---
 
-## Rung table — twenty-four files, dependency order
+## Rung table — twenty-five files, dependency order
 
 Each rung stands on the GREEN rungs beneath it; none authors cryptography a lower
 rung had not already proven. Every file carries a per-file witness
@@ -52,6 +52,7 @@ rung had not already proven. Every file carries a per-file witness
 | File | What it is | Reference |
 |------|------------|-----------|
 | `hmac_sha512.rye` | HMAC-SHA-512 keyed authentication — the HKDF / PRF stone | RFC 2104 · FIPS 198-1 · RFC 4231 |
+| `hmac_sha256.rye` | HMAC-SHA-256 keyed authentication — TLS 1.3 PRF · JWT HS256 · TOTP · the Signal/Bitcoin HKDF stone | RFC 2104 · FIPS 198-1 · RFC 4231 |
 | `hkdf_sha512.rye` | HKDF-SHA-512 extract-then-expand — the key schedule every handshake and vault stands on | RFC 5869 |
 | `argon2.rye` | Argon2d · Argon2i · Argon2id memory-hard password KDF — the stone Vault stands on | RFC 9106 |
 
@@ -102,7 +103,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 
 [`crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) rebuilds each
 `crypto/<name>.rye` fresh from source to the gitignored `crypto/bin/` and runs all
-twenty-four per-file witnesses in the dependency order above, refusing whole —
+twenty-five per-file witnesses in the dependency order above, refusing whole —
 naming the file that stopped it — the moment any one goes RED. A GREEN suite means
 every claim here is re-provable by tooling, not trusted from a commit message
 alone (measurement beats memory).
