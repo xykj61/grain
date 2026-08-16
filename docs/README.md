@@ -3,7 +3,7 @@
 **Status:** Checkable — compression shelf routing
 **Depth:** routing
 **Ceiling:** ≤40 lines
-**Last updated:** 2026-07-18 (LULU · JABS · ZETA · COMPASS · HAWM · TUBE)
+**Last updated:** 2026-08-15 (CRYPTO — Season G audit front door)
 **Compresses:** [`20260712-221600`](../active-designing/20260712-221600_docs-compression-layer-design.md) · [`20260717-173848`](../active-designing/20260717-173848_compass-card-and-foundations-compress.md)
 
 ---
@@ -26,6 +26,7 @@
 | [`LULU.md`](LULU.md) | guide · ≤80 | Hearth display presets · short home · Wired Glass |
 | [`SETU.md`](SETU.md) | guide · ≤80 | USB hearth carry Glass↔Desk — SETU0–SETU1 |
 | [`PROVEN_SEAT.md`](PROVEN_SEAT.md) | guide · ≤300 | Proven-seat ladder — Genode G0 through signed-Kumara (not HAWM) |
+| [`CRYPTO.md`](CRYPTO.md) | guide · ≤300 | Season G crypto — 20 Rye-native primitives + 3 compositions, each GREEN |
 | [`HAWM.md`](HAWM.md) | guide · ≤120 | GrapheneOS / Pixel mobile ladder — HAWM0–HAWM3 |
 | [`TUBE.md`](TUBE.md) | guide · ≤150 | App-manifest + NativeActivity APK ladder — TUBE0 / TUBE0.5 |
 | [`JAMCUE.md`](JAMCUE.md) | guide · ≤80 | Glow cell-pack demo vectors — in-tree; outward gift is mat/rub season |
