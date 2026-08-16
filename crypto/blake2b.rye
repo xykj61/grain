@@ -44,10 +44,13 @@ pub const hex_len: u32 = digest_len * 2;
 /// streaming API for larger inputs is a later rung; this bound is a promise, not a limitation of the algorithm.
 pub const max_message_bytes: u32 = 1 << 20;
 
-/// The one fault this primitive can raise: a message longer than max_message_bytes, refused before a single byte is mixed.
+/// The faults this primitive can raise, each refused before a single byte is mixed.
 pub const Blake2bError = error{
     /// A message whose length exceeds max_message_bytes — refused at the edge, before the counter or the block loop begins.
     MessageTooLong,
+    /// A variable-length request of zero bytes or more than digest_len (64) — refused before hash_var mixes a byte. BLAKE2b's own
+    /// parameter block carries the output length in a single byte 1..64, so a request outside that range is not a BLAKE2b digest at all.
+    BadOutputLen,
 };
 
 /// The BLAKE2b initialization vector — the eight 64-bit words that seed the chaining value (identical to SHA-512's IV). Named as a
@@ -182,6 +185,58 @@ pub fn hash512(msg: []const u8) Blake2bError![digest_len]u8 {
         std.mem.writeInt(u64, out[i * 8 ..][0..8], h[i], .little);
     }
     return out;
+}
+
+/// Hash a message to a variable-length digest of 1..64 bytes — the general BLAKE2b that hash512 is the 64-byte special case of. The only
+/// difference from hash512 is the parameter block: an unkeyed digest of out.len bytes xors 0x01010000 (fanout and depth of one) with the
+/// output length itself into the first chaining word, and the emit copies exactly the first out.len bytes of the eight-word state. This
+/// is the primitive Argon2's blake2b_long chain and its final key derivation stand on (RFC 9106 uses BLAKE2b at every output length from
+/// one byte to a full block); it shares this module's GREEN compression, authoring no new mathematics.
+pub fn hash_var(out: []u8, msg: []const u8) Blake2bError!void {
+    // invariant: BLAKE2b carries its output length in one parameter byte, so a variable request is meaningful only for 1..64 bytes.
+    if (out.len == 0 or out.len > digest_len) return error.BadOutputLen;
+    // invariant: the message fits the named bound, so its length casts to u32 losslessly and the counter never overflows the loop.
+    if (msg.len > max_message_bytes) return error.MessageTooLong;
+
+    const out_len: u32 = @intCast(out.len);
+    // invariant: the output length is the exact byte count requested — the bounded check above proves 1 <= out_len <= 64.
+    assert(out_len >= 1 and out_len <= digest_len);
+    const total: u32 = @intCast(msg.len);
+    // invariant: the u32 count names exactly the message bytes — the bounded cast lost nothing.
+    assert(total == msg.len);
+
+    var h: [8]u64 = iv;
+    // The parameter block for an unkeyed out_len-byte digest: 0x01010000 for depth and fanout of one, xor the requested output length.
+    h[0] ^= 0x0000000001010000 ^ @as(u64, out_len);
+
+    if (total == 0) {
+        // The empty message is one final block of all zeros, counter zero — the same last-block rule hash512 keeps.
+        const empty = [_]u8{0} ** block_bytes;
+        compress(&h, &empty, 0, true);
+    } else {
+        var offset: u32 = 0;
+        while (total - offset > block_bytes) : (offset += block_bytes) {
+            compress(&h, msg[offset..][0..block_bytes], @as(u128, offset + block_bytes), false);
+        }
+        const rem = total - offset;
+        // invariant: the tail is a non-empty block-sized-or-smaller span — the loop above consumed every earlier full block.
+        assert(rem > 0 and rem <= block_bytes);
+        var last_block = [_]u8{0} ** block_bytes;
+        var j: u32 = 0;
+        while (j < rem) : (j += 1) last_block[j] = msg[offset + j];
+        compress(&h, &last_block, @as(u128, total), true);
+    }
+
+    // Serialize the whole eight-word state little-endian, then emit exactly the first out_len bytes — BLAKE2b's own truncation rule.
+    var digest: [digest_len]u8 = undefined;
+    var i: u32 = 0;
+    while (i < 8) : (i += 1) {
+        std.mem.writeInt(u64, digest[i * 8 ..][0..8], h[i], .little);
+    }
+    var k: u32 = 0;
+    while (k < out_len) : (k += 1) out[k] = digest[k];
+    // invariant: the emit filled exactly the requested length, no more and no less.
+    assert(k == out_len);
 }
 
 /// Render a 64-byte digest as 128 lowercase hex characters, so a selftest or a keeper can compare against the RFC's own hex form.

@@ -1,0 +1,41 @@
+# tools/crypto_argon2_witness.rish — Argon2 authored in pure Rye: Season G's memory-hard password rung, the KDF that turns a keeper's
+# remembered password into a strong key at a deliberately large RAM cost — the stone Vault stands on so a key need never live on the
+# device — proven byte-for-byte against RFC 9106's own published known-answers for all three modes (Season G · Cryptography).
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+# Kin: crypto/blake2b.rye (the hash beneath it — Argon2's whole diffusion is BLAKE2b's, GREEN, with a variable-length hash accreted this
+# round). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity discipline target, never a copied line — our own Rye, studied
+# clean-room from the public standard RFC 9106 and Zig's own MIT reference (.claude/rules/gratitude-licenses.md).
+#
+# crypto/argon2.rye fills a memory of 1024-byte blocks and stirs each from two earlier blocks through the BlaMka permutation (BLAKE2b's
+# round function plus the 64-bit multiply that forbids a lane-only shortcut), over t passes, then blake2b_long-derives the key from the
+# folded final block — authoring no new cryptography, the whole diffusion is the GREEN crypto/blake2b.rye's. The primitive calls no
+# std.crypto. It is proven at selftest byte-for-byte against RFC 9106's own published known-answers: all three modes' primary p=4 vectors
+# (password 0x01*32, salt 0x02*16, secret 0x03*8, ad 0x04*12, t=3 m=32, 32-byte output, secret and ad folded) AND the reference argon2
+# p=1 24-byte vectors (single lane, sub-digest variable output) — the same answers Zig's independent std.crypto argon2 checks itself
+# against. A salt below eight bytes, a memory too small for the parallelism, or a zero time cost each refuses its named error before a byte
+# is mixed. Purely local — TEST inputs, no real password, no identity key, no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_argon2_witness.rish
+
+say "crypto-argon2: Language EN — Season G's memory-hard password rung: Argon2 (RFC 9106), all three modes (Argon2d data-dependent, Argon2i data-independent, Argon2id the hybrid). It is the KDF built to make brute-forcing a stolen hash expensive in RAM as well as time — the stone Vault stands on, so a keeper's password becomes a key without that key ever having to live on the device. The whole mixing is BLAKE2b's, so it authors no new cryptography, and it ties byte-for-byte to the published RFC 9106 known-answers."
+say "crypto-argon2: Style Radiant — the law is stated positively: H0 = BLAKE2b(params ‖ pw ‖ salt ‖ secret ‖ ad), each lane's first two blocks are blake2b_long(H0 ‖ index ‖ lane), every later block is G(prev, phi) xored across passes (phi data-independent for Argon2i, data-dependent for Argon2d), and the derived key is blake2b_long of the xored final block, so the same password, salt, secret, ad, and parameters always fold to the same key anyone can replay against RFC 9106."
+say "crypto-argon2: Lens TAME — the primitive calls no std.crypto; it composes the already-GREEN crypto/blake2b.rye (with a variable-length hash accreted this round, still GREEN). The blocks live in the season arena sized to exactly the memory cost, refused above max_memory_blocks; password, salt, secret, ad, time, and parallelism are each bounded at the edge with a named error, and contract asserts guard every function. Proven byte-for-byte against RFC 9106's three primary p=4 known-answers (secret and ad folded, 32-byte output) and the reference p=1 24-byte vectors — the same answers Zig's independent std.crypto argon2 checks itself against. A salt below eight bytes, a memory too small for the parallelism, or a zero time cost each refuses its named error before a byte is mixed. Constant-time timing-safety stays the Season's named horizon; deriving from a real password stays the custody gate. Purely local — TEST inputs, no real password, no identity key, no network, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/argon2"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/argon2.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-argon2: build failed — ${build.err}"
+
+let outfile = "crypto/bin/argon2.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-argon2: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-argon2: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-argon2' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-argon2: selftest did not print the GREEN crypto-argon2 line"

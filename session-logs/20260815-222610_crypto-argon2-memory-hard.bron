@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260815.222610
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (cloud pier) — Eastern (EDT) time convention
+title Season G twentieth rung — Argon2 memory-hard password KDF in pure Rye
+prompt take the next agent-doable lap Lindy-first crux-first on the road past BUHR; Rye prioritized, Glow on green-witnessed Rye; send often as signed rounds; stop at custody gates
+think Read REMEMBER (380KB, read by line offset) and the three itinerary docs — the 1024-round road, the six-season double-seat, and the Rye-first crypto parity wave. Season G (Cryptography) is the live thread: recent commits climbed XChaCha20, HMAC-SHA-512, HKDF-SHA-512. Nineteen rungs GREEN.
+think Lindy-first crux-first: the design doc's explicitly-named primitive set (Ed25519, X25519, BLAKE2b, the ChaCha/Poly line) is now complete. The highest-Lindy still-open primitive that serves a real module is Argon2 — the memory-hard password KDF Vault needs so a key can come from a memorable secret rather than living on-device. It is the hardest-solvable crypto primitive still open (the crux), and a Monocypher primitive with published RFC 9106 known-answers and an independent Zig std.crypto reference.
+think Argon2's blake2b_long needs a variable-output-length BLAKE2b (output length baked into the parameter block), which blake2b.rye did not expose. Accreted hash_var onto blake2b.rye sharing its GREEN compress — accrete-never-break — and reran the blake2b witness GREEN before building on it.
+think Studied the full Zig std.crypto argon2 reference (MIT, safe clean-room) plus RFC 9106, then authored crypto/argon2.rye in TAME Rye idiom (snake_case, contract asserts, named errors, bounded arena allocation sized to the memory cost). Implemented all three modes — the address gen differs only in data-independent (i) vs data-dependent (d) J1 derivation, so three modes cost little more than one and buy three RFC known-answers.
+obs First metal pass mismatched the argon2d primary vector — a blake2b_long chain off-by-one: I rehashed V one time too many before the final tail block. Fixed by emitting the first block before the loop and rehash-then-emit inside, matching RFC 9106's chain. After the fix all six vectors (three p=4 with secret/ad, three p=1) reproduce byte-for-byte, plus three bound refusals.
+obs Kept the primary parity proof on RFC 9106's own published known-answers rather than calling Zig's kdf directly — Zig's kdf now takes an io/threading param that couples awkwardly; the RFC KAT is the stronger, cleaner proof and is exactly what std.crypto checks itself against.
+loom witness=crypto_suite_witness files=20 modes=argon2d,argon2i,argon2id kats=6 result=GREEN
+file crypto/argon2.rye Argon2 all three modes, RFC 9106 parity-GREEN — the memory-hard password KDF, Vault's stone
+file crypto/blake2b.rye accreted hash_var (variable-length BLAKE2b) sharing the GREEN compression; blake2b witness stays GREEN
+file tools/crypto_argon2_witness.rish per-file witness building and proving crypto/argon2.rye against the RFC 9106 known-answers
+file tools/crypto_suite_witness.rish argon2 wired in dependency order right after HKDF; counts to twenty files / eighteen primitives
+file crypto/README.md twenty files, eighteen primitives — Argon2 row added to the key-derivation section
+file work-in-progress/REMEMBER.md living edge to TWENTY rungs, Argon2 lead, HKDF demoted to prior rung
+recommend keep-going the next Lindy-first crux on Season G — a password-sealed Vault box composition (Argon2 to key, then the GREEN sealed_session box) is now buildable; deriving from a real password stays the custody gate
