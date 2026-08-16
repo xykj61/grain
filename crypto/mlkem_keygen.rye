@@ -1,0 +1,316 @@
+//! crypto/mlkem_keygen.rye — Season G (Cryptography): the ML-KEM key-generation rung, the FOURTH stone of the post-quantum arc and the FIRST with a
+//! doubled oracle. FIPS 203 K-PKE.KeyGen and ML-KEM.KeyGen, authored in pure Rye: it expands a 32-byte seed d through SHA3-512 into (rho, sigma),
+//! draws the public matrix A with SampleNTT, the secret s and error e with SamplePolyCBD, forms t_hat = A ∘ ŝ + ê in the NTT domain, and serializes
+//! the encapsulation key ek = ByteEncode12(t_hat) ‖ rho and the decapsulation key dk = ByteEncode12(ŝ) ‖ ek ‖ H(ek) ‖ z. It composes only GREEN
+//! rungs — the base ring (crypto/mlkem_ring.rye), the serialization (crypto/mlkem_encode.rye), the sampling (crypto/mlkem_sample.rye), and the
+//! SHA-3 / SHAKE family (crypto/sha3.rye, crypto/shake.rye) — and holds no key of its own: every seed here is a public test vector.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
+//! Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — rung 4 of the ML-KEM ladder, named there as "the first rung
+//! with a doubled oracle: generateDeterministic(seed) producing encapsulation and decapsulation keys byte-for-byte against Zig's std.crypto ML-KEM".
+//! Rye-first spine: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+//! Kin: crypto/mlkem_ring.rye (NTT · pointwise multiply, GREEN) · crypto/mlkem_encode.rye (ByteEncode12, GREEN) · crypto/mlkem_sample.rye (SampleNTT ·
+//! SamplePolyCBD, GREEN) · crypto/sha3.rye (SHA3-512 for G, SHA3-256 for H) · crypto/shake.rye (SHAKE256 for the PRF). The parity TARGET is Zig's
+//! std.crypto ml_kem (nist.MLKem512/768/1024), studied clean-room — never a copied line (.claude/rules/gratitude-licenses.md).
+//!
+//! THE DOUBLED ORACLE — this is where self-consistency gives way to a second, independent implementation. FIPS 203 specifies standard-domain
+//! arithmetic; Zig's std.crypto computes internally in Montgomery domain for speed, yet both normalize to the canonical standard-domain residue
+//! before ByteEncode, so the two agree byte-for-byte at the PUBLISHED boundary — the encoded ek and dk. This rung authors the spec's standard-domain
+//! keygen and proves it against Zig's generateDeterministic(seed) → toBytes over several deterministic seeds at all three parameter sets
+//! (ML-KEM-512/768/1024). Two strangers confirming one answer is the discipline the whole library rests on; here the ring's own coefficient ordering
+//! meets its first external witness.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. The keygen FUNCTION calls no std.crypto — it composes our own
+//! GREEN rungs; only the SELFTEST invokes Zig's std.crypto as the parity oracle to diff against, exactly as the classical arc's witnesses diff against
+//! Monocypher. Every seed is a public test vector; generating or signing with the maintainer's OWN post-quantum identity key stays the custody gate.
+//! Constant-time timing-safety stays the Season's named horizon — this rung proves CORRECTNESS.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/mlkem_keygen.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const ring = @import("mlkem_ring.rye");
+const encode = @import("mlkem_encode.rye");
+const sample = @import("mlkem_sample.rye");
+const sha3 = @import("sha3.rye");
+const shake = @import("shake.rye");
+
+pub const mlkem_keygen_version = "20260816.161537";
+
+/// ML-KEM's prime modulus, borrowed from the base ring so every rung cites one number.
+pub const q: u32 = ring.q;
+
+/// The ring degree — 256 coefficients per polynomial, borrowed from the base ring.
+pub const n: u32 = ring.n;
+
+/// The largest module rank ML-KEM uses (ML-KEM-1024 has k = 4). Every fixed-size buffer here is sized for this ceiling so a smaller parameter set
+/// simply uses a prefix; named so the matrix and vectors cite one bound.
+pub const max_k: u32 = 4;
+
+/// The bytes one degree-12 ByteEncode of a single polynomial produces: 256 coefficients × 12 bits ÷ 8 = 384. Named so the ek/dk offsets cite it.
+pub const poly_encoded_bytes: u32 = 384;
+
+/// The seed halves G produces and the shared/rejection secret z: each 32 bytes, exactly FIPS 203's widths. rho seeds the public matrix A; sigma seeds
+/// the secret and error noise; z is the implicit-rejection value folded into the decapsulation key.
+pub const seed_half_bytes: u32 = 32;
+
+/// The largest encapsulation and decapsulation keys (ML-KEM-1024): ek = 384·k + 32, dk = 768·k + 96 at k = 4. Named so the selftest's scratch buffers
+/// cite one ceiling rather than a magic number.
+pub const ek_max_bytes: u32 = 384 * max_k + 32;
+pub const dk_max_bytes: u32 = 768 * max_k + 96;
+
+/// The faults this rung can raise. Every one is either a composed rung's honest error surfaced (the ring/sample/hash never fail on our fixed widths,
+/// yet we honor their unions) or a selftest proof that failed — never a normal runtime outcome once the parity is GREEN.
+pub const KeyGenError = error{
+    /// A composed SHA-3 call (G = SHA3-512, H = SHA3-256) reported a bad length — impossible for our fixed inputs, honored honestly.
+    HashFailed,
+    /// A composed sampler (SampleNTT / SamplePolyCBD) surfaced its own error — impossible for our fixed widths, honored honestly.
+    SampleFailed,
+    /// A composed SHAKE256 PRF reported a bad length — impossible for our fixed 33-byte input and 64·eta output, honored honestly.
+    PrfFailed,
+    /// The Zig std.crypto reference keygen reported an error in the selftest — never expected for a valid 64-byte seed.
+    OracleFailed,
+    /// Our encoded key length did not match Zig's toBytes length — a parameter-set width was computed wrong.
+    SizeMismatch,
+    /// Our encapsulation key disagreed with Zig's byte-for-byte — the ring ordering, matrix indexing, or serialization diverged from FIPS 203.
+    EkMismatch,
+    /// Our decapsulation key disagreed with Zig's byte-for-byte — the secret encoding, H(ek), or z placement diverged from FIPS 203.
+    DkMismatch,
+    /// A generated key came out all-zero, so a passing parity would prove nothing — the selftest refuses a trivial witness.
+    TrivialWitness,
+};
+
+/// prf_fill — FIPS 203's PRF_eta: SHAKE256(sigma ‖ nonce) squeezed to 64·eta bytes, the byte block SamplePolyCBD draws a noise polynomial from. One
+/// nonce byte separates each of the 2k draws (s over nonces 0..k−1, e over nonces k..2k−1), exactly as Zig's Poly.noise appends its nonce suffix.
+fn prf_fill(sigma: *const [seed_half_bytes]u8, nonce: u8, out: []u8) KeyGenError!void {
+    // invariant (precondition): the output is exactly 64·eta bytes for eta in {2, 3} — the only widths SamplePolyCBD accepts.
+    assert(out.len == 64 * sample.eta_min or out.len == 64 * sample.eta_max);
+    var input: [seed_half_bytes + 1]u8 = undefined;
+    var t: u32 = 0;
+    // invariant (bound): copy exactly the 32 sigma bytes, one per turn.
+    while (t < seed_half_bytes) : (t += 1) input[t] = sigma[t];
+    input[seed_half_bytes] = nonce;
+    shake.shake256(input[0..], out) catch return error.PrfFailed;
+}
+
+/// keygen — FIPS 203 K-PKE.KeyGen wrapped by ML-KEM.KeyGen, parameterized by module rank k and noise parameter eta1. Writes the encapsulation key
+/// into ek_out (384·k + 32 bytes) and the decapsulation key into dk_out (768·k + 96 bytes). Composes only GREEN rungs; the seed d and rejection value
+/// z are public test vectors, never a real identity key.
+pub fn keygen(comptime k: u32, comptime eta1: u32, d: *const [seed_half_bytes]u8, z: *const [seed_half_bytes]u8, ek_out: []u8, dk_out: []u8) KeyGenError!void {
+    // invariant (precondition): the parameter set is one ML-KEM names (k in 2..4, eta1 in {2, 3}) and the buffers hold exactly the FIPS sizes.
+    assert(k >= 2 and k <= max_k);
+    assert(eta1 == sample.eta_min or eta1 == sample.eta_max);
+    const ek_len: u32 = poly_encoded_bytes * k + seed_half_bytes;
+    const dk_len: u32 = 2 * poly_encoded_bytes * k + 2 * seed_half_bytes + seed_half_bytes;
+    assert(ek_out.len == ek_len);
+    assert(dk_out.len == dk_len);
+
+    // G(d ‖ k) = SHA3-512 → (rho, sigma). ML-KEM appends the rank byte for domain separation between the three parameter sets.
+    var g_in: [seed_half_bytes + 1]u8 = undefined;
+    var t: u32 = 0;
+    // invariant (bound): copy exactly the 32 seed bytes, one per turn.
+    while (t < seed_half_bytes) : (t += 1) g_in[t] = d[t];
+    g_in[seed_half_bytes] = @as(u8, @intCast(k));
+    const expanded = sha3.hash512(g_in[0..]) catch return error.HashFailed;
+    var rho: [seed_half_bytes]u8 = undefined;
+    var sigma: [seed_half_bytes]u8 = undefined;
+    t = 0;
+    // invariant (bound): split the 64-byte G output into two 32-byte halves, one byte per turn.
+    while (t < seed_half_bytes) : (t += 1) {
+        rho[t] = expanded[t];
+        sigma[t] = expanded[seed_half_bytes + t];
+    }
+
+    // A_hat[i][j] = SampleNTT(rho, j, i) — the domain bytes are (j, i), so the matrix is A (not its transpose), and t_hat[i] = Σ_j A[i][j] ∘ ŝ[j].
+    var a_hat: [max_k][max_k]ring.Poly = undefined;
+    var i: u32 = 0;
+    // invariant (bound): exactly k rows, each with exactly k columns — k ≤ max_k, never unbounded.
+    while (i < k) : (i += 1) {
+        var j: u32 = 0;
+        while (j < k) : (j += 1) {
+            a_hat[i][j] = sample.sample_ntt(&rho, @as(u8, @intCast(j)), @as(u8, @intCast(i))) catch return error.SampleFailed;
+        }
+    }
+
+    // ŝ[j] = NTT(SamplePolyCBD(PRF(sigma, j), eta1)) — the secret vector, in the NTT domain.
+    var s_hat: [max_k]ring.Poly = undefined;
+    i = 0;
+    // invariant (bound): exactly k secret polynomials, nonces 0..k−1.
+    while (i < k) : (i += 1) {
+        var prf: [64 * 3]u8 = undefined;
+        const plen: u32 = 64 * eta1;
+        try prf_fill(&sigma, @as(u8, @intCast(i)), prf[0..plen]);
+        const s_poly = sample.sample_cbd(prf[0..plen], eta1) catch return error.SampleFailed;
+        s_hat[i] = ring.ntt(&s_poly);
+    }
+
+    // ê[i] = NTT(SamplePolyCBD(PRF(sigma, k + i), eta1)) — the error vector, in the NTT domain, nonces k..2k−1.
+    var e_hat: [max_k]ring.Poly = undefined;
+    i = 0;
+    // invariant (bound): exactly k error polynomials, one per row.
+    while (i < k) : (i += 1) {
+        var prf: [64 * 3]u8 = undefined;
+        const plen: u32 = 64 * eta1;
+        try prf_fill(&sigma, @as(u8, @intCast(k + i)), prf[0..plen]);
+        const e_poly = sample.sample_cbd(prf[0..plen], eta1) catch return error.SampleFailed;
+        e_hat[i] = ring.ntt(&e_poly);
+    }
+
+    // t_hat[i] = Σ_j A_hat[i][j] ∘ ŝ[j] + ê[i], each coefficient reduced mod q. Every summand is a canonical residue, and k+1 of them sum below
+    // (max_k + 1)·q < 2¹⁶, so one reduction per coefficient lands it back in [0, q).
+    var t_hat: [max_k]ring.Poly = undefined;
+    i = 0;
+    // invariant (bound): exactly k output polynomials.
+    while (i < k) : (i += 1) {
+        var acc: ring.Poly = e_hat[i];
+        var j: u32 = 0;
+        // invariant (bound): exactly k pointwise products accumulated per row.
+        while (j < k) : (j += 1) {
+            const prod = ring.multiply_ntts(&a_hat[i][j], &s_hat[j]);
+            var c: u32 = 0;
+            // invariant (bound): exactly n = 256 coefficients folded in, one per turn.
+            while (c < n) : (c += 1) {
+                // invariant: both addends are canonical residues, so the sum stays below 2q before the single reduction.
+                assert(acc.cs[c] < q and prod.cs[c] < q);
+                acc.cs[c] = (acc.cs[c] + prod.cs[c]) % q;
+            }
+        }
+        t_hat[i] = acc;
+    }
+
+    // ek = ByteEncode12(t_hat[0..k]) ‖ rho.
+    i = 0;
+    // invariant (bound): exactly k encoded polynomials laid end to end.
+    while (i < k) : (i += 1) {
+        const enc = encode.byte_encode(&t_hat[i].cs, encode.max_d);
+        var b: u32 = 0;
+        // invariant (bound): exactly 384 bytes per polynomial.
+        while (b < poly_encoded_bytes) : (b += 1) ek_out[poly_encoded_bytes * i + b] = enc.bytes[b];
+    }
+    t = 0;
+    // invariant (bound): the 32-byte rho tail of ek.
+    while (t < seed_half_bytes) : (t += 1) ek_out[poly_encoded_bytes * k + t] = rho[t];
+
+    // dk = ByteEncode12(ŝ[0..k]) ‖ ek ‖ H(ek) ‖ z — the K-PKE decryption key, the ek, its hash, and the implicit-rejection value.
+    i = 0;
+    // invariant (bound): exactly k encoded secret polynomials, the K-PKE decryption key dk_pke.
+    while (i < k) : (i += 1) {
+        const enc = encode.byte_encode(&s_hat[i].cs, encode.max_d);
+        var b: u32 = 0;
+        while (b < poly_encoded_bytes) : (b += 1) dk_out[poly_encoded_bytes * i + b] = enc.bytes[b];
+    }
+    var off: u32 = poly_encoded_bytes * k;
+    var b2: u32 = 0;
+    // invariant (bound): copy the whole ek into dk, one byte per turn.
+    while (b2 < ek_len) : (b2 += 1) dk_out[off + b2] = ek_out[b2];
+    off += ek_len;
+    const hek = sha3.hash256(ek_out[0..ek_len]) catch return error.HashFailed;
+    b2 = 0;
+    // invariant (bound): the 32-byte H(ek).
+    while (b2 < seed_half_bytes) : (b2 += 1) dk_out[off + b2] = hek[b2];
+    off += seed_half_bytes;
+    b2 = 0;
+    // invariant (bound): the 32-byte implicit-rejection z.
+    while (b2 < seed_half_bytes) : (b2 += 1) dk_out[off + b2] = z[b2];
+    // invariant (postcondition): every dk byte was written exactly once.
+    assert(off + seed_half_bytes == dk_len);
+}
+
+// ---- selftest ----------------------------------------------------------------------------------------------------------------------
+
+/// bytes_from_seed — fill a byte buffer deterministically from a seed with the same tiny LCG the ring, encode, and sample rungs use, so a failing run
+/// always reruns identically without any std.crypto.
+fn bytes_from_seed(seed: u32, buf: []u8) void {
+    var state: u32 = seed *% 2654435761 +% 1013904223;
+    var i: u32 = 0;
+    while (i < buf.len) : (i += 1) {
+        state = state *% 1664525 +% 1013904223;
+        buf[i] = @as(u8, @intCast((state >> 8) & 0xFF));
+    }
+}
+
+/// all_zero — is a byte slice entirely zero? A generated key that is must not pass a parity check, or the witness would prove nothing.
+fn all_zero(buf: []const u8) bool {
+    var i: u32 = 0;
+    while (i < buf.len) : (i += 1) {
+        if (buf[i] != 0) return false;
+    }
+    return true;
+}
+
+/// check_param — the doubled oracle for one parameter set: our pure-Rye keygen versus Zig's std.crypto reference, byte-for-byte over one seed. Kem is
+/// the Zig type (nist.MLKem512/768/1024); k and eta1 name our matching parameters. Zig's generateDeterministic takes a 64-byte seed d ‖ z; toBytes on
+/// the public and secret keys yields exactly the FIPS ek and dk.
+fn check_param(comptime Kem: type, comptime k: u32, comptime eta1: u32, d: *const [seed_half_bytes]u8, z: *const [seed_half_bytes]u8) KeyGenError!void {
+    var seed: [64]u8 = undefined;
+    var t: u32 = 0;
+    while (t < seed_half_bytes) : (t += 1) {
+        seed[t] = d[t];
+        seed[seed_half_bytes + t] = z[t];
+    }
+    const kp = Kem.KeyPair.generateDeterministic(seed) catch return error.OracleFailed;
+    const ek_ref = kp.public_key.toBytes();
+    const dk_ref = kp.secret_key.toBytes();
+
+    const ek_len: u32 = poly_encoded_bytes * k + seed_half_bytes;
+    const dk_len: u32 = 2 * poly_encoded_bytes * k + 3 * seed_half_bytes;
+    // invariant: our width arithmetic must match Zig's own encoded_length for this parameter set.
+    if (ek_ref.len != ek_len or dk_ref.len != dk_len) return error.SizeMismatch;
+
+    var ek_mine: [ek_max_bytes]u8 = undefined;
+    var dk_mine: [dk_max_bytes]u8 = undefined;
+    try keygen(k, eta1, d, z, ek_mine[0..ek_len], dk_mine[0..dk_len]);
+
+    // A key that is all zero would make a byte match meaningless — refuse the trivial witness before the diff.
+    if (all_zero(ek_mine[0..ek_len]) or all_zero(dk_mine[0..dk_len])) return error.TrivialWitness;
+
+    var b: u32 = 0;
+    while (b < ek_len) : (b += 1) {
+        if (ek_mine[b] != ek_ref[b]) return error.EkMismatch;
+    }
+    b = 0;
+    while (b < dk_len) : (b += 1) {
+        if (dk_mine[b] != dk_ref[b]) return error.DkMismatch;
+    }
+}
+
+fn run_selftest() !u8 {
+    const mlkem = std.crypto.kem.ml_kem;
+
+    // Over a deterministic spread of seeds, our pure-Rye K-PKE + ML-KEM keygen must match Zig's std.crypto reference byte-for-byte at every parameter
+    // set. This is the arc's FIRST external oracle: the ring's coefficient ordering, the matrix indexing (j, i), the PRF nonce sequence, and the
+    // ek/dk serialization all meet Zig's independent implementation at once. A single wrong stone fails the diff.
+    {
+        var seed: u32 = 1;
+        while (seed <= 8) : (seed += 1) {
+            var d: [seed_half_bytes]u8 = undefined;
+            var z: [seed_half_bytes]u8 = undefined;
+            bytes_from_seed(seed, d[0..]);
+            bytes_from_seed(seed *% 2654435761 +% 7, z[0..]);
+            // ML-KEM-512: k = 2, eta1 = 3.
+            try check_param(mlkem.MLKem512, 2, 3, &d, &z);
+            // ML-KEM-768: k = 3, eta1 = 2.
+            try check_param(mlkem.MLKem768, 3, 2, &d, &z);
+            // ML-KEM-1024: k = 4, eta1 = 2.
+            try check_param(mlkem.MLKem1024, 4, 2, &d, &z);
+        }
+    }
+
+    print("GREEN crypto-mlkem-keygen: the ML-KEM key-generation rung (FIPS 203 K-PKE.KeyGen wrapped by ML-KEM.KeyGen), authored in pure Rye as " ++
+        "Season G's fourth post-quantum rung and the FIRST with a DOUBLED oracle. It expands a 32-byte seed through SHA3-512 into (rho, sigma), " ++
+        "draws the public matrix A with SampleNTT and the secret/error noise with SamplePolyCBD, forms t_hat = A NTT-multiply s_hat + e_hat, and " ++
+        "serializes ek = ByteEncode12(t_hat) then rho and dk = ByteEncode12(s_hat) then ek then H(ek) then z. Proven byte-for-byte against Zig's " ++
+        "independent std.crypto ml_kem generateDeterministic(seed) at ALL THREE parameter sets (ML-KEM-512 k=2 eta1=3, ML-KEM-768 k=3 eta1=2, " ++
+        "ML-KEM-1024 k=4 eta1=2) over 8 deterministic seeds each: our standard-domain arithmetic and Zig's Montgomery-domain arithmetic agree at " ++
+        "the published byte boundary, exactly as the pivot doc foretold. The keygen function composes only GREEN rungs and calls no std.crypto; " ++
+        "only this selftest invokes Zig as the parity oracle. Purely local — every seed a public test vector, no key held, no network, no funds, " ++
+        "no real device; signing with the maintainer's own post-quantum key stays the custody gate, constant-time timing-safety the named horizon.\n", .{});
+    return 0;
+}
+
+pub fn main(init_args: std.process.Init) !u8 {
+    _ = init_args;
+    return run_selftest();
+}
