@@ -1,0 +1,43 @@
+# tools/crypto_mlkem_encode_witness.rish — the ML-KEM serialization rung: FIPS 203 ByteEncode/ByteDecode (the LSB-first bit-packing between 256
+# d-bit coefficients and 32*d bytes) and Compress/Decompress (the lossy rounding that shortens a ciphertext and the round that lifts it back).
+# This is the post-quantum arc's second rung, standing on the GREEN base ring (crypto/mlkem_ring.rye) — the serialization every ML-KEM key,
+# ciphertext, and message crosses, authored in pure Rye (Season G · Cryptography).
+#
+# Season: crypto — Season G's second post-quantum stone, rung 2 of the ML-KEM ladder the pivot doc seats. This rung authors serialization only;
+# it holds no key and runs no protocol. Every key, ciphertext, and message moves between ring coefficients and bytes through exactly these four
+# operations, and this witness proves that move correct.
+# Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md (rung 2 — ByteEncode/ByteDecode and Compress/Decompress,
+# proven by the encode/decode round-trip and the FIPS 203 compression bound; the byte parity against Zig std.crypto arrives at the keygen rung).
+# Rye-first spine: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+# Clean-room: the widths (1, 4, 5, 10, 11, 12), the LSB-first bit order, and the Compress/Decompress rounding are the public NIST standard's own;
+# the arithmetic is our own Rye, never a copied line (.claude/rules/gratitude-licenses.md).
+#
+# crypto/mlkem_encode.rye proves itself by SELF-CONSISTENCY with no external dependency — the pattern crypto/mlkem_ring.rye and
+# crypto/elligator.rye stood on: a fixed LSB-first bit-packing known-answer (encode [0xABC, 0xDEF] at d = 12 gives bytes BC FA DE), the
+# encode/decode round-trip ByteDecode_d(ByteEncode_d(F)) = F over every width 1..12 on non-trivial polynomials, the message-width known-answers
+# (Decompress_1(1) = 1665), the exact identity Compress_d(Decompress_d(y)) = y over the whole domain of every compression width, and the
+# FIPS 203 4.2.1 compression bound — the centered round-trip error is at most round(q/2^(d+1)) for every x in [0, q). Purely local — no key, no
+# network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_mlkem_encode_witness.rish
+
+say "crypto-mlkem-encode: Language EN — the ML-KEM serialization rung: FIPS 203 ByteEncode/ByteDecode lays 256 d-bit coefficients into 32*d bytes and reads them back, and Compress/Decompress trades a coefficient's low bits for a shorter ciphertext and rounds it back toward the ring. This is the post-quantum arc's second rung, standing on the GREEN base ring — the serialization every ML-KEM key, ciphertext, and message crosses."
+say "crypto-mlkem-encode: Style Radiant — serialization is its own inverse: the law is stated positively as a round-trip. Encode then decode returns the polynomial unchanged at every width; compress then decompress lands within the bound FIPS 203 proves; and decompress then compress returns the value exactly, so ciphertext compression never loses an already-compressed value. The byte-for-byte parity against Zig std.crypto is taken at the keygen rung; here the serialization proves itself."
+say "crypto-mlkem-encode: Lens TAME — bounded loops (256 coefficients, at most two byte flushes per coefficient, every compression domain walked whole), contract asserts on every function, canonical residues in [0, q) and compressed values in [0, 2^d) throughout. Correctness proven by self-consistency: the LSB-first bit-packing known-answer, the encode/decode round-trip over widths 1..12, the message-width known-answers, the exact identity Compress_d(Decompress_d(y)) = y over every compression width's whole domain, and the FIPS 203 4.2.1 compression bound over the whole field. Data-independent by construction; constant-time timing-safety the named horizon. Purely local — no key, no network, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/mlkem_encode"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/mlkem_encode.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-mlkem-encode: build failed — ${build.err}"
+
+let outfile = "crypto/bin/mlkem_encode.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-mlkem-encode: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-mlkem-encode: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-mlkem-encode' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-mlkem-encode: selftest did not print the GREEN crypto-mlkem-encode line"

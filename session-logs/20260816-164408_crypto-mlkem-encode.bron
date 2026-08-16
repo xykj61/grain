@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260816.164408
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) time convention — this session in ai-jail
+title crypto — the ML-KEM serialization rung, encode/decode + compress GREEN
+prompt Take the next agent-doable lap Lindy-first crux-first on the road ahead; Rye prioritized, send often as signed rounds, approve own design rounds, make progress before checking in, stop only at custody gates. (Continues the post-quantum ML-KEM arc; the prior log named mlkem_encode.rye as the next crux.)
+think The prior round's ring rung named the next crux outright: mlkem_encode.rye — FIPS 203's serialization over the GREEN base ring. Found the lap already authored in the working tree (crypto/mlkem_encode.rye + its witness untracked, README/docs/suite edited to 62/40) but uncommitted — an in-progress increment. Read it against FIPS 203: ByteEncode/ByteDecode (Algorithms 5·6, the LSB-first bit-packing between 256 d-bit coefficients and 32·d bytes) and Compress/Decompress (§4.2.1, the lossy rounding round(2^d·x/q) and its lift round(q·y/2^d)). The whole module holds no key and runs no protocol; it moves data between two representations, exactly as the ring moved data between two bases.
+think Verified the arithmetic is honest before trusting the green: compress computes floor((2^(d+1)·x + q)/2q) — the exact round-half-up of 2^d·x/q — and decompress floor((2·q·y + 2^d)/2^(d+1)); the numerators stay far inside u32 (x<q, 2^(d+1)<=4096; 2·q·y<1.4e7). Every loop bound and branch depends only on the public width d, never a coefficient value, so the module is data-independent by construction and constant-time timing-safety stays the Season's named horizon — this rung proves CORRECTNESS.
+obs GREEN on metal. Serialization is its own inverse, so the oracle is self-consistency with no external dependency, exactly where the ring rung stood: a fixed LSB-first bit-packing known-answer (encode [0xABC, 0xDEF] at d=12 gives bytes BC FA DE — a wrong bit direction fails before any round-trip), the encode/decode round-trip ByteDecode_d(ByteEncode_d(F))=F over every width 1..12 on non-trivial polys, the message-width known-answers (Decompress_1(1)=round(q/2)=1665), the exact identity Compress_d(Decompress_d(y))=y walked over the WHOLE domain of every compression width (1,4,5,10,11), and the FIPS 203 §4.2.1 compression bound — the centered round-trip error is at most round(q/2^(d+1)) for every x in [0,q). Each check refuses a trivial (all-zero) witness. The byte-boundary parity against Zig std.crypto arrives at the keygen rung.
+obs New crypto/*.rye tripped the count-guard bijection again. Registered crypto_mlkem_encode_witness in the suite; README/docs/suite narration all bumped 61->62 files, 39->40 primitives, 22 compositions held (it authors new serialization arithmetic — a primitive). Count guard GREEN at 62; module witness GREEN. Gate-free and purely local — no key, no signature, no network, no funds, no device.
+loom witness=crypto_mlkem_encode result=GREEN roundtrip_widths=12 compress_identity_domains=5 property=bytedecode_of_byteencode_eq_F_and_fips203_compress_bound
+loom witness=crypto_count_guard result=GREEN crypto_files=62
+file crypto/mlkem_encode.rye the ML-KEM serialization rung in pure Rye — ByteEncode/ByteDecode LSB-first bit-packing and Compress/Decompress rounding, proven by self-consistency over the GREEN base ring
+file tools/crypto_mlkem_encode_witness.rish the rung's build+selftest witness, registered in the suite
+file tools/crypto_suite_witness.rish registered the new witness, narration synced to 62 files / 40 primitives / 22 compositions
+file crypto/README.md added the mlkem_encode rung row, header and suite counts synced to 62
+file docs/CRYPTO.md added the rung row and synced counts on the audit front door
+file work-in-progress/REMEMBER.md git nib + prior nib refreshed to the second post-quantum rung
+recommend keep-going the serialization rung stands GREEN; the next Rye-first crux Lindy-first is the sampling rung (SampleNTT / SamplePolyCBD) on the GREEN shake.rye, then keygen — the first doubled-oracle ML-KEM rung where byte parity against Zig std.crypto begins. All gate-free and local until a real PQ identity key.
