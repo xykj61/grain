@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260815.200457
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) — this session in ai-jail
+title Season G tenth rung — scalar arithmetic modulo the group order L in pure Rye
+prompt Take the next agent-doable lap Lindy-first crux-first on the Rye-first crypto-parity wave; Rye prioritized, Glow on green-witnessed Rye; approve your own design rounds; send each finished increment as its own signed round; stop only at custody gates. baton prin recur.
+think With point decode GREEN and sent (ninth rung, HEAD 770ea44753), I checked what the Ed25519 verify equation still lacks. Verify (RFC 8032 5.1.7) computes k = SHA-512(R || A || M) reduced mod L, then checks [S]B = R + [k]A, refusing a non-canonical S. Decode, the scalar ladder, the group law, and SHA-512 are all GREEN — the one missing arithmetic piece is scalar reduction mod L: the ladder takes a 32-byte scalar, but the hash is 64 bytes, so a reduction step must fold 512 bits to a canonical scalar below L first. That is the crux, and it is pure public arithmetic — no key, no signature, no gate.
+think Confirmed the parity oracle before writing: Zig's std.crypto.ecc.Edwards25519.scalar exposes reduce64([64]u8), reduce([32]u8), and rejectNonCanonical([32]u8), and its field_order equals L = 2^252 + 27742317777372353535851937790883648493 (RFC 8032). rejectNonCanonical errors exactly when s >= L, so my is_canonical returning true for s < L matches verdict-for-verdict.
+think Authored crypto/ed25519_scalar.rye: reduce by bytewise Horner from the most significant byte down, running residue kept below L by a bounded run of subtractions. Because acc stays below L before each step, acc*256 + byte stays below 256*L, so fewer than 256 subtractions per byte restore it — a named, proven bound (max_reduce_subtractions), not a trust-the-while loop. Big-integer helpers on five u64 limbs (ge5, sub5, shl8_add) with u128 for carries; is_canonical is the same comparison without the arithmetic.
+think Derived L's limbs from its defining form rather than pasting a limb pattern: the RFC addend carried as a u128 and split into the low two limbs, 2^252 placed as a single set bit (bit 252 = 64*3 + 60) in the fourth limb. Honest like the p-derivations in the earlier rungs.
+obs GREEN on the first metal pass — no build fix. The is_canonical spread genuinely exercised both verdicts (both canon and noncanon nonzero, guarded by SpreadTooNarrow), and reduce matched Zig reduce64 byte-for-byte across 64 seeded 64-byte values plus the all-ones extreme.
+obs The reduction is deliberately variable-time (the subtraction count depends on the value), which is correct here: in verification the value reduced is the PUBLIC SHA-512(R || A || M) and the checked encoding is the PUBLIC signature S, so nothing secret is timed — the same posture the scalar ladder carries. A constant-time reduction for secret scalars stays the Season's named horizon.
+obs tame_style bans clean; the new file lands in none of the ratchet lists. Calls no std.crypto in the primitive. Honest scope held: no key, no signing, no network, no funds, no real device — no custody gate crossed.
+loom witness=crypto_ed25519_scalar_witness reduce_spread=65 canonical_spread=64 known_answers=4 result=GREEN
+file crypto/ed25519_scalar.rye scalar reduction mod L and canonical check in pure Rye, parity-GREEN vs Zig reduce64 and rejectNonCanonical
+file tools/crypto_ed25519_scalar_witness.rish the witness that builds, runs selftest, asserts the GREEN line
+file work-in-progress/REMEMBER.md living edge updated to TEN primitives GREEN; git nib refreshed in this work commit
+recommend keep-going Every arithmetic piece the Ed25519 verify equation needs now stands GREEN — decode, the scalar ladder, the group law, SHA-512, and scalar reduction mod L. The next crux is the verify assembly itself: [S]B = R + [k]A over the RFC 8032 published test vectors, parity against Zig's Ed25519.verify and the RFC KATs — non-gated public arithmetic. Signing with the maintainer's own identity key stays the custody gate.

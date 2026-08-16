@@ -1,0 +1,279 @@
+//! crypto/ed25519_scalar.rye — Season G (Cryptography), the tenth rung: scalar arithmetic modulo the group order L authored in pure Rye. Every
+//! curve rung so far worked on points; this one works on the scalars that multiply them. Ed25519 verification (RFC 8032 §5.1.7) hashes the
+//! commitment, the public key, and the message through SHA-512 into a 64-byte value, then reads that value as a little-endian integer and
+//! reduces it modulo L — the prime order of the base point — to obtain the challenge scalar k. It also refuses a signature whose S component is
+//! not already less than L. This file authors exactly those two operations: reduce (64 bytes → a 32-byte scalar mod L) and is_canonical
+//! (is a 32-byte encoding already the canonical representative below L). With these, Ed25519 verify becomes a pure composition over the GREEN
+//! decode, the GREEN scalar ladder, the GREEN group law, and GREEN SHA-512 — the last arithmetic rung the verify equation needs.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus
+//! unblock; the scalar reduction mod L is the piece between SHA-512 and the group equation).
+//! Kin: crypto/ed25519_scalarmul.rye (the ladder that consumes a reduced scalar, GREEN) · crypto/sha512.rye (the hash whose 64-byte output this
+//! reduces, GREEN) · crypto/ed25519_decode.rye (the point decode verify also composes, GREEN). Monocypher (vendor/monocypher, CC0/BSD-dual) is
+//! the parity TARGET, never a copied line — our own composition, studied clean-room from the public mathematics of RFC 8032 and Monocypher's
+//! public API (.claude/rules/gratitude-licenses.md).
+//!
+//! THE CRUX — reduction modulo L by bytewise Horner. Walk the 64-byte value from its most significant byte to its least, keeping a running
+//! residue acc that is always kept below L: at each byte, acc becomes acc·256 + byte, then L is subtracted from acc until acc is once more below
+//! L. Because acc stays below L before each step, acc·256 + byte stays below 256·L, so the number of subtractions per byte is below 256 — a
+//! named, proven bound, not an open loop. The group order is L = 2^252 + 27742317777372353535851937790883648493 (RFC 8032); its limbs are
+//! DERIVED from that defining form (the small addend as a u128, plus 2^252 placed by a shift), never pasted as a limb pattern. is_canonical is
+//! the same comparison without the arithmetic: read the 32-byte encoding as a little-endian integer and answer whether it is below L.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity. A scalar is an integer, not a secret and not a
+//! signature: this file holds no key, signs nothing, and calls no std.crypto in the primitive. In Ed25519 verification the value reduced is
+//! SHA-512(R ‖ A ‖ M) and the encoding checked is the signature's S — both PUBLIC — so this bytewise reduction runs over public data and its
+//! variable-time subtraction loop leaks nothing secret, the same posture the scalar ladder carries; a constant-time reduction for secret
+//! scalars stays the Season's named horizon. Parity is proven at selftest against algebraic known-answers anyone can check (0 reduces to 0, L
+//! reduces to 0, and both canonical verdicts on 0 and on L), and against Zig's own std.crypto.ecc.Edwards25519.scalar.reduce64 and
+//! rejectNonCanonical as an independent implementation, byte-for-byte and verdict-for-verdict across a spread of inputs. Monocypher-source
+//! parity stays the same held-fetch horizon the other primitives carry.
+//!
+//! Run from the repository root:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/ed25519_scalar.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const ed25519_scalar_version = "20260815.200457";
+
+/// The two fixed widths this rung works between: a 32-byte canonical scalar (the width Ed25519 encodes) and the 64-byte wide value SHA-512
+/// produces. Named so the array bounds are stated constants rather than literals buried in the walk.
+pub const scalar_bytes: u32 = 32;
+pub const wide_bytes: u32 = 64;
+
+/// The most times L can be subtracted from a single Horner step. Because the running residue stays below L before each step, acc·256 + byte
+/// stays below 256·L, so fewer than 256 subtractions restore acc below L. Named so the inner loop carries a proven bound rather than trusting a
+/// while to terminate.
+pub const max_reduce_subtractions: u32 = 256;
+
+/// The group order L = 2^252 + 27742317777372353535851937790883648493 (RFC 8032 §5.1), as five little-endian 64-bit limbs. The small addend is
+/// carried as a u128 and split into the low two limbs; 2^252 is placed as a single set bit in the fourth limb (bit 252 = 64·3 + 60). Derived
+/// from L's defining form in our own arithmetic, never copied as a limb pattern.
+fn order_l() [5]u64 {
+    const addend: u128 = 27742317777372353535851937790883648493;
+    var l = [_]u64{ 0, 0, 0, 0, 0 };
+    l[0] = @truncate(addend);
+    l[1] = @truncate(addend >> 64);
+    l[3] = @as(u64, 1) << 60; // 2^252, since 252 = 64·3 + 60
+    // invariant: the low limbs carry exactly the RFC addend and the high bit is 2^252 — L is built, not pasted.
+    assert(l[0] == @as(u64, @truncate(addend)) and l[3] == (@as(u64, 1) << 60));
+    // invariant: the fifth limb stays zero — L is a 253-bit number and never occupies the 320-bit top limb.
+    assert(l[4] == 0);
+    return l;
+}
+
+/// True when the 320-bit little-endian value a is greater than or equal to b, compared limb by limb from the most significant down.
+fn ge5(a: [5]u64, b: [5]u64) bool {
+    var i: u32 = 5;
+    while (i > 0) {
+        i -= 1;
+        if (a[i] != b[i]) return a[i] > b[i];
+    }
+    return true; // exactly equal
+}
+
+/// The little-endian difference a − b for a ≥ b, across five 64-bit limbs with a borrow. Callers subtract only when ge5 already holds, so no
+/// underflow escapes the width.
+fn sub5(a: [5]u64, b: [5]u64) [5]u64 {
+    // invariant: subtraction is called only when a ≥ b, so the final borrow is zero (asserted below).
+    assert(ge5(a, b));
+    var r = [_]u64{ 0, 0, 0, 0, 0 };
+    var borrow: u64 = 0;
+    var i: u32 = 0;
+    while (i < 5) : (i += 1) {
+        const bi: u128 = @as(u128, b[i]) + borrow;
+        if (@as(u128, a[i]) >= bi) {
+            r[i] = @truncate(@as(u128, a[i]) - bi);
+            borrow = 0;
+        } else {
+            r[i] = @truncate((@as(u128, 1) << 64) + @as(u128, a[i]) - bi);
+            borrow = 1;
+        }
+    }
+    // invariant: no borrow survives the top limb, so the difference fits five limbs exactly.
+    assert(borrow == 0);
+    return r;
+}
+
+/// One Horner step: acc·256 + byte across five little-endian limbs. The running residue stays below L (< 2^253), so the shifted value stays
+/// below 2^261 and the fifth limb absorbs the top bits with no carry escaping the width.
+fn shl8_add(a: [5]u64, byte: u8) [5]u64 {
+    var r = [_]u64{ 0, 0, 0, 0, 0 };
+    var carry: u64 = byte;
+    var i: u32 = 0;
+    while (i < 5) : (i += 1) {
+        const v: u128 = (@as(u128, a[i]) << 8) + carry;
+        r[i] = @truncate(v);
+        carry = @truncate(v >> 64);
+    }
+    // invariant: with acc below L the product fits five limbs, so nothing carries past the top limb.
+    assert(carry == 0);
+    return r;
+}
+
+/// Read a 32-byte little-endian encoding into five 64-bit limbs (the top limb always zero — a 32-byte value never reaches the fifth limb).
+fn load32(s: *const [32]u8) [5]u64 {
+    var l = [_]u64{ 0, 0, 0, 0, 0 };
+    var i: u32 = 0;
+    while (i < scalar_bytes) : (i += 1) {
+        // invariant: the destination limb index stays inside the four low limbs and the shift fits within a limb.
+        assert((i >> 3) < 4 and (i & 7) <= 7);
+        l[i >> 3] |= @as(u64, s[i]) << @intCast((i & 7) * 8);
+    }
+    return l;
+}
+
+/// Serialize the four low limbs of a value below L into a 32-byte little-endian scalar (the fifth limb is zero for any residue below L).
+fn store32(l: [5]u64) [32]u8 {
+    // invariant: only values below L are serialized, so the top limb is empty and the low four limbs hold the whole scalar.
+    assert(l[4] == 0);
+    var s = [_]u8{0} ** 32;
+    var i: u32 = 0;
+    while (i < scalar_bytes) : (i += 1) {
+        s[i] = @truncate(l[i >> 3] >> @intCast((i & 7) * 8));
+    }
+    return s;
+}
+
+/// Reduce a 64-byte little-endian value modulo L into a canonical 32-byte scalar. Bytewise Horner from the most significant byte down, keeping
+/// the running residue below L at every step by a bounded run of subtractions. This is the hash-to-scalar step Ed25519 verification runs on the
+/// PUBLIC value SHA-512(R ‖ A ‖ M); it holds no secret.
+pub fn reduce(wide: *const [64]u8) [32]u8 {
+    const l = order_l();
+    var acc = [_]u64{ 0, 0, 0, 0, 0 };
+    var i: u32 = wide_bytes;
+    while (i > 0) {
+        i -= 1;
+        // invariant: the source index stays inside the 64-byte value throughout the walk.
+        assert(i < wide_bytes);
+        acc = shl8_add(acc, wide[i]);
+        var guard: u32 = 0;
+        while (ge5(acc, l)) {
+            acc = sub5(acc, l);
+            guard += 1;
+            // invariant: the residue returns below L within the proven bound — the loop cannot run away.
+            assert(guard <= max_reduce_subtractions);
+        }
+    }
+    // invariant: the final residue is strictly below L — a canonical scalar, exactly what the ladder wants.
+    assert(!ge5(acc, l));
+    return store32(acc);
+}
+
+/// True when a 32-byte encoding is already the canonical scalar below L. Ed25519 verification refuses a signature whose S is not canonical
+/// (RFC 8032 §5.1.7); this is that check, over the public S component — the same comparison reduce runs, without the arithmetic.
+pub fn is_canonical(s: *const [32]u8) bool {
+    return !ge5(load32(s), order_l());
+}
+
+// ---- selftest ----------------------------------------------------------------------------------------------------------------------
+
+fn bytes_eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) {
+        if (a[i] != b[i]) return false;
+    }
+    return true;
+}
+
+/// L itself as 32 little-endian bytes — the canonical boundary, built from our own order_l so the known-answer tests quote no external limb.
+fn l_bytes() [32]u8 {
+    return store32(order_l());
+}
+
+/// A deterministic spread of 64-byte values — the same generator shape the other crypto selftests use, seeded so each differs and each is
+/// large enough to genuinely exceed L, giving the reduction something real to fold.
+fn wide_bytes_seed(seed: u8) [64]u8 {
+    var w: [64]u8 = undefined;
+    var i: u32 = 0;
+    while (i < wide_bytes) : (i += 1) w[i] = @truncate(@as(u32, i) *% (@as(u32, seed) | 1) +% @as(u32, seed) +% 13);
+    return w;
+}
+
+/// A deterministic spread of 32-byte encodings — seeded so some land below L (canonical) and some at or above it (non-canonical), so the
+/// verdict parity has both answers to disagree on if is_canonical were wrong.
+fn scalar_bytes_seed(seed: u8) [32]u8 {
+    var s: [32]u8 = undefined;
+    var i: u32 = 0;
+    while (i < scalar_bytes) : (i += 1) s[i] = @truncate(@as(u32, i) *% (@as(u32, seed) | 1) +% @as(u32, seed) +% 5);
+    // Vary the top byte across the L boundary: L's top byte is 0x10, so values here span both sides.
+    s[31] = seed & 0x1f;
+    return s;
+}
+
+/// Independent reference: Zig's own std.crypto edwards25519 scalar field, used ONLY inside the selftest. The primitive above never calls it.
+const ZScalar = std.crypto.ecc.Edwards25519.scalar;
+
+fn run_selftest() !u8 {
+    // 1. Algebraic known-answers anyone can check.
+    {
+        // 0 reduces to 0.
+        const zero_wide = [_]u8{0} ** 64;
+        if (!bytes_eq(&reduce(&zero_wide), &([_]u8{0} ** 32))) return error.ZeroReduceMismatch;
+
+        // L reduces to 0 — embed our own L bytes in the low half of a 64-byte value.
+        var l_wide = [_]u8{0} ** 64;
+        const lb = l_bytes();
+        var i: u32 = 0;
+        while (i < 32) : (i += 1) l_wide[i] = lb[i];
+        if (!bytes_eq(&reduce(&l_wide), &([_]u8{0} ** 32))) return error.OrderReduceMismatch;
+
+        // 0 is canonical (below L); L itself is not.
+        if (!is_canonical(&([_]u8{0} ** 32))) return error.ZeroNotCanonical;
+        if (is_canonical(&lb)) return error.OrderCanonical;
+    }
+
+    // 2. Independent-implementation parity for reduce: our bytewise Horner equals Zig's std.crypto reduce64 byte-for-byte across a spread of
+    //    64-byte values, plus the all-ones extreme.
+    {
+        var seed: u8 = 1;
+        while (seed <= 64) : (seed += 1) {
+            const w = wide_bytes_seed(seed);
+            if (!bytes_eq(&reduce(&w), &ZScalar.reduce64(w))) return error.RefReduceMismatch;
+        }
+        const ones = [_]u8{0xff} ** 64;
+        if (!bytes_eq(&reduce(&ones), &ZScalar.reduce64(ones))) return error.RefReduceOnesMismatch;
+    }
+
+    // 3. Independent-implementation parity for is_canonical: our verdict matches Zig's rejectNonCanonical across a spread, and the spread
+    //    genuinely exercises both answers so the check is not trivially constant.
+    {
+        var seed: u8 = 1;
+        var canon: u32 = 0;
+        var noncanon: u32 = 0;
+        while (seed <= 64) : (seed += 1) {
+            const s = scalar_bytes_seed(seed);
+            const ours = is_canonical(&s);
+            const theirs = if (ZScalar.rejectNonCanonical(s)) |_| true else |_| false;
+            if (ours != theirs) return error.RefCanonicalMismatch;
+            if (ours) canon += 1 else noncanon += 1;
+        }
+        // invariant: the spread named both a canonical and a non-canonical encoding — the verdict is not trivially one-sided.
+        if (canon == 0 or noncanon == 0) return error.SpreadTooNarrow;
+    }
+
+    print("GREEN crypto-ed25519-scalar: scalar arithmetic modulo the group order L authored in pure Rye — Season G's tenth rung, the " ++
+        "hash-to-scalar step between GREEN SHA-512 and the GREEN scalar ladder. reduce folds a 64-byte little-endian value modulo " ++
+        "L = 2^252 + 27742317777372353535851937790883648493 (RFC 8032) by bytewise Horner from the most significant byte down, keeping the " ++
+        "running residue below L by a run of subtractions proven to number fewer than 256 per byte; is_canonical answers whether a 32-byte " ++
+        "encoding is already the canonical representative below L. L's limbs are derived from its defining form in our own arithmetic — the " ++
+        "small addend split from a u128, 2^252 placed by a shift — never pasted as a limb pattern. The primitive calls no std.crypto. Parity " ++
+        "holds against algebraic known-answers (0 reduces to 0, L reduces to 0, 0 is canonical and L is not), and our authored Rye equals " ++
+        "Zig's independent std.crypto.ecc.Edwards25519.scalar.reduce64 byte-for-byte and rejectNonCanonical verdict-for-verdict across a " ++
+        "spread of inputs that names both canonical and non-canonical encodings. Monocypher's own scalar reduction passes the same " ++
+        "mathematics — its vendored source is a held fetch, so Monocypher-source parity is an honest horizon rung. Purely local arithmetic — " ++
+        "in verification the value reduced is the PUBLIC SHA-512(R ‖ A ‖ M) and the encoding checked is the PUBLIC signature S, so the " ++
+        "variable-time reduction leaks no secret; a constant-time reduction for secret scalars stays a separate named horizon. No real key, " ++
+        "no signing, no network, no funds, no real device. With reduce and is_canonical GREEN, every arithmetic piece the Ed25519 verify " ++
+        "equation needs now stands, and verify becomes a composition over decode, the scalar ladder, the group law, and SHA-512.\n", .{});
+    return 0;
+}
+
+pub fn main(init_args: std.process.Init) !u8 {
+    _ = init_args;
+    return run_selftest();
+}
