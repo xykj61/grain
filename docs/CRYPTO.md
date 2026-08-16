@@ -1,6 +1,6 @@
 # Crypto — the Season G audit front door
 
-*A Rye-native, parity-checked cryptography library — twenty primitives and three compositions, each GREEN on metal.*
+*A Rye-native, parity-checked cryptography library — twenty-one primitives and three compositions, each GREEN on metal.*
 
 **Status:** Checkable — Season G operator + auditor guide
 **Depth:** guide
@@ -32,7 +32,7 @@ vectors — never a copied line ([`gratitude-licenses.md`](../.claude/rules/grat
 
 ---
 
-## Rung table — twenty-three files, dependency order
+## Rung table — twenty-four files, dependency order
 
 Each rung stands on the GREEN rungs beneath it; none authors cryptography a lower
 rung had not already proven. Every file carries a per-file witness
@@ -45,6 +45,7 @@ rung had not already proven. Every file carries a per-file witness
 | `sha512.rye` | SHA-512 — the hash Ed25519 signs with | FIPS 180-4 · RFC 8032 |
 | `blake2b.rye` | BLAKE2b-512 — Monocypher's hash · the key-derivation hash | RFC 7693 |
 | `sha3.rye` | SHA3-256 · SHA3-512 over Keccak-f[1600] — the hash Aurora names content with | FIPS 202 |
+| `sha256.rye` | SHA-256 — the hash Tablecloth keys content with, and Mycelium places and seeds by | FIPS 180-4 |
 
 ### Keyed hash and key derivation
 
@@ -101,7 +102,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 
 [`crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) rebuilds each
 `crypto/<name>.rye` fresh from source to the gitignored `crypto/bin/` and runs all
-twenty-three per-file witnesses in the dependency order above, refusing whole —
+twenty-four per-file witnesses in the dependency order above, refusing whole —
 naming the file that stopped it — the moment any one goes RED. A GREEN suite means
 every claim here is re-provable by tooling, not trusted from a commit message
 alone (measurement beats memory).

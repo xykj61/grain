@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260815.232724
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+title Season G — SHA-256 authored in pure Rye, the content-addressing hash unified
+prompt Take the next agent-doable lap Lindy-first crux-first past the crypto/itinerary road; Rye first, Glow on green-witnessed Rye; send each finished increment as its own signed round; stop at custody gates; baton prin recur.
+think Read the three road docs and REMEMBER: Season G (Cryptography) is the active double-seat and the whole crypto_suite_witness ran GREEN across twenty-three files (twenty primitives + three compositions). The named Season G crux rungs — primitive · KAT · parity witness · constant-time note — are all landed, so the next crux is a genuinely-needed rung, not invented scope.
+think Grepped for the tree's own SHA-256 demand: pond/apps/tablecloth_keyed.rye keys content with std.crypto Sha256, and the Mycelium consensus foundation places worlds by SHA-256(domain · world-id · host-pk) in puddle.rye and seeds constel ship identities from SHA-256(name). Season G's thesis is to author our own, parity-checked, off std.crypto — so a Rye-native SHA-256 is a real load-bearing gap, exactly like SHA3 was added for Aurora's need. Highest-Lindy crux-first: every content-addressed name and consensus placement stands on it.
+think SHA-256 is the 32-bit sibling of the GREEN sha512.rye — same Merkle–Damgård shape over u32 words: eight-word init, sixty-four round constants, Ch/Maj/big/small-sigma with the SHA-256 rotation set, sixty-four rounds, 64-byte block, 0x80 marker + 64-bit big-endian bit length, the second-block edge at rem >= 56. Authored crypto/sha256.rye by mirroring the house style exactly (bounds, ≥2 contract asserts per fn, wrapping +% mod 2^32, MessageTooLong at the edge, no std.crypto in the primitive).
+think Wrote tools/crypto_sha256_witness.rish mirroring the sha512 witness three-say shape; registered sha256 after sha3 in crypto_suite_witness.rish and bumped every count (twenty→twenty-one primitives, twenty-three→twenty-four files, three→four hashes); added the row to crypto/README.md and docs/CRYPTO.md with their count references.
+obs GREEN on the first metal pass — no fix needed. FIPS 180-4 known-answers for "abc" and the empty message match hex for hex, and our Rye equals Zig's independent std.crypto Sha256 byte-for-byte over empty, "abc", 55 bytes (fits the block), 56 bytes (forces a second all-padding block), and a 300-byte multi-block input; an over-long message refuses MessageTooLong before a byte is mixed.
+obs tame_style_check bans clean, the new file in no ratchet list. Whole-suite crypto_suite_witness GREEN across all twenty-four files. Monocypher does not ship SHA-256, so this hash is authored from FIPS 180-4 directly — honest scope, no copied line. Non-gated: TEST vectors only, no key, no network, no funds, no device; constant-time timing-safety stays the Season's named horizon; migrating tablecloth_keyed/puddle/constel onto this Rye SHA-256 off std.crypto is a later touch-round, not this one.
+loom witness=crypto_sha256_witness green=1 kat_vectors=2 parity_inputs=5 files_in_suite=24
+loom witness=crypto_suite_witness green=1 files=24 primitives=21 compositions=3
+file crypto/sha256.rye SHA-256 authored in pure Rye from FIPS 180-4, calling no std.crypto — the tree's content-addressing hash off the standard library.
+file tools/crypto_sha256_witness.rish per-file witness: FIPS 180-4 KATs plus byte-for-byte std.crypto parity across the padding edges.
+file tools/crypto_suite_witness.rish registered sha256 after sha3; counts to twenty-one primitives / twenty-four files / four hashes.
+file crypto/README.md hashes-table row and count references updated to twenty-four files.
+file docs/CRYPTO.md audit front door: rung-table row and count references updated to twenty-four files.
+recommend keep-going next Lindy-first crux is the touch-round migrating tablecloth_keyed.rye / the Mycelium spine onto this Rye SHA-256 off std.crypto, or the next needed primitive — mechanical, single-module, no gate.
