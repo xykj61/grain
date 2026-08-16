@@ -1,0 +1,67 @@
+# tools/crypto_monocypher_x25519_parity_witness.rish — Monocypher-source parity for X25519, the key agreement the Kumara sealed door
+# (crypto/kumara_sealed.rye) rests on. Our authored crypto/x25519.rye and the vendored Monocypher's own C (vendor/monocypher, CC0/BSD-dual), each
+# compiled fresh and asked for their X25519 public keys and shared secrets over RFC 7748 §6.1's Alice/Bob exchange, diffed byte-for-byte. The second
+# rung of the real Monocypher-source parity pattern (tools/crypto_monocypher_parity_witness.rish opened it on BLAKE2b). Season G · Cryptography.
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
+# proving Rye output equals Monocypher output byte-for-byte." X25519 is exactly the primitive crypto/kumara_sealed.rye's confidentiality door agrees
+# with, so proving it against the actual audit target hardens that door directly.
+# Kin: crypto/x25519.rye (our authored key agreement, GREEN against Zig's std.crypto) · tools/monocypher_x25519_parity.rye (our printing harness) ·
+# tools/fixtures/monocypher_x25519_harness.c (Monocypher's printing harness) · tools/crypto_monocypher_parity_witness.rish (the BLAKE2b sibling).
+# Monocypher stays the parity TARGET, vendored and unmodified, never a copied line — our own Rye, studied clean-room
+# (.claude/rules/gratitude-licenses.md).
+#
+# The four values are RFC 7748 §6.1's own published exchange: Alice's public key (base·alice), Bob's public key (base·bob), and the shared secret
+# reached from each side. Both implementations clamp the scalar internally per RFC 7748 §5, so each is fed the raw published scalar. Purely local —
+# no key of ours, no network, no funds, no device; constant-time timing-safety stays the Season's named horizon.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_monocypher_x25519_parity_witness.rish
+
+say "crypto-monocypher-x25519-parity: Language EN — Monocypher-source parity for X25519, the key agreement the Kumara sealed door rests on. The BLAKE2b sibling opened the pattern; this rung proves our authored crypto/x25519.rye against the ACTUAL vendored Monocypher C over RFC 7748 §6.1's own published Alice/Bob key exchange, so the confidentiality door of crypto/kumara_sealed.rye agrees, byte-for-byte, with the very library Grain's audit names."
+say "crypto-monocypher-x25519-parity: Style Radiant — like against like. Our authored X25519 and the unmodified vendored Monocypher each compile fresh and each print, in order, Alice's public key (base·alice), Bob's public key (base·bob), and the shared secret reached from each side. Two independent implementations, one RFC-published exchange; the parity is that the two outputs agree hex for hex, and that the shared secret reached from Alice's side equals the one reached from Bob's."
+say "crypto-monocypher-x25519-parity: Lens TAME — no fabricated constant is trusted: the oracle is a second real implementation, and the exchange is anchored to RFC 7748 §6.1's published Alice public, Bob public, and shared secret. The witness diffs the four Monocypher lines against the four Rye lines byte-for-byte AND asserts the three published values. Both sides clamp the scalar internally per RFC 7748 §5, so each is fed the raw published scalar. Monocypher is linked, never copied. Purely local — no key of ours, no network, no funds, no device; constant-time timing-safety stays the named horizon."
+
+let zig = "vendor/zig-toolchain/zig"
+let cbin = "crypto/bin/monocypher_x25519"
+let cout = "crypto/bin/monocypher_x25519.out"
+let rout = "crypto/bin/rye_x25519.out"
+
+# 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_x25519_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
+assert cbuild.ok else "crypto-monocypher-x25519-parity: Monocypher C harness build failed — ${cbuild.err}"
+
+# 2. Run the Monocypher C harness — four X25519 hex lines.
+let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]
+assert crun.ok else "crypto-monocypher-x25519-parity: Monocypher C harness exited non-zero — see ${cout}"
+
+# 3. Run our authored Rye harness — four X25519 hex lines over the identical exchange.
+let rrun = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run tools/monocypher_x25519_parity.rye > ${rout} 2>&1"]
+assert rrun.ok else "crypto-monocypher-x25519-parity: Rye harness exited non-zero — see ${rout}"
+
+# 4. Byte-for-byte parity: the two four-line outputs must be identical.
+let diff = run ["sh" "-c" "diff ${cout} ${rout} > /dev/null && echo same"]
+assert (trim diff.out) == "same" else "crypto-monocypher-x25519-parity: Monocypher and Rye X25519 disagree — Monocypher:\n$(cat ${cout})\nRye:\n$(cat ${rout})"
+
+# 5. Anchor to the world: RFC 7748 §6.1 published Alice public (line 1), Bob public (line 2), and the shared secret (lines 3 and 4).
+let rfc_alice_pub = "8520f0098930a754748b7ddcb43ef75a0dbf3a0d26381af4eba4a98eaa9b4e6a"
+let rfc_bob_pub = "de9edb7d7b7dc1b4d35b61c2ece435373f8343c85b78674dadfc7e146f882b4f"
+let rfc_shared = "4a5d9d5ba4ce2de1728e3bf480350f25e07e21c947d19e3376f09b3c1e161742"
+
+let got_alice = run ["sh" "-c" "sed -n '1p' ${cout}"]
+assert (trim got_alice.out) == rfc_alice_pub else "crypto-monocypher-x25519-parity: Alice public key is not the RFC 7748 §6.1 published value"
+
+let got_bob = run ["sh" "-c" "sed -n '2p' ${cout}"]
+assert (trim got_bob.out) == rfc_bob_pub else "crypto-monocypher-x25519-parity: Bob public key is not the RFC 7748 §6.1 published value"
+
+let got_ab = run ["sh" "-c" "sed -n '3p' ${cout}"]
+assert (trim got_ab.out) == rfc_shared else "crypto-monocypher-x25519-parity: shared secret from Alice's side is not the RFC 7748 §6.1 published value"
+
+let got_ba = run ["sh" "-c" "sed -n '4p' ${cout}"]
+assert (trim got_ba.out) == rfc_shared else "crypto-monocypher-x25519-parity: shared secret from Bob's side is not the RFC 7748 §6.1 published value"
+
+let shown = run ["sh" "-c" "cat ${cout}"]
+say "crypto-monocypher-x25519-parity: the RFC 7748 §6.1 exchange, agreed by both implementations:\n${shown.out}"
+
+say "GREEN crypto-monocypher-x25519-parity: our authored crypto/x25519.rye and the vendored Monocypher's own C, each compiled fresh, produce byte-for-byte identical X25519 over RFC 7748 §6.1's Alice/Bob exchange — Alice's public key, Bob's public key, and the shared secret reached from each side all match, and all three match the RFC's published values. The second real Monocypher-SOURCE parity rung, hardening the key agreement the Kumara sealed door rests on — no recited constant, the oracle a second real implementation. Monocypher stays vendored and unmodified, linked never copied. Purely local, no key of ours, no network, no funds, no device; constant-time timing-safety stays the named horizon."
