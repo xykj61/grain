@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260816.141150
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Monocypher-parity for standalone variable-length BLAKE2b, GREEN
+prompt read REMEMBER + the three itinerary docs; take the next agent-doable lap Lindy-first crux-first, Rye-first, send each increment as its own signed round; stop at custody gates
+think Walked the three itinerary docs. Season G (Cryptography · Rye-native, Monocypher-parity) is the active double-seat and the highest-Lindy new thread — it serves every module that signs or verifies, and every recent commit is a Monocypher-source parity rung. The git nib narrative confirms twelve rungs GREEN, the twelfth being standalone HChaCha20.
+think Crux-first within Season G: surveyed the twelve landed parity witnesses. The pattern proves each shared core STANDALONE in its own right (ChaCha20, Poly1305, SHA-512, HMAC-SHA-512, HChaCha20). Found the gap — the first BLAKE2b rung (tools/crypto_monocypher_parity_witness.rish) proves only crypto_blake2b(hash, 64, ...), the 64-byte full digest, yet crypto/blake2b.rye exposes hash_var for arbitrary 1..64-byte output, the mode Argon2's blake2b_long chain and RFC 9106 key derivation lean on. Variable-length BLAKE2b had no standalone Monocypher-source parity.
+think Built the thirteenth rung as the established three-file pattern, mirroring the HChaCha20 rung exactly: a C harness linking the unmodified vendored Monocypher's crypto_blake2b(hash, hash_size, ...), a Rye printing harness over crypto/blake2b.rye's hash_var (through the tools/blake2b.rye symlink), and a witness diffing six variable-length digests byte-for-byte at output lengths 64/16/20/28/32/48.
+think Anchored to the world without fabricating a constant: line 1 is (out_len 64, "abc"), which is BLAKE2b-512("abc") exactly, asserted against RFC 7693 Appendix A's published ba80a53f…d4009923 (the value already seated in crypto/blake2b.rye:258). Lines 2-6 rest on the two-implementation oracle. Wrote a variable-length hex printer in the Rye harness since to_hex fixes the 64-byte case alone.
+obs GREEN first pass — Monocypher and Rye agree hex-for-hex across all six digests, and the RFC anchor holds. Gate-free and purely local: RFC public vector plus deterministic inputs, no real key, no signature, no network, no funds, no device. Constant-time timing-safety stays the Season's one named horizon.
+obs Count guard untouched — the three new files live in tools/ and tools/fixtures/; crypto/*.rye is unchanged (tools/blake2b.rye is a symlink into crypto/). Docs synced same round: crypto/README.md and docs/CRYPTO.md both moved from twelve rungs to thirteen with the standalone variable-length BLAKE2b entry.
+obs TAME style check GREEN (bans clean); the authored Rye harness carries the opening triad and ≥2 invariant-commented asserts per fn, bounded buffers at construction.
+loom witness=crypto_monocypher_blake2b_var_parity digests=6 out_lens=64,16,20,28,32,48 parity=byte-for-byte anchor=rfc7693_blake2b512_abc result=GREEN
+file tools/fixtures/monocypher_blake2b_var_harness.c the vendored Monocypher's variable-length crypto_blake2b harness (parity target, unmodified)
+file tools/monocypher_blake2b_var_parity.rye our authored hash_var printing harness over the six identical inputs
+file tools/crypto_monocypher_blake2b_var_parity_witness.rish the thirteenth Monocypher-source parity witness, diff + RFC anchor
+file crypto/README.md rung count twelve → thirteen; standalone variable-length BLAKE2b entry
+file docs/CRYPTO.md rung count twelve → thirteen; standalone variable-length BLAKE2b entry
+recommend keep-going the standalone-core sweep continues honestly — a keyed-BLAKE2b MAC primitive (Monocypher's crypto_blake2b_keyed) is the next natural Rye-first rung, unimplemented yet and worth its own lap

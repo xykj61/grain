@@ -199,7 +199,7 @@ caller-supplied seed — a test seed is not the maintainer's identity key.
 
 **Monocypher-source parity is landed:** the vendored `vendor/monocypher`
 (CC0/BSD-dual, unmodified) is compiled fresh and diffed byte-for-byte against our
-authored Rye over the published vectors — twelve rungs GREEN (BLAKE2b, X25519,
+authored Rye over the published vectors — thirteen rungs GREEN (BLAKE2b, X25519,
 Ed25519, the ChaCha20-Poly1305 AEAD, Argon2 across all three modes, the
 XChaCha20-Poly1305 flagship `crypto_aead_lock`, the Edwards↔Montgomery
 conversion `crypto_eddsa_to_x25519` / `crypto_x25519_to_eddsa` that unifies one
@@ -216,7 +216,11 @@ built on, anchored to RFC 4231's published tags, and the standalone HChaCha20
 `crypto_chacha20_h` — the XChaCha nonce-extension core every random-nonce sealed
 message folds through, proven in its own right rather than only inside the
 XChaCha20-Poly1305 flagship, anchored to draft-irtf-cfrg-xchacha-03 §2.2.1's
-published subkey), each also
+published subkey, and the standalone variable-length BLAKE2b `crypto_blake2b` at
+output lengths below 64 — the length-parameterized hash core the first BLAKE2b
+rung never exercised, proving `blake2b.rye`'s `hash_var` at 16/20/28/32/48 bytes,
+the mode Argon2's `blake2b_long` chain and RFC 9106 key derivation lean on,
+anchored by its 64-byte case to RFC 7693's published BLAKE2b-512("abc")), each also
 anchored to its RFC or published known-answer. One horizon stays honest beside it:
 **constant-time** waits on measurement as above.
 

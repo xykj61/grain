@@ -148,7 +148,7 @@ is re-provable by tooling, not trusted from a commit message alone.
   Season's constant-time discipline note.
 - **Monocypher-source parity** is **landed**: the vendored `vendor/monocypher`
   (CC0/BSD-dual, unmodified) is compiled fresh and diffed byte-for-byte against our
-  authored Rye over the published vectors. Twelve rungs stand GREEN — **BLAKE2b**,
+  authored Rye over the published vectors. Thirteen rungs stand GREEN — **BLAKE2b**,
   **X25519**, **Ed25519**, the **ChaCha20-Poly1305 AEAD**, **Argon2** (all three
   modes), the **XChaCha20-Poly1305 flagship** (Monocypher's `crypto_aead_lock`,
   the 24-byte extended-nonce AEAD Lotus's signed carry, Vault, and Comlink reach for),
@@ -172,7 +172,12 @@ is re-provable by tooling, not trusted from a commit message alone.
   Vault, Comlink, the Lotus signed carry — folds a 24-byte nonce through before
   enciphering, proven in its own right rather than only inside the XChaCha20-Poly1305
   flagship, the nonce-extension counterpart to the standalone ChaCha20 and Poly1305
-  rungs, anchored to draft-irtf-cfrg-xchacha-03 §2.2.1's published subkey)
+  rungs, anchored to draft-irtf-cfrg-xchacha-03 §2.2.1's published subkey),
+  and the **standalone variable-length BLAKE2b** (`crypto_blake2b` at output
+  lengths below 64 — the length-parameterized hash core the first BLAKE2b rung
+  never exercised, proving `blake2b.rye`'s `hash_var` at 16/20/28/32/48 bytes, the
+  mode Argon2's `blake2b_long` chain and RFC 9106 key derivation lean on, anchored
+  by its 64-byte case to RFC 7693's published BLAKE2b-512("abc"))
   — each also anchored to its RFC or published known-answer, so the oracle is a real
   second implementation. Parity against Zig's `std.crypto` still holds beside it.
 - **The keys stay the maintainer's hand.** Every witness runs over **TEST** keys and

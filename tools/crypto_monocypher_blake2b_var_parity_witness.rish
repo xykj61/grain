@@ -1,0 +1,62 @@
+# tools/crypto_monocypher_blake2b_var_parity_witness.rish — Monocypher-source parity for the standalone VARIABLE-LENGTH BLAKE2b (hash_var), the
+# length-parameterized hash core the existing 64-byte BLAKE2b rung never exercised — the mode Argon2's blake2b_long chain and RFC 9106 key
+# derivation lean on, folding BLAKE2b at every output length from one byte to a full block. Our authored crypto/blake2b.rye's hash_var and the
+# vendored Monocypher's own crypto_blake2b(hash, hash_size, ...) (vendor/monocypher, CC0/BSD-dual), each compiled fresh and asked for the same six
+# variable-length digests, diffed byte-for-byte. The THIRTEENTH rung of the real Monocypher-source parity pattern (BLAKE2b full-digest · X25519 ·
+# Ed25519 · IETF AEAD · Argon2 · XChaCha20-Poly1305 flagship · Edwards↔Montgomery · standalone Poly1305 · standalone ChaCha20 · standalone SHA-512 ·
+# HMAC-SHA-512 · standalone HChaCha20 came before). Season G · Cryptography.
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
+# proving Rye output equals Monocypher output byte-for-byte." The first BLAKE2b rung proved crypto_blake2b(hash, 64, ...) — the 64-byte full digest —
+# yet crypto/blake2b.rye's hash_var serves EVERY output length 1..64, the mode Monocypher's own Argon2 folds through and Grain's key derivation reaches
+# for. This rung proves that variable-output core STANDALONE against Monocypher's own length-parameterized crypto_blake2b, the output-length counterpart
+# to the way the standalone ChaCha20 and Poly1305 rungs prove the AEAD's cores in their own right.
+# Kin: crypto/blake2b.rye (our authored BLAKE2b + hash_var, GREEN against Zig's std.crypto and RFC 7693) · tools/monocypher_blake2b_var_parity.rye
+# (our printing harness) · tools/fixtures/monocypher_blake2b_var_harness.c (Monocypher's printing harness) · tools/crypto_monocypher_parity_witness.rish
+# (the first BLAKE2b rung, the 64-byte full digest — together they prove BLAKE2b at its full width and at every shorter output length). Monocypher stays
+# the parity TARGET, vendored and unmodified, never a copied line, studied clean-room (.claude/rules/gratitude-licenses.md).
+#
+# The six lines are anchored to the world: line 1 is (out_len 64, "abc"), which is BLAKE2b-512("abc") exactly — the RFC 7693 Appendix A published
+# known-answer (ba80a53f…d4009923); lines 2-6 are variable-length digests over deterministic messages at output lengths 16/20/28/32/48, where the
+# oracle is a second real implementation agreeing byte-for-byte. Purely local — no key of ours, no network, no funds, no device; constant-time
+# timing-safety stays the Season's named horizon.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_monocypher_blake2b_var_parity_witness.rish
+
+say "crypto-monocypher-blake2b-var-parity: Language EN — Monocypher-source parity for the standalone VARIABLE-LENGTH BLAKE2b (hash_var), the length-parameterized hash core the first BLAKE2b rung never exercised: it proved only the 64-byte full digest, yet crypto/blake2b.rye's hash_var serves every output length 1..64, the mode Argon2's blake2b_long chain and RFC 9106 key derivation lean on. This thirteenth rung proves that variable-output core STANDALONE against the ACTUAL vendored Monocypher C over six digests at lengths 64/16/20/28/32/48, byte-for-byte."
+say "crypto-monocypher-blake2b-var-parity: Style Radiant — like against like. Our authored hash_var and the unmodified vendored Monocypher each compile fresh and each print, in order, six variable-length BLAKE2b digests over identical (output-length, message) pairs: (64, 'abc') then five at lengths 16/20/28/32/48 over the empty message, 'abc', a full 128-byte block, a 200-byte multi-block input, and the fox pangram. Two independent implementations, one set of inputs; the parity is that the six digests agree hex for hex."
+say "crypto-monocypher-blake2b-var-parity: Lens TAME — no fabricated constant is trusted: line 1 is (64, 'abc'), which is BLAKE2b-512('abc') exactly, anchored to RFC 7693 Appendix A's published digest ba80a53f…d4009923; the remaining lines' oracle is a second real implementation. The witness diffs the six Monocypher lines against the six Rye lines byte-for-byte AND asserts the published anchor. Monocypher is linked, never copied. Purely local — no key of ours, no network, no funds, no device; constant-time timing-safety stays the named horizon."
+
+let zig = "vendor/zig-toolchain/zig"
+let cbin = "crypto/bin/monocypher_blake2b_var"
+let cout = "crypto/bin/monocypher_blake2b_var.out"
+let rout = "crypto/bin/rye_blake2b_var.out"
+
+# 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_blake2b_var_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
+assert cbuild.ok else "crypto-monocypher-blake2b-var-parity: Monocypher C harness build failed — ${cbuild.err}"
+
+# 2. Run the Monocypher C harness — six variable-length digest hex lines.
+let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]
+assert crun.ok else "crypto-monocypher-blake2b-var-parity: Monocypher C harness exited non-zero — see ${cout}"
+
+# 3. Run our authored Rye harness — six variable-length digest hex lines over the identical inputs.
+let rrun = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run tools/monocypher_blake2b_var_parity.rye > ${rout} 2>&1"]
+assert rrun.ok else "crypto-monocypher-blake2b-var-parity: Rye harness exited non-zero — see ${rout}"
+
+# 4. Byte-for-byte parity: the two six-line outputs must be identical.
+let diff = run ["sh" "-c" "diff ${cout} ${rout} > /dev/null && echo same"]
+assert (trim diff.out) == "same" else "crypto-monocypher-blake2b-var-parity: Monocypher and Rye digests disagree — Monocypher:\n$(cat ${cout})\nRye:\n$(cat ${rout})"
+
+# 5. Anchor to the world: line 1 is (out_len 64, "abc"), which is BLAKE2b-512("abc") — the RFC 7693 Appendix A published digest.
+let rfc_abc = "ba80a53f981c4d0d6a2797b69f12f6e94c212f14685ac4b74b12bb6fdbffa2d17d87c5392aab792dc252d5de4533cc9518d38aa8dbf1925ab92386edd4009923"
+
+let got_abc = run ["sh" "-c" "sed -n '1p' ${cout}"]
+assert (trim got_abc.out) == rfc_abc else "crypto-monocypher-blake2b-var-parity: line 1 is not the RFC 7693 Appendix A BLAKE2b-512(\"abc\") published digest"
+
+let shown = run ["sh" "-c" "cat ${cout}"]
+say "crypto-monocypher-blake2b-var-parity: the six variable-length digests, agreed by both implementations:\n${shown.out}"
+
+say "GREEN crypto-monocypher-blake2b-var-parity: our authored crypto/blake2b.rye's hash_var and the vendored Monocypher's own crypto_blake2b(hash, hash_size, ...), each compiled fresh, produce byte-for-byte identical variable-length BLAKE2b digests over the RFC 7693 anchor (64, \"abc\" = BLAKE2b-512(\"abc\"), ba80a53f…d4009923) and five deterministic (output-length, message) pairs at lengths 16/20/28/32/48. The THIRTEENTH real Monocypher-SOURCE parity rung, proving the length-parameterized hash core Argon2's blake2b_long chain and RFC 9106 key derivation lean on in its own right — the output-length counterpart to the standalone ChaCha20, Poly1305, and SHA-512 rungs. Monocypher stays vendored and unmodified, linked never copied. Purely local, no key of ours, no network, no funds, no device; constant-time timing-safety stays the named horizon."
