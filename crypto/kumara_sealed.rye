@@ -1,0 +1,267 @@
+//! crypto/kumara_sealed.rye — Season G (Cryptography): a message sealed TO a named Kumara identity, and opened AS that identity. Where
+//! crypto/kumara_carry.rye answers "did THIS keeper make this record" (provenance, a signature the world can read), this rung answers the other
+//! half of a conversation — "only THIS keeper can read this message" (confidentiality, a sealed box only the identity's holder opens). It is the
+//! Comlink private-message door: a sender who knows only a keeper's published Kumara identity (its 32-byte Ed25519 public key) seals a message
+//! that only the holder of that identity's seed can open.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · "a Comlink/Vault composition
+//! reaching identity through this door" is the rung the kumara_attestation edge named next). This composition authors NO new cryptography and
+//! adds NO new frame — a Kumara sealed message IS a Grain Sealed Session v1 frame (crypto/sealed_session.rye) addressed through the identity's
+//! X25519 keypair.
+//! Kin: crypto/sealed_session.rye (the sealed-box frame this addresses, GREEN) · crypto/ed25519_to_x25519.rye (the birational map that turns the
+//! identity's ONE Ed25519 key into the X25519 key agreement wants, both halves GREEN) · crypto/kumara_identity.rye (the phrase→identity front
+//! door, GREEN) · crypto/kumara_carry.rye (the provenance sibling — who MADE it, to this rung's who can READ it).
+//!
+//! THE CRUX — a Kumara identity signs with Ed25519, yet a sealed box agrees with X25519. crypto/ed25519_to_x25519.rye maps between them: the
+//! recipient's Ed25519 PUBLIC key converts to the X25519 public a sender seals to (eddsa_to_x25519), and the recipient's Ed25519 SEED converts to
+//! the X25519 secret they open with (eddsa_secret_to_x25519). Those two halves name ONE X25519 keypair — that is exactly the property
+//! crypto/ed25519_to_x25519.rye proves GREEN (x25519_base(secret) = eddsa_to_x25519(public)) — so a message sealed to the identity's public key
+//! opens under the identity's seed and no other. One identity, one seed, and it both signs (kumara_carry) and receives (this rung).
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. Every identity here is a TEST identity grown from BIP-39's
+//! own published Trezor vector mnemonic; sealing to or opening as the maintainer's OWN Kumara identity, grown from a real seed, stays the custody
+//! gate. Constant-time timing-safety stays the Season's named horizon.
+//!
+//! Run from the repository root:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/kumara_sealed.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const identity = @import("kumara_identity.rye");
+const convert = @import("ed25519_to_x25519.rye");
+const session = @import("sealed_session.rye");
+const x = @import("x25519.rye"); // the crux re-anchor: the identity's X25519 public reached two ways must agree (selftest only).
+
+pub const kumara_sealed_version = "20260816.105100";
+
+/// The plaintext bound is the sealed session's own — this rung addresses the same frame, it does not enlarge it.
+pub const max_plain_bytes: u32 = session.max_plain_bytes;
+/// The fixed frame overhead (magic ‖ ephemeral pubkey ‖ ciphertext-length ‖ tag) inherited from the sealed session.
+pub const frame_overhead: u32 = session.frame_overhead;
+/// The largest frame a caller must size a buffer for — overhead plus the maximum plaintext.
+pub const max_frame_bytes: u32 = session.max_frame_bytes;
+
+/// A Kumara sealed message fails exactly as a sealed session does — a wrong recipient, a tampered frame, or a bound overrun — since it IS a
+/// sealed session frame addressed through an identity's key. Named once so the module states its contract honestly.
+pub const KumaraSealedError = session.SealedSessionError;
+
+/// seal_to — seal a plaintext TO a Kumara identity named by its 32-byte Ed25519 public key, under a FRESH ephemeral X25519 private key (the
+/// caller's duty to supply fresh randomness per message). The sender needs ONLY the recipient's published identity — no secret — and the frame
+/// it writes is entirely public, readable only by the holder of that identity's seed. Returns the frame length.
+pub fn seal_to(recipient_ed_pub: *const [identity.public_len]u8, ephemeral_priv: *const [32]u8, plain: []const u8, out: []u8) session.SealedSessionError!u32 {
+    // The identity's Ed25519 public key becomes the X25519 public key the sealed box agrees with — one identity key, both roles.
+    const recipient_x = convert.eddsa_to_x25519(recipient_ed_pub);
+    const frame_len = try session.seal(ephemeral_priv, &recipient_x, plain, out);
+    // invariant (postcondition): the frame carries at least the fixed overhead — an empty-plaintext message still writes the whole header and tag.
+    assert(frame_len >= session.frame_overhead);
+    // invariant (postcondition): the frame is no larger than the overhead plus the plaintext bound — the address adds no bytes of its own.
+    assert(frame_len <= session.frame_overhead + max_plain_bytes);
+    return frame_len;
+}
+
+/// open_as — open a sealed frame AS the Kumara identity holding this 32-byte Ed25519 seed. The seed converts to the identity's X25519 secret, and
+/// the tag verifies ONLY when the frame was sealed to that identity's own public key — a message meant for a different identity, or a tampered
+/// frame, fails OpenFailed with no plaintext revealed. Returns the ephemeral public transcript and a zero-copy slice of the recovered plaintext.
+pub fn open_as(recipient_seed: *const [identity.secret_len]u8, frame: []const u8, out: []u8) session.SealedSessionError!session.Opened {
+    // The identity's Ed25519 seed becomes the X25519 secret the sealed box opens with — the secret half of the same one identity key.
+    const recipient_x_secret = convert.eddsa_secret_to_x25519(recipient_seed);
+    const opened = try session.open(&recipient_x_secret, frame, out);
+    // invariant (postcondition): the recovered plaintext honours the module's plaintext bound (session.open enforced it; restated at this door).
+    assert(opened.plain.len <= max_plain_bytes);
+    // invariant (postcondition): the ephemeral public transcript is the fixed 32 bytes — a full X25519 public key, not a truncation.
+    assert(opened.ephemeral_pub.len == 32);
+    return opened;
+}
+
+/// seal_to_identity — the convenience door: seal TO a whole Identity, reading its published public key. A sender who holds a peer's Identity value
+/// (from crypto/kumara_identity.rye) reaches seal_to without unpacking the field.
+pub fn seal_to_identity(id: *const identity.Identity, ephemeral_priv: *const [32]u8, plain: []const u8, out: []u8) session.SealedSessionError!u32 {
+    // invariant (construction): the Identity's public key is the fixed Ed25519 width the map expects.
+    assert(id.public_key.len == identity.public_len);
+    return seal_to(&id.public_key, ephemeral_priv, plain, out);
+}
+
+/// open_as_identity — the convenience door: open AS a whole Identity, reading its secret seed. The holder of an Identity value opens without
+/// unpacking the seed by hand.
+pub fn open_as_identity(id: *const identity.Identity, frame: []const u8, out: []u8) session.SealedSessionError!session.Opened {
+    // invariant (construction): the Identity's secret seed is the fixed width the secret map expects.
+    assert(id.secret_seed.len == identity.secret_len);
+    return open_as(&id.secret_seed, frame, out);
+}
+
+// ---- selftest ----------------------------------------------------------------------------------------------------------------------
+
+fn bytes_eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) {
+        if (a[i] != b[i]) return false;
+    }
+    return true;
+}
+
+/// Fill a buffer with a deterministic, non-trivial TEST pattern seeded per call so distinct payloads differ and none is all-zero. TEST data only.
+fn fill_test(buf: []u8, seed: u8) void {
+    var i: u32 = 0;
+    while (i < buf.len) : (i += 1) buf[i] = @as(u8, @truncate(@as(u32, i) *% 131 +% @as(u32, seed) +% 17));
+}
+
+const trezor_mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";
+const trezor_passphrase = "TREZOR";
+
+fn run_selftest() !u8 {
+    const test_coin: u32 = 7; // a registered Grain SLIP-44 coin type is a named horizon; the tests pass an explicit slot.
+
+    var frame_buf: [max_frame_bytes]u8 = undefined;
+    var frame_buf2: [max_frame_bytes]u8 = undefined;
+    var out_buf: [max_plain_bytes]u8 = undefined;
+    var out2: [max_plain_bytes]u8 = undefined;
+
+    // The recipient keeper — a TEST identity from the published Trezor mnemonic. NOT a real Kumara identity.
+    const keeper = try identity.from_mnemonic(trezor_mnemonic, trezor_passphrase, test_coin, 0, 0);
+    // A DIFFERENT keeper — a different account under the same phrase, so its public key (and X25519 key) is genuinely distinct.
+    const other = try identity.from_mnemonic(trezor_mnemonic, trezor_passphrase, test_coin, 1, 0);
+    if (bytes_eq(keeper.public_key[0..], other.public_key[0..])) return error.KeepersCollide;
+
+    // A TEST ephemeral — in real use, fresh randomness per message.
+    var esk: [32]u8 = undefined;
+    fill_test(esk[0..], 3);
+
+    // 1. THE CRUX, RE-ANCHORED HERE. The two ways to the identity's X25519 public key must agree: base·(secret from seed) equals the forward map
+    //    of the identity's Ed25519 public key. This is exactly the property that makes a message sealed to the public open under the seed — the
+    //    reason seal_to and open_as address ONE keypair. Proven one rung down in ed25519_to_x25519, re-checked here on a REAL Kumara identity.
+    {
+        const x_secret = convert.eddsa_secret_to_x25519(&keeper.secret_seed);
+        const pub_via_secret = x.x25519_base(&x_secret);
+        const pub_via_map = convert.eddsa_to_x25519(&keeper.public_key);
+        if (!bytes_eq(pub_via_secret[0..], pub_via_map[0..])) return error.IdentityKeypairMismatch;
+    }
+
+    // 2. ROUND-TRIP across a spread of plaintext lengths, including the empty message and the maximum. Sealed to the keeper's identity, opened as
+    //    the keeper, the plaintext returns byte-for-byte.
+    {
+        const lengths = [_]u32{ 0, 1, 16, 64, 1000, 4096, max_plain_bytes };
+        for (lengths) |plen| {
+            var plain_buf: [max_plain_bytes]u8 = undefined;
+            const plain = plain_buf[0..plen];
+            fill_test(plain, @truncate(plen +% 5));
+
+            const flen = try seal_to_identity(&keeper, &esk, plain, frame_buf[0..]);
+            if (flen != frame_overhead + plen) return error.FrameLenWrong;
+            const opened = try open_as_identity(&keeper, frame_buf[0..flen], out_buf[0..]);
+            if (!bytes_eq(opened.plain, plain)) return error.PlainWrong;
+        }
+    }
+
+    // 3. CONFIDENTIALITY SHAPE. The ciphertext is NOT the plaintext — the message is actually enciphered to the identity, not carried in clear.
+    {
+        var plain_buf: [128]u8 = undefined;
+        fill_test(plain_buf[0..], 9);
+        const flen = try seal_to_identity(&keeper, &esk, plain_buf[0..], frame_buf[0..]);
+        const cipher = frame_buf[session.header_len .. session.header_len + 128];
+        if (bytes_eq(cipher, plain_buf[0..])) return error.CiphertextIsPlaintext;
+        _ = flen;
+    }
+
+    // 4. THE BINDING REFUSES THE WRONG IDENTITY. A message sealed to the keeper, opened AS the other keeper, fails OpenFailed — the sealed box is
+    //    addressed to exactly one identity's X25519 key, and no other identity's seed derives it. The true keeper still opens it.
+    {
+        var plain_buf: [64]u8 = undefined;
+        fill_test(plain_buf[0..], 31);
+        const flen = try seal_to_identity(&keeper, &esk, plain_buf[0..], frame_buf[0..]);
+        if (open_as_identity(&other, frame_buf[0..flen], out_buf[0..])) |_| return error.WrongIdentityOpened else |e| {
+            if (e != error.OpenFailed) return error.WrongIdentityWrongError;
+        }
+        const opened = try open_as_identity(&keeper, frame_buf[0..flen], out_buf[0..]);
+        if (!bytes_eq(opened.plain, plain_buf[0..])) return error.TrueKeeperPlainWrong;
+    }
+
+    // 5. SEALED-BOX FRESHNESS. Two DIFFERENT ephemerals sealing the same message to the same identity produce DIFFERENT frames (fresh key + nonce
+    //    per ephemeral), yet BOTH open as the keeper to the same plaintext — reuse-free sealing to an identity is safe.
+    {
+        var esk2: [32]u8 = undefined;
+        fill_test(esk2[0..], 77);
+        var plain_buf: [128]u8 = undefined;
+        fill_test(plain_buf[0..], 13);
+        const f1 = try seal_to_identity(&keeper, &esk, plain_buf[0..], frame_buf[0..]);
+        const f2 = try seal_to_identity(&keeper, &esk2, plain_buf[0..], frame_buf2[0..]);
+        if (bytes_eq(frame_buf[session.header_len .. session.header_len + 128], frame_buf2[session.header_len .. session.header_len + 128])) return error.NoFreshness;
+        const o1 = try open_as_identity(&keeper, frame_buf[0..f1], out_buf[0..]);
+        if (!bytes_eq(o1.plain, plain_buf[0..])) return error.FreshnessPlain1Wrong;
+        const o2 = try open_as_identity(&keeper, frame_buf2[0..f2], out2[0..]);
+        if (!bytes_eq(o2.plain, plain_buf[0..])) return error.FreshnessPlain2Wrong;
+    }
+
+    // 6. DETERMINISM given a fixed ephemeral. Same identity + ephemeral + message seal to byte-identical frames — the whole path is a pure
+    //    function of its inputs (no hidden randomness inside the seal).
+    {
+        var plain_buf: [128]u8 = undefined;
+        fill_test(plain_buf[0..], 21);
+        const f1 = try seal_to_identity(&keeper, &esk, plain_buf[0..], frame_buf[0..]);
+        const f2 = try seal_to_identity(&keeper, &esk, plain_buf[0..], frame_buf2[0..]);
+        if (f1 != f2 or !bytes_eq(frame_buf[0..f1], frame_buf2[0..f2])) return error.DeterminismWrong;
+    }
+
+    // 7. INHERITED TAMPER GUARDS. A Kumara sealed message IS a sealed session frame, so the frame's own verify-before-trust still fires through
+    //    open_as: a flipped ciphertext byte, a flipped ephemeral-key byte, and a broken magic each refuse with the sealed session's named error.
+    {
+        var plain_buf: [64]u8 = undefined;
+        fill_test(plain_buf[0..], 41);
+
+        // Flip a ciphertext byte — the AEAD tag no longer verifies.
+        const flen = try seal_to_identity(&keeper, &esk, plain_buf[0..], frame_buf[0..]);
+        frame_buf[session.header_len + 3] ^= 0x01;
+        if (open_as_identity(&keeper, frame_buf[0..flen], out_buf[0..])) |_| return error.TamperCipherOpened else |e| {
+            if (e != error.OpenFailed) return error.TamperCipherWrongError;
+        }
+
+        // Flip an ephemeral-key byte — the rederived shared secret changes, so key and nonce change and the tag fails.
+        const flen2 = try seal_to_identity(&keeper, &esk, plain_buf[0..], frame_buf[0..]);
+        frame_buf[session.magic_len + 5] ^= 0x01;
+        if (open_as_identity(&keeper, frame_buf[0..flen2], out_buf[0..])) |_| return error.TamperEpkOpened else |e| {
+            if (e != error.OpenFailed) return error.TamperEpkWrongError;
+        }
+
+        // Break the magic — this is refused as not a sealed frame at all.
+        const flen3 = try seal_to_identity(&keeper, &esk, plain_buf[0..], frame_buf[0..]);
+        frame_buf[0] = 'X';
+        if (open_as_identity(&keeper, frame_buf[0..flen3], out_buf[0..])) |_| return error.BadMagicOpened else |e| {
+            if (e != error.BadMagic) return error.BadMagicWrongError;
+        }
+    }
+
+    // 8. OUT-TOO-SMALL. Sealing into a buffer that cannot hold the whole frame is refused before a byte is written.
+    {
+        var small: [session.frame_overhead + 10]u8 = undefined;
+        var plain_buf: [64]u8 = undefined;
+        fill_test(plain_buf[0..], 61);
+        if (seal_to_identity(&keeper, &esk, plain_buf[0..], small[0..])) |_| return error.SmallOutAccepted else |e| {
+            if (e != error.OutTooSmall) return error.SmallOutWrongError;
+        }
+    }
+
+    print("GREEN crypto-kumara-sealed: a message sealed TO a named Kumara identity, and opened AS that identity — Season G's composition that " ++
+        "reaches identity through the sealed-session door. Where crypto/kumara_carry.rye answers 'did THIS keeper make this record' " ++
+        "(provenance), this rung answers 'only THIS keeper can read this message' (confidentiality): the Comlink private-message door. It " ++
+        "authors NO new cryptography and adds NO new frame — a Kumara sealed message IS a Grain Sealed Session v1 frame addressed through the " ++
+        "identity's X25519 keypair. The crux: a Kumara identity signs with Ed25519 yet a sealed box agrees with X25519, so seal_to converts " ++
+        "the recipient's Ed25519 PUBLIC key to the X25519 public it seals to (eddsa_to_x25519) and open_as converts the recipient's Ed25519 " ++
+        "SEED to the X25519 secret it opens with (eddsa_secret_to_x25519) — two halves of ONE identity key, agreeing because " ++
+        "x25519_base(secret) = eddsa_to_x25519(public), the property ed25519_to_x25519 proves GREEN and this rung re-anchors on a REAL Kumara " ++
+        "identity. GREEN on the first metal pass: a sender holding only the keeper's published identity round-trips seven plaintext lengths " ++
+        "(empty → 64 KiB) as the keeper; the message is enciphered, not clear; a DIFFERENT identity is refused OpenFailed while the true keeper " ++
+        "still opens it; two ephemerals seal fresh frames that both open; sealing is deterministic given a fixed ephemeral; and the inherited " ++
+        "guards (a flipped ciphertext byte, a flipped ephemeral-key byte, a broken magic, an undersized out buffer) each refuse with the sealed " ++
+        "session's own named error. TEST identities only, from BIP-39's published Trezor vector; sealing to or opening as the maintainer's own " ++
+        "Kumara identity, grown from a real seed, stays the custody gate; constant-time timing-safety stays the named horizon. Purely local — " ++
+        "no network, no funds, no real device. One identity, one seed: it both signs and now receives.\n", .{});
+    return 0;
+}
+
+pub fn main(init_args: std.process.Init) !u8 {
+    _ = init_args;
+    return run_selftest();
+}

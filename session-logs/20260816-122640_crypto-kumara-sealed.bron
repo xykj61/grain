@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260816.122640
+editor Zed
+model Claude Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title crypto/kumara_sealed — a message sealed TO a Kumara identity, opened AS it, GREEN
+prompt take the next agent-doable lap Lindy-first crux-first; Rye prioritized, Glow on green Rye; send often as its own signed round; stop at custody gates; baton prin recur
+think Read REMEMBER's crypto arc, the 1024-round itinerary, the six-season double-seat, and the rye-first crypto decision wave. Season G — Cryptography stays the highest-Lindy live spine; the prior round (ed25519_to_x25519 secret half) named Round 2 outright: seal a message TO a Kumara identity, open it AS the identity — the Comlink private-message door.
+think Found crypto/kumara_sealed.rye already authored and untracked, a complete composition with an eight-part selftest. Ran it on metal: GREEN. The lap's remaining work was the completion the module convention demands — its per-file witness, its README row, its suite-registry entry, and the file count guard.
+think Lindy-first: this is the confidentiality sibling of kumara_carry (provenance) — every Comlink DM ever passes through this door, so finishing and sending it is the durable move. It authors no new cryptography and enlarges no frame: a Kumara sealed message IS a sealed_session v1 frame addressed through the identity's X25519 keypair, reached by the birational map (public via eddsa_to_x25519, secret via eddsa_secret_to_x25519).
+obs Wrote tools/crypto_kumara_sealed_witness.rish modelled on the attestation witness; it builds fresh to crypto/bin and asserts the GREEN crypto-kumara-sealed line. Registered it as the suite's 56th witness. Added the README composition row and bumped the header count fifty-five→fifty-six, twenty→twenty-one compositions (docs-implementation-sync in the same round).
+obs tame_style_check GREEN (bans clean); per-file witness GREEN end to end. No custody gate crossed — TEST identities only from BIP-39's published Trezor vector; sealing to or opening as the maintainer's own identity stays gate #3/#4, and constant-time timing-safety stays the named horizon.
+loom witness=crypto_kumara_sealed_witness result=GREEN plaintext_lengths=7 span=empty..65536 guards=cipher+epk+magic+small
+file crypto/kumara_sealed.rye the composition — seal_to/open_as address the sealed-session frame through the identity's X25519 keypair
+file tools/crypto_kumara_sealed_witness.rish per-file witness, builds fresh and asserts the GREEN line
+file tools/crypto_suite_witness.rish registers kumara_sealed as the suite's 56th witness
+file crypto/README.md composition row for kumara_sealed and the fifty-six/twenty-one count sync
+recommend keep-going — the identity arc's send/receive halves both stand; next durable crux is a Comlink/Vault composition that carries a sealed Kumara message over the wire, or the parity-witness horizon; count guard 56, docs+suite in sync
