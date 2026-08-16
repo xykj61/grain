@@ -1,0 +1,76 @@
+# tools/crypto_monocypher_argon2_parity_witness.rish — Monocypher-source parity for Argon2, the memory-hard password KDF Vault's seal rests on.
+# Our authored crypto/argon2.rye and the vendored Monocypher's own C (vendor/monocypher, CC0/BSD-dual), each compiled fresh and asked for their
+# Argon2d, Argon2i, and Argon2id derived keys over RFC 9106's primary p=4 vector, diffed byte-for-byte. The FIFTH rung of the real
+# Monocypher-source parity pattern — BLAKE2b opened it, X25519 and Ed25519 extended it, the ChaCha/Poly AEAD closed the four the decision wave
+# named, and this rung carries the same discipline to Argon2, the password KDF Monocypher itself implements and any auditor of a key vault names
+# first. Season G · Cryptography.
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G names the parity witness "proving
+# Rye output equals Monocypher output byte-for-byte" as its crux rung, and Argon2 as the stone Vault stands on so a key need never live on the
+# device. Grain will face a security audit; parity against the ACTUAL library an auditor names, not merely a recited constant, is the honest way
+# to earn it.
+# Kin: crypto/argon2.rye (our authored KDF, GREEN against RFC 9106's known-answers and Zig's std.crypto) · crypto/blake2b.rye (the hash its whole
+# diffusion is) · tools/monocypher_argon2_parity.rye (our printing harness) · tools/fixtures/monocypher_argon2_harness.c (Monocypher's printing
+# harness) · tools/crypto_monocypher_aead_parity_witness.rish (the AEAD sibling). Monocypher stays the parity TARGET, vendored and unmodified,
+# never a copied line — our own Rye, studied clean-room (.claude/rules/gratitude-licenses.md).
+#
+# THE PARITY: Monocypher's crypto_argon2 fills a work area of nb_blocks 1024-byte blocks, folds the RFC 9106 pre-image
+# (H0 = BLAKE2b(params ‖ pw ‖ salt ‖ secret ‖ ad)), stirs each block through the BlaMka permutation over nb_passes, and derives the key from the
+# folded final block — exactly what crypto/argon2.rye composes from the GREEN crypto/blake2b.rye. Each implementation prints three lines — the
+# Argon2d, Argon2i, and Argon2id derived keys — over RFC 9106's own primary p=4 vector; the witness diffs the two outputs byte-for-byte AND
+# anchors all three to RFC 9106's published known-answers, so the oracle is a real second implementation, never a recited constant. Purely local
+# — RFC 9106's public TEST inputs, no real password, no identity key, no network, no funds, no device; constant-time timing-safety stays the
+# Season's named horizon, and deriving from a real password stays the custody gate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_monocypher_argon2_parity_witness.rish
+
+say "crypto-monocypher-argon2-parity: Language EN — Monocypher-source parity for Argon2, the fifth Monocypher-SOURCE parity rung. The BLAKE2b, X25519, Ed25519, and ChaCha/Poly siblings proved hashing, key agreement, signing, and authenticated encryption against the vendored Monocypher; this rung proves our authored crypto/argon2.rye — the memory-hard password KDF Vault's seal rests on — against the ACTUAL vendored Monocypher C over RFC 9106's primary p=4 vector, all three modes, byte-for-byte. Argon2 is the primitive Monocypher itself implements and any auditor of a password vault names first."
+say "crypto-monocypher-argon2-parity: Style Radiant — like against like. Our authored Argon2 and the unmodified vendored Monocypher each compile fresh and each print, in order, the Argon2d, Argon2i, and Argon2id derived keys (32 bytes each) over RFC 9106's own password 0x01*32, salt 0x02*16, secret 0x03*8, and additional data 0x04*12, at t=3 passes, m=32 blocks, p=4 lanes. Two independent implementations, one RFC-published vector; the parity is that the three outputs agree hex for hex, and that all three agree with RFC 9106's published known-answers."
+say "crypto-monocypher-argon2-parity: Lens TAME — no fabricated constant is trusted: Monocypher's crypto_argon2 and crypto/argon2.rye fold the identical RFC 9106 pre-image through the same BlaMka diffusion, and all three outputs are anchored to RFC 9106's published Argon2d, Argon2i, and Argon2id known-answers. Monocypher is linked, never copied — clean-room discipline holds. Purely local — RFC 9106's public TEST inputs, no real password, no identity key, no network, no funds, no device; constant-time timing-safety stays the named horizon, and deriving from a real password stays the custody gate."
+
+let zig = "vendor/zig-toolchain/zig"
+let cbin = "crypto/bin/monocypher_argon2"
+let cout = "crypto/bin/monocypher_argon2.out"
+let rout = "crypto/bin/rye_argon2.out"
+
+# 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_argon2_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
+assert cbuild.ok else "crypto-monocypher-argon2-parity: Monocypher C harness build failed — ${cbuild.err}"
+
+# 2. Run the Monocypher C harness — three Argon2 hex lines: Argon2d, Argon2i, Argon2id.
+let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]
+assert crun.ok else "crypto-monocypher-argon2-parity: Monocypher C harness exited non-zero — see ${cout}"
+
+# 3. Run our authored Rye harness — the same three Argon2 hex lines over the identical inputs.
+let rrun = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run tools/monocypher_argon2_parity.rye > ${rout} 2>&1"]
+assert rrun.ok else "crypto-monocypher-argon2-parity: Rye harness exited non-zero — see ${rout}"
+
+# 4. Byte-for-byte parity: the two three-line outputs must be identical.
+let diff = run ["sh" "-c" "diff ${cout} ${rout} > /dev/null && echo same"]
+assert (trim diff.out) == "same" else "crypto-monocypher-argon2-parity: Monocypher and Rye Argon2 disagree — Monocypher:\n$(cat ${cout})\nRye:\n$(cat ${rout})"
+
+# 5. Anchor to the world: RFC 9106's published Argon2d (line 1), Argon2i (line 2), and Argon2id (line 3) known-answers.
+let rfc_2d = "512b391b6f1162975371d3091973429 4f868e3be3984f3c1a13a4db9fabe4acb"
+let rfc_2i = "c814d9d1dc7f37aa13f0d77f2494bda1 c8de6b016dd388d29952a4c4672b6ce8"
+let rfc_2id = "0d640df58d78766c08c037a34a8b53c9 d01ef0452d75b65eb52520e96b01e659"
+
+# The published constants above carry one space for readability; strip it before comparing.
+let want_2d = run ["sh" "-c" "printf '%s' '${rfc_2d}' | tr -d ' '"]
+let want_2i = run ["sh" "-c" "printf '%s' '${rfc_2i}' | tr -d ' '"]
+let want_2id = run ["sh" "-c" "printf '%s' '${rfc_2id}' | tr -d ' '"]
+
+let got_2d = run ["sh" "-c" "sed -n '1p' ${cout}"]
+assert (trim got_2d.out) == (trim want_2d.out) else "crypto-monocypher-argon2-parity: Argon2d is not the RFC 9106 published value"
+
+let got_2i = run ["sh" "-c" "sed -n '2p' ${cout}"]
+assert (trim got_2i.out) == (trim want_2i.out) else "crypto-monocypher-argon2-parity: Argon2i is not the RFC 9106 published value"
+
+let got_2id = run ["sh" "-c" "sed -n '3p' ${cout}"]
+assert (trim got_2id.out) == (trim want_2id.out) else "crypto-monocypher-argon2-parity: Argon2id is not the RFC 9106 published value"
+
+let shown = run ["sh" "-c" "cat ${cout}"]
+say "crypto-monocypher-argon2-parity: the RFC 9106 primary derived keys, agreed by both implementations (Argon2d, Argon2i, Argon2id):\n${shown.out}"
+
+say "GREEN crypto-monocypher-argon2-parity: our authored crypto/argon2.rye and the vendored Monocypher's own C, each compiled fresh, produce byte-for-byte identical Argon2 derived keys over RFC 9106's primary p=4 vector — all three modes (Argon2d, Argon2i, Argon2id) match, and all three match the RFC's published known-answers. The fifth real Monocypher-SOURCE parity rung, carrying the discipline past the four the decision wave named to Argon2, the memory-hard password KDF Vault's seal rests on. Monocypher stays vendored and unmodified, linked never copied. Purely local, no real password, no identity key, no signature, no network, no funds, no device; constant-time timing-safety stays the named horizon, and deriving from a real password stays the custody gate."

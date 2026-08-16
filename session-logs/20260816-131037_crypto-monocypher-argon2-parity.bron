@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260816.131037
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title crypto — Monocypher-source parity for Argon2, GREEN
+prompt take the next agent-doable lap Lindy-first crux-first on the road ahead; Rye prioritized, Glow on green-witnessed Rye; send each finished increment; stop at the custody gates
+think Read REMEMBER, the 1024-round itinerary, the six-season double-seat, and the decision wave. The freshest arc is Season G crypto — the four Monocypher-source parity rungs (BLAKE2b, X25519, Ed25519, ChaCha/Poly AEAD) landed in the last four commits, closing the four primitive families the decision wave named.
+think Monocypher also implements Argon2 (crypto_argon2, config+inputs+extras), and our crypto/argon2.rye is GREEN against RFC 9106 and Zig std.crypto. Argon2 is the memory-hard KDF Vault's seal rests on — the highest-Lindy remaining parity rung and exactly the primitive an auditor of a password vault names first. Chose it as the fifth rung, crux-first: Argon2 is the hardest-solvable remaining parity (memory-hard, BLAKE2b-internal), and once proven Vault's KDF stands on library-parity ground.
+think Verified the vendored Monocypher header exposes crypto_argon2 with key(secret)+ad extras and mode numbering (d=0,i=1,id=2) matching our Mode enum, so RFC 9106's primary p=4 vector (secret 0x03*8, ad 0x04*12) maps one-to-one. Reused the proven sibling shape from the AEAD rung exactly.
+think Built three files: tools/fixtures/monocypher_argon2_harness.c (links unmodified vendored source through zig cc, prints three hex lines — Argon2d, Argon2i, Argon2id — over the RFC 9106 primary vector, 64-byte-aligned static 32-block work area), tools/monocypher_argon2_parity.rye (prints the same three lines over the GREEN crypto/argon2.rye, reached via tools/argon2.rye + tools/blake2b.rye symlinks), and tools/crypto_monocypher_argon2_parity_witness.rish (diffs the two three-line outputs byte-for-byte AND anchors all three to RFC 9106's published Argon2d/Argon2i/Argon2id known-answers).
+obs GREEN on the first full pass: byte-identical Argon2 across all three modes, all three matching RFC 9106's published known-answers (Argon2id 0d640df5…e659). No fabricated constant — the oracle is the actual vendored Monocypher, a real second implementation.
+obs Count guard untouched — harness Rye and the argon2.rye symlink live in tools/, so crypto/*.rye stays 56; the monocypher parity witnesses stand outside the suite as the four siblings do.
+obs Docs synced in the same round (docs-implementation-sync): crypto/README.md and docs/CRYPTO.md both still called Monocypher-source parity an unfulfilled horizon behind a held fetch — stale since the first four rungs landed. Rewrote both to state parity is LANDED, five rungs GREEN (BLAKE2b, X25519, Ed25519, AEAD, Argon2), each anchored to its RFC known-answer.
+obs Gate-free and purely local — RFC 9106's public TEST inputs, no real password, no identity key, no signature, no network, no funds, no device. Constant-time timing-safety stays the one named horizon; deriving from a real password stays the custody gate (#3/#4).
+loom witness=crypto_monocypher_argon2_parity_witness modes=3 out_bytes=32 nb_blocks=32 passes=3 lanes=4 result=green_first_pass
+file tools/fixtures/monocypher_argon2_harness.c the Monocypher C harness — three Argon2 derived keys over the RFC 9106 primary vector
+file tools/monocypher_argon2_parity.rye our authored Rye harness over the GREEN crypto/argon2.rye, same three lines
+file tools/crypto_monocypher_argon2_parity_witness.rish the parity witness — byte-for-byte diff plus RFC 9106 anchor, GREEN
+file tools/argon2.rye symlink to ../crypto/argon2.rye so the Rye harness resolves the import beside itself
+file crypto/README.md Monocypher-source parity bullet moved from horizon to landed (five rungs)
+file docs/CRYPTO.md same sync — parity landed, constant-time the one remaining horizon
+recommend keep-going — extend Monocypher-source parity is now complete for every primitive Monocypher implements; next crux is the docs-compression molt that feeds the seed, or a Comlink-over-wire composition (a Claude check-in for the wire seam)

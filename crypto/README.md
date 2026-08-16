@@ -146,9 +146,12 @@ is re-provable by tooling, not trusted from a commit message alone.
   are data-independent by construction, and the one path (Ed25519 signing) that is
   **deliberately variable-time** — in [`CONSTANT_TIME.md`](CONSTANT_TIME.md), the
   Season's constant-time discipline note.
-- **Monocypher-source parity** is a **horizon** behind the held `vendor/monocypher`
-  network fetch; today's parity is proven against the RFC vectors and Zig's
-  `std.crypto`, both runnable now.
+- **Monocypher-source parity** is **landed**: the vendored `vendor/monocypher`
+  (CC0/BSD-dual, unmodified) is compiled fresh and diffed byte-for-byte against our
+  authored Rye over the published vectors. Five rungs stand GREEN — **BLAKE2b**,
+  **X25519**, **Ed25519**, the **ChaCha20-Poly1305 AEAD**, and **Argon2** (all three
+  modes) — each also anchored to its RFC known-answer, so the oracle is a real second
+  implementation. Parity against Zig's `std.crypto` still holds beside it.
 - **The keys stay the maintainer's hand.** Every witness runs over **TEST** keys and
   the RFC's public vectors — no real identity key, no network, no funds, no real
   device. Signing a record, or agreeing a session, with the maintainer's **own**

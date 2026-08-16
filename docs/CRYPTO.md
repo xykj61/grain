@@ -197,10 +197,12 @@ a session, with the maintainer's **own** identity key stays a **custody gate**
 hand. `ed25519_sign.rye`'s `derive_public(seed)` and `sign(seed, msg)` take a
 caller-supplied seed — a test seed is not the maintainer's identity key.
 
-Two further horizons stay honest: **Monocypher-source parity** waits behind the
-held `vendor/monocypher` network fetch (today's parity is the RFC vectors plus
-Zig's `std.crypto`, both runnable now), and **constant-time** waits on
-measurement as above.
+**Monocypher-source parity is landed:** the vendored `vendor/monocypher`
+(CC0/BSD-dual, unmodified) is compiled fresh and diffed byte-for-byte against our
+authored Rye over the published vectors — five rungs GREEN (BLAKE2b, X25519,
+Ed25519, the ChaCha20-Poly1305 AEAD, and Argon2 across all three modes), each also
+anchored to its RFC known-answer. One horizon stays honest beside it:
+**constant-time** waits on measurement as above.
 
 ---
 
