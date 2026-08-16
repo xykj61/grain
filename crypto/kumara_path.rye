@@ -1,0 +1,368 @@
+//! crypto/kumara_path.rye — Season G (Cryptography), the identity arc's account-path rung: the ed25519 sibling of crypto/bip44.rye. Where
+//! crypto/slip10_ed25519.rye grows one BIP-39 seed into a whole TREE of ed25519 identity keys and derives a child by a bare hardened index,
+//! this rung is the CONVENTION that gives that tree a named, copyable shape — m / purpose' / coin_type' / account' / index', every level hardened
+//! — so a keeper's Kumara identity is reached the same way from the same phrase on any device. It is the parser and the walker of that path:
+//! parse_path reads the human "m/44'/0'/0'/0'" text into the exact 32-bit hardened index list; derive_path and derive_identity walk
+//! crypto/slip10_ed25519.rye's ckd_priv down that list from the master to the identity key a Kumara signature is made with.
+//!
+//! It authors NO new cryptography. Every HMAC, every clamp, every scalar lives one rung down in the already-GREEN crypto/slip10_ed25519.rye
+//! (itself only HMAC-SHA-512 and the ed25519 public derivation); this module contributes only the path grammar. The one difference from its
+//! secp256k1 sibling crypto/bip44.rye is the law ed25519 imposes: SLIP-0010 admits ONLY hardened derivation over ed25519 (a normal child has no
+//! defined public-parent form), so this parser REQUIRES a hardening marker on every level and refuses a bare index NotHardened — where bip44's
+//! parser accepts both. The recipe (BIP-44 §"Path levels", turned toward identity over SLIP-0010's ed25519 curve):
+//!   m / 44' / coin_type' / account' / index'
+//! with 44' the purpose fixed by BIP-43, coin_type' the SLIP-44-style coin slot (a registered Grain identity coin type is a named horizon, so it
+//! stays a caller-supplied value rather than a fabricated constant), account' a hardened account number, and index' the hardened leaf. All four
+//! levels are hardened because ed25519 has no watch-only public-parent path — the whole tree is reached only from the seed.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave — the library
+//! that serves Kumara identity, Vault, Comlink, and the Lotus signed carry; this rung is the identity arc's account path, the ed25519 answer to the
+//! wallet arc's crypto/bip44.rye).
+//! Kin: crypto/slip10_ed25519.rye (the ed25519 HD tree this walks, GREEN on metal) · crypto/bip44.rye (the secp256k1 account-path sibling) ·
+//! crypto/bip39_seed.rye (the seed that grows the master) · crypto/ed25519_sign.rye (the public derivation two rungs down). Monocypher
+//! (vendor/monocypher, CC0/BSD-dual) is the parity DISCIPLINE target for the primitives beneath; the path convention and SLIP-0010's test vectors
+//! are public standards, studied clean-room (.claude/rules/gratitude-licenses.md).
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. Every key walked here is a TEST key derived from SLIP-0010's
+//! own published test-vector seeds; this module calls no std.crypto. Constant-time discipline does not arise in the parser: a derivation path is
+//! public structure (a device shows it), not a secret; only the keys it reaches are secret, and their timing-safety is crypto/slip10_ed25519.rye's
+//! and crypto/ed25519_sign.rye's named horizon, not this parser's (crypto/CONSTANT_TIME.md). Growing a REAL Kumara identity and signing with its
+//! key stays the custody gate (#3/#4) — the agent builds and verifies the derivation, never holds the maintainer's key.
+//!
+//! Parity is proven at selftest the replayable way the tree favours, against SLIP-0010's OWN published ed25519 test vectors (the spec's own
+//! known-answers, quoted character for character from the canonical satoshilabs/slips slip-0010.md, never fabricated): walking each of the six
+//! nodes of Test Vector 1 and Test Vector 2 BY ITS HUMAN PATH STRING ("m", "m/0'", … "m/0'/1'/2'/2'/1000000000'") reproduces EXACTLY the spec's
+//! published private key, chain code, AND 0x00-prefixed public key at every node — so the path parser, the hardening requirement, and the walk are
+//! all proven against a real standard answer without a single external fetch. The Kumara convention itself is proven: "m/44'/0'/0'/0'" parses to
+//! the exact all-hardened index list, derive_identity and derive_path agree byte-for-byte, and a malformed path (a bare non-hardened index, no
+//! master, a non-digit index, an index at 2³¹, a too-deep path, a trailing slash) each raises its named error.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/kumara_path.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const slip10 = @import("slip10_ed25519.rye");
+const bip32 = @import("bip32.rye");
+const hmac = @import("hmac_sha512.rye");
+
+pub const kumara_path_version = "20260816.160000";
+
+/// The fixed Kumara identity-path levels, named rather than scattered as magic numbers. The purpose is fixed by BIP-43 (44), reused by the ed25519
+/// identity convention. A registered Grain SLIP-44 coin type is a named HORIZON — until then the coin slot is a caller-supplied value, so this
+/// module fabricates no registry number it has not earned.
+pub const purpose: u32 = 44;
+
+/// A generous ceiling on a parsed path's depth. The Kumara convention is exactly four levels below the master; sixteen bounds the parser well
+/// above any real identity path while staying under crypto/slip10_ed25519.rye's own thirty-two-level derivation ceiling.
+pub const max_path_depth: u32 = 16;
+
+/// The largest decimal an index string may carry (ten digits), so the parse loop is bounded and a wildly long token is refused early.
+const max_index_digits: u32 = 10;
+
+/// The faults this rung can raise, each refused at the edge before a wrong index or a malformed path walks the tree.
+pub const KumaraPathError = error{
+    /// A path that is empty, does not begin with the master 'm', has a missing or misplaced separator, an empty index token, or a trailing slash.
+    BadPath,
+    /// A bare index at or above 2³¹ (the hardened offset) — a level's value must stay below it, the hardening bit is added by the parser itself.
+    IndexTooLarge,
+    /// A level with no hardening marker — ed25519/SLIP-0010 admits only hardened derivation, so every Kumara-path level must carry a ' / h / H.
+    NotHardened,
+    /// A path deeper than max_path_depth levels — refused before the walk overruns its bound.
+    PathTooDeep,
+};
+
+/// Parse a hardened-only ed25519 derivation path ("m", "m/44'/0'/0'/0'", "m/0'/1'") into `out` as the exact 32-bit index list, returning the
+/// depth. EVERY level must carry a hardening marker (' or h or H) — the hardened offset (2³¹) is added to its value — because ed25519 has no
+/// normal (public-parent) child; a bare level raises NotHardened. "m" alone yields zero indices (the master itself). No cryptography here: pure
+/// text over a bounded decimal.
+pub fn parse_path(out: *[max_path_depth]u32, path: []const u8) KumaraPathError!u32 {
+    // invariant: a path names the master first — an empty path or one not rooted at 'm' cannot describe a node.
+    if (path.len == 0) return error.BadPath;
+    if (path[0] != 'm') return error.BadPath;
+
+    var i: u32 = 1;
+    var count: u32 = 0;
+    while (i < path.len) {
+        // Each level after the master opens with a single '/' separator.
+        if (path[i] != '/') return error.BadPath;
+        i += 1;
+
+        // At least one decimal digit must follow the separator — no empty token, no trailing slash.
+        if (i >= path.len or path[i] < '0' or path[i] > '9') return error.BadPath;
+
+        var value: u32 = 0;
+        var digits: u32 = 0;
+        while (i < path.len and path[i] >= '0' and path[i] <= '9') : (i += 1) {
+            // invariant: an index token never runs past ten digits — a u32 index needs at most ten, and this bounds the loop.
+            if (digits >= max_index_digits) return error.IndexTooLarge;
+            digits += 1;
+            const d: u32 = path[i] - '0';
+            // Overflow-safe accumulation kept entirely in u32: guard before the multiply and before the add so the bare value can never wrap or
+            // reach the hardened offset. A valid bare value is 0..2³¹-1; the parser adds the hardened offset itself once the marker is seen.
+            if (value > (bip32.hardened_offset - 1) / 10) return error.IndexTooLarge;
+            value = value * 10;
+            if (value > bip32.hardened_offset - 1 - d) return error.IndexTooLarge;
+            value += d;
+        }
+
+        // invariant: ed25519 admits ONLY hardened derivation — every level must carry a ' / h / H marker; a bare index has no ed25519 child.
+        if (i >= path.len or (path[i] != '\'' and path[i] != 'h' and path[i] != 'H')) return error.NotHardened;
+        i += 1;
+
+        // invariant: the parsed depth stays within its named ceiling before another level is recorded.
+        if (count >= max_path_depth) return error.PathTooDeep;
+        out[count] = value + bip32.hardened_offset;
+        count += 1;
+    }
+    // invariant: a "m"-only path yields zero levels; every other path yields at least one and never more than the ceiling.
+    assert(count <= max_path_depth);
+    return count;
+}
+
+/// Derive the ed25519 node at `path` from `seed`: parse the human path, grow the master from the seed, then walk slip10's ckd_priv down each
+/// parsed hardened index. Composes crypto/slip10_ed25519.rye entirely — the mathematics is proven there; here is only the walk.
+pub fn derive_path(seed: []const u8, path: []const u8) (KumaraPathError || slip10.Slip10Error || hmac.HmacError)!slip10.Node {
+    var indices: [max_path_depth]u32 = undefined;
+    const count = try parse_path(&indices, path);
+    var node = try slip10.master_from_seed(seed);
+    var k: u32 = 0;
+    while (k < count) : (k += 1) {
+        // invariant: the walk never steps past the parsed depth.
+        assert(k < max_path_depth);
+        node = try slip10.ckd_priv(&node, indices[k]);
+    }
+    return node;
+}
+
+/// Derive a Kumara identity leaf m/44'/coin_type'/account'/index' directly from the three chosen level values, without a path string. All four
+/// levels are hardened here by adding the hardened offset; there is no watch-only public path over ed25519, so every level must be hardened. This
+/// is the ergonomic heart of "the Kumara identity path".
+pub fn derive_identity(
+    seed: []const u8,
+    coin_type: u32,
+    account: u32,
+    index: u32,
+) (KumaraPathError || slip10.Slip10Error || hmac.HmacError)!slip10.Node {
+    // invariant: every level stays below 2³¹ before the hardening bit is added — a value at or above it would collide with the offset.
+    if (coin_type >= bip32.hardened_offset or account >= bip32.hardened_offset or index >= bip32.hardened_offset) return error.IndexTooLarge;
+
+    var node = try slip10.master_from_seed(seed);
+    node = try slip10.ckd_priv(&node, purpose + bip32.hardened_offset);
+    node = try slip10.ckd_priv(&node, coin_type + bip32.hardened_offset);
+    node = try slip10.ckd_priv(&node, account + bip32.hardened_offset);
+    node = try slip10.ckd_priv(&node, index + bip32.hardened_offset);
+    return node;
+}
+
+fn nibble(c: u8) u8 {
+    if (c >= '0' and c <= '9') return c - '0';
+    // invariant: the vector hex uses only lowercase a–f beyond the digits.
+    assert(c >= 'a' and c <= 'f');
+    return c - 'a' + 10;
+}
+
+/// Compare two raw byte buffers — the check the direct helper and the path walk face, both raw (not hex).
+fn slices_eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) if (a[i] != b[i]) return false;
+    return true;
+}
+
+/// Compare a raw byte buffer against its lowercase-hex spelling — the replayable check every node's private key, chain code, and public key face.
+fn eq_hex(raw: []const u8, hex: []const u8) bool {
+    if (raw.len * 2 != hex.len) return false;
+    var i: u32 = 0;
+    while (i < raw.len) : (i += 1) {
+        if (raw[i] != nibble(hex[i * 2]) * 16 + nibble(hex[i * 2 + 1])) return false;
+    }
+    return true;
+}
+
+fn from_hex(out: []u8, hex: []const u8) u32 {
+    // invariant: two hex chars name one byte, so the buffer must hold half the hex length.
+    assert(hex.len % 2 == 0 and out.len * 2 >= hex.len);
+    var i: u32 = 0;
+    while (i < hex.len / 2) : (i += 1) out[i] = nibble(hex[i * 2]) * 16 + nibble(hex[i * 2 + 1]);
+    return @intCast(hex.len / 2);
+}
+
+// SLIP-0010's OWN published ed25519 test vectors — the spec's own known-answers, quoted character for character from the canonical
+// satoshilabs/slips slip-0010.md; nothing here is fabricated. Each node is named BY ITS HUMAN PATH STRING so the parser and the walk are proven
+// together, exactly as crypto/bip44.rye proves its walk against BIP-32's Test Vector 1.
+const v1_seed_hex = "000102030405060708090a0b0c0d0e0f";
+const v1_paths = [_][]const u8{
+    "m",
+    "m/0'",
+    "m/0'/1'",
+    "m/0'/1'/2'",
+    "m/0'/1'/2'/2'",
+    "m/0'/1'/2'/2'/1000000000'",
+};
+const v1_chain = [_][]const u8{
+    "90046a93de5380a72b5e45010748567d5ea02bbf6522f979e05c0d8d8ca9fffb",
+    "8b59aa11380b624e81507a27fedda59fea6d0b779a778918a2fd3590e16e9c69",
+    "a320425f77d1b5c2505a6b1b27382b37368ee640e3557c315416801243552f14",
+    "2e69929e00b5ab250f49c3fb1c12f252de4fed2c1db88387094a0f8c4c9ccd6c",
+    "8f6d87f93d750e0efccda017d662a1b31a266e4a6f5993b15f5c1f07f74dd5cc",
+    "68789923a0cac2cd5a29172a475fe9e0fb14cd6adb5ad98a3fa70333e7afa230",
+};
+const v1_priv = [_][]const u8{
+    "2b4be7f19ee27bbf30c667b642d5f4aa69fd169872f8fc3059c08ebae2eb19e7",
+    "68e0fe46dfb67e368c75379acec591dad19df3cde26e63b93a8e704f1dade7a3",
+    "b1d0bad404bf35da785a64ca1ac54b2617211d2777696fbffaf208f746ae84f2",
+    "92a5b23c0b8a99e37d07df3fb9966917f5d06e02ddbd909c7e184371463e9fc9",
+    "30d1dc7e5fc04c31219ab25a27ae00b50f6fd66622f6e9c913253d6511d1e662",
+    "8f94d394a8e8fd6b1bc2f3f49f5c47e385281d5c17e65324b0f62483e37e8793",
+};
+const v1_pub = [_][]const u8{
+    "00a4b2856bfec510abab89753fac1ac0e1112364e7d250545963f135f2a33188ed",
+    "008c8a13df77a28f3445213a0f432fde644acaa215fc72dcdf300d5efaa85d350c",
+    "001932a5270f335bed617d5b935c80aedb1a35bd9fc1e31acafd5372c30f5c1187",
+    "00ae98736566d30ed0e9d2f4486a64bc95740d89c7db33f52121f8ea8f76ff0fc1",
+    "008abae2d66361c879b900d204ad2cc4984fa2aa344dd7ddc46007329ac76c429c",
+    "003c24da049451555d51a7014a37337aa4e12d41e485abccfa46b47dfb2af54b7a",
+};
+
+const v2_seed_hex = "fffcf9f6f3f0edeae7e4e1dedbd8d5d2cfccc9c6c3c0bdbab7b4b1aeaba8a5a29f9c999693908d8a8784817e7b7875726f6c696663605d5a5754514e4b484542";
+const v2_paths = [_][]const u8{
+    "m",
+    "m/0'",
+    "m/0'/2147483647'",
+    "m/0'/2147483647'/1'",
+    "m/0'/2147483647'/1'/2147483646'",
+    "m/0'/2147483647'/1'/2147483646'/2'",
+};
+const v2_chain = [_][]const u8{
+    "ef70a74db9c3a5af931b5fe73ed8e1a53464133654fd55e7a66f8570b8e33c3b",
+    "0b78a3226f915c082bf118f83618a618ab6dec793752624cbeb622acb562862d",
+    "138f0b2551bcafeca6ff2aa88ba8ed0ed8de070841f0c4ef0165df8181eaad7f",
+    "73bd9fff1cfbde33a1b846c27085f711c0fe2d66fd32e139d3ebc28e5a4a6b90",
+    "0902fe8a29f9140480a00ef244bd183e8a13288e4412d8389d140aac1794825a",
+    "5d70af781f3a37b829f0d060924d5e960bdc02e85423494afc0b1a41bbe196d4",
+};
+const v2_priv = [_][]const u8{
+    "171cb88b1b3c1db25add599712e36245d75bc65a1a5c9e18d76f9f2b1eab4012",
+    "1559eb2bbec5790b0c65d8693e4d0875b1747f4970ae8b650486ed7470845635",
+    "ea4f5bfe8694d8bb74b7b59404632fd5968b774ed545e810de9c32a4fb4192f4",
+    "3757c7577170179c7868353ada796c839135b3d30554bbb74a4b1e4a5a58505c",
+    "5837736c89570de861ebc173b1086da4f505d4adb387c6a1b1342d5e4ac9ec72",
+    "551d333177df541ad876a60ea71f00447931c0a9da16f227c11ea080d7391b8d",
+};
+const v2_pub = [_][]const u8{
+    "008fe9693f8fa62a4305a140b9764c5ee01e455963744fe18204b4fb948249308a",
+    "0086fab68dcb57aa196c77c5f264f215a112c22a912c10d123b0d03c3c28ef1037",
+    "005ba3b9ac6e90e83effcd25ac4e58a1365a9e35a3d3ae5eb07b9e4d90bcf7506d",
+    "002e66aa57069c86cc18249aecf5cb5a9cebbfd6fadeab056254763874a9352b45",
+    "00e33c0f7d81d843c572275f287498e8d408654fdf0d1e065b84e2e6f157aab09b",
+    "0047150c75db263559a70d5778bf36abbab30fb061ad69f69ece61a72b0cfa4fc0",
+};
+
+/// Walk one published vector by its human path strings, checking the private key, chain code, and 33-byte public key at EVERY node against the
+/// spec's bytes — the parser, the hardening requirement, and the walk all proven together against a real standard answer.
+fn check_vector(
+    seed_hex: []const u8,
+    paths: []const []const u8,
+    chain: []const []const u8,
+    priv: []const []const u8,
+    pub_hex: []const []const u8,
+) !void {
+    // invariant: the vector's path, chain-code, private-key, and public-key arrays move in lockstep, one row per node.
+    assert(paths.len == chain.len and priv.len == chain.len and pub_hex.len == chain.len);
+
+    var seed: [64]u8 = undefined;
+    const seed_len = from_hex(seed[0..], seed_hex);
+
+    var pi: u32 = 0;
+    while (pi < paths.len) : (pi += 1) {
+        const node = try derive_path(seed[0..seed_len], paths[pi]);
+        const pk = slip10.public_key(&node);
+        if (!eq_hex(node.chain_code[0..], chain[pi])) return error.ChainCodeMismatch;
+        if (!eq_hex(node.key[0..], priv[pi])) return error.PrivMismatch;
+        if (!eq_hex(pk[0..], pub_hex[pi])) return error.PubMismatch;
+    }
+}
+
+fn run_selftest() !u8 {
+    // 1. SLIP-0010 Test Vector 1 (seed 000102…0f), walked BY HUMAN PATH STRING: each of the six nodes, reached through parse_path + derive_path
+    //    from its all-hardened path text, reproduces EXACTLY the spec's published private key, chain code, and 0x00-prefixed public key. This
+    //    proves the path grammar (the required ' marker, the separators, the decimal indices including the ten-digit 1000000000'), the walk, and
+    //    the ed25519 public derivation together, against a real standard answer, with no external fetch.
+    try check_vector(v1_seed_hex, v1_paths[0..], v1_chain[0..], v1_priv[0..], v1_pub[0..]);
+
+    // 2. SLIP-0010 Test Vector 2 (the 64-byte seed): the same three-way check across its five hardened children, including the 2147483647'- and
+    //    2147483646'-hardened indices whose decimal spelling exercises the ten-digit token bound and the high bits of the index encoding.
+    try check_vector(v2_seed_hex, v2_paths[0..], v2_chain[0..], v2_priv[0..], v2_pub[0..]);
+
+    // 3. The Kumara convention parses to the exact all-hardened index list, and derive_identity reaches the SAME leaf as the path-string walk
+    //    byte-for-byte — the direct three-value helper and the "m/44'/coin'/account'/index'" walk agree, proving neither drifts from the other.
+    {
+        const h = bip32.hardened_offset;
+        var idx: [max_path_depth]u32 = undefined;
+
+        const kumara = try parse_path(&idx, "m/44'/0'/0'/0'");
+        if (kumara != 4) return error.KumaraDepthWrong;
+        if (idx[0] != purpose + h or idx[1] != 0 + h or idx[2] != 0 + h or idx[3] != 0 + h) return error.KumaraIndicesWrong;
+
+        // The h / H markers harden exactly as ' does — a device that writes m/44h is the same path as m/44'.
+        const alt = try parse_path(&idx, "m/44h/7H/3'/9'");
+        if (alt != 4 or idx[0] != purpose + h or idx[1] != 7 + h or idx[2] != 3 + h or idx[3] != 9 + h) return error.KumaraIndicesWrong;
+
+        var seed: [32]u8 = undefined;
+        const seed_len = from_hex(seed[0..], v1_seed_hex);
+        const by_helper = try derive_identity(seed[0..seed_len], 0, 0, 0);
+        const by_path = try derive_path(seed[0..seed_len], "m/44'/0'/0'/0'");
+        if (!slices_eq(by_helper.key[0..], by_path.key[0..])) return error.HelperPathDisagree;
+        if (!slices_eq(by_helper.chain_code[0..], by_path.chain_code[0..])) return error.HelperPathChainDisagree;
+        // invariant: the identity public key is the 33-byte SLIP-0010 form — a 0x00 domain tag ahead of the compressed ed25519 key.
+        const pk = slip10.public_key(&by_helper);
+        if (pk.len != slip10.public_len or pk[0] != 0x00) return error.NotSlip10Public;
+
+        // "m" alone yields zero levels (the master itself).
+        const root = try parse_path(&idx, "m");
+        if (root != 0) return error.MasterDepthWrong;
+    }
+
+    // 4. The edges refuse, each with its named error: a BARE (non-hardened) index — the ed25519 law this parser adds over bip44 — an empty path, a
+    //    path not rooted at the master, a non-digit index token, an index at the hardened offset (2³¹, one past the largest legal bare value), a
+    //    path deeper than the ceiling, and a trailing slash.
+    {
+        var idx: [max_path_depth]u32 = undefined;
+        if (parse_path(&idx, "m/0")) |_| return error.BareSlipped else |err| if (err != error.NotHardened) return error.WrongBare;
+        if (parse_path(&idx, "m/44'/0/0'")) |_| return error.BareMidSlipped else |err| if (err != error.NotHardened) return error.WrongBareMid;
+        if (parse_path(&idx, "")) |_| return error.EmptySlipped else |err| if (err != error.BadPath) return error.WrongEmpty;
+        if (parse_path(&idx, "x/0'")) |_| return error.NoMasterSlipped else |err| if (err != error.BadPath) return error.WrongNoMaster;
+        if (parse_path(&idx, "m/0'/1'/nope'")) |_| return error.BadIndexSlipped else |err| if (err != error.BadPath) return error.WrongBadIndex;
+        if (parse_path(&idx, "m/2147483648'")) |_| return error.TooLargeSlipped else |err| if (err != error.IndexTooLarge) return error.WrongTooLarge;
+        // 2147483647 is the largest legal bare value (2³¹-1) — it must parse when hardened, one below the hardened offset.
+        if (parse_path(&idx, "m/2147483647'")) |_| {} else |_| return error.MaxIndexRejected;
+        if (parse_path(&idx, "m/0'/")) |_| return error.TrailingSlashSlipped else |err| if (err != error.BadPath) return error.WrongTrailing;
+        // A path of seventeen hardened levels is one past the sixteen-level ceiling.
+        const too_deep = "m/0'/0'/0'/0'/0'/0'/0'/0'/0'/0'/0'/0'/0'/0'/0'/0'/0'";
+        if (parse_path(&idx, too_deep)) |_| return error.TooDeepSlipped else |err| if (err != error.PathTooDeep) return error.WrongTooDeep;
+    }
+
+    print("GREEN crypto-kumara-path: the Kumara identity path authored in pure Rye — the identity arc's account-path rung, the ed25519 sibling of " ++
+        "crypto/bip44, the CONVENTION giving crypto/slip10_ed25519's HD tree its named shape m/44'/coin_type'/account'/index' so a keeper's Kumara " ++
+        "identity is reached the same way from the same phrase on any device. Authors NO new cryptography: parse_path reads the human path text " ++
+        "into the exact 32-bit hardened index list (REQUIRING a ' / h / H marker on every level, since ed25519/SLIP-0010 admits only hardened " ++
+        "derivation — a bare index refuses NotHardened), and derive_path / derive_identity walk crypto/slip10_ed25519's ckd_priv down it from the " ++
+        "master. Parity holds the replayable way, against SLIP-0010's OWN published ed25519 test vectors (quoted character for character from " ++
+        "satoshilabs/slips, never fabricated): all six nodes of BOTH Test Vector 1 (seed 000102…0f) and Test Vector 2 (the 64-byte seed), each " ++
+        "walked BY ITS HUMAN PATH STRING ('m' … 'm/0'/1'/2'/2'/1000000000''), reproduce EXACTLY the spec's private key, chain code, AND 33-byte " ++
+        "public key — proving the parser, the hardening requirement, and the walk against a real answer with no external fetch. The Kumara " ++
+        "convention itself is proven: m/44'/0'/0'/0' parses to [44+H, 0+H, 0+H, 0+H], derive_identity and derive_path agree byte-for-byte, and a " ++
+        "malformed path (a bare index, no master, a non-digit index, an index at 2³¹, a too-deep path, a trailing slash) each raises its named " ++
+        "error. Purely local — TEST keys from the spec's own seeds, no real identity key, no network, no funds, no real device; growing a REAL " ++
+        "Kumara identity and signing with its key stays the custody gate. With this rung the identity arc reaches a named leaf: phrase → seed → " ++
+        "ed25519 HD tree → Kumara identity path.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

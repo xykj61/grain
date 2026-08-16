@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260816.091115
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud bench — Eastern (EDT) time convention
+title crypto/kumara_path.rye — the Kumara identity path, parity-GREEN against SLIP-0010's own ed25519 vectors
+prompt Read REMEMBER and the three road-ahead design docs; take the next agent-doable lap Lindy-first crux-first, Rye prioritized; approve own design rounds; send each finished increment as its own signed round; stop at the custody gates.
+think Read the 1024-round itinerary, the six-season double-seat, and the Rye-first crypto-parity wave. The living arc is Season G (Cryptography): 50 files GREEN, the identity arc landed at SLIP-0010 (phrase → seed → ed25519 HD tree). The slip10 git nib itself named the next step: an ed25519 identity-path convention, or a Kumara identity-key composition over this tree.
+think Lindy-first crux-first: the ed25519 identity-path convention is the more foundational rung — every Kumara identity key stands on it — and it is provable against a real standard with zero fabrication. It is the exact structural sibling of the already-GREEN bip44.rye, turned from secp256k1 wallets to Grain's own ed25519 identity.
+think Studied bip44.rye (the secp256k1 account-path sibling) and slip10_ed25519.rye (the ed25519 HD tree beneath). The one law ed25519 adds: SLIP-0010 admits ONLY hardened derivation, so the parser must REQUIRE a ' / h / H marker on every level and refuse a bare index NotHardened — where bip44's parser accepts both.
+think Wrote crypto/kumara_path.rye: parse_path (hardened-only), derive_path (walks slip10.ckd_priv), derive_identity (the m/44'/coin'/account'/index' convention). Proved it the replayable way — walking all six nodes of BOTH SLIP-0010 Test Vector 1 and Test Vector 2 by their human path strings reproduces EXACTLY the spec's private key, chain code, and 33-byte public key, no external fetch.
+obs One mechanical red on the first build: HelperPathDisagree, from misusing eq_hex (raw-vs-hex) for a raw-vs-raw compare between derive_identity and derive_path. Added a slices_eq raw byte-compare helper; GREEN on the next build, no other reds.
+obs A registered Grain SLIP-44 coin type is a named horizon — the coin slot stays a caller-supplied value rather than a fabricated registry number, so the module earns no constant it has not earned.
+obs Non-gated: TEST keys from the spec's own seeds only. Growing a REAL Kumara identity and signing with its key stays the custody gate (#3/#4) — the agent builds and verifies the derivation, never holds the key.
+loom witness=crypto_kumara_path_witness build_ok=1 vectors=2 nodes_each=6 first_build_reds=1
+file crypto/kumara_path.rye the Kumara identity path — parse + walk over slip10's ed25519 HD tree, sixteenth composition
+file tools/crypto_kumara_path_witness.rish per-file witness building the module fresh and asserting its GREEN line
+file tools/crypto_suite_witness.rish registered kumara_path after slip10; count prose synced fifty→fifty-one, fifteen→sixteen compositions
+file crypto/README.md new rung row after bip44; heading and witness count fifty→fifty-one
+file docs/CRYPTO.md new rung row after slip10; header and rung-table count synced
+recommend keep-going the identity arc reaches a named leaf; next a Kumara identity-key composition over this tree (build+verify only, the real key the gate), or BIP-49/84 script-type paths reusing bip44's parser

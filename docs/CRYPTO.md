@@ -1,6 +1,6 @@
 # Crypto — the Season G audit front door
 
-*A Rye-native, parity-checked cryptography library — thirty-five primitives and fifteen compositions, each GREEN on metal.*
+*A Rye-native, parity-checked cryptography library — thirty-five primitives and sixteen compositions, each GREEN on metal.*
 
 **Status:** Checkable — Season G operator + auditor guide
 **Depth:** guide
@@ -32,7 +32,7 @@ vectors — never a copied line ([`gratitude-licenses.md`](../.claude/rules/grat
 
 ---
 
-## Rung table — fifty files, dependency order
+## Rung table — fifty-one files, dependency order
 
 Each rung stands on the GREEN rungs beneath it; none authors cryptography a lower
 rung had not already proven. Every file carries a per-file witness
@@ -122,6 +122,7 @@ rung had not already proven. Every file carries a per-file witness
 | `bip39_seed.rye` | BIP-39 mnemonic→seed — the wallet arc's bridge from a human backup phrase to the 512-bit seed `bip32.rye` grows the HD tree from. One recipe over the GREEN `pbkdf2_sha512.rye`: `seed = PBKDF2-HMAC-SHA-512(mnemonic, "mnemonic"‖passphrase, 2048, 64)`. Proven against BIP-39's own published Trezor vectors byte-for-byte; NFKD normalization a documented precondition, entropy→mnemonic a separate rung | PBKDF2-HMAC-SHA-512 · BIP-39 |
 | `bip44.rye` | BIP-44 account paths — the convention giving `bip32.rye`'s HD tree its five-level shape `m/44'/coin_type'/account'/change/address_index`, so every wallet reaches the same address for the same phrase. `parse_path` reads the human path text (the `'`/`h`/`H` hardened marker, decimal indices bounded overflow-safe below 2³¹) into the exact 32-bit index list; `derive_path`/`derive_bip44` walk `bip32.rye`'s `ckd_priv` down it to the account leaf. Authors no new cryptography. Parity against BIP-32's own Test Vector 1: all six nodes walked **by their human path strings** serialize to EXACTLY the spec's published xprv AND xpub, no external fetch; `m/44'/60'/0'/0/0` parses to the exact hardened index list, `derive_bip44` and `derive_path` agree byte-for-byte, malformed paths refused. TEST keys only; a real signature stays the custody gate | BIP-32 |
 | `slip10_ed25519.rye` | SLIP-0010 HD keys over the **ed25519** curve — the identity arc's HD rung, the bridge from a BIP-39 seed to Grain's OWN ed25519 identity keys (Kumara signs with ed25519). BIP-32's additive child law does not fit ed25519, so SLIP-0010 takes the child key as `I_L` directly and derives **hardened-only**: `master_from_seed` runs the `"ed25519 seed"` HMAC; `ckd_priv` derives a hardened child via `I = HMAC-SHA-512(c_par, 0x00‖ser256(k_par)‖ser32(i))`; `public_key` emits `0x00‖ed25519_public(I_L)`; `derive` walks a hardened index list. Authors no new cryptography — composes the GREEN `hmac_sha512.rye` and `ed25519_sign.rye`. Parity against SLIP-0010's own ed25519 Test Vectors 1 and 2: every chain node's private key, chain code, AND 33-byte public key reproduce EXACTLY the spec's bytes; a non-hardened index refuses `NotHardened`, an over-deep path `DepthTooDeep`. TEST keys only; a real Kumara signature stays the custody gate | HMAC-SHA-512 · Ed25519 |
+| `kumara_path.rye` | The **Kumara identity path** — the ed25519 sibling of `bip44.rye`: the convention giving `slip10_ed25519.rye`'s ed25519 HD tree its named shape `m/44'/coin_type'/account'/index'`, so a keeper's Kumara identity is reached the same way from the same phrase on any device. ed25519 admits only hardened derivation, so `parse_path` REQUIRES a `'`/`h`/`H` marker on every level (a bare index refused `NotHardened`); `derive_path`/`derive_identity` walk `slip10_ed25519.rye`'s `ckd_priv` down the all-hardened list. Authors no new cryptography. Parity against SLIP-0010's own ed25519 Test Vectors 1 and 2: all six nodes of each, walked **by their human path strings**, reproduce EXACTLY the spec's private key, chain code, AND 33-byte public key, no external fetch; `m/44'/0'/0'/0'` parses to `[44+H, 0+H, 0+H, 0+H]`, `derive_identity` and `derive_path` agree byte-for-byte, malformed paths refused. A registered Grain SLIP-44 coin type is a named horizon. TEST keys only; a real Kumara signature stays the custody gate | SLIP-0010 (Test Vectors 1·2) |
 
 ---
 
@@ -133,7 +134,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 
 [`crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) rebuilds each
 `crypto/<name>.rye` fresh from source to the gitignored `crypto/bin/` and runs all
-fifty per-file witnesses in the dependency order above, refusing whole —
+fifty-one per-file witnesses in the dependency order above, refusing whole —
 naming the file that stopped it — the moment any one goes RED. A GREEN suite means
 every claim here is re-provable by tooling, not trusted from a commit message
 alone (measurement beats memory). It then runs the **count guard**
