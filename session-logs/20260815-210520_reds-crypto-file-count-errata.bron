@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260815.210520
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title REDS — a self-caught crypto file-count miscount (eighteen written, sixteen true)
+prompt Take the next agent-doable lap Lindy-first crux-first past BUHR; send each finished increment; stop at custody gates. (This lap is the reds-first correction of a miscount the loop wrote in the prior lap.)
+think While scoping the whole-suite crypto witness (the next crux), I ran `ls crypto/*.rye | wc -l` to enumerate the files the suite runner must green — and it read SIXTEEN, not the eighteen I had just written into the sealed_session log, the README row, and commit d2c4e8167a. REMEMBER itself says SIXTEEN rungs (fourteen primitives plus two compositions). The number eighteen was wrong.
+think Reds-first: a red is something wrong; name it, record it, book the remainder to reds before new work. The red is a documentation miscount, self-caught by an ls recount before any downstream reliance — no code, no witness, no custody touched, only three prose surfaces.
+think Accrete-never-break by tier: the living README row is Tier 3 — corrected in place with an inline errata note. The dated sealed_session .bron log is Tier 2 testimony — kept unrewritten, an `errata` field appended per the one-clock law. Commit d2c4e8167a is immutable dated history — not rewritten; this log and the errata point back to it.
+think The REDS ledger (work-in-progress/REDS.md) is at 24435 of its 24576-byte `living_pin_max_bytes` cap — 141 bytes free, not enough for a full three-field row without a fold of the older living rows to archive. Rather than overflow the bound or silently skip the law, I record the red's three fields here (a Checkable record in REDS's own spirit) and BOOK the formal REDS row plus a ledger fold as the immediate next reds lap.
+obs What went wrong — the loop wrote "eighteen crypto .rye files" in a log, a README row, and a commit body; the true count is sixteen (fourteen primitives + two compositions).
+obs What caught it — `ls crypto/*.rye | wc -l` returned 16 while enumerating files for the whole-suite witness; the machine caught it, not a re-read (the pattern REDS names again).
+obs What it taught — measure before claiming, even for a count that feels obvious; a "how many files" claim is a checkable fact, so check it with the shell rather than counting from memory of an ls scroll.
+obs Booked — REDS row 75 (this red, three fields) plus a fold of older living rows to archive, since the ledger is one row from its byte cap; that fold is the next reds-allocation lap, ahead of the whole-suite witness crux.
+loom files_true=16 primitives=14 compositions=2 files_claimed_wrong=18 reds_ledger_bytes=24435 reds_ledger_cap=24576
+file session-logs/README.md living row for the sealed_session runner corrected eighteen -> sixteen with an inline errata note; new row for this correction log
+file session-logs/20260815-210227_season-g-sealed-session-witness-runner.bron errata field appended (accrete), body kept unrewritten per one-clock law
+recommend keep-going — book the reds lap: fold older REDS living rows to archive to reclaim bytes, then seat REDS row 75 with the three fields above; that reds allocation precedes the whole-suite crypto witness crux (reds-first).
