@@ -1,0 +1,44 @@
+# tools/crypto_mlkem_ring_witness.rish — the ML-KEM base ring, R_q = Z_q[X]/(X^256 + 1) with q = 3329, authored in pure Rye as Season G's
+# first post-quantum rung: modular arithmetic mod 3329, the forward and inverse Number Theoretic Transform (FIPS 203 Algorithms 9 and 10),
+# and the pointwise multiply in the NTT domain (Algorithm 11 over the Algorithm 12 base case). This is the arithmetic every later ML-KEM rung
+# (encode, sample, keygen, encaps/decaps) composes — the post-quantum counterpart to crypto/fe25519.rye (Season G · Cryptography).
+#
+# Season: crypto — Season G's first post-quantum stone, opening the ML-KEM/ML-DSA arc the pivot doc seats. This rung authors the ring
+# mathematics only; it holds no key and runs no protocol. The whole scheme's speed rests on the NTT, the finite-field FFT cousin that turns a
+# 256-by-256 schoolbook convolution into 128 tiny degree-1 products, and this witness proves that turn correct.
+# Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md (the pivot to ML-KEM/ML-DSA on the doubled oracle, and the
+# honest parity boundary: FIPS standard-domain vs Zig's Montgomery domain agree only at the encoded byte boundary, so this rung proves
+# correctness by self-consistency and the byte parity against Zig std.crypto arrives at the keygen rung). Rye-first spine:
+# active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+# Clean-room: q = 3329, zeta = 17, and the FIPS 203 butterfly schedule are the public NIST standard's own; the arithmetic is our own Rye,
+# never a copied line (.claude/rules/gratitude-licenses.md).
+#
+# crypto/mlkem_ring.rye proves itself by SELF-CONSISTENCY with no external dependency — the pattern crypto/elligator.rye stood on when Zig
+# shipped no primitive to diff: the primitive-root anchors FIPS 203 fixes (zeta^256 = 1, zeta^128 = -1, 128*3303 = 1 mod q), the NTT
+# round-trip inv_ntt(ntt(f)) = f over 64 non-trivial polynomials, and the decisive one, that multiply-in-the-NTT-domain equals schoolbook
+# negacyclic convolution — inv_ntt(ntt(f) o ntt(g)) = f (*) g in R_q — over 64 deterministic pairs. The schoolbook is the definition of the
+# ring, slow and obviously correct; its agreement with the fast NTT path proves the forward transform, the pointwise multiply and its gammas,
+# and the inverse transform all together. Purely local — no key, no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_mlkem_ring_witness.rish
+
+say "crypto-mlkem-ring: Language EN — the ML-KEM base ring is R_q = Z_q[X]/(X^256 + 1) with the prime modulus q = 3329, the one polynomial ring every lattice operation in NIST FIPS 203 (CRYSTALS-Kyber) lives in. This is the post-quantum arc's first rung — the arithmetic, not the protocol — the counterpart to crypto/fe25519.rye for the elliptic curves."
+say "crypto-mlkem-ring: Style Radiant — the law is stated positively: author the spec's standard-domain arithmetic (zeta = 17, plain reduction mod 3329), compute the twiddle tables at compile time from the field, and prove the NTT correct by self-consistency. FIPS specifies standard domain while Zig's std.crypto computes in Montgomery domain, so the byte-for-byte parity against Zig is taken at the encoded boundary at the keygen rung; here the ring proves itself."
+say "crypto-mlkem-ring: Lens TAME — bounded loops (the transform is exactly seven butterfly layers, every loop cites n = 256 or 128), contract asserts on every function, canonical residues in [0, q) throughout, twiddle tables built at comptime from the field rather than pasted. Correctness proven by self-consistency: the primitive-root anchors (zeta^256 = 1, zeta^128 = -1, 128*3303 = 1 mod q), the NTT round-trip over 64 non-trivial polynomials, and multiply-in-the-NTT-domain equal to schoolbook negacyclic convolution over 64 pairs. Data-independent by construction; constant-time timing-safety the named horizon. Purely local — no key, no network, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/mlkem_ring"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/mlkem_ring.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-mlkem-ring: build failed — ${build.err}"
+
+let outfile = "crypto/bin/mlkem_ring.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-mlkem-ring: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-mlkem-ring: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-mlkem-ring' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-mlkem-ring: selftest did not print the GREEN crypto-mlkem-ring line"
