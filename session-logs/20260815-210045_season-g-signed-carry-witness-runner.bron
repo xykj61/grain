@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260815.210045
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Season G — the signed carry witness runner, second of three tooling-parity gaps
+prompt Take the next agent-doable lap Lindy-first crux-first past BUHR — Rye prioritized, Glow on green-witnessed Rye; read REMEMBER, the 1024-round itinerary, the six-season double-seat, and the rye-first crypto parity wave; send each finished increment to origin and xykj61; stop at custody gates.
+think Fourth lap. The prior lap closed the first of three tooling-parity gaps (the X25519 runner). Continuing the kg the prior recommend named: signed_carry, the first composition, is next — provenance is the more foundational of the two remaining (a signed record is the shape Kumara identity, Vault, and the Lotus 'who made this record' carry all reach for before confidentiality).
+think Non-gated: the runner builds crypto/signed_carry.rye to the gitignored crypto/bin/ and runs its selftest over a TEST seed — no real identity key, no network, no funds, no device. Sealing a record with the maintainer's own key stays the custody gate; this only re-proves the library over a test seed.
+obs GREEN on the first run. Modeled byte-for-shape on tools/crypto_aead_witness.rish and the x25519 runner just landed: three say lines (Language EN · Style Radiant · Lens TAME), then build, selftest to crypto/bin/signed_carry.out, grep the 'GREEN crypto-signed-carry' token (note the token is crypto-signed-carry, not crypto-signed — the earlier survey grep truncated at the hyphen). The signed carry's parity story is unchanged (eight payload lengths, determinism, independent BLAKE2b + primitive-verify cross-check, seven named refusals); this lap adds the runner that re-proves it on demand.
+obs One tooling-parity gap remains — sealed_session — the next and final kg lap of this sub-arc, its own signed round. No custody gate touched.
+loom witness=crypto_signed_carry_witness payload_lengths=8 refusal_paths=7 result=GREEN
+file tools/crypto_signed_carry_witness.rish the reproducible on-metal runner for the signed carry composition — builds crypto/signed_carry.rye, runs its selftest, asserts GREEN
+file session-logs/README.md newest-first row for this lap
+recommend keep-going — one tooling-parity gap remains (sealed_session); write its witness runner as its own signed round, closing the sub-arc, then the crypto module earns a whole-suite runner and an index doc for the seed.
