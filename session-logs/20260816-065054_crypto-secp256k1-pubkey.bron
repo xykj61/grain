@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260816.065054
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) — this session in ai-jail
+title crypto/secp256k1_pubkey.rye — SEC1 public-key serialization in pure Rye, parity-GREEN
+prompt Take the next agent-doable lap Lindy-first crux-first on the crypto-parity wave; Rye first; approve own design rounds; send each finished increment as its own signed round; stop at custody gates
+think Read REMEMBER edge, the 1024-round itinerary, the six-season double-seat, and the Rye-first crypto parity wave. The live thread is Season G crypto — the last nine commits built the Ethereum/Bitcoin tower up through EIP-1559.
+think Lindy-first, crux-first: BIP-32 HD keys are the highest-Lindy next thread, yet its byte parity needs canonical base58 xprv/xpub vectors the design doc flags as a deferred web-search round — fabricating them would be a red. Chose the rung BIP-32 must stand on that CAN be proven self-contained: SEC1 public-key serialization, anchored to Zig std as an independent oracle exactly as the tree favours.
+think Confirmed the primitives are GREEN and their interfaces: secp256k1_ecdsa_sign.derive_public(d_be)->{qx,qy}, secp256k1_ecrecover.decompress(x,parity)->y. Confirmed Zig std.crypto.ecc.Secp256k1 exposes basePoint.mul, toCompressedSec1, toUncompressedSec1, fromSec1, affineCoordinates — the oracle.
+think Wrote crypto/secp256k1_pubkey.rye: compress_xy (0x02/0x03‖x, parity from y's low byte), uncompress_xy (0x04‖x‖y), from_private_compressed/uncompressed (compose derive_public), parse (either form back to x,y; compressed y via ecr.decompress), with named PubkeyError{BadLength,BadTag}, bounded copies, ≥2 asserts per fn.
+think GREEN on the first metal build. Parity self-contained: eight deterministic test scalars, our encodings equal Zig's toCompressedSec1/toUncompressedSec1 byte-for-byte, our parse recovers Zig's affine coords, and our parse of Zig's OWN compressed bytes recovers the same y — no published constant trusted.
+obs Registered the witness in crypto_suite_witness after secp256k1_ecrecover; updated the suite's spelled counts nine→ten compositions, 43→44 files, and the final GREEN line. Count guard computes the bijection and prints 44 — file and proof cannot disagree.
+obs Full choir GREEN: all forty-four Season G files built fresh in dependency order. TAME style bans clean on the scan roster; the new file adds no ratchet.
+obs Honest scope held: serializing a PUBLIC key touches no secret; the private scalar is a TEST key; signing with the maintainer's identity key stays the custody gate (#3/#4). No gate reached this round.
+obs This rung directly unblocks BIP-32 next: serP(point(kpar)) — the compressed form a non-hardened child derivation hashes — is now GREEN and parity-checked.
+loom witness=crypto_secp256k1_pubkey_witness scalars=8 forms=2 parity=zig-std-secp256k1 green=true
+loom suite=crypto_suite files=44 primitives=34 compositions=10 count_guard=44 green=true
+file crypto/secp256k1_pubkey.rye the SEC1 serialization composition — compress/uncompress/from_private/parse over GREEN derive_public + decompress
+file tools/crypto_secp256k1_pubkey_witness.rish the per-file witness — builds and greens the module against the Zig std oracle
+file tools/crypto_suite_witness.rish registered the new witness after ecrecover; spelled counts synced to 34 primitives + 10 compositions = 44
+file work-in-progress/REMEMBER.md living edge refreshed to secp256k1_pubkey; prior eip1559 edge folded to prior-edge (accrete-never-break)
+recommend keep-going the next Lindy-first crux is BIP-32 HD key derivation now that SEC1 serP is GREEN — its byte parity wants the canonical base58 xprv/xpub vectors (a named web-search research round), so either source those or prove the CKDpriv/CKDpub homomorphism self-contained; the constant-time timing horizon still waits on measurement
