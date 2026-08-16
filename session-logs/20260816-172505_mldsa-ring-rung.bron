@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260816.172505
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+title ML-DSA base ring, NTT self-consistency GREEN
+prompt Take the next agent-doable lap Lindy-first crux-first on the road ahead; Rye prioritized, Glow on green Rye; send each finished increment; stop at custody gates; baton prin recur.
+think Read REMEMBER's custody gates and the three road docs (1024-round itinerary, six-season double-seat, the rye-first decision wave) plus the post-quantum pivot. The ML-KEM ladder closed whole through decaps round-trip GREEN; the pivot doc's rung 6 is the ML-DSA (FIPS 204) signature ladder — the highest-Lindy new thread, the post-quantum successor to the Ed25519 every Kumara identity rests on. Its first stone is the base ring, mirroring mlkem_ring.rye.
+think ML-DSA's ring differs from ML-KEM's in three ways I authored carefully: q = 8380417 = 2^23 − 2^13 + 1 (so mul_mod must widen to u64, since q·q ≈ 7·10^13 overflows u32); zeta = 1753 is a primitive 512th root, so X^256+1 splits into 256 LINEAR factors and the NTT is COMPLETE (eight butterfly layers to len=1, not seven to len=2); and the NTT-domain multiply is therefore plain coefficient-wise scalar multiplication — no gamma base case, the one simplification the larger modulus grants. Confirmed q and zeta against vendor/zig-toolchain/lib/std/crypto/ml_dsa.zig before authoring; derived inv256 = q − 32736 = 8347681 from the field and asserted it.
+think The butterfly bodies are identical to mlkem_ring.rye's (forward and inverse), so I reused them and changed only the layer count and twiddle indexing (i runs 1..255 forward, 255..1 inverse over the comptime zetas[k]=zeta^BitRev8(k) table). Proof is self-consistency, no external dependency: primitive-root anchors (zeta^512=1, zeta^256=−1, 256·inv256=1), NTT round-trip over 64 non-trivial polys, and the decisive inv_ntt(ntt(f) o ntt(g)) = negacyclic schoolbook f (*) g over 64 pairs. Byte parity against Zig arrives at the ML-DSA keygen rung, exactly as ML-KEM's did.
+obs GREEN on the FIRST build. The ring proves itself against the schoolbook definition of R_q with no oracle needed yet — the same footing mlkem_ring.rye stood on.
+obs TAME style bans clean; every function carries contract asserts, every loop cites n=256 or 128, the twiddle table is comptime from the field never pasted. README synced same round with the first ML-DSA rung row (opening the signature half of the post-quantum section).
+loom witness=crypto_mldsa_ring_witness round_trip_polys=64 convolution_pairs=64 layers=8 wall_note=GREEN-first-build
+file crypto/mldsa_ring.rye the ML-DSA base ring — mod-8380417 arithmetic (u64-widened mul), the complete forward/inverse NTT, and the scalar NTT-domain multiply
+file tools/crypto_mldsa_ring_witness.rish the witness — builds the binary and asserts the GREEN self-consistency line
+file crypto/README.md synced — the first ML-DSA rung row, the signature ladder opens
+recommend keep-going the ML-DSA ring is GREEN; the next crux is mldsa_encode.rye (FIPS 204 SimpleBitPack/BitPack and the coefficient encodings) then sample, on the same self-consistency footing before keygen's doubled oracle
