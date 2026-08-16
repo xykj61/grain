@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260815.210227
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Season G — the sealed session witness runner, closing the tooling-parity sub-arc
+prompt Take the next agent-doable lap Lindy-first crux-first past BUHR — Rye prioritized, Glow on green-witnessed Rye; read REMEMBER, the 1024-round itinerary, the six-season double-seat, and the rye-first crypto parity wave; send each finished increment to origin and xykj61; stop at custody gates.
+think Fifth lap, and the last of the three-gap sub-arc. The X25519 and signed carry runners landed; sealed_session — the second composition, Comlink's confidential session — is the final GREEN-claimed crypto file lacking the standard tools/crypto_<name>_witness.rish runner.
+think Non-gated: the runner builds crypto/sealed_session.rye to the gitignored crypto/bin/ and runs its selftest over TEST keypairs — no real identity key, no network, no funds, no device. The ephemeral private must be fresh randomness in real use; the selftest uses deterministic TEST ephemerals to prove the mathematics. Agreeing a session with the maintainer's own identity key stays the custody gate.
+obs GREEN on the first run. Modeled byte-for-shape on the aead, x25519, and signed_carry runners: three say lines (Language EN · Style Radiant · Lens TAME), then build, selftest to crypto/bin/sealed_session.out, grep the 'GREEN crypto-sealed-session' token (confirmed the full token — not crypto-sealed — before writing the assert). The sealed session's parity story is unchanged (seven plaintext lengths, ciphertext-not-plaintext, sealed-box freshness, determinism, six named refusals); this lap adds the runner that re-proves it on demand.
+obs Sub-arc closed: all eighteen crypto .rye files now carry a reproducible on-metal witness runner. Measurement beats memory — every GREEN claim in the crypto library is now re-provable by tooling, not trusted from a commit message alone. No custody gate touched.
+loom witness=crypto_sealed_session_witness primitives_composed=3 plaintext_lengths=7 refusal_paths=6 result=GREEN
+file tools/crypto_sealed_session_witness.rish the reproducible on-metal runner for the sealed session composition — builds crypto/sealed_session.rye, runs its selftest, asserts GREEN; closes the three-gap sub-arc
+file session-logs/README.md newest-first row for this lap
+recommend keep-going — the crypto library now carries a full suite of per-file witness runners; the next Lindy-first crux is a whole-suite crypto witness (one runner that greens every primitive and composition in order) and a crypto module index doc that can ride into the public seed with the docs-compression pass.
