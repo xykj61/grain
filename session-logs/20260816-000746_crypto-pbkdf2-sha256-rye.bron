@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260816.000746
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Season G — PBKDF2-HMAC-SHA-256 authored in pure Rye
+prompt continue the loop: next agent-doable lap Lindy-first crux-first, Rye prioritized; send each finished increment as its own signed round; stop at custody gates
+think My prior HKDF round's recommend named PBKDF2-HMAC-SHA-256 (RFC 6070/7914 vectors) as a natural next crux. It stands directly on the already-GREEN crypto/hmac_sha256.rye, has published known-answers, and is high-Lindy: PBKDF2 is the iteration-hard password KDF WPA2/WPA3, LUKS, and 1Password actually run — the audit expects the tree to hold it beside the memory-hard Argon2 it already carries. Agent-doable, witness-provable, no custody crossed.
+think Confirmed the whole crypto suite GREEN first (measurement beats memory) — twenty-six files re-proven fresh — so I built on solid ground rather than a remembered state.
+think Authored crypto/pbkdf2_sha256.rye from RFC 8018 §5.2 as the iteration-hard sibling of the KDF family: each block T(i) = U(1) XOR … XOR U(c) with U(1) = HMAC(P, S ‖ INT_32_BE(i)) and U(j) = HMAC(P, U(j-1)); the derived key is the run of blocks truncated to length. The password keys every HMAC, the salt with a 4-byte big-endian block index seeds the first U, the count c is the whole cost. No new cryptography, no std.crypto in the primitive; each HMAC call is provably within crypto/hmac_sha256.rye's own key/message bounds, so its error is catch-unreachable rather than swallowed.
+think Bounds named at the edge: max_password_bytes = HMAC key bound; max_salt_bytes = HMAC message bound minus 4 (room for INT_32_BE); max_iterations = 1<<24; max_dk_bytes = 1<<12. Five named errors — PasswordTooLong, SaltTooLong, IterationsZero, IterationsTooMany, OutputTooLong — each refused before a byte is mixed.
+obs GREEN on the first metal pass. Parity holds three ways: RFC 7914 Section 11's OWN PBKDF2-HMAC-SHA-256 vectors — P="passwd"/S="salt"/c=1 and P="Password"/S="NaCl"/c=80000, 64-byte keys, hex for hex (the c=80000 case proves the full iteration depth); Zig's independent std.crypto.pwhash.pbkdf2 with HmacSha256 byte-for-byte across single-iteration, high-count, multi-block (100 bytes / 4 blocks), and partial-tail (17 bytes) shapes; AND the RFC-4231-anchored HMAC beneath — a single-iteration block equals HMAC(P, S ‖ INT_32_BE(1)) exactly. All five bounds refuse their named error.
+obs Registered after argon2 in crypto_suite_witness.rish (password-KDF family kept together) — whole-suite GREEN across all twenty-seven files (twenty-four primitives + three compositions), exit 0. tame_style_check bans clean; the new file is in no ratchet list.
+obs Docs synced same round (docs-implementation-sync): crypto/README.md KDF table row + counts to twenty-seven, docs/CRYPTO.md rung table row + title/header/suite counts, crypto/CONSTANT_TIME.md folded pbkdf2_sha256 into the HKDF/Argon2 data-independent row (c is a public parameter, not a secret).
+obs Non-gated — TEST inputs, no real identity key, no network, no funds, no device. Constant-time discipline stays the HMAC layer's named horizon.
+loom witness=crypto_pbkdf2_sha256_witness green=1 refs=3 rfc=RFC-8018-RFC-7914-s11 parity=std.crypto.pwhash.pbkdf2 max_iter=16777216 max_dk=4096
+loom witness=crypto_suite_witness files=27 primitives=24 compositions=3 green=1 exit=0
+file crypto/pbkdf2_sha256.rye the new key-derivation rung, PBKDF2-HMAC-SHA-256 in pure Rye over the GREEN HMAC-SHA-256, RFC 7914 §11 own vectors
+file tools/crypto_pbkdf2_sha256_witness.rish per-file witness, RFC 7914 §11 + std.crypto.pwhash.pbkdf2 parity + HMAC tie, GREEN
+file tools/crypto_suite_witness.rish registers the new rung after argon2; counts and order strings synced to twenty-seven
+file crypto/README.md KDF table row, file/witness counts to twenty-seven
+file docs/CRYPTO.md rung table row and title/header/suite counts synced on the audit front door
+file crypto/CONSTANT_TIME.md pbkdf2_sha256 folded into the HKDF/Argon2 data-independent row
+recommend keep-going the SHA-256 KDF family now holds HMAC, HKDF, and PBKDF2 beside Argon2; a natural next crux is either PBKDF2-HMAC-SHA-512 (RFC 7914's other published set) or the streaming/incremental hash horizon the bounded one-shots keep naming

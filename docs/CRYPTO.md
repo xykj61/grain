@@ -1,6 +1,6 @@
 # Crypto — the Season G audit front door
 
-*A Rye-native, parity-checked cryptography library — twenty-three primitives and three compositions, each GREEN on metal.*
+*A Rye-native, parity-checked cryptography library — twenty-four primitives and three compositions, each GREEN on metal.*
 
 **Status:** Checkable — Season G operator + auditor guide
 **Depth:** guide
@@ -32,7 +32,7 @@ vectors — never a copied line ([`gratitude-licenses.md`](../.claude/rules/grat
 
 ---
 
-## Rung table — twenty-six files, dependency order
+## Rung table — twenty-seven files, dependency order
 
 Each rung stands on the GREEN rungs beneath it; none authors cryptography a lower
 rung had not already proven. Every file carries a per-file witness
@@ -56,6 +56,7 @@ rung had not already proven. Every file carries a per-file witness
 | `hkdf_sha512.rye` | HKDF-SHA-512 extract-then-expand — the key schedule every handshake and vault stands on | RFC 5869 |
 | `hkdf_sha256.rye` | HKDF-SHA-256 extract-then-expand — the schedule TLS 1.3 · Noise · Signal run, proven against RFC 5869's own SHA-256 vectors | RFC 5869 |
 | `argon2.rye` | Argon2d · Argon2i · Argon2id memory-hard password KDF — the stone Vault stands on | RFC 9106 |
+| `pbkdf2_sha256.rye` | PBKDF2-HMAC-SHA-256 iteration-hard password KDF — WPA2/WPA3 · LUKS · 1Password; Argon2's iteration-hard counterpart | RFC 8018 · RFC 7914 §11 |
 
 ### The ChaCha / Poly line
 
@@ -104,7 +105,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 
 [`crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) rebuilds each
 `crypto/<name>.rye` fresh from source to the gitignored `crypto/bin/` and runs all
-twenty-six per-file witnesses in the dependency order above, refusing whole —
+twenty-seven per-file witnesses in the dependency order above, refusing whole —
 naming the file that stopped it — the moment any one goes RED. A GREEN suite means
 every claim here is re-provable by tooling, not trusted from a commit message
 alone (measurement beats memory).

@@ -19,7 +19,7 @@ a message: **Kumara** identity, **Vault** sealed storage, **Comlink** sessions, 
 the **Lotus** signed carry. It authors the mathematics once, in the open, so a hand
 placing trust in it can read exactly what it does.
 
-## The twenty-six files — twenty-three primitives and three compositions
+## The twenty-seven files — twenty-four primitives and three compositions
 
 Built in dependency order: each rung stands on the GREEN rungs beneath it, none
 authoring cryptography a lower rung had not already proven.
@@ -42,6 +42,7 @@ authoring cryptography a lower rung had not already proven.
 | [`hkdf_sha512.rye`](hkdf_sha512.rye) | HKDF-SHA-512 extract-then-expand key derivation (the key schedule every handshake and vault stands on) | RFC 5869 |
 | [`hkdf_sha256.rye`](hkdf_sha256.rye) | HKDF-SHA-256 extract-then-expand key derivation (the schedule TLS 1.3 · Noise · Signal run — proven against RFC 5869's own SHA-256 vectors) | RFC 5869 |
 | [`argon2.rye`](argon2.rye) | Argon2d · Argon2i · Argon2id memory-hard password KDF (a remembered password into a key at a large RAM cost — the stone Vault stands on) | RFC 9106 |
+| [`pbkdf2_sha256.rye`](pbkdf2_sha256.rye) | PBKDF2-HMAC-SHA-256 iteration-hard password KDF (WPA2/WPA3 · LUKS · 1Password — a password stretched by iterating the HMAC, the counterpart to Argon2's memory hardness) | RFC 8018 · RFC 7914 §11 (vectors) |
 
 ### The ChaCha / Poly line
 
@@ -93,7 +94,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 ```
 
 [`../tools/crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) runs all
-twenty-six per-file witnesses in the dependency order above, rebuilding and reproving
+twenty-seven per-file witnesses in the dependency order above, rebuilding and reproving
 each from source, and refuses whole — naming the file that stopped it — the moment
 any one goes RED. A GREEN suite means every claim in this library is re-provable by
 tooling, not trusted from a commit message alone.

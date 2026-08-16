@@ -1,0 +1,42 @@
+# tools/crypto_pbkdf2_sha256_witness.rish — PBKDF2-HMAC-SHA-256 authored in pure Rye: Season G's iteration-hard password KDF, the
+# password stretch WPA2/WPA3, LUKS, and 1Password actually run, proven against RFC 7914 Section 11's OWN published PBKDF2-HMAC-SHA-256
+# known-answers and byte-for-byte against an independent implementation (Season G · Cryptography).
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+# Kin: crypto/hmac_sha256.rye (the keyed hash beneath it, GREEN) · crypto/sha256.rye (the hash beneath that) · crypto/hkdf_sha256.rye
+# (a sibling composing the same HMAC) · crypto/argon2.rye (the memory-hard KDF this iteration-hard one stands beside). Monocypher
+# (vendor/monocypher, CC0/BSD-dual) is the parity discipline target, never a copied line — our own Rye, studied clean-room from the
+# public standards (.claude/rules/gratitude-licenses.md).
+#
+# crypto/pbkdf2_sha256.rye composes the GREEN crypto/hmac_sha256.rye through RFC 8018 §5.2 — each block T(i) = U(1) XOR … XOR U(c) with
+# U(1) = HMAC(P, S ‖ INT_32_BE(i)) and U(j) = HMAC(P, U(j-1)), the derived key the run of blocks truncated to length — authoring no new
+# cryptography. The primitive calls no std.crypto. Parity is proven at selftest against three references runnable now: RFC 7914 Section 11
+# published PBKDF2-HMAC-SHA-256 vectors (c = 1 and the full c = 80000 depth, 64-byte keys) hex for hex; Zig's own std.crypto.pwhash.pbkdf2
+# with HmacSha256 byte-for-byte across single-iteration, high-count, multi-block, and partial-tail shapes; AND the RFC-4231-anchored HMAC
+# beneath it (a single-iteration block is exactly HMAC(P, S ‖ INT_32_BE(1))). An over-long password, salt, or request, a zero count, and
+# an over-large count each refuse a named error before a byte is mixed. Purely local — TEST inputs, no real identity key, no network, no
+# funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_pbkdf2_sha256_witness.rish
+
+say "crypto-pbkdf2-sha256: Language EN — Season G's iteration-hard password KDF: PBKDF2-HMAC-SHA-256 (RFC 8018 / RFC 2898), the standard 'stretch a password into a key by iterating a keyed hash many times' primitive, the password stretch WPA2/WPA3, LUKS disk encryption, and 1Password actually run to make a guess expensive. It authors no new cryptography — it composes the GREEN crypto/hmac_sha256.rye through the RFC's iterate-and-XOR, so it is genuinely buildable this round and carries RFC 7914 Section 11's OWN published PBKDF2-HMAC-SHA-256 known-answer vectors. It stands beside crypto/argon2.rye: Argon2 is memory-hard, PBKDF2 is iteration-hard, and a security audit expects the tree to hold both."
+say "crypto-pbkdf2-sha256: Style Radiant — the law is stated positively: each block T(i) = U(1) XOR U(2) XOR … XOR U(c), with U(1) = HMAC(P, S ‖ INT_32_BE(i)) and U(j) = HMAC(P, U(j-1)), and the derived key is the run of blocks truncated to the requested length, so the same password, salt, iteration count, and length always fold to the same key anyone can replay against the standard's own vectors."
+say "crypto-pbkdf2-sha256: Lens TAME — the primitive calls no std.crypto; it composes an already-GREEN HMAC, bounded password/salt/iterations and an output cap, contract asserts on every function, each HMAC call beneath provably within its own message and key bounds so its error is unreachable and asserted rather than swallowed. Parity holds three ways: RFC 7914 Section 11 published vectors (c = 1 and c = 80000, 64-byte keys) hex for hex; Zig's independent std.crypto.pwhash.pbkdf2 byte-for-byte across single-iteration, high-count, multi-block, and partial-tail shapes; and the RFC-4231-anchored HMAC beneath (a single-iteration block is exactly HMAC(P, S ‖ INT_32_BE(1))). An over-long password, salt, or request, a zero count, and an over-large count each refuse a named error before a byte is mixed. Constant-time discipline stays the HMAC layer's named horizon. Purely local — TEST inputs, no real identity key, no network, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/pbkdf2_sha256"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/pbkdf2_sha256.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-pbkdf2-sha256: build failed — ${build.err}"
+
+let outfile = "crypto/bin/pbkdf2_sha256.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-pbkdf2-sha256: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-pbkdf2-sha256: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-pbkdf2-sha256' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-pbkdf2-sha256: selftest did not print the GREEN crypto-pbkdf2-sha256 line"
