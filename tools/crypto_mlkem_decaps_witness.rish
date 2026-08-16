@@ -1,0 +1,45 @@
+# tools/crypto_mlkem_decaps_witness.rish — the ML-KEM decapsulation rung: FIPS 203 K-PKE.Decrypt wrapped by ML-KEM.Decaps, authored in pure Rye and
+# proven byte-for-byte against Zig's independent std.crypto ml_kem on BOTH branches. This is the post-quantum arc's SIXTH rung, the one that closes the
+# KEM round-trip — it composes the GREEN base ring (crypto/mlkem_ring.rye), serialization (crypto/mlkem_encode.rye), keygen (crypto/mlkem_keygen.rye),
+# and encaps (crypto/mlkem_encaps.rye, for the Fujisaki–Okamoto re-encryption check), and confirms the recovered shared secret against a second,
+# independent implementation on the honest path AND the implicit-rejection path (Season G · Cryptography).
+#
+# Season: crypto — Season G's sixth post-quantum stone, rung 6 of the ML-KEM ladder the pivot doc seats. The decaps function holds no key: every dk and
+# ciphertext is a public test vector. Every ML-KEM sealed session and Comlink door will one day rest on exactly this recovery, so this witness proves
+# the whole composition — the decryption, the FO re-encryption verify, and the implicit-rejection derivation — agrees with the NIST-standard reference
+# to the byte, whether the ciphertext is honest or tampered.
+# Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md (rung 6 — the decapsulation rung whose recovered shared secret meets
+# Zig's std.crypto ML-KEM-512/768/1024 decaps on both branches).
+# Rye-first spine: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+# Clean-room: the K-PKE.Decrypt algorithm, the G hash wiring, the FO re-encryption check, and the SHAKE256 implicit-rejection secret are the public NIST
+# standard's own; the arithmetic is our own Rye composed over our own GREEN rungs, with Zig's std.crypto read only as the reference to diff against —
+# never a copied line (.claude/rules/gratitude-licenses.md).
+#
+# crypto/mlkem_decaps.rye proves itself by a DOUBLED oracle on BOTH branches — the discipline the whole library rests on. For an untouched ciphertext
+# our decaps must recover exactly the encaps shared secret K and equal Zig's decaps; for a one-byte-tampered ciphertext our decaps must equal Zig's
+# derived implicit-rejection secret and differ from K, proving the FO reject branch fired. This closes the KEM round-trip keygen → encaps → decaps end
+# to end against an independent implementation at all three parameter sets over eight deterministic pairs each. Purely local — no key held, no network,
+# no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_mlkem_decaps_witness.rish
+
+say "crypto-mlkem-decaps: Language EN — the ML-KEM decapsulation rung: FIPS 203 K-PKE.Decrypt wrapped by ML-KEM.Decaps. It parses the decapsulation key dk into (dk_pke, ek, H(ek), z), decrypts the ciphertext c to a candidate message m' = ByteEncode_1(Compress_1(v - InvNTT(s_hat NTT-multiply NTT(u)))), re-derives (K', r') = G(m' then H(ek)), RE-ENCRYPTS m' under ek with r' through the GREEN encaps rung, and returns K' when the re-encryption reproduces c byte-for-byte — otherwise the implicit-rejection secret K-bar = SHAKE256(z then c). This is the post-quantum arc's sixth rung, closing the KEM round-trip, composing the GREEN ring, encode, keygen, and encaps rungs."
+say "crypto-mlkem-decaps: Style Radiant — the law is stated positively as byte parity on BOTH branches. For an honest ciphertext our decaps must recover exactly the encaps shared secret K and equal Zig's decaps; for a tampered ciphertext our decaps must equal Zig's derived rejection secret and differ from K. Two strangers agree on when to accept and on what to hand back when they reject — the Fujisaki–Okamoto transform's verify-by-re-encryption is exactly what makes ML-KEM CCA-secure, and both branches are proven."
+say "crypto-mlkem-decaps: Lens TAME — bounded loops (k polynomials, 256 coefficients, 32-d ciphertext bytes per polynomial, the z-then-c SHAKE input), contract asserts on every function, canonical residues in [0, q) throughout, the subtraction written as (v + q - x) mod q. Correctness proven by a DOUBLED oracle: our standard-domain composition versus Zig's independent std.crypto ml_kem decaps, byte-for-byte at ML-KEM-512 (k=2 eta1=3 du=10 dv=4), ML-KEM-768 (k=3 eta1=2 du=10 dv=4), and ML-KEM-1024 (k=4 eta1=2 du=11 dv=5) over 8 deterministic (key seed, message) pairs each, on the honest and the rejection path, a trivial all-zero or non-distinct secret refused. The decaps function calls no std.crypto; only the selftest invokes Zig as the parity oracle. Every dk and message is a public test vector — no key held, no network, no funds, no device; decapsulating with the maintainer's own post-quantum key stays the custody gate, constant-time timing-safety the named horizon."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/mlkem_decaps"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/mlkem_decaps.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-mlkem-decaps: build failed — ${build.err}"
+
+let outfile = "crypto/bin/mlkem_decaps.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-mlkem-decaps: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-mlkem-decaps: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-mlkem-decaps' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-mlkem-decaps: selftest did not print the GREEN crypto-mlkem-decaps line"
