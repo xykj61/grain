@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260816.083007
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title crypto/bip39_mnemonic.rye — BIP-39 entropy↔mnemonic in pure Rye, parity-GREEN
+prompt take the next agent-doable lap Lindy-first crux-first on the Rye-first crypto parity road; Rye prioritized, Glow on green-witnessed Rye; send each finished increment as its own signed round; stop at custody gates
+think Read the road-ahead trio (1024-round itinerary, six-season double-seat, the decision wave) plus REMEMBER context. The living metal-producing thread is Season G crypto; the prior three logs each named the same next crux outright — "Next: BIP-39 entropy→mnemonic, then BIP-44 paths." So the Lindy-first crux-first lap was already pointed at: entropy↔mnemonic, the OTHER half of BIP-39, the half bip39_seed.rye explicitly deferred as its own rung.
+think Lindy weight is high — every wallet must both MAKE a backup phrase from entropy and CHECK a phrase a keeper types back (the checksum catches a mistyped word before it grows a wrong wallet). Crux weight is right — it is the hardest-solvable next wallet-arc rung (bit-packing + a 2048-word table), and once GREEN it makes BIP-39 whole: entropy → mnemonic → seed → the HD tree bip32 grows.
+think The one real risk was the 2048-word English list — hand-typing it is error-prone. Chose the durable honest path: fetched the canonical bitcoin/bips english.txt, confirmed its SHA-256 equals the published canonical digest 2f5eed53…3b24dbda, embedded it byte-exact at crypto/data/bip39_english.txt via @embedFile so the build needs no network, and proved its authenticity at selftest (SHA-256 of the embedded table == the published digest) so a one-word tamper goes RED rather than sign a wrong phrase.
+think Authored crypto/bip39_mnemonic.rye authoring NO new cryptography: a CS = ENT/32 checksum from the GREEN sha256.rye plus pure 11-bit big-endian bit-packing over the fixed 2048-word list. from_entropy cuts the entropy‖checksum stream into 11-bit word indices; to_entropy repacks indices, splits off the entropy, recomputes SHA-256(entropy) and compares the top CS bits, refusing InvalidChecksum. Binary search bounded at 11 compares; every width named; contract asserts on the exact (ENT+CS)/11 word count and the bit-packing.
+obs One build red: sha256.hash returns Sha256Error (MessageTooLong) not in my error set. Entropy is ≤32 bytes ≪ the 1 MB sha256 bound, so the hash cannot fault — used catch unreachable with an invariant note, exactly as bip39_seed does with pbkdf2. GREEN on the second build.
+obs Parity holds the replayable way against BIP-39's OWN published Trezor vectors (English, fetched byte-exact, never recited): six entropy values across all three published ENT lengths (128/192/256 bits → 12/18/24 words = checksum widths 4/6/8), both extremes (all-zero and all-ones) each, encode to EXACTLY their published mnemonics word-for-word and decode back to EXACTLY their entropy byte-for-byte with the checksum verified; a flipped word is REFUSED InvalidChecksum; bad length, unknown word, and bad count each raise their named error. TAME style bans clean.
+obs Registered after bip39_seed in the suite — the count-guard bijection now prints 48 (thirty-five primitives + thirteen compositions); synced crypto/README.md, docs/CRYPTO.md 47→48 and 12→13 compositions, added a rung row to each. The full suite rebuilt and reproved all 48 fresh in dependency order, exit 0 (it refuses whole on any RED). Every entropy is a TEST value from the spec's own vectors; generating real entropy and signing a real wallet stays the custody gate (#3/#4). Purely local — no network at build, no funds, no device.
+loom witness=crypto_bip39_mnemonic_witness green=1 vectors=6 ent_lengths=3 wordlist_words=2048 wordlist_sha256=2f5eed53a4727b4bf8880d8f3f199efc90e58503646d9ff8eff3a2ed3b24dbda crypto_files=48
+loom witness=crypto_suite_witness files=48 exit=0
+file crypto/bip39_mnemonic.rye the entropy↔mnemonic rung — from_entropy · to_entropy · is_valid, checksum-verified, no new cryptography
+file crypto/data/bip39_english.txt the canonical 2048-word English list, embedded byte-exact and SHA-256-pinned
+file tools/crypto_bip39_mnemonic_witness.rish the per-file witness — builds fresh, asserts the GREEN line
+file tools/crypto_suite_witness.rish registered the new witness after bip39_seed
+file crypto/README.md front-door count 47→48, compositions 12→13, new rung row
+file docs/CRYPTO.md audit front-door count 47→48, compositions 12→13, new rung row
+recommend keep-going BIP-44/49/84 account paths (m/44'/…) — a clean composition over the GREEN bip32, no new crypto, the rung that turns the HD tree into real receive addresses; or entropy generation as a named horizon
