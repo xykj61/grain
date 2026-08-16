@@ -148,10 +148,13 @@ is re-provable by tooling, not trusted from a commit message alone.
   Season's constant-time discipline note.
 - **Monocypher-source parity** is **landed**: the vendored `vendor/monocypher`
   (CC0/BSD-dual, unmodified) is compiled fresh and diffed byte-for-byte against our
-  authored Rye over the published vectors. Six rungs stand GREEN — **BLAKE2b**,
+  authored Rye over the published vectors. Seven rungs stand GREEN — **BLAKE2b**,
   **X25519**, **Ed25519**, the **ChaCha20-Poly1305 AEAD**, **Argon2** (all three
-  modes), and the **XChaCha20-Poly1305 flagship** (Monocypher's `crypto_aead_lock`,
-  the 24-byte extended-nonce AEAD Lotus's signed carry, Vault, and Comlink reach for)
+  modes), the **XChaCha20-Poly1305 flagship** (Monocypher's `crypto_aead_lock`,
+  the 24-byte extended-nonce AEAD Lotus's signed carry, Vault, and Comlink reach for),
+  and the **Edwards↔Montgomery conversion** (`crypto_eddsa_to_x25519` /
+  `crypto_x25519_to_eddsa`, the map that lets one Ed25519 identity key both sign and
+  agree — the one-key story `kumara_sealed.rye` rests on)
   — each also anchored to its RFC or published known-answer, so the oracle is a real
   second implementation. Parity against Zig's `std.crypto` still holds beside it.
 - **The keys stay the maintainer's hand.** Every witness runs over **TEST** keys and

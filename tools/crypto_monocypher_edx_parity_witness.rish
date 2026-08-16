@@ -1,0 +1,62 @@
+# tools/crypto_monocypher_edx_parity_witness.rish — Monocypher-source parity for the Edwards↔Montgomery key conversion, the identity-unification
+# map that lets ONE Ed25519 key both sign and agree — the conversion crypto/kumara_sealed.rye's one-key story rests on. Our authored
+# crypto/ed25519_to_x25519.rye and the vendored Monocypher's own C (vendor/monocypher, CC0/BSD-dual), each compiled fresh and asked for the same
+# three maps, diffed byte-for-byte. The SEVENTH rung of the real Monocypher-source parity pattern (BLAKE2b · X25519 · Ed25519 · IETF AEAD · Argon2 ·
+# XChaCha20-Poly1305 flagship came before). Season G · Cryptography.
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
+# proving Rye output equals Monocypher output byte-for-byte." crypto/ed25519_to_x25519.rye itself named Monocypher-source parity as an honest held
+# horizon; this rung closes it, so the one-key identity story is proven against the very library Grain's audit names.
+# Kin: crypto/ed25519_to_x25519.rye (our authored maps, GREEN against Zig's std.crypto) · tools/monocypher_edx_parity.rye (our printing harness) ·
+# tools/fixtures/monocypher_edx_harness.c (Monocypher's printing harness) · tools/crypto_monocypher_x25519_parity_witness.rish (the X25519 sibling).
+# Monocypher stays the parity TARGET, vendored and unmodified, never a copied line — our own Rye, studied clean-room
+# (.claude/rules/gratitude-licenses.md).
+#
+# The three lines are anchored to the world twice over: RFC 7748 §4.1 fixes eddsa_to_x25519(Edwards base) = u = 9 exactly (line 1) and
+# x25519_to_eddsa(u = 9) = the sign-0 Edwards base encoding 5866…66 (line 3); line 2 forward-maps RFC 8032 §7.1 Test 1's real public key, where the
+# oracle is a second real implementation agreeing byte-for-byte. Purely local — no key of ours, no network, no funds, no device; constant-time
+# timing-safety stays the Season's named horizon.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_monocypher_edx_parity_witness.rish
+
+say "crypto-monocypher-edx-parity: Language EN — Monocypher-source parity for the Edwards↔Montgomery key conversion, the map that lets ONE Ed25519 identity key both sign and agree. crypto/ed25519_to_x25519.rye named Monocypher-source parity as a held horizon; this seventh rung closes it, proving our authored maps against the ACTUAL vendored Monocypher C over the same three conversions, byte-for-byte."
+say "crypto-monocypher-edx-parity: Style Radiant — like against like. Our authored maps and the unmodified vendored Monocypher each compile fresh and each print, in order, eddsa_to_x25519(Edwards base), eddsa_to_x25519(RFC 8032 Test 1 public key), and x25519_to_eddsa(X25519 base u = 9). Two independent implementations, one set of conversions; the parity is that the three outputs agree hex for hex."
+say "crypto-monocypher-edx-parity: Lens TAME — no fabricated constant is trusted: the oracle is a second real implementation, and the maps are anchored to RFC 7748 §4.1's published base-point relationship — eddsa_to_x25519(base) = u = 9, and x25519_to_eddsa(9) = the sign-0 Edwards base 5866…66. The witness diffs the three Monocypher lines against the three Rye lines byte-for-byte AND asserts both published anchors. Monocypher is linked, never copied. Purely local — no key of ours, no network, no funds, no device; constant-time timing-safety stays the named horizon."
+
+let zig = "vendor/zig-toolchain/zig"
+let cbin = "crypto/bin/monocypher_edx"
+let cout = "crypto/bin/monocypher_edx.out"
+let rout = "crypto/bin/rye_edx.out"
+
+# 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_edx_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
+assert cbuild.ok else "crypto-monocypher-edx-parity: Monocypher C harness build failed — ${cbuild.err}"
+
+# 2. Run the Monocypher C harness — three conversion hex lines.
+let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]
+assert crun.ok else "crypto-monocypher-edx-parity: Monocypher C harness exited non-zero — see ${cout}"
+
+# 3. Run our authored Rye harness — three conversion hex lines over the identical inputs.
+let rrun = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run tools/monocypher_edx_parity.rye > ${rout} 2>&1"]
+assert rrun.ok else "crypto-monocypher-edx-parity: Rye harness exited non-zero — see ${rout}"
+
+# 4. Byte-for-byte parity: the two three-line outputs must be identical.
+let diff = run ["sh" "-c" "diff ${cout} ${rout} > /dev/null && echo same"]
+assert (trim diff.out) == "same" else "crypto-monocypher-edx-parity: Monocypher and Rye conversions disagree — Monocypher:\n$(cat ${cout})\nRye:\n$(cat ${rout})"
+
+# 5. Anchor to the world: RFC 7748 §4.1 base-point relationship, both directions.
+let x_base_u = "0900000000000000000000000000000000000000000000000000000000000000"
+let ed_base = "5866666666666666666666666666666666666666666666666666666666666666"
+
+let got_fwd = run ["sh" "-c" "sed -n '1p' ${cout}"]
+assert (trim got_fwd.out) == x_base_u else "crypto-monocypher-edx-parity: eddsa_to_x25519(Edwards base) is not the RFC 7748 §4.1 published u = 9"
+
+let got_rev = run ["sh" "-c" "sed -n '3p' ${cout}"]
+assert (trim got_rev.out) == ed_base else "crypto-monocypher-edx-parity: x25519_to_eddsa(u = 9) is not the RFC 7748 §4.1 published sign-0 Edwards base 5866…66"
+
+let shown = run ["sh" "-c" "cat ${cout}"]
+say "crypto-monocypher-edx-parity: the three conversions, agreed by both implementations:\n${shown.out}"
+
+say "GREEN crypto-monocypher-edx-parity: our authored crypto/ed25519_to_x25519.rye and the vendored Monocypher's own C, each compiled fresh, produce byte-for-byte identical Edwards↔Montgomery conversions over the RFC 7748 §4.1 base-point relationship (both directions anchored) and RFC 8032 §7.1 Test 1's real public key. The SEVENTH real Monocypher-SOURCE parity rung, closing the held horizon crypto/ed25519_to_x25519.rye itself named and hardening the one-key identity story crypto/kumara_sealed.rye rests on — no recited constant, the oracle a second real implementation. Monocypher stays vendored and unmodified, linked never copied. Purely local, no key of ours, no network, no funds, no device; constant-time timing-safety stays the named horizon."
