@@ -199,7 +199,7 @@ caller-supplied seed — a test seed is not the maintainer's identity key.
 
 **Monocypher-source parity is landed:** the vendored `vendor/monocypher`
 (CC0/BSD-dual, unmodified) is compiled fresh and diffed byte-for-byte against our
-authored Rye over the published vectors — ten rungs GREEN (BLAKE2b, X25519,
+authored Rye over the published vectors — eleven rungs GREEN (BLAKE2b, X25519,
 Ed25519, the ChaCha20-Poly1305 AEAD, Argon2 across all three modes, the
 XChaCha20-Poly1305 flagship `crypto_aead_lock`, the Edwards↔Montgomery
 conversion `crypto_eddsa_to_x25519` / `crypto_x25519_to_eddsa` that unifies one
@@ -207,10 +207,12 @@ identity key for signing and agreement, the standalone Poly1305
 authenticator `crypto_poly1305` — the MAC every sealed carry rests on, proven in
 its own right rather than only embedded in the AEAD — the standalone ChaCha20
 stream cipher `crypto_chacha20_ietf`, the keystream the whole ChaCha/Poly line
-enciphers against, likewise proven standalone, and the standalone SHA-512 hash
+enciphers against, likewise proven standalone, the standalone SHA-512 hash
 `crypto_sha512` — the hash Ed25519 signs with and the hash every HMAC-SHA512,
 HKDF-SHA512, and BIP32 seed derivation folds through, proven in its own right
-rather than only embedded in Ed25519 signing), each also
+rather than only embedded in Ed25519 signing, and HMAC-SHA-512
+`crypto_sha512_hmac` — the keyed MAC HKDF-SHA512 and BIP32 key derivation are
+built on, anchored to RFC 4231's published tags), each also
 anchored to its RFC or published known-answer. One horizon stays honest beside it:
 **constant-time** waits on measurement as above.
 
