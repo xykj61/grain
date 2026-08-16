@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260816.123654
+editor Zed
+model Claude Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title crypto — the first real Monocypher-SOURCE parity witness (BLAKE2b), GREEN
+prompt take the next agent-doable lap Lindy-first crux-first; Rye prioritized; send often as its own signed round; approve your own design rounds; stop at custody gates; baton prin recur
+think After sending kumara_sealed, chose the next crux Lindy-first. Every crypto witness so far proves our Rye against Zig's std.crypto; Season G's design doc names as a crux rung "the parity witness proving Rye output equals Monocypher output byte-for-byte," and crypto/blake2b.rye's own selftest promised it outright — "its vendored source is a held fetch, so Monocypher-source parity is an honest horizon rung, added later." The fetch is no longer held (vendor/monocypher is on disk), so this closes a named horizon and is higher-Lindy than one more primitive: it establishes the parity-harness pattern the whole audit rests on.
+think Judged it agent-doable and gate-free — no key, no signature, no seed, no provisioning, no payment, purely local. Spiked the two unknowns first: zig cc compiles Monocypher (clang 21) and reproduces the RFC 7693 "abc" vector exactly; and Rye resolves imports beside the importing file (why crypto/ symlinks its deps), so a tools/ harness needs a symlink to blake2b.rye.
+think Design: two printing harnesses over the SAME four canonical messages blake2b's selftest already uses (empty, "abc", a 128-byte block, a 200-byte multi-block) — one C (Monocypher), one Rye (ours) — diffed byte-for-byte by the witness, with the empty and "abc" lines also anchored to RFC 7693's published Appendix A known-answers so the oracle is a real second implementation, never a recited constant.
+obs GREEN on the first full pass: Monocypher's C and our authored Rye produce byte-identical BLAKE2b-512 over all four messages, and the two published lines match the RFC. Kept it clean-room: Monocypher is linked from the unmodified vendored source, never a copied line (gratitude-licenses). Count guard untouched — the harness Rye lives in tools/ (not crypto/), so crypto/*.rye stays 56.
+obs Synced the now-closed horizon in the two docs that named it as held: crypto/blake2b.rye's selftest comment and GREEN print, and tools/crypto_blake2b_witness.rish's Lens line — both now point at tools/crypto_monocypher_parity_witness.rish. Re-witnessed blake2b GREEN after the prose change (grep prefix unchanged).
+loom witness=crypto_monocypher_parity_witness result=GREEN messages=4 impls=rye+monocypher_c anchor=rfc7693
+file tools/crypto_monocypher_parity_witness.rish the witness — builds both harnesses, diffs byte-for-byte, anchors to RFC 7693
+file tools/fixtures/monocypher_blake2b_harness.c Monocypher's printing harness, links the unmodified vendored source via zig cc
+file tools/monocypher_blake2b_parity.rye our authored printing harness over the same four messages
+file tools/blake2b.rye symlink → ../crypto/blake2b.rye so the tools harness can import the GREEN primitive
+file crypto/blake2b.rye selftest prose synced — Monocypher-source parity closed, no longer a held fetch
+file tools/crypto_blake2b_witness.rish Lens prose synced to the closed horizon
+recommend keep-going — the parity-harness pattern is proven; next durable crux is extending Monocypher-source parity to X25519/Ed25519 (its optional module) and the ChaCha/Poly line, or a Comlink composition carrying a sealed Kumara message over the wire
