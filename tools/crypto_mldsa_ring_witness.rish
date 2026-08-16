@@ -1,0 +1,47 @@
+# tools/crypto_mldsa_ring_witness.rish — the ML-DSA base ring, R_q = Z_q[X]/(X^256 + 1) with q = 8380417 = 2^23 - 2^13 + 1, authored in pure Rye
+# as Season G's first post-quantum SIGNATURE rung: modular arithmetic mod 8380417 (mul_mod widens to u64 since q*q overflows u32), the forward and
+# inverse Number Theoretic Transform (FIPS 204 Algorithms 41 and 42), and the pointwise multiply in the NTT domain (256 scalar products). This is
+# the arithmetic every later ML-DSA rung (encode, sample, keygen, sign/verify) composes — the signature-side counterpart to
+# crypto/mlkem_ring.rye and the post-quantum successor to crypto/ed25519_*.rye (Season G · Cryptography).
+#
+# Season: crypto — Season G's first post-quantum SIGNATURE stone, opening the ML-DSA half of the ladder the pivot doc seats after the ML-KEM half
+# closed (ring, encode, sample, keygen, encaps/decaps all GREEN). This rung authors the ring mathematics only; it holds no key and runs no
+# protocol. ML-DSA's modulus q = 8380417 satisfies q = 1 mod 512, so a primitive 512th root of unity exists and X^256 + 1 splits ALL the way into
+# 256 linear factors — the NTT is COMPLETE and its domain multiply is plain coefficient-wise scalar multiplication, one structural simplification
+# ML-DSA's ring enjoys over ML-KEM's (whose q = 3329 leaves 128 degree-1 factors and a gamma base case).
+# Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md (the pivot to ML-KEM/ML-DSA on the doubled oracle, and the
+# honest parity boundary: FIPS standard-domain vs Zig's Montgomery domain agree only at the encoded byte boundary, so this rung proves
+# correctness by self-consistency and the byte parity against Zig std.crypto arrives at the keygen rung). Rye-first spine:
+# active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+# Clean-room: q = 8380417, zeta = 1753, and the FIPS 204 butterfly schedule are the public NIST standard's own (confirmed against Zig std.crypto
+# ml_dsa at vendor/zig-toolchain/lib/std/crypto/ml_dsa.zig); the arithmetic is our own Rye, never a copied line (.claude/rules/gratitude-licenses.md).
+#
+# crypto/mldsa_ring.rye proves itself by SELF-CONSISTENCY with no external dependency — the pattern crypto/mlkem_ring.rye stood on: the
+# primitive-root anchors FIPS 204 fixes (zeta^512 = 1, zeta^256 = -1, 256*8347681 = 1 mod q), the NTT round-trip inv_ntt(ntt(f)) = f over 64
+# non-trivial polynomials, and the decisive one, that multiply-in-the-NTT-domain equals schoolbook negacyclic convolution — inv_ntt(ntt(f) o
+# ntt(g)) = f (*) g in R_q — over 64 deterministic pairs. The schoolbook is the definition of the ring, slow and obviously correct; its agreement
+# with the fast NTT path proves the forward transform, the coefficient-wise pointwise multiply, and the inverse transform all together. Purely
+# local — no key, no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_mldsa_ring_witness.rish
+
+say "crypto-mldsa-ring: Language EN — the ML-DSA base ring is R_q = Z_q[X]/(X^256 + 1) with the prime modulus q = 8380417 = 2^23 - 2^13 + 1, the one polynomial ring every lattice operation in NIST FIPS 204 (CRYSTALS-Dilithium) lives in. This is the post-quantum SIGNATURE ladder's first rung — the arithmetic, not the protocol — the counterpart to crypto/mlkem_ring.rye for the KEM and the post-quantum successor to crypto/ed25519 for identity."
+say "crypto-mldsa-ring: Style Radiant — the law is stated positively: author the spec's standard-domain arithmetic (zeta = 1753, plain reduction mod 8380417), compute the twiddle table at compile time from the field, and prove the NTT correct by self-consistency. FIPS specifies standard domain while Zig's std.crypto computes in Montgomery domain, so the byte-for-byte parity against Zig is taken at the encoded boundary at the keygen rung; here the ring proves itself."
+say "crypto-mldsa-ring: Lens TAME — bounded loops (the transform is exactly eight butterfly layers, every loop cites n = 256 or 128), contract asserts on every function, canonical residues in [0, q) throughout, the twiddle table built at comptime from the field rather than pasted. mul_mod widens to u64 because q*q overflows u32 — the one arithmetic difference the larger modulus forces. Correctness proven by self-consistency: the primitive-root anchors (zeta^512 = 1, zeta^256 = -1, 256*8347681 = 1 mod q), the NTT round-trip over 64 non-trivial polynomials, and multiply-in-the-NTT-domain equal to schoolbook negacyclic convolution over 64 pairs. Data-independent by construction; constant-time timing-safety the named horizon. Purely local — no key, no network, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/mldsa_ring"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/mldsa_ring.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-mldsa-ring: build failed — ${build.err}"
+
+let outfile = "crypto/bin/mldsa_ring.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-mldsa-ring: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-mldsa-ring: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-mldsa-ring' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-mldsa-ring: selftest did not print the GREEN crypto-mldsa-ring line"

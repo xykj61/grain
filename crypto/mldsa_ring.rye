@@ -1,0 +1,362 @@
+//! crypto/mldsa_ring.rye — Season G (Cryptography): the ML-DSA base ring, the first rung of the post-quantum SIGNATURE ladder. Every lattice
+//! operation in ML-DSA (NIST FIPS 204, CRYSTALS-Dilithium) lives in one polynomial ring — R_q = Z_q[X]/(X²⁵⁶ + 1) with the prime modulus
+//! q = 8380417 = 2²³ − 2¹³ + 1 — and, exactly as in ML-KEM, the whole scheme's speed rests on multiplying in that ring through the Number
+//! Theoretic Transform (NTT). Here the transform is COMPLETE: because q ≡ 1 (mod 512) a primitive 512th root of unity exists, so X²⁵⁶ + 1 splits
+//! all the way into 256 LINEAR factors and the NTT carries a polynomial to 256 independent scalars. The NTT-domain multiply is then plain
+//! coefficient-wise multiplication — no degree-1 base case, no gamma twiddles, the one structural simplification ML-DSA's ring enjoys over
+//! ML-KEM's (whose q = 3329 leaves 128 degree-1 factors). This module authors that ring in pure Rye: modular add/sub/mul mod 8380417, the
+//! forward NTT, the inverse NTT, and the pointwise multiply in the NTT domain — the arithmetic every later ML-DSA rung (encode, sample, keygen,
+//! sign/verify) stands on. It is the signature-side counterpart to crypto/mlkem_ring.rye, and the post-quantum successor to crypto/fe25519.rye.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
+//! Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — the pivot that seats ML-KEM/ML-DSA on the doubled oracle
+//! (a FIPS known-answer AND an independent second implementation agreeing byte-for-byte), because the vendored Zig std.crypto ships ml_kem.zig
+//! and ml_dsa.zig but no SLH-DSA. ML-DSA is the post-quantum successor to the Ed25519 that every Kumara identity, subkey, and attestation rests
+//! on. Rye-first spine: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+//! Kin: crypto/mlkem_ring.rye (the KEM-side ring sibling, GREEN) · crypto/shake.rye (the XOF that will seed ML-DSA's matrix and noise) ·
+//! crypto/fe25519.rye (the classical field this scheme outlives). The parity TARGET is Zig's std.crypto ml_dsa (q = 8380417, zeta = 1753,
+//! confirmed at vendor/zig-toolchain/lib/std/crypto/ml_dsa.zig) and the FIPS 204 known-answers, studied clean-room — never a copied line
+//! (.claude/rules/gratitude-licenses.md).
+//!
+//! THE HONEST PARITY BOUNDARY — FIPS 204 specifies STANDARD-domain arithmetic (the primitive 512th root ζ = 1753, plain reduction mod q); Zig's
+//! std.crypto computes internally in MONTGOMERY domain for speed. The two disagree on the representation of an intermediate NTT coefficient, yet
+//! agree byte-for-byte at every published boundary (encoded keys, signatures) because both normalize to the canonical residue before encoding.
+//! So this module authors the SPEC's standard domain — clean, auditable, FIPS-faithful — and its correctness is proven here by SELF-CONSISTENCY,
+//! exactly where crypto/mlkem_ring.rye's round-trip identity stood: the NTT round-trip inv_ntt(ntt(f)) = f, and the decisive one, that
+//! multiply-in-the-NTT-domain equals schoolbook negacyclic convolution — inv_ntt(ntt(f) ∘ ntt(g)) = f ⊛ g in R_q — over a deterministic spread
+//! of pseudo-random polynomials. The byte-boundary parity against Zig std.crypto arrives at the keygen rung.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. This module holds no key and signs nothing; it computes in
+//! a ring. It calls no std.crypto. Constant-time timing-safety stays the Season's named horizon — the arithmetic here is data-independent by
+//! construction (no branch depends on a coefficient's value), yet a timing CLAIM wants measurement on metal, so this rung proves CORRECTNESS.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/mldsa_ring.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const mldsa_ring_version = "20260816.172505";
+
+/// ML-DSA's prime modulus, q = 8380417 = 2²³ − 2¹³ + 1 — chosen so that 512 divides q − 1, which is exactly what lets a primitive 512th root of
+/// unity exist mod q and the NTT split the ring all the way down to 256 degree-0 factors (FIPS 204 §2.5). Every coefficient this module handles
+/// lives in the reduced range [0, q). Note q·q ≈ 7·10¹³ overflows u32, so mul_mod widens to u64 for the product before reducing.
+pub const q: u32 = 8380417;
+
+/// The ring degree: R_q = Z_q[X]/(X²⁵⁶ + 1), so every polynomial carries exactly 256 coefficients — the same degree as ML-KEM, a different
+/// modulus. Named so every loop and the Poly array both cite one ceiling rather than a bare literal.
+pub const n: u32 = 256;
+
+/// The primitive 512th root of unity mod q that FIPS 204 fixes for the transform (ζ = 1753): 1753⁵¹² ≡ 1 and 1753²⁵⁶ ≡ −1 (mod 8380417), the
+/// property the selftest anchors on. Every zeta the NTT twiddles by is a power of this root. Confirmed against Zig std.crypto ml_dsa's ZETA.
+pub const zeta_root: u32 = 1753;
+
+/// 256⁻¹ mod q = 8347681 — the scale the inverse NTT applies to every coefficient at the end, undoing the factor of 256 the eight butterfly
+/// layers accumulate (FIPS 204 Algorithm 42). Derived from the field: 256·32736 = 8380416 = q − 1 ≡ −1, so 256·(q − 32736) ≡ 1, giving
+/// 256⁻¹ = q − 32736 = 8347681. Asserted in the selftest, never a lone limb.
+pub const inv256: u32 = 8347681;
+
+/// The faults this ring's selftest can raise — every one a proof that failed, never a runtime path (the arithmetic below cannot fail; it reduces).
+pub const MldsaRingError = error{
+    /// The primitive-root anchors (ζ⁵¹² = 1, ζ²⁵⁶ = −1, or 256·inv256 = 1) did not hold — a wrong constant, caught before any transform.
+    RootAnchorMismatch,
+    /// The bit-reversal of an 8-bit index did not match its known value — the index permutation the zetas table rests on is wrong.
+    BitRevMismatch,
+    /// inv_ntt(ntt(f)) did not return f — the forward and inverse transforms disagree.
+    RoundTripMismatch,
+    /// inv_ntt(ntt(f) ∘ ntt(g)) did not equal the schoolbook negacyclic convolution f ⊛ g — the NTT multiply is wrong.
+    ConvolutionMismatch,
+    /// A test polynomial came out identically zero, so a passing check would prove nothing — the selftest refuses a trivial witness.
+    TrivialWitness,
+};
+
+/// A ring element: 256 coefficients over Z_q, each kept in the reduced range [0, q). The same layout in the standard domain and the NTT domain —
+/// what changes between them is which basis the coefficients speak in, not their storage.
+pub const Poly = struct {
+    cs: [n]u32,
+};
+
+/// add_mod — (a + b) mod q for a, b already in [0, q). One add stays below 2q ≈ 1.68·10⁷ < 2³², so a single reduction lands the result in range.
+fn add_mod(a: u32, b: u32) u32 {
+    // invariant (precondition): both inputs are already reduced, so their sum cannot overflow u32.
+    assert(a < q and b < q);
+    const r = (a + b) % q;
+    // invariant (postcondition): the result is a canonical residue.
+    assert(r < q);
+    return r;
+}
+
+/// sub_mod — (a − b) mod q for a, b in [0, q). Add q before subtracting so the intermediate never underflows in unsigned arithmetic (a + q − b
+/// stays below 2q < 2³²).
+fn sub_mod(a: u32, b: u32) u32 {
+    // invariant (precondition): both inputs are reduced, so a + q − b stays below 2q.
+    assert(a < q and b < q);
+    const r = (a + q - b) % q;
+    // invariant (postcondition): the difference is a canonical residue.
+    assert(r < q);
+    return r;
+}
+
+/// mul_mod — (a · b) mod q for a, b in [0, q). Unlike ML-KEM's ring, the product q·q ≈ 7·10¹³ OVERFLOWS u32, so the multiply widens to u64 first,
+/// then one reduction brings it back to [0, q). This is the one arithmetic difference the larger modulus forces.
+fn mul_mod(a: u32, b: u32) u32 {
+    // invariant (precondition): both inputs are reduced, so the widened product fits u64 with room to spare (q·q < 2⁴⁶).
+    assert(a < q and b < q);
+    const prod: u64 = @as(u64, a) * @as(u64, b);
+    const r: u32 = @intCast(prod % q);
+    // invariant (postcondition): the product reduces to a canonical residue.
+    assert(r < q);
+    return r;
+}
+
+/// pow_mod — base^exp mod q by square-and-multiply, the helper the zeta table is computed with. Comptime-callable, so the table below is built at
+/// compile time exactly as Zig's own std.crypto ml_dsa builds its zetas.
+fn pow_mod(base: u32, exp: u32) u32 {
+    // invariant (precondition): the base is reduced so every squaring stays a valid mul_mod input.
+    assert(base < q);
+    var result: u32 = 1;
+    var b: u32 = base % q;
+    var e: u32 = exp;
+    // invariant (bound): the exponent halves each turn, so the loop runs at most 32 times (u32 has 32 bits) — never unbounded.
+    var guard: u32 = 0;
+    while (e > 0) : (guard += 1) {
+        assert(guard < 32);
+        if ((e & 1) == 1) result = mul_mod(result, b);
+        b = mul_mod(b, b);
+        e >>= 1;
+    }
+    // invariant (postcondition): the result is a canonical residue.
+    assert(result < q);
+    return result;
+}
+
+/// bitrev8 — reverse the low 8 bits of x, the index permutation FIPS 204's zetas table is laid out under (zetas[k] = ζ^BitRev8(k)). The eight
+/// bits are exactly enough to index the 256 twiddle factors — one more bit than ML-KEM's, because the complete NTT visits 255 twiddles.
+fn bitrev8(x: u32) u32 {
+    // invariant (precondition): the index addresses one of the 256 twiddles, so it fits in 8 bits.
+    assert(x < 256);
+    var r: u32 = 0;
+    var i: u32 = 0;
+    // invariant (bound): exactly eight bit moves, the width of a 256-entry index.
+    while (i < 8) : (i += 1) {
+        r = (r << 1) | ((x >> @as(u5, @intCast(i))) & 1);
+    }
+    // invariant (postcondition): a reversed 8-bit value still fits 8 bits.
+    assert(r < 256);
+    return r;
+}
+
+/// compute_zetas — the NTT twiddle table, zetas[k] = ζ^BitRev8(k) mod q for k in 0..256 (FIPS 204 §Algorithm 41, ζ = 1753). Built at comptime
+/// from the field, never a pasted table, so a wrong root cannot slip in unproven. Index 0 is the unused ζ⁰ = 1; the transform reads 1..255.
+fn compute_zetas() [256]u32 {
+    // Building 256 twiddles by square-and-multiply at comptime crosses Zig's default 1000-branch budget; raise it for this pure computation.
+    @setEvalBranchQuota(200000);
+    var table: [256]u32 = undefined;
+    var k: u32 = 0;
+    // invariant (bound): exactly 256 twiddles, one per NTT butterfly index across the eight layers.
+    while (k < 256) : (k += 1) {
+        table[k] = pow_mod(zeta_root, bitrev8(k));
+    }
+    return table;
+}
+
+/// The twiddle table, computed once at compile time. ML-DSA needs no separate gamma table: the complete NTT leaves degree-0 scalars, so the
+/// NTT-domain multiply is plain coefficient-wise multiplication (multiply_ntts below), not a degree-1 base case.
+const zetas: [256]u32 = compute_zetas();
+
+/// ntt — the forward Number Theoretic Transform (FIPS 204 Algorithm 41). EIGHT layers of Cooley–Tukey butterflies (len = 128, 64, …, 1) carry a
+/// standard-domain polynomial into the NTT domain, where ring multiplication becomes 256 independent scalar products. Pure, data-independent
+/// control flow: the butterfly schedule depends only on the public degree, never on a coefficient's value. The butterfly is identical to
+/// ML-KEM's; only the layer count (eight, down to len = 1) and the twiddle count (255) differ, because this ring splits completely.
+pub fn ntt(f: *const Poly) Poly {
+    var a = f.*;
+    // invariant (precondition): every input coefficient is already a canonical residue.
+    assert(a.cs[0] < q and a.cs[n - 1] < q);
+    var i: u32 = 1;
+    var len: u32 = 128;
+    // invariant (bound): the transform runs exactly eight layers (len halves from 128 down to 1), i walking the 255 twiddles once each.
+    while (len >= 1) : (len >>= 1) {
+        var start: u32 = 0;
+        while (start < n) : (start += 2 * len) {
+            const z = zetas[i];
+            i += 1;
+            var j: u32 = start;
+            while (j < start + len) : (j += 1) {
+                const t = mul_mod(z, a.cs[j + len]);
+                a.cs[j + len] = sub_mod(a.cs[j], t);
+                a.cs[j] = add_mod(a.cs[j], t);
+            }
+        }
+        // the final layer runs at len = 1; the shift `len >>= 1` would then loop forever at 0, so break once it is consumed.
+        if (len == 1) break;
+    }
+    // invariant (postcondition): every twiddle was consumed exactly once (indices 1..255, then i rests at 256).
+    assert(i == 256);
+    return a;
+}
+
+/// inv_ntt — the inverse NTT (FIPS 204 Algorithm 42). The same eight layers run outward (len = 1, 2, …, 128) with the twiddles walked in
+/// reverse, then every coefficient is scaled by 256⁻¹ = 8347681 to undo the factor the butterflies accumulate. inv_ntt(ntt(f)) = f. The
+/// butterfly matches ML-KEM's inverse exactly: t = w[j]; w[j] = t + w[j+len]; w[j+len] = ζ·(w[j+len] − t), which equals FIPS 204's
+/// −ζ·(t − w[j+len]) with the positive twiddle table.
+pub fn inv_ntt(f: *const Poly) Poly {
+    var a = f.*;
+    // invariant (precondition): every input coefficient is a canonical residue.
+    assert(a.cs[0] < q and a.cs[n - 1] < q);
+    var i: u32 = 255;
+    var len: u32 = 1;
+    // invariant (bound): exactly eight layers outward (len doubles from 1 to 128), i walking the twiddles back down from 255 to 1.
+    while (len <= 128) : (len <<= 1) {
+        var start: u32 = 0;
+        while (start < n) : (start += 2 * len) {
+            const z = zetas[i];
+            // i counts down; on the final (len = 128) layer its last decrement reaches 0, so guard the subtraction against underflow at the end.
+            if (i > 0) i -= 1;
+            var j: u32 = start;
+            while (j < start + len) : (j += 1) {
+                const t = a.cs[j];
+                a.cs[j] = add_mod(t, a.cs[j + len]);
+                a.cs[j + len] = mul_mod(z, sub_mod(a.cs[j + len], t));
+            }
+        }
+    }
+    var k: u32 = 0;
+    // invariant (bound): one final scaling per coefficient, exactly n of them.
+    while (k < n) : (k += 1) {
+        a.cs[k] = mul_mod(a.cs[k], inv256);
+    }
+    return a;
+}
+
+/// multiply_ntts — multiply two ring elements already in the NTT domain (FIPS 204 Algorithm 45's coefficient-wise product). Because ML-DSA's
+/// complete NTT splits R_q into 256 quotients Z_q[X]/(X − ζᵢ), each of degree ZERO, the product is 256 independent SCALAR multiplies:
+/// h[i] = a[i]·b[i] mod q. This is the whole reason the NTT exists — the ring multiply is now linear-time — and it is simpler than ML-KEM's
+/// degree-1 base case precisely because the larger modulus lets the ring split all the way down.
+pub fn multiply_ntts(f: *const Poly, g: *const Poly) Poly {
+    var h: Poly = .{ .cs = [_]u32{0} ** n };
+    // invariant (precondition): both operands carry canonical residues.
+    assert(f.cs[0] < q and g.cs[0] < q);
+    var i: u32 = 0;
+    // invariant (bound): exactly 256 scalar products, one per NTT-domain factor.
+    while (i < n) : (i += 1) {
+        h.cs[i] = mul_mod(f.cs[i], g.cs[i]);
+    }
+    // invariant (postcondition): the result is a full ring element back in the NTT domain.
+    assert(h.cs[n - 1] < q);
+    return h;
+}
+
+// ---- selftest ----------------------------------------------------------------------------------------------------------------------
+
+/// A deterministic pseudo-random ring element from a seed — the selftest's non-trivial inputs, each coefficient reduced into [0, q). A tiny LCG
+/// keeps it reproducible without any std.crypto, so a failing run always reruns identically.
+fn poly_from_seed(seed: u32) Poly {
+    var p: Poly = .{ .cs = [_]u32{0} ** n };
+    var state: u32 = seed *% 2654435761 +% 1013904223;
+    var j: u32 = 0;
+    while (j < n) : (j += 1) {
+        state = state *% 1664525 +% 1013904223;
+        p.cs[j] = state % q;
+    }
+    return p;
+}
+
+/// poly_eq — do two ring elements match coefficient for coefficient?
+fn poly_eq(a: *const Poly, b: *const Poly) bool {
+    var j: u32 = 0;
+    while (j < n) : (j += 1) {
+        if (a.cs[j] != b.cs[j]) return false;
+    }
+    return true;
+}
+
+/// poly_is_zero — is every coefficient zero? Used to refuse a trivial witness (a passing check on the zero polynomial proves nothing).
+fn poly_is_zero(a: *const Poly) bool {
+    var j: u32 = 0;
+    while (j < n) : (j += 1) {
+        if (a.cs[j] != 0) return false;
+    }
+    return true;
+}
+
+/// negacyclic_schoolbook — the reference ring multiply, straight from the definition of R_q = Z_q[X]/(X²⁵⁶ + 1): the O(n²) convolution where a
+/// term whose degree reaches 256 or beyond wraps with a MINUS sign (X²⁵⁶ ≡ −1). This is the ground truth the NTT multiply must reproduce; it is
+/// slow and obviously correct, which is exactly what a self-consistency oracle wants. Identical in shape to ML-KEM's — the ring degree is shared.
+fn negacyclic_schoolbook(f: *const Poly, g: *const Poly) Poly {
+    var h: Poly = .{ .cs = [_]u32{0} ** n };
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        var j: u32 = 0;
+        while (j < n) : (j += 1) {
+            const p = mul_mod(f.cs[i], g.cs[j]);
+            const k = i + j;
+            if (k < n) {
+                h.cs[k] = add_mod(h.cs[k], p);
+            } else {
+                h.cs[k - n] = sub_mod(h.cs[k - n], p);
+            }
+        }
+    }
+    return h;
+}
+
+fn run_selftest() !u8 {
+    // 1. The primitive-root anchors FIPS 204 fixes: ζ = 1753 has order 512 mod q (ζ⁵¹² = 1 and ζ²⁵⁶ = −1), and 256·inv256 = 1. These are the
+    //    field facts the entire transform rests on; a wrong q or ζ fails here before any butterfly runs.
+    if (pow_mod(zeta_root, 512) != 1) return error.RootAnchorMismatch;
+    if (pow_mod(zeta_root, 256) != q - 1) return error.RootAnchorMismatch;
+    if (mul_mod(inv256, 256) != 1) return error.RootAnchorMismatch;
+
+    // 2. The bit-reversal the zetas table is laid out under, on its named fixed points (8-bit reversal).
+    if (bitrev8(0) != 0) return error.BitRevMismatch;
+    if (bitrev8(1) != 128) return error.BitRevMismatch;
+    if (bitrev8(128) != 1) return error.BitRevMismatch;
+    if (bitrev8(255) != 255) return error.BitRevMismatch;
+
+    // 3. The NTT round-trip: inv_ntt(ntt(f)) = f across a deterministic spread of non-trivial polynomials. A round-trip that held only on the
+    //    zero polynomial would prove nothing, so each input is asserted non-zero.
+    {
+        var seed: u32 = 1;
+        while (seed <= 64) : (seed += 1) {
+            const f = poly_from_seed(seed);
+            if (poly_is_zero(&f)) return error.TrivialWitness;
+            const back = inv_ntt(&ntt(&f));
+            if (!poly_eq(&back, &f)) return error.RoundTripMismatch;
+        }
+    }
+
+    // 4. THE decisive oracle: multiply-in-the-NTT-domain equals schoolbook negacyclic convolution. inv_ntt(ntt(f) ∘ ntt(g)) = f ⊛ g in R_q,
+    //    across a deterministic spread. The schoolbook is the definition of the ring; the NTT path is the fast route. Their agreement proves the
+    //    forward transform, the coefficient-wise pointwise multiply, and the inverse transform all together, with no external dependency.
+    {
+        var seed: u32 = 1;
+        while (seed <= 64) : (seed += 1) {
+            const f = poly_from_seed(seed);
+            const g = poly_from_seed(seed +% 1000);
+            const school = negacyclic_schoolbook(&f, &g);
+            if (poly_is_zero(&school)) return error.TrivialWitness;
+            const fast = inv_ntt(&multiply_ntts(&ntt(&f), &ntt(&g)));
+            if (!poly_eq(&fast, &school)) return error.ConvolutionMismatch;
+        }
+    }
+
+    print("GREEN crypto-mldsa-ring: the ML-DSA base ring R_q = Z_q[X]/(X^256 + 1), q = 8380417 = 2^23 - 2^13 + 1, authored in pure Rye as " ++
+        "Season G's first post-quantum SIGNATURE rung. Modular add/sub/mul mod 8380417 (mul_mod widens to u64 since q*q overflows u32), the " ++
+        "forward NTT and inverse NTT (FIPS 204 Algorithms 41 and 42, EIGHT Cooley-Tukey butterfly layers under the primitive 512th root " ++
+        "zeta = 1753, confirmed against Zig std.crypto ml_dsa), and the pointwise multiply in the NTT domain (256 scalar products — the " ++
+        "complete NTT splits R_q into 256 degree-0 factors, so no gamma base case, the one simplification the larger modulus grants over " ++
+        "ML-KEM). The twiddle table zetas[k] = zeta^BitRev8(k) is computed at compile time from the field, never a pasted limb. FIPS specifies " ++
+        "standard-domain arithmetic while Zig's std.crypto computes in Montgomery domain, so parity against Zig is taken at the encoded byte " ++
+        "boundary at the keygen rung; here correctness is proven by SELF-CONSISTENCY with no external dependency — the primitive-root anchors " ++
+        "(zeta^512 = 1, zeta^256 = -1, 256*8347681 = 1 mod q), the NTT round-trip inv_ntt(ntt(f)) = f over 64 non-trivial polynomials, and the " ++
+        "decisive one, that inv_ntt(ntt(f) o ntt(g)) equals schoolbook negacyclic convolution f (*) g in R_q over 64 pairs. This ring is the " ++
+        "arithmetic the ML-DSA encode, sample, keygen, and sign/verify rungs compose next, the post-quantum successor to the Ed25519 every " ++
+        "Kumara identity rests on. Purely local — no key, no network, no funds, no real device; the arithmetic is data-independent by " ++
+        "construction, constant-time timing-safety the Season's named horizon.\n", .{});
+    return 0;
+}
+
+pub fn main(init_args: std.process.Init) !u8 {
+    _ = init_args;
+    return run_selftest();
+}
