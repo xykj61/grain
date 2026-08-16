@@ -1,0 +1,41 @@
+# tools/crypto_bip39_seed_witness.rish — BIP-39 mnemonic→seed authored in pure Rye as a composition over the GREEN PBKDF2-HMAC-SHA-512,
+# authoring NO new cryptography. The wallet arc's bridge from a human backup phrase to the 512-bit binary seed crypto/bip32.rye grows a
+# whole hierarchical-deterministic tree from: a keeper writes down twelve or twenty-four words, and this rung folds them (with an optional
+# passphrase) into the 64 bytes the HD wallet stands on (crypto · Season G).
+#
+# Season: crypto — Season G (the Six-Season double-seat). This rung contributes only the BIP-39 seed recipe — the fixed salt "mnemonic" ‖
+# passphrase and the 2048-round PBKDF2-HMAC-SHA-512 — over crypto/pbkdf2_sha512.rye, itself proven byte-for-byte on metal. Design read:
+# active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave, Rye first).
+# Clean-room: BIP-39 is a public standard; the assembly is ours, standing on our own parity-GREEN stone, never a copied line
+# (.claude/rules/gratitude-licenses.md).
+#
+# Parity is proven at selftest the replayable way the tree favours — against BIP-39's OWN published Trezor test vectors (English, passphrase
+# "TREZOR"), fetched byte-exact from the canonical trezor/python-mnemonic vectors, never recited from memory: three mnemonics fold to
+# EXACTLY their published 128-hex-char seeds, character for character, so a one-bit error anywhere in the salt assembly, the 2048-round
+# PBKDF2, or the HMAC beneath would break a match; the seed also ties transitively to the GREEN PBKDF2 beneath. Edge refusals MnemonicTooLong
+# and PassphraseTooLong fire. Purely local — every mnemonic is a TEST phrase from the spec's own vectors, no network, no funds; generating a
+# real wallet from a real mnemonic and signing with its key stays the custody gate, and NFKD normalization of non-ASCII input is a named
+# horizon.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_bip39_seed_witness.rish
+
+say "crypto-bip39-seed: Language EN — BIP-39 mnemonic→seed: the wallet arc's bridge from a human backup phrase to a 512-bit binary seed. The whole recipe is one fixed line — seed = PBKDF2-HMAC-SHA-512(password = mnemonic, salt = 'mnemonic' ‖ passphrase, c = 2048, dkLen = 64) — composed entirely over the GREEN crypto/pbkdf2_sha512.rye, authoring no new cryptography. This is the half of BIP-39 that feeds crypto/bip32.rye: from these 64 bytes, master_from_seed grows the whole hierarchical-deterministic tree of a wallet's keys."
+say "crypto-bip39-seed: Style Radiant — a keeper writes down twelve or twenty-four words and, with an optional passphrase, this rung folds them into the seed the whole wallet stands on. One backup phrase, one seed, and the ladder of addresses beneath it — the human edge of the HD wallet, authored in the open and proven against the standard's own answers."
+say "crypto-bip39-seed: Lens TAME — every width named (seed_len 64, bip39_iterations 2048, bounded mnemonic and passphrase), the assembled salt asserted within the KDF's own salt bound at compile time, contract asserts on the derivation; it calls no cryptography of its own, only the GREEN PBKDF2 beneath. Parity holds against BIP-39's OWN published Trezor vectors (English, passphrase 'TREZOR', fetched byte-exact): three mnemonics fold to EXACTLY their published 128-hex-char seeds, character for character; the seed ties transitively to the GREEN PBKDF2 beneath. Edge refusals MnemonicTooLong and PassphraseTooLong fire. NFKD normalization of the inputs is a documented precondition — the ASCII vectors make it the identity; entropy→mnemonic is its own separate rung. Purely local — TEST mnemonics only, no real identity key, no network, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/bip39_seed"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/bip39_seed.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-bip39-seed: build failed — ${build.err}"
+
+let outfile = "crypto/bin/bip39_seed.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-bip39-seed: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-bip39-seed: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-bip39-seed' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-bip39-seed: selftest did not print the GREEN crypto-bip39-seed line"

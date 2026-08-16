@@ -1,0 +1,198 @@
+//! crypto/bip39_seed.rye — Season G (Cryptography), the wallet arc's mnemonic→seed rung: BIP-39's derivation of a 512-bit binary seed from
+//! a mnemonic sentence and an optional passphrase. This is the exact bridge from a human backup phrase to the seed crypto/bip32.rye's
+//! master_from_seed grows a whole tree of keys from — a keeper writes down twelve or twenty-four words, and this rung folds them (with an
+//! optional passphrase) into the 64 bytes the HD wallet stands on. It authors NO new cryptography: it composes the GREEN
+//! crypto/pbkdf2_sha512.rye through BIP-39's one fixed recipe —
+//!   seed = PBKDF2-HMAC-SHA-512(password = mnemonic, salt = "mnemonic" ‖ passphrase, c = 2048, dkLen = 64).
+//! A twelfth composition, buildable this round because the stone beneath it (PBKDF2-HMAC-SHA-512) is already GREEN on metal, and provable
+//! against BIP-39's OWN published Trezor test vectors byte-for-byte.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+//! Kin: crypto/pbkdf2_sha512.rye (the KDF beneath it, GREEN on metal) · crypto/bip32.rye (master_from_seed grows the HD tree from this seed) ·
+//! crypto/hmac_sha512.rye (the PRF two rungs down). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity DISCIPLINE target — our own
+//! Rye, studied clean-room from the public standards (.claude/rules/gratitude-licenses.md).
+//!
+//! HONEST SCOPE — software only, purely LOCAL, TEST mnemonics from BIP-39's own published vectors, no real identity key, no network, no
+//! funds, no real device. The module calls no std.crypto. **NFKD normalization is a documented precondition:** BIP-39 specifies the
+//! mnemonic and passphrase be NFKD-normalized UTF-8 before this derivation; the published English test vectors are pure ASCII, for which
+//! NFKD is the identity, so this rung takes already-normalized bytes and folds them — normalizing non-ASCII input is the caller's job and a
+//! named horizon, not a claim made here. Generating the mnemonic from entropy (the 2048-word English list and its SHA-256 checksum) is its
+//! own separate rung; this one derives the seed from a mnemonic, the half that feeds BIP-32. Constant-time discipline is the HMAC layer's
+//! named horizon.
+//!
+//! Parity is proven at selftest against BIP-39's OWN published Trezor vectors (passphrase "TREZOR"), fetched byte-exact from the canonical
+//! trezor/python-mnemonic vectors, never recited from memory: three English mnemonics fold to EXACTLY their published 128-hex-char seeds,
+//! character for character — a one-bit error anywhere in the salt assembly, the 2048-round PBKDF2, or the HMAC beneath would break a match.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/bip39_seed.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const pbkdf2 = @import("pbkdf2_sha512.rye");
+
+pub const bip39_seed_version = "20260816.075743";
+
+/// The fixed BIP-39 parameters, named so no magic number floats in the code: the derived seed is always 64 bytes, the iteration count is
+/// always 2048, and the salt always begins with the ASCII word "mnemonic" before the passphrase.
+pub const seed_len: u32 = 64;
+pub const bip39_iterations: u32 = 2048;
+const salt_prefix = "mnemonic";
+const salt_prefix_len: u32 = salt_prefix.len;
+
+/// The largest inputs this rung accepts, each refused at the edge before a byte is mixed. A 24-word English mnemonic is under ~216 bytes;
+/// 1024 is a generous ceiling that still cites a bound. The passphrase sits below its own named ceiling, and the assembled salt
+/// ("mnemonic" ‖ passphrase) must fit crypto/pbkdf2_sha512.rye's own salt bound — asserted at construction so the composition is provably
+/// within the stone beneath it.
+pub const max_mnemonic_bytes: u32 = 1024;
+pub const max_passphrase_bytes: u32 = 1024;
+
+// invariant: the assembled salt fits the KDF's salt bound, so the composition never overruns the stone beneath it. Checked at compile time
+// so a future bound change that broke the composition would fail to build rather than fault at runtime.
+comptime {
+    assert(salt_prefix_len + max_passphrase_bytes <= pbkdf2.max_salt_bytes);
+}
+
+/// The two faults this rung can raise, each refused at the edge before a byte is mixed.
+pub const Bip39Error = error{
+    /// A mnemonic longer than max_mnemonic_bytes — refused before it keys the PBKDF2.
+    MnemonicTooLong,
+    /// A passphrase longer than max_passphrase_bytes — refused before the salt is assembled.
+    PassphraseTooLong,
+};
+
+/// BIP-39 seed derivation: fold `mnemonic` and `passphrase` (both already NFKD-normalized UTF-8) into the 64-byte binary `out` seed a BIP-32
+/// master key is grown from. The whole recipe: PBKDF2-HMAC-SHA-512 over the mnemonic keyed by the salt "mnemonic" ‖ passphrase, 2048 rounds.
+pub fn seed(out: *[seed_len]u8, mnemonic: []const u8, passphrase: []const u8) Bip39Error!void {
+    // invariant: the mnemonic fits its named ceiling, so it keys the PBKDF2 within bound.
+    if (mnemonic.len > max_mnemonic_bytes) return error.MnemonicTooLong;
+    // invariant: the passphrase fits its named ceiling, so the assembled salt stays within the KDF's salt bound.
+    if (passphrase.len > max_passphrase_bytes) return error.PassphraseTooLong;
+
+    // Assemble the salt: the fixed ASCII prefix "mnemonic" followed by the passphrase, into a buffer bounded above by the comptime check.
+    var salt: [salt_prefix_len + max_passphrase_bytes]u8 = undefined;
+    var p: u32 = 0;
+    while (p < salt_prefix_len) : (p += 1) salt[p] = salt_prefix[p];
+    const plen: u32 = @intCast(passphrase.len);
+    // invariant: the passphrase-length cast lost nothing — it is bounded by max_passphrase_bytes above.
+    assert(plen <= max_passphrase_bytes);
+    var k: u32 = 0;
+    while (k < plen) : (k += 1) {
+        salt[salt_prefix_len + k] = passphrase[k];
+    }
+    const salt_len: u32 = salt_prefix_len + plen;
+    // invariant: the assembled salt is the prefix plus the passphrase, no more, and within the KDF's salt bound.
+    assert(salt_len <= pbkdf2.max_salt_bytes);
+
+    // The mnemonic keys the PBKDF2, the assembled salt seeds it, 2048 rounds fold to the 64-byte seed. The mnemonic is within the KDF's
+    // password bound (max_mnemonic_bytes ≪ pbkdf2.max_password_bytes) and the salt within its salt bound (asserted), and 64 ≤ max_dk_bytes,
+    // so this derivation cannot fault — asserted, not swallowed.
+    pbkdf2.pbkdf2(out[0..], mnemonic, salt[0..salt_len], bip39_iterations) catch unreachable;
+}
+
+fn nibble(c: u8) u8 {
+    if (c >= '0' and c <= '9') return c - '0';
+    // invariant: the vector hex uses only lowercase a–f beyond the digits — no other byte reaches here.
+    assert(c >= 'a' and c <= 'f');
+    return c - 'a' + 10;
+}
+
+/// True when the 64-byte seed equals the hex string, byte for byte — a published Trezor known-answer compared against our output.
+fn eq_hex(bytes: []const u8, hex: []const u8) bool {
+    // invariant: two hex chars name one byte, so a well-formed vector's hex is exactly twice the byte length.
+    if (hex.len != bytes.len * 2) return false;
+    var i: u32 = 0;
+    while (i < bytes.len) : (i += 1) {
+        const want: u8 = nibble(hex[i * 2]) * 16 + nibble(hex[i * 2 + 1]);
+        if (bytes[i] != want) return false;
+    }
+    return true;
+}
+
+// BIP-39's OWN published Trezor test vectors (English, passphrase "TREZOR"), fetched byte-exact from the canonical trezor/python-mnemonic
+// vectors — the mnemonic and its 128-hex-char seed, our Rye must reproduce hex for hex.
+
+// Vector 1 — entropy all zeros.
+const v1_mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";
+const v1_seed_hex = "c55257c360c07c72029aebc1b53c05ed0362ada38ead3e3e9efa3708e53495531f09a6987599d18264c1e1c92f2cf141630c7a3c4ab7c81b2f001698e7463b04";
+
+// Vector 2 — "legal winner…".
+const v2_mnemonic = "legal winner thank year wave sausage worth useful legal winner thank yellow";
+const v2_seed_hex = "2e8905819b8723fe2c1d161860e5ee1830318dbf49a83bd451cfb8440c28bd6fa457fe1296106559a3c80937a1c1069be3a3a5bd381ee6260e8d9739fce1f607";
+
+// Vector 3 — "letter advice cage…".
+const v3_mnemonic = "letter advice cage absurd amount doctor acoustic avoid letter advice cage above";
+const v3_seed_hex = "d71de856f81a8acc65e6fc851a38d4d7ec216fd0796d0a6827a3ad6ed5511a30fa280f12eb2e47ed2ac03b5c462a0358d18d69fe4f985ec81778c1b370b652a8";
+
+const trezor_passphrase = "TREZOR";
+
+fn run_selftest() !u8 {
+    // 1. BIP-39's OWN published Trezor known-answers — each English mnemonic (passphrase "TREZOR") folds to EXACTLY its published seed,
+    //    character for character. A one-bit error in the salt assembly, the 2048-round PBKDF2, or the HMAC beneath would break a match.
+    {
+        var s1: [seed_len]u8 = undefined;
+        try seed(&s1, v1_mnemonic, trezor_passphrase);
+        if (!eq_hex(s1[0..], v1_seed_hex)) return error.Vector1Mismatch;
+
+        var s2: [seed_len]u8 = undefined;
+        try seed(&s2, v2_mnemonic, trezor_passphrase);
+        if (!eq_hex(s2[0..], v2_seed_hex)) return error.Vector2Mismatch;
+
+        var s3: [seed_len]u8 = undefined;
+        try seed(&s3, v3_mnemonic, trezor_passphrase);
+        if (!eq_hex(s3[0..], v3_seed_hex)) return error.Vector3Mismatch;
+    }
+
+    // 2. The seed ties transitively to the stone beneath: seed(m, p) is exactly PBKDF2-HMAC-SHA-512 over the mnemonic with salt
+    //    "mnemonic" ‖ passphrase at 2048 rounds — the same GREEN crypto/pbkdf2_sha512.rye, reached directly here with the salt assembled by
+    //    hand, must give the identical bytes.
+    {
+        const mnemonic = "tie to the kdf beneath abandon abandon about";
+        const passphrase = "a passphrase";
+        var via_seed: [seed_len]u8 = undefined;
+        try seed(&via_seed, mnemonic, passphrase);
+
+        var salt: [8 + 12]u8 = undefined;
+        const prefix = "mnemonic";
+        var i: u32 = 0;
+        while (i < prefix.len) : (i += 1) salt[i] = prefix[i];
+        while (i < prefix.len + passphrase.len) : (i += 1) salt[i] = passphrase[i - prefix.len];
+        var via_kdf: [seed_len]u8 = undefined;
+        try pbkdf2.pbkdf2(&via_kdf, mnemonic, salt[0..], bip39_iterations);
+
+        var b: u32 = 0;
+        while (b < seed_len) : (b += 1) if (via_seed[b] != via_kdf[b]) return error.KdfTieMismatch;
+    }
+
+    // 3. The bounds refuse an over-long mnemonic and an over-long passphrase before a byte is mixed.
+    {
+        var out: [seed_len]u8 = undefined;
+
+        const oversize_mnemonic: []const u8 = @as([*]const u8, @ptrFromInt(0x1000))[0 .. max_mnemonic_bytes + 1];
+        if (seed(&out, oversize_mnemonic, "p")) |_| return error.OversizeMnemonicSlipped else |err| if (err != error.MnemonicTooLong) return error.WrongOversizeMnemonic;
+
+        const oversize_passphrase: []const u8 = @as([*]const u8, @ptrFromInt(0x1000))[0 .. max_passphrase_bytes + 1];
+        if (seed(&out, "abandon about", oversize_passphrase)) |_| return error.OversizePassphraseSlipped else |err| if (err != error.PassphraseTooLong) return error.WrongOversizePassphrase;
+    }
+
+    print("GREEN crypto-bip39-seed: BIP-39 mnemonic→seed authored in pure Rye — the wallet arc's bridge from a human backup phrase to the " ++
+        "512-bit binary seed crypto/bip32.rye's master_from_seed grows a whole HD tree from. A twelfth composition authoring no new " ++
+        "cryptography, only BIP-39's one fixed recipe over the GREEN crypto/pbkdf2_sha512.rye: seed = PBKDF2-HMAC-SHA-512(mnemonic, " ++
+        "\"mnemonic\" ‖ passphrase, c = 2048, dkLen = 64). Parity holds the replayable way, against BIP-39's OWN published Trezor vectors " ++
+        "(English, passphrase \"TREZOR\", fetched byte-exact from the canonical trezor/python-mnemonic vectors, never recited): three " ++
+        "mnemonics fold to EXACTLY their published 128-hex-char seeds, character for character; the seed also ties transitively to the " ++
+        "GREEN PBKDF2 beneath (the same bytes reached with the salt assembled by hand). An over-long mnemonic and an over-long passphrase " ++
+        "each refuse a named error before a byte is mixed. NFKD normalization of the inputs is a documented precondition — the ASCII " ++
+        "vectors make it the identity, and normalizing non-ASCII input is the caller's job and a named horizon; entropy→mnemonic (the " ++
+        "2048-word list and its checksum) is its own separate rung. Purely local — TEST mnemonics from the spec's own vectors, no real " ++
+        "identity key, no network, no funds, no real device; constant-time discipline stays the HMAC layer's named horizon. The half of " ++
+        "BIP-39 that feeds BIP-32 now stands in our own Rye — one backup phrase folds to the seed the whole wallet tree grows from.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    return run_selftest();
+}

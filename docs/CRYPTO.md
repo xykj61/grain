@@ -1,6 +1,6 @@
 # Crypto — the Season G audit front door
 
-*A Rye-native, parity-checked cryptography library — thirty-five primitives and eleven compositions, each GREEN on metal.*
+*A Rye-native, parity-checked cryptography library — thirty-five primitives and twelve compositions, each GREEN on metal.*
 
 **Status:** Checkable — Season G operator + auditor guide
 **Depth:** guide
@@ -32,7 +32,7 @@ vectors — never a copied line ([`gratitude-licenses.md`](../.claude/rules/grat
 
 ---
 
-## Rung table — forty-six files, dependency order
+## Rung table — forty-seven files, dependency order
 
 Each rung stands on the GREEN rungs beneath it; none authors cryptography a lower
 rung had not already proven. Every file carries a per-file witness
@@ -118,6 +118,7 @@ rung had not already proven. Every file carries a per-file witness
 | `eip155_tx.rye` | *What does a key sign before every on-chain send, and who signed it?* — the EIP-155 legacy Ethereum transaction digest `keccak256(rlp([nonce, gasPrice, gas, to, value, data, chainId, 0, 0]))`, the exact bytes a wallet signs. Hashes the flat nine-field transaction list (where `eip712` hashes a typed tree off-chain); the chain id folded into the preimage is replay protection, and `v = recovery_id + 2·chainId + 35` carries it back out, so `recover_sender` reads the twenty-byte sender out of the sighash and signature. Parity three ways: the EIP-155 spec's own canonical example hashes byte-for-byte to the spec's stated sighash `0xdaf5a779…4c8e53`, an independent Zig-Keccak construction over the same RLP gives the identical digest, and the spec's published `(v=37, r, s)` recovers to exactly the example's published sender `0x9d8a62f6…855a4f` | RLP · Keccak-256 · ecrecover · eth_address |
 | `eip1559_tx.rye` | *What does a key sign before every modern (type-2) send, and who signed it?* — the EIP-1559 typed-transaction digest `keccak256(0x02 ‖ rlp([chainId, nonce, maxPriorityFeePerGas, maxFeePerGas, gasLimit, to, value, data, accessList]))`, the exact bytes a wallet signs since the London fork. Prepends the EIP-2718 type byte `0x02` and carries the dynamic-fee market (a tip ceiling and a fee ceiling in place of one gasPrice); the signed wire form appends `[yParity, r, s]` for twelve fields, the recovery bit a plain `yParity` because the chain id already lives in the signed list, so `recover_sender` reads the twenty-byte sender back out. Parity three ways with no fabricated constant: the example test key `0x4646…46` derives to exactly the address EIP-155 publishes, `0x9d8a62f6…855a4f`; an independent Zig-Keccak construction over the same type-prefixed RLP gives the identical digest; and deterministically signing then recovering returns exactly that derived address | RLP · Keccak-256 · ecdsa_sign · ecrecover · eth_address |
 | `bip32.rye` | *From one seed, the whole tree of a wallet's keys.* — BIP-32 hierarchical-deterministic keys: a child private key is `(parse256(I_L) + k_par) mod n` where `I = HMAC-SHA-512(c_par, D)` splits into the offset `I_L` and the child chain code `I_R`; `D` is `0x00‖ser256(k_par)‖ser32(i)` for a hardened child or `serP(point(k_par))‖ser32(i)` for a normal one. `master_from_seed` runs the fixed `"Bitcoin seed"` HMAC, `ckd_priv` derives both kinds, `neuter`/`ckd_pub` derive the public tree from an xpub alone (`K_child = point(I_L) + K_par` over the complete group law, a hardened index refused from a public parent), and `serialize_xprv`/`serialize_xpub`/`serialize_ext_pub` wrap any node in the 78-byte version‖depth‖fingerprint‖index‖chain-code‖key body under Base58Check. The rung a wallet's whole account model stands on — one backup phrase, one seed, the ladder of addresses beneath it, watch-only or spending. Parity against BIP-32's own published Test Vector 1: from the published seed `000102…0f`, all six chain nodes serialize to EXACTLY the spec's published xprv AND xpub strings, character for character; each node's neuter reproduces the same xpub, and every normal index reaches it through CKDpub from the neutered parent alone | HMAC-SHA-512 · secp256k1 pubkey · group law · scalar reduce · HASH160 · Base58Check |
+| `bip39_seed.rye` | BIP-39 mnemonic→seed — the wallet arc's bridge from a human backup phrase to the 512-bit seed `bip32.rye` grows the HD tree from. One recipe over the GREEN `pbkdf2_sha512.rye`: `seed = PBKDF2-HMAC-SHA-512(mnemonic, "mnemonic"‖passphrase, 2048, 64)`. Proven against BIP-39's own published Trezor vectors byte-for-byte; NFKD normalization a documented precondition, entropy→mnemonic a separate rung | PBKDF2-HMAC-SHA-512 · BIP-39 |
 
 ---
 
@@ -129,7 +130,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 
 [`crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) rebuilds each
 `crypto/<name>.rye` fresh from source to the gitignored `crypto/bin/` and runs all
-forty-six per-file witnesses in the dependency order above, refusing whole —
+forty-seven per-file witnesses in the dependency order above, refusing whole —
 naming the file that stopped it — the moment any one goes RED. A GREEN suite means
 every claim here is re-provable by tooling, not trusted from a commit message
 alone (measurement beats memory). It then runs the **count guard**
