@@ -1,0 +1,65 @@
+# tools/crypto_monocypher_hmac_sha512_parity_witness.rish — Monocypher-source parity for HMAC-SHA-512 (RFC 2104 / RFC 4231), the keyed MAC HKDF-SHA512
+# and BIP32 key derivation are built on. Our authored crypto/hmac_sha512.rye and the vendored Monocypher's own C (vendor/monocypher, CC0/BSD-dual), each
+# compiled fresh and asked for the same five tags, diffed byte-for-byte. The ELEVENTH rung of the real Monocypher-source parity pattern (BLAKE2b ·
+# X25519 · Ed25519 · IETF AEAD · Argon2 · XChaCha20-Poly1305 flagship · Edwards↔Montgomery · standalone Poly1305 · standalone ChaCha20 · standalone
+# SHA-512 came before). Season G · Cryptography.
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
+# proving Rye output equals Monocypher output byte-for-byte." crypto/hmac_sha512.rye's own selftest named Monocypher-source parity as an honest held
+# horizon; this rung closes it. HMAC-SHA-512 is the keyed authentication and key-derivation primitive the HKDF-SHA512 expander and the BIP32 seed
+# derivation both fold their inputs through — so it stands proven against the very library Grain's audit names, the keyed-MAC counterpart to the
+# standalone SHA-512 rung it rests on.
+# Kin: crypto/hmac_sha512.rye (our authored MAC, GREEN against Zig's std.crypto and the RFC 4231 vectors) · crypto/sha512.rye (the hash beneath it,
+# proven standalone the round before) · tools/monocypher_hmac_sha512_parity.rye (our printing harness) ·
+# tools/fixtures/monocypher_hmac_sha512_harness.c (Monocypher's printing harness). Monocypher's HMAC-SHA-512 lives in its OPTIONAL module
+# (src/optional/monocypher-ed25519.c, crypto_sha512_hmac), linked so like meets like. Monocypher stays the parity TARGET, vendored and unmodified, never
+# a copied line, studied clean-room (.claude/rules/gratitude-licenses.md).
+#
+# The five lines are anchored to the world twice over: line 1 is RFC 4231 Test Case 1's published HMAC-SHA-512 (key 0x0b*20, "Hi There"), line 2 is Test
+# Case 2's (key "Jefe", "what do ya want for nothing?"); lines 3-5 are tags over an exact-block-length key, a longer-than-block key (the hash-the-key
+# path), and the empty message, where the oracle is a second real implementation agreeing byte-for-byte.
+# Purely local — no key of ours, no network, no funds, no device; constant-time timing-safety of the tag comparison stays the Season's named horizon.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_monocypher_hmac_sha512_parity_witness.rish
+
+say "crypto-monocypher-hmac-sha512-parity: Language EN — Monocypher-source parity for HMAC-SHA-512 (RFC 2104 / RFC 4231), the keyed MAC HKDF-SHA512 and BIP32 key derivation are built on. crypto/hmac_sha512.rye named Monocypher-source parity as a held horizon; this eleventh rung closes it and proves the keyed MAC against the ACTUAL vendored Monocypher C over five tags, byte-for-byte — the keyed-MAC counterpart to the standalone SHA-512 rung it rests on."
+say "crypto-monocypher-hmac-sha512-parity: Style Radiant — like against like. Our authored MAC and the unmodified vendored Monocypher each compile fresh and each print, in order, RFC 4231 Test Case 1, Test Case 2, then tags over an exact-block-length key, a longer-than-block key, and the empty message. Two independent implementations, one set of inputs; the parity is that the five lines agree hex for hex."
+say "crypto-monocypher-hmac-sha512-parity: Lens TAME — no fabricated constant is trusted: lines 1 and 2 are anchored to RFC 4231's published HMAC-SHA-512 test-case tags; the key-path lines' oracle is a second real implementation. The witness diffs the five Monocypher lines against the five Rye lines byte-for-byte AND asserts both published anchors. Monocypher's HMAC-SHA-512 is its optional module, linked never copied. Purely local — no key of ours, no network, no funds, no device; constant-time timing-safety stays the named horizon."
+
+let zig = "vendor/zig-toolchain/zig"
+let cbin = "crypto/bin/monocypher_hmac_sha512"
+let cout = "crypto/bin/monocypher_hmac_sha512.out"
+let rout = "crypto/bin/rye_hmac_sha512.out"
+
+# 1. Build the Monocypher C harness, linking the unmodified vendored core AND the optional SHA-512/HMAC module with zig cc.
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src -I vendor/monocypher/src/optional tools/fixtures/monocypher_hmac_sha512_harness.c vendor/monocypher/src/monocypher.c vendor/monocypher/src/optional/monocypher-ed25519.c -o ${cbin}"]
+assert cbuild.ok else "crypto-monocypher-hmac-sha512-parity: Monocypher C harness build failed — ${cbuild.err}"
+
+# 2. Run the Monocypher C harness — five HMAC-SHA-512 hex lines.
+let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]
+assert crun.ok else "crypto-monocypher-hmac-sha512-parity: Monocypher C harness exited non-zero — see ${cout}"
+
+# 3. Run our authored Rye harness — five HMAC-SHA-512 hex lines over the identical inputs.
+let rrun = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run tools/monocypher_hmac_sha512_parity.rye > ${rout} 2>&1"]
+assert rrun.ok else "crypto-monocypher-hmac-sha512-parity: Rye harness exited non-zero — see ${rout}"
+
+# 4. Byte-for-byte parity: the two five-line outputs must be identical.
+let diff = run ["sh" "-c" "diff ${cout} ${rout} > /dev/null && echo same"]
+assert (trim diff.out) == "same" else "crypto-monocypher-hmac-sha512-parity: Monocypher and Rye tags disagree — Monocypher:\n$(cat ${cout})\nRye:\n$(cat ${rout})"
+
+# 5. Anchor to the world: line 1 is RFC 4231 Test Case 1's HMAC-SHA-512, line 2 is Test Case 2's.
+let rfc_tc1 = "87aa7cdea5ef619d4ff0b4241a1d6cb02379f4e2ce4ec2787ad0b30545e17cdedaa833b7d6b8a702038b274eaea3f4e4be9d914eeb61f1702e696c203a126854"
+let rfc_tc2 = "164b7a7bfcf819e2e395fbe73b56e0a387bd64222e831fd610270cd7ea2505549758bf75c05a994a6d034f65f8f0e6fdcaeab1a34d4a6b4b636e070a38bce737"
+
+let got_tc1 = run ["sh" "-c" "sed -n '1p' ${cout}"]
+assert (trim got_tc1.out) == rfc_tc1 else "crypto-monocypher-hmac-sha512-parity: line 1 is not RFC 4231 Test Case 1's published HMAC-SHA-512"
+
+let got_tc2 = run ["sh" "-c" "sed -n '2p' ${cout}"]
+assert (trim got_tc2.out) == rfc_tc2 else "crypto-monocypher-hmac-sha512-parity: line 2 is not RFC 4231 Test Case 2's published HMAC-SHA-512"
+
+let shown = run ["sh" "-c" "cat ${cout}"]
+say "crypto-monocypher-hmac-sha512-parity: the five lines, agreed by both implementations:\n${shown.out}"
+
+say "GREEN crypto-monocypher-hmac-sha512-parity: our authored crypto/hmac_sha512.rye and the vendored Monocypher's own C, each compiled fresh, produce byte-for-byte identical HMAC-SHA-512 output over RFC 4231 Test Cases 1 and 2 (both anchored to their published known-answers) and over an exact-block-length key, a longer-than-block key (the hash-the-key path), and the empty message. The ELEVENTH real Monocypher-SOURCE parity rung, closing the held horizon crypto/hmac_sha512.rye itself named and proving the keyed MAC HKDF-SHA512 and BIP32 key derivation are built on — the keyed-MAC counterpart to the standalone SHA-512 rung it rests on. Monocypher's HMAC-SHA-512 is its optional module, linked never copied. Purely local, no key of ours, no network, no funds, no device; constant-time timing-safety of the tag comparison stays the named horizon."

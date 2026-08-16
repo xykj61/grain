@@ -148,7 +148,7 @@ is re-provable by tooling, not trusted from a commit message alone.
   Season's constant-time discipline note.
 - **Monocypher-source parity** is **landed**: the vendored `vendor/monocypher`
   (CC0/BSD-dual, unmodified) is compiled fresh and diffed byte-for-byte against our
-  authored Rye over the published vectors. Ten rungs stand GREEN — **BLAKE2b**,
+  authored Rye over the published vectors. Eleven rungs stand GREEN — **BLAKE2b**,
   **X25519**, **Ed25519**, the **ChaCha20-Poly1305 AEAD**, **Argon2** (all three
   modes), the **XChaCha20-Poly1305 flagship** (Monocypher's `crypto_aead_lock`,
   the 24-byte extended-nonce AEAD Lotus's signed carry, Vault, and Comlink reach for),
@@ -160,10 +160,13 @@ is re-provable by tooling, not trusted from a commit message alone.
   embedded in the AEAD), the **standalone ChaCha20** stream cipher (Monocypher's
   `crypto_chacha20_ietf`, the keystream the whole ChaCha/Poly line enciphers against
   — likewise proven in its own right, the stream-cipher counterpart to the Poly1305 rung),
-  and the **standalone SHA-512** hash (Monocypher's optional `crypto_sha512`, the
+  the **standalone SHA-512** hash (Monocypher's optional `crypto_sha512`, the
   hash Ed25519 signs with and the hash every HMAC-SHA512, HKDF-SHA512, and BIP32
   seed derivation folds through — proven in its own right rather than only embedded
-  in Ed25519 signing, the hash-cipher counterpart to the ChaCha20 and Poly1305 rungs)
+  in Ed25519 signing, the hash-cipher counterpart to the ChaCha20 and Poly1305 rungs),
+  and **HMAC-SHA-512** (Monocypher's optional `crypto_sha512_hmac`, the keyed MAC
+  HKDF-SHA512 and BIP32 key derivation are built on — the keyed-MAC counterpart to
+  the standalone SHA-512 hash it rests on, anchored to RFC 4231's published tags)
   — each also anchored to its RFC or published known-answer, so the oracle is a real
   second implementation. Parity against Zig's `std.crypto` still holds beside it.
 - **The keys stay the maintainer's hand.** Every witness runs over **TEST** keys and
