@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260816.075743
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu cloud bench — Eastern (EDT) time convention
+title crypto: BIP-39 mnemonic→seed in Rye, parity-GREEN against Trezor vectors — the wallet arc bridges to BIP-32
+prompt Take the next agent-doable lap Lindy-first crux-first — Rye prioritized, send each finished increment as its own signed round, stop at the custody gates. baton prin recur.
+think Third round this turn, continuing the wallet arc: with pbkdf2_sha512 laid last round as the stone, BIP-39 mnemonic→seed is now a thin composition — seed = PBKDF2-HMAC-SHA-512(mnemonic, "mnemonic"‖passphrase, 2048, 64). This is the half of BIP-39 that feeds bip32.master_from_seed.
+think The rung's real value is a world-bound published known-answer. The suite's discipline is "fetched byte-exact, never recited," and the design doc named crypto vector-sourcing a deferred research round — so I fetched the canonical Trezor vectors (trezor/python-mnemonic vectors.json) with WebFetch and pinned three English entries (entropy all-zero "abandon…about", "legal winner…", "letter advice cage…"), passphrase "TREZOR", each with its full 128-hex-char seed.
+think Authored crypto/bip39_seed.rye as the twelfth composition: assembles the salt "mnemonic"‖passphrase into a bounded buffer (comptime-asserted within pbkdf2_sha512.max_salt_bytes), calls the GREEN pbkdf2 at 2048 rounds into a fixed 64-byte seed. Named bounds (max_mnemonic_bytes 1024, max_passphrase_bytes 1024), two named errors (MnemonicTooLong, PassphraseTooLong), contract asserts. Authoring no new cryptography.
+obs Honest scope stated in the header: NFKD normalization is a documented precondition — BIP-39 wants NFKD-normalized UTF-8, and the English vectors are pure ASCII (NFKD is the identity), so this rung takes already-normalized bytes; normalizing non-ASCII input is the caller's job and a named horizon. Generating the mnemonic from entropy (the 2048-word list + SHA-256 checksum) is its own separate rung — this one derives the seed from a mnemonic, the half that feeds BIP-32.
+obs GREEN on the first metal build: all three Trezor seeds reproduce EXACTLY, character for character — which also confirms the whole tower down through pbkdf2_sha512 and hmac_sha512 against a real-world answer, retroactively strengthening last round's Zig-oracle-only proof (the Trezor seed IS PBKDF2-HMAC-SHA-512 at 2048 rounds). Plus a transitive tie to the GREEN PBKDF2 (salt assembled by hand gives the same bytes) and the two bounds refusals.
+obs Count guard bijection kept: registered after bip32 in the suite; updated the suite say line and both front-door docs from 46→47 files (35 primitives + 12 compositions). CONSTANT_TIME.md unchanged — bip39_seed adds no timing surface beyond the pbkdf2 row already there (same precedent as bip32, which the doc also does not list). tame_style_check bans clean.
+loom witness=crypto_bip39_seed_witness green=1 vectors=3 iterations=2048 seed_bytes=64 source=trezor_python_mnemonic_vectors
+file crypto/bip39_seed.rye the BIP-39 seed composition — one backup phrase folds to the 512-bit seed BIP-32 grows the HD tree from
+file tools/crypto_bip39_seed_witness.rish per-file witness — build + selftest, GREEN line asserted
+file tools/crypto_suite_witness.rish registered after bip32; count 47, 12 compositions
+file crypto/README.md front-door count 46→47 and the bip39_seed rung row
+file docs/CRYPTO.md audit shelf count 46→47 and the rung-table row
+recommend keep-going the wallet arc's next rungs are BIP-39 entropy→mnemonic (the 2048-word English list + SHA-256 checksum) and BIP-44 account paths over the GREEN BIP-32; generating a real wallet and signing with its key stays the custody gate
