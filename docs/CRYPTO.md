@@ -199,7 +199,7 @@ caller-supplied seed — a test seed is not the maintainer's identity key.
 
 **Monocypher-source parity is landed:** the vendored `vendor/monocypher`
 (CC0/BSD-dual, unmodified) is compiled fresh and diffed byte-for-byte against our
-authored Rye over the published vectors — thirteen rungs GREEN (BLAKE2b, X25519,
+authored Rye over the published vectors — fourteen rungs GREEN (BLAKE2b, X25519,
 Ed25519, the ChaCha20-Poly1305 AEAD, Argon2 across all three modes, the
 XChaCha20-Poly1305 flagship `crypto_aead_lock`, the Edwards↔Montgomery
 conversion `crypto_eddsa_to_x25519` / `crypto_x25519_to_eddsa` that unifies one
@@ -220,7 +220,13 @@ published subkey, and the standalone variable-length BLAKE2b `crypto_blake2b` at
 output lengths below 64 — the length-parameterized hash core the first BLAKE2b
 rung never exercised, proving `blake2b.rye`'s `hash_var` at 16/20/28/32/48 bytes,
 the mode Argon2's `blake2b_long` chain and RFC 9106 key derivation lean on,
-anchored by its 64-byte case to RFC 7693's published BLAKE2b-512("abc")), each also
+anchored by its 64-byte case to RFC 7693's published BLAKE2b-512("abc"), and the
+keyed BLAKE2b MAC `crypto_blake2b_keyed` — the message authenticator no one
+without the key can forge, proving `blake2b.rye`'s `hash_keyed` over six
+(output-length, key, message) triples under keys of 1..64 bytes, the mode Grain's
+per-record authentication and key derivation reach for, its oracle three
+independent implementations agreeing byte-for-byte since RFC 7693 publishes only
+the unkeyed answer), each also
 anchored to its RFC or published known-answer. One horizon stays honest beside it:
 **constant-time** waits on measurement as above.
 
