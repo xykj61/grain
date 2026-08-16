@@ -3,7 +3,7 @@
 **Language:** EN · **Voice:** Kyri · **Style:** Radiant · **Status:** Living
 **Season:** G — Cryptography (the Six-Season double-seat)
 **Design read:** [`../active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md`](../active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md)
-**Front door:** [`README.md`](README.md) · **Clean-room law:** [`../.claude/rules/gratitude-licenses.md`](../.claude/rules/gratitude-licenses.md)
+**Front door:** [`README.md`](README.md) · **Compressed guide:** [`../docs/CRYPTO.md`](../docs/CRYPTO.md) · **Clean-room law:** [`../.claude/rules/gratitude-licenses.md`](../.claude/rules/gratitude-licenses.md)
 
 This note is the crux rung the Season G design named plainly: *"a constant-time
 discipline note — timing-safety as a named horizon, since it wants measurement,
