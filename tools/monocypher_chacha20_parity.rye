@@ -1,0 +1,83 @@
+//! tools/monocypher_chacha20_parity.rye — our authored crypto/chacha20.rye asked for its OWN ChaCha20 (IETF, RFC 8439) keystream and ciphertext over
+//! the same six inputs the Monocypher C harness (tools/fixtures/monocypher_chacha20_harness.c) prints, so tools/crypto_monocypher_chacha20_parity_witness.rish
+//! can diff our bytes against the vendored Monocypher's C byte-for-byte — the stream cipher the whole ChaCha/Poly line is built on, proven against the
+//! audit's parity target. Season G (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//!
+//! crypto/chacha20.rye's own selftest named Monocypher-source parity as an honest held horizon; this harness lets the witness close it. Six lines print,
+//! in order: the RFC 8439 §2.3.2 keystream block for counter 1, the RFC 8439 §2.4.2 ciphertext of the RFC's 114-byte plaintext at counter 1, then
+//! keystream-over-deterministic-message lines for sizes {0, 5, 64, 200} at raised counters (empty · sub-block · exact 64-byte boundary · multi-block),
+//! each message byte i generated as (i*11 + 3) mod 256 and counter si*7 — the same coverage the selftest uses.
+//!
+//! This authors NO cryptography — it is a printing harness over the GREEN crypto/chacha20.rye (reached through the tools/chacha20.rye symlink, since Rye
+//! resolves imports beside the importing file). Purely local — no key of ours, no network, no funds, no device.
+//!
+//! Run from the repository root:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run tools/monocypher_chacha20_parity.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const c = @import("chacha20.rye");
+
+/// RFC 8439 key 00 01 02 ... 1f — a public test vector, never a real secret.
+const rfc_key = [c.key_bytes]u8{
+    0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
+    0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f,
+};
+
+/// RFC 8439 §2.3.2 block nonce and §2.4.2 encryption nonce.
+const rfc_block_nonce = [c.nonce_bytes]u8{ 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00, 0x4a, 0x00, 0x00, 0x00, 0x00 };
+const rfc_enc_nonce = [c.nonce_bytes]u8{ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x4a, 0x00, 0x00, 0x00, 0x00 };
+
+/// RFC 8439 §2.4.2 canonical plaintext — the standard's own published test string, reproduced byte-for-byte as the neutral reference.
+const rfc_plaintext = "Ladies and Gentlemen of the class of '99: If I could offer you only one tip for the future, sunscreen would be it.";
+
+const hex_alphabet = "0123456789abcdef";
+
+/// print_bytes — render n bytes as 2n lowercase hex characters, one line.
+fn print_bytes(b: []const u8) void {
+    // invariant: the rendered span fits the fixed hex buffer — two hex characters per byte, bounded by the multi-block max.
+    assert(b.len <= 256);
+    var out: [512]u8 = undefined;
+    var i: u32 = 0;
+    while (i < b.len) : (i += 1) {
+        out[i * 2] = hex_alphabet[b[i] >> 4];
+        out[i * 2 + 1] = hex_alphabet[b[i] & 0x0f];
+    }
+    const n: u32 = @as(u32, @intCast(b.len)) * 2;
+    print("{s}\n", .{out[0..n]});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+
+    // invariant (construction): the key and nonces are the fixed IETF ChaCha20 widths.
+    assert(rfc_key.len == c.key_bytes and rfc_block_nonce.len == c.nonce_bytes and rfc_enc_nonce.len == c.nonce_bytes);
+
+    // 1. RFC 8439 §2.3.2 keystream block for counter 1.
+    const ks = c.block(&rfc_key, 1, &rfc_block_nonce);
+    print_bytes(&ks);
+
+    // 2. RFC 8439 §2.4.2 encryption of the RFC's 114-byte plaintext at counter 1.
+    var ct: [rfc_plaintext.len]u8 = undefined;
+    try c.stream_xor(&ct, rfc_plaintext, &rfc_key, 1, &rfc_enc_nonce);
+    print_bytes(&ct);
+
+    // 3..6. Keystream over deterministic messages at raised counters — byte i = (i*11 + 3) mod 256, counter si*7.
+    const sizes = [_]u32{ 0, 5, 64, 200 };
+    for (sizes, 0..) |sz, si| {
+        // invariant: every printed size fits the fixed message buffer, so the block loop is bounded.
+        assert(sz <= 200);
+        var msg: [200]u8 = undefined;
+        var i: u32 = 0;
+        while (i < sz) : (i += 1) msg[i] = @as(u8, @truncate(i *% 11 +% 3));
+        const ctr: u32 = @as(u32, @intCast(si)) *% 7;
+
+        var buf: [200]u8 = undefined;
+        try c.stream_xor(buf[0..sz], msg[0..sz], &rfc_key, ctr, &rfc_enc_nonce);
+        print_bytes(buf[0..sz]);
+    }
+
+    return 0;
+}

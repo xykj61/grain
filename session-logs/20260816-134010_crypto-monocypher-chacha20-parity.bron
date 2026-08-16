@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260816.134010
+editor Zed
+model Fable 5
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title crypto — Monocypher-source parity for standalone ChaCha20, GREEN
+prompt Continue the crypto-parity recursion Lindy-first crux-first; Rye prioritized; approve own design rounds and make progress; send each finished increment; stop at custody gates
+think Just landed and sent the eighth rung (standalone Poly1305). The recursion asks to keep climbing while gates are clear; the natural next crux is the stream-cipher counterpart — ChaCha20 was proven only EMBEDDED in the AEAD flagship, never standalone against Monocypher's own crypto_chacha20_ietf, and crypto/chacha20.rye's own selftest names Monocypher-source parity as a held horizon (same shape the Poly1305 rung closed)
+think Confirmed our chacha20.rye is the IETF variant (12-byte nonce, u32 counter), so the parity target is crypto_chacha20_ietf, not the djb 64-bit-counter variant. Reused the proven pattern: a C harness enciphering zeros for the keystream block and the RFC plaintext for the ciphertext, a Rye harness over the GREEN module via the existing tools/chacha20.rye symlink, a Rishi witness diffing six lines and anchoring the first two to RFC 8439
+think Chose six lines: line 1 the RFC 8439 §2.3.2 keystream block for counter 1 (published anchor), line 2 the §2.4.2 ciphertext of the 114-byte plaintext (published anchor), lines 3-6 keystream over deterministic messages of sizes {0,5,64,200} at raised counters (empty · sub-block · exact 64-byte boundary · multi-block) with a second real implementation as oracle — the same coverage the selftest uses
+obs GREEN on the first full pass — Monocypher's crypto_chacha20_ietf and our crypto/chacha20.rye produce byte-identical keystream and ciphertext over all six lines; line 1 = the published §2.3.2 block, line 2 = the published §2.4.2 ciphertext, both anchors asserted
+obs Count guard untouched: added only tools/ files (C harness, Rye harness, Rishi witness) and reused the existing tools/chacha20.rye symlink, so crypto/*.rye stays 56 real. Gate-free and purely local — RFC public key and nonces, no real secret, no signature, no network, no funds, no device; constant-time timing-safety stays the one named horizon
+obs Docs synced in the same round: crypto/README.md and docs/CRYPTO.md moved Monocypher-source parity from eight rungs to nine, naming standalone ChaCha20 as the stream-cipher counterpart to the Poly1305 rung; crypto/chacha20.rye's selftest text updated from "held horizon" to "landed", citing the new witness. Together the Poly1305 and ChaCha20 rungs prove both AEAD halves standalone
+loom witness=crypto_monocypher_chacha20_parity_witness result=green primitive=chacha20_ietf lines=6 anchors=2 count_guard=56
+file tools/fixtures/monocypher_chacha20_harness.c Monocypher C harness over the unmodified vendored crypto_chacha20_ietf, prints six keystream/ciphertext lines
+file tools/monocypher_chacha20_parity.rye Rye printing harness over the GREEN crypto/chacha20.rye, same six hex lines over identical inputs
+file tools/crypto_monocypher_chacha20_parity_witness.rish builds both, diffs byte-for-byte, anchors lines 1-2 to RFC 8439 §2.3.2 and §2.4.2 published known-answers
+file crypto/chacha20.rye selftest text moved from "Monocypher-source parity is a held horizon" to "landed", citing the new witness
+file crypto/README.md parity note moved eight rungs to nine, standalone ChaCha20 named
+file docs/CRYPTO.md same nine-rung sync, "stream-cipher counterpart" wording
+recommend keep-going — a tenth parity rung (the ChaCha20 djb 8-byte-nonce/64-bit-counter variant if the module grows it, or crypto_verify16/32/64 constant-time compare) is mechanical and gate-free; crypto stays the highest-Lindy thread until an audit surface or the Lotus signing gate calls
