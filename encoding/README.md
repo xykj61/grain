@@ -27,11 +27,20 @@ implementation.
 | [`base32.rye`](base32.rye) | Base32 — the case-safe, punctuation-free alphabet (A–Z 2–7) a TOTP secret, an onion address, or a CIDv1 content id wears; five bytes into eight symbols, `=` padding, encode and decode | RFC 4648 |
 | [`hex.rye`](hex.rye) | Base16 / hex — two lowercase characters per byte, the plainest form a digest, a key, or a wire frame wears; decode accepts either case. Proven byte-for-byte against Zig's own `std.fmt` hex | RFC 4648 |
 | [`bech32.rye`](bech32.rye) | Bech32 · Bech32m — the checksummed form a modern address wears: a human-readable prefix, a `1` separator, the payload in the case-safe 32-symbol alphabet, and a six-symbol BCH checksum that localizes a mistype where Base58Check only detects one. The form segwit outputs, Nostr `npub`/`nsec` keys, and Cosmos-family accounts travel in; `encode_bytes`/`decode_bytes` dress a proven Ed25519 key as an `npub` directly | BIP-173 · BIP-350 |
+| [`pem.rye`](pem.rye) | PEM — the labelled armor a key, certificate, or signed carry wears as text: a `-----BEGIN LABEL-----` line, the payload in standard Base64 wrapped at 64 characters a line, and a `-----END LABEL-----` line. The exact form an Ed25519 key or a signature is pasted into a config file, mailed between two hands, or committed beside its code — the shape `openssl` prints and every TLS stack reads. A composition over `base64.rye`, adding only the framing and the wrap; `decode` refuses `BadLabel` when a block does not claim the requested label | RFC 7468 |
 
 **Natural next rungs** (named, not yet built): a ratchet migration of the per-file
 `to_hex` each crypto witness hand-rolls onto the proven `hex.rye` (its own round,
 grepped and repointed), and the lowercase / no-pad Base32 variants (RFC 4648 §6 and
 the CIDv1 form) when a surface needs them.
+
+Like `base58check.rye`, `pem.rye` carries no `std` codec to check against (Zig ships no
+PEM), so its parity is proven the way the standard is trusted: against a reproducible
+RFC-4648-anchored known-answer (the block wrapping "foobar" is exactly
+`-----BEGIN GRAIN TEST-----` ‖ `Zm9vYmFy` ‖ `-----END GRAIN TEST-----`, since `Zm9vYmFy`
+is RFC 4648 §10's published Base64 of "foobar") *and* a second, independent deframer
+that recovers the same body across a sweep of payload lengths — a genuine
+cross-implementation check standing in for the missing `std` reference.
 
 Bech32 carries no `std` codec (Zig ships none), so its parity is proven the way the
 standard is trusted: against the BIP-173 and BIP-350 valid checksums (each
