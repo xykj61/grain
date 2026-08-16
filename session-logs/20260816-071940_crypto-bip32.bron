@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260816.071940
+editor Zed
+model Fable 5
+voice Kyri
+host cloud bench — Eastern (EDT) time convention
+title crypto/bip32.rye — BIP-32 hierarchical-deterministic keys in pure Rye, parity-GREEN
+prompt take the next agent-doable lap Lindy-first crux-first on the crypto parity wave; Rye prioritized, Glow on green-witnessed Rye; send each finished increment; stop at custody gates
+think The recursion prompt points at the Rye-first crypto parity stream — the last ten commits are Rye-native crypto compositions, parity-GREEN. The SEC1 pubkey commit named BIP-32 hierarchical-deterministic keys outright as the coming rung. Lindy-first crux-first: BIP-32 is the highest-Lindy next thread — a wallet's whole account model stands on it, and it composes only stones already GREEN.
+think Studied the composition idiom from secp256k1_pubkey.rye and its witness: pure-Rye module with an opening triad, contract asserts, a self-contained selftest printing GREEN crypto-<name>, and a per-file *_witness.rish that builds fresh and greps the GREEN line.
+think Confirmed every stone: HMAC-SHA-512 mac(msg,key)→[64]u8, secp256k1_scalar reduce (64-byte LITTLE-endian in, LE out) for (I_L + k_par) mod n since no public add exists, from_private_compressed for serP(point(k)), bitcoin_address hash160 for the fingerprint, encoding_base58check.encode(version_byte, payload) for the xprv/xpub envelope. is_canonical(&LE) gates I_L < n.
+think Scoped the lap deliberately: master_from_seed + ckd_priv (hardened and normal) + neuter + xprv/xpub Base58Check serialization. This reaches EVERY published Test Vector 1 value. CKDpub (public-parent→public-child point addition) is a distinct capability whose outputs are all covered by neutering here, so I named it the next rung rather than widening this round (narrow-scope, finishing edge).
+think Did NOT recite the BIP-32 test-vector base58 strings from memory — a single wrong character makes the parity dishonest. Fetched Test Vector 1 byte-exact from the canonical bitcoin/bips bip-0032.mediawiki source.
+obs The scalar add rides the GREEN reduce: (I_L + k_par) is at most 2n < 2^257, laid into the low bytes of a 64-byte little-endian wide buffer with a single carry byte, reduced, then mirrored back to big-endian. Authors no new primitive.
+obs GREEN on the first metal build — all six chain nodes (m, m/0H, m/0H/1, m/0H/1/2H, m/0H/1/2H/2, m/0H/1/2H/2/1000000000) serialize to EXACTLY the spec's published xprv AND xpub strings, character for character. A one-bit error in the HMAC, the modular add, the compression, the fingerprint, or the envelope would break a match. Edge refusals BadSeedLength fire for a too-short and a too-long seed.
+obs Registered after eip1559_tx — the count-guard bijection now prints 45 (34 primitives + 11 compositions). Found the two front-door docs already one behind (they read 43 while disk was 44 after pubkey), so brought crypto/README.md and docs/CRYPTO.md current to 45 and added the missing secp256k1_pubkey row to docs/CRYPTO.md as well as the bip32 row to both; synced the suite witness narration (44/ten → 45/eleven, bip32 clause appended). TAME style check GREEN.
+loom witness=crypto_bip32_witness build=green vectors=6 xprv_xpub_pairs=12 files_total=45 compositions=11
+file crypto/bip32.rye the BIP-32 HD-keys composition — master, CKDpriv (hardened/normal), neuter, xprv/xpub serialization; no new cryptography
+file tools/crypto_bip32_witness.rish the per-file witness — builds fresh to crypto/bin, asserts the GREEN crypto-bip32 line against Test Vector 1
+file tools/crypto_suite_witness.rish registered bip32 in the suite list; synced narration counts to 45/eleven and appended the bip32 clause
+file crypto/README.md front door — header to forty-five/eleven, bip32 compositions row, witness count to forty-five
+file docs/CRYPTO.md audit shelf — counts to forty-five/eleven, added the missing secp256k1_pubkey row and the bip32 row
+recommend keep-going the named next rung is public-only CKDpub (public-parent→public-child point addition over the GREEN secp256k1 group law), then BIP-39 mnemonic→seed (PBKDF2-HMAC-SHA-512) and BIP-44 paths — the wallet-derivation arc continues, each its own parity-GREEN send
