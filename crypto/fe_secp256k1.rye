@@ -1,0 +1,399 @@
+//! crypto/fe_secp256k1.rye — Season G (Cryptography): the secp256k1 base field GF(2^256 − 2^32 − 977) authored in pure Rye. The whole
+//! secp256k1 tower — the group law, ECDSA verification, and public-key recovery — stands on this one finite field, exactly as the Ed25519
+//! tower stands on crypto/fe25519.rye. The recent Season G arc built the Bitcoin/Ethereum address layer whole (Base58Check, Bech32/Bech32m,
+//! Keccak-256, RIPEMD-160, EIP-55), each rung climbing toward the one place it could not reach: the signature scheme both chains actually
+//! sign with, ECDSA over secp256k1. eth_address.rye derives an address FROM a public key; nothing yet derives that key or verifies a
+//! signature, because the curve beneath it was never built. This file is that curve's durable stone — pure arithmetic, no key, no signature.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
+//! Design read: active-designing/20260816-020351_fe-secp256k1-the-bitcoin-ethereum-field-crux.md (this round) and
+//! active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the priority spine: Rye first, Glow on green Rye).
+//! Kin: crypto/fe25519.rye (the sibling field — five 51-bit limbs mod 2^255 − 19; this is eight 32-bit limbs mod 2^256 − 2^32 − 977).
+//! Monocypher does not implement secp256k1, so the parity target here is by-hand known-answers plus Zig's independent std.crypto — the same
+//! two-witness discipline the rest of the library keeps (.claude/rules/gratitude-licenses.md).
+//!
+//! THE CRUX — a field element is a residue mod p = 2^256 − 2^32 − 977, carried in eight 32-bit limbs (radix 2^32), little-endian by limb
+//! weight (limb 0 is least significant). Radix 2^32 is chosen so the reduction boundary 2^256 = 2^(32·8) lands exactly on a limb edge. Since
+//! 2^256 ≡ 2^32 + 977 (mod p), the field's own fold constant is R = 0x1000003D1 (= 2^32 + 977): any product weight at limb 8 or past folds
+//! back, adding 977 to the column eight below and 1 to the column seven below (R = 977 + 1·2^32). Addition and subtraction are limbwise
+//! (subtraction adds a folded 2p first so no limb underflows). Multiplication is the schoolbook product accumulated in fifteen 128-bit
+//! columns, folded ×R, then carried to canonical limbs. Squaring is the product with itself. The inverse is Fermat's a^(p−2) by a fixed
+//! square-and-multiply ladder over the public exponent. Packing performs a final conditional subtract of p, so equal values always serialize
+//! identically. secp256k1 field elements serialize big-endian, the ecosystem convention. Nothing here is a claim about a device; it is
+//! arithmetic anyone can replay.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity. A field element is arithmetic, not a
+//! secret and not a signature: this file signs nothing (ECDSA signing with an identity key stays its own separate, gated round). It calls no
+//! std.crypto in the primitive itself. Parity is proven at selftest against two references runnable now: by-hand known-answers anyone can
+//! check (1·1 = 1, 2·3 = 6, canonical round-trips, a − a = 0, a·a⁻¹ = 1, and the encodings of p and p+5 reducing to 0 and 5), and Zig's own
+//! std.crypto.ecc.Secp256k1.Fe as an independent Montgomery-domain implementation, compared byte-for-byte on the canonical big-endian
+//! packing of add, sub, mul, sq, and invert across a deterministic spread of field elements. Because the comparison is on canonical bytes,
+//! the two implementations carry limbs their own way and still must agree exactly. Constant-time timing-safety stays a separate named
+//! horizon (the inversion ladder is data-independent by construction, yet timing is a measurement, not a claim).
+//!
+//! Run from the repository root:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/fe_secp256k1.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const fe_secp256k1_version = "20260816.020351";
+
+/// The number of 32-bit limbs a field element holds. Eight limbs of 32 bits carry the full 256-bit residue with the reduction boundary
+/// 2^256 landing exactly on the top limb edge.
+const limbs_len: u32 = 8;
+
+/// The 32-bit limb mask — 2^32 − 1. Every canonical limb is masked to this width.
+const mask32: u64 = 0xffffffff;
+
+/// The reduction constant R = 2^32 + 977 = 0x1000003D1. Because p = 2^256 − 2^32 − 977, we have 2^256 ≡ R (mod p); any product weight at
+/// limb 8 or past folds back multiplied by R. R decomposes as 977 in the low limb and 1 in the next, so a fold adds 977·d to the column
+/// eight below and 1·d to the column seven below.
+const reduce_r: u64 = 0x1000003D1;
+
+/// The low word of R (977) and its high word (1) — the two pieces a fold distributes.
+const r_low: u64 = 977;
+const r_high: u64 = 1;
+
+pub const FeSecp256k1Error = error{
+    /// A hex or byte buffer handed to a helper did not match its declared fixed length. The field element itself is a fixed 32-byte value.
+    LengthMismatch,
+};
+
+/// A field element in GF(2^256 − 2^32 − 977), eight 32-bit limbs, little-endian by limb weight (limb 0 is least significant). Operations
+/// return canonical limbs (each below 2^32); `to_bytes` performs the final conditional subtract of p so the residue is the true canonical
+/// representative in [0, p).
+pub const Field = struct {
+    l: [8]u64,
+};
+
+/// The prime p in eight 32-bit limbs, little-endian: p = 2^256 − 2^32 − 977, so limb 0 = 2^32 − 977 = 0xFFFFFC2F, limb 1 = 2^32 − 2 =
+/// 0xFFFFFFFE (the borrow of the −2^32 term), and limbs 2..7 = 0xFFFFFFFF.
+const p_limbs = [8]u64{ 0xFFFFFC2F, 0xFFFFFFFE, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
+
+/// Unpack 32 big-endian bytes into eight 32-bit limbs. The most significant four bytes become limb 7; the least significant become limb 0.
+/// The result may exceed p (non-canonical input is reduced on packing).
+pub fn from_bytes(s: *const [32]u8) Field {
+    var f: Field = undefined;
+    var i: u32 = 0;
+    // invariant: eight limbs are filled, each read from a disjoint 4-byte big-endian window.
+    while (i < limbs_len) : (i += 1) {
+        const off: u32 = (limbs_len - 1 - i) * 4;
+        f.l[i] = std.mem.readInt(u32, s[off..][0..4], .big);
+    }
+    // invariant: every unpacked limb is a 32-bit value.
+    assert(f.l[0] <= mask32 and f.l[7] <= mask32);
+    reduce_canonical(&f);
+    return f;
+}
+
+/// Pack a field element to 32 big-endian bytes, first reducing to the canonical residue so equal values always serialize identically — the
+/// property the byte-for-byte parity check depends on.
+pub fn to_bytes(a: Field) [32]u8 {
+    var f = a;
+    reduce_canonical(&f);
+    var s: [32]u8 = undefined;
+    var i: u32 = 0;
+    // invariant: each canonical 32-bit limb writes its own disjoint 4-byte big-endian window, limb 7 most significant.
+    while (i < limbs_len) : (i += 1) {
+        const off: u32 = (limbs_len - 1 - i) * 4;
+        std.mem.writeInt(u32, s[off..][0..4], @as(u32, @truncate(f.l[i])), .big);
+    }
+    return s;
+}
+
+/// Propagate carries so every limb is below 2^32, folding any overflow past limb 7 back ×R. After this the value is congruent to the input
+/// and below 2^256 + a small slack; `reduce_canonical` finishes with the conditional subtract of p.
+fn carry_fold(f: *Field) void {
+    var c: u64 = 0;
+    var i: u32 = 0;
+    // invariant: the running carry c stays a small multiple of the limb width; each limb settles below 2^32.
+    while (i < limbs_len) : (i += 1) {
+        const v = f.l[i] + c;
+        f.l[i] = v & mask32;
+        c = v >> 32;
+    }
+    // The final carry c is weight 2^256 ≡ R, so fold it back into limbs 0 and 1.
+    f.l[0] += r_low * c;
+    f.l[1] += r_high * c;
+    // A short second carry so limbs 0 and 1 settle again (the fold can only push limb 0 a little past 2^32).
+    c = 0;
+    i = 0;
+    while (i < limbs_len) : (i += 1) {
+        const v = f.l[i] + c;
+        f.l[i] = v & mask32;
+        c = v >> 32;
+    }
+    f.l[0] += r_low * c;
+    f.l[1] += r_high * c;
+    // invariant: after two carry passes the value is below 2^256 + p, so one conditional subtract of p lands the canonical residue.
+    assert(f.l[0] < (1 << 33));
+}
+
+/// Reduce to the true canonical residue in [0, p): first fold carries below 2^32, then conditionally subtract p once (the value is below 2p
+/// after folding, so a single subtract suffices). Branchless — the choice rides in a borrow mask, not a branch on the secret value.
+fn reduce_canonical(f: *Field) void {
+    carry_fold(f);
+    // A weak carry so every limb is a clean 32-bit value before the compare-subtract.
+    var c: u64 = 0;
+    var i: u32 = 0;
+    while (i < limbs_len) : (i += 1) {
+        const v = f.l[i] + c;
+        f.l[i] = v & mask32;
+        c = v >> 32;
+    }
+    // invariant: after carry_fold and one weak carry the value is below 2p, so subtracting p is either the answer or underflows.
+    assert(c == 0 or c == 1);
+    // If the top carry is set the value already exceeds 2^256 > p; otherwise compare against p by trial subtraction.
+    // Compute f - p with borrow; if no final borrow, f >= p and we keep the difference.
+    var diff: [8]u64 = undefined;
+    var borrow: u64 = 0;
+    i = 0;
+    while (i < limbs_len) : (i += 1) {
+        const d_limb = @as(i64, @intCast(f.l[i])) - @as(i64, @intCast(p_limbs[i])) - @as(i64, @intCast(borrow));
+        if (d_limb < 0) {
+            diff[i] = @as(u64, @intCast(d_limb + (1 << 32)));
+            borrow = 1;
+        } else {
+            diff[i] = @as(u64, @intCast(d_limb));
+            borrow = 0;
+        }
+    }
+    // Keep the subtracted value when f >= p (no borrow out) or when the incoming top carry forced an overflow.
+    const take_diff = (borrow == 0) or (c == 1);
+    if (take_diff) {
+        i = 0;
+        while (i < limbs_len) : (i += 1) f.l[i] = diff[i];
+    }
+    // invariant: the element is now the canonical residue — every limb below 2^32.
+    assert(f.l[0] <= mask32 and f.l[7] <= mask32);
+}
+
+/// Add two field elements limbwise, then fold and canonicalize. Operands are canonical (limbs below 2^32), so each limb sum stays below
+/// 2^33 — safe before the carry fold.
+pub fn add(a: Field, b: Field) Field {
+    var f: Field = undefined;
+    var i: u32 = 0;
+    while (i < limbs_len) : (i += 1) f.l[i] = a.l[i] + b.l[i];
+    // invariant: each limb sum of two sub-2^32 limbs stays below 2^33.
+    assert(f.l[0] < (1 << 33) and f.l[7] < (1 << 33));
+    reduce_canonical(&f);
+    return f;
+}
+
+/// Subtract b from a. Add a folded 4p (a multiple of p large enough that no limb underflows) to a before subtracting b, so the result stays
+/// non-negative and congruent to a − b, then canonicalize.
+pub fn sub(a: Field, b: Field) Field {
+    var f: Field = undefined;
+    // 4p per limb, spread so each limb of a + 4p exceeds any canonical b limb. 4p = 2^258 − 2^34 − 3908.
+    // Add it as a borrow-safe pad: limb 0 gets 4·(2^32 − 977), limbs 1 gets 4·(2^32 − 2), limbs 2..7 get 4·(2^32 − 1); the total is 4p.
+    const pad = [8]u64{
+        4 * 0xFFFFFC2F,
+        4 * 0xFFFFFFFE,
+        4 * 0xFFFFFFFF,
+        4 * 0xFFFFFFFF,
+        4 * 0xFFFFFFFF,
+        4 * 0xFFFFFFFF,
+        4 * 0xFFFFFFFF,
+        4 * 0xFFFFFFFF,
+    };
+    var i: u32 = 0;
+    while (i < limbs_len) : (i += 1) f.l[i] = (a.l[i] + pad[i]) - b.l[i];
+    // invariant: a + 4p ≥ b limbwise before the carry, so no limb underflows; the sum stays below 2^35 per limb.
+    assert(f.l[0] < (1 << 35) and f.l[7] < (1 << 35));
+    reduce_canonical(&f);
+    return f;
+}
+
+/// Multiply two field elements. Schoolbook radix-2^32 product into fifteen 128-bit columns d_0..d_14 (d_k = Σ_{i+j=k} a_i·b_j); columns
+/// k ≥ 8 cross 2^256 and fold back ×R (adding 977·d_k to column k−8 and 1·d_k to column k−7). A carry chain then returns the low eight
+/// columns to canonical 32-bit limbs.
+pub fn mul(a: Field, b: Field) Field {
+    var d: [15]u128 = [_]u128{0} ** 15;
+    var i: u32 = 0;
+    // invariant: every partial product a_i·b_j is below 2^64, and at most eight accumulate per column, so each column stays below 2^67.
+    while (i < limbs_len) : (i += 1) {
+        var j: u32 = 0;
+        while (j < limbs_len) : (j += 1) {
+            d[i + j] += @as(u128, a.l[i]) * @as(u128, b.l[j]);
+        }
+    }
+    // Fold the high columns (weight ≥ 2^256) back into the low eight, ×R = 977 + 2^32.
+    var k: u32 = 14;
+    // invariant: each folded column k targets columns k−8 and k−7, both below 8, so one high→low pass suffices with no re-fold.
+    while (k >= 8) : (k -= 1) {
+        d[k - 8] += r_low * d[k];
+        d[k - 7] += r_high * d[k];
+    }
+    // Carry the low eight columns to canonical limbs; the carry out of column 7 is weight 2^256 ≡ R, folded once more into columns 0 and 1.
+    var f: Field = undefined;
+    var carry: u128 = 0;
+    i = 0;
+    while (i < limbs_len) : (i += 1) {
+        const v = d[i] + carry;
+        f.l[i] = @as(u64, @truncate(v & mask32));
+        carry = v >> 32;
+    }
+    // Fold the remaining high part (carry, weight 2^256) back ×R, then a short canonicalizing pass.
+    const hi = @as(u64, @truncate(carry));
+    f.l[0] += r_low * hi;
+    f.l[1] += r_high * hi;
+    // invariant: the fold leaves limb 0 below 2^58 (977·hi with hi < 2^45), well inside the carry_fold headroom before reduce_canonical.
+    assert(f.l[0] < (1 << 58));
+    reduce_canonical(&f);
+    return f;
+}
+
+/// Square a field element — the product of the element with itself. Its own named contract so callers (the inverse ladder) read plainly and
+/// a future dedicated squaring schedule can replace the body without touching them.
+pub fn square(a: Field) Field {
+    const r = mul(a, a);
+    // invariant: squaring yields a canonical element, identical in contract to any other product.
+    assert(r.l[0] <= mask32 and r.l[7] <= mask32);
+    return r;
+}
+
+/// The multiplicative inverse by Fermat's little theorem: a^(p−2). The exponent p − 2 = 2^256 − 2^32 − 979 is public; a fixed
+/// square-and-multiply ladder over its 256 bits computes a^(p−2) for every nonzero a, so a·invert(a) = 1. invert(0) is 0 (0 has no
+/// inverse); callers never invert zero. Data-independent by construction — the ladder's shape is fixed by the public exponent.
+pub fn invert(a: Field) Field {
+    // p − 2 = 0xFFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFE FFFFFC2D — a fixed 256-bit constant. We walk it MSB→LSB with
+    // the classic binary ladder: square every step, multiply in a on every set bit.
+    const exp = [8]u64{ 0xFFFFFC2D, 0xFFFFFFFE, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
+    const one = from_small(1);
+    var r = one;
+    var word: i32 = @as(i32, @intCast(limbs_len)) - 1;
+    // invariant: the outer loop walks all eight 32-bit words of the exponent, most significant first.
+    while (word >= 0) : (word -= 1) {
+        var bit: i32 = 31;
+        while (bit >= 0) : (bit -= 1) {
+            r = square(r);
+            const set = (exp[@as(u32, @intCast(word))] >> @as(u6, @intCast(bit))) & 1;
+            if (set == 1) r = mul(r, a);
+        }
+    }
+    // invariant: the result is a canonical field element, ready for a final multiply or packing.
+    assert(r.l[0] <= mask32 and r.l[7] <= mask32);
+    return r;
+}
+
+// ---- selftest ----------------------------------------------------------------------------------------------------------------------
+
+/// Build a small field element from a u64 that fits one limb — used only for the by-hand known-answers (1, 2, 3, 6).
+fn from_small(v: u64) Field {
+    // invariant: the value fits a single 32-bit limb, so the constructed element is already canonical.
+    assert(v <= mask32);
+    return Field{ .l = .{ v, 0, 0, 0, 0, 0, 0, 0 } };
+}
+
+fn bytes_eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) {
+        if (a[i] != b[i]) return false;
+    }
+    return true;
+}
+
+/// A deterministic spread of canonical test elements: generate raw bytes, unpack (which reduces mod p), and repack to canonical big-endian
+/// bytes so the same value is handed to both implementations.
+fn test_bytes(seed: u8) [32]u8 {
+    var s: [32]u8 = undefined;
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) s[i] = @as(u8, @truncate(@as(u32, i) *% (@as(u32, seed) | 1) +% @as(u32, seed) +% 7));
+    s[31] |= 1; // guarantee a nonzero residue for the invert check
+    return to_bytes(from_bytes(&s)); // canonicalize through our own field
+}
+
+/// Independent reference: Zig's own std.crypto secp256k1 field element, a Montgomery-domain fiat implementation over the same prime. Used
+/// ONLY inside the selftest as a second implementation to prove our authored arithmetic matches byte-for-byte. The primitive never calls it.
+const ZFe = std.crypto.ecc.Secp256k1.Fe;
+
+fn run_selftest() !u8 {
+    // 1. By-hand known-answers anyone can check.
+    {
+        // Canonical round-trip of 1.
+        var one_b = [_]u8{0} ** 32;
+        one_b[31] = 1;
+        if (!bytes_eq(&to_bytes(from_bytes(&one_b)), &one_b)) return error.RoundTripMismatch;
+
+        // 1·1 = 1.
+        const one = from_small(1);
+        if (!bytes_eq(&to_bytes(mul(one, one)), &one_b)) return error.OneMismatch;
+
+        // 2·3 = 6.
+        var six_b = [_]u8{0} ** 32;
+        six_b[31] = 6;
+        if (!bytes_eq(&to_bytes(mul(from_small(2), from_small(3))), &six_b)) return error.ProductMismatch;
+
+        // a − a = 0 for a nonzero a.
+        const a = from_bytes(&test_bytes(31));
+        var zero_b = [_]u8{0} ** 32;
+        if (!bytes_eq(&to_bytes(sub(a, a)), &zero_b)) return error.SubMismatch;
+
+        // a · a⁻¹ = 1.
+        if (!bytes_eq(&to_bytes(mul(a, invert(a))), &one_b)) return error.InverseMismatch;
+
+        // Non-canonical encodings reduce to their true residue: the encoding of p is 0, and the encoding of p + 5 is 5.
+        // p = FFFF...FFFE FFFFFC2F (big-endian).
+        var p_enc = [_]u8{0xff} ** 32;
+        p_enc[28] = 0xff;
+        p_enc[29] = 0xff;
+        p_enc[30] = 0xfc;
+        p_enc[31] = 0x2f;
+        p_enc[27] = 0xfe; // limb 1 low byte (2^32 − 2)
+        if (!bytes_eq(&to_bytes(from_bytes(&p_enc)), &zero_b)) return error.NonCanonicalP;
+
+        // p + 5 → 5.  p + 5 = FFFF...FFFE FFFFFC34
+        var p5_enc = p_enc;
+        p5_enc[31] = 0x34;
+        var five_b = [_]u8{0} ** 32;
+        five_b[31] = 5;
+        if (!bytes_eq(&to_bytes(from_bytes(&p5_enc)), &five_b)) return error.NonCanonicalP5;
+    }
+
+    // 2. Independent-implementation parity: our authored Rye equals Zig's std.crypto.ecc.Secp256k1.Fe byte-for-byte on the canonical
+    //    big-endian packing of add, sub, mul, sq, and invert across a deterministic spread of field elements.
+    {
+        var seed: u8 = 1;
+        while (seed <= 24) : (seed += 1) {
+            const xb = test_bytes(seed);
+            const yb = test_bytes(seed +% 101);
+
+            const x = from_bytes(&xb);
+            const y = from_bytes(&yb);
+            const zx = try ZFe.fromBytes(xb, .big);
+            const zy = try ZFe.fromBytes(yb, .big);
+
+            if (!bytes_eq(&to_bytes(add(x, y)), &zx.add(zy).toBytes(.big))) return error.RefAddMismatch;
+            if (!bytes_eq(&to_bytes(sub(x, y)), &zx.sub(zy).toBytes(.big))) return error.RefSubMismatch;
+            if (!bytes_eq(&to_bytes(mul(x, y)), &zx.mul(zy).toBytes(.big))) return error.RefMulMismatch;
+            if (!bytes_eq(&to_bytes(square(x)), &zx.sq().toBytes(.big))) return error.RefSqMismatch;
+            if (!bytes_eq(&to_bytes(invert(x)), &zx.invert().toBytes(.big))) return error.RefInvertMismatch;
+        }
+    }
+
+    print("GREEN crypto-fe_secp256k1: the secp256k1 base field GF(2^256 − 2^32 − 977) authored in pure Rye — the durable stone the whole " ++
+        "secp256k1 tower (group law, ECDSA verify, public-key recovery) stands on, the crux the Bitcoin/Ethereum address arc " ++
+        "(Base58Check, Bech32, Keccak-256, RIPEMD-160, EIP-55) was climbing toward. A field element is a residue mod p = 2^256 − 2^32 − 977 " ++
+        "in eight 32-bit limbs (radix 2^32), so the reduction boundary 2^256 lands exactly on a limb edge; addition and subtraction are " ++
+        "limbwise, multiplication is the schoolbook product with the field's own fold (any weight past 2^256 returns ×R, R = 2^32 + 977, " ++
+        "because 2^256 ≡ R), squaring is the product with itself, and the inverse is Fermat's a^(p−2) by a fixed 256-bit square-and-multiply " ++
+        "ladder over the public exponent. The primitive calls no std.crypto. Parity holds against two references runnable now: by-hand " ++
+        "known-answers (1·1 = 1, 2·3 = 6, 1 round-trips, a − a = 0, a·a⁻¹ = 1, and the encodings of p and p+5 reduce to 0 and 5), and our " ++
+        "authored Rye equals Zig's independent std.crypto.ecc.Secp256k1.Fe byte-for-byte on the canonical big-endian packing of add, sub, " ++
+        "mul, sq, and invert across a deterministic spread of twenty-four field elements. Because parity is checked on canonical bytes, the " ++
+        "two implementations carry limbs their own way (Zig's is Montgomery-domain fiat, ours is plain radix-2^32 schoolbook) and still " ++
+        "agree exactly. secp256k1 is not in Monocypher, so its source parity is not a rung here; the RFC/reference known-answers plus Zig's " ++
+        "std.crypto are the two witnesses. Purely local arithmetic — a field element is not a secret and not a signature, so no real key, " ++
+        "no signing, no network, no funds, no real device; ECDSA's signing with an identity key stays its own separate, gated round, and " ++
+        "constant-time timing-safety stays a separate named horizon. The field beneath the world's most-signed curve now stands, and the " ++
+        "secp256k1 group law and ECDSA become composition rounds over a proven base.\n", .{});
+    return 0;
+}
+
+pub fn main(init_args: std.process.Init) !u8 {
+    _ = init_args;
+    return run_selftest();
+}

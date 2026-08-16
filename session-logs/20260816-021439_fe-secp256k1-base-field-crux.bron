@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260816.021439
+editor Zed
+model Fable 5
+voice Kyri
+host cloud pier (Linux) — Eastern (EDT) time convention
+title fe_secp256k1 — the Bitcoin/Ethereum base field, parity-GREEN
+prompt Read the road-ahead cards and itineraries; take the next agent-doable lap Lindy-first crux-first; Rye first, Glow on green Rye; approve own design rounds; send each finished increment; stop at custody gates.
+think Read REMEMBER (huge), the 1,024-round itinerary, the six-season double-seat, and the decision wave. The living crux is the Season G Rye-native crypto parity library; recent commits (SHAKE, EIP-55, RIPEMD-160, Keccak-256, PEM, bech32, base58check) built the whole Bitcoin/Ethereum ADDRESS layer.
+think Lindy-first crux-first: the address arc was climbing toward the one thing it could not reach — the signature scheme both chains sign with, ECDSA over secp256k1. eth_address derives an address FROM a pubkey; nothing derives that key or verifies a signature, because the curve's base field was never built. Exactly as the Ed25519 tower stood on fe25519.rye, the secp256k1 tower stands on one field. That field is the crux — pure arithmetic, no key, no custody gate.
+think Chose radix 2^32 with eight limbs so the reduction boundary 2^256 lands exactly on a limb edge (a radix-2^52 layout would misalign the fold at 2^260). Fold constant R = 2^32 + 977 = 0x1000003D1, since 2^256 ≡ R (mod p), p = 2^256 − 2^32 − 977. Schoolbook multiply into fifteen u128 columns, columns k≥8 fold ×R into k−8 (×977) and k−7 (×1), carry chain to canonical limbs, final conditional subtract of p on packing.
+think Two build reds, both fixed on metal: a local const named `sub` shadowed the `sub` fn (renamed to d_limb); the mul post-fold assert bound was too tight (2^43) — after 977·hi the limb reaches ~2^56, loosened to 2^58 with the bound reasoned in a comment.
+obs Parity holds byte-for-byte against Zig's independent std.crypto.ecc.Secp256k1.Fe (a Montgomery-domain fiat implementation) on add/sub/mul/sq/invert across 24 elements, plus by-hand known-answers (1·1=1, 2·3=6, a−a=0, a·a⁻¹=1, encodings of p and p+5 reduce to 0 and 5). Two implementations carrying limbs their own way agree on canonical bytes — the strongest parity a field can claim without a measurement.
+obs Honest posture recorded: fe_secp256k1's canonical conditional subtract currently BRANCHES on the value (reduce_canonical's if take_diff), so it is not yet data-independent-by-construction like fe25519. Named as a horizon in CONSTANT_TIME.md — no secret scalar flows through the field yet; make it branchless before ECDSA signing (a later gated round) reaches it.
+obs secp256k1 is not in Monocypher, so its source parity is not a rung; the two witnesses are the reference known-answers and Zig's std.crypto — the same two-witness discipline the library keeps.
+obs Docs-sync ratchet while CRYPTO.md was open: added the missing keccak256, shake, eth_address, and the new fe_secp256k1 rows, and corrected the stale counts (24→29 primitives, 3→4 compositions, 27→33 files) in CRYPTO.md and the suite witness narrative.
+loom witness=crypto_suite_witness files=33 primitives=29 compositions=4 result=GREEN
+loom witness=crypto_fe_secp256k1_witness parity_elements=24 ops=add,sub,mul,sq,invert result=GREEN
+file active-designing/20260816-020351_fe-secp256k1-the-bitcoin-ethereum-field-crux.md the design capture (raw layer) naming the crux, the mathematics, and what it unblocks
+file crypto/fe_secp256k1.rye the secp256k1 base field GF(2^256 − 2^32 − 977) in pure Rye, eight 32-bit limbs, parity-GREEN
+file tools/crypto_fe_secp256k1_witness.rish the per-file witness — builds and asserts GREEN crypto-fe_secp256k1
+file tools/crypto_suite_witness.rish registers the new rung in dependency order; narrative counts refreshed to 33 files
+file docs/CRYPTO.md adds the secp256k1 field row plus the missing keccak256/shake/eth_address rows; counts corrected
+file crypto/CONSTANT_TIME.md records fe_secp256k1's honest mixed posture and the branchless horizon
+recommend keep-going the secp256k1 group law is the next composition rung over this proven field — same shape the Ed25519 tower took over fe25519

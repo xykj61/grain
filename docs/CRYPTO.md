@@ -1,11 +1,11 @@
 # Crypto — the Season G audit front door
 
-*A Rye-native, parity-checked cryptography library — twenty-four primitives and three compositions, each GREEN on metal.*
+*A Rye-native, parity-checked cryptography library — twenty-nine primitives and four compositions, each GREEN on metal.*
 
 **Status:** Checkable — Season G operator + auditor guide
 **Depth:** guide
 **Ceiling:** ≤300 lines
-**Last updated:** 2026-08-15
+**Last updated:** 2026-08-16
 **Compresses:** [`crypto/README.md`](../crypto/README.md) · [`crypto/CONSTANT_TIME.md`](../crypto/CONSTANT_TIME.md) · [`20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md`](../active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md) · the Season G `.bron` session logs (raw beneath)
 
 ---
@@ -32,7 +32,7 @@ vectors — never a copied line ([`gratitude-licenses.md`](../.claude/rules/grat
 
 ---
 
-## Rung table — twenty-seven files, dependency order
+## Rung table — thirty-three files, dependency order
 
 Each rung stands on the GREEN rungs beneath it; none authors cryptography a lower
 rung had not already proven. Every file carries a per-file witness
@@ -45,6 +45,8 @@ rung had not already proven. Every file carries a per-file witness
 | `sha512.rye` | SHA-512 — the hash Ed25519 signs with | FIPS 180-4 · RFC 8032 |
 | `blake2b.rye` | BLAKE2b-512 — Monocypher's hash · the key-derivation hash | RFC 7693 |
 | `sha3.rye` | SHA3-256 · SHA3-512 over Keccak-f[1600] — the hash Aurora names content with | FIPS 202 |
+| `keccak256.rye` | Keccak-256 — the Ethereum-family hash, the same Keccak-f[1600] sponge as SHA3-256 with the original 0x01 delimiter; composes over the GREEN `sha3.rye` | Keccak (pre-FIPS-202) |
+| `shake.rye` | SHAKE128 · SHAKE256 extendable-output functions over Keccak-f[1600] | FIPS 202 |
 | `sha256.rye` | SHA-256 — the hash Tablecloth keys content with, and Mycelium places and seeds by | FIPS 180-4 |
 | `ripemd160.rye` | RIPEMD-160 — the second half of Bitcoin's HASH160 = RIPEMD-160(SHA-256(x)), the address step Base58Check and Bech32 encode; composes over the GREEN `sha256.rye` | RIPEMD-160 (Dobbertin·Bosselaers·Preneel) |
 
@@ -88,6 +90,12 @@ rung had not already proven. Every file carries a per-file witness
 | `x25519.rye` | X25519 ECDH (Montgomery ladder) | RFC 7748 |
 | `ed25519_to_x25519.rye` | The birational Edwards↔Montgomery key conversion — one identity key both signs and agrees | RFC 7748 §4.1 |
 
+### The secp256k1 base field (the Bitcoin/Ethereum curve)
+
+| File | What it is | Reference |
+|------|------------|-----------|
+| `fe_secp256k1.rye` | The base field GF(2²⁵⁶ − 2³² − 977), eight 32-bit limbs — the durable stone the whole secp256k1 tower (group law, ECDSA verify, public-key recovery) will stand on; the crux the address arc above (Keccak-256 · RIPEMD-160 · Base58Check · Bech32 · EIP-55) was climbing toward. Not in Monocypher, so parity is by-hand known-answers plus Zig's independent `std.crypto.ecc.Secp256k1.Fe` | secp256k1 (SEC 2) |
+
 ### Compositions (no new cryptography — proven stones assembled)
 
 | File | What it answers | Composes |
@@ -95,6 +103,7 @@ rung had not already proven. Every file carries a per-file witness
 | `signed_carry.rye` | *Who made this record?* — a content-addressed, signed carry frame | BLAKE2b-512 · Ed25519 |
 | `sealed_session.rye` | *Only you can read this* — a seal-to-a-public-key box | X25519 · BLAKE2b-512 · ChaCha20-Poly1305 |
 | `vault_seal.rye` | *Only your password can open this* — a password-sealed box | Argon2id · XChaCha20-Poly1305 |
+| `eth_address.rye` | *What Ethereum address is this key?* — the low 20 bytes of Keccak-256(pubkey), EIP-55 mixed-case checksum | Keccak-256 |
 
 ---
 
@@ -106,7 +115,7 @@ rishi/bin/rishi run tools/crypto_suite_witness.rish
 
 [`crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) rebuilds each
 `crypto/<name>.rye` fresh from source to the gitignored `crypto/bin/` and runs all
-twenty-seven per-file witnesses in the dependency order above, refusing whole —
+thirty-three per-file witnesses in the dependency order above, refusing whole —
 naming the file that stopped it — the moment any one goes RED. A GREEN suite means
 every claim here is re-provable by tooling, not trusted from a commit message
 alone (measurement beats memory).
