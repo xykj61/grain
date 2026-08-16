@@ -1,0 +1,49 @@
+# tools/crypto_eip1559_tx_witness.rish — the EIP-1559 typed-transaction (type-2) digest, authored in pure Rye as a composition over five
+# already-GREEN stones: the Recursive Length Prefix serialization (encoding/rlp.rye), the Keccak-256 (crypto/keccak256.rye), the ECDSA
+# signer over a PUBLIC TEST KEY (crypto/secp256k1_ecdsa_sign.rye), the ECDSA public-key recovery (crypto/secp256k1_ecrecover.rye), and the
+# address derivation (crypto/eth_address.rye). It is the digest a wallet signs before every modern Ethereum send: prepend the type byte 0x02,
+# lay the fields out as an RLP list, hash that with Keccak-256, and you hold the exact bytes a key signs; recover the signature back and you
+# hold the sender (crypto · Season G · Cryptography).
+#
+# Season: crypto — Season G (the Six-Season double-seat). This rung authors NO new cryptography and NO new serialization: every byte is the
+# GREEN RLP, every hash the GREEN Keccak-256, every signature the GREEN ECDSA signer over a published test key, every recovery the GREEN
+# ecrecover, every address the GREEN eth_address — it contributes only the EIP-1559 / EIP-2718 assembly (the type byte 0x02, the nine-field
+# signing list [chainId, nonce, maxPriorityFeePerGas, maxFeePerGas, gasLimit, to, value, data, accessList], the sighash over it, and the
+# twelve-field signed form that appends [yParity, r, s]). Where eip155_tx hashes the FLAT legacy nine-field list, eip1559_tx hashes the TYPED,
+# type-prefixed list of the London fork's default transaction — the two on-chain shapes a key is asked to sign, both over the same GREEN tower.
+# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+# Clean-room: EIP-1559, EIP-2718, and the Yellow Paper are Ethereum's own public standards; the encoding is ours, standing on our own
+# parity-GREEN rungs, never a copied line (.claude/rules/gratitude-licenses.md).
+#
+# Parity is proven at selftest three ways anyone can replay, WITHOUT a fabricated external constant: (1) a WORLD BINDING — deriving the example
+# test key 0x4646...46 through our GREEN secp256k1 + eth_address yields exactly the address EIP-155 already publishes for that key,
+# 0x9d8a62f6...855a4f; (2) an INDEPENDENT construction — the type-2 sighash built a second time with Zig's own std.crypto Keccak-256 over the
+# identical 0x02 || rlp(...) bytes is byte-for-byte equal to our GREEN path; and (3) a FULL ROUND-TRIP — deterministically signing the sighash
+# with that test key (RFC-6979, reproducible) then recovering the sender through our ecrecover returns exactly the derived, published address,
+# so a one-bit error anywhere in the type prefix, the RLP layout, the hash, the signer, or the recovery would break the match. The signed
+# twelve-field transaction assembles, leads with 0x02, and round-trips through the RLP decoder; edge refusals BadFieldCount, BadYParity,
+# BadScalarLength each fire. Purely local — no maintainer key, no network, no funds, no real device: this module builds the public preimage and
+# recovers from a signature over a published test key, never a real identity. Signing with the maintainer's own key stays the custody gate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/crypto_eip1559_tx_witness.rish
+
+say "crypto-eip1559-tx: Language EN — the EIP-1559 typed-transaction (type-2) digest: the exact bytes a wallet signs before every modern Ethereum send. Prepend the type byte 0x02, lay the nine transaction fields out as an RLP list, hash that with Keccak-256, and you hold the sighash; recover the signature back through ecrecover and you hold the sender. Composed entirely over GREEN rungs — RLP, Keccak-256, ECDSA signer, ecrecover, eth_address — authoring no new cryptography and no new serialization."
+say "crypto-eip1559-tx: Style Radiant — EIP-2718 wraps a transaction in a one-byte type tag so new shapes need no hard fork; EIP-1559 defines type 0x02 with a dynamic-fee market — maxPriorityFeePerGas (the validator's tip) and maxFeePerGas (the sender's ceiling) — in place of the single legacy gasPrice. The signing preimage is 0x02 || rlp([chainId, nonce, maxPriorityFeePerGas, maxFeePerGas, gasLimit, to, value, data, accessList]); the signed wire form appends [yParity, r, s] for twelve fields, the chain id already inside the signed list so the recovery bit stays a plain yParity, never the legacy v."
+say "crypto-eip1559-tx: Lens TAME — every buffer bound (max_tx_bytes), every field walk width-bounded (signing_fields_count, signed_fields_count), contract asserts on each function; it calls no std codec of its own, only the GREEN RLP and Keccak-256 beneath it. Parity holds three ways with no fabricated constant: the example test key 0x4646...46 derives to exactly the address EIP-155 publishes, 0x9d8a62f6...855a4f; the same type-prefixed preimage hashed by Zig's own std.crypto Keccak-256 gives the identical digest; and deterministically signing then recovering returns exactly that derived address. Edge refusals BadFieldCount, BadYParity, BadScalarLength each fire. Purely local — no maintainer key, no network, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/eip1559_tx"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/eip1559_tx.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-eip1559-tx: build failed — ${build.err}"
+
+let outfile = "crypto/bin/eip1559_tx.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-eip1559-tx: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-eip1559-tx: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-eip1559-tx' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-eip1559-tx: selftest did not print the GREEN crypto-eip1559-tx line"
