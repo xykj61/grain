@@ -1,0 +1,232 @@
+//! image/font5x7_arrowdiag.rye -- the open diagonal-arrow corpus: the four corner arrows (Season G, font content).
+//!
+//! Season G (Open Media Primitives) - more content BEYOND printable ASCII for the open glyph atlas image/glyph.rye
+//! (gfa1), completing the arrow family the six basic directions began (image/font5x7_arrow.rye, U+2190..U+2195, the
+//! four cardinals and the two axis double-heads). Where that corpus points along the axes, this one points to the
+//! CORNERS: the four diagonal arrows -- north-west, north-east, south-east, south-west -- at their real Unicode
+//! codepoints U+2196..U+2199, so the eight-direction arrow set stands whole. These are the marks a terminal surface
+//! (the Dexter/Scooter family) reaches for to resize a corner, drag diagonally, or point off-axis, drawn in our own
+//! open hand on the same 5x7 body.
+//!
+//! The source stays plain ASCII (ASCII-first): the codepoints are written as numeric literals (0x2196 ...) and each
+//! arrow is named in an ASCII comment, so no non-ASCII byte enters the file even though the glyphs it builds cover a
+//! non-ASCII range. The four codepoints are contiguous U+2196..U+2199 -- still carried as an explicit ascending table,
+//! the shape the gfa1 encoder trusts (strictly ascending, shared cell, coverage length == cell area). The drawings ARE
+//! the specification: each arrow is seven rows of five cells in ASCII line art ('#' full ink, '.' none) -- a diagonal
+//! shaft stepping corner to corner with a two-prong head (one horizontal, one vertical) at the pointed corner -- that a
+//! reader audits by eye; the coverage bytes are derived from that art, never the reverse. build_atlas turns the four
+//! drawings into a glyph.GlyphAtlas the gfa1 encoder accepts, so the property that matters stays provable on metal:
+//! decode(encode(atlas)) recovers every glyph byte-for-byte, the arrows are present and distinct, and each reads within
+//! an honest legibility band. One structural property earns its own proof: the two upward arrows are horizontal
+//! mirrors of each other (north-west reflected column c to 4-c is north-east), and likewise the two downward arrows,
+//! which is what makes the four a true reflected family rather than four unrelated drawings. No network, no key, no
+//! funds -- the marks a surface reads the day it wants to point off-axis.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_arrowdiag.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+
+pub const font5x7_arrowdiag_version = "20260817.082305";
+
+/// Every glyph in this corpus shares one 5-wide, 7-tall cell -- the same body the arrow and box corpora carry.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance: the cell width plus one column of daylight, the same advance the sibling corpora carry.
+pub const arrowdiag_advance: u8 = cell_w + 1;
+
+/// The corpus holds exactly the four diagonal corner arrows named in the table below.
+pub const arrowdiag_count: u32 = 4;
+
+/// Cells per glyph -- the coverage length every arrow carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The four diagonal-arrow codepoints, strictly ascending and contiguous -- the order the gfa1 encoder trusts. Each
+/// aligns by index with arrowdiag_art below. Written as numeric literals so the source stays plain ASCII while the
+/// glyphs cover a non-ASCII range:
+///   0x2196 north-west, 0x2197 north-east, 0x2198 south-east, 0x2199 south-west.
+const arrowdiag_codepoints = [arrowdiag_count]u32{
+    0x2196, 0x2197, 0x2198, 0x2199,
+};
+
+/// The four arrows, drawn in the open. Each is seven rows of five cells; '#' ink, '.' background. A diagonal shaft
+/// steps corner to corner; a two-prong head (one horizontal stub, one vertical stub) opens at the pointed corner so
+/// the eye reads which way it aims. A reader audits every arrow here by eye, and the coverage bytes are lifted from
+/// this art, never guessed.
+const arrowdiag_art = [arrowdiag_count][cell_h][]const u8{
+    .{ "###..", "##...", "##...", "..#..", "...#.", "...#.", "....#" }, // U+2196 north-west (tip top-left)
+    .{ "..###", "...##", "...##", "..#..", ".#...", ".#...", "#...." }, // U+2197 north-east (tip top-right)
+    .{ "#....", ".#...", ".#...", "..#..", "...##", "...##", "..###" }, // U+2198 south-east (tip bottom-right)
+    .{ "....#", "...#.", "...#.", "..#..", "##...", "##...", "###.." }, // U+2199 south-west (tip bottom-left)
+};
+
+/// Lift one arrow's ASCII art into a freshly allocated coverage grid of exactly cell_area bytes: 255 for ink,
+/// 0 for background. The art's own shape is asserted, so a mistyped row is a stopped line rather than a bad glyph.
+fn coverage_from_art(allocator: std.mem.Allocator, art: [cell_h][]const u8) ![]u8 {
+    // invariant: a coverage grid is exactly the shared cell area, within the atlas ceiling.
+    assert(cell_area >= 1);
+    assert(cell_area <= glyph.coverage_max);
+    const cov = try allocator.alloc(u8, cell_area);
+    var idx: u32 = 0;
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        const row = art[r];
+        // invariant: every drawn row is exactly the cell width -- the art matches the grid.
+        assert(row.len == cell_w);
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            cov[idx] = if (row[c] == '#') 255 else 0;
+            idx += 1;
+        }
+    }
+    // invariant: the whole grid was filled, no cell left unwritten.
+    assert(idx == cell_area);
+    return cov;
+}
+
+/// Build the diagonal-arrow atlas: four glyphs at the named ascending codepoints, sharing the 5x7 cell and advance.
+/// The gfa1 encoder accepts the result directly (ascending codepoints, coverage length == cell area).
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the corpus is the four named diagonal arrows and no more.
+    assert(arrowdiag_count == 4);
+    assert(cell_area == 35);
+    const glyphs = try allocator.alloc(glyph.Glyph, arrowdiag_count);
+    var i: u32 = 0;
+    var last_cp: u32 = 0;
+    while (i < arrowdiag_count) : (i += 1) {
+        const cp = arrowdiag_codepoints[i];
+        // invariant: codepoints are strictly ascending -- the ordering the gfa1 encoder trusts.
+        assert(i == 0 or cp > last_cp);
+        last_cp = cp;
+        const cov = try coverage_from_art(allocator, arrowdiag_art[i]);
+        glyphs[i] = glyph.Glyph{
+            .codepoint = cp,
+            .advance = arrowdiag_advance,
+            .coverage = cov,
+        };
+    }
+    // invariant: the last codepoint is the south-west arrow (U+2199) -- the table ends where the diagonal set ends.
+    assert(glyphs[arrowdiag_count - 1].codepoint == 0x2199);
+    return glyph.GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- the legibility signal a blank glyph would fail.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+/// True when `right` is the left-right mirror of `left`: cell (r, c) of one equals cell (r, 4-c) of the other. This
+/// is the structural bond that makes the corner arrows a reflected family -- north-west mirrors to north-east, and
+/// south-west to south-east -- rather than four unrelated drawings.
+fn is_horizontal_mirror(left: []const u8, right: []const u8) bool {
+    // invariant: both glyphs are the shared, bounded grid.
+    assert(left.len == cell_area);
+    assert(right.len == cell_area);
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            const mirror_c = cell_w - 1 - c;
+            if (left[r * cell_w + c] != right[r * cell_w + mirror_c]) return false;
+        }
+    }
+    return true;
+}
+
+// --- selftest: build the diagonal-arrow atlas, round-trip through gfa1, prove present, distinct, legible, mirrored ---
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built atlas is the four-arrow corpus at the shared cell.
+    assert(glyph_count == arrowdiag_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // Four present arrows: every one looks up, carries the shared advance; an ASCII letter and a cardinal arrow miss.
+    var d: u32 = 0;
+    while (d < arrowdiag_count) : (d += 1) {
+        const cp = arrowdiag_codepoints[d];
+        if (back.lookup(cp)) |g| {
+            assert(g.codepoint == cp);
+            assert(g.advance == arrowdiag_advance);
+        } else return error.ArrowMissing;
+    }
+    if (back.lookup('A')) |_| return error.NonArrowFound else {}
+    if (back.lookup(0x2190)) |_| return error.CardinalArrowFound else {} // a basic arrow lives in the sibling corpus
+
+    // Distinctness: no two arrows share identical coverage -- a real diagonal set points to four corners.
+    var a: u32 = 0;
+    while (a < arrowdiag_count) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b < arrowdiag_count) : (b += 1) {
+            if (std.mem.eql(u8, atlas.glyphs[a].coverage, atlas.glyphs[b].coverage)) return error.ArrowsNotDistinct;
+        }
+    }
+
+    // The structural crux: the corner arrows are a left-right reflected family. North-west (index 0) mirrors to
+    // north-east (index 1), and south-east (index 2) mirrors to south-west (index 3) -- so a copy slip that drew the
+    // same arrow twice, or mirrored the wrong pair, is a stopped line rather than a shipped glyph. The mirror also
+    // holds the other way, so the relation is a true reflection, not a coincidence of one direction.
+    const nw = atlas.glyphs[0].coverage;
+    const ne = atlas.glyphs[1].coverage;
+    const se = atlas.glyphs[2].coverage;
+    const sw = atlas.glyphs[3].coverage;
+    if (!is_horizontal_mirror(nw, ne)) return error.UpwardPairNotMirrored;
+    if (!is_horizontal_mirror(ne, nw)) return error.UpwardPairNotMirrored;
+    if (!is_horizontal_mirror(se, sw)) return error.DownwardPairNotMirrored;
+    if (!is_horizontal_mirror(sw, se)) return error.DownwardPairNotMirrored;
+
+    // Legibility: each arrow's ink count sits inside an honest band. The same band the sibling arrow corpus carries --
+    // a diagonal shaft with a two-prong head reads at eleven cells, well within a chevron floor and a filled ceiling.
+    const ink_min: u32 = 6;
+    const ink_max: u32 = 16;
+    var lo: u32 = cell_area;
+    var hi: u32 = 0;
+    var k: u32 = 0;
+    while (k < arrowdiag_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (n < ink_min or n > ink_max) return error.ArrowIllegible;
+        if (n < lo) lo = n;
+        if (n > hi) hi = n;
+    }
+    // invariant: the observed ink band stayed inside the honest bounds.
+    assert(lo >= ink_min);
+    assert(hi <= ink_max);
+
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof.
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-arrowdiag: {d} arrows U+2196..U+2199 at {d}x{d} round-trip byte-identical; all present, distinct, mirror-paired, legible (ink {d}..{d} of {d}); encoded {d} bytes, raw {d}\n", .{
+        glyph_count, cell_w, cell_h, lo, hi, cell_area, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_arrowdiag selftest\n", .{});
+    return 1;
+}
