@@ -1,0 +1,224 @@
+//! pond/apps/scooter_input.rye -- Scooter, the typed keeper: raw keystroke bytes drive a composing session.
+//!
+//! Season G (Open Media Primitives) -- the terminal family. Two proven halves stood a step apart:
+//!   - dexter_key.rye decodes a keeper's keyboard BYTES into bounded Key events and drives an editable line,
+//!     stopping at the first Enter so a caller can submit between lines.
+//!   - scooter_compose.rye holds a Session whose prompt() IS a dexter_line editable line and whose submit()
+//!     commits that line as a post, refusing an empty prompt by name.
+//! This rung joins them into one act: a keeper's raw byte run edits the session's own prompt line and, at each
+//! Enter, commits it as a post -- the write loop closed all the way from keyboard bytes to the journal. It owns
+//! no line of its own; it drives the session's prompt through dexter_key over the same bounded API, so every
+//! edit's bounds are enforced exactly once, in dexter_line.
+//! Pattern elder: pond/apps/dexter_key.rye -- drive over a line; this is drive over a whole session.
+//!
+//! The crux is one faithful loop held strictly bounded:
+//!   - feed walks a byte run; each dexter_key.drive advances 1+ bytes, so the loop terminates within the run.
+//!   - On a decoded Enter, submit commits the held line. An empty Enter is a harmless no-op (a real terminal
+//!     posts nothing on a blank line), so a keeper mashing Enter never fills the journal with blanks.
+//!   - A full journal stops the feed by name (journal_full), reporting the bytes consumed so a caller resumes
+//!     the remainder against a fresh channel rather than dropping keystrokes.
+//!   - The same byte run drives the same session to the same journal every time -- referential transparency
+//!     over the whole input path, the way the decoder and the compose fold each already are.
+//!
+//! Facts only, custody-first: it edits a line and appends posts to a channel a member already holds -- no
+//! network, no key held, no funds. The wire between two Constel piers reaches the serve gate (the maintainer's
+//! hand), and the raw TTY read (cbreak, escape timing) is Dexter's own later rung. This pure loop is their floor.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build pond/apps/scooter_input.rye -femit-bin=pond/bin/scooter-input
+//!   pond/bin/scooter-input selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const key = @import("dexter_key.rye");
+const compose = @import("scooter_compose.rye");
+const channel = @import("scooter_channel.rye");
+
+pub const scooter_input_version = "20260817.104345";
+
+/// The most bytes one feed consumes -- the decoder's own bound, so a fed run never outgrows a keystroke read.
+pub const max_feed: u32 = key.max_input;
+
+/// Where a feed stopped: it drained the whole run (the prompt holds any partial line, waiting for more input),
+/// or the channel's journal filled and refused a post (the caller resumes the remainder elsewhere).
+pub const FeedStop = enum {
+    drained, // the byte run ended with no refusal -- the prompt holds the trailing partial line
+    journal_full, // a submit hit the journal bound -- the feed stopped rather than dropping the post silently
+};
+
+/// The result of feeding a byte run into a session: where it stopped, how many lines it committed, and how many
+/// bytes it consumed. On journal_full, `used` counts up to and including the Enter that could not be posted.
+pub const Feed = struct {
+    stop: FeedStop,
+    posted: u32, // the number of non-empty lines committed to the journal this feed
+    used: u32, // the bytes consumed -- equal to bytes.len on drained, less on journal_full
+};
+
+/// Decode and drive a raw keystroke run into a composing session, committing each completed line as a post.
+/// The session's own prompt line is edited through dexter_key; an empty Enter posts nothing; a full journal
+/// stops the feed by name. Never fails: every boundary edit is a no-op, and the one real refusal is reported.
+pub fn feed(s: *compose.Session, bytes: []const u8) Feed {
+    // invariant: the fed run is bounded by the decoder's own maximum.
+    assert(bytes.len <= max_feed);
+    // invariant: the session opens on a member seat, so every submit this feed makes can post.
+    assert(s.ch.is_member(s.me));
+    var i: u32 = 0;
+    var posted: u32 = 0;
+    // Each dexter_key.drive over a non-empty slice consumes >= 1 byte, so `i` grows every pass and the loop
+    // terminates within bytes.len passes -- the same progress guarantee the decoder's own drive proves.
+    while (i < bytes.len) {
+        const d = key.drive(s.prompt(), bytes[i..]);
+        // invariant: a drive over bytes that remain always advances, so this loop cannot stall.
+        assert(d.used >= 1);
+        i += d.used;
+        if (d.stop == .submit) {
+            // An Enter was decoded: the prompt holds the completed line. Commit it, counting only a real post
+            // (submit returns a seq), tolerating an empty line, and stopping the feed by name when the journal
+            // is full. The seq value itself is unused here -- the caller reads the journal for order.
+            if (s.submit()) |_| {
+                posted += 1;
+            } else |err| switch (err) {
+                error.EmptyEntry => {}, // a blank Enter -- nothing posted, the prompt is already empty
+                error.JournalFull => {
+                    // invariant: a refused submit consumed the Enter, so `used` never claims the post landed.
+                    assert(i <= bytes.len);
+                    return .{ .stop = .journal_full, .posted = posted, .used = i };
+                },
+                else => {}, // NotMember/TextTooLong cannot fire: the seat is held and the line is bounded equal
+            }
+        }
+    }
+    // invariant: draining consumed the whole run exactly, and never overran it.
+    assert(i >= bytes.len);
+    // Seam cast: bytes.len is a std usize; the bound assert above proves it fits u32, cast at the edge.
+    return .{ .stop = .drained, .posted = posted, .used = @intCast(bytes.len) };
+}
+
+// --- selftest -------------------------------------------------------------------------------------------
+
+const host_key: u32 = 1001;
+const ada: u32 = 2002;
+
+fn typed_lines_become_posts() !void {
+    var ch = channel.Channel.open(host_key);
+    var s = compose.Session.open(&ch, host_key);
+    // Two lines typed as one raw run, each ended by a newline, land as two posts in order.
+    const f = feed(&s, "hello\nworld\n");
+    assert(f.stop == .drained);
+    assert(f.posted == 2);
+    assert(ch.post_count == 2);
+    const p0 = try ch.get(0);
+    const p1 = try ch.get(1);
+    assert(std.mem.eql(u8, p0.body(), "hello"));
+    assert(std.mem.eql(u8, p1.body(), "world"));
+    // The prompt cleared after the last Enter, ready for the next line.
+    assert(s.line.len == 0);
+    print("scooter_input: two typed lines in one raw run become two posts in order, the prompt cleared.\n", .{});
+}
+
+fn a_partial_line_waits_in_the_prompt() !void {
+    var ch = channel.Channel.open(host_key);
+    var s = compose.Session.open(&ch, host_key);
+    // A run with no Enter drains, leaving the partial line held in the prompt -- nothing posted yet.
+    const first = feed(&s, "par");
+    assert(first.stop == .drained);
+    assert(first.posted == 0);
+    assert(ch.post_count == 0);
+    assert(std.mem.eql(u8, s.prompt().text(), "par"));
+    // The rest of the line, ending in Enter, completes and posts the whole word.
+    const second = feed(&s, "tial\n");
+    assert(second.posted == 1);
+    const post = try ch.get(0);
+    assert(std.mem.eql(u8, post.body(), "partial"));
+    print("scooter_input: a partial line waits in the prompt, and a later run completes and posts it whole.\n", .{});
+}
+
+fn an_arrow_edits_before_the_post_lands() !void {
+    var ch = channel.Channel.open(host_key);
+    var s = compose.Session.open(&ch, host_key);
+    // Type "helo", a Left arrow (ESC [ D) between 'l' and 'o', an inserted 'l', then Enter -- "hello" posts.
+    const f = feed(&s, "helo\x1b[Dl\n");
+    assert(f.posted == 1);
+    const post = try ch.get(0);
+    assert(std.mem.eql(u8, post.body(), "hello"));
+    print("scooter_input: an arrow key splices the line mid-word before Enter commits the edited post.\n", .{});
+}
+
+fn a_blank_enter_posts_nothing() !void {
+    var ch = channel.Channel.open(host_key);
+    var s = compose.Session.open(&ch, host_key);
+    // A keeper mashing Enter on an empty prompt posts nothing -- no blank clutters the journal.
+    const f = feed(&s, "\n\n\n");
+    assert(f.stop == .drained);
+    assert(f.posted == 0);
+    assert(ch.post_count == 0);
+    // A real line still posts after the blanks.
+    _ = feed(&s, "real\n");
+    assert(ch.post_count == 1);
+    const post = try ch.get(0);
+    assert(std.mem.eql(u8, post.body(), "real"));
+    print("scooter_input: a blank Enter posts nothing; a real line after the blanks still lands.\n", .{});
+}
+
+fn a_full_journal_stops_the_feed() !void {
+    var ch = channel.Channel.open(host_key);
+    var s = compose.Session.open(&ch, host_key);
+    // Fill the journal to one shy of its bound with direct posts, then feed two lines: the first fills the
+    // journal, the second cannot post, so the feed stops by name reporting the bytes it consumed.
+    var m: u32 = 0;
+    while (m < channel.max_posts - 1) : (m += 1) {
+        _ = try ch.post(host_key, "x");
+    }
+    assert(ch.post_count == channel.max_posts - 1);
+    // "last" fills the journal; "lost" cannot post, so the feed stops at that Enter, leaving "more" unread.
+    const f = feed(&s, "last\nlost\nmore\n"); // 15 bytes: "last\n" (5) + "lost\n" (5) + "more\n" (5)
+    assert(f.stop == .journal_full);
+    assert(f.posted == 1); // "last" filled the journal
+    assert(ch.post_count == channel.max_posts);
+    // The feed stopped at the Enter it could not post -- ten bytes in, the trailing "more\n" untouched.
+    assert(f.used == 10);
+    assert(f.used < 15);
+    print("scooter_input: a full journal stops the feed by name, reporting the bytes consumed, dropping no post silently.\n", .{});
+}
+
+fn feeding_is_deterministic() !void {
+    // The same raw run drives two fresh sessions to the same journal -- referential transparency end to end.
+    var ca = channel.Channel.open(host_key);
+    var cb = channel.Channel.open(host_key);
+    var sa = compose.Session.open(&ca, host_key);
+    var sb = compose.Session.open(&cb, host_key);
+    const run = "rain\x1b[Hg\ntwo\n"; // type "rain", Home, insert 'g' -> "grain", then "two"
+    _ = feed(&sa, run);
+    _ = feed(&sb, run);
+    assert(ca.post_count == cb.post_count);
+    var k: u32 = 0;
+    while (k < ca.post_count) : (k += 1) {
+        const a = try ca.get(k);
+        const b = try cb.get(k);
+        assert(std.mem.eql(u8, a.body(), b.body()));
+    }
+    const first = try ca.get(0);
+    assert(std.mem.eql(u8, first.body(), "grain"));
+    print("scooter_input: the same raw run drives two sessions to the same journal every time.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try typed_lines_become_posts();
+    try a_partial_line_waits_in_the_prompt();
+    try an_arrow_edits_before_the_post_lands();
+    try a_blank_enter_posts_nothing();
+    try a_full_journal_stops_the_feed();
+    try feeding_is_deterministic();
+    print("scooter_input: version {s}\n", .{scooter_input_version});
+    print("GREEN: scooter_input; a keeper's raw keystroke bytes drive a composing session all the way to the journal -- typed lines become posts, an arrow edits mid-word, a partial line waits, a blank Enter posts nothing, a full journal stops the feed by name, all pure and deterministic.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "scooter-input"))) {
+        return run_selftest();
+    }
+    return run_selftest();
+}
