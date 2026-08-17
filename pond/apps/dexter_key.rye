@@ -1,0 +1,366 @@
+//! pond/apps/dexter_key.rye -- Dexter, the keystroke decoder: raw input bytes to bounded key events.
+//!
+//! Season G (Open Media Primitives) -- the terminal family. dexter_line.rye holds a bounded editable line
+//! (insert, delete, cursor motion) and scooter_compose.rye joins it to a channel; both act on already-named
+//! actions. Between them and a real terminal sits one missing floor: a keeper's keyboard hands a terminal
+//! BYTES, and a printable byte is one thing while an arrow key is the three bytes ESC '[' 'D'. This module is
+//! that decoder -- bytes in, a bounded run of decoded Key events out, then a driver that edits a line.
+//! Held pure on purpose: it reads a byte SLICE a caller already has, never a raw TTY and never the network,
+//! so a headless witness replays any keystroke path without a terminal. The raw TTY read (cbreak, escape
+//! timing) and the Comlink wire between two Constel piers are Dexter's later rungs -- they reach the serve
+//! gate, the maintainer's hand. This byte-to-key floor is what those rungs stand on.
+//! Pattern elder: pond/apps/dexter_line.rye -- the same bounded state machine, named errors, >=2 asserts.
+//! Value-model kin: pond/apps/window_input.rye -- the ZETA glass keyboard's pre-decoded Action; this is the
+//! Dexter terminal's own byte-level decoder with a real cursor, arrows, home/end, and forward-delete.
+//!
+//! The crux is one faithful mapping held strictly bounded:
+//!   - A printable ASCII byte (0x20..0x7e) decodes to a printable key carrying that byte.
+//!   - A backspace (0x08 or 0x7f) deletes left; a carriage return or newline (0x0d/0x0a) is Enter (submit).
+//!   - A CSI escape ESC '[' <final> decodes an arrow (C/D right/left), Home ('H' or '1~'/'7~'), End ('F' or
+//!     '4~'/'8~'), or forward-delete ('3~'); an SS3 escape ESC 'O' <final> decodes the same arrows and edges.
+//!   - Anything with no terminal-editing meaning here (Up/Down, an unknown escape, a stray control byte)
+//!     decodes to `ignored` -- consumed, never crashed on, never a dropped edit elsewhere.
+//!   - decode is single-step: it consumes 1+ bytes and yields exactly one key, so a caller walks a byte run
+//!     deterministically; drive applies keys to a line until Enter or the run ends, boundary edits a harmless
+//!     no-op (a Left at the start does nothing rather than refusing) -- a live terminal never dies on a key.
+//!
+//! Facts only, custody-first: it decodes bytes and edits a line of text -- no network, no key held, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build pond/apps/dexter_key.rye -femit-bin=pond/bin/dexter-key
+//!   pond/bin/dexter-key selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const line = @import("dexter_line.rye");
+
+pub const dexter_key_version = "20260817.103223";
+
+/// A decoded byte run holds at most this many bytes -- bounded so a keystroke read never grows unbounded.
+/// A power of two comfortably past a paste of one line; a caller with more feeds the decoder in slices.
+pub const max_input: u32 = 4096;
+
+/// The lowest and highest printable ASCII bytes -- a space through a tilde, the only bytes that become text.
+pub const printable_low: u8 = 0x20; // ' '
+pub const printable_high: u8 = 0x7e; // '~'
+
+/// The named control bytes a terminal keyboard sends outside the printable band.
+pub const byte_bs: u8 = 0x08; // backspace (Ctrl-H)
+pub const byte_del: u8 = 0x7f; // delete key sends DEL on most terminals -- treated as backspace
+pub const byte_cr: u8 = 0x0d; // carriage return -- Enter
+pub const byte_lf: u8 = 0x0a; // line feed -- Enter
+pub const byte_esc: u8 = 0x1b; // escape -- the head of a CSI or SS3 sequence
+
+/// What a decoded keystroke means to the line editor. `printable` carries its byte in Key.ch; the rest are
+/// named motions and edits. `ignored` is a real, honest outcome -- a key with no binding here, consumed whole.
+pub const KeyKind = enum {
+    printable, // a printable ASCII byte enters the line -- Key.ch holds it
+    backspace, // delete the byte left of the cursor
+    delete_forward, // delete the byte under the cursor
+    left, // step the cursor one byte left
+    right, // step the cursor one byte right
+    home, // jump the cursor to the start of the line
+    end, // jump the cursor to the end of the line
+    enter, // commit the line -- a caller submits, then reads on
+    ignored, // no terminal-editing meaning here -- consumed, never an error
+};
+
+/// One decoded keystroke. `ch` is meaningful only when `kind == .printable`; it is 0 otherwise, so a key is
+/// always a plain record a caller can compare and switch over.
+pub const Key = struct {
+    kind: KeyKind,
+    ch: u8 = 0,
+};
+
+/// The result of one decode step: the key that was read and how many bytes it consumed (always >= 1, so a
+/// caller's walk over a byte run always makes progress and terminates).
+pub const Step = struct {
+    key: Key,
+    used: u32,
+};
+
+/// Is this byte a printable ASCII character -- a space through a tilde, the only bytes that become line text?
+pub fn is_printable(ch: u8) bool {
+    // invariant: the printable band is a real ascending range within a byte.
+    assert(printable_low <= printable_high);
+    assert(printable_high <= 0x7f);
+    return ch >= printable_low and ch <= printable_high;
+}
+
+/// Decode the CSI/SS3 tail after ESC and the intro byte ('[' or 'O') at bytes[2..], returning the key and the
+/// total bytes the whole escape consumed (including the leading ESC and intro). A short or unknown escape is
+/// `ignored`, consuming exactly what is present so the caller's walk always advances.
+fn decode_escape(bytes: []const u8) Step {
+    // invariant: this is only called on a real ESC + intro pair.
+    assert(bytes.len >= 2);
+    assert(bytes[0] == byte_esc);
+    // A lone ESC, or ESC then something that is not a CSI/SS3 intro: no binding, consume just the two present.
+    const intro = bytes[1];
+    if (intro != '[' and intro != 'O') return .{ .key = .{ .kind = .ignored }, .used = 2 };
+    if (bytes.len < 3) return .{ .key = .{ .kind = .ignored }, .used = 2 };
+
+    const final = bytes[2];
+    // The single-letter finals a terminal sends for arrows and edges, shared by CSI ('[') and SS3 ('O').
+    const letter: ?KeyKind = switch (final) {
+        'C' => .right,
+        'D' => .left,
+        'H' => .home,
+        'F' => .end,
+        'A', 'B' => .ignored, // Up and Down have no line-editing meaning here
+        else => null,
+    };
+    if (letter) |k| return .{ .key = .{ .kind = k }, .used = 3 };
+
+    // A numeric CSI: ESC '[' <digits> '~'. Only '[' carries these; SS3 does not. Scan a bounded digit run to
+    // the terminating '~', then map the leading digit. An unterminated or unknown run is ignored.
+    if (intro == '[' and final >= '0' and final <= '9') {
+        // invariant: the digit scan is bounded to a small window past the intro.
+        const scan_max: u32 = 8;
+        var i: u32 = 2;
+        while (i < bytes.len and i < 2 + scan_max) : (i += 1) {
+            if (bytes[i] == '~') {
+                const kind: KeyKind = switch (final) {
+                    '3' => .delete_forward, // the Delete key
+                    '1', '7' => .home, // Home on xterm ('1~') and rxvt ('7~')
+                    '4', '8' => .end, // End on xterm ('4~') and rxvt ('8~')
+                    else => .ignored,
+                };
+                return .{ .key = .{ .kind = kind }, .used = i + 1 };
+            }
+        }
+        // No terminator within the window: consume what we scanned rather than stalling.
+        return .{ .key = .{ .kind = .ignored }, .used = i };
+    }
+
+    // A CSI/SS3 final we do not bind: consume the three present bytes.
+    return .{ .key = .{ .kind = .ignored }, .used = 3 };
+}
+
+/// Decode exactly one keystroke from the front of a byte run. Consumes 1+ bytes; a printable byte, a control
+/// byte, or a whole escape sequence each yield one key. Never fails: an unknown byte is `ignored`, not an error.
+pub fn decode(bytes: []const u8) Step {
+    // invariant: decode is only called with bytes to read, and never past the bound.
+    assert(bytes.len >= 1);
+    assert(bytes.len <= max_input);
+    const b = bytes[0];
+    if (is_printable(b)) return .{ .key = .{ .kind = .printable, .ch = b }, .used = 1 };
+    if (b == byte_bs or b == byte_del) return .{ .key = .{ .kind = .backspace }, .used = 1 };
+    if (b == byte_cr or b == byte_lf) return .{ .key = .{ .kind = .enter }, .used = 1 };
+    if (b == byte_esc) {
+        if (bytes.len < 2) return .{ .key = .{ .kind = .ignored }, .used = 1 }; // a lone trailing ESC
+        return decode_escape(bytes);
+    }
+    // Any other control byte (Ctrl-A, a tab, a NUL) has no binding in this floor -- consumed, ignored.
+    return .{ .key = .{ .kind = .ignored }, .used = 1 };
+}
+
+/// Apply one decoded key to a line. A motion or edit runs through dexter_line's own proven API; a boundary
+/// refusal (Left at the start, Backspace on an empty line, a full line) is swallowed to a harmless no-op, the
+/// way a live terminal treats a key at the edge -- it does nothing rather than dying. Enter and ignored touch
+/// no bytes here (the caller submits on Enter). Returns the kind applied so a caller can act on Enter.
+pub fn apply(l: *line.Line, k: Key) KeyKind {
+    // invariant: the line handed in is within its own bound before the edit.
+    assert(l.len <= line.max_line);
+    assert(l.cursor <= l.len);
+    switch (k.kind) {
+        .printable => l.insert(k.ch) catch {}, // NonPrintable cannot fire (decode filtered it); LineFull a no-op
+        .backspace => l.backspace() catch {}, // CursorAtStart a harmless no-op
+        .delete_forward => l.delete_forward() catch {}, // CursorAtEnd a harmless no-op
+        .left => l.move_left() catch {}, // CursorAtStart a harmless no-op
+        .right => l.move_right() catch {}, // CursorAtEnd a harmless no-op
+        .home => l.move_home(),
+        .end => l.move_end(),
+        .enter => {}, // the caller commits the line; the editor holds it unchanged
+        .ignored => {}, // no binding -- nothing to do
+    }
+    // invariant: whatever ran, the line is still within bounds and the cursor within it.
+    assert(l.len <= line.max_line);
+    assert(l.cursor <= l.len);
+    return k.kind;
+}
+
+/// What a drive over a byte run stopped on: it reached an Enter (the caller should submit the held line) or it
+/// ran the whole run out with no Enter (the line is edited, waiting for more input).
+pub const DriveStop = enum {
+    submit, // an Enter was decoded -- the caller commits `used` consumed
+    drained, // the byte run ended with no Enter -- the line holds the edits so far
+};
+
+/// The result of driving a byte run into a line: where it stopped and how many bytes it consumed. On `submit`,
+/// `used` counts up to and including the Enter, so a caller commits, then drives the remaining bytes as the
+/// next line.
+pub const Drive = struct {
+    stop: DriveStop,
+    used: u32,
+};
+
+/// Decode and apply a byte run into a line, stopping at the first Enter so a caller can submit between lines.
+/// Every keystroke edits within dexter_line's bounds; a boundary key is a no-op, so the drive never fails.
+pub fn drive(l: *line.Line, bytes: []const u8) Drive {
+    // invariant: the driven run is bounded, and the line starts within its own bound.
+    assert(bytes.len <= max_input);
+    assert(l.len <= line.max_line);
+    var i: u32 = 0;
+    // Each step consumes >= 1 byte, so this loop advances every pass and terminates within bytes.len passes.
+    while (i < bytes.len) {
+        const step = decode(bytes[i..]);
+        assert(step.used >= 1);
+        const kind = apply(l, step.key);
+        i += step.used;
+        if (kind == .enter) {
+            // invariant: consuming the Enter never ran past the run.
+            assert(i <= bytes.len);
+            return .{ .stop = .submit, .used = i };
+        }
+    }
+    // invariant: draining consumed the whole run exactly.
+    assert(i >= bytes.len);
+    // Seam cast: bytes.len is a std usize; the bound assert above proves it fits u32, cast at the edge.
+    return .{ .stop = .drained, .used = @intCast(bytes.len) };
+}
+
+// --- selftest -------------------------------------------------------------------------------------------
+
+fn printable_bytes_build_the_line() !void {
+    var l = line.Line.empty();
+    const d = drive(&l, "hello");
+    // A plain run drains with no Enter, the typed bytes read back in order, the cursor past the last.
+    assert(d.stop == .drained);
+    assert(d.used == 5);
+    assert(std.mem.eql(u8, l.text(), "hello"));
+    assert(l.cursor == 5);
+    print("dexter_key: printable bytes decode to keys that build the line at the cursor.\n", .{});
+}
+
+fn an_arrow_moves_the_cursor_and_splices() !void {
+    var l = line.Line.empty();
+    // Type "helo", then a Left arrow (ESC [ D), then 'l' -- the byte splices in at the moved cursor.
+    _ = drive(&l, "helo");
+    const left = decode("\x1b[D");
+    assert(left.key.kind == .left);
+    assert(left.used == 3);
+    _ = drive(&l, "\x1b[D"); // cursor now between 'l' and 'o'
+    _ = drive(&l, "l");
+    assert(std.mem.eql(u8, l.text(), "hello"));
+    print("dexter_key: a CSI left arrow moves the cursor, so a later byte splices mid-line.\n", .{});
+}
+
+fn home_end_and_delete_decode() !void {
+    var l = line.Line.empty();
+    _ = drive(&l, "abcd");
+    // Home (ESC [ H) jumps to the start; the Delete key (ESC [ 3 ~) removes the byte under the cursor.
+    const home = decode("\x1b[H");
+    assert(home.key.kind == .home);
+    const del = decode("\x1b[3~");
+    assert(del.key.kind == .delete_forward);
+    assert(del.used == 4);
+    _ = drive(&l, "\x1b[H\x1b[3~"); // home, then forward-delete the 'a'
+    assert(std.mem.eql(u8, l.text(), "bcd"));
+    assert(l.cursor == 0);
+    // End (ESC [ F) jumps past the last byte.
+    const end = decode("\x1b[F");
+    assert(end.key.kind == .end);
+    _ = drive(&l, "\x1b[F");
+    assert(l.cursor == 3);
+    print("dexter_key: Home, End, and the Delete key decode and drive the line as named.\n", .{});
+}
+
+fn backspace_and_enter_decode() !void {
+    var l = line.Line.empty();
+    _ = drive(&l, "hi!");
+    // A DEL byte (0x7f) backspaces the '!'.
+    const bs = decode("\x7f");
+    assert(bs.key.kind == .backspace);
+    _ = drive(&l, "\x7f");
+    assert(std.mem.eql(u8, l.text(), "hi"));
+    // A carriage return decodes to Enter, and drive stops on it reporting the bytes consumed.
+    const cr = decode("\r");
+    assert(cr.key.kind == .enter);
+    print("dexter_key: a DEL byte backspaces and a carriage return decodes to Enter.\n", .{});
+}
+
+fn drive_stops_at_enter_between_lines() !void {
+    var l = line.Line.empty();
+    // A run holding two lines: "one\ntwo" -- drive stops at the newline, reporting 4 bytes used ("one" + LF).
+    const first = drive(&l, "one\ntwo");
+    assert(first.stop == .submit);
+    assert(first.used == 4);
+    assert(std.mem.eql(u8, l.text(), "one"));
+    // The caller submits and clears, then drives the remainder as the next line.
+    l.clear();
+    const second = drive(&l, "two");
+    assert(second.stop == .drained);
+    assert(std.mem.eql(u8, l.text(), "two"));
+    print("dexter_key: drive stops at the first Enter, so a caller submits between lines.\n", .{});
+}
+
+fn boundary_keys_are_harmless_no_ops() !void {
+    var l = line.Line.empty();
+    // A Left arrow on an empty line, and a backspace on an empty line, each do nothing rather than crashing.
+    _ = drive(&l, "\x1b[D");
+    assert(l.len == 0);
+    assert(l.cursor == 0);
+    _ = drive(&l, "\x7f");
+    assert(l.len == 0);
+    // A Right arrow at the end of a held line is likewise a no-op.
+    _ = drive(&l, "hi");
+    _ = drive(&l, "\x1b[C"); // already at end
+    assert(l.cursor == 2);
+    print("dexter_key: a key at the edge (Left at start, Backspace when empty, Right at end) is a harmless no-op.\n", .{});
+}
+
+fn unknown_sequences_are_ignored() !void {
+    var l = line.Line.empty();
+    _ = drive(&l, "ab");
+    // An Up arrow (ESC [ A) and an unknown CSI final (ESC [ Z) both decode to ignored, landing no byte.
+    const up = decode("\x1b[A");
+    assert(up.key.kind == .ignored);
+    assert(up.used == 3);
+    const unknown = decode("\x1b[Z");
+    assert(unknown.key.kind == .ignored);
+    // A lone trailing ESC is ignored, consuming just itself.
+    const lone = decode("\x1b");
+    assert(lone.key.kind == .ignored);
+    assert(lone.used == 1);
+    // A tab (a control byte with no binding here) is ignored, no byte landing.
+    const tab = decode("\t");
+    assert(tab.key.kind == .ignored);
+    _ = drive(&l, "\x1b[A\x1b[Z\t");
+    assert(std.mem.eql(u8, l.text(), "ab"));
+    print("dexter_key: an Up arrow, an unknown escape, a lone ESC, and a tab all decode to ignored, no byte landing.\n", .{});
+}
+
+fn decoding_is_deterministic() !void {
+    // The same byte run drives the same line every time -- referential transparency over the decoder.
+    var a = line.Line.empty();
+    var b = line.Line.empty();
+    const run = "gr\x1b[Dai\x1b[Fn"; // "gr", Left, "ai", End, "n"
+    _ = drive(&a, run);
+    _ = drive(&b, run);
+    assert(std.mem.eql(u8, a.text(), b.text()));
+    assert(a.cursor == b.cursor);
+    print("dexter_key: the same byte run drives the same line every time.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try printable_bytes_build_the_line();
+    try an_arrow_moves_the_cursor_and_splices();
+    try home_end_and_delete_decode();
+    try backspace_and_enter_decode();
+    try drive_stops_at_enter_between_lines();
+    try boundary_keys_are_harmless_no_ops();
+    try unknown_sequences_are_ignored();
+    try decoding_is_deterministic();
+    print("dexter_key: version {s}\n", .{dexter_key_version});
+    print("GREEN: dexter_key; a keeper's keyboard bytes decode to bounded key events -- printable, backspace, forward-delete, arrows, Home/End, Enter -- and drive a bounded line, boundary keys a harmless no-op, unknown sequences ignored, all pure and deterministic.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "dexter-key"))) {
+        return run_selftest();
+    }
+    return run_selftest();
+}
