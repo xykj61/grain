@@ -1,0 +1,39 @@
+# tools/scooter_nav_witness.rish -- Scooter, the read binding, on metal.
+#
+# pond/apps/scooter_nav.rye is the small binding that joins the read stack's three proven floors: dexter_key
+# names a keeper's navigation keys, scooter_read holds one bounded scroll position with paging verbs, and
+# scooter_view.render_window draws the slice at that position. This module maps a decoded Key to the read
+# view's matching verb, so a run of keyboard bytes scrolls a held view -- the READ-side twin of scooter_input.
+# Held PURE: it reads a byte SLICE via dexter_key's pure decode, owns no view or channel, and touches no pixel.
+# This witness builds the module and asserts its selftest speaks GREEN over the five cruxes:
+#   - An Up arrow steps the view one post older and a Down arrow one newer.
+#   - A Page Up key pages a whole page older and a Page Down key returns toward the newest.
+#   - Home jumps to the oldest post and End jumps to the newest, the chat's home view.
+#   - A printable run, a Backspace, and an Enter do not scroll a read view -- the position holds.
+#   - A mixed byte run drives the view deterministically, its render one truth with render_window at the top.
+#
+# Facts only, custody-first: it moves a scroll position over a public journal -- no network, no key, no funds.
+# The raw TTY read (cbreak) and the Comlink wire between two Constel piers reach the serve gate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/scooter_nav_witness.rish
+
+say "scooter-nav: Language EN -- a keeper's navigation keys drive a held read view through journal history."
+say "scooter-nav: Lens TAME -- the byte run bounded, typing keys a no-op, the position always one truth with the drawn frame, no TTY, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+
+let bin = "pond/bin/scooter-nav"
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/scooter_nav.rye -femit-bin=${bin}"]
+assert build.ok else "scooter-nav: scooter_nav build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "scooter-nav: scooter_nav selftest exited non-zero"
+assert selftest.out contains "GREEN" else "scooter-nav: selftest did not speak GREEN"
+assert selftest.out contains "an Up arrow steps the view one post older" else "scooter-nav: arrow-step crux missing"
+assert selftest.out contains "a Page Up key pages a whole page older" else "scooter-nav: page-key crux missing"
+assert selftest.out contains "Home jumps to the oldest post and End jumps to the newest" else "scooter-nav: home-end crux missing"
+assert selftest.out contains "do not scroll a read view -- the position holds" else "scooter-nav: typing-no-op crux missing"
+assert selftest.out contains "drives the view deterministically, its render one truth" else "scooter-nav: one-truth crux missing"
+
+say "GREEN: scooter-nav -- a keeper's navigation keys drive a held read view: arrows step one post, Page keys move a page, Home/End jump to the edges, typing a no-op, the position one truth with the drawn frame."

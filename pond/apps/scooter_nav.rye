@@ -1,0 +1,181 @@
+//! pond/apps/scooter_nav.rye -- Scooter, the read binding: navigation keys drive a held view.
+//!
+//! Season G (Open Media Primitives) -- the terminal family. Three proven floors now stand: dexter_key names a
+//! keeper's navigation keys (nav_up/nav_down/page_up/page_down, plus Home/End), scooter_read holds one bounded
+//! scroll position with paging verbs, and scooter_view.render_window draws the slice at that position. This
+//! module is the small binding that joins them: it maps a decoded Key to the read view's matching paging verb,
+//! so a run of keyboard bytes scrolls a held view and each step is drawable. It is the READ-side twin of
+//! scooter_input, which drove keystroke bytes into the WRITE prompt; this drives them into the read position.
+//! Held PURE -- it reads a byte SLICE a caller already has (via dexter_key's pure decode), owns no view or
+//! channel of its own, and touches no pixel: the caller holds the View, this only moves its position.
+//! Pattern elder: pond/apps/scooter_input.rye -- the same bounded drive over dexter_key's decode, write-side.
+//!
+//! The crux is one faithful binding held strictly bounded:
+//!   - nav_up steps one post older, nav_down one newer; page_up/page_down move a whole page; Home jumps to the
+//!     oldest post and End to the newest (a chat's home) -- the pager affordances a reader expects.
+//!   - Every other key (a printable byte, Backspace, Enter, an ignored escape) is a NO-OP for the read view --
+//!     a read view does not type, so the position holds unchanged, never a dropped or spurious scroll.
+//!   - drive walks a whole byte run, applying each decoded key, bounded because every decode consumes 1+ bytes;
+//!     the held view's position and the drawn frame stay one truth (render is render_window at the held top).
+//!
+//! Facts only, custody-first: it moves a scroll position over a public journal -- no network, no key, no funds.
+//! The raw TTY read (cbreak, escape timing) and the Comlink wire between two Constel piers reach the serve gate.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build pond/apps/scooter_nav.rye -femit-bin=pond/bin/scooter-nav
+//!   pond/bin/scooter-nav selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const channel = @import("scooter_channel.rye");
+const read = @import("scooter_read.rye");
+const view = @import("scooter_view.rye");
+const key = @import("dexter_key.rye");
+
+pub const scooter_nav_version = "20260817.111500";
+
+/// A decoded byte run holds at most this many bytes -- the same bound dexter_key reads under, so a navigation
+/// read never grows unbounded. A caller with more feeds the binding in slices.
+pub const max_input: u32 = key.max_input;
+
+/// Apply one decoded key to a held read view over its channel. A navigation key moves the view's position
+/// through scooter_read's own clamped verbs; every other key is a harmless no-op (a read view does not type).
+/// Returns the key kind applied so a caller can act (for example, redraw only when the kind was navigation).
+pub fn apply_key(v: *read.View, ch: *const channel.Channel, k: key.Key) key.KeyKind {
+    // invariant: the view's position is bounded before the step, and the channel count is real.
+    assert(v.top <= channel.max_posts);
+    assert(ch.post_count <= channel.max_posts);
+    switch (k.kind) {
+        .nav_up => v.line_up(),
+        .nav_down => v.line_down(ch),
+        .page_up => v.page_up(),
+        .page_down => v.page_down(ch),
+        .home => v.go_oldest(), // Home -- jump to the first post, the top of the journal
+        .end => v.go_home(ch), // End -- jump to the newest, the chat's home view
+        else => {}, // printable, backspace, forward-delete, left/right, enter, ignored: a read view scrolls on none
+    }
+    // invariant: whatever ran, the position is still bounded and never names a seq past the journal.
+    assert(v.top <= channel.max_posts);
+    assert(v.top <= ch.post_count);
+    return k.kind;
+}
+
+/// Decode and apply a whole byte run into a held view, returning how many bytes were consumed (the whole run).
+/// Each decode step consumes 1+ bytes, so the walk advances every pass and terminates within bytes.len passes.
+pub fn drive(v: *read.View, ch: *const channel.Channel, bytes: []const u8) u32 {
+    // invariant: the driven run is bounded, and the view starts within the journal.
+    assert(bytes.len <= max_input);
+    assert(v.top <= ch.post_count);
+    var i: u32 = 0;
+    while (i < bytes.len) {
+        const step = key.decode(bytes[i..]);
+        assert(step.used >= 1);
+        _ = apply_key(v, ch, step.key);
+        i += step.used;
+    }
+    // invariant: the walk consumed the whole run exactly.
+    assert(i >= bytes.len);
+    // Seam cast: bytes.len is a std usize; the bound assert above proves it fits u32, cast at the edge.
+    return @intCast(bytes.len);
+}
+
+// --- selftest -------------------------------------------------------------------------------------------
+
+const host_key: u32 = 1001;
+const ada: u32 = 2002;
+
+fn a_journal_of(post_count: u32) !channel.Channel {
+    var ch = channel.Channel.open(host_key);
+    try ch.admit(host_key, ada);
+    var k: u32 = 0;
+    while (k < post_count) : (k += 1) {
+        var buf: [16]u8 = undefined;
+        const text = std.fmt.bufPrint(&buf, "post {d}", .{k}) catch unreachable;
+        _ = try ch.post(ada, text);
+    }
+    return ch;
+}
+
+fn an_arrow_steps_one_post() !void {
+    // From home over thirty posts, an Up byte steps the view one post older; a Down byte steps it back newer.
+    var ch = try a_journal_of(30);
+    var v = read.View.opened(&ch);
+    const home = v.top; // 8
+    _ = drive(&v, &ch, "\x1b[A"); // Up
+    assert(v.top == home - 1); // 7
+    _ = drive(&v, &ch, "\x1b[B"); // Down
+    assert(v.top == home); // back to 8, clamped at home
+    print("scooter_nav: an Up arrow steps the view one post older and a Down arrow one newer.\n", .{});
+}
+
+fn a_page_key_moves_a_whole_page() !void {
+    // A Page Up byte pages toward older by a full page (clamped at the first post); Page Down returns home.
+    var ch = try a_journal_of(30);
+    var v = read.View.opened(&ch);
+    _ = drive(&v, &ch, "\x1b[5~"); // Page Up -- 8 - 22 clamps to 0
+    assert(v.top == 0);
+    _ = drive(&v, &ch, "\x1b[6~"); // Page Down -- 0 + 22 clamps to home 8
+    assert(v.top == 8);
+    print("scooter_nav: a Page Up key pages a whole page older and a Page Down key returns toward the newest.\n", .{});
+}
+
+fn home_and_end_jump_to_the_edges() !void {
+    // Home jumps to the oldest post (top 0); End jumps to the newest (the home view).
+    var ch = try a_journal_of(30);
+    var v = read.View.opened(&ch);
+    _ = drive(&v, &ch, "\x1b[H"); // Home
+    assert(v.top == 0);
+    _ = drive(&v, &ch, "\x1b[F"); // End
+    assert(v.top == 8); // latest_top(30, 22)
+    print("scooter_nav: Home jumps to the oldest post and End jumps to the newest, the chat's home view.\n", .{});
+}
+
+fn typing_keys_do_not_scroll() !void {
+    // A printable run, a Backspace, and an Enter are all no-ops for the read view -- the position holds.
+    var ch = try a_journal_of(30);
+    var v = read.View.opened(&ch);
+    const home = v.top;
+    _ = drive(&v, &ch, "hello\x7f\r"); // text, a DEL, a carriage return
+    assert(v.top == home);
+    // An unknown escape likewise leaves the position untouched.
+    _ = drive(&v, &ch, "\x1b[Z");
+    assert(v.top == home);
+    print("scooter_nav: a printable run, a Backspace, and an Enter do not scroll a read view -- the position holds.\n", .{});
+}
+
+fn a_mixed_run_drives_and_stays_one_truth() !void {
+    // A single mixed byte run drives the view deterministically, and its render equals render_window at the top.
+    var ch = try a_journal_of(30);
+    var a = read.View.opened(&ch);
+    var b = read.View.opened(&ch);
+    const run = "\x1b[5~\x1b[B\x1b[B\x1b[A"; // Page Up, Down, Down, Up -> 0, then +1, +1, -1 == 1
+    _ = drive(&a, &ch, run);
+    _ = drive(&b, &ch, run);
+    assert(a.top == b.top); // deterministic
+    assert(a.top == 1);
+    // The held position and the drawn frame are one truth: the view's render equals render_window at its top.
+    const frame = a.render(&ch);
+    const direct = view.render_window(&ch, a.top);
+    assert(std.mem.eql(u8, &frame.cells, &direct.cells));
+    print("scooter_nav: a mixed byte run drives the view deterministically, its render one truth with the position.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try an_arrow_steps_one_post();
+    try a_page_key_moves_a_whole_page();
+    try home_and_end_jump_to_the_edges();
+    try typing_keys_do_not_scroll();
+    try a_mixed_run_drives_and_stays_one_truth();
+    print("scooter_nav: version {s}\n", .{scooter_nav_version});
+    print("GREEN: scooter_nav; a keeper's navigation keys drive a held read view -- arrows step one post, Page keys move a page, Home/End jump to the edges, typing keys a harmless no-op, the byte run bounded and the position always one truth with the drawn frame.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "scooter-nav"))) {
+        return run_selftest();
+    }
+    return run_selftest();
+}

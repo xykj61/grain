@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260817.111430
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title scooter_nav -- navigation keys drive a held read view
+prompt recur: continue the next agent-doable lap Lindy-first crux-first; send often; Rye-first; approve own design rounds; stop at custody gates
+think This is the capstone of the read-navigation stack. Three floors stood proven: dexter_key names the navigation keys (this turn's prior lap), scooter_read holds one bounded scroll position with paging verbs, scooter_view.render_window draws the slice. scooter_nav is the small binding that joins them, the READ-side twin of scooter_input (which drove keystroke bytes into the WRITE prompt).
+think Design: apply_key maps a decoded Key to the read view's matching verb -- nav_up->line_up, nav_down->line_down, page_up->page_up, page_down->page_down, Home->go_oldest, End->go_home (the pager affordances a reader expects); every other key (printable, backspace, enter, ignored) is a NO-OP, because a read view does not type. drive walks a whole byte run through dexter_key.decode, bounded because every decode consumes 1+ bytes. Held pure: it owns no view or channel, only moves the caller's position.
+think Values apart, never braided: decode (dexter_key) names the key, the view (scooter_read) holds the position, the window (scooter_view) draws it, and this only routes a named key to a clamped verb. Each layer proven on its own witness; the binding proves the routing and that the whole stack stays one truth.
+obs Five cruxes GREEN on metal over a 30-post journal: an Up byte steps one older, a Down byte one newer clamped at home; a Page Up byte pages to the first post, a Page Down returns home; Home jumps to seq 0, End to the home view (top 8); a printable run + Backspace + Enter + an unknown escape leave the position untouched; and a mixed byte run (PgUp, Down, Down, Up -> top 1) drives two views to the same position deterministically, the view's render equal to render_window at that top byte-for-byte.
+obs GREEN first metal run after two authoring slips I caught before build: a malformed compound assert (v.top == page_rows == 22 or ...) removed, and a tautological render check (comparing a.render to itself) replaced with a real comparison against view.render_window at the top. tame_style_check bans clean, width-check exit 0, plain 7-bit ASCII, >=2 positive asserts per fn, one seam @intCast on bytes.len after its bound assert. Module doc and tools/scooter_nav_witness.rish name the binding (docs-sync).
+loom witness=scooter_nav_witness cruxes=5 journal_posts=30 mixed_run_top=1 determinism=2_views_equal result=GREEN
+file pond/apps/scooter_nav.rye the read binding: apply_key routes a decoded navigation Key to scooter_read's clamped paging verbs, typing keys a no-op; drive walks a bounded byte run
+file tools/scooter_nav_witness.rish builds the module and asserts the five cruxes GREEN on metal
+file session-logs/20260817-111430_scooter-nav-key-binding.kyri this record
+recommend check-in (either) the read-navigation stack is complete and green end to end -- a keeper's keyboard bytes now scroll a rendered Scooter conversation, all pure: scooter_scroll (position) -> render_window (draw) -> scooter_read (held view) -> dexter_key nav keys (decode) -> scooter_nav (bind). The remaining read rungs reach the SERVE GATE, the maintainer's hand: the raw TTY read (cbreak mode, escape timing -- an OS/terminal seam) and the Comlink wire between two Constel piers. A fresh agent-doable direction (another Season G open-media thread, or a different season's crux) is a good place to confirm the next Lindy-first crux
