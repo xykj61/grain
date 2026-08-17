@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260817.020530
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title text_reel -- Season G capstone, the open video codecs on a real rendered corpus
+prompt recur the autonomous loop -- next agent-doable lap Lindy-first crux-first, one rota doc per lap, send often
+think Oriented on REMEMBER, the 1024-round itinerary, the eight-season double-seat, and the Rye-first crypto/decision wave. The live edge is Season G open-media; the text/font/paint family reached its capstone (paint_paragraph_in_box), and REMEMBER's own next-item named it: prove the image/video codecs on a REAL corpus rather than crafted clips.
+think Rota this lap read item 16, SIMPLE_LOVABLE_COMPLETE -- which pointed the crux: the narrowest whole thing that is lovable and complete. The Lindy-first crux is the place the whole open-media family meets: render real frames with the finished font-and-paint family, feed them through both open video codecs (gfv1 intra-frame, gfd1 inter-frame), prove byte-for-byte round-trip and the inter-frame payoff on real text.
+think Designed image/text_reel.rye as pure composition over public APIs (solid, paint_line, both codecs' encode/decode) -- a typewriter reveal of 'GRAIN OPEN MEDIA', one glyph per frame, so most of each frame stands still and inter-frame storage wins. Invented no storage, codec, palette, or geometry.
+think Red-then-green: first build panicked on assert(gfd_res.delta_frames == frame_count - 1). Probed the real numbers -- gfv=4746, gfd=1903, delta_frames=14 of 15. The adaptive encoder rightly keyframed one frame where a delta cost more. Asserting == frame_count-1 was a false invariant (REDS #82); relaxed to assert delta_frames >= 1 (the two caption spaces guarantee at least one zero-change delta) and reported the measured 14 in the GREEN line.
+obs The delta win is structural on mostly-static motion: for every later frame gfd1 stores min(delta, keyframe) while gfv1 stores the frame whole, so gfd1 <= gfv1 always and strictly less wherever any delta wins. 1903 < 4746 on real rendered text is the payoff the crafted clips could only hint at.
+obs Cross-codec distinctness proven honestly: feeding the gfv1 stream to the gfd1 decoder refuses at the magic (BadMagic), so the two formats never silently mis-read one another.
+loom witness=text_reel_witness frames=16 frame_wh=120x16 ink_first=17 ink_last=228 gfv_bytes=4746 gfd_bytes=1903 delta_frames=14
+file image/text_reel.rye the capstone module -- renders a real caption reel with the font-and-paint family and proves both open video codecs round-trip it, inter-frame smaller than intra-frame
+file tools/text_reel_witness.rish builds and runs the module, asserts the GREEN capstone line, the both-codecs round-trip, and the inter-frame-smaller payoff
+file crux/REMEMBER.md rolled the Git nib to the capstone, updated the Season G live-edge note (the real-corpus next-item is DONE), shifted the nib chain
+recommend keep-going Season G continues -- prove the codecs on longer/varied real reels, or the open font/video work Season G still names (glyph atlas beyond 5x7, inter-frame on camera-shaped motion).

@@ -1,0 +1,185 @@
+//! image/text_reel.rye -- Season G's capstone: the open video codecs proven on a REAL rendered corpus.
+//!
+//! Season G (Open Media Primitives) built each media floor apart -- the QOI still image (image/qoi.rye), the whole
+//! open ASCII font (image/font5x7_ascii.rye), the text-layout and text-paint rungs that turn a string into pixels
+//! (image/text_layout.rye, image/text_paint.rye), and the two open video codecs: gfv1 intra-frame (image/frames.rye,
+//! every frame stored whole) and gfd1 inter-frame (image/frames_delta.rye, a keyframe plus per-frame pixel deltas).
+//! Each proved itself on content CRAFTED for the test -- solid fills, a hand-drawn pattern, a sparse three-pixel edit.
+//! This module is where they meet: it renders a REAL caption reel with the finished font-and-paint family, then feeds
+//! that real motion through BOTH codecs and proves each recovers it byte for byte, and that the inter-frame codec is
+//! smaller than the intra-frame one on rendered text rather than on a crafted clip -- the reason inter-frame exists,
+//! shown on the kind of picture a surface actually plays back.
+//!
+//! The reel is a typewriter reveal: a caption uncovered one glyph per frame on a white ground, black ink. Each frame
+//! differs from the one before it only by the newly revealed glyph, so most of the picture stands still frame to frame
+//! -- the mostly-static motion where inter-frame storage wins. Pure composition over the family's public APIs: this
+//! module invents no storage, codec, palette, or geometry, only draws with what is drawn already. No network, no key,
+//! no funds -- a real moving picture on our own open codecs, proven on our own open font.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/text_reel.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const text_layout = @import("text_layout.rye");
+const font_ascii = @import("font5x7_ascii.rye");
+const text_paint = @import("text_paint.rye");
+const frames = @import("frames.rye");
+const frames_delta = @import("frames_delta.rye");
+
+pub const text_reel_version = "20260817.020530";
+
+/// The reel's caption -- the string revealed one glyph per frame. Its length is the frame count, so the whole reel is
+/// a real reveal of exactly these bytes. Spaces are blank glyphs (the open font's space adds no ink), so a space frame
+/// changes nothing from the frame before it -- an honest zero-change delta the inter-frame codec stores for near free.
+pub const reel_caption = "GRAIN OPEN MEDIA";
+
+/// The reel's frame extent. Landscape and comfortably larger than the caption's inked band, so the static white ground
+/// dominates every frame -- the condition under which inter-frame storage plainly beats storing each frame whole.
+pub const reel_width: u32 = 120;
+pub const reel_height: u32 = 16;
+
+/// Playback rate stored in both containers' headers -- carried through a round-trip, never interpreted here.
+pub const reel_fps: u8 = 12;
+
+/// Where the caption's baseline origin sits inside the frame -- a small inset from the top-left so the whole inked band
+/// lands within the ground with margin on every side.
+const caption_x: u32 = 2;
+const caption_y: u32 = 4;
+
+/// Count the inked cells of a frame -- every pixel that is not the pure-white ground. Full-ink lands pure black over
+/// white and a partly covered edge blends to grey, so any non-white pixel is ink the reveal placed. Bounded by the
+/// frame's own pixel count, which qoi.Pixmap already proved at birth.
+fn frame_ink(pm: *const qoi.Pixmap) u32 {
+    var count: u32 = 0;
+    var i: usize = 0;
+    while (i < pm.pixels.len) : (i += 4) {
+        const is_white = pm.pixels[i] == 255 and pm.pixels[i + 1] == 255 and pm.pixels[i + 2] == 255;
+        if (!is_white) count += 1;
+    }
+    // invariant: a frame's inked cells never exceed its total pixels.
+    assert(count <= pm.pixel_count());
+    return count;
+}
+
+/// True when two videos carry the same header and the same frames byte for byte -- the equality a round-trip must
+/// recover. Compared field by field, then frame by frame through qoi.Pixmap's own byte compare.
+pub fn videos_equal(a: *const frames.Video, b: *const frames.Video) bool {
+    if (a.width != b.width or a.height != b.height) return false;
+    if (a.orientation != b.orientation or a.fps != b.fps) return false;
+    if (a.frames.len != b.frames.len) return false;
+    var f: usize = 0;
+    while (f < a.frames.len) : (f += 1) {
+        if (!a.frames[f].same_bytes(&b.frames[f])) return false;
+    }
+    return true;
+}
+
+/// Build the caption reel -- one frame per caption byte, each a white ground with the caption revealed up to and
+/// including that byte, painted in black through the open font-and-paint family. Frame k shows caption[0 .. k + 1], so
+/// frame 0 shows the first glyph and the last frame shows the whole caption. Returns a Video whose orientation is
+/// derived from the extent (never a stored lie) and whose fps is the reel's own rate. The scratch buffer holds one
+/// placed glyph per caption byte, sized once and reused across frames, so there is no per-frame hidden allocation.
+pub fn build_caption_reel(garden: std.mem.Allocator, atlas: *const @import("glyph.rye").GlyphAtlas) !frames.Video {
+    const caption = reel_caption;
+    // invariant: the reel has at least one frame and stays within the video codec's frame ceiling.
+    assert(caption.len >= 1);
+    assert(caption.len <= frames.gfv_max_frames);
+    const frame_count: u32 = @intCast(caption.len);
+
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+
+    const scratch = try garden.alloc(text_layout.PlacedGlyph, caption.len);
+    const pms = try garden.alloc(qoi.Pixmap, frame_count);
+
+    var k: u32 = 0;
+    while (k < frame_count) : (k += 1) {
+        var frame = try text_paint.solid(garden, reel_width, reel_height, white);
+        // Reveal caption[0 .. k + 1] -- one more glyph than the frame before, the typewriter step.
+        const shown = caption[0 .. k + 1];
+        try text_paint.paint_line(atlas, shown, scratch, &frame, caption_x, caption_y, black);
+        pms[k] = frame;
+    }
+
+    return frames.Video{
+        .width = reel_width,
+        .height = reel_height,
+        .orientation = frames.derive_orientation(reel_width, reel_height),
+        .fps = reel_fps,
+        .frames = pms,
+    };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try font_ascii.build_atlas(garden);
+    const video = try build_caption_reel(garden, &atlas);
+    const frame_count: u32 = @intCast(video.frames.len);
+    const pixel_count = video.frame_pixels();
+    // invariant: the reel rendered exactly one frame per caption byte.
+    assert(frame_count == reel_caption.len);
+
+    // The reel is REAL, progressive content: ink never decreases as glyphs are revealed (a space adds none, a letter
+    // adds some), and the last frame carries strictly more ink than the first -- the reveal actually drew something.
+    const first_ink = frame_ink(&video.frames[0]);
+    const last_ink = frame_ink(&video.frames[frame_count - 1]);
+    assert(first_ink >= 1);
+    assert(last_ink > first_ink);
+    {
+        var k: u32 = 1;
+        while (k < frame_count) : (k += 1) {
+            assert(frame_ink(&video.frames[k]) >= frame_ink(&video.frames[k - 1]));
+        }
+    }
+
+    // --- gfv1 intra-frame: encode, decode, prove the real reel round-trips byte for byte -----------------------
+    const gfv_cap = frames.encoded_bound(pixel_count, frame_count);
+    const gfv_dst = try garden.alloc(u8, gfv_cap);
+    const gfv_res = try frames.encode(garden, &video, gfv_dst);
+    assert(gfv_res.frame_count == frame_count);
+    const gfv_stream = gfv_dst[0..gfv_res.len];
+    const gfv_back = try frames.decode(garden, gfv_stream);
+    assert(videos_equal(&gfv_back, &video));
+
+    // --- gfd1 inter-frame: encode, decode, prove the same real reel round-trips byte for byte ------------------
+    const gfd_cap = frames_delta.encoded_bound(pixel_count, frame_count);
+    const gfd_dst = try garden.alloc(u8, gfd_cap);
+    const gfd_res = try frames_delta.encode(garden, &video, gfd_dst);
+    assert(gfd_res.frame_count == frame_count);
+    const gfd_stream = gfd_dst[0..gfd_res.len];
+    const gfd_back = try frames_delta.decode(garden, gfd_stream);
+    assert(videos_equal(&gfd_back, &video));
+
+    // The payoff, on REAL rendered text rather than a crafted clip: because a typewriter reveal changes only the newly
+    // shown glyph frame to frame, inter-frame storage is plainly smaller than storing every frame whole -- the reason
+    // gfd1 exists, shown on the kind of motion a surface actually plays. The two spaces in the caption reveal nothing,
+    // so at least those frames store as zero-change deltas; the adaptive encoder still keeps the free hand to store any
+    // frame as a keyframe where that is smaller, so the delta count is a REPORTED measurement, never asserted exact.
+    assert(gfd_res.len < gfv_res.len);
+    assert(gfd_res.delta_frames >= 1);
+
+    // The two formats are distinct on real content: a gfv1 stream is not a gfd1 stream. Feeding the intra-frame bytes
+    // to the inter-frame decoder refuses by name at the magic, never silently mis-reads real rendered frames.
+    if (frames_delta.decode(garden, gfv_stream)) |_| {
+        return error.MagicSlipped;
+    } else |e| {
+        if (e != error.BadMagic) return error.WrongMagic;
+    }
+
+    print("GREEN image-text-reel: '{s}' revealed over {d} frames of {d}x{d}, ink {d}->{d}; round-trip byte-identical through BOTH codecs; inter-frame {d} bytes < intra-frame {d} ({d} delta frames); gfv1 stream refused by gfd1 decoder as BadMagic\n", .{
+        reel_caption, frame_count, reel_width, reel_height, first_ink, last_ink, gfd_res.len, gfv_res.len, gfd_res.delta_frames,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: text_reel selftest\n", .{});
+    return 1;
+}
