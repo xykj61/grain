@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260817.103223
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title dexter_key -- the keystroke decoder, bytes to bounded key events, GREEN
+prompt take the next agent-doable lap Lindy-first crux-first on the recursion loop; deep-read one council-rota doc; Rye-first; send often; stop at custody gates
+think The terminal family has a complete editing model (dexter_line.Line -- insert, delete, cursor motion, all bounded) and a composed session (scooter_compose.Session), but both act on already-named actions. Between them and a real terminal sits a missing floor: a keyboard hands a terminal BYTES, and a printable byte is one thing while an arrow key is the three bytes ESC '[' 'D'. That decoder is the live-input rung the card names -- and it is PURE (bytes in, no TTY read, no network), so the raw TTY and the Comlink wire stay at the serve gate.
+think Lindy-first: every terminal surface (Dexter, a Realidream editor, the Grainphone shell) decodes keys from bytes, and ANSI escape decoding is a decades-stable standard (VT100/xterm). The elder window_input.rye is a different lineage (ZETA glass keyboard, append-only, no cursor, pre-decoded Wayland actions); this is the Dexter terminal's own byte-level decoder with a real cursor, arrows, home/end, forward-delete.
+think Shape: Key = record {kind: KeyKind, ch}; decode(bytes) -> Step {key, used} single-step (consumes 1+ bytes, always advances); decode_escape handles CSI ESC '[' finals (C/D arrows, H/F edges, 3~ delete, 1~/7~ home, 4~/8~ end) and SS3 ESC 'O'; apply(line, key) drives dexter_line's proven API, swallowing a boundary refusal to a harmless no-op the way a live terminal treats a key at the edge; drive(line, bytes) loops to the first Enter and reports bytes used, so a caller submits between lines.
+think Value model kept plain (record + enum, not a payload union) matching enum(u8) usage across pond/apps; >=2 positive asserts per fn with // invariant; every loop bounded (max_input 4096, the digit scan a fixed 8-byte window); named errors surface from dexter_line, none new needed since apply swallows boundary no-ops.
+obs One red, caught by the compiler: bytes.len is a std usize and Drive.used is u32; fixed with an @intCast at the seam AFTER the bound assert proves it fits -- correct Tiger seam code, not debt. GREEN first run after that. tame_style_check bans clean (my file not on the zero-assert list), width-check exit 0, plain 7-bit ASCII.
+obs Held pure and layered right: dexter_key imports dexter_line (same dir, no symlink), composes it, and touches no channel/network/key. The decoder never fails -- an unknown byte or escape is `ignored`, a real honest outcome consumed whole, so a paste of junk cannot crash the reader.
+loom witness=dexter_key_witness cruxes=8 max_input=4096 esc_scan_window=8 green=first-run-after-seam-cast
+file pond/apps/dexter_key.rye the keystroke decoder: decode/decode_escape/apply/drive over dexter_line, KeyKind + Key + Step + Drive records, selftest proves the eight cruxes
+file tools/dexter_key_witness.rish builds the module and asserts GREEN over the eight cruxes; no TTY, no key, no funds
+file crux/REMEMBER.md live edge + Git nib refreshed to the keystroke decoder; prior nib demoted
+recommend keep-going the byte-to-key floor stands; next Lindy crux is wiring drive() to scooter_compose.Session (decode a run, edit the prompt, submit on Enter) as a pure rung, or the raw TTY read + Comlink wire which reach the serve gate -- the maintainer's hand
