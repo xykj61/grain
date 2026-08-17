@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260817.012829
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title text_paint grows paragraph alignment (left/centre/right)
+prompt autonomous loop -- next agent-doable lap Lindy-first crux-first, Season G open-media
+think Read the road: REMEMBER (Git nib edcdd6e image/text_paint paragraph GREEN), the 1024-round itinerary, the eight-season double-seat, the rye-first crypto wave, and the autonomous-loop seed section 1 rota.
+think Rota this lap (d27, item 14): context/RADIANT_STYLE.md with TWILIGHT -- deep-read; a pass changes register, never a claim (claim_preserve_witness); benediction only where earned, so this technical prose ends plainly.
+think Surveyed image/: the text-paint family is mature (solid, paint_placed, paint_placed_clipped, paint_line, paint_paragraph) yet every paragraph stacks LEFT-set only. Alignment is the crux-first Lindy rung -- every text surface needs it, it composes the already-proven wrap + paint, and it is pure geometry where left is a strict superset of today.
+think Confirmed font5x7_ascii glyph_advance = cell_w + 1 = 6 > cell_w = 5, so a line's painted box (width-1) sits strictly inside its advance width -- an alignment shift within the slack stays inside the paragraph box the up-front check proved.
+think Grew paint_paragraph_aligned(mode: Align{left,centre,right}) as the full body with a per-line sideways offset = slack (right) / slack/2 (centre) / 0 (left); rewrote paint_paragraph to delegate with .left, so the two share one routine (single-stranded) and left reproduces the pre-alignment paint byte-for-byte.
+think Zig reserves `align`, so the parameter is `mode` -- caught by the first build, fixed, rebuilt GREEN.
+obs Proof composes alignment from the strict single-line painter: built expected right/centre canvases by painting each wrapped line at its own offset, then matched paint_paragraph_aligned byte-for-byte; centre and right change exactly the same pixel count as left (alignment shifts ink, adding none, dropping none); right-set differs from left-set (the short line moved) while the widest line holds its origin under every alignment.
+obs tame_style_check bans clean; width-check exit 0 on the touched file; text_paint witness prints two GREEN lines with the new alignment claims grepped. README and module header synced in the same round; the stale "mid-word splitting" pending-rung line (already landed) corrected per docs-implementation-sync.
+loom witness=text_paint_witness changed_px=79 lines=2 aligns=3 result=GREEN
+file image/text_paint.rye Align enum + paint_paragraph_aligned; paint_paragraph delegates .left; selftest proves the offset composition
+file tools/text_paint_witness.rish two grep gates for the alignment claim
+file image/README.md paint-half paragraph sentence names left/centre/right alignment; next-rungs line synced
+recommend keep-going -- next Season G rung: the diagonal box-drawing marks over the 5x7 body, or align paint_line/clipped the same way
