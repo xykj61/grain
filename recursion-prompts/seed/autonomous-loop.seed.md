@@ -12,6 +12,15 @@
 
 Read `context/` before large decisions: TAME (safety > performance > joy), CIVIC (name what the prompt rewards), the compass rose (`foundations/20260706-185112_follow-our-compass.md`), Two Rooms (checkable vs proposed), Radiant and Twilight style, Lindy-first crux-first, reds-first. The disciplines are written to be loaded this way; restating them drifts from them.
 
+Load these named paths too, so the loop carries the disciplines an unattended run most often forgets:
+
+- **Reds ledger** — `work-in-progress/REDS.md`: a red books the allocation before new work; close it on a witness on metal (`.claude/rules/reds-first.md`).
+- **Cairns ledger** — `work-in-progress/CAIRNS.md`: mark the way back before any breach rename or seated debride (`.claude/rules/cairn.md`).
+- **Docs stay synced** — `.claude/rules/docs-implementation-sync.md`: when behavior changes, the doc that describes it moves in the **same** commit; a doc's behavioral claim is checked by reading or running, never assumed.
+- **Prove before GREEN** — before any round claims GREEN, run the module's own witness plus `rishi/bin/rishi run tools/tame_style_check.rish` and `tools/width-check.rish`; a green witness never excuses zero asserts (`.claude/rules/tame-guidance.md`).
+- **Loom capture** — when a round measures a hot path, record a `loom key=value` line in the session log from real measurement, never memory (`.claude/rules/session-logs.md`).
+- **Style sweep** — the Radiant/Twilight pass named in §6 rides before every send; `context/RADIANT_STYLE.md` and `context/TWILIGHT_STYLE.md` are its guides.
+
 ## 2 — The hard bounds, by tag (the custody gates — never cross)
 
 Carried verbatim from `work-in-progress/REMEMBER.md` → *Custody gates*. An autonomous run **stops and surfaces** at each; it never crosses:
@@ -47,6 +56,7 @@ A tripwire is not a stop — it is a design round you **approve for yourself** a
 ## 6 — Clock, ledger, remotes, signing
 
 - **Clock:** `TZ=America/New_York date +%Y%m%d.%H%M%S`, never fabricated. One clock, not one hand.
+- **Style sweep before every send:** before each commit, run a Radiant pass over the round's prose — code comments, Markdown, and prose generally — and a Twilight pass on the rare night or devotional piece; lead with what is, active voice, `yet`/`however` over `but`, a benediction only where earned. A style pass holds numbers, paths, stamps, and modality counts exactly (`claim_preserve_witness`) — it changes register, never a claim. Ordinary and technical prose still ends plainly.
 - **Commits:** CONTRIBUTING style — component-prefixed subject under 50 chars, Radiant body, `Related` section. The session log rides in the same commit.
 - **Remotes:** push both `origin` and `xykj61` every send (ls-remote guard first; `origin` may 403 from the cloud — name it, the home pier closes the gap).
 - **Cadence — send often:** push each *finished increment* as its own atomic signed round — a new file, a passing witness, a landed doc — rather than batching a whole rung, so progress is followable on GitHub in near-real-time. More granular than one-send-per-rung, yet still no pin-only commit: every send carries a green witness or an honest note, and each subject stays component-scoped.
