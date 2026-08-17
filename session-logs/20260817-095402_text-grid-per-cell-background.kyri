@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260817.095402
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image text_grid per-cell background -- the full coloured terminal cell
+prompt baton prin recur -- take the next agent-doable lap Lindy-first crux-first on the open-media road, send often
+think Read the road: REMEMBER inner loop, the 1024-round itinerary, the eight-season double-seat, the Rye-first crypto-parity wave. Live edge is Season G open-media; the last laps grew image/text_grid.rye a per-cell FOREGROUND palette (render_grid_fg) and scooter_paint painted a live conversation to pixels in colour.
+think Lindy-first crux-first: the coloured terminal had per-cell fg over ONE shared bg. A real terminal cell carries an ink AND a ground -- that is what makes a header bar, a selected row, an unread badge. The smallest tractable move that completes the coloured-terminal cell model is a per-cell BACKGROUND. Floor code, does not wait on paused Brushstroke.
+think Rota lap read item 22 (context/SILO_TECHNIQUE.md) -- understand, abstract, re-express in our own voice; the coloured-terminal idea enters owned, no borrowed dress.
+think Design: fill_cell writes a cell's whole col_pitch x cell_h block bg DIRECTLY (a straight set), so a grid whose every cell shares one ground reproduces solid(bg) byte-for-byte -- the parity the coloured verb rests on. paint_grid_cells fills each cell's ground then paints its glyph in its own fg over it (a real terminal cell). render_grid_cells sizes the image exactly; the cells tile it, so no base fill shows through.
+obs Witness-first, red-then-green in the same round: uniform-ground render equals render_grid_fg pixel-for-pixel (tiling parity); a blue header bar leaves no band pixel white and shows pure blue between the glyphs; changed pixels >= the whole blue band; the coloured terminal round-trips through QOI byte-for-byte; a wrong-length bg refuses GridBgMismatch by name before a pixel is allocated.
+obs Bounds: every buffer names a max (grid_cols_max, grid_rows_max, qoi's pixel ceiling), the box is checked all-or-nothing once up front, u32 counts and u8 colour bytes, >=2 asserts per fn. No network, no key, no funds.
+loom witness=text_grid_witness grid=16x3 image_px=96x21 ink_px=291 result=GREEN
+file image/text_grid.rye added GridBgMismatch, fill_cell, paint_grid_cells, render_grid_cells; version 20260817.095023; selftest extended with the per-cell-bg proof
+file tools/text_grid_witness.rish Style say line now names the per-cell fg+bg coloured header
+recommend keep-going -- the coloured terminal cell is whole; a natural next rung feeds a live scooter_view.Frame's fg/bg palette through render_grid_cells in a pond rung, or a cell-inversion helper (swap fg/bg for a selected row)
