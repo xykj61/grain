@@ -1,0 +1,44 @@
+# tools/shape_witness.rish -- the open rectangle primitives prove themselves on metal (Season G, geometry floor).
+#
+# Season G (Open Media Primitives) - the geometry floor beneath the paint rungs: two bounded rectangle verbs over an
+# RGBA grid, set beside color.rye (the arithmetic floor) and text_paint.rye (the glyph painter one layer up). Where
+# text_paint paints GLYPHS onto a qoi.Pixmap, image/shape.rye paints PLAIN AREA -- a filled rectangle and a
+# rectangle outline (a frame) -- the shapes a panel, a selection highlight, a crop overlay, a table cell, or a
+# progress-bar track are drawn from.
+#
+# The crux this witness proves is that the two verbs paint EXACTLY the pixels they name and refuse every overrun BY
+# NAME: fill_rect changes exactly w*h pixels of an opaque paint (the colour exactly) and leaves the rest untouched,
+# and blends true where the paint is translucent (a half-alpha fill over white equals color.over, uniform across the
+# area); stroke_rect changes exactly the border ring (ring_cells) with the interior untouched, and -- the property
+# that earns the single-pass ring -- composites every ring pixel including the four corners EXACTLY ONCE, so a
+# translucent frame reads uniform rather than doubling to a darker corner. Every malformed call refuses by name
+# (BadRectDims, RectOutOfBounds, BadThickness, StrokeTooThick). Pure composition over color.over and qoi.Pixmap;
+# invents no storage, codec, palette, glyph, or font. No network, no key, no funds -- the shapes a surface draws the
+# day it wants to frame a picture, on our own open geometry.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/shape_witness.rish
+
+say "shape: Language EN -- Season G's geometry floor; two bounded rectangle verbs (fill_rect, stroke_rect) over an RGBA grid, the shapes a surface frames a picture with, beneath the glyph painter."
+say "shape: Style Radiant -- pure geometry over color.over and qoi.Pixmap, braiding neither; an opaque paint writes the colour exactly, a translucent paint blends true, and the single-pass ring composites each corner exactly once so a translucent frame reads uniform."
+say "shape: Lens TAME -- u32 in-memory counts, u64 only for the wrap-safe box sums; every rectangle's box is checked ONCE up front so the inner loop is proven in-bounds; each verb refuses its overruns by name (BadRectDims - RectOutOfBounds - BadThickness - StrokeTooThick); no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/shape"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/shape.rye -femit-bin=${bin}"]
+assert build.ok else "shape: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "shape: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "shape: ${out}"
+
+let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-shape' && echo yes"]
+assert (trim green.out) == "yes" else "shape: selftest did not print the GREEN geometry line"
+
+let corners = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'corners composited once' && echo yes"]
+assert (trim corners.out) == "yes" else "shape: the single-pass ring did not prove corners composited once"
+
+say "shape: GREEN -- the open rectangle primitives whole; fill and frame paint the exact pixels they name, blend true, refuse every overrun by name, and the translucent frame reads uniform corner to corner."

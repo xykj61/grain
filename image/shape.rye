@@ -1,0 +1,254 @@
+//! image/shape.rye -- the open rectangle primitives (Season G, the geometry floor beneath the paint rungs).
+//!
+//! Season G (Open Media Primitives) - the smallest honest floor a surface needs before it frames anything: two
+//! bounded rectangle verbs over an RGBA grid. Where image/text_paint.rye paints GLYPHS onto a qoi.Pixmap, this rung
+//! paints PLAIN AREA -- a filled rectangle and a rectangle outline (a frame) -- the shapes a panel, a selection
+//! highlight, a crop overlay, a table cell, or a progress-bar track are drawn from. It is the twin of color.rye's
+//! arithmetic one layer up: pure geometry over the grid, composing only two public APIs and braiding neither --
+//!   - image/color.rye composites a paint colour over the destination (Porter-Duff src-over, straight alpha),
+//!   - image/qoi.rye owns the RGBA target (a Pixmap, pixels held RGBA, four bytes per cell).
+//! No new storage, codec, palette, glyph, or font -- only area painted onto a grid that already exists. A paint's own
+//! alpha carries transparency: an opaque paint writes the colour exactly, a partial-alpha paint blends true through
+//! color.over, so a translucent panel tint reads through to the picture beneath. Every rectangle's box is checked
+//! against the target ONCE, up front, so an overrunning verb refuses RectOutOfBounds BY NAME rather than writing a
+//! pixel outside the buffer -- the same "refuse rather than paint garbage" discipline the codec and the glyph atlas
+//! keep. stroke_rect paints its border ring in a SINGLE pass (a pixel is a border pixel when it lies within the
+//! thickness of any edge), so a corner is composited EXACTLY ONCE -- a translucent frame reads uniform, never a
+//! darker corner where two edge bands would overlap. No network, no key, no funds -- the shapes a surface draws the
+//! day it wants to frame a picture, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/shape.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+
+pub const shape_version = "20260817.063000";
+
+/// Composite one paint pixel over the target at (`x`, `y`) -- the single place a pixel is written, shared by both
+/// verbs so the fill and the frame blend identically. The caller has already proven (x, y) lands inside the buffer.
+/// Full-area coverage: unlike a glyph cell there is no coverage byte, the paint's own alpha is the whole story.
+fn blend_pixel(target: *qoi.Pixmap, x: u32, y: u32, paint: color.Rgba) void {
+    // invariant: the caller proved this pixel lands inside the target buffer, on both axes.
+    assert(x < target.width);
+    // invariant: the same, on the vertical axis -- both are load-bearing for the flat index below.
+    assert(y < target.height);
+    const di = (@as(usize, y) * @as(usize, target.width) + @as(usize, x)) * 4;
+    const dst = color.Rgba{
+        .r = target.pixels[di],
+        .g = target.pixels[di + 1],
+        .b = target.pixels[di + 2],
+        .a = target.pixels[di + 3],
+    };
+    const res = color.over(paint, dst);
+    target.pixels[di] = res.r;
+    target.pixels[di + 1] = res.g;
+    target.pixels[di + 2] = res.b;
+    target.pixels[di + 3] = res.a;
+}
+
+/// The number of pixels a stroke_rect border ring covers, for a `w` x `h` rectangle framed at `thickness`: the whole
+/// area less the untouched interior. A pure count a caller (or a witness) can predict before painting. When the
+/// thickness fills the rectangle (2*thickness == w or h) the interior is empty and the ring is the whole area.
+pub fn ring_cells(w: u32, h: u32, thickness: u32) u32 {
+    // invariant: a ring is defined only for a real rectangle whose border fits within it, on both axes.
+    assert(w >= 2 * thickness);
+    assert(h >= 2 * thickness);
+    // invariant: thickness is real -- a zero-thickness frame paints nothing and is refused before this is called.
+    assert(thickness >= 1);
+    const inner_w: u32 = w - 2 * thickness;
+    const inner_h: u32 = h - 2 * thickness;
+    return w * h - inner_w * inner_h;
+}
+
+/// Fill the rectangle at (`x`, `y`) of size `w` x `h` with `paint`, compositing src-over so a translucent paint tints
+/// the picture beneath. Refuses BadRectDims if either extent is zero (a rectangle has real area), and RectOutOfBounds
+/// BY NAME if the box would exceed the target -- checked ONCE up front in u64 so the sum can never wrap before the
+/// bound refuses, leaving the inner loop proven in-bounds. An opaque paint writes the colour exactly; a zero-alpha
+/// paint is a no-op that touches every covered pixel and changes none (color.over leaves the destination).
+pub fn fill_rect(target: *qoi.Pixmap, x: u32, y: u32, w: u32, h: u32, paint: color.Rgba) !void {
+    // invariant: a fillable rectangle has real extent on both axes.
+    if (w == 0 or h == 0) return error.BadRectDims;
+    // The box's far edges, in u64 so the sum can never wrap before the bound check refuses.
+    const right: u64 = @as(u64, x) + @as(u64, w);
+    const bottom: u64 = @as(u64, y) + @as(u64, h);
+    if (right > @as(u64, target.width) or bottom > @as(u64, target.height)) return error.RectOutOfBounds;
+    // invariant: the up-front check proved every pixel of the w x h box lands inside the target buffer.
+    assert(right <= @as(u64, target.width));
+    assert(bottom <= @as(u64, target.height));
+
+    var ry: u32 = 0;
+    while (ry < h) : (ry += 1) {
+        var rx: u32 = 0;
+        while (rx < w) : (rx += 1) {
+            blend_pixel(target, x + rx, y + ry, paint);
+        }
+    }
+}
+
+/// Stroke a rectangle OUTLINE -- a frame `thickness` pixels wide around the box at (`x`, `y`) of size `w` x `h` --
+/// with `paint`, compositing src-over. Refuses BadRectDims (zero extent), BadThickness (a frame paints something),
+/// StrokeTooThick BY NAME if two borders would overrun the box (2*thickness exceeds a side), and RectOutOfBounds BY
+/// NAME if the box exceeds the target -- every check up front. The border is painted in ONE pass: a pixel belongs to
+/// the ring when it lies within `thickness` of any of the four edges, so a corner is composited EXACTLY ONCE and a
+/// translucent frame reads uniform rather than doubling to a darker corner. The interior is left untouched.
+pub fn stroke_rect(target: *qoi.Pixmap, x: u32, y: u32, w: u32, h: u32, thickness: u32, paint: color.Rgba) !void {
+    // invariant: a strokable rectangle has real extent on both axes.
+    if (w == 0 or h == 0) return error.BadRectDims;
+    // invariant: a frame of zero width would paint nothing -- refuse it by name rather than run an empty loop.
+    if (thickness == 0) return error.BadThickness;
+    // invariant: two opposite borders must fit within the box, or the ring is not well defined on that axis.
+    if (2 * thickness > w or 2 * thickness > h) return error.StrokeTooThick;
+    const right: u64 = @as(u64, x) + @as(u64, w);
+    const bottom: u64 = @as(u64, y) + @as(u64, h);
+    if (right > @as(u64, target.width) or bottom > @as(u64, target.height)) return error.RectOutOfBounds;
+
+    var ry: u32 = 0;
+    while (ry < h) : (ry += 1) {
+        const on_h_edge = ry < thickness or ry >= h - thickness;
+        var rx: u32 = 0;
+        while (rx < w) : (rx += 1) {
+            const on_v_edge = rx < thickness or rx >= w - thickness;
+            // A ring pixel lies within the thickness of any edge; painted once, so corners never double-composite.
+            if (on_h_edge or on_v_edge) blend_pixel(target, x + rx, y + ry, paint);
+        }
+    }
+}
+
+// --- selftest: prove fill and frame paint the exact pixels, blend true, and refuse every overrun by name --------
+
+/// Mint a one-colour RGBA canvas for the selftest -- a local, bounded builder so this geometry rung leans on no
+/// higher module (text_paint owns the public `solid`; shape sits beneath it and borrows nothing from it).
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Count pixels of `img` whose RGBA differs from `bg` -- the honest measure of "how much did a verb change".
+fn changed_from(img: *const qoi.Pixmap, bg: color.Rgba) u32 {
+    // invariant: the buffer is four bytes per pixel -- the RGBA invariant a Pixmap carries.
+    assert(img.pixels.len % 4 == 0);
+    var n: u32 = 0;
+    var i: usize = 0;
+    while (i < img.pixels.len) : (i += 4) {
+        const px = color.Rgba{ .r = img.pixels[i], .g = img.pixels[i + 1], .b = img.pixels[i + 2], .a = img.pixels[i + 3] };
+        if (!px.eql(bg)) n += 1;
+    }
+    // invariant: the changed count never exceeds the pixels walked.
+    assert(n <= @as(u32, @intCast(img.pixels.len / 4)));
+    return n;
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+    const red = color.Rgba{ .r = 220, .g = 40, .b = 40, .a = 255 };
+    const red_half = color.Rgba{ .r = 220, .g = 40, .b = 40, .a = 128 };
+
+    // --- fill_rect paints exactly w*h pixels, the colour exactly, leaving the rest untouched -------------------
+    var c1 = try make_canvas(garden, 20, 12, white);
+    try fill_rect(&c1, 3, 2, 6, 4, red);
+    const filled = changed_from(&c1, white);
+    // invariant: an opaque fill changes exactly its area and no more.
+    if (filled != 6 * 4) return error.FillCountWrong;
+    // A pixel inside the rect is the paint exactly; a pixel outside is the untouched background.
+    if (!pixel_at(&c1, 3, 2).eql(red)) return error.FillColourWrong;
+    if (!pixel_at(&c1, 8, 5).eql(red)) return error.FillColourWrong;
+    if (!pixel_at(&c1, 0, 0).eql(white)) return error.FillLeakedOutside;
+    if (!pixel_at(&c1, 9, 6).eql(white)) return error.FillLeakedOutside; // one past the far corner
+
+    // --- fill_rect blends true: a half-alpha fill over opaque white equals color.over, uniform across the area ---
+    var c2 = try make_canvas(garden, 10, 10, white);
+    try fill_rect(&c2, 1, 1, 4, 4, red_half);
+    const blended = color.over(red_half, white);
+    if (blended.eql(red_half) or blended.eql(white)) return error.BlendNotBetween; // a real blend, not either pole
+    var by: u32 = 1;
+    while (by < 5) : (by += 1) {
+        var bx: u32 = 1;
+        while (bx < 5) : (bx += 1) {
+            if (!pixel_at(&c2, bx, by).eql(blended)) return error.BlendNotUniform;
+        }
+    }
+
+    // --- fill_rect refuses a zero extent and an overrun, each BY NAME -------------------------------------------
+    if (fill_rect(&c1, 0, 0, 0, 4, red)) |_| return error.ExpectedBadRectDims else |e| {
+        if (e != error.BadRectDims) return error.WrongError;
+    }
+    if (fill_rect(&c1, 16, 0, 6, 4, red)) |_| return error.ExpectedRectOutOfBounds else |e| {
+        if (e != error.RectOutOfBounds) return error.WrongError; // 16+6 = 22 > width 20
+    }
+
+    // --- stroke_rect paints exactly the ring, leaves the interior untouched ------------------------------------
+    var c3 = try make_canvas(garden, 20, 16, white);
+    try stroke_rect(&c3, 2, 2, 8, 6, 1, red);
+    const ring = changed_from(&c3, white);
+    const expect_ring = ring_cells(8, 6, 1); // 8*6 - 6*4 = 24
+    // invariant: a one-pixel frame changes exactly its ring and nothing within.
+    if (ring != expect_ring) return error.RingCountWrong;
+    // The interior (the 6x4 box at (3,3)) stays the background exactly.
+    if (!pixel_at(&c3, 5, 4).eql(white)) return error.RingFilledInterior;
+    // The four corners and an edge midpoint are the paint.
+    if (!pixel_at(&c3, 2, 2).eql(red)) return error.RingCornerMissing; // top-left
+    if (!pixel_at(&c3, 9, 7).eql(red)) return error.RingCornerMissing; // bottom-right
+    if (!pixel_at(&c3, 5, 2).eql(red)) return error.RingEdgeMissing; // top edge midpoint
+
+    // --- stroke_rect composites each ring pixel ONCE: a translucent frame reads uniform, corners never doubled ---
+    var c4 = try make_canvas(garden, 20, 16, white);
+    try stroke_rect(&c4, 2, 2, 8, 6, 1, red_half);
+    const frame_blend = color.over(red_half, white);
+    // Every ring pixel -- including all four corners, where two edge bands meet -- equals a SINGLE composite. If a
+    // corner were painted twice it would be darker than frame_blend; this proves the single-pass ring is honest.
+    const corners = [4][2]u32{ .{ 2, 2 }, .{ 9, 2 }, .{ 2, 7 }, .{ 9, 7 } };
+    var ci: u32 = 0;
+    while (ci < 4) : (ci += 1) {
+        if (!pixel_at(&c4, corners[ci][0], corners[ci][1]).eql(frame_blend)) return error.CornerDoubleComposited;
+    }
+
+    // --- stroke_rect refuses a zero thickness, an over-thick frame, and an overrun, each BY NAME ----------------
+    if (stroke_rect(&c3, 0, 0, 8, 6, 0, red)) |_| return error.ExpectedBadThickness else |e| {
+        if (e != error.BadThickness) return error.WrongError;
+    }
+    if (stroke_rect(&c3, 0, 0, 8, 6, 4, red)) |_| return error.ExpectedStrokeTooThick else |e| {
+        if (e != error.StrokeTooThick) return error.WrongError; // 2*4 = 8 > height 6
+    }
+    if (stroke_rect(&c3, 15, 0, 8, 6, 1, red)) |_| return error.ExpectedRectOutOfBounds else |e| {
+        if (e != error.RectOutOfBounds) return error.WrongError; // 15+8 = 23 > width 20
+    }
+
+    print("GREEN image-shape: fill_rect paints {d} px exactly and blends true; stroke_rect rings {d} px, interior untouched, corners composited once (translucent frame uniform); zero-dims, overrun, zero/over-thick all refuse by name\n", .{
+        filled, expect_ring,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: shape selftest\n", .{});
+    return 1;
+}

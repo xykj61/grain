@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260817.024310
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image/shape.rye -- the open rectangle primitives, Season G geometry floor
+prompt Autonomous loop: take the next agent-doable lap Lindy-first crux-first on the road past BUHR; Rye-first; send often; stop at custody gates.
+think Read REMEMBER inner loop, the 1024-round itinerary, the eight-season double-seat, and the Rye-first crypto wave. Live edge is deep in Season G open-media: color, glyph atlas, both video codecs, a full ASCII font plus box/arrow/block corpora, and the whole text place/measure/wrap/justify/paint family are GREEN.
+think Rota this lap read item 12 (growing-a-language): stand on proven ground, wear a thin costume, grow the smallest version that works, compose don't rewrite. That named the shape of the crux exactly.
+think Crux hunt: grepped for a rectangle/fill/stroke primitive and found NONE -- text_paint paints glyphs, but no module paints plain area. A bounded fill_rect/stroke_rect is genuine floor code every surface needs (panels, selection, crop overlay, table cells, progress track) and unblocks the framed text panel the terminal family (Dexter/Scooter) wants. Highest-Lindy still-tractable move: floor primitive beneath the paint rungs.
+think Chose to draw the border ring in a SINGLE pass (a pixel is a ring pixel when within thickness of any edge) rather than four edge bands, so a corner composites exactly once -- otherwise a translucent frame would double-composite the corners darker. Proved this on metal with a half-alpha frame: every corner equals a single color.over.
+think Single-stranded: shape.rye imports only color.rye and qoi.rye, braiding neither; it sits BENEATH text_paint (text depends on area, not the reverse), so it borrows nothing from the higher module -- the selftest mints its own canvas locally rather than reach up for text_paint.solid.
+obs tame_style_check first went RED on four compound `assert(a and b)` -- the ban that names the failing half. Split each into two asserts; re-ran clean. Width-check exit 0. A good reminder the ban is live and worth honoring as-you-write.
+obs Kept the compression/count claims as measured facts printed by the selftest (24 px fill, 24 px ring), never asserted beyond what the round-trip proves -- REDS #82 discipline (report, don't over-claim).
+loom witness=shape_witness fill_px=24 ring_px=24 verbs=2 refusals=4 wall_note=build+selftest GREEN first clean run after assert split
+file image/shape.rye the two bounded rectangle verbs (fill_rect, stroke_rect) + ring_cells, pure over color.over and qoi.Pixmap, every overrun refused by name
+file tools/shape_witness.rish proves fill/frame paint the exact pixels, blend true, single-pass ring composites corners once, every overrun refuses by name
+file image/README.md Season G list gains the shape.rye geometry-floor entry; next-rungs note now names the framed text panel
+file crux/REMEMBER.md live edge + Git nib rolled to shape.rye; prior justify_line nib demoted to a comment; stale marquee comment dropped for tidiness
+recommend keep-going -- next Season G crux is the framed text panel: join stroke_rect with paint_paragraph_in_box so a paragraph reads inside a drawn border (the Dexter/Scooter panel primitive), a clean single-stranded compose of two green rungs.
