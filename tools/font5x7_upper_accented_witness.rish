@@ -1,0 +1,48 @@
+# tools/font5x7_upper_accented_witness.rish -- the open uppercase accented-letters corpus proves itself on metal (Season G, font content).
+#
+# Season G (Open Media Primitives) - font content for the open glyph atlas image/glyph.rye (gfa1), set beside the five
+# ASCII corpora, the wider-symbol corpora (the box family, the arrows, the block elements, the geometric marks, the
+# math/technical operators, the currency signs), the Greek letters (tools/font5x7_greek_witness.rish), the
+# sub/superscript and fraction corpora, and the accented LOWERCASE family (tools/font5x7_latin1_witness.rish and its
+# grave/circumflex/german siblings).
+#
+# The crux this witness proves is a REAL, OPEN, hand-drawn uppercase accented-letters corpus: the eight accented
+# capitals the same Romance name reaches for at the start of a sentence or set in all-caps -- A acute, C cedilla,
+# E acute, I acute, N tilde, O acute, U acute, U diaeresis -- at their real Unicode codepoints U+00C1, U+00C7, U+00C9,
+# U+00CD, U+00D1, U+00D3, U+00DA, U+00DC, each a 5x7 coverage grid drawn in the open as ASCII line art in
+# image/font5x7_upper_accented.rye, built into a gfa1 atlas and proven on metal. A full round-trip recovers every
+# codepoint, advance, and coverage byte byte-for-byte; all eight letters look up present and carry the shared advance
+# while an unaccented ASCII capital misses; no two letters share coverage (each accented name is spelled with its own
+# glyph); each letter reads within an honest legibility band; and the diacritic placement holds -- the seven
+# above-marked letters each carry ink on their top row while the C cedilla alone leaves its top row empty and hangs its
+# mark beneath. The uppercase crux beyond the lowercase twin: a capital fills the whole body, so each letter is
+# compressed into the bottom five rows with the mark on the top two -- proven honest by the placement check.
+# Compression is reported as a fact, never asserted -- the round-trip is the proof. No network, no key, no funds -- the
+# capitals a surface reads the day it prints a name that ASCII cannot spell, on our own open font.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/font5x7_upper_accented_witness.rish
+
+say "font5x7-upper-accented: Language EN -- Season G font content; the eight uppercase accented letters (A acute, C cedilla, E acute, I acute, N tilde, O acute, U acute, U diaeresis) drawn in the open as ASCII line art, built into the gfa1 atlas, the capitals a civic surface prints when a name in a Romance language opens a sentence or is set in all-caps."
+say "font5x7-upper-accented: Style Radiant -- the drawings are the specification and the bytes are derived from them, so decode(encode(atlas)) recovers every letter byte for byte; our own hand, permissively ours, no external font to license and no web-search gate."
+say "font5x7-upper-accented: Lens TAME -- u32 in-memory counts, u8 coverage bytes; every buffer names a maximum (cell_area - upper_count - the atlas ceilings it rests on); each function states its invariants positively; codepoints explicit and strictly ascending; the source stays plain ASCII with numeric codepoints though the glyphs cover a non-ASCII range; compression a reported fact never a false invariant; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/font5x7_upper_accented"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/font5x7_upper_accented.rye -femit-bin=${bin}"]
+assert build.ok else "font5x7-upper-accented: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "font5x7-upper-accented: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "font5x7-upper-accented: ${out}"
+
+let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-font5x7-upper-accented' && echo yes"]
+assert (trim green.out) == "yes" else "font5x7-upper-accented: selftest did not print the GREEN corpus line"
+
+let round = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'round-trip byte-identical' && echo yes"]
+assert (trim round.out) == "yes" else "font5x7-upper-accented: round-trip was not byte-identical"
+
+say "font5x7-upper-accented: GREEN -- the open uppercase accented-letters corpus whole; eight capitals round-trip byte-identical, all present, distinct, and legible, seven marked above and the C cedilla below; the font gains the capitals a civic surface needs to open a name that ASCII cannot spell."
