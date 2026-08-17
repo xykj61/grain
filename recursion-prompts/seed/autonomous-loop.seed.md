@@ -23,7 +23,7 @@ Load these named paths too, so the loop carries the disciplines an unattended ru
 
 ### The council rota -- one canon doc deep-read per lap (d27)
 
-The lenses above load every lap. The **rota** is the supplement: deep-read **one** doc from this list of 27 per lap, cycling by lap index (lap N reads item `N mod 27`), so the durable foundations and context stay in living awareness across a long run rather than fading. Twenty-seven for the council d27 -- the sky fractal's fullest ring (3-9-15-27); breadth beats frequency here, since the core lenses already reinforce each lap.
+The lenses above load every lap. The **rota** is the supplement: deep-read **one** doc from this list of 27 per lap, cycling by lap index (lap N reads item `N mod 27`), so the durable foundations and context stay in living awareness across a long run rather than fading. Twenty-seven for the council d27 -- the sky fractal's fullest ring (3-9-15-27); breadth beats frequency here, since the core lenses already reinforce each lap. The living pins (REMEMBER, REDS, CAIRNS) are not on the rota because they are read every lap already; the two style guides share one slot; room was made this way for the system foundations Keaton named.
 
 1. `foundations/README.md`
 2. `foundations/20260706-185112_follow-our-compass.md`
@@ -34,24 +34,24 @@ The lenses above load every lap. The **rota** is the supplement: deep-read **one
 7. `foundations/20260813-142420_mycelium-the-consensus-protocol.md`
 8. `foundations/20260811-233509_the-singularity.md`
 9. `foundations/20260810-011514_pond-the-application-module.md`
-10. `context/RADIANT_STYLE.md`
-11. `context/TWILIGHT_STYLE.md`
-12. `context/TAME_CORE.md`
-13. `context/TAME_GUIDANCE.md`
-14. `context/LEXICON.md`
-15. `context/TWO_ROOMS.md`
-16. `context/KYRI.md`
-17. `context/QUIN.md`
-18. `context/ORGANIZING.md`
-19. `context/SILO_TECHNIQUE.md`
-20. `context/specs/20260627-102012_one-clock-naming-law.md`
-21. `active-designing/20260702-184312_the-grain-and-the-crossing.md`
-22. `active-designing/20260816-205859_double-seat-expansion-eight-seasons.md`
-23. `active-designing/20260812-171050_the-1024-round-itinerary.md`
-24. `recursion-prompts/README.md`
-25. `crux/REDS.md`
-26. `crux/CAIRNS.md`
-27. `crux/REMEMBER.md`
+10. `foundations/20260703-182612_sameness-is-the-macro.md`
+11. `active-designing/yonder/20260618-182412_single-stranded.md`
+12. `active-designing/yonder/20260618-184912_growing-a-language.md`
+13. `foundations/20260728-032134_keeh-and-kia.md` (the happy zone)
+14. `context/RADIANT_STYLE.md` (with `context/TWILIGHT_STYLE.md`)
+15. `context/TAME_CORE.md`
+16. `context/TAME_GUIDANCE.md`
+17. `context/LEXICON.md`
+18. `context/TWO_ROOMS.md`
+19. `context/KYRI.md`
+20. `context/QUIN.md`
+21. `context/ORGANIZING.md`
+22. `context/SILO_TECHNIQUE.md`
+23. `context/specs/20260627-102012_one-clock-naming-law.md`
+24. `active-designing/20260702-184312_the-grain-and-the-crossing.md`
+25. `active-designing/20260816-205859_double-seat-expansion-eight-seasons.md`
+26. `active-designing/20260812-171050_the-1024-round-itinerary.md`
+27. `recursion-prompts/README.md`
 
 ## 2 -- The hard bounds, by tag (the custody gates -- never cross)
 

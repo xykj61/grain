@@ -82,11 +82,13 @@ The open, bounded, permissively-licensed media family. Image (QOI, HUNK) and aud
 - **Open permissive fonts + a font codec (QOI-for-fonts)** -- a bounded, content-addressed, permissively-licensed **glyph format** across weights, styles, and families (serif - sans - mono - all-caps), decoded verify-before-trust into a glyph grid the surface can paint, sitting beside QOI and the audio wire. *Crux / journey -- seat as a journey.*
 - **Open video codec (QOI-for-video)** -- begin with the **intra-frame container**: a self-describing, content-addressed **QOI-per-frame** stream (landscape / portrait / square are container metadata, not new math) for **Photos - Skate - Realidream - Pond**, rather than a full inter-frame codec. *Horizon -- start smallest.*
 
-*Gratitude, siloed:* QOI (Dominic Szablewski) and OGG/Vorbis (Xiph.Org) as the shape-ancestors of the family; studied clean-room, our own Rye.
+- **The terminal family (Dexter + Scooter)** *(double-seated `20260816`)* -- the **text** media primitive, beside image and sound. **Dexter** is the bounded terminal module (our Dill parallel, offered as a library); **Scooter** is the permissioned peer-to-peer command-line chat on Pond (channels, journals, inboxes over Comlink) -- a TAME-guided reimplementation of the elder Urbit Talk app. Plan: [`../expanding-prompts/20260816-222322_dexter-terminal-and-scooter-cli-chat.md`](../expanding-prompts/20260816-222322_dexter-terminal-and-scooter-cli-chat.md); study: [`../external-research/20260816-222322_dill-talk-tty-and-the-terminal-family.md`](../external-research/20260816-222322_dill-talk-tty-and-the-terminal-family.md). *Crux for the app; gratitude-fetch the elders for study first.*
 
-### Season H -- Intelligence & Open Weights *(the arc Quin's Q-vane named)*
+*Gratitude, siloed:* QOI (Dominic Szablewski) and OGG/Vorbis (Xiph.Org) as the shape-ancestors of the media family; ncurses, Ghostty/libghostty (Mitchell Hashimoto), and the elder Urbit Dill/Talk for the terminal family; studied clean-room, our own Rye.
 
-The open-weight intelligence family for the inference Q-vane's four hats -- **Lattice - Lantern - Scribble - Ember**.
+### Season H -- Intelligence & Open Weights *(the arc the Lumen inference vane named)*
+
+The open-weight intelligence family for **Lumen**, the inference vane (renamed from Quin's Q-vane `20260816`), and its four hats -- **Lattice - Lantern - Scribble - Ember**.
 
 - **Open-weight ML: math - parser - training - output** -- a bounded, asserted **math library** (the linear-algebra floor), a **parser** for open model formats, and a **training / output pipeline** feeding Lattice, Lantern, Scribble, and Ember. *Horizon, season-scale -- Keaton's call to open; do not start as a side effect of another round.*
 - **Open model-format compliance study** -- one **external-research round**: do `safetensors` (bounded, mmap-friendly) and `GGUF` pass TAME civic/style? Likely yes. **Adopt an existing open format before authoring our own.** *Research first.*

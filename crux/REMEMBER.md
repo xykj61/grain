@@ -12,7 +12,9 @@
 - **Spelling: American.** Use `color`, not `colour`; normalize `colour -> color` on touch. This is a USA project.
 - **Style sweep before every send** -- Radiant pass over the round's prose (Twilight for a night piece), register only never a claim. Seed section 6.
 - **Rota of the canon.** Each lap, read ONE doc from the 27-doc council rota in `recursion-prompts/seed/autonomous-loop.seed.md` section 1, cycling by lap index, so the durable foundations and context stay in awareness across the run.
-- **Live edge:** the open-media family is building -- `image/color.rye` (sRGB colour algebra) is GREEN; the crypto surface stands WHOLE (do not reopen it without a named gap). Next open-media rungs: fonts, then intra-frame video. Itinerary: `active-designing/20260816-205859_double-seat-expansion-eight-seasons.md` (Season G).
+- **Live edge:** the open-media family is building -- `image/color.rye` (sRGB color algebra) is GREEN; the crypto surface stands WHOLE (do not reopen it without a named gap). Next open-media rungs: fonts, then intra-frame video. Itinerary: `active-designing/20260816-205859_double-seat-expansion-eight-seasons.md` (Season G).
+- **Seated names (`20260816`):** **Scooter** = the CLI chat app (Talk reimplementation on Pond); **Dexter** = the terminal module (our Dill parallel, affirmed); **Lumen** = the inference vane (renames Quin's Q-vane, gathering Lattice, Lantern, Ember, Scribble). Plan: `expanding-prompts/20260816-222322_dexter-terminal-and-scooter-cli-chat.md`.
+- **Seated breaches (cairn-first when executed):** **Dimeroll -> Dimeroll** (born name `dimeroll.com`; 147 living refs; molt/debride, Season B); **Quin's Q-vane -> Lumen** (rename its references); **Bron -> Kyri** and **Quin voice -> Kyri** (docs-compression season). Each is its own signed round, cairn first; none cut yet.
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
