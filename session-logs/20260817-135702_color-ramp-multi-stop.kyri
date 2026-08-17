@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260817.135702
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title color_ramp -- a multi-stop gradient across many control colors, GREEN
+prompt Keaton's autonomous loop: next agent-doable lap Lindy-first crux-first, Rye-first, send often, one rota doc per lap, stop only at custody gates.
+think Second lap of this run. The prior lap landed color_gradient (two endpoints). The natural general form is a multi-stop gradient across K control colors -- the CSS linear-gradient(red, yellow, green) stop list -- which a real gradient editor and a heat map want.
+think Built image/color_ramp.rye as the general form of color_gradient: ramp(control, dst) routes each output stop to one of the K-1 segments and an even blend within it, single-stranded over color.mix. The strongest crux is containment -- a two-control ramp must equal color_gradient.gradient byte-for-byte, so a gradient IS a ramp of two controls.
+think The routing: global position gnum = i*(K-1) out of den = N-1; segment s = gnum/den (floor); local remainder r = gnum - s*den; the last stop clamps into the final segment with r = den so it reads the last control exactly rather than indexing past the array.
+obs ONE red, caught by the containment witness and closed same-sitting: local_t first ROUNDED (num*255 + den/2)/den, but color_gradient.stop_t FLOORS (num*255/den), so the two-control ramp did NOT equal the gradient -- error.RampNotGradientForTwo fired. Changed local_t to floor num*255/den; GREEN thereafter. The containment proof caught the drift before any claim reached the card (Two Rooms: a checkable stays in the checkable room only once a witness binds it).
+obs FIRST GREEN after the fix: a 3-control ramp at 5 stops reads red/green/blue exactly at their aligned stops; a two-control ramp equals color_gradient.gradient byte-for-byte over nine stops; a black-grey-white ramp ascends non-decreasing in luminance across BOTH segments; a color-to-itself ramp stays flat; too few controls and an out-of-band length refuse by name; deterministic. tame_style_check bans clean, width-check exit 0, plain 7-bit ASCII, >= 2 positive asserts per fn, two documented seam casts (control.len/dst.len usize -> u32 after their bounds), bounded to ramp_max_control 16 and the shared gradient_max_stops 64.
+obs Rota lap read item 18 context/TWO_ROOMS.md -- the checkable and the visionary, named at the door; every claim in this rung is a witnessed checkable, the containment the sharpest, so nothing borrows the bench's authority without a witness.
+loom witness=color_ramp_witness green=1 red_caught=RampNotGradientForTwo fix=floor_not_round max_control=16 max_stops=64
+file image/color_ramp.rye the multi-stop piecewise-linear ramp, single-stranded over color.mix, containing color_gradient
+file tools/color_ramp_witness.rish builds and self-proves the ramp on metal, GREEN
+file image/README.md names color_ramp.rye beside color_gradient.rye (docs-sync)
+file crux/REMEMBER.md live edge + Git nib refreshed to the ramp rung
+recommend keep-going the color family now grows a one-seed tonal scale, a two-endpoint gradient, and a many-control ramp; next agent-doable is gradient stops at NAMED (uneven) positions, an open-fonts glyph rung, or a fresh Lindy-first crux -- no custody gate touched.
