@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260817.014833
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title paint_paragraph_boxed -- the paragraph's vertical set, GREEN
+prompt autonomous loop -- recur; next agent-doable lap Lindy-first crux-first, Season G open-media
+think The text-paint family carried horizontal set (paint_paragraph_aligned: left/centre/right within the content box) and a clip companion, yet no vertical placement -- the block always sat at its origin, with no way to centre it or flush it to the bottom of a panel taller than itself. The missing axis a real text region needs is exactly that: place the whole stack top, middle, or bottom within a box.
+think Wrote paint_paragraph_boxed as pure composition -- wrap once to learn the line count, compute the block height (mirroring paint_paragraph_aligned's own box_bottom offset: (lines-1)*line_step + ch), refuse ParagraphBoxTooShort if the block is taller than the box (the strict all-or-nothing companion to the clipping painter), else offset the origin_y down by the vertical slack (top 0, bottom slack, middle slack/2) and DELEGATE the wrap-stack-paint to paint_paragraph_aligned unchanged. Single-stranded: the horizontal set, the disjoint bands, and the target box check all stay in one place; the new routine only decides where the block's top sits.
+think Proved four ways against the plain paragraph as ground truth: a top set into a box six rows taller equals paint_paragraph at origin 0; middle equals it at slack/2; bottom equals it at the whole slack -- each byte-for-byte. Every vertical set changes exactly the same pixel count as the strict block (vertical placement moves the stack down as one, adding none, dropping none); bottom differs from top (the block truly moved); a box one row shorter than the block refuses ParagraphBoxTooShort by name, buffer untouched.
+obs GREEN on the first build; tame_style_check bans clean, width-check exit 0, witness GREEN with four new grep gates. Rota this lap read item 15 (TAME_CORE, with TAME_GUIDANCE) -- fitting, since this lap wrote Rye: >=2 asserts per fn stated positively, u32 coordinates with u64 sums before the bound check, a named refusal at the edge, no new storage.
+obs Single-stranded held: the boxed painter delegates to paint_paragraph_aligned rather than re-implementing the stack, so both share one geometry and one target check -- the belt-and-brace the aligned painter already keeps carries through the vertical set for free.
+loom witness=text_paint_witness result=GREEN boxed_slack=6 boxed_block_h=15 para_pixels=79
+file image/text_paint.rye VAlign enum + paint_paragraph_boxed + selftest block (top/middle/bottom/refuse); version and header updated
+file tools/text_paint_witness.rish four greps binding the boxed-paragraph claim, refreshed closing line
+file image/README.md the boxed-paragraph sentence beside the clipped and aligned paragraphs
+file crux/REMEMBER.md git nib rolled forward to this round; prior nibs shifted down
+recommend keep-going -- next Season G rung: aligning paint_line/paint_placed within a box the way the paragraph now boxes, or proving the codecs on real corpora
