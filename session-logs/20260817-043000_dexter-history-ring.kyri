@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260817.043000
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title dexter history ring -- the bounded recall of past lines, GREEN
+prompt autonomous loop -- take the next agent-doable lap Lindy-first crux-first, send often, stop at custody gates
+think Prior lap (dexter_line) gave the terminal its one editable line and closed the first half of plan round 5; its recommend line named the second half -- the bounded history ring, the up/down-arrow recall every shell prompt carries. That is the honest next agent-doable crux: pure, ungated, Rye-first, reused by every prompt the terminal family draws, finishable green in one lap.
+think Built pond/apps/dexter_history.rye: a History of at most 64 past lines, each of at most 256 bytes (matching dexter_line's max_line so any held line commits whole). commit remembers a finished line, dropping the oldest at the cap (a ring); recall_prev walks the cursor toward older lines, recall_next toward newer, stepping off the newest back to the live edge (null, a fresh line to compose). The cursor lives in 0..count, count being the live edge; a commit drops it back to the live edge, exactly as a shell returns to a fresh prompt.
+think Modeled the ring with start + count and a % max_history slot map, so the drop-oldest at the cap is a single start advance rather than a shift of 64 entries. The recall cursor is a logical index into that ring; entry(i) maps it to a slot. Every operation asserts count <= max_history and cursor <= count.
+obs GREEN on the first metal run. tame_style_check flagged two compound asserts in the recall selftest (n != null and eql); split each into a named null-check and a byte-check, then bans clean, width-check exit 0. New prose plain ASCII, American spelling.
+obs Additive by construction -- a fresh module beside dexter_line and the scooter rungs; nothing of them was touched. Held pure: no raw terminal, no escape codes, no network -- the editable line (prior lap) and its history (this lap) are the two floors the live-TTY cursor rung will stand on.
+obs Rota lap (d27, item 23) read context/specs/20260627-102012_one-clock-naming-law.md -- one stamp names a thing and versions it, later always larger, collisions ended. This log's own filename (20260817-043000) and the ring's own version field keep that law; the ring is itself an append-only order in memory, each commit sorting after the last.
+loom witness=dexter_history_witness selftest=GREEN max_history=64 max_entry=256 selftest_cases=4
+file pond/apps/dexter_history.rye the bounded history ring -- commit remembers the newest, recall walks a cursor, the ring drops the oldest at the cap
+file tools/dexter_history_witness.rish builds the module and asserts its selftest speaks GREEN over the four cruxes
+file crux/REMEMBER.md git nib refreshed to the dexter_history living edge, in the work commit
+file session-logs/README.md newest-first index row prepended
+recommend keep-going with the editable line and its history both proven, the terminal family's next agent-doable rung is the drawn-terminal cursor (a live prompt composing dexter_line + dexter_history onto scooter_view's frame), while the Comlink transport between two Constel piers stays the serve gate -- the maintainer's hand

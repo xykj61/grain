@@ -1,0 +1,260 @@
+//! pond/apps/dexter_history.rye -- Dexter, the bounded history ring: recall of past lines at a prompt.
+//!
+//! Season G (Open Media Primitives) -- the terminal family. dexter_line.rye holds one editable line (the
+//! input half); this module remembers the lines already committed, so a keeper walks back through what they
+//! typed -- the up-and-down-arrow recall every shell prompt carries. It is the second half of the terminal
+//! family's plan round 5 (the editable line, then its history), held pure: no raw terminal, no escape codes,
+//! and no network enter here. A caller commits a finished line; the ring remembers the newest under a named
+//! cap, dropping the oldest when it fills; recall_prev/recall_next walk the cursor over the kept lines.
+//! Pattern elder: pond/apps/scooter_channel.rye -- the same bounded state machine, named errors, >=2 asserts.
+//!
+//! The crux is one bounded recall held honest:
+//!   - Commit remembers the newest. commit appends a finished line; at the cap the oldest falls away
+//!     (a ring, never unbounded), so the history holds at most max_history lines, always the most recent.
+//!   - Recall walks a cursor, never mutating. recall_prev steps toward older lines, recall_next toward
+//!     newer; past the oldest is refused (NoEarlier), and stepping newer past the last kept line returns to
+//!     the live edge (a fresh empty line the caller is composing). The kept lines are never changed by a walk.
+//!   - Each committed line reads back byte-for-byte, and the same commits yield the same ring every time.
+//!
+//! Facts only, custody-first: it remembers lines of text and holds nothing else -- no network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build pond/apps/dexter_history.rye -femit-bin=pond/bin/dexter-history
+//!   pond/bin/dexter-history selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const dexter_history_version = "20260817.043000";
+
+/// The ring remembers at most this many past lines -- power of two, bounded so history never grows unbounded.
+pub const max_history: u32 = 64;
+
+/// Each remembered line holds at most this many bytes -- matches dexter_line's max_line, so any line the
+/// editor holds can be committed whole. A longer line is refused rather than truncated.
+pub const max_entry: u32 = 256;
+
+pub const HistoryError = error{
+    EntryTooLong, // a committed line exceeds the entry bound -- refuse rather than truncate
+    NoEarlier, // no earlier line to recall -- the cursor is at the oldest, refused by name
+    NoLater, // no later line to recall -- the cursor is at the live edge, refused by name
+};
+
+/// One remembered line: the bytes committed, held byte-for-byte, and how many are held.
+pub const Entry = struct {
+    bytes: [max_entry]u8 = [_]u8{0} ** max_entry,
+    len: u32 = 0,
+
+    /// The remembered text -- exactly the bytes committed, never more than the buffer holds.
+    pub fn text(self: *const Entry) []const u8 {
+        // invariant: the held length never claims more than the buffer holds.
+        assert(self.len <= max_entry);
+        return self.bytes[0..self.len];
+    }
+};
+
+/// A bounded ring of past lines with a recall cursor. `start` names the oldest line's slot; `count` how many
+/// are held (0..max_history). The cursor lives in 0..count: cursor == count is the LIVE edge (not browsing,
+/// a fresh line the caller composes); cursor == count-1 is the newest kept line; cursor == 0 the oldest.
+/// A commit resets the cursor to the live edge, exactly as a shell drops you back to a fresh prompt.
+pub const History = struct {
+    entries: [max_history]Entry = [_]Entry{.{}} ** max_history,
+    start: u32 = 0,
+    count: u32 = 0,
+    cursor: u32 = 0,
+
+    /// A fresh empty history: nothing remembered, the cursor at the live edge (which is also the start).
+    pub fn empty() History {
+        const h = History{};
+        // invariant: a fresh ring holds nothing and browses nothing.
+        assert(h.count == 0);
+        assert(h.cursor == 0);
+        return h;
+    }
+
+    /// How many lines are held right now, never past the bound.
+    pub fn len(self: *const History) u32 {
+        // invariant: the ring never holds more than its bound.
+        assert(self.count <= max_history);
+        // invariant: the cursor never leaves the live range.
+        assert(self.cursor <= self.count);
+        return self.count;
+    }
+
+    /// The kept line at logical index i, oldest first (0 is the oldest, count-1 the newest).
+    pub fn entry(self: *const History, i: u32) *const Entry {
+        // invariant: only a real kept line is ever read.
+        assert(i < self.count);
+        // invariant: the ring never holds more than its bound.
+        assert(self.count <= max_history);
+        const slot = (self.start + i) % max_history;
+        return &self.entries[slot];
+    }
+
+    /// Remember a finished line. At the cap the oldest falls away (the ring advances), so the history always
+    /// holds the most recent max_history lines. The recall cursor returns to the live edge. A line longer
+    /// than the entry bound is refused rather than truncated.
+    pub fn commit(self: *History, line: []const u8) HistoryError!void {
+        // invariant: the ring and cursor are within bounds before the commit.
+        assert(self.count <= max_history);
+        assert(self.cursor <= self.count);
+        if (line.len > max_entry) return error.EntryTooLong;
+        // The write slot is just past the newest held line, wrapping the ring.
+        const slot = (self.start + self.count) % max_history;
+        var e = Entry{};
+        var i: u32 = 0;
+        while (i < line.len) : (i += 1) {
+            e.bytes[i] = line[i];
+        }
+        e.len = @intCast(line.len);
+        self.entries[slot] = e;
+        if (self.count < max_history) {
+            self.count += 1;
+        } else {
+            // At the cap: the write overwrote the oldest, so the oldest is now the next slot.
+            self.start = (self.start + 1) % max_history;
+        }
+        // A commit drops back to the live edge, a fresh line to compose.
+        self.cursor = self.count;
+        // invariant: the ring stayed within its bound and the cursor rests at the live edge.
+        assert(self.count <= max_history);
+        assert(self.cursor == self.count);
+    }
+
+    /// Are we browsing history, or resting at the live edge?
+    pub fn is_browsing(self: *const History) bool {
+        // invariant: the cursor never leaves the live range.
+        assert(self.cursor <= self.count);
+        assert(self.count <= max_history);
+        return self.cursor < self.count;
+    }
+
+    /// Step the cursor toward older lines and return the newly-shown line. From the live edge the first step
+    /// shows the newest kept line; further steps walk back. Past the oldest is refused (NoEarlier).
+    pub fn recall_prev(self: *History) HistoryError!*const Entry {
+        // invariant: the cursor is within the live range before the step.
+        assert(self.cursor <= self.count);
+        assert(self.count <= max_history);
+        if (self.cursor == 0) return error.NoEarlier;
+        self.cursor -= 1;
+        // invariant: the cursor now names a real kept line.
+        assert(self.cursor < self.count);
+        return self.entry(self.cursor);
+    }
+
+    /// Step the cursor toward newer lines. A step within history returns the newer line; a step off the
+    /// newest returns null -- the live edge, a fresh empty line the caller resumes composing. Already at
+    /// the live edge is refused (NoLater).
+    pub fn recall_next(self: *History) HistoryError!?*const Entry {
+        // invariant: the cursor is within the live range before the step.
+        assert(self.cursor <= self.count);
+        assert(self.count <= max_history);
+        if (self.cursor >= self.count) return error.NoLater;
+        self.cursor += 1;
+        // invariant: the cursor stayed within the live range.
+        assert(self.cursor <= self.count);
+        if (self.cursor == self.count) return null;
+        return self.entry(self.cursor);
+    }
+};
+
+fn commit_remembers_newest() !void {
+    var h = History.empty();
+    try h.commit("one");
+    try h.commit("two");
+    try h.commit("three");
+    // Three lines held, oldest first, each byte-for-byte.
+    assert(h.len() == 3);
+    assert(std.mem.eql(u8, h.entry(0).text(), "one"));
+    assert(std.mem.eql(u8, h.entry(1).text(), "two"));
+    assert(std.mem.eql(u8, h.entry(2).text(), "three"));
+    print("dexter_history: commit remembers each finished line, oldest first, byte-for-byte.\n", .{});
+}
+
+fn recall_walks_the_cursor() !void {
+    var h = History.empty();
+    try h.commit("ls");
+    try h.commit("cd pond");
+    try h.commit("rye build");
+    // From the live edge, prev shows the newest, then walks back to the oldest.
+    assert(!h.is_browsing());
+    const p1 = try h.recall_prev();
+    assert(std.mem.eql(u8, p1.text(), "rye build"));
+    assert(h.is_browsing());
+    const p2 = try h.recall_prev();
+    assert(std.mem.eql(u8, p2.text(), "cd pond"));
+    const p3 = try h.recall_prev();
+    assert(std.mem.eql(u8, p3.text(), "ls"));
+    // Past the oldest is refused; the shown line is unchanged.
+    const past_oldest = h.recall_prev();
+    assert(past_oldest == error.NoEarlier);
+    // next walks forward again, and off the newest returns to the live edge (null).
+    const n1 = try h.recall_next();
+    assert(n1 != null);
+    assert(std.mem.eql(u8, n1.?.text(), "cd pond"));
+    const n2 = try h.recall_next();
+    assert(n2 != null);
+    assert(std.mem.eql(u8, n2.?.text(), "rye build"));
+    const n3 = try h.recall_next();
+    assert(n3 == null); // the live edge, a fresh line to compose
+    assert(!h.is_browsing());
+    const past_live = h.recall_next();
+    assert(past_live == error.NoLater);
+    print("dexter_history: recall_prev walks toward older lines, recall_next toward newer, off the newest is the live edge.\n", .{});
+}
+
+fn ring_drops_the_oldest() !void {
+    var h = History.empty();
+    // Fill past the cap; the ring keeps the most recent max_history, dropping the oldest.
+    const total: u32 = max_history + 5;
+    var i: u32 = 0;
+    var buf: [16]u8 = undefined;
+    while (i < total) : (i += 1) {
+        const s = std.fmt.bufPrint(&buf, "line{d}", .{i}) catch unreachable;
+        try h.commit(s);
+    }
+    // The history is exactly the cap, and its oldest is line 5 (0..4 fell away), its newest line total-1.
+    assert(h.len() == max_history);
+    const oldest = std.fmt.bufPrint(&buf, "line{d}", .{total - max_history}) catch unreachable;
+    assert(std.mem.eql(u8, h.entry(0).text(), oldest));
+    const newest = std.fmt.bufPrint(&buf, "line{d}", .{total - 1}) catch unreachable;
+    assert(std.mem.eql(u8, h.entry(max_history - 1).text(), newest));
+    print("dexter_history: at the cap the ring drops the oldest, holding the most recent {d} lines.\n", .{max_history});
+}
+
+fn commit_resets_to_live_edge() !void {
+    var h = History.empty();
+    try h.commit("first");
+    try h.commit("second");
+    // Browse into history, then commit -- the cursor drops back to a fresh live edge.
+    _ = try h.recall_prev();
+    assert(h.is_browsing());
+    try h.commit("third");
+    assert(!h.is_browsing());
+    assert(h.len() == 3);
+    // A too-long line is refused rather than truncated, and the ring is unchanged.
+    var long: [max_entry + 1]u8 = [_]u8{'x'} ** (max_entry + 1);
+    const refused = h.commit(long[0..]);
+    assert(refused == error.EntryTooLong);
+    assert(h.len() == 3);
+    print("dexter_history: a commit drops back to the live edge, and an over-long line is refused not truncated.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try commit_remembers_newest();
+    try recall_walks_the_cursor();
+    try ring_drops_the_oldest();
+    try commit_resets_to_live_edge();
+    print("dexter_history: version {s}\n", .{dexter_history_version});
+    print("GREEN: dexter_history; a bounded ring of at most {d} past lines -- commit remembers the newest, recall walks a cursor over the kept lines, and the ring drops the oldest at the cap, deterministic every time.\n", .{max_history});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "dexter-history"))) {
+        return run_selftest();
+    }
+    return run_selftest();
+}
