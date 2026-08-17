@@ -97,9 +97,17 @@ A tripwire is not a stop -- it is a design round you **approve for yourself** an
 - **Signing:** GPG-signing stays on; never `--no-gpg-sign`, never `--no-verify`.
 - **REMEMBER git nib** updates in the same work commit; amend at most once; never a pin-only follow-up.
 
-## 7 -- Every round leaves a record
+## 7 -- Every round leaves a record; single-stranded card and log
 
 A `.bron`/`.kyri` session log per round (`session-logs/`), a newest-first row in `session-logs/README.md`, and REMEMBER's Now refreshed. The round summary is the agent's account in Kyri's voice. The log's `recommend` line names the next concrete rung -- it is the baton the next lap reads first (section 1, *Running thread*), so write it as a clear handoff, not a closing flourish.
+
+**Single strand each.** The **logs are the record of what was done**; **REMEMBER is the live card of what is next**. Keep them single-stranded (`active-designing/yonder/20260618-182412_single-stranded.md`) -- never let REMEMBER swell into a second copy of the log index. A round refreshes REMEMBER's *Now* to point at live work; it does not re-list into REMEMBER the finished laps the logs already hold.
+
+**Boundary condense-and-reaim.** When a set completes -- a round-set, quest, journey, equinox, or season -- and the scope's crux to-do items are all hit, run one condense pass before opening the next set:
+
+- **Deep-read for the next crux**, past REMEMBER's top rows: the recent logs' `recommend` lines, the crux to-do ledgers (`crux/TASKS.md`, `crux/ROADMAP.md`, `crux/THREADS.md`, `crux/REDS.md`), and the itineraries (`active-designing/20260812-171050_the-1024-round-itinerary.md`, `active-designing/20260816-205859_double-seat-expansion-eight-seasons.md`).
+- **Condense the done work out of REMEMBER** -- strike the completed *Now*/arc lines the logs already record, so the card shrinks as work lands. Record a **cairn** (`crux/CAIRNS.md`, `.claude/rules/cairn.md` names REMEMBER by name) first when the condense rewrites more than a line or two of the living card. Accrete-never-break holds by tier: REMEMBER's *Now* is Tier 3 and may sweep, the logs are Tier 2 and are never rewritten, so nothing done is ever lost.
+- **Refill *Now* and *next*** with the crux the deep read surfaced, so REMEMBER always carries live love-tasks -- a living work-front that evolves as work completes, never a redundant session-log index.
 
 ## 8 -- The budget and the stop rule
 
