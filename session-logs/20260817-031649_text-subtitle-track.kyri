@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260817.031649
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image -- text_subtitle: the timed subtitle track over moving video, GREEN
+prompt autonomous loop -- next agent-doable lap Lindy-first crux-first in Season G open-media; Rye-first, witness-first, send often; stop at custody gates
+think Read crux/REMEMBER, the 1024-round itinerary, the eight-season double-seat, and the rye-first crypto-parity wave for the road; the living edge sits in Season G (Open Media Primitives), the image/text/video family, last rung image/text_caption.rye (the static lower-third over moving video).
+think Rota this lap (d27) read item 16, context/SIMPLE_LOVABLE_COMPLETE.md -- ship one small, lovable, complete thing at its own scale, claim only what the loop closes.
+think The image/README named the next Season G doors; the highest-Lindy crux that is also SLC-small: turn the static caption into a TIMED subtitle track -- multiple cues, each shown only over its frame span. That is the natural completion of text_caption and a genuinely reused video primitive (every player shows subtitles), composing proven verbs with no new format.
+think Design: a Cue is a half-open span [start, end) plus text; a track is a bounded ordered disjoint list; validate_track refuses EmptyTrack/TooManyCues/CueEmptySpan/CueBeyondReel/CuesOverlap by name before a pixel; active_cue(track, k) returns the one cue containing k or null. The panel place is fixed (reused text_panel.Panel); only the text changes per cue, so the panel rect depends only on cue text -- opaque by construction.
+think Crux proof against the plain no-subtitle background as ground truth: a gap frame equals background byte for byte (no panel where no cue active); a shown frame differs from background only within the panel rect (touches the card only); within a cue span the panel rect is byte-steady frame to frame; two different cues render different panels. Then round-trip byte-for-byte through both codecs (gfv1, gfd1), gfv1 refused at gfd1 magic; delta/keyframe mix REPORTED not claimed (REDS #82).
+obs GREEN on the first metal run: 3 cues over 24 frames of 96x48, 17 shown + 7 gap frames, each cue byte-steady and distinct from the next, round-trip byte-identical through both codecs; gfd1 8196 bytes vs gfv1 10271.
+obs Reused text_paint.solid rather than reaching for a raw qoi.Pixmap constructor (there is no Pixmap.init); the module composes only public verbs (background verbs, paint_text_panel, both codecs), braiding none.
+obs tame_style_check bans clean (no compound asserts, unqualified assert, no memcpy site), width-check exit 0, new prose plain ASCII; every fn carries >=2 positive // invariant asserts.
+loom witness=text_subtitle_witness frames=24 cues=3 shown=17 gap=7 gfd1_bytes=8196 gfv1_bytes=10271
+file image/text_subtitle.rye the timed subtitle track: bounded ordered-disjoint Cue list, active_cue reader, exact-span crux over both codecs
+file tools/text_subtitle_witness.rish builds and runs the selftest, asserts the GREEN line and the span/gap/round-trip crux phrases
+file image/README.md names the new timing rung under Season G and re-points the next-rungs line
+file crux/REMEMBER.md Git nib refreshed to the living edge in the same work commit
+recommend keep-going Season G stays fertile -- the subtitle track proven on longer/varied real reels, the remaining wider symbols over the 5x7 body, or an open glyph atlas beyond the 5x7 body are each a clean next round; no custody gate in reach.

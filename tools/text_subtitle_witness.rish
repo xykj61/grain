@@ -1,0 +1,45 @@
+# tools/text_subtitle_witness.rish -- the timed subtitle track proves itself over moving video (Season G, open media).
+#
+# Season G (Open Media Primitives) - the rung above image/text_caption.rye. A caption pins ONE fixed card over a moving
+# reel; a subtitle track pins a SEQUENCE of cards, each shown only during its own span of frames. image/text_subtitle.rye
+# renders the same mostly-still moving background, then composites the ACTIVE cue's panel (if any) onto each frame at the
+# fixed lower-third place, and assembles the result as a clip.
+#
+# The crux this witness proves is that a cue is shown EXACTLY over its span and nowhere else, measured against the plain
+# no-subtitle background as ground truth: a GAP frame equals the background byte for byte, a SHOWN frame differs from the
+# background only within the panel rectangle, within one cue's span the panel is byte-steady from frame to frame, and two
+# different cues render different panels. The whole subtitled reel then round-trips byte for byte through BOTH open
+# codecs; the delta/keyframe mix is REPORTED, never claimed a compression win (REDS #82). No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/text_subtitle_witness.rish
+
+say "text-subtitle: Language EN -- Season G's timing rung; a sequence of caption cards, each shown only over its own span of frames, composing image/text_panel.rye onto image/frames.rye and image/frames_delta.rye."
+say "text-subtitle: Style Radiant -- the panel place holds still while the text inside it changes as the clip plays; between two cues nothing is shown, so a subtitle is present exactly when its cue is active and never otherwise."
+say "text-subtitle: Lens TAME -- u32 in-memory counts, u8 pixel bytes; every buffer names a maximum (subtitle_max_frames, subtitle_max_cues, the codecs' encoded_bound, the QOI ceilings beneath); the track is validated ordered and disjoint before a pixel is painted; each failure has a name; the delta/keyframe mix a reported measurement, never a false compression claim; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/text_subtitle"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/text_subtitle.rye -femit-bin=${bin}"]
+assert build.ok else "text-subtitle: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "text-subtitle: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "text-subtitle: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-text-subtitle' && echo yes"]
+assert (trim green.out) == "yes" else "text-subtitle: selftest did not print the GREEN subtitle line"
+
+let span = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'each cue byte-steady across its span and distinct from the next' && echo yes"]
+assert (trim span.out) == "yes" else "text-subtitle: the exact-span crux (steady within span, distinct between cues) did not prove"
+
+let gap = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a gap frame equals the plain background byte for byte' && echo yes"]
+assert (trim gap.out) == "yes" else "text-subtitle: the empty-gap crux (no panel where no cue is active) did not prove"
+
+let round = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-trip byte-identical through BOTH codecs' && echo yes"]
+assert (trim round.out) == "yes" else "text-subtitle: the subtitled reel did not round-trip through both codecs"
+
+say "text-subtitle: GREEN -- a timed subtitle track over moving video; each cue is shown exactly over its span (steady while up, distinct from the next, nothing in the gaps), and the composited reel round-trips byte for byte through both open codecs."

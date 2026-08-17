@@ -1,0 +1,365 @@
+//! image/text_subtitle.rye -- the timed subtitle track: a caption that changes over the reel (Season G, open media).
+//!
+//! Season G (Open Media Primitives) - the rung above image/text_caption.rye. A caption pins ONE fixed card over a moving
+//! reel; a subtitle track pins a SEQUENCE of cards, each shown only during its own span of frames. That timing is the
+//! whole difference between a lower-third and a subtitle: the panel place holds still, yet the text inside it changes as
+//! the clip plays, and between two cues nothing is shown at all. Everything under this rung is already proven -- the
+//! opaque panel seals text inside a frame (text_panel.rye), the two codecs round-trip a reel byte for byte (frames.rye,
+//! frames_delta.rye), and text_caption.rye proved the static-overlay crux for a single card -- so this rung braids none
+//! of it: it renders the same mostly-still moving background, then composites the ACTIVE cue's panel (if any) onto each
+//! frame at the same fixed place.
+//!
+//! The crux this rung proves is that a cue is shown EXACTLY over its span and nowhere else. Three measurable halves,
+//! each against the plain no-subtitle background as ground truth:
+//!   * a frame in a GAP between cues equals the background byte for byte -- no panel is painted where no cue is active,
+//!   * a frame inside a cue's span differs from the background only WITHIN the panel rectangle -- the subtitle touches
+//!     the card and nothing else, and
+//!   * within one cue's span the panel rectangle is byte-identical from frame to frame (the card is steady while it is
+//!     up), while two different cues render DIFFERENT panels (the text really changed).
+//! The whole subtitled reel then round-trips byte for byte through BOTH open codecs, and the delta/keyframe mix is
+//! REPORTED, never claimed a compression win (REDS #82). Pure composition over public APIs (the background verbs,
+//! paint_text_panel, both codecs); no new storage, codec, palette, glyph, or font. No network, no key, no funds -- the
+//! subtitle track a surface plays over live video, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/text_subtitle.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const glyph = @import("glyph.rye");
+const font_ascii = @import("font5x7_ascii.rye");
+const text_layout = @import("text_layout.rye");
+const text_paint = @import("text_paint.rye");
+const text_panel = @import("text_panel.rye");
+const shape = @import("shape.rye");
+const frames = @import("frames.rye");
+const frames_delta = @import("frames_delta.rye");
+
+pub const text_subtitle_version = "20260817.031500";
+
+/// One subtitle cue -- a text shown over a half-open span of frames [start, end). The panel place is fixed for the whole
+/// track (subtitle_panel below); only the text and the span differ from cue to cue.
+pub const Cue = struct {
+    start: u32, // first frame the cue is shown (inclusive)
+    end: u32, // one past the last frame the cue is shown (exclusive)
+    text: []const u8,
+};
+
+/// The frame window -- the fixed viewport the background pans through and the subtitle panel is pinned onto. Landscape.
+pub const subtitle_frame_w: u32 = 96;
+pub const subtitle_frame_h: u32 = 48;
+
+/// Playback rate stored in both containers' headers -- carried through a round-trip, never interpreted here.
+pub const subtitle_fps: u8 = 12;
+
+/// A safe ceiling on the reel's frame count and on the number of cues, so the frame loop, the codecs' frame field, and
+/// the track scan all stay bounded.
+pub const subtitle_max_frames: u32 = 256;
+pub const subtitle_max_cues: u32 = 32;
+
+/// A ceiling on one cue's text length, so the wrap/scratch buffers the panel painter needs are sized once for the whole
+/// track. A subtitle line that will not fit the panel is refused by paint_text_panel by name, not by this bound.
+pub const subtitle_max_text: u32 = 64;
+
+/// The moving subject beneath the subtitles -- a small filled block that steps across the frame, the mostly-still shot
+/// where a subtitle sits. Bounded to stay wholly in frame on both axes.
+const block_w: u32 = 12;
+const block_h: u32 = 12;
+const block_y: u32 = 8; // above the lower-third panel, in the live part of the frame
+const block_step: u32 = 2; // columns the block advances each frame
+const block_x0: u32 = 4; // the block's first left edge
+
+/// The still ground behind the moving block -- a calm slate the block and subtitles sit on.
+const ground_color = color.Rgba{ .r = 30, .g = 34, .b = 44, .a = 255 };
+/// The moving block's colour -- a warm accent distinct from the ground, so its motion is unmistakable.
+const block_color = color.Rgba{ .r = 220, .g = 140, .b = 40, .a = 255 };
+
+/// The lower-third subtitle panel -- a fixed rectangle, an opaque warm fill, a blue border ring, a padding gap. Opaque
+/// by construction (fill alpha 255): the panel fully overwrites the background beneath it, so its pixels depend only on
+/// the cue text, never on what moves underneath. Shared by builder and witness so both name the exact same rect.
+pub const subtitle_panel = text_panel.Panel{
+    .x = 6,
+    .y = 30,
+    .w = 84,
+    .h = 16,
+    .thickness = 2,
+    .pad = 2,
+    .fill = color.Rgba{ .r = 240, .g = 236, .b = 224, .a = 255 },
+    .border = color.Rgba{ .r = 40, .g = 80, .b = 200, .a = 255 },
+};
+
+/// The subtitle ink -- a near-black, opaque, so the text is opaque within the opaque panel.
+pub const subtitle_ink = color.Rgba{ .r = 20, .g = 20, .b = 20, .a = 255 };
+
+/// The default subtitle track for the selftest -- three short cues with gaps between them, so both the shown-span and
+/// the empty-gap cases are exercised. Each text fits one 5x7 line within the panel's inner box.
+pub const default_track = [_]Cue{
+    .{ .start = 2, .end = 8, .text = "GRAIN MEDIA" },
+    .{ .start = 11, .end = 17, .text = "OPEN VIDEO" },
+    .{ .start = 19, .end = 24, .text = "SUBTITLES" },
+};
+pub const default_frame_count: u32 = 24;
+
+/// Prove a track is well-formed BEFORE a pixel is painted: non-empty, bounded, every cue a real forward span within the
+/// reel, and the cues strictly ordered with no overlap. Each failure has a name, so a caller learns of a bad track at
+/// once rather than through a mis-drawn reel. Ordering-and-disjointness is one check: each cue must start at or after the
+/// previous cue's end, which forces both strict order and no overlap in a single pass.
+pub fn validate_track(track: []const Cue, frame_count: u32) !void {
+    // invariant: a track shows something, and stays within this module's cue bound.
+    if (track.len == 0) return error.EmptyTrack;
+    if (track.len > subtitle_max_cues) return error.TooManyCues;
+    // invariant: the reel itself is within this module's frame bound and the codecs' ceiling.
+    assert(frame_count >= 1);
+    assert(frame_count <= subtitle_max_frames);
+    var prev_end: u32 = 0;
+    var i: u32 = 0;
+    while (i < track.len) : (i += 1) {
+        const cue = track[i];
+        // invariant: a cue is a real forward span, wholly within the reel.
+        if (cue.start >= cue.end) return error.CueEmptySpan;
+        if (cue.end > frame_count) return error.CueBeyondReel;
+        if (cue.text.len > subtitle_max_text) return error.CueTextTooLong;
+        // invariant: cues are strictly ordered and never overlap -- this cue starts no earlier than the last one ended.
+        if (cue.start < prev_end) return error.CuesOverlap;
+        prev_end = cue.end;
+    }
+}
+
+/// The index of the cue active on frame `k`, or null when `k` falls in a gap. The track is validated (ordered, disjoint),
+/// so at most one cue contains any frame; a linear scan over the bounded track is the whole reader a surface needs.
+pub fn active_cue(track: []const Cue, k: u32) ?u32 {
+    // invariant: the track is bounded, so the scan terminates within subtitle_max_cues steps.
+    assert(track.len <= subtitle_max_cues);
+    var i: u32 = 0;
+    while (i < track.len) : (i += 1) {
+        // invariant: the span is half-open [start, end), so end is exclusive -- a frame equal to end is NOT in the cue.
+        if (k >= track[i].start and k < track[i].end) return i;
+    }
+    return null;
+}
+
+/// Build one background frame: a still ground with the moving block at its left edge for frame `k`. This is the plain,
+/// no-subtitle picture -- the ground truth the witness measures every subtitled frame against. The block steps right one
+/// stride per frame and flushes to the right margin once it reaches it, so it stays wholly in frame on every frame.
+pub fn background_frame(garden: std.mem.Allocator, k: u32) !qoi.Pixmap {
+    // invariant: the block's travel window has room, so the clamp below never underflows.
+    const last_bx: u32 = subtitle_frame_w - block_w;
+    assert(block_x0 <= last_bx);
+    var bx: u32 = block_x0 + k * block_step;
+    if (bx > last_bx) bx = last_bx; // once the block reaches the margin it holds there, still wholly in frame
+    // invariant: the block lies wholly within the frame on both axes.
+    assert(bx + block_w <= subtitle_frame_w);
+    assert(block_y + block_h <= subtitle_frame_h);
+    var frame = try text_paint.solid(garden, subtitle_frame_w, subtitle_frame_h, ground_color);
+    try shape.fill_rect(&frame, bx, block_y, block_w, block_h, block_color);
+    return frame;
+}
+
+/// Build the subtitled reel: the moving background on every frame, with the active cue's panel (if any) composited onto
+/// it at the fixed lower-third place. The track is validated first, so a malformed track refuses by name having built
+/// nothing. The panel is painted all-or-nothing by paint_text_panel, which refuses if a cue cannot fit -- so a built reel
+/// carries whole cards or the build fails loudly, never a half-drawn one. Returns a Video whose orientation is derived
+/// from the extent (never a stored lie) and whose fps is the reel's own rate.
+pub fn build_subtitled_reel(garden: std.mem.Allocator, atlas: *const glyph.GlyphAtlas, track: []const Cue, frame_count: u32) !frames.Video {
+    try validate_track(track, frame_count);
+    // invariant: the reel stays within this module's bound and both codecs' frame ceiling.
+    assert(frame_count >= 2);
+    assert(frame_count <= subtitle_max_frames);
+    assert(frame_count <= frames.gfv_max_frames);
+
+    // The wrap/scratch buffers hold the worst case across the whole track -- one wrapped line and one placed glyph per
+    // byte of the longest cue text -- sized once so the frame loop allocates nothing per frame.
+    var longest: u32 = 1;
+    {
+        var i: u32 = 0;
+        while (i < track.len) : (i += 1) {
+            const n: u32 = @intCast(track[i].text.len);
+            if (n > longest) longest = n;
+        }
+    }
+    const lines_buf = try garden.alloc(text_layout.WrapLine, longest);
+    const scratch = try garden.alloc(text_layout.PlacedGlyph, longest);
+
+    const pms = try garden.alloc(qoi.Pixmap, frame_count);
+    var k: u32 = 0;
+    while (k < frame_count) : (k += 1) {
+        var frame = try background_frame(garden, k);
+        if (active_cue(track, k)) |idx| {
+            // invariant: an active index the scan returned is a real cue slot.
+            assert(idx < track.len);
+            _ = try text_panel.paint_text_panel(atlas, track[idx].text, 1, .center, .middle, subtitle_panel, lines_buf, scratch, &frame, subtitle_ink);
+        }
+        pms[k] = frame;
+    }
+
+    return frames.Video{
+        .width = subtitle_frame_w,
+        .height = subtitle_frame_h,
+        .orientation = frames.derive_orientation(subtitle_frame_w, subtitle_frame_h),
+        .fps = subtitle_fps,
+        .frames = pms,
+    };
+}
+
+/// True when two videos carry the same header and the same frames byte for byte -- the equality a round-trip recovers.
+pub fn videos_equal(a: *const frames.Video, b: *const frames.Video) bool {
+    if (a.width != b.width or a.height != b.height) return false;
+    if (a.orientation != b.orientation or a.fps != b.fps) return false;
+    if (a.frames.len != b.frames.len) return false;
+    var f: usize = 0;
+    while (f < a.frames.len) : (f += 1) {
+        if (!a.frames[f].same_bytes(&b.frames[f])) return false;
+    }
+    return true;
+}
+
+/// True when a `w` x `h` sub-rectangle at (`x`, `y`) is byte-identical between two same-sized frames. The reader stays
+/// inside both buffers on every row -- the caller has proven the rectangle lies within the frame.
+fn rect_bytes_equal(a: *const qoi.Pixmap, b: *const qoi.Pixmap, x: u32, y: u32, w: u32, h: u32) bool {
+    // invariant: both frames share dimensions and the rectangle lies wholly within them.
+    assert(a.width == b.width);
+    assert(a.height == b.height);
+    assert(x + w <= a.width);
+    assert(y + h <= a.height);
+    var ry: u32 = 0;
+    while (ry < h) : (ry += 1) {
+        const row = (@as(usize, y + ry) * @as(usize, a.width) + @as(usize, x)) * 4;
+        const run = @as(usize, w) * 4;
+        if (!std.mem.eql(u8, a.pixels[row .. row + run], b.pixels[row .. row + run])) return false;
+    }
+    return true;
+}
+
+/// Count the pixels that differ between two same-sized frames but lie OUTSIDE the panel rectangle -- the change with the
+/// subtitle card excluded. Zero proves a subtitled frame touches only the panel, leaving the moving background untouched.
+fn diff_outside_panel(a: *const qoi.Pixmap, b: *const qoi.Pixmap, panel: text_panel.Panel) u32 {
+    // invariant: only same-sized frames are compared, so a shared pixel index is valid in both.
+    assert(a.pixels.len == b.pixels.len);
+    assert(a.width == b.width);
+    var count: u32 = 0;
+    var y: u32 = 0;
+    while (y < a.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x < a.width) : (x += 1) {
+            const in_panel = x >= panel.x and x < panel.x + panel.w and y >= panel.y and y < panel.y + panel.h;
+            if (in_panel) continue;
+            const i = (@as(usize, y) * @as(usize, a.width) + @as(usize, x)) * 4;
+            const same = a.pixels[i] == b.pixels[i] and a.pixels[i + 1] == b.pixels[i + 1] and
+                a.pixels[i + 2] == b.pixels[i + 2] and a.pixels[i + 3] == b.pixels[i + 3];
+            if (!same) count += 1;
+        }
+    }
+    return count;
+}
+
+// --- selftest: prove each cue is shown EXACTLY over its span, and the subtitled reel round-trips through both codecs ---
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try font_ascii.build_atlas(garden);
+    const track = default_track[0..];
+    const frame_count: u32 = default_frame_count;
+    const video = try build_subtitled_reel(garden, &atlas, track, frame_count);
+    // invariant: the built reel has exactly the frames requested.
+    assert(video.frames.len == frame_count);
+    const pixel_count = video.frame_pixels();
+    const p = subtitle_panel;
+
+    // The CRUX, half one and two -- against the plain no-subtitle background as ground truth, frame by frame:
+    //   * a GAP frame equals the background byte for byte (no panel where no cue is active), and
+    //   * a CUE frame differs from the background only WITHIN the panel rectangle (the subtitle touches the card only).
+    var gap_frames: u32 = 0;
+    var shown_frames: u32 = 0;
+    {
+        var k: u32 = 0;
+        while (k < frame_count) : (k += 1) {
+            const bg = try background_frame(garden, k);
+            if (active_cue(track, k)) |_| {
+                shown_frames += 1;
+                if (diff_outside_panel(&video.frames[k], &bg, p) != 0) return error.SubtitlePaintedOutsidePanel;
+            } else {
+                gap_frames += 1;
+                if (!video.frames[k].same_bytes(&bg)) return error.SubtitleShownInGap;
+            }
+        }
+    }
+    // invariant: the default track exercises both cases -- at least one shown frame and at least one gap frame.
+    if (shown_frames == 0) return error.NoCueEverShown;
+    if (gap_frames == 0) return error.NoGapEverTested;
+
+    // The CRUX, half three -- within one cue's span the panel is STEADY (byte-identical frame to frame), and two cues
+    // render DIFFERENT panels (the text really changed between them). Both read the fixed panel rectangle directly.
+    {
+        var i: u32 = 0;
+        while (i < track.len) : (i += 1) {
+            const cue = track[i];
+            const first = cue.start;
+            var k: u32 = first + 1;
+            while (k < cue.end) : (k += 1) {
+                if (!rect_bytes_equal(&video.frames[first], &video.frames[k], p.x, p.y, p.w, p.h)) return error.CuePanelFlickered;
+            }
+            if (i + 1 < track.len) {
+                const next_first = track[i + 1].start;
+                // invariant: a later cue with different text paints a panel that differs from this one, byte for byte.
+                if (rect_bytes_equal(&video.frames[first], &video.frames[next_first], p.x, p.y, p.w, p.h)) return error.CuesLookIdentical;
+            }
+        }
+    }
+
+    // A shown cue's panel corner reads the opaque border, not a background pixel -- the panel really is where we claim.
+    const shown_k: u32 = track[0].start;
+    const corner = pixel_at(&video.frames[shown_k], p.x, p.y);
+    if (!corner.eql(p.border)) return error.CueCornerNotBorder;
+
+    // --- gfv1 intra-frame: encode, decode, prove the subtitled reel round-trips byte for byte -----------------------
+    const gfv_cap = frames.encoded_bound(pixel_count, frame_count);
+    const gfv_dst = try garden.alloc(u8, gfv_cap);
+    const gfv_res = try frames.encode(garden, &video, gfv_dst);
+    // invariant: the encoder wrote every frame.
+    assert(gfv_res.frame_count == frame_count);
+    const gfv_back = try frames.decode(garden, gfv_dst[0..gfv_res.len]);
+    if (!videos_equal(&gfv_back, &video)) return error.GfvRoundTripBroke;
+
+    // --- gfd1 inter-frame: encode, decode, prove the SAME subtitled reel round-trips byte for byte -----------------
+    const gfd_cap = frames_delta.encoded_bound(pixel_count, frame_count);
+    const gfd_dst = try garden.alloc(u8, gfd_cap);
+    const gfd_res = try frames_delta.encode(garden, &video, gfd_dst);
+    assert(gfd_res.frame_count == frame_count);
+    const gfd_back = try frames_delta.decode(garden, gfd_dst[0..gfd_res.len]);
+    if (!videos_equal(&gfd_back, &video)) return error.GfdRoundTripBroke;
+
+    // The two formats stay distinct: a gfv1 stream refuses at the gfd1 magic.
+    if (frames_delta.decode(garden, gfv_dst[0..gfv_res.len])) |_| {
+        return error.MagicSlipped;
+    } else |e| {
+        if (e != error.BadMagic) return error.WrongMagic;
+    }
+
+    // The delta/keyframe mix is a REPORTED measurement -- the moving block and the appearing/vanishing cards make some
+    // frames delta cheaply and some not, so the count is shown, never asserted exact (REDS #82).
+    const keyframes: u32 = frame_count - gfd_res.delta_frames;
+    print("GREEN image-text-subtitle: {d} cues shown over {d} frames of {d}x{d} moving video; each cue byte-steady across its span and distinct from the next, {d} shown + {d} gap frames (a gap frame equals the plain background byte for byte, a shown frame differs only within the panel); round-trip byte-identical through BOTH codecs; gfd1 adaptive mix {d} deltas + {d} keyframes ({d} bytes vs gfv1 {d}); gfv1 stream refused by gfd1 decoder as BadMagic\n", .{
+        track.len, frame_count, subtitle_frame_w, subtitle_frame_h, shown_frames, gap_frames, gfd_res.delta_frames, keyframes, gfd_res.len, gfv_res.len,
+    });
+    return 0;
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: text_subtitle selftest\n", .{});
+    return 1;
+}
