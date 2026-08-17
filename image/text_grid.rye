@@ -39,7 +39,7 @@ const text_layout = @import("text_layout.rye");
 const text_paint = @import("text_paint.rye");
 const font_ascii = @import("font5x7_ascii.rye");
 
-pub const text_grid_version = "20260817.095023";
+pub const text_grid_version = "20260817.113943";
 
 /// The column pitch of the grid -- the shared advance every ASCII glyph carries (cell width plus one daylight
 /// column), so a monospace cell is exactly this many pixels wide, its glyph body left-set within it.
@@ -320,6 +320,44 @@ pub fn render_grid_cells(
     const scratch = try allocator.alloc(text_layout.PlacedGlyph, cols);
     try paint_grid_cells(atlas, cells, cols, rows, fg, bg, scratch, &pm, 0, 0);
     return pm;
+}
+
+/// Render a monospace grid where each cell's ink is CHOSEN for legibility against its own ground -- the first
+/// consumer of color.readable_ink, and the accessibility default a surface reaches for when it names only the
+/// grounds. `bg` holds one ground colour per cell (row-major, exactly cols*rows); each cell's ink is
+/// color.readable_ink(bg[i]) -- pure black or pure white, whichever wins the higher WCAG contrast -- so a keeper who
+/// paints a header blue, a row grey, a badge yellow gets legible text on every one without picking an ink by hand.
+/// Pure composition over render_grid_cells: it builds the fg palette from the grounds and passes through, so its
+/// output equals render_grid_cells with fg[i] = readable_ink(bg[i]) byte-for-byte. Color decides the ink, text_grid
+/// paints it -- neither braided into the other. A ground palette of the wrong length refuses GridBgMismatch by name,
+/// before any pixel is allocated.
+pub fn render_grid_auto_ink(
+    allocator: std.mem.Allocator,
+    atlas: *const glyph.GlyphAtlas,
+    cells: []const u8,
+    cols: u32,
+    rows: u32,
+    bg: []const color.Rgba,
+) !qoi.Pixmap {
+    _ = try check_grid(atlas, cells, cols, rows);
+    // invariant: the ground palette carries exactly one colour per cell -- computed in u64 so the product cannot wrap.
+    const count: u64 = @as(u64, cols) * @as(u64, rows);
+    if (@as(u64, bg.len) != count) return error.GridBgMismatch;
+
+    // Build the fg palette by choosing the legible ink for each cell's own ground -- the whole of the composition:
+    // color decides the ink, text_grid paints it. n fits u32 because check_grid proved cells.len == cols*rows within
+    // the per-axis bounds, so the product is bounded by grid_cols_max*grid_rows_max.
+    const n: u32 = @intCast(count);
+    const fg = try allocator.alloc(color.Rgba, n);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        fg[i] = color.readable_ink(bg[i]);
+    }
+    // invariant: the built palette carries exactly one ink per cell, ready for the per-cell render.
+    assert(fg.len == n);
+    // invariant: a validated grid has at least one cell, so there is an ink to pick and a face to paint.
+    assert(n >= 1);
+    return render_grid_cells(allocator, atlas, cells, cols, rows, fg, bg);
 }
 
 /// Render a monospace grid with a visible block CURSOR at one cell -- the abstract terminal cursor every grid surface
@@ -632,6 +670,70 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         } else |e| if (e != error.GridBgMismatch) return error.WrongBgMismatch;
     }
 
+    // Auto-ink: the first consumer of color.readable_ink. A keeper names only the per-cell GROUNDS and the ink is
+    // chosen legible for each -- black on a light ground, white on a dark one -- so no caption is unreadable by
+    // default. Prove it three ways: the built ink matches readable_ink cell by cell, the whole image equals the
+    // explicit render_grid_cells over that same palette (pure composition), and the picked ink clears WCAG AA.
+    {
+        const blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 };
+        const light_grey = color.Rgba{ .r = 0xdd, .g = 0xdd, .b = 0xdd, .a = 255 };
+        // A per-cell ground palette: row 0 a dark blue header, row 1 a light-grey row, row 2 white.
+        const bgpal = try garden.alloc(color.Rgba, cols * rows);
+        var i: u32 = 0;
+        // invariant: the ground palette is exactly one colour per cell before the auto-ink render reads it.
+        assert(bgpal.len == cols * rows);
+        while (i < bgpal.len) : (i += 1) {
+            if (i < cols) {
+                bgpal[i] = blue;
+            } else if (i < 2 * cols) {
+                bgpal[i] = light_grey;
+            } else {
+                bgpal[i] = white;
+            }
+        }
+
+        const auto = try render_grid_auto_ink(garden, &atlas, cells, cols, rows, bgpal);
+        assert(auto.width == face.width);
+        assert(auto.height == face.height);
+
+        // Cell by cell: the chosen ink is readable_ink of that cell's ground -- white on the dark blue header, black
+        // on the light-grey and white rows. Build the same fg palette by hand and render_grid_cells with it; the two
+        // images agree byte-for-byte, so render_grid_auto_ink is exactly that composition, nothing hidden.
+        const fg_by_hand = try garden.alloc(color.Rgba, cols * rows);
+        i = 0;
+        while (i < fg_by_hand.len) : (i += 1) fg_by_hand[i] = color.readable_ink(bgpal[i]);
+        // invariant: the dark header ground takes white ink; the light rows take black ink -- the everyday pick.
+        assert(fg_by_hand[0].eql(white));
+        assert(fg_by_hand[cols].eql(black));
+        assert(fg_by_hand[2 * cols].eql(black));
+        const explicit = try render_grid_cells(garden, &atlas, cells, cols, rows, fg_by_hand, bgpal);
+        // invariant: the auto-ink render is exactly render_grid_cells over the readable-ink palette -- pure composition.
+        assert(auto.same_bytes(&explicit));
+
+        // The legibility claim, measured: every picked ink clears WCAG AA against its own ground -- readable_ink takes
+        // the better of black and white, which on each of these grounds passes the 4.50 body-text bar.
+        i = 0;
+        while (i < fg_by_hand.len) : (i += 1) {
+            // invariant: the auto-picked ink is legible on its ground by the module's own WCAG measure, not a guess.
+            assert(color.meets_aa(fg_by_hand[i], bgpal[i]));
+        }
+
+        // Deterministic and portable: the auto-ink face renders the same bytes and round-trips through QOI.
+        const auto2 = try render_grid_auto_ink(garden, &atlas, cells, cols, rows, bgpal);
+        assert(auto2.same_bytes(&auto));
+        const acap = qoi.encoded_bound(auto.width * auto.height);
+        const adst = try garden.alloc(u8, acap);
+        const aenc = try qoi.encode(&auto, adst);
+        const aback = try qoi.decode(garden, adst[0..aenc.len]);
+        assert(aback.same_bytes(&auto));
+
+        // A ground palette of the wrong length refuses GridBgMismatch by name, before any pixel is allocated.
+        const short_bg = try garden.alloc(color.Rgba, cols * rows - 1);
+        if (render_grid_auto_ink(garden, &atlas, cells, cols, rows, short_bg)) |_| {
+            return error.AutoBgMismatchSlipped;
+        } else |e| if (e != error.GridBgMismatch) return error.WrongAutoBgMismatch;
+    }
+
     // The block CURSOR: render_grid_cursor paints the whole grid plain but inverts one cell to inverse video -- the
     // classic terminal cursor. Place it on the blank cell (row 2, col 0), so the cursor is a solid ink block, the
     // cleanest proof. It is pure composition over render_grid_cells; the abstract floor scooter_paint passes through.
@@ -726,7 +828,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(changed_pixels(tiny.pixels, tiny_before) == 0);
     }
 
-    print("GREEN image-text-grid: a {d}x{d} terminal grid painted into a {d}x{d} image; ink {d} px equals the summed cell coverage, the blank row is ground, a cell block equals its standalone glyph paint, a per-cell fg palette paints row 0 red while inking the same cells, a per-cell bg over a uniform ground reproduces the single-ground render and over a blue bar paints a real coloured header (no band pixel stays white), a block CURSOR inverts exactly one cell to a solid inverse-video block (confined byte-for-byte to that cell, a bad index refusing GridCursorOutOfGrid by name), deterministic, every face round-trips through QOI byte-for-byte, and every mis-shape refuses by name\n", .{
+    print("GREEN image-text-grid: a {d}x{d} terminal grid painted into a {d}x{d} image; ink {d} px equals the summed cell coverage, the blank row is ground, a cell block equals its standalone glyph paint, a per-cell fg palette paints row 0 red while inking the same cells, a per-cell bg over a uniform ground reproduces the single-ground render and over a blue bar paints a real coloured header (no band pixel stays white), a block CURSOR inverts exactly one cell to a solid inverse-video block (confined byte-for-byte to that cell, a bad index refusing GridCursorOutOfGrid by name), auto-ink picks a legible ink per cell from color.readable_ink (white on a dark header, black on light rows) equalling the explicit readable-ink palette and clearing WCAG AA on every ground, deterministic, every face round-trips through QOI byte-for-byte, and every mis-shape refuses by name\n", .{
         cols, rows, face.width, face.height, changed,
     });
     return 0;
