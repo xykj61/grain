@@ -1,0 +1,215 @@
+//! image/font5x7_latin1_text.rye -- the Western European text font: printable ASCII and the whole Latin-1 letter block, one atlas.
+//!
+//! Season G (Open Media Primitives) - the capstone of the 5x7 font family's coverage, one level above BOTH unifying
+//! fonts already landed. image/font5x7_ascii.rye gathered the five ASCII corpora into one contiguous font of the
+//! ninety-five printable ASCII codepoints (space 32 to '~' 126); image/font5x7_latin1_block.rye gathered the thirteen
+//! accent/letter corpora into the whole Latin-1 Supplement letter block (sixty-two letters, U+00C0..U+00FF but the two
+//! math signs). This module merges those two proven atlases into ONE gfa1 atlas of a hundred fifty-seven glyphs: the
+//! single font a Western European surface loads to set a document, a caption, or a name -- the ASCII a keyboard types
+//! and the accented letters a Romance, French, Italian, Portuguese, German, Danish, Norwegian, or Icelandic name adds,
+//! in one lookup Dexter, Scooter, Skate, and Brushstroke read, rather than two fonts to choose between.
+//!
+//! The distinctive crux, beyond the round-trip and the ascending-and-unique disjointness the sub-fonts prove, is that
+//! the two halves compose with a CLEAN GAP between them: the ASCII font ends at '~' (0x7E) and the Latin-1 block opens at
+//! A grave (0xC0), so the C1-control and punctuation range 0x7F..0xBF carries NO glyph -- the font holds exactly the two
+//! ranges its sub-fonts drew and nothing between. The selftest proves the ASCII half contiguous 0x20..0x7E, the Latin-1
+//! half block-complete (present everywhere but the multiplication U+00D7 and division U+00F7 signs), and the gap between
+//! empty (a spot check that DEL 0x7F, the copyright sign 0xA9, and the inverted question mark 0xBF all miss). The merged
+//! count equals the SUM of the two sub-fonts (95 + 62 = 157); the space (0x20) stays the one blank glyph, every other
+//! glyph inked. decode(encode()) recovers the whole font byte-for-byte. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_latin1_text.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+const ascii = @import("font5x7_ascii.rye");
+const block = @import("font5x7_latin1_block.rye");
+
+pub const font5x7_latin1_text_version = "20260817.084250";
+
+/// The whole family shares one 5x7 cell -- both sub-fonts agree on this, and this module asserts the agreement per gather.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance every glyph carries: the cell width plus one column of daylight, the same advance both sub-fonts carry.
+pub const glyph_advance: u8 = cell_w + 1;
+
+/// Cells per glyph -- the coverage length every glyph carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The unifying count -- the sum of the two sub-fonts' own counts: printable ASCII (95) and the Latin-1 letter block (62).
+/// Named from the sub-fonts' own count constants, so a sub-font that grows without this sum growing fails the fill assert.
+pub const text_count: u32 = ascii.ascii_count + block.block_count;
+
+/// The three spot-check codepoints in the gap between the two ranges (0x7F..0xBF) -- DEL, the copyright sign, the inverted
+/// question mark. None is drawn by either sub-font, so all three must miss: the proof that the two ranges do not bleed.
+pub const gap_del: u32 = 0x007F;
+pub const gap_copyright: u32 = 0x00A9;
+pub const gap_inv_question: u32 = 0x00BF;
+
+/// Lift one sub-font atlas's glyphs into the combined table starting at `dst_off`, asserting each shares the cell and
+/// advance. Returns the next free offset. The gathered coverage slices are borrowed from the source atlas, which lives in
+/// the same arena -- no copy, and the merge sort below reorders references, never bytes.
+fn gather(dst: []glyph.Glyph, dst_off: u32, src: *const glyph.GlyphAtlas) u32 {
+    // invariant: the source shares this family's cell -- a sub-font at a different size would corrupt the font.
+    assert(src.cell_w == cell_w);
+    assert(src.cell_h == cell_h);
+    const n: u32 = @intCast(src.glyphs.len);
+    // invariant: the gathered run fits inside the combined table.
+    assert(dst_off + n <= text_count);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const g = src.glyphs[i];
+        // invariant: every merged glyph carries the shared advance, so every letter lays out alike.
+        assert(g.advance == glyph_advance);
+        assert(g.coverage.len == cell_area);
+        dst[dst_off + i] = g;
+    }
+    return dst_off + n;
+}
+
+/// Build the Western European text font: merge the two sub-fonts, then sort the whole table strictly ascending by
+/// codepoint. The gfa1 encoder accepts the result directly (ascending codepoints, coverage length == cell area); the
+/// selftest proves the ASCII half contiguous, the Latin-1 half block-complete, and the gap between them empty.
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the family cell fits the atlas ceiling, and the count fits the glyph ceiling.
+    assert(cell_area <= glyph.coverage_max);
+    assert(text_count <= glyph.glyph_max);
+    // invariant: the unifying count is the sum the two sub-fonts name -- 157 glyphs, no more.
+    assert(text_count == 157);
+
+    const glyphs = try allocator.alloc(glyph.Glyph, text_count);
+    var off: u32 = 0;
+
+    // Gather the two proven sub-fonts. Order of gathering does not matter -- the sort below places every glyph.
+    const ascii_atlas = try ascii.build_atlas(allocator);
+    off = gather(glyphs, off, &ascii_atlas);
+    const block_atlas = try block.build_atlas(allocator);
+    off = gather(glyphs, off, &block_atlas);
+
+    // invariant: the two sub-fonts fill the table exactly -- a short count would mean a lost sub-font.
+    assert(off == text_count);
+
+    // Insertion sort by codepoint -- bounded by text_count, stable, and small (a hundred fifty-seven glyphs). The gfa1
+    // encoder demands strictly ascending codepoints; this is where the two sub-fonts become one ordered font.
+    var i: u32 = 1;
+    while (i < text_count) : (i += 1) {
+        const key = glyphs[i];
+        var j: u32 = i;
+        while (j > 0 and glyphs[j - 1].codepoint > key.codepoint) : (j -= 1) {
+            glyphs[j] = glyphs[j - 1];
+        }
+        glyphs[j] = key;
+    }
+
+    // invariant: the sorted table opens at the space (0x20, the lowest printable ASCII) and closes at y diaeresis (0x00FF,
+    // the highest Latin-1 letter) -- the whole Western European text range, end to end.
+    assert(glyphs[0].codepoint == ' ');
+    assert(glyphs[text_count - 1].codepoint == 0x00FF);
+    return glyph.GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph. Every glyph but the space carries ink; the space is blank.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+// --- selftest: build the text font, round-trip it, prove the two halves whole and the gap between them empty -----------
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built font is the hundred-fifty-seven-glyph text set at the shared cell.
+    assert(glyph_count == text_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // The disjointness crux: the merged codepoints run STRICTLY ASCENDING with NO DUPLICATE. Since the merged count is the
+    // sum of the two sub-fonts (asserted 157 in build_atlas), strictly-ascending here proves them disjoint.
+    var e: u32 = 1;
+    while (e < glyph_count) : (e += 1) {
+        if (!(atlas.glyphs[e].codepoint > atlas.glyphs[e - 1].codepoint)) return error.CodepointsNotStrictlyAscending;
+    }
+
+    // The ASCII half: contiguous 0x20..0x7E, every codepoint present and carrying the shared advance.
+    var cp: u32 = ascii.printable_lo;
+    while (cp <= ascii.printable_hi) : (cp += 1) {
+        if (back.lookup(cp)) |g| {
+            assert(g.advance == glyph_advance);
+        } else return error.AsciiCodepointMissing;
+    }
+
+    // The Latin-1 half: block-complete 0xC0..0xFF, present everywhere but the two math signs (U+00D7, U+00F7).
+    cp = block.block_first;
+    while (cp <= block.block_last) : (cp += 1) {
+        const is_math = (cp == block.mult_sign or cp == block.div_sign);
+        if (back.lookup(cp)) |g| {
+            if (is_math) return error.MathSignFoundInLetterBlock;
+            assert(g.advance == glyph_advance);
+        } else {
+            if (!is_math) return error.BlockLetterMissing;
+        }
+    }
+
+    // The gap crux: the range 0x7F..0xBF between the two sub-fonts carries no glyph -- three spot checks that the ranges do
+    // not bleed into each other (DEL, the copyright sign, the inverted question mark all miss).
+    if (back.lookup(gap_del)) |_| return error.GapCodepointFound else {}
+    if (back.lookup(gap_copyright)) |_| return error.GapCodepointFound else {}
+    if (back.lookup(gap_inv_question)) |_| return error.GapCodepointFound else {}
+
+    // The space (0x20) is the one blank glyph, carrying the shared advance so text lays out evenly; every other glyph inks.
+    if (back.lookup(' ')) |g| {
+        if (ink_count(g.coverage) != 0) return error.SpaceNotBlank;
+        assert(g.advance == glyph_advance);
+    } else return error.SpaceMissing;
+    var blanks: u32 = 0;
+    var lo: u32 = cell_area;
+    var hi: u32 = 0;
+    var k: u32 = 0;
+    while (k < glyph_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (n == 0) {
+            blanks += 1;
+        } else {
+            if (n < lo) lo = n;
+            if (n > hi) hi = n;
+        }
+    }
+    // invariant: exactly one glyph is blank -- the space, and no other.
+    if (blanks != 1) return error.WrongBlankCount;
+
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof (the REDS #82 lesson).
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-latin1-text: {d} glyphs (printable ASCII 0x20..0x7E + Latin-1 letters U+00C0..U+00FF but the two math signs) at {d}x{d} round-trip byte-identical; strictly ascending and unique (two sub-fonts disjoint: 95 + 62), ASCII half contiguous, Latin-1 half block-complete, the gap 0x7F..0xBF empty; the space the one blank glyph, every other inked (ink {d}..{d} of {d}); encoded {d} bytes, raw {d}\n", .{
+        glyph_count, cell_w, cell_h, lo, hi, cell_area, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_latin1_text selftest\n", .{});
+    return 1;
+}

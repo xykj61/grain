@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260817.084250
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title font5x7 -- the Western European text font (ASCII + Latin-1 block), GREEN
+prompt recur: continue the loop, next agent-doable lap Lindy-first crux-first, Season G open media, send often
+think The prior lap this turn unified the whole Latin-1 letter block into one atlas. The next finishing-edge crux one level above: merge the two proven unifying fonts -- font5x7_ascii (95 printable ASCII, contiguous) and font5x7_latin1_block (62 Latin-1 letters) -- into the single font a Western European surface actually loads for text.
+think Confirmed the ASCII font's exports by grep: printable_lo=space (0x20), printable_hi='~' (0x7E), ascii_count=95, build_atlas, advance cell_w+1. The Latin-1 block font exports block_count=62, block_first/block_last/mult_sign/div_sign, same advance. The two ranges are disjoint by construction: ASCII ends 0x7E, Latin-1 opens 0xC0.
+think Mirrored the unifier pattern (gather borrows references, insertion sort to strictly-ascending), then proved three things the sub-fonts could not prove alone: the ASCII half contiguous 0x20..0x7E, the Latin-1 half block-complete (present but the two math signs), and the GAP between them (0x7F..0xBF) empty -- spot-checked at DEL 0x7F, copyright 0xA9, inverted question 0xBF -- so the two ranges do not bleed.
+think Kept the space's single-blank property from the ASCII font: proved exactly one glyph blank (the space) across the whole 157, every other inked, so text lays out evenly.
+obs GREEN on the first metal run, no red: 157 glyphs round-trip byte-identical, strictly ascending and unique (two sub-fonts disjoint 95+62), ASCII half contiguous, Latin-1 half block-complete, gap empty, exactly one blank glyph (the space), ink 3..20 of 35, encoded 6875 over raw 5495. tame_style_check bans clean, width-check exit 0, both files plain 7-bit ASCII.
+think Rota (d27, item 8) deep-read foundations/20260811-233509_the-singularity.md -- the night the tool began to tend itself and kept every promise: bounds do not lift for an autonomous hand, custody stays human, the tool doubles back and proves before it claims. This run is that discipline in motion -- each rung bounded, witnessed on metal, signed, sent, and stopping at the gates it must not cross.
+obs The gap proof is the rung's own contribution -- neither sub-font could state that nothing lives between them, since each only knows its own range; the merged font is where the empty band becomes a checkable claim.
+loom witness=font5x7_latin1_text_witness glyphs=157 encoded_bytes=6875 raw_bytes=5495 ink_lo=3 ink_hi=20 cell_area=35 blanks=1
+file image/font5x7_latin1_text.rye the text font -- merges font5x7_ascii + font5x7_latin1_block, proves contiguous/block-complete/gap-empty
+file tools/font5x7_latin1_text_witness.rish the witness -- builds, round-trips, proves the two halves whole and the gap empty on metal
+file image/README.md docs-sync -- the accented-Latin family entry names the Western European text font and its clean-gap crux; witness roster grew _latin1_text
+file session-logs/20260817-084250_font5x7-latin1-text-font.kyri this record
+file session-logs/README.md newest-first index row
+recommend keep-going the whole Western European printable text now reads as one font lookup (157 glyphs). Next open-media rungs stay open (proving the text font on a real render, the open glyph atlas beyond 5x7, a next symbol family). No network, no key, no funds -- no gate reached.
