@@ -1,0 +1,167 @@
+//! image/color_contrast.rye -- the WCAG contrast reading of an on-colour palette (Season G, the accessibility table a
+//! design system ships beside its swatches).
+//!
+//! Season G (Open Media Primitives) -- a single-stranded consumer that JOINS two proven floors one rung above them.
+//! image/color_swatch.rye grows a whole on-colour scale, each tone a fill paired with the legible ink a keeper writes on
+//! it. image/color.rye measures the WCAG contrast of any two colours (contrast_ratio_x100) and names the conformance bars
+//! (meets_aa, meets_aa_large, meets_aaa). Neither reads the other's whole palette. This rung pairs them into the table a
+//! design system ships beside its colours: for every swatch, the exact contrast of its ink against its fill and which WCAG
+//! bar that ink clears -- AA-large, AA-normal, AAA -- so a keeper reads back not just a palette but a proof of which tones
+//! are legible body text, which are legible only at large sizes, and which reach the AAA bar.
+//!
+//! Compose, not braid: color_swatch DECIDES each fill-and-ink pair, color DECIDES each contrast and conformance bar, and
+//! this module only READS one measurement per swatch -- no new storage, codec, palette, or maths. Each reading is a pure
+//! read over the two existing verbs, so both modules' proofs carry through untouched. The report is HONEST rather than
+//! flattering: readable_ink picks the higher-contrast of black and white for each fill, yet a mid-tone fill can leave even
+//! the better ink short of the AA-normal bar, so this table reports each tone truthfully rather than assuming a whole scale
+//! clears AA. That honesty is the point -- a design system needs to know WHICH tones need large text, not a blanket claim.
+//! No network, no key, no funds -- the contrast table Brushstroke and Skate read the day the design system lands, on our
+//! own open colour model.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/color_contrast.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const color_swatch = @import("color_swatch.rye");
+
+pub const color_contrast_version = "20260817.124200";
+
+/// The most readings a single report ever holds -- shared with color_swatch's ceiling, so a contrast table is bounded by
+/// the very same budget as the palette it reads. No report is ever unbounded.
+pub const report_max_tones: u32 = color_swatch.swatch_max_tones;
+
+/// One swatch's contrast reading: the exact WCAG ratio of its ink against its fill (x100, so 4.50:1 is 450), and which
+/// conformance bars that ink clears. A design-system accessibility row -- the number and the three yes/no bars together.
+pub const Reading = struct {
+    ratio_x100: u32 = 0,
+    meets_aa: bool = false,
+    meets_aa_large: bool = false,
+    meets_aaa: bool = false,
+};
+
+/// The contrast reading of one swatch -- the ink's WCAG ratio against the fill, and the three conformance bars. A pure
+/// read over color's own contrast measurement, so nothing here re-derives what color.rye already proves.
+pub fn reading_for(sw: color_swatch.Swatch) Reading {
+    const ratio = color.contrast_ratio_x100(sw.ink, sw.fill);
+    // invariant: a WCAG ratio lands between 1.00 and 21.00 on the x100 scale -- the band color.rye guarantees.
+    assert(ratio >= 100);
+    assert(ratio <= 2100);
+    const aa = color.meets_aa(sw.ink, sw.fill);
+    const aa_large = color.meets_aa_large(sw.ink, sw.fill);
+    const aaa = color.meets_aaa(sw.ink, sw.fill);
+    // invariant: the bars nest -- clearing the AA-normal bar always clears the easier AA-large bar.
+    assert(aa_large or !aa);
+    // invariant: the bars nest the other way too -- clearing AAA always clears the easier AA-normal bar.
+    assert(aa or !aaa);
+    return .{ .ratio_x100 = ratio, .meets_aa = aa, .meets_aa_large = aa_large, .meets_aaa = aaa };
+}
+
+/// Read a whole palette's contrast into `dst` -- one Reading per swatch, in order. A length mismatch refuses by name,
+/// having written nothing, so a caller can never read a reading against the wrong swatch.
+pub fn read_scale(swatches: []const color_swatch.Swatch, dst: []Reading) !void {
+    // invariant: every swatch gets exactly one reading -- the table and the palette are the same length.
+    if (dst.len != swatches.len) return error.ReportLenMismatch;
+    // invariant: a report holds at least one reading and never more than the bounded ceiling.
+    if (dst.len < 1) return error.ReportTooShort;
+    if (dst.len > report_max_tones) return error.ReportTooLong;
+    // The length is bounded above by the ceiling, so the seam cast to a u32 count is safe.
+    const count: u32 = @intCast(dst.len);
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        dst[i] = reading_for(swatches[i]);
+    }
+    // invariant: the first reading is exactly reading_for of the first swatch -- the table hides nothing.
+    assert(dst[0].ratio_x100 == color.contrast_ratio_x100(swatches[0].ink, swatches[0].fill));
+}
+
+// --- selftest: prove each reading measures its own swatch, the bars nest, and the report reads the whole palette honestly
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    _ = garden;
+
+    // Grow a nine-swatch on-colour scale from a blue seed, then read its whole contrast table. The fills and inks are
+    // color_swatch's own; this module only measures them, so the readings compose rather than re-derive.
+    const blue = color.Rgba{ .r = 40, .g = 90, .b = 200, .a = 255 };
+    var swatches: [9]color_swatch.Swatch = undefined;
+    try color_swatch.readable_scale(blue, swatches[0..]);
+    var readings: [9]Reading = undefined;
+    try read_scale(swatches[0..], readings[0..]);
+
+    // Every reading measures its own swatch's ink against its own fill -- nothing hidden, nothing crossed.
+    var i: u32 = 0;
+    while (i < 9) : (i += 1) {
+        const want = color.contrast_ratio_x100(swatches[i].ink, swatches[i].fill);
+        if (readings[i].ratio_x100 != want) return error.RatioNotMeasured;
+        // The bars agree with color's own predicates on the same swatch.
+        if (readings[i].meets_aa != color.meets_aa(swatches[i].ink, swatches[i].fill)) return error.AaDisagrees;
+        if (readings[i].meets_aaa != color.meets_aaa(swatches[i].ink, swatches[i].fill)) return error.AaaDisagrees;
+    }
+
+    // The bars NEST every row: AAA implies AA-normal implies AA-large. A stronger bar never passes where a weaker one fails.
+    i = 0;
+    while (i < 9) : (i += 1) {
+        if (readings[i].meets_aaa and !readings[i].meets_aa) return error.AaaWithoutAa;
+        if (readings[i].meets_aa and !readings[i].meets_aa_large) return error.AaWithoutAaLarge;
+    }
+
+    // The endpoints clear AA-normal -- black on the near-white tint and white on the deep shade are both legible body text,
+    // exactly the guarantee color_swatch's own crossover proof gives, now read back as a number at or above the 450 bar.
+    if (!readings[0].meets_aa) return error.LightestFailsAa;
+    if (!readings[8].meets_aa) return error.DarkestFailsAa;
+    if (readings[0].ratio_x100 < color.contrast_aa_normal) return error.LightestRatioBelowAa;
+    if (readings[8].ratio_x100 < color.contrast_aa_normal) return error.DarkestRatioBelowAa;
+
+    // This blue on-colour ramp clears AA-normal on EVERY tone -- readable_ink's pick is strong enough across the whole
+    // nine-step scale, a real positive the metal shows (not merely the endpoints color_swatch already proved). Every
+    // reading also sits at or above the WCAG 1.00 floor by construction.
+    i = 0;
+    while (i < 9) : (i += 1) {
+        if (readings[i].ratio_x100 < 100) return error.RatioBelowFloor;
+        if (!readings[i].meets_aa) return error.RampToneBelowAa;
+    }
+
+    // HONEST, not flattering: the report tells the truth about a FAILING row too. A deliberately low-contrast swatch -- a
+    // mid grey ink on a near-equal grey fill, the kind a careless hand-built palette produces -- reads below AA-normal, and
+    // the reading says so plainly rather than blanket-passing it. This proves the table reports both legible and illegible
+    // pairs faithfully, which is the whole reason a design system ships it.
+    const dim = color_swatch.Swatch{
+        .fill = color.Rgba{ .r = 128, .g = 128, .b = 128, .a = 255 },
+        .ink = color.Rgba{ .r = 160, .g = 160, .b = 160, .a = 255 },
+    };
+    const dim_reading = reading_for(dim);
+    if (dim_reading.meets_aa) return error.DimRowFalselyPassesAa;
+    if (dim_reading.ratio_x100 >= color.contrast_aa_normal) return error.DimRatioNotBelowAa;
+    if (dim_reading.ratio_x100 < 100) return error.DimRatioBelowFloor;
+
+    // The report refuses a length that does not match the palette -- a reading can never land against the wrong swatch.
+    var short: [8]Reading = undefined;
+    if (read_scale(swatches[0..], short[0..])) |_| return error.MismatchNotRefused else |err| {
+        if (err != error.ReportLenMismatch) return error.WrongMismatchError;
+    }
+
+    // Determinism: the same palette reads byte-for-byte the same table every time.
+    var a_tab: [9]Reading = undefined;
+    var b_tab: [9]Reading = undefined;
+    try read_scale(swatches[0..], a_tab[0..]);
+    try read_scale(swatches[0..], b_tab[0..]);
+    i = 0;
+    while (i < 9) : (i += 1) {
+        if (a_tab[i].ratio_x100 != b_tab[i].ratio_x100) return error.ReportNotDeterministic;
+        if (a_tab[i].meets_aa != b_tab[i].meets_aa) return error.ReportBarsNotDeterministic;
+    }
+
+    print("GREEN image-color-contrast: a WCAG contrast table read over a whole on-colour palette; each reading measures its own swatch's ink against its own fill (agreeing byte-for-byte with color.contrast_ratio_x100 and color.meets_aa/meets_aaa); the three conformance bars nest every row (AAA implies AA-normal implies AA-large); this blue on-colour ramp clears the AA-normal bar (450) on every one of its nine tones, not merely the endpoints color_swatch's crossover proof promises; the report is honest rather than flattering -- a deliberately low-contrast grey-on-grey swatch reads below AA-normal and the table says so plainly, so it reports illegible pairs as faithfully as legible ones; a length that does not match the palette refuses ReportLenMismatch by name having written nothing; the same palette reads the same table byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: color_contrast selftest\n", .{});
+    return 1;
+}
