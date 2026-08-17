@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260817.080221
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title font5x7 circumflex vowels grown by composition, GREEN
+prompt autonomous loop -- take the next agent-doable lap Lindy-first crux-first, send often, deep-read one council-rota doc, stop only at custody gates
+think The live edge is Season G's open-media font family. Two laps back landed image/glyph_accent.rye's compose_accent_atlas (the accent economy proven on the grave mark), and the next lap grew the acute set by composition (image/font5x7_acute.rye, a second mark). REMEMBER and image/README.md name the next crux outright: draw the circumflex, tilde, and diaeresis marks once each and grow their whole sets from a table, each its own round. Circumflex is next in the trio and the interesting one -- a centered, symmetric caret rather than a lean -- so it is crux-first.
+think Read glyph_accent.rye (the tool), font5x7_acute.rye (the second-mark pattern to mirror), font5x7_circumflex.rye (the hand-drawn parity target), and font5x7_lower.rye (the base). Verified by hand that lowercase a/e/o/u carry blank rows 0-1 and their rows 2..6 equal the hand-drawn circumflex bodies exactly, so overlay(base, caret rows 0-1 "..#.."/".#.#.") reproduces the hand-drawn circumflex byte-for-byte for those four vowels.
+think The dotted i circumflex (U+00EE) is left out honestly: the lowercase 'i' carries a dot on its own top row, so a caret overlaid there would keep the dot AND add the peak. The hand-drawn corpus draws it distinctly, exactly as font5x7_acute omits the i acute and glyph_accent omits the i grave for the same reason.
+think Wrote image/font5x7_circumflex_comp.rye modeled on font5x7_acute.rye: draw the caret once, map a/e/o/u to their ascending circumflex codepoints (U+00E2, U+00EA, U+00F4, U+00FB), grow the atlas with accent.compose_accent_atlas, then prove byte-for-byte parity against font5x7_circumflex's own coverage, gfa1 round-trip, presence, distinctness, legibility, and -- the circumflex-specific crux -- the caret centered and symmetric on the composed letter (apex on the center column, no ink in either half up top, one equal leg to each side on the row beneath).
+obs First metal run GREEN, no red: 4 vowels grown from one caret and a four-row table, each byte-for-byte the hand-drawn coverage, round-trip byte-identical, ink 15..17 of 35, every caret centered and symmetric. The economy is now proven on a THIRD mark (grave, acute, circumflex); the centered mark composes as cleanly as the two leaning ones.
+obs Named the file font5x7_circumflex_comp.rye rather than the taken font5x7_circumflex.rye -- the composed corpus is a parity-proven twin of the hand-drawn one, exactly as font5x7_acute is a composed twin of the acute vowels living in font5x7_latin1. The hand-drawn corpus stays the audit-by-eye specification; the composed one proves the tool reaches the same bytes.
+obs Rota lap (d27, item 2) deep-read foundations/20260706-185112_follow-our-compass.md -- the return habit, witness before narrative, the finishing edge. Staying on the sanctioned next rung of the open journey (rather than opening a new domain) is the compass pointing home; a small green increment sent as its own round is followable on GitHub.
+loom witness=font5x7_circumflex_comp_witness glyphs=4 encoded_bytes=206 raw_bytes=140 ink_lo=15 ink_hi=17
+file image/font5x7_circumflex_comp.rye the circumflex vowels grown by composition, byte-for-byte the hand-drawn font5x7_circumflex coverage, GREEN
+file tools/font5x7_circumflex_comp_witness.rish the companion Rishi witness, builds and proves the corpus on metal
+file image/README.md accreted the font5x7_circumflex_comp entry and reframed the next-rungs line to tilde/diaeresis (docs-sync)
+file crux/REMEMBER.md live edge notes the third accent mark grown by composition
+recommend keep-going draw the tilde mark once and grow its whole set from a table the same way, then the diaeresis, each its own signed round

@@ -1,0 +1,31 @@
+# tools/font5x7_circumflex_comp_witness.rish -- the circumflex vowels GROWN by composition prove themselves on metal (Season G).
+#
+# Season G (Open Media Primitives) - the third accent mark grown rather than drawn. Where image/glyph_accent.rye
+# proved compose_accent_atlas on the grave mark and image/font5x7_acute.rye grew the acute set, image/font5x7_circumflex_comp.rye
+# grows the a/e/o/u circumflex set (U+00E2, U+00EA, U+00F4, U+00FB) by overlaying a single caret onto the lowercase
+# base through a four-row table. The crux this witness proves: each composed circumflex vowel equals the hand-drawn
+# image/font5x7_circumflex.rye's own coverage BYTE-FOR-BYTE, and the composed atlas round-trips through the gfa1
+# encoder/decoder byte-for-byte -- so the corpus grown by composition IS the corpus drawn by hand, proven on a third
+# mark. The dotted i circumflex is omitted honestly (its base carries a dot the caret would not replace). No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/font5x7_circumflex_comp_witness.rish
+
+say "font5x7-circumflex-comp: Language EN -- Season G open-media primitive; the circumflex vowels grown by composition from one caret and a four-row table over the lowercase base, the O(letters + accents) economy proven on a third mark (grave, acute, now circumflex)."
+say "font5x7-circumflex-comp: Style Radiant -- the hand-drawn circumflex corpus is the specification; the composed vowels equal its coverage byte-for-byte and round-trip through gfa1 byte-identical, so a corpus grown by composition is the corpus drawn by hand, our own open font, no external font to license."
+say "font5x7-circumflex-comp: Lens TAME -- u32 in-memory counts; the table bounded; accented codepoints strictly ascending (the order the encoder trusts); invariants positive (parity per row, the base present, the caret centered and symmetric); refusals named; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/font5x7_circumflex_comp"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/font5x7_circumflex_comp.rye -femit-bin=${bin}"]
+assert build.ok else "font5x7-circumflex-comp: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "font5x7-circumflex-comp: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "font5x7-circumflex-comp: ${out}"
+
+let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-font5x7-circumflex-comp' && echo yes"]
+assert (trim green.out) == "yes" else "font5x7-circumflex-comp: selftest did not print the GREEN corpus line"

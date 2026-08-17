@@ -1,0 +1,266 @@
+//! image/font5x7_circumflex_comp.rye -- the open circumflex vowels corpus, GROWN BY COMPOSITION (Season G, the overlay economy for a third mark).
+//!
+//! Season G (Open Media Primitives) - font content for the open glyph atlas image/glyph.rye (gfa1), set beside the
+//! hand-drawn accent corpora (image/font5x7_grave.rye the grave vowels, image/font5x7_circumflex.rye the circumflex
+//! drawn by hand, image/font5x7_latin1.rye the Iberian acute and cedilla) and beside image/font5x7_acute.rye, the
+//! acute set grown the same way. Where the hand-drawn circumflex corpus draws every letter, this one draws NOTHING
+//! but a single circumflex mark and grows the whole composable circumflex vowel set by composition --
+//! image/glyph_accent.rye's compose_accent_atlas overlays one caret onto each mapped lowercase base, so a circumflex,
+//! e circumflex, o circumflex, u circumflex (U+00E2, U+00EA, U+00F4, U+00FB) arrive from a four-row table plus one
+//! drawing rather than four. This is the THIRD mark to prove the accent economy on metal: image/glyph_accent.rye
+//! proved it for the grave, image/font5x7_acute.rye for the acute, and here the same tool grows the circumflex family.
+//!
+//! The crux stays byte-for-byte parity with the hand: each composed circumflex vowel equals the hand-drawn
+//! image/font5x7_circumflex.rye's own coverage for that codepoint, so the corpus grown by composition IS the corpus
+//! drawn by hand -- proven, not claimed. The i circumflex (U+00EE) is left out honestly: the lowercase 'i' carries a
+//! dot on its own top row, so a caret overlaid there would keep the dot AND add the peak; that letter is drawn
+//! distinctly in the hand-drawn circumflex corpus, exactly as image/font5x7_acute.rye omits the i acute for the same
+//! reason. The composed set is the four vowels whose base the mark does not disturb.
+//!
+//! The source stays plain ASCII (ASCII-first): codepoints are numeric literals (0x00E2 ...) and each letter is named
+//! in an ASCII comment, so no non-ASCII byte enters the file though the glyphs cover a non-ASCII range. The circumflex
+//! mark leans NOWHERE -- its apex sits on the center column (row 0), its two legs fall evenly to either side (row 1),
+//! the mirror axis of the leaning acute/grave pair -- and the composed atlas round-trips through the gfa1
+//! encoder/decoder byte-for-byte. No network, no key, no funds -- the marks a surface reads the day it prints a French
+//! or Portuguese name that ASCII cannot spell, grown on our own open font at a fraction of the drawing.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_circumflex_comp.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+const compose = @import("glyph_compose.rye");
+const accent = @import("glyph_accent.rye");
+const font_lower = @import("font5x7_lower.rye");
+const font_circumflex = @import("font5x7_circumflex.rye");
+
+pub const font5x7_circumflex_comp_version = "20260817.080221";
+
+/// Every glyph in this corpus shares one 5-wide, 7-tall cell -- the same body the ASCII, Greek, and Latin-1 corpora carry.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance: the cell width plus one column of daylight, the same advance the sibling corpora carry.
+pub const circumflex_advance: u8 = cell_w + 1;
+
+/// The corpus holds exactly the four composable circumflex vowels named in the table below (the i circumflex is
+/// drawn distinctly in the hand-drawn corpus, its dotted base disturbed by a mark).
+pub const circumflex_count: u32 = 4;
+
+/// Cells per glyph -- the coverage length every letter carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The column that separates the two halves of the cell. Columns 0-1 are the left half, columns 3-4 the right half;
+/// column 2 (the center) is where the circumflex apex sits and the two legs fall away from. The proof reads these.
+pub const center_col: u32 = 2;
+
+/// The circumflex combining mark, drawn ONCE -- the whole economy of this corpus. An apex on the center column (row 0)
+/// crowning two legs that fall evenly to columns 1 and 3 (row 1), the body rows blank; overlaid onto a lowercase vowel
+/// it yields the circumflex letter image/font5x7_circumflex.rye draws by hand. It leans NOWHERE -- the mirror axis of
+/// the leaning acute/grave pair, the difference between a circumflex letter and an acute or grave one.
+const circumflex_mark_art = [cell_h][]const u8{
+    "..#..",
+    ".#.#.",
+    ".....",
+    ".....",
+    ".....",
+    ".....",
+    ".....",
+};
+
+/// The composition table: four lowercase vowels, each mapped to its circumflex codepoint, strictly ascending by the
+/// accented codepoint (the order the gfa1 encoder trusts). The dotted 'i' (U+00EE) is left out honestly -- its base
+/// carries a dot the caret would not replace; the hand-drawn corpus draws it distinctly.
+///   0x00E2 a circumflex, 0x00EA e circumflex, 0x00F4 o circumflex, 0x00FB u circumflex.
+const circumflex_map = [circumflex_count]accent.AccentMap{
+    .{ .base = 'a', .accented = 0x00E2 },
+    .{ .base = 'e', .accented = 0x00EA },
+    .{ .base = 'o', .accented = 0x00F4 },
+    .{ .base = 'u', .accented = 0x00FB },
+};
+
+/// Lift the circumflex mark's ASCII art into a freshly allocated coverage grid of exactly cell_area bytes: 255 for ink,
+/// 0 for background. The art's own shape is asserted, so a mistyped row is a stopped line rather than a bad mark.
+fn coverage_from_art(allocator: std.mem.Allocator, art: [cell_h][]const u8) ![]u8 {
+    // invariant: a coverage grid is exactly the shared cell area, within the atlas ceiling.
+    assert(cell_area >= 1);
+    assert(cell_area <= glyph.coverage_max);
+    const cov = try allocator.alloc(u8, cell_area);
+    var idx: u32 = 0;
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        const row = art[r];
+        // invariant: every drawn row is exactly the cell width -- the art matches the grid.
+        assert(row.len == cell_w);
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            cov[idx] = if (row[c] == '#') 255 else 0;
+            idx += 1;
+        }
+    }
+    // invariant: the whole grid was filled, no cell left unwritten.
+    assert(idx == cell_area);
+    return cov;
+}
+
+/// Build the circumflex-accent vowels atlas by composition: overlay the one caret onto each mapped lowercase base,
+/// yielding four accented glyphs at the named ascending codepoints. The gfa1 encoder accepts the result directly.
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the corpus is the four named composable circumflex vowels and no more.
+    assert(circumflex_count == 4);
+    assert(cell_area == 35);
+    const lower = try font_lower.build_atlas(allocator);
+    const mark = try coverage_from_art(allocator, circumflex_mark_art);
+    // The tool from image/glyph_accent.rye does the growing -- a table plus one mark, not four drawings.
+    const atlas = try accent.compose_accent_atlas(allocator, &lower, mark, circumflex_map[0..], circumflex_advance);
+    // invariant: exactly one composed glyph per table row, at the shared cell.
+    assert(atlas.glyphs.len == circumflex_count);
+    assert(atlas.cell_area() == cell_area);
+    return atlas;
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- the legibility signal a blank glyph would fail.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+/// Count the inked cells in row r of a glyph, restricted to the half-open column band [c0, c1). The circumflex proof
+/// reads the apex (center column, row 0) and each leg (the two halves, row 1) with this one reader. Row 0 is the top.
+fn row_band_ink(cov: []const u8, r: u32, c0: u32, c1: u32) u32 {
+    // invariant: the row index sits inside the shared cell, over the shared grid.
+    assert(r < cell_h);
+    assert(cov.len == cell_area);
+    // invariant: the column band is well-ordered and inside the cell width.
+    assert(c0 <= c1);
+    assert(c1 <= cell_w);
+    var n: u32 = 0;
+    var c: u32 = c0;
+    while (c < c1) : (c += 1) {
+        if (cov[r * cell_w + c] != 0) n += 1;
+    }
+    // invariant: the band count never exceeds the band it was counted over.
+    assert(n <= c1 - c0);
+    return n;
+}
+
+/// The coverage grid of a codepoint's glyph in the built atlas, or a named miss -- the reader the placement proofs use.
+fn coverage_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) ![]const u8 {
+    if (atlas.lookup(codepoint)) |g| return g.coverage;
+    return error.CircumflexVowelMissing;
+}
+
+// --- selftest: grow the circumflex atlas by composition, prove parity with the hand, round-trip, distinct, legible, centered --
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built atlas is the four-vowel corpus at the shared cell.
+    assert(glyph_count == circumflex_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // The crux -- byte-for-byte parity with the hand-drawn corpus. Each composed circumflex vowel equals the hand-drawn
+    // font5x7_circumflex corpus's own coverage for that codepoint, so the corpus grown by composition IS the corpus
+    // drawn by hand -- proven on a third mark after the grave and the acute.
+    const hand = try font_circumflex.build_atlas(garden);
+    var matched: u32 = 0;
+    var i: u32 = 0;
+    while (i < atlas.glyphs.len) : (i += 1) {
+        const g = atlas.glyphs[i];
+        const want = hand.lookup(g.codepoint) orelse return error.CircumflexHandMissing;
+        if (!std.mem.eql(u8, g.coverage, want.coverage)) return error.ComposedMismatch;
+        if (g.advance != circumflex_advance) return error.ComposedWrongAdvance;
+        matched += 1;
+    }
+    // invariant: every composed vowel matched its hand-drawn twin.
+    assert(matched == circumflex_count);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // Four present vowels: every mapped codepoint looks up and carries the shared advance; an unaccented ASCII vowel misses.
+    var d: u32 = 0;
+    while (d < circumflex_count) : (d += 1) {
+        const cp = circumflex_map[d].accented;
+        if (back.lookup(cp)) |g| {
+            assert(g.codepoint == cp);
+            assert(g.advance == circumflex_advance);
+        } else return error.CircumflexVowelMissing;
+    }
+    if (back.lookup('a')) |_| return error.NonCircumflexFound else {}
+
+    // Distinctness: no two letters share identical coverage -- the a circumflex and the o circumflex differ, the e
+    // circumflex and the u circumflex differ (catches a copy slip that would leave two names spelled with one glyph).
+    var a: u32 = 0;
+    while (a < circumflex_count) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b < circumflex_count) : (b += 1) {
+            if (std.mem.eql(u8, atlas.glyphs[a].coverage, atlas.glyphs[b].coverage)) return error.CircumflexVowelsNotDistinct;
+        }
+    }
+
+    // Legibility: each letter's ink count sits inside an honest band -- the floor where the o/u circumflex (their
+    // lightest) still read, the ceiling where the a/e circumflex (their heaviest) still resolve as letters, not blocks.
+    const ink_min: u32 = 9;
+    const ink_max: u32 = 19;
+    var lo: u32 = cell_area;
+    var hi: u32 = 0;
+    var k: u32 = 0;
+    while (k < circumflex_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (n < ink_min or n > ink_max) return error.CircumflexVowelIllegible;
+        if (n < lo) lo = n;
+        if (n > hi) hi = n;
+    }
+    // invariant: the observed ink band stayed inside the honest bounds.
+    assert(lo >= ink_min);
+    assert(hi <= ink_max);
+
+    // Circumflex placement -- the centered, symmetric peak the mark carries, proven on the composed letter: the apex
+    // sits on the center column of the top row (no ink in either half up there), and the row beneath carries one leg
+    // in the left half and one in the right, the two legs EQUAL. Where the acute leans right and the grave leans left,
+    // this leans nowhere -- the mirror axis. Each guard is toothed on its own -- a drifted apex or a lopsided caret reds by name.
+    var m: u32 = 0;
+    while (m < circumflex_count) : (m += 1) {
+        const cov = try coverage_of(&atlas, circumflex_map[m].accented);
+        if (!(row_band_ink(cov, 0, center_col, center_col + 1) >= 1)) return error.CircumflexNotCentered;
+        if (!(row_band_ink(cov, 0, 0, center_col) == 0)) return error.CircumflexApexDriftedLeft;
+        if (!(row_band_ink(cov, 0, center_col + 1, cell_w) == 0)) return error.CircumflexApexDriftedRight;
+        const leg_left = row_band_ink(cov, 1, 0, center_col);
+        const leg_right = row_band_ink(cov, 1, center_col + 1, cell_w);
+        if (!(leg_left >= 1)) return error.CircumflexLegLeftMissing;
+        if (!(leg_right >= 1)) return error.CircumflexLegRightMissing;
+        if (!(leg_left == leg_right)) return error.CircumflexLegsAsymmetric;
+    }
+
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof.
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-circumflex-comp: {d} circumflex vowels U+00E2,U+00EA,U+00F4,U+00FB grown by composition (one caret + a {d}-row table), each byte-for-byte the hand-drawn font5x7_circumflex coverage; round-trip byte-identical; all present, distinct, legible (ink {d}..{d} of {d}); every caret centered and symmetric (the mirror axis of the acute/grave pair); encoded {d} bytes, raw {d}\n", .{
+        glyph_count, circumflex_count, lo, hi, cell_area, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_circumflex_comp selftest\n", .{});
+    return 1;
+}
