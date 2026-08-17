@@ -1,0 +1,40 @@
+# tools/frames_delta_video_witness.rish -- the open inter-frame codec proves itself on metal (Season G, video).
+#
+# Season G (Open Media Primitives) - the motion floor above image/frames.rye (gfv1, intra-frame). Where gfv1
+# (tools/frames_video_witness.rish) stores every frame whole, gfd1 stores the first frame as a keyframe and every
+# later frame as only the pixels that changed from the frame before it.
+#
+# The crux this witness proves is a REAL inter-frame video codec: image/frames_delta.rye, a keyframe plus sparse,
+# strictly-ascending (pixel index, RGBA) deltas. A full round-trip recovers dimensions, orientation, fps, frame
+# count, and every frame's RGBA bytes byte-for-byte; a mostly-static clip's three-pixel delta frame is far smaller
+# than its whole keyframe (the reason inter-frame exists); and six corruptions each refuse by name (BadMagic,
+# BadEndMarker, TrailingData, Truncated, FirstFrameNotKey, BadOrientation). Content-addressing stays external, so
+# image/ keeps zero dependency on crypto/. No network, no key, no funds -- the motion a surface plays back the day
+# it wants a moving picture, on our own open codec.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/frames_delta_video_witness.rish
+
+say "frames-delta: Language EN -- Season G's inter-frame video rung; a keyframe plus per-frame pixel deltas, verified bytes that reconstruct within named bounds rather than playing garbage."
+say "frames-delta: Style Radiant -- the delta is a sparse ascending list of (index, RGBA) edits against the frame before, so decode(encode(video)) recovers every frame byte for byte; our own open codec, no external library to license."
+say "frames-delta: Lens TAME -- u32 in-memory counts, u8 pixel bytes; every buffer names a maximum (pixel_count - gfd_max_frames - the QOI ceilings it rests on); each function states its invariants positively; delta indices strictly ascending and bounded; compression a reported and measured fact; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/frames_delta"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/frames_delta.rye -femit-bin=${bin}"]
+assert build.ok else "frames-delta: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "frames-delta: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "frames-delta: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-frames-delta' && echo yes"]
+assert (trim green.out) == "yes" else "frames-delta: selftest did not print the GREEN codec line"
+
+let round = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-trip byte-identical' && echo yes"]
+assert (trim round.out) == "yes" else "frames-delta: round-trip was not byte-identical"
+
+say "frames-delta: GREEN -- the open inter-frame codec whole; a keyframe plus deltas round-trips byte-identical, the delta far smaller than the keyframe, every refusal named."

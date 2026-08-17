@@ -1,0 +1,434 @@
+//! image/frames_delta.rye -- the open inter-frame video codec (gfd1, Season G, the rung after the gfv1 container).
+//!
+//! Season G (Open Media Primitives) - the motion floor above image/frames.rye (gfv1, intra-frame). Where gfv1
+//! stores every frame whole as its own QOI stream, gfd1 stores the FIRST frame as a whole keyframe and every
+//! later frame as only the pixels that CHANGED from the frame before it. A clip whose frames barely move -- a
+//! talking head, a slide, a still scene with a moving cursor -- shrinks to a keyframe plus a handful of pixel
+//! edits, the real win an inter-frame codec exists for. It rests on the proven ground of image/qoi.rye (the
+//! keyframe) and image/frames.rye (the container shape and orientation), and adds only the delta: a sparse,
+//! strictly-ascending list of (pixel index, RGBA) edits per frame.
+//!
+//! A gfd1 frame is self-describing: one kind byte (0 keyframe, 1 delta), a big-endian u32 payload length, then
+//! either a whole QOI stream or a delta payload (u32 change_count, then change_count entries of u32 index + 4
+//! RGBA bytes). The first frame must be a keyframe; a delta frame reconstructs from the frame before it. Every
+//! failure is a NAMED refusal -- nothing past the header is trusted until each frame reconstructs to exactly the
+//! container's dimensions and the stream ends in the canonical eight-byte marker. The property that matters is
+//! provable on metal: decode(encode(video)) recovers every frame's RGBA bytes BYTE-FOR-BYTE, and a mostly-static
+//! clip's delta frames are far smaller than its keyframe. Content-addressing stays external (Tablecloth keys it,
+//! as for images), so image/ keeps zero dependency on crypto/. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/frames_delta.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const frames = @import("frames.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const frames_delta_version = "20260816.233500";
+
+/// Header is fixed, the gfv1 shape one magic apart: 4 magic - 4 width - 4 height (BE) - 1 orientation - 1 fps -
+/// 2 frame_count (BE).
+pub const header_len: u32 = 16;
+
+/// Each frame opens with one kind byte, then a big-endian u32 naming its payload length.
+pub const kind_field: u32 = 1;
+pub const frame_len_field: u32 = 4;
+
+/// The two frame kinds -- a whole QOI keyframe, or a sparse delta against the frame before.
+pub const frame_key: u8 = 0;
+pub const frame_delta: u8 = 1;
+
+/// One delta entry is a big-endian u32 pixel index plus four RGBA bytes.
+pub const delta_entry_len: u32 = 8;
+
+/// The delta payload opens with a big-endian u32 change_count, then that many entries.
+pub const change_count_field: u32 = 4;
+
+/// The stream ends in exactly these eight bytes -- the same family echo as qoi.rye and frames.rye.
+pub const end_marker = [8]u8{ 0, 0, 0, 0, 0, 0, 0, 1 };
+
+/// A clip holds at most this many frames -- the same honest ceiling gfv1 names.
+pub const gfd_max_frames: u32 = frames.gfv_max_frames;
+
+fn read_u32_be(b: []const u8) u32 {
+    // invariant: a big-endian read needs its four bytes present.
+    assert(b.len >= 4);
+    return (@as(u32, b[0]) << 24) | (@as(u32, b[1]) << 16) | (@as(u32, b[2]) << 8) | @as(u32, b[3]);
+}
+
+fn write_u32_be(b: []u8, v: u32) void {
+    // invariant: a big-endian write needs its four bytes of room.
+    assert(b.len >= 4);
+    b[0] = @intCast((v >> 24) & 0xFF);
+    b[1] = @intCast((v >> 16) & 0xFF);
+    b[2] = @intCast((v >> 8) & 0xFF);
+    b[3] = @intCast(v & 0xFF);
+}
+
+/// What an encode produced -- the byte length written, the frame count, and how many of those frames were stored
+/// as deltas, so a witness can prove the inter-frame win.
+pub const EncodeResult = struct {
+    len: u32 = 0,
+    frame_count: u32 = 0,
+    delta_frames: u32 = 0,
+};
+
+/// A safe upper bound on a gfd1 clip's encoded size. A frame is at worst a keyframe (whole QOI) or a full delta
+/// (every pixel changed); the bound takes the larger, so a caller's buffer never overflows whatever encode picks.
+pub fn encoded_bound(pixels: u32, frame_count: u32) u32 {
+    // invariant: the bound covers a clip the format can actually hold.
+    assert(pixels <= qoi.qoi_max_pixels);
+    assert(frame_count >= 1);
+    assert(frame_count <= gfd_max_frames);
+    const key_payload = qoi.encoded_bound(pixels);
+    const delta_payload = change_count_field + pixels * delta_entry_len;
+    const worst_payload = if (key_payload > delta_payload) key_payload else delta_payload;
+    const per_frame = kind_field + frame_len_field + worst_payload;
+    return header_len + frame_count * per_frame + @as(u32, end_marker.len);
+}
+
+/// Encode a Video into a caller-provided buffer (sized by `encoded_bound`). The first frame is a whole QOI
+/// keyframe; each later frame stores only the pixels that differ from the frame before it, as a strictly
+/// ascending (index, RGBA) list. Returns the byte length, frame count, and delta-frame count.
+pub fn encode(allocator: std.mem.Allocator, video: *const frames.Video, dst: []u8) !EncodeResult {
+    // invariant: a clip has at least one frame and no more than the ceiling.
+    assert(video.frames.len >= 1);
+    assert(video.frames.len <= gfd_max_frames);
+    const frame_count: u32 = @intCast(video.frames.len);
+    const pixel_count = video.frame_pixels();
+    if (dst.len < encoded_bound(pixel_count, frame_count)) return error.EncodeOverflow;
+    // invariant: the stored orientation matches the dimensions, so encode never writes a lie.
+    assert(video.orientation == frames.derive_orientation(video.width, video.height));
+    assert(video.fps >= 1);
+
+    dst[0] = 'g';
+    dst[1] = 'f';
+    dst[2] = 'd';
+    dst[3] = '1';
+    write_u32_be(dst[4..8], video.width);
+    write_u32_be(dst[8..12], video.height);
+    dst[12] = video.orientation;
+    dst[13] = video.fps;
+    dst[14] = @intCast((frame_count >> 8) & 0xFF);
+    dst[15] = @intCast(frame_count & 0xFF);
+
+    const scratch = try allocator.alloc(u8, qoi.encoded_bound(pixel_count));
+
+    var w: u32 = header_len;
+    var delta_frames: u32 = 0;
+    var f: u32 = 0;
+    while (f < frame_count) : (f += 1) {
+        const pm = &video.frames[f];
+        // invariant: every frame shares the container's dimensions.
+        assert(pm.width == video.width);
+        assert(pm.height == video.height);
+
+        if (f == 0) {
+            dst[w] = frame_key;
+            w += kind_field;
+            const len_slot = w;
+            w += frame_len_field;
+            const res = try qoi.encode(pm, scratch);
+            tally_copy.copy_disjoint(u8, dst[w .. w + res.len], scratch[0..res.len]);
+            w += res.len;
+            write_u32_be(dst[len_slot .. len_slot + frame_len_field], res.len);
+        } else {
+            dst[w] = frame_delta;
+            w += kind_field;
+            const len_slot = w;
+            w += frame_len_field;
+            const payload_start = w;
+            const cc_slot = w;
+            w += change_count_field;
+
+            const prev = video.frames[f - 1].pixels;
+            const cur = pm.pixels;
+            var change_count: u32 = 0;
+            var i: u32 = 0;
+            while (i < pixel_count) : (i += 1) {
+                const off = i * 4;
+                // A pixel changed when any of its four RGBA bytes differs from the frame before.
+                if (!std.mem.eql(u8, cur[off .. off + 4], prev[off .. off + 4])) {
+                    write_u32_be(dst[w .. w + 4], i);
+                    w += 4;
+                    tally_copy.copy_disjoint(u8, dst[w .. w + 4], cur[off .. off + 4]);
+                    w += 4;
+                    change_count += 1;
+                }
+            }
+            write_u32_be(dst[cc_slot .. cc_slot + change_count_field], change_count);
+            const frame_len = w - payload_start;
+            write_u32_be(dst[len_slot .. len_slot + frame_len_field], frame_len);
+            delta_frames += 1;
+        }
+    }
+
+    var m: u32 = 0;
+    while (m < end_marker.len) : (m += 1) {
+        dst[w] = end_marker[m];
+        w += 1;
+    }
+
+    // invariant: the write stayed within the bound the caller sized against.
+    assert(w <= encoded_bound(pixel_count, frame_count));
+    return EncodeResult{ .len = w, .frame_count = frame_count, .delta_frames = delta_frames };
+}
+
+/// Reconstruct one delta frame: copy the previous frame's pixels, then apply the ascending (index, RGBA) edits.
+/// Every edit is bounded and ordered, so a malformed delta refuses by name rather than writing out of place.
+fn apply_delta(allocator: std.mem.Allocator, prev: []const u8, payload: []const u8, pixel_count: u32) ![]u8 {
+    // invariant: the previous frame is a full RGBA buffer for this clip's dimensions.
+    assert(prev.len == @as(usize, pixel_count) * 4);
+    if (payload.len < change_count_field) return error.BadDelta;
+    const change_count = read_u32_be(payload[0..change_count_field]);
+    if (change_count > pixel_count) return error.TooManyChanges;
+    // A delta payload is exactly its header plus its entries -- no fewer (Truncated), no more (TrailingData).
+    const expected: u64 = @as(u64, change_count_field) + @as(u64, change_count) * @as(u64, delta_entry_len);
+    if (payload.len != expected) return error.BadDelta;
+
+    const buf = try allocator.alloc(u8, @as(usize, pixel_count) * 4);
+    tally_copy.copy_disjoint(u8, buf, prev);
+
+    var q: u32 = change_count_field;
+    var c: u32 = 0;
+    var have_last = false;
+    var last_idx: u32 = 0;
+    while (c < change_count) : (c += 1) {
+        const idx = read_u32_be(payload[q .. q + 4]);
+        q += 4;
+        if (idx >= pixel_count) return error.ChangeOutOfRange;
+        // invariant: indices strictly ascend, so no duplicate and no backward write -- the decoder trusts order.
+        if (have_last and idx <= last_idx) return error.UnsortedChanges;
+        have_last = true;
+        last_idx = idx;
+        const off = @as(usize, idx) * 4;
+        tally_copy.copy_disjoint(u8, buf[off .. off + 4], payload[q .. q + 4]);
+        q += 4;
+    }
+    // invariant: applying the delta consumed the whole payload.
+    assert(q == payload.len);
+    return buf;
+}
+
+/// Decode a gfd1 byte stream into a freshly allocated Video. Every failure is a NAMED refusal; the first frame
+/// must be a keyframe, each frame reconstructs to the container's dimensions, and the stream ends in the marker.
+pub fn decode(allocator: std.mem.Allocator, bytes: []const u8) !frames.Video {
+    // invariant: a real gfd1 stream is at least a header and an end marker long.
+    if (bytes.len < header_len + end_marker.len) return error.Truncated;
+    if (!(bytes[0] == 'g' and bytes[1] == 'f' and bytes[2] == 'd' and bytes[3] == '1')) return error.BadMagic;
+
+    const width = read_u32_be(bytes[4..8]);
+    const height = read_u32_be(bytes[8..12]);
+    const orientation = bytes[12];
+    const fps = bytes[13];
+    const frame_count: u32 = (@as(u32, bytes[14]) << 8) | @as(u32, bytes[15]);
+
+    if (width == 0 or height == 0) return error.BadDimensions;
+    if (width > qoi.qoi_max_dim or height > qoi.qoi_max_dim) return error.TooLarge;
+    const total = @as(u64, width) * @as(u64, height);
+    if (total > qoi.qoi_max_pixels) return error.TooLarge;
+    const pixel_count: u32 = @intCast(total);
+
+    if (orientation != frames.derive_orientation(width, height)) return error.BadOrientation;
+    if (fps == 0) return error.BadFps;
+    if (frame_count == 0 or frame_count > gfd_max_frames) return error.BadFrameCount;
+
+    const out_frames = try allocator.alloc(qoi.Pixmap, frame_count);
+
+    var p: u32 = header_len;
+    var f: u32 = 0;
+    while (f < frame_count) : (f += 1) {
+        // invariant: a frame needs its kind byte and length prefix present.
+        if (@as(u64, p) + kind_field + frame_len_field > bytes.len) return error.Truncated;
+        const kind = bytes[p];
+        p += kind_field;
+        if (kind != frame_key and kind != frame_delta) return error.BadFrameKind;
+        if (f == 0 and kind != frame_key) return error.FirstFrameNotKey;
+
+        const frame_len = read_u32_be(bytes[p .. p + frame_len_field]);
+        p += frame_len_field;
+        if (@as(u64, p) + frame_len > bytes.len) return error.Truncated;
+        const payload = bytes[p .. p + frame_len];
+
+        if (kind == frame_key) {
+            const frame = try qoi.decode(allocator, payload);
+            if (frame.width != width or frame.height != height) return error.FrameDimsMismatch;
+            out_frames[f] = frame;
+        } else {
+            // A delta frame always has a keyframe before it (f > 0), guaranteed by the FirstFrameNotKey check.
+            const prev = out_frames[f - 1].pixels;
+            const buf = try apply_delta(allocator, prev, payload, pixel_count);
+            out_frames[f] = qoi.Pixmap{ .width = width, .height = height, .channels = 4, .colorspace = 0, .pixels = buf };
+        }
+        p += frame_len;
+    }
+
+    // The tail must be exactly the eight-byte end marker -- no fewer (Truncated), no more (TrailingData).
+    const remaining = @as(u64, bytes.len) - @as(u64, p);
+    if (remaining < end_marker.len) return error.Truncated;
+    if (remaining > end_marker.len) return error.TrailingData;
+    if (!std.mem.eql(u8, bytes[p .. p + end_marker.len], end_marker[0..])) return error.BadEndMarker;
+
+    // invariant: the decode read every frame and consumed the whole stream.
+    assert(f == frame_count);
+    assert(p + end_marker.len == bytes.len);
+    return frames.Video{
+        .width = width,
+        .height = height,
+        .orientation = orientation,
+        .fps = fps,
+        .frames = out_frames,
+    };
+}
+
+// --- selftest: encode a mostly-static clip that round-trips byte-for-byte, prove the delta win and each refusal -
+
+/// Build a per-pixel gradient keyframe, so the clip is not a trivial solid color.
+fn pattern_frame(allocator: std.mem.Allocator, width: u32, height: u32) !qoi.Pixmap {
+    const n = width * height;
+    const buf = try allocator.alloc(u8, @as(usize, n) * 4);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const off = @as(usize, i) * 4;
+        buf[off] = @intCast(i & 0xFF);
+        buf[off + 1] = @intCast((i *% 3) & 0xFF);
+        buf[off + 2] = @intCast((i *% 7) & 0xFF);
+        buf[off + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = width, .height = height, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+/// Copy a frame and change exactly `n` pixels, so the next frame differs from the last in a known, small count.
+fn nudged_frame(allocator: std.mem.Allocator, base: *const qoi.Pixmap, n: u32) !qoi.Pixmap {
+    const buf = try allocator.alloc(u8, base.pixels.len);
+    tally_copy.copy_disjoint(u8, buf, base.pixels);
+    var k: u32 = 0;
+    while (k < n) : (k += 1) {
+        const off = @as(usize, k) * 4;
+        // Flip a byte so the pixel genuinely differs from the base frame.
+        buf[off] = base.pixels[off] ^ 0xFF;
+    }
+    return qoi.Pixmap{ .width = base.width, .height = base.height, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+fn craft(allocator: std.mem.Allocator) !frames.Video {
+    const width: u32 = 16;
+    const height: u32 = 12; // 16x12 -> landscape, 192 pixels
+    const out = try allocator.alloc(qoi.Pixmap, 4);
+    out[0] = try pattern_frame(allocator, width, height);
+    out[1] = try nudged_frame(allocator, &out[0], 3); // 3 pixels change from frame 0
+    out[2] = try nudged_frame(allocator, &out[1], 5); // 5 pixels change from frame 1
+    out[3] = try nudged_frame(allocator, &out[2], 2); // 2 pixels change from frame 2
+    return frames.Video{
+        .width = width,
+        .height = height,
+        .orientation = frames.derive_orientation(width, height),
+        .fps = 12,
+        .frames = out,
+    };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const video = try craft(garden);
+    const pixel_count = video.frame_pixels();
+    const frame_count: u32 = @intCast(video.frames.len);
+    const cap = encoded_bound(pixel_count, frame_count);
+    const dst = try garden.alloc(u8, cap);
+
+    const res = try encode(garden, &video, dst);
+    // invariant: the encoder wrote every frame, and every frame after the first is a delta.
+    assert(res.frame_count == frame_count);
+    assert(res.delta_frames == frame_count - 1);
+
+    const raw_bytes = @as(u32, pixel_count) * 4 * frame_count;
+    // invariant: the codec compressed -- encoded is smaller than the raw RGBA of all frames stacked.
+    assert(res.len < raw_bytes);
+
+    const stream = dst[0..res.len];
+    const back = try decode(garden, stream);
+    // The crux: a full round-trip recovers dimensions, orientation, fps, frame count, and every frame's bytes.
+    assert(back.width == video.width);
+    assert(back.height == video.height);
+    assert(back.orientation == video.orientation);
+    assert(back.fps == video.fps);
+    assert(back.frames.len == video.frames.len);
+    var f: u32 = 0;
+    while (f < frame_count) : (f += 1) {
+        assert(back.frames[f].same_bytes(&video.frames[f]));
+    }
+
+    // The inter-frame win, measured: a delta frame is far smaller than the keyframe. The keyframe payload is the
+    // first frame's whole QOI stream; a delta of a few pixels is change_count_field + n * delta_entry_len bytes.
+    const key_payload = try qoi.encode(&video.frames[0], try garden.alloc(u8, qoi.encoded_bound(pixel_count)));
+    const delta1_bytes = change_count_field + 3 * delta_entry_len; // frame 1 changed 3 pixels
+    // invariant: a three-pixel delta is smaller than the whole keyframe -- the reason inter-frame exists.
+    assert(delta1_bytes < key_payload.len);
+
+    // --- named refusals -------------------------------------------------------------------------------
+    // Truncated: drop the last byte.
+    if (decode(garden, stream[0 .. stream.len - 1])) |_| return error.TruncSlipped else |e| {
+        if (e != error.BadEndMarker and e != error.Truncated) return error.WrongTrunc;
+    }
+    // Bad magic: corrupt the first byte.
+    {
+        const bad = try garden.alloc(u8, stream.len);
+        tally_copy.copy_disjoint(u8, bad, stream);
+        bad[0] = 'X';
+        if (decode(garden, bad)) |_| return error.MagicSlipped else |e| {
+            if (e != error.BadMagic) return error.WrongMagic;
+        }
+    }
+    // Bad end marker: corrupt the final byte.
+    {
+        const bad = try garden.alloc(u8, stream.len);
+        tally_copy.copy_disjoint(u8, bad, stream);
+        bad[bad.len - 1] = 0x02;
+        if (decode(garden, bad)) |_| return error.EndSlipped else |e| {
+            if (e != error.BadEndMarker) return error.WrongEnd;
+        }
+    }
+    // Trailing data: an extra byte past a whole valid stream.
+    {
+        const bad = try garden.alloc(u8, stream.len + 1);
+        tally_copy.copy_disjoint(u8, bad[0..stream.len], stream);
+        bad[bad.len - 1] = 0x00;
+        if (decode(garden, bad)) |_| return error.TrailSlipped else |e| {
+            if (e != error.TrailingData) return error.WrongTrail;
+        }
+    }
+    // First frame not a keyframe: flip the first frame's kind byte to delta.
+    {
+        const bad = try garden.alloc(u8, stream.len);
+        tally_copy.copy_disjoint(u8, bad, stream);
+        bad[header_len] = frame_delta;
+        if (decode(garden, bad)) |_| return error.KeySlipped else |e| {
+            if (e != error.FirstFrameNotKey) return error.WrongKey;
+        }
+    }
+    // Bad orientation: claim portrait for a landscape clip.
+    {
+        const bad = try garden.alloc(u8, stream.len);
+        tally_copy.copy_disjoint(u8, bad, stream);
+        bad[12] = frames.orient_portrait;
+        if (decode(garden, bad)) |_| return error.OrientSlipped else |e| {
+            if (e != error.BadOrientation) return error.WrongOrient;
+        }
+    }
+
+    print("GREEN image-frames-delta: 4-frame 16x12 clip round-trip byte-identical; orientation={d} fps={d} frames={d} deltas={d}; encoded {d} bytes < raw {d}, keyframe {d} bytes vs 3-pixel delta {d} bytes; refusals BadMagic-BadEndMarker-TrailingData-Truncated-FirstFrameNotKey-BadOrientation all named\n", .{
+        back.orientation, back.fps, back.frames.len, res.delta_frames, res.len, raw_bytes, key_payload.len, delta1_bytes,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: frames_delta selftest\n", .{});
+    return 1;
+}

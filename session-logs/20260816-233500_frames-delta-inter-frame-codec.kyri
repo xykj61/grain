@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260816.233500
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image -- the open inter-frame video codec (gfd1), GREEN
+prompt Autonomous loop: take the next agent-doable lap Lindy-first crux-first; send often as its own signed round
+think Fourth lap of the run. REMEMBER named the next open-media crux outright after the punctuation corpus sent GREEN: an inter-frame video codec. This is the higher-Lindy move over wider font symbols -- motion compression is the reason a video format exists -- so I took it: image/frames_delta.rye (gfd1), the motion floor above image/frames.rye (gfv1, intra-frame).
+think The design that keeps it small and honest: reuse gfv1's proven container shape (16-byte header, end marker, orientation derived from dimensions) and qoi.rye as the keyframe, and add only the delta. Frame 0 is a whole QOI keyframe; each later frame stores a strictly-ascending sparse list of (u32 pixel index, 4 RGBA bytes) edits against the frame before it. Ascending indices mean no duplicate and no backward write, so the decoder trusts order and refuses UnsortedChanges/ChangeOutOfRange/TooManyChanges by name.
+think I imported frames.rye directly and returned its Video struct, so a surface treats gfv1 and gfd1 identically after decode -- a decoded clip is a list of whole Pixmaps either way. Only the wire differs. Rye-first: the codec is proven on metal before any Glow surface reads it.
+obs Round-trip is byte-for-byte, the crux: decode(encode(video)) recovers dimensions, orientation, fps, frame count, and every frame's RGBA bytes. Measured the inter-frame win rather than claiming it -- a 4-frame 16x12 clip encodes to 541 bytes (< 3072 raw), and a 3-pixel delta frame is 28 bytes against the 405-byte keyframe. The asserts prove delta < keyframe and deltas == frame_count - 1.
+obs Six corruptions each refuse by name (BadMagic, BadEndMarker, TrailingData, Truncated, FirstFrameNotKey, BadOrientation); the FirstFrameNotKey guard also makes the delta reconstruction's "there is always a previous keyframe" a proven precondition, not a hope. apply_delta bounds every edit and asserts it consumed the whole payload.
+obs Kept gfv1 whole as the intra-frame floor -- gfd1 stands beside it, not over it; a clip with hard cuts wants keyframes, a static scene wants deltas. Next rungs: unify a full ASCII font set, then adaptive per-frame keyframe/delta selection (choose whichever is smaller).
+loom witness=frames_delta_video_witness frames=4 cell=16x12 deltas=3 encoded_bytes=541 raw_bytes=3072 keyframe_bytes=405 delta3px_bytes=28
+file image/frames_delta.rye the gfd1 inter-frame codec -- a QOI keyframe plus per-frame sparse ascending pixel deltas
+file tools/frames_delta_video_witness.rish proves the codec on metal -- round-trip byte-identical, the delta win measured, every refusal named
+file crux/REMEMBER.md live-edge line names frames_delta GREEN; next rungs wider symbols, then adaptive keyframe/delta
+recommend keep-going next open-media rung: unify a full ASCII font set over the atlas, then adaptive keyframe/delta selection
