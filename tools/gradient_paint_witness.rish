@@ -43,4 +43,7 @@ assert (trim roundtrip.out) == "yes" else "gradient-paint: the painted strip did
 let bend = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'bend the painted strip where even spacing cannot' && echo yes"]
 assert (trim bend.out) == "yes" else "gradient-paint: the painted strip did not prove it bends with position"
 
-say "gradient-paint: GREEN -- a positioned gradient painted onto a real image, its edges and blend exact, its bend measured, its round trip byte-for-byte, proven on metal."
+let diag = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the diagonal pair paint_gradient_diag and paint_gradient_adiag finish the linear-gradient family' && echo yes"]
+assert (trim diag.out) == "yes" else "gradient-paint: the diagonal pair did not prove it finishes the linear-gradient family"
+
+say "gradient-paint: GREEN -- a positioned gradient painted onto a real image along all four directions (horizontal, vertical, and the diagonal pair), its edges and blend exact, its bend measured, its round trip byte-for-byte, proven on metal."
