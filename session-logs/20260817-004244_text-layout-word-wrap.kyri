@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260817.004244
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title text-layout grows word-wrap, the second Season G composition rung
+prompt Autonomous loop (continued): take the next agent-doable lap Lindy-first crux-first; the layout module named word-wrap as its next rung; Rye-first; send often; stop at custody gates.
+think The prior lap landed single-line layout and named word-wrap as the grow-it rung. Growing-a-language macro: reach for the smallest version that works, then diverge by strengthening -- wrap belongs in text_layout.rye beside layout_line, not a new module.
+think wrap_lines is greedy word-wrap at spaces: skip leading/inter-line spaces, seed a line with its first word (always accepted, even if wider than max -- no mid-word split this rung), then grow word by word while the running width plus the real whitespace-run width stays within max_width; a rejected word rewinds the cursor to its start so the next line begins there and the spaces between belong to no line.
+think The load-bearing correctness property: WrapLine.width must equal a fresh measure_width of text[start..start+len]. My first draft summed a single space advance as the gap while the span kept the original multi-space run -- an inconsistency. Fixed by measuring the actual whitespace-run width per gap and excluding trailing spaces from the span, so the two always agree; the selftest asserts it on every wrapped line.
+think Caught three of my own errors on metal, not by claim: a double pointer (&atlas inside a fn whose atlas is already a pointer), a wrap buffer sized to the short paragraph while a messy 11-char case overflowed it, and two width assertions off by counting words instead of glyphs (8 glyphs in 'ab cd ef', not 5). Each surfaced as a build error or an assert panic and was fixed before GREEN.
+obs Rota lap (d27): the itinerary/eight-seasons rota doc was deep-read on the prior lap this turn; this continued lap strengthens that same Season G composition thread rather than opening a new one, honoring the finishing edge (ship the layout module whole before naming the next).
+obs SLC held: single-line layout plus word-boundary wrap is a complete, lovable text-geometry floor; mid-word splitting and RGBA painting are named next/later rungs, not scope crept into this one.
+loom witness=text_layout_witness wrap_para_glyphs=8 wrap_max_cells=30 wrap_lines=2 line0_cells=30 line1_cells=12
+file image/text_layout.rye adds WrapLine + wrap_lines (greedy word-wrap) and word_start_rewind; header names the new rung
+file tools/text_layout_witness.rish proves wrap breaks at spaces, per-line widths equal a fresh measure, a too-wide word takes its own line, MaxWidthTooSmall refuses
+file image/README.md text_layout entry names wrap_lines/WrapLine; next-rungs line updated to mid-word splitting
+recommend keep-going -- next Season G crux: mid-word splitting for a word wider than the wrap width, or the diagonal box corpus; both agent-doable floor code, no gate.
