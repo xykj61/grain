@@ -1,14 +1,14 @@
-# tools/palette_paint_witness.rish -- a palette of colour swatches SEEN on a real image proves itself on metal (Season G).
+# tools/palette_paint_witness.rish -- a palette of color swatches SEEN on a real image proves itself on metal (Season G).
 #
 # Season G (Open Media Primitives) -- the discrete sibling of image/gradient_paint.rish: where the gradient paints a
-# CONTINUOUS ramp, this rung paints a row (or column) of solid colour SWATCHES, the palette legend a design surface shows
-# beside a picker, a colour scale, or a gradient. Stands on the open geometry floor (image/shape.rye fill_rect), the open
-# colour algebra (image/color.rye), and the open QOI codec (image/qoi.rye).
-# Design read: active-designing/20260816-210735_season-g-color-algebra-crux.md (the colour floor this stands on).
+# CONTINUOUS ramp, this rung paints a row (or column) of solid color SWATCHES, the palette legend a design surface shows
+# beside a picker, a color scale, or a gradient. Stands on the open geometry floor (image/shape.rye fill_rect), the open
+# color algebra (image/color.rye), and the open QOI codec (image/qoi.rye).
+# Design read: active-designing/20260816-210735_season-g-color-algebra-crux.md (the color floor this stands on).
 # Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS Color spec + sRGB -- public standards only).
 #
 # The crux this witness proves is that a palette becomes a real image: paint_palette_h tiles the width with n solid
-# swatches, swatch i filling the columns [i*w/n, (i+1)*w/n). Each cell is its colour exactly byte-for-byte, the cells are
+# swatches, swatch i filling the columns [i*w/n, (i+1)*w/n). Each cell is its color exactly byte-for-byte, the cells are
 # contiguous and disjoint (no gap, no overlap, a hard edge at each boundary), an uneven width still tiles exactly, a
 # translucent swatch blends src-over, the palette round-trips through the open QOI codec byte-for-byte, the vertical twin
 # stacks the swatches, and an empty palette, a zero dimension, a strip too narrow for its swatches, an out-of-bounds box,
@@ -18,7 +18,7 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/palette_paint_witness.rish
 
-say "palette-paint: Language EN -- Season G's palette of colour swatches painted onto an image; a keeper names a list of colours and reads back a tiled swatch strip a surface can show, on our own colour model and open codec."
+say "palette-paint: Language EN -- Season G's palette of color swatches painted onto an image; a keeper names a list of colors and reads back a tiled swatch strip a surface can show, on our own color model and open codec."
 say "palette-paint: Style Radiant -- compose not braid; shape.fill_rect OWNS the fill, qoi owns the RGBA target, color composites src-over, and this rung only ROUTES each swatch to its cell so a translucent swatch tints the picture beneath."
 say "palette-paint: Lens TAME -- the whole rectangle bound-checked ONCE up front in u64 so a far edge can never wrap; the palette validated ONCE before any pixel so a malformed list refuses having painted nothing; the cell partition in u32 so it never wraps; integer boundaries so a strip is deterministic; no network, no key, no funds."
 
@@ -46,4 +46,4 @@ assert (trim tile.out) == "yes" else "palette-paint: the palette did not prove i
 let uneven = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'partitions to widths 2,3,3 tiling exactly' && echo yes"]
 assert (trim uneven.out) == "yes" else "palette-paint: the uneven partition did not prove it tiles exactly"
 
-say "palette-paint: GREEN -- a palette of colour swatches painted onto a real image (horizontal and vertical), the cells tiling exactly, each swatch its colour, its blend true, its round trip byte-for-byte, proven on metal."
+say "palette-paint: GREEN -- a palette of color swatches painted onto a real image (horizontal and vertical), the cells tiling exactly, each swatch its color, its blend true, its round trip byte-for-byte, proven on metal."
