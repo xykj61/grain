@@ -1,0 +1,58 @@
+# tools/repeat_radial_paint_witness.rish -- a REPEATING RADIAL positioned gradient SEEN on a real image (Season G).
+#
+# Season G (Open Media Primitives) -- the radial twin of tools/repeat_paint_witness.rish (the LINEAR repeating gradient) and
+# the repeating sibling of tools/radial_paint_witness.rish (the single radial disc). This rung proves the REPEATING RADIAL
+# gradient: the ramp runs over a fixed radial BAND of pixels and TILES it outward as concentric rings, so the picture reads
+# first..last, first..last with a hard seam at each band boundary (the CSS repeating-radial-gradient shape). Stands on the
+# positioned ramp (image/color_ramp_stops.rye), the open color algebra (image/color.rye), and the open QOI codec
+# (image/qoi.rye).
+# Design read: active-designing/20260816-210735_season-g-color-algebra-crux.md (the color floor this stands on).
+# Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS Color / Images specs -- public standards only).
+#
+# The crux this witness proves is that a repeating radial positioned gradient becomes a real image: paint_gradient_repeat_radial
+# fills a box where each pixel is the color the positioned ramp samples at its radius WITHIN its band, tiling outward. A
+# black-to-white ramp over band 4 makes each pixel's red channel equal its ring position, so the center reads 0 and the row
+# outward reads 85,170,255,0 (the ramp tiles as concentric rings); the ring ascends 0<85<170<255 then seams hard (255 drops
+# straight to 0 at the band boundary); the ring wraps exactly; the pattern is a true circle (the four points one cell out
+# share one ring color); a red-green-blue radial round-trips through the open QOI codec byte-for-byte; a wider band spreads the
+# ramp over more rings where a narrow one wraps; a sub-rectangle paints only its own box; a single-pixel box, a zero dimension,
+# a band under two, a band past the dimension ceiling, an out-of-bounds box, and a non-ascending ramp refuse by name having
+# painted nothing. Compose not braid -- color_ramp_stops decides the color, qoi owns the target, color composites; this rung
+# only routes each pixel to its position within its ring. The routing is integer (a bit-by-bit square root, no float) so a
+# ring is deterministic. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/repeat_radial_paint_witness.rish
+
+say "repeat-radial-paint: Language EN -- Season G's repeating radial positioned gradient painted onto an image; a keeper names a stop list and a band and reads back tiled concentric rings a surface can show, on our own color model and open codec."
+say "repeat-radial-paint: Style Radiant -- compose not braid; color_ramp_stops DECIDES each pixel's color, qoi owns the RGBA target, color composites src-over, and this rung only ROUTES each pixel to its position within its ring so translucent rings tint the picture beneath."
+say "repeat-radial-paint: Lens TAME -- the whole box bound-checked ONCE up front in u64 so a far edge can never wrap; the band checked against a named dimension ceiling; the ramp validated ONCE before any pixel so a malformed strip refuses having painted nothing; the radius routed through a bit-by-bit integer square root (no float) so a ring is deterministic; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/repeat_radial_paint"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/repeat_radial_paint.rye -femit-bin=${bin}"]
+assert build.ok else "repeat-radial-paint: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "repeat-radial-paint: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "repeat-radial-paint: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-repeat-radial-paint' && echo yes"]
+assert (trim green.out) == "yes" else "repeat-radial-paint: selftest did not print the GREEN repeat-radial-paint line"
+
+let roundtrip = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-trips through the open QOI codec byte-for-byte' && echo yes"]
+assert (trim roundtrip.out) == "yes" else "repeat-radial-paint: the painted rings did not prove their QOI round trip"
+
+let tiles = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the ramp tiles as concentric rings' && echo yes"]
+assert (trim tiles.out) == "yes" else "repeat-radial-paint: the rings did not prove the ramp tiles outward"
+
+let seam = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'seams hard' && echo yes"]
+assert (trim seam.out) == "yes" else "repeat-radial-paint: the rings did not prove their hard band seam"
+
+let circle = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the pattern is a true circle' && echo yes"]
+assert (trim circle.out) == "yes" else "repeat-radial-paint: the rings did not prove they are a true circle"
+
+say "repeat-radial-paint: GREEN -- a repeating radial positioned gradient painted onto a real image, its center and ring tiling exact, its seam hard, its circle true, its round trip byte-for-byte, proven on metal."

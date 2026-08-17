@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260817.153832
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title repeat_radial_paint -- the repeating radial gradient, the rings that tile, GREEN
+prompt Read crux/REMEMBER and the road-ahead docs; take the next agent-doable lap Lindy-first crux-first; send often; stop at custody gates. baton prin recur (second lap this turn)
+think Prior lap this turn landed image/repeat_paint.rye (the linear repeating gradient, h/v twins). The natural twin is the CSS repeating-radial-gradient -- concentric rings that tile outward -- matching the one-shape-per-file cadence (radial_paint beside gradient_paint), so repeat_radial_paint sits beside repeat_paint.
+think The doubling image/radial_paint.rye uses to keep the single-disc center exact would make on-axis radii even and skip half the ramp under a modulo -- a real quality loss for a tiled pattern. So this rung uses the INTEGER center ((w-1)/2, (h-1)/2), floored for even dims: a pixel's radius is then a whole number and every ramp position appears at full resolution along an axis. The slight center asymmetry for even dims is honest and documented; it matters far less for a repeating pattern than for a single disc.
+think Routing: radius = isqrt_u64(dx*dx + dy*dy) (a bit-by-bit integer square root, kept local exactly as radial_paint keeps its own), then repeat via (radius % band) * pos_max / (band-1). Bounded: |dx|,|dy| <= 8191 so squares <= ~6.7e7, d2 fits u64, radius <= ~11585, cycle*255 <= ~2.09M. Named refusals up front -- BadStripDims, StripTooSmall (single pixel, no radius), BandTooSmall (<2), BandTooLarge (>qoi_max_dim), RepeatRadialOutOfBounds, plus ramp refusals -- so a refusal paints nothing (proven by re-scanning all-white).
+think Made exact by a black->white ramp on an odd 9x9 box, integer center (4,4): along the center row the radius is |c-4| exactly, so band 4 reads outward 0,85,170,255,0 -- the ramp tiles as concentric rings; the ring ascends then seams hard (255 drops to 0); the four points one cell out share one ring color (a true circle); a wider band (8) reaches only halfway at four cells out (145, not wrapped) -- the band is a real control.
+obs FIRST GREEN in the routing after one caught typo: a missing close paren in the cycle < band assert, fixed before the first build. tame_style_check bans clean, width-check exit 0, plain 7-bit ASCII, >= 2 positive asserts per fn.
+obs Two clean laps this turn keep to the established one-shape-per-lap cadence rather than widening scope -- the finishing edge holds: each shape ships proven and sent before the next is named. The repeat family now paints both the linear and the radial shapes.
+loom witness=repeat_radial_paint_witness green=1 box=9x9 band_cells=4 center=integer-floored
+file image/repeat_radial_paint.rye the repeating radial gradient -- tiles the ramp outward as concentric rings via an integer-center radius modulo
+file tools/repeat_radial_paint_witness.rish proves the ring tiling, hard seam, true circle, band control, and QOI round trip on metal; GREEN first run
+file image/README.md names repeat_radial_paint.rye beside repeat_paint.rye (docs-sync)
+recommend keep-going the repeating family now paints linear and radial; a repeating conic (repeating angular wedges) would complete it, or a gradient-as-fill compose -- all agent-doable, Season G open-media

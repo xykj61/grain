@@ -1,0 +1,284 @@
+//! image/repeat_radial_paint.rye -- a REPEATING RADIAL positioned gradient SEEN on an image (Season G, the rings that tile).
+//!
+//! Season G (Open Media Primitives) -- the radial twin of image/repeat_paint.rye (the LINEAR repeating gradient), and the
+//! repeating sibling of image/radial_paint.rye (the single radial disc). Where the single radial gradient runs its ramp ONCE
+//! from the center to the farthest corner, this rung runs the ramp over a fixed radial BAND of pixels and TILES it outward --
+//! the CSS `repeating-radial-gradient` shape -- so the picture reads as concentric rings first..last, first..last, a hard
+//! seam at each band boundary just as CSS draws unless the first and last controls match.
+//!
+//! Compose, not braid: color_ramp_stops.sample_checked DECIDES each pixel's color at its computed position, image/qoi owns
+//! the RGBA target, and image/color composites the paint over the destination (Porter-Duff src-over, straight alpha). This
+//! module only ROUTES each pixel to its position WITHIN its band and writes it -- no new color math, no new codec.
+//!
+//! The routing stays integer so a painted ring is deterministic and needs no float. The center sits at the integer cell
+//! ((w-1)/2, (h-1)/2) -- floored for even dimensions, unlike image/radial_paint.rye's DOUBLED center, so a pixel's radius is
+//! a whole number and every ramp position appears at full resolution along an axis (doubling would make on-axis radii even
+//! and skip half the ramp). A pixel's radius is the integer square root of its squared distance from that center, its band
+//! position is `radius % band`, and that maps to the global ramp position `(radius % band) * pos_max / (band - 1)`, so the
+//! center is the first control exactly, a ring `band-1` cells out is the last control exactly, and the next ring wraps back
+//! to the first control -- the seam. The whole box is bound-checked ONCE up front (in u64 so a far edge can never wrap before
+//! the bound refuses), the band is checked against a named ceiling, and the ramp is validated ONCE before any pixel is
+//! written, so a malformed strip refuses by name having painted nothing -- all-or-nothing, never a half-painted ring. No
+//! network, no key, no funds.
+//!
+//! Teacher, thanked clean-room: the CSS repeating-radial-gradient concept (W3C CSS Color / Images -- public standard only).
+//! The idea enters siloed (context/SILO_TECHNIQUE.md): the shape is ours, named plainly; the thanks live in the witness header.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/repeat_radial_paint.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const ramp_stops = @import("color_ramp_stops.rye");
+
+pub const repeat_radial_paint_version = "20260817.154500";
+
+/// Composite one paint color over the destination pixel at (x, y), src-over, so a translucent ring reads through to the
+/// picture beneath. The caller proves the pixel lands inside the target; this writer only blends.
+fn blend_pixel(target: *qoi.Pixmap, x: u32, y: u32, paint: color.Rgba) void {
+    // invariant: the caller proved this pixel lands inside the target buffer, on the horizontal axis.
+    assert(x < target.width);
+    // invariant: and on the vertical axis -- both are load-bearing for the flat index below.
+    assert(y < target.height);
+    const di = (@as(usize, y) * @as(usize, target.width) + @as(usize, x)) * 4;
+    const dst = color.Rgba{
+        .r = target.pixels[di],
+        .g = target.pixels[di + 1],
+        .b = target.pixels[di + 2],
+        .a = target.pixels[di + 3],
+    };
+    const res = color.over(paint, dst);
+    target.pixels[di] = res.r;
+    target.pixels[di + 1] = res.g;
+    target.pixels[di + 2] = res.b;
+    target.pixels[di + 3] = res.a;
+}
+
+/// The integer square root of `n` -- floor(sqrt(n)) by the classic bit-by-bit method, so the radial routing needs no float
+/// and a painted ring is deterministic across targets. Bounded: `bit` starts at the largest power of four in u64 and shrinks
+/// by two bits per step, so the loop runs at most 32 times. (Kept local exactly as image/radial_paint.rye keeps its own.)
+fn isqrt_u64(n: u64) u64 {
+    // invariant: the largest even-bit seed fits in u64 (1 << 62 is the top power of four).
+    var bit: u64 = @as(u64, 1) << 62;
+    var num: u64 = n;
+    var res: u64 = 0;
+    // Shrink the seed below the radicand so the first accepted bit is meaningful (at most 31 shrink steps).
+    while (bit > num) : (bit >>= 2) {}
+    while (bit != 0) : (bit >>= 2) {
+        if (num >= res + bit) {
+            num -= res + bit;
+            res = (res >> 1) + bit;
+        } else {
+            res >>= 1;
+        }
+    }
+    // invariant: res is the floor square root -- res*res never exceeds n (res <= ~11585 here, so res*res never wraps u64).
+    assert(res * res <= n);
+    return res;
+}
+
+/// The repeating-radial position (0..pos_max) of pixel (`cx`, `cy`) about the integer center (`cx0`, `cy0`), tiling the ramp
+/// every `band` cells of radius -- the center reads 0, a ring `band-1` cells out reads pos_max, the next ring wraps to 0.
+/// Shared by the painter, so the pixel-to-position routing is one small honest reader.
+fn repeat_radial_pos(cx: u32, cy: u32, cx0: u32, cy0: u32, band: u32) u8 {
+    // invariant: a repeating radial band needs at least two cells, so the ramp has a direction within one ring.
+    assert(band >= 2);
+    // Signed offsets from the integer center; |dx|,|dy| <= w-1,h-1 <= 8191, so each square <= ~6.7e7 and the sum fits u64.
+    const dx: i64 = @as(i64, cx) - @as(i64, cx0);
+    const dy: i64 = @as(i64, cy) - @as(i64, cy0);
+    const d2: u64 = @as(u64, @intCast(dx * dx)) + @as(u64, @intCast(dy * dy));
+    const radius: u64 = isqrt_u64(d2);
+    // The ring position wraps every `band` cells of radius; cycle names this pixel's place within its own ring.
+    const cycle: u64 = radius % @as(u64, band);
+    // invariant: the cycle index names a real cell of the band.
+    assert(cycle < @as(u64, band));
+    const den: u64 = @as(u64, band) - 1;
+    // cycle <= band-1 <= qoi_max_dim-1, so cycle * 255 <= ~2.09M in u64 and the lerp never wraps. Floor division, so the
+    // center reads 0 and a ring band-1 cells out reads pos_max exactly.
+    const p: u64 = cycle * @as(u64, ramp_stops.pos_max) / den;
+    // invariant: the position stays inside the ramp domain (cycle 0 gives 0, cycle band-1 gives pos_max).
+    assert(p <= ramp_stops.pos_max);
+    return @intCast(p);
+}
+
+/// Paint a REPEATING RADIAL positioned gradient into the rectangle at (`x`, `y`) of size `w` x `h` on `target`: the ramp runs
+/// over `band` cells of radius and tiles outward as concentric rings, the center the first control and each ring wrapping
+/// back at the band boundary. Refuses `BadStripDims` if `w` or `h` is zero, `StripTooSmall` on a single-pixel box (no radius),
+/// `BandTooSmall` if the band is under two, `BandTooLarge` if the band exceeds the image dimension ceiling,
+/// `RepeatRadialOutOfBounds` if the box would exceed the target, and every `color_ramp_stops` refusal by name -- all checked
+/// BEFORE any pixel is written, so a refusal leaves the target untouched.
+pub fn paint_gradient_repeat_radial(target: *qoi.Pixmap, x: u32, y: u32, w: u32, h: u32, band: u32, control: []const color.Rgba, positions: []const u8) !void {
+    // invariant: a repeating radial box has real extent and more than one pixel, so at least one radius exists.
+    if (w == 0 or h == 0) return error.BadStripDims;
+    if (w == 1 and h == 1) return error.StripTooSmall;
+    // invariant: the band carries the ramp's direction, so it needs at least two cells and stays within the named ceiling.
+    if (band < 2) return error.BandTooSmall;
+    if (band > qoi.qoi_max_dim) return error.BandTooLarge;
+    // The ramp is validated ONCE up front, so a malformed stop list refuses having painted nothing.
+    try ramp_stops.check(control, positions);
+    // The box's far edges, in u64 so the sum can never wrap before the bound check refuses.
+    const right: u64 = @as(u64, x) + @as(u64, w);
+    const bottom: u64 = @as(u64, y) + @as(u64, h);
+    if (right > @as(u64, target.width) or bottom > @as(u64, target.height)) return error.RepeatRadialOutOfBounds;
+    // invariant: the up-front check proved every pixel of the w x h box lands inside the target buffer.
+    assert(right <= @as(u64, target.width));
+    assert(bottom <= @as(u64, target.height));
+
+    // The integer center, floored for even dimensions so a pixel's radius is a whole number and the ramp reads full-resolution.
+    const cx0: u32 = (w - 1) / 2;
+    const cy0: u32 = (h - 1) / 2;
+
+    var cy: u32 = 0;
+    while (cy < h) : (cy += 1) {
+        var cx: u32 = 0;
+        while (cx < w) : (cx += 1) {
+            // The color is decided by the positioned ramp; this module only routes the pixel to its position within its ring.
+            const col = ramp_stops.sample_checked(control, positions, repeat_radial_pos(cx, cy, cx0, cy0, band));
+            blend_pixel(target, x + cx, y + cy, col);
+        }
+    }
+}
+
+// --- selftest: paint a repeating radial, prove its center, its ring tiling, its seam, its round trip on metal --------------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module (it
+/// keeps its own canvas exactly as image/radial_paint.rye and image/repeat_paint.rye do).
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
+    const green = color.Rgba{ .r = 0, .g = 255, .b = 0, .a = 255 };
+    const blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 };
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    const bw = [_]color.Rgba{ black, white };
+    const at_ends = [_]u8{ 0, 255 };
+    const band: u32 = 4; // one ring is four cells of radius: the ramp reads 0, 85, 170, 255 outward (255/3 per step).
+
+    // A black -> white repeating radial over an odd 9x9 box makes each pixel's RED channel EQUAL its ring position (color.mix
+    // of 0 and 255 by parameter p reads back p). The integer center is (4,4). Along the center row the radius is |c - 4|
+    // exactly, so with band 4 the row reads outward 0,85,170,255, 0 -- the ramp TILES as concentric rings.
+    const sq: u32 = 9;
+    const cc: u32 = 4; // (sq-1)/2
+    var img = try make_canvas(garden, sq, sq, red);
+    try paint_gradient_repeat_radial(&img, 0, 0, sq, sq, band, bw[0..], at_ends[0..]);
+    if (pixel_at(&img, cc, cc).r != 0) return error.CenterNotFirstControl;
+    if (pixel_at(&img, cc + 1, cc).r != 85) return error.RingOneNotEven;
+    if (pixel_at(&img, cc + 2, cc).r != 170) return error.RingTwoNotEven;
+    if (pixel_at(&img, cc + 3, cc).r != 255) return error.RingThreeNotLast;
+    if (pixel_at(&img, cc + 4, cc).r != 0) return error.RingFourNotWrapped;
+
+    // The ring ascends outward then SEAMS hard -- the last cell of a band (255) drops straight back to the first cell of the
+    // next (0), a hard edge -- and the ring wraps exactly: the center and a point one band out share the first control.
+    if (!(pixel_at(&img, cc, cc).r < pixel_at(&img, cc + 1, cc).r and pixel_at(&img, cc + 1, cc).r < pixel_at(&img, cc + 2, cc).r and pixel_at(&img, cc + 2, cc).r < pixel_at(&img, cc + 3, cc).r)) return error.RingNotAscending;
+    if (!(pixel_at(&img, cc + 3, cc).r == 255 and pixel_at(&img, cc + 4, cc).r == 0)) return error.RingSeamNotHard;
+
+    // The pattern is a true circle about the center: the four points one cell out (N, S, E, W) share one ring color.
+    const e_r = pixel_at(&img, cc + 1, cc).r;
+    if (pixel_at(&img, cc - 1, cc).r != e_r) return error.WestRingDiffers;
+    if (pixel_at(&img, cc, cc + 1).r != e_r) return error.SouthRingDiffers;
+    if (pixel_at(&img, cc, cc - 1).r != e_r) return error.NorthRingDiffers;
+
+    // Paint a red-green-blue repeating radial and prove it round-trips through the open QOI codec byte-for-byte -- a real image.
+    const rgb = [_]color.Rgba{ red, green, blue };
+    const at_even = [_]u8{ 0, 128, 255 };
+    var img_rgb = try make_canvas(garden, sq, sq, white);
+    try paint_gradient_repeat_radial(&img_rgb, 0, 0, sq, sq, band, rgb[0..], at_even[0..]);
+    const cap = qoi.encoded_bound(img_rgb.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&img_rgb, dst);
+    const back = try qoi.decode(garden, dst[0..enc.len]);
+    if (!back.same_bytes(&img_rgb)) return error.RingsDidNotRoundTrip;
+
+    // A wider band spreads the ramp over more rings: band 8 across the same box shows ONE ring reaching only halfway, so the
+    // point four cells out reads a mid value (255*4/7 = 145) rather than wrapping back to 0 as it did at band 4 -- a control.
+    var img_wide = try make_canvas(garden, sq, sq, white);
+    try paint_gradient_repeat_radial(&img_wide, 0, 0, sq, sq, 8, bw[0..], at_ends[0..]);
+    if (pixel_at(&img_wide, cc + 4, cc).r == 0) return error.BandDidNotSpread;
+
+    // A sub-rectangle paints only its own box: paint a 5x5 radial at (1,1) on a wider canvas and prove the ground around it
+    // stays the untouched white (the box is honored, nothing bleeds).
+    var img_sub = try make_canvas(garden, 8, 8, white);
+    try paint_gradient_repeat_radial(&img_sub, 1, 1, 5, 5, band, rgb[0..], at_even[0..]);
+    if (!pixel_at(&img_sub, 0, 0).eql(white)) return error.GutterPainted;
+    if (!pixel_at(&img_sub, 7, 7).eql(white)) return error.FarGutterPainted;
+    if (pixel_at(&img_sub, 3, 3).eql(white)) return error.RingCenterNotPainted;
+
+    // Refusals by name, each having painted nothing: a single-pixel box (no radius), a zero dimension, a band under two, a
+    // band past the ceiling, an out-of-bounds box, and a malformed ramp (non-ascending positions caught up front).
+    var tiny = try make_canvas(garden, 8, 8, white);
+    if (paint_gradient_repeat_radial(&tiny, 0, 0, 1, 1, band, rgb[0..], at_even[0..])) |_| return error.SinglePixelNotRefused else |err| {
+        if (err != error.StripTooSmall) return error.WrongSmallError;
+    }
+    if (paint_gradient_repeat_radial(&tiny, 0, 0, 8, 0, band, rgb[0..], at_even[0..])) |_| return error.ZeroDimNotRefused else |err| {
+        if (err != error.BadStripDims) return error.WrongDimsError;
+    }
+    if (paint_gradient_repeat_radial(&tiny, 0, 0, 8, 8, 1, rgb[0..], at_even[0..])) |_| return error.SmallBandNotRefused else |err| {
+        if (err != error.BandTooSmall) return error.WrongBandError;
+    }
+    if (paint_gradient_repeat_radial(&tiny, 0, 0, 8, 8, qoi.qoi_max_dim + 1, rgb[0..], at_even[0..])) |_| return error.LargeBandNotRefused else |err| {
+        if (err != error.BandTooLarge) return error.WrongLargeBandError;
+    }
+    if (paint_gradient_repeat_radial(&tiny, 2, 0, 8, 8, band, rgb[0..], at_even[0..])) |_| return error.OverrunNotRefused else |err| {
+        if (err != error.RepeatRadialOutOfBounds) return error.WrongOverrunError;
+    }
+    const not_asc = [_]u8{ 0, 0, 255 };
+    if (paint_gradient_repeat_radial(&tiny, 0, 0, 8, 8, band, rgb[0..], not_asc[0..])) |_| return error.BadRampNotRefused else |err| {
+        if (err != error.StopsNotAscending) return error.WrongRampError;
+    }
+    // The refused calls painted nothing -- the tiny canvas is still all white.
+    var wy: u32 = 0;
+    while (wy < tiny.height) : (wy += 1) {
+        var wx: u32 = 0;
+        while (wx < tiny.width) : (wx += 1) {
+            if (!pixel_at(&tiny, wx, wy).eql(white)) return error.RefusedButPainted;
+        }
+    }
+
+    // Determinism: the same ramp painted twice grows byte-for-byte the same rings.
+    var img_a = try make_canvas(garden, sq, sq, white);
+    var img_b = try make_canvas(garden, sq, sq, white);
+    try paint_gradient_repeat_radial(&img_a, 0, 0, sq, sq, band, rgb[0..], at_even[0..]);
+    try paint_gradient_repeat_radial(&img_b, 0, 0, sq, sq, band, rgb[0..], at_even[0..]);
+    if (!img_a.same_bytes(&img_b)) return error.RingsNotDeterministic;
+
+    print("GREEN image-repeat-radial-paint: a repeating radial positioned gradient painted onto a real image -- a black-to-white ramp over band 4 makes each pixel red channel equal its ring position, so the center reads 0 and the row outward reads 85,170,255,0 (the ramp tiles as concentric rings), the ring ascends 0<85<170<255 then seams hard (255 drops straight to 0 at the band boundary), the ring wraps exactly (the center and a point one band out share the first control); the pattern is a true circle (the four points one cell out share one ring color); a red-green-blue radial round-trips through the open QOI codec byte-for-byte; a wider band spreads the ramp over more rings where a narrow one wraps (band 8 reaches only halfway at four cells out); a sub-rectangle paints only its own box (the ground stays white); a single-pixel box, a zero dimension, a band under two, a band past the dimension ceiling, an out-of-bounds box, and a non-ascending ramp refuse by name having painted nothing; the same ramp paints the same rings byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: repeat_radial_paint selftest\n", .{});
+    return 1;
+}
