@@ -1,0 +1,229 @@
+//! image/font5x7_math.rye -- the open math/technical-marks corpus: the operators a terminal surface shows
+//! (Season G, font content).
+//!
+//! Season G (Open Media Primitives) - font content for the open glyph atlas image/glyph.rye (gfa1), set beside the
+//! five ASCII corpora (image/font5x7.rye the numerals, image/font5x7_alpha.rye the uppercase, image/font5x7_lower.rye
+//! the lowercase, image/font5x7_punct.rye the punctuation, image/font5x7_symbol.rye the symbols) and the wider-symbol
+//! corpora that opened next -- the box family (image/font5x7_box.rye light, image/font5x7_boxdouble.rye double,
+//! image/font5x7_boxdiag.rye diagonal, image/font5x7_boxarc.rye rounded), the arrows (image/font5x7_arrow.rye), the
+//! block elements (image/font5x7_block.rye), and the geometric marks (image/font5x7_geometric.rye). Where the box
+//! corpora FRAME and rule, the arrows POINT, and the geometric shapes MARK and select, this corpus supplies the ten
+//! math/technical marks a terminal surface shows in a readout, a status line, or a diff: the degree sign, plus-minus,
+//! multiplication and division signs, the true minus, infinity, approximately-equal, not-equal, and the less-than-or-
+//! equal and greater-than-or-equal comparisons -- at their real Unicode codepoints U+00B0, U+00B1, U+00D7, U+00F7,
+//! U+2212, U+221E, U+2248, U+2260, U+2264, U+2265, drawn in our own open hand on the same 5x7 body. These are exactly
+//! the marks a terminal reads the day it prints a temperature, a tolerance, a rate, or a comparison.
+//!
+//! The source stays plain ASCII (ASCII-first): the codepoints are written as numeric literals (0x00B0 ...) and each
+//! mark is named in an ASCII comment, so no non-ASCII byte enters the file even though the glyphs it builds cover a
+//! non-ASCII range. The codepoints are NOT contiguous (the Latin-1 marks sit far below the mathematical-operators
+//! block, and the block itself skips the marks this set leaves out), so this corpus carries an explicit ascending
+//! codepoint table -- the shape the gfa1 encoder trusts (strictly ascending, shared cell, coverage length == cell
+//! area). The drawings ARE the specification: each mark is seven rows of five cells in ASCII line art ('#' full ink,
+//! '.' none) that a reader audits by eye; the coverage bytes are derived from that art, never the reverse. build_atlas
+//! turns the ten drawings into a glyph.GlyphAtlas the gfa1 encoder accepts, so the property that matters stays provable
+//! on metal: decode(encode(atlas)) recovers every glyph byte-for-byte, the marks are present and distinct, each reads
+//! within an honest legibility band, and the family orders hold -- plus-minus and not-equal each out-ink the bare
+//! minus, and the two comparison marks mirror to equal weight. No network, no key, no funds -- the operators a surface
+//! reads the day it prints a readout, on our own open font.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_math.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+
+pub const font5x7_math_version = "20260817.045958";
+
+/// Every glyph in this corpus shares one 5-wide, 7-tall cell -- the same body the ASCII and wider-symbol corpora carry.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance: the cell width plus one column of daylight, the same advance the sibling corpora carry.
+pub const math_advance: u8 = cell_w + 1;
+
+/// The corpus holds exactly the ten math/technical marks named in the table below.
+pub const math_count: u32 = 10;
+
+/// Cells per glyph -- the coverage length every mark carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The ten math/technical codepoints, strictly ascending -- the order the gfa1 encoder trusts. Each aligns by index
+/// with math_art below. Written as numeric literals so the source stays plain ASCII while the glyphs cover a non-ASCII
+/// range:
+///   0x00B0 degree sign, 0x00B1 plus-minus sign, 0x00D7 multiplication sign, 0x00F7 division sign,
+///   0x2212 minus sign, 0x221E infinity, 0x2248 almost-equal-to (approximately), 0x2260 not-equal-to,
+///   0x2264 less-than-or-equal-to, 0x2265 greater-than-or-equal-to. The Latin-1 marks sit far below the mathematical-
+///   operators block, so the codepoints are named outright rather than derived from a base.
+const math_codepoints = [math_count]u32{
+    0x00B0, 0x00B1, 0x00D7, 0x00F7, 0x2212, 0x221E, 0x2248, 0x2260, 0x2264, 0x2265,
+};
+
+/// The ten marks, drawn in the open. Each is seven rows of five cells; '#' ink, '.' background. A reader audits every
+/// mark here by eye, and the coverage bytes are lifted from this art, never guessed. The degree sits high as a small
+/// ring; the plus-minus stacks a plus over a bar; the multiplication draws an X and the division a dot-bar-dot; the
+/// minus is the bare bar; infinity draws two loops; the approximation stacks two waves; the not-equal slashes an
+/// equals; and the two comparisons mirror a chevron over a bar.
+const math_art = [math_count][cell_h][]const u8{
+    .{ ".###.", ".#.#.", ".###.", ".....", ".....", ".....", "....." }, // U+00B0 degree sign
+    .{ ".....", "..#..", "..#..", "#####", "..#..", "#####", "....." }, // U+00B1 plus-minus sign
+    .{ ".....", "#...#", ".#.#.", "..#..", ".#.#.", "#...#", "....." }, // U+00D7 multiplication sign
+    .{ ".....", "..#..", ".....", "#####", ".....", "..#..", "....." }, // U+00F7 division sign
+    .{ ".....", ".....", ".....", "#####", ".....", ".....", "....." }, // U+2212 minus sign
+    .{ ".....", ".....", "##.##", "#.#.#", "##.##", ".....", "....." }, // U+221E infinity
+    .{ ".....", ".....", ".##.#", "#.##.", ".##.#", "#.##.", "....." }, // U+2248 almost-equal-to
+    .{ ".....", "....#", "#####", "..#..", "#####", "#....", "....." }, // U+2260 not-equal-to
+    .{ "...##", ".##..", "#....", ".##..", "...##", ".....", "#####" }, // U+2264 less-than-or-equal-to
+    .{ "##...", "..##.", "....#", "..##.", "##...", ".....", "#####" }, // U+2265 greater-than-or-equal-to
+};
+
+/// Lift one mark's ASCII art into a freshly allocated coverage grid of exactly cell_area bytes: 255 for ink,
+/// 0 for background. The art's own shape is asserted, so a mistyped row is a stopped line rather than a bad glyph.
+fn coverage_from_art(allocator: std.mem.Allocator, art: [cell_h][]const u8) ![]u8 {
+    // invariant: a coverage grid is exactly the shared cell area, within the atlas ceiling.
+    assert(cell_area >= 1);
+    assert(cell_area <= glyph.coverage_max);
+    const cov = try allocator.alloc(u8, cell_area);
+    var idx: u32 = 0;
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        const row = art[r];
+        // invariant: every drawn row is exactly the cell width -- the art matches the grid.
+        assert(row.len == cell_w);
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            cov[idx] = if (row[c] == '#') 255 else 0;
+            idx += 1;
+        }
+    }
+    // invariant: the whole grid was filled, no cell left unwritten.
+    assert(idx == cell_area);
+    return cov;
+}
+
+/// Build the math/technical-marks atlas: ten glyphs at the named ascending codepoints, sharing the 5x7 cell and
+/// advance. The gfa1 encoder accepts the result directly (ascending codepoints, coverage length == cell area).
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the corpus is the ten named math marks and no more.
+    assert(math_count == 10);
+    assert(cell_area == 35);
+    const glyphs = try allocator.alloc(glyph.Glyph, math_count);
+    var i: u32 = 0;
+    var last_cp: u32 = 0;
+    while (i < math_count) : (i += 1) {
+        const cp = math_codepoints[i];
+        // invariant: codepoints are strictly ascending -- the ordering the gfa1 encoder trusts.
+        assert(i == 0 or cp > last_cp);
+        last_cp = cp;
+        const cov = try coverage_from_art(allocator, math_art[i]);
+        glyphs[i] = glyph.Glyph{
+            .codepoint = cp,
+            .advance = math_advance,
+            .coverage = cov,
+        };
+    }
+    // invariant: the last codepoint is greater-than-or-equal (U+2265) -- the table ends where this set ends.
+    assert(glyphs[math_count - 1].codepoint == 0x2265);
+    return glyph.GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- the legibility signal a blank glyph would fail.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+/// The ink count of a codepoint's glyph in the built atlas -- the reader the family-order proofs use.
+fn ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return ink_count(g.coverage);
+    return error.MathMarkMissing;
+}
+
+// --- selftest: build the math atlas, round-trip it through gfa1, prove all present, distinct, legible --------------
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built atlas is the ten-mark corpus at the shared cell.
+    assert(glyph_count == math_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // Ten present marks: every one looks up, carries the shared advance; an ASCII letter misses.
+    var d: u32 = 0;
+    while (d < math_count) : (d += 1) {
+        const cp = math_codepoints[d];
+        if (back.lookup(cp)) |g| {
+            assert(g.codepoint == cp);
+            assert(g.advance == math_advance);
+        } else return error.MathMarkMissing;
+    }
+    if (back.lookup('A')) |_| return error.NonMathFound else {}
+
+    // Distinctness: no two marks share identical coverage -- a real operator set's glyphs differ (catches a copy slip,
+    // and proves the mirrored comparisons carry distinct ink despite equal weight).
+    var a: u32 = 0;
+    while (a < math_count) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b < math_count) : (b += 1) {
+            if (std.mem.eql(u8, atlas.glyphs[a].coverage, atlas.glyphs[b].coverage)) return error.MathMarksNotDistinct;
+        }
+    }
+
+    // Legibility: each mark's ink count sits inside an honest band. The floor sits where the bare minus (a single bar)
+    // still reads, the ceiling where the busiest comparison still resolves as a mark rather than a solid block.
+    const ink_min: u32 = 5;
+    const ink_max: u32 = 20;
+    var lo: u32 = cell_area;
+    var hi: u32 = 0;
+    var k: u32 = 0;
+    while (k < math_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (n < ink_min or n > ink_max) return error.MathMarkIllegible;
+        if (n < lo) lo = n;
+        if (n > hi) hi = n;
+    }
+    // invariant: the observed ink band stayed inside the honest bounds.
+    assert(lo >= ink_min);
+    assert(hi <= ink_max);
+
+    // Family order: the plus-minus and the not-equal each carry more ink than the bare minus (each adds a stroke the
+    // minus lacks), and the two comparison marks mirror to equal weight -- what makes the set a true family rather than
+    // ten unrelated drawings, and what lets a readout tell a tolerance from a subtraction, and a floor from a ceiling.
+    if (!(try ink_of(&atlas, 0x00B1) > try ink_of(&atlas, 0x2212))) return error.PlusMinusOrderWrong; // +/- > minus
+    if (!(try ink_of(&atlas, 0x2260) > try ink_of(&atlas, 0x2212))) return error.NotEqualOrderWrong; // != > minus
+    if (!(try ink_of(&atlas, 0x2264) == try ink_of(&atlas, 0x2265))) return error.CompareMirrorWrong; // <= mirrors >=
+
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof.
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-math: {d} math marks U+00B0,U+00B1,U+00D7,U+00F7,U+2212,U+221E,U+2248,U+2260,U+2264,U+2265 at {d}x{d} round-trip byte-identical; all present, distinct, legible (ink {d}..{d} of {d}); plus-minus>minus, not-equal>minus, and <= mirrors >= hold; encoded {d} bytes, raw {d}\n", .{
+        glyph_count, cell_w, cell_h, lo, hi, cell_area, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_math selftest\n", .{});
+    return 1;
+}
