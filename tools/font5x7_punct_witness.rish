@@ -1,0 +1,41 @@
+# tools/font5x7_punct_witness.rish -- the open punctuation corpus proves itself on metal (Season G, font content).
+#
+# Season G (Open Media Primitives) - the fourth real content for the open glyph atlas image/glyph.rye (gfa1),
+# set beside the numerals (tools/font5x7_witness.rish), the uppercase (tools/font5x7_alpha_witness.rish), and the
+# lowercase (tools/font5x7_lower_witness.rish).
+#
+# The crux this witness proves is a REAL, OPEN, hand-drawn punctuation corpus: the thirteen common marks
+# '!' '(' ')' '*' '+' ',' '-' '.' '/' ':' ';' '=' '?', each a 5x7 coverage grid drawn in the open as ASCII line art
+# in image/font5x7_punct.rye at explicit ascending codepoints, built into a gfa1 atlas and proven on metal. A full
+# round-trip recovers every codepoint, advance, and coverage byte byte-for-byte; all thirteen marks look up present
+# and carry the shared advance while a letter misses; no two marks share coverage (a real font's glyphs differ);
+# and each mark reads within an honest, sparse legibility band (a hyphen is three cells, a letter body far busier).
+# Compression is reported as a fact, never asserted -- the round-trip is the proof. No network, no key, no funds --
+# the punctuation a surface reads the day it wants a sentence, on our own open font.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/font5x7_punct_witness.rish
+
+say "font5x7-punct: Language EN -- Season G's font content rung; the thirteen common punctuation marks drawn in the open as ASCII line art, built into the gfa1 atlas, verified bytes that decode within named bounds rather than painting garbage."
+say "font5x7-punct: Style Radiant -- the drawings are the specification and the bytes are derived from them, so decode(encode(atlas)) recovers every mark byte for byte; our own hand, permissively ours, no external font to license and no web-search gate."
+say "font5x7-punct: Lens TAME -- u32 in-memory counts, u8 coverage bytes; every buffer names a maximum (cell_area - mark_count - the atlas ceilings it rests on); each function states its invariants positively; codepoints explicit and strictly ascending; compression a reported fact never a false invariant; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/font5x7_punct"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/font5x7_punct.rye -femit-bin=${bin}"]
+assert build.ok else "font5x7-punct: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "font5x7-punct: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "font5x7-punct: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-font5x7-punct' && echo yes"]
+assert (trim green.out) == "yes" else "font5x7-punct: selftest did not print the GREEN corpus line"
+
+let round = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-trip byte-identical' && echo yes"]
+assert (trim round.out) == "yes" else "font5x7-punct: round-trip was not byte-identical"
+
+say "font5x7-punct: GREEN -- the open punctuation corpus whole; thirteen marks round-trip byte-identical, all present, distinct, and legible."

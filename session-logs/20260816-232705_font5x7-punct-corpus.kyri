@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260816.232705
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image -- the open punctuation corpus, a 5x7 mark set, GREEN
+prompt Autonomous loop: take the next agent-doable lap Lindy-first crux-first; send often as its own signed round
+think Third font-content lap of the run, after the numerals, uppercase, and lowercase corpora all sent GREEN. REMEMBER named the next open-media rung outright -- extend the corpus toward punctuation -- so I took it: image/font5x7_punct.rye, mirroring the three proven letter/digit modules over the same gfa1 atlas.
+think The one real difference from the letter corpora: punctuation codepoints are NOT contiguous ('!'=33, '('=40 ... '?'=63), so a 'base + i' run cannot key them. This corpus carries an EXPLICIT ascending codepoint table (mark_codepoints), the shape glyph.rye's encoder still trusts (strictly ascending, shared cell, coverage length == cell area). build_atlas asserts the ascending order per glyph so a mis-sorted table is a stopped line, not a bad stream.
+think Rota lap: index ~1122 mod 27 = 15 -> deep-read context/TAME_CORE.md before writing. Held its reflexes in hand: opening triad, >=2 positive asserts per fn each with an // invariant: reason, u32 in-memory counts, u8 coverage bytes, every buffer names a max, named errors, no compound asserts.
+obs Hand-drew thirteen 5x7 marks as ASCII line art -- '!' '(' ')' '*' '+' ',' '-' '.' '/' ':' ';' '=' '?'. All thirteen present, distinct, legible (ink 3..11 of 35). Punctuation is genuinely sparse, so the legibility floor sits low (2) where a hyphen is three cells; the ceiling (14) stays below the letters' busy bodies. The non-member miss check uses a letter 'A' (absent from this atlas), a real guard against a copy slip from a letter module.
+obs Compression reported not asserted (encoded 475 > raw 455) -- I expected sparse marks to run well under QOI-style encoding, yet they exceed raw by a little; asserting a direction the data does not hold would be the REDS #82 false-invariant mistake. The round-trip is the proof, not a compression claim.
+obs Kept the three sibling corpora whole as proven floor -- four corpora now stand over one gfa1 atlas; a later round can unify them into a full ASCII set. Next rung: an inter-frame video codec, then wider symbols.
+loom witness=font5x7_punct_witness glyphs=13 cell=5x7 encoded_bytes=475 raw_bytes=455 ink_lo=3 ink_hi=11
+file image/font5x7_punct.rye the thirteen punctuation marks hand-drawn into the shared 5x7 body at explicit ascending codepoints, built into the gfa1 atlas
+file tools/font5x7_punct_witness.rish proves the corpus on metal -- round-trip byte-identical, all present, distinct, legible
+file crux/REMEMBER.md live-edge line names font5x7_punct GREEN; next rungs an inter-frame codec, then wider symbols
+recommend keep-going next open-media rung: an inter-frame video codec (delta frames over gfv1), then wider symbol coverage
