@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260816.225918
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title the open intra-frame video container (gfv1), Season G's rung after the glyph atlas
+prompt read the road-ahead docs and take the next agent-doable lap Lindy-first crux-first; Rye prioritized, send often, deep-read one rota doc, stop at the custody gates
+think Read REMEMBER's inner loop, the 1024-round itinerary, the eight-season double-seat, and the decision wave. Live edge is the open-media family: image/color.rye and image/glyph.rye (gfa1) GREEN, crypto surface WHOLE. REMEMBER names the next open-media rungs as permissive font corpora (web-search-deferred) then intra-frame video -- so the next agent-doable code crux is the video container.
+think Deep-read one council-rota doc this lap. Lap index ~ session-log count (1118) + 1 = 1119; 1119 mod 27 = 12 -> rota item 12, active-designing/yonder/20260618-184912_growing-a-language.md. It taught the frame directly: a complex system that works grew from a simpler system that worked, so reach for the smallest version that runs and grow it. A video, at its smallest honest form, is a table of images -- so gfv1 is intra-frame only (whole QOI frames, no motion vectors), resting on the proven ground of image/qoi.rye rather than inventing a codec whole.
+think Designed gfv1 to echo the family shape exactly (fixed header, length-delimited frame table, eight-byte end marker, named refusals, round-trip witness). Made orientation a CHECKED claim derived from the dimensions rather than free metadata, so the container can never carry a lie about its own shape. Kept content-addressing external (Tablecloth keys it, as for qoi) so image/ stays free of any crypto/ dependency.
+obs Witness GREEN on metal: a three-frame 8x4 landscape clip round-trips byte-for-byte, orientation/fps/frame_count preserved, encoded 175 bytes < raw 384, and six deliberate corruptions each refuse by their own name (BadMagic, BadEndMarker, TrailingData, Truncated, BadOrientation, FrameDimsMismatch). tame_style_check bans clean (new file carries asserts, not on the zero-assert ratchet), width-check OK.
+loom witness=frames_video_witness frames=3 dims=8x4 encoded_bytes=175 raw_bytes=384
+file image/frames.rye the gfv1 intra-frame video container -- encode/decode over a table of QOI frames, resting on image/qoi.rye
+file tools/frames_video_witness.rish proves the round-trip byte-identical, compression real, every refusal named
+file active-designing/20260816-225918_season-g-frames-video-crux.md the self-approved design round for gfv1
+file image/README.md docs-sync: frames.rye added to the Season G family; next-rungs line moved to inter-frame codec
+file crux/REMEMBER.md inner-loop live edge names gfv1 GREEN and points at the next open-media rungs
+recommend keep-going the video container is GREEN on metal; the next open-media crux is the inter-frame codec (or the web-search-deferred font corpora round), no gate reached

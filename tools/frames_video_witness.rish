@@ -1,0 +1,42 @@
+# tools/frames_video_witness.rish -- the open intra-frame video container proves itself on metal (Season G).
+#
+# Season G (Open Media Primitives) - the video rung beside image/qoi.rye (image), image/glyph.rye (font),
+# and image/color.rye (color). Design read: active-designing/20260816-225918_season-g-frames-video-crux.md
+# Teacher, thanked clean-room: the container lineage of Ogg/Matroska (a self-describing stream of
+# length-delimited frames) -- public shape only, never their code.
+#
+# The crux this witness proves is a REAL, BOUNDED, OPEN video container: a video, at its smallest honest form,
+# is a table of images -- intra-frame only, one size for the whole clip by construction. The module owns both
+# halves (encode + decode) resting on the proven ground of image/qoi.rye, so the property that matters is
+# checkable end to end: a full round-trip over a crafted three-frame 8x4 landscape clip recovers every frame's
+# RGBA bytes byte-for-byte and preserves orientation, fps, and frame count; the container compresses (encoded <
+# raw RGBA of all frames stacked); and six deliberate corruptions each refuse with their own named error
+# (BadMagic - BadEndMarker - TrailingData - Truncated - BadOrientation - FrameDimsMismatch). No network, no
+# key, no funds -- the video container Photos, Skate, Realidream, and Pond read the day a surface wants motion.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/frames_video_witness.rish
+
+say "frames-video: Language EN -- Season G's video rung; a video is a table of images, intra-frame only, verified bytes that decode within named bounds, a malformed stream refusing by name rather than decoding garbage."
+say "frames-video: Style Radiant -- the container owns both halves and rests on the proven ground of image/qoi.rye, so decode(encode(video)) recovers every frame's bytes byte for byte; Ogg and Matroska are thanked clean-room as the teachers of a self-describing length-delimited frame stream."
+say "frames-video: Lens TAME -- u32 in-memory counts, u16 frame_count on the wire, big-endian bytes; every buffer names a maximum (gfv_max_frames - qoi_max_dim - qoi_max_pixels - encoded_bound); each function states its invariants positively; copy_disjoint over bare copyForwards; orientation is a checked claim, never free metadata; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/frames"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/frames.rye -femit-bin=${bin}"]
+assert build.ok else "frames-video: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "frames-video: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "frames-video: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-frames' && echo yes"]
+assert (trim green.out) == "yes" else "frames-video: selftest did not print the GREEN codec line"
+
+let round = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-trip byte-identical' && echo yes"]
+assert (trim round.out) == "yes" else "frames-video: round-trip was not byte-identical"
+
+say "frames-video: GREEN -- open intra-frame video container whole; three-frame clip round-trip byte-identical, orientation and fps preserved, every refusal named, compression real."

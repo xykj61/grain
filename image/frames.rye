@@ -1,0 +1,366 @@
+//! image/frames.rye -- the open intra-frame video container (gfv1, Season G, the rung after the glyph atlas).
+//!
+//! Season G (Open Media Primitives) - the video floor beside image/qoi.rye (image), image/glyph.rye (font),
+//! and image/color.rye (color). Design read: active-designing/20260816-225918_season-g-frames-video-crux.md
+//! Teacher, thanked clean-room: the container lineage of Ogg/Matroska (a self-describing stream of
+//! length-delimited frames) -- public shape only, never their code.
+//!
+//! A video, at its smallest honest form, is a TABLE OF IMAGES the way a font is a table of glyphs and an image
+//! is a table of pixels. This is the "start smallest" the itinerary names: not an inter-frame codec (motion
+//! vectors, P/B frames) but a bounded, verified list of whole QOI frames -- intra-frame only, one size for the
+//! whole clip by construction. The module rests on the proven ground of image/qoi.rye (the growing-a-language
+//! method) and adds only the container: a fixed header, a length-delimited table of QOI streams, the family's
+//! eight-byte end marker. A malformed stream refuses BY NAME rather than decoding garbage; the property that
+//! matters is provable on metal: decode(encode(video)) recovers every frame's RGBA bytes BYTE-FOR-BYTE, and
+//! orientation, fps, and frame_count survive. Content-addressing stays external (Tablecloth keys it, as for
+//! images), so image/ keeps zero dependency on crypto/. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/frames.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const frames_version = "20260816.225918";
+
+/// Header is fixed: 4 magic - 4 width - 4 height (BE) - 1 orientation - 1 fps - 2 frame_count (BE).
+pub const header_len: u32 = 16;
+
+/// The per-frame length prefix -- a big-endian u32 naming exactly how many QOI bytes the frame carries.
+pub const frame_len_field: u32 = 4;
+
+/// The stream ends in exactly these eight bytes -- seven zeros and a one, the same family echo as qoi.rye.
+pub const end_marker = [8]u8{ 0, 0, 0, 0, 0, 0, 0, 1 };
+
+/// A clip holds at most this many frames -- a short animation; honest headroom, not ambition. Fits a u16.
+pub const gfv_max_frames: u32 = 4096;
+
+/// The three container orientations -- derived from the shared dimensions, never a free-floating claim.
+pub const orient_landscape: u8 = 0; // width > height
+pub const orient_portrait: u8 = 1; // height > width
+pub const orient_square: u8 = 2; // width == height
+
+/// The orientation a pair of dimensions implies. The decoder checks the stored byte against this, so a gfv1
+/// stream can never carry a lie about its own shape.
+pub fn derive_orientation(width: u32, height: u32) u8 {
+    // invariant: a container frame has real, positive dimensions.
+    assert(width >= 1);
+    assert(height >= 1);
+    if (width > height) return orient_landscape;
+    if (height > width) return orient_portrait;
+    return orient_square;
+}
+
+fn read_u32_be(b: []const u8) u32 {
+    // invariant: a big-endian read needs its four bytes present.
+    assert(b.len >= 4);
+    return (@as(u32, b[0]) << 24) | (@as(u32, b[1]) << 16) | (@as(u32, b[2]) << 8) | @as(u32, b[3]);
+}
+
+fn write_u32_be(b: []u8, v: u32) void {
+    // invariant: a big-endian write needs its four bytes of room.
+    assert(b.len >= 4);
+    b[0] = @intCast((v >> 24) & 0xFF);
+    b[1] = @intCast((v >> 16) & 0xFF);
+    b[2] = @intCast((v >> 8) & 0xFF);
+    b[3] = @intCast(v & 0xFF);
+}
+
+/// A decoded clip -- shared dimensions and orientation, a frame rate, and the frames in order. Each frame is a
+/// fully decoded qoi.Pixmap, all one size by construction.
+pub const Video = struct {
+    width: u32 = 0,
+    height: u32 = 0,
+    orientation: u8 = 0,
+    fps: u8 = 0,
+    frames: []qoi.Pixmap = &[_]qoi.Pixmap{},
+
+    /// Pixels per frame -- the exact RGBA cell count every frame in this clip carries.
+    pub fn frame_pixels(self: *const Video) u32 {
+        // invariant: a clip's frame dimensions stay within the image ceiling.
+        const n = @as(u64, self.width) * @as(u64, self.height);
+        assert(n <= qoi.qoi_max_pixels);
+        return @intCast(n);
+    }
+};
+
+/// What an encode produced -- the byte length written and the frame count, so a witness can prove the whole
+/// clip round-tripped and shrank.
+pub const EncodeResult = struct {
+    len: u32 = 0,
+    frame_count: u32 = 0,
+};
+
+/// A safe upper bound on the encoded size of a `frame_count`-frame clip of `pixels`-pixel frames: header +
+/// per-frame (length prefix + worst-case QOI encode) + the end marker. A caller sizes its buffer by this.
+pub fn encoded_bound(pixels: u32, frame_count: u32) u32 {
+    // invariant: the bound covers a clip the format can actually hold.
+    assert(pixels <= qoi.qoi_max_pixels);
+    assert(frame_count >= 1);
+    assert(frame_count <= gfv_max_frames);
+    const per_frame = frame_len_field + qoi.encoded_bound(pixels);
+    return header_len + frame_count * per_frame + @as(u32, end_marker.len);
+}
+
+/// Decode a gfv1 byte stream into a freshly allocated Video. Every failure is a NAMED refusal; nothing past
+/// the header is trusted until each frame decodes to exactly the container's dimensions and the stream ends in
+/// the canonical eight-byte marker with no trailing data.
+pub fn decode(allocator: std.mem.Allocator, bytes: []const u8) !Video {
+    // invariant: a real gfv1 stream is at least a header and an end marker long.
+    if (bytes.len < header_len + end_marker.len) return error.Truncated;
+    if (!(bytes[0] == 'g' and bytes[1] == 'f' and bytes[2] == 'v' and bytes[3] == '1')) return error.BadMagic;
+
+    const width = read_u32_be(bytes[4..8]);
+    const height = read_u32_be(bytes[8..12]);
+    const orientation = bytes[12];
+    const fps = bytes[13];
+    const frame_count: u32 = (@as(u32, bytes[14]) << 8) | @as(u32, bytes[15]);
+
+    if (width == 0 or height == 0) return error.BadDimensions;
+    if (width > qoi.qoi_max_dim or height > qoi.qoi_max_dim) return error.TooLarge;
+    const total = @as(u64, width) * @as(u64, height);
+    if (total > qoi.qoi_max_pixels) return error.TooLarge;
+    const pixel_count: u32 = @intCast(total);
+
+    if (orientation != derive_orientation(width, height)) return error.BadOrientation;
+    if (fps == 0) return error.BadFps;
+    if (frame_count == 0 or frame_count > gfv_max_frames) return error.BadFrameCount;
+
+    const frames = try allocator.alloc(qoi.Pixmap, frame_count);
+    const frame_cap = qoi.encoded_bound(pixel_count);
+
+    var p: u32 = header_len; // read cursor into `bytes`
+    var f: u32 = 0; // frame cursor
+    while (f < frame_count) : (f += 1) {
+        // invariant: a frame needs its four-byte length prefix present.
+        if (@as(u64, p) + frame_len_field > bytes.len) return error.Truncated;
+        const frame_len = read_u32_be(bytes[p .. p + frame_len_field]);
+        p += frame_len_field;
+        // A frame can never claim to be larger than a worst-case QOI encode of the container's dimensions.
+        if (frame_len > frame_cap) return error.FrameTooLarge;
+        if (@as(u64, p) + frame_len > bytes.len) return error.Truncated;
+
+        const frame = try qoi.decode(allocator, bytes[p .. p + frame_len]);
+        if (frame.width != width or frame.height != height) return error.FrameDimsMismatch;
+        frames[f] = frame;
+        p += frame_len;
+    }
+
+    // The tail must be exactly the eight-byte end marker -- no fewer (Truncated), no more (TrailingData).
+    const remaining = @as(u64, bytes.len) - @as(u64, p);
+    if (remaining < end_marker.len) return error.Truncated;
+    if (remaining > end_marker.len) return error.TrailingData;
+    if (!std.mem.eql(u8, bytes[p .. p + end_marker.len], end_marker[0..])) return error.BadEndMarker;
+
+    // invariant: the decode read every frame and consumed the whole stream.
+    assert(f == frame_count);
+    assert(p + end_marker.len == bytes.len);
+    return Video{
+        .width = width,
+        .height = height,
+        .orientation = orientation,
+        .fps = fps,
+        .frames = frames,
+    };
+}
+
+/// Encode a Video into a caller-provided buffer (sized by `encoded_bound`). Returns the byte length written and
+/// the frame count. Each frame is a whole QOI stream, so the container adds only its header, length prefixes,
+/// and end marker.
+pub fn encode(allocator: std.mem.Allocator, video: *const Video, dst: []u8) !EncodeResult {
+    // invariant: a clip has at least one frame and no more than the ceiling.
+    assert(video.frames.len >= 1);
+    assert(video.frames.len <= gfv_max_frames);
+    const frame_count: u32 = @intCast(video.frames.len);
+    const pixel_count = video.frame_pixels();
+    if (dst.len < encoded_bound(pixel_count, frame_count)) return error.EncodeOverflow;
+    // invariant: the stored orientation matches the dimensions, so encode never writes a lie.
+    assert(video.orientation == derive_orientation(video.width, video.height));
+    assert(video.fps >= 1);
+
+    dst[0] = 'g';
+    dst[1] = 'f';
+    dst[2] = 'v';
+    dst[3] = '1';
+    write_u32_be(dst[4..8], video.width);
+    write_u32_be(dst[8..12], video.height);
+    dst[12] = video.orientation;
+    dst[13] = video.fps;
+    dst[14] = @intCast((frame_count >> 8) & 0xFF);
+    dst[15] = @intCast(frame_count & 0xFF);
+
+    const frame_cap = qoi.encoded_bound(pixel_count);
+    const scratch = try allocator.alloc(u8, frame_cap);
+
+    var w: u32 = header_len; // write cursor into dst
+    var f: u32 = 0;
+    while (f < frame_count) : (f += 1) {
+        const pm = &video.frames[f];
+        // invariant: every frame shares the container's dimensions.
+        assert(pm.width == video.width);
+        assert(pm.height == video.height);
+        const res = try qoi.encode(pm, scratch);
+        write_u32_be(dst[w .. w + frame_len_field], res.len);
+        w += frame_len_field;
+        tally_copy.copy_disjoint(u8, dst[w .. w + res.len], scratch[0..res.len]);
+        w += res.len;
+    }
+
+    var m: u32 = 0;
+    while (m < end_marker.len) : (m += 1) {
+        dst[w] = end_marker[m];
+        w += 1;
+    }
+
+    // invariant: the write stayed within the bound the caller sized against.
+    assert(w <= encoded_bound(pixel_count, frame_count));
+    return EncodeResult{ .len = w, .frame_count = frame_count };
+}
+
+// --- selftest: encode a small clip that round-trips byte-for-byte, and prove each named refusal ------------
+
+/// Build a solid-color frame of the given dimensions.
+fn solid_frame(allocator: std.mem.Allocator, width: u32, height: u32, r: u8, g: u8, b: u8) !qoi.Pixmap {
+    const n = width * height;
+    const buf = try allocator.alloc(u8, @as(usize, n) * 4);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const off = @as(usize, i) * 4;
+        buf[off] = r;
+        buf[off + 1] = g;
+        buf[off + 2] = b;
+        buf[off + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = width, .height = height, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+/// Build a per-pixel gradient frame, so the clip is not only solid colors.
+fn pattern_frame(allocator: std.mem.Allocator, width: u32, height: u32) !qoi.Pixmap {
+    const n = width * height;
+    const buf = try allocator.alloc(u8, @as(usize, n) * 4);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const off = @as(usize, i) * 4;
+        buf[off] = @intCast(i & 0xFF);
+        buf[off + 1] = @intCast((i *% 3) & 0xFF);
+        buf[off + 2] = @intCast((i *% 7) & 0xFF);
+        buf[off + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = width, .height = height, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+fn craft(allocator: std.mem.Allocator) !Video {
+    const width: u32 = 8;
+    const height: u32 = 4; // 8x4 -> landscape
+    const frames = try allocator.alloc(qoi.Pixmap, 3);
+    frames[0] = try solid_frame(allocator, width, height, 10, 20, 30);
+    frames[1] = try solid_frame(allocator, width, height, 200, 100, 50);
+    frames[2] = try pattern_frame(allocator, width, height);
+    return Video{
+        .width = width,
+        .height = height,
+        .orientation = derive_orientation(width, height),
+        .fps = 12,
+        .frames = frames,
+    };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const video = try craft(garden);
+    const pixel_count = video.frame_pixels();
+    const frame_count: u32 = @intCast(video.frames.len);
+    const cap = encoded_bound(pixel_count, frame_count);
+    const dst = try garden.alloc(u8, cap);
+
+    const res = try encode(garden, &video, dst);
+    // invariant: the encoder wrote every frame.
+    assert(res.frame_count == frame_count);
+
+    const raw_bytes = @as(u32, pixel_count) * 4 * frame_count;
+    // invariant: the container compressed -- encoded is smaller than the raw RGBA of all frames stacked.
+    assert(res.len < raw_bytes);
+
+    const stream = dst[0..res.len];
+    const back = try decode(garden, stream);
+    // The crux: a full round-trip recovers dimensions, orientation, fps, frame count, and every frame's bytes.
+    assert(back.width == video.width);
+    assert(back.height == video.height);
+    assert(back.orientation == video.orientation);
+    assert(back.fps == video.fps);
+    assert(back.frames.len == video.frames.len);
+    var f: u32 = 0;
+    while (f < frame_count) : (f += 1) {
+        assert(back.frames[f].same_bytes(&video.frames[f]));
+    }
+
+    // --- named refusals -------------------------------------------------------------------------------
+    // Truncated: drop the last byte.
+    if (decode(garden, stream[0 .. stream.len - 1])) |_| return error.TruncSlipped else |e| {
+        if (e != error.BadEndMarker and e != error.Truncated) return error.WrongTrunc;
+    }
+    // Bad magic: corrupt the first byte.
+    {
+        const bad = try garden.alloc(u8, stream.len);
+        tally_copy.copy_disjoint(u8, bad[0..stream.len], stream);
+        bad[0] = 'X';
+        if (decode(garden, bad)) |_| return error.MagicSlipped else |e| {
+            if (e != error.BadMagic) return error.WrongMagic;
+        }
+    }
+    // Bad end marker: corrupt the final byte.
+    {
+        const bad = try garden.alloc(u8, stream.len);
+        tally_copy.copy_disjoint(u8, bad[0..stream.len], stream);
+        bad[bad.len - 1] = 0x02;
+        if (decode(garden, bad)) |_| return error.EndSlipped else |e| {
+            if (e != error.BadEndMarker) return error.WrongEnd;
+        }
+    }
+    // Trailing data: an extra byte past a whole valid stream.
+    {
+        const bad = try garden.alloc(u8, stream.len + 1);
+        tally_copy.copy_disjoint(u8, bad[0..stream.len], stream);
+        bad[bad.len - 1] = 0x00;
+        if (decode(garden, bad)) |_| return error.TrailSlipped else |e| {
+            if (e != error.TrailingData) return error.WrongTrail;
+        }
+    }
+    // Bad orientation: claim portrait for a landscape clip.
+    {
+        const bad = try garden.alloc(u8, stream.len);
+        tally_copy.copy_disjoint(u8, bad[0..stream.len], stream);
+        bad[12] = orient_portrait;
+        if (decode(garden, bad)) |_| return error.OrientSlipped else |e| {
+            if (e != error.BadOrientation) return error.WrongOrient;
+        }
+    }
+    // Frame dims mismatch: shrink the container width in the header so a decoded frame no longer matches.
+    // A width of 4 keeps 4x4 within bounds and square, so it passes magic/dim/orientation checks yet the
+    // first frame decodes to 8x4 and refuses by name.
+    {
+        const bad = try garden.alloc(u8, stream.len);
+        tally_copy.copy_disjoint(u8, bad[0..stream.len], stream);
+        write_u32_be(bad[4..8], 4);
+        bad[12] = orient_square; // 4x4 is square, so orientation passes and the frame check is what fires
+        if (decode(garden, bad)) |_| return error.DimsSlipped else |e| {
+            if (e != error.FrameDimsMismatch and e != error.FrameTooLarge) return error.WrongDims;
+        }
+    }
+
+    print("GREEN image-frames: 3-frame 8x4 clip round-trip byte-identical; orientation={d} fps={d} frames={d}; encoded {d} bytes < raw {d}; refusals BadMagic-BadEndMarker-TrailingData-Truncated-BadOrientation-FrameDimsMismatch all named\n", .{
+        back.orientation, back.fps, back.frames.len, res.len, raw_bytes,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: frames selftest\n", .{});
+    return 1;
+}
