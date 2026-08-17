@@ -1,0 +1,46 @@
+# tools/color_format_witness.rish -- writing ANY color to its CSS functional string proves itself over the open color algebra (Season G).
+#
+# Season G (Open Media Primitives) -- the writer that closes the round trip color.parse_func opened. The algebra could
+# READ rgb()/rgba()/hsl()/hsla() (image/color.rye parse_func) and WRITE only hex (color.format_hex); this module
+# (image/color_format.rye) writes the functional forms back, beside the named-color table (image/color_names.rye), the
+# nearest-name finder (image/color_nearest.rye), and the open color algebra itself.
+# Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS Color spec + sRGB/HSL model -- public standards only).
+#
+# The crux this witness proves is a faithful writer: format_rgb spells the four bytes so parse_func recovers the color
+# byte-for-byte, and format_hsl spells color.rgb_to_hsl(c) so the TEXT never drifts from the algebra's own reading
+# (integer HSL is not byte-exact, and the module claims text fidelity, not color exactness). Bounded (the widest form,
+# "hsla(360, 100%, 100%, 255)", is twenty-six bytes; a narrow buffer refuses by name). No new math, no network, no key,
+# no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/color_format_witness.rish
+
+say "color-format: Language EN -- Season G's functional writer; a keeper reads a stylesheet color and now EMITS one, 'rgb(255, 0, 0)' or 'hsl(0, 100%, 50%)', closing the round trip parse_func opened."
+say "color-format: Style Radiant -- single-stranded; this module only FORMATS, inventing no color fact; the rgb() text is the four bytes in decimal and the hsl() text is exactly color.rgb_to_hsl spelled out."
+say "color-format: Lens TAME -- every form is bounded by construction (twenty-six bytes, the widest hsla); a buffer too narrow refuses by name rather than truncating; deterministic; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/color_format"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/color_format.rye -femit-bin=${bin}"]
+assert build.ok else "color-format: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "color-format: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "color-format: ${out}"
+
+# Honour the loom REDS #76 named: check every claim with Rishi's native `contains`, never a shell grep over interpolated
+# output, so punctuation in the selftest prose can never break a check.
+assert out contains "GREEN image-color-format" else "color-format: selftest did not print the GREEN color-format line"
+assert out contains "an opaque color writes rgb()" else "color-format: an opaque color did not write the rgb() form"
+assert out contains "a departing alpha writes rgba()" else "color-format: a departing alpha did not write the rgba() form"
+assert out contains "recovers c byte-for-byte" else "color-format: the rgb round trip lost a byte"
+assert out contains "spells color.rgb_to_hsl exactly" else "color-format: the hsl() text did not spell the algebra's reading"
+assert out contains "can never drift" else "color-format: the hsl() text drifted from rgb_to_hsl"
+assert out contains "fits the twenty-six-byte bound" else "color-format: a form ran past its named bound"
+assert out contains "refuses BufferTooSmall by name at both doors" else "color-format: a narrow buffer did not refuse by name"
+assert out contains "writes the same string every time" else "color-format: the writing was not deterministic"
+
+say "color-format: GREEN -- the CSS functional writer whole over the open color algebra; rgb() round-trips byte-for-byte, rgba() carries alpha, the hsl() text spells rgb_to_hsl without drift, every form fits its twenty-six-byte bound, a narrow buffer refuses by name at both doors, deterministic; the color family can now EMIT the functional forms it could already read."

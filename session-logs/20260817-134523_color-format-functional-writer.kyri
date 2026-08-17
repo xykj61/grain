@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260817.134523
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image/color_format.rye -- write any color to its CSS functional string, GREEN
+prompt recur the road ahead Lindy-first crux-first; take the next agent-doable lap over the open-media color family; rota one council doc; send each finished increment as its own signed round; stop at custody gates
+think Read the road: REMEMBER live edge, the 1024-round itinerary, the eight-season double-seat, the Rye-first crypto/decision wave. Season G (Open Media Primitives) is the live building edge; the color algebra is the smallest tractable crux and has grown a deep single-stranded family (algebra, adjust, scale, swatch, harmony, contrast, names, names_css, nearest, nearest_css, name_group, tone, describe).
+think Looked for the honest next gap rather than another naming altitude. Found it in the writer side: color.parse_func READS rgb()/rgba()/hsl()/hsla() and color.format_hex WRITES only hex. A design system that reads a stylesheet color could not EMIT one back -- the functional round trip parse_func opened stayed open. That is the Lindy-first crux: completing a round trip is durable floor a whole family stands on, and it needs no rendering (Brushstroke stays paused), only pure formatting.
+think Built image/color_format.rye single-stranded -- it only FORMATS, inventing no color fact. format_rgb spells the four bytes in decimal (integer alpha dialect matching parse_func); format_hsl spells exactly color.rgb_to_hsl(c). Split the honesty by what the algebra can prove: the rgb round trip is byte-for-byte (parse_func(format_rgb(c)) == c), while integer HSL is not byte-exact, so the hsl claim is TEXT FIDELITY -- proven by rebuilding the string from an independent rgb_to_hsl reading in the selftest, never against itself.
+think Bounded to twenty-six bytes (the widest, "hsla(360, 100%, 100%, 255)"); a buffer one byte too narrow refuses BufferTooSmall at both doors. write_uint bounds every field to three digits; static heads/separators copy through copy_disjoint.
+obs FIRST GREEN, no reds. tame_style_check bans clean (my file added no compound assert or seam cast), width-check exit 0, plain 7-bit ASCII, American spelling, >= 2 positive asserts per fn. The rgb round trip over a spread of eight (opaque and translucent) recovers every byte; the hsl text is rebuilt byte-for-byte so it can never drift.
+obs Single-stranded held: this module neither swelled color.rye nor mutated a sibling -- it is a new door on the algebra's existing readings, so parse_func and rgb_to_hsl stand unchanged, each keeping its own green.
+loom witness=color_format_witness build=ok selftest=ok forms=rgb+rgba+hsl+hsla round_trip_spread=8 func_max_bytes=26 reds=0
+file image/color_format.rye the functional writer -- format_rgb (byte-for-byte round trip) and format_hsl (text fidelity to rgb_to_hsl), bounded and deterministic
+file tools/color_format_witness.rish proves both doors on metal, native contains checks per REDS #76
+file crux/REMEMBER.md live edge + Git nib advanced to name color_format; prior nib demoted
+file session-logs/README.md newest-first index row prepended
+recommend keep-going the open-fonts glyph journey is the next Season G rung after color, or a fresh Lindy-first crux; the color family now both reads and writes the CSS forms

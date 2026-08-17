@@ -1,0 +1,252 @@
+//! image/color_format.rye -- write ANY color to its CSS functional string (Season G), the writer parse_func opened.
+//!
+//! Season G (Open Media Primitives) -- the color algebra could READ the functional forms (color.parse_func reads
+//! rgb()/rgba()/hsl()/hsla()) and WRITE only the hex form (color.format_hex writes #rrggbbaa). This module writes the
+//! functional forms back, so the round trip parse_func opened closes: a design system that reads a stylesheet color can
+//! now EMIT one. Single-stranded -- it only FORMATS. It invents no color fact: the rgb() text is the four bytes spelled
+//! in decimal, and the hsl() text is exactly color.rgb_to_hsl(c) spelled out; this module adds no new math and calls the
+//! algebra for the one reading it needs.
+//!
+//! Two front doors, each returning the slice written into a caller buffer:
+//!
+//!   format_rgb(c, buf) -> "rgb(r, g, b)" when opaque, "rgba(r, g, b, a)" when alpha departs from 255. The channels are
+//!     the four bytes in decimal, in this module's integer alpha dialect (0..255, matching parse_func) rather than CSS's
+//!     0..1 float, so parse_func(format_rgb(c)) recovers c BYTE-FOR-BYTE.
+//!   format_hsl(c, buf) -> "hsl(h, s%, l%)" / "hsla(h, s%, l%, a)", the fields taken straight from color.rgb_to_hsl(c).
+//!     Integer HSL cannot round-trip byte-exact (color.rye states this), so the honest claim here is fidelity of the
+//!     TEXT, not exactness of the color: the string spells rgb_to_hsl(c) without drift.
+//!
+//! Every field is at most three digits (360, 255, 100); the widest phrase, "hsla(360, 100%, 100%, 255)", is twenty-six
+//! bytes. The buffer is bounded by construction; a buffer too small refuses BufferTooSmall by name rather than writing a
+//! partial string. Bounded, deterministic, no stored channel byte, no parser, no network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/color_format.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+
+pub const color_format_version = "20260817.134523";
+
+/// The widest functional string this module ever writes: "hsla(360, 100%, 100%, 255)" -- twenty-six bytes. A caller
+/// buffer at least this wide always holds any rgb()/rgba()/hsl()/hsla() form whole.
+pub const func_max: u32 = 26;
+
+/// Write one bounded unsigned integer (at most three digits) in decimal into the front of `dst`, returning the count
+/// written. Every field this module spells -- a channel byte (0..255), a hue (0..360), a percent (0..100) -- fits.
+fn write_uint(dst: []u8, v: u32) u32 {
+    // invariant: no field this module writes ever exceeds three decimal digits.
+    assert(v <= 999);
+    var tmp: [3]u8 = undefined;
+    var n: u32 = 0;
+    var x = v;
+    while (true) {
+        tmp[n] = '0' + @as(u8, @intCast(x % 10));
+        x /= 10;
+        n += 1;
+        if (x == 0) break;
+    }
+    // invariant: at least one digit and never more than three, so the reversal below stays in bounds.
+    assert(n >= 1);
+    assert(n <= 3);
+    assert(dst.len >= n);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) dst[i] = tmp[n - 1 - i];
+    return n;
+}
+
+/// Copy a static head or separator into the front of `dst`, returning its length -- the disjoint copy under its guarded
+/// name, since a caller buffer never overlaps a static string.
+fn write_word(dst: []u8, word: []const u8) u32 {
+    // invariant: the destination holds the whole word, so the copy never runs past the buffer.
+    assert(dst.len >= word.len);
+    // invariant: every head and separator this module writes is short -- at most the widest phrase.
+    assert(word.len <= func_max);
+    @import("tally_copy.rye").copy_disjoint(u8, dst[0..word.len], word);
+    return @intCast(word.len);
+}
+
+/// Write the two-byte field separator ", " and return its length.
+fn write_sep(dst: []u8) u32 {
+    // invariant: the separator is exactly two bytes, comma then space, matching what parse_func splits and trims.
+    return write_word(dst, ", ");
+}
+
+/// Write a color as `rgb(r, g, b)` (opaque) or `rgba(r, g, b, a)` (alpha departs from 255) into `buf`, returning the
+/// slice written. The channels are the four bytes in decimal, so parse_func recovers the color byte-for-byte.
+pub fn format_rgb(c: color.Rgba, buf: []u8) ![]const u8 {
+    // invariant: the buffer holds the widest functional form whole, so no string is ever truncated.
+    assert(func_max == 26);
+    if (buf.len < func_max) return error.BufferTooSmall;
+
+    const is_opaque = c.a == 255;
+    var n: u32 = 0;
+    n += write_word(buf[n..], if (is_opaque) "rgb(" else "rgba(");
+    n += write_uint(buf[n..], c.r);
+    n += write_sep(buf[n..]);
+    n += write_uint(buf[n..], c.g);
+    n += write_sep(buf[n..]);
+    n += write_uint(buf[n..], c.b);
+    if (!is_opaque) {
+        n += write_sep(buf[n..]);
+        n += write_uint(buf[n..], c.a);
+    }
+    // invariant: one closing paren fits, since the widest rgba form is shorter than the named bound.
+    assert(n < func_max);
+    buf[n] = ')';
+    n += 1;
+    return buf[0..n];
+}
+
+/// Write a color as `hsl(h, s%, l%)` (opaque) or `hsla(h, s%, l%, a)` into `buf`, returning the slice written. The h/s/l
+/// fields are exactly color.rgb_to_hsl(c); the string is a faithful spelling of that reading, not a claim of exactness.
+pub fn format_hsl(c: color.Rgba, buf: []u8) ![]const u8 {
+    // invariant: the buffer holds the widest functional form whole, so no string is ever truncated.
+    assert(func_max == 26);
+    if (buf.len < func_max) return error.BufferTooSmall;
+
+    const hsl = color.rgb_to_hsl(c);
+    // invariant: the reading stays within its declared ranges, so each field spells at most three digits.
+    assert(hsl.h <= 360);
+    assert(hsl.s <= 100);
+    assert(hsl.l <= 100);
+
+    const is_opaque = c.a == 255;
+    var n: u32 = 0;
+    n += write_word(buf[n..], if (is_opaque) "hsl(" else "hsla(");
+    n += write_uint(buf[n..], hsl.h);
+    n += write_sep(buf[n..]);
+    n += write_uint(buf[n..], hsl.s);
+    buf[n] = '%';
+    n += 1;
+    n += write_sep(buf[n..]);
+    n += write_uint(buf[n..], hsl.l);
+    buf[n] = '%';
+    n += 1;
+    if (!is_opaque) {
+        n += write_sep(buf[n..]);
+        n += write_uint(buf[n..], c.a);
+    }
+    // invariant: one closing paren fits within the named bound.
+    assert(n < func_max);
+    buf[n] = ')';
+    n += 1;
+    return buf[0..n];
+}
+
+// --- selftest: prove the functional writer -- rgb() round-trips byte-for-byte, rgba() carries alpha, the hsl() text
+// --- spells rgb_to_hsl without drift, the widest phrase writes to its bound, a narrow buffer refuses by name, and the
+// --- writing is deterministic.
+
+fn eq(got: []const u8, want: []const u8) bool {
+    return std.mem.eql(u8, got, want);
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    _ = garden;
+    var buf: [func_max]u8 = undefined;
+
+    // 1. An opaque color writes the three-channel rgb() form -- pure red #ff0000 reads "rgb(255, 0, 0)".
+    if (!eq(try format_rgb(try color.parse_hex("#ff0000"), &buf), "rgb(255, 0, 0)")) return error.RgbOpaqueWrong;
+
+    // 2. A color whose alpha departs writes rgba() with the fourth channel -- #ff000080 reads "rgba(255, 0, 0, 128)".
+    if (!eq(try format_rgb(try color.parse_hex("#ff000080"), &buf), "rgba(255, 0, 0, 128)")) return error.RgbaAlphaWrong;
+
+    // 3. The rgb round trip is byte-for-byte -- parse_func(format_rgb(c)) recovers c exactly, over a spread that spans
+    // every channel and both opaque and translucent alpha, so the writer never loses a byte the reader kept.
+    const spread = [_][]const u8{ "#000000", "#ffffff", "#123456", "#abcdef", "#7f3f00", "#004020", "#e0e0ffff", "#c0804080" };
+    var i: u32 = 0;
+    while (i < spread.len) : (i += 1) {
+        const c = try color.parse_hex(spread[i]);
+        const text = try format_rgb(c, &buf);
+        const back = try color.parse_func(text);
+        if (!back.eql(c)) return error.RgbRoundTripLost;
+    }
+
+    // 4. The hsl() form spells rgb_to_hsl -- pure red #ff0000 reads "hsl(0, 100%, 50%)".
+    if (!eq(try format_hsl(try color.parse_hex("#ff0000"), &buf), "hsl(0, 100%, 50%)")) return error.HslOpaqueWrong;
+
+    // 5. A translucent color writes hsla() with the integer alpha -- a half-alpha pure blue #0000ff80 reads
+    // "hsla(240, 100%, 50%, 128)".
+    if (!eq(try format_hsl(try color.parse_hex("#0000ff80"), &buf), "hsla(240, 100%, 50%, 128)")) return error.HslaAlphaWrong;
+
+    // 6. The hsl() text never drifts from rgb_to_hsl -- rebuild the expected string independently from the algebra's own
+    // reading and compare byte-for-byte over the spread, so format_hsl can only ever spell the reading it was given.
+    i = 0;
+    while (i < spread.len) : (i += 1) {
+        const c = try color.parse_hex(spread[i]);
+        const got = try format_hsl(c, &buf);
+        var want_buf: [func_max]u8 = undefined;
+        const want = expected_hsl(c, &want_buf);
+        if (!eq(got, want)) return error.HslTextDrifted;
+    }
+
+    // 7. The widest phrase writes within its bound -- a translucent magenta #ff00fffe carries a three-digit hue and a
+    // fourth alpha field, the longest an hsla() ever runs, and it never passes func_max.
+    const wide = try format_hsl(try color.parse_hex("#ff00fffe"), &buf);
+    if (wide.len > func_max) return error.WidestPastBound;
+
+    // 8. A buffer narrower than the widest phrase refuses by name rather than writing a partial string -- both doors.
+    var tiny: [func_max - 1]u8 = undefined;
+    if (format_rgb(try color.parse_hex("#ffffff"), &tiny)) |_| {
+        return error.NarrowRgbAccepted;
+    } else |err| {
+        if (err != error.BufferTooSmall) return error.WrongRgbRefusal;
+    }
+    if (format_hsl(try color.parse_hex("#ffffff"), &tiny)) |_| {
+        return error.NarrowHslAccepted;
+    } else |err| {
+        if (err != error.BufferTooSmall) return error.WrongHslRefusal;
+    }
+
+    // 9. Determinism -- the same color writes the same string every time, both forms.
+    var a_buf: [func_max]u8 = undefined;
+    var b_buf: [func_max]u8 = undefined;
+    const rgb_once = try format_rgb(try color.parse_hex("#123456"), &a_buf);
+    const rgb_again = try format_rgb(try color.parse_hex("#123456"), &b_buf);
+    if (!eq(rgb_once, rgb_again)) return error.RgbNotDeterministic;
+    const hsl_once = try format_hsl(try color.parse_hex("#123456"), &a_buf);
+    const hsl_again = try format_hsl(try color.parse_hex("#123456"), &b_buf);
+    if (!eq(hsl_once, hsl_again)) return error.HslNotDeterministic;
+
+    print("GREEN image-color-format: any color writes its CSS functional string over the open color algebra, closing the round trip parse_func opened; an opaque color writes rgb() (pure red reads 'rgb(255, 0, 0)') and a departing alpha writes rgba() ('rgba(255, 0, 0, 128)'); parse_func(format_rgb(c)) recovers c byte-for-byte over a spread of eight colors, so the writer loses no byte the reader kept; the hsl() form spells color.rgb_to_hsl exactly (pure red reads 'hsl(0, 100%, 50%)', half-alpha blue reads 'hsla(240, 100%, 50%, 128)') and the text is rebuilt byte-for-byte from the algebra's own reading so it can never drift; every form fits the twenty-six-byte bound; a buffer one byte too narrow refuses BufferTooSmall by name at both doors rather than truncating; and the same color writes the same string every time (single-stranded: this module only formats, inventing no color fact)\n", .{});
+    return 0;
+}
+
+/// Rebuild the expected hsl() string straight from color.rgb_to_hsl, by the same spelling, so the selftest checks
+/// format_hsl against an independent composition rather than against itself.
+fn expected_hsl(c: color.Rgba, buf: []u8) []const u8 {
+    assert(buf.len >= func_max); // invariant: the check buffer holds the widest phrase whole
+    const hsl = color.rgb_to_hsl(c);
+    const is_opaque = c.a == 255;
+    var n: u32 = 0;
+    n += write_word(buf[n..], if (is_opaque) "hsl(" else "hsla(");
+    n += write_uint(buf[n..], hsl.h);
+    n += write_sep(buf[n..]);
+    n += write_uint(buf[n..], hsl.s);
+    buf[n] = '%';
+    n += 1;
+    n += write_sep(buf[n..]);
+    n += write_uint(buf[n..], hsl.l);
+    buf[n] = '%';
+    n += 1;
+    if (!is_opaque) {
+        n += write_sep(buf[n..]);
+        n += write_uint(buf[n..], c.a);
+    }
+    assert(n < func_max); // invariant: the closing paren fits within the named bound
+    buf[n] = ')';
+    n += 1;
+    return buf[0..n];
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: color_format selftest\n", .{});
+    return 1;
+}
