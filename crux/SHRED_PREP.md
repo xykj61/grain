@@ -111,6 +111,18 @@ Plan: `../active-designing/20260809-234413_loadable-topologies-and-pond-silo-bri
 
 The eventual "shedding" of the elder descriptor would be a **deep git-history debride** — it stays **RED** and word-gated, needs a **cairn** first, and is not opened here. Molt is prep only.
 
+### Molt seated — old-waymark session logs (breach round `20260817`)
+
+**Seated (`20260817`, Keaton's word — "old logs with old waymarks... prepped for shedding across all these phases").** Five waymark/module **breaches** landed this day (cairn `crux/CAIRNS.md 20260817.173615`): **DREY → DREY**, **FORA → FORA**, **LOWE → LOWE**, **WADE → WADE → WADE**, and the module **Dimeroll → Dimeroll**. These are **breaches, not full debrides** (per [`../.claude/rules/debride.md`](../.claude/rules/debride.md)): the living tree carries the new names, yet the elders still live in git history and the **dated session logs**, kept whole as the historical account of the work built under them. The full **debride** — purging the elders from *all* history — is a later **deep debride** (history rewrite + force-push, custody gate #1, Keaton's hand).
+
+This molt is the **prep toward that eventual debride**: the elder-waymark logs are seated as shed-candidates (**Class H**), the census the roster rather than a hand-typed list:
+
+```
+git ls-files 'session-logs/*' | grep -iE 'mihi|dimeroll|fuss|drey|fora'
+```
+
+**80 dated logs** carry an elder waymark in name or content (drey 19 · fora 32 · lowe 18 · dimeroll 7 · wade 6, two overlapping). They are **prep only**: the fossils stay whole on disk, git history keeps every byte, and the **Class H shred stays RED until Keaton circles it** per phase or whole. The REDS ledger and the `crux/CAIRNS.md` walk-back rows are **not** in this batch — they are the reds record and the recovery markers, kept live. Measurement beats memory: the shed census (`tools/fixtures/shed_census_scan.sh` and the grep above) is authority for membership, never recall.
+
 ### Pending molt — Bron → Kyri (by molt, not rewrite · opens after JARL)
 
 **Decision (`20260810`, Keaton's word):** the session-log notation **Bron** re-grows under the favorite word **Kyri**. Measured scale: **2,163** `.bron` files, **378** living references. This is a **molt, never a rewrite** — the **2,163 existing `.bron` files are never renamed** (one-clock law / accrete-never-break protect every dated artifact); **new** logs are born `.kyri`; the notation spec grows a Kyri mutant while the Bron spec stays a readable fossil; the 378 references update forward and tools read **both** extensions. No history rewrite, no unsigning, no force-push.
