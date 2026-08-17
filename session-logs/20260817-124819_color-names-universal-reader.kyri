@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260817.124819
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image/color_names.rye -- resolve_any, the universal color reader (name | hex | functional), GREEN
+prompt autonomous loop, second lap this run: after landing the HTML4 named table, take the next agent-doable rung Lindy-first crux-first over the same color family
+think color.parse already dispatches hex vs functional but is name-blind; the natural capstone of the naming rung is a single front door that also accepts a keyword. resolve_any(text) trims spaces, resolves an all-letters text through the HTML4 table, and delegates every other form to color.parse -- names from this module, hex and rgb()/hsl() from color's own proven parser.
+think Dispatch cannot be "first byte is a letter -> name" because rgb()/hsl() also start with letters; instead is_letters(text) requires the WHOLE trimmed text to be ASCII letters, so "rgb(0,0,255)" (has digits and parens) delegates while "blue" resolves. Clean and honest.
+think Kept it compose-not-braid and bounded: trim_ascii_spaces only trims within color.color_max_text (over-long text passes through for color.parse to refuse), is_letters bounded by name_max, both helpers >= 2 positive asserts. A tenth selftest crux proves a name, a hex, and a functional form all read to the same bytes with spaces trimmed and an unknown name still refused UnknownColorName.
+obs GREEN on metal, no reds. tame_style_check exit 0 (color_names not flagged), width-check exit 0 (not flagged), witness exit 0 with a new native `contains` line for resolve_any. American spelling held (born color). image/README.md names resolve_any (docs-sync).
+loom witness=color_names_witness build_ok=1 selftest_ok=1 cruxes=10
+file image/color_names.rye adds resolve_any + trim_ascii_spaces + is_letters -- the universal name/hex/functional front door
+file tools/color_names_witness.rish adds the resolve_any native contains assertion
+file image/README.md names resolve_any in the color_names entry (docs-sync)
+recommend keep-going the extended CSS3 147-name set over this same table shape, or a fresh Season G / other-season Lindy-first crux; no custody gate touched
