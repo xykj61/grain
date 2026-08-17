@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260817.121301
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image/color_swatch.rye -- the on-colour ramp, each tone paired with its legible ink
+prompt Autonomous loop (recur): take the next agent-doable lap Lindy-first crux-first, Season G open-media; send often; stop only at custody gates
+think Read crux/REMEMBER.md (INNER LOOP + Custody gates + Open doors), the double-seat eight-season itinerary, the 1024-round itinerary head, and the crypto-parity/decision-wave doc for the road; the live edge is Season G open-media, the colour family cresting (color -> color_adjust -> color_scale), with the readable-ink floor (readable_ink/best_ink/meets_aa) newly consumed by text_grid and text_panel.
+think REMEMBER named the next agent-doable direction plainly: another Season G rung, and specifically "a scale keyed off best_ink so each tone carries a readable ink." That is the crux -- it fuses the two most recent threads (color_scale.tonal_scale + color.readable_ink) into the design-system on-colour token, higher-Lindy than a bare named-colour table because it is the thing a design system actually reaches for right after a tonal ramp.
+think Single-stranded per the family: color_scale DECIDES each fill (tone_at), color DECIDES each ink (readable_ink), and image/color_swatch.rye only PAIRS them into a Swatch {fill, ink}. No new storage, codec, palette, or maths -- a read-read-pair over two proven verbs, so both modules' proofs carry through untouched.
+think Proof design -- prove the pairing hides nothing (fills byte-for-byte the color_scale ramp, each ink exactly readable_ink of its own fill), the crossover exists (lightest tone takes black ink, darkest takes white), the endpoints clear WCAG AA, and the crux property: the crossover is CLEAN -- one flip top to bottom, never a black tone beneath a white -- because the ramp's lightness is monotone and readable_ink flips at a single luminance threshold. Plus alpha (opaque ink, fill carries the seed's glass), a grey ramp, refusal by name, determinism.
+obs GREEN on the first metal run of the module selftest, no design reds. tame_style_check bans clean, width-check exit 0, plain 7-bit ASCII, >= 2 positive asserts per fn, one documented seam cast (dst.len usize -> u32 after the bound). swatch_max_tones is shared with color_scale.scale_max_tones so the paired palette is bounded by the very same budget as the bare scale.
+obs One witness red, a recurrence: the selftest GREEN line held an apostrophe (color_scale's) and the witness first used the printf | grep pattern, so the single-quote closed early and the grep failed though the binary was plainly GREEN. This is exactly the lantern REDS #76 already turned into a LOOM -- check witness claims with Rishi's native `contains`, never a shell grep over interpolated output. Honoured the loom: converted every witness check to `assert out contains "..."`. Also dropped the apostrophe from the module line as belt-and-suspenders. No new REDS row needed -- the loom is already booked (#76); this lap simply applies it where the elder color_scale witness had not.
+loom witness=color_swatch_witness scale_tones=9 endpoints_aa=2 crossover=clean
+file image/color_swatch.rye the on-colour ramp: Swatch {fill, ink}, readable_scale/swatch_at pairing color_scale's tone with color's readable ink
+file tools/color_swatch_witness.rish proves the pairing, the clean crossover, AA endpoints, opaque ink, refusal, determinism -- checked with native contains per the REDS #76 loom
+file image/README.md names color_swatch.rye beside color_scale.rye (docs-sync)
+file crux/REMEMBER.md git nib refreshed, INNER LOOP live edge extended with the on-colour ramp, rota lap 15 noted
+file session-logs/20260817-121301_color-swatch-on-color-ramp.kyri this record
+recommend keep-going another Season G colour rung (a named-colour table, or a swatch scale keyed off best_ink over a keeper's own brand pair rather than pure black/white) or a fresh Lindy-first crux; rota lap 15 read context/TAME_CORE.md -- safety > performance > joy, bound everything, assert invariants first, exactly the reflexes this pairing keeps

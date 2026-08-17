@@ -1,0 +1,171 @@
+//! image/color_swatch.rye -- a tonal scale where every tone carries its own legible ink (Season G, the on-colour ramp).
+//!
+//! Season G (Open Media Primitives) -- a single-stranded consumer that JOINS two proven floors one rung above them.
+//! image/color_scale.rye grows a whole tonal SCALE from one seed colour (lightest tint to darkest shade). image/color.rye
+//! picks the legible ink for text on any fill (readable_ink -- pure black or pure white, whichever clears the higher WCAG
+//! contrast). Neither module knew about the other. This rung pairs them: a Swatch is a fill colour AND the ink a keeper
+//! writes on it, and readable_scale grows a whole row of swatches from one seed -- the design-system "on-colour" token
+//! (Material's on-primary, Tailwind's paired text colour). A keeper names one brand colour and reads back a ready palette
+//! where every tone already knows the ink that stays legible on it: dark text on the light tints, light text on the deep
+//! shades, the crossover found for free.
+//!
+//! Compose, not braid: color_scale DECIDES each fill (tone_at reads the seed and steps the lightness), color DECIDES each
+//! ink (readable_ink measures the WCAG contrast), and this module only PAIRS them into a Swatch -- no new storage, codec,
+//! palette, or maths. Each swatch is a read-read-pair over the two existing verbs, so both modules' proofs carry through
+//! untouched. The fills are exactly color_scale's ramp and the inks exactly color's accessibility pick; because the ramp's
+//! lightness steps down monotonically and readable_ink flips at a single luminance threshold, the inks partition into one
+//! clean crossover -- black on the light tones above, white on the dark tones below, never a black tone beneath a white.
+//! No network, no key, no funds -- the paired palette Brushstroke and Skate grow the day the design system lands, on our
+//! own open colour model.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/color_swatch.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const color_scale = @import("color_scale.rye");
+
+pub const color_swatch_version = "20260817.121000";
+
+/// The most swatches a single scale ever holds -- shared with color_scale's ceiling, so a paired palette is bounded by the
+/// very same budget as the bare tonal scale it is grown from. No paired palette is ever unbounded.
+pub const swatch_max_tones: u32 = color_scale.scale_max_tones;
+
+/// A swatch: a fill colour and the legible ink to write text on it. The design-system "on-colour" token -- a tone plus the
+/// pure black or pure white that stays readable against it, so a surface never picks a caption ink by hand.
+pub const Swatch = struct {
+    fill: color.Rgba = .{},
+    ink: color.Rgba = .{},
+};
+
+/// Swatch `i` of a `count`-swatch scale grown from `seed`: the fill is color_scale's tone (the seed's hue and saturation
+/// held, the lightness stepped down the band), the ink is color's readable pick for that fill. Text ink is fully opaque;
+/// the fill carries the seed's alpha through.
+pub fn swatch_at(seed: color.Rgba, i: u32, count: u32) Swatch {
+    // invariant: the index names a real swatch in a real scale (mirrors color_scale.tone_at's own bound).
+    assert(count >= 2);
+    assert(i < count);
+    const fill = color_scale.tone_at(seed, i, count);
+    const ink = color.readable_ink(fill);
+    // invariant: the fill carries the seed's alpha untouched -- only its lightness was stepped by the ramp.
+    assert(fill.a == seed.a);
+    // invariant: readable_ink returns pure black or pure white, so the text ink is always fully opaque.
+    assert(ink.a == 255);
+    return .{ .fill = fill, .ink = ink };
+}
+
+/// Fill `dst` with a whole on-colour scale grown from `seed` -- dst.len swatches from the lightest tint (index 0) to the
+/// darkest shade, each pairing color_scale's tone with color's legible ink. A scale of fewer than two swatches or more than
+/// the ceiling refuses by name, having written nothing.
+pub fn readable_scale(seed: color.Rgba, dst: []Swatch) !void {
+    // invariant: a scale holds at least two swatches and never more than the bounded ceiling -- the same band as the bare
+    // tonal scale it pairs an ink onto.
+    if (dst.len < 2) return error.ScaleTooShort;
+    if (dst.len > swatch_max_tones) return error.ScaleTooLong;
+    // The length is bounded above by the ceiling, so the seam cast to a u32 swatch count is safe.
+    const count: u32 = @intCast(dst.len);
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        dst[i] = swatch_at(seed, i, count);
+    }
+    // invariant: a filled scale runs lightest-first -- swatch 0's fill is at least as light as the last swatch's fill.
+    assert(color.rgb_to_hsl(dst[0].fill).l >= color.rgb_to_hsl(dst[dst.len - 1].fill).l);
+    // invariant: the first swatch's ink is exactly color's readable pick for its own fill -- the pairing hides nothing.
+    assert(dst[0].ink.eql(color.readable_ink(dst[0].fill)));
+}
+
+// --- selftest: prove each swatch pairs the ramp's tone with its legible ink, the crossover is clean, endpoints clear AA --
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    _ = garden;
+
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    // Grow a nine-swatch scale from a blue seed and hold it beside the bare tonal scale color_scale grows from the same
+    // seed: the fills must be byte-for-byte the same ramp, so the pairing composes rather than re-deriving the maths.
+    const blue = color.Rgba{ .r = 40, .g = 90, .b = 200, .a = 255 };
+    var swatches: [9]Swatch = undefined;
+    try readable_scale(blue, swatches[0..]);
+    var fills: [9]color.Rgba = undefined;
+    try color_scale.tonal_scale(blue, fills[0..]);
+    var i: u32 = 0;
+    while (i < 9) : (i += 1) {
+        if (!swatches[i].fill.eql(fills[i])) return error.FillNotTheRamp;
+        // Each swatch's ink is exactly color's readable pick for its own fill -- nothing hidden in the pairing.
+        if (!swatches[i].ink.eql(color.readable_ink(swatches[i].fill))) return error.InkNotReadablePick;
+    }
+
+    // The crossover exists across the ramp: the lightest tone (0) takes BLACK ink, the darkest (last) takes WHITE ink.
+    if (!swatches[0].ink.eql(black)) return error.LightestNotBlackInk;
+    if (!swatches[8].ink.eql(white)) return error.DarkestNotWhiteInk;
+
+    // The endpoints clear WCAG AA -- black on the near-white tint and white on the deep shade are both legible body text.
+    if (!color.meets_aa(swatches[0].ink, swatches[0].fill)) return error.LightestInkFailsAa;
+    if (!color.meets_aa(swatches[8].ink, swatches[8].fill)) return error.DarkestInkFailsAa;
+
+    // The crossover is CLEAN -- one flip, top to bottom: once a swatch takes white ink no later swatch takes black again.
+    // This is the on-colour guarantee: dark text on the light tones above, light text on the dark tones below, no island.
+    var seen_white = false;
+    var c: u32 = 0;
+    while (c < 9) : (c += 1) {
+        const is_white = swatches[c].ink.eql(white);
+        if (seen_white and !is_white) return error.CrossoverNotMonotone;
+        if (is_white) seen_white = true;
+    }
+    if (!seen_white) return error.CrossoverNeverFlipped;
+
+    // Text ink is always fully opaque, and the fill carries the seed's alpha -- a translucent seed grows translucent fills
+    // under solid inks (a caption stays readable while the ground beneath it keeps its glass).
+    const glassy = color.Rgba{ .r = 60, .g = 120, .b = 200, .a = 128 };
+    var glass: [6]Swatch = undefined;
+    try readable_scale(glassy, glass[0..]);
+    var gi: u32 = 0;
+    while (gi < 6) : (gi += 1) {
+        if (glass[gi].ink.a != 255) return error.InkNotOpaque;
+        if (glass[gi].fill.a != 128) return error.FillDroppedAlpha;
+    }
+
+    // A grey seed grows grey fills, each still carrying a legible ink -- the neutral ramp a design system leans on most.
+    const grey = color.Rgba{ .r = 128, .g = 128, .b = 128, .a = 255 };
+    var greys: [7]Swatch = undefined;
+    try readable_scale(grey, greys[0..]);
+    var ni: u32 = 0;
+    while (ni < 7) : (ni += 1) {
+        const t = greys[ni].fill;
+        if (!(t.r == t.g and t.g == t.b)) return error.GreyFillNotNeutral;
+        if (!greys[ni].ink.eql(color.readable_ink(t))) return error.GreyInkNotReadablePick;
+    }
+
+    // The scale refuses an out-of-band length by name, having written nothing a caller could mistake for a palette.
+    var one: [1]Swatch = undefined;
+    if (readable_scale(blue, one[0..])) |_| return error.ShortScaleNotRefused else |err| {
+        if (err != error.ScaleTooShort) return error.WrongShortError;
+    }
+
+    // Determinism: the same seed and count grow byte-for-byte the same paired scale.
+    var a_scale: [5]Swatch = undefined;
+    var b_scale: [5]Swatch = undefined;
+    try readable_scale(blue, a_scale[0..]);
+    try readable_scale(blue, b_scale[0..]);
+    var di: u32 = 0;
+    while (di < 5) : (di += 1) {
+        if (!(a_scale[di].fill.eql(b_scale[di].fill) and a_scale[di].ink.eql(b_scale[di].ink))) {
+            return error.ScaleNotDeterministic;
+        }
+    }
+
+    print("GREEN image-color-swatch: an on-colour scale grown from one seed pairs each tone with its legible ink; the fills are byte-for-byte the color_scale ramp and each ink is color.readable_ink of its own fill; the lightest tone takes black ink and the darkest white, both endpoints clearing WCAG AA; the crossover is clean (one flip top to bottom, never a black tone beneath a white); text ink is fully opaque while a translucent seed keeps its fill glass; a grey seed grows grey fills each still legible; an out-of-band length refuses ScaleTooShort by name; the same seed grows the same scale byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: color_swatch selftest\n", .{});
+    return 1;
+}
