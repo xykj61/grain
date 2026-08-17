@@ -1,0 +1,252 @@
+//! image/compose.rye -- one image SEEN over another (Season G, the compositing verb the whole surface leans on).
+//!
+//! Season G (Open Media Primitives) - where image/shape.rye composites a SOLID color over the grid and
+//! image/checker_paint.rye draws the transparency GROUND behind a translucent picture, this rung draws the picture
+//! ITSELF: it composites a SOURCE image over a TARGET image, each source pixel blended src-over its target pixel, so a
+//! translucent photo laid over the checker ground reads as a photo with holes, and a sprite sheet renders each of its
+//! tiles by index. Two gestures, one verb -- paint_over lays a whole picture at a point; paint_over_region lays a
+//! sub-rectangle of a larger picture, the single-sprite render an index-into-one-image surface uses (a marketplace
+//! that web-hosts ONE big sprite and draws each product as a window into it -- the McMaster-Carr speed trick).
+//!
+//! Compose, not braid: image/color.rye owns the blend (color.over composites one RGBA over another), image/qoi.rye owns
+//! both buffers (a Pixmap, four bytes per pixel), and this module only ROUTES each source pixel to its target pixel and
+//! asks color.over to blend -- no new blend math, no new codec, no new color. The source region and the destination box
+//! are bound-checked ONCE up front (in u64 so a far edge can never wrap before the bound refuses): the source window
+//! must lie inside the source, the destination window inside the target. A malformed compose refuses BY NAME having
+//! written nothing -- all-or-nothing, never a half-drawn picture. No network, no key, no funds -- the picture a surface
+//! draws the day it wants to show one image over another, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/compose.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+
+pub const compose_version = "20260817.161129";
+
+/// Composite one source pixel over the target at (`x`, `y`) -- the single place a pixel is written, so every compose
+/// blends identically. The caller has already proven (x, y) lands inside the target buffer. Full-pixel coverage: the
+/// source pixel's own alpha is the whole story, exactly as image/shape.rye blends a fill.
+fn blend_over(target: *qoi.Pixmap, x: u32, y: u32, src: color.Rgba) void {
+    // invariant: the caller proved this pixel lands inside the target buffer, on the horizontal axis.
+    assert(x < target.width);
+    // invariant: the same on the vertical axis -- both are load-bearing for the flat index below.
+    assert(y < target.height);
+    const di = (@as(usize, y) * @as(usize, target.width) + @as(usize, x)) * 4;
+    const dst = color.Rgba{
+        .r = target.pixels[di],
+        .g = target.pixels[di + 1],
+        .b = target.pixels[di + 2],
+        .a = target.pixels[di + 3],
+    };
+    const res = color.over(src, dst);
+    target.pixels[di] = res.r;
+    target.pixels[di + 1] = res.g;
+    target.pixels[di + 2] = res.b;
+    target.pixels[di + 3] = res.a;
+}
+
+/// Read one source pixel's RGBA at (`x`, `y`) -- the caller has proven the read lands inside the source buffer.
+fn source_pixel(src: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the source buffer on both axes.
+    assert(x < src.width);
+    assert(y < src.height);
+    const si = (@as(usize, y) * @as(usize, src.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = src.pixels[si], .g = src.pixels[si + 1], .b = src.pixels[si + 2], .a = src.pixels[si + 3] };
+}
+
+/// Composite a `sw` x `sh` window of `source`, its top-left at (`sx`, `sy`) in the source, over `target` with its
+/// top-left at (`dx`, `dy`) in the target -- each source pixel blended src-over its matching target pixel. This is the
+/// single-sprite render: a surface web-hosts ONE big sprite image and draws each product, glyph, or tile as a window
+/// into it, so the whole catalog is one decode. Refuses `BadComposeDims` if `sw` or `sh` is zero, `SourceOutOfBounds`
+/// BY NAME if the source window exceeds the source image, `ComposeOutOfBounds` BY NAME if the destination window
+/// exceeds the target -- every check BEFORE any pixel, so a refusal leaves the target untouched.
+pub fn paint_over_region(target: *qoi.Pixmap, dx: u32, dy: u32, source: *const qoi.Pixmap, sx: u32, sy: u32, sw: u32, sh: u32) !void {
+    // invariant: a drawable window has real extent on both axes.
+    if (sw == 0 or sh == 0) return error.BadComposeDims;
+    // The source window's far edges, in u64 so the sum can never wrap before the bound check refuses.
+    const src_right: u64 = @as(u64, sx) + @as(u64, sw);
+    const src_bottom: u64 = @as(u64, sy) + @as(u64, sh);
+    if (src_right > @as(u64, source.width) or src_bottom > @as(u64, source.height)) return error.SourceOutOfBounds;
+    // The destination window's far edges, in u64 for the same wrap-proof reason.
+    const dst_right: u64 = @as(u64, dx) + @as(u64, sw);
+    const dst_bottom: u64 = @as(u64, dy) + @as(u64, sh);
+    if (dst_right > @as(u64, target.width) or dst_bottom > @as(u64, target.height)) return error.ComposeOutOfBounds;
+    // invariant: the up-front checks proved every pixel of the window lands inside BOTH buffers.
+    assert(src_right <= @as(u64, source.width));
+    assert(dst_right <= @as(u64, target.width));
+
+    var r: u32 = 0;
+    while (r < sh) : (r += 1) {
+        var c: u32 = 0;
+        while (c < sw) : (c += 1) {
+            // Route the one source pixel to its one target pixel; color.over owns the blend. Both were proven in
+            // bounds up front, so neither the read nor the write can leave its buffer.
+            const src_px = source_pixel(source, sx + c, sy + r);
+            blend_over(target, dx + c, dy + r, src_px);
+        }
+    }
+}
+
+/// Composite the WHOLE of `source` over `target` with its top-left at (`dx`, `dy`) -- a one-call convenience over
+/// paint_over_region with the source's full extent, the picture a surface lays over the transparency ground. Refuses
+/// the same errors by the same names as paint_over_region (a zero-size source is `BadComposeDims`).
+pub fn paint_over(target: *qoi.Pixmap, dx: u32, dy: u32, source: *const qoi.Pixmap) !void {
+    // invariant: a real picture has extent; a zero-size source refuses as a bad window, painting nothing.
+    if (source.width == 0 or source.height == 0) return error.BadComposeDims;
+    try paint_over_region(target, dx, dy, source, 0, 0, source.width, source.height);
+}
+
+// --- selftest: prove an opaque source overwrites, a translucent source blends, a window renders, refuse by name ------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module
+/// (exactly as image/shape.rye and image/checker_paint.rye keep their own canvas).
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// Count pixels of `img` whose RGBA differs from `bg` -- the honest measure of how much a compose covered.
+fn changed_from(img: *const qoi.Pixmap, bg: color.Rgba) u32 {
+    // invariant: the buffer is four bytes per pixel -- the RGBA invariant a Pixmap carries.
+    assert(img.pixels.len % 4 == 0);
+    var n: u32 = 0;
+    var i: usize = 0;
+    while (i < img.pixels.len) : (i += 4) {
+        const px = color.Rgba{ .r = img.pixels[i], .g = img.pixels[i + 1], .b = img.pixels[i + 2], .a = img.pixels[i + 3] };
+        if (!px.eql(bg)) n += 1;
+    }
+    // invariant: the changed count never exceeds the pixels walked.
+    assert(n <= @as(u32, @intCast(img.pixels.len / 4)));
+    return n;
+}
+
+/// Paint a 4x1 horizontal band of four named colors into `img` at row 0 -- a tiny sprite sheet for the window test.
+fn make_sprite_sheet(garden: std.mem.Allocator) !qoi.Pixmap {
+    const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
+    const green = color.Rgba{ .r = 0, .g = 255, .b = 0, .a = 255 };
+    const blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 };
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    var sheet = try make_canvas(garden, 4, 1, red);
+    const cols = [_]color.Rgba{ red, green, blue, black };
+    var i: u32 = 0;
+    while (i < 4) : (i += 1) {
+        const di = @as(usize, i) * 4;
+        sheet.pixels[di] = cols[i].r;
+        sheet.pixels[di + 1] = cols[i].g;
+        sheet.pixels[di + 2] = cols[i].b;
+        sheet.pixels[di + 3] = cols[i].a;
+    }
+    return sheet;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+    const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
+    const green = color.Rgba{ .r = 0, .g = 255, .b = 0, .a = 255 };
+    const blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 };
+    const blue_half = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 128 };
+
+    // --- an opaque source drawn whole OVERWRITES its footprint and nothing else --------------------------------------
+    var target = try make_canvas(garden, 6, 6, white);
+    var src = try make_canvas(garden, 2, 2, red);
+    try paint_over(&target, 1, 1, &src);
+    // The 2x2 red square lands at (1,1)..(2,2); every one of its four pixels is pure red (opaque overwrites).
+    if (!pixel_at(&target, 1, 1).eql(red)) return error.OpaqueNotDrawn;
+    if (!pixel_at(&target, 2, 2).eql(red)) return error.OpaqueNotDrawn;
+    // The gutters around it stay white -- a compose paints only its own window.
+    if (!pixel_at(&target, 0, 0).eql(white)) return error.GutterPainted;
+    if (!pixel_at(&target, 3, 3).eql(white)) return error.GutterPainted;
+    if (changed_from(&target, white) != 4) return error.OpaqueFootprintWrong; // exactly the 2x2 window changed
+
+    // --- a translucent source BLENDS src-over, not overwrites --------------------------------------------------------
+    var t_blend = try make_canvas(garden, 3, 3, white);
+    var s_blend = try make_canvas(garden, 3, 3, blue_half);
+    try paint_over(&t_blend, 0, 0, &s_blend);
+    const blended = color.over(blue_half, white);
+    if (blended.eql(blue_half) or blended.eql(white)) return error.BlendNotBetween; // a real blend, not either pole
+    if (!pixel_at(&t_blend, 0, 0).eql(blended)) return error.TranslucentNotBlended;
+    if (!pixel_at(&t_blend, 2, 2).eql(blended)) return error.TranslucentNotBlended;
+
+    // --- a WINDOW of a sprite sheet renders exactly one tile: the single-sprite index render -------------------------
+    const sheet = try make_sprite_sheet(garden); // 4x1: red, green, blue, black at columns 0,1,2,3
+    var canvas = try make_canvas(garden, 3, 1, white);
+    // Draw the sprite at index 2 (blue) -- a 1x1 window at source (2,0) -- to the canvas at (1,0).
+    try paint_over_region(&canvas, 1, 0, &sheet, 2, 0, 1, 1);
+    if (!pixel_at(&canvas, 1, 0).eql(blue)) return error.WindowWrongTile; // the indexed tile, not its neighbor
+    if (!pixel_at(&canvas, 0, 0).eql(white)) return error.WindowSpilled; // only the one-pixel window drew
+    if (!pixel_at(&canvas, 2, 0).eql(white)) return error.WindowSpilled;
+    // A wider window renders a contiguous run of tiles: source (1,0) size 2x1 -> green then blue.
+    var strip = try make_canvas(garden, 2, 1, white);
+    try paint_over_region(&strip, 0, 0, &sheet, 1, 0, 2, 1);
+    if (!pixel_at(&strip, 0, 0).eql(green)) return error.WindowRunWrong;
+    if (!pixel_at(&strip, 1, 0).eql(blue)) return error.WindowRunWrong;
+
+    // --- the composited image round-trips through the open QOI codec byte-for-byte -- a real image, not a private buffer
+    const cap = qoi.encoded_bound(target.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&target, dst);
+    const back = try qoi.decode(garden, dst[0..enc.len]);
+    if (!back.same_bytes(&target)) return error.ComposeDidNotRoundTrip;
+
+    // --- refusals by name, each having written nothing --------------------------------------------------------------
+    var tgt = try make_canvas(garden, 4, 4, white);
+    var small = try make_canvas(garden, 2, 2, red);
+    // A zero-size window refuses as bad dims.
+    if (paint_over_region(&tgt, 0, 0, &small, 0, 0, 0, 2)) |_| return error.ZeroDimsNotRefused else |err| {
+        if (err != error.BadComposeDims) return error.WrongDimsError;
+    }
+    // A source window past the source edge refuses SourceOutOfBounds (source is 2x2, window wants 3 wide).
+    if (paint_over_region(&tgt, 0, 0, &small, 0, 0, 3, 2)) |_| return error.SourceOverrunNotRefused else |err| {
+        if (err != error.SourceOutOfBounds) return error.WrongSourceError;
+    }
+    // A destination window past the target edge refuses ComposeOutOfBounds (dx 3 + 2 = 5 > width 4).
+    if (paint_over_region(&tgt, 3, 0, &small, 0, 0, 2, 2)) |_| return error.DestOverrunNotRefused else |err| {
+        if (err != error.ComposeOutOfBounds) return error.WrongDestError;
+    }
+    // Every refusal wrote nothing -- the target is still all white.
+    if (changed_from(&tgt, white) != 0) return error.RefusedButWrote;
+
+    // --- determinism: the same compose over the same ground grows byte-for-byte the same image ----------------------
+    var img_a = try make_canvas(garden, 4, 4, white);
+    var img_b = try make_canvas(garden, 4, 4, white);
+    try paint_over(&img_a, 1, 1, &small);
+    try paint_over(&img_b, 1, 1, &small);
+    if (!img_a.same_bytes(&img_b)) return error.ComposeNotDeterministic;
+
+    print("GREEN image-compose: one image composited over another -- an opaque 2x2 source drawn whole overwrites exactly its 4-pixel footprint and leaves the gutters untouched; a translucent source blends src-over through color.over, equal to neither the source nor the ground; a 1x1 window of a 4x1 sprite sheet renders exactly the indexed tile (the single-sprite render), a 2x1 window a contiguous run of tiles; the composited image round-trips through the open QOI codec byte-for-byte; a zero-size window, a source window past the source edge, and a destination window past the target edge each refuse by name having written nothing; the same compose grows the same image byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: compose selftest\n", .{});
+    return 1;
+}

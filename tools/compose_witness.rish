@@ -1,0 +1,41 @@
+# tools/compose_witness.rish -- one image SEEN over another proves itself on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the compositing verb the surface family leans on: where tools/shape_witness (if
+# present) proves a SOLID color composited over the grid and tools/checker_paint_witness proves the transparency GROUND,
+# this rung proves the picture ITSELF -- a SOURCE image composited over a TARGET image, each source pixel blended
+# src-over its target pixel. Stands on the open color algebra (image/color.rye over), the open QOI codec (image/qoi.rye),
+# and no new math. Design read: active-designing/20260816-210735_season-g-color-algebra-crux.md (the color floor).
+# Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS Color spec + sRGB -- public standards only).
+#
+# The crux this witness proves is that one image becomes SEEN over another: paint_over lays a whole picture at a point,
+# paint_over_region lays a sub-rectangle of a larger picture (the single-sprite render an index-into-one-image surface
+# uses -- the McMaster-Carr trick). An opaque source overwrites exactly its footprint and leaves the gutters untouched;
+# a translucent source blends src-over, equal to neither pole; a window of a sprite sheet renders exactly the indexed
+# tile; the composited image round-trips through the open QOI codec byte-for-byte; a zero-size window, a source window
+# past the source edge, and a destination window past the target edge each refuse by name having written nothing.
+# Compose not braid -- color owns the blend, qoi owns both buffers; this rung only routes each source pixel to its
+# target pixel. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/compose_witness.rish
+
+say "compose: Language EN -- Season G's compositing verb; a keeper lays one picture over another, or draws a window of one big sprite as an index into it, on our own color model and open codec."
+say "compose: Style Radiant -- compose not braid; image/color.rye OWNS the src-over blend, image/qoi.rye owns both RGBA buffers, and this rung only ROUTES each source pixel to its target pixel so a translucent picture tints the ground beneath it."
+say "compose: Lens TAME -- the source window and the destination box bound-checked ONCE up front in u64 so a far edge can never wrap; the window loop in u32 so it never wraps; all-or-nothing so a refusal writes nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/compose"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/compose.rye -femit-bin=${bin}"]
+assert build.ok else "compose: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "compose: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "compose: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-compose' && echo yes"]
+assert (trim green.out) == "yes" else "compose: selftest did not print the GREEN compose line"
+
+say "compose: GREEN -- one image composited over another, proven on metal: opaque overwrite, translucent src-over blend, the single-sprite window render, a byte-for-byte QOI round trip, and every malformed compose refused by name having written nothing."
