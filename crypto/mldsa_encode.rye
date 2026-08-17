@@ -211,8 +211,10 @@ pub fn power2round(r: u32) Split {
     return .{ .r1 = r1, .r0 = r0 };
 }
 
-/// decompose — FIPS 204 Algorithm 36: split r ∈ [0, q) at the 2γ₂ boundary into (r1, r0) with r1·2γ₂ + r0 ≡ r (mod q), r0 centered in (−γ₂, γ₂].
-/// The one wrinkle FIPS fixes: when the high part would wrap to the top step, it is pulled to 0 and r0 borrows 1, so r1 stays in [0, (q−1)/2γ₂).
+/// decompose — FIPS 204 Algorithm 36: split r ∈ [0, q) at the 2γ₂ boundary into (r1, r0) with r1·2γ₂ + r0 ≡ r (mod q), r0 centered in [−γ₂, γ₂].
+/// The one wrinkle FIPS fixes: when the high part would wrap to the top step, it is pulled to 0 and r0 borrows 1, so r1 stays in [0, (q−1)/2γ₂). That
+/// borrow is the sole path to r0 = −γ₂ exactly — reached only at r = q − γ₂ — so the centered range is [−γ₂, γ₂], not (−γ₂, γ₂]. A signer meeting
+/// r0 = −γ₂ rejects on the ‖r0‖∞ norm bound and retries, exactly as FIPS intends; the primitive must return it, never panic on it.
 pub fn decompose(r: u32, gamma2: u32) Split {
     // invariant (precondition): a canonical residue and one of the two FIPS 204 low-bit granularities.
     assert(r < q);
@@ -231,8 +233,9 @@ pub fn decompose(r: u32, gamma2: u32) Split {
     } else {
         r1 = @as(u32, @intCast(@divExact(r_minus_r0, @as(i64, @intCast(two_g)))));
     }
-    // invariant (postcondition): the split reconstructs mod q and both parts sit in their FIPS 204 ranges.
-    assert(r0 > -@as(i32, @intCast(gamma2)) and r0 <= @as(i32, @intCast(gamma2)));
+    // invariant (postcondition): the split reconstructs mod q and both parts sit in their FIPS 204 ranges. The lower bound is inclusive: the
+    // top-step borrow above produces r0 = −γ₂ exactly at r = q − γ₂, a value FIPS admits and a signer rejects on its norm bound.
+    assert(r0 >= -@as(i32, @intCast(gamma2)) and r0 <= @as(i32, @intCast(gamma2)));
     const recon: i64 = @mod(@as(i64, @intCast(r1)) * @as(i64, @intCast(two_g)) + @as(i64, r0), @as(i64, @intCast(q)));
     assert(recon == @as(i64, @intCast(r)));
     return .{ .r1 = r1, .r0 = r0 };
@@ -398,25 +401,32 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 5. Decompose reconstructs mod q: r1·2γ₂ + r0 ≡ r, r0 centered in (−γ₂, γ₂], r1 in [0, (q−1)/2γ₂), over a deterministic spread at BOTH γ₂. The
-    //    top-step wrap (r near q − 1) is exercised by the spread, and the reconstruction check would catch a mishandled borrow.
+    // 5. Decompose reconstructs mod q: r1·2γ₂ + r0 ≡ r, r0 centered in [−γ₂, γ₂], r1 in [0, (q−1)/2γ₂), over a deterministic spread at BOTH γ₂ PLUS
+    //    the exact top-step boundary r = q − γ₂, the sole residue that borrows r0 all the way to −γ₂ (a random spread misses one residue in q; the
+    //    hybrid signed carry witness's digest found it). The reconstruction check would catch a mishandled borrow.
     {
         const gs = [_]u32{ gamma2_88, gamma2_32 };
         for (gs) |g2| {
             const two_g: i64 = 2 * @as(i64, @intCast(g2));
             const m: u32 = (q - 1) / (2 * g2);
+            // The boundary residue that reaches r0 = −γ₂ exactly, checked alongside the pseudo-random spread so the inclusive lower bound is proven.
+            const boundary = q - g2;
             var seed: u32 = 1;
             while (seed <= 64) : (seed += 1) {
-                const r = poly_from_seed(seed *% 7, q);
+                var r = poly_from_seed(seed *% 7, q);
+                r[@intCast(seed % n)] = boundary; // plant the top-step residue at a deterministic slot each round
                 var i: u32 = 0;
                 while (i < n) : (i += 1) {
                     const s = decompose(r[i], g2);
                     if (s.r1 >= m) return error.DecomposeMismatch;
-                    if (!(s.r0 > -@as(i32, @intCast(g2)) and s.r0 <= @as(i32, @intCast(g2)))) return error.DecomposeMismatch;
+                    if (!(s.r0 >= -@as(i32, @intCast(g2)) and s.r0 <= @as(i32, @intCast(g2)))) return error.DecomposeMismatch;
                     const recon = @mod(@as(i64, @intCast(s.r1)) * two_g + @as(i64, s.r0), @as(i64, @intCast(q)));
                     if (recon != @as(i64, @intCast(r[i]))) return error.DecomposeMismatch;
                 }
             }
+            // Prove the boundary directly: decompose(q − γ₂) = (0, −γ₂), the inclusive-lower-bound case a strict assert would have panicked on.
+            const sb = decompose(boundary, g2);
+            if (!(sb.r1 == 0 and sb.r0 == -@as(i32, @intCast(g2)))) return error.DecomposeMismatch;
         }
     }
 
