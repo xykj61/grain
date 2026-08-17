@@ -24,6 +24,12 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260817.172514` -- REMEMBER Prior Git nib stack condensed (the code-edge trail folded to a pointer)
+
+**Walk-back nib:** `d7e7694385`
+**Swept:** the verbose `Prior Git nib` / `Older Git nib` / `Oldest Git nib` stack in `crux/REMEMBER.md` (lines 38-209), 81 giant per-nib paragraphs the loop had appended one lap at a time, condensed to a single pointer. The current `Git nib` (line 21, the loop's living code edge) and the lean `<!-- prior nib -->` HTML trail (the seven most recent, lines 23-36) both stay; the live status lines below (Host, crypto refinements, decision wave, latest lap) are untouched. Done on Keaton's word so the card stays single-stranded.
+**What waits there, worth recalling:** at nib `d7e7694385` and every commit before it, the full stack reads whole -- `git show d7e7694385:crux/REMEMBER.md`. Every prior living-edge nib it named (the whole Season G image walk -- scrubber, text_subtitle, text_panel, shape, text_caption, text_reel, and dozens more) is a real commit recoverable by `git log --oneline`, and each rung has its own dated log in `session-logs/`. The trail moved to where git already keeps it.
+
 ### `20260817.171714` -- REMEMBER Today arc condensed (the done-work wall folded to a pointer)
 
 **Walk-back nib:** `3b8b0d4858`
