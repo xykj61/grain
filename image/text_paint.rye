@@ -19,7 +19,10 @@
 //! paints half a paragraph. paint_paragraph_aligned sets each wrapped line left, centre, or right within the block by
 //! a pure sideways offset within the line's slack -- alignment moves ink, adding none and dropping none, so the box
 //! check and the changed-pixel count hold whatever the alignment, and left reproduces the plain paint byte-for-byte.
-//! No network, no key, no funds.
+//! And paint_paragraph_clipped is the paragraph's clip companion: where paint_paragraph is all-or-nothing, this one paints
+//! as much of the block as a fixed box holds -- a line inside lands identically to the strict paint, a line straddling the
+//! bottom lands its visible rows, a line entirely below is skipped -- so a bounded panel shows the text that fits rather
+//! than refusing the whole block. It returns the count of cells painted. No network, no key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/text_paint.rye selftest
 
@@ -32,7 +35,7 @@ const qoi = @import("qoi.rye");
 const text_layout = @import("text_layout.rye");
 const font_ascii = @import("font5x7_ascii.rye");
 
-pub const text_paint_version = "20260817.011350";
+pub const text_paint_version = "20260817.013854";
 
 /// Where each wrapped line sits inside the paragraph's content box (the widest line's width). `left` hugs the origin
 /// (the block's natural, historical behaviour); `right` flushes each line's right edge to the widest line's; `center`
@@ -300,6 +303,60 @@ pub fn paint_paragraph(
     ink: color.Rgba,
 ) !u32 {
     return paint_paragraph_aligned(atlas, text, max_width, line_gap, .left, lines_buf, scratch, target, origin_x, origin_y, ink);
+}
+
+/// Paint a whole PARAGRAPH into a fixed box, CLIPPING any line or cell that falls outside the target rather than
+/// refusing. Where paint_paragraph is all-or-nothing (it refuses ParagraphOutOfBounds before touching a pixel), this
+/// one paints as much of the block as the box holds -- exactly what a bounded panel that shows more text than it has
+/// room for wants. It wraps `text` to `max_width` at glyph boundaries (never-overflow), then paints each wrapped line
+/// stepping down by one line box through paint_placed_clipped, so a line inside the box lands identically to the strict
+/// paint, a line straddling the bottom edge lands its visible rows, and a line entirely below the box is skipped. No
+/// up-front box check -- clipping is the whole point. Returns the count of cells actually painted, so a caller (and a
+/// witness) can measure how much of the block landed. `lines_buf` holds one WrapLine per input byte and `scratch` one
+/// PlacedGlyph per byte; the caller sizes both >= text.len. An empty (or all-space) paragraph paints nothing.
+pub fn paint_paragraph_clipped(
+    atlas: *const glyph.GlyphAtlas,
+    text: []const u8,
+    max_width: u32,
+    line_gap: u32,
+    lines_buf: []text_layout.WrapLine,
+    scratch: []text_layout.PlacedGlyph,
+    target: *qoi.Pixmap,
+    origin_x: u32,
+    origin_y: u32,
+    ink: color.Rgba,
+) !u32 {
+    // invariant: both buffers hold room for the worst case -- one wrapped line, and one placed glyph, per input byte.
+    assert(lines_buf.len >= text.len);
+    assert(scratch.len >= text.len);
+
+    const lines = try text_layout.wrap_lines_break(atlas, text, max_width, lines_buf);
+    if (lines == 0) return 0; // an empty or all-space paragraph paints nothing -- a bounded base case
+
+    const ch: u32 = atlas.cell_h;
+    // invariant: a paintable atlas has a real cell height, so a line step is a real forward move.
+    assert(ch >= 1);
+    // The vertical step is the cell height plus the leading -- always >= the cell height, so line boxes stay disjoint.
+    const line_step: u64 = @as(u64, ch) + @as(u64, line_gap);
+
+    var painted: u32 = 0;
+    var k: u32 = 0;
+    while (k < lines) : (k += 1) {
+        const wl = lines_buf[k];
+        const span = text[wl.start .. wl.start + wl.len];
+        const laid = try text_layout.layout_line(atlas, span, scratch);
+        // invariant: layout placed one glyph per span byte, so the slice we paint matches the wrap's reported length.
+        assert(laid.count == wl.len);
+        // This line's top row, in u64 so the sum can never wrap. A line whose top is already at or past the bottom
+        // edge contributes nothing -- skip it, the clean vertical clip that saves paint_placed_clipped a whole pass.
+        const dy_u64: u64 = @as(u64, origin_y) + @as(u64, k) * line_step;
+        if (dy_u64 >= @as(u64, target.height)) continue;
+        const dy: u32 = @intCast(dy_u64);
+        painted += try paint_placed_clipped(atlas, scratch[0..laid.count], target, origin_x, dy, ink);
+    }
+    // invariant: the loop walked exactly the wrapped line count.
+    assert(k == lines);
+    return painted;
 }
 
 // --- selftest: paint real text against the full-ASCII font, prove ink composites exactly and bounds refuse -------
@@ -639,11 +696,47 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
             assert(!pright.same_bytes(&pcanvas));
         }
 
+        // --- clipped paragraph: paint the wrapped block into a box, clipping lines past the edge rather than refusing --
+        {
+            // A box the paragraph fits in: the clipped painter matches the strict all-or-nothing paint byte-for-byte and
+            // paints all the ink -- inside the box, clipping and refusing agree exactly.
+            const pcfit = try solid(garden, pw, pht, white);
+            const fit_painted = try paint_paragraph_clipped(&atlas, para, pmax, gap, plines, pscratch, @constCast(&pcfit), 0, 0, red);
+            assert(pcfit.same_bytes(&pcanvas));
+            assert(fit_painted == para_want);
+
+            // A box only one line-box tall holds line 0 and clips line 1 entirely (line 1 starts at row step >= ph). The
+            // clipped paint lands line 0's ink alone -- fewer cells than the whole paragraph, more than zero -- and every
+            // pixel equals a standalone paint of the first line, so the visible line is exact and the dropped line
+            // touches nothing. Where the strict painter refuses this same too-short canvas, the clipped one shows what fits.
+            const line0span = para[plines[0].start .. plines[0].start + plines[0].len];
+            const l0scratch = try garden.alloc(text_layout.PlacedGlyph, line0span.len);
+            const l0 = try text_layout.layout_line(&atlas, line0span, l0scratch);
+            const line0_ink = inked_cells(l0scratch[0..l0.count], cell_area);
+            const shortbox = try solid(garden, pw, ph, white);
+            const short_painted = try paint_paragraph_clipped(&atlas, para, pmax, gap, plines, pscratch, @constCast(&shortbox), 0, 0, red);
+            assert(short_painted == line0_ink);
+            assert(short_painted < para_want);
+            assert(short_painted >= 1);
+            const l0only = try solid(garden, pw, ph, white);
+            try paint_placed(&atlas, l0scratch[0..l0.count], @constCast(&l0only), 0, 0, red);
+            assert(shortbox.same_bytes(&l0only));
+
+            // A box placed entirely below the block (origin at the paragraph's bottom) clips to a clean no-op -- zero
+            // painted, buffer untouched byte-for-byte. Clipping degrades to nothing rather than a refusal.
+            const belowbox = try solid(garden, pw, ph, white);
+            const below_before = try garden.alloc(u8, belowbox.pixels.len);
+            @import("tally_copy.rye").copy_disjoint(u8, below_before, belowbox.pixels);
+            const below_painted = try paint_paragraph_clipped(&atlas, para, pmax, gap, plines, pscratch, @constCast(&belowbox), 0, ph, red);
+            assert(below_painted == 0);
+            assert(changed_pixels(belowbox.pixels, below_before) == 0);
+        }
+
         para_lines_report = painted_lines;
         para_changed_report = pchanged;
     }
 
-    print("GREEN image-text-paint: '{s}' painted red over white changed exactly {d} pixels (= inked cells); every changed pixel is the ink, every other stays background; deterministic and byte-identical through paint_line; transparent ink is a no-op; half-alpha blends through color.over exactly; empty line paints nothing; PaintOutOfBounds refused by name on width and on height; clipping paints only the visible part ({d} of {d} cells on a narrow canvas, matching the strict paint pixel-for-pixel), a fully off-canvas line clips to a clean no-op, and a line that fits clips identically to the strict paint; a wrapped paragraph paints {d} stacked lines changing exactly {d} pixels (= summed line ink, disjoint bands), its top band equals a standalone single-line paint, and a too-short canvas refuses ParagraphOutOfBounds by name leaving the buffer untouched; and the paragraph aligns -- left reproduces the plain paint byte-for-byte, centre- and right-set match a line-by-line offset composition exactly while changing the same pixel count (alignment shifts ink sideways, adding none and dropping none)\n", .{ text, changed, clipped, want_changed, para_lines_report, para_changed_report });
+    print("GREEN image-text-paint: '{s}' painted red over white changed exactly {d} pixels (= inked cells); every changed pixel is the ink, every other stays background; deterministic and byte-identical through paint_line; transparent ink is a no-op; half-alpha blends through color.over exactly; empty line paints nothing; PaintOutOfBounds refused by name on width and on height; clipping paints only the visible part ({d} of {d} cells on a narrow canvas, matching the strict paint pixel-for-pixel), a fully off-canvas line clips to a clean no-op, and a line that fits clips identically to the strict paint; a wrapped paragraph paints {d} stacked lines changing exactly {d} pixels (= summed line ink, disjoint bands), its top band equals a standalone single-line paint, and a too-short canvas refuses ParagraphOutOfBounds by name leaving the buffer untouched; the paragraph aligns -- left reproduces the plain paint byte-for-byte, centre- and right-set match a line-by-line offset composition exactly while changing the same pixel count (alignment shifts ink sideways, adding none and dropping none); and the paragraph clips -- a box it fits in paints byte-for-byte the strict paint, a box one line-box tall paints just the first line's ink (matching a standalone single-line paint) where the strict painter would refuse, and a box below the block clips to a clean no-op\n", .{ text, changed, clipped, want_changed, para_lines_report, para_changed_report });
     return 0;
 }
 
