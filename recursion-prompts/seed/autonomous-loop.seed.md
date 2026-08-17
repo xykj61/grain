@@ -20,6 +20,7 @@ Load these named paths too, so the loop carries the disciplines an unattended ru
 - **Prove before GREEN** -- before any round claims GREEN, run the module's own witness plus `rishi/bin/rishi run tools/tame_style_check.rish` and `tools/width-check.rish`; a green witness never excuses zero asserts (`.claude/rules/tame-guidance.md`).
 - **Loom capture** -- when a round measures a hot path, record a `loom key=value` line in the session log from real measurement, never memory (`.claude/rules/session-logs.md`).
 - **Style sweep** -- the Radiant/Twilight pass named in section 6 rides before every send; `context/RADIANT_STYLE.md` and `context/TWILIGHT_STYLE.md` are its guides.
+- **Running thread** -- start each lap by reading the top few rows of `session-logs/README.md` and the newest log's `recommend` line. That row plus the recommend field are the lap-to-lap baton, so the run picks up the last lap's arc -- which family just closed, what was left undone -- rather than rediscovering it from REMEMBER alone. The record is not only a memory; it is the handoff.
 
 ### The council rota -- one canon doc deep-read per lap (d27)
 
@@ -97,7 +98,7 @@ A tripwire is not a stop -- it is a design round you **approve for yourself** an
 
 ## 7 -- Every round leaves a record
 
-A `.bron`/`.kyri` session log per round (`session-logs/`), a newest-first row in `session-logs/README.md`, and REMEMBER's Now refreshed. The round summary is the agent's account in Kyri's voice.
+A `.bron`/`.kyri` session log per round (`session-logs/`), a newest-first row in `session-logs/README.md`, and REMEMBER's Now refreshed. The round summary is the agent's account in Kyri's voice. The log's `recommend` line names the next concrete rung -- it is the baton the next lap reads first (section 1, *Running thread*), so write it as a clear handoff, not a closing flourish.
 
 ## 8 -- The budget and the stop rule
 
