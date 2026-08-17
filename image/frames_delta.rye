@@ -26,7 +26,7 @@ const qoi = @import("qoi.rye");
 const frames = @import("frames.rye");
 const tally_copy = @import("tally_copy.rye");
 
-pub const frames_delta_version = "20260816.233500";
+pub const frames_delta_version = "20260817.000007";
 
 /// Header is fixed, the gfv1 shape one magic apart: 4 magic - 4 width - 4 height (BE) - 1 orientation - 1 fps -
 /// 2 frame_count (BE).
@@ -90,8 +90,12 @@ pub fn encoded_bound(pixels: u32, frame_count: u32) u32 {
 }
 
 /// Encode a Video into a caller-provided buffer (sized by `encoded_bound`). The first frame is a whole QOI
-/// keyframe; each later frame stores only the pixels that differ from the frame before it, as a strictly
-/// ascending (index, RGBA) list. Returns the byte length, frame count, and delta-frame count.
+/// keyframe; each later frame stores whichever is SMALLER -- a delta of the pixels that differ from the frame
+/// before it (a strictly ascending (index, RGBA) list), or a fresh whole keyframe. The adaptive choice means a
+/// scene cut, whose delta would touch every pixel and outweigh a plain keyframe, costs no more than an intra-frame;
+/// a barely-moving frame still shrinks to its handful of edits. The decoder already accepts a keyframe at any
+/// position, so this is a pure encoder gain -- no format change. Returns the byte length, frame count, and
+/// delta-frame count (keyframes chosen mid-stream are frame_count - 1 - delta_frames, plus the mandatory first).
 pub fn encode(allocator: std.mem.Allocator, video: *const frames.Video, dst: []u8) !EncodeResult {
     // invariant: a clip has at least one frame and no more than the ceiling.
     assert(video.frames.len >= 1);
@@ -115,6 +119,8 @@ pub fn encode(allocator: std.mem.Allocator, video: *const frames.Video, dst: []u
     dst[15] = @intCast(frame_count & 0xFF);
 
     const scratch = try allocator.alloc(u8, qoi.encoded_bound(pixel_count));
+    // A delta candidate is built here before the adaptive choice: its own count field plus, at worst, every pixel.
+    const delta_scratch = try allocator.alloc(u8, change_count_field + pixel_count * delta_entry_len);
 
     var w: u32 = header_len;
     var delta_frames: u32 = 0;
@@ -135,33 +141,50 @@ pub fn encode(allocator: std.mem.Allocator, video: *const frames.Video, dst: []u
             w += res.len;
             write_u32_be(dst[len_slot .. len_slot + frame_len_field], res.len);
         } else {
-            dst[w] = frame_delta;
-            w += kind_field;
-            const len_slot = w;
-            w += frame_len_field;
-            const payload_start = w;
-            const cc_slot = w;
-            w += change_count_field;
-
+            // Build the delta candidate against the previous frame into delta_scratch, counting the changed pixels.
             const prev = video.frames[f - 1].pixels;
             const cur = pm.pixels;
             var change_count: u32 = 0;
+            var dw: u32 = change_count_field; // leave room for the count field at the head
             var i: u32 = 0;
             while (i < pixel_count) : (i += 1) {
                 const off = i * 4;
                 // A pixel changed when any of its four RGBA bytes differs from the frame before.
                 if (!std.mem.eql(u8, cur[off .. off + 4], prev[off .. off + 4])) {
-                    write_u32_be(dst[w .. w + 4], i);
-                    w += 4;
-                    tally_copy.copy_disjoint(u8, dst[w .. w + 4], cur[off .. off + 4]);
-                    w += 4;
+                    write_u32_be(delta_scratch[dw .. dw + 4], i);
+                    dw += 4;
+                    tally_copy.copy_disjoint(u8, delta_scratch[dw .. dw + 4], cur[off .. off + 4]);
+                    dw += 4;
                     change_count += 1;
                 }
             }
-            write_u32_be(dst[cc_slot .. cc_slot + change_count_field], change_count);
-            const frame_len = w - payload_start;
-            write_u32_be(dst[len_slot .. len_slot + frame_len_field], frame_len);
-            delta_frames += 1;
+            write_u32_be(delta_scratch[0..change_count_field], change_count);
+            const delta_len = dw;
+            // invariant: a delta is exactly its count field plus its entries -- the length apply_delta will demand.
+            assert(delta_len == change_count_field + change_count * delta_entry_len);
+
+            // Encode a fresh keyframe candidate for the same frame; adaptive selection stores the smaller of the two.
+            const key_res = try qoi.encode(pm, scratch);
+            const key_len = key_res.len;
+
+            // The adaptive choice: a delta at most ties a fresh keyframe (deltas decode cheaply, so ties favor them);
+            // a scene cut whose delta touches every pixel loses to the keyframe and is stored intra-frame instead.
+            if (delta_len <= key_len) {
+                dst[w] = frame_delta;
+                w += kind_field;
+                write_u32_be(dst[w .. w + frame_len_field], delta_len);
+                w += frame_len_field;
+                tally_copy.copy_disjoint(u8, dst[w .. w + delta_len], delta_scratch[0..delta_len]);
+                w += delta_len;
+                delta_frames += 1;
+            } else {
+                dst[w] = frame_key;
+                w += kind_field;
+                write_u32_be(dst[w .. w + frame_len_field], key_len);
+                w += frame_len_field;
+                tally_copy.copy_disjoint(u8, dst[w .. w + key_len], scratch[0..key_len]);
+                w += key_len;
+            }
         }
     }
 
@@ -313,6 +336,40 @@ fn nudged_frame(allocator: std.mem.Allocator, base: *const qoi.Pixmap, n: u32) !
     return qoi.Pixmap{ .width = base.width, .height = base.height, .channels = 4, .colorspace = 0, .pixels = buf };
 }
 
+/// Copy a frame and invert every pixel's RGB (alpha held at 255), so the result differs from the base in ALL
+/// pixels -- a scene cut, whose delta would touch every pixel and lose to a fresh keyframe under adaptive selection.
+fn inverted_frame(allocator: std.mem.Allocator, base: *const qoi.Pixmap) !qoi.Pixmap {
+    const buf = try allocator.alloc(u8, base.pixels.len);
+    const n = base.width * base.height;
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const off = @as(usize, i) * 4;
+        // A byte XOR 0xFF always differs from itself, so every pixel genuinely changes.
+        buf[off] = base.pixels[off] ^ 0xFF;
+        buf[off + 1] = base.pixels[off + 1] ^ 0xFF;
+        buf[off + 2] = base.pixels[off + 2] ^ 0xFF;
+        buf[off + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = base.width, .height = base.height, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+/// A two-frame clip whose second frame is a full scene cut -- every pixel differs from the first. The encoder's
+/// adaptive selection stores this frame as a fresh keyframe, not a whole-image delta, so it never costs more.
+fn craft_scene_cut(allocator: std.mem.Allocator) !frames.Video {
+    const width: u32 = 16;
+    const height: u32 = 12;
+    const out = try allocator.alloc(qoi.Pixmap, 2);
+    out[0] = try pattern_frame(allocator, width, height);
+    out[1] = try inverted_frame(allocator, &out[0]);
+    return frames.Video{
+        .width = width,
+        .height = height,
+        .orientation = frames.derive_orientation(width, height),
+        .fps = 12,
+        .frames = out,
+    };
+}
+
 fn craft(allocator: std.mem.Allocator) !frames.Video {
     const width: u32 = 16;
     const height: u32 = 12; // 16x12 -> landscape, 192 pixels
@@ -417,8 +474,25 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    print("GREEN image-frames-delta: 4-frame 16x12 clip round-trip byte-identical; orientation={d} fps={d} frames={d} deltas={d}; encoded {d} bytes < raw {d}, keyframe {d} bytes vs 3-pixel delta {d} bytes; refusals BadMagic-BadEndMarker-TrailingData-Truncated-FirstFrameNotKey-BadOrientation all named\n", .{
-        back.orientation, back.fps, back.frames.len, res.delta_frames, res.len, raw_bytes, key_payload.len, delta1_bytes,
+    // --- adaptive selection: a scene cut is stored as a keyframe, not a whole-image delta ----------------
+    const cut = try craft_scene_cut(garden);
+    const cut_pixels = cut.frame_pixels();
+    const cut_cap = encoded_bound(cut_pixels, @intCast(cut.frames.len));
+    const cut_dst = try garden.alloc(u8, cut_cap);
+    const cut_res = try encode(garden, &cut, cut_dst);
+    // invariant: the encoder chose a keyframe for the fully-changed second frame -- zero deltas, not one. Without
+    // adaptive selection this would be one delta touching all 192 pixels (1540 bytes) rather than a plain keyframe.
+    assert(cut_res.delta_frames == 0);
+    const cut_back = try decode(garden, cut_dst[0..cut_res.len]);
+    // The scene-cut clip still round-trips byte-for-byte -- adaptive selection changed the encoding, never the frames.
+    assert(cut_back.frames.len == cut.frames.len);
+    var g: u32 = 0;
+    while (g < cut.frames.len) : (g += 1) {
+        assert(cut_back.frames[g].same_bytes(&cut.frames[g]));
+    }
+
+    print("GREEN image-frames-delta: 4-frame 16x12 clip round-trip byte-identical; orientation={d} fps={d} frames={d} deltas={d}; encoded {d} bytes < raw {d}, keyframe {d} bytes vs 3-pixel delta {d} bytes; adaptive selection stores a 2-frame scene cut as {d} deltas (a keyframe, not a whole-image delta); refusals BadMagic-BadEndMarker-TrailingData-Truncated-FirstFrameNotKey-BadOrientation all named\n", .{
+        back.orientation, back.fps, back.frames.len, res.delta_frames, res.len, raw_bytes, key_payload.len, delta1_bytes, cut_res.delta_frames,
     });
     return 0;
 }
