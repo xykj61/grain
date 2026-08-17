@@ -1,0 +1,45 @@
+# tools/font5x7_ascii_witness.rish -- the unifying full-ASCII font proves itself on metal (Season G, font content).
+#
+# Season G (Open Media Primitives) - the finishing rung of the font family. The five hand-drawn corpora landed one
+# at a time -- the numerals (tools/font5x7_witness.rish), the uppercase (tools/font5x7_alpha_witness.rish), the
+# lowercase (tools/font5x7_lower_witness.rish), the punctuation (tools/font5x7_punct_witness.rish), and the symbols
+# (tools/font5x7_symbol_witness.rish). This witness proves they compose into ONE complete font: image/font5x7_ascii.rye
+# merges all five with a freshly drawn blank space into a single gfa1 atlas covering every printable ASCII codepoint
+# from the space (32) to '~' (126).
+#
+# The crux this witness proves, beyond the round-trip each corpus already proves: the merged codepoints run strictly
+# ascending AND contiguous across the whole printable band 32..126 -- every codepoint present exactly once, no hole
+# where a glyph was forgotten and no seam where two corpora overlap. The space is the one blank glyph (zero ink,
+# carrying the shared advance so text lays out evenly); every other glyph carries ink. A full round-trip recovers the
+# whole font byte-for-byte. Compression is reported as a fact, never asserted -- the round-trip is the proof. No
+# network, no key, no funds -- the single font a surface reads the day it wants text, on our own open hand end to end.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/font5x7_ascii_witness.rish
+
+say "font5x7-ascii: Language EN -- Season G's finishing font rung; the five proven 5x7 corpora merged with a blank space into one gfa1 atlas covering the whole printable-ASCII band, a complete font of our own hand."
+say "font5x7-ascii: Style Radiant -- the corpora are the specification and this module only composes them, so decode(encode(atlas)) recovers the whole font byte for byte; our own hand, permissively ours, no external font to license and no web-search gate."
+say "font5x7-ascii: Lens TAME -- u32 in-memory counts, u8 coverage bytes; every buffer names a maximum (cell_area - ascii_count - the atlas ceilings it rests on); each function states its invariants positively; codepoints strictly ascending and proven contiguous; compression a reported fact never a false invariant; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/font5x7_ascii"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/font5x7_ascii.rye -femit-bin=${bin}"]
+assert build.ok else "font5x7-ascii: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "font5x7-ascii: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "font5x7-ascii: ${out}"
+
+let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-font5x7-ascii' && echo yes"]
+assert (trim green.out) == "yes" else "font5x7-ascii: selftest did not print the GREEN font line"
+
+let band = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'band contiguous 32..126' && echo yes"]
+assert (trim band.out) == "yes" else "font5x7-ascii: the printable band was not proven contiguous"
+
+let round = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'round-trip byte-identical' && echo yes"]
+assert (trim round.out) == "yes" else "font5x7-ascii: round-trip was not byte-identical"
+
+say "font5x7-ascii: GREEN -- the font family stands whole; ninety-five glyphs round-trip byte-identical, the band contiguous 32..126, the space uniquely blank; one complete ASCII font of our own hand."

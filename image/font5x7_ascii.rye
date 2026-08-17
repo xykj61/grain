@@ -1,0 +1,206 @@
+//! image/font5x7_ascii.rye -- the unifying full-ASCII font: the five 5x7 corpora merged into one complete font.
+//!
+//! Season G (Open Media Primitives) - the finishing rung of the font family. The corpora landed one at a time --
+//! the numerals (font5x7.rye), the uppercase (font5x7_alpha.rye), the lowercase (font5x7_lower.rye), the thirteen
+//! punctuation marks (font5x7_punct.rye), and the nineteen symbols (font5x7_symbol.rye) -- each proven on metal in
+//! its own hand-drawn corpus. This module gathers all five, adds the one glyph none of them draws (the space), and
+//! composes them into a single gfa1 atlas covering EVERY printable ASCII codepoint from the space (32) to '~' (126),
+//! contiguous and complete: ninety-five glyphs, no gap, no duplicate, our own hand end to end, permissively ours,
+//! no external font to license. This is the font a surface actually reaches for -- one table Dexter, Scooter, Skate,
+//! and Brushstroke read the day they want text, rather than five corpora to stitch by hand.
+//!
+//! The distinctive crux this module proves, beyond the round-trip each corpus already proves: the merged codepoints
+//! run STRICTLY ASCENDING AND CONTIGUOUS across the whole printable band 32..126 -- every codepoint present exactly
+//! once, no hole where a glyph was forgotten and no seam where two corpora overlap. The space is the one blank glyph
+//! (zero ink, carrying the shared advance so text lays out evenly); every other glyph carries ink. decode(encode())
+//! recovers the whole font byte-for-byte. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_ascii.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+const numeral = @import("font5x7.rye");
+const upper = @import("font5x7_alpha.rye");
+const lower = @import("font5x7_lower.rye");
+const punct = @import("font5x7_punct.rye");
+const symbol = @import("font5x7_symbol.rye");
+
+pub const font5x7_ascii_version = "20260816.235308";
+
+/// The whole family shares one 5x7 cell -- the corpora agree on this, and this module asserts the agreement.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance every glyph carries, including the space: the cell width plus one column of daylight.
+pub const glyph_advance: u8 = cell_w + 1;
+
+/// Cells per glyph -- the coverage length every glyph carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The printable ASCII band this font covers, inclusive: the space (32) through '~' (126).
+pub const printable_lo: u32 = ' ';
+pub const printable_hi: u32 = '~';
+
+/// The full-ASCII glyph count -- one per codepoint in the printable band. 32..126 inclusive is ninety-five marks:
+/// the space, thirteen punctuation, nineteen symbols, ten digits, and both twenty-six-letter cases (1+13+19+10+26+26).
+pub const ascii_count: u32 = printable_hi - printable_lo + 1;
+
+/// Lift one corpus atlas's glyphs into the combined table starting at `dst_off`, asserting each shares the cell and
+/// advance. Returns the next free offset. The gathered coverage slices are borrowed from the source atlas, which
+/// lives in the same arena -- no copy, and the merge sort below reorders references, never bytes.
+fn gather(dst: []glyph.Glyph, dst_off: u32, src: *const glyph.GlyphAtlas) u32 {
+    // invariant: the source shares this family's cell -- a corpus at a different size would corrupt the font.
+    assert(src.cell_w == cell_w);
+    assert(src.cell_h == cell_h);
+    const n: u32 = @intCast(src.glyphs.len);
+    // invariant: the gathered run fits inside the combined table.
+    assert(dst_off + n <= ascii_count);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const g = src.glyphs[i];
+        // invariant: every merged glyph carries the shared advance, so the space and a letter lay out alike.
+        assert(g.advance == glyph_advance);
+        assert(g.coverage.len == cell_area);
+        dst[dst_off + i] = g;
+    }
+    return dst_off + n;
+}
+
+/// Build the complete printable-ASCII font: merge the five corpora with a freshly drawn blank space, then sort the
+/// whole table strictly ascending by codepoint. The gfa1 encoder accepts the result directly (ascending codepoints,
+/// coverage length == cell area), and the selftest proves the band is contiguous 32..126 with no gap or duplicate.
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the family cell matches the atlas ceiling it must fit under.
+    assert(cell_area <= glyph.coverage_max);
+    assert(ascii_count <= glyph.glyph_max);
+
+    const glyphs = try allocator.alloc(glyph.Glyph, ascii_count);
+
+    // The space: the one glyph no ink corpus draws -- a blank cell carrying the shared advance, so a run of text
+    // reserves its column exactly as a letter does. Zero ink is the point, not a defect, so the selftest expects it.
+    const space_cov = try allocator.alloc(u8, cell_area);
+    var s: u32 = 0;
+    while (s < cell_area) : (s += 1) space_cov[s] = 0;
+    glyphs[0] = glyph.Glyph{ .codepoint = ' ', .advance = glyph_advance, .coverage = space_cov };
+    var off: u32 = 1;
+
+    // Gather the five proven corpora. Order of gathering does not matter -- the sort below places every glyph.
+    const num_atlas = try numeral.build_atlas(allocator);
+    off = gather(glyphs, off, &num_atlas);
+    const up_atlas = try upper.build_atlas(allocator);
+    off = gather(glyphs, off, &up_atlas);
+    const lo_atlas = try lower.build_atlas(allocator);
+    off = gather(glyphs, off, &lo_atlas);
+    const pu_atlas = try punct.build_atlas(allocator);
+    off = gather(glyphs, off, &pu_atlas);
+    const sy_atlas = try symbol.build_atlas(allocator);
+    off = gather(glyphs, off, &sy_atlas);
+
+    // invariant: the five corpora plus the space fill the table exactly -- a short count would mean a lost corpus.
+    assert(off == ascii_count);
+
+    // Insertion sort by codepoint -- bounded by ascii_count, stable, and small (ninety-five glyphs). The gfa1
+    // encoder demands strictly ascending codepoints; this is where the interleaved corpora become one ordered font.
+    var i: u32 = 1;
+    while (i < ascii_count) : (i += 1) {
+        const key = glyphs[i];
+        var j: u32 = i;
+        while (j > 0 and glyphs[j - 1].codepoint > key.codepoint) : (j -= 1) {
+            glyphs[j] = glyphs[j - 1];
+        }
+        glyphs[j] = key;
+    }
+
+    // invariant: the sorted table opens at the space and closes at '~' -- the printable band, end to end.
+    assert(glyphs[0].codepoint == printable_lo);
+    assert(glyphs[ascii_count - 1].codepoint == printable_hi);
+    return glyph.GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- zero marks the space, positive marks every other glyph.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+// --- selftest: build the full-ASCII font, round-trip it through gfa1, prove the band contiguous and the space blank ---
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built font is the ninety-five-glyph printable band at the shared cell.
+    assert(glyph_count == ascii_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // The completeness crux: the codepoints run contiguous 32..126 -- every printable codepoint present exactly once,
+    // no gap and no duplicate. A hole (a forgotten glyph) or a seam (two corpora overlapping) fails here.
+    var expect: u32 = printable_lo;
+    var e: u32 = 0;
+    while (e < glyph_count) : (e += 1) {
+        if (atlas.glyphs[e].codepoint != expect) return error.BandNotContiguous;
+        expect += 1;
+    }
+    // invariant: the walk consumed the whole band and stopped one past '~'.
+    assert(expect == printable_hi + 1);
+
+    // Every printable codepoint looks up present through the decoded font and carries the shared advance.
+    var cp: u32 = printable_lo;
+    while (cp <= printable_hi) : (cp += 1) {
+        if (back.lookup(cp)) |g| {
+            assert(g.codepoint == cp);
+            assert(g.advance == glyph_advance);
+        } else return error.GlyphMissing;
+    }
+    // A codepoint just past the band (DEL, 127) is absent -- the font is the printable band and no more.
+    if (back.lookup(printable_hi + 1)) |_| return error.NonPrintableFound else {}
+
+    // The space is the one blank glyph; every other glyph carries ink. This is the property that spans corpora --
+    // no ink corpus draws a blank, and the space draws nothing but its advance.
+    var blanks: u32 = 0;
+    var k: u32 = 0;
+    while (k < glyph_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (atlas.glyphs[k].codepoint == ' ') {
+            if (n != 0) return error.SpaceNotBlank;
+            blanks += 1;
+        } else if (n == 0) return error.NonSpaceBlank;
+    }
+    // invariant: exactly one blank glyph -- the space, and only the space.
+    assert(blanks == 1);
+
+    // Compression is reported as a fact, not asserted -- a full font of dense line art need not shrink, and the
+    // round-trip is the proof either way (the REDS #82 lesson: never assert a direction the data does not hold).
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-ascii: {d} glyphs ' '..'~' at {d}x{d} round-trip byte-identical; band contiguous 32..126, no gap/dup; space uniquely blank, all others inked; encoded {d} bytes, raw {d}\n", .{
+        glyph_count, cell_w, cell_h, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_ascii selftest\n", .{});
+    return 1;
+}
