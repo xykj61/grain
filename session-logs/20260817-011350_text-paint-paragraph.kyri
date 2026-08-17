@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260817.011350
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image -- text_paint grows paragraph painting, the wrapped block stacked, GREEN
+prompt Take the next agent-doable lap Lindy-first crux-first on the open-media road; read one council-rota doc; Rye-first; send often; stop at custody gates.
+think Read REMEMBER's INNER LOOP live edge, the 1024-round itinerary, the eight-season double-seat, and the rye-first crypto wave. The live edge names the next open-media rung outright: paint a break-wrapped paragraph through text_paint, then prove the codecs on a real corpus. Paragraph painting is the smaller, Lindy-first crux -- it finishes the text family (place, measure, wrap, split, paint line, clip line) with the block a surface actually shows -- and it is floor code that waits on nothing (only Brushstroke rendering is paused, not layout/paint math).
+think Read text_layout.rye and text_paint.rye whole. text_layout gives WrapLine spans (start, len, width) over the original text from wrap_lines_break (the never-overflow companion); text_paint gives paint_placed (strict, up-front box check, PaintOutOfBounds by name) and layout_line. paint_paragraph is pure composition over exactly those: wrap, then paint each line stepping down by one line box.
+think Design choice -- all-or-nothing. A strict paragraph must not paint some lines then fail on a later one, so the whole paragraph box (widest line across via WrapLine.width, all lines and their gaps down) is bound-checked ONCE up front in u64 and refuses ParagraphOutOfBounds by name before touching a pixel. Bounding the width on WrapLine.width is conservative (the trailing advance carries no ink) so it never permits an overflow.
+think Design choice -- disjoint bands. The vertical step is cell height plus a line_gap leading, always >= the cell height, so consecutive line bands never overlap. That is what lets the selftest bind the paragraph's changed-pixel count to the exact SUM of each line's independently-counted inked cells -- no overlap, no stray, none missed. And the top line-box band equals a standalone paint_placed of the first wrapped line pixel-for-pixel: a paragraph is the single-line paint stacked, nothing more.
+think No hidden allocation: the caller sizes the WrapLine and PlacedGlyph buffers >= text.len (the wrap's and the layout's worst case), matching the paint_line pattern already in the file. The dy cast to u32 is safe because the up-front box_bottom check proved origin_y + (lines-1)*step + ch <= target.height, a u32.
+obs GREEN on the first build after the edits -- no red this lap. tame_style_check bans clean (the compound asserts were written split from the start this time), width-check exit 0, new prose plain ASCII. The witness gained four paragraph assertions (stacked lines, summed-ink disjoint bands, top-band == single-line paint, ParagraphOutOfBounds all-or-nothing refusal).
+obs Rota lap (d27, item 13): foundations/20260728-032134_keeh-and-kia.md -- the happy zone. Its teaching (witness-first, red-then-green, fix the fault at the station not the driveway, dignity through craft) is exactly the discipline of an up-front box check that refuses by name before a bad pixel ever ships.
+loom witness=text_paint_witness selftest_green=1 paragraph_lines=2 paragraph_changed_px=79 build_reds=0
+file image/text_paint.rye paint_paragraph -- wrap-then-stack the never-overflow block, all-or-nothing, ParagraphOutOfBounds by name
+file tools/text_paint_witness.rish four paragraph assertions added, GREEN summary extended
+file crux/REMEMBER.md INNER LOOP live edge + Git nib cascade refreshed (paragraph painting done; next is proving the codecs on a real corpus)
+file session-logs/20260817-011350_text-paint-paragraph.kyri this record
+recommend keep-going -- the text/font family is complete (place, measure, wrap, split, paint line, clip line, paint paragraph); the next open-media crux is proving the image/video codecs (qoi, frames, frames_delta) on a real corpus rather than crafted clips.
