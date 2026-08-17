@@ -45,4 +45,10 @@ assert (trim refuse.out) == "yes" else "color-algebra: the five named refusals w
 let contrast = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'WCAG white-on-black contrast 21.00' && echo yes"]
 assert (trim contrast.out) == "yes" else "color-algebra: WCAG white-on-black contrast did not reach the exact 21.00 maximum"
 
-say "color-algebra: GREEN — open colour algebra whole; hex round-trip byte-identical, every refusal named, HSL primaries exact, blend, quantize, and WCAG contrast proven."
+let ink = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'readable ink picks black on white and white on black' && echo yes"]
+assert (trim ink.out) == "yes" else "color-algebra: readable-ink pick did not choose the legible extreme on each fill"
+
+let bars = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'passes AA fails AAA' && echo yes"]
+assert (trim bars.out) == "yes" else "color-algebra: a mid-grey did not split the AA and AAA conformance bars"
+
+say "color-algebra: GREEN — open colour algebra whole; hex round-trip byte-identical, every refusal named, HSL primaries exact, blend, quantize, WCAG contrast, readable-ink pick, and AA/AAA conformance proven."
