@@ -39,6 +39,7 @@ assert out contains "every named color's canonical hex parses through color.pars
 assert out contains "resolves case-insensitively" else "color-names: a name did not resolve case-insensitively"
 assert out contains "refuses UnknownColorName by name" else "color-names: an unknown name was not refused by name"
 assert out contains "name_of returns the exact name" else "color-names: name_of did not read a color back to its name"
+assert out contains "resolve_any is the universal front door" else "color-names: resolve_any did not read name/hex/functional alike"
 assert out contains "block-complete at sixteen" else "color-names: the table was not the whole HTML4 set of sixteen"
 
 say "color-names: GREEN -- the sixteen HTML4 color names whole over the open color algebra; every name round-trips through parse_hex, resolves case-insensitively, refuses the unknown, reads back by name_of, the set sorted and block-complete."

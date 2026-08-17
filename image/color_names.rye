@@ -24,7 +24,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const color = @import("color.rye");
 
-pub const color_names_version = "20260817.000000";
+pub const color_names_version = "20260817.124600";
 
 /// The longest color name we will read -- a generous ceiling over the longest keyword ("fuchsia", seven bytes).
 /// A name longer than this is not a known color, so it refuses at the door rather than scanning the table.
@@ -116,8 +116,50 @@ pub fn name_of(c: color.Rgba) ?[]const u8 {
     return null;
 }
 
+fn trim_ascii_spaces(text: []const u8) []const u8 {
+    // invariant: only bounded text is trimmed here; over-long text is returned untouched for color.parse to refuse.
+    if (text.len > color.color_max_text) return text;
+    const n: u32 = @intCast(text.len);
+    var lo: u32 = 0;
+    while (lo < n and text[lo] == ' ') : (lo += 1) {}
+    var hi: u32 = n;
+    while (hi > lo and text[hi - 1] == ' ') : (hi -= 1) {}
+    // invariant: the trimmed slice is never wider than the input.
+    assert(hi >= lo);
+    assert(hi <= n);
+    return text[lo..hi];
+}
+
+fn is_letters(text: []const u8) bool {
+    // invariant: an empty text is not a name, and a name never exceeds the module ceiling.
+    if (text.len == 0) return false;
+    if (text.len > name_max) return false;
+    const n: u32 = @intCast(text.len);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const lower = ascii_lower(text[i]);
+        if (lower < 'a' or lower > 'z') return false;
+    }
+    return true;
+}
+
+/// The universal color front door: read a NAME, a hex form, or a functional form to four bytes. An all-letters text
+/// resolves through the HTML4 table; anything else delegates to color.parse (a `#`/bare hex or an rgb()/hsl() form).
+/// Leading and trailing spaces are trimmed, so a stylesheet or theme file reads "red", "#ff0000", "rgb(255,0,0)", and
+/// "hsl(0,100%,50%)" alike through one call. Compose, not braid: names come from this module, every other form from
+/// color's own proven parser.
+pub fn resolve_any(text: []const u8) !color.Rgba {
+    // invariant: the table is the whole HTML4 set, bounded and never scanned past its end.
+    assert(named_color_count == table.len);
+    // invariant: the name ceiling is at least one byte, so a name is meaningfully bounded before the letter scan.
+    assert(name_max >= 1);
+    const t = trim_ascii_spaces(text);
+    if (is_letters(t)) return resolve(t);
+    return color.parse(t);
+}
+
 // --- selftest: prove every name parses through color.parse_hex, resolves case-insensitively, refuses the unknown,
-// --- reads back by name_of, and the table is the whole sorted HTML4 set.
+// --- reads back by name_of, resolve_any reads name/hex/functional alike, and the table is the whole sorted HTML4 set.
 
 fn run_selftest(garden: std.mem.Allocator) !u8 {
     _ = garden;
@@ -171,11 +213,23 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     // 8. The set is the whole HTML4 sixteen -- block-complete, not a truncated sample.
     if (named_color_count != 16) return error.CountWrong;
 
-    // 9. Determinism -- the same name reads the same bytes every time.
+    // 9. resolve_any is the universal front door: a name, a hex, and a functional form all read to the same bytes,
+    // leading/trailing spaces trimmed, an unknown name still refused by name.
+    const blue_named = try resolve_any(" Blue ");
+    if (!blue_named.eql(.{ .r = 0, .g = 0, .b = 255, .a = 255 })) return error.AnyNameWrong;
+    const green_hex = try resolve_any("#00ff00");
+    if (!green_hex.eql(.{ .r = 0, .g = 255, .b = 0, .a = 255 })) return error.AnyHexWrong;
+    const blue_func = try resolve_any("rgb(0,0,255)");
+    if (!blue_func.eql(blue_named)) return error.AnyFuncWrong;
+    if (resolve_any("mauve")) |_| return error.AnyUnknownNotRefused else |err| {
+        if (err != error.UnknownColorName) return error.AnyWrongUnknownError;
+    }
+
+    // 10. Determinism -- the same name reads the same bytes every time.
     const red_again = try resolve("red");
     if (!red_again.eql(red)) return error.NotDeterministic;
 
-    print("GREEN image-color-names: the sixteen HTML4 color names read over the open color algebra; every named color's canonical hex parses through color.parse_hex (compose not braid, no private parser); a name resolves case-insensitively (RED, Red, red one color); an unknown or empty name refuses UnknownColorName by name having guessed nothing; a resolved color round-trips through color.format_hex to its canonical nine-byte form; name_of returns the exact name for an opaque named color and honestly null for an unnamed or translucent one; the table is strictly ascending, duplicate-free, and block-complete at sixteen; the same name reads the same bytes every time\n", .{});
+    print("GREEN image-color-names: the sixteen HTML4 color names read over the open color algebra; every named color's canonical hex parses through color.parse_hex (compose not braid, no private parser); a name resolves case-insensitively (RED, Red, red one color); an unknown or empty name refuses UnknownColorName by name having guessed nothing; a resolved color round-trips through color.format_hex to its canonical nine-byte form; name_of returns the exact name for an opaque named color and honestly null for an unnamed or translucent one; resolve_any is the universal front door, reading a name, a hex, and a functional form to the same bytes with spaces trimmed and an unknown name still refused; the table is strictly ascending, duplicate-free, and block-complete at sixteen; the same name reads the same bytes every time\n", .{});
     return 0;
 }
 
