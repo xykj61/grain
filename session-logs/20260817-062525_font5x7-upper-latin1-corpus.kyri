@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260817.062525
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title font5x7 -- the rest of the uppercase Latin-1 accented letters, closing the capitals set, GREEN
+prompt Take the next agent-doable lap Lindy-first crux-first on the road past BUHR, optimizing the harmony-of-styles balance compass; deep-read one council-rota doc; Rye-first; send often as signed increments; stop at custody gates.
+think Read REMEMBER's inner loop, the 1024-round itinerary, the eight-season double-seat, and the rye-first crypto-parity wave. The living edge is Season G Open Media Primitives; the Dexter/Scooter terminal family drawn surface is whole (only the live keystroke reader and Comlink transport remain, both serve gates). The open font atlas has grown a wide corpus family; the newest lap drew the eight acute-and-tilde uppercase accented capitals in image/font5x7_upper_accented.rye.
+think Crux-first within the open font family: the uppercase accented set covered only eight letters while the accented LOWERCASE family covers twenty-one/twenty-two across latin1/grave/circumflex/german/accented. The gap is the thirteen grave/circumflex/tilde/diaeresis capitals -- completing the uppercase set so it mirrors the lowercase closes the loop (SLC: complete). Highest-Lindy, smallest tractable, self-contained, in the established pattern, waits on nothing (Brushstroke rendering paused, not glyph content).
+think Reused the acute corpus's compressed A/E/I/O/U bodies (rows 2..6) so the whole uppercase family reads as one weight, and drew each mark on rows 0..1: grave leaning left, circumflex peak, tilde wave, diaeresis dots -- mark shapes lifted from the lowercase grave/circumflex corpora and the acute uppercase corpus for consistency. Codepoints U+00C0,C2,C3,C4,C8,CA,CC,CE,D2,D4,D6,D9,DB, strictly ascending, non-contiguous (the acute set and unaccented capitals skipped).
+think Rota lap deep-read context/SIMPLE_LOVABLE_COMPLETE.md (item 16) -- it names exactly this lap's shape: do the narrow thing wholly, claim only what is already true; completing the uppercase set so every accented lowercase letter has its capital is the loop closing, not a feature promised.
+obs Proof is the gfa1 round-trip plus present/distinct/legible band (same 8..20 band the acute eight proved), every letter marked above (top-row ink >= 1), and the five grave capitals leaning left (top-row ink in the left half, none in the right) -- the grave crux inherited from the lowercase grave corpus, written as two named guards, no compound assert. GREEN on the first metal run, no red.
+obs Split the left/right half readers into their own bounded functions (left_half_ink, right_half_ink) so each names its own <= 2 invariant rather than a compound assert; a mistyped or lopsided mark bites by name (GraveNotLeaningLeft, GraveInkOnRight, DiacriticNotAbove).
+obs docs-implementation-sync: the image/README.md trailed several recent font laps (the whole accented family was undocumented). Ratchet not sweep -- added one concise entry documenting the accented-Latin family this corpus completes, rather than retrofitting every prior corpus.
+loom witness=font5x7_upper_latin1_witness glyphs=13 cell=5x7 ink_lo=11 ink_hi=18 encoded_bytes=624 raw_bytes=455 round_trip=byte_identical
+file image/font5x7_upper_latin1.rye the thirteen uppercase Latin-1 accented capitals that complete the set beside the acute eight
+file tools/font5x7_upper_latin1_witness.rish builds and proves the corpus on metal -- round-trip, present/distinct/legible, marked above, grave-left
+file image/README.md accreted one entry for the accented-Latin family under Open Media Primitives (docs-sync ratchet)
+file session-logs/20260817-062525_font5x7-upper-latin1-corpus.kyri this record
+recommend keep-going the uppercase accented set is whole; the natural next font rungs are a unifying accented-uppercase merge (the font5x7_accented parallel for capitals) or the open-font journey's atlas-of-atlases, both agent-doable in the same pattern

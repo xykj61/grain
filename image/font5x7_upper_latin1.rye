@@ -1,0 +1,298 @@
+//! image/font5x7_upper_latin1.rye -- the rest of the open uppercase Latin-1 accented letters, completing the capitals set (Season G, font content).
+//!
+//! Season G (Open Media Primitives) - font content for the open glyph atlas image/glyph.rye (gfa1). The acute-and-tilde
+//! capitals landed first in image/font5x7_upper_accented.rye (A acute, C cedilla, E acute, I acute, N tilde, O acute,
+//! U acute, U diaeresis). This corpus supplies the thirteen that complete the uppercase Latin-1 accented set, so the
+//! capitals mirror the accented LOWERCASE family already whole (image/font5x7_latin1.rye and its grave/circumflex/german
+//! siblings, unified in image/font5x7_accented.rye): the grave, circumflex, tilde, and diaeresis capitals a French,
+//! Italian, Portuguese, or German name reaches for at the start of a sentence or set in ALL-CAPS --
+//!   A grave, A circumflex, A tilde, A diaeresis, E grave, E circumflex, I grave, I circumflex,
+//!   O grave, O circumflex, O diaeresis, U grave, U circumflex,
+//! at their real Unicode codepoints U+00C0, U+00C2, U+00C3, U+00C4, U+00C8, U+00CA, U+00CC, U+00CE, U+00D2, U+00D4,
+//! U+00D6, U+00D9, U+00DB -- each exactly 0x20 below its lowercase twin. Together with the eight acute-and-tilde
+//! capitals this closes the loop: every accented lowercase letter the tree draws now has its capital, so a civic
+//! surface prints A NAME IN ALL-CAPS with its true marks rather than an ASCII-folded approximation.
+//!
+//! The source stays plain ASCII (ASCII-first): the codepoints are written as numeric literals (0x00C0 ...) and each
+//! letter is named in an ASCII comment, so no non-ASCII byte enters the file even though the glyphs it builds cover a
+//! non-ASCII range. The codepoints are NOT contiguous (they skip the unaccented capitals and the acute set already
+//! drawn), so this corpus carries an explicit ascending codepoint table -- the shape the gfa1 encoder trusts (strictly
+//! ascending, shared cell, coverage length == cell area). The drawings ARE the specification: each letter is seven rows
+//! of five cells in ASCII line art ('#' full ink, '.' none) that a reader audits by eye; the coverage bytes are derived
+//! from that art, never the reverse. THE UPPERCASE CRUX, inherited from the acute set: a capital fills the whole 5x7
+//! body, leaving no daylight above it for a mark, so each capital is compressed into the bottom FIVE rows (rows 2..6) --
+//! the same compressed A, E, I, O, U bodies the acute corpus proved -- and its diacritic drawn on the top two rows
+//! (rows 0..1): a grave stroke leaning LEFT, a circumflex peak, a tilde wave, or two diaeresis dots. The grave-marked
+//! capitals carry their crux from the lowercase grave corpus: top-row ink in the left half and none in the right, the
+//! honest signal that separates a grave capital from its acute twin. build_atlas turns the thirteen drawings into a
+//! glyph.GlyphAtlas the gfa1 encoder accepts, so the property that matters stays provable on metal:
+//! decode(encode(atlas)) recovers every glyph byte-for-byte, the letters are present and distinct, each reads within an
+//! honest legibility band, each carries its mark above the compressed body, and every grave capital leans left.
+//! No network, no key, no funds -- the capitals a surface reads the day it prints a full name that ASCII cannot spell.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_upper_latin1.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+
+pub const font5x7_upper_latin1_version = "20260817.062525";
+
+/// Every glyph in this corpus shares one 5-wide, 7-tall cell -- the same body the ASCII, Greek, and accented corpora carry.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance: the cell width plus one column of daylight, the same advance the sibling corpora carry.
+pub const upper_advance: u8 = cell_w + 1;
+
+/// The corpus holds exactly the thirteen uppercase accented letters that complete the Latin-1 set beside the acute eight.
+pub const upper_count: u32 = 13;
+
+/// Cells per glyph -- the coverage length every letter carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The thirteen uppercase Latin-1 codepoints, strictly ascending -- the order the gfa1 encoder trusts. Each aligns by
+/// index with upper_art below. Written as numeric literals so the source stays plain ASCII while the glyphs cover a
+/// non-ASCII range:
+///   0x00C0 A grave, 0x00C2 A circumflex, 0x00C3 A tilde, 0x00C4 A diaeresis, 0x00C8 E grave, 0x00CA E circumflex,
+///   0x00CC I grave, 0x00CE I circumflex, 0x00D2 O grave, 0x00D4 O circumflex, 0x00D6 O diaeresis, 0x00D9 U grave,
+///   0x00DB U circumflex. Each is exactly 0x20 below its lowercase twin in the accented lowercase family; the acute set
+///   already drawn (0x00C1, 0x00C9, 0x00CD, 0x00D3, 0x00DA) and the unaccented capitals are skipped.
+const upper_codepoints = [upper_count]u32{
+    0x00C0, 0x00C2, 0x00C3, 0x00C4, 0x00C8, 0x00CA, 0x00CC, 0x00CE, 0x00D2, 0x00D4, 0x00D6, 0x00D9, 0x00DB,
+};
+
+/// The thirteen capitals, drawn in the open. Each is seven rows of five cells; '#' ink, '.' background. A reader audits
+/// every letter here by eye, and the coverage bytes are lifted from this art, never guessed. Because a capital fills the
+/// whole body, each letter reuses the acute corpus's compressed A/E/I/O/U body in rows 2..6 and draws its mark on rows
+/// 0..1: a grave stroke leaning left (".#..."), a circumflex peak ("..#.." over ".#.#."), a tilde wave ("..#.#" over
+/// ".#.#."), or two diaeresis dots (".#.#." over ".....").
+const upper_art = [upper_count][cell_h][]const u8{
+    .{ ".#...", "..#..", ".###.", "#...#", "#####", "#...#", "#...#" }, // U+00C0 A grave
+    .{ "..#..", ".#.#.", ".###.", "#...#", "#####", "#...#", "#...#" }, // U+00C2 A circumflex
+    .{ "..#.#", ".#.#.", ".###.", "#...#", "#####", "#...#", "#...#" }, // U+00C3 A tilde
+    .{ ".#.#.", ".....", ".###.", "#...#", "#####", "#...#", "#...#" }, // U+00C4 A diaeresis
+    .{ ".#...", "..#..", "#####", "#....", "###..", "#....", "#####" }, // U+00C8 E grave
+    .{ "..#..", ".#.#.", "#####", "#....", "###..", "#....", "#####" }, // U+00CA E circumflex
+    .{ ".#...", "..#..", ".###.", "..#..", "..#..", "..#..", ".###." }, // U+00CC I grave
+    .{ "..#..", ".#.#.", ".###.", "..#..", "..#..", "..#..", ".###." }, // U+00CE I circumflex
+    .{ ".#...", "..#..", ".###.", "#...#", "#...#", "#...#", ".###." }, // U+00D2 O grave
+    .{ "..#..", ".#.#.", ".###.", "#...#", "#...#", "#...#", ".###." }, // U+00D4 O circumflex
+    .{ ".#.#.", ".....", ".###.", "#...#", "#...#", "#...#", ".###." }, // U+00D6 O diaeresis
+    .{ ".#...", "..#..", "#...#", "#...#", "#...#", "#...#", ".###." }, // U+00D9 U grave
+    .{ "..#..", ".#.#.", "#...#", "#...#", "#...#", "#...#", ".###." }, // U+00DB U circumflex
+};
+
+/// The five codepoints whose mark is a grave -- each must lean LEFT (top-row ink in the left half, none in the right),
+/// the crux this corpus inherits from the lowercase grave corpus. The other eight carry a centered or symmetric mark.
+const grave_codepoints = [_]u32{ 0x00C0, 0x00C8, 0x00CC, 0x00D2, 0x00D9 };
+
+/// Lift one letter's ASCII art into a freshly allocated coverage grid of exactly cell_area bytes: 255 for ink,
+/// 0 for background. The art's own shape is asserted, so a mistyped row is a stopped line rather than a bad glyph.
+fn coverage_from_art(allocator: std.mem.Allocator, art: [cell_h][]const u8) ![]u8 {
+    // invariant: a coverage grid is exactly the shared cell area, within the atlas ceiling.
+    assert(cell_area >= 1);
+    assert(cell_area <= glyph.coverage_max);
+    const cov = try allocator.alloc(u8, cell_area);
+    var idx: u32 = 0;
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        const row = art[r];
+        // invariant: every drawn row is exactly the cell width -- the art matches the grid.
+        assert(row.len == cell_w);
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            cov[idx] = if (row[c] == '#') 255 else 0;
+            idx += 1;
+        }
+    }
+    // invariant: the whole grid was filled, no cell left unwritten.
+    assert(idx == cell_area);
+    return cov;
+}
+
+/// Build the remaining uppercase accented-letters atlas: thirteen glyphs at the named ascending codepoints, sharing the
+/// 5x7 cell and advance. The gfa1 encoder accepts the result directly (ascending codepoints, coverage length == cell area).
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the corpus is the thirteen named capitals and no more.
+    assert(upper_count == 13);
+    assert(cell_area == 35);
+    const glyphs = try allocator.alloc(glyph.Glyph, upper_count);
+    var i: u32 = 0;
+    var last_cp: u32 = 0;
+    while (i < upper_count) : (i += 1) {
+        const cp = upper_codepoints[i];
+        // invariant: codepoints are strictly ascending -- the ordering the gfa1 encoder trusts.
+        assert(i == 0 or cp > last_cp);
+        last_cp = cp;
+        const cov = try coverage_from_art(allocator, upper_art[i]);
+        glyphs[i] = glyph.Glyph{
+            .codepoint = cp,
+            .advance = upper_advance,
+            .coverage = cov,
+        };
+    }
+    // invariant: the last codepoint is the U circumflex (U+00DB) -- the table ends where this set ends.
+    assert(glyphs[upper_count - 1].codepoint == 0x00DB);
+    return glyph.GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- the legibility signal a blank glyph would fail.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+/// Count the inked cells in one row r of a glyph -- the reader the diacritic-placement proof uses. Row 0 is the top.
+fn row_ink(cov: []const u8, r: u32) u32 {
+    // invariant: the row index sits inside the shared cell, over the shared grid.
+    assert(r < cell_h);
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var c: u32 = 0;
+    while (c < cell_w) : (c += 1) {
+        if (cov[r * cell_w + c] != 0) n += 1;
+    }
+    // invariant: a single row can hold at most cell_w inked cells.
+    assert(n <= cell_w);
+    return n;
+}
+
+/// Count the inked cells in the left half (columns 0..1) of one row -- the reader the grave-lean proof uses.
+fn left_half_ink(cov: []const u8, r: u32) u32 {
+    // invariant: the row index sits inside the shared cell, over the shared grid.
+    assert(r < cell_h);
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var c: u32 = 0;
+    while (c < 2) : (c += 1) {
+        if (cov[r * cell_w + c] != 0) n += 1;
+    }
+    // invariant: the left half holds at most two columns of ink.
+    assert(n <= 2);
+    return n;
+}
+
+/// Count the inked cells in the right half (columns 3..4) of one row -- the reader the grave-lean proof uses.
+fn right_half_ink(cov: []const u8, r: u32) u32 {
+    // invariant: the row index sits inside the shared cell, over the shared grid.
+    assert(r < cell_h);
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var c: u32 = 3;
+    while (c < cell_w) : (c += 1) {
+        if (cov[r * cell_w + c] != 0) n += 1;
+    }
+    // invariant: the right half holds at most two columns of ink.
+    assert(n <= 2);
+    return n;
+}
+
+/// The top-row (row 0) ink of a codepoint's glyph in the built atlas -- the reader the placement proof uses.
+fn top_row_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return row_ink(g.coverage, 0);
+    return error.UpperLetterMissing;
+}
+
+// --- selftest: build the atlas, round-trip through gfa1, prove all present, distinct, legible, marked above, grave-left ---
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built atlas is the thirteen-letter corpus at the shared cell.
+    assert(glyph_count == upper_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // Thirteen present letters: every one looks up, carries the shared advance; an unaccented ASCII capital misses, and
+    // so does an acute capital -- that one lives in the sibling corpus, never doubled here.
+    var d: u32 = 0;
+    while (d < upper_count) : (d += 1) {
+        const cp = upper_codepoints[d];
+        if (back.lookup(cp)) |g| {
+            assert(g.codepoint == cp);
+            assert(g.advance == upper_advance);
+        } else return error.UpperLetterMissing;
+    }
+    if (back.lookup('A')) |_| return error.NonUpperFound else {}
+    if (back.lookup(0x00C1)) |_| return error.AcuteDoubled else {} // A acute belongs to the sibling corpus
+
+    // Distinctness: no two letters share identical coverage -- the grave A and the circumflex A differ, the grave O and
+    // the diaeresis O differ (catches a copy slip that would leave two names spelled with one glyph).
+    var a: u32 = 0;
+    while (a < upper_count) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b < upper_count) : (b += 1) {
+            if (std.mem.eql(u8, atlas.glyphs[a].coverage, atlas.glyphs[b].coverage)) return error.UpperLettersNotDistinct;
+        }
+    }
+
+    // Legibility: each letter's ink count sits inside an honest band -- the same band the acute corpus proved, so the
+    // whole uppercase family reads as one weight. The floor sits where the I grave (its lightest) still reads, the
+    // ceiling where the E circumflex and A tilde (its heaviest) still resolve as letters, not blocks.
+    const ink_min: u32 = 8;
+    const ink_max: u32 = 20;
+    var lo: u32 = cell_area;
+    var hi: u32 = 0;
+    var k: u32 = 0;
+    while (k < upper_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (n < ink_min or n > ink_max) return error.UpperLetterIllegible;
+        if (n < lo) lo = n;
+        if (n > hi) hi = n;
+    }
+    // invariant: the observed ink band stayed inside the honest bounds.
+    assert(lo >= ink_min);
+    assert(hi <= ink_max);
+
+    // Diacritic placement -- what makes each of these an accented capital rather than a plain one. Every letter carries
+    // ink on its top row, so the mark sits above the compressed body rather than drifting into it -- the uppercase crux,
+    // since the capital fills the whole cell but for the two rows this proof reserves for the mark.
+    var p: u32 = 0;
+    while (p < upper_count) : (p += 1) {
+        if (!(try top_row_ink_of(&atlas, upper_codepoints[p]) >= 1)) return error.DiacriticNotAbove;
+    }
+
+    // The grave lean -- the five grave capitals each carry top-row ink in the left half and none in the right, the honest
+    // signal that separates a grave capital from its acute twin (mirrors the lowercase grave corpus's own crux).
+    var q: u32 = 0;
+    while (q < grave_codepoints.len) : (q += 1) {
+        if (atlas.lookup(grave_codepoints[q])) |g| {
+            if (!(left_half_ink(g.coverage, 0) >= 1)) return error.GraveNotLeaningLeft;
+            if (!(right_half_ink(g.coverage, 0) == 0)) return error.GraveInkOnRight;
+        } else return error.UpperLetterMissing;
+    }
+
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof.
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-upper-latin1: {d} uppercase letters U+00C0,U+00C2,U+00C3,U+00C4,U+00C8,U+00CA,U+00CC,U+00CE,U+00D2,U+00D4,U+00D6,U+00D9,U+00DB at {d}x{d} round-trip byte-identical; all present, distinct, legible (ink {d}..{d} of {d}); all marked above, the five grave capitals leaning left; encoded {d} bytes, raw {d}\n", .{
+        glyph_count, cell_w, cell_h, lo, hi, cell_area, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_upper_latin1 selftest\n", .{});
+    return 1;
+}
