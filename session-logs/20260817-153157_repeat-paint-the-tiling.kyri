@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260817.153157
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title repeat_paint -- the repeating gradient, the ramp that tiles, GREEN
+prompt Read crux/REMEMBER and the road-ahead docs; take the next agent-doable lap Lindy-first crux-first; deep-read one council-rota doc; Rye-first; send often; stop at custody gates. baton prin recur
+think Living edge is Season G open-media -- the CSS gradient triad (linear gradient_paint, radial radial_paint, conic conic_paint) all landed GREEN over the last laps. The natural highest-Lindy crux beside them is the REPEATING gradient (CSS repeating-linear-gradient), a fourth shape that runs the ramp over a fixed period and tiles it. It fits the grain: compose not braid over the same three public APIs, adding only one integer modulo, bounded and deterministic; it finishes another well-defined CSS sub-family a surface will read for years.
+think Modeled image/repeat_paint.rye on conic_paint's shape exactly: blend_pixel, a shared repeat_pos(c, period) reader, a shared check_repeat guard, then the h/v twins paint_gradient_repeat_h and paint_gradient_repeat_v. The routing is repeat_pos = (c % period) * pos_max / (period-1): the tile's first cell is the first control, its last cell the last control, the next cell wraps back -- the hard CSS seam. The period carries the direction, not the width, so a strip may be any size >= one cell (a nice distinction from the linear painter's StripTooNarrow).
+think Bounds: c < w <= qoi_max_dim (8192) so cycle*255 <= ~2.09M in u32, never wraps regardless of period. Named ceilings refuse by name -- BadStripDims (zero w/h), PeriodTooSmall (period < 2), PeriodTooLarge (period > qoi_max_dim), RepeatOutOfBounds (box past target), plus every color_ramp_stops refusal. All checked up front so a refusal paints nothing (proven by re-scanning the canvas all-white after each refusal).
+think Made exact and measured by a black->white ramp: color.mix of 0 and 255 by p reads back p, so each pixel's red channel EQUALS its tile position. An 8-wide strip over period 4 reads 0,85,170,255 twice -- the ramp tiles; column 0 equals column period (exact repeat); each tile ascends 0<85<170<255 then seams hard (255 drops straight to 0); the vertical twin tiles down the rows; a wider period (8 over an 8-wide strip) shows one tile not two, so column 4 no longer wraps to 0 -- the period is a real control.
+obs FIRST GREEN in the routing, no reds this lap -- the conic sibling's structure carried over cleanly, so the modulo routing and the h/v twins were right the first metal run. tame_style_check bans clean, width-check exit 0, plain 7-bit ASCII, American spelling, >= 2 positive asserts per fn.
+obs Rota lap deep-read active-designing/20260702-184312_the-grain-and-the-crossing.md (item 24) -- the CSS repeating-gradient concept makes the crossing: studied in the named world, separated from its scaffolding, restated leaning only on strands of our grain (compose not braid, bounded everything, one value model), the thanks kept in the witness header (gratitude/w3c-css-color.md). Every sentence of the module cuts with a named strand; no borrowed noun survives in room two.
+loom witness=repeat_paint_witness green=1 shapes=2 period_cells=4 strip=8x3
+file image/repeat_paint.rye the repeating gradient pair -- paint_gradient_repeat_h and _v tile the ramp at a fixed period via one integer modulo
+file tools/repeat_paint_witness.rish proves the tiling, hard seam, period control, and QOI round trip on metal; GREEN first run
+file image/README.md names repeat_paint.rye beside conic_paint.rye as the fourth gradient shape (docs-sync)
+recommend keep-going the gradient family now paints linear, radial, conic, and repeating; a natural next rung is the repeating radial/conic twins or gradient-as-fill for shapes -- all agent-doable, Season G open-media

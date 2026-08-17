@@ -1,0 +1,290 @@
+//! image/repeat_paint.rye -- a REPEATING positioned gradient SEEN on an image (Season G, the ramp that tiles).
+//!
+//! Season G (Open Media Primitives) -- the fourth shape of the CSS gradient family, the sibling of
+//! image/gradient_paint.rye (the LINEAR family, one ramp across the whole strip), image/radial_paint.rye (the RADIAL circle),
+//! and image/conic_paint.rye (the CONIC sweep). Where a linear gradient runs its ramp ONCE from edge to edge, a REPEATING
+//! gradient runs the ramp over a fixed PERIOD of cells and TILES it across the strip -- the CSS `repeating-linear-gradient`
+//! shape. One tile of `period` cells carries the full ramp (the first control at the tile's start, the last at its end), and
+//! the next tile starts the ramp over, so the pattern reads first..last, first..last, a hard seam at each tile boundary just
+//! as CSS draws unless the first and last controls match.
+//!
+//! Compose, not braid: color_ramp_stops.sample_checked DECIDES each cell's color at its computed position, image/qoi owns
+//! the RGBA target, and image/color composites the paint over the destination (Porter-Duff src-over, straight alpha). This
+//! module only ROUTES each cell to its position WITHIN its tile and writes it -- no new color math, no new codec. The
+//! routing is one integer modulo: cell `c` sits at tile position `c % period`, and that maps to the global ramp position
+//! `(c % period) * pos_max / (period - 1)`, so the tile's first cell is the first control exactly, its last cell the last
+//! control exactly, and the following cell wraps back to the first control -- the seam. `paint_gradient_repeat_h` tiles
+//! along the columns (the ramp runs left to right and repeats); `paint_gradient_repeat_v` is the vertical twin, tiling down
+//! the rows. The PERIOD carries the direction, not the width, so a strip may be any size >= one cell: a strip narrower than
+//! one period simply shows the ramp's opening, a wider strip shows several tiles.
+//!
+//! The whole rectangle's box is bound-checked ONCE up front (in u64 so a far edge can never wrap before the bound refuses),
+//! the period is checked against a named ceiling, and the ramp is validated ONCE before any pixel is written, so a malformed
+//! strip refuses by name having painted nothing -- all-or-nothing, never a half-painted tile. No network, no key, no funds.
+//!
+//! Teacher, thanked clean-room: the CSS repeating-linear-gradient concept (W3C CSS Color / Images -- public standard only).
+//! The idea enters siloed (context/SILO_TECHNIQUE.md): the shape is ours, named plainly; the thanks live in the witness header.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/repeat_paint.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const ramp_stops = @import("color_ramp_stops.rye");
+
+pub const repeat_paint_version = "20260817.152500";
+
+/// Composite one paint color over the destination pixel at (x, y), src-over, so a translucent tile reads through to the
+/// picture beneath. The caller proves the pixel lands inside the target; this writer only blends.
+fn blend_pixel(target: *qoi.Pixmap, x: u32, y: u32, paint: color.Rgba) void {
+    // invariant: the caller proved this pixel lands inside the target buffer, on the horizontal axis.
+    assert(x < target.width);
+    // invariant: and on the vertical axis -- both are load-bearing for the flat index below.
+    assert(y < target.height);
+    const di = (@as(usize, y) * @as(usize, target.width) + @as(usize, x)) * 4;
+    const dst = color.Rgba{
+        .r = target.pixels[di],
+        .g = target.pixels[di + 1],
+        .b = target.pixels[di + 2],
+        .a = target.pixels[di + 3],
+    };
+    const res = color.over(paint, dst);
+    target.pixels[di] = res.r;
+    target.pixels[di + 1] = res.g;
+    target.pixels[di + 2] = res.b;
+    target.pixels[di + 3] = res.a;
+}
+
+/// The global ramp position (0..pos_max) of cell `c` WITHIN its tile of `period` cells -- an even integer lerp from 0 (the
+/// tile's first cell, the first control exactly) to pos_max (the tile's last cell, the last control exactly), wrapping back
+/// to 0 at the next tile. Shared by both axes, so the cell-to-position routing is one small honest reader.
+fn repeat_pos(c: u32, period: u32) u8 {
+    // invariant: a repeating tile needs at least two cells, so the ramp has a direction within one period.
+    assert(period >= 2);
+    // The tile position wraps every `period` cells; cycle names this cell's place within its own tile.
+    const cycle: u32 = c % period;
+    // invariant: the cycle index names a real cell of the tile.
+    assert(cycle < period);
+    const den: u32 = period - 1;
+    // cycle <= min(c, period-1); c < w <= qoi_max_dim (8192), so cycle * 255 <= ~2.09M in u32 and the lerp never wraps.
+    // Floor division, so the tile's first cell reads 0 and its last cell reads pos_max exactly.
+    const p: u32 = cycle * @as(u32, ramp_stops.pos_max) / den;
+    // invariant: the position stays inside the ramp domain (cycle 0 gives 0, cycle period-1 gives pos_max).
+    assert(p <= ramp_stops.pos_max);
+    return @intCast(p);
+}
+
+/// Refuse a malformed repeating strip by name, having painted nothing: `BadStripDims` if `w` or `h` is zero,
+/// `PeriodTooSmall` if the period is under two (a tile needs a direction), `PeriodTooLarge` if the period exceeds the
+/// image module's named dimension ceiling, `RepeatOutOfBounds` if the box would exceed the target, and every
+/// `color_ramp_stops` refusal by name if the ramp is malformed. Shared by both painters so their guard is one reader.
+fn check_repeat(target: *qoi.Pixmap, x: u32, y: u32, w: u32, h: u32, period: u32, control: []const color.Rgba, positions: []const u8) !void {
+    // invariant: a repeating gradient box has real extent on both axes.
+    if (w == 0 or h == 0) return error.BadStripDims;
+    // invariant: the period carries the ramp's direction, so it needs at least two cells and stays within the named ceiling.
+    if (period < 2) return error.PeriodTooSmall;
+    if (period > qoi.qoi_max_dim) return error.PeriodTooLarge;
+    // The ramp is validated ONCE up front, so a malformed stop list refuses having painted nothing.
+    try ramp_stops.check(control, positions);
+    // The box's far edges, in u64 so the sum can never wrap before the bound check refuses.
+    const right: u64 = @as(u64, x) + @as(u64, w);
+    const bottom: u64 = @as(u64, y) + @as(u64, h);
+    if (right > @as(u64, target.width) or bottom > @as(u64, target.height)) return error.RepeatOutOfBounds;
+    // invariant: the up-front check proved every pixel of the w x h box lands inside the target buffer.
+    assert(right <= @as(u64, target.width));
+    assert(bottom <= @as(u64, target.height));
+}
+
+/// Paint a REPEATING HORIZONTAL gradient into the rectangle at (`x`, `y`) of size `w` x `h` on `target`: the ramp runs across
+/// `period` columns and tiles left to right, so the first column of every tile is the first control and its last column the
+/// last control, painted down the whole height. Refuses by name (see `check_repeat`) having painted nothing, so a refusal
+/// leaves the target untouched.
+pub fn paint_gradient_repeat_h(target: *qoi.Pixmap, x: u32, y: u32, w: u32, h: u32, period: u32, control: []const color.Rgba, positions: []const u8) !void {
+    try check_repeat(target, x, y, w, h, period, control, positions);
+
+    var cy: u32 = 0;
+    while (cy < h) : (cy += 1) {
+        var cx: u32 = 0;
+        while (cx < w) : (cx += 1) {
+            // The color is decided by the positioned ramp; this module only routes the column to its position within its tile.
+            const col = ramp_stops.sample_checked(control, positions, repeat_pos(cx, period));
+            blend_pixel(target, x + cx, y + cy, col);
+        }
+    }
+}
+
+/// Paint a REPEATING VERTICAL gradient into the rectangle at (`x`, `y`) of size `w` x `h` on `target` -- the twin of
+/// `paint_gradient_repeat_h`, tiling the ramp down `period` rows so it runs top to bottom and repeats. Refuses by name
+/// (see `check_repeat`) having painted nothing.
+pub fn paint_gradient_repeat_v(target: *qoi.Pixmap, x: u32, y: u32, w: u32, h: u32, period: u32, control: []const color.Rgba, positions: []const u8) !void {
+    try check_repeat(target, x, y, w, h, period, control, positions);
+
+    var cy: u32 = 0;
+    while (cy < h) : (cy += 1) {
+        // The whole row shares one tile position, so the ramp runs down the rows and repeats every `period` rows.
+        const col = ramp_stops.sample_checked(control, positions, repeat_pos(cy, period));
+        var cx: u32 = 0;
+        while (cx < w) : (cx += 1) {
+            blend_pixel(target, x + cx, y + cy, col);
+        }
+    }
+}
+
+// --- selftest: paint a repeating strip, prove its tiling, its seam, its constancy, its round trip --------------------------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module (it
+/// keeps its own canvas exactly as image/conic_paint.rye and image/radial_paint.rye do).
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
+    const green = color.Rgba{ .r = 0, .g = 255, .b = 0, .a = 255 };
+    const blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 };
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    const bw = [_]color.Rgba{ black, white };
+    const at_ends = [_]u8{ 0, 255 };
+    const period: u32 = 4; // one tile is four cells: the ramp reads 0, 85, 170, 255 across it (255/3 per step).
+
+    // A black -> white repeating HORIZONTAL gradient over an 8x3 strip makes each pixel's RED channel EQUAL its tile position
+    // (color.mix of 0 and 255 by parameter p reads back p). With period 4 the ramp reads 0, 85, 170, 255 within each tile, so
+    // an 8-wide strip shows two full tiles: columns read 0,85,170,255, 0,85,170,255. The crux -- the ramp TILES.
+    const wide: u32 = 8;
+    const tall: u32 = 3;
+    var img_h = try make_canvas(garden, wide, tall, red);
+    try paint_gradient_repeat_h(&img_h, 0, 0, wide, tall, period, bw[0..], at_ends[0..]);
+    const want_h = [_]u8{ 0, 85, 170, 255, 0, 85, 170, 255 };
+    var hc: u32 = 0;
+    while (hc < wide) : (hc += 1) {
+        if (pixel_at(&img_h, hc, 0).r != want_h[hc]) return error.HTileNotTiled;
+    }
+
+    // The tile repeats exactly: column 0 and column `period` read the same first control, and each tile ascends 0 < 85 < 170
+    // < 255 then SEAMS -- the last cell of a tile (255) drops straight back to the first cell of the next (0), a hard edge.
+    if (pixel_at(&img_h, 0, 0).r != pixel_at(&img_h, period, 0).r) return error.HTileDidNotRepeat;
+    if (!(pixel_at(&img_h, 0, 0).r < pixel_at(&img_h, 1, 0).r and pixel_at(&img_h, 1, 0).r < pixel_at(&img_h, 2, 0).r and pixel_at(&img_h, 2, 0).r < pixel_at(&img_h, 3, 0).r)) return error.HTileNotAscending;
+    if (!(pixel_at(&img_h, 3, 0).r == 255 and pixel_at(&img_h, 4, 0).r == 0)) return error.HSeamNotHard;
+
+    // A horizontal repeat depends only on the column, so every row of a column is the same constant color.
+    var hrow: u32 = 0;
+    while (hrow < tall) : (hrow += 1) {
+        var hcol: u32 = 0;
+        while (hcol < wide) : (hcol += 1) {
+            if (pixel_at(&img_h, hcol, hrow).r != want_h[hcol]) return error.HColumnNotConstant;
+        }
+    }
+
+    // The VERTICAL twin tiles the same ramp down the rows: an 3x8 strip reads 0,85,170,255, 0,85,170,255 top to bottom, and
+    // every column of a row shares one color.
+    var img_v = try make_canvas(garden, tall, wide, red);
+    try paint_gradient_repeat_v(&img_v, 0, 0, tall, wide, period, bw[0..], at_ends[0..]);
+    var vr: u32 = 0;
+    while (vr < wide) : (vr += 1) {
+        if (pixel_at(&img_v, 0, vr).r != want_h[vr]) return error.VTileNotTiled;
+        var vcol: u32 = 0;
+        while (vcol < tall) : (vcol += 1) {
+            if (pixel_at(&img_v, vcol, vr).r != want_h[vr]) return error.VRowNotConstant;
+        }
+    }
+    if (pixel_at(&img_v, 0, 0).r != pixel_at(&img_v, 0, period).r) return error.VTileDidNotRepeat;
+
+    // Paint a red-green-blue repeating strip and prove it round-trips through the open QOI codec byte-for-byte -- a real image.
+    const rgb = [_]color.Rgba{ red, green, blue };
+    const at_even = [_]u8{ 0, 128, 255 };
+    var img_rgb = try make_canvas(garden, wide, tall, white);
+    try paint_gradient_repeat_h(&img_rgb, 0, 0, wide, tall, period, rgb[0..], at_even[0..]);
+    const cap = qoi.encoded_bound(img_rgb.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&img_rgb, dst);
+    const back = try qoi.decode(garden, dst[0..enc.len]);
+    if (!back.same_bytes(&img_rgb)) return error.StripDidNotRoundTrip;
+
+    // A wider period spreads the ramp over more cells: period 8 across an 8-wide strip shows ONE tile (0..255 exactly), so
+    // column 4 reads a mid value rather than wrapping back to 0 as it did at period 4 -- the period is a real control.
+    var img_wide_p = try make_canvas(garden, wide, tall, white);
+    try paint_gradient_repeat_h(&img_wide_p, 0, 0, wide, tall, wide, bw[0..], at_ends[0..]);
+    if (pixel_at(&img_wide_p, 4, 0).r == 0) return error.PeriodDidNotSpread;
+
+    // A sub-rectangle paints only its own box: paint a 4x2 tile at (1,1) on a wider canvas and prove the ground around it
+    // stays the untouched white (the box is honored, nothing bleeds).
+    var img_sub = try make_canvas(garden, 8, 6, white);
+    try paint_gradient_repeat_h(&img_sub, 1, 1, 4, 2, period, rgb[0..], at_even[0..]);
+    if (!pixel_at(&img_sub, 0, 0).eql(white)) return error.GutterPainted;
+    if (!pixel_at(&img_sub, 7, 5).eql(white)) return error.FarGutterPainted;
+    if (pixel_at(&img_sub, 1, 1).eql(white)) return error.TileTopNotPainted;
+
+    // Refusals by name, each having painted nothing: a zero dimension, a period under two (no direction), a period past the
+    // dimension ceiling, an out-of-bounds box, and a malformed ramp (non-ascending positions caught up front).
+    var tiny = try make_canvas(garden, 8, 8, white);
+    if (paint_gradient_repeat_h(&tiny, 0, 0, 8, 0, period, rgb[0..], at_even[0..])) |_| return error.ZeroDimNotRefused else |err| {
+        if (err != error.BadStripDims) return error.WrongDimsError;
+    }
+    if (paint_gradient_repeat_h(&tiny, 0, 0, 8, 8, 1, rgb[0..], at_even[0..])) |_| return error.SmallPeriodNotRefused else |err| {
+        if (err != error.PeriodTooSmall) return error.WrongPeriodError;
+    }
+    if (paint_gradient_repeat_h(&tiny, 0, 0, 8, 8, qoi.qoi_max_dim + 1, rgb[0..], at_even[0..])) |_| return error.LargePeriodNotRefused else |err| {
+        if (err != error.PeriodTooLarge) return error.WrongLargePeriodError;
+    }
+    if (paint_gradient_repeat_h(&tiny, 2, 0, 8, 8, period, rgb[0..], at_even[0..])) |_| return error.OverrunNotRefused else |err| {
+        if (err != error.RepeatOutOfBounds) return error.WrongOverrunError;
+    }
+    const not_asc = [_]u8{ 0, 0, 255 };
+    if (paint_gradient_repeat_h(&tiny, 0, 0, 8, 8, period, rgb[0..], not_asc[0..])) |_| return error.BadRampNotRefused else |err| {
+        if (err != error.StopsNotAscending) return error.WrongRampError;
+    }
+    // The refused calls painted nothing -- the tiny canvas is still all white.
+    var wy: u32 = 0;
+    while (wy < tiny.height) : (wy += 1) {
+        var wx: u32 = 0;
+        while (wx < tiny.width) : (wx += 1) {
+            if (!pixel_at(&tiny, wx, wy).eql(white)) return error.RefusedButPainted;
+        }
+    }
+
+    // Determinism: the same ramp painted twice grows byte-for-byte the same tiling.
+    var img_a = try make_canvas(garden, wide, tall, white);
+    var img_b = try make_canvas(garden, wide, tall, white);
+    try paint_gradient_repeat_h(&img_a, 0, 0, wide, tall, period, rgb[0..], at_even[0..]);
+    try paint_gradient_repeat_h(&img_b, 0, 0, wide, tall, period, rgb[0..], at_even[0..]);
+    if (!img_a.same_bytes(&img_b)) return error.StripNotDeterministic;
+
+    print("GREEN image-repeat-paint: a repeating positioned gradient painted onto a real image -- a black-to-white ramp over period 4 makes each pixel red channel equal its tile position, so an 8-wide strip reads 0,85,170,255 twice (the ramp tiles), the tile repeats exactly (column 0 equals column period), each tile ascends 0<85<170<255 then seams hard (255 drops straight to 0 at the tile boundary); a horizontal repeat is constant down each column and the vertical twin tiles the same ramp down the rows constant across each row; a red-green-blue strip round-trips through the open QOI codec byte-for-byte; a wider period spreads the ramp over more cells where a narrow one wraps (period 8 shows one tile, not two); a sub-rectangle paints only its own box (the ground stays white); a zero dimension, a period under two, a period past the dimension ceiling, an out-of-bounds box, and a non-ascending ramp refuse by name having painted nothing; the same ramp paints the same tiling byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: repeat_paint selftest\n", .{});
+    return 1;
+}
