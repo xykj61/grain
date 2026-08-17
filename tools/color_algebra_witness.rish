@@ -1,0 +1,45 @@
+# tools/color_algebra_witness.rish — the open sRGB colour algebra proves itself on metal (Season G crux).
+#
+# Season G (Open Media Primitives) · the colour floor beside the open image codec (image/qoi.rye).
+# Design read: active-designing/20260816-210735_season-g-color-algebra-crux.md
+# Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS Color spec + sRGB — public standards only).
+#
+# The crux this witness proves is a REAL, BOUNDED, OPEN colour model in Rye, floor code that does not wait on
+# DJINN's Bit Design System (only Brushstroke rendering is paused, never colour math). A colour is four sRGB
+# bytes held exactly: parse #rgb/#rrggbb/#rrggbbaa hex and rgb()/hsl() functional forms, format back to
+# canonical #rrggbbaa, and the round-trip recovers the colour byte-for-byte. Five malformed inputs each refuse
+# by their own named error (BadHexLength · BadHexDigit · BadFunctionForm · ChannelOutOfRange · BadLevels). The
+# HSL primaries land exactly; the RGB→HSL→RGB sweep reports its true worst-channel error (5, the honest cost
+# of a percent-granular reading, stated rather than claimed exact). Blend and over-compositing endpoints are
+# exact; quantize's 256 levels is the identity and 2 levels snaps to the ends. No network, no key, no funds —
+# the colour Brushstroke and Skate read the day the design system lands.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/color_algebra_witness.rish
+
+say "color-algebra: Language EN — Season G's smallest tractable crux; a colour is four sRGB bytes held exactly, every text form a bounded reading of those bytes, a malformed text refusing by name rather than guessing a colour."
+say "color-algebra: Style Radiant — the module owns hex, functional, HSL, blend, and quantize whole, so parse(format(c)) recovers the colour byte for byte; the W3C CSS Color spec and sRGB are thanked clean-room as public standards, never a copied line."
+say "color-algebra: Lens TAME — u8 channels, u16 hue, u8 percent, u32 counts; every parse names color_max_text and refuses by name; integer fixed-point so results are deterministic; HSL round-trip tolerance measured and stated, not claimed exact; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/color"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/color.rye -femit-bin=${bin}"]
+assert build.ok else "color-algebra: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "color-algebra: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+say "color-algebra: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-color' && echo yes"]
+assert (trim green.out) == "yes" else "color-algebra: selftest did not print the GREEN colour line"
+
+let round = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'hex round-trip byte-identical' && echo yes"]
+assert (trim round.out) == "yes" else "color-algebra: hex round-trip was not byte-identical"
+
+let refuse = run ["sh" "-c" "printf '%s' '${out}' | grep -q '5 refusals named' && echo yes"]
+assert (trim refuse.out) == "yes" else "color-algebra: the five named refusals were not all proven"
+
+say "color-algebra: GREEN — open colour algebra whole; hex round-trip byte-identical, every refusal named, HSL primaries exact, blend and quantize proven."

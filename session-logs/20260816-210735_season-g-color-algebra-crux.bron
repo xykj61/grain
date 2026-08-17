@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260816.210735
+editor Claude Agent (Zed thread)
+model Fable 5 (claude-fable-5)
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title Season G colour algebra in Rye — the smallest tractable crux, GREEN
+prompt Keaton's recursion baton: take the next agent-doable lap Lindy-first crux-first, Rye prioritized, self-approve the design round, make progress and send each finished increment, stop only at custody gates.
+think Read REMEMBER, the 1,024-round itinerary, the eight-season double-seat, and the rye-first crypto/decision-wave doc. Only custody gates remained as blockers (seed force-push, hardware, funds, identity key); plenty of agent-doable crux work stands. The eight-season doc names the open sRGB/hex/HSL colour algebra in Rye as the crux and smallest tractable move in the whole pile — floor code that does not wait on DJINN's Bit Design System (only Brushstroke rendering is paused, never colour math). Highest-Lindy, no gate, no dependency: chosen.
+think Studied image/qoi.rye and tools/hunk_qoi_witness.rish as the sibling open-media primitive to mirror the shape — opening triad, Rgba struct, named refusals, bounded buffers, a selftest lowered to a binary by a .rish witness. Self-approved a design round (active-designing/20260816-210735) naming the four quest rounds: parse+format, HSL conversion, blend, quantize.
+think Built image/color.rye: hex parse across #rgb/#rgba/#rrggbb/#rrggbbaa with canonical #rrggbbaa format (exact colour round-trip), rgb()/rgba()/hsl()/hsla() functional parse, integer fixed-point RGB↔HSL (deterministic, no float), linear mix, Porter-Duff over-compositing, and channel quantize. Every parse names color_max_text and refuses by name; two-plus positive invariants per function.
+think Iterated on metal: dropped an unused tally_copy import, fixed a never-mutated var→const, and measured the true RGB→HSL→RGB worst-channel error before asserting it. The sweep max is 5 — inherent to HSL being a percent-granular reading (only 101 lightness levels for 256 byte values), not a math flaw; stated the tolerance honestly at 5 rather than claiming exactness integer HSL cannot give.
+think Split six compound asserts to satisfy the TAME ban (each failing half named). tame_style_check GREEN, selftest GREEN, witness GREEN end to end.
+obs Kept the colour module out of the Season-A/HUNK image README rather than misfile it under the Open Image journey — it belongs to Season G Open Media Primitives, which has no drawn waymark yet; named that honestly in the design note. image/bin/color is gitignored, so no binary is committed.
+loom witness=color_algebra_witness hsl_roundtrip_max_err=5 hsl_tol=5 hex_shapes=4 named_refusals=5
+file image/color.rye the open sRGB/hex/HSL colour algebra — parse·format·convert·blend·quantize, bounded and named
+file tools/color_algebra_witness.rish proves the module on metal: hex round-trip byte-identical, five refusals named, HSL primaries exact
+file active-designing/20260816-210735_season-g-color-algebra-crux.md the self-approved design round naming the four quest rounds
+file gratitude/w3c-css-color.md clean-room thanks to the W3C CSS Color spec and sRGB, public standards only
+file session-logs/README.md newest-first index row for this round
+recommend keep-going the next Season G rung is the open permissive fonts + QOI-for-fonts glyph codec (a journey), same open-media family, no gate
