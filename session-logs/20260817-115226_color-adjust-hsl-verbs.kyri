@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260817.115226
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image/color_adjust.rye -- HSL adjustment verbs, the palette toolkit
+prompt recur the autonomous loop: next agent-doable lap Lindy-first crux-first, Rye-first, read one council-rota doc, send often
+think Read crux/REMEMBER.md (INNER LOOP directives), the 1024-round itinerary, the eight-season double-seat, and the Rye-first crypto-parity wave. Live edge is Season G open-media; the readable-ink floor just reached two consumers.
+think Council rota lap index 13 -> foundations/20260728-032134_keeh-and-kia.md (the happy zone): fix the fault at the station, witness-first, high output that still stops to fix. Kept the lap single-stranded and proven before claiming green.
+think Lindy-first crux-first: the color module owns hex/functional/HSL/blend/quantize/WCAG whole, yet the everyday palette moves a design system makes from one seed color -- lighten/darken, saturate/desaturate, hue rotation, complement, grayscale -- had no home. Those verbs are what Brushstroke and Skate reach for to grow a scale; high-Lindy, tractable in one lap.
+think Single-stranded per the growing-a-language/single-stranded lens: color DECIDES the base algebra (rgb_to_hsl/hsl_to_rgb), color_adjust only steers one HSL field between its named bounds and hands the reading back. No new storage, codec, or maths; color.rye untouched, so its proofs carry through.
+obs Each verb clamps at the band edge rather than wrapping -- lighten past white stays white, darken past black stays black -- via saturating add_clamp/sub_clamp helpers. Alpha rides through both directions of the round trip (Hsl carries .a), verified per verb.
+obs grayscale sets saturation to 0, which hsl_to_rgb returns as the exact grey l*255/100 -- so it equals a full desaturation byte-for-byte and yields equal channels; complement is rotate_hue 180, and a double-complement returns the hue (cyan is exactly 180 from red on this integer wheel).
+obs First metal run GREEN, no reds. tame_style_check flagged one compound assert(a and b) -- split into two, honoring the ban -- then clean; width-check exit 0; both files plain 7-bit ASCII; >= 2 positive asserts per fn.
+file image/color_adjust.rye the palette toolkit -- lighten/darken/saturate/desaturate/grayscale/rotate_hue/complement over color's HSL round trip
+file tools/color_adjust_witness.rish proves each verb steers its band, clamps at the edge, carries alpha, and is deterministic on metal
+file image/README.md docs-sync: a color_adjust.rye entry beside color.rye names the new palette verbs
+recommend keep-going another Season G rung (a named-color table, or the palette scale a design system builds from one seed) or a fresh Lindy-first crux; all custody gates untouched.

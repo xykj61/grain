@@ -1,0 +1,46 @@
+# tools/color_adjust_witness.rish -- HSL-space colour adjustment verbs prove themselves on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the palette toolkit beside the open colour algebra (image/color.rye).
+# Design read: active-designing/20260816-210735_season-g-color-algebra-crux.md (the colour floor this stands on).
+# Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS Color spec + sRGB -- public standards only).
+#
+# The crux this witness proves is the everyday palette moves a design system makes from one seed colour, written as a
+# single-stranded consumer of colour's own HSL round trip: lighten/darken steer the lightness band and clamp at
+# white/black, saturate/desaturate steer the saturation band, grayscale yields an equal-channel grey equal to a full
+# desaturation, rotate_hue turns the wheel and a full 360 turn returns the hue, complement is a half turn. Alpha rides
+# through every verb untouched, and the same adjustment on the same seed yields the same bytes. No new storage, codec,
+# or maths -- read-adjust-write over the existing algebra, so colour's own proofs carry through. No network, no key, no
+# funds -- the palette Brushstroke and Skate grow the day the design system lands.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/color_adjust_witness.rish
+
+say "color-adjust: Language EN -- Season G's palette toolkit; every verb steers one HSL band between its named bounds and hands the reading back to hsl_to_rgb, so a surface grows a scale from one seed colour."
+say "color-adjust: Style Radiant -- compose not braid; colour DECIDES the base algebra and this module only steers one field, clamping at the band edge rather than wrapping, so lighten past white stays white and darken past black stays black."
+say "color-adjust: Lens TAME -- u8 percents, u16 degrees; each amount asserted within its band; saturating clamps by name; alpha carried through; integer fixed-point so results are deterministic; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/color_adjust"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/color_adjust.rye -femit-bin=${bin}"]
+assert build.ok else "color-adjust: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "color-adjust: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "color-adjust: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-color-adjust' && echo yes"]
+assert (trim green.out) == "yes" else "color-adjust: selftest did not print the GREEN colour-adjust line"
+
+let clamp = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'clamp at white/black' && echo yes"]
+assert (trim clamp.out) == "yes" else "color-adjust: lighten/darken did not clamp at the band edges"
+
+let turn = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'full 360 turn is identity' && echo yes"]
+assert (trim turn.out) == "yes" else "color-adjust: a full hue turn did not return to the start"
+
+let alpha = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'alpha rides through every verb' && echo yes"]
+assert (trim alpha.out) == "yes" else "color-adjust: alpha was not carried through every verb"
+
+say "color-adjust: GREEN -- HSL adjustment verbs whole; lighten/darken/saturate/desaturate steer their bands and clamp, grayscale equals a full desaturation, rotate_hue and complement turn the wheel, alpha carried through, determinism proven."

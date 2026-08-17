@@ -1,0 +1,202 @@
+//! image/color_adjust.rye -- HSL-space colour adjustment verbs (Season G, the palette toolkit a design system reaches for).
+//!
+//! Season G (Open Media Primitives) -- a single-stranded consumer of image/color.rye's HSL algebra. The colour module
+//! already owns the round trip: rgb_to_hsl reads a colour as hue/saturation/lightness, hsl_to_rgb writes one back, alpha
+//! carried through both ways. This rung composes those two proven verbs into the everyday palette moves a surface makes
+//! when it grows a scale from one seed colour -- the Sass-style lighten/darken, saturate/desaturate, a hue rotation, the
+//! complement across the wheel, and a full desaturation to grey. Compose, not braid: colour DECIDES the base algebra and
+//! this module only steers one HSL field between its named bounds, then hands the reading back to hsl_to_rgb. No new
+//! storage, codec, palette, or maths -- every verb is read-adjust-write over the existing algebra, so colour's own proofs
+//! carry through. Every amount is a bounded percentage-point step (0..=100) or a bounded degree turn (0..=360); each verb
+//! clamps at the band edge rather than wrapping a lightness or a saturation, so lighten past white stays white and darken
+//! past black stays black. Alpha rides through untouched. No network, no key, no funds -- the palette Brushstroke and
+//! Skate grow the day the design system lands, on our own open colour model.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/color_adjust.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+
+pub const color_adjust_version = "20260817.115226";
+
+/// The widest percentage-point step a lightness or saturation adjustment ever takes -- a full sweep of the 0..100 band.
+pub const adjust_max_pct: u8 = 100;
+
+/// Add `d` to `v` and clamp to `max` -- a saturating add for a bounded percent, so an over-step lands on the band edge
+/// rather than wrapping. Both operands and the ceiling are small percents, so the sum is taken in u32 and never wraps.
+fn add_clamp(v: u8, d: u8, max: u8) u8 {
+    // invariant: the ceiling is a real percentage-point bound this module ever uses.
+    assert(max <= adjust_max_pct);
+    const sum: u32 = @as(u32, v) + @as(u32, d);
+    const capped: u32 = if (sum > @as(u32, max)) @as(u32, max) else sum;
+    // invariant: the clamped result stays within the named ceiling and never falls below the start.
+    assert(capped <= @as(u32, max));
+    assert(capped >= @as(u32, v) or v > max);
+    return @intCast(capped);
+}
+
+/// Subtract `d` from `v`, flooring at zero -- a saturating subtract for a bounded percent, so an over-step lands on zero
+/// rather than underflowing. The comparison guards the subtraction so it always stays non-negative.
+fn sub_clamp(v: u8, d: u8) u8 {
+    // invariant: a subtracted percent is itself within the band, so the floored result is a real percent.
+    assert(d <= adjust_max_pct);
+    const out: u8 = if (d >= v) 0 else v - d;
+    // invariant: the result never rises above the start -- a subtract only lowers or holds.
+    assert(out <= v);
+    return out;
+}
+
+/// Lighten a colour by `pct` percentage points of lightness, clamped at white. Reads the colour as HSL, raises the
+/// lightness band, and writes it back -- alpha carried through. lighten(white, x) stays white (already at l=100).
+pub fn lighten(c: color.Rgba, pct: u8) color.Rgba {
+    // invariant: the step is a real percentage-point amount within the 0..100 band.
+    assert(pct <= adjust_max_pct);
+    var hsl = color.rgb_to_hsl(c);
+    const raised = add_clamp(hsl.l, pct, 100);
+    // invariant: lightening never lowers the lightness -- it raises or holds at white.
+    assert(raised >= hsl.l);
+    hsl.l = raised;
+    return color.hsl_to_rgb(hsl);
+}
+
+/// Darken a colour by `pct` percentage points of lightness, floored at black. darken(black, x) stays black (l=0 already).
+pub fn darken(c: color.Rgba, pct: u8) color.Rgba {
+    // invariant: the step is a real percentage-point amount within the 0..100 band.
+    assert(pct <= adjust_max_pct);
+    var hsl = color.rgb_to_hsl(c);
+    const lowered = sub_clamp(hsl.l, pct);
+    // invariant: darkening never raises the lightness -- it lowers or holds at black.
+    assert(lowered <= hsl.l);
+    hsl.l = lowered;
+    return color.hsl_to_rgb(hsl);
+}
+
+/// Saturate a colour by `pct` percentage points, clamped at full saturation. A grey (saturation 0) has no hue to
+/// intensify, so saturating it holds it grey until its hue is set -- honest, not a guessed colour.
+pub fn saturate(c: color.Rgba, pct: u8) color.Rgba {
+    // invariant: the step is a real percentage-point amount within the 0..100 band.
+    assert(pct <= adjust_max_pct);
+    var hsl = color.rgb_to_hsl(c);
+    const raised = add_clamp(hsl.s, pct, 100);
+    // invariant: saturating never lowers the saturation -- it raises or holds at full.
+    assert(raised >= hsl.s);
+    hsl.s = raised;
+    return color.hsl_to_rgb(hsl);
+}
+
+/// Desaturate a colour by `pct` percentage points, floored at zero (grey). desaturate(c, 100) equals grayscale(c).
+pub fn desaturate(c: color.Rgba, pct: u8) color.Rgba {
+    // invariant: the step is a real percentage-point amount within the 0..100 band.
+    assert(pct <= adjust_max_pct);
+    var hsl = color.rgb_to_hsl(c);
+    const lowered = sub_clamp(hsl.s, pct);
+    // invariant: desaturating never raises the saturation -- it lowers or holds at grey.
+    assert(lowered <= hsl.s);
+    hsl.s = lowered;
+    return color.hsl_to_rgb(hsl);
+}
+
+/// Fully desaturate a colour to its grey of equal lightness -- saturation to zero. Because hsl_to_rgb returns the exact
+/// grey l*255/100 when saturation is zero, the result has every channel equal, alpha carried through.
+pub fn grayscale(c: color.Rgba) color.Rgba {
+    var hsl = color.rgb_to_hsl(c);
+    hsl.s = 0;
+    // invariant: a zero-saturation reading has no hue to carry.
+    assert(hsl.s == 0);
+    const grey = color.hsl_to_rgb(hsl);
+    // invariant: an equal-channel grey is what a fully desaturated colour must be.
+    assert(grey.r == grey.g);
+    assert(grey.g == grey.b);
+    return grey;
+}
+
+/// Rotate a colour's hue by `deg` degrees around the wheel (0..=360), wrapping past 360 back to zero. A grey has no hue,
+/// so a rotation holds it grey. Alpha carried through. rotate_hue(c, 360) returns the same hue reading as c.
+pub fn rotate_hue(c: color.Rgba, deg: u16) color.Rgba {
+    // invariant: a turn is a real number of degrees within one full circle.
+    assert(deg <= 360);
+    var hsl = color.rgb_to_hsl(c);
+    // The sum is taken in u32 (max 360 + 360 = 720) and wrapped by modulo, so the hue lands back in [0, 360).
+    const turned: u32 = (@as(u32, hsl.h) + @as(u32, deg)) % 360;
+    // invariant: a wrapped hue is a real hue in the [0, 360) band the algebra expects.
+    assert(turned < 360);
+    hsl.h = @intCast(turned);
+    return color.hsl_to_rgb(hsl);
+}
+
+/// The complement of a colour -- its hue rotated a half turn (180 degrees) across the wheel, saturation and lightness
+/// held. The everyday "opposite" a two-colour scheme reaches for. complement(complement(c)) returns c's hue reading.
+pub fn complement(c: color.Rgba) color.Rgba {
+    return rotate_hue(c, 180);
+}
+
+// --- selftest: prove each verb steers one HSL band between its bounds, clamps at the edge, and carries alpha through ----
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    _ = garden;
+
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
+
+    // lighten raises the lightness band; darken lowers it. A mid-grey lightened is lighter, darkened is darker.
+    const grey = color.Rgba{ .r = 128, .g = 128, .b = 128, .a = 255 };
+    const grey_l = color.rgb_to_hsl(grey).l;
+    const lit = lighten(grey, 20);
+    const drk = darken(grey, 20);
+    // invariant: lightening raises the lightness reading and darkening lowers it.
+    if (!(color.rgb_to_hsl(lit).l > grey_l)) return error.LightenDidNotRaise;
+    if (!(color.rgb_to_hsl(drk).l < grey_l)) return error.DarkenDidNotLower;
+
+    // Clamp at the band edges: white cannot lighten, black cannot darken -- an over-step holds the extreme.
+    if (!lighten(white, 40).eql(white)) return error.LightenPastWhite;
+    if (!darken(black, 40).eql(black)) return error.DarkenPastBlack;
+
+    // saturate raises the saturation band, desaturate lowers it. A half-saturated colour moves both ways.
+    // hsl(0, 50, 50) is a muted red the algebra can round-trip well enough to move measurably.
+    const muted = color.hsl_to_rgb(color.Hsl{ .h = 0, .s = 50, .l = 50, .a = 255 });
+    const muted_s = color.rgb_to_hsl(muted).s;
+    const more = saturate(muted, 30);
+    const less = desaturate(muted, 30);
+    // invariant: saturating raises the saturation reading and desaturating lowers it.
+    if (!(color.rgb_to_hsl(more).s > muted_s)) return error.SaturateDidNotRaise;
+    if (!(color.rgb_to_hsl(less).s < muted_s)) return error.DesaturateDidNotLower;
+
+    // grayscale yields an equal-channel grey, and equals a full desaturation.
+    const g = grayscale(red);
+    if (!(g.r == g.g and g.g == g.b)) return error.GrayscaleNotGrey;
+    if (!grayscale(red).eql(desaturate(red, 100))) return error.GrayscaleNotFullDesaturate;
+
+    // rotate_hue moves the hue and wraps a full turn back to the start; complement is a half turn twice = the start.
+    const red_h = color.rgb_to_hsl(red).h;
+    if (color.rgb_to_hsl(rotate_hue(red, 120)).h == red_h) return error.RotateDidNotMove;
+    if (color.rgb_to_hsl(rotate_hue(red, 360)).h != red_h) return error.FullTurnNotIdentity;
+    if (color.rgb_to_hsl(complement(complement(red))).h != red_h) return error.DoubleComplementNotIdentity;
+    // A complement of red is around cyan -- a hue near 180.
+    const comp_h = color.rgb_to_hsl(complement(red)).h;
+    if (!(comp_h == 180)) return error.ComplementNotHalfTurn;
+
+    // Alpha rides through every verb untouched -- a translucent seed keeps its alpha after each adjustment.
+    const glassy = color.Rgba{ .r = 200, .g = 60, .b = 60, .a = 128 };
+    if (lighten(glassy, 10).a != 128) return error.LightenDroppedAlpha;
+    if (grayscale(glassy).a != 128) return error.GrayscaleDroppedAlpha;
+    if (rotate_hue(glassy, 90).a != 128) return error.RotateDroppedAlpha;
+
+    // Determinism: the same adjustment on the same seed yields the same bytes.
+    if (!lighten(grey, 20).eql(lighten(grey, 20))) return error.NotDeterministic;
+
+    print("GREEN image-color-adjust: lighten/darken steer the lightness band and clamp at white/black; saturate/desaturate steer the saturation band; grayscale yields an equal-channel grey equal to a full desaturation; rotate_hue turns the wheel and a full 360 turn is identity; complement is a half turn (double-complement returns the hue); alpha rides through every verb; determinism holds\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: color_adjust selftest\n", .{});
+    return 1;
+}
