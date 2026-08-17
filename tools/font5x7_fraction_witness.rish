@@ -37,13 +37,10 @@ assert selftest.ok else "font5x7-fraction: selftest exited non-zero -- ${selftes
 let out = trim selftest.out
 say "font5x7-fraction: ${out}"
 
-let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-font5x7-fraction' && echo yes"]
-assert (trim green.out) == "yes" else "font5x7-fraction: selftest did not print the GREEN corpus line"
+assert selftest.out contains "GREEN image-font5x7-fraction" else "font5x7-fraction: selftest did not print the GREEN corpus line"
 
-let round = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'round-trip byte-identical' && echo yes"]
-assert (trim round.out) == "yes" else "font5x7-fraction: round-trip was not byte-identical"
+assert selftest.out contains "round-trip byte-identical" else "font5x7-fraction: round-trip was not byte-identical"
 
-let parts = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'three-part (numerator + solidus + denominator)' && echo yes"]
-assert (trim parts.out) == "yes" else "font5x7-fraction: fractions were not proven three-part"
+assert selftest.out contains "three-part (numerator + solidus + denominator)" else "font5x7-fraction: fractions were not proven three-part"
 
 say "font5x7-fraction: GREEN -- the open vulgar-fractions corpus whole; nine fractions round-trip byte-identical, all present, distinct, legible, and three-part (numerator, solidus, denominator), their codepoint table non-contiguous, three quarters out-inking one quarter and seven eighths one eighth; the font gains the fractions a surface prints the day it names half a price."

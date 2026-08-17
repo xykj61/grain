@@ -29,29 +29,20 @@ let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "hunk-photos-adjust: selftest exited non-zero — ${selftest.out}"
 
 let out = trim selftest.out
-say "hunk-photos-adjust: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-adjust' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-photos-adjust: selftest did not print the GREEN adjust line"
+assert selftest.out contains "GREEN image-photos-adjust" else "hunk-photos-adjust: selftest did not print the GREEN adjust line"
 
-let neutral = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'neutral adjust byte-identical' && echo yes"]
-assert (trim neutral.out) == "yes" else "hunk-photos-adjust: the neutral adjust was not proven byte-identical"
+assert selftest.out contains "neutral adjust byte-identical" else "hunk-photos-adjust: the neutral adjust was not proven byte-identical"
 
-let pivot = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'contrast pivots around the 128 midpoint' && echo yes"]
-assert (trim pivot.out) == "yes" else "hunk-photos-adjust: the contrast pivot was not proven"
+assert selftest.out contains "contrast pivots around the 128 midpoint" else "hunk-photos-adjust: the contrast pivot was not proven"
 
-let alpha = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'alpha passes through untouched' && echo yes"]
-assert (trim alpha.out) == "yes" else "hunk-photos-adjust: alpha pass-through was not proven"
+assert selftest.out contains "alpha passes through untouched" else "hunk-photos-adjust: alpha pass-through was not proven"
 
-let open = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'adjusted image re-encodes and round-trips' && echo yes"]
-assert (trim open.out) == "yes" else "hunk-photos-adjust: an adjusted image did not round-trip as an open image"
+assert selftest.out contains "adjusted image re-encodes and round-trips" else "hunk-photos-adjust: an adjusted image did not round-trip as an open image"
 
 # HUNK3 crop, HUNK8 orient, and HUNK9 scale selftests still run in the same binary — their GREEN lines must remain.
-let crop = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos:' && echo yes"]
-assert (trim crop.out) == "yes" else "hunk-photos-adjust: HUNK3 crop selftest no longer GREEN beneath"
-let orient = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-orient' && echo yes"]
-assert (trim orient.out) == "yes" else "hunk-photos-adjust: HUNK8 orient selftest no longer GREEN beneath"
-let scale = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-scale' && echo yes"]
-assert (trim scale.out) == "yes" else "hunk-photos-adjust: HUNK9 scale selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos:" else "hunk-photos-adjust: HUNK3 crop selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos-orient" else "hunk-photos-adjust: HUNK8 orient selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos-scale" else "hunk-photos-adjust: HUNK9 scale selftest no longer GREEN beneath"
 
 say "hunk-photos-adjust: GREEN — the Photos app tunes brightness and contrast over the open grid; pure, bounded, alpha untouched, refusals named; HUNK3 crop, HUNK8 orient, and HUNK9 scale still GREEN beneath."

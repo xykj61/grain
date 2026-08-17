@@ -35,7 +35,6 @@ assert selftest.ok else "compose-tiled: selftest exited non-zero -- ${selftest.o
 let out = trim selftest.out
 say "compose-tiled: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-compose-tiled' && echo yes"]
-assert (trim green.out) == "yes" else "compose-tiled: selftest did not print the GREEN compose-tiled line"
+assert selftest.out contains "GREEN image-compose-tiled" else "compose-tiled: selftest did not print the GREEN compose-tiled line"
 
 say "compose-tiled: GREEN -- a source pattern tiled to fill a box, proven on metal: an exact grid of copies, a clipped boundary tile, a translucent src-over tile, a byte-for-byte QOI round trip, and every malformed fill refused by name having painted nothing."

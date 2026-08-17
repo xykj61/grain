@@ -30,16 +30,12 @@ assert selftest.ok else "text-subtitle: selftest exited non-zero -- ${selftest.o
 let out = trim selftest.out
 say "text-subtitle: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-text-subtitle' && echo yes"]
-assert (trim green.out) == "yes" else "text-subtitle: selftest did not print the GREEN subtitle line"
+assert selftest.out contains "GREEN image-text-subtitle" else "text-subtitle: selftest did not print the GREEN subtitle line"
 
-let span = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'each cue byte-steady across its span and distinct from the next' && echo yes"]
-assert (trim span.out) == "yes" else "text-subtitle: the exact-span crux (steady within span, distinct between cues) did not prove"
+assert selftest.out contains "each cue byte-steady across its span and distinct from the next" else "text-subtitle: the exact-span crux (steady within span, distinct between cues) did not prove"
 
-let gap = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a gap frame equals the plain background byte for byte' && echo yes"]
-assert (trim gap.out) == "yes" else "text-subtitle: the empty-gap crux (no panel where no cue is active) did not prove"
+assert selftest.out contains "a gap frame equals the plain background byte for byte" else "text-subtitle: the empty-gap crux (no panel where no cue is active) did not prove"
 
-let round = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-trip byte-identical through BOTH codecs' && echo yes"]
-assert (trim round.out) == "yes" else "text-subtitle: the subtitled reel did not round-trip through both codecs"
+assert selftest.out contains "round-trip byte-identical through BOTH codecs" else "text-subtitle: the subtitled reel did not round-trip through both codecs"
 
 say "text-subtitle: GREEN -- a timed subtitle track over moving video; each cue is shown exactly over its span (steady while up, distinct from the next, nothing in the gaps), and the composited reel round-trips byte for byte through both open codecs."

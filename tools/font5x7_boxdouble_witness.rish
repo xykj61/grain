@@ -36,10 +36,8 @@ assert selftest.ok else "font5x7-boxdouble: selftest exited non-zero -- ${selfte
 let out = trim selftest.out
 say "font5x7-boxdouble: ${out}"
 
-let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-font5x7-boxdouble' && echo yes"]
-assert (trim green.out) == "yes" else "font5x7-boxdouble: selftest did not print the GREEN corpus line"
+assert selftest.out contains "GREEN image-font5x7-boxdouble" else "font5x7-boxdouble: selftest did not print the GREEN corpus line"
 
-let round = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'round-trip byte-identical' && echo yes"]
-assert (trim round.out) == "yes" else "font5x7-boxdouble: round-trip was not byte-identical"
+assert selftest.out contains "round-trip byte-identical" else "font5x7-boxdouble: round-trip was not byte-identical"
 
 say "font5x7-boxdouble: GREEN -- the open double-line box corpus whole; eleven double marks round-trip byte-identical, all present, distinct, and legible; the box family gains its heavier rails."

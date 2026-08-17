@@ -33,22 +33,16 @@ assert selftest.ok else "color-algebra: selftest exited non-zero — ${selftest.
 let out = trim selftest.out
 say "color-algebra: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-color' && echo yes"]
-assert (trim green.out) == "yes" else "color-algebra: selftest did not print the GREEN colour line"
+assert selftest.out contains "GREEN image-color" else "color-algebra: selftest did not print the GREEN colour line"
 
-let round = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'hex round-trip byte-identical' && echo yes"]
-assert (trim round.out) == "yes" else "color-algebra: hex round-trip was not byte-identical"
+assert selftest.out contains "hex round-trip byte-identical" else "color-algebra: hex round-trip was not byte-identical"
 
-let refuse = run ["sh" "-c" "printf '%s' '${out}' | grep -q '5 refusals named' && echo yes"]
-assert (trim refuse.out) == "yes" else "color-algebra: the five named refusals were not all proven"
+assert selftest.out contains "5 refusals named" else "color-algebra: the five named refusals were not all proven"
 
-let contrast = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'WCAG white-on-black contrast 21.00' && echo yes"]
-assert (trim contrast.out) == "yes" else "color-algebra: WCAG white-on-black contrast did not reach the exact 21.00 maximum"
+assert selftest.out contains "WCAG white-on-black contrast 21.00" else "color-algebra: WCAG white-on-black contrast did not reach the exact 21.00 maximum"
 
-let ink = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'readable ink picks black on white and white on black' && echo yes"]
-assert (trim ink.out) == "yes" else "color-algebra: readable-ink pick did not choose the legible extreme on each fill"
+assert selftest.out contains "readable ink picks black on white and white on black" else "color-algebra: readable-ink pick did not choose the legible extreme on each fill"
 
-let bars = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'passes AA fails AAA' && echo yes"]
-assert (trim bars.out) == "yes" else "color-algebra: a mid-grey did not split the AA and AAA conformance bars"
+assert selftest.out contains "passes AA fails AAA" else "color-algebra: a mid-grey did not split the AA and AAA conformance bars"
 
 say "color-algebra: GREEN — open colour algebra whole; hex round-trip byte-identical, every refusal named, HSL primaries exact, blend, quantize, WCAG contrast, readable-ink pick, and AA/AAA conformance proven."

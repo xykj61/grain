@@ -31,13 +31,10 @@ assert selftest.ok else "text-marquee: selftest exited non-zero -- ${selftest.ou
 let out = trim selftest.out
 say "text-marquee: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-text-marquee' && echo yes"]
-assert (trim green.out) == "yes" else "text-marquee: selftest did not print the GREEN panning line"
+assert selftest.out contains "GREEN image-text-marquee" else "text-marquee: selftest did not print the GREEN panning line"
 
-let round = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-trip byte-identical through BOTH codecs under REAL panning' && echo yes"]
-assert (trim round.out) == "yes" else "text-marquee: the panning reel did not round-trip through both codecs"
+assert selftest.out contains "round-trip byte-identical through BOTH codecs under REAL panning" else "text-marquee: the panning reel did not round-trip through both codecs"
 
-let adaptive = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'adaptive mix' && echo yes"]
-assert (trim adaptive.out) == "yes" else "text-marquee: the adaptive delta/keyframe mix was not reported"
+assert selftest.out contains "adaptive mix" else "text-marquee: the adaptive delta/keyframe mix was not reported"
 
 say "text-marquee: GREEN -- the open video codecs whole under motion; a real panning reel round-trips byte-identical through both open codecs, the adaptive delta/keyframe mix reported honestly, the two formats distinct by name."

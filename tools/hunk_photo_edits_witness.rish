@@ -33,25 +33,18 @@ assert selftest.ok else "hunk-photo-edits: selftest exited non-zero — ${selfte
 let out = trim selftest.out
 say "hunk-photo-edits: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photo-edits' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-photo-edits: selftest did not print the GREEN edit-list line"
+assert selftest.out contains "GREEN image-photo-edits" else "hunk-photo-edits: selftest did not print the GREEN edit-list line"
 
-let compose = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'equals the verbs by hand byte-for-byte' && echo yes"]
-assert (trim compose.out) == "yes" else "hunk-photo-edits: replay did not compose the verbs by hand"
+assert selftest.out contains "equals the verbs by hand byte-for-byte" else "hunk-photo-edits: replay did not compose the verbs by hand"
 
-let deterministic = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'replay is deterministic' && echo yes"]
-assert (trim deterministic.out) == "yes" else "hunk-photo-edits: replay was not proven deterministic"
+assert selftest.out contains "replay is deterministic" else "hunk-photo-edits: replay was not proven deterministic"
 
-let nondestructive = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the empty list recovers it' && echo yes"]
-assert (trim nondestructive.out) == "yes" else "hunk-photo-edits: non-destructive replay was not proven"
+assert selftest.out contains "the empty list recovers it" else "hunk-photo-edits: non-destructive replay was not proven"
 
-let fixed = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'fixed point and the rebuilt list applies to the same bytes' && echo yes"]
-assert (trim fixed.out) == "yes" else "hunk-photo-edits: the travel-as-text fixed point was not proven"
+assert selftest.out contains "fixed point and the rebuilt list applies to the same bytes" else "hunk-photo-edits: the travel-as-text fixed point was not proven"
 
-let open = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'edited image re-encodes and round-trips' && echo yes"]
-assert (trim open.out) == "yes" else "hunk-photo-edits: an edited image did not round-trip as an open image"
+assert selftest.out contains "edited image re-encodes and round-trips" else "hunk-photo-edits: an edited image did not round-trip as an open image"
 
-let fold = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'surfaces OutOfBounds through the fold' && echo yes"]
-assert (trim fold.out) == "yes" else "hunk-photo-edits: a verb's own refusal did not surface through the fold"
+assert selftest.out contains "surfaces OutOfBounds through the fold" else "hunk-photo-edits: a verb's own refusal did not surface through the fold"
 
 say "hunk-photo-edits: GREEN — the Photos app edits non-destructively: verbs recorded as data, replayed deterministically over an untouched source, travelling as a fixed-point record; refusals named."

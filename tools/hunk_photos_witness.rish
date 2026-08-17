@@ -30,15 +30,11 @@ let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "hunk-photos: selftest exited non-zero — ${selftest.out}"
 
 let out = trim selftest.out
-say "hunk-photos: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-photos: selftest did not print the GREEN crop line"
+assert selftest.out contains "GREEN image-photos" else "hunk-photos: selftest did not print the GREEN crop line"
 
-let pure = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'source untouched (pure)' && echo yes"]
-assert (trim pure.out) == "yes" else "hunk-photos: the crop did not leave the source untouched"
+assert selftest.out contains "source untouched (pure)" else "hunk-photos: the crop did not leave the source untouched"
 
-let open = run ["sh" "-c" "printf '%s' '${out}' | grep -q 're-encodes and round-trips' && echo yes"]
-assert (trim open.out) == "yes" else "hunk-photos: a cropped image did not round-trip as an open image"
+assert selftest.out contains "re-encodes and round-trips" else "hunk-photos: a cropped image did not round-trip as an open image"
 
 say "hunk-photos: GREEN — the first Photos verb crops the open grid; pure, bounded, every pixel its source, refusals named."

@@ -29,24 +29,17 @@ let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "hunk-photos-scale: selftest exited non-zero — ${selftest.out}"
 
 let out = trim selftest.out
-say "hunk-photos-scale: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-scale' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-photos-scale: selftest did not print the GREEN scale line"
+assert selftest.out contains "GREEN image-photos-scale" else "hunk-photos-scale: selftest did not print the GREEN scale line"
 
-let identity = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'identity resize byte-identical' && echo yes"]
-assert (trim identity.out) == "yes" else "hunk-photos-scale: the identity resize was not proven byte-identical"
+assert selftest.out contains "identity resize byte-identical" else "hunk-photos-scale: the identity resize was not proven byte-identical"
 
-let upscale = run ["sh" "-c" "printf '%s' '${out}' | grep -q '2x nearest upscale samples each pixel' && echo yes"]
-assert (trim upscale.out) == "yes" else "hunk-photos-scale: the 2x upscale sampling was not proven"
+assert selftest.out contains "2x nearest upscale samples each pixel" else "hunk-photos-scale: the 2x upscale sampling was not proven"
 
-let open = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'scaled image re-encodes and round-trips' && echo yes"]
-assert (trim open.out) == "yes" else "hunk-photos-scale: a scaled image did not round-trip as an open image"
+assert selftest.out contains "scaled image re-encodes and round-trips" else "hunk-photos-scale: a scaled image did not round-trip as an open image"
 
 # HUNK3 crop and HUNK8 orient selftests still run in the same binary — their GREEN lines must remain.
-let crop = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos:' && echo yes"]
-assert (trim crop.out) == "yes" else "hunk-photos-scale: HUNK3 crop selftest no longer GREEN beneath"
-let orient = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-orient' && echo yes"]
-assert (trim orient.out) == "yes" else "hunk-photos-scale: HUNK8 orient selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos:" else "hunk-photos-scale: HUNK3 crop selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos-orient" else "hunk-photos-scale: HUNK8 orient selftest no longer GREEN beneath"
 
 say "hunk-photos-scale: GREEN — the Photos app resizes the open grid; pure, bounded, nearest-neighbor, refusals named; HUNK3 crop and HUNK8 orient still GREEN beneath."

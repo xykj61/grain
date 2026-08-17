@@ -34,10 +34,8 @@ assert selftest.ok else "glyph-atlas: selftest exited non-zero -- ${selftest.out
 let out = trim selftest.out
 say "glyph-atlas: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-glyph' && echo yes"]
-assert (trim green.out) == "yes" else "glyph-atlas: selftest did not print the GREEN codec line"
+assert selftest.out contains "GREEN image-glyph" else "glyph-atlas: selftest did not print the GREEN codec line"
 
-let round = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-trip byte-identical' && echo yes"]
-assert (trim round.out) == "yes" else "glyph-atlas: round-trip was not byte-identical"
+assert selftest.out contains "round-trip byte-identical" else "glyph-atlas: round-trip was not byte-identical"
 
 say "glyph-atlas: GREEN -- open glyph atlas whole; two-op round-trip byte-identical, lookup proven, every refusal named, compression real."

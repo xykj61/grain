@@ -30,42 +30,28 @@ let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "hunk-photos-hue-turn: selftest exited non-zero — ${selftest.out}"
 
 let out = trim selftest.out
-say "hunk-photos-hue-turn: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-hue-turn' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-photos-hue-turn: selftest did not print the GREEN hue-turn line"
+assert selftest.out contains "GREEN image-photos-hue-turn" else "hunk-photos-hue-turn: selftest did not print the GREEN hue-turn line"
 
-let zero = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a zero turn byte-identical' && echo yes"]
-assert (trim zero.out) == "yes" else "hunk-photos-hue-turn: the zero turn was not proven byte-identical"
+assert selftest.out contains "a zero turn byte-identical" else "hunk-photos-hue-turn: the zero turn was not proven byte-identical"
 
-let order = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'three turns compose to the identity' && echo yes"]
-assert (trim order.out) == "yes" else "hunk-photos-hue-turn: the order-three composition was not proven"
+assert selftest.out contains "three turns compose to the identity" else "hunk-photos-hue-turn: the order-three composition was not proven"
 
-let direction = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'red->green->blue->red' && echo yes"]
-assert (trim direction.out) == "yes" else "hunk-photos-hue-turn: the +120 direction was not proven"
+assert selftest.out contains "red->green->blue->red" else "hunk-photos-hue-turn: the +120 direction was not proven"
 
-let preserved = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'HSV value and chroma preserved' && echo yes"]
-assert (trim preserved.out) == "yes" else "hunk-photos-hue-turn: value and chroma preservation was not proven"
+assert selftest.out contains "HSV value and chroma preserved" else "hunk-photos-hue-turn: value and chroma preservation was not proven"
 
-let fixed = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'already-gray pixel is a fixed point' && echo yes"]
-assert (trim fixed.out) == "yes" else "hunk-photos-hue-turn: the gray fixed point was not proven"
+assert selftest.out contains "already-gray pixel is a fixed point" else "hunk-photos-hue-turn: the gray fixed point was not proven"
 
-let alpha = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'alpha passes through untouched' && echo yes"]
-assert (trim alpha.out) == "yes" else "hunk-photos-hue-turn: alpha pass-through was not proven"
+assert selftest.out contains "alpha passes through untouched" else "hunk-photos-hue-turn: alpha pass-through was not proven"
 
-let open = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'hue-turned image re-encodes and round-trips' && echo yes"]
-assert (trim open.out) == "yes" else "hunk-photos-hue-turn: a hue-turned image did not round-trip as an open image"
+assert selftest.out contains "hue-turned image re-encodes and round-trips" else "hunk-photos-hue-turn: a hue-turned image did not round-trip as an open image"
 
 # HUNK3 crop, HUNK8 orient, HUNK9 scale, HUNK10 adjust, and HUNK21 saturate selftests still run in the same binary.
-let crop = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos:' && echo yes"]
-assert (trim crop.out) == "yes" else "hunk-photos-hue-turn: HUNK3 crop selftest no longer GREEN beneath"
-let orient = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-orient' && echo yes"]
-assert (trim orient.out) == "yes" else "hunk-photos-hue-turn: HUNK8 orient selftest no longer GREEN beneath"
-let scale = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-scale' && echo yes"]
-assert (trim scale.out) == "yes" else "hunk-photos-hue-turn: HUNK9 scale selftest no longer GREEN beneath"
-let adjust = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-adjust' && echo yes"]
-assert (trim adjust.out) == "yes" else "hunk-photos-hue-turn: HUNK10 adjust selftest no longer GREEN beneath"
-let saturate = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-saturate' && echo yes"]
-assert (trim saturate.out) == "yes" else "hunk-photos-hue-turn: HUNK21 saturate selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos:" else "hunk-photos-hue-turn: HUNK3 crop selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos-orient" else "hunk-photos-hue-turn: HUNK8 orient selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos-scale" else "hunk-photos-hue-turn: HUNK9 scale selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos-adjust" else "hunk-photos-hue-turn: HUNK10 adjust selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos-saturate" else "hunk-photos-hue-turn: HUNK21 saturate selftest no longer GREEN beneath"
 
 say "hunk-photos-hue-turn: GREEN — the Photos app turns hue over the open grid; pure, exact-integer, value and chroma preserved, alpha untouched, refusal named; HUNK3 crop, HUNK8 orient, HUNK9 scale, HUNK10 adjust, and HUNK21 saturate still GREEN beneath."

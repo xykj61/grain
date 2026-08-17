@@ -32,22 +32,16 @@ assert selftest.ok else "timecode: selftest exited non-zero -- ${selftest.out}"
 let out = trim selftest.out
 say "timecode: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-timecode' && echo yes"]
-assert (trim green.out) == "yes" else "timecode: selftest did not print the GREEN timecode line"
+assert selftest.out contains "GREEN image-timecode" else "timecode: selftest did not print the GREEN timecode line"
 
-let kat = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'format_timecode exact by KAT' && echo yes"]
-assert (trim kat.out) == "yes" else "timecode: the format_timecode known-answer crux did not prove"
+assert selftest.out contains "format_timecode exact by KAT" else "timecode: the format_timecode known-answer crux did not prove"
 
-let bound = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'badge pixels bound to the formatter' && echo yes"]
-assert (trim bound.out) == "yes" else "timecode: the pixels-bound-to-formatter crux did not prove"
+assert selftest.out contains "badge pixels bound to the formatter" else "timecode: the pixels-bound-to-formatter crux did not prove"
 
-let tick = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'steady pairs' && echo yes"]
-assert (trim tick.out) == "yes" else "timecode: the tick-with-playback crux did not prove"
+assert selftest.out contains "steady pairs" else "timecode: the tick-with-playback crux did not prove"
 
-let only = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'touching only the' && echo yes"]
-assert (trim only.out) == "yes" else "timecode: the overlay-touches-only-the-badge crux did not prove"
+assert selftest.out contains "touching only the" else "timecode: the overlay-touches-only-the-badge crux did not prove"
 
-let round = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-trip byte-identical through BOTH codecs' && echo yes"]
-assert (trim round.out) == "yes" else "timecode: the stamped reel did not round-trip through both codecs"
+assert selftest.out contains "round-trip byte-identical through BOTH codecs" else "timecode: the stamped reel did not round-trip through both codecs"
 
 say "timecode: GREEN -- an M:SS clock over moving video; format_timecode is exact by known answer with no float, its digits bound to the badge pixels byte for byte, the readout ticks once per second, touches only the badge, and the composited reel round-trips byte for byte through both open codecs."

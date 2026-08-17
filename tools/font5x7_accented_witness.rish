@@ -35,13 +35,10 @@ assert selftest.ok else "font5x7-accented: selftest exited non-zero -- ${selftes
 let out = trim selftest.out
 say "font5x7-accented: ${out}"
 
-let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-font5x7-accented' && echo yes"]
-assert (trim green.out) == "yes" else "font5x7-accented: selftest did not print the GREEN corpus line"
+assert selftest.out contains "GREEN image-font5x7-accented" else "font5x7-accented: selftest did not print the GREEN corpus line"
 
-let round = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'round-trip byte-identical' && echo yes"]
-assert (trim round.out) == "yes" else "font5x7-accented: round-trip was not byte-identical"
+assert selftest.out contains "round-trip byte-identical" else "font5x7-accented: round-trip was not byte-identical"
 
-let disjoint = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'strictly ascending and unique (the four corpora disjoint: 8+5+5+3)' && echo yes"]
-assert (trim disjoint.out) == "yes" else "font5x7-accented: the four corpora were not proven disjoint"
+assert selftest.out contains "strictly ascending and unique (the four corpora disjoint: 8+5+5+3)" else "font5x7-accented: the four corpora were not proven disjoint"
 
 say "font5x7-accented: GREEN -- the unifying accented-Latin font whole; twenty-one accented letters round-trip byte-identical, codepoints strictly ascending and unique, the four corpora proven disjoint (no collision, no letter lost); one open table a civic surface reads to spell a name that ASCII cannot."

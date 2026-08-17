@@ -34,16 +34,12 @@ assert selftest.ok else "palette-paint: selftest exited non-zero -- ${selftest.o
 let out = trim selftest.out
 say "palette-paint: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-palette-paint' && echo yes"]
-assert (trim green.out) == "yes" else "palette-paint: selftest did not print the GREEN palette-paint line"
+assert selftest.out contains "GREEN image-palette-paint" else "palette-paint: selftest did not print the GREEN palette-paint line"
 
-let roundtrip = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-trips through the open QOI codec byte-for-byte' && echo yes"]
-assert (trim roundtrip.out) == "yes" else "palette-paint: the painted palette did not prove its QOI round trip"
+assert selftest.out contains "round-trips through the open QOI codec byte-for-byte" else "palette-paint: the painted palette did not prove its QOI round trip"
 
-let tile = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'tiles the whole width' && echo yes"]
-assert (trim tile.out) == "yes" else "palette-paint: the palette did not prove it tiles the whole strip"
+assert selftest.out contains "tiles the whole width" else "palette-paint: the palette did not prove it tiles the whole strip"
 
-let uneven = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'partitions to widths 2,3,3 tiling exactly' && echo yes"]
-assert (trim uneven.out) == "yes" else "palette-paint: the uneven partition did not prove it tiles exactly"
+assert selftest.out contains "partitions to widths 2,3,3 tiling exactly" else "palette-paint: the uneven partition did not prove it tiles exactly"
 
 say "palette-paint: GREEN -- a palette of color swatches painted onto a real image (horizontal and vertical), the cells tiling exactly, each swatch its color, its blend true, its round trip byte-for-byte, proven on metal."

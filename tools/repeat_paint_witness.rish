@@ -40,19 +40,14 @@ assert selftest.ok else "repeat-paint: selftest exited non-zero -- ${selftest.ou
 let out = trim selftest.out
 say "repeat-paint: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-repeat-paint' && echo yes"]
-assert (trim green.out) == "yes" else "repeat-paint: selftest did not print the GREEN repeat-paint line"
+assert selftest.out contains "GREEN image-repeat-paint" else "repeat-paint: selftest did not print the GREEN repeat-paint line"
 
-let roundtrip = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-trips through the open QOI codec byte-for-byte' && echo yes"]
-assert (trim roundtrip.out) == "yes" else "repeat-paint: the painted strip did not prove its QOI round trip"
+assert selftest.out contains "round-trips through the open QOI codec byte-for-byte" else "repeat-paint: the painted strip did not prove its QOI round trip"
 
-let tiles = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the ramp tiles' && echo yes"]
-assert (trim tiles.out) == "yes" else "repeat-paint: the strip did not prove the ramp tiles across the period"
+assert selftest.out contains "the ramp tiles" else "repeat-paint: the strip did not prove the ramp tiles across the period"
 
-let seam = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'seams hard' && echo yes"]
-assert (trim seam.out) == "yes" else "repeat-paint: the strip did not prove its hard tile seam"
+assert selftest.out contains "seams hard" else "repeat-paint: the strip did not prove its hard tile seam"
 
-let spread = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a wider period spreads the ramp over more cells' && echo yes"]
-assert (trim spread.out) == "yes" else "repeat-paint: the strip did not prove the period spreads the ramp"
+assert selftest.out contains "a wider period spreads the ramp over more cells" else "repeat-paint: the strip did not prove the period spreads the ramp"
 
 say "repeat-paint: GREEN -- a repeating positioned gradient painted onto a real image, its tiling and hard seam exact, its period a real control, its round trip byte-for-byte, proven on metal."
