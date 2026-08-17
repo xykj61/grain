@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260817.075135
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title font5x7 -- Icelandic capitals corpus, GREEN
+prompt Autonomous loop -- take the next agent-doable lap Lindy-first crux-first; Rye-first Season G open-media font family; deep-read one rota doc; send each increment.
+think Read REMEMBER's inner loop, the 1024-round itinerary, the eight-season double-seat, and the Rye-first crypto-parity wave for the road. The live edge is Season G's open font family; HEAD's own scope note named the next crux outright -- the Icelandic capitals (Eth, Thorn, Y acute) remain, exactly as the lowercase Nordic corpus preceded the lowercase Icelandic.
+think Confirmed the gap by measurement, not memory: grepped every image/font5x7_*.rye for uppercase Latin-1 codepoints. Missing capitals are U+00CB, U+00CF, U+00D0, U+00D5, U+00DD, U+00DE. The Icelandic three (D0 Eth, DD Y acute, DE Thorn) are the crux-first, set-closing rung mirroring the lowercase corpus; the other three (CB, CF, D5 diaeresis/tilde capitals) are a distinct gap I named honestly rather than folded in -- one keystone per round.
+think Modeled image/font5x7_upper_icelandic.rye on font5x7_upper_nordic.rye and font5x7_icelandic.rye: the three-distinct-constructions crux, drawings-are-the-spec, explicit ascending codepoints, gfa1 round-trip byte-identical, per-construction toothed guards. Eth is a full-height capital D crossed by a bar (top+bottom bar closing the bowl, a crossbar on the middle row with left-half ink == 2 crossing the stem into the bowl); Thorn is a full-height stem open at top and bottom (stem col inked and full-row ink == 1 on rows 0 and 6) with a bowl at its middle; Y acute is the compressed capital Y with the acute leaning right on rows 0..1 (top-row right-half inked, left-half blank), the same lean the upper_accented corpus proves.
+obs Y acute is inherently sparse (ink 9) while Eth is heavy (ink 17), so the honest legibility band widened to 9..20 -- the floor still catches a blank glyph, the band names the true spread rather than a false-tight one. Compression stays a reported fact, never asserted; the round-trip is the proof.
+loom witness=font5x7_upper_icelandic_witness glyphs=3 cell=5x7 ink_lo=9 ink_hi=17 encoded_bytes=158 raw_bytes=105 first_run=green
+obs Docs-sync uncovered a pre-existing completeness slip: image/README.md's accented-Latin entry implied the uppercase set closes, yet CB/CF/D5 capitals stand undrawn though their lowercase twins ship. Named that gap in the doc in-place rather than claiming a closure the tree does not have -- a docs-implementation-sync fix, not a red booked (no false behavioral claim in code, only an over-broad prose implication now corrected).
+file image/font5x7_upper_icelandic.rye the three Icelandic capitals drawn in the open, three constructions, gfa1 round-trip proven
+file tools/font5x7_upper_icelandic_witness.rish proves the corpus on metal -- present, distinct, legible, three-built
+file image/README.md accreted the upper_icelandic companion, named the CB/CF/D5 remaining gap, grew the witness roster
+file crux/REMEMBER.md Git nib advanced to this edge; prior nib carries the upper_nordic narrative
+recommend keep-going next crux is the last uppercase gap -- the E/I diaeresis and O tilde capitals (U+00CB, U+00CF, U+00D5), closing the whole uppercase Latin-1 letter set, same pattern

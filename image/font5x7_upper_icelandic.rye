@@ -1,0 +1,294 @@
+//! image/font5x7_upper_icelandic.rye -- the open Icelandic CAPITALS corpus: Eth, Y acute, and Thorn finish the uppercase Latin-1 block.
+//!
+//! Season G (Open Media Primitives) - font content for the open glyph atlas image/glyph.rye (gfa1), the uppercase
+//! companion to image/font5x7_icelandic.rye (the lowercase eth, y acute, thorn). Where the accented and Danish-Norwegian
+//! capital corpora (image/font5x7_upper_accented.rye, image/font5x7_upper_latin1.rye, image/font5x7_upper_nordic.rye)
+//! drew every accented vowel and Scandinavian capital in the Latin-1 Supplement block, three uppercase letters remained
+//! undrawn, the ones an Icelandic name reaches for in ALL-CAPS -- Eth, Y acute, Thorn. This corpus draws them at their
+//! real Unicode codepoints U+00D0 Eth, U+00DD Y acute, U+00DE Thorn, in our own open hand on the same 5x7 body, each
+//! exactly 0x20 below its lowercase twin in image/font5x7_icelandic.rye. These are the capitals a civic surface prints
+//! at the head of a name or in ALL-CAPS -- ODINN, YMIR, THORVALDUR -- with the letter the alphabet actually carries
+//! rather than an ASCII fold of it.
+//!
+//! The crux this corpus proves matches its lowercase twin: these three are NOT one shared mark -- they are THREE DISTINCT
+//! CONSTRUCTIONS, each read by its own toothed guard:
+//!   - Eth (U+00D0) is a full-height capital D CROSSED by a bar -- a closed bowl (a top bar on row 0, a bottom bar on
+//!     row 6) with a horizontal stroke on the middle row that crosses the left stem into the bowl, the mark that tells
+//!     Eth from a plain D;
+//!   - Thorn (U+00DE) is a FULL-HEIGHT STEM with a bowl at its middle -- ink in the left column on every row from the top
+//!     to the bottom, a bowl on the right in between, an open top and bottom no closed D carries;
+//!   - Y acute (U+00DD) is the capital Y under an ACUTE stroke leaning right -- the Y compressed into rows 2..6 the way
+//!     the accented capitals are, with an acute mark on rows 0..1 (top-row ink in the right half, none in the left), the
+//!     same lean image/font5x7_upper_accented.rye proves.
+//! A lost crossbar, a missing stem, or an acute leaning the wrong way is a stopped line rather than a wrong glyph.
+//!
+//! The source stays plain ASCII (ASCII-first): the codepoints are written as numeric literals (0x00D0 ...) and each
+//! letter is named in an ASCII comment, so no non-ASCII byte enters the file even though the glyphs it builds cover a
+//! non-ASCII range. The codepoints are NOT contiguous (the accented and Scandinavian capitals sit between them in the
+//! Latin-1 Supplement block), so this corpus carries an explicit ascending codepoint table -- the shape the gfa1 encoder
+//! trusts (strictly ascending, shared cell, coverage length == cell area). The drawings ARE the specification: each
+//! letter is seven rows of five cells in ASCII line art ('#' full ink, '.' none) that a reader audits by eye; the
+//! coverage bytes are derived from that art, never the reverse. No network, no key, no funds -- the capitals a surface
+//! reads the day it prints an Icelandic name in ALL-CAPS on our own open font.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_upper_icelandic.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+
+pub const font5x7_upper_icelandic_version = "20260817.074722";
+
+/// Every glyph in this corpus shares one 5-wide, 7-tall cell -- the same body the ASCII, Greek, and accent corpora carry.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance: the cell width plus one column of daylight, the same advance the sibling corpora carry.
+pub const upper_icelandic_advance: u8 = cell_w + 1;
+
+/// The corpus holds exactly the three Icelandic capitals named in the table below.
+pub const upper_icelandic_count: u32 = 3;
+
+/// Cells per glyph -- the coverage length every letter carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The center column of the cell -- the split between the left and right halves the acute and crossbar proofs read.
+pub const center_col: u32 = 2;
+
+/// The top row (row 0), the crossbar/bowl middle row (row 3), and the bottom row (row 6). Each construction proof reads
+/// named rows: Eth's crossbar crosses the stem on row 3 with a top bar on row 0 and a bottom bar on row 6; Thorn's stem
+/// inks the left column on rows 0 and 6 (open top and bottom) with a bowl to the right at row 3; Y acute's mark leans on
+/// row 0.
+pub const top_row: u32 = 0;
+pub const mid_row: u32 = 3;
+pub const bottom_row: u32 = 6;
+
+/// The left column of the cell (column 0) -- Thorn's full-height stem lives here, inked from the top row to the bottom.
+pub const stem_col: u32 = 0;
+
+/// The three Icelandic capital codepoints, strictly ascending -- the order the gfa1 encoder trusts. Each aligns by index
+/// with upper_icelandic_art below. Written as numeric literals so the source stays plain ASCII while the glyphs cover a
+/// non-ASCII range:
+///   0x00D0 Eth, 0x00DD Y acute, 0x00DE Thorn. Each is exactly 0x20 below its lowercase twin in
+///   image/font5x7_icelandic.rye; the accented and Scandinavian capitals between them in the block are skipped.
+const upper_icelandic_codepoints = [upper_icelandic_count]u32{
+    0x00D0, 0x00DD, 0x00DE,
+};
+
+/// The three capitals, drawn in the open. Each is seven rows of five cells; '#' ink, '.' background. A reader audits
+/// every letter here by eye, and the coverage bytes are lifted from this art, never guessed. The three are built three
+/// ways:
+///   - Eth (U+00D0): a full-height capital D (top bar on row 0, bottom bar on row 6, a bowl between) with a horizontal
+///     crossbar on the middle row that crosses the left stem into the bowl (columns 0 and 1 both inked on row 3);
+///   - Y acute (U+00DD): the capital Y compressed into rows 2..6 (two arms falling to one stem) under an acute stroke
+///     leaning right on rows 0..1;
+///   - Thorn (U+00DE): a full-height stem in the left column (every row from top to bottom) with a bowl on the right at
+///     its middle (rows 1..4), the top and bottom rows open beside the stem.
+const upper_icelandic_art = [upper_icelandic_count][cell_h][]const u8{
+    .{ "###..", "#..#.", "#...#", "##..#", "#...#", "#..#.", "###.." }, // U+00D0 Eth
+    .{ "...#.", "..#..", "#...#", ".#.#.", "..#..", "..#..", "..#.." }, // U+00DD Y acute
+    .{ "#....", "####.", "#...#", "#...#", "####.", "#....", "#...." }, // U+00DE Thorn
+};
+
+/// Lift one letter's ASCII art into a freshly allocated coverage grid of exactly cell_area bytes: 255 for ink,
+/// 0 for background. The art's own shape is asserted, so a mistyped row is a stopped line rather than a bad glyph.
+fn coverage_from_art(allocator: std.mem.Allocator, art: [cell_h][]const u8) ![]u8 {
+    // invariant: a coverage grid is exactly the shared cell area, within the atlas ceiling.
+    assert(cell_area >= 1);
+    assert(cell_area <= glyph.coverage_max);
+    const cov = try allocator.alloc(u8, cell_area);
+    var idx: u32 = 0;
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        const row = art[r];
+        // invariant: every drawn row is exactly the cell width -- the art matches the grid.
+        assert(row.len == cell_w);
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            cov[idx] = if (row[c] == '#') 255 else 0;
+            idx += 1;
+        }
+    }
+    // invariant: the whole grid was filled, no cell left unwritten.
+    assert(idx == cell_area);
+    return cov;
+}
+
+/// Build the Icelandic capitals atlas: three glyphs at the named ascending codepoints, sharing the 5x7 cell and advance.
+/// The gfa1 encoder accepts the result directly (ascending codepoints, coverage length == cell area).
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the corpus is the three named capitals and no more.
+    assert(upper_icelandic_count == 3);
+    assert(cell_area == 35);
+    const glyphs = try allocator.alloc(glyph.Glyph, upper_icelandic_count);
+    var i: u32 = 0;
+    var last_cp: u32 = 0;
+    while (i < upper_icelandic_count) : (i += 1) {
+        const cp = upper_icelandic_codepoints[i];
+        // invariant: codepoints are strictly ascending -- the ordering the gfa1 encoder trusts.
+        assert(i == 0 or cp > last_cp);
+        last_cp = cp;
+        const cov = try coverage_from_art(allocator, upper_icelandic_art[i]);
+        glyphs[i] = glyph.Glyph{
+            .codepoint = cp,
+            .advance = upper_icelandic_advance,
+            .coverage = cov,
+        };
+    }
+    // invariant: the last codepoint is Thorn (U+00DE) -- the table ends where this set ends.
+    assert(glyphs[upper_icelandic_count - 1].codepoint == 0x00DE);
+    return glyph.GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- the legibility signal a blank glyph would fail.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+/// Count the inked cells in row r of a glyph, restricted to the half-open column band [c0, c1). Every construction proof
+/// reads a row band with this one reader. Row 0 is the top.
+fn row_band_ink(cov: []const u8, r: u32, c0: u32, c1: u32) u32 {
+    // invariant: the row index sits inside the shared cell, over the shared grid.
+    assert(r < cell_h);
+    assert(cov.len == cell_area);
+    // invariant: the column band is well-ordered and inside the cell width.
+    assert(c0 <= c1);
+    assert(c1 <= cell_w);
+    var n: u32 = 0;
+    var c: u32 = c0;
+    while (c < c1) : (c += 1) {
+        if (cov[r * cell_w + c] != 0) n += 1;
+    }
+    // invariant: the band count never exceeds the band it was counted over.
+    assert(n <= c1 - c0);
+    return n;
+}
+
+/// The whole-row ink of row r for a codepoint's glyph -- the reader Eth's top/bottom bar and Thorn's open-row proofs share.
+fn full_row_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32, r: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return row_band_ink(g.coverage, r, 0, cell_w);
+    return error.UpperIcelandicLetterMissing;
+}
+
+/// The left-half ink of row r (columns 0..1) for a codepoint's glyph -- Eth's crossbar and Y acute's lean proofs read this.
+fn left_half_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32, r: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return row_band_ink(g.coverage, r, 0, center_col);
+    return error.UpperIcelandicLetterMissing;
+}
+
+/// The right-half ink of row r (columns 3..4) for a codepoint's glyph -- Y acute's lean and Thorn's bowl proofs read this.
+fn right_half_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32, r: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return row_band_ink(g.coverage, r, center_col + 1, cell_w);
+    return error.UpperIcelandicLetterMissing;
+}
+
+/// The stem-column ink at row r (column 0) for a codepoint's glyph -- Thorn's full-height stem proof reads the top and
+/// bottom rows here to prove the stem stands open at both ends.
+fn stem_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32, r: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return row_band_ink(g.coverage, r, stem_col, stem_col + 1);
+    return error.UpperIcelandicLetterMissing;
+}
+
+// --- selftest: build the uppercase Icelandic atlas, round-trip it through gfa1, prove present, distinct, legible, three-built ---
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built atlas is the three-capital corpus at the shared cell.
+    assert(glyph_count == upper_icelandic_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // Three present capitals: every one looks up, carries the shared advance; a plain ASCII 'Y' misses.
+    var d: u32 = 0;
+    while (d < upper_icelandic_count) : (d += 1) {
+        const cp = upper_icelandic_codepoints[d];
+        if (back.lookup(cp)) |g| {
+            assert(g.codepoint == cp);
+            assert(g.advance == upper_icelandic_advance);
+        } else return error.UpperIcelandicLetterMissing;
+    }
+    if (back.lookup('Y')) |_| return error.NonUpperIcelandicFound else {}
+
+    // Distinctness: no two of the three capitals share identical coverage.
+    var a: u32 = 0;
+    while (a < upper_icelandic_count) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b < upper_icelandic_count) : (b += 1) {
+            if (std.mem.eql(u8, atlas.glyphs[a].coverage, atlas.glyphs[b].coverage)) return error.UpperIcelandicLettersNotDistinct;
+        }
+    }
+
+    // Legibility: each capital's ink count sits inside an honest band. The floor sits where Y acute (its lightest, a
+    // sparse capital Y under an acute) still reads, the ceiling where Eth (its heaviest, a crossed capital D) still
+    // resolves as a letter.
+    const ink_min: u32 = 9;
+    const ink_max: u32 = 20;
+    var lo: u32 = cell_area;
+    var hi: u32 = 0;
+    var k: u32 = 0;
+    while (k < upper_icelandic_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (n < ink_min or n > ink_max) return error.UpperIcelandicLetterIllegible;
+        if (n < lo) lo = n;
+        if (n > hi) hi = n;
+    }
+    // invariant: the observed ink band stayed inside the honest bounds.
+    assert(lo >= ink_min);
+    assert(hi <= ink_max);
+
+    // Construction 1 -- Eth (U+00D0): a full-height capital D CROSSED by a bar. Three toothed guards read it: a top bar
+    // closes the bowl above (row 0 spans >= 3), a bottom bar closes it below (row 6 spans >= 3), and the middle row's
+    // left half carries the crossbar crossing the stem into the bowl (columns 0 and 1 both inked, == 2) where a plain D
+    // would ink only the stem.
+    if ((try full_row_ink_of(&atlas, 0x00D0, top_row)) < 3) return error.UpperIcelandicEthNoTopBar;
+    if ((try full_row_ink_of(&atlas, 0x00D0, bottom_row)) < 3) return error.UpperIcelandicEthNoBottomBar;
+    if ((try left_half_ink_of(&atlas, 0x00D0, mid_row)) != 2) return error.UpperIcelandicEthNoCrossbar;
+
+    // Construction 2 -- Y acute (U+00DD): the capital Y under an ACUTE stroke leaning RIGHT. Two toothed guards read it:
+    // the top row carries ink in the right half and none in the left, the same lean image/font5x7_upper_accented.rye
+    // proves for the accented capitals.
+    if ((try right_half_ink_of(&atlas, 0x00DD, top_row)) < 1) return error.UpperIcelandicAcuteNotLeaningRight;
+    if ((try left_half_ink_of(&atlas, 0x00DD, top_row)) != 0) return error.UpperIcelandicAcuteNotLeaningRight;
+
+    // Construction 3 -- Thorn (U+00DE): a FULL-HEIGHT STEM with a bowl at its middle. Three toothed guards read it: the
+    // left column is inked on the top row and on the bottom row (the stem stands open at both ends, unlike Eth's closed
+    // bars), and a bowl stands to the right at the middle row.
+    if ((try stem_ink_of(&atlas, 0x00DE, top_row)) != 1 or (try full_row_ink_of(&atlas, 0x00DE, top_row)) != 1) return error.UpperIcelandicThornTopNotOpen;
+    if ((try stem_ink_of(&atlas, 0x00DE, bottom_row)) != 1 or (try full_row_ink_of(&atlas, 0x00DE, bottom_row)) != 1) return error.UpperIcelandicThornBottomNotOpen;
+    if ((try right_half_ink_of(&atlas, 0x00DE, mid_row)) < 1) return error.UpperIcelandicThornNoBowl;
+
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof.
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-upper-icelandic: {d} Icelandic capitals U+00D0,U+00DD,U+00DE at {d}x{d} round-trip byte-identical; all present, distinct, legible (ink {d}..{d} of {d}); three distinct constructions (Eth's crossed D, Thorn's full-height stem, Y acute's right lean); encoded {d} bytes, raw {d}\n", .{
+        glyph_count, cell_w, cell_h, lo, hi, cell_area, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_upper_icelandic selftest\n", .{});
+    return 1;
+}
