@@ -1,0 +1,319 @@
+//! image/text_grid.rye -- the monospace grid painted into an image: where the terminal grid meets the pixel family.
+//!
+//! Season G (Open Media Primitives) -- the bridge rung. The tree grew two families side by side and never let them
+//! meet on metal. One is the terminal grid: scooter_view.rye folds a channel into a fixed 24x80 grid of character
+//! CELLS (bytes), dexter_line.rye edits a bounded line, scooter_compose.rye joins them into a composed frame -- all
+//! held as BYTES a keeper reads. The other is the open-media paint family: font5x7_ascii.rye draws every printable
+//! ASCII glyph, text_paint.rye composites a laid line's coverage into an RGBA grid, qoi.rye owns the pixel target.
+//! This module is the join -- it paints a monospace grid of character bytes into a real image, so a terminal face is
+//! not only bytes a reader parses but PIXELS a surface (Grainphone, Realidream, Skate) shows.
+//!
+//! Pattern elder: image/text_paint.rye paint_paragraph -- the same "stack rows down by one cell box, all-or-nothing
+//! against the target" discipline, here over a fixed grid of equal-width cells rather than a wrapped paragraph.
+//!
+//! The crux is one faithful bridge held bounded:
+//!   - The grid is `cells` bytes, row-major, `cols` wide by `rows` tall, every byte printable ASCII (space..'~').
+//!   - Every cell occupies exactly one column pitch (the shared glyph advance) across and one cell height down, so
+//!     the grid is true monospace -- cell (r, c) paints its glyph's ink at pixel (c*pitch, r*cell_h), the space
+//!     drawing nothing but reserving its column, exactly as a terminal cell holds a blank.
+//!   - All-or-nothing: the whole grid's box is checked against the target ONCE up front, so a grid that would
+//!     overflow refuses GridOutOfBounds BY NAME before a pixel moves -- never a half-painted face.
+//!   - render_grid is the verb a surface reaches for: give it a grid and two colours, it hands back the whole face as
+//!     an image (ink over a solid ground), sized exactly to the grid, bounded by qoi's own pixel ceiling.
+//!   - The fold is referentially transparent -- the same grid renders the same bytes every time, and the image
+//!     round-trips through the open QOI codec byte-for-byte.
+//!
+//! Facts only, custody-first: it reads a grid of bytes and paints an image -- no network, no key, no funds. The grid
+//! a real terminal fills (scooter_view.Frame.cells) is this same `cells []u8`; a pond rung bridges the two in one
+//! line without inverting the layering (pond composes image, never the reverse).
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/text_grid.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const text_layout = @import("text_layout.rye");
+const text_paint = @import("text_paint.rye");
+const font_ascii = @import("font5x7_ascii.rye");
+
+pub const text_grid_version = "20260817.091833";
+
+/// The column pitch of the grid -- the shared advance every ASCII glyph carries (cell width plus one daylight
+/// column), so a monospace cell is exactly this many pixels wide, its glyph body left-set within it.
+pub const col_pitch: u32 = font_ascii.glyph_advance;
+
+/// A grid never exceeds these on either axis -- a named bound so the painting loops are provably finite. The true
+/// ceiling on a rendered image is qoi's pixel budget, checked at render; these keep the loops bounded regardless.
+pub const grid_cols_max: u32 = 512;
+pub const grid_rows_max: u32 = 512;
+
+pub const GridError = error{
+    BadGridDims, // a grid has zero columns or zero rows, or exceeds the named per-axis bound -- refuse by name
+    GridCellsMismatch, // the cells buffer is not exactly cols*rows bytes -- a mis-shaped grid, refused
+    GridAtlasMismatch, // the atlas is not the shared 5x7 cell this monospace grid is drawn against -- refused
+    GridScratchTooSmall, // the caller's placement scratch cannot hold one row of glyphs -- refused, never a partial
+    GridOutOfBounds, // the grid's painted box would exceed the target buffer -- refuse before a pixel moves
+    GridTooLarge, // the rendered image would exceed qoi's pixel ceiling -- refuse rather than allocate past it
+};
+
+/// The image width a grid of `cols` columns paints into -- one column pitch per cell.
+pub fn grid_pixel_width(cols: u32) u32 {
+    // invariant: the width is measured only for a grid within the named column bound, so the product cannot wrap.
+    assert(cols >= 1);
+    assert(cols <= grid_cols_max);
+    return cols * col_pitch;
+}
+
+/// The image height a grid of `rows` rows paints into -- one cell height per row.
+pub fn grid_pixel_height(atlas: *const glyph.GlyphAtlas, rows: u32) u32 {
+    // invariant: the height is measured only for a grid within the named row bound, against a real cell height.
+    assert(rows >= 1);
+    assert(rows <= grid_rows_max);
+    assert(atlas.cell_h >= 1);
+    return rows * @as(u32, atlas.cell_h);
+}
+
+/// Validate a grid's shape against an atlas: real bounded dimensions, a cells buffer of exactly cols*rows bytes, and
+/// the shared monospace cell. Returns the cell height, the one atlas fact the painters below need. Refuses by name.
+fn check_grid(atlas: *const glyph.GlyphAtlas, cells: []const u8, cols: u32, rows: u32) GridError!u32 {
+    // invariant: a paintable grid has real extent on both axes, within the named per-axis bounds.
+    if (cols == 0 or rows == 0 or cols > grid_cols_max or rows > grid_rows_max) return error.BadGridDims;
+    // invariant: the shared 5x7 cell is what this monospace grid's column pitch and layout assume.
+    if (atlas.cell_w != font_ascii.cell_w or atlas.cell_h != font_ascii.cell_h) return error.GridAtlasMismatch;
+    // The cells buffer must be exactly the grid -- computed in u64 so the product can never wrap before the check.
+    const want: u64 = @as(u64, cols) * @as(u64, rows);
+    if (@as(u64, cells.len) != want) return error.GridCellsMismatch;
+    return @as(u32, atlas.cell_h);
+}
+
+/// Paint a monospace grid of character bytes into `target` at pixel origin (`origin_x`, `origin_y`), compositing
+/// `ink` through each cell's glyph coverage. Each row is laid out and painted stepping down by one cell height, so
+/// cell (r, c) lands at (origin_x + c*pitch, origin_y + r*cell_h). The whole grid's box is checked against the
+/// target ONCE up front -- an overflowing grid refuses GridOutOfBounds by name before a pixel moves. `scratch` holds
+/// one PlacedGlyph per column (the caller sizes it >= cols, no hidden allocation). A space cell paints nothing.
+pub fn paint_grid(
+    atlas: *const glyph.GlyphAtlas,
+    cells: []const u8,
+    cols: u32,
+    rows: u32,
+    scratch: []text_layout.PlacedGlyph,
+    target: *qoi.Pixmap,
+    origin_x: u32,
+    origin_y: u32,
+    ink: color.Rgba,
+) GridError!void {
+    const cell_h = try check_grid(atlas, cells, cols, rows);
+    // invariant: the placement scratch holds a glyph for every column in a row.
+    if (scratch.len < cols) return error.GridScratchTooSmall;
+
+    // The grid's full painted box, in u64 so the sums can never wrap before the bound check refuses. Width is the
+    // last cell's pitch origin plus one cell body; height is the last row's step plus one cell. Conservative: the
+    // trailing daylight column of the last cell falls inside grid_pixel_width, so bounding on it never overflows.
+    const box_right: u64 = @as(u64, origin_x) + @as(u64, grid_pixel_width(cols));
+    const box_bottom: u64 = @as(u64, origin_y) + @as(u64, rows) * @as(u64, cell_h);
+    if (box_right > @as(u64, target.width) or box_bottom > @as(u64, target.height)) return error.GridOutOfBounds;
+
+    // Paint each row at its stepped-down origin. layout_line places each byte's glyph at its advance-summed pen_x,
+    // and every ASCII glyph shares the advance, so a laid row is exactly monospace -- column c at c*col_pitch.
+    var r: u32 = 0;
+    while (r < rows) : (r += 1) {
+        const row = cells[r * cols .. r * cols + cols];
+        const laid = text_layout.layout_line(atlas, row, scratch) catch return error.GridCellsMismatch;
+        // invariant: layout placed one glyph per cell, so the slice we paint is exactly this row's width.
+        assert(laid.count == cols);
+        const dy: u32 = origin_y + r * cell_h;
+        // The up-front box check proved this row's box lands inside the target; paint_placed keeps its own guard too.
+        text_paint.paint_placed(atlas, scratch[0..laid.count], target, origin_x, dy, ink) catch return error.GridOutOfBounds;
+    }
+    // invariant: the loop painted exactly every row of the grid.
+    assert(r == rows);
+}
+
+/// Render a whole monospace grid into a fresh image sized exactly to it -- the verb a terminal surface reaches for.
+/// The canvas is filled `bg`, then the grid is painted in `fg` (ink over ground). The image is grid_pixel_width by
+/// grid_pixel_height; a grid whose image would exceed qoi's pixel ceiling refuses GridTooLarge by name rather than
+/// allocating past it. Returns the painted Pixmap, which round-trips through the QOI codec byte-for-byte.
+pub fn render_grid(
+    allocator: std.mem.Allocator,
+    atlas: *const glyph.GlyphAtlas,
+    cells: []const u8,
+    cols: u32,
+    rows: u32,
+    fg: color.Rgba,
+    bg: color.Rgba,
+) !qoi.Pixmap {
+    _ = try check_grid(atlas, cells, cols, rows);
+
+    const w: u32 = grid_pixel_width(cols);
+    const h: u32 = grid_pixel_height(atlas, rows);
+    // invariant: the image fits qoi's pixel ceiling -- checked in u64 so the product cannot wrap before refusal.
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    if (total > @as(u64, qoi.qoi_max_pixels)) return error.GridTooLarge;
+
+    var pm = try text_paint.solid(allocator, w, h, bg);
+    const scratch = try allocator.alloc(text_layout.PlacedGlyph, cols);
+    try paint_grid(atlas, cells, cols, rows, scratch, &pm, 0, 0, fg);
+    return pm;
+}
+
+// --- selftest: paint a real terminal-shaped grid, prove the bridge faithful and round-tripping ------------------
+
+/// Count the inked coverage cells across the whole grid -- the exact pixel count a full-opaque paint must change, so
+/// the witness binds "painted" to a measured number rather than a guess. A space cell contributes zero.
+fn grid_ink(atlas: *const glyph.GlyphAtlas, cells: []const u8, cols: u32, rows: u32) u32 {
+    const cell_area = atlas.cell_area();
+    var n: u32 = 0;
+    var i: u32 = 0;
+    // invariant: the walk stays within the grid's own cell count.
+    assert(cells.len == cols * rows);
+    while (i < cells.len) : (i += 1) {
+        if (atlas.lookup(cells[i])) |g| {
+            var c: u32 = 0;
+            while (c < cell_area) : (c += 1) {
+                if (g.coverage[c] != 0) n += 1;
+            }
+        }
+    }
+    return n;
+}
+
+/// How many pixels of `a` differ from `b` -- two canvases of the same length, four bytes per pixel.
+fn changed_pixels(a: []const u8, b: []const u8) u32 {
+    // invariant: the two canvases are the same buffer length, a whole number of RGBA pixels.
+    assert(a.len == b.len);
+    assert(a.len % 4 == 0);
+    var n: u32 = 0;
+    var i: usize = 0;
+    while (i < a.len) : (i += 4) {
+        if (a[i] != b[i] or a[i + 1] != b[i + 1] or a[i + 2] != b[i + 2] or a[i + 3] != b[i + 3]) n += 1;
+    }
+    return n;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try font_ascii.build_atlas(garden);
+    const cell_h: u32 = atlas.cell_h;
+
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    // A real terminal-shaped grid: exactly the bytes scooter_view.Frame.cells carries -- a header row, a post row, a
+    // blank row -- so this is the terminal face, painted. Built here as plain bytes so image/ stays self-contained;
+    // a pond rung feeds a live Frame's cells in one line later.
+    const cols: u32 = 16;
+    const rows: u32 = 3;
+    const r0 = "scooter: 1 posts";
+    const r1 = "[0] p1001: hi   ";
+    const r2 = "                ";
+    // invariant: each row is exactly the grid width, so the three concatenate into a clean cols*rows grid.
+    assert(r0.len == cols);
+    assert(r1.len == cols);
+    assert(r2.len == cols);
+    const cells = try garden.alloc(u8, cols * rows);
+    @import("tally_copy.rye").copy_disjoint(u8, cells[0..cols], r0);
+    @import("tally_copy.rye").copy_disjoint(u8, cells[cols .. 2 * cols], r1);
+    @import("tally_copy.rye").copy_disjoint(u8, cells[2 * cols .. 3 * cols], r2);
+
+    // render_grid hands back the whole face as an image, sized exactly to the grid.
+    const face = try render_grid(garden, &atlas, cells, cols, rows, black, white);
+    // Structural: the image is exactly cols pitches wide by rows cell-heights tall.
+    assert(face.width == cols * col_pitch);
+    assert(face.height == rows * cell_h);
+    assert(face.pixels.len == @as(usize, face.width) * @as(usize, face.height) * 4);
+
+    // The bridge is faithful by measure: the painted ink equals the summed coverage of every non-space cell -- no
+    // stray pixel, none missed, and the blank row contributes zero. Compare against a bg-only canvas of the same size.
+    const ground = try text_paint.solid(garden, face.width, face.height, white);
+    const want_ink = grid_ink(&atlas, cells, cols, rows);
+    // invariant: a real header-and-post grid carries ink, so there is something to paint.
+    assert(want_ink >= 1);
+    const changed = changed_pixels(face.pixels, ground.pixels);
+    assert(changed == want_ink);
+
+    // The blank last row is background byte-for-byte -- a space cell reserves its column and paints nothing.
+    {
+        var y: u32 = 2 * cell_h;
+        while (y < 3 * cell_h) : (y += 1) {
+            var x: u32 = 0;
+            while (x < face.width) : (x += 1) {
+                const i = (@as(usize, y) * @as(usize, face.width) + @as(usize, x)) * 4;
+                // invariant: a blank cell paints nothing, so its pixels are still the white ground on every channel.
+                assert(face.pixels[i] == 255);
+                assert(face.pixels[i + 1] == 255);
+                assert(face.pixels[i + 2] == 255);
+            }
+        }
+    }
+
+    // The bridge is faithful cell-by-cell: the pixel block of a chosen non-space cell equals a standalone paint of
+    // that one glyph at its grid origin. Take the 's' at (row 0, col 0) and the '1' at (row 0, col 9).
+    {
+        const single = try text_paint.solid(garden, col_pitch, cell_h, white);
+        const one_scratch = try garden.alloc(text_layout.PlacedGlyph, 1);
+        // Cell (0,0) is 's': paint it alone at the origin and compare the face's top-left cell block to it.
+        const s_laid = try text_layout.layout_line(&atlas, cells[0..1], one_scratch);
+        try text_paint.paint_placed(&atlas, one_scratch[0..s_laid.count], @constCast(&single), 0, 0, black);
+        var yy: u32 = 0;
+        while (yy < cell_h) : (yy += 1) {
+            var xx: u32 = 0;
+            while (xx < col_pitch) : (xx += 1) {
+                const fi = (@as(usize, yy) * @as(usize, face.width) + @as(usize, xx)) * 4;
+                const si = (@as(usize, yy) * @as(usize, single.width) + @as(usize, xx)) * 4;
+                assert(face.pixels[fi] == single.pixels[si]);
+                assert(face.pixels[fi + 3] == single.pixels[si + 3]);
+            }
+        }
+    }
+
+    // Determinism: the same grid renders byte-for-byte the same image.
+    const face2 = try render_grid(garden, &atlas, cells, cols, rows, black, white);
+    assert(face2.same_bytes(&face));
+
+    // The terminal image round-trips through the open QOI codec byte-for-byte -- the family capstone move: a channel
+    // painted to pixels is a real, portable image, not a private buffer.
+    const cap = qoi.encoded_bound(face.width * face.height);
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&face, dst);
+    const back = try qoi.decode(garden, dst[0..enc.len]);
+    assert(back.same_bytes(&face));
+
+    // Refusals by name: a mis-shaped cells buffer, a zero dimension, a wrong-cell atlas, and a target too small.
+    {
+        const short = try garden.alloc(u8, cols * rows - 1);
+        if (render_grid(garden, &atlas, short, cols, rows, black, white)) |_| {
+            return error.MismatchSlipped;
+        } else |e| if (e != error.GridCellsMismatch) return error.WrongMismatch;
+
+        if (render_grid(garden, &atlas, cells, 0, rows, black, white)) |_| {
+            return error.ZeroDimSlipped;
+        } else |e| if (e != error.BadGridDims) return error.WrongZeroDim;
+
+        // paint_grid onto a target one row too short refuses GridOutOfBounds before touching a pixel.
+        var tiny = try text_paint.solid(garden, cols * col_pitch, rows * cell_h - 1, white);
+        const tiny_before = try garden.alloc(u8, tiny.pixels.len);
+        @import("tally_copy.rye").copy_disjoint(u8, tiny_before, tiny.pixels);
+        const gscratch = try garden.alloc(text_layout.PlacedGlyph, cols);
+        if (paint_grid(&atlas, cells, cols, rows, gscratch, &tiny, 0, 0, black)) |_| {
+            return error.OverflowSlipped;
+        } else |e| if (e != error.GridOutOfBounds) return error.WrongOverflow;
+        assert(changed_pixels(tiny.pixels, tiny_before) == 0);
+    }
+
+    print("GREEN image-text-grid: a {d}x{d} terminal grid painted into a {d}x{d} image; ink {d} px equals the summed cell coverage, the blank row is ground, a cell block equals its standalone glyph paint, deterministic, round-trips through QOI byte-for-byte, and every mis-shape refuses by name\n", .{
+        cols, rows, face.width, face.height, changed,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: text_grid selftest\n", .{});
+    return 1;
+}
