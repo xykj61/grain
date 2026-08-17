@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260817.105056
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title scooter_scroll -- the read cursor: a keeper pages through journal history, GREEN
+prompt recur: continue the next agent-doable lap Lindy-first crux-first on the Season G terminal family; send often as its own signed round; stop at custody gates.
+think The prior lap closed the WRITE loop (scooter_input: raw bytes -> feed -> journal). Its counterpart, the missing READ side, is the crux here: scooter_view always draws the FIRST posts and marks the rest "(+N more)", so a keeper cannot read history that scrolled off. A scroll position -- the seq of the topmost visible post, with clamp verbs -- is the model a live terminal needs. Highest-Lindy agent-doable crux: pure integer logic, no gate, composes the family's own bounds.
+think Held it as PURE integer logic owning no rendering: window(post_count, rows, top) names the visible slice and the above/below counts; scooter_view keeps the drawing. Kept the two concerns apart -- position here, pixels there -- so each is proven where it lives, matching the compose/paint split already in the family.
+think Chose the chat-natural anchoring: latest_top pins the home view with the NEWEST posts at the bottom (not the oldest, as render_within currently shows), scroll_up walks toward older history clamped at the first post, scroll_down walks toward newer clamped at home. Every clamp is written to never underflow a u32 (if top > by then top - by else 0) and never name a seq past the journal.
+obs GREEN first metal run, no reds this lap -- the prior lap's two witness reds taught tighter test arithmetic (trace the exact seq/byte counts before asserting), applied here from the start. The strongest assert is a property, not an example: the_window_always_partitions_the_journal sweeps every top over a 30-post journal and proves above + shown + below == post_count exactly, so no scroll position can ever drop or double-count a post.
+obs tame_style_check bans clean (many positive asserts, not on the zero-assert list), width-check exit 0, plain 7-bit ASCII, >=2 positive // invariant asserts per fn, no seam cast needed (all u32 arithmetic bounded by channel.max_posts). Rota this lap: continued from the same council reading (Pond -- Scooter is an app in Pond; the read cursor is app-floor, not a serve-gate rung).
+loom witness=scooter_scroll_witness cruxes=6 max_posts=256 body_rows_test=6 partition_sweep=30 green=first-run
+file pond/apps/scooter_scroll.rye the read cursor: window/latest_top/scroll_up/scroll_down over a post count, Window{top,count,above,below}; selftest proves the six cruxes including the partition property
+file tools/scooter_scroll_witness.rish builds the module and asserts GREEN over the six cruxes; no TTY, no key, no funds
+file crux/REMEMBER.md live edge + Git nib refreshed to the read cursor; prior nib demoted
+recommend keep-going the read position stands beside the write loop, both pure; the next agent-doable Lindy crux is to wire them to the drawn frame -- a scooter_view.render_window(ch, rows, top) that draws the windowed slice with "N older"/"N newer" scroll marks, or map dexter_key's currently-ignored Up/Down to scroll_up/scroll_down so a keeper pages live. The raw TTY read and the Comlink wire between two Constel piers stay the serve gate, the maintainer's hand.

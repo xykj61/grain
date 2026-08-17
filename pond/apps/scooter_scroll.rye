@@ -1,0 +1,204 @@
+//! pond/apps/scooter_scroll.rye -- Scooter, the read cursor: a bounded scroll position over a journal.
+//!
+//! Season G (Open Media Primitives) -- the terminal family. scooter_view.rye folds a channel into a bounded
+//! 24x80 frame, yet it always draws the FIRST posts and marks the rest "(+N more)" -- a keeper cannot read
+//! history that scrolled off. This module is the missing READ-side model: a scroll position (the seq of the
+//! topmost visible post) with clamp verbs, so a keeper pages up into older posts and back down to the latest,
+//! and a caller renders exactly the visible slice. Held PURE integer logic -- it names WHICH posts are visible
+//! and how many hide above and below; it draws no pixel and reads no channel body, so scooter_view keeps the
+//! drawing and this keeps the position. The two compose: window() names the slice, scooter_view draws it.
+//! Pattern elder: pond/apps/scooter_input.rye -- a bounded state machine over the family's public bounds.
+//!
+//! The crux is one honest position held strictly bounded:
+//!   - window(post_count, rows, top) reports the visible slice: how many posts show, and how many hide above
+//!     (older, before top) and below (newer, after the last shown) -- the counts a caller draws as scroll marks.
+//!   - latest_top pins the position that shows the NEWEST posts anchored to the bottom row, a chat's home view.
+//!   - scroll_up walks the top toward older posts (top decreases), clamped at the first post; scroll_down walks
+//!     it toward newer, clamped so the newest post never scrolls past the bottom -- neither verb ever underflows
+//!     or shows a post that is not there.
+//!
+//! Facts only, custody-first: it computes a scroll position over a post count -- no network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build pond/apps/scooter_scroll.rye -femit-bin=pond/bin/scooter-scroll
+//!   pond/bin/scooter-scroll selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const channel = @import("scooter_channel.rye");
+
+pub const scooter_scroll_version = "20260817.104345";
+
+/// The most posts a journal holds -- the channel's own bound, so a scroll position never names a seq past it.
+pub const max_posts: u32 = channel.max_posts;
+
+/// The visible slice of a journal at a scroll position: where it starts, how many posts show, and how many
+/// hide on each side. `above` are older posts (before `top`); `below` are newer (after the last shown). A
+/// caller draws `above`/`below` as "N older"/"N newer" scroll marks and reads seq `top..top+count` for the body.
+pub const Window = struct {
+    top: u32, // the seq of the first visible post -- the topmost row of the body
+    count: u32, // the number of posts visible -- at most `rows`, at most the posts from `top` on
+    above: u32, // older posts hidden before `top` (equal to `top`)
+    below: u32, // newer posts hidden after the last visible post
+};
+
+/// The visible slice at scroll position `top`, given how many posts the journal holds and how many body rows
+/// the frame offers. A `top` past the journal is clamped to its end, so the window is always a real slice.
+pub fn window(post_count: u32, rows: u32, top: u32) Window {
+    // invariant: a journal never exceeds its bound, and the body always offers at least one row.
+    assert(post_count <= max_posts);
+    assert(rows >= 1);
+    // Clamp a top that names nothing to the last post (an empty journal clamps to zero) -- never read past end.
+    const start: u32 = if (top > post_count) post_count else top;
+    const remaining: u32 = post_count - start;
+    const count: u32 = if (remaining < rows) remaining else rows;
+    const below: u32 = remaining - count;
+    // invariant: every visible post is real, and the three parts sum to the whole journal exactly.
+    assert(start + count <= post_count);
+    assert(start + count + below == post_count);
+    return .{ .top = start, .count = count, .above = start, .below = below };
+}
+
+/// The scroll position that shows the NEWEST posts anchored to the bottom row -- a chat's home view. When the
+/// journal is shorter than the body, the top is zero (every post shows); otherwise it leaves exactly `rows`
+/// posts visible ending at the last one.
+pub fn latest_top(post_count: u32, rows: u32) u32 {
+    // invariant: the journal is bounded and the body offers at least one row.
+    assert(post_count <= max_posts);
+    assert(rows >= 1);
+    const top: u32 = if (post_count > rows) post_count - rows else 0;
+    // invariant: the home view shows the last post -- top plus at most `rows` reaches post_count.
+    assert(top + rows >= post_count);
+    assert(top <= post_count);
+    return top;
+}
+
+/// Walk the scroll position `by` posts toward OLDER history (the top decreases), clamped at the first post so
+/// it never underflows. A caller binds this to Page-Up or a wheel-up.
+pub fn scroll_up(top: u32, by: u32) u32 {
+    // invariant: a scroll position never names a seq past the journal bound.
+    assert(top <= max_posts);
+    const next: u32 = if (top > by) top - by else 0;
+    // invariant: scrolling up never moves toward newer posts, and never underflows below the first.
+    assert(next <= top);
+    return next;
+}
+
+/// Walk the scroll position `by` posts toward NEWER history (the top increases), clamped so the newest post
+/// never scrolls past the bottom row -- the home view is the furthest down a keeper can go. Binds to Page-Down.
+pub fn scroll_down(top: u32, by: u32, post_count: u32, rows: u32) u32 {
+    // invariant: the journal is bounded and the body offers at least one row.
+    assert(post_count <= max_posts);
+    assert(rows >= 1);
+    const max_top: u32 = latest_top(post_count, rows);
+    const raw: u32 = top + by;
+    const next: u32 = if (raw > max_top) max_top else raw;
+    // invariant: scrolling down never moves toward older posts, and never past the home view.
+    assert(next >= top or top > max_top);
+    assert(next <= max_top);
+    return next;
+}
+
+// --- selftest -------------------------------------------------------------------------------------------
+
+const body_rows: u32 = 6; // a small body for the tests -- the real frame offers more
+
+fn a_short_journal_shows_every_post() !void {
+    // Four posts in a six-row body: all four show, nothing hides on either side, the home view is the top.
+    const w = window(4, body_rows, 0);
+    assert(w.count == 4);
+    assert(w.above == 0);
+    assert(w.below == 0);
+    assert(latest_top(4, body_rows) == 0);
+    print("scooter_scroll: a journal shorter than the body shows every post, nothing hidden, home at the top.\n", .{});
+}
+
+fn the_home_view_anchors_the_newest_to_the_bottom() !void {
+    // Twenty posts, six rows: the home view shows the last six (seq 14..19), fourteen hidden above, none below.
+    const top = latest_top(20, body_rows);
+    assert(top == 14);
+    const w = window(20, body_rows, top);
+    assert(w.count == body_rows);
+    assert(w.top == 14);
+    assert(w.above == 14);
+    assert(w.below == 0);
+    print("scooter_scroll: the home view anchors the newest posts to the bottom, the rest hidden above.\n", .{});
+}
+
+fn scrolling_up_reveals_older_posts() !void {
+    // From the home view of twenty posts, page up by six: the window slides to older posts, some now below.
+    const home = latest_top(20, body_rows);
+    const up = scroll_up(home, body_rows);
+    assert(up == 8);
+    const w = window(20, body_rows, up);
+    assert(w.top == 8);
+    assert(w.count == body_rows);
+    assert(w.above == 8); // eight older still hidden
+    assert(w.below == 6); // six newer now hidden below
+    // Page up past the start clamps to the first post, never underflowing.
+    const top_edge = scroll_up(3, body_rows);
+    assert(top_edge == 0);
+    print("scooter_scroll: paging up reveals older posts and marks the newer ones below, clamping at the first.\n", .{});
+}
+
+fn scrolling_down_returns_to_the_newest() !void {
+    // From an older position, page down toward newer; it never passes the home view.
+    const home = latest_top(20, body_rows);
+    const down = scroll_down(8, body_rows, 20, body_rows);
+    assert(down == home); // 8 + 6 == 14 == home exactly
+    // Page down past home clamps to home, never showing a post that is not there.
+    const past = scroll_down(home, body_rows, 20, body_rows);
+    assert(past == home);
+    const w = window(20, body_rows, past);
+    assert(w.below == 0); // at home, nothing hides below
+    print("scooter_scroll: paging down returns toward the newest and clamps at the home view, never past it.\n", .{});
+}
+
+fn an_empty_journal_is_a_real_empty_window() !void {
+    // No posts: the window is empty on every side, and the home view is the top -- no underflow, no phantom post.
+    const w = window(0, body_rows, 0);
+    assert(w.count == 0);
+    assert(w.above == 0);
+    assert(w.below == 0);
+    assert(latest_top(0, body_rows) == 0);
+    // A top past the end of a real journal clamps to the end, showing nothing below.
+    const clamped = window(5, body_rows, 99);
+    assert(clamped.top == 5);
+    assert(clamped.count == 0);
+    assert(clamped.above == 5);
+    assert(clamped.below == 0);
+    print("scooter_scroll: an empty journal and an over-far top both clamp to a real empty window, no phantom post.\n", .{});
+}
+
+fn the_window_always_partitions_the_journal() !void {
+    // For every scroll position over a journal, above + count + below equals the whole post count exactly.
+    const post_count: u32 = 30;
+    var top: u32 = 0;
+    while (top <= post_count) : (top += 1) {
+        const w = window(post_count, body_rows, top);
+        assert(w.above + w.count + w.below == post_count);
+        assert(w.count <= body_rows);
+    }
+    print("scooter_scroll: at every scroll position the window partitions the journal -- above + shown + below is the whole.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try a_short_journal_shows_every_post();
+    try the_home_view_anchors_the_newest_to_the_bottom();
+    try scrolling_up_reveals_older_posts();
+    try scrolling_down_returns_to_the_newest();
+    try an_empty_journal_is_a_real_empty_window();
+    try the_window_always_partitions_the_journal();
+    print("scooter_scroll: version {s}\n", .{scooter_scroll_version});
+    print("GREEN: scooter_scroll; a bounded read cursor over a journal -- the home view anchors the newest, paging up reveals older posts, paging down clamps at home, and the window always partitions the journal into above, shown, and below, all pure and deterministic.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "scooter-scroll"))) {
+        return run_selftest();
+    }
+    return run_selftest();
+}
