@@ -1,0 +1,273 @@
+//! image/place_paint.rye -- one source PLACED at a named anchor in a box (Season G, the CSS background-position sibling of compose_tiled).
+//!
+//! Season G (Open Media Primitives) - where image/compose_tiled.rye TILES a small pattern edge to edge to fill a box (the
+//! CSS `background-repeat` gesture), this rung places ONE copy and anchors it: it draws a single source at a named corner,
+//! edge, or center of a rectangle -- the CSS `background-position` with `no-repeat` gesture (an icon pinned top-right in a
+//! panel, a logo centered in a card, a badge dropped in a bottom corner). A keeper names a box, a source, and a horizontal
+//! and vertical anchor (start, center, end) and reads back the source seated at that spot, the box's remaining area left as
+//! the ground beneath it. A source LARGER than the box is CLIPPED to the box, the anchor choosing WHICH window of the
+//! source shows -- exactly as a CSS positioned background clips an oversize image, so the placement always stays inside its
+//! box with no spill.
+//!
+//! Compose, not braid: image/compose.rye owns the blit (paint_over_region composites a source window over a target window,
+//! src-over), image/qoi.rye owns both buffers, and this module only ROUTES the anchor to its one window and its one clip --
+//! no new blend math, no new codec, no new color, not even a new pixel loop. Two axes, one rule (axis_window): when the
+//! source FITS the box the whole source is drawn at the anchored offset (start at 0, center on the slack, end flush to the
+//! far edge); when the source OVERFLOWS the box a window of the source the box's size is drawn from the box corner, the
+//! anchor choosing which window. The box is bound-checked ONCE up front (in u64 so a far edge can never wrap before the
+//! bound refuses), so a malformed placement refuses BY NAME having painted nothing -- all-or-nothing, never a half-placed
+//! source. No network, no key, no funds -- the icon a surface pins the day it wants a badge in a corner, on our own open
+//! geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/place_paint.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const compose = @import("compose.rye");
+
+pub const place_paint_version = "20260817.162612";
+
+/// Where along one axis a source seats within a box: `start` flush to the low edge (left / top), `center` on the slack,
+/// `end` flush to the high edge (right / bottom). The two axes name a corner, an edge midpoint, or the dead center -- the
+/// nine CSS `background-position` keywords built from one axis rule seen twice.
+pub const Anchor = enum { start, center, end };
+
+/// The one window a placed source shows on one axis: `dest_off` is where in the box the draw begins, `src_off` is where in
+/// the source that window starts, and `span` is the visible length. Both axes share this so a placement is the same rule
+/// seen twice.
+const AxisWindow = struct { dest_off: u32, src_off: u32, span: u32 };
+
+/// Route one axis: given a box extent `box`, a source extent `src`, and an `anchor`, return the visible window. When the
+/// source FITS (`src <= box`) the whole source shows at an anchored offset within the box (the slack goes before it, split
+/// by the anchor); when the source OVERFLOWS (`src > box`) a box-sized window of the source shows from the box corner, the
+/// anchor choosing which window. All unsigned: the two cases keep every offset non-negative, so no signed math is needed.
+fn axis_window(box: u32, src: u32, anchor: Anchor) AxisWindow {
+    // invariant: a placeable axis has real extent on both the box and the source.
+    assert(box >= 1);
+    assert(src >= 1);
+    if (src <= box) {
+        // The source fits: the box has `slack` spare units, divided before the source by the anchor.
+        const slack = box - src;
+        const dest_off: u32 = switch (anchor) {
+            .start => 0,
+            .center => slack / 2,
+            .end => slack,
+        };
+        // invariant: the whole source lands inside the box -- a fitting source is never clipped.
+        assert(dest_off + src <= box);
+        return .{ .dest_off = dest_off, .src_off = 0, .span = src };
+    }
+    // The source overflows: a box-sized window of the source shows, its start chosen by the anchor.
+    const over = src - box;
+    const src_off: u32 = switch (anchor) {
+        .start => 0,
+        .center => over / 2,
+        .end => over,
+    };
+    // invariant: the window stays inside the source -- an overflowing source is clipped to exactly the box.
+    assert(src_off + box <= src);
+    return .{ .dest_off = 0, .src_off = src_off, .span = box };
+}
+
+/// Place `source` at the (`ax`, `ay`) anchor of the box at (`x`, `y`) of size `w` x `h` on `target` -- the CSS
+/// `background-position` + `no-repeat` gesture. The source is composited src-over through compose.paint_over_region at its
+/// one anchored window, the box's remaining area left as the ground beneath. A source larger than the box is CLIPPED to the
+/// box, the anchor choosing which window shows. Refuses `BadPlaceDims` if `w` or `h` is zero, `EmptySource` if the source
+/// has no extent, `PlaceOutOfBounds` BY NAME if the box exceeds the target -- all checked BEFORE any pixel, so a refusal
+/// leaves the target untouched.
+pub fn paint_placed(target: *qoi.Pixmap, x: u32, y: u32, w: u32, h: u32, source: *const qoi.Pixmap, ax: Anchor, ay: Anchor) !void {
+    // invariant: a placeable box has real extent on both axes.
+    if (w == 0 or h == 0) return error.BadPlaceDims;
+    // invariant: a real source has extent; a zero-size source places nothing and refuses by name.
+    if (source.width == 0 or source.height == 0) return error.EmptySource;
+    // The box's far edges, in u64 so the sum can never wrap before the bound check refuses.
+    const right: u64 = @as(u64, x) + @as(u64, w);
+    const bottom: u64 = @as(u64, y) + @as(u64, h);
+    if (right > @as(u64, target.width) or bottom > @as(u64, target.height)) return error.PlaceOutOfBounds;
+    // invariant: the up-front check proved every pixel of the w x h box lands inside the target buffer.
+    assert(right <= @as(u64, target.width));
+    assert(bottom <= @as(u64, target.height));
+
+    const wx = axis_window(w, source.width, ax);
+    const wy = axis_window(h, source.height, ay);
+    // invariant: the anchored window lands inside the box on both axes, so it lands inside the proven-in-bounds target.
+    assert(wx.dest_off + wx.span <= w);
+    assert(wy.dest_off + wy.span <= h);
+    // Route the one window to compose: a (possibly clipped) window of the source, drawn at the anchored spot in the box.
+    try compose.paint_over_region(target, x + wx.dest_off, y + wy.dest_off, source, wx.src_off, wy.src_off, wx.span, wy.span);
+}
+
+// --- selftest: prove the anchor seats the source, an oversize source clips, blend true, round-trip, refuse by name ------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module
+/// (exactly as image/compose_tiled.rye and image/compose.rye keep their own canvas).
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// Set one pixel's RGBA at (x, y) -- a small writer the source builders share.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+/// Count pixels of `img` whose RGBA differs from `bg` -- the honest measure of how much a placement covered.
+fn changed_from(img: *const qoi.Pixmap, bg: color.Rgba) u32 {
+    // invariant: the buffer is four bytes per pixel -- the RGBA invariant a Pixmap carries.
+    assert(img.pixels.len % 4 == 0);
+    var n: u32 = 0;
+    var i: usize = 0;
+    while (i < img.pixels.len) : (i += 4) {
+        const px = color.Rgba{ .r = img.pixels[i], .g = img.pixels[i + 1], .b = img.pixels[i + 2], .a = img.pixels[i + 3] };
+        if (!px.eql(bg)) n += 1;
+    }
+    // invariant: the changed count never exceeds the pixels walked.
+    assert(n <= @as(u32, @intCast(img.pixels.len / 4)));
+    return n;
+}
+
+/// Mint a 2x2 four-color source -- red, green at the top; blue, black at the bottom -- so a placed copy is checkable by
+/// which of the four corners a target pixel matches.
+fn make_source(garden: std.mem.Allocator) !qoi.Pixmap {
+    var p = try make_canvas(garden, 2, 2, color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 });
+    set_pixel(&p, 0, 0, color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 }); // red
+    set_pixel(&p, 1, 0, color.Rgba{ .r = 0, .g = 255, .b = 0, .a = 255 }); // green
+    set_pixel(&p, 0, 1, color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 }); // blue
+    set_pixel(&p, 1, 1, color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 }); // black
+    return p;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+    const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
+    const green = color.Rgba{ .r = 0, .g = 255, .b = 0, .a = 255 };
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+
+    const source = try make_source(garden); // 2x2: red, green / blue, black
+
+    // --- a fitting source CENTERED in a box lands on the slack and leaves the gutters ground -------------------------
+    var img_c = try make_canvas(garden, 4, 4, white);
+    try paint_placed(&img_c, 0, 0, 4, 4, &source, .center, .center); // slack 2 each axis, half -> offset (1,1)
+    if (!pixel_at(&img_c, 1, 1).eql(red)) return error.CenterTopLeftWrong; // source (0,0)
+    if (!pixel_at(&img_c, 2, 2).eql(black)) return error.CenterBottomRightWrong; // source (1,1)
+    if (!pixel_at(&img_c, 0, 0).eql(white)) return error.CenterGutterPainted; // the ground stays
+    if (changed_from(&img_c, white) != 4) return error.CenterFootprintWrong; // exactly the 2x2 source changed
+
+    // --- anchor START seats the source flush to the low corner (top-left) --------------------------------------------
+    var img_s = try make_canvas(garden, 4, 4, white);
+    try paint_placed(&img_s, 0, 0, 4, 4, &source, .start, .start);
+    if (!pixel_at(&img_s, 0, 0).eql(red)) return error.StartCornerWrong; // source seats at (0,0)
+    if (!pixel_at(&img_s, 1, 1).eql(black)) return error.StartFarWrong;
+    if (!pixel_at(&img_s, 3, 3).eql(white)) return error.StartGutterPainted; // the far gutter stays ground
+
+    // --- anchor END seats the source flush to the high corner (bottom-right) -----------------------------------------
+    var img_e = try make_canvas(garden, 4, 4, white);
+    try paint_placed(&img_e, 0, 0, 4, 4, &source, .end, .end); // slack 2 -> offset (2,2)
+    if (!pixel_at(&img_e, 2, 2).eql(red)) return error.EndCornerWrong; // source (0,0) seats at (2,2)
+    if (!pixel_at(&img_e, 3, 3).eql(black)) return error.EndFarWrong; // source (1,1) at (3,3)
+    if (!pixel_at(&img_e, 0, 0).eql(white)) return error.EndGutterPainted;
+
+    // --- a MIXED anchor (right, top) seats the source at the top-right corner -----------------------------------------
+    var img_m = try make_canvas(garden, 4, 4, white);
+    try paint_placed(&img_m, 0, 0, 4, 4, &source, .end, .start); // x flush right (offset 2), y flush top (offset 0)
+    if (!pixel_at(&img_m, 2, 0).eql(red)) return error.MixedCornerWrong; // source (0,0) at (2,0)
+    if (!pixel_at(&img_m, 3, 1).eql(black)) return error.MixedFarWrong; // source (1,1) at (3,1)
+
+    // --- a source LARGER than its box is CLIPPED, the anchor choosing which window shows ------------------------------
+    // A 4x4 source with a distinct interior: (1,1) red, (2,2) green on a white ground.
+    var big = try make_canvas(garden, 4, 4, white);
+    set_pixel(&big, 1, 1, red);
+    set_pixel(&big, 2, 2, green);
+    // Center-clip into a 2x2 box: over = 2, half -> src window starts at (1,1). Box (0,0) shows source (1,1) = red.
+    var img_clip = try make_canvas(garden, 2, 2, white);
+    try paint_placed(&img_clip, 0, 0, 2, 2, &big, .center, .center);
+    if (!pixel_at(&img_clip, 0, 0).eql(red)) return error.ClipCenterWrong; // source (1,1)
+    if (!pixel_at(&img_clip, 1, 1).eql(green)) return error.ClipCenterFarWrong; // source (2,2)
+    // Start-clip shows the source's OWN top-left window: box (0,0) is source (0,0) = white ground of the big source.
+    var img_clip_s = try make_canvas(garden, 2, 2, red); // a red box so a white source pixel is visible
+    try paint_placed(&img_clip_s, 0, 0, 2, 2, &big, .start, .start);
+    if (!pixel_at(&img_clip_s, 0, 0).eql(white)) return error.ClipStartWrong; // source (0,0) = white
+    if (!pixel_at(&img_clip_s, 1, 1).eql(red)) return error.ClipStartFarWrong; // source (1,1) = red
+
+    // --- a translucent source BLENDS src-over its ground, not overwrites ----------------------------------------------
+    const blue_half = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 128 };
+    var s_trans = try make_canvas(garden, 2, 2, blue_half);
+    var img_blend = try make_canvas(garden, 2, 2, white);
+    try paint_placed(&img_blend, 0, 0, 2, 2, &s_trans, .start, .start);
+    const blended = color.over(blue_half, white);
+    if (blended.eql(blue_half) or blended.eql(white)) return error.BlendNotBetween; // a real blend, not either pole
+    if (!pixel_at(&img_blend, 0, 0).eql(blended)) return error.PlaceBlendWrong;
+    if (!pixel_at(&img_blend, 1, 1).eql(blended)) return error.PlaceBlendWrong;
+
+    // --- the placed image round-trips through the open QOI codec byte-for-byte -- a real image, not a private buffer --
+    const cap = qoi.encoded_bound(img_c.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&img_c, dst);
+    const back = try qoi.decode(garden, dst[0..enc.len]);
+    if (!back.same_bytes(&img_c)) return error.PlaceDidNotRoundTrip;
+
+    // --- refusals by name, each having painted nothing ---------------------------------------------------------------
+    var tgt = try make_canvas(garden, 4, 4, white);
+    if (paint_placed(&tgt, 0, 0, 4, 0, &source, .start, .start)) |_| return error.ZeroDimsNotRefused else |err| {
+        if (err != error.BadPlaceDims) return error.WrongDimsError;
+    }
+    var empty = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (paint_placed(&tgt, 0, 0, 4, 4, &empty, .start, .start)) |_| return error.EmptySourceNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+    if (paint_placed(&tgt, 2, 0, 4, 4, &source, .start, .start)) |_| return error.OverrunNotRefused else |err| {
+        if (err != error.PlaceOutOfBounds) return error.WrongOverrunError; // 2+4 = 6 > width 4
+    }
+    if (changed_from(&tgt, white) != 0) return error.RefusedButPainted; // every refusal painted nothing
+
+    // --- determinism: the same placement seats the same source byte-for-byte -----------------------------------------
+    var img_a = try make_canvas(garden, 4, 4, white);
+    var img_b = try make_canvas(garden, 4, 4, white);
+    try paint_placed(&img_a, 0, 0, 4, 4, &source, .center, .end);
+    try paint_placed(&img_b, 0, 0, 4, 4, &source, .center, .end);
+    if (!img_a.same_bytes(&img_b)) return error.PlaceNotDeterministic;
+
+    print("GREEN image-place: one source placed at a named anchor in a box -- a 2x2 source centered in a 4x4 box seats on the slack at (1,1) leaving the four gutters ground; anchor start seats it flush to the top-left corner, anchor end flush to the bottom-right, a mixed (right, top) anchor at the top-right corner; a 4x4 source larger than a 2x2 box is CLIPPED to the box, the center anchor showing the middle window of the source and the start anchor showing its top-left window; a translucent source blends src-over its ground equal to neither pole; the placed image round-trips through the open QOI codec byte-for-byte; a zero dimension, an empty source, and an out-of-bounds box refuse by name having painted nothing; the same placement seats the same source byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: place_paint selftest\n", .{});
+    return 1;
+}
