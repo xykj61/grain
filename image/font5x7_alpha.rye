@@ -1,0 +1,196 @@
+//! image/font5x7_alpha.rye -- the open uppercase alphabet corpus: a 5x7 A-Z set (Season G, the font content rung).
+//!
+//! Season G (Open Media Primitives) - the second real content for the open glyph atlas image/glyph.rye (gfa1),
+//! set beside the ten numerals of image/font5x7.rye. Where that module filled the atlas with '0'-'9', this one
+//! fills it with the twenty-six uppercase letters 'A'-'Z', each hand-drawn in the same 5x7 coverage grid, our own
+//! hand and permissively ours, no external font to license and no web-search gate.
+//!
+//! The drawings ARE the specification: each letter is seven rows of five cells in ASCII line art ('#' full ink,
+//! '.' none) that a reader audits by eye, and the coverage bytes are derived from that art, never the reverse.
+//! build_atlas turns the twenty-six drawings into a glyph.GlyphAtlas the gfa1 encoder accepts, so the property
+//! that matters stays provable on metal: decode(encode(atlas)) recovers every glyph byte-for-byte, the letters
+//! are present and distinct, and each reads within an honest legibility band. No network, no key, no funds --
+//! the letter corpus Dexter, Scooter, Skate, and Brushstroke read the day a surface wants a word.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_alpha.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+
+pub const font5x7_alpha_version = "20260816.231605";
+
+/// Every glyph in this corpus shares one 5-wide, 7-tall cell -- the same body the numeral corpus carries.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance: the cell width plus one column of daylight between letters.
+pub const letter_advance: u8 = cell_w + 1;
+
+/// The corpus holds exactly the twenty-six uppercase letters, 'A' through 'Z'.
+pub const letter_count: u32 = 26;
+
+/// Cells per glyph -- the coverage length every letter carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The twenty-six letters, drawn in the open. Each is seven rows of five cells; '#' is full ink, '.' background.
+/// A reader audits every letter here by eye, and the coverage bytes are lifted from this art, never guessed.
+const letter_art = [letter_count][cell_h][]const u8{
+    .{ ".###.", "#...#", "#...#", "#####", "#...#", "#...#", "#...#" }, // A
+    .{ "####.", "#...#", "#...#", "####.", "#...#", "#...#", "####." }, // B
+    .{ ".###.", "#...#", "#....", "#....", "#....", "#...#", ".###." }, // C
+    .{ "###..", "#..#.", "#...#", "#...#", "#...#", "#..#.", "###.." }, // D
+    .{ "#####", "#....", "#....", "####.", "#....", "#....", "#####" }, // E
+    .{ "#####", "#....", "#....", "####.", "#....", "#....", "#...." }, // F
+    .{ ".###.", "#...#", "#....", "#.###", "#...#", "#...#", ".###." }, // G
+    .{ "#...#", "#...#", "#...#", "#####", "#...#", "#...#", "#...#" }, // H
+    .{ ".###.", "..#..", "..#..", "..#..", "..#..", "..#..", ".###." }, // I
+    .{ "..###", "...#.", "...#.", "...#.", "...#.", "#..#.", ".##.." }, // J
+    .{ "#...#", "#..#.", "#.#..", "##...", "#.#..", "#..#.", "#...#" }, // K
+    .{ "#....", "#....", "#....", "#....", "#....", "#....", "#####" }, // L
+    .{ "#...#", "##.##", "#.#.#", "#.#.#", "#...#", "#...#", "#...#" }, // M
+    .{ "#...#", "#...#", "##..#", "#.#.#", "#..##", "#...#", "#...#" }, // N
+    .{ ".###.", "#...#", "#...#", "#...#", "#...#", "#...#", ".###." }, // O
+    .{ "####.", "#...#", "#...#", "####.", "#....", "#....", "#...." }, // P
+    .{ ".###.", "#...#", "#...#", "#...#", "#.#.#", "#..#.", ".##.#" }, // Q
+    .{ "####.", "#...#", "#...#", "####.", "#.#..", "#..#.", "#...#" }, // R
+    .{ ".###.", "#...#", "#....", ".###.", "....#", "#...#", ".###." }, // S
+    .{ "#####", "..#..", "..#..", "..#..", "..#..", "..#..", "..#.." }, // T
+    .{ "#...#", "#...#", "#...#", "#...#", "#...#", "#...#", ".###." }, // U
+    .{ "#...#", "#...#", "#...#", "#...#", "#...#", ".#.#.", "..#.." }, // V
+    .{ "#...#", "#...#", "#...#", "#.#.#", "#.#.#", "#.#.#", ".#.#." }, // W
+    .{ "#...#", "#...#", ".#.#.", "..#..", ".#.#.", "#...#", "#...#" }, // X
+    .{ "#...#", "#...#", ".#.#.", "..#..", "..#..", "..#..", "..#.." }, // Y
+    .{ "#####", "....#", "...#.", "..#..", ".#...", "#....", "#####" }, // Z
+};
+
+/// Lift one letter's ASCII art into a freshly allocated coverage grid of exactly cell_area bytes: 255 for ink,
+/// 0 for background. The art's own shape is asserted, so a mistyped row is a stopped line rather than a bad glyph.
+fn coverage_from_art(allocator: std.mem.Allocator, art: [cell_h][]const u8) ![]u8 {
+    // invariant: a coverage grid is exactly the shared cell area, within the atlas ceiling.
+    assert(cell_area >= 1);
+    assert(cell_area <= glyph.coverage_max);
+    const cov = try allocator.alloc(u8, cell_area);
+    var idx: u32 = 0;
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        const row = art[r];
+        // invariant: every drawn row is exactly the cell width -- the art matches the grid.
+        assert(row.len == cell_w);
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            cov[idx] = if (row[c] == '#') 255 else 0;
+            idx += 1;
+        }
+    }
+    // invariant: the whole grid was filled, no cell left unwritten.
+    assert(idx == cell_area);
+    return cov;
+}
+
+/// Build the letter atlas: twenty-six glyphs, codepoint 'A'+i, strictly ascending, sharing the 5x7 cell and
+/// advance. The gfa1 encoder accepts the result directly (ascending codepoints, coverage length == cell area).
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the corpus is the twenty-six uppercase letters and no more.
+    assert(letter_count == 26);
+    assert(cell_area == 35);
+    const glyphs = try allocator.alloc(glyph.Glyph, letter_count);
+    var i: u32 = 0;
+    while (i < letter_count) : (i += 1) {
+        const cov = try coverage_from_art(allocator, letter_art[i]);
+        glyphs[i] = glyph.Glyph{
+            .codepoint = 'A' + i,
+            .advance = letter_advance,
+            .coverage = cov,
+        };
+    }
+    // invariant: the last codepoint is 'Z' -- the table spans the full uppercase run.
+    assert(glyphs[letter_count - 1].codepoint == 'Z');
+    return glyph.GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- the legibility signal a blank glyph would fail.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+// --- selftest: build the letter atlas, round-trip it through gfa1, prove all present, distinct, legible --------
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built atlas is the twenty-six-letter corpus at the shared cell.
+    assert(glyph_count == letter_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // Twenty-six present letters: every letter looks up, carries the shared advance; a non-letter misses.
+    var d: u32 = 0;
+    while (d < letter_count) : (d += 1) {
+        const cp: u32 = 'A' + d;
+        if (back.lookup(cp)) |g| {
+            assert(g.codepoint == cp);
+            assert(g.advance == letter_advance);
+        } else return error.LetterMissing;
+    }
+    if (back.lookup('0')) |_| return error.NonLetterFound else {}
+
+    // Distinctness: no two letters share identical coverage -- a real font's glyphs differ (catches a copy slip).
+    var a: u32 = 0;
+    while (a < letter_count) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b < letter_count) : (b += 1) {
+            if (std.mem.eql(u8, atlas.glyphs[a].coverage, atlas.glyphs[b].coverage)) return error.LettersNotDistinct;
+        }
+    }
+
+    // Legibility: each letter's ink count sits inside an honest band -- neither blank nor solid.
+    const ink_min: u32 = 6;
+    const ink_max: u32 = 30;
+    var lo: u32 = cell_area;
+    var hi: u32 = 0;
+    var k: u32 = 0;
+    while (k < letter_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (n < ink_min or n > ink_max) return error.LetterIllegible;
+        if (n < lo) lo = n;
+        if (n > hi) hi = n;
+    }
+    // invariant: the observed ink band stayed inside the honest bounds.
+    assert(lo >= ink_min);
+    assert(hi <= ink_max);
+
+    // Compression is reported as a fact, not asserted -- real letters are busy, and the round-trip is the proof.
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-alpha: {d} letters 'A'-'Z' at {d}x{d} round-trip byte-identical; all present, distinct, legible (ink {d}..{d} of {d}); encoded {d} bytes, raw {d}\n", .{
+        glyph_count, cell_w, cell_h, lo, hi, cell_area, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_alpha selftest\n", .{});
+    return 1;
+}
