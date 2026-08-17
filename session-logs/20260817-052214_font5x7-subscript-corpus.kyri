@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260817.052214
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title font5x7 subscript-digits corpus, GREEN
+prompt run the autonomous loop -- next agent-doable lap Lindy-first crux-first, send often, stop at custody gates
+think Second lap of the run. The Greek corpus landed and sent; REMEMBER's next-open-media list still names fraction glyphs and superscript/subscript digits for units.
+think Chose subscript digits over superscript: the codepoints are contiguous (U+2080..U+2089, one base plus the digit), the lowering is a clean structural property to prove, and the marks serve the same science-readout family the Greek and math corpora serve -- a chemical formula (H2O, CO2), a math index (x1, an), a footnote.
+think Crux is distinctness of ten small 3x5 digits and legible lowering. Drew each three cells wide over the bottom five rows, top two rows blank, coverage lifted from the art; proved every digit sits low (first two rows carry no ink) beyond the round-trip.
+think Family order: the dense subscript eight (13 ink) out-inks the sparse subscript one (8), so a formula tells a small eight from a small one -- the same family-order habit the currency and Greek corpora keep.
+obs GREEN first metal run, no red; ink band 7..13 of 35 as hand-counted, lowering proof held, eight>one held, decode(encode(atlas)) byte-identical (encoded 385, raw 350).
+obs tame_style_check bans clean, width-check exit 0, both files plain 7-bit ASCII though the glyphs cover a non-ASCII range (numeric codepoint base -- the ascii-first exception for a font codec's glyph tables).
+loom witness=font5x7_subscript_witness glyphs=10 cell=5x7 encoded_bytes=385 raw_bytes=350 ink_lo=7 ink_hi=13
+file image/font5x7_subscript.rye the ten subscript digits, drawn small and low, built into the gfa1 atlas
+file tools/font5x7_subscript_witness.rish proves the corpus round-trips byte-identical, present, distinct, legible, lowered, order holds
+recommend keep-going next open-media rung: superscript digits for exponents/units, fraction glyphs, or the captioned panel on longer real reels -- all agent-doable, no gate

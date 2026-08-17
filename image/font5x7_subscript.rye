@@ -1,0 +1,231 @@
+//! image/font5x7_subscript.rye -- the open subscript-digits corpus: the small digits a formula prints low (Season G).
+//!
+//! Season G (Open Media Primitives) - font content for the open glyph atlas image/glyph.rye (gfa1), set beside the
+//! five ASCII corpora (image/font5x7.rye the full-height numerals, image/font5x7_alpha.rye the uppercase,
+//! image/font5x7_lower.rye the lowercase, image/font5x7_punct.rye the punctuation, image/font5x7_symbol.rye the
+//! symbols), the wider-symbol corpora (the box family, the arrows, the block elements, the geometric marks, the
+//! math/technical operators image/font5x7_math.rye, the currency signs image/font5x7_currency.rye), and the
+//! Greek letters image/font5x7_greek.rye. Where the numerals corpus draws the ten full-height digits a readout
+//! counts with, this corpus draws the ten SUBSCRIPT digits a formula lowers -- the small numbers a chemical formula
+//! sets below the line (H(2)O, CO(2)), a footnote marks with, or a math surface indexes a term by (x(1), a(n)), at
+//! their real Unicode codepoints U+2080..U+2089 (the subscript-digit run of the superscripts-and-subscripts block),
+//! drawn in our own open hand on the same 5x7 body. Each digit sits small and low -- three cells wide over the bottom
+//! five rows -- so it reads as a subscript beside a full-height numeral rather than as a second full digit.
+//!
+//! The source stays plain ASCII (ASCII-first): the codepoints are written as a numeric base (0x2080) plus the digit
+//! value, and each mark is named in an ASCII comment, so no non-ASCII byte enters the file even though the glyphs it
+//! builds cover a non-ASCII range. The ten codepoints ARE contiguous (U+2080 subscript zero through U+2089 subscript
+//! nine), so this corpus derives each from the base rather than listing a table -- the strictly ascending order the
+//! gfa1 encoder trusts. The drawings ARE the specification: each digit is seven rows of five cells in ASCII line art
+//! ('#' full ink, '.' none) that a reader audits by eye; the coverage bytes are derived from that art, never the
+//! reverse. build_atlas turns the ten drawings into a glyph.GlyphAtlas the gfa1 encoder accepts, so the property that
+//! matters stays provable on metal: decode(encode(atlas)) recovers every glyph byte-for-byte, the digits are present
+//! and distinct, each reads within an honest legibility band, and the family order holds -- the dense subscript eight
+//! out-inks the sparse subscript one, so a formula tells one small digit from another. No network, no key, no funds --
+//! the small digits a surface sets low the day it prints a formula, on our own open font.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_subscript.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+
+pub const font5x7_subscript_version = "20260817.052028";
+
+/// Every glyph in this corpus shares one 5-wide, 7-tall cell -- the same body the ASCII and wider-symbol corpora carry.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance: the cell width plus one column of daylight, the same advance the sibling corpora carry.
+pub const subscript_advance: u8 = cell_w + 1;
+
+/// The corpus holds exactly the ten subscript digits, zero through nine.
+pub const subscript_count: u32 = 10;
+
+/// Cells per glyph -- the coverage length every digit carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The base codepoint of the subscript-digit run -- U+2080 subscript zero. The ten codepoints are contiguous
+/// (U+2080..U+2089), so digit d sits at subscript_base + d; the source stays plain ASCII while the glyphs cover a
+/// non-ASCII range.
+pub const subscript_base: u32 = 0x2080;
+
+/// The ten subscript digits, drawn in the open. Each is seven rows of five cells; '#' ink, '.' background. A reader
+/// audits every digit here by eye, and the coverage bytes are lifted from this art, never guessed. Each digit sits
+/// three cells wide (columns 1..3) over the bottom five rows (rows 2..6), the top two rows left blank, so the digit
+/// reads small and low -- a subscript beside a full-height numeral.
+const subscript_art = [subscript_count][cell_h][]const u8{
+    .{ ".....", ".....", ".###.", ".#.#.", ".#.#.", ".#.#.", ".###." }, // U+2080 subscript zero
+    .{ ".....", ".....", "..#..", ".##..", "..#..", "..#..", ".###." }, // U+2081 subscript one
+    .{ ".....", ".....", ".###.", "...#.", ".###.", ".#...", ".###." }, // U+2082 subscript two
+    .{ ".....", ".....", ".###.", "...#.", ".###.", "...#.", ".###." }, // U+2083 subscript three
+    .{ ".....", ".....", ".#.#.", ".#.#.", ".###.", "...#.", "...#." }, // U+2084 subscript four
+    .{ ".....", ".....", ".###.", ".#...", ".###.", "...#.", ".###." }, // U+2085 subscript five
+    .{ ".....", ".....", ".###.", ".#...", ".###.", ".#.#.", ".###." }, // U+2086 subscript six
+    .{ ".....", ".....", ".###.", "...#.", "..#..", ".#...", ".#..." }, // U+2087 subscript seven
+    .{ ".....", ".....", ".###.", ".#.#.", ".###.", ".#.#.", ".###." }, // U+2088 subscript eight
+    .{ ".....", ".....", ".###.", ".#.#.", ".###.", "...#.", ".###." }, // U+2089 subscript nine
+};
+
+/// Lift one digit's ASCII art into a freshly allocated coverage grid of exactly cell_area bytes: 255 for ink,
+/// 0 for background. The art's own shape is asserted, so a mistyped row is a stopped line rather than a bad glyph.
+fn coverage_from_art(allocator: std.mem.Allocator, art: [cell_h][]const u8) ![]u8 {
+    // invariant: a coverage grid is exactly the shared cell area, within the atlas ceiling.
+    assert(cell_area >= 1);
+    assert(cell_area <= glyph.coverage_max);
+    const cov = try allocator.alloc(u8, cell_area);
+    var idx: u32 = 0;
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        const row = art[r];
+        // invariant: every drawn row is exactly the cell width -- the art matches the grid.
+        assert(row.len == cell_w);
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            cov[idx] = if (row[c] == '#') 255 else 0;
+            idx += 1;
+        }
+    }
+    // invariant: the whole grid was filled, no cell left unwritten.
+    assert(idx == cell_area);
+    return cov;
+}
+
+/// Build the subscript-digits atlas: ten glyphs at the contiguous ascending codepoints U+2080..U+2089, sharing the
+/// 5x7 cell and advance. The gfa1 encoder accepts the result directly (ascending codepoints, coverage length == cell
+/// area).
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the corpus is the ten subscript digits and no more.
+    assert(subscript_count == 10);
+    assert(cell_area == 35);
+    const glyphs = try allocator.alloc(glyph.Glyph, subscript_count);
+    var i: u32 = 0;
+    var last_cp: u32 = 0;
+    while (i < subscript_count) : (i += 1) {
+        const cp = subscript_base + i;
+        // invariant: codepoints are strictly ascending -- the ordering the gfa1 encoder trusts.
+        assert(i == 0 or cp > last_cp);
+        last_cp = cp;
+        const cov = try coverage_from_art(allocator, subscript_art[i]);
+        glyphs[i] = glyph.Glyph{
+            .codepoint = cp,
+            .advance = subscript_advance,
+            .coverage = cov,
+        };
+    }
+    // invariant: the last codepoint is subscript nine (U+2089) -- the run ends where this set ends.
+    assert(glyphs[subscript_count - 1].codepoint == 0x2089);
+    return glyph.GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- the legibility signal a blank glyph would fail.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+/// The ink count of a codepoint's glyph in the built atlas -- the reader the family-order proof uses.
+fn ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return ink_count(g.coverage);
+    return error.SubscriptDigitMissing;
+}
+
+// --- selftest: build the subscript atlas, round-trip it through gfa1, prove all present, distinct, legible ---------
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built atlas is the ten-digit corpus at the shared cell.
+    assert(glyph_count == subscript_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // Ten present digits: every one looks up, carries the shared advance; a full-height ASCII digit misses (a subscript
+    // is a distinct codepoint, never the same point as '0').
+    var d: u32 = 0;
+    while (d < subscript_count) : (d += 1) {
+        const cp = subscript_base + d;
+        if (back.lookup(cp)) |g| {
+            assert(g.codepoint == cp);
+            assert(g.advance == subscript_advance);
+        } else return error.SubscriptDigitMissing;
+    }
+    if (back.lookup('0')) |_| return error.NonSubscriptFound else {}
+
+    // Distinctness: no two digits share identical coverage -- ten digits differ (catches a copy slip between look-alikes
+    // like the two and the three).
+    var a: u32 = 0;
+    while (a < subscript_count) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b < subscript_count) : (b += 1) {
+            if (std.mem.eql(u8, atlas.glyphs[a].coverage, atlas.glyphs[b].coverage)) return error.SubscriptDigitsNotDistinct;
+        }
+    }
+
+    // Legibility: each digit's ink count sits inside an honest band. The floor sits where the subscript seven (its
+    // lightest digit) still reads, the ceiling where the subscript eight (its densest) still resolves as a small digit,
+    // not a block.
+    const ink_min: u32 = 5;
+    const ink_max: u32 = 18;
+    var lo: u32 = cell_area;
+    var hi: u32 = 0;
+    var k: u32 = 0;
+    while (k < subscript_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (n < ink_min or n > ink_max) return error.SubscriptDigitIllegible;
+        if (n < lo) lo = n;
+        if (n > hi) hi = n;
+    }
+    // invariant: the observed ink band stayed inside the honest bounds.
+    assert(lo >= ink_min);
+    assert(hi <= ink_max);
+
+    // Family order: the dense subscript eight out-inks the sparse subscript one -- what makes the set a true numeral
+    // family rather than ten unrelated drawings, and what lets a formula tell a small eight from a small one.
+    if (!(try ink_of(&atlas, 0x2088) > try ink_of(&atlas, 0x2081))) return error.EightOrderWrong; // eight > one
+
+    // Every subscript sits in the bottom five rows: the top two rows carry no ink, so the digit reads low -- the
+    // property that makes it a subscript rather than a second full-height numeral.
+    var g: u32 = 0;
+    while (g < subscript_count) : (g += 1) {
+        const cov = atlas.glyphs[g].coverage;
+        var col: u32 = 0;
+        // invariant: the first two rows (the top 2 * cell_w cells) are blank for every digit.
+        while (col < 2 * @as(u32, cell_w)) : (col += 1) {
+            if (cov[col] != 0) return error.SubscriptNotLowered;
+        }
+    }
+
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof.
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-subscript: {d} subscript digits U+2080..U+2089 at {d}x{d} round-trip byte-identical; all present, distinct, legible (ink {d}..{d} of {d}), all lowered to the bottom five rows; eight>one holds; encoded {d} bytes, raw {d}\n", .{
+        glyph_count, cell_w, cell_h, lo, hi, cell_area, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_subscript selftest\n", .{});
+    return 1;
+}
