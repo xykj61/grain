@@ -36,16 +36,12 @@ assert selftest.ok else "checker-paint: selftest exited non-zero -- ${selftest.o
 let out = trim selftest.out
 say "checker-paint: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-checker-paint' && echo yes"]
-assert (trim green.out) == "yes" else "checker-paint: selftest did not print the GREEN checker-paint line"
+assert selftest.out contains "GREEN image-checker-paint" else "checker-paint: selftest did not print the GREEN checker-paint line"
 
-let roundtrip = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-trips through the open QOI codec byte-for-byte' && echo yes"]
-assert (trim roundtrip.out) == "yes" else "checker-paint: the painted checker did not prove its QOI round trip"
+assert selftest.out contains "round-trips through the open QOI codec byte-for-byte" else "checker-paint: the painted checker did not prove its QOI round trip"
 
-let checker = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a true checker: orthogonal neighbors differ, diagonal neighbors share' && echo yes"]
-assert (trim checker.out) == "yes" else "checker-paint: the parity did not prove it is a true checkerboard"
+assert selftest.out contains "a true checker: orthogonal neighbors differ, diagonal neighbors share" else "checker-paint: the parity did not prove it is a true checkerboard"
 
-let clip = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'clips the last band to one pixel and still tiles to the edge' && echo yes"]
-assert (trim clip.out) == "yes" else "checker-paint: the non-dividing partition did not prove it clips and tiles exactly"
+assert selftest.out contains "clips the last band to one pixel and still tiles to the edge" else "checker-paint: the non-dividing partition did not prove it clips and tiles exactly"
 
 say "checker-paint: GREEN -- a checkerboard painted onto a real image (a true two-color parity grid, boundary cells clipped, the conventional transparency ground), the cells tiling exactly, each its color, its blend true, its round trip byte-for-byte, proven on metal."

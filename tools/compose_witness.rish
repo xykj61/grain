@@ -35,7 +35,6 @@ assert selftest.ok else "compose: selftest exited non-zero -- ${selftest.out}"
 let out = trim selftest.out
 say "compose: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-compose' && echo yes"]
-assert (trim green.out) == "yes" else "compose: selftest did not print the GREEN compose line"
+assert selftest.out contains "GREEN image-compose" else "compose: selftest did not print the GREEN compose line"
 
 say "compose: GREEN -- one image composited over another, proven on metal: opaque overwrite, translucent src-over blend, the single-sprite window render, a byte-for-byte QOI round trip, and every malformed compose refused by name having written nothing."

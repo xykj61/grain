@@ -36,22 +36,16 @@ assert selftest.ok else "text-layout: selftest exited non-zero -- ${selftest.out
 let out = trim selftest.out
 say "text-layout: ${out}"
 
-let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-text-layout' && echo yes"]
-assert (trim green.out) == "yes" else "text-layout: selftest did not print the GREEN layout line"
+assert selftest.out contains "GREEN image-text-layout" else "text-layout: selftest did not print the GREEN layout line"
 
-let refuse = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'refused by name' && echo yes"]
-assert (trim refuse.out) == "yes" else "text-layout: the named refusals were not proven"
+assert selftest.out contains "refused by name" else "text-layout: the named refusals were not proven"
 
-let band = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'full printable band 32..126' && echo yes"]
-assert (trim band.out) == "yes" else "text-layout: the full printable band did not lay out clean"
+assert selftest.out contains "full printable band 32..126" else "text-layout: the full printable band did not lay out clean"
 
-let wrap = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'wrap breaks' && echo yes"]
-assert (trim wrap.out) == "yes" else "text-layout: word-wrap did not break a line at a space boundary"
+assert selftest.out contains "wrap breaks" else "text-layout: word-wrap did not break a line at a space boundary"
 
-let split = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'break-wrap splits' && echo yes"]
-assert (trim split.out) == "yes" else "text-layout: break-wrap did not split an over-wide word within the max"
+assert selftest.out contains "break-wrap splits" else "text-layout: break-wrap did not split an over-wide word within the max"
 
-let justify = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'justify flushes' && echo yes"]
-assert (trim justify.out) == "yes" else "text-layout: justify did not flush a line's interior gaps to the target width"
+assert selftest.out contains "justify flushes" else "text-layout: justify did not flush a line's interior gaps to the target width"
 
 say "text-layout: GREEN -- the fonts become usable geometry; a line lays out at proven pen origins and width, a paragraph word-wraps to a max width with honest per-line widths, an over-wide word splits at a glyph boundary within the max with no glyph lost, justify flushes a line's interior gaps to a wider target with a single word left untouched, the printable band lays clean, and an uncovered byte, a zero max, or a too-tight justify target refuses by name."

@@ -39,10 +39,8 @@ assert selftest.ok else "font5x7-upper-accented: selftest exited non-zero -- ${s
 let out = trim selftest.out
 say "font5x7-upper-accented: ${out}"
 
-let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-font5x7-upper-accented' && echo yes"]
-assert (trim green.out) == "yes" else "font5x7-upper-accented: selftest did not print the GREEN corpus line"
+assert selftest.out contains "GREEN image-font5x7-upper-accented" else "font5x7-upper-accented: selftest did not print the GREEN corpus line"
 
-let round = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'round-trip byte-identical' && echo yes"]
-assert (trim round.out) == "yes" else "font5x7-upper-accented: round-trip was not byte-identical"
+assert selftest.out contains "round-trip byte-identical" else "font5x7-upper-accented: round-trip was not byte-identical"
 
 say "font5x7-upper-accented: GREEN -- the open uppercase accented-letters corpus whole; eight capitals round-trip byte-identical, all present, distinct, and legible, seven marked above and the C cedilla below; the font gains the capitals a civic surface needs to open a name that ASCII cannot spell."

@@ -40,19 +40,14 @@ assert selftest.ok else "repeat-radial-paint: selftest exited non-zero -- ${self
 let out = trim selftest.out
 say "repeat-radial-paint: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-repeat-radial-paint' && echo yes"]
-assert (trim green.out) == "yes" else "repeat-radial-paint: selftest did not print the GREEN repeat-radial-paint line"
+assert selftest.out contains "GREEN image-repeat-radial-paint" else "repeat-radial-paint: selftest did not print the GREEN repeat-radial-paint line"
 
-let roundtrip = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-trips through the open QOI codec byte-for-byte' && echo yes"]
-assert (trim roundtrip.out) == "yes" else "repeat-radial-paint: the painted rings did not prove their QOI round trip"
+assert selftest.out contains "round-trips through the open QOI codec byte-for-byte" else "repeat-radial-paint: the painted rings did not prove their QOI round trip"
 
-let tiles = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the ramp tiles as concentric rings' && echo yes"]
-assert (trim tiles.out) == "yes" else "repeat-radial-paint: the rings did not prove the ramp tiles outward"
+assert selftest.out contains "the ramp tiles as concentric rings" else "repeat-radial-paint: the rings did not prove the ramp tiles outward"
 
-let seam = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'seams hard' && echo yes"]
-assert (trim seam.out) == "yes" else "repeat-radial-paint: the rings did not prove their hard band seam"
+assert selftest.out contains "seams hard" else "repeat-radial-paint: the rings did not prove their hard band seam"
 
-let circle = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the pattern is a true circle' && echo yes"]
-assert (trim circle.out) == "yes" else "repeat-radial-paint: the rings did not prove they are a true circle"
+assert selftest.out contains "the pattern is a true circle" else "repeat-radial-paint: the rings did not prove they are a true circle"
 
 say "repeat-radial-paint: GREEN -- a repeating radial positioned gradient painted onto a real image, its center and ring tiling exact, its seam hard, its circle true, its round trip byte-for-byte, proven on metal."

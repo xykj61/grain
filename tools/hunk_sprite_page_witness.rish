@@ -34,19 +34,15 @@ assert selftest.ok else "hunk-sprite-page: selftest exited non-zero — ${selfte
 let out = trim selftest.out
 say "hunk-sprite-page: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN sprite-page' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-sprite-page: selftest did not print the GREEN page line"
+assert selftest.out contains "GREEN sprite-page" else "hunk-sprite-page: selftest did not print the GREEN page line"
 
-let differ = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'pages differ' && echo yes"]
-assert (trim differ.out) == "yes" else "hunk-sprite-page: the selftest did not prove the two product pages differ"
+assert selftest.out contains "pages differ" else "hunk-sprite-page: the selftest did not prove the two product pages differ"
 
-let nodrift = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'equals a direct down-map cell for cell' && echo yes"]
-assert (trim nodrift.out) == "yes" else "hunk-sprite-page: the selftest did not prove the page equals a direct down-map"
+assert selftest.out contains "equals a direct down-map cell for cell" else "hunk-sprite-page: the selftest did not prove the page equals a direct down-map"
 
 # HUNK4 stays GREEN — the page reuses sprite.render; the index underneath must still hold.
 let sprite = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/sprite.rye -femit-bin=image/bin/sprite && image/bin/sprite selftest 2>&1"]
 assert sprite.ok else "hunk-sprite-page: HUNK4 sprite re-run failed — ${sprite.out}"
-let sprite_green = run ["sh" "-c" "printf '%s' '${sprite.out}' | grep -q 'GREEN image-sprite' && echo yes"]
-assert (trim sprite_green.out) == "yes" else "hunk-sprite-page: HUNK4 sprite selftest did not stay GREEN"
+assert sprite.out contains "GREEN image-sprite" else "hunk-sprite-page: HUNK4 sprite selftest did not stay GREEN"
 
 say "hunk-sprite-page: GREEN — a marketplace product page is rendered and seen on metal; HUNK4 index underneath stays GREEN. HUNK5 lands."

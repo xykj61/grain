@@ -38,10 +38,8 @@ assert selftest.ok else "font5x7-upper-latin1: selftest exited non-zero -- ${sel
 let out = trim selftest.out
 say "font5x7-upper-latin1: ${out}"
 
-let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-font5x7-upper-latin1' && echo yes"]
-assert (trim green.out) == "yes" else "font5x7-upper-latin1: selftest did not print the GREEN corpus line"
+assert selftest.out contains "GREEN image-font5x7-upper-latin1" else "font5x7-upper-latin1: selftest did not print the GREEN corpus line"
 
-let round = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'round-trip byte-identical' && echo yes"]
-assert (trim round.out) == "yes" else "font5x7-upper-latin1: round-trip was not byte-identical"
+assert selftest.out contains "round-trip byte-identical" else "font5x7-upper-latin1: round-trip was not byte-identical"
 
 say "font5x7-upper-latin1: GREEN -- the uppercase accented set whole; thirteen capitals round-trip byte-identical, all present, distinct, and legible, all marked above and the grave five leaning left; every accented lowercase letter the tree draws now has its capital, so a civic surface prints a full name in all-caps with its true marks."

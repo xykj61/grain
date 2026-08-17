@@ -37,19 +37,14 @@ assert selftest.ok else "radial-paint: selftest exited non-zero -- ${selftest.ou
 let out = trim selftest.out
 say "radial-paint: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-radial-paint' && echo yes"]
-assert (trim green.out) == "yes" else "radial-paint: selftest did not print the GREEN radial-paint line"
+assert selftest.out contains "GREEN image-radial-paint" else "radial-paint: selftest did not print the GREEN radial-paint line"
 
-let roundtrip = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-trips through the open QOI codec byte-for-byte' && echo yes"]
-assert (trim roundtrip.out) == "yes" else "radial-paint: the painted disc did not prove its QOI round trip"
+assert selftest.out contains "round-trips through the open QOI codec byte-for-byte" else "radial-paint: the painted disc did not prove its QOI round trip"
 
-let ring = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'share one constant ring color' && echo yes"]
-assert (trim ring.out) == "yes" else "radial-paint: the disc did not prove its rings are constant (radial symmetry)"
+assert selftest.out contains "share one constant ring color" else "radial-paint: the disc did not prove its rings are constant (radial symmetry)"
 
-let monotonic = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the position grows with the radius' && echo yes"]
-assert (trim monotonic.out) == "yes" else "radial-paint: the disc did not prove its position grows with the radius"
+assert selftest.out contains "the position grows with the radius" else "radial-paint: the disc did not prove its position grows with the radius"
 
-let bend = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'bend the disc where even spacing cannot' && echo yes"]
-assert (trim bend.out) == "yes" else "radial-paint: the disc did not prove it bends with position"
+assert selftest.out contains "bend the disc where even spacing cannot" else "radial-paint: the disc did not prove it bends with position"
 
 say "radial-paint: GREEN -- a radial positioned gradient painted onto a real image, its center and corners exact, its rings constant, its radius monotonic, its bend measured, its round trip byte-for-byte, proven on metal."

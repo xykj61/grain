@@ -31,10 +31,8 @@ assert selftest.ok else "font5x7: selftest exited non-zero -- ${selftest.out}"
 let out = trim selftest.out
 say "font5x7: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-font5x7' && echo yes"]
-assert (trim green.out) == "yes" else "font5x7: selftest did not print the GREEN corpus line"
+assert selftest.out contains "GREEN image-font5x7" else "font5x7: selftest did not print the GREEN corpus line"
 
-let round = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-trip byte-identical' && echo yes"]
-assert (trim round.out) == "yes" else "font5x7: round-trip was not byte-identical"
+assert selftest.out contains "round-trip byte-identical" else "font5x7: round-trip was not byte-identical"
 
 say "font5x7: GREEN -- the first open font corpus whole; ten numerals round-trip byte-identical, all present, distinct, and legible."

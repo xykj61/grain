@@ -29,5 +29,4 @@ assert selftest.ok else "glyph-accent: selftest exited non-zero -- ${selftest.ou
 let out = trim selftest.out
 say "glyph-accent: ${out}"
 
-let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-glyph-accent' && echo yes"]
-assert (trim green.out) == "yes" else "glyph-accent: selftest did not print the GREEN primitive line"
+assert selftest.out contains "GREEN image-glyph-accent" else "glyph-accent: selftest did not print the GREEN primitive line"
