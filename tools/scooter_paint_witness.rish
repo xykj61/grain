@@ -1,0 +1,38 @@
+# tools/scooter_paint_witness.rish -- Scooter, the painted face on metal.
+#
+# pond/apps/scooter_paint.rye is the pond bridge rung of Season G's open-media family: it feeds a LIVE Scooter
+# conversation through image/text_grid.rye, the abstract terminal-grid painter. scooter_view.rye folds an
+# append-only channel into a fixed 24x80 Frame of character cells; this module takes that Frame and paints it
+# into a real image, so a keeper's conversation becomes pixels a surface can show, not only bytes a terminal
+# parses. This witness builds the module to a binary and asserts its selftest speaks GREEN over the cruxes:
+#   - A real conversation folds -- a 2-post channel's header reads "scooter: 2 posts", so the face is a true
+#     journal, not a crafted grid.
+#   - Sized exactly -- the image is frame_cols column pitches wide by frame_rows cell heights tall.
+#   - Faithful by measure -- the bridge adds nothing but its guard: a paintable frame renders BYTE-FOR-BYTE the
+#     same image text_grid paints straight from the same cells (a pure pass-through).
+#   - Deterministic and portable -- the same channel renders the same image, which round-trips through the open
+#     QOI codec byte-for-byte.
+#   - The honest edge -- a frame cell carrying a byte the font cannot draw refuses ScooterFrameUnpaintable by
+#     name, having painted nothing.
+#
+# Facts only, custody-first: it reads a public journal a member already holds and paints it; no network, no key
+# signs, no funds. The wire that carries the image between two Constel piers reaches the serve gate -- the
+# maintainer's hand, not here.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/scooter_paint_witness.rish
+
+say "scooter-paint: Language EN -- a live channel's terminal frame painted into a portable image a surface can show."
+say "scooter-paint: Lens TAME -- pond composes image, faithful byte-for-byte to the painter, unpaintable cells refused by name, no key and no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+
+let bin = "pond/bin/scooter-paint"
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/scooter_paint.rye -femit-bin=${bin}"]
+assert build.ok else "scooter-paint: scooter_paint build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "scooter-paint: scooter_paint selftest exited non-zero"
+
+say selftest.out
+say "scooter-paint: GREEN -- the painted conversation is faithful, deterministic, portable, and refuses the unpaintable by name."

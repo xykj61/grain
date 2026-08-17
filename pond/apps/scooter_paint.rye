@@ -1,0 +1,171 @@
+//! pond/apps/scooter_paint.rye -- Scooter, the painted face: a live channel folded to a frame, then to pixels.
+//!
+//! Season G (Open Media Primitives) -- the pond bridge rung. image/text_grid.rye built the join in the abstract:
+//! it paints ANY monospace grid of character bytes into an image. This module is the join made LIVE -- it feeds a
+//! real Scooter conversation through it. scooter_view.rye folds an append-only channel into a fixed 24x80 Frame of
+//! character cells; this rung takes that Frame's cells and hands them to text_grid.render_grid, so a keeper's
+//! conversation is not only bytes a terminal parses but PIXELS a surface (Grainphone, Realidream, Skate) shows.
+//!
+//! Layering held right: pond composes image, never the reverse. text_grid is self-contained in image/ and knows
+//! nothing of Scooter; this pond rung is the only place the two families meet, and it imports DOWN into image/.
+//!
+//! Pattern elder: image/text_grid.rye run_selftest -- it painted a hand-built grid shaped like a Frame; this rung
+//! paints a Frame folded from a real channel, closing the loop the elder left open by one line.
+//!
+//! The crux is one faithful, bounded bridge:
+//!   - render_channel folds a channel to a Frame (scooter_view.render) and paints it -- the whole verb a surface calls.
+//!   - paint_frame guards the honest edge: a Frame cell could carry a byte the 5x7 ASCII font cannot draw (a post
+//!     with a stray control or high byte), so paint_frame refuses ScooterFrameUnpaintable BY NAME before a pixel
+//!     moves, rather than letting text_grid mislabel it as a shape mismatch downstream.
+//!   - The bridge adds nothing but that guard: a paintable Frame renders BYTE-FOR-BYTE the same image text_grid
+//!     would paint from the same cells, so the fold stays referentially transparent and the image round-trips
+//!     through the open QOI codec unchanged.
+//!
+//! Facts only, custody-first: it reads a public journal a member already holds and paints it -- no network, no key
+//! signs, no funds. The wire that carries the image between two Constel piers reaches the serve gate (the
+//! maintainer's hand), and the live TTY that would show it is Dexter's own later rung.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build pond/apps/scooter_paint.rye -femit-bin=pond/bin/scooter-paint
+//!   pond/bin/scooter-paint selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const channel = @import("scooter_channel.rye");
+const view = @import("scooter_view.rye");
+const grid = @import("text_grid.rye");
+const glyph = @import("glyph.rye");
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const font_ascii = @import("font5x7_ascii.rye");
+
+pub const scooter_paint_version = "20260817.132800";
+
+/// The fixed number of cells in a Scooter frame -- the terminal grid this bridge paints, named as u32 for the
+/// bounded walk below. Equal to scooter_view's frame_rows * frame_cols (24 * 80 = 1920), asserted at use.
+pub const frame_cells: u32 = view.frame_rows * view.frame_cols;
+
+pub const ScooterPaintError = error{
+    ScooterFrameUnpaintable, // a frame cell carries a byte outside printable ASCII (space..'~') the font cannot draw
+};
+
+/// Is every cell of a folded frame a printable-ASCII byte the shared 5x7 font can draw? A Scooter post is member
+/// text, so a stray control or high byte is possible; this is the honest gate before the painter is asked to draw.
+pub fn frame_is_paintable(frame: *const view.Frame) bool {
+    // invariant: the frame is exactly the fixed terminal grid, so the walk below is provably finite.
+    assert(frame.cells.len == frame_cells);
+    var i: u32 = 0;
+    while (i < frame_cells) : (i += 1) {
+        const b = frame.cells[i];
+        // Printable ASCII is space (0x20) through '~' (0x7e) -- exactly what font5x7_ascii's atlas covers.
+        if (b < 0x20 or b > 0x7e) return false;
+    }
+    // invariant: an unbroken walk visited every cell of the grid.
+    assert(i == frame_cells);
+    return true;
+}
+
+/// Paint a folded Scooter frame into a fresh image sized exactly to the terminal grid: `fg` ink over a `bg` ground.
+/// Refuses ScooterFrameUnpaintable by name if any cell carries a byte the font cannot draw, before a pixel moves.
+pub fn paint_frame(
+    allocator: std.mem.Allocator,
+    atlas: *const glyph.GlyphAtlas,
+    frame: *const view.Frame,
+    fg: color.Rgba,
+    bg: color.Rgba,
+) !qoi.Pixmap {
+    // invariant: the frame is the fixed 24x80 grid text_grid paints one column pitch per cell.
+    assert(frame.cells.len == frame_cells);
+    // invariant: every cell draws, or we refuse by name here rather than mislabel it a shape mismatch downstream.
+    if (!frame_is_paintable(frame)) return error.ScooterFrameUnpaintable;
+    return grid.render_grid(allocator, atlas, frame.cells[0..], view.frame_cols, view.frame_rows, fg, bg);
+}
+
+/// The whole verb a surface reaches for: fold a channel to a terminal frame, then paint it into an image. Ink over
+/// a solid ground, sized exactly to the 24x80 grid; the same channel renders the same image every time.
+pub fn render_channel(
+    allocator: std.mem.Allocator,
+    atlas: *const glyph.GlyphAtlas,
+    ch: *const channel.Channel,
+    fg: color.Rgba,
+    bg: color.Rgba,
+) !qoi.Pixmap {
+    const frame = view.render(ch);
+    // invariant: the fold produced the fixed terminal grid, never more rows than the frame holds.
+    assert(frame.cells.len == frame_cells);
+    assert(frame.rows_used <= view.frame_rows);
+    return paint_frame(allocator, atlas, &frame, fg, bg);
+}
+
+// --- selftest: fold a real conversation to pixels, prove the bridge faithful, deterministic, and refusing --------
+
+const host_key: u32 = 1001;
+const ada: u32 = 2002;
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try font_ascii.build_atlas(garden);
+
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    // A real Scooter conversation: a host opens a channel, admits a member, two posts land.
+    var ch = channel.Channel.open(host_key);
+    try ch.admit(host_key, ada);
+    _ = try ch.post(ada, "hello");
+    _ = try ch.post(host_key, "hi ada");
+
+    // The fold is a real terminal face -- its header row reads the true post count, so this is a conversation, not
+    // a crafted grid. (row_text trims the trailing padding for the eye.)
+    const frame = view.render(&ch);
+    // invariant: two posts landed, so the header names two.
+    assert(std.mem.eql(u8, view.row_text(&frame, 0), "scooter: 2 posts"));
+
+    // The whole verb hands back the conversation as an image, sized exactly to the 24x80 grid.
+    const face = try render_channel(garden, &atlas, &ch, black, white);
+    assert(face.width == view.frame_cols * grid.col_pitch);
+    assert(face.height == view.frame_rows * @as(u32, atlas.cell_h));
+    assert(face.pixels.len == @as(usize, face.width) * @as(usize, face.height) * 4);
+
+    // Faithful by measure: the bridge adds nothing but its guard -- a paintable frame renders BYTE-FOR-BYTE the
+    // same image text_grid would paint straight from the same cells. The pond rung is a pure, honest pass-through.
+    const straight = try grid.render_grid(garden, &atlas, frame.cells[0..], view.frame_cols, view.frame_rows, black, white);
+    assert(face.same_bytes(&straight));
+
+    // Determinism: the same channel renders the same conversation image every time.
+    const face2 = try render_channel(garden, &atlas, &ch, black, white);
+    assert(face2.same_bytes(&face));
+
+    // The conversation, painted, is a real portable image -- it round-trips through the open QOI codec byte-for-byte.
+    const cap = qoi.encoded_bound(face.width * face.height);
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&face, dst);
+    const back = try qoi.decode(garden, dst[0..enc.len]);
+    assert(back.same_bytes(&face));
+
+    // The honest edge, refused by name: a frame cell carrying a byte the font cannot draw refuses
+    // ScooterFrameUnpaintable, having painted nothing. Copy the good frame and poke one high byte.
+    {
+        var bad = frame;
+        bad.cells[0] = 0x80; // a high byte no printable-ASCII glyph covers
+        // invariant: the poked frame is no longer wholly paintable.
+        assert(!frame_is_paintable(&bad));
+        if (paint_frame(garden, &atlas, &bad, black, white)) |_| {
+            return error.UnpaintableSlipped;
+        } else |e| if (e != error.ScooterFrameUnpaintable) return error.WrongUnpaintable;
+    }
+
+    print("GREEN scooter-paint: a real 2-post channel folded to a {d}x{d} frame and painted into a {d}x{d} image, byte-for-byte what text_grid paints from the same cells, deterministic, round-trips through QOI, and an unpaintable frame refuses ScooterFrameUnpaintable by name\n", .{
+        view.frame_cols, view.frame_rows, face.width, face.height,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: scooter-paint selftest\n", .{});
+    return 1;
+}
