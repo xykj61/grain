@@ -23,6 +23,10 @@
 #     text_grid.render_grid_cells; no header pixel stays the old white page (the band is a filled bar, where the
 #     fg-only twin left it white between letters), the body page below is untouched, it round-trips through QOI,
 #     and a mis-sized background palette refuses GridBgMismatch by name.
+#   - The drawn caret -- render_session paints a composing session with a visible block CURSOR at the caret cell
+#     (inverse video): the caret cell reads a solid ink block where the plain painted session reads solid ground,
+#     the flip confined byte-for-byte to that one cell, the cursor clearing and following the keeper when the caret
+#     walks home, and the whole drawn face round-trips through QOI.
 #
 # Facts only, custody-first: it reads a public journal a member already holds and paints it; no network, no key
 # signs, no funds. The wire that carries the image between two Constel piers reaches the serve gate -- the
