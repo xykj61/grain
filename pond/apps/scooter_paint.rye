@@ -38,9 +38,10 @@
 //!
 //! The drawn caret joins a composing session (scooter_compose) to the painted face: render_session folds the session
 //! to a frame and paints it with a visible block CURSOR at the caret cell -- inverse video (the glyph in the ground
-//! colour over an ink-colour ground), the classic terminal cursor a keeper watches. It is pure composition over
-//! paint_frame_cells: the caret is one inverted cell, the conversation untouched, so the drawn face equals the plain
-//! painted session everywhere but that single cell, and the cursor clears and follows the keeper as the caret moves.
+//! colour over an ink-colour ground), the classic terminal cursor a keeper watches. It is a pure pass-through of
+//! text_grid.render_grid_cursor -- the abstract cursor primitive every grid surface shares -- so the caret is one
+//! inverted cell, the conversation untouched: the drawn face equals the plain painted session everywhere but that
+//! single cell, and the cursor clears and follows the keeper as the caret moves.
 //!
 //! Facts only, custody-first: it reads a public journal a member already holds and paints it -- no network, no key
 //! signs, no funds. The wire that carries the image between two Constel piers reaches the serve gate (the
@@ -228,8 +229,9 @@ pub fn render_channel_bar(
 /// already tracks caret_col (where the cursor sits in the prompt row); this paints that column as inverse video --
 /// the caret cell draws its glyph in `ground` over an `ink` ground, so it reads as a solid ink block over a space or
 /// a knocked-out glyph over a letter, exactly the block cursor every terminal shows. Every other cell reads `ink` over
-/// `ground`. Pure composition over paint_frame_cells: the caret is one cell, the conversation untouched. The same
-/// session renders the same image every time; a mis-sized palette refuses GridBgMismatch by name (inherited).
+/// `ground`. Pure pass-through of text_grid.render_grid_cursor, the abstract cursor primitive: the caret is one cell,
+/// the conversation untouched. The same session renders the same image every time; the frame is checked paintable
+/// first, so a stray high byte refuses ScooterFrameUnpaintable by name before the painter is asked to draw.
 pub fn render_session(
     allocator: std.mem.Allocator,
     atlas: *const glyph.GlyphAtlas,
@@ -238,8 +240,10 @@ pub fn render_session(
     ground: color.Rgba,
 ) !qoi.Pixmap {
     const frame = session.frame();
-    // invariant: the fold produced the fixed terminal grid, so the palettes below index it safely.
+    // invariant: the fold produced the fixed terminal grid, so the caret index below is within the grid.
     assert(frame.cells.len == frame_cells);
+    // invariant: every cell draws, or we refuse by name here rather than mislabel it downstream.
+    if (!frame_is_paintable(&frame)) return error.ScooterFrameUnpaintable;
 
     // The caret cell: the prompt row (the reserved last row) at the tracked caret column. caret_col already asserts
     // the column is within the row, and prompt_row is a real row, so the flat index is provably within the grid.
@@ -247,20 +251,7 @@ pub fn render_session(
     // invariant: the caret cell is a real cell of the fixed grid.
     assert(caret < frame_cells);
 
-    // Build the two per-cell palettes: `ink` over `ground` everywhere, INVERTED at the caret cell so the cursor reads
-    // inverse video (glyph in the ground colour over an ink-colour ground -- a solid block over a space).
-    const fg = try allocator.alloc(color.Rgba, frame_cells);
-    const bg = try allocator.alloc(color.Rgba, frame_cells);
-    var i: u32 = 0;
-    while (i < frame_cells) : (i += 1) {
-        const is_caret = i == caret;
-        fg[i] = if (is_caret) ground else ink;
-        bg[i] = if (is_caret) ink else ground;
-    }
-    // invariant: each palette carries exactly one colour per cell of the fixed grid.
-    assert(fg.len == frame_cells);
-    assert(bg.len == frame_cells);
-    return paint_frame_cells(allocator, atlas, &frame, fg, bg);
+    return grid.render_grid_cursor(allocator, atlas, frame.cells[0..], view.frame_cols, view.frame_rows, ink, ground, caret);
 }
 
 // --- selftest: fold a real conversation to pixels, prove the bridge faithful, deterministic, and refusing --------
