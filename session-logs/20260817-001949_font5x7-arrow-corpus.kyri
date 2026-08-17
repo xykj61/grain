@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260817.001949
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image -- the open arrow corpus, GREEN
+prompt Autonomous loop -- take the next agent-doable lap Lindy-first crux-first; Season G open-media; send often; stop at custody gates.
+think Second lap this run. The README next-rungs line (after the double-line box corpus landed) names arrows and the diagonal box marks. Arrows are the crux: where the box corpora frame and rule, arrows point -- the mark a terminal (Dexter/Scooter) uses to scroll a list or mark a selection.
+think Chose a tight, contiguous, low-risk set: the six basic arrows U+2190..U+2195 (left, up, right, down, and the two axis double-heads). Left the eight diagonals for their own round rather than risk sloppy hand-drawn diagonals on a 5x7 grid.
+think Design: shaft on the middle row/column with a filled-triangle head for the four cardinals (mirror/flip of one drawing), outward chevron heads for the two double-heads. The drawings are the specification; coverage lifted from the art.
+obs Followed the exact box-corpus pattern (explicit ascending codepoint table, art-is-spec, round-trip + present + distinct + legible-band). Ink came out 9..12 of 35 as designed; set an honest band 6..16. Compression reported as a fact (encoded 252 > raw 210) -- like the sparse box marks the round-length stream carries per-run overhead, so the round-trip is the proof, never a false compression-direction invariant.
+loom witness=font5x7_arrow_witness marks=6 cell=5x7 ink_lo=9 ink_hi=12 encoded_bytes=252 raw_bytes=210
+file image/font5x7_arrow.rye the six directional arrows drawn in the open, built into a gfa1 atlas, round-trip byte-identical
+file tools/font5x7_arrow_witness.rish proves the corpus on metal -- present, distinct, legible, byte-for-byte
+file image/README.md Season G section gains the arrow bullet; next-rungs line narrows to the diagonal box marks
+recommend keep-going -- next Season G font rung is the diagonal box marks (or rounded corners), then proving the codecs on real corpora; all agent-doable, no gate.
