@@ -7,13 +7,13 @@
 **Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
 **Voice:** Kyri
 **Kin:** [`reds-first`](20260729-224828_reds-first-and-the-allocation.md) -- reds-first names what the allocation does *after* a red; Standfast names the *stop itself*.
-**Gratitude:** [`../gratitude/toyota-production-system.md`](../gratitude/toyota-production-system.md) -- the andon cord and *jidoka*, studied clean-room, given our own word.
+**Gratitude:** [`../gratitude/toyota-production-system.md`](../gratitude/toyota-production-system.md) -- the manufacturing lineage that first stopped a line for a defect, studied clean-room and given our own word. The teachers and their terms are named there, and there alone.
 
 ---
 
 ## The gesture we are naming
 
-On the Toyota line, any worker who saw a defect could pull a cord and stop the entire line. The cost of stopping was accepted on purpose, because the alternative -- letting a known defect flow downstream into a hundred finished cars -- was far more expensive. Quality was built *in* by refusing to build *over* a fault. Toyota called the principle *jidoka*, and the cord the *andon*. We thank them for it, and we give the reflex our own plain word: **Standfast.**
+A line that keeps moving over a known defect spends its speed building a hundred flawed things at once; a line that stops the instant the defect is seen spends a pause and saves the hundred. Quality is built *in* by refusing to build *over* a fault. That discipline is old and proven, handed down by the manufacturing tradition we thank in [`../gratitude/toyota-production-system.md`](../gratitude/toyota-production-system.md) -- the teachers and their words kept there, in the gratitude room, per the silo technique. The name **Standfast**, and the shape it takes here, are our own.
 
 To Standfast is three things at once:
 

@@ -24,6 +24,12 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260817.173615` -- Five breach molt debride renames queued (prep, no cut yet)
+
+**Walk-back nib:** `27e1916049`
+**Swept:** *nothing yet* -- planted ahead of five newly approved breaches so each keeps its walk-back before it cuts. Four are **waymark redraws** (same ladder, same goals, chosen on Keaton's word and reserved in the derive exclude): **DREY -> DREY** (`season-a-mikrophone-forgetful-capture`, idx 1189), **FORA -> FORA** (`constel-local-test-constellations`, idx 1594), **WADE -> WADE** (`bit-design-system-surface-and-dimeroll-entities`, idx 127), **LOWE -> LOWE** (`cion-molt-living-mutants-and-fossils`, idx 2813). The fifth is a **module rename**, **Dimeroll -> Dimeroll** (a Comlink-tendency name change, ~147 living refs). Each is a **breach molt debride** that executes as its own signed round; DREY alone touches ~502 living sites (DREY0..DREY16 rung labels, `tools/drey_*` witnesses, `mikrophone/` modules, and cross-refs from Constel/Lotus).
+**What waits there, worth recalling:** at nib `27e1916049` and every commit before it, the tree still labels every site with the elder marks -- DREY, FORA, WADE, LOWE, and Dimeroll. Walk back with `git show 27e1916049:.claude/rules/waymark-ladders.md` or `git log --oneline 27e1916049`. New draws seated in `tools/waymark_derive.rish` (seated-draws comment + exclude) and `.claude/rules/waymark-ladders.md`; retirement noted in `context/LEXICON.md` (DREY), `crux/REMEMBER.md` open doors, and `active-designing/20260816-205859_double-seat-expansion-eight-seasons.md`.
+
 ### `20260817.172514` -- REMEMBER Prior Git nib stack condensed (the code-edge trail folded to a pointer)
 
 **Walk-back nib:** `d7e7694385`
