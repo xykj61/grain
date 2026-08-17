@@ -1,0 +1,210 @@
+//! image/font5x7_boxdouble.rye -- the open box-drawing corpus: the double-line box set (Season G, font content).
+//!
+//! Season G (Open Media Primitives) - the second content BEYOND printable ASCII for the open glyph atlas
+//! image/glyph.rye (gfa1), the double-line sibling of image/font5x7_box.rye (the light single-line set). Where the
+//! light corpus drew the eleven single-line marks at U+2500..U+253C, this corpus draws their eleven DOUBLE-line twins
+//! -- horizontal, vertical, the four corners, the four tees, and the cross -- at their real Unicode codepoints
+//! U+2550..U+256C. These are exactly the marks a terminal surface (the Dexter/Scooter family) reaches for to frame a
+//! heavier panel, rule a bold divider, or box a titled table, drawn in our own open hand on the same 5x7 body.
+//!
+//! The source stays plain ASCII (ASCII-first): the codepoints are written as numeric literals (0x2550 ...) and each
+//! mark is named in an ASCII comment, so no non-ASCII byte enters the file even though the glyphs it builds cover a
+//! non-ASCII range. The codepoints are NOT contiguous (they skip the light and diagonal marks the double set leaves
+//! out), so this corpus carries an explicit ascending codepoint table -- the shape the gfa1 encoder trusts (strictly
+//! ascending, shared cell, coverage length == cell area). The drawings ARE the specification: each mark is seven rows
+//! of five cells in ASCII line art ('#' full ink, '.' none), with two parallel rails -- the horizontal rails on rows
+//! 2 and 4, the vertical rails on columns 1 and 3, straddling the single-line pen's middle row (3) and middle column
+//! (2) -- that a reader audits by eye; the coverage bytes are derived from that art, never the reverse. build_atlas
+//! turns the eleven drawings into a glyph.GlyphAtlas the gfa1 encoder accepts, so the property that matters stays
+//! provable on metal: decode(encode(atlas)) recovers every glyph byte-for-byte, the marks are present and distinct,
+//! and each reads within an honest legibility band. No network, no key, no funds -- the marks a surface reads the day
+//! it wants to draw a heavier frame, on our own open font.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_boxdouble.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+
+pub const font5x7_boxdouble_version = "20260817.000000";
+
+/// Every glyph in this corpus shares one 5-wide, 7-tall cell -- the same body the ASCII and light-box corpora carry.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance: the cell width plus one column of daylight, the same advance the sibling corpora carry.
+pub const box_advance: u8 = cell_w + 1;
+
+/// The corpus holds exactly the eleven double-line box-drawing marks named in the table below.
+pub const box_count: u32 = 11;
+
+/// Cells per glyph -- the coverage length every mark carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The eleven double-line box-drawing codepoints, strictly ascending -- the order the gfa1 encoder trusts. Each
+/// aligns by index with box_art below. Written as numeric literals so the source stays plain ASCII while the glyphs
+/// cover a non-ASCII range:
+///   0x2550 horizontal, 0x2551 vertical, 0x2554 down+right corner, 0x2557 down+left corner, 0x255A up+right corner,
+///   0x255D up+left corner, 0x2560 vertical+right tee, 0x2563 vertical+left tee, 0x2566 horizontal+down tee,
+///   0x2569 horizontal+up tee, 0x256C cross. These are the double single-line set; the light single-line marks
+///   (font5x7_box.rye) and the diagonal marks are their own corpora, so the codepoints are named outright rather
+///   than derived from a base.
+const box_codepoints = [box_count]u32{
+    0x2550, 0x2551, 0x2554, 0x2557, 0x255A, 0x255D, 0x2560, 0x2563, 0x2566, 0x2569, 0x256C,
+};
+
+/// The eleven marks, drawn in the open. Each is seven rows of five cells; '#' ink, '.' background. Two parallel rails
+/// carry the "double" line: the horizontal rails ride rows 2 and 4, the vertical rails ride columns 1 and 3. A reader
+/// audits every mark here by eye, and the coverage bytes are lifted from this art, never guessed.
+const box_art = [box_count][cell_h][]const u8{
+    .{ ".....", ".....", "#####", ".....", "#####", ".....", "....." }, // U+2550 horizontal (two rails, rows 2 and 4)
+    .{ ".#.#.", ".#.#.", ".#.#.", ".#.#.", ".#.#.", ".#.#.", ".#.#." }, // U+2551 vertical (two rails, cols 1 and 3)
+    .{ ".....", ".....", ".####", ".#...", ".#.##", ".#.#.", ".#.#." }, // U+2554 down and right
+    .{ ".....", ".....", "####.", "...#.", "##.#.", ".#.#.", ".#.#." }, // U+2557 down and left
+    .{ ".#.#.", ".#.#.", ".#.##", ".#...", ".####", ".....", "....." }, // U+255A up and right
+    .{ ".#.#.", ".#.#.", "##.#.", "...#.", "####.", ".....", "....." }, // U+255D up and left
+    .{ ".#.#.", ".#.#.", ".#.##", ".#...", ".#.##", ".#.#.", ".#.#." }, // U+2560 vertical and right
+    .{ ".#.#.", ".#.#.", "##.#.", "...#.", "##.#.", ".#.#.", ".#.#." }, // U+2563 vertical and left
+    .{ ".....", ".....", "#####", ".#.#.", "##.##", ".#.#.", ".#.#." }, // U+2566 horizontal and down
+    .{ ".#.#.", ".#.#.", "##.##", ".#.#.", "#####", ".....", "....." }, // U+2569 horizontal and up
+    .{ ".#.#.", ".#.#.", "#####", ".#.#.", "#####", ".#.#.", ".#.#." }, // U+256C cross
+};
+
+/// Lift one mark's ASCII art into a freshly allocated coverage grid of exactly cell_area bytes: 255 for ink,
+/// 0 for background. The art's own shape is asserted, so a mistyped row is a stopped line rather than a bad glyph.
+fn coverage_from_art(allocator: std.mem.Allocator, art: [cell_h][]const u8) ![]u8 {
+    // invariant: a coverage grid is exactly the shared cell area, within the atlas ceiling.
+    assert(cell_area >= 1);
+    assert(cell_area <= glyph.coverage_max);
+    const cov = try allocator.alloc(u8, cell_area);
+    var idx: u32 = 0;
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        const row = art[r];
+        // invariant: every drawn row is exactly the cell width -- the art matches the grid.
+        assert(row.len == cell_w);
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            cov[idx] = if (row[c] == '#') 255 else 0;
+            idx += 1;
+        }
+    }
+    // invariant: the whole grid was filled, no cell left unwritten.
+    assert(idx == cell_area);
+    return cov;
+}
+
+/// Build the double-line box atlas: eleven glyphs at the named ascending codepoints, sharing the 5x7 cell and advance.
+/// The gfa1 encoder accepts the result directly (ascending codepoints, coverage length == cell area).
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the corpus is the eleven named double-line box marks and no more.
+    assert(box_count == 11);
+    assert(cell_area == 35);
+    const glyphs = try allocator.alloc(glyph.Glyph, box_count);
+    var i: u32 = 0;
+    var last_cp: u32 = 0;
+    while (i < box_count) : (i += 1) {
+        const cp = box_codepoints[i];
+        // invariant: codepoints are strictly ascending -- the ordering the gfa1 encoder trusts.
+        assert(i == 0 or cp > last_cp);
+        last_cp = cp;
+        const cov = try coverage_from_art(allocator, box_art[i]);
+        glyphs[i] = glyph.Glyph{
+            .codepoint = cp,
+            .advance = box_advance,
+            .coverage = cov,
+        };
+    }
+    // invariant: the last codepoint is the double cross (U+256C) -- the table ends where the double set ends.
+    assert(glyphs[box_count - 1].codepoint == 0x256C);
+    return glyph.GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- the legibility signal a blank glyph would fail.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+// --- selftest: build the double-line box atlas, round-trip it through gfa1, prove all present, distinct, legible ---
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built atlas is the eleven-mark corpus at the shared cell.
+    assert(glyph_count == box_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // Eleven present marks: every one looks up, carries the shared advance; an ASCII letter misses.
+    var d: u32 = 0;
+    while (d < box_count) : (d += 1) {
+        const cp = box_codepoints[d];
+        if (back.lookup(cp)) |g| {
+            assert(g.codepoint == cp);
+            assert(g.advance == box_advance);
+        } else return error.BoxMarkMissing;
+    }
+    if (back.lookup('A')) |_| return error.NonBoxFound else {}
+
+    // Distinctness: no two marks share identical coverage -- a real double-box set's glyphs differ (catches a slip).
+    var a: u32 = 0;
+    while (a < box_count) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b < box_count) : (b += 1) {
+            if (std.mem.eql(u8, atlas.glyphs[a].coverage, atlas.glyphs[b].coverage)) return error.BoxMarksNotDistinct;
+        }
+    }
+
+    // Legibility: each mark's ink count sits inside an honest band. The double set carries two rails, so it is denser
+    // than the light set -- the floor sits where a plain double horizontal rule (two rows of five, ten cells) still
+    // reads, and the ceiling where the double cross (twenty cells) still resolves as parallel line art rather than a
+    // solid blob.
+    const ink_min: u32 = 8;
+    const ink_max: u32 = 22;
+    var lo: u32 = cell_area;
+    var hi: u32 = 0;
+    var k: u32 = 0;
+    while (k < box_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (n < ink_min or n > ink_max) return error.BoxMarkIllegible;
+        if (n < lo) lo = n;
+        if (n > hi) hi = n;
+    }
+    // invariant: the observed ink band stayed inside the honest bounds.
+    assert(lo >= ink_min);
+    assert(hi <= ink_max);
+
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof.
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-boxdouble: {d} double-line box marks U+2550..U+256C at {d}x{d} round-trip byte-identical; all present, distinct, legible (ink {d}..{d} of {d}); encoded {d} bytes, raw {d}\n", .{
+        glyph_count, cell_w, cell_h, lo, hi, cell_area, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_boxdouble selftest\n", .{});
+    return 1;
+}
