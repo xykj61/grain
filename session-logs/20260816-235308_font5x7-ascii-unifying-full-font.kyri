@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260816.235308
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image -- the unifying full-ASCII font composes the five corpora into one complete font, GREEN
+prompt Autonomous loop: take the next agent-doable lap Lindy-first crux-first; Rye prioritized, Glow on green-witnessed Rye; deep-read one council-rota doc; send often as its own signed round; stop at the custody gates
+think Sixth open-media lap of the run. The prior lap completed a full ASCII font set as five separate corpora -- numerals, uppercase, lowercase, thirteen punctuation, nineteen symbols -- each proven on metal but each its own atlas. Its recommend named the finishing move outright: a space glyph plus a unifying full-ASCII atlas builder. Lindy-first crux-first pointed here over the video codec's adaptive-delta rung, because this is the finishing edge -- one complete font a surface actually reads is worth more than a sixth deeper media thread; ship the whole thing before naming the next.
+think The shape: image/font5x7_ascii.rye imports glyph.rye and all five corpora, calls each build_atlas, adds the one glyph no ink corpus draws (the space, codepoint 32, blank coverage carrying the shared advance 6), merges all ninety-five into one table, and insertion-sorts strictly ascending by codepoint -- the gfa1 encoder demands ascending codepoints, and the corpora interleave across the band (space 32, punct/symbol in the gaps, digits 48-57, letters 65-90 and 97-122). No copy of coverage bytes: the merge reorders references in the shared arena.
+think The distinctive crux beyond each corpus's byte-for-byte round-trip: the merged band runs strictly ascending AND contiguous 32..126 -- every printable codepoint present exactly once, no hole where a glyph was forgotten and no seam where two corpora overlap. The selftest walks the expected codepoint from 32 and fails BandNotContiguous on any mismatch; asserts the walk stopped one past '~'; proves the space is the one blank glyph (zero ink) while every other glyph carries ink; and confirms DEL (127) is absent -- the font is the printable band and no more.
+obs GREEN on the first metal pass: 95 glyphs ' '..'~' at 5x7, round-trip byte-identical, band contiguous 32..126 no gap/dup, space uniquely blank all others inked; encoded 4037 bytes over raw 3325. Compression reported not asserted -- a full font of dense line art need not shrink, and asserting a direction the data does not hold would be the REDS #82 false-invariant mistake; the round-trip is the proof.
+obs This lap is Simple, Lovable, Complete made literal (rota deep-read, item 16): the loop closes -- five corpora become one complete font, whole within its scope, the single table Dexter, Scooter, Skate, and Brushstroke read the day they want text rather than five corpora to stitch by hand. Nothing new invented; only the proven corpora composed and the completeness proven.
+obs Rota lap (d27) deep-read context/SIMPLE_LOVABLE_COMPLETE.md -- ship the smallest thing that is whole, ask nothing to be forgiven; the exact stance for a finishing/unifying rung that closes a family rather than opening a sixth thread.
+loom witness=font5x7_ascii_witness glyphs=95 band=32..126 cell=5x7 encoded_bytes=4037 raw_bytes=3325
+file image/font5x7_ascii.rye the five 5x7 corpora merged with a blank space into one gfa1 atlas covering the whole printable ASCII band, proven contiguous
+file tools/font5x7_ascii_witness.rish proves the unified font on metal -- round-trip byte-identical, band contiguous 32..126, space uniquely blank, every check named
+file image/README.md adds the font5x7_ascii unifying-font bullet and corrects the next-rungs line (arrows/box-drawing beyond ASCII, adaptive keyframe/delta)
+file crux/REMEMBER.md live-edge line names font5x7_ascii GREEN, the family's finishing rung, one complete ASCII font
+recommend keep-going next open-media rung: symbol coverage beyond ASCII (arrows, box-drawing) over the same 5x7 body, or adaptive keyframe/delta selection for the gfd1 inter-frame codec -- the font family now stands whole
