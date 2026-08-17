@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260817.015538
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title paint_paragraph_in_box -- the 2-D text region, GREEN
+prompt autonomous loop -- recur; next agent-doable lap Lindy-first crux-first, Season G open-media
+think The prior lap gave the paragraph a vertical set (paint_paragraph_boxed) beside its horizontal inter-line set (paint_paragraph_aligned) and its clip companion. The one primitive a real text region still wanted was BOTH axes at once -- place the whole content block within a box horizontally and vertically together, the capstone that makes the family a region rather than a stack.
+think Wrote paint_paragraph_in_box as pure composition: wrap once to learn the widest line (the block width), refuse ParagraphBoxTooNarrow if the block is wider than box_w, compute the horizontal box offset by the one h set (left 0, right hslack, centre half), then DELEGATE to paint_paragraph_boxed at the sideways-shifted origin -- which handles the vertical set and refuses ParagraphBoxTooShort. So a single h knob sets both the block's horizontal place in the box and each line's inter-line set within it (one intent, one knob), and v sets the vertical. Single-stranded: in_box computes only the horizontal offset; the vertical set, inter-line set, and target check all stay in the delegate.
+think Proved three corners against paint_paragraph_aligned as ground truth, since in_box(h,v) equals aligned(mode=h) at the box offset (hoff, voff): (left,top) at (0,0), (centre,middle) at (slack/2,slack/2), (right,bottom) at (slack,slack), each byte-for-byte. Every corner changes the same 79 pixels as the strict block (placement moves the block as one, adding none, dropping none); bottom-right differs from top-left; a box a column too narrow refuses ParagraphBoxTooNarrow buffer-untouched; a box a row too short still refuses ParagraphBoxTooShort through the delegate -- both axes guarded.
+obs GREEN on the first build; tame_style_check bans clean, width-check exit 0, witness GREEN with three new grep gates (2-D placement, corner-equals-aligned-paint, narrow refusal). Rota this lap continues from item 15 (TAME_CORE with TAME_GUIDANCE) -- the smallest-scope, delegate-don't-duplicate reflex is exactly what kept in_box single-stranded.
+obs The text/font family now spans place, measure, wrap, split, paint line, clip line, paint block, align block (horizontal), box block (vertical), and region block (both axes) -- a complete open text surface, every rung witnessed against a hand-composed ground truth.
+loom witness=text_paint_witness result=GREEN box_hslack=6 box_vslack=6 para_pixels=79
+file image/text_paint.rye paint_paragraph_in_box + selftest block (three corners, narrow refuse, short refuse); version and header updated
+file tools/text_paint_witness.rish three greps binding the 2-D box claim, refreshed closing line
+file image/README.md the 2-D region sentence closing the paragraph family
+file crux/REMEMBER.md git nib rolled forward to this round; prior nibs shifted down
+recommend keep-going -- next Season G rung: proving the QOI/text codecs on a real corpus (Season 2 Yield, GISM), or the open-font glyph codec journey named in the eight-season plan
