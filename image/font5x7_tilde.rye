@@ -1,0 +1,273 @@
+//! image/font5x7_tilde.rye -- the open tilde-accent vowels corpus: the wave that spans both halves (Season G, font content).
+//!
+//! Season G (Open Media Primitives) - font content for the open glyph atlas image/glyph.rye (gfa1), set beside the
+//! five ASCII corpora (image/font5x7.rye the numerals, image/font5x7_alpha.rye the uppercase, image/font5x7_lower.rye
+//! the lowercase, image/font5x7_punct.rye the punctuation, image/font5x7_symbol.rye the symbols), the wider-symbol
+//! corpora (the box family, the arrows, the block elements, the geometric marks, the math/technical operators, the
+//! currency signs), the Greek letters (image/font5x7_greek.rye), the sub/superscript and fraction corpora, and the
+//! three accent corpora already drawn -- the acute/cedilla set (image/font5x7_latin1.rye), the grave vowels
+//! (image/font5x7_grave.rye), and the circumflex vowels (image/font5x7_circumflex.rye). Where the acute leans its mark
+//! right, the grave leans it left, and the circumflex peaks it dead-center, this corpus supplies the two tilde-accent
+//! lowercase vowels a Portuguese name reaches for -- a tilde, o tilde -- at their real Unicode codepoints U+00E3, U+00F5,
+//! drawn in our own open hand on the same 5x7 body. The n tilde already lives in the acute/cedilla corpus; these are the
+//! nasal VOWELS that spell Sao Paulo, Joao, coracao, irma, and nacao -- the accent the Portuguese language carries most,
+//! and the gap the accented family carried honestly: font5x7_upper drew the uppercase A tilde, yet no lowercase a tilde
+//! or o tilde was drawn (they appeared only as NEGATIVE tests, the glyph a corpus proves absent). This corpus draws them.
+//!
+//! The corpus completes the accent trio as its fourth lean. The acute mark (image/font5x7_latin1.rye) sits right of
+//! center, the grave (image/font5x7_grave.rye) left of center, the circumflex (image/font5x7_circumflex.rye) a centered
+//! peak; the tilde is a WAVE that spans the whole cell -- ink in BOTH the left half and the right half of the top two
+//! rows, and a crest that rises to the RIGHT of center where a circumflex apex would sit only on center. That span is
+//! the crux this corpus proves: a reader tells a tilde from an acute (right-only), a grave (left-only), or a circumflex
+//! (centered peak) by the wave that reaches both sides at once. The tilde mark is the same wave the n tilde carries.
+//!
+//! The source stays plain ASCII (ASCII-first): the codepoints are written as numeric literals (0x00E3 ...) and each
+//! letter is named in an ASCII comment, so no non-ASCII byte enters the file even though the glyphs it builds cover a
+//! non-ASCII range. The codepoints are NOT contiguous (they skip the unaccented, acute, grave, and circumflex letters
+//! between them in the Latin-1 Supplement block), so this corpus carries an explicit ascending codepoint table -- the
+//! shape the gfa1 encoder trusts (strictly ascending, shared cell, coverage length == cell area). The drawings ARE the
+//! specification: each letter is seven rows of five cells in ASCII line art ('#' full ink, '.' none) that a reader audits
+//! by eye; the coverage bytes are derived from that art, never the reverse. build_atlas turns the two drawings into a
+//! glyph.GlyphAtlas the gfa1 encoder accepts, so the property that matters stays provable on metal: decode(encode(atlas))
+//! recovers every glyph byte-for-byte, the letters are present and distinct, each reads within an honest legibility band,
+//! and each tilde mark spans both halves and crests to the right. No network, no key, no funds -- the marks a surface
+//! reads the day it prints a Portuguese name that ASCII cannot spell, on our own open font.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_tilde.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+
+pub const font5x7_tilde_version = "20260817.063757";
+
+/// Every glyph in this corpus shares one 5-wide, 7-tall cell -- the same body the ASCII, Greek, and accent corpora carry.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance: the cell width plus one column of daylight, the same advance the sibling corpora carry.
+pub const tilde_advance: u8 = cell_w + 1;
+
+/// The corpus holds exactly the two tilde-accent vowels named in the table below.
+pub const tilde_count: u32 = 2;
+
+/// Cells per glyph -- the coverage length every letter carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The column that separates the two halves of the cell. Columns 0-1 are the left half, columns 3-4 the right half;
+/// column 2 (the center) belongs to neither. The tilde proof reads both halves and the crest right of center.
+pub const center_col: u32 = 2;
+
+/// The two tilde codepoints, strictly ascending -- the order the gfa1 encoder trusts. Each aligns by index with
+/// tilde_art below. Written as numeric literals so the source stays plain ASCII while the glyphs cover a non-ASCII
+/// range:
+///   0x00E3 a tilde, 0x00F5 o tilde. The unaccented, acute, grave, and circumflex letters between them in the Latin-1
+///   Supplement block are skipped, so the codepoints are named outright rather than derived.
+const tilde_codepoints = [tilde_count]u32{
+    0x00E3, 0x00F5,
+};
+
+/// The two letters, drawn in the open. Each is seven rows of five cells; '#' ink, '.' background. A reader audits every
+/// letter here by eye, and the coverage bytes are lifted from this art, never guessed. Both letters wear the same tilde
+/// mark on their top two rows -- a WAVE spanning the cell (row 0 crests at columns 2 and 4, row 1 dips to columns 1 and
+/// 3), the same wave the n tilde in image/font5x7_latin1.rye carries -- above a letter body shared with the grave twins
+/// in image/font5x7_grave.rye. The wave reaching BOTH halves is the whole point: it is neither the acute's right lean,
+/// the grave's left lean, nor the circumflex's centered peak, but a stroke that spans the whole top, the fourth lean.
+const tilde_art = [tilde_count][cell_h][]const u8{
+    .{ "..#.#", ".#.#.", ".###.", "....#", ".####", "#...#", ".####" }, // U+00E3 a tilde
+    .{ "..#.#", ".#.#.", ".###.", "#...#", "#...#", "#...#", ".###." }, // U+00F5 o tilde
+};
+
+/// Lift one letter's ASCII art into a freshly allocated coverage grid of exactly cell_area bytes: 255 for ink,
+/// 0 for background. The art's own shape is asserted, so a mistyped row is a stopped line rather than a bad glyph.
+fn coverage_from_art(allocator: std.mem.Allocator, art: [cell_h][]const u8) ![]u8 {
+    // invariant: a coverage grid is exactly the shared cell area, within the atlas ceiling.
+    assert(cell_area >= 1);
+    assert(cell_area <= glyph.coverage_max);
+    const cov = try allocator.alloc(u8, cell_area);
+    var idx: u32 = 0;
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        const row = art[r];
+        // invariant: every drawn row is exactly the cell width -- the art matches the grid.
+        assert(row.len == cell_w);
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            cov[idx] = if (row[c] == '#') 255 else 0;
+            idx += 1;
+        }
+    }
+    // invariant: the whole grid was filled, no cell left unwritten.
+    assert(idx == cell_area);
+    return cov;
+}
+
+/// Build the tilde-accent vowels atlas: two glyphs at the named ascending codepoints, sharing the 5x7 cell and advance.
+/// The gfa1 encoder accepts the result directly (ascending codepoints, coverage length == cell area).
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the corpus is the two named tilde vowels and no more.
+    assert(tilde_count == 2);
+    assert(cell_area == 35);
+    const glyphs = try allocator.alloc(glyph.Glyph, tilde_count);
+    var i: u32 = 0;
+    var last_cp: u32 = 0;
+    while (i < tilde_count) : (i += 1) {
+        const cp = tilde_codepoints[i];
+        // invariant: codepoints are strictly ascending -- the ordering the gfa1 encoder trusts.
+        assert(i == 0 or cp > last_cp);
+        last_cp = cp;
+        const cov = try coverage_from_art(allocator, tilde_art[i]);
+        glyphs[i] = glyph.Glyph{
+            .codepoint = cp,
+            .advance = tilde_advance,
+            .coverage = cov,
+        };
+    }
+    // invariant: the last codepoint is the o tilde (U+00F5) -- the table ends where this set ends.
+    assert(glyphs[tilde_count - 1].codepoint == 0x00F5);
+    return glyph.GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- the legibility signal a blank glyph would fail.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+/// Count the inked cells in row r of a glyph, restricted to the half-open column band [c0, c1). The tilde proof reads
+/// the top two rows' left half (columns 0-2) and right half (columns 3-5) with this one reader. Row 0 is the top.
+fn row_band_ink(cov: []const u8, r: u32, c0: u32, c1: u32) u32 {
+    // invariant: the row index sits inside the shared cell, over the shared grid.
+    assert(r < cell_h);
+    assert(cov.len == cell_area);
+    // invariant: the column band is well-ordered and inside the cell width.
+    assert(c0 <= c1);
+    assert(c1 <= cell_w);
+    var n: u32 = 0;
+    var c: u32 = c0;
+    while (c < c1) : (c += 1) {
+        if (cov[r * cell_w + c] != 0) n += 1;
+    }
+    // invariant: the band count never exceeds the band it was counted over.
+    assert(n <= c1 - c0);
+    return n;
+}
+
+/// The tilde-mark ink in the LEFT half (columns 0-1) across the top two rows of a codepoint's glyph -- one half of the
+/// wave-spans-both-sides proof. Rows 0 and 1 carry the mark; the body begins on row 2.
+fn top_left_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| {
+        return row_band_ink(g.coverage, 0, 0, center_col) + row_band_ink(g.coverage, 1, 0, center_col);
+    }
+    return error.TildeVowelMissing;
+}
+
+/// The tilde-mark ink in the RIGHT half (columns 3-4) across the top two rows of a codepoint's glyph -- the other half
+/// of the wave-spans-both-sides proof.
+fn top_right_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| {
+        return row_band_ink(g.coverage, 0, center_col + 1, cell_w) + row_band_ink(g.coverage, 1, center_col + 1, cell_w);
+    }
+    return error.TildeVowelMissing;
+}
+
+/// The top-row (row 0) ink strictly RIGHT of center of a codepoint's glyph -- the crest that rises where a circumflex
+/// apex would sit only on center. This is the reader that separates a tilde wave from a centered peak.
+fn crest_right_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return row_band_ink(g.coverage, 0, center_col + 1, cell_w);
+    return error.TildeVowelMissing;
+}
+
+// --- selftest: build the tilde atlas, round-trip it through gfa1, prove present, distinct, legible, wave-spanning ---
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built atlas is the two-vowel corpus at the shared cell.
+    assert(glyph_count == tilde_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // Two present vowels: every one looks up, carries the shared advance; an unaccented ASCII vowel misses.
+    var d: u32 = 0;
+    while (d < tilde_count) : (d += 1) {
+        const cp = tilde_codepoints[d];
+        if (back.lookup(cp)) |g| {
+            assert(g.codepoint == cp);
+            assert(g.advance == tilde_advance);
+        } else return error.TildeVowelMissing;
+    }
+    if (back.lookup('a')) |_| return error.NonTildeFound else {}
+
+    // Distinctness: the a tilde and the o tilde carry different coverage (catches a copy slip that would leave both
+    // names spelled with one glyph).
+    var a: u32 = 0;
+    while (a < tilde_count) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b < tilde_count) : (b += 1) {
+            if (std.mem.eql(u8, atlas.glyphs[a].coverage, atlas.glyphs[b].coverage)) return error.TildeVowelsNotDistinct;
+        }
+    }
+
+    // Legibility: each letter's ink count sits inside an honest band. The floor sits where the o tilde (its lighter, a
+    // round bowl under a wave) still reads, the ceiling where the a tilde (its heavier) still resolves as a letter.
+    const ink_min: u32 = 12;
+    const ink_max: u32 = 22;
+    var lo: u32 = cell_area;
+    var hi: u32 = 0;
+    var k: u32 = 0;
+    while (k < tilde_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (n < ink_min or n > ink_max) return error.TildeVowelIllegible;
+        if (n < lo) lo = n;
+        if (n > hi) hi = n;
+    }
+    // invariant: the observed ink band stayed inside the honest bounds.
+    assert(lo >= ink_min);
+    assert(hi <= ink_max);
+
+    // Tilde placement -- the fourth lean, and what makes each of these a tilde letter rather than an acute, grave, or
+    // circumflex one: the mark is a WAVE spanning the whole top. Three toothed guards read it: the mark carries ink in
+    // the LEFT half AND the RIGHT half of the top two rows (a wave reaches both sides, where acute is right-only and
+    // grave left-only), and the top row itself crests RIGHT of center (where a circumflex apex sits only on center).
+    var m: u32 = 0;
+    while (m < tilde_count) : (m += 1) {
+        const cp = tilde_codepoints[m];
+        if (!(try top_left_ink_of(&atlas, cp) >= 1)) return error.TildeNotSpanningLeft;
+        if (!(try top_right_ink_of(&atlas, cp) >= 1)) return error.TildeNotSpanningRight;
+        if (!(try crest_right_of(&atlas, cp) >= 1)) return error.TildeNoRightCrest;
+    }
+
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof.
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-tilde: {d} tilde vowels U+00E3,U+00F5 at {d}x{d} round-trip byte-identical; all present, distinct, legible (ink {d}..{d} of {d}); every mark a wave spanning both halves and cresting right (the fourth lean beside acute/grave/circumflex); encoded {d} bytes, raw {d}\n", .{
+        glyph_count, cell_w, cell_h, lo, hi, cell_area, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_tilde selftest\n", .{});
+    return 1;
+}

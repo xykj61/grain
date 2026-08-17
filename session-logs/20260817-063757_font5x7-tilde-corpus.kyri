@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260817.063757
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title font5x7 tilde-accent vowels corpus -- the fourth lean, GREEN
+prompt Read crux/REMEMBER.md and the road-ahead docs; take the next agent-doable lap Lindy-first crux-first, one rota deep-read, send often. baton prin recur
+think REMEMBER's live edge is the Season G open-media font family; the accented-Latin family reads as two unifying fonts (font5x7_accented lowercase 21, font5x7_upper uppercase 21). Walked the family for the next crux.
+think Found a real asymmetry: font5x7_upper draws the uppercase A tilde (U+00C3), yet no lowercase a tilde (U+00E3) or o tilde (U+00F5) is drawn anywhere -- grep found them only as NEGATIVE tests in font5x7_accented (the glyph a corpus proves absent). Portuguese (Sao Paulo, Joao, coracao, irma, nacao) reaches for exactly these nasal vowels. The gap the accented family had carried honestly.
+think The accent corpora already prove three leans: acute right (font5x7_latin1), grave left (font5x7_grave), circumflex centered peak (font5x7_circumflex). The tilde is the fourth lean -- a wave spanning both halves. That is the corpus-specific crux to prove beyond the shared round-trip.
+think Reused the ASCII-art template from font5x7_grave: same coverage_from_art, build_atlas, ink_count, row_band_ink shape. The tilde mark is the same wave the n tilde carries (rows 0-1: `..#.#`, `.#.#.`), over the grave a/o bodies in rows 2-6.
+think Designed three toothed placement guards: top-two-row LEFT-half ink >= 1 and RIGHT-half ink >= 1 (the wave reaches both sides, where acute is right-only and grave left-only), plus row-0 crest right-of-center >= 1 (where a circumflex apex would sit only on center). Each its own bounded reader, no compound assert.
+obs GREEN on the first metal run, no red: 2 tilde vowels U+00E3,U+00F5 round-trip byte-identical, present, distinct, legible (ink 16..18 of 35), every mark a wave spanning both halves and cresting right. tame_style_check bans clean, width-check exit 0, both files plain 7-bit ASCII though the glyphs cover a non-ASCII range (numeric codepoint literals, the ascii-first font-table exception).
+obs Docs-sync ratchet, not a sweep: image/README.md accreted the tilde corpus into the accented-Latin family entry, naming the fourth lean and the gap it fills, and added _tilde to the witness-sibling list. Did not claim it into the unifying font5x7_accented (which still tests a tilde absent) -- an honest sibling addition, not a false merge.
+obs Rota this lap (d27, item 17) deep-read context/LEXICON.md -- the living vocabulary; nib, waymark, survey, shape, the module names. A corpus named by its plain function (tilde vowels) reads true on its ten-thousandth day, the Comlink tendency and Lindy-first the guide.
+loom witness=font5x7_tilde_witness glyphs=2 cell=5x7 ink_lo=16 ink_hi=18 encoded_bytes=109 raw_bytes=70
+file image/font5x7_tilde.rye the open tilde-accent vowels corpus (a tilde U+00E3, o tilde U+00F5), the fourth lean
+file tools/font5x7_tilde_witness.rish proves the corpus on metal: round-trip, present, distinct, legible, wave-spanning
+file image/README.md accreted the tilde corpus into the accented-Latin family entry (docs-sync ratchet)
+recommend keep-going the lowercase accented family now spells a Portuguese name; next open-media rungs: the uppercase O tilde (U+00D5, the one uppercase tilde vowel still undrawn), the open glyph atlas beyond 5x7, or the captioned panel on longer real reels. No network, no key, no funds.
