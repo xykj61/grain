@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20260816.201310
+editor Claude Code
+model Fable 5
+voice Kyri
+host Framework 16 AMD · EDT (America/New_York) · Vultr SEA VPS · ai-jail
+title crypto — the HYBRID signed carry GREEN, the open corner, and a reds-first find in ML-DSA decompose
+prompt Read REMEMBER + the 1024-round itinerary and the six-season double-seat; take the next agent-doable lap Lindy-first crux-first, self-approve design rounds, make progress before checking in, send each finished increment as its own signed round, STOP at custody gates.
+think Walked the road — REMEMBER's git nib is the hybrid signed-AND-sealed door, the last corner of the hybrid MATRIX; the post-quantum pivot chose ML-KEM+ML-DSA over SLH-DSA (single-oracle horizon). The hybrid surface guards MESSAGES (sealed, signed-sealed) but not the OPEN shape — a public record whose authorship must hold past the quantum day.
+think Lindy-first crux-first: provenance on a PUBLIC artifact (publishing, parts records, fair-trade certs, chain of custody) is read thousands of times over the artifact's life; hardening it against the quantum day is durable. The one still-open corner: the post-quantum successor of crypto/signed_carry.rye — same frame, Ed25519 signature replaced by the hybrid signature. Self-approved the design round (active-designing/20260816-201310).
+think Built crypto/hybrid_signed_carry.rye mirroring signed_carry's public content-addressed frame and hybrid_signed_sealed's comptime-per-param layout: magic GHC1 · signer Ed25519 public · signer ML-DSA public · paylen(u64 BE) · payload · BLAKE2b-512 digest · Ed25519 sig · ML-DSA sig. Verify-before-trust: magic, length, recomputed content address, then hybrid verify (both families), before one zero-copy payload byte leaves.
+think First metal pass PANICKED — reached unreachable inside mldsa_encode.decompose (FIPS 204 Alg 36) during ML-DSA-44 signing. The sealed door signs digests fine across its tests, so my particular digest drew a coefficient the others never did.
+think Diagnosed the RED (REDS #82): decompose asserted r0 > -gamma2 (strict), yet FIPS's top-step borrow reaches r0 = -gamma2 exactly at r = q - gamma2 (for gamma2_88 = (q-1)/88 = 95232, that residue is 8285185). The reconstruction was already correct; only the range floor was one notch too tight. Real signing must TOLERATE r0 = -gamma2 then reject on the norm bound and retry — the assert panicked before that could happen. The module's own selftest swept 64 pseudo-random polynomials and missed that one residue in q.
+think Fixed the floor to r0 >= -gamma2 in decompose, relaxed the same bound in the module's selftest, PLANTED r = q - gamma2 in the spread, and added a direct assertion decompose(q - gamma2) = (0, -gamma2) — a boundary proof, not a sample. Rebuilt mldsa_encode/sign/verify/identity: all GREEN, no regression. hybrid_signed_carry then GREEN at all three tiers.
+obs A random spread is not a boundary proof — the transferable lesson booked to REDS #82. A rejection-sampling primitive must tolerate the boundary its own math produces and reject on the norm bound; the assert was defending an invariant FIPS does not hold.
+obs Registered the new witness in crypto_suite_witness; count guard GREEN 79 to 80 (fifty primitives + thirty compositions). Synced crypto/README.md and docs/CRYPTO.md spelled counts (seventy-nine to eighty, twenty-nine to thirty) and added the rung row to both. TAME bans clean, width-check exit 0.
+obs No custody gate reached — every carry uses a TEST hybrid identity from a published-vector mnemonic, no real key, no network, no funds, no device. Signing a real record with the maintainer's own hybrid identity stays the gate.
+loom witness=crypto_hybrid_signed_carry_witness tiers=3 payload_lengths=6 refusals=6 max_payload_bytes=65536 result=GREEN
+loom witness=crypto_count_guard_witness crypto_rye_files=80 suite_registrations=80 result=GREEN
+file crypto/hybrid_signed_carry.rye the open corner of the hybrid surface — a public, content-addressed carry signed by a hybrid identity
+file tools/crypto_hybrid_signed_carry_witness.rish per-file witness; builds and runs the selftest, greps the GREEN line
+file crypto/mldsa_encode.rye reds-first fix — decompose floor relaxed to r0 >= -gamma2 with a planted boundary proof
+file tools/crypto_suite_witness.rish registered the new witness in dependency order after the sealed sibling
+file crypto/README.md front-door count 79 to 80, thirty compositions, new rung row
+file docs/CRYPTO.md rung table count 79 to 80, thirty compositions, new rung row
+file work-in-progress/REDS.md REDS #82 — the decompose boundary red, three fields, closed on metal
+file active-designing/20260816-201310_the-hybrid-signed-carry-provenance-on-both-worlds.md self-approved design read for the rung
+recommend keep-going the hybrid surface now covers open provenance too; next a fresh journey (Season A/B/C crux) or another crypto composition, each a self-approved design read first — custody gates untouched
