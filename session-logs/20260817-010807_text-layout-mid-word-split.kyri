@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260817.010807
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title text-layout mid-word split -- wrap_lines_break, GREEN
+prompt recur the autonomous loop: take the next agent-doable lap Lindy-first crux-first; deep-read one council-rota doc; Rye prioritized; send often
+think Council-rota doc this lap (item 12, following last lap's item 11 single-stranded): active-designing/yonder/20260618-184912_growing-a-language.md -- grow by strengthening not rewriting, the smallest thing that works, one shared value model. It pointed the design directly.
+think Live edge is Season G open-media text family; the card names mid-word splitting as the next text rung. Crux, Lindy-first (text-geometry floor read for years), agent-doable, no gate.
+think Kept accrete-never-break: wrap_lines stays behavior-identical (its own witness re-runs GREEN). Lifted measure_word to file level (single-stranded, one measure for both wrap functions) and added fit_glyphs. Added wrap_lines_break as the opt-in never-overflow companion beside the whole-word wrap_lines -- the strict/relaxed pair the text_paint rung already keeps (strict paint vs clipped paint).
+think Split-word contract, proven on metal: every emitted line stays within max_width when the max holds one glyph, and no glyph is lost (spans concatenate back to the word byte-for-byte). Progress guarantee: a max narrower than one glyph still places exactly one glyph per line, never looping.
+obs Self-caught red before send: TAME tame_style_check flagged compound assert(a and b) in the new selftest cases; split each into single-predicate asserts. tame_style_check clean, width-check exit 0 after.
+obs Proven: "abcdef"@max18 -> "abc"|"def"; "abcdefg"@18 -> 3 lines with reconstruction equal to "abcdefg"; break-wrap == word-wrap line-for-line on a fitting paragraph (strict superset); "ab cdefghij"@18 composes word-wrap then split into 4 lines each within max; zero-max refuses MaxWidthTooSmall by name. Dependent text_paint witness re-runs GREEN (additive).
+file image/text_layout.rye added wrap_lines_break + lifted measure_word/fit_glyphs; wrap_lines behavior unchanged
+file tools/text_layout_witness.rish proves the mid-word split on metal (break-wrap splits assertion)
+file session-logs/20260817-010807_text-layout-mid-word-split.kyri this record
+recommend keep-going next Season G text rung -- symbol coverage beyond ASCII already done; prove the image/video codecs on a real corpus rather than crafted clips, or paint a break-wrapped paragraph through text_paint
