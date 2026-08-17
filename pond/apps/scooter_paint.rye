@@ -36,6 +36,12 @@
 //! of paint_frame_fg, sharing the same paintability guard and standing BESIDE the single-ink and fg-only verbs (all
 //! untouched), so it is still a pure pass-through of text_grid.render_grid_cells. Ground first, ink over it, per cell.
 //!
+//! The drawn caret joins a composing session (scooter_compose) to the painted face: render_session folds the session
+//! to a frame and paints it with a visible block CURSOR at the caret cell -- inverse video (the glyph in the ground
+//! colour over an ink-colour ground), the classic terminal cursor a keeper watches. It is pure composition over
+//! paint_frame_cells: the caret is one inverted cell, the conversation untouched, so the drawn face equals the plain
+//! painted session everywhere but that single cell, and the cursor clears and follows the keeper as the caret moves.
+//!
 //! Facts only, custody-first: it reads a public journal a member already holds and paints it -- no network, no key
 //! signs, no funds. The wire that carries the image between two Constel piers reaches the serve gate (the
 //! maintainer's hand), and the live TTY that would show it is Dexter's own later rung.
@@ -48,6 +54,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const channel = @import("scooter_channel.rye");
 const view = @import("scooter_view.rye");
+const compose = @import("scooter_compose.rye");
 const grid = @import("text_grid.rye");
 const glyph = @import("glyph.rye");
 const color = @import("color.rye");
@@ -217,6 +224,45 @@ pub fn render_channel_bar(
     return paint_frame_cells(allocator, atlas, &frame, fg, bg);
 }
 
+/// The drawn caret: paint a composing session with a visible block CURSOR at the caret cell. scooter_compose.Session
+/// already tracks caret_col (where the cursor sits in the prompt row); this paints that column as inverse video --
+/// the caret cell draws its glyph in `ground` over an `ink` ground, so it reads as a solid ink block over a space or
+/// a knocked-out glyph over a letter, exactly the block cursor every terminal shows. Every other cell reads `ink` over
+/// `ground`. Pure composition over paint_frame_cells: the caret is one cell, the conversation untouched. The same
+/// session renders the same image every time; a mis-sized palette refuses GridBgMismatch by name (inherited).
+pub fn render_session(
+    allocator: std.mem.Allocator,
+    atlas: *const glyph.GlyphAtlas,
+    session: *const compose.Session,
+    ink: color.Rgba,
+    ground: color.Rgba,
+) !qoi.Pixmap {
+    const frame = session.frame();
+    // invariant: the fold produced the fixed terminal grid, so the palettes below index it safely.
+    assert(frame.cells.len == frame_cells);
+
+    // The caret cell: the prompt row (the reserved last row) at the tracked caret column. caret_col already asserts
+    // the column is within the row, and prompt_row is a real row, so the flat index is provably within the grid.
+    const caret: u32 = compose.prompt_row * view.frame_cols + session.caret_col();
+    // invariant: the caret cell is a real cell of the fixed grid.
+    assert(caret < frame_cells);
+
+    // Build the two per-cell palettes: `ink` over `ground` everywhere, INVERTED at the caret cell so the cursor reads
+    // inverse video (glyph in the ground colour over an ink-colour ground -- a solid block over a space).
+    const fg = try allocator.alloc(color.Rgba, frame_cells);
+    const bg = try allocator.alloc(color.Rgba, frame_cells);
+    var i: u32 = 0;
+    while (i < frame_cells) : (i += 1) {
+        const is_caret = i == caret;
+        fg[i] = if (is_caret) ground else ink;
+        bg[i] = if (is_caret) ink else ground;
+    }
+    // invariant: each palette carries exactly one colour per cell of the fixed grid.
+    assert(fg.len == frame_cells);
+    assert(bg.len == frame_cells);
+    return paint_frame_cells(allocator, atlas, &frame, fg, bg);
+}
+
 // --- selftest: fold a real conversation to pixels, prove the bridge faithful, deterministic, and refusing --------
 
 /// Count pixels that carry ink over a white ground -- any pixel not pure opaque white. Both the single-ink and the
@@ -231,6 +277,13 @@ fn inked_over_white(pixels: []const u8) u32 {
         if (pixels[i] != 255 or pixels[i + 1] != 255 or pixels[i + 2] != 255 or pixels[i + 3] != 255) n += 1;
     }
     return n;
+}
+
+/// Does the RGBA pixel at byte offset `bi` equal the colour `c`? A single-expression predicate so a solid-cell check
+/// reads as one non-compound assert (TAME bans a compound conjunction in an assert); the conjunction lives in this
+/// returned boolean, not the assert that calls it.
+fn pixel_is(pixels: []const u8, bi: usize, c: color.Rgba) bool {
+    return pixels[bi] == c.r and pixels[bi + 1] == c.g and pixels[bi + 2] == c.b and pixels[bi + 3] == c.a;
 }
 
 const host_key: u32 = 1001;
@@ -447,6 +500,102 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         } else |e| if (e != error.GridBgMismatch) return error.WrongBgMismatch;
     }
 
+    // The drawn caret on a LIVE composing session: a member types a line, and render_session paints the prompt with a
+    // visible block CURSOR at the caret cell -- inverse video, the classic terminal cursor. (This block builds its own
+    // session and frames, so it does not disturb the folded `frame` the poke below still needs clean.)
+    {
+        const col_pitch: u32 = grid.col_pitch;
+        const cell_h: u32 = atlas.cell_h;
+
+        var s = compose.Session.open(&ch, host_key);
+        try s.prompt().type_str("draft");
+        // The caret sits after the "> " prefix and the five typed bytes -- over the space beyond "draft", so the caret
+        // cell is a blank the cursor fills SOLID, the cleanest proof a cursor is a visible block.
+        const cc: u32 = s.caret_col();
+        assert(cc == compose.prompt_cols + 5);
+        const cr: u32 = compose.prompt_row;
+
+        const frame_s = s.frame();
+        // The plain painted session (no caret) is the reference the drawn face must equal everywhere but one cell.
+        const plain = try paint_frame(garden, &atlas, &frame_s, black, white);
+        const drawn = try render_session(garden, &atlas, &s, black, white);
+        assert(drawn.width == plain.width);
+        assert(drawn.height == plain.height);
+
+        // The cursor is a visible block: over the caret cell's whole pixel block, the drawn face is solid INK (black)
+        // where the plain face is solid GROUND (white) -- the cell flipped to inverse video.
+        {
+            var y: u32 = cr * cell_h;
+            const y_end: u32 = (cr + 1) * cell_h;
+            while (y < y_end) : (y += 1) {
+                var x: u32 = cc * col_pitch;
+                const x_end: u32 = (cc + 1) * col_pitch;
+                while (x < x_end) : (x += 1) {
+                    const bi = (@as(usize, y) * @as(usize, drawn.width) + @as(usize, x)) * 4;
+                    // invariant: the caret cell reads solid ink on the drawn face -- a filled cursor block.
+                    assert(pixel_is(drawn.pixels, bi, black));
+                    // invariant: the same cell reads solid ground on the plain face -- the cursor is what flipped it.
+                    assert(pixel_is(plain.pixels, bi, white));
+                }
+            }
+        }
+
+        // Confined to one cell (values apart, never braided): every pixel OUTSIDE the caret cell is byte-for-byte the
+        // plain face -- the cursor touches its own cell and nothing of the conversation.
+        {
+            assert(drawn.pixels.len == plain.pixels.len);
+            const cx0: u32 = cc * col_pitch;
+            const cx1: u32 = (cc + 1) * col_pitch;
+            const cy0: u32 = cr * cell_h;
+            const cy1: u32 = (cr + 1) * cell_h;
+            var p: usize = 0;
+            const px_count: usize = @as(usize, drawn.width) * @as(usize, drawn.height);
+            while (p < px_count) : (p += 1) {
+                const x: u32 = @intCast(p % @as(usize, drawn.width));
+                const y: u32 = @intCast(p / @as(usize, drawn.width));
+                const in_caret = x >= cx0 and x < cx1 and y >= cy0 and y < cy1;
+                if (in_caret) continue;
+                const bi = p * 4;
+                // invariant: a pixel outside the caret cell is untouched -- identical to the plain painted session.
+                assert(drawn.pixels[bi] == plain.pixels[bi]);
+                assert(drawn.pixels[bi + 1] == plain.pixels[bi + 1]);
+                assert(drawn.pixels[bi + 2] == plain.pixels[bi + 2]);
+                assert(drawn.pixels[bi + 3] == plain.pixels[bi + 3]);
+            }
+        }
+
+        // Determinism: the same session renders the same drawn image every time.
+        const drawn2 = try render_session(garden, &atlas, &s, black, white);
+        assert(drawn2.same_bytes(&drawn));
+
+        // The drawn conversation is a real portable image -- it round-trips through the open QOI codec byte-for-byte.
+        const scap = qoi.encoded_bound(drawn.width * drawn.height);
+        const sdst = try garden.alloc(u8, scap);
+        const senc = try qoi.encode(&drawn, sdst);
+        const sback = try qoi.decode(garden, sdst[0..senc.len]);
+        assert(sback.same_bytes(&drawn));
+
+        // The cursor MOVES: walk the caret home (to just past the prefix) and render again. The two faces differ, and
+        // the old caret cell (the space beyond "draft") reverts to solid ground -- the cursor cleared and followed the keeper.
+        s.prompt().move_home();
+        assert(s.caret_col() == compose.prompt_cols);
+        const home = try render_session(garden, &atlas, &s, black, white);
+        assert(!home.same_bytes(&drawn));
+        {
+            var y: u32 = cr * cell_h;
+            const y_end: u32 = (cr + 1) * cell_h;
+            while (y < y_end) : (y += 1) {
+                var x: u32 = cc * col_pitch;
+                const x_end: u32 = (cc + 1) * col_pitch;
+                while (x < x_end) : (x += 1) {
+                    const bi = (@as(usize, y) * @as(usize, home.width) + @as(usize, x)) * 4;
+                    // invariant: with the caret moved home, the old caret cell is solid ground again -- one moving mark.
+                    assert(pixel_is(home.pixels, bi, white));
+                }
+            }
+        }
+    }
+
     // The honest edge, refused by name: a frame cell carrying a byte the font cannot draw refuses
     // ScooterFrameUnpaintable, having painted nothing. Copy the good frame and poke one high byte.
     {
@@ -459,7 +608,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         } else |e| if (e != error.ScooterFrameUnpaintable) return error.WrongUnpaintable;
     }
 
-    print("GREEN scooter-paint: a real 2-post channel folded to a {d}x{d} frame and painted into a {d}x{d} image, byte-for-byte what text_grid paints from the same cells, deterministic, round-trips through QOI; a coloured face paints the status header red and the body black while inking the same pixels; a coloured BAR paints the whole status band yellow-on-blue (no header pixel stays white, the body page below untouched), byte-for-byte text_grid's per-cell render, deterministic, round-trips through QOI, a mis-sized bg refusing GridBgMismatch by name; and an unpaintable frame refuses ScooterFrameUnpaintable by name\n", .{
+    print("GREEN scooter-paint: a real 2-post channel folded to a {d}x{d} frame and painted into a {d}x{d} image, byte-for-byte what text_grid paints from the same cells, deterministic, round-trips through QOI; a coloured face paints the status header red and the body black while inking the same pixels; a coloured BAR paints the whole status band yellow-on-blue (no header pixel stays white, the body page below untouched), byte-for-byte text_grid's per-cell render, deterministic, round-trips through QOI, a mis-sized bg refusing GridBgMismatch by name; a composing session's DRAWN CARET fills its caret cell a solid inverse-video block (solid ink where the plain face is solid ground), confined byte-for-byte to that one cell, clearing and following the keeper when the caret walks home, round-trips through QOI; and an unpaintable frame refuses ScooterFrameUnpaintable by name\n", .{
         view.frame_cols, view.frame_rows, face.width, face.height,
     });
     return 0;
