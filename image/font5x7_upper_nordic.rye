@@ -1,0 +1,310 @@
+//! image/font5x7_upper_nordic.rye -- the open Danish-Norwegian CAPITALS corpus: the three uppercase letters after Z.
+//!
+//! Season G (Open Media Primitives) - font content for the open glyph atlas image/glyph.rye (gfa1), the uppercase
+//! companion to image/font5x7_nordic.rye (the lowercase a ring, ae ligature, o stroke). Where that corpus closed the
+//! lowercase Latin-1 letter set, this one draws the three CAPITALS a Danish or Norwegian alphabet appends after Z --
+//! A with a ring, the AE ligature, O with a stroke -- at their real Unicode codepoints U+00C5 A ring, U+00C6 AE
+//! ligature, U+00D8 O stroke (each 0x20 below its lowercase twin), in our own open hand on the same 5x7 body. These
+//! are the capitals a civic surface prints at the head of a name or in ALL-CAPS -- AERO, BJORN, KOBENHAVN, ANGSTROM --
+//! with the letter the alphabet actually carries rather than an ASCII fold of it. They stand beside the accented
+//! capitals (image/font5x7_upper_accented.rye and image/font5x7_upper_latin1.rye) as whole letters built three other
+//! ways, not one shared mark on a vowel body.
+//!
+//! The crux this corpus proves matches its lowercase twin: these three are NOT one shared mark -- they are THREE
+//! DISTINCT CONSTRUCTIONS, each read by its own toothed guard. Because a capital fills the whole body, each letter is
+//! compressed into rows 2..6 the way the accented capitals are, leaving rows 0..1 for a mark:
+//!   - A ring (U+00C5) wears a HOLLOW RING above the compressed A -- a top bar (row 0) over two sides (row 1) whose
+//!     center cell stays blank (the hole that makes a ring a ring);
+//!   - AE (U+00C6) is a LIGATURE, the A and the E fused into one wide capital -- no mark above (both mark rows blank)
+//!     and a full crossbar across its middle where the two letters join;
+//!   - O stroke (U+00D8) is a capital O with a STROKE THROUGH the bowl -- no mark above, and the center cell of the
+//!     bowl INKED by the diagonal slash where a plain O leaves it hollow.
+//! A mistyped ring, a lost crossbar, or a missing stroke is a stopped line rather than a wrong glyph.
+//!
+//! The source stays plain ASCII (ASCII-first): the codepoints are written as numeric literals (0x00C5 ...) and each
+//! letter is named in an ASCII comment, so no non-ASCII byte enters the file even though the glyphs it builds cover a
+//! non-ASCII range. The codepoints are NOT contiguous (they skip the accented capitals between them in the Latin-1
+//! Supplement block), so this corpus carries an explicit ascending codepoint table -- the shape the gfa1 encoder trusts
+//! (strictly ascending, shared cell, coverage length == cell area). The drawings ARE the specification: each letter is
+//! seven rows of five cells in ASCII line art ('#' full ink, '.' none) that a reader audits by eye; the coverage bytes
+//! are derived from that art, never the reverse. No network, no key, no funds -- the capitals a surface reads the day it
+//! prints a Danish or Norwegian name in ALL-CAPS on our own open font.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_upper_nordic.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+
+pub const font5x7_upper_nordic_version = "20260817.073802";
+
+/// Every glyph in this corpus shares one 5-wide, 7-tall cell -- the same body the ASCII, Greek, and accent corpora carry.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance: the cell width plus one column of daylight, the same advance the sibling corpora carry.
+pub const upper_nordic_advance: u8 = cell_w + 1;
+
+/// The corpus holds exactly the three Danish-Norwegian capitals named in the table below.
+pub const upper_nordic_count: u32 = 3;
+
+/// Cells per glyph -- the coverage length every letter carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The center column of the cell. The ring's hole and the O-stroke's crossing both fall here, so the two construction
+/// proofs read one shared column.
+pub const center_col: u32 = 2;
+
+/// The two mark rows above the compressed capital body (rows 0 and 1). The ring lives here; the ligature and the stroke
+/// leave both blank, which is how a reader tells a marked-above letter from one built whole.
+pub const mark_row_top: u32 = 0;
+pub const mark_row_bottom: u32 = 1;
+
+/// The middle row of the compressed capital body (row 4). The ligature's crossbar and the O-stroke's crossing both fall
+/// on this row, so both body proofs read one shared row.
+pub const mid_row: u32 = 4;
+
+/// The three Danish-Norwegian capital codepoints, strictly ascending -- the order the gfa1 encoder trusts. Each aligns
+/// by index with upper_nordic_art below. Written as numeric literals so the source stays plain ASCII while the glyphs
+/// cover a non-ASCII range:
+///   0x00C5 A ring, 0x00C6 AE ligature, 0x00D8 O stroke. Each is exactly 0x20 below its lowercase twin in
+///   image/font5x7_nordic.rye; the accented capitals between them in the Latin-1 Supplement block are skipped.
+const upper_nordic_codepoints = [upper_nordic_count]u32{
+    0x00C5, 0x00C6, 0x00D8,
+};
+
+/// The three capitals, drawn in the open. Each is seven rows of five cells; '#' ink, '.' background. A reader audits
+/// every letter here by eye, and the coverage bytes are lifted from this art, never guessed. Each capital is compressed
+/// into rows 2..6 the way the accented capitals are, so the three are built three ways:
+///   - A ring (U+00C5): the compressed A of image/font5x7_upper_accented.rye in rows 2..6, with a HOLLOW RING on the two
+///     mark rows -- a top bar (row 0) over two sides (row 1) whose center cell stays blank, so the ring has a hole;
+///   - AE (U+00C6): a wide ligature, the A and the E fused, both mark rows blank (no diacritic) and a full crossbar on
+///     the middle row where the two counters join;
+///   - O stroke (U+00D8): the compressed O in rows 2..6, both mark rows blank, with a diagonal slash from the lower left
+///     to the upper right that INKS the center cell of the bowl where a plain O leaves it hollow.
+const upper_nordic_art = [upper_nordic_count][cell_h][]const u8{
+    .{ ".###.", ".#.#.", ".###.", "#...#", "#####", "#...#", "#...#" }, // U+00C5 A ring
+    .{ ".....", ".....", ".####", "#.#..", "####.", "#.#..", "#.###" }, // U+00C6 AE ligature
+    .{ ".....", ".....", ".###.", "#..##", "#.#.#", "##..#", ".###." }, // U+00D8 O stroke
+};
+
+/// Lift one letter's ASCII art into a freshly allocated coverage grid of exactly cell_area bytes: 255 for ink,
+/// 0 for background. The art's own shape is asserted, so a mistyped row is a stopped line rather than a bad glyph.
+fn coverage_from_art(allocator: std.mem.Allocator, art: [cell_h][]const u8) ![]u8 {
+    // invariant: a coverage grid is exactly the shared cell area, within the atlas ceiling.
+    assert(cell_area >= 1);
+    assert(cell_area <= glyph.coverage_max);
+    const cov = try allocator.alloc(u8, cell_area);
+    var idx: u32 = 0;
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        const row = art[r];
+        // invariant: every drawn row is exactly the cell width -- the art matches the grid.
+        assert(row.len == cell_w);
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            cov[idx] = if (row[c] == '#') 255 else 0;
+            idx += 1;
+        }
+    }
+    // invariant: the whole grid was filled, no cell left unwritten.
+    assert(idx == cell_area);
+    return cov;
+}
+
+/// Build the Danish-Norwegian capitals atlas: three glyphs at the named ascending codepoints, sharing the 5x7 cell and
+/// advance. The gfa1 encoder accepts the result directly (ascending codepoints, coverage length == cell area).
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the corpus is the three named capitals and no more.
+    assert(upper_nordic_count == 3);
+    assert(cell_area == 35);
+    const glyphs = try allocator.alloc(glyph.Glyph, upper_nordic_count);
+    var i: u32 = 0;
+    var last_cp: u32 = 0;
+    while (i < upper_nordic_count) : (i += 1) {
+        const cp = upper_nordic_codepoints[i];
+        // invariant: codepoints are strictly ascending -- the ordering the gfa1 encoder trusts.
+        assert(i == 0 or cp > last_cp);
+        last_cp = cp;
+        const cov = try coverage_from_art(allocator, upper_nordic_art[i]);
+        glyphs[i] = glyph.Glyph{
+            .codepoint = cp,
+            .advance = upper_nordic_advance,
+            .coverage = cov,
+        };
+    }
+    // invariant: the last codepoint is the O stroke (U+00D8) -- the table ends where this set ends.
+    assert(glyphs[upper_nordic_count - 1].codepoint == 0x00D8);
+    return glyph.GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- the legibility signal a blank glyph would fail.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+/// Count the inked cells in row r of a glyph, restricted to the half-open column band [c0, c1). Every construction proof
+/// reads a row band with this one reader. Row 0 is the top.
+fn row_band_ink(cov: []const u8, r: u32, c0: u32, c1: u32) u32 {
+    // invariant: the row index sits inside the shared cell, over the shared grid.
+    assert(r < cell_h);
+    assert(cov.len == cell_area);
+    // invariant: the column band is well-ordered and inside the cell width.
+    assert(c0 <= c1);
+    assert(c1 <= cell_w);
+    var n: u32 = 0;
+    var c: u32 = c0;
+    while (c < c1) : (c += 1) {
+        if (cov[r * cell_w + c] != 0) n += 1;
+    }
+    // invariant: the band count never exceeds the band it was counted over.
+    assert(n <= c1 - c0);
+    return n;
+}
+
+/// The whole-mark-rows (rows 0 and 1) ink of a codepoint's glyph. The A ring carries its ring here (ink > 0); the AE
+/// ligature and the O stroke leave both rows blank (0), which is how a reader tells a marked-above letter from a whole
+/// one built without a diacritic.
+fn mark_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| {
+        return row_band_ink(g.coverage, mark_row_top, 0, cell_w) + row_band_ink(g.coverage, mark_row_bottom, 0, cell_w);
+    }
+    return error.UpperNordicLetterMissing;
+}
+
+/// The left-half ink of the top mark row (row 0, columns 0..1). The A ring's top bar spans both halves; the proof reads
+/// this against >= 1.
+fn top_left_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return row_band_ink(g.coverage, mark_row_top, 0, center_col);
+    return error.UpperNordicLetterMissing;
+}
+
+/// The right-half ink of the top mark row (row 0, columns 3..4). The A ring's top bar spans both halves; the proof reads
+/// this against >= 1.
+fn top_right_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return row_band_ink(g.coverage, mark_row_top, center_col + 1, cell_w);
+    return error.UpperNordicLetterMissing;
+}
+
+/// The center-column ink of the second mark row (row 1, column 2) -- the ring's HOLE. The A ring leaves this cell blank
+/// (0), which is what makes the ring a ring rather than a solid mark; the proof reads this against 0.
+fn ring_gap_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return row_band_ink(g.coverage, mark_row_bottom, center_col, center_col + 1);
+    return error.UpperNordicLetterMissing;
+}
+
+/// The whole middle-row (row 4) ink of a codepoint's glyph -- the ligature's crossbar. The AE ligature carries a full
+/// bar here (>= 4) where the A and the E join; the proof reads this to tell the ligature from a single bowl.
+fn mid_row_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return row_band_ink(g.coverage, mid_row, 0, cell_w);
+    return error.UpperNordicLetterMissing;
+}
+
+/// The center-column ink of the middle row (row 4, column 2) -- the O stroke's crossing. The O stroke INKS this cell
+/// where a plain O leaves it hollow; the proof reads this against 1 to tell the stroked O from a bare O.
+fn bowl_center_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return row_band_ink(g.coverage, mid_row, center_col, center_col + 1);
+    return error.UpperNordicLetterMissing;
+}
+
+// --- selftest: build the uppercase Nordic atlas, round-trip it through gfa1, prove present, distinct, legible, three-built --
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built atlas is the three-capital corpus at the shared cell.
+    assert(glyph_count == upper_nordic_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // Three present capitals: every one looks up, carries the shared advance; an unaccented ASCII 'A' misses.
+    var d: u32 = 0;
+    while (d < upper_nordic_count) : (d += 1) {
+        const cp = upper_nordic_codepoints[d];
+        if (back.lookup(cp)) |g| {
+            assert(g.codepoint == cp);
+            assert(g.advance == upper_nordic_advance);
+        } else return error.UpperNordicLetterMissing;
+    }
+    if (back.lookup('A')) |_| return error.NonUpperNordicFound else {}
+
+    // Distinctness: no two of the three capitals share identical coverage (catches a copy slip that would leave two
+    // names spelled with one glyph).
+    var a: u32 = 0;
+    while (a < upper_nordic_count) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b < upper_nordic_count) : (b += 1) {
+            if (std.mem.eql(u8, atlas.glyphs[a].coverage, atlas.glyphs[b].coverage)) return error.UpperNordicLettersNotDistinct;
+        }
+    }
+
+    // Legibility: each capital's ink count sits inside an honest band. The floor sits where the O stroke (its lightest, a
+    // bowl and a slash) still reads, the ceiling where the A ring (its heaviest, a capital under a ring) still resolves.
+    const ink_min: u32 = 14;
+    const ink_max: u32 = 21;
+    var lo: u32 = cell_area;
+    var hi: u32 = 0;
+    var k: u32 = 0;
+    while (k < upper_nordic_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (n < ink_min or n > ink_max) return error.UpperNordicLetterIllegible;
+        if (n < lo) lo = n;
+        if (n > hi) hi = n;
+    }
+    // invariant: the observed ink band stayed inside the honest bounds.
+    assert(lo >= ink_min);
+    assert(hi <= ink_max);
+
+    // Construction 1 -- the A ring (U+00C5): a HOLLOW RING above the compressed A. Three toothed guards read it: the mark
+    // rows carry ink (a ring is present above), the top bar spans both halves (a real ring, not a lean), and the ring's
+    // center cell on the second mark row is blank (the hole that makes a ring a ring).
+    if ((try mark_ink_of(&atlas, 0x00C5)) < 3) return error.UpperNordicRingMissing;
+    if ((try top_left_ink_of(&atlas, 0x00C5)) < 1 or (try top_right_ink_of(&atlas, 0x00C5)) < 1) return error.UpperNordicRingNotSpanning;
+    if ((try ring_gap_ink_of(&atlas, 0x00C5)) != 0) return error.UpperNordicRingNotHollow;
+
+    // Construction 2 -- the AE ligature (U+00C6): a wide capital built WITHOUT a diacritic. Two toothed guards read it:
+    // both mark rows are blank (no mark above, unlike the ring), and the middle row is a full crossbar (>= 4) where the
+    // A and the E join into one letter.
+    if ((try mark_ink_of(&atlas, 0x00C6)) != 0) return error.UpperNordicLigatureHasMark;
+    if ((try mid_row_ink_of(&atlas, 0x00C6)) < 4) return error.UpperNordicLigatureNoCrossbar;
+
+    // Construction 3 -- the O stroke (U+00D8): a capital O with a STROKE THROUGH the bowl. Two toothed guards read it:
+    // both mark rows are blank (no mark above), and the center cell of the bowl is inked (the slash crosses where a plain
+    // O leaves the center hollow).
+    if ((try mark_ink_of(&atlas, 0x00D8)) != 0) return error.UpperNordicStrokeHasMark;
+    if ((try bowl_center_ink_of(&atlas, 0x00D8)) != 1) return error.UpperNordicStrokeNotThrough;
+
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof.
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-upper-nordic: {d} Danish-Norwegian capitals U+00C5,U+00C6,U+00D8 at {d}x{d} round-trip byte-identical; all present, distinct, legible (ink {d}..{d} of {d}); three distinct constructions (A ring hollow above, AE ligature with a full crossbar and no mark, O stroke crossing the bowl center); encoded {d} bytes, raw {d}\n", .{
+        glyph_count, cell_w, cell_h, lo, hi, cell_area, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_upper_nordic selftest\n", .{});
+    return 1;
+}
