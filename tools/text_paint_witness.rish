@@ -1,0 +1,53 @@
+# tools/text_paint_witness.rish -- the open text-painting rung proves itself on metal (Season G, the paint half).
+#
+# Season G (Open Media Primitives) - the rung image/text_layout.rye named as the one it prepares. Where text_layout
+# PLACES a string's glyphs along a line and MEASURES their widths (pure geometry, no pixel touched), this rung PAINTS
+# that placement into an RGBA image. It is pure composition over the family's public APIs:
+#   - image/text_layout.rye places each glyph (its pen origin),
+#   - image/glyph.rye hands each glyph a coverage grid (one byte per cell, 0 no ink .. 255 full ink),
+#   - image/color.rye composites an ink colour over the destination (Porter-Duff src-over),
+#   - image/qoi.rye owns the RGBA target (a Pixmap, four bytes per cell).
+# So the nine hand-drawn open corpora become not only usable geometry but a string SEEN on an image.
+#
+# The crux this witness proves: painting 'Hi!' red over a white canvas changes EXACTLY the number of pixels that carry
+# ink (no stray pixel, no missed cell); every changed pixel is exactly the ink and every other stays the background,
+# byte-for-byte; the paint is deterministic and paint_line matches the placed path byte-for-byte; a transparent ink is
+# a true no-op; a half-alpha ink blends through color.over exactly, not by a guess; the empty line paints nothing; and
+# a line that would overrun the target's width OR its height refuses PaintOutOfBounds BY NAME rather than writing a
+# pixel outside the buffer. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/text_paint_witness.rish
+
+say "text-paint: Language EN -- Season G's paint rung; the half that composites a laid-out string's glyph coverage into an RGBA image, so the nine open corpora become a string seen, not only measured."
+say "text-paint: Style Radiant -- pure composition over image/text_layout (geometry), image/glyph (coverage), image/color (src-over), and image/qoi (the RGBA target); no new storage, codec, palette, or geometry."
+say "text-paint: Lens TAME -- u32 pixel coordinates, u8 colour and coverage bytes; the painted box is bound-checked ONCE up front so the inner loop is proven in-bounds; an overflowing paint is a named refusal (PaintOutOfBounds); no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/text_paint"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/text_paint.rye -femit-bin=${bin}"]
+assert build.ok else "text-paint: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "text-paint: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "text-paint: ${out}"
+
+let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-text-paint' && echo yes"]
+assert (trim green.out) == "yes" else "text-paint: selftest did not print the GREEN paint line"
+
+let changed = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'changed exactly 32 pixels' && echo yes"]
+assert (trim changed.out) == "yes" else "text-paint: the paint did not change exactly the inked-cell count"
+
+let ink = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'every changed pixel is the ink' && echo yes"]
+assert (trim ink.out) == "yes" else "text-paint: an ink pixel or a background pixel did not land exactly"
+
+let blend = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'half-alpha blends through color.over exactly' && echo yes"]
+assert (trim blend.out) == "yes" else "text-paint: the partial-alpha blend did not match color.over"
+
+let refuse = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'PaintOutOfBounds refused by name' && echo yes"]
+assert (trim refuse.out) == "yes" else "text-paint: the out-of-bounds refusal was not proven"
+
+say "text-paint: GREEN -- the fonts become a string seen; ink composites through coverage exactly where the glyphs carry it, the paint is deterministic, a partial alpha blends true, and a line that would overrun refuses by name."

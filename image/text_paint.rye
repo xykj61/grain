@@ -1,0 +1,307 @@
+//! image/text_paint.rye -- the open text-painting rung (Season G, the paint half after the measure half).
+//!
+//! Season G (Open Media Primitives) - the rung image/text_layout.rye named as the one it prepares: "Painting the
+//! placed coverage into an RGBA grid is the later rung this one prepares; here we only place and measure." This
+//! module is that later rung. It joins the whole open-font family into one act -- a string SEEN on an image:
+//!   - image/text_layout.rye places each glyph along a line (its pen origin, borrowed from the atlas),
+//!   - image/glyph.rye hands each glyph a coverage grid (one byte per cell, 0 no ink .. 255 full ink),
+//!   - image/color.rye composites an ink colour over the destination (Porter-Duff src-over, straight alpha),
+//!   - image/qoi.rye owns the RGBA target (a Pixmap, pixels held RGBA, four bytes per cell).
+//! Pure composition over those public APIs -- no new storage, codec, palette, or geometry. A coverage byte is the
+//! ink's alpha at that cell (scaled by the ink's own alpha), so full-ink over an opaque ink writes the ink exactly,
+//! no-ink leaves the destination untouched, and a partial cell blends. The painted line's bounding box is checked
+//! against the target ONCE, up front, so an overflowing paint refuses PaintOutOfBounds BY NAME rather than writing
+//! a pixel outside the buffer -- the same "refuse rather than paint garbage" discipline glyph.rye keeps. Clipping a
+//! line that runs past the edge (painting only the visible part) is a named later rung; this rung paints a line that
+//! fits, whole, or refuses. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/text_paint.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const text_layout = @import("text_layout.rye");
+const font_ascii = @import("font5x7_ascii.rye");
+
+pub const text_paint_version = "20260817.043000";
+
+/// Scale a base alpha by a coverage byte, both in 0..255, rounded -- the ink's own alpha times the cell's coverage.
+/// Full coverage (255) returns the base alpha unchanged; no coverage (0) returns zero (a transparent, no-op source).
+fn scale_alpha(base: u8, cov: u8) u8 {
+    // invariant: a product of two bytes, rounded and divided by 255, is itself a byte -- never overflows u8.
+    const scaled: u32 = (@as(u32, base) * @as(u32, cov) + 127) / 255;
+    assert(scaled <= 255);
+    return @intCast(scaled);
+}
+
+/// Allocate a fresh RGBA Pixmap of `width` x `height`, every pixel the one colour `fill` -- the canvas a paint needs
+/// before it has anything to paint on. Bounded by qoi's own pixel ceiling, so the buffer size is proven at birth.
+pub fn solid(allocator: std.mem.Allocator, width: u32, height: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes, within the image module's named pixel ceiling.
+    if (width == 0 or height == 0) return error.BadDimensions;
+    const total: u64 = @as(u64, width) * @as(u64, height);
+    if (total > qoi.qoi_max_pixels) return error.TooLarge;
+
+    const pixels = try allocator.alloc(u8, @as(usize, @intCast(total)) * 4);
+    // invariant: the buffer is exactly four bytes per pixel -- the RGBA invariant qoi.Pixmap carries.
+    assert(pixels.len == @as(usize, @intCast(total)) * 4);
+
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = width, .height = height, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Paint already-placed glyphs into `target`, compositing `ink` through each glyph's coverage, at pixel origin
+/// (`origin_x`, `origin_y`). Each cell one byte of coverage becomes the ink's alpha at (origin_x + pen_x + cx,
+/// origin_y + cy); a zero cell leaves the destination untouched; a covered cell is `color.over(ink', dst)`. Refuses
+/// PaintOutOfBounds BY NAME if the line's painted box would exceed the target -- checked once, so the inner loop is
+/// proven in-bounds. An empty placement paints nothing. The atlas gives the cell size every glyph's coverage carries.
+pub fn paint_placed(
+    atlas: *const glyph.GlyphAtlas,
+    placed: []const text_layout.PlacedGlyph,
+    target: *qoi.Pixmap,
+    origin_x: u32,
+    origin_y: u32,
+    ink: color.Rgba,
+) !void {
+    // invariant: the placement stays within text_layout's own line ceiling, so the outer loop is bounded.
+    if (placed.len > text_layout.line_glyph_max) return error.LineTooLong;
+    if (placed.len == 0) return; // an empty line paints nothing -- a real, bounded base case
+
+    const cw: u32 = atlas.cell_w;
+    const ch: u32 = atlas.cell_h;
+    // invariant: a paintable atlas has real cells on both axes.
+    assert(cw >= 1);
+    assert(ch >= 1);
+
+    // The line's painted box: its rightmost inked column is the last glyph's pen origin plus one cell width, and its
+    // bottom is one cell height. Computed in u64 so the sum can never wrap before the bound check refuses.
+    const last = placed[placed.len - 1];
+    const box_right: u64 = @as(u64, origin_x) + @as(u64, last.pen_x) + @as(u64, cw);
+    const box_bottom: u64 = @as(u64, origin_y) + @as(u64, ch);
+    if (box_right > @as(u64, target.width) or box_bottom > @as(u64, target.height)) return error.PaintOutOfBounds;
+
+    for (placed) |p| {
+        const g = p.src;
+        // invariant: the glyph's coverage is exactly the atlas cell area -- the grid the inner loop walks.
+        assert(g.coverage.len == @as(usize, cw) * @as(usize, ch));
+        var cy: u32 = 0;
+        while (cy < ch) : (cy += 1) {
+            var cx: u32 = 0;
+            while (cx < cw) : (cx += 1) {
+                const cov = g.coverage[@as(usize, cy) * @as(usize, cw) + @as(usize, cx)];
+                if (cov == 0) continue; // no ink -- the destination shows through untouched
+                const dx = origin_x + p.pen_x + cx;
+                const dy = origin_y + cy;
+                // invariant: the up-front box check proved every inked cell lands inside the target buffer.
+                assert(dx < target.width);
+                assert(dy < target.height);
+                const di = (@as(usize, dy) * @as(usize, target.width) + @as(usize, dx)) * 4;
+                const dst = color.Rgba{
+                    .r = target.pixels[di],
+                    .g = target.pixels[di + 1],
+                    .b = target.pixels[di + 2],
+                    .a = target.pixels[di + 3],
+                };
+                const src = color.Rgba{ .r = ink.r, .g = ink.g, .b = ink.b, .a = scale_alpha(ink.a, cov) };
+                const res = color.over(src, dst);
+                target.pixels[di] = res.r;
+                target.pixels[di + 1] = res.g;
+                target.pixels[di + 2] = res.b;
+                target.pixels[di + 3] = res.a;
+            }
+        }
+    }
+}
+
+/// Lay `text` out against `atlas` and paint it in one call -- the verb a surface reaches for. `scratch` holds one
+/// PlacedGlyph per byte (the caller sizes it >= text.len, no hidden allocation); layout_line refuses an uncovered
+/// byte BY NAME before a pixel is touched, and paint_placed refuses PaintOutOfBounds if the laid line would overflow.
+pub fn paint_line(
+    atlas: *const glyph.GlyphAtlas,
+    text: []const u8,
+    scratch: []text_layout.PlacedGlyph,
+    target: *qoi.Pixmap,
+    origin_x: u32,
+    origin_y: u32,
+    ink: color.Rgba,
+) !void {
+    // invariant: the scratch buffer holds a placed glyph for every input byte.
+    assert(scratch.len >= text.len);
+    const line = try text_layout.layout_line(atlas, text, scratch);
+    // invariant: layout placed exactly one glyph per byte, so the slice we paint matches the text length.
+    assert(line.count == text.len);
+    try paint_placed(atlas, scratch[0..line.count], target, origin_x, origin_y, ink);
+}
+
+// --- selftest: paint real text against the full-ASCII font, prove ink composites exactly and bounds refuse -------
+
+/// Count the inked cells (coverage byte != 0) across a laid-out line -- the exact number of pixels a full-opaque ink
+/// paint must change, so the selftest can bind "painted" to a measured count rather than a guess.
+fn inked_cells(placed: []const text_layout.PlacedGlyph, cell_area: u32) u32 {
+    var n: u32 = 0;
+    var k: u32 = 0;
+    // invariant: the walk stays within the placement.
+    assert(placed.len <= text_layout.line_glyph_max);
+    while (k < placed.len) : (k += 1) {
+        var c: u32 = 0;
+        while (c < cell_area) : (c += 1) {
+            if (placed[k].src.coverage[c] != 0) n += 1;
+        }
+    }
+    return n;
+}
+
+/// How many pixels of `a` differ from `b` -- two canvases of the same length, four bytes per pixel.
+fn changed_pixels(a: []const u8, b: []const u8) u32 {
+    // invariant: the two canvases are the same buffer length, a whole number of RGBA pixels.
+    assert(a.len == b.len);
+    assert(a.len % 4 == 0);
+    var n: u32 = 0;
+    var i: usize = 0;
+    while (i < a.len) : (i += 4) {
+        if (a[i] != b[i] or a[i + 1] != b[i + 1] or a[i + 2] != b[i + 2] or a[i + 3] != b[i + 3]) n += 1;
+    }
+    return n;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try font_ascii.build_atlas(garden);
+    const cell_area = atlas.cell_area();
+
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+    const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
+
+    // solid(): a fresh canvas is the fill colour in every pixel, on both channels and alpha.
+    const canvas = try solid(garden, 20, 8, white);
+    assert(canvas.width == 20);
+    assert(canvas.height == 8);
+    assert(canvas.pixels.len == 20 * 8 * 4);
+    {
+        var i: usize = 0;
+        while (i < canvas.pixels.len) : (i += 4) {
+            assert(canvas.pixels[i] == 255);
+            assert(canvas.pixels[i + 3] == 255);
+        }
+    }
+
+    // Lay out "Hi!" and count exactly how many cells carry ink -- the number a full-opaque paint must change.
+    const text = "Hi!";
+    const scratch = try garden.alloc(text_layout.PlacedGlyph, text.len);
+    const line = try text_layout.layout_line(&atlas, text, scratch);
+    const want_changed = inked_cells(scratch[0..line.count], cell_area);
+    // invariant: real glyphs carry ink, so the count the paint must change is positive.
+    assert(want_changed >= 1);
+
+    // Keep a pristine copy of the white canvas, then paint red text over a working copy.
+    const pristine = try garden.alloc(u8, canvas.pixels.len);
+    @import("tally_copy.rye").copy_disjoint(u8, pristine, canvas.pixels);
+    try paint_placed(&atlas, scratch[0..line.count], @constCast(&canvas), 0, 0, red);
+
+    // The number of changed pixels equals the inked-cell count exactly -- no stray pixel, no missed cell.
+    const changed = changed_pixels(canvas.pixels, pristine);
+    assert(changed == want_changed);
+
+    // Every changed pixel is EXACTLY the ink (opaque red over white = red, by color.over); every unchanged pixel
+    // is still the white background byte-for-byte. Ink lands where coverage is, nowhere else.
+    {
+        var i: usize = 0;
+        while (i < canvas.pixels.len) : (i += 4) {
+            const now = color.Rgba{ .r = canvas.pixels[i], .g = canvas.pixels[i + 1], .b = canvas.pixels[i + 2], .a = canvas.pixels[i + 3] };
+            const was_white = pristine[i] == 255 and pristine[i + 1] == 255 and pristine[i + 2] == 255;
+            if (color.Rgba.eql(now, red)) {
+                // an inked cell -- correct
+            } else {
+                // a cell the paint left alone -- it was white before and is still white, byte-for-byte.
+                assert(was_white);
+                assert(now.r == 255);
+                assert(now.g == 255);
+                assert(now.b == 255);
+            }
+        }
+    }
+
+    // Determinism: painting the same line onto a fresh identical canvas yields byte-for-byte the same pixels.
+    const canvas2 = try solid(garden, 20, 8, white);
+    try paint_placed(&atlas, scratch[0..line.count], @constCast(&canvas2), 0, 0, red);
+    assert(canvas2.same_bytes(&canvas));
+
+    // Transparent ink paints nothing -- an alpha-0 source leaves the canvas white byte-for-byte (a real no-op).
+    const clear_red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 0 };
+    const canvas3 = try solid(garden, 20, 8, white);
+    const before3 = try garden.alloc(u8, canvas3.pixels.len);
+    @import("tally_copy.rye").copy_disjoint(u8, before3, canvas3.pixels);
+    try paint_placed(&atlas, scratch[0..line.count], @constCast(&canvas3), 0, 0, clear_red);
+    assert(changed_pixels(canvas3.pixels, before3) == 0);
+
+    // Partial alpha blends through color.over exactly -- half-alpha red over white is the composite, not a guess.
+    const half_red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 128 };
+    const expect_blend = color.over(color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 128 }, white);
+    const canvas4 = try solid(garden, 20, 8, white);
+    try paint_placed(&atlas, scratch[0..line.count], @constCast(&canvas4), 0, 0, half_red);
+    {
+        // At least one pixel must carry the exact blend (a covered cell), and none may be a stray colour.
+        var seen_blend = false;
+        var i: usize = 0;
+        while (i < canvas4.pixels.len) : (i += 4) {
+            const now = color.Rgba{ .r = canvas4.pixels[i], .g = canvas4.pixels[i + 1], .b = canvas4.pixels[i + 2], .a = canvas4.pixels[i + 3] };
+            if (color.Rgba.eql(now, expect_blend)) {
+                seen_blend = true;
+            } else {
+                // an untouched white cell -- the blend landed only where the glyph carries coverage.
+                assert(now.r == 255);
+                assert(now.g == 255);
+                assert(now.b == 255);
+            }
+        }
+        assert(seen_blend);
+    }
+
+    // The empty line paints nothing -- a bounded base case that never touches the buffer.
+    const empty_canvas = try solid(garden, 4, 4, white);
+    const empty_before = try garden.alloc(u8, empty_canvas.pixels.len);
+    @import("tally_copy.rye").copy_disjoint(u8, empty_before, empty_canvas.pixels);
+    try paint_placed(&atlas, scratch[0..0], @constCast(&empty_canvas), 0, 0, red);
+    assert(changed_pixels(empty_canvas.pixels, empty_before) == 0);
+
+    // PaintOutOfBounds: a line that overruns the target's width refuses BY NAME, and so does one past its height.
+    const tiny = try solid(garden, 6, 8, white);
+    if (paint_placed(&atlas, scratch[0..line.count], @constCast(&tiny), 0, 0, red)) |_| {
+        return error.OverflowSlipped;
+    } else |e| {
+        if (e != error.PaintOutOfBounds) return error.WrongOverflow;
+    }
+    const shallow = try solid(garden, 20, 4, white);
+    if (paint_placed(&atlas, scratch[0..line.count], @constCast(&shallow), 0, 3, red)) |_| {
+        return error.OverflowSlipped;
+    } else |e| {
+        if (e != error.PaintOutOfBounds) return error.WrongOverflow;
+    }
+
+    // paint_line composes layout and paint in one call, matching the placed path byte-for-byte.
+    const canvas5 = try solid(garden, 20, 8, white);
+    const scratch5 = try garden.alloc(text_layout.PlacedGlyph, text.len);
+    try paint_line(&atlas, text, scratch5, @constCast(&canvas5), 0, 0, red);
+    assert(canvas5.same_bytes(&canvas));
+
+    print("GREEN image-text-paint: '{s}' painted red over white changed exactly {d} pixels (= inked cells); every changed pixel is the ink, every other stays background; deterministic and byte-identical through paint_line; transparent ink is a no-op; half-alpha blends through color.over exactly; empty line paints nothing; PaintOutOfBounds refused by name on width and on height\n", .{ text, changed });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: text_paint selftest\n", .{});
+    return 1;
+}

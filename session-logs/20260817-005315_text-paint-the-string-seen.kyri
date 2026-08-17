@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260817.005315
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title text-paint -- the open-font family becomes a string seen
+prompt baton prin recur -- take the next agent-doable lap Lindy-first crux-first on the road past BUHR, one council-rota deep-read, Rye-first, send often, stop at custody gates
+think Read the three road docs (1024-round itinerary, eight-season double-seat, rye-first crypto wave) and the REMEMBER live edge. The open-media family (Season G) is the live edge and the crypto surface stands WHOLE (do not reopen without a named gap). So the Lindy-first crux is inside Season G.
+think image/text_layout.rye names its own successor in its doc: "Painting the placed coverage into an RGBA grid is the later rung this one prepares." That is the highest-Lindy crux-first move -- it unifies the whole open-font family (nine hand-drawn corpora + full-ASCII font) from measured geometry into a string SEEN on an image, the capability every surface (Skate, Photos, Realidream) needs.
+think Confirmed the four free parts already exist: text_layout.PlacedGlyph (pen origin), glyph.Glyph.coverage (one byte per cell), color.over (Porter-Duff src-over) + color.Rgba, qoi.Pixmap (RGBA target). Coverage bytes are 0/255 for the 5x7 fonts, so opaque ink over white = ink exactly (color.over(red,blue)==red already proven in color.rye's own selftest).
+think Wrote image/text_paint.rye: solid() mints a one-colour canvas; paint_placed() composites ink through coverage at a pixel origin, bound-checking the painted box ONCE up front so the inner loop is proven in-bounds; paint_line() lays out + paints in one call over public APIs. An overrun refuses PaintOutOfBounds by name (clipping is a named later rung) -- the family's refuse-rather-than-paint-garbage discipline.
+think Built and selftest GREEN on the first run: 'Hi!' red over white changes EXACTLY 32 pixels (= the inked-cell count), every changed pixel is the ink and every other stays white, deterministic, paint_line matches paint_placed byte-for-byte, transparent ink is a no-op, half-alpha equals color.over(red@128,white) exactly, empty line paints nothing, PaintOutOfBounds refused on width AND height.
+obs tame_style_check flagged six compound asserts (assert(a and b)) -- split each into sequential asserts, the only red of the round, caught by the witness gate before send. width-check exit 0. New prose plain ASCII.
+obs Council rota this lap (commit count 38242, item 11 of 27): active-designing/yonder/20260618-182412_single-stranded.md -- simple vs easy, compose free parts rather than braid them. text_paint embodies it: it adds no new storage, codec, palette, or geometry, only the join of four single-stranded parts, each still reasoned about alone.
+obs SLC held: painting a line that fits, whole, is a complete text floor; clipping a partly-visible line and mid-word splitting are named later rungs, not this one. No custody gate reached -- no network, no key, no funds.
+file image/text_paint.rye the paint half -- solid + paint_placed + paint_line, composition over text_layout/glyph/color/qoi
+file tools/text_paint_witness.rish proves the round on metal (exact inked-cell count, ink exactness, determinism, blend, named refusal)
+file image/README.md adds the text_paint.rye entry and repoints the "next rungs" line (clipping now named)
+file crux/REMEMBER.md live edge names text_paint GREEN; new Git nib, text_layout promoted to Prior, frames_delta prior folded into git history
+recommend keep-going the next Season G rung: mid-word splitting for a word wider than the wrap width, or edge-clipping a line that runs past an image edge (the sibling text-family rungs), or proving the image/video codecs on a real corpus -- each its own signed round.
