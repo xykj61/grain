@@ -123,6 +123,7 @@ Keaton approved debride / shred / seed-force-update. Honoring that approval **me
 2. **`.myc` -> `.kres`** -- contract-notation supersede (also supersedes Sui Move as the tree's contract lang). Cairn.
 3. **Council sky -> Constel sky** -- living-doc + module rename. Cairn.
 4. **Deep debride + seed force-push (*initial public seed*, again)** -- the one-way rung: root-README molt-tracking done first, `sow_witness` GREEN (depersonalized, `twilight/` kept), **cairn mandatory** (a deep rewrite loses its own walk-back), then force-push `grain-os/grain`. **Custody gate #1 -- stays Keaton's hand even with standing approval.** The commit message uses the **"initial public seed"** wording (it reads well).
+5. **Four waymark redraws (`20260817`, chosen on Keaton's word)** -- **DREY -> DREY** - **FORA -> FORA** - **WADE -> WADE** - **LOWE -> LOWE**, same ladders and goals, drawn via [`../tools/waymark_derive.rish`](../tools/waymark_derive.rish) and reserved in its exclude; cairn `crux/CAIRNS.md 20260817.173615`. Each is a **breach molt debride** of its own round -- molt the elder rung labels and `tools/<mark>_*` witnesses, repoint every living reference (relative path, bare filename, shorthand), leave dated logs. DREY alone touches ~502 sites (DREY0..16, `mikrophone/`, Constel/Lotus cross-refs).
 
 ## Constel test-network naming law (self-invented, siloed)
 
