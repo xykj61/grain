@@ -1,0 +1,311 @@
+//! pond/apps/scooter_session.rye -- Scooter, the whole loop: one keystroke stream drives read and write at once.
+//!
+//! Season G (Open Media Primitives) -- the terminal family's capstone on the Pond floor. Two proven halves have
+//! stood a step apart. The WRITE half (scooter_input over scooter_compose) drives a keeper's typed bytes into an
+//! editable prompt and commits each finished line as a post. The READ half (scooter_nav over scooter_read)
+//! drives navigation bytes into a held scroll position over the same journal. A real terminal chat is BOTH at
+//! once -- a scrollable history above a live input line -- yet nothing joined them into one session a keeper
+//! drives with a single keyboard. This module is that join: it holds one compose Session and one read View over
+//! the same channel, and routes each decoded keystroke to the half it belongs to.
+//!
+//! The routing is a clean partition of dexter_key's KeyKind, so every key has exactly one home:
+//!   - Editing keys (a printable byte, Backspace, forward-Delete, Left/Right, Home/End) edit the PROMPT line
+//!     through dexter_key.apply -- Home and End are the input line's own start/end, the readline motion a typist
+//!     expects, so the prompt keeps its full editing model unchanged.
+//!   - Navigation keys (Up/Down, Page Up/Page Down) scroll the read VIEW through scooter_nav.apply_key -- the
+//!     scrollback affordance a reader expects, disjoint from the editing set so no key means two things.
+//!   - Enter commits the prompt as a post, then snaps the view home to the newest, so a keeper always sees the
+//!     line they just sent; an empty Enter posts nothing, and a full journal stops the feed by name.
+//!
+//! The drawn face follows the position: at home the live compose frame (journal tail plus the editable prompt
+//! row); scrolled up the read window (the history slice with its scroll-status row). The draft prompt is held
+//! either way and reappears the moment the keeper returns home -- typing and scrolling never disturb each other.
+//!
+//! Held PURE and custody-first: it composes a channel, a prompt, and a scroll position -- no raw TTY, no network,
+//! no key, no funds. The cbreak TTY read and the Comlink wire between two Constel piers reach the serve gate.
+//! Pattern elders: pond/apps/scooter_input.rye (write drive) and pond/apps/scooter_nav.rye (read drive).
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build pond/apps/scooter_session.rye -femit-bin=pond/bin/scooter-session
+//!   pond/bin/scooter-session selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const channel = @import("scooter_channel.rye");
+const compose = @import("scooter_compose.rye");
+const read = @import("scooter_read.rye");
+const scroll = @import("scooter_scroll.rye");
+const view = @import("scooter_view.rye");
+const nav = @import("scooter_nav.rye");
+const key = @import("dexter_key.rye");
+
+pub const scooter_session_version = "20260817.113000";
+
+/// A fed byte run holds at most this many bytes -- the same bound the decoder and both driven halves read
+/// under, so the whole session never scrolls or edits past a bounded run. A caller with more feeds in slices.
+pub const max_feed: u32 = key.max_input;
+
+/// Where a feed stopped: it drained the whole run (the prompt holds any trailing partial line and the view sits
+/// wherever the last navigation key left it), or the journal filled and refused a post so the feed stopped by
+/// name rather than dropping the keeper's line silently.
+pub const FeedStop = enum {
+    drained, // the byte run ended with no refusal
+    journal_full, // a submit hit the journal bound -- the feed stopped rather than losing the post
+};
+
+/// The result of feeding a keystroke run into the whole session: where it stopped, how many lines it committed
+/// as posts, and how many bytes it consumed. On journal_full, `used` counts up to and including the Enter that
+/// could not be posted, so a caller knows exactly where to resume.
+pub const Feed = struct {
+    stop: FeedStop,
+    posted: u32, // non-empty lines committed to the journal this feed
+    used: u32, // bytes consumed -- equal to bytes.len on drained, less on journal_full
+};
+
+/// The whole Scooter session over one channel: a live write prompt and a held read position, driven together.
+pub const Session = struct {
+    ch: *channel.Channel,
+    writer: compose.Session,
+    reader: read.View,
+
+    /// Seat a whole session over a channel for member `me`. Membership is the compose half's own door (a
+    /// non-member cannot open a composing session), and the read view opens at home over the same journal.
+    pub fn open(ch: *channel.Channel, me: u32) Session {
+        // invariant: the keeper holds a seat, so every submit this session makes can post.
+        assert(ch.is_member(me));
+        const s = Session{
+            .ch = ch,
+            .writer = compose.Session.open(ch, me),
+            .reader = read.View.opened(ch),
+        };
+        // invariant: a fresh session opens on an empty prompt and a bounded read position.
+        assert(s.writer.line.len == 0);
+        assert(s.reader.top <= channel.max_posts);
+        return s;
+    }
+
+    /// Is the read view resting at home -- the newest window, where the live prompt is drawn? True on a fresh
+    /// session and after every submit; false while the keeper has scrolled back into history to read.
+    pub fn at_home(self: *const Session) bool {
+        // invariant: the held position and the channel count are both bounded, so latest_top reads real counts.
+        assert(self.reader.top <= channel.max_posts);
+        assert(self.ch.post_count <= channel.max_posts);
+        return self.reader.top == scroll.latest_top(self.ch.post_count, read.page_rows);
+    }
+
+    /// Decode and drive a whole keystroke run through the session, routing each key to the half it belongs to.
+    /// Editing keys edit the prompt, navigation keys scroll the view, Enter commits a post and snaps home. Never
+    /// fails: every boundary edit is a no-op, and the one real refusal (a full journal) is reported by name.
+    pub fn feed(self: *Session, bytes: []const u8) Feed {
+        // invariant: the fed run is bounded by the decoder's own maximum.
+        assert(bytes.len <= max_feed);
+        // invariant: the session holds a seat, so every submit this feed makes can post.
+        assert(self.ch.is_member(self.writer.me));
+        var i: u32 = 0;
+        var posted: u32 = 0;
+        // Each decode consumes 1+ bytes, so `i` grows every pass and the loop terminates within bytes.len passes.
+        while (i < bytes.len) {
+            const step = key.decode(bytes[i..]);
+            // invariant: a decode over bytes that remain always advances, so this loop cannot stall.
+            assert(step.used >= 1);
+            i += step.used;
+            switch (step.key.kind) {
+                .nav_up, .nav_down, .page_up, .page_down => {
+                    // A navigation key scrolls the read view; the prompt holds unchanged.
+                    _ = nav.apply_key(&self.reader, self.ch, step.key);
+                },
+                .enter => {
+                    // Commit the held line as a post, count only a real post, tolerate an empty line, and stop
+                    // by name when the journal is full. On a real post, snap the view home so the keeper sees it.
+                    if (self.writer.submit()) |_| {
+                        posted += 1;
+                        self.reader.go_home(self.ch);
+                    } else |err| switch (err) {
+                        error.EmptyEntry => {}, // a blank Enter -- nothing posted, the prompt already cleared
+                        error.JournalFull => {
+                            // invariant: a refused submit consumed the Enter, so `used` never claims it landed.
+                            assert(i <= bytes.len);
+                            return .{ .stop = .journal_full, .posted = posted, .used = i };
+                        },
+                        else => {}, // NotMember/TextTooLong cannot fire: the seat is held and the line is bounded equal
+                    }
+                },
+                else => {
+                    // Every editing key (printable, Backspace, forward-Delete, Left/Right, Home/End) and an
+                    // ignored escape edit the prompt line -- Home/End are the input line's own start/end.
+                    _ = key.apply(self.writer.prompt(), step.key);
+                },
+            }
+        }
+        // invariant: draining consumed the whole run exactly, and never overran it.
+        assert(i >= bytes.len);
+        // Seam cast: bytes.len is a std usize; the bound assert above proves it fits u32, cast at the edge.
+        return .{ .stop = .drained, .posted = posted, .used = @intCast(bytes.len) };
+    }
+
+    /// Fold the whole session into one bounded terminal frame, following the read position: at home the live
+    /// compose frame (the journal tail with the editable prompt row), scrolled up the read window (the history
+    /// slice with its scroll-status row). Pure over the family's public renders -- the same state draws the same
+    /// bytes every time, and the frame is always exactly the fixed grid.
+    pub fn frame(self: *const Session) view.Frame {
+        // invariant: the read position is bounded before either render reads the journal.
+        assert(self.reader.top <= channel.max_posts);
+        // invariant: the channel count is real, so both renders name only present posts.
+        assert(self.ch.post_count <= channel.max_posts);
+        if (self.at_home()) return self.writer.frame();
+        return self.reader.render(self.ch);
+    }
+
+    /// The column the caret sits at in the prompt row, meaningful only at home where the prompt is drawn -- a
+    /// later live TTY or painter reads it to place the cursor. While scrolled back the keeper is reading, so the
+    /// caret is not shown; a caller checks at_home first.
+    pub fn caret_col(self: *const Session) u32 {
+        // invariant: the caret column comes straight from the compose half's own proven bound.
+        const c = self.writer.caret_col();
+        assert(c < view.frame_cols);
+        return c;
+    }
+};
+
+// --- selftest -------------------------------------------------------------------------------------------
+
+const host_key: u32 = 1001;
+const ada: u32 = 2002;
+
+fn a_seated_channel(post_count: u32) !channel.Channel {
+    // A channel the host and Ada share, seeded with `post_count` posts by Ada so a read view has history.
+    var ch = channel.Channel.open(host_key);
+    try ch.admit(host_key, ada);
+    var k: u32 = 0;
+    while (k < post_count) : (k += 1) {
+        var buf: [16]u8 = undefined;
+        const text = std.fmt.bufPrint(&buf, "post {d}", .{k}) catch unreachable;
+        _ = try ch.post(ada, text);
+    }
+    return ch;
+}
+
+fn typing_edits_the_prompt_only() !void {
+    // A printable run edits the prompt line and never moves the read view or the journal.
+    var ch = try a_seated_channel(30);
+    var s = Session.open(&ch, host_key);
+    const home = s.reader.top;
+    const f = s.feed("hello");
+    assert(f.stop == .drained);
+    assert(f.posted == 0);
+    assert(std.mem.eql(u8, s.writer.prompt().text(), "hello"));
+    assert(s.reader.top == home); // typing did not scroll
+    assert(ch.post_count == 30); // typing did not post
+    print("scooter_session: a printable run edits the prompt and leaves the read view and journal untouched.\n", .{});
+}
+
+fn navigation_scrolls_the_view_only() !void {
+    // A navigation run scrolls the read view and never touches the prompt line.
+    var ch = try a_seated_channel(30);
+    var s = Session.open(&ch, host_key);
+    _ = s.feed("draft"); // a held draft
+    const home = s.reader.top;
+    _ = s.feed("\x1b[A\x1b[A"); // two Up arrows -- step two posts older
+    assert(s.reader.top == home - 2);
+    assert(!s.at_home()); // scrolled back into history
+    assert(std.mem.eql(u8, s.writer.prompt().text(), "draft")); // the draft held through scrolling
+    print("scooter_session: a navigation run scrolls the read view and holds the draft prompt untouched.\n", .{});
+}
+
+fn enter_posts_and_snaps_home() !void {
+    // Enter commits the prompt as a post; even from a scrolled position the view snaps home to show the new line.
+    var ch = try a_seated_channel(30);
+    var s = Session.open(&ch, host_key);
+    _ = s.feed("\x1b[5~"); // Page Up -- scroll away from home first
+    assert(!s.at_home());
+    const f = s.feed("hi there\r"); // type then Enter
+    assert(f.stop == .drained);
+    assert(f.posted == 1);
+    assert(ch.post_count == 31);
+    const last = try ch.get(30);
+    assert(std.mem.eql(u8, last.body(), "hi there"));
+    assert(s.writer.prompt().len == 0); // the prompt cleared after the post
+    assert(s.at_home()); // the view snapped home so the keeper sees their sent line
+    print("scooter_session: Enter commits the prompt as a post and snaps the view home to the newest line.\n", .{});
+}
+
+fn an_empty_enter_posts_nothing() !void {
+    // A bare Enter with no typed text posts nothing and holds the view where it was.
+    var ch = try a_seated_channel(30);
+    var s = Session.open(&ch, host_key);
+    _ = s.feed("\x1b[H"); // Home is the prompt's line-start, an editing key -- not a scroll, so still at home
+    assert(s.at_home());
+    const f = s.feed("\r"); // a lone carriage return
+    assert(f.posted == 0);
+    assert(ch.post_count == 30);
+    print("scooter_session: a bare Enter posts nothing and the journal holds its count.\n", .{});
+}
+
+fn home_end_edit_the_line_not_the_scroll() !void {
+    // Home and End move the prompt cursor to line start/end; they do not scroll the read view.
+    var ch = try a_seated_channel(30);
+    var s = Session.open(&ch, host_key);
+    const home = s.reader.top;
+    _ = s.feed("abc"); // cursor at end, col 3
+    _ = s.feed("\x1b[H"); // Home -- to line start
+    assert(s.writer.prompt().cursor == 0);
+    assert(s.reader.top == home); // the read view did not move
+    _ = s.feed("\x1b[F"); // End -- to line end
+    assert(s.writer.prompt().cursor == 3);
+    assert(s.reader.top == home);
+    print("scooter_session: Home and End move the prompt cursor and never scroll the read view.\n", .{});
+}
+
+fn a_full_journal_stops_the_feed_by_name() !void {
+    // Fill the journal to its bound, then one more Enter stops the feed by name rather than dropping the post.
+    var ch = try a_seated_channel(channel.max_posts - 1); // one short of full
+    var s = Session.open(&ch, host_key);
+    const f0 = s.feed("last\r"); // fills the journal exactly
+    assert(f0.stop == .drained);
+    assert(f0.posted == 1);
+    assert(ch.post_count == channel.max_posts);
+    const f1 = s.feed("over\r"); // no room -- the submit is refused by name
+    assert(f1.stop == .journal_full);
+    assert(f1.posted == 0);
+    assert(ch.post_count == channel.max_posts); // nothing dropped, nothing overran
+    print("scooter_session: a full journal stops the feed by name, dropping no post and overrunning no bound.\n", .{});
+}
+
+fn the_frame_follows_the_position() !void {
+    // At home the frame is the live compose face; scrolled up it is the read window -- each one truth with state.
+    var ch = try a_seated_channel(30);
+    var s = Session.open(&ch, host_key);
+    _ = s.feed("hi"); // a draft on the prompt row
+    assert(s.at_home());
+    const live = s.frame();
+    const direct_live = s.writer.frame();
+    assert(std.mem.eql(u8, &live.cells, &direct_live.cells)); // at home == the compose face
+    _ = s.feed("\x1b[5~"); // Page Up -- into history
+    assert(!s.at_home());
+    const back = s.frame();
+    const direct_back = s.reader.render(&ch);
+    assert(std.mem.eql(u8, &back.cells, &direct_back.cells)); // scrolled == the read window
+    print("scooter_session: the drawn frame follows the read position -- the live prompt at home, the window scrolled back.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try typing_edits_the_prompt_only();
+    try navigation_scrolls_the_view_only();
+    try enter_posts_and_snaps_home();
+    try an_empty_enter_posts_nothing();
+    try home_end_edit_the_line_not_the_scroll();
+    try a_full_journal_stops_the_feed_by_name();
+    try the_frame_follows_the_position();
+    print("scooter_session: version {s}\n", .{scooter_session_version});
+    print("GREEN: scooter_session; one keystroke stream drives the whole terminal chat -- editing keys edit the prompt, navigation keys scroll the read view, Enter posts and snaps home, the frame follows the position, every bound asserted and the two halves never disturb each other.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "scooter-session"))) {
+        return run_selftest();
+    }
+    return run_selftest();
+}

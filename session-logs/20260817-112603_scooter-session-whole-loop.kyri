@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260817.112603
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title scooter_session -- the whole terminal chat loop closes
+prompt recur the autonomous loop: next agent-doable lap Lindy-first crux-first, read one council-rota doc, send often
+think Read REMEMBER inner loop + the three road docs (1024-round itinerary, eight-season double-seat, decision wave). Live edge is Season G open-media, the Scooter/Dexter terminal family.
+think Surveyed the terminal family: WRITE half proven (scooter_input drives keystrokes into scooter_compose, commits posts); READ half proven (scooter_nav drives navigation keys into scooter_read's held View). Nothing joined them into one session a keeper drives with one keyboard -- that is the missing capstone and the Lindy crux (the join that makes Scooter a real terminal chat).
+think Studied the key interfaces: dexter_key.KeyKind is a clean set; dexter_key.apply routes editing keys (printable/backspace/delete_forward/left/right/home/end) to a Line; scooter_nav.apply_key routes nav keys (up/down/page/home/end) to a View. Home/End are the one ambiguous pair.
+think Design decision: partition the keys disjointly -- editing keys (incl. Home/End as line start/end, the readline motion a typist expects) edit the prompt; navigation keys (Up/Down, Page Up/Down) scroll the view; Enter posts and snaps the view home so the sender sees their line. Least surprise: each key does one thing, typing and scrolling never cross-affect.
+think Frame follows the read position -- at home the live compose frame (render_within reserves the prompt row), scrolled up the read window (render_window's scroll-status row). No sibling edits needed: home is detected via scroll.latest_top(post_count, read.page_rows).
+obs render_window does not reliably leave the last frame row free (its scroll-status row can land on row 23), so overlaying a prompt there would clobber content -- the home/scrolled branch is the honest composition, keeping each module's render authoritative.
+obs Rota lap index: git rev-list --count HEAD = 38321, mod 27 = 8 -> rota item 9, foundations/20260810-011514_pond-the-application-module.md. Directly on point: Pond is the floor where bounded modules compose into a running whole; scooter_session enacts exactly that composition.
+obs Seven cruxes GREEN first metal run, no reds. tame_style_check bans clean; width-check clean; plain 7-bit ASCII; >=2 positive asserts per fn; one documented seam cast (bytes.len usize -> u32 at the edge, bound proven first).
+loom witness=scooter_session_witness cruxes=7 posts_max=256 journal_test=30 wall=green
+file pond/apps/scooter_session.rye the capstone: one keystroke stream routed to read view and write prompt, frame follows position
+file tools/scooter_session_witness.rish builds the module and asserts the seven cruxes speak GREEN on metal
+file crux/REMEMBER.md live edge + Git nib updated to the whole-loop rung (same work commit, one amend for the hash)
+recommend keep-going a fresh Season G open-media thread or another season's Lindy-first crux; the terminal read+write loop is now one session, the remaining rungs (raw TTY, Comlink wire) reach the serve gate -- the maintainer's hand
