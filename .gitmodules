@@ -24,7 +24,7 @@
 	url = https://github.com/nostr-protocol/nips
 [submodule "gratitude/damus"]
 	path = gratitude/damus
-	url = https://github.com/damus-io/damus
+	url = https://github.com/dfora-io/damus
 [submodule "gratitude/primal"]
 	path = gratitude/primal
 	url = https://github.com/PrimalHQ/primal-caching-service
