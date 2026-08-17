@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260817.111006
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title dexter_key -- the decoder names the navigation keys
+prompt recur: continue the next agent-doable lap Lindy-first crux-first; send often; Rye-first; approve own design rounds; stop at custody gates
+think The read stack now has a pure position model (scooter_scroll), a drawn window (render_window), and a held view with paging verbs (scooter_read). The one missing floor to make scrolling reachable by a keeper: the decoder must NAME the navigation keys. dexter_key mapped Up/Down to .ignored -- a deliberate 'no line meaning' choice -- and dropped Page Up/Down through the numeric else.
+think This is a change to a proven module's decode contract, the kind of seam the collaboration rhythm flags. The autonomous directive approves my own design rounds; it is not a custody gate. Chose to make the decoder FAITHFUL: name every key the terminal sends (nav_up/nav_down/page_up/page_down), while the line editor still applies them as a no-op (a line of text does not scroll). A read view binds them; the line editor ignores them. Two consumers, one honest decode.
+think Kept accrete-never-break in spirit: the line-editing behavior is byte-identical (nav keys were no-ops as .ignored, still no-ops as named kinds), so scooter_input/scooter_compose are unaffected. Only the decoder's NAME for these keys changed, from a blanket ignored to a precise navigation kind -- richer, not breaking.
+obs Added KeyKind nav_up/nav_down/page_up/page_down; decode_escape maps CSI/SS3 'A'->nav_up, 'B'->nav_down and CSI '5~'->page_up, '6~'->page_down; apply treats all four as a line no-op (exhaustive switch). New crux GREEN on metal: Up/Down and Page Up/Down decode to their named kinds (an SS3 Up decodes the same as its CSI twin), and driving all four into a line leaves it byte-identical with the cursor unmoved. The unknown-sequence crux narrowed to ESC[Z, a lone ESC, and a tab -- still ignored.
+obs GREEN dexter_key witness (nine cruxes now); scooter_input still GREEN (downstream apply behavior unchanged). tame_style_check bans clean, width-check exit 0, plain 7-bit ASCII, >=2 positive asserts per fn, one existing seam @intCast unchanged. Module doc and tools/dexter_key_witness.rish name the navigation keys (docs-sync).
+loom witness=dexter_key_witness cruxes=9 nav_kinds=4 downstream=scooter_input_GREEN result=GREEN
+file pond/apps/dexter_key.rye the decoder names nav_up/nav_down/page_up/page_down; the line editor applies them as a no-op, a read view binds them to scrolling
+file tools/dexter_key_witness.rish asserts the navigation crux beside the eight elder ones
+file session-logs/20260817-111006_dexter-key-navigation-keys.kyri this record
+recommend keep-going the three read-stack floors are green and the decoder now names the keys; the next rung is the small binding that joins them -- a pure map from a dexter_key navigation Key to a scooter_read paging verb (nav_up->line_up, nav_down->line_down, page_up->page_up, page_down->page_down), so a byte run scrolls a held view and render_window draws each step, still no TTY and no network; the raw TTY read (cbreak) and the Comlink wire between two Constel piers reach the serve gate, the maintainer's hand
