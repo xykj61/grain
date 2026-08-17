@@ -1,0 +1,175 @@
+//! pond/apps/dexter_prompt.rye -- Dexter, the drawn prompt: an editable line rendered into a terminal row.
+//!
+//! Season G (Open Media Primitives) -- the terminal family. dexter_line.rye holds one editable line; this
+//! module DRAWS it: it folds a prompt prefix and the line's bytes into a single bounded terminal row of the
+//! same 80-column width scooter_view.rye draws its journal in, tracking the column the caret sits at. When
+//! the line is wider than the row it scrolls horizontally, keeping the cursor always visible -- the way a
+//! shell prompt slides a long command left so the caret never leaves the screen. It is the OUTPUT of the
+//! input half, the bridge between dexter_line/dexter_shell and scooter_view's drawn frame, and held pure:
+//! no raw terminal, no escape codes, no network. A live TTY that reads keystrokes is the last rung; this
+//! draws the row that rung will show.
+//! Pattern elder: pond/apps/scooter_view.rye -- the same fold from a model into a fixed-width character row.
+//!
+//! The crux is one row drawn honest, the cursor never off-screen:
+//!   - The row is exactly the terminal width. render_prompt returns a PromptRow of exactly row_cols cells,
+//!     the prefix then the visible window of the line, space-filled where no character is drawn.
+//!   - The cursor is always visible. cursor_col names the column the caret sits at, always within the row;
+//!     a line wider than the row scrolls so the cursor stays in view (anchored to show the tail at the end).
+//!   - The fold is referentially transparent -- the same prefix and line render the same row every time.
+//!
+//! Facts only, custody-first: it draws a line of text into a row and holds nothing else -- no network, no key.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build pond/apps/dexter_prompt.rye -femit-bin=pond/bin/dexter-prompt
+//!   pond/bin/dexter-prompt selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const line = @import("dexter_line.rye");
+const view = @import("scooter_view.rye");
+
+pub const dexter_prompt_version = "20260817.044200";
+
+/// A prompt row is the same width scooter_view draws its journal in -- the classic 80-column terminal.
+pub const row_cols: u32 = view.frame_cols;
+
+/// A prompt prefix takes at most this many columns, leaving room for at least one column of the line.
+pub const max_prefix: u32 = row_cols - 1;
+
+pub const PromptError = error{
+    PrefixTooWide, // the prefix leaves no room for the line -- refuse rather than draw an unusable row
+};
+
+/// A drawn prompt row: a fixed grid of exactly row_cols cells, space-filled where no character is drawn,
+/// and the column the caret sits at (always within the row).
+pub const PromptRow = struct {
+    cells: [row_cols]u8 = [_]u8{' '} ** row_cols,
+    cursor_col: u32 = 0,
+
+    /// The row as a slice of exactly row_cols cells.
+    pub fn text(self: *const PromptRow) []const u8 {
+        // invariant: the caret always sits within the drawn row.
+        assert(self.cursor_col < row_cols);
+        return self.cells[0..row_cols];
+    }
+};
+
+/// Fold a prompt prefix and an editable line into one terminal row, the cursor always visible. The prefix
+/// occupies the leftmost columns; the line fills the rest, scrolled horizontally so the caret stays in view.
+/// A prefix that leaves no room for the line is refused (PrefixTooWide).
+pub fn render_prompt(prefix: []const u8, l: *const line.Line) PromptError!PromptRow {
+    // invariant: the line's own bounds hold before we draw it.
+    assert(l.len <= line.max_line);
+    assert(l.cursor <= l.len);
+    if (prefix.len > max_prefix) return error.PrefixTooWide;
+    const prefix_len: u32 = @intCast(prefix.len);
+    // The columns left for the line after the prefix -- at least one by the PrefixTooWide guard.
+    const avail: u32 = row_cols - prefix_len;
+    // invariant: the line always has at least one column to draw into.
+    assert(avail >= 1);
+    // Choose the window start so the cursor is always visible: when the cursor sits at or past the available
+    // width, anchor the window so the caret rests at the last line column (showing the tail); else show the
+    // start of the line.
+    var win_start: u32 = 0;
+    if (l.cursor >= avail) {
+        win_start = l.cursor - avail + 1;
+    }
+    // invariant: the window start never runs past the held line.
+    assert(win_start <= l.len);
+
+    var out = PromptRow{};
+    // Draw the prefix into the leftmost columns.
+    var i: u32 = 0;
+    while (i < prefix_len) : (i += 1) {
+        out.cells[i] = prefix[i];
+    }
+    // Draw the visible window of the line after the prefix, up to the available width or the line's end.
+    const body = l.text();
+    var col: u32 = 0;
+    while (col < avail and win_start + col < l.len) : (col += 1) {
+        out.cells[prefix_len + col] = body[win_start + col];
+    }
+    // The caret column is the prefix plus the cursor's offset within the visible window.
+    out.cursor_col = prefix_len + (l.cursor - win_start);
+    // invariant: the caret landed within the drawn row.
+    assert(out.cursor_col < row_cols);
+    return out;
+}
+
+fn short_line_fits_with_the_caret() !void {
+    var l = line.Line.empty();
+    try l.type_str("hello");
+    const rendered = try render_prompt("> ", &l);
+    // The row draws the prefix then the line, padded to the full width; the caret sits past the text.
+    const r = rendered.text();
+    assert(r.len == row_cols);
+    assert(std.mem.eql(u8, r[0..7], "> hello"));
+    assert(r[7] == ' '); // padded beyond the text
+    assert(rendered.cursor_col == 7); // prefix 2 + cursor 5
+    print("dexter_prompt: a short line draws prefix then text, padded to the full width, the caret past the text.\n", .{});
+}
+
+fn long_line_scrolls_to_keep_the_caret() !void {
+    var l = line.Line.empty();
+    // A line far wider than the row, caret at the end.
+    var k: u32 = 0;
+    while (k < 100) : (k += 1) try l.insert('a');
+    const rendered = try render_prompt("> ", &l);
+    const r = rendered.text();
+    assert(r.len == row_cols);
+    // The row is full of the prefix and the visible tail; the caret rests at the last column.
+    assert(std.mem.eql(u8, r[0..2], "> "));
+    assert(rendered.cursor_col == row_cols - 1); // caret at the last column, in view
+    // Move the caret home: the window slides back to the start of the line, caret just after the prefix.
+    l.move_home();
+    const home = try render_prompt("> ", &l);
+    assert(home.cursor_col == 2); // prefix 2 + cursor 0
+    assert(home.cells[2] == 'a'); // the line's first byte shows at the window start
+    print("dexter_prompt: a line wider than the row scrolls so the caret is always visible, at the end or at home.\n", .{});
+}
+
+fn empty_line_draws_the_prompt() !void {
+    var l = line.Line.empty();
+    const rendered = try render_prompt("$ ", &l);
+    const r = rendered.text();
+    assert(r.len == row_cols);
+    assert(std.mem.eql(u8, r[0..2], "$ "));
+    assert(r[2] == ' '); // no line yet
+    assert(rendered.cursor_col == 2); // the caret waits just past the prompt
+    // Determinism: the same prefix and line render the same row.
+    const again = try render_prompt("$ ", &l);
+    assert(std.mem.eql(u8, rendered.text(), again.text()));
+    print("dexter_prompt: an empty line still draws its prompt with the caret waiting, deterministic every time.\n", .{});
+}
+
+fn an_overwide_prefix_refuses() !void {
+    var l = line.Line.empty();
+    try l.type_str("x");
+    // A prefix as wide as the whole row leaves no column for the line -- refused by name.
+    var wide: [row_cols]u8 = [_]u8{'>'} ** row_cols;
+    const refused = render_prompt(wide[0..], &l);
+    assert(refused == error.PrefixTooWide);
+    // A prefix exactly at the bound (one column left) is accepted.
+    const ok = try render_prompt(wide[0..max_prefix], &l);
+    assert(ok.text().len == row_cols);
+    print("dexter_prompt: a prefix that leaves no room for the line is refused (PrefixTooWide), one column is enough.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try short_line_fits_with_the_caret();
+    try long_line_scrolls_to_keep_the_caret();
+    try empty_line_draws_the_prompt();
+    try an_overwide_prefix_refuses();
+    print("dexter_prompt: version {s}\n", .{dexter_prompt_version});
+    print("GREEN: dexter_prompt; an editable line drawn into a {d}-column terminal row -- prefix then a horizontally-scrolled window that keeps the caret always visible, exactly the row width, deterministic every time.\n", .{row_cols});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "dexter-prompt"))) {
+        return run_selftest();
+    }
+    return run_selftest();
+}
