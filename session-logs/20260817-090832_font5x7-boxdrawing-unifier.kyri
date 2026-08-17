@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260817.090832
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title font5x7_boxdrawing -- the unifying box-drawing font, sparse-completeness crux, GREEN
+prompt recur baton: take the next agent-doable lap Lindy-first crux-first, balance-compass; deep-read one council-rota doc per lap; Rye-first; send each finished increment as its own signed round; stop at custody gates
+think Read REMEMBER, the 1024-round itinerary, the eight-season double-seat, and the rye-first crypto wave. The live edge is Season G open media: the arrow font just landed as the FIRST symbol-side unifier, and the terminal write loop closed (scooter_compose). The two letter unifiers (ascii, latin1_block) and the arrow unifier all stand; the box-drawing marks still sat as four separate leaf corpora (box 11, boxdouble 11, boxarc 4, boxdiag 3).
+think Lindy-first crux-first: the natural next symbol-side unifier is the box-drawing font -- and it is exactly the terminal frame set Dexter/Scooter reach for, so it harmonizes the long font arc with the terminal family the last lap advanced. Balance-compass favored a rung that ties the two threads rather than a twenty-first isolated glyph corpus.
+think The distinctive crux had to differ from the arrow unifier's CONTIGUOUS completeness. The Box Drawing block is holey: 29 marks scattered across a 116-codepoint span (U+2500..U+2573), the heavy-line variants undrawn. So the proof is SPARSE completeness -- walk the whole span, prove EXACTLY 29 hits and 87 misses, spot-check two named holes (heavy horizontal U+2501, heavy vertical U+2503) absent by hand. A phantom mark or a dropped corner breaks the tally.
+think Modeled the module on font5x7_arrows.rye (gather + insertion sort + round-trip + walk). block_count derived from the four corpora's own count constants (box.box_count + boxdouble.box_count + boxarc.boxarc_count + boxdiag.boxdiag_count) so a leaf gained or lost breaks the fill assert; the ascending walk proves the four disjoint.
+obs GREEN on the first metal run, no red over the whole selftest: 29 marks round-trip byte-identical, strictly ascending and unique, sparsely complete (29 hits, 87 misses, span 116), the two heavy holes absent, every glyph inked (ink 5..20 of 35), encoded 1056 over raw 1015 (dense box rails, near-parity, reported not asserted -- the REDS #82 lesson).
+obs Rota lap (d27, item 17) deep-read context/LEXICON.md -- the living vocabulary (waymark, survey, lap, shape, witness, claim, two rooms). A corpus named by its plain function reads true on its ten-thousandth day (the Comlink tendency, Lindy-first); a unifier that gathers four proven leaf corpora into one terminal-frame lookup is that clarity at the glyph scale.
+obs Balance held: this closes the box-drawing family into one lookup, the second symbol-side unifier, while pointing at the terminal surface the prior lap advanced. No network, no key, no funds -- clear of every custody gate.
+loom witness=font5x7_boxdrawing_witness marks=29 span=116 holes=87 ink_lo=5 ink_hi=20 encoded_bytes=1056 raw_bytes=1015
+file image/font5x7_boxdrawing.rye the unifying box-drawing font -- four corpora merged, sparse-completeness crux
+file tools/font5x7_boxdrawing_witness.rish builds and runs the selftest, asserts the GREEN corpus line
+file image/README.md accreted the font5x7_boxdrawing entry (second symbol-side unifier, sparse-completeness crux) -- docs-sync
+file crux/REMEMBER.md live edge + Git nib refreshed to the boxdrawing unifier
+recommend keep-going -- next symbol-side rungs: a heavy box corpus (the U+2501/U+2503 holes this font names), or a wider terminal-symbol unifier gathering box + arrows + geometric; the terminal family's wire between two Constel piers still reaches the serve gate (the maintainer's hand)

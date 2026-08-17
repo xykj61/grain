@@ -1,0 +1,42 @@
+# tools/font5x7_boxdrawing_witness.rish -- the whole box-drawing set, unified into one open font, proves itself on metal (Season G).
+#
+# Season G (Open Media Primitives) - font content for the open glyph atlas image/glyph.rye (gfa1). This is the SECOND
+# unifier on the symbol side of the family, the sibling to the arrow unifier already landed
+# (tools/font5x7_arrows_witness.rish gathered the ten arrows) and to the two letter unifiers
+# (tools/font5x7_ascii_witness.rish, the ninety-five printable ASCII glyphs; tools/font5x7_latin1_block_witness.rish, the
+# sixty-two Latin-1 letters). image/font5x7_boxdrawing.rye gathers the box-drawing family whole -- the eleven light marks
+# (image/font5x7_box.rye, U+2500..U+253C), the eleven double-line twins (image/font5x7_boxdouble.rye, U+2550..U+256C), the
+# four rounded corners (image/font5x7_boxarc.rye, U+256D..U+2570), and the three diagonals (image/font5x7_boxdiag.rye,
+# U+2571..U+2573) into ONE gfa1 atlas, the whole terminal frame set in a single lookup.
+#
+# The crux this witness proves, beside the round-trip and the ascending-and-unique disjointness the arrow unifier shares,
+# is SPARSE BLOCK COMPLETENESS -- the deliberate contrast to the arrow set's contiguous span. The four corpora draw
+# exactly twenty-nine marks scattered across a span of one hundred sixteen codepoints (the Box Drawing block is holey --
+# the heavy-line variants are not marks this open font draws). The selftest walks the WHOLE span and proves EXACTLY
+# twenty-nine hits and eighty-seven misses, and spot-proves two named holes (the heavy horizontal and vertical) absent, so
+# a phantom mark or a dropped corner breaks the tally. The merged count equals the sum of the four corpora
+# (11 + 11 + 4 + 3 = 29), which with the strictly-ascending codepoints proves them disjoint. Compression is reported as a
+# fact, never asserted -- the round-trip is the proof. No network, no key, no funds -- the whole terminal frame set a
+# surface reads the day it draws a box on our own open font.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/font5x7_boxdrawing_witness.rish
+
+say "font5x7-boxdrawing: Language EN -- Season G font content; the whole box-drawing set (twenty-nine marks across the sparse span U+2500..U+2573) gathered from four proven leaf corpora into one gfa1 atlas -- the whole terminal frame set in a single lookup, the second symbol-side unifier beside the arrow font and the two letter fonts."
+say "font5x7-boxdrawing: Style Radiant -- the four corpora each already prove their own drawings on metal; this font merges their green atlases and proves the whole is sparsely complete, ascending, and disjoint, so decode(encode(atlas)) recovers every mark byte for byte; our own hand end to end, permissively ours, no external font to license and no web-search gate."
+say "font5x7-boxdrawing: Lens TAME -- u32 in-memory counts, u8 coverage bytes; every buffer names a maximum (cell_area - block_count - the atlas ceilings it rests on); the unifying count is the sum of the four corpora's own count constants and is strictly less than the sparse span; each function states its invariants positively; codepoints explicit and strictly ascending; the source stays plain ASCII; compression a reported fact never a false invariant; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/font5x7_boxdrawing"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/font5x7_boxdrawing.rye -femit-bin=${bin}"]
+assert build.ok else "font5x7-boxdrawing: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "font5x7-boxdrawing: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "font5x7-boxdrawing: ${out}"
+
+let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-font5x7-boxdrawing' && echo yes"]
+assert (trim green.out) == "yes" else "font5x7-boxdrawing: selftest did not print the GREEN corpus line"
