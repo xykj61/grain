@@ -1,0 +1,177 @@
+//! image/color_gradient.rye -- an even gradient ramp between two colours (Season G, the two-endpoint palette rung).
+//!
+//! Season G (Open Media Primitives) -- a single-stranded consumer of image/color.rye's blend, the two-endpoint SIBLING
+//! of image/color_scale.rye. Where color_scale grows a tonal ramp from ONE seed (its hue and saturation held, only the
+//! lightness stepping), this rung grows a ramp between TWO arbitrary colours -- the CSS linear-gradient stop list, a row
+//! of evenly-spaced blends from a start colour to an end colour. A keeper names two colours (a warm start, a cool end)
+//! and reads back the whole ramp between them: the stops a background fade, a heat map, or a two-tone chart legend needs.
+//!
+//! Compose, not braid: colour DECIDES the blend (color.mix lerps each channel between the two endpoints) and this module
+//! only SPACES the stops -- it sets the mix parameter of stop `i` to an evenly-stepped value from 0 (stop 0 is the start
+//! colour exactly) to 255 (the last stop is the end colour exactly). No new storage, codec, or colour maths -- every stop
+//! is a color.mix over the two endpoints, so colour's own proofs carry through untouched. The step is integer fixed-point,
+//! so a ramp is deterministic; the interpolation runs in straight sRGB (color.mix's own space), the CSS default. Alpha
+//! rides the same lerp, so a fade from opaque to clear steps its alpha evenly too. No network, no key, no funds -- the
+//! gradient Brushstroke and Skate paint the day the design system lands, on our own open colour model.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/color_gradient.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+
+pub const color_gradient_version = "20260817.135338";
+
+/// The most stops a single gradient ever holds -- a bounded ramp, so no gradient is ever unbounded. A smooth on-screen
+/// fade rarely wants more than a couple dozen; sixty-four is generous headroom the loop will never breach, and keeps the
+/// stop-parameter step strictly ascending (255 / 63 >= 1, so no two stops share a mix value).
+pub const gradient_max_stops: u32 = 64;
+
+/// The mix parameter (0..255) for stop `i` of a `count`-stop gradient -- an even lerp from 0 (stop 0, the start colour
+/// exactly) to 255 (stop count-1, the end colour exactly). Integer fixed-point, so the ramp is deterministic; count >= 2
+/// keeps the denominator at least one, and the bound above keeps the step strictly ascending.
+pub fn stop_t(i: u32, count: u32) u8 {
+    // invariant: a gradient holds at least two stops and never more than the module's ceiling.
+    assert(count >= 2);
+    assert(count <= gradient_max_stops);
+    // invariant: the stop index names a real stop within the gradient.
+    assert(i < count);
+    // The lerp is walked in u32 (max 255 * 63 = 16065) so it never wraps, then narrowed back to a byte.
+    const steps: u32 = count - 1;
+    const t: u32 = @as(u32, 255) * i / steps;
+    // invariant: the mix parameter stays a byte, endpoints included (i == 0 gives 0, i == count-1 gives 255).
+    assert(t <= 255);
+    return @intCast(t);
+}
+
+/// Stop `i` of a `count`-stop gradient from `a` to `b`: color.mix(a, b, stop_t(i, count)). Stop 0 is `a` exactly, stop
+/// count-1 is `b` exactly, and every stop between is an even blend of the two endpoints in straight sRGB.
+pub fn sample(a: color.Rgba, b: color.Rgba, i: u32, count: u32) color.Rgba {
+    // invariant: the index names a real stop in a real gradient.
+    assert(count >= 2);
+    assert(i < count);
+    return color.mix(a, b, stop_t(i, count));
+}
+
+/// Fill `dst` with a whole gradient from `a` to `b` -- dst.len evenly-spaced stops, dst[0] the start colour exactly and
+/// dst[len-1] the end colour exactly. A gradient of fewer than two stops or more than the ceiling refuses by name, having
+/// written nothing a caller could mistake for a ramp.
+pub fn gradient(a: color.Rgba, b: color.Rgba, dst: []color.Rgba) !void {
+    // invariant: a gradient holds at least two stops and never more than the bounded ceiling.
+    if (dst.len < 2) return error.GradientTooShort;
+    if (dst.len > gradient_max_stops) return error.GradientTooLong;
+    // The length is bounded above by the ceiling, so the seam cast to a u32 stop count is safe.
+    const count: u32 = @intCast(dst.len);
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        dst[i] = sample(a, b, i, count);
+    }
+    // invariant: a filled gradient carries its endpoints exactly -- the first stop is `a`, the last is `b`.
+    assert(dst[0].eql(a));
+    assert(dst[dst.len - 1].eql(b));
+}
+
+// --- selftest: prove a gradient hits its endpoints, blends evenly between them, carries alpha, and refuses by name ------
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    _ = garden;
+
+    const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
+    const blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 };
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    // The stop parameter hits both endpoints exactly and steps strictly upward: stop 0 is 0 (the start), the last stop is
+    // 255 (the end), and no two stops share a mix value.
+    if (stop_t(0, 9) != 0) return error.FirstStopNotStart;
+    if (stop_t(8, 9) != 255) return error.LastStopNotEnd;
+    var prev_t: i32 = -1;
+    var k: u32 = 0;
+    while (k < 9) : (k += 1) {
+        const t: i32 = stop_t(k, 9);
+        if (!(t > prev_t)) return error.StopsNotAscending;
+        prev_t = t;
+    }
+
+    // The endpoints land byte-for-byte: a red-to-blue gradient starts red and ends blue.
+    var ramp: [9]color.Rgba = undefined;
+    try gradient(red, blue, ramp[0..]);
+    if (!ramp[0].eql(red)) return error.GradientStartWrong;
+    if (!ramp[8].eql(blue)) return error.GradientEndWrong;
+
+    // The gradient genuinely BLENDS: a middle stop of red-to-blue carries both red and blue at once (neither endpoint), the
+    // proof that a ramp is a fade rather than a hard cut. Red falls and blue rises across the stops.
+    const mid = ramp[4];
+    if (!(mid.r > 0 and mid.b > 0)) return error.MidStopNotBlended;
+    if (!(mid.r < red.r and mid.b < blue.b)) return error.MidStopNotBetween;
+
+    // A black-to-white gradient rises strictly in luminance -- the visual proof that a lighter stop reflects more light
+    // than the stop before it, all the way up the ramp.
+    var bw: [7]color.Rgba = undefined;
+    try gradient(black, white, bw[0..]);
+    var prev_lum: i64 = -1;
+    var j: u32 = 0;
+    while (j < 7) : (j += 1) {
+        const lum: i64 = color.relative_luminance(bw[j]);
+        if (!(lum > prev_lum)) return error.GradientLuminanceNotAscending;
+        prev_lum = lum;
+    }
+
+    // A gradient between one colour and itself is a flat ramp -- every stop equals that colour, no phantom drift.
+    var flat: [6]color.Rgba = undefined;
+    try gradient(red, red, flat[0..]);
+    var fi: u32 = 0;
+    while (fi < 6) : (fi += 1) {
+        if (!flat[fi].eql(red)) return error.FlatGradientDrifted;
+    }
+
+    // Alpha rides the same lerp: a gradient from opaque to clear steps its alpha strictly down, endpoints exact.
+    const solid = color.Rgba{ .r = 60, .g = 120, .b = 200, .a = 255 };
+    const clear = color.Rgba{ .r = 60, .g = 120, .b = 200, .a = 0 };
+    var fade: [8]color.Rgba = undefined;
+    try gradient(solid, clear, fade[0..]);
+    if (fade[0].a != 255 or fade[7].a != 0) return error.FadeEndpointsWrong;
+    var prev_a: i32 = 256;
+    var ai: u32 = 0;
+    while (ai < 8) : (ai += 1) {
+        const av: i32 = fade[ai].a;
+        if (!(av < prev_a)) return error.FadeAlphaNotDescending;
+        prev_a = av;
+    }
+
+    // sample agrees with the filled ramp: reading one stop equals that stop of gradient().
+    var si: u32 = 0;
+    while (si < 9) : (si += 1) {
+        if (!sample(red, blue, si, 9).eql(ramp[si])) return error.SampleDisagreesWithFill;
+    }
+
+    // The gradient refuses an out-of-band length by name, having written nothing a caller could mistake for a ramp.
+    var one: [1]color.Rgba = undefined;
+    if (gradient(red, blue, one[0..])) |_| return error.ShortGradientNotRefused else |err| {
+        if (err != error.GradientTooShort) return error.WrongShortError;
+    }
+
+    // Determinism: the same endpoints and count grow byte-for-byte the same ramp.
+    var a_ramp: [7]color.Rgba = undefined;
+    var b_ramp: [7]color.Rgba = undefined;
+    try gradient(red, blue, a_ramp[0..]);
+    try gradient(red, blue, b_ramp[0..]);
+    var di: u32 = 0;
+    while (di < 7) : (di += 1) {
+        if (!a_ramp[di].eql(b_ramp[di])) return error.GradientNotDeterministic;
+    }
+
+    print("GREEN image-color-gradient: an even gradient between two colours hits both endpoints byte-for-byte (stop 0 the start, the last stop the end); the stop parameter steps strictly 0..255; a red-to-blue mid stop carries both channels (a true blend, not a cut); a black-to-white ramp ascends strictly in luminance; a colour-to-itself ramp stays flat; alpha rides the lerp so an opaque-to-clear fade steps its alpha strictly down; sample agrees with the filled ramp; an out-of-band length refuses GradientTooShort by name; the same endpoints grow the same ramp byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: color_gradient selftest\n", .{});
+    return 1;
+}

@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260817.135338
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title color_gradient -- an even gradient between any two colors, GREEN
+prompt Keaton's autonomous loop: take the next agent-doable lap Lindy-first crux-first, Rye-first, send often, one rota doc per lap, stop only at custody gates.
+think Read the road ahead -- crux/REMEMBER.md, the eight-season double-seat, the 1024-round itinerary, the crypto-parity wave, and the autonomous-loop seed. The live edge is the Season G open-media color family on Rye; the last lap landed color_format (HEAD) and read rota item 16, so this lap reads item 17 (context/LEXICON.md).
+think The card named the uppercase-Latin-1 capitals (Eth/Thorn/Y acute) as a next rung -- but I found image/font5x7_upper_icelandic.rye already on disk AND committed at ba28b492ea (an ancestor of HEAD, git clean), a prior interrupted lap that in fact finished. My Write was correctly rejected as a duplicate. Ran its witness: GREEN. So that rung is done; the card simply lagged. Not redone.
+think Surveyed for a genuine gap. The font family is very complete (composition rungs acute/circumflex_comp/tilde_comp/diaeresis_comp, unifiers latin1_block/arrows/boxdrawing, upper_close all committed). In color, color.mix(a,b,t) is a single blend and color_scale ramps ONE seed's lightness -- but NO multi-step gradient between two arbitrary colors existed. That is the CSS linear-gradient stop list, a real design-system primitive and a clean SLC crux.
+think Built image/color_gradient.rye as the two-endpoint SIBLING of color_scale, single-stranded over color.mix: stop_t(i,count) spaces the mix parameter evenly 0..255 (endpoints exact), sample(a,b,i,count) is color.mix at that parameter, gradient(a,b,dst) fills a bounded buffer. No new color math -- color decides the blend, this module only spaces the stops, so color's proofs carry through.
+obs FIRST GREEN, no reds. Proven on metal: endpoints byte-for-byte (stop 0 = start, last = end); stop parameter strictly ascending 0..255 (no two stops share a value); a red-to-blue mid stop carries BOTH channels (a true blend, not a hard cut); a black-to-white ramp ascends strictly in luminance (visual proof, no round trip); a color-to-itself ramp stays flat; alpha rides the lerp so an opaque-to-clear fade steps its alpha strictly down; sample agrees with the filled ramp; an out-of-band length refuses GradientTooShort by name; deterministic.
+obs tame_style_check bans clean, width-check exit 0, plain 7-bit ASCII, >= 2 positive asserts per fn, one documented seam cast (dst.len usize -> u32 after the bound), bounded to gradient_max_stops 64 (keeps the step strictly ascending, 255/63 >= 1). Rota item 17 (LEXICON): each module name teaches its function -- "gradient between two colors" is exactly that plain word, the Comlink tendency in a name.
+loom witness=color_gradient_witness green=1 stops_proven=9,7,6,8 max_stops=64
+file image/color_gradient.rye the two-endpoint gradient ramp, single-stranded over color.mix
+file tools/color_gradient_witness.rish builds and self-proves the gradient on metal, GREEN
+file image/README.md names color_gradient.rye beside color_scale.rye (docs-sync)
+file crux/REMEMBER.md live edge + Git nib refreshed to the gradient rung
+recommend keep-going the color family now grows both a one-seed tonal scale and a two-endpoint gradient; next agent-doable is a multi-stop gradient over N color stops, an open-fonts glyph rung, or a fresh Lindy-first crux -- no custody gate touched.

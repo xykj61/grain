@@ -1,0 +1,42 @@
+# tools/color_gradient_witness.rish -- an even gradient ramp between two colours proves itself on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the two-endpoint palette rung beside the one-seed tonal ramp (image/color_scale.rye)
+# and the open colour algebra (image/color.rye).
+# Design read: active-designing/20260816-210735_season-g-color-algebra-crux.md (the colour floor this stands on).
+# Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS Color spec + sRGB -- public standards only).
+#
+# The crux this witness proves is the two-endpoint sibling of the tonal scale: grow a whole even gradient between TWO
+# arbitrary colours, written as a single-stranded consumer of colour's own blend. Stop 0 is the start colour exactly, the
+# last stop the end colour exactly, and every stop between is an even color.mix of the two endpoints. The stop parameter
+# steps strictly 0..255; a red-to-blue mid stop carries both channels (a true blend, not a hard cut); a black-to-white ramp
+# ascends strictly in luminance; a colour-to-itself ramp stays flat; alpha rides the same lerp so an opaque-to-clear fade
+# steps its alpha strictly down; sample agrees with the filled ramp; an out-of-band length refuses by name. No new storage,
+# codec, or maths -- a mix over the two endpoints, so colour's own proofs carry through. No network, no key, no funds --
+# the gradient Brushstroke and Skate paint the day the design system lands.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/color_gradient_witness.rish
+
+say "color-gradient: Language EN -- Season G's two-endpoint ramp; a keeper names a start colour and an end colour and reads back the whole row of evenly-spaced blends between them, the CSS linear-gradient stop list on our own colour model."
+say "color-gradient: Style Radiant -- compose not braid; colour DECIDES the blend and this module only spaces the stops, so a gradient is an even color.mix over the two endpoints and colour's own proofs carry through."
+say "color-gradient: Lens TAME -- u32 stop counts bounded by gradient_max_stops; the stop lerp in u32 so it never wraps; endpoints and byte range asserted; integer fixed-point so a ramp is deterministic; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/color_gradient"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/color_gradient.rye -femit-bin=${bin}"]
+assert build.ok else "color-gradient: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "color-gradient: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "color-gradient: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-color-gradient' && echo yes"]
+assert (trim green.out) == "yes" else "color-gradient: selftest did not print the GREEN colour-gradient line"
+
+let blend = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a true blend, not a cut' && echo yes"]
+assert (trim blend.out) == "yes" else "color-gradient: the mid stop did not prove a true blend"
+
+say "color-gradient: GREEN -- an even gradient between two colours hits both endpoints and blends evenly between them, proven on metal."
