@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260817.161129
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image: compose, one image over another
+prompt Autonomous loop -- take the next agent-doable lap Lindy-first crux-first, deep-read one council-rota doc, send each increment, stop at custody gates.
+think Read the road-ahead docs: the 1024-round itinerary, the eight-season double-seat, the rye-first crypto wave, and the REMEMBER live edge. The paint family is deep -- gradients (linear/radial/conic + three repeating), palette_paint (discrete 1D swatch legend), checker_paint (discrete 2D checkerboard / transparency ground). Both the image and crypto families are mature.
+think Lindy-first crux-first: the higher-Lindy missing floor was not a 13th pattern variant but the compositing VERB itself -- image/shape.rye composites a SOLID color over the grid, and checker_paint draws the transparency GROUND, yet nothing composited one IMAGE over another. That is the gesture the alpha ground exists to sit behind (a translucent photo over the checker), and the McMaster-Carr single-sprite render the eight-season double-seat named (draw each product as a window into one big sprite). It serves Photos, Skate, Realidream, Pond -- the whole surface family.
+think Design: paint_over_region(target,dx,dy,source,sx,sy,sw,sh) blits a source window over a target window, each source pixel src-over its target pixel via color.over; paint_over(target,dx,dy,source) is the whole-picture convenience. Two bounds checks up front in u64 (source window inside source, dest window inside target), all-or-nothing.
+think Compose not braid held: color.over OWNS the blend, qoi.Pixmap owns both buffers, this rung only routes each source pixel to its target pixel -- no new blend math, no new codec, no new color. The same shape as checker_paint routing each cell to shape.fill_rect.
+think Council rota lap 14 (14 mod 27) -> context/RADIANT_STYLE.md (with TWILIGHT_STYLE.md). Applied: lead with what IS (the picture it draws), the vocabulary of correctness (refusals stated positively, by name), affirmative framing over defensive.
+obs GREEN on the first build and first witness run, no reds. Bounded once up front in u64; the window loop in u32. The single-sprite window test doubles as the marketplace-render proof: a 1x1 window of a 4x1 sprite sheet renders exactly the indexed tile, a 2x1 window a contiguous run.
+obs Two functions mirror the family's "keeper names it / keeper gets the convention for free" pattern (paint_over_region general, paint_over the whole-picture convenience) -- the same shape as paint_checkerboard / paint_alpha_ground and paint_palette_h / paint_palette_v.
+loom witness=compose_witness build=green selftest=green tame_style=clean width_check=exit0 ascii=clean
+file image/compose.rye the src-over image compositing verb (paint_over, paint_over_region), GREEN
+file tools/compose_witness.rish proves it on metal -- opaque overwrite, translucent blend, the single-sprite window render, QOI round trip, refusals by name
+file image/README.md names compose.rye beside checker_paint.rye (docs-sync)
+file crux/REMEMBER.md live edge + Git nib refreshed to the compose rung (nib PENDING until the work commit, amended once per remember-git-nib rule)
+recommend keep-going the open-media family continues -- next agent-doable rungs could be a tiled/repeated compose (a source pattern that fills a box), an alpha-mask compose (draw a picture through a stencil), or proving the alpha ground + compose together on a real translucent picture; all agent-doable, no gate reached.
