@@ -37,5 +37,6 @@ assert out contains "each ink is color.readable_ink of its own fill" else "color
 assert out contains "crossover is clean" else "color-swatch: the black-to-white ink crossover was not clean"
 assert out contains "clearing WCAG AA" else "color-swatch: an endpoint ink did not clear WCAG AA"
 assert out contains "refuses ScaleTooShort by name" else "color-swatch: an out-of-band length was not refused by name"
+assert out contains "the general form contains the special one" else "color-swatch: the brand-pair scale did not reduce to the readable scale"
 
 say "color-swatch: GREEN -- the on-colour scale from one seed whole; each tone paired with its legible ink, the crossover clean, endpoints clearing AA, out-of-band lengths refused, determinism proven."
