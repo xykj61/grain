@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260817.161745
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image: compose_tiled, a pattern that fills a box
+prompt Autonomous loop -- continue the next agent-doable lap Lindy-first crux-first in Season G open-media, deep-read one council-rota doc, send each increment, stop at custody gates.
+think Last lap shipped image/compose.rye (paint_over, paint_over_region) -- the compositing verb. The natural next rung composes that verb: paint_tiled paves a box with copies of a small source pattern, the CSS background-repeat gesture (a texture, a wallpaper, a motif that fills a panel). Genuine surface need, small, adds not even a new pixel loop -- it routes each tile to compose.paint_over_region.
+think Design: paint_tiled(target,x,y,w,h,pattern) tiles from the corner; a boundary tile the pattern size does not divide is CLIPPED to the box edge (ceiling-division tile count, min(pw, w-lo_x) window), exactly as checker_paint clips a boundary cell. A pattern larger than the box is itself clipped -- the same code path, no special case.
+think Compose not braid held: compose.paint_over_region OWNS the blit, qoi owns both buffers, this rung only routes each tile to its window and its clip. Compose IS the crux word, and this rung honors it by composing compose itself.
+think Council rota lap 15 (15 mod 27) -> context/TAME_CORE.md (with TAME_GUIDANCE). Applied: bound everything (the box checked once up front in u64), assert invariants first (>=2 positive asserts per fn), say why (each clip and ceiling division carries its reason). The tile count is a ceiling division so a boundary tile is clipped not dropped.
+obs GREEN on the first build and first witness run, no reds. One tidy caught before build: I initially added an unused green/blue binding plus a bogus silence line; removed both so the selftest declares only the colors it checks (red, black, white) -- TAME clean, no dead bindings.
+obs The single-sprite render from last lap and the tile render this lap together give a surface both gestures the McMaster-Carr trick needs: draw one indexed tile, or pave a whole area with a repeating motif.
+loom witness=compose_tiled_witness build=green selftest=green tame_style=clean width_check=exit0 ascii=clean
+file image/compose_tiled.rye the background-repeat tiler (paint_tiled), GREEN
+file tools/compose_tiled_witness.rish proves it on metal -- exact grid, clipped boundary tile, translucent blend, larger-than-box clip, QOI round trip, refusals by name
+file image/README.md names compose_tiled.rye beside compose.rye (docs-sync)
+file crux/REMEMBER.md live edge + Git nib refreshed to the compose_tiled rung (nib PENDING until the work commit, amended once per remember-git-nib rule)
+recommend keep-going the open-media family continues -- next agent-doable rungs could be a centered/offset tile origin (background-position), an alpha-mask compose (draw a picture through a stencil), or proving the alpha ground + compose + tile together on a real translucent picture; all agent-doable, no gate reached.

@@ -1,0 +1,257 @@
+//! image/compose_tiled.rye -- a source pattern TILED to fill a box (Season G, the CSS background-repeat sibling of compose).
+//!
+//! Season G (Open Media Primitives) - where image/compose.rye lays ONE picture over a target at a point, this rung lays
+//! MANY: it TILES a small source pattern across a rectangle, edge to edge, the way a surface repeats a texture, a
+//! wallpaper, or a small motif to fill a panel (the CSS `background-repeat` gesture). A keeper names a pattern and a box
+//! and reads back the box paved with copies of the pattern, a boundary tile the pattern does not divide simply CLIPPED
+//! to the box edge -- so the fill always covers its whole box with no gap and no seam, exactly as checker_paint clips a
+//! boundary cell.
+//!
+//! Compose, not braid: image/compose.rye owns the blit (paint_over_region composites a source window over a target
+//! window, src-over), image/qoi.rye owns both buffers, and this module only ROUTES each tile position to its window and
+//! its clip -- no new blend math, no new codec, no new color, not even a new pixel loop. The tiles pave the box EXACTLY:
+//! tile (col, row) spans the columns [col*pw, min((col+1)*pw, w)) and the rows [row*ph, min((row+1)*ph, h)), an integer
+//! partition where the first tile starts at the corner, the tiles are contiguous and disjoint (no gap, no overlap), and
+//! a boundary tile is CLIPPED to the box edge -- a partial source window, its top-left corner. The whole box is
+//! bound-checked ONCE up front (in u64 so a far edge can never wrap before the bound refuses), so a malformed fill
+//! refuses BY NAME having painted nothing -- all-or-nothing, never a half-paved box. No network, no key, no funds -- the
+//! texture a surface repeats the day it wants to fill a panel with a motif, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/compose_tiled.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const compose = @import("compose.rye");
+
+pub const compose_tiled_version = "20260817.161745";
+
+/// The number of tiles along one axis of `extent` units at pattern size `unit` -- the ceiling division ceil(extent/unit),
+/// so a boundary tile the pattern size does not divide evenly is counted (and later clipped) rather than dropped. The
+/// caller has proven `extent >= 1` and `unit >= 1`, so the count is at least one.
+fn tile_count(extent: u32, unit: u32) u32 {
+    // invariant: the axis has real extent, so at least one tile covers it.
+    assert(extent >= 1);
+    // invariant: a pattern has real size, so the division below never divides by zero.
+    assert(unit >= 1);
+    // extent <= qoi_max_dim (8192) and unit >= 1, so extent + unit - 1 never wraps in u32.
+    const n: u32 = (extent + unit - 1) / unit;
+    // invariant: at least one tile covers the axis, and no more than one tile per unit.
+    assert(n >= 1);
+    assert(n <= extent);
+    return n;
+}
+
+/// Pave the rectangle at (`x`, `y`) of size `w` x `h` on `target` with copies of `pattern`, tiled from the corner edge
+/// to edge -- the CSS `background-repeat` gesture. A boundary tile the pattern does not divide evenly is CLIPPED to the
+/// box edge (its top-left corner drawn), so the fill covers the whole box with no gap and no seam. Each tile is
+/// composited src-over through compose.paint_over_region, so a translucent pattern tiles over whatever lies beneath.
+/// Refuses `BadTileDims` if `w` or `h` is zero, `EmptyPattern` if the pattern has no extent, `TileOutOfBounds` BY NAME
+/// if the box exceeds the target -- all checked BEFORE any pixel, so a refusal leaves the target untouched.
+pub fn paint_tiled(target: *qoi.Pixmap, x: u32, y: u32, w: u32, h: u32, pattern: *const qoi.Pixmap) !void {
+    // invariant: a pavable box has real extent on both axes.
+    if (w == 0 or h == 0) return error.BadTileDims;
+    // invariant: a real pattern has extent; a zero-size pattern paves nothing and refuses by name.
+    if (pattern.width == 0 or pattern.height == 0) return error.EmptyPattern;
+    // The box's far edges, in u64 so the sum can never wrap before the bound check refuses.
+    const right: u64 = @as(u64, x) + @as(u64, w);
+    const bottom: u64 = @as(u64, y) + @as(u64, h);
+    if (right > @as(u64, target.width) or bottom > @as(u64, target.height)) return error.TileOutOfBounds;
+    // invariant: the up-front check proved every pixel of the w x h box lands inside the target buffer.
+    assert(right <= @as(u64, target.width));
+    assert(bottom <= @as(u64, target.height));
+
+    const pw = pattern.width;
+    const ph = pattern.height;
+    const cols = tile_count(w, pw);
+    const rows = tile_count(h, ph);
+
+    var r: u32 = 0;
+    while (r < rows) : (r += 1) {
+        // The tile's row band, clipped to the box bottom. r < rows and ph >= 1, so r*ph < h always.
+        const lo_y = r * ph;
+        const th = @min(ph, h - lo_y);
+        // invariant: a tile band is at least one pixel tall (the clip only shortens the last band, never empties it).
+        assert(th >= 1);
+        var c: u32 = 0;
+        while (c < cols) : (c += 1) {
+            // The tile's column band, clipped to the box right edge.
+            const lo_x = c * pw;
+            const tw = @min(pw, w - lo_x);
+            // invariant: a tile band is at least one pixel wide.
+            assert(tw >= 1);
+            // Route this tile to compose: a (possibly clipped) top-left window of the pattern, drawn at the tile's
+            // corner in the target. The box was proven in bounds up front, so this window lands inside the target.
+            try compose.paint_over_region(target, x + lo_x, y + lo_y, pattern, 0, 0, tw, th);
+        }
+    }
+}
+
+// --- selftest: prove the tiles pave the box exactly, clip at the edge, blend true, round-trip, refuse by name --------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module
+/// (exactly as image/compose.rye and image/checker_paint.rye keep their own canvas).
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// Set one pixel's RGBA at (x, y) -- a small writer the pattern builder shares.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+/// Mint a 2x2 four-color pattern -- red, green at the top; blue, black at the bottom -- so a tiled copy is checkable
+/// by which of the four corners a target pixel matches.
+fn make_pattern(garden: std.mem.Allocator) !qoi.Pixmap {
+    var p = try make_canvas(garden, 2, 2, color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 });
+    set_pixel(&p, 0, 0, color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 }); // red
+    set_pixel(&p, 1, 0, color.Rgba{ .r = 0, .g = 255, .b = 0, .a = 255 }); // green
+    set_pixel(&p, 0, 1, color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 }); // blue
+    set_pixel(&p, 1, 1, color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 }); // black
+    return p;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+    const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+
+    const pattern = try make_pattern(garden); // 2x2: red, green / blue, black
+
+    // --- an evenly-dividing tile: a 2x2 pattern paves a 4x4 box -> a 2x2 grid of copies, each pixel its pattern color -
+    var img = try make_canvas(garden, 4, 4, white);
+    try paint_tiled(&img, 0, 0, 4, 4, &pattern);
+    var ty: u32 = 0;
+    while (ty < 4) : (ty += 1) {
+        var tx: u32 = 0;
+        while (tx < 4) : (tx += 1) {
+            // Each target pixel maps to the pattern pixel at (tx % 2, ty % 2) -- the repeat is a pure modulo.
+            const want = pixel_at(&pattern, tx % 2, ty % 2);
+            if (!pixel_at(&img, tx, ty).eql(want)) return error.TileColourWrong;
+        }
+    }
+    // The far tile (2,2)..(3,3) is a full fresh copy of the pattern -- corner (3,3) is the pattern's own (1,1) black.
+    if (!pixel_at(&img, 2, 2).eql(red)) return error.TileNotRepeated;
+    if (!pixel_at(&img, 3, 3).eql(black)) return error.TileNotRepeated;
+
+    // --- a non-dividing tile: the 2x2 pattern paves a 3x3 box -> the last col/row band clipped to one pixel ----------
+    var img_clip = try make_canvas(garden, 3, 3, white);
+    try paint_tiled(&img_clip, 0, 0, 3, 3, &pattern);
+    // Column 2 is a clipped tile: its top-left pattern column only. Row 0 col 2 is pattern (0,0) = red.
+    if (!pixel_at(&img_clip, 2, 0).eql(red)) return error.ClippedTileWrong;
+    // The far corner (2,2) is the pattern's (0,0) again (both axes clipped to the top-left) -- red, not black.
+    if (!pixel_at(&img_clip, 2, 2).eql(red)) return error.ClippedCornerWrong;
+    // No white left behind -- the clipped fill still paves the whole box.
+    var left_ground: u32 = 0;
+    var gy: u32 = 0;
+    while (gy < 3) : (gy += 1) {
+        var gx: u32 = 0;
+        while (gx < 3) : (gx += 1) {
+            if (pixel_at(&img_clip, gx, gy).eql(white)) left_ground += 1;
+        }
+    }
+    if (left_ground != 0) return error.ClippedLeftGround;
+
+    // --- a translucent pattern tiles over its ground: a half-alpha pattern blends src-over, not overwrites -----------
+    const blue_half = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 128 };
+    var p_trans = try make_canvas(garden, 2, 2, blue_half);
+    var img_blend = try make_canvas(garden, 4, 4, white);
+    try paint_tiled(&img_blend, 0, 0, 4, 4, &p_trans);
+    const blended = color.over(blue_half, white);
+    if (blended.eql(blue_half) or blended.eql(white)) return error.BlendNotBetween; // a real blend, not either pole
+    if (!pixel_at(&img_blend, 0, 0).eql(blended)) return error.TileBlendNotUniform;
+    if (!pixel_at(&img_blend, 3, 3).eql(blended)) return error.TileBlendNotUniform;
+
+    // --- the tiled image round-trips through the open QOI codec byte-for-byte -- a real image, not a private buffer ---
+    const cap = qoi.encoded_bound(img.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&img, dst);
+    const back = try qoi.decode(garden, dst[0..enc.len]);
+    if (!back.same_bytes(&img)) return error.TileDidNotRoundTrip;
+
+    // --- a sub-rectangle paves only its own box: a tiled fill at (1,1) leaves the surrounding gutters untouched ------
+    var img_sub = try make_canvas(garden, 6, 6, white);
+    try paint_tiled(&img_sub, 1, 1, 4, 4, &pattern);
+    if (!pixel_at(&img_sub, 0, 0).eql(white)) return error.CornerGutterPaved;
+    if (!pixel_at(&img_sub, 5, 5).eql(white)) return error.FarGutterPaved;
+    if (pixel_at(&img_sub, 1, 1).eql(white)) return error.TileStartNotPaved; // (1,1) is the pattern's own (0,0) red
+    if (!pixel_at(&img_sub, 1, 1).eql(red)) return error.TileStartWrong;
+
+    // --- a pattern larger than its box is itself clipped to the box: a 2x2 pattern in a 1x1 box draws one pixel ------
+    var img_tiny_box = try make_canvas(garden, 3, 3, white);
+    try paint_tiled(&img_tiny_box, 0, 0, 1, 1, &pattern);
+    if (!pixel_at(&img_tiny_box, 0, 0).eql(red)) return error.TinyBoxWrong; // the pattern's (0,0)
+    if (!pixel_at(&img_tiny_box, 1, 0).eql(white)) return error.TinyBoxSpilled; // only the 1x1 box paved
+
+    // --- refusals by name, each having painted nothing --------------------------------------------------------------
+    var tgt = try make_canvas(garden, 4, 4, white);
+    if (paint_tiled(&tgt, 0, 0, 4, 0, &pattern)) |_| return error.ZeroDimsNotRefused else |err| {
+        if (err != error.BadTileDims) return error.WrongDimsError;
+    }
+    var empty = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (paint_tiled(&tgt, 0, 0, 4, 4, &empty)) |_| return error.EmptyPatternNotRefused else |err| {
+        if (err != error.EmptyPattern) return error.WrongEmptyError;
+    }
+    if (paint_tiled(&tgt, 2, 0, 4, 4, &pattern)) |_| return error.OverrunNotRefused else |err| {
+        if (err != error.TileOutOfBounds) return error.WrongOverrunError; // 2+4 = 6 > width 4
+    }
+    // Every refusal painted nothing -- the target is still all white.
+    var ry: u32 = 0;
+    while (ry < tgt.height) : (ry += 1) {
+        var rx: u32 = 0;
+        while (rx < tgt.width) : (rx += 1) {
+            if (!pixel_at(&tgt, rx, ry).eql(white)) return error.RefusedButPaved;
+        }
+    }
+
+    // --- determinism: the same pattern tiled twice paves the same box byte-for-byte ----------------------------------
+    var img_a = try make_canvas(garden, 4, 4, white);
+    var img_b = try make_canvas(garden, 4, 4, white);
+    try paint_tiled(&img_a, 0, 0, 4, 4, &pattern);
+    try paint_tiled(&img_b, 0, 0, 4, 4, &pattern);
+    if (!img_a.same_bytes(&img_b)) return error.TileNotDeterministic;
+
+    print("GREEN image-compose-tiled: a source pattern tiled to fill a box -- an evenly-dividing 2x2 pattern paves a 4x4 box into a 2x2 grid of copies, each pixel its pattern color by (tx%2, ty%2) byte-for-byte, the far tile a full fresh copy; a non-dividing 3x3 box clips the last col/row band to one pixel (its top-left) and still paves the whole box with no gap; a translucent pattern blends src-over uniform; the tiled image round-trips through the open QOI codec byte-for-byte; a sub-rectangle paves only its own box (the gutters stay ground); a pattern larger than a 1x1 box is itself clipped to one pixel; a zero dimension, an empty pattern, and an out-of-bounds box refuse by name having painted nothing; the same pattern paves the same box byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: compose_tiled selftest\n", .{});
+    return 1;
+}
