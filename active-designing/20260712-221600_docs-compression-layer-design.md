@@ -201,6 +201,7 @@ This design and the **docs-geode** "inner docs crush" charter (`counsel/20260728
 2. **Quin -> Kyri molt.** Fold Quin's variant identity into `context/KYRI.md`, move the inference Q-vane (Lattice, Scribble, Lantern, Ember) to the inference/forge home where a reader will find it, and fossilize `context/QUIN.md` Class H. A molt, awaiting a confirming word.
 3. **REMEMBER and TAME_GUIDANCE breakdown.** Split each huge file into a short always-loaded hub plus linked leaves (REMEMBER: a scannable hub over dated `crux/remember/` history pages; TAME: lean on `context/TAME_CORE.md` as the read layer, the supplement as deep reference).
 4. **Session-log index ASCII sweep.** Normalize the legacy non-ASCII in `session-logs/README.md` as a ratchet round, under the ASCII-first rule, rather than a mid-session blast.
+5. **Folder-organizing molt.** Sort `active-designing/` and `external-research/`: move spent writings to `archive/` (backward-pointing) or `yonder/` (forward-pointing, deferred yet alive), and re-seat still-living writings at fresh one-clock stamps with current metadata and repointed references, per the organizing rule in `ORGANIZING.md` and the molt discipline. Age is a hint; relevance and inbound citation outrank the stamp. A ratchet, cairn-first where a living card is swept, never a mass rename.
 
 ---
 
