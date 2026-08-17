@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260817.130328
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image/color_name_group.rye -- the coarse color family of any color, GREEN
+prompt baton prin recur -- take the next agent-doable lap Lindy-first crux-first over the open-media color family; each lap deep-read one council-rota doc; send often
+think Rota lap 10 reads foundations/20260703-182612_sameness-is-the-macro.md -- compress by public sameness (one value model, one table shape), grow the language in canon not in private syntax, and count the whole cost of a line saved; a rung that reuses the proven HSL floor rather than inventing a new mechanism is exactly the sameness move.
+think The card named two forward directions from color_nearest: the extended CSS3 147-name table, or a fresh Lindy-first crux. Weighed the 147-name table against reds-first + measurement-beats-memory: hand-typing 148 exact hex values from memory risks a SILENT wrong-but-valid hex a round-trip check cannot catch. Deferred it honestly as a verification round wanting a fetched canonical source, and chose a lower-risk, equally-Lindy crux I can prove whole.
+think group_of(c) answers a coarser, older question than the exact (color_names) or nearest (color_nearest) name -- what FAMILY is this? -- returning one of eleven plain words (eight hue families plus black/white/gray). It composes color.rgb_to_hsl: tone first (a very dark color reads black and a very light one white, whatever its hue), then a washed-out color reads gray, then the hue bands. Red wraps the wheel and owns both ends.
+think The bands are this module's OWN design, each a named constant with a why -- no transcription risk, every claim one I construct and prove. Verified the primaries land integer-exact from rgb_to_hsl before writing the boundaries (red 0, orange 38, yellow 60, green 120, cyan 180, blue 240, purple 270, magenta 300), so the eight bands each hold their primary squarely.
+obs GREEN on the FIRST metal run, no reds -- the pre-check of exact hues paid off. Proven: every chromatic family reachable; tone overrides hue at both edges (#200000 reads black, #ffe0e0 reads white); a washed-out color reads gray (#808080 and a faint #887f88 magenta both); a near-boundary hue lands on the right side of its right-open band (#ffbf00 hue 44 reads orange not yellow, the edge proven not just the center); group_of always returns a member of the sorted eleven over a spread across the wheel; deterministic.
+obs Compose not braid held clean -- color DECIDES the HSL, this module only READS the bands against it, so color's proofs carry through and the new module stores no channel byte and no parser of its own. Sibling to color_names (exact) and color_nearest (closest), a third naming altitude the design system reaches for first when sorting a palette or tagging a photo.
+obs tame_style_check bans clean, width-check exit 0, plain 7-bit ASCII, American spelling (born color), >= 2 positive asserts per fn, no seam cast (u16 hue and u8 percents throughout). Witness uses Rishi native contains (REDS #76 loom). image/README.md names color_name_group.rye (docs-sync).
+file image/color_name_group.rye the classifier: group_of reads color.rgb_to_hsl against eleven named bands
+file tools/color_name_group_witness.rish proves every family reachable, tone over hue, gray for washed-out, a near-boundary edge, always a member, deterministic
+file image/README.md docs-sync -- names the coarse-family sibling of the naming pair
+recommend keep-going -- the color family now names ANY color at three altitudes (exact, nearest, family); next agent-doable direction is the extended CSS3 147-name table as a fetch-verified round (avoiding transcription reds), or a fresh Lindy-first crux

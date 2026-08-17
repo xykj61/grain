@@ -1,0 +1,187 @@
+//! image/color_name_group.rye -- the coarse color FAMILY of any color, over the open color algebra (Season G).
+//!
+//! Season G (Open Media Primitives) -- a single-stranded consumer of image/color.rye, one rung above it and a sibling
+//! to the naming family. color_names reads a color to its EXACT keyword and color_nearest reads it to the CLOSEST of
+//! the sixteen named swatches; both answer "which named color is this?". This rung answers a coarser, older question a
+//! keeper and a palette organizer ask before either: "what FAMILY is this?" -- red, orange, yellow, green, cyan, blue,
+//! purple, magenta, or the three achromatic families black, white, gray. group_of(c) reads any color to one plain
+//! family word, so a photo tagger buckets by hue, a palette sorts by family, and a filter keeps "the blues".
+//!
+//! Compose, not braid: color DECIDES the hue, saturation, and lightness through its own proven rgb_to_hsl, and this
+//! module only READS those three numbers against named bands -- no new math, no stored channel byte, no parser. The
+//! bands are this module's own design choices, each a named constant with a why, not a transcribed external table:
+//! tone first (a very dark color reads black and a very light one white, whatever its hue, because at the lightness
+//! edges hue carries almost no visible color), then a washed-out color reads gray, then a chromatic color reads its
+//! hue family. Red wraps the wheel, owning both ends. Bounded (eleven families, a fixed scan), integer (degrees and
+//! percents only), deterministic, no network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/color_name_group.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+
+pub const color_name_group_version = "20260817.130059";
+
+/// The three achromatic family words -- a color reads one of these when its tone or its washed-out saturation speaks
+/// louder than any hue. Named as constants so the bands below and the selftest name the exact same strings.
+pub const group_black = "black";
+pub const group_white = "white";
+pub const group_gray = "gray";
+
+/// The eight chromatic hue-family words -- the plain names a keeper reaches for around the color wheel.
+pub const group_red = "red";
+pub const group_orange = "orange";
+pub const group_yellow = "yellow";
+pub const group_green = "green";
+pub const group_cyan = "cyan";
+pub const group_blue = "blue";
+pub const group_purple = "purple";
+pub const group_magenta = "magenta";
+
+/// The whole family set -- eleven words, sorted strictly ascending so it is canonical and duplicate-free by
+/// inspection, and so the selftest can prove group_of always returns a real member.
+pub const group_count: u32 = 11;
+pub const groups = [group_count][]const u8{
+    group_black,
+    group_blue,
+    group_cyan,
+    group_gray,
+    group_green,
+    group_magenta,
+    group_orange,
+    group_purple,
+    group_red,
+    group_white,
+    group_yellow,
+};
+
+/// Tone bands, in percent lightness. A color at or below the black ceiling reads black and one at or above the white
+/// floor reads white, whatever its hue -- near the lightness edges the eye sees almost no color, so tone speaks first.
+pub const light_black_max: u8 = 12;
+pub const light_white_min: u8 = 92;
+
+/// The saturation ceiling, in percent, below which a color is washed out enough to read gray rather than a hue family.
+pub const sat_gray_max: u8 = 12;
+
+/// The hue-band edges, in degrees, that split the wheel into eight plain families. Right-open intervals: a hue reads
+/// the family whose lower edge it meets. Red wraps the wheel, owning [345, 360) and [0, 15). Each edge is chosen so the
+/// six primaries and secondaries land squarely inside their family (red 0, orange ~38, yellow 60, green 120, cyan 180,
+/// blue 240, purple ~270, magenta 300).
+pub const hue_red_orange: u16 = 15;
+pub const hue_orange_yellow: u16 = 45;
+pub const hue_yellow_green: u16 = 70;
+pub const hue_green_cyan: u16 = 165;
+pub const hue_cyan_blue: u16 = 195;
+pub const hue_blue_purple: u16 = 255;
+pub const hue_purple_magenta: u16 = 285;
+pub const hue_magenta_red: u16 = 345;
+
+/// Read any color to its coarse family word. Composes color.rgb_to_hsl: tone decides black/white, saturation decides
+/// gray, and the hue bands decide the eight chromatic families. Always returns one of `groups`.
+pub fn group_of(c: color.Rgba) []const u8 {
+    // invariant: the tone thresholds are ordered, so black and white can never both claim one color.
+    assert(light_black_max < light_white_min);
+    // invariant: the gray ceiling is a real percent, so the achromatic test is well-formed.
+    assert(sat_gray_max <= 100);
+    const hsl = color.rgb_to_hsl(c);
+    // Tone first: a very dark color reads black and a very light one white, whatever its hue.
+    if (hsl.l <= light_black_max) return group_black;
+    if (hsl.l >= light_white_min) return group_white;
+    // A washed-out color reads gray rather than a hue family.
+    if (hsl.s <= sat_gray_max) return group_gray;
+    // A chromatic color reads its hue family; red wraps the wheel and owns both ends.
+    const h = hsl.h;
+    if (h < hue_red_orange or h >= hue_magenta_red) return group_red;
+    if (h < hue_orange_yellow) return group_orange;
+    if (h < hue_yellow_green) return group_yellow;
+    if (h < hue_green_cyan) return group_green;
+    if (h < hue_cyan_blue) return group_cyan;
+    if (h < hue_blue_purple) return group_blue;
+    if (h < hue_purple_magenta) return group_purple;
+    return group_magenta;
+}
+
+/// Whether a name is one of the eleven family words -- a bounded scan the selftest uses to prove completeness.
+fn is_group(name: []const u8) bool {
+    // invariant: the family set is the fixed eleven, never scanned past its end.
+    assert(groups.len == group_count);
+    var i: u32 = 0;
+    while (i < group_count) : (i += 1) {
+        if (std.mem.eql(u8, name, groups[i])) return true;
+    }
+    return false;
+}
+
+// --- selftest: prove each primary and secondary reads its family, tone overrides hue at both lightness edges, a
+// --- washed-out color reads gray, a near-boundary hue lands on the right side, group_of always returns a member, and
+// --- the reading is deterministic.
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    _ = garden;
+
+    // 1. The family set is the whole eleven, sorted strictly ascending -- canonical and duplicate-free by inspection.
+    if (groups.len != group_count) return error.CountWrong;
+    var i: u32 = 1;
+    while (i < group_count) : (i += 1) {
+        if (!std.mem.lessThan(u8, groups[i - 1], groups[i])) return error.GroupsNotSorted;
+    }
+
+    // 2. Each of the six primaries and secondaries reads its own hue family -- every chromatic band reachable, the
+    // hues integer-exact from rgb_to_hsl (red 0, yellow 60, green 120, cyan 180, blue 240, magenta 300).
+    if (!std.mem.eql(u8, group_of(try color.parse_hex("#ff0000")), group_red)) return error.RedWrong;
+    if (!std.mem.eql(u8, group_of(try color.parse_hex("#ffff00")), group_yellow)) return error.YellowWrong;
+    if (!std.mem.eql(u8, group_of(try color.parse_hex("#00ff00")), group_green)) return error.GreenWrong;
+    if (!std.mem.eql(u8, group_of(try color.parse_hex("#00ffff")), group_cyan)) return error.CyanWrong;
+    if (!std.mem.eql(u8, group_of(try color.parse_hex("#0000ff")), group_blue)) return error.BlueWrong;
+    if (!std.mem.eql(u8, group_of(try color.parse_hex("#ff00ff")), group_magenta)) return error.MagentaWrong;
+
+    // 3. The two families with no pure primary read their representatives -- orange #ffa500 (hue ~38) and purple
+    // #8000ff (hue 270), so all eight chromatic families are proven reachable.
+    if (!std.mem.eql(u8, group_of(try color.parse_hex("#ffa500")), group_orange)) return error.OrangeWrong;
+    if (!std.mem.eql(u8, group_of(try color.parse_hex("#8000ff")), group_purple)) return error.PurpleWrong;
+
+    // 4. Tone overrides hue at both lightness edges: a very dark red #200000 (lightness ~6) reads black, and a very
+    // light red #ffe0e0 (lightness ~94) reads white -- the family follows the eye, which sees no color there.
+    if (!std.mem.eql(u8, group_of(try color.parse_hex("#200000")), group_black)) return error.DarkNotBlack;
+    if (!std.mem.eql(u8, group_of(try color.parse_hex("#ffe0e0")), group_white)) return error.LightNotWhite;
+
+    // 5. Pure black and pure white read their families; a mid-gray #808080 (saturation 0) reads gray, and a barely
+    // saturated color #887f88 (saturation ~4, a faint magenta) reads gray too -- washed-out saturation over hue.
+    if (!std.mem.eql(u8, group_of(try color.parse_hex("#000000")), group_black)) return error.BlackWrong;
+    if (!std.mem.eql(u8, group_of(try color.parse_hex("#ffffff")), group_white)) return error.WhiteWrong;
+    if (!std.mem.eql(u8, group_of(try color.parse_hex("#808080")), group_gray)) return error.GrayWrong;
+    if (!std.mem.eql(u8, group_of(try color.parse_hex("#887f88")), group_gray)) return error.FaintNotGray;
+
+    // 6. A near-boundary hue lands on the right side: #ffbf00 (hue 44, just under the orange/yellow edge at 45) reads
+    // orange, not yellow -- the right-open band proven at its edge, not merely at its center.
+    if (!std.mem.eql(u8, group_of(try color.parse_hex("#ffbf00")), group_orange)) return error.BoundaryWrong;
+
+    // 7. group_of always returns a real family member -- a spread of colors across the wheel and the tones, each
+    // proven to land inside the sorted set, so the function can never invent a word outside it.
+    const spread = [_][]const u8{ "#123456", "#abcdef", "#7f3f00", "#004020", "#e0e0ff", "#050505", "#fdfdfd", "#606060" };
+    var j: u32 = 0;
+    while (j < spread.len) : (j += 1) {
+        const g = group_of(try color.parse_hex(spread[j]));
+        if (!is_group(g)) return error.GroupNotMember;
+    }
+
+    // 8. Determinism -- the same color reads the same family every time.
+    const red_once = group_of(try color.parse_hex("#ff0000"));
+    const red_again = group_of(try color.parse_hex("#ff0000"));
+    if (!std.mem.eql(u8, red_once, red_again)) return error.NotDeterministic;
+
+    print("GREEN image-color-name-group: any color reads one of eleven plain family words over the open color algebra; each primary and secondary reads its hue family (red green blue cyan magenta yellow, plus orange and purple), so all eight chromatic bands are reachable; tone overrides hue at both edges (a very dark red reads black, a very light red reads white); a washed-out color reads gray (a mid-gray and a barely-saturated faint magenta both); a near-boundary hue lands on the right side of its right-open band (hue 44 reads orange not yellow); group_of always returns a member of the sorted eleven; and the same color reads the same family every time (compose not braid, color decides the HSL and this module only reads the bands)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: color_name_group selftest\n", .{});
+    return 1;
+}

@@ -1,0 +1,45 @@
+# tools/color_name_group_witness.rish -- the coarse color family of ANY color proves itself over the open color algebra (Season G).
+#
+# Season G (Open Media Primitives) -- the hue-family classifier beside the nearest-name finder (image/color_nearest.rye),
+# the named-color table (image/color_names.rye), the WCAG contrast reading (image/color_contrast.rye), the on-color swatch
+# (image/color_swatch.rye), the tonal scale (image/color_scale.rye), the palette toolkit (image/color_adjust.rye), and the
+# open color algebra (image/color.rye).
+# Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS Color spec + HSL model -- public standards only).
+#
+# The crux this witness proves is a coarser, older question than the exact or nearest table answers: given ANY color, what
+# FAMILY is it -- red, orange, yellow, green, cyan, blue, purple, magenta, or the achromatic black, white, gray? group_of(c)
+# reads color's proven HSL against named bands and returns one plain family word. Written single-stranded -- color DECIDES the
+# hue, saturation, and lightness through rgb_to_hsl, and this module only READS those three numbers against its own named
+# bands. Tone overrides hue at the lightness edges; a washed-out color reads gray; red wraps the wheel. No new math, no stored
+# channel byte, no parser. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/color_name_group_witness.rish
+
+say "color-name-group: Language EN -- Season G's hue-family classifier; a keeper buckets ANY color by its plain family, coarser than the exact or nearest name."
+say "color-name-group: Style Radiant -- compose not braid; color DECIDES the HSL through rgb_to_hsl, this module only READS the bands, so color's proofs carry through."
+say "color-name-group: Lens TAME -- eleven families in a fixed sorted scan; degrees and percents only, no seam cast; tone overrides hue at the edges deterministically; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/color_name_group"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/color_name_group.rye -femit-bin=${bin}"]
+assert build.ok else "color-name-group: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "color-name-group: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "color-name-group: ${out}"
+
+# Honour the loom REDS #76 named: check every claim with Rishi's native `contains`, never a shell grep over interpolated
+# output, so punctuation in the selftest prose can never break a check.
+assert out contains "GREEN image-color-name-group" else "color-name-group: selftest did not print the GREEN color-name-group line"
+assert out contains "all eight chromatic bands are reachable" else "color-name-group: a chromatic family was not reachable"
+assert out contains "tone overrides hue at both edges" else "color-name-group: tone did not override hue at the lightness edges"
+assert out contains "a washed-out color reads gray" else "color-name-group: a washed-out color did not read gray"
+assert out contains "hue 44 reads orange not yellow" else "color-name-group: a near-boundary hue landed on the wrong side"
+assert out contains "group_of always returns a member of the sorted eleven" else "color-name-group: group_of returned a word outside the family set"
+assert out contains "reads the same family every time" else "color-name-group: the reading was not deterministic"
+
+say "color-name-group: GREEN -- the coarse color family whole over the open color algebra; every chromatic family reachable, tone over hue at the edges, gray for the washed-out, a near-boundary hue on the right side, always a member, deterministic."
