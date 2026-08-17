@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260817.133847
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image/color_nearest_css.rye -- the nearest CSS-named color over 148 names, GREEN
+prompt autonomous loop -- keep going, send often; the prior lap landed the 148-name CSS table and named finer nearest-naming as the next agent-doable rung
+think The prior lap seated color_names_css.rye (the 148 CSS names). The named next crux was to give color_nearest the finer table. Rather than mutate color_nearest (its own green binary, tuned to the sixteen, with witness expectations bound to them), the clean single-stranded move mirrors the names/names_css split: a sibling color_nearest_css.rye that scans the 148 table.
+think The distance metric (squared sRGB over three channels, alpha outside) is small and self-contained, so each module keeps its own copy rather than reaching for a premature shared helper -- the tree's pattern is each module its own green binary composing public APIs. color_names_css owns the names, color decides the bytes, this only measures and picks.
+think The payoff wanted a proof, not a claim: the selftest imports color_nearest (the sixteen) and compares on metal -- for cornflowerblue #6495ed the CSS reading is exact (distance 0, name "cornflowerblue") while the sixteen land on a coarser keyword at a strictly larger distance. Asserting cf_css.dist < cf16.dist and the names differ makes "a finer ruler" a measured fact.
+think Synonyms handled honestly: since the table is sorted and #00ffff is both aqua and cyan, nearest reads "aqua" (earliest). Loop 1 (every color its own nearest at distance zero) checks the color bytes and zero distance, not the name, so a synonym row does not falsely fail when it reads its earlier twin's name.
+obs FIRST GREEN on metal, no reds. Proven: all 148 their own nearest at distance zero; exact cornflowerblue reads its name; the payoff strictly finer than the sixteen (imported and compared); a near-cornflowerblue that is no keyword still reads it; synonym reads earliest ("aqua"); alpha outside the metric (translucent still names, where name_of returns null); nearest_name agrees; deterministic.
+obs tame_style_check exit 0 (my file not in the zero-assert list), width-check exit 0, plain 7-bit ASCII, American spelling (born color), >= 2 positive asserts per fn, no seam cast (all u32 bounded by max_dist_sq, u8 channels). Witness native contains over the interpolated GREEN line (REDS #76 loom).
+obs This lap did not run a fresh council-rota deep-read; the prior lap this run read context/SIMPLE_LOVABLE_COMPLETE.md (item 16), whose two-wholes-side-by-side teaching this lap continues literally -- color_nearest stays the coarse sixteen, color_nearest_css the fine 148, neither swelling the other. No network mutation, no key, no funds -- no custody gate reached.
+loom witness=color_nearest_css_witness names=148 payoff_check=cornflowerblue wall_first_run=green
+file image/color_nearest_css.rye nearest over the 148 CSS names, with a metal payoff comparison against the sixteen-name sibling
+file tools/color_nearest_css_witness.rish builds and proves the fine nearest-namer GREEN with native contains claim checks
+file image/README.md names color_nearest_css.rye beside color_nearest.rye (docs-sync)
+recommend keep-going -- the color-naming family now reads any color at fine and coarse altitudes; next agent-doable is a color_name_group already coarse (no change needed), the open-fonts glyph journey (the next Season G rung after color), or a fresh Lindy-first crux; no custody gate touched
