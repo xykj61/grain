@@ -57,6 +57,7 @@ pub const GridError = error{
     GridScratchTooSmall, // the caller's placement scratch cannot hold one row of glyphs -- refused, never a partial
     GridOutOfBounds, // the grid's painted box would exceed the target buffer -- refuse before a pixel moves
     GridTooLarge, // the rendered image would exceed qoi's pixel ceiling -- refuse rather than allocate past it
+    GridFgMismatch, // the per-cell foreground buffer is not exactly cols*rows colours -- a mis-shaped palette, refused
 };
 
 /// The image width a grid of `cols` columns paints into -- one column pitch per cell.
@@ -130,6 +131,83 @@ pub fn paint_grid(
     }
     // invariant: the loop painted exactly every row of the grid.
     assert(r == rows);
+}
+
+/// Paint a monospace grid where each cell carries its OWN foreground colour -- the coloured-terminal twin of
+/// paint_grid. `fg` holds one colour per cell (row-major, exactly cols*rows), so cell (r, c) paints its glyph in
+/// fg[r*cols + c]: a header in one colour, a caret in another, an unread badge in a third. Same all-or-nothing box
+/// check up front (GridOutOfBounds by name before a pixel moves), same monospace placement; the only difference is
+/// the ink is read per cell rather than shared. A space cell paints nothing, whatever its colour.
+pub fn paint_grid_fg(
+    atlas: *const glyph.GlyphAtlas,
+    cells: []const u8,
+    cols: u32,
+    rows: u32,
+    fg: []const color.Rgba,
+    scratch: []text_layout.PlacedGlyph,
+    target: *qoi.Pixmap,
+    origin_x: u32,
+    origin_y: u32,
+) GridError!void {
+    const cell_h = try check_grid(atlas, cells, cols, rows);
+    // invariant: the placement scratch holds a glyph for every column in a row.
+    if (scratch.len < cols) return error.GridScratchTooSmall;
+    // invariant: the palette carries exactly one colour per cell -- computed in u64 so the product cannot wrap.
+    if (@as(u64, fg.len) != @as(u64, cols) * @as(u64, rows)) return error.GridFgMismatch;
+
+    // The grid's full painted box, in u64 so the sums can never wrap before the bound check refuses -- identical to
+    // paint_grid, since the placement is identical and only the per-cell ink differs.
+    const box_right: u64 = @as(u64, origin_x) + @as(u64, grid_pixel_width(cols));
+    const box_bottom: u64 = @as(u64, origin_y) + @as(u64, rows) * @as(u64, cell_h);
+    if (box_right > @as(u64, target.width) or box_bottom > @as(u64, target.height)) return error.GridOutOfBounds;
+
+    var r: u32 = 0;
+    while (r < rows) : (r += 1) {
+        const row = cells[r * cols .. r * cols + cols];
+        const laid = text_layout.layout_line(atlas, row, scratch) catch return error.GridCellsMismatch;
+        // invariant: layout placed one glyph per cell, so each column's placement sits at scratch[c].
+        assert(laid.count == cols);
+        const dy: u32 = origin_y + r * cell_h;
+        // Paint each cell's single glyph in its own colour. scratch[c] already carries pen_x = c*advance, so the
+        // one-glyph slice lands at the right column when painted from the row origin.
+        var c: u32 = 0;
+        while (c < cols) : (c += 1) {
+            const ink = fg[r * cols + c];
+            text_paint.paint_placed(atlas, scratch[c .. c + 1], target, origin_x, dy, ink) catch return error.GridOutOfBounds;
+        }
+        // invariant: the inner loop painted exactly every column of this row.
+        assert(c == cols);
+    }
+    // invariant: the loop painted exactly every row of the grid.
+    assert(r == rows);
+}
+
+/// Render a whole monospace grid with a per-cell foreground palette into a fresh image sized exactly to it -- the
+/// coloured-terminal twin of render_grid. The canvas is filled `bg`, then each cell's glyph is painted in its own
+/// `fg` colour. Bounded by qoi's pixel ceiling (GridTooLarge by name); the image round-trips through QOI unchanged.
+pub fn render_grid_fg(
+    allocator: std.mem.Allocator,
+    atlas: *const glyph.GlyphAtlas,
+    cells: []const u8,
+    cols: u32,
+    rows: u32,
+    fg: []const color.Rgba,
+    bg: color.Rgba,
+) !qoi.Pixmap {
+    _ = try check_grid(atlas, cells, cols, rows);
+    // invariant: the palette carries exactly one colour per cell before any pixel is allocated or painted.
+    if (@as(u64, fg.len) != @as(u64, cols) * @as(u64, rows)) return error.GridFgMismatch;
+
+    const w: u32 = grid_pixel_width(cols);
+    const h: u32 = grid_pixel_height(atlas, rows);
+    // invariant: the image fits qoi's pixel ceiling -- checked in u64 so the product cannot wrap before refusal.
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    if (total > @as(u64, qoi.qoi_max_pixels)) return error.GridTooLarge;
+
+    var pm = try text_paint.solid(allocator, w, h, bg);
+    const scratch = try allocator.alloc(text_layout.PlacedGlyph, cols);
+    try paint_grid_fg(atlas, cells, cols, rows, fg, scratch, &pm, 0, 0);
+    return pm;
 }
 
 /// Render a whole monospace grid into a fresh image sized exactly to it -- the verb a terminal surface reaches for.
@@ -280,6 +358,59 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const back = try qoi.decode(garden, dst[0..enc.len]);
     assert(back.same_bytes(&face));
 
+    // Per-cell colour: the same grid rendered with a palette that paints row 0 red and every other row black. The
+    // coloured face inks the SAME cells as the single-ink face (placement is identical), yet an inked pixel in row 0
+    // carries red where the black face carried black -- colour is read per cell, not shared.
+    {
+        const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
+        const fg = try garden.alloc(color.Rgba, cols * rows);
+        var i: u32 = 0;
+        // invariant: the palette is exactly one colour per cell before the render reads it.
+        assert(fg.len == cols * rows);
+        while (i < fg.len) : (i += 1) {
+            fg[i] = if (i < cols) red else black; // row 0 red, the rest black
+        }
+        const colored = try render_grid_fg(garden, &atlas, cells, cols, rows, fg, white);
+        // Same size, same inked-cell count as the single-ink face -- the palette moves colour, adds no ink.
+        assert(colored.width == face.width);
+        assert(colored.height == face.height);
+        const colored_changed = changed_pixels(colored.pixels, ground.pixels);
+        assert(colored_changed == want_ink);
+
+        // An inked pixel in row 0 reads red on the coloured face and black on the single-ink face -- the colour is
+        // per cell. Find the first pixel the black face inked within row 0's band and prove the two disagree there.
+        var found: bool = false;
+        var y: u32 = 0;
+        while (y < cell_h and !found) : (y += 1) {
+            var x: u32 = 0;
+            while (x < face.width) : (x += 1) {
+                const bi = (@as(usize, y) * @as(usize, face.width) + @as(usize, x)) * 4;
+                if (face.pixels[bi + 3] != 0 and face.pixels[bi] == 0 and face.pixels[bi + 1] == 0 and face.pixels[bi + 2] == 0) {
+                    // this pixel is fully-black ink on the single-ink face; the coloured face paints it red here
+                    assert(colored.pixels[bi] == 255);
+                    assert(colored.pixels[bi + 1] == 0);
+                    found = true;
+                    break;
+                }
+            }
+        }
+        // invariant: row 0 carried black ink on the single-ink face, so a red pixel was found to compare.
+        assert(found);
+
+        // The coloured conversation is a real portable image too -- it round-trips through QOI byte-for-byte.
+        const ccap = qoi.encoded_bound(colored.width * colored.height);
+        const cdst = try garden.alloc(u8, ccap);
+        const cenc = try qoi.encode(&colored, cdst);
+        const cback = try qoi.decode(garden, cdst[0..cenc.len]);
+        assert(cback.same_bytes(&colored));
+
+        // A palette of the wrong length refuses GridFgMismatch by name, before any pixel is allocated.
+        const short_fg = try garden.alloc(color.Rgba, cols * rows - 1);
+        if (render_grid_fg(garden, &atlas, cells, cols, rows, short_fg, white)) |_| {
+            return error.FgMismatchSlipped;
+        } else |e| if (e != error.GridFgMismatch) return error.WrongFgMismatch;
+    }
+
     // Refusals by name: a mis-shaped cells buffer, a zero dimension, a wrong-cell atlas, and a target too small.
     {
         const short = try garden.alloc(u8, cols * rows - 1);
@@ -302,7 +433,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(changed_pixels(tiny.pixels, tiny_before) == 0);
     }
 
-    print("GREEN image-text-grid: a {d}x{d} terminal grid painted into a {d}x{d} image; ink {d} px equals the summed cell coverage, the blank row is ground, a cell block equals its standalone glyph paint, deterministic, round-trips through QOI byte-for-byte, and every mis-shape refuses by name\n", .{
+    print("GREEN image-text-grid: a {d}x{d} terminal grid painted into a {d}x{d} image; ink {d} px equals the summed cell coverage, the blank row is ground, a cell block equals its standalone glyph paint, a per-cell palette paints row 0 red while inking the same cells, deterministic, both single-ink and coloured faces round-trip through QOI byte-for-byte, and every mis-shape refuses by name\n", .{
         cols, rows, face.width, face.height, changed,
     });
     return 0;
