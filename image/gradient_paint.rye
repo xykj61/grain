@@ -1,0 +1,228 @@
+//! image/gradient_paint.rye -- a positioned gradient SEEN on an image (Season G, where the color ramp meets the pixels).
+//!
+//! Season G (Open Media Primitives) - the first rung where the color-ramp family meets the pixel grid, the twin of what
+//! image/text_paint.rye did for the font family (it turned laid-out glyphs into pixels; this turns a positioned gradient
+//! into pixels). image/color_ramp_stops.rye grows a positioned multi-stop gradient as color VALUES; this rung paints that
+//! gradient into a real image, so a keeper who names a stop list reads back a gradient strip a surface can show.
+//!
+//! Compose, not braid: color_ramp_stops DECIDES each column's color (sample_checked over the positioned ramp), image/qoi
+//! owns the RGBA target (a Pixmap, four bytes per cell), and image/color composites the paint over the destination
+//! (Porter-Duff src-over, straight alpha), so a translucent gradient tints the picture beneath. This module only ROUTES
+//! each column of the strip to its global position and writes it -- no new color math, no new codec. A horizontal strip
+//! of width w maps column c to the global position c * pos_max / (w-1), so the leftmost column is the first control
+//! exactly and the rightmost is the last control exactly, and every column between carries the sampled blend. The whole
+//! rectangle's box is bound-checked ONCE up front (in u64 so a far edge can never wrap before the bound refuses), and the
+//! ramp is validated ONCE before any pixel is written, so a malformed strip refuses by name having painted nothing --
+//! all-or-nothing, never a half-painted band. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/gradient_paint.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const ramp_stops = @import("color_ramp_stops.rye");
+
+pub const gradient_paint_version = "20260817.142301";
+
+/// Composite one paint color over the destination pixel at (x, y), src-over, so a translucent gradient reads through to
+/// the picture beneath. The caller proves the pixel lands inside the target; this writer only blends.
+fn blend_pixel(target: *qoi.Pixmap, x: u32, y: u32, paint: color.Rgba) void {
+    // invariant: the caller proved this pixel lands inside the target buffer, on the horizontal axis.
+    assert(x < target.width);
+    // invariant: and on the vertical axis -- both are load-bearing for the flat index below.
+    assert(y < target.height);
+    const di = (@as(usize, y) * @as(usize, target.width) + @as(usize, x)) * 4;
+    const dst = color.Rgba{
+        .r = target.pixels[di],
+        .g = target.pixels[di + 1],
+        .b = target.pixels[di + 2],
+        .a = target.pixels[di + 3],
+    };
+    const res = color.over(paint, dst);
+    target.pixels[di] = res.r;
+    target.pixels[di + 1] = res.g;
+    target.pixels[di + 2] = res.b;
+    target.pixels[di + 3] = res.a;
+}
+
+/// The global position (0..pos_max) of column `c` in a strip of width `w` -- an even integer lerp from 0 (the left edge,
+/// the first control exactly) to pos_max (the right edge, the last control exactly). Shared by every column, so the
+/// column-to-position routing is one small honest reader.
+fn column_pos(c: u32, w: u32) u8 {
+    // invariant: a horizontal gradient needs at least two columns, so the denominator is at least one.
+    assert(w >= 2);
+    // invariant: the column names a real column of the strip.
+    assert(c < w);
+    const den: u32 = w - 1;
+    // c <= w-1 <= qoi_max_dim (8192), so c * 255 <= ~2.09M in u32 and the lerp never wraps. Floor division, so the left
+    // edge reads 0 and the right edge reads pos_max exactly.
+    const p: u32 = c * @as(u32, ramp_stops.pos_max) / den;
+    // invariant: the position stays inside the domain (c == 0 gives 0, c == w-1 gives pos_max).
+    assert(p <= ramp_stops.pos_max);
+    return @intCast(p);
+}
+
+/// Paint a HORIZONTAL positioned gradient into the rectangle at (`x`, `y`) of size `w` x `h` on `target`: each column is
+/// the color the positioned ramp samples at that column's global position, painted down the whole height. The leftmost
+/// column is the first control exactly and the rightmost is the last control exactly. Refuses `StripTooNarrow` if `w` is
+/// under two (a gradient needs a direction), `BadStripDims` if `h` is zero, `GradientStripOutOfBounds` BY NAME if the box
+/// would exceed the target, and every `color_ramp_stops` refusal by name if the ramp is malformed -- all checked BEFORE
+/// any pixel is written, so a refusal leaves the target untouched.
+pub fn paint_gradient_h(target: *qoi.Pixmap, x: u32, y: u32, w: u32, h: u32, control: []const color.Rgba, positions: []const u8) !void {
+    // invariant: a horizontal gradient strip has at least two columns and a real height.
+    if (w < 2) return error.StripTooNarrow;
+    if (h == 0) return error.BadStripDims;
+    // The ramp is validated ONCE up front, so a malformed stop list refuses having painted nothing.
+    try ramp_stops.check(control, positions);
+    // The box's far edges, in u64 so the sum can never wrap before the bound check refuses.
+    const right: u64 = @as(u64, x) + @as(u64, w);
+    const bottom: u64 = @as(u64, y) + @as(u64, h);
+    if (right > @as(u64, target.width) or bottom > @as(u64, target.height)) return error.GradientStripOutOfBounds;
+    // invariant: the up-front check proved every pixel of the w x h box lands inside the target buffer.
+    assert(right <= @as(u64, target.width));
+    assert(bottom <= @as(u64, target.height));
+
+    var cx: u32 = 0;
+    while (cx < w) : (cx += 1) {
+        // The column's color is decided by the positioned ramp; this module only routes the column to its position.
+        const col = ramp_stops.sample_checked(control, positions, column_pos(cx, w));
+        var cy: u32 = 0;
+        while (cy < h) : (cy += 1) {
+            blend_pixel(target, x + cx, y + cy, col);
+        }
+    }
+}
+
+// --- selftest: paint a positioned gradient strip, prove its edges, its blend, its bend, and its round trip on metal ----
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module (it
+/// borrows nothing from text_paint's public `solid`, exactly as image/shape.rye keeps its own canvas).
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
+    const green = color.Rgba{ .r = 0, .g = 255, .b = 0, .a = 255 };
+    const blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    const rgb = [_]color.Rgba{ red, green, blue };
+    const at_even = [_]u8{ 0, 128, 255 };
+
+    // Paint a 9-wide, 4-tall red-green-blue gradient over a white canvas. The strip is a real image a surface can show.
+    const strip_w: u32 = 9;
+    const strip_h: u32 = 4;
+    var img = try make_canvas(garden, strip_w, strip_h, white);
+    try paint_gradient_h(&img, 0, 0, strip_w, strip_h, rgb[0..], at_even[0..]);
+
+    // The leftmost column is the first control (red) and the rightmost is the last control (blue), byte-for-byte, down the
+    // whole height -- the crux that the endpoints land exactly where the ramp anchors them.
+    var ry: u32 = 0;
+    while (ry < strip_h) : (ry += 1) {
+        if (!pixel_at(&img, 0, ry).eql(red)) return error.LeftEdgeNotFirstControl;
+        if (!pixel_at(&img, strip_w - 1, ry).eql(blue)) return error.RightEdgeNotLastControl;
+    }
+
+    // A column strictly inside the first segment carries BOTH red and green (a true blend, not a hard cut), and the same
+    // color down its whole height (a horizontal gradient is constant vertically).
+    const mid_col: u32 = 2;
+    const midpix = pixel_at(&img, mid_col, 0);
+    if (!(midpix.r > 0 and midpix.g > 0)) return error.MidColumnNotBlended;
+    ry = 0;
+    while (ry < strip_h) : (ry += 1) {
+        if (!pixel_at(&img, mid_col, ry).eql(midpix)) return error.ColumnNotConstantVertically;
+    }
+
+    // Uneven positions BEND the painted strip: with green pushed near the end (position 200) the same column reads a
+    // different color than with green centred (position 128), the measured proof that a position is a real control on the
+    // pixels, not only in the values.
+    const at_late = [_]u8{ 0, 200, 255 };
+    var img_late = try make_canvas(garden, strip_w, strip_h, white);
+    try paint_gradient_h(&img_late, 0, 0, strip_w, strip_h, rgb[0..], at_late[0..]);
+    if (pixel_at(&img_late, mid_col, 0).eql(midpix)) return error.PositionDidNotBendStrip;
+
+    // The painted strip round-trips through the open QOI codec byte-for-byte -- a real image, not a private buffer.
+    const cap = qoi.encoded_bound(img.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&img, dst);
+    const back = try qoi.decode(garden, dst[0..enc.len]);
+    if (!back.same_bytes(&img)) return error.StripDidNotRoundTrip;
+
+    // A sub-rectangle paints only its own columns: paint a 3-wide strip at x=1 on a fresh wider canvas and prove the
+    // columns outside it stay the untouched ground (the box is honored, nothing bleeds).
+    var img_sub = try make_canvas(garden, 6, 2, white);
+    try paint_gradient_h(&img_sub, 1, 0, 3, 2, rgb[0..], at_even[0..]);
+    if (!pixel_at(&img_sub, 0, 0).eql(white)) return error.LeftGutterPainted;
+    if (!pixel_at(&img_sub, 5, 0).eql(white)) return error.RightGutterPainted;
+    if (pixel_at(&img_sub, 1, 0).eql(white)) return error.StripStartNotPainted;
+
+    // Refusals by name, each having painted nothing: a one-column strip (no direction), a zero height, an out-of-bounds
+    // box, and a malformed ramp (non-ascending positions caught up front).
+    var tiny = try make_canvas(garden, 4, 2, white);
+    if (paint_gradient_h(&tiny, 0, 0, 1, 2, rgb[0..], at_even[0..])) |_| return error.NarrowNotRefused else |err| {
+        if (err != error.StripTooNarrow) return error.WrongNarrowError;
+    }
+    if (paint_gradient_h(&tiny, 0, 0, 4, 0, rgb[0..], at_even[0..])) |_| return error.ZeroHeightNotRefused else |err| {
+        if (err != error.BadStripDims) return error.WrongHeightError;
+    }
+    if (paint_gradient_h(&tiny, 2, 0, 4, 2, rgb[0..], at_even[0..])) |_| return error.OverrunNotRefused else |err| {
+        if (err != error.GradientStripOutOfBounds) return error.WrongOverrunError;
+    }
+    const not_asc = [_]u8{ 0, 0, 255 };
+    if (paint_gradient_h(&tiny, 0, 0, 4, 2, rgb[0..], not_asc[0..])) |_| return error.BadRampNotRefused else |err| {
+        if (err != error.StopsNotAscending) return error.WrongRampError;
+    }
+    // The overrun and bad-ramp refusals painted nothing -- the tiny canvas is still all white.
+    var wy: u32 = 0;
+    while (wy < tiny.height) : (wy += 1) {
+        var wx: u32 = 0;
+        while (wx < tiny.width) : (wx += 1) {
+            if (!pixel_at(&tiny, wx, wy).eql(white)) return error.RefusedButPainted;
+        }
+    }
+
+    // Determinism: the same ramp painted twice grows byte-for-byte the same strip.
+    var img_a = try make_canvas(garden, strip_w, strip_h, white);
+    var img_b = try make_canvas(garden, strip_w, strip_h, white);
+    try paint_gradient_h(&img_a, 0, 0, strip_w, strip_h, rgb[0..], at_even[0..]);
+    try paint_gradient_h(&img_b, 0, 0, strip_w, strip_h, rgb[0..], at_even[0..]);
+    if (!img_a.same_bytes(&img_b)) return error.StripNotDeterministic;
+
+    print("GREEN image-gradient-paint: a positioned gradient painted onto a real image -- the leftmost column is the first control and the rightmost the last, byte-for-byte down the whole height; a mid column carries both channels (a true blend) constant vertically; uneven positions bend the painted strip where even spacing cannot (green at 200 vs 128 read differently at the same column); the strip round-trips through the open QOI codec byte-for-byte; a sub-rectangle paints only its own columns (the gutters stay ground); a one-column strip, a zero height, an out-of-bounds box, and a non-ascending ramp refuse by name having painted nothing; the same ramp paints the same strip byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: gradient_paint selftest\n", .{});
+    return 1;
+}

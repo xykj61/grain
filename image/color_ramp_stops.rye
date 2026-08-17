@@ -49,7 +49,7 @@ fn blend_param(num: u32, den: u32) u8 {
 /// Validate a control/position pair: equal lengths, at least two controls and never more than the shared ceiling, the
 /// positions strictly ascending from exactly 0 to exactly pos_max. Refuses by name so no caller ever samples a ramp whose
 /// shape it never checked.
-fn check(control: []const color.Rgba, positions: []const u8) !void {
+pub fn check(control: []const color.Rgba, positions: []const u8) !void {
     // invariant: one position per control, so every segment has two real endpoints.
     if (control.len != positions.len) return error.StopCountMismatch;
     // invariant: a ramp holds at least two controls and never more than color_ramp's bounded ceiling.
@@ -70,7 +70,7 @@ fn check(control: []const color.Rgba, positions: []const u8) !void {
 /// Read the blended colour at global position `pos`, assuming a control/position pair already validated by `check`. Finds
 /// the segment whose start boundary is the greatest position <= pos (the last segment catches pos == pos_max), then blends
 /// its two controls by the local fraction. A position landing exactly on a control reads that control byte-for-byte.
-fn sample_checked(control: []const color.Rgba, positions: []const u8, pos: u8) color.Rgba {
+pub fn sample_checked(control: []const color.Rgba, positions: []const u8, pos: u8) color.Rgba {
     // invariant: a validated pair holds at least two controls, so at least one real segment exists.
     assert(control.len >= 2);
     assert(control.len == positions.len);

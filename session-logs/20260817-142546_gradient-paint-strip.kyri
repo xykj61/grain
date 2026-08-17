@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260817.142546
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image/gradient_paint.rye -- a positioned gradient SEEN on an image, GREEN
+prompt Autonomous loop lap 2: take the next agent-doable lap Lindy-first crux-first over the open-media color family; send often; stop at custody gates.
+think Rota d27 lap 2 = foundations/20260706-185112_follow-our-compass.md -- the return habit: foundations -> grain -> active-designing -> TASKS -> witnesses; grain answers does-this-cut-clean, compass answers where-to-look. Read it before choosing the crux.
+think First crux tried: close the uppercase Latin-1 letter set with font5x7_upper_icelandic (Eth/Thorn/Y-acute). The Write guard refused -- the file already existed. It was already built and committed at ba28b492ea, GREEN. My REMEMBER card was stale (it listed those capitals as remaining). The guard correctly protected committed work; overwriting it would have been a real red. Picked a genuinely new crux instead rather than redo done work.
+think New crux, Lindy-first: the first rung where the color-ramp family meets the PIXEL grid -- the twin of what text_paint did for the font family (glyphs to pixels; now a positioned gradient to pixels). A gradient you can SEE is the product surface; high-Lindy, and crux-first because no prior rung had rasterized the ramp.
+think gradient_paint.rye paint_gradient_h(target, x, y, w, h, control, positions): each column c maps to global position c*pos_max/(w-1), sampled by color_ramp_stops.sample_checked, painted down the whole height, composited src-over so a translucent gradient tints beneath. Compose not braid: color_ramp_stops decides the color, qoi owns the target, color composites, this rung only routes.
+think Additive expose in color_ramp_stops: made check and sample_checked pub so the painter validates the ramp ONCE up front (all-or-nothing) then samples per column without re-validating O(w*K). color_ramp_stops witness re-run GREEN after the expose -- additive, no behavior change.
+obs First GREEN, no reds this lap (the module logic was clean first build; the earlier upper-icelandic detour cost no red -- the guard caught it before any write). Proofs: left column == first control and right == last, byte-for-byte down the height; a mid column carries both channels constant vertically; uneven positions bend the painted strip (green at 200 vs 128 read differently at the same column, MEASURED not claimed); QOI round-trip byte-for-byte; a sub-rectangle paints only its own columns (gutters stay ground); StripTooNarrow / BadStripDims / GradientStripOutOfBounds / non-ascending ramp each refuse having painted nothing (proven by re-scanning the canvas all-white after a refusal); determinism byte-for-byte.
+obs TAME clean (bans clean, ratchet counts unchanged), width-check exit 0, plain 7-bit ASCII, American spelling, >= 2 positive asserts per fn, u64 up-front box check (the shape.rye idiom), u32 column lerp bounded by qoi_max_dim so it never wraps, local make_canvas so the rung leans on no higher module (mirrors shape.rye keeping its own canvas).
+loom witness=gradient_paint_witness build_ok=1 selftest_ok=1 reds=0 strip=9x4 also color_ramp_stops re-run GREEN after pub expose
+file image/gradient_paint.rye the gradient-strip painter -- paint_gradient_h over color_ramp_stops + qoi + color
+file image/color_ramp_stops.rye check and sample_checked made pub (additive) so the painter validates once then samples per column
+file tools/gradient_paint_witness.rish proves build + selftest GREEN, greps the GREEN line, the QOI round-trip claim, and the bend claim
+file image/README.md names gradient_paint.rye beside shape.rye and text_paint.rye (docs-sync, same commit)
+file crux/REMEMBER.md git nib + inner-loop live edge refreshed to this rung
+recommend keep-going a vertical gradient companion (paint_gradient_v), a gradient legend/swatch strip, or a fresh Lindy-first crux -- none reach a custody gate
