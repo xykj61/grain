@@ -1,0 +1,304 @@
+//! image/palette_paint.rye -- a palette of colour swatches SEEN on an image (Season G, the discrete sibling of the gradient).
+//!
+//! Season G (Open Media Primitives) - where image/gradient_paint.rye paints a CONTINUOUS ramp (every column a fresh blend),
+//! this rung paints the DISCRETE twin: a row (or column) of solid colour SWATCHES, the palette legend a design surface
+//! shows beside a picker, a colour scale, or a gradient. A keeper names a list of colours and reads back a tiled strip a
+//! surface can show -- the same "the ramp family meets the pixel grid" gesture, but stepped rather than smooth.
+//!
+//! Compose, not braid: image/shape.rye owns the fill (fill_rect composites a solid colour src-over over the RGBA grid),
+//! image/qoi.rye owns the target (a Pixmap, four bytes per cell), and this module only ROUTES each swatch to its CELL --
+//! no new colour math, no new codec, no new blend. The n swatches tile the strip EXACTLY: swatch i spans the columns
+//! [i*w/n, (i+1)*w/n), an integer partition where cell 0 starts at the left edge, cell n ends at the right edge exactly,
+//! the cells are contiguous and disjoint (no gap, no overlap), and their widths differ by at most one when n does not
+//! divide w evenly. paint_palette_v is the vertical twin, stacking the swatches top to bottom the same way. The whole
+//! rectangle's box is bound-checked ONCE up front (in u64 so a far edge can never wrap before the bound refuses), and the
+//! palette is validated ONCE before any pixel is written, so a malformed strip refuses BY NAME having painted nothing --
+//! all-or-nothing, never a half-painted band. No network, no key, no funds -- the swatch legend a surface draws the day
+//! it wants to show a palette, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/palette_paint.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const shape = @import("shape.rye");
+
+pub const palette_paint_version = "20260817.150000";
+
+/// The largest palette this rung paints -- a full 8-bit-indexed palette (256 swatches), the ceiling a colour picker or an
+/// indexed image would ever ask for. Named so the cell-partition arithmetic stays far inside u32 (i * extent with i <= 256
+/// and extent <= qoi_max_dim is ~2.1M, never near a wrap).
+pub const palette_max_swatches: u32 = 256;
+
+/// The left (or top) boundary of swatch `i` in a strip of `n` swatches across `extent` units -- the integer partition
+/// i*extent/n, floor division so cell 0 starts at 0 and cell n ends at extent exactly. Shared by both painters, so the
+/// swatch-to-cell routing is one small honest reader; every cell is at least one unit wide because the caller proved
+/// extent >= n before this is called.
+fn cell_bound(i: u32, n: u32, extent: u32) u32 {
+    // invariant: a palette has at least one swatch, so the denominator is real.
+    assert(n >= 1);
+    // invariant: the index names a real boundary from the first edge (0) to the far edge (n).
+    assert(i <= n);
+    // invariant: the strip is wide enough to give every swatch at least one unit, so no cell collapses to zero width.
+    assert(extent >= n);
+    // i <= n <= palette_max_swatches (256) and extent <= qoi_max_dim (8192), so i*extent <= ~2.1M in u32 and never wraps.
+    const b: u32 = i * extent / n;
+    // invariant: the boundary stays inside the strip (i == 0 gives 0, i == n gives extent exactly).
+    assert(b <= extent);
+    return b;
+}
+
+/// Validate a palette before any pixel is painted: it must hold at least one swatch and no more than the named ceiling.
+/// Refuses `EmptyPalette` (nothing to show) and `PaletteTooManyColors` BY NAME so a caller learns why nothing was painted.
+fn check_palette(colors: []const color.Rgba) !void {
+    // invariant: a palette shows at least one swatch.
+    if (colors.len == 0) return error.EmptyPalette;
+    // invariant: the swatch count stays within the named ceiling, so the cell arithmetic stays inside u32.
+    if (colors.len > palette_max_swatches) return error.PaletteTooManyColors;
+}
+
+/// Paint a HORIZONTAL palette of solid swatches into the rectangle at (`x`, `y`) of size `w` x `h` on `target`: the n
+/// colours tile the width, swatch i filling the columns [i*w/n, (i+1)*w/n) down the whole height. The cells are contiguous
+/// and disjoint, cover the whole width with no gap, and each is its colour exactly (a translucent swatch blends src-over
+/// through shape.fill_rect). Refuses `EmptyPalette`/`PaletteTooManyColors` (a malformed palette), `BadStripDims` if `w` or
+/// `h` is zero, `PaletteStripTooNarrow` if `w` is under the swatch count (a cell would collapse to zero width),
+/// `PaletteOutOfBounds` BY NAME if the box exceeds the target -- all checked BEFORE any pixel, so a refusal leaves the
+/// target untouched.
+pub fn paint_palette_h(target: *qoi.Pixmap, x: u32, y: u32, w: u32, h: u32, colors: []const color.Rgba) !void {
+    // The palette is validated ONCE up front, so a malformed list refuses having painted nothing.
+    try check_palette(colors);
+    // invariant: a paintable strip has real extent on both axes.
+    if (w == 0 or h == 0) return error.BadStripDims;
+    const n: u32 = @intCast(colors.len);
+    // invariant: the strip is wide enough to give every swatch at least one column.
+    if (w < n) return error.PaletteStripTooNarrow;
+    // The box's far edges, in u64 so the sum can never wrap before the bound check refuses.
+    const right: u64 = @as(u64, x) + @as(u64, w);
+    const bottom: u64 = @as(u64, y) + @as(u64, h);
+    if (right > @as(u64, target.width) or bottom > @as(u64, target.height)) return error.PaletteOutOfBounds;
+    // invariant: the up-front check proved every pixel of the w x h box lands inside the target buffer.
+    assert(right <= @as(u64, target.width));
+    assert(bottom <= @as(u64, target.height));
+
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const lo = cell_bound(i, n, w);
+        const hi = cell_bound(i + 1, n, w);
+        // invariant: every cell is at least one column wide, so the fill below never sees a zero extent.
+        assert(hi > lo);
+        // The cell's colour is the swatch; this module only routes the swatch to its cell, shape composites it. The box
+        // was proven in-bounds up front, so this fill lands entirely inside the target -- it cannot fail its own check.
+        try shape.fill_rect(target, x + lo, y, hi - lo, h, colors[i]);
+    }
+}
+
+/// Paint a VERTICAL palette of solid swatches into the rectangle at (`x`, `y`) of size `w` x `h` on `target`: the twin of
+/// paint_palette_h with the axes swapped -- the n colours stack top to bottom, swatch i filling the rows [i*h/n, (i+1)*h/n)
+/// across the whole width. Refuses `EmptyPalette`/`PaletteTooManyColors`, `BadStripDims` if `w` or `h` is zero,
+/// `PaletteStripTooShort` if `h` is under the swatch count, `PaletteOutOfBounds` BY NAME if the box exceeds the target --
+/// all checked BEFORE any pixel is written.
+pub fn paint_palette_v(target: *qoi.Pixmap, x: u32, y: u32, w: u32, h: u32, colors: []const color.Rgba) !void {
+    // The palette is validated ONCE up front, so a malformed list refuses having painted nothing.
+    try check_palette(colors);
+    // invariant: a paintable strip has real extent on both axes.
+    if (w == 0 or h == 0) return error.BadStripDims;
+    const n: u32 = @intCast(colors.len);
+    // invariant: the strip is tall enough to give every swatch at least one row.
+    if (h < n) return error.PaletteStripTooShort;
+    // The box's far edges, in u64 so the sum can never wrap before the bound check refuses.
+    const right: u64 = @as(u64, x) + @as(u64, w);
+    const bottom: u64 = @as(u64, y) + @as(u64, h);
+    if (right > @as(u64, target.width) or bottom > @as(u64, target.height)) return error.PaletteOutOfBounds;
+    // invariant: the up-front check proved every pixel of the w x h box lands inside the target buffer.
+    assert(right <= @as(u64, target.width));
+    assert(bottom <= @as(u64, target.height));
+
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const lo = cell_bound(i, n, h);
+        const hi = cell_bound(i + 1, n, h);
+        // invariant: every cell is at least one row tall, so the fill below never sees a zero extent.
+        assert(hi > lo);
+        // The cell's colour is the swatch; shape composites it. The box was proven in-bounds, so this fill cannot fail.
+        try shape.fill_rect(target, x, y + lo, w, hi - lo, colors[i]);
+    }
+}
+
+// --- selftest: prove the swatches tile the strip exactly, each cell its colour, blend true, round-trip, refuse by name ---
+
+/// Mint a one-colour RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module
+/// (exactly as image/shape.rye and image/gradient_paint.rye keep their own canvas).
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// Count pixels of `img` whose RGBA differs from `bg` -- the honest measure of how much a palette covered.
+fn changed_from(img: *const qoi.Pixmap, bg: color.Rgba) u32 {
+    // invariant: the buffer is four bytes per pixel -- the RGBA invariant a Pixmap carries.
+    assert(img.pixels.len % 4 == 0);
+    var n: u32 = 0;
+    var i: usize = 0;
+    while (i < img.pixels.len) : (i += 4) {
+        const px = color.Rgba{ .r = img.pixels[i], .g = img.pixels[i + 1], .b = img.pixels[i + 2], .a = img.pixels[i + 3] };
+        if (!px.eql(bg)) n += 1;
+    }
+    // invariant: the changed count never exceeds the pixels walked.
+    assert(n <= @as(u32, @intCast(img.pixels.len / 4)));
+    return n;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
+    const green = color.Rgba{ .r = 0, .g = 255, .b = 0, .a = 255 };
+    const blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+    const red_half = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 128 };
+
+    const rgb = [_]color.Rgba{ red, green, blue };
+
+    // --- an evenly-dividing palette: a 3-colour strip across width 9 gives three 3-wide cells, each its colour exactly ---
+    const w_even: u32 = 9;
+    const strip_h: u32 = 4;
+    var img = try make_canvas(garden, w_even, strip_h, white);
+    try paint_palette_h(&img, 0, 0, w_even, strip_h, rgb[0..]);
+
+    // Each third is one solid colour, byte-for-byte across its columns and down the whole height -- the crux that a swatch
+    // fills its whole cell and nothing else.
+    var ey: u32 = 0;
+    while (ey < strip_h) : (ey += 1) {
+        var ex: u32 = 0;
+        while (ex < w_even) : (ex += 1) {
+            const want = if (ex < 3) red else if (ex < 6) green else blue;
+            if (!pixel_at(&img, ex, ey).eql(want)) return error.SwatchColourWrong;
+        }
+    }
+    // The palette tiles the WHOLE strip: every pixel is a swatch, none left the white ground (no gap, no overlap).
+    if (changed_from(&img, white) != w_even * strip_h) return error.PaletteLeftGround;
+    // Adjacent cells are distinct at the boundary -- a hard edge, not a blend (column 2 red, column 3 green).
+    if (pixel_at(&img, 2, 0).eql(pixel_at(&img, 3, 0))) return error.SwatchBoundaryNotHard;
+
+    // --- an uneven palette: width 8, 3 swatches -> cells [0,2) [2,5) [5,8), widths 2,3,3, tiling 8 exactly ------------
+    const w_odd: u32 = 8;
+    var img_odd = try make_canvas(garden, w_odd, 2, white);
+    try paint_palette_h(&img_odd, 0, 0, w_odd, 2, rgb[0..]);
+    // The partition floor(i*8/3) puts boundaries at 0,2,5,8: cell 0 red on cols 0-1, cell 1 green on 2-4, cell 2 blue 5-7.
+    if (!pixel_at(&img_odd, 0, 0).eql(red)) return error.UnevenFirstNotFirst;
+    if (!pixel_at(&img_odd, 1, 0).eql(red)) return error.UnevenFirstNotFirst;
+    if (!pixel_at(&img_odd, 2, 0).eql(green)) return error.UnevenMidWrong;
+    if (!pixel_at(&img_odd, 4, 0).eql(green)) return error.UnevenMidWrong;
+    if (!pixel_at(&img_odd, 5, 0).eql(blue)) return error.UnevenLastWrong;
+    if (!pixel_at(&img_odd, 7, 0).eql(blue)) return error.UnevenLastNotLast; // the far edge is the last swatch exactly
+    // The uneven strip still tiles the whole width -- no gap where the remainder fell.
+    if (changed_from(&img_odd, white) != w_odd * 2) return error.UnevenLeftGround;
+
+    // --- a translucent swatch blends true: a half-alpha red swatch over white equals color.over, uniform across its cell -
+    const solo = [_]color.Rgba{red_half};
+    var img_blend = try make_canvas(garden, 4, 3, white);
+    try paint_palette_h(&img_blend, 0, 0, 4, 3, solo[0..]);
+    const blended = color.over(red_half, white);
+    if (blended.eql(red_half) or blended.eql(white)) return error.BlendNotBetween; // a real blend, not either pole
+    var bx: u32 = 0;
+    while (bx < 4) : (bx += 1) {
+        if (!pixel_at(&img_blend, bx, 0).eql(blended)) return error.SwatchBlendNotUniform;
+    }
+
+    // --- the painted palette round-trips through the open QOI codec byte-for-byte -- a real image, not a private buffer --
+    const cap = qoi.encoded_bound(img.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&img, dst);
+    const back = try qoi.decode(garden, dst[0..enc.len]);
+    if (!back.same_bytes(&img)) return error.PaletteDidNotRoundTrip;
+
+    // --- a sub-rectangle paints only its own columns: a palette at x=1 leaves the gutters the untouched ground ---------
+    var img_sub = try make_canvas(garden, 8, 2, white);
+    try paint_palette_h(&img_sub, 1, 0, 6, 2, rgb[0..]);
+    if (!pixel_at(&img_sub, 0, 0).eql(white)) return error.LeftGutterPainted;
+    if (!pixel_at(&img_sub, 7, 0).eql(white)) return error.RightGutterPainted;
+    if (pixel_at(&img_sub, 1, 0).eql(white)) return error.PaletteStartNotPainted;
+
+    // --- the vertical twin: a 3-colour palette stacked DOWN a tall strip, top cell red, bottom blue, each row constant --
+    var img_v = try make_canvas(garden, strip_h, w_even, white);
+    try paint_palette_v(&img_v, 0, 0, strip_h, w_even, rgb[0..]);
+    var vy: u32 = 0;
+    while (vy < w_even) : (vy += 1) {
+        const want = if (vy < 3) red else if (vy < 6) green else blue;
+        var vx: u32 = 0;
+        while (vx < strip_h) : (vx += 1) {
+            if (!pixel_at(&img_v, vx, vy).eql(want)) return error.VerticalSwatchWrong;
+        }
+    }
+    if (changed_from(&img_v, white) != strip_h * w_even) return error.VerticalLeftGround;
+
+    // --- refusals by name, each having painted nothing --------------------------------------------------------------
+    const empty = [_]color.Rgba{};
+    var tiny = try make_canvas(garden, 6, 2, white);
+    if (paint_palette_h(&tiny, 0, 0, 6, 2, empty[0..])) |_| return error.EmptyNotRefused else |err| {
+        if (err != error.EmptyPalette) return error.WrongEmptyError;
+    }
+    if (paint_palette_h(&tiny, 0, 0, 6, 0, rgb[0..])) |_| return error.ZeroDimsNotRefused else |err| {
+        if (err != error.BadStripDims) return error.WrongDimsError;
+    }
+    // A 2-wide strip cannot hold 3 swatches -- a cell would collapse to zero width, refused by name.
+    if (paint_palette_h(&tiny, 0, 0, 2, 2, rgb[0..])) |_| return error.NarrowNotRefused else |err| {
+        if (err != error.PaletteStripTooNarrow) return error.WrongNarrowError;
+    }
+    if (paint_palette_h(&tiny, 2, 0, 6, 2, rgb[0..])) |_| return error.OverrunNotRefused else |err| {
+        if (err != error.PaletteOutOfBounds) return error.WrongOverrunError; // 2+6 = 8 > width 6
+    }
+    // The vertical twin refuses a strip too short for its swatches by its own name.
+    if (paint_palette_v(&tiny, 0, 0, 6, 2, rgb[0..])) |_| return error.ShortNotRefused else |err| {
+        if (err != error.PaletteStripTooShort) return error.WrongShortError; // height 2 < 3 swatches
+    }
+    // Every refusal painted nothing -- the tiny canvas is still all white.
+    var ry: u32 = 0;
+    while (ry < tiny.height) : (ry += 1) {
+        var rx: u32 = 0;
+        while (rx < tiny.width) : (rx += 1) {
+            if (!pixel_at(&tiny, rx, ry).eql(white)) return error.RefusedButPainted;
+        }
+    }
+
+    // --- determinism: the same palette painted twice grows byte-for-byte the same strip ------------------------------
+    var img_a = try make_canvas(garden, w_even, strip_h, white);
+    var img_b = try make_canvas(garden, w_even, strip_h, white);
+    try paint_palette_h(&img_a, 0, 0, w_even, strip_h, rgb[0..]);
+    try paint_palette_h(&img_b, 0, 0, w_even, strip_h, rgb[0..]);
+    if (!img_a.same_bytes(&img_b)) return error.PaletteNotDeterministic;
+
+    print("GREEN image-palette-paint: a palette of colour swatches painted onto a real image -- an evenly-dividing 3-colour strip fills three equal cells each its colour exactly byte-for-byte and tiles the whole width (no gap, no overlap, a hard edge at each boundary); an uneven width 8 over 3 swatches partitions to widths 2,3,3 tiling exactly, the far edge the last swatch; a translucent swatch blends src-over uniform across its cell; the palette round-trips through the open QOI codec byte-for-byte; a sub-rectangle paints only its own columns (the gutters stay ground); the vertical twin paint_palette_v stacks the swatches top to bottom (top cell first, bottom cell last, each row constant); an empty palette, a zero dimension, a strip too narrow for its swatches, an out-of-bounds box, and a too-short vertical strip refuse by name having painted nothing; the same palette paints the same strip byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: palette_paint selftest\n", .{});
+    return 1;
+}
