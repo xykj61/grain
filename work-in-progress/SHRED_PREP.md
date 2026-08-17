@@ -79,6 +79,7 @@ Add a row **every time** a living mutant seats and the prior stamp becomes fossi
 | `foundations/20260629-063512_the-wafer-and-the-sovereign-coin.md` | `foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md` | p33 `20260728.225239` | invent held |
 | `counsel/20260728-232415_anvil-forge-to-kiln-name-lean.md` | LEXICON **Ember** entry | molt `20260808.220423` | anvil→kiln naming counsel · superseded by Ember rename |
 | `counsel/20260728-234419_the-kiln-season-oct-charter.md` | LEXICON **Ember** entry | molt `20260808.220423` | Kiln Season charter · season keeps its name as history · Ember is the living module |
+| `active-designing/20260813-020035_double-seat-expansion-six-seasons.md` | `active-designing/20260816-205859_double-seat-expansion-eight-seasons.md` | molt `20260816.205859` | six-season itinerary → eight (colour module + open-weight intelligence folded in); mutant accretes all six whole · shred stays RED until circled |
 
 **Ember supersession (molt `20260808.220423`).** The living forge module renamed `anvil/` → `kiln/` → **`ember/`** (Keaton's word). Kiln/anvil naming writings above are prepped as Class H fossils; the rested **Kiln Season** keeps its name as history and is not touched. Any tribute framing once attached to the Anvil name is **debrided** `20260809.012200` — removed from the living tree and stripped from history, not archived. Molt remains prep only; the Class H shred of the kiln/anvil naming fossils stays RED.
 
