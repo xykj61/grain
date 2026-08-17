@@ -10,8 +10,10 @@
 //! BY NAME (BadHexLength · BadHexDigit · BadFunctionForm · ChannelOutOfRange · BadLevels) rather than
 //! guessing a colour. All arithmetic is integer fixed-point, so the results are deterministic across targets;
 //! integer HSL cannot round-trip byte-exact, and this module states its measured tolerance rather than
-//! claiming an exactness it does not have. No network, no key, no funds — the colour model Brushstroke and
-//! Skate read the day the design system lands.
+//! claiming an exactness it does not have. On top of the WCAG luminance and contrast floor it offers the
+//! readable-ink pick (readable_ink · best_ink) and the AA/AAA conformance predicates (meets_aa ·
+//! meets_aa_large · meets_aaa), so a surface chooses legible text on any fill rather than guessing.
+//! No network, no key, no funds — the color model Brushstroke and Skate read the day the design system lands.
 //!
 //!   rishi/bin/rishi run tools/color_algebra_witness.rish
 //!
@@ -485,6 +487,69 @@ pub fn contrast_ratio_x100(a: Rgba, b: Rgba) u32 {
     return @intCast(ratio);
 }
 
+// --- readable ink (WCAG accessibility floor, part two) ----------------------------------------------------
+
+/// WCAG 2.x conformance bars, on the same x100 scale contrast_ratio_x100 returns. Normal-size text asks a
+/// higher bar than large text; AAA asks more than AA. Named so a surface reads intent, not a bare number.
+pub const contrast_aa_normal: u32 = 450; // 4.50:1 -- AA, body text
+pub const contrast_aa_large: u32 = 300; // 3.00:1 -- AA, large text (>= 18pt, or 14pt bold)
+pub const contrast_aaa_normal: u32 = 700; // 7.00:1 -- AAA, body text
+
+/// Pick the more readable ink -- pure black or pure white -- for text drawn on `bg`, choosing whichever
+/// yields the higher WCAG contrast. The single most-reached-for accessibility helper: legible text on any
+/// fill, so the terminal, Skate, and Photos never paint a caption a keeper cannot read.
+pub fn readable_ink(bg: Rgba) Rgba {
+    const black = Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+    const cb = contrast_ratio_x100(black, bg);
+    const cw = contrast_ratio_x100(white, bg);
+    // invariant: each candidate contrast is a real WCAG ratio, at or above the 1.00 floor.
+    assert(cb >= 100);
+    assert(cw >= 100);
+    // Ties go to white -- a lighter ink reads warmer on a mid fill, and white-on-mid is the common default.
+    return if (cw >= cb) white else black;
+}
+
+/// Of two candidate inks, return the one with the higher WCAG contrast against `bg`. Generalizes
+/// readable_ink to a keeper's own palette pair -- a brand light and a brand dark, say -- rather than the
+/// pure black/white extremes.
+pub fn best_ink(bg: Rgba, first: Rgba, second: Rgba) Rgba {
+    const c1 = contrast_ratio_x100(first, bg);
+    const c2 = contrast_ratio_x100(second, bg);
+    // invariant: each candidate contrast is a real WCAG ratio, at or above the 1.00 floor.
+    assert(c1 >= 100);
+    assert(c2 >= 100);
+    // Ties keep the first candidate -- a stable, order-honest choice.
+    return if (c1 >= c2) first else second;
+}
+
+/// Does `fg` on `bg` meet WCAG 2.x AA for normal-size text (contrast >= 4.50)?
+pub fn meets_aa(fg: Rgba, bg: Rgba) bool {
+    const ratio = contrast_ratio_x100(fg, bg);
+    // invariant: the ratio is a real WCAG value, and the AA-normal bar is itself a legal threshold.
+    assert(ratio >= 100);
+    assert(contrast_aa_normal >= 100);
+    return ratio >= contrast_aa_normal;
+}
+
+/// Does `fg` on `bg` meet WCAG 2.x AA for large text (>= 18pt, or 14pt bold) -- contrast >= 3.00?
+pub fn meets_aa_large(fg: Rgba, bg: Rgba) bool {
+    const ratio = contrast_ratio_x100(fg, bg);
+    // invariant: the ratio is a real WCAG value, and the AA-large bar is itself a legal threshold.
+    assert(ratio >= 100);
+    assert(contrast_aa_large >= 100);
+    return ratio >= contrast_aa_large;
+}
+
+/// Does `fg` on `bg` meet WCAG 2.x AAA for normal-size text (contrast >= 7.00)?
+pub fn meets_aaa(fg: Rgba, bg: Rgba) bool {
+    const ratio = contrast_ratio_x100(fg, bg);
+    // invariant: the ratio is a real WCAG value, and the AAA-normal bar is itself a legal threshold.
+    assert(ratio >= 100);
+    assert(contrast_aaa_normal >= 100);
+    return ratio >= contrast_aaa_normal;
+}
+
 // --- selftest ---------------------------------------------------------------------------------------------
 
 fn expect_color(got: Rgba, want: Rgba) !void {
@@ -630,7 +695,28 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
             relative_luminance(Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 }))) return error.LumWeightWrong;
     }
 
-    print("GREEN image-color: hex round-trip byte-identical across 4 shapes; rgb()/hsl() parsed; 5 refusals named (BadHexLength·BadHexDigit·BadFunctionForm·ChannelOutOfRange·BadLevels); HSL primaries exact; RGB→HSL→RGB sweep max_err={d} <= 5; blend/over endpoints exact; quantize 256=identity, 2=snap; WCAG white-on-black contrast {d}.{d:0>2} (max 21.00)\n", .{ max_err, wb_x100 / 100, wb_x100 % 100 });
+    // 11) Readable-ink pick + WCAG AA/AAA conformance predicates.
+    var grey_x100: u32 = 0;
+    {
+        const black = Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+        const white = Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+        // On a light fill the ink is black; on a dark fill it is white -- the everyday legibility choice.
+        if (!readable_ink(white).eql(black)) return error.InkOnWhiteWrong;
+        if (!readable_ink(black).eql(white)) return error.InkOnBlackWrong;
+        // best_ink generalizes it: of two candidates the higher-contrast ink wins; a tie keeps the first.
+        if (!best_ink(white, black, white).eql(black)) return error.BestInkWrong;
+        // White-on-black clears every bar; white-on-white clears none, even the gentle large-text bar.
+        if (!meets_aa(white, black)) return error.AaWhiteBlackWrong;
+        if (!meets_aaa(white, black)) return error.AaaWhiteBlackWrong;
+        if (meets_aa_large(white, white)) return error.AaLargeSelfWrong;
+        // A mid grey #666666 on white sits between the bars (~5.7:1): it passes AA-normal, fails AAA.
+        const grey = Rgba{ .r = 0x66, .g = 0x66, .b = 0x66, .a = 255 };
+        grey_x100 = contrast_ratio_x100(grey, white);
+        if (!meets_aa(grey, white)) return error.AaGreyWrong;
+        if (meets_aaa(grey, white)) return error.AaaGreyWrong;
+    }
+
+    print("GREEN image-color: hex round-trip byte-identical across 4 shapes; rgb()/hsl() parsed; 5 refusals named (BadHexLength·BadHexDigit·BadFunctionForm·ChannelOutOfRange·BadLevels); HSL primaries exact; RGB→HSL→RGB sweep max_err={d} <= 5; blend/over endpoints exact; quantize 256=identity, 2=snap; WCAG white-on-black contrast {d}.{d:0>2} (max 21.00); readable ink picks black on white and white on black, AA/AAA bars named, mid-grey {d}.{d:0>2}:1 passes AA fails AAA\n", .{ max_err, wb_x100 / 100, wb_x100 % 100, grey_x100 / 100, grey_x100 % 100 });
     return 0;
 }
 
