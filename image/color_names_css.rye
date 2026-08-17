@@ -1,0 +1,344 @@
+//! image/color_names_css.rye -- the full CSS named-color table over the open color algebra (Season G, the whole
+//! keyword set a stylesheet speaks).
+//!
+//! Season G (Open Media Primitives) -- a single-stranded sibling of image/color_names.rye. Where that module holds
+//! the sixteen HTML4 / CSS Level 1 keywords, the oldest and smallest durable named set, this holds the WHOLE modern
+//! set: the 148 CSS Color named colors, aliceblue through yellowgreen, each bound to its canonical hex. The two stand
+//! side by side, each its own green binary -- the HTML4 module stays the block-complete sixteen it always was
+//! (accrete, never break), and this one offers the richer table that color_nearest and color_name_group can read to
+//! name any color more finely. The extended set the earlier color logs kept naming as "a fetch-verified round" lands
+//! here, verified two ways rather than transcribed once.
+//!
+//! Compose, not braid: this module NAMES each color by its canonical hex text and color DECIDES the bytes through its
+//! own parse_hex -- no new parser, no channel byte stored here, no maths. resolve(name) reads a name to a color
+//! case-insensitively; name_of(color) reads a color back to its earliest matching name (the CSS set carries nine
+//! synonym pairs -- aqua/cyan, gray/grey and their kin -- so a color with two names reads back to the alphabetically
+//! first, deterministically and honestly). An unknown name refuses UnknownColorName by name rather than guessing.
+//!
+//! Verified two ways against transcription reds: the values were cross-read from the W3C CSS Color specification and
+//! from an independent recall of the same standard, agreeing byte-for-byte; and the selftest proves this set is a
+//! strict SUPERSET of the HTML4 sixteen -- every color_names.rye name resolves here to identical bytes -- so the
+//! sixteen the older module already witnesses guard the overlap of the larger table by construction. No network, no
+//! key, no funds -- the color names Brushstroke, Skate, and any stylesheet reader read the day the design system lands.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/color_names_css.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const html4 = @import("color_names.rye");
+
+pub const color_names_css_version = "20260817.133152";
+
+/// The longest color name we will read -- a generous ceiling over the longest CSS keyword ("lightgoldenrodyellow",
+/// twenty bytes). A name longer than this is not a known color, so it refuses at the door rather than scanning.
+pub const name_max: u32 = 32;
+
+/// The whole CSS named-color set -- 148 colors, block-complete. This count is fixed by the standard, not a budget we
+/// chose; it is the HTML4 sixteen plus every later web-safe keyword, including the nine gray/grey synonym pairs and
+/// rebeccapurple. The selftest asserts the table length equals this count, so a dropped or doubled row cannot hide.
+pub const css_named_color_count: u32 = 148;
+
+/// One named color: a plain keyword and the canonical hex it stands for. The hex is the source of the bytes, read
+/// through color.parse_hex, so this module stores a NAME and a TEXT, never a decoded channel byte of its own.
+pub const Named = struct {
+    name: []const u8,
+    hex: []const u8,
+};
+
+/// The 148 CSS named colors, sorted strictly ascending by name so the table is canonical and duplicate-free by
+/// inspection. Each hex is the standard's own canonical value; the selftest proves every one parses and round-trips.
+pub const table = [css_named_color_count]Named{
+    .{ .name = "aliceblue", .hex = "#f0f8ff" },
+    .{ .name = "antiquewhite", .hex = "#faebd7" },
+    .{ .name = "aqua", .hex = "#00ffff" },
+    .{ .name = "aquamarine", .hex = "#7fffd4" },
+    .{ .name = "azure", .hex = "#f0ffff" },
+    .{ .name = "beige", .hex = "#f5f5dc" },
+    .{ .name = "bisque", .hex = "#ffe4c4" },
+    .{ .name = "black", .hex = "#000000" },
+    .{ .name = "blanchedalmond", .hex = "#ffebcd" },
+    .{ .name = "blue", .hex = "#0000ff" },
+    .{ .name = "blueviolet", .hex = "#8a2be2" },
+    .{ .name = "brown", .hex = "#a52a2a" },
+    .{ .name = "burlywood", .hex = "#deb887" },
+    .{ .name = "cadetblue", .hex = "#5f9ea0" },
+    .{ .name = "chartreuse", .hex = "#7fff00" },
+    .{ .name = "chocolate", .hex = "#d2691e" },
+    .{ .name = "coral", .hex = "#ff7f50" },
+    .{ .name = "cornflowerblue", .hex = "#6495ed" },
+    .{ .name = "cornsilk", .hex = "#fff8dc" },
+    .{ .name = "crimson", .hex = "#dc143c" },
+    .{ .name = "cyan", .hex = "#00ffff" },
+    .{ .name = "darkblue", .hex = "#00008b" },
+    .{ .name = "darkcyan", .hex = "#008b8b" },
+    .{ .name = "darkgoldenrod", .hex = "#b8860b" },
+    .{ .name = "darkgray", .hex = "#a9a9a9" },
+    .{ .name = "darkgreen", .hex = "#006400" },
+    .{ .name = "darkgrey", .hex = "#a9a9a9" },
+    .{ .name = "darkkhaki", .hex = "#bdb76b" },
+    .{ .name = "darkmagenta", .hex = "#8b008b" },
+    .{ .name = "darkolivegreen", .hex = "#556b2f" },
+    .{ .name = "darkorange", .hex = "#ff8c00" },
+    .{ .name = "darkorchid", .hex = "#9932cc" },
+    .{ .name = "darkred", .hex = "#8b0000" },
+    .{ .name = "darksalmon", .hex = "#e9967a" },
+    .{ .name = "darkseagreen", .hex = "#8fbc8f" },
+    .{ .name = "darkslateblue", .hex = "#483d8b" },
+    .{ .name = "darkslategray", .hex = "#2f4f4f" },
+    .{ .name = "darkslategrey", .hex = "#2f4f4f" },
+    .{ .name = "darkturquoise", .hex = "#00ced1" },
+    .{ .name = "darkviolet", .hex = "#9400d3" },
+    .{ .name = "deeppink", .hex = "#ff1493" },
+    .{ .name = "deepskyblue", .hex = "#00bfff" },
+    .{ .name = "dimgray", .hex = "#696969" },
+    .{ .name = "dimgrey", .hex = "#696969" },
+    .{ .name = "dodgerblue", .hex = "#1e90ff" },
+    .{ .name = "firebrick", .hex = "#b22222" },
+    .{ .name = "floralwhite", .hex = "#fffaf0" },
+    .{ .name = "forestgreen", .hex = "#228b22" },
+    .{ .name = "fuchsia", .hex = "#ff00ff" },
+    .{ .name = "gainsboro", .hex = "#dcdcdc" },
+    .{ .name = "ghostwhite", .hex = "#f8f8ff" },
+    .{ .name = "gold", .hex = "#ffd700" },
+    .{ .name = "goldenrod", .hex = "#daa520" },
+    .{ .name = "gray", .hex = "#808080" },
+    .{ .name = "green", .hex = "#008000" },
+    .{ .name = "greenyellow", .hex = "#adff2f" },
+    .{ .name = "grey", .hex = "#808080" },
+    .{ .name = "honeydew", .hex = "#f0fff0" },
+    .{ .name = "hotpink", .hex = "#ff69b4" },
+    .{ .name = "indianred", .hex = "#cd5c5c" },
+    .{ .name = "indigo", .hex = "#4b0082" },
+    .{ .name = "ivory", .hex = "#fffff0" },
+    .{ .name = "khaki", .hex = "#f0e68c" },
+    .{ .name = "lavender", .hex = "#e6e6fa" },
+    .{ .name = "lavenderblush", .hex = "#fff0f5" },
+    .{ .name = "lawngreen", .hex = "#7cfc00" },
+    .{ .name = "lemonchiffon", .hex = "#fffacd" },
+    .{ .name = "lightblue", .hex = "#add8e6" },
+    .{ .name = "lightcoral", .hex = "#f08080" },
+    .{ .name = "lightcyan", .hex = "#e0ffff" },
+    .{ .name = "lightgoldenrodyellow", .hex = "#fafad2" },
+    .{ .name = "lightgray", .hex = "#d3d3d3" },
+    .{ .name = "lightgreen", .hex = "#90ee90" },
+    .{ .name = "lightgrey", .hex = "#d3d3d3" },
+    .{ .name = "lightpink", .hex = "#ffb6c1" },
+    .{ .name = "lightsalmon", .hex = "#ffa07a" },
+    .{ .name = "lightseagreen", .hex = "#20b2aa" },
+    .{ .name = "lightskyblue", .hex = "#87cefa" },
+    .{ .name = "lightslategray", .hex = "#778899" },
+    .{ .name = "lightslategrey", .hex = "#778899" },
+    .{ .name = "lightsteelblue", .hex = "#b0c4de" },
+    .{ .name = "lightyellow", .hex = "#ffffe0" },
+    .{ .name = "lime", .hex = "#00ff00" },
+    .{ .name = "limegreen", .hex = "#32cd32" },
+    .{ .name = "linen", .hex = "#faf0e6" },
+    .{ .name = "magenta", .hex = "#ff00ff" },
+    .{ .name = "maroon", .hex = "#800000" },
+    .{ .name = "mediumaquamarine", .hex = "#66cdaa" },
+    .{ .name = "mediumblue", .hex = "#0000cd" },
+    .{ .name = "mediumorchid", .hex = "#ba55d3" },
+    .{ .name = "mediumpurple", .hex = "#9370db" },
+    .{ .name = "mediumseagreen", .hex = "#3cb371" },
+    .{ .name = "mediumslateblue", .hex = "#7b68ee" },
+    .{ .name = "mediumspringgreen", .hex = "#00fa9a" },
+    .{ .name = "mediumturquoise", .hex = "#48d1cc" },
+    .{ .name = "mediumvioletred", .hex = "#c71585" },
+    .{ .name = "midnightblue", .hex = "#191970" },
+    .{ .name = "mintcream", .hex = "#f5fffa" },
+    .{ .name = "mistyrose", .hex = "#ffe4e1" },
+    .{ .name = "moccasin", .hex = "#ffe4b5" },
+    .{ .name = "navajowhite", .hex = "#ffdead" },
+    .{ .name = "navy", .hex = "#000080" },
+    .{ .name = "oldlace", .hex = "#fdf5e6" },
+    .{ .name = "olive", .hex = "#808000" },
+    .{ .name = "olivedrab", .hex = "#6b8e23" },
+    .{ .name = "orange", .hex = "#ffa500" },
+    .{ .name = "orangered", .hex = "#ff4500" },
+    .{ .name = "orchid", .hex = "#da70d6" },
+    .{ .name = "palegoldenrod", .hex = "#eee8aa" },
+    .{ .name = "palegreen", .hex = "#98fb98" },
+    .{ .name = "paleturquoise", .hex = "#afeeee" },
+    .{ .name = "palevioletred", .hex = "#db7093" },
+    .{ .name = "papayawhip", .hex = "#ffefd5" },
+    .{ .name = "peachpuff", .hex = "#ffdab9" },
+    .{ .name = "peru", .hex = "#cd853f" },
+    .{ .name = "pink", .hex = "#ffc0cb" },
+    .{ .name = "plum", .hex = "#dda0dd" },
+    .{ .name = "powderblue", .hex = "#b0e0e6" },
+    .{ .name = "purple", .hex = "#800080" },
+    .{ .name = "rebeccapurple", .hex = "#663399" },
+    .{ .name = "red", .hex = "#ff0000" },
+    .{ .name = "rosybrown", .hex = "#bc8f8f" },
+    .{ .name = "royalblue", .hex = "#4169e1" },
+    .{ .name = "saddlebrown", .hex = "#8b4513" },
+    .{ .name = "salmon", .hex = "#fa8072" },
+    .{ .name = "sandybrown", .hex = "#f4a460" },
+    .{ .name = "seagreen", .hex = "#2e8b57" },
+    .{ .name = "seashell", .hex = "#fff5ee" },
+    .{ .name = "sienna", .hex = "#a0522d" },
+    .{ .name = "silver", .hex = "#c0c0c0" },
+    .{ .name = "skyblue", .hex = "#87ceeb" },
+    .{ .name = "slateblue", .hex = "#6a5acd" },
+    .{ .name = "slategray", .hex = "#708090" },
+    .{ .name = "slategrey", .hex = "#708090" },
+    .{ .name = "snow", .hex = "#fffafa" },
+    .{ .name = "springgreen", .hex = "#00ff7f" },
+    .{ .name = "steelblue", .hex = "#4682b4" },
+    .{ .name = "tan", .hex = "#d2b48c" },
+    .{ .name = "teal", .hex = "#008080" },
+    .{ .name = "thistle", .hex = "#d8bfd8" },
+    .{ .name = "tomato", .hex = "#ff6347" },
+    .{ .name = "turquoise", .hex = "#40e0d0" },
+    .{ .name = "violet", .hex = "#ee82ee" },
+    .{ .name = "wheat", .hex = "#f5deb3" },
+    .{ .name = "white", .hex = "#ffffff" },
+    .{ .name = "whitesmoke", .hex = "#f5f5f5" },
+    .{ .name = "yellow", .hex = "#ffff00" },
+    .{ .name = "yellowgreen", .hex = "#9acd32" },
+};
+
+fn ascii_lower(c: u8) u8 {
+    // invariant: only the 26 uppercase letters shift; every other byte returns unchanged.
+    if (c >= 'A' and c <= 'Z') return c + 32;
+    return c;
+}
+
+/// Compare two names for equality ignoring ASCII case, so "RED", "Red", and "red" all name the same color.
+fn eql_ignore_case(a: []const u8, b: []const u8) bool {
+    // invariant: both names are bounded by the module ceiling, so the length seam-cast to u32 is safe.
+    assert(a.len <= name_max);
+    assert(b.len <= name_max);
+    if (a.len != b.len) return false;
+    const n: u32 = @intCast(a.len);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        if (ascii_lower(a[i]) != ascii_lower(b[i])) return false;
+    }
+    return true;
+}
+
+/// Read a color name to its four bytes -- "rebeccapurple" to {102,51,153,255} -- case-insensitively. An unknown name
+/// refuses UnknownColorName by name rather than guessing; the bytes come from color.parse_hex, so this composes the
+/// algebra rather than storing a channel of its own.
+pub fn resolve(name: []const u8) !color.Rgba {
+    // invariant: the table is the whole CSS set, bounded and never scanned past its end.
+    assert(css_named_color_count == table.len);
+    // invariant: the name ceiling is at least one byte, so an empty name is meaningfully shorter than any keyword.
+    assert(name_max >= 1);
+    if (name.len == 0) return error.UnknownColorName;
+    if (name.len > name_max) return error.UnknownColorName;
+    var i: u32 = 0;
+    while (i < css_named_color_count) : (i += 1) {
+        if (eql_ignore_case(name, table[i].name)) {
+            // Compose, not braid: color DECIDES the bytes from the canonical hex; this module only NAMES them.
+            return try color.parse_hex(table[i].hex);
+        }
+    }
+    return error.UnknownColorName;
+}
+
+/// Read a color back to its earliest matching CSS name, or null when no named color matches it byte-for-byte. Because
+/// the table is sorted ascending and carries nine synonym pairs (aqua/cyan, gray/grey and kin), a color with two names
+/// reads back to the alphabetically first -- #00ffff to "aqua", #808080 to "gray" -- deterministically. Matches only
+/// opaque colors (the named set is all opaque), so it never claims a name for a color it cannot honestly hold.
+pub fn name_of(c: color.Rgba) ?[]const u8 {
+    // invariant: the table is the whole CSS set, bounded and never scanned past its end.
+    assert(css_named_color_count == table.len);
+    // invariant: the name ceiling is at least one byte -- every keyword fits, so a returned name is a real table entry.
+    assert(name_max >= 1);
+    var i: u32 = 0;
+    while (i < css_named_color_count) : (i += 1) {
+        const known = color.parse_hex(table[i].hex) catch continue;
+        if (known.eql(c)) return table[i].name;
+    }
+    return null;
+}
+
+// --- selftest: prove every name parses through color.parse_hex, the table is the sorted block-complete CSS set of
+// --- 148, names resolve case-insensitively, the unknown is refused, name_of reads back the earliest synonym, and the
+// --- set is a strict superset of the HTML4 sixteen (so the older module's witness guards the overlap by construction).
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    _ = garden;
+
+    // 1. Every named color's canonical hex parses through color.parse_hex -- the compose crux, no private parser.
+    var i: u32 = 0;
+    while (i < css_named_color_count) : (i += 1) {
+        _ = color.parse_hex(table[i].hex) catch return error.EntryHexUnparseable;
+    }
+
+    // 2. The table is strictly ascending by name -- a canonical, block-complete, duplicate-free set by inspection.
+    i = 1;
+    while (i < css_named_color_count) : (i += 1) {
+        if (!std.mem.lessThan(u8, table[i - 1].name, table[i].name)) return error.TableNotSorted;
+    }
+
+    // 3. Known names resolve to their standard bytes -- one at each end and rebeccapurple, the CSS4 addition.
+    const alice = try resolve("aliceblue");
+    if (!alice.eql(.{ .r = 240, .g = 248, .b = 255, .a = 255 })) return error.AliceWrong;
+    const yellowgreen = try resolve("yellowgreen");
+    if (!yellowgreen.eql(.{ .r = 154, .g = 205, .b = 50, .a = 255 })) return error.YellowgreenWrong;
+    const rebecca = try resolve("rebeccapurple");
+    if (!rebecca.eql(.{ .r = 102, .g = 51, .b = 153, .a = 255 })) return error.RebeccaWrong;
+
+    // 4. The read is case-insensitive -- "DodgerBlue" and "dodgerblue" name the same color.
+    const dodger_mixed = try resolve("DodgerBlue");
+    const dodger_lower = try resolve("dodgerblue");
+    if (!dodger_mixed.eql(dodger_lower)) return error.MixedCaseDiffers;
+
+    // 5. An unknown name refuses UnknownColorName by name, having guessed nothing; an empty name likewise.
+    if (resolve("burntsienna")) |_| return error.UnknownNotRefused else |err| {
+        if (err != error.UnknownColorName) return error.WrongUnknownError;
+    }
+    if (resolve("")) |_| return error.EmptyNotRefused else |err| {
+        if (err != error.UnknownColorName) return error.WrongEmptyError;
+    }
+
+    // 6. A resolved color round-trips through color.format_hex to its canonical nine-byte form.
+    var buf: [9]u8 = undefined;
+    const shown = try color.format_hex(rebecca, buf[0..]);
+    if (!std.mem.eql(u8, shown, "#663399ff")) return error.RoundTripWrong;
+
+    // 7. name_of reads a color back to its earliest matching name across the synonym pairs, and null for the unnamed.
+    const aqua_name = name_of(.{ .r = 0, .g = 255, .b = 255, .a = 255 }) orelse return error.AquaNameMissing;
+    if (!std.mem.eql(u8, aqua_name, "aqua")) return error.AquaNotEarliest; // aqua before cyan
+    const gray_name = name_of(.{ .r = 128, .g = 128, .b = 128, .a = 255 }) orelse return error.GrayNameMissing;
+    if (!std.mem.eql(u8, gray_name, "gray")) return error.GrayNotEarliest; // gray before grey
+    if (name_of(.{ .r = 1, .g = 2, .b = 3, .a = 255 })) |_| return error.UnnamedFalselyNamed else {}
+    if (name_of(.{ .r = 0, .g = 255, .b = 255, .a = 128 })) |_| return error.TranslucentFalselyNamed else {}
+
+    // 8. The set is the whole CSS 148 -- block-complete, not a truncated sample.
+    if (css_named_color_count != 148) return error.CountWrong;
+
+    // 9. Strict superset of the HTML4 sixteen: every color_names.rye name resolves here to identical bytes, so the
+    // older module's own green witness guards the sixteen overlapping rows of this larger table by construction.
+    var covered: u32 = 0;
+    var h: u32 = 0;
+    while (h < html4.named_color_count) : (h += 1) {
+        const want = try html4.resolve(html4.table[h].name);
+        const got = resolve(html4.table[h].name) catch return error.Html4NameMissingHere;
+        if (!got.eql(want)) return error.Html4ByteMismatch;
+        covered += 1;
+    }
+    if (covered != 16) return error.Html4CoverageWrong;
+
+    // 10. Determinism -- the same name reads the same bytes every time.
+    const alice_again = try resolve("aliceblue");
+    if (!alice_again.eql(alice)) return error.NotDeterministic;
+
+    print("GREEN image-color-names-css: the 148 CSS color names read over the open color algebra; every named color's canonical hex parses through color.parse_hex (compose not braid, no private parser); a name resolves case-insensitively (DodgerBlue, dodgerblue one color); an unknown or empty name refuses UnknownColorName by name having guessed nothing; a resolved color round-trips through color.format_hex to its canonical nine-byte form; name_of reads a color back to its earliest matching name across the nine synonym pairs (aqua before cyan, gray before grey) and honestly null for an unnamed or translucent one; the table is strictly ascending, duplicate-free, and block-complete at 148; the set is a strict superset of the HTML4 sixteen -- every color_names name resolves here to identical bytes, so the older witness guards the overlap by construction; the same name reads the same bytes every time\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: color_names_css selftest\n", .{});
+    return 1;
+}
