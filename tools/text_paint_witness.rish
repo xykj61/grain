@@ -83,4 +83,16 @@ assert (trim para_clip_fit.out) == "yes" else "text-paint: a fitting box did not
 let para_clip_partial = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'paints just the first line' && echo yes"]
 assert (trim para_clip_partial.out) == "yes" else "text-paint: a one-line-tall box did not paint only the visible first line"
 
-say "text-paint: GREEN -- the fonts become a string seen; ink composites through coverage exactly where the glyphs carry it, the paint is deterministic, a partial alpha blends true, a line that would overrun refuses by name, paint_placed_clipped paints only the visible part -- matching the strict paint pixel-for-pixel, degrading to a clean no-op fully off-canvas -- paint_paragraph stacks a never-overflow wrapped block into stepped lines, all-or-nothing, refusing ParagraphOutOfBounds by name on a canvas too short, and paint_paragraph_clipped shows as much of that block as a fixed box holds where the strict painter would refuse."
+let para_box = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'the paragraph sits in a box' && echo yes"]
+assert (trim para_box.out) == "yes" else "text-paint: paint_paragraph_boxed did not place the block within a taller box"
+
+let para_box_top = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'a top set reproduces the plain paragraph at the box origin' && echo yes"]
+assert (trim para_box_top.out) == "yes" else "text-paint: a top vertical set did not reproduce the plain paragraph at the box origin"
+
+let para_box_shift = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'vertical placement moves the whole stack down as one' && echo yes"]
+assert (trim para_box_shift.out) == "yes" else "text-paint: middle/bottom set did not match a shifted paint at an equal pixel count"
+
+let para_box_refuse = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'refuses ParagraphBoxTooShort by name leaving the buffer untouched' && echo yes"]
+assert (trim para_box_refuse.out) == "yes" else "text-paint: a box shorter than the block did not refuse ParagraphBoxTooShort all-or-nothing"
+
+say "text-paint: GREEN -- the fonts become a string seen; ink composites through coverage exactly where the glyphs carry it, the paint is deterministic, a partial alpha blends true, a line that would overrun refuses by name, paint_placed_clipped paints only the visible part -- matching the strict paint pixel-for-pixel, degrading to a clean no-op fully off-canvas -- paint_paragraph stacks a never-overflow wrapped block into stepped lines, all-or-nothing, refusing ParagraphOutOfBounds by name on a canvas too short, paint_paragraph_clipped shows as much of that block as a fixed box holds where the strict painter would refuse, and paint_paragraph_boxed places the whole block top-, middle-, or bottom-set within a taller box -- a pure vertical shift that changes the same pixel count, refusing ParagraphBoxTooShort by name where the box is shorter than the block."
