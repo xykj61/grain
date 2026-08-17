@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260816.223956
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image -- the open glyph atlas, Season G's font rung, GREEN
+prompt read the road-ahead docs and take the next agent-doable lap Lindy-first crux-first; Rye prioritized, send often, stop at the custody gates
+think Read REMEMBER's inner loop, the 1024-round itinerary, the eight-season double-seat, and the decision wave. Live edge is the open-media family: image/color.rye is GREEN, crypto surface stands WHOLE. Next named open-media rung is fonts, then intra-frame video. Lindy-first crux-first: the font codec is the next durable floor, and its smallest tractable crux is a bounded, self-describing, verify-before-trust glyph atlas -- QOI's twin one family over (single-channel coverage instead of four-channel color).
+think Deep-read one council-rota doc this lap. Lap index ~ session-log count (1116) + 1 = 1117; 1117 mod 27 = 10 -> rota item 10, foundations/20260703-182612_sameness-is-the-macro.md. It taught the frame: compress by public sameness, not private cleverness -- so the glyph codec deliberately echoes qoi.rye's shape (fixed header, per-record table, end marker, named refusals, round-trip witness) rather than inventing a new dialect. Learning qoi is learning glyph.
+think Studied image/qoi.rye and image/color.rye as the pattern, and tools/hunk_qoi_witness.rish as the witness shape. Designed GFA1: 8-byte header (magic gfa1, cell_w, cell_h, glyph_count BE), per-glyph records (codepoint u32 BE, advance u8, a two-op run-length coverage stream RUN/LIT), the same eight-byte end marker as QOI. Coverage is one byte per cell, 0..255. Decoded shape GlyphAtlas{cell_w,cell_h,glyphs} with lookup(codepoint).
+think Self-approved the design round (active-designing/20260816-223956_season-g-glyph-atlas-crux.md) and thanked the teacher clean-room (gratitude/bdf-bitmap-font.md -- Adobe's public BDF spec and the run-length lineage, public shape only).
+obs Two reds caught on metal before GREEN. First: the encoded_bound worst case (single big literal) underestimated a fragmented stream (alternating short lit/run), so a stroke pattern overran dst -- index out of bounds. Fixed the bound to a provably safe 3*cell_area per glyph (every op emits at most 3 bytes; the ops partition the input). Second: the vertical-stroke craft pattern did not compress (encoded > raw) since its horizontal runs are length 1; recrafted to mostly-background grids with a horizontal ink bar plus one stray partial cell, so RUN dominates and one LIT still fires. Both self-caught by the selftest asserts, not shipped.
+obs TAME style check flagged six compound assert(a and b) -- split each into two positive asserts. width-check exit 0. Then converted the new .rye and .rish from the qoi register (em-dash, middot) to plain ASCII per the live ASCII-first directive (REDS #83); the GREEN grep line stays matched.
+loom witness=glyph_atlas_witness cells=35 glyphs=3 ops_run=9 ops_lit=3 encoded_bytes=73 raw_bytes=105
+file image/glyph.rye the open glyph atlas -- GFA1 encode+decode, lookup, round-trip byte-for-byte, named refusals
+file tools/glyph_atlas_witness.rish proves it on metal: round-trip byte-identical, both ops fire, compression real, six refusals each named
+file active-designing/20260816-223956_season-g-glyph-atlas-crux.md the self-approved design round naming the wire shape, bounds, and witness
+file gratitude/bdf-bitmap-font.md the teacher thanked clean-room -- BDF and the run-length lineage, public shape only
+file image/README.md a Season G subsection documenting color.rye (was undocumented) and glyph.rye, docs synced same round
+file crux/REMEMBER.md live-edge line updated -- the gfa1 glyph atlas is now GREEN; next rungs font corpora then intra-frame video
+recommend keep-going the next open-media rung is a permissive font corpus feeding the atlas, or the intra-frame video container; both are agent-doable, no gate

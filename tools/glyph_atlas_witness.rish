@@ -1,0 +1,43 @@
+# tools/glyph_atlas_witness.rish -- the open glyph atlas proves itself on metal (Season G, the font rung).
+#
+# Season G (Open Media Primitives) - the open-font rung beside image/qoi.rye (image) and image/color.rye (color).
+# Design read: active-designing/20260816-223956_season-g-glyph-atlas-crux.md
+# Teacher, thanked clean-room: gratitude/bdf-bitmap-font.md (Adobe's public BDF spec + the run-length lineage).
+#
+# The crux this witness proves is a REAL, BOUNDED, OPEN glyph format: a font is a table of glyphs keyed by
+# codepoint, each glyph a small coverage grid; an atlas is verified bytes that decode, deterministically and
+# within named ceilings, to that table -- and a malformed stream refuses BY NAME. The module owns both halves
+# (encode + decode) so the property that matters is checkable end to end: a full round-trip over a crafted 5x7
+# atlas of three glyphs recovers every codepoint, advance, and coverage byte byte-for-byte; lookup finds a
+# present codepoint and misses an absent one; and six deliberate corruptions each refuse with their own named
+# error (BadMagic - BadCellSize - UnsortedCodepoints - CoverageOverrun - BadEndMarker - TrailingData). The
+# codec reaches for both coverage ops (RUN and LIT each >= 1) and compresses (encoded < raw coverage), so this
+# is genuine compression, not a raw copy. No network, no key, no funds -- the glyph format Skate and Brushstroke
+# read the day the design system lands, standing on an open format no one had to ask permission to read.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/glyph_atlas_witness.rish
+
+say "glyph-atlas: Language EN -- Season G's font rung; a font is a table of glyphs keyed by codepoint, each a small coverage grid, verified bytes that decode within named bounds, a malformed stream refusing by name rather than painting garbage."
+say "glyph-atlas: Style Radiant -- the codec owns both halves, so decode(encode(atlas)) recovers every codepoint, advance, and coverage byte byte for byte; BDF and the run-length lineage are thanked clean-room as the teachers of an open format small enough to hold whole in one hand."
+say "glyph-atlas: Lens TAME -- u32 in-memory counts, u8 coverage bytes, wire is big-endian bytes; every buffer names a maximum (glyph_cell_max - glyph_max - coverage_max - encoded_bound); each function states its invariants positively; copy_disjoint over bare copyForwards; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/glyph"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/glyph.rye -femit-bin=${bin}"]
+assert build.ok else "glyph-atlas: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "glyph-atlas: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "glyph-atlas: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-glyph' && echo yes"]
+assert (trim green.out) == "yes" else "glyph-atlas: selftest did not print the GREEN codec line"
+
+let round = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-trip byte-identical' && echo yes"]
+assert (trim round.out) == "yes" else "glyph-atlas: round-trip was not byte-identical"
+
+say "glyph-atlas: GREEN -- open glyph atlas whole; two-op round-trip byte-identical, lookup proven, every refusal named, compression real."

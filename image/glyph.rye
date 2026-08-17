@@ -1,0 +1,445 @@
+//! image/glyph.rye -- the open glyph atlas (Season G, the open-font rung after color).
+//!
+//! Season G (Open Media Primitives) - the font floor beside image/qoi.rye (image) and image/color.rye (color).
+//! Design read: active-designing/20260816-223956_season-g-glyph-atlas-crux.md
+//! Teacher, thanked clean-room: gratitude/bdf-bitmap-font.md (Adobe's public BDF spec + the run-length lineage).
+//!
+//! A font is a table of glyphs keyed by codepoint; a glyph is a small coverage grid -- one byte per cell, 0 for
+//! no ink, 255 for full ink, between for partial. This is QOI's twin one family over: verified bytes that
+//! DECODE, deterministically and within named bounds, to a grid, where a malformed stream refuses BY NAME
+//! rather than painting garbage. The module owns both halves so the property that matters is provable on metal:
+//! decode(encode(atlas)) recovers every codepoint, advance, and coverage byte BYTE-FOR-BYTE. Coverage runs long
+//! (a row of background, a stroke of ink), so a two-op run-length stream (RUN value+count, LIT count+bytes) is
+//! genuine compression, not a raw copy. No network, no key, no funds -- the glyph format Skate and Brushstroke
+//! read the day the design system lands; painting the coverage into pixels is a later, paused rung, not this one.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/glyph.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const tally_copy = @import("tally_copy.rye");
+
+pub const glyph_version = "20260816.223956";
+
+/// Header is fixed: 4 magic - 1 cell_w - 1 cell_h - 2 glyph_count (BE).
+pub const header_len: u32 = 8;
+
+/// The stream ends in exactly these eight bytes -- seven zeros and a one, the same family echo as image/qoi.rye.
+pub const end_marker = [8]u8{ 0, 0, 0, 0, 0, 0, 0, 1 };
+
+/// A coverage grid is at most 64x64 cells -- a right-to-repair panel's UI type is far smaller; honest headroom.
+pub const glyph_cell_max: u32 = 64;
+
+/// An atlas holds at most this many glyphs -- a generous ceiling over a Latin + punctuation + symbol set.
+pub const glyph_max: u32 = 4096;
+
+/// The most coverage bytes one glyph can hold, named at construction.
+pub const coverage_max: u32 = glyph_cell_max * glyph_cell_max;
+
+/// The two coverage-stream ops. Each carries its own count byte, so a coverage byte is never also an op tag.
+const op_lit: u8 = 0x00; // 0x00 - count C(1..255) - C literal coverage bytes
+const op_run: u8 = 0x01; // 0x01 - count C(1..255) - one value byte, repeated C times
+
+/// One glyph -- a codepoint, a pen advance, and a coverage grid of exactly cell_w*cell_h bytes.
+pub const Glyph = struct {
+    codepoint: u32 = 0,
+    advance: u8 = 0,
+    coverage: []u8 = &[_]u8{},
+};
+
+/// A decoded atlas -- cell dimensions shared by every glyph, glyphs strictly ascending by codepoint.
+pub const GlyphAtlas = struct {
+    cell_w: u8 = 0,
+    cell_h: u8 = 0,
+    glyphs: []Glyph = &[_]Glyph{},
+
+    /// Cells per glyph -- the exact coverage length every glyph in this atlas carries.
+    pub fn cell_area(self: *const GlyphAtlas) u32 {
+        // invariant: an atlas cell is within the named ceiling on both axes.
+        assert(self.cell_w >= 1);
+        assert(self.cell_w <= glyph_cell_max);
+        assert(self.cell_h >= 1);
+        assert(self.cell_h <= glyph_cell_max);
+        return @as(u32, self.cell_w) * @as(u32, self.cell_h);
+    }
+
+    /// Find a glyph by codepoint in the ascending table, or null. A plain honest scan -- the smallest reader a
+    /// surface needs; the table is bounded by glyph_max so the loop is bounded.
+    pub fn lookup(self: *const GlyphAtlas, codepoint: u32) ?*const Glyph {
+        // invariant: the table never exceeds the atlas ceiling, so this scan is bounded.
+        assert(self.glyphs.len <= glyph_max);
+        for (self.glyphs) |*g| {
+            if (g.codepoint == codepoint) return g;
+        }
+        return null;
+    }
+
+    /// Byte-for-byte structural equality -- dimensions, glyph count, and every glyph's codepoint, advance, and
+    /// coverage bytes. The property the round-trip proves.
+    pub fn same_bytes(self: *const GlyphAtlas, other: *const GlyphAtlas) bool {
+        if (self.cell_w != other.cell_w or self.cell_h != other.cell_h) return false;
+        if (self.glyphs.len != other.glyphs.len) return false;
+        for (self.glyphs, other.glyphs) |a, b| {
+            if (a.codepoint != b.codepoint or a.advance != b.advance) return false;
+            if (!std.mem.eql(u8, a.coverage, b.coverage)) return false;
+        }
+        return true;
+    }
+};
+
+fn read_u16_be(b: []const u8) u16 {
+    // invariant: a big-endian u16 read needs its two bytes present.
+    assert(b.len >= 2);
+    return (@as(u16, b[0]) << 8) | @as(u16, b[1]);
+}
+
+fn write_u16_be(b: []u8, v: u16) void {
+    // invariant: a big-endian u16 write needs its two bytes of room.
+    assert(b.len >= 2);
+    b[0] = @intCast((v >> 8) & 0xFF);
+    b[1] = @intCast(v & 0xFF);
+}
+
+fn read_u32_be(b: []const u8) u32 {
+    // invariant: a big-endian u32 read needs its four bytes present.
+    assert(b.len >= 4);
+    return (@as(u32, b[0]) << 24) | (@as(u32, b[1]) << 16) | (@as(u32, b[2]) << 8) | @as(u32, b[3]);
+}
+
+fn write_u32_be(b: []u8, v: u32) void {
+    // invariant: a big-endian u32 write needs its four bytes of room.
+    assert(b.len >= 4);
+    b[0] = @intCast((v >> 24) & 0xFF);
+    b[1] = @intCast((v >> 16) & 0xFF);
+    b[2] = @intCast((v >> 8) & 0xFF);
+    b[3] = @intCast(v & 0xFF);
+}
+
+/// What an encode produced -- the byte length written, and how many of each coverage op it used, so a witness
+/// can prove the encoder truly reached for both RUN and LIT (and the round-trip proves the decoder read each).
+pub const EncodeResult = struct {
+    len: u32 = 0,
+    runs: u32 = 0,
+    lits: u32 = 0,
+};
+
+/// A safe upper bound on the encoded size of an atlas. Every coverage op emits at most 3 bytes (a RUN is
+/// always 3, a LIT of length 1 is 3), and the ops partition the cell_area input bytes, so a glyph's coverage
+/// stream never exceeds 3*cell_area bytes; add the fixed 5 bytes of codepoint+advance. A caller sizes its
+/// buffer by this, never guessing.
+pub fn encoded_bound(glyph_count: u32, cell_area: u32) u32 {
+    // invariant: the bound covers a real atlas within both named ceilings.
+    assert(glyph_count >= 1);
+    assert(glyph_count <= glyph_max);
+    assert(cell_area >= 1);
+    assert(cell_area <= coverage_max);
+    const per_glyph = 5 + 3 * cell_area;
+    return header_len + glyph_count * per_glyph + @as(u32, end_marker.len);
+}
+
+/// Encode one glyph's coverage into dst with the two-op RLE, returning bytes written and per-op counts folded
+/// into `res`. A run of an identical byte >= 3 long is worth a RUN op; everything else accumulates into a LIT.
+fn encode_coverage(cov: []const u8, dst: []u8, res: *EncodeResult) u32 {
+    // invariant: coverage is a bounded grid; the destination has room for the worst-case framing.
+    assert(cov.len >= 1);
+    assert(cov.len <= coverage_max);
+    var w: u32 = 0;
+    var i: u32 = 0;
+    const n: u32 = @intCast(cov.len);
+    while (i < n) {
+        // Measure the run of identical bytes starting at i (capped at 255, the count field's ceiling).
+        var run_len: u32 = 1;
+        while (i + run_len < n and cov[i + run_len] == cov[i] and run_len < 255) : (run_len += 1) {}
+        if (run_len >= 3) {
+            dst[w] = op_run;
+            dst[w + 1] = @intCast(run_len);
+            dst[w + 2] = cov[i];
+            w += 3;
+            res.runs += 1;
+            i += run_len;
+        } else {
+            // Gather a literal span up to the next worthwhile run (or 255 bytes, the count ceiling).
+            const start = i;
+            var lit_len: u32 = 0;
+            while (i < n and lit_len < 255) {
+                var look: u32 = 1;
+                while (i + look < n and cov[i + look] == cov[i] and look < 3) : (look += 1) {}
+                if (look >= 3) break; // a run worth breaking the literal for begins here
+                i += 1;
+                lit_len += 1;
+            }
+            // invariant: a literal span is a real, bounded, non-empty stretch.
+            assert(lit_len >= 1);
+            assert(lit_len <= 255);
+            dst[w] = op_lit;
+            dst[w + 1] = @intCast(lit_len);
+            var k: u32 = 0;
+            while (k < lit_len) : (k += 1) dst[w + 2 + k] = cov[start + k];
+            w += 2 + lit_len;
+            res.lits += 1;
+        }
+    }
+    // invariant: the whole coverage grid was consumed.
+    assert(i == n);
+    return w;
+}
+
+/// Encode an atlas into a caller-provided buffer (sized by `encoded_bound`). Returns byte length and op counts.
+/// Refuses UnsortedCodepoints if the caller's glyphs are not strictly ascending -- the invariant a decoder trusts.
+pub fn encode(atlas: *const GlyphAtlas, dst: []u8) !EncodeResult {
+    const cell_area = atlas.cell_area();
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: an atlas holds at least one glyph and no more than the ceiling.
+    if (glyph_count == 0 or glyph_count > glyph_max) return error.BadGlyphCount;
+    if (dst.len < encoded_bound(glyph_count, cell_area)) return error.EncodeOverflow;
+
+    var res = EncodeResult{};
+    var w: u32 = 0;
+
+    dst[w] = 'g';
+    dst[w + 1] = 'f';
+    dst[w + 2] = 'a';
+    dst[w + 3] = '1';
+    dst[w + 4] = atlas.cell_w;
+    dst[w + 5] = atlas.cell_h;
+    write_u16_be(dst[w + 6 .. w + 8], @intCast(glyph_count));
+    w = header_len;
+
+    var last_cp: u32 = 0;
+    var first = true;
+    for (atlas.glyphs) |g| {
+        if (!first and g.codepoint <= last_cp) return error.UnsortedCodepoints;
+        first = false;
+        last_cp = g.codepoint;
+        // invariant: every glyph's coverage matches the atlas cell area exactly.
+        if (g.coverage.len != cell_area) return error.BadCoverageLen;
+        write_u32_be(dst[w .. w + 4], g.codepoint);
+        dst[w + 4] = g.advance;
+        w += 5;
+        w += encode_coverage(g.coverage, dst[w..], &res);
+    }
+
+    var m: u32 = 0;
+    while (m < end_marker.len) : (m += 1) {
+        dst[w] = end_marker[m];
+        w += 1;
+    }
+    // invariant: the write stayed within the proven bound.
+    assert(w <= encoded_bound(glyph_count, cell_area));
+    res.len = w;
+    return res;
+}
+
+/// Decode one glyph's coverage stream into `out` (exactly cell_area bytes). Advances and returns the read
+/// cursor. Refuses CoverageOverrun / CoverageShort if the RLE does not decode to exactly the cell area, BadOp
+/// for an unknown op, Truncated if the stream ends mid-op.
+fn decode_coverage(bytes: []const u8, start: u32, out: []u8) !u32 {
+    // invariant: the output grid is a bounded, non-empty coverage buffer.
+    assert(out.len >= 1);
+    assert(out.len <= coverage_max);
+    const need: u32 = @intCast(out.len);
+    var p: u32 = start;
+    var o: u32 = 0;
+    while (o < need) {
+        if (p >= bytes.len) return error.Truncated;
+        const op = bytes[p];
+        p += 1;
+        if (p >= bytes.len) return error.Truncated;
+        const count: u32 = bytes[p];
+        p += 1;
+        if (count == 0) return error.BadOp; // a zero-length op is never emitted; refuse it
+        if (op == op_run) {
+            if (p >= bytes.len) return error.Truncated;
+            const value = bytes[p];
+            p += 1;
+            if (o + count > need) return error.CoverageOverrun;
+            var k: u32 = 0;
+            while (k < count) : (k += 1) out[o + k] = value;
+            o += count;
+        } else if (op == op_lit) {
+            if (p + count > bytes.len) return error.Truncated;
+            if (o + count > need) return error.CoverageOverrun;
+            var k: u32 = 0;
+            while (k < count) : (k += 1) out[o + k] = bytes[p + k];
+            p += count;
+            o += count;
+        } else {
+            return error.BadOp;
+        }
+    }
+    // invariant: coverage decoded to exactly the cell area -- no more, no less.
+    if (o != need) return error.CoverageShort;
+    assert(o == need);
+    return p;
+}
+
+/// Decode a GFA1 byte stream into a freshly allocated atlas. Every failure is a NAMED refusal; nothing past the
+/// header is trusted until the whole atlas decodes to exactly its declared glyphs, codepoints strictly
+/// ascending, and the stream ends in the canonical eight-byte marker with no trailing data.
+pub fn decode(allocator: std.mem.Allocator, bytes: []const u8) !GlyphAtlas {
+    // invariant: a real atlas is at least a header and an end marker long.
+    if (bytes.len < header_len + end_marker.len) return error.Truncated;
+    if (!(bytes[0] == 'g' and bytes[1] == 'f' and bytes[2] == 'a' and bytes[3] == '1')) return error.BadMagic;
+
+    const cell_w = bytes[4];
+    const cell_h = bytes[5];
+    if (cell_w < 1 or cell_w > glyph_cell_max or cell_h < 1 or cell_h > glyph_cell_max) return error.BadCellSize;
+    const glyph_count: u32 = read_u16_be(bytes[6..8]);
+    if (glyph_count == 0 or glyph_count > glyph_max) return error.BadGlyphCount;
+    const cell_area = @as(u32, cell_w) * @as(u32, cell_h);
+
+    const glyphs = try allocator.alloc(Glyph, glyph_count);
+    var p: u32 = header_len;
+    var last_cp: u32 = 0;
+    var i: u32 = 0;
+    while (i < glyph_count) : (i += 1) {
+        if (p + 5 > bytes.len) return error.Truncated;
+        const codepoint = read_u32_be(bytes[p .. p + 4]);
+        const advance = bytes[p + 4];
+        p += 5;
+        if (i > 0 and codepoint <= last_cp) return error.UnsortedCodepoints;
+        last_cp = codepoint;
+        const cov = try allocator.alloc(u8, cell_area);
+        p = try decode_coverage(bytes, p, cov);
+        glyphs[i] = Glyph{ .codepoint = codepoint, .advance = advance, .coverage = cov };
+    }
+
+    // The tail must be exactly the eight-byte end marker -- no fewer (Truncated), no more (TrailingData).
+    const remaining = @as(u64, bytes.len) - @as(u64, p);
+    if (remaining < end_marker.len) return error.Truncated;
+    if (remaining > end_marker.len) return error.TrailingData;
+    if (!std.mem.eql(u8, bytes[p .. p + end_marker.len], end_marker[0..])) return error.BadEndMarker;
+
+    // invariant: the decode filled every glyph and consumed the whole stream.
+    assert(i == glyph_count);
+    assert(p + end_marker.len == bytes.len);
+    return GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+// --- selftest: craft a small atlas, round-trip it byte-for-byte, prove lookup and each named refusal --------
+
+/// Build a 5x7 atlas of three codepoints, each coverage grid mostly background with a horizontal ink bar and a
+/// single stray partial cell -- so the long runs give the encoder RUN ops, the isolated stray gives it a short
+/// LIT, and the whole atlas compresses well below its raw coverage.
+fn craft(allocator: std.mem.Allocator) !GlyphAtlas {
+    const cell_w: u8 = 5;
+    const cell_h: u8 = 7;
+    const area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+    const cps = [_]u32{ 'A', 'B', 'C' };
+    const glyphs = try allocator.alloc(Glyph, cps.len);
+    var gi: u32 = 0;
+    while (gi < cps.len) : (gi += 1) {
+        const cov = try allocator.alloc(u8, area);
+        // Background zeros everywhere (long RUN), a full ink row at (gi+1)*cell_w (a RUN of cell_w 255s), and a
+        // single mid-gray stray at cell 7 (an isolated LIT that breaks the leading zero run).
+        var idx: u32 = 0;
+        while (idx < area) : (idx += 1) cov[idx] = 0;
+        const bar_start: u32 = (gi + 1) * cell_w;
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) cov[bar_start + c] = 255;
+        cov[7] = 128; // a stray partial cell -> forces a short LIT op
+        glyphs[gi] = Glyph{ .codepoint = cps[gi], .advance = cell_w, .coverage = cov };
+    }
+    return GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try craft(garden);
+    const area = atlas.cell_area();
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    const cap = encoded_bound(glyph_count, area);
+    const dst = try garden.alloc(u8, cap);
+
+    const res = try encode(&atlas, dst);
+    // invariant: the encoder reached for both coverage ops.
+    assert(res.runs >= 1);
+    assert(res.lits >= 1);
+    // invariant: compression happened -- encoded is smaller than the raw coverage.
+    const raw_coverage = glyph_count * area;
+    assert(res.len < raw_coverage);
+
+    const stream = dst[0..res.len];
+    const back = try decode(garden, stream);
+    // The crux: a full round-trip recovers the atlas byte-for-byte.
+    assert(back.same_bytes(&atlas));
+
+    // lookup: a present codepoint is found; an absent one misses.
+    if (back.lookup('B')) |g| {
+        assert(g.codepoint == 'B');
+    } else return error.LookupMissedPresent;
+    if (back.lookup('Z')) |_| return error.LookupFoundAbsent else {}
+
+    // --- named refusals -------------------------------------------------------------------------------
+    // BadMagic: corrupt the first byte.
+    {
+        const bad = try garden.alloc(u8, stream.len);
+        tally_copy.copy_disjoint(u8, bad[0..stream.len], stream);
+        bad[0] = 'X';
+        if (decode(garden, bad)) |_| return error.MagicSlipped else |e| {
+            if (e != error.BadMagic) return error.WrongMagic;
+        }
+    }
+    // BadCellSize: zero the cell width.
+    {
+        const bad = try garden.alloc(u8, stream.len);
+        tally_copy.copy_disjoint(u8, bad[0..stream.len], stream);
+        bad[4] = 0;
+        if (decode(garden, bad)) |_| return error.CellSlipped else |e| {
+            if (e != error.BadCellSize) return error.WrongCell;
+        }
+    }
+    // UnsortedCodepoints: rewrite the first glyph's codepoint to equal the second's (>= breaks strict ascent).
+    // The first record's codepoint sits at header_len (byte 8); make it 'B' so 'B' then 'B' is not ascending.
+    {
+        const bad = try garden.alloc(u8, stream.len);
+        tally_copy.copy_disjoint(u8, bad[0..stream.len], stream);
+        write_u32_be(bad[header_len .. header_len + 4], 'B');
+        if (decode(garden, bad)) |_| return error.SortSlipped else |e| {
+            if (e != error.UnsortedCodepoints) return error.WrongSort;
+        }
+    }
+    // CoverageOverrun: inflate the first coverage op's count so it decodes past the cell area. The first op
+    // sits just after the first record's 5-byte codepoint+advance, at header_len+5; its count byte is +1.
+    {
+        const bad = try garden.alloc(u8, stream.len);
+        tally_copy.copy_disjoint(u8, bad[0..stream.len], stream);
+        bad[header_len + 5 + 1] = 255;
+        if (decode(garden, bad)) |_| return error.OverrunSlipped else |e| {
+            if (e != error.CoverageOverrun and e != error.Truncated and e != error.BadOp) return error.WrongOverrun;
+        }
+    }
+    // BadEndMarker: corrupt the final byte.
+    {
+        const bad = try garden.alloc(u8, stream.len);
+        tally_copy.copy_disjoint(u8, bad[0..stream.len], stream);
+        bad[bad.len - 1] = 0x02;
+        if (decode(garden, bad)) |_| return error.EndSlipped else |e| {
+            if (e != error.BadEndMarker) return error.WrongEnd;
+        }
+    }
+    // TrailingData: an extra byte past a whole valid stream.
+    {
+        const bad = try garden.alloc(u8, stream.len + 1);
+        tally_copy.copy_disjoint(u8, bad[0..stream.len], stream);
+        bad[bad.len - 1] = 0x00;
+        if (decode(garden, bad)) |_| return error.TrailSlipped else |e| {
+            if (e != error.TrailingData) return error.WrongTrail;
+        }
+    }
+
+    print("GREEN image-glyph: {d}x{d} atlas of {d} glyphs round-trip byte-identical; ops run={d} lit={d}; encoded {d} bytes < raw {d}; lookup hit+miss proven; refusals BadMagic-BadCellSize-UnsortedCodepoints-CoverageOverrun-BadEndMarker-TrailingData all named\n", .{
+        atlas.cell_w, atlas.cell_h, glyph_count, res.runs, res.lits, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: glyph selftest\n", .{});
+    return 1;
+}
