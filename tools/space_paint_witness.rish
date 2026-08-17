@@ -1,0 +1,45 @@
+# tools/space_paint_witness.rish -- a source pattern SPACED to fill a box, whole copies with even ground gaps, proves itself on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the CSS background-repeat: space sibling of tools/compose_tiled_witness.rish and
+# tools/place_paint_witness.rish. Where compose_tiled TILES a pattern edge to edge and CLIPS the boundary copy
+# (background-repeat: repeat), and place_paint places ONE copy at an anchor (no-repeat), this rung tiles only WHOLE
+# copies and never clips one -- it fits as many whole patterns as the box holds, pins the first and last flush to the
+# two edges, and shows the leftover as even GROUND GAPS between them (a row of evenly-spaced badges, a strip of logos
+# gapped to the margins, a motif filling a panel without a seam AND without a cut). Stands on the open compositing verb
+# (image/compose.rye paint_over_region) and the open QOI codec (image/qoi.rye), adding no new pixel loop.
+# Design read: active-designing/20260816-210735_season-g-color-algebra-crux.md (the color floor this stands on).
+# Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS spec -- public standards only).
+#
+# The crux this witness proves is that whole copies space with ground between them: paint_spaced fits floor(box/unit)
+# whole copies, pins copy 0 flush to the low edge and the last copy flush to the high edge, and distributes the leftover
+# as even ground gaps that stay the ground beneath -- never clipping a copy to make it fit. An exact fit fills with no
+# ground; a leftover axis shows the gap as ground; only one whole copy seats at the start with the leftover trailing; a
+# pattern larger than the box shows a single clipped copy; a translucent copy blends src-over uniform; the spaced image
+# round-trips through the open QOI codec byte-for-byte; a zero dimension, an empty pattern, and an out-of-bounds box each
+# refuse by name having painted nothing. Compose not braid -- compose owns the blit, qoi owns the buffers; this rung only
+# routes each whole copy to its spaced offset. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/space_paint_witness.rish
+
+say "space-paint: Language EN -- Season G's background-repeat: space verb; a keeper names a box and a pattern and reads back whole copies spaced flush to the edges with even ground gaps between them, on our own open geometry and codec."
+say "space-paint: Style Radiant -- compose not braid; image/compose.rye paint_over_region OWNS the blit, image/qoi.rye owns both buffers, and this rung only ROUTES each whole copy to its spaced offset so a translucent copy seats over the ground beneath it."
+say "space-paint: Lens TAME -- the box bound-checked ONCE up front in u64 so a far edge can never wrap; the spaced offset one pure per-axis rule seen twice (floor(box/unit) whole copies, gap shared by an integer-rounded even split); whole copies never clipped, an oversize pattern clipped once; all-or-nothing so a refusal paints nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/space_paint"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/space_paint.rye -femit-bin=${bin}"]
+assert build.ok else "space-paint: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "space-paint: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "space-paint: ${out}"
+
+# Check the GREEN claim with Rishi's native `contains`, never a shell grep over interpolated output -- an apostrophe in
+# the selftest prose can never close a shell quote here, the loom REDS #76 taught the tree.
+assert selftest.out contains "GREEN image-space" else "space-paint: selftest did not print the GREEN space line"
+
+say "space-paint: GREEN -- a source pattern spaced to fill a box with whole copies and even ground gaps, proven on metal: an exact fit filled with no ground; a leftover axis pinned the first and last copies flush and left the gap as ground; one whole copy seated at the start; an oversize pattern clipped to a single copy; a translucent src-over fill; a byte-for-byte QOI round trip; and every malformed fill refused by name having painted nothing."
