@@ -1,0 +1,283 @@
+//! image/radial_paint.rye -- a RADIAL positioned gradient SEEN on an image (Season G, the circle beside the line).
+//!
+//! Season G (Open Media Primitives) - the sibling of image/gradient_paint.rye, which finished the LINEAR gradient family
+//! (horizontal, vertical, and the diagonal pair). Where a linear gradient maps a pixel to its distance ALONG one axis, a
+//! radial gradient maps a pixel to its distance FROM the box center: the center is the first control exactly and the
+//! farthest corner the last, so the ramp runs outward in rings (the CSS `radial-gradient(circle, ...)` shape, its default
+//! `farthest-corner` extent). Every pixel the same distance from the center carries one constant color -- a true circle.
+//!
+//! Compose, not braid: color_ramp_stops.sample_checked DECIDES each pixel's color at its computed position, image/qoi owns
+//! the RGBA target, and image/color composites the paint over the destination (Porter-Duff src-over, straight alpha). This
+//! module only ROUTES each pixel to its radial position and writes it -- no new color math, no new codec.
+//!
+//! The routing stays integer fixed-point so a painted disc is deterministic. Coordinates are DOUBLED (2*cx - (w-1)) so the
+//! center lands exactly on a pixel for odd dimensions and exactly between two for even ones, without a fraction. A pixel's
+//! squared distance from the center d2 = dx2*dx2 + dy2*dy2; the farthest corner sits max_d2 = (w-1)^2 + (h-1)^2 away (all
+//! four corners are equidistant from the true center). The position is p = isqrt(d2 * pos_max^2 / max_d2), so the center
+//! (d2 == 0) reads 0 and a corner (d2 == max_d2) reads pos_max exactly, every ring between carrying the sampled blend. The
+//! whole box is bound-checked ONCE up front (in u64 so a far edge can never wrap before the bound refuses), and the ramp is
+//! validated ONCE before any pixel is written, so a malformed disc refuses by name having painted nothing -- all-or-nothing,
+//! never a half-painted ring. No network, no key, no funds.
+//!
+//! Teacher, thanked clean-room: the CSS radial-gradient concept (W3C CSS Color / Images -- public standard only). The idea
+//! enters siloed (context/SILO_TECHNIQUE.md): the shape is ours, named plainly; the thanks live in the witness header.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/radial_paint.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const ramp_stops = @import("color_ramp_stops.rye");
+
+pub const radial_paint_version = "20260817.152118";
+
+/// Composite one paint color over the destination pixel at (x, y), src-over, so a translucent disc reads through to the
+/// picture beneath. The caller proves the pixel lands inside the target; this writer only blends.
+fn blend_pixel(target: *qoi.Pixmap, x: u32, y: u32, paint: color.Rgba) void {
+    // invariant: the caller proved this pixel lands inside the target buffer, on the horizontal axis.
+    assert(x < target.width);
+    // invariant: and on the vertical axis -- both are load-bearing for the flat index below.
+    assert(y < target.height);
+    const di = (@as(usize, y) * @as(usize, target.width) + @as(usize, x)) * 4;
+    const dst = color.Rgba{
+        .r = target.pixels[di],
+        .g = target.pixels[di + 1],
+        .b = target.pixels[di + 2],
+        .a = target.pixels[di + 3],
+    };
+    const res = color.over(paint, dst);
+    target.pixels[di] = res.r;
+    target.pixels[di + 1] = res.g;
+    target.pixels[di + 2] = res.b;
+    target.pixels[di + 3] = res.a;
+}
+
+/// The integer square root of `n` -- floor(sqrt(n)) by the classic bit-by-bit method, so the radial routing needs no float
+/// and a painted disc is deterministic across targets. Bounded: `bit` starts at the largest power of four in u64 and shrinks
+/// by two bits per step, so the loop runs at most 32 times.
+fn isqrt_u64(n: u64) u64 {
+    // invariant: the largest even-bit seed fits in u64 (1 << 62 is the top power of four).
+    var bit: u64 = @as(u64, 1) << 62;
+    var num: u64 = n;
+    var res: u64 = 0;
+    // Shrink the seed below the radicand so the first accepted bit is meaningful (at most 31 shrink steps).
+    while (bit > num) : (bit >>= 2) {}
+    while (bit != 0) : (bit >>= 2) {
+        if (num >= res + bit) {
+            num -= res + bit;
+            res = (res >> 1) + bit;
+        } else {
+            res >>= 1;
+        }
+    }
+    // invariant: res is the floor square root -- res*res never exceeds n (res <= ~2.95M here, so res*res never wraps u64).
+    assert(res * res <= n);
+    return res;
+}
+
+/// The radial position (0..pos_max) of pixel (`cx`, `cy`) in a box of size `w` x `h` whose farthest corner sits `max_d2`
+/// squared units from the center -- an integer lerp along the RADIUS from 0 (the center exactly) to pos_max (a corner
+/// exactly). Shared by the painter, so the pixel-to-position routing is one small honest reader.
+fn radial_pos(cx: u32, cy: u32, w: u32, h: u32, max_d2: u64) u8 {
+    // invariant: the pixel names a real cell of the box.
+    assert(cx < w);
+    assert(cy < h);
+    // invariant: the farthest corner is at least one unit away (guaranteed by the single-pixel refusal up front).
+    assert(max_d2 >= 1);
+    // Doubled coordinates keep the center exact without a fraction: dx2 runs -(w-1)..(w-1), zero at the center.
+    const dx2: i64 = 2 * @as(i64, cx) - (@as(i64, w) - 1);
+    const dy2: i64 = 2 * @as(i64, cy) - (@as(i64, h) - 1);
+    // Squared distance from the center; dx2,dy2 <= 8191 so each square <= ~6.7e7 and the sum never wraps i64 or u64.
+    const d2: u64 = @as(u64, @intCast(dx2 * dx2)) + @as(u64, @intCast(dy2 * dy2));
+    // invariant: no pixel is farther from the center than a corner, so d2 never exceeds max_d2.
+    assert(d2 <= max_d2);
+    // p = isqrt(d2 * pos_max^2 / max_d2): d2 <= ~1.34e8 and pos_max^2 = 65025, so the product <= ~8.7e12 stays inside u64.
+    // The center (d2 == 0) reads 0 and a corner (d2 == max_d2) reads isqrt(pos_max^2) = pos_max exactly.
+    const scaled: u64 = d2 * @as(u64, ramp_stops.pos_max) * @as(u64, ramp_stops.pos_max) / max_d2;
+    const p: u64 = isqrt_u64(scaled);
+    // invariant: the position stays inside the ramp domain.
+    assert(p <= ramp_stops.pos_max);
+    return @intCast(p);
+}
+
+/// Paint a RADIAL positioned gradient into the rectangle at (`x`, `y`) of size `w` x `h` on `target`: each pixel is the
+/// color the positioned ramp samples at its distance from the box center, so the center is the first control exactly and
+/// each corner the last, every ring between one constant color. Refuses `BadStripDims` if `w` or `h` is zero,
+/// `StripTooSmall` if the box is a single pixel (no radial direction), `RadialOutOfBounds` BY NAME if the box would exceed
+/// the target, and every `color_ramp_stops` refusal by name if the ramp is malformed -- all checked BEFORE any pixel is
+/// written, so a refusal leaves the target untouched.
+pub fn paint_gradient_radial(target: *qoi.Pixmap, x: u32, y: u32, w: u32, h: u32, control: []const color.Rgba, positions: []const u8) !void {
+    // invariant: a radial gradient box has real extent and at least one step between center and corner.
+    if (w == 0 or h == 0) return error.BadStripDims;
+    if (w == 1 and h == 1) return error.StripTooSmall;
+    // The ramp is validated ONCE up front, so a malformed stop list refuses having painted nothing.
+    try ramp_stops.check(control, positions);
+    // The box's far edges, in u64 so the sum can never wrap before the bound check refuses.
+    const right: u64 = @as(u64, x) + @as(u64, w);
+    const bottom: u64 = @as(u64, y) + @as(u64, h);
+    if (right > @as(u64, target.width) or bottom > @as(u64, target.height)) return error.RadialOutOfBounds;
+    // invariant: the up-front check proved every pixel of the w x h box lands inside the target buffer.
+    assert(right <= @as(u64, target.width));
+    assert(bottom <= @as(u64, target.height));
+
+    // The farthest corner sits (w-1)^2 + (h-1)^2 squared units from the center; at least one since the box is not a pixel.
+    const wm: u64 = @as(u64, w) - 1;
+    const hm: u64 = @as(u64, h) - 1;
+    const max_d2: u64 = wm * wm + hm * hm;
+    // invariant: a non-single-pixel box has a positive corner distance, so the position divide never divides by zero.
+    assert(max_d2 >= 1);
+
+    var cy: u32 = 0;
+    while (cy < h) : (cy += 1) {
+        var cx: u32 = 0;
+        while (cx < w) : (cx += 1) {
+            // The pixel's color is decided by the positioned ramp; this module only routes the pixel to its radial position.
+            const col = ramp_stops.sample_checked(control, positions, radial_pos(cx, cy, w, h, max_d2));
+            blend_pixel(target, x + cx, y + cy, col);
+        }
+    }
+}
+
+// --- selftest: paint a radial disc, prove its center, its rings, its corners, its bend, and its round trip on metal ------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module (it
+/// keeps its own canvas exactly as image/gradient_paint.rye and image/shape.rye do).
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
+    const green = color.Rgba{ .r = 0, .g = 255, .b = 0, .a = 255 };
+    const blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    const rgb = [_]color.Rgba{ red, green, blue };
+    const at_even = [_]u8{ 0, 128, 255 };
+
+    // Paint a 5x5 red-green-blue radial disc over a white canvas. The center is the first control, the corners the last.
+    const sq: u32 = 5;
+    var img = try make_canvas(garden, sq, sq, white);
+    try paint_gradient_radial(&img, 0, 0, sq, sq, rgb[0..], at_even[0..]);
+
+    // The center pixel (2,2) sits exactly on the first control (red), and all four corners on the last (blue),
+    // byte-for-byte -- the crux that the endpoints land where the ramp anchors them, radially.
+    const cxc: u32 = sq / 2;
+    if (!pixel_at(&img, cxc, cxc).eql(red)) return error.CenterNotFirstControl;
+    if (!pixel_at(&img, 0, 0).eql(blue)) return error.CornerTLNotLastControl;
+    if (!pixel_at(&img, sq - 1, 0).eql(blue)) return error.CornerTRNotLastControl;
+    if (!pixel_at(&img, 0, sq - 1).eql(blue)) return error.CornerBLNotLastControl;
+    if (!pixel_at(&img, sq - 1, sq - 1).eql(blue)) return error.CornerBRNotLastControl;
+
+    // Radial symmetry: the four edge midpoints are all one squared step from the center, so they carry one constant color
+    // -- a true ring, not a linear ramp. And that ring color is neither the center's nor a corner's.
+    const ring = pixel_at(&img, 0, cxc);
+    if (!pixel_at(&img, sq - 1, cxc).eql(ring)) return error.RingRightNotConstant;
+    if (!pixel_at(&img, cxc, 0).eql(ring)) return error.RingTopNotConstant;
+    if (!pixel_at(&img, cxc, sq - 1).eql(ring)) return error.RingBottomNotConstant;
+    if (ring.eql(red)) return error.RingSameAsCenter;
+    if (ring.eql(blue)) return error.RingSameAsCorner;
+
+    // A pixel nearer the center reads a lower position than one farther out: the edge midpoint (distance 2) blends less
+    // toward blue than the corner (distance 2*sqrt(2)), the measured proof the position grows with the radius.
+    if (ring.b >= pixel_at(&img, 0, 0).b) return error.RadiusNotMonotonic;
+
+    // Uneven positions BEND the disc: with green pushed near the end (position 200) the same ring reads a different color
+    // than with green centred (position 128), so a position is a real control on the pixels, not only in the values.
+    const at_late = [_]u8{ 0, 200, 255 };
+    var img_late = try make_canvas(garden, sq, sq, white);
+    try paint_gradient_radial(&img_late, 0, 0, sq, sq, rgb[0..], at_late[0..]);
+    if (pixel_at(&img_late, 0, cxc).eql(ring)) return error.PositionDidNotBendDisc;
+
+    // The painted disc round-trips through the open QOI codec byte-for-byte -- a real image, not a private buffer.
+    const cap = qoi.encoded_bound(img.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&img, dst);
+    const back = try qoi.decode(garden, dst[0..enc.len]);
+    if (!back.same_bytes(&img)) return error.DiscDidNotRoundTrip;
+
+    // A sub-rectangle paints only its own box: paint a 3x3 disc at (1,1) on a wider canvas and prove the ground around it
+    // stays the untouched white (the box is honored, nothing bleeds).
+    var img_sub = try make_canvas(garden, 6, 6, white);
+    try paint_gradient_radial(&img_sub, 1, 1, 3, 3, rgb[0..], at_even[0..]);
+    if (!pixel_at(&img_sub, 0, 0).eql(white)) return error.GutterPainted;
+    if (!pixel_at(&img_sub, 5, 5).eql(white)) return error.FarGutterPainted;
+    if (pixel_at(&img_sub, 2, 2).eql(white)) return error.DiscCenterNotPainted;
+
+    // A non-square disc still routes: a 7x3 box has its center on the middle pixel and its corners on the last control,
+    // proving the routing does not assume a square (the corners are equidistant from the true center at any aspect).
+    var img_wide = try make_canvas(garden, 7, 3, white);
+    try paint_gradient_radial(&img_wide, 0, 0, 7, 3, rgb[0..], at_even[0..]);
+    if (!pixel_at(&img_wide, 3, 1).eql(red)) return error.WideCenterNotFirstControl;
+    if (!pixel_at(&img_wide, 0, 0).eql(blue)) return error.WideCornerNotLastControl;
+    if (!pixel_at(&img_wide, 6, 2).eql(blue)) return error.WideCornerBRNotLastControl;
+
+    // Refusals by name, each having painted nothing: a single-pixel box (no radial direction), a zero dimension, an
+    // out-of-bounds box, and a malformed ramp (non-ascending positions caught up front).
+    var tiny = try make_canvas(garden, 4, 4, white);
+    if (paint_gradient_radial(&tiny, 0, 0, 1, 1, rgb[0..], at_even[0..])) |_| return error.SinglePixelNotRefused else |err| {
+        if (err != error.StripTooSmall) return error.WrongSmallError;
+    }
+    if (paint_gradient_radial(&tiny, 0, 0, 4, 0, rgb[0..], at_even[0..])) |_| return error.ZeroDimNotRefused else |err| {
+        if (err != error.BadStripDims) return error.WrongDimsError;
+    }
+    if (paint_gradient_radial(&tiny, 2, 0, 4, 4, rgb[0..], at_even[0..])) |_| return error.OverrunNotRefused else |err| {
+        if (err != error.RadialOutOfBounds) return error.WrongOverrunError;
+    }
+    const not_asc = [_]u8{ 0, 0, 255 };
+    if (paint_gradient_radial(&tiny, 0, 0, 4, 4, rgb[0..], not_asc[0..])) |_| return error.BadRampNotRefused else |err| {
+        if (err != error.StopsNotAscending) return error.WrongRampError;
+    }
+    // The refused calls painted nothing -- the tiny canvas is still all white.
+    var wy: u32 = 0;
+    while (wy < tiny.height) : (wy += 1) {
+        var wx: u32 = 0;
+        while (wx < tiny.width) : (wx += 1) {
+            if (!pixel_at(&tiny, wx, wy).eql(white)) return error.RefusedButPainted;
+        }
+    }
+
+    // Determinism: the same ramp painted twice grows byte-for-byte the same disc.
+    var img_a = try make_canvas(garden, sq, sq, white);
+    var img_b = try make_canvas(garden, sq, sq, white);
+    try paint_gradient_radial(&img_a, 0, 0, sq, sq, rgb[0..], at_even[0..]);
+    try paint_gradient_radial(&img_b, 0, 0, sq, sq, rgb[0..], at_even[0..]);
+    if (!img_a.same_bytes(&img_b)) return error.DiscNotDeterministic;
+
+    print("GREEN image-radial-paint: a radial positioned gradient painted onto a real image -- the center pixel is the first control and every corner the last, byte-for-byte; the four edge midpoints share one constant ring color (a true circle, neither center nor corner); the position grows with the radius (the ring blends less toward the last control than a corner); uneven positions bend the disc where even spacing cannot (green at 200 vs 128 read differently on the same ring); the disc round-trips through the open QOI codec byte-for-byte; a sub-rectangle paints only its own box (the ground stays white); a non-square 7x3 box still centers and corners exactly; a single-pixel box, a zero dimension, an out-of-bounds box, and a non-ascending ramp refuse by name having painted nothing; the same ramp paints the same disc byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: radial_paint selftest\n", .{});
+    return 1;
+}
