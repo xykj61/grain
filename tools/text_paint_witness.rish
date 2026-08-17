@@ -68,4 +68,10 @@ assert (trim para_band.out) == "yes" else "text-paint: the paragraph's top line 
 let para_refuse = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'refuses ParagraphOutOfBounds by name leaving the buffer untouched' && echo yes"]
 assert (trim para_refuse.out) == "yes" else "text-paint: a too-short canvas did not refuse ParagraphOutOfBounds all-or-nothing"
 
+let para_align = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'the paragraph aligns' && echo yes"]
+assert (trim para_align.out) == "yes" else "text-paint: paragraph alignment did not prove out"
+
+let para_align_shift = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'alignment shifts ink sideways, adding none and dropping none' && echo yes"]
+assert (trim para_align_shift.out) == "yes" else "text-paint: centre/right-set did not match the offset composition at an equal pixel count"
+
 say "text-paint: GREEN -- the fonts become a string seen; ink composites through coverage exactly where the glyphs carry it, the paint is deterministic, a partial alpha blends true, a line that would overrun refuses by name, paint_placed_clipped paints only the visible part -- matching the strict paint pixel-for-pixel, degrading to a clean no-op fully off-canvas -- and paint_paragraph stacks a never-overflow wrapped block into stepped lines, all-or-nothing, refusing ParagraphOutOfBounds by name on a canvas too short."
