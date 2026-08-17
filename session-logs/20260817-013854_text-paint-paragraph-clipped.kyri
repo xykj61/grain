@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260817.013854
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title paint_paragraph_clipped -- the paragraph's clip companion, GREEN
+prompt autonomous loop -- recur; next agent-doable lap Lindy-first crux-first, Season G open-media
+think The text-paint family carried a strict line painter, a clipped line painter, and a strict all-or-nothing paragraph painter with horizontal alignment -- yet the paragraph had no clip companion, so a panel shorter than its text could only refuse the whole block. The missing primitive a bounded or scrollable text region needs is exactly that companion: paint as much of the wrapped block as the box holds.
+think Wrote paint_paragraph_clipped as pure composition over the existing public APIs -- wrap_lines_break to place the never-overflow lines, then paint_placed_clipped per line at its stepped-down origin, skipping any line whose top row already sits at or past the bottom edge (a clean vertical clip that saves the inner painter a whole pass). It returns the count of cells painted, matching the clipped line painter's shape.
+think Proved three cases against the strict paragraph as ground truth: a box the block fits in clips byte-for-byte the strict paint at the full ink count; a box one line-box tall paints just the first line's ink (equal to a standalone single-line paint) where the strict painter refuses ParagraphOutOfBounds; a box placed below the block clips to a clean no-op, buffer untouched.
+obs GREEN on the first build; tame_style_check bans clean, width-check exit 0, witness GREEN with three new grep assertions. Rota this lap read item 14 (RADIANT_STYLE, with TWILIGHT) -- the style guide that also governs the pre-send sweep.
+obs Single-stranded held: the clip painter reuses paint_placed_clipped and layout_line, adding no new storage, codec, palette, or geometry -- only the join, the same discipline paint_paragraph_aligned kept.
+loom witness=text_paint_witness result=GREEN clipped_fit_pixels=79 clipped_short_pixels=firstline strict_para_pixels=79
+file image/text_paint.rye paint_paragraph_clipped + three selftest cases; version and header updated
+file tools/text_paint_witness.rish three greps binding the clipped-paragraph claim, refreshed closing line
+file image/README.md the clipped-paragraph sentence beside the aligned paragraph
+file crux/REMEMBER.md git nib rolled forward to this round; prior nibs shifted down
+recommend keep-going -- next Season G rung: vertical alignment (top/middle/bottom) of a paragraph within a box, or proving the codecs on real corpora
