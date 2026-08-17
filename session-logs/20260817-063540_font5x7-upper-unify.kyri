@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260817.063540
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title font5x7 -- the unifying accented-capitals font: two uppercase corpora merged, proven disjoint, GREEN
+prompt Continue the autonomous loop, next agent-doable lap Lindy-first crux-first; finishing-edge: ship one whole thing before naming the next; send often.
+think The prior lap closed the uppercase Latin-1 accented set (font5x7_upper_latin1, thirteen capitals) beside the acute eight (font5x7_upper_accented). The finishing-edge move is the same one the lowercase family already took: a unifying font that merges the corpora into one atlas, the capital twin of font5x7_accented and the parallel of font5x7_ascii. Ship the whole family before naming a new one.
+think Mirrored font5x7_accented exactly: gather the two corpora (8 + 13), insertion-sort strictly ascending by codepoint, and prove disjointness the same honest way -- merged count equals the sum of the corpora's own count constants (acute.upper_count + rest.upper_count == 21) and the codepoints run strictly ascending with no duplicate, so a collision would fail. The band is non-contiguous (U+00C0..U+00DC skips the unaccented capitals), so the proof is ascending-and-unique rather than contiguous.
+think Negative proofs guard against phantoms: a plain ASCII 'A' misses (the accented set, not the base), and an accented capital no corpus drew (U+00C5, A ring) misses too -- the font holds exactly what the two corpora drew. Every glyph carries ink; no blank in an accented set.
+obs GREEN on the first metal run, no red. encoded 1005 bytes vs raw 735 (the merged accented set does not compress -- the glyphs are ink-varied, not run-dominant), reported as a fact per the REDS #82 lesson, never asserted. The lowercase and uppercase accented families now each read as one lookup: twenty-one accents, twenty-one accented capitals, every lowercase mark's capital present.
+obs The two half-fonts (font5x7_accented + font5x7_upper) are the natural inputs to a later whole-Latin-1 font that also folds in the ASCII base -- named, not built this lap (finishing edge: one whole thing sent).
+loom witness=font5x7_upper_witness glyphs=21 cell=5x7 encoded_bytes=1005 raw_bytes=735 round_trip=byte_identical corpora=2 sum=8+13
+file image/font5x7_upper.rye the unifying accented-capitals font: font5x7_upper_accented + font5x7_upper_latin1 merged, sorted, proven disjoint
+file tools/font5x7_upper_witness.rish builds and proves the merged font on metal -- round-trip, ascending-and-unique, present, no phantom, all inked
+file image/README.md named both unifying fonts (accented + upper) in the accented-Latin family entry
+file session-logs/20260817-063540_font5x7-upper-unify.kyri this record
+recommend keep-going both accented halves are now unified fonts; the next agent-doable font rung is a whole-Latin-1 font folding the ASCII base with both accented halves, or advancing another Season G open-media primitive

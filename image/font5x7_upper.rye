@@ -1,0 +1,192 @@
+//! image/font5x7_upper.rye -- the unifying accented-capitals font: the two uppercase corpora merged into one table.
+//!
+//! Season G (Open Media Primitives) - the finishing rung of the uppercase accented family, the capital parallel of
+//! image/font5x7_accented.rye (which unified the lowercase accents) and of image/font5x7_ascii.rye (which unified the
+//! printable ASCII). The accented capitals landed in two hand-drawn corpora -- the acute-and-tilde eight
+//! (font5x7_upper_accented.rye: A acute, C cedilla, E acute, I acute, N tilde, O acute, U acute, U diaeresis) and the
+//! grave/circumflex/tilde/diaeresis thirteen that completed the set (font5x7_upper_latin1.rye: A grave, A circumflex,
+//! A tilde, A diaeresis, E grave, E circumflex, I grave, I circumflex, O grave, O circumflex, O diaeresis, U grave,
+//! U circumflex) -- each proven on metal in its own corpus. This module gathers both into a single gfa1 atlas covering
+//! the twenty-one accented capitals a Romance, French, Italian, Portuguese, or German name reaches for at the head of a
+//! sentence or set in ALL-CAPS, our own hand end to end, permissively ours, no external font to license. It is the table
+//! a surface reaches for when it prints A NAME IN ALL-CAPS that ASCII folds -- one lookup Dexter, Scooter, Skate, and
+//! Brushstroke read the day they want an accented capital, rather than two corpora to stitch by hand.
+//!
+//! The distinctive crux this module proves, beyond the round-trip each corpus already proves: the merged codepoints run
+//! STRICTLY ASCENDING WITH NO DUPLICATE across the accented-capitals set, and the merged count equals the SUM of the two
+//! corpora (8 + 13 = 21). Those two facts together prove the corpora are DISJOINT -- no two claim the same codepoint (the
+//! acute corpus drew U+00C1, the completion corpus never redraws it), so the two sets compose into one font with no
+//! collision and no capital lost. Like the lowercase accented font this band is NOT contiguous (it skips the unaccented
+//! capitals between the accented ones in the Latin-1 Supplement block), so the proof is ascending-and-unique rather than
+//! contiguous; every glyph carries ink (there is no blank in an accented set). This font is the exact capital twin of
+//! font5x7_accented: twenty-one lowercase accents, twenty-one accented capitals, every lowercase mark's capital present.
+//! decode(encode()) recovers the whole font byte-for-byte. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_upper.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+const acute = @import("font5x7_upper_accented.rye");
+const rest = @import("font5x7_upper_latin1.rye");
+
+pub const font5x7_upper_version = "20260817.063540";
+
+/// The whole family shares one 5x7 cell -- the corpora agree on this, and this module asserts the agreement.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance every glyph carries: the cell width plus one column of daylight.
+pub const glyph_advance: u8 = cell_w + 1;
+
+/// Cells per glyph -- the coverage length every glyph carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The unifying count -- the sum of the two uppercase accented corpora: the acute-and-tilde eight and the completion
+/// thirteen. Named from the corpora's own counts, so a corpus that grows without this sum growing fails the fill assert.
+pub const upper_count: u32 = acute.upper_count + rest.upper_count;
+
+/// Lift one corpus atlas's glyphs into the combined table starting at `dst_off`, asserting each shares the cell and
+/// advance. Returns the next free offset. The gathered coverage slices are borrowed from the source atlas, which lives
+/// in the same arena -- no copy, and the merge sort below reorders references, never bytes.
+fn gather(dst: []glyph.Glyph, dst_off: u32, src: *const glyph.GlyphAtlas) u32 {
+    // invariant: the source shares this family's cell -- a corpus at a different size would corrupt the font.
+    assert(src.cell_w == cell_w);
+    assert(src.cell_h == cell_h);
+    const n: u32 = @intCast(src.glyphs.len);
+    // invariant: the gathered run fits inside the combined table.
+    assert(dst_off + n <= upper_count);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const g = src.glyphs[i];
+        // invariant: every merged glyph carries the shared advance, so every accented capital lays out alike.
+        assert(g.advance == glyph_advance);
+        assert(g.coverage.len == cell_area);
+        dst[dst_off + i] = g;
+    }
+    return dst_off + n;
+}
+
+/// Build the unifying accented-capitals font: merge the two corpora, then sort the whole table strictly ascending by
+/// codepoint. The gfa1 encoder accepts the result directly (ascending codepoints, coverage length == cell area), and the
+/// selftest proves the band is ascending-and-unique with the merged count equal to the sum of the two corpora.
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the family cell matches the atlas ceiling it must fit under, and the count fits the glyph ceiling.
+    assert(cell_area <= glyph.coverage_max);
+    assert(upper_count <= glyph.glyph_max);
+    // invariant: the unifying count is the sum the two corpora name -- 21 capitals, no more.
+    assert(upper_count == 21);
+
+    const glyphs = try allocator.alloc(glyph.Glyph, upper_count);
+    var off: u32 = 0;
+
+    // Gather the two proven corpora. Order of gathering does not matter -- the sort below places every glyph.
+    const ac_atlas = try acute.build_atlas(allocator);
+    off = gather(glyphs, off, &ac_atlas);
+    const re_atlas = try rest.build_atlas(allocator);
+    off = gather(glyphs, off, &re_atlas);
+
+    // invariant: the two corpora fill the table exactly -- a short count would mean a lost corpus.
+    assert(off == upper_count);
+
+    // Insertion sort by codepoint -- bounded by upper_count, stable, and small (twenty-one glyphs). The gfa1 encoder
+    // demands strictly ascending codepoints; this is where the two corpora become one ordered font.
+    var i: u32 = 1;
+    while (i < upper_count) : (i += 1) {
+        const key = glyphs[i];
+        var j: u32 = i;
+        while (j > 0 and glyphs[j - 1].codepoint > key.codepoint) : (j -= 1) {
+            glyphs[j] = glyphs[j - 1];
+        }
+        glyphs[j] = key;
+    }
+
+    // invariant: the sorted table opens at the A grave (U+00C0, the lowest accented capital) and closes at the U
+    // diaeresis (U+00DC, the highest) -- the accented-capitals band, end to end.
+    assert(glyphs[0].codepoint == 0x00C0);
+    assert(glyphs[upper_count - 1].codepoint == 0x00DC);
+    return glyph.GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- every accented capital carries ink; none is blank.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+// --- selftest: build the capitals font, round-trip it through gfa1, prove ascending-and-unique and disjoint corpora ---
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built font is the twenty-one-glyph accented-capitals set at the shared cell.
+    assert(glyph_count == upper_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // The disjointness crux: the merged codepoints run STRICTLY ASCENDING with NO DUPLICATE. Since the merged count is
+    // the sum of the two corpora (asserted 21 in build_atlas), strictly-ascending here proves the corpora are disjoint
+    // -- no two claim the same codepoint, so a collision (both corpora drawing one capital) would fail here.
+    var e: u32 = 1;
+    while (e < glyph_count) : (e += 1) {
+        if (!(atlas.glyphs[e].codepoint > atlas.glyphs[e - 1].codepoint)) return error.CodepointsNotStrictlyAscending;
+    }
+
+    // Every accented capital the two corpora drew looks up present through the decoded font and carries the shared
+    // advance. The full merged set, checked one codepoint at a time.
+    const all = [upper_count]u32{
+        0x00C0, 0x00C1, 0x00C2, 0x00C3, 0x00C4, 0x00C7, 0x00C8, 0x00C9, 0x00CA, 0x00CC, 0x00CD,
+        0x00CE, 0x00D1, 0x00D2, 0x00D3, 0x00D4, 0x00D6, 0x00D9, 0x00DA, 0x00DB, 0x00DC,
+    };
+    var a: u32 = 0;
+    while (a < upper_count) : (a += 1) {
+        if (back.lookup(all[a])) |g| {
+            assert(g.codepoint == all[a]);
+            assert(g.advance == glyph_advance);
+        } else return error.AccentedCapitalMissing;
+    }
+
+    // A plain ASCII 'A' misses -- this font is the accented capitals, not the base letters. And an accented capital no
+    // corpus drew (U+00C5, A ring) misses too -- the font holds exactly what the two corpora drew, no phantom glyph.
+    if (back.lookup('A')) |_| return error.BaseCapitalFound else {}
+    if (back.lookup(0x00C5)) |_| return error.PhantomCapitalFound else {}
+
+    // Every glyph carries ink -- unlike the ASCII font there is no blank space in an accented set.
+    var k: u32 = 0;
+    while (k < glyph_count) : (k += 1) {
+        if (ink_count(atlas.glyphs[k].coverage) == 0) return error.AccentedCapitalBlank;
+    }
+
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof (the REDS #82 lesson).
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-upper: {d} accented capitals U+00C0..U+00DC (non-contiguous) at {d}x{d} round-trip byte-identical; codepoints strictly ascending and unique (the two corpora disjoint: 8+13), every glyph inked, a base 'A' and an undrawn A-ring both absent; encoded {d} bytes, raw {d}\n", .{
+        glyph_count, cell_w, cell_h, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_upper selftest\n", .{});
+    return 1;
+}
