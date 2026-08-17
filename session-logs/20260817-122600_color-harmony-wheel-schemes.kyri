@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260817.122600
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title color_harmony -- named colour-wheel schemes from one seed, GREEN
+prompt baton prin recur -- take the next agent-doable lap Lindy-first crux-first, Rye-first, send often, stop at custody gates
+think Read the road-ahead docs: the 1024-round itinerary, the eight-season double-seat, and the rye-first crypto wave. Season G (Open Media Primitives) names colour as the smallest tractable crux and it is well underway -- color algebra, adjust toolkit, tonal scale, and the on-colour swatch (with brand-pair) all landed GREEN in recent laps.
+think Picked the next colour rung Lindy-first crux-first: named colour-wheel HARMONIES (complementary, analogous, triadic, split-complementary, tetradic, square). Colour-wheel harmony is centuries-old theory (deeply Lindy) and the design-system palette a surface names after tints and on-colours. Crux-tractable: it composes cleanly over the proven color_adjust.rotate_hue floor with no new maths -- exactly parallel to how color_swatch composed color_scale + color.
+think Confirmed no color_harmony module existed and it was not among the design doc's four crux rounds; it is a journey-level accretion above the crux, self-approved per the loop's tripwire rule.
+think Wrote image/color_harmony.rye: each scheme a fixed small array (two to four colours, bounded by construction) leading with the keeper's own seed byte-for-byte, the partners grown by at_angle (a thin name over rotate_hue) at the classical wheel angles named as constants with a why. complementary[1] is exactly color_adjust.complement; tetradic/square hold the complement at their third corner. A grey seed collapses every scheme to the same grey; alpha rides through.
+think Deep-read this lap's council-rota doc (lap index 1220 mod 27 -> item 6): foundations/20260814-071700_hardware-and-right-to-repair.md -- Season A's front door, whose discipline (open floor, proven pure in Rye, compose-not-braid) the harmony rung follows exactly.
+obs First build GREEN; selftest passed on the metal. tame_style_check flagged four compound asserts (BAN: split so the failing half is named) -- split every `a and b` assert into two positive asserts. Rebuilt GREEN, bans clean, width-check exit 0.
+obs Witness red then green: the first witness used printf|grep over the interpolated GREEN line, which holds an apostrophe ("keeper's own seed"), so the single-quoted sh string closed early and the GREEN check failed though the binary was plainly GREEN -- the exact recurrence REDS #76 turned into a loom. Honoured the loom: every witness check now uses Rishi's native `assert out contains "..."`, which never routes through a shell. Witness GREEN.
+obs Even-spacing claims (triadic thirds, square quarters) are checked within a stated 4-degree integer-round-trip tolerance, stated rather than claimed exact -- the same honesty color_scale keeps reading luminance off a rendered ramp. Structural facts (seed led byte-for-byte, complement composed, alpha carried, grey collapsed) are asserted exact.
+loom witness=color_harmony_witness schemes=6 max_colours=4 build=green selftest=green tame_bans=clean width_check=0
+file image/color_harmony.rye six named colour-wheel schemes over color_adjust.rotate_hue, single-stranded, GREEN
+file tools/color_harmony_witness.rish proves the schemes on metal, native contains checks (REDS #76 loom honoured)
+file image/README.md names color_harmony.rye beside color_swatch.rye (docs-sync)
+file crux/REMEMBER.md Git nib refreshed to the color_harmony rung in the same work commit
+recommend keep-going another Season G colour rung (a named-colour table, or per-tone WCAG contrast reading) or a fresh Lindy-first crux; the colour family now offers seed -> tonal scale -> on-colour ramp -> named wheel palettes
