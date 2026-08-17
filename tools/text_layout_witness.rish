@@ -8,8 +8,10 @@
 #
 # The crux this witness proves: a real line ('Hi!') lays out at the expected pen origins (0, advance, 2*advance) and
 # total width; measure_width agrees with the laid line; the empty line is a clean zero; the whole printable band 32..126
-# lays out covered; and an uncovered byte (a tab control char) refuses BY NAME (UncoveredCodepoint) for both layout and
-# measure rather than painting a silent hole. No network, no key, no funds.
+# lays out covered; word-wrap breaks a paragraph at space boundaries so each line stays within a max width, and every
+# wrapped span's stated width equals a fresh measure of that span; a word wider than the max takes its own line whole;
+# and an uncovered byte (a tab control char) refuses BY NAME (UncoveredCodepoint), a zero max by name (MaxWidthTooSmall),
+# rather than painting a silent hole or looping forever. No network, no key, no funds.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/text_layout_witness.rish
@@ -33,10 +35,13 @@ say "text-layout: ${out}"
 let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-text-layout' && echo yes"]
 assert (trim green.out) == "yes" else "text-layout: selftest did not print the GREEN layout line"
 
-let refuse = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'UncoveredCodepoint refused by name' && echo yes"]
-assert (trim refuse.out) == "yes" else "text-layout: the uncovered-codepoint refusal was not proven"
+let refuse = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'refused by name' && echo yes"]
+assert (trim refuse.out) == "yes" else "text-layout: the named refusals were not proven"
 
 let band = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'full printable band 32..126' && echo yes"]
 assert (trim band.out) == "yes" else "text-layout: the full printable band did not lay out clean"
 
-say "text-layout: GREEN -- the fonts become usable geometry; a line lays out at proven pen origins and width, the printable band lays clean, and an uncovered byte refuses by name."
+let wrap = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'wrap breaks' && echo yes"]
+assert (trim wrap.out) == "yes" else "text-layout: word-wrap did not break a line at a space boundary"
+
+say "text-layout: GREEN -- the fonts become usable geometry; a line lays out at proven pen origins and width, a paragraph word-wraps to a max width with honest per-line widths, the printable band lays clean, and an uncovered byte or a zero max refuses by name."

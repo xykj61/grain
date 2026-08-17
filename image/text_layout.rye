@@ -11,7 +11,10 @@
 //! glyph's advance. A byte with no glyph in the atlas is a NAMED refusal (UncoveredCodepoint) rather than a silent
 //! hole -- the same discipline glyph.rye keeps, refusing rather than painting garbage. The full-ASCII font covers the
 //! whole printable band, so a caller that composes with it lays out any printable string; an uncovered byte (a
-//! control char, or a codepoint only some other corpus draws) refuses by name. No network, no key, no funds.
+//! control char, or a codepoint only some other corpus draws) refuses by name. wrap_lines grows on top: it breaks a
+//! paragraph into lines that stay within a max width, at space boundaries, so each wrapped span lays out directly and
+//! its stated width equals a fresh measure of it. A word wider than the max takes its own line whole (this rung wraps
+//! at word boundaries and never splits mid-word -- that is a later rung). No network, no key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/text_layout.rye selftest
 
@@ -102,6 +105,101 @@ pub fn covers(atlas: *const glyph.GlyphAtlas, text: []const u8) bool {
     return true;
 }
 
+/// One wrapped line -- a byte span into the original text (start offset, length) and its pen width in cells. The
+/// span excludes the space that broke it, so a caller lays out out_lines[k] directly with layout_line.
+pub const WrapLine = struct {
+    start: u32 = 0,
+    len: u32 = 0,
+    width: u32 = 0,
+};
+
+/// Greedy word-wrap: break `text` into lines whose pen width stays within `max_width`, breaking only at spaces
+/// (codepoint 32). A word wider than max_width takes its own line whole -- this rung never splits mid-word (that is
+/// a later rung); it wraps at word boundaries, the smallest complete thing. Returns the line count written to
+/// `out_lines`. Refuses UncoveredCodepoint by name if any non-space byte has no glyph, and MaxWidthTooSmall if
+/// max_width cannot hold even one glyph. The spans reference `text`, so a caller lays each out with layout_line.
+pub fn wrap_lines(atlas: *const glyph.GlyphAtlas, text: []const u8, max_width: u32, out_lines: []WrapLine) !u32 {
+    // invariant: a usable wrap needs room for at least one glyph, and the input stays within the named ceiling.
+    if (max_width == 0) return error.MaxWidthTooSmall;
+    if (text.len > line_glyph_max) return error.LineTooLong;
+    // invariant: worst case is one line per byte, so the buffer must hold a line for every byte of input.
+    assert(out_lines.len >= text.len);
+
+    const space_cp: u32 = ' ';
+    var lines: u32 = 0;
+    var i: u32 = 0;
+    const n: u32 = @intCast(text.len);
+
+    // Measure the run of non-space bytes starting at `at`, advancing a returned cursor. A caller trusts the width
+    // only after this returns, since an uncovered byte refuses here by name.
+    const measure_word = struct {
+        fn run(a: *const glyph.GlyphAtlas, t: []const u8, at: u32) !struct { end: u32, width: u32 } {
+            var p: u32 = at;
+            var wsum: u32 = 0;
+            const len: u32 = @intCast(t.len);
+            while (p < len and t[p] != ' ') : (p += 1) {
+                const g = a.lookup(t[p]) orelse return error.UncoveredCodepoint;
+                // invariant: an advance is a real forward step, so a word width never stalls.
+                assert(g.advance >= 1);
+                wsum += g.advance;
+                assert(wsum <= line_width_max);
+            }
+            return .{ .end = p, .width = wsum };
+        }
+    }.run;
+
+    while (i < n) {
+        // Skip the run of spaces that separates words; leading and inter-line spaces never begin a line.
+        while (i < n and text[i] == space_cp) : (i += 1) {}
+        if (i >= n) break;
+
+        const line_start = i;
+        // The first word of a line is always accepted, even if wider than max_width (this rung wraps at word
+        // boundaries and never splits mid-word). Its width seeds the line.
+        const first = try measure_word(atlas, text, i);
+        var line_width: u32 = first.width;
+        var line_end: u32 = first.end;
+        i = first.end;
+
+        // Grow the line word by word: measure the whitespace run, then the next word; accept while it fits.
+        while (i < n) {
+            const sp_start = i;
+            while (i < n and text[i] == space_cp) : (i += 1) {}
+            if (i >= n) break; // trailing spaces end the line; they are not part of the span
+            const sp_width: u32 = (i - sp_start) * @as(u32, (atlas.lookup(space_cp) orelse return error.UncoveredCodepoint).advance);
+            const word = try measure_word(atlas, text, i);
+            if (line_width + sp_width + word.width > max_width) {
+                // The word does not fit -- rewind to its start; the spaces before it belong to no line.
+                i = word_start_rewind(sp_start, text, space_cp);
+                break;
+            }
+            line_width += sp_width + word.width;
+            line_end = word.end;
+            i = word.end;
+        }
+
+        // invariant: a closed line holds at least one glyph and never begins on a space.
+        assert(line_end > line_start);
+        assert(text[line_start] != space_cp);
+        out_lines[lines] = WrapLine{ .start = line_start, .len = line_end - line_start, .width = line_width };
+        lines += 1;
+    }
+    // invariant: the wrap produced no more lines than bytes -- the worst-case ceiling held.
+    assert(lines <= n);
+    return lines;
+}
+
+/// Rewind helper: from the start of a whitespace run, return the index of the first non-space byte -- the start of
+/// the word that overflowed, where the next line begins. The spaces between are dropped from every span.
+fn word_start_rewind(sp_start: u32, text: []const u8, space_cp: u32) u32 {
+    var p: u32 = sp_start;
+    const n: u32 = @intCast(text.len);
+    // invariant: the run stays within the text.
+    assert(sp_start <= n);
+    while (p < n and text[p] == space_cp) : (p += 1) {}
+    return p;
+}
+
 // --- selftest: lay real text against the full-ASCII font, prove pen positions, width, coverage, and the refusal ---
 
 fn run_selftest(garden: std.mem.Allocator) !u8 {
@@ -164,8 +262,50 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(band_line.width == advance * band_len);
     assert(covers(&atlas, band));
 
-    print("GREEN image-text-layout: laid '{s}' as {d} glyphs at pen 0..{d} width {d}; measure agrees; empty line zero; full printable band {d}..{d} ({d} glyphs) lays clean at width {d}; covers hit+miss proven; UncoveredCodepoint refused by name for layout and measure\n", .{
-        text, line.count, line.width - advance, line.width, band_lo, band_hi, band_len, band_line.width,
+    // --- word-wrap: break a line at spaces so each line stays within a max width ------------------------------
+    const para = "ab cd ef"; // three 2-glyph words; each word 2*advance=12, a space advance=6
+    // One WrapLine per byte is the worst case; size for the longest string this selftest wraps.
+    const wl = try garden.alloc(WrapLine, 64);
+
+    // A wide max holds the whole paragraph on one line: eight glyphs (two words, two spaces, ...) = 8*advance.
+    const one = try wrap_lines(&atlas, para, 1000, wl);
+    assert(one == 1);
+    assert(wl[0].start == 0);
+    assert(wl[0].len == para.len);
+    assert(wl[0].width == advance * 8);
+
+    // max_width 30 (5*advance = 30) fits "ab cd" (=30) but not a third word: two lines, no space begins a line.
+    const two = try wrap_lines(&atlas, para, advance * 5, wl);
+    assert(two == 2);
+    // Each wrapped span's stated width equals a fresh measure of that span -- the promise a caller relies on.
+    var li: u32 = 0;
+    while (li < two) : (li += 1) {
+        const span = para[wl[li].start .. wl[li].start + wl[li].len];
+        assert(wl[li].width == (try measure_width(&atlas, span)));
+        assert(para[wl[li].start] != ' ');
+    }
+    assert(wl[0].width == advance * 5); // "ab cd" -- five glyphs
+    assert(wl[1].width == advance * 2); // "ef" -- two glyphs
+
+    // A single word wider than max_width takes its own line whole -- wrap never splits mid-word here.
+    const longword = try wrap_lines(&atlas, "abcdef", advance, wl);
+    assert(longword == 1);
+    assert(wl[0].width == advance * 6);
+
+    // Multiple and leading spaces collapse cleanly: spans never begin on a space, widths stay honest.
+    const messy = try wrap_lines(&atlas, "  ab   cd  ", 1000, wl);
+    assert(messy == 1);
+    const mspan = "  ab   cd  "[wl[0].start .. wl[0].start + wl[0].len];
+    assert(mspan[0] != ' ');
+    assert(wl[0].width == (try measure_width(&atlas, mspan)));
+
+    // MaxWidthTooSmall: a zero max refuses by name rather than looping forever.
+    if (wrap_lines(&atlas, para, 0, wl)) |_| return error.ZeroWidthSlipped else |e| {
+        if (e != error.MaxWidthTooSmall) return error.WrongZeroWidth;
+    }
+
+    print("GREEN image-text-layout: laid '{s}' as {d} glyphs at pen 0..{d} width {d}; measure agrees; empty line zero; full printable band {d}..{d} ({d} glyphs) lays clean at width {d}; wrap breaks '{s}' into {d} lines at width {d}; a too-wide word takes its own line; UncoveredCodepoint and MaxWidthTooSmall refused by name\n", .{
+        text, line.count, line.width - advance, line.width, band_lo, band_hi, band_len, band_line.width, para, two, advance * 5,
     });
     return 0;
 }
