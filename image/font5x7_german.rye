@@ -1,0 +1,253 @@
+//! image/font5x7_german.rye -- the open German letters corpus: the a/o umlauts and the eszett (Season G, font content).
+//!
+//! Season G (Open Media Primitives) - font content for the open glyph atlas image/glyph.rye (gfa1), set beside the
+//! five ASCII corpora, the wider-symbol corpora (the box family, the arrows, the block elements, the geometric marks,
+//! the math/technical operators, the currency signs), the Greek letters (image/font5x7_greek.rye), the sub/superscript
+//! and fraction corpora, and the accent trio: the Latin-1 acute/cedilla corpus (image/font5x7_latin1.rye), the grave
+//! vowels (image/font5x7_grave.rye), and the circumflex vowels (image/font5x7_circumflex.rye). This corpus supplies the
+//! three letters that complete a German name: a umlaut and o umlaut (U+00E4, U+00F6) and the eszett (U+00DF, the
+//! sharp s). The third umlaut, u umlaut (U+00FC), already lives in the acute/cedilla corpus; with these three a civic
+//! surface can spell a keeper's own German name -- Mueller as Muller with the umlaut, Schaefer as Schafer, Weiss as
+//! Weiss with the eszett -- rather than an ASCII-folded approximation of it.
+//!
+//! The crux this corpus proves is what SEPARATES an umlaut from a letterform. The umlaut is TWO SEPARATED DOTS: for
+//! both a umlaut and o umlaut the top row carries ink at column 1 and column 3 with column 2 empty between them, the
+//! same two-dot mark the u umlaut already carries. The eszett is a LETTER, not a mark: its top row is a connected curve
+//! with ink on the center column where an umlaut leaves a gap. So the proof reads the top row of each glyph and tells a
+//! dotted vowel from a full letter by whether the center column is empty (a gap between two dots) or inked (a joined top).
+//!
+//! The source stays plain ASCII (ASCII-first): the codepoints are written as numeric literals (0x00DF ...) and each
+//! letter is named in an ASCII comment, so no non-ASCII byte enters the file even though the glyphs it builds cover a
+//! non-ASCII range. The codepoints are NOT contiguous (they skip the letters between the eszett and the umlauts in the
+//! Latin-1 Supplement block), so this corpus carries an explicit ascending codepoint table -- the shape the gfa1
+//! encoder trusts (strictly ascending, shared cell, coverage length == cell area). The drawings ARE the specification:
+//! each letter is seven rows of five cells in ASCII line art ('#' full ink, '.' none) that a reader audits by eye; the
+//! coverage bytes are derived from that art, never the reverse. build_atlas turns the three drawings into a
+//! glyph.GlyphAtlas the gfa1 encoder accepts, so the property that matters stays provable on metal: decode(encode(atlas))
+//! recovers every glyph byte-for-byte, the letters are present and distinct, each reads within an honest legibility
+//! band, and the umlaut-versus-letterform placement holds. No network, no key, no funds -- the marks a surface reads the
+//! day it prints a name that ASCII cannot spell, on our own open font.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_german.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+
+pub const font5x7_german_version = "20260817.060613";
+
+/// Every glyph in this corpus shares one 5-wide, 7-tall cell -- the same body the ASCII, Greek, and accent corpora carry.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance: the cell width plus one column of daylight, the same advance the sibling corpora carry.
+pub const german_advance: u8 = cell_w + 1;
+
+/// The corpus holds exactly the three German letters named in the table below.
+pub const german_count: u32 = 3;
+
+/// Cells per glyph -- the coverage length every letter carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The center column of the cell -- empty between the two umlaut dots, inked in the eszett's joined top. The proof reads it.
+pub const center_col: u32 = 2;
+
+/// The three German codepoints, strictly ascending -- the order the gfa1 encoder trusts. Each aligns by index with
+/// german_art below. Written as numeric literals so the source stays plain ASCII while the glyphs cover a non-ASCII
+/// range:
+///   0x00DF eszett (sharp s), 0x00E4 a umlaut, 0x00F6 o umlaut. The u umlaut (0x00FC) already lives in
+///   image/font5x7_latin1.rye, so this corpus adds the two remaining umlauts and the eszett. The letters between them
+///   in the Latin-1 Supplement block are skipped, so the codepoints are named outright rather than derived from a base.
+const german_codepoints = [german_count]u32{
+    0x00DF, 0x00E4, 0x00F6,
+};
+
+/// The three letters, drawn in the open. Each is seven rows of five cells; '#' ink, '.' background. A reader audits
+/// every letter here by eye, and the coverage bytes are lifted from this art, never guessed. The a umlaut and o umlaut
+/// wear the two-dot umlaut on the top row (columns 1 and 3, a gap at column 2) above a vowel body shared with the accent
+/// corpora; the eszett is a full-height letterform -- a left stem, an upper and lower bowl, and a joined top whose ink
+/// falls on the center column where an umlaut leaves a gap.
+const german_art = [german_count][cell_h][]const u8{
+    .{ ".##..", "#..#.", "#..#.", "#.##.", "#..#.", "#..#.", "#.#.." }, // U+00DF eszett (sharp s)
+    .{ ".#.#.", ".....", ".###.", "....#", ".####", "#...#", ".####" }, // U+00E4 a umlaut
+    .{ ".#.#.", ".....", ".###.", "#...#", "#...#", "#...#", ".###." }, // U+00F6 o umlaut
+};
+
+/// Lift one letter's ASCII art into a freshly allocated coverage grid of exactly cell_area bytes: 255 for ink,
+/// 0 for background. The art's own shape is asserted, so a mistyped row is a stopped line rather than a bad glyph.
+fn coverage_from_art(allocator: std.mem.Allocator, art: [cell_h][]const u8) ![]u8 {
+    // invariant: a coverage grid is exactly the shared cell area, within the atlas ceiling.
+    assert(cell_area >= 1);
+    assert(cell_area <= glyph.coverage_max);
+    const cov = try allocator.alloc(u8, cell_area);
+    var idx: u32 = 0;
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        const row = art[r];
+        // invariant: every drawn row is exactly the cell width -- the art matches the grid.
+        assert(row.len == cell_w);
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            cov[idx] = if (row[c] == '#') 255 else 0;
+            idx += 1;
+        }
+    }
+    // invariant: the whole grid was filled, no cell left unwritten.
+    assert(idx == cell_area);
+    return cov;
+}
+
+/// Build the German letters atlas: three glyphs at the named ascending codepoints, sharing the 5x7 cell and advance.
+/// The gfa1 encoder accepts the result directly (ascending codepoints, coverage length == cell area).
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the corpus is the three named German letters and no more.
+    assert(german_count == 3);
+    assert(cell_area == 35);
+    const glyphs = try allocator.alloc(glyph.Glyph, german_count);
+    var i: u32 = 0;
+    var last_cp: u32 = 0;
+    while (i < german_count) : (i += 1) {
+        const cp = german_codepoints[i];
+        // invariant: codepoints are strictly ascending -- the ordering the gfa1 encoder trusts.
+        assert(i == 0 or cp > last_cp);
+        last_cp = cp;
+        const cov = try coverage_from_art(allocator, german_art[i]);
+        glyphs[i] = glyph.Glyph{
+            .codepoint = cp,
+            .advance = german_advance,
+            .coverage = cov,
+        };
+    }
+    // invariant: the last codepoint is the o umlaut (U+00F6) -- the table ends where this set ends.
+    assert(glyphs[german_count - 1].codepoint == 0x00F6);
+    return glyph.GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- the legibility signal a blank glyph would fail.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+/// Count the inked cells in row r of a glyph, restricted to the half-open column band [c0, c1). The umlaut-versus-
+/// letterform proof reads the top row's two dots and its center column with this one reader. Row 0 is the top.
+fn row_band_ink(cov: []const u8, r: u32, c0: u32, c1: u32) u32 {
+    // invariant: the row index sits inside the shared cell, over the shared grid.
+    assert(r < cell_h);
+    assert(cov.len == cell_area);
+    // invariant: the column band is well-ordered and inside the cell width.
+    assert(c0 <= c1);
+    assert(c1 <= cell_w);
+    var n: u32 = 0;
+    var c: u32 = c0;
+    while (c < c1) : (c += 1) {
+        if (cov[r * cell_w + c] != 0) n += 1;
+    }
+    // invariant: the band count never exceeds the band it was counted over.
+    assert(n <= c1 - c0);
+    return n;
+}
+
+/// The coverage grid of a codepoint's glyph in the built atlas, or a named miss -- the reader the placement proofs use.
+fn coverage_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) ![]const u8 {
+    if (atlas.lookup(codepoint)) |g| return g.coverage;
+    return error.GermanLetterMissing;
+}
+
+// --- selftest: build the German atlas, round-trip it through gfa1, prove present, distinct, legible, marks-placed ----
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built atlas is the three-letter corpus at the shared cell.
+    assert(glyph_count == german_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // Three present letters: every one looks up, carries the shared advance; an unaccented ASCII letter misses.
+    var d: u32 = 0;
+    while (d < german_count) : (d += 1) {
+        const cp = german_codepoints[d];
+        if (back.lookup(cp)) |g| {
+            assert(g.codepoint == cp);
+            assert(g.advance == german_advance);
+        } else return error.GermanLetterMissing;
+    }
+    if (back.lookup('s')) |_| return error.NonGermanFound else {}
+
+    // Distinctness: no two letters share identical coverage -- the a umlaut and the o umlaut differ, and neither is the
+    // eszett (catches a copy slip that would leave two names spelled with one glyph).
+    var a: u32 = 0;
+    while (a < german_count) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b < german_count) : (b += 1) {
+            if (std.mem.eql(u8, atlas.glyphs[a].coverage, atlas.glyphs[b].coverage)) return error.GermanLettersNotDistinct;
+        }
+    }
+
+    // Legibility: each letter's ink count sits inside an honest band. The floor sits where the o umlaut (its lightest)
+    // still reads, the ceiling where the a umlaut (its heaviest) still resolves as a letter, not a block.
+    const ink_min: u32 = 12;
+    const ink_max: u32 = 18;
+    var lo: u32 = cell_area;
+    var hi: u32 = 0;
+    var k: u32 = 0;
+    while (k < german_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (n < ink_min or n > ink_max) return error.GermanLetterIllegible;
+        if (n < lo) lo = n;
+        if (n > hi) hi = n;
+    }
+    // invariant: the observed ink band stayed inside the honest bounds.
+    assert(lo >= ink_min);
+    assert(hi <= ink_max);
+
+    // Umlaut-versus-letterform placement -- what separates a dotted vowel from a full letter, and what a reader audits.
+    // The two umlaut vowels each carry TWO SEPARATED DOTS on the top row (ink at column 1 and column 3, the center
+    // column empty between them), the same mark the u umlaut already carries. The eszett is a LETTER, not a mark: its
+    // top row is a joined curve with ink on the center column where an umlaut leaves a gap. Each guard is toothed on its
+    // own -- a merged umlaut or an eszett drawn with a dotted top reds by name.
+    const umlauts = [_]u32{ 0x00E4, 0x00F6 };
+    var m: u32 = 0;
+    while (m < umlauts.len) : (m += 1) {
+        const cov = try coverage_of(&atlas, umlauts[m]);
+        if (!(row_band_ink(cov, 0, 1, 2) >= 1)) return error.UmlautLeftDotMissing;
+        if (!(row_band_ink(cov, 0, 3, 4) >= 1)) return error.UmlautRightDotMissing;
+        if (!(row_band_ink(cov, 0, center_col, center_col + 1) == 0)) return error.UmlautDotsMerged;
+    }
+    const eszett = try coverage_of(&atlas, 0x00DF);
+    if (!(row_band_ink(eszett, 0, center_col, center_col + 1) >= 1)) return error.EszettMissingJoinedTop;
+
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof.
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-german: {d} German letters U+00DF,U+00E4,U+00F6 at {d}x{d} round-trip byte-identical; all present, distinct, legible (ink {d}..{d} of {d}); the two umlauts two-dotted with a center gap, the eszett a joined letterform; encoded {d} bytes, raw {d}\n", .{
+        glyph_count, cell_w, cell_h, lo, hi, cell_area, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_german selftest\n", .{});
+    return 1;
+}
