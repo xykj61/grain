@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260816.231605
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image -- the open uppercase alphabet corpus, a 5x7 A-Z set, GREEN
+prompt Take the next agent-doable lap Lindy-first crux-first; Rye prioritized, Glow on green-witnessed Rye; deep-read one council-rota doc; send often
+think Read REMEMBER: the live edge is the open-media family; font5x7.rye (ten numerals) is the last GREEN rung, and the named next open-media rung is extending the corpus toward A-Z and punctuation.
+think Lindy-first crux-first: a font corpus is read forever (high Lindy); the smallest tractable, decisive move is the uppercase alphabet, mirroring the proven digit corpus rather than reaching for lowercase+punctuation+inter-frame video at once. One keystone this round.
+think Design read: keep font5x7.rye (digits) whole as proven floor and add image/font5x7_alpha.rye beside it -- accrete-never-break; a later round can unify into a full ASCII corpus. The digit module is a clean template: same 5x7 cell, same coverage_from_art lift, same build_atlas over the glyph.rye gfa1 encoder, same four proven properties (byte-for-byte round-trip, all present + carry advance while a non-member misses, distinct coverage, honest legibility band).
+think Council rota lap index 1120 mod 27 = 13 -> foundations/20260728-032134_keeh-and-kia.md (the happy zone): fix the fault at the station, witness-first red-then-green, high output without ignoring the red light -- the exact discipline for a hand-drawn corpus, so the drawings are the spec and the round-trip is the proof.
+obs Hand-drew twenty-six 5x7 uppercase letters as ASCII line art in the source so a reader audits every glyph by eye; coverage bytes derived from the art, never the reverse. All 26 present, distinct, legible (ink 10..20 of 35). Kept the same ink band (6..30) as the digit corpus for consistency.
+obs Compression reported, not asserted (encoded 1273 > raw 910) -- real letters are busy, and asserting a direction the data does not hold would be a false invariant (the REDS #82 lesson the digit corpus already learned). The round-trip is the proof.
+obs Baseline first: ran the existing font5x7 witness GREEN before touching anything, then proved the new rung. tame_style_check clean, width-check exit 0, new files plain ASCII per ASCII-first. No network, no key, no funds -- no custody gate near this rung.
+loom witness=font5x7_alpha_witness glyphs=26 cell=5x7 encoded_bytes=1273 raw_bytes=910 ink_lo=10 ink_hi=20
+file image/font5x7_alpha.rye the twenty-six uppercase letters hand-drawn into the shared 5x7 body, built into the gfa1 atlas
+file tools/font5x7_alpha_witness.rish proves the corpus on metal -- round-trip byte-identical, all present, distinct, legible
+file crux/REMEMBER.md live-edge line names font5x7_alpha GREEN; next rungs lowercase + punctuation, then inter-frame video
+recommend keep-going next open-media rung: extend the corpus toward lowercase and punctuation, then an inter-frame video codec
