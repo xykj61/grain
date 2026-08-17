@@ -1,11 +1,11 @@
 # Cairn — mark the way back before you debride
 
 **Seated:** `20260809.024851` on Keaton's word · **Status:** Living
-**Ledger:** [`../../work-in-progress/CAIRNS.md`](../../work-in-progress/CAIRNS.md)
+**Ledger:** [`../../crux/CAIRNS.md`](../../crux/CAIRNS.md)
 **Kin:** [`debride.md`](debride.md) — debride removes; a cairn marks the way back first.
 **Cursor twin:** [`../../.cursor/rules/cairn.mdc`](../../.cursor/rules/cairn.mdc)
 
-A **cairn** is a stacked-stone trail marker. Before any **seated debride** that rewrites a living card — REMEMBER, THREADS, TASKS, ROADMAP, or any work-in-progress file whose old body may hold ideas worth recalling — record one row in `work-in-progress/CAIRNS.md` so the departing card stays one `git show` away.
+A **cairn** is a stacked-stone trail marker. Before any **seated debride** that rewrites a living card — REMEMBER, THREADS, TASKS, ROADMAP, or any work-in-progress file whose old body may hold ideas worth recalling — record one row in `crux/CAIRNS.md` so the departing card stays one `git show` away.
 
 ## What a cairn always records
 
