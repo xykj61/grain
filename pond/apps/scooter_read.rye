@@ -1,0 +1,263 @@
+//! pond/apps/scooter_read.rye -- Scooter, the read view: a held scroll position over a channel.
+//!
+//! Season G (Open Media Primitives) -- the terminal family. Two proven halves stood a step apart: scooter_scroll
+//! computes the pure read-cursor partition (window/latest_top/scroll_up/scroll_down over a post count), and
+//! scooter_view.render_window draws the slice a keeper has scrolled to. Neither HOLDS a position -- a caller had
+//! to carry the top itself and pass it to both. This module is that holder: a View owns one scroll position and
+//! offers the paging verbs a reader reaches for (home, oldest, page up/down, line up/down), each clamped against
+//! the channel's live post count, and renders the frame at the held position. Held PURE -- it owns a u32 and
+//! composes the two proven modules; it draws no pixel of its own and reads no channel body, so scooter_scroll
+//! keeps the math, scooter_view keeps the drawing, and this keeps the position between keystrokes.
+//! Pattern elder: pond/apps/scooter_compose.rye -- the WRITE-side session; this is its READ-side twin.
+//!
+//! The crux is one held position, bounded and always in step with the drawn frame:
+//!   - A page steps by page_rows -- the posts a scrolled frame shows, one less than the body since render_window
+//!     reserves the last body row for the scroll status. So a page up reveals exactly the posts that were above.
+//!   - go_home anchors the newest to the bottom (a chat's home); go_oldest jumps to the first post.
+//!   - page_up/line_up walk toward older history clamped at the first post; page_down/line_down walk toward newer
+//!     clamped at home -- neither ever underflows or names a seq past the journal (scooter_scroll proves it).
+//!   - render is render_window at the held top -- the view's position and the drawn slice are always one truth.
+//!
+//! Facts only, custody-first: it holds a scroll position and renders a public journal -- no network, no key, no
+//! funds. Binding a keeper's Up/Down/Page keys to these verbs is a later rung; the raw TTY read and the Comlink
+//! wire between two Constel piers reach the serve gate -- the maintainer's hand.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build pond/apps/scooter_read.rye -femit-bin=pond/bin/scooter-read
+//!   pond/bin/scooter-read selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const channel = @import("scooter_channel.rye");
+const scroll = @import("scooter_scroll.rye");
+const view = @import("scooter_view.rye");
+
+pub const scooter_read_version = "20260817.110000";
+
+/// The posts a scrolled frame shows -- one less than the body, since render_window reserves the last body row
+/// for the "(^ A older  v B newer)" status. A page steps by exactly this many posts, so paging aligns with the
+/// drawn slice: a page up reveals precisely the posts the status marked as older above.
+pub const page_rows: u32 = view.body_rows - 1;
+
+/// A held read view over a channel: one scroll position (the seq of the topmost visible post). The channel is
+/// passed to each verb rather than stored, so the view never outlives or aliases a channel it does not own.
+pub const View = struct {
+    top: u32 = 0,
+
+    /// A fresh view at the home position -- the newest posts anchored to the bottom for the channel's post count.
+    pub fn opened(ch: *const channel.Channel) View {
+        // invariant: a channel never exceeds its post bound, so latest_top reads a real count.
+        assert(ch.post_count <= channel.max_posts);
+        const home = scroll.latest_top(ch.post_count, page_rows);
+        // invariant: the home position never names a seq past the journal.
+        assert(home <= ch.post_count);
+        return .{ .top = home };
+    }
+
+    /// Jump to the home view -- the newest posts anchored to the bottom.
+    pub fn go_home(self: *View, ch: *const channel.Channel) void {
+        // invariant: the held position is bounded before and the channel count is real.
+        assert(self.top <= scroll.max_posts);
+        assert(ch.post_count <= channel.max_posts);
+        self.top = scroll.latest_top(ch.post_count, page_rows);
+        // invariant: home never names a seq past the journal.
+        assert(self.top <= ch.post_count);
+    }
+
+    /// Jump to the oldest post -- the top of the journal.
+    pub fn go_oldest(self: *View) void {
+        // invariant: the held position is bounded before the jump.
+        assert(self.top <= scroll.max_posts);
+        self.top = 0;
+        // invariant: the oldest position is the first seq.
+        assert(self.top == 0);
+    }
+
+    /// Page toward OLDER history by a full page, clamped at the first post.
+    pub fn page_up(self: *View) void {
+        // invariant: the held position is bounded before the step.
+        assert(self.top <= scroll.max_posts);
+        const before = self.top;
+        self.top = scroll.scroll_up(self.top, page_rows);
+        // invariant: paging up never moves toward newer posts.
+        assert(self.top <= before);
+    }
+
+    /// Page toward NEWER history by a full page, clamped at the home view.
+    pub fn page_down(self: *View, ch: *const channel.Channel) void {
+        // invariant: the held position is bounded and the channel count is real.
+        assert(self.top <= scroll.max_posts);
+        assert(ch.post_count <= channel.max_posts);
+        self.top = scroll.scroll_down(self.top, page_rows, ch.post_count, page_rows);
+        // invariant: paging down never names a seq past the journal.
+        assert(self.top <= ch.post_count);
+    }
+
+    /// Step one post toward OLDER history, clamped at the first post.
+    pub fn line_up(self: *View) void {
+        // invariant: the held position is bounded before the step.
+        assert(self.top <= scroll.max_posts);
+        const before = self.top;
+        self.top = scroll.scroll_up(self.top, 1);
+        // invariant: a line up moves at most one toward older, never newer.
+        assert(self.top <= before);
+    }
+
+    /// Step one post toward NEWER history, clamped at the home view.
+    pub fn line_down(self: *View, ch: *const channel.Channel) void {
+        // invariant: the held position is bounded and the channel count is real.
+        assert(self.top <= scroll.max_posts);
+        assert(ch.post_count <= channel.max_posts);
+        self.top = scroll.scroll_down(self.top, 1, ch.post_count, page_rows);
+        // invariant: a line down never names a seq past the journal.
+        assert(self.top <= ch.post_count);
+    }
+
+    /// Draw the frame at the held position -- render_window at self.top, the position and the drawn slice one truth.
+    pub fn render(self: *const View, ch: *const channel.Channel) view.Frame {
+        // invariant: the held position is bounded, so render_window reads a real slice.
+        assert(self.top <= scroll.max_posts);
+        assert(ch.post_count <= channel.max_posts);
+        return view.render_window(ch, self.top);
+    }
+};
+
+// --- selftest -------------------------------------------------------------------------------------------
+
+const host_key: u32 = 1001;
+const ada: u32 = 2002;
+
+fn a_journal_of(post_count: u32) !channel.Channel {
+    // A channel with `post_count` posts, each naming its own seq so the drawn row is checkable.
+    var ch = channel.Channel.open(host_key);
+    try ch.admit(host_key, ada);
+    var k: u32 = 0;
+    while (k < post_count) : (k += 1) {
+        var buf: [16]u8 = undefined;
+        const text = std.fmt.bufPrint(&buf, "post {d}", .{k}) catch unreachable;
+        _ = try ch.post(ada, text);
+    }
+    return ch;
+}
+
+fn a_fresh_view_opens_at_home() !void {
+    // Thirty posts: the fresh view sits at the home position, and its render anchors the newest to the bottom.
+    var ch = try a_journal_of(30);
+    const v = View.opened(&ch);
+    assert(v.top == scroll.latest_top(30, page_rows)); // 30 - 22 == 8
+    const frame = v.render(&ch);
+    // The newest post is anchored to the last body row; the view's render equals render_window at its top.
+    assert(std.mem.eql(u8, view.row_text(&frame, page_rows), "[29] p2002: post 29"));
+    const direct = view.render_window(&ch, v.top);
+    assert(std.mem.eql(u8, &frame.cells, &direct.cells));
+    print("scooter_read: a fresh view opens at home, its render anchoring the newest post to the bottom.\n", .{});
+}
+
+fn paging_up_reveals_older_then_clamps() !void {
+    // From home, a page up steps back exactly one page; a second reaches the first post and clamps there.
+    var ch = try a_journal_of(30);
+    var v = View.opened(&ch);
+    const home = v.top; // 8
+    v.page_up();
+    assert(v.top == scroll.scroll_up(home, page_rows)); // 8 - 22 -> 0 (clamped)
+    assert(v.top == 0);
+    // Already at the first post: another page up stays put, never underflowing.
+    v.page_up();
+    assert(v.top == 0);
+    // The render at the top shows the oldest post first.
+    const frame = v.render(&ch);
+    assert(std.mem.eql(u8, view.row_text(&frame, 1), "[0] p2002: post 0"));
+    print("scooter_read: paging up reveals older posts and clamps at the first, never underflowing.\n", .{});
+}
+
+fn paging_down_returns_home_then_clamps() !void {
+    // From the oldest, a page down returns toward newer; it never passes the home view.
+    var ch = try a_journal_of(30);
+    var v = View.opened(&ch);
+    v.go_oldest();
+    assert(v.top == 0);
+    v.page_down(&ch); // 0 + 22 -> clamped to home 8
+    assert(v.top == scroll.latest_top(30, page_rows));
+    // Already home: another page down stays put.
+    v.page_down(&ch);
+    assert(v.top == scroll.latest_top(30, page_rows));
+    print("scooter_read: paging down returns toward the newest and clamps at the home view, never past it.\n", .{});
+}
+
+fn line_steps_move_by_one() !void {
+    // A line up and a line down move the position by exactly one post, each clamped at its edge.
+    var ch = try a_journal_of(30);
+    var v = View.opened(&ch);
+    const home = v.top; // 8
+    v.line_up();
+    assert(v.top == home - 1); // 7
+    v.line_down(&ch);
+    assert(v.top == home); // back to 8, clamped at home
+    v.line_down(&ch); // already home
+    assert(v.top == home);
+    // Line up walks one at a time down to the first post and clamps.
+    v.go_oldest();
+    v.line_up();
+    assert(v.top == 0);
+    print("scooter_read: a line up and a line down move the held position by exactly one, clamped at each edge.\n", .{});
+}
+
+fn a_short_journal_stays_home() !void {
+    // Four posts fit the body: home is the top, every paging verb is a harmless no-op, the render shows all four.
+    var ch = try a_journal_of(4);
+    var v = View.opened(&ch);
+    assert(v.top == 0);
+    v.page_up();
+    assert(v.top == 0);
+    v.page_down(&ch);
+    assert(v.top == 0);
+    v.line_up();
+    v.line_down(&ch);
+    assert(v.top == 0);
+    const frame = v.render(&ch);
+    // A fitting journal renders exactly the elder face -- every post, no scroll mark.
+    const elder = view.render(&ch);
+    assert(std.mem.eql(u8, &frame.cells, &elder.cells));
+    print("scooter_read: a journal that fits the body stays home, every paging verb a harmless no-op.\n", .{});
+}
+
+fn the_view_and_the_frame_are_one_truth() !void {
+    // At every position a walk of paging verbs reaches, the render equals render_window at the held top, and the
+    // top never names a seq past the journal -- the held position and the drawn slice are always one truth.
+    var ch = try a_journal_of(30);
+    var v = View.opened(&ch);
+    v.go_oldest();
+    var step: u32 = 0;
+    // Walk from oldest to home by line steps, checking the render matches at each stop; bounded by post_count.
+    while (step <= 30) : (step += 1) {
+        assert(v.top <= 30);
+        const frame = v.render(&ch);
+        const direct = view.render_window(&ch, v.top);
+        assert(std.mem.eql(u8, &frame.cells, &direct.cells));
+        v.line_down(&ch);
+    }
+    // The walk ended clamped at home, never past it.
+    assert(v.top == scroll.latest_top(30, page_rows));
+    print("scooter_read: at every position the view's render equals render_window at its top -- one truth.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try a_fresh_view_opens_at_home();
+    try paging_up_reveals_older_then_clamps();
+    try paging_down_returns_home_then_clamps();
+    try line_steps_move_by_one();
+    try a_short_journal_stays_home();
+    try the_view_and_the_frame_are_one_truth();
+    print("scooter_read: version {s}\n", .{scooter_read_version});
+    print("GREEN: scooter_read; a held read view over a channel -- one bounded scroll position paged by home, oldest, page, and line verbs, each clamped against the live journal, its render always render_window at the held top so the position and the drawn slice are one truth, all pure and deterministic.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "scooter-read"))) {
+        return run_selftest();
+    }
+    return run_selftest();
+}

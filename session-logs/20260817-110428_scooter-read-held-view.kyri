@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260817.110428
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title scooter_read -- the held read view, a scroll position paged over a channel
+prompt recur: continue the next agent-doable lap Lindy-first crux-first; send often; Rye-first; approve own design rounds; stop at custody gates
+think Prior lap landed render_window (the scroll position wired to the drawn frame). Its recommend named the next rung: bind navigation over a HELD position. Two ways to reach a keyboard: extend dexter_key to decode Up/Down/Page as first-class kinds (it maps them to .ignored today, a proven contract), or first build the held position the keys will drive.
+think Chose the held position first -- smaller, self-contained, does not reopen dexter_key's decode contract in the same lap (one keystone per round). scooter_read is scooter_compose's READ-side twin: where compose holds the write prompt, read holds the scroll top.
+think Design: View owns one u32 top; verbs (opened/go_home/go_oldest/page_up/page_down/line_up/line_down) delegate to scooter_scroll clamped against the channel's live post_count; render delegates to scooter_view.render_window at the held top. page_rows = view.body_rows - 1, matching render_window's reserved status row, so a page up reveals exactly the posts the status marked older above. Values apart, never braided: scroll keeps the math, view keeps the drawing, this keeps the position.
+think The channel is passed to each verb rather than stored, so the view never outlives or aliases a channel it does not own -- the same custody care scooter_compose takes with its channel pointer.
+obs Six cruxes GREEN on metal over a 30-post journal (page_rows 22): a fresh view opens at home (top 8) and its render anchors seq 29 to the last body row, byte-for-byte render_window at its top; paging up steps back one page to the first post and clamps at 0; paging down returns to home (8) and clamps; a line up/down moves by exactly one at each edge; a 4-post journal stays home with every paging verb a no-op and renders the elder face exactly; and the strongest -- walking oldest-to-home by line steps, the view's render equals render_window at its top at EVERY stop, so the held position and the drawn slice are one truth.
+obs GREEN first metal run, no reds. Elder witnesses unaffected (new module, imports scooter_channel/scooter_scroll/scooter_view same-dir, no cycle). tame_style_check bans clean, width-check exit 0, plain 7-bit ASCII, >=2 positive // invariant asserts per fn (before-and-after position bounds), no seam cast.
+loom witness=scooter_read_witness cruxes=6 journal_posts=30 page_rows=22 walk=oldest_to_home_by_line result=GREEN
+file pond/apps/scooter_read.rye the held read view: one bounded scroll position, paging verbs clamped against the live journal, render is render_window at the held top
+file tools/scooter_read_witness.rish builds the module and asserts the six cruxes GREEN on metal
+file session-logs/20260817-110428_scooter-read-held-view.kyri this record
+recommend keep-going the read view now has a held position and a faithful render; the next rung binds a keeper's keys to it -- extend dexter_key to decode Up/Down (arrows) and Page Up/Down as first-class key kinds (they map to .ignored today, a proven contract to update with its witness), then a small binding maps those keys to scooter_read's page/line verbs; the raw TTY read and the Comlink wire between two Constel piers reach the serve gate, the maintainer's hand
