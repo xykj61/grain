@@ -1,0 +1,289 @@
+//! image/font5x7_diaeresis.rye -- the open diaeresis-accent vowels corpus: the two dots that complete the five leans.
+//!
+//! Season G (Open Media Primitives) - font content for the open glyph atlas image/glyph.rye (gfa1), set beside the
+//! five ASCII corpora (image/font5x7.rye the numerals, image/font5x7_alpha.rye the uppercase, image/font5x7_lower.rye
+//! the lowercase, image/font5x7_punct.rye the punctuation, image/font5x7_symbol.rye the symbols), the wider-symbol
+//! corpora (the box family, the arrows, the block elements, the geometric marks, the math/technical operators, the
+//! currency signs), the Greek letters (image/font5x7_greek.rye), the sub/superscript and fraction corpora, and the
+//! four accent corpora already drawn -- the acute/cedilla set (image/font5x7_latin1.rye), the grave vowels
+//! (image/font5x7_grave.rye), the circumflex vowels (image/font5x7_circumflex.rye), and the tilde vowels
+//! (image/font5x7_tilde.rye). The German letters corpus (image/font5x7_german.rye) already drew the two-dot mark on
+//! three vowels -- a umlaut, o umlaut, u umlaut -- yet the same mark spells other languages on OTHER vowels a German
+//! name never reaches: e diaeresis, i diaeresis, y diaeresis, the letters French (Noel, naive, L'Hay) and the wider
+//! Latin world carry. This corpus draws the three the umlaut set left undrawn -- e diaeresis, i diaeresis, y diaeresis
+//! -- at their real Unicode codepoints U+00EB, U+00EF, U+00FF, in our own open hand on the same 5x7 body.
+//!
+//! The corpus completes the accent taxonomy as its FIFTH lean. The acute mark (image/font5x7_latin1.rye) leans right,
+//! the grave (image/font5x7_grave.rye) left, the circumflex (image/font5x7_circumflex.rye) peaks dead-center, the tilde
+//! (image/font5x7_tilde.rye) waves across both halves -- and the diaeresis is TWO SEPARATED DOTS: ink at exactly two
+//! columns of the top row with a CLEAN GAP between them, and nothing on the second mark row. That single row of two
+//! parted dots is the crux this corpus proves: a reader tells a diaeresis from an acute (one right stroke), a grave
+//! (one left stroke), a circumflex (a two-row centered peak), or a tilde (a two-row wave) by the two dots that stand
+//! apart on one row. And the mark is the SAME two-dot mark image/font5x7_german.rye drew over a/o/u -- proven here
+//! byte-for-byte against the German umlaut's own top row, so the accent family stays one consistent hand.
+//!
+//! The source stays plain ASCII (ASCII-first): the codepoints are written as numeric literals (0x00EB ...) and each
+//! letter is named in an ASCII comment, so no non-ASCII byte enters the file even though the glyphs it builds cover a
+//! non-ASCII range. The codepoints are NOT contiguous (they skip the unaccented and other-accented letters between them
+//! in the Latin-1 Supplement block), so this corpus carries an explicit ascending codepoint table -- the shape the gfa1
+//! encoder trusts (strictly ascending, shared cell, coverage length == cell area). The drawings ARE the specification:
+//! each letter is seven rows of five cells in ASCII line art ('#' full ink, '.' none) that a reader audits by eye; the
+//! coverage bytes are derived from that art, never the reverse. build_atlas turns the three drawings into a
+//! glyph.GlyphAtlas the gfa1 encoder accepts, so the property that matters stays provable on metal: decode(encode(atlas))
+//! recovers every glyph byte-for-byte, the letters are present and distinct, each reads within an honest legibility band,
+//! and each diaeresis mark is two parted dots on one row. No network, no key, no funds -- the marks a surface reads the
+//! day it prints a name ASCII cannot spell, on our own open font.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_diaeresis.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+const german = @import("font5x7_german.rye");
+
+pub const font5x7_diaeresis_version = "20260817.065004";
+
+/// Every glyph in this corpus shares one 5-wide, 7-tall cell -- the same body the ASCII, Greek, and accent corpora carry.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance: the cell width plus one column of daylight, the same advance the sibling corpora carry.
+pub const diaeresis_advance: u8 = cell_w + 1;
+
+/// The corpus holds exactly the three diaeresis-accent vowels named in the table below.
+pub const diaeresis_count: u32 = 3;
+
+/// Cells per glyph -- the coverage length every letter carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The center column of the cell. The diaeresis dots straddle it -- one dot left of it (column 1), one right (column 3),
+/// column 2 itself blank -- so the "two parted dots" proof reads a gap exactly here.
+pub const center_col: u32 = 2;
+
+/// The three diaeresis codepoints, strictly ascending -- the order the gfa1 encoder trusts. Each aligns by index with
+/// diaeresis_art below. Written as numeric literals so the source stays plain ASCII while the glyphs cover a non-ASCII
+/// range:
+///   0x00EB e diaeresis, 0x00EF i diaeresis, 0x00FF y diaeresis. The letters between them in the Latin-1 Supplement
+///   block are skipped, so the codepoints are named outright rather than derived.
+const diaeresis_codepoints = [diaeresis_count]u32{
+    0x00EB, 0x00EF, 0x00FF,
+};
+
+/// The three letters, drawn in the open. Each is seven rows of five cells; '#' ink, '.' background. A reader audits every
+/// letter here by eye, and the coverage bytes are lifted from this art, never guessed. All three wear the same diaeresis
+/// mark on their top row -- TWO DOTS parted by a gap (row 0 is ".#.#.", columns 1 and 3 inked, column 2 blank), with the
+/// second mark row (row 1) fully blank, the same mark image/font5x7_german.rye drew over a/o/u -- above a letter body
+/// shared with the circumflex twins in image/font5x7_circumflex.rye (the e and i bodies) and the lowercase y in
+/// image/font5x7_lower.rye. Two parted dots on one row is the whole point: neither the acute's right stroke, the grave's
+/// left, the circumflex's centered peak, nor the tilde's spanning wave, but a pair that stands apart -- the fifth lean.
+const diaeresis_art = [diaeresis_count][cell_h][]const u8{
+    .{ ".#.#.", ".....", ".###.", "#...#", "#####", "#....", ".###." }, // U+00EB e diaeresis
+    .{ ".#.#.", ".....", ".##..", "..#..", "..#..", "..#..", ".###." }, // U+00EF i diaeresis
+    .{ ".#.#.", ".....", "#...#", "#...#", ".####", "....#", ".###." }, // U+00FF y diaeresis
+};
+
+/// Lift one letter's ASCII art into a freshly allocated coverage grid of exactly cell_area bytes: 255 for ink,
+/// 0 for background. The art's own shape is asserted, so a mistyped row is a stopped line rather than a bad glyph.
+fn coverage_from_art(allocator: std.mem.Allocator, art: [cell_h][]const u8) ![]u8 {
+    // invariant: a coverage grid is exactly the shared cell area, within the atlas ceiling.
+    assert(cell_area >= 1);
+    assert(cell_area <= glyph.coverage_max);
+    const cov = try allocator.alloc(u8, cell_area);
+    var idx: u32 = 0;
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        const row = art[r];
+        // invariant: every drawn row is exactly the cell width -- the art matches the grid.
+        assert(row.len == cell_w);
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            cov[idx] = if (row[c] == '#') 255 else 0;
+            idx += 1;
+        }
+    }
+    // invariant: the whole grid was filled, no cell left unwritten.
+    assert(idx == cell_area);
+    return cov;
+}
+
+/// Build the diaeresis-accent vowels atlas: three glyphs at the named ascending codepoints, sharing the 5x7 cell and
+/// advance. The gfa1 encoder accepts the result directly (ascending codepoints, coverage length == cell area).
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the corpus is the three named diaeresis vowels and no more.
+    assert(diaeresis_count == 3);
+    assert(cell_area == 35);
+    const glyphs = try allocator.alloc(glyph.Glyph, diaeresis_count);
+    var i: u32 = 0;
+    var last_cp: u32 = 0;
+    while (i < diaeresis_count) : (i += 1) {
+        const cp = diaeresis_codepoints[i];
+        // invariant: codepoints are strictly ascending -- the ordering the gfa1 encoder trusts.
+        assert(i == 0 or cp > last_cp);
+        last_cp = cp;
+        const cov = try coverage_from_art(allocator, diaeresis_art[i]);
+        glyphs[i] = glyph.Glyph{
+            .codepoint = cp,
+            .advance = diaeresis_advance,
+            .coverage = cov,
+        };
+    }
+    // invariant: the last codepoint is the y diaeresis (U+00FF) -- the table ends where this set ends.
+    assert(glyphs[diaeresis_count - 1].codepoint == 0x00FF);
+    return glyph.GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- the legibility signal a blank glyph would fail.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+/// Count the inked cells in row r of a glyph, restricted to the half-open column band [c0, c1). The diaeresis proof
+/// reads the top row (row 0) column by column with this one reader. Row 0 is the top.
+fn row_band_ink(cov: []const u8, r: u32, c0: u32, c1: u32) u32 {
+    // invariant: the row index sits inside the shared cell, over the shared grid.
+    assert(r < cell_h);
+    assert(cov.len == cell_area);
+    // invariant: the column band is well-ordered and inside the cell width.
+    assert(c0 <= c1);
+    assert(c1 <= cell_w);
+    var n: u32 = 0;
+    var c: u32 = c0;
+    while (c < c1) : (c += 1) {
+        if (cov[r * cell_w + c] != 0) n += 1;
+    }
+    // invariant: the band count never exceeds the band it was counted over.
+    assert(n <= c1 - c0);
+    return n;
+}
+
+/// The whole top-row (row 0) ink of a codepoint's glyph -- the two dots and nothing else. A diaeresis carries exactly
+/// two inked cells here; the proof reads this against 2.
+fn top_row_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return row_band_ink(g.coverage, 0, 0, cell_w);
+    return error.DiaeresisVowelMissing;
+}
+
+/// The center-column ink on the top row of a codepoint's glyph -- the GAP between the two dots. A diaeresis leaves this
+/// column blank (0), which is what parts the dots; the proof reads this against 0.
+fn top_center_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return row_band_ink(g.coverage, 0, center_col, center_col + 1);
+    return error.DiaeresisVowelMissing;
+}
+
+/// The second mark-row (row 1) ink of a codepoint's glyph. A diaeresis is a SINGLE row of dots -- row 1 is blank (0),
+/// which separates it from the circumflex and the tilde, whose marks span two rows. The proof reads this against 0.
+fn second_mark_row_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return row_band_ink(g.coverage, 1, 0, cell_w);
+    return error.DiaeresisVowelMissing;
+}
+
+// --- selftest: build the diaeresis atlas, round-trip it through gfa1, prove present, distinct, legible, two-dotted ---
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built atlas is the three-vowel corpus at the shared cell.
+    assert(glyph_count == diaeresis_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // Three present vowels: every one looks up, carries the shared advance; an unaccented ASCII vowel misses.
+    var d: u32 = 0;
+    while (d < diaeresis_count) : (d += 1) {
+        const cp = diaeresis_codepoints[d];
+        if (back.lookup(cp)) |g| {
+            assert(g.codepoint == cp);
+            assert(g.advance == diaeresis_advance);
+        } else return error.DiaeresisVowelMissing;
+    }
+    if (back.lookup('e')) |_| return error.NonDiaeresisFound else {}
+
+    // Distinctness: no two of the three letters share identical coverage (catches a copy slip that would leave two
+    // names spelled with one glyph).
+    var a: u32 = 0;
+    while (a < diaeresis_count) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b < diaeresis_count) : (b += 1) {
+            if (std.mem.eql(u8, atlas.glyphs[a].coverage, atlas.glyphs[b].coverage)) return error.DiaeresisVowelsNotDistinct;
+        }
+    }
+
+    // Legibility: each letter's ink count sits inside an honest band. The floor sits where the i diaeresis (its lighter,
+    // a thin stem under two dots) still reads, the ceiling where the e diaeresis (its heavier) still resolves as a letter.
+    const ink_min: u32 = 8;
+    const ink_max: u32 = 18;
+    var lo: u32 = cell_area;
+    var hi: u32 = 0;
+    var k: u32 = 0;
+    while (k < diaeresis_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (n < ink_min or n > ink_max) return error.DiaeresisVowelIllegible;
+        if (n < lo) lo = n;
+        if (n > hi) hi = n;
+    }
+    // invariant: the observed ink band stayed inside the honest bounds.
+    assert(lo >= ink_min);
+    assert(hi <= ink_max);
+
+    // Diaeresis placement -- the fifth lean, and what makes each of these a diaeresis letter rather than an acute, grave,
+    // circumflex, or tilde one: the mark is TWO PARTED DOTS on ONE row. Three toothed guards read it: the top row carries
+    // exactly two inked cells (the two dots), the center column of that row is blank (the gap that parts them), and the
+    // second mark row is blank (a single row of dots, where the circumflex and tilde span two rows).
+    var m: u32 = 0;
+    while (m < diaeresis_count) : (m += 1) {
+        const cp = diaeresis_codepoints[m];
+        if ((try top_row_ink_of(&atlas, cp)) != 2) return error.DiaeresisNotTwoDots;
+        if ((try top_center_ink_of(&atlas, cp)) != 0) return error.DiaeresisNoGap;
+        if ((try second_mark_row_ink_of(&atlas, cp)) != 0) return error.DiaeresisMarkTooTall;
+    }
+
+    // Family consistency: the two-dot mark these three carry is the SAME mark image/font5x7_german.rye drew over its
+    // umlaut vowels -- proven byte-for-byte against the German a umlaut's own top row, so the accent family stays one
+    // consistent hand rather than two hands that happen to look alike.
+    const german_atlas = try german.build_atlas(garden);
+    const a_umlaut = german_atlas.lookup(0x00E4) orelse return error.GermanUmlautMissing;
+    var e: u32 = 0;
+    while (e < diaeresis_count) : (e += 1) {
+        const cp = diaeresis_codepoints[e];
+        const g = atlas.lookup(cp) orelse return error.DiaeresisVowelMissing;
+        var col: u32 = 0;
+        while (col < cell_w) : (col += 1) {
+            // invariant: each diaeresis top-row cell equals the German umlaut's top-row cell -- one shared mark.
+            if (g.coverage[col] != a_umlaut.coverage[col]) return error.DiaeresisMarkUnlikeUmlaut;
+        }
+    }
+
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof.
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-diaeresis: {d} diaeresis vowels U+00EB,U+00EF,U+00FF at {d}x{d} round-trip byte-identical; all present, distinct, legible (ink {d}..{d} of {d}); every mark two parted dots on one row (the fifth lean beside acute/grave/circumflex/tilde), byte-identical to the German umlaut's; encoded {d} bytes, raw {d}\n", .{
+        glyph_count, cell_w, cell_h, lo, hi, cell_area, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_diaeresis selftest\n", .{});
+    return 1;
+}

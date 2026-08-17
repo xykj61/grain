@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260817.065004
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title font5x7 diaeresis-accent vowels corpus -- the fifth lean, GREEN
+prompt Read crux/REMEMBER.md and the road-ahead docs; take the next agent-doable lap Lindy-first crux-first, one rota deep-read, send often. baton prin recur
+think REMEMBER's live edge is the Season G open-media font family; the accented-Latin family now reads as two unifying fonts (font5x7_accented lowercase 21, font5x7_upper uppercase 21) with the tilde vowels the most recent lap. Walked the family for the next real gap rather than another small increment.
+think Found a genuine gap crux-first: the accent-mark taxonomy has four leans drawn on vowels (acute right, grave left, circumflex centered peak, tilde wave) plus the German umlaut two-dot mark on a/o/u -- yet the same two-dot diaeresis mark spells other languages on OTHER vowels a German name never reaches: e diaeresis, i diaeresis, y diaeresis (Noel, naive, L'Hay). The diaeresis is the fifth and last European vowel diacritic, and three of its letters were undrawn. Drawing them completes the taxonomy.
+think Reused the ASCII-art template from font5x7_tilde: same coverage_from_art, build_atlas, ink_count, row_band_ink shape. The diaeresis mark is the same two-dot mark the German umlaut carries (row 0 `.#.#.`, row 1 blank), over the circumflex e/i bodies and the lowercase y in rows 2-6.
+think Designed three toothed placement guards distinguishing the diaeresis from every other lean: top-row ink == 2 (exactly two dots), center-column ink == 0 (the gap that parts them), second-mark-row ink == 0 (a single row of dots, where circumflex and tilde span two). Each its own bounded reader, no compound assert.
+think Added a family-consistency crux beyond the round-trip: proved each diaeresis top row byte-identical to the German a umlaut's own top row (imported font5x7_german, built its atlas, compared column by column), so the accent family is one consistent hand rather than two that happen to look alike.
+obs GREEN on the first metal run, no red: 3 diaeresis vowels U+00EB,U+00EF,U+00FF round-trip byte-identical, present, distinct, legible (ink 10..16 of 35), every mark two parted dots on one row and byte-identical to the German umlaut's. tame_style_check bans clean, width-check exit 0, both files plain 7-bit ASCII though the glyphs cover a non-ASCII range (numeric codepoint literals, the ascii-first font-table exception).
+obs Docs-sync ratchet, not a sweep: image/README.md accreted the diaeresis corpus into the accented-Latin family entry, naming the fifth lean and the gap it fills, and added _diaeresis to the witness-sibling list. Did not claim it into the unifying font5x7_accented (a later merge round can gather the fifth lean); an honest sibling addition.
+obs Rota this lap (d27, item 27) deep-read recursion-prompts/README.md -- the balance-compass charter: every prompt rewards something, and the craft keeps the reward pointed at finished, proven, bounded work. This lap is one such -- a single whole corpus, proven on metal, sent as its own signed round, Radiant prose swept before the send.
+loom witness=font5x7_diaeresis_witness glyphs=3 cell=5x7 ink_lo=10 ink_hi=16 encoded_bytes=144 raw_bytes=105
+file image/font5x7_diaeresis.rye the open diaeresis-accent vowels corpus (e/i/y diaeresis U+00EB,U+00EF,U+00FF), the fifth lean
+file tools/font5x7_diaeresis_witness.rish proves the corpus on metal: round-trip, present, distinct, legible, two-dotted, umlaut-consistent
+file image/README.md accreted the diaeresis corpus into the accented-Latin family entry (docs-sync ratchet)
+file crux/REMEMBER.md Git nib refreshed to the diaeresis round; the accent-mark taxonomy is now complete on vowels
+recommend keep-going the five European vowel diacritics are all drawn (acute, grave, circumflex, tilde, diaeresis); next open-media rungs: fold the fifth lean into the unifying font5x7_accented (now 22+ letters), draw the remaining Latin-1 letters (ae, o-slash, eth, thorn, y-acute), or prove the codecs on a real corpus rather than crafted cases. No network, no key, no funds.
