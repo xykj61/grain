@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260817.132132
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title color_readable.rye -- nudge any color to meet a WCAG contrast floor, GREEN
+prompt Autonomous loop: take the next agent-doable lap Lindy-first crux-first, Season G open media; deep-read one council-rota doc; send often; stop at custody gates
+think Read REMEMBER, the 1024-round itinerary, the eight-season double-seat, and the rye-first crypto-parity wave for the road. The live crux is Season G open media, and the color algebra is the smallest tractable, highest-Lindy lane -- floor code that does not wait on DJINN's Bit Design System.
+think Surveyed the color family (color, color_names, color_nearest, color_tone, color_name_group, color_describe, color_adjust, color_scale, color_swatch, color_harmony, color_contrast). The WCAG accessibility thread (relative_luminance, contrast_ratio_x100, readable_ink, meets_aa/aaa, the contrast table) is the most durable lane -- WCAG is a decades-stable standard.
+think Found a genuine gap: readable_ink(bg) REPLACES a caller's foreground with pure black or white. Nothing KEEPS a keeper's chosen color and nudges it minimally to clear a floor. That is the accessibility move a design system actually reaches for -- a brand red that stays red while gaining contrast.
+think Designed fit(fg, bg, target_x100): return fg unchanged when it already clears; else walk lightness OUTWARD from the seed by growing distance (lighter side first, then darker) via color's proven rgb_to_hsl/hsl_to_rgb, returning the FIRST clearing value -- provably the nearest, with a tie to the warmer lighter ink matching readable_ink. Refuse ContrastUnreachable when no lightness clears (a mid-grey has no ink at 21:1). Outward-by-distance scan is correct regardless of any non-monotonicity, and bounded to 101 steps.
+think Compose not braid -- color decides contrast and the round trip; this module only searches lightness. Held hue, saturation, and alpha by feeding the same Hsl with only l changed. fit_aa/fit_aa_large/fit_aaa name the three floors (4.50/3.00/7.00).
+obs FIRST GREEN on metal, no reds. Every selftest premise held under real measurement: pure red on white starts below AA and darkens to the nearest clearing lightness; the ceiling 21:1 against grey refuses ContrastUnreachable while AA against the same grey still clears; alpha carried; deterministic.
+obs tame_style_check bans clean (my file not in the zero-assert list), width-check exit 0, plain 7-bit ASCII, American spelling, >= 2 positive asserts per fn, no seam cast (u32 percents). Witness uses Rishi native contains over the interpolated GREEN line (REDS #76 loom), never a shell grep.
+obs Council rota deep-read this lap: foundations/20260814-071700_hardware-and-right-to-repair.md (item 6) -- Season A's front door, the body you can hold; the color floor prepares the surface a hand will read. The accessibility family now offers two altitudes -- readable_ink REPLACES a color, color_readable KEEPS it.
+file image/color_readable.rye the new module: fit + fit_aa/fit_aa_large/fit_aaa, candidate_at round trip, an eight-crux selftest
+file tools/color_readable_witness.rish the witness: build, selftest, native contains checks over the GREEN line
+file image/README.md docs-sync -- names color_readable.rye beside the naming family (accessibility sibling of readable_ink)
+file crux/REMEMBER.md Live edge clause + Git nib rotated (color_describe demoted to Prior)
+recommend keep-going the next color rung (swatch-labels pairing color_scale tones with human phrases), the CSS3 147-name table as a fetch-verified round, or a fresh Lindy-first crux -- all agent-doable, no gate

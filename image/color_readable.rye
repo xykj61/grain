@@ -1,0 +1,175 @@
+//! image/color_readable.rye -- nudge a color to MEET a WCAG contrast floor over the open color algebra (Season G).
+//!
+//! Season G (Open Media Primitives) -- a single-stranded consumer of image/color.rye, and the deliberate SIBLING of the
+//! readable-ink pick that already lives in color.rye. Where color.readable_ink(bg) throws away a caller's foreground and
+//! returns pure black or pure white, this module KEEPS the caller's color and moves it as LITTLE as it can -- along
+//! lightness alone -- until it clears a named WCAG floor against a background. A brand red stays red; a link blue stays
+//! blue; only its lightness shifts, and only as far as the floor demands. When even pure black and pure white cannot
+//! reach the floor against that background (a mid-grey fill has no ink at 7:1), it refuses by name rather than pretend.
+//!
+//! Compose, not braid: color DECIDES contrast through its own proven contrast_ratio_x100, and DECIDES the round trip
+//! through rgb_to_hsl / hsl_to_rgb; this module only SEARCHES lightness for the nearest value that clears the bar. No new
+//! color math, no parser, no stored channel byte. The search is bounded (at most 101 lightness steps, the whole 0..100
+//! range), integer (a percent only), deterministic, no network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/color_readable.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+
+pub const color_readable_version = "20260817.132132";
+
+/// The most lightness percent a search ever visits -- the whole 0..=100 range, one step at a time. Named so the bound is
+/// a constant with a why: HSL lightness is a percent, so 100 steps out from any seed reaches both extremes and no more.
+pub const lightness_max: u32 = 100;
+
+/// Move `fg` the SMALLEST distance along lightness -- hue, saturation, and alpha held -- to the nearest color whose WCAG
+/// contrast against `bg` is at least `target_x100` (on the ×100 scale color.contrast_ratio_x100 returns, so 4.50:1 is
+/// 450). Returns `fg` unchanged when it already clears the bar. Refuses ContrastUnreachable when no lightness -- not even
+/// pure black or pure white -- clears it against this background. The search visits lightnesses by increasing distance
+/// from `fg`'s own, so the FIRST clear it finds is the nearest, and a tie prefers the lighter side.
+pub fn fit(fg: color.Rgba, bg: color.Rgba, target_x100: u32) !color.Rgba {
+    // invariant: the target is a real WCAG bar, between the 1.00 floor and the 21.00 ceiling the ratio can return.
+    assert(target_x100 >= 100);
+    assert(target_x100 <= 2100);
+
+    // Already legible: the smallest move is no move at all, so return the caller's own color untouched.
+    if (color.contrast_ratio_x100(fg, bg) >= target_x100) return fg;
+
+    const hsl = color.rgb_to_hsl(fg);
+    const l0: u32 = hsl.l;
+    // invariant: an HSL lightness is a percent, so it can never sit past the range the search walks.
+    assert(l0 <= lightness_max);
+
+    // Walk lightness outward from the seed by growing distance. At each distance, try the lighter side first, then the
+    // darker, so the nearest clearing lightness wins and ties go to the warmer, lighter ink -- matching readable_ink.
+    var delta: u32 = 1;
+    while (delta <= lightness_max) : (delta += 1) {
+        if (l0 + delta <= lightness_max) {
+            const up = candidate_at(hsl, l0 + delta);
+            if (color.contrast_ratio_x100(up, bg) >= target_x100) {
+                // invariant: a returned nudge truly clears the bar it was asked to clear.
+                assert(color.contrast_ratio_x100(up, bg) >= target_x100);
+                return up;
+            }
+        }
+        if (delta <= l0) {
+            const down = candidate_at(hsl, l0 - delta);
+            if (color.contrast_ratio_x100(down, bg) >= target_x100) {
+                // invariant: a returned nudge truly clears the bar it was asked to clear.
+                assert(color.contrast_ratio_x100(down, bg) >= target_x100);
+                return down;
+            }
+        }
+    }
+
+    // No lightness clears the bar -- not even the extremes, which give the most contrast any ink can against this fill.
+    return error.ContrastUnreachable;
+}
+
+/// Rebuild `fg`'s HSL at a new lightness, holding hue, saturation, and alpha. The one place lightness changes, so every
+/// caller shares one round trip through color's proven hsl_to_rgb.
+fn candidate_at(hsl: color.Hsl, new_l: u32) color.Rgba {
+    // invariant: the search only ever offers a lightness inside the percent range.
+    assert(new_l <= lightness_max);
+    const shifted = color.Hsl{ .h = hsl.h, .s = hsl.s, .l = @intCast(new_l), .a = hsl.a };
+    // invariant: only lightness moved -- hue, saturation, and alpha are the seed's own.
+    assert(shifted.h == hsl.h);
+    assert(shifted.a == hsl.a);
+    return color.hsl_to_rgb(shifted);
+}
+
+/// Fit `fg` on `bg` to WCAG AA for normal-size body text (4.50:1) -- the single most-reached-for accessibility floor.
+pub fn fit_aa(fg: color.Rgba, bg: color.Rgba) !color.Rgba {
+    // invariant: the AA-normal bar is a real WCAG threshold.
+    assert(color.contrast_aa_normal >= 100);
+    return fit(fg, bg, color.contrast_aa_normal);
+}
+
+/// Fit `fg` on `bg` to WCAG AA for large text (3.00:1) -- headings and >= 18pt copy.
+pub fn fit_aa_large(fg: color.Rgba, bg: color.Rgba) !color.Rgba {
+    // invariant: the AA-large bar is a real WCAG threshold.
+    assert(color.contrast_aa_large >= 100);
+    return fit(fg, bg, color.contrast_aa_large);
+}
+
+/// Fit `fg` on `bg` to WCAG AAA for normal-size body text (7.00:1) -- the strictest common floor.
+pub fn fit_aaa(fg: color.Rgba, bg: color.Rgba) !color.Rgba {
+    // invariant: the AAA-normal bar is a real WCAG threshold.
+    assert(color.contrast_aaa_normal >= 100);
+    return fit(fg, bg, color.contrast_aaa_normal);
+}
+
+// --- selftest: prove a color that already clears the floor returns UNCHANGED, a failing color is NUDGED just enough to
+// --- clear it (its hue and alpha held, only lightness moved), the move is the NEAREST clearing lightness, an impossible
+// --- floor refuses by name, and the whole reading is deterministic.
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    _ = garden;
+
+    const white = try color.parse_hex("#ffffff");
+    const black = try color.parse_hex("#000000");
+
+    // 1. Already legible -> unchanged. Black on white clears AAA by a mile, so fit returns the exact caller bytes.
+    const kept = try fit_aaa(black, white);
+    if (!kept.eql(black)) return error.LegibleNotKept;
+
+    // 2. A failing color is nudged to CLEAR the floor. Pure red on white falls short of AA (~4:1); fit_aa moves it until
+    // it clears 4.50, and the result truly meets AA where the seed did not.
+    const red = try color.parse_hex("#ff0000");
+    if (color.meets_aa(red, white)) return error.RedAlreadyAa; // the premise: red on white starts BELOW AA
+    const red_fit = try fit_aa(red, white);
+    if (!color.meets_aa(red_fit, white)) return error.RedNotFitted;
+
+    // 3. Only LIGHTNESS moved -- hue and saturation held. The nudged red stays red: its HSL hue matches the seed's, and
+    // it is not an achromatic extreme (saturation survives), so a brand color keeps its identity while gaining contrast.
+    const red_hsl = color.rgb_to_hsl(red);
+    const fit_hsl = color.rgb_to_hsl(red_fit);
+    if (fit_hsl.h != red_hsl.h) return error.HueMoved;
+    if (fit_hsl.s == 0) return error.SaturationLost;
+
+    // 4. The nudge is the NEAREST clearing lightness. Red on white must darken to gain contrast; a lightness ONE step
+    // lighter than the result (back toward the seed) must FAIL AA, proving the search stopped at the closest clear.
+    if (fit_hsl.l >= red_hsl.l) return error.NudgeWrongWay; // red darkened, so the result sits below the seed's lightness
+    const one_nearer = color.hsl_to_rgb(color.Hsl{ .h = fit_hsl.h, .s = fit_hsl.s, .l = fit_hsl.l + 1, .a = fit_hsl.a });
+    if (color.meets_aa(one_nearer, white)) return error.NotNearest;
+
+    // 5. Alpha is carried through a nudge -- a half-transparent red keeps its alpha while its lightness moves.
+    const red_alpha = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 128 };
+    const alpha_fit = try fit_aa(red_alpha, white);
+    if (alpha_fit.a != 128) return error.AlphaDropped;
+
+    // 6. An impossible floor refuses by name. A mid-grey fill (#808080) has no ink -- not black, not white -- that
+    // reaches the 21:1 ceiling, so fitting any color to 2100 against it returns ContrastUnreachable, never a false clear.
+    const grey = try color.parse_hex("#808080");
+    if (fit(red, grey, 2100)) |_| {
+        return error.UnreachableNotRefused;
+    } else |err| {
+        if (err != error.ContrastUnreachable) return err;
+    }
+
+    // 7. A near-boundary floor that IS reachable still clears -- fitting to AA against grey succeeds, so the refusal in
+    // step 6 is about the impossible ceiling, not a blanket give-up on a grey background.
+    const on_grey = try fit_aa(white, grey);
+    if (!color.meets_aa(on_grey, grey)) return error.GreyAaNotFitted;
+
+    // 8. Determinism -- the same fit returns the same color every time.
+    const once = try fit_aa(red, white);
+    const again = try fit_aa(red, white);
+    if (!once.eql(again)) return error.NotDeterministic;
+
+    print("GREEN image-color-readable: any color is nudged the SMALLEST distance along lightness to MEET a named WCAG floor against a background over the open color algebra; a color that already clears the floor returns unchanged (black on white kept exact); a failing color is nudged just enough to clear it (pure red on white starts below AA and fit_aa lifts it over 4.50); only lightness moved, so the nudged red keeps its hue and saturation -- a brand color keeps its identity; the move is the nearest clearing lightness (one step back toward the seed fails AA); alpha is carried through the nudge; an impossible ceiling refuses ContrastUnreachable rather than pretend; a reachable floor against the same grey still clears; and the same fit returns the same color every time (compose not braid, color decides contrast and the round trip, this module only searches lightness -- a sibling of readable_ink that KEEPS the caller's color rather than replacing it with black or white)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: color_readable selftest\n", .{});
+    return 1;
+}
