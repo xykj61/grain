@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260817.105859
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title scooter_view render_window -- the scroll position wired to the drawn frame
+prompt recur: take the next agent-doable lap Lindy-first crux-first; send often; deep-read one council-rota doc; Rye-first, Glow on green-witnessed Rye; approve own design rounds; stop at custody gates
+think Read the road: REMEMBER inner loop, the 1024-round itinerary, the eight-season double-seat, the Rye-first crypto-parity wave. The live edge is Season G open-media, the terminal family (Dexter + Scooter). The card names the next agent-doable rungs after scooter_scroll landed: wiring the position to the drawn frame (scooter_view.render_window with scroll marks) and mapping dexter_key Up/Down to scroll.
+think Crux choice, Lindy-first: render_window is the higher-Lindy floor -- the pure position model (scooter_scroll) is useless until a frame draws the scrolled slice; it is the durable view every read surface stands on. Chose it over the key binding, which stands on it.
+think scooter_scroll.window(post_count, rows, top) already computes the partition (top, count, above, below). scooter_view.render_within always draws seq 0 and marks the tail "(+K more)". render_window composes the two -- values apart, never braided: the window names WHICH posts show, render_window draws them, plus one status row "(^ A older  v B newer)".
+think Design held simple and provable: a journal that fits the body has nothing to scroll, so it draws every post with NO mark, byte-for-byte the elder render (parity crux). An overflowing journal reserves exactly ONE body row for the scroll status (like the elder overflow tail, so the row budget is unchanged), draws window.count posts from window.top, and the status names the model's above/below.
+think Rota this lap deep-read item 2, foundations/20260706-185112_follow-our-compass.md -- the compass rose: witness before narrative, one lap one witness bolt, and the grain's 'values apart, never braided' (the sibling hub The Grain and the Crossing). render_window is that grain: the position model named apart from the drawing, each proven on its own witness.
+obs Four new cruxes proven on metal in scooter_view's own selftest over a 30-post journal (body 23, shown budget 22): the home view anchors seq 29 to the last body row with "(^ 8 older  v 0 newer)" while the elder render still starts at seq 0; scrolling to the first post shows seq 0..21 with "(^ 0 older  v 8 newer)", the partition above+count+below == 30; a 4-post journal draws byte-for-byte the elder face with no mark (rows_used 5); and at EVERY top 0..30 the drawn status row equals a bufPrint of the pure model's counts and rows_used == 1+count+1, deterministic.
+obs GREEN first metal run, no reds. Elder scooter_scroll and scooter_paint witnesses still GREEN (scooter_view now imports scooter_scroll, same dir, no cycle; scooter_paint's symlink closure already carries scooter_scroll).
+obs tame_style_check bans clean, width-check exit 0, both touched files plain 7-bit ASCII. >=2 positive // invariant asserts per fn, no new seam cast (all u32 arithmetic bounded by channel.max_posts), plain record value model. Module header and tools/scooter_view_witness.rish name render_window (docs-sync).
+loom witness=scooter_view_witness cruxes=9 journal_posts=30 body_rows=23 shown_budget=22 status_row_scan=0..30 result=GREEN
+file pond/apps/scooter_view.rye render_window folds a channel at a scroll position, composing scooter_scroll.window with the drawing, one status row naming the hidden counts
+file tools/scooter_view_witness.rish asserts the four read-window cruxes on metal beside the five elder ones
+file session-logs/20260817-105859_scooter-render-window.kyri this record
+recommend keep-going the next agent-doable rung binds dexter_key Up/Down (and Page keys) to scooter_scroll.scroll_up/down over a held scroll position, then render_window draws each step -- the read-navigation loop, still pure; the raw TTY read and the Comlink wire between two Constel piers reach the serve gate, the maintainer's hand

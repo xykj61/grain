@@ -10,6 +10,10 @@
 #     deterministic (the same channel renders identical bytes).
 #   - Truncation marks -- an over-wide post clips to the row width with a '~' and never bleeds the next row.
 #   - Overflow counts -- a journal past the body ends in "(+K more)" with the true remaining count.
+#   - Read window -- render_window draws the scrolled slice a keeper has paged to (composing the pure position
+#     model scooter_scroll.window), the home view anchoring the newest, a "(^ A older  v B newer)" mark naming
+#     the hidden counts, a fitting journal drawn like the elder with no mark, the drawn mark carrying the
+#     model's counts exactly and deterministically.
 #
 # Facts only, custody-first: it reads a public journal and draws it; no network, no key signs, no funds.
 # The Comlink transport between two Constel piers reaches the serve gate -- the maintainer's hand, not here.
@@ -34,5 +38,9 @@ assert selftest.out contains "never a blank face" else "scooter-r3: empty-face c
 assert selftest.out contains "read back in the frame byte-for-byte" else "scooter-r3: journal-readback crux missing"
 assert selftest.out contains "clips to the row width with a '~'" else "scooter-r3: truncation crux missing"
 assert selftest.out contains "with the true count, never a dropped tail" else "scooter-r3: overflow crux missing"
+assert selftest.out contains "anchors the newest posts to the bottom with a scroll mark" else "scooter-r3: read-window home crux missing"
+assert selftest.out contains "scrolling up reveals older posts and the mark names both sides" else "scooter-r3: read-window scroll-up crux missing"
+assert selftest.out contains "draws identically to the elder render, with no scroll mark" else "scooter-r3: read-window fitting-journal crux missing"
+assert selftest.out contains "carries the pure model's counts exactly, deterministically" else "scooter-r3: read-window model-parity crux missing"
 
-say "GREEN: scooter-r3 -- scooter_view folds a channel into a bounded terminal frame: header, journal, truncation mark, and an honest overflow tail."
+say "GREEN: scooter-r3 -- scooter_view folds a channel into a bounded terminal frame: header, journal, truncation mark, an honest overflow tail, and a scrolled read window carrying the pure position model's counts."
