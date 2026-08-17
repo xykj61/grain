@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260817.044738
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title font5x7 geometric shapes corpus, GREEN
+prompt autonomous loop -- take the next agent-doable lap Lindy-first crux-first, send often, stop at custody gates
+think Read the road-ahead docs (1024-round itinerary, eight-season double-seat, rye-first crypto wave) plus REMEMBER's inner loop and the recursion seed. The terminal family's drawn surface (Dexter/Scooter) is whole; its remaining rounds (the live keystroke reader, the Comlink wire between piers) reach the serve gate -- blocked. The color-algebra crux and the crypto surface both stand GREEN and WHOLE.
+think Rota lap: last log recorded item 26; this lap read item 27, recursion-prompts/README.md (the balance-compass charter -- Radiant/Twilight/TAME/CIVIC/compass/Lindy-first/reds-first held in balance, the reward pointed at finished, proven, bounded work).
+think image/README.md line 75 names the next Season G rungs: the remaining wider symbols over the 5x7 body. The box family (light, double, diagonal), arrows, and blocks exist; the geometric shapes a list points and selects with were the clean, tractable, on-pattern gap -- and directly serve the live Dexter/Scooter surface (bullets, unread badges, radio dots, selection carets).
+think Followed image/font5x7_box.rye as the exact template: ten marks drawn as 5x7 ASCII line art (the drawings are the specification, bytes lifted from the art), an explicit strictly-ascending codepoint table (U+2022 bullet then U+25A0..U+25CF), build_atlas into a gfa1 glyph.GlyphAtlas, and a selftest that round-trips through the gfa1 encoder byte-for-byte.
+think Added a family-order proof beyond the round-trip (the boxdiag corpus set the precedent of one structural proof): the filled twin out-inks its hollow twin and the small bullet under-inks the large filled disc, so a list can mark a leaf and a node distinctly rather than as ten unrelated drawings.
+obs GREEN on the first metal run, no red. Ten marks U+2022,U+25A0..U+25CF at 5x7 round-trip byte-identical; all present, distinct, legible (ink 11..21 of 35); filled>hollow and bullet<disc hold; encoded 404 bytes, raw 350 (the dense filled shapes do not compress, honestly reported not asserted).
+obs tame_style_check bans clean (my file carries asserts, not on the zero-assert ratchet), width-check exit 0, both new files plain 7-bit ASCII though the glyphs cover a non-ASCII range (numeric codepoint literals, each named in an ASCII comment).
+obs Rested entirely inside the open-media family -- no network, no key, no funds, no gate touched. A pure, additive corpus beside the box/arrow/block siblings.
+loom witness=font5x7_geometric_witness marks=10 cell=5x7 ink_lo=11 ink_hi=21 encoded_bytes=404 raw_bytes=350
+file image/font5x7_geometric.rye the ten-mark geometric corpus, drawn 5x7, built into the gfa1 atlas
+file tools/font5x7_geometric_witness.rish proves the corpus on metal -- round-trip byte-identical, present, distinct, legible, family order
+file image/README.md the Open Media Primitives section gains the geometric-shapes rung beside the block corpus
+recommend keep-going the wider-symbol rungs continue (rounded box arcs, math/technical marks) as their own corpora; the terminal family's live keystroke reader and Comlink wire stay at the serve gate
