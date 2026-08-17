@@ -1,0 +1,396 @@
+//! pond/apps/scooter_keyed.rye -- Scooter, Rung 2: the signed post.
+//!
+//! Rung one (scooter_channel.rye) admitted keepers by a plain point number and trusted the caller to
+//! name their own author. This rung binds each post to a settled Kumara identity: a member proves
+//! authorship by signature rather than by claim, and the journal keeps that proof so anyone holding the
+//! bytes can re-check who wrote them. It is the integrity tablecloth_keyed.rye gave the artifact store,
+//! carried to the channel journal -- an append-only record of proven authorship.
+//!
+//! A keeper publishes a post by presenting the point's Deed (verified against the constellation, so it is
+//! a current settled identity, not a ghost) and a signature over the exact post: the author point, the
+//! sequence number this post will take, the text length, and a SHA-256 of the text. Binding the seq pins
+//! the post to its place in the journal (a signed post cannot be replayed at another position); binding
+//! the digest pins it to its exact bytes (a tampered text cannot ride a real signature). Only then does
+//! rung one's own post append the entry -- still enforcing membership, the text bound, and the journal
+//! bound -- and the signature is stored at that seq for later offline re-verification.
+//!
+//! It invents no signing and no channel rule: it composes rung one's Channel over the identity surface
+//! (kumara, tilak, topology, constellation) the settlement already witnessed. Demo keeper seeds only; no
+//! real key, no network, no funds. Signing with the maintainer's own Kumara key, and the Comlink
+//! transport that carries a signed post between Constel piers, stay Keaton's hand (custody/serve gates).
+//!
+//! Design read: active-designing/20260817-035757_scooter-signed-post-crux.md
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build pond/apps/scooter_keyed.rye -femit-bin=pond/bin/scooter-keyed
+//!   pond/bin/scooter-keyed selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const channel = @import("scooter_channel.rye");
+const kumara = @import("kumara.rye");
+const tilak = @import("kumara_tilak.rye");
+const topology = @import("topology.rye");
+const settlement = @import("constellation.rye");
+
+const Sha256 = std.crypto.hash.sha2.Sha256;
+
+pub const scooter_keyed_version = "20260817.035757";
+
+const pubkey_len: u32 = 32;
+const sig_len: u32 = 64;
+const digest_len: u32 = 32;
+
+pub const KeyError = error{ NotOwner, BadSignature };
+
+// The message a keeper signs to publish a post: the author point, the sequence number the post will take,
+// the text length (so no two texts collide by a shared prefix), and a SHA-256 of the exact text. Possessing
+// a point number is never enough -- the seq and the content are bound in, so a signed post pins to its
+// place in the journal and to its exact bytes.
+const max_msg_len: u32 = 4 + 4 + 4 + digest_len; // 44
+
+fn text_digest(text: []const u8) [digest_len]u8 {
+    // invariant: the text digest is a SHA-256, thirty-two bytes wide.
+    assert(digest_len == 32);
+    var out: [digest_len]u8 = undefined;
+    Sha256.hash(text, &out, .{});
+    return out;
+}
+
+// Fill out with the signed message and return its length. Bounded by max_msg_len.
+fn auth_message(out: *[max_msg_len]u8, point: u32, seq: u32, text_len: u32, tdigest: *const [digest_len]u8) u32 {
+    // invariant: a post's seq is a real journal index, under the channel bound.
+    assert(seq < channel.max_posts);
+    // invariant: a post's text honors the channel's text bound.
+    assert(text_len <= channel.max_text);
+    std.mem.writeInt(u32, out[0..4], point, .little);
+    std.mem.writeInt(u32, out[4..8], seq, .little);
+    std.mem.writeInt(u32, out[8..12], text_len, .little);
+    var off: u32 = 12;
+    for (tdigest) |b| {
+        out[off] = b;
+        off += 1;
+    }
+    // invariant: the assembled message never exceeds its bound.
+    assert(off <= max_msg_len);
+    return off;
+}
+
+/// Sign a post -- the author's word that this exact text, at this sequence number, is posted by this
+/// point. Signed under the keeper seed. The witness (and any real poster) signs with the point's keeper
+/// before post_signed. The seq must be the journal end the post will land at (channel.post_count).
+pub fn sign_post(
+    keeper_seed: *const [kumara.seed_length]u8,
+    point: u32,
+    seq: u32,
+    text: []const u8,
+) [sig_len]u8 {
+    // invariant: a signable text fits the channel's text budget.
+    assert(text.len <= channel.max_text);
+    const kp = kumara.keypair_from_seed(keeper_seed);
+    const td = text_digest(text);
+    var msg: [max_msg_len]u8 = undefined;
+    const len = auth_message(&msg, point, seq, @intCast(text.len), &td);
+    return kumara.sign(msg[0..len], kp, null).toBytes();
+}
+
+fn verify_post(
+    keeper: [pubkey_len]u8,
+    point: u32,
+    seq: u32,
+    text: []const u8,
+    sig: *const [sig_len]u8,
+) bool {
+    // invariant: an Ed25519 public key is 32 bytes and a signature 64.
+    assert(pubkey_len == 32);
+    assert(sig_len == 64);
+    const pub_key = kumara.PublicKey.fromBytes(keeper) catch return false;
+    const td = text_digest(text);
+    var msg: [max_msg_len]u8 = undefined;
+    const len = auth_message(&msg, point, seq, @intCast(text.len), &td);
+    kumara.verify_bytes(msg[0..len], sig, pub_key) catch return false;
+    return true;
+}
+
+/// The SHA-256 a post binds -- exposed so a recipient holding a stored signature and the held bytes can
+/// confirm the two match without recomputing the message layout by hand.
+pub fn digest_of(text: []const u8) [digest_len]u8 {
+    return text_digest(text);
+}
+
+/// Verify a post receipt entirely offline, from the bound digest rather than the text. A recipient holding
+/// only the receipt (point, seq, text length, digest, signature) confirms the author's keeper signed
+/// exactly these facts -- no channel, no network, and no text needed. A recipient who also holds the text
+/// checks digest_of(text) against the bound digest separately, so the two halves of trust stay distinct.
+pub fn verify_receipt(
+    keeper: [pubkey_len]u8,
+    point: u32,
+    seq: u32,
+    text_len: u32,
+    digest: *const [digest_len]u8,
+    sig: *const [sig_len]u8,
+) bool {
+    // invariant: an Ed25519 public key is 32 bytes and a signature 64.
+    assert(pubkey_len == 32);
+    assert(sig_len == 64);
+    // invariant: a receipt's text length honors the channel's text budget.
+    assert(text_len <= channel.max_text);
+    const pub_key = kumara.PublicKey.fromBytes(keeper) catch return false;
+    var msg: [max_msg_len]u8 = undefined;
+    const len = auth_message(&msg, point, seq, text_len, digest);
+    kumara.verify_bytes(msg[0..len], sig, pub_key) catch return false;
+    return true;
+}
+
+/// A channel whose every post is signed by a settled Kumara point. It wraps rung one's Channel unchanged
+/// (one source of truth for the roster, the journal, and the derived inbox) and records the signature
+/// alongside each post, aligned by sequence number.
+// Invariant: ch.post_count is the number of live posts; sigs[seq] holds the signature over post seq.
+pub const KeyedChannel = struct {
+    ch: channel.Channel,
+    sigs: [channel.max_posts][sig_len]u8 = undefined,
+
+    /// Open a keyed channel with its founding host, exactly as rung one opens a channel.
+    pub fn open(host: u32) KeyedChannel {
+        const kc = KeyedChannel{ .ch = channel.Channel.open(host) };
+        // invariant: a fresh keyed channel holds no post, so no signature is bound yet.
+        assert(kc.ch.post_count == 0);
+        return kc;
+    }
+
+    /// The signature over a held post, or NoSuchPost when the seq names nothing held. A read-only borrow,
+    /// so a recipient can re-verify any post's authorship offline against the held bytes.
+    pub fn signature_of(self: *const KeyedChannel, seq: u32) channel.ChannelError!*const [sig_len]u8 {
+        if (seq >= self.ch.post_count) return error.NoSuchPost;
+        // invariant: a signature is bound only for a post the journal actually holds.
+        assert(seq < channel.max_posts);
+        return &self.sigs[seq];
+    }
+};
+
+/// Post signed text to a keyed channel. The author presents the point's Deed (verified against the
+/// constellation, so it is a current settled member -- NotOwner otherwise) and a signature over the exact
+/// post (the point, the seq this post will take, the text length, and the text digest -- BadSignature
+/// otherwise, before any byte is appended). Only then does rung one's own post append the entry, still
+/// enforcing membership (NotMember), the text bound (TextTooLong), and the journal bound (JournalFull).
+/// Returns the new post's sequence number. The signature is stored at that seq for later re-verification.
+pub fn post_signed(
+    kc: *KeyedChannel,
+    con: *const settlement.Constellation,
+    deed: *const settlement.Deed,
+    text: []const u8,
+    keeper_sig: *const [sig_len]u8,
+) (channel.ChannelError || KeyError)!u32 {
+    // invariant: the caller owns the point -- its deed is a current member of the constellation.
+    if (!settlement.verify(con, deed)) return error.NotOwner;
+    const seq = kc.ch.post_count;
+    // invariant: the keeper signed this exact text, at this exact seq, for this point.
+    if (!verify_post(deed.keeper, deed.point, seq, text, keeper_sig)) return error.BadSignature;
+    const landed = try kc.ch.post(deed.point, text);
+    // invariant: rung one appended the post at exactly the seq we verified -- the journal is append-only.
+    assert(landed == seq);
+    kc.sigs[landed] = keeper_sig.*;
+    return landed;
+}
+
+// --- selftest -----------------------------------------------------------
+
+const g_key: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
+const g_keeper: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
+const s_key: [kumara.seed_length]u8 = .{0x44} ** kumara.seed_length;
+const s_keeper: [kumara.seed_length]u8 = .{0x55} ** kumara.seed_length;
+const p_key: [kumara.seed_length]u8 = .{0x77} ** kumara.seed_length;
+const p_keeper: [kumara.seed_length]u8 = .{0x88} ** kumara.seed_length;
+
+// The inclusive fractal: galaxy 3, its star (3,2) = 27, its planet (3,2,4) = 267.
+const galaxy_num: u32 = 3;
+const star_num: u32 = 27;
+const planet_num: u32 = 267;
+
+// The 36-byte spawn authority the settlement mint checks (child number ++ identity).
+fn spawn_authority(signer_seed: *const [kumara.seed_length]u8, child: u32, child_identity: *const [pubkey_len]u8) [sig_len]u8 {
+    const kp = kumara.keypair_from_seed(signer_seed);
+    var msg: [4 + pubkey_len]u8 = undefined;
+    std.mem.writeInt(u32, msg[0..4], child, .little);
+    for (child_identity, 0..) |b, i| msg[4 + i] = b;
+    return kumara.sign(&msg, kp, null).toBytes();
+}
+
+const World = struct {
+    con: settlement.Constellation,
+    galaxy: settlement.Deed,
+    star: settlement.Deed,
+    planet: settlement.Deed,
+};
+
+fn seat_world() !World {
+    const g_bind = tilak.make_bind(&g_key, &g_keeper);
+    const s_bind = tilak.make_bind(&s_key, &s_keeper);
+    const p_bind = tilak.make_bind(&p_key, &p_keeper);
+    const opened = try settlement.open(galaxy_num, &g_bind);
+    var con = opened.con;
+    const galaxy_deed = opened.deed;
+
+    const g_sow = tilak.make_cap(&g_keeper, galaxy_num, .sow, g_bind.kumara_pubkey);
+    const spawn_star = spawn_authority(&g_key, star_num, &s_bind.kumara_pubkey);
+    const star = try settlement.mint(&con, &galaxy_deed, star_num, &s_bind, &g_sow, &spawn_star);
+
+    const s_sow = tilak.make_cap(&s_keeper, star_num, .sow, s_bind.kumara_pubkey);
+    const spawn_planet = spawn_authority(&s_key, planet_num, &p_bind.kumara_pubkey);
+    const planet = try settlement.mint(&con, &star, planet_num, &p_bind, &s_sow, &spawn_planet);
+
+    return .{ .con = con, .galaxy = galaxy_deed, .star = star, .planet = planet };
+}
+
+// An unsettled deed for a point that never settled -- used to prove the non-owner refusal.
+fn ghost_deed(point: u32) settlement.Deed {
+    const addr = topology.decode(point).?;
+    const zero: [pubkey_len]u8 = .{0} ** pubkey_len;
+    return .{
+        .point = point,
+        .tier = addr.tier,
+        .identity_key = zero,
+        .keeper = zero,
+        .sponsor = topology.encode(addr.parent()),
+        .net_key = zero,
+        .key_counter = 0,
+        .reset_counter = 0,
+        .version = 1,
+    };
+}
+
+const msg_star = "the star lights the border, plain and glad.";
+const msg_planet = "linen over the planet's table, warp and weft.";
+
+/// The host and an admitted member each sign a real post; every signature verifies, the journal reads
+/// back byte-for-byte, and each stored signature re-verifies offline from the held bytes.
+fn signed_posts_verify() !void {
+    const w = try seat_world();
+    var kc = KeyedChannel.open(galaxy_num); // the galaxy hosts the channel
+
+    // The host admits the star and the planet as members.
+    try kc.ch.admit(galaxy_num, star_num);
+    try kc.ch.admit(galaxy_num, planet_num);
+
+    // The star signs and posts, then the planet signs and posts -- each at the seq it will take.
+    const s_sig = sign_post(&s_keeper, star_num, kc.ch.post_count, msg_star);
+    const s_seq = try post_signed(&kc, &w.con, &w.star, msg_star, &s_sig);
+    assert(s_seq == 0);
+    const p_sig = sign_post(&p_keeper, planet_num, kc.ch.post_count, msg_planet);
+    const p_seq = try post_signed(&kc, &w.con, &w.planet, msg_planet, &p_sig);
+    assert(p_seq == 1);
+    assert(kc.ch.post_count == 2);
+
+    // Each post reads back byte-for-byte, authored by the point that signed it.
+    const p0 = try kc.ch.get(s_seq);
+    assert(std.mem.eql(u8, p0.body(), msg_star));
+    assert(p0.author == star_num);
+    const p1 = try kc.ch.get(p_seq);
+    assert(std.mem.eql(u8, p1.body(), msg_planet));
+    assert(p1.author == planet_num);
+
+    // Each stored signature re-verifies offline from the held bytes -- proven authorship, kept.
+    const held_s = try kc.signature_of(s_seq);
+    assert(verify_post(w.star.keeper, star_num, s_seq, p0.body(), held_s));
+    const held_p = try kc.signature_of(p_seq);
+    assert(verify_post(w.planet.keeper, planet_num, p_seq, p1.body(), held_p));
+
+    // A receipt re-verifies from the bound digest alone, without the text in hand.
+    const sd = digest_of(msg_star);
+    assert(verify_receipt(w.star.keeper, star_num, s_seq, @intCast(msg_star.len), &sd, held_s));
+
+    print("scooter_keyed: two settled points signed their posts; each read back byte-for-byte and each stored signature re-verified offline from the held bytes.\n", .{});
+}
+
+/// Every refusal holds -- a ghost owner, a forged signature, a signature over other text, and a
+/// non-member each refuse, and a refused post leaves the journal exactly as it was.
+fn refusals_hold() !void {
+    const w = try seat_world();
+    var kc = KeyedChannel.open(galaxy_num);
+    try kc.ch.admit(galaxy_num, star_num);
+
+    // A ghost deed -- a point that never settled -- refuses NotOwner, and no post lands.
+    const ghost = ghost_deed(500);
+    const gsig = sign_post(&s_keeper, 500, kc.ch.post_count, msg_star);
+    const before_ghost = kc.ch.post_count;
+    if (post_signed(&kc, &w.con, &ghost, msg_star, &gsig)) |_| {
+        return error.GhostPosted;
+    } else |err| {
+        assert(err == error.NotOwner);
+    }
+    assert(kc.ch.post_count == before_ghost);
+
+    // A forged signature refuses BadSignature before any byte is appended.
+    const zero_sig: [sig_len]u8 = .{0} ** sig_len;
+    if (post_signed(&kc, &w.con, &w.star, msg_star, &zero_sig)) |_| {
+        return error.ForgedPosted;
+    } else |err| {
+        assert(err == error.BadSignature);
+    }
+    assert(kc.ch.post_count == before_ghost);
+
+    // A signature over other text refuses -- the digest is bound in, so a tampered text cannot ride a
+    // real signature. The star signs msg_star but tries to post msg_planet under it.
+    const tsig = sign_post(&s_keeper, star_num, kc.ch.post_count, msg_star);
+    if (post_signed(&kc, &w.con, &w.star, msg_planet, &tsig)) |_| {
+        return error.TamperedPosted;
+    } else |err| {
+        assert(err == error.BadSignature);
+    }
+    assert(kc.ch.post_count == before_ghost);
+
+    // A settled point that is not a channel member still refuses NotMember (rung one's rule holds under
+    // the keyed layer) -- the planet was never admitted here. It signs a valid post, yet membership is
+    // required as well as identity, neither alone.
+    const nsig = sign_post(&p_keeper, planet_num, kc.ch.post_count, msg_planet);
+    if (post_signed(&kc, &w.con, &w.planet, msg_planet, &nsig)) |_| {
+        return error.NonMemberPosted;
+    } else |err| {
+        assert(err == error.NotMember);
+    }
+    assert(kc.ch.post_count == before_ghost);
+
+    print("scooter_keyed: every refusal holds -- a ghost owner (NotOwner), a forged signature and a tampered text (BadSignature), and a settled non-member (NotMember); no refused post landed a byte.\n", .{});
+}
+
+/// A signed post pins to its place -- a signature over one seq refuses at another, so a post cannot be
+/// replayed at a different journal position even by its true author.
+fn seq_is_bound() !void {
+    const w = try seat_world();
+    var kc = KeyedChannel.open(galaxy_num);
+    try kc.ch.admit(galaxy_num, star_num);
+
+    // The star signs a post for seq 1, but the journal end is seq 0 -- the signature does not match seq 0.
+    const wrong_seq_sig = sign_post(&s_keeper, star_num, 1, msg_star);
+    assert(kc.ch.post_count == 0);
+    if (post_signed(&kc, &w.con, &w.star, msg_star, &wrong_seq_sig)) |_| {
+        return error.ReplayedPost;
+    } else |err| {
+        assert(err == error.BadSignature);
+    }
+    assert(kc.ch.post_count == 0);
+
+    // Signed for the true seq 0, it lands.
+    const right_sig = sign_post(&s_keeper, star_num, 0, msg_star);
+    const seq = try post_signed(&kc, &w.con, &w.star, msg_star, &right_sig);
+    assert(seq == 0);
+
+    print("scooter_keyed: a signature binds the seq -- a post signed for seq 1 refused at seq 0, so a signed post cannot be replayed at another position.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try signed_posts_verify();
+    try refusals_hold();
+    try seq_is_bound();
+    print("scooter_keyed: version {s}\n", .{scooter_keyed_version});
+    print("GREEN: scooter_keyed r2; every post is signed by a settled Kumara point -- authorship is proven, kept, and bound to its exact bytes and place.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2 and (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "scooter-keyed"))) {
+        return run_selftest();
+    }
+    return run_selftest();
+}

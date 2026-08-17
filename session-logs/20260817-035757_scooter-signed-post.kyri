@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260817.035757
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title scooter r2 -- the signed post, every message bound to a settled Kumara identity
+prompt baton prin recur -- take the next agent-doable lap Lindy-first crux-first past the Scooter channel model
+think Read the road: REMEMBER names the living edge scooter_channel.rye (r1, the permissioned channel model) and calls out the next rungs plainly -- Signing each post (r2, Kumara), the Dexter drawn frame, and the Comlink transport. The transport reaches the serve gate (Keaton's hand); the Dexter frame is a fresh module. The signed post deepens what already stands and unblocks every later rung, so it is the highest-Lindy agent-doable crux now.
+think Lindy-first, crux-first: a point number alone is a claim; a stranger who learns a member's number could speak in their name. A signature the whole constellation can verify turns the append-only journal into an append-only record of proven authorship -- the same integrity tablecloth_keyed.rye gave the artifact store. It serves every message the channel will ever carry.
+think Studied the elder pattern (tablecloth_keyed.rye, spool_keyed.rye) for the demo-keeper shape: seat a galaxy/star/planet world via settlement.open + mint, present a Deed verified by settlement.verify, sign an auth_message over the exact facts. Mirrored it exactly rather than inventing a parallel shape.
+think Bound the signed message to author point + seq + text_len + SHA-256(text). Binding the seq pins a post to its journal position (no replay at another seq); binding the digest pins it to its exact bytes (no tampered text riding a real signature). The keyed layer wraps rung one's Channel unchanged (one source of truth) and stores each signature aligned by seq, exactly as tablecloth_keyed stores an owner aligned by catalog index.
+think Wrote a self-approved design round first (active-designing/20260817-035757_scooter-signed-post-crux.md), then the code, then the witness -- witness-first discipline, four selftest properties: signed posts verify and re-verify offline, every refusal holds, the seq is bound.
+obs post_signed requires BOTH identity (a verified Deed + a real signature) AND membership (rung one's NotMember still fires) -- neither alone admits a post. A settled non-member who signs a valid post still refuses NotMember; a member impostor without the keeper seed cannot forge a signature. The two guards compose cleanly because the keyed layer only calls rung one's public post after its own checks pass.
+obs Demo keeper seeds only -- no real key, no network, no funds. Signing with Keaton's own Kumara key stays custody gate #4; the Comlink transport that carries a signed post between Constel piers reaches the serve gate. Both stay Keaton's hand; the library is what the agent builds and proves.
+obs GREEN on the first metal run -- no red this lap. tame_style_check bans clean (no compound asserts slipped through), width-check exit 0, new prose plain ASCII. Rung one's channel witness re-runs GREEN under the keyed layer (the channel model is unchanged).
+loom witness=scooter_keyed_witness build=ok selftest=GREEN properties=3 base_rerun=GREEN
+file active-designing/20260817-035757_scooter-signed-post-crux.md the self-approved design round naming the r2 crux
+file pond/apps/scooter_keyed.rye the signed-post layer over rung one's Channel; every post bound to a settled Kumara point
+file tools/scooter_keyed_witness.rish the metal witness; builds, asserts GREEN over three cruxes, re-runs rung one
+file session-logs/README.md prepended the newest-first index row for this lap
+think Rota lap (d27, item 20) read context/QUIN.md -- the inference host and its four voices. Lattice (precision held in bounds) and Ember (craft that earns its warmth, prove what must hold) name exactly this lap: an exact signed message, every bound asserted, the making proven before it is claimed.
+recommend keep-going scooter r3 -- either the Dexter drawn frame (the bounded cell grid, a fresh reusable TTY module) or admit-signing (the host signs each admit, symmetric to the signed post); the Comlink transport between two Constel piers is the serve gate and waits for Keaton's hand.

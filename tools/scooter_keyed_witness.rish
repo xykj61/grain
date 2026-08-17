@@ -1,0 +1,41 @@
+# tools/scooter_keyed_witness.rish -- Scooter, Rung 2: the signed post on metal.
+#
+# pond/apps/scooter_keyed.rye binds each post to a settled Kumara identity: a member proves authorship by
+# signature rather than by claim, and the journal keeps that proof so anyone holding the bytes can re-check
+# who wrote them -- the integrity tablecloth_keyed.rye gave the artifact store, carried to the channel
+# journal. This witness builds the module to a binary and asserts its selftest speaks GREEN over the cruxes:
+#   - Signed posts verify -- two settled points sign real posts; each reads back byte-for-byte and each
+#     stored signature re-verifies offline from the held bytes.
+#   - Refusals hold -- a ghost owner (NotOwner), a forged signature and a tampered text (BadSignature), and
+#     a settled non-member (NotMember) each refuse, and no refused post lands a byte.
+#   - The seq is bound -- a post signed for one seq refuses at another, so a signed post cannot be replayed
+#     at a different journal position.
+#
+# Facts only, custody-first: demo keeper seeds only, no real key, no network, no funds. Signing with the
+# maintainer's own Kumara key and the Comlink transport between piers stay Keaton's hand.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/scooter_keyed_witness.rish
+
+say "scooter-r2: Language EN -- each post is signed by a settled Kumara point; authorship is proven and kept."
+say "scooter-r2: Lens TAME -- a ghost, a forgery, a tampered text, and a non-member each refuse; the seq is bound."
+
+let zig = "vendor/zig-toolchain/zig"
+
+let bin = "pond/bin/scooter-keyed"
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/scooter_keyed.rye -femit-bin=${bin}"]
+assert build.ok else "scooter-r2: scooter_keyed build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "scooter-r2: scooter_keyed selftest exited non-zero"
+assert selftest.out contains "GREEN" else "scooter-r2: selftest did not speak GREEN"
+assert selftest.out contains "each stored signature re-verified offline from the held bytes" else "scooter-r2: signed-posts crux missing"
+assert selftest.out contains "no refused post landed a byte" else "scooter-r2: refusals crux missing"
+assert selftest.out contains "a signature binds the seq" else "scooter-r2: seq-bound crux missing"
+
+# Rung one still stands GREEN under the keyed layer -- the channel model is unchanged.
+let base = run ["sh" "-c" "rishi/bin/rishi run tools/scooter_channel_witness.rish 2>&1"]
+assert base.ok else "scooter-r2: rung-one channel witness regressed"
+assert base.out contains "GREEN: scooter-r1" else "scooter-r2: rung-one channel witness did not speak GREEN"
+
+say "GREEN: scooter-r2 -- scooter_keyed signs every post to a settled Kumara point; authorship is proven, kept, and bound to its exact bytes and place."
