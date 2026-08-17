@@ -18,6 +18,11 @@
 #     the reading colour, a pure pass-through of text_grid.render_grid_fg; the coloured face inks the same pixels
 #     as the single-ink face (colour moves ink, adds none), reads the accent on the header and the body colour
 #     below, round-trips through QOI, and a mis-sized palette refuses GridFgMismatch by name.
+#   - The full coloured cell -- render_channel_bar paints the status row as a real BAR (white-on-blue), the header
+#     ink over its own header GROUND band and the body over the reading ground, a pure pass-through of
+#     text_grid.render_grid_cells; no header pixel stays the old white page (the band is a filled bar, where the
+#     fg-only twin left it white between letters), the body page below is untouched, it round-trips through QOI,
+#     and a mis-sized background palette refuses GridBgMismatch by name.
 #
 # Facts only, custody-first: it reads a public journal a member already holds and paints it; no network, no key
 # signs, no funds. The wire that carries the image between two Constel piers reaches the serve gate -- the
