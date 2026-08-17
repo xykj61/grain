@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260817.041429
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title scooter r3 -- the Dexter drawn frame, a channel's face on a bounded terminal grid, GREEN
+prompt autonomous loop -- read REMEMBER + the three road-ahead docs, take the next agent-doable lap Lindy-first crux-first, send often, stop at custody gates
+think Read the road ahead: REMEMBER (living edge scooter_keyed r2 at 5c137d2c6a), the 1024-round itinerary, the eight-season double-seat, and the Rye-first crypto/decision-wave doc.
+think Lindy-first crux-first pointed first at the eight-season doc's named "build first" crux -- the open color algebra in Rye. I drafted it, then checked the tree before sending: image/color.rye already stands committed and GREEN (hex+alpha, rgb()/hsl(), HSL, blend, quantize, WCAG contrast) -- richer than my draft. Removed the duplicate rather than send it.
+think Checked the next-highest-Lindy crux, the decision-wave's Rye-native Monocypher-parity crypto: the crypto/ suite is comprehensively built with full parity witnesses (blake2b, sha512, ed25519, x25519, chacha20, poly1305, argon2, hkdf, hmac, elligator). Also built. The bench has out-climbed the calendar's named cruxes -- the itinerary's own "good problem."
+think Read the real git frontier: the living thread is the Scooter terminal family (channel r1, signed post r2 at HEAD). Both rungs named the same next agent-doable step and left it -- the Dexter drawn frame -- while the Comlink transport reaches the serve gate (the maintainer's hand). That is the honest next crux: additive, ungated, Rye-first, finishable green in one lap.
+think Built pond/apps/scooter_view.rye: render folds a Channel's public journal into a bounded 24x80 terminal character grid -- a header row, one body row per post ("[seq] pAUTHOR: text"), a '~' truncation mark on an over-wide post, and an honest "(+K more)" overflow tail. Pure, deterministic, no rendering system (Brushstroke stays paused), no network, no key, no funds. It imports rung one and calls only its public API, so rungs one and two stand unchanged.
+obs GREEN on the first metal run. tame_style_check caught two compound asserts (i>=1 and i<frame_rows; last[0] and last[1]) -- split each into two named asserts, then bans clean, width-check exit 0. New prose plain ASCII, American spelling.
+obs Additive by construction -- the witness build compiled the unchanged scooter_channel.rye, so rung one's model is intact; no file of rungs one or two was touched.
+obs Rota lap read item 21, the ORGANIZING filing guide. Small doc drift found: the seed rota lists context/ORGANIZING.md, yet the file lives at repo root ./ORGANIZING.md. Noted, not fixed this lap (the seed is a template; accrete, a later docs-sync round can repoint the rota path). Also deep-read TAME_CORE as the code-relevant lens for writing Rye.
+loom witness=scooter_view_witness selftest=GREEN frame_rows=24 frame_cols=80 cells=1920 selftest_cases=5
+file pond/apps/scooter_view.rye the Dexter drawn frame -- a bounded terminal grid folded from a channel's journal
+file tools/scooter_view_witness.rish builds the module and asserts its selftest speaks GREEN over the five cruxes
+file active-designing/20260817-041429_scooter-drawn-frame-crux.md the self-approved design round opening this rung
+file crux/REMEMBER.md git nib refreshed to the scooter_view living edge, in the work commit
+file session-logs/README.md newest-first index row prepended
+recommend keep-going the terminal family's next agent-doable rung is Scooter-on-Dexter input (a live TTY line through drawn_terminal), while the Comlink transport between two Constel piers stays the serve gate -- the maintainer's hand

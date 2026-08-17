@@ -1,0 +1,292 @@
+//! pond/apps/scooter_view.rye -- Scooter, Rung 3: the Dexter drawn frame.
+//!
+//! Season G (Open Media Primitives) -- the terminal family. Rung one (scooter_channel.rye) draws the
+//! permissioned channel with its append-only journal; rung two (scooter_keyed.rye) binds each post to a
+//! Kumara identity. Both named the same next step and left it: the Dexter drawn frame. This rung gives a
+//! channel a face a keeper can read -- it folds the journal into a bounded terminal character grid, purely
+//! and deterministically, so the conversation is visible without the wire.
+//! Design read: active-designing/20260817-041429_scooter-drawn-frame-crux.md
+//! Pattern elder: pond/apps/mantra_browser.rye -- the same fold from a model to a readable frame.
+//!
+//! The crux is one honest fold held bounded:
+//!   - A terminal frame is a fixed grid of character cells (24 rows of 80 columns, the classic terminal).
+//!     render folds a Channel into one Frame: a header row, one body row per post, an overflow tail.
+//!   - Truncation marks, never wraps -- a post wider than the frame ends in '~', never bleeding a row.
+//!   - Overflow counts, never drops -- more posts than the body holds end in "(+K more)" with the true K.
+//!   - The fold is referentially transparent -- the same channel renders the same bytes every time.
+//!
+//! Facts only, custody-first: it reads a channel's public journal and draws it; it opens no network, holds
+//! no key, and moves no funds (the wire between two Constel piers reaches the serve gate -- the maintainer's
+//! hand). A live TTY with a cursor and input is Dexter's own module and a later rung.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build pond/apps/scooter_view.rye -femit-bin=pond/bin/scooter-view
+//!   pond/bin/scooter-view selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const channel = @import("scooter_channel.rye");
+
+pub const scooter_view_version = "20260817.041429";
+
+/// A terminal frame is the classic 24 rows of 80 columns -- a fixed grid of character cells.
+pub const frame_rows: u32 = 24;
+pub const frame_cols: u32 = 80;
+
+/// The header takes the first row; the rest carry the journal.
+pub const body_rows: u32 = frame_rows - 1;
+
+/// A rendered terminal frame: a fixed grid of cells, space-filled where no character is drawn. rows_used
+/// names how many rows carry content, so a caller (or a later painter) knows where the drawing ends.
+pub const Frame = struct {
+    cells: [frame_rows * frame_cols]u8 = [_]u8{' '} ** (frame_rows * frame_cols),
+    rows_used: u32 = 0,
+
+    /// One row as a slice of exactly frame_cols cells.
+    pub fn row(self: *const Frame, i: u32) []const u8 {
+        // invariant: only a real row of the fixed grid is ever read.
+        assert(i < frame_rows);
+        const start = i * frame_cols;
+        // invariant: a row is exactly the frame width, never more.
+        assert(start + frame_cols <= self.cells.len);
+        return self.cells[start .. start + frame_cols];
+    }
+};
+
+/// A bounded writer over a single row. It never writes past the row's width; the first attempt to overflow
+/// is remembered so render can mark the row truncated with a '~'.
+const RowWriter = struct {
+    cells: []u8, // exactly frame_cols wide
+    col: u32 = 0,
+    overflowed: bool = false,
+
+    fn put(self: *RowWriter, c: u8) void {
+        // invariant: a write lands only within the row; past the edge it is dropped and remembered.
+        if (self.col < self.cells.len) {
+            self.cells[self.col] = c;
+            self.col += 1;
+        } else {
+            self.overflowed = true;
+        }
+        assert(self.col <= self.cells.len);
+    }
+
+    fn put_str(self: *RowWriter, s: []const u8) void {
+        // invariant: the run is bounded by the string's own length -- no unbounded loop.
+        var i: u32 = 0;
+        while (i < s.len) : (i += 1) self.put(s[i]);
+    }
+
+    /// Write a u32 as decimal. A u32 is at most ten digits, so the scratch is bounded at ten.
+    fn put_uint(self: *RowWriter, v: u32) void {
+        var digits: [10]u8 = undefined;
+        var n: u32 = 0;
+        var x: u32 = v;
+        // invariant: a u32 never needs more than ten decimal digits.
+        while (true) {
+            digits[n] = @intCast('0' + (x % 10));
+            n += 1;
+            x = x / 10;
+            if (x == 0) break;
+            assert(n < 10);
+        }
+        // Emit most-significant first (the scratch filled least-significant first).
+        var i: u32 = n;
+        while (i > 0) {
+            i -= 1;
+            self.put(digits[i]);
+        }
+    }
+};
+
+/// Clear a row to spaces, returning a writer positioned at its start.
+fn open_row(frame: *Frame, i: u32) RowWriter {
+    // invariant: only a real row is opened for writing.
+    assert(i < frame_rows);
+    const start = i * frame_cols;
+    var col: u32 = 0;
+    while (col < frame_cols) : (col += 1) frame.cells[start + col] = ' ';
+    return RowWriter{ .cells = frame.cells[start .. start + frame_cols] };
+}
+
+/// If a writer tried to overflow its row, mark the last cell '~' so a reader sees the text was clipped.
+fn seal_row(w: *RowWriter) void {
+    // invariant: the truncation mark lands in the row's last cell, never past it.
+    if (w.overflowed and w.cells.len > 0) w.cells[w.cells.len - 1] = '~';
+}
+
+/// Draw one post into a body row: "[<seq>] p<author>: <text>", truncated to the width with a '~' mark.
+fn draw_post(frame: *Frame, i: u32, post: *const channel.Post) void {
+    // invariant: a post is drawn only into a real body row -- below the header, within the grid.
+    assert(i >= 1);
+    assert(i < frame_rows);
+    var w = open_row(frame, i);
+    w.put('[');
+    w.put_uint(post.seq);
+    w.put_str("] p");
+    w.put_uint(post.author);
+    w.put_str(": ");
+    w.put_str(post.body());
+    seal_row(&w);
+}
+
+/// Fold a channel's journal into a bounded terminal frame -- the Dexter drawn face of a Scooter channel.
+pub fn render(ch: *const channel.Channel) Frame {
+    var frame = Frame{};
+
+    // The header names the channel and its post count.
+    var head = open_row(&frame, 0);
+    head.put_str("scooter: ");
+    head.put_uint(ch.post_count);
+    head.put_str(" posts");
+    seal_row(&head);
+    frame.rows_used = 1;
+
+    if (ch.post_count == 0) {
+        var w = open_row(&frame, 1);
+        w.put_str("(no posts yet)");
+        seal_row(&w);
+        frame.rows_used = 2;
+        // invariant: the empty face uses exactly the header and one note row.
+        assert(frame.rows_used == 2);
+        return frame;
+    }
+
+    // How many posts fit in the body. When the journal overflows, the last body row is the overflow note,
+    // so the shown count leaves that row free.
+    const overflow = ch.post_count > body_rows;
+    const shown: u32 = if (overflow) body_rows - 1 else ch.post_count;
+    // invariant: never draw more body rows than the body holds.
+    assert(shown <= body_rows);
+
+    var seq: u32 = 0;
+    while (seq < shown) : (seq += 1) {
+        const post = ch.get(seq) catch unreachable; // seq < shown <= post_count, so the post is present
+        draw_post(&frame, 1 + seq, post);
+    }
+    frame.rows_used = 1 + shown;
+
+    if (overflow) {
+        const more: u32 = ch.post_count - shown;
+        var w = open_row(&frame, 1 + shown);
+        w.put_str("(+");
+        w.put_uint(more);
+        w.put_str(" more)");
+        seal_row(&w);
+        frame.rows_used = 1 + shown + 1;
+        // invariant: the overflow tail never pushes past the frame.
+        assert(frame.rows_used <= frame_rows);
+    }
+
+    // invariant: the drawing always fits within the fixed grid.
+    assert(frame.rows_used <= frame_rows);
+    return frame;
+}
+
+/// The trimmed text of a row -- its content without the trailing space padding. A reader's convenience.
+pub fn row_text(frame: *const Frame, i: u32) []const u8 {
+    // invariant: only a real row is trimmed.
+    assert(i < frame_rows);
+    const r = frame.row(i);
+    var end: u32 = @intCast(r.len);
+    while (end > 0 and r[end - 1] == ' ') : (end -= 1) {}
+    return r[0..end];
+}
+
+// --- selftest -------------------------------------------------------------------------------------------
+
+const host_key: u32 = 1001;
+const ada: u32 = 2002;
+
+fn frame_is_structurally_exact() !void {
+    var ch = channel.Channel.open(host_key);
+    const frame = render(&ch);
+    // Every row is exactly the frame width; the buffer is exactly rows x cols.
+    assert(frame.cells.len == frame_rows * frame_cols);
+    var i: u32 = 0;
+    while (i < frame_rows) : (i += 1) assert(frame.row(i).len == frame_cols);
+    print("scooter_view: the frame is exactly {d}x{d}; every row is exactly {d} cells wide.\n", .{ frame_rows, frame_cols, frame_cols });
+}
+
+fn empty_channel_says_so() !void {
+    var ch = channel.Channel.open(host_key);
+    const frame = render(&ch);
+    assert(std.mem.eql(u8, row_text(&frame, 0), "scooter: 0 posts"));
+    assert(std.mem.eql(u8, row_text(&frame, 1), "(no posts yet)"));
+    print("scooter_view: an empty channel draws its header and (no posts yet), never a blank face.\n", .{});
+}
+
+fn journal_reads_back_in_the_frame() !void {
+    var ch = channel.Channel.open(host_key);
+    try ch.admit(host_key, ada);
+    _ = try ch.post(ada, "hello");
+    _ = try ch.post(host_key, "hi ada");
+    _ = try ch.post(ada, "");
+    const frame = render(&ch);
+    assert(std.mem.eql(u8, row_text(&frame, 0), "scooter: 3 posts"));
+    // Each post shows its seq, author point, and text, byte-for-byte within its row.
+    assert(std.mem.eql(u8, row_text(&frame, 1), "[0] p2002: hello"));
+    assert(std.mem.eql(u8, row_text(&frame, 2), "[1] p1001: hi ada"));
+    assert(std.mem.eql(u8, row_text(&frame, 3), "[2] p2002:")); // an empty post draws its head, no body
+    // Determinism: the same channel renders identical bytes.
+    const again = render(&ch);
+    assert(std.mem.eql(u8, &frame.cells, &again.cells));
+    print("scooter_view: three posts read back in the frame byte-for-byte, and the fold is deterministic.\n", .{});
+}
+
+fn over_wide_post_truncates() !void {
+    var ch = channel.Channel.open(host_key);
+    try ch.admit(host_key, ada);
+    // A text far wider than 80 columns must clip to the row with a '~', never wrap or overflow.
+    _ = try ch.post(ada, "0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789");
+    const frame = render(&ch);
+    const r = frame.row(1);
+    assert(r.len == frame_cols);
+    assert(r[frame_cols - 1] == '~'); // the truncation mark sits in the last cell
+    // The next row is untouched by the over-wide post (no bleed).
+    assert(std.mem.eql(u8, row_text(&frame, 2), ""));
+    print("scooter_view: an over-wide post clips to the row width with a '~' and never bleeds the next row.\n", .{});
+}
+
+fn overflow_counts_never_drops() !void {
+    var ch = channel.Channel.open(host_key);
+    try ch.admit(host_key, ada);
+    // Post more than the body can hold; the body is body_rows tall, so overflow shows body_rows-1 posts.
+    const total: u32 = body_rows + 5; // comfortably past the body
+    var k: u32 = 0;
+    while (k < total) : (k += 1) _ = try ch.post(ada, "m");
+    const frame = render(&ch);
+    // The last body row is the overflow note with the true remaining count.
+    const shown: u32 = body_rows - 1;
+    const more: u32 = total - shown;
+    const last = row_text(&frame, 1 + shown);
+    // Build the expected "(+K more)" and compare.
+    assert(last.len >= 6);
+    assert(last[0] == '(');
+    assert(last[1] == '+');
+    // The note names the true count -- confirm the digits of `more` appear.
+    var buf: [16]u8 = undefined;
+    const note = std.fmt.bufPrint(&buf, "(+{d} more)", .{more}) catch unreachable;
+    assert(std.mem.eql(u8, last, note));
+    print("scooter_view: a journal past the body ends in (+{d} more) with the true count, never a dropped tail.\n", .{more});
+}
+
+fn run_selftest() !u8 {
+    try frame_is_structurally_exact();
+    try empty_channel_says_so();
+    try journal_reads_back_in_the_frame();
+    try over_wide_post_truncates();
+    try overflow_counts_never_drops();
+    print("scooter_view: version {s}\n", .{scooter_view_version});
+    print("GREEN: scooter_view r3; a channel folds into a bounded {d}x{d} terminal frame -- header, journal, truncation mark, and an honest overflow tail, deterministic every time.\n", .{ frame_rows, frame_cols });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "scooter-view"))) {
+        return run_selftest();
+    }
+    return run_selftest();
+}
