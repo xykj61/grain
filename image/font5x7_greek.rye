@@ -1,0 +1,236 @@
+//! image/font5x7_greek.rye -- the open Greek-letters corpus: the marks a science readout prints (Season G, font content).
+//!
+//! Season G (Open Media Primitives) - font content for the open glyph atlas image/glyph.rye (gfa1), set beside the
+//! five ASCII corpora (image/font5x7.rye the numerals, image/font5x7_alpha.rye the uppercase, image/font5x7_lower.rye
+//! the lowercase, image/font5x7_punct.rye the punctuation, image/font5x7_symbol.rye the symbols) and the wider-symbol
+//! corpora that opened next -- the box family (image/font5x7_box.rye light, image/font5x7_boxdouble.rye double,
+//! image/font5x7_boxdiag.rye diagonal, image/font5x7_boxarc.rye rounded), the arrows (image/font5x7_arrow.rye), the
+//! block elements (image/font5x7_block.rye), the geometric marks (image/font5x7_geometric.rye), the math/technical
+//! operators (image/font5x7_math.rye), and the currency signs (image/font5x7_currency.rye). Where the box corpora
+//! FRAME, the arrows POINT, the geometric shapes MARK, the math corpus PRINTS an operator, and the currency corpus
+//! PRINTS a price, this corpus supplies the twelve Greek marks a science and engineering readout reaches for -- the
+//! three capitals a meter shows outright (Delta for a change, Sigma for a sum, Omega for ohms) and the nine lowercase
+//! letters a formula names a quantity with (alpha, beta, gamma an angle or a particle, theta an angle, lambda a
+//! wavelength, mu the micro prefix, pi the ratio, sigma a stress or a standard deviation, omega an angular frequency),
+//! at their real Unicode codepoints U+0394, U+03A3, U+03A9, U+03B1, U+03B2, U+03B3, U+03B8, U+03BB, U+03BC, U+03C0,
+//! U+03C3, U+03C9, drawn in our own open hand on the same 5x7 body. These are the marks a readout has printed for
+//! quantities since the first alphabet named them -- the longest-lived glyphs a science surface owns.
+//!
+//! The source stays plain ASCII (ASCII-first): the codepoints are written as numeric literals (0x0394 ...) and each
+//! mark is named in an ASCII comment, so no non-ASCII byte enters the file even though the glyphs it builds cover a
+//! non-ASCII range. The codepoints are NOT contiguous (the three capitals sit in the Greek block's upper case, the nine
+//! lowercase letters below them, with unused letters skipped), so this corpus carries an explicit ascending codepoint
+//! table -- the shape the gfa1 encoder trusts (strictly ascending, shared cell, coverage length == cell area). The
+//! drawings ARE the specification: each letter is seven rows of five cells in ASCII line art ('#' full ink, '.' none)
+//! that a reader audits by eye; the coverage bytes are derived from that art, never the reverse. build_atlas turns the
+//! twelve drawings into a glyph.GlyphAtlas the gfa1 encoder accepts, so the property that matters stays provable on
+//! metal: decode(encode(atlas)) recovers every glyph byte-for-byte, the letters are present and distinct, each reads
+//! within an honest legibility band, and the family orders hold -- the capital Omega (the ohm) out-inks the lowercase
+//! omega (an angular frequency), and the capital Sigma (a sum) out-inks the lowercase sigma (a standard deviation), so
+//! a readout tells one case of a letter from the other. No network, no key, no funds -- the marks a surface reads the
+//! day it prints a quantity, on our own open font.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_greek.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+
+pub const font5x7_greek_version = "20260817.051516";
+
+/// Every glyph in this corpus shares one 5-wide, 7-tall cell -- the same body the ASCII and wider-symbol corpora carry.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance: the cell width plus one column of daylight, the same advance the sibling corpora carry.
+pub const greek_advance: u8 = cell_w + 1;
+
+/// The corpus holds exactly the twelve Greek letters named in the table below.
+pub const greek_count: u32 = 12;
+
+/// Cells per glyph -- the coverage length every letter carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The twelve Greek codepoints, strictly ascending -- the order the gfa1 encoder trusts. Each aligns by index with
+/// greek_art below. Written as numeric literals so the source stays plain ASCII while the glyphs cover a non-ASCII
+/// range:
+///   0x0394 capital Delta (a change), 0x03A3 capital Sigma (a sum), 0x03A9 capital Omega (ohms),
+///   0x03B1 alpha, 0x03B2 beta, 0x03B3 gamma, 0x03B8 theta, 0x03BB lambda, 0x03BC mu,
+///   0x03C0 pi, 0x03C3 lowercase sigma, 0x03C9 lowercase omega. The three capitals sit above the lowercase run, so
+///   the codepoints are named outright rather than derived from a base.
+const greek_codepoints = [greek_count]u32{
+    0x0394, 0x03A3, 0x03A9, 0x03B1, 0x03B2, 0x03B3, 0x03B8, 0x03BB, 0x03BC, 0x03C0, 0x03C3, 0x03C9,
+};
+
+/// The twelve letters, drawn in the open. Each is seven rows of five cells; '#' ink, '.' background. A reader audits
+/// every letter here by eye, and the coverage bytes are lifted from this art, never guessed. The capital Delta rises to
+/// a peak over a base bar; the capital Sigma zig-zags between two bars; the capital Omega horseshoes down to two feet;
+/// alpha loops with a tail to the lower right; beta rises on a left stem with two bulges; gamma forks to a light tail;
+/// theta rings an oval with a crossbar; lambda climbs to a peak and splays two legs; mu drops a left descender past a
+/// bowl; pi bars a lid over two legs; lowercase sigma loops with a top tail to the right; lowercase omega rounds two
+/// bowls like a soft w.
+const greek_art = [greek_count][cell_h][]const u8{
+    .{ "..#..", ".#.#.", ".#.#.", "#...#", "#...#", "#...#", "#####" }, // U+0394 capital Delta
+    .{ "#####", "#....", ".#...", "..#..", ".#...", "#....", "#####" }, // U+03A3 capital Sigma
+    .{ ".###.", "#...#", "#...#", "#...#", ".#.#.", ".#.#.", "##.##" }, // U+03A9 capital Omega
+    .{ ".....", ".....", ".###.", "#..#.", "#..#.", "#..#.", ".##.#" }, // U+03B1 alpha
+    .{ ".##..", "#..#.", "#..#.", "###..", "#..#.", "#..#.", "#...." }, // U+03B2 beta
+    .{ ".....", ".....", "#...#", "#...#", ".#.#.", "..#..", ".#..." }, // U+03B3 gamma
+    .{ ".....", ".###.", "#...#", "#####", "#...#", ".###.", "....." }, // U+03B8 theta
+    .{ ".....", "..#..", "..#..", ".#.#.", ".#.#.", "#...#", "#...#" }, // U+03BB lambda
+    .{ ".....", ".....", "#..#.", "#..#.", "#..#.", "###.#", "#...." }, // U+03BC mu
+    .{ ".....", ".....", ".....", "#####", ".#.#.", ".#.#.", ".#.#." }, // U+03C0 pi
+    .{ ".....", ".....", ".####", "#.#..", "#..#.", "#..#.", ".##.." }, // U+03C3 lowercase sigma
+    .{ ".....", ".....", ".....", "#.#.#", "#.#.#", "#.#.#", ".#.#." }, // U+03C9 lowercase omega
+};
+
+/// Lift one letter's ASCII art into a freshly allocated coverage grid of exactly cell_area bytes: 255 for ink,
+/// 0 for background. The art's own shape is asserted, so a mistyped row is a stopped line rather than a bad glyph.
+fn coverage_from_art(allocator: std.mem.Allocator, art: [cell_h][]const u8) ![]u8 {
+    // invariant: a coverage grid is exactly the shared cell area, within the atlas ceiling.
+    assert(cell_area >= 1);
+    assert(cell_area <= glyph.coverage_max);
+    const cov = try allocator.alloc(u8, cell_area);
+    var idx: u32 = 0;
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        const row = art[r];
+        // invariant: every drawn row is exactly the cell width -- the art matches the grid.
+        assert(row.len == cell_w);
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            cov[idx] = if (row[c] == '#') 255 else 0;
+            idx += 1;
+        }
+    }
+    // invariant: the whole grid was filled, no cell left unwritten.
+    assert(idx == cell_area);
+    return cov;
+}
+
+/// Build the Greek-letters atlas: twelve glyphs at the named ascending codepoints, sharing the 5x7 cell and advance.
+/// The gfa1 encoder accepts the result directly (ascending codepoints, coverage length == cell area).
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the corpus is the twelve named Greek letters and no more.
+    assert(greek_count == 12);
+    assert(cell_area == 35);
+    const glyphs = try allocator.alloc(glyph.Glyph, greek_count);
+    var i: u32 = 0;
+    var last_cp: u32 = 0;
+    while (i < greek_count) : (i += 1) {
+        const cp = greek_codepoints[i];
+        // invariant: codepoints are strictly ascending -- the ordering the gfa1 encoder trusts.
+        assert(i == 0 or cp > last_cp);
+        last_cp = cp;
+        const cov = try coverage_from_art(allocator, greek_art[i]);
+        glyphs[i] = glyph.Glyph{
+            .codepoint = cp,
+            .advance = greek_advance,
+            .coverage = cov,
+        };
+    }
+    // invariant: the last codepoint is the lowercase omega (U+03C9) -- the table ends where this set ends.
+    assert(glyphs[greek_count - 1].codepoint == 0x03C9);
+    return glyph.GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- the legibility signal a blank glyph would fail.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+/// The ink count of a codepoint's glyph in the built atlas -- the reader the family-order proofs use.
+fn ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return ink_count(g.coverage);
+    return error.GreekLetterMissing;
+}
+
+// --- selftest: build the Greek atlas, round-trip it through gfa1, prove all present, distinct, legible -------------
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built atlas is the twelve-letter corpus at the shared cell.
+    assert(glyph_count == greek_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // Twelve present letters: every one looks up, carries the shared advance; an ASCII letter misses.
+    var d: u32 = 0;
+    while (d < greek_count) : (d += 1) {
+        const cp = greek_codepoints[d];
+        if (back.lookup(cp)) |g| {
+            assert(g.codepoint == cp);
+            assert(g.advance == greek_advance);
+        } else return error.GreekLetterMissing;
+    }
+    if (back.lookup('A')) |_| return error.NonGreekFound else {}
+
+    // Distinctness: no two letters share identical coverage -- a real alphabet's glyphs differ (catches a copy slip).
+    var a: u32 = 0;
+    while (a < greek_count) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b < greek_count) : (b += 1) {
+            if (std.mem.eql(u8, atlas.glyphs[a].coverage, atlas.glyphs[b].coverage)) return error.GreekLettersNotDistinct;
+        }
+    }
+
+    // Legibility: each letter's ink count sits inside an honest band. The floor sits where gamma (its lightest letter,
+    // a light fork) still reads, the ceiling where the capital Omega (its heaviest) still resolves as a mark, not a
+    // block.
+    const ink_min: u32 = 6;
+    const ink_max: u32 = 20;
+    var lo: u32 = cell_area;
+    var hi: u32 = 0;
+    var k: u32 = 0;
+    while (k < greek_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (n < ink_min or n > ink_max) return error.GreekLetterIllegible;
+        if (n < lo) lo = n;
+        if (n > hi) hi = n;
+    }
+    // invariant: the observed ink band stayed inside the honest bounds.
+    assert(lo >= ink_min);
+    assert(hi <= ink_max);
+
+    // Family order: the capital Omega (the ohm a meter shows) out-inks the lowercase omega (an angular frequency), and
+    // the capital Sigma (a sum) out-inks the lowercase sigma (a standard deviation) -- what makes each letter a true
+    // two-case pair rather than two unrelated drawings, and what lets a readout tell one case of a letter from the
+    // other.
+    if (!(try ink_of(&atlas, 0x03A9) > try ink_of(&atlas, 0x03C9))) return error.OmegaOrderWrong; // Omega > omega
+    if (!(try ink_of(&atlas, 0x03A3) > try ink_of(&atlas, 0x03C3))) return error.SigmaOrderWrong; // Sigma > sigma
+
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof.
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-greek: {d} Greek letters U+0394,U+03A3,U+03A9,U+03B1,U+03B2,U+03B3,U+03B8,U+03BB,U+03BC,U+03C0,U+03C3,U+03C9 at {d}x{d} round-trip byte-identical; all present, distinct, legible (ink {d}..{d} of {d}); Omega>omega and Sigma>sigma hold; encoded {d} bytes, raw {d}\n", .{
+        glyph_count, cell_w, cell_h, lo, hi, cell_area, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_greek selftest\n", .{});
+    return 1;
+}

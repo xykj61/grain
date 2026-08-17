@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260817.051724
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title font5x7 Greek-letters corpus, GREEN
+prompt run the autonomous loop -- next agent-doable lap Lindy-first crux-first, send often, stop at custody gates
+think Read REMEMBER, the itinerary, the double-seat Season G doc, and the crypto-parity doc for the road; the live edge is the open-media font family, the crypto surface stands WHOLE.
+think Rota is ascending across recent laps (27 -> 1 -> 2 -> 3 for boxarc/math/currency); this lap reads item 4, foundations/20260729-224828_reds-first-and-the-allocation.md -- a red books the remainder of the allocation, the fix closes on a witness on metal never a claim.
+think REMEMBER names the next open-media rungs: more wider symbols (fraction glyphs, superscript/subscript digits, Greek for science readouts). Chose Greek: the most Lindy of the three, the marks a science and engineering readout has printed for quantities since the first alphabet named them, and the natural companion to the just-landed math and currency corpora (a readout printing Ohm, microvolts, delta-t, pi).
+think Curated twelve -- the three capitals a meter shows outright (Delta, Sigma, Omega for ohms) and the nine lowercase a formula names a quantity with (alpha, beta, gamma, theta, lambda, mu, pi, sigma, omega) -- matching the currency (8) and math (10) cadence rather than the full 24-letter case; drew each 5x7 in the open as ASCII line art, coverage lifted from the art.
+think Designed two same-letter family orders provable beyond the round-trip: capital Omega (17 ink) > lowercase omega (11), and capital Sigma (15) > lowercase sigma (12), so a readout tells the ohm from the angular frequency and the sum from the standard deviation.
+obs GREEN first metal run, no red; ink band landed 8..17 of 35 exactly as hand-counted, both family orders held, decode(encode(atlas)) byte-identical (encoded 474, raw 420).
+obs tame_style_check bans clean, width-check exit 0, both files plain 7-bit ASCII though the glyphs cover a non-ASCII range (numeric codepoint literals -- the ascii-first exception for a font codec's glyph tables).
+loom witness=font5x7_greek_witness glyphs=12 cell=5x7 encoded_bytes=474 raw_bytes=420 ink_lo=8 ink_hi=17
+file image/font5x7_greek.rye the twelve-letter Greek corpus, drawn in the open, built into the gfa1 atlas
+file tools/font5x7_greek_witness.rish proves the corpus round-trips byte-identical, present, distinct, legible, orders hold
+recommend keep-going next open-media rung: fraction glyphs or superscript/subscript digits for units, or the captioned panel on longer real reels -- all agent-doable, no gate
