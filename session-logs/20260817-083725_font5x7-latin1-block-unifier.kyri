@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260817.083725
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title font5x7 -- the unifying Latin-1 letter font, the whole block in one atlas, GREEN
+prompt recur: take the next agent-doable lap Lindy-first crux-first, Season G open media, Rye-first, send often, stop at custody gates
+think Read the road docs -- the 1024-round itinerary, the eight-season double-seat, the Rye-first crypto-parity wave -- and REMEMBER's live edge. The open-media font family is the live edge; the INNER LOOP text lagged the actual frontier (it still named accent-composition and Icelandic capitals as next, both already landed in recent commits).
+think Surveyed the image/ corpora and git log. The Latin-1 Supplement letter block stands closed across thirteen leaf corpora (32 lowercase + 30 uppercase). Two partial unifiers already exist (font5x7_accented merged the four earliest lowercase accent corpora, font5x7_upper the two earliest uppercase), but neither covers the tilde/diaeresis/nordic/icelandic/close corpora that landed later.
+think Lindy-first crux-first pick: one level above both partial unifiers, gather ALL thirteen leaf corpora into one gfa1 atlas and prove BLOCK COMPLETENESS -- the strongest statement the family can make. This is the finishing edge (ship one whole thing), and floor code a surface reaches for the day it prints any Western European name.
+think Confirmed by measurement (grep) each corpus's exported count and build_atlas: latin1 8, grave 5, circumflex 5, german 3, tilde 2, diaeresis 3, nordic 3, icelandic 3, upper_accented 8, upper_latin1 13, upper_nordic 3, upper_icelandic 3, upper_close 3 = 62. The Latin-1 block U+00C0..U+00FF is 64 codepoints; exactly two are non-letters (multiplication U+00D7, division U+00F7, which live in font5x7_math), so 64-2 = 62 letters. The two tallies agree, and the module asserts they agree.
+think Mirrored the font5x7_accented unifier pattern exactly: gather() borrows glyph references (no copy), insertion sort to strictly-ascending order the gfa1 encoder trusts, then the completeness walk over the whole block -- every codepoint present and carrying the shared advance EXCEPT the two math signs, which must miss.
+obs GREEN on the first metal run, no red: 62 letters round-trip byte-identical, codepoints strictly ascending and unique (thirteen corpora disjoint), block-complete (every letter present, both math signs absent), every glyph inked (ink 9..19 of 35), encoded 2854 bytes over raw 2170. tame_style_check bans clean, width-check exit 0, both files verified plain 7-bit ASCII by grep.
+obs The disjointness proof reads the thirteen LEAF corpora directly rather than composing the two partial unifiers, so a collision between any two leaves fails the ascending walk at full strength -- no unifier could mask a double-drawn letter.
+obs Two independent tallies guard the count: block_count (the sum of the thirteen corpora's own count constants) and block_letter_span (the block span minus its two math-sign holes) must both equal 62, so a leaf gained or lost breaks the tie at construction.
+loom witness=font5x7_latin1_block_witness glyphs=62 encoded_bytes=2854 raw_bytes=2170 ink_lo=9 ink_hi=19 cell_area=35
+file image/font5x7_latin1_block.rye the unifier -- gathers thirteen leaf corpora, proves block completeness U+00C0..U+00FF minus the two math signs
+file tools/font5x7_latin1_block_witness.rish the witness -- builds, round-trips, proves ascending/disjoint/block-complete on metal
+file image/README.md docs-sync -- the accented-Latin family entry names the whole-block unifier and its completeness crux; witness roster grew _latin1_block
+file session-logs/20260817-083725_font5x7-latin1-block-unifier.kyri this record
+file session-logs/README.md newest-first index row
+recommend keep-going the whole Latin-1 letter block now reads as one lookup; next open-media rungs stay open (the block-complete font proven on a real reel, the open glyph atlas beyond 5x7, or a next symbol family). No network, no key, no funds -- no gate reached.

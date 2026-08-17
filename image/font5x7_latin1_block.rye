@@ -1,0 +1,260 @@
+//! image/font5x7_latin1_block.rye -- the unifying Latin-1 letter font: the whole Latin-1 Supplement letter block in one atlas.
+//!
+//! Season G (Open Media Primitives) - the finishing rung of the whole Latin-1 letter family, one level above the two
+//! partial unifiers already landed (image/font5x7_accented.rye gathered the four earliest lowercase accent corpora, and
+//! image/font5x7_upper.rye gathered the two earliest uppercase accent corpora). Since those two landed, the tree drew
+//! every remaining Latin-1 letter -- the tilde and diaeresis vowels, the Danish-Norwegian and Icelandic letters, their
+//! capitals, and the three closing capitals -- until the block stood closed across thirteen leaf corpora. This module
+//! gathers all thirteen into ONE gfa1 atlas covering the whole Latin-1 Supplement letter block, our own open hand end to
+//! end: the sixty-two letters a Western European name reaches for, in a single lookup Dexter, Scooter, Skate, and
+//! Brushstroke read the day they print a Romance, French, Italian, Portuguese, German, Danish, Norwegian, or Icelandic
+//! name, rather than thirteen corpora to stitch by hand.
+//!
+//! The distinctive crux this module proves, beyond the round-trip and the ascending-and-unique disjointness the smaller
+//! unifiers prove, is BLOCK COMPLETENESS: every codepoint in U+00C0..U+00FF is present EXCEPT exactly the two that are
+//! not letters -- the multiplication sign U+00D7 and the division sign U+00F7, which live in image/font5x7_math.rye. The
+//! selftest walks the whole 64-codepoint block and asserts each of the two math signs misses while every other codepoint
+//! is present, so the font holds the whole letter block and nothing but it -- the strongest statement the family can make.
+//! The merged count equals the SUM of the thirteen corpora (32 lowercase + 30 uppercase = 62), which together with the
+//! strictly-ascending codepoints proves the corpora DISJOINT: no two claim one letter, so the thirteen compose with no
+//! collision and no letter lost.
+//!
+//! The band is NOT contiguous only at the two math-sign holes; every other step is by one. The source stays plain ASCII
+//! (ASCII-first): the corpora it merges each carry numeric codepoint literals, and this module names the two holes as
+//! numeric literals too. No network, no key, no funds -- the whole Latin-1 letter block a surface reads the day it spells
+//! any Western European name on our own open font.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_latin1_block.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+
+// The thirteen leaf corpora, gathered directly (never through the smaller unifiers, so the disjointness proof reads the
+// leaves at full strength). Lowercase first, then uppercase -- the sort below places every glyph regardless of order.
+const latin1 = @import("font5x7_latin1.rye"); // acute/cedilla, 8
+const grave = @import("font5x7_grave.rye"); // grave vowels, 5
+const circumflex = @import("font5x7_circumflex.rye"); // circumflex vowels, 5
+const german = @import("font5x7_german.rye"); // eszett + a/o umlaut, 3
+const tilde = @import("font5x7_tilde.rye"); // tilde vowels, 2
+const diaeresis = @import("font5x7_diaeresis.rye"); // e/i/y diaeresis, 3
+const nordic = @import("font5x7_nordic.rye"); // a ring, ae, o stroke, 3
+const icelandic = @import("font5x7_icelandic.rye"); // eth, y acute, thorn, 3
+const up_acc = @import("font5x7_upper_accented.rye"); // acute/cedilla/tilde/diaeresis capitals, 8
+const up_lat = @import("font5x7_upper_latin1.rye"); // grave/circumflex/tilde/diaeresis capitals, 13
+const up_nordic = @import("font5x7_upper_nordic.rye"); // A ring, AE, O stroke, 3
+const up_icelandic = @import("font5x7_upper_icelandic.rye"); // Eth, Y acute, Thorn, 3
+const up_close = @import("font5x7_upper_close.rye"); // E/I diaeresis, O tilde, 3
+
+pub const font5x7_latin1_block_version = "20260817.083725";
+
+/// The whole family shares one 5x7 cell -- every corpus agrees on this, and this module asserts the agreement per gather.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance every glyph carries: the cell width plus one column of daylight, the same advance the corpora carry.
+pub const glyph_advance: u8 = cell_w + 1;
+
+/// Cells per glyph -- the coverage length every glyph carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The first and last codepoints of the Latin-1 Supplement block, and the two codepoints in it that are NOT letters --
+/// the multiplication and division signs, which live in image/font5x7_math.rye. The completeness proof walks the block
+/// from first to last and expects a hit everywhere but these two holes.
+pub const block_first: u32 = 0x00C0;
+pub const block_last: u32 = 0x00FF;
+pub const mult_sign: u32 = 0x00D7;
+pub const div_sign: u32 = 0x00F7;
+
+/// The unifying count -- the sum of the thirteen corpora's own counts (32 lowercase + 30 uppercase = 62). Named from the
+/// corpora's own count constants, so a corpus that grows without this sum growing fails the fill assert in build_atlas.
+pub const block_count: u32 =
+    latin1.latin1_count + grave.grave_count + circumflex.circumflex_count +
+    german.german_count + tilde.tilde_count + diaeresis.diaeresis_count +
+    nordic.nordic_count + icelandic.icelandic_count +
+    up_acc.upper_count + up_lat.upper_count +
+    up_nordic.upper_nordic_count + up_icelandic.upper_icelandic_count +
+    up_close.upper_close_count;
+
+/// The number of letter codepoints in the whole block: its span (block_last - block_first + 1) minus the two math-sign
+/// holes. This must equal block_count, and the selftest asserts they agree -- a leaf gained or lost would break the tie.
+pub const block_letter_span: u32 = (block_last - block_first + 1) - 2;
+
+/// Lift one corpus atlas's glyphs into the combined table starting at `dst_off`, asserting each shares the cell and
+/// advance. Returns the next free offset. The gathered coverage slices are borrowed from the source atlas, which lives in
+/// the same arena -- no copy, and the merge sort below reorders references, never bytes.
+fn gather(dst: []glyph.Glyph, dst_off: u32, src: *const glyph.GlyphAtlas) u32 {
+    // invariant: the source shares this family's cell -- a corpus at a different size would corrupt the font.
+    assert(src.cell_w == cell_w);
+    assert(src.cell_h == cell_h);
+    const n: u32 = @intCast(src.glyphs.len);
+    // invariant: the gathered run fits inside the combined table.
+    assert(dst_off + n <= block_count);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const g = src.glyphs[i];
+        // invariant: every merged glyph carries the shared advance, so every letter lays out alike.
+        assert(g.advance == glyph_advance);
+        assert(g.coverage.len == cell_area);
+        dst[dst_off + i] = g;
+    }
+    return dst_off + n;
+}
+
+/// Build the unifying Latin-1 letter font: merge the thirteen corpora, then sort the whole table strictly ascending by
+/// codepoint. The gfa1 encoder accepts the result directly (ascending codepoints, coverage length == cell area); the
+/// selftest proves the band ascending-and-unique, the count equal to the sum, and the whole block present but its two
+/// math signs absent.
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the family cell fits the atlas ceiling, and the count fits the glyph ceiling.
+    assert(cell_area <= glyph.coverage_max);
+    assert(block_count <= glyph.glyph_max);
+    // invariant: the unifying count is the sixty-two letters the thirteen corpora name, and equals the block's own letter
+    // span (the block minus its two math signs) -- two independent tallies that must agree.
+    assert(block_count == 62);
+    assert(block_count == block_letter_span);
+
+    const glyphs = try allocator.alloc(glyph.Glyph, block_count);
+    var off: u32 = 0;
+
+    // Gather the thirteen proven corpora. Order of gathering does not matter -- the sort below places every glyph.
+    const a01 = try latin1.build_atlas(allocator);
+    off = gather(glyphs, off, &a01);
+    const a02 = try grave.build_atlas(allocator);
+    off = gather(glyphs, off, &a02);
+    const a03 = try circumflex.build_atlas(allocator);
+    off = gather(glyphs, off, &a03);
+    const a04 = try german.build_atlas(allocator);
+    off = gather(glyphs, off, &a04);
+    const a05 = try tilde.build_atlas(allocator);
+    off = gather(glyphs, off, &a05);
+    const a06 = try diaeresis.build_atlas(allocator);
+    off = gather(glyphs, off, &a06);
+    const a07 = try nordic.build_atlas(allocator);
+    off = gather(glyphs, off, &a07);
+    const a08 = try icelandic.build_atlas(allocator);
+    off = gather(glyphs, off, &a08);
+    const a09 = try up_acc.build_atlas(allocator);
+    off = gather(glyphs, off, &a09);
+    const a10 = try up_lat.build_atlas(allocator);
+    off = gather(glyphs, off, &a10);
+    const a11 = try up_nordic.build_atlas(allocator);
+    off = gather(glyphs, off, &a11);
+    const a12 = try up_icelandic.build_atlas(allocator);
+    off = gather(glyphs, off, &a12);
+    const a13 = try up_close.build_atlas(allocator);
+    off = gather(glyphs, off, &a13);
+
+    // invariant: the thirteen corpora fill the table exactly -- a short count would mean a lost corpus.
+    assert(off == block_count);
+
+    // Insertion sort by codepoint -- bounded by block_count, stable, and small (sixty-two glyphs). The gfa1 encoder
+    // demands strictly ascending codepoints; this is where the thirteen corpora become one ordered font.
+    var i: u32 = 1;
+    while (i < block_count) : (i += 1) {
+        const key = glyphs[i];
+        var j: u32 = i;
+        while (j > 0 and glyphs[j - 1].codepoint > key.codepoint) : (j -= 1) {
+            glyphs[j] = glyphs[j - 1];
+        }
+        glyphs[j] = key;
+    }
+
+    // invariant: the sorted table opens at A grave (U+00C0, the lowest block letter) and closes at y diaeresis (U+00FF,
+    // the highest) -- the whole letter block, end to end.
+    assert(glyphs[0].codepoint == block_first);
+    assert(glyphs[block_count - 1].codepoint == block_last);
+    return glyph.GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- every letter carries ink; none is blank.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+// --- selftest: build the whole Latin-1 letter font, round-trip it, prove disjoint corpora and BLOCK COMPLETENESS -------
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built font is the sixty-two-letter block at the shared cell.
+    assert(glyph_count == block_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // The disjointness crux: the merged codepoints run STRICTLY ASCENDING with NO DUPLICATE. Since the merged count is the
+    // sum of the thirteen corpora (asserted 62 in build_atlas), strictly-ascending here proves the corpora disjoint -- a
+    // collision (two corpora drawing one letter) would fail this walk.
+    var e: u32 = 1;
+    while (e < glyph_count) : (e += 1) {
+        if (!(atlas.glyphs[e].codepoint > atlas.glyphs[e - 1].codepoint)) return error.CodepointsNotStrictlyAscending;
+    }
+
+    // The BLOCK COMPLETENESS crux: walk the whole Latin-1 Supplement block U+00C0..U+00FF. Every codepoint is present in
+    // the decoded font and carries the shared advance EXCEPT the two that are not letters -- the multiplication sign
+    // (U+00D7) and the division sign (U+00F7) -- which must miss. So the font holds the whole letter block and nothing but.
+    var present: u32 = 0;
+    var cp: u32 = block_first;
+    while (cp <= block_last) : (cp += 1) {
+        const is_math = (cp == mult_sign or cp == div_sign);
+        if (back.lookup(cp)) |g| {
+            if (is_math) return error.MathSignFoundInLetterBlock;
+            assert(g.codepoint == cp);
+            assert(g.advance == glyph_advance);
+            present += 1;
+        } else {
+            if (!is_math) return error.BlockLetterMissing;
+        }
+    }
+    // invariant: exactly the block's letter span is present -- the two math signs are the only holes.
+    if (present != block_count) return error.BlockCoverageIncomplete;
+
+    // A plain ASCII 'A' and 'a' both miss -- this font is the accented/extended block, not the base letters.
+    if (back.lookup('A')) |_| return error.BaseLetterFound else {}
+    if (back.lookup('a')) |_| return error.BaseLetterFound else {}
+
+    // Every glyph carries ink -- there is no blank in a letter set.
+    var lo: u32 = cell_area;
+    var hi: u32 = 0;
+    var k: u32 = 0;
+    while (k < glyph_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (n == 0) return error.BlockGlyphBlank;
+        if (n < lo) lo = n;
+        if (n > hi) hi = n;
+    }
+
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof (the REDS #82 lesson).
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-latin1-block: {d} Latin-1 letters U+00C0..U+00FF (the whole block but the two math signs U+00D7,U+00F7) at {d}x{d} round-trip byte-identical; codepoints strictly ascending and unique (thirteen corpora disjoint: 32 lowercase + 30 uppercase); block-complete (every letter present, both math signs absent), every glyph inked (ink {d}..{d} of {d}); encoded {d} bytes, raw {d}\n", .{
+        glyph_count, cell_w, cell_h, lo, hi, cell_area, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_latin1_block selftest\n", .{});
+    return 1;
+}
