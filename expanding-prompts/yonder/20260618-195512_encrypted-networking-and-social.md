@@ -44,7 +44,7 @@ Learn, from three living systems and one boot project, how to carry *values betw
 
 - `external-research/yonder/20260618-195512_encrypted-networking-riscv.md` — encrypted networking from the boot upward, translated to our stack on RISC-V, with the Urbit/Sui essences, in the requested seven-part structure, under the active-designing and TAME lenses.
 - `external-research/yonder/20260618-195612_devotional-social-layer.md` — the social-layer vision: Nostr relays, Sui-style validation, and DAG curation woven into a simple, value-true application for a devotional vegan community, critically evaluated through our filters.
-- `gratitude/` — `urbit/urbit`, `MystenLabs/sui`, `nostr-protocol/nips`, `PrimalHQ/primal-caching-service`, `damus-io/damus`, added as honored submodules, with the README's provenance and licenses recorded.
+- `gratitude/` — `urbit/urbit`, `MystenLabs/sui`, `nostr-protocol/nips`, `PrimalHQ/primal-caching-service`, `dfora-io/damus`, added as honored submodules, with the README's provenance and licenses recorded.
 - `work-in-progress/20260623-033012_open-threads.md` — a fresh snapshot naming the threads these studies open and the questions still live.
 
 ## The Lens to Hold

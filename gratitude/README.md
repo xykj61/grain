@@ -87,8 +87,8 @@ When we adapt one of these works into Radiant Style, the rewrite lives elsewhere
   - Source: <https://github.com/nostr-protocol/nips>
 - **`primal/`** — PrimalHQ's caching service for Nostr (the archived original; development continues at `primal-server`). It connects to relays, gathers their events in real time, and serves them to clients as curated feeds over a WebSocket cache API — a working study in curation-by-service, weighed in `../external-research/yonder/20260618-195612_devotional-social-layer.md_...`. Cloned shallow (depth 1), MIT.
   - Source: <https://github.com/PrimalHQ/primal-caching-service>
-- **`damus/`** — the damus-io community's Nostr client for iOS and macOS, signing and verifying at the edge across many NIPs. It shows the protocol lived from the user's side, honored in `../external-research/yonder/20260618-195612_devotional-social-layer.md_...`. Cloned shallow (depth 1), GPL-3.0.
-  - Source: <https://github.com/damus-io/damus>
+- **`damus/`** — the dfora-io community's Nostr client for iOS and macOS, signing and verifying at the edge across many NIPs. It shows the protocol lived from the user's side, honored in `../external-research/yonder/20260618-195612_devotional-social-layer.md_...`. Cloned shallow (depth 1), GPL-3.0.
+  - Source: <https://github.com/dfora-io/damus>
 
 ### The interface and documentation study (`980`)
 

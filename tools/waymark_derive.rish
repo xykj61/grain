@@ -104,7 +104,7 @@ say "corpus sha3-512: ${digest_val}"
 #   constel-test-network-fake-pier-local-constellations -> FORA (20260814 · Constel fake-pier test-network naming, siloed dev constellations)
 #   season-c-lotus-creative-suite-audio-wire-shape -> ALES (20260814 · Season C Lotus creative suite, the basic audio wire shape)
 #   season-a-mikrophone-forgetful-capture -> DREY (20260817 - renamed from DREY, breach molt debride EXECUTED; DREY kept in exclude as historical)
-#   constel-local-test-constellations -> FORA (20260817 - FORA replacement, same Constel test-network goals; breach-queued, same cairn)
+#   constel-local-test-constellations -> FORA (20260817 - renamed from FORA, breach molt debride EXECUTED; FORA kept in exclude as historical)
 #   bit-design-system-surface-and-dimeroll-entities -> WADE (20260817 - transient: drawn when the module was dimeroll; superseded when Dimeroll renamed to Dimeroll -- kept in exclude as historical)
 #   dimeroll-hr-and-accounting-entities -> WADE (20260817 - the WADE->WADE->WADE season, re-breached from the dimeroll-consistent preimage idx 5141 on Keaton's word; WADE and WADE both stay in exclude as historical)
 #   cion-molt-living-mutants-and-fossils -> LOWE (20260817 - renamed from LOWE, breach molt debride EXECUTED; LOWE kept in exclude as historical)
@@ -115,7 +115,8 @@ say "corpus sha3-512: ${digest_val}"
 # SALA dropped from exclude at alias retirement 20260724.202412 (Sala is historical).
 # Placeholder below is the most recent seat; change it when drawing the next.
 # Most recent seats (breach molt debride replacements 20260817):
-#   EXECUTED: WADE (WADE->WADE->WADE), LOWE (LOWE), DREY (DREY). QUEUED: FORA (FORA).
+#   ALL EXECUTED 20260817: WADE (WADE->WADE->WADE), LOWE (LOWE), DREY (DREY), FORA (FORA).
+#   Elder marks WADE, WADE, LOWE, DREY, FORA kept in exclude as historical.
 #   WADE, WADE, LOWE kept in exclude as historical. input_name rests on WADE's below.
 let input_name = "dimeroll-hr-and-accounting-entities"
 
