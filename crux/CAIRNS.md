@@ -24,6 +24,12 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260816.220634` -- work-in-progress -> crux rename EXECUTED (the breach the 20260815 cairn pre-planted)
+
+**Walk-back nib:** `947c592333`
+**Swept:** the `work-in-progress/` directory renamed to `crux/` via `git mv`, so the living pins (REMEMBER, REDS, CAIRNS, SHRED_PREP, ROADMAP, TASKS) now sort high alphabetically as Keaton seated. A back-compat symlink `work-in-progress -> crux` is committed so the 2,000+ dated session logs and counsel that cite `work-in-progress/...` still resolve unchanged -- accrete-never-break without rewriting one dated artifact. Only the loop paths (the seed and `tools/launch-claude-season.rish`) and the living rules that name the ledgers were repointed to `crux/`; the dated-bearing ledgers kept their historical `work-in-progress` wording and resolve through the symlink.
+**What waits there, worth recalling:** at nib `947c592333` and every commit before it, the tree still holds a real `work-in-progress/` directory -- every path in dated logs is literal there, not a symlink. A future full repoint of living references (dropping the symlink) would be its own ratchet round.
+
 ### `20260815.175524` — Decision-wave breach queue: Bron→Kyri and work-in-progress→crux (prep, no cut yet)
 
 **Walk-back nib:** `9e3c2dccfa`

@@ -6,7 +6,7 @@
 
 ## The one line (paste form)
 
-> Read `work-in-progress/REMEMBER.md`; take the next agent-doable lap Lindy-first crux-first; send often -- push each finished increment (a new file, a passing witness, a doc) to `origin` and `xykj61` as its own signed round so progress is followable on GitHub; approve your own design rounds and trust yourself before checking in; keep double-seating new visions that address calendar-itinerary blind spots; STOP at the custody gates in REMEMBER; if only those gates remain, run the shell command `touch .loop-gates-only` and print exactly `GATES-ONLY`, then stop. baton prin recur
+> Read `crux/REMEMBER.md`; take the next agent-doable lap Lindy-first crux-first; send often -- push each finished increment (a new file, a passing witness, a doc) to `origin` and `xykj61` as its own signed round so progress is followable on GitHub; approve your own design rounds and trust yourself before checking in; keep double-seating new visions that address calendar-itinerary blind spots; STOP at the custody gates in REMEMBER; if only those gates remain, run the shell command `touch .loop-gates-only` and print exactly `GATES-ONLY`, then stop. baton prin recur
 
 ## 1 -- The lenses, loaded by reference
 
@@ -14,8 +14,8 @@ Read `context/` before large decisions: TAME (safety > performance > joy), CIVIC
 
 Load these named paths too, so the loop carries the disciplines an unattended run most often forgets:
 
-- **Reds ledger** -- `work-in-progress/REDS.md`: a red books the allocation before new work; close it on a witness on metal (`.claude/rules/reds-first.md`).
-- **Cairns ledger** -- `work-in-progress/CAIRNS.md`: mark the way back before any breach rename or seated debride (`.claude/rules/cairn.md`).
+- **Reds ledger** -- `crux/REDS.md`: a red books the allocation before new work; close it on a witness on metal (`.claude/rules/reds-first.md`).
+- **Cairns ledger** -- `crux/CAIRNS.md`: mark the way back before any breach rename or seated debride (`.claude/rules/cairn.md`).
 - **Docs stay synced** -- `.claude/rules/docs-implementation-sync.md`: when behavior changes, the doc that describes it moves in the **same** commit; a doc's behavioral claim is checked by reading or running, never assumed.
 - **Prove before GREEN** -- before any round claims GREEN, run the module's own witness plus `rishi/bin/rishi run tools/tame_style_check.rish` and `tools/width-check.rish`; a green witness never excuses zero asserts (`.claude/rules/tame-guidance.md`).
 - **Loom capture** -- when a round measures a hot path, record a `loom key=value` line in the session log from real measurement, never memory (`.claude/rules/session-logs.md`).
@@ -49,13 +49,13 @@ The lenses above load every lap. The **rota** is the supplement: deep-read **one
 22. `active-designing/20260816-205859_double-seat-expansion-eight-seasons.md`
 23. `active-designing/20260812-171050_the-1024-round-itinerary.md`
 24. `recursion-prompts/README.md`
-25. `work-in-progress/REDS.md`
-26. `work-in-progress/CAIRNS.md`
-27. `work-in-progress/REMEMBER.md`
+25. `crux/REDS.md`
+26. `crux/CAIRNS.md`
+27. `crux/REMEMBER.md`
 
 ## 2 -- The hard bounds, by tag (the custody gates -- never cross)
 
-Carried verbatim from `work-in-progress/REMEMBER.md` -> *Custody gates*. An autonomous run **stops and surfaces** at each; it never crosses:
+Carried verbatim from `crux/REMEMBER.md` -> *Custody gates*. An autonomous run **stops and surfaces** at each; it never crosses:
 
 1. {{seed-force-push-gate -- the final seed force-push to grain-os/grain}}
 2. {{provisioning-or-paying -- cloud/VPS/subscription; agents author IaC, Keaton provisions and pays}}
@@ -82,7 +82,7 @@ Name the proof before the work: {{witness path}} asserts {{invariant}}; green lo
 A tripwire is not a stop -- it is a design round you **approve for yourself** and make progress on, rather than panicking to check in. Book it, name it, keep going:
 
 - A new big vision that fills a calendar-itinerary blind spot -> **double-seat** it (Lexicon + a rule/foundation) so it never disturbs the fixed itinerary, and continue.
-- A red -> book it in `work-in-progress/REDS.md` (what went wrong - what caught it - what it taught), close it on a witness on metal, then resume.
+- A red -> book it in `crux/REDS.md` (what went wrong - what caught it - what it taught), close it on a witness on metal, then resume.
 - A genuine custody fork -> that is a gate (part 2); surface it, do not decide it.
 
 ## 6 -- Clock, ledger, remotes, signing

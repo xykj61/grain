@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260816.220634
+editor Claude Code
+model claude-opus-4-8
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title work-in-progress -> crux rename executed, cairn-first
+prompt Keaton: you can rename the seed and launch recipe paths since we're not running the loop now -- I interrupted it so I could standfast-correct here myself. (The work-in-progress -> crux rename was seated earlier in the 20260815 decision-wave cairn.)
+think The loop being stopped removed the one blocker: crux/REMEMBER.md is hardcoded in the seed and launch recipe, so a rename mid-run would have broken the running loop. With it stopped, the breach is safe.
+think Cairn first (the discipline for a breach rename): recorded walk-back nib 947c592333 and the live stamp in crux/CAIRNS.md before the cut. Then git mv work-in-progress crux, and committed a back-compat symlink work-in-progress -> crux so the 2,000+ dated logs and counsel that cite work-in-progress/... still resolve unchanged -- accrete-never-break without rewriting a single dated artifact.
+think Repointed only the loop paths (seed, launch recipe) and the living rules that name the ledgers (reds-first, cairn, ascii-first). A first blanket sed over-reached -- it rewrote dated historical text inside the ledgers (the 20260815 cairn read nonsensically crux/->crux/), so I restored REMEMBER/REDS/CAIRNS/SHRED_PREP from the committed 947c592333 content, preserving their history; the symlink resolves their work-in-progress references. ASCII-cleaned the launch recipe's em-dashes in the same pass.
+obs crux/ now sorts high alphabetically as seated; the loop recipe runs GREEN against crux/REMEMBER.md. A future full repoint of living references (dropping the symlink) is its own ratchet round, noted in the cairn.
+file crux/ the renamed directory (was work-in-progress/), living pins now sort high
+file work-in-progress the committed back-compat symlink -> crux
+file crux/CAIRNS.md walk-back cairn for the executed rename
+file tools/launch-claude-season.rish loop paths repointed to crux/, em-dashes ASCII-cleaned
+file recursion-prompts/seed/autonomous-loop.seed.md seed paths repointed to crux/
+recommend check-in (Claude) the rename is landed and the loop runs; next is the Tablecloth capture and the Quin/Kyri unification question
