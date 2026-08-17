@@ -12,7 +12,10 @@
 //! horizontal strip of width w maps column c to the global position c * pos_max / (w-1), so the leftmost column is the
 //! first control exactly and the rightmost is the last control exactly, and every column between carries the sampled
 //! blend; paint_gradient_v is the vertical twin, mapping row r of height h the same way so the ramp runs top to bottom.
-//! The whole
+//! paint_gradient_diag and paint_gradient_adiag are the diagonal pair that finish the linear-gradient family: the main
+//! diagonal maps pixel (cx, cy) to the position (cx + cy) * pos_max / ((w-1) + (h-1)), so the top-left corner is the first
+//! control exactly and the bottom-right corner the last, every anti-diagonal band one constant color; the anti-diagonal
+//! twin runs top-right to bottom-left the same way (the CSS `linear-gradient(to bottom right, ...)` shape). The whole
 //! rectangle's box is bound-checked ONCE up front (in u64 so a far edge can never wrap before the bound refuses), and the
 //! ramp is validated ONCE before any pixel is written, so a malformed strip refuses by name having painted nothing --
 //! all-or-nothing, never a half-painted band. No network, no key, no funds.
@@ -26,7 +29,7 @@ const color = @import("color.rye");
 const qoi = @import("qoi.rye");
 const ramp_stops = @import("color_ramp_stops.rye");
 
-pub const gradient_paint_version = "20260817.142301";
+pub const gradient_paint_version = "20260817.143452";
 
 /// Composite one paint color over the destination pixel at (x, y), src-over, so a translucent gradient reads through to
 /// the picture beneath. The caller proves the pixel lands inside the target; this writer only blends.
@@ -143,6 +146,88 @@ pub fn paint_gradient_v(target: *qoi.Pixmap, x: u32, y: u32, w: u32, h: u32, con
     }
 }
 
+/// The global position (0..pos_max) of a diagonal band whose summed coordinate distance from the first corner is `sum`, in
+/// a box whose far corner sits `den` steps away -- the diagonal twin of column_pos and row_pos, an even integer lerp from
+/// 0 (the first corner exactly) to pos_max (the far corner exactly). Shared by both diagonal painters, so the
+/// pixel-to-position routing is one small honest reader.
+fn diag_pos(sum: u32, den: u32) u8 {
+    // invariant: a diagonal gradient needs at least one step between its corners, so the denominator is at least one.
+    assert(den >= 1);
+    // invariant: the band lies between the two corners inclusive.
+    assert(sum <= den);
+    // sum <= den <= (qoi_max_dim-1)*2 (~16382), so sum * 255 <= ~4.17M in u32 and the lerp never wraps. Floor division, so
+    // the first corner reads 0 and the far corner reads pos_max exactly.
+    const p: u32 = sum * @as(u32, ramp_stops.pos_max) / den;
+    // invariant: the position stays inside the domain (sum == 0 gives 0, sum == den gives pos_max).
+    assert(p <= ramp_stops.pos_max);
+    return @intCast(p);
+}
+
+/// Paint a MAIN-DIAGONAL positioned gradient into the rectangle at (`x`, `y`) of size `w` x `h` on `target`: each pixel is
+/// the color the positioned ramp samples at (cx + cy) * pos_max / ((w-1) + (h-1)), so the top-left corner is the first
+/// control exactly and the bottom-right corner the last, and each anti-diagonal band is one constant color. Refuses
+/// `BadStripDims` if `w` or `h` is zero, `StripTooSmall` if the box is a single pixel (no diagonal direction),
+/// `GradientStripOutOfBounds` BY NAME if the box would exceed the target, and every `color_ramp_stops` refusal by name if
+/// the ramp is malformed -- all checked BEFORE any pixel is written, so a refusal leaves the target untouched.
+pub fn paint_gradient_diag(target: *qoi.Pixmap, x: u32, y: u32, w: u32, h: u32, control: []const color.Rgba, positions: []const u8) !void {
+    // invariant: a diagonal gradient box has real extent and at least one step between its corners.
+    if (w == 0 or h == 0) return error.BadStripDims;
+    if (w == 1 and h == 1) return error.StripTooSmall;
+    // The ramp is validated ONCE up front, so a malformed stop list refuses having painted nothing.
+    try ramp_stops.check(control, positions);
+    // The box's far edges, in u64 so the sum can never wrap before the bound check refuses.
+    const right: u64 = @as(u64, x) + @as(u64, w);
+    const bottom: u64 = @as(u64, y) + @as(u64, h);
+    if (right > @as(u64, target.width) or bottom > @as(u64, target.height)) return error.GradientStripOutOfBounds;
+    // invariant: the up-front check proved every pixel of the w x h box lands inside the target buffer.
+    assert(right <= @as(u64, target.width));
+    assert(bottom <= @as(u64, target.height));
+
+    // The far corner sits (w-1) + (h-1) steps from the top-left; at least one since the box is not a single pixel.
+    const den: u32 = (w - 1) + (h - 1);
+    var cy: u32 = 0;
+    while (cy < h) : (cy += 1) {
+        var cx: u32 = 0;
+        while (cx < w) : (cx += 1) {
+            // The pixel's color is decided by the positioned ramp; this module only routes the pixel to its position. The
+            // main diagonal measures distance from the top-left corner as cx + cy.
+            const col = ramp_stops.sample_checked(control, positions, diag_pos(cx + cy, den));
+            blend_pixel(target, x + cx, y + cy, col);
+        }
+    }
+}
+
+/// Paint an ANTI-DIAGONAL positioned gradient into the rectangle at (`x`, `y`) of size `w` x `h` on `target`: the twin of
+/// paint_gradient_diag running top-right to bottom-left, so the top-right corner is the first control exactly and the
+/// bottom-left corner the last. Distance from the top-right corner is (w-1 - cx) + cy. Refuses `BadStripDims` if `w` or
+/// `h` is zero, `StripTooSmall` if the box is a single pixel, `GradientStripOutOfBounds` BY NAME if the box would exceed
+/// the target, and every `color_ramp_stops` refusal by name -- all checked BEFORE any pixel is written.
+pub fn paint_gradient_adiag(target: *qoi.Pixmap, x: u32, y: u32, w: u32, h: u32, control: []const color.Rgba, positions: []const u8) !void {
+    // invariant: a diagonal gradient box has real extent and at least one step between its corners.
+    if (w == 0 or h == 0) return error.BadStripDims;
+    if (w == 1 and h == 1) return error.StripTooSmall;
+    // The ramp is validated ONCE up front, so a malformed stop list refuses having painted nothing.
+    try ramp_stops.check(control, positions);
+    // The box's far edges, in u64 so the sum can never wrap before the bound check refuses.
+    const right: u64 = @as(u64, x) + @as(u64, w);
+    const bottom: u64 = @as(u64, y) + @as(u64, h);
+    if (right > @as(u64, target.width) or bottom > @as(u64, target.height)) return error.GradientStripOutOfBounds;
+    // invariant: the up-front check proved every pixel of the w x h box lands inside the target buffer.
+    assert(right <= @as(u64, target.width));
+    assert(bottom <= @as(u64, target.height));
+
+    const den: u32 = (w - 1) + (h - 1);
+    var cy: u32 = 0;
+    while (cy < h) : (cy += 1) {
+        var cx: u32 = 0;
+        while (cx < w) : (cx += 1) {
+            // Distance from the top-right corner: mirror the column so cx == w-1 reads 0 and cx == 0 reads w-1.
+            const col = ramp_stops.sample_checked(control, positions, diag_pos((w - 1 - cx) + cy, den));
+            blend_pixel(target, x + cx, y + cy, col);
+        }
+    }
+}
+
 // --- selftest: paint a positioned gradient strip, prove its edges, its blend, its bend, and its round trip on metal ----
 
 /// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module (it
@@ -246,6 +331,41 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (!pixel_at(&img_v, vx, mid_col).eql(vmid)) return error.RowNotConstantHorizontally;
     }
 
+    // The main-diagonal painter: a red-green-blue gradient across a square has its first control on the top-left corner
+    // and its last on the bottom-right corner, byte-for-byte, and each anti-diagonal band (cx + cy constant) is one
+    // constant color -- the proof that position is a function of BOTH axes, not one.
+    const sq: u32 = 5;
+    var img_d = try make_canvas(garden, sq, sq, white);
+    try paint_gradient_diag(&img_d, 0, 0, sq, sq, rgb[0..], at_even[0..]);
+    if (!pixel_at(&img_d, 0, 0).eql(red)) return error.DiagTopLeftNotFirstControl;
+    if (!pixel_at(&img_d, sq - 1, sq - 1).eql(blue)) return error.DiagBottomRightNotLastControl;
+    // Two pixels on the same anti-diagonal (0,2) and (2,0) share one color; a pixel off it does not.
+    const band = pixel_at(&img_d, 0, 2);
+    if (!pixel_at(&img_d, 2, 0).eql(band)) return error.DiagBandNotConstant;
+    if (pixel_at(&img_d, 0, 0).eql(band)) return error.DiagBandNotDistinct;
+
+    // The anti-diagonal twin swaps the horizontal corner: its first control lands on the top-RIGHT corner and its last on
+    // the bottom-left corner, the mirror of the main diagonal across the vertical axis.
+    var img_ad = try make_canvas(garden, sq, sq, white);
+    try paint_gradient_adiag(&img_ad, 0, 0, sq, sq, rgb[0..], at_even[0..]);
+    if (!pixel_at(&img_ad, sq - 1, 0).eql(red)) return error.AdiagTopRightNotFirstControl;
+    if (!pixel_at(&img_ad, 0, sq - 1).eql(blue)) return error.AdiagBottomLeftNotLastControl;
+    // The anti-diagonal is the main diagonal mirrored left-to-right, pixel by pixel.
+    var my: u32 = 0;
+    while (my < sq) : (my += 1) {
+        var mx: u32 = 0;
+        while (mx < sq) : (mx += 1) {
+            if (!pixel_at(&img_ad, mx, my).eql(pixel_at(&img_d, sq - 1 - mx, my))) return error.AdiagNotMirrorOfDiag;
+        }
+    }
+
+    // A degenerate thin diagonal still runs: a 1 x 2 box has one step between its corners, so the top pixel is the first
+    // control and the bottom the last (the diagonal collapses onto the vertical axis, yet the routing holds).
+    var img_thin = try make_canvas(garden, 1, 2, white);
+    try paint_gradient_diag(&img_thin, 0, 0, 1, 2, rgb[0..], at_even[0..]);
+    if (!pixel_at(&img_thin, 0, 0).eql(red)) return error.ThinDiagTopNotFirstControl;
+    if (!pixel_at(&img_thin, 0, 1).eql(blue)) return error.ThinDiagBottomNotLastControl;
+
     // Refusals by name, each having painted nothing: a one-column strip (no direction), a zero height, an out-of-bounds
     // box, a short vertical strip, and a malformed ramp (non-ascending positions caught up front).
     var tiny = try make_canvas(garden, 4, 2, white);
@@ -266,6 +386,13 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     if (paint_gradient_v(&tiny, 0, 0, 4, 1, rgb[0..], at_even[0..])) |_| return error.ShortNotRefused else |err| {
         if (err != error.StripTooShort) return error.WrongShortError;
     }
+    // The diagonal painters refuse a single-pixel box (no diagonal direction) by name, and a zero dimension too.
+    if (paint_gradient_diag(&tiny, 0, 0, 1, 1, rgb[0..], at_even[0..])) |_| return error.SinglePixelNotRefused else |err| {
+        if (err != error.StripTooSmall) return error.WrongSmallError;
+    }
+    if (paint_gradient_adiag(&tiny, 0, 0, 4, 0, rgb[0..], at_even[0..])) |_| return error.AdiagZeroNotRefused else |err| {
+        if (err != error.BadStripDims) return error.WrongAdiagDimsError;
+    }
     // The overrun and bad-ramp refusals painted nothing -- the tiny canvas is still all white.
     var wy: u32 = 0;
     while (wy < tiny.height) : (wy += 1) {
@@ -282,7 +409,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     try paint_gradient_h(&img_b, 0, 0, strip_w, strip_h, rgb[0..], at_even[0..]);
     if (!img_a.same_bytes(&img_b)) return error.StripNotDeterministic;
 
-    print("GREEN image-gradient-paint: a positioned gradient painted onto a real image -- the leftmost column is the first control and the rightmost the last, byte-for-byte down the whole height; a mid column carries both channels (a true blend) constant vertically; uneven positions bend the painted strip where even spacing cannot (green at 200 vs 128 read differently at the same column); the strip round-trips through the open QOI codec byte-for-byte; a sub-rectangle paints only its own columns (the gutters stay ground); the vertical twin paint_gradient_v runs the ramp top to bottom (first control on the top row, last on the bottom, each row constant across the width); a one-column strip, a zero height, an out-of-bounds box, a one-row vertical strip, and a non-ascending ramp refuse by name having painted nothing; the same ramp paints the same strip byte-for-byte\n", .{});
+    print("GREEN image-gradient-paint: a positioned gradient painted onto a real image -- the leftmost column is the first control and the rightmost the last, byte-for-byte down the whole height; a mid column carries both channels (a true blend) constant vertically; uneven positions bend the painted strip where even spacing cannot (green at 200 vs 128 read differently at the same column); the strip round-trips through the open QOI codec byte-for-byte; a sub-rectangle paints only its own columns (the gutters stay ground); the vertical twin paint_gradient_v runs the ramp top to bottom (first control on the top row, last on the bottom, each row constant across the width); the diagonal pair paint_gradient_diag and paint_gradient_adiag finish the linear-gradient family (main diagonal: first control on the top-left corner, last on the bottom-right, each anti-diagonal band one constant color; the anti-diagonal twin is that painting mirrored left-to-right, first control on the top-right corner; a thin 1x2 diagonal still routes its corners); a one-column strip, a zero height, an out-of-bounds box, a one-row vertical strip, a single-pixel diagonal box, and a non-ascending ramp refuse by name having painted nothing; the same ramp paints the same strip byte-for-byte\n", .{});
     return 0;
 }
 
