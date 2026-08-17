@@ -1,0 +1,268 @@
+//! image/checker_paint.rye -- a checkerboard SEEN on an image (Season G, the discrete 2D sibling of the palette strip).
+//!
+//! Season G (Open Media Primitives) - where image/palette_paint.rye tiles ONE axis with a row of solid swatches, this
+//! rung tiles BOTH axes with an alternating two-color grid: the checkerboard a design surface draws as the TRANSPARENCY
+//! GROUND behind a translucent picture (the light-and-white squares an image editor shows so an alpha hole reads as a
+//! hole, not as white), and the pattern a board, a swatch backdrop, or a "no color" chip is drawn from. A keeper names
+//! two colors and a cell size and reads back a tiled grid a surface can show -- the same "the palette meets the pixel
+//! grid" gesture as palette_paint, stepped in two dimensions rather than one.
+//!
+//! Compose, not braid: image/shape.rye owns the fill (fill_rect composites a solid color src-over over the RGBA grid),
+//! image/qoi.rye owns the target (a Pixmap, four bytes per cell), and this module only ROUTES each cell to its COLOR by
+//! its (col + row) parity -- no new color math, no new codec, no new blend. The cells tile the rectangle EXACTLY: cell
+//! (col, row) spans the columns [col*cell, min((col+1)*cell, w)) and the rows [row*cell, min((row+1)*cell, h)), an
+//! integer partition where the first cell starts at the corner, the cells are contiguous and disjoint (no gap, no
+//! overlap), and a boundary cell is simply CLIPPED to the rectangle edge when the cell size does not divide the extent --
+//! so a checker always fills its whole box with no seam. The parity is a true checkerboard: orthogonal neighbors differ,
+//! diagonal neighbors share, cell (0,0) the first color. The whole rectangle's box is bound-checked ONCE up front (in
+//! u64 so a far edge can never wrap before the bound refuses), so a malformed strip refuses BY NAME having painted
+//! nothing -- all-or-nothing, never a half-painted grid. No network, no key, no funds -- the transparency ground a
+//! surface draws the day it wants to show an alpha hole, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/checker_paint.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const shape = @import("shape.rye");
+
+pub const checker_paint_version = "20260817.160159";
+
+/// The conventional transparency-ground cell size in pixels -- the small square an image editor tiles behind a picture
+/// so an alpha hole reads as a hole. Eight is the size Photoshop and GIMP settle on: large enough to see, small enough
+/// that a thumbnail still reads as "transparent" rather than as two solid halves.
+pub const alpha_ground_cell: u32 = 8;
+
+/// The two shades the conventional transparency ground alternates -- a light gray and a pure white, the neutral pair a
+/// picture of any hue reads clearly against. Named so paint_alpha_ground stays a one-call convenience over the general
+/// verb rather than asking every caller to remember the two shades.
+pub const alpha_ground_light = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+pub const alpha_ground_dark = color.Rgba{ .r = 204, .g = 204, .b = 204, .a = 255 };
+
+/// The number of cells along one axis of `extent` units at cell size `cell` -- the ceiling division ceil(extent/cell),
+/// so a boundary cell that the cell size does not divide evenly is counted (and later clipped) rather than dropped. The
+/// caller has already proven `extent >= 1` and `cell >= 1`, so the count is at least one.
+fn cell_count(extent: u32, cell: u32) u32 {
+    // invariant: the axis has real extent, so at least one cell covers it.
+    assert(extent >= 1);
+    // invariant: a cell has real size, so the division below never divides by zero.
+    assert(cell >= 1);
+    // extent <= qoi_max_dim (8192) and cell >= 1, so extent + cell - 1 <= 16383 in u32 and never wraps.
+    const n: u32 = (extent + cell - 1) / cell;
+    // invariant: at least one cell covers the axis, and no more than one cell per unit.
+    assert(n >= 1);
+    assert(n <= extent);
+    return n;
+}
+
+/// Paint a CHECKERBOARD of `cell`-sized squares into the rectangle at (`x`, `y`) of size `w` x `h` on `target`, the two
+/// colors alternating by (col + row) parity so cell (0, 0) is `color_a`, its orthogonal neighbors `color_b`, its
+/// diagonal neighbors `color_a` again -- a true checkerboard. The cells tile the whole box: a boundary cell that `cell`
+/// does not divide evenly is clipped to the rectangle edge, so there is no gap and no seam. A translucent color blends
+/// src-over through shape.fill_rect. Refuses `BadCheckerDims` if `w` or `h` is zero, `BadCellSize` if `cell` is zero,
+/// `CheckerOutOfBounds` BY NAME if the box exceeds the target -- all checked BEFORE any pixel, so a refusal leaves the
+/// target untouched.
+pub fn paint_checkerboard(target: *qoi.Pixmap, x: u32, y: u32, w: u32, h: u32, cell: u32, color_a: color.Rgba, color_b: color.Rgba) !void {
+    // invariant: a paintable board has real extent on both axes.
+    if (w == 0 or h == 0) return error.BadCheckerDims;
+    // invariant: a cell has real size, so the partition below never divides by zero and never collapses to nothing.
+    if (cell == 0) return error.BadCellSize;
+    // The box's far edges, in u64 so the sum can never wrap before the bound check refuses.
+    const right: u64 = @as(u64, x) + @as(u64, w);
+    const bottom: u64 = @as(u64, y) + @as(u64, h);
+    if (right > @as(u64, target.width) or bottom > @as(u64, target.height)) return error.CheckerOutOfBounds;
+    // invariant: the up-front check proved every pixel of the w x h box lands inside the target buffer.
+    assert(right <= @as(u64, target.width));
+    assert(bottom <= @as(u64, target.height));
+
+    const cols = cell_count(w, cell);
+    const rows = cell_count(h, cell);
+
+    var r: u32 = 0;
+    while (r < rows) : (r += 1) {
+        // The cell's row band, clipped to the rectangle's bottom edge. r < rows and cell >= 1, so r*cell < h always.
+        const lo_y = r * cell;
+        const hi_y = @min(lo_y + cell, h);
+        // invariant: a row band is at least one pixel tall (the clip only shortens the last band, never empties it).
+        assert(hi_y > lo_y);
+        var c: u32 = 0;
+        while (c < cols) : (c += 1) {
+            // The cell's column band, clipped to the rectangle's right edge.
+            const lo_x = c * cell;
+            const hi_x = @min(lo_x + cell, w);
+            // invariant: a column band is at least one pixel wide.
+            assert(hi_x > lo_x);
+            // The parity picks the color; this module only routes the cell to its color, shape composites it. The box
+            // was proven in-bounds up front, so this fill lands entirely inside the target -- it cannot fail its check.
+            const paint = if ((c + r) % 2 == 0) color_a else color_b;
+            try shape.fill_rect(target, x + lo_x, y + lo_y, hi_x - lo_x, hi_y - lo_y, paint);
+        }
+    }
+}
+
+/// Paint the conventional TRANSPARENCY GROUND into the rectangle at (`x`, `y`) of size `w` x `h` -- a one-call
+/// convenience over paint_checkerboard with the named light/white shades and the named cell size, the backdrop a
+/// surface draws behind a translucent picture so an alpha hole reads as a hole. Refuses the same errors by the same
+/// names as paint_checkerboard.
+pub fn paint_alpha_ground(target: *qoi.Pixmap, x: u32, y: u32, w: u32, h: u32) !void {
+    try paint_checkerboard(target, x, y, w, h, alpha_ground_cell, alpha_ground_light, alpha_ground_dark);
+}
+
+// --- selftest: prove the cells tile the box exactly, the parity a true checker, blend true, round-trip, refuse by name ---
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module
+/// (exactly as image/shape.rye and image/palette_paint.rye keep their own canvas).
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// Count pixels of `img` whose RGBA differs from `bg` -- the honest measure of how much a checker covered.
+fn changed_from(img: *const qoi.Pixmap, bg: color.Rgba) u32 {
+    // invariant: the buffer is four bytes per pixel -- the RGBA invariant a Pixmap carries.
+    assert(img.pixels.len % 4 == 0);
+    var n: u32 = 0;
+    var i: usize = 0;
+    while (i < img.pixels.len) : (i += 4) {
+        const px = color.Rgba{ .r = img.pixels[i], .g = img.pixels[i + 1], .b = img.pixels[i + 2], .a = img.pixels[i + 3] };
+        if (!px.eql(bg)) n += 1;
+    }
+    // invariant: the changed count never exceeds the pixels walked.
+    assert(n <= @as(u32, @intCast(img.pixels.len / 4)));
+    return n;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
+    const blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+    const blue_half = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 128 };
+
+    // --- an evenly-dividing checker: 4x4 with cell 2 -> a 2x2 grid of 2x2 cells, parity red/blue by (col+row) --------
+    var img = try make_canvas(garden, 4, 4, white);
+    try paint_checkerboard(&img, 0, 0, 4, 4, 2, red, blue);
+    // Each 2x2 block is one solid color chosen by parity: (0,0) and (1,1) red, (1,0) and (0,1) blue.
+    var cy: u32 = 0;
+    while (cy < 4) : (cy += 1) {
+        var cx: u32 = 0;
+        while (cx < 4) : (cx += 1) {
+            const col = cx / 2;
+            const row = cy / 2;
+            const want = if ((col + row) % 2 == 0) red else blue;
+            if (!pixel_at(&img, cx, cy).eql(want)) return error.CheckerColourWrong;
+        }
+    }
+    // The checker tiles the WHOLE box: every pixel is a swatch, none left the white ground (no gap, no overlap).
+    if (changed_from(&img, white) != 4 * 4) return error.CheckerLeftGround;
+    // A true checkerboard: orthogonal neighbors differ, diagonal neighbors share (cell (0,0) vs (1,0) vs (1,1)).
+    if (pixel_at(&img, 0, 0).eql(pixel_at(&img, 2, 0))) return error.CheckerNeighborNotAlternating; // (0,0) vs (1,0)
+    if (pixel_at(&img, 0, 0).eql(pixel_at(&img, 0, 2))) return error.CheckerNeighborNotAlternating; // (0,0) vs (0,1)
+    if (!pixel_at(&img, 0, 0).eql(pixel_at(&img, 2, 2))) return error.CheckerDiagonalNotShared; // (0,0) vs (1,1)
+
+    // --- a non-dividing checker: 5x5 with cell 2 -> cols/rows 3, the last band clipped to 1px, still tiling to the edge
+    var img_clip = try make_canvas(garden, 5, 5, white);
+    try paint_checkerboard(&img_clip, 0, 0, 5, 5, 2, red, blue);
+    // Column boundaries fall at 0,2,4,5: the last cell is a single pixel wide, and still carries its parity color.
+    // Cell (2,0) at x in [4,5), parity (2+0)=even -> red; the far edge is painted, not left ground.
+    if (!pixel_at(&img_clip, 4, 0).eql(red)) return error.ClippedCellWrong;
+    if (!pixel_at(&img_clip, 4, 4).eql(red)) return error.ClippedCornerWrong; // cell (2,2), parity even -> red
+    // The clipped checker still tiles the whole box -- no gap where the remainder fell.
+    if (changed_from(&img_clip, white) != 5 * 5) return error.ClippedLeftGround;
+
+    // --- a translucent color blends true: a half-alpha blue cell over white equals color.over, not either pole --------
+    var img_blend = try make_canvas(garden, 4, 2, white);
+    try paint_checkerboard(&img_blend, 0, 0, 4, 2, 2, white, blue_half);
+    const blended = color.over(blue_half, white);
+    if (blended.eql(blue_half) or blended.eql(white)) return error.BlendNotBetween; // a real blend, not either pole
+    // Cell (1,0) at x in [2,4) is the translucent color; it blends uniform across its cell.
+    if (!pixel_at(&img_blend, 2, 0).eql(blended)) return error.CheckerBlendNotUniform;
+    if (!pixel_at(&img_blend, 3, 1).eql(blended)) return error.CheckerBlendNotUniform;
+
+    // --- the painted checker round-trips through the open QOI codec byte-for-byte -- a real image, not a private buffer
+    const cap = qoi.encoded_bound(img.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&img, dst);
+    const back = try qoi.decode(garden, dst[0..enc.len]);
+    if (!back.same_bytes(&img)) return error.CheckerDidNotRoundTrip;
+
+    // --- a sub-rectangle paints only its own box: a checker at (1,1) leaves the surrounding gutters untouched ground --
+    var img_sub = try make_canvas(garden, 6, 6, white);
+    try paint_checkerboard(&img_sub, 1, 1, 4, 4, 2, red, blue);
+    if (!pixel_at(&img_sub, 0, 0).eql(white)) return error.CornerGutterPainted;
+    if (!pixel_at(&img_sub, 5, 5).eql(white)) return error.FarGutterPainted;
+    if (pixel_at(&img_sub, 1, 1).eql(white)) return error.CheckerStartNotPainted;
+
+    // --- the conventional transparency ground: two distinct neutral shades, a real checker, cell (0,0) the light shade
+    var img_ground = try make_canvas(garden, 16, 16, red);
+    try paint_alpha_ground(&img_ground, 0, 0, 16, 16);
+    if (!pixel_at(&img_ground, 0, 0).eql(alpha_ground_light)) return error.GroundFirstNotLight;
+    // The cell size is 8, so the neighbor cell at x=8 is the dark shade -- the ground is a real two-shade checker.
+    if (!pixel_at(&img_ground, 8, 0).eql(alpha_ground_dark)) return error.GroundNeighborNotDark;
+    if (changed_from(&img_ground, red) != 16 * 16) return error.GroundLeftBackground; // covers the whole box
+
+    // --- refusals by name, each having painted nothing --------------------------------------------------------------
+    var tiny = try make_canvas(garden, 6, 6, white);
+    if (paint_checkerboard(&tiny, 0, 0, 6, 0, 2, red, blue)) |_| return error.ZeroDimsNotRefused else |err| {
+        if (err != error.BadCheckerDims) return error.WrongDimsError;
+    }
+    if (paint_checkerboard(&tiny, 0, 0, 6, 6, 0, red, blue)) |_| return error.ZeroCellNotRefused else |err| {
+        if (err != error.BadCellSize) return error.WrongCellError;
+    }
+    if (paint_checkerboard(&tiny, 2, 0, 6, 6, 2, red, blue)) |_| return error.OverrunNotRefused else |err| {
+        if (err != error.CheckerOutOfBounds) return error.WrongOverrunError; // 2+6 = 8 > width 6
+    }
+    if (paint_alpha_ground(&tiny, 0, 3, 6, 6)) |_| return error.GroundOverrunNotRefused else |err| {
+        if (err != error.CheckerOutOfBounds) return error.WrongGroundOverrunError; // 3+6 = 9 > height 6
+    }
+    // Every refusal painted nothing -- the tiny canvas is still all white.
+    var ry: u32 = 0;
+    while (ry < tiny.height) : (ry += 1) {
+        var rx: u32 = 0;
+        while (rx < tiny.width) : (rx += 1) {
+            if (!pixel_at(&tiny, rx, ry).eql(white)) return error.RefusedButPainted;
+        }
+    }
+
+    // --- determinism: the same checker painted twice grows byte-for-byte the same board -------------------------------
+    var img_a = try make_canvas(garden, 4, 4, white);
+    var img_b = try make_canvas(garden, 4, 4, white);
+    try paint_checkerboard(&img_a, 0, 0, 4, 4, 2, red, blue);
+    try paint_checkerboard(&img_b, 0, 0, 4, 4, 2, red, blue);
+    if (!img_a.same_bytes(&img_b)) return error.CheckerNotDeterministic;
+
+    print("GREEN image-checker-paint: a checkerboard painted onto a real image -- an evenly-dividing 4x4 over cell 2 fills a 2x2 grid of 2x2 cells each its parity color byte-for-byte and tiles the whole box (no gap, no overlap, a true checker: orthogonal neighbors differ, diagonal neighbors share); a non-dividing 5x5 over cell 2 clips the last band to one pixel and still tiles to the edge; a translucent cell blends src-over uniform; the checker round-trips through the open QOI codec byte-for-byte; a sub-rectangle paints only its own box (the gutters stay ground); paint_alpha_ground fills the conventional transparency ground (light and white, cell 8) covering the whole box; a zero dimension, a zero cell size, and an out-of-bounds box refuse by name having painted nothing; the same checker paints the same board byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: checker_paint selftest\n", .{});
+    return 1;
+}

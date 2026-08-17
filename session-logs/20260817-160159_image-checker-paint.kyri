@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260817.160159
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image: checker_paint, the transparency ground
+prompt Autonomous loop -- take the next agent-doable lap Lindy-first crux-first in Season G open-media, deep-read one council-rota doc, send each increment, stop at custody gates.
+think Read the road-ahead docs: the 1024-round itinerary, the eight-season double-seat, the rye-first crypto wave, and the REMEMBER live edge. The CSS gradient family is whole (linear, radial, conic + three repeating) and palette_paint added the discrete 1D swatch legend last lap.
+think Lindy-first crux-first: the next durable, tractable open-media rung is the checkerboard -- the discrete 2D sibling of the 1D palette strip, and the transparency GROUND the existing Photos app needs behind a translucent picture. Genuine need, small, composes proven floor (shape.fill_rect, qoi, color), no new math.
+think Council rota lap 13 (13 mod 27) -> foundations/20260728-032134_keeh-and-kia.md, the happy zone. Its teaching applied: fix the fault at the station, not the customer's driveway -- witness-first, red-then-green. Built the module and witness together and proved GREEN before any claim.
+think Design: paint_checkerboard(target,x,y,w,h,cell,a,b) routes cell (col,row) to a color by (col+row) parity; a boundary cell the cell size does not divide is CLIPPED to the edge (ceiling-division cell count) so the board always tiles exactly. paint_alpha_ground is the one-call convenience with the conventional light/white shades and cell 8.
+obs Compose not braid held: shape owns the fill, qoi the target, color composites; this rung only routes. Bounded once up front in u64; cell partition in u32 (c*cell <= ~67M). GREEN on the first build and first witness run, no reds.
+obs Two functions mirror the palette's "keeper names it / keeper gets the convention for free" pattern (paint_checkerboard general, paint_alpha_ground conventional) -- the same shape as render_grid_auto_ink and readable_scale elsewhere in the family.
+loom witness=checker_paint_witness build=green selftest=green tame_style=clean width_check=exit0 ascii=clean
+file image/checker_paint.rye the checkerboard / transparency-ground painter, GREEN
+file tools/checker_paint_witness.rish proves the board on metal -- parity, clip-to-edge, blend, QOI round trip, refusals by name
+file image/README.md names checker_paint.rye beside palette_paint.rye (docs-sync)
+file crux/REMEMBER.md live edge + Git nib refreshed to the checker rung (nib lags HEAD by one amend per remember-git-nib rule)
+recommend keep-going the open-media family continues -- next discrete rungs could be a stripe/hatch pattern or proving the paint family on a real translucent picture over the alpha ground; all agent-doable, no gate reached.
