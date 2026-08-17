@@ -1,0 +1,14 @@
+format session-log-v1
+stamp 20260816.223620
+editor Claude Code
+model claude-opus-4-8
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title outer loop carries crux links and the rota; SLC on the rota
+prompt Keaton: is the outer recursion loop rishi launch-claude tool updated with the right crux links and including the rota? Then: add the SLC foundation to the rota, unifying to keep 27 -- search the context folder, I thought we had one.
+think Verified honestly rather than assumed. Crux links were right (crux/REMEMBER.md x4, crux/CAIRNS.md x2, zero work-in-progress). The rota was NOT in the outer one-liner -- it lived only in the seed section 1, and the launch recipe never pointed the agent at it. Fixed both one-liner prompts to deep-read one council-rota doc per lap from recursion-prompts/seed/autonomous-loop.seed.md section 1, cycling by lap index.
+think Found the SLC foundation Keaton remembered: context/SIMPLE_LOVABLE_COMPLETE.md (simple, lovable, complete). Added it to the rota and held d27 by unifying the TAME core and shelf into one slot (mirroring the style-guide unification), so the number stays 27 with no pin displaced.
+obs The seed rota and the launch recipe now agree: the outer loop tells the agent to read the rota, and the rota lists 27 including SLC. Recipe runs GREEN, both files ASCII-clean.
+file tools/launch-claude-season.rish both one-liner prompts now deep-read one rota doc per lap
+file recursion-prompts/seed/autonomous-loop.seed.md SLC added, TAME core+shelf unified, held at d27
+recommend check-in (Claude) the outer loop is correct and complete; ready to resume on the Dexter cell-grid or a cairn-first rename whenever the loop restarts
