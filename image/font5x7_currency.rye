@@ -1,0 +1,224 @@
+//! image/font5x7_currency.rye -- the open currency-signs corpus: the marks a readout prints when it shows a price
+//! (Season G, font content).
+//!
+//! Season G (Open Media Primitives) - font content for the open glyph atlas image/glyph.rye (gfa1), set beside the
+//! five ASCII corpora (image/font5x7.rye the numerals, image/font5x7_alpha.rye the uppercase, image/font5x7_lower.rye
+//! the lowercase, image/font5x7_punct.rye the punctuation, image/font5x7_symbol.rye the symbols) and the wider-symbol
+//! corpora that opened next -- the box family (image/font5x7_box.rye light, image/font5x7_boxdouble.rye double,
+//! image/font5x7_boxdiag.rye diagonal, image/font5x7_boxarc.rye rounded), the arrows (image/font5x7_arrow.rye), the
+//! block elements (image/font5x7_block.rye), the geometric marks (image/font5x7_geometric.rye), and the math/technical
+//! operators (image/font5x7_math.rye). Where the box corpora FRAME, the arrows POINT, the geometric shapes MARK, and
+//! the math corpus PRINTS an operator, this corpus supplies the eight currency signs a terminal surface prints when it
+//! shows a PRICE -- the marks ASCII lacks: the cent, pound, generic-currency, and yen signs of the Latin-1 block, then
+//! the won, euro, Indian-rupee, and bitcoin signs of the currency-symbols block, at their real Unicode codepoints
+//! U+00A2, U+00A3, U+00A4, U+00A5, U+20A9, U+20AC, U+20B9, U+20BF, drawn in our own open hand on the same 5x7 body.
+//! These are the marks a fair-trade readout reads the day it prints a cost -- the commerce spine's own glyphs.
+//!
+//! The source stays plain ASCII (ASCII-first): the codepoints are written as numeric literals (0x00A2 ...) and each
+//! mark is named in an ASCII comment, so no non-ASCII byte enters the file even though the glyphs it builds cover a
+//! non-ASCII range. The codepoints are NOT contiguous (the Latin-1 signs sit far below the currency-symbols block, and
+//! the block itself skips the signs this set leaves out), so this corpus carries an explicit ascending codepoint table
+//! -- the shape the gfa1 encoder trusts (strictly ascending, shared cell, coverage length == cell area). The drawings
+//! ARE the specification: each sign is seven rows of five cells in ASCII line art ('#' full ink, '.' none) that a
+//! reader audits by eye; the coverage bytes are derived from that art, never the reverse. build_atlas turns the eight
+//! drawings into a glyph.GlyphAtlas the gfa1 encoder accepts, so the property that matters stays provable on metal:
+//! decode(encode(atlas)) recovers every glyph byte-for-byte, the signs are present and distinct, each reads within an
+//! honest legibility band, and the family orders hold -- the euro out-inks the cent (both C-forms, the euro adds a
+//! second bar the cent lacks), and the won out-inks the yen (both struck letterforms, the W carries more ink than the
+//! Y). No network, no key, no funds -- the marks a surface reads the day it prints a price, on our own open font.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_currency.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+
+pub const font5x7_currency_version = "20260817.050736";
+
+/// Every glyph in this corpus shares one 5-wide, 7-tall cell -- the same body the ASCII and wider-symbol corpora carry.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance: the cell width plus one column of daylight, the same advance the sibling corpora carry.
+pub const currency_advance: u8 = cell_w + 1;
+
+/// The corpus holds exactly the eight currency signs named in the table below.
+pub const currency_count: u32 = 8;
+
+/// Cells per glyph -- the coverage length every sign carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The eight currency codepoints, strictly ascending -- the order the gfa1 encoder trusts. Each aligns by index with
+/// currency_art below. Written as numeric literals so the source stays plain ASCII while the glyphs cover a non-ASCII
+/// range:
+///   0x00A2 cent sign, 0x00A3 pound sign, 0x00A4 currency sign (generic), 0x00A5 yen sign,
+///   0x20A9 won sign, 0x20AC euro sign, 0x20B9 Indian rupee sign, 0x20BF bitcoin sign. The Latin-1 signs sit far
+///   below the currency-symbols block, so the codepoints are named outright rather than derived from a base.
+const currency_codepoints = [currency_count]u32{
+    0x00A2, 0x00A3, 0x00A4, 0x00A5, 0x20A9, 0x20AC, 0x20B9, 0x20BF,
+};
+
+/// The eight signs, drawn in the open. Each is seven rows of five cells; '#' ink, '.' background. A reader audits every
+/// sign here by eye, and the coverage bytes are lifted from this art, never guessed. The cent strikes a C with one
+/// vertical bar; the pound curls an L over a crossbar and a foot; the generic currency rings four corner ticks; the yen
+/// strikes a Y with two bars and the won a denser W with two bars; the euro strikes a C with two bars; the rupee stacks
+/// two top bars over a descending diagonal; and the bitcoin ticks a B above and below.
+const currency_art = [currency_count][cell_h][]const u8{
+    .{ "..#..", ".###.", "#.#..", "#.#..", "#.#..", ".###.", "..#.." }, // U+00A2 cent sign
+    .{ "..##.", ".#...", ".#...", "###..", ".#...", ".#...", "####." }, // U+00A3 pound sign
+    .{ "#...#", ".###.", ".#.#.", ".#.#.", ".###.", "#...#", "....." }, // U+00A4 currency sign (generic)
+    .{ "#...#", ".#.#.", "..#..", "#####", "..#..", "#####", "..#.." }, // U+00A5 yen sign
+    .{ "#.#.#", "#.#.#", "#####", "#.#.#", "#####", ".#.#.", "....." }, // U+20A9 won sign
+    .{ "..###", ".#...", "###..", "#....", "###..", ".#...", "..###" }, // U+20AC euro sign
+    .{ "#####", "#..#.", "#####", "...#.", "..#..", ".#...", "#...." }, // U+20B9 Indian rupee sign
+    .{ ".#.#.", "###..", "#.#..", "###..", "#.#..", "###..", ".#.#." }, // U+20BF bitcoin sign
+};
+
+/// Lift one sign's ASCII art into a freshly allocated coverage grid of exactly cell_area bytes: 255 for ink,
+/// 0 for background. The art's own shape is asserted, so a mistyped row is a stopped line rather than a bad glyph.
+fn coverage_from_art(allocator: std.mem.Allocator, art: [cell_h][]const u8) ![]u8 {
+    // invariant: a coverage grid is exactly the shared cell area, within the atlas ceiling.
+    assert(cell_area >= 1);
+    assert(cell_area <= glyph.coverage_max);
+    const cov = try allocator.alloc(u8, cell_area);
+    var idx: u32 = 0;
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        const row = art[r];
+        // invariant: every drawn row is exactly the cell width -- the art matches the grid.
+        assert(row.len == cell_w);
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            cov[idx] = if (row[c] == '#') 255 else 0;
+            idx += 1;
+        }
+    }
+    // invariant: the whole grid was filled, no cell left unwritten.
+    assert(idx == cell_area);
+    return cov;
+}
+
+/// Build the currency-signs atlas: eight glyphs at the named ascending codepoints, sharing the 5x7 cell and advance.
+/// The gfa1 encoder accepts the result directly (ascending codepoints, coverage length == cell area).
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the corpus is the eight named currency signs and no more.
+    assert(currency_count == 8);
+    assert(cell_area == 35);
+    const glyphs = try allocator.alloc(glyph.Glyph, currency_count);
+    var i: u32 = 0;
+    var last_cp: u32 = 0;
+    while (i < currency_count) : (i += 1) {
+        const cp = currency_codepoints[i];
+        // invariant: codepoints are strictly ascending -- the ordering the gfa1 encoder trusts.
+        assert(i == 0 or cp > last_cp);
+        last_cp = cp;
+        const cov = try coverage_from_art(allocator, currency_art[i]);
+        glyphs[i] = glyph.Glyph{
+            .codepoint = cp,
+            .advance = currency_advance,
+            .coverage = cov,
+        };
+    }
+    // invariant: the last codepoint is the bitcoin sign (U+20BF) -- the table ends where this set ends.
+    assert(glyphs[currency_count - 1].codepoint == 0x20BF);
+    return glyph.GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- the legibility signal a blank glyph would fail.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+/// The ink count of a codepoint's glyph in the built atlas -- the reader the family-order proofs use.
+fn ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return ink_count(g.coverage);
+    return error.CurrencySignMissing;
+}
+
+// --- selftest: build the currency atlas, round-trip it through gfa1, prove all present, distinct, legible -----------
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built atlas is the eight-sign corpus at the shared cell.
+    assert(glyph_count == currency_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // Eight present signs: every one looks up, carries the shared advance; an ASCII letter misses.
+    var d: u32 = 0;
+    while (d < currency_count) : (d += 1) {
+        const cp = currency_codepoints[d];
+        if (back.lookup(cp)) |g| {
+            assert(g.codepoint == cp);
+            assert(g.advance == currency_advance);
+        } else return error.CurrencySignMissing;
+    }
+    if (back.lookup('A')) |_| return error.NonCurrencyFound else {}
+
+    // Distinctness: no two signs share identical coverage -- a real currency set's glyphs differ (catches a copy slip).
+    var a: u32 = 0;
+    while (a < currency_count) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b < currency_count) : (b += 1) {
+            if (std.mem.eql(u8, atlas.glyphs[a].coverage, atlas.glyphs[b].coverage)) return error.CurrencySignsNotDistinct;
+        }
+    }
+
+    // Legibility: each sign's ink count sits inside an honest band. The floor sits where the pound (its lightest sign)
+    // still reads, the ceiling where the busiest struck letterform (the won) still resolves as a mark, not a block.
+    const ink_min: u32 = 8;
+    const ink_max: u32 = 24;
+    var lo: u32 = cell_area;
+    var hi: u32 = 0;
+    var k: u32 = 0;
+    while (k < currency_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (n < ink_min or n > ink_max) return error.CurrencySignIllegible;
+        if (n < lo) lo = n;
+        if (n > hi) hi = n;
+    }
+    // invariant: the observed ink band stayed inside the honest bounds.
+    assert(lo >= ink_min);
+    assert(hi <= ink_max);
+
+    // Family order: the euro out-inks the cent (both C-forms, the euro adds a second bar the cent lacks), and the won
+    // out-inks the yen (both struck letterforms, the W carries more ink than the Y) -- what makes the set a true family
+    // rather than eight unrelated drawings, and what lets a readout tell a euro price from a cent, a won from a yen.
+    if (!(try ink_of(&atlas, 0x20AC) > try ink_of(&atlas, 0x00A2))) return error.EuroOrderWrong; // euro > cent
+    if (!(try ink_of(&atlas, 0x20A9) > try ink_of(&atlas, 0x00A5))) return error.WonOrderWrong; // won > yen
+
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof.
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-currency: {d} currency signs U+00A2,U+00A3,U+00A4,U+00A5,U+20A9,U+20AC,U+20B9,U+20BF at {d}x{d} round-trip byte-identical; all present, distinct, legible (ink {d}..{d} of {d}); euro>cent and won>yen hold; encoded {d} bytes, raw {d}\n", .{
+        glyph_count, cell_w, cell_h, lo, hi, cell_area, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_currency selftest\n", .{});
+    return 1;
+}

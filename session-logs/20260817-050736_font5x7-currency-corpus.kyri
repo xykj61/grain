@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260817.050736
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title font5x7 -- currency-signs corpus: the marks a readout prints when it shows a price, GREEN
+prompt take the next agent-doable lap Lindy-first crux-first; each lap deep-read one council-rota doc; Rye prioritized; approve own design rounds; send often; sweep prose Radiant; STOP at custody gates
+think Read REMEMBER inner loop, the 1024-round itinerary, the eight-season double-seat, and the Rye-first crypto-parity wave. The live edge is Season G's font5x7 corpus family -- the recent laps built the geometric, rounded-box-corner, and math/technical-marks corpora into the gfa1 open glyph atlas.
+think Lap index: last recorded rota read was item 2 (follow-our-compass) on the math lap; this lap is item 3, foundations/20260811-211431_the-lindy-effect-and-the-long-return.md. Deep-read it: the plainest words are the longest-lived; a thing that does not perish lengthens its expected future the longer it lasts. Money is exactly such a readout -- a price reads true for centuries -- so a currency corpus is the Lindy-first crux, not a fashion corpus.
+think Crux chosen: the open currency-signs corpus -- the eight marks ASCII lacks that a fair-trade readout prints when it shows a cost. It serves the Dimeroll/Linengrow commerce spine (Season B) directly, the highest-Lindy next font content beside the ASCII, box, arrow, block, geometric, and math corpora already GREEN.
+think Mirrored image/font5x7_math.rye exactly: numeric-literal codepoints (ASCII-first source, non-ASCII glyph range), strictly ascending table the gfa1 encoder trusts, ASCII line-art drawings that ARE the specification with coverage bytes lifted from the art, build_atlas + a witness-driven selftest that round-trips through gfa1 byte-for-byte and proves presence, distinctness, legibility, and family orders.
+think Family orders chosen honest and provable from the art I drew: euro out-inks cent (both C-forms, euro adds a second bar), and won out-inks yen (both struck letterforms, W denser than Y). Two orders rather than three -- currency does not mirror the way the comparisons do, and a forced third would be less honest than two true ones.
+obs Codepoints U+00A2,U+00A3,U+00A4,U+00A5 (Latin-1) then U+20A9,U+20AC,U+20B9,U+20BF (currency-symbols block) -- non-contiguous across two blocks, so the explicit ascending table earns its place exactly as the math corpus's did.
+obs GREEN on the first metal run, no red: 8 signs round-trip byte-identical, all present, distinct, legible (ink 13..21 of 35), euro>cent and won>yen hold, encoded 376 bytes vs raw 280 (the gfa1 header/codepoint overhead on a tiny 8-glyph atlas, reported as a fact never asserted). tame_style_check bans clean, width-check exit 0, both files plain 7-bit ASCII.
+loom witness=font5x7_currency_witness glyphs=8 cell=5x7 encoded_bytes=376 raw_bytes=280 ink_lo=13 ink_hi=21
+file image/font5x7_currency.rye the open currency-signs corpus -- eight signs drawn in the open, built into the gfa1 atlas
+file tools/font5x7_currency_witness.rish proves the corpus on metal: round-trip byte-identical, present, distinct, legible, family orders hold
+file crux/REMEMBER.md Git nib -> currency, math demoted to prior; live-edge line records currency GREEN and refreshes the next-candidates note
+recommend keep-going next open-media wider-symbol corpus (fractions, superscript/subscript unit digits, or Greek for science readouts) -- mechanical, single-module, the pattern is written
