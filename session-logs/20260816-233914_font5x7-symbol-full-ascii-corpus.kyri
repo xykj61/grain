@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260816.233914
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image -- the open symbol corpus completes a full ASCII font set, GREEN
+prompt Autonomous loop: take the next agent-doable lap Lindy-first crux-first; deep-read one council-rota doc; send often as its own signed round
+think Fifth open-media lap of the run. REMEMBER named the next crux outright: wider symbol coverage to unify a full ASCII font set. The font family already held numerals, uppercase, lowercase, and the thirteen common punctuation marks -- so the tractable, high-Lindy move was the corpus that closes the gap: image/font5x7_symbol.rye, the nineteen printable-ASCII symbols the other corpora leave uncovered.
+think Followed the punctuation corpus exactly, because its shape is right for scattered codepoints: an explicit strictly-ascending codepoint table rather than a base+i run, and the ASCII line art is the specification with coverage bytes lifted from the drawing. The nineteen: '"' '#' '$' '%' '&' apostrophe '<' '>' '@' '[' backslash ']' '^' '_' backtick '{' '|' '}' '~' -- codepoints 34-39, 60, 62, 64, 91-96, 123-126, all ascending, ending at '~'. With this corpus present the family covers every printable codepoint '!'..'~' but the space.
+think Legibility band runs wider than the punctuation's (2..22 vs 2..14): ASCII symbols span a real density range, a backtick at three cells and a hash at twenty, so an honest band admits both. Observed 3..20 on metal.
+obs GREEN on the first metal pass: decode(encode(atlas)) byte-for-byte, all nineteen present carrying the shared advance (a letter misses, the copy-slip guard), no two share coverage, each inside the band. Compression reported not asserted (encoded 751 > raw 665) -- symbol art is busy, and asserting a direction the data does not hold would be the REDS #82 false-invariant mistake; the round-trip is the proof.
+obs One self-caught red in the witness, not the module: the GREEN line carries a literal double quote ('"'..'~'), and the sibling witnesses' printf '%s' '${out}' echo corrupts under a double quote inside single quotes. The selftest was already GREEN; fixed by re-grepping the binary output directly instead of re-embedding the captured string -- ground truth is the binary, not a fragile echo. Left a comment saying why so the next symbol-bearing witness does not repeat it.
+obs Rota lap (d27) deep-read foundations/20260814-071700_hardware-and-right-to-repair.md -- Season A's front door, whose "open underneath" promise this open font set serves directly: a surface that paints ASCII the day it wants it, on a font the tree owns end to end, no proprietary codec, nothing a reader cannot check.
+loom witness=font5x7_symbol_witness glyphs=19 cell=5x7 ink_lo=3 ink_hi=20 encoded_bytes=751 raw_bytes=665
+file image/font5x7_symbol.rye the nineteen remaining printable-ASCII symbols hand-drawn 5x7 over the gfa1 atlas
+file tools/font5x7_symbol_witness.rish proves the corpus on metal -- round-trip byte-identical, present/distinct/legible, every check named
+file image/README.md adds the font5x7 corpora family bullet (now full ASCII but the space); corrects the next-rungs line
+file crux/REMEMBER.md live-edge line names font5x7_symbol GREEN and the full-ASCII completion; next rungs beyond-ASCII symbols then adaptive keyframe/delta
+recommend keep-going next open-media rung: a space glyph plus a unifying full-ASCII atlas builder, or arrows/box-drawing beyond ASCII, then adaptive keyframe/delta selection

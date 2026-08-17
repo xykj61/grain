@@ -1,0 +1,210 @@
+//! image/font5x7_symbol.rye -- the open symbol corpus: the remaining printable-ASCII marks (Season G, font content).
+//!
+//! Season G (Open Media Primitives) - the fifth real content for the open glyph atlas image/glyph.rye (gfa1), set
+//! beside the ten numerals of image/font5x7.rye, the uppercase of image/font5x7_alpha.rye, the lowercase of
+//! image/font5x7_lower.rye, and the thirteen common punctuation marks of image/font5x7_punct.rye. Those four fill
+//! the atlas with '0'-'9', 'A'-'Z', 'a'-'z', and the common sentence punctuation; this one fills it with the
+//! nineteen printable-ASCII symbols the other corpora leave uncovered: '"' '#' '$' '%' '&' '\'' '<' '>' '@' '['
+//! '\\' ']' '^' '_' '`' '{' '|' '}' '~'. With this corpus present, the family covers every printable ASCII
+//! codepoint from '!' (33) to '~' (126) except the space -- a full ASCII font set, our own hand, permissively ours,
+//! no external font to license and no web-search gate.
+//!
+//! Like the punctuation, these codepoints are NOT contiguous (they fall in the gaps around the letters and digits),
+//! so this corpus carries an explicit ascending codepoint table rather than a 'base + i' run -- the shape the gfa1
+//! encoder trusts (strictly ascending, shared cell, coverage length == cell area). The drawings ARE the
+//! specification: each mark is seven rows of five cells in ASCII line art ('#' full ink, '.' none) that a reader
+//! audits by eye, and the coverage bytes are derived from that art, never the reverse. build_atlas turns the
+//! nineteen drawings into a glyph.GlyphAtlas the gfa1 encoder accepts, so the property that matters stays provable
+//! on metal: decode(encode(atlas)) recovers every glyph byte-for-byte, the marks are present and distinct, and each
+//! reads within an honest legibility band. These symbols span a wide density -- a backtick is three cells, a hash
+//! twenty -- so the band runs wider than the punctuation's, honest to what an ASCII symbol set really holds. No
+//! network, no key, no funds -- the symbols a surface reads the day it wants code, math, or a bracketed path.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_symbol.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+
+pub const font5x7_symbol_version = "20260816.233914";
+
+/// Every glyph in this corpus shares one 5-wide, 7-tall cell -- the same body the numeral, letter, and punctuation corpora carry.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance: the cell width plus one column of daylight, the same advance the sibling corpora carry.
+pub const symbol_advance: u8 = cell_w + 1;
+
+/// The corpus holds exactly the nineteen remaining printable-ASCII symbols named in the table below.
+pub const symbol_count: u32 = 19;
+
+/// Cells per glyph -- the coverage length every mark carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The nineteen symbol codepoints, strictly ascending -- the order the gfa1 encoder trusts. Each aligns by index
+/// with symbol_art below: '"'=34, '#'=35, '$'=36, '%'=37, '&'=38, '\''=39, '<'=60, '>'=62, '@'=64, '['=91,
+/// '\\'=92, ']'=93, '^'=94, '_'=95, '`'=96, '{'=123, '|'=124, '}'=125, '~'=126. They fall in the gaps around the
+/// letters and digits, so they are named outright rather than derived from a base.
+const symbol_codepoints = [symbol_count]u32{ '"', '#', '$', '%', '&', '\'', '<', '>', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~' };
+
+/// The nineteen symbols, drawn in the open. Each is seven rows of five cells; '#' ink, '.' background. A reader
+/// audits every mark here by eye, and the coverage bytes are lifted from this art, never guessed.
+const symbol_art = [symbol_count][cell_h][]const u8{
+    .{ ".#.#.", ".#.#.", ".....", ".....", ".....", ".....", "....." }, // " double quote
+    .{ ".#.#.", ".#.#.", "#####", ".#.#.", "#####", ".#.#.", ".#.#." }, // # hash
+    .{ "..#..", ".####", "#.#..", ".###.", "..#.#", "####.", "..#.." }, // $ dollar
+    .{ "##..#", "##.#.", "...#.", "..#..", ".#...", ".#.##", "#..##" }, // % percent
+    .{ ".##..", "#..#.", "#.#..", ".#...", "#.#.#", "#..#.", ".##.#" }, // & ampersand
+    .{ "..#..", "..#..", ".#...", ".....", ".....", ".....", "....." }, // ' apostrophe
+    .{ "....#", "...#.", "..#..", ".#...", "..#..", "...#.", "....#" }, // < less-than
+    .{ "#....", ".#...", "..#..", "...#.", "..#..", ".#...", "#...." }, // > greater-than
+    .{ ".###.", "#...#", "#.##.", "#.#.#", "#.##.", "#....", ".###." }, // @ at
+    .{ ".###.", ".#...", ".#...", ".#...", ".#...", ".#...", ".###." }, // [ left bracket
+    .{ "#....", "#....", ".#...", "..#..", "...#.", "....#", "....#" }, // \ backslash
+    .{ ".###.", "...#.", "...#.", "...#.", "...#.", "...#.", ".###." }, // ] right bracket
+    .{ "..#..", ".#.#.", "#...#", ".....", ".....", ".....", "....." }, // ^ caret
+    .{ ".....", ".....", ".....", ".....", ".....", ".....", "#####" }, // _ underscore
+    .{ ".#...", "..#..", "...#.", ".....", ".....", ".....", "....." }, // ` backtick
+    .{ "...##", "..#..", "..#..", ".#...", "..#..", "..#..", "...##" }, // { left brace
+    .{ "..#..", "..#..", "..#..", "..#..", "..#..", "..#..", "..#.." }, // | vertical bar
+    .{ "##...", "..#..", "..#..", "...#.", "..#..", "..#..", "##..." }, // } right brace
+    .{ ".....", ".....", ".#..#", "#.##.", ".....", ".....", "....." }, // ~ tilde
+};
+
+/// Lift one mark's ASCII art into a freshly allocated coverage grid of exactly cell_area bytes: 255 for ink,
+/// 0 for background. The art's own shape is asserted, so a mistyped row is a stopped line rather than a bad glyph.
+fn coverage_from_art(allocator: std.mem.Allocator, art: [cell_h][]const u8) ![]u8 {
+    // invariant: a coverage grid is exactly the shared cell area, within the atlas ceiling.
+    assert(cell_area >= 1);
+    assert(cell_area <= glyph.coverage_max);
+    const cov = try allocator.alloc(u8, cell_area);
+    var idx: u32 = 0;
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        const row = art[r];
+        // invariant: every drawn row is exactly the cell width -- the art matches the grid.
+        assert(row.len == cell_w);
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            cov[idx] = if (row[c] == '#') 255 else 0;
+            idx += 1;
+        }
+    }
+    // invariant: the whole grid was filled, no cell left unwritten.
+    assert(idx == cell_area);
+    return cov;
+}
+
+/// Build the symbol atlas: nineteen glyphs at the named ascending codepoints, sharing the 5x7 cell and advance.
+/// The gfa1 encoder accepts the result directly (ascending codepoints, coverage length == cell area).
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the corpus is the nineteen named symbols and no more.
+    assert(symbol_count == 19);
+    assert(cell_area == 35);
+    const glyphs = try allocator.alloc(glyph.Glyph, symbol_count);
+    var i: u32 = 0;
+    var last_cp: u32 = 0;
+    while (i < symbol_count) : (i += 1) {
+        const cp = symbol_codepoints[i];
+        // invariant: codepoints are strictly ascending -- the ordering the gfa1 encoder trusts.
+        assert(i == 0 or cp > last_cp);
+        last_cp = cp;
+        const cov = try coverage_from_art(allocator, symbol_art[i]);
+        glyphs[i] = glyph.Glyph{
+            .codepoint = cp,
+            .advance = symbol_advance,
+            .coverage = cov,
+        };
+    }
+    // invariant: the last codepoint is '~' -- the table ends where the printable-ASCII range ends.
+    assert(glyphs[symbol_count - 1].codepoint == '~');
+    return glyph.GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- the legibility signal a blank glyph would fail.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+// --- selftest: build the symbol atlas, round-trip it through gfa1, prove all present, distinct, legible ---------
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built atlas is the nineteen-symbol corpus at the shared cell.
+    assert(glyph_count == symbol_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // Nineteen present symbols: every mark looks up, carries the shared advance; a letter misses.
+    var d: u32 = 0;
+    while (d < symbol_count) : (d += 1) {
+        const cp = symbol_codepoints[d];
+        if (back.lookup(cp)) |g| {
+            assert(g.codepoint == cp);
+            assert(g.advance == symbol_advance);
+        } else return error.SymbolMissing;
+    }
+    if (back.lookup('A')) |_| return error.NonSymbolFound else {}
+
+    // Distinctness: no two symbols share identical coverage -- a real font's glyphs differ (catches a copy slip).
+    var a: u32 = 0;
+    while (a < symbol_count) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b < symbol_count) : (b += 1) {
+            if (std.mem.eql(u8, atlas.glyphs[a].coverage, atlas.glyphs[b].coverage)) return error.SymbolsNotDistinct;
+        }
+    }
+
+    // Legibility: each symbol's ink count sits inside an honest band. ASCII symbols span a wide density -- the
+    // floor sits low, where a backtick (three cells) still reads, and the ceiling above the punctuation's, where a
+    // hash (twenty cells) still resolves as a mark rather than a blob.
+    const ink_min: u32 = 2;
+    const ink_max: u32 = 22;
+    var lo: u32 = cell_area;
+    var hi: u32 = 0;
+    var k: u32 = 0;
+    while (k < symbol_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (n < ink_min or n > ink_max) return error.SymbolIllegible;
+        if (n < lo) lo = n;
+        if (n > hi) hi = n;
+    }
+    // invariant: the observed ink band stayed inside the honest bounds.
+    assert(lo >= ink_min);
+    assert(hi <= ink_max);
+
+    // Compression is reported as a fact, not asserted -- some symbols run dense, yet the round-trip is the proof.
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-symbol: {d} symbols '\"'..'~' at {d}x{d} round-trip byte-identical; all present, distinct, legible (ink {d}..{d} of {d}); encoded {d} bytes, raw {d}\n", .{
+        glyph_count, cell_w, cell_h, lo, hi, cell_area, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_symbol selftest\n", .{});
+    return 1;
+}

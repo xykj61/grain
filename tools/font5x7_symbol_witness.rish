@@ -1,0 +1,45 @@
+# tools/font5x7_symbol_witness.rish -- the open symbol corpus proves itself on metal (Season G, font content).
+#
+# Season G (Open Media Primitives) - the fifth real content for the open glyph atlas image/glyph.rye (gfa1), set
+# beside the numerals (tools/font5x7_witness.rish), the uppercase (tools/font5x7_alpha_witness.rish), the lowercase
+# (tools/font5x7_lower_witness.rish), and the punctuation (tools/font5x7_punct_witness.rish).
+#
+# The crux this witness proves is a REAL, OPEN, hand-drawn symbol corpus: the nineteen printable-ASCII marks the
+# other corpora leave uncovered -- '"' '#' '$' '%' '&' '\'' '<' '>' '@' '[' '\\' ']' '^' '_' '`' '{' '|' '}' '~' --
+# each a 5x7 coverage grid drawn in the open as ASCII line art in image/font5x7_symbol.rye at explicit ascending
+# codepoints, built into a gfa1 atlas and proven on metal. With this corpus present, the family covers every
+# printable ASCII codepoint from '!' to '~' except the space -- a full ASCII font set of our own hand. A full
+# round-trip recovers every codepoint, advance, and coverage byte byte-for-byte; all nineteen symbols look up
+# present and carry the shared advance while a letter misses; no two symbols share coverage (a real font's glyphs
+# differ); and each symbol reads within an honest, wide legibility band (a backtick is three cells, a hash twenty).
+# Compression is reported as a fact, never asserted -- the round-trip is the proof. No network, no key, no funds --
+# the symbols a surface reads the day it wants code, math, or a bracketed path, on our own open font.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/font5x7_symbol_witness.rish
+
+say "font5x7-symbol: Language EN -- Season G's font content rung; the nineteen remaining printable-ASCII symbols drawn in the open as ASCII line art, built into the gfa1 atlas, completing a full ASCII font set of our own hand."
+say "font5x7-symbol: Style Radiant -- the drawings are the specification and the bytes are derived from them, so decode(encode(atlas)) recovers every mark byte for byte; our own hand, permissively ours, no external font to license and no web-search gate."
+say "font5x7-symbol: Lens TAME -- u32 in-memory counts, u8 coverage bytes; every buffer names a maximum (cell_area - symbol_count - the atlas ceilings it rests on); each function states its invariants positively; codepoints explicit and strictly ascending; compression a reported fact never a false invariant; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/font5x7_symbol"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/font5x7_symbol.rye -femit-bin=${bin}"]
+assert build.ok else "font5x7-symbol: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "font5x7-symbol: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "font5x7-symbol: ${out}"
+
+# Re-grep the binary output directly rather than re-embedding the captured string: this corpus's GREEN line carries
+# a literal double quote ('"'..'~'), which would corrupt a printf single-quoted echo -- the binary is the ground truth.
+let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-font5x7-symbol' && echo yes"]
+assert (trim green.out) == "yes" else "font5x7-symbol: selftest did not print the GREEN corpus line"
+
+let round = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'round-trip byte-identical' && echo yes"]
+assert (trim round.out) == "yes" else "font5x7-symbol: round-trip was not byte-identical"
+
+say "font5x7-symbol: GREEN -- the open symbol corpus whole; nineteen marks round-trip byte-identical, all present, distinct, and legible; the family now covers all printable ASCII but the space."
