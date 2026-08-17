@@ -1,0 +1,188 @@
+//! image/color_describe.rye -- the plain human DESCRIPTION of any color (Season G), composed from tone and family.
+//!
+//! Season G (Open Media Primitives) -- the crest of the color-naming family, and the rung its two siblings were built
+//! to enable. image/color_tone.rye reads a color's coarse TONE (dark, mid, light) from lightness alone, and
+//! image/color_name_group.rye reads its coarse FAMILY (red, blue, ..., plus black/white/gray) from hue, saturation, and
+//! tone. Each stays single-stranded, about one thing. This module COMPOSES them into the phrase a human actually says --
+//! "dark blue", "light green", a bare "red" for a mid-tone color -- so a photo caption, a palette label, or an alt-text
+//! reads one plain string instead of two words the caller must braid by hand.
+//!
+//! Compose, not braid: describe invents no color fact. tone_of decides the tone, group_of decides the family, and this
+//! module only JOINS their two words the way a person speaks -- following three plain rules of English color speech,
+//! each a design choice named with a why:
+//!
+//!   1. A mid-tone color leaves its tone unspoken -- "blue", not "mid blue" -- because a human names the tone only when
+//!      it departs from the ordinary. So a mid tone yields the bare family word.
+//!   2. A black or white family already carries its own tone, so the tone word is dropped -- "black", never "dark
+//!      black"; "white", never "light white". These families read as the tone word alone.
+//!   3. Every other case joins tone and family with one space -- "dark gray", "light magenta".
+//!
+//! The phrase is written into a caller buffer, bounded by construction (the longest phrase, "light magenta", is thirteen
+//! bytes); a buffer too small refuses by name rather than truncating. Bounded, deterministic, no new math, no stored
+//! channel byte, no parser, no network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/color_describe.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const tone = @import("color_tone.rye");
+const group = @import("color_name_group.rye");
+
+pub const color_describe_version = "20260817.131306";
+
+/// The longest human phrase this module ever writes: the longest tone word ("light", 5) plus one space plus the longest
+/// family word ("magenta", 7) -- thirteen bytes. A caller buffer at least this wide always holds any description.
+pub const describe_max: u32 = 13;
+
+/// Write the plain human description of a color into `buf`, returning the written slice. Composes tone.tone_of and
+/// group.group_of, joining their words by the three rules of color speech above. Always returns a slice of `buf`; a
+/// buffer narrower than `describe_max` refuses `DescribeBufferTooSmall` rather than writing a partial phrase.
+pub fn describe(c: color.Rgba, buf: []u8) ![]const u8 {
+    // invariant: the buffer holds the widest phrase whole, so no description is ever truncated.
+    assert(describe_max == 13);
+    if (buf.len < describe_max) return error.DescribeBufferTooSmall;
+
+    const family = group.group_of(c);
+    // invariant: the family word is a real member of the family set, so the phrase never carries an invented word.
+    assert(family.len >= 3);
+    assert(family.len <= 7);
+
+    // Rule 2: a black or white family already speaks its tone -- the family word stands alone.
+    if (std.mem.eql(u8, family, group.group_white) or std.mem.eql(u8, family, group.group_black)) {
+        return write_word(buf, family);
+    }
+
+    // Rule 1: a mid-tone color leaves its tone unspoken -- the bare family word.
+    const t = tone.tone_of(c);
+    if (std.mem.eql(u8, t, tone.tone_mid)) {
+        return write_word(buf, family);
+    }
+
+    // Rule 3: join the tone and family with one space -- "dark gray", "light magenta".
+    // invariant: tone plus a space plus family never exceeds the widest phrase.
+    assert(t.len + 1 + family.len <= describe_max);
+    copy_into(buf[0..t.len], t);
+    buf[t.len] = ' ';
+    const fam_start: u32 = @intCast(t.len + 1);
+    copy_into(buf[fam_start .. fam_start + family.len], family);
+    return buf[0 .. fam_start + family.len];
+}
+
+/// Copy one word into the front of `buf` and return exactly that slice -- the bare-family and achromatic cases.
+fn write_word(buf: []u8, word: []const u8) []const u8 {
+    // invariant: the word fits, since every family and tone word is shorter than the widest phrase.
+    assert(word.len <= describe_max);
+    // invariant: the destination holds the whole word, so the copy never runs past the buffer.
+    assert(buf.len >= word.len);
+    copy_into(buf[0..word.len], word);
+    return buf[0..word.len];
+}
+
+/// The disjoint copy under its guarded name -- lengths agree and the caller-owned buffer never overlaps a static word.
+fn copy_into(dst: []u8, src: []const u8) void {
+    // invariant: destination and source name the same count, the disjoint-copy precondition.
+    assert(dst.len == src.len);
+    @import("tally_copy.rye").copy_disjoint(u8, dst, src);
+}
+
+// --- selftest: prove each rule of color speech -- a mid tone drops its word, black/white read tone-alone, dark/light
+// --- join with a space -- that the phrase is exactly tone+family, that a narrow buffer refuses, and that it is
+// --- deterministic and always a slice of the buffer.
+
+fn eq(got: []const u8, want: []const u8) bool {
+    return std.mem.eql(u8, got, want);
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    _ = garden;
+    var buf: [describe_max]u8 = undefined;
+
+    // 1. A mid-tone chromatic color leaves its tone unspoken -- pure red #ff0000 (family red, tone mid) reads "red".
+    if (!eq(try describe(try color.parse_hex("#ff0000"), &buf), "red")) return error.MidRedWrong;
+
+    // 2. A dark chromatic color joins tone and family -- darkblue #00008b (family blue, tone dark) reads "dark blue".
+    if (!eq(try describe(try color.parse_hex("#00008b"), &buf), "dark blue")) return error.DarkBlueWrong;
+
+    // 3. A light chromatic color joins the other way -- lightgreen #90ee90 (family green, tone light) reads
+    // "light green" -- so both departing tones are proven, and the space sits between the two words.
+    if (!eq(try describe(try color.parse_hex("#90ee90"), &buf), "light green")) return error.LightGreenWrong;
+
+    // 4. The widest phrase writes whole -- a light magenta #ffb0ff (family magenta, tone light) reads "light magenta",
+    // thirteen bytes, exercising the buffer to its named bound.
+    const widest = try describe(try color.parse_hex("#ffb0ff"), &buf);
+    if (!eq(widest, "light magenta")) return error.WidestWrong;
+    if (widest.len != describe_max) return error.WidestLenWrong;
+
+    // 5. Rule 2: a black family reads its tone-word alone -- a very dark red #200000 (family black) reads "black",
+    // never "dark black"; a very light red #ffe0e0 (family white) reads "white", never "light white".
+    if (!eq(try describe(try color.parse_hex("#200000"), &buf), "black")) return error.BlackWrong;
+    if (!eq(try describe(try color.parse_hex("#ffe0e0"), &buf), "white")) return error.WhiteWrong;
+
+    // 6. The gray family keeps its tone (it is not black or white) -- a dark gray #404040 reads "dark gray", a light
+    // gray #d0d0d0 reads "light gray", and a mid gray #808080 reads the bare "gray".
+    if (!eq(try describe(try color.parse_hex("#404040"), &buf), "dark gray")) return error.DarkGrayWrong;
+    if (!eq(try describe(try color.parse_hex("#d0d0d0"), &buf), "light gray")) return error.LightGrayWrong;
+    if (!eq(try describe(try color.parse_hex("#808080"), &buf), "gray")) return error.MidGrayWrong;
+
+    // 7. The phrase is exactly tone.tone_of + family, joined by the rules -- proven by rebuilding it from the two
+    // siblings for a spread of colors and comparing byte-for-byte, so describe can never drift from its parts.
+    const spread = [_][]const u8{ "#123456", "#abcdef", "#7f3f00", "#004020", "#e0e0ff", "#c08040", "#3060c0", "#a040a0" };
+    var i: u32 = 0;
+    while (i < spread.len) : (i += 1) {
+        const c = try color.parse_hex(spread[i]);
+        const got = try describe(c, &buf);
+        var want_buf: [describe_max]u8 = undefined;
+        const want = expected(c, &want_buf);
+        if (!eq(got, want)) return error.PhraseNotComposed;
+    }
+
+    // 8. A buffer narrower than the widest phrase refuses by name rather than truncating -- twelve bytes is one short.
+    var tiny: [12]u8 = undefined;
+    if (describe(try color.parse_hex("#ffb0ff"), &tiny)) |_| {
+        return error.NarrowBufferAccepted;
+    } else |err| {
+        if (err != error.DescribeBufferTooSmall) return error.WrongRefusal;
+    }
+
+    // 9. Determinism -- the same color reads the same phrase every time.
+    var a_buf: [describe_max]u8 = undefined;
+    var b_buf: [describe_max]u8 = undefined;
+    const once = try describe(try color.parse_hex("#00008b"), &a_buf);
+    const again = try describe(try color.parse_hex("#00008b"), &b_buf);
+    if (!eq(once, again)) return error.NotDeterministic;
+
+    print("GREEN image-color-describe: any color reads one plain human phrase composed from its tone and family over the open color algebra; a mid-tone color leaves its tone unspoken (pure red reads 'red'); a departing tone joins with a space (darkblue reads 'dark blue', lightgreen 'light green'); the widest phrase writes whole ('light magenta', thirteen bytes at the named bound); a black or white family reads its tone-word alone ('black' not 'dark black', 'white' not 'light white'); the gray family keeps its tone ('dark gray', 'light gray', bare 'gray'); the phrase is exactly tone_of plus family rebuilt byte-for-byte from the two siblings, so it never drifts from its parts; a buffer one byte too narrow refuses DescribeBufferTooSmall rather than truncating; and the same color reads the same phrase every time (compose not braid, tone and family each decide their own word and this module only joins them)\n", .{});
+    return 0;
+}
+
+/// Rebuild the expected phrase straight from the two siblings, by the same three rules, so the selftest checks describe
+/// against an independent composition rather than against itself.
+fn expected(c: color.Rgba, buf: []u8) []const u8 {
+    assert(buf.len >= describe_max); // invariant: the check buffer holds the widest phrase whole
+    const family = group.group_of(c);
+    if (std.mem.eql(u8, family, group.group_white) or std.mem.eql(u8, family, group.group_black)) {
+        return write_word(buf, family);
+    }
+    const t = tone.tone_of(c);
+    if (std.mem.eql(u8, t, tone.tone_mid)) {
+        return write_word(buf, family);
+    }
+    assert(t.len + 1 + family.len <= describe_max); // invariant: the joined phrase fits
+    copy_into(buf[0..t.len], t);
+    buf[t.len] = ' ';
+    const fam_start: u32 = @intCast(t.len + 1);
+    copy_into(buf[fam_start .. fam_start + family.len], family);
+    return buf[0 .. fam_start + family.len];
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: color_describe selftest\n", .{});
+    return 1;
+}
