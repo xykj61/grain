@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260817.150028
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title conic_paint -- the sweep beside the line and the ring
+prompt baton prin recur -- take the next agent-doable lap Lindy-first crux-first on the Season G open-media arc; send often, gates stay Keaton's hand
+think Read the road: REMEMBER (live edge = gradient_paint linear family h/v/diag done, radial_paint circle done), the 1024-round itinerary, the eight-season double-seat, the rye-first crypto wave. The gradient family had linear (all four directions) and radial (circle) -- the CSS gradient triad's missing third is CONIC.
+think Lindy-first crux-first: a conic gradient is a canonical, durable CSS primitive every surface reuses (Brushstroke, Skate, Realidream), and its crux is the angular routing -- the hardest-solvable piece. Chose it over lower-Lindy utilities (a swatch/legend strip).
+think Crux solved without trigonometry: a pseudo-angle. Doubled coords keep the center exact; the four quadrants clockwise from the top split the turn; within a quadrant position grows linearly with the coordinate ratio -- (q*s + numer) * pos_max / (4*s), s = |dx2| + |dy2|. Monotonic in the true angle, integer, deterministic.
+think Convention: the top (dx2==0, dy2<0) falls in the north-east branch by the dx2>=0 test, so the top reads the first control exactly (the seam); the last control is approached but never painted exactly, honest for a conic seam.
+think Witness crux made exact and measured: a black->white ramp makes color.mix return the position in the red channel, so cardinal bearings are exact integers -- top 0, east 63, south 127, west 191 (a clockwise quarter each), and each cardinal ray reads one constant wedge along a whole column/row.
+obs First GREEN, no reds in the routing. One witness red caught and closed same-sitting: the grep guards printf the GREEN line in single quotes, and apostrophes (pixel's, turn's) closed the shell string -- reworded the printed line apostrophe-free (matching how radial_paint already avoided them). Register only, not a claim change.
+obs Rota lap deep-read context/specs/20260627-102012_one-clock-naming-law.md (item 23) -- the name teaches the function; conic_pos and paint_gradient_conic are plain words a newcomer grasps, honoring that law.
+obs Compose not braid held: color_ramp_stops decides color, qoi owns the target, color composites; this rung only routes each pixel to its bearing. No network, no key, no funds -- no custody gate touched.
+file image/conic_paint.rye the conic positioned gradient painter and its selftest, GREEN on metal
+file tools/conic_paint_witness.rish the on-metal witness proving the sweep, its bearings, wedges, seam, bend, and QOI round trip
+file image/README.md docs-sync -- names conic_paint.rye beside radial_paint.rye, completing the CSS gradient triad in the roster
+recommend keep-going the CSS gradient triad is whole (linear, radial, conic); next agent-doable Season G rungs -- a gradient legend/swatch strip, an open-fonts glyph rung, or a fresh Lindy-first crux

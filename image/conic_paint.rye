@@ -1,0 +1,294 @@
+//! image/conic_paint.rye -- a CONIC positioned gradient SEEN on an image (Season G, the sweep beside the line and the ring).
+//!
+//! Season G (Open Media Primitives) -- the third and last shape of the CSS gradient triad, the sibling of
+//! image/gradient_paint.rye (the LINEAR family, distance ALONG an axis) and image/radial_paint.rye (the RADIAL circle,
+//! distance FROM the center). Where a linear gradient sweeps a line and a radial gradient sweeps a radius, a CONIC gradient
+//! sweeps an ANGLE: each pixel's ramp position is its bearing around the box center, so the ramp turns like a clock hand.
+//! The first control sits at the top (12 o'clock) and the ramp runs CLOCKWISE through east, south, and west back to the top
+//! -- the CSS `conic-gradient(from 0deg at center, ...)` shape, its default start and center. Every pixel on one ray from
+//! the center carries one constant color (a wedge), and the first and last controls meet at the top in a single seam.
+//!
+//! Compose, not braid: color_ramp_stops.sample_checked DECIDES each pixel's color at its computed position, image/qoi owns
+//! the RGBA target, and image/color composites the paint over the destination (Porter-Duff src-over, straight alpha). This
+//! module only ROUTES each pixel to its angular position and writes it -- no new color math, no new codec.
+//!
+//! The routing stays integer fixed-point so a painted sweep is deterministic, and needs no trigonometry. Coordinates are
+//! DOUBLED (2*cx - (w-1)) so the center lands exactly on a pixel for odd dimensions and exactly between two for even ones,
+//! without a fraction. The bearing is a PSEUDO-ANGLE: the four quadrants around the center (north-east, south-east,
+//! south-west, north-west) split the turn into four, and within a quadrant the position grows linearly with the ratio of
+//! the two coordinates -- a monotonic function of the true angle that needs only add, multiply, and one divide. So the top
+//! reads 0, east reads pos_max/4, south pos_max/2, west 3*pos_max/4, each ray between one constant color. The whole box is
+//! bound-checked ONCE up front (in u64 so a far edge can never wrap before the bound refuses), and the ramp is validated
+//! ONCE before any pixel is written, so a malformed sweep refuses by name having painted nothing -- all-or-nothing, never a
+//! half-painted wedge. No network, no key, no funds.
+//!
+//! Teacher, thanked clean-room: the CSS conic-gradient concept (W3C CSS Color / Images -- public standard only). The idea
+//! enters siloed (context/SILO_TECHNIQUE.md): the shape is ours, named plainly; the thanks live in the witness header.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/conic_paint.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const ramp_stops = @import("color_ramp_stops.rye");
+
+pub const conic_paint_version = "20260817.145526";
+
+/// Composite one paint color over the destination pixel at (x, y), src-over, so a translucent sweep reads through to the
+/// picture beneath. The caller proves the pixel lands inside the target; this writer only blends.
+fn blend_pixel(target: *qoi.Pixmap, x: u32, y: u32, paint: color.Rgba) void {
+    // invariant: the caller proved this pixel lands inside the target buffer, on the horizontal axis.
+    assert(x < target.width);
+    // invariant: and on the vertical axis -- both are load-bearing for the flat index below.
+    assert(y < target.height);
+    const di = (@as(usize, y) * @as(usize, target.width) + @as(usize, x)) * 4;
+    const dst = color.Rgba{
+        .r = target.pixels[di],
+        .g = target.pixels[di + 1],
+        .b = target.pixels[di + 2],
+        .a = target.pixels[di + 3],
+    };
+    const res = color.over(paint, dst);
+    target.pixels[di] = res.r;
+    target.pixels[di + 1] = res.g;
+    target.pixels[di + 2] = res.b;
+    target.pixels[di + 3] = res.a;
+}
+
+/// The conic position (0..pos_max) of pixel (`cx`, `cy`) in a box of size `w` x `h` -- its bearing CLOCKWISE from the top,
+/// as an integer pseudo-angle. The four quadrants around the center split the turn into four; within a quadrant the
+/// position grows linearly with the ratio of the two doubled coordinates, so the top reads 0, east pos_max/4, south
+/// pos_max/2, west 3*pos_max/4, and every ray between one constant color. Shared by the painter, so the pixel-to-bearing
+/// routing is one small honest reader. The exact center has no bearing and reads 0 (the first control) by convention.
+fn conic_pos(cx: u32, cy: u32, w: u32, h: u32) u8 {
+    // invariant: the pixel names a real cell of the box.
+    assert(cx < w);
+    assert(cy < h);
+    // Doubled coordinates keep the center exact without a fraction: dx2 runs -(w-1)..(w-1) (positive = right of center),
+    // dy2 the same on the vertical axis (positive = below center, since a row grows downward).
+    const dx2: i64 = 2 * @as(i64, cx) - (@as(i64, w) - 1);
+    const dy2: i64 = 2 * @as(i64, cy) - (@as(i64, h) - 1);
+    // Absolute coordinate magnitudes; dx2,dy2 <= 8191 so each fits u64 with room to spare after the abs.
+    const a: u64 = @intCast(if (dx2 < 0) -dx2 else dx2);
+    const b: u64 = @intCast(if (dy2 < 0) -dy2 else dy2);
+    const s: u64 = a + b;
+    // invariant: the exact center (both coordinates zero) has no bearing -- read the first control, position zero.
+    if (s == 0) return 0;
+    // Pick the quadrant clockwise from the top and the numerator whose ratio grows 0..1 across that quadrant. The top
+    // (dx2 == 0, dy2 < 0) falls in the north-east branch by the dx2 >= 0 test, so the top reads exactly zero (the seam).
+    var q: u64 = undefined;
+    var numer: u64 = undefined;
+    if (dy2 <= 0) {
+        // Upper half: north-east (top -> east) reads |dx2|/s from 0 to 1; north-west (west -> top) is the last quadrant.
+        if (dx2 >= 0) {
+            q = 0;
+            numer = a;
+        } else {
+            q = 3;
+            numer = b;
+        }
+    } else {
+        // Lower half: south-east (east -> south) reads |dy2|/s; south-west (south -> west) reads |dx2|/s.
+        if (dx2 >= 0) {
+            q = 1;
+            numer = b;
+        } else {
+            q = 2;
+            numer = a;
+        }
+    }
+    // pos = (q + numer/s) / 4 * pos_max, kept integer: (q*s + numer) * pos_max / (4*s). The numerator (q*s + numer) never
+    // exceeds 4*s and s <= ~16382, so (4*s)*pos_max <= ~1.67e7 stays far inside u64. Floor division, deterministic.
+    const pos: u64 = (q * s + numer) * @as(u64, ramp_stops.pos_max) / (4 * s);
+    // invariant: the bearing stays inside the ramp domain (equality only at the unreachable top seam of the last quadrant).
+    assert(pos <= ramp_stops.pos_max);
+    return @intCast(pos);
+}
+
+/// Paint a CONIC positioned gradient into the rectangle at (`x`, `y`) of size `w` x `h` on `target`: each pixel is the
+/// color the positioned ramp samples at its bearing clockwise from the top, so the first control sits at the top and the
+/// ramp sweeps clockwise, every ray from the center one constant color. Refuses `BadStripDims` if `w` or `h` is zero,
+/// `StripTooSmall` if the box is a single pixel (no angular direction), `ConicOutOfBounds` BY NAME if the box would exceed
+/// the target, and every `color_ramp_stops` refusal by name if the ramp is malformed -- all checked BEFORE any pixel is
+/// written, so a refusal leaves the target untouched.
+pub fn paint_gradient_conic(target: *qoi.Pixmap, x: u32, y: u32, w: u32, h: u32, control: []const color.Rgba, positions: []const u8) !void {
+    // invariant: a conic gradient box has real extent and more than one pixel, so at least one bearing exists.
+    if (w == 0 or h == 0) return error.BadStripDims;
+    if (w == 1 and h == 1) return error.StripTooSmall;
+    // The ramp is validated ONCE up front, so a malformed stop list refuses having painted nothing.
+    try ramp_stops.check(control, positions);
+    // The box's far edges, in u64 so the sum can never wrap before the bound check refuses.
+    const right: u64 = @as(u64, x) + @as(u64, w);
+    const bottom: u64 = @as(u64, y) + @as(u64, h);
+    if (right > @as(u64, target.width) or bottom > @as(u64, target.height)) return error.ConicOutOfBounds;
+    // invariant: the up-front check proved every pixel of the w x h box lands inside the target buffer.
+    assert(right <= @as(u64, target.width));
+    assert(bottom <= @as(u64, target.height));
+
+    var cy: u32 = 0;
+    while (cy < h) : (cy += 1) {
+        var cx: u32 = 0;
+        while (cx < w) : (cx += 1) {
+            // The pixel's color is decided by the positioned ramp; this module only routes the pixel to its angular bearing.
+            const col = ramp_stops.sample_checked(control, positions, conic_pos(cx, cy, w, h));
+            blend_pixel(target, x + cx, y + cy, col);
+        }
+    }
+}
+
+// --- selftest: paint a conic sweep, prove its top seam, its cardinal bearings, its constant wedges, its round trip -------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module (it
+/// keeps its own canvas exactly as image/radial_paint.rye and image/shape.rye do).
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
+    const green = color.Rgba{ .r = 0, .g = 255, .b = 0, .a = 255 };
+    const blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 };
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    // A black -> white conic over an odd 7x7 box makes each pixel's RED channel EQUAL its bearing (color.mix of 0 and 255
+    // by parameter p reads back p), so the cardinal bearings are exact integers: the top reads 0, east pos_max/4 = 63,
+    // south pos_max/2 = 127, west 3*pos_max/4 = 191 -- the crux that the sweep turns clockwise from the top by a quarter.
+    const bw = [_]color.Rgba{ black, white };
+    const at_ends = [_]u8{ 0, 255 };
+    const sq: u32 = 7;
+    const cc: u32 = sq / 2; // the center cell (3,3)
+    var img = try make_canvas(garden, sq, sq, red);
+    try paint_gradient_conic(&img, 0, 0, sq, sq, bw[0..], at_ends[0..]);
+    if (pixel_at(&img, cc, 0).r != 0) return error.TopNotZero;
+    if (pixel_at(&img, sq - 1, cc).r != 63) return error.EastNotQuarter;
+    if (pixel_at(&img, cc, sq - 1).r != 127) return error.SouthNotHalf;
+    if (pixel_at(&img, 0, cc).r != 191) return error.WestNotThreeQuarter;
+
+    // The bearings ascend strictly clockwise -- top < east < south < west -- so the ramp truly sweeps one way around.
+    const top_r = pixel_at(&img, cc, 0).r;
+    const east_r = pixel_at(&img, sq - 1, cc).r;
+    const south_r = pixel_at(&img, cc, sq - 1).r;
+    const west_r = pixel_at(&img, 0, cc).r;
+    if (!(top_r < east_r and east_r < south_r and south_r < west_r)) return error.BearingsNotClockwise;
+
+    // Each ray from the center is one constant wedge color: every pixel straight above the center shares the top bearing
+    // (the first control), and every pixel straight below shares the south bearing -- a wedge, not a linear ramp.
+    var ry: u32 = 0;
+    while (ry < cc) : (ry += 1) {
+        if (pixel_at(&img, cc, ry).r != top_r) return error.NorthRayNotConstant;
+        if (pixel_at(&img, cc, sq - 1 - ry).r != south_r) return error.SouthRayNotConstant;
+    }
+    var rx: u32 = 0;
+    while (rx < cc) : (rx += 1) {
+        if (pixel_at(&img, sq - 1 - rx, cc).r != east_r) return error.EastRayNotConstant;
+        if (pixel_at(&img, rx, cc).r != west_r) return error.WestRayNotConstant;
+    }
+
+    // The top is the SEAM where the first and last controls meet: the top reads the first control while the cell just west
+    // of the top-center (still the last, north-west quadrant) reads a HIGH bearing near the end of the turn.
+    if (pixel_at(&img, cc, 0).r != 0) return error.TopSeamNotFirst;
+    if (!(pixel_at(&img, cc - 1, 0).r > 191)) return error.PreTopNotHighBearing;
+
+    // Paint a red-green-blue conic and prove it round-trips through the open QOI codec byte-for-byte -- a real image.
+    const rgb = [_]color.Rgba{ red, green, blue };
+    const at_even = [_]u8{ 0, 128, 255 };
+    var img_rgb = try make_canvas(garden, sq, sq, white);
+    try paint_gradient_conic(&img_rgb, 0, 0, sq, sq, rgb[0..], at_even[0..]);
+    const cap = qoi.encoded_bound(img_rgb.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&img_rgb, dst);
+    const back = try qoi.decode(garden, dst[0..enc.len]);
+    if (!back.same_bytes(&img_rgb)) return error.SweepDidNotRoundTrip;
+
+    // Uneven positions BEND the sweep: with green pushed near the end (position 200) the east bearing (63) sits earlier in
+    // the first segment than with green centred (128), so the same pixel reads a different color -- a real control.
+    const at_late = [_]u8{ 0, 200, 255 };
+    var img_late = try make_canvas(garden, sq, sq, white);
+    try paint_gradient_conic(&img_late, 0, 0, sq, sq, rgb[0..], at_late[0..]);
+    if (pixel_at(&img_late, sq - 1, cc).eql(pixel_at(&img_rgb, sq - 1, cc))) return error.PositionDidNotBendSweep;
+
+    // A sub-rectangle paints only its own box: paint a 3x3 sweep at (1,1) on a wider canvas and prove the ground around it
+    // stays the untouched white (the box is honored, nothing bleeds).
+    var img_sub = try make_canvas(garden, 6, 6, white);
+    try paint_gradient_conic(&img_sub, 1, 1, 3, 3, rgb[0..], at_even[0..]);
+    if (!pixel_at(&img_sub, 0, 0).eql(white)) return error.GutterPainted;
+    if (!pixel_at(&img_sub, 5, 5).eql(white)) return error.FarGutterPainted;
+    if (pixel_at(&img_sub, 2, 1).eql(white)) return error.SweepTopNotPainted;
+
+    // A non-square box still sweeps: a 7x3 box reads the first control at its top-center and a high bearing just west of it,
+    // proving the routing does not assume a square (the quadrants split by sign, at any aspect).
+    var img_wide = try make_canvas(garden, 7, 3, black);
+    try paint_gradient_conic(&img_wide, 0, 0, 7, 3, bw[0..], at_ends[0..]);
+    if (pixel_at(&img_wide, 3, 0).r != 0) return error.WideTopNotFirstControl;
+    if (!(pixel_at(&img_wide, 2, 0).r > 191)) return error.WidePreTopNotHighBearing;
+
+    // Refusals by name, each having painted nothing: a single-pixel box (no angular direction), a zero dimension, an
+    // out-of-bounds box, and a malformed ramp (non-ascending positions caught up front).
+    var tiny = try make_canvas(garden, 4, 4, white);
+    if (paint_gradient_conic(&tiny, 0, 0, 1, 1, rgb[0..], at_even[0..])) |_| return error.SinglePixelNotRefused else |err| {
+        if (err != error.StripTooSmall) return error.WrongSmallError;
+    }
+    if (paint_gradient_conic(&tiny, 0, 0, 4, 0, rgb[0..], at_even[0..])) |_| return error.ZeroDimNotRefused else |err| {
+        if (err != error.BadStripDims) return error.WrongDimsError;
+    }
+    if (paint_gradient_conic(&tiny, 2, 0, 4, 4, rgb[0..], at_even[0..])) |_| return error.OverrunNotRefused else |err| {
+        if (err != error.ConicOutOfBounds) return error.WrongOverrunError;
+    }
+    const not_asc = [_]u8{ 0, 0, 255 };
+    if (paint_gradient_conic(&tiny, 0, 0, 4, 4, rgb[0..], not_asc[0..])) |_| return error.BadRampNotRefused else |err| {
+        if (err != error.StopsNotAscending) return error.WrongRampError;
+    }
+    // The refused calls painted nothing -- the tiny canvas is still all white.
+    var wy: u32 = 0;
+    while (wy < tiny.height) : (wy += 1) {
+        var wx: u32 = 0;
+        while (wx < tiny.width) : (wx += 1) {
+            if (!pixel_at(&tiny, wx, wy).eql(white)) return error.RefusedButPainted;
+        }
+    }
+
+    // Determinism: the same ramp painted twice grows byte-for-byte the same sweep.
+    var img_a = try make_canvas(garden, sq, sq, white);
+    var img_b = try make_canvas(garden, sq, sq, white);
+    try paint_gradient_conic(&img_a, 0, 0, sq, sq, rgb[0..], at_even[0..]);
+    try paint_gradient_conic(&img_b, 0, 0, sq, sq, rgb[0..], at_even[0..]);
+    if (!img_a.same_bytes(&img_b)) return error.SweepNotDeterministic;
+
+    print("GREEN image-conic-paint: a conic positioned gradient painted onto a real image -- a black-to-white sweep makes each pixel red channel equal its bearing, so the top reads 0, east 63, south 127, west 191 exactly (the sweep turns clockwise from the top by a quarter), the four bearings ascending strictly; each ray from the center is one constant wedge color (the whole column above the center reads the first control, the whole column below the south bearing); the top is the seam where the first and last controls meet (the cell just west of top-center reads a high bearing near the end of the turn); a red-green-blue sweep round-trips through the open QOI codec byte-for-byte; uneven positions bend the sweep where even spacing cannot (green at 200 vs 128 read differently at the east bearing); a sub-rectangle paints only its own box (the ground stays white); a non-square 7x3 box still tops and seams exactly; a single-pixel box, a zero dimension, an out-of-bounds box, and a non-ascending ramp refuse by name having painted nothing; the same ramp paints the same sweep byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: conic_paint selftest\n", .{});
+    return 1;
+}
