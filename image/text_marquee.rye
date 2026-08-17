@@ -1,0 +1,211 @@
+//! image/text_marquee.rye -- the open video codecs proven on REAL panning motion (Season G, the hard case).
+//!
+//! Season G's capstone (image/text_reel.rye) proved both open video codecs -- gfv1 intra-frame (image/frames.rye)
+//! and gfd1 inter-frame (image/frames_delta.rye) -- on a typewriter reveal, where each frame changes only the newly
+//! shown glyph. That is the EASY case for inter-frame storage: the picture is mostly still, so the delta always wins.
+//! This module proves the HARD case, the one the reveal could not reach -- REAL panning motion, where the whole inked
+//! band slides sideways every frame and many pixels change at once. A wide strip is rendered ONCE with the finished
+//! font-and-paint family (a caption on a white ground, a frame-width of blank lead-in and trail-out), then each frame
+//! is a horizontal window cropped from that strip, stepped one glyph-advance to the right -- so the caption appears to
+//! scroll left through a fixed frame, a marquee.
+//!
+//! The crux is the ADAPTIVE codec earning its keep on content that does not favour it: gfd1 chooses, per frame, the
+//! smaller of a pixel delta or a whole keyframe, so heavy panning is exactly where it must fall back to keyframes
+//! rather than store a delta larger than the frame. This witness proves the round-trip stays byte-for-byte through
+//! BOTH codecs on that motion, and REPORTS the delta/keyframe mix rather than asserting the delta wins -- because on
+//! real panning it may not, and the honest proof is correctness under motion, not a compression claim (REDS #82). Pure
+//! composition over public APIs (solid, paint_line, a local crop, both codecs); no new storage, codec, palette, or
+//! geometry. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/text_marquee.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const text_layout = @import("text_layout.rye");
+const font_ascii = @import("font5x7_ascii.rye");
+const text_paint = @import("text_paint.rye");
+const frames = @import("frames.rye");
+const frames_delta = @import("frames_delta.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const text_marquee_version = "20260817.021343";
+
+/// The scrolling caption -- rendered once onto a wide strip, then panned across the frame window one frame at a time.
+pub const marquee_caption = "OPEN MEDIA MARQUEE";
+
+/// The frame window's extent -- the fixed viewport the caption scrolls through. Landscape.
+pub const marquee_width: u32 = 96;
+pub const marquee_height: u32 = 16;
+
+/// Playback rate stored in both containers' headers -- carried through a round-trip, never interpreted here.
+pub const marquee_fps: u8 = 12;
+
+/// Where the caption's baseline origin sits vertically inside the strip -- a small inset from the top.
+const caption_y: u32 = 4;
+
+/// A safe ceiling on the marquee's frame count, so the frame loop and the codecs' frame field stay bounded.
+const marquee_max_frames: u32 = 256;
+
+/// Copy a `w` x `h` horizontal window of `strip` starting at column `x0` into a fresh Pixmap -- one frame of the pan.
+/// Each destination row is a contiguous run copied from the matching strip row, so the crop is a pure pixel move with
+/// no blend. The caller has proven the window lies within the strip; asserted here again at the edge.
+fn crop_window(garden: std.mem.Allocator, strip: *const qoi.Pixmap, x0: u32, w: u32, h: u32) !qoi.Pixmap {
+    // invariant: the window lies wholly within the strip on both axes.
+    assert(x0 + w <= strip.width);
+    assert(h == strip.height);
+    const out_pixels = try garden.alloc(u8, @as(usize, w) * @as(usize, h) * 4);
+    // invariant: the destination buffer is exactly four bytes per window pixel.
+    assert(out_pixels.len == @as(usize, w) * @as(usize, h) * 4);
+
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        const src_off = (@as(usize, y) * @as(usize, strip.width) + @as(usize, x0)) * 4;
+        const dst_off = @as(usize, y) * @as(usize, w) * 4;
+        const run = @as(usize, w) * 4;
+        tally_copy.copy_disjoint(u8, out_pixels[dst_off .. dst_off + run], strip.pixels[src_off .. src_off + run]);
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = out_pixels };
+}
+
+/// True when two videos carry the same header and the same frames byte for byte -- the equality a round-trip recovers.
+pub fn videos_equal(a: *const frames.Video, b: *const frames.Video) bool {
+    if (a.width != b.width or a.height != b.height) return false;
+    if (a.orientation != b.orientation or a.fps != b.fps) return false;
+    if (a.frames.len != b.frames.len) return false;
+    var f: usize = 0;
+    while (f < a.frames.len) : (f += 1) {
+        if (!a.frames[f].same_bytes(&b.frames[f])) return false;
+    }
+    return true;
+}
+
+/// Build the marquee reel -- render the caption ONCE onto a wide strip (a frame-width of blank lead-in, the caption,
+/// a frame-width of blank trail-out), then crop one frame per step, each stepped `step` columns to the right, so the
+/// caption scrolls left through the fixed window. Returns a Video whose orientation is derived from the extent (never
+/// a stored lie) and whose fps is the reel's own rate.
+pub fn build_marquee_reel(garden: std.mem.Allocator, atlas: *const @import("glyph.rye").GlyphAtlas) !frames.Video {
+    const caption = marquee_caption;
+    const advance: u32 = font_ascii.glyph_advance;
+    // The caption's painted band is at most one advance per glyph wide; the strip pads a frame-width on each side so
+    // the caption can start wholly off the right of the first window and end wholly off the left of the last.
+    const caption_span: u32 = @as(u32, @intCast(caption.len)) * advance;
+    const strip_w: u32 = caption_span + 2 * marquee_width;
+
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+
+    var strip = try text_paint.solid(garden, strip_w, marquee_height, white);
+    const scratch = try garden.alloc(text_layout.PlacedGlyph, caption.len);
+    // Paint the caption a frame-width in from the strip's left edge -- the blank lead-in the first window shows.
+    try text_paint.paint_line(atlas, caption, scratch, &strip, marquee_width, caption_y, black);
+
+    // The window travels from the strip's left edge to its right edge, one glyph-advance per frame -- a clean
+    // character-by-character marquee. Frame count is the travel divided by the step, plus the first frame.
+    const step: u32 = advance;
+    const travel: u32 = strip_w - marquee_width; // last valid x0
+    const frame_count: u32 = travel / step + 1;
+    // invariant: the reel stays within the codecs' frame ceiling and this module's own bound.
+    assert(frame_count >= 2);
+    assert(frame_count <= marquee_max_frames);
+    assert(frame_count <= frames.gfv_max_frames);
+
+    const pms = try garden.alloc(qoi.Pixmap, frame_count);
+    var k: u32 = 0;
+    while (k < frame_count) : (k += 1) {
+        var x0: u32 = k * step;
+        if (x0 > travel) x0 = travel; // the final frame flushes to the strip's right edge
+        pms[k] = try crop_window(garden, &strip, x0, marquee_width, marquee_height);
+    }
+
+    return frames.Video{
+        .width = marquee_width,
+        .height = marquee_height,
+        .orientation = frames.derive_orientation(marquee_width, marquee_height),
+        .fps = marquee_fps,
+        .frames = pms,
+    };
+}
+
+/// Count the pixels that differ between two same-sized frames -- the size of the motion from one frame to the next.
+fn frame_diff(a: *const qoi.Pixmap, b: *const qoi.Pixmap) u32 {
+    // invariant: only same-sized frames are compared, so the byte lengths match.
+    assert(a.pixels.len == b.pixels.len);
+    var count: u32 = 0;
+    var i: usize = 0;
+    while (i < a.pixels.len) : (i += 4) {
+        const same = a.pixels[i] == b.pixels[i] and a.pixels[i + 1] == b.pixels[i + 1] and
+            a.pixels[i + 2] == b.pixels[i + 2] and a.pixels[i + 3] == b.pixels[i + 3];
+        if (!same) count += 1;
+    }
+    return count;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try font_ascii.build_atlas(garden);
+    const video = try build_marquee_reel(garden, &atlas);
+    const frame_count: u32 = @intCast(video.frames.len);
+    const pixel_count = video.frame_pixels();
+    assert(frame_count >= 2);
+
+    // The motion is REAL panning: at least one interior step slides the whole inked band, so many pixels change -- far
+    // more than a typewriter reveal's single new glyph. Find the largest single-frame change to report the motion's
+    // scale, and prove at least one consecutive pair genuinely differs (this is not a static clip).
+    var max_diff: u32 = 0;
+    var moved: bool = false;
+    {
+        var k: u32 = 1;
+        while (k < frame_count) : (k += 1) {
+            const d = frame_diff(&video.frames[k - 1], &video.frames[k]);
+            if (d > max_diff) max_diff = d;
+            if (d > 0) moved = true;
+        }
+    }
+    assert(moved);
+    assert(max_diff >= 1);
+
+    // --- gfv1 intra-frame: encode, decode, prove the panning reel round-trips byte for byte -------------------
+    const gfv_cap = frames.encoded_bound(pixel_count, frame_count);
+    const gfv_dst = try garden.alloc(u8, gfv_cap);
+    const gfv_res = try frames.encode(garden, &video, gfv_dst);
+    assert(gfv_res.frame_count == frame_count);
+    const gfv_back = try frames.decode(garden, gfv_dst[0..gfv_res.len]);
+    assert(videos_equal(&gfv_back, &video));
+
+    // --- gfd1 inter-frame: encode, decode, prove the SAME panning reel round-trips byte for byte -------------
+    // This is the crux: heavy panning is where the adaptive encoder must be trusted to fall back to keyframes rather
+    // than store a delta larger than a frame, and to reconstruct the motion exactly either way.
+    const gfd_cap = frames_delta.encoded_bound(pixel_count, frame_count);
+    const gfd_dst = try garden.alloc(u8, gfd_cap);
+    const gfd_res = try frames_delta.encode(garden, &video, gfd_dst);
+    assert(gfd_res.frame_count == frame_count);
+    const gfd_back = try frames_delta.decode(garden, gfd_dst[0..gfd_res.len]);
+    assert(videos_equal(&gfd_back, &video));
+
+    // The two formats stay distinct on real motion, too: a gfv1 stream refuses at the gfd1 magic.
+    if (frames_delta.decode(garden, gfv_dst[0..gfv_res.len])) |_| {
+        return error.MagicSlipped;
+    } else |e| {
+        if (e != error.BadMagic) return error.WrongMagic;
+    }
+
+    // The delta/keyframe mix is a REPORTED measurement -- on panning motion the adaptive encoder legitimately keyframes
+    // where a delta would cost more, so the count is shown, never asserted to a compression win (REDS #82).
+    const keyframes: u32 = frame_count - gfd_res.delta_frames;
+    print("GREEN image-text-marquee: '{s}' panned over {d} frames of {d}x{d} (max frame change {d} px); round-trip byte-identical through BOTH codecs under REAL panning; gfd1 adaptive mix {d} deltas + {d} keyframes ({d} bytes vs gfv1 {d}); gfv1 stream refused by gfd1 decoder as BadMagic\n", .{
+        marquee_caption, frame_count, marquee_width, marquee_height, max_diff, gfd_res.delta_frames, keyframes, gfd_res.len, gfv_res.len,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: text_marquee selftest\n", .{});
+    return 1;
+}

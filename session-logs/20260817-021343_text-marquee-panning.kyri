@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260817.021343
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title text_marquee -- the open video codecs proven on REAL panning motion, the hard case
+prompt recur the autonomous loop -- next agent-doable lap Lindy-first crux-first, one rota doc per lap, send often
+think The capstone (text_reel) proved both codecs on a typewriter reveal -- mostly-static motion where the inter-frame delta always wins. That left a real blind spot: the codec's ADAPTIVE keyframe-vs-delta choice was never exercised on content that does not favour it. The Lindy-first crux is to harden the codec's core adaptive promise on REAL panning motion.
+think Designed image/text_marquee.rye: render a wide caption strip ONCE with the font-and-paint family, then crop one frame per glyph-advance step to scroll the caption left through a fixed window -- true camera-shaped motion where the whole inked band slides every frame. paint_placed_clipped only clips the right/bottom edge (u32 origins), so a left-exit scroll needed the wide-strip-plus-crop approach, not a shifting negative origin. Wrote a small row-wise crop_window over tally_copy.copy_disjoint.
+think Deliberately did NOT assert gfd < gfv here -- on heavy panning that would be a false invariant (REDS #82). Asserted only what is structurally true: round-trip byte-for-byte through both codecs, and real motion (adjacent frames differ). Reported the delta/keyframe mix.
+obs The measurement rewarded the honesty: 35 frames, max frame change 223px, and gfd1's adaptive encoder chose 0 deltas + 35 keyframes -- every panning frame's delta would cost more than a whole frame, so it correctly fell back to keyframes. gfd1 (9783 bytes) is a hair LARGER than gfv1 (9748), exactly the 35-byte per-frame kind-field overhead, yet still round-trips byte-for-byte. The adaptive fallback is proven correct on the case that defeats naive inter-frame.
+obs Reel and marquee together are the real proof: one codec, two contents -- mostly-static (14 deltas, big win) and panning (all keyframes, no win) -- adapting correctly and reconstructing exactly either way. This is what a codec's adaptive claim actually means, shown rather than asserted.
+loom witness=text_marquee_witness frames=35 frame_wh=96x16 max_frame_diff_px=223 gfd_deltas=0 gfd_keyframes=35 gfd_bytes=9783 gfv_bytes=9748
+file image/text_marquee.rye renders a wide strip, crops a scrolling marquee, proves both codecs round-trip real panning and reports the adaptive delta/keyframe mix
+file tools/text_marquee_witness.rish builds and runs the module, asserts the GREEN line, both-codecs round-trip under panning, and the reported adaptive mix
+file crux/REMEMBER.md rolled the Git nib to the marquee, extended the Season G live-edge note with the hard case, shifted the nib chain
+recommend keep-going Season G continues -- longer/varied real reels, or the open font work still named (glyph atlas beyond the 5x7 body).
