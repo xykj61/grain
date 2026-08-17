@@ -1,0 +1,38 @@
+# tools/scooter_view_witness.rish -- Scooter, Rung 3: the Dexter drawn frame on metal.
+#
+# pond/apps/scooter_view.rye gives a Scooter channel a face -- it folds the append-only journal (rung one,
+# scooter_channel.rye) into a bounded terminal character grid, so a keeper reads the conversation without
+# the wire. This witness builds the module to a binary and asserts its selftest speaks GREEN over the five
+# cruxes:
+#   - Structurally exact -- the frame is exactly 24x80; every row is exactly 80 cells wide.
+#   - Empty face honest -- a fresh channel draws its header and (no posts yet), never a blank grid.
+#   - Journal reads back -- three posts show seq, author point, and text byte-for-byte, and the fold is
+#     deterministic (the same channel renders identical bytes).
+#   - Truncation marks -- an over-wide post clips to the row width with a '~' and never bleeds the next row.
+#   - Overflow counts -- a journal past the body ends in "(+K more)" with the true remaining count.
+#
+# Facts only, custody-first: it reads a public journal and draws it; no network, no key signs, no funds.
+# The Comlink transport between two Constel piers reaches the serve gate -- the maintainer's hand, not here.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/scooter_view_witness.rish
+
+say "scooter-r3: Language EN -- a channel's journal folded into a bounded terminal frame a keeper can read."
+say "scooter-r3: Lens TAME -- a fixed 24x80 grid, every row the true width, truncation and overflow honest, no key and no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+
+let bin = "pond/bin/scooter-view"
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/scooter_view.rye -femit-bin=${bin}"]
+assert build.ok else "scooter-r3: scooter_view build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "scooter-r3: scooter_view selftest exited non-zero"
+assert selftest.out contains "GREEN" else "scooter-r3: selftest did not speak GREEN"
+assert selftest.out contains "every row is exactly 80 cells wide" else "scooter-r3: structural-exactness crux missing"
+assert selftest.out contains "never a blank face" else "scooter-r3: empty-face crux missing"
+assert selftest.out contains "read back in the frame byte-for-byte" else "scooter-r3: journal-readback crux missing"
+assert selftest.out contains "clips to the row width with a '~'" else "scooter-r3: truncation crux missing"
+assert selftest.out contains "with the true count, never a dropped tail" else "scooter-r3: overflow crux missing"
+
+say "GREEN: scooter-r3 -- scooter_view folds a channel into a bounded terminal frame: header, journal, truncation mark, and an honest overflow tail."
