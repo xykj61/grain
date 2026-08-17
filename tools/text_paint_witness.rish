@@ -56,4 +56,16 @@ assert (trim clip.out) == "yes" else "text-paint: the clipping painter did not p
 let clip_match = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'matching the strict paint pixel-for-pixel' && echo yes"]
 assert (trim clip_match.out) == "yes" else "text-paint: the clipped pixels did not match the strict paint"
 
-say "text-paint: GREEN -- the fonts become a string seen; ink composites through coverage exactly where the glyphs carry it, the paint is deterministic, a partial alpha blends true, a line that would overrun refuses by name, and paint_placed_clipped paints only the visible part -- matching the strict paint pixel-for-pixel, degrading to a clean no-op fully off-canvas."
+let para = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'a wrapped paragraph paints 2 stacked lines' && echo yes"]
+assert (trim para.out) == "yes" else "text-paint: paint_paragraph did not stack the wrapped lines into a block"
+
+let para_disjoint = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q '= summed line ink, disjoint bands' && echo yes"]
+assert (trim para_disjoint.out) == "yes" else "text-paint: the paragraph changed pixels did not equal the summed line ink"
+
+let para_band = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'top band equals a standalone single-line paint' && echo yes"]
+assert (trim para_band.out) == "yes" else "text-paint: the paragraph's top line band did not match a standalone single-line paint"
+
+let para_refuse = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'refuses ParagraphOutOfBounds by name leaving the buffer untouched' && echo yes"]
+assert (trim para_refuse.out) == "yes" else "text-paint: a too-short canvas did not refuse ParagraphOutOfBounds all-or-nothing"
+
+say "text-paint: GREEN -- the fonts become a string seen; ink composites through coverage exactly where the glyphs carry it, the paint is deterministic, a partial alpha blends true, a line that would overrun refuses by name, paint_placed_clipped paints only the visible part -- matching the strict paint pixel-for-pixel, degrading to a clean no-op fully off-canvas -- and paint_paragraph stacks a never-overflow wrapped block into stepped lines, all-or-nothing, refusing ParagraphOutOfBounds by name on a canvas too short."
