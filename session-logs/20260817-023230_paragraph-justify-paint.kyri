@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260817.023230
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image -- text_paint: paint_paragraph_justified, the block that flushes both margins, GREEN
+prompt Autonomous loop -- continue Season G open media on green-witnessed Rye; land justify's paint half, send it as its own signed round.
+think Prior round landed justify_line in text_layout (pure geometry). This round is the paint half it prepares: paint_paragraph_justified, the block companion, so a justified paragraph is SEEN on an image.
+think It mirrors paint_paragraph_aligned: wrap to max_width, step down by one line box, bound-check all-or-nothing up front. The one difference is the target column -- justified lines reach max_width, so the up-front box_right bounds on origin_x + max_width (conservative: the last and single-word lines fall short).
+think Every wrapped line but the last is justified to max_width via justify_line; the last line stays left-set (the honest newspaper habit), and a single-word line has no gap so justify leaves it as laid. Single-stranded: it composes justify_line + paint_placed, braiding neither.
+obs The existing paragraph selftest used 'ab cd ef' whose first line already fills the column (zero slack) -- a weak justify proof. Added a dedicated 'aa bb cc dd' block at max 10*advance so the first line has real slack (2 cells over two gaps, +6 each) and justification actually stretches.
+obs Proven on metal: the block matches a hand-composed justify+paint byte-for-byte, differs from the left-set paint (the first line truly stretched), changes the SAME pixel count as left (justify moves ink, adds/drops none), the top band equals a standalone justify+paint of line 0, and a column-short canvas refuses ParagraphOutOfBounds by name leaving the buffer untouched.
+loom witness=text_paint_witness selftest=GREEN justify_para=aabbccdd cols=10adv slack_per_gap=6 lines=2
+file image/text_paint.rye paint_paragraph_justified + selftest proof; the paint half of the justify family
+file tools/text_paint_witness.rish -- asserts the new justified GREEN clause on metal
+recommend keep-going -- next open-media: a justified variant inside a 2-D box, or the open font work Season G still names (glyph atlas beyond 5x7)
