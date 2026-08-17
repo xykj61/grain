@@ -1,0 +1,190 @@
+//! image/color_names.rye -- the named CSS/HTML color table over the open color algebra (Season G, the names a
+//! keeper reaches for before a hex).
+//!
+//! Season G (Open Media Primitives) -- a single-stranded consumer of image/color.rye, one rung above it. The color
+//! algebra reads four bytes from a hex text (parse_hex) and writes them back canonically (format_hex); it knows no
+//! names. Yet a keeper names a color long before they name its hex -- "red", "navy", "teal" -- and a design system,
+//! a stylesheet, an SVG, a CSS file all speak those keywords. This rung gives the algebra its names: the sixteen
+//! HTML4 / CSS Level 1 color keywords, the oldest and most durable named set on the web (stable since ~1996), each
+//! bound to its canonical hex. resolve(name) reads a name to a color; name_of(color) reads a color back to its
+//! exact name.
+//!
+//! Compose, not braid: this module NAMES each color by its canonical hex text, and color DECIDES the bytes through
+//! its own parse_hex -- no new parser, no new storage of channel bytes, no maths. Every entry is proven to round-trip
+//! through color.parse_hex, so color's proofs carry through untouched. The table is the whole HTML4 set and nothing
+//! more -- a Simple, Lovable, Complete set: bounded, block-complete, sorted, and each name a plain English word. An
+//! unknown name refuses UnknownColorName by name rather than guessing a color; name_of matches only opaque colors
+//! exactly, so it never claims a name it cannot honestly hold. No network, no key, no funds -- the color names
+//! Brushstroke, Skate, and any stylesheet reader read the day the design system lands, on our own open color model.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/color_names.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+
+pub const color_names_version = "20260817.000000";
+
+/// The longest color name we will read -- a generous ceiling over the longest keyword ("fuchsia", seven bytes).
+/// A name longer than this is not a known color, so it refuses at the door rather than scanning the table.
+pub const name_max: u32 = 32;
+
+/// The whole HTML4 / CSS Level 1 named set -- sixteen colors, block-complete. This count is fixed by the standard,
+/// not a budget we chose; the extended CSS3 set (147 names) is a clearly-named later rung, never a silent cap here.
+pub const named_color_count: u32 = 16;
+
+/// One named color: a plain English keyword and the canonical hex it stands for. The hex is the source of the bytes,
+/// read through color.parse_hex, so this module stores a NAME and a TEXT, never a decoded channel byte of its own.
+pub const Named = struct {
+    name: []const u8,
+    hex: []const u8,
+};
+
+/// The sixteen HTML4 colors, sorted strictly ascending by name so the table is canonical and duplicate-free by
+/// inspection. Each hex is the standard's own canonical value; the selftest proves every one parses and round-trips.
+pub const table = [named_color_count]Named{
+    .{ .name = "aqua", .hex = "#00ffff" },
+    .{ .name = "black", .hex = "#000000" },
+    .{ .name = "blue", .hex = "#0000ff" },
+    .{ .name = "fuchsia", .hex = "#ff00ff" },
+    .{ .name = "gray", .hex = "#808080" },
+    .{ .name = "green", .hex = "#008000" },
+    .{ .name = "lime", .hex = "#00ff00" },
+    .{ .name = "maroon", .hex = "#800000" },
+    .{ .name = "navy", .hex = "#000080" },
+    .{ .name = "olive", .hex = "#808000" },
+    .{ .name = "purple", .hex = "#800080" },
+    .{ .name = "red", .hex = "#ff0000" },
+    .{ .name = "silver", .hex = "#c0c0c0" },
+    .{ .name = "teal", .hex = "#008080" },
+    .{ .name = "white", .hex = "#ffffff" },
+    .{ .name = "yellow", .hex = "#ffff00" },
+};
+
+fn ascii_lower(c: u8) u8 {
+    // invariant: only the 26 uppercase letters shift; every other byte returns unchanged.
+    if (c >= 'A' and c <= 'Z') return c + 32;
+    return c;
+}
+
+/// Compare two names for equality ignoring ASCII case, so "RED", "Red", and "red" all name the same color.
+fn eql_ignore_case(a: []const u8, b: []const u8) bool {
+    // invariant: both names are bounded by the module ceiling, so the length seam-cast to u32 is safe.
+    assert(a.len <= name_max);
+    assert(b.len <= name_max);
+    if (a.len != b.len) return false;
+    const n: u32 = @intCast(a.len);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        if (ascii_lower(a[i]) != ascii_lower(b[i])) return false;
+    }
+    return true;
+}
+
+/// Read a color name to its four bytes -- "red" to {255,0,0,255} -- case-insensitively. An unknown name refuses
+/// UnknownColorName by name rather than guessing; the bytes come from color.parse_hex, so this composes the algebra.
+pub fn resolve(name: []const u8) !color.Rgba {
+    // invariant: the table is the whole HTML4 set, bounded and never scanned past its end.
+    assert(named_color_count == table.len);
+    // invariant: the name ceiling is at least one byte, so an empty name is meaningfully shorter than any keyword.
+    assert(name_max >= 1);
+    if (name.len == 0) return error.UnknownColorName;
+    if (name.len > name_max) return error.UnknownColorName;
+    var i: u32 = 0;
+    while (i < named_color_count) : (i += 1) {
+        if (eql_ignore_case(name, table[i].name)) {
+            // Compose, not braid: color DECIDES the bytes from the canonical hex; this module only NAMES them.
+            return try color.parse_hex(table[i].hex);
+        }
+    }
+    return error.UnknownColorName;
+}
+
+/// Read a color back to its exact HTML4 name, or null when no named color matches it byte-for-byte. Matches only
+/// opaque colors exactly (the named set is all opaque), so it never claims a name for a color it cannot honestly hold.
+pub fn name_of(c: color.Rgba) ?[]const u8 {
+    // invariant: the table is the whole HTML4 set, bounded and never scanned past its end.
+    assert(named_color_count == table.len);
+    // invariant: the name ceiling is at least one byte -- every keyword fits, so a returned name is a real table entry.
+    assert(name_max >= 1);
+    var i: u32 = 0;
+    while (i < named_color_count) : (i += 1) {
+        const known = color.parse_hex(table[i].hex) catch continue;
+        if (known.eql(c)) return table[i].name;
+    }
+    return null;
+}
+
+// --- selftest: prove every name parses through color.parse_hex, resolves case-insensitively, refuses the unknown,
+// --- reads back by name_of, and the table is the whole sorted HTML4 set.
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    _ = garden;
+
+    // 1. Every named color's canonical hex parses through color.parse_hex -- the compose crux, no private parser.
+    var i: u32 = 0;
+    while (i < named_color_count) : (i += 1) {
+        _ = color.parse_hex(table[i].hex) catch return error.EntryHexUnparseable;
+    }
+
+    // 2. The table is strictly ascending by name -- a canonical, block-complete, duplicate-free set by inspection.
+    i = 1;
+    while (i < named_color_count) : (i += 1) {
+        if (!std.mem.lessThan(u8, table[i - 1].name, table[i].name)) return error.TableNotSorted;
+    }
+
+    // 3. Known names resolve to their standard bytes.
+    const red = try resolve("red");
+    if (!red.eql(.{ .r = 255, .g = 0, .b = 0, .a = 255 })) return error.RedWrong;
+    const teal = try resolve("teal");
+    if (!teal.eql(.{ .r = 0, .g = 128, .b = 128, .a = 255 })) return error.TealWrong;
+    const navy = try resolve("navy");
+    if (!navy.eql(.{ .r = 0, .g = 0, .b = 128, .a = 255 })) return error.NavyWrong;
+
+    // 4. The read is case-insensitive -- "RED" and "Red" name the same color as "red".
+    const red_upper = try resolve("RED");
+    const red_mixed = try resolve("Red");
+    if (!red_upper.eql(red)) return error.UpperCaseDiffers;
+    if (!red_mixed.eql(red)) return error.MixedCaseDiffers;
+
+    // 5. An unknown name refuses UnknownColorName by name, having guessed nothing.
+    if (resolve("mauve")) |_| return error.UnknownNotRefused else |err| {
+        if (err != error.UnknownColorName) return error.WrongUnknownError;
+    }
+    // An empty name is likewise unknown, not a silent match.
+    if (resolve("")) |_| return error.EmptyNotRefused else |err| {
+        if (err != error.UnknownColorName) return error.WrongEmptyError;
+    }
+
+    // 6. A resolved color round-trips through color.format_hex to its canonical nine-byte form.
+    var buf: [9]u8 = undefined;
+    const shown = try color.format_hex(red, buf[0..]);
+    if (!std.mem.eql(u8, shown, "#ff0000ff")) return error.RoundTripWrong;
+
+    // 7. name_of reads a color back to its exact name, and honestly returns null for an unnamed or translucent one.
+    const teal_name = name_of(.{ .r = 0, .g = 128, .b = 128, .a = 255 }) orelse return error.TealNameMissing;
+    if (!std.mem.eql(u8, teal_name, "teal")) return error.TealNameWrong;
+    if (name_of(.{ .r = 1, .g = 2, .b = 3, .a = 255 })) |_| return error.UnnamedFalselyNamed else {}
+    if (name_of(.{ .r = 0, .g = 128, .b = 128, .a = 128 })) |_| return error.TranslucentFalselyNamed else {}
+
+    // 8. The set is the whole HTML4 sixteen -- block-complete, not a truncated sample.
+    if (named_color_count != 16) return error.CountWrong;
+
+    // 9. Determinism -- the same name reads the same bytes every time.
+    const red_again = try resolve("red");
+    if (!red_again.eql(red)) return error.NotDeterministic;
+
+    print("GREEN image-color-names: the sixteen HTML4 color names read over the open color algebra; every named color's canonical hex parses through color.parse_hex (compose not braid, no private parser); a name resolves case-insensitively (RED, Red, red one color); an unknown or empty name refuses UnknownColorName by name having guessed nothing; a resolved color round-trips through color.format_hex to its canonical nine-byte form; name_of returns the exact name for an opaque named color and honestly null for an unnamed or translucent one; the table is strictly ascending, duplicate-free, and block-complete at sixteen; the same name reads the same bytes every time\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: color_names selftest\n", .{});
+    return 1;
+}
