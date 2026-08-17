@@ -1,44 +1,44 @@
 ---
-description: TAME Guidance for Rye, Rishi, Brix, Bron, Kyri, Glow, Brush, Mycelium — invariants, bounds, widths, garden memory
+description: TAME Guidance for Rye, Rishi, Brix, Bron, Kyri, Glow, Brush, Mycelium -- invariants, bounds, widths, garden memory
 globs: "**/*.{rye,rish,brix,bron,kyri,myc}"
 alwaysApply: false
 ---
 
-# TAME Guidance — Code
+# TAME Guidance -- Code
 
-**Canon:** `external-research/TAME_GUIDANCE.md` (voiced Tiger Style) · **Source:** `gratitude/TIGER_STYLE.md`
-**Operational supplement (the shelf):** `context/TAME_GUIDANCE.md` · **Compressed core (read first):** `context/TAME_CORE.md` — apply when writing or reviewing Rye (`.rye`), Rishi (`.rish`), Brix (`.brix`), Bron (`.bron`), Kyri (`.kyri`), Glow, Brush (Brushstroke), and Mycelium (`.myc`) code.
+**Canon:** `external-research/TAME_GUIDANCE.md` (voiced Tiger Style) - **Source:** `gratitude/TIGER_STYLE.md`
+**Operational supplement (the shelf):** `context/TAME_GUIDANCE.md` - **Compressed core (read first):** `context/TAME_CORE.md` -- apply when writing or reviewing Rye (`.rye`), Rishi (`.rish`), Brix (`.brix`), Bron (`.bron`), Kyri (`.kyri`), Glow, Brush (Brushstroke), and Mycelium (`.myc`) code.
 
 Full checkable surface: supplement section **What We Check, and When**.
 
-## TAME Core — the reflexes (always, every code write)
+## TAME Core -- the reflexes (always, every code write)
 
-The highest points, token-dense; full form: `context/TAME_CORE.md` (core) · `context/TAME_GUIDANCE.md` (shelf).
+The highest points, token-dense; full form: `context/TAME_CORE.md` (core) - `context/TAME_GUIDANCE.md` (shelf).
 
-- **Safety > performance > joy** — safety structural, performance measured, joy is clarity + saying why.
-- **Bound everything** — every allocation/collection/loop names a max; check at the edge; fail with a **named error**. No unbounded recursion.
-- **Assert invariants first** — construction · mutation · postcondition, **≥2 per fn**, each `// invariant:`, stated **positively**.
-- **Explicit widths** — `u32` in-memory · `u64` wire · `usize` **seam-only** (assert bound, `@intCast` at edge). **Say why.** Accrete by tier. One value model (string·int·bool·list·record).
-- **Rye reflexes** — opening triad (`std`·`assert`·`print`) · `snake_case` · short fns · named errors with `try` · `copy_disjoint` not bare `@memcpy` · unqualified `assert` · no compound `assert(a and b)` · `garden` arena, never raw `ArenaAllocator`.
-- **Rishi** — `run` → `{ ok, out, code }`, check before trusting `out`; no integer div/mod; `run [ … ]` args on one line.
-- **Reds-first** — a red books the allocation; a fix closes on a **witness on metal**, never a claim.
+- **Safety > performance > joy** -- safety structural, performance measured, joy is clarity + saying why.
+- **Bound everything** -- every allocation/collection/loop names a max; check at the edge; fail with a **named error**. No unbounded recursion.
+- **Assert invariants first** -- construction - mutation - postcondition, **>=2 per fn**, each `// invariant:`, stated **positively**.
+- **Explicit widths** -- `u32` in-memory - `u64` wire - `usize` **seam-only** (assert bound, `@intCast` at edge). **Say why.** Accrete by tier. One value model (string-int-bool-list-record).
+- **Rye reflexes** -- opening triad (`std`-`assert`-`print`) - `snake_case` - short fns - named errors with `try` - `copy_disjoint` not bare `@memcpy` - unqualified `assert` - no compound `assert(a and b)` - `garden` arena, never raw `ArenaAllocator`.
+- **Rishi** -- `run` -> `{ ok, out, code }`, check before trusting `out`; no integer div/mod; `run [ ... ]` args on one line.
+- **Reds-first** -- a red books the allocation; a fix closes on a **witness on metal**, never a claim.
 
 ## Core moves (root)
 
 - State invariants **before** implementing; `// invariant:` on every `assert`; `const assert = std.debug.assert` once per file, then bare `assert(...)`.
-- Diagnostic lines in hosted `.rye`: `const print = std.debug.print` once per file, then bare `print(...)` — as-you-touch, no lint gate yet (see supplement **Diagnostic output**).
-- **Opening lines:** hosted `.rye` begins with `std`, bare `assert`, bare `print` — see supplement **The opening lines**.
-- Bounds on everything; named errors; accrete-never-break in **three tiers** (Tier 1 proof absolute · Tier 2 testimony + recorded Radiant pass · Tier 3 open); one value model. Canon: `context/TAME_GUIDANCE.md` §4.
+- Diagnostic lines in hosted `.rye`: `const print = std.debug.print` once per file, then bare `print(...)` -- as-you-touch, no lint gate yet (see supplement **Diagnostic output**).
+- **Opening lines:** hosted `.rye` begins with `std`, bare `assert`, bare `print` -- see supplement **The opening lines**.
+- Bounds on everything; named errors; accrete-never-break in **three tiers** (Tier 1 proof absolute - Tier 2 testimony + recorded Radiant pass - Tier 3 open); one value model. Canon: `context/TAME_GUIDANCE.md` section 4.
 - **`snake_case`** for functions, variables, and file names (996 / Tiger Style).
-- **Explicit widths** in authored APIs — see supplement Rye section.
+- **Explicit widths** in authored APIs -- see supplement Rye section.
 
 ## Explicit widths (authored Rye)
 
 Tiger Style discipline: **`usize` is a boundary type, not a design type.** Full table in `context/TAME_GUIDANCE.md`.
 
-- **`u32`** — in-memory counts, indices, lengths bounded by a named constant (`max_*`, garden capacity, grid cols).
-- **`u64`** — wire-persistent offsets, timestamps, cross-target sizes.
-- **`usize`** — **only** at the inherited-std seam (`buf.len`, `[]T` indexing, Zig `std` APIs). Pair every `@intCast` with `assert(value <= std.math.maxInt(Target))`. Seam casts are correct Tiger code, not debt.
+- **`u32`** -- in-memory counts, indices, lengths bounded by a named constant (`max_*`, garden capacity, grid cols).
+- **`u64`** -- wire-persistent offsets, timestamps, cross-target sizes.
+- **`usize`** -- **only** at the inherited-std seam (`buf.len`, `[]T` indexing, Zig `std` APIs). Pair every `@intCast` with `assert(value <= std.math.maxInt(Target))`. Seam casts are correct Tiger code, not debt.
 - **Never** `usize` in struct fields, public params, or return types we publish.
 - Charter: `expanding-prompts/20260620-210812_explicit-width-audit.md`; inventory: `work-in-progress/20260620-212126_usize-width-baseline.md`.
 - Live lint: `tools/width-check.rish`; growing: `tools/tame-check.rish` (unqualified-assert, no `Self = @This()`, whitespace).
@@ -47,55 +47,55 @@ Tiger Style discipline: **`usize` is a boundary type, not a design type.** Full 
 
 - **Never** use `std.heap.ArenaAllocator` directly in `.rye` we author (seeds, Rishi, Skate, witnesses, tools).
 - **Always** use `const garden = init.arena.allocator()` at the pristine std seam (`init.arena` is Zig's field name; `garden` is the warm local binding).
-- Do **not** add `GardenAllocator` as a std rename — owned wrapper belongs at `rye.garden` / `tally/heap-garden.rye` when built.
+- Do **not** add `GardenAllocator` as a std rename -- owned wrapper belongs at `rye.garden` / `tally/heap-garden.rye` when built.
 - Policy: `context/specs/inherited-names.md`.
 
 ## Priority
 
-Safety first, performance second, joy third. Compiler fork (slice `len: u32`) is a **horizon** — see `active-designing/20260628-043542_thin-frontend-slc-direction.md`; the active track is explicit widths + lint beside SLC.
+Safety first, performance second, joy third. Compiler fork (slice `len: u32`) is a **horizon** -- see `active-designing/20260628-043542_thin-frontend-slc-direction.md`; the active track is explicit widths + lint beside SLC.
 
 ## Tidy rules (`tame_style_check`)
 
-**Witness:** `tools/tame_style_check.rish` · **Scan:** `tools/fixtures/tame_style_scan.sh` · **Brief:** `active-designing/20260707-164612_tame-tidy-rules-brief.md`
+**Witness:** `tools/tame_style_check.rish` - **Scan:** `tools/fixtures/tame_style_scan.sh` - **Brief:** `active-designing/20260707-164612_tame-tidy-rules-brief.md`
 
-**Bans fail parity** — fix before commit:
+**Bans fail parity** -- fix before commit:
 
 - `) == error.` / `) != error.` at call seams (captured `|err|` in assert is welcome)
-- `std.debug.assert(` — unqualified `assert` only
-- `assert(a and b)` — split compound asserts
-- `copyForwards` / `copyBackwards` — use `tally/copy.rye` `copy_disjoint`
+- `std.debug.assert(` -- unqualified `assert` only
+- `assert(a and b)` -- split compound asserts
+- `copyForwards` / `copyBackwards` -- use `tally/copy.rye` `copy_disjoint`
 - `Self = @This()`, `usingnamespace`, `!comptime`, `FIXME`, `dbg(`
 
-**Ratchets print, never fail** — migrate on touch in every file you edit:
+**Ratchets print, never fail** -- migrate on touch in every file you edit:
 
-- `@memcpy(` application sites → `copy_disjoint` (1 intentional `@memcpy` remains inside `copy_disjoint` only)
-- camelCase `fn` → `snake_case` for all functions in the touched file; grep inbound references
-- functions past 70 lines → split at natural seams; run module witnesses
-- zero `assert(` in core modules → import assert; contract postconditions; see honest exempt list in scan script
+- `@memcpy(` application sites -> `copy_disjoint` (1 intentional `@memcpy` remains inside `copy_disjoint` only)
+- camelCase `fn` -> `snake_case` for all functions in the touched file; grep inbound references
+- functions past 70 lines -> split at natural seams; run module witnesses
+- zero `assert(` in core modules -> import assert; contract postconditions; see honest exempt list in scan script
 
 Run when touching authored `.rye`: `rishi/bin/rishi run tools/tame_style_check.rish`
 
-## SLC Rye Definition of Done (hosted · linengrow · glass)
+## SLC Rye Definition of Done (hosted - linengrow - glass)
 
-No new law — the supplement already seats this. Agents must not skip it when shipping an SLC.
+No new law -- the supplement already seats this. Agents must not skip it when shipping an SLC.
 
 1. **Opening triad** on every new or touched hosted `.rye`: `const std`, `const assert = std.debug.assert`, `const print = std.debug.print` (witnesses use bare `print` for claim lines).
-2. **Contract asserts** on every new/touched `fn` — aim ≥ two per function (preconditions, postconditions, bounds). `// invariant:` on each assert.
-3. **No new `@memcpy`** — use `tally/copy.rye` `copy_disjoint` (linengrow: `@import("tally_copy.rye")` symlink).
-4. **Witnesses are not enough** — a GREEN `*_witness.rye` does not excuse zero asserts in the module under test.
-5. **Before claiming GREEN** — run `tame_style_check` and the module’s own witness; trust advise ratchet counts (native must match legacy after `20260717.181715`).
-6. **Glass / NativeActivity touch** — migrate `@memcpy` and add opening lines in that file before leaving.
+2. **Contract asserts** on every new/touched `fn` -- aim >= two per function (preconditions, postconditions, bounds). `// invariant:` on each assert.
+3. **No new `@memcpy`** -- use `tally/copy.rye` `copy_disjoint` (linengrow: `@import("tally_copy.rye")` symlink).
+4. **Witnesses are not enough** -- a GREEN `*_witness.rye` does not excuse zero asserts in the module under test.
+5. **Before claiming GREEN** -- run `tame_style_check` and the module's own witness; trust advise ratchet counts (native must match legacy after `20260717.181715`).
+6. **Glass / NativeActivity touch** -- migrate `@memcpy` and add opening lines in that file before leaving.
 
-**Ledger:** `active-designing/20260717-181715_tame-slc-rye-audit-ledger.md` · **Brief:** `active-designing/20260707-164612_tame-tidy-rules-brief.md`
+**Ledger:** `active-designing/20260717-181715_tame-slc-rye-audit-ledger.md` - **Brief:** `active-designing/20260707-164612_tame-tidy-rules-brief.md`
 
-## SLC Rye Definition of Done (hosted · linengrow · glass)
+## SLC Rye Definition of Done (hosted - linengrow - glass)
 
-Existing law, not new philosophy — agents must not skip when shipping SLC Rye (`20260717.181715` realign). Ledger: `active-designing/20260717-181715_tame-slc-rye-audit-ledger.md`.
+Existing law, not new philosophy -- agents must not skip when shipping SLC Rye (`20260717.181715` realign). Ledger: `active-designing/20260717-181715_tame-slc-rye-audit-ledger.md`.
 
 1. **Opening triad** on every new or touched hosted / linengrow / glass `.rye`: `const std`, bare `assert`, bare `print`.
-2. **Contract asserts** on every new or touched `fn` — aim ≥ two asserts per function (pre / post / invariant); `// invariant:` on each. A GREEN `*_witness.rye` does **not** excuse zero asserts in the module under test.
-3. **Witness voice** — bare `print` claim lines (`-- GREEN` / final `GREEN:`); prepare → compile → prove. On RED, surface stderr.
-4. **No new `@memcpy`** — `tally/copy.rye` `copy_disjoint` (or `linengrow/tally_copy.rye` symlink). Migrate memcpy in every glass / NativeActivity file you touch before leaving.
-5. **Before claiming GREEN** — run `tame_style_check` and the module witness; trust advise ratchet counts (native must match legacy after the `20260717.181715` filter fix).
+2. **Contract asserts** on every new or touched `fn` -- aim >= two asserts per function (pre / post / invariant); `// invariant:` on each. A GREEN `*_witness.rye` does **not** excuse zero asserts in the module under test.
+3. **Witness voice** -- bare `print` claim lines (`-- GREEN` / final `GREEN:`); prepare -> compile -> prove. On RED, surface stderr.
+4. **No new `@memcpy`** -- `tally/copy.rye` `copy_disjoint` (or `linengrow/tally_copy.rye` symlink). Migrate memcpy in every glass / NativeActivity file you touch before leaving.
+5. **Before claiming GREEN** -- run `tame_style_check` and the module witness; trust advise ratchet counts (native must match legacy after the `20260717.181715` filter fix).
 
 Season closed for AST/`tidy.zig` clone laps; hygiene stays open on touch. Tidy migration does not open new domains (MALA / Brix / Pond stay behind counsel).

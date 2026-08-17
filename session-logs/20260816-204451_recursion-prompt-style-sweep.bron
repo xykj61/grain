@@ -1,14 +1,14 @@
 format session-log-v1
 stamp 20260816.204451
-editor Claude Agent (Zed thread)
-model Fable 5 (claude-fable-5)
+editor Claude Code
+model claude-opus-4-8
 voice Kyri
-host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
 title recursion prompt learns a style sweep before every send
 prompt Keaton asked whether the rishi launch-claude recursion prompt should include Radiant style passes/sweeps before all batch commits and sends for code comments and Markdown and prose; whether to symlink context/RADIANT_STYLE.md to foundations or name more context files in the loop; whether balance constel should join or replace balance council; what other blind spots the loop misses; and a long list of double-seat proposals (fonts, RGB color, video codec, ML libraries, HuggingFace compliance, model store, Sig/Sui validators vs Mycelium token, self-hosted compute, sports HR software)
-think The message is mostly thinking-out-loud plus one concrete change request. Grounded the concrete ask by reading the living home of the loop prompts — recursion-prompts/ (seed + dated versions) and the two prompt lines in tools/launch-claude-season.rish — rather than editing from memory. The cellar README already names the harmony as balance COMPASS, not council; balance constel would collide with the seated FORA waymark (Constel test-network naming), so I recommend keeping balance compass and not introducing constel.
+think The message is mostly thinking-out-loud plus one concrete change request. Grounded the concrete ask by reading the living home of the loop prompts -- recursion-prompts/ (seed + dated versions) and the two prompt lines in tools/launch-claude-season.rish -- rather than editing from memory. The cellar README already names the harmony as balance COMPASS, not council; balance constel would collide with the seated FORA waymark (Constel test-network naming), so I recommend keeping balance compass and not introducing constel.
 think Confirmed no style-sweep-before-send clause existed anywhere in recursion-prompts/ or the loop lines. Added one clause: sweep the round's prose Radiant (Twilight for a night piece) before each send, register only never a claim, ordinary/technical prose still ends plainly. Seated it in the living seed section 6, both loop prompt lines, and a fresh dated version per the cellar's own evolve-by-filling rule.
-think Held back on the strategic pile — fonts, video, ML, blockchain, sports HR. These are double-seat calls that belong to Keaton under Lindy-first crux-first and the finishing edge (the crypto surface is mid-flight). Reported an assessment rather than spinning up seasons autonomously.
+think Held back on the strategic pile -- fonts, video, ML, blockchain, sports HR. These are double-seat calls that belong to Keaton under Lindy-first crux-first and the finishing edge (the crypto surface is mid-flight). Reported an assessment rather than spinning up seasons autonomously.
 obs Symlinking RADIANT_STYLE.md into foundations was declined: the loop already loads lenses by reference in seed section 1, and a symlink duplicates a canonical reference against references-are-promises. Naming the file path in the prompt is the lighter fix if wanted.
 file recursion-prompts/seed/autonomous-loop.seed.md added the style-sweep-before-send bullet to section 6
 file tools/launch-claude-season.rish both loop prompt lines carry the sweep clause before send often
