@@ -1,0 +1,173 @@
+//! image/color_ramp.rye -- a piecewise-linear ramp across many control colours (Season G, the multi-stop gradient).
+//!
+//! Season G (Open Media Primitives) -- the general form of image/color_gradient.rye, which grew an even gradient between
+//! exactly TWO colours. A real gradient editor and a heat map want MORE than two control colours: a warm start, a bright
+//! middle, a cool end -- the CSS `linear-gradient(red, yellow, green)` stop list. This rung grows that piecewise-linear
+//! ramp: given K evenly-spaced control colours (K >= 2) it fills any number of output stops, each stop an even blend
+//! within whichever of the K-1 segments it lands in. The control colours themselves fall at evenly-spaced positions from
+//! 0 (the first control) to 1 (the last), and a stop that lands exactly on a control reads that control byte-for-byte.
+//!
+//! Compose, not braid: colour DECIDES the blend (color.mix lerps within a segment) and this module only ROUTES each
+//! output stop to its segment and its local fraction -- no new colour maths. The two-control ramp is exactly
+//! color_gradient.gradient (proven byte-for-byte in the selftest), so the GENERAL verb contains the SPECIAL one: a
+//! gradient is a ramp of two controls. The routing is integer fixed-point, so a ramp is deterministic; the interpolation
+//! runs in straight sRGB (color.mix's own space), the CSS default. Alpha rides the same lerp. No network, no key, no
+//! funds -- the multi-stop gradient Brushstroke and Skate paint the day the design system lands, on our own colour model.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/color_ramp.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const gradient = @import("color_gradient.rye");
+
+pub const color_ramp_version = "20260817.135338";
+
+/// The most control colours a single ramp ever holds -- a bounded stop list, so no ramp is ever unbounded. A gradient
+/// editor rarely wants more than a handful of stops; sixteen is generous headroom the loop will never breach.
+pub const ramp_max_control: u32 = 16;
+
+/// The mix parameter (0..255) for a local fraction `num`/`den` within one segment -- an even integer lerp, rounded to the
+/// nearest byte. Shared by every output stop, so the routing is one small honest reader.
+fn local_t(num: u32, den: u32) u8 {
+    // invariant: the local fraction is a proper fraction of a real segment -- denominator at least one, numerator within it.
+    assert(den >= 1);
+    assert(num <= den);
+    // num * 255 <= den * 255 <= 63 * 255 = 16065 in u32, so the lerp never wraps. Floor division, matching
+    // color_gradient.stop_t exactly, so a two-control ramp equals the two-endpoint gradient byte-for-byte.
+    const t: u32 = num * 255 / den;
+    // invariant: the mix parameter stays a byte (num == den gives 255, num == 0 gives 0).
+    assert(t <= 255);
+    return @intCast(t);
+}
+
+/// Fill `dst` with a piecewise-linear ramp across the `control` colours -- dst.len evenly-spaced stops, dst[0] the first
+/// control exactly and dst[len-1] the last control exactly. Each output stop is routed to one of the K-1 segments and an
+/// even blend within it. A control list of fewer than two colours or more than the ceiling, or a dst of fewer than two
+/// stops or more than color_gradient's ceiling, refuses by name having written nothing a caller could mistake for a ramp.
+pub fn ramp(control: []const color.Rgba, dst: []color.Rgba) !void {
+    // invariant: the control list holds at least two colours and never more than the bounded ceiling.
+    if (control.len < 2) return error.RampTooFewControls;
+    if (control.len > ramp_max_control) return error.RampTooManyControls;
+    // invariant: the output holds at least two stops and never more than the shared gradient ceiling.
+    if (dst.len < 2) return error.RampTooShort;
+    if (dst.len > gradient.gradient_max_stops) return error.RampTooLong;
+    // Both lengths are bounded above by named ceilings, so the seam casts to u32 counts are safe.
+    const k: u32 = @intCast(control.len);
+    const n: u32 = @intCast(dst.len);
+    const seg: u32 = k - 1;
+    const den: u32 = n - 1;
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        // Global position in segment units, as the fraction gnum/den in 0..seg. The segment index is its integer floor.
+        const gnum: u32 = i * seg;
+        var s: u32 = gnum / den;
+        var r: u32 = gnum - s * den;
+        // The last stop lands exactly on the final control: clamp the floor into the last segment and set the local
+        // fraction to one, so dst[n-1] reads control[k-1] byte-for-byte rather than indexing past the segment array.
+        if (s >= seg) {
+            s = seg - 1;
+            r = den;
+        }
+        // invariant: the segment index names a real segment, so both endpoints of the mix are real controls.
+        assert(s < seg);
+        assert(s + 1 < k);
+        dst[i] = color.mix(control[s], control[s + 1], local_t(r, den));
+    }
+    // invariant: a filled ramp carries its endpoints exactly -- the first stop is the first control, the last is the last.
+    assert(dst[0].eql(control[0]));
+    assert(dst[dst.len - 1].eql(control[control.len - 1]));
+}
+
+// --- selftest: prove a ramp hits its controls, contains the two-colour gradient, ascends a light ramp, refuses by name --
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    _ = garden;
+
+    const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
+    const green = color.Rgba{ .r = 0, .g = 255, .b = 0, .a = 255 };
+    const blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 };
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const grey = color.Rgba{ .r = 128, .g = 128, .b = 128, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    // A three-control ramp whose length aligns with the controls (5 stops over 3 controls) reads each control exactly at
+    // its aligned stop -- dst[0] red, dst[2] green, dst[4] blue byte-for-byte, the crux that a control is honored, not blurred.
+    const rgb = [_]color.Rgba{ red, green, blue };
+    var aligned: [5]color.Rgba = undefined;
+    try ramp(rgb[0..], aligned[0..]);
+    if (!aligned[0].eql(red)) return error.RampFirstControlWrong;
+    if (!aligned[2].eql(green)) return error.RampMidControlWrong;
+    if (!aligned[4].eql(blue)) return error.RampLastControlWrong;
+
+    // The general contains the special: a TWO-control ramp equals color_gradient.gradient of the same endpoints,
+    // byte-for-byte, so a gradient is exactly a ramp of two controls.
+    const ends = [_]color.Rgba{ red, blue };
+    var ramp2: [9]color.Rgba = undefined;
+    var grad2: [9]color.Rgba = undefined;
+    try ramp(ends[0..], ramp2[0..]);
+    try gradient.gradient(red, blue, grad2[0..]);
+    var gi: u32 = 0;
+    while (gi < 9) : (gi += 1) {
+        if (!ramp2[gi].eql(grad2[gi])) return error.RampNotGradientForTwo;
+    }
+
+    // A black -> grey -> white ramp rises non-decreasing in luminance across the whole run -- a lighter stop never
+    // reflects less light than the stop before it, the visual proof across two joined segments.
+    const bgw = [_]color.Rgba{ black, grey, white };
+    var lightramp: [11]color.Rgba = undefined;
+    try ramp(bgw[0..], lightramp[0..]);
+    if (!lightramp[0].eql(black)) return error.LightRampStartWrong;
+    if (!lightramp[10].eql(white)) return error.LightRampEndWrong;
+    var prev_lum: i64 = -1;
+    var j: u32 = 0;
+    while (j < 11) : (j += 1) {
+        const lum: i64 = color.relative_luminance(lightramp[j]);
+        if (!(lum >= prev_lum)) return error.RampLuminanceDipped;
+        prev_lum = lum;
+    }
+
+    // A ramp between a colour and itself (two identical controls) stays flat -- every stop that colour, no phantom drift.
+    const same = [_]color.Rgba{ red, red };
+    var flat: [6]color.Rgba = undefined;
+    try ramp(same[0..], flat[0..]);
+    var fi: u32 = 0;
+    while (fi < 6) : (fi += 1) {
+        if (!flat[fi].eql(red)) return error.FlatRampDrifted;
+    }
+
+    // Refusals by name: too few controls, and an out-of-band output length, each having written nothing.
+    var out5: [5]color.Rgba = undefined;
+    const one = [_]color.Rgba{red};
+    if (ramp(one[0..], out5[0..])) |_| return error.FewControlsNotRefused else |err| {
+        if (err != error.RampTooFewControls) return error.WrongFewControlsError;
+    }
+    var out1: [1]color.Rgba = undefined;
+    if (ramp(rgb[0..], out1[0..])) |_| return error.ShortRampNotRefused else |err| {
+        if (err != error.RampTooShort) return error.WrongShortError;
+    }
+
+    // Determinism: the same controls and length grow byte-for-byte the same ramp.
+    var a_ramp: [8]color.Rgba = undefined;
+    var b_ramp: [8]color.Rgba = undefined;
+    try ramp(rgb[0..], a_ramp[0..]);
+    try ramp(rgb[0..], b_ramp[0..]);
+    var di: u32 = 0;
+    while (di < 8) : (di += 1) {
+        if (!a_ramp[di].eql(b_ramp[di])) return error.RampNotDeterministic;
+    }
+
+    print("GREEN image-color-ramp: a piecewise-linear ramp across many controls hits its endpoints byte-for-byte and reads each aligned control exactly (red/green/blue at 5 stops over 3 controls); a two-control ramp equals color_gradient.gradient byte-for-byte (the general contains the special); a black-grey-white ramp ascends non-decreasing in luminance across both segments; a colour-to-itself ramp stays flat; too few controls and an out-of-band length refuse by name; the same controls grow the same ramp byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: color_ramp selftest\n", .{});
+    return 1;
+}
