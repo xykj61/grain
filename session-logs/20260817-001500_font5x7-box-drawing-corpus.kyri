@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260817.001500
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image -- the open box-drawing corpus, first font content beyond ASCII, GREEN
+prompt Autonomous loop -- take the next agent-doable lap Lindy-first crux-first; Season G open-media; send often; stop at custody gates.
+think Read REMEMBER inner loop, the 1024-round itinerary, the eight-season double-seat, and the rye-first crypto wave for the road. Recent laps built the Season G font family (numerals, both cases, punctuation, symbols, the unifying full-ASCII font) and the video codecs (gfv1, gfd1 with adaptive keyframe/delta).
+think The image/README named the next Season G rung outright: wider symbol coverage beyond ASCII (arrows, box-drawing) over the same 5x7 body. Lindy-first crux-first pick: the light box-drawing set is a coherent, complete, fully agent-doable corpus that needs no external data and no gate, and it feeds forward into the Dexter/Scooter terminal family (Season G) that draws frames and rules.
+think Designed the eleven light single-line marks on the shared 5x7 body -- horizontal, vertical, four corners, four tees, cross -- pen riding the middle row (index 3) and middle column (index 2), at real codepoints U+2500..U+253C. Kept the source plain ASCII per ascii-first by writing the codepoints as numeric literals (0x2500 ...) and naming each mark in an ASCII comment, so no non-ASCII byte enters the file though the glyphs cover a non-ASCII range -- no ascii-first exception needed.
+think Mirrored the symbol corpus shape exactly: coverage_from_art lifts the drawing, build_atlas emits a glyph.GlyphAtlas the gfa1 encoder accepts, the selftest round-trips through gfa1 byte-for-byte and proves present, distinct, legible. Legibility band 4..12 chosen for the sparse box set (a plain rule is five cells, the cross eleven).
+obs Rota lap (d27), lap-index proxy 1127 logs mod 27 = 20, deep-read context/QUIN.md -- the four voices (Lattice arithmetic, Scribble legibility, Lantern honesty, Ember craft); Lattice and Scribble apply here, sizing the ink band honestly and naming each mark in plain ASCII so a reader audits by eye.
+obs Compression is reported, not asserted (encoded 400 > raw 385) -- the light box marks are sparse but the run-length stream carries per-run overhead; asserting a direction the data does not hold would be the REDS #82 false-invariant mistake. The byte-for-byte round-trip is the proof.
+loom witness=font5x7_box_witness marks=11 cell=5x7 encoded_bytes=400 raw_bytes=385 ink_lo=5 ink_hi=11
+file image/font5x7_box.rye the open box-drawing corpus -- eleven light marks U+2500..U+253C on the shared 5x7 body, ASCII source
+file tools/font5x7_box_witness.rish proves the corpus on metal -- round-trip byte-identical, all present, distinct, legible
+file image/README.md Season G section updated in the same round -- box corpus added, next-rungs line narrowed to arrows and double-line/diagonal marks
+recommend keep-going -- the remaining wider symbols (arrows, double-line and diagonal box marks) over the same 5x7 body are the next Season G corpus rungs, each its own round; proving the codecs on real corpora is the larger crux waiting behind them.
