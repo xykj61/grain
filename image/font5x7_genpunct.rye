@@ -1,0 +1,253 @@
+//! image/font5x7_genpunct.rye -- the open general-punctuation corpus: the smart-punctuation marks (Season G, font content).
+//!
+//! Season G (Open Media Primitives) - more content BEYOND printable ASCII for the open glyph atlas image/glyph.rye
+//! (gfa1), a sibling of the ASCII punctuation corpus (image/font5x7_punct.rye, the thirteen straight-ASCII marks).
+//! Where that corpus draws the marks a keyboard types directly, this one draws the seven "smart" marks real rendered
+//! text carries above ASCII -- the en dash and em dash (U+2013 U+2014), the curly single and double quotation marks
+//! (U+2018 U+2019 U+201C U+201D), and the horizontal ellipsis (U+2026). Our own source prose stays plain ASCII by the
+//! ascii-first rule, yet a surface that paints a document, a caption, or a quoted foreign name must be able to SHOW
+//! these; this corpus draws them in our own open hand on the same 5x7 body so text_paint can render them the day it
+//! meets them.
+//!
+//! The source stays plain ASCII (ascii-first): the codepoints are written as numeric literals (0x2013 ...) and each
+//! mark is named in an ASCII comment, so no non-ASCII byte enters the file even though the glyphs it builds cover a
+//! non-ASCII range. The seven codepoints are non-contiguous by nature (two dash points, four quote points, one
+//! ellipsis point), so the corpus carries an explicit ascending table -- the shape the gfa1 encoder trusts (strictly
+//! ascending, shared cell, coverage length == cell area). The drawings ARE the specification: each mark is seven rows
+//! of five cells in ASCII line art ('#' full ink, '.' none) that a reader audits by eye; the coverage bytes are
+//! derived from that art, never the reverse. build_atlas turns the seven drawings into a glyph.GlyphAtlas the gfa1
+//! encoder accepts, so the property that matters stays provable on metal: decode(encode(atlas)) recovers every glyph
+//! byte-for-byte, the marks are present and distinct, and each reads within an honest legibility band. Three
+//! structural properties earn their own proof: the en dash is a strict SUBSET of the em dash (the short dash inks a
+//! subset of the long dash's cells, and the em inks strictly more), each double quote OUT-INKS its single twin (a
+//! double is two marks, a single one), and the ellipsis is exactly three evenly spaced dots on the baseline row --
+//! what makes the seven a true punctuation family rather than seven unrelated drawings. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_genpunct.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+
+pub const font5x7_genpunct_version = "20260817.083024";
+
+/// Every glyph in this corpus shares one 5-wide, 7-tall cell -- the same body the ASCII and box corpora carry.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance: the cell width plus one column of daylight, the same advance the sibling corpora carry.
+pub const genpunct_advance: u8 = cell_w + 1;
+
+/// The corpus holds exactly the seven general-punctuation marks named in the table below.
+pub const genpunct_count: u32 = 7;
+
+/// Cells per glyph -- the coverage length every mark carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The seven general-punctuation codepoints, strictly ascending -- the order the gfa1 encoder trusts. Each aligns by
+/// index with genpunct_art below. Written as numeric literals so the source stays plain ASCII while the glyphs cover
+/// a non-ASCII range:
+///   0x2013 en dash, 0x2014 em dash, 0x2018 left single quote, 0x2019 right single quote,
+///   0x201C left double quote, 0x201D right double quote, 0x2026 horizontal ellipsis.
+const genpunct_codepoints = [genpunct_count]u32{
+    0x2013, 0x2014, 0x2018, 0x2019, 0x201C, 0x201D, 0x2026,
+};
+
+/// Index constants for the structural proofs below -- named so the properties read plainly rather than by bare number.
+const idx_en: u32 = 0;
+const idx_em: u32 = 1;
+const idx_lsingle: u32 = 2;
+const idx_rsingle: u32 = 3;
+const idx_ldouble: u32 = 4;
+const idx_rdouble: u32 = 5;
+const idx_ellipsis: u32 = 6;
+
+/// The seven marks, drawn in the open. Each is seven rows of five cells; '#' ink, '.' background. The dashes are pure
+/// horizontal bars on the middle row (en the middle three cells, em the full five); the singles are one comma-shaped
+/// mark high in the cell (leaning opposite ways); the doubles are two such marks side by side; the ellipsis is three
+/// dots on the baseline. A reader audits every mark here by eye, and the coverage bytes are lifted from this art.
+const genpunct_art = [genpunct_count][cell_h][]const u8{
+    .{ ".....", ".....", ".....", ".###.", ".....", ".....", "....." }, // U+2013 en dash    (middle three cells)
+    .{ ".....", ".....", ".....", "#####", ".....", ".....", "....." }, // U+2014 em dash    (full width)
+    .{ "..##.", "..#..", "...#.", ".....", ".....", ".....", "....." }, // U+2018 left single  (opening, tail down-right)
+    .{ ".##..", "..#..", ".#...", ".....", ".....", ".....", "....." }, // U+2019 right single (closing, tail down-left)
+    .{ "##.##", "#..#.", ".#..#", ".....", ".....", ".....", "....." }, // U+201C left double  (two opening marks)
+    .{ "##.##", ".#..#", "#..#.", ".....", ".....", ".....", "....." }, // U+201D right double (two closing marks)
+    .{ ".....", ".....", ".....", ".....", ".....", ".....", "#.#.#" }, // U+2026 ellipsis   (three baseline dots)
+};
+
+/// Lift one mark's ASCII art into a freshly allocated coverage grid of exactly cell_area bytes: 255 for ink,
+/// 0 for background. The art's own shape is asserted, so a mistyped row is a stopped line rather than a bad glyph.
+fn coverage_from_art(allocator: std.mem.Allocator, art: [cell_h][]const u8) ![]u8 {
+    // invariant: a coverage grid is exactly the shared cell area, within the atlas ceiling.
+    assert(cell_area >= 1);
+    assert(cell_area <= glyph.coverage_max);
+    const cov = try allocator.alloc(u8, cell_area);
+    var idx: u32 = 0;
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        const row = art[r];
+        // invariant: every drawn row is exactly the cell width -- the art matches the grid.
+        assert(row.len == cell_w);
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            cov[idx] = if (row[c] == '#') 255 else 0;
+            idx += 1;
+        }
+    }
+    // invariant: the whole grid was filled, no cell left unwritten.
+    assert(idx == cell_area);
+    return cov;
+}
+
+/// Build the general-punctuation atlas: seven glyphs at the named ascending codepoints, sharing the 5x7 cell and
+/// advance. The gfa1 encoder accepts the result directly (ascending codepoints, coverage length == cell area).
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the corpus is the seven named marks and no more.
+    assert(genpunct_count == 7);
+    assert(cell_area == 35);
+    const glyphs = try allocator.alloc(glyph.Glyph, genpunct_count);
+    var i: u32 = 0;
+    var last_cp: u32 = 0;
+    while (i < genpunct_count) : (i += 1) {
+        const cp = genpunct_codepoints[i];
+        // invariant: codepoints are strictly ascending -- the ordering the gfa1 encoder trusts.
+        assert(i == 0 or cp > last_cp);
+        last_cp = cp;
+        const cov = try coverage_from_art(allocator, genpunct_art[i]);
+        glyphs[i] = glyph.Glyph{
+            .codepoint = cp,
+            .advance = genpunct_advance,
+            .coverage = cov,
+        };
+    }
+    // invariant: the last codepoint is the ellipsis (U+2026) -- the table ends where the general set ends.
+    assert(glyphs[genpunct_count - 1].codepoint == 0x2026);
+    return glyph.GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- the legibility signal a blank glyph would fail.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+/// True when every inked cell of `small` is also inked in `big` -- `small` is a subset of `big`. The en dash is a
+/// subset of the em dash: the short dash lights only cells the long dash also lights.
+fn is_ink_subset(small: []const u8, big: []const u8) bool {
+    // invariant: both glyphs are the shared, bounded grid.
+    assert(small.len == cell_area);
+    assert(big.len == cell_area);
+    var i: u32 = 0;
+    while (i < cell_area) : (i += 1) {
+        if (small[i] != 0 and big[i] == 0) return false;
+    }
+    return true;
+}
+
+// --- selftest: build the atlas, round-trip through gfa1, prove present, distinct, legible, and the structural bonds ---
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built atlas is the seven-mark corpus at the shared cell.
+    assert(glyph_count == genpunct_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // Seven present marks: every one looks up, carries the shared advance; an ASCII hyphen misses (it lives in punct).
+    var d: u32 = 0;
+    while (d < genpunct_count) : (d += 1) {
+        const cp = genpunct_codepoints[d];
+        if (back.lookup(cp)) |g| {
+            assert(g.codepoint == cp);
+            assert(g.advance == genpunct_advance);
+        } else return error.MarkMissing;
+    }
+    if (back.lookup('-')) |_| return error.AsciiMarkFound else {} // the straight ASCII hyphen lives in font5x7_punct
+
+    // Distinctness: no two marks share identical coverage -- opening and closing quotes really differ, dashes differ.
+    var a: u32 = 0;
+    while (a < genpunct_count) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b < genpunct_count) : (b += 1) {
+            if (std.mem.eql(u8, atlas.glyphs[a].coverage, atlas.glyphs[b].coverage)) return error.MarksNotDistinct;
+        }
+    }
+
+    // Structural crux 1: the en dash is a strict SUBSET of the em dash -- the short dash inks only cells the long dash
+    // also inks, and the em inks strictly more. A dash drawn the wrong length is a stopped line, not a shipped glyph.
+    const en = atlas.glyphs[idx_en].coverage;
+    const em = atlas.glyphs[idx_em].coverage;
+    if (!is_ink_subset(en, em)) return error.EnNotSubsetOfEm;
+    if (!(ink_count(em) > ink_count(en))) return error.EmNotLongerThanEn;
+
+    // Structural crux 2: each double quote OUT-INKS its single twin -- a double is two marks, a single is one.
+    if (!(ink_count(atlas.glyphs[idx_ldouble].coverage) > ink_count(atlas.glyphs[idx_lsingle].coverage)))
+        return error.LeftDoubleNotHeavier;
+    if (!(ink_count(atlas.glyphs[idx_rdouble].coverage) > ink_count(atlas.glyphs[idx_rsingle].coverage)))
+        return error.RightDoubleNotHeavier;
+
+    // Structural crux 3: the ellipsis is exactly three evenly spaced dots on the baseline row -- cells (6,0),(6,2),(6,4)
+    // inked and nothing else. This is what makes it read as three dots rather than a solid bar or a scatter.
+    const dots = atlas.glyphs[idx_ellipsis].coverage;
+    if (ink_count(dots) != 3) return error.EllipsisNotThreeDots;
+    var cell: u32 = 0;
+    while (cell < cell_area) : (cell += 1) {
+        const row = cell / cell_w;
+        const col = cell % cell_w;
+        const want_ink = (row == cell_h - 1) and (col % 2 == 0); // bottom row, even columns 0,2,4
+        const has_ink = dots[cell] != 0;
+        if (want_ink != has_ink) return error.EllipsisNotBaselineDots;
+    }
+
+    // Legibility: each mark's ink count sits inside an honest band -- the same low floor the ASCII punct corpus carries
+    // (a comma is a few cells) up to a ceiling that still resolves a double quote as two marks rather than a blot.
+    const ink_min: u32 = 2;
+    const ink_max: u32 = 14;
+    var lo: u32 = cell_area;
+    var hi: u32 = 0;
+    var k: u32 = 0;
+    while (k < genpunct_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (n < ink_min or n > ink_max) return error.MarkIllegible;
+        if (n < lo) lo = n;
+        if (n > hi) hi = n;
+    }
+    // invariant: the observed ink band stayed inside the honest bounds.
+    assert(lo >= ink_min);
+    assert(hi <= ink_max);
+
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof.
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-genpunct: {d} marks (dashes, curly quotes, ellipsis) at {d}x{d} round-trip byte-identical; all present, distinct, legible (ink {d}..{d} of {d}); en subset of em, doubles out-ink singles, ellipsis three baseline dots; encoded {d} bytes, raw {d}\n", .{
+        glyph_count, cell_w, cell_h, lo, hi, cell_area, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_genpunct selftest\n", .{});
+    return 1;
+}

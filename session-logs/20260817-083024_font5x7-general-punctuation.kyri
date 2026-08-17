@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260817.083024
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title font5x7 -- the smart-punctuation set (dashes, curly quotes, ellipsis), GREEN
+prompt Run the autonomous loop: take the next agent-doable lap Lindy-first crux-first, one council-rota doc deep-read per lap, Rye-first, send each finished increment, stop at custody gates.
+think Second lap of this run. The arrow family closed last lap; the README names the remaining wider symbols over the 5x7 body as the next Season G rungs. Crux-first among them: the general-punctuation marks real rendered text carries above ASCII -- the en/em dashes, the four curly quotes, the horizontal ellipsis. text_paint.rye already paints real strings; a surface that shows a document, a caption, or a quoted foreign name meets these constantly, so drawing them is direct Lindy value for the text-rendering rung already shipped.
+think A subtlety worth naming: our own prose stays plain ASCII by the ascii-first rule, so we never TYPE these -- yet a font must be able to SHOW them when displayed content contains them. Drawing the smart marks does not weaken ascii-first; the file itself stays plain ASCII (numeric codepoint literals, the font-codec exception), it only lets the surface render text that isn't ours.
+think Design over the shared 5x7 body: dashes as pure middle-row bars (en the middle three cells, em the full five); singles as one comma-shaped mark high in the cell, leaning opposite ways for open/close; doubles as two such marks; ellipsis as three baseline dots at cols 0,2,4. Three structural proofs, in the boxdiag/arrow spirit: en dash is a strict INK SUBSET of the em dash (and em strictly heavier), each double OUT-INKS its single twin, and the ellipsis is exactly three evenly spaced baseline dots -- each a toothed guard against a wrong-length or misplaced mark.
+obs GREEN on the first metal run, no red: 7 marks round-trip byte-identical through gfa1; all present and carrying the shared advance while an ASCII hyphen misses (it lives in font5x7_punct); all distinct (open vs close quotes really differ); the three structural bonds hold; legible ink 3..8 of 35. It even compresses -- encoded 161 over raw 245 -- the dashes and ellipsis run-dominant.
+obs tame_style_check GREEN (bans clean), width-check exit 0, both files verified plain 7-bit ASCII by grep -P '[^\x00-\x7F]' (font-codec glyph-table exception to ascii-first). image/README.md accreted the font5x7_genpunct entry naming the three structural proofs (docs-sync, same commit).
+loom witness=font5x7_genpunct_witness marks=7 ink_lo=3 ink_hi=8 cell_area=35 encoded_bytes=161 raw_bytes=245
+think Council rota this lap (d27): the prior lap read item 5 (standfast), so cadence continues to item 6 -- foundations/20260814-071700_hardware-and-right-to-repair.md, the Season A ground the whole open-media floor serves: a device family buildable from honest parts, a picture and now the text on it owned all the way down. A font drawn in our own open hand, no external file to license, is exactly the right-to-repair posture one layer up -- the surface owes nothing to a foundry.
+file image/font5x7_genpunct.rye the seven smart-punctuation marks drawn in the open; three structural bonds proven
+file tools/font5x7_genpunct_witness.rish builds and runs the corpus, asserts the GREEN and structural-bond lines
+file image/README.md docs-sync -- the genpunct entry naming the en-subset-of-em, double-heavier, three-dots proofs
+file session-logs/README.md newest-first index row
+recommend keep-going -- the smart-punctuation set stands whole; the next Season G rungs are the remaining wider symbols over the 5x7 body and an open glyph atlas beyond it, each its own round. No custody gate reached; no network, no key, no funds.
