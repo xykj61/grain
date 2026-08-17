@@ -1,0 +1,310 @@
+//! image/font5x7_diaeresis_comp.rye -- the open diaeresis-accent vowels corpus, GROWN BY COMPOSITION, and the accent
+//! economy's proven boundary (Season G, the FIFTH and last mark to meet the overlay tool).
+//!
+//! Season G (Open Media Primitives) - font content for the open glyph atlas image/glyph.rye (gfa1), set beside the
+//! hand-drawn diaeresis corpus (image/font5x7_diaeresis.rye the e/i/y diaeresis vowels drawn by hand, and
+//! image/font5x7_german.rye the a/o/u umlauts) and beside the composed accent siblings -- image/glyph_accent.rye (the
+//! grave), image/font5x7_acute.rye (the acute), image/font5x7_circumflex_comp.rye (the circumflex), and
+//! image/font5x7_tilde_comp.rye (the tilde). This corpus closes the accent-composition family on its fifth mark: the
+//! two parted dots overlaid onto a lowercase base by image/glyph_accent.rye's compose_accent_atlas.
+//!
+//! Where the four earlier composed corpora each grew a handful of vowels, the diaeresis reaches only ONE cleanly -- and
+//! the crux of this rung is proving that boundary on metal rather than asserting it. The hand-drawn diaeresis corpus
+//! carries three vowels (e/i/y); only the e diaeresis (U+00EB) is a lowercase base with a clear, blank top that the two
+//! dots complete without collision, so only it composes byte-for-byte. The other two are proven UNCOMPOSABLE here, each
+//! for a named reason a reader can audit:
+//!   - the i diaeresis: lowercase 'i' carries a TITTLE (its own dot on the top row), so overlaying the two dots keeps
+//!     the tittle AND adds the mark -- the top row inks three cells rather than two, unlike the hand's two parted dots.
+//!   - the y diaeresis: the lowercase 'y' body reaches the top mark row, so the hand-drawn diaeresis y SHIFTS its body
+//!     down a row to make room for the dots; an overlay onto the un-shifted lowercase y leaves body ink where the mark
+//!     row must be blank.
+//! So this corpus grows the one vowel the economy reaches AND proves, on metal, that image/font5x7_diaeresis.rye is
+//! right to keep i and y hand-drawn -- the accent family's exact edge, demonstrated rather than claimed. This mirrors
+//! the honest omission every composed sibling made of the dotted i; here the omission itself is witnessed.
+//!
+//! The crux for the composed e stays byte-for-byte parity with the hand: the composed e diaeresis equals the hand-drawn
+//! image/font5x7_diaeresis.rye's own coverage for U+00EB, so the letter grown by composition IS the letter drawn by
+//! hand. The mark itself is proven the SAME two-dot mark image/font5x7_german.rye drew over its umlaut vowels, so the
+//! accent family stays one consistent hand across all five leans.
+//!
+//! The source stays plain ASCII (ASCII-first): the one composed codepoint is a numeric literal (0x00EB) and each letter
+//! is named in an ASCII comment, so no non-ASCII byte enters the file though the glyph covers a non-ASCII range. The
+//! diaeresis is TWO SEPARATED DOTS on one row -- the fifth lean beside the acute's right stroke, the grave's left, the
+//! circumflex's centered peak, and the tilde's spanning wave -- and the composed atlas round-trips through the gfa1
+//! encoder/decoder byte-for-byte. No network, no key, no funds -- the mark a surface reads the day it prints a name
+//! ASCII cannot spell, grown on our own open font at a fraction of the drawing.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_diaeresis_comp.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+const compose = @import("glyph_compose.rye");
+const accent = @import("glyph_accent.rye");
+const font_lower = @import("font5x7_lower.rye");
+const font_diaeresis = @import("font5x7_diaeresis.rye");
+const german = @import("font5x7_german.rye");
+
+pub const font5x7_diaeresis_comp_version = "20260817.081520";
+
+/// Every glyph in this corpus shares one 5-wide, 7-tall cell -- the same body the ASCII, Greek, and accent corpora carry.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance: the cell width plus one column of daylight, the same advance the sibling corpora carry.
+pub const diaeresis_advance: u8 = cell_w + 1;
+
+/// The corpus grows exactly the ONE composable diaeresis vowel -- the e diaeresis. The i and y diaeresis are proven
+/// uncomposable below and stay hand-drawn in image/font5x7_diaeresis.rye.
+pub const diaeresis_count: u32 = 1;
+
+/// Cells per glyph -- the coverage length every letter carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The center column of the cell. The diaeresis dots straddle it -- one left (column 1), one right (column 3), the
+/// center (column 2) blank -- so the "two parted dots" proof reads a gap exactly here.
+pub const center_col: u32 = 2;
+
+/// The diaeresis combining mark, drawn ONCE -- the whole economy of this corpus. TWO SEPARATED DOTS on the top row
+/// (columns 1 and 3, the center blank), the second mark row and the body rows blank; overlaid onto a lowercase vowel
+/// whose top is clear it yields the diaeresis letter image/font5x7_diaeresis.rye draws by hand. It is the fifth lean --
+/// neither the acute's right stroke, the grave's left, the circumflex's centered peak, nor the tilde's spanning wave,
+/// but a pair that stands apart on one row.
+const diaeresis_mark_art = [cell_h][]const u8{
+    ".#.#.",
+    ".....",
+    ".....",
+    ".....",
+    ".....",
+    ".....",
+    ".....",
+};
+
+/// The composition table: the one lowercase vowel whose base the two dots do not disturb, mapped to its diaeresis
+/// codepoint. A one-row table is honest here -- the economy reaches exactly one of the three diaeresis vowels.
+///   0x00EB e diaeresis.
+const diaeresis_map = [diaeresis_count]accent.AccentMap{
+    .{ .base = 'e', .accented = 0x00EB },
+};
+
+/// The two lowercase bases the mark CANNOT compose cleanly, each mapped to the hand-drawn diaeresis codepoint it would
+/// try to reproduce. The selftest overlays the mark onto each and proves the result differs from the hand corpus, so the
+/// omission is witnessed rather than merely stated.
+///   0x00EF i diaeresis (base 'i' carries a tittle), 0x00FF y diaeresis (base 'y' body reaches the mark row).
+const uncomposable_map = [2]accent.AccentMap{
+    .{ .base = 'i', .accented = 0x00EF },
+    .{ .base = 'y', .accented = 0x00FF },
+};
+
+/// Lift the diaeresis mark's ASCII art into a freshly allocated coverage grid of exactly cell_area bytes: 255 for ink,
+/// 0 for background. The art's own shape is asserted, so a mistyped row is a stopped line rather than a bad mark.
+fn coverage_from_art(allocator: std.mem.Allocator, art: [cell_h][]const u8) ![]u8 {
+    // invariant: a coverage grid is exactly the shared cell area, within the atlas ceiling.
+    assert(cell_area >= 1);
+    assert(cell_area <= glyph.coverage_max);
+    const cov = try allocator.alloc(u8, cell_area);
+    var idx: u32 = 0;
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        const row = art[r];
+        // invariant: every drawn row is exactly the cell width -- the art matches the grid.
+        assert(row.len == cell_w);
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            cov[idx] = if (row[c] == '#') 255 else 0;
+            idx += 1;
+        }
+    }
+    // invariant: the whole grid was filled, no cell left unwritten.
+    assert(idx == cell_area);
+    return cov;
+}
+
+/// Build the diaeresis-accent vowel atlas by composition: overlay the two dots onto the one clear lowercase base,
+/// yielding one accented glyph at the named codepoint. The gfa1 encoder accepts the result directly.
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the corpus is the one named composable diaeresis vowel and no more.
+    assert(diaeresis_count == 1);
+    assert(cell_area == 35);
+    const lower = try font_lower.build_atlas(allocator);
+    const mark = try coverage_from_art(allocator, diaeresis_mark_art);
+    // The tool from image/glyph_accent.rye does the growing -- one mark over one clear base, not a hand drawing.
+    const atlas = try accent.compose_accent_atlas(allocator, &lower, mark, diaeresis_map[0..], diaeresis_advance);
+    // invariant: exactly one composed glyph, at the shared cell.
+    assert(atlas.glyphs.len == diaeresis_count);
+    assert(atlas.cell_area() == cell_area);
+    return atlas;
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- the legibility signal a blank glyph would fail.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+/// Count the inked cells in row r of a glyph, restricted to the half-open column band [c0, c1). The diaeresis proof
+/// reads the top mark rows column by column with this one reader. Row 0 is the top.
+fn row_band_ink(cov: []const u8, r: u32, c0: u32, c1: u32) u32 {
+    // invariant: the row index sits inside the shared cell, over the shared grid.
+    assert(r < cell_h);
+    assert(cov.len == cell_area);
+    // invariant: the column band is well-ordered and inside the cell width.
+    assert(c0 <= c1);
+    assert(c1 <= cell_w);
+    var n: u32 = 0;
+    var c: u32 = c0;
+    while (c < c1) : (c += 1) {
+        if (cov[r * cell_w + c] != 0) n += 1;
+    }
+    // invariant: the band count never exceeds the band it was counted over.
+    assert(n <= c1 - c0);
+    return n;
+}
+
+/// The whole top-row (row 0) ink of a codepoint's glyph -- the two dots and nothing else on a diaeresis letter.
+fn top_row_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return row_band_ink(g.coverage, 0, 0, cell_w);
+    return error.DiaeresisVowelMissing;
+}
+
+/// The center-column ink on the top row of a codepoint's glyph -- the GAP that parts the two dots. Blank on a diaeresis.
+fn top_center_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return row_band_ink(g.coverage, 0, center_col, center_col + 1);
+    return error.DiaeresisVowelMissing;
+}
+
+/// The second mark-row (row 1) ink of a codepoint's glyph -- blank on a diaeresis, the single-row mark that sets it
+/// apart from the two-row circumflex and tilde.
+fn second_mark_row_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return row_band_ink(g.coverage, 1, 0, cell_w);
+    return error.DiaeresisVowelMissing;
+}
+
+// --- selftest: grow the one composable diaeresis vowel, prove parity, round-trip, two-dotted; prove the boundary ------
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built atlas is the one-vowel corpus at the shared cell.
+    assert(glyph_count == diaeresis_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // The crux -- byte-for-byte parity with the hand. The composed e diaeresis equals the hand-drawn font5x7_diaeresis
+    // corpus's own coverage for U+00EB, so the letter grown by composition IS the letter drawn by hand.
+    const hand = try font_diaeresis.build_atlas(garden);
+    var matched: u32 = 0;
+    var i: u32 = 0;
+    while (i < atlas.glyphs.len) : (i += 1) {
+        const g = atlas.glyphs[i];
+        const want = hand.lookup(g.codepoint) orelse return error.DiaeresisHandMissing;
+        if (!std.mem.eql(u8, g.coverage, want.coverage)) return error.ComposedMismatch;
+        if (g.advance != diaeresis_advance) return error.ComposedWrongAdvance;
+        matched += 1;
+    }
+    // invariant: the composed vowel matched its hand-drawn twin.
+    assert(matched == diaeresis_count);
+
+    // The boundary, proven on metal -- why the family stops at one composed vowel. Overlaying the mark onto the lowercase
+    // 'i' and lowercase 'y' does NOT reproduce the hand-drawn diaeresis i/y: the i's tittle survives under the dots
+    // (three inked top cells, not two), and the y's body reaches the second mark row where the hand shifts it away. So
+    // font5x7_diaeresis is proven right to keep them hand-drawn, rather than left to a claim.
+    const lower = try font_lower.build_atlas(garden);
+    const mark = try coverage_from_art(garden, diaeresis_mark_art);
+    var refuted: u32 = 0;
+    var u: u32 = 0;
+    while (u < uncomposable_map.len) : (u += 1) {
+        const row = uncomposable_map[u];
+        const base_glyph = lower.lookup(row.base) orelse return error.UncomposableBaseMissing;
+        const overlaid = try compose.overlay(garden, base_glyph.coverage, mark, cell_area);
+        const hand_glyph = hand.lookup(row.accented) orelse return error.DiaeresisHandMissing;
+        // invariant: the overlay differs from the hand-drawn letter -- the omission is witnessed, not assumed.
+        if (std.mem.eql(u8, overlaid, hand_glyph.coverage)) return error.UncomposableActuallyComposed;
+        refuted += 1;
+    }
+    assert(refuted == uncomposable_map.len);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // The composed vowel is present, carries the shared advance; an unaccented ASCII vowel misses.
+    var d: u32 = 0;
+    while (d < diaeresis_count) : (d += 1) {
+        const cp = diaeresis_map[d].accented;
+        if (back.lookup(cp)) |g| {
+            assert(g.codepoint == cp);
+            assert(g.advance == diaeresis_advance);
+        } else return error.DiaeresisVowelMissing;
+    }
+    if (back.lookup('e')) |_| return error.NonDiaeresisFound else {}
+
+    // Legibility: the composed letter's ink count sits inside an honest band -- the e diaeresis reads as a letter, never
+    // a blank cell nor a solid block.
+    const ink_min: u32 = 8;
+    const ink_max: u32 = 18;
+    var lo: u32 = cell_area;
+    var hi: u32 = 0;
+    var k: u32 = 0;
+    while (k < diaeresis_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (n < ink_min or n > ink_max) return error.DiaeresisVowelIllegible;
+        if (n < lo) lo = n;
+        if (n > hi) hi = n;
+    }
+    // invariant: the observed ink band stayed inside the honest bounds.
+    assert(lo >= ink_min);
+    assert(hi <= ink_max);
+
+    // Diaeresis placement -- the fifth lean, proven on the composed letter: TWO PARTED DOTS on ONE row. Three toothed
+    // guards read it -- the top row carries exactly two inked cells, the center column of that row is blank (the gap),
+    // and the second mark row is blank (a single row of dots, where the circumflex and tilde span two rows).
+    var m: u32 = 0;
+    while (m < diaeresis_count) : (m += 1) {
+        const cp = diaeresis_map[m].accented;
+        if ((try top_row_ink_of(&atlas, cp)) != 2) return error.DiaeresisNotTwoDots;
+        if ((try top_center_ink_of(&atlas, cp)) != 0) return error.DiaeresisNoGap;
+        if ((try second_mark_row_ink_of(&atlas, cp)) != 0) return error.DiaeresisMarkTooTall;
+    }
+
+    // Family consistency: the two-dot mark the composed e carries is the SAME mark image/font5x7_german.rye drew over its
+    // umlaut vowels -- proven byte-for-byte against the German a umlaut's own top row, so all five accent leans stay one
+    // consistent hand.
+    const german_atlas = try german.build_atlas(garden);
+    const a_umlaut = german_atlas.lookup(0x00E4) orelse return error.GermanUmlautMissing;
+    const e_diaeresis = atlas.lookup(0x00EB) orelse return error.DiaeresisVowelMissing;
+    var col: u32 = 0;
+    while (col < cell_w) : (col += 1) {
+        // invariant: the composed diaeresis top-row cell equals the German umlaut's top-row cell -- one shared mark.
+        if (e_diaeresis.coverage[col] != a_umlaut.coverage[col]) return error.DiaeresisMarkUnlikeUmlaut;
+    }
+
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof.
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-diaeresis-comp: {d} diaeresis vowel U+00EB grown by composition (two dots over the clear lowercase base), byte-for-byte the hand-drawn font5x7_diaeresis coverage and the German umlaut's own mark; the i and y diaeresis proven UNCOMPOSABLE on metal ({d} refuted -- the tittle and the raised body), so the hand keeps them rightly; round-trip byte-identical; present, legible (ink {d}..{d} of {d}); the fifth and last accent lean, two parted dots on one row; encoded {d} bytes, raw {d}\n", .{
+        glyph_count, refuted, lo, hi, cell_area, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_diaeresis_comp selftest\n", .{});
+    return 1;
+}

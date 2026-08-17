@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260817.081520
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title font5x7 -- diaeresis grown by composition, GREEN; the accent economy's boundary proven
+prompt Run the autonomous loop: take the next agent-doable lap Lindy-first crux-first, one council-rota doc deep-read per lap, Rye-first, send each finished increment, stop at custody gates.
+think The living edge is Season G's accent-composition arc: glyph_compose (overlay) -> glyph_accent (compose_accent_atlas, grave) -> font5x7_acute -> font5x7_circumflex_comp -> font5x7_tilde_comp. The documented next rung was the diaeresis by composition -- the fifth and final European vowel diacritic. Crux-first, closing the family.
+think Before building, I checked parity byte-for-byte. The hand-drawn diaeresis set is e/i/y (U+00EB,U+00EF,U+00FF). Composition overlays the two-dot mark onto a lowercase base. Only e composes cleanly: lowercase e has blank rows 0-1 and its body rows 2-6 match the hand diaeresis e exactly.
+think The other two do NOT compose, each for a real reason -- a genuine learned discovery worth witnessing, not glossing. Lowercase i carries a tittle (..#.. on row 0); overlaying the dots keeps the tittle AND adds the mark (three inked top cells, not two). Lowercase y's body reaches row 1 (#...#), so the hand-drawn diaeresis y shifts its body down a row to fit the mark; an overlay onto the un-shifted y leaves body ink where the mark row must be blank.
+think So the honest, Lindy lap is not another rote corpus but the family's exact EDGE: grow the one composable vowel (e) AND prove on metal that overlaying the mark on i and y does not reproduce the hand corpus, justifying font5x7_diaeresis keeping them hand-drawn. This proves WHY the family stops here rather than asserting it -- more durable than a fifth me-too corpus.
+obs GREEN on the first metal run, no red: 1 diaeresis vowel U+00EB grown by composition, byte-for-byte the hand-drawn font5x7_diaeresis coverage and the German umlaut's own two-dot mark; i and y proven UNCOMPOSABLE (2 refuted -- the tittle and the raised body); round-trip byte-identical; legible ink 16/35; the two-parted-dots placement toothed by three guards; encoded 52 bytes over raw 35.
+obs tame_style_check GREEN (bans clean), width-check exit 0, both files plain 7-bit ASCII (numeric codepoint literals -- the ascii-first exception for a font codec's glyph tables). image/README.md accreted the font5x7_diaeresis_comp entry and reframed the next-rungs line: every European vowel diacritic now stands proven by composition, the accent-composition family closed on a demonstrated boundary (docs-sync).
+loom witness=font5x7_diaeresis_comp_witness composed_vowels=1 refuted_uncomposable=2 ink=16 cell_area=35 encoded_bytes=52 raw_bytes=35
+think Council rota this lap (d27): the prior lap read item 3, so this lap deep-read item 4 -- foundations/20260729-224828_reds-first-and-the-allocation.md. The reds-first law: a red books the remainder of the allocation, the fix closes on a witness on metal not a claim, every lantern that fires twice becomes a self-halting machine. No red this lap; the boundary-proof witness is exactly the "prove, do not claim" spirit -- the uncomposable omission is a guard, not a note.
+file image/font5x7_diaeresis_comp.rye the fifth accent mark grown by composition; one composable vowel, the boundary proven on metal
+file tools/font5x7_diaeresis_comp_witness.rish builds and runs the corpus, asserts the GREEN line
+file image/README.md docs-sync -- the diaeresis-comp entry and the reframed next-rungs line closing the family
+file session-logs/README.md newest-first index row
+recommend keep-going -- the accent-composition family is closed; the next Season G rungs are the remaining wider symbols over the 5x7 body and an open glyph atlas beyond it, each its own round. No custody gate reached; no network, no key, no funds.
