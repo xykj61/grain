@@ -35,7 +35,7 @@ const qoi = @import("qoi.rye");
 const text_layout = @import("text_layout.rye");
 const font_ascii = @import("font5x7_ascii.rye");
 
-pub const text_paint_version = "20260817.014833";
+pub const text_paint_version = "20260817.015538";
 
 /// Where each wrapped line sits inside the paragraph's content box (the widest line's width). `left` hugs the origin
 /// (the block's natural, historical behaviour); `right` flushes each line's right edge to the widest line's; `center`
@@ -424,6 +424,67 @@ pub fn paint_paragraph_boxed(
     // horizontal set, the disjoint bands, and the target box check all stay in one place. voff + block_h <= box_h, so
     // the delegated paint stays inside the box the caller reserved; its own ParagraphOutOfBounds guards the target.
     return paint_paragraph_aligned(atlas, text, max_width, line_gap, h_mode, lines_buf, scratch, target, origin_x, origin_y + voff, ink);
+}
+
+/// Paint a whole PARAGRAPH placed within a box on BOTH axes -- the 2-D capstone of the family, a real text region. The
+/// content block (widest line across, all lines and gaps down) is positioned horizontally within `box_w` and vertically
+/// within `box_h` by the one `h`/`v` set: `h` chooses left/centre/right for BOTH the block's place in the box AND each
+/// line's set within the block (a right-set region right-sets its lines too -- one intent, one knob), and `v` chooses
+/// top/middle/bottom. All-or-nothing on both axes: it refuses ParagraphBoxTooNarrow BY NAME if the block is wider than
+/// the box, and delegates to paint_paragraph_boxed for the vertical placement (which refuses ParagraphBoxTooShort if the
+/// block is taller). Single-stranded -- it only computes the horizontal box offset, then hands the wrap-stack-paint to
+/// the boxed painter at the shifted origin, so the vertical set, the inter-line set, and the target check all stay in
+/// one place. Placement moves the block as one, adding no pixel and dropping none. `lines_buf` holds one WrapLine per
+/// input byte and `scratch` one PlacedGlyph per byte; the caller sizes both >= text.len. Returns the lines painted; an
+/// empty (or all-space) paragraph paints nothing and returns zero.
+pub fn paint_paragraph_in_box(
+    atlas: *const glyph.GlyphAtlas,
+    text: []const u8,
+    max_width: u32,
+    line_gap: u32,
+    h: Align,
+    v: VAlign,
+    box_w: u32,
+    box_h: u32,
+    lines_buf: []text_layout.WrapLine,
+    scratch: []text_layout.PlacedGlyph,
+    target: *qoi.Pixmap,
+    origin_x: u32,
+    origin_y: u32,
+    ink: color.Rgba,
+) !u32 {
+    // invariant: both buffers hold room for the worst case -- one wrapped line, and one placed glyph, per input byte.
+    assert(lines_buf.len >= text.len);
+    assert(scratch.len >= text.len);
+    // invariant: a box a block can sit in has real extent on both axes.
+    if (box_w == 0 or box_h == 0) return error.BadDimensions;
+
+    const lines = try text_layout.wrap_lines_break(atlas, text, max_width, lines_buf);
+    if (lines == 0) return 0; // an empty or all-space paragraph paints nothing -- a bounded base case
+
+    // The content block's width is the widest wrapped line -- the same measure paint_paragraph_aligned bounds against.
+    var widest: u32 = 0;
+    var k: u32 = 0;
+    while (k < lines) : (k += 1) {
+        if (lines_buf[k].width > widest) widest = lines_buf[k].width;
+    }
+    // A block wider than the box cannot be placed all-or-nothing -- refuse by name, the horizontal peer of TooShort.
+    if (@as(u64, widest) > @as(u64, box_w)) return error.ParagraphBoxTooNarrow;
+
+    // The horizontal slack is the room the box has beyond the block -- where a left/centre/right set moves it sideways.
+    const hslack: u32 = box_w - widest;
+    const hoff: u32 = switch (h) {
+        .left => 0,
+        .right => hslack,
+        .center => hslack / 2,
+    };
+    // invariant: the horizontal box offset never exceeds the slack, so the shifted block stays inside the box width.
+    assert(hoff <= hslack);
+
+    // Delegate the vertical placement (and the wrap-stack-paint) to the boxed painter at the sideways-shifted origin --
+    // single-stranded, so the vertical set, the inter-line set, and the target box check all stay in one place. The
+    // block sits within [origin_x + hoff, origin_x + box_w) across, so it stays inside the box the caller reserved.
+    return paint_paragraph_boxed(atlas, text, max_width, line_gap, h, v, box_h, lines_buf, scratch, target, origin_x + hoff, origin_y, ink);
 }
 
 // --- selftest: paint real text against the full-ASCII font, prove ink composites exactly and bounds refuse -------
@@ -850,11 +911,78 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
             assert(changed_pixels(vtight.pixels, vtight_before) == 0);
         }
 
+        // --- boxed on both axes: place the block left/centre/right AND top/middle/bottom within a 2-D box -----------
+        {
+            // The content block's width is the widest wrapped line -- the measure the horizontal box offset works from.
+            var widest3: u32 = 0;
+            {
+                var wi: u32 = 0;
+                while (wi < nlines) : (wi += 1) {
+                    if (plines[wi].width > widest3) widest3 = plines[wi].width;
+                }
+            }
+            // A box roomy on both axes: six columns wider than the block, six rows taller than it -- slack each way.
+            const hslack: u32 = 6;
+            const vslack: u32 = 6;
+            const bw: u32 = widest3 + hslack;
+            const bh: u32 = pht + vslack;
+
+            // A 2-D set equals paint_paragraph_aligned(mode = h) at the box offset (hoff, voff) -- the boxed painter it
+            // delegates to only shifts the origin. Prove three corners: (left, top) at (0, 0), (centre, middle) at
+            // (slack/2, slack/2), (right, bottom) at (slack, slack) -- each byte-for-byte against the hand-composed paint.
+            const lt_expect = try solid(garden, bw, bh, white);
+            _ = try paint_paragraph_aligned(&atlas, para, pmax, gap, .left, plines, pscratch, @constCast(&lt_expect), 0, 0, red);
+            const cm_expect = try solid(garden, bw, bh, white);
+            _ = try paint_paragraph_aligned(&atlas, para, pmax, gap, .center, plines, pscratch, @constCast(&cm_expect), hslack / 2, vslack / 2, red);
+            const rb_expect = try solid(garden, bw, bh, white);
+            _ = try paint_paragraph_aligned(&atlas, para, pmax, gap, .right, plines, pscratch, @constCast(&rb_expect), hslack, vslack, red);
+
+            const lt = try solid(garden, bw, bh, white);
+            const lt_lines = try paint_paragraph_in_box(&atlas, para, pmax, gap, .left, .top, bw, bh, plines, pscratch, @constCast(&lt), 0, 0, red);
+            assert(lt_lines == nlines);
+            assert(lt.same_bytes(&lt_expect));
+            const cm = try solid(garden, bw, bh, white);
+            _ = try paint_paragraph_in_box(&atlas, para, pmax, gap, .center, .middle, bw, bh, plines, pscratch, @constCast(&cm), 0, 0, red);
+            assert(cm.same_bytes(&cm_expect));
+            const rb = try solid(garden, bw, bh, white);
+            _ = try paint_paragraph_in_box(&atlas, para, pmax, gap, .right, .bottom, bw, bh, plines, pscratch, @constCast(&rb), 0, 0, red);
+            assert(rb.same_bytes(&rb_expect));
+
+            // Placement moves the block as one -- it adds no pixel and drops none, so every corner changes exactly as
+            // many pixels as the strict block, and a bottom-right set truly differs from a top-left one.
+            const bpristine = try solid(garden, bw, bh, white);
+            assert(changed_pixels(lt.pixels, bpristine.pixels) == pchanged);
+            assert(changed_pixels(cm.pixels, bpristine.pixels) == pchanged);
+            assert(changed_pixels(rb.pixels, bpristine.pixels) == pchanged);
+            assert(!rb.same_bytes(&lt));
+
+            // ParagraphBoxTooNarrow: a box narrower than the block refuses BY NAME before any pixel is touched, buffer
+            // untouched -- the horizontal peer of the vertical ParagraphBoxTooShort, all-or-nothing on both axes.
+            const bnarrow = try solid(garden, widest3 - 1, bh, white);
+            const bnarrow_before = try garden.alloc(u8, bnarrow.pixels.len);
+            @import("tally_copy.rye").copy_disjoint(u8, bnarrow_before, bnarrow.pixels);
+            if (paint_paragraph_in_box(&atlas, para, pmax, gap, .left, .top, widest3 - 1, bh, plines, pscratch, @constCast(&bnarrow), 0, 0, red)) |_| {
+                return error.BoxNarrowSlipped;
+            } else |e| {
+                if (e != error.ParagraphBoxTooNarrow) return error.WrongBoxNarrow;
+            }
+            assert(changed_pixels(bnarrow.pixels, bnarrow_before) == 0);
+
+            // And the vertical refusal still propagates through the delegate: a box wide enough yet a row too short
+            // refuses ParagraphBoxTooShort by name, so the 2-D painter guards both axes.
+            const bshort = try solid(garden, bw, pht - 1, white);
+            if (paint_paragraph_in_box(&atlas, para, pmax, gap, .left, .top, bw, pht - 1, plines, pscratch, @constCast(&bshort), 0, 0, red)) |_| {
+                return error.BoxShortSlipped;
+            } else |e| {
+                if (e != error.ParagraphBoxTooShort) return error.WrongBoxShort;
+            }
+        }
+
         para_lines_report = painted_lines;
         para_changed_report = pchanged;
     }
 
-    print("GREEN image-text-paint: '{s}' painted red over white changed exactly {d} pixels (= inked cells); every changed pixel is the ink, every other stays background; deterministic and byte-identical through paint_line; transparent ink is a no-op; half-alpha blends through color.over exactly; empty line paints nothing; PaintOutOfBounds refused by name on width and on height; clipping paints only the visible part ({d} of {d} cells on a narrow canvas, matching the strict paint pixel-for-pixel), a fully off-canvas line clips to a clean no-op, and a line that fits clips identically to the strict paint; a wrapped paragraph paints {d} stacked lines changing exactly {d} pixels (= summed line ink, disjoint bands), its top band equals a standalone single-line paint, and a too-short canvas refuses ParagraphOutOfBounds by name leaving the buffer untouched; the paragraph aligns -- left reproduces the plain paint byte-for-byte, centre- and right-set match a line-by-line offset composition exactly while changing the same pixel count (alignment shifts ink sideways, adding none and dropping none); and the paragraph clips -- a box it fits in paints byte-for-byte the strict paint, a box one line-box tall paints just the first line's ink (matching a standalone single-line paint) where the strict painter would refuse, and a box below the block clips to a clean no-op; and the paragraph sits in a box -- a top set reproduces the plain paragraph at the box origin, middle- and bottom-set match a plain paint at the shifted origin exactly while changing the same pixel count (vertical placement moves the whole stack down as one, adding none and dropping none), and a box shorter than the block refuses ParagraphBoxTooShort by name leaving the buffer untouched\n", .{ text, changed, clipped, want_changed, para_lines_report, para_changed_report });
+    print("GREEN image-text-paint: '{s}' painted red over white changed exactly {d} pixels (= inked cells); every changed pixel is the ink, every other stays background; deterministic and byte-identical through paint_line; transparent ink is a no-op; half-alpha blends through color.over exactly; empty line paints nothing; PaintOutOfBounds refused by name on width and on height; clipping paints only the visible part ({d} of {d} cells on a narrow canvas, matching the strict paint pixel-for-pixel), a fully off-canvas line clips to a clean no-op, and a line that fits clips identically to the strict paint; a wrapped paragraph paints {d} stacked lines changing exactly {d} pixels (= summed line ink, disjoint bands), its top band equals a standalone single-line paint, and a too-short canvas refuses ParagraphOutOfBounds by name leaving the buffer untouched; the paragraph aligns -- left reproduces the plain paint byte-for-byte, centre- and right-set match a line-by-line offset composition exactly while changing the same pixel count (alignment shifts ink sideways, adding none and dropping none); and the paragraph clips -- a box it fits in paints byte-for-byte the strict paint, a box one line-box tall paints just the first line's ink (matching a standalone single-line paint) where the strict painter would refuse, and a box below the block clips to a clean no-op; and the paragraph sits in a box -- a top set reproduces the plain paragraph at the box origin, middle- and bottom-set match a plain paint at the shifted origin exactly while changing the same pixel count (vertical placement moves the whole stack down as one, adding none and dropping none), and a box shorter than the block refuses ParagraphBoxTooShort by name leaving the buffer untouched; and the paragraph sits in a 2-D box -- left/centre/right AND top/middle/bottom together, each corner equal to a plain aligned paint at the box offset while changing the same pixel count, refusing ParagraphBoxTooNarrow on a box too narrow and ParagraphBoxTooShort on one too short\n", .{ text, changed, clipped, want_changed, para_lines_report, para_changed_report });
     return 0;
 }
 
