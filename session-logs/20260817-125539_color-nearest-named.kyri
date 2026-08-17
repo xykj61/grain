@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260817.125539
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image/color_nearest.rye -- the nearest named color to any color
+prompt Take the next agent-doable lap Lindy-first crux-first on the road past BUHR; deep-read one council-rota doc; Rye-first; send often.
+think Read REMEMBER, the 1024-round itinerary, the eight-season double-seat, and the rye-first crypto-parity wave; the live edge is the Season G open-media color family, last landing color_names.rye resolve_any.
+think The suggested next crux was the CSS3 147-name table, yet hand-entering 147 hex values I cannot witness against an external source conflicts with reds-first (prove before you claim, measurement beats memory) -- a wrong-but-valid hex would pass every witness silently.
+think Chose a fully-provable Lindy crux over the same table instead: nearest(c), the nearest named color to ANY color by squared sRGB distance. It names every color, not just the exact sixteen, composes over color_names + color, and every claim is witnessable on metal.
+think Design: a Match {name, color, dist}; squared Euclidean over RGB only (alpha outside the metric, the named set opaque); ties break to the first (alphabetically-earlier) sorted entry; bounded by named_color_count, all u32 bounded by max_dist_sq, no seam cast.
+obs One build red closed at once: literal braces {250,5,5} in the selftest prose parsed as a print format placeholder ("too few arguments"); doubled to {{250,5,5}}. GREEN thereafter.
+obs Cruxes proven: every HTML4 color its own nearest at distance zero reading back its name; a near-red {250,5,5} reads "red" at exact distance 75; a color midway between black and navy ties to the earlier "black"; a translucent red still reads "red" at distance zero where name_of returns null; nearest_name agrees with nearest; deterministic.
+obs Rota lap 9: foundations/20260810-011514_pond-the-application-module.md -- bounded modules compose into a running whole; nearest is exactly such a consumer of color_names and color, owning no fact of its own.
+obs tame_style_check bans clean, width-check exit 0, plain 7-bit ASCII, American spelling (born color), witness native contains (REDS #76 loom). No custody gate touched.
+loom witness=color_nearest_witness build=ok selftest=green cruxes=7 named_scanned=16
+file image/color_nearest.rye the nearest named color to any color, single-stranded over color_names + color
+file tools/color_nearest_witness.rish proves every crux on metal via native contains
+file image/README.md names color_nearest.rye (docs-sync)
+file crux/REMEMBER.md Git nib demoted to Prior, new nib written for this rung
+recommend keep-going the extended CSS3 147-name set enriches nearest for free once verified, or a fresh Season G / other-season Lindy-first crux

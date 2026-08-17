@@ -1,0 +1,44 @@
+# tools/color_nearest_witness.rish -- the nearest named color to ANY color proves itself over the open color algebra (Season G).
+#
+# Season G (Open Media Primitives) -- the nearest-name finder beside the named-color table (image/color_names.rye), the WCAG
+# contrast reading (image/color_contrast.rye), the on-color swatch (image/color_swatch.rye), the tonal scale
+# (image/color_scale.rye), the palette toolkit (image/color_adjust.rye), and the open color algebra (image/color.rye).
+# Design read: active-designing/20260816-210735_season-g-color-algebra-crux.md (the color floor this stands on).
+# Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS Color spec + HTML4 keywords -- public standards only).
+#
+# The crux this witness proves is the wider question the exact table could not answer: given ANY color, what do we CALL it?
+# nearest(c) scans the sixteen HTML4 names and picks the closest by squared sRGB distance, so every color has a name.
+# Written single-stranded -- color_names OWNS the names, color DECIDES the bytes through its own parse_hex, and this module
+# only MEASURES distance and PICKS the smallest. Every named color is its own nearest at distance zero; a near-red reads
+# "red"; a tie breaks to the earlier sorted entry; alpha is outside the metric so a translucent red still reads "red" where
+# name_of returns null. No new storage, codec, or maths. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/color_nearest_witness.rish
+
+say "color-nearest: Language EN -- Season G's nearest-name finder; a keeper reads ANY color to the name closest to it, not only the sixteen that land on a keyword exactly."
+say "color-nearest: Style Radiant -- compose not braid; color_names OWNS the names, color DECIDES the bytes, this module only MEASURES distance and PICKS the least, so both modules' proofs carry through."
+say "color-nearest: Lens TAME -- the scan bounded by named_color_count; the squared distance bounded by max_dist_sq inside u32; a tie broken deterministically to the earlier entry; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/color_nearest"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/color_nearest.rye -femit-bin=${bin}"]
+assert build.ok else "color-nearest: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "color-nearest: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "color-nearest: ${out}"
+
+# Honour the loom REDS #76 named: check every claim with Rishi's native `contains`, never a shell grep over interpolated
+# output, so punctuation in the selftest prose can never break a check.
+assert out contains "GREEN image-color-nearest" else "color-nearest: selftest did not print the GREEN color-nearest line"
+assert out contains "is its own nearest at squared distance zero" else "color-nearest: a named color was not its own zero-distance nearest"
+assert out contains "still reads 'red' at its exact squared distance 75" else "color-nearest: a near-red did not read the right name and distance"
+assert out contains "breaks to the earlier 'black' by first-winner determinism" else "color-nearest: a tie did not break to the earlier sorted entry"
+assert out contains "alpha is outside the metric" else "color-nearest: alpha was not held outside the named-set metric"
+assert out contains "reads the same name and distance every time" else "color-nearest: the reading was not deterministic"
+
+say "color-nearest: GREEN -- the nearest named color whole over the open color algebra; every named color its own zero-distance nearest, a near color reads the right name, a tie breaks to the earlier entry, alpha outside the metric, deterministic."

@@ -1,0 +1,161 @@
+//! image/color_nearest.rye -- the nearest named color to ANY color, over the open color algebra (Season G).
+//!
+//! Season G (Open Media Primitives) -- a single-stranded consumer of image/color_names.rye, one rung above it. The
+//! named table (color_names) reads a color to its EXACT name and null for everything else -- honest, yet it names only
+//! the sixteen colors that land on a keyword byte-for-byte. A design system asks a wider question: given ANY color a
+//! keeper picked or a photo quantized to, what do we CALL it? This rung answers -- nearest(c) returns the table entry
+//! closest to c in sRGB, so a near-red reads "red", a dark blue reads "navy", and every color has a name.
+//!
+//! Compose, not braid: color_names still OWNS the names and their canonical hex, color still DECIDES the bytes through
+//! its own parse_hex, and this module only MEASURES distance and PICKS the smallest -- no new table, no stored channel
+//! byte, no parser. The metric is squared Euclidean distance over the three sRGB channels; alpha is not part of the
+//! named-set metric (the named set is all opaque), so a translucent red still reads "red" where color_names.name_of
+//! honestly returns null. Ties break to the EARLIER table entry, and the table is sorted ascending by name, so a tie
+//! is deterministic and reads the alphabetically-first name. Bounded (the whole scan is the fixed sixteen), integer
+//! (the squared distance of three byte channels never leaves u32), no network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/color_nearest.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const color_names = @import("color_names.rye");
+
+pub const color_nearest_version = "20260817.130500";
+
+/// The largest squared sRGB distance between two colors -- three channels, each byte diff at most 255, each square at
+/// most 65025, so the sum never exceeds 195075. Named so the u32 the distance rides in is proven to hold it with room.
+pub const max_dist_sq: u32 = 3 * 255 * 255;
+
+/// A nearest-color reading: the matched name, the exact color the name stands for, and the squared sRGB distance from
+/// the queried color to it (0 exactly when the query IS a named color). The name and color come from color_names, so
+/// this struct stores a reading, never a fact of its own.
+pub const Match = struct {
+    name: []const u8,
+    color: color.Rgba,
+    dist: u32,
+};
+
+/// The squared sRGB distance between two colors over the three color channels -- alpha is not part of the named-set
+/// metric, so it is deliberately left out. Squared rather than rooted because the square root is monotonic: the
+/// nearest color by squared distance is the nearest by true distance, and the square stays exact integer arithmetic.
+fn rgb_dist_sq(x: color.Rgba, y: color.Rgba) u32 {
+    // invariant: each channel difference is a byte magnitude, so it never exceeds 255 and its square never exceeds 65025.
+    const dr: u32 = if (x.r >= y.r) x.r - y.r else y.r - x.r;
+    const dg: u32 = if (x.g >= y.g) x.g - y.g else y.g - x.g;
+    const db: u32 = if (x.b >= y.b) x.b - y.b else y.b - x.b;
+    assert(dr <= 255);
+    assert(dg <= 255);
+    const sum = dr * dr + dg * dg + db * db;
+    // invariant: the summed square is bounded by the three-channel maximum, so it fits the u32 it is carried in.
+    assert(sum <= max_dist_sq);
+    return sum;
+}
+
+/// The nearest named color to any color -- the answer to "what do we call this?" for a color that need not be a
+/// keyword. Scans the whole HTML4 table, measures the squared sRGB distance to each, and keeps the smallest; a tie
+/// breaks to the earlier (alphabetically-first) table entry because the scan keeps the first winner. Composes:
+/// color_names owns the names, color decides the bytes, this only picks the least distance.
+pub fn nearest(c: color.Rgba) Match {
+    // invariant: the table is the whole HTML4 set, non-empty, so a nearest match always exists.
+    assert(color_names.named_color_count == color_names.table.len);
+    assert(color_names.named_color_count >= 1);
+    var best: ?Match = null;
+    var i: u32 = 0;
+    while (i < color_names.named_color_count) : (i += 1) {
+        // Compose, not braid: color DECIDES the bytes from color_names' canonical hex; a rare unparseable entry is
+        // skipped rather than trusted, exactly as color_names.name_of skips it.
+        const known = color.parse_hex(color_names.table[i].hex) catch continue;
+        const d = rgb_dist_sq(c, known);
+        if (best) |b| {
+            // Strictly-less keeps the FIRST winner on a tie, so the alphabetically-earlier name wins deterministically.
+            if (d < b.dist) best = .{ .name = color_names.table[i].name, .color = known, .dist = d };
+        } else {
+            best = .{ .name = color_names.table[i].name, .color = known, .dist = d };
+        }
+    }
+    // invariant: the table is non-empty and every HTML4 entry parses, so a best match was found.
+    assert(best != null);
+    return best.?;
+}
+
+/// The nearest named color's name alone, for a caller that wants only the word. A thin reading of nearest, so the two
+/// never disagree.
+pub fn nearest_name(c: color.Rgba) []const u8 {
+    // invariant: nearest always returns a real table entry, so its name is a real keyword.
+    const m = nearest(c);
+    assert(m.name.len >= 1);
+    return m.name;
+}
+
+// --- selftest: prove every named color is its own nearest at distance zero, a near color reads the right name, a tie
+// --- breaks to the earlier entry, alpha is outside the metric, and the reading is deterministic.
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    _ = garden;
+
+    // 1. Every named color is its OWN nearest, at squared distance exactly zero, and reads back its own name -- the
+    // completeness crux, walked over the whole table (a wrong hex or a mis-ordered pick breaks it).
+    var i: u32 = 0;
+    while (i < color_names.named_color_count) : (i += 1) {
+        const known = try color.parse_hex(color_names.table[i].hex);
+        const m = nearest(known);
+        if (m.dist != 0) return error.NamedNotZeroDist;
+        if (!std.mem.eql(u8, m.name, color_names.table[i].name)) return error.NamedWrongName;
+        if (!m.color.eql(known)) return error.NamedWrongColor;
+    }
+
+    // 2. An exact red reads "red" at distance zero, agreeing with color_names.name_of on the colors it can name.
+    const red = try color.parse_hex("#ff0000");
+    const red_match = nearest(red);
+    if (!std.mem.eql(u8, red_match.name, "red")) return error.RedNameWrong;
+    if (red_match.dist != 0) return error.RedDistWrong;
+    const exact = color_names.name_of(red) orelse return error.RedNotExact;
+    if (!std.mem.eql(u8, exact, red_match.name)) return error.RedDisagrees;
+
+    // 3. A near-red {250,5,5} is NOT a keyword (name_of is null) yet reads "red", its distance the exact squared sum.
+    const near_red = color.Rgba{ .r = 250, .g = 5, .b = 5, .a = 255 };
+    if (color_names.name_of(near_red)) |_| return error.NearRedFalselyExact else {}
+    const near_match = nearest(near_red);
+    if (!std.mem.eql(u8, near_match.name, "red")) return error.NearRedNameWrong;
+    // distance to #ff0000: dr=5, dg=5, db=5 -> 25+25+25 = 75.
+    if (near_match.dist != 75) return error.NearRedDistWrong;
+
+    // 4. A color exactly between black {0,0,0} and navy {0,0,128} -- {0,0,64} -- ties, and the tie breaks to "black",
+    // the alphabetically-earlier entry, proving first-winner determinism and the sorted scan order.
+    const midway = color.Rgba{ .r = 0, .g = 0, .b = 64, .a = 255 };
+    const mid_match = nearest(midway);
+    if (!std.mem.eql(u8, mid_match.name, "black")) return error.TieNotEarliest;
+    // both squared distances are 64*64 = 4096; the reading carries that.
+    if (mid_match.dist != 4096) return error.TieDistWrong;
+
+    // 5. Alpha is outside the named-set metric: a translucent red still reads "red" at distance zero, where name_of
+    // honestly returns null. This is the meaningful line nearest draws that the exact table could not.
+    const glass_red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 10 };
+    if (color_names.name_of(glass_red)) |_| return error.GlassFalselyExact else {}
+    const glass_match = nearest(glass_red);
+    if (!std.mem.eql(u8, glass_match.name, "red")) return error.GlassNameWrong;
+    if (glass_match.dist != 0) return error.GlassDistWrong;
+
+    // 6. nearest_name reads the same word as nearest, never disagreeing with its own fuller reading.
+    if (!std.mem.eql(u8, nearest_name(near_red), near_match.name)) return error.ConvenienceDisagrees;
+
+    // 7. Determinism -- the same color reads the same name and distance every time.
+    const again = nearest(near_red);
+    if (!std.mem.eql(u8, again.name, near_match.name)) return error.NotDeterministicName;
+    if (again.dist != near_match.dist) return error.NotDeterministicDist;
+
+    print("GREEN image-color-nearest: the nearest named color to ANY color over the open color algebra; every one of the sixteen HTML4 colors is its own nearest at squared distance zero reading back its own name (compose not braid, color_names owns the names and color decides the bytes); a near-red {{250,5,5}} that is no keyword still reads 'red' at its exact squared distance 75; a color midway between black and navy ties and breaks to the earlier 'black' by first-winner determinism over the sorted table; alpha is outside the metric so a translucent red still reads 'red' at distance zero where name_of honestly returns null; nearest_name reads the same word as nearest; and the same color reads the same name and distance every time\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: color_nearest selftest\n", .{});
+    return 1;
+}
