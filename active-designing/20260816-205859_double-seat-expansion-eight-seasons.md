@@ -37,7 +37,7 @@ The device family, buildable from honest parts.
 The finance-and-receipts spine for activist musicians and vegan artists.
 
 - **The press release** -- adapt the *Something to Give From* memo (authored `20260812` by the companion agent) into a **Linengrow magazine** press piece, Radiant register.
-- **Dimeroll -> Dimeroll** -- a **breach rename** (Keaton bought `dimeroll.com`). Dimeroll's entity books (Season 2, Journey 8) already stand; Dimeroll is the born name they carry forward. **Cairn required** (see the breach queue).
+- **Dimeroll -> Dimeroll** -- a **breach rename EXECUTED `20260817`** (Keaton bought `dimeroll.com`). The entity books (Season 2, Journey 8) stand; Dimeroll is the born name they now carry. **Cairn required** (see the breach queue).
 - The rail itself: USDC/USDY on Solana, scheduled gifts, quiet Treasury-backed growth, **zero-knowledge donation receipts**, Passes-style supporter circles, the wider veganic supply-chain garden, Harvey-grade legal + OpenEvidence-grade health floors as horizons.
 - **Sports-team HR vertical** *(new -- from the horizon ledger)* -- roster / team-player-management software for a sports club (e.g. an MLS or NBA/WNBA org) reads as a **client vertical** of Linengrow PBC's HR & accounting (WADE) and the Dimeroll books, not a season of its own. *Horizon; a go-to-market leap, Keaton's business call.*
 
@@ -64,7 +64,7 @@ The finance-and-receipts spine for activist musicians and vegan artists.
 
 - **Skate "interface"** -- a changeable feature in the shape of **"outfit"** (an interface a keeper swaps). **Gratitude** to the interfaces of **Substack** and **Instagram** (with the open **Photos** module), siloed; choose **non-trademark-infringing** interface names for those SLCs only.
 - **Council sky -> Constel sky** -- a **breach rename** after *constellation* (Keaton bought `constel.net`; `.org`/`.com` unavailable). *Constel* is the odd sky. **Cairn required.**
-- **Namespace priority shift** -- `.com` now outranks `.sol` / `.sui` for Dimeroll/Dimeroll purchases; the Siya Fund LLC portfolio of `.sol`/`.sui` names is leveraged, not led-with.
+- **Namespace priority shift** -- `.com` now outranks `.sol` / `.sui` for Dimeroll purchases; the Siya Fund LLC portfolio of `.sol`/`.sui` names is leveraged, not led-with.
 - **Gratitude silos** -- **syntax.sh** and its founder **Emory Jensen**; **ultrametric.ai**. Silo both missions with thanks; find the TAME-harmony/compass-council alignments worth folding into the double-seat.
 - **The queyqwinqkri Twilight theme** -- a sixteenth-and-beyond poetic theme research task (below).
 - **Baton x Chitra** -- refine the baton resins and recursion prompts as an **ASCII representation of the hardware itself**, fused with **Chitra** astrology, inspired by **Cerebras WSE SRAM** and **bismuth**. Multicrystal.
@@ -138,7 +138,7 @@ Three threads across these eight seasons pull toward a growth/commerce posture t
 
 Keaton approved debride / shred / seed-force-update. Honoring that approval **means sequencing it safely**, not firing a history rewrite mid-capture. Each breach below is a **named round of its own**, and each **records a cairn first** ([`../work-in-progress/CAIRNS.md`](../work-in-progress/CAIRNS.md)):
 
-1. **Dimeroll -> Dimeroll** -- global module + doc rename (many inbound sites). Cairn, then re-grow born-named beside the elder, then shred the fossil.
+1. **Dimeroll -> Dimeroll** -- global module + doc rename **EXECUTED `20260817`** (54 files renamed, content repointed, dated logs + counsel kept as testimony; cairn `crux/CAIRNS.md 20260817.173615`).
 2. **`.myc` -> `.kres`** -- contract-notation supersede (also supersedes Sui Move as the tree's contract lang). Cairn.
 3. **Council sky -> Constel sky** -- living-doc + module rename. Cairn.
 4. **Deep debride + seed force-push (*initial public seed*, again)** -- the one-way rung: root-README molt-tracking done first, `sow_witness` GREEN (depersonalized, `twilight/` kept), **cairn mandatory** (a deep rewrite loses its own walk-back), then force-push `grain-os/grain`. **Custody gate #1 -- stays Keaton's hand even with standing approval.** The commit message uses the **"initial public seed"** wording (it reads well).
