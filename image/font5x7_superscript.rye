@@ -1,0 +1,266 @@
+//! image/font5x7_superscript.rye -- the open superscript-digits corpus: the small digits a formula prints high (Season G).
+//!
+//! Season G (Open Media Primitives) - font content for the open glyph atlas image/glyph.rye (gfa1), set beside the
+//! five ASCII corpora (image/font5x7.rye the full-height numerals, image/font5x7_alpha.rye the uppercase,
+//! image/font5x7_lower.rye the lowercase, image/font5x7_punct.rye the punctuation, image/font5x7_symbol.rye the
+//! symbols), the wider-symbol corpora (the box family, the arrows, the block elements, the geometric marks, the
+//! math/technical operators image/font5x7_math.rye, the currency signs image/font5x7_currency.rye), the Greek
+//! letters image/font5x7_greek.rye, and the SUBSCRIPT digits image/font5x7_subscript.rye. This corpus is that
+//! subscript's twin from the other side of the line: the ten SUPERSCRIPT digits a formula RAISES -- the small numbers
+//! an exponent sets above the line (x(2), 10(6)), a footnote marks with, or an ordinal prints (1(st) as 1 raised), at
+//! their real Unicode codepoints, drawn in our own open hand on the same 5x7 body. Each digit sits small and high --
+//! three cells wide over the TOP five rows, the bottom two rows left blank -- so it reads as a superscript beside a
+//! full-height numeral rather than as a second full digit. Where the subscript twin sits low, this one sits high.
+//!
+//! The crux that distinguishes this corpus from its subscript twin is a real Unicode quirk worth proving: the
+//! superscript digits are NOT a contiguous run. The digits one, two, and three sit far below the rest, in the Latin-1
+//! Supplement (U+00B9 superscript one, U+00B2 superscript two, U+00B3 superscript three -- seated there for the old
+//! typewriter and ISO-8859-1 days), while zero and four through nine sit together in the superscripts-and-subscripts
+//! block (U+2070 superscript zero, U+2074..U+2079 four through nine). So this corpus carries an EXPLICIT ascending
+//! codepoint table rather than deriving each from a base the way the subscript run does -- and the table's digit order
+//! is scrambled against its codepoint order: the glyph at the lowest codepoint (U+00B2) is the digit TWO, not the digit
+//! zero. That scramble, and the non-contiguity behind it, are proven on metal here, so a reader trusts the table rather
+//! than assuming a tidy run that the subscript twin has but this corpus does not.
+//!
+//! The source stays plain ASCII (ASCII-first): the codepoints are written as numeric literals (0x00B2 ...) and each
+//! mark is named in an ASCII comment, so no non-ASCII byte enters the file even though the glyphs it builds cover a
+//! non-ASCII range. The drawings ARE the specification: each digit is seven rows of five cells in ASCII line art
+//! ('#' full ink, '.' none) that a reader audits by eye; the coverage bytes are derived from that art, never the
+//! reverse. build_atlas turns the ten drawings into a glyph.GlyphAtlas the gfa1 encoder accepts, so the property that
+//! matters stays provable on metal: decode(encode(atlas)) recovers every glyph byte-for-byte, the digits are present
+//! and distinct, each reads within an honest legibility band, every one sits high (the bottom two rows blank), the
+//! codepoint table is non-contiguous and digit-scrambled, and the family order holds -- the dense superscript eight
+//! out-inks the sparse superscript one, so a formula tells one small raised digit from another. No network, no key, no
+//! funds -- the small digits a surface sets high the day it prints an exponent, on our own open font.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_superscript.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+
+pub const font5x7_superscript_version = "20260817.052704";
+
+/// Every glyph in this corpus shares one 5-wide, 7-tall cell -- the same body the ASCII and wider-symbol corpora carry.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance: the cell width plus one column of daylight, the same advance the sibling corpora carry.
+pub const superscript_advance: u8 = cell_w + 1;
+
+/// The corpus holds exactly the ten superscript digits, zero through nine.
+pub const superscript_count: u32 = 10;
+
+/// Cells per glyph -- the coverage length every digit carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The ten superscript codepoints, strictly ascending -- the order the gfa1 encoder trusts. Each aligns by index with
+/// superscript_art and superscript_digit below. Written as numeric literals so the source stays plain ASCII while the
+/// glyphs cover a non-ASCII range. The run is NOT contiguous and its digit order is scrambled: one, two, and three sit
+/// in the Latin-1 Supplement below the rest, so the table opens on the digit TWO (the lowest codepoint), not the digit
+/// zero:
+///   0x00B2 superscript two, 0x00B3 superscript three, 0x00B9 superscript one,
+///   0x2070 superscript zero, 0x2074 superscript four, 0x2075 five, 0x2076 six, 0x2077 seven, 0x2078 eight, 0x2079 nine.
+const superscript_codepoints = [superscript_count]u32{
+    0x00B2, 0x00B3, 0x00B9, 0x2070, 0x2074, 0x2075, 0x2076, 0x2077, 0x2078, 0x2079,
+};
+
+/// The digit value each codepoint stands for, aligned by index with superscript_codepoints. Named outright because the
+/// codepoint order does not match the digit order -- the scramble a reader would otherwise have to hold in their head.
+const superscript_digit = [superscript_count]u8{
+    2, 3, 1, 0, 4, 5, 6, 7, 8, 9,
+};
+
+/// The ten digits, drawn in the open, in ascending-codepoint order (so index 0 is the digit two, the lowest codepoint).
+/// Each is seven rows of five cells; '#' ink, '.' background. A reader audits every digit here by eye, and the coverage
+/// bytes are lifted from this art, never guessed. Each digit sits three cells wide (columns 1..3) over the TOP five rows
+/// (rows 0..4), the bottom two rows left blank, so the digit reads small and high -- a superscript beside a full-height
+/// numeral, and the mirror of the subscript twin that sits low.
+const superscript_art = [superscript_count][cell_h][]const u8{
+    .{ ".###.", "...#.", ".###.", ".#...", ".###.", ".....", "....." }, // U+00B2 superscript two
+    .{ ".###.", "...#.", ".###.", "...#.", ".###.", ".....", "....." }, // U+00B3 superscript three
+    .{ "..#..", ".##..", "..#..", "..#..", ".###.", ".....", "....." }, // U+00B9 superscript one
+    .{ ".###.", ".#.#.", ".#.#.", ".#.#.", ".###.", ".....", "....." }, // U+2070 superscript zero
+    .{ ".#.#.", ".#.#.", ".###.", "...#.", "...#.", ".....", "....." }, // U+2074 superscript four
+    .{ ".###.", ".#...", ".###.", "...#.", ".###.", ".....", "....." }, // U+2075 superscript five
+    .{ ".###.", ".#...", ".###.", ".#.#.", ".###.", ".....", "....." }, // U+2076 superscript six
+    .{ ".###.", "...#.", "..#..", ".#...", ".#...", ".....", "....." }, // U+2077 superscript seven
+    .{ ".###.", ".#.#.", ".###.", ".#.#.", ".###.", ".....", "....." }, // U+2078 superscript eight
+    .{ ".###.", ".#.#.", ".###.", "...#.", ".###.", ".....", "....." }, // U+2079 superscript nine
+};
+
+/// Lift one digit's ASCII art into a freshly allocated coverage grid of exactly cell_area bytes: 255 for ink,
+/// 0 for background. The art's own shape is asserted, so a mistyped row is a stopped line rather than a bad glyph.
+fn coverage_from_art(allocator: std.mem.Allocator, art: [cell_h][]const u8) ![]u8 {
+    // invariant: a coverage grid is exactly the shared cell area, within the atlas ceiling.
+    assert(cell_area >= 1);
+    assert(cell_area <= glyph.coverage_max);
+    const cov = try allocator.alloc(u8, cell_area);
+    var idx: u32 = 0;
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        const row = art[r];
+        // invariant: every drawn row is exactly the cell width -- the art matches the grid.
+        assert(row.len == cell_w);
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            cov[idx] = if (row[c] == '#') 255 else 0;
+            idx += 1;
+        }
+    }
+    // invariant: the whole grid was filled, no cell left unwritten.
+    assert(idx == cell_area);
+    return cov;
+}
+
+/// Build the superscript-digits atlas: ten glyphs at the named ascending codepoints, sharing the 5x7 cell and advance.
+/// The gfa1 encoder accepts the result directly (ascending codepoints, coverage length == cell area).
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the corpus is the ten superscript digits and no more.
+    assert(superscript_count == 10);
+    assert(cell_area == 35);
+    const glyphs = try allocator.alloc(glyph.Glyph, superscript_count);
+    var i: u32 = 0;
+    var last_cp: u32 = 0;
+    while (i < superscript_count) : (i += 1) {
+        const cp = superscript_codepoints[i];
+        // invariant: codepoints are strictly ascending -- the ordering the gfa1 encoder trusts.
+        assert(i == 0 or cp > last_cp);
+        last_cp = cp;
+        const cov = try coverage_from_art(allocator, superscript_art[i]);
+        glyphs[i] = glyph.Glyph{
+            .codepoint = cp,
+            .advance = superscript_advance,
+            .coverage = cov,
+        };
+    }
+    // invariant: the last codepoint is superscript nine (U+2079) -- the table ends where this set ends.
+    assert(glyphs[superscript_count - 1].codepoint == 0x2079);
+    return glyph.GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- the legibility signal a blank glyph would fail.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+/// The ink count of a codepoint's glyph in the built atlas -- the reader the family-order proof uses.
+fn ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return ink_count(g.coverage);
+    return error.SuperscriptDigitMissing;
+}
+
+// --- selftest: build the superscript atlas, round-trip it through gfa1, prove all present, distinct, legible ---------
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built atlas is the ten-digit corpus at the shared cell.
+    assert(glyph_count == superscript_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // Ten present digits: every one looks up, carries the shared advance; a full-height ASCII digit misses (a superscript
+    // is a distinct codepoint, never the same point as '2').
+    var d: u32 = 0;
+    while (d < superscript_count) : (d += 1) {
+        const cp = superscript_codepoints[d];
+        if (back.lookup(cp)) |g| {
+            assert(g.codepoint == cp);
+            assert(g.advance == superscript_advance);
+        } else return error.SuperscriptDigitMissing;
+    }
+    if (back.lookup('2')) |_| return error.NonSuperscriptFound else {}
+
+    // Distinctness: no two digits share identical coverage -- ten digits differ (catches a copy slip between look-alikes
+    // like the two and the three).
+    var a: u32 = 0;
+    while (a < superscript_count) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b < superscript_count) : (b += 1) {
+            if (std.mem.eql(u8, atlas.glyphs[a].coverage, atlas.glyphs[b].coverage)) return error.SuperscriptDigitsNotDistinct;
+        }
+    }
+
+    // Legibility: each digit's ink count sits inside an honest band. The floor sits where the superscript seven (its
+    // lightest digit) still reads, the ceiling where the superscript eight (its densest) still resolves as a small digit,
+    // not a block.
+    const ink_min: u32 = 5;
+    const ink_max: u32 = 18;
+    var lo: u32 = cell_area;
+    var hi: u32 = 0;
+    var k: u32 = 0;
+    while (k < superscript_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (n < ink_min or n > ink_max) return error.SuperscriptDigitIllegible;
+        if (n < lo) lo = n;
+        if (n > hi) hi = n;
+    }
+    // invariant: the observed ink band stayed inside the honest bounds.
+    assert(lo >= ink_min);
+    assert(hi <= ink_max);
+
+    // Family order: the dense superscript eight out-inks the sparse superscript one -- what makes the set a true numeral
+    // family rather than ten unrelated drawings, and what lets a formula tell a small eight from a small one.
+    if (!(try ink_of(&atlas, 0x2078) > try ink_of(&atlas, 0x00B9))) return error.EightOrderWrong; // eight > one
+
+    // Every superscript sits in the TOP five rows: the bottom two rows carry no ink, so the digit reads high -- the
+    // property that makes it a superscript rather than a second full-height numeral, and the mirror of the subscript
+    // twin whose TOP two rows are the blank ones.
+    var g: u32 = 0;
+    while (g < superscript_count) : (g += 1) {
+        const cov = atlas.glyphs[g].coverage;
+        // invariant: the last two rows (the bottom 2 * cell_w cells) are blank for every digit.
+        var col: u32 = (cell_h - 2) * @as(u32, cell_w);
+        while (col < cell_area) : (col += 1) {
+            if (cov[col] != 0) return error.SuperscriptNotRaised;
+        }
+    }
+
+    // Non-contiguous, digit-scrambled: the real Unicode quirk this corpus proves, and what sets it apart from the tidy
+    // subscript run. The table is NOT a contiguous run (some consecutive pair jumps by more than one -- the Latin-1 gap
+    // between superscript one at U+00B9 and superscript zero at U+2070), and the lowest codepoint carries the digit TWO,
+    // not the digit zero -- so a reader must trust the explicit table rather than assume a base-derived run.
+    var found_gap = false;
+    var p: u32 = 1;
+    while (p < superscript_count) : (p += 1) {
+        if (superscript_codepoints[p] > superscript_codepoints[p - 1] + 1) found_gap = true;
+    }
+    if (!found_gap) return error.SuperscriptRunUnexpectedlyContiguous;
+    // invariant: the corpus opens on the digit two at its lowest codepoint -- the scramble, proven not assumed.
+    if (superscript_digit[0] != 2) return error.SuperscriptOrderNotScrambled;
+
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof.
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-superscript: {d} superscript digits U+00B2,U+00B3,U+00B9,U+2070,U+2074..U+2079 at {d}x{d} round-trip byte-identical; all present, distinct, legible (ink {d}..{d} of {d}), all raised to the top five rows; codepoints non-contiguous and digit-scrambled (opens on two); eight>one holds; encoded {d} bytes, raw {d}\n", .{
+        glyph_count, cell_w, cell_h, lo, hi, cell_area, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_superscript selftest\n", .{});
+    return 1;
+}

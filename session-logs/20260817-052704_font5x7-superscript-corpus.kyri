@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260817.052704
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title font5x7 superscript-digits corpus, GREEN
+prompt autonomous loop -- take the next agent-doable lap Lindy-first crux-first; read the road-ahead docs; one rota doc per lap; send often; stop at custody gates
+think Read crux/REMEMBER.md (nib 7cd38076ad), the 1024-round itinerary, the eight-season double-seat, and the crypto/decision-wave doc. Live edge is Season G Open Media Primitives -- the font5x7 corpus march, one glyph corpus per lap.
+think Crux pick: the subscript-digits corpus landed last lap (nib 7cd38076ad, rota item 5). Its exact companion is the SUPERSCRIPT digits -- the twin from the other side of the line. High coherence with the just-finished work, small and tractable, genuinely Lindy (an open font read for years).
+think The distinguishing crux over subscript: superscript codepoints are famously NON-contiguous -- one/two/three sit in the Latin-1 Supplement (U+00B9,U+00B2,U+00B3), zero and four-through-nine in the superscripts block (U+2070,U+2074..U+2079). So the corpus carries an explicit ascending table (greek's pattern) rather than base-derivation (subscript's pattern), and the digit order is scrambled against codepoint order (opens on the digit two). Proved both on metal.
+think Lap index math: geometric read rota item 27, then boxarc=1, math=2, currency=3, greek=4, subscript=5 -- so this lap reads item 6, foundations/20260814-071700_hardware-and-right-to-repair.md. Read it: Season A stands proven in software and waits on honest metal; this corpus is more open font content proven before any board.
+obs Mirrored the subscript twin exactly: same digit shapes moved from the bottom five rows to the top five, the blank-rows check flipped from top-two to bottom-two. Reused greek's explicit codepoint-table shape for the non-contiguous run. Ten digits, ink 7..13 of 35, eight>one holds, all raised, table non-contiguous and scrambled.
+obs GREEN on first metal run, no red. tame_style_check bans clean, width-check exit 0, both files plain 7-bit ASCII (numeric codepoint literals -- the ascii-first font-table exception). README lagged math/currency/greek/subscript; stayed bounded (ratchet not sweep) and added one coherent subscript+superscript twin bullet rather than backfilling all four.
+loom witness=font5x7_superscript_witness glyphs=10 cell=5x7 ink_lo=7 ink_hi=13 encoded_bytes=384 raw_bytes=350
+file image/font5x7_superscript.rye the open superscript-digits corpus -- ten digits high on the 5x7 body, non-contiguous scrambled codepoint table
+file tools/font5x7_superscript_witness.rish proves the corpus on metal -- round-trip, present/distinct/legible/raised, non-contiguous, eight>one
+file image/README.md added the off-baseline digit-twins bullet (subscript + superscript) beside the geometric corpus, docs synced with the code
+file crux/REMEMBER.md new Git nib for the superscript corpus, subscript demoted to Prior Git nib in the history chain
+recommend keep-going the next font corpus lap continues the open-media family (fraction glyphs, or the superscript letters an ordinal marks with); Season G climbs one proven corpus per lap
