@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260817.035009
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title scooter_channel r1 -- permissioned channel, append-only journal, derived-unread inbox
+prompt autonomous loop -- next agent-doable lap Lindy-first crux-first, Rye prioritized, send often
+think Read REMEMBER, the 1024-round itinerary, the eight-season double-seat, and the crypto decision-wave. The timed-overlay open-media family is capstoned (player_hud); the crypto surface stands WHOLE (do not reopen without a named gap). Next Lindy-first crux among agent-doable work: the terminal family the eight-season map names -- Dexter (drawn TTY, floor already in linengrow/) and Scooter (permissioned CLI chat on Pond), which had NO file yet.
+think Council rota this lap: lap index 1153 mod 27 = 19 -> item 19, context/KYRI.md (the standing voice; four voices -- Lattice/Scribble/Lantern/Ember -- and measurement beats memory, witness before narrative). Read whole.
+think Scooter's heart is its channel model (plan build round 6): a permissioned join, an append-only journal, a per-member unread inbox. Pure bounded Rye, provable on metal with no network/key/funds -- the highest-Lindy still-tractable move. Studied the proven elders pond/apps/skate_circle.rye and skate_group.rye (bounded state machine, named errors, demo keeper points, selftest speaks GREEN) and mirrored their exact idiom.
+think Design self-approved: active-designing/20260817-035009_scooter-channel-model-crux.md. Model: Channel opens with a founding host (seat zero); only the host admits (NotHost otherwise); a stranger can neither post nor read (NotMember). post appends one Post (author, strictly ascending seq, bounded text held byte-for-byte). unread_count is DERIVED post_count-cursor, never stored; a late joiner's cursor starts at post_count so history is not unread; catch_up advances the cursor, which is monotone and never rewinds. Bounded on every axis (ChannelFull, JournalFull, TextTooLong).
+obs GREEN on the first metal run. tame_style_check bans clean (no scooter file in any ratchet list), width-check exit 0, all new prose plain ASCII. Fixed one Zig lint before build -- an unmutated array bound was declared const rather than var.
+obs Crux proven checkable: a non-host admit refused NotHost; a stranger's post refused NotMember and left the journal untouched (before == after); three posts carried seqs 0,1,2 ascending, each text read back byte-for-byte; a member admitted after two posts started at 0 unread, each post raised a caught-up member by exactly one, catch_up zeroed it; ChannelFull/TextTooLong/JournalFull each refused by name.
+obs Single-stranded: mirrors the skate state-machine pattern; invents no storage, transport, or identity. Signing each post (r2, Kumara), the Dexter drawn frame, and the Comlink transport between two Constel fake piers are named later rungs; a channel served over the wire reaches the serve gate -- Keaton's hand.
+file active-designing/20260817-035009_scooter-channel-model-crux.md self-approved design read for the round
+file pond/apps/scooter_channel.rye the first Scooter file -- permissioned channel, append-only journal, derived-unread inbox
+file tools/scooter_channel_witness.rish builds the module and asserts the selftest speaks GREEN over the four cruxes
+recommend keep-going -- the next Scooter rung is the signed post (r2, Kumara), mirroring skate_circle_signed; the drawn-frame and Comlink transport rungs follow, transport reaching the serve gate.

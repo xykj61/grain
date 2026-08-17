@@ -1,0 +1,335 @@
+//! pond/apps/scooter_channel.rye -- Scooter, Rung 1: a permissioned channel with an append-only
+//! journal and a per-member unread inbox. The first file of the Scooter CLI chat family.
+//!
+//! Season G (Open Media Primitives) -- the terminal family. Dexter owns the drawn TTY; Scooter is the
+//! permissioned command-line chat that runs on it, over Comlink and on Pond. This rung draws its heart:
+//! the channel model every later rung (the drawn frame, the signed post, the Comlink transport) stands on.
+//! Design read: active-designing/20260817-035009_scooter-channel-model-crux.md
+//! Pattern elders: pond/apps/skate_circle.rye, pond/apps/skate_group.rye -- the same bounded state machine.
+//!
+//! The crux is three honest properties held at once:
+//!   - Permissioned join. A channel opens with a founding host. Only the host admits a keeper; a stranger
+//!     who was never admitted can neither post nor read. Consent is the host's explicit act -- presence is
+//!     never default, exactly as Skate rules it.
+//!   - Append-only journal. A member's post appends one Post -- author, a strictly ascending sequence
+//!     number, and bounded text held byte-for-byte. The journal only grows; a post is never mutated or
+//!     dropped; the seq is monotone by construction.
+//!   - Derived-unread inbox. Each member carries a read cursor. unread_count is DERIVED (post_count minus
+//!     the cursor), never stored, so it cannot drift from the journal. A keeper admitted after N posts
+//!     starts with a cursor at N -- they see only messages from when they joined. catch_up advances the
+//!     cursor to the journal end (clears the inbox); the cursor is monotone and never rewinds.
+//!
+//! Facts only, custody-first: it records the facts of a conversation and holds nothing, opens no network,
+//! signs nothing, and moves no funds (a channel served over the wire reaches the serve gate -- Keaton's
+//! hand; a signed post is the next rung). Demo keeper points only.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build pond/apps/scooter_channel.rye -femit-bin=pond/bin/scooter-channel
+//!   pond/bin/scooter-channel selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const scooter_channel_version = "20260817.035009";
+
+/// A channel seats at most this many keepers -- a bounded conversation, not a whole network.
+pub const max_members: u32 = 32;
+
+/// A dev channel holds at most this many posts -- power of two, bounded so the journal never grows unbounded.
+pub const max_posts: u32 = 256;
+
+/// A single post carries at most this many text bytes -- refuse an over-long post rather than truncate it.
+pub const max_text: u32 = 256;
+
+pub const ChannelError = error{
+    NotHost, // only the founding host admits a keeper -- a stranger cannot seat themselves
+    AlreadyMember, // this keeper already holds a seat -- a seat is granted once
+    ChannelFull, // the roster is at its bound -- refuse rather than drop a keeper
+    NotMember, // only a member posts or reads -- a stranger is refused
+    TextTooLong, // a post exceeds the bounded text length -- refuse rather than truncate
+    JournalFull, // the journal is at its bound -- refuse rather than drop a post
+    NoSuchPost, // a seq names no post held in the journal
+};
+
+/// One entry in the append-only journal: who wrote it, its monotone sequence number, and the text held
+/// byte-for-byte. A post is written once and never mutated -- the journal only ever grows past it.
+pub const Post = struct {
+    author: u32,
+    seq: u32,
+    text: [max_text]u8 = [_]u8{0} ** max_text,
+    text_len: u32 = 0,
+
+    /// The text as it was posted -- exactly the bytes written, never more than the buffer holds.
+    pub fn body(self: *const Post) []const u8 {
+        // invariant: the held length never claims more than the buffer holds.
+        assert(self.text_len <= max_text);
+        // invariant: a post's sequence number is a real journal index, under the bound.
+        assert(self.seq < max_posts);
+        return self.text[0..self.text_len];
+    }
+};
+
+/// A permissioned conversation: the founding host, the keepers the host has admitted, the append-only
+/// journal of posts, and a per-member read cursor (index-aligned with the roster). A member's unread
+/// count is DERIVED from post_count and its cursor -- never stored, so it cannot drift from the journal.
+// Invariant: member_count in 1..max_members (the host always holds seat zero); post_count <= max_posts.
+pub const Channel = struct {
+    host: u32,
+    members: [max_members]u32 = [_]u32{0} ** max_members,
+    cursors: [max_members]u32 = [_]u32{0} ** max_members,
+    member_count: u32 = 0,
+    posts: [max_posts]Post = undefined,
+    post_count: u32 = 0,
+
+    /// Open a channel with its founding host as the sole first member, its cursor at the empty journal.
+    pub fn open(host: u32) Channel {
+        var c = Channel{ .host = host };
+        c.members[0] = host;
+        c.cursors[0] = 0;
+        c.member_count = 1;
+        // invariant: a fresh channel seats exactly the host and holds no post.
+        assert(c.member_count == 1);
+        assert(c.post_count == 0);
+        return c;
+    }
+
+    /// The roster index of a keeper, or null when they hold no seat. The cursor lives at the same index.
+    pub fn member_index(self: *const Channel, point: u32) ?u32 {
+        // invariant: the roster never exceeds its bound.
+        assert(self.member_count <= max_members);
+        // invariant: the host always holds a seat, so the roster is never empty.
+        assert(self.member_count >= 1);
+        var i: u32 = 0;
+        while (i < self.member_count) : (i += 1) {
+            if (self.members[i] == point) return i;
+        }
+        return null;
+    }
+
+    /// Is this keeper a member -- did the host admit them (or are they the host)?
+    pub fn is_member(self: *const Channel, point: u32) bool {
+        // invariant: membership is exactly holding a roster seat, nothing more.
+        assert(self.member_count <= max_members);
+        return self.member_index(point) != null;
+    }
+
+    /// The host admits a keeper. Only the host may admit (NotHost otherwise -- a stranger cannot seat
+    /// themselves); a taken seat refuses (a seat is granted once); a full roster refuses rather than drop a
+    /// keeper. A new member's cursor starts at the current journal end, so they see only posts from here on.
+    pub fn admit(self: *Channel, caller: u32, candidate: u32) ChannelError!void {
+        if (caller != self.host) return error.NotHost;
+        if (self.is_member(candidate)) return error.AlreadyMember;
+        if (self.member_count >= max_members) return error.ChannelFull;
+        const i = self.member_count;
+        self.members[i] = candidate;
+        self.cursors[i] = self.post_count; // caught up on arrival -- history is not unread
+        self.member_count += 1;
+        // invariant: admitting seated exactly one keeper, within the bound.
+        assert(self.member_count == i + 1);
+        assert(self.member_count <= max_members);
+    }
+
+    /// A member posts text to the journal. Only a member may post (NotMember -- a stranger is refused, and
+    /// the journal is left exactly as it was); the text is bounded (TextTooLong); the journal is bounded
+    /// (JournalFull). Returns the new post's sequence number -- one past the prior last, strictly ascending.
+    pub fn post(self: *Channel, author: u32, text: []const u8) ChannelError!u32 {
+        if (!self.is_member(author)) return error.NotMember;
+        if (text.len > max_text) return error.TextTooLong;
+        if (self.post_count >= max_posts) return error.JournalFull;
+        const seq = self.post_count;
+        var entry = Post{ .author = author, .seq = seq };
+        const n: u32 = @intCast(text.len); // bounded above by max_text, checked at the edge just now
+        var k: u32 = 0;
+        while (k < n) : (k += 1) {
+            entry.text[k] = text[k];
+        }
+        entry.text_len = n;
+        self.posts[seq] = entry;
+        self.post_count += 1;
+        // invariant: the post grew the journal by exactly one, within its bound.
+        assert(self.post_count == seq + 1);
+        assert(self.post_count <= max_posts);
+        return seq;
+    }
+
+    /// The post at a sequence number, or NoSuchPost when the seq names nothing held. A read-only borrow.
+    pub fn get(self: *const Channel, seq: u32) ChannelError!*const Post {
+        if (seq >= self.post_count) return error.NoSuchPost;
+        // invariant: a held post's own seq matches the index it sits at -- the journal is append-only.
+        assert(self.posts[seq].seq == seq);
+        // invariant: the read stays within what the journal actually holds.
+        assert(seq < max_posts);
+        return &self.posts[seq];
+    }
+
+    /// A member's unread count -- DERIVED as the posts past their cursor, never stored. NotMember for a
+    /// stranger. A caught-up member reads zero; the count rises by one for each post made after they read.
+    pub fn unread_count(self: *const Channel, member: u32) ChannelError!u32 {
+        const idx = self.member_index(member) orelse return error.NotMember;
+        const cursor = self.cursors[idx];
+        // invariant: a cursor never runs past the journal end -- unread is a real, non-negative count.
+        assert(cursor <= self.post_count);
+        // invariant: the derived unread is exactly the gap between the journal end and the cursor.
+        assert(self.post_count - cursor <= self.post_count);
+        return self.post_count - cursor;
+    }
+
+    /// A member catches up -- their cursor advances to the journal end, clearing the inbox. The cursor is
+    /// monotone: it only ever moves forward, never rewinds, so a read message never returns to unread.
+    pub fn catch_up(self: *Channel, member: u32) ChannelError!void {
+        const idx = self.member_index(member) orelse return error.NotMember;
+        const before = self.cursors[idx];
+        // invariant: catching up never moves the cursor backward -- reads are monotone.
+        assert(self.post_count >= before);
+        self.cursors[idx] = self.post_count;
+        // invariant: after catching up the member has nothing unread.
+        assert(self.cursors[idx] == self.post_count);
+    }
+};
+
+// --- selftest -----------------------------------------------------------
+
+// Demo keeper points -- plain identifiers for the pure rule; r2 binds each to a settled Kumara identity.
+const host_key: u32 = 700;
+const ada: u32 = 101;
+const bo: u32 = 202;
+const stranger: u32 = 909;
+
+/// Only the host admits, and a stranger who was never admitted can neither post nor read -- and a refused
+/// post leaves the journal exactly as it was, not one byte landed.
+fn permissioned_join_holds() !void {
+    var c = Channel.open(host_key);
+
+    // A non-host cannot admit -- a stranger cannot seat themselves or a friend.
+    const usurped = c.admit(ada, bo);
+    assert(usurped == error.NotHost);
+    assert(!c.is_member(bo));
+
+    // The host admits Ada; Ada is a member, the stranger is not.
+    try c.admit(host_key, ada);
+    assert(c.is_member(ada));
+    assert(!c.is_member(stranger));
+
+    // A stranger's post is refused, and the journal is unchanged -- no byte lands.
+    const before = c.post_count;
+    const refused = c.post(stranger, "i was never asked");
+    assert(refused == error.NotMember);
+    assert(c.post_count == before);
+
+    print("scooter_channel: only the host admits; a stranger's post refused NotMember and left the journal untouched.\n", .{});
+}
+
+/// The journal is append-only: seqs ascend 0,1,2 strictly, each post's text reads back byte-for-byte, and
+/// the count only grows.
+fn journal_is_append_only() !void {
+    var c = Channel.open(host_key);
+    try c.admit(host_key, ada);
+
+    const s0 = try c.post(ada, "hello");
+    const s1 = try c.post(host_key, "hi ada");
+    const s2 = try c.post(ada, "");
+    assert(s0 == 0);
+    assert(s1 == 1);
+    assert(s2 == 2);
+    assert(c.post_count == 3);
+
+    // Each post reads back byte-for-byte, authored by whoever wrote it.
+    const p0 = try c.get(s0);
+    assert(std.mem.eql(u8, p0.body(), "hello"));
+    assert(p0.author == ada);
+    const p1 = try c.get(s1);
+    assert(std.mem.eql(u8, p1.body(), "hi ada"));
+    assert(p1.author == host_key);
+    const p2 = try c.get(s2);
+    assert(p2.body().len == 0); // an empty post is a real, distinct entry
+
+    // A seq past the journal end names nothing held.
+    const missing = c.get(c.post_count);
+    assert(missing == error.NoSuchPost);
+
+    print("scooter_channel: three posts carried seqs 0,1,2 ascending; each text read back byte-for-byte, append-only.\n", .{});
+}
+
+/// The unread inbox is derived: a member admitted after posts already stand starts caught up; each new
+/// post raises unread by exactly one; catch_up zeroes it; the cursor never rewinds.
+fn unread_inbox_is_derived() !void {
+    var c = Channel.open(host_key);
+    try c.admit(host_key, ada);
+
+    // Two posts stand before Bo joins.
+    _ = try c.post(ada, "one");
+    _ = try c.post(host_key, "two");
+
+    // Bo joins caught up -- history is not unread.
+    try c.admit(host_key, bo);
+    assert(try c.unread_count(bo) == 0);
+
+    // Ada, who has read nothing, has both posts unread.
+    assert(try c.unread_count(ada) == 2);
+
+    // A new post raises every caught-up member by exactly one.
+    _ = try c.post(ada, "three");
+    assert(try c.unread_count(bo) == 1);
+    assert(try c.unread_count(ada) == 3);
+
+    // Bo catches up -- the inbox clears; a later post is the only thing unread again.
+    try c.catch_up(bo);
+    assert(try c.unread_count(bo) == 0);
+    _ = try c.post(host_key, "four");
+    assert(try c.unread_count(bo) == 1);
+
+    // A stranger has no inbox at all.
+    const no_inbox = c.unread_count(stranger);
+    assert(no_inbox == error.NotMember);
+
+    print("scooter_channel: unread is derived post_count-cursor; a late joiner starts at 0, each post adds one, catch_up clears.\n", .{});
+}
+
+/// The channel is bounded on every axis -- a full roster, a full journal, and an over-long post each
+/// refuse by name rather than drop a keeper, a post, or a byte.
+fn bounds_refuse_by_name() !void {
+    var c = Channel.open(host_key);
+
+    // Fill the roster to its bound (the host already holds seat zero).
+    var n: u32 = 0;
+    while (n < max_members - 1) : (n += 1) {
+        try c.admit(host_key, 1000 + n);
+    }
+    const overflow = c.admit(host_key, 9999);
+    assert(overflow == error.ChannelFull);
+
+    // An over-long post refuses rather than truncate.
+    const big = [_]u8{'x'} ** (max_text + 1);
+    const too_long = c.post(host_key, big[0..]);
+    assert(too_long == error.TextTooLong);
+
+    // Fill the journal to its bound, then refuse the next post.
+    var full = Channel.open(host_key);
+    var m: u32 = 0;
+    while (m < max_posts) : (m += 1) {
+        _ = try full.post(host_key, "x");
+    }
+    const journal_full = full.post(host_key, "one more");
+    assert(journal_full == error.JournalFull);
+
+    print("scooter_channel: a full roster refused ChannelFull, an over-long post TextTooLong, a full journal JournalFull.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try permissioned_join_holds();
+    try journal_is_append_only();
+    try unread_inbox_is_derived();
+    try bounds_refuse_by_name();
+    print("scooter_channel: version {s}\n", .{scooter_channel_version});
+    print("GREEN: scooter_channel r1; only the host admits, the journal is append-only, and every member's unread inbox is derived -- never stored.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "scooter-channel"))) {
+        return run_selftest();
+    }
+    return run_selftest();
+}
