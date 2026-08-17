@@ -11,8 +11,11 @@
 # lays out covered; word-wrap breaks a paragraph at space boundaries so each line stays within a max width, and every
 # wrapped span's stated width equals a fresh measure of that span; a word wider than the max takes its own line whole;
 # the break-wrap companion (wrap_lines_break) instead SPLITS an over-wide word at a glyph boundary so no line runs past
-# the max and no glyph is lost; and an uncovered byte (a tab control char) refuses BY NAME (UncoveredCodepoint), a zero
-# max by name (MaxWidthTooSmall), rather than painting a silent hole or looping forever. No network, no key, no funds.
+# the max and no glyph is lost; justify (justify_line) flushes a laid line to a wider target by spreading the slack
+# across its interior word gaps, the remainder to the first gaps, a single-word line left untouched; and an uncovered
+# byte (a tab control char) refuses BY NAME (UncoveredCodepoint), a zero max by name (MaxWidthTooSmall), a too-tight
+# justify target by name (JustifyTargetTooSmall), rather than painting a silent hole or looping forever. No network,
+# no key, no funds.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/text_layout_witness.rish
@@ -48,4 +51,7 @@ assert (trim wrap.out) == "yes" else "text-layout: word-wrap did not break a lin
 let split = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'break-wrap splits' && echo yes"]
 assert (trim split.out) == "yes" else "text-layout: break-wrap did not split an over-wide word within the max"
 
-say "text-layout: GREEN -- the fonts become usable geometry; a line lays out at proven pen origins and width, a paragraph word-wraps to a max width with honest per-line widths, an over-wide word splits at a glyph boundary within the max with no glyph lost, the printable band lays clean, and an uncovered byte or a zero max refuses by name."
+let justify = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'justify flushes' && echo yes"]
+assert (trim justify.out) == "yes" else "text-layout: justify did not flush a line's interior gaps to the target width"
+
+say "text-layout: GREEN -- the fonts become usable geometry; a line lays out at proven pen origins and width, a paragraph word-wraps to a max width with honest per-line widths, an over-wide word splits at a glyph boundary within the max with no glyph lost, justify flushes a line's interior gaps to a wider target with a single word left untouched, the printable band lays clean, and an uncovered byte, a zero max, or a too-tight justify target refuses by name."
