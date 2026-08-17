@@ -1,0 +1,215 @@
+//! pond/apps/dexter_shell.rye -- Dexter, the prompt session: an editable line married to its history.
+//!
+//! Season G (Open Media Primitives) -- the terminal family. dexter_line.rye holds one editable line; the
+//! dexter_history.rye ring remembers the committed ones. This module weds them into the prompt state machine
+//! a keeper actually drives: type into the line, submit it (remember it, clear the line for the next), and
+//! walk history with up/down -- recalling an older line INTO the editable line to run or edit again. It is
+//! pure composition over both modules' public APIs (neither is touched), and held pure: no raw terminal, no
+//! escape codes, and no network. The live TTY that reads real keystrokes is the last rung; this is its floor.
+//! Pattern elder: pond/apps/quin_host.rye -- one bounded entry gathering the pieces beneath it.
+//!
+//! The crux is the honest recall round-trip, with a draft never lost:
+//!   - Submit remembers and clears. submit commits the current line to history and empties the line, exactly
+//!     as pressing Enter runs a command and drops you to a fresh prompt.
+//!   - Up/down recall INTO the line. up loads the previous committed line into the editable line (to run or
+//!     edit again); down loads the next; each replaces the line's contents, cursor at the end.
+//!   - The draft is stashed, never lost. Stepping from the live edge into history saves the line you were
+//!     composing; stepping back down to the live edge restores it -- so browsing history never eats a draft.
+//!   - Past either end is refused by name (NoEarlier / NoLater), never a silent no-op.
+//!
+//! Facts only, custody-first: it holds a line and its history and nothing else -- no network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build pond/apps/dexter_shell.rye -femit-bin=pond/bin/dexter-shell
+//!   pond/bin/dexter-shell selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const line = @import("dexter_line.rye");
+const history = @import("dexter_history.rye");
+
+pub const dexter_shell_version = "20260817.043600";
+
+/// Replace an editable line's contents with the bytes of a remembered entry, cursor at the end. The bytes
+/// come from a committed line, so they are printable by construction; insert still refuses any that are not.
+fn load_line(l: *line.Line, bytes: []const u8) line.LineError!void {
+    // invariant: a recalled line never exceeds the editable line's bound.
+    assert(bytes.len <= line.max_line);
+    l.clear();
+    var i: u32 = 0;
+    while (i < bytes.len) : (i += 1) {
+        try l.insert(bytes[i]);
+    }
+    // invariant: the whole entry loaded, the cursor resting past the last byte.
+    assert(l.len == bytes.len);
+    assert(l.cursor == l.len);
+}
+
+/// A prompt session: the line being composed, the history of committed lines, and a stashed draft that
+/// preserves an in-progress line while the keeper browses history. `stashed` is true exactly while a draft
+/// is held (set stepping up from the live edge, cleared restoring it or on submit).
+pub const Prompt = struct {
+    line: line.Line = .{},
+    hist: history.History = .{},
+    draft: line.Line = .{},
+    stashed: bool = false,
+
+    /// A fresh prompt: an empty line, an empty history, no stashed draft.
+    pub fn open() Prompt {
+        const p = Prompt{};
+        // invariant: a fresh prompt composes nothing and remembers nothing.
+        assert(p.line.len == 0);
+        assert(p.stashed == false);
+        return p;
+    }
+
+    /// Type a whole string into the line at the cursor -- the caller's keystrokes.
+    pub fn type_str(self: *Prompt, s: []const u8) line.LineError!void {
+        // invariant: a typed string never exceeds the editable line's bound.
+        assert(s.len <= line.max_line);
+        assert(self.line.len <= line.max_line);
+        try self.line.type_str(s);
+    }
+
+    /// The bytes currently composed in the editable line.
+    pub fn current(self: *const Prompt) []const u8 {
+        // invariant: the line is always within its bound.
+        assert(self.line.len <= line.max_line);
+        return self.line.text();
+    }
+
+    /// Remember the current line and clear it for the next -- pressing Enter. The committed bytes join the
+    /// history ring (dropping the oldest at the cap); any browse ends and any stashed draft is dropped.
+    pub fn submit(self: *Prompt) history.HistoryError!void {
+        // invariant: the line and history are within bounds before the commit.
+        assert(self.line.len <= line.max_line);
+        assert(self.hist.len() <= history.max_history);
+        try self.hist.commit(self.line.text());
+        self.line.clear();
+        self.stashed = false;
+        // invariant: the line is empty and the prompt rests at the live edge.
+        assert(self.line.len == 0);
+        assert(!self.hist.is_browsing());
+    }
+
+    /// Recall the previous committed line into the editable line. Stepping up from the live edge stashes the
+    /// draft first, so it is not lost. Past the oldest is refused (NoEarlier).
+    pub fn up(self: *Prompt) !void {
+        // invariant: the line and history are within bounds before the step.
+        assert(self.line.len <= line.max_line);
+        assert(self.hist.len() <= history.max_history);
+        if (!self.hist.is_browsing()) {
+            // Save the in-progress line before the first step into history.
+            self.draft = self.line;
+            self.stashed = true;
+        }
+        const e = try self.hist.recall_prev();
+        try load_line(&self.line, e.text());
+        // invariant: browsing history means a draft is held to restore.
+        assert(self.stashed);
+    }
+
+    /// Recall the next committed line into the editable line. Stepping off the newest returns to the live
+    /// edge and restores the stashed draft (or an empty line). Already at the live edge is refused (NoLater).
+    pub fn down(self: *Prompt) !void {
+        // invariant: the line and history are within bounds before the step.
+        assert(self.line.len <= line.max_line);
+        assert(self.hist.len() <= history.max_history);
+        const maybe = try self.hist.recall_next();
+        if (maybe) |e| {
+            try load_line(&self.line, e.text());
+        } else {
+            // Back at the live edge: restore the draft the keeper was composing.
+            if (self.stashed) {
+                self.line = self.draft;
+                self.stashed = false;
+            } else {
+                self.line.clear();
+            }
+        }
+        // invariant: at the live edge no draft is outstanding.
+        assert(self.hist.is_browsing() or !self.stashed);
+    }
+};
+
+fn submit_remembers_and_clears() !void {
+    var p = Prompt.open();
+    try p.type_str("echo hi");
+    // Submit remembers the line and clears it for the next.
+    try p.submit();
+    assert(std.mem.eql(u8, p.current(), ""));
+    assert(p.hist.len() == 1);
+    assert(std.mem.eql(u8, p.hist.entry(0).text(), "echo hi"));
+    print("dexter_shell: submit remembers the line in history and clears it for the next.\n", .{});
+}
+
+fn up_down_recall_into_the_line() !void {
+    var p = Prompt.open();
+    try p.type_str("first");
+    try p.submit();
+    try p.type_str("second");
+    try p.submit();
+    // Up recalls the newest, then the older, into the editable line.
+    try p.up();
+    assert(std.mem.eql(u8, p.current(), "second"));
+    try p.up();
+    assert(std.mem.eql(u8, p.current(), "first"));
+    // A recalled line is editable -- backspace shortens it without touching history.
+    try p.line.backspace();
+    assert(std.mem.eql(u8, p.current(), "firs"));
+    assert(std.mem.eql(u8, p.hist.entry(0).text(), "first")); // history unchanged
+    // Down walks back toward newer, then off the newest to the live edge (empty, no draft here).
+    try p.down();
+    assert(std.mem.eql(u8, p.current(), "second"));
+    try p.down();
+    assert(std.mem.eql(u8, p.current(), ""));
+    print("dexter_shell: up and down recall committed lines into the editable line, history untouched.\n", .{});
+}
+
+fn the_draft_is_stashed() !void {
+    var p = Prompt.open();
+    try p.type_str("older");
+    try p.submit();
+    // Compose a fresh line, then browse up -- the draft must survive the trip.
+    try p.type_str("in progress");
+    try p.up();
+    assert(std.mem.eql(u8, p.current(), "older"));
+    // Step back down to the live edge: the draft returns exactly.
+    try p.down();
+    assert(std.mem.eql(u8, p.current(), "in progress"));
+    print("dexter_shell: an in-progress draft is stashed on up and restored on the way back down.\n", .{});
+}
+
+fn recall_bounds_are_named() !void {
+    var p = Prompt.open();
+    try p.type_str("only");
+    try p.submit();
+    // At the live edge, down is refused by name.
+    const at_live = p.down();
+    assert(at_live == error.NoLater);
+    // Up to the single entry, then up again is refused by name.
+    try p.up();
+    assert(std.mem.eql(u8, p.current(), "only"));
+    const past_oldest = p.up();
+    assert(past_oldest == error.NoEarlier);
+    print("dexter_shell: a step past the oldest or past the live edge is refused by name.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try submit_remembers_and_clears();
+    try up_down_recall_into_the_line();
+    try the_draft_is_stashed();
+    try recall_bounds_are_named();
+    print("dexter_shell: version {s}\n", .{dexter_shell_version});
+    print("GREEN: dexter_shell; an editable line married to its history -- submit remembers and clears, up/down recall committed lines into the line, and an in-progress draft is stashed and restored, deterministic every time.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "dexter-shell"))) {
+        return run_selftest();
+    }
+    return run_selftest();
+}

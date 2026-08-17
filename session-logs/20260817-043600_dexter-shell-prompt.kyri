@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260817.043600
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title dexter shell -- the prompt session, line married to history, GREEN
+prompt autonomous loop -- take the next agent-doable lap Lindy-first crux-first, send often, stop at custody gates
+think The editable line (dexter_line) and its history ring (dexter_history) both stand GREEN and sent. The honest next crux is the prompt state machine that weds them -- the session a keeper actually drives: type, submit (remember and clear), and walk history with up/down, recalling a committed line INTO the editable line. Pure composition over both modules' public APIs, ungated, finishable green in one lap.
+think Built pond/apps/dexter_shell.rye: a Prompt holding a Line, a History, and a stashed draft. submit commits the line to history and clears it; up recalls the previous committed line into the line (stashing the in-progress draft on the first step up from the live edge); down recalls the next, and stepping off the newest restores the stashed draft. Past the oldest refuses NoEarlier, past the live edge NoLater -- both bubbling up from the ring unchanged.
+think The draft stash is the completeness the SLC lens asks for: a prompt that ate your half-typed line on up-arrow would be unlovable. Stepping up from the live edge saves the line; stepping back down restores it exactly. load_line replaces the editable line's contents via public insert, so a recalled line arrives editable with the cursor at the end.
+obs GREEN on the first metal run -- no red at all this lap. tame_style_check bans clean (no compound asserts), width-check exit 0, new prose plain ASCII, American spelling. The witness build compiled the unchanged dexter_line and dexter_history, so both prior rungs stand intact -- composition, not modification.
+obs This ties to the grain (rota item 24): values apart, never braided. dexter_shell composes two whole modules through their public APIs, braiding neither -- a value crosses the boundary whole. The prompt is one bounded entry gathering the pieces beneath it, the quin_host shape carried to the terminal.
+obs Rota lap (d27, item 24) read active-designing/20260702-184312_the-grain-and-the-crossing.md -- the grain is the standing commitments a new idea must be cut to fit; composition over tangling is one strand, and this rung leans only on it.
+loom witness=dexter_shell_witness selftest=GREEN selftest_cases=4 composes=dexter_line+dexter_history
+file pond/apps/dexter_shell.rye the prompt session -- submit remembers and clears, up/down recall into the line, the draft stashed and restored
+file tools/dexter_shell_witness.rish builds the module and asserts its selftest speaks GREEN over the four cruxes
+file crux/REMEMBER.md git nib refreshed to the dexter_shell living edge, in the work commit
+file session-logs/README.md newest-first index row prepended
+recommend keep-going the terminal family's next agent-doable rung is the drawn prompt -- rendering the shell's editable line with a visible cursor into scooter_view's bounded frame row (still pure, no raw TTY); the live keystroke reader and the Comlink transport between two Constel piers stay the serve gate -- the maintainer's hand
