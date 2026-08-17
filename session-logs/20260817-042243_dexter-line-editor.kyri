@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260817.042243
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title dexter line editor -- the bounded input line, the terminal's input half, GREEN
+prompt autonomous loop -- read REMEMBER + the three road-ahead docs, take the next agent-doable lap Lindy-first crux-first, send often, stop at custody gates
+think Read the road ahead: REMEMBER (living edge scooter_view r3 at 77b799400c), the 1024-round itinerary, the eight-season double-seat (Season G, the terminal family), and the Rye-first crypto/decision-wave doc. The Dexter/Scooter plan names round 5 next: the line editor.
+think Lindy-first crux-first: scooter_view r3 gave Dexter its OUTPUT half (a channel's journal folded into a bounded 24x80 frame). The card and the drawn-frame design each name the INPUT half -- a live TTY with a cursor -- as Dexter's own later rung. The bounded editable line is the crux beneath it: pure arithmetic over a byte buffer, reused by every prompt the terminal family will ever draw, ungated, finishable green in one lap. The wire between Constel piers stays the serve gate (the maintainer's hand).
+think Built pond/apps/dexter_line.rye: a Line of at most 256 bytes with a cursor, insert (printable ASCII only, shifting the tail right), backspace and delete_forward (shifting the tail left), move_left/right/home/end, and clear. Every operation keeps cursor <= len <= max_line by construction; before/after split the line at the cursor for a prompt to draw. Named errors: LineFull, NonPrintable, CursorAtStart, CursorAtEnd -- refused by name, never a silent no-op.
+obs GREEN on the first metal run. tame_style_check first flagged the selftest's `) == error.` call-seam checks (assert(l.move_right() == error.X)); bound each refused call to a const first (past_end, past_start, overflow, tab, newline, del) matching the scooter_channel house pattern, then bans clean, width-check exit 0. New prose plain ASCII, American spelling.
+obs Additive by construction -- a fresh module beside scooter_view; nothing of the channel, keyed, or view rungs was touched. Held pure: no raw terminal, no escape codes, no network -- the editable line is the floor the live-TTY rung stands on.
+obs Rota lap (d27, item 22) read context/SILO_TECHNIQUE.md -- receive an idea, understand it, set it down in your own vocabulary with the outside names left in the gratitude room. The ncurses/Ghostty/Dill line-editor lessons enter Dexter siloed; the elders are thanked in the plan's gratitude line, never quoted in the code.
+loom witness=dexter_line_witness selftest=GREEN max_line=256 selftest_cases=6
+file pond/apps/dexter_line.rye the bounded editable line -- insert, delete, cursor motion, clear, all held within 0..len
+file tools/dexter_line_witness.rish builds the module and asserts its selftest speaks GREEN over the six cruxes
+file crux/REMEMBER.md git nib refreshed to the dexter_line living edge, in the work commit
+file session-logs/README.md newest-first index row prepended
+recommend keep-going the terminal family's next agent-doable rung is Dexter's history ring (a bounded recall of past lines under a named cap, the second half of plan round 5), then the drawn-terminal cursor rung; the Comlink transport between two Constel piers stays the serve gate -- the maintainer's hand
