@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260817.114500
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title text_panel paint_text_panel_auto_ink -- the second consumer of color.readable_ink
+prompt recur the loop; continue Lindy-first crux-first after the first readable-ink consumer landed, single-stranded, send often
+think The prior lap gave color.readable_ink its first consumer on the terminal grid (render_grid_auto_ink) and left the pointer: another readable-ink consumer, a text_panel auto-inking its caption over its own fill. That is the next Lindy-first crux -- the accessibility floor reaching a second real surface, the framed card a dialog/callout/label draws.
+think text_panel.paint_text_panel took an explicit ink argument. The consumer picks it instead: ink = color.readable_ink(panel.fill), the ground the caption sits on (not the ring). A keeper names only the panel and gets a legible caption -- white on a dark callout, black on a light card.
+think Council rota lap index 12 -> growing-a-language, move 4: diverge by strengthening, not rewriting -- additive, behavior-preserving, proven by a gate. The verb is exactly that: a new pub fn, the elder paint_text_panel untouched and still GREEN, every containment and refusal proof carried through by the delegate.
+think paint_text_panel_auto_ink chooses ink and passes through paint_text_panel. Two positive asserts (ink.a == 255, ink is black or white). No new field, no new codec.
+think Witness proves the pick (white on navy #14143c, black on the warm paper), the byte-for-byte parity with an explicit paint over that same ink (pure composition), and meets_aa on the pick.
+obs GREEN on the first metal run, no reds. The auto-ink card equals the explicit render byte-for-byte, so nothing hides in the wrapper. The elder GREEN substring stayed whole; the witness gained one grep assertion, mirroring the grid lap.
+obs Single-stranded held again: color decides, text_panel paints, neither braided. The readable-ink floor now reaches both the terminal grid and the framed card -- two surfaces, one primitive, no consumer left guessing an ink.
+loom witness=text_panel_auto_ink ink_px=26 ring_px=344 canvas=80x40
+file image/text_panel.rye paint_text_panel_auto_ink -- the second consumer of color.readable_ink; version bumped, GREEN line widened
+file tools/text_panel_witness.rish added the auto-ink grep assertion, elder assertions kept whole
+file crux/REMEMBER.md live edge names the second consumer; Git nib refreshed, prior nib demoted
+recommend keep-going another readable-ink consumer or a fresh Season G / other-season Lindy-first crux
