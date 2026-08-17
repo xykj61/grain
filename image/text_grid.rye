@@ -39,7 +39,7 @@ const text_layout = @import("text_layout.rye");
 const text_paint = @import("text_paint.rye");
 const font_ascii = @import("font5x7_ascii.rye");
 
-pub const text_grid_version = "20260817.091833";
+pub const text_grid_version = "20260817.095023";
 
 /// The column pitch of the grid -- the shared advance every ASCII glyph carries (cell width plus one daylight
 /// column), so a monospace cell is exactly this many pixels wide, its glyph body left-set within it.
@@ -58,6 +58,7 @@ pub const GridError = error{
     GridOutOfBounds, // the grid's painted box would exceed the target buffer -- refuse before a pixel moves
     GridTooLarge, // the rendered image would exceed qoi's pixel ceiling -- refuse rather than allocate past it
     GridFgMismatch, // the per-cell foreground buffer is not exactly cols*rows colours -- a mis-shaped palette, refused
+    GridBgMismatch, // the per-cell background buffer is not exactly cols*rows colours -- a mis-shaped ground, refused
 };
 
 /// The image width a grid of `cols` columns paints into -- one column pitch per cell.
@@ -182,6 +183,82 @@ pub fn paint_grid_fg(
     assert(r == rows);
 }
 
+/// Fill one cell's whole background block -- a `col_pitch` by `cell_h` rectangle whose top-left is (`x0`, `y0`) -- with
+/// the ground colour `bg`, written directly (a straight set of all four bytes, the bottom layer a glyph then composites
+/// over). The caller has proven the whole grid box lands inside the target up front, so every cell rectangle is in
+/// bounds; this helper never checks again. A direct set (rather than a blend) makes a cell's ground exactly `bg`, so a
+/// grid whose every cell shares one ground reproduces solid(bg) byte-for-byte -- the parity the coloured verb rests on.
+fn fill_cell(target: *qoi.Pixmap, x0: u32, y0: u32, cell_h: u32, bg: color.Rgba) void {
+    // invariant: the cell block lands inside the target on both axes -- the caller's up-front box check proved it.
+    assert(x0 + col_pitch <= target.width);
+    assert(y0 + cell_h <= target.height);
+    var y: u32 = 0;
+    while (y < cell_h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < col_pitch) : (x += 1) {
+            const di = (@as(usize, y0 + y) * @as(usize, target.width) + @as(usize, x0 + x)) * 4;
+            target.pixels[di] = bg.r;
+            target.pixels[di + 1] = bg.g;
+            target.pixels[di + 2] = bg.b;
+            target.pixels[di + 3] = bg.a;
+        }
+    }
+}
+
+/// Paint a monospace grid where each cell carries BOTH its own foreground and its own background -- the full coloured
+/// terminal cell, the twin of paint_grid_fg that adds a per-cell ground. `fg` and `bg` each hold one colour per cell
+/// (row-major, exactly cols*rows). For each cell (r, c) the whole cell block is filled bg[r*cols + c] first, then the
+/// glyph is painted in fg[r*cols + c] over that ground -- so a header bar reads white-on-blue, a selected row inverts,
+/// an unread badge highlights, exactly as a real terminal cell holds an ink over a ground. Same all-or-nothing box
+/// check up front (GridOutOfBounds by name before a pixel moves), same monospace placement; a space cell fills its
+/// ground and paints no ink, reserving its column like a blank terminal cell. Because the cells tile the image exactly
+/// (cols column pitches across, rows cell heights down), a uniform bg reproduces render_grid_fg over that same ground.
+pub fn paint_grid_cells(
+    atlas: *const glyph.GlyphAtlas,
+    cells: []const u8,
+    cols: u32,
+    rows: u32,
+    fg: []const color.Rgba,
+    bg: []const color.Rgba,
+    scratch: []text_layout.PlacedGlyph,
+    target: *qoi.Pixmap,
+    origin_x: u32,
+    origin_y: u32,
+) GridError!void {
+    const cell_h = try check_grid(atlas, cells, cols, rows);
+    // invariant: the placement scratch holds a glyph for every column in a row.
+    if (scratch.len < cols) return error.GridScratchTooSmall;
+    // invariant: each palette carries exactly one colour per cell -- computed in u64 so the product cannot wrap.
+    if (@as(u64, fg.len) != @as(u64, cols) * @as(u64, rows)) return error.GridFgMismatch;
+    if (@as(u64, bg.len) != @as(u64, cols) * @as(u64, rows)) return error.GridBgMismatch;
+
+    // The grid's full painted box, in u64 so the sums can never wrap before the bound check refuses -- identical to
+    // paint_grid_fg, since the placement is identical and only the added per-cell ground differs.
+    const box_right: u64 = @as(u64, origin_x) + @as(u64, grid_pixel_width(cols));
+    const box_bottom: u64 = @as(u64, origin_y) + @as(u64, rows) * @as(u64, cell_h);
+    if (box_right > @as(u64, target.width) or box_bottom > @as(u64, target.height)) return error.GridOutOfBounds;
+
+    var r: u32 = 0;
+    while (r < rows) : (r += 1) {
+        const row = cells[r * cols .. r * cols + cols];
+        const laid = text_layout.layout_line(atlas, row, scratch) catch return error.GridCellsMismatch;
+        // invariant: layout placed one glyph per cell, so each column's placement sits at scratch[c].
+        assert(laid.count == cols);
+        const dy: u32 = origin_y + r * cell_h;
+        var c: u32 = 0;
+        while (c < cols) : (c += 1) {
+            // Ground first, then ink over it -- a real terminal cell. The up-front box check proved both land inside.
+            fill_cell(target, origin_x + c * col_pitch, dy, cell_h, bg[r * cols + c]);
+            const ink = fg[r * cols + c];
+            text_paint.paint_placed(atlas, scratch[c .. c + 1], target, origin_x, dy, ink) catch return error.GridOutOfBounds;
+        }
+        // invariant: the inner loop painted exactly every column of this row.
+        assert(c == cols);
+    }
+    // invariant: the loop painted exactly every row of the grid.
+    assert(r == rows);
+}
+
 /// Render a whole monospace grid with a per-cell foreground palette into a fresh image sized exactly to it -- the
 /// coloured-terminal twin of render_grid. The canvas is filled `bg`, then each cell's glyph is painted in its own
 /// `fg` colour. Bounded by qoi's pixel ceiling (GridTooLarge by name); the image round-trips through QOI unchanged.
@@ -207,6 +284,40 @@ pub fn render_grid_fg(
     var pm = try text_paint.solid(allocator, w, h, bg);
     const scratch = try allocator.alloc(text_layout.PlacedGlyph, cols);
     try paint_grid_fg(atlas, cells, cols, rows, fg, scratch, &pm, 0, 0);
+    return pm;
+}
+
+/// Render a whole monospace grid with per-cell foreground AND per-cell background into a fresh image sized exactly to
+/// it -- the full coloured terminal, the verb a surface reaches for when every cell owns both its ink and its ground.
+/// The canvas is allocated, then each cell's block is filled its own `bg` and its glyph painted in its own `fg`; the
+/// cells tile the image exactly, so no base fill shows through. Bounded by qoi's pixel ceiling (GridTooLarge by name);
+/// the image round-trips through QOI unchanged. A uniform `bg` reproduces render_grid_fg over that same ground.
+pub fn render_grid_cells(
+    allocator: std.mem.Allocator,
+    atlas: *const glyph.GlyphAtlas,
+    cells: []const u8,
+    cols: u32,
+    rows: u32,
+    fg: []const color.Rgba,
+    bg: []const color.Rgba,
+) !qoi.Pixmap {
+    _ = try check_grid(atlas, cells, cols, rows);
+    // invariant: each palette carries exactly one colour per cell before any pixel is allocated or painted.
+    if (@as(u64, fg.len) != @as(u64, cols) * @as(u64, rows)) return error.GridFgMismatch;
+    if (@as(u64, bg.len) != @as(u64, cols) * @as(u64, rows)) return error.GridBgMismatch;
+
+    const w: u32 = grid_pixel_width(cols);
+    const h: u32 = grid_pixel_height(atlas, rows);
+    // invariant: the image fits qoi's pixel ceiling -- checked in u64 so the product cannot wrap before refusal.
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    if (total > @as(u64, qoi.qoi_max_pixels)) return error.GridTooLarge;
+
+    // The cells tile the whole image, so every pixel is filled by a cell's own ground -- the base fill is a bounded
+    // birth colour that no cell leaves visible. Black keeps solid()'s contract (a real, opaque canvas) before tiling.
+    const base = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    var pm = try text_paint.solid(allocator, w, h, base);
+    const scratch = try allocator.alloc(text_layout.PlacedGlyph, cols);
+    try paint_grid_cells(atlas, cells, cols, rows, fg, bg, scratch, &pm, 0, 0);
     return pm;
 }
 
@@ -411,6 +522,77 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         } else |e| if (e != error.GridFgMismatch) return error.WrongFgMismatch;
     }
 
+    // Per-cell background: the full coloured terminal cell -- an ink over its OWN ground. First the tiling parity: a
+    // grid rendered with a per-cell fg palette over a UNIFORM white ground reproduces render_grid_fg over that same
+    // white byte-for-byte, because the cells tile the image exactly and a straight ground fill matches solid(white).
+    {
+        const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
+        const blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 };
+        const fgpal = try garden.alloc(color.Rgba, cols * rows);
+        var i: u32 = 0;
+        // invariant: the fg palette is exactly one colour per cell -- the same row-0-red palette as the fg face above.
+        assert(fgpal.len == cols * rows);
+        while (i < fgpal.len) : (i += 1) {
+            fgpal[i] = if (i < cols) red else black; // row 0 red, the rest black
+        }
+        const white_bg = try garden.alloc(color.Rgba, cols * rows);
+        i = 0;
+        while (i < white_bg.len) : (i += 1) white_bg[i] = white;
+
+        const fg_face = try render_grid_fg(garden, &atlas, cells, cols, rows, fgpal, white);
+        const cells_uniform = try render_grid_cells(garden, &atlas, cells, cols, rows, fgpal, white_bg);
+        // invariant: a per-cell render over a uniform ground is the single-ground render, pixel-for-pixel.
+        assert(cells_uniform.same_bytes(&fg_face));
+
+        // Now a real per-cell ground: row 0 painted on a BLUE bar, every other row on white -- a coloured header. The
+        // blue band's every non-inked pixel reads blue; the fg glyphs paint over it. No pixel of the band stays white.
+        const bgpal = try garden.alloc(color.Rgba, cols * rows);
+        i = 0;
+        while (i < bgpal.len) : (i += 1) {
+            bgpal[i] = if (i < cols) blue else white; // row 0 blue bar, the rest white
+        }
+        const termimg = try render_grid_cells(garden, &atlas, cells, cols, rows, fgpal, bgpal);
+        assert(termimg.width == face.width);
+        assert(termimg.height == face.height);
+
+        // Walk row 0's whole pixel band: no pixel is the old white ground (the blue bar covers it), and at least one is
+        // pure blue (the ground shows between the header's glyphs) -- a real coloured cell, ink over its own ground.
+        {
+            var seen_blue = false;
+            var y: u32 = 0;
+            while (y < cell_h) : (y += 1) {
+                var x: u32 = 0;
+                while (x < termimg.width) : (x += 1) {
+                    const ti = (@as(usize, y) * @as(usize, termimg.width) + @as(usize, x)) * 4;
+                    const is_white = termimg.pixels[ti] == 255 and termimg.pixels[ti + 1] == 255 and termimg.pixels[ti + 2] == 255;
+                    // invariant: a coloured header cell never shows the old white ground -- its own blue bar covers it.
+                    assert(!is_white);
+                    if (termimg.pixels[ti] == 0 and termimg.pixels[ti + 1] == 0 and termimg.pixels[ti + 2] == 255) seen_blue = true;
+                }
+            }
+            // invariant: the blue ground shows through the header's daylight, so the ground is truly painted per cell.
+            assert(seen_blue);
+        }
+
+        // The whole blue header band changed against the white ground -- far more than the fg ink alone would touch.
+        const term_changed = changed_pixels(termimg.pixels, ground.pixels);
+        // invariant: the coloured terminal changes at least the whole blue header band (cols pitches by one cell high).
+        assert(term_changed >= cols * col_pitch * cell_h);
+
+        // The coloured terminal is a real portable image -- it round-trips through the open QOI codec byte-for-byte.
+        const tcap = qoi.encoded_bound(termimg.width * termimg.height);
+        const tdst = try garden.alloc(u8, tcap);
+        const tenc = try qoi.encode(&termimg, tdst);
+        const tback = try qoi.decode(garden, tdst[0..tenc.len]);
+        assert(tback.same_bytes(&termimg));
+
+        // A background palette of the wrong length refuses GridBgMismatch by name, before any pixel is allocated.
+        const short_bg = try garden.alloc(color.Rgba, cols * rows - 1);
+        if (render_grid_cells(garden, &atlas, cells, cols, rows, fgpal, short_bg)) |_| {
+            return error.BgMismatchSlipped;
+        } else |e| if (e != error.GridBgMismatch) return error.WrongBgMismatch;
+    }
+
     // Refusals by name: a mis-shaped cells buffer, a zero dimension, a wrong-cell atlas, and a target too small.
     {
         const short = try garden.alloc(u8, cols * rows - 1);
@@ -433,7 +615,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(changed_pixels(tiny.pixels, tiny_before) == 0);
     }
 
-    print("GREEN image-text-grid: a {d}x{d} terminal grid painted into a {d}x{d} image; ink {d} px equals the summed cell coverage, the blank row is ground, a cell block equals its standalone glyph paint, a per-cell palette paints row 0 red while inking the same cells, deterministic, both single-ink and coloured faces round-trip through QOI byte-for-byte, and every mis-shape refuses by name\n", .{
+    print("GREEN image-text-grid: a {d}x{d} terminal grid painted into a {d}x{d} image; ink {d} px equals the summed cell coverage, the blank row is ground, a cell block equals its standalone glyph paint, a per-cell fg palette paints row 0 red while inking the same cells, a per-cell bg over a uniform ground reproduces the single-ground render and over a blue bar paints a real coloured header (no band pixel stays white), deterministic, every face round-trips through QOI byte-for-byte, and every mis-shape refuses by name\n", .{
         cols, rows, face.width, face.height, changed,
     });
     return 0;
