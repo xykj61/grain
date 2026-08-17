@@ -432,6 +432,59 @@ pub fn quantize(c: Rgba, levels: u32) !Rgba {
     };
 }
 
+// --- luminance & contrast (WCAG accessibility floor) ------------------------------------------------------
+
+/// Relative luminance and contrast are computed in fixed point scaled by this factor, so the runtime path
+/// stays integer-only and deterministic. The nonlinear sRGB gamma lives in a comptime table below.
+pub const luminance_scale: u32 = 100_000;
+
+/// The sRGB electro-optical transfer: each 0..255 channel linearized to 0..luminance_scale. The curve is
+/// nonlinear (a fractional power), so it is evaluated once at comptime into a 256-entry table; the runtime
+/// only ever indexes it, holding to the module's integer-only, deterministic discipline.
+const srgb_linear: [256]u32 = blk: {
+    @setEvalBranchQuota(20_000);
+    var table: [256]u32 = undefined;
+    var i: u32 = 0;
+    while (i < 256) : (i += 1) {
+        const cs: f64 = @as(f64, @floatFromInt(i)) / 255.0;
+        const lin: f64 = if (cs <= 0.04045) cs / 12.92 else std.math.pow(f64, (cs + 0.055) / 1.055, 2.4);
+        table[i] = @intFromFloat(lin * @as(f64, @floatFromInt(luminance_scale)) + 0.5);
+    }
+    break :blk table;
+};
+
+/// Relative luminance of a colour (WCAG 2.x), scaled to 0..luminance_scale. Alpha is ignored — luminance is a
+/// property of the three colour channels. Pure black is 0, pure white is luminance_scale.
+pub fn relative_luminance(c: Rgba) u32 {
+    const rl: u64 = srgb_linear[c.r];
+    const gl: u64 = srgb_linear[c.g];
+    const bl: u64 = srgb_linear[c.b];
+    // BT.709 luma weights ×10000 (2126 + 7152 + 722 = 10000), so the weighted sum stays in scale.
+    const y: u64 = (2126 * rl + 7152 * gl + 722 * bl) / 10000;
+    // invariant: a relative luminance never exceeds full scale.
+    assert(y <= luminance_scale);
+    return @intCast(y);
+}
+
+/// The 0.05 luminance offset WCAG adds to both terms, in luminance_scale units (0.05 × 100000).
+const contrast_offset: u32 = 5_000;
+
+/// WCAG contrast ratio between two colours, scaled ×100 (so 21.00 is 2100, 1.00 is 100). The lighter colour's
+/// luminance leads the ratio; order of the arguments does not matter. White on black is the maximum, 2100.
+pub fn contrast_ratio_x100(a: Rgba, b: Rgba) u32 {
+    const la = relative_luminance(a);
+    const lb = relative_luminance(b);
+    const hi: u64 = @as(u64, @max(la, lb)) + contrast_offset;
+    const lo: u64 = @as(u64, @min(la, lb)) + contrast_offset;
+    // invariant: the offset makes the denominator positive, so the divide is always safe.
+    assert(lo > 0);
+    const ratio: u64 = (hi * 100 + lo / 2) / lo;
+    // invariant: a WCAG ratio lands between 1.00 and 21.00.
+    assert(ratio >= 100);
+    assert(ratio <= 2100);
+    return @intCast(ratio);
+}
+
 // --- selftest ---------------------------------------------------------------------------------------------
 
 fn expect_color(got: Rgba, want: Rgba) !void {
@@ -561,7 +614,23 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (!(q2.r == 0 and q2.g == 255 and q2.b == 0)) return error.QuantTwoWrong;
     }
 
-    print("GREEN image-color: hex round-trip byte-identical across 4 shapes; rgb()/hsl() parsed; 5 refusals named (BadHexLength·BadHexDigit·BadFunctionForm·ChannelOutOfRange·BadLevels); HSL primaries exact; RGB→HSL→RGB sweep max_err={d} <= 5; blend/over endpoints exact; quantize 256=identity, 2=snap\n", .{max_err});
+    // 10) WCAG luminance & contrast known vectors.
+    var wb_x100: u32 = 0;
+    {
+        const black = Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+        const white = Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+        if (relative_luminance(black) != 0) return error.LumBlackWrong;
+        if (relative_luminance(white) != luminance_scale) return error.LumWhiteWrong;
+        wb_x100 = contrast_ratio_x100(white, black);
+        if (wb_x100 != 2100) return error.ContrastWhiteBlackWrong; // 21.00, the maximum
+        if (contrast_ratio_x100(black, white) != 2100) return error.ContrastOrderWrong; // order-free
+        if (contrast_ratio_x100(white, white) != 100) return error.ContrastSelfWrong; // 1.00, no contrast
+        // A green channel weighs most — pure green is far brighter than pure blue.
+        if (!(relative_luminance(Rgba{ .r = 0, .g = 255, .b = 0, .a = 255 }) >
+            relative_luminance(Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 }))) return error.LumWeightWrong;
+    }
+
+    print("GREEN image-color: hex round-trip byte-identical across 4 shapes; rgb()/hsl() parsed; 5 refusals named (BadHexLength·BadHexDigit·BadFunctionForm·ChannelOutOfRange·BadLevels); HSL primaries exact; RGB→HSL→RGB sweep max_err={d} <= 5; blend/over endpoints exact; quantize 256=identity, 2=snap; WCAG white-on-black contrast {d}.{d:0>2} (max 21.00)\n", .{ max_err, wb_x100 / 100, wb_x100 % 100 });
     return 0;
 }
 

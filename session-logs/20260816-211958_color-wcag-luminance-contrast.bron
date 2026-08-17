@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260816.211958
+editor Claude Agent (Zed thread)
+model Fable 5 (claude-fable-5)
+voice Kyri
+host Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern (EDT) time convention
+title colour module gains WCAG luminance and contrast, GREEN
+prompt Keaton's recursion baton: keep making agent-doable Lindy-first progress, send each finished increment as its own signed round.
+think The colour module (image/color.rye, landed this session) now owes a design system the accessibility floor: relative luminance and contrast ratio. Read for years by any surface that places text on colour, so high-Lindy; a bounded, self-contained extension of the same module.
+think The sRGB gamma expansion is nonlinear (a fractional power), which would want float at runtime. Kept the runtime integer-only and deterministic by evaluating the curve once at comptime into a 256-entry srgb_linear table scaled by luminance_scale (100000); the runtime only indexes it. Relative luminance is the BT.709 weighted sum (2126/7152/722, summing to 10000). Contrast is the WCAG (Ll+0.05)/(Ld+0.05) with the 0.05 offset in scale units, returned ×100.
+think Proved by known vectors: black luminance 0, white luminance full scale, white-on-black contrast exactly 2100 (21.00, the maximum), order-free, white-on-white 100 (1.00), and green weighing more than blue. Selftest GREEN, tame_style_check clean, width-check exit 0, witness GREEN end to end with an explicit 21.00 assertion added.
+obs Runtime holds the module's no-float discipline even though the transfer function is nonlinear — the comptime table is the seam. No new refusal paths; the existing five named errors stand. image/bin/color stays gitignored.
+loom witness=color_algebra_witness wcag_white_on_black_x100=2100 luminance_scale=100000 table_entries=256
+file image/color.rye relative_luminance and contrast_ratio_x100 added, comptime sRGB-linear table
+file tools/color_algebra_witness.rish asserts the exact 21.00 WCAG maximum on metal
+file session-logs/README.md newest-first index row for this round
+recommend keep-going the open permissive fonts + QOI-for-fonts glyph codec opens the next Season G rung (a journey), same open-media family, no gate

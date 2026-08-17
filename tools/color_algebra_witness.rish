@@ -42,4 +42,7 @@ assert (trim round.out) == "yes" else "color-algebra: hex round-trip was not byt
 let refuse = run ["sh" "-c" "printf '%s' '${out}' | grep -q '5 refusals named' && echo yes"]
 assert (trim refuse.out) == "yes" else "color-algebra: the five named refusals were not all proven"
 
-say "color-algebra: GREEN — open colour algebra whole; hex round-trip byte-identical, every refusal named, HSL primaries exact, blend and quantize proven."
+let contrast = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'WCAG white-on-black contrast 21.00' && echo yes"]
+assert (trim contrast.out) == "yes" else "color-algebra: WCAG white-on-black contrast did not reach the exact 21.00 maximum"
+
+say "color-algebra: GREEN — open colour algebra whole; hex round-trip byte-identical, every refusal named, HSL primaries exact, blend, quantize, and WCAG contrast proven."
