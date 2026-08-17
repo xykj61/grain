@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260817.144036
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title gradient_paint diagonal pair finishes the linear-gradient family
+prompt recur the autonomous loop: take the next agent-doable lap Lindy-first crux-first, Rye-first, green-witnessed, send each increment
+think Read the road -- REMEMBER live edge, the 1024-round itinerary, the eight-season double-seat, the crypto-parity wave. Live edge is Season G open-media: gradient_paint paints a positioned gradient onto a real image along the horizontal and vertical axes.
+think Lindy-first crux-first: the color-ramp-meets-pixels family had two of the four straight directions. The crux completion is the diagonal pair -- paint_gradient_diag (top-left to bottom-right) and paint_gradient_adiag (top-right to bottom-left) -- which finishes the whole linear-gradient family (the CSS linear-gradient(to bottom right, ...) shape) in one coherent, bounded rung.
+think Compose not braid, unchanged: color_ramp_stops DECIDES each pixel's color, qoi owns the RGBA target, color composites src-over; this rung only ROUTES each pixel to its position, now a function of BOTH axes. A shared diag_pos(sum, den) reader maps a pixel's summed distance from the first corner to a 0..pos_max position, floor-division so the corners land exactly.
+think Overflow proven bounded: sum <= den <= (qoi_max_dim-1)*2 ~= 16382, so sum*255 <= ~4.17M in u32, never wraps. Box bound-checked once up front in u64; ramp validated once before any pixel, so a refusal paints nothing (all-or-nothing).
+obs Refusals by name: BadStripDims (zero dimension), StripTooSmall (single-pixel box, no diagonal direction), GradientStripOutOfBounds, and every color_ramp_stops refusal -- each having painted nothing.
+obs Selftest proves it on metal: top-left is the first control and bottom-right the last byte-for-byte; two pixels on one anti-diagonal share a color and a pixel off it does not; the anti-diagonal is the main diagonal mirrored pixel by pixel; a thin 1x2 diagonal still routes its corners; a single-pixel box refuses StripTooSmall.
+obs Gates: no key, no signature, no funds, no provisioning -- fully agent-doable, no custody gate reached this lap.
+obs Rota lap deep-read context/SIMPLE_LOVABLE_COMPLETE.md (item 16) -- this rung is simple (one thing: diagonal gradients), lovable (finishes the family), complete (the loop closes across all four directions with refusals and round-trip).
+loom witness=gradient_paint_witness result=GREEN directions=4 selftest_checks=diagonal+anti-diagonal+thin+refusals
+file image/gradient_paint.rye added paint_gradient_diag, paint_gradient_adiag, and shared diag_pos; extended the selftest and GREEN line
+file tools/gradient_paint_witness.rish added the diagonal assertion and updated the GREEN summary
+file image/README.md named the diagonal pair in the gradient_paint entry (docs-sync)
+file crux/REMEMBER.md moved live edge and Git nib forward to the diagonal rung
+recommend keep-going the open-media family keeps opening rungs -- next Lindy-first crux could be a radial/conic gradient (position by distance/angle from a center) or a gradient-fill helper over an arbitrary rect, all on the same three public APIs
