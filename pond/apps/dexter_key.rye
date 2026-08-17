@@ -18,8 +18,11 @@
 //!   - A backspace (0x08 or 0x7f) deletes left; a carriage return or newline (0x0d/0x0a) is Enter (submit).
 //!   - A CSI escape ESC '[' <final> decodes an arrow (C/D right/left), Home ('H' or '1~'/'7~'), End ('F' or
 //!     '4~'/'8~'), or forward-delete ('3~'); an SS3 escape ESC 'O' <final> decodes the same arrows and edges.
-//!   - Anything with no terminal-editing meaning here (Up/Down, an unknown escape, a stray control byte)
-//!     decodes to `ignored` -- consumed, never crashed on, never a dropped edit elsewhere.
+//!   - Up/Down and Page Up/Down decode to bounded NAVIGATION keys (nav_up/nav_down/page_up/page_down) -- they
+//!     carry no line-editing meaning (the line editor applies them as a no-op), yet a read view binds them to
+//!     scrolling, so the decoder names every key the terminal sends rather than silently dropping it.
+//!   - Anything still unbound here (an unknown escape final, a stray control byte) decodes to `ignored` --
+//!     consumed, never crashed on, never a dropped edit elsewhere.
 //!   - decode is single-step: it consumes 1+ bytes and yields exactly one key, so a caller walks a byte run
 //!     deterministically; drive applies keys to a line until Enter or the run ends, boundary edits a harmless
 //!     no-op (a Left at the start does nothing rather than refusing) -- a live terminal never dies on a key.
@@ -34,7 +37,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const line = @import("dexter_line.rye");
 
-pub const dexter_key_version = "20260817.103223";
+pub const dexter_key_version = "20260817.110900";
 
 /// A decoded byte run holds at most this many bytes -- bounded so a keystroke read never grows unbounded.
 /// A power of two comfortably past a paste of one line; a caller with more feeds the decoder in slices.
@@ -61,6 +64,10 @@ pub const KeyKind = enum {
     right, // step the cursor one byte right
     home, // jump the cursor to the start of the line
     end, // jump the cursor to the end of the line
+    nav_up, // Up arrow -- scroll toward older history; no line meaning, a read view pages up
+    nav_down, // Down arrow -- scroll toward newer history; a read view pages down
+    page_up, // Page Up -- scroll a whole page toward older history
+    page_down, // Page Down -- scroll a whole page toward newer history
     enter, // commit the line -- a caller submits, then reads on
     ignored, // no terminal-editing meaning here -- consumed, never an error
 };
@@ -106,7 +113,8 @@ fn decode_escape(bytes: []const u8) Step {
         'D' => .left,
         'H' => .home,
         'F' => .end,
-        'A', 'B' => .ignored, // Up and Down have no line-editing meaning here
+        'A' => .nav_up, // Up -- a navigation key, no line meaning; a read view scrolls on it
+        'B' => .nav_down, // Down -- a navigation key, no line meaning
         else => null,
     };
     if (letter) |k| return .{ .key = .{ .kind = k }, .used = 3 };
@@ -123,6 +131,8 @@ fn decode_escape(bytes: []const u8) Step {
                     '3' => .delete_forward, // the Delete key
                     '1', '7' => .home, // Home on xterm ('1~') and rxvt ('7~')
                     '4', '8' => .end, // End on xterm ('4~') and rxvt ('8~')
+                    '5' => .page_up, // Page Up ('5~')
+                    '6' => .page_down, // Page Down ('6~')
                     else => .ignored,
                 };
                 return .{ .key = .{ .kind = kind }, .used = i + 1 };
@@ -170,6 +180,7 @@ pub fn apply(l: *line.Line, k: Key) KeyKind {
         .right => l.move_right() catch {}, // CursorAtEnd a harmless no-op
         .home => l.move_home(),
         .end => l.move_end(),
+        .nav_up, .nav_down, .page_up, .page_down => {}, // navigation -- no line meaning; a read view scrolls
         .enter => {}, // the caller commits the line; the editor holds it unchanged
         .ignored => {}, // no binding -- nothing to do
     }
@@ -309,15 +320,37 @@ fn boundary_keys_are_harmless_no_ops() !void {
     print("dexter_key: a key at the edge (Left at start, Backspace when empty, Right at end) is a harmless no-op.\n", .{});
 }
 
+fn navigation_keys_decode() !void {
+    var l = line.Line.empty();
+    _ = drive(&l, "ab");
+    // Up/Down arrows and Page Up/Down decode to bounded navigation keys -- named, not silently dropped.
+    const up = decode("\x1b[A");
+    assert(up.key.kind == .nav_up);
+    assert(up.used == 3);
+    const down = decode("\x1b[B");
+    assert(down.key.kind == .nav_down);
+    const pgup = decode("\x1b[5~");
+    assert(pgup.key.kind == .page_up);
+    assert(pgup.used == 4);
+    const pgdn = decode("\x1b[6~");
+    assert(pgdn.key.kind == .page_down);
+    // An SS3 Up (ESC O A) decodes the same as its CSI twin -- the letter finals are shared by both intros.
+    const ss3_up = decode("\x1bOA");
+    assert(ss3_up.key.kind == .nav_up);
+    // The line editor applies each navigation key as a harmless no-op -- a line of text does not scroll.
+    _ = drive(&l, "\x1b[A\x1b[B\x1b[5~\x1b[6~");
+    assert(std.mem.eql(u8, l.text(), "ab"));
+    assert(l.cursor == 2);
+    print("dexter_key: Up/Down arrows and Page Up/Down decode to bounded navigation keys the line editor ignores.\n", .{});
+}
+
 fn unknown_sequences_are_ignored() !void {
     var l = line.Line.empty();
     _ = drive(&l, "ab");
-    // An Up arrow (ESC [ A) and an unknown CSI final (ESC [ Z) both decode to ignored, landing no byte.
-    const up = decode("\x1b[A");
-    assert(up.key.kind == .ignored);
-    assert(up.used == 3);
+    // An unknown CSI final (ESC [ Z) decodes to ignored, landing no byte.
     const unknown = decode("\x1b[Z");
     assert(unknown.key.kind == .ignored);
+    assert(unknown.used == 3);
     // A lone trailing ESC is ignored, consuming just itself.
     const lone = decode("\x1b");
     assert(lone.key.kind == .ignored);
@@ -325,9 +358,9 @@ fn unknown_sequences_are_ignored() !void {
     // A tab (a control byte with no binding here) is ignored, no byte landing.
     const tab = decode("\t");
     assert(tab.key.kind == .ignored);
-    _ = drive(&l, "\x1b[A\x1b[Z\t");
+    _ = drive(&l, "\x1b[Z\t");
     assert(std.mem.eql(u8, l.text(), "ab"));
-    print("dexter_key: an Up arrow, an unknown escape, a lone ESC, and a tab all decode to ignored, no byte landing.\n", .{});
+    print("dexter_key: an unknown escape, a lone ESC, and a tab all decode to ignored, no byte landing.\n", .{});
 }
 
 fn decoding_is_deterministic() !void {
@@ -349,10 +382,11 @@ fn run_selftest() !u8 {
     try backspace_and_enter_decode();
     try drive_stops_at_enter_between_lines();
     try boundary_keys_are_harmless_no_ops();
+    try navigation_keys_decode();
     try unknown_sequences_are_ignored();
     try decoding_is_deterministic();
     print("dexter_key: version {s}\n", .{dexter_key_version});
-    print("GREEN: dexter_key; a keeper's keyboard bytes decode to bounded key events -- printable, backspace, forward-delete, arrows, Home/End, Enter -- and drive a bounded line, boundary keys a harmless no-op, unknown sequences ignored, all pure and deterministic.\n", .{});
+    print("GREEN: dexter_key; a keeper's keyboard bytes decode to bounded key events -- printable, backspace, forward-delete, arrows, Home/End, navigation (Up/Down, Page Up/Down), Enter -- and drive a bounded line, boundary keys a harmless no-op, navigation a line no-op, unknown sequences ignored, all pure and deterministic.\n", .{});
     return 0;
 }
 
