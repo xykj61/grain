@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260817.171922
+editor Claude Code
+model claude-opus-4-8
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title condense the REMEMBER Today arc, cairn first
+prompt Keaton said: condense the REMEMBER Today arc now, cairn first
+think The Today arc (crux/REMEMBER.md lines 228-306) was a wall of ~160 dated done-work bullets -- 116 LANDED, 24 OPENED, 17 COMPLETE, 7 CLOSED, 5 SEATED -- the card half-become a second copy of the log index
+think Cairn discipline first: recorded the walk-back nib 3b8b0d4858 and live stamp in crux/CAIRNS.md before the condense commit, naming what the arc held and where each bullet's detail now lives (session-logs + git history), so nothing landed is lost
+think Condensed the section to a lean pointer that still names the big landed arcs (Mandate, Acme DX, CION, AHOY, WADE, Singularity, Twilight, BUHR MCP, 1024-round, TACT J1/J2/J4, recursion cellar, Season A/HUNK, Constel, Testament) and defers the rest to the logs
+think Held every other section exactly -- INNER LOOP directives, Compass Season table, Waymarks, Pier, gates, open doors, card habits; left the Git nib field for the background loop that owns the living code edge
+obs Tier-safe by design: REMEMBER's Now/arc is Tier 3 and may sweep, the logs are Tier 2 and never rewritten, and the cairn keeps the full arc one git show away
+obs Splice was mechanical and verified: 390 -> 319 lines, zero done-work markers left in the condensed region, Compass Season and all live sections intact, plain 7-bit ASCII
+file crux/CAIRNS.md walk-back cairn row 20260817.171714 (nib 3b8b0d4858) recorded before the cut
+file crux/REMEMBER.md the Today arc condensed from 79 lines to a 7-line pointer; card now 319 lines, single-stranded
+recommend keep-going the card is lean; a natural next condense is the Prior Git nib stack (a similar accreted wall), on Keaton's word

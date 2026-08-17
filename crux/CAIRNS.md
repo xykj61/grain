@@ -24,6 +24,12 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260817.171714` -- REMEMBER Today arc condensed (the done-work wall folded to a pointer)
+
+**Walk-back nib:** `3b8b0d4858`
+**Swept:** the `## Today 20260811 -- a full arc` section of `crux/REMEMBER.md` (lines 228-306), a wall of ~160 dated done-work bullets -- 116 `LANDED`, 24 `OPENED`, 17 `COMPLETE`, 7 `CLOSED`, 5 `SEATED` -- condensed to a single lean pointer that names the big landed arcs and defers every detail to the session logs and git history. Done on Keaton's word so the operator card stays single-stranded: the live work-front, never a second copy of the log index. No other section touched; the INNER LOOP directives, the Compass Season table, Waymarks, gates, and open doors all stand.
+**What waits there, worth recalling:** at nib `3b8b0d4858` and every commit before it, the full arc reads whole -- `git show 3b8b0d4858:crux/REMEMBER.md`. Every bullet it held (Mandate, the Acme DX season, CION labeling, the AHOY front door and WADE surface, the Singularity, the Twilight palette, BUHR's MCP surface, the 1,024-round itinerary, TACT Journeys 1/2/4, the recursion cellar, Season A / HUNK, Constel and Testament) is also recorded in `session-logs/` as its own dated `.bron`/`.kyri` log. Nothing landed is lost; the wall simply moved to where the record belongs.
+
 ### `20260816.220634` -- work-in-progress -> crux rename EXECUTED (the breach the 20260815 cairn pre-planted)
 
 **Walk-back nib:** `947c592333`
