@@ -3,7 +3,7 @@
 **Seated:** `20260729.224828` · **Status:** Living · **Cites, never restates**
 
 Canonical home: `foundations/20260729-224828_reds-first-and-the-allocation.md`
-Ledger: `work-in-progress/REDS.md` · Gratitude: `gratitude/toyota-production-system.md`
+Ledger: `crux/REDS.md` · Gratitude: `gratitude/toyota-production-system.md`
 
 When a red is found: name it, record it in the ledger with all three fields
 (what went wrong · what caught it · what it taught), and **book the remainder of
