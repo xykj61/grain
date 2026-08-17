@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260817.053640
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title font5x7 vulgar-fractions corpus, GREEN
+prompt autonomous loop -- take the next agent-doable lap Lindy-first crux-first, Season G open media
+think Read REMEMBER, the 1024-round itinerary, the eight-season double-seat, and the rye-first crypto wave for the road ahead. The tree is in a long productive Season G open-media font run; the prior lap landed the superscript-digits corpus. Crypto stands WHOLE, the Dexter/Scooter terminal drawn surface is whole and its remaining rungs (live TTY, Comlink transport) reach the serve gate.
+think Council rota by lap index: the prior lap read item 24, so this lap reads item 25 -- active-designing/20260816-205859_double-seat-expansion-eight-seasons.md, which names Season G's open-media family. Read whole; it frames the font family as font content beside image, sound, video, terminal.
+think Next open-media named in the live edge: fraction glyphs. Chose it as the genuine crux over an easy padding lap: a vulgar fraction composes a raised numerator, a diagonal solidus, and a lowered denominator in ONE 5x7 cell -- the hardest glyph of the whole digit family, the natural culmination of the subscript (low) and superscript (high) twins. Lindy: quarters and halves have been printed on price tags and recipes for centuries, and they are the Dimeroll/Linengrow commerce spine's own "1/2 off, 3/4 lb" glyphs.
+think Studied image/font5x7_superscript.rye and its witness for the exact pattern (art table -> coverage_from_art -> build_atlas -> gfa1 round-trip -> present/distinct/legible/family-order). Confirmed image/glyph.rye API (coverage_max 4096, GlyphAtlas, encode/decode/lookup/same_bytes/encoded_bound/cell_area).
+think Designed a shared skeleton: numerator in the top-left 3x3 block (rows 0..2, cols 0..2), denominator in the bottom-right 3x3 block (rows 4..6, cols 2..4), one shared solidus of five anti-diagonal cells (1,4),(2,3),(3,2),(4,1),(5,0). The two digit blocks are disjoint by row, so the top number never touches the bottom. Hand-drew nine fractions -- the three Latin-1 vulgar fractions U+00BC..U+00BE and the six Number Forms U+2153,U+2154,U+215B..U+215E -- computing ink counts by hand (13..19) before running.
+think Added the fraction-specific crux to the selftest: every glyph proven three-part (block_has_ink over the numerator block, over the denominator block, and all five solidus cells inked), replacing the subscript/superscript "raised/lowered" check. Kept the shared checks: round-trip byte-identical, present + ASCII-digit-misses, distinct, legibility band, non-contiguous codepoint table, and two family orders (3/4>1/4, 7/8>1/8).
+obs GREEN on the first metal run: ink band 13..19 exactly as hand-computed, encoded 451 bytes over raw 315. tame_style_check flagged one compound assert (r1 < cell_h and c1 < cell_w); split into two named checks per the house pattern, then bans clean; width-check exit 0; both files plain 7-bit ASCII though the glyphs cover a non-ASCII range (numeric codepoint literals -- the ascii-first exception for a font codec's glyph tables).
+obs Pure additive font content -- a fresh module and witness; the glyph atlas rung and every sibling corpus stand untouched. No network, no key, no funds; no custody gate reached.
+loom witness=font5x7_fraction_witness glyphs=9 cell=5x7 encoded_bytes=451 raw_bytes=315 ink_lo=13 ink_hi=19
+file image/font5x7_fraction.rye the nine vulgar fractions drawn 5x7, built into the gfa1 atlas, three-part proven
+file tools/font5x7_fraction_witness.rish proves the corpus GREEN on metal -- round-trip, present, distinct, legible, three-part, non-contiguous, family order
+file crux/REMEMBER.md live edge + Git nib updated to the fraction corpus; superscript demoted to prior
+recommend keep-going the open glyph atlas beyond 5x7, or the captioned panel proven on longer/varied real reels -- both agent-doable Season G open-media rungs; the terminal family's live TTY and Comlink transport reach the serve gate

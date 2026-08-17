@@ -1,0 +1,279 @@
+//! image/font5x7_fraction.rye -- the open vulgar-fractions corpus: the nine fractions a price tag and a recipe print (Season G).
+//!
+//! Season G (Open Media Primitives) - font content for the open glyph atlas image/glyph.rye (gfa1), set beside the
+//! five ASCII corpora (the numerals, the uppercase, the lowercase, the punctuation, the symbols), the wider-symbol
+//! corpora (the box family, the arrows, the block elements, the geometric marks, the math/technical operators, the
+//! currency signs), the Greek letters, and the two digit twins from either side of the line -- the SUBSCRIPT digits
+//! (image/font5x7_subscript.rye, small and low) and the SUPERSCRIPT digits (image/font5x7_superscript.rye, small and
+//! high). This corpus is where those two twins MEET in one body: a vulgar fraction sets a small numerator high on the
+//! left, a small denominator low on the right, and a diagonal solidus between them -- the nine common fractions a
+//! surface prints the day it shows a price ("1/2 off"), a weight ("3/4 lb"), or a measure ("2/3 cup"), at their real
+//! Unicode codepoints, drawn in our own open hand on the shared 5x7 body.
+//!
+//! The nine are the three Latin-1 vulgar fractions -- one quarter (U+00BC), one half (U+00BD), three quarters (U+00BE)
+//! -- and the six common Number Forms -- one third (U+2153), two thirds (U+2154), and the four eighths one/three/five/
+//! seven (U+215B..U+215E). The crux that sets this corpus apart from every sibling is COMPOSITION IN ONE CELL: where a
+//! subscript digit only sits low and a superscript digit only sits high, a fraction must carry a raised numerator, a
+//! lowered denominator, AND a diagonal solidus at once, in five columns by seven rows -- the hardest glyph of the whole
+//! digit family. So every fraction shares one iconic solidus (the five anti-diagonal cells from the lower-left corner
+//! to the upper-right), draws its numerator in the top-left three-by-three block, and draws its denominator in the
+//! bottom-right three-by-three block, the two blocks disjoint by construction so a reader tells the top number from the
+//! bottom. That three-part structure is proven on metal: every glyph carries ink in the numerator region, ink in the
+//! denominator region, and all five solidus cells inked.
+//!
+//! The source stays plain ASCII (ASCII-first): the codepoints are written as numeric literals (0x00BC ...) and each
+//! fraction is named in an ASCII comment, so no non-ASCII byte enters the file even though the glyphs it builds cover a
+//! non-ASCII range. The drawings ARE the specification: each fraction is seven rows of five cells in ASCII line art
+//! ('#' full ink, '.' none) that a reader audits by eye; the coverage bytes are derived from that art, never the
+//! reverse. build_atlas turns the nine drawings into a glyph.GlyphAtlas the gfa1 encoder accepts, so the property that
+//! matters stays provable on metal: decode(encode(atlas)) recovers every glyph byte-for-byte, the fractions are present
+//! and distinct, each reads within an honest legibility band, each carries its three parts (numerator, solidus,
+//! denominator), the codepoint table is non-contiguous (the Latin-1 gap before the Number Forms), and the family order
+//! holds -- three quarters out-inks one quarter, and seven eighths out-inks one eighth, so a reader tells a bigger part
+//! of a whole from a smaller one. No network, no key, no funds -- the fractions a surface prints the day it names half
+//! a price, on our own open font.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_fraction.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+
+pub const font5x7_fraction_version = "20260817.053640";
+
+/// Every glyph in this corpus shares one 5-wide, 7-tall cell -- the same body the ASCII and wider-symbol corpora carry.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance: the cell width plus one column of daylight, the same advance the sibling corpora carry.
+pub const fraction_advance: u8 = cell_w + 1;
+
+/// The corpus holds exactly the nine common vulgar fractions.
+pub const fraction_count: u32 = 9;
+
+/// Cells per glyph -- the coverage length every fraction carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The nine fraction codepoints, strictly ascending -- the order the gfa1 encoder trusts. Each aligns by index with
+/// fraction_art below. Written as numeric literals so the source stays plain ASCII while the glyphs cover a non-ASCII
+/// range. The run is NOT contiguous: the three Latin-1 vulgar fractions (U+00BC..U+00BE) sit far below the six Number
+/// Forms (U+2153, U+2154, U+215B..U+215E), a real gap this corpus proves rather than assuming a tidy run:
+///   0x00BC one quarter, 0x00BD one half, 0x00BE three quarters,
+///   0x2153 one third, 0x2154 two thirds, 0x215B one eighth, 0x215C three eighths, 0x215D five eighths, 0x215E seven eighths.
+const fraction_codepoints = [fraction_count]u32{
+    0x00BC, 0x00BD, 0x00BE, 0x2153, 0x2154, 0x215B, 0x215C, 0x215D, 0x215E,
+};
+
+/// The nine fractions, drawn in the open, in ascending-codepoint order. Each is seven rows of five cells; '#' ink,
+/// '.' background. A reader audits every fraction here by eye, and the coverage bytes are lifted from this art, never
+/// guessed. Every fraction shares one solidus -- the five anti-diagonal cells (row1,col4), (row2,col3), (row3,col2),
+/// (row4,col1), (row5,col0) -- draws its numerator in the top-left 3x3 block (rows 0..2, cols 0..2), and its
+/// denominator in the bottom-right 3x3 block (rows 4..6, cols 2..4), the two blocks disjoint by row so the top number
+/// never touches the bottom.
+const fraction_art = [fraction_count][cell_h][]const u8{
+    .{ ".#...", ".#..#", ".#.#.", "..#..", ".##.#", "#.###", "....#" }, // U+00BC one quarter  (1 over 4)
+    .{ ".#...", ".#..#", ".#.#.", "..#..", ".###.", "#..#.", "...##" }, // U+00BD one half     (1 over 2)
+    .{ "##...", ".##.#", "##.#.", "..#..", ".##.#", "#.###", "....#" }, // U+00BE three quarters (3 over 4)
+    .{ ".#...", ".#..#", ".#.#.", "..#..", ".###.", "#..##", "..##." }, // U+2153 one third    (1 over 3)
+    .{ "##...", ".#..#", ".###.", "..#..", ".###.", "#..##", "..##." }, // U+2154 two thirds   (2 over 3)
+    .{ ".#...", ".#..#", ".#.#.", "..#..", ".##.#", "#.###", "..#.#" }, // U+215B one eighth   (1 over 8)
+    .{ "##...", ".##.#", "##.#.", "..#..", ".##.#", "#.###", "..#.#" }, // U+215C three eighths (3 over 8)
+    .{ "###..", "##..#", ".###.", "..#..", ".##.#", "#.###", "..#.#" }, // U+215D five eighths  (5 over 8)
+    .{ "###..", "..#.#", ".#.#.", "..#..", ".##.#", "#.###", "..#.#" }, // U+215E seven eighths (7 over 8)
+};
+
+/// Lift one fraction's ASCII art into a freshly allocated coverage grid of exactly cell_area bytes: 255 for ink,
+/// 0 for background. The art's own shape is asserted, so a mistyped row is a stopped line rather than a bad glyph.
+fn coverage_from_art(allocator: std.mem.Allocator, art: [cell_h][]const u8) ![]u8 {
+    // invariant: a coverage grid is exactly the shared cell area, within the atlas ceiling.
+    assert(cell_area >= 1);
+    assert(cell_area <= glyph.coverage_max);
+    const cov = try allocator.alloc(u8, cell_area);
+    var idx: u32 = 0;
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        const row = art[r];
+        // invariant: every drawn row is exactly the cell width -- the art matches the grid.
+        assert(row.len == cell_w);
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            cov[idx] = if (row[c] == '#') 255 else 0;
+            idx += 1;
+        }
+    }
+    // invariant: the whole grid was filled, no cell left unwritten.
+    assert(idx == cell_area);
+    return cov;
+}
+
+/// Build the vulgar-fractions atlas: nine glyphs at the named ascending codepoints, sharing the 5x7 cell and advance.
+/// The gfa1 encoder accepts the result directly (ascending codepoints, coverage length == cell area).
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the corpus is the nine common fractions and no more.
+    assert(fraction_count == 9);
+    assert(cell_area == 35);
+    const glyphs = try allocator.alloc(glyph.Glyph, fraction_count);
+    var i: u32 = 0;
+    var last_cp: u32 = 0;
+    while (i < fraction_count) : (i += 1) {
+        const cp = fraction_codepoints[i];
+        // invariant: codepoints are strictly ascending -- the ordering the gfa1 encoder trusts.
+        assert(i == 0 or cp > last_cp);
+        last_cp = cp;
+        const cov = try coverage_from_art(allocator, fraction_art[i]);
+        glyphs[i] = glyph.Glyph{
+            .codepoint = cp,
+            .advance = fraction_advance,
+            .coverage = cov,
+        };
+    }
+    // invariant: the last codepoint is seven eighths (U+215E) -- the table ends where this set ends.
+    assert(glyphs[fraction_count - 1].codepoint == 0x215E);
+    return glyph.GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- the legibility signal a blank glyph would fail.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+/// The ink count of a codepoint's glyph in the built atlas -- the reader the family-order proof uses.
+fn ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return ink_count(g.coverage);
+    return error.FractionMissing;
+}
+
+/// Whether a rectangular block of the cell carries any ink -- the reader the numerator/denominator proofs use. The
+/// block runs rows r0..r1 inclusive, cols c0..c1 inclusive, over the shared 5x7 grid.
+fn block_has_ink(cov: []const u8, r0: u32, r1: u32, c0: u32, c1: u32) bool {
+    // invariant: the block stays inside the shared cell.
+    assert(cov.len == cell_area);
+    assert(r1 < cell_h);
+    assert(c1 < cell_w);
+    var r: u32 = r0;
+    while (r <= r1) : (r += 1) {
+        var c: u32 = c0;
+        while (c <= c1) : (c += 1) {
+            if (cov[r * @as(u32, cell_w) + c] != 0) return true;
+        }
+    }
+    return false;
+}
+
+// --- selftest: build the fraction atlas, round-trip it through gfa1, prove present, distinct, legible, three-part ----
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built atlas is the nine-fraction corpus at the shared cell.
+    assert(glyph_count == fraction_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // Nine present fractions: every one looks up, carries the shared advance; a full-height ASCII digit misses (a
+    // fraction is a distinct codepoint, never the same point as '1' or '2').
+    var d: u32 = 0;
+    while (d < fraction_count) : (d += 1) {
+        const cp = fraction_codepoints[d];
+        if (back.lookup(cp)) |g| {
+            assert(g.codepoint == cp);
+            assert(g.advance == fraction_advance);
+        } else return error.FractionMissing;
+    }
+    if (back.lookup('1')) |_| return error.NonFractionFound else {}
+
+    // Distinctness: no two fractions share identical coverage -- nine fractions differ (catches a copy slip between
+    // look-alikes like the three eighths and the one eighth).
+    var a: u32 = 0;
+    while (a < fraction_count) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b < fraction_count) : (b += 1) {
+            if (std.mem.eql(u8, atlas.glyphs[a].coverage, atlas.glyphs[b].coverage)) return error.FractionsNotDistinct;
+        }
+    }
+
+    // Legibility: each fraction's ink count sits inside an honest band. The floor sits where one half (its lightest
+    // fraction) still reads, the ceiling where five eighths (its densest) still resolves as three small parts, not a
+    // block.
+    const ink_min: u32 = 10;
+    const ink_max: u32 = 24;
+    var lo: u32 = cell_area;
+    var hi: u32 = 0;
+    var k: u32 = 0;
+    while (k < fraction_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (n < ink_min or n > ink_max) return error.FractionIllegible;
+        if (n < lo) lo = n;
+        if (n > hi) hi = n;
+    }
+    // invariant: the observed ink band stayed inside the honest bounds.
+    assert(lo >= ink_min);
+    assert(hi <= ink_max);
+
+    // Three parts: the crux that sets a fraction apart from every sibling. Every glyph carries ink in the top-left
+    // numerator block (rows 0..2, cols 0..2), ink in the bottom-right denominator block (rows 4..6, cols 2..4), and
+    // all five solidus cells -- (row1,col4), (row2,col3), (row3,col2), (row4,col1), (row5,col0) -- inked, so the top
+    // number, the slash, and the bottom number all read.
+    const solidus = [5][2]u32{ .{ 1, 4 }, .{ 2, 3 }, .{ 3, 2 }, .{ 4, 1 }, .{ 5, 0 } };
+    var g: u32 = 0;
+    while (g < fraction_count) : (g += 1) {
+        const cov = atlas.glyphs[g].coverage;
+        if (!block_has_ink(cov, 0, 2, 0, 2)) return error.FractionNumeratorBlank;
+        if (!block_has_ink(cov, 4, 6, 2, 4)) return error.FractionDenominatorBlank;
+        var s: u32 = 0;
+        while (s < solidus.len) : (s += 1) {
+            const cell = solidus[s][0] * @as(u32, cell_w) + solidus[s][1];
+            if (cov[cell] == 0) return error.FractionSolidusBroken;
+        }
+    }
+
+    // Non-contiguous: the real Unicode fact this corpus proves. The three Latin-1 vulgar fractions (U+00BC..U+00BE)
+    // sit far below the six Number Forms (U+2153..U+215E), so some consecutive pair jumps by more than one -- a reader
+    // must trust the explicit table rather than assume one tidy run.
+    var found_gap = false;
+    var p: u32 = 1;
+    while (p < fraction_count) : (p += 1) {
+        if (fraction_codepoints[p] > fraction_codepoints[p - 1] + 1) found_gap = true;
+    }
+    if (!found_gap) return error.FractionRunUnexpectedlyContiguous;
+
+    // Family order: within a shared denominator, more of the whole carries more ink. Three quarters out-inks one
+    // quarter (both /4), and seven eighths out-inks one eighth (both /8) -- what lets a reader tell a bigger part of a
+    // whole from a smaller one, not just that a fraction is present.
+    if (!(try ink_of(&atlas, 0x00BE) > try ink_of(&atlas, 0x00BC))) return error.QuarterOrderWrong; // 3/4 > 1/4
+    if (!(try ink_of(&atlas, 0x215E) > try ink_of(&atlas, 0x215B))) return error.EighthOrderWrong; // 7/8 > 1/8
+
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof.
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-fraction: {d} vulgar fractions U+00BC..U+00BE,U+2153,U+2154,U+215B..U+215E at {d}x{d} round-trip byte-identical; all present, distinct, legible (ink {d}..{d} of {d}), each three-part (numerator + solidus + denominator); codepoints non-contiguous (Latin-1 then Number Forms); 3/4>1/4 and 7/8>1/8 hold; encoded {d} bytes, raw {d}\n", .{
+        glyph_count, cell_w, cell_h, lo, hi, cell_area, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_fraction selftest\n", .{});
+    return 1;
+}
