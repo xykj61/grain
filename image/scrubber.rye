@@ -1,0 +1,358 @@
+//! image/scrubber.rye -- the playback scrubber: a data-driven progress bar composited over the reel (Season G, open media).
+//!
+//! Season G (Open Media Primitives) - the rung beside image/text_subtitle.rye. Where a subtitle track pins TIMED TEXT
+//! over a moving reel, a scrubber pins TIMED GEOMETRY: the playback progress bar a video player draws along the bottom
+//! edge, its elapsed portion growing left to right as the clip plays. image/shape.rye's own docstring names "a
+//! progress-bar track" as one of the shapes fill_rect and stroke_rect are drawn from -- this rung is that shape made
+//! literal, and it braids nothing beneath it: it renders the same mostly-still moving background image/text_subtitle.rye
+//! proved, then composites a fixed-place bar onto each frame whose FILL WIDTH is a pure function of playback progress.
+//!
+//! The crux this rung proves is that the elapsed fill is a monotone, data-driven function of the frame index -- it never
+//! runs backward, it starts empty, and it ends full. Four measurable halves, each against the plain no-scrubber
+//! background as ground truth:
+//!   * the fill grows with playback -- the count of elapsed pixels is non-decreasing frame to frame, and strictly grows
+//!     from empty (frame zero paints zero elapsed pixels) to full (the last frame fills the whole inner track),
+//!   * the overlay touches only the bar -- a subtitled... a scrubbed frame differs from the background only WITHIN the
+//!     scrubber rectangle, leaving the moving picture beneath it untouched, and
+//!   * the fill is a superset over time -- every column lit at an earlier frame stays lit at a later one (the elapsed
+//!     edge only ever advances), which the non-decreasing count plus the left-anchored fill together prove.
+//! The whole scrubbed reel then round-trips byte for byte through BOTH open codecs, and the delta/keyframe mix is
+//! REPORTED, never claimed a compression win (REDS #82). Pure composition over public APIs (the background verbs,
+//! shape.fill_rect, shape.stroke_rect, both codecs); no new storage, codec, palette, glyph, or font -- integer
+//! arithmetic maps progress to a pixel width, so no float ever enters. No network, no key, no funds -- the progress bar
+//! a surface plays under live video, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/scrubber.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const text_paint = @import("text_paint.rye");
+const shape = @import("shape.rye");
+const frames = @import("frames.rye");
+const frames_delta = @import("frames_delta.rye");
+
+pub const scrubber_version = "20260817.072000";
+
+/// The frame window the background moves through and the scrubber is pinned onto. Landscape, matching the caption and
+/// subtitle rungs so the whole broadcast-overlay family shares one canvas size.
+pub const scrubber_frame_w: u32 = 96;
+pub const scrubber_frame_h: u32 = 48;
+
+/// Playback rate stored in both containers' headers -- carried through a round-trip, never interpreted here.
+pub const scrubber_fps: u8 = 12;
+
+/// A safe ceiling on the reel's frame count, so the frame loop and the codecs' frame field stay bounded.
+pub const scrubber_max_frames: u32 = 256;
+
+/// The playback scrubber -- a fixed rectangle drawn along the bottom edge of the frame. The border ring frames the bar;
+/// the inner track (the rect inset by `thickness` on every side) holds the empty `track` colour, over which the elapsed
+/// portion is filled in `fill`. Opaque by construction (every colour's alpha is 255): the bar fully overwrites the
+/// background beneath it, so its pixels depend only on the progress, never on what moves underneath. Shared by builder
+/// and witness so both name the exact same rectangle.
+pub const Scrubber = struct {
+    x: u32,
+    y: u32,
+    w: u32,
+    h: u32,
+    thickness: u32, // border ring width on every side; zero draws no ring
+    track: color.Rgba, // the empty (un-elapsed) bar colour
+    fill: color.Rgba, // the elapsed (played) portion colour
+    border: color.Rgba, // the ring colour
+};
+
+/// The default scrubber for the selftest -- a lower-edge bar with a one-pixel blue frame, a dim track, a warm fill.
+pub const default_scrubber = Scrubber{
+    .x = 6,
+    .y = 40,
+    .w = 84,
+    .h = 6,
+    .thickness = 1,
+    .track = color.Rgba{ .r = 70, .g = 76, .b = 90, .a = 255 },
+    .fill = color.Rgba{ .r = 230, .g = 170, .b = 60, .a = 255 },
+    .border = color.Rgba{ .r = 40, .g = 80, .b = 200, .a = 255 },
+};
+
+pub const default_frame_count: u32 = 24;
+
+/// The moving subject beneath the scrubber -- a small filled block that steps across the frame, the mostly-still shot a
+/// progress bar sits under. Bounded to stay wholly in frame on both axes.
+const block_w: u32 = 12;
+const block_h: u32 = 12;
+const block_y: u32 = 10; // above the lower-edge scrubber, in the live part of the frame
+const block_step: u32 = 2; // columns the block advances each frame
+const block_x0: u32 = 4; // the block's first left edge
+
+/// The still ground behind the moving block -- a calm slate the block and the bar sit on.
+const ground_color = color.Rgba{ .r = 30, .g = 34, .b = 44, .a = 255 };
+/// The moving block's colour -- a cool accent distinct from the ground and the bar fill, so its motion is unmistakable.
+const block_color = color.Rgba{ .r = 90, .g = 200, .b = 160, .a = 255 };
+
+/// Prove a scrubber is well-formed BEFORE a pixel is painted: real extent, a border that fits, an inner track with real
+/// area, and a placement wholly within the frame. Each failure has a name, so a caller learns of a bad bar at once
+/// rather than through a mis-drawn reel. The bounds are checked in u64 so a far edge can never wrap before it refuses.
+pub fn validate_scrubber(bar: Scrubber) !void {
+    // invariant: a drawable bar has real extent on both axes.
+    if (bar.w == 0 or bar.h == 0) return error.BadScrubberDims;
+    // invariant: two opposite borders must fit within the box, or the inner track is not well defined on that axis.
+    if (2 * bar.thickness > bar.w) return error.ScrubberBorderTooThick;
+    if (2 * bar.thickness > bar.h) return error.ScrubberBorderTooThick;
+    // invariant: the inner track must have real area, or there is nothing to fill.
+    const inner_w: u32 = bar.w - 2 * bar.thickness;
+    const inner_h: u32 = bar.h - 2 * bar.thickness;
+    if (inner_w == 0 or inner_h == 0) return error.ScrubberTooSmall;
+    // invariant: the whole bar lands inside the frame; the sum is in u64 so it can never wrap before refusing.
+    const right: u64 = @as(u64, bar.x) + @as(u64, bar.w);
+    const bottom: u64 = @as(u64, bar.y) + @as(u64, bar.h);
+    if (right > @as(u64, scrubber_frame_w)) return error.ScrubberOutOfBounds;
+    if (bottom > @as(u64, scrubber_frame_h)) return error.ScrubberOutOfBounds;
+}
+
+/// The width in pixels of the elapsed (played) portion of the inner track at frame `k` of a reel of `frame_count`
+/// frames. A pure integer map: progress runs 0 at the first frame to 1 at the last, so the fill runs 0 to `inner_w`.
+/// Computed in u64 (`inner_w * k` can exceed u32 for a wide bar and a long reel) then narrowed once the quotient is
+/// proven <= inner_w. Monotone non-decreasing in `k` because the numerator grows and the divisor is fixed.
+pub fn elapsed_width(inner_w: u32, k: u32, frame_count: u32) u32 {
+    // invariant: progress is defined over a reel of at least two frames (a first and a last, so the divisor is >= 1).
+    assert(frame_count >= 2);
+    // invariant: the frame index lies within the reel, so the quotient never exceeds inner_w.
+    assert(k < frame_count);
+    const num: u64 = @as(u64, inner_w) * @as(u64, k);
+    const filled: u64 = num / @as(u64, frame_count - 1);
+    // invariant: a full reel fills exactly the inner track and never more, so the narrowing below is safe.
+    assert(filled <= @as(u64, inner_w));
+    return @as(u32, @intCast(filled));
+}
+
+/// Build one background frame: a still ground with the moving block at its left edge for frame `k`. This is the plain,
+/// no-scrubber picture -- the ground truth the witness measures every scrubbed frame against. The block steps right one
+/// stride per frame and holds at the right margin once it reaches it, so it stays wholly in frame on every frame.
+pub fn background_frame(garden: std.mem.Allocator, k: u32) !qoi.Pixmap {
+    // invariant: the block's travel window has room, so the clamp below never underflows.
+    const last_bx: u32 = scrubber_frame_w - block_w;
+    assert(block_x0 <= last_bx);
+    // invariant: the block sits above the scrubber, wholly within the live part of the frame.
+    assert(block_y + block_h <= scrubber_frame_h);
+    var bx: u32 = block_x0 + k * block_step;
+    if (bx > last_bx) bx = last_bx; // once the block reaches the margin it holds there, still wholly in frame
+    var frame = try text_paint.solid(garden, scrubber_frame_w, scrubber_frame_h, ground_color);
+    try shape.fill_rect(&frame, bx, block_y, block_w, block_h, block_color);
+    return frame;
+}
+
+/// Paint the scrubber onto `frame` at progress frame `k`: the empty track, then the elapsed portion, then the border
+/// ring. The bar is validated first, so a malformed bar refuses by name having painted nothing. All three verbs are
+/// bounded by shape.rye, and the bar was proven in-frame, so each lands inside the buffer. A zero-thickness bar draws
+/// no ring. Returns the elapsed width painted, so a caller (or the witness) reads the same number the fill used.
+pub fn paint_scrubber(frame: *qoi.Pixmap, bar: Scrubber, k: u32, frame_count: u32) !u32 {
+    try validate_scrubber(bar);
+    // invariant: the frame is the module's own window, so the validated bar lands inside it.
+    assert(frame.width == scrubber_frame_w);
+    assert(frame.height == scrubber_frame_h);
+    const inner_x: u32 = bar.x + bar.thickness;
+    const inner_y: u32 = bar.y + bar.thickness;
+    const inner_w: u32 = bar.w - 2 * bar.thickness;
+    const inner_h: u32 = bar.h - 2 * bar.thickness;
+    // The empty track fills the whole inner area first, so an un-elapsed column reads the track colour, not background.
+    try shape.fill_rect(frame, inner_x, inner_y, inner_w, inner_h, bar.track);
+    const filled: u32 = elapsed_width(inner_w, k, frame_count);
+    // invariant: the elapsed fill never exceeds the inner track it sits in.
+    assert(filled <= inner_w);
+    if (filled > 0) {
+        try shape.fill_rect(frame, inner_x, inner_y, filled, inner_h, bar.fill);
+    }
+    if (bar.thickness > 0) {
+        try shape.stroke_rect(frame, bar.x, bar.y, bar.w, bar.h, bar.thickness, bar.border);
+    }
+    return filled;
+}
+
+/// Build the scrubbed reel: the moving background on every frame, with the progress bar composited onto it at the fixed
+/// lower-edge place. The bar is validated once up front, so a malformed bar refuses by name having built nothing.
+/// Returns a Video whose orientation is derived from the extent (never a stored lie) and whose fps is the reel's rate.
+pub fn build_scrubbed_reel(garden: std.mem.Allocator, bar: Scrubber, frame_count: u32) !frames.Video {
+    try validate_scrubber(bar);
+    // invariant: the reel has a first and last frame and stays within the module bound and both codecs' ceiling.
+    assert(frame_count >= 2);
+    assert(frame_count <= scrubber_max_frames);
+    assert(frame_count <= frames.gfv_max_frames);
+
+    const pms = try garden.alloc(qoi.Pixmap, frame_count);
+    var k: u32 = 0;
+    while (k < frame_count) : (k += 1) {
+        var frame = try background_frame(garden, k);
+        _ = try paint_scrubber(&frame, bar, k, frame_count);
+        pms[k] = frame;
+    }
+
+    return frames.Video{
+        .width = scrubber_frame_w,
+        .height = scrubber_frame_h,
+        .orientation = frames.derive_orientation(scrubber_frame_w, scrubber_frame_h),
+        .fps = scrubber_fps,
+        .frames = pms,
+    };
+}
+
+/// True when two videos carry the same header and the same frames byte for byte -- the equality a round-trip recovers.
+pub fn videos_equal(a: *const frames.Video, b: *const frames.Video) bool {
+    if (a.width != b.width or a.height != b.height) return false;
+    if (a.orientation != b.orientation or a.fps != b.fps) return false;
+    if (a.frames.len != b.frames.len) return false;
+    var f: usize = 0;
+    while (f < a.frames.len) : (f += 1) {
+        if (!a.frames[f].same_bytes(&b.frames[f])) return false;
+    }
+    return true;
+}
+
+/// Count the pixels of `img` whose RGBA equals `want` -- the honest measure of "how much of this colour is on screen".
+/// The elapsed fill is opaque, so its pixel count is exactly the elapsed width times the inner height.
+fn count_color(img: *const qoi.Pixmap, want: color.Rgba) u32 {
+    // invariant: the buffer holds four bytes per pixel -- the RGBA invariant a Pixmap carries.
+    assert(img.pixels.len % 4 == 0);
+    var n: u32 = 0;
+    var i: usize = 0;
+    while (i < img.pixels.len) : (i += 4) {
+        const px = color.Rgba{ .r = img.pixels[i], .g = img.pixels[i + 1], .b = img.pixels[i + 2], .a = img.pixels[i + 3] };
+        if (px.eql(want)) n += 1;
+    }
+    return n;
+}
+
+/// Count the pixels that differ between two same-sized frames but lie OUTSIDE the scrubber rectangle -- the change with
+/// the bar excluded. Zero proves a scrubbed frame touches only the bar, leaving the moving background untouched.
+fn diff_outside_bar(a: *const qoi.Pixmap, b: *const qoi.Pixmap, bar: Scrubber) u32 {
+    // invariant: only same-sized frames are compared, so a shared pixel index is valid in both.
+    assert(a.pixels.len == b.pixels.len);
+    assert(a.width == b.width);
+    var count: u32 = 0;
+    var y: u32 = 0;
+    while (y < a.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x < a.width) : (x += 1) {
+            const in_x = x >= bar.x and x < bar.x + bar.w;
+            const in_y = y >= bar.y and y < bar.y + bar.h;
+            if (in_x and in_y) continue;
+            const i = (@as(usize, y) * @as(usize, a.width) + @as(usize, x)) * 4;
+            const same_rg = a.pixels[i] == b.pixels[i] and a.pixels[i + 1] == b.pixels[i + 1];
+            const same_ba = a.pixels[i + 2] == b.pixels[i + 2] and a.pixels[i + 3] == b.pixels[i + 3];
+            if (!(same_rg and same_ba)) count += 1;
+        }
+    }
+    return count;
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+// --- selftest: prove the fill is a monotone data-driven function of progress, and the reel round-trips both codecs ---
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const bar = default_scrubber;
+    const frame_count: u32 = default_frame_count;
+    const inner_w: u32 = bar.w - 2 * bar.thickness;
+    const inner_h: u32 = bar.h - 2 * bar.thickness;
+    const video = try build_scrubbed_reel(garden, bar, frame_count);
+    // invariant: the built reel has exactly the frames requested.
+    assert(video.frames.len == frame_count);
+    const pixel_count = video.frame_pixels();
+
+    // The CRUX, halves one and three -- the elapsed fill grows with playback and never runs backward. Measured as the
+    // count of opaque fill-colour pixels per frame: empty at the first frame, full at the last, non-decreasing between.
+    var prev_fill: u32 = 0;
+    {
+        var k: u32 = 0;
+        while (k < frame_count) : (k += 1) {
+            const lit = count_color(&video.frames[k], bar.fill);
+            const want = elapsed_width(inner_w, k, frame_count) * inner_h;
+            // The fill colour on screen matches the pure progress map exactly (opaque, so count == width * height).
+            if (lit != want) return error.FillCountOffModel;
+            // invariant: the elapsed fill never shrinks from one frame to the next.
+            if (lit < prev_fill) return error.FillRanBackward;
+            prev_fill = lit;
+        }
+    }
+    // The first frame paints zero elapsed pixels; the last fills the whole inner track. This is the empty->full span.
+    if (count_color(&video.frames[0], bar.fill) != 0) return error.FirstFrameNotEmpty;
+    if (count_color(&video.frames[frame_count - 1], bar.fill) != inner_w * inner_h) return error.LastFrameNotFull;
+
+    // The CRUX, half two -- against the plain no-scrubber background as ground truth, a scrubbed frame differs from the
+    // background only WITHIN the scrubber rectangle (the bar touches its own place and nothing else). Checked on every
+    // frame, so the moving picture beneath the bar is proven untouched throughout playback.
+    {
+        var k: u32 = 0;
+        while (k < frame_count) : (k += 1) {
+            const bg = try background_frame(garden, k);
+            if (diff_outside_bar(&video.frames[k], &bg, bar) != 0) return error.ScrubberPaintedOutsideBar;
+        }
+    }
+
+    // The bar's corner reads the opaque border, not a background pixel -- the bar really is where we claim.
+    const corner = pixel_at(&video.frames[frame_count - 1], bar.x, bar.y);
+    if (!corner.eql(bar.border)) return error.ScrubberCornerNotBorder;
+    // A mid-reel frame's leading un-elapsed column reads the track colour, proving the empty track was laid down.
+    const mid: u32 = frame_count / 2;
+    const inner_x: u32 = bar.x + bar.thickness;
+    const inner_y: u32 = bar.y + bar.thickness;
+    const tail = pixel_at(&video.frames[mid], inner_x + inner_w - 1, inner_y);
+    if (!tail.eql(bar.track)) return error.TrackNotLaid;
+
+    // --- gfv1 intra-frame: encode, decode, prove the scrubbed reel round-trips byte for byte -----------------------
+    const gfv_cap = frames.encoded_bound(pixel_count, frame_count);
+    const gfv_dst = try garden.alloc(u8, gfv_cap);
+    const gfv_res = try frames.encode(garden, &video, gfv_dst);
+    // invariant: the encoder wrote every frame.
+    assert(gfv_res.frame_count == frame_count);
+    const gfv_back = try frames.decode(garden, gfv_dst[0..gfv_res.len]);
+    if (!videos_equal(&gfv_back, &video)) return error.GfvRoundTripBroke;
+
+    // --- gfd1 inter-frame: encode, decode, prove the SAME scrubbed reel round-trips byte for byte -----------------
+    const gfd_cap = frames_delta.encoded_bound(pixel_count, frame_count);
+    const gfd_dst = try garden.alloc(u8, gfd_cap);
+    const gfd_res = try frames_delta.encode(garden, &video, gfd_dst);
+    assert(gfd_res.frame_count == frame_count);
+    const gfd_back = try frames_delta.decode(garden, gfd_dst[0..gfd_res.len]);
+    if (!videos_equal(&gfd_back, &video)) return error.GfdRoundTripBroke;
+
+    // The two formats stay distinct: a gfv1 stream refuses at the gfd1 magic.
+    if (frames_delta.decode(garden, gfv_dst[0..gfv_res.len])) |_| {
+        return error.MagicSlipped;
+    } else |e| {
+        if (e != error.BadMagic) return error.WrongMagic;
+    }
+
+    // A malformed bar refuses by name having painted nothing -- an inner track with no room to fill.
+    const too_thick = Scrubber{ .x = 6, .y = 40, .w = 84, .h = 6, .thickness = 3, .track = bar.track, .fill = bar.fill, .border = bar.border };
+    if (validate_scrubber(too_thick)) |_| {
+        return error.ExpectedScrubberTooSmall;
+    } else |e| {
+        if (e != error.ScrubberTooSmall) return error.WrongScrubberError; // inner_h = 6 - 6 = 0
+    }
+
+    // The delta/keyframe mix is a REPORTED measurement -- the moving block and the growing fill make some frames delta
+    // cheaply and some not, so the count is shown, never asserted exact (REDS #82).
+    const keyframes: u32 = frame_count - gfd_res.delta_frames;
+    print("GREEN image-scrubber: progress bar over {d} frames of {d}x{d} moving video; elapsed fill grows {d}->{d} px monotone (empty first frame, full last), touching only the {d}x{d} bar; round-trip byte-identical through BOTH codecs; gfd1 adaptive mix {d} deltas + {d} keyframes ({d} bytes vs gfv1 {d}); gfv1 stream refused by gfd1 decoder as BadMagic\n", .{
+        frame_count, scrubber_frame_w, scrubber_frame_h, 0, inner_w * inner_h, bar.w, bar.h, gfd_res.delta_frames, keyframes, gfd_res.len, gfv_res.len,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: scrubber selftest\n", .{});
+    return 1;
+}

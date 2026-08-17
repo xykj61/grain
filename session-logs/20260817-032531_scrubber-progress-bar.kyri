@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260817.032531
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image -- scrubber: the playback progress bar over moving video, GREEN
+prompt Autonomous loop -- take the next agent-doable lap Lindy-first crux-first over Season G open media; read one council-rota doc; send often; stop at custody gates.
+think Read REMEMBER's live edge (image/text_subtitle.rye GREEN, the timed subtitle track), the eight-season double-seat, the 1024-round itinerary, and the crypto-parity doc; the live edge is Season G open-media, the broadcast-overlay family growing rung by rung.
+think Rota this lap (d27, item 17) deep-read context/LEXICON.md -- the living vocabulary; noted no scrubber term yet, so the module is named by the Comlink tendency (clear, fun, safe), colliding with nothing seated.
+think Picked the next crux Lindy-first: image/shape.rye's own docstring names "a progress-bar track" as a shape fill_rect/stroke_rect exist to draw. A scrubber is timed GEOMETRY beside text_subtitle's timed TEXT -- a universal video-player primitive, distinct new invariant, needs no new storage/codec/palette/glyph/font.
+think Designed the fill as a pure integer map: elapsed_width(inner_w, k, frame_count) = inner_w * k / (frame_count - 1) in u64, narrowed once proven <= inner_w. Monotone non-decreasing in k, zero at the first frame, full at the last -- no float ever enters.
+think Composed over public APIs only (background verbs, shape.fill_rect, shape.stroke_rect, both codecs), reusing the mostly-still moving-block background as ground truth; single-stranded, braiding nothing beneath.
+obs GREEN on the first metal run: the elapsed fill grows 0 -> 328 px monotone (inner 82x4) over 24 frames of 96x48, touching only the 84x6 bar, and the reel round-trips byte for byte through both codecs.
+obs The gfd1 adaptive encoder honestly chose 0 deltas + 24 keyframes -- a moving block AND a growing fill on every frame make a delta cost more than a whole frame -- so gfd1 (4651 bytes) is a hair larger than gfv1 (4627), reported not claimed (REDS #82). Same honest fallback text_marquee showed on panning.
+loom witness=scrubber_witness frames=24 frame_w=96 frame_h=48 fill_grow_px=328 gfv_bytes=4627 gfd_bytes=4651 gfd_deltas=0 gfd_keyframes=24
+file image/scrubber.rye the playback scrubber -- a data-driven progress bar composited over the reel; elapsed fill a pure integer function of the frame index, monotone empty->full, touching only the bar, round-trip both codecs.
+file tools/scrubber_witness.rish builds and runs the selftest on metal; asserts the GREEN line, the monotone-fill crux, the overlay-touches-only-the-bar crux, and the both-codecs round-trip.
+file crux/REMEMBER.md live edge + Git nib refreshed to the scrubber rung in the same work commit.
+file session-logs/README.md newest-first row prepended for this lap.
+recommend keep-going next Season G rung -- a scrubber playhead marker, a two-line lower-third chyron, or wider symbols over the 5x7 body; all agent-doable, no gate.
