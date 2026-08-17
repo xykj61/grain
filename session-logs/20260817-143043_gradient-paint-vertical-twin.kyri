@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260817.143043
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image/gradient_paint.rye -- paint_gradient_v, the vertical twin, GREEN
+prompt Autonomous loop lap 3: take the next agent-doable lap Lindy-first crux-first over the open-media color family; send often; stop at custody gates.
+think Rota d27 lap 3 = foundations/20260811-211431_the-lindy-effect-and-the-long-return.md -- the longest-lived work first; a gradient a surface renders is read for years, so completing the strip painter's two axes is durable, not a swell.
+think The prior lap shipped paint_gradient_h (horizontal). A gradient painter that runs only one axis is half a verb. paint_gradient_v is the honest completion: row r of height h maps to global position r*pos_max/(h-1), painted across the whole width, the ramp running top to bottom -- the axes swapped from the horizontal twin. This is one concept in two directions, not new scope, so it belongs in the same module.
+think Kept it single-stranded: paint_gradient_v is a mirror of paint_gradient_h reusing row_pos (the vertical twin of column_pos), the same up-front u64 box check, the same one-check-then-sample-per-row loop over color_ramp_stops. No new color math, no new codec.
+obs FIRST GREEN, no reds. Added proofs: the top row is the first control and the bottom the last, byte-for-byte across the width; a mid row carries both channels constant HORIZONTALLY (a vertical gradient is constant across the width, the dual of the horizontal proof); a one-row vertical strip refuses StripTooShort by name. gradient_paint witness re-run GREEN, TAME bans clean, width-check exit 0, plain 7-bit ASCII (0 non-ASCII bytes), American spelling.
+loom witness=gradient_paint_witness build_ok=1 selftest_ok=1 reds=0 axes=2 h_and_v
+file image/gradient_paint.rye added row_pos + paint_gradient_v (the vertical twin), extended the selftest with the top/bottom edges, the constant-across-width proof, and a StripTooShort refusal
+file image/README.md the gradient_paint entry now names paint_gradient_v beside paint_gradient_h (docs-sync, same commit)
+file crux/REMEMBER.md git nib + inner-loop live edge note the vertical twin
+recommend keep-going a gradient legend/swatch strip (label each control), a diagonal/2-axis gradient, or a fresh Lindy-first crux -- none reach a custody gate

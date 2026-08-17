@@ -8,9 +8,11 @@
 //! Compose, not braid: color_ramp_stops DECIDES each column's color (sample_checked over the positioned ramp), image/qoi
 //! owns the RGBA target (a Pixmap, four bytes per cell), and image/color composites the paint over the destination
 //! (Porter-Duff src-over, straight alpha), so a translucent gradient tints the picture beneath. This module only ROUTES
-//! each column of the strip to its global position and writes it -- no new color math, no new codec. A horizontal strip
-//! of width w maps column c to the global position c * pos_max / (w-1), so the leftmost column is the first control
-//! exactly and the rightmost is the last control exactly, and every column between carries the sampled blend. The whole
+//! each column (or row) of the strip to its global position and writes it -- no new color math, no new codec. A
+//! horizontal strip of width w maps column c to the global position c * pos_max / (w-1), so the leftmost column is the
+//! first control exactly and the rightmost is the last control exactly, and every column between carries the sampled
+//! blend; paint_gradient_v is the vertical twin, mapping row r of height h the same way so the ramp runs top to bottom.
+//! The whole
 //! rectangle's box is bound-checked ONCE up front (in u64 so a far edge can never wrap before the bound refuses), and the
 //! ramp is validated ONCE before any pixel is written, so a malformed strip refuses by name having painted nothing --
 //! all-or-nothing, never a half-painted band. No network, no key, no funds.
@@ -90,6 +92,52 @@ pub fn paint_gradient_h(target: *qoi.Pixmap, x: u32, y: u32, w: u32, h: u32, con
         const col = ramp_stops.sample_checked(control, positions, column_pos(cx, w));
         var cy: u32 = 0;
         while (cy < h) : (cy += 1) {
+            blend_pixel(target, x + cx, y + cy, col);
+        }
+    }
+}
+
+/// The global position (0..pos_max) of row `r` in a strip of height `h` -- the vertical twin of column_pos, an even
+/// integer lerp from 0 (the top edge, the first control) to pos_max (the bottom edge, the last control).
+fn row_pos(r: u32, h: u32) u8 {
+    // invariant: a vertical gradient needs at least two rows, so the denominator is at least one.
+    assert(h >= 2);
+    // invariant: the row names a real row of the strip.
+    assert(r < h);
+    const den: u32 = h - 1;
+    // r <= h-1 <= qoi_max_dim (8192), so r * 255 <= ~2.09M in u32 and the lerp never wraps. Floor division.
+    const p: u32 = r * @as(u32, ramp_stops.pos_max) / den;
+    // invariant: the position stays inside the domain (r == 0 gives 0, r == h-1 gives pos_max).
+    assert(p <= ramp_stops.pos_max);
+    return @intCast(p);
+}
+
+/// Paint a VERTICAL positioned gradient into the rectangle at (`x`, `y`) of size `w` x `h` on `target`: each row is the
+/// color the positioned ramp samples at that row's global position, painted across the whole width. The twin of
+/// paint_gradient_h with the axes swapped -- the topmost row is the first control exactly and the bottom row the last.
+/// Refuses `StripTooShort` if `h` is under two (a gradient needs a direction), `BadStripDims` if `w` is zero,
+/// `GradientStripOutOfBounds` BY NAME if the box would exceed the target, and every `color_ramp_stops` refusal by name if
+/// the ramp is malformed -- all checked BEFORE any pixel is written, so a refusal leaves the target untouched.
+pub fn paint_gradient_v(target: *qoi.Pixmap, x: u32, y: u32, w: u32, h: u32, control: []const color.Rgba, positions: []const u8) !void {
+    // invariant: a vertical gradient strip has at least two rows and a real width.
+    if (h < 2) return error.StripTooShort;
+    if (w == 0) return error.BadStripDims;
+    // The ramp is validated ONCE up front, so a malformed stop list refuses having painted nothing.
+    try ramp_stops.check(control, positions);
+    // The box's far edges, in u64 so the sum can never wrap before the bound check refuses.
+    const right: u64 = @as(u64, x) + @as(u64, w);
+    const bottom: u64 = @as(u64, y) + @as(u64, h);
+    if (right > @as(u64, target.width) or bottom > @as(u64, target.height)) return error.GradientStripOutOfBounds;
+    // invariant: the up-front check proved every pixel of the w x h box lands inside the target buffer.
+    assert(right <= @as(u64, target.width));
+    assert(bottom <= @as(u64, target.height));
+
+    var cy: u32 = 0;
+    while (cy < h) : (cy += 1) {
+        // The row's color is decided by the positioned ramp; this module only routes the row to its position.
+        const col = ramp_stops.sample_checked(control, positions, row_pos(cy, h));
+        var cx: u32 = 0;
+        while (cx < w) : (cx += 1) {
             blend_pixel(target, x + cx, y + cy, col);
         }
     }
@@ -181,8 +229,25 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     if (!pixel_at(&img_sub, 5, 0).eql(white)) return error.RightGutterPainted;
     if (pixel_at(&img_sub, 1, 0).eql(white)) return error.StripStartNotPainted;
 
+    // The vertical twin: a red-green-blue gradient painted DOWN a tall strip has its first control on the top row and its
+    // last on the bottom row, byte-for-byte across the whole width, and each row is one constant color (a vertical
+    // gradient is constant horizontally) -- the axes swapped from the horizontal proof.
+    var img_v = try make_canvas(garden, strip_h, strip_w, white);
+    try paint_gradient_v(&img_v, 0, 0, strip_h, strip_w, rgb[0..], at_even[0..]);
+    var vx: u32 = 0;
+    while (vx < strip_h) : (vx += 1) {
+        if (!pixel_at(&img_v, vx, 0).eql(red)) return error.TopEdgeNotFirstControl;
+        if (!pixel_at(&img_v, vx, strip_w - 1).eql(blue)) return error.BottomEdgeNotLastControl;
+    }
+    const vmid = pixel_at(&img_v, 0, mid_col);
+    if (!(vmid.r > 0 and vmid.g > 0)) return error.VerticalMidRowNotBlended;
+    vx = 0;
+    while (vx < strip_h) : (vx += 1) {
+        if (!pixel_at(&img_v, vx, mid_col).eql(vmid)) return error.RowNotConstantHorizontally;
+    }
+
     // Refusals by name, each having painted nothing: a one-column strip (no direction), a zero height, an out-of-bounds
-    // box, and a malformed ramp (non-ascending positions caught up front).
+    // box, a short vertical strip, and a malformed ramp (non-ascending positions caught up front).
     var tiny = try make_canvas(garden, 4, 2, white);
     if (paint_gradient_h(&tiny, 0, 0, 1, 2, rgb[0..], at_even[0..])) |_| return error.NarrowNotRefused else |err| {
         if (err != error.StripTooNarrow) return error.WrongNarrowError;
@@ -196,6 +261,10 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const not_asc = [_]u8{ 0, 0, 255 };
     if (paint_gradient_h(&tiny, 0, 0, 4, 2, rgb[0..], not_asc[0..])) |_| return error.BadRampNotRefused else |err| {
         if (err != error.StopsNotAscending) return error.WrongRampError;
+    }
+    // The vertical twin refuses a one-ROW strip (no vertical direction) by its own name.
+    if (paint_gradient_v(&tiny, 0, 0, 4, 1, rgb[0..], at_even[0..])) |_| return error.ShortNotRefused else |err| {
+        if (err != error.StripTooShort) return error.WrongShortError;
     }
     // The overrun and bad-ramp refusals painted nothing -- the tiny canvas is still all white.
     var wy: u32 = 0;
@@ -213,7 +282,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     try paint_gradient_h(&img_b, 0, 0, strip_w, strip_h, rgb[0..], at_even[0..]);
     if (!img_a.same_bytes(&img_b)) return error.StripNotDeterministic;
 
-    print("GREEN image-gradient-paint: a positioned gradient painted onto a real image -- the leftmost column is the first control and the rightmost the last, byte-for-byte down the whole height; a mid column carries both channels (a true blend) constant vertically; uneven positions bend the painted strip where even spacing cannot (green at 200 vs 128 read differently at the same column); the strip round-trips through the open QOI codec byte-for-byte; a sub-rectangle paints only its own columns (the gutters stay ground); a one-column strip, a zero height, an out-of-bounds box, and a non-ascending ramp refuse by name having painted nothing; the same ramp paints the same strip byte-for-byte\n", .{});
+    print("GREEN image-gradient-paint: a positioned gradient painted onto a real image -- the leftmost column is the first control and the rightmost the last, byte-for-byte down the whole height; a mid column carries both channels (a true blend) constant vertically; uneven positions bend the painted strip where even spacing cannot (green at 200 vs 128 read differently at the same column); the strip round-trips through the open QOI codec byte-for-byte; a sub-rectangle paints only its own columns (the gutters stay ground); the vertical twin paint_gradient_v runs the ramp top to bottom (first control on the top row, last on the bottom, each row constant across the width); a one-column strip, a zero height, an out-of-bounds box, a one-row vertical strip, and a non-ascending ramp refuse by name having painted nothing; the same ramp paints the same strip byte-for-byte\n", .{});
     return 0;
 }
 
