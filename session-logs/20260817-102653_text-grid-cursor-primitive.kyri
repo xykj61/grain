@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260817.102653
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title text_grid -- the abstract cursor primitive, render_session passes through, GREEN
+prompt take the next agent-doable lap Lindy-first crux-first on the recursion loop; deep-read one council-rota doc; send often; stop at custody gates
+think The prior lap drew the caret by building the inverted per-cell palette INLINE in pond's render_session. Lindy-first: a cursor is not a Scooter fact, it is a grid fact -- every grid surface (a Realidream editor, a Dexter terminal, any future grid) wants a block cursor. So lift it to the abstract painter where it belongs.
+think render_grid_cursor in image/text_grid.rye: paint the whole grid plain (ink over ground) but invert the cell at a flat index to inverse video. Pure composition over render_grid_cells -- build the two palettes, pass through. A bad index refuses GridCursorOutOfGrid by name.
+think Proven in text_grid's own selftest (so the existing witness covers it): cursor on the blank cell (row 2, col 0) reads solid ink where the plain render reads solid ground; every pixel outside the cursor cell is byte-for-byte the plain render; determinism; QOI round-trip; bad index refused.
+think Then refactor render_session (pond) to a pure pass-through of render_grid_cursor. The scooter_paint witness is UNCHANGED and stays GREEN, which proves the refactor is byte-identical -- the caret moved homes without changing a pixel. Layering held: image/ owns the primitive, pond composes down.
+obs GREEN both witnesses first metal run, no red. This is the image/pond layering the family keeps: the abstract verb lives in image/text_grid beside render_grid/_fg/_cells, the live verb in pond passes through -- exactly as render_channel_bar passes through render_grid_cells.
+obs Kept the frame-paintable guard in render_session so a stray high byte still refuses ScooterFrameUnpaintable by name before the painter draws -- the pass-through did not drop the honest edge.
+loom witness=text_grid_witness grid=16x3 image=96x21 cursor_cell=r2c0 confinement=byte-for-byte green=first-run
+loom witness=scooter_paint_witness refactor=render_session-passthrough witness_unchanged=true green=byte-identical
+file image/text_grid.rye render_grid_cursor, the abstract block-cursor primitive over render_grid_cells; GridCursorOutOfGrid added; selftest proves it
+file pond/apps/scooter_paint.rye render_session now a pure pass-through of render_grid_cursor -- the caret no longer inline in pond
+file image/README.md names render_grid_cells and render_grid_cursor (docs-sync)
+file crux/REMEMBER.md live edge + Git nib refreshed to the abstract cursor primitive; prior nib demoted
+recommend keep-going the cursor floor stands where every grid surface can reach it; next Lindy crux is the coloured caret over a coloured status face (compose render_grid_cursor with the bar palettes) or a multi-cell selection range -- both pure composition over render_grid_cells
