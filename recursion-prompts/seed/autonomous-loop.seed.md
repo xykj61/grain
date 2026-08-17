@@ -14,8 +14,9 @@ Read `context/` before large decisions: TAME (safety > performance > joy), CIVIC
 
 Load these named paths too, so the loop carries the disciplines an unattended run most often forgets:
 
-- **Reds ledger** -- `crux/REDS.md`: a red books the allocation before new work; close it on a witness on metal (`.claude/rules/reds-first.md`).
+- **Standfast -- stop the line for reds** -- `crux/REDS.md` and `foundations/20260816-214652_standfast-the-stopped-line.md`: the moment a red is real the line halts -- new constructive work does not begin beside it. At each lap, first close the open, agent-closable reds in the ledger (find the root not the symptom, then a witness on metal) before taking new work; a red you cannot close -- custody-gated or needing Keaton -- is surfaced like a gate, never routed around. A lantern that fires twice becomes a loom (`.claude/rules/reds-first.md`).
 - **Cairns ledger** -- `crux/CAIRNS.md`: mark the way back before any breach rename or seated debride (`.claude/rules/cairn.md`).
+- **References are promises; relocate stale files, never route around them** -- when a red's true root is that a file is no longer relevant, resolve it by **molt** (to a fossil), **archive/** (finished-historical), or **yonder/** (deferred-yet-alive) rather than forcing a code fix on tissue that should leave -- cairn first, and **never** an autonomous shred or debride (those stay Keaton's word). Before any move or rename, sweep the whole tree for every inbound reference -- the exact relative path, the bare filename, and any shorthand or slug form -- across code, docs, session logs, note files, and code comments; repoint every **living** reference. Dated testimony keeps its text and stays readable (accrete-never-break): it is checked so nothing breaks silently, never rewritten. `.claude/rules/molt.md` -- `.claude/rules/cairn.md` -- `context/ORGANIZING.md` -- the *References are promises* rule in `.claude/rules/collaboration.md`.
 - **Docs stay synced** -- `.claude/rules/docs-implementation-sync.md`: when behavior changes, the doc that describes it moves in the **same** commit; a doc's behavioral claim is checked by reading or running, never assumed.
 - **Prove before GREEN** -- before any round claims GREEN, run the module's own witness plus `rishi/bin/rishi run tools/tame_style_check.rish` and `tools/width-check.rish`; a green witness never excuses zero asserts (`.claude/rules/tame-guidance.md`).
 - **Loom capture** -- when a round measures a hot path, record a `loom key=value` line in the session log from real measurement, never memory (`.claude/rules/session-logs.md`).
@@ -83,7 +84,7 @@ Name the proof before the work: {{witness path}} asserts {{invariant}}; green lo
 A tripwire is not a stop -- it is a design round you **approve for yourself** and make progress on, rather than panicking to check in. Book it, name it, keep going:
 
 - A new big vision that fills a calendar-itinerary blind spot -> **double-seat** it (Lexicon + a rule/foundation) so it never disturbs the fixed itinerary, and continue.
-- A red -> book it in `crux/REDS.md` (what went wrong - what caught it - what it taught), close it on a witness on metal, then resume.
+- A red -> **Standfast**: stop, book it in `crux/REDS.md` (what went wrong - what caught it - what it taught), find the root not the symptom, and close it on a witness on metal before resuming. If the root is a stale file, relocate it (molt/archive/yonder) after a full inbound-reference sweep and a cairn -- never an autonomous shred or debride.
 - A genuine custody fork -> that is a gate (part 2); surface it, do not decide it.
 
 ## 6 -- Clock, ledger, remotes, signing
