@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260817.022328
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image -- text_layout: justify_line, the flush-both-margins rung, GREEN
+prompt Autonomous loop -- take the next agent-doable lap Lindy-first crux-first, Rye-first, Season G open media; send each finished increment; deep-read one council-rota doc; stop at custody gates.
+think Read REMEMBER's inner loop, the 1024-round itinerary, the eight-season double-seat, and the rye-first crypto wave. Crypto stands WHOLE; the live edge is Season G open media, the text family.
+think Surveyed the text family: text_layout has place/measure/wrap/break-wrap; text_paint has paint_paragraph_aligned with left/right/center plus boxed/in-box/clipped. The alignment family was missing its fourth classic member -- justify (flush both margins).
+think Justify is the crux: durable (every document surface wants it), tractable (operates on already-laid PlacedGlyphs), self-contained (one pure-geometry function). Higher-value and more tractable than hand-drawing a font beyond 5x7, and it is Rye floor math -- no pixel, so independent of paused Brushstroke.
+think Home is text_layout.rye, the pure-geometry twin of color.rye's arithmetic -- single-stranded beside layout_line, not braided into it. justify_line redistributes slack across interior word gaps: base = slack/gaps, remainder to the first gaps, cumulative shift keeps pen origins monotone.
+think interior_gaps counts only spaces with a non-space glyph on each side, so a leading/trailing/double space is never stretched; a single-word line (zero gaps) is left untouched -- the honest last-line behaviour.
+obs Named refusals: JustifyTargetTooSmall (target tighter than the laid line) and JustifyTargetTooWide (past line_width_max), so slack can never underflow or wrap. Two >=2-assert contracts per function, invariants stated positively.
+obs Rota lap (d27, item 11) read active-designing/yonder/20260618-182412_single-stranded.md -- simple vs easy, compose don't braid. It named exactly this shape: justify_line is one thing, set beside layout_line, drawable and changeable alone.
+loom witness=text_layout_witness selftest=GREEN justify_from=48 justify_to=54 gaps=2 per_gap=3
+file image/text_layout.rye justify_line + interior_gaps + selftest proof; the alignment family's fourth member
+file tools/text_layout_witness.rish -- unchanged; the selftest it drives now proves justify on metal
+recommend keep-going -- next: paint_paragraph_justified in text_paint.rye, painting every wrapped line justified except the last

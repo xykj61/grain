@@ -18,7 +18,10 @@
 //! overflows the max it SPLITS that word at a glyph boundary rather than letting one line run past the max -- so every
 //! emitted line stays within the max whenever the max holds at least one glyph, and the split loses no glyph. The two
 //! are the strict/relaxed pair the text_paint rung already keeps (strict paint vs clipped paint): word-boundary wrap
-//! is the whole-word promise, break wrap is the never-overflow promise. No network, no key, no funds.
+//! is the whole-word promise, break wrap is the never-overflow promise. justify_line is the alignment family's fourth
+//! member beside left, right, and center: given a line already laid, it flushes both margins to a wider target by
+//! spreading the slack evenly across the interior word gaps -- pure geometry, shifting pen origins, touching no pixel;
+//! a single-word line has no gap to stretch and is left exactly as laid. No network, no key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/text_layout.rye selftest
 
@@ -28,7 +31,7 @@ const print = std.debug.print;
 const glyph = @import("glyph.rye");
 const font_ascii = @import("font5x7_ascii.rye");
 
-pub const text_layout_version = "20260817.010230";
+pub const text_layout_version = "20260817.022328";
 
 /// The most glyphs one laid-out line may hold -- a generous ceiling over any label a repair-panel UI shows.
 pub const line_glyph_max: u32 = 4096;
@@ -310,6 +313,77 @@ fn word_start_rewind(sp_start: u32, text: []const u8, space_cp: u32) u32 {
     return p;
 }
 
+/// Count the INTERIOR word gaps in a laid-out line -- each space glyph that carries a non-space glyph on both sides.
+/// A leading, trailing, or run-internal space is not a gap justification may stretch (nothing to push apart on one
+/// side), so it is not counted. A single-word line has zero gaps. Bounded: the scan walks at most `count` glyphs.
+fn interior_gaps(placed: []const PlacedGlyph, count: u32, space_cp: u32) u32 {
+    // invariant: the reported count fits the buffer and stays within the line ceiling, so the walk is bounded.
+    assert(count <= placed.len);
+    assert(count <= line_glyph_max);
+    if (count < 3) return 0; // a gap needs a glyph on each side -- three glyphs minimum ("a b").
+    var gaps: u32 = 0;
+    var i: u32 = 1;
+    while (i + 1 < count) : (i += 1) {
+        const is_gap = placed[i].codepoint == space_cp and
+            placed[i - 1].codepoint != space_cp and
+            placed[i + 1].codepoint != space_cp;
+        if (is_gap) gaps += 1;
+    }
+    // invariant: a gap needs a neighbor pair, so there are fewer gaps than glyphs.
+    assert(gaps < count);
+    return gaps;
+}
+
+/// Justify a laid-out line to `target_width` by widening its interior word gaps evenly -- the flush-both-margins rung
+/// the alignment family (left, right, center) was missing. `placed[0..count]` is a line already laid by layout_line,
+/// so pen_x is each glyph's advance-summed origin and `current_width` is that line's pen width. The slack
+/// (target_width - current_width) is spread across the interior gaps: each gap grows by `slack / gaps` cells, and the
+/// first `slack % gaps` gaps take one extra cell, so the total added is exactly the slack and the last glyph's right
+/// edge lands on target_width. A single-word line (zero gaps) cannot be stretched -- it is left untouched, the honest
+/// classic behaviour (a last line or an unbreakable word stays left-set). Returns the line's new pen width. Pure
+/// geometry: it shifts pen origins, touches no pixel and allocates nothing -- the twin discipline of layout_line.
+pub fn justify_line(placed: []PlacedGlyph, count: u32, space_cp: u32, current_width: u32, target_width: u32) !u32 {
+    // invariant: the buffer holds the reported glyphs and the line stays within the named ceiling.
+    assert(count <= placed.len);
+    assert(count <= line_glyph_max);
+    // invariant: justify only ever widens -- a target tighter than the laid line is a caller error, refused by name.
+    if (target_width < current_width) return error.JustifyTargetTooSmall;
+    // invariant: the target stays within the proven width ceiling, so the added slack can never wrap.
+    if (target_width > line_width_max) return error.JustifyTargetTooWide;
+
+    const gaps = interior_gaps(placed, count, space_cp);
+    if (gaps == 0) return current_width; // nothing to push apart -- the line stays exactly as laid.
+
+    const slack: u32 = target_width - current_width;
+    const base: u32 = slack / gaps; // every interior gap grows by at least this many cells.
+    const extra: u32 = slack % gaps; // the first `extra` gaps take one more, so the total added equals the slack.
+
+    var added: u32 = 0; // cumulative widening applied to every glyph seen so far -- only ever grows.
+    var seen_gaps: u32 = 0;
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        // A glyph is shifted right by all the widening that landed before it -- pen origins stay monotone.
+        placed[i].pen_x += added;
+        const is_gap = i > 0 and i + 1 < count and
+            placed[i].codepoint == space_cp and
+            placed[i - 1].codepoint != space_cp and
+            placed[i + 1].codepoint != space_cp;
+        if (is_gap) {
+            // This gap widens after its own space glyph, so the next word starts further along.
+            added += base;
+            if (seen_gaps < extra) added += 1;
+            seen_gaps += 1;
+        }
+    }
+    // invariant: every interior gap was widened exactly once, and the total added is exactly the slack.
+    assert(seen_gaps == gaps);
+    assert(added == slack);
+    const new_width: u32 = current_width + added;
+    // invariant: the line now flushes to the requested target width, both margins met.
+    assert(new_width == target_width);
+    return new_width;
+}
+
 // --- selftest: lay real text against the full-ASCII font, prove pen positions, width, coverage, and the refusal ---
 
 fn run_selftest(garden: std.mem.Allocator) !u8 {
@@ -478,8 +552,47 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (e != error.MaxWidthTooSmall) return error.WrongZeroWidth;
     }
 
-    print("GREEN image-text-layout: laid '{s}' as {d} glyphs at pen 0..{d} width {d}; measure agrees; empty line zero; full printable band {d}..{d} ({d} glyphs) lays clean at width {d}; wrap breaks '{s}' into {d} lines at width {d}; a too-wide word takes its own line; break-wrap splits 'abcdefg' into {d} lines each within the max with no glyph lost; UncoveredCodepoint and MaxWidthTooSmall refused by name\n", .{
-        text, line.count, line.width - advance, line.width, band_lo, band_hi, band_len, band_line.width, para, two, advance * 5, split3,
+    // --- justify: stretch a laid line's interior gaps so both margins flush to a wider target ---
+    // "ab cd ef" lays as three two-glyph words joined by two single-space gaps; justify to width + 6 grows each gap
+    // by 3, so both margins meet the target and the word origins step out by the cumulative widening.
+    const jtext = "ab cd ef";
+    const jout = try garden.alloc(PlacedGlyph, jtext.len);
+    const jlaid = try layout_line(&atlas, jtext, jout);
+    const jtarget: u32 = jlaid.width + 6; // 6 extra cells over two gaps -> 3 cells each, no remainder
+    const jwidth = try justify_line(jout, jlaid.count, ' ', jlaid.width, jtarget);
+    assert(jwidth == jtarget); // the line now flushes exactly to the target
+    // 'a'(0) 'b'(adv) ' '(2adv) 'c'(3adv+3) 'd'(4adv+3) ' '(5adv+3) 'e'(6adv+6) 'f'(7adv+6): each gap adds 3 downstream.
+    assert(jout[0].pen_x == 0);
+    assert(jout[1].pen_x == advance);
+    assert(jout[2].pen_x == advance * 2); // the first space sits where it was laid; the widening lands after it
+    assert(jout[3].pen_x == advance * 3 + 3); // 'c' -- first word after the first stretched gap
+    assert(jout[6].pen_x == advance * 6 + 6); // 'e' -- shifted by both stretched gaps
+    // The pen origins stay strictly monotone after the stretch -- no glyph slid backward.
+    var ji: u32 = 1;
+    while (ji < jlaid.count) : (ji += 1) assert(jout[ji].pen_x > jout[ji - 1].pen_x);
+
+    // An uneven slack spreads the remainder to the FIRST gaps: +7 over two gaps is 4 then 3.
+    const jout2 = try garden.alloc(PlacedGlyph, jtext.len);
+    const jlaid2 = try layout_line(&atlas, jtext, jout2);
+    const jwidth2 = try justify_line(jout2, jlaid2.count, ' ', jlaid2.width, jlaid2.width + 7);
+    assert(jwidth2 == jlaid2.width + 7);
+    assert(jout2[3].pen_x == advance * 3 + 4); // first gap took the extra cell (4)
+    assert(jout2[6].pen_x == advance * 6 + 7); // second gap took 3 -- cumulative 4 + 3 = 7
+
+    // A single-word line has no interior gap, so justify leaves it exactly as laid -- the honest last-line behaviour.
+    const jsolo = try garden.alloc(PlacedGlyph, "word".len);
+    const jsololaid = try layout_line(&atlas, "word", jsolo);
+    const jsolowidth = try justify_line(jsolo, jsololaid.count, ' ', jsololaid.width, jsololaid.width + 10);
+    assert(jsolowidth == jsololaid.width); // untouched: no gap to stretch
+    assert(jsolo[0].pen_x == 0);
+
+    // A target tighter than the laid line refuses BY NAME rather than underflowing a pen origin.
+    if (justify_line(jout, jlaid.count, ' ', jlaid.width, jlaid.width - 1)) |_| return error.TightJustifySlipped else |e| {
+        if (e != error.JustifyTargetTooSmall) return error.WrongTightJustify;
+    }
+
+    print("GREEN image-text-layout: laid '{s}' as {d} glyphs at pen 0..{d} width {d}; measure agrees; empty line zero; full printable band {d}..{d} ({d} glyphs) lays clean at width {d}; wrap breaks '{s}' into {d} lines at width {d}; a too-wide word takes its own line; break-wrap splits 'abcdefg' into {d} lines each within the max with no glyph lost; justify flushes 'ab cd ef' from width {d} to {d} spreading slack across two interior gaps (single word untouched); UncoveredCodepoint, MaxWidthTooSmall, and JustifyTargetTooSmall refused by name\n", .{
+        text, line.count, line.width - advance, line.width, band_lo, band_hi, band_len, band_line.width, para, two, advance * 5, split3, jlaid.width, jtarget,
     });
     return 0;
 }
