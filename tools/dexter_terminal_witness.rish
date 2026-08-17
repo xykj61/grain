@@ -1,0 +1,35 @@
+# tools/dexter_terminal_witness.rish -- Dexter, the full terminal on metal.
+#
+# pond/apps/dexter_terminal.rye composes a channel's journal (scooter_view) and an editable line
+# (dexter_line drawn by dexter_prompt) into ONE terminal screen -- the conversation filling the rows above,
+# the prompt on the last row, the shape of a chat client at the command line. This witness builds the module
+# to a binary and asserts its selftest speaks GREEN over the three cruxes:
+#   - Journal above, prompt below -- the header and posts fill the top rows, the prompt is the last row,
+#     the caret on it just past the typed text.
+#   - The regions never overlap -- even a full journal leaves the last row for the prompt; the overflow tail
+#     sits on the row above, never on the prompt row.
+#   - Structurally exact and deterministic -- the screen is exactly 24x80, every row the true width, and the
+#     same channel and line render the same screen.
+#
+# Facts only, custody-first: it draws a conversation and a prompt and holds nothing else -- no network, no key.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/dexter_terminal_witness.rish
+
+say "dexter-terminal: Language EN -- a channel's journal above and an editable prompt below, one terminal screen."
+say "dexter-terminal: Lens TAME -- exactly 24x80, the two regions disjoint, the caret always on the prompt, no key and no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+
+let bin = "pond/bin/dexter-terminal"
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/dexter_terminal.rye -femit-bin=${bin}"]
+assert build.ok else "dexter-terminal: dexter_terminal build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "dexter-terminal: dexter_terminal selftest exited non-zero"
+assert selftest.out contains "GREEN" else "dexter-terminal: selftest did not speak GREEN"
+assert selftest.out contains "the journal fills the rows above and the prompt is the last row" else "dexter-terminal: compose crux missing"
+assert selftest.out contains "the regions never overlap" else "dexter-terminal: disjoint crux missing"
+assert selftest.out contains "exactly 24x80, every row the true width, and the fold is deterministic" else "dexter-terminal: structural crux missing"
+
+say "GREEN: dexter-terminal -- the journal above and the prompt below in one screen, the regions disjoint and the caret always on the prompt."
