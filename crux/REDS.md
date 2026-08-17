@@ -74,6 +74,12 @@ A red enters this ledger when it is found. Rows are never edited or removed; a l
 
 **REDS #86 (`20260817.181058`) -- ten hunk_photos witnesses had never run GREEN here.** *Wrong:* each echoed the whole verbose selftest via `say "...: ${out}"`, tripping Rishi `StringTooLong` before its own asserts ran. *Caught:* the #85 sweep, running all 97 -- ten exited non-zero at the `say` line. *Taught:* a witness must not echo an unbounded interpolation; the `contains` asserts already carry the checks. Removed it in all ten; each now runs GREEN, proving #85. Released.
 
+**REDS #81 CLOSED (`20260817.183713`) -- the loom now hears every rung:** the nine ML-KEM and ML-DSA rungs that had landed as their own GREEN per-file witnesses without being added to `crypto_suite_witness`'s registration are all registered now, and the fix is proven not by re-reading but by the loom REDS #80 booked -- `crypto_count_guard_witness` runs **GREEN** over an exact **bijection**: 80 `crypto/*.rye` files, each registered in the suite and each registration backing a real file, so an unregistered rung would go RED naming itself. The registration gap #81 named is closed and now guarded against recurrence. Released -- the gated-reds sweep proved it on metal.
+
+**REDS #78 CLOSED (`20260817.183713`) -- the census reads GREEN once the study clone is present:** #78's residual RED was named honestly as a **provisioning fact, not a code red** -- `safe_list_census_witness` could not reach full GREEN because a deeper elder wanted `gratitude/tigerbeetle/src`, absent on that bench. The study clone is present now, and `tools/gen/season/safe_list_census_witness.rish` runs **GREEN** (`verdict=ok`, `SHRED_RED=yes`, almanac seat 28). The provisioning gate lifted; the code was always sound. Released.
+
+**REDS #75 -- reviewed, stays errata (`20260817.183713`):** under the gated-reds sweep the two future-dated Testament stamps were re-confirmed. The only true fix is a history rewrite (deep **debride**, custody gate #1, Keaton's hand), so per the one-clock law and accrete-never-break the row **stays errata** rather than being force-corrected -- rewriting pushed testimony is exactly the custody gate that stays manual. The mono witness still tracks the newest commit as head, so nothing downstream breaks. Not a code red; no allocation to release.
+
 ---
 
 ## What the pattern says
