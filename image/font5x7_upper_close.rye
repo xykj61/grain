@@ -1,0 +1,301 @@
+//! image/font5x7_upper_close.rye -- the three capitals that CLOSE the uppercase Latin-1 letter set: E and I diaeresis, O tilde.
+//!
+//! Season G (Open Media Primitives) - font content for the open glyph atlas image/glyph.rye (gfa1). The accented capital
+//! corpora (image/font5x7_upper_accented.rye, image/font5x7_upper_latin1.rye) drew the acute, grave, circumflex, tilde,
+//! and diaeresis capitals, and the Scandinavian and Icelandic capital corpora (image/font5x7_upper_nordic.rye,
+//! image/font5x7_upper_icelandic.rye) drew the seven letters beyond the accents -- yet three uppercase letters of the
+//! block still stood undrawn, the capital twins of lowercase letters the tree already carries: E diaeresis, I diaeresis,
+//! O tilde. This corpus draws them at their real Unicode codepoints U+00CB E diaeresis, U+00CF I diaeresis, U+00D5 O
+//! tilde, each exactly 0x20 below its lowercase twin in the diaeresis and tilde corpora. With these three, EVERY
+//! alphabetic codepoint in the whole Latin-1 Supplement block -- lowercase and uppercase alike -- now stands drawn in our
+//! own open hand: the uppercase Latin-1 letter set is closed outright.
+//!
+//! The crux this corpus proves is that these three are marked ABOVE with TWO different marks, each read by its own toothed
+//! guard, and its bodies are three distinct capitals:
+//!   - E diaeresis (U+00CB) and I diaeresis (U+00CF) each wear the DIAERESIS -- two parted dots on the top mark row (the
+//!     center column blank between them) with the second mark row clear -- over the compressed capital E and I bodies;
+//!   - O tilde (U+00D5) wears the TILDE -- a wave spanning both mark rows and cresting right of center -- over the
+//!     compressed capital O body.
+//! The two diaeresis marks are proven BYTE-IDENTICAL to each other, so the mark stays one consistent hand across the two
+//! letters it crowns. A lost dot, a filled gap, or a tilde flattened to one row is a stopped line rather than a wrong glyph.
+//!
+//! The source stays plain ASCII (ASCII-first): the codepoints are written as numeric literals (0x00CB ...) and each
+//! letter is named in an ASCII comment, so no non-ASCII byte enters the file even though the glyphs it builds cover a
+//! non-ASCII range. The codepoints are NOT contiguous (the other capitals sit between them in the block), so this corpus
+//! carries an explicit ascending codepoint table -- the shape the gfa1 encoder trusts (strictly ascending, shared cell,
+//! coverage length == cell area). The drawings ARE the specification: each letter is seven rows of five cells in ASCII
+//! line art ('#' full ink, '.' none) that a reader audits by eye; the coverage bytes are derived from that art, never the
+//! reverse. No network, no key, no funds -- the capitals a surface reads the day it prints a full ALL-CAPS name whose last
+//! marks the block had left uppercase-blank, on our own open font.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_upper_close.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+
+pub const font5x7_upper_close_version = "20260817.075413";
+
+/// Every glyph in this corpus shares one 5-wide, 7-tall cell -- the same body the ASCII, Greek, and accent corpora carry.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance: the cell width plus one column of daylight, the same advance the sibling corpora carry.
+pub const upper_close_advance: u8 = cell_w + 1;
+
+/// The corpus holds exactly the three closing capitals named in the table below.
+pub const upper_close_count: u32 = 3;
+
+/// Cells per glyph -- the coverage length every letter carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The center column of the cell -- the diaeresis's parted gap and the tilde's crest both read against it.
+pub const center_col: u32 = 2;
+
+/// The two mark rows above the compressed capital body (rows 0 and 1). The diaeresis inks only the top row here; the
+/// tilde waves across both. This is where a reader tells a marked capital from a bare one.
+pub const mark_row_top: u32 = 0;
+pub const mark_row_bottom: u32 = 1;
+
+/// The three closing capital codepoints, strictly ascending -- the order the gfa1 encoder trusts. Each aligns by index
+/// with upper_close_art below. Written as numeric literals so the source stays plain ASCII while the glyphs cover a
+/// non-ASCII range:
+///   0x00CB E diaeresis, 0x00CF I diaeresis, 0x00D5 O tilde. Each is exactly 0x20 below its lowercase twin in the
+///   diaeresis and tilde corpora; the other capitals between them in the block are drawn by the accented and
+///   Scandinavian/Icelandic capital corpora.
+const upper_close_codepoints = [upper_close_count]u32{
+    0x00CB, 0x00CF, 0x00D5,
+};
+
+/// The three capitals, drawn in the open. Each is seven rows of five cells; '#' ink, '.' background. A reader audits every
+/// letter here by eye, and the coverage bytes are lifted from this art, never guessed. The bodies are compressed into rows
+/// 2..6 the way the accented capitals are, with the mark on rows 0..1:
+///   - E diaeresis (U+00CB): two parted dots (top row, columns 1 and 3, center blank; second mark row clear) over the
+///     compressed capital E;
+///   - I diaeresis (U+00CF): the same two parted dots over the compressed capital I;
+///   - O tilde (U+00D5): a tilde wave (a rise on the top row cresting right, a fall on the second mark row) over the
+///     compressed capital O.
+const upper_close_art = [upper_close_count][cell_h][]const u8{
+    .{ ".#.#.", ".....", "#####", "#....", "###..", "#....", "#####" }, // U+00CB E diaeresis
+    .{ ".#.#.", ".....", ".###.", "..#..", "..#..", "..#..", ".###." }, // U+00CF I diaeresis
+    .{ "..#.#", ".#.#.", ".###.", "#...#", "#...#", "#...#", ".###." }, // U+00D5 O tilde
+};
+
+/// Lift one letter's ASCII art into a freshly allocated coverage grid of exactly cell_area bytes: 255 for ink,
+/// 0 for background. The art's own shape is asserted, so a mistyped row is a stopped line rather than a bad glyph.
+fn coverage_from_art(allocator: std.mem.Allocator, art: [cell_h][]const u8) ![]u8 {
+    // invariant: a coverage grid is exactly the shared cell area, within the atlas ceiling.
+    assert(cell_area >= 1);
+    assert(cell_area <= glyph.coverage_max);
+    const cov = try allocator.alloc(u8, cell_area);
+    var idx: u32 = 0;
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        const row = art[r];
+        // invariant: every drawn row is exactly the cell width -- the art matches the grid.
+        assert(row.len == cell_w);
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            cov[idx] = if (row[c] == '#') 255 else 0;
+            idx += 1;
+        }
+    }
+    // invariant: the whole grid was filled, no cell left unwritten.
+    assert(idx == cell_area);
+    return cov;
+}
+
+/// Build the closing capitals atlas: three glyphs at the named ascending codepoints, sharing the 5x7 cell and advance.
+/// The gfa1 encoder accepts the result directly (ascending codepoints, coverage length == cell area).
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the corpus is the three named capitals and no more.
+    assert(upper_close_count == 3);
+    assert(cell_area == 35);
+    const glyphs = try allocator.alloc(glyph.Glyph, upper_close_count);
+    var i: u32 = 0;
+    var last_cp: u32 = 0;
+    while (i < upper_close_count) : (i += 1) {
+        const cp = upper_close_codepoints[i];
+        // invariant: codepoints are strictly ascending -- the ordering the gfa1 encoder trusts.
+        assert(i == 0 or cp > last_cp);
+        last_cp = cp;
+        const cov = try coverage_from_art(allocator, upper_close_art[i]);
+        glyphs[i] = glyph.Glyph{
+            .codepoint = cp,
+            .advance = upper_close_advance,
+            .coverage = cov,
+        };
+    }
+    // invariant: the last codepoint is O tilde (U+00D5) -- the table ends where this set ends.
+    assert(glyphs[upper_close_count - 1].codepoint == 0x00D5);
+    return glyph.GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- the legibility signal a blank glyph would fail.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+/// Count the inked cells in row r of a glyph, restricted to the half-open column band [c0, c1). Every construction proof
+/// reads a row band with this one reader. Row 0 is the top.
+fn row_band_ink(cov: []const u8, r: u32, c0: u32, c1: u32) u32 {
+    // invariant: the row index sits inside the shared cell, over the shared grid.
+    assert(r < cell_h);
+    assert(cov.len == cell_area);
+    // invariant: the column band is well-ordered and inside the cell width.
+    assert(c0 <= c1);
+    assert(c1 <= cell_w);
+    var n: u32 = 0;
+    var c: u32 = c0;
+    while (c < c1) : (c += 1) {
+        if (cov[r * cell_w + c] != 0) n += 1;
+    }
+    // invariant: the band count never exceeds the band it was counted over.
+    assert(n <= c1 - c0);
+    return n;
+}
+
+/// The whole-row ink of row r for a codepoint's glyph -- the reader the blank-second-row and tilde-wave proofs share.
+fn full_row_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32, r: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return row_band_ink(g.coverage, r, 0, cell_w);
+    return error.UpperCloseLetterMissing;
+}
+
+/// The left-half ink of row r (columns 0..1) for a codepoint's glyph -- the diaeresis's left dot proof reads this.
+fn left_half_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32, r: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return row_band_ink(g.coverage, r, 0, center_col);
+    return error.UpperCloseLetterMissing;
+}
+
+/// The right-half ink of row r (columns 3..4) for a codepoint's glyph -- the diaeresis's right dot and the tilde's crest
+/// proofs read this.
+fn right_half_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32, r: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return row_band_ink(g.coverage, r, center_col + 1, cell_w);
+    return error.UpperCloseLetterMissing;
+}
+
+/// The center-column ink at row r (column 2) for a codepoint's glyph -- the diaeresis's PARTED GAP proof reads the top
+/// row here, where two dots leave the center blank.
+fn center_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32, r: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return row_band_ink(g.coverage, r, center_col, center_col + 1);
+    return error.UpperCloseLetterMissing;
+}
+
+/// The two mark rows (rows 0 and 1) of a codepoint's glyph, returned as a freshly copied slice, so the two diaeresis marks
+/// can be compared byte-for-byte -- the family-consistency proof that the mark stays one hand.
+fn mark_rows_of(allocator: std.mem.Allocator, atlas: *const glyph.GlyphAtlas, codepoint: u32) ![]u8 {
+    // invariant: the mark spans exactly the two named rows over the shared cell width.
+    const mark_len: u32 = 2 * cell_w;
+    assert(mark_len <= cell_area);
+    if (atlas.lookup(codepoint)) |g| {
+        const out = try allocator.alloc(u8, mark_len);
+        var i: u32 = 0;
+        while (i < mark_len) : (i += 1) out[i] = g.coverage[mark_row_top * cell_w + i];
+        return out;
+    }
+    return error.UpperCloseLetterMissing;
+}
+
+// --- selftest: build the closing capitals atlas, round-trip it through gfa1, prove present, distinct, legible, marked ---
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built atlas is the three-capital corpus at the shared cell.
+    assert(glyph_count == upper_close_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // Three present capitals: every one looks up, carries the shared advance; a plain ASCII 'E' misses.
+    var d: u32 = 0;
+    while (d < upper_close_count) : (d += 1) {
+        const cp = upper_close_codepoints[d];
+        if (back.lookup(cp)) |g| {
+            assert(g.codepoint == cp);
+            assert(g.advance == upper_close_advance);
+        } else return error.UpperCloseLetterMissing;
+    }
+    if (back.lookup('E')) |_| return error.NonUpperCloseFound else {}
+
+    // Distinctness: no two of the three capitals share identical coverage.
+    var a: u32 = 0;
+    while (a < upper_close_count) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b < upper_close_count) : (b += 1) {
+            if (std.mem.eql(u8, atlas.glyphs[a].coverage, atlas.glyphs[b].coverage)) return error.UpperCloseLettersNotDistinct;
+        }
+    }
+
+    // Legibility: each capital's ink count sits inside an honest band. The floor sits where I diaeresis (its lightest, a
+    // narrow I under two dots) still reads, the ceiling where E diaeresis (its heaviest, a full E under two dots) resolves.
+    const ink_min: u32 = 10;
+    const ink_max: u32 = 18;
+    var lo: u32 = cell_area;
+    var hi: u32 = 0;
+    var k: u32 = 0;
+    while (k < upper_close_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (n < ink_min or n > ink_max) return error.UpperCloseLetterIllegible;
+        if (n < lo) lo = n;
+        if (n > hi) hi = n;
+    }
+    // invariant: the observed ink band stayed inside the honest bounds.
+    assert(lo >= ink_min);
+    assert(hi <= ink_max);
+
+    // Construction 1 & 2 -- E diaeresis (U+00CB) and I diaeresis (U+00CF): the DIAERESIS, two parted dots. For each, three
+    // toothed guards read it: the top mark row inks its left half and its right half (two dots), its center column stays
+    // blank (the parting between them), and the second mark row is clear (a diaeresis is one row, not a wave).
+    const diaeresis = [2]u32{ 0x00CB, 0x00CF };
+    var e: u32 = 0;
+    while (e < 2) : (e += 1) {
+        const cp = diaeresis[e];
+        if ((try left_half_ink_of(&atlas, cp, mark_row_top)) < 1 or (try right_half_ink_of(&atlas, cp, mark_row_top)) < 1) return error.UpperCloseDiaeresisNotTwoDots;
+        if ((try center_ink_of(&atlas, cp, mark_row_top)) != 0) return error.UpperCloseDiaeresisGapFilled;
+        if ((try full_row_ink_of(&atlas, cp, mark_row_bottom)) != 0) return error.UpperCloseDiaeresisSecondRowInked;
+    }
+
+    // Family consistency -- the two diaeresis marks are byte-identical, so the mark stays one hand across E and I.
+    const mark_e = try mark_rows_of(garden, &atlas, 0x00CB);
+    const mark_i = try mark_rows_of(garden, &atlas, 0x00CF);
+    if (!std.mem.eql(u8, mark_e, mark_i)) return error.UpperCloseDiaeresisMarksDiffer;
+
+    // Construction 3 -- O tilde (U+00D5): the TILDE, a wave over BOTH mark rows cresting right. Two toothed guards read it:
+    // both mark rows carry ink (a two-row wave, unlike the one-row diaeresis), and the top row crests right of center.
+    if ((try full_row_ink_of(&atlas, 0x00D5, mark_row_top)) < 1 or (try full_row_ink_of(&atlas, 0x00D5, mark_row_bottom)) < 1) return error.UpperCloseTildeNotTwoRows;
+    if ((try right_half_ink_of(&atlas, 0x00D5, mark_row_top)) < 1) return error.UpperCloseTildeNoRightCrest;
+
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof.
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-upper-close: {d} closing capitals U+00CB,U+00CF,U+00D5 at {d}x{d} round-trip byte-identical; all present, distinct, legible (ink {d}..{d} of {d}); two diaeresis marks byte-identical, O tilde a two-row wave cresting right -- the uppercase Latin-1 letter set now closed; encoded {d} bytes, raw {d}\n", .{
+        glyph_count, cell_w, cell_h, lo, hi, cell_area, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_upper_close selftest\n", .{});
+    return 1;
+}
