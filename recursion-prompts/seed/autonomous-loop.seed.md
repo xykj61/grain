@@ -74,6 +74,8 @@ Everything else -- design, code, witnesses, docs, weaves, seed *projection* (not
 
 The itinerary is REMEMBER's season table and open doors. Each round: read the compass, pick the highest-Lindy crux among agent-doable work, land it, prove it, send it. Named route, never an open field.
 
+**Lindy-priority double-seat (seated `20260817`): the Microkernel Target** -- Caravan on seL4/Genode (clean-room study; both copyleft), Tally on s6/skalibs (ISC), a Rye compiler Tally/Caravan target, Aurora on RISC-V/QEMU, closed by the parity-witness happy-zone suite running GREEN on the new target. It is ordered ahead of Seasons A-H by Lindy-first crux-first, yet **most of its rungs are gates** (a fetch approval, a per-component license read, buying hardware). The loop advances only its **agent-doable** rungs -- external-research answers (can Zig target seL4/Genode today?), clean-room design briefs, the parity-suite scaffolding -- and **surfaces, never crosses**, every fetch/license/hardware gate. Direction and clean-room boundary: `active-designing/20260816-205859_double-seat-expansion-eight-seasons.md` and `external-research/20260817-185851_microkernel-target-and-the-os-parity-question.md`.
+
 - **Next lap:** {{the next agent-doable rung -- file - what it composes - what it proves}}
 - **Then:** {{the rung after, if pre-decidable}}
 

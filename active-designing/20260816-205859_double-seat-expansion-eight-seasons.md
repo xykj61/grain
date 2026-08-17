@@ -98,6 +98,25 @@ The open-weight intelligence family for **Lumen**, the inference vane (renamed f
 
 ---
 
+## Lindy-priority double-seat: The Microkernel Target *(seated `20260817` on Keaton's word -- takes precedence over Seasons A-H)*
+
+The most durable work names itself. A supervised, bounded, asserted userland is worth years; a microkernel that is **proven** rather than merely tested is the strongest safety floor in existence, and it is the natural home for the safety-first discipline the whole tree already keeps. So this arc **double-seats beside** the eight seasons and, by Lindy-first crux-first, is ordered **ahead of** them: it compounds under everything else. It never disturbs the fixed 1,024-round road; it takes priority among the *new* work. Full research capture and the three blind spots: [`../external-research/20260817-185851_microkernel-target-and-the-os-parity-question.md`](../external-research/20260817-185851_microkernel-target-and-the-os-parity-question.md).
+
+The interior keeps the power-of-two discipline -- four equinoxes, each four journeys, each four quests, each four rounds -- so the fractal holds within the arc:
+
+- **Equinox 1 -- Caravan on the microkernel (crux; Caravan before Tally).** Clean-room **study** of **seL4** (GPLv2) and **Genode** (AGPLv3) as design ground -- the capability IPC model and the supervision tree -- authoring Caravan's own Rye, no copyleft source in the tree. Rye-parity sets of rounds mirror the existing Caravan witnesses on the new ground. *Gate: license read per component precedes any fetch; copyleft = study only.*
+- **Equinox 2 -- Tally on s6 / skalibs, and the musl/Alpine utilities.** Continue Tally's bounded-allocation inheritance beside s6 (ISC, freer). Where a wanted behavior has no microkernel analog, study **Alpine** packages on **musl libc** (MIT) that run under **s6** (never systemd) and fuse them into TAME-guided Caravan instructions of our own. *Gate: per-package Alpine license read.*
+- **Equinox 3 -- the Rye compiler's Tally/Caravan target.** The prize: the Rye compiler lowering to a supervised-microkernel target. **External-research question first:** can Zig target seL4/Genode today (freestanding + the seL4 libs looks plausible; Genode's C++ framework is the harder fit)? The answer decides whether this advances the deferred compiler fork (F1-F5) or leans on Zig's existing target machinery.
+- **Equinox 4 -- Aurora on RISC-V under QEMU, and the proof that closes it.** Bring the microkernel target up **in emulation first** on Aurora's freestanding riscv64 path, sidestepping the firmware-blob question. **The close is a witness, not a claim:** the existing GREEN **parity-witness happy-zone suite** (and its kin) must run **GREEN on the new Tally/Caravan target**, on emulation or metal, before the target is "done." *Horizon research beside it: which BIOS/firmware seL4 and Genode boot on; whether it reaches RISC-V open boot the way the Mikrophone/SiFive SKI interface does; AMD PSP / Intel ME as the freedom-vs-speed wall; whether full freedom means only old, slow Coreboot/Libreboot hardware.*
+
+*Compass check (blind spots addressed):* the license framing is corrected (seL4/Genode are copyleft, studied clean-room, not "permissive"); the compiler target is named as living past a deferred fork, not free; and the hardware-freedom-vs-speed tradeoff is a named horizon with RISC-V/QEMU as the pragmatic first target, not a purchase.
+
+## Foundations housekeeping seated beside this arc
+
+The **galaxy-choosing writings** -- the `*-and-*` naming tributes in `foundations/` (Trya & Ariana, Linn & Helen, Murr & Kyler Murray, Mala & Kamala, Gwoh & Sarah Guo, Shyu & Wayne, Eyva & Avanti, and *the names we did not use*) -- are seated **to yonder**: they are alive yet no longer front-line foundations, so they move to `foundations/yonder/` in their own mechanical lap (inbound references repointed, dated stamps preserved). **Keeh & Kia** (the happy zone) stays a living foundation -- it is on the council rota, not a galaxy-naming tribute. This is seated here as a decision; the moves run as their own round beside the debrides.
+
+---
+
 ## Hard facts recorded (measurement, not memory)
 
 | Fact | Value |

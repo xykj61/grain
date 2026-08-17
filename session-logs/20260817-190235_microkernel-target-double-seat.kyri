@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260817.190235
+editor Claude Code
+model claude-opus-4-8
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title double-seat the Microkernel Target (Caravan/Tally/Rye), Lindy-priority
+prompt Keaton proposed a Lindy-priority double-seat: Caravan on seL4/Genode, Tally on s6/skalibs, musl/Alpine utils under s6, a Rye compiler Tally/Caravan target, Aurora on RISC-V/QEMU, with the parity-witness happy-zone suite proving the new target; plus yondering the galaxy-choosing foundations; update the loops; and asked what I think
+think Assessed honestly and found three blind spots the compass catches -- the load-bearing one is licensing: seL4 is GPLv2 and Genode AGPLv3 (copyleft, NOT permissive), so a fetch means clean-room STUDY, not code copy; s6/skalibs ISC and musl MIT are permissive; Alpine is per-package
+think Second blind spot: a Rye compiler Tally/Caravan target lives past the deferred F1-F5 compiler fork; whether Zig can target seL4/Genode today (freestanding + seL4 libs plausible, Genode C++ harder) is the external-research question, to answer against real toolchain versions not memory
+think Third blind spot: hardware freedom trades against speed -- fully-FOSS boot means old/slow Coreboot hardware, modern x86 needs AMD PSP / Intel ME blobs, so RISC-V under QEMU first sidesteps the firmware question and defers the metal decision to research
+think Captured all this in an external-research writing (Acme-employee voice, clean-room, ASCII), then double-seated it into the eight-season itinerary as a Lindy-priority arc ahead of Seasons A-H with the power-of-two interior (4 equinoxes: Caravan-on-microkernel, Tally-on-s6+musl/Alpine, the Rye target, Aurora RISC-V + the parity-suite close)
+think Priorities kept as Keaton set them: Caravan before Tally, RISC-V/QEMU first, and the target is not done until the GREEN parity-witness happy-zone suite runs GREEN on it -- proof before narrative, seated as an explicit rung
+obs The loops name the arc as the seated Lindy-priority yet advance only its agent-doable rungs (external-research, clean-room briefs, parity scaffolding) and surface every fetch/license/hardware gate -- most of this arc is gated, so pointing the loop at it without that caveat would stall it
+obs Seated the galaxy-choosing foundations (the *-and-* naming tributes) to yonder as a decision; the moves run as their own mechanical lap (4-8 inbound refs each), and Keeh & Kia stays living (rota, happy zone, not a naming tribute)
+file external-research/20260817-185851_microkernel-target-and-the-os-parity-question.md the vision, the three blind spots, the open research questions, the license clean-room analysis
+file active-designing/20260816-205859_double-seat-expansion-eight-seasons.md the Lindy-priority Microkernel Target double-seat + the foundations-yonder decision
+file recursion-prompts/seed/autonomous-loop.seed.md route section names the Lindy-priority arc, agent-doable rungs only, gates surfaced
+file tools/launch-claude-season.rish both -p lines carry the Microkernel Target Lindy-priority clause
+recommend keep-going resume the debrides (Dimeroll -> Dimeroll next); the microkernel arc advances its study/research rungs and waits at its fetch/license/hardware gates for Keaton's word
