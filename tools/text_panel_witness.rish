@@ -41,4 +41,7 @@ assert (trim green.out) == "yes" else "text_panel: selftest did not print the GR
 let sealed = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'SEALED inside the frame' && echo yes"]
 assert (trim sealed.out) == "yes" else "text_panel: the containment crux (text sealed inside the frame) did not prove"
 
+let autoink = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'auto-ink picks a legible caption' && echo yes"]
+assert (trim autoink.out) == "yes" else "text_panel: the readable-ink caption consumer did not prove"
+
 say "text_panel: GREEN -- the framed text panel whole; fill, frame, and text compose into one card with the text sealed inside the border, a borderless panel skips the ring, and every malformed panel refuses by name having painted nothing."

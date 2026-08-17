@@ -31,7 +31,7 @@ const shape = @import("shape.rye");
 const text_layout = @import("text_layout.rye");
 const text_paint = @import("text_paint.rye");
 
-pub const text_panel_version = "20260817.024819";
+pub const text_panel_version = "20260817.114500";
 
 /// A framed text panel: a rectangle on the target, a border ring `thickness` pixels wide, a `pad` gap between the ring
 /// and the text, a `fill` behind everything and a `border` colour for the ring. The inner content box a paragraph is
@@ -134,6 +134,35 @@ pub fn paint_text_panel(
     // invariant: the pre-measure and the paint agree on the line count -- a deterministic wrap at the same width.
     assert(painted == lines);
     return painted;
+}
+
+/// Paint a framed text panel whose caption ink is CHOSEN legible against its own fill -- the readable-ink consumer for
+/// the framed card, twin of text_grid.render_grid_auto_ink. The caller names only the panel (its fill, border,
+/// geometry); the text ink is color.readable_ink(panel.fill) -- black or white, whichever wins the higher WCAG
+/// contrast against the ground the text sits on -- so a keeper who paints a dark callout gets a white caption and a
+/// light card a black one, without picking an ink by hand. Pure composition over paint_text_panel: it chooses the ink
+/// and passes through, so its result equals paint_text_panel with ink = readable_ink(panel.fill). Color decides the
+/// ink, text_panel paints it -- neither braided. Every refusal of paint_text_panel carries through by name unchanged.
+pub fn paint_text_panel_auto_ink(
+    atlas: *const glyph.GlyphAtlas,
+    text: []const u8,
+    line_gap: u32,
+    h: text_paint.Align,
+    v: text_paint.VAlign,
+    panel: Panel,
+    lines_buf: []text_layout.WrapLine,
+    scratch: []text_layout.PlacedGlyph,
+    target: *qoi.Pixmap,
+) !u32 {
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+    // The caption sits on the fill, so the ink is chosen against the fill (the ground behind the paragraph, not the ring).
+    const ink = color.readable_ink(panel.fill);
+    // invariant: readable_ink returns an opaque pick, so the caption composites solid over the fill.
+    assert(ink.a == 255);
+    // invariant: the pick is one of the two legibility extremes -- pure black or pure white, never a guessed midtone.
+    assert(ink.eql(black) or ink.eql(white));
+    return paint_text_panel(atlas, text, line_gap, h, v, panel, lines_buf, scratch, target, ink);
 }
 
 // --- selftest: prove the panel composes fill + frame + text, contains the text within the frame, and refuses by name -
@@ -262,6 +291,33 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (any_border) return error.BorderlessDrewRing;
     }
 
+    // Auto-ink: the readable-ink consumer for the framed card. The caller names only the panel; the caption ink is
+    // chosen legible against the panel's own fill. Prove the pick (white on a dark fill, black on a light one), the
+    // byte-for-byte parity with an explicit paint over that same ink, and the WCAG AA legibility of the pick.
+    {
+        const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+        // A dark navy fill: readable_ink picks white for the caption.
+        const navy = color.Rgba{ .r = 20, .g = 20, .b = 60, .a = 255 };
+        const dark_panel = Panel{ .x = 4, .y = 3, .w = 60, .h = 30, .thickness = 2, .pad = 2, .fill = navy, .border = border };
+        const auto_ink = color.readable_ink(navy);
+        // invariant: a dark fill takes white caption ink -- the everyday legible pick.
+        if (!auto_ink.eql(white)) return error.AutoInkDarkWrong;
+        // invariant: the picked ink clears WCAG AA against its own fill, by the module's own measure.
+        if (!color.meets_aa(auto_ink, navy)) return error.AutoInkNotLegible;
+
+        var ca = try make_canvas(garden, 80, 40, white);
+        var ce = try make_canvas(garden, 80, 40, white);
+        const na = try paint_text_panel_auto_ink(&atlas, "Hi", 1, .center, .middle, dark_panel, buf, scratch, &ca);
+        const ne = try paint_text_panel(&atlas, "Hi", 1, .center, .middle, dark_panel, buf, scratch, &ce, auto_ink);
+        // invariant: the auto-ink panel equals the explicit paint over the chosen ink -- pure composition, nothing hidden.
+        if (na != ne) return error.AutoLineCountWrong;
+        if (!ca.same_bytes(&ce)) return error.AutoNotComposition;
+
+        // The mirror pick: a light fill (the warm paper) takes black caption ink.
+        const light_ink = color.readable_ink(paper);
+        if (!light_ink.eql(black)) return error.AutoInkLightWrong;
+    }
+
     // --- refusals, each BY NAME, all-or-nothing (the buffer untouched on refusal) -------------------------------------
 
     // BadPanelDims: a zero extent.
@@ -295,7 +351,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     }
     if (!std.mem.eql(u8, c4.pixels, before4)) return error.TooTallTouchedBuffer;
 
-    print("GREEN image-text-panel: fill + frame + text compose into one card; the text is SEALED inside the frame ({d} ink px all within the inner box, {d} ring px all the border colour); a borderless panel skips the ring; determinism holds; BadPanelDims/PanelOutOfBounds/PanelTooSmall/PanelContentTooTall all refuse by name, buffer untouched\n", .{
+    print("GREEN image-text-panel: fill + frame + text compose into one card; the text is SEALED inside the frame ({d} ink px all within the inner box, {d} ring px all the border colour); a borderless panel skips the ring; auto-ink picks a legible caption from color.readable_ink (white on a dark fill, black on a light one) equalling the explicit paint over that ink byte-for-byte and clearing WCAG AA; determinism holds; BadPanelDims/PanelOutOfBounds/PanelTooSmall/PanelContentTooTall all refuse by name, buffer untouched\n", .{
         ink_seen, ring_pixels,
     });
     return 0;
