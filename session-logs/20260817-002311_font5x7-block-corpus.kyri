@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260817.002311
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image -- the open block-elements corpus, GREEN
+prompt take the next agent-doable lap Lindy-first crux-first on the road past BUHR; deep-read one rota doc; Rye-first; send often; stop at custody gates
+think Read the road docs -- REMEMBER inner loop, the 1024-round itinerary, the eight-season double-seat, the crypto/decision-wave. The live edge is Season G (Open Media Primitives): the loop has been climbing the open font family one 5x7 corpus per lap (numerals, both letter cases, punct, symbol, unified ASCII, light box, double box, arrow), each serving the Dexter/Scooter terminal surface.
+think Lindy-first crux-first: the next durable, agent-doable rung is the block-elements corpus (half blocks, full block, three shades, U+2580..U+2593) -- the marks a terminal reaches for to shade a panel, draw a progress bar, or preview an image at half-cell resolution. Same proven macro as its siblings, resting on the green glyph atlas (gfa1).
+think Modeled image/font5x7_block.rye and tools/font5x7_block_witness.rish exactly on the arrow corpus, then gave the witness two properties the shading family earns that the others do not: the half blocks PARTITION the cell (upper|lower, left|right each ink every cell exactly once -- an XOR proof) and the three shades form a strictly rising RAMP under the full block (light<medium<dark<full). The old fixed legibility band does not fit blocks, whose whole point is that ink varies from grayscale ramp to solid fill -- so the ramp ordering replaces it honestly.
+obs GREEN on the first metal pass: 8 blocks round-trip byte-identical, present, distinct; halves partition (upper 20 + lower 15 = 35, left 21 + right 14 = 35); shades ramp 10 < 18 < 25 < 35. Unlike every earlier corpus this one truly COMPRESSES (encoded 274 < raw 280) -- block glyphs are run-dominant where the sparser box and punct marks paid per-run overhead; still reported as a fact, never asserted, the round-trip the proof.
+obs Rota lap (d27) deep-read growing-a-language: reach for the smallest version that works and grow it, diverge by strengthening not rewriting. A block corpus is that macro once more -- one small proven corpus resting on the proven atlas ground, adding fills and shades without touching the encoder.
+loom witness=font5x7_block_witness glyphs=8 cell=5x7 encoded_bytes=274 raw_bytes=280 partition_upper=20 partition_lower=15 ramp=10-18-25-35
+file image/font5x7_block.rye the eight block glyphs drawn in the open, partition and ramp asserted
+file tools/font5x7_block_witness.rish proves round-trip, presence, distinctness, partition, ramp on metal
+file image/README.md Season G font list gains the block-elements corpus entry
+recommend keep-going the next Season G font rung (remaining wider symbols, the diagonal box marks) or proving the codecs on real corpora; each its own round, no gate reached

@@ -1,0 +1,236 @@
+//! image/font5x7_block.rye -- the open block-elements corpus: half blocks and shades (Season G, font content).
+//!
+//! Season G (Open Media Primitives) - more content BEYOND printable ASCII for the open glyph atlas image/glyph.rye
+//! (gfa1), a sibling of the box-drawing corpora (image/font5x7_box.rye, image/font5x7_boxdouble.rye) and the arrow
+//! corpus (image/font5x7_arrow.rye). Where the box corpora frame and rule and the arrows point, block elements FILL
+//! and SHADE: this corpus draws the four half blocks -- upper, lower, left, right -- the full block, and the three
+//! shade densities (light, medium, dark) at their real Unicode codepoints U+2580..U+2593. These are exactly the marks
+//! a terminal surface (the Dexter/Scooter family) reaches for to draw a shaded panel, a progress bar, or a low-fi
+//! image preview at half-cell resolution, drawn in our own open hand on the same 5x7 body.
+//!
+//! The source stays plain ASCII (ASCII-first): the codepoints are written as numeric literals (0x2580 ...) and each
+//! block is named in an ASCII comment, so no non-ASCII byte enters the file even though the glyphs it builds cover a
+//! non-ASCII range. The codepoints are carried as an explicit strictly-ascending table -- the shape the gfa1 encoder
+//! trusts (shared cell, coverage length == cell area). The drawings ARE the specification: each block is seven rows
+//! of five cells in ASCII line art ('#' full ink, '.' none) that a reader audits by eye; the coverage bytes are
+//! derived from that art, never the reverse.
+//!
+//! Two honest properties set this corpus apart from its siblings and earn their own proof on metal. The half blocks
+//! PARTITION the cell: upper and lower are disjoint and together cover all thirty-five cells, and so are left and
+//! right -- each pair tiles the body exactly, which is what makes them double a terminal's vertical or horizontal
+//! resolution. And the shades form a RAMP: light, medium, and dark rise in strictly increasing ink, the grayscale
+//! ladder a surface reads to render an image in a text cell. build_atlas turns the eight drawings into a
+//! glyph.GlyphAtlas the gfa1 encoder accepts, so the crux stays provable: decode(encode(atlas)) recovers every glyph
+//! byte-for-byte, the blocks are present and distinct, the halves partition, the shades ramp. No network, no key, no
+//! funds -- the marks a surface reads the day it wants to shade a cell.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_block.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+
+pub const font5x7_block_version = "20260817.002311";
+
+/// Every glyph in this corpus shares one 5-wide, 7-tall cell -- the same body the ASCII, box, and arrow corpora carry.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance: the cell width plus one column of daylight, the same advance the sibling corpora carry.
+pub const block_advance: u8 = cell_w + 1;
+
+/// The corpus holds exactly the eight block elements named in the table below.
+pub const block_count: u32 = 8;
+
+/// Cells per glyph -- the coverage length every block carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The eight block codepoints, strictly ascending -- the order the gfa1 encoder trusts. Each aligns by index with
+/// block_art below. Written as numeric literals so the source stays plain ASCII while the glyphs cover a non-ASCII
+/// range:
+///   0x2580 upper half, 0x2584 lower half, 0x2588 full, 0x258C left half, 0x2590 right half,
+///   0x2591 light shade, 0x2592 medium shade, 0x2593 dark shade.
+const block_codepoints = [block_count]u32{
+    0x2580, 0x2584, 0x2588, 0x258C, 0x2590, 0x2591, 0x2592, 0x2593,
+};
+
+/// The eight blocks, drawn in the open. Each is seven rows of five cells; '#' ink, '.' background. The half blocks
+/// fill exactly one part of the cell (upper is rows 0..3, lower is rows 4..6, left is cols 0..2, right is cols 3..4,
+/// so each pair tiles the body); the full block fills every cell; the three shades rise in density -- light a sparse
+/// dither, medium a checkerboard, dark the checkerboard's near-inverse. A reader audits every block here by eye, and
+/// the coverage bytes are lifted from this art, never guessed.
+const block_art = [block_count][cell_h][]const u8{
+    .{ "#####", "#####", "#####", "#####", ".....", ".....", "....." }, // U+2580 upper half  (rows 0..3)
+    .{ ".....", ".....", ".....", ".....", "#####", "#####", "#####" }, // U+2584 lower half  (rows 4..6)
+    .{ "#####", "#####", "#####", "#####", "#####", "#####", "#####" }, // U+2588 full block  (all cells)
+    .{ "###..", "###..", "###..", "###..", "###..", "###..", "###.." }, // U+258C left half   (cols 0..2)
+    .{ "...##", "...##", "...##", "...##", "...##", "...##", "...##" }, // U+2590 right half  (cols 3..4)
+    .{ "#.#.#", ".....", ".#.#.", ".....", "#.#.#", ".....", ".#.#." }, // U+2591 light shade (sparse dither)
+    .{ "#.#.#", ".#.#.", "#.#.#", ".#.#.", "#.#.#", ".#.#.", "#.#.#" }, // U+2592 medium shade(checkerboard)
+    .{ ".#.#.", "#####", "#.#.#", "#####", ".#.#.", "#####", "#.#.#" }, // U+2593 dark shade  (dense inverse)
+};
+
+/// Lift one block's ASCII art into a freshly allocated coverage grid of exactly cell_area bytes: 255 for ink,
+/// 0 for background. The art's own shape is asserted, so a mistyped row is a stopped line rather than a bad glyph.
+fn coverage_from_art(allocator: std.mem.Allocator, art: [cell_h][]const u8) ![]u8 {
+    // invariant: a coverage grid is exactly the shared cell area, within the atlas ceiling.
+    assert(cell_area >= 1);
+    assert(cell_area <= glyph.coverage_max);
+    const cov = try allocator.alloc(u8, cell_area);
+    var idx: u32 = 0;
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        const row = art[r];
+        // invariant: every drawn row is exactly the cell width -- the art matches the grid.
+        assert(row.len == cell_w);
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            cov[idx] = if (row[c] == '#') 255 else 0;
+            idx += 1;
+        }
+    }
+    // invariant: the whole grid was filled, no cell left unwritten.
+    assert(idx == cell_area);
+    return cov;
+}
+
+/// Build the block atlas: eight glyphs at the named ascending codepoints, sharing the 5x7 cell and advance.
+/// The gfa1 encoder accepts the result directly (ascending codepoints, coverage length == cell area).
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the corpus is the eight named block elements and no more.
+    assert(block_count == 8);
+    assert(cell_area == 35);
+    const glyphs = try allocator.alloc(glyph.Glyph, block_count);
+    var i: u32 = 0;
+    var last_cp: u32 = 0;
+    while (i < block_count) : (i += 1) {
+        const cp = block_codepoints[i];
+        // invariant: codepoints are strictly ascending -- the ordering the gfa1 encoder trusts.
+        assert(i == 0 or cp > last_cp);
+        last_cp = cp;
+        const cov = try coverage_from_art(allocator, block_art[i]);
+        glyphs[i] = glyph.Glyph{
+            .codepoint = cp,
+            .advance = block_advance,
+            .coverage = cov,
+        };
+    }
+    // invariant: the last codepoint is the dark shade (U+2593) -- the table ends where the block set ends.
+    assert(glyphs[block_count - 1].codepoint == 0x2593);
+    return glyph.GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- the density signal the shade ramp and half partition read.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+/// True when two coverage grids partition the cell: every cell is inked in exactly one of them, none in both.
+/// This is the honest half-block property -- upper|lower and left|right each tile the body with no overlap and no gap.
+fn partitions(a: []const u8, b: []const u8) bool {
+    // invariant: both grids are the shared, bounded cell.
+    assert(a.len == cell_area);
+    assert(b.len == cell_area);
+    var i: u32 = 0;
+    while (i < cell_area) : (i += 1) {
+        const a_ink = a[i] != 0;
+        const b_ink = b[i] != 0;
+        // exactly one side inks each cell -- an XOR that must hold for every cell.
+        if (a_ink == b_ink) return false;
+    }
+    return true;
+}
+
+// --- selftest: build the block atlas, round-trip it through gfa1, prove present, distinct, partitioned, ramped -----
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built atlas is the eight-block corpus at the shared cell.
+    assert(glyph_count == block_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // Eight present blocks: every one looks up, carries the shared advance; an ASCII letter misses.
+    var d: u32 = 0;
+    while (d < block_count) : (d += 1) {
+        const cp = block_codepoints[d];
+        if (back.lookup(cp)) |g| {
+            assert(g.codepoint == cp);
+            assert(g.advance == block_advance);
+        } else return error.BlockMissing;
+    }
+    if (back.lookup('A')) |_| return error.NonBlockFound else {}
+
+    // Distinctness: no two blocks share identical coverage -- a real block set fills eight different ways.
+    var a: u32 = 0;
+    while (a < block_count) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b < block_count) : (b += 1) {
+            if (std.mem.eql(u8, atlas.glyphs[a].coverage, atlas.glyphs[b].coverage)) return error.BlocksNotDistinct;
+        }
+    }
+
+    // Partition: upper (index 0) and lower (index 1) tile the cell; so do left (index 3) and right (index 4).
+    // Each pair inks every cell exactly once -- the property that lets half blocks double a terminal's resolution.
+    const upper = atlas.glyphs[0].coverage;
+    const lower = atlas.glyphs[1].coverage;
+    const left = atlas.glyphs[3].coverage;
+    const right = atlas.glyphs[4].coverage;
+    if (!partitions(upper, lower)) return error.HalvesDoNotPartition;
+    if (!partitions(left, right)) return error.HalvesDoNotPartition;
+    // invariant: a partition's two ink counts sum to the whole cell.
+    assert(ink_count(upper) + ink_count(lower) == cell_area);
+    assert(ink_count(left) + ink_count(right) == cell_area);
+
+    // Full block (index 2) inks every cell -- the ceiling of the density ladder.
+    if (ink_count(atlas.glyphs[2].coverage) != cell_area) return error.FullBlockNotSolid;
+
+    // Ramp: light (index 5) < medium (index 6) < dark (index 7) < full, strictly rising ink -- the grayscale ladder.
+    const light = ink_count(atlas.glyphs[5].coverage);
+    const medium = ink_count(atlas.glyphs[6].coverage);
+    const dark = ink_count(atlas.glyphs[7].coverage);
+    if (!(light < medium and medium < dark and dark < cell_area)) return error.ShadesNotRamped;
+    // invariant: the shade ramp stays strictly ordered under the full block.
+    assert(light < medium);
+    assert(medium < dark);
+    assert(dark < cell_area);
+
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof.
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-block: {d} blocks U+2580..U+2593 at {d}x{d} round-trip byte-identical; present, distinct; halves partition (upper {d}+lower {d}, left {d}+right {d} of {d}); shades ramp {d}<{d}<{d}<{d}; encoded {d} bytes, raw {d}\n", .{
+        glyph_count,       cell_w,             cell_h,
+        ink_count(upper),  ink_count(lower),   ink_count(left),
+        ink_count(right),  cell_area,          light,
+        medium,            dark,               cell_area,
+        res.len,           raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_block selftest\n", .{});
+    return 1;
+}
