@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260817.073802
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title font5x7 upper Nordic capitals corpus, GREEN
+prompt Autonomous loop lap -- take the next agent-doable rung Lindy-first crux-first on the open-media font family, prove it on metal, send it as its own signed round.
+think Read the operator card, the seed autonomous-loop rota, and the acute/circumflex/nordic corpora plus glyph_accent to place the next rung.
+think Two pre-decided routes stood open: circumflex-by-composition (a third repeat of an economy already proven on the grave and the acute) versus the uppercase Nordic companions that CLOSE the Scandinavian capitals. Chose the latter -- Lindy-first crux-first: finishing a whole named set outweighs repeating a proven economy a third time.
+think Designed the three capitals on the compressed rows-2..6 body the accented capitals use, leaving rows 0..1 for a mark: A ring wears a hollow ring above the compressed A; AE is a fused ligature (mark rows blank, a full crossbar on the middle row); O stroke is the compressed O with a diagonal slash inking the bowl center.
+think Mirrored the lowercase font5x7_nordic guard structure exactly -- three constructions, each read by its own toothed guard (ring present + spanning + hollow, ligature mark-less + crossbarred, stroke mark-less + bowl-center inked), so a mistyped ring or lost crossbar reds by name.
+obs GREEN on the first metal run, no red; ink 15..19 of 35 as predicted, encoded 135 bytes over raw 105. tame_style_check bans clean, width-check exit 0, both files plain 7-bit ASCII (numeric codepoint literals -- the ascii-first exception for a font codec's glyph tables).
+obs Honest scope: this closes the Scandinavian CAPITALS (A ring, AE, O stroke), not the whole uppercase Latin-1 set -- the Icelandic capitals (Eth, Thorn, Y acute) remain, exactly as the lowercase Nordic corpus preceded the lowercase Icelandic. No false "closes the set" claim.
+obs font5x7_upper still legitimately tests U+00C5 (A ring) absent within its own separate atlas; this new corpus is a distinct atlas and does not disturb that green binary.
+obs Rota lap (d27) deep-read item 3, foundations/20260811-211431_the-lindy-effect-and-the-long-return.md -- the long return: a finished, proven capital set is read for years; it guided choosing the set-closing rung over the repeat.
+loom witness=font5x7_upper_nordic_witness glyphs=3 encoded_bytes=135 raw_bytes=105 ink_lo=15 ink_hi=19
+file image/font5x7_upper_nordic.rye the three Danish-Norwegian capitals grown in the open, three distinct constructions each toothed by its own guard
+file tools/font5x7_upper_nordic_witness.rish builds the corpus and proves round-trip, present, distinct, legible, three-built on metal
+file image/README.md accreted the upper_nordic companion into the accented-Latin family entry and the witness roster (docs-sync)
+recommend keep-going the Icelandic capitals (Eth U+00D0, Thorn U+00DE, Y acute U+00DD) close the uppercase Latin-1 letter set outright next, the same three-constructions shape.
