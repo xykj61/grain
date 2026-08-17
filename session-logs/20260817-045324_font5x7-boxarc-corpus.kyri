@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260817.045324
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title font5x7 rounded box corners, GREEN
+prompt autonomous loop -- send often, take the next agent-doable lap Lindy-first crux-first, stop at custody gates
+think Second lap of the run, following the geometric-shapes corpus (sent as 5402730856/e83ebebe6b). The wider-symbol rung named in image/README.md still had a clean, tractable gap: the ROUNDED box corners, the soft twin of font5x7_box.rye's square corners.
+think Chose it Lindy-first crux-first because it serves the live edge directly -- the Dexter/Scooter terminal family draws a frame around a channel, and a modern terminal surface frames with a rounded border. The four arc corners let that frame be soft rather than hard-angled, mixing freely with the straight rules and tees already in the atlas.
+think Followed image/font5x7_box.rye as the exact template again: four marks drawn 5x7 as ASCII line art, an explicit strictly-ascending codepoint table (U+256D..U+2570), build_atlas into a gfa1 glyph.GlyphAtlas, a selftest that round-trips through the gfa1 encoder byte-for-byte.
+think Rounded the corner on the coarse grid by the honest low-resolution trick every bitmap font uses -- the exact elbow cell left blank, the horizontal stub stepped one column in, so the pen reads as a soft diagonal ease. Named it as an honest ease in the docstring, never a claim of a true curve at 5x7.
+obs GREEN on the first metal run, no red. Four corners U+256D..U+2570 at 5x7 round-trip byte-identical; all present, distinct (the four elbows point four ways), legible (ink 5..5 of 35); encoded 138 bytes, raw 140 (a sparse set, barely compresses, honestly reported not asserted).
+obs tame_style_check bans clean, width-check exit 0, both new files plain 7-bit ASCII though the glyphs cover a non-ASCII range (numeric codepoint literals, each named in an ASCII comment).
+obs A pure, additive corpus beside the box/boxdouble/boxdiag/arrow/block/geometric siblings -- no network, no key, no funds, no gate touched.
+loom witness=font5x7_boxarc_witness marks=4 cell=5x7 ink_lo=5 ink_hi=5 encoded_bytes=138 raw_bytes=140
+file image/font5x7_boxarc.rye the four rounded box corners, drawn 5x7, built into the gfa1 atlas
+file tools/font5x7_boxarc_witness.rish proves the corpus on metal -- round-trip byte-identical, present, distinct, legible
+file image/README.md the Open Media Primitives section gains the rounded-corner rung beside the geometric corpus
+recommend keep-going more wider symbols (math/technical marks, additional geometric fills) as their own corpora; the terminal family's live keystroke reader and Comlink wire stay at the serve gate
