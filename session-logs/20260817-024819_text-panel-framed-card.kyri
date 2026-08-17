@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260817.024819
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Season G -- the framed text panel, where shape and text first meet
+prompt Autonomous loop: take the next agent-doable lap Lindy-first crux-first on the eight-season road; deep-read one rota doc; Rye-first; send often; stop at custody gates.
+think Read crux/REMEMBER.md (custody gates + live edge), the 1024-round itinerary's eight-season double-seat, and the decision-wave doc. The live edge is Season G open-media: image/shape.rye (fill_rect + stroke_rect, the geometry floor) is GREEN. The card names the framed text panel (join stroke_rect with paint_paragraph_in_box) as the next open-media rung -- the Lindy-first crux-first move, since it is the first place the geometry floor and the text family meet, composing two proven-green modules rather than opening new math.
+think Rota this lap read item 13 (foundations/20260728-032134_keeh-and-kia.md, the happy zone) -- fix the fault at the station, build the smallest version that works, thin edge honest. The panel rests on the proven shape+text floor and adds only the join, exactly that ethos.
+think Studied image/shape.rye (fill_rect, stroke_rect, ring_cells), image/text_paint.rye (paint_paragraph_in_box, Align/VAlign, solid), image/text_layout.rye (wrap_lines_break, WrapLine.width), and image/glyph.rye (GlyphAtlas.cell_h/cell_w). font5x7_ascii.build_atlas mints the full-ASCII atlas.
+think Designed image/text_panel.rye: paint_text_panel fills the panel background, strokes the border ring (skipped when thickness is zero), and places a wrapped/aligned paragraph in the inner content box -- the panel inset on every side by thickness + pad. The crux is CONTAINMENT: the frame ring and the inked cells are disjoint by construction, so a border pixel reads the border colour exactly and every ink pixel lies strictly inside the inner box.
+think All-or-nothing: bound-check the whole panel against the target once up front (PanelOutOfBounds), prove the inner box has real extent (PanelTooSmall via a pure inner_box helper), and pre-measure the wrapped block with text_layout (the measurement authority) BEFORE committing a pixel (PanelContentTooWide/PanelContentTooTall) -- a panel that cannot hold its text refuses by name having painted nothing.
+obs GREEN on the first metal run: 26 ink px all within the inner box, 344 ring px all the border colour, borderless panel draws zero border pixels, determinism holds, four refusals by name with the buffer untouched. tame_style_check caught two compound asserts in on_ring (split them); width-check exit 0.
+obs Single-stranded held -- the panel delegates fill/frame/paragraph to their own proven verbs and only pre-measures; it reimplements no paint. The redundant wrap (pre-measure then the painter's own wrap) is bounded and deterministic, the honest cost of all-or-nothing.
+loom witness=text_panel_witness ink_px=26 ring_px=344 panel=60x30 inset=4
+file image/text_panel.rye the framed text panel -- paint_text_panel + inner_box, composes shape + text_paint + text_layout
+file tools/text_panel_witness.rish proves the panel GREEN on metal -- containment crux, borderless skip, refusals by name
+file crux/REMEMBER.md live edge + git nib block advanced to text_panel; shape demoted to Prior; nib ladder relabeled
+recommend keep-going Next open-media: prove the codecs on longer/varied real reels, the captioned panel within a video frame, or the open font work Season G still names (glyph atlas beyond 5x7).

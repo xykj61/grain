@@ -1,0 +1,312 @@
+//! image/text_panel.rye -- the framed text panel (Season G, where the geometry floor and the text family first meet).
+//!
+//! Season G (Open Media Primitives) - the first rung that JOINS the two halves built beneath it: image/shape.rye owns
+//! the plain area (fill_rect, stroke_rect -- a filled box and a frame), image/text_paint.rye owns the glyph (a whole
+//! wrapped, aligned paragraph placed within a box). A framed text panel is the shape a surface actually draws when it
+//! wants a bordered card of readable text -- a dialog, a label chip, a callout, a table cell with a caption. This rung
+//! composes the two, braiding neither:
+//!   - image/shape.rye paints the background (fill_rect) and the border ring (stroke_rect),
+//!   - image/text_paint.rye paints the wrapped paragraph inside the inner content box (paint_paragraph_in_box),
+//!   - image/text_layout.rye measures the wrapped block up front, so the panel is all-or-nothing.
+//! The crux this rung proves is CONTAINMENT: the text lives strictly inside the frame and never touches the border. The
+//! inner content box is the panel inset on every side by the border thickness PLUS a padding gap, and the paragraph is
+//! placed all-or-nothing within that inner box -- so the border ring and the inked cells are DISJOINT by construction,
+//! and a border pixel reads the border colour exactly, never an ink pixel that bled onto the frame. The whole panel is
+//! checked against the target ONCE up front (PanelOutOfBounds by name), the inner box is proven to have real extent
+//! (PanelTooSmall), and the wrapped block is proven to fit the inner box BEFORE a single pixel is committed
+//! (PanelContentTooWide / PanelContentTooTall) -- so a panel that cannot hold its text refuses by name having painted
+//! nothing, never a half-drawn card. A zero-thickness border is honest: the panel paints its fill and text with no ring
+//! (a borderless card). No new storage, codec, palette, glyph, or font -- only three proven verbs composed into one.
+//! No network, no key, no funds -- the card a surface frames the day it wants bordered text, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/text_panel.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const glyph = @import("glyph.rye");
+const shape = @import("shape.rye");
+const text_layout = @import("text_layout.rye");
+const text_paint = @import("text_paint.rye");
+
+pub const text_panel_version = "20260817.024819";
+
+/// A framed text panel: a rectangle on the target, a border ring `thickness` pixels wide, a `pad` gap between the ring
+/// and the text, a `fill` behind everything and a `border` colour for the ring. The inner content box a paragraph is
+/// placed in is the rectangle inset on every side by `thickness + pad`. A `thickness` of zero is a borderless card --
+/// the fill and text paint with no ring, and `border` is then unused.
+pub const Panel = struct {
+    x: u32,
+    y: u32,
+    w: u32,
+    h: u32,
+    thickness: u32,
+    pad: u32,
+    fill: color.Rgba,
+    border: color.Rgba,
+};
+
+/// The inner content box of a panel -- the rectangle a paragraph is placed in, inset on every side by `thickness + pad`.
+/// A pure geometry helper a caller (or a witness) can predict before painting, refusing PanelTooSmall BY NAME when the
+/// inset leaves no real extent on either axis (the same refuse-rather-than-paint discipline the shape floor keeps). All
+/// arithmetic is bounded: the inset sum is taken in u64 so 2*inset can never wrap before the extent check refuses.
+pub fn inner_box(panel: Panel) !struct { x: u32, y: u32, w: u32, h: u32 } {
+    // invariant: a panel a box can sit in has real extent on both axes.
+    if (panel.w == 0 or panel.h == 0) return error.BadPanelDims;
+    // The inset each side is the border ring plus the padding gap; in u64 so 2*inset never wraps before the check.
+    const inset: u64 = @as(u64, panel.thickness) + @as(u64, panel.pad);
+    const two_inset: u64 = 2 * inset;
+    // The inner box must have real extent on both axes, or there is nowhere to place text.
+    if (two_inset >= @as(u64, panel.w) or two_inset >= @as(u64, panel.h)) return error.PanelTooSmall;
+    // invariant: the inset fits within both extents, so the subtractions below stay in u32 without wrapping.
+    assert(two_inset < @as(u64, panel.w));
+    assert(two_inset < @as(u64, panel.h));
+    const in: u32 = @as(u32, @intCast(inset));
+    return .{ .x = panel.x + in, .y = panel.y + in, .w = panel.w - 2 * in, .h = panel.h - 2 * in };
+}
+
+/// Paint a framed text panel: fill the background, stroke the border ring (unless borderless), and place a wrapped,
+/// aligned paragraph within the inner content box. All-or-nothing: the whole panel is bound-checked against the target
+/// once up front (PanelOutOfBounds), the inner box is proven to have real extent (PanelTooSmall via inner_box), and the
+/// wrapped block is proven to fit the inner box BEFORE any pixel is committed (PanelContentTooWide / PanelContentTooTall)
+/// -- so a panel that cannot hold its text refuses by name having painted nothing. Single-stranded: it delegates the
+/// fill, the frame, and the paragraph paint to their own proven verbs; because the fit is pre-proven, those delegates'
+/// own box checks are guaranteed to pass. `h`/`v` set the paragraph's place within the inner box (left/centre/right,
+/// top/middle/bottom). `lines_buf` holds one WrapLine per input byte and `scratch` one PlacedGlyph per byte; the caller
+/// sizes both >= text.len. Returns the lines painted; an empty (or all-space) paragraph paints the frame and no text.
+pub fn paint_text_panel(
+    atlas: *const glyph.GlyphAtlas,
+    text: []const u8,
+    line_gap: u32,
+    h: text_paint.Align,
+    v: text_paint.VAlign,
+    panel: Panel,
+    lines_buf: []text_layout.WrapLine,
+    scratch: []text_layout.PlacedGlyph,
+    target: *qoi.Pixmap,
+    ink: color.Rgba,
+) !u32 {
+    // invariant: both buffers hold the worst case -- one wrapped line, and one placed glyph, per input byte.
+    assert(lines_buf.len >= text.len);
+    assert(scratch.len >= text.len);
+
+    // The whole panel fits the target -- checked ONCE up front in u64 so the far edges never wrap before the refusal.
+    const right: u64 = @as(u64, panel.x) + @as(u64, panel.w);
+    const bottom: u64 = @as(u64, panel.y) + @as(u64, panel.h);
+    if (panel.w == 0 or panel.h == 0) return error.BadPanelDims;
+    if (right > @as(u64, target.width) or bottom > @as(u64, target.height)) return error.PanelOutOfBounds;
+
+    // The inner content box -- the panel inset by thickness + pad on every side (refuses PanelTooSmall by name).
+    const box = try inner_box(panel);
+
+    // Pre-measure the wrapped block against the inner box BEFORE committing a single frame pixel, so the panel is
+    // all-or-nothing: the layout module is the measurement authority (its purpose), not a reimplementation of paint.
+    // wrap_lines_break splits an over-wide word at a glyph boundary, so widest <= box.w always holds; the height is the
+    // one bound the inner box can fail. If the block is taller than the inner box, refuse by name having painted nothing.
+    const lines = try text_layout.wrap_lines_break(atlas, text, box.w, lines_buf);
+    if (lines > 0) {
+        var widest: u32 = 0;
+        var k: u32 = 0;
+        while (k < lines) : (k += 1) {
+            if (lines_buf[k].width > widest) widest = lines_buf[k].width;
+        }
+        // A block wider than the inner box cannot be placed all-or-nothing -- refuse by name (belt to the wrap's own bound).
+        if (widest > box.w) return error.PanelContentTooWide;
+        const ch: u32 = atlas.cell_h;
+        // invariant: a paintable atlas has a real cell height, so a line step is a real forward move.
+        assert(ch >= 1);
+        // The block's own height: one cell per line plus the leading between them, in u64 so the sum never wraps.
+        const line_step: u64 = @as(u64, ch) + @as(u64, line_gap);
+        const block_h: u64 = @as(u64, lines - 1) * line_step + @as(u64, ch);
+        if (block_h > @as(u64, box.h)) return error.PanelContentTooTall;
+    }
+
+    // Every check has passed -- paint, all-or-nothing. Fill the whole panel first (the ground behind the border and the
+    // text), then the border ring (disjoint from the inner box, so it never touches an inked cell), then the paragraph
+    // within the inner box. The delegated painters' own box checks are proven to pass by the pre-measure above.
+    try shape.fill_rect(target, panel.x, panel.y, panel.w, panel.h, panel.fill);
+    if (panel.thickness > 0) {
+        try shape.stroke_rect(target, panel.x, panel.y, panel.w, panel.h, panel.thickness, panel.border);
+    }
+    const painted = try text_paint.paint_paragraph_in_box(atlas, text, box.w, line_gap, h, v, box.w, box.h, lines_buf, scratch, target, box.x, box.y, ink);
+    // invariant: the pre-measure and the paint agree on the line count -- a deterministic wrap at the same width.
+    assert(painted == lines);
+    return painted;
+}
+
+// --- selftest: prove the panel composes fill + frame + text, contains the text within the frame, and refuses by name -
+
+/// Mint a one-colour RGBA canvas -- a local bounded builder, so this rung leans on no higher module for its ground.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// Is (x, y) on the border ring of `panel` -- within `thickness` of any of the four edges of the panel rectangle?
+fn on_ring(panel: Panel, x: u32, y: u32) bool {
+    // invariant: the query point lies inside the panel rectangle (the caller only asks about panel pixels).
+    assert(x >= panel.x);
+    assert(x < panel.x + panel.w);
+    assert(y >= panel.y);
+    assert(y < panel.y + panel.h);
+    const rx: u32 = x - panel.x;
+    const ry: u32 = y - panel.y;
+    const on_h = ry < panel.thickness or ry >= panel.h - panel.thickness;
+    const on_v = rx < panel.thickness or rx >= panel.w - panel.thickness;
+    return on_h or on_v;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try @import("font5x7_ascii.rye").build_atlas(garden);
+
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+    const paper = color.Rgba{ .r = 240, .g = 236, .b = 224, .a = 255 }; // a warm off-white panel fill
+    const border = color.Rgba{ .r = 40, .g = 80, .b = 200, .a = 255 }; // a blue frame
+    const ink = color.Rgba{ .r = 200, .g = 30, .b = 30, .a = 255 }; // red text
+
+    const buf = try garden.alloc(text_layout.WrapLine, 64);
+    const scratch = try garden.alloc(text_layout.PlacedGlyph, 64);
+
+    // A panel with a 2-px blue frame, a 2-px pad, warm-off-white fill, red text placed centre/middle in the inner box.
+    const panel = Panel{ .x = 4, .y = 3, .w = 60, .h = 30, .thickness = 2, .pad = 2, .fill = paper, .border = border };
+
+    // inner_box predicts the content region before any pixel: inset = thickness + pad = 4 each side.
+    const box = try inner_box(panel);
+    // invariant: the inner box is the panel inset by 4 on every side.
+    if (box.x != 8 or box.y != 7 or box.w != 52 or box.h != 22) return error.InnerBoxWrong;
+
+    var c1 = try make_canvas(garden, 80, 40, white);
+    const painted = try paint_text_panel(&atlas, "Hi", 1, .center, .middle, panel, buf, scratch, &c1, ink);
+    // invariant: "Hi" fits one line inside the inner box.
+    if (painted != 1) return error.LineCountWrong;
+
+    // CONTAINMENT -- the crux. Walk every pixel of the panel rectangle and classify it:
+    //   * a ring pixel MUST read the border colour exactly (the fill was painted first, the opaque frame over it, and
+    //     no ink ever reaches the ring), and
+    //   * every pixel that reads the ink colour MUST lie strictly inside the inner box (the text never escapes the frame).
+    // Outside the panel the canvas stays the untouched white background. Together these prove fill, frame, and text
+    // compose into one card with the text sealed inside the border.
+    var ink_seen: u32 = 0;
+    var ring_pixels: u32 = 0;
+    var py: u32 = panel.y;
+    while (py < panel.y + panel.h) : (py += 1) {
+        var px: u32 = panel.x;
+        while (px < panel.x + panel.w) : (px += 1) {
+            const p = pixel_at(&c1, px, py);
+            if (on_ring(panel, px, py)) {
+                ring_pixels += 1;
+                // A ring pixel is the border colour exactly -- neither ink bled onto it nor fill showed through.
+                if (!p.eql(border)) return error.RingNotBorder;
+            }
+            if (p.eql(ink)) {
+                ink_seen += 1;
+                // Every ink pixel lies strictly inside the inner content box -- the text is sealed within the frame.
+                const inside = px >= box.x and px < box.x + box.w and py >= box.y and py < box.y + box.h;
+                if (!inside) return error.InkEscapedFrame;
+            }
+        }
+    }
+    // invariant: real glyphs carry ink, so the text is genuinely on the canvas, and the ring is genuinely present.
+    if (ink_seen == 0) return error.NoInkPainted;
+    if (ring_pixels != shape.ring_cells(panel.w, panel.h, panel.thickness)) return error.RingCountWrong;
+
+    // The padding band reads the fill: a pixel between the ring and the text (a corner of the inner box that "Hi" does
+    // not reach, since the text is centred) is the warm off-white, proving the fill filled the inner box behind the text.
+    if (!pixel_at(&c1, box.x, box.y).eql(paper)) return error.PadNotFill;
+
+    // Outside the panel the canvas is untouched white, byte-for-byte.
+    if (!pixel_at(&c1, 0, 0).eql(white)) return error.LeakedOutsidePanel;
+    if (!pixel_at(&c1, 79, 39).eql(white)) return error.LeakedOutsidePanel;
+
+    // Determinism: the same panel painted onto a fresh identical canvas yields byte-for-byte the same pixels.
+    var c2 = try make_canvas(garden, 80, 40, white);
+    _ = try paint_text_panel(&atlas, "Hi", 1, .center, .middle, panel, buf, scratch, &c2, ink);
+    if (!c2.same_bytes(&c1)) return error.NotDeterministic;
+
+    // A borderless panel (thickness 0) paints its fill and text with NO ring -- the panel corner is the fill, not a border.
+    var c3 = try make_canvas(garden, 80, 40, white);
+    const flat = Panel{ .x = 4, .y = 3, .w = 60, .h = 30, .thickness = 0, .pad = 2, .fill = paper, .border = border };
+    _ = try paint_text_panel(&atlas, "Hi", 1, .left, .top, flat, buf, scratch, &c3, ink);
+    if (!pixel_at(&c3, 4, 3).eql(paper)) return error.BorderlessCornerNotFill; // the very corner is fill, no ring
+    {
+        // No pixel anywhere on the borderless canvas is the border colour -- the ring was genuinely skipped.
+        var any_border = false;
+        var i: usize = 0;
+        while (i < c3.pixels.len) : (i += 4) {
+            const p = color.Rgba{ .r = c3.pixels[i], .g = c3.pixels[i + 1], .b = c3.pixels[i + 2], .a = c3.pixels[i + 3] };
+            if (p.eql(border)) any_border = true;
+        }
+        if (any_border) return error.BorderlessDrewRing;
+    }
+
+    // --- refusals, each BY NAME, all-or-nothing (the buffer untouched on refusal) -------------------------------------
+
+    // BadPanelDims: a zero extent.
+    var c4 = try make_canvas(garden, 80, 40, white);
+    const zero = Panel{ .x = 0, .y = 0, .w = 0, .h = 10, .thickness = 1, .pad = 0, .fill = paper, .border = border };
+    if (paint_text_panel(&atlas, "Hi", 1, .left, .top, zero, buf, scratch, &c4, ink)) |_| return error.ExpectedBadPanelDims else |e| {
+        if (e != error.BadPanelDims) return error.WrongError;
+    }
+
+    // PanelOutOfBounds: a panel past the target's edge refuses, buffer untouched.
+    const before4 = try garden.alloc(u8, c4.pixels.len);
+    @import("tally_copy.rye").copy_disjoint(u8, before4, c4.pixels);
+    const over = Panel{ .x = 30, .y = 3, .w = 60, .h = 30, .thickness = 2, .pad = 2, .fill = paper, .border = border };
+    if (paint_text_panel(&atlas, "Hi", 1, .left, .top, over, buf, scratch, &c4, ink)) |_| return error.ExpectedPanelOutOfBounds else |e| {
+        if (e != error.PanelOutOfBounds) return error.WrongError; // 30 + 60 = 90 > width 80
+    }
+    if (!std.mem.eql(u8, c4.pixels, before4)) return error.PanelOOBTouchedBuffer;
+
+    // PanelTooSmall: the inset swallows the whole panel -- no inner box.
+    const tight = Panel{ .x = 4, .y = 3, .w = 10, .h = 30, .thickness = 4, .pad = 2, .fill = paper, .border = border };
+    if (paint_text_panel(&atlas, "Hi", 1, .left, .top, tight, buf, scratch, &c4, ink)) |_| return error.ExpectedPanelTooSmall else |e| {
+        if (e != error.PanelTooSmall) return error.WrongError; // 2*(4+2) = 12 >= width 10
+    }
+
+    // PanelContentTooTall: a many-word paragraph that wraps taller than the inner box refuses, buffer untouched.
+    @import("tally_copy.rye").copy_disjoint(u8, before4, c4.pixels);
+    const tall_text = "one two three four five six seven eight nine ten eleven twelve";
+    const small = Panel{ .x = 4, .y = 3, .w = 40, .h = 16, .thickness = 1, .pad = 1, .fill = paper, .border = border };
+    if (paint_text_panel(&atlas, tall_text, 1, .left, .top, small, buf, scratch, &c4, ink)) |_| return error.ExpectedPanelContentTooTall else |e| {
+        if (e != error.PanelContentTooTall) return error.WrongError;
+    }
+    if (!std.mem.eql(u8, c4.pixels, before4)) return error.TooTallTouchedBuffer;
+
+    print("GREEN image-text-panel: fill + frame + text compose into one card; the text is SEALED inside the frame ({d} ink px all within the inner box, {d} ring px all the border colour); a borderless panel skips the ring; determinism holds; BadPanelDims/PanelOutOfBounds/PanelTooSmall/PanelContentTooTall all refuse by name, buffer untouched\n", .{
+        ink_seen, ring_pixels,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: text_panel selftest\n", .{});
+    return 1;
+}
