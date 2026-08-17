@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260817.061655
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title font5x7 -- uppercase accented letters, the capitals a Romance name opens with, GREEN
+prompt recur baton prin -- take the next agent-doable lap Lindy-first crux-first, Rye-first, one rota doc deep-read, send each increment
+think The live edge finished the accented LOWERCASE family (latin1, grave, circumflex, german, unified in font5x7_accented). The named next open-media rung was the uppercase accented letters -- the crux-first parallel, since a name opens a sentence or is set in all-caps and ASCII cannot spell it there either.
+think Crux for uppercase beyond lowercase: a capital fills the whole 5x7 body, leaving no daylight above for a mark. The honest bitmap accommodation is to compress each capital into the bottom five rows (2..6) and draw its diacritic on the top two (0..1). I mirrored the lowercase corpus structure exactly -- eight letters (A acute, C cedilla, E acute, I acute, N tilde, O acute, U acute, U diaeresis) at U+00C1,U+00C7,U+00C9,U+00CD,U+00D1,U+00D3,U+00DA,U+00DC, each 0x20 below its lowercase twin.
+think Drew each capital by hand as ASCII line art, the drawings ARE the specification; lifted the compressed 5-row bodies from image/font5x7_alpha.rye so the accented capitals match the plain uppercase font. The C cedilla alone marked from beneath (top row empty, tail on the bottom row), the family order the lowercase set proves, kept.
+think Wrote the witness to mirror font5x7_latin1_witness: build, selftest, GREEN line, round-trip byte-identical line. Ran it -- GREEN on the first metal run, ink band 10..17 of 35 as designed, encoded 397 bytes vs raw 280.
+obs tame_style_check bans clean (no compound assert needed -- the placement checks were written as separate named guards from the start), width-check exit 0, both files plain 7-bit ASCII though the glyphs cover a non-ASCII range (numeric codepoint literals -- the ascii-first exception for a font codec's glyph tables). No red booked.
+obs Rota this lap (d27, item 27) deep-read recursion-prompts/README.md -- the balance-compass charter, the reward pointed at finished, proven, bounded work. This lap is one such: a single whole corpus, proven on metal, bounded, sent as its own signed round.
+obs Finishing edge honored: ship one whole thing (the uppercase acute/cedilla/tilde/diaeresis set) before naming the next (the grave/circumflex/umlaut capitals, now the named next open-media rung).
+loom witness=font5x7_upper_accented_witness glyphs=8 cell=5x7 encoded_bytes=397 raw_bytes=280 ink_min=10 ink_max=17
+file image/font5x7_upper_accented.rye the eight uppercase accented letters drawn in the open, compressed into rows 2..6 with the mark on rows 0..1
+file tools/font5x7_upper_accented_witness.rish proves the corpus on metal -- round-trip byte-identical, present, distinct, legible, placed
+file crux/REMEMBER.md live edge updated: the uppercase accented corpus GREEN; next open-media the remaining accented capitals
+recommend keep-going the grave/circumflex/umlaut uppercase capitals extend this set, or the open glyph atlas beyond 5x7 -- all agent-doable, no gate reached
