@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260817.085318
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title font5x7 -- the unifying arrow font: the whole eight-direction set in one atlas, GREEN
+prompt recur: continue the loop, next agent-doable lap Lindy-first crux-first, Season G open media, send often
+think Read the road-ahead docs (1024-round itinerary, eight-season double-seat, rye-first crypto parity) and the custody gates. The crypto surface stands WHOLE already (ed25519, x25519, ML-KEM, ML-DSA, blake2b, sha3, secp256k1, argon2 all present in crypto/), so reopening it needs a named gap -- none. The clear Lindy-first crux-first agent-doable momentum is the open-media 5x7 font family.
+think Surveyed the family: the letter side is finished (font5x7_ascii unifies 95 printable ASCII, font5x7_latin1_block unifies 62 Latin-1 letters, font5x7_latin1_text merges both). The SYMBOL side -- arrows, box drawing, blocks, geometric, greek, math, currency, fraction, subscript, genpunct -- has NO unifier. That is the natural third pillar and the crux-first move: it opens the ultimate ASCII+Latin1+symbol unifier next.
+think Chose the arrows as the first symbol unifier because they alone form a perfect CONTIGUOUS block: font5x7_arrow is U+2190..U+2195 (6 basic) and font5x7_arrowdiag is U+2196..U+2199 (4 diagonal), together exactly U+2190..U+2199 with no hole. So the completeness proof is the strongest and cleanest the family can make -- stronger than the Latin-1 unifier's, whose 64-codepoint block carried two math-sign holes.
+think Mirrored the font5x7_latin1_block unifier pattern exactly (gather borrows references asserting shared cell+advance, insertion sort to strictly-ascending, round-trip through gfa1, count == sum of corpora == span). Added the no-hole span walk and two negative checks (a plain ASCII 'A' and U+219A just past the span both miss -- no phantom glyph).
+obs GREEN on the first metal run, no red: 10 arrows round-trip byte-identical, strictly ascending and unique (two corpora disjoint 6+4), contiguously complete (every codepoint in the span present, no hole), every glyph inked (ink 9..12 of 35), encoded 442 over raw 350 (ink-scattered arrows, no compression, reported as fact). tame_style_check bans clean, width-check exit 0, both files plain 7-bit ASCII.
+think Rota (d27, item 9) deep-read foundations/20260810-011514_pond-the-application-module.md -- Pond is the floor where bounded modules compose into a running usable whole, inheriting the shape of Gall and the isolation of the hypervisors without copying a line. A unifier that gathers proven leaf corpora into one lookup is that same composition at the glyph scale: many corpora, one vessel, one honest atlas.
+obs The contiguous-completeness proof is the unifier's own contribution -- neither arrow corpus could state that the whole eight-direction span is unbroken, since each knows only its own half; the merged font is where the unbroken run becomes a checkable claim.
+loom witness=font5x7_arrows_witness glyphs=10 encoded_bytes=442 raw_bytes=350 ink_lo=9 ink_hi=12 cell_area=35
+file image/font5x7_arrows.rye the unifying arrow font -- merges font5x7_arrow + font5x7_arrowdiag, proves contiguous block completeness U+2190..U+2199
+file tools/font5x7_arrows_witness.rish the witness -- builds, round-trips, proves the whole span unbroken and the corpora disjoint on metal
+file image/README.md docs-sync -- new font5x7_arrows entry naming the symbol-side-unifier role and the contiguous-completeness crux
+file crux/REMEMBER.md live edge + git nib refreshed to the arrows unifier; prior edge demoted to Prior Git nib
+file session-logs/20260817-085318_font5x7-arrows-unifier.kyri this record
+file session-logs/README.md newest-first index row
+recommend keep-going the first symbol-side unifier stands; the box-drawing family (font5x7_box light, boxdouble, boxdiag, boxarc) is the next natural symbol unifier, then the grand ASCII+Latin1+symbol font. No network, no key, no funds -- no gate reached.

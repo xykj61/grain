@@ -1,0 +1,212 @@
+//! image/font5x7_arrows.rye -- the unifying arrow font: the whole eight-direction arrow set in one atlas.
+//!
+//! Season G (Open Media Primitives) - the first unifier on the SYMBOL side of the family, the sibling to the two letter
+//! unifiers already landed: image/font5x7_ascii.rye gathers the ninety-five printable ASCII glyphs, and
+//! image/font5x7_latin1_block.rye gathers the sixty-two Latin-1 letters. Neither holds a symbol; the arrows, the box
+//! drawing, the blocks, and the geometric marks all still stand as separate leaf corpora. This module gathers the first
+//! symbol family whole: it merges image/font5x7_arrow.rye (the six basic directions, U+2190..U+2195 -- the four cardinals
+//! and the two axis double-heads) and image/font5x7_arrowdiag.rye (the four diagonal corner arrows, U+2196..U+2199) into
+//! ONE gfa1 atlas, the whole eight-direction arrow set a terminal surface (the Dexter/Scooter family) reads in a single
+//! lookup the day it points a cursor, resizes a corner, or scrolls, rather than two corpora to stitch by hand.
+//!
+//! The distinctive crux this module proves, beyond the round-trip and the ascending-and-unique disjointness the letter
+//! unifiers prove, is CONTIGUOUS BLOCK COMPLETENESS -- stronger than the Latin-1 unifier's, whose block carried two
+//! math-sign holes. The arrow set has NO holes: every codepoint in U+2190..U+2199 is a drawn arrow, so the selftest walks
+//! the whole ten-codepoint span and asserts a hit at every step, the run unbroken from the leftward arrow to the
+//! south-west diagonal. The merged count equals the SUM of the two corpora (6 + 4 = 10), which together with the
+//! strictly-ascending codepoints proves them DISJOINT: neither claims the other's arrow, so the two compose with no
+//! collision and no direction lost, and the whole span (block_last - block_first + 1) equals that same ten.
+//!
+//! The source stays plain ASCII (ASCII-first): the two corpora it merges carry numeric codepoint literals, and this module
+//! names the span bounds as numeric literals too. No network, no key, no funds -- the whole arrow set a surface reads the
+//! day it wants to point in any of the eight directions on our own open font.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_arrows.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+
+// The two leaf corpora, gathered directly. Basic directions first, then diagonals -- the sort below places every glyph
+// regardless of order.
+const arrow = @import("font5x7_arrow.rye"); // cardinals + axis double-heads, U+2190..U+2195, 6
+const arrowdiag = @import("font5x7_arrowdiag.rye"); // diagonal corner arrows, U+2196..U+2199, 4
+
+pub const font5x7_arrows_version = "20260817.153000";
+
+/// The whole family shares one 5x7 cell -- both corpora agree on this, and this module asserts the agreement per gather.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance every glyph carries: the cell width plus one column of daylight, the same advance the corpora carry.
+pub const glyph_advance: u8 = cell_w + 1;
+
+/// Cells per glyph -- the coverage length every glyph carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The first and last codepoints of the arrow block. Unlike the Latin-1 letter block, this span carries NO holes -- every
+/// codepoint from first to last is a drawn arrow, so the completeness proof walks the whole span and expects a hit at
+/// every step.
+pub const block_first: u32 = 0x2190;
+pub const block_last: u32 = 0x2199;
+
+/// The unifying count -- the sum of the two corpora's own counts (6 basic + 4 diagonal = 10). Named from the corpora's own
+/// count constants, so a corpus that grows without this sum growing fails the fill assert in build_atlas.
+pub const block_count: u32 = arrow.arrow_count + arrowdiag.arrowdiag_count;
+
+/// The number of codepoints in the whole arrow span. With no holes this equals block_count exactly, and the selftest
+/// asserts they agree -- a corpus gained or lost, or a hole opened in the span, would break the tie.
+pub const block_span: u32 = block_last - block_first + 1;
+
+/// Lift one corpus atlas's glyphs into the combined table starting at `dst_off`, asserting each shares the cell and
+/// advance. Returns the next free offset. The gathered coverage slices are borrowed from the source atlas, which lives in
+/// the same arena -- no copy, and the merge sort below reorders references, never bytes.
+fn gather(dst: []glyph.Glyph, dst_off: u32, src: *const glyph.GlyphAtlas) u32 {
+    // invariant: the source shares this family's cell -- a corpus at a different size would corrupt the font.
+    assert(src.cell_w == cell_w);
+    assert(src.cell_h == cell_h);
+    const n: u32 = @intCast(src.glyphs.len);
+    // invariant: the gathered run fits inside the combined table.
+    assert(dst_off + n <= block_count);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const g = src.glyphs[i];
+        // invariant: every merged glyph carries the shared advance, so every arrow lays out alike.
+        assert(g.advance == glyph_advance);
+        assert(g.coverage.len == cell_area);
+        dst[dst_off + i] = g;
+    }
+    return dst_off + n;
+}
+
+/// Build the unifying arrow font: merge the two corpora, then sort the whole table strictly ascending by codepoint. The
+/// gfa1 encoder accepts the result directly (ascending codepoints, coverage length == cell area); the selftest proves the
+/// span ascending-and-unique, the count equal to the sum, and the whole block present with no hole.
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the family cell fits the atlas ceiling, and the count fits the glyph ceiling.
+    assert(cell_area <= glyph.coverage_max);
+    assert(block_count <= glyph.glyph_max);
+    // invariant: the unifying count is the ten arrows the two corpora name, and equals the arrow span (no holes) -- two
+    // independent tallies that must agree.
+    assert(block_count == 10);
+    assert(block_count == block_span);
+
+    const glyphs = try allocator.alloc(glyph.Glyph, block_count);
+    var off: u32 = 0;
+
+    // Gather the two proven corpora. Order of gathering does not matter -- the sort below places every glyph.
+    const a01 = try arrow.build_atlas(allocator);
+    off = gather(glyphs, off, &a01);
+    const a02 = try arrowdiag.build_atlas(allocator);
+    off = gather(glyphs, off, &a02);
+
+    // invariant: the two corpora fill the table exactly -- a short count would mean a lost corpus.
+    assert(off == block_count);
+
+    // Insertion sort by codepoint -- bounded by block_count, stable, and small (ten glyphs). The gfa1 encoder demands
+    // strictly ascending codepoints; this is where the two corpora become one ordered font.
+    var i: u32 = 1;
+    while (i < block_count) : (i += 1) {
+        const key = glyphs[i];
+        var j: u32 = i;
+        while (j > 0 and glyphs[j - 1].codepoint > key.codepoint) : (j -= 1) {
+            glyphs[j] = glyphs[j - 1];
+        }
+        glyphs[j] = key;
+    }
+
+    // invariant: the sorted table opens at the leftward arrow (U+2190) and closes at the south-west diagonal (U+2199) --
+    // the whole arrow block, end to end.
+    assert(glyphs[0].codepoint == block_first);
+    assert(glyphs[block_count - 1].codepoint == block_last);
+    return glyph.GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- every arrow carries ink; none is blank.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+// --- selftest: build the whole arrow font, round-trip it, prove disjoint corpora and CONTIGUOUS COMPLETENESS ----------
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built font is the ten-arrow set at the shared cell.
+    assert(glyph_count == block_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // The disjointness crux: the merged codepoints run STRICTLY ASCENDING with NO DUPLICATE. Since the merged count is the
+    // sum of the two corpora (asserted 10 in build_atlas), strictly-ascending here proves the corpora disjoint -- a
+    // collision (both drawing one arrow) would fail this walk.
+    var e: u32 = 1;
+    while (e < glyph_count) : (e += 1) {
+        if (!(atlas.glyphs[e].codepoint > atlas.glyphs[e - 1].codepoint)) return error.CodepointsNotStrictlyAscending;
+    }
+
+    // The CONTIGUOUS COMPLETENESS crux: walk the whole arrow span U+2190..U+2199. Every codepoint is present in the
+    // decoded font and carries the shared advance -- there is NO hole, so a single miss is a stopped line. This is a
+    // stronger statement than the Latin-1 unifier's, whose block carried two math-sign holes; the arrow block is unbroken.
+    var present: u32 = 0;
+    var cp: u32 = block_first;
+    while (cp <= block_last) : (cp += 1) {
+        if (back.lookup(cp)) |g| {
+            assert(g.codepoint == cp);
+            assert(g.advance == glyph_advance);
+            present += 1;
+        } else return error.ArrowSpanHole;
+    }
+    // invariant: the whole span is present -- every one of the ten arrows, no hole.
+    if (present != block_count) return error.ArrowCoverageIncomplete;
+
+    // A plain ASCII 'A' misses (this is the arrow set, not letters) and a codepoint just past the span (U+219A) misses
+    // too (no phantom glyph beyond the block).
+    if (back.lookup('A')) |_| return error.NonArrowFound else {}
+    if (back.lookup(block_last + 1)) |_| return error.PhantomArrowFound else {}
+
+    // Every glyph carries ink -- there is no blank in an arrow set.
+    var lo: u32 = cell_area;
+    var hi: u32 = 0;
+    var k: u32 = 0;
+    while (k < glyph_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (n == 0) return error.ArrowGlyphBlank;
+        if (n < lo) lo = n;
+        if (n > hi) hi = n;
+    }
+
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof (the REDS #82 lesson).
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-arrows: {d} arrows U+2190..U+2199 (the whole eight-direction set) at {d}x{d} round-trip byte-identical; codepoints strictly ascending and unique (two corpora disjoint: 6 basic + 4 diagonal); contiguously complete (every codepoint in the span present, no hole), every glyph inked (ink {d}..{d} of {d}); encoded {d} bytes, raw {d}\n", .{
+        glyph_count, cell_w, cell_h, lo, hi, cell_area, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_arrows selftest\n", .{});
+    return 1;
+}
