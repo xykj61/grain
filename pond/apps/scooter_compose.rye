@@ -1,0 +1,281 @@
+//! pond/apps/scooter_compose.rye -- Scooter, Rung 4: the composed session, where input meets the drawn face.
+//!
+//! Season G (Open Media Primitives) -- the terminal family. Every part but the join already stands:
+//!   - scooter_channel.rye keeps a permissioned, append-only journal,
+//!   - scooter_keyed.rye binds each post to a Kumara identity,
+//!   - scooter_view.rye folds a channel into a bounded 24x80 terminal frame a keeper reads,
+//!   - dexter_line.rye holds a bounded editable line, the input half.
+//! This rung joins them into one act: a keeper types a line and watches it land in the conversation. It was
+//! designed for from both sides -- scooter_view.render_within reserves its last row "for a prompt" and passes
+//! the journal a smaller budget so the prompt has room; dexter_line holds the editable line the prompt draws.
+//! Design read: active-designing/20260817-085923_scooter-compose-crux.md
+//! Pattern elder: pond/apps/scooter_view.rye -- the same bounded fold, held pure over the family's public API.
+//!
+//! The crux is one honest join held bounded:
+//!   - A Session holds a channel (by pointer -- it owns no copy), the editable prompt line, and the typing point.
+//!   - submit commits the current line as a post by `me`, then clears the prompt. An empty line is refused by
+//!     name (EmptyEntry) rather than posting a blank; the channel's own bounds (JournalFull) surface unchanged.
+//!   - frame folds the whole session into one frame: the journal in the body, the prompt "> <line>" on the
+//!     reserved last row, truncated with '~' if it overruns. The same session renders the same bytes every time.
+//!   - caret_col reports where the caret sits in the prompt row, for the later live TTY -- the fold needs only bytes.
+//!
+//! Facts only, custody-first: it edits a line and appends a post to a channel a member already holds -- no
+//! network, no key held, no funds. The wire between two Constel piers reaches the serve gate (the maintainer's
+//! hand), and the raw TTY with escape codes is Dexter's own later rung.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build pond/apps/scooter_compose.rye -femit-bin=pond/bin/scooter-compose
+//!   pond/bin/scooter-compose selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const channel = @import("scooter_channel.rye");
+const view = @import("scooter_view.rye");
+const line = @import("dexter_line.rye");
+
+pub const scooter_compose_version = "20260817.085923";
+
+/// The prompt draws "> " before the editable line -- a two-cell gutter a keeper recognizes as "type here".
+pub const prompt_prefix = "> ";
+/// The prefix width named as u32 for the bounded row arithmetic (equal to prompt_prefix.len, asserted below).
+pub const prompt_cols: u32 = 2;
+
+/// The last row of the frame is reserved for the prompt; the journal draws in the rows above it.
+pub const prompt_row: u32 = view.frame_rows - 1;
+/// The journal's row budget -- the body beneath the header, less the one row the prompt reserves.
+pub const journal_body: u32 = view.body_rows - 1;
+
+/// submit surfaces the channel's own refusals unchanged, plus one of its own: an empty prompt is never posted.
+pub const SubmitError = channel.ChannelError || error{
+    EmptyEntry, // an empty prompt line is refused rather than posting a blank
+};
+
+/// A composing session over a channel: the channel it appends to (borrowed, never copied), the editable
+/// prompt line, and the point of the keeper who is typing. It adds only what the parts cannot do alone --
+/// membership at construction, an empty-guarded submit, and the composed frame.
+pub const Session = struct {
+    ch: *channel.Channel,
+    line: line.Line = line.Line.empty(),
+    me: u32,
+
+    /// Seat a session over a channel for a member `me`. A non-member cannot open a composing session, since
+    /// a non-member cannot post -- the membership the channel already enforces is checked here at the door.
+    pub fn open(ch: *channel.Channel, me: u32) Session {
+        // invariant: the composing keeper holds a seat, so every submit can post.
+        assert(ch.is_member(me));
+        const s = Session{ .ch = ch, .line = line.Line.empty(), .me = me };
+        // invariant: a fresh session opens on an empty prompt.
+        assert(s.line.len == 0);
+        return s;
+    }
+
+    /// The editable prompt line -- a caller edits it through dexter_line's own proven API (insert, backspace,
+    /// cursor motion) rather than through re-wrapped copies, so the line's bounds are enforced in one place.
+    pub fn prompt(self: *Session) *line.Line {
+        // invariant: the held prompt is always within the line bound.
+        assert(self.line.len <= line.max_line);
+        // invariant: the cursor is always within the held line.
+        assert(self.line.cursor <= self.line.len);
+        return &self.line;
+    }
+
+    /// Commit the current prompt line as a post by `me`, then clear the prompt for the next entry. An empty
+    /// line is refused by name (EmptyEntry); the channel's own bounds surface unchanged. Returns the new seq.
+    pub fn submit(self: *Session) SubmitError!u32 {
+        // invariant: the prompt is within its bound before the commit.
+        assert(self.line.len <= line.max_line);
+        // invariant: the composing keeper still holds a seat.
+        assert(self.ch.is_member(self.me));
+        const text = self.line.text();
+        if (text.len == 0) return error.EmptyEntry;
+        // The line holds at most max_line bytes and the channel accepts max_text; the two bounds are equal, so
+        // a held line never exceeds the journal's text bound -- TextTooLong cannot fire from a prompt.
+        const seq = try self.ch.post(self.me, text);
+        self.line.clear();
+        // invariant: the prompt is empty and ready after a committed entry.
+        assert(self.line.len == 0);
+        return seq;
+    }
+
+    /// Fold the whole session into a bounded terminal frame: the journal in the body, the prompt on the last
+    /// row. Pure over the family's public APIs -- scooter_view draws the journal within its reserved budget,
+    /// this rung adds the prompt line. The same session renders the same bytes every time.
+    pub fn frame(self: *const Session) view.Frame {
+        // invariant: the journal budget leaves the prompt row free and holds at least one row.
+        assert(journal_body >= 1);
+        assert(journal_body < view.body_rows);
+        var f = view.render_within(self.ch, journal_body);
+        write_prompt_row(&f, &self.line);
+        return f;
+    }
+
+    /// The column the caret sits at in the prompt row -- after the prefix and the bytes before the cursor,
+    /// clamped to the last cell so the caret is always a real column. A later live TTY or painter reads this.
+    pub fn caret_col(self: *const Session) u32 {
+        // invariant: the cursor is a real offset within the prompt line.
+        assert(self.line.cursor <= line.max_line);
+        const raw: u32 = prompt_cols + self.line.cursor;
+        const c: u32 = if (raw >= view.frame_cols) view.frame_cols - 1 else raw;
+        // invariant: the caret never claims a column outside the row.
+        assert(c < view.frame_cols);
+        return c;
+    }
+};
+
+/// Draw the prompt into the frame's reserved last row: the prefix, then the held line, truncated to the row
+/// width with a '~' if it overruns -- the same "mark, never wrap" discipline scooter_view keeps for a post.
+fn write_prompt_row(f: *view.Frame, l: *const line.Line) void {
+    // invariant: the prefix width names the literal it is drawn from.
+    assert(prompt_prefix.len == prompt_cols);
+    // invariant: the prompt row is a real row within the fixed grid.
+    assert(prompt_row < view.frame_rows);
+    const start: u32 = prompt_row * view.frame_cols;
+    assert(start + view.frame_cols <= f.cells.len);
+
+    // Clear the row to spaces.
+    var col: u32 = 0;
+    while (col < view.frame_cols) : (col += 1) f.cells[start + col] = ' ';
+
+    // Write the prefix, then the line text, dropping any overrun and remembering it.
+    var w: u32 = 0;
+    var overflow = false;
+    var pi: u32 = 0;
+    while (pi < prompt_cols) : (pi += 1) {
+        if (w < view.frame_cols) {
+            f.cells[start + w] = prompt_prefix[pi];
+            w += 1;
+        } else overflow = true;
+    }
+    const t = l.text();
+    var ti: u32 = 0;
+    while (ti < t.len) : (ti += 1) {
+        if (w < view.frame_cols) {
+            f.cells[start + w] = t[ti];
+            w += 1;
+        } else overflow = true;
+    }
+    if (overflow) f.cells[start + view.frame_cols - 1] = '~';
+    // invariant: writing never ran past the row width.
+    assert(w <= view.frame_cols);
+}
+
+// --- selftest -------------------------------------------------------------------------------------------
+
+const host_key: u32 = 1001;
+const ada: u32 = 2002;
+
+fn a_typed_line_becomes_a_post() !void {
+    var ch = channel.Channel.open(host_key);
+    var s = Session.open(&ch, host_key);
+    try s.prompt().type_str("hello");
+    const seq = try s.submit();
+    // The line landed in the journal as one post, and the prompt cleared for the next entry.
+    assert(seq == 0);
+    assert(ch.post_count == 1);
+    const post = try ch.get(0);
+    assert(std.mem.eql(u8, post.body(), "hello"));
+    assert(s.line.len == 0);
+    print("scooter_compose: a typed line becomes a post, and the prompt clears for the next entry.\n", .{});
+}
+
+fn an_empty_submit_is_refused() !void {
+    var ch = channel.Channel.open(host_key);
+    var s = Session.open(&ch, host_key);
+    // An empty prompt is refused by name, and the journal is left exactly as it was -- never a blank post.
+    const refused = s.submit();
+    assert(refused == error.EmptyEntry);
+    assert(ch.post_count == 0);
+    print("scooter_compose: an empty submit is refused (EmptyEntry), never a blank post.\n", .{});
+}
+
+fn the_frame_shows_journal_and_prompt() !void {
+    var ch = channel.Channel.open(host_key);
+    try ch.admit(host_key, ada);
+    var s = Session.open(&ch, host_key);
+    // Two committed posts, then a third still drafted in the prompt.
+    try s.prompt().type_str("hi ada");
+    _ = try s.submit();
+    _ = try ch.post(ada, "hey");
+    try s.prompt().type_str("draft");
+    const f = s.frame();
+    // The header and journal read back in the body.
+    assert(std.mem.eql(u8, view.row_text(&f, 0), "scooter: 2 posts"));
+    assert(std.mem.eql(u8, view.row_text(&f, 1), "[0] p1001: hi ada"));
+    assert(std.mem.eql(u8, view.row_text(&f, 2), "[1] p2002: hey"));
+    // The prompt draws the drafted line on the reserved last row.
+    assert(std.mem.eql(u8, view.row_text(&f, prompt_row), "> draft"));
+    // Determinism: the same session renders identical bytes.
+    const again = s.frame();
+    assert(std.mem.eql(u8, &f.cells, &again.cells));
+    print("scooter_compose: the frame shows the journal in the body and the prompt on the last row, deterministically.\n", .{});
+}
+
+fn the_prompt_truncates_never_overflows() !void {
+    var ch = channel.Channel.open(host_key);
+    var s = Session.open(&ch, host_key);
+    // A draft far wider than the row must clip to the width with a '~', never overflow it.
+    try s.prompt().type_str("0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789");
+    const f = s.frame();
+    const r = f.row(prompt_row);
+    assert(r.len == view.frame_cols);
+    assert(r[view.frame_cols - 1] == '~');
+    print("scooter_compose: an over-wide prompt clips to the row width with a '~', never overflowing it.\n", .{});
+}
+
+fn the_caret_tracks_the_cursor() !void {
+    var ch = channel.Channel.open(host_key);
+    var s = Session.open(&ch, host_key);
+    try s.prompt().type_str("hi");
+    // The caret sits after the prefix and the two typed bytes.
+    assert(s.caret_col() == prompt_cols + 2);
+    // Home walks the cursor to the start; the caret follows to just past the prefix.
+    s.prompt().move_home();
+    assert(s.caret_col() == prompt_cols);
+    print("scooter_compose: the caret column tracks the prompt cursor, prefix plus the bytes before it.\n", .{});
+}
+
+fn the_prompt_row_is_reserved() !void {
+    var ch = channel.Channel.open(host_key);
+    var s = Session.open(&ch, host_key);
+    // Post more than the journal budget holds; the journal must draw its overflow note within the body and
+    // never write the prompt row, which stays the prompt.
+    const total: u32 = journal_body + 5;
+    var k: u32 = 0;
+    while (k < total) : (k += 1) {
+        try s.prompt().type_str("m");
+        _ = try s.submit();
+    }
+    try s.prompt().type_str("still typing");
+    const f = s.frame();
+    // The prompt row shows the prompt, not a journal row.
+    assert(std.mem.eql(u8, view.row_text(&f, prompt_row), "> still typing"));
+    // The journal's overflow note lands within the reserved body budget, never on the prompt row.
+    const shown: u32 = journal_body - 1;
+    const note = view.row_text(&f, 1 + shown);
+    assert(note.len >= 2);
+    assert(note[0] == '(');
+    assert(note[1] == '+');
+    assert(1 + shown < prompt_row);
+    print("scooter_compose: even a journal past its budget draws its overflow within the body; the prompt row stays reserved.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try a_typed_line_becomes_a_post();
+    try an_empty_submit_is_refused();
+    try the_frame_shows_journal_and_prompt();
+    try the_prompt_truncates_never_overflows();
+    try the_caret_tracks_the_cursor();
+    try the_prompt_row_is_reserved();
+    print("scooter_compose: version {s}\n", .{scooter_compose_version});
+    print("GREEN: scooter_compose r4; a keeper's typed line becomes a post and the family joins into one frame -- journal in the body, prompt on the reserved last row, truncation honest, caret tracked, empty submit refused, all bounded and deterministic.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "scooter-compose"))) {
+        return run_selftest();
+    }
+    return run_selftest();
+}
