@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260817.071500
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title font5x7 -- Icelandic letters corpus (eth, y acute, thorn), GREEN
+prompt Autonomous loop: take the next agent-doable lap Lindy-first crux-first; each lap deep-read one council-rota doc; Rye prioritized; send often; stop at custody gates.
+think After the nordic corpus (a ring, ae, o stroke) landed, three lowercase letters remained undrawn in the Latin-1 Supplement block -- eth (U+00F0), y acute (U+00FD), thorn (U+00FE), the letters an Icelandic name reaches for. Drawing them closes the lowercase Latin-1 letter set outright, a strong Lindy completion.
+think Kept the corpus tight at three, matching the established rhythm. The crux is that these are built three different ways -- eth's crossed ascender, thorn's full-height stem, y acute's right lean -- so each is read by its own toothed guard rather than a shared placement check.
+think Reused known bodies: y acute is the lowercase y body under the acute stroke font5x7_latin1 proves; eth and thorn are genuine letterforms drawn fresh. Designed thorn as a col-0 stem inked on every row with a mid bowl; eth as a bowl under a horizontal crossbar spanning the upper cell.
+obs GREEN on the first metal run, ink 14..15 of 35, no red. tame_style_check bans clean, width-check exit 0, both files plain 7-bit ASCII though the glyphs cover a non-ASCII range (numeric codepoint literals -- the ascii-first exception for a font codec's glyph tables).
+obs This is the second full increment of the run, sent as its own signed round per send-often. With it, every alphabetic codepoint in U+00DF..U+00FF is drawn in our own open hand (the division sign apart, in font5x7_math).
+obs Rota lap deep-read item 2 (foundations/20260706-185112_follow-our-compass.md) -- the return habit; closing a whole named set before naming the next is the compass pointing at the finishing edge.
+loom witness=font5x7_icelandic selftest_glyphs=3 cell=5x7 ink_lo=14 ink_hi=15 encoded_bytes=160 raw_bytes=105
+file image/font5x7_icelandic.rye the open Icelandic letters corpus: eth, y acute, thorn, three distinct constructions
+file tools/font5x7_icelandic_witness.rish proves the corpus on metal: build, selftest, GREEN line
+file image/README.md accreted the icelandic corpus into the accented-Latin family entry (docs-sync ratchet)
+file crux/REMEMBER.md rotated Git nib to the icelandic corpus, demoted nordic to Prior, refreshed the live-edge next-steps clause
+recommend keep-going next open-media rung: the uppercase companions to finish the Latin-1 capitals (A ring U+00C5, AE U+00C6, O stroke U+00D8, Eth U+00D0, Thorn U+00DE, Y acute U+00DD), then the open glyph atlas beyond 5x7. No custody gate touched -- no network, no key, no funds.
