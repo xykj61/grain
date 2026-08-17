@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260817.072800
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title glyph_accent -- a whole accented corpus grown by composition, GREEN
+prompt Recur the road ahead: next agent-doable lap Lindy-first crux-first, Rye prioritized, send often, stop at custody gates.
+think The prior lap landed the single-glyph overlay primitive (glyph_compose.overlay). The crux-first continuation is its payoff: turn the verb into the tool that actually retires the grind -- compose a WHOLE accented corpus from one base atlas, one mark, and a codepoint table, rather than one glyph at a time.
+think Designed image/glyph_accent.rye -- compose_accent_atlas(base_atlas, mark, map, advance) overlays the mark onto each mapped base glyph and returns a gfa1-encodable glyph.GlyphAtlas of accented letters. The map is a list of AccentMap{base, accented}; accented codepoints required strictly ascending (the order the encoder trusts); bounded by accent_max; refusals named (EmptyMap, TooManyAccents, MarkLenMismatch, MapNotAscending, BaseGlyphMissing).
+think The witness proves the payoff end to end: compose_accent_atlas(lowercase base, grave mark, a/e/o/u grave map) reproduces the hand-drawn font5x7_grave coverage byte-for-byte for those four vowels, AND the composed atlas round-trips through the gfa1 encoder/decoder byte-identical -- so a corpus grown by composition is indistinguishable from one drawn by hand, and it is a real encodable corpus, not just matching coverage. Plus four named refusals.
+obs GREEN on the first metal run, no red. Pure composition over glyph.rye and glyph_compose.overlay through public APIs; the shipped font5x7_lower and font5x7_grave corpora stay their own green binaries, read only to prove parity. tame_style_check bans clean, width-check exit 0.
+obs The two laps together tell the whole story: glyph_compose is the verb (overlay one), glyph_accent is the tool (grow a set). A five-vowel accent corpus is now a five-row table plus one mark, not five hand drawings -- O(letters x accents) collapsed to O(letters + accents), proven against the very corpora the grind produced.
+obs docs-sync: image/README.md accreted a glyph_accent entry and reframed the next-rungs line to name drawing each remaining mark once so compose_accent_atlas grows its whole set from a table; REMEMBER live edge and Git nib updated in the same commit.
+loom witness=glyph_accent_witness composed_glyphs=4 matched=4 roundtrip=byte_identical wall_note=first-run-green
+file image/glyph_accent.rye compose_accent_atlas -- grows a whole accented corpus from a base atlas + one mark + a codepoint table
+file tools/glyph_accent_witness.rish proves the composed grave corpus equals the hand-drawn coverage byte-for-byte and round-trips through gfa1
+file image/README.md accreted the glyph_accent entry and next-rungs reframe (docs-sync)
+file crux/REMEMBER.md live edge + Git nib note the composition tool
+recommend keep-going draw the acute, circumflex, tilde, and diaeresis marks once each and grow each whole accented set through compose_accent_atlas from a table -- the grind's replacement, one mark per round

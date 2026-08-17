@@ -1,0 +1,190 @@
+//! image/glyph_accent.rye -- a whole accented corpus by composition (Season G, the overlay primitive's payoff).
+//!
+//! Season G (Open Media Primitives) - the rung that turns image/glyph_compose.rye's single-glyph overlay into the
+//! tool that retires the accent grind. Where overlay(base, mark) composes ONE accented letter, compose_accent_atlas
+//! composes a WHOLE corpus: given a base atlas (the lowercase a-z already drawn), one combining mark drawn once, and
+//! a table mapping each base codepoint to its accented codepoint, it overlays the mark onto each named base and
+//! returns a glyph.GlyphAtlas of accented letters the gfa1 encoder accepts directly. A five-vowel accent corpus is
+//! then a five-row table plus one mark, not five hand drawings -- the O(letters + accents) economy made literal.
+//!
+//! The property that matters stays provable on metal: compose_accent_atlas(lowercase base, grave mark, the a/e/o/u
+//! grave map) reproduces the hand-drawn image/font5x7_grave.rye corpus's own coverage BYTE-FOR-BYTE for those four
+//! vowels, and the composed atlas round-trips through the gfa1 encoder/decoder byte-for-byte -- so a corpus grown by
+//! composition is indistinguishable from one drawn by hand, at a fraction of the drawing. The map is required
+//! strictly ascending by accented codepoint (the order the encoder trusts); a base the atlas lacks, a mark of the
+//! wrong length, a non-ascending map, and an empty or over-long map each refuse by name. No network, no key, no
+//! funds -- the tool a surface uses to reach every accented letter a keeper's name carries.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/glyph_accent.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+const compose = @import("glyph_compose.rye");
+const font_lower = @import("font5x7_lower.rye");
+const font_grave = @import("font5x7_grave.rye");
+
+pub const glyph_accent_version = "20260817.072800";
+
+/// The most accented letters one composition may produce -- a generous ceiling over any single accent set, bounded
+/// well under the atlas's own glyph_max so a table can never outrun the encoder.
+pub const accent_max: u32 = 256;
+
+/// One row of the composition table: a base letter's codepoint and the accented codepoint the mark turns it into.
+pub const AccentMap = struct {
+    base: u32 = 0,
+    accented: u32 = 0,
+};
+
+/// The shared 5x7 body the corpora carry -- named here only for the selftest's own demonstrator mark.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// Compose a whole accented atlas: overlay the one mark onto each mapped base glyph of the base atlas, producing an
+/// accented glyph at each mapped codepoint. The base atlas is read-only; a fresh atlas is returned. This is the
+/// accent family's economy realized -- one mark and a table stand in for a hand of drawings.
+pub fn compose_accent_atlas(
+    allocator: std.mem.Allocator,
+    base_atlas: *const glyph.GlyphAtlas,
+    mark: []const u8,
+    map: []const AccentMap,
+    advance: u8,
+) !glyph.GlyphAtlas {
+    // invariant: the table is non-empty and within the named ceiling, so the loop is bounded.
+    if (map.len < 1) return error.EmptyMap;
+    if (map.len > accent_max) return error.TooManyAccents;
+    const area = base_atlas.cell_area();
+    // invariant: the mark is exactly one cell of the base atlas -- the overlay demands it.
+    if (mark.len != area) return error.MarkLenMismatch;
+
+    const count: u32 = @intCast(map.len);
+    const glyphs = try allocator.alloc(glyph.Glyph, count);
+    var i: u32 = 0;
+    var last_cp: u32 = 0;
+    while (i < count) : (i += 1) {
+        const row = map[i];
+        // invariant: accented codepoints are strictly ascending -- the ordering the gfa1 encoder trusts.
+        if (!(i == 0 or row.accented > last_cp)) return error.MapNotAscending;
+        last_cp = row.accented;
+        // invariant: the base letter the mark accents is present in the base atlas.
+        const base_glyph = base_atlas.lookup(row.base) orelse return error.BaseGlyphMissing;
+        const cov = try compose.overlay(allocator, base_glyph.coverage, mark, area);
+        glyphs[i] = glyph.Glyph{
+            .codepoint = row.accented,
+            .advance = advance,
+            .coverage = cov,
+        };
+    }
+    // invariant: exactly one accented glyph was composed per table row.
+    assert(glyphs.len == map.len);
+    return glyph.GlyphAtlas{ .cell_w = base_atlas.cell_w, .cell_h = base_atlas.cell_h, .glyphs = glyphs };
+}
+
+/// The grave combining mark, drawn once -- the demonstrator this rung composes with. Top-row ink leaning left, the
+/// body rows blank; overlaid onto a lowercase vowel it yields the grave letter font5x7_grave draws by hand.
+const grave_mark_art = [cell_h][]const u8{
+    ".#...",
+    "..#..",
+    ".....",
+    ".....",
+    ".....",
+    ".....",
+    ".....",
+};
+
+fn coverage_from_art(allocator: std.mem.Allocator, art: [cell_h][]const u8) ![]u8 {
+    // invariant: a coverage grid is exactly the shared cell area, within the atlas ceiling.
+    assert(cell_area >= 1);
+    assert(cell_area <= glyph.coverage_max);
+    const cov = try allocator.alloc(u8, cell_area);
+    var idx: u32 = 0;
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        const rowart = art[r];
+        // invariant: every drawn row is exactly the cell width -- the art matches the grid.
+        assert(rowart.len == cell_w);
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            cov[idx] = if (rowart[c] == '#') 255 else 0;
+            idx += 1;
+        }
+    }
+    // invariant: exactly one cell was written per grid position.
+    assert(idx == cell_area);
+    return cov;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const lower = try font_lower.build_atlas(garden);
+    const grave = try font_grave.build_atlas(garden);
+    const mark = try coverage_from_art(garden, grave_mark_art);
+
+    // The composition table: four lowercase vowels, each mapped to its grave codepoint, strictly ascending by the
+    // accented codepoint. The dotted 'i' (U+00EC) is left out honestly -- its base differs under a mark, so the
+    // corpus draws it distinctly; composition reproduces the four whose base is untouched above.
+    const map = [4]AccentMap{
+        .{ .base = 'a', .accented = 0x00E0 },
+        .{ .base = 'e', .accented = 0x00E8 },
+        .{ .base = 'o', .accented = 0x00F2 },
+        .{ .base = 'u', .accented = 0x00F9 },
+    };
+    const composed = try compose_accent_atlas(garden, &lower, mark, map[0..], 6);
+    // invariant: the composed atlas holds exactly the four mapped accented letters at the shared cell.
+    assert(composed.glyphs.len == 4);
+    assert(composed.cell_area() == cell_area);
+
+    // The crux -- byte-for-byte parity with the hand-drawn corpus. Each composed accented glyph equals the grave
+    // corpus's own coverage for that codepoint, so the corpus grown by composition IS the corpus drawn by hand.
+    var matched: u32 = 0;
+    var i: u32 = 0;
+    while (i < composed.glyphs.len) : (i += 1) {
+        const g = composed.glyphs[i];
+        const want = grave.lookup(g.codepoint) orelse return error.GraveCorpusMissing;
+        if (!std.mem.eql(u8, g.coverage, want.coverage)) return error.ComposedMismatch;
+        if (g.advance != 6) return error.ComposedWrongAdvance;
+        matched += 1;
+    }
+    assert(matched == 4);
+
+    // The composed atlas round-trips through the gfa1 encoder/decoder byte-for-byte -- a real, encodable corpus.
+    const cap = glyph.encoded_bound(@intCast(composed.glyphs.len), cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&composed, dst);
+    const back = try glyph.decode(garden, dst[0..res.len]);
+    if (!back.same_bytes(&composed)) return error.RoundTripMismatch;
+
+    // Refusals real -- a base the atlas lacks, a wrong-length mark, a non-ascending map, and an empty map.
+    const bad_base = [1]AccentMap{.{ .base = 0x2603, .accented = 0x00E0 }};
+    if (compose_accent_atlas(garden, &lower, mark, bad_base[0..], 6)) |_| return error.RefusedBadBaseMissing else |e| {
+        if (e != error.BaseGlyphMissing) return e;
+    }
+    const short = try garden.alloc(u8, cell_area - 1);
+    if (compose_accent_atlas(garden, &lower, short, map[0..], 6)) |_| return error.RefusedBadMarkMissing else |e| {
+        if (e != error.MarkLenMismatch) return e;
+    }
+    const descending = [2]AccentMap{ .{ .base = 'e', .accented = 0x00E8 }, .{ .base = 'a', .accented = 0x00E0 } };
+    if (compose_accent_atlas(garden, &lower, mark, descending[0..], 6)) |_| return error.RefusedNonAscendingMissing else |e| {
+        if (e != error.MapNotAscending) return e;
+    }
+    const empty = [0]AccentMap{};
+    if (compose_accent_atlas(garden, &lower, mark, empty[0..], 6)) |_| return error.RefusedEmptyMissing else |e| {
+        if (e != error.EmptyMap) return e;
+    }
+
+    print("GREEN image-glyph-accent: compose_accent_atlas grew {d} grave vowels (a,e,o,u) from one base atlas + one mark + a {d}-row table, each byte-for-byte the hand-drawn font5x7_grave coverage, the composed atlas round-tripping through gfa1 byte-identical; a missing base, a short mark, a non-ascending map, and an empty map refuse by name -- a corpus is now a table, not a hand of drawings\n", .{
+        matched, composed.glyphs.len,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: glyph_accent selftest\n", .{});
+    return 1;
+}
