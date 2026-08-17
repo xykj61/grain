@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260817.093701
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title text_grid -- per-cell foreground colour, the coloured terminal, GREEN
+prompt Autonomous loop: continue taking agent-doable laps Lindy-first crux-first optimizing for the balance compass, deep-read one council-rota doc, send often, stop at custody gates.
+think The prior lap's recommend named the nearer mechanical crux: teach text_grid a per-cell foreground so a header or a caret can carry its own colour. A terminal surface shows coloured text -- an author name, an unread badge, a caret -- so per-cell colour is Lindy-durable floor every future glass surface (Grainphone, Realidream, Skate) stands on. It is also the one API move that unlocks colour across the whole terminal-meets-pixels family.
+think Accrete-never-break: rather than change render_grid/paint_grid (which would break scooter_paint and the selftest), I ADDED paint_grid_fg and render_grid_fg beside the single-ink verbs, untouched. The coloured twin takes fg []color.Rgba of exactly cols*rows; cell (r,c) paints its glyph in fg[r*cols+c]. Placement is identical to paint_grid -- layout each row once, but paint each cell's one-glyph slice (scratch[c..c+1], already carrying pen_x=c*advance) in its own ink rather than the whole row in one. A mis-sized palette refuses GridFgMismatch by name before any pixel is allocated.
+think Witness crux -- colour is per cell, not shared, proven by measure: extended text_grid's own selftest so the existing witness covers it. A palette paints row 0 red and every other row black. Proved the coloured face inks the SAME cells as the single-ink face (colour moves ink, adds none -- changed count equals want_ink), then found the first fully-black inked pixel in row 0's band on the single-ink face and proved the coloured face reads red (255,0,0) there -- so the ink is read per cell. The coloured face round-trips through QOI byte-for-byte too, and a short palette refuses GridFgMismatch.
+obs GREEN on the first metal run, no red: the 16x3 selftest now also proves the per-cell palette. scooter_paint still GREEN (the single-ink verbs it calls are unchanged). tame_style_check bans clean, width-check exit 0, text_grid.rye plain 7-bit ASCII.
+obs Balance lap held: a floor feature that serves the whole terminal family (colour everywhere it shows text) rather than a new leaf; accretive so nothing already GREEN moved. The coloured caret and coloured author name a chat surface wants are now one call away.
+obs Rota this lap (d27) deep-read item 20, context/QUIN.md -- the four faculties Kyri carries forward (Lattice's honest number, Scribble's open door, Lantern's marked proposed, Ember's earned craft) and Quin's two live hats. This rung is Lattice and Ember: colour bound to a measured red pixel, the twin proven beside the elder before it is called done.
+loom witness=text_grid_witness grid=16x3 image_px=96x21 ink_px=291 palette=per_cell wall_ms=NA
+file image/text_grid.rye added paint_grid_fg + render_grid_fg (per-cell foreground), GridFgMismatch, and colour proofs in the selftest; single-ink verbs untouched
+file image/README.md text_grid entry names the render_grid_fg coloured twin and its per-cell palette (docs-sync)
+file crux/REMEMBER.md INNER LOOP Git nib refreshed to name the per-cell-colour rung
+recommend keep-going teach scooter_paint (or a thin twin) to hand text_grid a palette that colours the header row and the caret, so a real conversation paints in colour -- the natural next mechanical lap over the coloured floor just laid. Still no seam, no gate.
