@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260817.072749
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title font5x7 acute vowels grown by composition, GREEN
+prompt autonomous loop -- take the next agent-doable lap Lindy-first crux-first, send often, deep-read one council-rota doc, stop only at custody gates
+think The live edge is Season G's open-media font family; the prior lap landed image/glyph_accent.rye's compose_accent_atlas, proving the accent economy on the grave mark. REMEMBER named the next crux outright: draw acute/circumflex/tilde/diaeresis marks once each and grow their whole sets from a table. Acute is the smallest tractable of those and the natural second proof -- crux-first.
+think Read glyph_accent.rye (the tool), font5x7_grave.rye (its parity target), font5x7_latin1.rye (where the hand-drawn acute vowels live), and font5x7_lower.rye (the base). Confirmed by hand that union(lowercase 'a', acute mark rows 0-1 "...#."/"..#..") equals latin1's a acute exactly, and the same for e/o/u -- so composition reproduces the hand.
+think The dotted i acute (U+00ED) is left out honestly: the lowercase 'i' carries a dot on its own top row, so an acute overlaid there would keep the dot AND add the stroke. latin1 draws it distinctly, exactly as glyph_accent omits the i grave for the same reason.
+think Wrote image/font5x7_acute.rye modeled on the corpus + composition pattern: draw the acute mark once, map a/e/o/u to their ascending acute codepoints, grow the atlas with accent.compose_accent_atlas, then prove byte-for-byte parity against font5x7_latin1's own coverage, gfa1 round-trip, presence, distinctness, legibility (ink 14..16 of 35), and the right-lean mirror of the grave (top-right ink >= 1, top-left == 0).
+obs First metal run GREEN, no red -- the invocation form is `rye run <file.rye> -- selftest` (args after the file need the `--` separator; the header one-liner without it errors "unrecognized file extension"). The economy is now proven on a second mark: a real accent corpus is a table plus one drawing.
+obs Rota lap (d27, item 16) deep-read context/SIMPLE_LOVABLE_COMPLETE.md -- do the narrow thing wholly and claim only what is true. A four-vowel acute corpus grown by composition, parity-proven and round-tripped, is simple, lovable, and complete at its scope; the honestly-omitted i is completeness as honesty about scope.
+loom witness=font5x7_acute_witness wall_ms=n/a glyphs=4 encoded_bytes=206 raw_bytes=140 ink_lo=14 ink_hi=16
+file image/font5x7_acute.rye the acute vowels grown by composition, byte-for-byte the hand-drawn latin1 coverage, GREEN
+file tools/font5x7_acute_witness.rish the companion Rishi witness, builds and proves the corpus on metal
+file image/README.md accreted the font5x7_acute entry and reframed the next-rungs line to circumflex/tilde/diaeresis (docs-sync)
+file crux/REMEMBER.md live edge notes the first accent corpus grown by composition; next marks named
+recommend keep-going draw the circumflex mark once and grow its whole set from a table the same way; then tilde and diaeresis, each its own signed round

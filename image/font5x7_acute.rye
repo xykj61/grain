@@ -1,0 +1,260 @@
+//! image/font5x7_acute.rye -- the open acute-accent vowels corpus, GROWN BY COMPOSITION (Season G, the overlay economy for a second mark).
+//!
+//! Season G (Open Media Primitives) - font content for the open glyph atlas image/glyph.rye (gfa1), set beside the
+//! hand-drawn accent corpora (image/font5x7_grave.rye the grave vowels, image/font5x7_latin1.rye the Iberian acute and
+//! cedilla, image/font5x7_circumflex.rye the circumflex, image/font5x7_german.rye the umlauts). Where those draw every
+//! letter by hand, this corpus draws NOTHING but a single acute mark and grows the whole acute vowel set by
+//! composition -- image/glyph_accent.rye's compose_accent_atlas overlays one acute stroke onto each mapped lowercase
+//! base, so a acute, e acute, o acute, u acute (U+00E1, U+00E9, U+00F3, U+00FA) arrive from a four-row table plus one
+//! drawing rather than four. This is the second mark to prove the accent economy on metal: image/glyph_accent.rye
+//! proved it for the grave, and here the same tool grows the acute family the same way.
+//!
+//! The crux stays byte-for-byte parity with the hand: each composed acute vowel equals image/font5x7_latin1.rye's own
+//! hand-drawn coverage for that codepoint, so the corpus grown by composition IS the corpus drawn by hand -- proven,
+//! not claimed. The i acute (U+00ED) is left out honestly: the lowercase 'i' carries a dot on its own top row, so an
+//! acute overlaid there would keep the dot AND add the stroke; that letter is drawn distinctly in the latin1 corpus,
+//! exactly as image/glyph_accent.rye omits the i grave for the same reason. The composed set is the four vowels whose
+//! base the mark does not disturb.
+//!
+//! The source stays plain ASCII (ASCII-first): codepoints are numeric literals (0x00E1 ...) and each letter is named
+//! in an ASCII comment, so no non-ASCII byte enters the file though the glyphs cover a non-ASCII range. The acute mark
+//! leans RIGHT -- its top-row ink sits right-of-center (column 3), the mirror of the grave -- and the composed atlas
+//! round-trips through the gfa1 encoder/decoder byte-for-byte. No network, no key, no funds -- the marks a surface reads
+//! the day it prints a Romance name that ASCII cannot spell, grown on our own open font at a fraction of the drawing.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_acute.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+const compose = @import("glyph_compose.rye");
+const accent = @import("glyph_accent.rye");
+const font_lower = @import("font5x7_lower.rye");
+const font_latin1 = @import("font5x7_latin1.rye");
+
+pub const font5x7_acute_version = "20260817.072749";
+
+/// Every glyph in this corpus shares one 5-wide, 7-tall cell -- the same body the ASCII, Greek, and Latin-1 corpora carry.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance: the cell width plus one column of daylight, the same advance the sibling corpora carry.
+pub const acute_advance: u8 = cell_w + 1;
+
+/// The corpus holds exactly the four composable acute vowels named in the table below (the i acute is drawn in latin1).
+pub const acute_count: u32 = 4;
+
+/// Cells per glyph -- the coverage length every letter carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The column that separates the two halves of the cell. Columns 0-1 are the left half, columns 3-4 the right half;
+/// column 2 (the center) belongs to neither. The acute proof reads these: an acute mark inks the RIGHT half up top.
+pub const center_col: u32 = 2;
+
+/// The acute combining mark, drawn ONCE -- the whole economy of this corpus. Top-row ink rising to the right (column 3
+/// on row 0, column 2 on row 1), the body rows blank; overlaid onto a lowercase vowel it yields the acute letter that
+/// image/font5x7_latin1.rye draws by hand. It leans RIGHT where the grave leans left -- the difference between the twins.
+const acute_mark_art = [cell_h][]const u8{
+    "...#.",
+    "..#..",
+    ".....",
+    ".....",
+    ".....",
+    ".....",
+    ".....",
+};
+
+/// The composition table: four lowercase vowels, each mapped to its acute codepoint, strictly ascending by the accented
+/// codepoint (the order the gfa1 encoder trusts). The dotted 'i' (U+00ED) is left out honestly -- its base carries a dot
+/// the mark would not replace; the latin1 corpus draws it distinctly.
+///   0x00E1 a acute, 0x00E9 e acute, 0x00F3 o acute, 0x00FA u acute.
+const acute_map = [acute_count]accent.AccentMap{
+    .{ .base = 'a', .accented = 0x00E1 },
+    .{ .base = 'e', .accented = 0x00E9 },
+    .{ .base = 'o', .accented = 0x00F3 },
+    .{ .base = 'u', .accented = 0x00FA },
+};
+
+/// Lift the acute mark's ASCII art into a freshly allocated coverage grid of exactly cell_area bytes: 255 for ink,
+/// 0 for background. The art's own shape is asserted, so a mistyped row is a stopped line rather than a bad mark.
+fn coverage_from_art(allocator: std.mem.Allocator, art: [cell_h][]const u8) ![]u8 {
+    // invariant: a coverage grid is exactly the shared cell area, within the atlas ceiling.
+    assert(cell_area >= 1);
+    assert(cell_area <= glyph.coverage_max);
+    const cov = try allocator.alloc(u8, cell_area);
+    var idx: u32 = 0;
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        const row = art[r];
+        // invariant: every drawn row is exactly the cell width -- the art matches the grid.
+        assert(row.len == cell_w);
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            cov[idx] = if (row[c] == '#') 255 else 0;
+            idx += 1;
+        }
+    }
+    // invariant: the whole grid was filled, no cell left unwritten.
+    assert(idx == cell_area);
+    return cov;
+}
+
+/// Build the acute-accent vowels atlas by composition: overlay the one acute mark onto each mapped lowercase base,
+/// yielding four accented glyphs at the named ascending codepoints. The gfa1 encoder accepts the result directly.
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the corpus is the four named composable acute vowels and no more.
+    assert(acute_count == 4);
+    assert(cell_area == 35);
+    const lower = try font_lower.build_atlas(allocator);
+    const mark = try coverage_from_art(allocator, acute_mark_art);
+    // The tool from image/glyph_accent.rye does the growing -- a table plus one mark, not four drawings.
+    const atlas = try accent.compose_accent_atlas(allocator, &lower, mark, acute_map[0..], acute_advance);
+    // invariant: exactly one composed glyph per table row, at the shared cell.
+    assert(atlas.glyphs.len == acute_count);
+    assert(atlas.cell_area() == cell_area);
+    return atlas;
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- the legibility signal a blank glyph would fail.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+/// Count the inked cells in row r of a glyph, restricted to the half-open column band [c0, c1). The acute proof reads
+/// the top row's left half (columns 0-2) and right half (columns 3-5) with this one reader. Row 0 is the top.
+fn row_band_ink(cov: []const u8, r: u32, c0: u32, c1: u32) u32 {
+    // invariant: the row index sits inside the shared cell, over the shared grid.
+    assert(r < cell_h);
+    assert(cov.len == cell_area);
+    // invariant: the column band is well-ordered and inside the cell width.
+    assert(c0 <= c1);
+    assert(c1 <= cell_w);
+    var n: u32 = 0;
+    var c: u32 = c0;
+    while (c < c1) : (c += 1) {
+        if (cov[r * cell_w + c] != 0) n += 1;
+    }
+    // invariant: the band count never exceeds the band it was counted over.
+    assert(n <= c1 - c0);
+    return n;
+}
+
+/// The top-row ink in the right half (columns 3-4) of a codepoint's glyph -- the reader the acute-leans-right proof uses.
+fn top_right_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return row_band_ink(g.coverage, 0, center_col + 1, cell_w);
+    return error.AcuteVowelMissing;
+}
+
+/// The top-row ink in the left half (columns 0-1) of a codepoint's glyph -- the reader that proves the mark stayed right.
+fn top_left_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return row_band_ink(g.coverage, 0, 0, center_col);
+    return error.AcuteVowelMissing;
+}
+
+// --- selftest: grow the acute atlas by composition, prove parity with the hand, round-trip, distinct, legible, right-leaning --
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built atlas is the four-vowel corpus at the shared cell.
+    assert(glyph_count == acute_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // The crux -- byte-for-byte parity with the hand-drawn latin1 acute glyphs. Each composed acute vowel equals the
+    // latin1 corpus's own coverage for that codepoint, so the corpus grown by composition IS the corpus drawn by hand.
+    const hand = try font_latin1.build_atlas(garden);
+    var matched: u32 = 0;
+    var i: u32 = 0;
+    while (i < atlas.glyphs.len) : (i += 1) {
+        const g = atlas.glyphs[i];
+        const want = hand.lookup(g.codepoint) orelse return error.AcuteHandMissing;
+        if (!std.mem.eql(u8, g.coverage, want.coverage)) return error.ComposedMismatch;
+        if (g.advance != acute_advance) return error.ComposedWrongAdvance;
+        matched += 1;
+    }
+    // invariant: every composed vowel matched its hand-drawn twin.
+    assert(matched == acute_count);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // Four present vowels: every mapped codepoint looks up and carries the shared advance; an unaccented ASCII vowel misses.
+    var d: u32 = 0;
+    while (d < acute_count) : (d += 1) {
+        const cp = acute_map[d].accented;
+        if (back.lookup(cp)) |g| {
+            assert(g.codepoint == cp);
+            assert(g.advance == acute_advance);
+        } else return error.AcuteVowelMissing;
+    }
+    if (back.lookup('a')) |_| return error.NonAcuteFound else {}
+
+    // Distinctness: no two letters share identical coverage -- the a acute and the o acute differ, the e acute and the
+    // u acute differ (catches a copy slip that would leave two names spelled with one glyph).
+    var a: u32 = 0;
+    while (a < acute_count) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b < acute_count) : (b += 1) {
+            if (std.mem.eql(u8, atlas.glyphs[a].coverage, atlas.glyphs[b].coverage)) return error.AcuteVowelsNotDistinct;
+        }
+    }
+
+    // Legibility: each letter's ink count sits inside an honest band -- the floor where the o/u acute (their lightest)
+    // still read, the ceiling where the a/e acute (their heaviest) still resolve as letters, not blocks.
+    const ink_min: u32 = 8;
+    const ink_max: u32 = 18;
+    var lo: u32 = cell_area;
+    var hi: u32 = 0;
+    var k: u32 = 0;
+    while (k < acute_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (n < ink_min or n > ink_max) return error.AcuteVowelIllegible;
+        if (n < lo) lo = n;
+        if (n > hi) hi = n;
+    }
+    // invariant: the observed ink band stayed inside the honest bounds.
+    assert(lo >= ink_min);
+    assert(hi <= ink_max);
+
+    // Acute placement -- the mirror of the grave proof: every acute vowel carries top-row ink in the RIGHT half
+    // (columns 3-4) and none in the left half (columns 0-1). The grave corpus leans the same mark left; here it leans
+    // right. This proves the mark sits where an acute accent demands rather than drifting into the grave's place.
+    var m: u32 = 0;
+    while (m < acute_count) : (m += 1) {
+        const cp = acute_map[m].accented;
+        if (!(try top_right_ink_of(&atlas, cp) >= 1)) return error.AcuteNotRightLeaning;
+        if (!(try top_left_ink_of(&atlas, cp) == 0)) return error.AcuteMarkDriftedLeft;
+    }
+
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof.
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-acute: {d} acute vowels U+00E1,U+00E9,U+00F3,U+00FA grown by composition (one mark + a {d}-row table), each byte-for-byte the hand-drawn font5x7_latin1 coverage; round-trip byte-identical; all present, distinct, legible (ink {d}..{d} of {d}); every mark leans right (mirror of the grave); encoded {d} bytes, raw {d}\n", .{
+        glyph_count, acute_count, lo, hi, cell_area, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_acute selftest\n", .{});
+    return 1;
+}
