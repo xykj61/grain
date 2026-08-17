@@ -1,0 +1,174 @@
+//! image/color_scale.rye -- a tonal palette scale grown from one seed colour (Season G, the design-system ramp).
+//!
+//! Season G (Open Media Primitives) -- a single-stranded consumer of image/color.rye's HSL algebra, one rung above
+//! image/color_adjust.rye. The adjust module gave a surface the everyday palette moves (lighten/darken, saturate,
+//! rotate). This rung gives it the move a design system actually reaches for first: grow a whole even tonal SCALE from
+//! ONE seed colour -- the Tailwind 50..900 / Material tonal ramp, a row of tones from lightest to darkest that share the
+//! seed's hue and saturation while their lightness steps evenly down a named band. A keeper names one brand colour and
+//! reads back a ready palette: a light tint for a card ground, the seed's own tone in the middle, a dark shade for text
+//! or a pressed state.
+//!
+//! Compose, not braid: colour DECIDES the base algebra (rgb_to_hsl reads the seed, hsl_to_rgb writes each tone) and this
+//! module only sets the lightness field of each tone to an evenly-stepped value between scale_light_max (the lightest
+//! tone) and scale_light_min (the darkest). No new storage, codec, palette, or maths -- every tone is a read-set-write
+//! over the existing algebra, so colour's own proofs carry through. The lightness step is integer fixed-point, so a scale
+//! is deterministic. Tone 0 is the lightest, tone count-1 the darkest; the seed's hue, saturation, and alpha ride through
+//! untouched. No network, no key, no funds -- the palette Brushstroke and Skate grow the day the design system lands, on
+//! our own open colour model.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/color_scale.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+
+pub const color_scale_version = "20260817.121500";
+
+/// The most tones a single scale ever holds -- a bounded ramp, so no palette is ever unbounded. A design system rarely
+/// asks for more than a dozen; thirty-two is generous headroom the loop will never breach.
+pub const scale_max_tones: u32 = 32;
+
+/// The lightest tone's lightness (percent) -- a near-white tint for a card ground or a subtle fill.
+pub const scale_light_max: u8 = 95;
+
+/// The darkest tone's lightness (percent) -- a deep shade for text on a light ground or a pressed state.
+pub const scale_light_min: u8 = 10;
+
+/// The lightness of tone `i` of a `count`-tone scale -- an even lerp from scale_light_max (tone 0, lightest) down to
+/// scale_light_min (tone count-1, darkest). Integer fixed-point, so the ramp is deterministic; count >= 2 keeps the
+/// denominator at least one.
+pub fn tone_lightness(i: u32, count: u32) u8 {
+    // invariant: a scale holds at least two tones and never more than the module's ceiling.
+    assert(count >= 2);
+    assert(count <= scale_max_tones);
+    // invariant: the tone index names a real tone within the scale.
+    assert(i < count);
+    // The band is walked in u32 (max 85 * 31 = 2635) so the lerp never wraps, then narrowed back to a percent.
+    const span: u32 = @as(u32, scale_light_max) - @as(u32, scale_light_min);
+    const steps: u32 = count - 1;
+    const drop: u32 = span * i / steps;
+    // invariant: the drop from the lightest tone never exceeds the full band.
+    assert(drop <= span);
+    const l: u32 = @as(u32, scale_light_max) - drop;
+    // invariant: every tone's lightness lands within the named band, endpoints included.
+    assert(l >= @as(u32, scale_light_min));
+    assert(l <= @as(u32, scale_light_max));
+    return @intCast(l);
+}
+
+/// Tone `i` of a `count`-tone scale grown from `seed`: the seed's hue and saturation held, the lightness set to
+/// tone_lightness(i, count), alpha carried through. Tone 0 is the lightest, tone count-1 the darkest.
+pub fn tone_at(seed: color.Rgba, i: u32, count: u32) color.Rgba {
+    // invariant: the index names a real tone in a real scale.
+    assert(count >= 2);
+    assert(i < count);
+    var hsl = color.rgb_to_hsl(seed);
+    hsl.l = tone_lightness(i, count);
+    // invariant: only the lightness is set by the ramp -- the seed's alpha rides through the reading untouched.
+    assert(hsl.a == seed.a);
+    // invariant: the set lightness is the ramp's own value for this tone.
+    assert(hsl.l == tone_lightness(i, count));
+    return color.hsl_to_rgb(hsl);
+}
+
+/// Fill `dst` with a whole tonal scale grown from `seed` -- dst.len tones from lightest (index 0) to darkest. Every tone
+/// holds the seed's hue and saturation; only the lightness steps evenly down the band. A scale of fewer than two tones or
+/// more than the ceiling refuses by name, having written nothing.
+pub fn tonal_scale(seed: color.Rgba, dst: []color.Rgba) !void {
+    // invariant: a scale holds at least two tones and never more than the bounded ceiling.
+    if (dst.len < 2) return error.ScaleTooShort;
+    if (dst.len > scale_max_tones) return error.ScaleTooLong;
+    // The length is bounded above by the ceiling, so the seam cast to a u32 tone count is safe.
+    const count: u32 = @intCast(dst.len);
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        dst[i] = tone_at(seed, i, count);
+    }
+    // invariant: a filled scale runs lightest-first -- tone 0 is at least as light as the last tone.
+    assert(color.rgb_to_hsl(dst[0]).l >= color.rgb_to_hsl(dst[dst.len - 1]).l);
+}
+
+// --- selftest: prove a scale steps evenly light-to-dark, holds the seed's hue/saturation/alpha, and refuses by name ----
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    _ = garden;
+
+    // The lerp hits both endpoints exactly: tone 0 is the lightest band value, the last tone the darkest.
+    if (tone_lightness(0, 9) != scale_light_max) return error.FirstToneNotLightest;
+    if (tone_lightness(8, 9) != scale_light_min) return error.LastToneNotDarkest;
+
+    // The pure lightness ramp is strictly decreasing across a nine-tone scale -- each tone darker than the one before.
+    var prev_l: u8 = 255;
+    var k: u32 = 0;
+    while (k < 9) : (k += 1) {
+        const l = tone_lightness(k, 9);
+        if (!(l < prev_l)) return error.RampNotStrictlyDarker;
+        prev_l = l;
+    }
+
+    // A scale grown from a red seed steps strictly darker by luminance -- the visual proof that does not lean on the HSL
+    // round trip: a lighter tone reflects more light than the tone below it, all the way down the ramp.
+    const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
+    var tones: [9]color.Rgba = undefined;
+    try tonal_scale(red, tones[0..]);
+    var prev_lum: u32 = color.luminance_scale + 1;
+    var j: u32 = 0;
+    while (j < 9) : (j += 1) {
+        const lum = color.relative_luminance(tones[j]);
+        if (!(lum < prev_lum)) return error.ScaleLuminanceNotDescending;
+        prev_lum = lum;
+    }
+
+    // A red seed keeps its hue across the mid tones -- red stays the dominant channel, so the ramp is a scale of reds.
+    const mid = tones[4];
+    if (!(mid.r >= mid.g and mid.r >= mid.b)) return error.MidToneLostHue;
+
+    // A grey seed (saturation 0) grows a scale of pure greys -- every tone equal-channel, proving saturation held at zero.
+    const grey = color.Rgba{ .r = 128, .g = 128, .b = 128, .a = 255 };
+    var greys: [6]color.Rgba = undefined;
+    try tonal_scale(grey, greys[0..]);
+    var gi: u32 = 0;
+    while (gi < 6) : (gi += 1) {
+        const t = greys[gi];
+        if (!(t.r == t.g and t.g == t.b)) return error.GreyScaleNotNeutral;
+    }
+
+    // Alpha rides through every tone -- a translucent seed grows a translucent scale.
+    const glassy = color.Rgba{ .r = 60, .g = 120, .b = 200, .a = 128 };
+    var glass: [5]color.Rgba = undefined;
+    try tonal_scale(glassy, glass[0..]);
+    var ai: u32 = 0;
+    while (ai < 5) : (ai += 1) {
+        if (glass[ai].a != 128) return error.ScaleDroppedAlpha;
+    }
+
+    // The scale refuses an out-of-band length by name, having written nothing a caller could mistake for a palette.
+    var one: [1]color.Rgba = undefined;
+    if (tonal_scale(red, one[0..])) |_| return error.ShortScaleNotRefused else |err| {
+        if (err != error.ScaleTooShort) return error.WrongShortError;
+    }
+
+    // Determinism: the same seed and count grow byte-for-byte the same scale.
+    var a_scale: [7]color.Rgba = undefined;
+    var b_scale: [7]color.Rgba = undefined;
+    try tonal_scale(red, a_scale[0..]);
+    try tonal_scale(red, b_scale[0..]);
+    var di: u32 = 0;
+    while (di < 7) : (di += 1) {
+        if (!a_scale[di].eql(b_scale[di])) return error.ScaleNotDeterministic;
+    }
+
+    print("GREEN image-color-scale: a tonal scale grown from one seed steps evenly from scale_light_max (tone 0, lightest) to scale_light_min (last, darkest); the pure lightness ramp is strictly darker each tone and the rendered scale luminance descends strictly; a red seed holds its hue (red the dominant channel), a grey seed grows a pure-grey scale (saturation held at zero), alpha rides through every tone; an out-of-band length refuses ScaleTooShort by name; the same seed grows the same scale byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: color_scale selftest\n", .{});
+    return 1;
+}

@@ -1,0 +1,48 @@
+# tools/color_scale_witness.rish -- a tonal palette scale grown from one seed proves itself on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the design-system ramp beside the palette toolkit (image/color_adjust.rye) and the
+# open colour algebra (image/color.rye).
+# Design read: active-designing/20260816-210735_season-g-color-algebra-crux.md (the colour floor this stands on).
+# Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS Color spec + sRGB -- public standards only).
+#
+# The crux this witness proves is the move a design system reaches for first: grow a whole even tonal SCALE from ONE seed
+# colour, written as a single-stranded consumer of colour's own HSL round trip. Tone 0 is the lightest, tone count-1 the
+# darkest; every tone holds the seed's hue and saturation while its lightness steps evenly down a named band. The pure
+# lightness ramp is strictly darker each tone, and the rendered scale's luminance descends strictly -- the visual proof
+# that does not lean on the round trip. A red seed keeps its hue, a grey seed grows a pure-grey scale, alpha rides through
+# every tone, and an out-of-band length refuses by name. No new storage, codec, or maths -- read-set-write over the
+# existing algebra, so colour's own proofs carry through. No network, no key, no funds -- the palette Brushstroke and
+# Skate grow the day the design system lands.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/color_scale_witness.rish
+
+say "color-scale: Language EN -- Season G's design-system ramp; a keeper names one seed colour and reads back a whole tonal palette, lightest tint to darkest shade, the seed's hue and saturation held across the row."
+say "color-scale: Style Radiant -- compose not braid; colour DECIDES the base algebra and this module only sets each tone's lightness to an evenly-stepped band value, so a scale is a read-set-write over the existing round trip."
+say "color-scale: Lens TAME -- u32 tone counts bounded by scale_max_tones; the lightness lerp in u32 so it never wraps; endpoints and band asserted; integer fixed-point so a scale is deterministic; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/color_scale"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/color_scale.rye -femit-bin=${bin}"]
+assert build.ok else "color-scale: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "color-scale: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "color-scale: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-color-scale' && echo yes"]
+assert (trim green.out) == "yes" else "color-scale: selftest did not print the GREEN colour-scale line"
+
+let ramp = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'luminance descends strictly' && echo yes"]
+assert (trim ramp.out) == "yes" else "color-scale: the rendered scale's luminance did not descend strictly"
+
+let hue = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'red seed holds its hue' && echo yes"]
+assert (trim hue.out) == "yes" else "color-scale: a coloured seed did not hold its hue across the scale"
+
+let refuse = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'refuses ScaleTooShort by name' && echo yes"]
+assert (trim refuse.out) == "yes" else "color-scale: an out-of-band length was not refused by name"
+
+say "color-scale: GREEN -- a tonal scale from one seed whole; the ramp steps evenly light-to-dark, hue and saturation held, alpha carried through, out-of-band lengths refused, determinism proven."

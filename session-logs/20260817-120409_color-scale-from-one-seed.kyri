@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260817.120409
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title color_scale -- the design-system tonal ramp from one seed
+prompt baton prin recur -- take the next agent-doable lap Lindy-first crux-first; REMEMBER named a Season G rung: the palette scale built from one seed
+think Read REMEMBER, the 1024-round itinerary, the eight-season double-seat, and the rye-first crypto wave for the road; the live edge is Season G open-media, color_adjust.rye just landed and named the next crux outright -- a named-color table or the palette scale from one seed.
+think Crux-first: the palette scale is the harder, more decisive move (a whole tonal ramp a design system reaches for first), where a named-color table is a lookup a later lap can pad in. Took the scale.
+think Read the color.rye public API (Rgba, Hsl, rgb_to_hsl/hsl_to_rgb, relative_luminance, luminance_scale) and color_adjust.rye's single-stranded shape, then grew image/color_scale.rye one rung above it: tone_lightness (a pure integer lerp from scale_light_max 95 down to scale_light_min 10), tone_at (hold the seed hue+sat, set the lightness), tonal_scale (fill a bounded caller buffer lightest-first).
+think Proof leans on luminance rather than the HSL round trip: relative_luminance descends strictly down a red scale (a robust visual proof), plus endpoints exact, a grey seed staying pure-grey (saturation held at zero), a red seed keeping the dominant channel (hue held), alpha carried, ScaleTooShort refused by name, determinism byte-for-byte.
+obs GREEN on the first metal run of the module -- no design reds. The one red was in the WITNESS: my GREEN print line said "the rendered scale's luminance", and the apostrophe in "scale's" broke the single-quoted sh -c grep string (syntax error near unexpected token). Dropped the apostrophe -> "the rendered scale luminance"; witness GREEN. A clean reminder that a GREEN message a witness greps under sh single-quotes must stay apostrophe-free.
+obs Single-stranded per Season G: color DECIDES the algebra, color_scale only SETS one field -- color.rye stays untouched and its proofs carry through, exactly the diverge-by-strengthening move.
+obs Rota lap 14 (14 mod 27): deep-read context/RADIANT_STYLE.md (with TWILIGHT_STYLE) -- lead with what is, affirmative contrast, benediction only where earned; the module doc and witness prose swept Radiant, ending plainly as technical pieces should.
+loom witness=color_scale_witness selftest_bytes=504 tones_proven=9+6+5+7 scale_max_tones=32
+file image/color_scale.rye the tonal palette scale grown from one seed -- tone_lightness/tone_at/tonal_scale over color's HSL algebra
+file tools/color_scale_witness.rish proves the ramp steps evenly light-to-dark, hue/saturation/alpha held, out-of-band lengths refused, determinism on metal
+file image/README.md names color_scale.rye beside color_adjust.rye (docs-sync)
+recommend keep-going another Season G rung -- the named-color table (a bounded lookup of common CSS colors by name) or a palette scale keyed off best_ink so each tone carries a readable ink; or a fresh Lindy-first crux
