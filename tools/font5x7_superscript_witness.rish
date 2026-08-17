@@ -37,13 +37,10 @@ assert selftest.ok else "font5x7-superscript: selftest exited non-zero -- ${self
 let out = trim selftest.out
 say "font5x7-superscript: ${out}"
 
-let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-font5x7-superscript' && echo yes"]
-assert (trim green.out) == "yes" else "font5x7-superscript: selftest did not print the GREEN corpus line"
+assert selftest.out contains "GREEN image-font5x7-superscript" else "font5x7-superscript: selftest did not print the GREEN corpus line"
 
-let round = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'round-trip byte-identical' && echo yes"]
-assert (trim round.out) == "yes" else "font5x7-superscript: round-trip was not byte-identical"
+assert selftest.out contains "round-trip byte-identical" else "font5x7-superscript: round-trip was not byte-identical"
 
-let raised = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'raised to the top five rows' && echo yes"]
-assert (trim raised.out) == "yes" else "font5x7-superscript: digits were not proven raised"
+assert selftest.out contains "raised to the top five rows" else "font5x7-superscript: digits were not proven raised"
 
 say "font5x7-superscript: GREEN -- the open superscript-digits corpus whole; ten small high digits round-trip byte-identical, all present, distinct, legible, and raised, their codepoint table non-contiguous and digit-scrambled, the dense eight out-inking the sparse one; the font gains the numbers a surface sets above the line when it prints an exponent."

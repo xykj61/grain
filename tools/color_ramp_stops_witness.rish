@@ -32,13 +32,10 @@ assert selftest.ok else "color-ramp-stops: selftest exited non-zero -- ${selftes
 let out = trim selftest.out
 say "color-ramp-stops: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-color-ramp-stops' && echo yes"]
-assert (trim green.out) == "yes" else "color-ramp-stops: selftest did not print the GREEN colour-ramp-stops line"
+assert selftest.out contains "GREEN image-color-ramp-stops" else "color-ramp-stops: selftest did not print the GREEN colour-ramp-stops line"
 
-let contains = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the general contains the special' && echo yes"]
-assert (trim contains.out) == "yes" else "color-ramp-stops: the two-control ramp did not prove equal to the gradient"
+assert selftest.out contains "the general contains the special" else "color-ramp-stops: the two-control ramp did not prove equal to the gradient"
 
-let bend = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'bend the ramp where even spacing cannot' && echo yes"]
-assert (trim bend.out) == "yes" else "color-ramp-stops: the positioned ramp did not prove it bends with position"
+assert selftest.out contains "bend the ramp where even spacing cannot" else "color-ramp-stops: the positioned ramp did not prove it bends with position"
 
 say "color-ramp-stops: GREEN -- a positioned multi-stop ramp reads each control at its own place, bends where the even ramp cannot, and contains the two-colour gradient, proven on metal."

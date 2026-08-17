@@ -28,5 +28,4 @@ assert selftest.ok else "font5x7-diaeresis-comp: selftest exited non-zero -- ${s
 let out = trim selftest.out
 say "font5x7-diaeresis-comp: ${out}"
 
-let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-font5x7-diaeresis-comp' && echo yes"]
-assert (trim green.out) == "yes" else "font5x7-diaeresis-comp: selftest did not print the GREEN corpus line"
+assert selftest.out contains "GREEN image-font5x7-diaeresis-comp" else "font5x7-diaeresis-comp: selftest did not print the GREEN corpus line"

@@ -32,22 +32,16 @@ assert selftest.ok else "hunk-edit-cursor: selftest exited non-zero — ${selfte
 let out = trim selftest.out
 say "hunk-edit-cursor: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-edit-cursor' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-edit-cursor: selftest did not print the GREEN cursor line"
+assert selftest.out contains "GREEN image-edit-cursor" else "hunk-edit-cursor: selftest did not print the GREEN cursor line"
 
-let walk = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'redo returns to the full image byte-for-byte' && echo yes"]
-assert (trim walk.out) == "yes" else "hunk-edit-cursor: undo/redo did not walk the history byte-for-byte"
+assert selftest.out contains "redo returns to the full image byte-for-byte" else "hunk-edit-cursor: undo/redo did not walk the history byte-for-byte"
 
-let roll = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'every step rolls forward again unchanged' && echo yes"]
-assert (trim roll.out) == "yes" else "hunk-edit-cursor: a full rewind did not roll forward again unchanged"
+assert selftest.out contains "every step rolls forward again unchanged" else "hunk-edit-cursor: a full rewind did not roll forward again unchanged"
 
-let forget = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'forgets the redo tail' && echo yes"]
-assert (trim forget.out) == "yes" else "hunk-edit-cursor: a fresh edit while rewound did not forget the redo tail"
+assert selftest.out contains "forgets the redo tail" else "hunk-edit-cursor: a fresh edit while rewound did not forget the redo tail"
 
-let clamp = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'clamp at both edges without' && echo yes"]
-assert (trim clamp.out) == "yes" else "hunk-edit-cursor: undo/redo did not clamp at both edges"
+assert selftest.out contains "clamp at both edges without" else "hunk-edit-cursor: undo/redo did not clamp at both edges"
 
-let travel = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'still round-trips as an open fixed-point record' && echo yes"]
-assert (trim travel.out) == "yes" else "hunk-edit-cursor: the applied prefix did not round-trip as an open record"
+assert selftest.out contains "still round-trips as an open fixed-point record" else "hunk-edit-cursor: the applied prefix did not round-trip as an open record"
 
 say "hunk-edit-cursor: GREEN — the Photos app walks its history: undo and redo byte-for-byte, a fresh edit forgets the road not taken, both edges clamped, the applied prefix still an open record; no network, no key, no funds."

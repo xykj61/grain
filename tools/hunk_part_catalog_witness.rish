@@ -31,22 +31,17 @@ assert selftest.ok else "hunk-part-catalog: selftest exited non-zero — ${selft
 let out = trim selftest.out
 say "hunk-part-catalog: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN part-catalog' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-part-catalog: selftest did not print the GREEN part-catalog line"
+assert selftest.out contains "GREEN part-catalog" else "hunk-part-catalog: selftest did not print the GREEN part-catalog line"
 
-let fixed = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'fixed point over' && echo yes"]
-assert (trim fixed.out) == "yes" else "hunk-part-catalog: the selftest did not prove render(parse(render)) is a fixed point over both halves"
+assert selftest.out contains "fixed point over" else "hunk-part-catalog: the selftest did not prove render(parse(render)) is a fixed point over both halves"
 
-let facts = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'price in cents survive' && echo yes"]
-assert (trim facts.out) == "yes" else "hunk-part-catalog: the selftest did not prove the facts survive the round-trip"
+assert selftest.out contains "price in cents survive" else "hunk-part-catalog: the selftest did not prove the facts survive the round-trip"
 
-let nofunds = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'no network, no key, no funds' && echo yes"]
-assert (trim nofunds.out) == "yes" else "hunk-part-catalog: the selftest did not affirm the custody floor (no funds)"
+assert selftest.out contains "no network, no key, no funds" else "hunk-part-catalog: the selftest did not affirm the custody floor (no funds)"
 
 # HUNK4 stays GREEN — the part catalog builds on the sprite index; the index underneath must still hold.
 let sprite = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/sprite.rye -femit-bin=image/bin/sprite && image/bin/sprite selftest 2>&1"]
 assert sprite.ok else "hunk-part-catalog: HUNK4 sprite re-run failed — ${sprite.out}"
-let sprite_green = run ["sh" "-c" "printf '%s' '${sprite.out}' | grep -q 'GREEN image-sprite' && echo yes"]
-assert (trim sprite_green.out) == "yes" else "hunk-part-catalog: HUNK4 sprite selftest did not stay GREEN"
+assert sprite.out contains "GREEN image-sprite" else "hunk-part-catalog: HUNK4 sprite selftest did not stay GREEN"
 
 say "hunk-part-catalog: GREEN — the parts marketplace carries a window AND its honest facts, travels as text, and rebuilds byte-for-byte on metal; HUNK4 index underneath stays GREEN. HUNK71 lands, the marketplace grows its facts."

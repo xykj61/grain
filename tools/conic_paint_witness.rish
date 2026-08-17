@@ -39,19 +39,14 @@ assert selftest.ok else "conic-paint: selftest exited non-zero -- ${selftest.out
 let out = trim selftest.out
 say "conic-paint: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-conic-paint' && echo yes"]
-assert (trim green.out) == "yes" else "conic-paint: selftest did not print the GREEN conic-paint line"
+assert selftest.out contains "GREEN image-conic-paint" else "conic-paint: selftest did not print the GREEN conic-paint line"
 
-let roundtrip = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-trips through the open QOI codec byte-for-byte' && echo yes"]
-assert (trim roundtrip.out) == "yes" else "conic-paint: the painted sweep did not prove its QOI round trip"
+assert selftest.out contains "round-trips through the open QOI codec byte-for-byte" else "conic-paint: the painted sweep did not prove its QOI round trip"
 
-let clockwise = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the sweep turns clockwise from the top by a quarter' && echo yes"]
-assert (trim clockwise.out) == "yes" else "conic-paint: the sweep did not prove its cardinal bearings turn clockwise"
+assert selftest.out contains "the sweep turns clockwise from the top by a quarter" else "conic-paint: the sweep did not prove its cardinal bearings turn clockwise"
 
-let wedge = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'each ray from the center is one constant wedge color' && echo yes"]
-assert (trim wedge.out) == "yes" else "conic-paint: the sweep did not prove its rays are constant wedges"
+assert selftest.out contains "each ray from the center is one constant wedge color" else "conic-paint: the sweep did not prove its rays are constant wedges"
 
-let bend = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'bend the sweep where even spacing cannot' && echo yes"]
-assert (trim bend.out) == "yes" else "conic-paint: the sweep did not prove it bends with position"
+assert selftest.out contains "bend the sweep where even spacing cannot" else "conic-paint: the sweep did not prove it bends with position"
 
 say "conic-paint: GREEN -- a conic positioned gradient painted onto a real image, its top seam and cardinal bearings exact, its rays constant wedges, its bend measured, its round trip byte-for-byte, proven on metal."

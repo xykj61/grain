@@ -33,16 +33,12 @@ assert selftest.ok else "color-scale: selftest exited non-zero -- ${selftest.out
 let out = trim selftest.out
 say "color-scale: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-color-scale' && echo yes"]
-assert (trim green.out) == "yes" else "color-scale: selftest did not print the GREEN colour-scale line"
+assert selftest.out contains "GREEN image-color-scale" else "color-scale: selftest did not print the GREEN colour-scale line"
 
-let ramp = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'luminance descends strictly' && echo yes"]
-assert (trim ramp.out) == "yes" else "color-scale: the rendered scale's luminance did not descend strictly"
+assert selftest.out contains "luminance descends strictly" else "color-scale: the rendered scale's luminance did not descend strictly"
 
-let hue = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'red seed holds its hue' && echo yes"]
-assert (trim hue.out) == "yes" else "color-scale: a coloured seed did not hold its hue across the scale"
+assert selftest.out contains "red seed holds its hue" else "color-scale: a coloured seed did not hold its hue across the scale"
 
-let refuse = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'refuses ScaleTooShort by name' && echo yes"]
-assert (trim refuse.out) == "yes" else "color-scale: an out-of-band length was not refused by name"
+assert selftest.out contains "refuses ScaleTooShort by name" else "color-scale: an out-of-band length was not refused by name"
 
 say "color-scale: GREEN -- a tonal scale from one seed whole; the ramp steps evenly light-to-dark, hue and saturation held, alpha carried through, out-of-band lengths refused, determinism proven."

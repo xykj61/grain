@@ -36,13 +36,10 @@ assert selftest.ok else "font5x7-german: selftest exited non-zero -- ${selftest.
 let out = trim selftest.out
 say "font5x7-german: ${out}"
 
-let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-font5x7-german' && echo yes"]
-assert (trim green.out) == "yes" else "font5x7-german: selftest did not print the GREEN corpus line"
+assert selftest.out contains "GREEN image-font5x7-german" else "font5x7-german: selftest did not print the GREEN corpus line"
 
-let round = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'round-trip byte-identical' && echo yes"]
-assert (trim round.out) == "yes" else "font5x7-german: round-trip was not byte-identical"
+assert selftest.out contains "round-trip byte-identical" else "font5x7-german: round-trip was not byte-identical"
 
-let marks = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'the two umlauts two-dotted with a center gap, the eszett a joined letterform' && echo yes"]
-assert (trim marks.out) == "yes" else "font5x7-german: umlaut/eszett placement did not hold"
+assert selftest.out contains "the two umlauts two-dotted with a center gap, the eszett a joined letterform" else "font5x7-german: umlaut/eszett placement did not hold"
 
 say "font5x7-german: GREEN -- the open German letters corpus whole; three marks round-trip byte-identical, all present, distinct, and legible, the two umlauts two-dotted and the eszett a joined letterform; with the u umlaut already drawn, the font can spell a German keeper's own name that ASCII cannot."

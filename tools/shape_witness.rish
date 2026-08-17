@@ -35,10 +35,8 @@ assert selftest.ok else "shape: selftest exited non-zero -- ${selftest.out}"
 let out = trim selftest.out
 say "shape: ${out}"
 
-let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-shape' && echo yes"]
-assert (trim green.out) == "yes" else "shape: selftest did not print the GREEN geometry line"
+assert selftest.out contains "GREEN image-shape" else "shape: selftest did not print the GREEN geometry line"
 
-let corners = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'corners composited once' && echo yes"]
-assert (trim corners.out) == "yes" else "shape: the single-pass ring did not prove corners composited once"
+assert selftest.out contains "corners composited once" else "shape: the single-pass ring did not prove corners composited once"
 
 say "shape: GREEN -- the open rectangle primitives whole; fill and frame paint the exact pixels they name, blend true, refuse every overrun by name, and the translucent frame reads uniform corner to corner."

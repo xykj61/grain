@@ -33,22 +33,16 @@ assert selftest.ok else "hunk-photo-revert: selftest exited non-zero — ${selft
 let out = trim selftest.out
 say "hunk-photo-revert: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photo-revert' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-photo-revert: selftest did not print the GREEN revert line"
+assert selftest.out contains "GREEN image-photo-revert" else "hunk-photo-revert: selftest did not print the GREEN revert line"
 
-let step = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'equals the first two verbs by hand' && echo yes"]
-assert (trim step.out) == "yes" else "hunk-photo-revert: a one-step revert did not equal the earlier verbs by hand"
+assert selftest.out contains "equals the first two verbs by hand" else "hunk-photo-revert: a one-step revert did not equal the earlier verbs by hand"
 
-let original = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'recovers the original one empty-list apply away' && echo yes"]
-assert (trim original.out) == "yes" else "hunk-photo-revert: reverting all did not recover the original"
+assert selftest.out contains "recovers the original one empty-list apply away" else "hunk-photo-revert: reverting all did not recover the original"
 
-let clamp = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'clamps to empty without' && echo yes"]
-assert (trim clamp.out) == "yes" else "hunk-photo-revert: an over-count drop did not clamp without underflow"
+assert selftest.out contains "clamps to empty without" else "hunk-photo-revert: an over-count drop did not clamp without underflow"
 
-let pure = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'source list is untouched so a revert' && echo yes"]
-assert (trim pure.out) == "yes" else "hunk-photo-revert: the source list was not proven untouched"
+assert selftest.out contains "source list is untouched so a revert" else "hunk-photo-revert: the source list was not proven untouched"
 
-let prefix = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'byte-prefix of the full record' && echo yes"]
-assert (trim prefix.out) == "yes" else "hunk-photo-revert: a revert was not proven a byte-prefix that still round-trips"
+assert selftest.out contains "byte-prefix of the full record" else "hunk-photo-revert: a revert was not proven a byte-prefix that still round-trips"
 
 say "hunk-photo-revert: GREEN — the Photos app reverts: edits dropped off the end of the list, earlier images and the original recovered by replay, clamping without underflow, the source list whole; no network, no key, no funds."

@@ -31,16 +31,12 @@ assert selftest.ok else "color-adjust: selftest exited non-zero -- ${selftest.ou
 let out = trim selftest.out
 say "color-adjust: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-color-adjust' && echo yes"]
-assert (trim green.out) == "yes" else "color-adjust: selftest did not print the GREEN colour-adjust line"
+assert selftest.out contains "GREEN image-color-adjust" else "color-adjust: selftest did not print the GREEN colour-adjust line"
 
-let clamp = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'clamp at white/black' && echo yes"]
-assert (trim clamp.out) == "yes" else "color-adjust: lighten/darken did not clamp at the band edges"
+assert selftest.out contains "clamp at white/black" else "color-adjust: lighten/darken did not clamp at the band edges"
 
-let turn = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'full 360 turn is identity' && echo yes"]
-assert (trim turn.out) == "yes" else "color-adjust: a full hue turn did not return to the start"
+assert selftest.out contains "full 360 turn is identity" else "color-adjust: a full hue turn did not return to the start"
 
-let alpha = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'alpha rides through every verb' && echo yes"]
-assert (trim alpha.out) == "yes" else "color-adjust: alpha was not carried through every verb"
+assert selftest.out contains "alpha rides through every verb" else "color-adjust: alpha was not carried through every verb"
 
 say "color-adjust: GREEN -- HSL adjustment verbs whole; lighten/darken/saturate/desaturate steer their bands and clamp, grayscale equals a full desaturation, rotate_hue and complement turn the wheel, alpha carried through, determinism proven."

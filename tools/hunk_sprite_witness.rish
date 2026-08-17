@@ -33,22 +33,17 @@ assert selftest.ok else "hunk-sprite: selftest exited non-zero — ${selftest.ou
 let out = trim selftest.out
 say "hunk-sprite: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-sprite' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-sprite: selftest did not print the GREEN sprite line"
+assert selftest.out contains "GREEN image-sprite" else "hunk-sprite: selftest did not print the GREEN sprite line"
 
-let onesheet = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'decoded once' && echo yes"]
-assert (trim onesheet.out) == "yes" else "hunk-sprite: the selftest did not prove one sheet decoded once serving every product"
+assert selftest.out contains "decoded once" else "hunk-sprite: the selftest did not prove one sheet decoded once serving every product"
 
-let window = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'each renders exactly its window' && echo yes"]
-assert (trim window.out) == "yes" else "hunk-sprite: the selftest did not prove each product renders exactly its window"
+assert selftest.out contains "each renders exactly its window" else "hunk-sprite: the selftest did not prove each product renders exactly its window"
 
-let disjoint = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'disjoint windows carry different pixels' && echo yes"]
-assert (trim disjoint.out) == "yes" else "hunk-sprite: the selftest did not prove disjoint windows carry different pixels"
+assert selftest.out contains "disjoint windows carry different pixels" else "hunk-sprite: the selftest did not prove disjoint windows carry different pixels"
 
 # HUNK3 stays GREEN — the sprite index reuses photos.crop; the crop verb underneath must still hold.
 let photos = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/photos.rye -femit-bin=image/bin/photos && image/bin/photos selftest 2>&1"]
 assert photos.ok else "hunk-sprite: HUNK3 photos re-run failed — ${photos.out}"
-let photos_green = run ["sh" "-c" "printf '%s' '${photos.out}' | grep -q 'GREEN image-photos' && echo yes"]
-assert (trim photos_green.out) == "yes" else "hunk-sprite: HUNK3 photos selftest did not stay GREEN"
+assert photos.out contains "GREEN image-photos" else "hunk-sprite: HUNK3 photos selftest did not stay GREEN"
 
 say "hunk-sprite: GREEN — the marketplace sprite index renders each product from one decoded sheet on metal; HUNK3 crop underneath stays GREEN. HUNK4 lands."

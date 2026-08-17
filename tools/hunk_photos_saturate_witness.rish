@@ -31,34 +31,23 @@ let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "hunk-photos-saturate: selftest exited non-zero — ${selftest.out}"
 
 let out = trim selftest.out
-say "hunk-photos-saturate: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-saturate' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-photos-saturate: selftest did not print the GREEN saturate line"
+assert selftest.out contains "GREEN image-photos-saturate" else "hunk-photos-saturate: selftest did not print the GREEN saturate line"
 
-let neutral = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'neutral saturation byte-identical' && echo yes"]
-assert (trim neutral.out) == "yes" else "hunk-photos-saturate: the neutral saturation was not proven byte-identical"
+assert selftest.out contains "neutral saturation byte-identical" else "hunk-photos-saturate: the neutral saturation was not proven byte-identical"
 
-let flatten = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'flattens each pixel to its own Rec.601 luma' && echo yes"]
-assert (trim flatten.out) == "yes" else "hunk-photos-saturate: the zero-saturation grayscale flatten was not proven"
+assert selftest.out contains "flattens each pixel to its own Rec.601 luma" else "hunk-photos-saturate: the zero-saturation grayscale flatten was not proven"
 
-let fixed = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'already-gray pixel is a fixed point' && echo yes"]
-assert (trim fixed.out) == "yes" else "hunk-photos-saturate: the gray fixed point was not proven"
+assert selftest.out contains "already-gray pixel is a fixed point" else "hunk-photos-saturate: the gray fixed point was not proven"
 
-let alpha = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'alpha passes through untouched' && echo yes"]
-assert (trim alpha.out) == "yes" else "hunk-photos-saturate: alpha pass-through was not proven"
+assert selftest.out contains "alpha passes through untouched" else "hunk-photos-saturate: alpha pass-through was not proven"
 
-let open = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'saturated image re-encodes and round-trips' && echo yes"]
-assert (trim open.out) == "yes" else "hunk-photos-saturate: a saturated image did not round-trip as an open image"
+assert selftest.out contains "saturated image re-encodes and round-trips" else "hunk-photos-saturate: a saturated image did not round-trip as an open image"
 
 # HUNK3 crop, HUNK8 orient, HUNK9 scale, and HUNK10 adjust selftests still run in the same binary — GREEN must hold.
-let crop = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos:' && echo yes"]
-assert (trim crop.out) == "yes" else "hunk-photos-saturate: HUNK3 crop selftest no longer GREEN beneath"
-let orient = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-orient' && echo yes"]
-assert (trim orient.out) == "yes" else "hunk-photos-saturate: HUNK8 orient selftest no longer GREEN beneath"
-let scale = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-scale' && echo yes"]
-assert (trim scale.out) == "yes" else "hunk-photos-saturate: HUNK9 scale selftest no longer GREEN beneath"
-let adjust = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-adjust' && echo yes"]
-assert (trim adjust.out) == "yes" else "hunk-photos-saturate: HUNK10 adjust selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos:" else "hunk-photos-saturate: HUNK3 crop selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos-orient" else "hunk-photos-saturate: HUNK8 orient selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos-scale" else "hunk-photos-saturate: HUNK9 scale selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos-adjust" else "hunk-photos-saturate: HUNK10 adjust selftest no longer GREEN beneath"
 
 say "hunk-photos-saturate: GREEN — the Photos app tunes saturation over the open grid; pure, bounded, luma-preserving, alpha untouched, refusals named; HUNK3 crop, HUNK8 orient, HUNK9 scale, and HUNK10 adjust still GREEN beneath."

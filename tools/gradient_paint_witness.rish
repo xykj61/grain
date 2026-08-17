@@ -34,16 +34,12 @@ assert selftest.ok else "gradient-paint: selftest exited non-zero -- ${selftest.
 let out = trim selftest.out
 say "gradient-paint: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-gradient-paint' && echo yes"]
-assert (trim green.out) == "yes" else "gradient-paint: selftest did not print the GREEN gradient-paint line"
+assert selftest.out contains "GREEN image-gradient-paint" else "gradient-paint: selftest did not print the GREEN gradient-paint line"
 
-let roundtrip = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-trips through the open QOI codec byte-for-byte' && echo yes"]
-assert (trim roundtrip.out) == "yes" else "gradient-paint: the painted strip did not prove its QOI round trip"
+assert selftest.out contains "round-trips through the open QOI codec byte-for-byte" else "gradient-paint: the painted strip did not prove its QOI round trip"
 
-let bend = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'bend the painted strip where even spacing cannot' && echo yes"]
-assert (trim bend.out) == "yes" else "gradient-paint: the painted strip did not prove it bends with position"
+assert selftest.out contains "bend the painted strip where even spacing cannot" else "gradient-paint: the painted strip did not prove it bends with position"
 
-let diag = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the diagonal pair paint_gradient_diag and paint_gradient_adiag finish the linear-gradient family' && echo yes"]
-assert (trim diag.out) == "yes" else "gradient-paint: the diagonal pair did not prove it finishes the linear-gradient family"
+assert selftest.out contains "the diagonal pair paint_gradient_diag and paint_gradient_adiag finish the linear-gradient family" else "gradient-paint: the diagonal pair did not prove it finishes the linear-gradient family"
 
 say "gradient-paint: GREEN -- a positioned gradient painted onto a real image along all four directions (horizontal, vertical, and the diagonal pair), its edges and blend exact, its bend measured, its round trip byte-for-byte, proven on metal."

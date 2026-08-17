@@ -39,19 +39,14 @@ assert selftest.ok else "repeat-conic-paint: selftest exited non-zero -- ${selft
 let out = trim selftest.out
 say "repeat-conic-paint: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-repeat-conic-paint' && echo yes"]
-assert (trim green.out) == "yes" else "repeat-conic-paint: selftest did not print the GREEN repeat-conic-paint line"
+assert selftest.out contains "GREEN image-repeat-conic-paint" else "repeat-conic-paint: selftest did not print the GREEN repeat-conic-paint line"
 
-let roundtrip = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-trips through the open QOI codec byte-for-byte' && echo yes"]
-assert (trim roundtrip.out) == "yes" else "repeat-conic-paint: the painted sweep did not prove its QOI round trip"
+assert selftest.out contains "round-trips through the open QOI codec byte-for-byte" else "repeat-conic-paint: the painted sweep did not prove its QOI round trip"
 
-let tiles = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the ramp cycles twice around the turn' && echo yes"]
-assert (trim tiles.out) == "yes" else "repeat-conic-paint: the sweep did not prove the ramp tiles around the turn"
+assert selftest.out contains "the ramp cycles twice around the turn" else "repeat-conic-paint: the sweep did not prove the ramp tiles around the turn"
 
-let seam = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'seams hard' && echo yes"]
-assert (trim seam.out) == "yes" else "repeat-conic-paint: the sweep did not prove its hard tile seam"
+assert selftest.out contains "seams hard" else "repeat-conic-paint: the sweep did not prove its hard tile seam"
 
-let wedge = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'one constant wedge color' && echo yes"]
-assert (trim wedge.out) == "yes" else "repeat-conic-paint: the sweep did not prove its constant wedges"
+assert selftest.out contains "one constant wedge color" else "repeat-conic-paint: the sweep did not prove its constant wedges"
 
 say "repeat-conic-paint: GREEN -- a repeating conic positioned gradient painted onto a real image, its tiling exact, its seam hard, its wedges constant, its round trip byte-for-byte, proven on metal."

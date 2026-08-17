@@ -33,10 +33,8 @@ assert selftest.ok else "color-gradient: selftest exited non-zero -- ${selftest.
 let out = trim selftest.out
 say "color-gradient: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-color-gradient' && echo yes"]
-assert (trim green.out) == "yes" else "color-gradient: selftest did not print the GREEN colour-gradient line"
+assert selftest.out contains "GREEN image-color-gradient" else "color-gradient: selftest did not print the GREEN colour-gradient line"
 
-let blend = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a true blend, not a cut' && echo yes"]
-assert (trim blend.out) == "yes" else "color-gradient: the mid stop did not prove a true blend"
+assert selftest.out contains "a true blend, not a cut" else "color-gradient: the mid stop did not prove a true blend"
 
 say "color-gradient: GREEN -- an even gradient between two colours hits both endpoints and blends evenly between them, proven on metal."

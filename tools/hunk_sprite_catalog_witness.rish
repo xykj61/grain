@@ -32,19 +32,15 @@ assert selftest.ok else "hunk-sprite-catalog: selftest exited non-zero — ${sel
 let out = trim selftest.out
 say "hunk-sprite-catalog: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN sprite-catalog' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-sprite-catalog: selftest did not print the GREEN catalog line"
+assert selftest.out contains "GREEN sprite-catalog" else "hunk-sprite-catalog: selftest did not print the GREEN catalog line"
 
-let fixed = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'fixed point' && echo yes"]
-assert (trim fixed.out) == "yes" else "hunk-sprite-catalog: the selftest did not prove render(parse(render)) is a fixed point"
+assert selftest.out contains "fixed point" else "hunk-sprite-catalog: the selftest did not prove render(parse(render)) is a fixed point"
 
-let sheetbound = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'window past a smaller sheet' && echo yes"]
-assert (trim sheetbound.out) == "yes" else "hunk-sprite-catalog: the selftest did not prove a catalog names no window the sheet lacks"
+assert selftest.out contains "window past a smaller sheet" else "hunk-sprite-catalog: the selftest did not prove a catalog names no window the sheet lacks"
 
 # HUNK4 stays GREEN — the catalog reads and rebuilds a SpriteIndex; the index underneath must still hold.
 let sprite = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/sprite.rye -femit-bin=image/bin/sprite && image/bin/sprite selftest 2>&1"]
 assert sprite.ok else "hunk-sprite-catalog: HUNK4 sprite re-run failed — ${sprite.out}"
-let sprite_green = run ["sh" "-c" "printf '%s' '${sprite.out}' | grep -q 'GREEN image-sprite' && echo yes"]
-assert (trim sprite_green.out) == "yes" else "hunk-sprite-catalog: HUNK4 sprite selftest did not stay GREEN"
+assert sprite.out contains "GREEN image-sprite" else "hunk-sprite-catalog: HUNK4 sprite selftest did not stay GREEN"
 
 say "hunk-sprite-catalog: GREEN — the marketplace catalog travels as text and rebuilds byte-for-byte on metal; HUNK4 index underneath stays GREEN. HUNK7 lands, the sprite quest closes."

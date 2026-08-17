@@ -31,19 +31,14 @@ assert selftest.ok else "player_hud: selftest exited non-zero -- ${selftest.out}
 let out = trim selftest.out
 say "player_hud: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-player-hud' && echo yes"]
-assert (trim green.out) == "yes" else "player_hud: selftest did not print the GREEN player-hud line"
+assert selftest.out contains "GREEN image-player-hud" else "player_hud: selftest did not print the GREEN player-hud line"
 
-let disjoint = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the two overlays disjoint' && echo yes"]
-assert (trim disjoint.out) == "yes" else "player_hud: the disjoint-overlays crux did not prove"
+assert selftest.out contains "the two overlays disjoint" else "player_hud: the disjoint-overlays crux did not prove"
 
-let each = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'each overlay keeps its own invariant under composition' && echo yes"]
-assert (trim each.out) == "yes" else "player_hud: the each-overlay-keeps-its-invariant crux did not prove"
+assert selftest.out contains "each overlay keeps its own invariant under composition" else "player_hud: the each-overlay-keeps-its-invariant crux did not prove"
 
-let only = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'touching only the badge and the bar' && echo yes"]
-assert (trim only.out) == "yes" else "player_hud: the HUD-touches-only-its-overlays crux did not prove"
+assert selftest.out contains "touching only the badge and the bar" else "player_hud: the HUD-touches-only-its-overlays crux did not prove"
 
-let round = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-trip byte-identical through BOTH codecs' && echo yes"]
-assert (trim round.out) == "yes" else "player_hud: the HUD reel did not round-trip through both codecs"
+assert selftest.out contains "round-trip byte-identical through BOTH codecs" else "player_hud: the HUD reel did not round-trip through both codecs"
 
 say "player_hud: GREEN -- the scrubber and the timecode composed on one reel; the two overlays disjoint, each keeping its own proven invariant, the HUD touching only its two places, and the composited reel round-trips byte for byte through both open codecs."

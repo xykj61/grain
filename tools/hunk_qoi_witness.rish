@@ -33,10 +33,8 @@ assert selftest.ok else "hunk-qoi: selftest exited non-zero — ${selftest.out}"
 let out = trim selftest.out
 say "hunk-qoi: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-qoi' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-qoi: selftest did not print the GREEN codec line"
+assert selftest.out contains "GREEN image-qoi" else "hunk-qoi: selftest did not print the GREEN codec line"
 
-let round = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-trip byte-identical' && echo yes"]
-assert (trim round.out) == "yes" else "hunk-qoi: round-trip was not byte-identical"
+assert selftest.out contains "round-trip byte-identical" else "hunk-qoi: round-trip was not byte-identical"
 
 say "hunk-qoi: GREEN — open image codec whole; six-op round-trip byte-identical, every refusal named, compression real."

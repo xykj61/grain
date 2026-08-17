@@ -36,13 +36,10 @@ assert selftest.ok else "font5x7-tilde: selftest exited non-zero -- ${selftest.o
 let out = trim selftest.out
 say "font5x7-tilde: ${out}"
 
-let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-font5x7-tilde' && echo yes"]
-assert (trim green.out) == "yes" else "font5x7-tilde: selftest did not print the GREEN corpus line"
+assert selftest.out contains "GREEN image-font5x7-tilde" else "font5x7-tilde: selftest did not print the GREEN corpus line"
 
-let round = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'round-trip byte-identical' && echo yes"]
-assert (trim round.out) == "yes" else "font5x7-tilde: round-trip was not byte-identical"
+assert selftest.out contains "round-trip byte-identical" else "font5x7-tilde: round-trip was not byte-identical"
 
-let wave = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'a wave spanning both halves' && echo yes"]
-assert (trim wave.out) == "yes" else "font5x7-tilde: tilde marks did not all span both halves"
+assert selftest.out contains "a wave spanning both halves" else "font5x7-tilde: tilde marks did not all span both halves"
 
 say "font5x7-tilde: GREEN -- the open tilde-accent vowels corpus whole; two marks round-trip byte-identical, all present, distinct, and legible, every mark a wave spanning both halves as the fourth lean beside acute/grave/circumflex; the font gains the nasal vowels a civic surface needs to spell a Portuguese name that ASCII cannot."

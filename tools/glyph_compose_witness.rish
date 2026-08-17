@@ -28,5 +28,4 @@ assert selftest.ok else "glyph-compose: selftest exited non-zero -- ${selftest.o
 let out = trim selftest.out
 say "glyph-compose: ${out}"
 
-let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-glyph-compose' && echo yes"]
-assert (trim green.out) == "yes" else "glyph-compose: selftest did not print the GREEN primitive line"
+assert selftest.out contains "GREEN image-glyph-compose" else "glyph-compose: selftest did not print the GREEN primitive line"

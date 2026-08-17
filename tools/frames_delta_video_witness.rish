@@ -31,13 +31,10 @@ assert selftest.ok else "frames-delta: selftest exited non-zero -- ${selftest.ou
 let out = trim selftest.out
 say "frames-delta: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-frames-delta' && echo yes"]
-assert (trim green.out) == "yes" else "frames-delta: selftest did not print the GREEN codec line"
+assert selftest.out contains "GREEN image-frames-delta" else "frames-delta: selftest did not print the GREEN codec line"
 
-let round = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-trip byte-identical' && echo yes"]
-assert (trim round.out) == "yes" else "frames-delta: round-trip was not byte-identical"
+assert selftest.out contains "round-trip byte-identical" else "frames-delta: round-trip was not byte-identical"
 
-let adaptive = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'adaptive selection stores a 2-frame scene cut as 0 deltas' && echo yes"]
-assert (trim adaptive.out) == "yes" else "frames-delta: adaptive selection did not store the scene cut as a keyframe"
+assert selftest.out contains "adaptive selection stores a 2-frame scene cut as 0 deltas" else "frames-delta: adaptive selection did not store the scene cut as a keyframe"
 
 say "frames-delta: GREEN -- the open inter-frame codec whole; a keyframe plus deltas round-trips byte-identical, the delta far smaller than the keyframe, a scene cut stored adaptively as a keyframe, every refusal named."

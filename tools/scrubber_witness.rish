@@ -30,16 +30,12 @@ assert selftest.ok else "scrubber: selftest exited non-zero -- ${selftest.out}"
 let out = trim selftest.out
 say "scrubber: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-scrubber' && echo yes"]
-assert (trim green.out) == "yes" else "scrubber: selftest did not print the GREEN scrubber line"
+assert selftest.out contains "GREEN image-scrubber" else "scrubber: selftest did not print the GREEN scrubber line"
 
-let grows = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'elapsed fill grows' && echo yes"]
-assert (trim grows.out) == "yes" else "scrubber: the monotone-fill crux (empty first frame, full last) did not prove"
+assert selftest.out contains "elapsed fill grows" else "scrubber: the monotone-fill crux (empty first frame, full last) did not prove"
 
-let only = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'touching only the' && echo yes"]
-assert (trim only.out) == "yes" else "scrubber: the overlay-touches-only-the-bar crux did not prove"
+assert selftest.out contains "touching only the" else "scrubber: the overlay-touches-only-the-bar crux did not prove"
 
-let round = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-trip byte-identical through BOTH codecs' && echo yes"]
-assert (trim round.out) == "yes" else "scrubber: the scrubbed reel did not round-trip through both codecs"
+assert selftest.out contains "round-trip byte-identical through BOTH codecs" else "scrubber: the scrubbed reel did not round-trip through both codecs"
 
 say "scrubber: GREEN -- a playback progress bar over moving video; the elapsed fill grows monotone from empty to full as a pure function of the frame index, touching only the bar, and the composited reel round-trips byte for byte through both open codecs."

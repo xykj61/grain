@@ -31,37 +31,25 @@ let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "hunk-photos-bilinear: selftest exited non-zero — ${selftest.out}"
 
 let out = trim selftest.out
-say "hunk-photos-bilinear: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-bilinear' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-photos-bilinear: selftest did not print the GREEN bilinear line"
+assert selftest.out contains "GREEN image-photos-bilinear" else "hunk-photos-bilinear: selftest did not print the GREEN bilinear line"
 
-let identity = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'identity size byte-identical' && echo yes"]
-assert (trim identity.out) == "yes" else "hunk-photos-bilinear: the identity size was not proven byte-identical"
+assert selftest.out contains "identity size byte-identical" else "hunk-photos-bilinear: the identity size was not proven byte-identical"
 
-let constant = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'stays that exact color at any size' && echo yes"]
-assert (trim constant.out) == "yes" else "hunk-photos-bilinear: the constant-stays-constant no-drift invariant was not proven"
+assert selftest.out contains "stays that exact color at any size" else "hunk-photos-bilinear: the constant-stays-constant no-drift invariant was not proven"
 
-let blend = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'exact average at the center' && echo yes"]
-assert (trim blend.out) == "yes" else "hunk-photos-bilinear: the clean midpoint blend was not proven"
+assert selftest.out contains "exact average at the center" else "hunk-photos-bilinear: the clean midpoint blend was not proven"
 
-let alpha = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'alpha blends alongside the colors' && echo yes"]
-assert (trim alpha.out) == "yes" else "hunk-photos-bilinear: alpha blending alongside the colors was not proven"
+assert selftest.out contains "alpha blends alongside the colors" else "hunk-photos-bilinear: alpha blending alongside the colors was not proven"
 
-let open = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'resized image re-encodes and round-trips' && echo yes"]
-assert (trim open.out) == "yes" else "hunk-photos-bilinear: a resized image did not round-trip as an open image"
+assert selftest.out contains "resized image re-encodes and round-trips" else "hunk-photos-bilinear: a resized image did not round-trip as an open image"
 
-let refuse = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a zero target and an over-ceiling target refused by name' && echo yes"]
-assert (trim refuse.out) == "yes" else "hunk-photos-bilinear: the EmptyImage and OutOfBounds refusals were not proven"
+assert selftest.out contains "a zero target and an over-ceiling target refused by name" else "hunk-photos-bilinear: the EmptyImage and OutOfBounds refusals were not proven"
 
 # HUNK3 crop, HUNK8 orient, HUNK9 scale, HUNK22 area, HUNK21 saturate, and HUNK23 hue-turn share the binary — GREEN holds.
-let crop = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos:' && echo yes"]
-assert (trim crop.out) == "yes" else "hunk-photos-bilinear: HUNK3 crop selftest no longer GREEN beneath"
-let scale = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-scale:' && echo yes"]
-assert (trim scale.out) == "yes" else "hunk-photos-bilinear: HUNK9 scale selftest no longer GREEN beneath"
-let area = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-scale-area' && echo yes"]
-assert (trim area.out) == "yes" else "hunk-photos-bilinear: HUNK22 area selftest no longer GREEN beneath"
-let hue = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-photos-hue-turn' && echo yes"]
-assert (trim hue.out) == "yes" else "hunk-photos-bilinear: HUNK23 hue-turn selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos:" else "hunk-photos-bilinear: HUNK3 crop selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos-scale:" else "hunk-photos-bilinear: HUNK9 scale selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos-scale-area" else "hunk-photos-bilinear: HUNK22 area selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos-hue-turn" else "hunk-photos-bilinear: HUNK23 hue-turn selftest no longer GREEN beneath"
 
 say "hunk-photos-bilinear: GREEN — HUNK24 bilinear resampler proven on metal; crop, scale, area, and hue-turn still GREEN beneath."

@@ -33,13 +33,10 @@ assert selftest.ok else "font5x7-genpunct: selftest exited non-zero -- ${selftes
 let out = trim selftest.out
 say "font5x7-genpunct: ${out}"
 
-let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-font5x7-genpunct' && echo yes"]
-assert (trim green.out) == "yes" else "font5x7-genpunct: selftest did not print the GREEN corpus line"
+assert selftest.out contains "GREEN image-font5x7-genpunct" else "font5x7-genpunct: selftest did not print the GREEN corpus line"
 
-let round = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'round-trip byte-identical' && echo yes"]
-assert (trim round.out) == "yes" else "font5x7-genpunct: round-trip was not byte-identical"
+assert selftest.out contains "round-trip byte-identical" else "font5x7-genpunct: round-trip was not byte-identical"
 
-let bonds = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'en subset of em' && echo yes"]
-assert (trim bonds.out) == "yes" else "font5x7-genpunct: the structural bonds were not reported"
+assert selftest.out contains "en subset of em" else "font5x7-genpunct: the structural bonds were not reported"
 
 say "font5x7-genpunct: GREEN -- the open general-punctuation corpus whole; seven smart marks round-trip byte-identical, all present, distinct, legible, and structurally bonded; a surface can paint real text that carries them."

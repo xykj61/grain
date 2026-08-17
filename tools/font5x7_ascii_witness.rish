@@ -33,13 +33,10 @@ assert selftest.ok else "font5x7-ascii: selftest exited non-zero -- ${selftest.o
 let out = trim selftest.out
 say "font5x7-ascii: ${out}"
 
-let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-font5x7-ascii' && echo yes"]
-assert (trim green.out) == "yes" else "font5x7-ascii: selftest did not print the GREEN font line"
+assert selftest.out contains "GREEN image-font5x7-ascii" else "font5x7-ascii: selftest did not print the GREEN font line"
 
-let band = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'band contiguous 32..126' && echo yes"]
-assert (trim band.out) == "yes" else "font5x7-ascii: the printable band was not proven contiguous"
+assert selftest.out contains "band contiguous 32..126" else "font5x7-ascii: the printable band was not proven contiguous"
 
-let round = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'round-trip byte-identical' && echo yes"]
-assert (trim round.out) == "yes" else "font5x7-ascii: round-trip was not byte-identical"
+assert selftest.out contains "round-trip byte-identical" else "font5x7-ascii: round-trip was not byte-identical"
 
 say "font5x7-ascii: GREEN -- the font family stands whole; ninety-five glyphs round-trip byte-identical, the band contiguous 32..126, the space uniquely blank; one complete ASCII font of our own hand."

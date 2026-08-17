@@ -33,13 +33,10 @@ assert selftest.ok else "font5x7-boxdiag: selftest exited non-zero -- ${selftest
 let out = trim selftest.out
 say "font5x7-boxdiag: ${out}"
 
-let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-font5x7-boxdiag' && echo yes"]
-assert (trim green.out) == "yes" else "font5x7-boxdiag: selftest did not print the GREEN corpus line"
+assert selftest.out contains "GREEN image-font5x7-boxdiag" else "font5x7-boxdiag: selftest did not print the GREEN corpus line"
 
-let round = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'round-trip byte-identical' && echo yes"]
-assert (trim round.out) == "yes" else "font5x7-boxdiag: round-trip was not byte-identical"
+assert selftest.out contains "round-trip byte-identical" else "font5x7-boxdiag: round-trip was not byte-identical"
 
-let union = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'the cross is exactly the two single diagonals overlaid' && echo yes"]
-assert (trim union.out) == "yes" else "font5x7-boxdiag: the cross was not proven the union of the two single diagonals"
+assert selftest.out contains "the cross is exactly the two single diagonals overlaid" else "font5x7-boxdiag: the cross was not proven the union of the two single diagonals"
 
 say "font5x7-boxdiag: GREEN -- the open diagonal box corpus whole; three light marks round-trip byte-identical, all present, distinct, legible, and the cross is the union of the two single diagonals; the box-drawing family is complete."

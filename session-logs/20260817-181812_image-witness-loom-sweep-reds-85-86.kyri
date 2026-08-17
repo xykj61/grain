@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260817.181812
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image-witness loom sweep -- REDS #85 closed, #86 found and closed
+prompt baton prin recur -- the autonomous loop; pick up the running thread, Standfast on reds first
+think Standfast lap: the open agent-closable red in crux/REDS.md was #85, which booked "the wider sweep of the remaining printf ... | grep image witnesses to native contains" as its own next round. That is the crux to take first, before new open-media work.
+think The fragile pattern: let VAR = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'NEEDLE' && echo yes"] then assert (trim VAR.out) == "yes" else "MSG" -- an apostrophe in the interpolated ${out} closes the shell single-quote early, so a truly-GREEN run misses (the #76 loom, taught to two HUNK witnesses but never carried into the image-witness template).
+think Scoped precisely: witnesses that build image/*.rye AND still carry the fragile check -- 97 files, 361 checks. Three haystack forms (printf '%s' '${out}', ${bin} selftest 2>&1, and cross-module printf '%s' '${X.out}'), plus grep -qF fixed-string variants. Every 'out' bound to selftest.out; no needle carries a double-quote; only two needles used grep's .* as a real wildcard.
+think Wrote a strict two-line perl transform collapsing each genuine pair to assert <source> contains "NEEDLE" else "MSG", mapping each haystack to its source variable. One compound three-grep line (hunk_filter_preset) hand-split into three contains asserts.
+obs Two needles leaned on grep's .* wildcard (travels as a .* format filter-presets-v1 record; inter-frame .* < intra-frame). contains is literal, so those failed until rewritten to stable literal substrings (byte counts vary, dropped). Caught by running the witnesses -- the machine, not a re-read.
+obs REDS #86 surfaced from the sweep: ten hunk_photos* witnesses died at say "...: ${out}" with Rishi StringTooLong before any assert ran -- they had never run GREEN on this ai-jail bench. Removed the redundant full-echo (the contains asserts carry the checks); all ten now run GREEN, proving the #85 conversion on the very files that could not prove it before.
+obs Witness on metal: 97 of 97 image-family witnesses GREEN by exit code; zero fragile grep-checks remain in the image family. tame_style_check is a .rye gate, out of scope for .rish witnesses; living_docs_lint GREEN (exit 0).
+obs REDS.md sat 1053 bytes from its 24576 living-pin cap; #85-closed and #86 recorded tight, trimmed to 24552 (24 headroom). A full fold of the oldest living rows wants its own round (the lint's near-bound trigger already names it).
+loom sweep=image_witness_contains files=97 checks_converted=361 witnesses_green=97 fragile_remaining=0
+file crux/REDS.md #85 CLOSED accounting + #86 row, tight under the 24576 living-pin cap
+file tools/*_witness.rish 97 image-family witnesses: fragile printf...|grep -> native contains; ten hunk_photos echo-lines removed (StringTooLong)
+recommend keep-going the image-witness fragility class is closed and witnessed; next Lindy-first crux is the open-media family's next rung (Season G) per the eight-season double-seat, or a REDS-fold round if the pin pressure returns

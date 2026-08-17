@@ -34,10 +34,8 @@ assert selftest.ok else "font5x7-subscript: selftest exited non-zero -- ${selfte
 let out = trim selftest.out
 say "font5x7-subscript: ${out}"
 
-let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-font5x7-subscript' && echo yes"]
-assert (trim green.out) == "yes" else "font5x7-subscript: selftest did not print the GREEN corpus line"
+assert selftest.out contains "GREEN image-font5x7-subscript" else "font5x7-subscript: selftest did not print the GREEN corpus line"
 
-let round = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'round-trip byte-identical' && echo yes"]
-assert (trim round.out) == "yes" else "font5x7-subscript: round-trip was not byte-identical"
+assert selftest.out contains "round-trip byte-identical" else "font5x7-subscript: round-trip was not byte-identical"
 
 say "font5x7-subscript: GREEN -- the open subscript-digits corpus whole; ten small low digits round-trip byte-identical, all present, distinct, legible, and lowered, the dense eight out-inking the sparse one; the font gains the numbers a surface sets below the line when it prints a formula."

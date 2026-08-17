@@ -37,13 +37,10 @@ assert selftest.ok else "font5x7-circumflex: selftest exited non-zero -- ${selft
 let out = trim selftest.out
 say "font5x7-circumflex: ${out}"
 
-let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-font5x7-circumflex' && echo yes"]
-assert (trim green.out) == "yes" else "font5x7-circumflex: selftest did not print the GREEN corpus line"
+assert selftest.out contains "GREEN image-font5x7-circumflex" else "font5x7-circumflex: selftest did not print the GREEN corpus line"
 
-let round = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'round-trip byte-identical' && echo yes"]
-assert (trim round.out) == "yes" else "font5x7-circumflex: round-trip was not byte-identical"
+assert selftest.out contains "round-trip byte-identical" else "font5x7-circumflex: round-trip was not byte-identical"
 
-let centered = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'every caret centered and symmetric' && echo yes"]
-assert (trim centered.out) == "yes" else "font5x7-circumflex: carets were not all centered and symmetric"
+assert selftest.out contains "every caret centered and symmetric" else "font5x7-circumflex: carets were not all centered and symmetric"
 
 say "font5x7-circumflex: GREEN -- the open circumflex vowels corpus whole; five marks round-trip byte-identical, all present, distinct, and legible, every caret centered and symmetric as the mirror axis of the acute/grave pair; the font gains the circumflex vowels a civic surface needs to spell a name that ASCII cannot."

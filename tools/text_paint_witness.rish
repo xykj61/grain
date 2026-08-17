@@ -35,76 +35,52 @@ assert selftest.ok else "text-paint: selftest exited non-zero -- ${selftest.out}
 let out = trim selftest.out
 say "text-paint: ${out}"
 
-let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-text-paint' && echo yes"]
-assert (trim green.out) == "yes" else "text-paint: selftest did not print the GREEN paint line"
+assert selftest.out contains "GREEN image-text-paint" else "text-paint: selftest did not print the GREEN paint line"
 
-let changed = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'changed exactly 32 pixels' && echo yes"]
-assert (trim changed.out) == "yes" else "text-paint: the paint did not change exactly the inked-cell count"
+assert selftest.out contains "changed exactly 32 pixels" else "text-paint: the paint did not change exactly the inked-cell count"
 
-let ink = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'every changed pixel is the ink' && echo yes"]
-assert (trim ink.out) == "yes" else "text-paint: an ink pixel or a background pixel did not land exactly"
+assert selftest.out contains "every changed pixel is the ink" else "text-paint: an ink pixel or a background pixel did not land exactly"
 
-let blend = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'half-alpha blends through color.over exactly' && echo yes"]
-assert (trim blend.out) == "yes" else "text-paint: the partial-alpha blend did not match color.over"
+assert selftest.out contains "half-alpha blends through color.over exactly" else "text-paint: the partial-alpha blend did not match color.over"
 
-let refuse = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'PaintOutOfBounds refused by name' && echo yes"]
-assert (trim refuse.out) == "yes" else "text-paint: the out-of-bounds refusal was not proven"
+assert selftest.out contains "PaintOutOfBounds refused by name" else "text-paint: the out-of-bounds refusal was not proven"
 
-let clip = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'clipping paints only the visible part' && echo yes"]
-assert (trim clip.out) == "yes" else "text-paint: the clipping painter did not paint only the visible part"
+assert selftest.out contains "clipping paints only the visible part" else "text-paint: the clipping painter did not paint only the visible part"
 
-let clip_match = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'matching the strict paint pixel-for-pixel' && echo yes"]
-assert (trim clip_match.out) == "yes" else "text-paint: the clipped pixels did not match the strict paint"
+assert selftest.out contains "matching the strict paint pixel-for-pixel" else "text-paint: the clipped pixels did not match the strict paint"
 
-let para = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'a wrapped paragraph paints 2 stacked lines' && echo yes"]
-assert (trim para.out) == "yes" else "text-paint: paint_paragraph did not stack the wrapped lines into a block"
+assert selftest.out contains "a wrapped paragraph paints 2 stacked lines" else "text-paint: paint_paragraph did not stack the wrapped lines into a block"
 
-let para_disjoint = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q '= summed line ink, disjoint bands' && echo yes"]
-assert (trim para_disjoint.out) == "yes" else "text-paint: the paragraph changed pixels did not equal the summed line ink"
+assert selftest.out contains "= summed line ink, disjoint bands" else "text-paint: the paragraph changed pixels did not equal the summed line ink"
 
-let para_band = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'top band equals a standalone single-line paint' && echo yes"]
-assert (trim para_band.out) == "yes" else "text-paint: the paragraph's top line band did not match a standalone single-line paint"
+assert selftest.out contains "top band equals a standalone single-line paint" else "text-paint: the paragraph's top line band did not match a standalone single-line paint"
 
-let para_refuse = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'refuses ParagraphOutOfBounds by name leaving the buffer untouched' && echo yes"]
-assert (trim para_refuse.out) == "yes" else "text-paint: a too-short canvas did not refuse ParagraphOutOfBounds all-or-nothing"
+assert selftest.out contains "refuses ParagraphOutOfBounds by name leaving the buffer untouched" else "text-paint: a too-short canvas did not refuse ParagraphOutOfBounds all-or-nothing"
 
-let para_align = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'the paragraph aligns' && echo yes"]
-assert (trim para_align.out) == "yes" else "text-paint: paragraph alignment did not prove out"
+assert selftest.out contains "the paragraph aligns" else "text-paint: paragraph alignment did not prove out"
 
-let para_align_shift = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'alignment shifts ink sideways, adding none and dropping none' && echo yes"]
-assert (trim para_align_shift.out) == "yes" else "text-paint: centre/right-set did not match the offset composition at an equal pixel count"
+assert selftest.out contains "alignment shifts ink sideways, adding none and dropping none" else "text-paint: centre/right-set did not match the offset composition at an equal pixel count"
 
-let para_justify = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'the paragraph justifies' && echo yes"]
-assert (trim para_justify.out) == "yes" else "text-paint: paragraph justification did not prove out"
+assert selftest.out contains "the paragraph justifies" else "text-paint: paragraph justification did not prove out"
 
-let para_clip = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'the paragraph clips' && echo yes"]
-assert (trim para_clip.out) == "yes" else "text-paint: paint_paragraph_clipped did not clip the block into a fixed box"
+assert selftest.out contains "the paragraph clips" else "text-paint: paint_paragraph_clipped did not clip the block into a fixed box"
 
-let para_clip_fit = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'a box it fits in paints byte-for-byte the strict paint' && echo yes"]
-assert (trim para_clip_fit.out) == "yes" else "text-paint: a fitting box did not clip identically to the strict paragraph paint"
+assert selftest.out contains "a box it fits in paints byte-for-byte the strict paint" else "text-paint: a fitting box did not clip identically to the strict paragraph paint"
 
-let para_clip_partial = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'paints just the first line' && echo yes"]
-assert (trim para_clip_partial.out) == "yes" else "text-paint: a one-line-tall box did not paint only the visible first line"
+assert selftest.out contains "paints just the first line" else "text-paint: a one-line-tall box did not paint only the visible first line"
 
-let para_box = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'the paragraph sits in a box' && echo yes"]
-assert (trim para_box.out) == "yes" else "text-paint: paint_paragraph_boxed did not place the block within a taller box"
+assert selftest.out contains "the paragraph sits in a box" else "text-paint: paint_paragraph_boxed did not place the block within a taller box"
 
-let para_box_top = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'a top set reproduces the plain paragraph at the box origin' && echo yes"]
-assert (trim para_box_top.out) == "yes" else "text-paint: a top vertical set did not reproduce the plain paragraph at the box origin"
+assert selftest.out contains "a top set reproduces the plain paragraph at the box origin" else "text-paint: a top vertical set did not reproduce the plain paragraph at the box origin"
 
-let para_box_shift = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'vertical placement moves the whole stack down as one' && echo yes"]
-assert (trim para_box_shift.out) == "yes" else "text-paint: middle/bottom set did not match a shifted paint at an equal pixel count"
+assert selftest.out contains "vertical placement moves the whole stack down as one" else "text-paint: middle/bottom set did not match a shifted paint at an equal pixel count"
 
-let para_box_refuse = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'refuses ParagraphBoxTooShort by name leaving the buffer untouched' && echo yes"]
-assert (trim para_box_refuse.out) == "yes" else "text-paint: a box shorter than the block did not refuse ParagraphBoxTooShort all-or-nothing"
+assert selftest.out contains "refuses ParagraphBoxTooShort by name leaving the buffer untouched" else "text-paint: a box shorter than the block did not refuse ParagraphBoxTooShort all-or-nothing"
 
-let para_2d = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'the paragraph sits in a 2-D box' && echo yes"]
-assert (trim para_2d.out) == "yes" else "text-paint: paint_paragraph_in_box did not place the block within a 2-D box"
+assert selftest.out contains "the paragraph sits in a 2-D box" else "text-paint: paint_paragraph_in_box did not place the block within a 2-D box"
 
-let para_2d_corner = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'each corner equal to a plain aligned paint at the box offset' && echo yes"]
-assert (trim para_2d_corner.out) == "yes" else "text-paint: a 2-D corner did not equal a plain aligned paint at the box offset"
+assert selftest.out contains "each corner equal to a plain aligned paint at the box offset" else "text-paint: a 2-D corner did not equal a plain aligned paint at the box offset"
 
-let para_2d_refuse = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'refusing ParagraphBoxTooNarrow on a box too narrow' && echo yes"]
-assert (trim para_2d_refuse.out) == "yes" else "text-paint: a box too narrow did not refuse ParagraphBoxTooNarrow on both axes"
+assert selftest.out contains "refusing ParagraphBoxTooNarrow on a box too narrow" else "text-paint: a box too narrow did not refuse ParagraphBoxTooNarrow on both axes"
 
 say "text-paint: GREEN -- the fonts become a string seen; ink composites through coverage exactly where the glyphs carry it, the paint is deterministic, a partial alpha blends true, a line that would overrun refuses by name, paint_placed_clipped paints only the visible part -- matching the strict paint pixel-for-pixel, degrading to a clean no-op fully off-canvas -- paint_paragraph stacks a never-overflow wrapped block into stepped lines, all-or-nothing, refusing ParagraphOutOfBounds by name on a canvas too short, paint_paragraph_justified flushes every wrapped line but the last to both margins of the column (the last left-set), a flat-edged newspaper block that changes the same pixel count as the left-set paint, paint_paragraph_clipped shows as much of that block as a fixed box holds where the strict painter would refuse, and paint_paragraph_boxed places the whole block top-, middle-, or bottom-set within a taller box -- a pure vertical shift that changes the same pixel count, refusing ParagraphBoxTooShort by name where the box is shorter than the block, and paint_paragraph_in_box places the block within a 2-D box on both axes at once -- left/centre/right and top/middle/bottom together, each corner equal to a plain aligned paint at the box offset, refusing ParagraphBoxTooNarrow or ParagraphBoxTooShort where the box does not hold it."
