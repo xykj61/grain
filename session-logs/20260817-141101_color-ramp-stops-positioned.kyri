@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260817.141101
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image/color_ramp_stops.rye -- a positioned multi-stop gradient, GREEN
+prompt Autonomous loop: take the next agent-doable lap Lindy-first crux-first over the open-media color family; send often; stop at custody gates.
+think Read crux/REMEMBER.md, the 1024-round itinerary, the eight-season double-seat, the crypto-parity wave, and the autonomous-loop seed. The live edge is Season G's open-media color/font family in image/, Rye with .rish witnesses.
+think Lap 1 of this run: rota d27 item 1 = foundations/README.md. Deep-read it -- the why beneath the work at two scales; front doors and foundations are the highest-Lindy prose (the long return); ordinary technical rungs end plainly.
+think The card named three agent-doable directions: an open-fonts glyph rung, gradient stops at NAMED positions (uneven spacing), or a fresh Lindy-first crux. Positioned gradient stops IS the crux: color_gradient (two endpoints) and color_ramp (K even controls) are both special cases of a ramp whose controls carry their OWN positions -- the CSS linear-gradient(red 0%, yellow 80%, green 100%) stop list. Lindy-durable (CSS gradients), crux-first (the general verb).
+think Design self-approved (tripwire, not a check-in): sample_at(control, positions, pos) reads the blend at any global position; ramp_positioned(control, positions, dst) fills evenly-spaced output stops sampling the positioned ramp. Positions in 0..pos_max (255), the same fixed-point domain color.mix's blend uses -- a position and a blend share one honest scale, a CSS percent maps p*255/100.
+think Containment kept honest: a two-control ramp anchored at {0, pos_max} equals color_gradient.gradient byte-for-byte (single segment, local fraction = global position / 255 = the position itself = stop_t), so the general contains the special. color_ramp is a SIBLING not a sub-case -- it routes in segment units where this routes in the shared position domain -- so uneven positions bend the ramp where even spacing cannot. Named that plainly rather than overclaiming a three-way containment.
+think The bend is proven MEASURED, not asserted: green pushed to position 200 vs centred at 128, both sampled at position 100, must read different colors and the centred one greener -- a position is a real control, not a decoration (Two Rooms: a checkable, not a claim).
+obs Two reds caught by the module's own witness and closed same-sitting. (1) Literal braces {0,255} in the GREEN print prose parsed as a format placeholder ("too few arguments" at build) -- doubled to {{0,255}}, the same red REDS logs for color_nearest. (2) The non-ascending refusal test [0,100,90] tripped LastStopNotMax before StopsNotAscending because check validates the last-position anchor first -- changed the fixture to [0,0,255] (last anchored at pos_max, middle non-ascending) so it exercises the intended refusal. Both are witness-caught test-fixture reds, not module logic reds; the module logic was first-GREEN.
+obs TAME clean (bans clean, ratchet counts unchanged at 11 zero-assert exempt files), width-check exit 0, plain 7-bit ASCII, American spelling (born color), >= 2 positive asserts per fn, two documented seam casts (control.len / positions.len usize -> u32 after their bounds), bounded segment search (never unbounded), integer fixed-point so a ramp is deterministic.
+loom witness=color_ramp_stops_witness build_ok=1 selftest_ok=1 cases=13 reds_caught=2
+file image/color_ramp_stops.rye the positioned multi-stop gradient -- sample_at + ramp_positioned over color.mix
+file tools/color_ramp_stops_witness.rish proves build + selftest GREEN on metal, greps the GREEN line, the containment claim, and the bend claim
+file image/README.md names color_ramp_stops.rye beside color_ramp.rye and color_gradient.rye (docs-sync, same commit)
+file crux/REMEMBER.md git nib + inner-loop live edge refreshed to this rung
+recommend keep-going the open-media color/font family stands wide; next agent-doable is an open-fonts glyph rung, gradient stops with a repeated/held color run, or a fresh Lindy-first crux -- none reach a custody gate

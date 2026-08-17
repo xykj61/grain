@@ -1,0 +1,44 @@
+# tools/color_ramp_stops_witness.rish -- a positioned multi-stop gradient proves itself on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the general form of both the two-endpoint gradient (image/color_gradient.rye) and
+# the even multi-stop ramp (image/color_ramp.rye), over the open colour algebra (image/color.rye).
+# Design read: active-designing/20260816-210735_season-g-color-algebra-crux.md (the colour floor this stands on).
+# Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS Color spec + sRGB -- public standards only).
+#
+# The crux this witness proves is the CSS positioned gradient stop list -- linear-gradient(red 0%, yellow 80%, green
+# 100%) -- where each control carries its OWN position, strictly ascending from 0 to pos_max. A position landing on a
+# control reads it byte-for-byte; a position between controls carries both channels; uneven positions BEND the ramp where
+# even spacing cannot (the measured crux). The general contains the special -- a two-control ramp anchored at {0, pos_max}
+# equals color_gradient.gradient byte-for-byte. A black-grey-white ramp ascends non-decreasing in luminance whatever the
+# spacing; a length mismatch, non-ascending positions, a first off zero, a last off pos_max, and an out-of-band length
+# refuse by name. No new colour maths -- a mix routed to its segment. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/color_ramp_stops_witness.rish
+
+say "color-ramp-stops: Language EN -- Season G's positioned gradient; a keeper names each control colour AND its position, and reads back the blended colour anywhere along the ramp, the CSS positioned linear-gradient stop list on our own colour model."
+say "color-ramp-stops: Style Radiant -- compose not braid; colour DECIDES the blend and this module only routes a global position to its segment, so the two-control ramp is exactly the two-endpoint gradient and uneven positions bend the ramp where even spacing cannot."
+say "color-ramp-stops: Lens TAME -- u32 control and stop counts bounded by ramp_max_control and the shared gradient ceiling; the segment search bounded by the segment count so it never runs away; positions strictly ascending so every denominator is at least one; endpoints and byte range asserted; integer fixed-point so a ramp is deterministic; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/color_ramp_stops"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/color_ramp_stops.rye -femit-bin=${bin}"]
+assert build.ok else "color-ramp-stops: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "color-ramp-stops: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "color-ramp-stops: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-color-ramp-stops' && echo yes"]
+assert (trim green.out) == "yes" else "color-ramp-stops: selftest did not print the GREEN colour-ramp-stops line"
+
+let contains = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the general contains the special' && echo yes"]
+assert (trim contains.out) == "yes" else "color-ramp-stops: the two-control ramp did not prove equal to the gradient"
+
+let bend = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'bend the ramp where even spacing cannot' && echo yes"]
+assert (trim bend.out) == "yes" else "color-ramp-stops: the positioned ramp did not prove it bends with position"
+
+say "color-ramp-stops: GREEN -- a positioned multi-stop ramp reads each control at its own place, bends where the even ramp cannot, and contains the two-colour gradient, proven on metal."

@@ -1,0 +1,241 @@
+//! image/color_ramp_stops.rye -- a positioned multi-stop gradient (Season G, the general form of the ramp).
+//!
+//! Season G (Open Media Primitives) -- the general form of both image/color_gradient.rye (an even gradient between TWO
+//! colours) and image/color_ramp.rye (an even ramp across K EVENLY-SPACED controls). A real gradient editor and a CSS
+//! stylesheet place each control at its OWN position: `linear-gradient(red 0%, yellow 80%, green 100%)` bunches the warm
+//! half of the ramp into the last fifth. This rung grows that positioned ramp: given K controls (K >= 2) each carrying a
+//! position in 0..pos_max, strictly ascending from 0 (the first control) to pos_max (the last), it reads the blended
+//! colour at any global position, or fills a whole buffer of evenly-spaced output stops sampling that positioned ramp.
+//!
+//! Compose, not braid: colour DECIDES the blend (color.mix lerps within a segment) and this module only ROUTES a global
+//! position to its segment and local fraction -- no new colour maths. The two-control positioned ramp (positions
+//! {0, pos_max}) equals color_gradient.gradient byte-for-byte (proven in the selftest), so the GENERAL verb contains the
+//! SPECIAL one: a gradient is a positioned ramp of two controls at the ends. color_ramp is a SIBLING, not a sub-case --
+//! it routes in segment units where this routes in the shared 0..pos_max position domain, so uneven positions bend the
+//! ramp where the even ramp cannot. The routing is integer fixed-point, so a ramp is deterministic; interpolation runs in
+//! straight sRGB (color.mix's own space), the CSS default. Alpha rides the same lerp. A CSS percent p maps to p * pos_max
+//! / 100. No network, no key, no funds -- the positioned gradient Brushstroke and Skate paint the day the design system
+//! lands, on our own colour model.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/color_ramp_stops.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const control_ramp = @import("color_ramp.rye");
+const gradient = @import("color_gradient.rye");
+
+pub const color_ramp_stops_version = "20260817.141101";
+
+/// The top of the position domain -- a control at pos_max sits at the far end of the ramp. Bytes (0..255), the same
+/// fixed-point domain color.mix's blend parameter uses, so a position and a blend share one honest scale. A CSS percent p
+/// maps here as p * pos_max / 100 (0% -> 0, 100% -> 255).
+pub const pos_max: u8 = 255;
+
+/// The mix parameter (0..255) for a local fraction `num`/`den` inside one segment -- an even integer lerp, floor-matching
+/// color_gradient.stop_t so the two-control positioned ramp equals the even gradient byte-for-byte.
+fn blend_param(num: u32, den: u32) u8 {
+    // invariant: the local fraction is a proper fraction of a real segment -- denominator at least one, numerator within it.
+    assert(den >= 1);
+    assert(num <= den);
+    // num <= pos_max (255), so num * 255 <= 65025 in u32 and the lerp never wraps. Floor division matches stop_t.
+    const t: u32 = num * 255 / den;
+    // invariant: the mix parameter stays a byte (num == den gives 255, num == 0 gives 0).
+    assert(t <= 255);
+    return @intCast(t);
+}
+
+/// Validate a control/position pair: equal lengths, at least two controls and never more than the shared ceiling, the
+/// positions strictly ascending from exactly 0 to exactly pos_max. Refuses by name so no caller ever samples a ramp whose
+/// shape it never checked.
+fn check(control: []const color.Rgba, positions: []const u8) !void {
+    // invariant: one position per control, so every segment has two real endpoints.
+    if (control.len != positions.len) return error.StopCountMismatch;
+    // invariant: a ramp holds at least two controls and never more than color_ramp's bounded ceiling.
+    if (control.len < 2) return error.RampTooFewStops;
+    if (control.len > control_ramp.ramp_max_control) return error.RampTooManyStops;
+    // The count is now bounded above by the ceiling, so the seam cast to a u32 count is safe.
+    const k: u32 = @intCast(positions.len);
+    // invariant: the ramp spans the whole position domain -- the first control anchors 0, the last anchors pos_max.
+    if (positions[0] != 0) return error.FirstStopNotZero;
+    if (positions[k - 1] != pos_max) return error.LastStopNotMax;
+    // invariant: positions strictly ascend, so every segment denominator (hi - lo) is at least one.
+    var i: u32 = 1;
+    while (i < k) : (i += 1) {
+        if (!(positions[i] > positions[i - 1])) return error.StopsNotAscending;
+    }
+}
+
+/// Read the blended colour at global position `pos`, assuming a control/position pair already validated by `check`. Finds
+/// the segment whose start boundary is the greatest position <= pos (the last segment catches pos == pos_max), then blends
+/// its two controls by the local fraction. A position landing exactly on a control reads that control byte-for-byte.
+fn sample_checked(control: []const color.Rgba, positions: []const u8, pos: u8) color.Rgba {
+    // invariant: a validated pair holds at least two controls, so at least one real segment exists.
+    assert(control.len >= 2);
+    assert(control.len == positions.len);
+    // The count is bounded by check's ceiling, so the seam cast to a u32 count is safe.
+    const k: u32 = @intCast(control.len);
+    const seg: u32 = k - 1;
+    // Advance to the last segment whose start boundary is <= pos. Bounded by seg (< ramp_max_control), never unbounded.
+    var s: u32 = 0;
+    while (s + 1 < seg and positions[s + 1] <= pos) : (s += 1) {}
+    // invariant: the segment index names a real segment, so both mix endpoints are real controls.
+    assert(s < seg);
+    assert(s + 1 < k);
+    const lo: u32 = positions[s];
+    const hi: u32 = positions[s + 1];
+    // invariant: strictly-ascending positions guarantee a real span, so the local denominator is at least one.
+    assert(hi > lo);
+    const num: u32 = @as(u32, pos) - lo;
+    const den: u32 = hi - lo;
+    return color.mix(control[s], control[s + 1], blend_param(num, den));
+}
+
+/// Read the blended colour at global position `pos` across the positioned `control` ramp. Validates the pair first, so a
+/// malformed ramp refuses by name rather than blending a shape it never checked.
+pub fn sample_at(control: []const color.Rgba, positions: []const u8, pos: u8) !color.Rgba {
+    try check(control, positions);
+    const out = sample_checked(control, positions, pos);
+    // invariant: sampling exactly at the first control's position reads the first control byte-for-byte.
+    if (pos == 0) assert(out.eql(control[0]));
+    // invariant: sampling exactly at the last control's position reads the last control byte-for-byte.
+    if (pos == pos_max) assert(out.eql(control[control.len - 1]));
+    return out;
+}
+
+/// Fill `dst` with the positioned ramp -- dst.len evenly-spaced OUTPUT stops (each at the global position stop i lands on),
+/// dst[0] the first control exactly and dst[len-1] the last control exactly. The output spacing is even (a rasterised
+/// buffer) while the CONTROL spacing is arbitrary, so the ramp bends toward whichever controls the positions cluster. A
+/// malformed control pair, or a dst of fewer than two stops or more than color_gradient's ceiling, refuses by name.
+pub fn ramp_positioned(control: []const color.Rgba, positions: []const u8, dst: []color.Rgba) !void {
+    try check(control, positions);
+    // invariant: the output holds at least two stops and never more than the shared gradient ceiling.
+    if (dst.len < 2) return error.RampTooShort;
+    if (dst.len > gradient.gradient_max_stops) return error.RampTooLong;
+    // The length is bounded above by the ceiling, so the seam cast to a u32 stop count is safe.
+    const n: u32 = @intCast(dst.len);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        // Output stop i lands at the same global position color_gradient places it (an even lerp 0..pos_max); sample the
+        // positioned ramp there. For two controls at {0, pos_max} this is exactly color_gradient.sample, the containment.
+        const gpos: u8 = gradient.stop_t(i, n);
+        dst[i] = sample_checked(control, positions, gpos);
+    }
+    // invariant: a filled ramp carries its endpoints exactly -- the first stop is the first control, the last is the last.
+    assert(dst[0].eql(control[0]));
+    assert(dst[dst.len - 1].eql(control[control.len - 1]));
+}
+
+// --- selftest: prove a positioned ramp reads its controls, contains the two-colour gradient, bends with position --------
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    _ = garden;
+
+    const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
+    const green = color.Rgba{ .r = 0, .g = 255, .b = 0, .a = 255 };
+    const blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 };
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const grey = color.Rgba{ .r = 128, .g = 128, .b = 128, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    // A positioned ramp reads each control exactly at its own position, however uneven the spacing: red at 0, green at
+    // 100, blue at 255 (pos_max), byte-for-byte -- the crux that a control is honoured, not blurred.
+    const rgb = [_]color.Rgba{ red, green, blue };
+    const at_uneven = [_]u8{ 0, 100, 255 };
+    if (!(try sample_at(rgb[0..], at_uneven[0..], 0)).eql(red)) return error.FirstControlWrong;
+    if (!(try sample_at(rgb[0..], at_uneven[0..], 100)).eql(green)) return error.MidControlWrong;
+    if (!(try sample_at(rgb[0..], at_uneven[0..], 255)).eql(blue)) return error.LastControlWrong;
+
+    // A position between two controls carries BOTH channels at once -- a true blend, not a hard cut. Halfway into the
+    // first segment red is falling and green is rising, so both are present.
+    const between = try sample_at(rgb[0..], at_uneven[0..], 50);
+    if (!(between.r > 0 and between.r < 255)) return error.BlendRedNotFalling;
+    if (!(between.g > 0 and between.g < 255)) return error.BlendGreenNotRising;
+
+    // Uneven positions BEND the ramp where even spacing cannot: with the mid control pushed near the end (green at 200),
+    // position 100 sits barely into the first segment and reads near red; with the mid control centred (green at 128),
+    // position 100 sits deep in the first segment and reads much greener -- so the two readings must differ, the measured
+    // proof that a position is a real control, not a decoration.
+    const at_late = [_]u8{ 0, 200, 255 };
+    const at_even = [_]u8{ 0, 128, 255 };
+    const bent = try sample_at(rgb[0..], at_late[0..], 100);
+    const centred = try sample_at(rgb[0..], at_even[0..], 100);
+    if (bent.eql(centred)) return error.PositionDidNotBendRamp;
+    if (!(centred.g > bent.g)) return error.CentredNotGreener;
+
+    // The general contains the special: a TWO-control positioned ramp with the controls anchored at {0, pos_max} equals
+    // color_gradient.gradient of the same endpoints, byte-for-byte, so a gradient is a positioned ramp of two end controls.
+    const ends = [_]color.Rgba{ red, blue };
+    const ends_at = [_]u8{ 0, 255 };
+    var ramp2: [9]color.Rgba = undefined;
+    var grad2: [9]color.Rgba = undefined;
+    try ramp_positioned(ends[0..], ends_at[0..], ramp2[0..]);
+    try gradient.gradient(red, blue, grad2[0..]);
+    var gi: u32 = 0;
+    while (gi < 9) : (gi += 1) {
+        if (!ramp2[gi].eql(grad2[gi])) return error.RampNotGradientForTwo;
+    }
+
+    // A black -> grey -> white ramp rises non-decreasing in luminance across the whole run whatever the spacing -- a
+    // lighter stop never reflects less light than the stop before it, proven with the grey control pushed off-centre.
+    const bgw = [_]color.Rgba{ black, grey, white };
+    const bgw_at = [_]u8{ 0, 64, 255 };
+    var lightramp: [11]color.Rgba = undefined;
+    try ramp_positioned(bgw[0..], bgw_at[0..], lightramp[0..]);
+    if (!lightramp[0].eql(black)) return error.LightRampStartWrong;
+    if (!lightramp[10].eql(white)) return error.LightRampEndWrong;
+    var prev_lum: i64 = -1;
+    var j: u32 = 0;
+    while (j < 11) : (j += 1) {
+        const lum: i64 = color.relative_luminance(lightramp[j]);
+        if (!(lum >= prev_lum)) return error.RampLuminanceDipped;
+        prev_lum = lum;
+    }
+
+    // Refusals by name, each having blended nothing a caller could mistake for a ramp: a length mismatch, non-ascending
+    // positions, a first position off zero, a last position off pos_max, and an out-of-band output length.
+    const short_at = [_]u8{ 0, 255 };
+    if (sample_at(rgb[0..], short_at[0..], 0)) |_| return error.MismatchNotRefused else |err| {
+        if (err != error.StopCountMismatch) return error.WrongMismatchError;
+    }
+    const not_asc = [_]u8{ 0, 0, 255 };
+    if (sample_at(rgb[0..], not_asc[0..], 0)) |_| return error.NonAscendingNotRefused else |err| {
+        if (err != error.StopsNotAscending) return error.WrongAscendingError;
+    }
+    const off_zero = [_]u8{ 5, 100, 255 };
+    if (sample_at(rgb[0..], off_zero[0..], 0)) |_| return error.OffZeroNotRefused else |err| {
+        if (err != error.FirstStopNotZero) return error.WrongZeroError;
+    }
+    const off_max = [_]u8{ 0, 100, 250 };
+    if (sample_at(rgb[0..], off_max[0..], 0)) |_| return error.OffMaxNotRefused else |err| {
+        if (err != error.LastStopNotMax) return error.WrongMaxError;
+    }
+    var out1: [1]color.Rgba = undefined;
+    if (ramp_positioned(rgb[0..], at_uneven[0..], out1[0..])) |_| return error.ShortRampNotRefused else |err| {
+        if (err != error.RampTooShort) return error.WrongShortError;
+    }
+
+    // Determinism: the same controls, positions, and length grow byte-for-byte the same ramp.
+    var a_ramp: [8]color.Rgba = undefined;
+    var b_ramp: [8]color.Rgba = undefined;
+    try ramp_positioned(rgb[0..], at_uneven[0..], a_ramp[0..]);
+    try ramp_positioned(rgb[0..], at_uneven[0..], b_ramp[0..]);
+    var di: u32 = 0;
+    while (di < 8) : (di += 1) {
+        if (!a_ramp[di].eql(b_ramp[di])) return error.RampNotDeterministic;
+    }
+
+    print("GREEN image-color-ramp-stops: a positioned multi-stop ramp reads each control exactly at its own position (red at 0, green at 100, blue at 255); a position between controls carries both channels (a true blend); uneven positions bend the ramp where even spacing cannot (green at 200 vs 128 read differently at position 100, the centred one greener); a two-control ramp at {{0,255}} equals color_gradient.gradient byte-for-byte (the general contains the special); a black-grey-white ramp ascends non-decreasing in luminance whatever the spacing; a length mismatch, non-ascending positions, a first off zero, a last off pos_max, and an out-of-band length refuse by name; the same inputs grow the same ramp byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: color_ramp_stops selftest\n", .{});
+    return 1;
+}
