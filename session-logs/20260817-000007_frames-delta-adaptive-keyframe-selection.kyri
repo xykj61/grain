@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260817.000007
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image -- adaptive keyframe/delta selection for the gfd1 inter-frame codec, GREEN
+prompt Autonomous loop: take the next agent-doable lap Lindy-first crux-first; Rye prioritized, Glow on green-witnessed Rye; deep-read one council-rota doc; send often as its own signed round; stop at the custody gates
+think Seventh open-media lap of the run, straight after the font family closed whole. Two Season G rungs stood open: wider symbol coverage beyond ASCII, or adaptive keyframe/delta selection for the gfd1 inter-frame codec. Lindy-first crux-first pointed at the codec: motion compression is the reason a video format exists, and a correctness/efficiency improvement to a proven codec is higher-Lindy than a sixth font corpus. It is also the crux -- the harder, more decisive move.
+think The key discovery reading the existing decode(): it already accepts a keyframe at ANY position (only frame 0 is required to be a keyframe; every later frame may be key or delta). So adaptive selection is a PURE ENCODER gain -- no format change, fully backward-compatible. The old encoder always emitted a delta for every non-first frame, even a scene cut whose delta touches every pixel (192 pixels * 8 bytes = 1540) when a plain keyframe (~405 bytes here) is far smaller.
+think The change: for each non-first frame, build the delta candidate into a scratch buffer (counting changed pixels), encode a fresh keyframe candidate into the QOI scratch, and store whichever is smaller -- ties favor the delta, since deltas decode cheaply. encoded_bound already sized each frame slot at max(key, delta), so the buffer stays safe with no resize. Proved with a new craft_scene_cut clip: a 2-frame clip whose second frame inverts every pixel (a full scene cut); the encoder stores it as 0 deltas -- a keyframe, not a whole-image delta -- and the clip still round-trips byte-for-byte.
+obs GREEN on the metal pass: the small-motion 4-frame clip still stores 3 deltas (541 bytes, unchanged -- adaptive never penalizes real motion savings), and the scene-cut clip stores 0 deltas (the keyframe won). Both round-trip byte-identical. The witness now asserts the adaptive line so the behavior is locked, not merely observed.
+obs No format byte moved and no refusal changed -- the decoder needed nothing, which is the honest proof this is a clean encoder-side improvement. A codec that costs no more than an intra-frame on heavy motion, and far less on light motion, is exactly the long-return kind of work Lindy rewards -- it will still read true and still pay when the code moves beneath it.
+obs Rota lap (d27) deep-read foundations/20260811-211431_the-lindy-effect-and-the-long-return.md -- durable work compounds; a proven codec made smarter without a format break is a non-perishable gain, earned by surviving its own witness.
+loom witness=frames_delta_video_witness clip_frames=4 deltas=3 encoded_bytes=541 raw_bytes=3072 scenecut_frames=2 scenecut_deltas=0
+file image/frames_delta.rye encode() now stores each non-first frame adaptively -- the smaller of a delta or a fresh keyframe; scene-cut selftest proves it
+file tools/frames_delta_video_witness.rish asserts the adaptive-selection line so a scene cut stored as a keyframe stays proven on metal
+file image/README.md adds the frames_delta.rye inter-frame codec bullet with adaptive selection; corrects the frames.rye sibling line and the next-rungs line
+file crux/REMEMBER.md live-edge line names the adaptive gfd1 selection GREEN; git nib refreshed in this same round
+recommend keep-going next open-media rung: wider symbol coverage beyond ASCII (arrows, box-drawing) over the same 5x7 body, or proving the image/video codecs on a real corpus rather than crafted clips
