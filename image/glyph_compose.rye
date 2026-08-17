@@ -1,0 +1,215 @@
+//! image/glyph_compose.rye -- the combining-diacritic overlay (Season G, the primitive that collapses the accent grind).
+//!
+//! Season G (Open Media Primitives) - a bounded verb over the coverage grid every glyph in the open atlas
+//! image/glyph.rye (gfa1) already carries. The long, honest run of accent corpora -- grave, acute, circumflex,
+//! tilde, diaeresis, each drawn over the same 5x7 body -- taught a discovery worth naming: an accented Latin letter
+//! is a BASE letter plus a COMBINING mark, and the mark lives entirely in the two blank rows above the letter. The
+//! grave corpus proves it by construction -- 'a grave' is byte-for-byte the lowercase 'a' with the grave mark added
+//! in rows 0 and 1, its rows 2..6 untouched. Hand-drawing every accented letter is therefore O(letters x accents)
+//! work; overlaying a base with a mark collapses it to O(letters + accents) -- draw each base once (the lowercase
+//! a-z already drawn), draw each mark once, and compose to reach every accented letter.
+//!
+//! overlay(base, mark, cell_area) is the whole primitive: a fresh coverage grid whose every cell is the larger of
+//! the two inputs (255 ink wins over 0 background), so ink from the base and ink from the mark both survive and
+//! neither erases the other. Pure over the grid (both inputs left untouched), bounded (cell_area within the atlas
+//! ceiling, each input exactly cell_area bytes), and named on refusal (BadCellArea - BaseLenMismatch -
+//! MarkLenMismatch). The property that matters stays provable on metal: overlay(lowercase 'a', grave mark) equals
+//! the hand-drawn 'a grave' coverage BYTE-FOR-BYTE (and the same for e, o, u), so the primitive reproduces what the
+//! grind drew by hand -- the grind was composition all along. No network, no key, no funds -- the verb a surface
+//! reaches for the day it composes a name that ASCII cannot spell, on our own open font.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/glyph_compose.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+const font_lower = @import("font5x7_lower.rye");
+const font_grave = @import("font5x7_grave.rye");
+
+pub const glyph_compose_version = "20260817.071536";
+
+/// The shared body the 5x7 corpora carry -- named here only for the proof and the combining-mark art below.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// Cells per glyph on the 5x7 body -- the coverage length the proof overlays over.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The grave combining mark, drawn once in the open on the same 5x7 body: top-row ink leaning left (columns 0-1),
+/// the two rows above the letter, every body row blank. Overlaid onto a lowercase vowel it yields the grave letter.
+/// This is the whole economy the primitive names -- one mark drawn once, reused under every base it accents.
+const grave_mark_art = [cell_h][]const u8{
+    ".#...",
+    "..#..",
+    ".....",
+    ".....",
+    ".....",
+    ".....",
+    ".....",
+};
+
+/// A blank mark -- all background. Overlaid onto any base it must return the base unchanged (the identity proof).
+const blank_mark_art = [cell_h][]const u8{
+    ".....",
+    ".....",
+    ".....",
+    ".....",
+    ".....",
+    ".....",
+    ".....",
+};
+
+/// Lift one 5x7 ASCII drawing into a freshly allocated coverage grid of exactly cell_area bytes: 255 for ink,
+/// 0 for background. The art's own shape is asserted, so a mistyped row is a stopped line rather than a bad mark.
+fn coverage_from_art(allocator: std.mem.Allocator, art: [cell_h][]const u8) ![]u8 {
+    // invariant: a coverage grid is exactly the shared cell area, within the atlas ceiling.
+    assert(cell_area >= 1);
+    assert(cell_area <= glyph.coverage_max);
+    const cov = try allocator.alloc(u8, cell_area);
+    var idx: u32 = 0;
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        const row = art[r];
+        // invariant: every drawn row is exactly the cell width -- the art matches the grid.
+        assert(row.len == cell_w);
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            cov[idx] = if (row[c] == '#') 255 else 0;
+            idx += 1;
+        }
+    }
+    // invariant: exactly one cell was written per grid position.
+    assert(idx == cell_area);
+    return cov;
+}
+
+/// Count the lit cells in a coverage grid -- ink is any non-zero byte.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: the coverage length is a bounded grid.
+    assert(cov.len >= 1);
+    assert(cov.len <= glyph.coverage_max);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cov.len);
+    return n;
+}
+
+/// Overlay a combining mark onto a base coverage grid: a fresh grid whose every cell is the larger of the two
+/// inputs, so ink from either survives and neither erases the other. The whole primitive of the accent family --
+/// one base plus one mark yields the accented letter, drawn by composition rather than by hand.
+pub fn overlay(allocator: std.mem.Allocator, base: []const u8, mark: []const u8, area: u32) ![]u8 {
+    // invariant: the cell area is a real, bounded grid.
+    if (area < 1 or area > glyph.coverage_max) return error.BadCellArea;
+    // invariant: each input is exactly one cell -- a mismatch refuses by name rather than reading past a buffer.
+    if (base.len != area) return error.BaseLenMismatch;
+    if (mark.len != area) return error.MarkLenMismatch;
+    const out = try allocator.alloc(u8, area);
+    var i: u32 = 0;
+    while (i < area) : (i += 1) {
+        const b = base[i];
+        const m = mark[i];
+        out[i] = if (b >= m) b else m;
+    }
+    // invariant: the union is a superset of both inputs -- every base ink cell and every mark ink cell is lit.
+    assert(ink_count(out) >= ink_count(base));
+    assert(ink_count(out) >= ink_count(mark));
+    // invariant: the union adds no ink beyond the two sources combined.
+    assert(ink_count(out) <= ink_count(base) + ink_count(mark));
+    return out;
+}
+
+/// Pull one glyph's coverage from a built corpus atlas by codepoint, or refuse by name if the corpus lacks it.
+fn coverage_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) ![]const u8 {
+    // invariant: the atlas table is bounded, so the lookup scan is bounded.
+    assert(atlas.glyphs.len <= glyph.glyph_max);
+    if (atlas.lookup(codepoint)) |g| return g.coverage;
+    return error.CorpusMissingGlyph;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // 1. Known-answer union -- a base and a mark whose overlay is written out cell for cell, audited by the reader.
+    //    base has ink at cells 0 and 34; mark has ink at cells 0 and 5; the union lights 0, 5, and 34.
+    const ka_base = try garden.alloc(u8, cell_area);
+    const ka_mark = try garden.alloc(u8, cell_area);
+    var z: u32 = 0;
+    while (z < cell_area) : (z += 1) {
+        ka_base[z] = 0;
+        ka_mark[z] = 0;
+    }
+    ka_base[0] = 255;
+    ka_base[34] = 255;
+    ka_mark[0] = 255;
+    ka_mark[5] = 255;
+    const ka = try overlay(garden, ka_base, ka_mark, cell_area);
+    if (!(ink_count(ka) == 3)) return error.KnownAnswerWrongInk;
+    if (!(ka[0] == 255 and ka[5] == 255 and ka[34] == 255)) return error.KnownAnswerWrongCells;
+    if (!(ka[1] == 0 and ka[6] == 0)) return error.KnownAnswerLeakedInk;
+
+    // 2. The crux -- byte-for-byte reproduction of a hand-drawn corpus. Build the lowercase base corpus and the
+    //    hand-drawn grave corpus; overlay each lowercase vowel with the single grave mark and prove the result
+    //    equals the corpus's own hand-drawn accented glyph, byte for byte. If it does, the grind was composition.
+    const lower = try font_lower.build_atlas(garden);
+    const grave = try font_grave.build_atlas(garden);
+    const mark = try coverage_from_art(garden, grave_mark_art);
+    // invariant: the mark is a real accent -- it carries ink, and it carries none in the body rows (2..6).
+    assert(ink_count(mark) >= 1);
+    var body: u32 = cell_w * 2;
+    while (body < cell_area) : (body += 1) assert(mark[body] == 0);
+
+    // The four vowels whose 5x7 base is untouched under a top-row mark. The dotted 'i' is the honest special case
+    // named in the design read -- its base differs under a mark, so the corpus draws 'i grave' distinctly.
+    const bases = [4]u32{ 'a', 'e', 'o', 'u' };
+    const graves = [4]u32{ 0x00E0, 0x00E8, 0x00F2, 0x00F9 };
+    var reproduced: u32 = 0;
+    var v: u32 = 0;
+    while (v < 4) : (v += 1) {
+        const base_cov = try coverage_of(&lower, bases[v]);
+        const want = try coverage_of(&grave, graves[v]);
+        const got = try overlay(garden, base_cov, mark, cell_area);
+        if (!std.mem.eql(u8, got, want)) return error.OverlayMismatch;
+        reproduced += 1;
+    }
+    // invariant: every one of the four composable vowels was reproduced from base + mark.
+    assert(reproduced == 4);
+
+    // 3. Algebraic honesty -- overlay is commutative, and a blank mark is the identity.
+    const a_cov = try coverage_of(&lower, 'a');
+    const ab = try overlay(garden, a_cov, mark, cell_area);
+    const ba = try overlay(garden, mark, a_cov, cell_area);
+    if (!std.mem.eql(u8, ab, ba)) return error.OverlayNotCommutative;
+    const blank = try coverage_from_art(garden, blank_mark_art);
+    const ident = try overlay(garden, a_cov, blank, cell_area);
+    if (!std.mem.eql(u8, ident, a_cov)) return error.BlankMarkNotIdentity;
+
+    // 4. Refusals real -- a wrong-length base, a wrong-length mark, and a bad cell area each refuse by name.
+    const short = try garden.alloc(u8, cell_area - 1);
+    if (overlay(garden, short, mark, cell_area)) |_| return error.RefusedBadBaseMissing else |e| {
+        if (e != error.BaseLenMismatch) return e;
+    }
+    if (overlay(garden, a_cov, short, cell_area)) |_| return error.RefusedBadMarkMissing else |e| {
+        if (e != error.MarkLenMismatch) return e;
+    }
+    if (overlay(garden, a_cov, mark, glyph.coverage_max + 1)) |_| return error.RefusedBadAreaMissing else |e| {
+        if (e != error.BadCellArea) return e;
+    }
+
+    print("GREEN image-glyph-compose: overlay(base,mark) reproduces {d} hand-drawn grave vowels (a,e,o,u) byte-for-byte over the {d}-cell 5x7 body; ink union is commutative, blank-mark identity holds, and BadCellArea/BaseLenMismatch/MarkLenMismatch refuse by name; the accent grind collapses O(letters x accents) -> O(letters + accents)\n", .{
+        reproduced, cell_area,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: glyph_compose selftest\n", .{});
+    return 1;
+}

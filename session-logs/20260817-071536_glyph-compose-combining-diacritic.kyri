@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260817.071536
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title glyph_compose -- the combining-diacritic overlay that collapses the accent grind, GREEN
+prompt Recur the road ahead: take the next agent-doable lap Lindy-first crux-first, Rye prioritized, deep-read one council-rota doc, send often, stop at custody gates.
+think Read the road-ahead docs and REMEMBER: the live edge is the open-media font family, which has run a long series of hand-drawn accent corpora (grave, acute, circumflex, tilde, diaeresis, german, nordic, icelandic) over the same 5x7 body.
+think A learned discovery worth naming: hand-drawing every accented letter is O(letters x accents) work, and the grave corpus proves by construction that 'a grave' is byte-for-byte the lowercase 'a' with a grave mark added in the two blank top rows -- rows 2..6 untouched. So the grind is composition. A combining-diacritic overlay primitive is the Lindy-first crux-first move: durable, read on every accented render forever, and it retires the grind rather than adding one more rung to it.
+think Verified the equality holds before coding: compared lowercase a/e/o/u art against grave a/e/o/u art -- rows 2..6 identical, rows 0..1 differ only by the grave mark. The dotted 'i' is the one honest exception (its base differs under a mark), named plainly rather than forced.
+think Designed image/glyph_compose.rye -- overlay(base, mark, cell_area) is a per-cell ink union (255 wins over 0) over the coverage grid every glyph already carries; bounded by glyph.coverage_max; refusals named (BadCellArea, BaseLenMismatch, MarkLenMismatch); invariants positive (result is a superset of both inputs, adds no ink beyond their sum).
+think The witness proves the crux on metal: overlay(lowercase 'a', grave mark) equals the hand-drawn 'a grave' coverage byte-for-byte (imported from the shipped font5x7_lower and font5x7_grave corpora through their public build_atlas), and the same for e, o, u -- so the primitive reproduces what the grind drew by hand. Plus a known-answer union, commutativity, blank-mark identity, and three named refusals.
+obs GREEN on the first metal run, no red. tame_style_check bans clean (new file carries asserts, not in the zero-assert exempt list), width-check exit 0. Pure composition over glyph.rye and the two shipped corpora through public APIs only; the corpora stay their own green binaries, unchanged.
+obs docs-sync: image/README.md accreted a glyph_compose entry and reframed the next-rungs line to name carrying the overlay to acute/circumflex/tilde/diaeresis as (base, mark) tables; REMEMBER live edge notes the GREEN primitive and the O(letters x accents) -> O(letters + accents) collapse. Design read: active-designing/20260817-071536_glyph-compose-combining-diacritic-crux.md (self-approved design round).
+obs Rota lap (d27, item 20) deep-read context/QUIN.md -- the four voices held in balance; Lattice's honest sizing (the ink-count invariants say exactly what they measure) and Ember's craft-that-earns-its-warmth (a primitive that retires a grind is craft revealing its meaning as it unfolds) both speak to this lap.
+loom witness=glyph_compose_witness reproduced=4 cell_area=35 wall_note=first-run-green
+file image/glyph_compose.rye the combining-diacritic overlay primitive -- overlay(base, mark, cell_area), the accent family's O(letters+accents) collapse
+file tools/glyph_compose_witness.rish proves overlay reproduces the hand-drawn grave vowels byte-for-byte on metal
+file active-designing/20260817-071536_glyph-compose-combining-diacritic-crux.md the self-approved design read naming the learned discovery and the crux
+file image/README.md accreted the glyph_compose entry and next-rungs reframe (docs-sync)
+file crux/REMEMBER.md live edge notes the GREEN primitive and the grind collapse
+recommend keep-going carry the overlay to the acute/circumflex/tilde/diaeresis marks as (base, mark) tables -- each a small round that reaches accented letters by composition rather than a fresh drawing
