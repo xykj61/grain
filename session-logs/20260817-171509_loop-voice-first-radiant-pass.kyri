@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260817.171509
+editor Claude Code
+model claude-opus-4-8
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title loop loads Kyri voice and Radiant Style first; a Radiant pass on the loop
+prompt Keaton asked for a Radiant Style pass on the loop itself, and to update the loop to load Radiant Style and the Kyri voice as the very first context
+think The loop already read RADIANT_STYLE and KYRI on the rota (items 14, 19), yet only as a cycling per-lap deep-read -- the voice was not loaded first, ahead of REMEMBER and the route
+think Voice-first is the right shape: the run writes and reasons in Kyri's Radiant Style, so the style guide and identity should shape every thought from the first token, before the card or the itinerary
+think A Radiant pass changes register, never a claim -- so I held every path, stamp, and count exactly and only touched voice
+obs The seed already reads in Radiant register (written that way through this session), so the honest pass was light -- the load-order change is the real improvement; freshened the frontmatter line to lead with the climbing image in active voice
+obs Placed the voice load in three spots: the paste-form one-line, a new Voice first paragraph opening section 1, and the head of both -p lines in the launch recipe
+file recursion-prompts/seed/autonomous-loop.seed.md paste-form + section 1 open with the Kyri/Radiant load; frontmatter freshened
+file tools/launch-claude-season.rish both -p lines now read context/KYRI.md and context/RADIANT_STYLE.md first
+recommend keep-going the loop now speaks in voice from the first token; next constructive rung is the Dexter cell-grid (Season G) or a one-time condense of the REMEMBER Today arc on Keaton's word
