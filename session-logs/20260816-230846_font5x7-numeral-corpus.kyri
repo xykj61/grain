@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260816.230846
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title font5x7 numeral corpus -- the first real content for the gfa1 atlas
+prompt Read the road-ahead docs; take the next agent-doable lap Lindy-first crux-first; Rye prioritized; deep-read one council-rota doc; send often; stop at the custody gates.
+think Read REMEMBER's INNER LOOP, the 1024-round itinerary, the eight-season double-seat, and the Rye-first crypto-parity wave. The live edge is the open-media family (Season G); crypto stands WHOLE. Named next rungs: permissive font corpora, then an inter-frame video codec. The atlas (gfa1) and video container (gfv1) are GREEN but hold only synthetic content.
+think Rota lap 1120 mod 27 = 13 -> foundations/20260728-032134_keeh-and-kia.md (the happy zone). Its teaching: fix the fault at the station not the driveway; witness-first, red-then-green; alertness is care not panic. Reinforced building the witness before trusting the corpus.
+think Lindy-first crux-first choice: the glyph atlas is an empty vessel; its first real content is the highest-Lindy crux on the open-media edge. Chose the ten numerals -- the corpus a surface reaches for first and keeps forever (clocks, prices, part numbers), floor code needing no external-font licensing gate, our own hand.
+think Drew each digit as 5x7 ASCII line art in image/font5x7.rye so a reader audits every glyph by eye; coverage bytes are derived from the art, never the reverse. build_atlas emits a glyph.GlyphAtlas the gfa1 encoder accepts (ascending codepoints, coverage == cell area).
+obs Refused to assert compression. The atlas rung's synthetic glyph was mostly background so its RLE beat raw; real digits are busy. Asserting encoded < raw would be a false invariant (the REDS #82 lesson -- defend only what the math holds). The witness reports encoded 505 vs raw 350 as a fact; the byte-for-byte round-trip carries the proof.
+obs Proved four properties on metal: round-trip byte-identical, ten present numerals with the shared advance (non-digit misses), pairwise distinctness (catches a copy-paste slip a round-trip would preserve), and a legibility band (ink 10..19 of 35, inside [6,30]).
+loom witness=font5x7_witness glyphs=10 cell=5x7 encoded_bytes=505 raw_bytes=350 ink_lo=10 ink_hi=19
+file image/font5x7.rye the ten-digit corpus and build_atlas, resting on image/glyph.rye
+file tools/font5x7_witness.rish proves the corpus GREEN on metal -- round-trip, present, distinct, legible
+file active-designing/20260816-230846_season-g-font5x7-corpus-crux.md the design read for this rung
+file crux/REMEMBER.md live edge and git nib refreshed to the font corpus
+recommend keep-going next open-media rung: extend the corpus toward A-Z and punctuation, or open the inter-frame video codec; both agent-doable, no gate.
