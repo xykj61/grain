@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260817.121929
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image/color_swatch.rye -- branded_scale, the on-colour ramp inked from a keeper's own brand pair
+prompt Autonomous loop (recur): next agent-doable lap Lindy-first crux-first, Season G open-media; send often; stop only at custody gates
+think The prior lap in this run landed color_swatch.rye's readable_scale (each tone paired with pure black or white by readable_ink). REMEMBER named the next agent-doable direction: a swatch scale keyed off best_ink over a keeper's own brand pair rather than pure black/white. That is the natural completion of the on-colour token -- a real design system inks against a brand's own light and dark text colours, not just the extremes.
+think Additive and single-stranded on the same module: branded_swatch_at/branded_scale set each swatch's ink to color.best_ink(fill, ink_light, ink_dark) -- the higher-contrast of the keeper's two brand inks. color_scale still decides each fill, color still decides each ink; this only widens which two inks the pick chooses between.
+think The crux proof is an SLC completeness argument: branded_scale is the GENERAL form and readable_scale the SPECIAL case. Because best_ink and readable_ink both break a tie toward the first/lighter ink, branded_scale(seed, white, black, dst) recovers readable_scale(seed, dst) byte-for-byte. The general verb contains the special one -- proven on metal, not claimed. Plus: a real navy/cream brand pair inks the same ramp, each ink exactly best_ink of its fill and always one of the two (never an invented third), and determinism across the brand variant.
+obs GREEN on the metal re-run, no reds. tame_style_check bans clean, width-check exit 0, plain 7-bit ASCII, >= 2 positive asserts per fn (the `or` membership checks live in `if` conditions, never in an assert, so no compound-assert ban is touched). The witness gained one native `contains` assertion for the reduction claim, honouring the REDS #76 loom; every elder assertion kept whole.
+think Rota lap 16 read context/SIMPLE_LOVABLE_COMPLETE.md -- ship the smallest thing that is WHOLE, complete at its scope and lovable in use, claiming only what the work makes true. The reduction proof is exactly that spirit: the branded verb is complete because it demonstrably contains the readable one, nothing half-built.
+file image/color_swatch.rye adds branded_swatch_at/branded_scale over color.best_ink; the general on-colour verb, readable_scale its white/black special case
+file tools/color_swatch_witness.rish gains the reduction assertion (native contains, per the REDS #76 loom)
+file image/README.md names branded_scale beside readable_scale (docs-sync)
+file crux/REMEMBER.md git nib refreshed, live edge extended with the brand-pair variant
+file session-logs/20260817-121929_color-swatch-brand-pair.kyri this record
+recommend keep-going another Season G colour rung (a named-colour table, or a swatch scale that carries its WCAG contrast reading per tone) or a fresh Lindy-first crux; the colour family now offers seed -> tonal scale -> on-colour ramp (black/white and brand-pair), a complete design-system palette floor ahead of Brushstroke

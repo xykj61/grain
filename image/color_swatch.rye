@@ -26,7 +26,7 @@ const print = std.debug.print;
 const color = @import("color.rye");
 const color_scale = @import("color_scale.rye");
 
-pub const color_swatch_version = "20260817.121000";
+pub const color_swatch_version = "20260817.122600";
 
 /// The most swatches a single scale ever holds -- shared with color_scale's ceiling, so a paired palette is bounded by the
 /// very same budget as the bare tonal scale it is grown from. No paired palette is ever unbounded.
@@ -73,6 +73,41 @@ pub fn readable_scale(seed: color.Rgba, dst: []Swatch) !void {
     assert(color.rgb_to_hsl(dst[0].fill).l >= color.rgb_to_hsl(dst[dst.len - 1].fill).l);
     // invariant: the first swatch's ink is exactly color's readable pick for its own fill -- the pairing hides nothing.
     assert(dst[0].ink.eql(color.readable_ink(dst[0].fill)));
+}
+
+/// Swatch `i` of a `count`-swatch scale grown from `seed`, inked from a keeper's own brand PAIR rather than pure black and
+/// white: the fill is color_scale's tone, the ink is color's best_ink of that fill among `ink_light` and `ink_dark` --
+/// whichever of the two brand inks clears the higher WCAG contrast. A brand's own light and dark text colours, placed
+/// against the ramp the same brand seed grows.
+pub fn branded_swatch_at(seed: color.Rgba, ink_light: color.Rgba, ink_dark: color.Rgba, i: u32, count: u32) Swatch {
+    // invariant: the index names a real swatch in a real scale (mirrors swatch_at's own bound).
+    assert(count >= 2);
+    assert(i < count);
+    const fill = color_scale.tone_at(seed, i, count);
+    const ink = color.best_ink(fill, ink_light, ink_dark);
+    // invariant: the fill carries the seed's alpha untouched -- only its lightness was stepped by the ramp.
+    assert(fill.a == seed.a);
+    return .{ .fill = fill, .ink = ink };
+}
+
+/// Fill `dst` with a whole on-colour scale grown from `seed` and inked from a brand PAIR (`ink_light`, `ink_dark`) rather
+/// than pure black and white -- the general form of readable_scale. Passing pure white and black (in that order) recovers
+/// readable_scale byte-for-byte, since best_ink and readable_ink both break a tie toward the first, lighter ink. A length
+/// under two or over the ceiling refuses by name, having written nothing.
+pub fn branded_scale(seed: color.Rgba, ink_light: color.Rgba, ink_dark: color.Rgba, dst: []Swatch) !void {
+    // invariant: a scale holds at least two swatches and never more than the bounded ceiling -- the same band as readable_scale.
+    if (dst.len < 2) return error.ScaleTooShort;
+    if (dst.len > swatch_max_tones) return error.ScaleTooLong;
+    // The length is bounded above by the ceiling, so the seam cast to a u32 swatch count is safe.
+    const count: u32 = @intCast(dst.len);
+    var i: u32 = 0;
+    while (i < count) : (i += 1) {
+        dst[i] = branded_swatch_at(seed, ink_light, ink_dark, i, count);
+    }
+    // invariant: a filled scale runs lightest-first -- swatch 0's fill is at least as light as the last swatch's fill.
+    assert(color.rgb_to_hsl(dst[0].fill).l >= color.rgb_to_hsl(dst[dst.len - 1].fill).l);
+    // invariant: the first swatch's ink is exactly best_ink of its own fill among the brand pair -- the pairing hides nothing.
+    assert(dst[0].ink.eql(color.best_ink(dst[0].fill, ink_light, ink_dark)));
 }
 
 // --- selftest: prove each swatch pairs the ramp's tone with its legible ink, the crossover is clean, endpoints clear AA --
@@ -156,7 +191,44 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    print("GREEN image-color-swatch: an on-colour scale grown from one seed pairs each tone with its legible ink; the fills are byte-for-byte the color_scale ramp and each ink is color.readable_ink of its own fill; the lightest tone takes black ink and the darkest white, both endpoints clearing WCAG AA; the crossover is clean (one flip top to bottom, never a black tone beneath a white); text ink is fully opaque while a translucent seed keeps its fill glass; a grey seed grows grey fills each still legible; an out-of-band length refuses ScaleTooShort by name; the same seed grows the same scale byte-for-byte\n", .{});
+    // The brand-pair variant reduces to the pure black/white variant exactly: branded_scale with white and black (in that
+    // order) recovers readable_scale byte-for-byte, since best_ink and readable_ink both break a tie toward the first,
+    // lighter ink. The general form contains the special one -- the SLC completeness proof.
+    var branded_bw: [9]Swatch = undefined;
+    try branded_scale(blue, white, black, branded_bw[0..]);
+    var bi: u32 = 0;
+    while (bi < 9) : (bi += 1) {
+        if (!(branded_bw[bi].fill.eql(swatches[bi].fill) and branded_bw[bi].ink.eql(swatches[bi].ink))) {
+            return error.BrandBwNotReadable;
+        }
+    }
+
+    // A real brand pair -- a deep navy and a warm cream -- inks the same ramp: each swatch's ink is exactly best_ink of its
+    // own fill among the two, and always one of the two brand inks, never an invented third colour.
+    const navy = color.Rgba{ .r = 20, .g = 30, .b = 70, .a = 255 };
+    const cream = color.Rgba{ .r = 250, .g = 245, .b = 225, .a = 255 };
+    var branded: [9]Swatch = undefined;
+    try branded_scale(blue, cream, navy, branded[0..]);
+    var pi: u32 = 0;
+    while (pi < 9) : (pi += 1) {
+        const want = color.best_ink(branded[pi].fill, cream, navy);
+        if (!branded[pi].ink.eql(want)) return error.BrandInkNotBestPick;
+        if (!(branded[pi].ink.eql(cream) or branded[pi].ink.eql(navy))) return error.BrandInkNotFromPair;
+    }
+
+    // Determinism across the brand variant too: the same seed and pair grow byte-for-byte the same paired scale.
+    var brand_a: [5]Swatch = undefined;
+    var brand_b: [5]Swatch = undefined;
+    try branded_scale(blue, cream, navy, brand_a[0..]);
+    try branded_scale(blue, cream, navy, brand_b[0..]);
+    var bd: u32 = 0;
+    while (bd < 5) : (bd += 1) {
+        if (!(brand_a[bd].fill.eql(brand_b[bd].fill) and brand_a[bd].ink.eql(brand_b[bd].ink))) {
+            return error.BrandScaleNotDeterministic;
+        }
+    }
+
+    print("GREEN image-color-swatch: an on-colour scale grown from one seed pairs each tone with its legible ink; the fills are byte-for-byte the color_scale ramp and each ink is color.readable_ink of its own fill; the lightest tone takes black ink and the darkest white, both endpoints clearing WCAG AA; the crossover is clean (one flip top to bottom, never a black tone beneath a white); text ink is fully opaque while a translucent seed keeps its fill glass; a grey seed grows grey fills each still legible; an out-of-band length refuses ScaleTooShort by name; the same seed grows the same scale byte-for-byte; a brand-pair scale (branded_scale over best_ink) inks the ramp from a keeper's own two colours, each ink the best_ink pick of its fill and always one of the pair, and passing white then black reduces to the readable scale byte-for-byte (the general form contains the special one)\n", .{});
     return 0;
 }
 
