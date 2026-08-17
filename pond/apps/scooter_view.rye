@@ -131,7 +131,19 @@ fn draw_post(frame: *Frame, i: u32, post: *const channel.Post) void {
 }
 
 /// Fold a channel's journal into a bounded terminal frame -- the Dexter drawn face of a Scooter channel.
+/// The body draws into the full body_rows beneath the header.
 pub fn render(ch: *const channel.Channel) Frame {
+    return render_within(ch, body_rows);
+}
+
+/// The same fold, given a bounded body budget -- how many rows beneath the header the journal may use. A
+/// composing surface (the full terminal, which reserves its last row for a prompt) passes a smaller budget
+/// so the journal leaves room; render itself passes the whole body_rows. The frame grid is still the fixed
+/// frame_rows x frame_cols; rows below the budget are left blank for the caller to fill.
+pub fn render_within(ch: *const channel.Channel, body_avail: u32) Frame {
+    // invariant: the body budget is at least one row and never exceeds the rows beneath the header.
+    assert(body_avail >= 1);
+    assert(body_avail <= body_rows);
     var frame = Frame{};
 
     // The header names the channel and its post count.
@@ -152,12 +164,12 @@ pub fn render(ch: *const channel.Channel) Frame {
         return frame;
     }
 
-    // How many posts fit in the body. When the journal overflows, the last body row is the overflow note,
-    // so the shown count leaves that row free.
-    const overflow = ch.post_count > body_rows;
-    const shown: u32 = if (overflow) body_rows - 1 else ch.post_count;
-    // invariant: never draw more body rows than the body holds.
-    assert(shown <= body_rows);
+    // How many posts fit in the body budget. When the journal overflows it, the last shown row is the
+    // overflow note, so the shown count leaves that row free.
+    const overflow = ch.post_count > body_avail;
+    const shown: u32 = if (overflow) body_avail - 1 else ch.post_count;
+    // invariant: never draw more body rows than the budget holds.
+    assert(shown <= body_avail);
 
     var seq: u32 = 0;
     while (seq < shown) : (seq += 1) {
@@ -174,8 +186,8 @@ pub fn render(ch: *const channel.Channel) Frame {
         w.put_str(" more)");
         seal_row(&w);
         frame.rows_used = 1 + shown + 1;
-        // invariant: the overflow tail never pushes past the frame.
-        assert(frame.rows_used <= frame_rows);
+        // invariant: the overflow tail never pushes past the budget beneath the header.
+        assert(frame.rows_used <= 1 + body_avail);
     }
 
     // invariant: the drawing always fits within the fixed grid.

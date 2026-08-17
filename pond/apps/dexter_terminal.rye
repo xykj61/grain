@@ -1,0 +1,189 @@
+//! pond/apps/dexter_terminal.rye -- Dexter, the full terminal: a channel's journal above, a prompt below.
+//!
+//! Season G (Open Media Primitives) -- the terminal family, the capstone of its drawn surface. The pieces
+//! all stand green on their own: scooter_view.rye folds a channel's journal into a bounded grid; dexter_line
+//! holds an editable line; dexter_prompt draws that line into a row with the caret always visible. This rung
+//! joins them into ONE terminal a keeper reads at a glance -- the conversation filling the rows above, the
+//! prompt they are typing on the last row -- exactly the shape of a chat client at the command line. It is
+//! pure composition (each piece called through its public API, none touched) and held pure: no raw terminal,
+//! no escape codes, no network. The live keystroke reader and the wire between piers are the last rungs;
+//! this draws the whole screen those rungs will show and read a caret position from.
+//! Pattern elder: pond/apps/player_hud.rye -- two proven overlays composed on one surface, disjoint by design.
+//!
+//! The crux is one screen composed cleanly, the two regions disjoint:
+//!   - The journal fills the rows above the prompt. render_terminal draws the channel into the top rows
+//!     with scooter_view.render_within, given a body budget one row short so the prompt has its own row.
+//!   - The prompt is the last row. dexter_prompt draws the editable line there; the caret's absolute place
+//!     on the screen (its row and column) is tracked, always the last row and always within the width.
+//!   - The regions never overlap. The journal writes only rows 0..term_rows-2, the prompt only the last row.
+//!   - The whole screen is exactly term_rows x term_cols, and the fold is referentially transparent.
+//!
+//! Facts only, custody-first: it draws a conversation and a prompt and holds nothing else -- no network, no key.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build pond/apps/dexter_terminal.rye -femit-bin=pond/bin/dexter-terminal
+//!   pond/bin/dexter-terminal selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const channel = @import("scooter_channel.rye");
+const view = @import("scooter_view.rye");
+const line = @import("dexter_line.rye");
+const prompt = @import("dexter_prompt.rye");
+
+pub const dexter_terminal_version = "20260817.044800";
+
+/// The terminal is the same fixed grid scooter_view and dexter_prompt draw in -- 24 rows of 80 columns.
+pub const term_rows: u32 = view.frame_rows;
+pub const term_cols: u32 = view.frame_cols;
+
+/// The prompt takes the last row; the journal fills the rows above it (the header plus term_rows-2 body rows).
+pub const prompt_row: u32 = term_rows - 1;
+pub const journal_body: u32 = term_rows - 2;
+
+/// A drawn terminal screen: the fixed grid of cells, and the absolute place of the caret (its row and
+/// column). The caret always sits on the prompt row, always within the width.
+pub const Terminal = struct {
+    cells: [term_rows * term_cols]u8 = [_]u8{' '} ** (term_rows * term_cols),
+    caret_row: u32 = prompt_row,
+    caret_col: u32 = 0,
+
+    /// One row as a slice of exactly term_cols cells.
+    pub fn row(self: *const Terminal, i: u32) []const u8 {
+        // invariant: only a real row of the fixed grid is ever read.
+        assert(i < term_rows);
+        const start = i * term_cols;
+        // invariant: a row is exactly the terminal width, never more.
+        assert(start + term_cols <= self.cells.len);
+        return self.cells[start .. start + term_cols];
+    }
+};
+
+/// Copy a source row of exactly term_cols cells into the terminal at row i.
+fn place_row(term: *Terminal, i: u32, src: []const u8) void {
+    // invariant: a placed row is exactly the terminal width and lands on a real row.
+    assert(src.len == term_cols);
+    assert(i < term_rows);
+    const start = i * term_cols;
+    var col: u32 = 0;
+    while (col < term_cols) : (col += 1) {
+        term.cells[start + col] = src[col];
+    }
+}
+
+/// Compose a channel's journal and an editable line into one terminal screen -- the conversation above, the
+/// prompt below. The journal draws into rows 0..prompt_row-1 (leaving the last row for the prompt), and the
+/// prompt draws into the last row; the caret's absolute place is the prompt row and the prompt's column.
+pub fn render_terminal(ch: *const channel.Channel, prefix: []const u8, l: *const line.Line) prompt.PromptError!Terminal {
+    // invariant: the line's own bounds hold before we draw it.
+    assert(l.len <= line.max_line);
+    assert(l.cursor <= l.len);
+    var term = Terminal{};
+
+    // The journal fills the rows above the prompt, given a body budget one row short so the prompt has a home.
+    const frame = view.render_within(ch, journal_body);
+    var i: u32 = 0;
+    while (i < prompt_row) : (i += 1) {
+        place_row(&term, i, frame.row(i));
+    }
+
+    // The prompt is the last row; its caret column becomes the terminal's caret column.
+    const p = try prompt.render_prompt(prefix, l);
+    place_row(&term, prompt_row, p.text());
+    term.caret_row = prompt_row;
+    term.caret_col = p.cursor_col;
+    // invariant: the caret sits on the prompt row, within the terminal width.
+    assert(term.caret_row == prompt_row);
+    assert(term.caret_col < term_cols);
+    return term;
+}
+
+/// The trimmed text of a terminal row -- its content without trailing space padding. A reader's convenience.
+pub fn row_text(term: *const Terminal, i: u32) []const u8 {
+    // invariant: only a real row is trimmed.
+    assert(i < term_rows);
+    const r = term.row(i);
+    var end: u32 = @intCast(r.len);
+    while (end > 0 and r[end - 1] == ' ') : (end -= 1) {}
+    return r[0..end];
+}
+
+const host_key: u32 = 1001;
+const ada: u32 = 2002;
+
+fn journal_above_prompt_below() !void {
+    var ch = channel.Channel.open(host_key);
+    try ch.admit(host_key, ada);
+    _ = try ch.post(host_key, "hello");
+    _ = try ch.post(ada, "hi there");
+    var l = line.Line.empty();
+    try l.type_str("reply");
+    const term = try render_terminal(&ch, "> ", &l);
+    // The header and posts fill the top rows; the prompt is the last row.
+    assert(std.mem.eql(u8, row_text(&term, 0), "scooter: 2 posts"));
+    assert(std.mem.eql(u8, row_text(&term, 1), "[0] p1001: hello"));
+    assert(std.mem.eql(u8, row_text(&term, 2), "[1] p2002: hi there"));
+    assert(std.mem.eql(u8, row_text(&term, prompt_row), "> reply"));
+    // The caret sits on the prompt row, just past the typed text.
+    assert(term.caret_row == prompt_row);
+    assert(term.caret_col == 7); // prefix 2 + cursor 5
+    print("dexter_terminal: the journal fills the rows above and the prompt is the last row, the caret on it.\n", .{});
+}
+
+fn the_regions_never_overlap() !void {
+    var ch = channel.Channel.open(host_key);
+    try ch.admit(host_key, ada);
+    // Post far more than the terminal can show -- the journal must still leave the last row for the prompt.
+    const total: u32 = term_rows + 10;
+    var k: u32 = 0;
+    while (k < total) : (k += 1) _ = try ch.post(ada, "m");
+    var l = line.Line.empty();
+    try l.type_str("typing");
+    const term = try render_terminal(&ch, "> ", &l);
+    // The overflow note never lands on the prompt row -- the prompt owns the last row alone.
+    const last = row_text(&term, prompt_row);
+    assert(std.mem.eql(u8, last, "> typing"));
+    // The journal's overflow tail sits on the row just above the prompt, not on it.
+    const above = row_text(&term, prompt_row - 1);
+    assert(above.len >= 2);
+    assert(above[0] == '(');
+    assert(above[1] == '+');
+    print("dexter_terminal: even a full journal leaves the last row for the prompt; the regions never overlap.\n", .{});
+}
+
+fn structurally_exact_and_deterministic() !void {
+    var ch = channel.Channel.open(host_key);
+    var l = line.Line.empty();
+    try l.type_str("x");
+    const term = try render_terminal(&ch, "$ ", &l);
+    // The screen is exactly term_rows x term_cols; every row is exactly the width.
+    assert(term.cells.len == term_rows * term_cols);
+    var i: u32 = 0;
+    while (i < term_rows) : (i += 1) assert(term.row(i).len == term_cols);
+    // An empty channel still draws its face above the prompt.
+    assert(std.mem.eql(u8, row_text(&term, 0), "scooter: 0 posts"));
+    assert(std.mem.eql(u8, row_text(&term, 1), "(no posts yet)"));
+    assert(std.mem.eql(u8, row_text(&term, prompt_row), "$ x"));
+    // Determinism: the same channel and line render the same screen.
+    const again = try render_terminal(&ch, "$ ", &l);
+    assert(std.mem.eql(u8, &term.cells, &again.cells));
+    print("dexter_terminal: the screen is exactly 24x80, every row the true width, and the fold is deterministic.\n", .{});
+}
+
+fn run_selftest() !u8 {
+    try journal_above_prompt_below();
+    try the_regions_never_overlap();
+    try structurally_exact_and_deterministic();
+    print("dexter_terminal: version {s}\n", .{dexter_terminal_version});
+    print("GREEN: dexter_terminal; a channel's journal and an editable line composed into one {d}x{d} screen -- the conversation above, the prompt on the last row, the two regions disjoint and the caret always on the prompt.\n", .{ term_rows, term_cols });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "dexter-terminal"))) {
+        return run_selftest();
+    }
+    return run_selftest();
+}

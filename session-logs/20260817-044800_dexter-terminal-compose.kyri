@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260817.044800
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title dexter terminal -- the journal above, the prompt below, one screen, GREEN
+prompt autonomous loop -- take the next agent-doable lap Lindy-first crux-first, send often, stop at custody gates
+think The input family's four floors all stand GREEN and sent (line, history, shell, prompt), and scooter_view draws the journal. The honest capstone crux is the full terminal -- composing the journal above and the drawn prompt below into ONE screen, the shape of a chat client at the command line. Pure composition, ungated, finishable green in one lap.
+think The clean composition needs the journal to know it has one fewer row (the prompt owns the last row). Rather than overwrite scooter_view's overflow tail, I additively generalized scooter_view.render into render_within(ch, body_avail) -- render now calls render_within(ch, body_rows), unchanged behavior, and its own witness re-runs GREEN. dexter_terminal calls render_within(ch, journal_body) with journal_body = term_rows - 2.
+think Built pond/apps/dexter_terminal.rye: render_terminal draws the journal into rows 0..prompt_row-1 and dexter_prompt's row into the last row, tracking the caret's absolute place (its row and column). The crux is disjointness -- the journal writes only the rows above, the prompt only the last row, so even a full journal leaves the last row for the prompt (the overflow tail lands on the row just above, never on the prompt row).
+obs GREEN on the first metal run -- no red. tame_style_check bans clean, width-check exit 0, new prose plain ASCII. The witness build compiled the unchanged scooter_channel, dexter_line, and dexter_prompt; scooter_view changed additively and its witness re-runs GREEN (behavior-preserving).
+obs This ties to the itinerary (rota item 26): the loop climbs faster than the calendar names the rungs -- the good problem. The terminal family is a Season G rung the double-seat named, and this arc filled five agent-doable rounds (line, history, shell, prompt, terminal) as its own self-approved quest, each witnessed and sent. Only the live keystroke reader and the wire between piers remain -- both at the serve gate.
+obs Rota lap (d27, item 26) read active-designing/20260812-171050_the-1024-round-itinerary.md -- Lindy-first crux-first orders the road; a quest is filled not invented; the gates are the fence.
+loom witness=dexter_terminal_witness selftest=GREEN term_rows=24 term_cols=80 selftest_cases=3 composes=scooter_view+dexter_prompt
+file pond/apps/dexter_terminal.rye the full terminal -- the journal above, the prompt on the last row, the regions disjoint, the caret on the prompt
+file pond/apps/scooter_view.rye additively generalized render into render_within(ch, body_avail); render unchanged, its witness re-runs GREEN
+file tools/dexter_terminal_witness.rish builds the module and asserts its selftest speaks GREEN over the three cruxes
+file crux/REMEMBER.md git nib refreshed to the dexter_terminal living edge, in the work commit
+file session-logs/README.md newest-first index row prepended
+recommend keep-going the terminal family's drawn surface is whole -- the only rungs left are the live keystroke reader (a raw TTY) and the Comlink transport between two Constel piers, both at the serve gate (the maintainer's hand); the next ungated agent-doable crux is Scooter's own next rung or another Season G open-media primitive
