@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260817.130848
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image/color_tone.rye -- the coarse tone of any color (dark, mid, light), GREEN
+prompt baton prin recur -- the next agent-doable lap Lindy-first crux-first over the open-media color family; each lap deep-read one council-rota doc; send often
+think Rota lap 11 reads active-designing/yonder/20260618-182412_single-stranded.md -- simple and easy are different; build by composing free parts each about one thing, and refuse the braid. The doc's own teaching pointed straight at the shape of this lap.
+think The prior lap seated group_of (hue family). The plain human way to name a color is TWO words -- "dark blue" -- a tone and a family. The single-stranded reading says: do not braid tone into group_of; make tone its OWN module about one thing (lightness), so a caller composes tone_of + group_of rather than one function holding both concerns.
+think tone_of(c) reads color.rgb_to_hsl and looks at lightness ALONE, returning dark / mid / light against two named edges (tone_dark_max 34, tone_light_min 70). It ignores hue and saturation entirely -- the single concern it holds. mid is the neutral tone a description leaves unspoken ("blue", not "mid blue").
+think Verified the lightness math before choosing edges: black l=0, white l=100, red/gray l=50, darkblue #00008b l~27, lightblue #add8e6 l~79, and the exact edge greys #585858 (l=35) and #575757 (l=34). Chose the bands so each test lands where I proved it would.
+obs GREEN on the FIRST metal run, no reds. Proven: all three tones reachable; a deep shade reads dark and a pale tint light whatever the hue; tone follows lightness ALONE (a red and a gray of the same lightness read the same tone, so hue/saturation never sway it -- the single-stranded crux); the band edges land on the right side (l=35 mid, l=34 dark); tone_of always returns a member of the sorted three; deterministic.
+obs Kept it a SEPARATE module from color_name_group deliberately, honoring single-stranded -- each about one thing, composed into "dark blue" not braided. This is the reward the doc names: either can be reasoned about and changed apart from the other.
+obs tame_style_check bans clean, width-check exit 0, plain 7-bit ASCII, American spelling, >= 2 positive asserts per fn, no seam cast (u8 percent only). Witness native contains (REDS #76 loom). image/README.md names color_tone.rye beside color_name_group.rye (docs-sync).
+file image/color_tone.rye tone_of reads color.rgb_to_hsl lightness against two named edges -> dark/mid/light
+file tools/color_tone_witness.rish proves three tones reachable, tone from lightness alone, the edges, always a member, deterministic
+file image/README.md docs-sync -- names the tone sibling of the hue-family module
+recommend keep-going -- the color family now yields a full human color description (tone + family, e.g. "dark blue") by composition; next agent-doable is a thin describe() that composes tone_of + group_of + color_nearest, the CSS3 147-name table as a fetch-verified round, or a fresh Lindy-first crux

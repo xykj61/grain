@@ -1,0 +1,42 @@
+# tools/color_tone_witness.rish -- the coarse tone of ANY color (dark, mid, light) proves itself over the open color algebra (Season G).
+#
+# Season G (Open Media Primitives) -- the tone reader beside the hue-family classifier (image/color_name_group.rye), the
+# nearest-name finder (image/color_nearest.rye), the named-color table (image/color_names.rye), and the open color algebra
+# (image/color.rye).
+# Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS Color spec + HSL model -- public standards only).
+#
+# The crux this witness proves is the tone question orthogonal to hue: given ANY color, how dark or light is it -- dark, mid,
+# or light -- from its lightness ALONE? tone_of(c) reads color's proven rgb_to_hsl against two named edges and returns one
+# plain word, ignoring hue and saturation. Deliberately a SEPARATE module from color_name_group (single-stranded: each about
+# one thing), so a caller COMPOSES tone_of + group_of into "dark blue" rather than braiding them. No new math, no stored
+# channel byte, no parser. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/color_tone_witness.rish
+
+say "color-tone: Language EN -- Season G's tone reader; a keeper reads ANY color as dark, mid, or light from its lightness alone, composed with the hue family into 'dark blue'."
+say "color-tone: Style Radiant -- compose not braid; color DECIDES the lightness through rgb_to_hsl, this module only READS the band, and it stays a separate module from the hue family (single-stranded)."
+say "color-tone: Lens TAME -- three tones in a fixed sorted scan; a percent only, no seam cast; the edges ordered and deterministic; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/color_tone"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/color_tone.rye -femit-bin=${bin}"]
+assert build.ok else "color-tone: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "color-tone: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "color-tone: ${out}"
+
+# Honour the loom REDS #76 named: check every claim with Rishi's native `contains`, never a shell grep over interpolated
+# output, so punctuation in the selftest prose can never break a check.
+assert out contains "GREEN image-color-tone" else "color-tone: selftest did not print the GREEN color-tone line"
+assert out contains "all three tones are reachable" else "color-tone: a tone was not reachable"
+assert out contains "tone follows lightness ALONE" else "color-tone: tone was swayed by hue or saturation"
+assert out contains "the band edges land on the right side" else "color-tone: a band edge landed on the wrong side"
+assert out contains "tone_of always returns a member of the sorted three" else "color-tone: tone_of returned a word outside the tone set"
+assert out contains "reads the same tone every time" else "color-tone: the reading was not deterministic"
+
+say "color-tone: GREEN -- the coarse tone whole over the open color algebra; three tones reachable, tone from lightness alone, the edges on the right side, always a member, deterministic; composed with the hue family into a plain human color description."

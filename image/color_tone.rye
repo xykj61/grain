@@ -1,0 +1,129 @@
+//! image/color_tone.rye -- the coarse TONE of any color (dark, mid, light), over the open color algebra (Season G).
+//!
+//! Season G (Open Media Primitives) -- a single-stranded consumer of image/color.rye, and the deliberate SIBLING of
+//! image/color_name_group.rye. Where group_of reads a color's HUE family (red, blue, ...), tone_of reads its LIGHTNESS
+//! alone -- dark, mid, or light -- ignoring hue and saturation entirely. The two stay SEPARATE modules on purpose
+//! (single-stranded: each about one thing), so a caller COMPOSES them into a plain human description -- "dark blue",
+//! "light green", a bare "red" for the mid tone -- without either module braiding the other's concern into itself.
+//!
+//! Compose, not braid: color DECIDES the lightness through its own proven rgb_to_hsl, and this module only READS that
+//! one number against two named edges -- no new math, no stored channel byte, no parser. The edges are this module's
+//! own design, each a named constant with a why: a color at or below the dark ceiling reads dark, one at or above the
+//! light floor reads light, and everything between reads the neutral mid (the tone a description leaves unspoken --
+//! "blue", not "mid blue"). Bounded (three tones, a fixed set), integer (a percent only), deterministic, no network,
+//! no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/color_tone.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+
+pub const color_tone_version = "20260817.130657";
+
+/// The three tone words. Named as constants so the bands below and the selftest name the exact same strings. `mid` is
+/// the neutral tone a human description leaves unspoken -- "blue", not "mid blue" -- yet named here so the set is whole.
+pub const tone_dark = "dark";
+pub const tone_mid = "mid";
+pub const tone_light = "light";
+
+/// The whole tone set -- three words, sorted strictly ascending so it is canonical and duplicate-free by inspection,
+/// and so the selftest can prove tone_of always returns a real member.
+pub const tone_count: u32 = 3;
+pub const tones = [tone_count][]const u8{
+    tone_dark,
+    tone_light,
+    tone_mid,
+};
+
+/// The lightness edges, in percent. A color at or below the dark ceiling reads dark; one at or above the light floor
+/// reads light; everything between reads mid. Chosen so pure black (0) and a deep shade read dark, pure white (100)
+/// and a pale tint read light, and a mid-lightness color of any hue reads mid.
+pub const tone_dark_max: u8 = 34;
+pub const tone_light_min: u8 = 70;
+
+/// Read any color to its coarse tone word, from lightness alone. Composes color.rgb_to_hsl and ignores hue and
+/// saturation, so two colors of the same lightness read the same tone whatever their hue. Always returns one of `tones`.
+pub fn tone_of(c: color.Rgba) []const u8 {
+    // invariant: the tone edges are ordered, so dark and light can never both claim one color.
+    assert(tone_dark_max < tone_light_min);
+    // invariant: the light floor is a real percent, so the band test is well-formed.
+    assert(tone_light_min <= 100);
+    const hsl = color.rgb_to_hsl(c);
+    if (hsl.l <= tone_dark_max) return tone_dark;
+    if (hsl.l >= tone_light_min) return tone_light;
+    return tone_mid;
+}
+
+/// Whether a name is one of the three tone words -- a bounded scan the selftest uses to prove completeness.
+fn is_tone(name: []const u8) bool {
+    // invariant: the tone set is the fixed three, never scanned past its end.
+    assert(tones.len == tone_count);
+    var i: u32 = 0;
+    while (i < tone_count) : (i += 1) {
+        if (std.mem.eql(u8, name, tones[i])) return true;
+    }
+    return false;
+}
+
+// --- selftest: prove pure black reads dark and pure white light, a mid color reads mid, tone follows lightness alone
+// --- (hue-independent), the band edges land on the right side, tone_of always returns a member, and it is deterministic.
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    _ = garden;
+
+    // 1. The tone set is the whole three, sorted strictly ascending -- canonical and duplicate-free by inspection.
+    if (tones.len != tone_count) return error.CountWrong;
+    var i: u32 = 1;
+    while (i < tone_count) : (i += 1) {
+        if (!std.mem.lessThan(u8, tones[i - 1], tones[i])) return error.TonesNotSorted;
+    }
+
+    // 2. Pure black reads dark, pure white reads light, a mid-lightness red reads mid -- the three tones reachable.
+    if (!std.mem.eql(u8, tone_of(try color.parse_hex("#000000")), tone_dark)) return error.BlackNotDark;
+    if (!std.mem.eql(u8, tone_of(try color.parse_hex("#ffffff")), tone_light)) return error.WhiteNotLight;
+    if (!std.mem.eql(u8, tone_of(try color.parse_hex("#ff0000")), tone_mid)) return error.RedNotMid;
+
+    // 3. A deep shade reads dark and a pale tint reads light, whatever the hue -- darkblue #00008b (lightness ~27) and
+    // lightblue #add8e6 (lightness ~79).
+    if (!std.mem.eql(u8, tone_of(try color.parse_hex("#00008b")), tone_dark)) return error.DarkBlueNotDark;
+    if (!std.mem.eql(u8, tone_of(try color.parse_hex("#add8e6")), tone_light)) return error.LightBlueNotLight;
+
+    // 4. Tone follows lightness ALONE: a red #ff0000 and a gray #808080, both lightness 50, read the SAME tone (mid),
+    // so hue and saturation never sway the reading -- the single concern this module holds.
+    const red_tone = tone_of(try color.parse_hex("#ff0000"));
+    const gray_tone = tone_of(try color.parse_hex("#808080"));
+    if (!std.mem.eql(u8, red_tone, gray_tone)) return error.ToneDependsOnHue;
+    if (!std.mem.eql(u8, gray_tone, tone_mid)) return error.MidGrayNotMid;
+
+    // 5. The band edges land on the right side: a gray of lightness exactly 35 (#585858) reads mid, and one of
+    // lightness 34 (#575757) reads dark -- the right-open dark band proven at its edge, not merely at its center.
+    if (!std.mem.eql(u8, tone_of(try color.parse_hex("#585858")), tone_mid)) return error.EdgeMidWrong;
+    if (!std.mem.eql(u8, tone_of(try color.parse_hex("#575757")), tone_dark)) return error.EdgeDarkWrong;
+
+    // 6. tone_of always returns a real tone member -- a spread of lightnesses across colors, each inside the set.
+    const spread = [_][]const u8{ "#123456", "#abcdef", "#7f3f00", "#004020", "#e0e0ff", "#050505", "#fdfdfd", "#606060" };
+    var j: u32 = 0;
+    while (j < spread.len) : (j += 1) {
+        if (!is_tone(tone_of(try color.parse_hex(spread[j])))) return error.ToneNotMember;
+    }
+
+    // 7. Determinism -- the same color reads the same tone every time.
+    const once = tone_of(try color.parse_hex("#00008b"));
+    const again = tone_of(try color.parse_hex("#00008b"));
+    if (!std.mem.eql(u8, once, again)) return error.NotDeterministic;
+
+    print("GREEN image-color-tone: any color reads one of three tone words (dark, mid, light) from its lightness alone over the open color algebra; pure black reads dark and pure white light, a mid-lightness color reads mid, so all three tones are reachable; a deep shade reads dark and a pale tint reads light whatever the hue (darkblue dark, lightblue light); tone follows lightness ALONE, so a red and a gray of the same lightness read the same tone (hue and saturation never sway it); the band edges land on the right side (lightness 35 reads mid, 34 reads dark); tone_of always returns a member of the sorted three; and the same color reads the same tone every time (compose not braid, color decides the lightness and this module only reads the band -- a sibling of color_name_group, composed into 'dark blue' rather than braided)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: color_tone selftest\n", .{});
+    return 1;
+}
