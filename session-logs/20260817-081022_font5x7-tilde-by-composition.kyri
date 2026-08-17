@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260817.081022
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title font5x7 tilde vowels grown by composition, GREEN
+prompt autonomous loop -- take the next agent-doable lap Lindy-first crux-first, send often, deep-read one council-rota doc, stop only at custody gates
+think The prior lap this turn grew the circumflex set by composition (the third mark). image/README.md names the tilde and diaeresis as the remaining composition rounds. The tilde is next -- and it earns its own round because the mark is a differently-shaped one: a WAVE that spans both halves and crests right, not a lean or a centered peak. Proving the composition tool reproduces that shape too is genuine incremental proof, not a repeat.
+think Read font5x7_tilde.rye (the hand-drawn parity target and the wave-placement readers to mirror). Verified lowercase a/o carry blank rows 0-1 and their rows 2..6 equal the hand-drawn tilde bodies, so overlay(base, wave rows 0-1 "..#.#"/".#.#.") reproduces the hand-drawn tilde byte-for-byte. Only the two nasal vowels compose: the n tilde (U+00F1) rides a consonant base and lives hand-drawn in font5x7_latin1, outside a vowel-base table -- named honestly rather than forced.
+think Wrote image/font5x7_tilde_comp.rye modeled on font5x7_circumflex_comp.rye: draw the wave once, map a/o to their ascending tilde codepoints (U+00E3, U+00F5), grow the atlas with accent.compose_accent_atlas, then prove byte-for-byte parity against font5x7_tilde's coverage, gfa1 round-trip, presence, distinctness, legibility, and the tilde-specific crux -- three toothed guards that the wave spans the left half, spans the right half, and crests right of center (the reader that separates a wave from a circumflex's centered peak).
+obs First metal run GREEN, no red: 2 vowels grown from one wave and a two-row table, each byte-for-byte the hand-drawn coverage, round-trip byte-identical, ink 16..18 of 35, every mark a wave spanning both halves and cresting right. The economy is now proven on a FOURTH mark -- grave, acute, circumflex, tilde -- and the tool composes a two-row spanning wave as cleanly as a lean or a peak.
+obs Rota lap (d27, item 3) deep-read foundations/20260811-211431_the-lindy-effect-and-the-long-return.md -- the long return: what survives is what deserves the opening paragraph. A composition primitive that turns O(letters x accents) hand-drawing into O(letters + accents) is Lindy-durable floor code; each composed mark is one more survived test that the primitive holds across differently-shaped marks.
+loom witness=font5x7_tilde_comp_witness glyphs=2 encoded_bytes=109 raw_bytes=70 ink_lo=16 ink_hi=18
+file image/font5x7_tilde_comp.rye the tilde vowels grown by composition, byte-for-byte the hand-drawn font5x7_tilde coverage, GREEN
+file tools/font5x7_tilde_comp_witness.rish the companion Rishi witness, builds and proves the corpus on metal
+file image/README.md accreted the font5x7_tilde_comp entry and reframed the next-rungs line to the diaeresis alone (docs-sync)
+file crux/REMEMBER.md live edge notes the fourth accent mark grown by composition
+recommend keep-going draw the diaeresis mark once and grow its whole set from a table the same way, the last of the four vowel-diacritic marks to compose
