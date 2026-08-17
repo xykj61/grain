@@ -14,6 +14,10 @@
 #     QOI codec byte-for-byte.
 #   - The honest edge -- a frame cell carrying a byte the font cannot draw refuses ScooterFrameUnpaintable by
 #     name, having painted nothing.
+#   - The coloured twin -- render_channel_fg paints the status header (row 0) in an accent colour and the body in
+#     the reading colour, a pure pass-through of text_grid.render_grid_fg; the coloured face inks the same pixels
+#     as the single-ink face (colour moves ink, adds none), reads the accent on the header and the body colour
+#     below, round-trips through QOI, and a mis-sized palette refuses GridFgMismatch by name.
 #
 # Facts only, custody-first: it reads a public journal a member already holds and paints it; no network, no key
 # signs, no funds. The wire that carries the image between two Constel piers reaches the serve gate -- the
