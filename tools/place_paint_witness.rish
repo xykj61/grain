@@ -36,7 +36,8 @@ assert selftest.ok else "place-paint: selftest exited non-zero -- ${selftest.out
 let out = trim selftest.out
 say "place-paint: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-place' && echo yes"]
-assert (trim green.out) == "yes" else "place-paint: selftest did not print the GREEN place line"
+# Check the GREEN claim with Rishi's native `contains`, never a shell grep over interpolated output -- an apostrophe in
+# the selftest prose (the source's own window) can never close a shell quote here, the loom REDS #76 taught the tree.
+assert selftest.out contains "GREEN image-place" else "place-paint: selftest did not print the GREEN place line"
 
 say "place-paint: GREEN -- one source placed at a named anchor in a box, proven on metal: the source seated on the slack, flush to a corner, or at a mixed corner; an oversize source clipped to the box by its anchor; a translucent src-over placement; a byte-for-byte QOI round trip; and every malformed placement refused by name having painted nothing."
