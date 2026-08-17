@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260817.003042
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title text-layout, the composition rung that makes the fonts usable
+prompt Autonomous loop: take the next agent-doable lap Lindy-first crux-first past BUHR; Rye prioritized, Glow on green-witnessed Rye; deep-read one council-rota doc; send often as its own signed round; stop at custody gates.
+think Nine font corpora and the gfa1 atlas stand, plus the unifying full-ASCII font. Lindy-first crux-first: another corpus is a repeat of a solved macro; the higher-Lindy crux is the composition that makes every corpus useful -- text layout, the measure half a surface needs before it can ever paint.
+think glyph.rye names pixel-painting a later, PAUSED Brushstroke rung. Layout is not painting: it is pen geometry and width arithmetic, the twin of color.rye's math. So it is floor code that waits on nothing, exactly the color-module precedent -- harmonious with the Brushstroke pause rather than crossing it.
+think SLC: the smallest complete thing is single-line layout -- place each glyph at the running pen origin, step by its advance, sum the width. Missing glyph is a NAMED refusal (UncoveredCodepoint), echoing glyph.rye's refuse-rather-than-paint-garbage discipline. Word-wrap is the named grow-it rung, not this round.
+think Built image/text_layout.rye: layout_line -> LineLayout{count,width} with one PlacedGlyph per byte; measure_width for sizing without a buffer; covers as the non-refusing predicate. u32 counts and pen widths, u8 codepoints, every loop and buffer bounded (line_glyph_max, line_width_max), >=2 positive invariants per fn.
+obs Rota lap (d27), lap-index proxy 1131 logs -> item 25, deep-read active-designing/20260816-205859_double-seat-expansion-eight-seasons.md -- Season G names color (done), fonts (in progress), and the media family; this layout rung is the bridge from the font family to Dexter/Scooter/Skate wanting text, precisely the "one table a surface reads the day it wants text" the eight-seasons doc calls for, now with the geometry to place it.
+obs One red caught and fixed in the same lap: tame_style_check banned a compound assert (empty_line.count == 0 and width == 0); split into two so the failing half names itself. Witness then GREEN, tame_style_check clean, width-check exit 0.
+loom witness=text_layout_witness selftest_glyphs=3 band_glyphs=95 band_width=570 line_width=18
+file image/text_layout.rye the layout module -- place, measure, cover; pure geometry, no pixel
+file tools/text_layout_witness.rish proves pen origins, width, empty base case, full band, and the named refusal on metal
+file image/README.md indexes text_layout under Open Media Primitives; updates the next-rungs line (word-wrap named)
+recommend keep-going -- next Season G crux: word-wrap a laid line to a max width at space breaks, or the diagonal box corpus; both agent-doable, floor code, no gate.

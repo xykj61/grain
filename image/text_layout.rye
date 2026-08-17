@@ -1,0 +1,181 @@
+//! image/text_layout.rye -- the open text-layout rung (Season G, the composition after the font family).
+//!
+//! Season G (Open Media Primitives) - the measure half that makes the nine hand-drawn corpora usable. The glyph
+//! atlas (image/glyph.rye, gfa1) and the full-ASCII font (image/font5x7_ascii.rye) give a surface the glyphs; this
+//! module gives it their GEOMETRY -- where each glyph of a string sits along a line, and how wide the whole line runs.
+//! It is pure measurement, the twin of image/color.rye's arithmetic: no pixel is touched, so it is floor code that
+//! does not wait on DJINN's Bit Design System (only Brushstroke rendering is paused, not layout math). Painting the
+//! placed coverage into an RGBA grid is the later rung this one prepares; here we only place and measure.
+//!
+//! A line is laid left to right: each glyph is stamped at the running pen origin, then the pen steps forward by that
+//! glyph's advance. A byte with no glyph in the atlas is a NAMED refusal (UncoveredCodepoint) rather than a silent
+//! hole -- the same discipline glyph.rye keeps, refusing rather than painting garbage. The full-ASCII font covers the
+//! whole printable band, so a caller that composes with it lays out any printable string; an uncovered byte (a
+//! control char, or a codepoint only some other corpus draws) refuses by name. No network, no key, no funds.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/text_layout.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+const font_ascii = @import("font5x7_ascii.rye");
+
+pub const text_layout_version = "20260817.003042";
+
+/// The most glyphs one laid-out line may hold -- a generous ceiling over any label a repair-panel UI shows.
+pub const line_glyph_max: u32 = 4096;
+
+/// The widest a line's pen may travel, in cells: line_glyph_max glyphs times the largest advance a glyph can carry.
+/// Named so the running pen sum has a proven ceiling and never has to be trusted unbounded.
+pub const line_width_max: u32 = line_glyph_max * 255;
+
+/// One placed glyph -- its codepoint, its pen origin along the line (cells from the line start), and the atlas glyph
+/// it points to. The pointer is borrowed from the atlas the caller passed; this module reorders references, not bytes.
+pub const PlacedGlyph = struct {
+    codepoint: u32 = 0,
+    pen_x: u32 = 0,
+    src: *const glyph.Glyph = undefined,
+};
+
+/// A laid-out single line -- how many glyphs were placed, and the total pen width in cells (the sum of advances).
+pub const LineLayout = struct {
+    count: u32 = 0,
+    width: u32 = 0,
+};
+
+/// Lay `text` (a byte string, one codepoint per byte) into `out`, one PlacedGlyph per byte, left to right by each
+/// glyph's advance. Returns the placed count and total width. Refuses UncoveredCodepoint by name the moment a byte
+/// has no glyph in the atlas -- a caller composes with a font whose band it covers, and learns of a gap at once.
+pub fn layout_line(atlas: *const glyph.GlyphAtlas, text: []const u8, out: []PlacedGlyph) !LineLayout {
+    // invariant: the input line stays within the named ceiling, so the loop below is bounded.
+    if (text.len > line_glyph_max) return error.LineTooLong;
+    // invariant: the caller's buffer holds at least one placed glyph per input byte.
+    assert(out.len >= text.len);
+
+    var pen: u32 = 0;
+    var i: u32 = 0;
+    const n: u32 = @intCast(text.len);
+    while (i < n) : (i += 1) {
+        const cp: u32 = text[i];
+        const g = atlas.lookup(cp) orelse return error.UncoveredCodepoint;
+        // invariant: a glyph advance is a real forward step, so the pen strictly increases per glyph.
+        assert(g.advance >= 1);
+        out[i] = PlacedGlyph{ .codepoint = cp, .pen_x = pen, .src = g };
+        pen += g.advance;
+        // invariant: the running pen never exceeds the proven line-width ceiling.
+        assert(pen <= line_width_max);
+    }
+    // invariant: with every advance >= 1, the total width is at least the glyph count -- no origin underflows.
+    assert(pen >= n);
+    return LineLayout{ .count = n, .width = pen };
+}
+
+/// Measure the total pen width of `text` in cells without placing glyphs -- the sizing a wrap or a centered label
+/// needs before it lays anything. Refuses UncoveredCodepoint by name, so a measured width is always an honest one.
+pub fn measure_width(atlas: *const glyph.GlyphAtlas, text: []const u8) !u32 {
+    // invariant: the measured line stays within the named ceiling.
+    if (text.len > line_glyph_max) return error.LineTooLong;
+    var pen: u32 = 0;
+    var i: u32 = 0;
+    const n: u32 = @intCast(text.len);
+    while (i < n) : (i += 1) {
+        const g = atlas.lookup(text[i]) orelse return error.UncoveredCodepoint;
+        // invariant: each advance is a real forward step within the width ceiling.
+        assert(g.advance >= 1);
+        pen += g.advance;
+        assert(pen <= line_width_max);
+    }
+    return pen;
+}
+
+/// Does `atlas` carry a glyph for every byte in `text`? The non-refusing predicate a caller checks before laying
+/// out, when it would rather substitute a font than field a refusal. A bounded scan -- text is capped at the ceiling.
+pub fn covers(atlas: *const glyph.GlyphAtlas, text: []const u8) bool {
+    // invariant: the checked line stays within the named ceiling, so the scan is bounded.
+    assert(text.len <= line_glyph_max);
+    var i: u32 = 0;
+    const n: u32 = @intCast(text.len);
+    while (i < n) : (i += 1) {
+        if (atlas.lookup(text[i]) == null) return false;
+    }
+    return true;
+}
+
+// --- selftest: lay real text against the full-ASCII font, prove pen positions, width, coverage, and the refusal ---
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try font_ascii.build_atlas(garden);
+    const advance: u32 = font_ascii.glyph_advance; // every printable-ASCII glyph shares this advance (6 cells)
+
+    // Lay a short line and prove the geometry: three glyphs at 0, advance, 2*advance; width = 3*advance.
+    const text = "Hi!";
+    const out = try garden.alloc(PlacedGlyph, text.len);
+    const line = try layout_line(&atlas, text, out);
+    // invariant: every byte was placed, and the total width is the sum of the shared advances.
+    assert(line.count == text.len);
+    assert(line.width == advance * @as(u32, text.len));
+
+    // Each placed glyph sits at its cumulative pen origin and points at the right codepoint.
+    var i: u32 = 0;
+    var expect_pen: u32 = 0;
+    while (i < line.count) : (i += 1) {
+        assert(out[i].codepoint == text[i]);
+        assert(out[i].pen_x == expect_pen);
+        assert(out[i].src.codepoint == text[i]);
+        expect_pen += out[i].src.advance;
+    }
+    // invariant: the walked pen ends exactly at the reported width.
+    assert(expect_pen == line.width);
+
+    // measure_width agrees with the laid line, without needing an out buffer.
+    const w = try measure_width(&atlas, text);
+    assert(w == line.width);
+
+    // The empty line places nothing and measures zero -- a real, bounded base case.
+    const empty_line = try layout_line(&atlas, "", out);
+    assert(empty_line.count == 0);
+    assert(empty_line.width == 0);
+    assert((try measure_width(&atlas, "")) == 0);
+
+    // covers: the full-ASCII font covers a printable line, and does not cover a control char (tab, 0x09).
+    assert(covers(&atlas, text));
+    const tab = [_]u8{0x09};
+    assert(!covers(&atlas, tab[0..]));
+
+    // UncoveredCodepoint: laying or measuring an uncovered byte refuses BY NAME, never a silent hole.
+    if (layout_line(&atlas, tab[0..], out)) |_| return error.UncoveredSlipped else |e| {
+        if (e != error.UncoveredCodepoint) return error.WrongUncovered;
+    }
+    if (measure_width(&atlas, tab[0..])) |_| return error.MeasureSlipped else |e| {
+        if (e != error.UncoveredCodepoint) return error.WrongMeasure;
+    }
+
+    // A full printable-band sweep lays out cleanly: every codepoint 32..126 covered, width = band * advance.
+    const band_lo: u32 = font_ascii.printable_lo;
+    const band_hi: u32 = font_ascii.printable_hi;
+    const band_len: u32 = band_hi - band_lo + 1;
+    const band = try garden.alloc(u8, band_len);
+    var c: u32 = 0;
+    while (c < band_len) : (c += 1) band[c] = @intCast(band_lo + c);
+    const band_out = try garden.alloc(PlacedGlyph, band_len);
+    const band_line = try layout_line(&atlas, band, band_out);
+    assert(band_line.count == band_len);
+    assert(band_line.width == advance * band_len);
+    assert(covers(&atlas, band));
+
+    print("GREEN image-text-layout: laid '{s}' as {d} glyphs at pen 0..{d} width {d}; measure agrees; empty line zero; full printable band {d}..{d} ({d} glyphs) lays clean at width {d}; covers hit+miss proven; UncoveredCodepoint refused by name for layout and measure\n", .{
+        text, line.count, line.width - advance, line.width, band_lo, band_hi, band_len, band_line.width,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: text_layout selftest\n", .{});
+    return 1;
+}

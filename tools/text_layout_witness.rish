@@ -1,0 +1,42 @@
+# tools/text_layout_witness.rish -- the open text-layout rung proves itself on metal (Season G, composition).
+#
+# Season G (Open Media Primitives) - the measure half that makes the nine hand-drawn corpora usable. The glyph atlas
+# (image/glyph.rye, gfa1) and the full-ASCII font (image/font5x7_ascii.rye) hand a surface the glyphs; image/text_layout.rye
+# hands it their geometry -- where each glyph of a string sits along a line, and how wide the whole line runs. It is
+# pure measurement, the twin of the color module's arithmetic: no pixel is touched, so it is floor code that does not
+# wait on the paused Brushstroke rendering.
+#
+# The crux this witness proves: a real line ('Hi!') lays out at the expected pen origins (0, advance, 2*advance) and
+# total width; measure_width agrees with the laid line; the empty line is a clean zero; the whole printable band 32..126
+# lays out covered; and an uncovered byte (a tab control char) refuses BY NAME (UncoveredCodepoint) for both layout and
+# measure rather than painting a silent hole. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/text_layout_witness.rish
+
+say "text-layout: Language EN -- Season G's composition rung; the measure half that places a string's glyphs along a line and sums their advances, so the nine open corpora become usable geometry."
+say "text-layout: Style Radiant -- pure measurement, the twin of the color module's arithmetic; no pixel touched, so it is floor code independent of the paused Brushstroke rendering."
+say "text-layout: Lens TAME -- u32 in-memory counts and pen widths, u8 codepoint bytes; every buffer and loop names a maximum (line_glyph_max - line_width_max); each function states its invariants positively; a missing glyph is a named refusal, never a silent hole; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/text_layout"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/text_layout.rye -femit-bin=${bin}"]
+assert build.ok else "text-layout: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "text-layout: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "text-layout: ${out}"
+
+let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-text-layout' && echo yes"]
+assert (trim green.out) == "yes" else "text-layout: selftest did not print the GREEN layout line"
+
+let refuse = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'UncoveredCodepoint refused by name' && echo yes"]
+assert (trim refuse.out) == "yes" else "text-layout: the uncovered-codepoint refusal was not proven"
+
+let band = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'full printable band 32..126' && echo yes"]
+assert (trim band.out) == "yes" else "text-layout: the full printable band did not lay out clean"
+
+say "text-layout: GREEN -- the fonts become usable geometry; a line lays out at proven pen origins and width, the printable band lays clean, and an uncovered byte refuses by name."
