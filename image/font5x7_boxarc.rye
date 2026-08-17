@@ -1,0 +1,200 @@
+//! image/font5x7_boxarc.rye -- the open rounded-corner box set: the four light arc corners (Season G, font content).
+//!
+//! Season G (Open Media Primitives) - font content for the open glyph atlas image/glyph.rye (gfa1), the soft-corner
+//! companion to image/font5x7_box.rye's sharp light corners. Where font5x7_box.rye draws the four SQUARE corners
+//! (U+250C U+2510 U+2514 U+2518) that meet at a hard right angle, this corpus draws the four ROUNDED corners
+//! (U+256D..U+2570) that a modern terminal surface reaches for to frame a panel with a soft edge -- exactly the
+//! rounded border the Dexter/Scooter terminal family draws around a channel. Four marks, drawn in our own open hand on
+//! the same 5x7 body the box, arrow, block, and geometric corpora share, so a rounded frame mixes freely with the
+//! straight rules and tees already in the atlas.
+//!
+//! The source stays plain ASCII (ASCII-first): the codepoints are written as numeric literals (0x256D ...) and each
+//! mark is named in an ASCII comment, so no non-ASCII byte enters the file even though the glyphs it builds cover a
+//! non-ASCII range. The corner is rounded on a coarse grid by the low-resolution trick every bitmap font uses: the
+//! exact elbow cell is left blank and the horizontal stub steps one column in, so the pen reads as a soft diagonal
+//! ease rather than a hard right angle -- an honest rounding, never a claim of a true curve at 5x7. The drawings ARE
+//! the specification: each mark is seven rows of five cells in ASCII line art ('#' full ink, '.' none) that a reader
+//! audits by eye; the coverage bytes are derived from that art, never the reverse. build_atlas turns the four
+//! drawings into a glyph.GlyphAtlas the gfa1 encoder accepts, so the property that matters stays provable on metal:
+//! decode(encode(atlas)) recovers every glyph byte-for-byte, the four corners are present and distinct, and each
+//! reads within an honest legibility band. No network, no key, no funds -- the corners a surface reads the day it
+//! wants a soft frame, on our own open font.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_boxarc.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+
+pub const font5x7_boxarc_version = "20260817.045324";
+
+/// Every glyph in this corpus shares one 5-wide, 7-tall cell -- the same body the box and sibling corpora carry.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance: the cell width plus one column of daylight, the same advance the sibling corpora carry.
+pub const boxarc_advance: u8 = cell_w + 1;
+
+/// The corpus holds exactly the four rounded box corners named in the table below.
+pub const boxarc_count: u32 = 4;
+
+/// Cells per glyph -- the coverage length every mark carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The four rounded-corner codepoints, strictly ascending -- the order the gfa1 encoder trusts. Each aligns by index
+/// with boxarc_art below. Written as numeric literals so the source stays plain ASCII while the glyphs cover a
+/// non-ASCII range:
+///   0x256D arc down and right (top-left rounded corner), 0x256E arc down and left (top-right),
+///   0x256F arc up and left (bottom-right), 0x2570 arc up and right (bottom-left). These are the light arc set, the
+///   soft twins of font5x7_box.rye's square U+250C/U+2510/U+2518/U+2514.
+const boxarc_codepoints = [boxarc_count]u32{
+    0x256D, 0x256E, 0x256F, 0x2570,
+};
+
+/// The four rounded corners, drawn in the open. Each is seven rows of five cells; '#' ink, '.' background. The pen
+/// rides the middle column (index 2) for its vertical arm and the middle row (index 3) for its horizontal arm, with
+/// the exact elbow cell left blank and the horizontal stub stepped one column in so the join reads as a soft ease.
+const boxarc_art = [boxarc_count][cell_h][]const u8{
+    .{ ".....", ".....", ".....", "...##", "..#..", "..#..", "..#.." }, // U+256D arc down and right (top-left)
+    .{ ".....", ".....", ".....", "##...", "..#..", "..#..", "..#.." }, // U+256E arc down and left (top-right)
+    .{ "..#..", "..#..", "..#..", "##...", ".....", ".....", "....." }, // U+256F arc up and left (bottom-right)
+    .{ "..#..", "..#..", "..#..", "...##", ".....", ".....", "....." }, // U+2570 arc up and right (bottom-left)
+};
+
+/// Lift one mark's ASCII art into a freshly allocated coverage grid of exactly cell_area bytes: 255 for ink,
+/// 0 for background. The art's own shape is asserted, so a mistyped row is a stopped line rather than a bad glyph.
+fn coverage_from_art(allocator: std.mem.Allocator, art: [cell_h][]const u8) ![]u8 {
+    // invariant: a coverage grid is exactly the shared cell area, within the atlas ceiling.
+    assert(cell_area >= 1);
+    assert(cell_area <= glyph.coverage_max);
+    const cov = try allocator.alloc(u8, cell_area);
+    var idx: u32 = 0;
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        const row = art[r];
+        // invariant: every drawn row is exactly the cell width -- the art matches the grid.
+        assert(row.len == cell_w);
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            cov[idx] = if (row[c] == '#') 255 else 0;
+            idx += 1;
+        }
+    }
+    // invariant: the whole grid was filled, no cell left unwritten.
+    assert(idx == cell_area);
+    return cov;
+}
+
+/// Build the rounded-corner atlas: four glyphs at the named ascending codepoints, sharing the 5x7 cell and advance.
+/// The gfa1 encoder accepts the result directly (ascending codepoints, coverage length == cell area).
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the corpus is the four named rounded corners and no more.
+    assert(boxarc_count == 4);
+    assert(cell_area == 35);
+    const glyphs = try allocator.alloc(glyph.Glyph, boxarc_count);
+    var i: u32 = 0;
+    var last_cp: u32 = 0;
+    while (i < boxarc_count) : (i += 1) {
+        const cp = boxarc_codepoints[i];
+        // invariant: codepoints are strictly ascending -- the ordering the gfa1 encoder trusts.
+        assert(i == 0 or cp > last_cp);
+        last_cp = cp;
+        const cov = try coverage_from_art(allocator, boxarc_art[i]);
+        glyphs[i] = glyph.Glyph{
+            .codepoint = cp,
+            .advance = boxarc_advance,
+            .coverage = cov,
+        };
+    }
+    // invariant: the last codepoint is the bottom-left arc (U+2570) -- the table ends where the arc set ends.
+    assert(glyphs[boxarc_count - 1].codepoint == 0x2570);
+    return glyph.GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- the legibility signal a blank glyph would fail.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+// --- selftest: build the arc atlas, round-trip it through gfa1, prove all present, distinct, legible ---------------
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built atlas is the four-corner corpus at the shared cell.
+    assert(glyph_count == boxarc_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // Four present corners: every one looks up, carries the shared advance; an ASCII letter misses.
+    var d: u32 = 0;
+    while (d < boxarc_count) : (d += 1) {
+        const cp = boxarc_codepoints[d];
+        if (back.lookup(cp)) |g| {
+            assert(g.codepoint == cp);
+            assert(g.advance == boxarc_advance);
+        } else return error.ArcCornerMissing;
+    }
+    if (back.lookup('A')) |_| return error.NonArcFound else {}
+
+    // Distinctness: no two corners share identical coverage -- the four elbows point four different ways.
+    var a: u32 = 0;
+    while (a < boxarc_count) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b < boxarc_count) : (b += 1) {
+            if (std.mem.eql(u8, atlas.glyphs[a].coverage, atlas.glyphs[b].coverage)) return error.ArcCornersNotDistinct;
+        }
+    }
+
+    // Legibility: each corner's ink count sits inside an honest band. An arc corner is sparse by nature -- a short
+    // horizontal stub plus a vertical arm -- so the floor sits where the stub still reads and the ceiling where the
+    // corner still resolves as line art rather than a blob.
+    const ink_min: u32 = 4;
+    const ink_max: u32 = 8;
+    var lo: u32 = cell_area;
+    var hi: u32 = 0;
+    var k: u32 = 0;
+    while (k < boxarc_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (n < ink_min or n > ink_max) return error.ArcCornerIllegible;
+        if (n < lo) lo = n;
+        if (n > hi) hi = n;
+    }
+    // invariant: the observed ink band stayed inside the honest bounds.
+    assert(lo >= ink_min);
+    assert(hi <= ink_max);
+
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof.
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-boxarc: {d} rounded box corners U+256D..U+2570 at {d}x{d} round-trip byte-identical; all present, distinct, legible (ink {d}..{d} of {d}); encoded {d} bytes, raw {d}\n", .{
+        glyph_count, cell_w, cell_h, lo, hi, cell_area, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_boxarc selftest\n", .{});
+    return 1;
+}
