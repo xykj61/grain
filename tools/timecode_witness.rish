@@ -1,0 +1,53 @@
+# tools/timecode_witness.rish -- the burned-in timecode proves itself over moving video (Season G, open media).
+#
+# Season G (Open Media Primitives) - the timed-TEXT companion to tools/scrubber_witness.rish's timed GEOMETRY. Where a
+# scrubber pins a progress BAR whose fill width is a pure function of the frame index, a timecode pins a READOUT whose
+# text is a pure function of the frame index: the "0:07" clock a video player burns into a corner, ticking one step per
+# second. image/timecode.rye renders the same mostly-still moving background, computes elapsed seconds by integer
+# arithmetic, formats them as digits, and composites a fixed-place badge onto each frame.
+#
+# The crux this witness proves is format_timecode: a total-seconds count turned into "M:SS" digit bytes by pure integer
+# division and remainder, NO FLOAT ever entering, proven by known answer (0 -> 0:00, 65 -> 1:05, 5999 -> 99:59) then bound
+# to pixels (an independently painted expected-text badge matches the reel byte for byte). The readout ticks with playback
+# (byte-steady within a second, changing at each boundary), touches only the badge rectangle, and the whole reel
+# round-trips byte for byte through BOTH open codecs; the delta/keyframe mix is REPORTED, never claimed a compression win
+# (REDS #82). No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/timecode_witness.rish
+
+say "timecode: Language EN -- Season G's timed-text rung; an M:SS clock whose digits are a pure function of the frame index, composing image/text_panel.rye and the font family onto image/frames.rye and image/frames_delta.rye."
+say "timecode: Style Radiant -- the badge holds its place while its readout ticks with playback; steady within each whole second, advancing exactly at the boundary, and never a clock running backward."
+say "timecode: Lens TAME -- u32 in-memory counts, u8 pixel bytes; the seconds and the M:SS split are integer division and modulo, so no float enters; every buffer names a maximum (timecode_max_frames, tc_max_len, the codecs' encoded_bound); format_timecode is proven by known answer and bound to pixels; each failure has a name; the delta/keyframe mix a reported measurement, never a false compression claim; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/timecode"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/timecode.rye -femit-bin=${bin}"]
+assert build.ok else "timecode: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "timecode: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "timecode: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-timecode' && echo yes"]
+assert (trim green.out) == "yes" else "timecode: selftest did not print the GREEN timecode line"
+
+let kat = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'format_timecode exact by KAT' && echo yes"]
+assert (trim kat.out) == "yes" else "timecode: the format_timecode known-answer crux did not prove"
+
+let bound = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'badge pixels bound to the formatter' && echo yes"]
+assert (trim bound.out) == "yes" else "timecode: the pixels-bound-to-formatter crux did not prove"
+
+let tick = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'steady pairs' && echo yes"]
+assert (trim tick.out) == "yes" else "timecode: the tick-with-playback crux did not prove"
+
+let only = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'touching only the' && echo yes"]
+assert (trim only.out) == "yes" else "timecode: the overlay-touches-only-the-badge crux did not prove"
+
+let round = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-trip byte-identical through BOTH codecs' && echo yes"]
+assert (trim round.out) == "yes" else "timecode: the stamped reel did not round-trip through both codecs"
+
+say "timecode: GREEN -- an M:SS clock over moving video; format_timecode is exact by known answer with no float, its digits bound to the badge pixels byte for byte, the readout ticks once per second, touches only the badge, and the composited reel round-trips byte for byte through both open codecs."

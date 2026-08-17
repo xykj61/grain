@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260817.033616
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image -- timecode: the burned-in M:SS clock over moving video, GREEN
+prompt Autonomous loop -- take the next agent-doable lap Lindy-first crux-first over Season G open media; read one council-rota doc; send often; stop at custody gates.
+think Read REMEMBER's live edge (image/scrubber.rye GREEN, the timed-geometry progress bar), the eight-season double-seat, the 1024-round itinerary, and the crypto-parity doc; the live edge is Season G open-media, the broadcast-overlay family growing rung by rung.
+think Rota this lap (d27, item 18) deep-read context/TWO_ROOMS.md -- the checkable and the visionary; honored it exactly, letting format_timecode enter the checkable room only through a witness that binds it (a known-answer test plus a pixels-bound check), never a claim.
+think Picked the next crux Lindy-first: the scrubber proved timed GEOMETRY, so the twin is timed TEXT -- an M:SS clock a video player burns into a corner, whose digits are a pure function of the frame index. The one genuinely new primitive is format_timecode: integer division and modulo turning a seconds count into digit bytes, no float, exact at every second.
+think Designed the proof to bind pixels to the formatter: paint the expected readout onto a DISTINCT flat background and compare only the opaque badge rectangle byte for byte, so a match proves the digits seen are the digits format_timecode produced (opacity makes the badge depend on the text alone).
+think Added a tick invariant against timecode_seconds as the oracle: within a whole second the badge is byte-steady frame to frame, and it changes exactly at each second boundary -- the clock advances when the second does, never between.
+think Composed over public APIs only (background verbs, paint_text_panel, both codecs), reusing the mostly-still moving-block background as ground truth; single-stranded, braiding nothing beneath, inventing no storage/codec/palette/glyph/font.
+obs GREEN on the first metal run: format_timecode passes every known answer (0->0:00, 1->0:01, 59->0:59, 60->1:00, 65->1:05, 600->10:00, 5999->99:59); the badge pixels match the formatter byte for byte on all 24 frames; 1 tick + 22 steady pairs over 24 frames of 96x48, touching only the 40x13 badge; the reel round-trips byte for byte through both codecs.
+obs The gfd1 adaptive encoder honestly chose 0 deltas + 24 keyframes -- the moving block ticks every frame, so a delta costs more than a whole frame -- so gfd1 (8111 bytes) is a hair larger than gfv1 (8087), reported not claimed (REDS #82). The same honest fallback the scrubber and marquee showed.
+obs The image/README.md was one rung behind (no scrubber entry yet); since the doc was open I added both the scrubber and the timecode rungs and refreshed the next-rungs line, so the family doc is honest again (docs-implementation-sync, a ratchet on touch).
+loom witness=timecode_witness frames=24 frame_w=96 frame_h=48 ticks=1 steady_pairs=22 gfv_bytes=8087 gfd_bytes=8111 gfd_deltas=0 gfd_keyframes=24
+file image/timecode.rye the burned-in timecode -- a data-driven M:SS clock composited over the reel; format_timecode turns the frame index into digit bytes by pure integer math, proven by known answer and bound to the badge pixels, ticking once per second, touching only the badge, round-trip both codecs.
+file tools/timecode_witness.rish builds and runs the selftest on metal; asserts the GREEN line, the format-by-known-answer crux, the pixels-bound-to-formatter crux, the tick-with-playback crux, the overlay-touches-only-the-badge crux, and the both-codecs round-trip.
+file image/README.md added the scrubber and timecode rungs to the family doc and refreshed the next-Season-G-rungs line (docs-implementation-sync).
+file crux/REMEMBER.md live edge + Git nib refreshed to the timecode rung in the same work commit.
+file session-logs/README.md newest-first row prepended for this lap.
+recommend keep-going next Season G rung -- the broadcast overlays proven on a longer varied real reel, a scrubber playhead marker, or wider symbols over the 5x7 body; all agent-doable, no gate.

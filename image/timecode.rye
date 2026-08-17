@@ -1,0 +1,418 @@
+//! image/timecode.rye -- the burned-in timecode: a data-driven M:SS clock composited over the reel (Season G, open media).
+//!
+//! Season G (Open Media Primitives) - the timed-TEXT companion to image/scrubber.rye's timed GEOMETRY. Where a scrubber
+//! pins a progress BAR whose fill width is a pure function of the frame index, a timecode pins a READOUT whose text is a
+//! pure function of the frame index: the "0:07" clock a video player burns into a corner, ticking one step per second as
+//! the clip plays. Everything under this rung is already proven -- the font family draws every ASCII glyph (font5x7_ascii),
+//! the opaque panel seals text inside a frame (text_panel.rye), the two codecs round-trip a reel byte for byte
+//! (frames.rye, frames_delta.rye) -- so this rung braids none of it: it renders the same mostly-still moving background,
+//! computes the elapsed time by integer arithmetic, formats it as digits, and composites a fixed-place badge onto each
+//! frame.
+//!
+//! The crux this rung proves, and the one thing nothing under it did, is `format_timecode`: a total-seconds count turned
+//! into "M:SS" (or "MM:SS") digit bytes by pure u32 integer division and remainder -- NO FLOAT ever enters, so the clock
+//! is exact at every second. It is proven by known-answer test (0 -> "0:00", 65 -> "1:05", 5999 -> "99:59"), then bound to
+//! pixels: an independently painted expected-text badge matches the reel's badge byte for byte, so the digits SEEN are the
+//! digits the formatter produced. Three more measurable halves, each against the plain no-badge background as ground truth:
+//!   * the readout ticks with playback -- within one whole second the badge rectangle is byte-identical frame to frame,
+//!     and at each second boundary it changes (the clock advances exactly when the second does, never between),
+//!   * the overlay touches only the badge -- a stamped frame differs from the background only WITHIN the badge rectangle,
+//!     leaving the moving picture beneath it untouched, and
+//!   * the elapsed seconds are monotone non-decreasing in the frame index (a clock never runs backward).
+//! The whole stamped reel then round-trips byte for byte through BOTH open codecs, and the delta/keyframe mix is REPORTED,
+//! never claimed a compression win (REDS #82). Pure composition over public APIs (the background verbs, paint_text_panel,
+//! both codecs); no new storage, codec, palette, glyph, or font -- integer arithmetic maps the frame index to a string, so
+//! no float ever enters. No network, no key, no funds -- the timecode a surface plays under live video, on our own open
+//! geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/timecode.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const glyph = @import("glyph.rye");
+const font_ascii = @import("font5x7_ascii.rye");
+const text_layout = @import("text_layout.rye");
+const text_paint = @import("text_paint.rye");
+const text_panel = @import("text_panel.rye");
+const shape = @import("shape.rye");
+const frames = @import("frames.rye");
+const frames_delta = @import("frames_delta.rye");
+
+pub const timecode_version = "20260817.074500";
+
+/// The frame window the background moves through and the badge is pinned onto. Landscape, matching the scrubber, caption,
+/// and subtitle rungs so the whole broadcast-overlay family shares one canvas size.
+pub const timecode_frame_w: u32 = 96;
+pub const timecode_frame_h: u32 = 48;
+
+/// Playback rate stored in both containers' headers AND read here to turn a frame index into elapsed seconds. The one
+/// place this family interprets fps rather than merely carrying it -- a timecode is fps made visible.
+pub const timecode_fps: u8 = 12;
+
+/// A safe ceiling on the reel's frame count, so the frame loop and the codecs' frame field stay bounded.
+pub const timecode_max_frames: u32 = 256;
+
+/// The badge's two-digit-minute ceiling: 99:59. A reel that would tick past this refuses at build time, so the fixed-width
+/// buffer below is always enough and the clock never wraps silently.
+pub const tc_max_seconds: u32 = 99 * 60 + 59;
+/// The longest readout, "99:59" -- five glyphs. A single-digit minute writes four ("9:59"); both fit this buffer.
+pub const tc_max_len: u32 = 5;
+
+/// A formatted timecode -- a fixed-width byte buffer and the count of bytes actually written. Value-typed (no allocation),
+/// so a caller reads `slice()` and paints it. The buffer holds "M:SS" or "MM:SS"; `len` is 4 or 5.
+pub const Timecode = struct {
+    buf: [tc_max_len]u8,
+    len: u32,
+
+    /// The written portion of the buffer -- the digits and colon, without the undefined tail.
+    pub fn slice(self: *const Timecode) []const u8 {
+        // invariant: the length names a real, bounded portion of the buffer.
+        assert(self.len >= 4);
+        assert(self.len <= tc_max_len);
+        return self.buf[0..self.len];
+    }
+};
+
+/// The elapsed whole seconds at frame `k` of a reel played at `fps` -- pure integer division, the clock's tick source.
+/// Monotone non-decreasing in `k` (the numerator grows, the divisor is fixed), and it advances exactly when `k` crosses a
+/// multiple of `fps`, so the readout ticks once per second and never between.
+pub fn timecode_seconds(k: u32, fps: u8) u32 {
+    // invariant: a real playback rate is at least one frame per second, so the divisor is non-zero.
+    assert(fps >= 1);
+    return k / @as(u32, fps);
+}
+
+/// Turn a total-seconds count into "M:SS" digit bytes -- the crux, and the one primitive this rung adds. Minutes are the
+/// seconds divided by sixty, the remainder is the seconds within the minute; both come from pure u32 division and modulo,
+/// so NO FLOAT ever enters and the clock is exact. Minutes carry no leading zero above the tens place (a two-digit minute
+/// keeps both digits); the seconds always carry two digits, as a clock is read. Refuses nothing -- the caller proves the
+/// bound -- yet asserts it, so a value past the badge's ceiling trips a named invariant rather than overrunning the buffer.
+pub fn format_timecode(total_seconds: u32) Timecode {
+    // invariant: the value fits the two-digit-minute badge, so both fields below stay single- or two-digit.
+    assert(total_seconds <= tc_max_seconds);
+    const minutes: u32 = total_seconds / 60;
+    const secs: u32 = total_seconds % 60;
+    // invariant: the split is well-formed -- minutes bounded to two digits, seconds to one minute's worth.
+    assert(minutes <= 99);
+    assert(secs <= 59);
+    var out = Timecode{ .buf = undefined, .len = 0 };
+    // The tens digit of the minute appears only when the minute reaches ten -- "9:59" has one minute digit, "10:00" two.
+    if (minutes >= 10) {
+        out.buf[out.len] = '0' + @as(u8, @intCast(minutes / 10));
+        out.len += 1;
+    }
+    out.buf[out.len] = '0' + @as(u8, @intCast(minutes % 10));
+    out.len += 1;
+    out.buf[out.len] = ':';
+    out.len += 1;
+    // The seconds always carry both digits, leading zero and all, so the readout width never jitters within a minute.
+    out.buf[out.len] = '0' + @as(u8, @intCast(secs / 10));
+    out.len += 1;
+    out.buf[out.len] = '0' + @as(u8, @intCast(secs % 10));
+    out.len += 1;
+    // invariant: exactly a four- or five-character readout was written, within the fixed buffer.
+    assert(out.len == 4 or out.len == 5);
+    return out;
+}
+
+/// The timecode badge -- a small opaque panel pinned in the upper-left corner, its ink the near-black digits. Opaque by
+/// construction (fill alpha 255): the badge fully overwrites the background beneath it, so its pixels depend only on the
+/// formatted time, never on what moves underneath. Shared by builder and witness so both name the exact same rectangle.
+pub const timecode_badge = text_panel.Panel{
+    .x = 4,
+    .y = 4,
+    .w = 40,
+    .h = 13,
+    .thickness = 1,
+    .pad = 2,
+    .fill = color.Rgba{ .r = 20, .g = 24, .b = 32, .a = 255 },
+    .border = color.Rgba{ .r = 60, .g = 120, .b = 220, .a = 255 },
+};
+
+/// The badge ink -- a bright, opaque near-white, so the digits read clearly on the dark badge fill.
+pub const timecode_ink = color.Rgba{ .r = 235, .g = 238, .b = 245, .a = 255 };
+
+pub const default_frame_count: u32 = 24;
+
+/// The moving subject beneath the badge -- a small filled block that steps across the frame, the mostly-still shot a
+/// timecode sits over. Bounded to stay wholly in frame on both axes; its path crosses under and past the badge, so motion
+/// outside the badge rectangle is always visible.
+const block_w: u32 = 12;
+const block_h: u32 = 12;
+const block_y: u32 = 20; // below the upper-left badge, in the live part of the frame
+const block_step: u32 = 2; // columns the block advances each frame
+const block_x0: u32 = 4; // the block's first left edge
+
+/// The still ground behind the moving block -- a calm slate the block and the badge sit on.
+const ground_color = color.Rgba{ .r = 30, .g = 34, .b = 44, .a = 255 };
+/// The moving block's colour -- a cool accent distinct from the ground and the badge, so its motion is unmistakable.
+const block_color = color.Rgba{ .r = 90, .g = 200, .b = 160, .a = 255 };
+
+/// Build one background frame: a still ground with the moving block at its left edge for frame `k`. This is the plain,
+/// no-badge picture -- the ground truth the witness measures every stamped frame against. The block steps right one stride
+/// per frame and holds at the right margin once it reaches it, so it stays wholly in frame on every frame.
+pub fn background_frame(garden: std.mem.Allocator, k: u32) !qoi.Pixmap {
+    // invariant: the block's travel window has room, so the clamp below never underflows.
+    const last_bx: u32 = timecode_frame_w - block_w;
+    assert(block_x0 <= last_bx);
+    // invariant: the block sits below the badge, wholly within the live part of the frame.
+    assert(block_y + block_h <= timecode_frame_h);
+    var bx: u32 = block_x0 + k * block_step;
+    if (bx > last_bx) bx = last_bx; // once the block reaches the margin it holds there, still wholly in frame
+    var frame = try text_paint.solid(garden, timecode_frame_w, timecode_frame_h, ground_color);
+    try shape.fill_rect(&frame, bx, block_y, block_w, block_h, block_color);
+    return frame;
+}
+
+/// Paint the timecode badge for frame `k` onto `frame`: the formatted "M:SS" centred inside the opaque badge panel. The
+/// text is computed here from the frame index alone (elapsed seconds, formatted), so a caller cannot pass a mismatched
+/// string. All-or-nothing via paint_text_panel, which refuses by name if the readout cannot fit -- so a built frame carries
+/// a whole badge or the build fails loudly. `lines_buf` and `scratch` are sized >= tc_max_len by the caller.
+pub fn paint_timecode(
+    atlas: *const glyph.GlyphAtlas,
+    frame: *qoi.Pixmap,
+    k: u32,
+    fps: u8,
+    lines_buf: []text_layout.WrapLine,
+    scratch: []text_layout.PlacedGlyph,
+) !void {
+    // invariant: the frame is the module's own window, so the fixed badge lands inside it.
+    assert(frame.width == timecode_frame_w);
+    assert(frame.height == timecode_frame_h);
+    const secs: u32 = timecode_seconds(k, fps);
+    const tc = format_timecode(secs);
+    _ = try text_panel.paint_text_panel(atlas, tc.slice(), 1, .center, .middle, timecode_badge, lines_buf, scratch, frame, timecode_ink);
+}
+
+/// Build the stamped reel: the moving background on every frame, with the timecode badge composited onto it at the fixed
+/// upper-left place. The reel's last frame is proven within the badge's second ceiling up front, so the clock never wraps.
+/// Returns a Video whose orientation is derived from the extent (never a stored lie) and whose fps is the reel's own rate.
+pub fn build_stamped_reel(garden: std.mem.Allocator, atlas: *const glyph.GlyphAtlas, frame_count: u32) !frames.Video {
+    // invariant: the reel has a first and last frame and stays within the module bound and both codecs' ceiling.
+    assert(frame_count >= 2);
+    assert(frame_count <= timecode_max_frames);
+    assert(frame_count <= frames.gfv_max_frames);
+    // invariant: the last frame's clock fits the badge, so format_timecode never trips its own ceiling.
+    assert(timecode_seconds(frame_count - 1, timecode_fps) <= tc_max_seconds);
+
+    // Sized once for the whole reel -- one wrapped line and one placed glyph per readout byte -- so the frame loop
+    // allocates nothing per frame. tc_max_len is the worst case across every frame's readout.
+    const lines_buf = try garden.alloc(text_layout.WrapLine, tc_max_len);
+    const scratch = try garden.alloc(text_layout.PlacedGlyph, tc_max_len);
+
+    const pms = try garden.alloc(qoi.Pixmap, frame_count);
+    var k: u32 = 0;
+    while (k < frame_count) : (k += 1) {
+        var frame = try background_frame(garden, k);
+        try paint_timecode(atlas, &frame, k, timecode_fps, lines_buf, scratch);
+        pms[k] = frame;
+    }
+
+    return frames.Video{
+        .width = timecode_frame_w,
+        .height = timecode_frame_h,
+        .orientation = frames.derive_orientation(timecode_frame_w, timecode_frame_h),
+        .fps = timecode_fps,
+        .frames = pms,
+    };
+}
+
+/// True when two videos carry the same header and the same frames byte for byte -- the equality a round-trip recovers.
+pub fn videos_equal(a: *const frames.Video, b: *const frames.Video) bool {
+    if (a.width != b.width or a.height != b.height) return false;
+    if (a.orientation != b.orientation or a.fps != b.fps) return false;
+    if (a.frames.len != b.frames.len) return false;
+    var f: usize = 0;
+    while (f < a.frames.len) : (f += 1) {
+        if (!a.frames[f].same_bytes(&b.frames[f])) return false;
+    }
+    return true;
+}
+
+/// True when a `w` x `h` sub-rectangle at (`x`, `y`) is byte-identical between two same-sized frames. The reader stays
+/// inside both buffers on every row -- the caller has proven the rectangle lies within the frame.
+fn rect_bytes_equal(a: *const qoi.Pixmap, b: *const qoi.Pixmap, x: u32, y: u32, w: u32, h: u32) bool {
+    // invariant: both frames share dimensions and the rectangle lies wholly within them.
+    assert(a.width == b.width);
+    assert(a.height == b.height);
+    assert(x + w <= a.width);
+    assert(y + h <= a.height);
+    var ry: u32 = 0;
+    while (ry < h) : (ry += 1) {
+        const row = (@as(usize, y + ry) * @as(usize, a.width) + @as(usize, x)) * 4;
+        const run = @as(usize, w) * 4;
+        if (!std.mem.eql(u8, a.pixels[row .. row + run], b.pixels[row .. row + run])) return false;
+    }
+    return true;
+}
+
+/// Count the pixels that differ between two same-sized frames but lie OUTSIDE the badge rectangle -- the change with the
+/// timecode badge excluded. Zero proves a stamped frame touches only the badge, leaving the moving background untouched.
+fn diff_outside_badge(a: *const qoi.Pixmap, b: *const qoi.Pixmap, badge: text_panel.Panel) u32 {
+    // invariant: only same-sized frames are compared, so a shared pixel index is valid in both.
+    assert(a.pixels.len == b.pixels.len);
+    assert(a.width == b.width);
+    var count: u32 = 0;
+    var y: u32 = 0;
+    while (y < a.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x < a.width) : (x += 1) {
+            const in_badge = x >= badge.x and x < badge.x + badge.w and y >= badge.y and y < badge.y + badge.h;
+            if (in_badge) continue;
+            const i = (@as(usize, y) * @as(usize, a.width) + @as(usize, x)) * 4;
+            const same = a.pixels[i] == b.pixels[i] and a.pixels[i + 1] == b.pixels[i + 1] and
+                a.pixels[i + 2] == b.pixels[i + 2] and a.pixels[i + 3] == b.pixels[i + 3];
+            if (!same) count += 1;
+        }
+    }
+    return count;
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// True when `tc` holds exactly the bytes of `want` -- the known-answer comparison the format KAT uses.
+fn tc_is(tc: *const Timecode, want: []const u8) bool {
+    return std.mem.eql(u8, tc.slice(), want);
+}
+
+// --- selftest: prove format_timecode by known answer, bind it to pixels, and round-trip the stamped reel both codecs ---
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // THE CRUX, part one -- format_timecode is exact at every second, proven by known answer. Pure integer math: no float
+    // enters, so these are not approximations. Zero, single-digit second, two-digit second, the minute rollover, a
+    // two-digit minute, and the badge's very ceiling all read as a clock is read.
+    if (!tc_is(&format_timecode(0), "0:00")) return error.FormatZeroWrong;
+    if (!tc_is(&format_timecode(1), "0:01")) return error.FormatOneWrong;
+    if (!tc_is(&format_timecode(9), "0:09")) return error.FormatNineWrong;
+    if (!tc_is(&format_timecode(59), "0:59")) return error.FormatFiftyNineWrong;
+    if (!tc_is(&format_timecode(60), "1:00")) return error.FormatMinuteWrong;
+    if (!tc_is(&format_timecode(65), "1:05")) return error.FormatOneOhFiveWrong;
+    if (!tc_is(&format_timecode(600), "10:00")) return error.FormatTenMinWrong;
+    if (!tc_is(&format_timecode(tc_max_seconds), "99:59")) return error.FormatCeilingWrong;
+
+    // timecode_seconds ticks once per fps frames: within a second it holds, at the boundary it advances by one.
+    if (timecode_seconds(0, timecode_fps) != 0) return error.SecondsZeroWrong;
+    if (timecode_seconds(timecode_fps - 1, timecode_fps) != 0) return error.SecondsPreTickWrong;
+    if (timecode_seconds(timecode_fps, timecode_fps) != 1) return error.SecondsTickWrong;
+    if (timecode_seconds(2 * timecode_fps, timecode_fps) != 2) return error.SecondsTwoTickWrong;
+
+    const atlas = try font_ascii.build_atlas(garden);
+    const frame_count: u32 = default_frame_count;
+    const video = try build_stamped_reel(garden, &atlas, frame_count);
+    // invariant: the built reel has exactly the frames requested.
+    assert(video.frames.len == frame_count);
+    const pixel_count = video.frame_pixels();
+    const b = timecode_badge;
+
+    // THE CRUX, part two -- the digits SEEN are the digits the formatter produced. For each frame, paint the expected
+    // readout onto a DISTINCT flat background and compare only the badge rectangle: because the badge is opaque, its
+    // pixels depend on the text alone, so a byte-for-byte match binds the pixels to format_timecode's output. The scratch
+    // buffers are sized for the worst-case readout.
+    const lines_buf = try garden.alloc(text_layout.WrapLine, tc_max_len);
+    const scratch = try garden.alloc(text_layout.PlacedGlyph, tc_max_len);
+    {
+        var k: u32 = 0;
+        while (k < frame_count) : (k += 1) {
+            var expect = try text_paint.solid(garden, timecode_frame_w, timecode_frame_h, block_color);
+            try paint_timecode(&atlas, &expect, k, timecode_fps, lines_buf, scratch);
+            if (!rect_bytes_equal(&video.frames[k], &expect, b.x, b.y, b.w, b.h)) return error.BadgeTextOffModel;
+        }
+    }
+
+    // THE CRUX, part three -- the readout ticks with playback: within one whole second the badge is byte-steady frame to
+    // frame, and at each second boundary it changes. Measured directly against timecode_seconds as the tick oracle.
+    var ticks: u32 = 0;
+    var steadies: u32 = 0;
+    {
+        var k: u32 = 1;
+        while (k < frame_count) : (k += 1) {
+            const same_second = timecode_seconds(k, timecode_fps) == timecode_seconds(k - 1, timecode_fps);
+            const badge_same = rect_bytes_equal(&video.frames[k - 1], &video.frames[k], b.x, b.y, b.w, b.h);
+            if (same_second) {
+                // invariant: no tick within a second -- the badge holds byte for byte.
+                if (!badge_same) return error.BadgeChangedMidSecond;
+                steadies += 1;
+            } else {
+                // invariant: the clock advances exactly at the second boundary -- the badge must differ there.
+                if (badge_same) return error.BadgeDidNotTick;
+                ticks += 1;
+            }
+        }
+    }
+    // invariant: the default reel exercises both cases -- at least one tick and at least one steady pair.
+    if (ticks == 0) return error.NoTickEverSeen;
+    if (steadies == 0) return error.NoSteadyEverSeen;
+
+    // THE CRUX, part four -- against the plain no-badge background as ground truth, a stamped frame differs from the
+    // background only WITHIN the badge rectangle (the badge touches its own place and nothing else). Checked on every
+    // frame, so the moving picture beneath the badge is proven untouched throughout playback. The elapsed seconds are
+    // proven monotone at the same pass.
+    var prev_secs: u32 = 0;
+    {
+        var k: u32 = 0;
+        while (k < frame_count) : (k += 1) {
+            const bg = try background_frame(garden, k);
+            if (diff_outside_badge(&video.frames[k], &bg, b) != 0) return error.BadgePaintedOutsideRect;
+            const s = timecode_seconds(k, timecode_fps);
+            // invariant: a clock never runs backward from one frame to the next.
+            if (s < prev_secs) return error.SecondsRanBackward;
+            prev_secs = s;
+        }
+    }
+
+    // The badge corner reads the opaque border, not a background pixel -- the badge really is where we claim.
+    const corner = pixel_at(&video.frames[frame_count - 1], b.x, b.y);
+    if (!corner.eql(b.border)) return error.BadgeCornerNotBorder;
+
+    // --- gfv1 intra-frame: encode, decode, prove the stamped reel round-trips byte for byte -------------------------
+    const gfv_cap = frames.encoded_bound(pixel_count, frame_count);
+    const gfv_dst = try garden.alloc(u8, gfv_cap);
+    const gfv_res = try frames.encode(garden, &video, gfv_dst);
+    // invariant: the encoder wrote every frame.
+    assert(gfv_res.frame_count == frame_count);
+    const gfv_back = try frames.decode(garden, gfv_dst[0..gfv_res.len]);
+    if (!videos_equal(&gfv_back, &video)) return error.GfvRoundTripBroke;
+
+    // --- gfd1 inter-frame: encode, decode, prove the SAME stamped reel round-trips byte for byte -------------------
+    const gfd_cap = frames_delta.encoded_bound(pixel_count, frame_count);
+    const gfd_dst = try garden.alloc(u8, gfd_cap);
+    const gfd_res = try frames_delta.encode(garden, &video, gfd_dst);
+    assert(gfd_res.frame_count == frame_count);
+    const gfd_back = try frames_delta.decode(garden, gfd_dst[0..gfd_res.len]);
+    if (!videos_equal(&gfd_back, &video)) return error.GfdRoundTripBroke;
+
+    // The two formats stay distinct: a gfv1 stream refuses at the gfd1 magic.
+    if (frames_delta.decode(garden, gfv_dst[0..gfv_res.len])) |_| {
+        return error.MagicSlipped;
+    } else |e| {
+        if (e != error.BadMagic) return error.WrongMagic;
+    }
+
+    // The delta/keyframe mix is a REPORTED measurement -- the moving block ticks every frame while the badge changes only
+    // at second boundaries, so some frames delta cheaply and some not; the count is shown, never asserted exact (REDS #82).
+    const keyframes: u32 = frame_count - gfd_res.delta_frames;
+    print("GREEN image-timecode: M:SS clock over {d} frames of {d}x{d} moving video; format_timecode exact by KAT (0->0:00, 65->1:05, 5999->99:59, no float); badge pixels bound to the formatter byte for byte; {d} ticks + {d} steady pairs (badge byte-steady within a second, changes at each boundary), touching only the {d}x{d} badge; round-trip byte-identical through BOTH codecs; gfd1 adaptive mix {d} deltas + {d} keyframes ({d} bytes vs gfv1 {d}); gfv1 stream refused by gfd1 decoder as BadMagic\n", .{
+        frame_count, timecode_frame_w, timecode_frame_h, ticks, steadies, b.w, b.h, gfd_res.delta_frames, keyframes, gfd_res.len, gfv_res.len,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: timecode selftest\n", .{});
+    return 1;
+}
