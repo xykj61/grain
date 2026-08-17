@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260817.030439
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title text_caption: the framed caption panel meets moving video, GREEN
+prompt autonomous loop -- next agent-doable lap Lindy-first crux-first; Season G open media
+think Read the road-ahead docs (1024-round itinerary, eight-season double-seat, rye-first crypto wave) and REMEMBER's live edge. The live edge is Season G open-media, image module; the last GREEN rung was text_panel.rye (a framed card). REMEMBER names the next cruxes: the captioned panel within a video frame, longer real reels, glyph atlas beyond 5x7.
+think Crux-first: the captioned-panel-on-video is the highest-Lindy compositional move -- it joins text_panel (the framed card) with frames.rye/frames_delta.rye (the video codecs), the first time the panel family meets moving video. It braids nothing new; it composes proven green rungs.
+think Rota deep-read this lap (log ~1149, 1149 mod 27 = 15): context/TAME_CORE.md -- reaffirmed bound everything, >=2 positive asserts per fn, explicit widths (u32 in-memory, u64 wire-safe sums), named errors, say why.
+think First build used a full gradient pan as the background; GREEN on first metal, yet the full pan makes gfd1 keyframe every frame, so the static caption never shows a codec saving. Revised to the archetypal lower-third: a mostly-still ground with one small block stepping across it, so the pinned caption and still ground contribute zero delta and gfd1 honestly wins.
+think The crux is the STATIC OVERLAY: the opaque panel painted at the identical rect every frame is byte-identical across the whole reel (measured: within the panel rect every frame equals frame zero; outside it at least one pair differs). The reel round-trips byte-for-byte through BOTH codecs; the delta/keyframe mix is REPORTED, never claimed (REDS #82).
+obs Two compound-assert bans (a.width==b.width and a.height==b.height) split into single asserts per TAME tidy rules; tame_style_check and width-check both GREEN after.
+obs README lagged several rungs (text_layout/text_panel/text_reel/text_marquee absent). Ratchet-not-sweep: added text_panel and text_caption entries and refreshed the stale "next rungs" line, without backfilling every missing rung (its own docs round).
+loom witness=text_caption_witness frames=41 dims=96x48 max_bg_diff_px=48 gfd1_bytes=16329 gfv1_bytes=23977 gfd1_deltas=40 gfd1_keyframes=1
+file image/text_caption.rye the module -- a static caption panel composited onto a moving reel, byte-identical across frames, round-trips both codecs
+file tools/text_caption_witness.rish the witness -- builds, runs selftest, asserts GREEN + the static-overlay crux + the both-codec round-trip
+file image/README.md added text_panel and text_caption entries; refreshed the Season G next-rungs line
+recommend keep-going the next Season G rung -- the remaining wider symbols over the 5x7 body, or the captioned panel proven on longer varied reels

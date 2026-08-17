@@ -1,0 +1,46 @@
+# tools/text_caption_witness.rish -- the framed caption panel proves itself over moving video (Season G, open media).
+#
+# Season G (Open Media Primitives) - the rung where the framed text panel (image/text_panel.rye) first composites onto
+# a MOVING video (image/frames.rye intra-frame, image/frames_delta.rye inter-frame). A caption panel over video is the
+# lower third a broadcast draws: a fixed, readable card pinned to one place on the screen while the picture moves
+# beneath it. image/text_caption.rye renders a mostly-still ground with one small block stepping across it (real
+# motion), then composites ONE fixed opaque caption panel onto every frame at the same lower-third place, and assembles
+# the result as a clip.
+#
+# The crux this witness proves is the STATIC OVERLAY over moving video: because the caption panel is opaque and painted
+# at the identical rectangle on every frame, its pixels are BYTE-IDENTICAL across the whole reel while the background
+# outside it genuinely moves -- steady where the eye reads, live everywhere else. It is measurable: within the panel
+# rectangle every frame equals frame zero byte for byte, and outside it at least one consecutive pair differs. The
+# composited reel then round-trips byte for byte through BOTH open codecs; the delta/keyframe mix is REPORTED, never
+# claimed -- yet on a mostly-still shot the pinned caption and the still ground contribute zero delta, so the inter-frame
+# gfd1 genuinely wins. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/text_caption_witness.rish
+
+say "text-caption: Language EN -- Season G's join rung; a framed caption panel pinned as a STATIC lower-third over moving video, composing image/text_panel.rye onto image/frames.rye and image/frames_delta.rye."
+say "text-caption: Style Radiant -- a mostly-still ground with one block stepping across it, the caption composited opaque onto every frame at the same place, so the card is byte-identical across the reel while the background moves beneath it."
+say "text-caption: Lens TAME -- u32 in-memory counts, u8 pixel bytes; every buffer names a maximum (caption_max_frames, the codecs' encoded_bound, the QOI ceilings beneath); each function states its invariants positively; the delta/keyframe mix a reported measurement, never a false compression claim; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/text_caption"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/text_caption.rye -femit-bin=${bin}"]
+assert build.ok else "text-caption: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "text-caption: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "text-caption: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-text-caption' && echo yes"]
+assert (trim green.out) == "yes" else "text-caption: selftest did not print the GREEN caption line"
+
+let static = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'caption byte-identical across every frame while the background moved' && echo yes"]
+assert (trim static.out) == "yes" else "text-caption: the static-overlay crux (caption steady, background moving) did not prove"
+
+let round = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-trip byte-identical through BOTH codecs' && echo yes"]
+assert (trim round.out) == "yes" else "text-caption: the captioned reel did not round-trip through both codecs"
+
+say "text-caption: GREEN -- a framed caption pinned as a static lower-third over moving video; the card is byte-identical across every frame while the picture moves beneath it, and the composited reel round-trips byte for byte through both open codecs."

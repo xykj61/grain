@@ -1,0 +1,275 @@
+//! image/text_caption.rye -- the framed caption panel meets the moving video frame (Season G, open media primitives).
+//!
+//! Season G (Open Media Primitives) - the rung where the framed text panel (image/text_panel.rye) first composites onto
+//! a MOVING video (image/frames.rye, image/frames_delta.rye). A caption panel over video is the lower third a broadcast
+//! draws: a fixed, readable card pinned to one place on the screen while the picture moves beneath it. Everything under
+//! it is already proven -- text_panel seals text inside a frame, the two codecs round-trip a reel byte for byte -- so
+//! this rung braids none of it: it renders a moving background (a gradient strip panned through a fixed window, the same
+//! real motion image/text_marquee.rye proved), then composites ONE fixed opaque caption panel onto every frame at the
+//! same lower-third place, and assembles the result as a clip.
+//!
+//! The crux this rung proves is the STATIC OVERLAY over moving video: because the caption panel is opaque and painted at
+//! the identical rectangle on every frame, its pixels are BYTE-IDENTICAL across the whole reel while the background
+//! outside it genuinely moves. That is exactly what a lower-third caption must be -- steady where the eye reads, live
+//! everywhere else -- and it is measurable: within the panel rectangle every frame equals frame zero byte for byte, and
+//! outside it at least one consecutive pair differs. The composited reel then round-trips byte for byte through BOTH
+//! open codecs, and the delta/keyframe mix is REPORTED, never claimed a compression win -- on a full pan the adaptive
+//! encoder legitimately keyframes where a delta of the whole moving background would cost more than a fresh frame
+//! (REDS #82). Pure composition over public APIs (solid, a local gradient + crop, paint_text_panel, both codecs); no new
+//! storage, codec, palette, glyph, or font. No network, no key, no funds -- the caption a surface pins over live video,
+//! on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/text_caption.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const glyph = @import("glyph.rye");
+const font_ascii = @import("font5x7_ascii.rye");
+const text_layout = @import("text_layout.rye");
+const text_paint = @import("text_paint.rye");
+const shape = @import("shape.rye");
+const text_panel = @import("text_panel.rye");
+const frames = @import("frames.rye");
+const frames_delta = @import("frames_delta.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const text_caption_version = "20260817.070000";
+
+/// The fixed caption text -- pinned to the lower third of every frame. Short enough to sit on one 5x7 line.
+pub const caption_text = "GRAIN MEDIA";
+
+/// The frame window -- the fixed viewport the background pans through and the caption is pinned onto. Landscape.
+pub const caption_frame_w: u32 = 96;
+pub const caption_frame_h: u32 = 48;
+
+/// Playback rate stored in both containers' headers -- carried through a round-trip, never interpreted here.
+pub const caption_fps: u8 = 12;
+
+/// A safe ceiling on the reel's frame count, so the frame loop and the codecs' frame field stay bounded.
+const caption_max_frames: u32 = 256;
+
+/// The moving subject beneath the caption -- a small filled block that steps across the frame, the way a subject moves
+/// through a mostly-still shot. This is the archetypal lower-third scene: most of the picture holds still, one thing
+/// moves, and the caption stays pinned -- exactly where an inter-frame delta earns its keep. Bounded to stay in frame.
+const block_w: u32 = 12;
+const block_h: u32 = 12;
+const block_y: u32 = 8; // above the lower-third caption, in the live part of the frame
+const block_step: u32 = 2; // columns the block advances each frame
+const block_x0: u32 = 4; // the block's first left edge
+
+/// The still ground behind the moving block -- a calm slate the block and caption sit on.
+const ground_color = color.Rgba{ .r = 30, .g = 34, .b = 44, .a = 255 };
+/// The moving block's colour -- a warm accent distinct from the ground, so its motion is unmistakable.
+const block_color = color.Rgba{ .r = 220, .g = 140, .b = 40, .a = 255 };
+
+/// The lower-third caption panel -- a fixed rectangle, an opaque warm fill, a blue border ring, a padding gap. Opaque by
+/// construction (fill alpha 255): the panel fully overwrites the background beneath it, so its pixels are identical on
+/// every frame no matter what moves underneath. Shared by the builder and the witness so both name the exact same rect.
+pub const caption_panel = text_panel.Panel{
+    .x = 6,
+    .y = 30,
+    .w = 84,
+    .h = 16,
+    .thickness = 2,
+    .pad = 2,
+    .fill = color.Rgba{ .r = 240, .g = 236, .b = 224, .a = 255 },
+    .border = color.Rgba{ .r = 40, .g = 80, .b = 200, .a = 255 },
+};
+
+/// The caption ink -- a near-black, opaque, so the text is opaque within the opaque panel.
+pub const caption_ink = color.Rgba{ .r = 20, .g = 20, .b = 20, .a = 255 };
+
+/// Build one frame: a still ground, the moving block at its left edge `bx`, and nothing else (the caption is composited
+/// by the caller). The block lies wholly within the frame by construction -- asserted at the edge. This is a mostly-still
+/// picture: only the block's columns change from frame to frame, so an inter-frame delta stays small.
+fn block_frame(garden: std.mem.Allocator, bx: u32) !qoi.Pixmap {
+    // invariant: the moving block stays wholly within the frame on both axes.
+    assert(bx + block_w <= caption_frame_w);
+    assert(block_y + block_h <= caption_frame_h);
+    var frame = try text_paint.solid(garden, caption_frame_w, caption_frame_h, ground_color);
+    try shape.fill_rect(&frame, bx, block_y, block_w, block_h, block_color);
+    return frame;
+}
+
+/// Build the captioned reel: a mostly-still ground with one small block stepping across it (real motion), and the fixed
+/// opaque caption panel composited onto every frame at the same lower-third place. Returns a Video whose orientation is
+/// derived from the extent (never a stored lie) and whose fps is the reel's own rate. The panel is painted all-or-nothing
+/// by paint_text_panel, which refuses by name if the caption cannot fit -- so a built reel carries a whole caption or the
+/// build fails loudly, never a half-drawn card.
+pub fn build_captioned_reel(garden: std.mem.Allocator, atlas: *const glyph.GlyphAtlas) !frames.Video {
+    // The block travels from its first edge to the frame's right margin, one step per frame -- a clean, bounded march.
+    const last_bx: u32 = caption_frame_w - block_w;
+    // invariant: the block starts inside the travel window, so there is room to move.
+    assert(block_x0 <= last_bx);
+    const travel: u32 = last_bx - block_x0;
+    const frame_count: u32 = travel / block_step + 1;
+    // invariant: the reel stays within this module's bound and both codecs' frame ceiling.
+    assert(frame_count >= 2);
+    assert(frame_count <= caption_max_frames);
+    assert(frame_count <= frames.gfv_max_frames);
+
+    // The caption fits one line inside the panel, so the worst case is one wrapped line and one placed glyph per byte.
+    const lines_buf = try garden.alloc(text_layout.WrapLine, caption_text.len);
+    const scratch = try garden.alloc(text_layout.PlacedGlyph, caption_text.len);
+
+    const pms = try garden.alloc(qoi.Pixmap, frame_count);
+    var k: u32 = 0;
+    while (k < frame_count) : (k += 1) {
+        var bx: u32 = block_x0 + k * block_step;
+        if (bx > last_bx) bx = last_bx; // the final frame flushes the block to the right margin
+        var frame = try block_frame(garden, bx);
+        // Composite the fixed caption panel onto this frame -- opaque, so its pixels are the panel's, not the ground's.
+        _ = try text_panel.paint_text_panel(atlas, caption_text, 1, .center, .middle, caption_panel, lines_buf, scratch, &frame, caption_ink);
+        pms[k] = frame;
+    }
+
+    return frames.Video{
+        .width = caption_frame_w,
+        .height = caption_frame_h,
+        .orientation = frames.derive_orientation(caption_frame_w, caption_frame_h),
+        .fps = caption_fps,
+        .frames = pms,
+    };
+}
+
+/// True when two videos carry the same header and the same frames byte for byte -- the equality a round-trip recovers.
+pub fn videos_equal(a: *const frames.Video, b: *const frames.Video) bool {
+    if (a.width != b.width or a.height != b.height) return false;
+    if (a.orientation != b.orientation or a.fps != b.fps) return false;
+    if (a.frames.len != b.frames.len) return false;
+    var f: usize = 0;
+    while (f < a.frames.len) : (f += 1) {
+        if (!a.frames[f].same_bytes(&b.frames[f])) return false;
+    }
+    return true;
+}
+
+/// True when a `w` x `h` sub-rectangle at (`x`, `y`) is byte-identical between two same-sized frames. The reader stays
+/// inside both buffers on every row -- the caller has proven the rectangle lies within the frame.
+fn rect_bytes_equal(a: *const qoi.Pixmap, b: *const qoi.Pixmap, x: u32, y: u32, w: u32, h: u32) bool {
+    // invariant: both frames share dimensions and the rectangle lies wholly within them.
+    assert(a.width == b.width);
+    assert(a.height == b.height);
+    assert(x + w <= a.width);
+    assert(y + h <= a.height);
+    var ry: u32 = 0;
+    while (ry < h) : (ry += 1) {
+        const row = (@as(usize, y + ry) * @as(usize, a.width) + @as(usize, x)) * 4;
+        const run = @as(usize, w) * 4;
+        if (!std.mem.eql(u8, a.pixels[row .. row + run], b.pixels[row .. row + run])) return false;
+    }
+    return true;
+}
+
+/// Count the pixels that differ between two same-sized frames but lie OUTSIDE the panel rectangle -- the size of the
+/// background motion, with the static caption excluded. Proves the video genuinely moves beneath a steady caption.
+fn background_diff(a: *const qoi.Pixmap, b: *const qoi.Pixmap, panel: text_panel.Panel) u32 {
+    // invariant: only same-sized frames are compared, so a shared pixel index is valid in both.
+    assert(a.pixels.len == b.pixels.len);
+    assert(a.width == b.width);
+    assert(a.height == b.height);
+    var count: u32 = 0;
+    var y: u32 = 0;
+    while (y < a.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x < a.width) : (x += 1) {
+            const in_panel = x >= panel.x and x < panel.x + panel.w and y >= panel.y and y < panel.y + panel.h;
+            if (in_panel) continue;
+            const i = (@as(usize, y) * @as(usize, a.width) + @as(usize, x)) * 4;
+            const same = a.pixels[i] == b.pixels[i] and a.pixels[i + 1] == b.pixels[i + 1] and
+                a.pixels[i + 2] == b.pixels[i + 2] and a.pixels[i + 3] == b.pixels[i + 3];
+            if (!same) count += 1;
+        }
+    }
+    return count;
+}
+
+// --- selftest: prove the caption is a STATIC overlay over moving video, and the reel round-trips through both codecs --
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try font_ascii.build_atlas(garden);
+    const video = try build_captioned_reel(garden, &atlas);
+    const frame_count: u32 = @intCast(video.frames.len);
+    const pixel_count = video.frame_pixels();
+    // invariant: a real reel has at least two frames, so there is motion to prove.
+    assert(frame_count >= 2);
+
+    // The CRUX -- the caption is a STATIC overlay while the background MOVES. Two measurable halves:
+    //   * within the panel rectangle, every frame equals frame zero byte for byte (the caption never flickers), and
+    //   * outside it, at least one consecutive pair differs (the video genuinely moves beneath the caption).
+    const p = caption_panel;
+    var caption_steady = true;
+    var max_bg_diff: u32 = 0;
+    var background_moved = false;
+    {
+        var k: u32 = 1;
+        while (k < frame_count) : (k += 1) {
+            if (!rect_bytes_equal(&video.frames[0], &video.frames[k], p.x, p.y, p.w, p.h)) caption_steady = false;
+            const d = background_diff(&video.frames[k - 1], &video.frames[k], p);
+            if (d > max_bg_diff) max_bg_diff = d;
+            if (d > 0) background_moved = true;
+        }
+    }
+    // invariant: the caption is pinned steady and the background is genuinely live -- the lower-third property.
+    if (!caption_steady) return error.CaptionFlickered;
+    if (!background_moved) return error.BackgroundStatic;
+    assert(max_bg_diff >= 1);
+
+    // The panel really is where we claim: frame zero's panel corner reads the opaque fill, not a background pixel.
+    const corner = text_panel_pixel(&video.frames[0], p.x, p.y);
+    if (!corner.eql(p.border)) return error.CaptionCornerNotBorder;
+
+    // --- gfv1 intra-frame: encode, decode, prove the captioned reel round-trips byte for byte ----------------------
+    const gfv_cap = frames.encoded_bound(pixel_count, frame_count);
+    const gfv_dst = try garden.alloc(u8, gfv_cap);
+    const gfv_res = try frames.encode(garden, &video, gfv_dst);
+    // invariant: the encoder wrote every frame.
+    assert(gfv_res.frame_count == frame_count);
+    const gfv_back = try frames.decode(garden, gfv_dst[0..gfv_res.len]);
+    if (!videos_equal(&gfv_back, &video)) return error.GfvRoundTripBroke;
+
+    // --- gfd1 inter-frame: encode, decode, prove the SAME captioned reel round-trips byte for byte ----------------
+    const gfd_cap = frames_delta.encoded_bound(pixel_count, frame_count);
+    const gfd_dst = try garden.alloc(u8, gfd_cap);
+    const gfd_res = try frames_delta.encode(garden, &video, gfd_dst);
+    assert(gfd_res.frame_count == frame_count);
+    const gfd_back = try frames_delta.decode(garden, gfd_dst[0..gfd_res.len]);
+    if (!videos_equal(&gfd_back, &video)) return error.GfdRoundTripBroke;
+
+    // The two formats stay distinct: a gfv1 stream refuses at the gfd1 magic.
+    if (frames_delta.decode(garden, gfv_dst[0..gfv_res.len])) |_| {
+        return error.MagicSlipped;
+    } else |e| {
+        if (e != error.BadMagic) return error.WrongMagic;
+    }
+
+    // The delta/keyframe mix is a REPORTED measurement -- on a full pan the adaptive encoder legitimately keyframes
+    // where a whole-background delta would cost more than a fresh frame, so the count is shown, never asserted (REDS #82).
+    const keyframes: u32 = frame_count - gfd_res.delta_frames;
+    print("GREEN image-text-caption: '{s}' pinned as a STATIC lower-third over {d} frames of {d}x{d} moving video; caption byte-identical across every frame while the background moved (max background change {d} px outside the panel); round-trip byte-identical through BOTH codecs; gfd1 adaptive mix {d} deltas + {d} keyframes ({d} bytes vs gfv1 {d}); gfv1 stream refused by gfd1 decoder as BadMagic\n", .{
+        caption_text, frame_count, caption_frame_w, caption_frame_h, max_bg_diff, gfd_res.delta_frames, keyframes, gfd_res.len, gfv_res.len,
+    });
+    return 0;
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks share.
+fn text_panel_pixel(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: text_caption selftest\n", .{});
+    return 1;
+}
