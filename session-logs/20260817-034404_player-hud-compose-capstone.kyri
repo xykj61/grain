@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260817.034404
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image -- player_hud: the scrubber and timecode composed on one reel, GREEN
+prompt Autonomous loop -- take the next agent-doable lap Lindy-first crux-first over Season G open media; send often; make progress before checking in; stop at custody gates.
+think Second lap of the run. The scrubber proved timed geometry and the timecode proved timed text, each alone; the higher-Lindy next move is to prove they COMPOSE, since a real video player shows both at once -- a capstone that demonstrates the family's pieces stand together, worth more than another isolated primitive.
+think Chose compose-don't-braid: image/player_hud.rye calls scrubber.paint_scrubber and timecode.paint_timecode -- the very verbs their own witnesses proved -- over one shared background, adding only the composition and the disjointness check. No new storage, codec, palette, glyph, or font.
+think Designed the crux as CLEAN composition: prove the two overlay rectangles are disjoint before a pixel is painted (rects_disjoint, refusing HudOverlaysOverlap by name), so the paint order cannot matter; then prove each overlay keeps its own invariant under composition and the HUD touches only the union of the two rects.
+think Placed the moving block in the clear mid-band between the upper-left badge and the lower-edge bar, so motion is always visible outside both overlays and the touches-only-its-overlays check is meaningful.
+obs GREEN on the first metal run: the two overlays disjoint (a bar clashing the badge refused HudOverlaysOverlap), the HUD touching only the badge and the bar; scrubber fill grows 0->328 px empty->full, timecode 1 tick + 22 steady pairs -- each keeping its own invariant; round-trip byte for byte through both codecs.
+obs tame_style_check caught four compound asserts (rectangle-extent and canvas-match pairs); split each so the failing half is named, then GREEN. The gfd1 adaptive encoder chose 0 deltas + 24 keyframes (block, fill, and clock all move every frame), so gfd1 9143 bytes is a hair over gfv1 9119 -- reported not claimed (REDS #82).
+loom witness=player_hud_witness frames=24 frame_w=96 frame_h=48 fill_grow_px=328 ticks=1 steady_pairs=22 gfv_bytes=9119 gfd_bytes=9143 gfd_deltas=0 gfd_keyframes=24
+file image/player_hud.rye the player HUD -- the scrubber and the timecode composed on one reel; the two overlays proven disjoint, each keeping its own invariant under composition, the HUD touching only its two places, round-trip both codecs.
+file tools/player_hud_witness.rish builds and runs the selftest on metal; asserts the GREEN line, the disjoint-overlays crux, the each-overlay-keeps-its-invariant crux, the touches-only-its-overlays crux, and the both-codecs round-trip.
+file image/README.md added the player_hud capstone rung to the family doc (docs-implementation-sync).
+file crux/REMEMBER.md live edge + Git nib refreshed to the player_hud rung in the same work commit.
+file session-logs/README.md newest-first row prepended for this lap.
+recommend keep-going next Season G rung -- the broadcast overlays proven on a longer varied real reel, a scrubber playhead marker, or wider symbols over the 5x7 body; all agent-doable, no gate.

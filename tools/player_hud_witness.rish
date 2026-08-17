@@ -1,0 +1,49 @@
+# tools/player_hud_witness.rish -- the player HUD proves the timed overlays compose over moving video (Season G).
+#
+# Season G (Open Media Primitives) - the capstone of the timed-overlay family. The scrubber (tools/scrubber_witness.rish)
+# proved timed GEOMETRY and the timecode (tools/timecode_witness.rish) proved timed TEXT, each alone. A real video player
+# shows both at once. image/player_hud.rye renders one mostly-still moving background and paints BOTH overlays onto every
+# frame, calling the very verbs their own witnesses proved and adding only the composition and the disjointness that makes
+# it honest.
+#
+# The crux this witness proves is that composition is clean: the two overlay rectangles are disjoint (a bar clashing the
+# badge is refused HudOverlaysOverlap by name), the HUD touches only the badge and the bar, the scrubber keeps its
+# empty->full monotone fill under composition, the timecode keeps its tick-per-second badge under composition, and the
+# whole reel round-trips byte for byte through BOTH open codecs; the delta/keyframe mix is REPORTED, never claimed a
+# compression win (REDS #82). No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/player_hud_witness.rish
+
+say "player_hud: Language EN -- Season G's capstone; the scrubber and the timecode composed on one reel, each keeping its own proven invariant, composing image/scrubber.rye and image/timecode.rye onto image/frames.rye and image/frames_delta.rye."
+say "player_hud: Style Radiant -- two overlays sharing one frame without touching; the bar grows along the bottom while the clock ticks in the corner, and the moving picture between them stays untouched."
+say "player_hud: Lens TAME -- u32 in-memory counts, u8 pixel bytes; the two placements are proven disjoint before a pixel is painted, so the paint order cannot matter; every buffer names a maximum (hud_max_frames, tc_max_len, the codecs' encoded_bound); each overlay keeps its own witnessed invariant; each failure has a name; the delta/keyframe mix a reported measurement, never a false compression claim; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/player_hud"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/player_hud.rye -femit-bin=${bin}"]
+assert build.ok else "player_hud: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "player_hud: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "player_hud: ${out}"
+
+let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-player-hud' && echo yes"]
+assert (trim green.out) == "yes" else "player_hud: selftest did not print the GREEN player-hud line"
+
+let disjoint = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the two overlays disjoint' && echo yes"]
+assert (trim disjoint.out) == "yes" else "player_hud: the disjoint-overlays crux did not prove"
+
+let each = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'each overlay keeps its own invariant under composition' && echo yes"]
+assert (trim each.out) == "yes" else "player_hud: the each-overlay-keeps-its-invariant crux did not prove"
+
+let only = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'touching only the badge and the bar' && echo yes"]
+assert (trim only.out) == "yes" else "player_hud: the HUD-touches-only-its-overlays crux did not prove"
+
+let round = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-trip byte-identical through BOTH codecs' && echo yes"]
+assert (trim round.out) == "yes" else "player_hud: the HUD reel did not round-trip through both codecs"
+
+say "player_hud: GREEN -- the scrubber and the timecode composed on one reel; the two overlays disjoint, each keeping its own proven invariant, the HUD touching only its two places, and the composited reel round-trips byte for byte through both open codecs."

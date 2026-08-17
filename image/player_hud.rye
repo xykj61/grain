@@ -1,0 +1,328 @@
+//! image/player_hud.rye -- the player HUD: the scrubber and the timecode composed on one reel (Season G, open media).
+//!
+//! Season G (Open Media Primitives) - the capstone of the timed-overlay family. Two rungs already stand alone: the
+//! scrubber pins timed GEOMETRY (a progress bar whose fill grows with playback, image/scrubber.rye) and the timecode pins
+//! timed TEXT (an M:SS clock whose digits are a pure function of the frame index, image/timecode.rye). A real video player
+//! shows BOTH at once -- the bar along the bottom, the clock in a corner. This rung proves they COMPOSE: it renders one
+//! mostly-still moving background and paints both overlays onto every frame, each keeping its own proven invariant, the
+//! two never touching. It braids nothing -- it calls scrubber.paint_scrubber and timecode.paint_timecode, the very verbs
+//! their own witnesses proved, and adds only the composition and the disjointness that makes it honest.
+//!
+//! The crux this rung proves is that composition is CLEAN: the two overlays occupy disjoint rectangles, so neither
+//! corrupts the other, and together they touch only their own two places. Four measurable halves, each against the plain
+//! no-HUD background as ground truth:
+//!   * the two overlay rectangles are DISJOINT (the badge upper-left, the bar along the bottom edge, proven not to overlap
+//!     before a pixel is painted, so the composition order cannot matter),
+//!   * a HUD frame differs from the background ONLY within the union of the badge and the bar -- the moving picture
+//!     between and around them is untouched,
+//!   * the scrubber keeps its own invariant under composition -- its elapsed fill is empty at the first frame, full at the
+//!     last, and non-decreasing between, exactly as it proves alone, and
+//!   * the timecode keeps its own invariant under composition -- the badge is byte-steady within a whole second and
+//!     changes at each second boundary, exactly as it proves alone.
+//! The whole HUD reel then round-trips byte for byte through BOTH open codecs, and the delta/keyframe mix is REPORTED,
+//! never claimed a compression win (REDS #82). Pure composition over public APIs (the background verbs, paint_scrubber,
+//! paint_timecode, both codecs); no new storage, codec, palette, glyph, or font. No network, no key, no funds -- the
+//! player overlay a surface draws under live video, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/player_hud.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const glyph = @import("glyph.rye");
+const font_ascii = @import("font5x7_ascii.rye");
+const text_layout = @import("text_layout.rye");
+const text_paint = @import("text_paint.rye");
+const text_panel = @import("text_panel.rye");
+const shape = @import("shape.rye");
+const scrubber = @import("scrubber.rye");
+const timecode = @import("timecode.rye");
+const frames = @import("frames.rye");
+const frames_delta = @import("frames_delta.rye");
+
+pub const player_hud_version = "20260817.034500";
+
+/// The frame window -- shared with both overlay rungs (96x48 landscape), so the scrubber and the timecode land exactly
+/// where their own modules place them. Asserted equal to both at build time, so a future divergence trips a named check.
+pub const hud_frame_w: u32 = 96;
+pub const hud_frame_h: u32 = 48;
+
+/// Playback rate carried in both containers' headers and read by the timecode to tick its clock. Shared with both rungs.
+pub const hud_fps: u8 = 12;
+
+/// A safe ceiling on the reel's frame count, so the frame loop and the codecs' frame field stay bounded.
+pub const hud_max_frames: u32 = 256;
+
+pub const default_frame_count: u32 = 24;
+
+/// The moving subject beneath the HUD -- a small filled block that steps across the frame, placed in the mid-band BETWEEN
+/// the upper-left badge and the lower-edge bar, so its motion is always visible outside both overlays. Bounded to stay
+/// wholly in frame on both axes.
+const block_w: u32 = 12;
+const block_h: u32 = 12;
+const block_y: u32 = 22; // between the badge (top) and the scrubber (bottom), in the clear live band
+const block_step: u32 = 2; // columns the block advances each frame
+const block_x0: u32 = 4; // the block's first left edge
+
+/// The still ground behind the moving block -- a calm slate the block and both overlays sit on.
+const ground_color = color.Rgba{ .r = 30, .g = 34, .b = 44, .a = 255 };
+/// The moving block's colour -- a warm accent distinct from the ground and both overlays, so its motion is unmistakable.
+const block_color = color.Rgba{ .r = 220, .g = 140, .b = 40, .a = 255 };
+
+/// Build one background frame: a still ground with the moving block in the mid-band for frame `k`. This is the plain,
+/// no-HUD picture -- the ground truth the witness measures every HUD frame against. The block steps right one stride per
+/// frame and holds at the right margin once it reaches it, so it stays wholly in frame on every frame.
+pub fn background_frame(garden: std.mem.Allocator, k: u32) !qoi.Pixmap {
+    // invariant: the block's travel window has room, so the clamp below never underflows.
+    const last_bx: u32 = hud_frame_w - block_w;
+    assert(block_x0 <= last_bx);
+    // invariant: the block sits in the clear mid-band, wholly within the frame.
+    assert(block_y + block_h <= hud_frame_h);
+    var bx: u32 = block_x0 + k * block_step;
+    if (bx > last_bx) bx = last_bx; // once the block reaches the margin it holds there, still wholly in frame
+    var frame = try text_paint.solid(garden, hud_frame_w, hud_frame_h, ground_color);
+    try shape.fill_rect(&frame, bx, block_y, block_w, block_h, block_color);
+    return frame;
+}
+
+/// True when two axis-aligned rectangles do not overlap -- the disjointness the composition rests on. A pure predicate:
+/// the rectangles are separate when one lies entirely to a side of the other on either axis.
+pub fn rects_disjoint(ax: u32, ay: u32, aw: u32, ah: u32, bx: u32, by: u32, bw: u32, bh: u32) bool {
+    // invariant: a real rectangle has extent on both axes, so the edge comparisons below are meaningful.
+    assert(aw > 0);
+    assert(ah > 0);
+    assert(bw > 0);
+    assert(bh > 0);
+    const a_right: u64 = @as(u64, ax) + @as(u64, aw);
+    const b_right: u64 = @as(u64, bx) + @as(u64, bw);
+    const a_bottom: u64 = @as(u64, ay) + @as(u64, ah);
+    const b_bottom: u64 = @as(u64, by) + @as(u64, bh);
+    return a_right <= @as(u64, bx) or b_right <= @as(u64, ax) or a_bottom <= @as(u64, by) or b_bottom <= @as(u64, ay);
+}
+
+/// Build the HUD reel: the moving background on every frame, with the scrubber composited along the bottom edge and the
+/// timecode badge in the upper-left corner. The two overlays are proven disjoint up front, so a malformed composition
+/// refuses by name having built nothing, and the paint order cannot matter. Returns a Video whose orientation is derived
+/// from the extent (never a stored lie) and whose fps is the reel's own rate.
+pub fn build_hud_reel(garden: std.mem.Allocator, atlas: *const glyph.GlyphAtlas, bar: scrubber.Scrubber, frame_count: u32) !frames.Video {
+    // invariant: the reel has a first and last frame and stays within the module bound and both codecs' ceiling.
+    assert(frame_count >= 2);
+    assert(frame_count <= hud_max_frames);
+    assert(frame_count <= frames.gfv_max_frames);
+    // invariant: the shared canvas matches both overlay modules exactly, so each lands where its own witness places it.
+    assert(hud_frame_w == scrubber.scrubber_frame_w);
+    assert(hud_frame_h == scrubber.scrubber_frame_h);
+    assert(hud_frame_w == timecode.timecode_frame_w);
+    assert(hud_frame_h == timecode.timecode_frame_h);
+    // The two overlays must not overlap, or one would corrupt the other; refuse by name before painting a single frame.
+    const badge = timecode.timecode_badge;
+    if (!rects_disjoint(badge.x, badge.y, badge.w, badge.h, bar.x, bar.y, bar.w, bar.h)) return error.HudOverlaysOverlap;
+
+    // The timecode's scratch buffers, sized once for the worst-case readout across the whole reel.
+    const lines_buf = try garden.alloc(text_layout.WrapLine, timecode.tc_max_len);
+    const scratch = try garden.alloc(text_layout.PlacedGlyph, timecode.tc_max_len);
+
+    const pms = try garden.alloc(qoi.Pixmap, frame_count);
+    var k: u32 = 0;
+    while (k < frame_count) : (k += 1) {
+        var frame = try background_frame(garden, k);
+        _ = try scrubber.paint_scrubber(&frame, bar, k, frame_count);
+        try timecode.paint_timecode(atlas, &frame, k, hud_fps, lines_buf, scratch);
+        pms[k] = frame;
+    }
+
+    return frames.Video{
+        .width = hud_frame_w,
+        .height = hud_frame_h,
+        .orientation = frames.derive_orientation(hud_frame_w, hud_frame_h),
+        .fps = hud_fps,
+        .frames = pms,
+    };
+}
+
+/// True when two videos carry the same header and the same frames byte for byte -- the equality a round-trip recovers.
+pub fn videos_equal(a: *const frames.Video, b: *const frames.Video) bool {
+    if (a.width != b.width or a.height != b.height) return false;
+    if (a.orientation != b.orientation or a.fps != b.fps) return false;
+    if (a.frames.len != b.frames.len) return false;
+    var f: usize = 0;
+    while (f < a.frames.len) : (f += 1) {
+        if (!a.frames[f].same_bytes(&b.frames[f])) return false;
+    }
+    return true;
+}
+
+/// True when a `w` x `h` sub-rectangle at (`x`, `y`) is byte-identical between two same-sized frames. The reader stays
+/// inside both buffers on every row -- the caller has proven the rectangle lies within the frame.
+fn rect_bytes_equal(a: *const qoi.Pixmap, b: *const qoi.Pixmap, x: u32, y: u32, w: u32, h: u32) bool {
+    // invariant: both frames share dimensions and the rectangle lies wholly within them.
+    assert(a.width == b.width);
+    assert(a.height == b.height);
+    assert(x + w <= a.width);
+    assert(y + h <= a.height);
+    var ry: u32 = 0;
+    while (ry < h) : (ry += 1) {
+        const row = (@as(usize, y + ry) * @as(usize, a.width) + @as(usize, x)) * 4;
+        const run = @as(usize, w) * 4;
+        if (!std.mem.eql(u8, a.pixels[row .. row + run], b.pixels[row .. row + run])) return false;
+    }
+    return true;
+}
+
+/// Count the pixels that differ between two same-sized frames but lie OUTSIDE both overlay rectangles -- the change with
+/// the whole HUD excluded. Zero proves a HUD frame touches only the badge and the bar, leaving the moving background
+/// between and around them untouched.
+fn diff_outside_hud(a: *const qoi.Pixmap, b: *const qoi.Pixmap, badge: text_panel.Panel, bar: scrubber.Scrubber) u32 {
+    // invariant: only same-sized frames are compared, so a shared pixel index is valid in both.
+    assert(a.pixels.len == b.pixels.len);
+    assert(a.width == b.width);
+    var count: u32 = 0;
+    var y: u32 = 0;
+    while (y < a.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x < a.width) : (x += 1) {
+            const in_badge = x >= badge.x and x < badge.x + badge.w and y >= badge.y and y < badge.y + badge.h;
+            const in_bar = x >= bar.x and x < bar.x + bar.w and y >= bar.y and y < bar.y + bar.h;
+            if (in_badge or in_bar) continue;
+            const i = (@as(usize, y) * @as(usize, a.width) + @as(usize, x)) * 4;
+            const same = a.pixels[i] == b.pixels[i] and a.pixels[i + 1] == b.pixels[i + 1] and
+                a.pixels[i + 2] == b.pixels[i + 2] and a.pixels[i + 3] == b.pixels[i + 3];
+            if (!same) count += 1;
+        }
+    }
+    return count;
+}
+
+/// Count the pixels of `img` whose RGBA equals `want` -- the honest measure of "how much of this colour is on screen".
+/// The scrubber's elapsed fill is opaque, so its pixel count is exactly the elapsed width times the inner height.
+fn count_color(img: *const qoi.Pixmap, want: color.Rgba) u32 {
+    // invariant: the buffer holds four bytes per pixel -- the RGBA invariant a Pixmap carries.
+    assert(img.pixels.len % 4 == 0);
+    var n: u32 = 0;
+    var i: usize = 0;
+    while (i < img.pixels.len) : (i += 4) {
+        const px = color.Rgba{ .r = img.pixels[i], .g = img.pixels[i + 1], .b = img.pixels[i + 2], .a = img.pixels[i + 3] };
+        if (px.eql(want)) n += 1;
+    }
+    return n;
+}
+
+// --- selftest: prove the two overlays compose cleanly, each keeps its invariant, and the reel round-trips both codecs ---
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try font_ascii.build_atlas(garden);
+    const bar = scrubber.default_scrubber;
+    const badge = timecode.timecode_badge;
+    const frame_count: u32 = default_frame_count;
+    const inner_w: u32 = bar.w - 2 * bar.thickness;
+    const inner_h: u32 = bar.h - 2 * bar.thickness;
+
+    // THE CRUX, half one -- the two overlays occupy disjoint rectangles, so neither corrupts the other and the paint
+    // order cannot matter. Proven directly on the two placements the reel uses.
+    if (!rects_disjoint(badge.x, badge.y, badge.w, badge.h, bar.x, bar.y, bar.w, bar.h)) return error.OverlaysNotDisjoint;
+
+    const video = try build_hud_reel(garden, &atlas, bar, frame_count);
+    // invariant: the built reel has exactly the frames requested.
+    assert(video.frames.len == frame_count);
+    const pixel_count = video.frame_pixels();
+
+    // THE CRUX, half two -- against the plain no-HUD background as ground truth, a HUD frame differs ONLY within the union
+    // of the badge and the bar; the moving picture between and around them is untouched. Checked on every frame.
+    {
+        var k: u32 = 0;
+        while (k < frame_count) : (k += 1) {
+            const bg = try background_frame(garden, k);
+            if (diff_outside_hud(&video.frames[k], &bg, badge, bar) != 0) return error.HudPaintedOutsideOverlays;
+        }
+    }
+
+    // THE CRUX, half three -- the scrubber keeps its own invariant under composition: its elapsed fill is empty at the
+    // first frame, full at the last, and non-decreasing between, exactly as it proves alone.
+    var prev_fill: u32 = 0;
+    {
+        var k: u32 = 0;
+        while (k < frame_count) : (k += 1) {
+            const lit = count_color(&video.frames[k], bar.fill);
+            const want = scrubber.elapsed_width(inner_w, k, frame_count) * inner_h;
+            if (lit != want) return error.HudScrubberOffModel;
+            if (lit < prev_fill) return error.HudScrubberRanBackward;
+            prev_fill = lit;
+        }
+    }
+    if (count_color(&video.frames[0], bar.fill) != 0) return error.HudScrubberFirstNotEmpty;
+    if (count_color(&video.frames[frame_count - 1], bar.fill) != inner_w * inner_h) return error.HudScrubberLastNotFull;
+
+    // THE CRUX, half four -- the timecode keeps its own invariant under composition: the badge is byte-steady within a
+    // whole second and changes at each second boundary, measured against timecode_seconds as the tick oracle.
+    var ticks: u32 = 0;
+    var steadies: u32 = 0;
+    {
+        var k: u32 = 1;
+        while (k < frame_count) : (k += 1) {
+            const same_second = timecode.timecode_seconds(k, hud_fps) == timecode.timecode_seconds(k - 1, hud_fps);
+            const badge_same = rect_bytes_equal(&video.frames[k - 1], &video.frames[k], badge.x, badge.y, badge.w, badge.h);
+            if (same_second) {
+                if (!badge_same) return error.HudBadgeChangedMidSecond;
+                steadies += 1;
+            } else {
+                if (badge_same) return error.HudBadgeDidNotTick;
+                ticks += 1;
+            }
+        }
+    }
+    // invariant: the default reel exercises both timed behaviours -- at least one tick and at least one steady pair.
+    if (ticks == 0) return error.HudNoTickEverSeen;
+    if (steadies == 0) return error.HudNoSteadyEverSeen;
+
+    // A malformed composition refuses by name -- a bar overlapping the badge would corrupt it, so the build refuses.
+    const clashing = scrubber.Scrubber{ .x = badge.x, .y = badge.y, .w = badge.w, .h = badge.h, .thickness = 1, .track = bar.track, .fill = bar.fill, .border = bar.border };
+    if (build_hud_reel(garden, &atlas, clashing, frame_count)) |_| {
+        return error.ExpectedOverlayOverlap;
+    } else |e| {
+        if (e != error.HudOverlaysOverlap) return error.WrongOverlapError;
+    }
+
+    // --- gfv1 intra-frame: encode, decode, prove the HUD reel round-trips byte for byte ----------------------------
+    const gfv_cap = frames.encoded_bound(pixel_count, frame_count);
+    const gfv_dst = try garden.alloc(u8, gfv_cap);
+    const gfv_res = try frames.encode(garden, &video, gfv_dst);
+    // invariant: the encoder wrote every frame.
+    assert(gfv_res.frame_count == frame_count);
+    const gfv_back = try frames.decode(garden, gfv_dst[0..gfv_res.len]);
+    if (!videos_equal(&gfv_back, &video)) return error.GfvRoundTripBroke;
+
+    // --- gfd1 inter-frame: encode, decode, prove the SAME HUD reel round-trips byte for byte -----------------------
+    const gfd_cap = frames_delta.encoded_bound(pixel_count, frame_count);
+    const gfd_dst = try garden.alloc(u8, gfd_cap);
+    const gfd_res = try frames_delta.encode(garden, &video, gfd_dst);
+    assert(gfd_res.frame_count == frame_count);
+    const gfd_back = try frames_delta.decode(garden, gfd_dst[0..gfd_res.len]);
+    if (!videos_equal(&gfd_back, &video)) return error.GfdRoundTripBroke;
+
+    // The two formats stay distinct: a gfv1 stream refuses at the gfd1 magic.
+    if (frames_delta.decode(garden, gfv_dst[0..gfv_res.len])) |_| {
+        return error.MagicSlipped;
+    } else |e| {
+        if (e != error.BadMagic) return error.WrongMagic;
+    }
+
+    // The delta/keyframe mix is a REPORTED measurement -- the moving block, the growing fill, and the ticking clock make
+    // some frames delta cheaply and some not, so the count is shown, never asserted exact (REDS #82).
+    const keyframes: u32 = frame_count - gfd_res.delta_frames;
+    print("GREEN image-player-hud: scrubber + timecode composed over {d} frames of {d}x{d} moving video; the two overlays disjoint (a bar clashing the badge refused HudOverlaysOverlap), the HUD touching only the badge and the bar; scrubber fill grows {d}->{d} px empty->full, timecode {d} ticks + {d} steady pairs -- each overlay keeps its own invariant under composition; round-trip byte-identical through BOTH codecs; gfd1 adaptive mix {d} deltas + {d} keyframes ({d} bytes vs gfv1 {d}); gfv1 stream refused by gfd1 decoder as BadMagic\n", .{
+        frame_count, hud_frame_w, hud_frame_h, 0, inner_w * inner_h, ticks, steadies, gfd_res.delta_frames, keyframes, gfd_res.len, gfv_res.len,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: player_hud selftest\n", .{});
+    return 1;
+}
