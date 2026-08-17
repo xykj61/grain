@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260817.013425
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title font5x7_boxdiag completes the box-drawing family (diagonal marks)
+prompt autonomous loop -- recur; next agent-doable lap Lindy-first crux-first, Season G open-media
+think The README named the diagonal box marks as a next Season G rung; taking it completes the box-drawing family the light (U+2500..U+253C) and double (U+2550..U+256C) sets began -- a Lindy completeness lap that follows the exact established corpus pattern.
+think Drew the three light diagonals on the shared 5x7 body: U+2571 the forward slash (upper-right to lower-left), U+2572 the backslash (upper-left to lower-right), U+2573 their cross -- the pen stepping one cell down each row corner to corner, the ASCII art the specification.
+think Added one property the straight-line box corpora could not: the cross is EXACTLY the two single diagonals overlaid -- a cell inks in the cross iff either single diagonal inks it (a union) -- which proves the three are a family, not three lone drawings.
+obs GREEN on the first build: 3 marks round-trip byte-identical, all present, distinct, legible (ink 7..13 of 35), the union holds, encoded 160 over raw 105 (compression reported, not asserted -- the round-trip is the proof, honoring REDS #82's no-false-invariant rule since the sparse diagonals pay run overhead).
+obs Caught and removed a nonsense `c += 0` filler line before the witness ran; the union loop body is a single if.
+loom witness=font5x7_boxdiag_witness marks=3 ink_lo=7 ink_hi=13 encoded=160 raw=105 result=GREEN
+file image/font5x7_boxdiag.rye the three light diagonal marks; build_atlas + selftest proving round-trip, distinctness, the cross-union, and the legibility band
+file tools/font5x7_boxdiag_witness.rish builds and runs the corpus, grepping the GREEN, round-trip, and union claims
+file image/README.md a boxdiag bullet beside its box-family siblings, naming the cross-union property
+recommend keep-going -- next Season G rung: proving the codecs on real corpora, or aligning paint_line/clipped the way paint_paragraph now aligns
