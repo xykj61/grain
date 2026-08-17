@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260817.113943
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title text_grid render_grid_auto_ink -- the first consumer of color.readable_ink
+prompt recur the loop; take the next agent-doable lap Lindy-first crux-first, single-stranded, sweep Radiant, send often, stop at custody gates
+think Read REMEMBER, the 1024-round itinerary, the eight-season double-seat, and the rye-first crypto wave for the road. Live edge is Season G open-media; the color module landed the readable-ink floor last lap and NAMED its own gap -- readable_ink is a proven primitive with no consumer outside color.rye.
+think Lindy-first crux-first: the highest-Lindy agent-doable move is to close that named gap -- make the accessibility floor reach a real surface. A surface that names only its per-cell grounds and gets legible text for free is the everyday accessibility default; that is durable, reached-for code, not a one-off.
+think Council rota lap index 11 -> active-designing/yonder/20260618-182412_single-stranded.md: simple over easy, compose not braid, each part about one thing. That shaped the design: color DECIDES the ink, text_grid PAINTS it, the verb builds the fg palette and passes through render_grid_cells unchanged -- no new storage, no new codec, no braid.
+think render_grid_auto_ink(cells, cols, rows, bg): for each cell fg[i] = color.readable_ink(bg[i]); delegate to render_grid_cells. Two positive asserts (fg.len == n, n >= 1). One check_grid up front; a mis-sized ground palette refuses GridBgMismatch before allocation.
+think Witness proves three ways: cell-by-cell the built ink equals readable_ink of that cell's ground (white on a dark blue header, black on light-grey and white rows); the whole image equals the explicit render_grid_cells over the same hand-built palette byte-for-byte (nothing hidden in the auto verb); every picked ink clears WCAG AA (>=4.50) against its own ground by meets_aa, walked over all 48 cells. Plus determinism and a QOI round-trip.
+obs GREEN on the first metal run, no reds. Additive: every elder assertion in the text_grid selftest stayed whole (the grep 'GREEN image-text-grid' still matches), and the witness gained one grep assertion for 'auto-ink picks a legible ink per cell', mirroring how the color lap widened its own proof.
+obs Single-stranded held: the consumer added no field, no codec, no storage -- it is pure composition of two proven floors. This is the shape the rota doc praises, taken deliberately.
+obs meets_aa held on all three grounds by the module's own integer path -- white on #0000ff (~8.59:1), black on #dddddd (~15:1), black on white (21:1) -- so the legibility claim is measured, never assumed.
+loom witness=text_grid_auto_ink grid=16x3 image_px=96x21 ink_px=291 cells_aa_checked=48
+file image/text_grid.rye render_grid_auto_ink -- the first consumer of color.readable_ink; version bumped, GREEN line widened
+file tools/text_grid_witness.rish added the auto-ink grep assertion, elder assertions kept whole
+file crux/REMEMBER.md live edge names the new consumer; Git nib refreshed, prior nib demoted
+recommend keep-going another readable-ink consumer (a text_panel auto-inking its caption over its own fill) or a fresh Season G / other-season Lindy-first crux

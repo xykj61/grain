@@ -37,3 +37,6 @@ say "text-grid: ${out}"
 
 let green = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'GREEN image-text-grid' && echo yes"]
 assert (trim green.out) == "yes" else "text-grid: selftest did not print the GREEN bridge line"
+
+let autoink = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'auto-ink picks a legible ink per cell' && echo yes"]
+assert (trim autoink.out) == "yes" else "text-grid: selftest did not prove the auto-ink readable-ink consumer"
