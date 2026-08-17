@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260817.094150
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title scooter_paint -- a live conversation in colour, GREEN
+prompt recur: next agent-doable lap Lindy-first crux-first; Rye prioritized; deep-read one council-rota doc; send often; stop at custody gates
+think Read the road-ahead: crux doc REMEMBER, the eight-season double-seat, the crypto-parity wave, the 1024-round itinerary, the autonomous-loop seed.
+think The font family is complete -- the uppercase Latin-1 set closed (commit 1039968864); recent laps moved to the terminal-meets-pixels bridge and the coloured terminal (text_grid render_grid_fg landed prior lap).
+think Crux-first: the just-landed per-cell colour primitive was only proven in the abstract text_grid selftest; the decisive move that makes it real is colouring a LIVE conversation on the pond bridge -- the payoff rung.
+think Chose render_channel_fg + paint_frame_fg in pond/apps/scooter_paint.rye: fold a channel, paint the status header (row 0) in an accent colour, the body in the reading colour -- a real terminal affordance.
+think Kept it a pure pass-through of text_grid.render_grid_fg so the claim is a byte-for-byte identity, not a new painter; the coloured verbs stand beside the untouched single-ink render_channel/paint_frame.
+think Split the compound colour asserts (tame_style_check bans assert(a and b)); scanned the whole body region below the header rather than assuming which row holds a post, so the body-colour proof is robust.
+obs GREEN first metal run: 80x24 frame -> 480x168 coloured image; coloured face inks the same pixels as the single-ink face (inked_over_white equal), a header pixel reads red where the body stays black, round-trips through QOI, a mis-sized palette refuses GridFgMismatch by name.
+obs Correctly layered -- pond composes image; no new symlinks needed since render_grid_fg lives in the already-linked text_grid.rye. Rota deep-read item 21 (ORGANIZING.md): implementing code lives in its module home, pond composing image is that layering held right.
+loom witness=scooter_paint_witness frame_cols=80 frame_rows=24 image_w=480 image_h=168 result=GREEN
+file pond/apps/scooter_paint.rye render_channel_fg + paint_frame_fg + inked_over_white helper and coloured selftest block
+file tools/scooter_paint_witness.rish header names the coloured twin (docs-sync)
+file crux/REMEMBER.md live-edge bullet + new Git nib, prior demoted
+recommend keep-going next: a caret/unread accent on a specific cell (the live TTY affordance), or pivot to the crypto-parity double-seat (highest-Lindy new thread) -- both agent-doable, no gate
