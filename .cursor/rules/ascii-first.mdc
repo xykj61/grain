@@ -1,0 +1,16 @@
+---
+description: Plain ASCII for new documents, code comments, and commit messages; non-ASCII only in an explicitly-named set of work rounds.
+alwaysApply: true
+---
+
+# ASCII-First -- plain ASCII for documents and commits
+
+**Seated:** `20260816.214652` on Keaton's word. Canonical twin: `.claude/rules/ascii-first.md` (full form). Kin: `reds-first.mdc`, REDS #83.
+
+Write every new document, code comment, and commit message in **plain 7-bit ASCII**. A non-ASCII character no reader needs is a corruption waiting to compound -- REMEMBER.md silently triple-encoded into 2,797 runs of mojibake before it was caught (REDS #83).
+
+Substitute: em/en-dash -> `--`/`-`; middot -> `-`/`,`/`;`; curly quotes -> straight `'`/`"`; arrows -> `->`/`<-`/`<->`; ellipsis -> `...`; Greek/subscripts in prose -> spelled (`gamma_2`, `sigma`).
+
+**Exception:** an explicitly-named set of work rounds where non-ASCII is the point (a Unicode module's fixtures, an i18n surface, a font codec's glyph tables). Name it in the round; keep it out of the operator card, commit subjects, and general prose.
+
+**Never rewrite dated artifacts** to retrofit this (one-clock law, accrete-never-break); repairing a mojibake *corruption* is a fix, not a style rewrite.
