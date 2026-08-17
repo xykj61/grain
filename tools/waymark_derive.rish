@@ -107,16 +107,17 @@ say "corpus sha3-512: ${digest_val}"
 #   constel-local-test-constellations -> FORA (20260817 - FORA replacement, same Constel test-network goals; breach-queued, same cairn)
 #   bit-design-system-surface-and-dimeroll-entities -> WADE (20260817 - transient: drawn when the module was dimeroll; superseded when Dimeroll renamed to Dimeroll -- kept in exclude as historical)
 #   dimeroll-hr-and-accounting-entities -> WADE (20260817 - the WADE->WADE->WADE season, re-breached from the dimeroll-consistent preimage idx 5141 on Keaton's word; WADE and WADE both stay in exclude as historical)
-#   cion-molt-living-mutants-and-fossils -> LOWE (20260817 - LOWE replacement, same CION-Eq2 Molt goals; breach-queued, same cairn)
+#   cion-molt-living-mutants-and-fossils -> LOWE (20260817 - renamed from LOWE, breach molt debride EXECUTED; LOWE kept in exclude as historical)
 # SETU is hand-seated (not a corpus draw — SETU is absent from flw); exclude only.
 # SEVA is hand-seated (viewer; absent from flw).
 # MAND is the seated M vane (in flw corpus; exclude so it never draws as a waymark).
 # MONA is the same-day prior name of Mand — exclude for one season.
 # SALA dropped from exclude at alias retirement 20260724.202412 (Sala is historical).
 # Placeholder below is the most recent seat; change it when drawing the next.
-# Most recent seats (four breach molt debride replacements queued 20260817):
-#   DREY (DREY), FORA (FORA), WADE (WADE), LOWE (LOWE). input_name rests on LOWE's below.
-let input_name = "cion-molt-living-mutants-and-fossils"
+# Most recent seats (breach molt debride replacements 20260817):
+#   EXECUTED: WADE (WADE->WADE->WADE), LOWE (LOWE). QUEUED: DREY (DREY), FORA (FORA).
+#   WADE, WADE, LOWE kept in exclude as historical. input_name rests on WADE's below.
+let input_name = "dimeroll-hr-and-accounting-entities"
 
 let hash_run = run ["sh" "-c" "printf '%s' '${input_name}' | ${ossl} dgst -sha3-512 | awk '{print $NF}' | cut -c1-8"]
 assert hash_run.ok else "openssl dgst -sha3-512 failed"
