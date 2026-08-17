@@ -1,0 +1,252 @@
+//! image/font5x7_latin1.rye -- the open Latin-1 accented-letters corpus: the marks a Romance name reaches for (Season G, font content).
+//!
+//! Season G (Open Media Primitives) - font content for the open glyph atlas image/glyph.rye (gfa1), set beside the
+//! five ASCII corpora (image/font5x7.rye the numerals, image/font5x7_alpha.rye the uppercase, image/font5x7_lower.rye
+//! the lowercase, image/font5x7_punct.rye the punctuation, image/font5x7_symbol.rye the symbols), the wider-symbol
+//! corpora (the box family, the arrows, the block elements, the geometric marks, the math/technical operators, the
+//! currency signs), the Greek letters (image/font5x7_greek.rye), and the sub/superscript and fraction corpora. Where
+//! the ASCII corpora spell plain English and the Greek corpus prints a quantity, this corpus supplies the eight
+//! Latin-1 accented lowercase letters a real name in a Romance language reaches for -- a acute, c cedilla, e acute,
+//! i acute, n tilde, o acute, u acute, u diaeresis, at their real Unicode codepoints U+00E1, U+00E7, U+00E9, U+00ED,
+//! U+00F1, U+00F3, U+00FA, U+00FC, drawn in our own open hand on the same 5x7 body. These are the letters that let a
+//! civic surface print a keeper's own name -- Andres, Francois, Nunez, Garcia -- rather than an ASCII-folded
+//! approximation of it, the difference between a device that reads a family's names and one that does not.
+//!
+//! The source stays plain ASCII (ASCII-first): the codepoints are written as numeric literals (0x00E1 ...) and each
+//! letter is named in an ASCII comment, so no non-ASCII byte enters the file even though the glyphs it builds cover a
+//! non-ASCII range. The codepoints are NOT contiguous (they skip the unaccented letters between them in the Latin-1
+//! Supplement block), so this corpus carries an explicit ascending codepoint table -- the shape the gfa1 encoder
+//! trusts (strictly ascending, shared cell, coverage length == cell area). The drawings ARE the specification: each
+//! letter is seven rows of five cells in ASCII line art ('#' full ink, '.' none) that a reader audits by eye; the
+//! coverage bytes are derived from that art, never the reverse. Seven letters carry their diacritic ABOVE (an acute
+//! stroke, a tilde wave, or two diaeresis dots on the top row); the c cedilla alone is marked from BENEATH, its top
+//! row empty and a small tail hung under the bowl -- the family order this corpus proves. build_atlas turns the eight
+//! drawings into a glyph.GlyphAtlas the gfa1 encoder accepts, so the property that matters stays provable on metal:
+//! decode(encode(atlas)) recovers every glyph byte-for-byte, the letters are present and distinct, each reads within
+//! an honest legibility band, and each diacritic sits where the letter demands it. No network, no key, no funds --
+//! the marks a surface reads the day it prints a name that ASCII cannot spell, on our own open font.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_latin1.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+
+pub const font5x7_latin1_version = "20260817.054604";
+
+/// Every glyph in this corpus shares one 5-wide, 7-tall cell -- the same body the ASCII, Greek, and symbol corpora carry.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance: the cell width plus one column of daylight, the same advance the sibling corpora carry.
+pub const latin1_advance: u8 = cell_w + 1;
+
+/// The corpus holds exactly the eight Latin-1 accented letters named in the table below.
+pub const latin1_count: u32 = 8;
+
+/// Cells per glyph -- the coverage length every letter carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The eight Latin-1 codepoints, strictly ascending -- the order the gfa1 encoder trusts. Each aligns by index with
+/// latin1_art below. Written as numeric literals so the source stays plain ASCII while the glyphs cover a non-ASCII
+/// range:
+///   0x00E1 a acute, 0x00E7 c cedilla, 0x00E9 e acute, 0x00ED i acute,
+///   0x00F1 n tilde, 0x00F3 o acute, 0x00FA u acute, 0x00FC u diaeresis. The unaccented letters between them in the
+///   Latin-1 Supplement block are skipped, so the codepoints are named outright rather than derived from a base.
+const latin1_codepoints = [latin1_count]u32{
+    0x00E1, 0x00E7, 0x00E9, 0x00ED, 0x00F1, 0x00F3, 0x00FA, 0x00FC,
+};
+
+/// The eight letters, drawn in the open. Each is seven rows of five cells; '#' ink, '.' background. A reader audits
+/// every letter here by eye, and the coverage bytes are lifted from this art, never guessed. Seven letters wear their
+/// mark on the top rows -- an acute stroke rising to the right (a, e, i, o, u), a tilde wave (n), two diaeresis dots
+/// (u) -- with the letter body below it; the c cedilla alone leaves the top row empty and hangs a small tail beneath
+/// the bowl, the one letter this corpus marks from below.
+const latin1_art = [latin1_count][cell_h][]const u8{
+    .{ "...#.", "..#..", ".###.", "....#", ".####", "#...#", ".####" }, // U+00E1 a acute
+    .{ ".....", ".###.", "#....", "#....", "#....", ".###.", "..#.." }, // U+00E7 c cedilla
+    .{ "...#.", "..#..", ".###.", "#...#", "#####", "#....", ".###." }, // U+00E9 e acute
+    .{ "...#.", "..#..", ".##..", "..#..", "..#..", "..#..", ".###." }, // U+00ED i acute
+    .{ "..#.#", ".#.#.", "####.", "#...#", "#...#", "#...#", "#...#" }, // U+00F1 n tilde
+    .{ "...#.", "..#..", ".###.", "#...#", "#...#", "#...#", ".###." }, // U+00F3 o acute
+    .{ "...#.", "..#..", "#...#", "#...#", "#...#", "#...#", ".####" }, // U+00FA u acute
+    .{ ".#.#.", ".....", "#...#", "#...#", "#...#", "#...#", ".####" }, // U+00FC u diaeresis
+};
+
+/// Lift one letter's ASCII art into a freshly allocated coverage grid of exactly cell_area bytes: 255 for ink,
+/// 0 for background. The art's own shape is asserted, so a mistyped row is a stopped line rather than a bad glyph.
+fn coverage_from_art(allocator: std.mem.Allocator, art: [cell_h][]const u8) ![]u8 {
+    // invariant: a coverage grid is exactly the shared cell area, within the atlas ceiling.
+    assert(cell_area >= 1);
+    assert(cell_area <= glyph.coverage_max);
+    const cov = try allocator.alloc(u8, cell_area);
+    var idx: u32 = 0;
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        const row = art[r];
+        // invariant: every drawn row is exactly the cell width -- the art matches the grid.
+        assert(row.len == cell_w);
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            cov[idx] = if (row[c] == '#') 255 else 0;
+            idx += 1;
+        }
+    }
+    // invariant: the whole grid was filled, no cell left unwritten.
+    assert(idx == cell_area);
+    return cov;
+}
+
+/// Build the Latin-1 accented-letters atlas: eight glyphs at the named ascending codepoints, sharing the 5x7 cell and
+/// advance. The gfa1 encoder accepts the result directly (ascending codepoints, coverage length == cell area).
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the corpus is the eight named Latin-1 letters and no more.
+    assert(latin1_count == 8);
+    assert(cell_area == 35);
+    const glyphs = try allocator.alloc(glyph.Glyph, latin1_count);
+    var i: u32 = 0;
+    var last_cp: u32 = 0;
+    while (i < latin1_count) : (i += 1) {
+        const cp = latin1_codepoints[i];
+        // invariant: codepoints are strictly ascending -- the ordering the gfa1 encoder trusts.
+        assert(i == 0 or cp > last_cp);
+        last_cp = cp;
+        const cov = try coverage_from_art(allocator, latin1_art[i]);
+        glyphs[i] = glyph.Glyph{
+            .codepoint = cp,
+            .advance = latin1_advance,
+            .coverage = cov,
+        };
+    }
+    // invariant: the last codepoint is the u diaeresis (U+00FC) -- the table ends where this set ends.
+    assert(glyphs[latin1_count - 1].codepoint == 0x00FC);
+    return glyph.GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- the legibility signal a blank glyph would fail.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+/// Count the inked cells in one row r of a glyph -- the reader the diacritic-placement proof uses. Row 0 is the top.
+fn row_ink(cov: []const u8, r: u32) u32 {
+    // invariant: the row index sits inside the shared cell, over the shared grid.
+    assert(r < cell_h);
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var c: u32 = 0;
+    while (c < cell_w) : (c += 1) {
+        if (cov[r * cell_w + c] != 0) n += 1;
+    }
+    // invariant: a single row can hold at most cell_w inked cells.
+    assert(n <= cell_w);
+    return n;
+}
+
+/// The top-row (row 0) ink of a codepoint's glyph in the built atlas -- the reader the placement proof uses.
+fn top_row_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return row_ink(g.coverage, 0);
+    return error.Latin1LetterMissing;
+}
+
+/// The bottom-row (row cell_h-1) ink of a codepoint's glyph -- the reader the cedilla proof uses.
+fn bottom_row_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return row_ink(g.coverage, cell_h - 1);
+    return error.Latin1LetterMissing;
+}
+
+// --- selftest: build the Latin-1 atlas, round-trip it through gfa1, prove all present, distinct, legible, placed ----
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built atlas is the eight-letter corpus at the shared cell.
+    assert(glyph_count == latin1_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // Eight present letters: every one looks up, carries the shared advance; an unaccented ASCII letter misses.
+    var d: u32 = 0;
+    while (d < latin1_count) : (d += 1) {
+        const cp = latin1_codepoints[d];
+        if (back.lookup(cp)) |g| {
+            assert(g.codepoint == cp);
+            assert(g.advance == latin1_advance);
+        } else return error.Latin1LetterMissing;
+    }
+    if (back.lookup('a')) |_| return error.NonLatin1Found else {}
+
+    // Distinctness: no two letters share identical coverage -- the acute a and the acute e differ, the acute u and the
+    // diaeresis u differ (catches a copy slip that would leave two names spelled with one glyph).
+    var a: u32 = 0;
+    while (a < latin1_count) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b < latin1_count) : (b += 1) {
+            if (std.mem.eql(u8, atlas.glyphs[a].coverage, atlas.glyphs[b].coverage)) return error.Latin1LettersNotDistinct;
+        }
+    }
+
+    // Legibility: each letter's ink count sits inside an honest band. The floor sits where the i acute (its lightest,
+    // a thin stem under a mark) still reads, the ceiling where the a acute and e acute (its heaviest) still resolve as
+    // letters, not blocks.
+    const ink_min: u32 = 8;
+    const ink_max: u32 = 20;
+    var lo: u32 = cell_area;
+    var hi: u32 = 0;
+    var k: u32 = 0;
+    while (k < latin1_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (n < ink_min or n > ink_max) return error.Latin1LetterIllegible;
+        if (n < lo) lo = n;
+        if (n > hi) hi = n;
+    }
+    // invariant: the observed ink band stayed inside the honest bounds.
+    assert(lo >= ink_min);
+    assert(hi <= ink_max);
+
+    // Diacritic placement -- what makes each of these an accented letter rather than a plain one, and what a reader
+    // audits: the seven above-marked letters (a, e, i, n, o, u acute and u diaeresis) each carry ink on their top row,
+    // while the c cedilla alone leaves its top row empty and hangs its mark on the bottom row. This proves the mark
+    // sits where the letter demands it rather than drifting into the body.
+    const above_marked = [_]u32{ 0x00E1, 0x00E9, 0x00ED, 0x00F1, 0x00F3, 0x00FA, 0x00FC };
+    var m: u32 = 0;
+    while (m < above_marked.len) : (m += 1) {
+        if (!(try top_row_ink_of(&atlas, above_marked[m]) >= 1)) return error.DiacriticNotAbove;
+    }
+    if (!(try top_row_ink_of(&atlas, 0x00E7) == 0)) return error.CedillaNotEmptyAbove; // c cedilla top row empty
+    if (!(try bottom_row_ink_of(&atlas, 0x00E7) >= 1)) return error.CedillaNotBelow; // c cedilla marked beneath
+
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof.
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-latin1: {d} Latin-1 letters U+00E1,U+00E7,U+00E9,U+00ED,U+00F1,U+00F3,U+00FA,U+00FC at {d}x{d} round-trip byte-identical; all present, distinct, legible (ink {d}..{d} of {d}); seven marked above, the c cedilla below; encoded {d} bytes, raw {d}\n", .{
+        glyph_count, cell_w, cell_h, lo, hi, cell_area, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_latin1 selftest\n", .{});
+    return 1;
+}
