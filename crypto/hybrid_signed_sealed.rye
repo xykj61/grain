@@ -1,0 +1,395 @@
+//! crypto/hybrid_signed_sealed.rye — Season G (Cryptography), the HYBRID sealed-AND-signed door: a message sealed TO a hybrid identity AND signed BY a
+//! hybrid identity, so one frame carries both CONFIDENTIALITY and PROVENANCE hardened on BOTH families at once — the classical Ed25519/X25519 world
+//! Comlink uses today, AND the post-quantum ML-DSA/ML-KEM world a lattice identity carries. It completes the hybrid surface: crypto/hybrid_identity.rye
+//! gives a keeper a name that signs on both families, crypto/hybrid_sealed.rye gives a message that hides on both, and this door gives one frame that does
+//! both — the hybrid analog of crypto/kumara_pq_sealed.rye (which seals-and-signs on the post-quantum family alone). A forger who breaks one signature
+//! family is caught; an eavesdropper who breaks one agreement family reads nothing; only an adversary who breaks BOTH families on BOTH sides defeats it.
+//!
+//! It authors NO new cryptography and adds NO new primitive. Confidentiality is crypto/hybrid_sealed.rye's own onion (the classical X25519 box inside the
+//! post-quantum ML-KEM box — a message readable only when both agreements open); provenance is crypto/hybrid_identity.rye's own hybrid signature (an
+//! Ed25519 signature beside an ML-DSA signature, genuine only when both verify). This module contributes only the framing that binds them — a signed
+//! envelope around the hybrid sealed frame, opened verify-before-trust: the sender's two public keys are checked against the reader's expectation, and the
+//! hybrid signature verified over a BLAKE2b-512 digest of the sealed frame, BEFORE either agreement is ever opened. A valid signature from the wrong
+//! keeper is caught, never mistaken for the right one, exactly as crypto/kumara_pq_sealed.rye's binding catches it on the post-quantum family.
+//!
+//! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, audit-ready). Double-seats BESIDE crypto/kumara_pq_sealed.rye (the
+//! post-quantum-only signed-and-sealed door) and crypto/hybrid_sealed.rye (the hybrid anonymous confidential door), retiring neither.
+//! Design read: active-designing/20260816-195850_the-hybrid-sealed-door-both-agreements.md · active-designing/20260816-192400_post-quantum-identity-is-dual-key.md.
+//! Kin: crypto/hybrid_sealed.rye (the confidentiality onion, GREEN) · crypto/hybrid_identity.rye (the hybrid signature, GREEN) · crypto/kumara_pq_sealed.rye
+//! (the post-quantum-only sibling this mirrors) · crypto/blake2b.rye (the digest the signature covers). Clean-room: BIP-39, SLIP-0010, RFC 5869, FIPS
+//! 203/204 are public standards studied through their specs; the framing is our own Rye wiring over our own GREEN rungs (.claude/rules/gratitude-licenses.md).
+//!
+//! THE ENVELOPE — magic "GHS1" ‖ sender-Ed25519-public(32) ‖ sender-ML-DSA-public(pk_len) ‖ Ed25519-signature(64) ‖ ML-DSA-signature(sig_len) ‖ inner
+//!   hybrid_sealed frame(variable, to the end). The fixed-width header (magic, the sender's two public keys, the two signatures) sits FIRST, so open
+//!   locates the trailing inner frame without parsing a nested length; the inner frame runs to the end and crypto/hybrid_sealed.rye validates it whole.
+//!   The hybrid signature covers a BLAKE2b-512 digest of the inner sealed frame — a fixed 64 bytes, within ML-DSA's message bound at every plaintext
+//!   length, bound to the exact ciphertext by the hash's collision resistance — so a tampered frame breaks the signature (caught at verify) or an AEAD tag
+//!   (caught at open), and never opens.
+//!
+//! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. Every identity in the selftest is a TEST hybrid identity from a
+//! published-vector mnemonic; the module's own functions call no std.crypto (each half is proven one rung down). Both the inner X25519 ephemeral and the
+//! ML-KEM message must be fresh randomness in real use — the selftest supplies deterministic TEST values and names the duty. Constant-time timing-safety
+//! stays crypto/CONSTANT_TIME.md's named horizon; sealing to or signing as the maintainer's OWN hybrid identity stays the custody gate.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/hybrid_signed_sealed.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const hybrid = @import("hybrid_identity.rye");
+const hsealed = @import("hybrid_sealed.rye");
+const pq = @import("kumara_pq_identity.rye");
+const classical = @import("kumara_identity.rye");
+const blake2b = @import("blake2b.rye");
+
+pub const hybrid_signed_sealed_version = "20260816.195850";
+
+/// The four magic bytes opening every Grain hybrid sealed-and-signed envelope (v1).
+pub const magic: [4]u8 = .{ 'G', 'H', 'S', '1' };
+pub const magic_len: u32 = 4;
+
+/// The Ed25519 public-key and signature widths the classical half carries — 32 and 64 bytes.
+pub const ed_public_len: u32 = classical.public_len;
+pub const ed_sig_len: u32 = hybrid.ed_sig_len;
+
+/// The 32-byte inner ephemeral and KEM-message widths, borrowed from the sealed door so a caller sizes one value each.
+pub const ephemeral_bytes: u32 = hsealed.ephemeral_bytes;
+pub const seed_bytes: u32 = hsealed.seed_bytes;
+
+/// header_len — the fixed-width envelope prefix for a parameter set: magic ‖ sender Ed25519 public ‖ sender ML-DSA public ‖ Ed25519 signature ‖ ML-DSA
+/// signature. Everything after it is the inner hybrid_sealed frame.
+pub fn header_len(comptime p: pq.PqParams) u32 {
+    return magic_len + ed_public_len + pq.sign_public_len(p) + ed_sig_len + pq.sig_len(p);
+}
+
+/// The largest plaintext one signed-and-sealed carry holds — inherited from the inner hybrid sealed frame, so this door adds no looser limit.
+pub const max_plain_bytes: u32 = hsealed.max_plain_bytes;
+
+/// max_frame_bytes — the whole envelope at the largest plaintext, per set: the fixed header plus the inner hybrid sealed frame's own maximum. Named so a
+/// caller's scratch cites one ceiling.
+pub fn max_frame_bytes(comptime p: pq.PqParams) u32 {
+    return header_len(p) + hsealed.max_frame_bytes(p);
+}
+
+pub const HybridSignedSealedError = error{
+    /// seal's output buffer is too small to hold the whole envelope — refused before any byte the caller relies on.
+    OutTooSmall,
+    /// A plaintext longer than max_plain_bytes — refused before any key agreement or signing.
+    PayloadTooLong,
+    /// open was handed a buffer shorter than the fixed header, so it cannot hold even an empty inner frame.
+    FrameTooShort,
+    /// The first four bytes are not the GHS1 magic — this is not a hybrid sealed-and-signed envelope.
+    BadMagic,
+    /// The envelope names a sender that is not the one the reader expected — a valid signature from the wrong keeper, refused before any agreement is opened.
+    UnexpectedSigner,
+    /// The sender's hybrid signature did not verify over the inner sealed frame — one or both families failed, so the provenance is not genuine. No
+    /// plaintext is revealed.
+    BadSignature,
+    /// The inner hybrid sealed frame did not open (a wrong recipient on one or both agreements, or a tampered ciphertext). No plaintext is revealed.
+    OpenFailed,
+    /// A composed seal, sign, verify, or hash rung surfaced its own error — honored honestly.
+    ComposedFailed,
+};
+
+/// What open() returns once provenance and confidentiality both hold: the recovered plaintext (a zero-copy slice into the caller's out buffer) and the
+/// verified sender's two public keys, so a caller reads who sent it beside what they sent.
+pub fn OpenedType(comptime p: pq.PqParams) type {
+    return struct {
+        plain: []const u8,
+        sender_ed_public: [ed_public_len]u8,
+        sender_mldsa_public: [pq.sign_public_len(p)]u8,
+    };
+}
+
+/// seal_signed — seal `plain` TO the recipient's hybrid identity (the confidentiality onion) and SIGN the sealed frame with the sender's hybrid signature
+/// (both families), writing a whole hybrid sealed-and-signed envelope into `out` and returning its length. Both `ephemeral_priv` (the inner X25519
+/// ephemeral) and `m` (the outer KEM message) are FRESH randomness the caller supplies per message.
+pub fn seal_signed(
+    comptime p: pq.PqParams,
+    sender: *const hybrid.HybridType(p),
+    recipient: *const hybrid.HybridType(p),
+    ephemeral_priv: *const [ephemeral_bytes]u8,
+    m: *const [seed_bytes]u8,
+    plain: []const u8,
+    out: []u8,
+) HybridSignedSealedError!u32 {
+    // invariant (precondition): the plaintext fits the inner frame's bound, so the whole envelope fits and every length below stays a bounded u32.
+    if (plain.len > max_plain_bytes) return error.PayloadTooLong;
+    const hlen = header_len(p);
+    // invariant (precondition): the caller's buffer holds at least the fixed header — the full check follows once the inner length is known.
+    if (out.len < hlen) return error.OutTooSmall;
+
+    // Write the inner hybrid sealed frame at out[hlen..], leaving room for the fixed header ahead of it.
+    const inner_len = hsealed.seal_to_identity(p, recipient, ephemeral_priv, m, plain, out[hlen..]) catch |e| return switch (e) {
+        error.OutTooSmall => error.OutTooSmall,
+        else => error.ComposedFailed,
+    };
+    const inner = out[hlen .. hlen + inner_len];
+
+    // Sign a BLAKE2b-512 digest of the inner sealed frame with the sender's HYBRID signature (Ed25519 + ML-DSA). Signing the digest (a fixed 64 bytes)
+    // rather than the frame itself keeps the signed message within ML-DSA's bound at every plaintext length, and binds the signature to the exact
+    // ciphertext by the hash's collision resistance.
+    const digest = blake2b.hash512(inner) catch return error.ComposedFailed;
+    const sig = hybrid.sign(p, sender, digest[0..]) catch return error.ComposedFailed;
+
+    // --- fixed header: magic ‖ sender Ed25519 public ‖ sender ML-DSA public ‖ Ed25519 signature ‖ ML-DSA signature ---------------------------------
+    var off: u32 = 0;
+    var i: u32 = 0;
+    while (i < magic_len) : (i += 1) out[off + i] = magic[i];
+    off += magic_len;
+
+    var e: u32 = 0;
+    // invariant (bound): copy exactly ed_public_len sender-Ed25519-public bytes.
+    while (e < ed_public_len) : (e += 1) out[off + e] = sender.classical.public_key[e];
+    off += ed_public_len;
+
+    const pk_len = pq.sign_public_len(p);
+    var k: u32 = 0;
+    // invariant (bound): copy exactly pk_len sender-ML-DSA-public bytes.
+    while (k < pk_len) : (k += 1) out[off + k] = sender.post_quantum.sign.public_key[k];
+    off += pk_len;
+
+    var s: u32 = 0;
+    // invariant (bound): copy exactly ed_sig_len Ed25519-signature bytes.
+    while (s < ed_sig_len) : (s += 1) out[off + s] = sig.ed[s];
+    off += ed_sig_len;
+
+    const ml_len = pq.sig_len(p);
+    var d: u32 = 0;
+    // invariant (bound): copy exactly ml_len ML-DSA-signature bytes.
+    while (d < ml_len) : (d += 1) out[off + d] = sig.mldsa[d];
+    off += ml_len;
+
+    // invariant (postcondition): the header was written to exactly the computed prefix length, and the whole envelope fits the buffer.
+    assert(off == hlen);
+    assert(hlen + inner_len <= out.len);
+    return hlen + inner_len;
+}
+
+/// open_signed — recover the plaintext of a hybrid sealed-and-signed envelope, verify-before-trust: refuse unless the named sender matches the reader's
+/// expectation on BOTH public keys and its HYBRID signature over the inner frame verifies (both families), THEN open the inner hybrid sealed frame with
+/// the recipient's own hybrid identity. A wrong expected sender (UnexpectedSigner), a forged or one-family signature (BadSignature), a wrong recipient or
+/// tampered ciphertext (OpenFailed) each refuse with no plaintext revealed. Returns the plaintext and the verified sender public keys.
+pub fn open_signed(
+    comptime p: pq.PqParams,
+    recipient: *const hybrid.HybridType(p),
+    expected_sender_ed_public: *const [ed_public_len]u8,
+    expected_sender_mldsa_public: *const [pq.sign_public_len(p)]u8,
+    frame: []const u8,
+    out: []u8,
+) HybridSignedSealedError!OpenedType(p) {
+    const hlen = header_len(p);
+    // invariant (precondition): the envelope is at least the fixed header, so every fixed field below has bytes to read.
+    if (frame.len < hlen) return error.FrameTooShort;
+    if (!bytes_eq(frame[0..magic_len], magic[0..])) return error.BadMagic;
+
+    const pk_len = pq.sign_public_len(p);
+    const ml_len = pq.sig_len(p);
+
+    // Read the named sender's two public keys and refuse a sender the reader did not expect — before any signature check or agreement is opened.
+    var off: u32 = magic_len;
+    var sender_ed_public: [ed_public_len]u8 = undefined;
+    var e: u32 = 0;
+    // invariant (bound): read exactly ed_public_len sender-Ed25519-public bytes.
+    while (e < ed_public_len) : (e += 1) sender_ed_public[e] = frame[off + e];
+    off += ed_public_len;
+
+    var sender_mldsa_public: [pq.sign_public_len(p)]u8 = undefined;
+    var k: u32 = 0;
+    // invariant (bound): read exactly pk_len sender-ML-DSA-public bytes.
+    while (k < pk_len) : (k += 1) sender_mldsa_public[k] = frame[off + k];
+    off += pk_len;
+
+    if (!bytes_eq(sender_ed_public[0..], expected_sender_ed_public[0..])) return error.UnexpectedSigner;
+    if (!bytes_eq(sender_mldsa_public[0..], expected_sender_mldsa_public[0..])) return error.UnexpectedSigner;
+
+    // Read the two signatures into a HybridSig and the inner sealed frame (which runs to the end).
+    var sig: hybrid.HybridSig(p) = undefined;
+    var s: u32 = 0;
+    // invariant (bound): read exactly ed_sig_len Ed25519-signature bytes.
+    while (s < ed_sig_len) : (s += 1) sig.ed[s] = frame[off + s];
+    off += ed_sig_len;
+    var d: u32 = 0;
+    // invariant (bound): read exactly ml_len ML-DSA-signature bytes.
+    while (d < ml_len) : (d += 1) sig.mldsa[d] = frame[off + d];
+    off += ml_len;
+    // invariant (construction): the header cursor consumed exactly the fixed prefix.
+    assert(off == hlen);
+    const inner = frame[hlen..];
+
+    // PROVENANCE FIRST — verify the sender's HYBRID signature over the BLAKE2b-512 digest of the inner frame; refuse a forgery (or a one-family break)
+    // before touching the recipient's secret keys. The digest is recomputed here, so a tampered ciphertext yields a different digest and the signature
+    // no longer verifies.
+    const digest = blake2b.hash512(inner) catch return error.ComposedFailed;
+    const genuine = hybrid.verify(p, &sender_ed_public, &sender_mldsa_public, digest[0..], &sig);
+    if (!genuine) return error.BadSignature;
+
+    // CONFIDENTIALITY — open the inner hybrid sealed frame with the recipient's own hybrid identity; a wrong recipient or tampered ciphertext fails.
+    const opened = hsealed.open_as_identity(p, recipient, inner, out) catch return error.OpenFailed;
+
+    // invariant (postcondition): both provenance and confidentiality held — the plaintext is authentic, from the expected sender, sealed to this recipient.
+    assert(genuine);
+    var result: OpenedType(p) = undefined;
+    result.plain = opened.plain;
+    result.sender_ed_public = sender_ed_public;
+    result.sender_mldsa_public = sender_mldsa_public;
+    return result;
+}
+
+// ---- shared helpers -----------------------------------------------------------------------------------------------------------------
+
+fn bytes_eq(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    // invariant (bound): read exactly a.len bytes, one per turn.
+    while (i < a.len) : (i += 1) if (a[i] != b[i]) return false;
+    return true;
+}
+
+/// Fill a buffer with a deterministic spread of test bytes — TEST plaintexts and TEST randomness only, never real entropy.
+fn fill_test(buf: []u8, seed: u8) void {
+    var i: u32 = 0;
+    while (i < buf.len) : (i += 1) buf[i] = @as(u8, @truncate(@as(u32, i) *% (@as(u32, seed) | 1) +% @as(u32, seed) +% 7));
+    if (buf.len > 0) buf[0] |= 1;
+}
+
+// ---- selftest ----------------------------------------------------------------------------------------------------------------------
+
+// BIP-39's own published Trezor vector 1 — a TEST phrase, never a real one.
+const trezor_mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";
+
+/// check_param — prove the hybrid sealed-and-signed door for one parameter set: a confidential-and-authenticated round-trip across plaintext lengths, and
+/// the refusals that prove both families guard both sides — a wrong recipient, a wrong expected sender, a tampered inner frame, and each half of the
+/// hybrid signature tampered alone.
+fn check_param(comptime p: pq.PqParams) !void {
+    const test_coin: u32 = 7;
+    const sender = try hybrid.from_mnemonic(p, trezor_mnemonic, "SENDER", test_coin, 0, 0);
+    const recipient = try hybrid.from_mnemonic(p, trezor_mnemonic, "RECIPIENT", test_coin, 0, 0);
+    const stranger = try hybrid.from_mnemonic(p, trezor_mnemonic, "STRANGER", test_coin, 0, 0);
+
+    var esk: [ephemeral_bytes]u8 = undefined;
+    fill_test(esk[0..], 3);
+    var m: [seed_bytes]u8 = undefined; // TEST KEM message — fresh randomness in real use
+    fill_test(m[0..], 19);
+
+    var frame_buf: [max_frame_bytes(p)]u8 = undefined;
+    var out_buf: [max_plain_bytes]u8 = undefined;
+
+    // 1. Round-trip across a spread of plaintext lengths: sealed to the recipient, signed by the sender, opened with both provenance and confidentiality,
+    //    the recovered sender public keys equal to the sender's own.
+    const lengths = [_]u32{ 0, 1, 16, 64, 500 };
+    for (lengths) |plen| {
+        var plain_buf: [500]u8 = undefined;
+        const plain = plain_buf[0..plen];
+        fill_test(plain, @truncate(plen +% 5));
+        const flen = try seal_signed(p, &sender, &recipient, &esk, &m, plain, frame_buf[0..]);
+        const opened = try open_signed(p, &recipient, &sender.classical.public_key, &sender.post_quantum.sign.public_key, frame_buf[0..flen], out_buf[0..]);
+        if (!bytes_eq(opened.plain, plain)) return error.PlainWrong;
+        if (!bytes_eq(opened.sender_ed_public[0..], sender.classical.public_key[0..])) return error.SenderEdWrong;
+        if (!bytes_eq(opened.sender_mldsa_public[0..], sender.post_quantum.sign.public_key[0..])) return error.SenderMlWrong;
+    }
+
+    // 2. Wrong recipient — the stranger cannot open a frame sealed to the recipient, even though the provenance is genuine: OpenFailed.
+    {
+        var plain_buf: [48]u8 = undefined;
+        fill_test(plain_buf[0..], 31);
+        const flen = try seal_signed(p, &sender, &recipient, &esk, &m, plain_buf[0..], frame_buf[0..]);
+        if (open_signed(p, &stranger, &sender.classical.public_key, &sender.post_quantum.sign.public_key, frame_buf[0..flen], out_buf[0..])) |_| {
+            return error.WrongRecipientOpened;
+        } else |err| if (err != error.OpenFailed) return error.WrongRecipientWrongError;
+    }
+
+    // 3. Wrong expected sender — a reader expecting the stranger refuses a frame the sender signed, before any agreement is opened: UnexpectedSigner.
+    {
+        var plain_buf: [48]u8 = undefined;
+        fill_test(plain_buf[0..], 37);
+        const flen = try seal_signed(p, &sender, &recipient, &esk, &m, plain_buf[0..], frame_buf[0..]);
+        if (open_signed(p, &recipient, &stranger.classical.public_key, &stranger.post_quantum.sign.public_key, frame_buf[0..flen], out_buf[0..])) |_| {
+            return error.WrongSenderOpened;
+        } else |err| if (err != error.UnexpectedSigner) return error.WrongSenderWrongError;
+    }
+
+    // 4. Tampered inner ciphertext — the hybrid signature no longer covers it: BadSignature, refused before any agreement is opened.
+    {
+        var plain_buf: [48]u8 = undefined;
+        fill_test(plain_buf[0..], 41);
+        const flen = try seal_signed(p, &sender, &recipient, &esk, &m, plain_buf[0..], frame_buf[0..]);
+        frame_buf[header_len(p)] ^= 0x01; // a byte inside the inner sealed frame
+        if (open_signed(p, &recipient, &sender.classical.public_key, &sender.post_quantum.sign.public_key, frame_buf[0..flen], out_buf[0..])) |_| {
+            return error.TamperInnerOpened;
+        } else |err| if (err != error.BadSignature) return error.TamperInnerWrongError;
+    }
+
+    // 5. A forger who breaks ONLY the classical family — a tampered Ed25519 signature byte — is caught by the hybrid verify: BadSignature.
+    {
+        var plain_buf: [48]u8 = undefined;
+        fill_test(plain_buf[0..], 43);
+        const flen = try seal_signed(p, &sender, &recipient, &esk, &m, plain_buf[0..], frame_buf[0..]);
+        // The Ed25519 signature sits right after magic ‖ sender Ed25519 public ‖ sender ML-DSA public.
+        const ed_sig_off = magic_len + ed_public_len + pq.sign_public_len(p);
+        frame_buf[ed_sig_off] ^= 0x01;
+        if (open_signed(p, &recipient, &sender.classical.public_key, &sender.post_quantum.sign.public_key, frame_buf[0..flen], out_buf[0..])) |_| {
+            return error.TamperEdSigOpened;
+        } else |err| if (err != error.BadSignature) return error.TamperEdSigWrongError;
+    }
+
+    // 6. A forger who breaks ONLY the post-quantum family — a tampered ML-DSA signature byte — is likewise caught: BadSignature.
+    {
+        var plain_buf: [48]u8 = undefined;
+        fill_test(plain_buf[0..], 47);
+        const flen = try seal_signed(p, &sender, &recipient, &esk, &m, plain_buf[0..], frame_buf[0..]);
+        const ml_sig_off = magic_len + ed_public_len + pq.sign_public_len(p) + ed_sig_len;
+        frame_buf[ml_sig_off] ^= 0x01;
+        if (open_signed(p, &recipient, &sender.classical.public_key, &sender.post_quantum.sign.public_key, frame_buf[0..flen], out_buf[0..])) |_| {
+            return error.TamperMlSigOpened;
+        } else |err| if (err != error.BadSignature) return error.TamperMlSigWrongError;
+    }
+
+    // 7. Bad magic and a too-short frame.
+    {
+        var plain_buf: [32]u8 = undefined;
+        fill_test(plain_buf[0..], 51);
+        const flen = try seal_signed(p, &sender, &recipient, &esk, &m, plain_buf[0..], frame_buf[0..]);
+        frame_buf[0] = 'X';
+        if (open_signed(p, &recipient, &sender.classical.public_key, &sender.post_quantum.sign.public_key, frame_buf[0..flen], out_buf[0..])) |_| {
+            return error.BadMagicOpened;
+        } else |err| if (err != error.BadMagic) return error.BadMagicWrongError;
+        frame_buf[0] = 'G'; // restore
+        if (open_signed(p, &recipient, &sender.classical.public_key, &sender.post_quantum.sign.public_key, frame_buf[0 .. header_len(p) - 1], out_buf[0..])) |_| {
+            return error.ShortOpened;
+        } else |err| if (err != error.FrameTooShort) return error.ShortWrongError;
+    }
+}
+
+fn run_selftest() !u8 {
+    try check_param(pq.pq_small);
+    try check_param(pq.pq_default);
+    try check_param(pq.pq_large);
+
+    print("GREEN crypto-hybrid-signed-sealed: the HYBRID sealed-AND-signed door authored in pure Rye — a message sealed TO a hybrid identity AND signed " ++
+        "BY a hybrid identity, so one frame carries both confidentiality and provenance hardened on BOTH families at once: the classical Ed25519/X25519 " ++
+        "world Comlink uses today, AND the post-quantum ML-DSA/ML-KEM world a lattice identity carries. It completes the hybrid surface — the hybrid " ++
+        "identity signs on both families, the hybrid sealed door hides on both, and this door does both in one frame; the hybrid analog of " ++
+        "crypto/kumara_pq_sealed. Authors NO new cryptography — confidentiality is crypto/hybrid_sealed's own onion (the classical X25519 box inside the " ++
+        "post-quantum ML-KEM box), provenance is crypto/hybrid_identity's own hybrid signature (Ed25519 beside ML-DSA, genuine only when both verify); " ++
+        "this module contributes only the signed envelope (magic GHS1 ‖ sender Ed25519 public ‖ sender ML-DSA public ‖ Ed25519 signature ‖ ML-DSA " ++
+        "signature ‖ inner hybrid_sealed frame) opened verify-before-trust: the sender's two public keys are checked against the reader's expectation and " ++
+        "the hybrid signature verified over a BLAKE2b-512 digest of the sealed frame, BEFORE either agreement is opened. Proven GREEN on the first metal " ++
+        "pass at every tier (small ML-DSA-44/ML-KEM-512, default ML-DSA-65/ML-KEM-768, large ML-DSA-87/ML-KEM-1024): a confidential-and-authenticated " ++
+        "round-trip across five plaintext lengths (empty → 500 bytes) recovering the plaintext and both verified sender keys, and six refusals — a wrong " ++
+        "recipient fails OpenFailed, a wrong expected sender fails UnexpectedSigner before any agreement is opened, a tampered inner ciphertext fails " ++
+        "BadSignature, a tampered Ed25519 signature byte fails BadSignature (a forger who breaks only the classical family is caught), a tampered ML-DSA " ++
+        "signature byte fails BadSignature (a forger who breaks only the post-quantum family is caught), plus bad magic and truncation. The module's own " ++
+        "functions call no std.crypto; each composed half is proven one rung down. Purely local over TEST hybrid identities from published vectors — no " ++
+        "real key held, no network, no funds, no real device; both the X25519 ephemeral and the ML-KEM message must be fresh randomness in real use, " ++
+        "constant-time timing-safety the named horizon, and sealing to or signing as the maintainer's own hybrid identity the custody gate. The hybrid " ++
+        "surface now stands whole — a name that signs on both worlds, a message that hides on both, and one frame that proves who sent it and hides it " ++
+        "from everyone else, falling only when both worlds fall at once.\n", .{});
+    return 0;
+}
+
+pub fn main(init_args: std.process.Init) !u8 {
+    _ = init_args;
+    return run_selftest();
+}

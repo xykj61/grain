@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260816.200738
+editor Zed + Claude Agent
+model Fable 5
+voice Kyri
+host Vultr SEA VPS (HP AMD 2vCPU/4GB shared) — Eastern (EDT) convention · ai-jail
+title The hybrid sealed-and-signed door — completing the hybrid surface
+prompt Recur the road Lindy-first crux-first; take the next agent-doable crypto lap and send it, stopping only at custody gates.
+think With the hybrid identity (signs on both families) and the hybrid sealed door (hides on both) both GREEN, the matrix's missing corner is the signed-AND-sealed hybrid — one frame carrying provenance and confidentiality over both families, the hybrid analog of kumara_pq_sealed.
+think Mirror kumara_pq_sealed's envelope but swap the confidentiality (hybrid_sealed's onion instead of mlkem_sealed) and the provenance (hybrid_identity's hybrid signature instead of ML-DSA alone). Sign a BLAKE2b-512 digest of the inner frame to stay within ML-DSA's bound.
+think Envelope: magic GHS1 ‖ sender Ed25519 public ‖ sender ML-DSA public ‖ Ed25519 sig ‖ ML-DSA sig ‖ inner hybrid_sealed frame. Opened verify-before-trust — both sender keys checked, hybrid signature verified, before either agreement is opened.
+obs GREEN on the first metal pass at all three tiers: a confidential-and-authenticated round-trip recovering the plaintext and both verified sender keys, and six refusals — wrong recipient (OpenFailed), wrong expected sender (UnexpectedSigner), tampered inner frame (BadSignature), each signature half tampered alone (BadSignature — a one-family forger caught either way), bad magic, truncation.
+obs Count guard GREEN at 79 crypto/*.rye (was 78); README + docs/CRYPTO.md synced same round (79 files, 50 primitives + 29 compositions); suite registers the witness; TAME bans clean, width-check exit 0.
+obs The hybrid surface now stands whole — a name that signs on both worlds, a message that hides on both, and one frame that proves who sent it while hiding it from everyone else, falling only when both worlds fall at once. Authors no new cryptography; every half proven one rung down.
+loom witness=crypto_hybrid_signed_sealed_witness tiers=3 lengths=5 refusals=6 result=GREEN files_after=79
+file crypto/hybrid_signed_sealed.rye the hybrid sealed-and-signed door — hybrid_sealed onion for confidentiality, hybrid signature for provenance, over both families
+file tools/crypto_hybrid_signed_sealed_witness.rish the per-file witness proving the door GREEN on metal at every tier
+file tools/crypto_suite_witness.rish registers the new witness so the suite and the count guard stay a bijection
+file crypto/README.md rung-table row + counts synced to seventy-nine files, twenty-nine compositions
+file docs/CRYPTO.md rung-table row + counts synced
+recommend keep-going the hybrid crypto surface is complete; the next durable crux is composition INTO Comlink — a private authenticated message door that reaches for the hybrid sealed-and-signed frame during the transition years
