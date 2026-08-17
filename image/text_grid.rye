@@ -59,6 +59,7 @@ pub const GridError = error{
     GridTooLarge, // the rendered image would exceed qoi's pixel ceiling -- refuse rather than allocate past it
     GridFgMismatch, // the per-cell foreground buffer is not exactly cols*rows colours -- a mis-shaped palette, refused
     GridBgMismatch, // the per-cell background buffer is not exactly cols*rows colours -- a mis-shaped ground, refused
+    GridCursorOutOfGrid, // the cursor cell index is not a real cell of the grid -- refuse before a pixel moves
 };
 
 /// The image width a grid of `cols` columns paints into -- one column pitch per cell.
@@ -319,6 +320,44 @@ pub fn render_grid_cells(
     const scratch = try allocator.alloc(text_layout.PlacedGlyph, cols);
     try paint_grid_cells(atlas, cells, cols, rows, fg, bg, scratch, &pm, 0, 0);
     return pm;
+}
+
+/// Render a monospace grid with a visible block CURSOR at one cell -- the abstract terminal cursor every grid surface
+/// reaches for. The whole grid paints `ink` over `ground`, except the cell at flat index `cursor` which is drawn
+/// INVERTED (its glyph in `ground` over an `ink` ground), so it reads as a solid ink block over a space or a
+/// knocked-out glyph over a letter -- inverse video, the classic block cursor. Pure composition over render_grid_cells:
+/// this builds the two palettes and passes through. A cursor index outside the grid refuses GridCursorOutOfGrid by name
+/// before a pixel is allocated. A caller wanting no cursor uses render_grid; this verb always draws exactly one.
+pub fn render_grid_cursor(
+    allocator: std.mem.Allocator,
+    atlas: *const glyph.GlyphAtlas,
+    cells: []const u8,
+    cols: u32,
+    rows: u32,
+    ink: color.Rgba,
+    ground: color.Rgba,
+    cursor: u32,
+) !qoi.Pixmap {
+    _ = try check_grid(atlas, cells, cols, rows);
+    // invariant: the cursor names a real cell of the grid, computed in u64 so the product cannot wrap before the check.
+    const count: u64 = @as(u64, cols) * @as(u64, rows);
+    if (@as(u64, cursor) >= count) return error.GridCursorOutOfGrid;
+
+    // Build the two per-cell palettes: `ink` over `ground` everywhere, INVERTED at the cursor cell so it reads inverse
+    // video. One colour per cell in each, exactly cols*rows -- the shape render_grid_cells trusts.
+    const n: u32 = @intCast(count);
+    const fg = try allocator.alloc(color.Rgba, n);
+    const bg = try allocator.alloc(color.Rgba, n);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const is_cursor = i == cursor;
+        fg[i] = if (is_cursor) ground else ink;
+        bg[i] = if (is_cursor) ink else ground;
+    }
+    // invariant: each palette carries exactly one colour per cell of the grid.
+    assert(fg.len == n);
+    assert(bg.len == n);
+    return render_grid_cells(allocator, atlas, cells, cols, rows, fg, bg);
 }
 
 /// Render a whole monospace grid into a fresh image sized exactly to it -- the verb a terminal surface reaches for.
@@ -593,6 +632,78 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         } else |e| if (e != error.GridBgMismatch) return error.WrongBgMismatch;
     }
 
+    // The block CURSOR: render_grid_cursor paints the whole grid plain but inverts one cell to inverse video -- the
+    // classic terminal cursor. Place it on the blank cell (row 2, col 0), so the cursor is a solid ink block, the
+    // cleanest proof. It is pure composition over render_grid_cells; the abstract floor scooter_paint passes through.
+    {
+        const cur_r: u32 = 2;
+        const cur_c: u32 = 0;
+        const cursor: u32 = cur_r * cols + cur_c;
+        const plain = try render_grid(garden, &atlas, cells, cols, rows, black, white);
+        const curimg = try render_grid_cursor(garden, &atlas, cells, cols, rows, black, white, cursor);
+        assert(curimg.width == plain.width);
+        assert(curimg.height == plain.height);
+
+        const cx0: u32 = cur_c * col_pitch;
+        const cx1: u32 = (cur_c + 1) * col_pitch;
+        const cy0: u32 = cur_r * cell_h;
+        const cy1: u32 = (cur_r + 1) * cell_h;
+
+        // Over the cursor cell's whole pixel block, the cursor face is solid ink (black) where the plain face is solid
+        // ground (white) -- the cell flipped to a filled cursor block.
+        {
+            var y: u32 = cy0;
+            while (y < cy1) : (y += 1) {
+                var x: u32 = cx0;
+                while (x < cx1) : (x += 1) {
+                    const i = (@as(usize, y) * @as(usize, curimg.width) + @as(usize, x)) * 4;
+                    // invariant: the cursor cell is solid ink on the cursor face.
+                    assert(curimg.pixels[i] == 0);
+                    assert(curimg.pixels[i + 1] == 0);
+                    assert(curimg.pixels[i + 2] == 0);
+                    assert(curimg.pixels[i + 3] == 255);
+                    // invariant: the same cell is solid ground on the plain face -- the cursor is what flipped it.
+                    assert(plain.pixels[i] == 255);
+                    assert(plain.pixels[i + 1] == 255);
+                    assert(plain.pixels[i + 2] == 255);
+                }
+            }
+        }
+
+        // Confined to one cell: every pixel OUTSIDE the cursor cell is byte-for-byte the plain face.
+        {
+            assert(curimg.pixels.len == plain.pixels.len);
+            const px_count: usize = @as(usize, curimg.width) * @as(usize, curimg.height);
+            var p: usize = 0;
+            while (p < px_count) : (p += 1) {
+                const x: u32 = @intCast(p % @as(usize, curimg.width));
+                const y: u32 = @intCast(p / @as(usize, curimg.width));
+                const in_cursor = x >= cx0 and x < cx1 and y >= cy0 and y < cy1;
+                if (in_cursor) continue;
+                const i = p * 4;
+                // invariant: a pixel outside the cursor cell is untouched -- identical to the plain render.
+                assert(curimg.pixels[i] == plain.pixels[i]);
+                assert(curimg.pixels[i + 1] == plain.pixels[i + 1]);
+                assert(curimg.pixels[i + 2] == plain.pixels[i + 2]);
+                assert(curimg.pixels[i + 3] == plain.pixels[i + 3]);
+            }
+        }
+
+        // Determinism and portability: the same grid and cursor render the same image, which round-trips through QOI.
+        const curimg2 = try render_grid_cursor(garden, &atlas, cells, cols, rows, black, white, cursor);
+        assert(curimg2.same_bytes(&curimg));
+        const ucap = qoi.encoded_bound(curimg.width * curimg.height);
+        const udst = try garden.alloc(u8, ucap);
+        const uenc = try qoi.encode(&curimg, udst);
+        const uback = try qoi.decode(garden, udst[0..uenc.len]);
+        assert(uback.same_bytes(&curimg));
+
+        // A cursor index past the last cell refuses GridCursorOutOfGrid by name, before any pixel is allocated.
+        if (render_grid_cursor(garden, &atlas, cells, cols, rows, black, white, cols * rows)) |_| {
+            return error.CursorOutSlipped;
+        } else |e| if (e != error.GridCursorOutOfGrid) return error.WrongCursorOut;
+    }
+
     // Refusals by name: a mis-shaped cells buffer, a zero dimension, a wrong-cell atlas, and a target too small.
     {
         const short = try garden.alloc(u8, cols * rows - 1);
@@ -615,7 +726,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(changed_pixels(tiny.pixels, tiny_before) == 0);
     }
 
-    print("GREEN image-text-grid: a {d}x{d} terminal grid painted into a {d}x{d} image; ink {d} px equals the summed cell coverage, the blank row is ground, a cell block equals its standalone glyph paint, a per-cell fg palette paints row 0 red while inking the same cells, a per-cell bg over a uniform ground reproduces the single-ground render and over a blue bar paints a real coloured header (no band pixel stays white), deterministic, every face round-trips through QOI byte-for-byte, and every mis-shape refuses by name\n", .{
+    print("GREEN image-text-grid: a {d}x{d} terminal grid painted into a {d}x{d} image; ink {d} px equals the summed cell coverage, the blank row is ground, a cell block equals its standalone glyph paint, a per-cell fg palette paints row 0 red while inking the same cells, a per-cell bg over a uniform ground reproduces the single-ground render and over a blue bar paints a real coloured header (no band pixel stays white), a block CURSOR inverts exactly one cell to a solid inverse-video block (confined byte-for-byte to that cell, a bad index refusing GridCursorOutOfGrid by name), deterministic, every face round-trips through QOI byte-for-byte, and every mis-shape refuses by name\n", .{
         cols, rows, face.width, face.height, changed,
     });
     return 0;
