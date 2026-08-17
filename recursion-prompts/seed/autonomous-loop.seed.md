@@ -23,7 +23,7 @@ Load these named paths too, so the loop carries the disciplines an unattended ru
 
 ### The council rota -- one canon doc deep-read per lap (d27)
 
-The lenses above load every lap. The **rota** is the supplement: deep-read **one** doc from this list of 27 per lap, cycling by lap index (lap N reads item `N mod 27`), so the durable foundations and context stay in living awareness across a long run rather than fading. Twenty-seven for the council d27 -- the sky fractal's fullest ring (3-9-15-27); breadth beats frequency here, since the core lenses already reinforce each lap. The living pins (REMEMBER, REDS, CAIRNS) are not on the rota because they are read every lap already; the two style guides share one slot; room was made this way for the system foundations Keaton named.
+The lenses above load every lap. The **rota** is the supplement: deep-read **one** doc from this list of 27 per lap, cycling by lap index (lap N reads item `N mod 27`), so the durable foundations and context stay in living awareness across a long run rather than fading. Twenty-seven for the council d27 -- the sky fractal's fullest ring (3-9-15-27); breadth beats frequency here, since the core lenses already reinforce each lap. The living pins (REMEMBER, REDS, CAIRNS) are not on the rota because they are read every lap already; the two style guides share one slot, and the TAME core and shelf share another; room was made this way for the system foundations Keaton named and for the SLC foundation (simple, lovable, complete).
 
 1. `foundations/README.md`
 2. `foundations/20260706-185112_follow-our-compass.md`
@@ -39,8 +39,8 @@ The lenses above load every lap. The **rota** is the supplement: deep-read **one
 12. `active-designing/yonder/20260618-184912_growing-a-language.md`
 13. `foundations/20260728-032134_keeh-and-kia.md` (the happy zone)
 14. `context/RADIANT_STYLE.md` (with `context/TWILIGHT_STYLE.md`)
-15. `context/TAME_CORE.md`
-16. `context/TAME_GUIDANCE.md`
+15. `context/TAME_CORE.md` (with `context/TAME_GUIDANCE.md`)
+16. `context/SIMPLE_LOVABLE_COMPLETE.md` (SLC -- simple, lovable, complete)
 17. `context/LEXICON.md`
 18. `context/TWO_ROOMS.md`
 19. `context/KYRI.md`
