@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260817.075413
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title font5x7 -- the closing capitals, uppercase Latin-1 set closed, GREEN
+prompt Autonomous loop -- continue the next agent-doable lap Lindy-first crux-first; the prior lap named the last uppercase gap; close it.
+think The prior lap (font5x7_upper_icelandic) found the block's last uppercase gap by measurement: E diaeresis (U+00CB), I diaeresis (U+00CF), O tilde (U+00D5) stood undrawn though their lowercase twins ship. Closing a whole named set is Lindy-durable floor code (rota this lap deep-read foundations/README.md -- the why beneath the how), so this is the crux-first next rung.
+think Studied the mark shapes already shipped: upper_latin1's A diaeresis and O diaeresis carry two parted dots on the top mark row (.#.#. then blank), A tilde carries a wave (..#.# over .#.#.). Reused those exact marks over the compressed capital E, I, O bodies (the accented-capitals rows-2..6 pattern), so the new corpus stays one hand with the letters beside it.
+think Built image/font5x7_upper_close.rye with the family idiom: drawings-are-the-spec, explicit ascending codepoints, gfa1 round-trip byte-identical, per-mark toothed guards. The diaeresis guard reads two dots with a blank center gap and a clear second row; the tilde guard reads a two-row wave cresting right. Added a family-consistency proof -- the E and I diaeresis mark rows are byte-identical, so the mark cannot drift between the two letters it crowns.
+obs GREEN on the first metal run, no red; ink band 11..17 of 35 (I diaeresis lightest, E diaeresis heaviest). tame_style_check bans clean, width-check exit 0, both files plain 7-bit ASCII (numeric codepoint literals, the ascii-first font-table exception). Milestone reached honestly: with these three, every alphabetic codepoint in the whole Latin-1 Supplement block -- lowercase and uppercase alike -- now stands drawn in our own open hand. The uppercase Latin-1 letter set is closed.
+loom witness=font5x7_upper_close_witness glyphs=3 cell=5x7 ink_lo=11 ink_hi=17 encoded_bytes=146 raw_bytes=105 first_run=green
+file image/font5x7_upper_close.rye E/I diaeresis + O tilde, closing the uppercase Latin-1 set, gfa1 round-trip proven
+file tools/font5x7_upper_close_witness.rish proves the corpus on metal -- present, distinct, legible, marks byte-identical
+file image/README.md records the uppercase-set close and grows the witness roster (docs-sync)
+file crux/REMEMBER.md Git nib advanced to this edge; prior nib carries the upper_icelandic narrative
+recommend keep-going the Latin-1 letters stand whole; a natural next durable rung is a unifying uppercase Latin-1 font (the capital twin of font5x7_upper, now that upper_nordic/upper_icelandic/upper_close extend it), or the next open-media journey (open fonts across weights, or the gfv1 video container)
