@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260817.005908
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title text-paint grows edge-clipping -- the visible part of a too-wide label
+prompt baton prin recur -- continue the loop, next agent-doable Season G rung after the paint half landed
+think The paint half (image/text_paint.rye) landed and sent last lap, naming edge-clipping as a later rung. A too-wide label is a real UI case: a panel wants to show the visible part, not field a refusal. So the crux this lap is paint_placed_clipped -- the opt-in companion to the strict paint_placed.
+think Single-stranded discipline (this lap's rota still fresh): rather than duplicate the composite, I lifted the per-cell blend into ONE composite_cell routine and pointed both painters at it, so an in-bounds cell blends identically whether strict or clipped -- one composite, two entry policies (refuse vs clip).
+think paint_placed_clipped drops any cell whose (dx, dy) falls outside the target and returns the count it painted, so a caller and the witness can measure how much of the line landed. The strict paint_placed keeps its up-front box check and its PaintOutOfBounds refusal unchanged -- clipping is additive, not a behavior change.
+think Proof design: paint the whole line onto a full-width canvas (the strict ground truth from the sibling proofs), then clip the same line onto an 8-wide canvas; assert every held pixel equals the full canvas at the same coordinate (clipping never alters an in-bounds pixel), the painted count is strictly between zero and the full inked count (a true partial), a fully off-canvas origin clips to zero painted and an untouched buffer, and a line that fits clips identically to the strict paint.
+obs GREEN on the first build: 'Hi!' clipped onto 8 wide lands 19 of 32 inked cells, pixel-for-pixel matching the strict paint; off-canvas is a clean no-op; a fitting line matches byte-for-byte. tame_style_check clean, width-check exit 0. No red this lap.
+obs No custody gate reached -- no network, no key, no funds. The clipping companion completes the paint rung's honest handling of a label wider than its panel: refuse (strict) or show the visible part (clipped), the caller's choice.
+loom witness=text_paint_witness clipped_cells=19 line_cells=32 narrow_width=8
+file image/text_paint.rye adds composite_cell (shared blend) + paint_placed_clipped (opt-in clip, returns painted count)
+file tools/text_paint_witness.rish asserts the clipping line and the pixel-for-pixel match with the strict paint
+file image/README.md the text_paint entry now names paint_placed_clipped; clipping dropped from the "next rungs" line
+file crux/REMEMBER.md live edge names the clip companion; Git nib rotated (paint half -> Prior, word-wrap -> Older)
+recommend keep-going the next Season G rung: mid-word splitting in text_layout for a word wider than the wrap width, or proving the image/video codecs on a real corpus rather than crafted clips -- each its own signed round.

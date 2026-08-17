@@ -59,6 +59,28 @@ pub fn solid(allocator: std.mem.Allocator, width: u32, height: u32, fill: color.
     return qoi.Pixmap{ .width = width, .height = height, .channels = 4, .colorspace = 0, .pixels = pixels };
 }
 
+/// Composite one covered cell of ink onto the target at (`dx`, `dy`) -- the single place a pixel is written, shared
+/// by the strict and the clipping painters so both blend identically. The caller has already proven (dx, dy) lands
+/// inside the buffer (a box check up front, or a per-cell clip). The ink's alpha is scaled by the cell coverage.
+fn composite_cell(target: *qoi.Pixmap, dx: u32, dy: u32, ink: color.Rgba, cov: u8) void {
+    // invariant: the caller proved this cell lands inside the target buffer, on both axes.
+    assert(dx < target.width);
+    assert(dy < target.height);
+    const di = (@as(usize, dy) * @as(usize, target.width) + @as(usize, dx)) * 4;
+    const dst = color.Rgba{
+        .r = target.pixels[di],
+        .g = target.pixels[di + 1],
+        .b = target.pixels[di + 2],
+        .a = target.pixels[di + 3],
+    };
+    const src = color.Rgba{ .r = ink.r, .g = ink.g, .b = ink.b, .a = scale_alpha(ink.a, cov) };
+    const res = color.over(src, dst);
+    target.pixels[di] = res.r;
+    target.pixels[di + 1] = res.g;
+    target.pixels[di + 2] = res.b;
+    target.pixels[di + 3] = res.a;
+}
+
 /// Paint already-placed glyphs into `target`, compositing `ink` through each glyph's coverage, at pixel origin
 /// (`origin_x`, `origin_y`). Each cell one byte of coverage becomes the ink's alpha at (origin_x + pen_x + cx,
 /// origin_y + cy); a zero cell leaves the destination untouched; a covered cell is `color.over(ink', dst)`. Refuses
@@ -99,27 +121,58 @@ pub fn paint_placed(
             while (cx < cw) : (cx += 1) {
                 const cov = g.coverage[@as(usize, cy) * @as(usize, cw) + @as(usize, cx)];
                 if (cov == 0) continue; // no ink -- the destination shows through untouched
-                const dx = origin_x + p.pen_x + cx;
-                const dy = origin_y + cy;
                 // invariant: the up-front box check proved every inked cell lands inside the target buffer.
-                assert(dx < target.width);
-                assert(dy < target.height);
-                const di = (@as(usize, dy) * @as(usize, target.width) + @as(usize, dx)) * 4;
-                const dst = color.Rgba{
-                    .r = target.pixels[di],
-                    .g = target.pixels[di + 1],
-                    .b = target.pixels[di + 2],
-                    .a = target.pixels[di + 3],
-                };
-                const src = color.Rgba{ .r = ink.r, .g = ink.g, .b = ink.b, .a = scale_alpha(ink.a, cov) };
-                const res = color.over(src, dst);
-                target.pixels[di] = res.r;
-                target.pixels[di + 1] = res.g;
-                target.pixels[di + 2] = res.b;
-                target.pixels[di + 3] = res.a;
+                composite_cell(target, origin_x + p.pen_x + cx, origin_y + cy, ink, cov);
             }
         }
     }
+}
+
+/// Paint already-placed glyphs into `target`, CLIPPING any cell that falls outside the buffer rather than refusing.
+/// Where paint_placed refuses a line that would overrun, this one paints only the visible part -- exactly what a
+/// panel that shows a label wider than itself wants. An inked cell inside the target is composited identically to
+/// paint_placed; an inked cell outside is dropped. Returns the count of cells actually painted, so a caller (and a
+/// witness) can measure how much of the line landed. An empty placement paints nothing and returns zero.
+pub fn paint_placed_clipped(
+    atlas: *const glyph.GlyphAtlas,
+    placed: []const text_layout.PlacedGlyph,
+    target: *qoi.Pixmap,
+    origin_x: u32,
+    origin_y: u32,
+    ink: color.Rgba,
+) !u32 {
+    // invariant: the placement stays within text_layout's own line ceiling, so the outer loop is bounded.
+    if (placed.len > text_layout.line_glyph_max) return error.LineTooLong;
+
+    const cw: u32 = atlas.cell_w;
+    const ch: u32 = atlas.cell_h;
+    // invariant: a paintable atlas has real cells on both axes.
+    assert(cw >= 1);
+    assert(ch >= 1);
+
+    var painted: u32 = 0;
+    for (placed) |p| {
+        const g = p.src;
+        // invariant: the glyph's coverage is exactly the atlas cell area -- the grid the inner loop walks.
+        assert(g.coverage.len == @as(usize, cw) * @as(usize, ch));
+        var cy: u32 = 0;
+        while (cy < ch) : (cy += 1) {
+            var cx: u32 = 0;
+            while (cx < cw) : (cx += 1) {
+                const cov = g.coverage[@as(usize, cy) * @as(usize, cw) + @as(usize, cx)];
+                if (cov == 0) continue; // no ink -- the destination shows through untouched
+                const dx = origin_x + p.pen_x + cx;
+                const dy = origin_y + cy;
+                // A cell outside the target is clipped, not painted -- the visible part lands, the rest is dropped.
+                if (dx >= target.width or dy >= target.height) continue;
+                composite_cell(target, dx, dy, ink, cov);
+                painted += 1;
+            }
+        }
+    }
+    // invariant: no more cells were painted than the placement could carry (glyphs times cell area).
+    assert(painted <= @as(u32, @intCast(placed.len)) * cw * ch);
+    return painted;
 }
 
 /// Lay `text` out against `atlas` and paint it in one call -- the verb a surface reaches for. `scratch` holds one
@@ -292,7 +345,49 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     try paint_line(&atlas, text, scratch5, @constCast(&canvas5), 0, 0, red);
     assert(canvas5.same_bytes(&canvas));
 
-    print("GREEN image-text-paint: '{s}' painted red over white changed exactly {d} pixels (= inked cells); every changed pixel is the ink, every other stays background; deterministic and byte-identical through paint_line; transparent ink is a no-op; half-alpha blends through color.over exactly; empty line paints nothing; PaintOutOfBounds refused by name on width and on height\n", .{ text, changed });
+    // --- clipping: paint_placed_clipped paints only the visible part, matching the strict paint where in-bounds ---
+    // A full-width canvas holds the whole line (the strict painter's canvas above is our ground truth). A narrow
+    // canvas clips the overrun; every pixel it holds must equal the full canvas at the same coordinate, and the
+    // painted count must be exactly the inked cells whose column stays within the narrow width.
+    const narrow_w: u32 = 8; // narrower than the 17-cell painted box of "Hi!" -- the tail clips off
+    const narrow = try solid(garden, narrow_w, 8, white);
+    const clipped = try paint_placed_clipped(&atlas, scratch[0..line.count], @constCast(&narrow), 0, 0, red);
+    // Every pixel of the narrow canvas equals the full canvas at (x, y) -- clipping never alters an in-bounds pixel.
+    {
+        var y: u32 = 0;
+        while (y < narrow.height) : (y += 1) {
+            var x: u32 = 0;
+            while (x < narrow.width) : (x += 1) {
+                const ni = (@as(usize, y) * @as(usize, narrow.width) + @as(usize, x)) * 4;
+                const fi = (@as(usize, y) * @as(usize, canvas.width) + @as(usize, x)) * 4;
+                assert(narrow.pixels[ni] == canvas.pixels[fi]);
+                assert(narrow.pixels[ni + 1] == canvas.pixels[fi + 1]);
+                assert(narrow.pixels[ni + 2] == canvas.pixels[fi + 2]);
+                assert(narrow.pixels[ni + 3] == canvas.pixels[fi + 3]);
+            }
+        }
+    }
+    // The clipped paint landed fewer cells than the whole line (real ink was dropped past the edge) yet more than
+    // zero (the head of the line is visible) -- a true partial paint, neither a refusal nor a full paint.
+    assert(clipped < want_changed);
+    assert(clipped >= 1);
+
+    // A line painted entirely off the canvas (origin past the right edge) clips to nothing -- zero painted, buffer
+    // untouched byte-for-byte. Clipping degrades to a clean no-op rather than a refusal.
+    const off = try solid(garden, 8, 8, white);
+    const off_before = try garden.alloc(u8, off.pixels.len);
+    @import("tally_copy.rye").copy_disjoint(u8, off_before, off.pixels);
+    const off_painted = try paint_placed_clipped(&atlas, scratch[0..line.count], @constCast(&off), 100, 0, red);
+    assert(off_painted == 0);
+    assert(changed_pixels(off.pixels, off_before) == 0);
+
+    // Clipping a line that fits entirely paints exactly what the strict painter does -- same pixels, count = inked.
+    const wide = try solid(garden, 20, 8, white);
+    const wide_painted = try paint_placed_clipped(&atlas, scratch[0..line.count], @constCast(&wide), 0, 0, red);
+    assert(wide_painted == want_changed);
+    assert(wide.same_bytes(&canvas));
+
+    print("GREEN image-text-paint: '{s}' painted red over white changed exactly {d} pixels (= inked cells); every changed pixel is the ink, every other stays background; deterministic and byte-identical through paint_line; transparent ink is a no-op; half-alpha blends through color.over exactly; empty line paints nothing; PaintOutOfBounds refused by name on width and on height; clipping paints only the visible part ({d} of {d} cells on a narrow canvas, matching the strict paint pixel-for-pixel), a fully off-canvas line clips to a clean no-op, and a line that fits clips identically to the strict paint\n", .{ text, changed, clipped, want_changed });
     return 0;
 }
 

@@ -50,4 +50,10 @@ assert (trim blend.out) == "yes" else "text-paint: the partial-alpha blend did n
 let refuse = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'PaintOutOfBounds refused by name' && echo yes"]
 assert (trim refuse.out) == "yes" else "text-paint: the out-of-bounds refusal was not proven"
 
-say "text-paint: GREEN -- the fonts become a string seen; ink composites through coverage exactly where the glyphs carry it, the paint is deterministic, a partial alpha blends true, and a line that would overrun refuses by name."
+let clip = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'clipping paints only the visible part' && echo yes"]
+assert (trim clip.out) == "yes" else "text-paint: the clipping painter did not paint only the visible part"
+
+let clip_match = run ["sh" "-c" "${bin} selftest 2>&1 | grep -q 'matching the strict paint pixel-for-pixel' && echo yes"]
+assert (trim clip_match.out) == "yes" else "text-paint: the clipped pixels did not match the strict paint"
+
+say "text-paint: GREEN -- the fonts become a string seen; ink composites through coverage exactly where the glyphs carry it, the paint is deterministic, a partial alpha blends true, a line that would overrun refuses by name, and paint_placed_clipped paints only the visible part -- matching the strict paint pixel-for-pixel, degrading to a clean no-op fully off-canvas."
