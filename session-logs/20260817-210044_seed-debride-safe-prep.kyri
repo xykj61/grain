@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260817.210044
+editor Claude Code
+model claude-opus-4-8
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title safe prep for the deep debride + seed force-push; what remains for Keaton
+prompt Keaton approved the deep debride and seed force-push; asked to start with the safe moves then reprint what is left to decide with tradeoffs and a recommendation; clarified grain-os is an xykj61 org (so push permission should exist), asked to add filter-repo to the nix config, and whether these features belong in Mantra's yonder itinerary
+think Verified the biggest supposed blocker is gone -- grain-os/grain IS reachable and a dry-run push AUTHORIZED with the xykj61 key (grain-os is xykj61's org, repo exists at HEAD 26cae5b2db); the seed force-push is technically possible from the jail
+think The Nix config edit is NOT possible from inside the jail -- /etc/nixos is read-only and sudo is blocked by no-new-privileges; the git-filter-repo install + nixos-rebuild is Keaton's hand outside the jail (host pier is nixosConfigurations.pier)
+think The seed projection witness (sow_witness) is RED for a fixable reason -- the manifest still named work-in-progress (renamed to crux this session) and the new module dirs are unclassified; the M1 witness needs every tracked root classified exactly once
+obs Fixed the one clearly-safe manifest line: personal work-in-progress -> personal crux (operator cards, still withheld, no new public exposure); the new modules (constel, crypto, encoding, image, lotus, mikrophone) still need a ship verdict -- allow=public or personal=withhold -- which is Keaton's outward-facing decision
+obs Recorded grain-os in the remote roster as the public-seed remote and custody gate #1 (xykj61 org, push verified by dry-run); the force-push itself stays Keaton's explicit word
+obs The deep debride still needs git-filter-repo (not installed) and a decided scope; purging elder waymarks from all history would destroy the dated testimony just molted for shed -- a real contradiction to resolve before any rewrite
+file template-manifest.bron work-in-progress -> crux (personal); new modules still need Keaton's ship verdict
+file context/REMOTE_ROSTER.md grain-os seed remote recorded (custody gate #1, xykj61 org, push verified)
+recommend check-in reprint delivered; what remains is Keaton's: the manifest ship verdicts, the git-filter-repo nix install + rebuild (his hand, jail read-only), the debride scope decision, and the two irreversible force-pushes
