@@ -1,0 +1,553 @@
+//! image/convex_hull.rye -- the CONVEX HULL of a point set by ANDREW's MONOTONE CHAIN: the smallest convex polygon that
+//! contains every point, read with EXACT integer cross products and NO tolerance -- the Lindy shape primitive from which robust
+//! CONVEXITY and SOLIDITY descend, the convex companion of image/polygon.rye's tolerance-driven Douglas-Peucker simplify.
+//!
+//! Season G (Open Media Primitives) -- image/contour.rye walks a component's ordered boundary ring, and image/polygon.rye
+//! simplifies that ring to its true corner vertices, KEEPING every concave (reflex) corner: an L keeps its inner notch, a plus
+//! its four. This rung reads the DUAL fact: the smallest CONVEX shape that contains the same points, which DROPS every concave
+//! corner because a dent lies strictly inside the convex boundary. Where polygon.simplify answers "what corners does this shape
+//! have?", the convex hull answers "what is the tightest convex wrapper around it?" -- and the gap between the two is exactly a
+//! shape's concavity, the fact image/turning.rye named the simplified polygon would finally decide.
+//!
+//! ANDREW's MONOTONE CHAIN (A.M. Andrew 1979) is the tolerance-free construction: sort the points by x then y, sweep left to
+//! right building the LOWER hull (pop any vertex that would make a non-right turn), then sweep right to left building the UPPER
+//! hull, and join them. The turn at each candidate is decided by the SIGNED CROSS PRODUCT of two edge vectors, computed EXACTLY
+//! in i64 over integer pixel coordinates -- so a point is on the hull, on an edge, or inside by an exact arithmetic fact, never a
+//! floating-point threshold. A collinear point is dropped (the pop test is `cross <= 0`), so the hull carries only true corners,
+//! which is precisely what makes the convexity oracle below a clean count comparison.
+//!
+//! Two descendants ride on the hull, each a capability no earlier reader gives:
+//!
+//!   ROBUST CONVEXITY -- `is_convex` reads a point set (a shape's simplified polygon vertices) and answers whether EVERY vertex
+//!   lies on the hull. A convex shape's every corner is extreme, so the hull keeps them all and the counts match; a concave
+//!   shape hides at least one reflex corner strictly inside the hull, so the hull count falls short. This is the clean oracle
+//!   image/turning.rye deferred -- deciding convexity over image/polygon.rye's staircase-free vertices, where a per-step signed
+//!   turn could not, because a raster diagonal wobbles a turn the true corners never do.
+//!
+//!   SOLIDITY -- how much of its own convex hull a shape actually fills, the classic region_area / hull_area descriptor. The hull
+//!   is CONVEX, so a pixel is inside it exactly when it sits on the inner side of EVERY hull edge (a convex polygon is the
+//!   intersection of half-planes) -- `hull_contains` decides this with the same exact integer cross product, and
+//!   `hull_filled_area` counts the pixels the hull encloses. A solid convex block fills its hull completely (solidity 1), while a
+//!   dented shape leaves the empty wedges between its arms inside the hull, so its solidity falls below 1 -- and the more dented
+//!   the shape, the lower it reads. Half-plane containment is a read only a CONVEX polygon admits; the hull is what earns it.
+//!
+//! Compose not braid. This rung OWNS only the hull construction and the reads over it (the monotone chain, the exact cross, the
+//! shoelace area, the half-plane containment, the convexity count) -- no gather, no blend, no codec, no color, no pixel-writing
+//! loop. image/contour.rye owns the Point type and the ordered ring; image/polygon.rye owns the vertex simplification; a caller
+//! hands this rung a ring, a vertex list, or any point set it already holds. The hull of a boundary ring is the hull of its
+//! shape -- interior pixels are inside the boundary and so inside its hull, never needed to build it.
+//!
+//! Everything is bounded before a byte: a hull is built over at most `convex_hull_max_points` points (a boundary perimeter far
+//! under 2^13), and a longer input refuses `HullTooLong` by name; an empty input refuses `EmptySource`; the cross product of two
+//! in-image edge vectors (coordinates well under 2^14) stays far under 2^28 in i64, and a shoelace sum over the hull far under
+//! 2^42, so no accumulator wraps. All-or-nothing, never a half-built hull. No network, no key, no funds -- the convex wrapper a
+//! surface names the day it wants to decide convexity, measure solidity, or test a point against a shape, on our own open
+//! geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/convex_hull.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const contour = @import("contour.rye");
+const polygon = @import("polygon.rye");
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+
+pub const convex_hull_version = "20260818.192128";
+
+/// A hull is built over at most this many points -- a boundary perimeter or a vertex list, far under the ceiling for any real
+/// shape. A longer input refuses `HullTooLong` rather than build an over-large hull; the same hard bound image/shape_number.rye
+/// and image/turning.rye keep over a boundary.
+pub const convex_hull_max_points: u32 = 1 << 13;
+
+pub const ConvexHullError = error{
+    EmptySource,
+    HullTooLong,
+};
+
+/// The SIGNED CROSS PRODUCT of the edge o->a with the edge o->b, exact in i64. Positive, zero, or negative names a left turn, a
+/// straight run, or a right turn (the sign convention depends on the axis orientation; only the SIGN and its consistency are
+/// read, never a magnitude threshold). Coordinates are well under 2^14, so each product stays far under 2^28 and the difference
+/// never wraps.
+fn cross(o: contour.Point, a: contour.Point, b: contour.Point) i64 {
+    const ax: i64 = @as(i64, a.x) - @as(i64, o.x);
+    const ay: i64 = @as(i64, a.y) - @as(i64, o.y);
+    const bx: i64 = @as(i64, b.x) - @as(i64, o.x);
+    const by: i64 = @as(i64, b.y) - @as(i64, o.y);
+    const c = ax * by - ay * bx;
+    // invariant: the cross product of two in-image edge vectors stays far under the i64 ceiling (coords under 2^14).
+    assert(c < (@as(i64, 1) << 40));
+    assert(c > -(@as(i64, 1) << 40));
+    return c;
+}
+
+/// True when two points are the same pixel -- used to drop duplicates after the sort so the hull carries each corner once.
+fn same_point(a: contour.Point, b: contour.Point) bool {
+    return a.x == b.x and a.y == b.y;
+}
+
+/// Order two points by x, then by y -- the monotone-chain sort key. A total order, so the sort is deterministic.
+fn point_before(a: contour.Point, b: contour.Point) bool {
+    if (a.x != b.x) return a.x < b.x;
+    return a.y < b.y;
+}
+
+/// Copy `points` into a fresh slice SORTED by (x, then y) with exact duplicates removed -- the sorted-unique set both the hull
+/// construction and the convexity oracle read. Refuses `EmptySource` on no points and `HullTooLong` past the ceiling. Insertion
+/// sort is the honest choice here: a boundary perimeter is modest, and the bound stands as a guaranteed ceiling. The caller owns
+/// the result.
+fn sorted_unique(allocator: std.mem.Allocator, points: []const contour.Point) ![]contour.Point {
+    // invariant: a hull of nothing is undefined; a real point set has at least one point.
+    if (points.len == 0) return error.EmptySource;
+    // invariant: the input stays within the hard ceiling so no hull is built unbounded.
+    if (points.len > convex_hull_max_points) return error.HullTooLong;
+
+    const buf = try allocator.alloc(contour.Point, points.len);
+    var i: usize = 0;
+    while (i < points.len) : (i += 1) buf[i] = points[i];
+
+    // insertion sort by (x, then y) -- ascending, stable enough for a total order on distinct pixels.
+    var a: usize = 1;
+    while (a < buf.len) : (a += 1) {
+        const key = buf[a];
+        var b: usize = a;
+        while (b > 0 and point_before(key, buf[b - 1])) : (b -= 1) {
+            buf[b] = buf[b - 1];
+        }
+        buf[b] = key;
+    }
+
+    // compact exact duplicates now that equal points are adjacent.
+    var m: usize = 0;
+    var k: usize = 0;
+    while (k < buf.len) : (k += 1) {
+        if (m == 0 or !same_point(buf[m - 1], buf[k])) {
+            buf[m] = buf[k];
+            m += 1;
+        }
+    }
+    // invariant: compaction never grows the set and always keeps at least one point.
+    assert(m >= 1);
+    assert(m <= buf.len);
+    return buf[0..m];
+}
+
+/// Build the convex hull of a SORTED-UNIQUE point set `u` by Andrew's monotone chain: a lower sweep left to right and an upper
+/// sweep right to left, each popping any vertex whose turn is not strictly convex (`cross <= 0` drops right turns AND collinear
+/// points, so the hull carries only true corners). Returns the hull vertices in order, a closed ring with no repeated closing
+/// point. A one- or two-point set is its own degenerate hull. The caller owns the result.
+fn hull_of_sorted(allocator: std.mem.Allocator, u: []const contour.Point) ![]contour.Point {
+    // invariant: a sorted-unique set handed here is never empty.
+    assert(u.len >= 1);
+    const m: usize = u.len;
+    if (m <= 2) {
+        // a single point or a single segment is its own hull -- no turn to test.
+        const deg = try allocator.alloc(contour.Point, m);
+        var i: usize = 0;
+        while (i < m) : (i += 1) deg[i] = u[i];
+        return deg;
+    }
+
+    // the chain writes at most 2*m + 1 slots before dropping the duplicated closing point.
+    const h = try allocator.alloc(contour.Point, 2 * m + 1);
+    var k: usize = 0;
+
+    // lower hull: sweep left to right.
+    var i: usize = 0;
+    while (i < m) : (i += 1) {
+        while (k >= 2 and cross(h[k - 2], h[k - 1], u[i]) <= 0) : (k -= 1) {}
+        h[k] = u[i];
+        k += 1;
+    }
+
+    // upper hull: sweep right to left, from the second-to-last point down to the first. `t` holds the lower hull's floor so the
+    // upper sweep never pops a lower-hull vertex.
+    const t: usize = k + 1;
+    var j: usize = m - 1;
+    while (j > 0) {
+        j -= 1; // j walks m-2, m-3, ..., 0
+        while (k >= t and cross(h[k - 2], h[k - 1], u[j]) <= 0) : (k -= 1) {}
+        h[k] = u[j];
+        k += 1;
+    }
+
+    // the last written point equals the first (the chain closed the ring), so the hull is h[0 .. k-1].
+    // invariant: a chain over three or more non-degenerate points closes with at least a triangle plus the repeated start.
+    assert(k >= 3);
+    const hn: usize = k - 1;
+    const out = try allocator.alloc(contour.Point, hn);
+    var q: usize = 0;
+    while (q < hn) : (q += 1) out[q] = h[q];
+    // invariant: a real hull never names more vertices than the sorted-unique set it was built from.
+    assert(out.len <= m);
+    return out;
+}
+
+/// The CONVEX HULL of any point set -- the smallest convex polygon containing every point, its vertices in ring order with no
+/// repeated closing point. Exact integer arithmetic, no tolerance. Refuses `EmptySource` on no points, `HullTooLong` past the
+/// ceiling. The caller owns the result.
+pub fn convex_hull(allocator: std.mem.Allocator, points: []const contour.Point) ![]contour.Point {
+    const u = try sorted_unique(allocator, points);
+    return hull_of_sorted(allocator, u);
+}
+
+/// TRUE when every point of `points` lies on its own convex hull -- the ROBUST CONVEXITY oracle. A convex shape's every corner is
+/// extreme so the hull keeps them all (counts match); a concave shape hides at least one reflex corner strictly inside the hull
+/// so the hull count falls short. Fed image/polygon.rye's SIMPLIFIED vertices (which carry no collinear runs), the count
+/// comparison is exact -- the clean convexity decision image/turning.rye's per-step signed turn could not make over raster noise.
+pub fn is_convex(allocator: std.mem.Allocator, points: []const contour.Point) !bool {
+    const u = try sorted_unique(allocator, points);
+    const hull = try hull_of_sorted(allocator, u);
+    // invariant: the hull is a subset of the distinct points, so its count never exceeds theirs.
+    assert(hull.len <= u.len);
+    // every distinct point is a hull vertex exactly when the shape is convex.
+    return hull.len == u.len;
+}
+
+/// TWICE the shoelace area of a hull ring -- an exact non-negative integer (twice, to stay integer without a halving fraction).
+/// A ring of fewer than three vertices encloses no area. The sum over in-image coordinates stays far under the i64 ceiling.
+pub fn hull_area2(hull: []const contour.Point) u64 {
+    // invariant: a real hull never exceeds the point ceiling, so the shoelace sum cannot wrap.
+    assert(hull.len <= convex_hull_max_points);
+    if (hull.len < 3) return 0;
+    var s: i64 = 0;
+    var i: usize = 0;
+    while (i < hull.len) : (i += 1) {
+        const a = hull[i];
+        const b = hull[(i + 1) % hull.len];
+        s += @as(i64, a.x) * @as(i64, b.y) - @as(i64, b.x) * @as(i64, a.y);
+    }
+    const mag: i64 = if (s < 0) -s else s;
+    // invariant: twice a real hull area is a bounded non-negative integer.
+    assert(mag >= 0);
+    return @intCast(mag);
+}
+
+/// TRUE when pixel (px, py) lies inside or on the CONVEX hull -- decided by half-planes: a convex polygon is the intersection of
+/// its edges' inner sides, so a point is inside exactly when no edge puts it strictly on one side while another puts it strictly
+/// on the other. Every cross product zero (on an edge or a vertex) counts as inside. This read is admitted ONLY by a convex
+/// polygon; the hull is what earns it. A one-point hull contains only that pixel; a two-point hull, only the pixels on its
+/// segment.
+pub fn hull_contains(hull: []const contour.Point, px: u32, py: u32) bool {
+    // invariant: a real hull never exceeds the point ceiling.
+    assert(hull.len <= convex_hull_max_points);
+    assert(hull.len >= 1);
+    const p = contour.Point{ .x = px, .y = py };
+    if (hull.len == 1) return same_point(hull[0], p);
+    if (hull.len == 2) {
+        // a degenerate segment hull: on it exactly when collinear (cross zero) and within the endpoints' box.
+        if (cross(hull[0], hull[1], p) != 0) return false;
+        const lox = if (hull[0].x <= hull[1].x) hull[0].x else hull[1].x;
+        const hix = if (hull[0].x >= hull[1].x) hull[0].x else hull[1].x;
+        const loy = if (hull[0].y <= hull[1].y) hull[0].y else hull[1].y;
+        const hiy = if (hull[0].y >= hull[1].y) hull[0].y else hull[1].y;
+        return px >= lox and px <= hix and py >= loy and py <= hiy;
+    }
+    var saw_pos = false;
+    var saw_neg = false;
+    var i: usize = 0;
+    while (i < hull.len) : (i += 1) {
+        const c = cross(hull[i], hull[(i + 1) % hull.len], p);
+        if (c > 0) saw_pos = true;
+        if (c < 0) saw_neg = true;
+    }
+    // inside a convex polygon: never strictly on both sides at once.
+    return !(saw_pos and saw_neg);
+}
+
+/// The number of integer pixels the CONVEX hull encloses -- its filled area, counted by half-plane containment over the hull's
+/// own bounding box (nothing outside the box can be inside the hull). The denominator of solidity. Bounded: the box area never
+/// exceeds the image module's pixel ceiling.
+pub fn hull_filled_area(hull: []const contour.Point) u32 {
+    // invariant: a real hull is a bounded ring with at least its own point.
+    assert(hull.len >= 1);
+    assert(hull.len <= convex_hull_max_points);
+    var lox: u32 = hull[0].x;
+    var hix: u32 = hull[0].x;
+    var loy: u32 = hull[0].y;
+    var hiy: u32 = hull[0].y;
+    var i: usize = 1;
+    while (i < hull.len) : (i += 1) {
+        if (hull[i].x < lox) lox = hull[i].x;
+        if (hull[i].x > hix) hix = hull[i].x;
+        if (hull[i].y < loy) loy = hull[i].y;
+        if (hull[i].y > hiy) hiy = hull[i].y;
+    }
+    const bw: u64 = @as(u64, hix - lox) + 1;
+    const bh: u64 = @as(u64, hiy - loy) + 1;
+    // invariant: the bounding box of an in-image hull stays within the named pixel ceiling.
+    assert(bw * bh <= @as(u64, label.label_max_pixels));
+    var count: u32 = 0;
+    var y: u32 = loy;
+    while (y <= hiy) : (y += 1) {
+        var x: u32 = lox;
+        while (x <= hix) : (x += 1) {
+            if (hull_contains(hull, x, y)) count += 1;
+        }
+    }
+    // invariant: a hull encloses at least its own vertices.
+    assert(count >= 1);
+    return count;
+}
+
+/// SOLIDITY -- the fraction of its convex hull a shape fills, `region_area / hull_filled_area`, in (0, 1]. A solid convex shape
+/// fills its hull entirely (1); a dented shape leaves the empty wedges between its arms inside the hull, so it reads below 1, and
+/// the more dented the lower. In f64 as image/moments.rye and image/hu_moments.rye already read shape geometry.
+pub fn solidity(region_area: u32, filled_hull_area: u32) f64 {
+    // invariant: a hull with area holds at least one pixel -- no division by zero.
+    assert(filled_hull_area >= 1);
+    // invariant: the convex hull contains the whole region, so its filled area is never smaller than the region's.
+    assert(filled_hull_area >= region_area);
+    return @as(f64, @floatFromInt(region_area)) / @as(f64, @floatFromInt(filled_hull_area));
+}
+
+// --- selftest: the hull of a convex ring is its corners; the hull FILLS a dent polygon.simplify keeps; the convexity oracle
+//     over simplified vertices; solidity 1 for a block and below 1 for the L and lower still for the plus; half-plane
+//     containment; a pure-algebraic interior-point crux; degenerate cases; refusals ---------------------------------------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// Count the foreground pixels of the component labeled `want` -- the region area solidity divides by.
+fn region_area_of(map: *const label.LabelMap, want: u32) u32 {
+    var count: u32 = 0;
+    var i: usize = 0;
+    while (i < map.labels.len) : (i += 1) {
+        if (map.labels[i] == want) count += 1;
+    }
+    return count;
+}
+
+/// Trace the single component of a one-shape canvas to its ordered boundary ring.
+fn ring_of(garden: std.mem.Allocator, img: *qoi.Pixmap) !contour.Contour {
+    const map = try label.label_components(garden, img);
+    // invariant: each selftest fixture holds exactly one component.
+    assert(map.count == 1);
+    return contour.trace_contour(garden, &map, 1);
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- THE HULL OF A CONVEX RING IS ITS CORNERS: a solid 5x5 block's 16-pixel boundary ring reduces to EXACTLY its four
+    //     corners (1,1)(5,1)(5,5)(1,5) -- the convex wrapper of a rectangle is the rectangle's corners, no interior boundary
+    //     pixel survives -----------------------------------------------------------------------------------------------
+    var big = try make_canvas(garden, 7, 7, 0);
+    set_block(&big, 1, 1, 5, 5);
+    const bmap = try label.label_components(garden, &big);
+    const bring = try contour.trace_contour(garden, &bmap, 1);
+    if (bring.points.len != 16) return error.BlockRingWrong; // a 5x5 block's outer ring is 16 pixels
+    const bhull = try convex_hull(garden, bring.points);
+    if (bhull.len != 4) return error.BlockHullNotFourCorners;
+    // the four hull vertices are exactly the block's corners, in some ring order
+    var saw_tl = false;
+    var saw_tr = false;
+    var saw_br = false;
+    var saw_bl = false;
+    var i: usize = 0;
+    while (i < bhull.len) : (i += 1) {
+        const p = bhull[i];
+        if (p.x == 1 and p.y == 1) saw_tl = true;
+        if (p.x == 5 and p.y == 1) saw_tr = true;
+        if (p.x == 5 and p.y == 5) saw_br = true;
+        if (p.x == 1 and p.y == 5) saw_bl = true;
+    }
+    if (!(saw_tl and saw_tr and saw_br and saw_bl)) return error.BlockHullCornersWrong;
+
+    // --- THE DECISIVE DUAL CRUX -- the hull FILLS a dent image/polygon.rye KEEPS: an L-shape's simplified polygon carries its
+    //     inner reflex corner, yet the L's convex hull DROPS it (the reflex corner lies strictly INSIDE the hull). Where the
+    //     simplify reads the true concave corners, the hull reads the tightest convex wrapper -- the gap between them is the
+    //     concavity ---------------------------------------------------------------------------------------------------
+    var lshape = try make_canvas(garden, 8, 8, 0);
+    set_block(&lshape, 1, 1, 2, 5); // the upright: cols 1..2, rows 1..5
+    set_block(&lshape, 1, 5, 4, 2); // the foot: cols 1..4, rows 5..6
+    const lmap = try label.label_components(garden, &lshape);
+    const lring = try contour.trace_contour(garden, &lmap, 1);
+    const lpoly = try polygon.simplify(garden, &lring, 0.5);
+    const lhull = try convex_hull(garden, lring.points);
+    // the L's simplified polygon keeps MORE than four corners (its reflex corner among them)
+    if (lpoly.vertices.len <= 4) return error.LPolyTooSimple;
+    // yet the hull has FEWER vertices than the simplified polygon -- it dropped the reflex corner
+    if (lhull.len >= lpoly.vertices.len) return error.LHullDidNotDropReflex;
+    // find the reflex corner without hardcoding its pixel: a simplified-polygon vertex ABSENT from the hull. Every convex corner
+    // of the shape is on the hull, so a poly vertex the hull dropped is exactly a concave (reflex) corner -- and it must lie
+    // strictly INSIDE the convex hull (a filled dent). This is the decisive gap between simplify (keeps the dent) and hull.
+    var reflex_x: u32 = 0;
+    var reflex_y: u32 = 0;
+    var found_reflex = false;
+    i = 0;
+    while (i < lpoly.vertices.len) : (i += 1) {
+        const v = lpoly.vertices[i];
+        var on_hull = false;
+        var j: usize = 0;
+        while (j < lhull.len) : (j += 1) {
+            if (lhull[j].x == v.x and lhull[j].y == v.y) on_hull = true;
+        }
+        if (!on_hull) {
+            reflex_x = v.x;
+            reflex_y = v.y;
+            found_reflex = true;
+            break;
+        }
+    }
+    if (!found_reflex) return error.LReflexNotFound; // a concave shape must hide at least one corner off its hull
+    if (!hull_contains(lhull, reflex_x, reflex_y)) return error.LReflexNotInsideHull; // yet the hull CONTAINS it (a filled dent)
+
+    // --- ROBUST CONVEXITY over image/polygon.rye's simplified vertices -- the clean oracle image/turning.rye deferred: the
+    //     block's four corners are all extreme (convex), the L's vertices are not (one reflex corner interior to the hull) ----
+    var square = try make_canvas(garden, 7, 7, 0);
+    set_block(&square, 1, 1, 5, 5);
+    const smap = try label.label_components(garden, &square);
+    const sring = try contour.trace_contour(garden, &smap, 1);
+    const spoly = try polygon.simplify(garden, &sring, 0.5);
+    if (!(try is_convex(garden, spoly.vertices))) return error.BlockNotConvex; // every corner extreme
+    if (try is_convex(garden, lpoly.vertices)) return error.LReadConvex; // the reflex corner hides inside the hull
+
+    // --- SOLIDITY: a solid convex block FILLS its hull entirely (solidity 1); the L leaves the empty corner inside its hull, so
+    //     it reads BELOW 1; the plus, with four dents, reads lower still -- the more dented the shape, the less solid ------
+    const block_area = region_area_of(&bmap, 1); // 25 pixels
+    const block_filled = hull_filled_area(bhull); // the hull is the block's own square: 25
+    const block_solidity = solidity(block_area, block_filled);
+    if (block_solidity < 0.999) return error.BlockNotSolid; // a convex block fills its hull exactly
+    if (block_area != block_filled) return error.BlockHullNotItsOwnFill; // the block IS its hull, pixel for pixel
+
+    const l_area = region_area_of(&lmap, 1);
+    const l_filled = hull_filled_area(lhull);
+    if (l_filled <= l_area) return error.LHullNotLargerThanRegion; // the hull encloses the empty dent too
+    const l_solidity = solidity(l_area, l_filled);
+    if (l_solidity >= block_solidity) return error.LNotLessSolidThanBlock; // the dent lowers solidity below the convex block
+
+    var plus = try make_canvas(garden, 9, 9, 0);
+    set_block(&plus, 3, 1, 2, 7); // the upright bar
+    set_block(&plus, 1, 3, 7, 2); // the crossbar
+    const pmap = try label.label_components(garden, &plus);
+    const pring = try contour.trace_contour(garden, &pmap, 1);
+    const phull = try convex_hull(garden, pring.points);
+    const p_area = region_area_of(&pmap, 1);
+    const p_filled = hull_filled_area(phull);
+    const p_solidity = solidity(p_area, p_filled);
+    if (p_solidity >= l_solidity) return error.PlusNotLessSolidThanL; // four dents cost more than one
+
+    // --- HALF-PLANE CONTAINMENT: a point clearly outside the block's hull is out, an interior pixel is in, and a hull VERTEX
+    //     (on an edge) counts as inside -- the convex-only read no concave polygon admits ----------------------------------
+    if (hull_contains(bhull, 0, 0)) return error.OutsidePointReadInside; // (0,0) is outside the 1..5 square hull
+    if (!hull_contains(bhull, 3, 3)) return error.InteriorPointReadOutside; // the center is inside
+    if (!hull_contains(bhull, 1, 1)) return error.VertexReadOutside; // a hull corner is on the hull, so inside
+
+    // --- A PURE-ALGEBRAIC crux, independent of any rasterization: four square corners plus a point at the CENTER -- the hull is
+    //     the four corners (the center is interior), and is_convex over all five reads FALSE (the interior point is not
+    //     extreme), while is_convex over the four corners reads TRUE ---------------------------------------------------
+    var square_pts = [_]contour.Point{
+        .{ .x = 0, .y = 0 },
+        .{ .x = 10, .y = 0 },
+        .{ .x = 10, .y = 10 },
+        .{ .x = 0, .y = 10 },
+    };
+    const corners_hull = try convex_hull(garden, square_pts[0..]);
+    if (corners_hull.len != 4) return error.SquareCornersHullWrong;
+    if (!(try is_convex(garden, square_pts[0..]))) return error.SquareCornersNotConvex;
+    var with_center = [_]contour.Point{
+        .{ .x = 0, .y = 0 },
+        .{ .x = 10, .y = 0 },
+        .{ .x = 10, .y = 10 },
+        .{ .x = 0, .y = 10 },
+        .{ .x = 5, .y = 5 }, // strictly interior
+    };
+    const center_hull = try convex_hull(garden, with_center[0..]);
+    if (center_hull.len != 4) return error.CenterPointLeakedOntoHull; // the interior point never reaches the hull
+    if (try is_convex(garden, with_center[0..])) return error.CenterPointReadConvex; // an interior point is not extreme
+    // the exact shoelace area of the 10x10 corner square is 100, so twice it is 200 -- an exact integer, no tolerance
+    if (hull_area2(corners_hull) != 200) return error.SquareHullAreaWrong;
+    // a COLLINEAR point on an edge is dropped too (cross zero pops it): three points on one line hull to the two endpoints
+    var colinear = [_]contour.Point{
+        .{ .x = 0, .y = 0 },
+        .{ .x = 5, .y = 0 },
+        .{ .x = 10, .y = 0 },
+    };
+    const col_hull = try convex_hull(garden, colinear[0..]);
+    if (col_hull.len != 2) return error.CollinearNotReducedToSegment; // the midpoint is not a corner
+
+    // --- DEGENERATE cases: a single point hulls to itself; two points to a two-point segment hull ----------------------
+    var one = [_]contour.Point{.{ .x = 4, .y = 7 }};
+    const one_hull = try convex_hull(garden, one[0..]);
+    if (one_hull.len != 1) return error.OnePointHullWrong;
+    if (one_hull[0].x != 4 or one_hull[0].y != 7) return error.OnePointHullMoved;
+    if (hull_area2(one_hull) != 0) return error.OnePointAreaNonZero;
+    var two = [_]contour.Point{ .{ .x = 2, .y = 2 }, .{ .x = 6, .y = 2 } };
+    const two_hull = try convex_hull(garden, two[0..]);
+    if (two_hull.len != 2) return error.TwoPointHullWrong;
+    if (hull_area2(two_hull) != 0) return error.TwoPointAreaNonZero;
+
+    // --- REFUSALS by name, having allocated nothing ------------------------------------------------------------------
+    const empty: []const contour.Point = &[_]contour.Point{};
+    if (convex_hull(garden, empty)) |_| return error.EmptyNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+    const over_len: usize = @as(usize, convex_hull_max_points) + 1;
+    const over = try garden.alloc(contour.Point, over_len);
+    var z: usize = 0;
+    while (z < over_len) : (z += 1) over[z] = .{ .x = @intCast(z % 100), .y = @intCast(z % 97) };
+    if (convex_hull(garden, over)) |_| return error.OverLenNotRefused else |err| {
+        if (err != error.HullTooLong) return error.WrongOverLenError;
+    }
+
+    // --- DETERMINISM: the same ring hulls to the same vertices twice --------------------------------------------------
+    const h1 = try convex_hull(garden, bring.points);
+    const h2 = try convex_hull(garden, bring.points);
+    if (h1.len != h2.len) return error.HullNotDeterministicLength;
+    i = 0;
+    while (i < h1.len) : (i += 1) {
+        if (h1[i].x != h2[i].x or h1[i].y != h2[i].y) return error.HullNotDeterministic;
+    }
+
+    print("GREEN image-convex-hull: the CONVEX HULL of a point set by Andrew's monotone chain over image/contour.rye's ring, EXACT integer cross products and NO tolerance -- a solid 5x5 block's 16-pixel boundary reduces to EXACTLY its four corners (no interior boundary pixel extreme); the DECISIVE DUAL crux -- an L's simplified polygon (image/polygon.rye) KEEPS its inner reflex corner yet the L's convex hull DROPS it (that dropped corner strictly INSIDE the hull, a filled dent), so the gap between simplify and hull is exactly the concavity; ROBUST CONVEXITY -- is_convex reads the block's four simplified corners as convex (all extreme) and the L's vertices as concave (one reflex corner interior to the hull), the clean oracle image/turning.rye's per-step signed turn could not make over raster noise; SOLIDITY -- a solid convex block FILLS its hull pixel-for-pixel (solidity 1, region area == hull filled area), the L leaves its empty corner inside the hull (below 1), the plus with four dents lower still, the more dented the less solid; HALF-PLANE CONTAINMENT (the convex-only read) -- an outside point is out, an interior pixel in, a hull vertex on-edge counts inside; a pure-algebraic crux -- four square corners plus an interior center hull to the four corners with the center never reaching the hull (is_convex FALSE with it, TRUE without), a collinear midpoint dropped to the two endpoints, the 10x10 corner square's exact twice-shoelace area 200; a lone point hulls to itself and two points to a segment (each area zero); an empty input refuses EmptySource and an over-long one HullTooLong, each having allocated nothing; the same ring hulls deterministically\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: convex_hull selftest\n", .{});
+    return 1;
+}

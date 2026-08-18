@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260818.192128
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title convex_hull -- Andrew's monotone chain, robust convexity and solidity descend, GREEN
+prompt baton prin recur -- pick up the running thread Lindy-first crux-first, take the next agent-doable lap, send it as its own signed round
+think Read the identity and style pair (KYRI.md, RADIANT_STYLE.md -- the latter is this lap's council-rota doc, item 14 following turning's item 13), then the operator card, the top session-log rows, and the crux ledgers.
+think Standfast first: every living REDS row is closed or released; only #75 rests as custody-gated errata, and #85's wider printf-grep image-witness sweep is booked as its own round. No open agent-closable red blocks new work.
+think The card and the last several logs named the crux-first next sibling outright: a CONVEX HULL over contour's ring, Andrew's monotone chain, exact integer cross products, no tolerance -- the Lindy shape primitive from which robust convexity and solidity descend, and the oracle turning.rye explicitly deferred. The last commit even titled it "name convex hull as next open-media crux." Took it.
+think Designed the decisive DUAL crux before coding: polygon.simplify KEEPS a shape's reflex corners; the convex hull DROPS them -- the gap between the two IS the concavity. Proved it by finding a simplified-polygon vertex absent from the hull and showing the hull CONTAINS it (a filled dent), coordinate-free rather than hardcoding a pixel.
+think Built image/convex_hull.rye composing over contour (the Point type and ring) and polygon (the simplified vertices): sorted_unique + hull_of_sorted (monotone chain, cross <= 0 pop drops collinear so the hull carries only true corners), convex_hull, is_convex (hull.len == distinct count -- the robust convexity oracle), hull_area2 (exact twice-shoelace), hull_contains (half-plane test, the convex-only read), hull_filled_area, solidity.
+think Solidity landed clean by counting the hull's FILLED pixels via half-plane containment rather than shoelace area -- a convex block then fills its hull pixel-for-pixel (solidity exactly 1, region area == hull filled area), sidestepping the pixel-center-vs-corner discrete residue a shoelace denominator would have inflated above 1. Half-plane containment is a read only a convex polygon admits; the hull is what earns it.
+obs MEASUREMENT BEAT MEMORY once, before any GREEN: my first crux hardcoded the L's reflex corner at pixel (2,5); the selftest reddened LReflexNotAPolyVertex because polygon.simplify places that corner elsewhere. Rather than chase the pixel, reframed to the coordinate-free statement -- a poly vertex the hull dropped, proven contained -- which is both more robust and the truer form of the crux. A stale (2,5) in the GREEN print string was then a docs-sync red I fixed in the same lap.
+obs The witness reads its GREEN with native `assert selftest.out contains` from the first draft, learning REDS #85 (the printf-grep apostrophe fragility) rather than repeating it.
+obs Solidity is honest about being in (0,1]: the convex hull always contains the whole region, so filled_hull_area >= region_area is an asserted invariant, no ratio above 1.
+loom witness=convex_hull_witness build_ok=1 selftest_exit=0 hull_5x5_block_vertices=4 square_10x10_area2=200
+file image/convex_hull.rye the convex hull by Andrew's monotone chain over contour's ring; is_convex, hull_area2, hull_contains, hull_filled_area, solidity; exact integer cross, no tolerance
+file tools/convex_hull_witness.rish builds and runs the selftest on metal, reads GREEN with native contains (REDS #85)
+file image/README.md Convex hull (Andrew's monotone chain) bullet after the differential turning descriptor (docs-sync)
+file crux/REMEMBER.md live edge + Git nib repointed to convex_hull single-stranded, turning folded to a prior-nib comment
+file session-logs/README.md prepended the newest-first row for this lap
+recommend keep-going Lindy-first crux-first on the same Season G open-media thread -- the named next sibling is the MINIMUM-AREA BOUNDING BOX (rotating calipers over the hull edges, the tightest oriented rectangle, exact arithmetic the hull earns) or CONVEXITY DEFECTS (per-dent depth below the hull). The round top-hat on a real photo still waits on a fetch gate. No network, no key, no funds.

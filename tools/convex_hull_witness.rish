@@ -1,0 +1,39 @@
+# tools/convex_hull_witness.rish -- the CONVEX HULL of a point set, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/contour.rye walks a component's ordered boundary ring, and image/polygon.rye
+# simplifies that ring to its true corner vertices, KEEPING every concave (reflex) corner. This rung reads the DUAL fact: the
+# smallest CONVEX shape that contains the same points, built by ANDREW's MONOTONE CHAIN with EXACT integer cross products and NO
+# tolerance. Where polygon.simplify answers "what corners does this shape have?", the convex hull answers "what is the tightest
+# convex wrapper around it?" -- and the gap between the two is exactly a shape's concavity. Compose not braid: this rung owns
+# only the hull construction and the reads over it; contour owns the ring, polygon the vertex simplification.
+#
+# The crux this witness proves on metal: a solid 5x5 block's 16-pixel boundary reduces to EXACTLY its four corners; the DECISIVE
+# dual crux -- an L's simplified polygon keeps its inner reflex corner at (2,5) yet the L's convex hull DROPS it (strictly inside
+# the hull, a filled dent); ROBUST CONVEXITY -- is_convex reads the block's simplified corners as convex and the L's as concave,
+# the clean oracle image/turning.rye's per-step signed turn could not make over raster noise; SOLIDITY -- a convex block fills its
+# hull pixel-for-pixel (1), the L below 1, the plus with four dents lower still; HALF-PLANE containment, a pure-algebraic
+# interior-point crux, degenerate cases, and refusals by name. No network, no key, no funds -- the convex wrapper a surface names
+# the day it decides convexity, measures solidity, or tests a point against a shape.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/convex_hull_witness.rish
+
+say "convex_hull: Language EN -- Season G convex hull over contour's ring by Andrew's monotone chain; exact integer cross products, no tolerance; is_convex over polygon's simplified vertices is the robust convexity oracle, solidity the region_area/hull_filled_area descriptor, hull_contains the convex-only half-plane read."
+say "convex_hull: Style Radiant -- compose not braid: this rung owns only the hull construction and the reads over it; contour owns the Point type and the ring, polygon the vertex simplification. No gather, no blend, no codec, no color, no pixel-writing loop -- a reading, not a render."
+say "convex_hull: Lens TAME -- a hull is built over at most convex_hull_max_points points; a longer input refuses HullTooLong and an empty one EmptySource; the exact cross product stays far under the i64 ceiling; all-or-nothing, never a half-built hull; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/convex_hull"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/convex_hull.rye -femit-bin=${bin}"]
+assert build.ok else "convex_hull: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "convex_hull: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "convex_hull: ${out}"
+
+assert selftest.out contains "GREEN image-convex-hull" else "convex_hull: selftest did not print the GREEN line"
+
+say "convex_hull: GREEN -- a 5x5 block's boundary reduces to its four corners, an L's hull DROPS the inner reflex corner its simplified polygon keeps (the filled dent, the gap that IS the concavity), is_convex reads the block convex and the L concave over simplified vertices, solidity is 1 for the convex block and below 1 for the L and lower still for the plus, half-plane containment is exact, the pure-algebraic interior-point crux holds, and the refusals fire by name, on metal."
