@@ -4,7 +4,7 @@
 
 **Stamp:** `20260729.220100`
 **Language:** EN
-**Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
+**Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../../context/RADIANT_STYLE.md))
 **Voice:** Riyo
 **Kind:** foundations · single-stranded meditation
 **Status:** **Mixed** — Checkable where it cites seated paths and measured counts; **Vision** where it names the long aim

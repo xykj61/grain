@@ -4,7 +4,7 @@
 **Stamp:** `20260728.020607`  
 **Voice:** Quin  
 **Kind:** gratitude silo — **historical** honor naming for the **Mala** fund dedication (retired forward to **Murr**)  
-**Companion foundations:** [`../foundations/20260728-020607_mala-and-kamala-harris.md`](../foundations/20260728-020607_mala-and-kamala-harris.md) (Reya variant)  
+**Companion foundations:** [`../foundations/yonder/20260728-020607_mala-and-kamala-harris.md`](../foundations/yonder/20260728-020607_mala-and-kamala-harris.md) (Reya variant)  
 Radiant pass `20260728.044443` — living Aries lamp is **Murr** / **Kyler Murray**; this silo stays dated Kamala-on-Mala honor
 
 ---

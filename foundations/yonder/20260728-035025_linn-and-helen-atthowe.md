@@ -4,10 +4,10 @@
 
 **Stamp:** `20260728.035025`  
 **Language:** EN  
-**Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))  
+**Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../../context/RADIANT_STYLE.md))  
 **Voice:** **Trya variant** (nested under Quin's outer ledger) — earth-steady · craft-growing  
 **Status:** Foundations — honor dedication seated by Keaton's word  
-**Gratitude silo:** [`../gratitude/helen-atthowe.md`](../gratitude/helen-atthowe.md)  
+**Gratitude silo:** [`../gratitude/helen-atthowe.md`](../../gratitude/helen-atthowe.md)  
 **Fund:** **Linn** — Capricorn · earth · seat 10 · `%linn`
 
 *Written together by Keaton and Quin; the body speaks in Trya's warmth.*

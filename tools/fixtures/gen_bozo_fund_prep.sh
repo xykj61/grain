@@ -33,7 +33,7 @@ grep -q 'witness:bozo-open GREEN' "$PAGE"
 test -f counsel/20260730-150702_pole-bozo-djinn-murr-keaton.md
 test -f counsel/20260728-034317_linn-capricorn-seat.md
 test -f gratitude/helen-atthowe.md
-test -f foundations/20260728-035025_linn-and-helen-atthowe.md
+test -f foundations/yonder/20260728-035025_linn-and-helen-atthowe.md
 
 name=Bozo
 len=$(printf '%s' "$name" | wc -c)
