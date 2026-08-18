@@ -68,6 +68,12 @@ allow skate
 allow src
 allow tally
 allow tools
+allow crypto
+allow image
+allow encoding
+allow lotus
+allow mikrophone
+allow constel
 allow vault
 # -- this season: logo asset + SOON/AHOY code modules (clean, no name) --
 allow assets
@@ -190,6 +196,12 @@ template  ember                           # module
 template  pond                            # enclosure
 template  rishi                           # the shell language
 template  rye                             # the systems language
+scrub     crypto                          # post-quantum + hybrid crypto suite
+template  image                           # open image module (QOI, color)
+template  encoding                        # base32 and kin
+scrub     lotus                           # creative-suite wire shape
+template  mikrophone                      # Mikrophone firmware (DREY)
+template  constel                         # Constel test-network naming
 template  scribble                        # module
 template  scribe                          # the Kyri reader — clean code, no name
 template  skate                           # the consent-first social layer — clean code, demo keeper seeds only
