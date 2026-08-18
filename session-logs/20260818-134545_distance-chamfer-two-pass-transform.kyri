@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260818.134545
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title distance -- the chamfer 3-4 two-pass distance transform, GREEN
+prompt baton prin recur -- autonomous loop; take the next agent-doable lap Lindy-first crux-first on the live green edge, Standfast on reds first, send often
+think Read the voice and style guides, REMEMBER, the three itineraries, and the top rows of session-logs/README.md. The live green edge is Season G open-media; the last lap landed image/label.rye (the 8-connected component labeler). The Microkernel double-seat leads Lindy yet its only ungated moves sit behind a web-fetch/license gate, surfaced not crossed -- so the agent-doable crux stays Season G.
+think Standfast first: swept crux/REDS.md rows 80-87 -- all CLOSED/released/booked-as-own-round; only #75 rests as custody-gated errata (a gate, not agent-closable). Standfast clear, new work may open.
+think The label log named three crux-first siblings: a DISTANCE TRANSFORM (the chamfer two-pass over a mask), a region/bounding-box reader over a LabelMap, a disk-element builder. Crux-first takes the hardest-solvable that opens the rest: the distance transform is a genuine two-pass algorithm and the most Lindy (the metric floor a distance-based erode/dilate, a watershed, and a shape-thickness reader all descend from), matching the pattern of taking the real algorithm over the reader/generator.
+think Chose the canonical convention -- distance to the nearest BACKGROUND pixel, so the foreground grows inward and the field's local maxima trace the medial axis, the exact field skeleton/zhang_suen thin a shape down toward. The classic chamfer 3-4 (Borgefors, 1986): orthogonal step 3, diagonal 4, a forward raster pass over W/NW/N/NE and a backward reverse-raster pass over E/SE/S/SW. Integer, deterministic, no float, no sqrt -- squarely in the TAME happy zone.
+think Compose not braid: this rung owns only the chamfer weights, the two-pass min-relaxation sweep (a `relax` helper), and the render ramp. branch.is_on reads the binary door (red >= 128), qoi owns the buffer, color.mix blends the colorize grayscale ramp. Bounded before a byte: dist_far = maxInt(u32)/2 sits far above any real chamfer distance (<= 4*8192 = 32768) yet leaves room to add a step weight without overflow; an empty source refuses by name having allocated nothing.
+think Traced the crux values by hand before coding: a solid 3x3 block reads 3 around its ring (one orthogonal step from the edge) and 6 at its center (two steps); a pixel touching a lone background hole only at its CORNER reads 4 not 3 (the diagonal weight); the same hole at the BOTTOM-RIGHT is reached only on the backward pass -- the decisive proof the second pass is load-bearing.
+obs GREEN on the FIRST full metal run, no reds -- the hand-trace held. tame_style_check bans clean, width-check exit 0, plain 7-bit ASCII, living_docs_lint advisory-only, living_card_ascii_witness GREEN after the REMEMBER repoint.
+obs Caught my own future-date: distance_version and the REMEMBER references read 20260818.140000 before the live clock (134545) was read; corrected both to the real clock per the REDS #75 lesson (measurement beats memory -- read the clock, never guess it).
+obs Council rota lap deep-read item 24, active-designing/20260702-184312_the-grain-and-the-crossing.md -- the grain strands (bounded everything, values apart never braided, sameness as compression, witnesses first). Applied directly: the module names its ceiling up front, crosses no value into another whole, composes over the shared is_on/qoi/mix doors rather than duplicating them, and claims GREEN only on a witness on metal.
+loom witness=distance_witness build=ok selftest=green checks=8 note=first-metal-run-no-reds
+file image/distance.rye the chamfer 3-4 two-pass distance transform: distance_chamfer, DistanceMap, distance_color, colorize
+file tools/distance_witness.rish proves the definition, the diagonal weight, the backward pass, colorize round-trip, refusal, determinism on metal
+file image/README.md Distance (chamfer transform) bullet after the Label entry (docs-sync)
+file crux/REMEMBER.md live edge repointed single-stranded to distance; Git nib updated; label folded to a one-line prior-nib pointer
+recommend keep-going Season G open-media, crux-first among the named siblings: a REGION-SIZE / BOUNDING-BOX reader over a LabelMap (the natural consumer of the labeler), a DISK-element builder for structure, or a DISTANCE-based erode/dilate thresholding this field. The Microkernel double-seat still leads Lindy yet stays gated on a web-fetch/license fetch (surfaced, never crossed). No custody gate reached this lap.

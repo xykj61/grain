@@ -1,0 +1,326 @@
+//! image/distance.rye -- give every foreground pixel of an RGBA mask its DISTANCE to the nearest background pixel: the field
+//! whose ridge the medial axis rides, the floor a distance-based erode/dilate, a watershed, and a shape-thickness reader all
+//! descend from (Season G, the crux-first sibling image/label.rye named beside a region reader and a disk-element builder).
+//!
+//! Season G (Open Media Primitives) -- image/label.rye partitions a mask into its connected pieces (a GLOBAL topology). This
+//! rung reads a mask's METRIC structure: for each pixel it measures how deep inside the foreground it lies, as the length of the
+//! shortest path of unit steps out to the nearest background pixel. Background pixels are 0; a foreground pixel one step from the
+//! edge is small, the heart of a thick shape is large -- so the local maxima of this field trace a shape's spine, exactly what
+//! image/skeleton.rye and image/zhang_suen.rye thin a shape down toward.
+//!
+//! The algorithm is the classic CHAMFER distance transform (Borgefors, 1986), a two-pass integer approximation of the Euclidean
+//! distance that needs no floating point and no square root. It weights an ORTHOGONAL step 3 and a DIAGONAL step 4 -- the 3-4
+//! mask, whose ratio 4/3 = 1.33 approximates sqrt(2) = 1.41 far better than the 1/1 city-block metric, at one third the true
+//! scale (a true unit distance reads as 3). A FORWARD raster pass relaxes each pixel against its four already-visited neighbors
+//! (W, NW, N, NE); a BACKWARD reverse-raster pass relaxes against the other four (E, SE, S, SW). Two passes suffice because every
+//! shortest chamfer path is monotone in one of the two sweep directions, so the second pass carries in exactly the distances the
+//! first could not see (a background pixel down-and-right of a mark reaches it only on the backward sweep -- the pass's reason to
+//! exist).
+//!
+//! Compose not braid. This rung OWNS only the chamfer weights, the two-pass min-relaxation sweep, and the render ramp. The binary
+//! meaning of a pixel -- foreground at or above the shared on-threshold -- is read through image/branch.rye's `is_on`, the one
+//! door image/label.rye, hitmiss, endpoints, and zhang_suen all read; image/qoi.rye owns the RGBA buffer; image/color.rye's `mix`
+//! blends the render ramp. `colorize` paints the field into a fresh Pixmap (background black, depth ramped dark-to-bright) so a
+//! distance map is a real image the open QOI codec round-trips byte-for-byte. No new gather, no blend, no codec, no color math
+//! beyond the shared ramp.
+//!
+//! Everything is bounded before a byte is allocated. The distance buffer is sized to the pixel count and holds u32; a chamfer
+//! distance can never exceed `dist_diagonal * max(width, height)` <= 4 * 8192 = 32768, so `dist_far` (the "no background reached
+//! yet" sentinel) sits far above any real distance and far below `maxInt(u32)`, leaving room to add a step weight without
+//! overflow. An empty source refuses BY NAME before any allocation -- all-or-nothing, never a half-measured map. No network, no
+//! key, no funds -- the depth a surface reads the day it asks how thick a mark is, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/distance.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const branch = @import("branch.rye");
+
+pub const distance_version = "20260818.134545";
+
+/// The most pixels a mask may hold -- the image module's own pixel ceiling, which also bounds the distance node count.
+pub const dist_max_pixels: u32 = qoi.qoi_max_pixels;
+
+/// The 3-4 chamfer weights (Borgefors, 1986): an ORTHOGONAL step reads 3, a DIAGONAL step 4. Their ratio 4/3 approximates the
+/// Euclidean sqrt(2) at one third the true scale -- integer, deterministic, no square root.
+pub const dist_orthogonal: u32 = 3;
+pub const dist_diagonal: u32 = 4;
+
+/// The "no background reached yet" sentinel: larger than any real chamfer distance (a distance never exceeds 4 * max dimension =
+/// 32768), yet half of maxInt(u32), so relaxing it by a step weight can never overflow. A pixel left at `dist_far` after both
+/// passes had no background pixel anywhere in the mask -- an honest "unbounded depth", never a wrapped-around small number.
+pub const dist_far: u32 = std.math.maxInt(u32) / 2;
+
+pub const DistanceError = error{
+    EmptySource,
+};
+
+/// A distance field over a mask: `dist[y*width + x]` is 0 for a background pixel, else the chamfer 3-4 distance from that
+/// foreground pixel to the nearest background pixel. `max_distance` is the largest finite distance present (0 when the mask holds
+/// no foreground). A pixel equal to `dist_far` had no background anywhere. The caller owns `dist`.
+pub const DistanceMap = struct {
+    width: u32 = 0,
+    height: u32 = 0,
+    max_distance: u32 = 0,
+    dist: []u32 = &[_]u32{},
+
+    /// The distance at `(x, y)` -- 0 for background, else the chamfer distance to the nearest background pixel.
+    pub fn at(self: *const DistanceMap, x: u32, y: u32) u32 {
+        // invariant: the read stays inside the distance buffer on both axes.
+        assert(x < self.width);
+        assert(y < self.height);
+        return self.dist[@as(usize, y) * @as(usize, self.width) + @as(usize, x)];
+    }
+};
+
+/// Relax `dist[pi]` toward `dist[ni] + w`, keeping the smaller -- the one min-step every chamfer pass is made of. Returns the new
+/// value so a pass can keep it in a register.
+fn relax(current: u32, neighbor: u32, w: u32) u32 {
+    // invariant: a real neighbor distance stays at or below the sentinel, so adding a step weight never overflows u32.
+    assert(neighbor <= dist_far);
+    const candidate: u32 = neighbor + w;
+    return if (candidate < current) candidate else current;
+}
+
+/// Measure every foreground pixel of `src` to the nearest background pixel by the chamfer 3-4 transform, into a fresh DistanceMap
+/// the caller owns. `src` is read-only. Background pixels (below the shared on-threshold) map to 0; each foreground pixel maps to
+/// its integer chamfer distance, and a foreground pixel with no background anywhere in the mask maps to `dist_far`.
+pub fn distance_chamfer(allocator: std.mem.Allocator, src: *const qoi.Pixmap) !DistanceMap {
+    // invariant: a real source has extent on both axes; a zero-size source has nothing to measure.
+    if (src.width == 0 or src.height == 0) return error.EmptySource;
+
+    const w: u32 = src.width;
+    const h: u32 = src.height;
+    const npix: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the source stays within the image module's named pixel ceiling.
+    assert(npix <= dist_max_pixels);
+    const count_pixels: u32 = @intCast(npix);
+    // invariant: a real source's buffer is one RGBA pixel per pixel, so the sweep reads every pixel in lockstep.
+    assert(src.pixels.len == @as(usize, count_pixels) * 4);
+
+    const dist = try allocator.alloc(u32, @as(usize, count_pixels));
+
+    // --- init: a background pixel is a feature at distance 0; a foreground pixel starts unreached at the sentinel -----------
+    var i: usize = 0;
+    while (i < @as(usize, count_pixels)) : (i += 1) {
+        dist[i] = if (branch.is_on(src.pixels, i * 4)) dist_far else 0;
+    }
+
+    // --- forward pass: raster order, relaxing each pixel against its four already-visited neighbors W, NW, N, NE ------------
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const pi: usize = @as(usize, y) * @as(usize, w) + @as(usize, x);
+            var d: u32 = dist[pi];
+            if (d == 0) continue; // a background pixel is already 0 -- no neighbor can lower it
+            if (x > 0) d = relax(d, dist[pi - 1], dist_orthogonal); // W
+            if (x > 0 and y > 0) d = relax(d, dist[pi - @as(usize, w) - 1], dist_diagonal); // NW
+            if (y > 0) d = relax(d, dist[pi - @as(usize, w)], dist_orthogonal); // N
+            if (x + 1 < w and y > 0) d = relax(d, dist[pi - @as(usize, w) + 1], dist_diagonal); // NE
+            dist[pi] = d;
+        }
+    }
+
+    // --- backward pass: reverse raster, relaxing each pixel against its four remaining neighbors E, SE, S, SW --------------
+    y = h;
+    while (y > 0) {
+        y -= 1;
+        var x: u32 = w;
+        while (x > 0) {
+            x -= 1;
+            const pi: usize = @as(usize, y) * @as(usize, w) + @as(usize, x);
+            var d: u32 = dist[pi];
+            if (d == 0) continue; // background stays 0
+            if (x + 1 < w) d = relax(d, dist[pi + 1], dist_orthogonal); // E
+            if (x + 1 < w and y + 1 < h) d = relax(d, dist[pi + @as(usize, w) + 1], dist_diagonal); // SE
+            if (y + 1 < h) d = relax(d, dist[pi + @as(usize, w)], dist_orthogonal); // S
+            if (x > 0 and y + 1 < h) d = relax(d, dist[pi + @as(usize, w) - 1], dist_diagonal); // SW
+            dist[pi] = d;
+        }
+    }
+
+    // --- the largest finite depth present: the ramp's ceiling, and an honest 0 when the mask holds no foreground -----------
+    var max_distance: u32 = 0;
+    i = 0;
+    while (i < @as(usize, count_pixels)) : (i += 1) {
+        const d = dist[i];
+        if (d != dist_far and d > max_distance) max_distance = d;
+    }
+
+    return DistanceMap{ .width = w, .height = h, .max_distance = max_distance, .dist = dist };
+}
+
+/// The display color of a distance: opaque BLACK for background (0), else a grayscale depth ramped from dark to bright by the
+/// pixel's share of `max_distance`. A pixel at `dist_far` (no background anywhere) renders full bright. `max_distance` 0 means
+/// there is no foreground to ramp, so every pixel is black.
+pub fn distance_color(d: u32, max_distance: u32) color.Rgba {
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+    if (d == 0 or max_distance == 0) return black;
+    // clamp the sentinel and any distance to the ramp ceiling, then blend by t = d * 255 / max_distance in u32 so no channel wraps.
+    const capped: u32 = if (d > max_distance) max_distance else d;
+    const t: u32 = capped * 255 / max_distance;
+    // invariant: the ramp parameter stays a valid u8 blend fraction.
+    assert(t <= 255);
+    return color.mix(black, white, @intCast(t));
+}
+
+/// Paint a distance field into a fresh RGBA Pixmap the caller owns: background black, each foreground pixel a grayscale depth
+/// from dark (shallow) to bright (deep). This is the render that makes a distance map a real image -- the open QOI codec
+/// round-trips it byte-for-byte.
+pub fn colorize(allocator: std.mem.Allocator, map: *const DistanceMap) !qoi.Pixmap {
+    // invariant: a real field has extent on both axes.
+    if (map.width == 0 or map.height == 0) return error.EmptySource;
+    const n: usize = @as(usize, map.width) * @as(usize, map.height);
+    // invariant: the distance buffer holds exactly one measure per pixel.
+    assert(map.dist.len == n);
+
+    const out = try allocator.alloc(u8, n * 4);
+    var i: usize = 0;
+    while (i < n) : (i += 1) {
+        const c = distance_color(map.dist[i], map.max_distance);
+        out[i * 4] = c.r;
+        out[i * 4 + 1] = c.g;
+        out[i * 4 + 2] = c.b;
+        out[i * 4 + 3] = 255; // alpha pinned opaque -- the render is a solid image, not a translucent one
+    }
+    // invariant: the sweep pinned every alpha byte to 255, so the render is a clean opaque image.
+    assert(out[3] == 255);
+    return qoi.Pixmap{ .width = map.width, .height = map.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+// --- selftest: the definition on a solid block, the diagonal-weight crux, the backward-pass crux, the degenerate cases --------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one pixel's RGBA at (x, y) -- the small writer the test shapes share.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    // --- the DEFINITION crux: a solid 3x3 foreground block on a black border. Every outer ring pixel is one orthogonal step
+    //     (weight 3) from the background edge; the center is one further orthogonal step (3 + 3 = 6) from any edge --------------
+    var block = try make_canvas(garden, 5, 5, black);
+    var by: u32 = 1;
+    while (by <= 3) : (by += 1) {
+        var bx: u32 = 1;
+        while (bx <= 3) : (bx += 1) set_pixel(&block, bx, by, white);
+    }
+    const bm = try distance_chamfer(garden, &block);
+    if (bm.at(0, 0) != 0) return error.BackgroundNotZero; // the border is background -> distance 0
+    if (bm.at(2, 0) != 0) return error.BackgroundNotZero;
+    if (bm.at(1, 1) != 3) return error.RingNotThree; // a block corner: nearest background is one orthogonal step (weight 3)
+    if (bm.at(2, 1) != 3) return error.RingNotThree; // a block edge-mid: also one orthogonal step
+    if (bm.at(1, 2) != 3) return error.RingNotThree;
+    if (bm.at(2, 2) != 6) return error.CenterNotSix; // the block center: two orthogonal steps from any edge (3 + 3)
+    if (bm.max_distance != 6) return error.MaxDistanceWrong;
+
+    // --- the DIAGONAL-WEIGHT crux: a foreground pixel whose ONLY nearby background is at a diagonal corner reads 4, never 3.
+    //     Fill a 4x4 canvas foreground, then cut a single background hole at (0,0). Pixel (1,1) touches that hole only at their
+    //     shared corner, so its distance is one diagonal step (weight 4); (1,0) and (0,1) touch it orthogonally (weight 3) -----
+    var holetl = try make_canvas(garden, 4, 4, white);
+    set_pixel(&holetl, 0, 0, black); // the lone background hole, top-left
+    const htl = try distance_chamfer(garden, &holetl);
+    if (htl.at(0, 0) != 0) return error.HoleNotZero;
+    if (htl.at(1, 0) != 3) return error.OrthoNeighborNotThree; // W of the hole -> one orthogonal step
+    if (htl.at(0, 1) != 3) return error.OrthoNeighborNotThree; // N of the hole -> one orthogonal step
+    if (htl.at(1, 1) != 4) return error.DiagNeighborNotFour; // corner-adjacent to the hole -> one diagonal step, proving weight 4
+
+    // --- the BACKWARD-PASS crux (the second pass's reason to exist): the lone background hole at the BOTTOM-RIGHT corner. The
+    //     forward pass, which only looks up-and-left, cannot see it at all -- pixel (2,2) reaches its true distance 4 only on the
+    //     backward sweep. Without the backward pass (2,2) would stay at the sentinel ----------------------------------------
+    var holebr = try make_canvas(garden, 4, 4, white);
+    set_pixel(&holebr, 3, 3, black); // the lone background hole, bottom-right
+    const hbr = try distance_chamfer(garden, &holebr);
+    if (hbr.at(3, 3) != 0) return error.HoleNotZero;
+    if (hbr.at(2, 3) != 3) return error.OrthoNeighborNotThree; // E-adjacent path only the backward pass carries
+    if (hbr.at(3, 2) != 3) return error.OrthoNeighborNotThree; // S-adjacent
+    if (hbr.at(2, 2) != 4) return error.BackwardPassMissed; // corner-adjacent to the bottom-right hole -> 4, only via the backward pass
+    if (hbr.at(0, 0) == dist_far) return error.CornerUnreached; // the far corner still reaches the single hole, not the sentinel
+
+    // --- a foreground pixel read by the RED channel, not alpha: a faint (near-transparent) mark on a faint ground still
+    //     measures, exactly as the rest of the family reads the binary door through branch.is_on --------------------------
+    var faint = try make_canvas(garden, 3, 3, color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 40 });
+    set_pixel(&faint, 1, 1, color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 30 });
+    const fm = try distance_chamfer(garden, &faint);
+    if (fm.at(1, 1) != 3) return error.FaintMarkNotMeasured; // a lone foreground pixel is one orthogonal step from its ground
+
+    // --- the DEGENERATE cases: an all-background mask is 0 everywhere with max_distance 0 -------------------------------
+    var blank = try make_canvas(garden, 4, 4, black);
+    const blankm = try distance_chamfer(garden, &blank);
+    if (blankm.max_distance != 0) return error.BlankMaxNotZero;
+    if (blankm.at(2, 2) != 0) return error.BlankPixelNotZero;
+
+    // --- COLORIZE renders the field into a real image: background black, a deep pixel brighter than a shallow one, and it
+    //     round-trips through the open QOI codec byte-for-byte ---------------------------------------------------------
+    const painted = try colorize(garden, &bm); // the 3x3 block field: ring 3, center 6
+    if (!(color.Rgba{ .r = painted.pixels[0], .g = painted.pixels[1], .b = painted.pixels[2], .a = painted.pixels[3] }).eql(black)) return error.BackgroundNotBlack;
+    const ring_i = (@as(usize, 1) * @as(usize, bm.width) + @as(usize, 1)) * 4; // ring pixel (1,1), distance 3
+    const center_i = (@as(usize, 2) * @as(usize, bm.width) + @as(usize, 2)) * 4; // center (2,2), distance 6
+    if (!(painted.pixels[center_i] > painted.pixels[ring_i])) return error.DeepNotBrighter; // the deeper pixel ramps brighter
+    if (painted.pixels[center_i] != 255) return error.MaxNotFullBright; // the deepest pixel (== max_distance) ramps to full white
+    const cap = qoi.encoded_bound(painted.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&painted, dst);
+    const backimg = try qoi.decode(garden, dst[0..enc.len]);
+    if (!backimg.same_bytes(&painted)) return error.ColorizeDidNotRoundTrip;
+
+    // --- the refusal by name, having allocated nothing (the guard fires before the sweep) -----------------------------
+    var empty_src = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (distance_chamfer(garden, &empty_src)) |_| return error.EmptySourceNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- determinism: the same mask reaches the same field -----------------------------------------------------------
+    const a = try distance_chamfer(garden, &block);
+    const b = try distance_chamfer(garden, &block);
+    if (a.max_distance != b.max_distance) return error.MaxNotDeterministic;
+    var i: usize = 0;
+    while (i < a.dist.len) : (i += 1) {
+        if (a.dist[i] != b.dist[i]) return error.FieldNotDeterministic;
+    }
+
+    print("GREEN image-distance: measure every foreground pixel of a mask to the nearest background pixel by the classic chamfer 3-4 two-pass transform (Borgefors) -- a solid 3x3 block reads 3 around its ring and 6 at its center (one and two orthogonal steps from the edge, weight 3 each), a pixel touching a lone background hole only at its CORNER reads 4 not 3 (the diagonal step weight), the same hole at the BOTTOM-RIGHT is reached only on the backward pass (the second pass's reason to exist), foreground is read by red >= 128 through branch.is_on (one binary door) so a faint mark still measures, an all-background mask is 0 with max_distance 0; colorize renders the field to a real image (background black, deep brighter than shallow, the deepest full white) that round-trips through the open QOI codec byte-for-byte; an empty source refuses by name having allocated nothing; the same mask measures deterministically\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: distance selftest\n", .{});
+    return 1;
+}
