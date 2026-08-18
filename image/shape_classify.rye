@@ -1,0 +1,396 @@
+//! image/shape_classify.rye -- NAME an unknown shape by the CLOSEST of a labeled set of template fingerprints: the argmin over
+//! image/shape_match.rye's distance, the payoff that closes the recognition loop hu_moments -> shape_match -> classify
+//! (Season G, the classifier over the recognizer over the fingerprint).
+//!
+//! Season G (Open Media Primitives) -- image/hu_moments.rye reads a component's SEVEN HU INVARIANT MOMENTS, the fingerprint that
+//! stays (near) constant when a mark is turned, moved, or resized. image/shape_match.rye reads the DISTANCE between two such
+//! fingerprints -- one scalar, small for the same form and large for a different one. A distance answers "are THESE two the same
+//! shape?"; a surface asks the next question up: "WHICH of the shapes I know is this?" This rung reads that -- the NEAREST-TEMPLATE
+//! classifier, the argmin of the distance over a labeled set of known fingerprints. Give it an unknown mark's Hu set and a small
+//! library of named templates (a triangle, a plus, an L, a block), and it names the class of the closest one. That is the move a
+//! text reader (which letter is this?), an icon matcher (which glyph?), and a part recognizer (which component?) are all built on:
+//! not the distance between two marks, but the CHOICE of the one known form an unknown mark most resembles.
+//!
+//! The choice is a plain argmin with an honest MARGIN. Over the template set the classifier finds the smallest distance (ties
+//! broken by the earliest template, so the choice is deterministic), and returns the winning template's index, its class id, the
+//! winning distance, and the MARGIN -- the gap to the second-closest template. A wide margin says the mark clearly belongs to its
+//! class; a thin margin says two known forms sit almost equally near, the honest signal a surface reads before it trusts a label.
+//!
+//! Two classifiers, one honest choice, exactly as the recognizer beneath offers. `classify` runs over shape_distance, the
+//! reflection-INVARIANT metric: a mark and its mirror read the same form, so a "b" template matches a "d" mark -- the recognizer a
+//! surface wants when a shape and its flip are one class. `classify_oriented` runs over shape_distance_oriented, which SEES the
+//! seventh Hu invariant's reflection sign-flip: a chiral mark lands on its own-handed template and NOT on its mirror -- the
+//! recognizer a surface wants when handedness names a different class ("b" is not "d"). The decisive crux is exactly this
+//! separation: with a chiral template AND its mirror both in the library, the blind classifier reads a mirror mark as
+//! indistinguishable from either (both distances near zero), while the oriented classifier names the correct handed class.
+//!
+//! Compose not braid. This rung OWNS only the argmin and its margin -- the scan over a template slice and the choice of the least
+//! distance. image/shape_match.rye owns the distance metric it minimizes; image/hu_moments.rye owns the fingerprints; image/label.rye
+//! owns the LabelMap those are read from. This module reads no pixels, writes no image, and touches no codec or color: it is a pure
+//! reduction over a slice of seven-number fingerprints, the smallest possible layer above the recognizer it queries.
+//!
+//! The template set is bounded by `shape_classify_max_templates` (256) so a scan is always finite; an empty library refuses
+//! `EmptyTemplates` by name, an over-long one `TooManyTemplates`, each having chosen nothing. The distances run in `f64` exactly
+//! as the metric beneath reads them, so no accumulator wraps. No network, no key, no funds -- the "which known shape is this?" a
+//! surface asks the moment it has a fingerprint and a library, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/shape_classify.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const label = @import("label.rye");
+const hu_moments = @import("hu_moments.rye");
+const shape_match = @import("shape_match.rye");
+
+pub const shape_classify_version = "20260818.182326";
+
+pub const ShapeClassifyError = error{
+    EmptyTemplates,
+    TooManyTemplates,
+};
+
+/// The largest template library a single classification scans. A real class library -- an alphabet, an icon set, a parts
+/// catalog -- stays well under this; the ceiling keeps the argmin scan finite and bounds it before any work.
+pub const shape_classify_max_templates: u32 = 256;
+
+/// One named template in a classifier's library: a class id the caller assigns (a codepoint, an icon number, a part label) and
+/// the Hu fingerprint of that class's canonical shape. The classifier never interprets `class_id`; it only carries the winner's
+/// id back out, so a caller reads the answer in its own vocabulary.
+pub const Template = struct {
+    class_id: u32 = 0,
+    hu: hu_moments.HuSet = .{},
+};
+
+/// The result of one classification: which template won and how confidently. `index` is the winning template's position in the
+/// library slice (0-based); `class_id` its assigned class; `distance` the winning (smallest) distance; `margin` the gap from the
+/// winner to the second-closest template -- a wide margin is a confident label, a thin one two near-equal candidates. With a
+/// single template the margin is zero, honestly: there is no runner-up to measure against.
+pub const Match = struct {
+    index: u32 = 0,
+    class_id: u32 = 0,
+    distance: f64 = 0,
+    margin: f64 = 0,
+};
+
+/// The distance between two fingerprints under the chosen metric: the reflection-invariant `shape_distance` when `oriented` is
+/// false (a mark and its mirror read the same form), the chirality-sensitive `shape_distance_oriented` when true (the mirror is
+/// a different form). One switch so the argmin below reads either recognizer without duplicating the scan.
+fn metric(a: hu_moments.HuSet, b: hu_moments.HuSet, oriented: bool) f64 {
+    const d = if (oriented) shape_match.shape_distance_oriented(a, b) else shape_match.shape_distance(a, b);
+    // invariant: a distance is non-negative by construction, so a smallest distance is a real floor.
+    assert(d >= 0.0);
+    return d;
+}
+
+/// The nearest-template choice: scan the library for the smallest distance to `unknown`, tracking the second-smallest so the
+/// margin is honest. Ties fall to the earliest template (strict `<` never replaces an equal incumbent), so the answer is
+/// deterministic. The whole scan is bounded by the library length, itself bounded by the named ceiling.
+fn nearest(unknown: hu_moments.HuSet, templates: []const Template, oriented: bool) !Match {
+    // invariant: a classification needs at least one known shape to choose from.
+    if (templates.len == 0) return error.EmptyTemplates;
+    // invariant: the library stays within the named ceiling so the scan is finite and bounded before any work.
+    if (templates.len > @as(usize, shape_classify_max_templates)) return error.TooManyTemplates;
+
+    var best_i: u32 = 0;
+    var best_d: f64 = metric(unknown, templates[0].hu, oriented);
+    // the runner-up distance; positive infinity until a second candidate is seen, so a single-template margin reads zero.
+    var second_d: f64 = std.math.inf(f64);
+
+    var k: u32 = 1;
+    while (k < @as(u32, @intCast(templates.len))) : (k += 1) {
+        const d = metric(unknown, templates[k].hu, oriented);
+        if (d < best_d) {
+            // a new winner: the old best becomes the runner-up.
+            second_d = best_d;
+            best_d = d;
+            best_i = k;
+        } else if (d < second_d) {
+            // not a winner yet closer than the current runner-up.
+            second_d = d;
+        }
+    }
+
+    // invariant: the winner index names a real template in the library.
+    assert(best_i < @as(u32, @intCast(templates.len)));
+    // invariant: the runner-up is never nearer than the winner -- the margin is non-negative.
+    assert(second_d >= best_d);
+
+    const margin: f64 = if (std.math.isFinite(second_d)) second_d - best_d else 0.0;
+    // invariant: the reported margin is never negative.
+    assert(margin >= 0.0);
+
+    return Match{
+        .index = best_i,
+        .class_id = templates[best_i].class_id,
+        .distance = best_d,
+        .margin = margin,
+    };
+}
+
+/// Name an unknown shape by the reflection-INVARIANT nearest template: the class of the library shape whose six-invariant Hu
+/// distance to `unknown` is smallest. A mark and its mirror read as one class here. Ties fall to the earliest template.
+pub fn classify(unknown: hu_moments.HuSet, templates: []const Template) !Match {
+    return nearest(unknown, templates, false);
+}
+
+/// Name an unknown shape by the chirality-SENSITIVE nearest template: the same argmin over the seven-invariant oriented distance,
+/// so a chiral mark lands on its own-handed template and not on its mirror. Ties fall to the earliest template.
+pub fn classify_oriented(unknown: hu_moments.HuSet, templates: []const Template) !Match {
+    return nearest(unknown, templates, true);
+}
+
+// --- selftest: recognition among decoys, the margin, exact-template zero, the oriented-vs-blind chirality crux, refusals -------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y) -- the small writer the fixtures share.
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// True when a foreground pixel sits at (x, y) of `img` -- read through the red channel like the family's binary door.
+fn is_set(img: *const qoi.Pixmap, x: u32, y: u32) bool {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    return img.pixels[(@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4] >= 128;
+}
+
+/// Paint a filled scalene right triangle with its top-left corner at (ox, oy): the horizontal leg is 13 and the vertical leg 7.
+/// A right triangle of unequal legs is strongly chiral, so it is the class whose recognition and handedness this rung proves.
+fn paint_chiral(img: *qoi.Pixmap, ox: u32, oy: u32) void {
+    var k: u32 = 0;
+    while (k < 7) : (k += 1) {
+        const row_w: u32 = 13 - 2 * k; // 13, 11, 9, 7, 5, 3, 1
+        var x: u32 = 0;
+        while (x < row_w) : (x += 1) set_dot(img, ox + x, oy + k);
+    }
+}
+
+/// A fresh canvas holding `src` rotated 90 degrees clockwise -- an exact lattice permutation, so the Hu invariants all hold.
+fn rotate90_cw(garden: std.mem.Allocator, src: *const qoi.Pixmap) !qoi.Pixmap {
+    const sw: u32 = src.width;
+    const sh: u32 = src.height;
+    var dst = try make_canvas(garden, sh, sw, 0);
+    var dy: u32 = 0;
+    while (dy < dst.height) : (dy += 1) {
+        var dx: u32 = 0;
+        while (dx < dst.width) : (dx += 1) {
+            // invariant: the sampled source coordinate stays inside the source on both axes.
+            assert(dx < sh);
+            assert((sh - 1 - dx) < sh);
+            if (is_set(src, dy, sh - 1 - dx)) set_dot(&dst, dx, dy);
+        }
+    }
+    return dst;
+}
+
+/// A fresh canvas holding `src` mirrored left-to-right -- an exact lattice reflection, so i1..i6 hold and i7 flips sign.
+fn mirror_x(garden: std.mem.Allocator, src: *const qoi.Pixmap) !qoi.Pixmap {
+    const sw: u32 = src.width;
+    const sh: u32 = src.height;
+    var dst = try make_canvas(garden, sw, sh, 0);
+    var yy: u32 = 0;
+    while (yy < sh) : (yy += 1) {
+        var xx: u32 = 0;
+        while (xx < sw) : (xx += 1) {
+            // invariant: the mirrored source column stays inside the source width.
+            assert((sw - 1 - xx) < sw);
+            if (is_set(src, sw - 1 - xx, yy)) set_dot(&dst, xx, yy);
+        }
+    }
+    return dst;
+}
+
+/// A fresh canvas holding `src` scaled up by an integer factor -- each source pixel becomes a `factor`x`factor` block.
+fn upscale(garden: std.mem.Allocator, src: *const qoi.Pixmap, factor: u32) !qoi.Pixmap {
+    // invariant: a real magnification is at least 2x.
+    assert(factor >= 2);
+    var dst = try make_canvas(garden, src.width * factor, src.height * factor, 0);
+    var yy: u32 = 0;
+    while (yy < src.height) : (yy += 1) {
+        var xx: u32 = 0;
+        while (xx < src.width) : (xx += 1) {
+            if (!is_set(src, xx, yy)) continue;
+            var by: u32 = 0;
+            while (by < factor) : (by += 1) {
+                var bx: u32 = 0;
+                while (bx < factor) : (bx += 1) set_dot(&dst, xx * factor + bx, yy * factor + by);
+            }
+        }
+    }
+    return dst;
+}
+
+/// The seven invariants of the single component of a fixture image, for the selftest.
+fn hu_of_image(garden: std.mem.Allocator, img: *const qoi.Pixmap) !hu_moments.HuSet {
+    const map = try label.label_components(garden, img);
+    // invariant: every fixture holds exactly one component.
+    assert(map.count == 1);
+    const sets = try hu_moments.hu_moments(garden, &map);
+    return sets[0];
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // Four distinct template classes, each a genuinely different form: a chiral triangle, a symmetric plus, a solid block, an L.
+    // Class ids are the caller's own vocabulary (10, 20, 30, 40) -- the classifier only carries the winner's id back out.
+    var tri = try make_canvas(garden, 17, 11, 0);
+    paint_chiral(&tri, 2, 2);
+    const hu_tri = try hu_of_image(garden, &tri);
+
+    var plus = try make_canvas(garden, 7, 7, 0);
+    set_dot(&plus, 3, 1);
+    set_dot(&plus, 3, 2);
+    set_dot(&plus, 1, 3);
+    set_dot(&plus, 2, 3);
+    set_dot(&plus, 3, 3);
+    set_dot(&plus, 4, 3);
+    set_dot(&plus, 5, 3);
+    set_dot(&plus, 3, 4);
+    set_dot(&plus, 3, 5);
+    const hu_plus = try hu_of_image(garden, &plus);
+
+    var block = try make_canvas(garden, 8, 8, 0);
+    var by: u32 = 1;
+    while (by < 7) : (by += 1) {
+        var bx: u32 = 1;
+        while (bx < 7) : (bx += 1) set_dot(&block, bx, by);
+    }
+    const hu_block = try hu_of_image(garden, &block);
+
+    var el = try make_canvas(garden, 8, 8, 0);
+    var ey: u32 = 1;
+    while (ey < 7) : (ey += 1) set_dot(&el, 1, ey); // the vertical stroke
+    var ex: u32 = 2;
+    while (ex < 6) : (ex += 1) set_dot(&el, ex, 6); // the foot
+    const hu_el = try hu_of_image(garden, &el);
+
+    const library = [_]Template{
+        .{ .class_id = 10, .hu = hu_tri },
+        .{ .class_id = 20, .hu = hu_plus },
+        .{ .class_id = 30, .hu = hu_block },
+        .{ .class_id = 40, .hu = hu_el },
+    };
+
+    // --- RECOGNITION, the decisive crux: a triangle turned 90 degrees, mirrored, AND scaled 4x -- a mark the library never saw
+    //     in that pose -- is NAMED the triangle class (10) over every decoy, with a WIDE margin. This is the payoff that closes
+    //     the loop hu_moments -> shape_match -> classify: not the distance between two marks, but the CHOICE of the known form
+    //     an unknown mark most resembles. -----------------------------------------------------------------------------------
+    const rot = try rotate90_cw(garden, &tri);
+    const mir = try mirror_x(garden, &rot);
+    const big = try upscale(garden, &mir, 4);
+    const hu_unknown = try hu_of_image(garden, &big);
+
+    const m = try classify(hu_unknown, &library);
+    if (m.class_id != 10) return error.TriangleNotRecognized; // the transformed triangle names the triangle class
+    if (m.index != 0) return error.WrongTemplateIndex;
+    if (!(m.distance < 0.2)) return error.RecognizedDistanceTooLarge; // a same-form distance stays small
+    // the margin is wide: the nearest decoy sits an order of magnitude farther than the winning triangle
+    if (!(m.margin > m.distance * 10.0)) return error.MarginTooThin;
+    if (!(m.margin > 1.0)) return error.MarginNotConfident;
+
+    // --- EXACT-TEMPLATE ZERO with a CONFIDENT margin: an unknown that IS the chiral L template reads distance exactly zero and
+    //     names it, and because the L sits far from every other class its margin is wide -- a metric law surfacing through the
+    //     classifier as a confident label. -----------------------------------------------------------------------------------
+    const ml = try classify(hu_el, &library);
+    if (ml.class_id != 40) return error.LNotItself;
+    if (ml.distance != 0.0) return error.ExactTemplateNotZero;
+    if (!(ml.margin > 1.0)) return error.LMarginNotConfident; // the L's nearest other class sits ~10 away
+
+    // --- the THIN MARGIN, the classifier's honest confidence signal: a symmetric plus and a solid block are NEAR-TWINS to Hu
+    //     moments (both compact and symmetric, their odd invariants zero), so the plus names its own class (20) at distance zero
+    //     yet its runner-up -- the block -- sits only a sliver away. The margin SURFACES this near-collision rather than hiding
+    //     it, the signal a surface reads before it trusts a label where two known forms sit almost equally near. -------------
+    const mp = try classify(hu_plus, &library);
+    if (mp.class_id != 20) return error.PlusNotItself;
+    if (mp.distance != 0.0) return error.PlusExactNotZero;
+    if (!(mp.margin > 0.0)) return error.PlusMarginNotPositive; // a real runner-up exists
+    if (!(mp.margin < 0.5)) return error.PlusMarginNotThin; // yet the block shadows the plus -- a thin, honest margin
+
+    // --- SINGLE TEMPLATE: one known shape always wins, and the margin is honestly zero (there is no runner-up to measure) ----
+    const one = [_]Template{.{ .class_id = 99, .hu = hu_block }};
+    const ms = try classify(hu_tri, &one);
+    if (ms.class_id != 99) return error.SingleNotChosen;
+    if (ms.margin != 0.0) return error.SingleMarginNotZero;
+
+    // --- the ORIENTED-vs-BLIND CHIRALITY CRUX, the classifier's own payoff of the seventh invariant: a library holding a chiral
+    //     shape AND its mirror as two DIFFERENT classes. A mirror mark is INDISTINGUISHABLE to the reflection-blind classifier
+    //     (both distances near zero, a thin margin), yet the ORIENTED classifier names the correct handed class outright. ----
+    const tri_mirror = try mirror_x(garden, &tri);
+    const hu_tri_mirror = try hu_of_image(garden, &tri_mirror);
+    const handed = [_]Template{
+        .{ .class_id = 100, .hu = hu_tri }, // the base-handed triangle
+        .{ .class_id = 101, .hu = hu_tri_mirror }, // its mirror, a different class
+    };
+
+    // the blind classifier cannot separate them: the mirror mark reads both handed templates as (near) the same form, so its
+    // margin is a sliver -- the honest signal that this metric is not the one to trust for handedness.
+    const blind = try classify(hu_tri_mirror, &handed);
+    if (!(blind.distance < 0.00000001) or !(blind.margin < 0.00000001)) return error.BlindSeparatedHandedness;
+
+    // the oriented classifier names the mirror mark its own handed class (101), a real margin away from the base (100).
+    const seen = try classify_oriented(hu_tri_mirror, &handed);
+    if (seen.class_id != 101) return error.OrientedWrongHand;
+    if (seen.index != 1) return error.OrientedWrongIndex;
+    if (!(seen.distance < 0.2)) return error.OrientedMatchTooFar; // it truly matches its mirror template
+    if (!(seen.margin > 0.2)) return error.OrientedMarginTooThin; // and the base handed class sits a real distance off
+
+    // --- DETERMINISM: the same query reads the same choice, index, distance, and margin --------------------------------------
+    const d1 = try classify(hu_unknown, &library);
+    const d2 = try classify(hu_unknown, &library);
+    if (d1.class_id != d2.class_id or d1.index != d2.index or d1.distance != d2.distance or d1.margin != d2.margin) {
+        return error.ClassifyNotDeterministic;
+    }
+
+    // --- REFUSAL by name, having chosen nothing --------------------------------------------------------------------------
+    const empty = [_]Template{};
+    if (classify(hu_tri, &empty)) |_| return error.EmptyNotRefused else |err| {
+        if (err != error.EmptyTemplates) return error.WrongEmptyError;
+    }
+
+    // an over-long library refuses by name -- a slice one past the ceiling, its fingerprints never read.
+    const over = try garden.alloc(Template, @as(usize, shape_classify_max_templates) + 1);
+    var oi: usize = 0;
+    while (oi < over.len) : (oi += 1) over[oi] = Template{ .class_id = 0, .hu = hu_block };
+    if (classify(hu_tri, over)) |_| return error.OverLongNotRefused else |err| {
+        if (err != error.TooManyTemplates) return error.WrongOverLongError;
+    }
+
+    print("GREEN image-shape-classify: NAME an unknown shape by the CLOSEST of a labeled template library -- the argmin over shape_match's distance, the payoff that closes the loop hu_moments -> shape_match -> classify. The decisive crux is RECOGNITION AMONG DECOYS: a chiral right triangle turned 90 degrees, mirrored, AND scaled up 4x -- a pose the library never saw -- is named the triangle class (10) over a plus, a block, and an L, with a distance under 0.2 and a margin more than ten times that (the nearest decoy an order of magnitude farther), so one choice tells which KNOWN form an unknown mark is; the chiral L that IS a template reads distance exactly zero and names class 40 with a wide margin (its nearest other class ~10 away); the MARGIN is the classifier's honest confidence signal -- a symmetric plus and a solid block are near-twins to Hu moments, so the plus names class 20 at distance zero yet its runner-up the block sits a sliver away (margin under 0.5), the near-collision surfaced rather than hidden; a single-template library always wins with an honestly zero margin; and the ORIENTED-vs-BLIND chirality crux -- with a chiral shape and its mirror as two classes, the reflection-blind classifier reads a mirror mark as indistinguishable from both (both distances and the margin under 1e-8) while the oriented classifier names the correct handed class (101) a real margin away, the seventh Hu invariant's sign-flip surfacing as the right label; the same query classifies deterministically; an empty library refuses EmptyTemplates and an over-long one TooManyTemplates, each having chosen nothing\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: shape_classify selftest\n", .{});
+    return 1;
+}
