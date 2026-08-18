@@ -1,0 +1,360 @@
+//! image/shape_number.rye -- the START-INVARIANT, ROTATION-INVARIANT canonical form of a boundary: the FIRST DIFFERENCE of a
+//! Freeman chain code (rotation invariance) minimized over all cyclic starts (start invariance), the SHAPE NUMBER a whole
+//! outline-matching family descends from, the CANONICAL companion of image/chain_code.rye's oriented code.
+//!
+//! Season G (Open Media Primitives) -- image/chain_code.rye reads a traced ring down to a string of Freeman directions 0..7 that
+//! deliberately KEEPS orientation: a shape and its 90-degree turn read codes whose values differ by a constant, and a different
+//! trace start cyclically rotates the whole string. That is exactly right for asking which way a shape faces, yet wrong for
+//! asking whether two outlines are the SAME shape regardless of turn or trace start. This rung answers the second question by
+//! folding both freedoms out, so shape identity becomes a byte compare.
+//!
+//! Two moves, each cancelling one freedom (Bribiesca & Guzman 1980; Gonzalez & Woods). The FIRST DIFFERENCE differences each
+//! code against its predecessor around the closed ring -- diff[k] = (codes[k] - codes[k-1]) mod 8 -- so rotating the shape, which
+//! adds a constant to every code, leaves the difference unchanged: a shape and its quarter-turn share the identical first
+//! difference. The SHAPE NUMBER then reads that difference as a cyclic sequence and picks the ONE rotation that is the
+//! lexicographically smallest (equivalently the minimum-magnitude base-8 integer, since every digit is one octal place), so
+//! tracing the same boundary from any pixel yields the identical canonical form. First difference gives rotation invariance;
+//! minimum rotation gives start invariance; together they are a translation/rotation/start-free fingerprint of the pure shape.
+//!
+//! The decisive crux, which no chain code alone can express: a spread 5x2 block and its 90-degree turn (a 2x5 block) trace to
+//! DIFFERENT chain codes -- different direction values AND a different starting corner -- yet collapse to the SAME shape number,
+//! while a block and a triangle keep DIFFERENT shape numbers, so the canonical form erases pose and keeps identity.
+//!
+//! Compose not braid. This rung OWNS only the differencing and the canonical rotation -- no gather, no blend, no codec, no color,
+//! not even a pixel-writing loop; it is a READING over image/chain_code.rye's ChainCode, which owns the code and its geometry.
+//! The empty code of a lone pixel has the trivial canonical form (the empty shape number).
+//!
+//! Everything is bounded before a byte: the minimum-rotation search is quadratic in the code length, so it carries its own hard
+//! ceiling `shape_number_max_len` (a real boundary is a perimeter, far under it) and a longer code refuses `ShapeTooLong` by
+//! name; a code carrying a value outside 0..7 refuses `BadCode` (defending chain_code's contract); all-or-nothing, never a
+//! half-built number. No network, no key, no funds -- the canonical outline a surface names the day it wants to match, hash, or
+//! deduplicate a shape blind to how it is turned or where its trace began, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/shape_number.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const chain_code = @import("chain_code.rye");
+const contour = @import("contour.rye");
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+
+pub const shape_number_version = "20260818.183942";
+
+/// The minimum-rotation search is O(N^2) in the code length N, so it carries a hard ceiling well below the image module's pixel
+/// count: a real boundary is a perimeter (a 256x256 solid rings in ~1024 steps), so 2^13 leaves generous headroom while keeping
+/// the worst case bounded. A longer code refuses `ShapeTooLong` rather than run an unbounded quadratic.
+pub const shape_number_max_len: u32 = 1 << 13;
+
+pub const ShapeError = error{
+    ShapeTooLong,
+    BadCode,
+};
+
+/// The FIRST DIFFERENCE of a closed chain code the caller owns -- diff[k] = (codes[k] - codes[k-1]) mod 8, cyclic (diff[0] takes
+/// the last code as its predecessor, since the ring is closed). This is ROTATION-INVARIANT: rotating a shape adds a constant to
+/// every code, and the difference of consecutive codes cancels it, so a shape and its 90-degree turn share the identical first
+/// difference. The empty code (a lone pixel) differences to the empty sequence.
+pub fn first_difference(allocator: std.mem.Allocator, ch: *const chain_code.ChainCode) ![]u8 {
+    const el: usize = ch.codes.len;
+    // a lone pixel has no steps -- its canonical difference is the empty sequence.
+    if (el == 0) return &[_]u8{};
+    // invariant: the quadratic canonical search downstream stays bounded, so the difference itself refuses an over-long code.
+    if (el > shape_number_max_len) return error.ShapeTooLong;
+    var v: usize = 0;
+    while (v < el) : (v += 1) {
+        // invariant: a chain code names one of eight directions; a value outside that breaks the mod-8 difference contract.
+        if (ch.codes[v] >= 8) return error.BadCode;
+    }
+
+    const diff = try allocator.alloc(u8, el);
+    var k: usize = 0;
+    while (k < el) : (k += 1) {
+        const prev: u8 = if (k == 0) ch.codes[el - 1] else ch.codes[k - 1];
+        // the +8 keeps the subtraction non-negative before the mod; both operands are 0..7, so the sum is 1..15 before mod 8.
+        const d: u8 = @intCast((@as(u32, ch.codes[k]) + 8 - @as(u32, prev)) % 8);
+        // invariant: a mod-8 difference of two 0..7 codes lands back in 0..7.
+        assert(d < 8);
+        diff[k] = d;
+    }
+    // invariant: the first difference holds exactly one digit per code, preserving the ring's order.
+    assert(diff.len == el);
+    return diff;
+}
+
+/// Is the cyclic rotation of `seq` starting at offset `a` lexicographically smaller than the one starting at `b`? Compared digit
+/// by digit around the ring; identical rotations (as for a symmetric shape) resolve false so the earlier offset wins, keeping the
+/// canonical choice deterministic.
+fn rotation_less(seq: []const u8, a: usize, b: usize) bool {
+    const el: usize = seq.len;
+    // invariant: both offsets index the sequence being rotated.
+    assert(a < el);
+    assert(b < el);
+    var k: usize = 0;
+    while (k < el) : (k += 1) {
+        const va: u8 = seq[(a + k) % el];
+        const vb: u8 = seq[(b + k) % el];
+        if (va < vb) return true;
+        if (va > vb) return false;
+    }
+    return false; // identical rotations -- keep the incumbent (the earlier offset)
+}
+
+/// The SHAPE NUMBER: the first difference rotated to the start that makes it the lexicographically smallest sequence (the
+/// minimum-magnitude base-8 reading). First difference gives ROTATION invariance; the minimum rotation gives START invariance --
+/// so the same boundary traced from any pixel, at any turn, yields the identical shape number. The caller owns the result; the
+/// empty code yields the empty shape number.
+pub fn shape_number(allocator: std.mem.Allocator, ch: *const chain_code.ChainCode) ![]u8 {
+    const diff = try first_difference(allocator, ch);
+    const el: usize = diff.len;
+    // the trivial canonical form of a point: no digits to rotate.
+    if (el == 0) return diff;
+
+    // the minimum-rotation search: the offset whose rotation reads smallest is the canonical start. Naive O(N^2), clearer than
+    // Booth's O(N) and bounded above by shape_number_max_len (first_difference already refused a longer code).
+    var best: usize = 0;
+    var cand: usize = 1;
+    while (cand < el) : (cand += 1) {
+        if (rotation_less(diff, cand, best)) best = cand;
+    }
+    // invariant: the chosen offset is a real position in the difference, so its rotation is a genuine reading of the ring.
+    assert(best < el);
+
+    const out = try allocator.alloc(u8, el);
+    var k: usize = 0;
+    while (k < el) : (k += 1) out[k] = diff[(best + k) % el];
+    // invariant: the canonical form holds exactly as many digits as the difference it rotates.
+    assert(out.len == el);
+    return out;
+}
+
+/// Two boundaries have the SAME SHAPE exactly when their shape numbers are equal -- the canonical form makes shape identity a
+/// byte compare, blind to how each is turned and where each was traced from. Different lengths mean different boundary orders,
+/// hence different shapes.
+pub fn shape_number_equal(a: []const u8, b: []const u8) bool {
+    if (a.len != b.len) return false;
+    var k: usize = 0;
+    while (k < a.len) : (k += 1) {
+        if (a[k] != b[k]) return false;
+    }
+    return true;
+}
+
+// --- selftest: rotation invariance of the first difference, the start-and-rotation-invariant shape number, discrimination,
+//     canonical minimality, degenerate cases, refusals -----------------------------------------------------------------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// Paint a filled right triangle whose row y fills `size - y` pixels -- a shape whose boundary carries DIAGONAL steps a
+/// rectangle never does, so its shape number differs from a block's.
+fn set_triangle(img: *qoi.Pixmap, ox: u32, oy: u32, size: u32) void {
+    // invariant: the triangle stays inside the buffer on both axes.
+    assert(ox + size <= img.width);
+    assert(oy + size <= img.height);
+    var yy: u32 = 0;
+    while (yy < size) : (yy += 1) {
+        var xx: u32 = 0;
+        while (xx < size - yy) : (xx += 1) set_dot(img, ox + xx, oy + yy);
+    }
+}
+
+/// Trace the single component of a one-shape canvas and encode its ordered ring as a Freeman chain code.
+fn code_of(garden: std.mem.Allocator, img: *qoi.Pixmap) !chain_code.ChainCode {
+    const map = try label.label_components(garden, img);
+    // invariant: each selftest fixture holds exactly one component.
+    assert(map.count == 1);
+    const ring = try contour.trace_contour(garden, &map, 1);
+    return chain_code.chain_from_contour(garden, &ring);
+}
+
+/// Build a ChainCode that is `base` turned by `add` 45-degree units (every code + add mod 8) AND re-started at offset `shift`
+/// (cyclically rotated) -- the same boundary, differently posed and differently traced. The start pixel is irrelevant to a shape
+/// number, so a placeholder start is fine.
+fn posed(garden: std.mem.Allocator, base: *const chain_code.ChainCode, add: u8, shift: usize) !chain_code.ChainCode {
+    const el: usize = base.codes.len;
+    assert(el > 0);
+    const codes = try garden.alloc(u8, el);
+    var k: usize = 0;
+    while (k < el) : (k += 1) {
+        const src: u8 = base.codes[(k + shift) % el];
+        codes[k] = @intCast((@as(u32, src) + @as(u32, add)) % 8);
+    }
+    return chain_code.ChainCode{ .start = base.start, .codes = codes };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- ROTATION INVARIANCE OF THE FIRST DIFFERENCE: a 5x5 block and the same code turned 90 degrees (+2 to every direction)
+    //     read the IDENTICAL first difference -- the turn's constant offset cancels in the difference, before any minimizing ---
+    var big = try make_canvas(garden, 7, 7, 0);
+    set_block(&big, 1, 1, 5, 5);
+    const bcode = try code_of(garden, &big);
+    const bdiff = try first_difference(garden, &bcode);
+    const bturned = try posed(garden, &bcode, 2, 0); // turned 90 degrees, same start offset
+    const tdiff = try first_difference(garden, &bturned);
+    if (tdiff.len != bdiff.len) return error.TurnChangedDiffLength;
+    var i: usize = 0;
+    while (i < bdiff.len) : (i += 1) {
+        if (tdiff[i] != bdiff[i]) return error.TurnChangedFirstDifference; // the difference is blind to a pure rotation
+    }
+    // the turned CODE itself is NOT identical -- the crux is real: rotation moves the code, the difference eats it
+    if (bcode.codes.len != bturned.codes.len) return error.PoseLengthWrong;
+    var any_code_diff = false;
+    i = 0;
+    while (i < bcode.codes.len) : (i += 1) {
+        if (bcode.codes[i] != bturned.codes[i]) any_code_diff = true;
+    }
+    if (!any_code_diff) return error.TurnLeftCodeUnchanged;
+
+    // --- THE SHAPE NUMBER, START-AND-ROTATION-INVARIANT: the base block, the base TURNED and RE-STARTED, all read the SAME
+    //     shape number -- the canonical form folds out both pose and trace start ------------------------------------------
+    const bshape = try shape_number(garden, &bcode);
+    const posed_block = try posed(garden, &bcode, 2, 3); // turned 90 degrees AND re-started 3 pixels along
+    const pshape = try shape_number(garden, &posed_block);
+    if (!shape_number_equal(bshape, pshape)) return error.ShapeNumberNotPoseInvariant;
+
+    // START INVARIANCE alone: the same code re-started at several offsets, no turn, reads the identical shape number
+    var s: usize = 1;
+    while (s < bcode.codes.len) : (s += 1) {
+        const restarted = try posed(garden, &bcode, 0, s);
+        const rshape = try shape_number(garden, &restarted);
+        if (!shape_number_equal(bshape, rshape)) return error.ShapeNumberNotStartInvariant;
+    }
+
+    // --- REAL GEOMETRY: a spread 5x2 block and its true 90-degree turn (a 2x5 block) trace to DIFFERENT chain codes yet share
+    //     one shape number -- congruent outlines named the same by the canonical form -------------------------------------
+    var wide = try make_canvas(garden, 7, 4, 0);
+    set_block(&wide, 1, 1, 5, 2);
+    const wcode = try code_of(garden, &wide);
+    var tallc = try make_canvas(garden, 4, 7, 0);
+    set_block(&tallc, 1, 1, 2, 5); // the wide block turned 90 degrees
+    const tcode = try code_of(garden, &tallc);
+    // the raw codes differ (different values and different start), the crux the shape number resolves
+    var codes_differ = wcode.codes.len != tcode.codes.len;
+    if (!codes_differ) {
+        i = 0;
+        while (i < wcode.codes.len) : (i += 1) {
+            if (wcode.codes[i] != tcode.codes[i]) codes_differ = true;
+        }
+    }
+    if (!codes_differ) return error.WideTallCodesUnexpectedlyEqual;
+    const wshape = try shape_number(garden, &wcode);
+    const tshape = try shape_number(garden, &tcode);
+    if (!shape_number_equal(wshape, tshape)) return error.CongruentShapesNotEqual;
+
+    // --- DISCRIMINATION: a block and a triangle keep DIFFERENT shape numbers -- the canonical form erases pose, not identity --
+    var tri = try make_canvas(garden, 8, 8, 0);
+    set_triangle(&tri, 1, 1, 5);
+    const tricode = try code_of(garden, &tri);
+    const trishape = try shape_number(garden, &tricode);
+    if (shape_number_equal(bshape, trishape)) return error.BlockAndTriangleCollided;
+
+    // --- CANONICAL MINIMALITY: the shape number is <= EVERY cyclic rotation of the first difference (proven exhaustively), so
+    //     no other start yields a smaller reading -- the choice is truly canonical --------------------------------------
+    const el: usize = bdiff.len;
+    var r: usize = 0;
+    while (r < el) : (r += 1) {
+        // compare bshape against the rotation of bdiff starting at r, digit by digit
+        var k: usize = 0;
+        var strictly_smaller = false;
+        while (k < el) : (k += 1) {
+            const sv: u8 = bshape[k];
+            const rv: u8 = bdiff[(r + k) % el];
+            if (sv < rv) break; // shape number already smaller -- fine
+            if (sv > rv) {
+                strictly_smaller = true; // this rotation beats the shape number -- canonical claim broken
+                break;
+            }
+        }
+        if (strictly_smaller) return error.ShapeNumberNotMinimal;
+    }
+
+    // --- DEGENERATE cases: a lone dot's empty code has the empty shape number; a domino's 2-step code has a 2-digit one ------
+    var dot = try make_canvas(garden, 3, 3, 0);
+    set_dot(&dot, 1, 1);
+    const dcode = try code_of(garden, &dot);
+    const dshape = try shape_number(garden, &dcode);
+    if (dshape.len != 0) return error.DotShapeNotEmpty;
+
+    var domino = try make_canvas(garden, 4, 3, 0);
+    set_dot(&domino, 1, 1);
+    set_dot(&domino, 2, 1);
+    const domcode = try code_of(garden, &domino);
+    const domshape = try shape_number(garden, &domcode);
+    if (domshape.len != 2) return error.DominoShapeLengthWrong;
+
+    // --- REFUSALS by name, having allocated nothing --------------------------------------------------------------------
+    // a code carrying a value outside 0..7 breaks the mod-8 contract -- refuse BadCode
+    var bad_codes = [_]u8{ 0, 9, 2 };
+    var bad = chain_code.ChainCode{ .start = .{}, .codes = bad_codes[0..] };
+    if (first_difference(garden, &bad)) |_| return error.BadCodeNotRefused else |err| {
+        if (err != error.BadCode) return error.WrongBadCodeError;
+    }
+    // a code longer than the quadratic ceiling refuses ShapeTooLong (built as a valid all-zero code just past the bound)
+    const over_len: usize = @as(usize, shape_number_max_len) + 1;
+    const over = try garden.alloc(u8, over_len);
+    var z: usize = 0;
+    while (z < over_len) : (z += 1) over[z] = 0;
+    var over_ch = chain_code.ChainCode{ .start = .{}, .codes = over };
+    if (first_difference(garden, &over_ch)) |_| return error.OverLenNotRefused else |err| {
+        if (err != error.ShapeTooLong) return error.WrongOverLenError;
+    }
+
+    // --- DETERMINISM: the same code reads the same shape number twice --------------------------------------------------
+    const sn1 = try shape_number(garden, &bcode);
+    const sn2 = try shape_number(garden, &bcode);
+    if (!shape_number_equal(sn1, sn2)) return error.ShapeNumberNotDeterministic;
+
+    print("GREEN image-shape-number: the START-INVARIANT, ROTATION-INVARIANT canonical form of a boundary over image/chain_code.rye -- the FIRST DIFFERENCE (diff[k] = (codes[k] - codes[k-1]) mod 8, cyclic) is ROTATION-INVARIANT (a 5x5 block and the same code turned 90 degrees, +2 to every direction, read the IDENTICAL first difference while the codes themselves differ -- the turn's constant cancels in the difference); the SHAPE NUMBER minimizes that difference over all cyclic starts, so the base block, the block TURNED AND RE-STARTED, and the same code re-started at every offset all read ONE shape number (START-and-ROTATION invariant); real geometry -- a spread 5x2 block and its true 90-degree turn (a 2x5 block) trace to DIFFERENT chain codes yet share one shape number, while a block and a triangle keep DIFFERENT shape numbers (pose erased, identity kept); CANONICAL MINIMALITY -- the shape number is <= every cyclic rotation of the first difference (proven exhaustively); a lone dot's empty code has the empty shape number, a domino a 2-digit one; a value outside 0..7 refuses BadCode and a code past the quadratic ceiling refuses ShapeTooLong, each having allocated nothing; the same code reads the same shape number deterministically\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: shape_number selftest\n", .{});
+    return 1;
+}

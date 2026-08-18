@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260818.183942
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title shape_number -- the start-invariant, rotation-invariant canonical form over chain_code, GREEN
+prompt baton prin recur -- pick up the running thread Lindy-first crux-first, take the next agent-doable lap, send it as its own signed round
+think Grounded in Kyri and Radiant Style, then read REMEMBER, the eight-season double-seat, the 1024-round itinerary, the crypto-parity decision-wave, and the top of session-logs/README. The live edge is the Season G open-media shape-recognition arc; the newest log (shape_classify) named the crux-first next sibling plainly: a SHAPE NUMBER / differential turning descriptor over chain_code -- the start-invariant canonical form.
+think Standfast check: scanned crux/REDS.md -- every living row (80-87) is closed or released, only #75 rests as custody-gated errata (a history rewrite, Keaton's hand). No open agent-closable red. The line was clear to grow new work.
+think Lindy-first crux-first among the two named siblings: the shape number is the higher-Lindy canonical form a whole outline-matching/dedup family descends from, and the real crux (a canonical minimum-rotation over a rotation-invariant first difference). The round top-hat on a real photo still wants a fetch gate -- surfaced, not crossed.
+think Designed the two moves before coding: FIRST DIFFERENCE cancels rotation (a turn adds a constant to every chain code, the difference of consecutive codes eats it) and the MINIMUM-MAGNITUDE cyclic rotation cancels the trace start. Together a translation/rotation/start-free fingerprint. Composes over chain_code's ChainCode, owning only the differencing and the canonical rotation -- a reading, not a render.
+think Bounded the O(N^2) minimum-rotation search with its own hard ceiling shape_number_max_len (2^13), refusing ShapeTooLong -- a real boundary is a perimeter far under it, so the quadratic worst case is named and capped rather than run unbounded over the pixel ceiling.
+obs GREEN on the FIRST full metal run, no algorithm reds. Built two certainty anchors: a REAL-geometry crux (a spread 5x2 block and its true 90-degree turn, a 2x5 block, trace to DIFFERENT chain codes yet share one shape number) and a PURE-algebraic crux (a synthetic code turned +2 and cyclically re-started reads the identical shape number by construction). Discrimination held (block vs triangle keep different shape numbers), and canonical minimality was proven exhaustively (the shape number <= every cyclic rotation of the first difference).
+obs Measurement beats memory: the version stamp was read from the live host clock (TZ=America/New_York), never fabricated (REDS #75 lesson); tolerances were not needed here since the descriptor is integer-exact.
+loom witness=shape_number_witness checks_green=1 first_difference_len=16 shape_number_max_len=8192
+file image/shape_number.rye the module -- first_difference (rotation-invariant), shape_number (minimum-rotation canonical form, start-invariant), shape_number_equal (shape identity as a byte compare); bounds by shape_number_max_len, refuses BadCode/ShapeTooLong
+file tools/shape_number_witness.rish the witness -- builds and runs the selftest on metal, asserting the GREEN line with native contains
+file image/README.md docs-sync -- Shape number (start-invariant canonical form) bullet after Shape classify, naming a differential turning descriptor as the next sibling
+file crux/REMEMBER.md live edge + Git nib repointed to shape_number single-stranded; shape_classify folded to a one-line prior-nib comment
+recommend keep-going the named crux-first next sibling is a DIFFERENTIAL TURNING DESCRIPTOR (the signed-curvature string over the same ordered ring, a shape signature complementary to the shape number); the round top-hat on a real photo waits on a fetch gate -- surfaced, never crossed
