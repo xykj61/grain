@@ -24,6 +24,12 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260818.101851` -- REMEMBER Now condensed: the giant per-nib live-edge and git-nib paragraphs folded to pointers
+
+**Walk-back nib:** `01b4c302c9` -- reachable in normal history (a working-tree condense, not a history rewrite); the full departing card is one `git show` away.
+**Swept:** the two accreted giants in REMEMBER's INNER LOOP -- the **live-edge** bullet (62,361 chars, the per-nib narrative of every Season G open-media rung stacked into one line) and the **Git nib** paragraph (13,064 chars, the convolve_n edge told in full) -- condensed to short single-stranded pointers naming only the newest rung (`image/separable.rye`) and directing to `session-logs/` for the per-rung detail. Every prior rung's full account already lives in its own dated `.kyri` log; the card was carrying a second copy of the log index, exactly what the single-stranded reading (council rota item 11, read this lap) names as the tangle to decline.
+**What waits there, worth recalling:** at nib `01b4c302c9` the REMEMBER card holds the complete per-nib prose for convolve_n and the whole open-media family (blur, gaussian, sharpen, edges, convolve, convolve_n, the resamplers, the font families) inline -- `git show 01b4c302c9:crux/REMEMBER.md`. No fact was lost: each rung's crux, bounds, and metal-GREEN account is preserved verbatim in its session log (`session-logs/20260818-*.kyri`), and the README module entries carry the durable per-module descriptions. The condense moves detail to where it belongs, keeping the operator card the live card of what is next.
+
 ### `20260818.030354` -- waymark file *content* debrided from all history (deep debride, force-pushed)
 
 **Walk-back nib:** `d2b28a3e25` -- held **LOCALLY only** at the safety tag `pre-content-debride-d2b28a3e25` until git GC; no longer on the remotes after the rewrite.

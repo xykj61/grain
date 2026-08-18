@@ -1,0 +1,451 @@
+//! image/separable.rye -- an RGBA image filtered by a SEPARABLE convolution kernel in two 1D passes (Season G, the fast path).
+//!
+//! Season G (Open Media Primitives) -- the efficiency floor beneath the general NxN kernel. image/convolve_n.rye runs the fully
+//! general signed window at any radius, yet it pays `(2r+1)*(2r+1)` taps per pixel -- 1089 taps for a 33x33 window. A great many
+//! of the kernels a surface actually reaches for are SEPARABLE: the 2D weight is the outer product of a horizontal 1D kernel and
+//! a vertical 1D kernel, `K[dy][dx] = v[dy] * h[dx]`. A box mean, every Gaussian, and a motion blur are all separable. For those
+//! the 2D convolution equals two 1D passes -- convolve every row by `h`, then every column of that by `v` -- at `2*(2r+1)` taps
+//! per pixel: 66 taps for the same 33x33 window a general pass spends 1089 on. The wide-kernel work drops from square to linear.
+//!
+//! THE SEPARABLE-EQUALS-GENERAL CRUX, proven byte-for-byte: the two-pass filter reproduces image/convolve_n.rye's output at the
+//! outer-product kernel exactly, with no rounding drift, on two conditions this rung holds. First, BOTH 1D normalizations are
+//! DEFERRED: the horizontal pass keeps the raw weighted sum (no divide), the vertical pass sums those, and the single divisor
+//! (the product of the two 1D divisors) divides ONCE at the end -- so the integer sum is `sum_dy v[dy] * sum_dx h[dx] * px =
+//! sum_{dy,dx} (v[dy]*h[dx]) * px`, the identical weighted window sum, then `@divTrunc(sum, divisor) + bias` clamped, exactly
+//! convolve_n's line. Second, the BORDER RULE is itself separable: clamp-to-edge on x depends only on the x axis and on y only
+//! the y axis, so clamping x in the row pass and y in the column pass lands the identical border pixel a single 2D clamp would.
+//! A separable kernel and a separable border make the two-pass result byte-for-byte the one-pass result, at a fraction of work.
+//!
+//! A `SeparableKernel` is a horizontal 1D weight slice and a vertical 1D weight slice (each `2r+1` signed weights, index i -> tap
+//! i-r), a `radius`, a `divisor` (the product of the two 1D normalizations), and a `bias` added after the single divide. This
+//! rung owns ONE thing -- the two-pass separable window sum -- and leans only on image/qoi.rye for the grid (image/convolve_n.rye
+//! enters only in the selftest, to prove the parity). Like the whole convolution family, the three COLOR channels are filtered
+//! each independently and the ALPHA is CARRIED from the source unchanged; window edges CLAMP to the border so the kernel is
+//! always full and a 1x1 image reads its own single pixel; the row-pass intermediate is i32 and the column sum i64 so a wide,
+//! heavy kernel never wraps, and the single final @divTrunc truncates toward zero so a filter is deterministic byte-for-byte. A
+//! zero-extent source, a radius outside its band, a 1D slice whose length is not `2r+1`, a zero or over-max divisor, or a weight
+//! or bias past its named bound refuses BY NAME before any allocation, so a malformed filter leaves nothing behind. No network,
+//! no key, no funds -- the wide blur a photo surface leans on, run at the cost a wide blur should cost.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/separable.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const convolve_n = @import("convolve_n.rye");
+
+pub const separable_version = "20260818.104500";
+
+/// The widest radius a 1D kernel may carry. A radius `r` names a `2r+1`-tap 1D kernel and a `(2r+1)x(2r+1)` equivalent window:
+/// radius 1 is the 3-tap case, radius 2 a 5-tap, radius 16 a 33-tap. Bounded so the two-pass sum can never wrap: the row sum over
+/// 33 taps of |weight| <= `separable_max_weight` times a byte <= 255 is at most 33 * 4096 * 255 = 34_467_840 -- well inside i32;
+/// the column sum of 33 such rows stays inside i64 with vast headroom.
+pub const separable_max_radius: u32 = 16;
+
+/// The widest absolute 1D weight a tap may carry. Bounded with the radius above so the i32 row sum can never wrap; a Gaussian's
+/// `[1,4,6,4,1]` and a box's `1`s sit far below it, and a heavier custom taper still stays safe.
+pub const separable_max_weight: i32 = 4096;
+
+/// The widest absolute divisor a kernel may name -- the product of the two 1D normalizations. A divisor of 1 leaves the sum as-is;
+/// 256 normalizes the 5x5 binomial Gaussian (its two 1D sums, 16 and 16). Bounded so the single final divide is a real, small
+/// normalization matching image/convolve_n.rye's own divisor band, so a separable kernel and its general twin normalize alike.
+pub const separable_max_divisor: i32 = 65536;
+
+/// The widest absolute bias a kernel may add after the single divide. Bounded, exactly as the general verb bounds its bias, so
+/// the shift stays near a real byte's neighborhood.
+pub const separable_max_bias: i32 = 4096;
+
+/// A separable convolution kernel: a horizontal 1D weight slice `h_weights` and a vertical 1D weight slice `v_weights`, each
+/// `2*radius+1` signed weights (index i is tap i-radius), a non-zero `divisor` that is the PRODUCT of the two 1D normalizations,
+/// and a `bias` added after the single final divide. The 2D-equivalent kernel is `weight[dy][dx] = v_weights[dy] * h_weights[dx]`
+/// over that same divisor and bias -- the outer product a separable filter names in two thin slices rather than a full window.
+pub const SeparableKernel = struct {
+    h_weights: []const i32,
+    v_weights: []const i32,
+    radius: u32,
+    divisor: i32,
+    bias: i32,
+
+    /// The 1D tap count a kernel of this radius must carry on each axis: `2r+1`. A caller sizes each 1D weight slice by this.
+    pub fn tap_count(radius: u32) u32 {
+        // invariant: a real window has a radius of at least one, so each 1D kernel is at least three taps.
+        assert(radius >= 1);
+        return 2 * radius + 1;
+    }
+};
+
+/// The 5-tap BOX MEAN 1D weights -- five 1s. As both axes over a divisor of 25 (5 * 5) this is the separable 5x5 box mean, the
+/// byte-for-byte twin of image/convolve_n.rye's `box_blur5`, offered as proof the separable path equals the general one.
+pub const box5_1d = [5]i32{ 1, 1, 1, 1, 1 };
+
+/// The 5-tap GAUSSIAN 1D weights -- the binomial `[1,4,6,4,1]`. As both axes over a divisor of 256 (16 * 16) this is the
+/// separable 5x5 Gaussian, the byte-for-byte twin of image/convolve_n.rye's `gaussian5`, at a fraction of its taps.
+pub const gaussian5_1d = [5]i32{ 1, 4, 6, 4, 1 };
+
+/// The 3-tap GAUSSIAN 1D weights -- the binomial `[1,2,1]`. As both axes over a divisor of 16 (4 * 4) this is the separable 3x3
+/// Gaussian, the smallest smooth blur named for a surface that wants a gentle single-step soften.
+pub const gaussian3_1d = [3]i32{ 1, 2, 1 };
+
+pub const SeparableError = error{
+    EmptySource,
+    BadRadius,
+    RadiusTooLarge,
+    WeightCountMismatch,
+    ZeroDivisor,
+    DivisorTooLarge,
+    WeightTooLarge,
+    BiasTooLarge,
+};
+
+/// Clamp a signed axis position onto a real pixel index in `[0, extent-1]`. A pass that reaches past a border reads the nearest
+/// border pixel, so the 1D kernel is always full; because this depends only on one axis, clamping x then y equals a 2D clamp.
+fn clamp_axis(pos: i64, extent: u32) u32 {
+    // invariant: a real axis has at least one pixel to clamp onto.
+    assert(extent >= 1);
+    if (pos <= 0) return 0;
+    const hi: i64 = @as(i64, extent) - 1;
+    // invariant: the far clamp lands on the last real pixel, never past it.
+    if (pos >= hi) return @intCast(hi);
+    return @intCast(pos);
+}
+
+/// Clamp a signed filtered value onto a real byte 0..255. An over/undershoot past a rail lands exactly on it rather than
+/// wrapping -- the whole reason the column sum is i64 and the result is clamped, not cast raw.
+fn clamp_byte(v: i64) u8 {
+    // invariant: a value below the floor pins to 0; the guard below proves the cast then cannot see a negative.
+    if (v < 0) return 0;
+    // invariant: a value above the ceiling pins to 255; the guard below proves the cast then cannot see 256+.
+    if (v > 255) return 255;
+    // invariant: past both rails the value is already a real byte, so the cast never truncates.
+    assert(v >= 0);
+    assert(v <= 255);
+    return @intCast(v);
+}
+
+/// The HORIZONTAL pass: fill `mid` with the raw (un-normalized) 1D weighted sum of each pixel's clamped horizontal window, one
+/// value per color channel. `mid` holds three i32 lanes per pixel; the vertical pass reads it. The divisor is DEFERRED here so
+/// no rounding is lost before the two passes combine -- the crux of the byte-for-byte parity.
+fn horizontal_pass(mid: []i32, src: []const u8, w: u32, h: u32, h_weights: []const i32, radius: u32) void {
+    // invariant: the row buffer holds three color lanes for every pixel, so every index lands inside it.
+    assert(mid.len == @as(usize, w) * @as(usize, h) * 3);
+    // invariant: the 1D kernel holds exactly the axis's taps (guarded before the call), so every tap lands inside it.
+    assert(h_weights.len == @as(usize, 2 * radius + 1));
+    const r: i64 = radius;
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            var ch: u32 = 0;
+            while (ch < 3) : (ch += 1) {
+                var sum: i32 = 0;
+                var t: u32 = 0;
+                while (t < h_weights.len) : (t += 1) {
+                    const dx: i64 = @as(i64, t) - r;
+                    const sx = clamp_axis(@as(i64, x) + dx, w);
+                    const si = (@as(usize, y) * @as(usize, w) + @as(usize, sx)) * 4 + @as(usize, ch);
+                    // each |weight| <= 4096 and each sample <= 255 over at most 33 taps, so |sum| stays far inside i32
+                    sum += h_weights[t] * @as(i32, src[si]);
+                }
+                mid[(@as(usize, y) * @as(usize, w) + @as(usize, x)) * 3 + @as(usize, ch)] = sum;
+            }
+        }
+    }
+}
+
+/// The VERTICAL pass: for each pixel sum the row-pass values in the clamped vertical window weighted by `v_weights`, divide ONCE
+/// by the combined divisor, add the bias, clamp to a byte, and write `out`; the alpha is carried from `src` unchanged. The column
+/// sum is i64 so a wide, heavy kernel never wraps before the single divide.
+fn vertical_pass(out: []u8, mid: []const i32, src: []const u8, w: u32, h: u32, v_weights: []const i32, radius: u32, divisor: i32, bias: i32) void {
+    // invariant: the output holds w*h RGBA pixels and the row buffer three color lanes each, so every index lands inside both.
+    assert(out.len == @as(usize, w) * @as(usize, h) * 4);
+    assert(mid.len == @as(usize, w) * @as(usize, h) * 3);
+    // invariant: the divisor is non-zero (guarded before the call), so the single final divide is well defined.
+    assert(divisor != 0);
+    const r: i64 = radius;
+    const div64: i64 = divisor;
+    const bias64: i64 = bias;
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const base = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            var ch: u32 = 0;
+            while (ch < 3) : (ch += 1) {
+                var sum: i64 = 0;
+                var t: u32 = 0;
+                while (t < v_weights.len) : (t += 1) {
+                    const dy: i64 = @as(i64, t) - r;
+                    const sy = clamp_axis(@as(i64, y) + dy, h);
+                    const mi = (@as(usize, sy) * @as(usize, w) + @as(usize, x)) * 3 + @as(usize, ch);
+                    // each |weight| <= 4096 times a row sum <= 34_467_840 over at most 33 taps stays far inside i64
+                    sum += @as(i64, v_weights[t]) * @as(i64, mid[mi]);
+                }
+                out[base + ch] = clamp_byte(@divTrunc(sum, div64) + bias64);
+            }
+            out[base + 3] = src[base + 3]; // alpha carried from the source, not convolved
+        }
+    }
+}
+
+/// Guard the source and kernel: a zero-extent source refuses `EmptySource`, a radius outside `[1, max]` refuses `BadRadius`/
+/// `RadiusTooLarge`, either 1D slice whose length is not `2r+1` refuses `WeightCountMismatch`, a zero or over-max divisor or an
+/// over-max weight or bias refuses BY NAME -- each before any allocation. Returns the pixel-buffer length so the caller allocates
+/// once.
+fn guard(src: *const qoi.Pixmap, kernel: SeparableKernel) SeparableError!usize {
+    // invariant: a real source has extent on both axes; a zero-size source has nothing to filter.
+    if (src.width == 0 or src.height == 0) return error.EmptySource;
+    // invariant: a real window has a radius of at least one, so each 1D kernel is at least three taps.
+    if (kernel.radius < 1) return error.BadRadius;
+    // invariant: the radius stays in band, so neither the row nor the column sum can wrap.
+    if (kernel.radius > separable_max_radius) return error.RadiusTooLarge;
+    const taps: usize = @as(usize, 2 * kernel.radius + 1);
+    // invariant: each 1D slice holds exactly the axis's taps, so a radius and its weights can never disagree.
+    if (kernel.h_weights.len != taps) return error.WeightCountMismatch;
+    if (kernel.v_weights.len != taps) return error.WeightCountMismatch;
+    // invariant: a zero divisor has no normalization; refuse rather than divide by zero.
+    if (kernel.divisor == 0) return error.ZeroDivisor;
+    const abs_div: i32 = if (kernel.divisor < 0) -kernel.divisor else kernel.divisor;
+    // invariant: the divisor magnitude stays in band, so the single final divide is a real, small normalization.
+    if (abs_div > separable_max_divisor) return error.DivisorTooLarge;
+    const abs_bias: i32 = if (kernel.bias < 0) -kernel.bias else kernel.bias;
+    // invariant: the bias magnitude stays in band, so the shift stays near a real byte's neighborhood.
+    if (abs_bias > separable_max_bias) return error.BiasTooLarge;
+    var t: u32 = 0;
+    while (t < kernel.h_weights.len) : (t += 1) {
+        const hv = kernel.h_weights[t];
+        const abs_h: i32 = if (hv < 0) -hv else hv;
+        // invariant: every horizontal weight magnitude stays in band, so the row sum can never wrap i32.
+        if (abs_h > separable_max_weight) return error.WeightTooLarge;
+        const vv = kernel.v_weights[t];
+        const abs_v: i32 = if (vv < 0) -vv else vv;
+        // invariant: every vertical weight magnitude stays in band, so the column sum stays deep inside i64.
+        if (abs_v > separable_max_weight) return error.WeightTooLarge;
+    }
+    return @as(usize, src.width) * @as(usize, src.height) * 4;
+}
+
+/// Filter `src` by a SEPARABLE `kernel` in two 1D passes into a fresh same-size RGBA Pixmap: the horizontal 1D sum, then the
+/// vertical 1D sum, divided once by the combined divisor and biased, each color channel independent and the alpha carried from
+/// `src` unchanged. Returns a newly allocated Pixmap the caller owns; `src` is read-only and untouched. The two-pass result is
+/// byte-for-byte the general `convolve_n` at the outer-product kernel, at `2*(2r+1)` taps per pixel rather than `(2r+1)^2`.
+pub fn separable_convolve(allocator: std.mem.Allocator, src: *const qoi.Pixmap, kernel: SeparableKernel) !qoi.Pixmap {
+    const n = try guard(src, kernel);
+    // invariant: the guard proved real extent, so the buffer length is a real positive pixel count.
+    assert(n >= 4);
+    const out = try allocator.alloc(u8, n);
+    const mid = try allocator.alloc(i32, @as(usize, src.width) * @as(usize, src.height) * 3);
+    horizontal_pass(mid, src.pixels, src.width, src.height, kernel.h_weights, kernel.radius);
+    vertical_pass(out, mid, src.pixels, src.width, src.height, kernel.v_weights, kernel.radius, kernel.divisor, kernel.bias);
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+/// Blur `src` with the separable 5x5 box mean into a fresh same-size RGBA Pixmap -- the byte-for-byte twin of convolve_n's
+/// `box_blur5`, run in two 1D passes rather than one 5x5 window.
+pub fn box_blur5(allocator: std.mem.Allocator, src: *const qoi.Pixmap) !qoi.Pixmap {
+    const kernel = SeparableKernel{ .h_weights = &box5_1d, .v_weights = &box5_1d, .radius = 2, .divisor = 25, .bias = 0 };
+    return separable_convolve(allocator, src, kernel);
+}
+
+/// Blur `src` with the separable 5x5 binomial Gaussian into a fresh same-size RGBA Pixmap -- the byte-for-byte twin of
+/// convolve_n's `gaussian5`, at 10 taps per pixel rather than 25.
+pub fn gaussian5(allocator: std.mem.Allocator, src: *const qoi.Pixmap) !qoi.Pixmap {
+    const kernel = SeparableKernel{ .h_weights = &gaussian5_1d, .v_weights = &gaussian5_1d, .radius = 2, .divisor = 256, .bias = 0 };
+    return separable_convolve(allocator, src, kernel);
+}
+
+// --- selftest: the separable two-pass equals the general one-pass byte-for-byte, at a fraction of the taps -------------------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// Set one pixel's RGBA at (x, y) -- a small writer the pattern builders share.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    // --- a multicolor checker to exercise the separable verb against the general one -----------------------------------
+    var checker = try make_canvas(garden, 9, 9, black);
+    var ky: u32 = 0;
+    while (ky < 9) : (ky += 1) {
+        var kx: u32 = 0;
+        while (kx < 9) : (kx += 1) {
+            if ((kx + ky) % 2 == 0) set_pixel(&checker, kx, ky, white);
+        }
+    }
+
+    // --- THE SEPARABLE-EQUALS-GENERAL CRUX: the two-pass 5x5 Gaussian reproduces convolve_n's one-pass 5x5 Gaussian ------
+    // byte-for-byte -- the deferred single divide and the separable clamp-to-edge make the two paths identical, at 10 taps
+    // per pixel rather than 25. This is the load-bearing claim: the fast path is not an approximation, it is the same image.
+    const sep_gauss = try gaussian5(garden, &checker);
+    const gen_gauss = try convolve_n.gaussian5(garden, &checker);
+    if (!sep_gauss.same_bytes(&gen_gauss)) return error.SeparableGaussianDidNotEqualGeneral;
+    // and the separable 5x5 box mean reproduces convolve_n's one-pass 5x5 box mean byte-for-byte
+    const sep_box = try box_blur5(garden, &checker);
+    const gen_box = try convolve_n.box_blur5(garden, &checker);
+    if (!sep_box.same_bytes(&gen_box)) return error.SeparableBoxDidNotEqualGeneral;
+
+    // --- the parity holds over a NON-flat, colored field too (not only the checker's black and white) -------------------
+    var mixed = try make_canvas(garden, 9, 9, color.Rgba{ .r = 30, .g = 90, .b = 210, .a = 200 });
+    set_pixel(&mixed, 4, 4, white);
+    set_pixel(&mixed, 2, 6, color.Rgba{ .r = 200, .g = 10, .b = 60, .a = 128 });
+    const sep_mixed = try gaussian5(garden, &mixed);
+    const gen_mixed = try convolve_n.gaussian5(garden, &mixed);
+    if (!sep_mixed.same_bytes(&gen_mixed)) return error.SeparableParityLostOnColor;
+
+    // --- the tap-count win is real: a separable pass spends 2*(2r+1) taps, the general (2r+1)^2 ---------------------------
+    const r: u32 = separable_max_radius;
+    const side = 2 * r + 1;
+    const sep_taps = 2 * side;
+    const gen_taps = side * side;
+    if (!(sep_taps < gen_taps)) return error.SeparableWasNotCheaper;
+    if (sep_taps != 66 or gen_taps != 1089) return error.TapCountMathDrifted;
+
+    // --- the 5x5 GAUSSIAN spreads a lone dot into a WIDE rounded bell, strictly descending and symmetric -----------------
+    var dot = try make_canvas(garden, 9, 9, black);
+    set_pixel(&dot, 4, 4, white);
+    const bell = try gaussian5(garden, &dot);
+    const center = pixel_at(&bell, 4, 4).r;
+    const near = pixel_at(&bell, 3, 4).r;
+    const far = pixel_at(&bell, 2, 4).r;
+    if (!(center > near and near > far and far > 0)) return error.Gaussian5NotAWideBell;
+    if (pixel_at(&bell, 5, 4).r != near or pixel_at(&bell, 6, 4).r != far) return error.Gaussian5NotSymmetric;
+    // a wholly flat field stays flat under the Gaussian (the weights sum to the divisor on each axis)
+    var flat100 = try make_canvas(garden, 9, 9, color.Rgba{ .r = 100, .g = 100, .b = 100, .a = 255 });
+    _ = &flat100;
+    const bell_flat = try gaussian5(garden, &flat100);
+    if (pixel_at(&bell_flat, 4, 4).r != 100) return error.Gaussian5FlatNotHeld;
+
+    // --- a DIRECTIONAL (motion) kernel is native to the separable form: a horizontal box with a vertical identity blurs --
+    // only across, leaving a vertical edge sharp -- the very shape a general kernel must spell out tap by tap.
+    var stripe = try make_canvas(garden, 9, 9, black);
+    var sy: u32 = 0;
+    while (sy < 9) : (sy += 1) set_pixel(&stripe, 4, sy, white); // a bright vertical line
+    // a 5-tap horizontal box with a 5-tap vertical identity: both axes at radius 2, so the kernel is well formed
+    var id5 = [5]i32{ 0, 0, 1, 0, 0 };
+    const motion5 = SeparableKernel{ .h_weights = &box5_1d, .v_weights = &id5, .radius = 2, .divisor = 5, .bias = 0 };
+    const smeared = try separable_convolve(garden, &stripe, motion5);
+    // the vertical line smears horizontally into a band, yet every column is still uniform top to bottom (no vertical blur)
+    if (!(pixel_at(&smeared, 4, 0).r == pixel_at(&smeared, 4, 8).r)) return error.MotionBlurLeakedVertically;
+    if (!(pixel_at(&smeared, 3, 4).r > 0 and pixel_at(&smeared, 5, 4).r > 0)) return error.MotionBlurDidNotSmearAcross;
+
+    // --- a 1x1 image reads its own pixel: every neighbor of both passes clamps to the single pixel --------------------
+    var one = try make_canvas(garden, 1, 1, white);
+    _ = &one;
+    const one_box = try box_blur5(garden, &one);
+    if (pixel_at(&one_box, 0, 0).r != 255) return error.SinglePixelBoxLost;
+    if (pixel_at(&one_box, 0, 0).a != 255) return error.SinglePixelAlphaLost;
+
+    // --- ALPHA is CARRIED, not convolved: a translucent source keeps its exact alpha byte ------------------------------
+    var trans = try make_canvas(garden, 7, 7, color.Rgba{ .r = 40, .g = 80, .b = 120, .a = 90 });
+    _ = &trans;
+    const trans_blur = try gaussian5(garden, &trans);
+    if (pixel_at(&trans_blur, 3, 3).a != 90) return error.AlphaNotCarried;
+
+    // --- a filtered image round-trips through the open QOI codec byte-for-byte -----------------------------------------
+    const shown = try gaussian5(garden, &checker);
+    const cap = qoi.encoded_bound(shown.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&shown, dst);
+    const back = try qoi.decode(garden, dst[0..enc.len]);
+    if (!back.same_bytes(&shown)) return error.SeparableDidNotRoundTrip;
+
+    // --- refusals by name, each having allocated nothing --------------------------------------------------------------
+    const bad_radius = SeparableKernel{ .h_weights = &gaussian3_1d, .v_weights = &gaussian3_1d, .radius = 0, .divisor = 16, .bias = 0 };
+    if (separable_convolve(garden, &checker, bad_radius)) |_| return error.BadRadiusNotRefused else |err| {
+        if (err != error.BadRadius) return error.WrongBadRadiusError;
+    }
+    const big_radius = SeparableKernel{ .h_weights = &box5_1d, .v_weights = &box5_1d, .radius = separable_max_radius + 1, .divisor = 25, .bias = 0 };
+    if (separable_convolve(garden, &checker, big_radius)) |_| return error.BigRadiusNotRefused else |err| {
+        if (err != error.RadiusTooLarge) return error.WrongBigRadiusError;
+    }
+    // a radius-2 kernel with only three horizontal weights: the count does not match the 5-tap axis
+    const wrong_count = SeparableKernel{ .h_weights = &gaussian3_1d, .v_weights = &box5_1d, .radius = 2, .divisor = 16, .bias = 0 };
+    if (separable_convolve(garden, &checker, wrong_count)) |_| return error.WrongCountNotRefused else |err| {
+        if (err != error.WeightCountMismatch) return error.WrongCountError;
+    }
+    const zero_div = SeparableKernel{ .h_weights = &box5_1d, .v_weights = &box5_1d, .radius = 2, .divisor = 0, .bias = 0 };
+    if (separable_convolve(garden, &checker, zero_div)) |_| return error.ZeroDivisorNotRefused else |err| {
+        if (err != error.ZeroDivisor) return error.WrongDivisorError;
+    }
+    const big_div = SeparableKernel{ .h_weights = &box5_1d, .v_weights = &box5_1d, .radius = 2, .divisor = separable_max_divisor + 1, .bias = 0 };
+    if (separable_convolve(garden, &checker, big_div)) |_| return error.BigDivisorNotRefused else |err| {
+        if (err != error.DivisorTooLarge) return error.WrongBigDivisorError;
+    }
+    const big_bias = SeparableKernel{ .h_weights = &box5_1d, .v_weights = &box5_1d, .radius = 2, .divisor = 25, .bias = separable_max_bias + 1 };
+    if (separable_convolve(garden, &checker, big_bias)) |_| return error.BigBiasNotRefused else |err| {
+        if (err != error.BiasTooLarge) return error.WrongBiasError;
+    }
+    var over_h = [5]i32{ 1, 1, 1, 1, 1 };
+    over_h[2] = separable_max_weight + 1;
+    const big_weight = SeparableKernel{ .h_weights = &over_h, .v_weights = &box5_1d, .radius = 2, .divisor = 25, .bias = 0 };
+    if (separable_convolve(garden, &checker, big_weight)) |_| return error.BigWeightNotRefused else |err| {
+        if (err != error.WeightTooLarge) return error.WrongWeightError;
+    }
+    var empty = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (separable_convolve(garden, &empty, SeparableKernel{ .h_weights = &box5_1d, .v_weights = &box5_1d, .radius = 2, .divisor = 25, .bias = 0 })) |_| return error.EmptySourceNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- the named convenience verbs equal the general separable verb at their kernels byte-for-byte -------------------
+    const box_by_verb = try box_blur5(garden, &checker);
+    const box_by_general = try separable_convolve(garden, &checker, SeparableKernel{ .h_weights = &box5_1d, .v_weights = &box5_1d, .radius = 2, .divisor = 25, .bias = 0 });
+    if (!box_by_verb.same_bytes(&box_by_general)) return error.Box5VerbIsNotGeneral;
+    const g_by_verb = try gaussian5(garden, &checker);
+    const g_by_general = try separable_convolve(garden, &checker, SeparableKernel{ .h_weights = &gaussian5_1d, .v_weights = &gaussian5_1d, .radius = 2, .divisor = 256, .bias = 0 });
+    if (!g_by_verb.same_bytes(&g_by_general)) return error.Gaussian5VerbIsNotGeneral;
+
+    // --- determinism: the same filter finds the same pixels byte-for-byte ----------------------------------------------
+    const map_a = try gaussian5(garden, &checker);
+    const map_b = try gaussian5(garden, &checker);
+    if (!map_a.same_bytes(&map_b)) return error.SeparableNotDeterministic;
+
+    print("GREEN image-separable: an RGBA image filtered by a separable convolution kernel in two 1D passes (a horizontal 1D sum then a vertical 1D sum, divided once by the combined divisor and biased, per color channel, alpha carried) -- THE SEPARABLE-EQUALS-GENERAL CRUX: the two-pass 5x5 Gaussian and 5x5 box mean reproduce image/convolve_n.rye's one-pass output byte-for-byte on a checker and on a colored translucent field, the deferred single divide and separable clamp-to-edge making the fast path the SAME image not an approximation, at 2*(2r+1) taps per pixel (66 for a 33x33 window) rather than (2r+1)^2 (1089); the 5x5 Gaussian spreads a dot into a strictly descending symmetric bell and holds a flat field flat; a directional (motion) kernel blurs across only, leaving a vertical line sharp down its columns; a 1x1 image keeps its pixel under both passes; alpha is carried not convolved; the filtered image round-trips through the open QOI codec byte-for-byte; a zero radius, an over-max radius, a mismatched weight count, a zero and over-max divisor, an over-max bias, an over-max weight, and an empty source refuse by name having allocated nothing; the box5 and gaussian5 convenience verbs equal the general separable verb at their kernels; the same filter is deterministic byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: separable selftest\n", .{});
+    return 1;
+}
