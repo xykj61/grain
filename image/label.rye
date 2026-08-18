@@ -1,0 +1,401 @@
+//! image/label.rye -- give every 8-CONNECTED COMPONENT of an RGBA mask its own label: the segmentation floor every blob
+//! count, region filter, and character isolation descends from (Season G, the crux-first sibling image/zhang_suen.rye named).
+//!
+//! Season G (Open Media Primitives) -- the topology rungs so far read a shape's LOCAL structure: image/endpoints.rye marks
+//! where a skeleton ends, image/branch.rye where it branches. This rung reads a shape's GLOBAL structure: it partitions the
+//! whole foreground into its maximal connected pieces, so a surface can ask HOW MANY marks a mask holds, WHICH pixels belong
+//! to the same one, and (once labeled) the size or bounding box of each. Two foreground pixels share a component when a chain
+//! of 8-adjacent foreground pixels joins them -- 8-connected, so pixels touching only at a CORNER are one piece, not two (the
+//! decisive difference from 4-connectivity, and the natural match to the 8-neighbor topology branch and zhang_suen already use).
+//!
+//! The algorithm is the classic TWO-PASS labeling with UNION-FIND equivalence resolution (Rosenfeld & Pfaltz, 1966). Pass one
+//! sweeps in raster order and gives each foreground pixel a PROVISIONAL label: it reads the four already-visited 8-neighbors
+//! (W, NW, N, NE), and if any are labeled it takes their minimum and UNIONS them all -- otherwise it opens a fresh label. A
+//! single component can pick up two provisional labels before the sweep learns they meet (the two arms of a U, joined only at
+//! the bottom row); union-find records that equivalence the moment the join is seen. Pass two RESOLVES each provisional label
+//! to its root and COMPACTS the roots to a dense range 1..count in raster order of first appearance, so the labels a caller
+//! reads are small, gap-free, and deterministic: the component whose first pixel appears earliest is label one.
+//!
+//! Compose not braid. This rung OWNS only the union-find (find with path halving, union keeping the smaller label as root),
+//! the two-pass sweep, and the raster-order compaction. The binary meaning of a pixel -- foreground at or above the shared
+//! on-threshold -- is read through image/branch.rye's `is_on`, the one door image/hitmiss.rye, endpoints, and zhang_suen all
+//! read; image/qoi.rye owns the RGBA buffer. `colorize` is the natural render: it paints each label a distinct palette color
+//! (background black) into a fresh Pixmap, so a labeling is a real image the open QOI codec round-trips byte-for-byte. No new
+//! gather, no blend, no codec, no color math beyond a fixed palette lookup.
+//!
+//! Everything is bounded before a byte is allocated: a component can never exceed one provisional label per pixel, so the
+//! union-find parent array is sized to the pixel count and `TooManyLabels` guards the impossible overflow by name. An empty
+//! source refuses BY NAME before any allocation -- all-or-nothing, never a half-labeled map. No network, no key, no funds --
+//! the regions a surface names the day it counts the marks in a mask, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/label.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const branch = @import("branch.rye");
+
+pub const label_version = "20260818.132657";
+
+/// The most pixels a mask may hold -- the image module's own pixel ceiling. A component never exceeds one provisional label per
+/// pixel, so this also bounds the union-find node count.
+pub const label_max_pixels: u32 = qoi.qoi_max_pixels;
+
+pub const LabelError = error{
+    EmptySource,
+    TooManyLabels,
+};
+
+/// A labeling of a mask: `labels[y*width + x]` is 0 for background, or 1..count for the component that pixel belongs to. The
+/// labels are dense (every value in 1..count is used) and raster-ordered (label one is the component whose first pixel appears
+/// earliest in raster order). The caller owns `labels`.
+pub const LabelMap = struct {
+    width: u32 = 0,
+    height: u32 = 0,
+    count: u32 = 0,
+    labels: []u32 = &[_]u32{},
+
+    /// The label at `(x, y)` -- 0 for background, 1..count for a component.
+    pub fn at(self: *const LabelMap, x: u32, y: u32) u32 {
+        // invariant: the read stays inside the label buffer on both axes.
+        assert(x < self.width);
+        assert(y < self.height);
+        return self.labels[@as(usize, y) * @as(usize, self.width) + @as(usize, x)];
+    }
+};
+
+/// The union-find ROOT of provisional label `a`, with path halving so repeated finds stay near-flat. Label 0 is background and
+/// is never a node.
+fn uf_find(parent: []u32, a: u32) u32 {
+    // invariant: only real provisional labels (1..) are union-find nodes; 0 is the background sentinel.
+    assert(a >= 1);
+    // invariant: the node index stays inside the parent array.
+    assert(a < parent.len);
+    var r: u32 = a;
+    while (parent[r] != r) {
+        parent[r] = parent[parent[r]]; // path halving: point at the grandparent, flattening as we climb
+        r = parent[r];
+    }
+    return r;
+}
+
+/// Union the components of provisional labels `a` and `b`, keeping the SMALLER label as the root so the choice is deterministic
+/// and the smallest provisional label of a component is always its root.
+fn uf_union(parent: []u32, a: u32, b: u32) void {
+    const ra = uf_find(parent, a);
+    const rb = uf_find(parent, b);
+    if (ra == rb) return;
+    // keep the smaller root -- deterministic, and the earliest-opened label wins.
+    if (ra < rb) parent[rb] = ra else parent[ra] = rb;
+}
+
+/// Label every 8-connected component of `src` into a fresh LabelMap the caller owns. `src` is read-only. Background pixels
+/// (below the shared on-threshold) map to 0; each maximal 8-connected foreground piece maps to a dense label in 1..count.
+pub fn label_components(allocator: std.mem.Allocator, src: *const qoi.Pixmap) !LabelMap {
+    // invariant: a real source has extent on both axes; a zero-size source has nothing to label.
+    if (src.width == 0 or src.height == 0) return error.EmptySource;
+
+    const w: u32 = src.width;
+    const h: u32 = src.height;
+    const npix: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the source stays within the image module's named pixel ceiling.
+    assert(npix <= label_max_pixels);
+    const count_pixels: u32 = @intCast(npix);
+    // invariant: a real source's buffer is one RGBA pixel per pixel, so the sweep reads every pixel in lockstep.
+    assert(src.pixels.len == @as(usize, count_pixels) * 4);
+
+    // one provisional label per pixel (0 = background), and a union-find parent array sized to the pixel count + 1: a
+    // component can never open more than one label per pixel, so this is a true ceiling, never merely a hope.
+    const prov = try allocator.alloc(u32, @as(usize, count_pixels));
+    const parent = try allocator.alloc(u32, @as(usize, count_pixels) + 1);
+    parent[0] = 0; // the background sentinel is its own root and never a real node
+
+    var nlabels: u32 = 0;
+
+    // --- pass one: raster sweep -- provisional labels, unioning the four already-visited 8-neighbors -------------------
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const pi: usize = @as(usize, y) * @as(usize, w) + @as(usize, x);
+            if (!branch.is_on(src.pixels, pi * 4)) {
+                prov[pi] = 0; // background carries no label
+                continue;
+            }
+            // gather the labels of the already-visited 8-neighbors -- W, NW, N, NE -- each guarded so the read stays in bounds.
+            var neigh: [4]u32 = .{ 0, 0, 0, 0 };
+            var nn: usize = 0;
+            if (x > 0) {
+                const l = prov[pi - 1]; // W
+                if (l != 0) {
+                    neigh[nn] = l;
+                    nn += 1;
+                }
+            }
+            if (x > 0 and y > 0) {
+                const l = prov[pi - @as(usize, w) - 1]; // NW
+                if (l != 0) {
+                    neigh[nn] = l;
+                    nn += 1;
+                }
+            }
+            if (y > 0) {
+                const l = prov[pi - @as(usize, w)]; // N
+                if (l != 0) {
+                    neigh[nn] = l;
+                    nn += 1;
+                }
+            }
+            if (x + 1 < w and y > 0) {
+                const l = prov[pi - @as(usize, w) + 1]; // NE
+                if (l != 0) {
+                    neigh[nn] = l;
+                    nn += 1;
+                }
+            }
+
+            if (nn == 0) {
+                // no labeled neighbor: open a fresh component.
+                nlabels += 1;
+                // invariant: the new label indexes inside the parent array; a component never exceeds one label per pixel.
+                if (nlabels >= parent.len) return error.TooManyLabels;
+                parent[nlabels] = nlabels;
+                prov[pi] = nlabels;
+            } else {
+                // take the minimum neighbor label, then record that every gathered label is the same component.
+                var m: u32 = neigh[0];
+                var k: usize = 1;
+                while (k < nn) : (k += 1) {
+                    if (neigh[k] < m) m = neigh[k];
+                }
+                prov[pi] = m;
+                k = 0;
+                while (k < nn) : (k += 1) uf_union(parent, m, neigh[k]);
+            }
+        }
+    }
+
+    // --- pass two: resolve each provisional label to its root, compacting roots to 1..count in raster order ------------
+    const labels = try allocator.alloc(u32, @as(usize, count_pixels));
+    const remap = try allocator.alloc(u32, @as(usize, count_pixels) + 1);
+    var r: usize = 0;
+    while (r < remap.len) : (r += 1) remap[r] = 0; // 0 means "this root has no compact label yet"
+
+    var final_count: u32 = 0;
+    var pi: usize = 0;
+    while (pi < @as(usize, count_pixels)) : (pi += 1) {
+        const p = prov[pi];
+        if (p == 0) {
+            labels[pi] = 0;
+            continue;
+        }
+        const root = uf_find(parent, p);
+        if (remap[root] == 0) {
+            final_count += 1;
+            remap[root] = final_count; // first sighting of this component in raster order -> the next dense label
+        }
+        labels[pi] = remap[root];
+    }
+    // invariant: the compacted count never exceeds the provisional label count.
+    assert(final_count <= nlabels);
+
+    return LabelMap{ .width = w, .height = h, .count = final_count, .labels = labels };
+}
+
+/// A fixed palette of distinct, bright colors -- none of them black, so every labeled component reads clearly against the black
+/// background `colorize` paints. Components beyond the palette length cycle it (the label map stays the exact truth regardless).
+const label_palette = [_]color.Rgba{
+    .{ .r = 230, .g = 25, .b = 75, .a = 255 },
+    .{ .r = 60, .g = 180, .b = 75, .a = 255 },
+    .{ .r = 0, .g = 130, .b = 200, .a = 255 },
+    .{ .r = 245, .g = 130, .b = 48, .a = 255 },
+    .{ .r = 145, .g = 30, .b = 180, .a = 255 },
+    .{ .r = 70, .g = 240, .b = 240, .a = 255 },
+    .{ .r = 240, .g = 50, .b = 230, .a = 255 },
+    .{ .r = 210, .g = 245, .b = 60, .a = 255 },
+    .{ .r = 250, .g = 190, .b = 190, .a = 255 },
+    .{ .r = 0, .g = 128, .b = 128, .a = 255 },
+    .{ .r = 170, .g = 110, .b = 40, .a = 255 },
+    .{ .r = 128, .g = 128, .b = 0, .a = 255 },
+};
+
+/// The display color of a label: opaque BLACK for background (0), else a distinct bright palette color cycled by the label.
+pub fn label_color(l: u32) color.Rgba {
+    if (l == 0) return color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const idx: usize = @as(usize, (l - 1)) % label_palette.len;
+    return label_palette[idx];
+}
+
+/// Paint a labeling into a fresh RGBA Pixmap the caller owns: background black, each component its distinct palette color. This
+/// is the render that makes a labeling a real image -- the open QOI codec round-trips it byte-for-byte.
+pub fn colorize(allocator: std.mem.Allocator, map: *const LabelMap) !qoi.Pixmap {
+    // invariant: a real labeling has extent on both axes.
+    if (map.width == 0 or map.height == 0) return error.EmptySource;
+    const n: usize = @as(usize, map.width) * @as(usize, map.height);
+    // invariant: the label buffer holds exactly one label per pixel.
+    assert(map.labels.len == n);
+
+    const out = try allocator.alloc(u8, n * 4);
+    var i: usize = 0;
+    while (i < n) : (i += 1) {
+        const c = label_color(map.labels[i]);
+        out[i * 4] = c.r;
+        out[i * 4 + 1] = c.g;
+        out[i * 4 + 2] = c.b;
+        out[i * 4 + 3] = 255; // alpha pinned opaque -- the render is a solid image, not a translucent one
+    }
+    // invariant: the sweep pinned every alpha byte to 255, so the render is a clean opaque image.
+    assert(out[3] == 255);
+    return qoi.Pixmap{ .width = map.width, .height = map.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+// --- selftest: the 8-vs-4 corner crux, separate blobs, the U-shape equivalence merge, the degenerate cases, round-trip -----
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one pixel's RGBA at (x, y) -- the small writer the pattern builders share.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    // --- the 8-VS-4 CORNER crux (the decisive one): two foreground pixels touching only at a CORNER are ONE 8-connected
+    //     component, where 4-connectivity would call them two -- this is what makes the labeler 8-connected --------------
+    var diag = try make_canvas(garden, 5, 5, black);
+    set_pixel(&diag, 1, 1, white);
+    set_pixel(&diag, 2, 2, white); // touches (1,1) only at their shared corner
+    const dm = try label_components(garden, &diag);
+    if (dm.count != 1) return error.CornerTouchNotOneComponent;
+    if (dm.at(1, 1) == 0) return error.CornerPixelUnlabeled;
+    if (dm.at(1, 1) != dm.at(2, 2)) return error.CornerPixelsNotSameLabel;
+    if (dm.at(0, 0) != 0) return error.BackgroundLabeled;
+
+    // --- SEPARATE BLOBS: two solid blocks with a clear gap are TWO components, each pixel labeled to its own, the two labels
+    //     distinct and each internally uniform -------------------------------------------------------------------------
+    var two = try make_canvas(garden, 9, 4, black);
+    var by: u32 = 1;
+    while (by <= 2) : (by += 1) {
+        set_pixel(&two, 1, by, white); // left block, cols 1..2
+        set_pixel(&two, 2, by, white);
+        set_pixel(&two, 6, by, white); // right block, cols 6..7 -- a clear gap at cols 3,4,5
+        set_pixel(&two, 7, by, white);
+    }
+    const tm = try label_components(garden, &two);
+    if (tm.count != 2) return error.TwoBlocksNotTwoComponents;
+    const left_label = tm.at(1, 1);
+    const right_label = tm.at(6, 1);
+    if (left_label == 0 or right_label == 0) return error.BlockPixelUnlabeled;
+    if (left_label == right_label) return error.SeparateBlocksMerged;
+    if (tm.at(2, 2) != left_label) return error.LeftBlockNotUniform;
+    if (tm.at(7, 2) != right_label) return error.RightBlockNotUniform;
+    if (left_label != 1) return error.RasterOrderWrong; // the left block appears first in raster order -> label one
+
+    // --- the U-SHAPE EQUIVALENCE MERGE crux (the union-find's reason to exist): two vertical bars joined only at the bottom
+    //     row. Pass one opens a separate label for each bar's top before the bottom row reveals they meet; union-find must
+    //     resolve them to ONE component -----------------------------------------------------------------------------------
+    var ushape = try make_canvas(garden, 5, 5, black);
+    var uy: u32 = 1;
+    while (uy <= 3) : (uy += 1) {
+        set_pixel(&ushape, 1, uy, white); // left bar, rows 1..3
+        set_pixel(&ushape, 3, uy, white); // right bar, rows 1..3
+    }
+    set_pixel(&ushape, 2, 3, white); // the bottom bridge joining the two bars
+    const um = try label_components(garden, &ushape);
+    if (um.count != 1) return error.UShapeNotMerged; // the whole U is one component after resolution
+    if (um.at(1, 1) != um.at(3, 1)) return error.UShapeArmsNotSameLabel; // the two tops, opened as separate labels, now agree
+
+    // --- the DEGENERATE cases: a single dot is one component; an all-background image has zero -------------------------
+    var dot = try make_canvas(garden, 3, 3, black);
+    set_pixel(&dot, 1, 1, white);
+    const dotm = try label_components(garden, &dot);
+    if (dotm.count != 1) return error.LoneDotNotOneComponent;
+    if (dotm.at(1, 1) != 1) return error.LoneDotNotLabelOne;
+
+    var blank = try make_canvas(garden, 4, 4, black);
+    const bm = try label_components(garden, &blank);
+    if (bm.count != 0) return error.EmptyMaskNotZeroComponents;
+    if (bm.at(0, 0) != 0) return error.EmptyMaskPixelLabeled;
+
+    // --- foreground is the RED channel, not alpha: a faint (near-transparent) mark still labels ------------------------
+    var faint = try make_canvas(garden, 4, 4, color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 40 });
+    set_pixel(&faint, 1, 1, color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 30 });
+    set_pixel(&faint, 2, 2, color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 30 });
+    const fm = try label_components(garden, &faint);
+    if (fm.count != 1) return error.FaintMarkNotLabeled; // foreground read by red >= 128, alpha ignored
+
+    // --- COLORIZE renders a labeling into a real image: background black, each component non-black, distinct labels get
+    //     distinct palette colors, and it round-trips through the open QOI codec byte-for-byte -------------------------
+    const painted = try colorize(garden, &tm);
+    // background is opaque black
+    if (!(color.Rgba{ .r = painted.pixels[0], .g = painted.pixels[1], .b = painted.pixels[2], .a = painted.pixels[3] }).eql(black)) return error.BackgroundNotBlack;
+    // the two components get the palette's first two colors (labels 1 and 2)
+    const c1 = label_color(1);
+    const c2 = label_color(2);
+    const li = (@as(usize, 1) * @as(usize, tm.width) + @as(usize, 1)) * 4; // left block pixel (1,1), label 1
+    const ri = (@as(usize, 1) * @as(usize, tm.width) + @as(usize, 6)) * 4; // right block pixel (6,1), label 2
+    if (painted.pixels[li] != c1.r or painted.pixels[li + 1] != c1.g or painted.pixels[li + 2] != c1.b) return error.LeftColorWrong;
+    if (painted.pixels[ri] != c2.r or painted.pixels[ri + 1] != c2.g or painted.pixels[ri + 2] != c2.b) return error.RightColorWrong;
+    if (c1.eql(black) or c2.eql(black)) return error.ComponentColorBlack; // no component ever renders as the background
+
+    const cap = qoi.encoded_bound(painted.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&painted, dst);
+    const backimg = try qoi.decode(garden, dst[0..enc.len]);
+    if (!backimg.same_bytes(&painted)) return error.ColorizeDidNotRoundTrip;
+
+    // --- the refusal by name, having allocated nothing (the guard fires before the sweep) -----------------------------
+    var empty_src = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (label_components(garden, &empty_src)) |_| return error.EmptySourceNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- determinism: the same mask reaches the same labels ----------------------------------------------------------
+    const a = try label_components(garden, &ushape);
+    const b = try label_components(garden, &ushape);
+    if (a.count != b.count) return error.CountNotDeterministic;
+    var i: usize = 0;
+    while (i < a.labels.len) : (i += 1) {
+        if (a.labels[i] != b.labels[i]) return error.LabelsNotDeterministic;
+    }
+
+    print("GREEN image-label: give every 8-CONNECTED COMPONENT of a mask its own dense raster-ordered label by the classic two-pass union-find (Rosenfeld & Pfaltz) -- two pixels touching only at a CORNER are ONE component (8-connected, where 4-connectivity would split them), two blocks with a gap are TWO with distinct uniform labels (the left one, first in raster order, label one), a U-shape whose two bars open as separate labels before the bottom bridge is seen resolves to ONE component through the union-find, a lone dot is one component and an all-background mask zero; foreground is read by red >= 128 through branch.is_on (one binary door) so a faint mark still labels; colorize renders a labeling to a real image (background black, each component a distinct non-black palette color) that round-trips through the open QOI codec byte-for-byte; an empty source refuses by name having allocated nothing; the same mask labels deterministically\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: label selftest\n", .{});
+    return 1;
+}
