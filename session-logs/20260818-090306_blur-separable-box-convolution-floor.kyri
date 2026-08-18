@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260818.090306
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title blur -- the separable box convolution floor, GREEN
+prompt baton prin recur -- reseat as Kyri, read the inner loop and itineraries, Standfast on reds, take the next agent-doable lap Lindy-first crux-first, send it, log it
+think Reseated as Kyri from KYRI.md and RADIANT_STYLE.md; read the REMEMBER inner loop, the REDS living rows, and the top three session logs to find the running thread.
+think Standfast check: every red in crux/REDS.md is closed, released, or resting as custody-gated errata (#75, a history rewrite = Keaton's hand). No open agent-closable red, so constructive work proceeds.
+think Lindy-first crux-first: the Microkernel double-seat leads yet its only ungated move is more study; the live green crux is Season G open-media. The newest log named the crop/window verb or the glyph atlas beyond 5x7 as next.
+think Measurement over memory: crop_gesture.rye already stands (preview extracts a sub-rectangle), and the whole Photos gesture family (crop, flip_h, flip_v, rotate_quarter, scale, adjust) is already whole -- the card and the newest log were a step behind. So neither crop nor flip/rotate is the gap.
+think The genuine floor gap: no blur or convolution primitive exists in any of the 115 image modules. By Lindy-first crux-first a separable box blur is the strongest pick -- convolution is the durable floor the whole soft-image family stands on (drop shadow, frosted panel, Gaussian, sharpen, edge kernels all descend from it), and a box blur is the hardest solvable rung that opens that family, a clean one-lap integer running-sum.
+think Design: a separable box mean of radius r -- the 2D (2r+1)x(2r+1) window is two 1D passes (horizontal then vertical on that result), matching image/scale_area.rye's own direct-gather idiom with a named radius bound rather than a running sum. Integer-only, half-up rounding (bias r over the odd window 2r+1), clamp-to-edge so the window stays full and a solid stays solid at its edges. Owns the box mean, leans only on qoi for the grid -- no blend, no codec, no color math. box_blur_h and box_blur_v exposed for a directional (motion) blur; box_blur their composition, freeing its row-blurred intermediate before return.
+obs One honest fix on the first metal run: a box blur spreads a point into a FLAT-TOP plateau, not a peak, so the center equals its orthogonal neighbors (28 each for a lit dot). My CenterNotBrightest check assumed a Gaussian peak; corrected it to prove the flat plateau (center positive AND equal to its neighbor) -- a more honest and educational check, the box signature. The GREEN print line and README were kept in sync with the corrected claim.
+obs TAME flagged seven compound asserts (assert(a and b)); split each into named halves so the failing half is always named. TAME + width + ASCII + living-docs + living-card ASCII all GREEN after.
+loom witness=blur_witness wall_pass=GREEN modules=1 checks=13 radius_max=256
+file image/blur.rye the separable box blur -- box_blur/box_blur_h/box_blur_v, the convolution floor
+file tools/blur_witness.rish proves the blur on metal, native contains check (REDS #85 discipline)
+file image/README.md a Soften summary bullet and a full blur.rye entry beside the resamplers
+file crux/REMEMBER.md live-edge refreshed to name blur as the newest rung; single-stranded, ASCII-clean
+recommend keep-going -- blur is the convolution floor; Gaussian (box mean run a few times), sharpen (image minus its own blur), and edge kernels are now its siblings to grow, while the Microkernel double-seat's only ungated move stays study. Council rota this lap: the Standfast foundation (item 5).

@@ -1,0 +1,379 @@
+//! image/blur.rye -- an RGBA image BLURRED by a separable box mean (Season G, the convolution floor the image family lacked).
+//!
+//! Season G (Open Media Primitives) -- the FIRST convolution rung beside the resamplers (image/scale.rye nearest,
+//! image/scale_bilinear.rye, image/scale_area.rye). Where a resample changes an image's SIZE, a blur softens its DETAIL at
+//! the same size: each output pixel is the MEAN of the square window of source pixels around it, so a sharp edge eases into
+//! a ramp and fine speckle settles toward its local average. This is the floor the whole soft-image family stands on -- a
+//! drop shadow is a blurred silhouette, a frosted-glass panel is a blurred backdrop, a Gaussian is a box mean run a few
+//! times, a sharpen is the image minus its own blur, a downscale prefilter is a blur before decimation. Grow the box mean
+//! once, cleanly, and every one of those becomes a sibling rather than a fresh problem.
+//!
+//! Separable, so the 2D box is two 1D passes: a box blur of radius `r` averages the `(2r+1)x(2r+1)` window, and because
+//! that window is a product of a horizontal span and a vertical span, the same result comes from blurring every row
+//! horizontally and then blurring every column of THAT vertically. Two O(width+height)-window passes replace one
+//! O(width*height)-window gather, and each pass is a pure integer mean -- no float, so a blur is deterministic
+//! byte-for-byte. Edges CLAMP: a window that reaches past the border reads the nearest border pixel instead, so the window
+//! is always the full `2r+1` wide and the divisor is constant, and a solid image stays exactly solid at its edges rather
+//! than darkening toward a phantom black margin. Every channel including alpha is averaged the same way; the rounding is
+//! half-up (the bias `r` over the odd window `2r+1`), so the mean of bytes is itself a real byte 0..255.
+//!
+//! This rung owns the box MEAN -- the averaging window that reads the source and writes a fresh buffer -- and leans only on
+//! image/qoi.rye for the pixel grid; it adds no blend, no codec, no color math, no premultiply. `box_blur` is the two-pass
+//! square blur; `box_blur_h` and `box_blur_v` are the single-axis passes a directional (motion) blur reaches for, and
+//! `box_blur` is exactly their composition. The radius is bounded by `blur_max_radius`, and a zero-extent source or an
+//! over-max radius refuses BY NAME before any allocation, so a malformed blur leaves nothing behind -- all-or-nothing,
+//! never a half-blurred image. No network, no key, no funds -- the softening a surface runs the day it wants a shadow, a
+//! frosted panel, or a gentler photo, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/blur.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+
+pub const blur_version = "20260818.085413";
+
+/// The widest box radius a single blur may name. A window of `2r+1` per axis at this ceiling is 513 pixels wide, so the
+/// per-channel window sum stays far inside u64 and the pass work is bounded. A caller wanting a softer blur than this runs
+/// the pass more than once (a Gaussian is a small box repeated), rather than naming an unbounded radius.
+pub const blur_max_radius: u32 = 256;
+
+pub const BlurError = error{
+    EmptySource,
+    BlurRadiusTooLarge,
+};
+
+/// Clamp a signed axis position onto a real pixel index in `[0, extent-1]`. A window that reaches past a border reads the
+/// nearest border pixel, so the box is always the full width and a solid edge never darkens toward a phantom margin.
+fn clamp_axis(pos: i64, extent: u32) u32 {
+    // invariant: a real axis has at least one pixel to clamp onto.
+    assert(extent >= 1);
+    if (pos <= 0) return 0;
+    const hi: i64 = @as(i64, extent) - 1;
+    // invariant: the far clamp lands on the last real pixel, never past it.
+    if (pos >= hi) return @intCast(hi);
+    return @intCast(pos);
+}
+
+/// Blur every ROW of `src` into `out` by a horizontal box mean of radius `radius`: `out[y][x]` is the mean of
+/// `src[y][x-radius .. x+radius]` with the ends clamped to the border. Both buffers hold exactly `w*h` RGBA pixels; the
+/// pass reads `src` and writes `out`, touching no other memory.
+fn pass_horizontal(out: []u8, src: []const u8, w: u32, h: u32, radius: u32) void {
+    // invariant: both buffers hold exactly w*h RGBA pixels, so every index below lands inside them.
+    assert(out.len == @as(usize, w) * @as(usize, h) * 4);
+    assert(src.len == out.len);
+    // invariant: a blur has real extent to sweep on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+
+    const win: u32 = 2 * radius + 1; // radius <= blur_max_radius (256), so win <= 513 -- no overflow
+    const win_u: u64 = @as(u64, win);
+    const bias: u64 = @as(u64, radius); // win/2 for the odd window 2r+1 -- half-up rounding of the mean
+
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            var acc_r: u64 = 0;
+            var acc_g: u64 = 0;
+            var acc_b: u64 = 0;
+            var acc_a: u64 = 0;
+            var k: u32 = 0;
+            while (k < win) : (k += 1) {
+                const signed: i64 = @as(i64, x) + @as(i64, k) - @as(i64, radius);
+                const sx = clamp_axis(signed, w);
+                const si = (@as(usize, y) * @as(usize, w) + @as(usize, sx)) * 4;
+                acc_r += @as(u64, src[si]);
+                acc_g += @as(u64, src[si + 1]);
+                acc_b += @as(u64, src[si + 2]);
+                acc_a += @as(u64, src[si + 3]);
+            }
+            const vr: u64 = (acc_r + bias) / win_u;
+            const vg: u64 = (acc_g + bias) / win_u;
+            const vb: u64 = (acc_b + bias) / win_u;
+            const va: u64 = (acc_a + bias) / win_u;
+            // invariant: the mean of bytes is itself a byte -- bias < win, so the rounded mean never reaches 256.
+            assert(vr <= 255);
+            assert(vg <= 255);
+            assert(vb <= 255);
+            assert(va <= 255);
+            const di = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            out[di] = @intCast(vr);
+            out[di + 1] = @intCast(vg);
+            out[di + 2] = @intCast(vb);
+            out[di + 3] = @intCast(va);
+        }
+    }
+}
+
+/// Blur every COLUMN of `src` into `out` by a vertical box mean of radius `radius`: `out[y][x]` is the mean of
+/// `src[y-radius .. y+radius][x]` with the ends clamped to the border. The mirror of `pass_horizontal` on the other axis.
+fn pass_vertical(out: []u8, src: []const u8, w: u32, h: u32, radius: u32) void {
+    // invariant: both buffers hold exactly w*h RGBA pixels, so every index below lands inside them.
+    assert(out.len == @as(usize, w) * @as(usize, h) * 4);
+    assert(src.len == out.len);
+    // invariant: a blur has real extent to sweep on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+
+    const win: u32 = 2 * radius + 1; // radius <= blur_max_radius (256), so win <= 513 -- no overflow
+    const win_u: u64 = @as(u64, win);
+    const bias: u64 = @as(u64, radius); // half-up rounding of the mean over the odd window
+
+    var x: u32 = 0;
+    while (x < w) : (x += 1) {
+        var y: u32 = 0;
+        while (y < h) : (y += 1) {
+            var acc_r: u64 = 0;
+            var acc_g: u64 = 0;
+            var acc_b: u64 = 0;
+            var acc_a: u64 = 0;
+            var k: u32 = 0;
+            while (k < win) : (k += 1) {
+                const signed: i64 = @as(i64, y) + @as(i64, k) - @as(i64, radius);
+                const sy = clamp_axis(signed, h);
+                const si = (@as(usize, sy) * @as(usize, w) + @as(usize, x)) * 4;
+                acc_r += @as(u64, src[si]);
+                acc_g += @as(u64, src[si + 1]);
+                acc_b += @as(u64, src[si + 2]);
+                acc_a += @as(u64, src[si + 3]);
+            }
+            const vr: u64 = (acc_r + bias) / win_u;
+            const vg: u64 = (acc_g + bias) / win_u;
+            const vb: u64 = (acc_b + bias) / win_u;
+            const va: u64 = (acc_a + bias) / win_u;
+            // invariant: the mean of bytes is itself a byte -- bias < win, so the rounded mean never reaches 256.
+            assert(vr <= 255);
+            assert(vg <= 255);
+            assert(vb <= 255);
+            assert(va <= 255);
+            const di = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            out[di] = @intCast(vr);
+            out[di + 1] = @intCast(vg);
+            out[di + 2] = @intCast(vb);
+            out[di + 3] = @intCast(va);
+        }
+    }
+}
+
+/// Guard a source and radius shared by all three public verbs: a zero-extent source refuses `EmptySource`, an over-max
+/// radius refuses `BlurRadiusTooLarge`, both BY NAME before any allocation. Returns the pixel-buffer length so the caller
+/// allocates once.
+fn guard(src: *const qoi.Pixmap, radius: u32) BlurError!usize {
+    // invariant: a real source has extent on both axes; a zero-size source has nothing to blur.
+    if (src.width == 0 or src.height == 0) return error.EmptySource;
+    // invariant: the radius stays within the module's named ceiling so the window sum can never wrap.
+    if (radius > blur_max_radius) return error.BlurRadiusTooLarge;
+    return @as(usize, src.width) * @as(usize, src.height) * 4;
+}
+
+/// Blur `src` into a fresh same-size RGBA Pixmap by a HORIZONTAL box mean of radius `radius` -- the single-axis pass a
+/// horizontal motion blur reaches for. Returns a newly allocated Pixmap the caller owns; `src` is read-only and untouched.
+pub fn box_blur_h(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32) !qoi.Pixmap {
+    const n = try guard(src, radius);
+    // invariant: the guard proved real extent, so the buffer length is a real positive pixel count.
+    assert(n >= 4);
+    const out = try allocator.alloc(u8, n);
+    pass_horizontal(out, src.pixels, src.width, src.height, radius);
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+/// Blur `src` into a fresh same-size RGBA Pixmap by a VERTICAL box mean of radius `radius` -- the single-axis pass a
+/// vertical motion blur reaches for. Returns a newly allocated Pixmap the caller owns; `src` is read-only and untouched.
+pub fn box_blur_v(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32) !qoi.Pixmap {
+    const n = try guard(src, radius);
+    // invariant: the guard proved real extent, so the buffer length is a real positive pixel count.
+    assert(n >= 4);
+    const out = try allocator.alloc(u8, n);
+    pass_vertical(out, src.pixels, src.width, src.height, radius);
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+/// Blur `src` into a fresh same-size RGBA Pixmap by the SQUARE box mean of radius `radius`: a horizontal pass then a
+/// vertical pass on that result, which equals the full `(2r+1)x(2r+1)` window mean because the box is separable. Returns a
+/// newly allocated Pixmap the caller owns; `src` is read-only and untouched. The intermediate row-blurred buffer is freed
+/// before return, so only the caller's result outlives the call.
+pub fn box_blur(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32) !qoi.Pixmap {
+    const n = try guard(src, radius);
+    // invariant: the guard proved real extent, so the buffer length is a real positive pixel count.
+    assert(n >= 4);
+    const tmp = try allocator.alloc(u8, n);
+    // The horizontal pass feeds the vertical pass; the intermediate never escapes this call.
+    defer allocator.free(tmp);
+    pass_horizontal(tmp, src.pixels, src.width, src.height, radius);
+    const out = try allocator.alloc(u8, n);
+    pass_vertical(out, tmp, src.width, src.height, radius);
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+// --- selftest: identity, edge spread, separable axes, solid stays solid, symmetry, alpha, round-trip, refusals ------------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// Set one pixel's RGBA at (x, y) -- a small writer the pattern builders share.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+    const bright = color.Rgba{ .r = 240, .g = 240, .b = 240, .a = 255 };
+
+    // A 2x2 four-color pattern -- the same corners the resize siblings prove against.
+    const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
+    const green = color.Rgba{ .r = 0, .g = 255, .b = 0, .a = 255 };
+    const blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 };
+    var pattern = try make_canvas(garden, 2, 2, red);
+    set_pixel(&pattern, 1, 0, green);
+    set_pixel(&pattern, 0, 1, blue);
+    set_pixel(&pattern, 1, 1, black);
+
+    // --- radius 0 is the IDENTITY blur: a 1x1 window copies the source byte-for-byte -----------------------------------
+    const same = try box_blur(garden, &pattern, 0);
+    if (!same.same_bytes(&pattern)) return error.IdentityNotByteExact;
+
+    // --- a HORIZONTAL box mean SPREADS a sharp step into a ramp: a 3px row [0,0,240] blurs to [0,80,160] ---------------
+    // out[0] window {0,0,0} (left clamped) = 0; out[1] window {0,0,240} = 240/3 = 80; out[2] window {0,240,240}
+    // (right clamped) = 480/3 = 160. The hard edge eases -- the whole reason a blur exists.
+    var row = try make_canvas(garden, 3, 1, black);
+    set_pixel(&row, 2, 0, bright);
+    const rblur = try box_blur_h(garden, &row, 1);
+    if (pixel_at(&rblur, 0, 0).r != 0) return error.RowSpreadLeftWrong;
+    if (pixel_at(&rblur, 1, 0).r != 80) return error.RowSpreadMidWrong;
+    if (pixel_at(&rblur, 2, 0).r != 160) return error.RowSpreadRightWrong;
+
+    // --- the VERTICAL pass mirrors the horizontal: a 1x3 column [0,0,240] blurs to [0,80,160] the same way -------------
+    var col = try make_canvas(garden, 1, 3, black);
+    set_pixel(&col, 0, 2, bright);
+    const cblur = try box_blur_v(garden, &col, 1);
+    if (pixel_at(&cblur, 0, 0).r != 0) return error.ColSpreadTopWrong;
+    if (pixel_at(&cblur, 0, 1).r != 80) return error.ColSpreadMidWrong;
+    if (pixel_at(&cblur, 0, 2).r != 160) return error.ColSpreadBottomWrong;
+
+    // --- a SOLID image stays the SAME solid color, edges and all: clamp means every window is all-teal, no dark margin -
+    const teal = color.Rgba{ .r = 0, .g = 128, .b = 128, .a = 255 };
+    var flat = try make_canvas(garden, 6, 6, teal);
+    _ = &flat;
+    const flat_blur = try box_blur(garden, &flat, 2);
+    var fy: u32 = 0;
+    while (fy < 6) : (fy += 1) {
+        var fx: u32 = 0;
+        while (fx < 6) : (fx += 1) {
+            if (!pixel_at(&flat_blur, fx, fy).eql(teal)) return error.SolidDidNotStaySolid;
+        }
+    }
+
+    // --- the axes are SEPARABLE and DIRECTIONAL: a vertical edge blurs under box_blur_h, stays sharp under box_blur_v --
+    // vsplit: left column black, right column white. A vertical blur sees uniform columns (no change); a horizontal blur
+    // eases the left-right step. This proves each single-axis pass touches only its own axis.
+    var vsplit = try make_canvas(garden, 2, 2, black);
+    set_pixel(&vsplit, 1, 0, white);
+    set_pixel(&vsplit, 1, 1, white);
+    const vblur = try box_blur_v(garden, &vsplit, 1);
+    if (!vblur.same_bytes(&vsplit)) return error.VerticalBlurTouchedVerticalEdge;
+    const hblur = try box_blur_h(garden, &vsplit, 1);
+    // row [0,255] -> out[0] {0,0,255}=255/3=85; out[1] {0,255,255}=510/3=170
+    if (pixel_at(&hblur, 0, 0).r != 85) return error.HorizontalBlurLeftWrong;
+    if (pixel_at(&hblur, 1, 0).r != 170) return error.HorizontalBlurRightWrong;
+
+    // --- a blur is SYMMETRIC: a single white pixel at the center of a black field spreads equally on both sides --------
+    var dot = try make_canvas(garden, 5, 5, black);
+    set_pixel(&dot, 2, 2, white);
+    const spread = try box_blur(garden, &dot, 1);
+    // mirror across the center column and the center row -- no directional bias
+    if (!pixel_at(&spread, 1, 2).eql(pixel_at(&spread, 3, 2))) return error.NotSymmetricHorizontally;
+    if (!pixel_at(&spread, 2, 1).eql(pixel_at(&spread, 2, 3))) return error.NotSymmetricVertically;
+    // a box blur spreads a point into a FLAT-TOP plateau (the box signature, unlike a peaked Gaussian): the lit center is
+    // positive and EQUAL to its orthogonal neighbors, while the far corners stay black (radius 1 cannot reach them)
+    if (pixel_at(&spread, 2, 2).r == 0) return error.CenterNotLit;
+    if (pixel_at(&spread, 2, 2).r != pixel_at(&spread, 1, 2).r) return error.PlateauNotFlat;
+    if (!pixel_at(&spread, 0, 0).eql(black)) return error.FarCornerNotUntouched;
+
+    // --- ALPHA blurs like any other channel: a 2px row [a=255, a=0] blurs its alpha the same as color ------------------
+    const opaque_blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 };
+    const clear_blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 0 };
+    var arow = try make_canvas(garden, 2, 1, opaque_blue);
+    set_pixel(&arow, 1, 0, clear_blue);
+    const ablur = try box_blur_h(garden, &arow, 1);
+    // out[0] window {255,255,0}=510/3=170; out[1] window {255,0,0}=255/3=85 -- alpha averaged, not carried
+    if (pixel_at(&ablur, 0, 0).a != 170) return error.AlphaLeftWrong;
+    if (pixel_at(&ablur, 1, 0).a != 85) return error.AlphaRightWrong;
+
+    // --- a blurred image round-trips through the open QOI codec byte-for-byte -- a real image, not a private buffer -----
+    var checker = try make_canvas(garden, 4, 4, black);
+    var ky: u32 = 0;
+    while (ky < 4) : (ky += 1) {
+        var kx: u32 = 0;
+        while (kx < 4) : (kx += 1) {
+            if ((kx + ky) % 2 == 0) set_pixel(&checker, kx, ky, white);
+        }
+    }
+    const shown = try box_blur(garden, &checker, 1);
+    const cap = qoi.encoded_bound(shown.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&shown, dst);
+    const back = try qoi.decode(garden, dst[0..enc.len]);
+    if (!back.same_bytes(&shown)) return error.BlurDidNotRoundTrip;
+
+    // --- refusals by name, each having allocated nothing --------------------------------------------------------------
+    if (box_blur(garden, &pattern, blur_max_radius + 1)) |_| return error.OverRadiusNotRefused else |err| {
+        if (err != error.BlurRadiusTooLarge) return error.WrongRadiusError;
+    }
+    var empty = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (box_blur(garden, &empty, 1)) |_| return error.EmptySourceNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- determinism: the same blur averages the same pixels byte-for-byte --------------------------------------------
+    const blur_a = try box_blur(garden, &checker, 1);
+    const blur_b = try box_blur(garden, &checker, 1);
+    if (!blur_a.same_bytes(&blur_b)) return error.BlurNotDeterministic;
+
+    print("GREEN image-blur: an RGBA image blurred by a separable box mean -- radius 0 is the identity byte-for-byte; a horizontal box mean spreads a 3px step [0,0,240] into a ramp [0,80,160] and the vertical pass mirrors it down a column; a solid image stays exactly solid at its edges (clamp, no dark margin); the two single-axis passes are separable and directional (a vertical edge blurs horizontally yet stays sharp vertically); a single center pixel spreads symmetrically into a flat-top plateau (the box signature) with the far corners untouched; alpha averages like any other channel; the blurred image round-trips through the open QOI codec byte-for-byte; an over-max radius and an empty source refuse by name having allocated nothing; the same blur is deterministic byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: blur selftest\n", .{});
+    return 1;
+}

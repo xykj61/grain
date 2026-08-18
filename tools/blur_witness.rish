@@ -1,0 +1,40 @@
+# tools/blur_witness.rish -- the separable box blur proves itself on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the FIRST convolution rung beside the resamplers (tools/scale_witness.rish,
+# tools/scale_bilinear_witness.rish, tools/scale_area_witness.rish). Where a resample changes an image's SIZE, a blur
+# softens its DETAIL at the same size: each output pixel is the mean of the square window of source pixels around it. This
+# is the floor the whole soft-image family stands on -- a drop shadow is a blurred silhouette, a frosted-glass panel a
+# blurred backdrop, a Gaussian a box mean run a few times, a sharpen the image minus its own blur.
+#
+# The crux this witness proves is that the box blur is SEPARABLE and EXACT: the 2D window mean equals a horizontal pass
+# then a vertical pass, each a pure integer mean with clamped edges, so a blur is deterministic byte-for-byte and a solid
+# image stays exactly solid at its edges (no phantom dark margin). On metal: radius 0 is the identity byte-for-byte; a
+# horizontal box mean spreads a sharp step [0,0,240] into a ramp [0,80,160] and the vertical pass mirrors it down a column;
+# a solid image stays solid edge to edge; the two single-axis passes are directional (a vertical edge blurs horizontally
+# yet stays sharp vertically); a single center pixel spreads symmetrically; alpha averages like any other channel; the
+# blurred image round-trips through the open QOI codec byte-for-byte; an over-max radius and an empty source refuse by name
+# having allocated nothing; and the same blur is deterministic. No network, no key, no funds -- the softening a surface
+# runs the day it wants a shadow, a frosted panel, or a gentler photo, on our own open geometry.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/blur_witness.rish
+
+say "blur: Language EN -- Season G convolution; an RGBA image softened by a separable box mean, the first convolution rung beside the nearest, bilinear, and area resamplers, the floor a shadow, a frosted panel, and a Gaussian all stand on."
+say "blur: Style Radiant -- separable, so the 2D box is two 1D passes: blur every row horizontally, then every column of that vertically, and the result equals the full (2r+1)x(2r+1) window mean; edges clamp so the window stays full and a solid stays solid; every channel including alpha averaged; integer only so a blur is deterministic byte-for-byte."
+say "blur: Lens TAME -- u32 in-memory counts, u64 for the window accumulator so it can never wrap, u8 output channels proven a real byte; the radius bounded by blur_max_radius (256); each function states its invariants positively; the source and radius guarded once up front so a refusal allocates nothing; the two-pass intermediate freed before return so only the caller's result outlives the call; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/blur"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/blur.rye -femit-bin=${bin}"]
+assert build.ok else "blur: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "blur: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "blur: ${out}"
+
+assert selftest.out contains "GREEN image-blur" else "blur: selftest did not print the GREEN line"
+
+say "blur: GREEN -- the separable box blur softens a picture without float or bias, proven on metal beside the resize family, the convolution floor the soft-image family stands on."
