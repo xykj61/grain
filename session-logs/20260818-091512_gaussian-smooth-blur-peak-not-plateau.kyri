@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260818.091512
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title gaussian -- the smooth blur above the box floor, peak not plateau, GREEN
+prompt autonomous loop -- baton prin recur: take the next agent-doable lap Lindy-first crux-first on the harmony-of-styles compass
+think Read Kyri + Radiant Style to stand in voice; read REMEMBER, the itineraries, REDS, and the top three session logs to pick up the thread.
+think Standfast first: walked REDS. Every agent-closable red is closed or released (80, 81, 83, 85, 86, 87 ...) and #75 rests as the deep-debride custody gate (errata, Keaton's hand). Newest log confirms Standfast clear. Free to build.
+think The live thread: the open-media family grows rung by rung on green-witnessed Rye because the Microkernel double-seat leads yet its only ungated move is study. The newest rung, image/blur.rye, landed the convolution FLOOR and named its own siblings -- "a Gaussian a box mean run a few times." Crux-first, the Gaussian is the decisive next move: the true smooth blur that drop shadow and frosted panel both stand on.
+think Measurement over memory: confirmed no gaussian/sharpen/shadow module exists (blur.rye is the only convolution rung, 116 image modules). Read blur.rye's full API -- box_blur/box_blur_h/box_blur_v, clamped, integer half-up.
+think The crux is a measured contrast: a single box blur spreads a point into a FLAT-TOP plateau (blur.rye proves exactly this), while a Gaussian spreads it into a PEAK. By the central limit theorem a box mean stacked converges to a Gaussian -- one box a flat window, two a triangle, three a bell. So gaussian owns NO new pixel math; it composes blur.box_blur `passes` times.
+think Hand-computed the exact bell for a 9px row, one white dot at center, radius 1, 3 passes of the integer half-up box mean: pass1 [0,0,0,85,85,85,0,0,0], pass2 [0,0,28,57,85,57,28,0,0], pass3 [0,9,28,57,66,57,28,9,0]. A strictly monotonic peak. The SAME row under one box blur ties center to neighbor (85==85) -- the plateau the Gaussian breaks. Same input, two signatures: the whole reason the rung exists.
+think Built image/gaussian.rye -- gaussian_blur_passes(allocator, src, radius, passes) the general form (each pass reads the last, each intermediate freed as the next replaces it), gaussian_blur the three-pass standard; a single pass degenerates to box_blur byte-for-byte (the general verb contains the box). Bounded by gaussian_max_radius (the box ceiling) and gaussian_max_passes (8); guarded once up front so EmptySource/GaussianRadiusTooLarge/GaussianPassesOutOfRange refuse having allocated nothing.
+obs GREEN on the first full metal run -- the hand-computed bell [0,9,28,57,66,57,28,9,0] matched byte-for-byte, no red. The selftest proves: identity at any pass count; one pass == box_blur; default == three-pass general form; the exact bell vs the box plateau on the same row; a symmetric 2D peak strictly above its neighbor; a solid stays solid; alpha peaks like any channel; QOI round-trip; three refusals by name; determinism.
+obs TAME flagged three compound `assert(a and b)` -- split each into two asserts (the same discipline blur.rye followed for its seven). Re-GREEN. width + ASCII + living-docs + living-card ASCII guard (REDS #83) all clean.
+obs Council rota (item 6, cycling 3->4->5->6): read foundations/20260814-071700_hardware-and-right-to-repair.md -- Season A's body-you-can-hold, where the image module sits under Photos and the parts marketplace. The Gaussian serves exactly that surface (frosted glass, soft shadows for a device UI). It also names the hardware custody gates (#2 provisioning, #3 refurb parts) that stay Keaton's hand.
+loom witness=gaussian_witness wall_first_run=green checks=15 bell=0,9,28,57,66,57,28,9,0 plateau=0,0,0,85,85,85,0,0,0
+file image/gaussian.rye the smooth-blur rung: a stack of box means, peak not plateau, integer-only and deterministic
+file tools/gaussian_witness.rish proves it on metal, native `contains` per REDS #85, GREEN
+file image/README.md Soften bullet extended + a full gaussian.rye entry beside blur.rye
+file crux/REMEMBER.md live edge promoted to gaussian as newest rung, blur reframed as the floor beneath it
+recommend keep-going -- sharpen (image minus its own blur), drop shadow (a blurred silhouette composited under), and frosted panel (a blurred backdrop) are now gaussian's siblings; sharpen is the crux-first next rung, a clean unsharp-mask over blur + a per-channel subtract

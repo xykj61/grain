@@ -1,0 +1,273 @@
+//! image/gaussian.rye -- an RGBA image GAUSSIAN-blurred by a stack of box means (Season G, the smooth blur above the box floor).
+//!
+//! Season G (Open Media Primitives) -- the SECOND convolution rung, standing directly on image/blur.rye. A single box mean
+//! softens a picture, yet it softens it BLUNTLY: a box spreads a point of light into a flat-top plateau, and a straight edge
+//! blurred by one box still carries a faint boxy ring. A Gaussian is the smooth blur a designer actually reaches for -- the
+//! frosted glass, the soft drop shadow, the gentle depth-of-field -- where a point spreads into a rounded PEAK that falls
+//! off evenly on every side with no plateau and no ring.
+//!
+//! The whole trick is that a Gaussian needs no Gaussian kernel and no float: by the central limit theorem, a box mean run a
+//! few times CONVERGES to a Gaussian. One box of radius r is a flat window; two boxes convolve to a triangle (a tent, one
+//! peak); three boxes round that tent into a bell indistinguishable from a true Gaussian for display work. So a Gaussian
+//! blur is just image/blur.rye's box mean, applied `passes` times in a row, each pass reading the last pass's result. Three
+//! passes is the standard approximation (`gaussian_default_passes`), and the effective spread grows as sqrt(passes) * the
+//! box's own spread, so a wider, smoother blur comes from a larger radius or more passes rather than a special kernel.
+//!
+//! This rung owns NO new pixel math -- it composes image/blur.rye's `box_blur` and adds only the repetition and the freeing
+//! of each intermediate, so every property the box proved (separable, integer-only, deterministic byte-for-byte, clamped
+//! edges, alpha averaged like any channel) carries up unchanged. `gaussian_blur_passes` is the general form (any pass count
+//! in range); `gaussian_blur` is the three-pass standard, exactly `gaussian_blur_passes` at `gaussian_default_passes`. A
+//! single pass degenerates honestly to `box_blur` byte-for-byte -- the general verb contains the box as its 1-pass special
+//! case. The radius is bounded by `gaussian_max_radius` (the box's own ceiling) and the pass count by `gaussian_max_passes`;
+//! a zero-extent source, an over-max radius, or an out-of-range pass count refuses BY NAME before any allocation, so a
+//! malformed blur leaves nothing behind. No network, no key, no funds -- the smooth softening a surface runs the day it
+//! wants frosted glass or a soft shadow, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/gaussian.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const blur = @import("blur.rye");
+
+pub const gaussian_version = "20260818.093000";
+
+/// The widest box radius one Gaussian pass may name -- the box's own ceiling, since each pass IS a box blur. A larger,
+/// smoother blur comes from more passes rather than an unbounded radius.
+pub const gaussian_max_radius: u32 = blur.blur_max_radius;
+
+/// The pass-count band. One pass degenerates to a plain box blur (a flat-top plateau); two make a triangle (one peak);
+/// three round it into a bell -- the standard display-quality Gaussian approximation. The ceiling bounds the work: at most
+/// `gaussian_max_passes` box sweeps, so the cost is a small named multiple of one blur.
+pub const gaussian_min_passes: u32 = 1;
+pub const gaussian_max_passes: u32 = 8;
+pub const gaussian_default_passes: u32 = 3;
+
+pub const GaussianError = error{
+    EmptySource,
+    GaussianRadiusTooLarge,
+    GaussianPassesOutOfRange,
+};
+
+/// Guard the source, radius, and pass count shared by both public verbs: a zero-extent source refuses `EmptySource`, an
+/// over-max radius `GaussianRadiusTooLarge`, an out-of-band pass count `GaussianPassesOutOfRange`, each BY NAME before any
+/// allocation. Returns nothing -- it only proves the inputs sound so the caller may allocate.
+fn guard(src: *const qoi.Pixmap, radius: u32, passes: u32) GaussianError!void {
+    // invariant: a real source has extent on both axes; a zero-size source has nothing to blur.
+    if (src.width == 0 or src.height == 0) return error.EmptySource;
+    // invariant: each pass is a box blur, so the box's own radius ceiling bounds a pass here too.
+    if (radius > gaussian_max_radius) return error.GaussianRadiusTooLarge;
+    // invariant: the pass count stays in the named band, so the work is a small bounded multiple of one blur.
+    if (passes < gaussian_min_passes or passes > gaussian_max_passes) return error.GaussianPassesOutOfRange;
+}
+
+/// Gaussian-blur `src` into a fresh same-size RGBA Pixmap by running the box mean of radius `radius` exactly `passes` times,
+/// each pass reading the previous pass's result. Returns a newly allocated Pixmap the caller owns; `src` is read-only and
+/// untouched. Every intermediate buffer is freed as the next pass replaces it, so only the caller's final result outlives
+/// the call. A single pass equals `blur.box_blur` byte-for-byte.
+pub fn gaussian_blur_passes(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32, passes: u32) !qoi.Pixmap {
+    try guard(src, radius, passes);
+    // invariant: the guard proved a real source and a pass count of at least one, so the first blur below is always run.
+    assert(passes >= gaussian_min_passes);
+    assert(src.width >= 1);
+    assert(src.height >= 1);
+
+    // The first pass reads the caller's source; each later pass reads and then frees the pass before it.
+    var current = try blur.box_blur(allocator, src, radius);
+    var done: u32 = 1;
+    while (done < passes) : (done += 1) {
+        const next = try blur.box_blur(allocator, &current, radius);
+        allocator.free(current.pixels);
+        current = next;
+    }
+    // invariant: the result is a same-size RGBA image -- the box preserves extent every pass.
+    assert(current.width == src.width);
+    assert(current.height == src.height);
+    return current;
+}
+
+/// Gaussian-blur `src` into a fresh same-size RGBA Pixmap by the STANDARD three-pass approximation -- exactly
+/// `gaussian_blur_passes` at `gaussian_default_passes`. The display-quality Gaussian a surface reaches for by default.
+pub fn gaussian_blur(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32) !qoi.Pixmap {
+    // invariant: the default pass count sits inside the named band, so it never trips the guard on its own.
+    assert(gaussian_default_passes >= gaussian_min_passes);
+    assert(gaussian_default_passes <= gaussian_max_passes);
+    return gaussian_blur_passes(allocator, src, radius, gaussian_default_passes);
+}
+
+// --- selftest: identity, box containment, the peak-not-plateau crux, symmetry, alpha, round-trip, refusals ---------------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// Set one pixel's RGBA at (x, y) -- a small writer the pattern builders share.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    // A 2x2 four-color pattern -- the same corners the resize and blur siblings prove against.
+    const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
+    const green = color.Rgba{ .r = 0, .g = 255, .b = 0, .a = 255 };
+    const blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 };
+    var pattern = try make_canvas(garden, 2, 2, red);
+    set_pixel(&pattern, 1, 0, green);
+    set_pixel(&pattern, 0, 1, blue);
+    set_pixel(&pattern, 1, 1, black);
+
+    // --- radius 0 is the IDENTITY blur at any pass count: a 1x1 window copies the source byte-for-byte -----------------
+    const same = try gaussian_blur(garden, &pattern, 0);
+    if (!same.same_bytes(&pattern)) return error.IdentityNotByteExact;
+
+    // --- a SINGLE pass DEGENERATES to the box mean byte-for-byte: the general verb contains the box as its 1-pass case --
+    const one_pass = try gaussian_blur_passes(garden, &pattern, 1, 1);
+    const box_once = try blur.box_blur(garden, &pattern, 1);
+    if (!one_pass.same_bytes(&box_once)) return error.OnePassIsNotTheBox;
+
+    // --- the DEFAULT equals the three-pass general form byte-for-byte -------------------------------------------------
+    const def = try gaussian_blur(garden, &pattern, 1);
+    const three = try gaussian_blur_passes(garden, &pattern, 1, gaussian_default_passes);
+    if (!def.same_bytes(&three)) return error.DefaultIsNotThreePass;
+
+    // --- THE CRUX: a Gaussian spreads a point into a PEAK, where the box spreads it into a PLATEAU --------------------
+    // A 9px black row with one white dot at the center (index 4). The three-pass Gaussian of radius 1 rounds the point
+    // into a bell whose exact integer profile is [0,9,28,57,66,57,28,9,0]: strictly monotonic falloff from the lit
+    // center outward, symmetric, no plateau. The SAME row under a single box blur is the flat-top [0,0,0,85,85,85,0,0,0]:
+    // center equal to its neighbor. Same input, two signatures -- this is the whole reason the Gaussian rung exists.
+    var row = try make_canvas(garden, 9, 1, black);
+    set_pixel(&row, 4, 0, white);
+    const bell = try gaussian_blur(garden, &row, 1);
+    if (pixel_at(&bell, 0, 0).r != 0) return error.BellEdgeLeftWrong;
+    if (pixel_at(&bell, 1, 0).r != 9) return error.BellWrong1;
+    if (pixel_at(&bell, 2, 0).r != 28) return error.BellWrong2;
+    if (pixel_at(&bell, 3, 0).r != 57) return error.BellWrong3;
+    if (pixel_at(&bell, 4, 0).r != 66) return error.BellPeakWrong;
+    if (pixel_at(&bell, 5, 0).r != 57) return error.BellWrong5;
+    if (pixel_at(&bell, 6, 0).r != 28) return error.BellWrong6;
+    if (pixel_at(&bell, 7, 0).r != 9) return error.BellWrong7;
+    if (pixel_at(&bell, 8, 0).r != 0) return error.BellEdgeRightWrong;
+    // strictly monotonic falloff from the center -- the Gaussian signature (a box would tie center to neighbor)
+    if (!(pixel_at(&bell, 4, 0).r > pixel_at(&bell, 3, 0).r)) return error.PeakNotAbovePlateau;
+    if (!(pixel_at(&bell, 3, 0).r > pixel_at(&bell, 2, 0).r)) return error.FalloffNotMonotonic;
+    if (!(pixel_at(&bell, 2, 0).r > pixel_at(&bell, 1, 0).r)) return error.FalloffNotMonotonic2;
+    // and the box on the same row ties the center to its neighbor -- the plateau the Gaussian breaks
+    const boxrow = try blur.box_blur_h(garden, &row, 1);
+    if (pixel_at(&boxrow, 4, 0).r != pixel_at(&boxrow, 3, 0).r) return error.BoxWasNotAPlateau;
+
+    // --- the peak is SYMMETRIC in 2D: a lone white dot in a 5x5 black field falls off equally on both axes -----------
+    var dot = try make_canvas(garden, 5, 5, black);
+    set_pixel(&dot, 2, 2, white);
+    const spread = try gaussian_blur(garden, &dot, 1);
+    if (!pixel_at(&spread, 1, 2).eql(pixel_at(&spread, 3, 2))) return error.NotSymmetricHorizontally;
+    if (!pixel_at(&spread, 2, 1).eql(pixel_at(&spread, 2, 3))) return error.NotSymmetricVertically;
+    // the center is the strict peak -- brighter than its orthogonal neighbor, unlike the box's flat plateau
+    if (!(pixel_at(&spread, 2, 2).r > pixel_at(&spread, 1, 2).r)) return error.Center2dNotPeak;
+
+    // --- a SOLID image stays the SAME solid color, edges and all: clamp means every window is uniform, every pass -----
+    const teal = color.Rgba{ .r = 0, .g = 128, .b = 128, .a = 255 };
+    var flat = try make_canvas(garden, 6, 6, teal);
+    _ = &flat;
+    const flat_blur = try gaussian_blur(garden, &flat, 2);
+    var fy: u32 = 0;
+    while (fy < 6) : (fy += 1) {
+        var fx: u32 = 0;
+        while (fx < 6) : (fx += 1) {
+            if (!pixel_at(&flat_blur, fx, fy).eql(teal)) return error.SolidDidNotStaySolid;
+        }
+    }
+
+    // --- ALPHA blurs into a peak like any other channel: a lone opaque dot in a clear field peaks in alpha ------------
+    const clear = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 0 };
+    const opaque_dot = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    var arow = try make_canvas(garden, 9, 1, clear);
+    set_pixel(&arow, 4, 0, opaque_dot);
+    const ablur = try gaussian_blur(garden, &arow, 1);
+    // the same bell profile the color channel proved, now in alpha -- averaged into a peak, not carried
+    if (pixel_at(&ablur, 4, 0).a != 66) return error.AlphaPeakWrong;
+    if (!(pixel_at(&ablur, 4, 0).a > pixel_at(&ablur, 3, 0).a)) return error.AlphaNotAPeak;
+
+    // --- a Gaussian-blurred image round-trips through the open QOI codec byte-for-byte -- a real image, not a buffer ---
+    var checker = try make_canvas(garden, 4, 4, black);
+    var ky: u32 = 0;
+    while (ky < 4) : (ky += 1) {
+        var kx: u32 = 0;
+        while (kx < 4) : (kx += 1) {
+            if ((kx + ky) % 2 == 0) set_pixel(&checker, kx, ky, white);
+        }
+    }
+    const shown = try gaussian_blur(garden, &checker, 1);
+    const cap = qoi.encoded_bound(shown.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&shown, dst);
+    const back = try qoi.decode(garden, dst[0..enc.len]);
+    if (!back.same_bytes(&shown)) return error.GaussianDidNotRoundTrip;
+
+    // --- refusals by name, each having allocated nothing --------------------------------------------------------------
+    if (gaussian_blur(garden, &pattern, gaussian_max_radius + 1)) |_| return error.OverRadiusNotRefused else |err| {
+        if (err != error.GaussianRadiusTooLarge) return error.WrongRadiusError;
+    }
+    if (gaussian_blur_passes(garden, &pattern, 1, 0)) |_| return error.ZeroPassesNotRefused else |err| {
+        if (err != error.GaussianPassesOutOfRange) return error.WrongPassesError;
+    }
+    if (gaussian_blur_passes(garden, &pattern, 1, gaussian_max_passes + 1)) |_| return error.OverPassesNotRefused else |err| {
+        if (err != error.GaussianPassesOutOfRange) return error.WrongPassesError2;
+    }
+    var empty = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (gaussian_blur(garden, &empty, 1)) |_| return error.EmptySourceNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- determinism: the same Gaussian averages the same pixels byte-for-byte ----------------------------------------
+    const blur_a = try gaussian_blur(garden, &checker, 1);
+    const blur_b = try gaussian_blur(garden, &checker, 1);
+    if (!blur_a.same_bytes(&blur_b)) return error.GaussianNotDeterministic;
+
+    print("GREEN image-gaussian: an RGBA image smooth-blurred by a stack of box means -- radius 0 is the identity byte-for-byte at any pass count; a single pass degenerates to box_blur byte-for-byte (the general verb contains the box); the default equals the three-pass general form; THE CRUX -- a lone white dot on a 9px row spreads to the exact bell [0,9,28,57,66,57,28,9,0], a strictly monotonic peak, where the SAME row under one box blur is the flat-top plateau [0,0,0,85,85,85,0,0,0] (center tied to neighbor); the 2D peak is symmetric on both axes and strictly above its neighbor; a solid image stays exactly solid at its edges; alpha blurs into a peak like any channel; the blurred image round-trips through the open QOI codec byte-for-byte; an over-max radius, a zero or over-max pass count, and an empty source refuse by name having allocated nothing; the same blur is deterministic byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: gaussian selftest\n", .{});
+    return 1;
+}
