@@ -24,7 +24,7 @@ Start with the compressor when context is short: [`../../docs/COMPASS.md`](../..
 | Grain (ten strands) | [`../../active-designing/20260702-184312_the-grain-and-the-crossing.md`](../../active-designing/20260702-184312_the-grain-and-the-crossing.md) |
 | Sameness | [`../../foundations/20260703-182612_sameness-is-the-macro.md`](../../foundations/20260703-182612_sameness-is-the-macro.md) |
 | Two Rooms | [`../../context/TWO_ROOMS.md`](../../context/TWO_ROOMS.md) |
-| Single-stranded modules | [`../../active-designing/yonder/20260618-182412_single-stranded.md`](../../active-designing/yonder/20260618-182412_single-stranded.md) |
+| Single-stranded modules | [`../../active-designing/20260618-182412_single-stranded.md`](../../active-designing/20260618-182412_single-stranded.md) |
 
 ## 3. How We Prove — Witness Habitat
 
