@@ -1,0 +1,329 @@
+//! image/shape_match.rye -- read the DISTANCE between two shapes' HU FINGERPRINTS: one number that says whether two marks are the
+//! SAME FORM regardless of how each is turned, moved, or resized, and a companion number that also tells a shape from its MIRROR
+//! (Season G, the recognizer over image/hu_moments.rye's seven invariants).
+//!
+//! Season G (Open Media Primitives) -- image/hu_moments.rye reads a component's SEVEN HU INVARIANT MOMENTS, the fingerprint that
+//! stays (near) constant when a mark is turned, moved, or resized. A fingerprint on its own answers nothing; the fact a surface
+//! actually asks is COMPARISON: is this mark the SAME SHAPE as that one? This rung reads that -- one scalar DISTANCE over two Hu
+//! sets, small when the two marks are the same form and large when they differ, so a letter matches its own rotated or resized
+//! copy far more closely than it matches a different letter. That is the move a text reader, an icon matcher, and a part
+//! recognizer are built on: not what a shape's fingerprint IS, but how FAR one fingerprint sits from another.
+//!
+//! The metric is Hu-matching by SIGNED LOG (the standard shape-comparison transform). A raw Hu set spans a huge dynamic range --
+//! i1 sits near 0.3 while i7 sits near a millionth -- so subtracting raw invariants would let i1 drown out every finer term. The
+//! signed log `sign(h) * log10(|h|)` folds each invariant onto one comparable scale while keeping its sign, and the distance is
+//! the sum of absolute differences of these signed logs (the classic I2 form): `d = sum_k |L(a_k) - L(b_k)|`, a proper metric --
+//! zero exactly when the two fingerprints agree, symmetric in its two arguments, obeying the triangle inequality by construction.
+//!
+//! Two distances, one honest choice. `shape_distance` runs over the SIX reflection-invariant invariants (i1..i6), so a mark and
+//! its LEFT-TO-RIGHT MIRROR read distance zero -- the recognizer a surface wants when a shape and its flip are "the same form."
+//! `shape_distance_oriented` adds the seventh, whose sign flips under reflection, so a mark and its mirror read a real nonzero
+//! distance -- the recognizer a surface wants when handedness matters (a "b" is not a "d"). The two numbers are the same fusion
+//! of the same fingerprints; they differ only in whether the seventh, chirality-bearing invariant is allowed to speak.
+//!
+//! Compose not braid. This rung OWNS only the metric -- the signed-log transform and the sum of absolute differences over two
+//! `HuSet` values. image/hu_moments.rye owns the invariants themselves and their accumulation; image/label.rye owns the LabelMap
+//! those invariants are read from. This module reads no pixels, writes no image, and touches no codec or color: it is a pure
+//! function over two seven-number fingerprints, the smallest possible layer above the reader it compares.
+//!
+//! An invariant whose magnitude falls below a named floor `hu_zero_floor` (a symmetric shape's odd-order invariants are exactly
+//! zero by construction) contributes a signed log of zero rather than a negative infinity, so a symmetric mark compares cleanly
+//! against any other. The signed logs run in `f64` exactly as hu_moments reads its invariants, so no accumulator can wrap. No
+//! network, no key, no funds -- the "are these the same shape?" a surface asks the moment it has two fingerprints in hand, on our
+//! own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/shape_match.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const label = @import("label.rye");
+const hu_moments = @import("hu_moments.rye");
+
+pub const shape_match_version = "20260818.173130";
+
+pub const ShapeMatchError = error{
+    EmptySource,
+};
+
+/// An invariant whose absolute value falls below this floor is treated as an exact zero for the signed-log transform. A
+/// symmetric shape's odd-order Hu invariants are exactly zero by construction (their odd central moments cancel), so this floor
+/// keeps `log10(0)` from becoming a negative infinity; it sits far below any real invariant a chiral 2D shape produces.
+pub const hu_zero_floor: f64 = 0.000000000001; // 1e-12
+
+/// The signed log-10 magnitude of one Hu invariant: `sign(h) * log10(|h|)`, or exactly zero when `|h|` is below `hu_zero_floor`.
+/// This folds the huge dynamic range of the raw Hu set (i1 near 0.3, i7 near a millionth) onto one comparable scale while keeping
+/// each invariant's sign, so the seventh invariant's reflection sign-flip survives the transform intact.
+pub fn signed_log10(h: f64) f64 {
+    const mag: f64 = if (h >= 0.0) h else -h;
+    // invariant: the magnitude of an absolute value is never negative.
+    assert(mag >= 0.0);
+    if (mag < hu_zero_floor) return 0.0;
+    const lg: f64 = std.math.log10(mag);
+    // invariant: a magnitude at or above the floor has a finite log, so the result is a real number.
+    assert(std.math.isFinite(lg));
+    return if (h >= 0.0) lg else -lg;
+}
+
+/// The signed-log signature of a Hu set: the seven signed-log magnitudes, in order. `m[0]` is `L(i1)` through `m[6]` = `L(i7)`.
+/// The distance functions read these; a caller rarely needs the signature directly, yet it is the honest middle value between a
+/// raw fingerprint and a scalar distance.
+pub const LogSignature = struct {
+    m: [7]f64 = [_]f64{0.0} ** 7,
+};
+
+/// The signed-log signature of one component's Hu invariants -- a pure transform, no pixels read.
+pub fn log_signature(hu: hu_moments.HuSet) LogSignature {
+    var sig = LogSignature{};
+    sig.m[0] = signed_log10(hu.i1);
+    sig.m[1] = signed_log10(hu.i2);
+    sig.m[2] = signed_log10(hu.i3);
+    sig.m[3] = signed_log10(hu.i4);
+    sig.m[4] = signed_log10(hu.i5);
+    sig.m[5] = signed_log10(hu.i6);
+    sig.m[6] = signed_log10(hu.i7);
+    return sig;
+}
+
+/// The sum of absolute signed-log differences of the first `count` invariants of two Hu sets. `count` is 6 for the
+/// reflection-invariant recognizer and 7 for the chirality-sensitive one; both are bounded by the seven-long signature.
+fn distance_over(a: hu_moments.HuSet, b: hu_moments.HuSet, count: u32) f64 {
+    // invariant: the compared span never exceeds the seven Hu invariants.
+    assert(count >= 1);
+    assert(count <= 7);
+    const sa = log_signature(a);
+    const sb = log_signature(b);
+    var sum: f64 = 0.0;
+    var k: u32 = 0;
+    while (k < count) : (k += 1) {
+        const diff: f64 = sa.m[k] - sb.m[k];
+        sum += if (diff >= 0.0) diff else -diff;
+    }
+    // invariant: a sum of absolute values is never negative -- a distance is non-negative by construction.
+    assert(sum >= 0.0);
+    return sum;
+}
+
+/// The reflection-INVARIANT shape distance between two components: the sum of absolute signed-log differences over the six
+/// invariants (i1..i6) that hold under translation, rotation, scale, AND reflection. A mark and its mirror read distance zero, so
+/// this is the "same form regardless of flip" recognizer. Zero exactly when the six invariants agree; symmetric in `a` and `b`.
+pub fn shape_distance(a: hu_moments.HuSet, b: hu_moments.HuSet) f64 {
+    // invariant: i1 and i2 are non-negative by construction, so their signed logs are their plain logs -- a sanity floor.
+    assert(a.i1 >= 0.0);
+    assert(b.i1 >= 0.0);
+    return distance_over(a, b, 6);
+}
+
+/// The chirality-SENSITIVE shape distance between two components: the same sum extended over all SEVEN invariants, including i7
+/// whose sign flips under reflection. A mark and its mirror read a real nonzero distance here, so this is the recognizer for
+/// when handedness matters (a shape is not its own mirror). Zero exactly when all seven agree; symmetric in `a` and `b`.
+pub fn shape_distance_oriented(a: hu_moments.HuSet, b: hu_moments.HuSet) f64 {
+    // invariant: i1 and i2 are non-negative by construction -- the same sanity floor as the reflection-invariant metric.
+    assert(a.i1 >= 0.0);
+    assert(b.i1 >= 0.0);
+    return distance_over(a, b, 7);
+}
+
+// --- selftest: recognition (same form near zero, different form large), mirror invariance vs chirality, metric laws -----------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y) -- the small writer the fixtures share.
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// True when a foreground pixel sits at (x, y) of `img` -- read through the red channel like the family's binary door.
+fn is_set(img: *const qoi.Pixmap, x: u32, y: u32) bool {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    return img.pixels[(@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4] >= 128;
+}
+
+/// Paint a filled scalene right triangle with its top-left corner at (ox, oy): the horizontal leg is 13 and the vertical leg 7.
+/// A right triangle of unequal legs is strongly chiral, so its seventh Hu invariant is robustly nonzero and its sign flips
+/// crisply under a left-to-right mirror -- exactly the shape whose recognition and chirality this rung is built to prove.
+fn paint_chiral(img: *qoi.Pixmap, ox: u32, oy: u32) void {
+    var k: u32 = 0;
+    while (k < 7) : (k += 1) {
+        const row_w: u32 = 13 - 2 * k; // 13, 11, 9, 7, 5, 3, 1
+        var x: u32 = 0;
+        while (x < row_w) : (x += 1) set_dot(img, ox + x, oy + k);
+    }
+}
+
+/// A fresh canvas holding `src` rotated 90 degrees clockwise -- an exact lattice permutation, so the Hu invariants all hold.
+fn rotate90_cw(garden: std.mem.Allocator, src: *const qoi.Pixmap) !qoi.Pixmap {
+    const sw: u32 = src.width;
+    const sh: u32 = src.height;
+    var dst = try make_canvas(garden, sh, sw, 0);
+    var dy: u32 = 0;
+    while (dy < dst.height) : (dy += 1) {
+        var dx: u32 = 0;
+        while (dx < dst.width) : (dx += 1) {
+            // invariant: the sampled source coordinate stays inside the source on both axes.
+            assert(dx < sh);
+            assert((sh - 1 - dx) < sh);
+            if (is_set(src, dy, sh - 1 - dx)) set_dot(&dst, dx, dy);
+        }
+    }
+    return dst;
+}
+
+/// A fresh canvas holding `src` mirrored left-to-right -- an exact lattice reflection, so i1..i6 hold and i7 flips sign.
+fn mirror_x(garden: std.mem.Allocator, src: *const qoi.Pixmap) !qoi.Pixmap {
+    const sw: u32 = src.width;
+    const sh: u32 = src.height;
+    var dst = try make_canvas(garden, sw, sh, 0);
+    var yy: u32 = 0;
+    while (yy < sh) : (yy += 1) {
+        var xx: u32 = 0;
+        while (xx < sw) : (xx += 1) {
+            // invariant: the mirrored source column stays inside the source width.
+            assert((sw - 1 - xx) < sw);
+            if (is_set(src, sw - 1 - xx, yy)) set_dot(&dst, xx, yy);
+        }
+    }
+    return dst;
+}
+
+/// A fresh canvas holding `src` scaled up by an integer factor -- each source pixel becomes a `factor`x`factor` block. Discrete
+/// rescaling is APPROXIMATELY Hu-invariant, so a real shape reads a small nonzero distance to its rescaled self (the named residue).
+fn upscale(garden: std.mem.Allocator, src: *const qoi.Pixmap, factor: u32) !qoi.Pixmap {
+    // invariant: a real magnification is at least 2x.
+    assert(factor >= 2);
+    var dst = try make_canvas(garden, src.width * factor, src.height * factor, 0);
+    var yy: u32 = 0;
+    while (yy < src.height) : (yy += 1) {
+        var xx: u32 = 0;
+        while (xx < src.width) : (xx += 1) {
+            if (!is_set(src, xx, yy)) continue;
+            var by: u32 = 0;
+            while (by < factor) : (by += 1) {
+                var bx: u32 = 0;
+                while (bx < factor) : (bx += 1) set_dot(&dst, xx * factor + bx, yy * factor + by);
+            }
+        }
+    }
+    return dst;
+}
+
+/// The seven invariants of the single component of a fixture image, for the selftest.
+fn hu_of_image(garden: std.mem.Allocator, img: *const qoi.Pixmap) !hu_moments.HuSet {
+    const map = try label.label_components(garden, img);
+    // invariant: every fixture holds exactly one component.
+    assert(map.count == 1);
+    const sets = try hu_moments.hu_moments(garden, &map);
+    return sets[0];
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // Thresholds keyed to metal, not memory. `same_form` is the ceiling a same-shape distance must stay under: rotation and
+    // reflection are exact lattice moves (their reflection-invariant distance is float slack ~1e-14), discrete rescaling carries
+    // a small named residue. `different_form` is the floor a genuinely different shape must clear -- a triangle against a plus.
+    const same_form: f64 = 0.2; // a same shape (turned, mirrored, or rescaled) stays well under this
+    const different_form: f64 = 3.0; // a different shape clears this by a wide margin
+    const tight: f64 = 0.00000001; // 1e-8: an exact lattice move's reflection-invariant distance, float slack only
+
+    // the chiral right triangle, well inside a canvas so translation is exercised too
+    var base = try make_canvas(garden, 17, 11, 0);
+    paint_chiral(&base, 2, 2);
+    const hb = try hu_of_image(garden, &base);
+
+    // --- IDENTITY: a shape against itself reads distance exactly zero (a metric law) -----------------------------------------
+    if (shape_distance(hb, hb) != 0.0) return error.IdentityNotZero;
+    if (shape_distance_oriented(hb, hb) != 0.0) return error.OrientedIdentityNotZero;
+
+    // --- RECOGNITION, the decisive crux: the SAME triangle turned 90 degrees, mirrored, and scaled 4x each reads a TINY
+    //     distance to the base, while a genuinely DIFFERENT shape (a plus) reads a LARGE one -- the recognizer no single Hu
+    //     value gives, the fusion of all seven into one comparable number that says "same shape" or "different shape". --------
+    const rot = try rotate90_cw(garden, &base);
+    const hr = try hu_of_image(garden, &rot);
+    const d_rot = shape_distance(hb, hr);
+    if (!(d_rot < same_form)) return error.RotationNotRecognized;
+
+    const mir = try mirror_x(garden, &base);
+    const hf = try hu_of_image(garden, &mir);
+    const d_mir = shape_distance(hb, hf);
+    if (!(d_mir < same_form)) return error.MirrorNotRecognized;
+    // the mirror is not merely close: over the six reflection-invariant invariants it is float-exact zero
+    if (!(d_mir < tight)) return error.MirrorNotInvariant;
+
+    const big = try upscale(garden, &base, 4);
+    const hg = try hu_of_image(garden, &big);
+    const d_scale = shape_distance(hb, hg);
+    if (!(d_scale < same_form)) return error.ScaleNotRecognized;
+
+    // a symmetric plus: a genuinely different form
+    var plus = try make_canvas(garden, 7, 7, 0);
+    set_dot(&plus, 3, 1);
+    set_dot(&plus, 3, 2);
+    set_dot(&plus, 1, 3);
+    set_dot(&plus, 2, 3);
+    set_dot(&plus, 3, 3);
+    set_dot(&plus, 4, 3);
+    set_dot(&plus, 5, 3);
+    set_dot(&plus, 3, 4);
+    set_dot(&plus, 3, 5);
+    const hp = try hu_of_image(garden, &plus);
+    const d_diff = shape_distance(hb, hp);
+    if (!(d_diff > different_form)) return error.DifferentNotSeparated;
+    // the crux in one line: the different shape sits an order of magnitude farther than any same-shape transform
+    if (!(d_diff > d_rot * 10.0)) return error.RecognitionMarginTooThin;
+    if (!(d_diff > d_scale * 10.0)) return error.RecognitionMarginTooThin;
+
+    // --- MIRROR INVARIANCE vs CHIRALITY: the reflection-invariant metric reads a mark and its mirror as the same form
+    //     (distance ~0), while the ORIENTED metric reads them as different (a real nonzero distance from i7's sign flip) --
+    //     the two numbers tell a surface whether handedness matters. ----------------------------------------------------
+    const d_mir_oriented = shape_distance_oriented(hb, hf);
+    if (!(d_mir_oriented > same_form)) return error.ChiralityNotSeen; // the oriented metric SEES the flip
+    if (!(d_mir_oriented > d_mir)) return error.OrientedNotStricter; // and always at least as strict as the blind one
+
+    // --- SYMMETRY: the distance does not depend on argument order (a metric law) --------------------------------------------
+    if (shape_distance(hb, hp) != shape_distance(hp, hb)) return error.NotSymmetric;
+    if (shape_distance_oriented(hb, hf) != shape_distance_oriented(hf, hb)) return error.OrientedNotSymmetric;
+
+    // --- signed_log10: the transform's own laws -- sign preserved, a sub-floor magnitude reads exactly zero ----------------
+    if (signed_log10(0.0) != 0.0) return error.ZeroLogNotZero;
+    if (!(signed_log10(0.001) < 0.0)) return error.SmallLogNotNegative; // log10 of a value under one is negative
+    if (!(signed_log10(1000.0) > 0.0)) return error.LargeLogNotPositive;
+    if (signed_log10(0.5) != -signed_log10(2.0)) return error.SignedLogNotOdd; // L(x) = -L(1/x)
+
+    print("GREEN image-shape-match: read the DISTANCE between two shapes' HU FINGERPRINTS by signed log (the standard shape-comparison transform), one scalar over two HuSet values -- the decisive crux is RECOGNITION: a chiral right triangle turned 90 degrees, mirrored, and scaled up 4x each reads a distance under 0.2 to the base triangle, yet a genuinely different shape (a symmetric plus) reads a distance over 3.0, an order of magnitude farther than any same-shape transform, so one number tells 'same form' from 'different form' where no single Hu value can; the reflection-invariant shape_distance over the six invariants i1..i6 reads a mark and its LEFT-TO-RIGHT MIRROR as float-exact the same form (distance under 1e-8), while shape_distance_oriented over all seven SEES the mirror as different (a real nonzero distance from the seventh invariant's reflection sign-flip), the two numbers telling a surface whether handedness matters; a shape against itself reads distance exactly zero and the distance is symmetric in its two arguments (the metric laws); the signed-log transform preserves each invariant's sign, folds a value under one to a negative log and a value over one to a positive log, is odd under reciprocal, and folds a sub-floor magnitude to exactly zero so a symmetric shape's zero invariants never become a negative infinity\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: shape_match selftest\n", .{});
+    return 1;
+}

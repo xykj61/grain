@@ -1,0 +1,26 @@
+format session-log-v1
+stamp 20260818.173130
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title shape_match -- the Hu-fingerprint distance, a shape recognizer, GREEN
+prompt baton prin recur -- the autonomous loop: read the identity/style canon, REMEMBER, the itineraries, and the running thread; Standfast on reds; take the next agent-doable lap Lindy-first crux-first; send often; stop at the custody gates
+think Oriented first: read KYRI.md and RADIANT_STYLE.md to be Kyri in Radiant Style, then REMEMBER's inner loop and Git nib, REDS, and the top of session-logs/README.md for the running thread.
+think Standfast check -- every living REDS row (80, 83, 84, 85, 86, 87, 81, 82, 78) is closed or released; only #75 rests as custody-gated errata (a deep-debride history rewrite, Keaton's hand). No open agent-closable red, so new constructive work is allowed.
+think The live edge is Season G open-media; the newest rung is image/polygon.rye. Its log named three crux-first agent-doable siblings: an edge-drawing render, a shape-match distance over the Hu vectors, and a Freeman chain code.
+think Lindy-first crux-first among the three: the shape-match distance is highest-Lindy (a whole shape-recognition family descends from it -- the direct payoff of hu_moments, telling whether two shapes are the same regardless of turn, scale, mirror) and the hardest-solvable. The edge-drawing render is a leaf; the chain code a representation. The matcher opens recognition.
+think Read hu_moments.rye for the HuSet interface (i1..i7), moments.rye and the hu_moments witness for the exact sibling style, and image/README.md to keep docs synced.
+think Designed the metric before coding: Hu-matching by signed log sign(h)*log10(|h|) folds the huge dynamic range (i1~0.3, i7~1e-6) onto one comparable scale keeping sign; distance = sum of absolute signed-log differences (the classic OpenCV I2 form) -- a proper metric (zero-exact, symmetric). Two honest metrics from the same fusion: shape_distance over i1..i6 (mirror-invariant), shape_distance_oriented over all seven (chirality-sensitive via i7's reflection sign-flip).
+think Measurement beats memory on the thresholds: built with a temporary diag mode, ran on metal, read the real distances, then set the crux ceilings and removed the scaffolding.
+obs GREEN on the first full metal run, no algorithm reds. The separation is decisive and measured: d_rot=8.3e-15, d_mir=1.2e-14 (float-exact same form over i1..i6), d_scale=0.005 (the discrete-rescaling residue), d_diff=14.4 (the plus, a different shape), d_mir_oriented=11.3 (the chirality signal from i7). The different shape sits ~2800x the scaled distance and past 10x every same-shape transform -- one number tells same form from different where no single Hu value can.
+obs Compose not braid held clean: the module owns only the metric (the signed-log transform and the sum of absolute differences over two HuSet values), reads no pixel, writes no image, touches no codec or color -- the smallest layer above the reader it compares. hu_moments owns the invariants, label owns the LabelMap.
+obs Bounded before a byte: signed logs in f64 exactly as hu_moments reads its invariants so no accumulator wraps; the compared span bounded by the seven-long signature; hu_zero_floor (1e-12) folds a sub-floor magnitude to exactly zero so a symmetric shape's zero invariants never become a negative infinity.
+obs TAME style bans clean, width-check exit 0, plain 7-bit ASCII, living-docs + living-card GREEN. The witness reads its GREEN claim with native `assert selftest.out contains` (REDS #76/#85 loom), never a shell grep.
+obs Council rota lap deep-read active-designing/20260618-184912_growing-a-language.md (item 12) -- stand on proven ground, wear a thin costume, own the core by path, diverge by strengthening; applied directly, shape_match stands on the proven hu_moments and is the thinnest possible layer above it, a pure function over two fingerprints.
+loom witness=shape_match_witness d_rot=8.326672684688674e-15 d_mir=1.176836406102666e-14 d_scale=0.005039349352957467 d_diff=14.415119753349712 d_mir_oriented=11.309413426961433
+file image/shape_match.rye the recognizer: shape_distance / shape_distance_oriented over two HuSet fingerprints by signed-log I2, a pure metric
+file tools/shape_match_witness.rish proves the recognition crux, mirror-invariance vs chirality, the metric laws, and the signed-log laws on metal
+file image/README.md Shape-match (Hu-fingerprint distance) bullet after Polygon (docs-sync)
+file crux/REMEMBER.md live edge + Git nib repointed single-stranded to shape_match; polygon folded to a one-line prior-nib pointer (no cairn -- a one-line repoint)
+recommend keep-going Named next siblings crux-first: an EDGE-DRAWING render (Bresenham lines between polygon vertices, the polygon's own paint), a FREEMAN chain code over the ordered contour ring, a NEAREST-TEMPLATE classifier (argmin over shape_distance); the round top-hat on a real photo wants a fetch gate. Standfast clear. No network, no key, no funds.
