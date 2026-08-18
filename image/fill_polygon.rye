@@ -1,0 +1,315 @@
+//! image/fill_polygon.rye -- fill a POLYGON's whole interior SOLID from its corner vertices: the AREA that completes the OUTLINE
+//! image/edge_draw.rye draws (Season G, the fill companion of the polygon outline).
+//!
+//! Season G (Open Media Primitives) -- image/edge_draw.rye draws the straight EDGE between two vertices as a connected run of
+//! pixels, so four corners come back a drawn quadrilateral OUTLINE: a boundary, hollow inside. A surface that wants to SHOW a
+//! shape as a solid mass -- a filled chart bar, a sprite silhouette, a UI panel, a flat button -- needs the inverse-completion:
+//! the AREA between those edges, every interior pixel lit, not only the ring. This rung reads that by the classic SCANLINE fill
+//! with the EVEN-ODD rule: for each horizontal row of pixels, find where the polygon's edges cross that row, sort the crossings,
+//! and fill the pixels between each consecutive pair -- so a scanline entering the shape and leaving it fills exactly the span
+//! inside. `fill_polygon` composes over image/edge_draw.rye: it draws the closed boundary through `draw_line` (so the outline is
+//! never broken) and adds its OWN interior fill, and the union is the solid shape.
+//!
+//! The decisive fact this fill carries that the outline cannot: AREA, and the EVEN-ODD parity that keeps a concavity hollow. The
+//! subtle crux of a scanline fill is VERTEX PARITY -- a scanline that grazes a vertex must count that vertex once, not twice or
+//! zero times, or a whole row leaks or drops. This rung rules the ambiguity out by construction: it samples each pixel row at its
+//! HALF-INTEGER center (working in DOUBLED coordinates so the sample line is an ODD number while every vertex sits on an EVEN
+//! one), so a scanline NEVER lands exactly on a vertex. No vertex is ever on the sample line, so no crossing is ever ambiguous --
+//! the even-odd count is always exact. A convex rectangle then comes back a solid block where the outline alone was a hollow
+//! frame; a concave U-shape fills its two arms and its joining bar yet leaves the notch between the arms dark, because a scanline
+//! through the arms crosses the boundary FOUR times (two spans) while one through the bar crosses TWICE (one span).
+//!
+//! Compose not braid. This rung OWNS only the scanline crossing computation, the even-odd span fill, and the routing of a
+//! polygon's edges through the boundary drawer. image/edge_draw.rye owns the line rasterization; image/polygon.rye owns the
+//! vertices and image/contour.rye their `Point` type; image/qoi.rye owns the RGBA buffer. No gather, no blend, no codec, no color
+//! math beyond writing a caller's chosen RGBA. Every allocation and loop names a bound: the canvas by the pixel ceiling, the
+//! per-row crossing scratch by the vertex count (at most one crossing per edge), the scanline loop by the canvas height. A zero
+//! canvas refuses `EmptySource` and a vertex outside the canvas refuses `VertexOutOfBounds`, each having filled nothing. No
+//! network, no key, no funds -- the solid a surface fills the moment it has a shape's corners in hand, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/fill_polygon.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const contour = @import("contour.rye");
+const polygon = @import("polygon.rye");
+const edge_draw = @import("edge_draw.rye");
+
+pub const fill_polygon_version = "20260818.175915";
+
+pub const FillPolygonError = error{
+    EmptySource,
+    VertexOutOfBounds,
+    LineTooLong,
+};
+
+/// The default ink a fill lays down -- the same opaque white the outline draws in, so boundary and interior read as one solid.
+pub const white: [4]u8 = [_]u8{ 255, 255, 255, 255 };
+
+/// Write one RGBA pixel at (x, y) of `img`. The write is bounds-asserted; callers guarantee the coordinate is in-canvas.
+fn put_pixel(img: *qoi.Pixmap, x: u32, y: u32, rgba: [4]u8) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = rgba[0];
+    img.pixels[di + 1] = rgba[1];
+    img.pixels[di + 2] = rgba[2];
+    img.pixels[di + 3] = rgba[3];
+}
+
+/// The x where the edge from (ax, ay) to (bx, by) crosses the doubled scanline `yc` (an odd number), or null when the edge does
+/// not straddle it. Working in DOUBLED y (each vertex y multiplied by two) makes `yc` odd while every vertex y is even, so a
+/// crossing is never exactly at a vertex -- the parity is unambiguous, and a horizontal edge (equal doubled y) never crosses.
+fn crossing_x(ax: u32, ay: u32, bx: u32, by: u32, yc: i64) ?i64 {
+    const ya: i64 = 2 * @as(i64, ay);
+    const yb: i64 = 2 * @as(i64, by);
+    // order the endpoints low-to-high in y so the straddle test and the interpolation share one orientation.
+    const yl: i64 = if (ya < yb) ya else yb;
+    const yu: i64 = if (ya < yb) yb else ya;
+    const xl: i64 = if (ya < yb) @as(i64, ax) else @as(i64, bx);
+    const xu: i64 = if (ya < yb) @as(i64, bx) else @as(i64, ax);
+    // a horizontal edge (yl == yu) never straddles an odd scanline; a real crossing needs yl < yc < yu strictly.
+    if (yc <= yl or yc >= yu) return null;
+    const den: i64 = yu - yl; // > 0 by the straddle test
+    // invariant: the sample sits strictly inside the edge's vertical span.
+    assert(den > 0);
+    const t: i64 = yc - yl; // 0 < t < den
+    // x = xl + (xu - xl) * t / den, rounded to nearest (floor of the half-shifted numerator, den > 0).
+    return xl + @divFloor(2 * (xu - xl) * t + den, 2 * den);
+}
+
+/// Insertion-sort the first `n` crossings ascending -- a scanline holds at most one crossing per edge, so `n` is tiny and bounded
+/// by the vertex count; insertion sort is the honest small-`n` choice.
+fn sort_crossings(xs: []i64, n: usize) void {
+    // invariant: the count to sort never exceeds the scratch length.
+    assert(n <= xs.len);
+    var i: usize = 1;
+    while (i < n) : (i += 1) {
+        const key = xs[i];
+        var j: usize = i;
+        while (j > 0 and xs[j - 1] > key) : (j -= 1) {
+            xs[j] = xs[j - 1];
+        }
+        xs[j] = key;
+    }
+}
+
+/// Fill a polygon SOLID white on an opaque-black canvas of `dst_w` x `dst_h`: draw the closed boundary through `edge_draw`, then
+/// fill each interior row's even-odd spans, so a shape's corner vertices come back a filled mass. The caller owns the returned
+/// pixmap. Composes `edge_draw.draw_line` for the boundary and owns the scanline interior fill.
+pub fn fill_polygon(allocator: std.mem.Allocator, poly: *const polygon.Polygon, dst_w: u32, dst_h: u32) !qoi.Pixmap {
+    // invariant: a real canvas has extent within the image module's named pixel ceiling.
+    if (dst_w == 0 or dst_h == 0) return error.EmptySource;
+    const n: u64 = @as(u64, dst_w) * @as(u64, dst_h);
+    assert(n <= @as(u64, qoi.qoi_max_pixels));
+    // invariant: a polygon to fill has at least its start vertex, and never more than the pixel ceiling holds.
+    assert(poly.vertices.len >= 1);
+    assert(poly.vertices.len <= @as(usize, qoi.qoi_max_pixels));
+
+    const out = try allocator.alloc(u8, @as(usize, @intCast(n)) * 4);
+    var i: usize = 0;
+    while (i < out.len) : (i += 4) {
+        out[i] = 0;
+        out[i + 1] = 0;
+        out[i + 2] = 0;
+        out[i + 3] = 255; // opaque black ground
+    }
+    var img = qoi.Pixmap{ .width = dst_w, .height = dst_h, .channels = 4, .colorspace = 0, .pixels = out };
+
+    // draw the closed boundary first -- it validates every vertex (VertexOutOfBounds) and guarantees an unbroken outline the
+    // half-integer scanline fill would otherwise leave short on the top and bottom rows.
+    if (poly.vertices.len == 1) {
+        const p = poly.vertices[0];
+        if (p.x >= dst_w or p.y >= dst_h) return error.VertexOutOfBounds;
+        put_pixel(&img, p.x, p.y, white);
+        return img;
+    }
+    var v: usize = 0;
+    while (v < poly.vertices.len) : (v += 1) {
+        const a = poly.vertices[v];
+        const b = poly.vertices[(v + 1) % poly.vertices.len]; // the last edge closes back to the first vertex
+        try edge_draw.draw_line(&img, a.x, a.y, b.x, b.y, white);
+    }
+    // a one- or two-vertex ring has no interior; the boundary is the whole figure.
+    if (poly.vertices.len < 3) return img;
+
+    // scratch for the crossings of a single scanline: at most one per edge, so the vertex count bounds it.
+    const xs = try allocator.alloc(i64, poly.vertices.len);
+
+    var y: u32 = 0;
+    while (y < dst_h) : (y += 1) {
+        const yc: i64 = 2 * @as(i64, y) + 1; // sample the pixel row at its half-integer center -- odd in doubled coordinates
+        var count: usize = 0;
+        var e: usize = 0;
+        while (e < poly.vertices.len) : (e += 1) {
+            const a = poly.vertices[e];
+            const b = poly.vertices[(e + 1) % poly.vertices.len];
+            if (crossing_x(a.x, a.y, b.x, b.y, yc)) |x| {
+                // invariant: the scratch never overflows -- at most one crossing per edge.
+                assert(count < xs.len);
+                xs[count] = x;
+                count += 1;
+            }
+        }
+        sort_crossings(xs, count);
+        // even-odd: fill the pixels between each consecutive pair of crossings (span in, span out).
+        var s: usize = 0;
+        while (s + 1 < count) : (s += 2) {
+            var xa: i64 = xs[s];
+            var xb: i64 = xs[s + 1];
+            if (xa < 0) xa = 0;
+            if (xb > @as(i64, dst_w) - 1) xb = @as(i64, dst_w) - 1;
+            var x: i64 = xa;
+            while (x <= xb) : (x += 1) {
+                put_pixel(&img, @intCast(x), y, white);
+            }
+        }
+    }
+    return img;
+}
+
+// --- selftest: the interior crux vs the outline, the even-odd concavity crux, refusals, round-trip, determinism ----------------
+
+/// True when a foreground pixel sits at (x, y) of `img` -- read through the red channel like the family's binary door.
+fn is_set(img: *const qoi.Pixmap, x: u32, y: u32) bool {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    return img.pixels[(@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4] >= 128;
+}
+
+/// Count the lit pixels of a canvas -- the family's small tally, for asserting an exact filled-pixel count.
+fn lit_count(img: *const qoi.Pixmap) u32 {
+    var c: u32 = 0;
+    var y: u32 = 0;
+    while (y < img.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x < img.width) : (x += 1) {
+            if (is_set(img, x, y)) c += 1;
+        }
+    }
+    return c;
+}
+
+/// Count the lit pixels of one row -- the per-scanline span tally.
+fn row_lit(img: *const qoi.Pixmap, y: u32) u32 {
+    var c: u32 = 0;
+    var x: u32 = 0;
+    while (x < img.width) : (x += 1) {
+        if (is_set(img, x, y)) c += 1;
+    }
+    return c;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- the RECTANGLE: four corners fill a SOLID block -- the interior lit where the OUTLINE alone left it dark (the AREA crux)
+    var verts = [_]contour.Point{
+        .{ .x = 1, .y = 1 },
+        .{ .x = 6, .y = 1 },
+        .{ .x = 6, .y = 4 },
+        .{ .x = 1, .y = 4 },
+    };
+    const rectp = polygon.Polygon{ .source_label = 1, .vertices = verts[0..] };
+    const rect = try fill_polygon(garden, &rectp, 10, 8);
+    // every pixel of the closed rectangle 1..6 x 1..4 is lit -- 6 * 4 = 24, a solid block, not a hollow frame
+    if (lit_count(&rect) != 24) return error.RectSolidCount;
+    // the interior pixel (3,2) is LIT here where paint_polygon (the outline) leaves it dark -- the decisive fill-vs-outline fact
+    if (!is_set(&rect, 3, 2)) return error.RectInteriorDark;
+    // spot the boundary too: all four corners and a mid-edge pixel
+    if (!is_set(&rect, 1, 1) or !is_set(&rect, 6, 1) or !is_set(&rect, 6, 4) or !is_set(&rect, 1, 4)) return error.RectCorners;
+    // outside the shape stays ground
+    if (is_set(&rect, 0, 0) or is_set(&rect, 7, 4) or is_set(&rect, 1, 5)) return error.RectBleed;
+
+    // cross-check the fill against the outline: paint the same corners as an OUTLINE, and prove the fill is a strict superset
+    // whose interior the outline lacks -- the compose-not-braid boundary between the two rungs made concrete.
+    const frame = try edge_draw.paint_polygon(garden, &rectp, 10, 8);
+    if (is_set(&frame, 3, 2)) return error.OutlineShouldBeHollow; // the outline's interior is dark
+    var py: u32 = 0;
+    while (py < 8) : (py += 1) {
+        var px: u32 = 0;
+        while (px < 10) : (px += 1) {
+            if (is_set(&frame, px, py) and !is_set(&rect, px, py)) return error.FillNotSuperset; // every outline pixel is filled too
+        }
+    }
+
+    // --- the EVEN-ODD CONCAVITY crux: a U-shape fills its two arms and its joining bar, yet leaves the notch between the arms
+    //     dark -- a scanline through the arms crosses the boundary FOUR times (two spans), one through the bar TWICE (one span) --
+    var uverts = [_]contour.Point{
+        .{ .x = 0, .y = 0 },
+        .{ .x = 2, .y = 0 },
+        .{ .x = 2, .y = 4 }, // down the left inner wall of the notch
+        .{ .x = 6, .y = 4 }, // across the notch bottom
+        .{ .x = 6, .y = 0 }, // up the right inner wall
+        .{ .x = 8, .y = 0 },
+        .{ .x = 8, .y = 6 },
+        .{ .x = 0, .y = 6 },
+    };
+    const up = polygon.Polygon{ .source_label = 2, .vertices = uverts[0..] };
+    const u = try fill_polygon(garden, &up, 9, 7);
+    // a row through the ARMS (y = 2) fills two spans x=0..2 and x=6..8, leaving the notch x=3..5 dark -- SIX lit, a gap between
+    if (row_lit(&u, 2) != 6) return error.UArmRowCount;
+    if (!is_set(&u, 0, 2) or !is_set(&u, 2, 2) or !is_set(&u, 6, 2) or !is_set(&u, 8, 2)) return error.UArmWalls;
+    if (is_set(&u, 3, 2) or is_set(&u, 4, 2) or is_set(&u, 5, 2)) return error.UNotchLeaked; // the notch stays hollow
+    // a row through the joining BAR (y = 5) fills one solid span x=0..8 -- NINE lit, no gap
+    if (row_lit(&u, 5) != 9) return error.UBarRowCount;
+    // the whole solid U is the 9x7 field minus the 3x4 notch (x=3..5, y=0..3): 63 - 12 = 51 lit
+    if (lit_count(&u) != 51) return error.USolidCount;
+
+    // --- a TRIANGLE fills its sloped interior: the apex row is a point, a lower row a wide span (the scanline widens with y) ----
+    var tverts = [_]contour.Point{
+        .{ .x = 4, .y = 0 }, // apex
+        .{ .x = 8, .y = 6 },
+        .{ .x = 0, .y = 6 }, // base
+    };
+    const tp = polygon.Polygon{ .source_label = 3, .vertices = tverts[0..] };
+    const tri = try fill_polygon(garden, &tp, 9, 7);
+    // the base row (y = 6) spans the full width x=0..8, nine lit; a row near the apex is far narrower
+    if (row_lit(&tri, 6) != 9) return error.TriBaseCount;
+    if (row_lit(&tri, 1) >= row_lit(&tri, 5)) return error.TriNotWidening; // the span grows from apex to base
+    if (is_set(&tri, 0, 0) or is_set(&tri, 8, 0)) return error.TriApexBleed; // the top corners stay ground
+
+    // --- the QOI ROUND-TRIP: the filled shape survives the open codec byte-for-byte -----------------------------------------
+    const cap = qoi.encoded_bound(u.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&u, dst);
+    const backimg = try qoi.decode(garden, dst[0..enc.len]);
+    if (!backimg.same_bytes(&u)) return error.RoundTripBytes;
+
+    // --- REFUSALS by name, having filled nothing --------------------------------------------------------------------------
+    if (fill_polygon(garden, &rectp, 0, 5)) |_| return error.EmptyNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+    var oobverts = [_]contour.Point{
+        .{ .x = 1, .y = 1 },
+        .{ .x = 20, .y = 1 }, // outside a 5x5 canvas
+        .{ .x = 3, .y = 3 },
+    };
+    const oobp = polygon.Polygon{ .source_label = 4, .vertices = oobverts[0..] };
+    if (fill_polygon(garden, &oobp, 5, 5)) |_| return error.OobNotRefused else |err| {
+        if (err != error.VertexOutOfBounds) return error.WrongOobError;
+    }
+
+    // --- DETERMINISM: the same call fills the same pixels ---------------------------------------------------------------
+    const d1 = try fill_polygon(garden, &up, 9, 7);
+    const d2 = try fill_polygon(garden, &up, 9, 7);
+    var k: usize = 0;
+    while (k < d1.pixels.len) : (k += 1) {
+        if (d1.pixels[k] != d2.pixels[k]) return error.NotDeterministic;
+    }
+
+    print("GREEN image-fill-polygon: fill a POLYGON's whole interior SOLID from its corner vertices by the SCANLINE fill with the EVEN-ODD rule -- the AREA that completes the OUTLINE image/edge_draw.rye draws; for each pixel row, find where the polygon's edges cross it, sort the crossings, and fill the span between each consecutive pair, sampling each row at its HALF-INTEGER center in DOUBLED coordinates so a scanline NEVER lands on a vertex and the even-odd parity is always exact; four corner vertices fill a SOLID 6x4 block (24 pixels) where the outline alone was a hollow frame -- the interior pixel (3,2) LIT where paint_polygon leaves it dark, and the fill a strict superset of the outline whose interior the outline lacks (compose not braid: edge_draw draws the boundary, this rung owns the interior); the decisive EVEN-ODD CONCAVITY crux is a U-shape that fills its two arms and its joining bar yet leaves the notch between the arms dark -- a scanline through the arms crosses the boundary FOUR times (two spans, six lit with a gap) while one through the bar crosses TWICE (one span, nine solid), the whole solid U the field minus its notch (51 pixels); a triangle fills a sloped interior whose span WIDENS from apex to base; the filled shape round-trips the open QOI codec byte-for-byte; a zero-dimension canvas refuses EmptySource and a vertex outside the canvas refuses VertexOutOfBounds having filled nothing; the same call fills deterministically\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: fill_polygon selftest\n", .{});
+    return 1;
+}

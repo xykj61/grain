@@ -1,0 +1,43 @@
+# tools/fill_polygon_witness.rish -- fill a POLYGON's whole interior SOLID from its corner vertices, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/edge_draw.rye draws the straight EDGE between two vertices as a connected run, so four
+# corners come back a drawn quadrilateral OUTLINE: a boundary, hollow inside. A surface that wants a shape as a solid mass -- a
+# filled chart bar, a sprite silhouette, a UI panel -- needs the inverse-completion: the AREA between those edges, every interior
+# pixel lit. This rung reads that by the classic SCANLINE fill with the EVEN-ODD rule: for each pixel row, find where the polygon's
+# edges cross it, sort the crossings, and fill the pixels between each consecutive pair. Compose not braid: fill_polygon draws the
+# closed boundary through edge_draw.draw_line (so the outline is never broken) and owns its interior fill; polygon owns the
+# vertices, contour the Point type, qoi the RGBA buffer. No gather, no blend, no codec, no color math beyond a caller's RGBA.
+#
+# The crux this witness proves on metal: the fill carries AREA the outline cannot, and the even-odd parity keeps a concavity
+# hollow. The subtle danger of a scanline fill is VERTEX PARITY -- a scanline grazing a vertex must count it once, not twice or
+# zero. This rung rules the ambiguity out by construction: it samples each pixel row at its HALF-INTEGER center in DOUBLED
+# coordinates, so the sample line is odd while every vertex sits on an even one and no scanline ever lands on a vertex. A rectangle
+# then fills a SOLID block where the outline alone was a hollow frame (interior pixel (3,2) lit where paint_polygon leaves it
+# dark), a concave U-shape fills its two arms and its joining bar yet leaves the notch between the arms dark (a scanline through
+# the arms crosses the boundary four times -- two spans -- while one through the bar crosses twice -- one span), and a triangle
+# fills a sloped interior whose span widens from apex to base. The filled shape round-trips the open QOI codec byte-for-byte; a
+# zero-dimension canvas refuses EmptySource and a vertex outside the canvas refuses VertexOutOfBounds having filled nothing. No
+# network, no key, no funds -- the solid a surface fills the moment it has a shape's corners in hand, on our own open geometry.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/fill_polygon_witness.rish
+
+say "fill_polygon: Language EN -- Season G fill over a polygon's vertices; fill_polygon draws the closed boundary through edge_draw.draw_line and fills each interior row's even-odd spans, so a shape's corners come back a solid mass, the AREA that completes the outline."
+say "fill_polygon: Style Radiant -- compose not braid: owns only the scanline crossing computation and the even-odd span fill; edge_draw draws the boundary, polygon owns the vertices, contour the Point type, qoi the RGBA buffer. No gather, no blend, no codec, no color math beyond a caller's chosen RGBA."
+say "fill_polygon: Lens TAME -- half-integer scanline sampling in doubled coordinates rules out vertex-parity ambiguity by construction; every allocation and loop names a bound (the canvas by the pixel ceiling, the per-row crossing scratch by the vertex count, the scanline loop by the height); a zero-dimension canvas refuses EmptySource and a vertex outside the canvas refuses VertexOutOfBounds; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/fill_polygon"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/fill_polygon.rye -femit-bin=${bin}"]
+assert build.ok else "fill_polygon: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "fill_polygon: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "fill_polygon: ${out}"
+
+assert selftest.out contains "GREEN image-fill-polygon" else "fill_polygon: selftest did not print the GREEN line"
+
+say "fill_polygon: GREEN -- four corners fill a solid 6x4 block (24 pixels) where the outline was a hollow frame, the fill a strict superset of the outline whose interior the outline lacks; a concave U fills its two arms and joining bar yet leaves the notch dark (two spans through the arms, one through the bar, 51 solid); a triangle's span widens from apex to base; the filled shape round-trips QOI byte-for-byte; the refusals fire by name, on metal."
