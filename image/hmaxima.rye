@@ -1,0 +1,346 @@
+//! image/hmaxima.rye -- SUPPRESS THE SHALLOW PEAKS of a distance field so a lumpy single object stops OVER-SEGMENTING: the
+//! h-maxima transform by grayscale geodesic reconstruction, the named horizon image/segment.rye composes toward (Season G, the
+//! crux-first remedy the auto-watershed capstone named for its one honest weakness).
+//!
+//! Season G (Open Media Primitives) -- image/segment.rye segments a bare mask by seeding a watershed from the REGIONAL MAXIMA of
+//! the distance field: one marker per distance peak. That is exactly right when every peak is a real object, and its own doc names
+//! the one place it over-reaches -- a SINGLE object with several distance peaks (a star, an L, a lumpy boundary) seeds one marker
+//! per peak and comes back cut into pieces it should not be. This rung is the textbook remedy: keep only the SIGNIFICANT peaks and
+//! merge the shallow ones, so segment seeds one marker per real object rather than one per bump.
+//!
+//! The tool is the H-MAXIMA TRANSFORM (Soille, Morphological Image Analysis). A peak's PROMINENCE (its dynamic) is how far it rises
+//! above the highest saddle that connects it to a taller peak -- a bump on the shoulder of a mountain has small prominence, the
+//! mountain's own summit has large prominence. HMAX_h suppresses every maximum whose prominence is below the threshold `h`: it
+//! lowers the marker field to `distance - h` (clamped at 0), then reconstructs it back up UNDER the original field by GEODESIC
+//! DILATION -- grow the marker by a 3x3 flat dilation, capped pixelwise at the original field, repeated until it stops changing.
+//! A shallow peak (prominence < h) is absorbed by the reconstruction and vanishes as a separate maximum; a tall peak survives,
+//! lowered by h yet still a distinct crest. The extended maxima of HMAX_h are then exactly the peaks worth seeding.
+//!
+//! Compose not braid. This rung OWNS only the h-maxima transform itself -- the marker subtraction and the geodesic reconstruction
+//! by dilation (the 3x3 max gather, the pixelwise cap at the mask, the iterate-to-stability). image/distance.rye owns the terrain
+//! type and its ceiling; image/medial_axis.rye reads the regional maxima; image/label.rye labels the marker components and owns the
+//! marker/output type; image/segment.rye's `markers_of_field` seeds from a field; image/watershed.rye owns the flood. `markers_hmax`
+//! and `segment_hmax` are the same pipelines segment already runs, with this suppression spliced in before the seeding. No new
+//! flood, no new codec, no new color, no new labeler. No network, no key, no funds -- the day a surface hands a bumpy blob and asks
+//! how many real objects, answered on our own open geometry.
+//!
+//! The honest bound, named plainly: `h` is a knob the caller sets to the smallest prominence that counts as a real object. Too
+//! small and a bumpy object still over-segments; too large and two genuine objects merge. There is no single right `h` for every
+//! image -- it is the parameter that turns raw regional-maxima seeding into object-aware seeding, and the caller owns the choice.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/hmaxima.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const branch = @import("branch.rye");
+const distance = @import("distance.rye");
+const medial_axis = @import("medial_axis.rye");
+const label = @import("label.rye");
+const segment = @import("segment.rye");
+const watershed = @import("watershed.rye");
+
+pub const hmaxima_version = "20260818.151415";
+
+/// The most pixels a field may hold -- the image module's own pixel ceiling, shared with every rung this composes over.
+pub const hmaxima_max_pixels: u32 = qoi.qoi_max_pixels;
+
+/// The eight neighbor offsets split into the raster CAUSAL half (already visited on a forward sweep: W, NW, N, NE) and the
+/// ANTICAUSAL half (visited on a backward sweep: E, SE, S, SW). Vincent's hybrid reconstruction reads one half per pass, so the
+/// marker floods across the whole grid in both directions each round.
+const causal_dx = [4]i32{ -1, -1, 0, 1 };
+const causal_dy = [4]i32{ 0, -1, -1, -1 };
+const anti_dx = [4]i32{ 1, 1, 0, -1 };
+const anti_dy = [4]i32{ 0, 1, 1, 1 };
+
+pub const HmaximaError = error{
+    EmptySource,
+};
+
+/// Subtract `h` from `d`, clamped at 0 -- the marker level for the h-maxima transform. A peak of depth `d` starts its
+/// reconstruction from `d - h`, so a peak shallower than `h` starts at 0 and is absorbed by the flood-up that follows.
+fn sub_clamp(d: u32, h: u32) u32 {
+    // invariant: the result never rises above the input, so the marker sits at or below the mask everywhere.
+    const out: u32 = if (d > h) d - h else 0;
+    assert(out <= d);
+    return out;
+}
+
+/// The larger of the marker value and its already-visited neighbors on `offs`, capped at the mask -- one geodesic-dilation step for
+/// one pixel. `j` is the reconstructing marker, `mask` the original field it may never exceed. Off-image neighbors are skipped
+/// (they contribute nothing to a max), so a border pixel grows only from its real neighbors.
+fn relax_dilate(j: []const u32, mask_val: u32, w: u32, h: u32, x: u32, y: u32, dxs: [4]i32, dys: [4]i32) u32 {
+    // invariant: the pixel's own marker never exceeds its mask, so the cap can only hold or lower the grown value.
+    const self_i: usize = @as(usize, y) * @as(usize, w) + @as(usize, x);
+    assert(j[self_i] <= mask_val);
+    var m: u32 = j[self_i];
+    var k: usize = 0;
+    while (k < 4) : (k += 1) {
+        const nx: i64 = @as(i64, x) + @as(i64, dxs[k]);
+        const ny: i64 = @as(i64, y) + @as(i64, dys[k]);
+        if (nx < 0 or ny < 0) continue;
+        if (nx >= @as(i64, w) or ny >= @as(i64, h)) continue;
+        const ni: usize = @as(usize, @intCast(ny)) * @as(usize, w) + @as(usize, @intCast(nx));
+        if (j[ni] > m) m = j[ni];
+    }
+    // invariant: the grown marker is capped at the mask, so reconstruction never rises above the original field.
+    return if (m > mask_val) mask_val else m;
+}
+
+/// One full pass of geodesic dilation over `j` under `mask`: forward raster relaxing against the causal neighbors, then backward
+/// raster relaxing against the anticausal neighbors. Returns whether any pixel changed, so the caller iterates to stability.
+fn dilate_pass(j: []u32, mask: []const u32, w: u32, h: u32) bool {
+    // invariant: the two buffers cover the same grid in lockstep.
+    assert(j.len == mask.len);
+    assert(j.len == @as(usize, w) * @as(usize, h));
+    var changed: bool = false;
+
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const pi: usize = @as(usize, y) * @as(usize, w) + @as(usize, x);
+            const grown = relax_dilate(j, mask[pi], w, h, x, y, causal_dx, causal_dy);
+            if (grown != j[pi]) {
+                j[pi] = grown;
+                changed = true;
+            }
+        }
+    }
+
+    y = h;
+    while (y > 0) {
+        y -= 1;
+        var x: u32 = w;
+        while (x > 0) {
+            x -= 1;
+            const pi: usize = @as(usize, y) * @as(usize, w) + @as(usize, x);
+            const grown = relax_dilate(j, mask[pi], w, h, x, y, anti_dx, anti_dy);
+            if (grown != j[pi]) {
+                j[pi] = grown;
+                changed = true;
+            }
+        }
+    }
+    return changed;
+}
+
+/// The largest finite depth present in a field buffer -- the ramp ceiling, ignoring the `dist_far` sentinel exactly as
+/// image/distance.rye does, and 0 when the buffer holds no foreground.
+fn max_finite(buf: []const u32) u32 {
+    var m: u32 = 0;
+    var i: usize = 0;
+    while (i < buf.len) : (i += 1) {
+        const v = buf[i];
+        if (v != distance.dist_far and v > m) m = v;
+    }
+    return m;
+}
+
+/// The H-MAXIMA transform of `dm`: lower the field to `distance - h` (clamped at 0), then reconstruct it back up UNDER the original
+/// field by geodesic dilation, so every peak shallower than `h` is absorbed and every deeper peak survives lowered by `h`. Returns
+/// a fresh DistanceMap the caller owns, over the same grid. Its regional maxima are the SIGNIFICANT peaks. `dm` is read-only; a
+/// zero-size field refuses `EmptySource` by name before any allocation.
+pub fn hmaxima(allocator: std.mem.Allocator, dm: *const distance.DistanceMap, h: u32) !distance.DistanceMap {
+    // invariant: a real field has extent on both axes; a zero-size field has no peaks to suppress.
+    if (dm.width == 0 or dm.height == 0) return error.EmptySource;
+
+    const w: u32 = dm.width;
+    const ht: u32 = dm.height;
+    const npix: u64 = @as(u64, w) * @as(u64, ht);
+    // invariant: the field stays within the image module's named pixel ceiling.
+    assert(npix <= hmaxima_max_pixels);
+    const count_pixels: u32 = @intCast(npix);
+    // invariant: the distance buffer holds exactly one measure per pixel.
+    assert(dm.dist.len == @as(usize, count_pixels));
+
+    const j = try allocator.alloc(u32, @as(usize, count_pixels));
+
+    // --- the marker: every peak starts h below its depth, clamped at 0, so a shallow peak starts flat with the ground ----------
+    var i: usize = 0;
+    while (i < @as(usize, count_pixels)) : (i += 1) j[i] = sub_clamp(dm.dist[i], h);
+
+    // --- reconstruct by dilation under the original field until a full pass changes nothing. Each productive pass raises at least
+    //     one pixel by at least 1 and the field is bounded above by the mask, so it converges; the pass ceiling is a loud guard --
+    const pass_cap: u32 = count_pixels + 2;
+    var passes: u32 = 0;
+    var changed: bool = true;
+    while (changed and passes < pass_cap) : (passes += 1) {
+        changed = dilate_pass(j, dm.dist, w, ht);
+    }
+    // invariant: reconstruction reached a fixpoint before the ceiling -- a stable field, never a truncated one.
+    assert(!changed);
+
+    return distance.DistanceMap{ .width = w, .height = ht, .max_distance = max_finite(j), .dist = j };
+}
+
+/// Seed watershed markers from the SIGNIFICANT peaks of a field: suppress the shallow peaks with `hmaxima`, then read the regional
+/// maxima of the survivor exactly as image/segment.rye seeds from any field. Returns the marker LabelMap -- one basin per real
+/// peak, seated at its deepest place. `dm` is read-only.
+pub fn markers_hmax(allocator: std.mem.Allocator, dm: *const distance.DistanceMap, h: u32) !label.LabelMap {
+    // invariant: a real field holds one distance per pixel (a zero-size field refuses inside hmaxima by name).
+    assert(dm.dist.len == @as(usize, dm.width) * @as(usize, dm.height));
+    const suppressed = try hmaxima(allocator, dm, h);
+    // invariant: suppression keeps the field's grid, so every marker still names a real field pixel.
+    assert(suppressed.width == dm.width);
+    assert(suppressed.height == dm.height);
+    return segment.markers_of_field(allocator, &suppressed);
+}
+
+/// Segment a bare mask into its REAL objects end to end, with shallow-peak suppression spliced in: distance field -> h-maxima
+/// suppression -> significant-peak markers -> Meyer's flood (image/watershed.rye). Where image/segment.rye seeds one marker per
+/// raw distance peak, this seeds one per significant peak, so a lumpy single object comes back whole rather than over-cut. The
+/// distance field is built ONCE. `src` is read-only; a field with no surviving peak refuses `NoMarkers` by name in the flood.
+pub fn segment_hmax(allocator: std.mem.Allocator, src: *const qoi.Pixmap, h: u32) !label.LabelMap {
+    // invariant: a real source holds one RGBA pixel per pixel -- the Pixmap contract, checked before any allocation.
+    assert(src.pixels.len == @as(usize, src.width) * @as(usize, src.height) * 4);
+
+    const dm = try distance.distance_chamfer(allocator, src); // the terrain, built once
+    const markers = try markers_hmax(allocator, &dm, h); // significant-peak markers over that terrain
+    // invariant: the markers and the terrain share the field's grid, so the flood can seat each basin.
+    assert(markers.width == dm.width);
+    assert(markers.height == dm.height);
+    return watershed.watershed(allocator, &dm, &markers); // Meyer's ordered flood -> basins + watershed lines
+}
+
+// --- selftest: the OVER-SEGMENTATION crux (one object, two unequal peaks -> raw seeds two, suppressed seeds one), the h=0
+//     identity, the field-cap invariant, the end-to-end segment_hmax, the refusals, round-trip via distance.colorize, determinism -
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one pixel's RGBA at (x, y) -- the small writer the test shapes share.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+/// Paint a filled `w` x `h` white block with its top-left corner at (x0, y0) -- the object the test shapes are built from.
+fn paint_block(img: *qoi.Pixmap, x0: u32, y0: u32, w: u32, h: u32, c: color.Rgba) void {
+    var dy: u32 = 0;
+    while (dy < h) : (dy += 1) {
+        var dx: u32 = 0;
+        while (dx < w) : (dx += 1) set_pixel(img, x0 + dx, y0 + dy, c);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    // --- the OVER-SEGMENTATION crux (the reason this rung exists): a SINGLE object with two UNEQUAL distance peaks. A 5x5 block
+    //     (cols 1..5, rows 1..5; center (3,3) reads deep) fused by a one-pixel neck at (6,3) to a 3x3 block (cols 7..9, rows 2..4;
+    //     center (8,3) reads shallower). It is ONE connected component, yet the raw distance field has TWO peaks, so image/segment.rye
+    //     seeds TWO markers and over-cuts it. H-maxima suppression at a threshold above the shallow peak's prominence keeps only the
+    //     deep peak, so it seeds ONE marker and the object comes back whole ------------------------------------------------------
+    var lumpy = try make_canvas(garden, 12, 8, black);
+    paint_block(&lumpy, 1, 1, 5, 5, white); // the big lobe: 5x5, deep center at (3,3)
+    paint_block(&lumpy, 7, 2, 3, 3, white); // the small lobe: 3x3, shallower center at (8,3)
+    set_pixel(&lumpy, 6, 3, white); // the one-pixel neck fusing the two lobes into a single object
+
+    // it is ONE 8-connected component -- the very thing raw segmentation over-cuts
+    const comp = try label.label_components(garden, &lumpy);
+    if (comp.count != 1) return error.LumpyNotOneComponent;
+
+    // the RAW markers (no suppression) find TWO peaks -- the over-segmentation
+    const dm = try distance.distance_chamfer(garden, &lumpy);
+    const raw = try segment.markers_of_field(garden, &dm);
+    if (raw.count != 2) return error.RawNotTwoPeaks;
+
+    // H-MAXIMA suppression at h=7 (measured on this fixture: the two peaks persist through h=5, collapse to one at h=6..8, and
+    // vanish at h>=9, so h=7 sits cleanly above the shallow lobe's prominence and below the deep lobe's) keeps ONE significant peak
+    const suppressed = try hmaxima(garden, &dm, 7);
+    const merged = try segment.markers_of_field(garden, &suppressed);
+    if (merged.count != 1) return error.SuppressedNotOnePeak;
+    if (merged.count >= raw.count) return error.SuppressionDidNotMerge; // strictly fewer -- the whole point
+    if (merged.at(3, 3) == 0) return error.DeepPeakNotKept; // the surviving marker sits on the deep lobe's center
+
+    // markers_hmax is exactly that pipeline in one call, and segment_hmax runs it end to end off the bare mask
+    const mh = try markers_hmax(garden, &dm, 7);
+    if (mh.count != 1) return error.MarkersHmaxNotOne;
+    const seg_h = try segment_hmax(garden, &lumpy, 7);
+    if (seg_h.count != 1) return error.SegmentHmaxNotWhole; // the lumpy object comes back ONE basin, not two
+    const seg_raw = try segment.segment(garden, &lumpy);
+    if (seg_raw.count != 2) return error.RawSegmentNotTwo; // and the raw segment DOES over-cut it, so the fix is real
+    var barpi: usize = 0;
+    while (barpi < seg_h.labels.len) : (barpi += 1) {
+        if (watershed.is_watershed(seg_h.labels[barpi])) return error.SuppressedStillCut; // no watershed line -- nothing was split
+    }
+
+    // --- the h=0 IDENTITY: suppressing by 0 removes no peak, so the field is unchanged byte-for-byte and its markers equal the raw
+    const identity = try hmaxima(garden, &dm, 0);
+    if (identity.dist.len != dm.dist.len) return error.IdentityWrongSize;
+    var ii: usize = 0;
+    while (ii < dm.dist.len) : (ii += 1) {
+        if (identity.dist[ii] != dm.dist[ii]) return error.IdentityChangedField; // h=0 is the identity transform
+    }
+    const id_marks = try segment.markers_of_field(garden, &identity);
+    if (id_marks.count != raw.count) return error.IdentityMarkersDiffer;
+
+    // --- the FIELD-CAP invariant: suppression never raises a value above the original field, and background stays 0 -----------
+    var ci: usize = 0;
+    while (ci < dm.dist.len) : (ci += 1) {
+        if (suppressed.dist[ci] > dm.dist[ci]) return error.SuppressionRoseAboveMask; // reconstruction is bounded by the mask
+        if (dm.dist[ci] == 0 and suppressed.dist[ci] != 0) return error.BackgroundLit; // background carries no peak
+    }
+
+    // --- COLORIZE the suppressed field with distance.colorize (compose not braid -- no new render) and round-trip it -----------
+    const painted = try distance.colorize(garden, &suppressed);
+    if (!(color.Rgba{ .r = painted.pixels[0], .g = painted.pixels[1], .b = painted.pixels[2], .a = painted.pixels[3] }).eql(black)) return error.PaintedBackgroundNotBlack;
+    const cap = qoi.encoded_bound(painted.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&painted, dst);
+    const backimg = try qoi.decode(garden, dst[0..enc.len]);
+    if (!backimg.same_bytes(&painted)) return error.ColorizeDidNotRoundTrip;
+
+    // --- the refusal by name, having allocated nothing (the guard fires before the marker) ------------------------------------
+    var empty_map = distance.DistanceMap{ .width = 0, .height = 0, .max_distance = 0, .dist = &[_]u32{} };
+    if (hmaxima(garden, &empty_map, 3)) |_| return error.EmptySourceNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- determinism: the same field suppresses to the same result byte-for-byte -----------------------------------------
+    const a = try hmaxima(garden, &dm, 7);
+    const b = try hmaxima(garden, &dm, 7);
+    if (a.max_distance != b.max_distance) return error.MaxNotDeterministic;
+    var di: usize = 0;
+    while (di < a.dist.len) : (di += 1) {
+        if (a.dist[di] != b.dist[di]) return error.FieldNotDeterministic;
+    }
+
+    print("GREEN image-hmaxima: SUPPRESS THE SHALLOW PEAKS of a distance field by the h-maxima transform (grayscale geodesic reconstruction by dilation) so a lumpy single object stops OVER-SEGMENTING -- a 5x5 lobe fused by a one-pixel neck to a 3x3 lobe is ONE 8-connected component, yet the raw distance field has TWO unequal peaks so image/segment.rye seeds TWO markers and over-cuts it; h-maxima at h=7 (measured above the shallow lobe's prominence, below the deep lobe's) lowers the field to distance-h and reconstructs it back UNDER the original by 3x3 geodesic dilation, absorbing the shallow peak so exactly ONE significant marker survives on the deep lobe's center; markers_hmax runs that pipeline in one call and segment_hmax runs it end to end so the lumpy object comes back ONE basin with no watershed line where the raw segment returns two; suppressing by h=0 is the identity (the field unchanged byte-for-byte, the markers equal to raw); reconstruction never rises above the mask and background stays 0; distance.colorize renders the suppressed field round-tripping through the open QOI codec byte-for-byte; a zero-size field refuses EmptySource by name having allocated nothing; the same field suppresses deterministically\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: hmaxima selftest\n", .{});
+    return 1;
+}

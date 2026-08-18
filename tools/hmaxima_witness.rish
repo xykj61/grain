@@ -1,0 +1,37 @@
+# tools/hmaxima_witness.rish -- suppress the shallow peaks of a distance field so a lumpy object stops over-segmenting, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the named horizon image/segment.rye composes toward. The auto-watershed capstone seeds one
+# marker per distance peak, which over-cuts a SINGLE object that has several distance peaks (a star, an L, a lumpy boundary). This
+# rung is the textbook remedy: the H-MAXIMA TRANSFORM by grayscale geodesic reconstruction, keeping only the peaks whose PROMINENCE
+# (rise above the highest connecting saddle) meets a threshold h, absorbing the shallow ones. Then segment seeds one marker per real
+# object rather than one per bump.
+#
+# The crux this witness proves on metal: a 5x5 lobe fused by a one-pixel neck to a 3x3 lobe is ONE 8-connected component, yet the raw
+# distance field has TWO unequal peaks so image/segment.rye seeds two markers and over-cuts it; h-maxima at a threshold above the
+# shallow lobe's prominence and below the deep lobe's keeps exactly ONE significant marker on the deep lobe, so segment_hmax comes
+# back one whole basin with no watershed line where the raw segment returns two; suppressing by h=0 is the identity; reconstruction
+# never rises above the mask and background stays 0; a zero-size field refuses EmptySource by name. No network, no key, no funds --
+# the day a surface hands a bumpy blob and asks how many real objects.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hmaxima_witness.rish
+
+say "hmaxima: Language EN -- Season G shallow-peak suppression; the h-maxima transform by grayscale geodesic reconstruction, the named remedy for image/segment.rye's over-segmentation."
+say "hmaxima: Style Radiant -- compose not braid: this rung owns only the h-maxima transform (the marker subtraction, the 3x3 geodesic dilation capped at the mask, the iterate-to-stability); distance owns the terrain, medial_axis reads the maxima, label the components, segment the seeding, watershed the flood."
+say "hmaxima: Lens TAME -- the field is bounded by the image pixel ceiling; reconstruction is bounded above by the mask and converges before a loud pass ceiling; a zero-size field refuses by name up front so a refusal allocates nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/hmaxima"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/hmaxima.rye -femit-bin=${bin}"]
+assert build.ok else "hmaxima: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hmaxima: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "hmaxima: ${out}"
+
+assert selftest.out contains "GREEN image-hmaxima" else "hmaxima: selftest did not print the GREEN line"
+
+say "hmaxima: GREEN -- the h-maxima transform absorbs a lumpy object's shallow distance peak so one significant marker survives on the deep lobe, segment_hmax returns one whole basin where the raw segment over-cuts into two, h=0 is the identity, reconstruction never rises above the mask, on metal."
