@@ -17,6 +17,12 @@
 | `origin` | GitHub `autoproject96/grain` |
 | `xykj61` | GitHub `xykj61/grain` |
 
+**Seed / public projection remote** (`20260817` — Keaton's word: grain-os is an xykj61 organization):
+
+| Remote | Forge | Use |
+|--------|-------|-----|
+| `grain-os` | GitHub `grain-os/grain` | The **public seed** (depersonalized, Option-B fresh history). **Custody gate #1** — the seed force-push. `grain-os` is a GitHub **organization owned by `xykj61`**, so the same `xykj61` SSH key has push access (verified by dry-run `20260817`; repo exists, HEAD `26cae5b2db`). The force-push itself stays Keaton's explicit word: it force-updates a public repo and is irreversible. Projected by `tools/sow.rish`, proven by `tools/sow_witness.rish` (M1 root-classification + M2 no-personal-no-key-no-name). |
+
 **Pier write ruling — Option 2 SEATED** (`20260730.034136` · Keaton's word · red 32 · counsel lean held): ls-remote proves existence, never authorization. **auth-refused** (403) is named in the send-word guard. **Cloud** pushes `xykj61` branch + PR, and **FF-merges to `xykj61/main` itself** (approved `20260730.034520` — Keaton's word: merge here in the Cloud environment). **`origin` / `main` syncs from the home pier** after Keaton pulls and GPG-pushes — no home credential leaves home. Dual-send still *aims* both waters; when Cloud meets auth-refused on origin, name it and continue the `xykj61` path — dual-send incomplete until the home pier closes the gap.
 
 **Retired from living push** (`20260729.141658`):
