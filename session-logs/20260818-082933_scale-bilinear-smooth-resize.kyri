@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260818.082933
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title scale_bilinear -- the smooth resize sibling of nearest, GREEN
+prompt baton prin recur -- pick up the running thread, take the next agent-doable lap Lindy-first crux-first
+think Read KYRI, RADIANT_STYLE, REMEMBER head, REDS, session-log index, and the double-seat eight-seasons itinerary to reseat as Kyri and find the thread.
+think Standfast check: every red in crux/REDS.md is closed or resting as custody-gated errata (#75, a history rewrite = Keaton's hand). No open agent-closable red, so the Standfast gate is satisfied and constructive work may proceed.
+think Lindy-first crux-first: the Microkernel double-seat leads the new work, yet its only ungated move is more study over an already-rich research capture; the live green code crux is Season G open-media, exactly as the recent logs have run it.
+think REMEMBER named the Icelandic capitals as the next font rung, but measurement beat memory: font5x7_upper_icelandic.rye and font5x7_upper_close.rye already stand GREEN and are wired into font5x7_latin1_block.rye -- the uppercase Latin-1 letter set is already closed. That REMEMBER line was stale.
+think The card's true unbuilt sibling: scale.rye (nearest-neighbor) is the only resize path, and it names "the area-average and bilinear paths grow beside it." Bilinear is the crux -- Lindy floor geometry read for years, the hardest-solvable clean move (a four-tap weighted blend in pure integer fixed-point), agent-doable with a witness on metal, no gate.
+think Design: separable bilinear over color.mix (the palette family's linear lerp, t in 0..255 with /255 rounding). One per-axis map axis_sample yields a lower source index, an upper neighbor, and a weight; each pixel is three mixes. Center-aligned mapping in exact integers over 2*dst_extent so identity is byte-exact and both edges clamp. Compose not braid: no new color math, no codec, no premultiply.
+obs One red caught and closed in-round: Zig 0.16 read the local name i0_u as a malformed primitive integer type (i + digit prefix, leading zero). Renamed the AxisSample fields and locals i0/i1 -> lo/hi; GREEN on the very next build. A machine caught it, not a second thought -- the reds-first pattern holds.
+obs Bilinear's honest scope named plainly rather than overclaimed: it reads a 2x2 neighborhood, so a downscale far below half-size still aliases; the area-average path is that verb and grows next. Two Rooms discipline -- the smooth-interpolation floor is what this rung proves, not decimation.
+loom witness=scale_bilinear_witness build_and_selftest=GREEN checks=8 identity_byte_exact=yes gradient_ascending=yes solid_stays_solid=yes alpha_blended=yes qoi_round_trip=byte_for_byte refusals=3 deterministic=yes
+file image/scale_bilinear.rye the smooth resize: bilinear interpolation over color.mix + qoi buffers, integer-only, bounds up front, GREEN.
+file tools/scale_bilinear_witness.rish proves it on metal with native `contains` (the REDS #85 loom), no fragile grep.
+file image/README.md seats the bullet beside scale.rye; the Resample summary already anticipated the bilinear path.
+file crux/REMEMBER.md records the live edge, refreshes the git nib in the same work commit, and marks the stale Icelandic-capitals line superseded.
+recommend keep-going -- the area-average resample path is the named next sibling; Season G open-media stays the live green crux beneath the Microkernel double-seat while its only ungated move is study.
