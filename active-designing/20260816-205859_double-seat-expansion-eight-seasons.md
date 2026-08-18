@@ -37,7 +37,7 @@ The device family, buildable from honest parts.
 The finance-and-receipts spine for activist musicians and vegan artists.
 
 - **The press release** -- adapt the *Something to Give From* memo (authored `20260812` by the companion agent) into a **Linengrow magazine** press piece, Radiant register.
-- **Dimeroll -> Dimeroll** -- a **breach rename EXECUTED `20260817`** (Keaton bought `dimeroll.com`). The entity books (Season 2, Journey 8) stand; Dimeroll is the born name they now carry. **Cairn required** (see the breach queue).
+- **Dimeroll** -- the HR & accounting module (born name, `dimeroll.com` bought `20260817`). The entity books (Season 2, Journey 8) stand; Dimeroll is the name they carry.
 - The rail itself: USDC/USDY on Solana, scheduled gifts, quiet Treasury-backed growth, **zero-knowledge donation receipts**, Passes-style supporter circles, the wider veganic supply-chain garden, Harvey-grade legal + OpenEvidence-grade health floors as horizons.
 - **Sports-team HR vertical** *(new -- from the horizon ledger)* -- roster / team-player-management software for a sports club (e.g. an MLS or NBA/WNBA org) reads as a **client vertical** of Linengrow PBC's HR & accounting (WADE) and the Dimeroll books, not a season of its own. *Horizon; a go-to-market leap, Keaton's business call.*
 
@@ -138,11 +138,11 @@ Three threads across these eight seasons pull toward a growth/commerce posture t
 
 Keaton approved debride / shred / seed-force-update. Honoring that approval **means sequencing it safely**, not firing a history rewrite mid-capture. Each breach below is a **named round of its own**, and each **records a cairn first** ([`../work-in-progress/CAIRNS.md`](../work-in-progress/CAIRNS.md)):
 
-1. **Dimeroll -> Dimeroll** -- global module + doc rename **EXECUTED `20260817`** (54 files renamed, content repointed, dated logs + counsel kept as testimony; cairn `crux/CAIRNS.md 20260817.173615`).
+1. **Dimeroll** -- the HR & accounting module (born name, `dimeroll.com`) carries the entity books; global rename **EXECUTED `20260817`** (54 files, content repointed; cairn `crux/CAIRNS.md 20260817.173615`).
 2. **`.myc` -> `.kres`** -- contract-notation supersede (also supersedes Sui Move as the tree's contract lang). Cairn.
 3. **Council sky -> Constel sky** -- living-doc + module rename. Cairn.
 4. **Deep debride + seed force-push (*initial public seed*, again)** -- the one-way rung: root-README molt-tracking done first, `sow_witness` GREEN (depersonalized, `twilight/` kept), **cairn mandatory** (a deep rewrite loses its own walk-back), then force-push `grain-os/grain`. **Custody gate #1 -- stays Keaton's hand even with standing approval.** The commit message uses the **"initial public seed"** wording (it reads well).
-5. **Four waymark breaches (`20260817`, chosen on Keaton's word) -- EXECUTED** -- **DREY -> DREY** - **FORA -> FORA** - **WADE -> WADE -> WADE** - **LOWE -> LOWE**, same ladders and goals, drawn via [`../tools/waymark_derive.rish`](../tools/waymark_derive.rish); cairn `crux/CAIRNS.md 20260817.173615`. Each ran as a **breach** -- the elder rung labels and `tools/<mark>_*` witnesses renamed, every living reference repointed, dated logs kept as testimony. All proven on metal (DREY ~502 sites, FORA ~1027; witnesses GREEN); the elder marks stay in the derive exclude as historical. **These are breaches, not full debrides**: the elders still live in git history and the dated logs, which are **molted for shed** on `crux/SHRED_PREP.md`. The full debride -- purging them from *all* history -- is a later **deep debride** (history rewrite + force-push, custody gate #1). (WADE was a transient dimeroll-era draw for the WADE season, re-breached to WADE once the module became Dimeroll.)
+5. **Waymark debride (`20260818`, "do it all") -- EXECUTED** -- the living ladders **DREY · FORA · WADE · LOWE** carry only their standing marks; the dead elder marks were purged from the living tree, the dated session logs (~80 removed rather than rewritten), and all git history (deep debride, custody gate #1, Keaton's hand). Canonical naming truth is sealed and self-verifying in [`../crux/waymark-registry.bron`](../crux/waymark-registry.bron), so no waymark fact was lost. The REDS ledger and `crux/CAIRNS.md` walk-back rows stayed live.
 
 ## Constel test-network naming law (self-invented, siloed)
 
