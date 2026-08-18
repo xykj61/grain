@@ -1,0 +1,339 @@
+//! image/thin.rye -- an RGBA mask THINNED to its skeleton by ITERATED HIT-OR-MISS SUBTRACTION: remove every pixel a
+//! template pair matches, then repeat until a whole pass changes nothing (Season G, the thinning floor skeletonization,
+//! pruning, and endpoint detection all descend from).
+//!
+//! Season G (Open Media Primitives) -- the natural sibling image/hitmiss.rye named. The hit-or-miss transform asks "does
+//! the foreground fit HERE and the ground fit THERE"; thinning turns that question into an action. One thinning step is a
+//! SET DIFFERENCE: the binarized shape MINUS the pixels the template pair matched --
+//!
+//!     thin_once(A, fg, bg) = A  AND NOT  hit_or_miss(A, fg, bg)
+//!
+//! A pixel survives the step unless it is both ON and a match, so a step never adds a pixel -- thinning is ANTI-EXTENSIVE,
+//! `thin_once(A) <= A` at every pixel for ANY template pair, because `on AND NOT matched` can only be a subset of `on`.
+//! Iterate the step and the on-set shrinks monotonically toward a FIXED POINT: apply the pair again and again, and the
+//! moment a whole pass removes nothing the shape has thinned as far as that template can carry it. Feed the classic skeleton
+//! template pair (and its eight rotations) and the shape reduces to its one-pixel medial skeleton; feed a directional edge
+//! template and it peels a shape from one side. This rung owns the driver; the SHAPE of the thinning is the caller's
+//! template, exactly as image/structure.rye left the shape of the element to the caller.
+//!
+//! Termination is not a hope, it is a bound. Each PRODUCTIVE pass (one that changes the image) removes at least one
+//! foreground pixel, and the foreground count is a finite non-negative integer, so the number of productive passes is at
+//! most the INITIAL foreground count -- the driver's ceiling is exactly that count plus one, and the loop asserts the pass
+//! index never crosses it. A pair that could loop forever is impossible here: `thin_once` cannot add a pixel, so the on-set
+//! is a strictly decreasing bounded sequence until it settles.
+//!
+//! Compose not braid. This rung OWNS only the set difference (a per-pixel `on AND NOT matched`, alpha pinned OPAQUE so a
+//! thinned mask stays a clean white-on-black plane) and the fixed-point loop. image/hitmiss.rye OWNS the match (two erosions
+//! intersected), image/structure.rye the fit gather beneath it, image/qoi.rye the RGBA buffers. No new gather, no blend, no
+//! codec, no color math. The binary meaning of a pixel -- foreground at or above `hitmiss.hitmiss_on_threshold` -- is read
+//! from hitmiss, one source of truth. An empty source, an empty foreground, an empty background, or an over-max template
+//! refuses BY NAME before any allocation (the same refusals hit_or_miss names), all-or-nothing, never a half-thinned image.
+//! No network, no key, no funds -- the skeleton, the pruned branch, and the one-pixel medial line a surface reaches for the
+//! day it reads a mask down to its bones, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/thin.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const structure = @import("structure.rye");
+const hitmiss = @import("hitmiss.rye");
+
+pub const thin_version = "20260818.120000";
+
+pub const ThinError = error{
+    EmptySource,
+    EmptyForeground,
+    EmptyBackground,
+    ForegroundTooLarge,
+    BackgroundTooLarge,
+};
+
+/// True when the pixel at byte index `i` reads as foreground -- its red channel is at or above the shared on-threshold.
+/// The binary meaning of a pixel lives in hitmiss.rye, so a thinned plane and the match it was cut from agree exactly.
+fn is_on(pixels: []const u8, i: usize) bool {
+    // invariant: the read stays inside the buffer.
+    assert(i < pixels.len);
+    return pixels[i] >= hitmiss.hitmiss_on_threshold;
+}
+
+/// Build a clean binary plane from `src`: opaque WHITE where a pixel is foreground, opaque BLACK where it is background,
+/// alpha pinned to 255. A thinned plane is itself a valid source for the next step, so the seed and every step speak the
+/// same two-color language and `same_bytes` can compare passes exactly.
+fn binarize(garden: std.mem.Allocator, src: *const qoi.Pixmap) !qoi.Pixmap {
+    // invariant: a real source has extent, so the plane has at least one pixel to set.
+    assert(src.width >= 1);
+    assert(src.height >= 1);
+    const n: usize = @as(usize, src.width) * @as(usize, src.height) * 4;
+    // invariant: the plane holds exactly one RGBA pixel per source pixel.
+    assert(src.pixels.len == n);
+    const plane = try garden.alloc(u8, n);
+    var i: usize = 0;
+    while (i < n) : (i += 4) {
+        const v: u8 = if (is_on(src.pixels, i)) 255 else 0;
+        plane[i] = v;
+        plane[i + 1] = v;
+        plane[i + 2] = v;
+        plane[i + 3] = 255; // alpha pinned opaque -- a mask, not a translucent image
+    }
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = plane };
+}
+
+/// Count the foreground pixels of a binary plane -- the strictly-decreasing quantity that bounds the driver's pass count.
+fn count_on(img: *const qoi.Pixmap) u32 {
+    // invariant: the buffer is a whole RGBA grid, so the step of four never reads past its end.
+    assert(img.pixels.len == @as(usize, img.width) * @as(usize, img.height) * 4);
+    var lit: u32 = 0;
+    var i: usize = 0;
+    while (i < img.pixels.len) : (i += 4) {
+        if (is_on(img.pixels, i)) lit += 1;
+    }
+    return lit;
+}
+
+/// Refuse a source and template pair BY NAME before any allocation -- the same guard hit_or_miss carries, mirrored here so
+/// the driver is all-or-nothing rather than binarizing first and refusing second. The per-step guard still lives in
+/// hit_or_miss; this only spares the seed allocation on a refusal.
+fn guard(src: *const qoi.Pixmap, fg: structure.StructuringElement, bg: structure.StructuringElement) ThinError!void {
+    // invariant: a real source has extent on both axes; a zero-size source has nothing to thin.
+    if (src.width == 0 or src.height == 0) return error.EmptySource;
+    // invariant: a thinning names at least one foreground cell and one background cell, or it is not a hit-or-miss pattern.
+    if (fg.offsets.len == 0) return error.EmptyForeground;
+    if (bg.offsets.len == 0) return error.EmptyBackground;
+    // invariant: each template stays within the general element's named ceiling, so both erosions stay bounded.
+    if (fg.offsets.len > @as(usize, structure.structure_max_offsets)) return error.ForegroundTooLarge;
+    if (bg.offsets.len > @as(usize, structure.structure_max_offsets)) return error.BackgroundTooLarge;
+}
+
+/// One thinning step: the binarized shape MINUS the pixels the template pair matches. Returns a fresh binary RGBA Pixmap the
+/// caller owns -- opaque WHITE where a pixel is ON and NOT matched, opaque BLACK elsewhere; `src` is read-only. Because the
+/// match is computed first, a refusal (empty source or template, over-max template) fires inside hit_or_miss before this
+/// step allocates its own output -- all-or-nothing.
+pub fn thin_once(allocator: std.mem.Allocator, src: *const qoi.Pixmap, fg: structure.StructuringElement, bg: structure.StructuringElement) !qoi.Pixmap {
+    // hit_or_miss OWNS the match and guards the source and both templates by name before it allocates anything.
+    const match = try hitmiss.hit_or_miss(allocator, src, fg, bg);
+    const n: usize = @as(usize, src.width) * @as(usize, src.height) * 4;
+    // invariant: the match plane matches the source extent, so the difference below reads them in lockstep.
+    assert(match.pixels.len == n);
+    assert(src.pixels.len == n);
+
+    const out = try allocator.alloc(u8, n);
+    var i: usize = 0;
+    while (i < n) : (i += 4) {
+        // a pixel survives only where it is ON in the source AND NOT lit in the match -- a set difference, never an addition.
+        const lit: bool = is_on(src.pixels, i) and !is_on(match.pixels, i);
+        const v: u8 = if (lit) 255 else 0;
+        out[i] = v;
+        out[i + 1] = v;
+        out[i + 2] = v;
+        out[i + 3] = 255; // the thinned plane stays a clean opaque mask
+    }
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+/// Thin `src` to a FIXED POINT: apply `thin_once` with the template pair `(fg, bg)` again and again until a whole pass
+/// removes nothing, and report the number of productive passes through `passes_out`. Returns a fresh binary RGBA Pixmap the
+/// caller owns. Termination is bounded: each productive pass removes at least one foreground pixel, so the count of passes
+/// is at most the initial foreground count.
+pub fn thin(allocator: std.mem.Allocator, src: *const qoi.Pixmap, fg: structure.StructuringElement, bg: structure.StructuringElement, passes_out: *u32) !qoi.Pixmap {
+    try guard(src, fg, bg);
+
+    var cur = try binarize(allocator, src);
+    var cur_on = count_on(&cur);
+    // invariant: the productive-pass ceiling is exactly the initial foreground count plus one -- one productive pass per
+    // pixel that can be removed, plus the final unproductive pass that proves the fixed point.
+    const ceiling: u32 = cur_on + 1;
+    var passes: u32 = 0;
+    while (true) {
+        const next = try thin_once(allocator, &cur, fg, bg);
+        const next_on = count_on(&next);
+        // invariant: thinning never adds a pixel, so the on-set is non-increasing (anti-extensive).
+        assert(next_on <= cur_on);
+        if (next.same_bytes(&cur)) {
+            // a pass that changed nothing -- the fixed point; `passes` counted only the productive passes.
+            passes_out.* = passes;
+            return next;
+        }
+        passes += 1;
+        // invariant: a productive pass stays within the proven ceiling; crossing it would mean a step added a pixel.
+        assert(passes < ceiling);
+        cur = next;
+        cur_on = next_on;
+    }
+}
+
+// --- selftest: definition, anti-extensive, the directional peel to a fixed point, idempotence, round-trip, refusals ------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// Set one pixel's RGBA at (x, y) -- a small writer the pattern builders share.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+/// Build the right-edge peel template pair -- fg = {center, left-neighbor}, bg = {right-neighbor}. A pixel matches when it
+/// is ON, its left neighbor is ON, and its right neighbor is OFF, so thinning with this pair strips the rightmost column of
+/// every horizontal run one pass at a time -- a clean, hand-verifiable thinning that converges to a shape's left edge.
+fn peel_right(garden: std.mem.Allocator) !struct { fg: structure.StructuringElement, bg: structure.StructuringElement } {
+    const fg_offs = try garden.alloc(structure.Offset, 2);
+    fg_offs[0] = structure.Offset{ .dx = 0, .dy = 0 };
+    fg_offs[1] = structure.Offset{ .dx = -1, .dy = 0 };
+    const bg_offs = try garden.alloc(structure.Offset, 1);
+    bg_offs[0] = structure.Offset{ .dx = 1, .dy = 0 };
+    return .{
+        .fg = structure.StructuringElement{ .offsets = fg_offs },
+        .bg = structure.StructuringElement{ .offsets = bg_offs },
+    };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    const peel = try peel_right(garden);
+
+    // --- the DEFINITION crux: thin_once equals the binarized shape MINUS the hit-or-miss matches, byte-for-byte ----------
+    // a 4-wide, 3-tall solid block held clear of every border in a 6x5 field, so no clamp fakes a neighbor
+    var block = try make_canvas(garden, 6, 5, black);
+    var by: u32 = 1;
+    while (by <= 3) : (by += 1) {
+        var bx: u32 = 1;
+        while (bx <= 4) : (bx += 1) set_pixel(&block, bx, by, white);
+    }
+    const step = try thin_once(garden, &block, peel.fg, peel.bg);
+    // hand-compose the same difference: binarize the block, then clear every matched pixel
+    const match = try hitmiss.hit_or_miss(garden, &block, peel.fg, peel.bg);
+    var expect = try make_canvas(garden, 6, 5, black);
+    var ei: usize = 0;
+    while (ei < expect.pixels.len) : (ei += 4) {
+        const on = block.pixels[ei] >= hitmiss.hitmiss_on_threshold;
+        const matched = match.pixels[ei] >= hitmiss.hitmiss_on_threshold;
+        const v: u8 = if (on and !matched) 255 else 0;
+        expect.pixels[ei] = v;
+        expect.pixels[ei + 1] = v;
+        expect.pixels[ei + 2] = v;
+        expect.pixels[ei + 3] = 255;
+    }
+    if (!step.same_bytes(&expect)) return error.ThinOnceNotSetDifference;
+
+    // --- ANTI-EXTENSIVE: every ON pixel of the step was ON in the block; a step never adds a pixel --------------------
+    var ai: usize = 0;
+    while (ai < step.pixels.len) : (ai += 4) {
+        const step_on = step.pixels[ai] >= hitmiss.hitmiss_on_threshold;
+        const block_on = block.pixels[ai] >= hitmiss.hitmiss_on_threshold;
+        if (step_on and !block_on) return error.ThinAddedAPixel;
+    }
+    // one pass off the block strips exactly the rightmost column (x=4), leaving x in {1,2,3}
+    if (!pixel_at(&step, 4, 2).eql(black)) return error.PeelDidNotStripRightColumn;
+    if (!pixel_at(&step, 3, 2).eql(white)) return error.PeelStrippedTooMuch;
+    if (!pixel_at(&step, 1, 2).eql(white)) return error.PeelStrippedTheLeftColumn;
+
+    // --- the FIXED-POINT crux, hand-verified: the 4-wide block thins to its single leftmost column over exactly three
+    //     productive passes, then converges -- a real thinning carried to its skeleton ----------------------------------
+    var passes: u32 = 0;
+    const skeleton = try thin(garden, &block, peel.fg, peel.bg, &passes);
+    if (passes != 3) return error.WrongProductivePassCount;
+    // the skeleton is a 1-wide, 3-tall vertical line at x=1; every other cell is black
+    var sy: u32 = 0;
+    while (sy < 5) : (sy += 1) {
+        var sx: u32 = 0;
+        while (sx < 6) : (sx += 1) {
+            const want_on = (sx == 1) and (sy >= 1 and sy <= 3);
+            const got = pixel_at(&skeleton, sx, sy);
+            if (want_on) {
+                if (!got.eql(white)) return error.SkeletonMissingColumn;
+            } else {
+                if (!got.eql(black)) return error.SkeletonHasStrayPixel;
+            }
+        }
+    }
+
+    // --- IDEMPOTENCE: thinning the already-thin skeleton removes nothing -- zero productive passes, the same image ------
+    var again: u32 = 99;
+    const resettled = try thin(garden, &skeleton, peel.fg, peel.bg, &again);
+    if (again != 0) return error.ThinShapeNotAFixedPoint;
+    if (!resettled.same_bytes(&skeleton)) return error.FixedPointDrifted;
+
+    // --- a thinned mask round-trips through the open QOI codec byte-for-byte -- a real image, not a private buffer -------
+    const cap = qoi.encoded_bound(skeleton.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&skeleton, dst);
+    const backimg = try qoi.decode(garden, dst[0..enc.len]);
+    if (!backimg.same_bytes(&skeleton)) return error.ThinDidNotRoundTrip;
+
+    // --- refusals by name, each having allocated nothing (the guard fires before the seed is built) ---------------------
+    const empty_fg = structure.StructuringElement{ .offsets = &[_]structure.Offset{} };
+    if (thin(garden, &block, empty_fg, peel.bg, &passes)) |_| return error.EmptyForegroundNotRefused else |err| {
+        if (err != error.EmptyForeground) return error.WrongEmptyForegroundError;
+    }
+    const empty_bg = structure.StructuringElement{ .offsets = &[_]structure.Offset{} };
+    if (thin(garden, &block, peel.fg, empty_bg, &passes)) |_| return error.EmptyBackgroundNotRefused else |err| {
+        if (err != error.EmptyBackground) return error.WrongEmptyBackgroundError;
+    }
+    const too_many = try garden.alloc(structure.Offset, @as(usize, structure.structure_max_offsets) + 1);
+    var ti: usize = 0;
+    while (ti < too_many.len) : (ti += 1) too_many[ti] = structure.Offset{ .dx = 0, .dy = 0 };
+    const oversize = structure.StructuringElement{ .offsets = too_many };
+    if (thin(garden, &block, oversize, peel.bg, &passes)) |_| return error.OversizeNotRefused else |err| {
+        if (err != error.ForegroundTooLarge) return error.WrongOversizeError;
+    }
+    var empty_src = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (thin(garden, &empty_src, peel.fg, peel.bg, &passes)) |_| return error.EmptySourceNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- determinism: the same thinning reaches the same skeleton byte-for-byte ----------------------------------------
+    var pa: u32 = 0;
+    var pb: u32 = 0;
+    const a = try thin(garden, &block, peel.fg, peel.bg, &pa);
+    const b = try thin(garden, &block, peel.fg, peel.bg, &pb);
+    if (pa != pb) return error.ThinPassCountNotDeterministic;
+    if (!a.same_bytes(&b)) return error.ThinNotDeterministic;
+
+    print("GREEN image-thin: an RGBA mask thinned to its skeleton by ITERATED HIT-OR-MISS SUBTRACTION -- thin_once removes exactly the pixels a template pair matches (the binarized shape AND NOT the hit-or-miss match, byte-for-byte), a step never adds a pixel (anti-extensive, every lit output pixel was lit in the source); a 4-wide 3-tall solid block under the right-edge peel template thins to its single leftmost column over exactly three productive passes and then converges to a fixed point; thinning the already-thin skeleton removes nothing in zero passes (idempotent); the thinned mask round-trips through the open QOI codec byte-for-byte; an empty foreground, an empty background, an over-max template, and an empty source refuse by name having allocated nothing; the same thinning is deterministic in both its pass count and its pixels byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: thin selftest\n", .{});
+    return 1;
+}
