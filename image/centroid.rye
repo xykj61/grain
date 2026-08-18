@@ -1,0 +1,271 @@
+//! image/centroid.rye -- read every LABELED COMPONENT's CENTROID (its center of mass) and find the region NEAREST a point
+//! (Season G, the placement floor a label anchor, a marker seed, and object tracking descend from, the first-moment companion
+//! of image/regions.rye's area and bounding box).
+//!
+//! Season G (Open Media Primitives) -- image/regions.rye reads a component's AREA (how many pixels) and its BOUNDING BOX (the
+//! rectangle it sits in). This rung reads the next fact a surface asks the moment it wants to POINT AT a blob: WHERE is its
+//! center of mass. The centroid is the mean of a component's pixel coordinates -- `(sum_x / area, sum_y / area)`, rounded to the
+//! nearest pixel -- a genuinely different fact from the bounding-box center: an L or a comma leans its mass to one side, so its
+//! centroid sits off the middle of its box, exactly where a surface wants to drop a label or seat a marker. `centroids` reads a
+//! LabelMap in one raster pass and returns one `Centroid` per component (its center and its area); `nearest_region` answers the
+//! click a surface fields -- which blob's center lies closest to a point -- by squared distance, ties broken by the earliest
+//! label so the pick is deterministic.
+//!
+//! Compose not braid. This rung OWNS only the first-moment accumulation (a running sum of x, y, and count per label) and the
+//! nearest-center search -- no gather, no blend, no codec, no color, not even a pixel-writing loop. image/label.rye owns the
+//! LabelMap and its dense raster-ordered labels; the caller labels once and asks these questions over the map it already holds.
+//! A centroid is a sum divided by a count; a nearest search is a minimum over squared distances -- pure functions over the map.
+//!
+//! Everything is bounded before a byte is allocated: a labeling holds at most one component per pixel, so the centroid slice is
+//! sized to the label count (itself bounded by the image module's pixel ceiling), and the coordinate sums run in u64 (a
+//! coordinate stays under the qoi dimension ceiling and an area under the pixel ceiling, so a sum can never wrap). An empty
+//! source refuses `EmptySource` by name and a nearest search over no regions refuses `NoRegions` by name -- all-or-nothing,
+//! never a half-measured answer. No network, no key, no funds -- the center a surface names the day it labels a blob, on our
+//! own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/centroid.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const label = @import("label.rye");
+
+pub const centroid_version = "20260818.155358";
+
+pub const CentroidError = error{
+    EmptySource,
+    NoRegions,
+};
+
+/// The center of mass of one labeled component. `label` is the component's dense label (1..count). `cx`, `cy` are the mean of
+/// its pixel coordinates rounded to the nearest pixel -- always inside the image on both axes. `area` is its foreground pixel
+/// count (the mass the mean was taken over), always at least one for a real region.
+pub const Centroid = struct {
+    label: u32 = 0,
+    cx: u32 = 0,
+    cy: u32 = 0,
+    area: u32 = 0,
+};
+
+/// Measure every component of `map` into a fresh slice the caller owns: `centroids[i]` is the component with label `i + 1`, so
+/// the slice is exactly `map.count` long and raster-ordered like the labels themselves. A single raster pass accumulates each
+/// component's coordinate sums and area; a second pass divides to the rounded mean. `map` is read-only.
+pub fn centroids(allocator: std.mem.Allocator, map: *const label.LabelMap) ![]Centroid {
+    // invariant: a real labeling has extent on both axes; a zero-size map has nothing to measure.
+    if (map.width == 0 or map.height == 0) return error.EmptySource;
+
+    const w: u32 = map.width;
+    const h: u32 = map.height;
+    const n: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the label buffer holds exactly one label per pixel.
+    assert(map.labels.len == @as(usize, @intCast(n)));
+    // invariant: a dense labeling never names more components than it has pixels.
+    assert(map.count <= @as(u32, @intCast(n)));
+
+    // running first moments: sum_x[i] and sum_y[i] in u64 so a full-image component can never wrap, area[i] the divisor.
+    const sum_x = try allocator.alloc(u64, @as(usize, map.count));
+    const sum_y = try allocator.alloc(u64, @as(usize, map.count));
+    const area = try allocator.alloc(u32, @as(usize, map.count));
+    var r: usize = 0;
+    while (r < area.len) : (r += 1) {
+        sum_x[r] = 0;
+        sum_y[r] = 0;
+        area[r] = 0;
+    }
+
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const l = map.labels[@as(usize, y) * @as(usize, w) + @as(usize, x)];
+            if (l == 0) continue; // background carries no region
+            // invariant: a foreground label is a real dense label within the count, so it indexes inside the sums.
+            assert(l >= 1);
+            assert(l <= map.count);
+            const idx: usize = @as(usize, l) - 1;
+            sum_x[idx] += @as(u64, x);
+            sum_y[idx] += @as(u64, y);
+            area[idx] += 1;
+        }
+    }
+
+    const out = try allocator.alloc(Centroid, @as(usize, map.count));
+    r = 0;
+    while (r < out.len) : (r += 1) {
+        // invariant: a dense labeling uses every label in 1..count, so every region met at least one pixel.
+        assert(area[r] >= 1);
+        const a: u64 = @as(u64, area[r]);
+        // round to the nearest pixel: (sum + area/2) / area, all in u64 so the add never wraps.
+        const cx: u64 = (sum_x[r] + a / 2) / a;
+        const cy: u64 = (sum_y[r] + a / 2) / a;
+        // invariant: the mean of coordinates each below an extent stays below that extent, so the center is inside the image.
+        assert(cx < @as(u64, w));
+        assert(cy < @as(u64, h));
+        out[r] = Centroid{ .label = @as(u32, @intCast(r)) + 1, .cx = @as(u32, @intCast(cx)), .cy = @as(u32, @intCast(cy)), .area = area[r] };
+    }
+    return out;
+}
+
+/// Return the component of `cents` whose centroid lies NEAREST the point (x, y), by squared Euclidean distance -- the click a
+/// surface fields when a keeper taps a blob. A tie is broken by the EARLIEST label so the pick is deterministic. `cents` is
+/// read-only; an empty slice refuses `NoRegions` by name.
+pub fn nearest_region(cents: []const Centroid, x: u32, y: u32) !Centroid {
+    // invariant: there is no nearest of nothing -- a real pick needs at least one region.
+    if (cents.len == 0) return error.NoRegions;
+
+    var best: Centroid = cents[0];
+    var best_d2: u64 = dist2(best.cx, best.cy, x, y);
+    var i: usize = 1;
+    while (i < cents.len) : (i += 1) {
+        const d2 = dist2(cents[i].cx, cents[i].cy, x, y);
+        // strict less-than keeps the earliest label on a tie: only a genuinely closer center displaces the held pick.
+        if (d2 < best_d2) {
+            best = cents[i];
+            best_d2 = d2;
+        }
+    }
+
+    // invariant: the chosen center is a real region (area at least one).
+    assert(best.area >= 1);
+    // invariant: the held distance is the true minimum -- no center lies closer than the one returned.
+    assert(best_d2 <= dist2(cents[0].cx, cents[0].cy, x, y));
+    return best;
+}
+
+/// The squared Euclidean distance between two points, in u64 so the two squared deltas can never wrap (each coordinate stays
+/// below the qoi dimension ceiling, so a delta squared stays far inside u64).
+fn dist2(ax: u32, ay: u32, bx: u32, by: u32) u64 {
+    const dx: u64 = if (ax >= bx) @as(u64, ax - bx) else @as(u64, bx - ax);
+    const dy: u64 = if (ay >= by) @as(u64, ay - by) else @as(u64, by - ay);
+    // invariant: an absolute delta stays within the dimension ceiling, so its square stays far inside u64.
+    assert(dx <= @as(u64, qoi.qoi_max_dim));
+    assert(dy <= @as(u64, qoi.qoi_max_dim));
+    return dx * dx + dy * dy;
+}
+
+// --- selftest: the centroid-is-the-mean crux, centroid-off-box-center, nearest_region, refusals, determinism ---------------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y) -- the small writer the fixtures share.
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // A scene of three components: a 3x3 block (centroid its middle), an L whose mass leans off its box center, and a lone dot.
+    // Raster order names them 1..3 by first-appearing pixel.
+    var scene = try make_canvas(garden, 9, 6, 0);
+    set_block(&scene, 0, 0, 3, 3); // block: pixels (0..2, 0..2), first pixel (0,0) -> label 1, centroid (1,1), area 9
+    set_dot(&scene, 5, 0); // L: (5,0)
+    set_dot(&scene, 5, 1); // L: (5,1)
+    set_dot(&scene, 6, 1); // L: (6,1) 8-connected -- first pixel (5,0) -> label 2, area 3
+    set_dot(&scene, 7, 4); // lone dot (7,4), first pixel later -> label 3, centroid (7,4), area 1
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 3) return error.SceneNotThreeComponents;
+
+    const cents = try centroids(garden, &map);
+    if (cents.len != 3) return error.CentroidCountWrong;
+
+    // --- the CENTROID crux: each center is the rounded MEAN of the component's pixel coordinates -----------------------
+    if (cents[0].cx != 1 or cents[0].cy != 1) return error.BlockCentroidWrong; // 3x3 block centered at its middle
+    if (cents[0].area != 9) return error.BlockAreaWrong;
+    if (cents[2].cx != 7 or cents[2].cy != 4) return error.DotCentroidWrong; // a lone dot is its own centroid
+    if (cents[2].area != 1) return error.DotAreaWrong;
+
+    // --- the CENTROID-OFF-BOX-CENTER crux (the decisive one): the L's mass leans to one side, so its centroid is NOT the
+    //     center of its bounding box. sum_x = 5+5+6 = 16, sum_y = 0+1+1 = 2, area 3 -> centroid (round 16/3, round 2/3) =
+    //     (5, 1); its box spans (5,0)..(6,1) whose center rounds to (6, 1) or (5, 1) on x but (0 or 1) on y -- the centroid
+    //     sits at row 1 where the box center sits at row 0 (the mass is heavier on the lower row) ------------------------
+    if (cents[1].cx != 5 or cents[1].cy != 1) return error.LCentroidWrong;
+    if (cents[1].area != 3) return error.LAreaWrong;
+    // the L's bounding-box center on y is (0 + 1) / 2 rounded = 0 (round-half-down of 0.5 by integer truncation), yet the
+    // centroid sits at y = 1 -- so a centroid is provably a different fact from a box center
+    const box_center_y: u32 = (0 + 1) / 2; // = 0
+    if (cents[1].cy == box_center_y) return error.CentroidEqualsBoxCenter; // 1 != 0
+
+    // --- the NEAREST crux: a point near the block picks the block, a point near the dot picks the dot -----------------
+    const near_block = try nearest_region(cents, 2, 2); // closest to the block centroid (1,1)
+    if (near_block.label != 1) return error.NearBlockWrong;
+    const near_dot = try nearest_region(cents, 7, 5); // closest to the dot centroid (7,4)
+    if (near_dot.label != 3) return error.NearDotWrong;
+    // a point exactly on the L's centroid picks the L
+    const near_l = try nearest_region(cents, 5, 1);
+    if (near_l.label != 2) return error.NearLWrong;
+
+    // --- the NEAREST TIE crux: two dots equidistant from a midpoint -- the earliest label wins -----------------------
+    var pair = try make_canvas(garden, 7, 3, 0);
+    set_dot(&pair, 1, 1); // dot A -> label 1, centroid (1,1)
+    set_dot(&pair, 5, 1); // dot B -> label 2, centroid (5,1)
+    const pmap = try label.label_components(garden, &pair);
+    const pcents = try centroids(garden, &pmap);
+    const tie = try nearest_region(pcents, 3, 1); // the midpoint, equidistant from (1,1) and (5,1)
+    if (tie.label != 1) return error.NearestTieNotEarliest; // the earliest label wins the tie
+
+    // --- refusals by name, having allocated nothing -----------------------------------------------------------------
+    var empty_map = label.LabelMap{ .width = 0, .height = 0, .count = 0, .labels = &[_]u32{} };
+    if (centroids(garden, &empty_map)) |_| return error.EmptyNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+    const empty_cents: []const Centroid = &[_]Centroid{};
+    if (nearest_region(empty_cents, 0, 0)) |_| return error.NoRegionsNotRefused else |err| {
+        if (err != error.NoRegions) return error.WrongNoRegionsError;
+    }
+
+    // --- determinism: the same labeling measures to the same centroids ----------------------------------------------
+    const a = try centroids(garden, &map);
+    const b = try centroids(garden, &map);
+    var i: usize = 0;
+    while (i < a.len) : (i += 1) {
+        if (a[i].cx != b[i].cx or a[i].cy != b[i].cy or a[i].area != b[i].area) return error.CentroidsNotDeterministic;
+    }
+
+    print("GREEN image-centroid: read every LABELED COMPONENT's CENTROID (rounded mean of its pixel coordinates) in one raster pass over a LabelMap, then find the region NEAREST a point -- a 3x3 block centers at its middle (1,1) area nine, a lone dot is its own centroid (7,4) area one, and an L whose mass leans low centers at (5,1) where its bounding-box center sits at row 0 (so a centroid is provably a different fact from a box center); nearest_region picks the block for a point near (1,1), the dot for a point near (7,4), the L for a point on (5,1), and breaks a two-dot equidistant tie to the earliest label; an empty source refuses EmptySource and a nearest search over no regions refuses NoRegions, each having allocated nothing; the same labeling measures deterministically\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: centroid selftest\n", .{});
+    return 1;
+}

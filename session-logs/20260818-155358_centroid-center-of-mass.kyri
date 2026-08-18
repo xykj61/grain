@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260818.155358
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title centroid -- component center of mass and nearest region, GREEN
+prompt Autonomous loop -- continue lap after lap Lindy-first crux-first on the running thread, send often.
+think Second lap this turn, on the same running thread (Season G open-media). Confirmed the extended-maxima render is low-crux: hmaxima's markers_hmax already extracts and labels the significant peaks (hmaxima then segment.markers_of_field), so a render would be a colorize compose. Crux-first and Lindy-first favor a genuine new measurement over a leaf visualization.
+think Picked the region CENTROID reader -- the first-moment measurement that opens marker placement, label anchoring, and object tracking, the natural companion of regions' area and bounding box, composing over label with no external-data gate. Higher Lindy than a bar chart, and a real crux (the integer rounded mean, distinct from the box center).
+think Designed the decisive crux before coding: an L whose mass leans low (pixels at (5,0),(5,1),(6,1)) centers at (5,1) where its bounding-box center sits at row 0 -- so a centroid is provably a different fact from a box center, the whole reason the reader exists beside measure_regions.
+think Bounded the arithmetic: coordinate sums run in u64 (a coordinate under qoi_max_dim 8192, an area under qoi_max_pixels 1<<20, so a sum stays far inside u64); nearest_region's squared distance stays inside u64 by the same dimension ceiling. Rounded mean by (sum + area/2)/area.
+obs GREEN on the FIRST metal run, no reds -- the hand-traced centroids (block (1,1), L (5,1), dot (7,4)) and the tie-to-earliest-label held exactly. nearest_region uses strict less-than so an equidistant two-dot tie breaks to the earliest label deterministically.
+obs Every discipline gate GREEN: tame_style_check bans clean, width-check exit 0, plain 7-bit ASCII. Docs synced in the same round: image/README.md gains a Centroid bullet after Size-structure; REMEMBER repointed single-stranded, region_stats folded to a one-line prior-nib pointer (no cairn -- a one-line repoint).
+obs This lap shares the turn with the region_stats lap (measure -> query -> centroid, a clean Lindy chain over label/regions). The council-rota deep-read for the turn was foundations/20260816-214652_standfast-the-stopped-line.md (item 5); Standfast confirmed clear before either lap began.
+file image/centroid.rye the centroid reader -- centroids, nearest_region over a LabelMap
+file tools/centroid_witness.rish the witness on metal -- the centroids, the off-box-center crux, nearest_region, the tie, the refusals
+file image/README.md Centroid bullet after Size-structure, docs-sync
+file crux/REMEMBER.md live edge repointed to centroid single-stranded, region_stats folded to a prior-nib pointer, git nib
+recommend keep-going Named next siblings, crux-first: an EXTENDED-MAXIMA render, a size-histogram RENDER (chart region_stats buckets as bars over shape/palette_paint), the round top-hat on a real photo (a fetch gate). No network, no key, no funds.
