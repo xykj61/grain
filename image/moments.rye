@@ -1,0 +1,335 @@
+//! image/moments.rye -- read every LABELED COMPONENT's SECOND CENTRAL MOMENTS, then its ORIENTATION and ECCENTRICITY: the
+//! measurement that tells two blobs of the same size and box apart by which way they LEAN (Season G, the second-moment
+//! companion of image/centroid.rye's first-moment center of mass).
+//!
+//! Season G (Open Media Primitives) -- image/regions.rye reads a component's AREA and BOUNDING BOX, image/centroid.rye its
+//! CENTER OF MASS (the first moment). This rung reads the next fact a surface asks the moment it wants to know a blob's SHAPE,
+//! not just its place: the SECOND CENTRAL MOMENTS about that center -- `mu20 = sum (x-cx)^2`, `mu02 = sum (y-cy)^2`, and the
+//! signed cross moment `mu11 = sum (x-cx)(y-cy)` -- and from them the blob's ORIENTATION (the angle of its long axis) and its
+//! ECCENTRICITY (how elongated it is, from 0 for a round blob toward 1 for a thin line). This is the fact a text baseline, an
+//! object tracker, and a shape classifier all descend from: two marks can share an area, a box, and a center yet lean opposite
+//! ways, and only the second moment tells them apart -- a diagonal stroke and an anti-diagonal stroke of the same five pixels
+//! sit in the same 5x5 box at the same center (2,2), yet one leans +45 degrees and the other -45.
+//!
+//! Compose not braid. This rung OWNS only the second-moment accumulation (a running sum of the squared and crossed coordinate
+//! deltas per label) and the closed-form geometry it reads off them. image/label.rye owns the LabelMap and its dense
+//! raster-ordered labels; image/centroid.rye owns the first-moment CENTER each deviation is taken about -- this module asks
+//! centroid for the centers, then measures the spread around them, so the two readers stack rather than duplicate. Orientation
+//! is `0.5 * atan2(2*mu11, mu20 - mu02)` and eccentricity is read from the two eigenvalues of the symmetric 2x2 moment matrix
+//! `[[mu20, mu11], [mu11, mu02]]` -- pure functions over the integers already measured, no image written, no color, no codec.
+//!
+//! The moments are accumulated about the ROUNDED center a pixel at a time, so `mu20` and `mu02` stay within `area * dim^2` and
+//! fit `u64`, and the signed `mu11` fits `i64` -- bounded before a byte, no wide accumulator and no overflow. Taking the
+//! deviations about the rounded (nearest-pixel) center rather than the exact real mean adds at most a half-pixel of spread on a
+//! large blob, which the orientation and eccentricity read through unchanged; a symmetric blob whose center lands exactly on a
+//! pixel is measured exactly. An empty source refuses `EmptySource` by name having allocated nothing; a map with no foreground
+//! measures to an empty slice, honestly zero regions. No network, no key, no funds -- the lean of a mark a surface names the
+//! day it labels it, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/moments.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const label = @import("label.rye");
+const centroid = @import("centroid.rye");
+
+pub const moments_version = "20260818.161832";
+
+pub const MomentsError = error{
+    EmptySource,
+};
+
+/// The second central moments of one labeled component, taken about its rounded center of mass. `label` is the component's dense
+/// label (1..count); `area` its foreground pixel count; `cx`, `cy` the center each deviation is measured from. `mu20` and `mu02`
+/// are the summed squared deviations along x and y (always non-negative); `mu11` is the summed product of the two deviations
+/// (signed -- positive when the blob leans up-right along the main diagonal, negative when it leans up-left). Orientation and
+/// eccentricity are read from these by `orientation_radians` and `eccentricity`.
+pub const Moment = struct {
+    label: u32 = 0,
+    area: u32 = 0,
+    cx: u32 = 0,
+    cy: u32 = 0,
+    mu20: u64 = 0,
+    mu02: u64 = 0,
+    mu11: i64 = 0,
+};
+
+/// Measure every component of `map` into a fresh slice the caller owns: `out[i]` is the component with label `i + 1`, so the
+/// slice is exactly `map.count` long and raster-ordered like the labels themselves. The centers come from image/centroid.rye
+/// (compose not braid); a single raster pass then accumulates the squared and crossed deviations about each center. `map` is
+/// read-only.
+pub fn moments(allocator: std.mem.Allocator, map: *const label.LabelMap) ![]Moment {
+    // invariant: a real labeling has extent on both axes; a zero-size map has nothing to measure.
+    if (map.width == 0 or map.height == 0) return error.EmptySource;
+
+    const w: u32 = map.width;
+    const h: u32 = map.height;
+    const n: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the label buffer holds exactly one label per pixel.
+    assert(map.labels.len == @as(usize, @intCast(n)));
+    // invariant: a dense labeling never names more components than it has pixels.
+    assert(map.count <= @as(u32, @intCast(n)));
+
+    // the first-moment centers each deviation is taken about -- centroid owns them, this rung only reads the spread around them.
+    const cents = try centroid.centroids(allocator, map);
+    // invariant: one center per dense label, raster-ordered like the labels.
+    assert(cents.len == @as(usize, map.count));
+
+    const out = try allocator.alloc(Moment, @as(usize, map.count));
+    var r: usize = 0;
+    while (r < out.len) : (r += 1) {
+        out[r] = Moment{
+            .label = cents[r].label,
+            .area = cents[r].area,
+            .cx = cents[r].cx,
+            .cy = cents[r].cy,
+            .mu20 = 0,
+            .mu02 = 0,
+            .mu11 = 0,
+        };
+    }
+
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const l = map.labels[@as(usize, y) * @as(usize, w) + @as(usize, x)];
+            if (l == 0) continue; // background carries no region
+            // invariant: a foreground label is a real dense label within the count, so it indexes inside the slice.
+            assert(l >= 1);
+            assert(l <= map.count);
+            const idx: usize = @as(usize, l) - 1;
+            // signed deviations from the component's center; each stays within the dimension ceiling so the square fits.
+            const dx: i64 = @as(i64, @intCast(x)) - @as(i64, @intCast(out[idx].cx));
+            const dy: i64 = @as(i64, @intCast(y)) - @as(i64, @intCast(out[idx].cy));
+            // invariant: a deviation never exceeds the image dimension, so its square stays far inside u64 and the sum cannot wrap.
+            assert(dx >= -@as(i64, qoi.qoi_max_dim));
+            assert(dx <= @as(i64, qoi.qoi_max_dim));
+            assert(dy >= -@as(i64, qoi.qoi_max_dim));
+            assert(dy <= @as(i64, qoi.qoi_max_dim));
+            out[idx].mu20 += @as(u64, @intCast(dx * dx));
+            out[idx].mu02 += @as(u64, @intCast(dy * dy));
+            out[idx].mu11 += dx * dy;
+        }
+    }
+
+    r = 0;
+    while (r < out.len) : (r += 1) {
+        // invariant: a dense labeling uses every label, so every region met at least one pixel.
+        assert(out[r].area >= 1);
+        // invariant: the squared-deviation sums are non-negative by construction.
+        assert(out[r].mu20 >= 0);
+        assert(out[r].mu02 >= 0);
+    }
+    return out;
+}
+
+/// The ORIENTATION of a component's long axis, in radians, measured from the x-axis and folded to the range (-pi/2, pi/2]. A
+/// value of 0 is a mark lying flat along x; +pi/2 a mark standing along y; +pi/4 a mark leaning up-right along the main
+/// diagonal; -pi/4 a mark leaning up-left. When the blob is isotropic (its x and y spread equal with no cross lean, as a square
+/// or a round dot), the long axis is undefined and 0 is returned by convention.
+pub fn orientation_radians(m: Moment) f64 {
+    // invariant: orientation reads a real region's spread.
+    assert(m.area >= 1);
+    // an isotropic blob has no distinguished axis -- report 0 rather than the ill-defined atan2(0, 0).
+    if (m.mu11 == 0 and m.mu20 == m.mu02) return 0.0;
+    const num: f64 = 2.0 * @as(f64, @floatFromInt(m.mu11));
+    const den: f64 = @as(f64, @floatFromInt(m.mu20)) - @as(f64, @floatFromInt(m.mu02));
+    const theta: f64 = 0.5 * std.math.atan2(num, den);
+    // invariant: the half-angle of atan2 stays within (-pi/2, pi/2].
+    assert(theta > -std.math.pi);
+    assert(theta <= std.math.pi);
+    return theta;
+}
+
+/// The ECCENTRICITY of a component, from 0 (a round or square blob, spread the same in every direction) toward 1 (a thin line,
+/// all spread along one axis). It is read from the two eigenvalues of the symmetric moment matrix `[[mu20, mu11], [mu11, mu02]]`
+/// as `sqrt(1 - lambda_min / lambda_max)`. A single pixel (no spread at all) returns 0.
+pub fn eccentricity(m: Moment) f64 {
+    // invariant: eccentricity reads a real region's spread.
+    assert(m.area >= 1);
+    const a: f64 = @as(f64, @floatFromInt(m.mu20));
+    const c: f64 = @as(f64, @floatFromInt(m.mu02));
+    const b: f64 = @as(f64, @floatFromInt(m.mu11));
+    const half_trace: f64 = (a + c) / 2.0;
+    const half_diff: f64 = (a - c) / 2.0;
+    // the moment matrix is symmetric positive-semidefinite, so the discriminant is real and non-negative.
+    const disc: f64 = std.math.sqrt(half_diff * half_diff + b * b);
+    const lambda_max: f64 = half_trace + disc;
+    var lambda_min: f64 = half_trace - disc;
+    // a positive-semidefinite matrix has non-negative eigenvalues; clamp away any float undershoot at zero.
+    if (lambda_min < 0.0) lambda_min = 0.0;
+    // invariant: the larger eigenvalue is at least the smaller.
+    assert(lambda_max >= lambda_min);
+    if (lambda_max <= 0.0) return 0.0; // no spread at all -- a single pixel
+    var arg: f64 = 1.0 - lambda_min / lambda_max;
+    if (arg < 0.0) arg = 0.0; // clamp float rounding into the real domain
+    const ecc: f64 = std.math.sqrt(arg);
+    // invariant: eccentricity is a proper fraction in [0, 1].
+    assert(ecc >= 0.0);
+    assert(ecc <= 1.0);
+    return ecc;
+}
+
+// --- selftest: the second-moment crux, the diagonal/anti-diagonal orientation split, isotropy, refusal, determinism ---------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y) -- the small writer the fixtures share.
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// True when two floats agree within a small tolerance -- the fixtures use exact-center shapes, so the moments are exact and the
+/// only slack is the trig library's own rounding.
+fn approx(got: f64, want: f64) bool {
+    const d = if (got >= want) got - want else want - got;
+    return d < 0.000001;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const half_pi: f64 = std.math.pi / 2.0;
+    const quarter_pi: f64 = std.math.pi / 4.0;
+
+    // --- the DECISIVE crux: a diagonal and an anti-diagonal of the same five pixels share area, box, and center, yet lean
+    //     opposite ways. Both sit in a 5x5 box; both center at (2,2). Only the SECOND MOMENT tells them apart. ----------------
+    var diag = try make_canvas(garden, 5, 5, 0);
+    set_dot(&diag, 0, 0);
+    set_dot(&diag, 1, 1);
+    set_dot(&diag, 2, 2);
+    set_dot(&diag, 3, 3);
+    set_dot(&diag, 4, 4); // main diagonal -- leans up-right
+    const dmap = try label.label_components(garden, &diag);
+    if (dmap.count != 1) return error.DiagNotOneComponent;
+    const dm = try moments(garden, &dmap);
+    if (dm[0].area != 5) return error.DiagAreaWrong;
+    if (dm[0].cx != 2 or dm[0].cy != 2) return error.DiagCenterWrong;
+    // deviations (-2,-2),(-1,-1),(0,0),(1,1),(2,2): mu20 = mu02 = 4+1+0+1+4 = 10, mu11 = same sum of products = +10
+    if (dm[0].mu20 != 10 or dm[0].mu02 != 10) return error.DiagSquaredMomentWrong;
+    if (dm[0].mu11 != 10) return error.DiagCrossMomentWrong;
+    if (!approx(orientation_radians(dm[0]), quarter_pi)) return error.DiagOrientationWrong; // +45 degrees
+
+    var anti = try make_canvas(garden, 5, 5, 0);
+    set_dot(&anti, 4, 0);
+    set_dot(&anti, 3, 1);
+    set_dot(&anti, 2, 2);
+    set_dot(&anti, 1, 3);
+    set_dot(&anti, 0, 4); // anti-diagonal -- leans up-left
+    const amap = try label.label_components(garden, &anti);
+    if (amap.count != 1) return error.AntiNotOneComponent;
+    const am = try moments(garden, &amap);
+    if (am[0].area != 5) return error.AntiAreaWrong;
+    if (am[0].cx != 2 or am[0].cy != 2) return error.AntiCenterWrong;
+    // same squared moments, but the products flip sign: mu11 = -10 -- the fact area and box and center all miss
+    if (am[0].mu20 != 10 or am[0].mu02 != 10) return error.AntiSquaredMomentWrong;
+    if (am[0].mu11 != -10) return error.AntiCrossMomentWrong;
+    if (!approx(orientation_radians(am[0]), -quarter_pi)) return error.AntiOrientationWrong; // -45 degrees
+    // the decisive proof: identical area, identical center, identical squared moments -- opposite orientation
+    if (dm[0].area != am[0].area) return error.CruxAreaDiffered;
+    if (dm[0].cx != am[0].cx or dm[0].cy != am[0].cy) return error.CruxCenterDiffered;
+    if (approx(orientation_radians(dm[0]), orientation_radians(am[0]))) return error.CruxOrientationsEqual;
+
+    // --- the AXIS crux: a flat bar reads orientation 0, a standing bar reads +pi/2 -- the long axis found on each -----------
+    var flat = try make_canvas(garden, 7, 5, 0);
+    set_block(&flat, 0, 2, 7, 1); // a 7-wide, 1-tall bar centered at (3, 2)
+    const fmap = try label.label_components(garden, &flat);
+    const fm = try moments(garden, &fmap);
+    if (fm[0].cx != 3 or fm[0].cy != 2) return error.FlatCenterWrong;
+    if (fm[0].mu02 != 0 or fm[0].mu11 != 0) return error.FlatMomentWrong; // no y-spread, no lean
+    if (!approx(orientation_radians(fm[0]), 0.0)) return error.FlatOrientationWrong; // flat along x
+    if (!approx(eccentricity(fm[0]), 1.0)) return error.FlatEccentricityWrong; // a line is maximally eccentric
+
+    var tall = try make_canvas(garden, 5, 7, 0);
+    set_block(&tall, 2, 0, 1, 7); // a 1-wide, 7-tall bar centered at (2, 3)
+    const tmap = try label.label_components(garden, &tall);
+    const tm = try moments(garden, &tmap);
+    if (tm[0].cx != 2 or tm[0].cy != 3) return error.TallCenterWrong;
+    if (tm[0].mu20 != 0 or tm[0].mu11 != 0) return error.TallMomentWrong; // no x-spread, no lean
+    if (!approx(orientation_radians(tm[0]), half_pi)) return error.TallOrientationWrong; // standing along y
+    if (!approx(eccentricity(tm[0]), 1.0)) return error.TallEccentricityWrong;
+
+    // --- the ISOTROPY crux: a solid square spreads the same on both axes with no lean, so its orientation is undefined
+    //     (reported 0) and its eccentricity is 0 -- the second moment cannot orient a shape that has no long axis -----------
+    var square = try make_canvas(garden, 5, 5, 0);
+    set_block(&square, 0, 0, 5, 5); // a solid 5x5 block centered at (2, 2)
+    const smap = try label.label_components(garden, &square);
+    const sm = try moments(garden, &smap);
+    if (sm[0].area != 25) return error.SquareAreaWrong;
+    if (sm[0].mu20 != sm[0].mu02 or sm[0].mu11 != 0) return error.SquareNotIsotropic; // equal spread, no lean
+    if (!approx(orientation_radians(sm[0]), 0.0)) return error.SquareOrientationWrong;
+    if (!approx(eccentricity(sm[0]), 0.0)) return error.SquareEccentricityWrong; // round by second moment
+
+    // a diagonal line is far more eccentric than the square -- eccentricity is a real, ordered fact
+    if (!(eccentricity(dm[0]) > eccentricity(sm[0]))) return error.EccentricityNotOrdered;
+
+    // --- the EMPTY-FOREGROUND case: a real canvas with no marks measures to zero regions, honestly -----------------------
+    var blank = try make_canvas(garden, 4, 4, 0);
+    _ = &blank;
+    const bmap = try label.label_components(garden, &blank);
+    const bm = try moments(garden, &bmap);
+    if (bm.len != 0) return error.BlankNotEmpty;
+
+    // --- refusal by name, having allocated nothing --------------------------------------------------------------------
+    var empty_map = label.LabelMap{ .width = 0, .height = 0, .count = 0, .labels = &[_]u32{} };
+    if (moments(garden, &empty_map)) |_| return error.EmptyNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- determinism: the same labeling measures to the same moments --------------------------------------------------
+    const p = try moments(garden, &dmap);
+    const q = try moments(garden, &dmap);
+    var i: usize = 0;
+    while (i < p.len) : (i += 1) {
+        if (p[i].mu20 != q[i].mu20 or p[i].mu02 != q[i].mu02 or p[i].mu11 != q[i].mu11) return error.MomentsNotDeterministic;
+    }
+
+    print("GREEN image-moments: read every LABELED COMPONENT's SECOND CENTRAL MOMENTS about its centroid in one raster pass, then its ORIENTATION and ECCENTRICITY -- the decisive crux is a diagonal and an anti-diagonal of the same five pixels that share area (5), bounding box (5x5), and center (2,2) yet carry mu11 of +10 and -10 so their orientations split +45 and -45 degrees (the lean no area, box, or center can see); a flat 7x1 bar reads orientation 0 and a standing 1x7 bar +90 degrees, each eccentricity 1 (a line is maximally elongated); a solid 5x5 square is isotropic (mu20 == mu02, mu11 == 0) so its orientation is undefined (0) and its eccentricity 0, and the diagonal line is provably more eccentric than the square; a blank canvas measures to zero regions; an empty source refuses EmptySource having allocated nothing; the same labeling measures deterministically\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: moments selftest\n", .{});
+    return 1;
+}

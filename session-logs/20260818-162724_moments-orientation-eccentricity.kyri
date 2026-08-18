@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260818.162724
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title moments -- component orientation and eccentricity, the second-moment companion of centroid, GREEN
+prompt baton prin recur -- take the next agent-doable lap Lindy-first crux-first on the running thread; send often; stop at custody gates
+think Loaded KYRI and RADIANT_STYLE first, then REMEMBER, REDS, session-logs top rows. Standfast clear: every living REDS row (80, 83, 84, 85, 81, 78, 86, 87) closed or released; only #75 rests as custody-gated errata (a deep-debride custody gate, not agent-closable). No open agent-closable reds -- so this lap grows Season G open-media.
+think The running thread is the Season G image family; live edge image/threshold.rye GREEN. Threshold's next-siblings named region MOMENTS/orientation as the second-moment companion of centroid (the lap two before). Lindy-first crux-first among the agent-doable siblings takes it: the hardest-solvable that opens the rest (orientation, tracking, shape descriptors) and the natural extension of the freshly-built centroid -- first moment to second moment.
+think Ceilings: qoi_max_dim 8192, qoi_max_pixels 1<<20. The exact scaled-moment formula (area*mu20 = area*sum_xx - sum_x^2) overflows u64 at the extreme (area*sum_xx ~ 6.7e19 > 2^64). So accumulate the second CENTRAL moments about the rounded centroid in a bounded second pass: mu20/mu02 in u64 (<= area*dim^2 ~ 6.7e13), the signed cross moment mu11 in i64 (+/- 6.7e13). Honest cost named: deviations about the rounded center add at most a half-pixel of spread on a large blob; exact for a symmetric blob whose center lands on a pixel, so the witness uses exact-center fixtures.
+think Compose not braid: moments asks image/centroid.rye for each component's center (the first moment it owns), then measures the spread around it -- the two readers stack rather than duplicate. label owns the LabelMap. Orientation = 0.5*atan2(2*mu11, mu20-mu02); eccentricity = sqrt(1 - lambda_min/lambda_max) over the eigenvalues of [[mu20,mu11],[mu11,mu02]]. Both are functions over the stored integers, no image written.
+think Designed the decisive crux before coding: a diagonal and an anti-diagonal of the same five pixels share area (5), bounding box (5x5), and center (2,2) -- every fact regions and centroid measure agrees -- yet their cross moments are +10 and -10, so orientation splits +45 and -45. The lean no earlier reader can see.
+obs GREEN on the first metal run, no algorithm reds. atan2 two-arg form (std.math.atan2(y, x)) built clean. TAME caught four compound asserts (a and b) -- split each into two named halves, re-GREEN. width + ASCII + living-docs + living-card all clean.
+obs Isotropy named honestly: a solid square has mu20==mu02, mu11==0, so the second moment cannot orient it -- orientation returns 0 by convention, eccentricity 0. The witness proves the diagonal line is provably more eccentric than the square, so eccentricity is a real ordered fact.
+loom witness=moments_witness checks=8 fixtures=6 crux=diagonal-anti-diagonal-orientation-split wall_note=GREEN-first-run
+file image/moments.rye second-moment reader: mu20/mu02/mu11 accumulation, orientation_radians, eccentricity; composes over label + centroid
+file tools/moments_witness.rish builds and runs the selftest on metal, asserts the GREEN line by native contains
+file image/README.md Moments (orientation and eccentricity) bullet after Threshold, named the second-moment companion of centroid (docs-sync)
+file crux/REMEMBER.md live edge + Git nib repointed to moments single-stranded, threshold folded to a one-line prior-nib pointer
+file session-logs/README.md newest-first index row prepended
+recommend keep-going Season G open-media, Lindy-first crux-first: rotation-invariant HU MOMENTS over these central moments, a CONTOUR/perimeter tracer over a labeling (Moore-neighbor), or a two-level MULTI-THRESHOLD over the histogram. The round top-hat on a real photo still wants a fetch gate. No network, no key, no funds.

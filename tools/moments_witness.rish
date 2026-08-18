@@ -1,0 +1,36 @@
+# tools/moments_witness.rish -- a labeling's SECOND CENTRAL MOMENTS, orientation, and eccentricity, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/regions.rye reads a component's area and box, image/centroid.rye its center of
+# mass (the first moment); this rung reads the SECOND moment about that center -- mu20, mu02, and the signed cross moment mu11 --
+# and from them a blob's ORIENTATION (the angle of its long axis) and ECCENTRICITY (how elongated it is). Compose not braid:
+# it asks centroid for the centers, then measures the spread around them.
+#
+# The crux this witness proves on metal: a diagonal and an anti-diagonal of the same five pixels share area (5), bounding box
+# (5x5), and center (2,2), yet their cross moments are +10 and -10 so their orientations split +45 and -45 degrees -- the lean
+# no area, box, or center can see. A flat 7x1 bar reads orientation 0 and a standing 1x7 bar +90 degrees, each eccentricity 1;
+# a solid 5x5 square is isotropic so its orientation is undefined (0) and its eccentricity 0, and the diagonal line is provably
+# more eccentric than the square; a blank canvas measures to zero regions; an empty source refuses by name. No network, no key,
+# no funds -- the lean of a mark a surface names the day it labels it, on our own open geometry.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/moments_witness.rish
+
+say "moments: Language EN -- Season G second-moment reader over a LabelMap; moments returns one Moment per component, orientation_radians reads its long-axis angle and eccentricity its elongation."
+say "moments: Style Radiant -- compose not braid: this rung owns only the second-moment accumulation and the closed-form geometry; label owns the LabelMap, centroid owns the first-moment center each deviation is taken about. No image written, no color, no codec."
+say "moments: Lens TAME -- the squared-deviation sums run in u64 and the signed cross moment in i64 so a full-image component can never wrap; the moment slice is sized to the label count; an empty source refuses EmptySource up front so a refusal allocates nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/moments"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/moments.rye -femit-bin=${bin}"]
+assert build.ok else "moments: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "moments: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "moments: ${out}"
+
+assert selftest.out contains "GREEN image-moments" else "moments: selftest did not print the GREEN line"
+
+say "moments: GREEN -- the diagonal and anti-diagonal split their orientation to +45 and -45 where area, box, and center all agree, the flat and standing bars orient along x and y, the square reads isotropic, the eccentricities order line above square, a blank canvas measures to zero regions, the refusal fires by name, on metal."
