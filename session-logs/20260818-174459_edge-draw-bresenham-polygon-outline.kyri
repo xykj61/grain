@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260818.174459
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title edge_draw -- Bresenham line and the polygon's own paint, GREEN
+prompt baton prin recur -- the autonomous loop, second lap of the turn: take the next agent-doable lap Lindy-first crux-first; send often; stop at the custody gates
+think Second lap of this turn, same live thread (Season G open-media). The shape_match log named three crux-first siblings; the earlier polygon/contour logs also named an edge-drawing render.
+think Lindy-first crux-first: the EDGE-DRAWING render (Bresenham) is the highest-Lindy (a wireframe, a chart axis, a polygon fill all descend from a line drawer -- the paint family genuinely lacked a line primitive) and a real crux (integer error-accumulation across all octants). It is the polygon's own paint, the inverse of the simplify that read the vertices.
+think Read polygon.rye (the Polygon and its contour.Point vertices), contour.rye's paint_contour and the qoi codec idiom (encoded_bound + dst + same_bytes) so the render composes cleanly and round-trips.
+think Designed the decisive crux before coding: CONNECTEDNESS -- a polygon's vertices are sparse corners, yet the drawn edge between two is an 8-connected run, so four corners come back a closed unbroken loop. Fixtures: axis-aligned exact span, 45-degree staircase, a shallow-slope 8-connected run (single-valued in x, every column crossed once), a steep line, and the polygon round-trip (a rectangle's 16 perimeter pixels, interior dark).
+obs Measurement beats memory caught a real over-claim on metal: I first asserted a steep line drawn in REVERSE plots a PIXEL-IDENTICAL run to its forward draw. It reddened (DirectionNotSymmetric) -- Bresenham's tie-break puts a pixel on an EXACT tie to the other side of the true line under reversal, so the pixel SET is not identical; only the endpoints and the pixel COUNT are direction-free. Corrected the claim to the honest invariant (endpoints + count, single-valued in the major axis) and the GREEN-line prose with it. A fixture over-claim fixed before any GREEN was ever claimed -- not a code red, no allocation booked (Standfast unbroken).
+obs GREEN on the full metal run after the correction: axis-aligned exact span (a horizontal x=1..6 lights six, no overrun), the 45-degree staircase, the SHALLOW 8-connected crux (every column x=0..8 crossed once, each pixel 8-adjacent to the last), the STEEP single-valued run (nine pixels, one per row, count direction-free), the POLYGON ROUND-TRIP (four corners -> a closed rectangle boundary, perimeter exactly 16, interior dark -- an outline not a fill), a QOI round-trip byte-for-byte, VertexOutOfBounds + EmptySource refusals, determinism.
+obs Bounded before a byte: a Bresenham run never leaves the bounding box of its endpoints, so two in-canvas vertices draw an edge wholly in-canvas (no silent clip); each step advances toward the endpoint so the loop runs at most the endpoint span plus one, a hard step ceiling guarding LineTooLong. Compose not braid: owns only the line rasterization and the edge routing -- no gather, blend, codec, or color math beyond a caller's RGBA; polygon owns the vertices, contour the Point type, qoi the buffer.
+obs TAME tidy caught one compound assert (`cx >= 0 and cy >= 0`), split into named halves, re-GREEN; width-check exit 0, plain 7-bit ASCII, living-docs + living-card GREEN.
+loom witness=edge_draw_witness rect_perimeter_px=16 shallow_run_px=9 steep_run_px=9
+file image/edge_draw.rye the render: draw_line (Bresenham integer line onto any RGBA buffer) + paint_polygon (a polygon's closed outline), composing over polygon
+file tools/edge_draw_witness.rish proves connectedness, the octant cases, the polygon round-trip, QOI round-trip, refusals, determinism on metal
+file image/README.md Edge draw (Bresenham line, polygon outline) bullet after Shape-match (docs-sync)
+file crux/REMEMBER.md live edge + Git nib repointed single-stranded to edge_draw; shape_match folded to a one-line prior-nib pointer (no cairn -- a one-line repoint)
+recommend keep-going Named next siblings crux-first: a FREEMAN chain code over the ordered contour ring (a compact boundary representation), a NEAREST-TEMPLATE classifier (argmin over shape_distance, the recognition payoff), a POLYGON FILL by scanline (edges to a filled area); the round top-hat on a real photo wants a fetch gate. Standfast clear. No network, no key, no funds.

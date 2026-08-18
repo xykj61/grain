@@ -1,0 +1,331 @@
+//! image/edge_draw.rye -- draw the STRAIGHT EDGE between two points as a CONNECTED run of pixels, and paint a POLYGON's whole
+//! closed outline from its corner vertices: the render that turns the few vertices image/polygon.rye reads back into the drawn
+//! shape (Season G, the paint companion of the polygon simplifier).
+//!
+//! Season G (Open Media Primitives) -- image/polygon.rye reads a shape's ordered ring down to the few VERTICES that define it
+//! (a 5x5 square's sixteen boundary pixels become four corners). Those vertices name the shape yet draw nothing; a surface that
+//! wants to SHOW the outline needs the inverse move -- the straight edge between one vertex and the next, filled in as a run of
+//! pixels a screen can light. This rung reads that: BRESENHAM's line algorithm (J.E. Bresenham, 1965), the classic integer
+//! rasterizer that walks from one endpoint to the other choosing, at each step, the single pixel nearest the true line -- no
+//! floating point, no gaps. `draw_line` is the reusable primitive (a wireframe, a chart axis, a polygon fill all descend from a
+//! line drawer); `paint_polygon` composes it around a polygon's vertices, closing the last edge back to the first, so four
+//! corners become a drawn quadrilateral outline -- the exact inverse of the simplify that produced them.
+//!
+//! The decisive fact this render carries that no vertex list can: CONNECTEDNESS. A polygon's vertices are a sparse set of
+//! corners; the drawn edge between two of them is an 8-CONNECTED run where each plotted pixel touches the next, so a shape drawn
+//! from four corners comes back a closed unbroken loop rather than four lonely dots. Bresenham earns this across every slope --
+//! a 45-degree diagonal walks the exact staircase, a shallow line steps one pixel down every few across, a steep one the reverse,
+//! and a line running up-left plots the same run as down-right reversed -- the octant symmetry the single integer error term
+//! folds into one loop. The endpoints are always exact, and because a Bresenham run never leaves the bounding box of its two
+//! endpoints, two in-canvas vertices draw an edge that stays wholly in the canvas -- no silent clip, no overrun.
+//!
+//! Compose not braid. This rung OWNS only the line rasterization (the integer error walk) and the routing of a polygon's edges
+//! through it. image/polygon.rye owns the vertices and image/contour.rye their `Point` type; image/qoi.rye owns the RGBA buffer.
+//! No gather, no blend, no codec, no color math beyond writing a caller's chosen RGBA -- the smallest render above the reader it
+//! draws. The line walk is bounded by the canvas: each step advances toward the endpoint, so the loop runs at most the endpoint
+//! span plus one, and a hard step ceiling guards `LineTooLong` by name against a malformed call. An empty canvas refuses
+//! `EmptySource` and a vertex outside the canvas refuses `VertexOutOfBounds`, each having drawn nothing. No network, no key, no
+//! funds -- the outline a surface draws the moment it has a shape's corners in hand, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/edge_draw.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const contour = @import("contour.rye");
+const polygon = @import("polygon.rye");
+
+pub const edge_draw_version = "20260818.174459";
+
+pub const EdgeDrawError = error{
+    EmptySource,
+    VertexOutOfBounds,
+    LineTooLong,
+};
+
+/// An opaque-white RGBA quad -- the default ink `paint_polygon` draws an outline in.
+pub const white: [4]u8 = [_]u8{ 255, 255, 255, 255 };
+
+/// Write one RGBA pixel at (x, y) of `img`. The write is bounds-asserted; callers guarantee the coordinate is in-canvas.
+fn put_pixel(img: *qoi.Pixmap, x: u32, y: u32, rgba: [4]u8) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = rgba[0];
+    img.pixels[di + 1] = rgba[1];
+    img.pixels[di + 2] = rgba[2];
+    img.pixels[di + 3] = rgba[3];
+}
+
+/// Draw the straight edge from (x0, y0) to (x1, y1) onto `img` in `rgba` by Bresenham's integer line algorithm. Both endpoints
+/// must lie inside the canvas; because a Bresenham run never leaves the bounding box of its endpoints, every plotted pixel is
+/// then in-canvas too. The plotted pixels form an 8-connected run, endpoints included and exact.
+pub fn draw_line(img: *qoi.Pixmap, x0: u32, y0: u32, x1: u32, y1: u32, rgba: [4]u8) !void {
+    // invariant: both endpoints lie inside the canvas, so the whole run (bounded by their box) does too.
+    if (x0 >= img.width or y0 >= img.height or x1 >= img.width or y1 >= img.height) return error.VertexOutOfBounds;
+
+    var cx: i32 = @intCast(x0);
+    var cy: i32 = @intCast(y0);
+    const ex: i32 = @intCast(x1);
+    const ey: i32 = @intCast(y1);
+
+    const dx: i32 = if (ex >= cx) ex - cx else cx - ex; // abs horizontal span
+    const dy_abs: i32 = if (ey >= cy) ey - cy else cy - ey; // abs vertical span
+    const ndy: i32 = -dy_abs; // Bresenham carries the vertical span negated
+    const sx: i32 = if (cx < ex) 1 else -1;
+    const sy: i32 = if (cy < ey) 1 else -1;
+    // invariant: the steps are unit moves in each axis.
+    assert(sx == 1 or sx == -1);
+    assert(sy == 1 or sy == -1);
+    var err: i32 = dx + ndy;
+
+    // the walk runs at most the endpoint span plus one; a hard ceiling guards a malformed call from an unbounded loop.
+    const span: u32 = @intCast(dx + dy_abs);
+    // invariant: the span of two in-canvas points stays within twice the image dimension ceiling.
+    assert(span <= 2 * qoi.qoi_max_dim);
+    const step_ceiling: u32 = span + 2;
+    var steps: u32 = 0;
+
+    while (true) {
+        // invariant: the walking position stays non-negative on both axes (inside the canvas bounding box of the endpoints).
+        assert(cx >= 0);
+        assert(cy >= 0);
+        put_pixel(img, @intCast(cx), @intCast(cy), rgba);
+        if (cx == ex and cy == ey) break;
+        steps += 1;
+        if (steps > step_ceiling) return error.LineTooLong;
+        const e2: i32 = 2 * err;
+        if (e2 >= ndy) {
+            err += ndy;
+            cx += sx;
+        }
+        if (e2 <= dx) {
+            err += dx;
+            cy += sy;
+        }
+    }
+}
+
+/// Paint a polygon's whole closed outline white on an opaque-black canvas of `dst_w` x `dst_h`: draw the Bresenham edge between
+/// each pair of consecutive vertices, then close the last vertex back to the first, so a shape's corner vertices come back a
+/// drawn, connected loop. The caller owns the returned pixmap. Composes `draw_line` around `polygon`'s vertices.
+pub fn paint_polygon(allocator: std.mem.Allocator, poly: *const polygon.Polygon, dst_w: u32, dst_h: u32) !qoi.Pixmap {
+    // invariant: a real canvas has extent within the image module's named pixel ceiling.
+    if (dst_w == 0 or dst_h == 0) return error.EmptySource;
+    const n: u64 = @as(u64, dst_w) * @as(u64, dst_h);
+    assert(n <= @as(u64, qoi.qoi_max_pixels));
+    // invariant: a polygon to draw has at least its start vertex.
+    assert(poly.vertices.len >= 1);
+    // invariant: a polygon never names more vertices than the pixel ceiling holds.
+    assert(poly.vertices.len <= @as(usize, qoi.qoi_max_pixels));
+
+    const out = try allocator.alloc(u8, @as(usize, @intCast(n)) * 4);
+    var i: usize = 0;
+    while (i < out.len) : (i += 4) {
+        out[i] = 0;
+        out[i + 1] = 0;
+        out[i + 2] = 0;
+        out[i + 3] = 255; // opaque black ground
+    }
+    var img = qoi.Pixmap{ .width = dst_w, .height = dst_h, .channels = 4, .colorspace = 0, .pixels = out };
+
+    // a single-vertex polygon (a degenerate ring) draws its one point; two or more draw a closed loop of edges.
+    if (poly.vertices.len == 1) {
+        const p = poly.vertices[0];
+        if (p.x >= dst_w or p.y >= dst_h) return error.VertexOutOfBounds;
+        put_pixel(&img, p.x, p.y, white);
+        return img;
+    }
+
+    var v: usize = 0;
+    while (v < poly.vertices.len) : (v += 1) {
+        const a = poly.vertices[v];
+        const b = poly.vertices[(v + 1) % poly.vertices.len]; // the last edge closes back to the first vertex
+        try draw_line(&img, a.x, a.y, b.x, b.y, white);
+    }
+    return img;
+}
+
+// --- selftest: the octant crux, connectedness, the polygon round-trip, endpoints exact, refusals, round-trip, determinism -----
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// True when a foreground pixel sits at (x, y) of `img` -- read through the red channel like the family's binary door.
+fn is_set(img: *const qoi.Pixmap, x: u32, y: u32) bool {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    return img.pixels[(@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4] >= 128;
+}
+
+/// Count the lit pixels of a canvas -- the family's small tally, for asserting an exact drawn-pixel count.
+fn lit_count(img: *const qoi.Pixmap) u32 {
+    var c: u32 = 0;
+    var y: u32 = 0;
+    while (y < img.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x < img.width) : (x += 1) {
+            if (is_set(img, x, y)) c += 1;
+        }
+    }
+    return c;
+}
+
+/// True when (ax, ay) and (bx, by) are 8-adjacent (touching, including diagonally) -- the connectedness a Bresenham run keeps.
+fn adjacent8(ax: u32, ay: u32, bx: u32, by: u32) bool {
+    const dx: u32 = if (ax >= bx) ax - bx else bx - ax;
+    const dy: u32 = if (ay >= by) ay - by else by - ay;
+    return dx <= 1 and dy <= 1 and (dx + dy) >= 1;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- HORIZONTAL / VERTICAL: a straight axis-aligned edge lights exactly the pixels between its endpoints, no more --------
+    var hv = try make_canvas(garden, 10, 10, 0);
+    try draw_line(&hv, 1, 3, 6, 3, white); // horizontal: x = 1..6 at y = 3
+    if (lit_count(&hv) != 6) return error.HorizontalCount;
+    if (!is_set(&hv, 1, 3) or !is_set(&hv, 6, 3)) return error.HorizontalEndpoints;
+    if (is_set(&hv, 0, 3) or is_set(&hv, 7, 3)) return error.HorizontalOverrun;
+    try draw_line(&hv, 8, 1, 8, 5, white); // vertical: y = 1..5 at x = 8, five fresh pixels
+    if (lit_count(&hv) != 11) return error.VerticalCount;
+
+    // --- DIAGONAL (45 degrees): the exact staircase, one pixel per step, endpoints included -------------------------------
+    var diag = try make_canvas(garden, 8, 8, 0);
+    try draw_line(&diag, 0, 0, 4, 4, white);
+    if (lit_count(&diag) != 5) return error.DiagonalCount; // (0,0),(1,1),(2,2),(3,3),(4,4)
+    var t: u32 = 0;
+    while (t <= 4) : (t += 1) {
+        if (!is_set(&diag, t, t)) return error.DiagonalWrongPixel;
+    }
+
+    // --- SHALLOW-SLOPE OCTANT + CONNECTEDNESS, the decisive crux: a line the vertices alone cannot draw comes back an
+    //     8-connected run, each plotted pixel touching the next, endpoints exact -- the fact no sparse vertex list carries ---
+    var shallow = try make_canvas(garden, 12, 8, 0);
+    try draw_line(&shallow, 0, 1, 8, 4, white); // shallow: crosses 8 in x while rising 3 in y
+    if (!is_set(&shallow, 0, 1) or !is_set(&shallow, 8, 4)) return error.ShallowEndpoints;
+    // walk the run column by column: every lit column holds exactly one lit pixel, and consecutive lit pixels are 8-adjacent
+    var prev_x: i32 = -1;
+    var prev_y: i32 = -1;
+    var col: u32 = 0;
+    var run_len: u32 = 0;
+    while (col <= 8) : (col += 1) {
+        var found: i32 = -1;
+        var row: u32 = 0;
+        while (row < shallow.height) : (row += 1) {
+            if (is_set(&shallow, col, row)) {
+                if (found != -1) return error.ShallowMultiplePerColumn; // a shallow Bresenham line is single-valued in x
+                found = @intCast(row);
+            }
+        }
+        if (found == -1) return error.ShallowGapColumn; // every column from x=0 to x=8 is crossed
+        run_len += 1;
+        if (prev_x != -1) {
+            if (!adjacent8(@intCast(prev_x), @intCast(prev_y), col, @intCast(found))) return error.ShallowNotConnected;
+        }
+        prev_x = @intCast(col);
+        prev_y = found;
+    }
+    if (run_len != 9) return error.ShallowRunLength; // x = 0..8 inclusive
+
+    // --- STEEP + REVERSED DIRECTION: a steep line is single-valued in its major axis (one pixel per row), and drawing it the
+    //     other way lights the SAME endpoints and the SAME pixel COUNT -- the run length is direction-free (max(dx,dy)+1),
+    //     even though a pixel on an EXACT tie may fall to the other side of the true line (Bresenham's honest subtlety). ------
+    var steepA = try make_canvas(garden, 8, 12, 0);
+    var steepB = try make_canvas(garden, 8, 12, 0);
+    try draw_line(&steepA, 1, 1, 4, 9, white); // down-right, steep: dy = 8 dominates, so nine pixels, one per row
+    try draw_line(&steepB, 4, 9, 1, 1, white); // the same segment drawn the other way
+    if (lit_count(&steepA) != 9) return error.SteepRunLength; // max(dx=3, dy=8) + 1 = 9
+    if (lit_count(&steepB) != lit_count(&steepA)) return error.SteepReverseCountDiffers;
+    if (!is_set(&steepA, 1, 1) or !is_set(&steepA, 4, 9)) return error.SteepEndpoints;
+    if (!is_set(&steepB, 1, 1) or !is_set(&steepB, 4, 9)) return error.SteepReverseEndpoints;
+    // single-valued in y: every row from y=1 to y=9 holds exactly one lit pixel
+    var srow: u32 = 1;
+    while (srow <= 9) : (srow += 1) {
+        var cnt: u32 = 0;
+        var scol: u32 = 0;
+        while (scol < steepA.width) : (scol += 1) {
+            if (is_set(&steepA, scol, srow)) cnt += 1;
+        }
+        if (cnt != 1) return error.SteepNotSingleValued;
+    }
+
+    // --- the POLYGON ROUND-TRIP: four corner vertices drawn as a closed loop reproduce the rectangle's boundary, connected --
+    var verts = [_]contour.Point{
+        .{ .x = 1, .y = 1 },
+        .{ .x = 6, .y = 1 },
+        .{ .x = 6, .y = 4 },
+        .{ .x = 1, .y = 4 },
+    };
+    const poly = polygon.Polygon{ .source_label = 1, .vertices = verts[0..] };
+    const rect = try paint_polygon(garden, &poly, 10, 8);
+    // the four corners are all lit, and the top and bottom edges span x = 1..6, the sides y = 1..4
+    if (!is_set(&rect, 1, 1) or !is_set(&rect, 6, 1) or !is_set(&rect, 6, 4) or !is_set(&rect, 1, 4)) return error.RectCorners;
+    var e: u32 = 1;
+    while (e <= 6) : (e += 1) {
+        if (!is_set(&rect, e, 1) or !is_set(&rect, e, 4)) return error.RectHorizontalEdges;
+    }
+    e = 1;
+    while (e <= 4) : (e += 1) {
+        if (!is_set(&rect, 1, e) or !is_set(&rect, 6, e)) return error.RectVerticalEdges;
+    }
+    // a 6x4-cornered rectangle outline lights its perimeter exactly: 2*(6-1) + 2*(4-1) = 16 boundary pixels
+    if (lit_count(&rect) != 16) return error.RectPerimeterCount;
+    // the interior stays dark -- an OUTLINE, not a fill (compose not braid: this rung draws edges, not areas)
+    if (is_set(&rect, 3, 2)) return error.RectInteriorFilled;
+
+    // --- the QOI ROUND-TRIP: the drawn outline survives the open codec byte-for-byte ------------------------------------
+    const cap = qoi.encoded_bound(rect.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&rect, dst);
+    const backimg = try qoi.decode(garden, dst[0..enc.len]);
+    if (!backimg.same_bytes(&rect)) return error.RoundTripBytes;
+
+    // --- REFUSALS by name, having drawn nothing -----------------------------------------------------------------------
+    var tiny = try make_canvas(garden, 4, 4, 0);
+    if (draw_line(&tiny, 0, 0, 9, 0, white)) |_| return error.OutOfBoundsNotRefused else |err| {
+        if (err != error.VertexOutOfBounds) return error.WrongOobError;
+    }
+    if (paint_polygon(garden, &poly, 0, 5)) |_| return error.EmptyNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- DETERMINISM: the same call draws the same pixels ------------------------------------------------------------
+    var d1 = try make_canvas(garden, 8, 8, 0);
+    var d2 = try make_canvas(garden, 8, 8, 0);
+    try draw_line(&d1, 0, 0, 6, 2, white);
+    try draw_line(&d2, 0, 0, 6, 2, white);
+    var k: usize = 0;
+    while (k < d1.pixels.len) : (k += 1) {
+        if (d1.pixels[k] != d2.pixels[k]) return error.NotDeterministic;
+    }
+
+    print("GREEN image-edge-draw: draw the STRAIGHT EDGE between two points as a CONNECTED run of pixels by BRESENHAM's integer line algorithm (J.E. Bresenham 1965), and paint a POLYGON's whole closed outline from its corner vertices -- the render that turns the few vertices image/polygon.rye reads back into the drawn shape; an axis-aligned edge lights exactly the pixels between its endpoints (a horizontal x=1..6 lights six, no overrun), a 45-degree diagonal walks the exact staircase (0,0)..(4,4), and the decisive crux is a shallow line the sparse vertices alone cannot draw coming back an 8-CONNECTED run -- every column from x=0 to x=8 crossed exactly once, each plotted pixel 8-adjacent to the next, endpoints exact -- the connectedness no vertex list carries; a steep line is single-valued in its major axis (one pixel per row) and drawing it the other way lights the same endpoints and the same pixel count, the run length direction-free even though a pixel on an exact tie may fall to the other side of the true line (Bresenham's honest subtlety); four corner vertices painted as a closed loop reproduce a rectangle's boundary connected and light its perimeter exactly (16 pixels) with the interior dark (an OUTLINE, not a fill); the drawn outline round-trips the open QOI codec byte-for-byte; a vertex outside the canvas refuses VertexOutOfBounds and a zero-dimension canvas refuses EmptySource having drawn nothing; the same call draws deterministically\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: edge_draw selftest\n", .{});
+    return 1;
+}
