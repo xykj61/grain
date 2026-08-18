@@ -1,0 +1,344 @@
+//! image/scale_area.rye -- an RGBA image RESAMPLED to a new size by area averaging (Season G, the honest downscale beside nearest and bilinear).
+//!
+//! Season G (Open Media Primitives) -- the DECIMATION sibling of image/scale.rye (nearest) and image/scale_bilinear.rye
+//! (bilinear). Where nearest copies the one nearest source pixel whole and bilinear reads the four pixels around each
+//! sample, area averaging reads EVERY source pixel a destination cell covers and takes their coverage-weighted mean -- so
+//! shrinking a photo far below half size keeps every source pixel's contribution rather than throwing most of them away.
+//! That is the whole reason a downscale wants area over the other two: nearest and bilinear each sample only one or two
+//! taps per axis, so a deep shrink drops the pixels between the taps and the picture ALIASES (a fine texture turns to
+//! moire, a page of text turns to speckle); area sees the whole box, so a shrunk thumbnail reads clean. A keeper names a
+//! source and a smaller target and reads back the picture decimated without the aliasing.
+//!
+//! Exact integer coverage, not a float box: the resize is ONE per-axis coverage map seen twice. A destination cell on an
+//! axis covers the source span `[dst_i/dst_extent, (dst_i+1)/dst_extent)` of the normalized axis; scaled by
+//! `src_extent*dst_extent` into whole subunits, that span is `[dst_i*src_extent, (dst_i+1)*src_extent)` and source pixel
+//! `i` covers `[i*dst_extent, (i+1)*dst_extent)`, so the weight of source pixel `i` for a destination cell is exactly the
+//! integer overlap of those two spans (`axis_weight`) -- no float, so a resize is deterministic byte-for-byte, and a
+//! partial edge pixel carries its true fractional share rather than being counted whole or dropped. The per-axis weights
+//! each sum to `src_extent`, so the two axes multiply to a constant total weight `W = src.width * src.height`, and every
+//! output channel is the box sum divided by `W` with half-up rounding. This rung owns the box MEAN, the averaging verb the
+//! resize family lacked -- it leans on image/qoi.rye for the buffers and adds no blend, no codec, no premultiply; the mean
+//! is the sampling rule itself, the way nearest owns the whole-pixel copy and bilinear owns the four-tap lerp.
+//!
+//! Honest scope: area averaging is the DOWNSCALE verb. On an upscale (a target larger than the source on an axis) each
+//! destination cell falls within a single source pixel, so area degenerates to blocky replication like nearest, inventing
+//! no between-color -- bilinear is the smooth-upscale verb, area the clean-downscale one, and a surface picks by whether it
+//! is shrinking or growing. The covered box a destination pixel averages is bounded by the source's own pixel count (the
+//! module's named ceiling), and the whole destination is bound-checked ONCE up front, so a malformed resize refuses BY
+//! NAME having allocated nothing -- all-or-nothing, never a half-scaled image. No network, no key, no funds -- the resize a
+//! surface runs the day it wants a photo shrunk clean, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/scale_area.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+
+pub const scale_area_version = "20260818.084122";
+
+/// One axis's source coverage for a destination cell: the inclusive range of source indices the cell touches. The cell
+/// spans `[dst_i*src_extent, (dst_i+1)*src_extent)` in subunits (where one source pixel is `dst_extent` subunits wide), so
+/// `first` is the floor of the low edge and `last` the floor of the highest covered subunit. Both are proven to name real
+/// source pixels, so the box a destination cell averages never reads past the source.
+const AxisCover = struct {
+    first: u32,
+    last: u32,
+};
+
+/// Map a destination index to the inclusive source-index range it covers on one axis. Both axes share this, so a resize is
+/// the same pure rule seen twice. The caller has proven both extents are at least one, so no division here is by zero.
+fn axis_cover(dst_i: u32, dst_extent: u32, src_extent: u32) AxisCover {
+    // invariant: the destination axis has real extent, so the divisions below never divide by zero.
+    assert(dst_extent >= 1);
+    // invariant: a real source has extent, so every covered index names a real source pixel.
+    assert(src_extent >= 1);
+    // invariant: the index names a real destination pixel on this axis.
+    assert(dst_i < dst_extent);
+
+    // Subunit span of the destination cell, held in u64 so the product can never wrap. dst_i < dst_extent <= qoi_max_dim
+    // and src_extent <= qoi_max_dim, so both endpoints stay well within u64.
+    const s0: u64 = @as(u64, dst_i) * @as(u64, src_extent);
+    const s1: u64 = @as(u64, dst_i + 1) * @as(u64, src_extent);
+    const den: u64 = @as(u64, dst_extent);
+
+    const first_u: u64 = s0 / den; // floor of the low edge
+    const last_u: u64 = (s1 - 1) / den; // floor of the highest covered subunit (s1 >= 1, so s1 - 1 never underflows)
+
+    const first: u32 = @intCast(first_u);
+    const last: u32 = @intCast(last_u);
+    const c = AxisCover{ .first = first, .last = last };
+    // invariant: the range runs low to high and stays inside the source extent (dst_i < dst_extent forces last < src).
+    assert(c.first <= c.last);
+    assert(c.last < src_extent);
+    return c;
+}
+
+/// The coverage weight of source pixel `i` for a destination cell on one axis: the integer overlap of the source pixel's
+/// subunit span `[i*dst_extent, (i+1)*dst_extent)` with the cell's span `[dst_i*src_extent, (dst_i+1)*src_extent)`. A
+/// covered pixel always carries a positive weight, and the weights over one cell sum to `src_extent`, so the two axes
+/// multiply to the constant total weight `W = src.width * src.height` every output is divided by.
+fn axis_weight(i: u32, dst_i: u32, dst_extent: u32, src_extent: u32) u32 {
+    // invariant: the source index names a real source pixel on this axis.
+    assert(i < src_extent);
+    // invariant: the destination index names a real destination pixel on this axis.
+    assert(dst_i < dst_extent);
+
+    // All four endpoints in u64 so no product wraps before the overlap is taken.
+    const pix_lo: u64 = @as(u64, i) * @as(u64, dst_extent);
+    const pix_hi: u64 = @as(u64, i + 1) * @as(u64, dst_extent);
+    const cell_lo: u64 = @as(u64, dst_i) * @as(u64, src_extent);
+    const cell_hi: u64 = @as(u64, dst_i + 1) * @as(u64, src_extent);
+
+    const lo: u64 = @max(pix_lo, cell_lo);
+    const hi: u64 = @min(pix_hi, cell_hi);
+    // invariant: a covered pixel truly overlaps the cell, so the overlap is a real positive length.
+    assert(hi > lo);
+    const w: u64 = hi - lo;
+    // invariant: the overlap never exceeds one whole source pixel's subunit width.
+    assert(w <= @as(u64, dst_extent));
+    return @intCast(w);
+}
+
+/// Read one source pixel's RGBA at (x, y) -- the box gather shares this one reader.
+fn tap(src: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the tap lands inside the source buffer on both axes.
+    assert(x < src.width);
+    assert(y < src.height);
+    const si = (@as(usize, y) * @as(usize, src.width) + @as(usize, x)) * 4;
+    // invariant: the four bytes of the tapped pixel lie wholly inside the source buffer.
+    assert(si + 4 <= src.pixels.len);
+    return color.Rgba{ .r = src.pixels[si], .g = src.pixels[si + 1], .b = src.pixels[si + 2], .a = src.pixels[si + 3] };
+}
+
+/// Resample `src` to a fresh `dst_w` x `dst_h` RGBA Pixmap by area averaging: each destination pixel is the coverage-
+/// weighted mean of every source pixel it covers (one per-axis coverage map, one integer box mean). Returns a newly
+/// allocated Pixmap the caller owns; `src` is read-only and untouched. Refuses `BadScaleDims` if `dst_w` or `dst_h` is
+/// zero, `EmptySource` if the source has no extent, and `ScaleTooLarge` BY NAME if the target exceeds the codec's max
+/// dimension or its pixel ceiling -- every check runs BEFORE any allocation, so a refusal leaves nothing behind.
+pub fn scale_area(allocator: std.mem.Allocator, src: *const qoi.Pixmap, dst_w: u32, dst_h: u32) !qoi.Pixmap {
+    // invariant: a resizable target has real extent on both axes.
+    if (dst_w == 0 or dst_h == 0) return error.BadScaleDims;
+    // invariant: a real source has extent; a zero-size source averages nothing and refuses by name.
+    if (src.width == 0 or src.height == 0) return error.EmptySource;
+    // invariant: the target stays within the codec's own max dimension, so a scaled image is always encodable.
+    if (dst_w > qoi.qoi_max_dim or dst_h > qoi.qoi_max_dim) return error.ScaleTooLarge;
+    // The target pixel count in u64 so the product can never wrap before the ceiling check refuses.
+    const total: u64 = @as(u64, dst_w) * @as(u64, dst_h);
+    if (total > qoi.qoi_max_pixels) return error.ScaleTooLarge;
+    // invariant: the bound proved the whole target fits the module's named pixel ceiling before any allocation.
+    assert(total <= qoi.qoi_max_pixels);
+
+    // The constant total weight every output channel is divided by. The source's own pixel count is proven <=
+    // qoi_max_pixels by its construction, so W stays well within u64 and the box sum (W * 255) never wraps.
+    const w_total: u64 = @as(u64, src.width) * @as(u64, src.height);
+    // invariant: a real source has real total weight, so the division below never divides by zero.
+    assert(w_total >= 1);
+    const half: u64 = w_total / 2; // half-up rounding bias for the mean
+
+    const pixels = try allocator.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var dy: u32 = 0;
+    while (dy < dst_h) : (dy += 1) {
+        const yc = axis_cover(dy, dst_h, src.height);
+        var dx: u32 = 0;
+        while (dx < dst_w) : (dx += 1) {
+            const xc = axis_cover(dx, dst_w, src.width);
+            var acc_r: u64 = 0;
+            var acc_g: u64 = 0;
+            var acc_b: u64 = 0;
+            var acc_a: u64 = 0;
+            // Sum every covered source pixel weighted by its 2D coverage (wx * wy). The box is bounded by the source's own
+            // pixel count, so this inner work is bounded by the module's named ceiling.
+            var iy: u32 = yc.first;
+            while (iy <= yc.last) : (iy += 1) {
+                const wy = axis_weight(iy, dy, dst_h, src.height);
+                var ix: u32 = xc.first;
+                while (ix <= xc.last) : (ix += 1) {
+                    const wx = axis_weight(ix, dx, dst_w, src.width);
+                    const wgt: u64 = @as(u64, wx) * @as(u64, wy);
+                    const p = tap(src, ix, iy);
+                    acc_r += wgt * @as(u64, p.r);
+                    acc_g += wgt * @as(u64, p.g);
+                    acc_b += wgt * @as(u64, p.b);
+                    acc_a += wgt * @as(u64, p.a);
+                }
+            }
+            // Each accumulator is a weighted sum of bytes over total weight W, so the rounded mean is a real byte 0..255.
+            const out_r: u8 = @intCast((acc_r + half) / w_total);
+            const out_g: u8 = @intCast((acc_g + half) / w_total);
+            const out_b: u8 = @intCast((acc_b + half) / w_total);
+            const out_a: u8 = @intCast((acc_a + half) / w_total);
+            const di = (@as(usize, dy) * @as(usize, dst_w) + @as(usize, dx)) * 4;
+            pixels[di] = out_r;
+            pixels[di + 1] = out_g;
+            pixels[di + 2] = out_b;
+            pixels[di + 3] = out_a;
+        }
+    }
+    return qoi.Pixmap{ .width = dst_w, .height = dst_h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+// --- selftest: prove identity, a true box average, a solid stays solid, alpha averaged, round-trip, refusals ---------------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// Set one pixel's RGBA at (x, y) -- a small writer the pattern builder shares.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
+    const green = color.Rgba{ .r = 0, .g = 255, .b = 0, .a = 255 };
+    const blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 };
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+
+    // A 2x2 four-color pattern -- red, green / blue, black -- the same corners the sibling resizes prove against.
+    var pattern = try make_canvas(garden, 2, 2, red);
+    set_pixel(&pattern, 1, 0, green);
+    set_pixel(&pattern, 0, 1, blue);
+    set_pixel(&pattern, 1, 1, black);
+
+    // --- an IDENTITY resize reproduces the source byte-for-byte: every cell covers exactly its one source pixel ---------
+    const same = try scale_area(garden, &pattern, 2, 2);
+    if (!same.same_bytes(&pattern)) return error.IdentityNotByteExact;
+
+    // --- a 2x DOWNSCALE takes the TRUE box AVERAGE: a 2x2 to 1x1 averages all four corners, the verb nearest refuses ----
+    // (255+0+0+0)/4 = 63.75 -> 64 for red and green channels; blue the same; alpha a full 255. This is the anti-aliasing
+    // crux: nearest would pick one corner (a single color); area keeps every corner's contribution.
+    const one = try scale_area(garden, &pattern, 1, 1);
+    const avg = pixel_at(&one, 0, 0);
+    // r channel: red(255)+green(0)+blue(0)+black(0) = 255, /4 rounded = 64
+    if (avg.r != 64) return error.BoxAverageRedWrong;
+    // g channel: red(0)+green(255)+blue(0)+black(0) = 255, /4 rounded = 64
+    if (avg.g != 64) return error.BoxAverageGreenWrong;
+    // b channel: red(0)+green(0)+blue(255)+black(0) = 255, /4 rounded = 64
+    if (avg.b != 64) return error.BoxAverageBlueWrong;
+    // a channel: every corner opaque, so the mean stays a full 255
+    if (avg.a != 255) return error.BoxAverageAlphaWrong;
+
+    // --- a checker DOWNSCALE proves the ANTI-ALIASING plainly: a 4x4 black/white checker shrunk to 1x1 reads mid-gray ---
+    // Nearest would read a single black or white pixel (aliasing the pattern to one extreme); area averages the eight
+    // black and eight white cells to a true middle value.
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+    var checker = try make_canvas(garden, 4, 4, black);
+    var cy: u32 = 0;
+    while (cy < 4) : (cy += 1) {
+        var cx: u32 = 0;
+        while (cx < 4) : (cx += 1) {
+            if ((cx + cy) % 2 == 0) set_pixel(&checker, cx, cy, white);
+        }
+    }
+    const gray = try scale_area(garden, &checker, 1, 1);
+    const g0 = pixel_at(&gray, 0, 0);
+    // eight white (255) and eight black (0) over sixteen: (8*255)/16 = 127.5 -> 128
+    if (g0.r != 128 or g0.g != 128 or g0.b != 128) return error.CheckerNotMidGray;
+    // the honest anti-aliasing claim: the shrunk pixel is a true middle, neither of the two source extremes
+    if (g0.r == 0 or g0.r == 255) return error.CheckerAliasedToExtreme;
+
+    // --- a SOLID image decimates to the SAME solid color: every mean is of equal colors, so no shift appears ------------
+    const teal = color.Rgba{ .r = 0, .g = 128, .b = 128, .a = 255 };
+    var flat = try make_canvas(garden, 6, 6, teal);
+    _ = &flat;
+    const flat_down = try scale_area(garden, &flat, 2, 3);
+    var fy: u32 = 0;
+    while (fy < 3) : (fy += 1) {
+        var fx: u32 = 0;
+        while (fx < 2) : (fx += 1) {
+            if (!pixel_at(&flat_down, fx, fy).eql(teal)) return error.SolidDidNotStaySolid;
+        }
+    }
+
+    // --- a NON-INTEGER downscale carries PARTIAL edge coverage: a 3px row to 2px weights the shared middle pixel ---------
+    // A 3-wide black/gray/white row to 2 wide: dest 0 = full black(0) + half gray(120) over weight 3 = (2*0 + 1*120)/3 =
+    // 40; dest 1 = half gray + full white(240) over weight 3 = (1*120 + 2*240)/3 = 200. The middle pixel splits its weight
+    // between the two outputs -- the exact fractional share nearest and bilinear cannot express on a downscale.
+    const gray120 = color.Rgba{ .r = 120, .g = 120, .b = 120, .a = 255 };
+    const white240 = color.Rgba{ .r = 240, .g = 240, .b = 240, .a = 255 };
+    var row3 = try make_canvas(garden, 3, 1, black);
+    set_pixel(&row3, 1, 0, gray120);
+    set_pixel(&row3, 2, 0, white240);
+    const row2 = try scale_area(garden, &row3, 2, 1);
+    if (pixel_at(&row2, 0, 0).r != 40) return error.PartialLeftWrong;
+    if (pixel_at(&row2, 1, 0).r != 200) return error.PartialRightWrong;
+
+    // --- ALPHA is averaged like any other channel: a two-alpha 2x1 row shrunk to 1x1 reads the mean alpha ---------------
+    const opaque_blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 };
+    const clear_blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 0 };
+    var afade = try make_canvas(garden, 2, 1, opaque_blue);
+    set_pixel(&afade, 1, 0, clear_blue);
+    const afade_down = try scale_area(garden, &afade, 1, 1);
+    // (255 + 0)/2 rounded = 128: the alpha channel averages exactly like color
+    if (pixel_at(&afade_down, 0, 0).a != 128) return error.AlphaNotAveraged;
+
+    // --- a resized image round-trips through the open QOI codec byte-for-byte -- a real image, not a private buffer ------
+    const shown = try scale_area(garden, &checker, 2, 2);
+    const cap = qoi.encoded_bound(shown.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&shown, dst);
+    const back = try qoi.decode(garden, dst[0..enc.len]);
+    if (!back.same_bytes(&shown)) return error.ScaleDidNotRoundTrip;
+
+    // --- refusals by name, each having allocated nothing --------------------------------------------------------------
+    if (scale_area(garden, &pattern, 0, 4)) |_| return error.ZeroDimsNotRefused else |err| {
+        if (err != error.BadScaleDims) return error.WrongDimsError;
+    }
+    var empty = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (scale_area(garden, &empty, 4, 4)) |_| return error.EmptySourceNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+    if (scale_area(garden, &pattern, qoi.qoi_max_dim + 1, 1)) |_| return error.OversizeNotRefused else |err| {
+        if (err != error.ScaleTooLarge) return error.WrongOversizeError;
+    }
+
+    // --- determinism: the same resize averages the same pixels byte-for-byte ------------------------------------------
+    const down_a = try scale_area(garden, &checker, 2, 2);
+    const down_b = try scale_area(garden, &checker, 2, 2);
+    if (!down_a.same_bytes(&down_b)) return error.ScaleNotDeterministic;
+
+    print("GREEN image-scale-area: an RGBA image resampled to a new size by area averaging -- an identity resize reproduces the source byte-for-byte; a 2x2 pattern shrunk to 1x1 takes the true box average of all four corners (64 per channel) rather than picking one; a 4x4 black/white checker shrunk to 1x1 reads a true mid-gray (128) rather than aliasing to a single extreme; a solid image decimates to the same solid color with no shift; a 3px-to-2px downscale carries partial edge coverage (the shared middle pixel split fractionally between the two outputs); alpha averages like any other channel; the resized image round-trips through the open QOI codec byte-for-byte; a zero dimension, an empty source, and an over-max target refuse by name having allocated nothing; the same resize averages the same pixels byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: scale_area selftest\n", .{});
+    return 1;
+}

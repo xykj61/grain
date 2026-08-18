@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260818.084122
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title scale_area -- the clean downscale that completes the resize family, GREEN
+prompt baton prin recur -- pick up the running thread, take the next agent-doable lap Lindy-first crux-first
+think Reseated as Kyri (KYRI.md, RADIANT_STYLE.md), read the REMEMBER inner loop, the REDS living rows, and the newest session log to find the thread.
+think Standfast check: every red in crux/REDS.md is closed, released, or resting as custody-gated errata (#75, a history rewrite = Keaton's hand). No open agent-closable red, so constructive work may proceed.
+think Lindy-first crux-first: the Microkernel double-seat leads yet its only ungated move is more study; the live green crux is Season G open-media. The newest log named the honest next sibling plainly -- the AREA-AVERAGE resample, the downscale verb that averages rather than aliases, the crux the resize family lacked (nearest and bilinear both sample too few taps to shrink far).
+think Design: the exact integer coverage-weighted box mean, chosen over the simpler equal-band average because it handles partial edge pixels honestly. One per-axis coverage map (axis_cover/axis_weight): a source pixel's weight is the integer overlap of two subunit spans, scaling both axes by src_extent*dst_extent so no float enters. The per-axis weights sum to src_extent, so the two axes multiply to a constant total weight W = src.w*src.h, and every output channel is the box sum over W with half-up rounding. The module owns the box mean (a weighted average, not a pairwise lerp), so it leans only on qoi for buffers -- no color.mix, no blend, no codec.
+think Honest scope named rather than overclaimed: area is the DOWNSCALE verb. On an upscale each destination cell falls within one source pixel, so area degenerates to blocky replication like nearest; bilinear stays the smooth-upscale verb. A surface picks by whether it is shrinking or growing.
+obs GREEN on the first metal run, no reds this lap -- the design was proven on paper first (the 4->2 box average and the 3->2 partial-coverage cases hand-checked before the build). The witness proves the anti-aliasing claim plainly: a 4x4 black/white checker shrunk to 1x1 reads a true mid-gray (128), where nearest would alias the whole pattern to one extreme.
+obs The REMEMBER planning text described this as HUNK22's area-average path with an equal-band formula; the built version is the more exact coverage-weighted form, a strict superset that also handles partial edges and upscale. Measurement over the plan: the implementation is honestly better than the sketch, and the card now names what stands.
+loom witness=scale_area_witness build_and_selftest=GREEN checks=9 identity_byte_exact=yes box_average=64_per_channel checker_to_midgray=128 solid_stays_solid=yes partial_edge_coverage=40_and_200 alpha_averaged=128 qoi_round_trip=byte_for_byte refusals=3 deterministic=yes
+file image/scale_area.rye the clean downscale: an exact integer coverage-weighted box mean over qoi buffers, integer-only, bounds up front, GREEN.
+file tools/scale_area_witness.rish proves it on metal with native `contains` (the REDS #85 loom), no fragile grep.
+file image/README.md seats the scale_area bullet beside scale_bilinear, and updates the Resample summary to name the three resize verbs present.
+file crux/REMEMBER.md records the live edge (the resize family now WHOLE), refreshes the git nib in the same work commit, marks the stale grows-next line superseded.
+recommend keep-going -- the resize family is whole (nearest, bilinear, area); the next Season G open-media crux is the crop/window verb or the open glyph atlas beyond 5x7, while the Microkernel double-seat's only ungated move stays study.
