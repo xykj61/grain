@@ -1,0 +1,317 @@
+//! image/medial_axis.rye -- read a shape's METRIC SPINE off the distance field: the RIDGE of local maxima of the chamfer
+//! distance transform, the medial axis reached by a different route than image/zhang_suen.rye's topological thinning, and the
+//! floor a watershed and a maximal-inscribed-disk reconstruction descend from (Season G, the crux-first consumer image/distance.rye
+//! named beside a watershed).
+//!
+//! Season G (Open Media Primitives) -- image/distance.rye gives every foreground pixel its depth: the chamfer distance out to the
+//! nearest background pixel. The heart of a thick shape reads large, a pixel one step from the edge reads small. So the LOCAL
+//! MAXIMA of that field trace the shape's spine -- the crest of the ridge, the pixels no neighbor sits deeper than. This rung
+//! reads exactly that crest: a foreground pixel is on the MEDIAL AXIS when no eight-neighbor holds a strictly greater distance.
+//!
+//! This is the medial axis by the DISTANCE route, and it is worth naming how it differs from the thinning route. image/zhang_suen.rye
+//! reduces a shape to a guaranteed UNIT-WIDTH skeleton by peeling removable boundary points; it preserves topology and connectivity,
+//! yet loses the thickness. The distance ridge preserves the THICKNESS -- every ridge pixel still carries its own distance, the
+//! radius of the maximal disk that fits the shape there, so the ridge plus its depths RECONSTRUCTS the shape (the medial axis
+//! transform). The honest cost, named plainly: the distance ridge is NOT guaranteed unit-width. An even-thickness bar reads one
+//! uniform depth across its whole width, so its entire cross-section is a local maximum and the ridge comes back two pixels wide.
+//! The two routes are complements -- Zhang-Suen for a thin connected skeleton, the distance ridge for a metric spine that remembers
+//! how thick the shape was. Neither is the other's replacement.
+//!
+//! Compose not braid. This rung OWNS only two small things: the local-maximum ridge test over neighbor distances, and the two
+//! renders. The distance field itself is image/distance.rye's -- `distance_chamfer` builds it, `dist_far` and the chamfer weights
+//! are its constants; a background pixel is `dist == 0`; image/branch.rye's `is_on` reads a rendered mask back through the one door
+//! the whole family shares (image/label.rye, distance, hitmiss, endpoints, zhang_suen all read it); image/qoi.rye owns the RGBA
+//! buffer; image/color.rye's `mix` ramps the depth render. No new distance transform, no blend beyond the shared ramp, no codec, no
+//! color math. `medial_mask` renders the ridge to a plain binary white-on-black mask the family consumes; `colorize` renders the
+//! MEDIAL AXIS TRANSFORM -- the ridge alone, each spine pixel ramped dark-to-bright by its depth, the ground black -- a real image
+//! the open QOI codec round-trips byte-for-byte.
+//!
+//! Everything is bounded before a byte is allocated. The ridge buffer is sized to the distance field's pixel count, itself bounded
+//! by the image module's pixel ceiling. The neighbor gather treats an off-image neighbor as background (distance 0), never a
+//! phantom, so an edge pixel is compared only against its real neighbors -- the honest topology image/branch.rye keeps. An empty
+//! field refuses BY NAME before any allocation -- all-or-nothing, never a half-read spine. No network, no key, no funds -- the
+//! spine a surface reads the day it asks where the middle of a mark runs, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/medial_axis.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const branch = @import("branch.rye");
+const distance = @import("distance.rye");
+
+pub const medial_axis_version = "20260818.141710";
+
+/// The most pixels a field may hold -- the image module's own pixel ceiling, shared with the distance rung this reads.
+pub const medial_max_pixels: u32 = qoi.qoi_max_pixels;
+
+/// The eight neighbor offsets in ring order -- N, NE, E, SE, S, SW, W, NW. This rung gathers neighbor DISTANCES (a different
+/// gather than image/branch.rye's boolean foreground ring), so it owns its own small offset table.
+const ring_dx = [8]i32{ 0, 1, 1, 1, 0, -1, -1, -1 };
+const ring_dy = [8]i32{ -1, -1, 0, 1, 1, 1, 0, -1 };
+
+pub const MedialError = error{
+    EmptySource,
+};
+
+/// The distance at the neighbor of `(x, y)` offset by `(dx, dy)`, or 0 when that neighbor falls off any edge. An off-image
+/// neighbor is BACKGROUND -- never a phantom -- so a strictly-greater test at the image border compares only real neighbors.
+fn neighbor_dist(dm: *const distance.DistanceMap, x: u32, y: u32, dx: i32, dy: i32) u32 {
+    const nx: i64 = @as(i64, x) + @as(i64, dx);
+    const ny: i64 = @as(i64, y) + @as(i64, dy);
+    // invariant: a neighbor off any edge is ground at distance 0, so the gather never reads outside the field.
+    if (nx < 0 or ny < 0) return 0;
+    if (nx >= @as(i64, dm.width) or ny >= @as(i64, dm.height)) return 0;
+    return dm.at(@as(u32, @intCast(nx)), @as(u32, @intCast(ny)));
+}
+
+/// True when `(x, y)` is on the medial axis of `dm`: a foreground pixel (distance > 0) whose distance no eight-neighbor exceeds.
+/// A ridge keeps its plateaus -- a neighbor of EQUAL depth does not disqualify -- so a uniform-thickness bar reads its whole
+/// crest, and a lone dot (all neighbors ground) is its own spine.
+pub fn is_ridge(dm: *const distance.DistanceMap, x: u32, y: u32) bool {
+    // invariant: the query stays inside the field on both axes.
+    assert(x < dm.width);
+    assert(y < dm.height);
+    const d = dm.at(x, y);
+    if (d == 0) return false; // background carries no spine
+    var k: usize = 0;
+    while (k < 8) : (k += 1) {
+        if (neighbor_dist(dm, x, y, ring_dx[k], ring_dy[k]) > d) return false; // a deeper neighbor: not the crest
+    }
+    return true;
+}
+
+/// Mark the MEDIAL AXIS of `dm` into a fresh binary RGBA Pixmap the caller owns: opaque WHITE at every ridge pixel, opaque BLACK
+/// elsewhere. The mask reads foreground through the same on-threshold door the whole family shares, so a spine feeds straight
+/// back into label, distance, morphology, or the paint rungs. `dm` is read-only.
+pub fn medial_mask(allocator: std.mem.Allocator, dm: *const distance.DistanceMap) !qoi.Pixmap {
+    // invariant: a real field has extent on both axes; a zero-size field has no spine to read.
+    if (dm.width == 0 or dm.height == 0) return error.EmptySource;
+
+    const w: u32 = dm.width;
+    const h: u32 = dm.height;
+    const npix: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the field stays within the image module's named pixel ceiling.
+    assert(npix <= medial_max_pixels);
+    const count_pixels: u32 = @intCast(npix);
+    // invariant: the distance buffer holds exactly one measure per pixel.
+    assert(dm.dist.len == @as(usize, count_pixels));
+
+    const out = try allocator.alloc(u8, @as(usize, count_pixels) * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const ci = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            const v: u8 = if (is_ridge(dm, x, y)) 255 else 0;
+            out[ci] = v;
+            out[ci + 1] = v;
+            out[ci + 2] = v;
+            out[ci + 3] = 255; // alpha pinned opaque -- a clean binary plane, never translucent
+        }
+    }
+    // invariant: the sweep pinned every alpha byte to 255, so the mask is a clean opaque image.
+    assert(out[3] == 255);
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+/// Paint the MEDIAL AXIS TRANSFORM of `dm` into a fresh RGBA Pixmap the caller owns: the ground and every non-ridge foreground
+/// pixel black, each RIDGE pixel a grayscale depth ramped dark (shallow spine) to bright (deep spine) by its share of the field's
+/// `max_distance`. Where `distance.colorize` paints the whole field, this paints the SPINE ALONE carrying its thickness -- the
+/// ridge plus its depths is the shape's reconstruction key. The open QOI codec round-trips it byte-for-byte.
+pub fn colorize(allocator: std.mem.Allocator, dm: *const distance.DistanceMap) !qoi.Pixmap {
+    // invariant: a real field has extent on both axes.
+    if (dm.width == 0 or dm.height == 0) return error.EmptySource;
+    const w: u32 = dm.width;
+    const h: u32 = dm.height;
+    const n: usize = @as(usize, w) * @as(usize, h);
+    // invariant: the distance buffer holds exactly one measure per pixel.
+    assert(dm.dist.len == n);
+
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    const out = try allocator.alloc(u8, n * 4);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const ci = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            var c = black;
+            if (is_ridge(dm, x, y)) {
+                const d = dm.at(x, y);
+                // ramp only a real ridge with a real ceiling; the spine of a zero-depth field stays black.
+                if (dm.max_distance != 0) {
+                    const capped: u32 = if (d > dm.max_distance) dm.max_distance else d;
+                    const t: u32 = capped * 255 / dm.max_distance;
+                    // invariant: the ramp parameter stays a valid u8 blend fraction.
+                    assert(t <= 255);
+                    c = color.mix(black, white, @intCast(t));
+                }
+            }
+            out[ci] = c.r;
+            out[ci + 1] = c.g;
+            out[ci + 2] = c.b;
+            out[ci + 3] = 255; // alpha pinned opaque -- the render is a solid image, not a translucent one
+        }
+    }
+    // invariant: the sweep pinned every alpha byte to 255, so the render is a clean opaque image.
+    assert(out[3] == 255);
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+/// The convenience over a MASK: build the distance field with image/distance.rye, then mark its medial axis. Returns the binary
+/// ridge mask, exactly `medial_mask(distance_chamfer(src))`, for a caller that holds a mask rather than a field.
+pub fn medial_axis_of(allocator: std.mem.Allocator, src: *const qoi.Pixmap) !qoi.Pixmap {
+    // invariant: a real source has extent on both axes; the distance rung refuses a zero-size source by name below.
+    const dm = try distance.distance_chamfer(allocator, src);
+    return medial_mask(allocator, &dm);
+}
+
+// --- selftest: the block crux (a route to the same center as thinning), the line crux, the two-wide non-thin crux, the MAT render
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one pixel's RGBA at (x, y) -- the small writer the test shapes share.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+/// Count the lit (white through branch.is_on) pixels of a binary mask -- the ridge tally the cruxes check.
+fn count_lit(img: *const qoi.Pixmap) u32 {
+    var lit: u32 = 0;
+    var i: usize = 0;
+    while (i < img.pixels.len) : (i += 4) {
+        if (branch.is_on(img.pixels, i)) lit += 1;
+    }
+    return lit;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    // --- the BLOCK crux: a solid 3x3 block on a black border. Its distance field reads 3 around the ring and 6 at the center,
+    //     so the center alone is the local maximum -- the medial axis is that single spine pixel, the SAME point image/zhang_suen.rye
+    //     thins the block to, reached here by the metric ridge rather than by peeling boundary points -----------------------
+    var block = try make_canvas(garden, 5, 5, black);
+    var by: u32 = 1;
+    while (by <= 3) : (by += 1) {
+        var bx: u32 = 1;
+        while (bx <= 3) : (bx += 1) set_pixel(&block, bx, by, white);
+    }
+    const block_dm = try distance.distance_chamfer(garden, &block);
+    const block_axis = try medial_mask(garden, &block_dm);
+    if (!branch.is_on(block_axis.pixels, (@as(usize, 2) * @as(usize, 5) + @as(usize, 2)) * 4)) return error.BlockCenterNotRidge; // the depth-6 center
+    if (branch.is_on(block_axis.pixels, (@as(usize, 1) * @as(usize, 5) + @as(usize, 1)) * 4)) return error.BlockRingIsRidge; // a depth-3 ring pixel has the deeper center as a neighbor
+    if (count_lit(&block_axis) != 1) return error.BlockAxisNotSingleSpine;
+
+    // --- the LINE crux: a one-pixel-wide horizontal line reads a uniform depth 3 along its whole length, so every line pixel is
+    //     a local maximum and the ridge keeps the line WHOLE -- the anti-erosion property the ridge shares with a thinning ----
+    var line = try make_canvas(garden, 7, 5, black);
+    var lx: u32 = 1;
+    while (lx <= 5) : (lx += 1) set_pixel(&line, lx, 2, white); // a 5-long line clear of the border
+    const line_dm = try distance.distance_chamfer(garden, &line);
+    const line_axis = try medial_mask(garden, &line_dm);
+    if (count_lit(&line_axis) != 5) return error.LineAxisNotWhole; // all five line pixels survive as spine
+    lx = 1;
+    while (lx <= 5) : (lx += 1) {
+        if (!branch.is_on(line_axis.pixels, (@as(usize, 2) * @as(usize, 7) + @as(usize, lx)) * 4)) return error.LinePixelNotRidge;
+    }
+
+    // --- the TWO-WIDE crux (the decisive honest subtlety vs. thinning): a 2-tall strip reads depth 3 across BOTH rows, so both
+    //     rows are local maxima and the ridge comes back TWO pixels wide -- the distance medial axis is NOT guaranteed unit-width,
+    //     where image/zhang_suen.rye would thin the same strip to a single row. Named honestly, not hidden ------------------
+    var strip = try make_canvas(garden, 8, 6, black);
+    var sy: u32 = 2;
+    while (sy <= 3) : (sy += 1) {
+        var sx: u32 = 1;
+        while (sx <= 6) : (sx += 1) set_pixel(&strip, sx, sy, white); // a 2-tall, 6-wide strip clear of the border
+    }
+    const strip_dm = try distance.distance_chamfer(garden, &strip);
+    const strip_axis = try medial_mask(garden, &strip_dm);
+    // a middle column carries BOTH its rows as spine -- the ridge is two pixels thick here, the non-unit-width proof
+    if (!branch.is_on(strip_axis.pixels, (@as(usize, 2) * @as(usize, 8) + @as(usize, 3)) * 4)) return error.StripTopRowNotRidge;
+    if (!branch.is_on(strip_axis.pixels, (@as(usize, 3) * @as(usize, 8) + @as(usize, 3)) * 4)) return error.StripBottomRowNotRidge;
+
+    // --- the LONE-DOT crux: a single foreground pixel is depth 3 with only ground around it, so it is its own spine ----------
+    var dot = try make_canvas(garden, 5, 5, black);
+    set_pixel(&dot, 2, 2, white);
+    const dot_dm = try distance.distance_chamfer(garden, &dot);
+    const dot_axis = try medial_mask(garden, &dot_dm);
+    if (count_lit(&dot_axis) != 1) return error.LoneDotNotSpine;
+    if (!branch.is_on(dot_axis.pixels, (@as(usize, 2) * @as(usize, 5) + @as(usize, 2)) * 4)) return error.LoneDotPixelNotRidge;
+
+    // --- the DEGENERATE case: an all-background field has no foreground, so the medial axis is empty ---------------------
+    var blank = try make_canvas(garden, 4, 4, black);
+    const blank_dm = try distance.distance_chamfer(garden, &blank);
+    const blank_axis = try medial_mask(garden, &blank_dm);
+    if (count_lit(&blank_axis) != 0) return error.BlankAxisNotEmpty;
+
+    // --- the MEDIAL AXIS TRANSFORM render: colorize paints the SPINE ALONE ramped by depth. The block's ridge is its center at
+    //     depth 6 == max_distance -> full white; the depth-3 ring, though foreground, is NOT ridge so it renders BLACK (unlike
+    //     distance.colorize which would ramp the whole field); the render round-trips through the open QOI codec byte-for-byte -
+    const painted = try colorize(garden, &block_dm);
+    const center_i = (@as(usize, 2) * @as(usize, 5) + @as(usize, 2)) * 4; // the spine, depth 6 == max
+    const ring_i = (@as(usize, 1) * @as(usize, 5) + @as(usize, 1)) * 4; // a foreground ring pixel, depth 3, not spine
+    if (painted.pixels[center_i] != 255) return error.SpineNotFullBright; // the deepest spine pixel ramps to full white
+    if (!(color.Rgba{ .r = painted.pixels[ring_i], .g = painted.pixels[ring_i + 1], .b = painted.pixels[ring_i + 2], .a = painted.pixels[ring_i + 3] }).eql(black)) return error.NonRidgeForegroundNotBlack;
+    const cap = qoi.encoded_bound(painted.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&painted, dst);
+    const backimg = try qoi.decode(garden, dst[0..enc.len]);
+    if (!backimg.same_bytes(&painted)) return error.ColorizeDidNotRoundTrip;
+
+    // --- the CONVENIENCE over a mask equals mask -> field -> ridge byte-for-byte ---------------------------------------
+    const conv = try medial_axis_of(garden, &block);
+    if (!conv.same_bytes(&block_axis)) return error.ConvenienceDisagrees;
+
+    // --- the refusal by name, having allocated nothing (the guard fires before the sweep) -----------------------------
+    var empty_map = distance.DistanceMap{ .width = 0, .height = 0, .max_distance = 0, .dist = &[_]u32{} };
+    if (medial_mask(garden, &empty_map)) |_| return error.EmptySourceNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- determinism: the same field reaches the same spine byte-for-byte ----------------------------------------------
+    const a = try medial_mask(garden, &block_dm);
+    const b = try medial_mask(garden, &block_dm);
+    if (!a.same_bytes(&b)) return error.AxisNotDeterministic;
+
+    print("GREEN image-medial_axis: read a shape's metric spine as the RIDGE of local maxima of the chamfer distance field (image/distance.rye) -- a solid 3x3 block reads depth 6 at its center and 3 around its ring, so the medial axis is that single center spine pixel, the SAME point Zhang-Suen thins the block to but reached by the metric ridge not by peeling boundary points; a one-pixel line reads uniform depth 3 so the ridge keeps it WHOLE (the anti-erosion property); a 2-tall strip reads depth 3 across BOTH rows so the ridge comes back TWO pixels wide -- the distance medial axis is honestly NOT unit-width, the complement of Zhang-Suen which is; a lone dot is its own spine; an all-background field has an empty axis; colorize renders the MEDIAL AXIS TRANSFORM (the spine alone ramped dark-to-bright by depth, the deepest full white, a non-ridge foreground pixel black) round-tripping through the open QOI codec byte-for-byte; the convenience over a mask equals field-then-ridge; an empty field refuses by name having allocated nothing; the same field reaches the same spine deterministically\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: medial_axis selftest\n", .{});
+    return 1;
+}
