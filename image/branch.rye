@@ -1,0 +1,284 @@
+//! image/branch.rye -- mark every SKELETON JUNCTION of an RGBA mask: the foreground pixels where a thinned figure BRANCHES,
+//! read by the crossing (connectivity) number rather than a template pack (Season G, the other half of skeleton topology).
+//!
+//! Season G (Open Media Primitives) -- the crux-first sibling image/endpoints.rye named. A skeleton reads a shape down to a
+//! one-pixel-wide medial figure; the two topological questions a surface then asks are WHERE it ends and WHERE it branches.
+//! image/endpoints.rye answered the first: an ENDPOINT is a foreground pixel of degree one, a tip. This rung answers the
+//! second: a JUNCTION is a foreground pixel where THREE OR MORE branches meet -- a Y, a T, a plus, an X-crossing.
+//!
+//! An endpoint could be a hit-or-miss template pack because degree one has only EIGHT single-neighbor configurations. A
+//! junction cannot: degree three or more spans 219 configurations (`C(8,3) + ... + C(8,8)`), far too many to enumerate. A
+//! naive neighbor COUNT is wrong too -- it fires falsely at the pixels flanking an orthogonal junction, since the pixel just
+//! below a plus's center is 8-adjacent to the center's two horizontal arm pixels and so reads degree four itself. The right
+//! tool is the CROSSING NUMBER (the Rutovitz connectivity number): walk the eight neighbors in a ring and count the FOREGROUND
+//! ARCS -- the runs of foreground the ring passes through. An endpoint has one arc, a path pixel two, a junction three or
+//! more; a lone dot and the solid interior of a blob have zero (no foreground run begins). The crossing number reads the
+//! genuine topology, so it lights only true branch pixels and leaves the orthogonal-junction flankers dark where a count
+//! would falsely flag them.
+//!
+//! We count the arcs as RISING EDGES around the ring: a foreground cell whose predecessor (clockwise) is background begins a
+//! new arc. The number of rising edges around the closed ring equals the crossing number exactly, with no division. The ring
+//! order is N, NE, E, SE, S, SW, W, NW; an out-of-bounds neighbor is BACKGROUND, never a phantom, so a pixel at the image
+//! edge counts only its real neighbors -- the correct topology for a degree measure (this diverges on purpose from the
+//! rank-filter clamp image/structure.rye uses, where a clamped border is right for a max or a min).
+//!
+//! Compose not braid. This rung OWNS only two small things: the crossing-number gather (the eight-neighbor ring and its arc
+//! count) and the degree threshold. The binary meaning of a pixel -- foreground at or above `hitmiss.hitmiss_on_threshold` --
+//! is read from image/hitmiss.rye, one source of truth shared with the endpoint detector; image/qoi.rye owns the RGBA
+//! buffers. No new gather over a general element, no blend, no codec, no color math. The output is a binary image: opaque
+//! WHITE at every junction, opaque BLACK everywhere else, deterministic byte-for-byte.
+//!
+//! An empty source refuses BY NAME before any allocation -- all-or-nothing, never a half-marked image. No network, no key, no
+//! funds -- the branch points a surface names the day it reads a skeleton's topology, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/branch.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const hitmiss = @import("hitmiss.rye");
+
+pub const branch_version = "20260818.124640";
+
+/// The least crossing number a junction has: three or more foreground arcs meet, so three or more branches emanate. An
+/// endpoint has crossing number one, a path pixel two; a junction begins at three.
+pub const branch_min_crossing: u32 = 3;
+
+pub const BranchError = error{
+    EmptySource,
+};
+
+/// The eight neighbors in RING order -- N, NE, E, SE, S, SW, W, NW -- so consecutive entries are adjacent around the pixel
+/// and the ring closes from NW back to N. The arc count reads this order as a closed cycle.
+const ring_dx = [8]i32{ 0, 1, 1, 1, 0, -1, -1, -1 };
+const ring_dy = [8]i32{ -1, -1, 0, 1, 1, 1, 0, -1 };
+
+/// True when the pixel at byte index `i` reads as foreground -- its red channel is at or above the shared on-threshold. The
+/// binary meaning of a pixel is decided in one place, image/hitmiss.rye, shared with the endpoint detector.
+fn is_on(pixels: []const u8, i: usize) bool {
+    // invariant: the read stays inside the buffer.
+    assert(i < pixels.len);
+    return pixels[i] >= hitmiss.hitmiss_on_threshold;
+}
+
+/// True when the neighbor of `(x, y)` at offset `(dx, dy)` is foreground. An out-of-bounds neighbor is BACKGROUND -- never a
+/// phantom -- so a pixel at the image edge counts only its real neighbors, the honest topology for a degree measure.
+fn neighbor_on(src: *const qoi.Pixmap, x: u32, y: u32, dx: i32, dy: i32) bool {
+    const nx: i64 = @as(i64, x) + @as(i64, dx);
+    const ny: i64 = @as(i64, y) + @as(i64, dy);
+    // invariant: a neighbor off any edge is ground, so the ring never reads outside the buffer.
+    if (nx < 0 or ny < 0) return false;
+    if (nx >= @as(i64, src.width) or ny >= @as(i64, src.height)) return false;
+    const i = (@as(usize, @intCast(ny)) * @as(usize, src.width) + @as(usize, @intCast(nx))) * 4;
+    return is_on(src.pixels, i);
+}
+
+/// The CROSSING NUMBER at `(x, y)`: the count of foreground ARCS around the eight-neighbor ring, read as RISING EDGES -- a
+/// foreground neighbor whose clockwise predecessor is background begins a new arc. Endpoint one, path two, junction three or
+/// more; a lone dot and a solid interior zero. No division: the rising-edge count equals the crossing number directly.
+fn crossing_number(src: *const qoi.Pixmap, x: u32, y: u32) u32 {
+    var on: [8]bool = undefined;
+    var k: usize = 0;
+    while (k < 8) : (k += 1) on[k] = neighbor_on(src, x, y, ring_dx[k], ring_dy[k]);
+
+    var arcs: u32 = 0;
+    var i: usize = 0;
+    while (i < 8) : (i += 1) {
+        // the predecessor around the closed ring: entry 0's predecessor is entry 7 (NW), so the cycle closes.
+        const prev = if (i == 0) on[7] else on[i - 1];
+        if (on[i] and !prev) arcs += 1;
+    }
+    // invariant: at most eight arcs can begin around eight cells, so the count stays a small bound.
+    assert(arcs <= 8);
+    return arcs;
+}
+
+/// Mark every JUNCTION of `src` -- a foreground pixel whose crossing number is at least `branch_min_crossing` -- into a fresh
+/// binary RGBA Pixmap the caller owns: opaque WHITE at each junction, opaque BLACK elsewhere. `src` is read-only.
+pub fn detect_branches(allocator: std.mem.Allocator, src: *const qoi.Pixmap) !qoi.Pixmap {
+    // invariant: a real source has extent on both axes; a zero-size source has nothing to detect.
+    if (src.width == 0 or src.height == 0) return error.EmptySource;
+
+    const n: usize = @as(usize, src.width) * @as(usize, src.height) * 4;
+    // invariant: a real source's buffer is one RGBA pixel per pixel, so the sweep reads every pixel in lockstep.
+    assert(src.pixels.len == n);
+
+    const out = try allocator.alloc(u8, n);
+    var y: u32 = 0;
+    while (y < src.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x < src.width) : (x += 1) {
+            const ci = (@as(usize, y) * @as(usize, src.width) + @as(usize, x)) * 4;
+            // a junction must itself be foreground; a background pixel is never a branch no matter what surrounds it.
+            const lit: bool = is_on(src.pixels, ci) and crossing_number(src, x, y) >= branch_min_crossing;
+            const v: u8 = if (lit) 255 else 0;
+            out[ci] = v;
+            out[ci + 1] = v;
+            out[ci + 2] = v;
+            out[ci + 3] = 255; // alpha pinned opaque -- the result is a mask, not a translucent image
+        }
+    }
+    // invariant: the sweep pinned every alpha byte to 255, so the result is a clean opaque mask.
+    assert(out[3] == 255);
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+// --- selftest: the diagonal Y, the orthogonal plus (arc-count vs naive degree), the degenerate zeros, opacity, round-trip -
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// Set one pixel's RGBA at (x, y) -- a small writer the pattern builders share.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+/// Count the white (lit) pixels of a binary detection plane -- the junction tally the cruxes check.
+fn count_white(img: *const qoi.Pixmap, white: color.Rgba) u32 {
+    var lit: u32 = 0;
+    var y: u32 = 0;
+    while (y < img.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x < img.width) : (x += 1) {
+            if (pixel_at(img, x, y).eql(white)) lit += 1;
+        }
+    }
+    return lit;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    // --- the threshold is the branch degree: three arcs or more meet at a junction --------------------------------------
+    if (branch_min_crossing != 3) return error.MinCrossingNotThree;
+
+    // --- the DIAGONAL-Y crux: a diagonal main line (1,1)..(7,7) with a diagonal spur (3,5),(2,6) off its center (4,4) has
+    //     EXACTLY ONE junction, the meeting point (4,4) of crossing number three -- the same clean diagonal geometry the
+    //     prune rung proved keeps a spur clear of its neighbors' rings --------------------------------------------------
+    var yshape = try make_canvas(garden, 9, 9, black);
+    var d: u32 = 1;
+    while (d <= 7) : (d += 1) set_pixel(&yshape, d, d, white); // the main diagonal
+    set_pixel(&yshape, 3, 5, white); // the spur's first step, down-left off the center
+    set_pixel(&yshape, 2, 6, white); // the spur's tip
+    const y_j = try detect_branches(garden, &yshape);
+    if (!pixel_at(&y_j, 4, 4).eql(white)) return error.DiagonalJunctionMissed; // arcs: NW, SE, SW-spur -> 3
+    if (!pixel_at(&y_j, 1, 1).eql(black)) return error.DiagEndpointFalselyBranch; // an endpoint, one arc
+    if (!pixel_at(&y_j, 7, 7).eql(black)) return error.DiagEndpointFalselyBranch;
+    if (!pixel_at(&y_j, 2, 6).eql(black)) return error.SpurTipFalselyBranch; // the spur tip, one arc
+    if (!pixel_at(&y_j, 3, 3).eql(black)) return error.DiagPathFalselyBranch; // a path pixel, two arcs
+    if (!pixel_at(&y_j, 3, 5).eql(black)) return error.SpurPathFalselyBranch; // the spur's path pixel, two arcs
+    if (count_white(&y_j, white) != 1) return error.DiagonalJunctionCountWrong;
+
+    // --- the ORTHOGONAL-PLUS crux (the decisive one): a one-pixel plus has EXACTLY ONE junction, its degree-four center of
+    //     crossing number four. A naive neighbor COUNT would falsely flag the four pixels flanking the center too (each is
+    //     8-adjacent to two arm pixels, so it reads degree four), yet each has crossing number TWO -- one foreground run
+    //     around its ring -- so the crossing number correctly leaves them dark. This is why we count arcs, not neighbors --
+    var plus = try make_canvas(garden, 7, 7, black);
+    var arm: u32 = 1;
+    while (arm <= 5) : (arm += 1) {
+        set_pixel(&plus, 3, arm, white); // the vertical arm, rows 1..5
+        set_pixel(&plus, arm, 3, white); // the horizontal arm, cols 1..5
+    }
+    const plus_j = try detect_branches(garden, &plus);
+    if (!pixel_at(&plus_j, 3, 3).eql(white)) return error.PlusCenterNotJunction; // crossing number four
+    if (!pixel_at(&plus_j, 3, 2).eql(black)) return error.PlusFlankerFalselyBranch; // above center: naive degree 4, arcs 2
+    if (!pixel_at(&plus_j, 3, 4).eql(black)) return error.PlusFlankerFalselyBranch; // below center
+    if (!pixel_at(&plus_j, 2, 3).eql(black)) return error.PlusFlankerFalselyBranch; // left of center
+    if (!pixel_at(&plus_j, 4, 3).eql(black)) return error.PlusFlankerFalselyBranch; // right of center
+    if (!pixel_at(&plus_j, 3, 1).eql(black)) return error.PlusTipFalselyBranch; // an arm tip, one arc
+    if (count_white(&plus_j, white) != 1) return error.PlusJunctionCountWrong;
+
+    // --- the DEGENERATE-ZERO crux: a lone dot (no foreground run begins) and the SOLID INTERIOR of a block (no run begins,
+    //     every neighbor on) both have crossing number ZERO, so neither is a junction -- the crossing number rejects the two
+    //     degenerate cases a naive count confuses ------------------------------------------------------------------------
+    var lone = try make_canvas(garden, 7, 7, black);
+    set_pixel(&lone, 3, 3, white); // a single dot, degree zero
+    const lone_j = try detect_branches(garden, &lone);
+    if (count_white(&lone_j, white) != 0) return error.LoneDotFalselyBranch;
+
+    var block = try make_canvas(garden, 7, 7, black);
+    var by: u32 = 1;
+    while (by <= 5) : (by += 1) {
+        var bx: u32 = 1;
+        while (bx <= 5) : (bx += 1) set_pixel(&block, bx, by, white); // a solid 5x5 white block, clear of the border
+    }
+    const block_j = try detect_branches(garden, &block);
+    if (!pixel_at(&block_j, 3, 3).eql(black)) return error.SolidInteriorFalselyBranch; // all eight neighbors on -> zero arcs
+
+    // --- the output is always OPAQUE, even from a translucent source: foreground is the red channel and the mask pins alpha
+    var faint = try make_canvas(garden, 7, 7, color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 40 });
+    var fa: u32 = 1;
+    while (fa <= 5) : (fa += 1) {
+        set_pixel(&faint, 3, fa, color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 30 }); // a faint plus, foreground by red
+        set_pixel(&faint, fa, 3, color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 30 });
+    }
+    const from_faint = try detect_branches(garden, &faint);
+    if (pixel_at(&from_faint, 3, 3).a != 255) return error.JunctionNotOpaque;
+    if (pixel_at(&from_faint, 0, 0).a != 255) return error.GroundNotOpaque;
+    if (!pixel_at(&from_faint, 3, 3).eql(white)) return error.FaintJunctionMissed; // foreground is red, not alpha
+
+    // --- a junction map round-trips through the open QOI codec byte-for-byte -- a real image, not a private buffer --------
+    const cap = qoi.encoded_bound(plus_j.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&plus_j, dst);
+    const backimg = try qoi.decode(garden, dst[0..enc.len]);
+    if (!backimg.same_bytes(&plus_j)) return error.BranchesDidNotRoundTrip;
+
+    // --- the refusal by name, having allocated nothing (the guard fires before the sweep) --------------------------------
+    var empty_src = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (detect_branches(garden, &empty_src)) |_| return error.EmptySourceNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- determinism: the same detection reaches the same junctions byte-for-byte ----------------------------------------
+    const a = try detect_branches(garden, &plus);
+    const b = try detect_branches(garden, &plus);
+    if (!a.same_bytes(&b)) return error.BranchesNotDeterministic;
+
+    print("GREEN image-branch: mark every SKELETON JUNCTION of a mask -- a foreground pixel where three or more branches meet -- by the crossing number (the count of foreground arcs around the eight-neighbor ring), not a template pack (degree three or more spans 219 configs) and not a naive neighbor count (which false-flags the flankers of an orthogonal junction); a diagonal Y lights exactly its one meeting point of crossing number three and leaves its endpoints and path pixels dark, a one-pixel plus lights only its degree-four center while the four pixels flanking it (naive degree four, crossing number two) stay dark, a lone dot and a solid block interior both light NOTHING (crossing number zero); the output is opaque white-on-black even from a translucent source; the junction map round-trips through the open QOI codec byte-for-byte; an empty source refuses by name having allocated nothing; the same detection is deterministic byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: branch selftest\n", .{});
+    return 1;
+}
