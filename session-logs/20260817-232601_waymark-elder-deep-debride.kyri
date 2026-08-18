@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260817.232601
+editor Claude Code
+model claude-opus-4-8
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title waymark-elder deep debride -- dead marks purged from living tree and all history, re-signed, force-pushed
+prompt Keaton: do it all -- the full waymark-elder debride (living tree, dated logs, history purge, re-sign, force-push); kg
+think Stage 1a (reversible, working tree): surgically removed the role-2 breach-documentation -- the elder->successor arrows and "renamed from X" notes -- from every living pin, keeping the successors. Cleaned waymark-ladders.md (both twins), waymark_derive.rish (elder seated-draws + exclude entries DREY/FORA/WADE/LOWE/WADE), LEXICON DREY entry, REMEMBER (seated-breaches line + breach-row rewritten to a clean debride record), SHRED_PREP (molt entry -> shed-complete record), the eight-season doc (Season B + breach-queue items 1 and 5)
+think Stage 1b: REDS elder mentions were usage (journey names), not arrows -- safe word-boundary replace LOWE->LOWE, DREY->DREY (same ladder, current name, no falsification). The lagging Cursor waymark twin made elder-free the same way. Then git rm the 76 elder-named session logs (drey* fora* fuss* mihi* *dimeroll* + the transitional debride-* records) and pruned their 76 README index rows; 0 dangling references
+think Kept by design as the debride's own record: crux/CAIRNS.md walk-back rows, the REDS lessons, and counsel dated testimony that named Dimeroll -- recovery markers, reds record, decision record, not dead tissue. The sealed registry (crux/waymark-registry.bron, re-sealed living-only, witness GREEN) holds every mark ever drawn, so removing the elders lost no canonical waymark fact -- exactly the guarantee Keaton built in step 1
+think Planted the walk-back cairn first (crux/CAIRNS.md, nib d87f9d76b1, tag pre-elder-debride-d87f9d76b1) before the debride commit, per cairn.md -- mandatory ahead of a deep debride whose walk-back is otherwise lost with the rewrite. Committed Stage 1 signed (77c6218ad8), tree byte-clean
+think Stage 2 (irreversible): scoped the history rewrite to a24a0ee465^..main -- only the 1023 commits from the first shed-path commit forward need rewriting; the 1884 earlier commits keep their hashes and signatures. filter-branch --index-filter (git rm --pathspec-from-file the 76 paths) + --commit-filter (git commit-tree -S) removed the logs from all history and re-signed every rewritten commit in one pass
+obs Verified before pushing: 0 shed paths remain anywhere in main history; the HEAD tree is byte-identical to the pre-purge Stage-1 tree (only the 76 files gone, nothing else corrupted); 0 unsigned commits in the rewritten range; HEAD signature good. Then force-pushed both living remotes -- origin (autoproject96/grain) and xykj61 (xykj61/grain), d87f9d76b1...fda3b1536e forced. Codeberg stays retired
+obs The force-push rewrote the recent nibs: the round_paint code edge moved 5e279ea487 -> 9f532ff911, and every REMEMBER-cited recent nib is now unreachable on main by design. Refreshed the living Git nib to the new HEAD; the walk-back stays local-only at the three safety tags (pre-elder-debride, pre-history-purge, pre-urbit-drop) until git GC
+obs Cost paid honestly, as with the urbit-lineage drop: every downstream must re-clone or hard-reset -- Keaton accepted this (no dependents). Re-signing was not lost; 1023 commits came out signed
+file crux/CAIRNS.md walk-back cairn for the debride (nib d87f9d76b1), planted before the cut
+file .claude/rules/waymark-ladders.md + .cursor twin elder rows and the breach-summary row removed; living ladders only
+file tools/waymark_derive.rish elder seated-draws + exclude entries removed; successors kept; runs clean (RED at exclude, intended)
+file crux/REMEMBER.md seated-breaches + breach-row cleaned to a debride record; living Git nib refreshed to fda3b1536e
+file crux/SHRED_PREP.md old-waymark-logs molt entry -> shed-complete record
+file session-logs/README.md 76 elder-log index rows pruned
+recommend check-in the waymark-elder deep debride is landed and verified on both remotes -- living tree elder-free, 76 logs purged from all history, 1023 commits re-signed, force-pushed. A fresh clone reads clean; every clone must re-clone or hard-reset. Next honest doors: the pending Bron->Kyri molt (opens after JARL) or the microkernel-target study rungs
