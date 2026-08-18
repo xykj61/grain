@@ -3,10 +3,12 @@
 # bound_mode: enforce = must be <= living_pin_max_bytes (fail hard)
 #             advisory = over-bound reported; emptied is loss, over-bound is tidy debt
 # No backtick characters. Presence tested with git ls-files.
-work-in-progress/REMEMBER.md	1000	Living pin — operator	advisory
-work-in-progress/ROADMAP.md	200	The Roadmap — living pin	enforce
-work-in-progress/TASKS.md	200	Tasks — living pin	enforce
-work-in-progress/EQUINOX_SEAT_MAP.md	200	Status:** Living pin	enforce
-work-in-progress/REDS.md	200	Living pin — one row per red	enforce
-work-in-progress/SHRED_PREP.md	200	Living pin — **shred RED	enforce
+# Paths repointed work-in-progress -> crux (the git mv rename, REDS #84); headers matched
+# to the pins as they read now (REMEMBER and REDS swept ASCII-first to '--'; SEAT_MAP rested).
+crux/REMEMBER.md	1000	Living pin -- operator	advisory
+crux/ROADMAP.md	200	The Roadmap	enforce
+crux/TASKS.md	200	Tasks	enforce
+crux/EQUINOX_SEAT_MAP.md	200	Rested history	enforce
+crux/REDS.md	200	Living pin -- one row per red	enforce
+crux/SHRED_PREP.md	200	shred RED	enforce
 tools/gen/season/prin_scope.rish	200	living pin	enforce

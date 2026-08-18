@@ -28,7 +28,7 @@ A specific, **explicitly-named set of work rounds** may use non-ASCII when it is
 
 ## Prevention, not just cure
 
-A living-card non-ASCII witness is booked (REDS #83): a small check that greps the operator card and other durable living pins for bytes above 0x7F and fails if any appear outside a named exception. Measurement beats memory -- the guard catches the next mojibake on the lap it enters, not months later.
+A living-card non-ASCII witness stands (REDS #83): `tools/living_card_ascii_witness.rish` over `tools/fixtures/living_card_ascii_scan.sh` greps the operator card and the REDS ledger for bytes above 0x7F and fails hard if any appear (the ENFORCE roster), while the pins still holding legacy dated non-ASCII are reported as an advisory ratchet to sweep down on touch rather than force-rewritten. A planted mojibake control proves the RED path on metal. Measurement beats memory -- the guard catches the next mojibake on the lap it enters, not months later.
 
 ## Why the rule exists
 

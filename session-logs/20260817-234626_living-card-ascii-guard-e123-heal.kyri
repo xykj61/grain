@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20260817.234626
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title living-card ASCII guard landed; e123 living-pin guard healed after the rename
+prompt baton prin recur -- take the next agent-doable lap Lindy-first crux-first; Standfast on reds; council rota; send often
+think Picked up the thread: last code lap was image/round_paint.rye (Season G open-media, the CSS background-repeat quartet made whole), then custody laps landed (seed force-push, urbit-lineage drop, waymark registry, deep debride). Working tree clean at 06c0b45412.
+think Lindy-first crux-first: the most durable open work was REDS #83's BOOKED prevention -- a living-card non-ASCII guard so the operator card can never mojibake unseen again (it corrupted once, the Standfast that named the reflex). A guard read for years beats another font rung. Confirmed the e123 living-pin guard checks empty/bound, NOT bytes -- so #83's prevention was genuinely still open.
+think Built tools/fixtures/living_card_ascii_scan.sh + tools/living_card_ascii_witness.rish + a tracked mojibake control (real high bytes). ENFORCE roster (REMEMBER, REDS -- both swept ASCII-first, measured 0 non-ASCII) fails hard on any byte above 0x7F; ADVISORY roster (the six legacy pins, 244 non-ASCII lines) is a ratchet, not force-rewritten (ASCII-first does not retrofit dated content). GREEN on metal; prove-red catches the control.
+think Standfast: checking REDS.md's byte size before appending surfaced it at 26312 > its 24576 bound. Running the e123 guard to confirm showed it had been silently RED since the work-in-progress -> crux rename -- four compounding drifts: stale work-in-progress/ paths (resolve via symlink but untracked under that name), em-dash roster headers the ASCII sweep moved to --, a gone SEAT_MAP header (now Rested history), and REDS over bound. REDS #84's own lesson recurring, one layer deeper in the guard's own roster.
+think Closed it root-first: repointed paths to crux/ in the scan + roster; matched the three drifted headers to the pins as they read now (dash-bearing ones shortened to dash-free substrings); folded REDS rows 74-79 to crux/archive/REDS-image-crypto-rows-74-79.md (every byte kept, accrete not debride), bringing REDS to 23617 under bound. e123 re-GREEN, planted-empty-pin RED path still caught.
+think Corrected my own near-miss: first wrote the fold/reds notes as 20260818, but TZ=America/New_York date read 20260817.234626 -- future-dating is REDS #75's exact mistake. Fixed every stamp to the true clock before committing.
+obs Council rota (lap): deep-read foundations/20260816-214652_standfast-the-stopped-line.md (item 5) -- apt: "a lantern that fires twice becomes a loom... so the line need never stop for it a third time." This lap built exactly that loom for the operator card.
+obs Scope note: my #83 witness and the e123 heal are one fascia (the living-pin guards, healed after the rename + ASCII sweep + ledger growth), so shipped as one Standfast round rather than split. A fold keeps every byte, so no cairn needed (the fold note is the way-back).
+obs REMEMBER is ~200 KB, over its advisory bound -- named as a condensation debt (advisory, not a break); a later lap condenses the giant live-edge blob.
+loom witness=living_card_ascii_witness checks=7 enforce_pins=2 advisory_non_ascii_lines=244 result=GREEN
+loom witness=equinox_e123_living_pin_guard reds_bytes_before=26312 reds_bytes_after=23617 bound=24576 result=GREEN
+file tools/living_card_ascii_witness.rish the REDS #83 prevention witness -- operator card + REDS enforced at zero non-ASCII, mojibake control caught
+file tools/fixtures/living_card_ascii_scan.sh the two-roster scan (enforce hard, advisory ratchet)
+file tools/fixtures/living_card_ascii_control/mojibake_control.md tracked control with real high bytes so prove-red proves on metal
+file .claude/rules/ascii-first.md docs-sync: the booked witness now stands, named
+file tools/fixtures/equinox_e123_living_pin_guard_scan.sh path vars repointed work-in-progress -> crux
+file tools/fixtures/living_pin_guard_roster.txt paths to crux/, headers matched to the swept pins
+file crux/REDS.md folded rows 74-79 to archive; new REDS #87 + #83-landed notes; back under bound
+file crux/archive/REDS-image-crypto-rows-74-79.md the closed-range fold, every byte kept
+file crux/REMEMBER.md INNER LOOP status note (guards healed, #83 prevention stands) + git nib
+recommend keep-going Season G open-media is the live edge; the next agent-doable crux is the open glyph atlas beyond 5x7 or a longer real-reel caption proof. No custody gate touched (no network, no key, no funds).

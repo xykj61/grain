@@ -1,0 +1,35 @@
+# tools/living_card_ascii_witness.rish -- the operator card stays plain 7-bit ASCII (REDS #83).
+#
+# The prevention REDS #83 booked, now on metal. crux/REMEMBER.md triple-encoded itself into
+# 2,797 runs of capital-A-tilde mojibake before a reader caught it (a tool read the UTF-8 card
+# as Latin-1 and rewrote it, each later edit re-encoding the mangled bytes another layer). The
+# fix was a byte-exact repair; the guard is how it never happens unseen again -- it catches the
+# next non-ASCII byte in the operator card on the lap it enters, not months later.
+#
+# The scan carries two rosters by the ASCII-first tier (.claude/rules/ascii-first.md): the pins
+# swept ASCII-first (REMEMBER, REDS) are ENFORCED at zero bytes above 0x7F and fail hard; the pins
+# still holding legacy dated non-ASCII are REPORTED as an advisory ratchet, never force-rewritten.
+# A distinct roof from the e123 living-pin content guard (empty/bound); byte-encoding is its own
+# concern. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/living_card_ascii_witness.rish
+
+say "living-card-ascii: Language EN -- the operator card and the REDS ledger read as plain 7-bit ASCII, and a mojibake byte is caught the lap it enters."
+say "living-card-ascii: Style Radiant -- ASCII-first by tier; the actively-written pins enforced at zero non-ASCII, the legacy pins ratcheted rather than rewritten."
+say "living-card-ascii: Lens TAME -- measurement beats memory; the guard greps for bytes above 0x7F and a planted mojibake control proves the RED path on metal."
+
+let green = run ["sh" "tools/fixtures/living_card_ascii_scan.sh"]
+assert green.ok else "living-card-ascii: living scan must exit 0 -- ${green.out}"
+assert green.out contains "enforce=honored" else "living-card-ascii: want enforce honored"
+assert green.out contains "enforce_ok=crux/REMEMBER.md" else "living-card-ascii: want operator card enforced clean"
+assert green.out contains "enforce_ok=crux/REDS.md" else "living-card-ascii: want REDS ledger enforced clean"
+assert green.out contains "advisory=ratchet_report" else "living-card-ascii: want advisory ratchet reported"
+assert green.out contains "control_kept=honored" else "living-card-ascii: want the control kept non-ASCII"
+assert green.out contains "verdict=ok" else "living-card-ascii: want verdict ok"
+
+let red = run ["sh" "tools/fixtures/living_card_ascii_scan.sh" "prove-red"]
+assert (red.ok == false) else "living-card-ascii: prove-red must refuse"
+assert red.out contains "RED_living_card_non_ascii_caught" else "living-card-ascii: prove-red want the mojibake control caught"
+
+say "GREEN: living-card-ascii -- operator card pure ASCII, REDS pure ASCII, legacy pins ratcheted, mojibake control caught (REDS #83 prevention on metal)."
