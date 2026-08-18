@@ -1,0 +1,16 @@
+format session-log-v1
+stamp 20260817.212059
+editor Claude Code
+model claude-opus-4-8
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title seed projection GREEN -- six new modules allowed, ready for Keaton's force-push
+prompt Keaton: allow all six, take the seed projection to GREEN
+think Added allow entries for crypto, image, encoding, lotus, mikrophone, constel, plus a copy verdict each -- template (verbatim) for the four clean modules, scrub (name-to-role transform) for crypto and lotus whose only personal refs are Keaton's-name mentions in prose (29 hits, no keys, no paths)
+think With crux already withheld (renamed from work-in-progress), every tracked root now carries exactly one verdict; the dotdirs .claude/.cursor were already classified (allow + scrub), my earlier grep missed the leading dot
+think sow_witness is slow (projects the whole 6380-file tree, scrubs 1007, withholds 121) so it ran in the background; it finished GREEN: M1_OK, SOW_OK, IDENT_CLEAN, NO_PERSONAL, SOW_WITNESS_GREEN
+obs The public seed now ships the crypto suite and the open-media surfaces; the projected seed/ is provably clean of personal paths, real keys, and the maintainer name
+obs The seed force-push mechanism: seed/ is its own gitignored repo with a single Option-B commit whose origin IS grain-os/grain (at 26cae5b, matching the remote); the fresh projection changed 1888 files, staged-but-uncommitted -- only the commit and the --force push remain, which stay Keaton's explicit custody-gate-1 trigger
+obs Did NOT force-push -- per the plan, the projection is taken to GREEN and the exact command handed to Keaton, so the irreversible public overwrite is his own reviewed act
+file template-manifest.bron six modules allowed + classified; every root now has exactly one verdict
+recommend check-in projection GREEN and ready; the seed force-push to grain-os/grain waits for Keaton's hand (cd seed; git add -A; git commit -S --amend; git push --force origin main); the private-history deep debride I still recommend against (contradicts urbit-reframe, destroys testimony)
