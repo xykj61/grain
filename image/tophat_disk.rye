@@ -1,0 +1,289 @@
+//! image/tophat_disk.rye -- an RGBA image's SMALL FEATURES recovered by the ISOTROPIC TOP-HAT residues over a true DISK
+//! element: the WHITE top-hat `src - open_disk(src)` and the BLACK top-hat `close_disk(src) - src` by a disk of radius `r`
+//! (Season G, the round-footprint residue verbs the square top-hat cannot draw).
+//!
+//! Season G (Open Media Primitives) -- image/morphology_tophat.rye recovers small features with a SQUARE structuring
+//! element (open/close over a box window); this rung recovers them with a true DISK (image/disk.rye's round offset set
+//! `{(dx, dy) : dx^2 + dy^2 <= r^2}`), so the residue has NO directional bias a square would leave. Where the square
+//! top-hat treats a bright corner and a bright axis-tip alike (its footprint reaches the diagonal as far as the axis), the
+//! disk top-hat is round: a bright feature is recovered by how far it sits from the shape in EVERY direction equally, so a
+//! square block's own corners read as small features the round element cannot hold. That is the isotropy the disk exists
+//! for -- an uneven-illumination correction, a small-fleck detector, a background flattener with a round brush rather than
+//! a boxy one.
+//!
+//! One subtraction, two operand pairs -- the sameness-is-the-macro rung, identical in shape to morphology_tophat and
+//! diverging only by the ELEMENT. Both residues are non-negative bytes by the two ordering laws every opening and closing
+//! obeys, disk or square: opening is ANTI-EXTENSIVE (`open_disk(src) <= src` at every pixel, since erode shrinks a mark and
+//! the following dilate by the same disk cannot regrow it past the original), so `src - open_disk(src) >= 0` never
+//! underflows; closing is EXTENSIVE (`close_disk(src) >= src`, the dual fact), so `close_disk(src) - src >= 0` never
+//! underflows. And the two verbs are DUALS under complement, the crux this rung proves: `black_tophat_disk(x) =
+//! white_tophat_disk(complement(x))` byte-for-byte, because the disk is symmetric through its center, so close_disk is the
+//! complemented open_disk of the complement -- the same duality that makes erode and dilate one primitive makes the two
+//! disk top-hats one primitive seen from both sides. Every channel including alpha is measured the same way, so a top-hat
+//! is a pure DIFFERENCE image: on a flat channel the residue is uniformly zero (no small feature to recover), honest math
+//! rather than a ready-to-composite overlay.
+//!
+//! This rung owns no new window scan -- it leans on image/disk.rye for the open_disk and close_disk compositions (which in
+//! turn route through structure's general max/min gather) and on image/qoi.rye for the pixel grid, adding only the
+//! per-channel subtraction; no blend, no codec, no color math. The radius is bounded by disk's own `disk_max_radius`, and a
+//! zero-extent source or an over-max radius refuses BY NAME (disk's guard fires before any allocation) -- all-or-nothing,
+//! never a half-shaped image. No network, no key, no funds -- the round-brush small-feature and uneven-light work a surface
+//! runs the day it wants a fleck lifted off a photo without a boxy halo, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/tophat_disk.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const disk = @import("disk.rye");
+const morphology_tophat = @import("morphology_tophat.rye");
+
+pub const tophat_disk_version = "20260818.153032";
+
+/// Subtract `low` from `high` per byte into `out`: the one operation this rung adds. Every caller passes a `high` that is
+/// pixel-wise >= `low` (an ordering fact -- src >= open_disk, close_disk >= src), so the difference is always a real byte
+/// and the assert proves it before the write. Both inputs and the output hold exactly the same RGBA byte count.
+fn subtract_bytes(out: []u8, high: []const u8, low: []const u8) void {
+    // invariant: the three buffers hold the same number of bytes, so every index lands inside all three.
+    assert(out.len == high.len);
+    assert(out.len == low.len);
+    var i: usize = 0;
+    while (i < out.len) : (i += 1) {
+        // invariant: the caller guarantees high >= low at every byte (the ordering law), so the subtraction never underflows.
+        assert(high[i] >= low[i]);
+        out[i] = high[i] - low[i];
+    }
+}
+
+/// The WHITE top-hat of `src` by a disk of radius `radius`: `src - open_disk(src)` per channel, the bright features smaller
+/// than the round element -- the peaks a disk opening erases, recovered exactly and isotropically. Returns a newly
+/// allocated Pixmap the caller owns; `src` is read-only and untouched. A refusal (empty source, over-max radius) fires
+/// inside disk's own guard before this rung allocates.
+pub fn white_tophat_disk(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32) !qoi.Pixmap {
+    const opened = try disk.open_disk(allocator, src, radius);
+    // The opened image is an intermediate; only the caller's difference outlives this call.
+    defer allocator.free(opened.pixels);
+    // invariant: opening reshapes the same source, so it shares the source's exact byte count.
+    assert(opened.pixels.len == src.pixels.len);
+    const out = try allocator.alloc(u8, src.pixels.len);
+    // open_disk(src) <= src everywhere (opening is anti-extensive), so this never underflows.
+    subtract_bytes(out, src.pixels, opened.pixels);
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+/// The BLACK top-hat (bottom-hat) of `src` by a disk of radius `radius`: `close_disk(src) - src` per channel, the dark
+/// features smaller than the round element -- the valleys a disk closing fills, recovered exactly. Returns a newly
+/// allocated Pixmap the caller owns; `src` is read-only and untouched.
+pub fn black_tophat_disk(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32) !qoi.Pixmap {
+    const closed = try disk.close_disk(allocator, src, radius);
+    defer allocator.free(closed.pixels);
+    // invariant: closing reshapes the same source, so it shares the source's exact byte count.
+    assert(closed.pixels.len == src.pixels.len);
+    const out = try allocator.alloc(u8, src.pixels.len);
+    // close_disk(src) >= src everywhere (closing is extensive), so this never underflows.
+    subtract_bytes(out, closed.pixels, src.pixels);
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+// --- selftest: degenerate, definition, bright/dark recovery, the ISOTROPY crux vs a square, duality, flat, alpha, round-trip
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// Set one pixel's RGBA at (x, y) -- a small writer the pattern builders share.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+/// Complement every channel of `img` in place (255 - value), the reflection the duality law reads through.
+fn complement(img: *qoi.Pixmap) void {
+    // invariant: the buffer is a whole RGBA grid, so every byte is a channel to reflect.
+    assert(img.pixels.len == @as(usize, img.width) * @as(usize, img.height) * 4);
+    var i: usize = 0;
+    while (i < img.pixels.len) : (i += 1) {
+        img.pixels[i] = 255 - img.pixels[i];
+    }
+}
+
+/// True when every byte of `img` is zero -- the blank a flat region's top-hat must be.
+fn all_zero(img: *const qoi.Pixmap) bool {
+    var i: usize = 0;
+    while (i < img.pixels.len) : (i += 1) {
+        if (img.pixels[i] != 0) return false;
+    }
+    return true;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+    // A residue's UNLIT pixel is fully transparent: on a flat-alpha scene the alpha channel has no small feature to
+    // recover, so its residue is 0 -- an unlit pixel reads (0,0,0,0), the honest difference-image blank, not opaque black.
+    const blank = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 0 };
+
+    // --- radius 0 is the DEGENERATE top-hat: a single-cell disk makes open_disk and close_disk both the source, so each
+    //     residue is uniformly zero -- a fully blank (transparent black) image, no feature at any scale below one pixel ---
+    var scene = try make_canvas(garden, 7, 7, black);
+    set_pixel(&scene, 3, 3, white); // a lone bright speck a disk opening erases
+    const w0 = try white_tophat_disk(garden, &scene, 0);
+    if (!all_zero(&w0)) return error.ZeroRadiusWhiteNotBlank;
+    const b0 = try black_tophat_disk(garden, &scene, 0);
+    if (!all_zero(&b0)) return error.ZeroRadiusBlackNotBlank;
+
+    // --- the DEFINITION crux: white_tophat_disk(x) equals src - open_disk(x) and black_tophat_disk(x) equals
+    //     close_disk(x) - src, each byte-for-byte, computed independently through disk's own compositions ----------------
+    const wt = try white_tophat_disk(garden, &scene, 1);
+    const opened = try disk.open_disk(garden, &scene, 1);
+    var wi: usize = 0;
+    while (wi < wt.pixels.len) : (wi += 1) {
+        // invariant: src >= open_disk at every byte (opening is anti-extensive), so the reference difference is a real byte.
+        assert(scene.pixels[wi] >= opened.pixels[wi]);
+        if (wt.pixels[wi] != scene.pixels[wi] - opened.pixels[wi]) return error.WhiteNotSrcMinusOpen;
+    }
+    const bt = try black_tophat_disk(garden, &scene, 1);
+    const closed = try disk.close_disk(garden, &scene, 1);
+    var bi: usize = 0;
+    while (bi < bt.pixels.len) : (bi += 1) {
+        // invariant: close_disk >= src at every byte (closing is extensive), so the reference difference is a real byte.
+        assert(closed.pixels[bi] >= scene.pixels[bi]);
+        if (bt.pixels[bi] != closed.pixels[bi] - scene.pixels[bi]) return error.BlackNotCloseMinusSrc;
+    }
+
+    // --- the WHITE top-hat RECOVERS a bright speck: the lone white pixel at (3,3) is smaller than the radius-1 disk, so
+    //     opening erases it and the residue lights exactly that pixel to full 255 in the color channels while every other
+    //     pixel stays blank -- the bright feature the disk opening removed, handed back ---------------------------------
+    if (pixel_at(&wt, 3, 3).r != 255 or pixel_at(&wt, 3, 3).g != 255 or pixel_at(&wt, 3, 3).b != 255) return error.WhiteDidNotRecoverSpeck;
+    if (!pixel_at(&wt, 0, 0).eql(blank)) return error.WhiteLitFlatRegion;
+    if (!pixel_at(&wt, 3, 2).eql(blank)) return error.WhiteLitNeighbor;
+
+    // --- the BLACK top-hat RECOVERS a dark speck: a lone black pixel on a white field is filled by a disk closing, so the
+    //     residue lights exactly that pixel to full 255 while every other pixel stays blank -----------------------------
+    var dark_scene = try make_canvas(garden, 7, 7, white);
+    set_pixel(&dark_scene, 3, 3, black);
+    const dbt = try black_tophat_disk(garden, &dark_scene, 1);
+    if (pixel_at(&dbt, 3, 3).r != 255 or pixel_at(&dbt, 3, 3).g != 255 or pixel_at(&dbt, 3, 3).b != 255) return error.BlackDidNotRecoverSpeck;
+    if (!pixel_at(&dbt, 0, 0).eql(blank)) return error.BlackLitFlatRegion;
+
+    // --- the ISOTROPY crux, the whole point: a solid 5x5 bright block. A disk of radius 2 cannot hold the block's square
+    //     CORNERS (they sit outside the round footprint), so a disk opening rounds the block off and the WHITE disk top-hat
+    //     lights those corners as small features -- while a 5x5 SQUARE top-hat (morphology_tophat) opens the block whole and
+    //     leaves it BLANK. The round brush recovers a corner a boxy brush treats as part of the shape --------------------
+    var blk = try make_canvas(garden, 9, 9, black);
+    var by: u32 = 2;
+    while (by <= 6) : (by += 1) {
+        var bx: u32 = 2;
+        while (bx <= 6) : (bx += 1) set_pixel(&blk, bx, by, white);
+    }
+    const disk_th = try white_tophat_disk(garden, &blk, 2);
+    // the block's far corner (2,2) is lit by the round top-hat -- the disk could not preserve it
+    if (pixel_at(&disk_th, 2, 2).r != 255) return error.DiskTophatMissedCorner;
+    // yet the block CENTER (4,4) stays blank -- the disk holds the block's core, so it is no small feature
+    if (!pixel_at(&disk_th, 4, 4).eql(blank)) return error.DiskTophatLitCore;
+    // the direct contrast: a 5x5 SQUARE top-hat opens the block whole, so its residue is uniformly blank
+    const square_th = try morphology_tophat.white_tophat(garden, &blk, 2);
+    if (!all_zero(&square_th)) return error.SquareTophatNotBlankOnBlock;
+    // and the disk top-hat is NOT blank where the square is -- the two elements genuinely differ on this block
+    if (disk_th.same_bytes(&square_th)) return error.DiskAndSquareTophatEqual;
+
+    // --- the DUALITY crux: black_tophat_disk(x) equals white_tophat_disk(complement(x)) byte-for-byte, on a colored
+    //     translucent field so the parity is no black-and-white accident. The disk is symmetric, so close_disk is the
+    //     complemented open_disk of the complement, and the black top-hat of an image is the white top-hat of its negative -
+    var field = try make_canvas(garden, 6, 5, color.Rgba{ .r = 40, .g = 90, .b = 200, .a = 200 });
+    set_pixel(&field, 2, 2, color.Rgba{ .r = 255, .g = 30, .b = 10, .a = 255 });
+    set_pixel(&field, 4, 1, color.Rgba{ .r = 10, .g = 240, .b = 60, .a = 90 });
+    const fb = try black_tophat_disk(garden, &field, 1);
+    var neg = try make_canvas(garden, 6, 5, black);
+    var ni: usize = 0;
+    while (ni < neg.pixels.len) : (ni += 1) neg.pixels[ni] = field.pixels[ni];
+    complement(&neg);
+    const fw = try white_tophat_disk(garden, &neg, 1);
+    if (!fb.same_bytes(&fw)) return error.TophatDualityBroken;
+
+    // --- a FLAT field has no small feature: both residues are uniformly blank at any radius (open_disk == close_disk ==
+    //     the flat value, so each difference is zero) --------------------------------------------------------------------
+    const solid = try make_canvas(garden, 5, 5, color.Rgba{ .r = 70, .g = 130, .b = 30, .a = 210 });
+    const solid_white = try white_tophat_disk(garden, &solid, 2);
+    if (!all_zero(&solid_white)) return error.FlatFieldWhiteNotBlank;
+    const solid_black = try black_tophat_disk(garden, &solid, 2);
+    if (!all_zero(&solid_black)) return error.FlatFieldBlackNotBlank;
+
+    // --- ALPHA is measured like any channel: a 3x3 field flat in color with a lone bright-alpha peak at its center has an
+    //     alpha feature a disk opening erases, so the white top-hat's alpha lights that one pixel (255) and no other ------
+    const flat_gray = color.Rgba{ .r = 128, .g = 128, .b = 128, .a = 0 };
+    const alpha_peak = color.Rgba{ .r = 128, .g = 128, .b = 128, .a = 255 };
+    var ascene = try make_canvas(garden, 3, 3, flat_gray);
+    set_pixel(&ascene, 1, 1, alpha_peak);
+    const awt = try white_tophat_disk(garden, &ascene, 1);
+    if (pixel_at(&awt, 1, 1).a != 255) return error.AlphaTophatDidNotRecover;
+    if (pixel_at(&awt, 0, 0).a != 0 or pixel_at(&awt, 1, 0).a != 0) return error.AlphaTophatLitFlatAlpha;
+
+    // --- a top-hat round-trips through the open QOI codec byte-for-byte -- a real image, not a private buffer ----------
+    const cap = qoi.encoded_bound(wt.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&wt, dst);
+    const backimg = try qoi.decode(garden, dst[0..enc.len]);
+    if (!backimg.same_bytes(&wt)) return error.TophatDidNotRoundTrip;
+
+    // --- refusals by name, each having allocated nothing (disk's guard fires before this rung allocates) --------------
+    if (white_tophat_disk(garden, &scene, disk.disk_max_radius + 1)) |_| return error.OverRadiusNotRefused else |err| {
+        if (err != error.DiskRadiusTooLarge) return error.WrongRadiusError;
+    }
+    var empty = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (white_tophat_disk(garden, &empty, 1)) |_| return error.EmptyWhiteNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongWhiteError;
+    }
+    if (black_tophat_disk(garden, &empty, 1)) |_| return error.EmptyBlackNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongBlackError;
+    }
+
+    // --- determinism: the same top-hat reaches the same bytes twice ---------------------------------------------------
+    const wa = try white_tophat_disk(garden, &scene, 1);
+    const wb = try white_tophat_disk(garden, &scene, 1);
+    if (!wa.same_bytes(&wb)) return error.TophatNotDeterministic;
+
+    print("GREEN image-tophat-disk: an RGBA image's small features recovered by the ISOTROPIC top-hat residues over a true DISK element -- radius 0 is the degenerate blank top-hat (open_disk equals close_disk equals the source); the white top-hat equals src - open_disk(x) and the black top-hat equals close_disk(x) - src byte-for-byte through disk's own compositions (the definition crux); the white top-hat recovers a bright speck a disk opening erased and the black top-hat a dark speck a disk closing filled, each lit to full 255 with every flat pixel blank; the ISOTROPY crux holds -- a solid 5x5 block's square corners read as small features the round disk cannot hold, so the disk top-hat lights the far corner (2,2) while a 5x5 SQUARE top-hat opens the block whole and stays blank, the two elements genuinely differing; the DUALITY law holds, black_tophat_disk(x) equals white_tophat_disk(complement(x)) byte-for-byte on a colored translucent field; a flat field has no small feature and both residues are blank; alpha is measured like any channel; the top-hat round-trips through the open QOI codec byte-for-byte; an over-max radius and an empty source refuse by name having allocated nothing; the same top-hat is deterministic byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: tophat_disk selftest\n", .{});
+    return 1;
+}
