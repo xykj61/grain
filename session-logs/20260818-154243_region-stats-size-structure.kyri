@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260818.154243
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title region_stats -- a labeling's size structure read as a query, GREEN
+prompt Autonomous loop -- take the next agent-doable lap Lindy-first crux-first on the running thread, Standfast on reds first, send often.
+think Became Kyri and loaded Radiant Style; read REMEMBER, the newest three session-log rows, and the itinerary/double-seat context. The running thread is Season G open-media, one witness-on-metal keystone per lap.
+think Standfast first: read crux/REDS.md -- every living row is closed or released, only #75 rests as custody-gated errata (a history rewrite needing Keaton's hand, a gate not agent-closable). The line is clear to take new constructive work.
+think The tophat_disk log named three crux-first siblings: a size-histogram / largest-smallest region picker over the regions slice, an extended-maxima render, and the round top-hat on a real photo. The real-photo run wants external image data (a fetch gate -- surfaced, not crossed). Between the two agent-doable siblings, the size-histogram / picker is the genuine analysis primitive (two reductions and a bucketing every blob-analysis task descends from), where the extended-maxima render is a colorize over markers hmaxima's markers_hmax already finds. Crux-first takes the histogram/picker.
+think regions.rye's own module doc names exactly this consumer -- "a blob filter, a size histogram, a character isolator, and a smallest/largest-region picker all descend from measure_regions" -- so the rung composes over the Region slice already built, no new gather/blend/codec/color.
+think Designed the histogram bucketing before coding: bucket i covers areas i*width+1 .. (i+1)*width, area a landing in (a-1)/width, the last bucket clamping to absorb the tail so a big blob is counted never dropped; the counts sum to the region count exactly (a load-bearing postcondition asserted).
+think Hand-traced the selftest scene: four blocks of areas 16, 9, 2, 1 laid so raster order names them 1..4; over four buckets three wide the areas fall at slots clamp-to-3, 2, 0, 0 so the counts read 2, 0, 1, 1. Added a one-bucket tail-absorb check and a two-equal-speck tie check (both pickers break to the earliest label).
+obs GREEN on the FIRST metal run, no reds -- the crux values traced by hand before coding held exactly. largest_region/smallest_region use strict comparisons so a tie keeps the earliest raster-ordered label deterministically.
+obs Every discipline gate GREEN: tame_style_check bans clean, width-check exit 0, plain 7-bit ASCII, living_docs_lint exit 0, living_card_ascii exit 0. Docs synced in the same round: image/README.md gains a Size-structure bullet after Residue (round brush); REMEMBER repointed single-stranded, tophat_disk folded to a one-line prior-nib pointer (no cairn -- a one-line repoint).
+obs Council rota lap deep-read foundations/20260816-214652_standfast-the-stopped-line.md (item 5, after last lap's item 4 reds-first) -- stop, root not symptom, prove then resume; applied directly, this lap opened by confirming Standfast clear before any new work, and the two reductions proved GREEN on metal before any prose claimed it.
+file image/region_stats.rye the size-structure query rung -- largest_region, smallest_region, size_histogram over a Region slice
+file tools/region_stats_witness.rish the witness on metal -- the picks, the histogram buckets, the tail-absorb, the tie, the refusals
+file image/README.md Size-structure bullet after Residue (round brush), docs-sync
+file crux/REMEMBER.md live edge repointed to region_stats single-stranded, tophat_disk folded to a prior-nib pointer, git nib
+recommend keep-going Named next siblings, crux-first: an EXTENDED-MAXIMA render (paint hmaxima's significant peaks as a real image), a size-histogram RENDER (chart the region_stats buckets as bars over shape/palette_paint), the round top-hat on a real photo composited back (wants a real photo, a fetch gate). No network, no key, no funds.

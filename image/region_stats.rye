@@ -1,0 +1,261 @@
+//! image/region_stats.rye -- read a labeling's SIZE STRUCTURE: pick the LARGEST and SMALLEST component, and bucket every
+//! component's area into a SIZE HISTOGRAM (Season G, the query floor a blob picker and a size distribution descend from, the
+//! natural consumer of image/regions.rye the measurement rung named crux-first).
+//!
+//! Season G (Open Media Primitives) -- image/regions.rye reads one `Region` per labeled component: its area (foreground pixel
+//! count) and its tight bounding box. That turns a segmentation into measurement. This rung turns the measurement into a
+//! QUERY -- the next question a surface asks the moment it holds a slice of regions: which piece is the BIGGEST, which the
+//! SMALLEST, and how are the sizes DISTRIBUTED. `largest_region` and `smallest_region` are the two argmax/argmin reductions --
+//! the biggest blob a keeper keeps, the smallest speck a keeper drops -- ties broken by the earliest label so the pick is
+//! deterministic (the regions are raster-ordered, so the earliest-appearing component wins a tie). `size_histogram` buckets
+//! every region's area into `bucket_count` buckets each `bucket_width` wide, the last bucket ABSORBING every area past its edge,
+//! so a lumpy catalog of blob sizes reads as one clean distribution a surface can chart or threshold.
+//!
+//! Compose not braid. This rung OWNS only the two reductions and the bucketing -- no gather, no blend, no codec, no color, not
+//! even a pixel loop. image/regions.rye owns the `Region` type and its area; the caller measures once with `measure_regions`
+//! and asks these questions over the slice it already holds. A region is a count, a pick is a max or a min, a histogram is a
+//! tally -- pure functions over a slice of numbers, the source never touched.
+//!
+//! Everything is bounded before a byte is allocated: the bucket count is capped by `region_stats_max_buckets`, so the counts
+//! slice can never grow past a named ceiling; an empty region slice refuses `EmptyRegions` by name (there is no largest of
+//! nothing), and a zero bucket count or zero bucket width refuses `BadBucketing` by name -- all-or-nothing, never a half-built
+//! histogram. No network, no key, no funds -- the size questions a surface names the day it sorts its blobs, on our own open
+//! geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/region_stats.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const label = @import("label.rye");
+const regions = @import("regions.rye");
+
+pub const region_stats_version = "20260818.154243";
+
+/// The bucket ceiling: a size histogram never opens more than this many buckets, so the counts slice is bounded before it is
+/// allocated. 65536 is far past any real size distribution a surface charts, and keeps the count product inside u32.
+pub const region_stats_max_buckets: u32 = 65536;
+
+pub const RegionStatsError = error{
+    EmptyRegions,
+    BadBucketing,
+};
+
+/// Return the LARGEST component of `regs` by area -- the biggest blob a keeper keeps. A tie is broken by the EARLIEST label
+/// (the regions are raster-ordered, so the first-appearing component of the tied area wins), which makes the pick
+/// deterministic. `regs` is read-only; an empty slice refuses `EmptyRegions` by name.
+pub fn largest_region(regs: []const regions.Region) !regions.Region {
+    // invariant: there is no largest of nothing -- a real pick needs at least one region.
+    if (regs.len == 0) return error.EmptyRegions;
+    // invariant: the slice stays within the named bucket ceiling's kin bound so an index never overflows u32.
+    assert(regs.len <= @as(usize, region_stats_max_buckets));
+
+    var best: regions.Region = regs[0];
+    var i: usize = 1;
+    while (i < regs.len) : (i += 1) {
+        // strict greater-than keeps the earliest label on a tie: only a genuinely larger area displaces the held pick.
+        if (regs[i].area > best.area) best = regs[i];
+    }
+
+    // invariant: a measured region always holds at least one pixel, so the winner does too.
+    assert(best.area >= 1);
+    // invariant: the pick is a true maximum -- no region carries a larger area than the one returned.
+    assert(best.area >= regs[0].area);
+    return best;
+}
+
+/// Return the SMALLEST component of `regs` by area -- the smallest speck a keeper drops. A tie is broken by the EARLIEST label,
+/// exactly as `largest_region` does, so the two pickers agree on which end of a tie they keep. `regs` is read-only; an empty
+/// slice refuses `EmptyRegions` by name.
+pub fn smallest_region(regs: []const regions.Region) !regions.Region {
+    // invariant: there is no smallest of nothing -- a real pick needs at least one region.
+    if (regs.len == 0) return error.EmptyRegions;
+    // invariant: the slice stays within the named bucket ceiling's kin bound so an index never overflows u32.
+    assert(regs.len <= @as(usize, region_stats_max_buckets));
+
+    var best: regions.Region = regs[0];
+    var i: usize = 1;
+    while (i < regs.len) : (i += 1) {
+        // strict less-than keeps the earliest label on a tie: only a genuinely smaller area displaces the held pick.
+        if (regs[i].area < best.area) best = regs[i];
+    }
+
+    // invariant: a measured region always holds at least one pixel, so the winner does too.
+    assert(best.area >= 1);
+    // invariant: the pick is a true minimum -- no region carries a smaller area than the one returned.
+    assert(best.area <= regs[0].area);
+    return best;
+}
+
+/// Bucket every component's area into a fresh SIZE HISTOGRAM the caller owns: `counts[i]` is how many regions fall in bucket
+/// `i`. Bucket `i` covers the areas `i * bucket_width + 1 .. (i + 1) * bucket_width` (a region of area `a >= 1` lands in bucket
+/// `(a - 1) / bucket_width`), and the LAST bucket ABSORBS every area past its high edge, so no region ever falls outside the
+/// slice. The counts sum to `regs.len` exactly. An empty region slice, a zero bucket count, or a zero bucket width refuses by
+/// name having allocated nothing.
+pub fn size_histogram(allocator: std.mem.Allocator, regs: []const regions.Region, bucket_count: u32, bucket_width: u32) ![]u32 {
+    // invariant: a real distribution needs at least one region to place.
+    if (regs.len == 0) return error.EmptyRegions;
+    // invariant: a histogram needs at least one bucket, no wider than the named ceiling, each of a real positive width.
+    if (bucket_count == 0 or bucket_count > region_stats_max_buckets) return error.BadBucketing;
+    if (bucket_width == 0) return error.BadBucketing;
+
+    const counts = try allocator.alloc(u32, @as(usize, bucket_count));
+    var b: usize = 0;
+    while (b < counts.len) : (b += 1) counts[b] = 0;
+
+    const last: u32 = bucket_count - 1;
+    var i: usize = 0;
+    while (i < regs.len) : (i += 1) {
+        const area = regs[i].area;
+        // invariant: a measured region holds at least one pixel, so (area - 1) never underflows.
+        assert(area >= 1);
+        var slot: u32 = (area - 1) / bucket_width;
+        // the last bucket absorbs every area past its high edge, so a big blob is counted, never dropped out of range.
+        if (slot > last) slot = last;
+        // invariant: the chosen bucket indexes inside the counts slice.
+        assert(slot < bucket_count);
+        counts[@as(usize, slot)] += 1;
+    }
+
+    // invariant: every region landed in exactly one bucket, so the counts sum to the region count.
+    var total: u64 = 0;
+    b = 0;
+    while (b < counts.len) : (b += 1) total += @as(u64, counts[b]);
+    assert(total == @as(u64, @intCast(regs.len)));
+    return counts;
+}
+
+// --- selftest: the largest/smallest picks, the tie tiebreak, the histogram buckets and its tail-absorb, refusals ------------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y) -- a small builder the fixtures share.
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) {
+            const di = (@as(usize, yy) * @as(usize, img.width) + @as(usize, xx)) * 4;
+            img.pixels[di] = 255;
+            img.pixels[di + 1] = 255;
+            img.pixels[di + 2] = 255;
+            img.pixels[di + 3] = 255;
+        }
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // A scene of four components of DISTINCT sizes, each an 8-connected block with a clear gap from the rest, laid so raster
+    // order (first-appearing pixel) names them 1..4: a 4x4 block (area 16) at the top-left, a 3x3 block (area 9) to its right,
+    // a two-pixel bar (area 2) below the first, and a lone speck (area 1) below the second. The four areas {16, 9, 2, 1} make
+    // the largest and smallest unambiguous and the histogram buckets decisive.
+    var scene = try make_canvas(garden, 12, 8, 0);
+    set_block(&scene, 0, 0, 4, 4); // area 16, first pixel (0,0) -> label 1
+    set_block(&scene, 7, 0, 3, 3); // area 9,  first pixel (0,7) -> label 2
+    set_block(&scene, 0, 6, 2, 1); // area 2,  first pixel (6,0) -> label 3
+    set_block(&scene, 7, 6, 1, 1); // area 1,  first pixel (6,7) -> label 4
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 4) return error.SceneNotFourComponents;
+
+    const regs = try regions.measure_regions(garden, &map);
+    if (regs.len != 4) return error.RegionCountWrong;
+    // confirm the raster-ordered areas are exactly what the picks and buckets below assume
+    if (regs[0].area != 16 or regs[1].area != 9 or regs[2].area != 2 or regs[3].area != 1) return error.SceneAreasWrong;
+
+    // --- the LARGEST crux: the 4x4 block wins by area, and it is label one -------------------------------------------
+    const big = try largest_region(regs);
+    if (big.area != 16) return error.LargestAreaWrong;
+    if (big.label != 1) return error.LargestLabelWrong;
+
+    // --- the SMALLEST crux: the lone speck wins by area, and it is label four ----------------------------------------
+    const small = try smallest_region(regs);
+    if (small.area != 1) return error.SmallestAreaWrong;
+    if (small.label != 4) return error.SmallestLabelWrong;
+
+    // --- the HISTOGRAM crux: four buckets three wide place the areas {16, 9, 2, 1} at slots {clamp->3, 2, 0, 0} ------
+    //     bucket 0 = areas 1..3, bucket 1 = 4..6, bucket 2 = 7..9, bucket 3 = 10.. (the tail-absorb) -----------------
+    const hist = try size_histogram(garden, regs, 4, 3);
+    if (hist.len != 4) return error.HistogramLenWrong;
+    if (hist[0] != 2) return error.HistBucketZeroWrong; // areas 2 and 1 both land in bucket 0
+    if (hist[1] != 0) return error.HistBucketOneWrong; // no area in 4..6
+    if (hist[2] != 1) return error.HistBucketTwoWrong; // area 9 lands in bucket 2 (7..9)
+    if (hist[3] != 1) return error.HistBucketThreeWrong; // area 16 is past 12 so the LAST bucket absorbs it
+    // the counts sum to the region count -- every region placed exactly once
+    if (hist[0] + hist[1] + hist[2] + hist[3] != 4) return error.HistSumWrong;
+
+    // --- the TAIL-ABSORB crux, isolated: one bucket holds EVERY area, so a small histogram never drops a big blob ----
+    const one_bucket = try size_histogram(garden, regs, 1, 3);
+    if (one_bucket.len != 1 or one_bucket[0] != 4) return error.TailAbsorbWrong;
+
+    // --- the TIE crux: two equal-area specks -- both pickers keep the EARLIEST label (label one) ---------------------
+    var pair = try make_canvas(garden, 6, 3, 0);
+    set_block(&pair, 0, 1, 1, 1); // speck A, first pixel (1,0) -> label 1
+    set_block(&pair, 4, 1, 1, 1); // speck B, first pixel (1,4) -> label 2, same area 1
+    const pmap = try label.label_components(garden, &pair);
+    if (pmap.count != 2) return error.PairNotTwoComponents;
+    const pregs = try regions.measure_regions(garden, &pmap);
+    if (pregs[0].area != pregs[1].area) return error.PairAreasDiffer; // both area 1, a true tie
+    const ptie_big = try largest_region(pregs);
+    const ptie_small = try smallest_region(pregs);
+    if (ptie_big.label != 1) return error.TieLargestNotEarliest; // the earliest label wins the tie
+    if (ptie_small.label != 1) return error.TieSmallestNotEarliest; // and the smallest picker agrees
+
+    // --- refusals by name, having allocated nothing -----------------------------------------------------------------
+    const empty: []const regions.Region = &[_]regions.Region{};
+    if (largest_region(empty)) |_| return error.EmptyNotRefused else |err| {
+        if (err != error.EmptyRegions) return error.WrongEmptyError;
+    }
+    if (smallest_region(empty)) |_| return error.EmptyNotRefused else |err| {
+        if (err != error.EmptyRegions) return error.WrongEmptyError;
+    }
+    if (size_histogram(garden, empty, 4, 3)) |_| return error.EmptyHistNotRefused else |err| {
+        if (err != error.EmptyRegions) return error.WrongEmptyError;
+    }
+    if (size_histogram(garden, regs, 0, 3)) |_| return error.ZeroBucketsNotRefused else |err| {
+        if (err != error.BadBucketing) return error.WrongBucketingError;
+    }
+    if (size_histogram(garden, regs, 4, 0)) |_| return error.ZeroWidthNotRefused else |err| {
+        if (err != error.BadBucketing) return error.WrongBucketingError;
+    }
+
+    // --- determinism: the same slice histograms to the same counts --------------------------------------------------
+    const a = try size_histogram(garden, regs, 4, 3);
+    const b = try size_histogram(garden, regs, 4, 3);
+    var i: usize = 0;
+    while (i < a.len) : (i += 1) {
+        if (a[i] != b[i]) return error.HistogramNotDeterministic;
+    }
+
+    print("GREEN image-region-stats: read a labeling's SIZE STRUCTURE over a slice of measured regions -- four components of areas 16, 9, 2, 1 give largest_region the 4x4 block (area 16, label one) and smallest_region the lone speck (area 1, label four); size_histogram with four buckets three wide places the areas at slots clamp-to-3, 2, 0, 0 so the counts read 2, 0, 1, 1 (bucket 0 holds areas two and one, bucket 2 holds area nine, and the LAST bucket absorbs area sixteen past its edge), the counts summing to the region count; a one-bucket histogram absorbs every area into slot zero (no big blob dropped); two equal-area specks make a true tie both pickers break to the earliest label; an empty region slice refuses EmptyRegions, a zero bucket count and a zero bucket width refuse BadBucketing, each having allocated nothing; the same slice histograms deterministically\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: region_stats selftest\n", .{});
+    return 1;
+}
