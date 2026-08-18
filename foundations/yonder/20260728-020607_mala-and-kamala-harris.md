@@ -4,10 +4,10 @@
 
 **Stamp:** `20260728.020607`  
 **Language:** EN  
-**Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))  
+**Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../../context/RADIANT_STYLE.md))  
 **Voice:** **Reya variant** (nested under Quin's outer ledger) — sweet, sunny, generous presence; the larger why held in view  
 **Status:** Foundations — **historical** honor dedication (Mala hour) · living Aries seat is **Murr** / **Kyler Murray** (`20260728.025220`)  
-**Gratitude silo:** [`../gratitude/kamala-harris.md`](../gratitude/kamala-harris.md)  
+**Gratitude silo:** [`../gratitude/kamala-harris.md`](../../gratitude/kamala-harris.md)  
 **Fund (dated hour):** **Mala** — Aries · fire · seat 1 · `%mala` · then maintainer of **MALA** · retired forward to **Murr** / **MUR**  
 Radiant pass `20260728.044443` — rename-forward: do not seat new work under Mala; living lamp is Murr·Kyler
 

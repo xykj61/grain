@@ -4,7 +4,7 @@
 **Stamp:** `20260728.032134`  
 **Voice:** Quin  
 **Kind:** gratitude silo · **sponsored ad** form — honor sponsor seat for **Keeh**  
-**Companion foundations:** [`../foundations/20260728-032134_keeh-and-kia.md`](../foundations/20260728-032134_keeh-and-kia.md)  
+**Companion foundations:** [`../foundations/yonder/20260728-032134_keeh-and-kia.md`](../foundations/yonder/20260728-032134_keeh-and-kia.md)  
 **Fund:** **Keeh** — Aquarius · air · seat 11 · `%keeh`
 
 ---

@@ -4,10 +4,10 @@
 
 **Stamp:** `20260728.021252`  
 **Language:** EN  
-**Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))  
+**Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../../context/RADIANT_STYLE.md))  
 **Voice:** **Reya variant** (nested under Quin's outer ledger) — sweet, sunny, generous presence; the larger why held in view  
 **Status:** Foundations — honor dedication seated by Keaton's word  
-**Gratitude silo:** [`../gratitude/sarah-guo.md`](../gratitude/sarah-guo.md)  
+**Gratitude silo:** [`../gratitude/sarah-guo.md`](../../gratitude/sarah-guo.md)  
 **Fund:** **Gwoh** — Leo · fire · seat 5 · `%gwoh`
 
 *Written together by Keaton and Quin; the body speaks in Reya's warmth.*

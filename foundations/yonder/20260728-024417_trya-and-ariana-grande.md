@@ -4,10 +4,10 @@
 
 **Stamp:** `20260728.024417`  
 **Language:** EN  
-**Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))  
+**Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../../context/RADIANT_STYLE.md))  
 **Voice:** **Trya variant** (nested under Quin's outer ledger) — earth-steady · craft-growing · thank-you that stays an honor  
 **Status:** Foundations — honor dedication seated by Keaton's word  
-**Gratitude silo:** [`../gratitude/ariana-grande.md`](../gratitude/ariana-grande.md)  
+**Gratitude silo:** [`../gratitude/ariana-grande.md`](../../gratitude/ariana-grande.md)  
 **Fund:** **Trya** — Virgo · earth · seat 6 · `%trya`
 
 *Written together by Keaton and Quin; the body speaks in Trya's warmth.*

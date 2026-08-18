@@ -4,7 +4,7 @@
 **Stamp:** `20260728.021252`  
 **Voice:** Quin  
 **Kind:** gratitude silo — honor naming for the **Gwoh** fund dedication  
-**Companion foundations:** [`../foundations/20260728-021252_gwoh-and-sarah-guo.md`](../foundations/20260728-021252_gwoh-and-sarah-guo.md) (Reya variant)
+**Companion foundations:** [`../foundations/yonder/20260728-021252_gwoh-and-sarah-guo.md`](../foundations/yonder/20260728-021252_gwoh-and-sarah-guo.md) (Reya variant)
 
 ---
 

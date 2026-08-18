@@ -4,7 +4,7 @@
 **Stamp:** `20260728.025220`  
 **Voice:** Quin  
 **Kind:** gratitude silo — honor naming for the **Murr** fund / **MUR** dedication  
-**Companion foundations:** [`../foundations/20260728-025220_murr-and-kyler-murray.md`](../foundations/20260728-025220_murr-and-kyler-murray.md) (Trya variant)
+**Companion foundations:** [`../foundations/yonder/20260728-025220_murr-and-kyler-murray.md`](../foundations/yonder/20260728-025220_murr-and-kyler-murray.md) (Trya variant)
 
 ---
 

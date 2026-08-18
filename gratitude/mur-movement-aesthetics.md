@@ -4,7 +4,7 @@
 **Stamp:** `20260728.025220`  
 **Voice:** Quin · nested Trya  
 **Kind:** gratitude silo — analogy teachers for the **MUR** season's poetics  
-**Companion foundations:** [`../foundations/20260728-025220_murr-and-kyler-murray.md`](../foundations/20260728-025220_murr-and-kyler-murray.md)
+**Companion foundations:** [`../foundations/yonder/20260728-025220_murr-and-kyler-murray.md`](../foundations/yonder/20260728-025220_murr-and-kyler-murray.md)
 
 ---
 
