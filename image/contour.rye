@@ -1,0 +1,413 @@
+//! image/contour.rye -- trace a LABELED COMPONENT's OUTER BOUNDARY as an ORDERED clockwise walk of pixel coordinates
+//! (Season G, the ordered-outline floor a perimeter, a chain code, a corner detector, and a polygon simplifier descend from,
+//! the boundary companion of image/regions.rye's area and box and image/centroid.rye's center).
+//!
+//! Season G (Open Media Primitives) -- every reader over a labeling so far returns an UNORDERED reduction: image/regions.rye
+//! reads a component's AREA and BOUNDING BOX, image/centroid.rye its CENTER, image/moments.rye its LEAN, image/hu_moments.rye
+//! its invariant FINGERPRINT. None of them hands back the one fact a surface needs the moment it wants to DRAW or MEASURE a
+//! shape's outline: the ORDERED sequence of boundary pixels, walked around the component in order so consecutive points are
+//! neighbors and the last closes back to the first. That ordered ring is what a perimeter length, a Freeman chain code, a
+//! corner finder, and a Douglas-Peucker polygon all read from -- and it is a genuinely different fact from every reduction
+//! above, because it carries ADJACENCY and ORDER, not just a count or a mean.
+//!
+//! The algorithm is MOORE-NEIGHBOR boundary tracing (the classic radial sweep). Start at the component's topmost-then-leftmost
+//! pixel -- an extreme point whose west neighbor is never the same label, so the trace can begin with a known backtrack. From
+//! each boundary pixel, sweep the eight neighbors CLOCKWISE beginning just past the cell we backed in from; the first same-label
+//! neighbor is the next boundary pixel, and the cell we would step back to becomes the new backtrack. Walk until the sweep
+//! returns to the start pixel. Because the start is an extreme point, the simple return-to-start criterion traces the whole
+//! outer ring exactly once, clockwise; a hard step ceiling stands as a guaranteed terminator regardless of shape.
+//!
+//! What the outer contour reads is the OUTLINE, a fact distinct from the fill: a solid block and the same block with its center
+//! carved to a hole share the SAME outer contour (identical points, identical order), though image/regions.rye reads their
+//! areas as different -- the outer boundary is blind to an interior hole exactly as a centroid is a different fact from a box
+//! center. The interior pixels a contour encloses are never on it; the ring grows as the outline, not the area.
+//!
+//! Compose not braid. This rung OWNS only the boundary walk (the clockwise neighbor sweep, the backtrack, the stop) and the
+//! perimeter it counts -- no gather, no blend, no codec, no color in the trace itself. image/label.rye owns the LabelMap and its
+//! dense raster-ordered labels; a caller labels once and traces any component it names over the map it already holds. The one
+//! render, `paint_contour`, paints a traced ring white on black into a fresh Pixmap the open QOI codec round-trips byte-for-byte
+//! -- the render borrows image/qoi.rye's buffer and nothing more.
+//!
+//! Everything is bounded before a byte is allocated: a labeling holds at most one pixel per pixel, so a boundary walk visits at
+//! most the pixel count of distinct points, and the point slice is sized to that ceiling; a hard step count guards the walk by
+//! name (`BoundaryTooLong`) so a malformed input can never loop forever. An empty source refuses `EmptySource` by name and a
+//! label outside 1..count refuses `BadLabel` by name -- all-or-nothing, never a half-traced ring. No network, no key, no funds
+//! -- the outline a surface names the day it wants to draw a shape's edge, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/contour.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const label = @import("label.rye");
+
+pub const contour_version = "20260818.170014";
+
+pub const ContourError = error{
+    EmptySource,
+    BadLabel,
+    BoundaryTooLong,
+};
+
+/// One pixel coordinate on a traced boundary -- always inside the image on both axes.
+pub const Point = struct {
+    x: u32 = 0,
+    y: u32 = 0,
+};
+
+/// A traced outer boundary of one labeled component: `label` is the component's dense label (1..count), `points` is the ordered
+/// clockwise ring of boundary pixels starting at the component's topmost-then-leftmost pixel. Consecutive points are 8-adjacent,
+/// and the last point is 8-adjacent to the first (a closed loop). The caller owns `points`.
+pub const Contour = struct {
+    label: u32 = 0,
+    points: []Point = &[_]Point{},
+
+    /// The perimeter of the boundary -- the number of distinct pixels on the ring. A different fact from the enclosed area.
+    pub fn perimeter(self: *const Contour) u32 {
+        // invariant: a real contour has at least its own start pixel.
+        assert(self.points.len >= 1);
+        // invariant: a boundary never names more points than the image module's pixel ceiling holds.
+        assert(self.points.len <= label.label_max_pixels);
+        return @intCast(self.points.len);
+    }
+};
+
+/// The eight neighbors in CLOCKWISE order (screen coordinates, y downward): E, SE, S, SW, W, NW, N, NE. The trace sweeps this
+/// ring beginning just past the backtrack cell, so the first same-label neighbor it meets is the next boundary pixel.
+const step_dx = [8]i32{ 1, 1, 0, -1, -1, -1, 0, 1 };
+const step_dy = [8]i32{ 0, 1, 1, 1, 0, -1, -1, -1 };
+
+/// The direction pointing the opposite way -- half a turn around the eight-neighbor ring. Used to set the backtrack of a newly
+/// found boundary pixel: the cell we stepped from lies opposite the direction we stepped in.
+fn opposite(d: u32) u32 {
+    // invariant: a direction indexes the eight-neighbor ring.
+    assert(d < 8);
+    return (d + 4) % 8;
+}
+
+/// True when the neighbor of `(x, y)` at ring offset `(dx, dy)` carries `want` in the labeling. A neighbor off any edge is not
+/// the label -- never a phantom -- so a component at the image border traces only its real neighbors.
+fn neighbor_is(map: *const label.LabelMap, x: u32, y: u32, dx: i32, dy: i32, want: u32) bool {
+    const nx: i64 = @as(i64, x) + @as(i64, dx);
+    const ny: i64 = @as(i64, y) + @as(i64, dy);
+    // invariant: a neighbor off any edge is background, so the ring never reads outside the buffer.
+    if (nx < 0 or ny < 0) return false;
+    if (nx >= @as(i64, map.width) or ny >= @as(i64, map.height)) return false;
+    return map.labels[@as(usize, @intCast(ny)) * @as(usize, map.width) + @as(usize, @intCast(nx))] == want;
+}
+
+/// Sweep the eight neighbors of `(x, y)` CLOCKWISE beginning at direction `(back + 1) % 8`, returning the ring index of the
+/// first neighbor carrying `want`. A boundary pixel of a component with two or more pixels always has such a neighbor (the
+/// previous pixel on the ring), so the caller relies on a hit; 8 means none was found (a lone pixel handled before the walk).
+fn sweep_next(map: *const label.LabelMap, x: u32, y: u32, back: u32, want: u32) u32 {
+    // invariant: the backtrack indexes the eight-neighbor ring.
+    assert(back < 8);
+    var k: u32 = 1;
+    while (k <= 8) : (k += 1) {
+        const d: u32 = (back + k) % 8;
+        if (neighbor_is(map, x, y, step_dx[d], step_dy[d], want)) return d;
+    }
+    return 8; // no same-label neighbor -- an isolated pixel
+}
+
+/// Trace the OUTER boundary of the component labeled `want` in `map` into a fresh Contour the caller owns. The ring is ordered
+/// clockwise from the component's topmost-then-leftmost pixel; a lone pixel traces to a single-point ring. `map` is read-only.
+pub fn trace_contour(allocator: std.mem.Allocator, map: *const label.LabelMap, want: u32) !Contour {
+    // invariant: a real labeling has extent on both axes; a zero-size map has nothing to trace.
+    if (map.width == 0 or map.height == 0) return error.EmptySource;
+    // invariant: only a dense label in 1..count names a real component.
+    if (want == 0 or want > map.count) return error.BadLabel;
+
+    const w: u32 = map.width;
+    const h: u32 = map.height;
+    const n: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the label buffer holds exactly one label per pixel.
+    assert(map.labels.len == @as(usize, @intCast(n)));
+    // invariant: a boundary walk visits at most one distinct point per pixel, so the pixel count is a true ceiling.
+    assert(n <= @as(u64, label.label_max_pixels));
+    const max_points: u32 = @intCast(n);
+
+    // find the start: the topmost, then leftmost pixel carrying `want` -- an extreme point whose west neighbor is not `want`.
+    var start_x: u32 = 0;
+    var start_y: u32 = 0;
+    var found_start = false;
+    var sy: u32 = 0;
+    outer: while (sy < h) : (sy += 1) {
+        var sx: u32 = 0;
+        while (sx < w) : (sx += 1) {
+            if (map.labels[@as(usize, sy) * @as(usize, w) + @as(usize, sx)] == want) {
+                start_x = sx;
+                start_y = sy;
+                found_start = true;
+                break :outer;
+            }
+        }
+    }
+    // invariant: a label in 1..count is used by a dense labeling, so its start pixel exists.
+    assert(found_start);
+
+    const points = try allocator.alloc(Point, @as(usize, max_points));
+    points[0] = Point{ .x = start_x, .y = start_y };
+    var len: u32 = 1;
+
+    // seed the walk: the west of an extreme start is never `want`, so W (index 4) is a valid backtrack. Sweep for the first
+    // same-label neighbor; if there is none, the component is a single isolated pixel and its ring is the start alone.
+    const first_d = sweep_next(map, start_x, start_y, 4, want);
+    if (first_d == 8) {
+        return Contour{ .label = want, .points = points[0..1] };
+    }
+
+    // step onto the first ring neighbor; its backtrack points back at the start.
+    var px: u32 = @intCast(@as(i64, start_x) + @as(i64, step_dx[first_d]));
+    var py: u32 = @intCast(@as(i64, start_y) + @as(i64, step_dy[first_d]));
+    var back: u32 = opposite(first_d);
+    points[len] = Point{ .x = px, .y = py };
+    len += 1;
+
+    // walk clockwise until the sweep returns to the start pixel. The start is an extreme point, so it is reached exactly once
+    // to close the ring; the step ceiling stands as a guaranteed terminator no matter the shape.
+    var steps: u32 = 0;
+    while (true) {
+        const d = sweep_next(map, px, py, back, want);
+        // invariant: a boundary pixel of a multi-pixel component always has the previous ring pixel as a same-label neighbor.
+        assert(d < 8);
+        const nx: u32 = @intCast(@as(i64, px) + @as(i64, step_dx[d]));
+        const ny: u32 = @intCast(@as(i64, py) + @as(i64, step_dy[d]));
+        if (nx == start_x and ny == start_y) break; // returned to the start -- the ring is closed
+        // invariant: the ring never records more distinct points than the pixel ceiling; the guard names the impossible.
+        if (len >= max_points) return error.BoundaryTooLong;
+        points[len] = Point{ .x = nx, .y = ny };
+        len += 1;
+        back = opposite(d);
+        px = nx;
+        py = ny;
+        steps += 1;
+        // invariant: a hard step ceiling guarantees termination even on a malformed labeling (four sweeps per pixel is ample).
+        if (steps > max_points *| 4) return error.BoundaryTooLong;
+    }
+
+    // invariant: the traced ring holds at least the start pixel and never exceeds the pixel ceiling.
+    assert(len >= 1);
+    assert(len <= max_points);
+    return Contour{ .label = want, .points = points[0..len] };
+}
+
+/// Paint a traced contour into a fresh RGBA Pixmap the caller owns: background BLACK, every ring pixel opaque WHITE. This is the
+/// render that makes an outline a real image -- the open QOI codec round-trips it byte-for-byte. `dst_w` by `dst_h` sizes the
+/// canvas; a ring pixel outside it refuses `BadLabel` never a silent clip (the contour must fit the canvas it is drawn on).
+pub fn paint_contour(allocator: std.mem.Allocator, c: *const Contour, dst_w: u32, dst_h: u32) !qoi.Pixmap {
+    // invariant: a real canvas has extent within the image module's named pixel ceiling.
+    if (dst_w == 0 or dst_h == 0) return error.EmptySource;
+    const n: u64 = @as(u64, dst_w) * @as(u64, dst_h);
+    assert(n <= @as(u64, qoi.qoi_max_pixels));
+    // invariant: a contour to paint has at least its start pixel.
+    assert(c.points.len >= 1);
+
+    const out = try allocator.alloc(u8, @as(usize, @intCast(n)) * 4);
+    var i: usize = 0;
+    while (i < out.len) : (i += 4) {
+        out[i] = 0;
+        out[i + 1] = 0;
+        out[i + 2] = 0;
+        out[i + 3] = 255; // opaque black ground
+    }
+    var k: usize = 0;
+    while (k < c.points.len) : (k += 1) {
+        const p = c.points[k];
+        // invariant: a ring pixel must land inside the canvas it is painted on -- no silent clip of the outline.
+        if (p.x >= dst_w or p.y >= dst_h) return error.BadLabel;
+        const di = (@as(usize, p.y) * @as(usize, dst_w) + @as(usize, p.x)) * 4;
+        out[di] = 255;
+        out[di + 1] = 255;
+        out[di + 2] = 255;
+        out[di + 3] = 255; // opaque white ring pixel
+    }
+    return qoi.Pixmap{ .width = dst_w, .height = dst_h, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+// --- selftest: the ordered-ring crux, outline-not-fill, perimeter, order/closure, degenerate cases, refusals, round-trip -----
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y) -- the small writer the fixtures share.
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// The absolute difference of two coordinates -- the axis span between two ring points.
+fn adiff(a: u32, b: u32) u32 {
+    return if (a >= b) a - b else b - a;
+}
+
+/// True when two points are 8-ADJACENT (a king move apart, and not the same pixel) -- the adjacency an ordered ring keeps.
+fn adjacent8(a: Point, b: Point) bool {
+    const dx = adiff(a.x, b.x);
+    const dy = adiff(a.y, b.y);
+    return dx <= 1 and dy <= 1 and (dx + dy) >= 1;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- the ORDERED-RING crux: a solid 5x5 block traces to its 16-pixel OUTER RING, the 9 interior pixels never on it, the
+    //     ring starting at the topmost-then-leftmost pixel and closing clockwise -----------------------------------------
+    var big = try make_canvas(garden, 7, 7, 0);
+    set_block(&big, 1, 1, 5, 5); // a 5x5 block at (1,1)..(5,5): area 25, ring 16, interior 9
+    const bmap = try label.label_components(garden, &big);
+    if (bmap.count != 1) return error.BigNotOneComponent;
+    const bc = try trace_contour(garden, &bmap, 1);
+    if (bc.perimeter() != 16) return error.BigPerimeterWrong; // the outer ring of a 5x5 block is 16 pixels
+    if (bc.points[0].x != 1 or bc.points[0].y != 1) return error.BigStartWrong; // topmost-then-leftmost pixel
+    // the interior pixel (3,3) is enclosed by the ring, never a point ON it
+    var kk: usize = 0;
+    while (kk < bc.points.len) : (kk += 1) {
+        if (bc.points[kk].x == 3 and bc.points[kk].y == 3) return error.InteriorPixelOnContour;
+    }
+
+    // --- the ORDER/CLOSURE crux (what no earlier reader gives): consecutive ring points are 8-ADJACENT and the last closes
+    //     back to the first -- a walkable closed loop, not an unordered set ---------------------------------------------
+    kk = 1;
+    while (kk < bc.points.len) : (kk += 1) {
+        if (!adjacent8(bc.points[kk - 1], bc.points[kk])) return error.RingNotOrdered;
+    }
+    if (!adjacent8(bc.points[bc.points.len - 1], bc.points[0])) return error.RingNotClosed;
+
+    // --- the OUTLINE-NOT-FILL crux (the decisive one): a solid 3x3 block and the SAME block with its center carved to a HOLE
+    //     read as DIFFERENT AREAS (9 vs 8, what regions sees) yet share the IDENTICAL OUTER CONTOUR -- the outer boundary is
+    //     blind to an interior hole, a genuinely different fact from the fill --------------------------------------------
+    var solid = try make_canvas(garden, 5, 5, 0);
+    set_block(&solid, 1, 1, 3, 3); // solid 3x3: area 9
+    const smap = try label.label_components(garden, &solid);
+    const sc = try trace_contour(garden, &smap, 1);
+
+    var ring = try make_canvas(garden, 5, 5, 0);
+    set_block(&ring, 1, 1, 3, 3);
+    // carve the center to background -- a hollow 3x3 ring: area 8, a real interior hole
+    ring.pixels[(@as(usize, 2) * @as(usize, 5) + @as(usize, 2)) * 4] = 0;
+    ring.pixels[(@as(usize, 2) * @as(usize, 5) + @as(usize, 2)) * 4 + 1] = 0;
+    ring.pixels[(@as(usize, 2) * @as(usize, 5) + @as(usize, 2)) * 4 + 2] = 0;
+    const rmap = try label.label_components(garden, &ring);
+    const rc = try trace_contour(garden, &rmap, 1);
+
+    if (sc.perimeter() != 8) return error.SolidPerimeterWrong; // a 3x3 block's outer ring is 8 pixels
+    if (rc.perimeter() != sc.perimeter()) return error.HoleChangedOuterContour;
+    if (rc.points.len != sc.points.len) return error.HoleChangedRingLength;
+    kk = 0;
+    while (kk < sc.points.len) : (kk += 1) {
+        // the two outer contours are identical point-for-point and order-for-order, though their areas differ (9 vs 8)
+        if (sc.points[kk].x != rc.points[kk].x or sc.points[kk].y != rc.points[kk].y) return error.OuterContoursDiffer;
+    }
+
+    // --- the PERIMETER-COMPACTNESS crux (equal area, different outline): a compact 4x4 block and a spread 2x8 block both hold
+    //     AREA 16, yet their outer rings differ -- the compact block's outline is 12 (a 2x2 interior it encloses), the spread
+    //     block's is all 16 (a 2-tall shape has no interior), so the outline length reads a COMPACTNESS the area cannot ------
+    var square = try make_canvas(garden, 6, 6, 0);
+    set_block(&square, 1, 1, 4, 4); // 4x4 block: area 16, outer ring 12 (encloses a 2x2 interior)
+    const qmap = try label.label_components(garden, &square);
+    const qc = try trace_contour(garden, &qmap, 1);
+    if (qc.perimeter() != 12) return error.SquarePerimeterWrong;
+
+    var strip = try make_canvas(garden, 10, 4, 0);
+    set_block(&strip, 1, 1, 8, 2); // a 2-tall 8-wide block: area 16, every pixel on the ring so the outline is 16
+    const lmap = try label.label_components(garden, &strip);
+    const lc = try trace_contour(garden, &lmap, 1);
+    if (lc.perimeter() != 16) return error.StripPerimeterWrong; // equal area (16), longer outline (16 > 12) -- less compact
+
+    // --- the DEGENERATE cases: a lone dot traces to a single-point ring; a two-pixel domino to a two-point ring ---------
+    var dot = try make_canvas(garden, 3, 3, 0);
+    set_dot(&dot, 1, 1);
+    const dmap = try label.label_components(garden, &dot);
+    const dc = try trace_contour(garden, &dmap, 1);
+    if (dc.perimeter() != 1) return error.DotPerimeterWrong;
+    if (dc.points[0].x != 1 or dc.points[0].y != 1) return error.DotPointWrong;
+
+    var domino = try make_canvas(garden, 4, 3, 0);
+    set_dot(&domino, 1, 1);
+    set_dot(&domino, 2, 1);
+    const domap = try label.label_components(garden, &domino);
+    const doc = try trace_contour(garden, &domap, 1);
+    if (doc.perimeter() != 2) return error.DominoPerimeterWrong;
+    if (!adjacent8(doc.points[0], doc.points[1])) return error.DominoNotAdjacent;
+
+    // --- PAINT_CONTOUR renders a ring into a real image: black ground, white ring, and it round-trips through QOI byte-for-
+    //     byte; a ring pixel is white and an interior/background pixel is black ----------------------------------------
+    const painted = try paint_contour(garden, &bc, 7, 7);
+    const ring_i = (@as(usize, 1) * @as(usize, 7) + @as(usize, 1)) * 4; // ring pixel (1,1) -- white
+    if (painted.pixels[ring_i] != 255 or painted.pixels[ring_i + 1] != 255 or painted.pixels[ring_i + 2] != 255) return error.RingPixelNotWhite;
+    const inside_i = (@as(usize, 3) * @as(usize, 7) + @as(usize, 3)) * 4; // interior (3,3) -- black ground, not on the ring
+    if (painted.pixels[inside_i] != 0 or painted.pixels[inside_i + 1] != 0 or painted.pixels[inside_i + 2] != 0) return error.InteriorPixelPainted;
+    const cap = qoi.encoded_bound(painted.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&painted, dst);
+    const backimg = try qoi.decode(garden, dst[0..enc.len]);
+    if (!backimg.same_bytes(&painted)) return error.ContourDidNotRoundTrip;
+
+    // --- refusals by name, having allocated nothing ------------------------------------------------------------------
+    var empty_map = label.LabelMap{ .width = 0, .height = 0, .count = 0, .labels = &[_]u32{} };
+    if (trace_contour(garden, &empty_map, 1)) |_| return error.EmptyNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+    if (trace_contour(garden, &bmap, 0)) |_| return error.ZeroLabelNotRefused else |err| {
+        if (err != error.BadLabel) return error.WrongBadLabelError;
+    }
+    if (trace_contour(garden, &bmap, 2)) |_| return error.OverLabelNotRefused else |err| {
+        if (err != error.BadLabel) return error.WrongBadLabelError;
+    }
+
+    // --- determinism: the same labeling traces to the same ring -----------------------------------------------------
+    const a = try trace_contour(garden, &bmap, 1);
+    const b = try trace_contour(garden, &bmap, 1);
+    if (a.points.len != b.points.len) return error.PerimeterNotDeterministic;
+    var i: usize = 0;
+    while (i < a.points.len) : (i += 1) {
+        if (a.points[i].x != b.points[i].x or a.points[i].y != b.points[i].y) return error.RingNotDeterministic;
+    }
+
+    print("GREEN image-contour: trace a LABELED COMPONENT's OUTER BOUNDARY as an ORDERED clockwise ring of pixel coordinates by Moore-neighbor tracing over a LabelMap -- a solid 5x5 block traces to its 16-pixel outer ring (the 9 interior pixels never on it), the ring starting at the topmost-then-leftmost pixel and closing clockwise (consecutive points 8-adjacent, the last adjacent to the first -- a walkable closed loop no area, box, center, or moment gives); the OUTLINE crux -- a solid 3x3 block (area 9) and the same block carved to a hollow ring (area 8) share the IDENTICAL outer contour point-for-point, so the outer boundary is blind to an interior hole, a different fact from the fill; two components of EQUAL area 16 carry different outlines -- a compact 4x4 block reads perimeter 12 (a 2x2 interior it encloses) and a spread 2x8 block perimeter 16 (all boundary), so the outline length reads a compactness area cannot express; a lone dot traces to a single-point ring and a domino to a two-point ring; paint_contour renders a ring white on black that round-trips through the open QOI codec byte-for-byte; an empty source refuses EmptySource and a label outside 1..count refuses BadLabel, each having allocated nothing; the same labeling traces deterministically\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: contour selftest\n", .{});
+    return 1;
+}
