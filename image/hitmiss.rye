@@ -1,0 +1,316 @@
+//! image/hitmiss.rye -- the HIT-OR-MISS transform: mark every pixel where a FOREGROUND template fits the shape AND a
+//! BACKGROUND template fits the ground around it (Season G, the exact-configuration detector the general gather opens).
+//!
+//! Season G (Open Media Primitives) -- the natural sibling image/structure.rye named. The square morphology grows or
+//! shrinks a mask; the general structuring element reshapes it by any offset set. The hit-or-miss transform asks a sharper
+//! question: not "does the element fit the foreground" alone, but "does the foreground fit HERE and the background fit
+//! THERE" at once -- an exact local pattern match. It is the floor thinning, skeletonization, and corner / endpoint /
+//! junction detection all descend from, because each of those is a hit-or-miss with a particular pair of templates.
+//!
+//! The classic definition composes two erosions over the general gather this rung leans on: for a binary image A, a
+//! foreground template `fg`, and a DISJOINT background template `bg`,
+//!
+//!     hit_or_miss(A) = erode(A, fg)  AND  erode(complement(A), bg)
+//!
+//! A pixel lights only where every `fg` offset lands on FOREGROUND (the shape) and every `bg` offset lands on BACKGROUND
+//! (the ground) -- so an isolated point (fg = the center, bg = its eight neighbors) lights only a lone pixel with no
+//! neighbor, and a convex corner (fg = the corner and its two inward neighbors, bg = the three outward ones) lights only a
+//! true corner. When `fg` and `bg` share an offset no pixel can match (a cell cannot be both shape and ground), so the
+//! result is empty -- the disjointness law, proven on metal below.
+//!
+//! Compose not braid. This rung OWNS only two small things: the BINARIZE (a pixel is foreground when its red channel is at
+//! least 128, so a clean white-on-black mask reads exactly, and the plane pins alpha OPAQUE so the complement never turns a
+//! solid mask transparent) and the final AND (a per-channel min of the two fit planes). image/structure.rye OWNS the fit
+//! gather -- `erode_se` reads each template over the plane, clamping at the border exactly as the whole morphology family
+//! does; image/qoi.rye owns the RGBA buffers. No new gather, no blend, no codec, no color math. The output is a binary
+//! image: opaque WHITE where the pattern matches, opaque BLACK everywhere else, deterministic byte-for-byte.
+//!
+//! Each template is bounded by `structure_max_offsets` (the general element's own ceiling); an empty source, an empty
+//! foreground, an empty background, or an over-max template refuses BY NAME before any allocation -- all-or-nothing, never a
+//! half-marked image. No network, no key, no funds -- the endpoint, the corner, and the junction a surface detects the day
+//! it thins a mask to its skeleton, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/hitmiss.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const structure = @import("structure.rye");
+
+pub const hitmiss_version = "20260818.111500";
+
+/// The red-channel threshold that decides foreground: a pixel is FOREGROUND (shape) when its red byte is at least this,
+/// BACKGROUND (ground) below it. A clean white-on-black mask (255 vs 0) reads exactly; a mid-gray above 128 counts as
+/// shape, below it as ground, so the transform is defined on any image, not only a strict two-color mask.
+pub const hitmiss_on_threshold: u8 = 128;
+
+pub const HitMissError = error{
+    EmptySource,
+    EmptyForeground,
+    EmptyBackground,
+    ForegroundTooLarge,
+    BackgroundTooLarge,
+};
+
+/// True when the pixel at byte index `i` reads as foreground -- its red channel is at or above the on-threshold. The one
+/// place the binary meaning of a pixel is decided, shared by both planes.
+fn is_on(pixels: []const u8, i: usize) bool {
+    // invariant: the read stays inside the buffer.
+    assert(i < pixels.len);
+    return pixels[i] >= hitmiss_on_threshold;
+}
+
+/// Build a clean binary plane from `src`: opaque WHITE where a pixel is foreground, opaque BLACK where it is background,
+/// with `invert` flipping the two. Alpha is pinned to 255 in BOTH planes, so the background plane is the true set-complement
+/// of the foreground WITHOUT a translucent source turning a solid mask transparent -- the alpha-trap a raw RGBA complement
+/// would fall into. The plane's three color channels are equal, so `erode_se`'s per-channel min reads the same rank in each.
+fn binarize(garden: std.mem.Allocator, src: *const qoi.Pixmap, comptime invert: bool) !qoi.Pixmap {
+    // invariant: a real source has extent, so the plane has at least one pixel to set.
+    assert(src.width >= 1);
+    assert(src.height >= 1);
+    const n: usize = @as(usize, src.width) * @as(usize, src.height) * 4;
+    // invariant: the plane holds exactly one RGBA pixel per source pixel.
+    assert(src.pixels.len == n);
+    const plane = try garden.alloc(u8, n);
+    var i: usize = 0;
+    while (i < n) : (i += 4) {
+        const on = is_on(src.pixels, i);
+        // invert flips the sense so the background plane marks ground white; both planes stay opaque.
+        const lit: bool = if (invert) !on else on;
+        const v: u8 = if (lit) 255 else 0;
+        plane[i] = v;
+        plane[i + 1] = v;
+        plane[i + 2] = v;
+        plane[i + 3] = 255; // alpha pinned opaque -- the plane is a mask, not a translucent image
+    }
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = plane };
+}
+
+/// Guard the source and both templates BY NAME before any allocation, so a refusal shapes nothing. Returns the shared
+/// pixel-buffer length so the caller allocates the result once.
+fn guard(src: *const qoi.Pixmap, fg: structure.StructuringElement, bg: structure.StructuringElement) HitMissError!usize {
+    // invariant: a real source has extent on both axes; a zero-size source has nothing to match.
+    if (src.width == 0 or src.height == 0) return error.EmptySource;
+    // invariant: a hit-or-miss names at least one foreground cell -- an empty template matches vacuously, which is not a pattern.
+    if (fg.offsets.len == 0) return error.EmptyForeground;
+    // invariant: and at least one background cell, so the transform truly asks "shape here AND ground there."
+    if (bg.offsets.len == 0) return error.EmptyBackground;
+    // invariant: each template stays within the general element's named ceiling, so both erosions stay bounded.
+    if (fg.offsets.len > @as(usize, structure.structure_max_offsets)) return error.ForegroundTooLarge;
+    if (bg.offsets.len > @as(usize, structure.structure_max_offsets)) return error.BackgroundTooLarge;
+    return @as(usize, src.width) * @as(usize, src.height) * 4;
+}
+
+/// Mark every pixel where the foreground template `fg` fits the shape AND the background template `bg` fits the ground.
+/// Returns a fresh binary RGBA Pixmap the caller owns -- opaque WHITE at a match, opaque BLACK elsewhere; `src` is read-only.
+pub fn hit_or_miss(allocator: std.mem.Allocator, src: *const qoi.Pixmap, fg: structure.StructuringElement, bg: structure.StructuringElement) !qoi.Pixmap {
+    const n = try guard(src, fg, bg);
+    // invariant: the guard proved real extent, so the buffer length is a real positive pixel count.
+    assert(n >= 4);
+
+    const plane = try binarize(allocator, src, false); // white where the source is foreground
+    const anti = try binarize(allocator, src, true); // white where the source is background (the set-complement, opaque)
+
+    // erode_se OWNS the fit: hit lights where every fg offset lands on foreground, miss where every bg offset lands on ground.
+    const hit = try structure.erode_se(allocator, &plane, fg);
+    const miss = try structure.erode_se(allocator, &anti, bg);
+    // invariant: both fit planes match the source extent, so the AND below reads them in lockstep.
+    assert(hit.pixels.len == n);
+    assert(miss.pixels.len == n);
+
+    const out = try allocator.alloc(u8, n);
+    var i: usize = 0;
+    while (i < n) : (i += 1) {
+        // the AND is a per-channel min: a match survives only where BOTH fit planes are white; alpha stays 255 in both.
+        out[i] = @min(hit.pixels[i], miss.pixels[i]);
+    }
+    // invariant: the output is opaque -- both fit planes pinned alpha 255, so their min is 255 at every pixel.
+    assert(out[3] == 255);
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+// --- selftest: isolated-point detector, the disjointness law, alpha opacity, the threshold, round-trip, refusals --------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// Set one pixel's RGBA at (x, y) -- a small writer the pattern builders share.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+/// Build the eight-neighbor background template {(dx, dy) : -1<=dx<=1, -1<=dy<=1, not (0,0)} -- the ground an isolated
+/// point must sit alone within.
+fn eight_neighbors(garden: std.mem.Allocator) ![]structure.Offset {
+    const offs = try garden.alloc(structure.Offset, 8);
+    var idx: usize = 0;
+    var dy: i32 = -1;
+    while (dy <= 1) : (dy += 1) {
+        var dx: i32 = -1;
+        while (dx <= 1) : (dx += 1) {
+            if (dx == 0 and dy == 0) continue;
+            offs[idx] = structure.Offset{ .dx = dx, .dy = dy };
+            idx += 1;
+        }
+    }
+    // invariant: the sweep filled exactly the eight surrounding cells.
+    assert(idx == 8);
+    return offs;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    // the center-only foreground template {(0,0)} -- the shape an isolated-point detector wants is a single lit pixel
+    const center_offset = try garden.alloc(structure.Offset, 1);
+    center_offset[0] = structure.Offset{ .dx = 0, .dy = 0 };
+    const center = structure.StructuringElement{ .offsets = center_offset };
+    const neighbors = structure.StructuringElement{ .offsets = try eight_neighbors(garden) };
+
+    // --- the ISOLATED-POINT detector: a lone white dot lights; a dot inside a block does not (it has a white neighbor) ----
+    var field = try make_canvas(garden, 7, 7, black);
+    set_pixel(&field, 3, 3, white); // a truly isolated point, clear of the block's reach
+    // a 2x2 white block in the top-left corner whose pixels each have a white neighbor -- none is isolated, and none is a
+    // neighbor of the (3,3) dot, so the dot stays alone
+    set_pixel(&field, 0, 0, white);
+    set_pixel(&field, 1, 0, white);
+    set_pixel(&field, 0, 1, white);
+    set_pixel(&field, 1, 1, white);
+    const isolated = try hit_or_miss(garden, &field, center, neighbors);
+    // the lone dot matches: center on, all eight neighbors off
+    if (!pixel_at(&isolated, 3, 3).eql(white)) return error.IsolatedPointNotDetected;
+    // every block pixel fails the background fit (a white neighbor), so none lights
+    if (!pixel_at(&isolated, 0, 0).eql(black)) return error.BlockPixelFalselyDetected;
+    if (!pixel_at(&isolated, 1, 1).eql(black)) return error.BlockPixelFalselyDetected;
+    // a plain background pixel fails the foreground fit (its center is off)
+    if (!pixel_at(&isolated, 5, 5).eql(black)) return error.GroundPixelFalselyDetected;
+    // and the dot is the ONLY match in the whole field -- count the lit pixels
+    var lit: u32 = 0;
+    var yy: u32 = 0;
+    while (yy < 7) : (yy += 1) {
+        var xx: u32 = 0;
+        while (xx < 7) : (xx += 1) {
+            if (pixel_at(&isolated, xx, yy).eql(white)) lit += 1;
+        }
+    }
+    if (lit != 1) return error.IsolatedCountWrong;
+
+    // --- the DISJOINTNESS law: when fg and bg SHARE an offset, no pixel can be both shape and ground, so nothing lights ---
+    const shared_bg = try garden.alloc(structure.Offset, 1);
+    shared_bg[0] = structure.Offset{ .dx = 0, .dy = 0 }; // the same cell the foreground claims
+    const overlap = structure.StructuringElement{ .offsets = shared_bg };
+    const empty_match = try hit_or_miss(garden, &field, center, overlap);
+    var oy: u32 = 0;
+    while (oy < 7) : (oy += 1) {
+        var ox: u32 = 0;
+        while (ox < 7) : (ox += 1) {
+            if (!pixel_at(&empty_match, ox, oy).eql(black)) return error.OverlapTemplateMatched;
+        }
+    }
+
+    // --- a BACKGROUND cell genuinely requires GROUND: fg={center}, bg={one right-neighbor} on an all-white field matches
+    //     nothing, because every interior center is on yet its right neighbor is also on -----------------------------------
+    const right_bg = try garden.alloc(structure.Offset, 1);
+    right_bg[0] = structure.Offset{ .dx = 1, .dy = 0 };
+    const right = structure.StructuringElement{ .offsets = right_bg };
+    var solid = try make_canvas(garden, 5, 5, white);
+    const none = try hit_or_miss(garden, &solid, center, right);
+    if (!pixel_at(&none, 2, 2).eql(black)) return error.SolidFieldFalselyDetected;
+
+    // --- the output is always OPAQUE, even from a translucent source: the plane pins alpha, sidestepping the complement trap
+    var translucent = try make_canvas(garden, 7, 7, color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 40 });
+    set_pixel(&translucent, 3, 3, color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 30 }); // a faint isolated dot
+    const from_faint = try hit_or_miss(garden, &translucent, center, neighbors);
+    if (pixel_at(&from_faint, 3, 3).a != 255) return error.MatchNotOpaque;
+    if (pixel_at(&from_faint, 0, 0).a != 255) return error.GroundNotOpaque;
+    // the faint dot still matched -- foreground is decided by the red channel (255 >= 128), not by alpha
+    if (!pixel_at(&from_faint, 3, 3).eql(white)) return error.FaintDotNotDetected;
+
+    // --- the THRESHOLD: a mid-gray at/above 128 counts as shape, below it as ground -----------------------------------
+    var grays = try make_canvas(garden, 7, 7, black);
+    set_pixel(&grays, 3, 3, color.Rgba{ .r = 200, .g = 0, .b = 0, .a = 255 }); // red 200 -- foreground (>= 128)
+    set_pixel(&grays, 5, 1, color.Rgba{ .r = 100, .g = 0, .b = 0, .a = 255 }); // red 100 -- ground (< 128)
+    const graymatch = try hit_or_miss(garden, &grays, center, neighbors);
+    if (!pixel_at(&graymatch, 3, 3).eql(white)) return error.MidGrayNotForeground; // 200 read as an isolated shape point
+    if (!pixel_at(&graymatch, 5, 1).eql(black)) return error.DimGrayNotBackground; // 100 read as ground, never a shape point
+
+    // --- a matched image round-trips through the open QOI codec byte-for-byte -- a real image, not a private buffer -------
+    const cap = qoi.encoded_bound(isolated.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&isolated, dst);
+    const backimg = try qoi.decode(garden, dst[0..enc.len]);
+    if (!backimg.same_bytes(&isolated)) return error.HitMissDidNotRoundTrip;
+
+    // --- refusals by name, each having allocated nothing --------------------------------------------------------------
+    const empty_fg = structure.StructuringElement{ .offsets = &[_]structure.Offset{} };
+    if (hit_or_miss(garden, &field, empty_fg, neighbors)) |_| return error.EmptyForegroundNotRefused else |err| {
+        if (err != error.EmptyForeground) return error.WrongEmptyForegroundError;
+    }
+    const empty_bg = structure.StructuringElement{ .offsets = &[_]structure.Offset{} };
+    if (hit_or_miss(garden, &field, center, empty_bg)) |_| return error.EmptyBackgroundNotRefused else |err| {
+        if (err != error.EmptyBackground) return error.WrongEmptyBackgroundError;
+    }
+    const too_many = try garden.alloc(structure.Offset, @as(usize, structure.structure_max_offsets) + 1);
+    var ti: usize = 0;
+    while (ti < too_many.len) : (ti += 1) too_many[ti] = structure.Offset{ .dx = 0, .dy = 0 };
+    const oversize = structure.StructuringElement{ .offsets = too_many };
+    if (hit_or_miss(garden, &field, oversize, neighbors)) |_| return error.OversizeNotRefused else |err| {
+        if (err != error.ForegroundTooLarge) return error.WrongOversizeError;
+    }
+    var empty_src = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (hit_or_miss(garden, &empty_src, center, neighbors)) |_| return error.EmptySourceNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- determinism: the same match reaches the same pixels byte-for-byte ----------------------------------------------
+    const a = try hit_or_miss(garden, &field, center, neighbors);
+    const b = try hit_or_miss(garden, &field, center, neighbors);
+    if (!a.same_bytes(&b)) return error.HitMissNotDeterministic;
+
+    print("GREEN image-hitmiss: the HIT-OR-MISS transform marks every pixel where a FOREGROUND template fits the shape AND a DISJOINT BACKGROUND template fits the ground, composed as two erode_se fits intersected -- an isolated-point detector (fg the center, bg the eight neighbors) lights a lone white dot and NOTHING else in the field (a block pixel with a white neighbor and a plain ground pixel both stay black); when fg and bg share a cell the disjointness law leaves the whole result black (no pixel is both shape and ground); a background cell genuinely requires ground, so a solid field matches nothing; the output is always opaque white-on-black even from a translucent source (the plane pins alpha, sidestepping the complement trap); a mid-gray at or above 128 reads as shape and below it as ground; the result round-trips through the open QOI codec byte-for-byte; an empty foreground, an empty background, an over-max template, and an empty source refuse by name having allocated nothing; the same match is deterministic byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: hitmiss selftest\n", .{});
+    return 1;
+}

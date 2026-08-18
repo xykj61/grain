@@ -1,0 +1,40 @@
+# tools/hitmiss_witness.rish -- the hit-or-miss transform proves itself on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the exact-configuration detector the general structuring element opens. Where
+# image/structure.rye reshapes a mask by any offset set, the hit-or-miss transform asks a sharper question: does the
+# FOREGROUND template fit the shape HERE and the BACKGROUND template fit the ground THERE at once? It is the floor thinning,
+# skeletonization, and corner / endpoint / junction detection descend from -- each is a hit-or-miss with a chosen pair of
+# templates.
+#
+# The crux this witness proves is the classic composition run on metal: hit_or_miss = erode(A, fg) AND erode(complement(A),
+# bg), leaning on structure.erode_se for both fits. An isolated-point detector (fg the center, bg the eight neighbors)
+# lights a lone white dot and nothing else; when fg and bg share a cell the disjointness law leaves the result empty (no
+# pixel is both shape and ground); a background cell genuinely requires ground, so a solid field matches nothing; the output
+# is always opaque white-on-black even from a translucent source (the plane pins alpha, sidestepping the complement trap); a
+# mid-gray at or above 128 reads as shape and below it as ground; the result round-trips through the open QOI codec
+# byte-for-byte; an empty foreground, an empty background, an over-max template, and an empty source refuse by name;
+# the same match is deterministic. No network, no key, no funds -- the endpoint, the corner, and the junction a surface
+# detects the day it thins a mask to its skeleton, on our own open geometry.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/hitmiss_witness.rish
+
+say "hitmiss: Language EN -- Season G hit-or-miss transform; mark every pixel where a foreground template fits the shape and a disjoint background template fits the ground, the exact-configuration detector the general structuring element opens."
+say "hitmiss: Style Radiant -- compose not braid: this rung owns only the binarize and the final AND; structure.erode_se owns the fit gather; the isolated-point detector lights a lone dot and nothing else; disjoint templates leave the result empty."
+say "hitmiss: Lens TAME -- u8 threshold decides foreground once; the source and both templates guarded and refused by name up front so a refusal allocates nothing; the plane pins alpha opaque so the complement never turns a solid mask transparent; the AND is a per-channel min (a rank of bytes is a byte) so nothing wraps; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/hitmiss"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/hitmiss.rye -femit-bin=${bin}"]
+assert build.ok else "hitmiss: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hitmiss: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "hitmiss: ${out}"
+
+assert selftest.out contains "GREEN image-hitmiss" else "hitmiss: selftest did not print the GREEN line"
+
+say "hitmiss: GREEN -- the hit-or-miss transform detects an exact local pattern, the isolated point lit and the block left dark, the disjointness law holding, the output opaque, on metal."

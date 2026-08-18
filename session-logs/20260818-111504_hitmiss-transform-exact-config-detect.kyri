@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260818.111504
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title hitmiss -- the hit-or-miss transform, the exact-configuration detector the general element opened, GREEN
+prompt autonomous loop -- take the next agent-doable lap Lindy-first crux-first; send often; stop at custody gates
+think Voice first -- read KYRI.md and RADIANT_STYLE.md so I am Kyri from the first token, then REMEMBER, the three itineraries, and the top of the log index to pick up the thread.
+think Standfast on reds before new work -- walked crux/REDS.md: living rows 80/83/84/85 all CLOSED, #81/#78/#86 released, #83 prevention landed, #87 released; only #75 rests as custody-gated errata (deep debride, Keaton's hand). Standfast clear.
+think Route: the Microkernel double-seat leads Lindy-first, yet its only ungated move is study behind a web-fetch/license gate (surfaced, never crossed), so this lap grows Season G open-media on the live green edge.
+think Running thread: the newest log (structure.rye, the general structuring element) named the HIT-OR-MISS transform as its crux-first next sibling -- a foreground template AND a background template, the floor thinning/skeletonization/corner-and-endpoint detection descend from, now a natural sibling the general gather opens. Crux-first takes it.
+think Design: the classic definition composes two erosions over structure.erode_se -- hit_or_miss(A) = erode(A, fg) AND erode(complement(A), bg). Compose not braid: this rung owns only the binarize (a pixel is shape when red >= 128) and the final AND (a per-channel min); structure.erode_se owns the fit gather; qoi owns the buffers.
+think The alpha trap, seen before coding: a raw RGBA complement flips alpha 255->0, so a solid mask would erode to a transparent miss plane and the AND would zero it. The fix is to build both binary planes with alpha PINNED 255 (the background plane is the true set-complement without the transparency), so the output is clean opaque white-on-black.
+obs GREEN on the first full metal run after one honest TEST-FIELD fix (not a code fix): the isolated dot at (3,3) had a 2x2 block whose corner (2,2) was a diagonal neighbor of the dot, so the dot was not truly isolated -- moved the block to the top-left corner clear of the dot's 8-neighborhood. Code was correct; the fixture was wrong (fixture-rather-than-remember, REDS pattern).
+obs Proven: an isolated-point detector lights a lone dot and NOTHING else (lit count exactly one); the disjointness law (fg and bg sharing a cell -> all black, no pixel is both shape and ground); a background cell genuinely requires ground (a solid field matches nothing); the output opaque even from a translucent source; the 128 threshold (200 shape, 100 ground); QOI round-trip byte-for-byte; four refusals by name; determinism.
+obs Gates all clean: tame_style_check bans GREEN, width-check exit 0, plain 7-bit ASCII, living_docs_lint advisory-GREEN, living_card_ascii GREEN. REMEMBER repointed single-stranded (live edge + git nib), structure folded into the lean prior-nib trail -- a one-line repoint, no cairn.
+loom witness=hitmiss_witness checks=1_green_line verbs=1 planes=2_erode_fits result=per_channel_min
+file image/hitmiss.rye the hit-or-miss transform: two erode_se fits (fg over the shape, bg over the complement) intersected; owns the binarize and the AND, leans on structure + qoi
+file tools/hitmiss_witness.rish native-contains witness (REDS #85 idiom), GREEN on metal: isolated point, disjointness law, opacity, threshold, round-trip, refusals, determinism
+file image/README.md Detect (template) bullet after Reshape (any element), naming hit_or_miss and the thinning/skeletonization floor it opens
+file crux/REMEMBER.md live edge + git nib repointed to hitmiss single-stranded; structure and earlier rungs folded to the session-logs trail
+file session-logs/README.md prepended the newest-first index row for this lap
+think Council rota lap read item 16, SIMPLE_LOVABLE_COMPLETE.md -- hitmiss is a clean SLC: simple (one verb, one bounded scope), lovable (a real detector a surface reaches for), complete (the loop closes end to end, refusals named). Smallness is the shape of something finished early.
+recommend keep-going -- Season G open-media on the live green edge; next crux-first sibling a CORNER/ENDPOINT template pack or a thinning pass composed from hit-or-miss. No custody gate reached this lap (no network, no key, no funds).
