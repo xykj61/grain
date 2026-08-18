@@ -1,0 +1,40 @@
+# tools/sharpen_witness.rish -- the unsharp mask proves itself on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the FIRST rung that reads its own blur back, standing on image/gaussian.rye's smooth
+# blur (tools/gaussian_witness.rish), which stands on image/blur.rye's box mean. Where a blur softens detail, a sharpen
+# restores it: the classic UNSHARP MASK adds back the difference between an image and a blurred copy of itself, so every edge
+# the blur eased is made STEEPER than it began. A designer reaches for this the moment a resized thumbnail or a scanned page
+# reads a touch soft.
+#
+# The crux this witness proves is that a sharpen is one honest line -- orig + amount * (orig - blur), clamped. On metal:
+# amount 0 and radius 0 both return the source byte-for-byte (the identity); the sharpen equals a hand-composed unsharp mask
+# byte-for-byte (this rung owns no hidden blur or blend); a flat field gains no detail even at max amount (a sharpen
+# amplifies edges, never smooth areas); a midtone step 64->192 gains an under/overshoot halo where the dark side darkens
+# below 64, the bright side brightens above 192, and the contrast across the edge expands past 128 while the flat interior
+# holds; a strong amount drives the overshoot past the rails and each lands exactly on 0 or 255 (clamp, no wrap); alpha is
+# sharpened like any channel; the sharpened image round-trips through the open QOI codec byte-for-byte; an over-max radius,
+# an over-max amount, and an empty source refuse by name having allocated nothing; the same sharpen is deterministic. No
+# network, no key, no funds -- the crispening a surface runs the day a resized image reads soft, on our own open geometry.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/sharpen_witness.rish
+
+say "sharpen: Language EN -- Season G convolution; an RGBA image sharpened by the unsharp mask, the first rung that reads its own blur back, the crispening a resized thumbnail or a scanned page wants."
+say "sharpen: Style Radiant -- a sharpen is one honest line, orig + amount * (orig - gaussian_blur), clamped; the detail is the high-pass (0 on a flat field, signed across an edge), so a sharpen amplifies edges and never manufactures noise on a smooth area; every property the Gaussian proved carries up unchanged."
+say "sharpen: Lens TAME -- u32 in-memory counts, the radius bounded by sharpen_max_radius (the Gaussian's own ceiling) and the amount by sharpen_max_amount; each function states its invariants positively; the source, radius, and amount guarded once up front so a refusal allocates nothing; the intermediate blurred buffer freed before return so only the caller's result outlives the call; the i32 intermediate clamped so an overshoot lands on a rail rather than wrapping; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/sharpen"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/sharpen.rye -femit-bin=${bin}"]
+assert build.ok else "sharpen: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "sharpen: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "sharpen: ${out}"
+
+assert selftest.out contains "GREEN image-sharpen" else "sharpen: selftest did not print the GREEN line"
+
+say "sharpen: GREEN -- the unsharp mask restores the detail a blur eased, proven on metal atop the Gaussian floor, the crispening a resized image wants."

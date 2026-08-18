@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260818.093016
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title sharpen -- the unsharp mask, the image minus its own blur, GREEN
+prompt baton prin recur -- the autonomous loop; take the next agent-doable lap Lindy-first crux-first on the live green edge, Standfast on reds first
+think Read Kyri + Radiant Style to write in voice, then REMEMBER (live edge), REDS, and the top of the session-log index to pick up the running thread. Standfast clear -- every red in crux/REDS.md is CLOSED, released, or resting as custody-gated errata (#75, a deep-debride gate that is Keaton's hand). No open agent-closable red, so constructive work is licensed.
+think Lindy-first crux-first: the Microkernel double-seat leads by Lindy yet its only ungated move is study, so the live green edge is Season G open-media. The newest log (gaussian) named its own siblings to grow next: sharpen (the image minus its own blur), drop shadow, frosted panel. Sharpen is the crux -- it owns genuinely NEW pixel math (the signed high-pass difference added back with a clamp), where drop shadow and frosted panel are pure compositions of blur + compose that already stand.
+think Built image/sharpen.rye: the classic unsharp mask, clamp(orig + amount * (orig - gaussian_blur)) per channel. amount is a PERCENT over sharpen_amount_scale (100) so a designer reads it plainly (0 identity, 100 full, 200 double); i32 intermediate truncated toward zero so bright/dark overshoot stay symmetric and a sharpen is deterministic; clamp lands an overshoot on a rail, never a wrap. Stands on gaussian.gaussian_blur (which stands on blur.box_blur) + qoi -- one new operation, no hidden blur or blend.
+think One honest fix on the first metal run: the "flat interior holds" check used an 8px row where a radius-2 3-pass Gaussian's reach touched index 0, so it moved. Widened to a 16px row so the interior pixel lies beyond the blur's reach -- the honest scope of the claim, not a loosened assert. GREEN after: amount 0 and radius 0 both the identity byte-for-byte; the module equals a hand-composed unsharp mask byte-for-byte (composition crux); a flat field gains nothing even at max amount; the EDGE CRUX -- a midtone step 64->192 gains an under/overshoot halo (dark side below 64, bright side above 192, contrast expands past 128, flat interior held); a strong amount clamps to 0/255 with no wrap; alpha sharpened like any channel; QOI round-trip; three refusals by name; determinism.
+obs Discipline: tools/sharpen_witness.rish uses native `assert selftest.out contains` (REDS #85/#76 convention, never printf|grep). tame_style_check bans clean (my file carries full asserts, not in the zero-assert ratchet), width-check clean, ASCII clean, living-docs advisory-only, living-card ASCII GREEN after the REMEMBER edit. README grows a Crispen summary bullet + a full sharpen.rye entry; REMEMBER's live edge prepends sharpen as the newest rung, single-stranded onto the gaussian chain.
+obs Council rota (lap item 7): deep-read foundations/20260813-142420_mycelium-the-consensus-protocol.md -- the leaderless consensus season, one law beneath ninety-eight modules (the order is decided once, by everyone, and read by everyone the same way), TigerBeetle + Mysticeti thanked clean-room never copied.
+loom witness=sharpen_witness wall_note=build+selftest GREEN checks=identity,composition,flat-holds,edge-overshoot,clamp,alpha,roundtrip,three-refusals,default,determinism
+file image/sharpen.rye the unsharp mask -- clamp(orig + amount*(orig - gaussian_blur)) per channel, GREEN
+file tools/sharpen_witness.rish proves it on metal, native contains checks
+file image/README.md Crispen summary bullet + full sharpen.rye entry beside gaussian
+file crux/REMEMBER.md live edge prepends sharpen as the newest open-media rung
+file session-logs/README.md newest-first index row for this lap
+recommend keep-going Season G open-media, next crux drop shadow (a blurred silhouette composited under) or frosted panel (a blurred backdrop) -- both now pure compositions of blur/gaussian + compose that already stand; no gate reached (no network, no key, no funds)

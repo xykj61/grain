@@ -1,0 +1,329 @@
+//! image/sharpen.rye -- an RGBA image SHARPENED by the unsharp mask (Season G, the image MINUS its own blur).
+//!
+//! Season G (Open Media Primitives) -- the FIRST rung that reads its own blur back, standing on image/gaussian.rye (which
+//! stands on image/blur.rye). Where a blur softens detail, a sharpen restores it: the classic UNSHARP MASK adds back the
+//! difference between an image and a blurred copy of itself, so every edge the blur eased is made STEEPER than it began. The
+//! name is a photographer's inheritance -- a soft ("unsharp") copy is subtracted to leave only the fine detail, and that
+//! detail is amplified onto the original. A designer reaches for this the moment a resized thumbnail or a scanned page reads
+//! a touch soft: a small radius crispens fine texture, a larger radius pops broad contrast.
+//!
+//! The math is one honest line per channel. Let `orig` be the source pixel and `blur` its Gaussian-blurred value. The DETAIL
+//! (the high-pass) is `orig - blur`: positive on the bright side of an edge, negative on the dark side, near zero on a flat
+//! field. The sharpened pixel is `orig + amount * detail`, clamped to a real byte. `amount` is a PERCENT over
+//! `sharpen_amount_scale` (100): amount 0 adds no detail (the identity), amount 100 adds the full detail once, amount 200
+//! doubles it. This is the whole reason a sharpen counteracts a blur -- where the blur pulled a bright edge pixel down, the
+//! detail is positive and pushes it back up; where it lifted a dark pixel, the detail is negative and pushes it back down,
+//! so a soft edge gains an under/overshoot halo and its local contrast expands.
+//!
+//! This rung owns ONE new operation -- the signed detail added back with a clamp -- and composes it over image/gaussian.rye
+//! for the blur and image/qoi.rye for the grid; it adds no blur math of its own, no codec, no color model. Because a flat
+//! region has zero detail (orig equals its own blur), a sharpen amplifies NOTHING on smooth areas -- only edges move, so a
+//! sharpen never manufactures noise on a clear sky. Every channel including alpha is sharpened the same way, matching the
+//! blur family's treatment. The arithmetic is integer-only (i32 intermediate, truncated toward zero so bright and dark
+//! overshoot stay symmetric), so a sharpen is deterministic byte-for-byte, and the clamp means an overshoot past 255 or an
+//! undershoot below 0 lands exactly on the rail rather than wrapping. `unsharp_mask` is the general verb (any radius, any
+//! amount in band); `sharpen` is the standard `sharpen_default_amount` convenience. A zero-extent source, an over-max
+//! radius, or an over-max amount refuses BY NAME before any allocation, so a malformed sharpen leaves nothing behind. No
+//! network, no key, no funds -- the crispening a surface runs the day a resized image reads soft, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/sharpen.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const gaussian = @import("gaussian.rye");
+
+pub const sharpen_version = "20260818.093500";
+
+/// The widest blur radius a sharpen may name -- the Gaussian's own ceiling, since the mask blurs with a Gaussian. A larger
+/// radius sharpens broader contrast; a smaller one crispens fine texture.
+pub const sharpen_max_radius: u32 = gaussian.gaussian_max_radius;
+
+/// The amount band, a PERCENT of the detail over `sharpen_amount_scale`. Zero is the identity (no detail added); 100 adds
+/// the full detail once; the ceiling bounds the overshoot so `amount * detail` stays a small bounded value inside i32.
+pub const sharpen_min_amount: u32 = 0;
+pub const sharpen_max_amount: u32 = 500;
+pub const sharpen_default_amount: u32 = 100;
+
+/// The fixed denominator `amount` is measured against: amount 100 means "add 100% of the detail," so a designer reads the
+/// amount as a plain percentage rather than a raw fixed-point fraction.
+pub const sharpen_amount_scale: u32 = 100;
+
+// The scale as a signed value for the i32 detail arithmetic -- the same constant, typed for the divide below.
+const amount_scale_i: i32 = @intCast(sharpen_amount_scale);
+
+pub const SharpenError = error{
+    EmptySource,
+    SharpenRadiusTooLarge,
+    SharpenAmountTooLarge,
+};
+
+/// Clamp a signed sharpened value onto a real byte 0..255. An overshoot past 255 or an undershoot below 0 lands exactly on
+/// the rail rather than wrapping -- the whole reason the intermediate is i32 and the result is clamped, not cast raw.
+fn clamp_byte(v: i32) u8 {
+    // invariant: a value below the floor pins to 0; the guard below proves the cast then cannot see a negative.
+    if (v < 0) return 0;
+    // invariant: a value above the ceiling pins to 255; the guard below proves the cast then cannot see 256+.
+    if (v > 255) return 255;
+    // invariant: past both rails the value is already a real byte, so the cast never truncates.
+    assert(v >= 0);
+    assert(v <= 255);
+    return @intCast(v);
+}
+
+/// Write the unsharp mask of `orig` (with `blurred` its Gaussian blur) into `out`: each byte becomes
+/// `clamp(orig + amount * (orig - blurred) / sharpen_amount_scale)`. All three buffers hold the same RGBA byte count; the
+/// pass reads `orig` and `blurred` and writes `out`, touching no other memory. Alpha is one more channel, sharpened alike.
+fn apply_unsharp(out: []u8, orig: []const u8, blurred: []const u8, amount: u32) void {
+    // invariant: all three buffers hold exactly the same byte count, so every index lands inside each.
+    assert(out.len == orig.len);
+    assert(orig.len == blurred.len);
+    // invariant: the amount stays in band (guarded before the call), so amt * detail can never wrap i32.
+    assert(amount <= sharpen_max_amount);
+    const amt: i32 = @intCast(amount);
+
+    var i: usize = 0;
+    while (i < out.len) : (i += 1) {
+        const o: i32 = @as(i32, orig[i]);
+        const b: i32 = @as(i32, blurred[i]);
+        const detail: i32 = o - b; // -255..255, the high-pass: 0 on a flat field, signed across an edge
+        // amt <= 500 and |detail| <= 255, so |amt * detail| <= 127500 -- far inside i32, no overflow
+        const contribution: i32 = @divTrunc(amt * detail, amount_scale_i);
+        out[i] = clamp_byte(o + contribution);
+    }
+}
+
+/// Guard the source, radius, and amount shared by both public verbs: a zero-extent source refuses `EmptySource`, an
+/// over-max radius `SharpenRadiusTooLarge`, an over-max amount `SharpenAmountTooLarge`, each BY NAME before any allocation.
+fn guard(src: *const qoi.Pixmap, radius: u32, amount: u32) SharpenError!void {
+    // invariant: a real source has extent on both axes; a zero-size source has nothing to sharpen.
+    if (src.width == 0 or src.height == 0) return error.EmptySource;
+    // invariant: the mask blurs with a Gaussian, so the Gaussian's own radius ceiling bounds a sharpen here too.
+    if (radius > sharpen_max_radius) return error.SharpenRadiusTooLarge;
+    // invariant: the amount stays in the named band, so the overshoot is a small bounded multiple of the detail.
+    if (amount > sharpen_max_amount) return error.SharpenAmountTooLarge;
+}
+
+/// Sharpen `src` into a fresh same-size RGBA Pixmap by the unsharp mask: blur `src` with a Gaussian of radius `radius`, then
+/// add `amount` percent of the detail (`src - blur`) back to `src`, clamping each channel to a real byte. Returns a newly
+/// allocated Pixmap the caller owns; `src` is read-only and untouched. The intermediate blurred buffer is freed before
+/// return. Amount 0 (or radius 0, a 1x1 identity blur) returns the source byte-for-byte -- the identity sharpen.
+pub fn unsharp_mask(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32, amount: u32) !qoi.Pixmap {
+    try guard(src, radius, amount);
+    // invariant: the guard proved a real source, so both axes carry at least one pixel.
+    assert(src.width >= 1);
+    assert(src.height >= 1);
+
+    const blurred = try gaussian.gaussian_blur(allocator, src, radius);
+    // The blurred copy feeds the mask and never escapes this call; only the caller's result outlives it.
+    defer allocator.free(blurred.pixels);
+    const n = src.pixels.len;
+    // invariant: the Gaussian preserves extent, so its buffer matches the source byte-for-byte in length.
+    assert(blurred.pixels.len == n);
+
+    const out = try allocator.alloc(u8, n);
+    apply_unsharp(out, src.pixels, blurred.pixels, amount);
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+/// Sharpen `src` into a fresh same-size RGBA Pixmap by the STANDARD amount -- exactly `unsharp_mask` at
+/// `sharpen_default_amount`. The full-strength unsharp mask a surface reaches for by default.
+pub fn sharpen(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32) !qoi.Pixmap {
+    // invariant: the default amount sits inside the named band, so it never trips the guard on its own.
+    assert(sharpen_default_amount >= sharpen_min_amount);
+    assert(sharpen_default_amount <= sharpen_max_amount);
+    return unsharp_mask(allocator, src, radius, sharpen_default_amount);
+}
+
+// --- selftest: identity, the unsharp composition, flat stays flat, edge overshoot, clamp, alpha, round-trip, refusals -----
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// Set one pixel's RGBA at (x, y) -- a small writer the pattern builders share.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+/// Build the unsharp mask INDEPENDENTLY of the module -- blur with the same Gaussian, then apply the formula plainly here --
+/// so the selftest can prove `unsharp_mask` equals a hand-composed unsharp mask byte-for-byte (the composition crux).
+fn expected_unsharp(garden: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32, amount: u32) !qoi.Pixmap {
+    const blurred = try gaussian.gaussian_blur(garden, src, radius);
+    const n = src.pixels.len;
+    // invariant: the Gaussian preserves extent, so the expected buffer matches the source in length.
+    assert(blurred.pixels.len == n);
+    const out = try garden.alloc(u8, n);
+    const amt: i32 = @intCast(amount);
+    var i: usize = 0;
+    while (i < n) : (i += 1) {
+        const o: i32 = @as(i32, src.pixels[i]);
+        const b: i32 = @as(i32, blurred.pixels[i]);
+        const c: i32 = @divTrunc(amt * (o - b), amount_scale_i);
+        var v: i32 = o + c;
+        if (v < 0) v = 0;
+        if (v > 255) v = 255;
+        out[i] = @intCast(v);
+    }
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    // A 2x2 four-color pattern -- the same corners the blur and resize siblings prove against.
+    const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
+    const green = color.Rgba{ .r = 0, .g = 255, .b = 0, .a = 255 };
+    const blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 };
+    var pattern = try make_canvas(garden, 2, 2, red);
+    set_pixel(&pattern, 1, 0, green);
+    set_pixel(&pattern, 0, 1, blue);
+    set_pixel(&pattern, 1, 1, black);
+
+    // --- amount 0 is the IDENTITY: no detail is added, so the source returns byte-for-byte at any radius -----------------
+    const zero_amt = try unsharp_mask(garden, &pattern, 2, 0);
+    if (!zero_amt.same_bytes(&pattern)) return error.ZeroAmountNotIdentity;
+
+    // --- radius 0 is the IDENTITY too: a 1x1 blur equals the source, so the detail is zero everywhere -------------------
+    const zero_rad = try unsharp_mask(garden, &pattern, 0, sharpen_default_amount);
+    if (!zero_rad.same_bytes(&pattern)) return error.ZeroRadiusNotIdentity;
+
+    // --- THE COMPOSITION CRUX: sharpen equals the hand-composed unsharp mask (blur, then orig + amount*detail) exactly --
+    // A varied 5x5 checker gives real detail on every edge; the module output must match an independent rebuild of the
+    // formula byte-for-byte, proving this rung IS the unsharp mask and owns no hidden blur or blend of its own.
+    var checker = try make_canvas(garden, 5, 5, black);
+    var cy: u32 = 0;
+    while (cy < 5) : (cy += 1) {
+        var cx: u32 = 0;
+        while (cx < 5) : (cx += 1) {
+            if ((cx + cy) % 2 == 0) set_pixel(&checker, cx, cy, white);
+        }
+    }
+    const composed = try unsharp_mask(garden, &checker, 1, 150);
+    const by_hand = try expected_unsharp(garden, &checker, 1, 150);
+    if (!composed.same_bytes(&by_hand)) return error.NotTheUnsharpMask;
+
+    // --- a FLAT image stays byte-for-byte: a smooth field has zero detail, so a sharpen amplifies nothing (no noise) ----
+    const teal = color.Rgba{ .r = 0, .g = 128, .b = 128, .a = 255 };
+    var flat = try make_canvas(garden, 6, 6, teal);
+    _ = &flat;
+    const flat_sharp = try unsharp_mask(garden, &flat, 2, sharpen_max_amount);
+    if (!flat_sharp.same_bytes(&flat)) return error.FlatFieldGainedDetail;
+
+    // --- THE EDGE CRUX: a midtone step gains an under/overshoot halo -- the dark side DARKENS, the bright side BRIGHTENS,
+    // and the local contrast across the edge EXPANDS. A step 64 -> 192 on a 16px row (left eight dim, right eight bright):
+    // the blur pulls index 7 up toward 192 (detail negative) and index 8 down toward 64 (detail positive), so the sharpen
+    // pushes 7 below 64 and 8 above 192, while a pixel deep in the flat interior (index 0, beyond the blur's reach) holds
+    // exactly. This is the whole reason a sharpen exists.
+    const dim = color.Rgba{ .r = 64, .g = 64, .b = 64, .a = 255 };
+    const brightish = color.Rgba{ .r = 192, .g = 192, .b = 192, .a = 255 };
+    var step = try make_canvas(garden, 16, 1, dim);
+    var sx: u32 = 8;
+    while (sx < 16) : (sx += 1) set_pixel(&step, sx, 0, brightish);
+    const sharp_step = try unsharp_mask(garden, &step, 2, sharpen_default_amount);
+    const left_edge = pixel_at(&sharp_step, 7, 0).r; // just DARK side of the transition
+    const right_edge = pixel_at(&sharp_step, 8, 0).r; // just BRIGHT side of the transition
+    if (!(left_edge < 64)) return error.DarkSideDidNotDarken;
+    if (!(right_edge > 192)) return error.BrightSideDidNotBrighten;
+    // the contrast across the edge is wider than the original 192 - 64 = 128
+    if (!(@as(u32, right_edge) - @as(u32, left_edge) > 128)) return error.ContrastDidNotExpand;
+    // a pixel deep in the flat interior of the step (index 0) lies beyond the blur's reach -- zero detail, held exactly
+    if (pixel_at(&sharp_step, 0, 0).r != 64) return error.FlatInteriorMoved;
+
+    // --- CLAMP, no wrap: a strong amount drives the overshoot past the rails, and each lands exactly on 0 or 255 --------
+    // A 2px row [0, 200] at amount 300: index 0's detail is negative (blur pulled up) so 0 + 3*(negative) undershoots to 0;
+    // index 1's detail is positive (blur pulled down) so 200 + 3*(positive) overshoots past 255 and clamps to 255.
+    const two_hundred = color.Rgba{ .r = 200, .g = 200, .b = 200, .a = 255 };
+    var rail = try make_canvas(garden, 2, 1, black);
+    set_pixel(&rail, 1, 0, two_hundred);
+    const railed = try unsharp_mask(garden, &rail, 1, 300);
+    if (pixel_at(&railed, 0, 0).r != 0) return error.UndershootDidNotClampToZero;
+    if (pixel_at(&railed, 1, 0).r != 255) return error.OvershootDidNotClampTo255;
+
+    // --- ALPHA is sharpened like any other channel: an opaque/translucent step sharpens its alpha edge too --------------
+    const opaque_g = color.Rgba{ .r = 0, .g = 128, .b = 0, .a = 64 };
+    const solid_g = color.Rgba{ .r = 0, .g = 128, .b = 0, .a = 192 };
+    var astep = try make_canvas(garden, 8, 1, opaque_g);
+    var ax: u32 = 4;
+    while (ax < 8) : (ax += 1) set_pixel(&astep, ax, 0, solid_g);
+    const asharp = try unsharp_mask(garden, &astep, 2, sharpen_default_amount);
+    // the alpha edge overshoots exactly as the color edge did: dark side below 64, bright side above 192
+    if (!(pixel_at(&asharp, 3, 0).a < 64)) return error.AlphaDarkSideDidNotDarken;
+    if (!(pixel_at(&asharp, 4, 0).a > 192)) return error.AlphaBrightSideDidNotBrighten;
+
+    // --- a sharpened image round-trips through the open QOI codec byte-for-byte -- a real image, not a private buffer ----
+    const shown = try unsharp_mask(garden, &checker, 1, sharpen_default_amount);
+    const cap = qoi.encoded_bound(shown.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&shown, dst);
+    const back = try qoi.decode(garden, dst[0..enc.len]);
+    if (!back.same_bytes(&shown)) return error.SharpenDidNotRoundTrip;
+
+    // --- refusals by name, each having allocated nothing --------------------------------------------------------------
+    if (unsharp_mask(garden, &pattern, sharpen_max_radius + 1, 100)) |_| return error.OverRadiusNotRefused else |err| {
+        if (err != error.SharpenRadiusTooLarge) return error.WrongRadiusError;
+    }
+    if (unsharp_mask(garden, &pattern, 1, sharpen_max_amount + 1)) |_| return error.OverAmountNotRefused else |err| {
+        if (err != error.SharpenAmountTooLarge) return error.WrongAmountError;
+    }
+    var empty = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (unsharp_mask(garden, &empty, 1, 100)) |_| return error.EmptySourceNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- the default convenience equals the general verb at the default amount byte-for-byte --------------------------
+    const by_default = try sharpen(garden, &checker, 1);
+    const by_general = try unsharp_mask(garden, &checker, 1, sharpen_default_amount);
+    if (!by_default.same_bytes(&by_general)) return error.DefaultIsNotGeneralAtDefaultAmount;
+
+    // --- determinism: the same sharpen amplifies the same detail byte-for-byte ----------------------------------------
+    const sharp_a = try unsharp_mask(garden, &checker, 1, 150);
+    const sharp_b = try unsharp_mask(garden, &checker, 1, 150);
+    if (!sharp_a.same_bytes(&sharp_b)) return error.SharpenNotDeterministic;
+
+    print("GREEN image-sharpen: an RGBA image sharpened by the unsharp mask (orig + amount*(orig - gaussian_blur), clamped) -- amount 0 and radius 0 both return the source byte-for-byte (the identity); the sharpen equals a hand-composed unsharp mask byte-for-byte (blur then add the detail back, this rung owning no hidden blur or blend); a flat field gains no detail even at max amount (a sharpen amplifies edges, never smooth areas); THE EDGE CRUX -- a midtone step 64->192 gains a halo where the dark side darkens below 64, the bright side brightens above 192, and the contrast across the edge expands past 128 while the flat interior holds; a strong amount drives the overshoot past the rails and each lands exactly on 0 or 255 (clamp, no wrap); alpha is sharpened like any channel; the sharpened image round-trips through the open QOI codec byte-for-byte; an over-max radius, an over-max amount, and an empty source refuse by name having allocated nothing; the default equals the general verb at the default amount; the same sharpen is deterministic byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: sharpen selftest\n", .{});
+    return 1;
+}
