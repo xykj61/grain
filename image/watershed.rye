@@ -1,0 +1,503 @@
+//! image/watershed.rye -- SEPARATE TOUCHING BLOBS a connected-component labeler reads as one: flood a distance field from
+//! its deepest markers outward and draw the WATERSHED LINE where two floods meet (Season G, the crux-first sibling
+//! image/medial_axis.rye named beside a disk-element builder and a size histogram).
+//!
+//! Season G (Open Media Primitives) -- image/label.rye partitions a mask into its 8-connected pieces, yet two objects that
+//! TOUCH read as one component, and no local test can split them. The watershed does what labeling cannot: it treats the
+//! distance field (image/distance.rye) as terrain, seats a source at the deep center of each object (a marker), and floods
+//! outward. Where two floods meet, a thin WATERSHED LINE falls -- the cut that separates two touching cells, two overlapping
+//! coins, two kissing letters. This is the segmentation move a labeler alone can never make.
+//!
+//! The algorithm is Meyer's ordered flooding (the marker-controlled watershed, F. Meyer 1991), an immersion of the INVERTED
+//! distance field. The markers sit deepest (highest distance, the object centers -- exactly the medial ridge image/medial_axis.rye
+//! reads); flooding the inverted terrain from those minima outward processes the deepest foreground first and the shallowest
+//! last. A hierarchical (bucket) queue keyed by terrain height gives the flood a strict, deterministic order in linear time: each
+//! foreground pixel enters the queue at most once, and the water level only rises. When a pixel is reached, its already-labeled
+//! neighbors decide it -- one basin among them claims it; TWO different basins make it a watershed pixel, and a watershed pixel
+//! never floods its own neighbors, so the line is one pixel thin and holds the basins apart.
+//!
+//! Compose not braid. This rung OWNS only the ordered flood: the terrain inversion, the bucket priority queue, and the
+//! one-basin/two-basins decision. image/distance.rye owns the DistanceMap terrain; image/label.rye owns the marker LabelMap AND
+//! the output labeling type AND the palette `colorize` paints with; image/qoi.rye owns the RGBA buffer; image/branch.rye's `is_on`
+//! is the binary door the field was built through. The result is a LabelMap whose basins are the markers' own labels 1..count, a
+//! watershed pixel marked `wshed_mark`, and background 0. `colorize` paints the basins their palette colors, the watershed line
+//! white, the background black, so a segmentation is a real image the open QOI codec round-trips byte-for-byte.
+//!
+//! Everything is bounded before a byte is allocated. The queue is a bucket list keyed by terrain height (0..max_distance <=
+//! 32768), threaded through a `next` array sized to the pixel count, so each pixel is queued at most once and the whole queue
+//! never exceeds the pixel count. A field with no depth, markers of a different size, an empty source, or no markers at all each
+//! refuses BY NAME before the flood -- all-or-nothing, never a half-flooded map. No network, no key, no funds -- the cut a surface
+//! draws the day two marks touch and must be told apart, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/watershed.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const branch = @import("branch.rye");
+const distance = @import("distance.rye");
+const label = @import("label.rye");
+
+pub const watershed_version = "20260818.143054";
+
+/// The most pixels a field may hold -- the image module's own pixel ceiling, which also bounds the queue node count.
+pub const wshed_max_pixels: u32 = qoi.qoi_max_pixels;
+
+/// The output label of a WATERSHED pixel -- a pixel where two basins met, the thin line that holds them apart. It sits far above
+/// any real basin label (basins are the markers' dense 1..count) so a reader tells a cut from a basin at a glance.
+pub const wshed_mark: u32 = std.math.maxInt(u32);
+
+/// Internal flood states, both far above any real basin label and distinct from `wshed_mark`, so the flood never confuses an
+/// unresolved pixel or a queue terminator with a basin.
+const w_init: u32 = std.math.maxInt(u32) - 1; // foreground not yet reached by any flood
+const w_nil: u32 = std.math.maxInt(u32) - 2; // the "no next pixel" terminator of a bucket's FIFO chain
+
+pub const WatershedError = error{
+    EmptySource,
+    SizeMismatch,
+    NoMarkers,
+    NoField,
+};
+
+/// True when a label is a watershed line pixel rather than a basin or background.
+pub fn is_watershed(l: u32) bool {
+    return l == wshed_mark;
+}
+
+/// The terrain height of a foreground pixel: the INVERTED distance, so the deepest pixel (the markers, largest distance) reads 0
+/// and floods first, and the shallowest reads highest and floods last. A pixel deeper than `max_distance` (a `dist_far` pixel in
+/// an all-foreground field) clamps to the floor -- flooded first, never an underflow.
+fn terrain(d: u32, max_distance: u32) u32 {
+    // invariant: only foreground pixels have terrain; background (distance 0) is never queued.
+    assert(d >= 1);
+    const capped: u32 = if (d > max_distance) max_distance else d;
+    return max_distance - capped;
+}
+
+/// Gather the in-bounds 8-neighbors of `(x, y)` into `out_idx`, returning how many there are. The one neighborhood the flood
+/// reads -- 8-connected, matching image/label.rye and image/branch.rye, so a diagonal touch is a real adjacency.
+fn gather_neighbors(x: u32, y: u32, w: u32, h: u32, out_idx: *[8]usize) usize {
+    // invariant: the center pixel itself is inside the field on both axes.
+    assert(x < w);
+    assert(y < h);
+    var n: usize = 0;
+    const row: usize = @as(usize, y) * @as(usize, w);
+    const up: usize = row -% @as(usize, w); // only read when y > 0
+    const down: usize = row + @as(usize, w); // only read when y + 1 < h
+    if (x > 0 and y > 0) {
+        out_idx[n] = up + @as(usize, x) - 1; // NW
+        n += 1;
+    }
+    if (y > 0) {
+        out_idx[n] = up + @as(usize, x); // N
+        n += 1;
+    }
+    if (x + 1 < w and y > 0) {
+        out_idx[n] = up + @as(usize, x) + 1; // NE
+        n += 1;
+    }
+    if (x > 0) {
+        out_idx[n] = row + @as(usize, x) - 1; // W
+        n += 1;
+    }
+    if (x + 1 < w) {
+        out_idx[n] = row + @as(usize, x) + 1; // E
+        n += 1;
+    }
+    if (x > 0 and y + 1 < h) {
+        out_idx[n] = down + @as(usize, x) - 1; // SW
+        n += 1;
+    }
+    if (y + 1 < h) {
+        out_idx[n] = down + @as(usize, x); // S
+        n += 1;
+    }
+    if (x + 1 < w and y + 1 < h) {
+        out_idx[n] = down + @as(usize, x) + 1; // SE
+        n += 1;
+    }
+    // invariant: a pixel has at most its eight neighbors.
+    assert(n <= 8);
+    return n;
+}
+
+/// Flood `field` from `markers` by Meyer's ordered immersion into a fresh LabelMap the caller owns. `field` is the distance
+/// terrain; `markers` seats a basin (its dense label 1..count) at each object's deep center. Every foreground pixel comes back
+/// labeled to the basin whose flood reached it first, or `wshed_mark` where two basins met; background stays 0. The output's
+/// `count` is the markers' basin count.
+pub fn watershed(allocator: std.mem.Allocator, field: *const distance.DistanceMap, markers: *const label.LabelMap) !label.LabelMap {
+    // invariant: a real field has extent on both axes; a zero-size field has nothing to flood.
+    if (field.width == 0 or field.height == 0) return error.EmptySource;
+    // invariant: the markers cover exactly the same grid as the terrain, else a seed cannot name a pixel.
+    if (markers.width != field.width or markers.height != field.height) return error.SizeMismatch;
+    // invariant: at least one basin, else the flood has no source.
+    if (markers.count == 0) return error.NoMarkers;
+    // invariant: the field has depth, else there is no foreground to flood (an all-background or all-foreground field).
+    if (field.max_distance == 0) return error.NoField;
+
+    const w: u32 = field.width;
+    const h: u32 = field.height;
+    const npix: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the field stays within the image module's named pixel ceiling.
+    assert(npix <= wshed_max_pixels);
+    const count_pixels: u32 = @intCast(npix);
+    // invariant: the field and markers hold exactly one value per pixel.
+    assert(field.dist.len == @as(usize, count_pixels));
+    assert(markers.labels.len == @as(usize, count_pixels));
+
+    const max_d: u32 = field.max_distance;
+    const levels: usize = @as(usize, max_d) + 1; // terrain heights 0..max_distance
+
+    const out = try allocator.alloc(u32, @as(usize, count_pixels));
+    const queued = try allocator.alloc(bool, @as(usize, count_pixels));
+    const next = try allocator.alloc(u32, @as(usize, count_pixels)); // FIFO chain link per pixel
+    const head = try allocator.alloc(u32, levels); // bucket heads, one per terrain height
+    const tail = try allocator.alloc(u32, levels); // bucket tails
+
+    // --- init: background 0, a marker its basin label, every other foreground pixel unresolved; all buckets empty -----------
+    var i: usize = 0;
+    while (i < @as(usize, count_pixels)) : (i += 1) {
+        queued[i] = false;
+        next[i] = w_nil;
+        if (field.dist[i] == 0) {
+            out[i] = 0; // background is distance 0 -- never a basin, never queued
+        } else {
+            const m = markers.labels[i];
+            out[i] = if (m >= 1 and m <= markers.count) m else w_init; // a marker seats its basin; other foreground waits
+        }
+    }
+    var b: usize = 0;
+    while (b < levels) : (b += 1) {
+        head[b] = w_nil;
+        tail[b] = w_nil;
+    }
+
+    // --- seed the queue: every unresolved foreground neighbor of a marker enters its own terrain bucket, once ---------------
+    var neigh: [8]usize = undefined;
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const pi: usize = @as(usize, y) * @as(usize, w) + @as(usize, x);
+            const l = out[pi];
+            if (l >= 1 and l <= markers.count) { // a marker pixel -- push its unresolved foreground neighbors
+                const nn = gather_neighbors(x, y, w, h, &neigh);
+                var k: usize = 0;
+                while (k < nn) : (k += 1) {
+                    const ni = neigh[k];
+                    if (out[ni] == w_init and !queued[ni]) {
+                        push_bucket(head, tail, next, terrain(field.dist[ni], max_d), ni);
+                        queued[ni] = true;
+                    }
+                }
+            }
+        }
+    }
+
+    // --- flood: rise through the terrain, deepest first, resolving each pixel by its already-labeled neighbors -------------
+    var flood_bound: u32 = count_pixels; // each pixel resolves at most once -- a strict ceiling on the flood loop
+    var level: usize = 0;
+    while (level < levels) {
+        if (head[level] == w_nil) {
+            level += 1; // this bucket is drained; the water rises to the next height
+            continue;
+        }
+        // invariant: the flood never resolves more pixels than the field holds.
+        assert(flood_bound > 0);
+        flood_bound -= 1;
+        const pi: usize = @as(usize, pop_bucket(head, tail, next, level));
+
+        const px: u32 = @intCast(pi % @as(usize, w));
+        const py: u32 = @intCast(pi / @as(usize, w));
+        const nn = gather_neighbors(px, py, w, h, &neigh);
+
+        // read the basins among the neighbors: one claims this pixel, two make it a watershed line.
+        var basin: u32 = 0; // 0 means "no basin neighbor seen yet"
+        var conflict: bool = false;
+        var k: usize = 0;
+        while (k < nn) : (k += 1) {
+            const nl = out[neigh[k]];
+            if (nl >= 1 and nl <= markers.count) {
+                if (basin == 0) {
+                    basin = nl;
+                } else if (basin != nl) {
+                    conflict = true;
+                }
+            }
+        }
+
+        if (conflict or basin == 0) {
+            // two basins met here, or the only labeled neighbor was itself a watershed pixel -- this pixel is the line.
+            out[pi] = wshed_mark;
+        } else {
+            out[pi] = basin; // one basin claims it; its flood advances to this pixel's own unresolved neighbors
+            k = 0;
+            while (k < nn) : (k += 1) {
+                const ni = neigh[k];
+                if (out[ni] == w_init and !queued[ni]) {
+                    var lv: u32 = terrain(field.dist[ni], max_d);
+                    if (@as(usize, lv) < level) lv = @intCast(level); // the water level only rises: flood a shallower pixel now
+                    push_bucket(head, tail, next, lv, ni);
+                    queued[ni] = true;
+                }
+            }
+        }
+    }
+
+    // --- any foreground no marker ever reached reads as watershed line, never as a basin (marker coverage is the caller's) --
+    i = 0;
+    while (i < @as(usize, count_pixels)) : (i += 1) {
+        if (out[i] == w_init) out[i] = wshed_mark;
+    }
+
+    return label.LabelMap{ .width = w, .height = h, .count = markers.count, .labels = out };
+}
+
+/// Append pixel `pi` to the FIFO of bucket `lv` -- O(1), threading through the shared `next` array.
+fn push_bucket(head: []u32, tail: []u32, next: []u32, lv: u32, pi: usize) void {
+    // invariant: the bucket index is a real terrain height and the pixel index fits a u32 node.
+    assert(@as(usize, lv) < head.len);
+    assert(pi < next.len);
+    const node: u32 = @intCast(pi);
+    next[pi] = w_nil; // it becomes the new tail, so nothing follows it
+    if (head[lv] == w_nil) {
+        head[lv] = node;
+        tail[lv] = node;
+    } else {
+        next[@as(usize, tail[lv])] = node;
+        tail[lv] = node;
+    }
+}
+
+/// Remove and return the head pixel of bucket `lv` -- O(1), the FIFO front so a terrain level drains in insertion order.
+fn pop_bucket(head: []u32, tail: []u32, next: []u32, lv: usize) u32 {
+    // invariant: the caller only pops a non-empty bucket.
+    assert(lv < head.len);
+    assert(head[lv] != w_nil);
+    const node: u32 = head[lv];
+    const nxt: u32 = next[@as(usize, node)];
+    head[lv] = nxt;
+    if (nxt == w_nil) tail[lv] = w_nil; // the bucket is now empty
+    return node;
+}
+
+/// The display color of a watershed labeling: opaque BLACK for background (0), WHITE for a watershed line, else the basin's
+/// distinct palette color -- reusing image/label.rye's palette, so a basin reads the same color it would as a plain component.
+pub fn watershed_color(l: u32) color.Rgba {
+    if (l == 0) return color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    if (l == wshed_mark) return color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+    return label.label_color(l);
+}
+
+/// Paint a watershed labeling into a fresh RGBA Pixmap the caller owns: background black, watershed lines white, each basin its
+/// palette color. The render that makes a segmentation a real image -- the open QOI codec round-trips it byte-for-byte.
+pub fn colorize(allocator: std.mem.Allocator, map: *const label.LabelMap) !qoi.Pixmap {
+    // invariant: a real labeling has extent on both axes.
+    if (map.width == 0 or map.height == 0) return error.EmptySource;
+    const n: usize = @as(usize, map.width) * @as(usize, map.height);
+    // invariant: the label buffer holds exactly one label per pixel.
+    assert(map.labels.len == n);
+
+    const buf = try allocator.alloc(u8, n * 4);
+    var i: usize = 0;
+    while (i < n) : (i += 1) {
+        const c = watershed_color(map.labels[i]);
+        buf[i * 4] = c.r;
+        buf[i * 4 + 1] = c.g;
+        buf[i * 4 + 2] = c.b;
+        buf[i * 4 + 3] = 255; // alpha pinned opaque -- the render is a solid image, not a translucent one
+    }
+    // invariant: the sweep pinned every alpha byte to 255, so the render is a clean opaque image.
+    assert(buf[3] == 255);
+    return qoi.Pixmap{ .width = map.width, .height = map.height, .channels = 4, .colorspace = 0, .pixels = buf };
+}
+
+// --- selftest: the touching-blobs crux, the single basin, the degenerate refusals, round-trip, determinism ------------------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one pixel's RGBA at (x, y) -- the small writer the test shapes share.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+/// Build a fresh marker LabelMap over a `w` x `h` grid, all background 0, the caller seating basins with `seat_marker`.
+fn make_markers(garden: std.mem.Allocator, w: u32, h: u32, count: u32) !label.LabelMap {
+    const n: usize = @as(usize, w) * @as(usize, h);
+    const labels = try garden.alloc(u32, n);
+    var i: usize = 0;
+    while (i < n) : (i += 1) labels[i] = 0;
+    return label.LabelMap{ .width = w, .height = h, .count = count, .labels = labels };
+}
+
+/// Seat basin `l` at (x, y) in a marker map.
+fn seat_marker(m: *label.LabelMap, x: u32, y: u32, l: u32) void {
+    assert(x < m.width);
+    assert(y < m.height);
+    m.labels[@as(usize, y) * @as(usize, m.width) + @as(usize, x)] = l;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    // --- the TOUCHING-BLOBS crux (the reason watershed exists): a single solid bar, 9 wide and 3 tall, is ONE 8-connected
+    //     component a labeler can never split. Seat a marker at each end's deep center and flood: the left half comes back one
+    //     basin, the right half the other, and a thin WATERSHED LINE falls between them ----------------------------------------
+    var bar = try make_canvas(garden, 11, 5, black);
+    var byy: u32 = 1;
+    while (byy <= 3) : (byy += 1) {
+        var bx: u32 = 1;
+        while (bx <= 9) : (bx += 1) set_pixel(&bar, bx, byy, white);
+    }
+    // the labeler reads the whole bar as ONE component -- the very thing watershed must overcome
+    const one = try label.label_components(garden, &bar);
+    if (one.count != 1) return error.BarNotOneComponent;
+
+    const bar_field = try distance.distance_chamfer(garden, &bar);
+    var bar_markers = try make_markers(garden, 11, 5, 2);
+    seat_marker(&bar_markers, 2, 2, 1); // basin 1 -- the left object's deep center
+    seat_marker(&bar_markers, 8, 2, 2); // basin 2 -- the right object's deep center
+    const ws = try watershed(garden, &bar_field, &bar_markers);
+    if (ws.count != 2) return error.WatershedNotTwoBasins;
+
+    const left_basin = ws.at(2, 2);
+    const right_basin = ws.at(8, 2);
+    if (left_basin != 1) return error.LeftMarkerBasinWrong; // the seated marker keeps its own basin label
+    if (right_basin != 2) return error.RightMarkerBasinWrong;
+    if (left_basin == right_basin) return error.TouchingBlobsNotSeparated; // the crux: the two ends are told apart
+    if (ws.at(3, 2) != left_basin) return error.LeftFloodNotSpread; // the left flood reached its neighborhood
+    if (ws.at(7, 2) != right_basin) return error.RightFloodNotSpread; // the right flood reached its neighborhood
+
+    // a WATERSHED LINE exists, and every foreground pixel is either a basin or a watershed line (nothing left unresolved),
+    // while every background pixel stays 0 -- the flood is total and the cut is real
+    var wshed_seen: bool = false;
+    var y: u32 = 0;
+    while (y < 5) : (y += 1) {
+        var x: u32 = 0;
+        while (x < 11) : (x += 1) {
+            const foreground = branch.is_on(bar.pixels, (@as(usize, y) * 11 + @as(usize, x)) * 4);
+            const l = ws.at(x, y);
+            if (foreground) {
+                if (l == 0) return error.ForegroundLeftBackground; // no foreground pixel reads as background
+                if (is_watershed(l)) wshed_seen = true;
+            } else {
+                if (l != 0) return error.BackgroundBecameBasin; // no background pixel was flooded
+            }
+        }
+    }
+    if (!wshed_seen) return error.NoWatershedLine; // the two floods met -- a line must fall
+
+    // --- the SINGLE-BASIN case: one marker in one blob floods the whole blob to that basin, with NO watershed line (nothing
+    //     to meet) -- a lone object comes back whole ---------------------------------------------------------------------
+    var blob = try make_canvas(garden, 5, 5, black);
+    var qy: u32 = 1;
+    while (qy <= 3) : (qy += 1) {
+        var qx: u32 = 1;
+        while (qx <= 3) : (qx += 1) set_pixel(&blob, qx, qy, white);
+    }
+    const blob_field = try distance.distance_chamfer(garden, &blob);
+    var blob_markers = try make_markers(garden, 5, 5, 1);
+    seat_marker(&blob_markers, 2, 2, 1); // one marker, the block center
+    const bw = try watershed(garden, &blob_field, &blob_markers);
+    var oy: u32 = 1;
+    while (oy <= 3) : (oy += 1) {
+        var ox: u32 = 1;
+        while (ox <= 3) : (ox += 1) {
+            if (bw.at(ox, oy) != 1) return error.SingleBasinNotWhole; // every foreground pixel is the one basin
+        }
+    }
+    if (bw.at(0, 0) != 0) return error.SingleBasinBackgroundWrong; // background stays 0
+
+    // --- COLORIZE renders a segmentation into a real image: background black, watershed white, each basin non-black, and it
+    //     round-trips through the open QOI codec byte-for-byte ---------------------------------------------------------
+    const painted = try colorize(garden, &ws);
+    if (!(color.Rgba{ .r = painted.pixels[0], .g = painted.pixels[1], .b = painted.pixels[2], .a = painted.pixels[3] }).eql(black)) return error.PaintedBackgroundNotBlack;
+    const c1 = label.label_color(1);
+    const li = (@as(usize, 2) * @as(usize, ws.width) + @as(usize, 2)) * 4; // left marker (2,2), basin 1
+    if (painted.pixels[li] != c1.r or painted.pixels[li + 1] != c1.g or painted.pixels[li + 2] != c1.b) return error.BasinColorWrong;
+    // some watershed pixel renders full white
+    var found_white: bool = false;
+    var pi: usize = 0;
+    while (pi < ws.labels.len) : (pi += 1) {
+        if (is_watershed(ws.labels[pi])) {
+            if (painted.pixels[pi * 4] != 255 or painted.pixels[pi * 4 + 1] != 255 or painted.pixels[pi * 4 + 2] != 255) return error.WatershedNotWhite;
+            found_white = true;
+        }
+    }
+    if (!found_white) return error.NoWatershedToPaint;
+    const cap = qoi.encoded_bound(painted.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&painted, dst);
+    const backimg = try qoi.decode(garden, dst[0..enc.len]);
+    if (!backimg.same_bytes(&painted)) return error.ColorizeDidNotRoundTrip;
+
+    // --- the refusals by name, each having allocated nothing (the guard fires before the flood) ------------------------
+    var empty_field = distance.DistanceMap{ .width = 0, .height = 0, .max_distance = 0, .dist = &[_]u32{} };
+    if (watershed(garden, &empty_field, &bar_markers)) |_| return error.EmptyNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+    var small_markers = try make_markers(garden, 3, 3, 1);
+    seat_marker(&small_markers, 1, 1, 1);
+    if (watershed(garden, &bar_field, &small_markers)) |_| return error.SizeMismatchNotRefused else |err| {
+        if (err != error.SizeMismatch) return error.WrongSizeError;
+    }
+    var no_markers = try make_markers(garden, 11, 5, 0);
+    if (watershed(garden, &bar_field, &no_markers)) |_| return error.NoMarkersNotRefused else |err| {
+        if (err != error.NoMarkers) return error.WrongNoMarkersError;
+    }
+    var flat = try make_canvas(garden, 4, 4, black); // all background -> max_distance 0 -> no field to flood
+    const flat_field = try distance.distance_chamfer(garden, &flat);
+    var flat_markers = try make_markers(garden, 4, 4, 1);
+    seat_marker(&flat_markers, 1, 1, 1);
+    if (watershed(garden, &flat_field, &flat_markers)) |_| return error.NoFieldNotRefused else |err| {
+        if (err != error.NoField) return error.WrongNoFieldError;
+    }
+
+    // --- determinism: the same field and markers reach the same segmentation --------------------------------------------
+    const a = try watershed(garden, &bar_field, &bar_markers);
+    const bb = try watershed(garden, &bar_field, &bar_markers);
+    if (a.count != bb.count) return error.CountNotDeterministic;
+    var i: usize = 0;
+    while (i < a.labels.len) : (i += 1) {
+        if (a.labels[i] != bb.labels[i]) return error.LabelsNotDeterministic;
+    }
+
+    print("GREEN image-watershed: SEPARATE TOUCHING BLOBS a labeler reads as one by Meyer's marker-controlled ordered flooding of the distance field -- a single solid bar the connected-component labeler calls ONE component is seated with a marker at each end's deep center and comes back TWO basins (the left marker keeps basin 1, the right basin 2, the two ends told apart) with a thin WATERSHED LINE falling between them where the two floods met; every foreground pixel comes back a basin or a watershed line and every background pixel stays 0 (the flood is total, the cut real); one marker floods a lone blob whole with no watershed line; the flood rides a bucket priority queue keyed by inverted-distance terrain, deepest first, each pixel queued at most once; colorize renders the segmentation to a real image (background black, watershed white, each basin its distinct palette color) that round-trips through the open QOI codec byte-for-byte; an empty field, a marker map of the wrong size, no markers, and a field with no depth each refuse by name having allocated nothing; the same field segments deterministically\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: watershed selftest\n", .{});
+    return 1;
+}
