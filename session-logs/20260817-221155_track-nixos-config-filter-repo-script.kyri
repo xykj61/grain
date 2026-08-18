@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260817.221155
+editor Claude Code
+model claude-opus-4-8
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title track the pier NixOS config in the repo; outer script to install git-filter-repo
+prompt Keaton: make/update a script I run outer to modify the nixos config so I can rebuild; shouldn't we track our personal nixos config since that's the whole point of nixos declarative files; would an outer symlink or a copy to path work
+think Keaton is right -- NixOS's whole point is a declarative, version-controlled config, yet /etc/nixos lived only on the host, untracked; tracking it in the repo makes it versioned, reviewable, reproducible
+think /etc/nixos is readable from the jail (not writable, no sudo), so I copied configuration.nix, disk-config.nix, flake.nix, flake.lock into a tracked nixos/ and added git-filter-repo to the tracked configuration.nix
+think Symlink vs copy: chose SYMLINK (/etc/nixos -> repo/nixos) so the repo is the ONE source of truth and a git edit applies on the next rebuild with no drift; a copy would leave two divergent files. The script keeps a timestamped backup of the old /etc/nixos for full reversibility
+obs Wrote tools/pier_nixos_track.sh modeled on pier_jq_install.sh -- guarded (pier host + repo present), validated (nix-instantiate --parse before switching), reversible (backup + atomic nixos-rebuild), idempotent (skip the relink if already tracking); Keaton runs it outer as root: sudo sh ~/grain/tools/pier_nixos_track.sh
+obs Seated nixos/ as personal in the seed manifest (host-specific: hostname, disk, packages -- never public), so the seed projection stays M1-classified and withholds the host config
+obs Installing git-filter-repo this way unblocks the eventual waymark-elder deep debride cleanly from the jail; counsel on whether that debride is worth it (even with an immutable registry it loses reds-lessons + walk-backs) rides in the reply, not committed
+file nixos/ tracked copy of the pier's declarative config, with git-filter-repo added
+file tools/pier_nixos_track.sh guarded/reversible outer script: symlink /etc/nixos -> repo + rebuild
+file template-manifest.bron personal nixos (withheld from the public seed)
+recommend check-in Keaton runs the outer script to install filter-repo; I recommend seating an immutable hash-sealed waymark registry next (good regardless), then weighing the debride with the registry in hand
