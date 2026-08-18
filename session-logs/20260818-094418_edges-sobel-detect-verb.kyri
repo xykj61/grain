@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260818.094418
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title edges -- the Sobel edge detector, the convolution floor's DETECT verb, GREEN
+prompt baton prin recur -- pick up the running thread; Standfast on reds first, then the next agent-doable lap Lindy-first crux-first on the live green edge; stop at custody gates
+think Became Kyri (context/KYRI.md + RADIANT_STYLE.md), then walked the living card, itineraries, top three session logs, and REDS.
+think Standfast pass: crux/REDS.md living rows (80, 81, 82, 83, 84, 85, 86, 87, 78, 75, 73, 74) are all CLOSED, released, or resting as custody-gated errata (#75 -- a history rewrite that is Keaton's hand). No open agent-closable red, so new work is allowed.
+think Running thread: the last many laps built the Season G open-media image family; newest was image/sharpen.rye (unsharp mask), GREEN. The Microkernel double-seat leads by Lindy-first crux-first, yet its only ungated move is study -- so the constructive lap grows Season G.
+think Crux-first choice: the blur module named "Gaussian/sharpen/edge kernels" as its siblings, and the sharpen log called drop shadow and frosted panel "pure compositions of blur + compose that already stand" -- the easy laps. Crux-first takes the hard one: a genuinely new convolution primitive. The Sobel edge detector is the third pillar of the convolution floor (blur smooths, sharpen enhances, edges detect) and owns new pixel math -- two signed directional gradient kernels combined by magnitude.
+think Design: edge_magnitude(allocator, src, gain) computes |gx|+|gy| per color channel (integer L1, no float, no sqrt), scaled by gain percent and clamped; alpha CARRIED from the source (not detected) so the map stays visible where the source was. edges(allocator, src) is the edge_default_gain convenience -- the exact general/convenience shape sharpen uses. Window clamps at the border like the blur family, so a 1x1 image yields black.
+think Resolved the alpha question honestly: detecting alpha would make an opaque photo's edge map fully transparent (invisible) -- so alpha is carried, documented as the sensible default, with alpha-detect and luminance maps named as future siblings.
+obs GREEN on the FIRST full metal run, no reds -- the hand-computed values landed exactly (a dim corner center reads 64 = |gx|+|gy|, proving the L1 SUM not a max; gain 300 lifts it to 192, gain 500 clamps to 255, gain 0 darkens to 0; a vertical edge lights a horizontal gradient to 255 while the flat interior stays dark; a 1x1 image yields black; alpha carried at an alpha boundary; QOI round-trip byte-for-byte; two refusals by name).
+obs The American-spelling directive caught me -- I first wrote "colour" throughout; normalized colour->color (and the uppercase COLOUR) before the gates, then rebuilt GREEN. Measurement over memory: the directive is in REMEMBER's INNER LOOP, read every lap.
+loom witness=edges_witness wall_run=first_pass checks=12 result=GREEN
+file image/edges.rye the Sobel edge detector -- |gx|+|gy| per color channel, gain-scaled, clamped, alpha carried; general edge_magnitude + edges convenience
+file tools/edges_witness.rish proves it on metal -- flat/directional/L1-sum/gain/alpha-carried/round-trip/refusals/determinism
+file image/README.md docs-sync -- a Detect bullet beside Crispen and a full edges.rye entry beside sharpen.rye
+file crux/REMEMBER.md live edge + Git nib prepended with the edges rung, sharpen demoted to prior edge
+recommend keep-going the convolution floor now has smooth (blur/gaussian), enhance (sharpen), and detect (edges); next crux-first siblings are a general signed 3x3 convolution kernel (emboss/Laplacian/custom) or a luminance edge map, or the compositional drop-shadow/frosted-panel rungs; all agent-doable, no gate reached
