@@ -1,0 +1,39 @@
+# tools/convolve_witness.rish -- the general 3x3 convolution kernel proves itself on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the GENERAL verb of the convolution floor, the form the specific convolutions descend
+# from. image/blur.rye and image/gaussian.rye smooth, image/sharpen.rye enhances, and image/edges.rye detects; each is a
+# hand-built special case of one idea -- slide a small weighted window across the image and replace every pixel with a
+# weighted sum of its neighbors. This rung names that idea outright, so a surface can emboss, find a Laplacian outline, or run
+# a keeper's own kernel without a new module for each.
+#
+# The crux this witness proves is that the general contains the special: the identity kernel reproduces the source
+# byte-for-byte. On metal: the box mean normalizes (a flat field of 100 stays 100, not 9*100); the Laplacian lights a bright
+# point to 255 and darkens its neighbors while a flat field stays black; the emboss centers a flat field on mid-gray 128 and
+# raises a diagonal edge above it, where a bias of 0 leaves the same emboss black; a negative result clamps to 0 and an over
+# result to 255 with no wrap; a 1x1 image keeps its pixel under the identity and reads black under the Laplacian; alpha is
+# carried not convolved; the filtered image round-trips through the open QOI codec byte-for-byte; a zero divisor, an over-max
+# divisor, bias, and weight, and an empty source refuse by name; the same filter is deterministic. No network, no key, no
+# funds -- the filter a surface runs the day it wants a relief, an outline, or a keeper's own kernel, on our own open geometry.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/convolve_witness.rish
+
+say "convolve: Language EN -- Season G convolution; an RGBA image filtered by a general signed 3x3 kernel, the form emboss, Laplacian, and every custom filter descend from, so a surface needs no new module per filter."
+say "convolve: Style Radiant -- a kernel is nine signed weights over the window, a divisor that normalizes the sum, and a bias added after; the filter is one honest line clamp((sum(weight*window) / divisor) + bias) per color channel, the alpha carried so the filtered image stays visible exactly where the source was."
+say "convolve: Lens TAME -- u32 in-memory counts, the weights, divisor, and bias each bounded and refused by name; each function states its invariants positively; the source and kernel guarded once up front so a refusal allocates nothing; the window clamps at the border so the 3x3 kernel is always full; the i32 intermediate clamped so an over/undershoot lands on a rail rather than wrapping; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/convolve"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/convolve.rye -femit-bin=${bin}"]
+assert build.ok else "convolve: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "convolve: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "convolve: ${out}"
+
+assert selftest.out contains "GREEN image-convolve" else "convolve: selftest did not print the GREEN line"
+
+say "convolve: GREEN -- a general signed 3x3 convolution filters an image atop the floor blur, sharpen, and edges each specialize, the identity kernel proving the general contains the special, on metal."

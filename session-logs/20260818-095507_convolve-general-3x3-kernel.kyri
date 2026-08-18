@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260818.095507
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title convolve -- the general signed 3x3 convolution kernel, the general contains the special, GREEN
+prompt baton prin recur -- pick up the running thread Lindy-first crux-first, take the next agent-doable lap
+think Grounded as Kyri in Radiant Style, read REMEMBER, the double-seat eight-seasons itinerary, and the top of the log index. The Microkernel double-seat leads by Lindy-first crux-first yet its only ungated move is study, so the live green edge is Season G open-media, one green Rye rung per lap.
+think Standfast check first: REDS is clean -- rows 80/83/84/85 and every prose note closed, released, or (#75) resting as custody-gated errata (a deep debride is Keaton's hand). No open agent-closable red, so new work is licensed.
+think Crux-first on the convolution floor: blur/gaussian SMOOTH, sharpen ENHANCES, edges DETECT -- each a hand-built special case of one idea. The edges log named a general 3x3 kernel and a luminance edge map as siblings. The general kernel is the more DURABLE (a floor emboss, Laplacian, and every custom filter descend from) and the harder-solvable (the crux), so I took it over the smaller luminance map.
+think Designed image/convolve.rye: a Kernel3 (nine signed weights, a divisor, a bias), clamp((sum(weight*window) / divisor) + bias) per color channel, alpha carried like edges, window clamped like the blur family, integer-only so deterministic. Bounded weight/divisor/bias each refused by name. Five named kernel constants (identity, box, laplacian, emboss, sharpen) ship as proof, emboss + laplacian as convenience verbs.
+think The proof shape the tree favors: the general contains the special. The IDENTITY kernel reproduces the source byte-for-byte; the box mean normalizes (flat 100 stays 100, not 9*100) so the divisor is proven; the emboss centers a flat field on mid-gray 128 so the bias is proven, and a bias of 0 leaves it black; the Laplacian lights a bright point to 255 and darkens neighbors so the signed weights are proven. Sobel edge-magnitude is NOT a single linear convolution (it is the L1 of two kernels), so I did not overclaim byte-for-byte parity with edges/sharpen -- named the honest distinction (this sharpen kernel is the single-window Laplacian sharpen, not the Gaussian unsharp mask).
+obs GREEN on the first full metal run, no reds -- the design held because it mirrored the proven edges.rye structure (clamp_axis, clamp_byte, guard-before-allocate, per-channel loop with alpha carried).
+obs Scope kept narrow: one new operation (the general normalized-biased weighted-window sum) over qoi, no new blend/codec/color; two convenience verbs are pure pass-throughs. A general NxN kernel, a separable-kernel fast path, and a preserve-vs-convolve-alpha option are the named siblings to grow next.
+obs Council rota item 9 -- foundations/20260810-011514_pond-the-application-module.md, the Pond application module: the floor where Grain's bounded modules compose into a running whole a person holds, inheriting the shape of an application host from Gall, isolation discipline from KVM/Qemu, and least-privilege posture from the Rust VMMs, code copied from none. The image family is one of those bounded modules Pond will one day compose into a surface a keeper opens.
+loom witness=convolve_witness wall_pass=green checks=20 kernels=5 image_modules=120
+file image/convolve.rye the general signed 3x3 convolution kernel -- Kernel3 (weights/divisor/bias), five named kernels, emboss/laplacian verbs, alpha carried, clamp-to-border, bounded refusals
+file tools/convolve_witness.rish proves it on metal -- build, selftest, native contains check for the GREEN line (never a shell grep, per REDS #85)
+file image/README.md the Filter summary bullet plus the full convolve.rye entry seated after edges.rye
+file crux/REMEMBER.md live-edge head repointed to convolve.rye as the newest green rung, single-stranded
+recommend keep-going the next Season G rung Lindy-first crux-first -- a luminance/grayscale edge map (edges' named sibling) or a general NxN kernel; the Microkernel double-seat still leads but stays study-only until a fetch/license gate opens

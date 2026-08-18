@@ -1,0 +1,404 @@
+//! image/convolve.rye -- an RGBA image filtered by a GENERAL signed 3x3 convolution kernel (Season G, the convolution floor's general verb).
+//!
+//! Season G (Open Media Primitives) -- the general form the specific convolutions descend from. image/blur.rye and
+//! image/gaussian.rye SMOOTH (a fixed averaging window), image/sharpen.rye ENHANCES detail (the image minus its own blur),
+//! and image/edges.rye DETECTS (the Sobel gradient magnitude). Each is a hand-built special case of one idea: slide a small
+//! weighted window across the image and replace every pixel with a weighted sum of its neighbors. This rung names that idea
+//! outright -- a general 3x3 convolution -- so a surface can emboss, find a Laplacian outline, or run a keeper's own custom
+//! filter without a new module for each. It is the floor a whole family of one-off filters stands on.
+//!
+//! A kernel is nine signed weights over the 3x3 window, a `divisor` that normalizes the sum, and a `bias` added after. For
+//! each output pixel and each color channel the value is `clamp((sum(weight[k] * window[k]) / divisor) + bias)`. The divisor
+//! lets an averaging kernel keep the image's brightness (a box of nine 1s over a divisor of 9 is the mean), and the bias lets
+//! a zero-sum kernel read at mid-gray instead of black (an emboss centers its relief on 128, so a flat field reads gray and
+//! the relief rises above and falls below it). The weights are signed, so a kernel can subtract as well as add -- that is what
+//! turns a plain average into an edge finder or a sharpener.
+//!
+//! Three named kernels ship as proof the general contains the special: the IDENTITY (a single 1 at the center) reproduces the
+//! source byte-for-byte; the BOX MEAN (nine 1s over a divisor of 9) averages a window, its brightness held by the divisor;
+//! the LAPLACIAN (`[[0,-1,0],[-1,4,-1],[0,-1,0]]`, zero-sum) lights a boundary and leaves a flat field black; the EMBOSS (a
+//! zero-sum diagonal relief with bias 128) reads a flat field as mid-gray and a diagonal edge as a raised or sunken line; the
+//! SHARPEN kernel (`[[0,-1,0],[-1,5,-1],[0,-1,0]]`, the single-kernel Laplacian sharpen, distinct from the Gaussian unsharp
+//! mask in image/sharpen.rye) crispens an edge in one pass.
+//!
+//! This rung owns ONE new operation -- the general signed weighted-window sum, normalized and biased -- and leans only on
+//! image/qoi.rye for the grid; it adds no blur, no blend, no codec, no color model. Like image/edges.rye, the convolution is
+//! measured on the three COLOR channels each independently and the ALPHA is CARRIED from the source unchanged, so the filtered
+//! image stays visible exactly where the source was (an opaque photo yields an opaque relief; a sprite's transparent ground
+//! stays transparent). Window edges CLAMP to the border, exactly as the whole convolution family does, so the 3x3 kernel is
+//! always full and a 1x1 image reads its own single pixel (the identity keeps it; a zero-sum kernel yields black). The
+//! arithmetic is integer-only (i32 intermediate, truncated toward zero) so a filter is deterministic byte-for-byte, and the
+//! clamp lands an over/undershoot exactly on 0 or 255 rather than wrapping. A zero-extent source, a zero divisor, or a weight,
+//! divisor, or bias past its named bound refuses BY NAME before any allocation, so a malformed filter leaves nothing behind.
+//! No network, no key, no funds -- the filter a surface runs the day it wants a relief, an outline, or a keeper's own kernel,
+//! on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/convolve.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+
+pub const convolve_version = "20260818.100000";
+
+/// The widest absolute weight a kernel tap may carry. Bounds the raw window sum: nine taps, each sample at most 255, each
+/// weight at most this, so |sum| <= 9 * 255 * convolve_max_weight stays far inside i32. Generous for every real kernel.
+pub const convolve_max_weight: i32 = 255;
+
+/// The widest absolute divisor a kernel may name. A divisor of 1 leaves the sum as-is (edge and emboss kernels); a larger one
+/// normalizes an averaging kernel. Bounded so the divide is a real, small normalization rather than an unbounded scale.
+pub const convolve_max_divisor: i32 = 4096;
+
+/// The widest absolute bias a kernel may add after the divide. A bias of 0 leaves the result centered on black; 128 centers a
+/// zero-sum relief on mid-gray. Bounded so the shift stays inside a real byte's neighborhood.
+pub const convolve_max_bias: i32 = 4096;
+
+/// A general 3x3 convolution kernel: nine signed weights over the window (row-major, k = 0..8, dx = k%3 - 1, dy = k/3 - 1), a
+/// non-zero divisor that normalizes the weighted sum, and a bias added after the divide. The whole filter is one honest line:
+/// `clamp((sum(weights[k] * window[k]) / divisor) + bias)` per color channel.
+pub const Kernel3 = struct {
+    weights: [9]i32,
+    divisor: i32,
+    bias: i32,
+};
+
+/// The IDENTITY kernel -- a single 1 at the center, divisor 1, bias 0. Reproduces the source byte-for-byte: the general verb
+/// contains the do-nothing special.
+pub const identity_kernel = Kernel3{ .weights = [9]i32{ 0, 0, 0, 0, 1, 0, 0, 0, 0 }, .divisor = 1, .bias = 0 };
+
+/// The BOX MEAN kernel -- nine 1s over a divisor of 9, bias 0. A 3x3 average, its brightness held by the divisor (a flat field
+/// stays its own value rather than nine times it). The floor image/blur.rye separates into two 1D passes; this is the direct
+/// 2D form, offered here to prove the divisor normalizes.
+pub const box_kernel = Kernel3{ .weights = [9]i32{ 1, 1, 1, 1, 1, 1, 1, 1, 1 }, .divisor = 9, .bias = 0 };
+
+/// The LAPLACIAN kernel -- `[[0,-1,0],[-1,4,-1],[0,-1,0]]`, zero-sum, divisor 1, bias 0. Lights a boundary (the second
+/// derivative is large where the image bends) and leaves a flat field black. A single-kernel edge finder, distinct from the
+/// Sobel gradient magnitude in image/edges.rye (which combines two directional kernels by L1 magnitude).
+pub const laplacian_kernel = Kernel3{ .weights = [9]i32{ 0, -1, 0, -1, 4, -1, 0, -1, 0 }, .divisor = 1, .bias = 0 };
+
+/// The EMBOSS kernel -- a zero-sum diagonal relief `[[-2,-1,0],[-1,0,1],[0,1,2]]`, divisor 1, bias 128. A flat field reads
+/// exactly mid-gray (the bias), and a diagonal edge rises above or sinks below it, the classic stamped-relief look.
+pub const emboss_kernel = Kernel3{ .weights = [9]i32{ -2, -1, 0, -1, 0, 1, 0, 1, 2 }, .divisor = 1, .bias = 128 };
+
+/// The SHARPEN kernel -- `[[0,-1,0],[-1,5,-1],[0,-1,0]]`, sum 1, divisor 1, bias 0. The single-kernel Laplacian sharpen: a
+/// flat field is preserved (5v - 4v = v) and an edge is steepened in one pass. Distinct from image/sharpen.rye's Gaussian
+/// unsharp mask, which subtracts a true multi-pass blur; this is the fast one-window approximation.
+pub const sharpen_kernel = Kernel3{ .weights = [9]i32{ 0, -1, 0, -1, 5, -1, 0, -1, 0 }, .divisor = 1, .bias = 0 };
+
+pub const ConvolveError = error{
+    EmptySource,
+    ZeroDivisor,
+    DivisorTooLarge,
+    WeightTooLarge,
+    BiasTooLarge,
+};
+
+/// Clamp a signed axis position onto a real pixel index in `[0, extent-1]`. A window that reaches past a border reads the
+/// nearest border pixel, so the 3x3 kernel is always full and a flat margin never invents a phantom value.
+fn clamp_axis(pos: i64, extent: u32) u32 {
+    // invariant: a real axis has at least one pixel to clamp onto.
+    assert(extent >= 1);
+    if (pos <= 0) return 0;
+    const hi: i64 = @as(i64, extent) - 1;
+    // invariant: the far clamp lands on the last real pixel, never past it.
+    if (pos >= hi) return @intCast(hi);
+    return @intCast(pos);
+}
+
+/// Clamp a signed filtered value onto a real byte 0..255. An over/undershoot past a rail lands exactly on it rather than
+/// wrapping -- the whole reason the intermediate is i32 and the result is clamped, not cast raw.
+fn clamp_byte(v: i32) u8 {
+    // invariant: a value below the floor pins to 0; the guard below proves the cast then cannot see a negative.
+    if (v < 0) return 0;
+    // invariant: a value above the ceiling pins to 255; the guard below proves the cast then cannot see 256+.
+    if (v > 255) return 255;
+    // invariant: past both rails the value is already a real byte, so the cast never truncates.
+    assert(v >= 0);
+    assert(v <= 255);
+    return @intCast(v);
+}
+
+/// Convolve one color channel at pixel (x, y): the weighted sum of the clamped 3x3 window, normalized by the divisor and
+/// shifted by the bias. Returns the pre-clamp signed value so the caller clamps once.
+fn convolve_channel(src: []const u8, w: u32, h: u32, x: u32, y: u32, ch: u32, kernel: Kernel3) i32 {
+    // invariant: the channel is one of the four RGBA lanes.
+    assert(ch < 4);
+    // invariant: the read pixel lies inside the image on both axes.
+    assert(x < w);
+    assert(y < h);
+    // invariant: the divisor is non-zero (guarded before the call), so the divide is well defined.
+    assert(kernel.divisor != 0);
+    var sum: i32 = 0;
+    var k: u32 = 0;
+    while (k < 9) : (k += 1) {
+        const dx: i64 = @as(i64, k % 3) - 1;
+        const dy: i64 = @as(i64, k / 3) - 1;
+        const sx = clamp_axis(@as(i64, x) + dx, w);
+        const sy = clamp_axis(@as(i64, y) + dy, h);
+        const si = (@as(usize, sy) * @as(usize, w) + @as(usize, sx)) * 4 + @as(usize, ch);
+        // each |weight| <= 255 and each sample <= 255, so |sum| <= 9*255*255 = 585_225 -- far inside i32
+        sum += kernel.weights[k] * @as(i32, src[si]);
+    }
+    return @divTrunc(sum, kernel.divisor) + kernel.bias;
+}
+
+/// Write the convolution of `src` by `kernel` into `out`: each color channel becomes the normalized, biased, clamped window
+/// sum and the alpha is carried from `src` unchanged. Both buffers hold the same RGBA byte count; the pass reads `src` and
+/// writes `out`, touching no other memory.
+fn apply_convolve(out: []u8, src: []const u8, w: u32, h: u32, kernel: Kernel3) void {
+    // invariant: both buffers hold exactly w*h RGBA pixels, so every index lands inside each.
+    assert(out.len == src.len);
+    assert(out.len == @as(usize, w) * @as(usize, h) * 4);
+    // invariant: the divisor is non-zero (guarded before the call), so no channel divides by zero.
+    assert(kernel.divisor != 0);
+
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const base = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            var ch: u32 = 0;
+            while (ch < 3) : (ch += 1) {
+                out[base + ch] = clamp_byte(convolve_channel(src, w, h, x, y, ch, kernel));
+            }
+            out[base + 3] = src[base + 3]; // alpha carried from the source, not convolved
+        }
+    }
+}
+
+/// Guard the source and kernel: a zero-extent source refuses `EmptySource`, a zero divisor `ZeroDivisor`, and a divisor,
+/// weight, or bias past its named bound refuses BY NAME, each before any allocation. Returns the pixel-buffer length so the
+/// caller allocates once.
+fn guard(src: *const qoi.Pixmap, kernel: Kernel3) ConvolveError!usize {
+    // invariant: a real source has extent on both axes; a zero-size source has nothing to filter.
+    if (src.width == 0 or src.height == 0) return error.EmptySource;
+    // invariant: a zero divisor has no normalization; refuse rather than divide by zero.
+    if (kernel.divisor == 0) return error.ZeroDivisor;
+    const abs_div: i32 = if (kernel.divisor < 0) -kernel.divisor else kernel.divisor;
+    // invariant: the divisor magnitude stays in band, so the divide is a real, small normalization.
+    if (abs_div > convolve_max_divisor) return error.DivisorTooLarge;
+    const abs_bias: i32 = if (kernel.bias < 0) -kernel.bias else kernel.bias;
+    // invariant: the bias magnitude stays in band, so the shift stays near a real byte's neighborhood.
+    if (abs_bias > convolve_max_bias) return error.BiasTooLarge;
+    var k: u32 = 0;
+    while (k < 9) : (k += 1) {
+        const wv = kernel.weights[k];
+        const abs_w: i32 = if (wv < 0) -wv else wv;
+        // invariant: every weight magnitude stays in band, so the window sum can never wrap i32.
+        if (abs_w > convolve_max_weight) return error.WeightTooLarge;
+    }
+    return @as(usize, src.width) * @as(usize, src.height) * 4;
+}
+
+/// Convolve `src` by `kernel` into a fresh same-size RGBA Pixmap: each color channel becomes the normalized, biased, clamped
+/// 3x3 window sum, the alpha carried from `src` unchanged. Returns a newly allocated Pixmap the caller owns; `src` is
+/// read-only and untouched.
+pub fn convolve(allocator: std.mem.Allocator, src: *const qoi.Pixmap, kernel: Kernel3) !qoi.Pixmap {
+    const n = try guard(src, kernel);
+    // invariant: the guard proved real extent, so the buffer length is a real positive pixel count.
+    assert(n >= 4);
+    const out = try allocator.alloc(u8, n);
+    apply_convolve(out, src.pixels, src.width, src.height, kernel);
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+/// Emboss `src` into a fresh same-size RGBA Pixmap -- exactly `convolve` with `emboss_kernel`. A flat field reads mid-gray and
+/// a diagonal edge rises or sinks around it, the stamped-relief look a surface reaches for by name.
+pub fn emboss(allocator: std.mem.Allocator, src: *const qoi.Pixmap) !qoi.Pixmap {
+    return convolve(allocator, src, emboss_kernel);
+}
+
+/// Find `src`'s Laplacian edges into a fresh same-size RGBA Pixmap -- exactly `convolve` with `laplacian_kernel`. A flat field
+/// stays black and a boundary lights, the single-kernel outline beside the Sobel magnitude in image/edges.rye.
+pub fn laplacian(allocator: std.mem.Allocator, src: *const qoi.Pixmap) !qoi.Pixmap {
+    return convolve(allocator, src, laplacian_kernel);
+}
+
+// --- selftest: identity contains the source, box normalizes, Laplacian lights an edge, emboss centers on the bias --------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// Set one pixel's RGBA at (x, y) -- a small writer the pattern builders share.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    // --- a multicolor checker to exercise the general verb ------------------------------------------------------------
+    var checker = try make_canvas(garden, 5, 5, black);
+    var ky: u32 = 0;
+    while (ky < 5) : (ky += 1) {
+        var kx: u32 = 0;
+        while (kx < 5) : (kx += 1) {
+            if ((kx + ky) % 2 == 0) set_pixel(&checker, kx, ky, white);
+        }
+    }
+
+    // --- THE GENERAL-CONTAINS-SPECIAL CRUX: the IDENTITY kernel reproduces the source byte-for-byte --------------------
+    const same = try convolve(garden, &checker, identity_kernel);
+    if (!same.same_bytes(&checker)) return error.IdentityDidNotReproduceSource;
+
+    // --- the BOX MEAN normalizes: a flat field of value 100 stays 100 (the divisor holds brightness, not 9*100) --------
+    const gray100 = color.Rgba{ .r = 100, .g = 100, .b = 100, .a = 255 };
+    var flat = try make_canvas(garden, 4, 4, gray100);
+    _ = &flat;
+    const boxed = try convolve(garden, &flat, box_kernel);
+    if (pixel_at(&boxed, 1, 1).r != 100) return error.BoxDidNotNormalize;
+    // alpha carried through the box, not convolved
+    if (pixel_at(&boxed, 1, 1).a != 255) return error.BoxAlphaNotCarried;
+
+    // --- the LAPLACIAN lights a boundary and leaves a flat field black -------------------------------------------------
+    // A 3x3 black field with only the center (1,1) white. At (1,1): 4*255 - 4*0 = 1020 -> clamps to 255 (a bright point).
+    // At the left neighbor (0,1): 4*0 - (right neighbor 255, others clamp black) = -255 -> clamps to 0 (dark).
+    var point = try make_canvas(garden, 3, 3, black);
+    set_pixel(&point, 1, 1, white);
+    const lap = try laplacian(garden, &point);
+    if (pixel_at(&lap, 1, 1).r != 255) return error.LaplacianCenterNotLit;
+    if (pixel_at(&lap, 0, 1).r != 0) return error.LaplacianNeighborNotDark;
+    // a wholly flat field has no second derivative: the Laplacian map is black everywhere
+    const lap_flat = try laplacian(garden, &flat);
+    if (pixel_at(&lap_flat, 1, 1).r != 0) return error.LaplacianFlatNotBlack;
+
+    // --- the EMBOSS centers on the bias: a flat field reads exactly mid-gray 128 (the zero-sum kernel plus bias 128) ----
+    const emb_flat = try emboss(garden, &flat);
+    var ey: u32 = 0;
+    while (ey < 4) : (ey += 1) {
+        var ex: u32 = 0;
+        while (ex < 4) : (ex += 1) {
+            if (pixel_at(&emb_flat, ex, ey).r != 128) return error.EmbossFlatNotMidGray;
+        }
+    }
+    // a diagonal edge lifts one side above the bias and sinks the other below it, so the relief is NOT uniform gray
+    var diag = try make_canvas(garden, 3, 3, black);
+    set_pixel(&diag, 2, 2, white);
+    const emb_edge = try emboss(garden, &diag);
+    // the kernel's positive lobe is toward the bottom-right, so the center reads above 128 near the bright corner
+    if (pixel_at(&emb_edge, 1, 1).r <= 128) return error.EmbossEdgeNotRaised;
+
+    // --- the BIAS shifts a zero-sum result: with a bias of 0 the same flat emboss reads black, not 128 -----------------
+    const emboss_no_bias = Kernel3{ .weights = emboss_kernel.weights, .divisor = 1, .bias = 0 };
+    const emb_dark = try convolve(garden, &flat, emboss_no_bias);
+    if (pixel_at(&emb_dark, 1, 1).r != 0) return error.ZeroBiasNotBlack;
+
+    // --- a NEGATIVE result clamps to 0, an OVER result clamps to 255 (no wrap) -----------------------------------------
+    // A kernel of all -1 over divisor 1, bias 0: a flat white field -> 9 * -255 = -2295 -> clamps to 0.
+    const negate = Kernel3{ .weights = [9]i32{ -1, -1, -1, -1, -1, -1, -1, -1, -1 }, .divisor = 1, .bias = 0 };
+    var flat_white = try make_canvas(garden, 3, 3, white);
+    _ = &flat_white;
+    const negated = try convolve(garden, &flat_white, negate);
+    if (pixel_at(&negated, 1, 1).r != 0) return error.NegativeDidNotClampToZero;
+    // an amplify kernel of all 1 over divisor 1, bias 0: a flat white field -> 9 * 255 = 2295 -> clamps to 255.
+    const amplify = Kernel3{ .weights = [9]i32{ 1, 1, 1, 1, 1, 1, 1, 1, 1 }, .divisor = 1, .bias = 0 };
+    const amped = try convolve(garden, &flat_white, amplify);
+    if (pixel_at(&amped, 1, 1).r != 255) return error.OverDidNotClampTo255;
+
+    // --- a 1x1 image reads its own pixel under the identity (every neighbor clamps to itself) --------------------------
+    var one = try make_canvas(garden, 1, 1, white);
+    _ = &one;
+    const one_id = try convolve(garden, &one, identity_kernel);
+    if (pixel_at(&one_id, 0, 0).r != 255) return error.SinglePixelIdentityLost;
+    // and yields black under the zero-sum Laplacian (all four neighbors clamp to the center, so 4c - 4c = 0)
+    const one_lap = try laplacian(garden, &one);
+    if (pixel_at(&one_lap, 0, 0).r != 0) return error.SinglePixelLaplacianNotBlack;
+    if (pixel_at(&one_lap, 0, 0).a != 255) return error.SinglePixelAlphaLost;
+
+    // --- ALPHA is CARRIED, not convolved: a translucent source keeps its exact alpha byte -----------------------------
+    const translucent = color.Rgba{ .r = 40, .g = 80, .b = 120, .a = 90 };
+    var trans = try make_canvas(garden, 4, 4, translucent);
+    _ = &trans;
+    const trans_emb = try emboss(garden, &trans);
+    if (pixel_at(&trans_emb, 1, 1).a != 90) return error.AlphaNotCarried;
+
+    // --- a filtered image round-trips through the open QOI codec byte-for-byte -- a real image, not a private buffer ----
+    const shown = try emboss(garden, &checker);
+    const cap = qoi.encoded_bound(shown.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&shown, dst);
+    const back = try qoi.decode(garden, dst[0..enc.len]);
+    if (!back.same_bytes(&shown)) return error.ConvolveDidNotRoundTrip;
+
+    // --- refusals by name, each having allocated nothing --------------------------------------------------------------
+    const zero_div = Kernel3{ .weights = identity_kernel.weights, .divisor = 0, .bias = 0 };
+    if (convolve(garden, &checker, zero_div)) |_| return error.ZeroDivisorNotRefused else |err| {
+        if (err != error.ZeroDivisor) return error.WrongDivisorError;
+    }
+    const big_div = Kernel3{ .weights = identity_kernel.weights, .divisor = convolve_max_divisor + 1, .bias = 0 };
+    if (convolve(garden, &checker, big_div)) |_| return error.BigDivisorNotRefused else |err| {
+        if (err != error.DivisorTooLarge) return error.WrongBigDivisorError;
+    }
+    const big_bias = Kernel3{ .weights = identity_kernel.weights, .divisor = 1, .bias = convolve_max_bias + 1 };
+    if (convolve(garden, &checker, big_bias)) |_| return error.BigBiasNotRefused else |err| {
+        if (err != error.BiasTooLarge) return error.WrongBiasError;
+    }
+    const big_weight = Kernel3{ .weights = [9]i32{ 0, 0, 0, 0, convolve_max_weight + 1, 0, 0, 0, 0 }, .divisor = 1, .bias = 0 };
+    if (convolve(garden, &checker, big_weight)) |_| return error.BigWeightNotRefused else |err| {
+        if (err != error.WeightTooLarge) return error.WrongWeightError;
+    }
+    var empty = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (convolve(garden, &empty, identity_kernel)) |_| return error.EmptySourceNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- the named convenience verbs equal the general verb at their kernels byte-for-byte ----------------------------
+    const emb_by_verb = try emboss(garden, &checker);
+    const emb_by_general = try convolve(garden, &checker, emboss_kernel);
+    if (!emb_by_verb.same_bytes(&emb_by_general)) return error.EmbossVerbIsNotGeneral;
+    const lap_by_verb = try laplacian(garden, &checker);
+    const lap_by_general = try convolve(garden, &checker, laplacian_kernel);
+    if (!lap_by_verb.same_bytes(&lap_by_general)) return error.LaplacianVerbIsNotGeneral;
+
+    // --- determinism: the same filter finds the same pixels byte-for-byte ---------------------------------------------
+    const map_a = try emboss(garden, &checker);
+    const map_b = try emboss(garden, &checker);
+    if (!map_a.same_bytes(&map_b)) return error.ConvolveNotDeterministic;
+
+    print("GREEN image-convolve: an RGBA image filtered by a general signed 3x3 convolution kernel (clamp((sum(weight*window) / divisor) + bias) per color channel, alpha carried) -- THE GENERAL-CONTAINS-SPECIAL CRUX: the identity kernel reproduces the source byte-for-byte; the box mean normalizes so a flat field of 100 stays 100 (the divisor holds brightness, not 9*100); the Laplacian lights a bright point to 255 and darkens its neighbors while a flat field stays black; the emboss centers a flat field on mid-gray 128 (the zero-sum kernel plus bias 128) and raises a diagonal edge above it, where a bias of 0 leaves the same emboss black (the bias shifts the zero-sum result); a negative result clamps to 0 and an over result to 255 with no wrap; a 1x1 image keeps its pixel under the identity and reads black under the Laplacian; alpha is carried not convolved; the filtered image round-trips through the open QOI codec byte-for-byte; a zero divisor, an over-max divisor, bias, and weight, and an empty source refuse by name having allocated nothing; the emboss and laplacian convenience verbs equal the general verb at their kernels; the same filter is deterministic byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: convolve selftest\n", .{});
+    return 1;
+}
