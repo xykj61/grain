@@ -1,0 +1,39 @@
+# tools/convolve_n_witness.rish -- the general NxN convolution kernel proves itself on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the WIDEST verb of the convolution floor. image/convolve.rye names the 3x3 convolution
+# outright, the form the fixed special cases descend from; yet a 3x3 window is itself a special case of an idea with no fixed
+# width -- a wider smooth, a motion blur, a large custom kernel all want a window bigger than three. This rung names the fully
+# general form, a signed weighted window of ANY odd size, so the 3x3 verb becomes the radius-1 case of one idea.
+#
+# The crux this witness proves is that the general contains the special one radius deeper: a radius-1 KernelN whose weights are
+# a Kernel3's weights reproduces image/convolve.rye's output byte-for-byte -- the Laplacian and the identity both -- so the
+# widest verb contains the 3x3 verb, which contains the identity. On metal: the 5x5 box mean normalizes a wider window (a flat
+# field of 100 stays 100); the 5x5 binomial Gaussian spreads a point into a strictly descending symmetric bell wider than a 3x3
+# pass and holds a flat field flat; a negative result clamps to 0 and an over result to 255 with no wrap at a wide radius; a 1x1
+# image keeps its pixel under a wide window; alpha is carried not convolved; the filtered image round-trips through the open QOI
+# codec byte-for-byte; a zero radius, an over-max radius, a mismatched weight count, a zero and over-max divisor, an over-max
+# bias and weight, and an empty source refuse by name; the same filter is deterministic. No network, no key, no funds -- the
+# widest filter a surface runs on our own open geometry, the day it wants a window bigger than three.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/convolve_n_witness.rish
+
+say "convolve_n: Language EN -- Season G convolution; an RGBA image filtered by a general signed NxN kernel, the widest form emboss, a wide Gaussian, a motion blur, and every custom filter descend from, so a surface is never gated by the window's width."
+say "convolve_n: Style Radiant -- a kernel is (2r+1)^2 signed weights over the window, a divisor that normalizes the sum, and a bias added after; the filter is one honest line clamp((sum(weight*window) / divisor) + bias) per color channel at any radius, the alpha carried so the filtered image stays visible exactly where the source was."
+say "convolve_n: Lens TAME -- u32 in-memory counts, the radius, weight count, divisor, weights, and bias each bounded and refused by name; each function states its invariants positively; the source and kernel guarded once up front so a refusal allocates nothing; the window clamps at the border so the kernel is always full; the i32 intermediate clamped so an over/undershoot lands on a rail rather than wrapping; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/convolve_n"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/convolve_n.rye -femit-bin=${bin}"]
+assert build.ok else "convolve_n: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "convolve_n: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "convolve_n: ${out}"
+
+assert selftest.out contains "GREEN image-convolve-n" else "convolve_n: selftest did not print the GREEN line"
+
+say "convolve_n: GREEN -- a general signed NxN convolution filters an image at any radius, a radius-1 KernelN proving it contains image/convolve.rye's 3x3 verb byte-for-byte, on metal."

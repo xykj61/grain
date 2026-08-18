@@ -1,0 +1,440 @@
+//! image/convolve_n.rye -- an RGBA image filtered by a GENERAL signed NxN convolution kernel (Season G, the convolution floor's widest verb).
+//!
+//! Season G (Open Media Primitives) -- the general of the general. image/convolve.rye names the 3x3 convolution outright, the
+//! form the fixed special cases descend from (blur/gaussian SMOOTH, sharpen ENHANCES, edges DETECT). Yet a 3x3 window is itself
+//! a special case: a wider smooth (a 5x5 or 7x7 Gaussian), a motion blur (a long thin line of weights), a large custom kernel
+//! all want a window bigger than three. This rung names the fully general form -- a signed weighted window of ANY odd size --
+//! so the 3x3 verb becomes the radius-1 case of one idea, and no filter is ever gated by the window's width again.
+//!
+//! A kernel is `(2r+1)*(2r+1)` signed weights over the window (radius `r`, row-major, k = 0..count, dx = k%(2r+1) - r, dy =
+//! k/(2r+1) - r), a `divisor` that normalizes the sum, and a `bias` added after. For each output pixel and each color channel
+//! the value is `clamp((sum(weight[k] * window[k]) / divisor) + bias)` -- exactly image/convolve.rye's line, widened from a
+//! fixed nine taps to a named radius. The divisor holds an averaging kernel's brightness (a 5x5 box of twenty-five 1s over a
+//! divisor of 25 is the mean, not twenty-five times it); the bias lets a zero-sum kernel read at mid-gray; the signed weights
+//! turn a plain average into an edge finder, a sharpener, or a directional smear.
+//!
+//! THE GENERAL-CONTAINS-SPECIAL CRUX, one radius deeper: a radius-1 KernelN whose weights are a Kernel3's weights reproduces
+//! image/convolve.rye's output byte-for-byte -- the widest verb contains the 3x3 verb, which contains the identity. Two named
+//! wider kernels ship as proof the width is real: the 5x5 BOX MEAN (twenty-five 1s over 25) averages a wider window than the
+//! 3x3 box; the 5x5 GAUSSIAN (the separable binomial `[1,4,6,4,1]` outer product over 256) spreads a point into a rounded bell
+//! wider and smoother than a single 3x3 pass, the true wide blur a designer reaches for.
+//!
+//! This rung owns ONE operation -- the general signed weighted-window sum at any radius, normalized and biased -- and leans
+//! only on image/qoi.rye for the grid (image/convolve.rye enters only in the selftest, to prove the 3x3 parity). Like the whole
+//! convolution family, the filter is measured on the three COLOR channels each independently and the ALPHA is CARRIED from the
+//! source unchanged; window edges CLAMP to the border so the kernel is always full and a 1x1 image reads its own single pixel;
+//! the arithmetic is integer-only (i32 intermediate, truncated toward zero) so a filter is deterministic byte-for-byte, and the
+//! clamp lands an over/undershoot exactly on 0 or 255 rather than wrapping. A zero-extent source, a radius outside its band, a
+//! weight count that mismatches the radius, a zero or over-max divisor, or a weight or bias past its named bound refuses BY NAME
+//! before any allocation, so a malformed filter leaves nothing behind. No network, no key, no funds -- the widest filter a
+//! surface runs on our own open geometry, the day it wants a window bigger than three.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/convolve_n.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const convolve = @import("convolve.rye");
+
+pub const convolve_n_version = "20260818.101500";
+
+/// The widest radius a kernel window may carry. A radius `r` names a `(2r+1)x(2r+1)` window: radius 1 is the 3x3 case, radius 2
+/// a 5x5, radius 16 a 33x33. Bounded so the window sum can never wrap i32: the widest window is 33*33 = 1089 taps, each sample
+/// at most 255 and each weight at most `convolve_n_max_weight`, so |sum| <= 1089 * 255 * 255 = 70_814_475 -- far inside i32.
+pub const convolve_n_max_radius: u32 = 16;
+
+/// The widest absolute weight a kernel tap may carry -- the same generous bound the 3x3 verb names, chosen with the radius bound
+/// above so the widest possible window sum stays deep inside i32.
+pub const convolve_n_max_weight: i32 = 255;
+
+/// The widest absolute divisor a kernel may name. A divisor of 1 leaves the sum as-is (edge and emboss kernels); a larger one
+/// normalizes an averaging kernel (256 for the binomial Gaussian). Bounded so the divide is a real, small normalization.
+pub const convolve_n_max_divisor: i32 = 65536;
+
+/// The widest absolute bias a kernel may add after the divide. A bias of 0 leaves the result centered on black; 128 centers a
+/// zero-sum relief on mid-gray. Bounded so the shift stays inside a real byte's neighborhood.
+pub const convolve_n_max_bias: i32 = 4096;
+
+/// A general NxN convolution kernel: `(2*radius+1)^2` signed weights over the window (row-major, k = 0..count, dx = k%(2r+1) - r,
+/// dy = k/(2r+1) - r), a non-zero divisor that normalizes the weighted sum, and a bias added after the divide. The whole filter
+/// is one honest line: `clamp((sum(weights[k] * window[k]) / divisor) + bias)` per color channel -- the 3x3 line, any radius.
+pub const KernelN = struct {
+    weights: []const i32,
+    radius: u32,
+    divisor: i32,
+    bias: i32,
+
+    /// The tap count a kernel of this radius must carry: the full `(2r+1)^2` window. A caller sizes its weight slice by this.
+    pub fn tap_count(radius: u32) u32 {
+        // invariant: a real window has a radius of at least one, so the side is at least three.
+        assert(radius >= 1);
+        const side = 2 * radius + 1;
+        return side * side;
+    }
+};
+
+/// The 5x5 BOX MEAN weights -- twenty-five 1s. Over a divisor of 25 (bias 0) this is a wider average than the 3x3 box, offered
+/// as proof the general verb normalizes a window of any width.
+pub const box5_weights = [25]i32{
+    1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1,
+};
+
+/// The 5x5 GAUSSIAN weights -- the separable binomial `[1,4,6,4,1]` outer product. Over a divisor of 256 (their sum, bias 0)
+/// this spreads a point into a rounded bell wider and smoother than a single 3x3 box, the true wide blur.
+pub const gaussian5_weights = [25]i32{
+    1, 4,  6,  4,  1,
+    4, 16, 24, 16, 4,
+    6, 24, 36, 24, 6,
+    4, 16, 24, 16, 4,
+    1, 4,  6,  4,  1,
+};
+
+pub const ConvolveNError = error{
+    EmptySource,
+    BadRadius,
+    RadiusTooLarge,
+    WeightCountMismatch,
+    ZeroDivisor,
+    DivisorTooLarge,
+    WeightTooLarge,
+    BiasTooLarge,
+};
+
+/// Clamp a signed axis position onto a real pixel index in `[0, extent-1]`. A window that reaches past a border reads the
+/// nearest border pixel, so the kernel is always full and a flat margin never invents a phantom value.
+fn clamp_axis(pos: i64, extent: u32) u32 {
+    // invariant: a real axis has at least one pixel to clamp onto.
+    assert(extent >= 1);
+    if (pos <= 0) return 0;
+    const hi: i64 = @as(i64, extent) - 1;
+    // invariant: the far clamp lands on the last real pixel, never past it.
+    if (pos >= hi) return @intCast(hi);
+    return @intCast(pos);
+}
+
+/// Clamp a signed filtered value onto a real byte 0..255. An over/undershoot past a rail lands exactly on it rather than
+/// wrapping -- the whole reason the intermediate is i32 and the result is clamped, not cast raw.
+fn clamp_byte(v: i32) u8 {
+    // invariant: a value below the floor pins to 0; the guard below proves the cast then cannot see a negative.
+    if (v < 0) return 0;
+    // invariant: a value above the ceiling pins to 255; the guard below proves the cast then cannot see 256+.
+    if (v > 255) return 255;
+    // invariant: past both rails the value is already a real byte, so the cast never truncates.
+    assert(v >= 0);
+    assert(v <= 255);
+    return @intCast(v);
+}
+
+/// Convolve one color channel at pixel (x, y): the weighted sum of the clamped `(2r+1)x(2r+1)` window, normalized by the divisor
+/// and shifted by the bias. Returns the pre-clamp signed value so the caller clamps once.
+fn convolve_channel(src: []const u8, w: u32, h: u32, x: u32, y: u32, ch: u32, kernel: KernelN) i32 {
+    // invariant: the channel is one of the four RGBA lanes.
+    assert(ch < 4);
+    // invariant: the read pixel lies inside the image on both axes.
+    assert(x < w);
+    assert(y < h);
+    // invariant: the divisor is non-zero (guarded before the call), so the divide is well defined.
+    assert(kernel.divisor != 0);
+    const side = 2 * kernel.radius + 1;
+    // invariant: the weight slice holds exactly the window's taps (guarded before the call), so every k lands inside it.
+    assert(kernel.weights.len == @as(usize, side) * @as(usize, side));
+    const r: i64 = kernel.radius;
+    var sum: i32 = 0;
+    var k: u32 = 0;
+    while (k < kernel.weights.len) : (k += 1) {
+        const dx: i64 = @as(i64, k % side) - r;
+        const dy: i64 = @as(i64, k / side) - r;
+        const sx = clamp_axis(@as(i64, x) + dx, w);
+        const sy = clamp_axis(@as(i64, y) + dy, h);
+        const si = (@as(usize, sy) * @as(usize, w) + @as(usize, sx)) * 4 + @as(usize, ch);
+        // each |weight| <= 255 and each sample <= 255 over at most 1089 taps, so |sum| stays far inside i32
+        sum += kernel.weights[k] * @as(i32, src[si]);
+    }
+    return @divTrunc(sum, kernel.divisor) + kernel.bias;
+}
+
+/// Write the convolution of `src` by `kernel` into `out`: each color channel becomes the normalized, biased, clamped window sum
+/// and the alpha is carried from `src` unchanged. Both buffers hold the same RGBA byte count; the pass reads `src` and writes
+/// `out`, touching no other memory.
+fn apply_convolve(out: []u8, src: []const u8, w: u32, h: u32, kernel: KernelN) void {
+    // invariant: both buffers hold exactly w*h RGBA pixels, so every index lands inside each.
+    assert(out.len == src.len);
+    assert(out.len == @as(usize, w) * @as(usize, h) * 4);
+    // invariant: the divisor is non-zero (guarded before the call), so no channel divides by zero.
+    assert(kernel.divisor != 0);
+
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const base = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            var ch: u32 = 0;
+            while (ch < 3) : (ch += 1) {
+                out[base + ch] = clamp_byte(convolve_channel(src, w, h, x, y, ch, kernel));
+            }
+            out[base + 3] = src[base + 3]; // alpha carried from the source, not convolved
+        }
+    }
+}
+
+/// Guard the source and kernel: a zero-extent source refuses `EmptySource`, a radius outside `[1, max]` refuses `BadRadius`/
+/// `RadiusTooLarge`, a weight slice whose length is not the full window refuses `WeightCountMismatch`, a zero or over-max divisor
+/// or an over-max weight or bias refuses BY NAME -- each before any allocation. Returns the pixel-buffer length so the caller
+/// allocates once.
+fn guard(src: *const qoi.Pixmap, kernel: KernelN) ConvolveNError!usize {
+    // invariant: a real source has extent on both axes; a zero-size source has nothing to filter.
+    if (src.width == 0 or src.height == 0) return error.EmptySource;
+    // invariant: a real window has a radius of at least one, so the side is at least three.
+    if (kernel.radius < 1) return error.BadRadius;
+    // invariant: the radius stays in band, so the window sum can never wrap i32.
+    if (kernel.radius > convolve_n_max_radius) return error.RadiusTooLarge;
+    const side: usize = @as(usize, 2 * kernel.radius + 1);
+    // invariant: the weight slice holds exactly the window's taps, so a radius and its weights can never disagree.
+    if (kernel.weights.len != side * side) return error.WeightCountMismatch;
+    // invariant: a zero divisor has no normalization; refuse rather than divide by zero.
+    if (kernel.divisor == 0) return error.ZeroDivisor;
+    const abs_div: i32 = if (kernel.divisor < 0) -kernel.divisor else kernel.divisor;
+    // invariant: the divisor magnitude stays in band, so the divide is a real, small normalization.
+    if (abs_div > convolve_n_max_divisor) return error.DivisorTooLarge;
+    const abs_bias: i32 = if (kernel.bias < 0) -kernel.bias else kernel.bias;
+    // invariant: the bias magnitude stays in band, so the shift stays near a real byte's neighborhood.
+    if (abs_bias > convolve_n_max_bias) return error.BiasTooLarge;
+    var k: u32 = 0;
+    while (k < kernel.weights.len) : (k += 1) {
+        const wv = kernel.weights[k];
+        const abs_w: i32 = if (wv < 0) -wv else wv;
+        // invariant: every weight magnitude stays in band, so the window sum can never wrap i32.
+        if (abs_w > convolve_n_max_weight) return error.WeightTooLarge;
+    }
+    return @as(usize, src.width) * @as(usize, src.height) * 4;
+}
+
+/// Convolve `src` by `kernel` into a fresh same-size RGBA Pixmap: each color channel becomes the normalized, biased, clamped
+/// `(2r+1)x(2r+1)` window sum, the alpha carried from `src` unchanged. Returns a newly allocated Pixmap the caller owns; `src`
+/// is read-only and untouched.
+pub fn convolve_n(allocator: std.mem.Allocator, src: *const qoi.Pixmap, kernel: KernelN) !qoi.Pixmap {
+    const n = try guard(src, kernel);
+    // invariant: the guard proved real extent, so the buffer length is a real positive pixel count.
+    assert(n >= 4);
+    const out = try allocator.alloc(u8, n);
+    apply_convolve(out, src.pixels, src.width, src.height, kernel);
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+/// Blur `src` with the 5x5 box mean into a fresh same-size RGBA Pixmap -- exactly `convolve_n` with the box5 kernel. A wider,
+/// blunter average than the 3x3 box, offered by name.
+pub fn box_blur5(allocator: std.mem.Allocator, src: *const qoi.Pixmap) !qoi.Pixmap {
+    const kernel = KernelN{ .weights = &box5_weights, .radius = 2, .divisor = 25, .bias = 0 };
+    return convolve_n(allocator, src, kernel);
+}
+
+/// Blur `src` with the 5x5 binomial Gaussian into a fresh same-size RGBA Pixmap -- exactly `convolve_n` with the gaussian5
+/// kernel. A rounded bell wider and smoother than a single 3x3 pass, the wide blur a surface reaches for by name.
+pub fn gaussian5(allocator: std.mem.Allocator, src: *const qoi.Pixmap) !qoi.Pixmap {
+    const kernel = KernelN{ .weights = &gaussian5_weights, .radius = 2, .divisor = 256, .bias = 0 };
+    return convolve_n(allocator, src, kernel);
+}
+
+// --- selftest: the general NxN contains the 3x3 special, a wider box normalizes, a wider Gaussian peaks smooth ------------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// Set one pixel's RGBA at (x, y) -- a small writer the pattern builders share.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    // --- a multicolor checker to exercise the general verb ------------------------------------------------------------
+    var checker = try make_canvas(garden, 7, 7, black);
+    var ky: u32 = 0;
+    while (ky < 7) : (ky += 1) {
+        var kx: u32 = 0;
+        while (kx < 7) : (kx += 1) {
+            if ((kx + ky) % 2 == 0) set_pixel(&checker, kx, ky, white);
+        }
+    }
+
+    // --- THE GENERAL-CONTAINS-SPECIAL CRUX, one radius deeper: a radius-1 KernelN whose weights are a Kernel3's weights ---
+    // reproduces image/convolve.rye's output byte-for-byte. The widest verb contains the 3x3 verb, which contains identity.
+    const lap3 = try convolve.laplacian(garden, &checker);
+    const lap_n = try convolve_n(garden, &checker, KernelN{
+        .weights = &convolve.laplacian_kernel.weights,
+        .radius = 1,
+        .divisor = convolve.laplacian_kernel.divisor,
+        .bias = convolve.laplacian_kernel.bias,
+    });
+    if (!lap_n.same_bytes(&lap3)) return error.GeneralDidNotContainThe3x3;
+    // and the identity 3x3 as a radius-1 KernelN reproduces the source byte-for-byte
+    const id_n = try convolve_n(garden, &checker, KernelN{
+        .weights = &convolve.identity_kernel.weights,
+        .radius = 1,
+        .divisor = 1,
+        .bias = 0,
+    });
+    if (!id_n.same_bytes(&checker)) return error.RadiusOneIdentityLost;
+
+    // --- the 5x5 BOX MEAN normalizes a WIDER window: a flat field of 100 stays 100 (the divisor holds brightness) ---------
+    const gray100 = color.Rgba{ .r = 100, .g = 100, .b = 100, .a = 255 };
+    var flat = try make_canvas(garden, 9, 9, gray100);
+    _ = &flat;
+    const boxed5 = try box_blur5(garden, &flat);
+    if (pixel_at(&boxed5, 4, 4).r != 100) return error.Box5DidNotNormalize;
+    // alpha carried through the wider box, not convolved
+    if (pixel_at(&boxed5, 4, 4).a != 255) return error.Box5AlphaNotCarried;
+
+    // --- the 5x5 GAUSSIAN spreads a point into a WIDE rounded bell: a lone white dot on a black field falls off smoothly ---
+    // Center weight 36/256*255 = 35; an orthogonal neighbor 24/256*255 = 23; a two-step neighbor 6/256*255 = 5. A strictly
+    // descending peak wider than a 3x3 pass could reach (the dot's light survives two pixels out).
+    var dot = try make_canvas(garden, 9, 9, black);
+    set_pixel(&dot, 4, 4, white);
+    const bell = try gaussian5(garden, &dot);
+    const center = pixel_at(&bell, 4, 4).r;
+    const near = pixel_at(&bell, 3, 4).r;
+    const far = pixel_at(&bell, 2, 4).r;
+    if (!(center > near and near > far and far > 0)) return error.Gaussian5NotAWideBell;
+    // the bell is symmetric on the horizontal axis (the kernel is symmetric)
+    if (pixel_at(&bell, 5, 4).r != near or pixel_at(&bell, 6, 4).r != far) return error.Gaussian5NotSymmetric;
+    // a wholly flat field stays flat under the Gaussian (the weights sum to the divisor)
+    const bell_flat = try gaussian5(garden, &flat);
+    if (pixel_at(&bell_flat, 4, 4).r != 100) return error.Gaussian5FlatNotHeld;
+
+    // --- a NEGATIVE result clamps to 0, an OVER result clamps to 255 (no wrap) at a wide radius -------------------------
+    // A 5x5 kernel of all -1 over divisor 1, bias 0 on a flat white field -> 25 * -255 -> clamps to 0.
+    var neg_w = [_]i32{-1} ** 25;
+    const negate = KernelN{ .weights = &neg_w, .radius = 2, .divisor = 1, .bias = 0 };
+    var flat_white = try make_canvas(garden, 7, 7, white);
+    _ = &flat_white;
+    const negated = try convolve_n(garden, &flat_white, negate);
+    if (pixel_at(&negated, 3, 3).r != 0) return error.NegativeDidNotClampToZero;
+    var amp_w = [_]i32{1} ** 25;
+    const amplify = KernelN{ .weights = &amp_w, .radius = 2, .divisor = 1, .bias = 0 };
+    const amped = try convolve_n(garden, &flat_white, amplify);
+    if (pixel_at(&amped, 3, 3).r != 255) return error.OverDidNotClampTo255;
+
+    // --- a 1x1 image reads its own pixel: every neighbor of a wide window clamps to the single pixel -------------------
+    var one = try make_canvas(garden, 1, 1, white);
+    _ = &one;
+    const one_box = try box_blur5(garden, &one);
+    if (pixel_at(&one_box, 0, 0).r != 255) return error.SinglePixelBoxLost;
+    if (pixel_at(&one_box, 0, 0).a != 255) return error.SinglePixelAlphaLost;
+
+    // --- ALPHA is CARRIED, not convolved: a translucent source keeps its exact alpha byte ------------------------------
+    const translucent = color.Rgba{ .r = 40, .g = 80, .b = 120, .a = 90 };
+    var trans = try make_canvas(garden, 7, 7, translucent);
+    _ = &trans;
+    const trans_blur = try gaussian5(garden, &trans);
+    if (pixel_at(&trans_blur, 3, 3).a != 90) return error.AlphaNotCarried;
+
+    // --- a filtered image round-trips through the open QOI codec byte-for-byte -----------------------------------------
+    const shown = try gaussian5(garden, &checker);
+    const cap = qoi.encoded_bound(shown.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&shown, dst);
+    const back = try qoi.decode(garden, dst[0..enc.len]);
+    if (!back.same_bytes(&shown)) return error.ConvolveNDidNotRoundTrip;
+
+    // --- refusals by name, each having allocated nothing --------------------------------------------------------------
+    const bad_radius = KernelN{ .weights = &convolve.identity_kernel.weights, .radius = 0, .divisor = 1, .bias = 0 };
+    if (convolve_n(garden, &checker, bad_radius)) |_| return error.BadRadiusNotRefused else |err| {
+        if (err != error.BadRadius) return error.WrongBadRadiusError;
+    }
+    const big_radius = KernelN{ .weights = &box5_weights, .radius = convolve_n_max_radius + 1, .divisor = 25, .bias = 0 };
+    if (convolve_n(garden, &checker, big_radius)) |_| return error.BigRadiusNotRefused else |err| {
+        if (err != error.RadiusTooLarge) return error.WrongBigRadiusError;
+    }
+    // a radius-2 kernel with only nine weights: the count does not match the 5x5 window
+    const wrong_count = KernelN{ .weights = &convolve.identity_kernel.weights, .radius = 2, .divisor = 1, .bias = 0 };
+    if (convolve_n(garden, &checker, wrong_count)) |_| return error.WrongCountNotRefused else |err| {
+        if (err != error.WeightCountMismatch) return error.WrongCountError;
+    }
+    const zero_div = KernelN{ .weights = &box5_weights, .radius = 2, .divisor = 0, .bias = 0 };
+    if (convolve_n(garden, &checker, zero_div)) |_| return error.ZeroDivisorNotRefused else |err| {
+        if (err != error.ZeroDivisor) return error.WrongDivisorError;
+    }
+    const big_div = KernelN{ .weights = &box5_weights, .radius = 2, .divisor = convolve_n_max_divisor + 1, .bias = 0 };
+    if (convolve_n(garden, &checker, big_div)) |_| return error.BigDivisorNotRefused else |err| {
+        if (err != error.DivisorTooLarge) return error.WrongBigDivisorError;
+    }
+    const big_bias = KernelN{ .weights = &box5_weights, .radius = 2, .divisor = 25, .bias = convolve_n_max_bias + 1 };
+    if (convolve_n(garden, &checker, big_bias)) |_| return error.BigBiasNotRefused else |err| {
+        if (err != error.BiasTooLarge) return error.WrongBiasError;
+    }
+    var over_w = [_]i32{1} ** 25;
+    over_w[12] = convolve_n_max_weight + 1;
+    const big_weight = KernelN{ .weights = &over_w, .radius = 2, .divisor = 25, .bias = 0 };
+    if (convolve_n(garden, &checker, big_weight)) |_| return error.BigWeightNotRefused else |err| {
+        if (err != error.WeightTooLarge) return error.WrongWeightError;
+    }
+    var empty = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (convolve_n(garden, &empty, KernelN{ .weights = &box5_weights, .radius = 2, .divisor = 25, .bias = 0 })) |_| return error.EmptySourceNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- the named convenience verbs equal the general verb at their kernels byte-for-byte -----------------------------
+    const box_by_verb = try box_blur5(garden, &checker);
+    const box_by_general = try convolve_n(garden, &checker, KernelN{ .weights = &box5_weights, .radius = 2, .divisor = 25, .bias = 0 });
+    if (!box_by_verb.same_bytes(&box_by_general)) return error.Box5VerbIsNotGeneral;
+    const g_by_verb = try gaussian5(garden, &checker);
+    const g_by_general = try convolve_n(garden, &checker, KernelN{ .weights = &gaussian5_weights, .radius = 2, .divisor = 256, .bias = 0 });
+    if (!g_by_verb.same_bytes(&g_by_general)) return error.Gaussian5VerbIsNotGeneral;
+
+    // --- determinism: the same filter finds the same pixels byte-for-byte ----------------------------------------------
+    const map_a = try gaussian5(garden, &checker);
+    const map_b = try gaussian5(garden, &checker);
+    if (!map_a.same_bytes(&map_b)) return error.ConvolveNNotDeterministic;
+
+    print("GREEN image-convolve-n: an RGBA image filtered by a general signed NxN convolution kernel (clamp((sum(weight*window) / divisor) + bias) per color channel at any radius, alpha carried) -- THE GENERAL-CONTAINS-SPECIAL CRUX one radius deeper: a radius-1 KernelN with a Kernel3's weights reproduces image/convolve.rye byte-for-byte (the Laplacian and the identity both), so the widest verb contains the 3x3 verb which contains the identity; the 5x5 box mean normalizes a wider window (a flat field of 100 stays 100); the 5x5 binomial Gaussian spreads a point into a strictly descending symmetric bell wider than a 3x3 pass and holds a flat field flat; a negative result clamps to 0 and an over result to 255 with no wrap at a wide radius; a 1x1 image keeps its pixel under a wide window (every neighbor clamps to it); alpha is carried not convolved; the filtered image round-trips through the open QOI codec byte-for-byte; a zero radius, an over-max radius, a mismatched weight count, a zero and over-max divisor, an over-max bias, an over-max weight, and an empty source refuse by name having allocated nothing; the box5 and gaussian5 convenience verbs equal the general verb at their kernels; the same filter is deterministic byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: convolve_n selftest\n", .{});
+    return 1;
+}
