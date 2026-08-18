@@ -1,0 +1,290 @@
+//! image/scale_bilinear.rye -- an RGBA image RESAMPLED to a new size by bilinear interpolation (Season G, the smooth resize beside the nearest one).
+//!
+//! Season G (Open Media Primitives) -- the SMOOTH-scaling sibling of image/scale.rye. Where nearest-neighbor copies the
+//! one nearest source pixel whole (clean blocks, no between-color), bilinear reads the FOUR source pixels around each
+//! destination sample and blends them by how near the sample falls to each -- so an upscale grows a gradient between the
+//! source colors rather than doubling hard blocks, the smooth thumbnail a photo wants where a sprite wanted the hard one.
+//! A keeper names a source and a target size and reads back the picture eased to the new extent, the two resize verbs
+//! (hard and smooth) standing side by side so a surface picks the one its content deserves.
+//!
+//! Separable, not braided: the whole verb is ONE per-axis map (`axis_sample`: a destination index yields its lower source
+//! index, its upper neighbor, and a blend weight `t` in 0..255) seen once per axis, and ONE existing blend -- color.mix,
+//! the linear two-color lerp the whole palette family already leans on. Each destination pixel is three mixes: blend the
+//! top pair by the horizontal weight, blend the bottom pair by the same weight, then blend those two by the vertical
+//! weight. So this module adds NO new color math (color.mix owns every blend and its rounding), no codec, no premultiply
+//! -- image/qoi.rye owns the buffers, image/color.rye owns the blend, and this rung only ROUTES four source pixels and a
+//! weight into that blend. Integer only: the fractional sample position is carried in a fixed 1/255 subpixel scale, no
+//! float ever enters the map, so a resize is deterministic byte-for-byte. Center-aligned: each destination pixel samples
+//! at its own CENTER mapped back into the source, so an identity resize (equal extents, weight 0 everywhere) reproduces
+//! the source byte-for-byte and the low and high edges clamp to the border pixel rather than reading past it.
+//!
+//! Honest scope: bilinear reads a 2x2 neighborhood, so it eases an upscale and a mild downscale beautifully; a downscale
+//! far below half-size still samples only two taps per axis and will alias, which the AREA-AVERAGE path (the family's
+//! other unbuilt resize sibling) is the verb for. This rung owns the smooth-interpolation floor, not the decimation one.
+//! The whole destination is bound-checked ONCE up front (its pixel count against the codec's named ceiling, its dims
+//! against the codec's max), so a malformed resize refuses BY NAME having allocated nothing -- all-or-nothing, never a
+//! half-scaled image. No network, no key, no funds -- the smooth resize a surface runs the day it wants a photo eased to
+//! another size, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/scale_bilinear.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+
+pub const scale_bilinear_version = "20260818.082933";
+
+/// The subpixel scale the fractional sample position is carried in: a weight of 0 is all the lower source pixel, 255 all
+/// the upper -- exactly color.mix's own `t` range, so the position math feeds the blend with no rescaling. A power-of-two
+/// scale would misalign with mix's /255 rounding; 255 keeps the two rules one.
+pub const weight_max: u32 = 255;
+
+/// One axis's sample: the lower source index a destination cell reads, its upper neighbor, and the blend weight between
+/// them in 0..weight_max. A destination pixel's center at index `d` maps back into the source at `src_center = (d + 0.5)
+/// * src_extent / dst_extent - 0.5`, carried in exact integers over the denominator `2 * dst_extent`. The lower index is
+/// its floor, the weight its fraction scaled to 0..255 and rounded. Both edges clamp: a sample landing below the first
+/// source pixel reads it with weight 0, and a sample at or past the last reads the last with weight 0 -- so the map never
+/// names a source index outside `[0, src_extent)`.
+const AxisSample = struct {
+    lo: u32,
+    hi: u32,
+    t: u8,
+};
+
+/// Map a destination index to its bilinear source sample on one axis. Both axes share this, so a resize is the same pure
+/// rule seen twice. The caller has proven both extents are at least one, so no division here is by zero.
+fn axis_sample(dst_i: u32, dst_extent: u32, src_extent: u32) AxisSample {
+    // invariant: the destination axis has real extent, so the divisions below never divide by zero.
+    assert(dst_extent >= 1);
+    // invariant: a real source has extent, so every mapped index names a real source pixel.
+    assert(src_extent >= 1);
+    // invariant: the index names a real destination pixel on this axis.
+    assert(dst_i < dst_extent);
+
+    const last: u32 = src_extent - 1;
+    // src_center = ((2*dst_i + 1) * src_extent - dst_extent) / (2 * dst_extent), in source-pixel units.
+    // Numerator held in u64 so the product can never wrap before it is reduced. dst_i < dst_extent <= qoi_max_dim and
+    // src_extent <= qoi_max_dim, so (2*dst_i+1)*src_extent stays well within u64.
+    const num: u64 = (@as(u64, 2 * dst_i + 1)) * @as(u64, src_extent);
+    const den: u64 = @as(u64, 2) * @as(u64, dst_extent);
+
+    // The sample center falls at or below the first source pixel -- clamp to the border, weight 0.
+    if (num <= @as(u64, dst_extent)) {
+        return AxisSample{ .lo = 0, .hi = @min(1, last), .t = 0 };
+    }
+    const pos: u64 = num - @as(u64, dst_extent); // >= 0, over `den`
+    const lo_u: u64 = pos / den;
+
+    // The sample center falls at or past the last source pixel -- clamp to the border, weight 0.
+    if (lo_u >= @as(u64, last)) {
+        return AxisSample{ .lo = last, .hi = last, .t = 0 };
+    }
+    const lo: u32 = @intCast(lo_u);
+    const rem: u64 = pos - lo_u * den; // in [0, den)
+    // t = round(rem / den * 255): (rem * 255 + den/2) / den, and den/2 = dst_extent.
+    const t_u: u64 = (rem * @as(u64, weight_max) + @as(u64, dst_extent)) / den;
+    // invariant: the rounded weight is a real subpixel fraction, never past a full step.
+    assert(t_u <= weight_max);
+
+    const s = AxisSample{ .lo = lo, .hi = lo + 1, .t = @intCast(t_u) };
+    // invariant: both source indices the sample names lie inside the source extent.
+    assert(s.lo < src_extent);
+    assert(s.hi < src_extent);
+    return s;
+}
+
+/// Read one source pixel's RGBA at (x, y) -- the four-tap gather shares this one reader.
+fn tap(src: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the tap lands inside the source buffer on both axes.
+    assert(x < src.width);
+    assert(y < src.height);
+    const si = (@as(usize, y) * @as(usize, src.width) + @as(usize, x)) * 4;
+    // invariant: the four bytes of the tapped pixel lie wholly inside the source buffer.
+    assert(si + 4 <= src.pixels.len);
+    return color.Rgba{ .r = src.pixels[si], .g = src.pixels[si + 1], .b = src.pixels[si + 2], .a = src.pixels[si + 3] };
+}
+
+/// Resample `src` to a fresh `dst_w` x `dst_h` RGBA Pixmap by bilinear interpolation: each destination pixel blends the
+/// four source pixels around its mapped center by the horizontal and vertical weights (three color.mix blends). Returns a
+/// newly allocated Pixmap the caller owns; `src` is read-only and untouched. Refuses `BadScaleDims` if `dst_w` or `dst_h`
+/// is zero, `EmptySource` if the source has no extent, and `ScaleTooLarge` BY NAME if the target exceeds the codec's max
+/// dimension or its pixel ceiling -- every check runs BEFORE any allocation, so a refusal leaves nothing behind.
+pub fn scale_bilinear(allocator: std.mem.Allocator, src: *const qoi.Pixmap, dst_w: u32, dst_h: u32) !qoi.Pixmap {
+    // invariant: a resizable target has real extent on both axes.
+    if (dst_w == 0 or dst_h == 0) return error.BadScaleDims;
+    // invariant: a real source has extent; a zero-size source maps nothing and refuses by name.
+    if (src.width == 0 or src.height == 0) return error.EmptySource;
+    // invariant: the target stays within the codec's own max dimension, so a scaled image is always encodable.
+    if (dst_w > qoi.qoi_max_dim or dst_h > qoi.qoi_max_dim) return error.ScaleTooLarge;
+    // The target pixel count in u64 so the product can never wrap before the ceiling check refuses.
+    const total: u64 = @as(u64, dst_w) * @as(u64, dst_h);
+    if (total > qoi.qoi_max_pixels) return error.ScaleTooLarge;
+    // invariant: the bound proved the whole target fits the module's named pixel ceiling before any allocation.
+    assert(total <= qoi.qoi_max_pixels);
+
+    const pixels = try allocator.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var dy: u32 = 0;
+    while (dy < dst_h) : (dy += 1) {
+        const ay = axis_sample(dy, dst_h, src.height);
+        var dx: u32 = 0;
+        while (dx < dst_w) : (dx += 1) {
+            const ax = axis_sample(dx, dst_w, src.width);
+            // Gather the 2x2 neighborhood the sample falls inside, all four taps proven in range by axis_sample.
+            const p00 = tap(src, ax.lo, ay.lo);
+            const p10 = tap(src, ax.hi, ay.lo);
+            const p01 = tap(src, ax.lo, ay.hi);
+            const p11 = tap(src, ax.hi, ay.hi);
+            // Three blends: the top pair by the horizontal weight, the bottom pair by the same, then those by the vertical.
+            const top = color.mix(p00, p10, ax.t);
+            const bot = color.mix(p01, p11, ax.t);
+            const out = color.mix(top, bot, ay.t);
+            const di = (@as(usize, dy) * @as(usize, dst_w) + @as(usize, dx)) * 4;
+            pixels[di] = out.r;
+            pixels[di + 1] = out.g;
+            pixels[di + 2] = out.b;
+            pixels[di + 3] = out.a;
+        }
+    }
+    return qoi.Pixmap{ .width = dst_w, .height = dst_h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+// --- selftest: prove identity, a between-color upscale, a solid stays solid, alpha blends, round-trip, refusals -----------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// Set one pixel's RGBA at (x, y) -- a small writer the pattern builder shares.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
+    const green = color.Rgba{ .r = 0, .g = 255, .b = 0, .a = 255 };
+    const blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 };
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+
+    // A 2x2 four-color pattern -- red, green / blue, black -- the same corners image/scale.rye proves against.
+    var pattern = try make_canvas(garden, 2, 2, red);
+    set_pixel(&pattern, 1, 0, green);
+    set_pixel(&pattern, 0, 1, blue);
+    set_pixel(&pattern, 1, 1, black);
+
+    // --- an IDENTITY resize reproduces the source byte-for-byte: every sample lands dead center, weight 0 --------------
+    const same = try scale_bilinear(garden, &pattern, 2, 2);
+    if (!same.same_bytes(&pattern)) return error.IdentityNotByteExact;
+
+    // --- a between-color UPSCALE grows a GRADIENT: a 2px black->white row eased to 4px steps strictly up ---------------
+    // This is the verb nearest-neighbor refuses: bilinear invents the in-between colors a smooth resize needs.
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+    var ramp = try make_canvas(garden, 2, 1, black);
+    set_pixel(&ramp, 1, 0, white);
+    const eased = try scale_bilinear(garden, &ramp, 4, 1);
+    const e0 = pixel_at(&eased, 0, 0).r;
+    const e1 = pixel_at(&eased, 1, 0).r;
+    const e2 = pixel_at(&eased, 2, 0).r;
+    const e3 = pixel_at(&eased, 3, 0).r;
+    // The clamped edges hold the endpoints, and the interior carries true between-values the source never held.
+    if (e0 != 0) return error.EasedLeftEdgeWrong;
+    if (e3 != 255) return error.EasedRightEdgeWrong;
+    if (!(e0 < e1 and e1 < e2 and e2 < e3)) return error.EasedNotAscending;
+    if (!(e1 > 0 and e1 < 255 and e2 > 0 and e2 < 255)) return error.EasedNoBetweenColour;
+
+    // --- a SOLID image eases to the SAME solid color: every blend is of equal colors, so no ringing appears -----------
+    const teal = color.Rgba{ .r = 0, .g = 128, .b = 128, .a = 255 };
+    var flat = try make_canvas(garden, 3, 3, teal);
+    _ = &flat;
+    const flat_up = try scale_bilinear(garden, &flat, 7, 5);
+    var fy: u32 = 0;
+    while (fy < 5) : (fy += 1) {
+        var fx: u32 = 0;
+        while (fx < 7) : (fx += 1) {
+            if (!pixel_at(&flat_up, fx, fy).eql(teal)) return error.SolidDidNotStaySolid;
+        }
+    }
+
+    // --- ALPHA blends too, the honest difference from nearest: a two-alpha row eases its alpha through the middle ------
+    // Nearest carries an alpha byte whole; bilinear reads alpha as a fourth channel and blends it like any other.
+    const opaque_blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 };
+    const clear_blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 0 };
+    var afade = try make_canvas(garden, 2, 1, opaque_blue);
+    set_pixel(&afade, 1, 0, clear_blue);
+    const afade_up = try scale_bilinear(garden, &afade, 4, 1);
+    const a0 = pixel_at(&afade_up, 0, 0).a;
+    const a1 = pixel_at(&afade_up, 1, 0).a;
+    const a2 = pixel_at(&afade_up, 2, 0).a;
+    const a3 = pixel_at(&afade_up, 3, 0).a;
+    if (a0 != 255 or a3 != 0) return error.AlphaEdgesWrong;
+    if (!(a0 > a1 and a1 > a2 and a2 > a3)) return error.AlphaNotBlended;
+
+    // --- a resized image round-trips through the open QOI codec byte-for-byte -- a real image, not a private buffer ----
+    const shown = try scale_bilinear(garden, &pattern, 5, 4);
+    const cap = qoi.encoded_bound(shown.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&shown, dst);
+    const back = try qoi.decode(garden, dst[0..enc.len]);
+    if (!back.same_bytes(&shown)) return error.ScaleDidNotRoundTrip;
+
+    // --- refusals by name, each having allocated nothing --------------------------------------------------------------
+    if (scale_bilinear(garden, &pattern, 0, 4)) |_| return error.ZeroDimsNotRefused else |err| {
+        if (err != error.BadScaleDims) return error.WrongDimsError;
+    }
+    var empty = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (scale_bilinear(garden, &empty, 4, 4)) |_| return error.EmptySourceNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+    if (scale_bilinear(garden, &pattern, qoi.qoi_max_dim + 1, 1)) |_| return error.OversizeNotRefused else |err| {
+        if (err != error.ScaleTooLarge) return error.WrongOversizeError;
+    }
+
+    // --- determinism: the same resize blends the same pixels byte-for-byte --------------------------------------------
+    const up_a = try scale_bilinear(garden, &pattern, 5, 3);
+    const up_b = try scale_bilinear(garden, &pattern, 5, 3);
+    if (!up_a.same_bytes(&up_b)) return error.ScaleNotDeterministic;
+
+    print("GREEN image-scale-bilinear: an RGBA image resampled to a new size by bilinear interpolation -- an identity resize reproduces the source byte-for-byte; a 2px black-to-white row eased to 4px grows a strictly ascending gradient carrying true between-colors nearest-neighbor refuses to invent; a solid image eases to the same solid color with no ringing; a two-alpha row blends its alpha through the middle (alpha read as a fourth channel, the honest difference from nearest's carry); the resized image round-trips through the open QOI codec byte-for-byte; a zero dimension, an empty source, and an over-max target refuse by name having allocated nothing; the same resize blends the same pixels byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: scale_bilinear selftest\n", .{});
+    return 1;
+}
