@@ -1,7 +1,7 @@
 # Season G -- the intra-frame video container (gfv1), the crux after the glyph atlas
 
 **Stamp:** `20260816.225918` - **Status:** Living (design capture) - **Voice:** Kyri - **Style:** Radiant
-**Kin:** [`the eight-season double-seat`](20260816-205859_double-seat-expansion-eight-seasons.md) (Season G) - [`image/qoi.rye`](../image/qoi.rye) - [`image/glyph.rye`](../image/glyph.rye) - [`the growing-a-language method`](yonder/20260618-184912_growing-a-language.md)
+**Kin:** [`the eight-season double-seat`](20260816-205859_double-seat-expansion-eight-seasons.md) (Season G) - [`image/qoi.rye`](../image/qoi.rye) - [`image/glyph.rye`](../image/glyph.rye) - [`the growing-a-language method`](20260618-184912_growing-a-language.md)
 **Teacher, thanked clean-room:** the container lineage of Ogg/Matroska (a self-describing stream of length-delimited frames) -- public shape only, our own Rye.
 
 ---

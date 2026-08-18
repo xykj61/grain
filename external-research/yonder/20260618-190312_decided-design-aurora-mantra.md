@@ -8,7 +8,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME Style (`TAME_STYLE.md`); systems lineage in `20260620-014412_system.md`
-**Reads back:** `yonder/20260617-195812_aurora-boot-riscv.md`, `yonder/20260617-195312_mantra.md`, through `../active-designing/yonder/20260618-182412_single-stranded.md`, `../active-designing/yonder/20260618-184912_growing-a-language.md`, and `../context/specs/rye-as-its-own-language.md`
+**Reads back:** `yonder/20260617-195812_aurora-boot-riscv.md`, `yonder/20260617-195312_mantra.md`, through `../active-designing/20260618-182412_single-stranded.md`, `../active-designing/20260618-184912_growing-a-language.md`, and `../context/specs/rye-as-its-own-language.md`
 
 Radiant pass `20260727.224156` — path re-point only; claims unchanged
 

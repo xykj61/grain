@@ -18,7 +18,7 @@ Load these named paths too, so the loop carries the disciplines an unattended ru
 
 - **Standfast -- stop the line for reds** -- `crux/REDS.md` and `foundations/20260816-214652_standfast-the-stopped-line.md`: the moment a red is real the line halts -- new constructive work does not begin beside it. At each lap, first close the open, agent-closable reds in the ledger (find the root not the symptom, then a witness on metal) before taking new work; a red you cannot close -- custody-gated or needing Keaton -- is surfaced like a gate, never routed around. A lantern that fires twice becomes a loom (`.claude/rules/reds-first.md`).
 - **Cairns ledger** -- `crux/CAIRNS.md`: mark the way back before any breach rename or seated debride (`.claude/rules/cairn.md`).
-- **References are promises; relocate stale files, never route around them** -- when a red's true root is that a file is no longer relevant, resolve it by **molt** (to a fossil), **archive/** (finished-historical), or **yonder/** (deferred-yet-alive) rather than forcing a code fix on tissue that should leave -- cairn first, and **never** an autonomous shred or debride (those stay Keaton's word). Before any move or rename, sweep the whole tree for every inbound reference -- the exact relative path, the bare filename, and any shorthand or slug form -- across code, docs, session logs, note files, and code comments; repoint every **living** reference. Dated testimony keeps its text and stays readable (accrete-never-break): it is checked so nothing breaks silently, never rewritten. `.claude/rules/molt.md` -- `.claude/rules/cairn.md` -- `context/ORGANIZING.md` -- the *References are promises* rule in `.claude/rules/collaboration.md`.
+- **References are promises; relocate stale files, never route around them** -- when a red's true root is that a file is no longer relevant, resolve it by **molt** (to a fossil), **archive/** (finished-historical), or **yonder/** (deferred-yet-alive) rather than forcing a code fix on tissue that should leave -- cairn first, and **never** an autonomous shred or debride (those stay Keaton's word). Before any move or rename, sweep the whole tree for every inbound reference -- the exact relative path, the bare filename, and any shorthand or slug form -- across code, docs, session logs, note files, and code comments; repoint every **living** reference. Dated testimony keeps its text and stays readable (accrete-never-break): it is checked so nothing breaks silently, never rewritten. `.claude/rules/molt.md` -- `.claude/rules/cairn.md` -- `ORGANIZING.md` -- the *References are promises* rule in `.claude/rules/collaboration.md`.
 - **Docs stay synced** -- `.claude/rules/docs-implementation-sync.md`: when behavior changes, the doc that describes it moves in the **same** commit; a doc's behavioral claim is checked by reading or running, never assumed.
 - **Prove before GREEN** -- before any round claims GREEN, run the module's own witness plus `rishi/bin/rishi run tools/tame_style_check.rish` and `tools/width-check.rish`; a green witness never excuses zero asserts (`.claude/rules/tame-guidance.md`).
 - **Loom capture** -- when a round measures a hot path, record a `loom key=value` line in the session log from real measurement, never memory (`.claude/rules/session-logs.md`).
@@ -39,8 +39,8 @@ The lenses above load every lap. The **rota** is the supplement: deep-read **one
 8. `foundations/20260811-233509_the-singularity.md`
 9. `foundations/20260810-011514_pond-the-application-module.md`
 10. `foundations/20260703-182612_sameness-is-the-macro.md`
-11. `active-designing/yonder/20260618-182412_single-stranded.md`
-12. `active-designing/yonder/20260618-184912_growing-a-language.md`
+11. `active-designing/20260618-182412_single-stranded.md`
+12. `active-designing/20260618-184912_growing-a-language.md`
 13. `foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md` (the happy zone -- fast isolated tests, thin edge; gratitude J.B. Rainsberger)
 14. `context/RADIANT_STYLE.md` (with `context/TWILIGHT_STYLE.md`)
 15. `context/TAME_CORE.md` (with `context/TAME_GUIDANCE.md`)
@@ -49,7 +49,7 @@ The lenses above load every lap. The **rota** is the supplement: deep-read **one
 18. `context/TWO_ROOMS.md`
 19. `context/KYRI.md`
 20. `context/QUIN.md`
-21. `context/ORGANIZING.md`
+21. `ORGANIZING.md`
 22. `context/SILO_TECHNIQUE.md`
 23. `context/specs/20260627-102012_one-clock-naming-law.md`
 24. `active-designing/20260702-184312_the-grain-and-the-crossing.md`
@@ -105,7 +105,7 @@ A tripwire is not a stop -- it is a design round you **approve for yourself** an
 
 A `.bron`/`.kyri` session log per round (`session-logs/`), a newest-first row in `session-logs/README.md`, and REMEMBER's Now refreshed. The round summary is the agent's account in Kyri's voice. The log's `recommend` line names the next concrete rung -- it is the baton the next lap reads first (section 1, *Running thread*), so write it as a clear handoff, not a closing flourish.
 
-**Single strand each.** The **logs are the record of what was done**; **REMEMBER is the live card of what is next**. Keep them single-stranded (`active-designing/yonder/20260618-182412_single-stranded.md`) -- never let REMEMBER swell into a second copy of the log index. A round refreshes REMEMBER's *Now* to point at live work; it does not re-list into REMEMBER the finished laps the logs already hold.
+**Single strand each.** The **logs are the record of what was done**; **REMEMBER is the live card of what is next**. Keep them single-stranded (`active-designing/20260618-182412_single-stranded.md`) -- never let REMEMBER swell into a second copy of the log index. A round refreshes REMEMBER's *Now* to point at live work; it does not re-list into REMEMBER the finished laps the logs already hold.
 
 **Boundary condense-and-reaim.** When a set completes -- a round-set, quest, journey, equinox, or season -- and the scope's crux to-do items are all hit, run one condense pass before opening the next set:
 

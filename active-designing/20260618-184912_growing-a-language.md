@@ -1,6 +1,6 @@
 # How We Grow a Language — Rishi on Rye, and One Style for the Family
 
-> **Yondered `20260702.185912`** — early brief, consumed into the living records; the stamp above endures as the moment it was written. Index: `../README.md`.
+> **Active on the council rota `20260817.200443`** -- re-seated from `yonder/` to `active-designing/` because it is read every lap on the council rota; relevance and inbound citation outrank the stamp (`../ORGANIZING.md`). Early brief written `20260702.185912`, consumed into the living records; that stamp endures as the moment it was written. Index: `README.md`.
 
 *We have grown one language already, Rye, and the way we did it is a method we can reuse. This brief draws that method out plainly, applies it to Rishi — our shell, which stands on Rye the way Rye stands on its foundation — and settles how TAME Guidance is organized across a family of languages: one shared root, and a small supplement for each, created only when earned.*
 

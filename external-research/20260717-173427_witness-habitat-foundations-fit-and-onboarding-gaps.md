@@ -25,7 +25,7 @@ An Acme Corporation employee reading this is weighing four questions that arrive
 
 | Strand | Seated home | Practice today | Drift |
 |---|---|---|---|
-| **Single-stranded modules** | `active-designing/yonder/20260618-182412_single-stranded.md` | Modules do one job; compose via one value model | Occasional glass density (many Skate lines) — product presentation, not a second value model |
+| **Single-stranded modules** | `active-designing/20260618-182412_single-stranded.md` | Modules do one job; compose via one value model | Occasional glass density (many Skate lines) — product presentation, not a second value model |
 | **Sameness** | `foundations/20260703-182612_sameness-is-the-macro.md` | Glow runes grow in canon; refuse private macros | General Glow parser still horizon |
 | **Happy zone / thin edge** | `foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md` | Center-fast witnesses; metalsmoke outside parity; RW-1/2/5 mirrors | Many Inference / glass seams still lack true collaboration/contract pairs |
 | **Compass** | `foundations/20260706-185112_follow-our-compass.md` | Align passes walk the rose | Newcomers are not walked through it as a tutorial |
