@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260817.203828
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image/round_paint.rye -- the CSS background-repeat: round member, the quartet made whole, GREEN
+prompt autonomous-loop recur: take the next agent-doable lap Lindy-first crux-first; send often
+think Standfast check first -- REDS living rows 74-80, 83, 84, 85 all closed or custody-gated (#75 is a deep-debride custody gate; #85/#86 closed by the image-witness loom sweep at nib 16e91c6b14). No open agent-closable red, so the line is clear for new constructive work.
+think Running thread from session-logs/README.md top rows: last lap landed image/scale.rye GREEN (nearest-neighbor resize floor), and REMEMBER's own live edge named the crux it unlocked -- the CSS background-repeat: round, the quartet's missing fourth beside repeat/no-repeat/space, which SCALES the tile and so needed a resize verb to compose over. That verb now exists. Lindy-first crux-first: this is the decisive move scale.rye opened.
+think Design: round's defining property is NO gap and NO clip -- it picks the nearest whole count of copies (round(box/unit), at least one) and resizes them to pave the box exactly. Integer-faithful realization: split the box into `count` contiguous cells whose extents differ by at most one pixel (the same fair partition palette_paint already uses), then paint each cell a nearest-neighbor resized copy. Compose not braid: scale_nearest owns the resize, compose.paint_over owns the blit, qoi owns the buffers.
+think Bound everything: at most four distinct tile sizes across the two axes (base or base+1 per axis), each resized once, so the allocation is named and small; round_count proven count <= box so every cell base >= 1; the whole box bound-checked once up front in u64 before any tile is resized, so a refusal allocates and paints nothing.
+think The distinguishing selftest cases prove round is neither repeat nor space: a 3x2 box with a 2x2 pattern paves the whole box (changed==6, no ground) with cell 1 shrunk to 1x2 (green/black not clipped away); a 4x4 pattern in a 2x2 box shrinks to one copy sampling all four corners (a resize, not a top-left clip). paint_rounded takes an allocator -- the first background-repeat member that allocates, because it is the first that resizes; named honestly.
+obs GREEN on the first metal run -- no reds this lap, the family template (space_paint/scale) carried clean. tame_style_check bans clean, width-check exit 0, plain 7-bit ASCII, living_docs_lint advisory-GREEN. README seats round_paint.rye between space_paint.rye and scale.rye, naming the quartet complete.
+obs The CSS background-repeat quartet is now WHOLE: compose_tiled (repeat, clips), space_paint (space, gaps), place_paint (no-repeat, one copy), round_paint (round, scales). round is the one that needed the resize floor beneath it, so it landed exactly one lap after scale -- the crux following its enabler.
+loom witness=round_paint_witness build_and_selftest checks=8 result=green first_run=green
+file image/round_paint.rye the CSS background-repeat: round -- whole copies resized so a whole count paves the box exactly, no gap no clip; composes over scale.rye + compose.rye
+file tools/round_paint_witness.rish proves round scales the tile (not clips, not gaps) on metal, native `contains` GREEN check per REDS #76/#85
+file image/README.md seats round_paint.rye beside space_paint.rye and scale.rye, the quartet named whole (docs-sync)
+file crux/REMEMBER.md live edge leads with round_paint GREEN and the quartet whole; git nib refreshed in the same work commit
+recommend keep-going -- the open-media family keeps building; next agent-doable Season G rungs Lindy-first: the area-average and bilinear resample paths beside scale_nearest (the Photos Resample family named them), or the captioned panel proven on longer real reels. No network, no key, no funds.

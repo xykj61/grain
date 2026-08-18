@@ -1,0 +1,344 @@
+//! image/round_paint.rye -- a source pattern ROUNDED to fill a box, whole copies SCALED to fit exactly (Season G, the CSS background-repeat: round member that completes the quartet).
+//!
+//! Season G (Open Media Primitives) -- the fourth and last member of the CSS `background-repeat` family, the one the
+//! resize floor unlocked. Where image/compose_tiled.rye TILES a pattern edge to edge and CLIPS the boundary copy
+//! (`repeat`), image/space_paint.rye tiles only WHOLE copies and shows the leftover as ground GAPS (`space`), and
+//! image/place_paint.rye places ONE anchored copy (`no-repeat`), this rung tiles whole copies and SCALES each so a whole
+//! number fit the box exactly -- NO gap and NO clip. It fits the nearest whole count of copies, then resizes the pattern
+//! so those copies pave the box edge to edge (the CSS `background-repeat: round` gesture: a texture stretched a hair so
+//! the tiles land flush, a motif that fills a panel with whole copies and no seam, an oversize badge SHRUNK to fit rather
+//! than cropped). A keeper names a box and a pattern and reads back the box paved with whole, resized copies, none clipped
+//! and none gapped.
+//!
+//! Compose, not braid: image/scale.rye owns the resize (scale_nearest resamples the pattern to a named size,
+//! nearest-neighbor), image/compose.rye owns the blit (paint_over lays one whole picture at a point, src-over),
+//! image/qoi.rye owns the buffers, and this module only ROUTES the box into a whole count of cells and paints each a
+//! resized copy -- no new blend math, no new codec, no new color, no new resample. The count is a pure per-axis rule
+//! (round_count): count = nearest(box / unit) whole copies, at least one; then the box is partitioned into `count`
+//! contiguous cells whose extents differ by at most one pixel (a fair integer partition, exactly as image/palette_paint.rye
+//! splits a strip), so the cells pave the box with no remainder. Each distinct cell size is resized ONCE (at most four
+//! tiles across the two axes), and every cell blits its matching resized tile. The oversize rule is round's own: a pattern
+//! larger than the box becomes ONE copy SHRUNK to the box (count one), never a clipped window. The whole box is
+//! bound-checked ONCE up front (in u64 so a far edge can never wrap before the bound refuses), BEFORE any tile is resized,
+//! so a malformed fill refuses BY NAME having allocated and painted nothing -- all-or-nothing, never a half-rounded box.
+//! No network, no key, no funds -- the flush-tiled fill a surface lays the day it wants whole copies with no seam and no
+//! crop, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/round_paint.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const compose = @import("compose.rye");
+const scale = @import("scale.rye");
+
+pub const round_paint_version = "20260817.203828";
+
+/// How whole copies of a `unit`-wide pattern round to fill a `box`-wide axis: `count` whole copies paving the box with no
+/// gap and no clip, the box split into `count` contiguous cells whose extents are `base` or `base + 1` (`rem` cells carry
+/// the extra pixel). Both axes share this, so a rounded fill is the same fair partition seen twice. `base >= 1` always, so
+/// every cell has real extent to resize a copy into.
+const RoundAxis = struct { count: u32, base: u32, rem: u32 };
+
+/// The nearest whole number of `unit`-wide copies that fit a `box`-wide axis, at least one -- `round(box / unit)` computed
+/// as the integer `floor(box / unit + 1/2) = (2*box + unit) / (2*unit)`. This is round's defining choice: rather than
+/// clipping a boundary copy (`repeat`) or leaving a gap (`space`), it picks the count that lands closest to the box and
+/// then the caller resizes the copies to pave it exactly. Both extents are proven at least one by the caller. The result
+/// never exceeds `box` (for `unit >= 1` the quotient is at most `box`), so the fair partition below gives every cell a
+/// `base` of at least one pixel.
+fn round_count(box: u32, unit: u32) u32 {
+    // invariant: the axis has real extent, so a fill is meaningful.
+    assert(box >= 1);
+    // invariant: a real pattern has extent, so the division below never divides by zero.
+    assert(unit >= 1);
+    // box <= qoi_max_dim (8192) and unit <= qoi_max_dim, so 2*box + unit <= 24576 stays well within u32 -- no wrap.
+    const nearest = (2 * box + unit) / (2 * unit);
+    const count = if (nearest == 0) 1 else nearest;
+    // invariant: at least one whole copy always fits (round never yields zero copies).
+    assert(count >= 1);
+    // invariant: the count never passes the box, so each of the `count` cells holds at least one pixel of extent.
+    assert(count <= box);
+    return count;
+}
+
+/// Plan one axis: given a box extent `box` and a pattern extent `unit`, return the whole `count` of copies and the fair
+/// partition (`base`, `rem`) that paves the box with cells differing by at most one pixel. `base` is `box / count` and
+/// `rem` is `box % count`, so `rem` cells carry `base + 1` and the rest carry `base`, summing to `box` exactly. The caller
+/// has proven `box >= 1` and `unit >= 1`.
+fn plan_axis(box: u32, unit: u32) RoundAxis {
+    // invariant: the axis has real extent.
+    assert(box >= 1);
+    // invariant: a real pattern has extent.
+    assert(unit >= 1);
+    const count = round_count(box, unit);
+    const base = box / count;
+    const rem = box % count;
+    // invariant: base is at least one pixel (count <= box), so every cell can hold a resized copy.
+    assert(base >= 1);
+    // invariant: the fair partition accounts for the box exactly -- no pixel unassigned, none double-counted.
+    assert(count * base + rem == box);
+    // invariant: the remainder names fewer cells than the count, so at least one cell carries the base extent.
+    assert(rem < count);
+    return .{ .count = count, .base = base, .rem = rem };
+}
+
+/// The extent of cell `i` on a planned axis -- `base + 1` for the first `rem` cells, `base` for the rest, so the cells
+/// pave the box with extents differing by at most one pixel.
+fn cell_extent(plan: RoundAxis, i: u32) u32 {
+    // invariant: the index names a real cell in the plan.
+    assert(i < plan.count);
+    return plan.base + (if (i < plan.rem) @as(u32, 1) else 0);
+}
+
+/// The start offset of cell `i` on a planned axis -- `i * base` plus one extra pixel for each earlier `rem` cell
+/// (`min(i, rem)`), so cell 0 seats at 0 and the cells are contiguous and disjoint. The sum of all extents is the box, so
+/// the last cell's far edge lands exactly on the box extent.
+fn cell_offset(plan: RoundAxis, i: u32) u32 {
+    // invariant: the index names a real cell in the plan.
+    assert(i < plan.count);
+    const carried = if (i < plan.rem) i else plan.rem;
+    const off = i * plan.base + carried;
+    // invariant: the cell seats inside the box -- its start plus its extent never passes the box (base*count + rem).
+    assert(off + cell_extent(plan, i) <= plan.count * plan.base + plan.rem);
+    return off;
+}
+
+/// Fill the rectangle at (`x`, `y`) of size `w` x `h` on `target` with WHOLE copies of `pattern`, each RESIZED so a whole
+/// count paves the box exactly -- the CSS `background-repeat: round` gesture. The nearest whole count of copies fits each
+/// axis, the box is split into that many contiguous cells (extents differing by at most one pixel), and each cell is
+/// painted a nearest-neighbor resized copy of the pattern -- no copy clipped, no ground gap left. Each copy is composited
+/// src-over through compose.paint_over, so a translucent pattern rounds over whatever lies beneath. `allocator` mints the
+/// resized tiles (at most four distinct sizes across the two axes). Refuses `BadRoundDims` if `w` or `h` is zero,
+/// `EmptySource` if the pattern has no extent, `RoundOutOfBounds` BY NAME if the box exceeds the target -- all checked
+/// BEFORE any tile is resized or any pixel painted, so a refusal leaves the target untouched and allocates nothing.
+pub fn paint_rounded(allocator: std.mem.Allocator, target: *qoi.Pixmap, x: u32, y: u32, w: u32, h: u32, pattern: *const qoi.Pixmap) !void {
+    // invariant: a fillable box has real extent on both axes.
+    if (w == 0 or h == 0) return error.BadRoundDims;
+    // invariant: a real pattern has extent; a zero-size pattern rounds nothing and refuses by name.
+    if (pattern.width == 0 or pattern.height == 0) return error.EmptySource;
+    // The box's far edges, in u64 so the sum can never wrap before the bound check refuses.
+    const right: u64 = @as(u64, x) + @as(u64, w);
+    const bottom: u64 = @as(u64, y) + @as(u64, h);
+    if (right > @as(u64, target.width) or bottom > @as(u64, target.height)) return error.RoundOutOfBounds;
+    // invariant: the up-front check proved every pixel of the w x h box lands inside the target buffer.
+    assert(right <= @as(u64, target.width));
+    assert(bottom <= @as(u64, target.height));
+
+    const px = plan_axis(w, pattern.width);
+    const py = plan_axis(h, pattern.height);
+
+    // Resize each distinct cell size ONCE -- at most four tiles across the two axes (base or base+1 per axis). The
+    // base tile always exists (rem < count leaves at least one base cell per axis); a +1 variant is minted only when
+    // that axis carries a remainder, else it aliases the base tile and is never selected.
+    const tile_bb = try scale.scale_nearest(allocator, pattern, px.base, py.base);
+    const tile_wb = if (px.rem > 0) try scale.scale_nearest(allocator, pattern, px.base + 1, py.base) else tile_bb;
+    const tile_bh = if (py.rem > 0) try scale.scale_nearest(allocator, pattern, px.base, py.base + 1) else tile_bb;
+    const tile_wh = if (px.rem > 0 and py.rem > 0) try scale.scale_nearest(allocator, pattern, px.base + 1, py.base + 1) else tile_bb;
+
+    var r: u32 = 0;
+    while (r < py.count) : (r += 1) {
+        const oy = cell_offset(py, r);
+        const ch = cell_extent(py, r);
+        const big_r = r < py.rem;
+        // invariant: the cell's row band stays inside the box (proven in bounds up front, so inside the target).
+        assert(oy + ch <= h);
+        var c: u32 = 0;
+        while (c < px.count) : (c += 1) {
+            const ox = cell_offset(px, c);
+            const cw = cell_extent(px, c);
+            const big_c = c < px.rem;
+            // invariant: the cell's column band stays inside the box.
+            assert(ox + cw <= w);
+            // Pick the resized tile whose size matches this cell -- big on an axis iff the cell carries the extra pixel.
+            const tile = if (big_c and big_r) &tile_wh else if (big_c) &tile_wb else if (big_r) &tile_bh else &tile_bb;
+            // invariant: the chosen tile is exactly the cell's size, so paint_over paves the cell with no clip and no gap.
+            assert(tile.width == cw);
+            assert(tile.height == ch);
+            // Route this resized whole copy to compose: the whole tile drawn at the cell's spaced corner. The box was
+            // proven in bounds up front, so this cell lands inside the target.
+            try compose.paint_over(target, x + ox, y + oy, tile);
+        }
+    }
+}
+
+// --- selftest: prove exact fit repeats, a non-dividing box scales (no gap, no clip), oversize shrinks, blend true, round-trip ---
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module
+/// (exactly as image/space_paint.rye and image/scale.rye keep their own canvas).
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// Set one pixel's RGBA at (x, y) -- a small writer the pattern builder shares.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+/// Count pixels of `img` whose RGBA differs from `bg` -- the honest measure of how much a fill covered.
+fn changed_from(img: *const qoi.Pixmap, bg: color.Rgba) u32 {
+    // invariant: the buffer is four bytes per pixel -- the RGBA invariant a Pixmap carries.
+    assert(img.pixels.len % 4 == 0);
+    var n: u32 = 0;
+    var i: usize = 0;
+    while (i < img.pixels.len) : (i += 4) {
+        const px = color.Rgba{ .r = img.pixels[i], .g = img.pixels[i + 1], .b = img.pixels[i + 2], .a = img.pixels[i + 3] };
+        if (!px.eql(bg)) n += 1;
+    }
+    // invariant: the changed count never exceeds the pixels walked.
+    assert(n <= @as(u32, @intCast(img.pixels.len / 4)));
+    return n;
+}
+
+/// Mint a 2x2 four-color pattern -- red, green at the top; blue, black at the bottom -- so a rounded copy is checkable by
+/// which of the four corners a target pixel matches.
+fn make_pattern(garden: std.mem.Allocator) !qoi.Pixmap {
+    var p = try make_canvas(garden, 2, 2, color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 });
+    set_pixel(&p, 0, 0, color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 }); // red
+    set_pixel(&p, 1, 0, color.Rgba{ .r = 0, .g = 255, .b = 0, .a = 255 }); // green
+    set_pixel(&p, 0, 1, color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 }); // blue
+    set_pixel(&p, 1, 1, color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 }); // black
+    return p;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+    const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
+    const green = color.Rgba{ .r = 0, .g = 255, .b = 0, .a = 255 };
+    const blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 };
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+
+    const pattern = try make_pattern(garden); // 2x2: red, green / blue, black
+
+    // --- an EXACT fit rounds to a clean repeat: a 2x2 pattern fills a 4x4 box as a 2x2 grid of whole IDENTITY copies -----
+    // count 2 each axis, base 2, rem 0 -- each tile resized 2x2 (identity), so round equals repeat when it divides evenly.
+    var img = try make_canvas(garden, 4, 4, white);
+    try paint_rounded(garden, &img, 0, 0, 4, 4, &pattern);
+    var ty: u32 = 0;
+    while (ty < 4) : (ty += 1) {
+        var tx: u32 = 0;
+        while (tx < 4) : (tx += 1) {
+            const want = pixel_at(&pattern, tx % 2, ty % 2); // exact fit repeats by a pure modulo
+            if (!pixel_at(&img, tx, ty).eql(want)) return error.ExactColourWrong;
+        }
+    }
+    if (changed_from(&img, white) != 16) return error.ExactFootprintWrong; // the whole box is copies, no ground
+
+    // --- a NON-DIVIDING box SCALES the copies, no gap and no clip -- round's defining move --------------------------------
+    // Box 3 wide x 2 tall, pattern 2x2: cols count round(3/2)=2, base 1, rem 1 -> widths 2,1; rows count 1, height 2.
+    // Cell 0 is the pattern resized to 2x2 (identity) at x=0; cell 1 is the pattern resized to 1x2 at x=2 (its single
+    // column samples source col 0: red on top, blue below). No column is left as ground (space would gap it), and the
+    // green/black of the second copy are not clipped away (repeat would crop) -- the copy is SHRUNK to a 1-wide tile.
+    var img_r = try make_canvas(garden, 3, 2, white);
+    try paint_rounded(garden, &img_r, 0, 0, 3, 2, &pattern);
+    if (!pixel_at(&img_r, 0, 0).eql(red)) return error.RoundCell0Wrong; // cell 0 identity: source (0,0)
+    if (!pixel_at(&img_r, 1, 0).eql(green)) return error.RoundCell0Wrong; // cell 0 identity: source (1,0)
+    if (!pixel_at(&img_r, 1, 1).eql(black)) return error.RoundCell0Wrong; // cell 0 identity: source (1,1)
+    if (!pixel_at(&img_r, 2, 0).eql(red)) return error.RoundCell1Wrong; // cell 1 (1x2): sampled source col 0, top
+    if (!pixel_at(&img_r, 2, 1).eql(blue)) return error.RoundCell1Wrong; // cell 1 (1x2): sampled source col 0, bottom
+    if (changed_from(&img_r, white) != 6) return error.RoundFootprintWrong; // whole box paved: no gap, no clip
+
+    // --- an OVERSIZE pattern SHRINKS to one copy, never a clipped window -- round's oversize rule ------------------------
+    // Box 2x2, pattern 4x4 with four distinct sampled corners: count round(2/4)=1, one copy resized 4x4 -> 2x2. A clip
+    // would show only the top-left quadrant; the resize SAMPLES all four corners, so all four colors appear.
+    var big = try make_canvas(garden, 4, 4, white);
+    set_pixel(&big, 0, 0, red); // sampled by dst (0,0): src_index(0,2,4)=0
+    set_pixel(&big, 2, 0, green); // sampled by dst (1,0): src_index(1,2,4)=2
+    set_pixel(&big, 0, 2, blue); // sampled by dst (0,1)
+    set_pixel(&big, 2, 2, black); // sampled by dst (1,1)
+    var img_big = try make_canvas(garden, 2, 2, white);
+    try paint_rounded(garden, &img_big, 0, 0, 2, 2, &big);
+    if (!pixel_at(&img_big, 0, 0).eql(red)) return error.OversizeShrinkWrong; // top-left corner sampled
+    if (!pixel_at(&img_big, 1, 0).eql(green)) return error.OversizeShrinkWrong; // top-right corner sampled, not clipped away
+    if (!pixel_at(&img_big, 0, 1).eql(blue)) return error.OversizeShrinkWrong;
+    if (!pixel_at(&img_big, 1, 1).eql(black)) return error.OversizeShrinkWrong; // all four corners present -> a shrink, not a clip
+
+    // --- a translucent pattern rounds over its ground: a half-alpha copy blends src-over, not overwrites -----------------
+    const blue_half = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 128 };
+    var p_trans = try make_canvas(garden, 2, 2, blue_half);
+    var img_blend = try make_canvas(garden, 4, 4, white);
+    try paint_rounded(garden, &img_blend, 0, 0, 4, 4, &p_trans); // exact fit -> every pixel a copy
+    const blended = color.over(blue_half, white);
+    if (blended.eql(blue_half) or blended.eql(white)) return error.BlendNotBetween; // a real blend, not either pole
+    if (!pixel_at(&img_blend, 0, 0).eql(blended)) return error.RoundBlendWrong;
+    if (!pixel_at(&img_blend, 3, 3).eql(blended)) return error.RoundBlendWrong;
+
+    // --- the rounded image round-trips through the open QOI codec byte-for-byte -- a real image, not a private buffer ----
+    const cap = qoi.encoded_bound(img_r.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&img_r, dst);
+    const back = try qoi.decode(garden, dst[0..enc.len]);
+    if (!back.same_bytes(&img_r)) return error.RoundDidNotRoundTrip;
+
+    // --- a sub-rectangle rounds only its own box: a rounded fill at (1,1) leaves the surrounding gutters untouched ------
+    var img_sub = try make_canvas(garden, 5, 4, white);
+    try paint_rounded(garden, &img_sub, 1, 1, 3, 2, &pattern); // same 3x2 round as above, shifted into the interior
+    if (!pixel_at(&img_sub, 0, 0).eql(white)) return error.CornerGutterRounded;
+    if (!pixel_at(&img_sub, 4, 3).eql(white)) return error.FarGutterRounded;
+    if (!pixel_at(&img_sub, 1, 1).eql(red)) return error.SubCell0Wrong; // the box's own cell 0
+    if (!pixel_at(&img_sub, 3, 1).eql(red)) return error.SubCell1Wrong; // cell 1 (1-wide), now at x=3
+
+    // --- refusals by name, each having painted nothing ---------------------------------------------------------------
+    var tgt = try make_canvas(garden, 4, 4, white);
+    if (paint_rounded(garden, &tgt, 0, 0, 4, 0, &pattern)) |_| return error.ZeroDimsNotRefused else |err| {
+        if (err != error.BadRoundDims) return error.WrongDimsError;
+    }
+    var empty = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (paint_rounded(garden, &tgt, 0, 0, 4, 4, &empty)) |_| return error.EmptySourceNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+    if (paint_rounded(garden, &tgt, 2, 0, 4, 4, &pattern)) |_| return error.OverrunNotRefused else |err| {
+        if (err != error.RoundOutOfBounds) return error.WrongOverrunError; // 2+4 = 6 > width 4
+    }
+    if (changed_from(&tgt, white) != 0) return error.RefusedButPainted; // every refusal painted nothing
+
+    // --- determinism: the same fill rounds the same copies byte-for-byte -----------------------------------------------
+    var img_a = try make_canvas(garden, 3, 2, white);
+    var img_b = try make_canvas(garden, 3, 2, white);
+    try paint_rounded(garden, &img_a, 0, 0, 3, 2, &pattern);
+    try paint_rounded(garden, &img_b, 0, 0, 3, 2, &pattern);
+    if (!img_a.same_bytes(&img_b)) return error.RoundNotDeterministic;
+
+    print("GREEN image-round: a source pattern rounded to fill a box, whole copies resized so a whole count pave it exactly -- an exact 2x2 pattern fills a 4x4 box as a 2x2 grid of whole identity copies with no ground left; a 3x2 box scales the copies (cell 0 the identity 2x2, cell 1 the pattern shrunk to 1x2) so the whole box is paved with no gap and no clip; a 4x4 pattern larger than a 2x2 box shrinks to one copy sampling all four corners (a resize, never a clipped window); a translucent pattern blends src-over uniform on an exact fill; the rounded image round-trips through the open QOI codec byte-for-byte; a sub-rectangle rounds only its own box (the gutters stay ground); a zero dimension, an empty pattern, and an out-of-bounds box refuse by name having painted nothing; the same fill rounds the same copies byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: round_paint selftest\n", .{});
+    return 1;
+}
