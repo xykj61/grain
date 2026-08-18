@@ -1,0 +1,528 @@
+//! image/morphology.rye -- an RGBA image reshaped by MATHEMATICAL MORPHOLOGY: dilate (max) and erode (min) over a
+//! square structuring element (Season G, the NONLINEAR rank-filter floor the image family lacked).
+//!
+//! Season G (Open Media Primitives) -- the first rung BEYOND the linear convolution floor. Where a convolution reads a
+//! window and returns a weighted SUM (blur is a mean, sharpen a high-pass, edges a gradient), morphology reads the same
+//! window and returns its MAX or its MIN -- a rank filter no linear kernel can express. Dilate takes the brightest pixel
+//! in the window, so a bright mark GROWS and a dark speck fills in; erode takes the darkest, so a bright mark SHRINKS and
+//! a bright speck vanishes. On an alpha mask the two grow and shrink a shape; on a photo they spread highlights or
+//! shadows. This is the floor every mask cleanup, outline, thickening, and speckle-removal pass stands on -- grow the two
+//! base verbs once and open, close, gradient, and top-hat all become siblings rather than fresh problems.
+//!
+//! Separable, exactly as the box blur is: a square structuring element of radius `r` is the product of a horizontal span
+//! and a vertical span, and MAX (like the mean) distributes over that product -- the max of a box equals the max of each
+//! row's max down the columns. So dilate is a horizontal max pass then a vertical max pass, erode a horizontal min then a
+//! vertical min, two O(width+height)-window passes replacing one O(width*height) gather. Each pass is a pure byte min or
+//! max -- no arithmetic, no rounding, so a result is deterministic byte-for-byte and a channel is trivially still a byte.
+//! Edges CLAMP like the blur: a window that reaches past the border reads the nearest border pixel, so the element is
+//! always the full `2r+1` wide and a solid image stays exactly solid at its edges.
+//!
+//! Every channel including alpha is dilated or eroded the same way. Two beautiful laws make this a real floor rather than
+//! two loops: dilate and erode are DUALS under complement -- erode(x) equals 255 - dilate(255 - x) byte-for-byte, because
+//! the min of a set is the complemented max of the complemented set; and OPENING (erode then dilate) is IDEMPOTENT --
+//! opening an already-opened image changes nothing, so a cleanup converges in one pass. This rung owns the min and the max
+//! window and leans only on image/qoi.rye for the pixel grid; it adds no blend, no codec, no color math. `dilate` and
+//! `erode` are the two-pass square verbs; `dilate_h`/`dilate_v`/`erode_h`/`erode_v` are the single-axis passes a
+//! directional element reaches for; `open` and `close` compose them. The radius is bounded by `morphology_max_radius`, and
+//! a zero-extent source or an over-max radius refuses BY NAME before any allocation -- all-or-nothing, never a half-shaped
+//! image. No network, no key, no funds -- the mask cleanup and shape work a surface runs the day it wants a thicker
+//! outline, a filled speck, or a trimmed halo, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/morphology.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+
+pub const morphology_version = "20260818.102534";
+
+/// The widest structuring-element radius a single morphology may name. A `2r+1` element at this ceiling is 513 pixels wide
+/// per axis, so each window scan stays bounded. A caller wanting a wider element runs the pass more than once (morphology
+/// composes: two radius-r dilates grow like one radius-2r dilate), rather than naming an unbounded radius.
+pub const morphology_max_radius: u32 = 256;
+
+pub const MorphologyError = error{
+    EmptySource,
+    MorphologyRadiusTooLarge,
+};
+
+/// Clamp a signed axis position onto a real pixel index in `[0, extent-1]`. A window that reaches past a border reads the
+/// nearest border pixel, so the element is always the full width and a solid edge never grows a phantom margin.
+fn clamp_axis(pos: i64, extent: u32) u32 {
+    // invariant: a real axis has at least one pixel to clamp onto.
+    assert(extent >= 1);
+    if (pos <= 0) return 0;
+    const hi: i64 = @as(i64, extent) - 1;
+    // invariant: the far clamp lands on the last real pixel, never past it.
+    if (pos >= hi) return @intCast(hi);
+    return @intCast(pos);
+}
+
+/// Reduce every ROW of `src` into `out` by a horizontal rank over the `2r+1` window: `out[y][x]` is the MAX (dilate) or
+/// MIN (erode) of `src[y][x-radius .. x+radius]` with the ends clamped to the border. Both buffers hold exactly `w*h` RGBA
+/// pixels; the pass reads `src` and writes `out`, touching no other memory. `is_max` chooses the rank at compile time.
+fn pass_horizontal(out: []u8, src: []const u8, w: u32, h: u32, radius: u32, comptime is_max: bool) void {
+    // invariant: both buffers hold exactly w*h RGBA pixels, so every index below lands inside them.
+    assert(out.len == @as(usize, w) * @as(usize, h) * 4);
+    assert(src.len == out.len);
+    // invariant: a morphology has real extent to sweep on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+
+    const win: u32 = 2 * radius + 1; // radius <= morphology_max_radius (256), so win <= 513 -- no overflow
+    const seed: u8 = if (is_max) 0 else 255; // max folds up from the darkest byte, min folds down from the brightest
+
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            var acc_r: u8 = seed;
+            var acc_g: u8 = seed;
+            var acc_b: u8 = seed;
+            var acc_a: u8 = seed;
+            var k: u32 = 0;
+            while (k < win) : (k += 1) {
+                const signed: i64 = @as(i64, x) + @as(i64, k) - @as(i64, radius);
+                const sx = clamp_axis(signed, w);
+                const si = (@as(usize, y) * @as(usize, w) + @as(usize, sx)) * 4;
+                if (is_max) {
+                    acc_r = @max(acc_r, src[si]);
+                    acc_g = @max(acc_g, src[si + 1]);
+                    acc_b = @max(acc_b, src[si + 2]);
+                    acc_a = @max(acc_a, src[si + 3]);
+                } else {
+                    acc_r = @min(acc_r, src[si]);
+                    acc_g = @min(acc_g, src[si + 1]);
+                    acc_b = @min(acc_b, src[si + 2]);
+                    acc_a = @min(acc_a, src[si + 3]);
+                }
+            }
+            // invariant: a rank of bytes is itself a byte -- the accumulators never leave 0..255 (u8 by type).
+            assert(@as(u32, acc_r) <= 255);
+            assert(@as(u32, acc_a) <= 255);
+            const di = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            out[di] = acc_r;
+            out[di + 1] = acc_g;
+            out[di + 2] = acc_b;
+            out[di + 3] = acc_a;
+        }
+    }
+}
+
+/// Reduce every COLUMN of `src` into `out` by a vertical rank over the `2r+1` window: `out[y][x]` is the MAX or MIN of
+/// `src[y-radius .. y+radius][x]` with the ends clamped to the border. The mirror of `pass_horizontal` on the other axis.
+fn pass_vertical(out: []u8, src: []const u8, w: u32, h: u32, radius: u32, comptime is_max: bool) void {
+    // invariant: both buffers hold exactly w*h RGBA pixels, so every index below lands inside them.
+    assert(out.len == @as(usize, w) * @as(usize, h) * 4);
+    assert(src.len == out.len);
+    // invariant: a morphology has real extent to sweep on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+
+    const win: u32 = 2 * radius + 1; // radius <= morphology_max_radius (256), so win <= 513 -- no overflow
+    const seed: u8 = if (is_max) 0 else 255;
+
+    var x: u32 = 0;
+    while (x < w) : (x += 1) {
+        var y: u32 = 0;
+        while (y < h) : (y += 1) {
+            var acc_r: u8 = seed;
+            var acc_g: u8 = seed;
+            var acc_b: u8 = seed;
+            var acc_a: u8 = seed;
+            var k: u32 = 0;
+            while (k < win) : (k += 1) {
+                const signed: i64 = @as(i64, y) + @as(i64, k) - @as(i64, radius);
+                const sy = clamp_axis(signed, h);
+                const si = (@as(usize, sy) * @as(usize, w) + @as(usize, x)) * 4;
+                if (is_max) {
+                    acc_r = @max(acc_r, src[si]);
+                    acc_g = @max(acc_g, src[si + 1]);
+                    acc_b = @max(acc_b, src[si + 2]);
+                    acc_a = @max(acc_a, src[si + 3]);
+                } else {
+                    acc_r = @min(acc_r, src[si]);
+                    acc_g = @min(acc_g, src[si + 1]);
+                    acc_b = @min(acc_b, src[si + 2]);
+                    acc_a = @min(acc_a, src[si + 3]);
+                }
+            }
+            // invariant: a rank of bytes is itself a byte -- the accumulators never leave 0..255 (u8 by type).
+            assert(@as(u32, acc_r) <= 255);
+            assert(@as(u32, acc_a) <= 255);
+            const di = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            out[di] = acc_r;
+            out[di + 1] = acc_g;
+            out[di + 2] = acc_b;
+            out[di + 3] = acc_a;
+        }
+    }
+}
+
+/// Guard a source and radius shared by every public verb: a zero-extent source refuses `EmptySource`, an over-max radius
+/// refuses `MorphologyRadiusTooLarge`, both BY NAME before any allocation. Returns the pixel-buffer length so the caller
+/// allocates once.
+fn guard(src: *const qoi.Pixmap, radius: u32) MorphologyError!usize {
+    // invariant: a real source has extent on both axes; a zero-size source has nothing to reshape.
+    if (src.width == 0 or src.height == 0) return error.EmptySource;
+    // invariant: the radius stays within the module's named ceiling so the window stays bounded.
+    if (radius > morphology_max_radius) return error.MorphologyRadiusTooLarge;
+    return @as(usize, src.width) * @as(usize, src.height) * 4;
+}
+
+/// Dilate `src` into a fresh same-size RGBA Pixmap by a HORIZONTAL max over the `2r+1` window -- the single-axis element a
+/// horizontal-only grow reaches for. Returns a newly allocated Pixmap the caller owns; `src` is read-only and untouched.
+pub fn dilate_h(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32) !qoi.Pixmap {
+    const n = try guard(src, radius);
+    // invariant: the guard proved real extent, so the buffer length is a real positive pixel count.
+    assert(n >= 4);
+    const out = try allocator.alloc(u8, n);
+    pass_horizontal(out, src.pixels, src.width, src.height, radius, true);
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+/// Dilate `src` into a fresh same-size RGBA Pixmap by a VERTICAL max over the `2r+1` window -- the single-axis grow on the
+/// other axis. Returns a newly allocated Pixmap the caller owns; `src` is read-only and untouched.
+pub fn dilate_v(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32) !qoi.Pixmap {
+    const n = try guard(src, radius);
+    // invariant: the guard proved real extent, so the buffer length is a real positive pixel count.
+    assert(n >= 4);
+    const out = try allocator.alloc(u8, n);
+    pass_vertical(out, src.pixels, src.width, src.height, radius, true);
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+/// Erode `src` into a fresh same-size RGBA Pixmap by a HORIZONTAL min over the `2r+1` window -- the single-axis shrink.
+/// Returns a newly allocated Pixmap the caller owns; `src` is read-only and untouched.
+pub fn erode_h(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32) !qoi.Pixmap {
+    const n = try guard(src, radius);
+    // invariant: the guard proved real extent, so the buffer length is a real positive pixel count.
+    assert(n >= 4);
+    const out = try allocator.alloc(u8, n);
+    pass_horizontal(out, src.pixels, src.width, src.height, radius, false);
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+/// Erode `src` into a fresh same-size RGBA Pixmap by a VERTICAL min over the `2r+1` window -- the single-axis shrink on the
+/// other axis. Returns a newly allocated Pixmap the caller owns; `src` is read-only and untouched.
+pub fn erode_v(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32) !qoi.Pixmap {
+    const n = try guard(src, radius);
+    // invariant: the guard proved real extent, so the buffer length is a real positive pixel count.
+    assert(n >= 4);
+    const out = try allocator.alloc(u8, n);
+    pass_vertical(out, src.pixels, src.width, src.height, radius, false);
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+/// Dilate `src` into a fresh same-size RGBA Pixmap by the SQUARE `(2r+1)x(2r+1)` max: a horizontal max pass then a
+/// vertical max pass on that result, which equals the full square-element max because max distributes over the box. Returns
+/// a newly allocated Pixmap the caller owns; `src` is read-only and untouched. The intermediate row buffer is freed before
+/// return, so only the caller's result outlives the call.
+pub fn dilate(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32) !qoi.Pixmap {
+    const n = try guard(src, radius);
+    // invariant: the guard proved real extent, so the buffer length is a real positive pixel count.
+    assert(n >= 4);
+    const tmp = try allocator.alloc(u8, n);
+    // The horizontal pass feeds the vertical pass; the intermediate never escapes this call.
+    defer allocator.free(tmp);
+    pass_horizontal(tmp, src.pixels, src.width, src.height, radius, true);
+    const out = try allocator.alloc(u8, n);
+    pass_vertical(out, tmp, src.width, src.height, radius, true);
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+/// Erode `src` into a fresh same-size RGBA Pixmap by the SQUARE `(2r+1)x(2r+1)` min: a horizontal min pass then a vertical
+/// min pass on that result, the min twin of `dilate`. Returns a newly allocated Pixmap the caller owns; `src` is read-only
+/// and untouched. The intermediate row buffer is freed before return.
+pub fn erode(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32) !qoi.Pixmap {
+    const n = try guard(src, radius);
+    // invariant: the guard proved real extent, so the buffer length is a real positive pixel count.
+    assert(n >= 4);
+    const tmp = try allocator.alloc(u8, n);
+    defer allocator.free(tmp);
+    pass_horizontal(tmp, src.pixels, src.width, src.height, radius, false);
+    const out = try allocator.alloc(u8, n);
+    pass_vertical(out, tmp, src.width, src.height, radius, false);
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+/// OPEN `src`: an erode followed by a dilate of the same radius -- the cleanup that removes bright specks smaller than the
+/// element while leaving larger shapes their size. Idempotent: opening an opened image changes nothing. The intermediate
+/// eroded image is freed before return.
+pub fn open(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32) !qoi.Pixmap {
+    // invariant: guard both stages up front so a refusal allocates nothing (erode guards again, harmlessly).
+    _ = try guard(src, radius);
+    var eroded = try erode(allocator, src, radius);
+    defer allocator.free(eroded.pixels);
+    return dilate(allocator, &eroded, radius);
+}
+
+/// CLOSE `src`: a dilate followed by an erode of the same radius -- the cleanup that fills dark specks and gaps smaller
+/// than the element while leaving larger holes. The dual of `open`. The intermediate dilated image is freed before return.
+pub fn close(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32) !qoi.Pixmap {
+    // invariant: guard up front so a refusal allocates nothing.
+    _ = try guard(src, radius);
+    var dilated = try dilate(allocator, src, radius);
+    defer allocator.free(dilated.pixels);
+    return erode(allocator, &dilated, radius);
+}
+
+// --- selftest: identity, grow/shrink, duality, extensivity, separable axes, idempotent open, alpha, round-trip, refusals -
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// Set one pixel's RGBA at (x, y) -- a small writer the pattern builders share.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+/// Complement every channel of `img` in place (255 - value), the reflection the duality law reads through.
+fn complement(img: *qoi.Pixmap) void {
+    // invariant: the buffer is a whole RGBA grid, so every byte is a channel to reflect.
+    assert(img.pixels.len == @as(usize, img.width) * @as(usize, img.height) * 4);
+    var i: usize = 0;
+    while (i < img.pixels.len) : (i += 1) {
+        img.pixels[i] = 255 - img.pixels[i];
+    }
+}
+
+/// A REFERENCE full-square dilate: the max over the whole `(2r+1)x(2r+1)` clamped element in one gather, no separation.
+/// The selftest proves the two-pass `dilate` equals this byte-for-byte -- the separability crux, computed the slow way.
+fn dilate_full(garden: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32) !qoi.Pixmap {
+    const w = src.width;
+    const h = src.height;
+    // invariant: the reference runs only on the small selftest images, well within the pixel ceiling.
+    assert(@as(u64, w) * @as(u64, h) <= qoi.qoi_max_pixels);
+    const out = try garden.alloc(u8, @as(usize, w) * @as(usize, h) * 4);
+    const rr: i64 = @as(i64, radius);
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            var acc = [_]u8{ 0, 0, 0, 0 };
+            var dy: i64 = -rr;
+            while (dy <= rr) : (dy += 1) {
+                const sy = clamp_axis(@as(i64, y) + dy, h);
+                var dx: i64 = -rr;
+                while (dx <= rr) : (dx += 1) {
+                    const sx = clamp_axis(@as(i64, x) + dx, w);
+                    const si = (@as(usize, sy) * @as(usize, w) + @as(usize, sx)) * 4;
+                    var c: u32 = 0;
+                    while (c < 4) : (c += 1) {
+                        acc[c] = @max(acc[c], src.pixels[si + c]);
+                    }
+                }
+            }
+            const di = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
+            out[di] = acc[0];
+            out[di + 1] = acc[1];
+            out[di + 2] = acc[2];
+            out[di + 3] = acc[3];
+        }
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+    const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
+    const green = color.Rgba{ .r = 0, .g = 255, .b = 0, .a = 255 };
+    const blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 };
+
+    // A 2x2 four-color pattern -- the same corners the blur and resize siblings prove against.
+    var pattern = try make_canvas(garden, 2, 2, red);
+    set_pixel(&pattern, 1, 0, green);
+    set_pixel(&pattern, 0, 1, blue);
+    set_pixel(&pattern, 1, 1, white);
+
+    // --- radius 0 is the IDENTITY for both verbs: a 1x1 element copies the source byte-for-byte -------------------------
+    const dsame = try dilate(garden, &pattern, 0);
+    if (!dsame.same_bytes(&pattern)) return error.DilateIdentityNotByteExact;
+    const esame = try erode(garden, &pattern, 0);
+    if (!esame.same_bytes(&pattern)) return error.ErodeIdentityNotByteExact;
+
+    // --- DILATE GROWS a bright mark; ERODE SHRINKS it. A lone white dot on black: radius-1 dilate fills its 3x3 to white,
+    //     radius-1 erode wipes it back to all black (a single pixel cannot survive a min that reaches the black around it).
+    var dot = try make_canvas(garden, 5, 5, black);
+    set_pixel(&dot, 2, 2, white);
+    const grown = try dilate(garden, &dot, 1);
+    // the eight neighbors of the center all become white (max reached the lit pixel), the corners at radius 2 stay black
+    if (!pixel_at(&grown, 1, 1).eql(white)) return error.DilateDidNotGrow;
+    if (!pixel_at(&grown, 3, 3).eql(white)) return error.DilateDidNotGrow;
+    if (!pixel_at(&grown, 0, 0).eql(black)) return error.DilateReachedTooFar;
+    const shrunk = try erode(garden, &dot, 1);
+    var ey: u32 = 0;
+    while (ey < 5) : (ey += 1) {
+        var ex: u32 = 0;
+        while (ex < 5) : (ex += 1) {
+            if (!pixel_at(&shrunk, ex, ey).eql(black)) return error.ErodeDidNotShrink;
+        }
+    }
+
+    // --- OPENING removes a speck smaller than the element: erode-then-dilate a lone dot leaves all black (the speck is
+    //     gone, never regrown), the classic bright-speckle cleanup -------------------------------------------------------
+    const opened_dot = try open(garden, &dot, 1);
+    var oy: u32 = 0;
+    while (oy < 5) : (oy += 1) {
+        var ox: u32 = 0;
+        while (ox < 5) : (ox += 1) {
+            if (!pixel_at(&opened_dot, ox, oy).eql(black)) return error.OpenDidNotRemoveSpeck;
+        }
+    }
+
+    // --- the DUALITY crux: erode(x) equals 255 - dilate(255 - x) byte-for-byte, on a real four-color pattern ------------
+    //     min is the complemented max of the complement -- the law that makes erode and dilate one primitive, not two.
+    const ero = try erode(garden, &pattern, 1);
+    var comp = try make_canvas(garden, 2, 2, black);
+    var ci: usize = 0;
+    while (ci < comp.pixels.len) : (ci += 1) comp.pixels[ci] = pattern.pixels[ci];
+    complement(&comp);
+    var dil_comp = try dilate(garden, &comp, 1);
+    complement(&dil_comp);
+    if (!ero.same_bytes(&dil_comp)) return error.DualityBroken;
+
+    // --- the SEPARABLE crux: the two-pass square dilate equals a full-window reference max byte-for-byte ----------------
+    //     a colored, translucent field so the parity is not a black-and-white accident.
+    var field = try make_canvas(garden, 6, 5, color.Rgba{ .r = 40, .g = 90, .b = 200, .a = 128 });
+    set_pixel(&field, 1, 1, color.Rgba{ .r = 255, .g = 30, .b = 10, .a = 255 });
+    set_pixel(&field, 4, 3, color.Rgba{ .r = 10, .g = 240, .b = 60, .a = 30 });
+    set_pixel(&field, 5, 0, white);
+    const two_pass = try dilate(garden, &field, 2);
+    const one_pass = try dilate_full(garden, &field, 2);
+    if (!two_pass.same_bytes(&one_pass)) return error.SeparableNotEqualFullWindow;
+
+    // --- EXTENSIVITY: dilate never darkens a pixel (result >= source), erode never brightens one (result <= source) -----
+    const dext = try dilate(garden, &field, 1);
+    const eext = try erode(garden, &field, 1);
+    var fy: u32 = 0;
+    while (fy < field.height) : (fy += 1) {
+        var fx: u32 = 0;
+        while (fx < field.width) : (fx += 1) {
+            const s = pixel_at(&field, fx, fy);
+            const d = pixel_at(&dext, fx, fy);
+            const e = pixel_at(&eext, fx, fy);
+            if (d.r < s.r or d.g < s.g or d.b < s.b or d.a < s.a) return error.DilateDarkenedAPixel;
+            if (e.r > s.r or e.g > s.g or e.b > s.b or e.a > s.a) return error.ErodeBrightenedAPixel;
+        }
+    }
+
+    // --- the axes are SEPARABLE and DIRECTIONAL: a full vertical white line on black grows WIDER under dilate_h (a
+    //     horizontal element) yet stays UNCHANGED under dilate_v (every column of the line is already all-max) -----------
+    var vline = try make_canvas(garden, 5, 3, black);
+    var ly: u32 = 0;
+    while (ly < 3) : (ly += 1) set_pixel(&vline, 2, ly, white);
+    const vgrown_v = try dilate_v(garden, &vline, 1);
+    if (!vgrown_v.same_bytes(&vline)) return error.VerticalDilateTouchedVerticalLine;
+    const vgrown_h = try dilate_h(garden, &vline, 1);
+    // the line at column 2 spreads to columns 1 and 3; column 0 and 4 stay black
+    if (!pixel_at(&vgrown_h, 1, 1).eql(white)) return error.HorizontalDilateDidNotWiden;
+    if (!pixel_at(&vgrown_h, 3, 1).eql(white)) return error.HorizontalDilateDidNotWiden;
+    if (!pixel_at(&vgrown_h, 0, 1).eql(black)) return error.HorizontalDilateReachedTooFar;
+    // and the square dilate is exactly the horizontal pass then the vertical pass
+    const sq = try dilate(garden, &vline, 1);
+    const hv = try dilate_v(garden, &vgrown_h, 1);
+    if (!sq.same_bytes(&hv)) return error.SquareNotHThenV;
+
+    // --- OPENING is IDEMPOTENT: opening an already-opened image changes nothing (a cleanup converges in one pass) -------
+    var texture = try make_canvas(garden, 7, 7, black);
+    set_pixel(&texture, 1, 1, white); // a lone speck (removed by opening)
+    var ty: u32 = 2;
+    while (ty < 6) : (ty += 1) { // a 4x4 solid block (survives opening)
+        var tx: u32 = 2;
+        while (tx < 6) : (tx += 1) set_pixel(&texture, tx, ty, white);
+    }
+    const o1 = try open(garden, &texture, 1);
+    const o2 = try open(garden, &o1, 1);
+    if (!o1.same_bytes(&o2)) return error.OpenNotIdempotent;
+
+    // --- ALPHA morphs like any other channel: a 2px row [a=255, a=0] dilates its alpha to the max, erodes to the min ----
+    const opaque_blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 };
+    const clear_blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 0 };
+    var arow = try make_canvas(garden, 2, 1, opaque_blue);
+    set_pixel(&arow, 1, 0, clear_blue);
+    const adil = try dilate_h(garden, &arow, 1);
+    if (pixel_at(&adil, 0, 0).a != 255 or pixel_at(&adil, 1, 0).a != 255) return error.AlphaDilateWrong;
+    const aero = try erode_h(garden, &arow, 1);
+    if (pixel_at(&aero, 0, 0).a != 0 or pixel_at(&aero, 1, 0).a != 0) return error.AlphaErodeWrong;
+
+    // --- a morphed image round-trips through the open QOI codec byte-for-byte -- a real image, not a private buffer ------
+    var checker = try make_canvas(garden, 4, 4, black);
+    var ky: u32 = 0;
+    while (ky < 4) : (ky += 1) {
+        var kx: u32 = 0;
+        while (kx < 4) : (kx += 1) {
+            if ((kx + ky) % 2 == 0) set_pixel(&checker, kx, ky, white);
+        }
+    }
+    const shown = try dilate(garden, &checker, 1);
+    const cap = qoi.encoded_bound(shown.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&shown, dst);
+    const backimg = try qoi.decode(garden, dst[0..enc.len]);
+    if (!backimg.same_bytes(&shown)) return error.MorphDidNotRoundTrip;
+
+    // --- refusals by name, each having allocated nothing --------------------------------------------------------------
+    if (dilate(garden, &pattern, morphology_max_radius + 1)) |_| return error.OverRadiusNotRefused else |err| {
+        if (err != error.MorphologyRadiusTooLarge) return error.WrongRadiusError;
+    }
+    var empty = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (erode(garden, &empty, 1)) |_| return error.EmptySourceNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+    if (open(garden, &empty, 1)) |_| return error.OpenEmptyNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongOpenError;
+    }
+
+    // --- determinism: the same dilate reaches the same pixels byte-for-byte --------------------------------------------
+    const da = try dilate(garden, &checker, 1);
+    const db = try dilate(garden, &checker, 1);
+    if (!da.same_bytes(&db)) return error.DilateNotDeterministic;
+
+    print("GREEN image-morphology: an RGBA image reshaped by dilate (max) and erode (min) over a square structuring element -- radius 0 is the identity for both verbs byte-for-byte; a lone white dot GROWS its 3x3 neighborhood under dilate and vanishes under erode; opening removes a speck smaller than the element (erode-then-dilate leaves it gone); the DUALITY law holds, erode(x) equals 255 minus dilate of the complement byte-for-byte; the two-pass square dilate equals a full-window reference max byte-for-byte on a colored translucent field (the separable crux); dilate never darkens and erode never brightens a pixel (extensivity); the single-axis passes are separable and directional (a vertical line widens horizontally yet stays whole vertically) and the square is the horizontal pass then the vertical; opening is idempotent; alpha morphs like any channel; the result round-trips through the open QOI codec byte-for-byte; an over-max radius, an empty source, and an empty open refuse by name having allocated nothing; the same dilate is deterministic byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: morphology selftest\n", .{});
+    return 1;
+}

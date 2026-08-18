@@ -1,0 +1,42 @@
+# tools/morphology_witness.rish -- mathematical morphology proves itself on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the first NONLINEAR rank-filter rung beyond the linear convolution floor. Where a
+# convolution returns a weighted SUM of its window (blur a mean, sharpen a high-pass, edges a gradient), morphology returns
+# the window's MAX (dilate) or MIN (erode) -- a rank no linear kernel can express. Dilate grows a bright mark and fills a
+# dark speck; erode shrinks a bright mark and wipes a bright speck. On an alpha mask the two grow and shrink a shape; on a
+# photo they spread highlights or shadows. This is the floor every mask cleanup, thickening, outline, and speckle pass
+# stands on -- open, close, gradient, and top-hat all become siblings of these two verbs.
+#
+# The crux this witness proves is that morphology is a real primitive, not two loops: the two-pass square dilate equals a
+# full-window reference max byte-for-byte on a colored translucent field (a box element is separable for max exactly as for
+# the mean, and the clamp-to-edge border is itself separable), so the fast path is the same image the slow gather is; the
+# DUALITY law holds, erode(x) equals 255 - dilate(255 - x) byte-for-byte, so the min verb is the complemented max verb;
+# OPENING is idempotent, so a cleanup converges in one pass. On metal: radius 0 is the identity for both verbs; a lone dot
+# grows under dilate and vanishes under erode; opening removes a speck smaller than the element; dilate never darkens and
+# erode never brightens a pixel (extensivity); the single-axis passes are separable and directional; alpha morphs like any
+# channel; the result round-trips through the open QOI codec byte-for-byte; an over-max radius, an empty source, and an
+# empty open refuse by name; the same dilate is deterministic. No network, no key, no funds -- the mask cleanup and shape
+# work a surface runs the day it wants a thicker outline, a filled speck, or a trimmed halo, on our own open geometry.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/morphology_witness.rish
+
+say "morphology: Language EN -- Season G morphology; an RGBA image reshaped by dilate (max) and erode (min) over a square structuring element, the nonlinear rank-filter floor beyond the linear convolution rungs."
+say "morphology: Style Radiant -- a square element of radius r is separable, so dilate is a horizontal max pass then a vertical max pass (erode the min twin); dilate and erode are DUALS under complement, and opening is idempotent -- two laws that make the pair one primitive rather than two loops."
+say "morphology: Lens TAME -- u32 in-memory counts, the radius bounded and refused by name; each function states its invariants positively; the source and radius guarded once up front so a refusal allocates nothing; the window clamps at the border so each 1D pass is always full; the accumulators are u8 (a rank of bytes is a byte) so no arithmetic can wrap; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/morphology"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/morphology.rye -femit-bin=${bin}"]
+assert build.ok else "morphology: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "morphology: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "morphology: ${out}"
+
+assert selftest.out contains "GREEN image-morphology" else "morphology: selftest did not print the GREEN line"
+
+say "morphology: GREEN -- dilate and erode reshape an RGBA image over a square element, the two-pass square equal to a full-window reference max byte-for-byte, the duality law holding, opening idempotent, on metal."
