@@ -1,0 +1,26 @@
+format session-log-v1
+stamp 20260818.172519
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title polygon -- Douglas-Peucker contour simplifier to defining vertices, GREEN
+prompt baton prin recur -- pick up the running thread Lindy-first crux-first, Standfast on reds first, take the next agent-doable lap and send it as its own signed round
+think Read KYRI.md and RADIANT_STYLE.md to reason as Kyri in Radiant Style, then crux/REMEMBER.md, the three itineraries, the top session-log rows, and crux/REDS.md for the running thread.
+think Standfast check first: every living REDS row is closed or released; only #75 rests as custody-gated errata (a history rewrite, Keaton's hand). No agent-closable red open -- the line is clear for new work.
+think The running thread is Season G open-media, each lap the natural consumer of the freshest edge. The newest edge is image/contour.rye (the ordered outer boundary ring); its own log named the family that descends from it -- a perimeter, a Freeman chain code, a corner detector, and a polygon simplifier.
+think Lindy-first crux-first among the agent-doable siblings takes the POLYGON SIMPLIFIER: the hardest-solvable that opens the whole shape-descriptor/vector family (a corner detector, a vector outline, a shape matcher descend from it), the direct payoff of the freshly-landed contour, and a genuine algorithm (Douglas-Peucker with a perpendicular-distance metric).
+think Narrow scope to ONE keystone: the simplifier alone, no edge render (Bresenham drawing is the named next sibling), so the round holds to a single move like the reader modules (centroid, moments, hu_moments) that carry no paint.
+think Designed the decisive crux before coding and hand-traced it: a solid 5x5 block's 16-pixel ring reduces at tolerance 0.5 to EXACTLY its four corners (each edge perfectly collinear, so any tolerance below the shape's extent keeps only the corners), an L to MORE THAN FOUR at the same tolerance, and a huge tolerance to the two-vertex floor (each chain collapses to its two anchors).
+think Bounded the recursion by unrolling Douglas-Peucker onto an explicit ring-sized work stack -- no unbounded call depth (TAME: no unbounded recursion), the stack guarding PolygonTooComplex by name; kept-vertex set sized to the ring length, itself bounded by the pixel ceiling.
+think Closed-ring adaptation: anchor at the start and the farthest point (unique argmax by strict > for determinism), split into two open chains, walk each; collect kept real indices in ring order so the polygon comes out an ordered subset starting at the ring start.
+obs GREEN on the first full metal run, no algorithm reds: the CORNER-RECOVERY crux (16 boundary pixels to 4 corners, verified point-for-point), the SUBSET/ORDER invariant, the SPREAD-STRIP crux (2x8 to 4), the CORNER-COUNT contrast (L > 4 > rectangle's 4 at one tolerance), the TOLERANCE knob to the two-vertex floor (monotone), dot -> one vertex and domino -> two, EmptyContour + BadTolerance refusals by name, determinism.
+obs TAME tidy caught three compound asserts (best_j span, far_j range, kept range) -- split each into named halves, re-GREEN. width-check exit 0, plain 7-bit ASCII, living-docs + living-card GREEN.
+obs Corrected my own fabricated version stamp (REDS #75 lesson) -- polygon_version first read 20260818.172943, later than the live clock; fixed to the live-read 20260818.172519 across the module and REMEMBER before the send.
+loom witness=polygon_witness wall_ms=measured checks=13 note=first-run-GREEN
+file image/polygon.rye the Douglas-Peucker closed-ring simplifier composing over contour: simplify reads a ring's defining vertices, bounded on an explicit stack
+file tools/polygon_witness.rish the witness proving the corner-recovery crux, the corner-count contrast, the tolerance floor, and the refusals on metal
+file image/README.md the Polygon (Douglas-Peucker simplify) bullet after Contour (docs-sync)
+file crux/REMEMBER.md live edge and Git nib repointed single-stranded to polygon; contour folded to a one-line prior-nib pointer (no cairn -- a one-line repoint)
+file session-logs/README.md prepended the newest-first index row
+recommend keep-going Season G open-media on the live green edge; next siblings crux-first -- an EDGE-DRAWING render (Bresenham lines between consecutive vertices, the polygon's own paint), a SHAPE-MATCH distance over the Hu vectors, a FREEMAN chain code over the ordered ring; the round top-hat on a real photo waits on a fetch gate. No network, no key, no funds.

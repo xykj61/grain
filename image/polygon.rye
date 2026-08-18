@@ -1,0 +1,437 @@
+//! image/polygon.rye -- simplify an ORDERED contour ring to the few VERTICES that define its shape, by Douglas-Peucker
+//! (Season G, the polygon a corner detector and a vector outline read from, the shape-descriptor companion of image/contour.rye's
+//! ordered ring and image/hu_moments.rye's invariant fingerprint).
+//!
+//! Season G (Open Media Primitives) -- image/contour.rye hands back a component's OUTER BOUNDARY as an ordered clockwise ring of
+//! pixel coordinates, one point per boundary pixel: a 5x5 block traces to a 16-point ring, a bigger block to a longer one. That
+//! ring carries adjacency and order, yet it still names a shape by every pixel on its edge rather than by the CORNERS a human
+//! eye reads. A rectangle is four corners; a triangle is three; an L is six. The ring does not say so -- it lists sixteen pixels
+//! where a square has four vertices. This rung reads exactly that missing fact: the minimal ordered set of VERTICES whose straight
+//! edges reproduce the ring within a chosen tolerance, so a dozen boundary pixels become the four points that draw the shape.
+//!
+//! The algorithm is DOUGLAS-PEUCKER (Ramer 1972, Douglas & Peucker 1973), the classic recursive line simplifier, adapted to a
+//! CLOSED ring. Anchor the ring at its start point and at the point farthest from it, splitting the loop into two open chains.
+//! For each chain, find the interior point whose PERPENDICULAR DISTANCE to the straight line between the chain's two anchors is
+//! greatest; if that distance exceeds the tolerance, keep the point and split the chain there, walking each half in turn;
+//! otherwise drop every interior point, replacing the whole chain with its two anchors. Collinear runs (a straight edge, every
+//! point zero distance from its own chord) collapse to their endpoints regardless of length, so a square's four straight edges
+//! reduce to its four corners at any tolerance below the shape's own extent. The recursion is unrolled onto an explicit,
+//! ring-bounded work stack -- no unbounded call depth, a guaranteed terminator by name.
+//!
+//! What the polygon reads is the shape's CORNER COUNT, a fact distinct from every reduction before it: image/regions.rye reads a
+//! component's area and box, image/centroid.rye its center, image/moments.rye its lean, image/hu_moments.rye its invariant
+//! fingerprint, image/contour.rye its ordered boundary pixels. None of them says a rectangle has four corners and an L has six.
+//! At one tolerance a 5x5 square's sixteen-pixel ring reduces to exactly four vertices while an L's ring reduces to more than
+//! four -- the polygon tells the two shapes apart by their real vertex count, which no area, box, center, or ring length can
+//! express. The tolerance is the knob: larger tolerance keeps fewer vertices, and past the shape's own extent every chain
+//! collapses to its two anchors, the two-vertex floor a closed ring can never fall below.
+//!
+//! Compose not braid. This rung OWNS only the vertex-selection choice -- the farthest-point anchor split, the perpendicular
+//! distance, the keep-or-drop decision. image/contour.rye owns the ordered ring and its Point type; a caller traces once and
+//! simplifies the ring it already holds. No gather, no blend, no codec, no color, not even a pixel-writing loop -- a polygon is a
+//! reading, like image/centroid.rye and image/moments.rye, not a render. The edge-drawing render (straight lines between
+//! consecutive vertices, a Bresenham walk) is the named next sibling, kept out of this keystone to hold the scope to one move.
+//!
+//! Everything is bounded before a byte is allocated: a ring holds at most one point per pixel, so the kept-vertex set and the
+//! Douglas-Peucker work stack are both sized to the ring length, itself bounded by image/label.rye's pixel ceiling; the stack
+//! guards `PolygonTooComplex` by name so a split can never overrun it. An empty ring refuses `EmptyContour` by name and a
+//! negative tolerance refuses `BadTolerance` by name -- all-or-nothing, never a half-built polygon. No network, no key, no funds
+//! -- the vertices a surface names the day it wants to draw or match a shape by its corners, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/polygon.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const label = @import("label.rye");
+const contour = @import("contour.rye");
+
+pub const polygon_version = "20260818.172519";
+
+pub const PolygonError = error{
+    EmptyContour,
+    BadTolerance,
+    PolygonTooComplex,
+};
+
+/// A simplified polygon of one contour: `source_label` is the component's dense label (1..count), `vertices` is the ordered
+/// subset of the ring's points that survive Douglas-Peucker at a chosen tolerance, in the same clockwise order and starting at
+/// the ring's start point. Consecutive vertices span straight edges; the last closes back to the first. The caller owns
+/// `vertices`. A closed ring never simplifies below two vertices.
+pub const Polygon = struct {
+    source_label: u32 = 0,
+    vertices: []contour.Point = &[_]contour.Point{},
+
+    /// The number of vertices in the simplified polygon -- the shape's corner count at the chosen tolerance, a different fact
+    /// from the ring length the polygon was read from.
+    pub fn vertex_count(self: *const Polygon) u32 {
+        // invariant: a real polygon has at least its own start vertex.
+        assert(self.vertices.len >= 1);
+        // invariant: a polygon never names more vertices than the image module's pixel ceiling holds.
+        assert(self.vertices.len <= label.label_max_pixels);
+        return @intCast(self.vertices.len);
+    }
+};
+
+/// The squared distance between two ring points, exact in i64 (coordinates are bounded well under 2^16, so a squared span stays
+/// far under 2^33). Used to pick the anchor farthest from the ring start; squared is enough for an argmax and needs no sqrt.
+fn dist_sq(a: contour.Point, b: contour.Point) i64 {
+    const dx: i64 = @as(i64, a.x) - @as(i64, b.x);
+    const dy: i64 = @as(i64, a.y) - @as(i64, b.y);
+    const d = dx * dx + dy * dy;
+    // invariant: a squared span is never negative.
+    assert(d >= 0);
+    // invariant: the span of two in-image points stays far under the i64 ceiling.
+    assert(d < (@as(i64, 1) << 40));
+    return d;
+}
+
+/// The PERPENDICULAR distance from point `p` to the straight line through `a` and `b`, in f64 (the geometry seam, as
+/// image/moments.rye and image/hu_moments.rye already use f64 for shape geometry). When `a` and `b` coincide the line is a
+/// point, so the distance is the plain span to it -- a guard that never fires for a real anchor pair yet keeps the reading total.
+fn perp_distance(p: contour.Point, a: contour.Point, b: contour.Point) f64 {
+    const ax: f64 = @floatFromInt(a.x);
+    const ay: f64 = @floatFromInt(a.y);
+    const bx: f64 = @floatFromInt(b.x);
+    const by: f64 = @floatFromInt(b.y);
+    const px: f64 = @floatFromInt(p.x);
+    const py: f64 = @floatFromInt(p.y);
+    const ex = bx - ax;
+    const ey = by - ay;
+    const len_sq = ex * ex + ey * ey;
+    // invariant: a squared length is never negative.
+    assert(len_sq >= 0.0);
+    if (len_sq == 0.0) {
+        const gx = px - ax;
+        const gy = py - ay;
+        // invariant: a plain span is never negative.
+        const g = @sqrt(gx * gx + gy * gy);
+        assert(g >= 0.0);
+        return g;
+    }
+    // twice the signed triangle area over the base length is the height -- the point's perpendicular distance to the line.
+    const cross = ex * (py - ay) - ey * (px - ax);
+    const area2 = if (cross < 0.0) -cross else cross;
+    // invariant: a distance read as |area| / length is never negative.
+    assert(area2 >= 0.0);
+    return area2 / @sqrt(len_sq);
+}
+
+/// Walk one open chain of the ring by Douglas-Peucker, marking every kept interior point in `keep`. The chain runs from virtual
+/// index `lo` to `hi` (each virtual index `v` names the ring point at `v % n`, so a chain may end at `n` meaning the start
+/// point). Both anchors are already kept by the caller. The recursion is unrolled onto `work`, a stack of pending (lo, hi) spans
+/// sized by the caller to the ring length; an overrun refuses `PolygonTooComplex` by name (it cannot happen for a real ring, yet
+/// the guard names the impossible). Points is the ring; n its length; tolerance the perpendicular cutoff.
+fn walk_chain(
+    points: []const contour.Point,
+    n: u32,
+    lo0: u32,
+    hi0: u32,
+    tolerance: f64,
+    keep: []bool,
+    work: [][2]u32,
+) !void {
+    // invariant: a chain spans a real, ordered virtual range within the ring's wrapped extent.
+    assert(hi0 > lo0);
+    assert(hi0 <= n);
+    // invariant: the ring and its keep-flags share one length.
+    assert(keep.len == @as(usize, n));
+
+    var top: u32 = 0;
+    work[top] = .{ lo0, hi0 };
+    top += 1;
+
+    while (top > 0) {
+        top -= 1;
+        const lo = work[top][0];
+        const hi = work[top][1];
+        // invariant: every span popped keeps its ordered anchors within the wrapped extent.
+        assert(hi > lo);
+        assert(hi <= n);
+        if (hi <= lo + 1) continue; // no interior points between adjacent anchors
+
+        const a = points[@as(usize, lo % n)];
+        const b = points[@as(usize, hi % n)];
+
+        // find the interior point of greatest perpendicular distance to the chord (a, b); earliest wins a tie (deterministic).
+        var best_j: u32 = lo + 1;
+        var best_d: f64 = -1.0;
+        var j: u32 = lo + 1;
+        while (j < hi) : (j += 1) {
+            const d = perp_distance(points[@as(usize, j % n)], a, b);
+            if (d > best_d) {
+                best_d = d;
+                best_j = j;
+            }
+        }
+        // invariant: a span with interior points always names a best interior index strictly between its anchors.
+        assert(best_j > lo);
+        assert(best_j < hi);
+
+        if (best_d > tolerance) {
+            keep[@as(usize, best_j % n)] = true;
+            // split at the kept point and walk both halves; the stack holds at most one pending span per kept vertex.
+            if (top + 2 > work.len) return error.PolygonTooComplex;
+            work[top] = .{ lo, best_j };
+            top += 1;
+            work[top] = .{ best_j, hi };
+            top += 1;
+        }
+    }
+}
+
+/// Simplify the closed ring of `c` to its defining vertices by Douglas-Peucker at `tolerance` (a perpendicular pixel distance;
+/// larger keeps fewer vertices). Returns a fresh Polygon the caller owns, its vertices an ordered subset of the ring starting at
+/// the ring's start point. A ring of one or two points is already minimal and is copied whole.
+pub fn simplify(allocator: std.mem.Allocator, c: *const contour.Contour, tolerance: f64) !Polygon {
+    // invariant: a real contour carries at least its own start pixel; an empty ring has no shape to read.
+    if (c.points.len == 0) return error.EmptyContour;
+    // invariant: a distance cutoff is never negative -- a negative tolerance names no reachable shape.
+    if (tolerance < 0.0) return error.BadTolerance;
+    // invariant: the ring never names more points than the image module's pixel ceiling holds.
+    assert(c.points.len <= label.label_max_pixels);
+
+    const n: u32 = @intCast(c.points.len);
+
+    // a ring of one or two points is already its own minimal polygon -- copy it whole, nothing to simplify.
+    if (n <= 2) {
+        const small = try allocator.alloc(contour.Point, @as(usize, n));
+        var i: u32 = 0;
+        while (i < n) : (i += 1) small[i] = c.points[i];
+        return Polygon{ .source_label = c.label, .vertices = small };
+    }
+
+    // keep[i] marks ring point i as a surviving vertex; the start (index 0) is always a vertex.
+    const keep = try allocator.alloc(bool, @as(usize, n));
+    var z: u32 = 0;
+    while (z < n) : (z += 1) keep[z] = false;
+    keep[0] = true;
+
+    // anchor two: the ring point farthest from the start splits the loop into two open chains, so the whole ring is covered.
+    var far_j: u32 = 1;
+    var far_d: i64 = -1;
+    var j: u32 = 1;
+    while (j < n) : (j += 1) {
+        const d = dist_sq(c.points[0], c.points[@as(usize, j)]);
+        if (d > far_d) {
+            far_d = d;
+            far_j = j;
+        }
+    }
+    // invariant: the farthest anchor is a real interior index of a ring of three or more points.
+    assert(far_j >= 1);
+    assert(far_j < n);
+    keep[@as(usize, far_j)] = true;
+
+    // the work stack: at most one pending span per kept vertex, and a ring keeps at most n vertices, so 2n+2 spans is ample.
+    const work = try allocator.alloc([2]u32, @as(usize, n) * 2 + 2);
+    // chain one runs start -> far anchor; chain two runs far anchor -> start (virtual index n wraps to point 0).
+    try walk_chain(c.points, n, 0, far_j, tolerance, keep, work);
+    try walk_chain(c.points, n, far_j, n, tolerance, keep, work);
+
+    // collect the kept points in ring order, starting at the start vertex -- an ordered subset of the ring.
+    var kept: u32 = 0;
+    var k: u32 = 0;
+    while (k < n) : (k += 1) {
+        if (keep[@as(usize, k)]) kept += 1;
+    }
+    // invariant: a closed ring of three or more points keeps at least its two anchors and never more than the ring itself.
+    assert(kept >= 2);
+    assert(kept <= n);
+
+    const verts = try allocator.alloc(contour.Point, @as(usize, kept));
+    var w: u32 = 0;
+    k = 0;
+    while (k < n) : (k += 1) {
+        if (keep[@as(usize, k)]) {
+            verts[@as(usize, w)] = c.points[@as(usize, k)];
+            w += 1;
+        }
+    }
+    // invariant: the vertex slice is filled exactly to the kept count.
+    assert(w == kept);
+    return Polygon{ .source_label = c.label, .vertices = verts };
+}
+
+// --- selftest: corner recovery, the corner-count contrast, the tolerance knob, the two-vertex floor, subset/order, refusals ----
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y) -- the small writer the fixtures share.
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// True when a polygon holds a vertex at exactly (x, y) -- the corner check the fixtures share.
+fn has_vertex(p: *const Polygon, x: u32, y: u32) bool {
+    var k: usize = 0;
+    while (k < p.vertices.len) : (k += 1) {
+        if (p.vertices[k].x == x and p.vertices[k].y == y) return true;
+    }
+    return false;
+}
+
+/// True when every vertex of `p` is a point of ring `c`, in the SAME cyclic order (each vertex found at a strictly advancing
+/// ring index). This proves the polygon is an ordered subset of the ring, inventing no point and shuffling no order.
+fn is_ordered_subset(p: *const Polygon, c: *const contour.Contour) bool {
+    var ri: usize = 0;
+    var vi: usize = 0;
+    while (vi < p.vertices.len) : (vi += 1) {
+        var found = false;
+        while (ri < c.points.len) : (ri += 1) {
+            if (c.points[ri].x == p.vertices[vi].x and c.points[ri].y == p.vertices[vi].y) {
+                found = true;
+                ri += 1;
+                break;
+            }
+        }
+        if (!found) return false;
+    }
+    return true;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- the CORNER-RECOVERY crux (decisive): a solid 5x5 block traces to a 16-pixel ring, yet the shape is a QUADRILATERAL --
+    //     Douglas-Peucker at tolerance 0.5 collapses the four straight edges to exactly the FOUR corner vertices, the fact the
+    //     raw ring's sixteen pixels cannot name --------------------------------------------------------------------------
+    var big = try make_canvas(garden, 7, 7, 0);
+    set_block(&big, 1, 1, 5, 5); // a 5x5 block at (1,1)..(5,5): ring 16, corners (1,1)(5,1)(5,5)(1,5)
+    const bmap = try label.label_components(garden, &big);
+    const bc = try trace(garden, &bmap, 1);
+    if (bc.perimeter() != 16) return error.RingNotSixteen; // guard the fixture: the ring is the expected 16 pixels
+    const bpoly = try simplify(garden, &bc, 0.5);
+    if (bpoly.vertex_count() != 4) return error.SquareNotFourCorners; // sixteen boundary pixels -> four defining vertices
+    if (!has_vertex(&bpoly, 1, 1)) return error.MissingCornerTL;
+    if (!has_vertex(&bpoly, 5, 1)) return error.MissingCornerTR;
+    if (!has_vertex(&bpoly, 5, 5)) return error.MissingCornerBR;
+    if (!has_vertex(&bpoly, 1, 5)) return error.MissingCornerBL;
+    // the first vertex is the ring's start (topmost-then-leftmost), always kept as an anchor
+    if (bpoly.vertices[0].x != 1 or bpoly.vertices[0].y != 1) return error.FirstVertexNotStart;
+
+    // --- the SUBSET/ORDER invariant: every polygon vertex is a ring point, in the same cyclic order -- no invented point, no
+    //     shuffled order ------------------------------------------------------------------------------------------------
+    if (!is_ordered_subset(&bpoly, &bc)) return error.PolygonNotOrderedSubset;
+
+    // --- a SPREAD strip of EQUAL corner count: a 2x8 block (ring 16, like a compact 4x4 would be 12) also reduces to four
+    //     corners, a straight run collapsing to its endpoints regardless of length -------------------------------------
+    var strip = try make_canvas(garden, 10, 4, 0);
+    set_block(&strip, 1, 1, 8, 2); // a 2-tall 8-wide block: corners (1,1)(8,1)(8,2)(1,2)
+    const lmap = try label.label_components(garden, &strip);
+    const lc = try trace(garden, &lmap, 1);
+    const lpoly = try simplify(garden, &lc, 0.5);
+    if (lpoly.vertex_count() != 4) return error.StripNotFourCorners;
+    if (!has_vertex(&lpoly, 1, 1) or !has_vertex(&lpoly, 8, 1) or !has_vertex(&lpoly, 8, 2) or !has_vertex(&lpoly, 1, 2))
+        return error.StripCornersWrong;
+
+    // --- the CORNER-COUNT contrast (what no earlier reader gives): an L-shape at the SAME tolerance 0.5 reduces to MORE THAN
+    //     FOUR vertices where the rectangle reduced to exactly four -- the polygon reads the two shapes' real corner counts,
+    //     a fact no area, box, center, moment, or ring length can express ------------------------------------------------
+    var ell = try make_canvas(garden, 8, 8, 0);
+    set_block(&ell, 1, 1, 2, 5); // vertical limb x in {1,2}, y in 1..5
+    set_block(&ell, 3, 4, 3, 2); // horizontal foot x in {3,4,5}, y in {4,5}
+    const emap = try label.label_components(garden, &ell);
+    if (emap.count != 1) return error.EllNotOneComponent; // the L is one 8-connected shape
+    const ec = try trace(garden, &emap, 1);
+    const epoly = try simplify(garden, &ec, 0.5);
+    if (epoly.vertex_count() <= 4) return error.EllNotMoreThanFour; // an L has strictly more corners than a rectangle
+    if (bpoly.vertex_count() >= epoly.vertex_count()) return error.CornerCountDidNotDistinguish;
+
+    // --- the TOLERANCE knob: a larger tolerance keeps FEWER vertices; past the shape's own extent every chain collapses to its
+    //     two anchors -- the two-vertex floor a closed ring can never fall below --------------------------------------
+    const bcoarse = try simplify(garden, &bc, 100.0);
+    if (bcoarse.vertex_count() != 2) return error.CoarseNotTwoFloor; // the degenerate floor: start and farthest anchor
+    if (bcoarse.vertices[0].x != 1 or bcoarse.vertices[0].y != 1) return error.CoarseFirstNotStart;
+    const ecoarse = try simplify(garden, &ec, 100.0);
+    if (ecoarse.vertex_count() != 2) return error.EllCoarseNotTwo;
+    // monotone: the L keeps more vertices at a fine tolerance than at a coarse one -- the knob truly coarsens the polygon
+    if (!(epoly.vertex_count() > ecoarse.vertex_count())) return error.ToleranceNotMonotone;
+
+    // --- the DEGENERATE rings pass through minimal: a lone dot (1-point ring) and a domino (2-point ring) copy whole --------
+    var dot = try make_canvas(garden, 3, 3, 0);
+    set_dot(&dot, 1, 1);
+    const dmap = try label.label_components(garden, &dot);
+    const dc = try trace(garden, &dmap, 1);
+    const dpoly = try simplify(garden, &dc, 0.5);
+    if (dpoly.vertex_count() != 1) return error.DotNotOneVertex;
+    if (dpoly.vertices[0].x != 1 or dpoly.vertices[0].y != 1) return error.DotVertexWrong;
+
+    var domino = try make_canvas(garden, 4, 3, 0);
+    set_dot(&domino, 1, 1);
+    set_dot(&domino, 2, 1);
+    const domap = try label.label_components(garden, &domino);
+    const doc = try trace(garden, &domap, 1);
+    const dopoly = try simplify(garden, &doc, 0.5);
+    if (dopoly.vertex_count() != 2) return error.DominoNotTwoVertices;
+
+    // --- refusals by name, having allocated nothing --------------------------------------------------------------------
+    var empty_ring = contour.Contour{ .label = 1, .points = &[_]contour.Point{} };
+    if (simplify(garden, &empty_ring, 0.5)) |_| return error.EmptyNotRefused else |err| {
+        if (err != error.EmptyContour) return error.WrongEmptyError;
+    }
+    if (simplify(garden, &bc, -1.0)) |_| return error.NegativeToleranceNotRefused else |err| {
+        if (err != error.BadTolerance) return error.WrongToleranceError;
+    }
+
+    // --- determinism: the same ring simplifies to the same polygon ----------------------------------------------------
+    const p1 = try simplify(garden, &bc, 0.5);
+    const p2 = try simplify(garden, &bc, 0.5);
+    if (p1.vertices.len != p2.vertices.len) return error.CountNotDeterministic;
+    var i: usize = 0;
+    while (i < p1.vertices.len) : (i += 1) {
+        if (p1.vertices[i].x != p2.vertices[i].x or p1.vertices[i].y != p2.vertices[i].y) return error.PolygonNotDeterministic;
+    }
+
+    print("GREEN image-polygon: simplify an ORDERED contour ring to its defining VERTICES by Douglas-Peucker over a Contour -- a solid 5x5 block traces to a 16-pixel ring yet reduces at tolerance 0.5 to exactly the FOUR corner vertices (1,1)(5,1)(5,5)(1,5), the sixteen boundary pixels named by the four points that draw the shape (a fact the raw ring cannot express); the polygon is an ordered subset of the ring starting at its start pixel, inventing no point; a spread 2x8 strip likewise reduces to its four corners, a straight run collapsing to its endpoints regardless of length; the CORNER-COUNT contrast -- an L-shape at the SAME tolerance reduces to MORE THAN FOUR vertices where the rectangle reduced to four, the polygon reading each shape's real corner count no area, box, center, moment, or ring length can give; the TOLERANCE knob coarsens monotonically -- a large tolerance keeps fewer vertices and past the shape's extent every chain collapses to the two-vertex floor a closed ring can never fall below; a lone dot and a domino pass through minimal; an empty ring refuses EmptyContour and a negative tolerance refuses BadTolerance, each having allocated nothing; the same ring simplifies deterministically\n", .{});
+    return 0;
+}
+
+/// Trace a component's outer ring -- a thin selftest shim over image/contour.rye so the fixtures read cleanly.
+fn trace(garden: std.mem.Allocator, map: *const label.LabelMap, want: u32) !contour.Contour {
+    return contour.trace_contour(garden, map, want);
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: polygon selftest\n", .{});
+    return 1;
+}
