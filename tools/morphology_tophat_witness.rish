@@ -1,0 +1,42 @@
+# tools/morphology_tophat_witness.rish -- the morphological top-hat residues prove themselves on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the RESIDUE verbs of the nonlinear morphology floor, the second derived operation
+# standing on image/morphology.rye's open (erode then dilate) and close (dilate then erode). Where the morphological
+# gradient (morphology_gradient.rye) lights a shape's BOUNDARY, the top-hat lights a shape's SMALL FEATURES -- the detail
+# an opening or a closing removes. The WHITE top-hat `src - open(src)` recovers the bright peaks an opening erases (a
+# highlight, a bright scratch, text brighter than its page); the BLACK top-hat `close(src) - src` recovers the dark valleys
+# a closing fills (a dust speck, a dark crack, text darker than its page). The floor of uneven-illumination correction,
+# small-feature detection, and background flattening, measured with no float and no square root, just a subtraction.
+#
+# One subtraction, two operand pairs -- the crux this witness proves is the DUALITY LAW: `black_tophat(x)` equals
+# `white_tophat(complement(x))` byte-for-byte, because close is the complemented open of the complement, so the black
+# top-hat of an image is the white top-hat of its negative. Both residues are non-negative bytes by the two ordering laws:
+# opening is anti-extensive (`open(src) <= src`) so `src - open >= 0` never underflows, closing is extensive
+# (`close(src) >= src`) so `close - src >= 0` never underflows. On metal: radius 0 is the degenerate blank top-hat; each
+# residue equals its composition byte-for-byte through morphology's own verbs (the definition crux); the white top-hat
+# recovers a bright speck and the black top-hat a dark speck, each lit while the flat regions stay blank; a flat field is
+# blank; alpha is measured like any channel; the result round-trips through the open QOI codec byte-for-byte; an over-max
+# radius and an empty source refuse by name; the same top-hat is deterministic. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/morphology_tophat_witness.rish
+
+say "morphology_tophat: Language EN -- Season G morphology top-hat; an RGBA image's small features recovered by the white top-hat (src minus open) and the black top-hat (close minus src) over a square structuring element, the residue verbs of the nonlinear morphology floor."
+say "morphology_tophat: Style Radiant -- one subtraction over two operand pairs; the white top-hat lights the bright peaks an opening erases and the black top-hat the dark valleys a closing fills, the two duals under complement so black_tophat(x) equals white_tophat of the negative."
+say "morphology_tophat: Lens TAME -- u32 in-memory counts, the radius bounded and refused by name through morphology's own guard; each function states its invariants positively; the source and radius guarded once before any allocation so a refusal allocates nothing; the subtraction asserts high >= low (the ordering law) at every byte, so no channel can underflow; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/morphology_tophat"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/morphology_tophat.rye -femit-bin=${bin}"]
+assert build.ok else "morphology_tophat: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "morphology_tophat: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "morphology_tophat: ${out}"
+
+assert selftest.out contains "GREEN image-morphology-tophat" else "morphology_tophat: selftest did not print the GREEN line"
+
+say "morphology_tophat: GREEN -- the top-hat residues recover an RGBA image's small features, the white top-hat equal to src minus open and the black top-hat to close minus src byte-for-byte, the two duals under complement, on metal."

@@ -1,0 +1,264 @@
+//! image/morphology_tophat.rye -- an RGBA image's SMALL FEATURES recovered by the MORPHOLOGICAL TOP-HAT residues: the WHITE
+//! top-hat `src - open(src)` and the BLACK top-hat `close(src) - src` over a square structuring element (Season G, the
+//! RESIDUE verbs of the nonlinear morphology floor).
+//!
+//! Season G (Open Media Primitives) -- the second derived operation standing on image/morphology.rye's open (erode then
+//! dilate) and close (dilate then erode). Where the morphological GRADIENT (morphology_gradient.rye) lights a shape's
+//! BOUNDARY, the top-hat lights a shape's SMALL FEATURES -- exactly the detail an opening or a closing removes. Opening
+//! erases bright specks smaller than the element, so the WHITE top-hat `src - open(src)` is precisely those erased bright
+//! peaks: a lone highlight, a thin bright scratch, text brighter than its page. Closing fills dark specks and gaps smaller
+//! than the element, so the BLACK top-hat `close(src) - src` is precisely those filled dark valleys: a speck of dust, a
+//! thin dark crack, text darker than its page. This is the floor of uneven-illumination correction, small-feature
+//! detection, and background flattening -- measured with no float, no square root, just a subtraction.
+//!
+//! One subtraction, two operand pairs -- the sameness-is-the-macro rung. Both residues are non-negative bytes by the two
+//! ordering laws of morphology: opening is ANTI-EXTENSIVE (`open(src) <= src` at every pixel, since erode shrinks a mark
+//! and the following dilate cannot regrow it past the original), so `src - open(src) >= 0` never underflows; closing is
+//! EXTENSIVE (`close(src) >= src`, the dual fact), so `close(src) - src >= 0` never underflows. And the two verbs are DUALS
+//! under complement, the crux this rung proves: `black_tophat(x) = white_tophat(complement(x))` byte-for-byte, because close
+//! is the complemented open of the complement -- the same duality that makes erode and dilate one primitive makes the two
+//! top-hats one primitive seen from both sides. Every channel including alpha is measured the same way, so a top-hat is a
+//! pure DIFFERENCE image: on a flat-alpha source the alpha channel of the residue is uniformly zero (a flat channel has no
+//! small feature to recover), honest math rather than a ready-to-composite overlay.
+//!
+//! This rung owns no new window scan -- it leans on image/morphology.rye for the open and close compositions and on
+//! image/qoi.rye for the pixel grid, adding only the per-channel subtraction; no blend, no codec, no color math. The radius
+//! is bounded by morphology's own `morphology_max_radius`, and a zero-extent source or an over-max radius refuses BY NAME
+//! (morphology's guard fires before any allocation) -- all-or-nothing, never a half-shaped image. No network, no key, no
+//! funds -- the small-feature and uneven-light work a surface runs the day it wants to lift text off a page or a fleck off
+//! a photo, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/morphology_tophat.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const morphology = @import("morphology.rye");
+
+pub const morphology_tophat_version = "20260818.104655";
+
+/// Subtract `low` from `high` per byte into `out`: the one operation this rung adds. Every caller passes a `high` that is
+/// pixel-wise >= `low` (an ordering fact -- src >= open, close >= src), so the difference is always a real byte and the
+/// assert proves it before the write. Both inputs and the output hold exactly the same RGBA byte count.
+fn subtract_bytes(out: []u8, high: []const u8, low: []const u8) void {
+    // invariant: the three buffers hold the same number of bytes, so every index lands inside all three.
+    assert(out.len == high.len);
+    assert(out.len == low.len);
+    var i: usize = 0;
+    while (i < out.len) : (i += 1) {
+        // invariant: the caller guarantees high >= low at every byte (the ordering law), so the subtraction never underflows.
+        assert(high[i] >= low[i]);
+        out[i] = high[i] - low[i];
+    }
+}
+
+/// The WHITE top-hat of `src`: `src - open(src)` per channel, the bright features smaller than the structuring element --
+/// the peaks an opening erases, recovered exactly. Returns a newly allocated Pixmap the caller owns; `src` is read-only and
+/// untouched. A refusal (empty source, over-max radius) fires inside morphology's own guard before this rung allocates.
+pub fn white_tophat(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32) !qoi.Pixmap {
+    const opened = try morphology.open(allocator, src, radius);
+    // The opened image is an intermediate; only the caller's difference outlives this call.
+    defer allocator.free(opened.pixels);
+    // invariant: opening reshapes the same source, so it shares the source's exact byte count.
+    assert(opened.pixels.len == src.pixels.len);
+    const out = try allocator.alloc(u8, src.pixels.len);
+    // open(src) <= src everywhere (opening is anti-extensive), so this never underflows.
+    subtract_bytes(out, src.pixels, opened.pixels);
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+/// The BLACK top-hat (bottom-hat) of `src`: `close(src) - src` per channel, the dark features smaller than the structuring
+/// element -- the valleys a closing fills, recovered exactly. Returns a newly allocated Pixmap the caller owns; `src` is
+/// read-only and untouched.
+pub fn black_tophat(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32) !qoi.Pixmap {
+    const closed = try morphology.close(allocator, src, radius);
+    defer allocator.free(closed.pixels);
+    // invariant: closing reshapes the same source, so it shares the source's exact byte count.
+    assert(closed.pixels.len == src.pixels.len);
+    const out = try allocator.alloc(u8, src.pixels.len);
+    // close(src) >= src everywhere (closing is extensive), so this never underflows.
+    subtract_bytes(out, closed.pixels, src.pixels);
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+// --- selftest: degenerate, definition, bright/dark recovery, duality, flat blank, alpha, round-trip, refusals -----------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// Set one pixel's RGBA at (x, y) -- a small writer the pattern builders share.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+/// Complement every channel of `img` in place (255 - value), the reflection the duality law reads through.
+fn complement(img: *qoi.Pixmap) void {
+    // invariant: the buffer is a whole RGBA grid, so every byte is a channel to reflect.
+    assert(img.pixels.len == @as(usize, img.width) * @as(usize, img.height) * 4);
+    var i: usize = 0;
+    while (i < img.pixels.len) : (i += 1) {
+        img.pixels[i] = 255 - img.pixels[i];
+    }
+}
+
+/// True when every byte of `img` is zero -- the blank a flat region's top-hat must be.
+fn all_zero(img: *const qoi.Pixmap) bool {
+    var i: usize = 0;
+    while (i < img.pixels.len) : (i += 1) {
+        if (img.pixels[i] != 0) return false;
+    }
+    return true;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+    // A residue's UNLIT pixel is fully transparent: on a flat-alpha scene the alpha channel has no small feature to
+    // recover, so its residue is 0 -- an unlit pixel reads (0,0,0,0), the honest difference-image blank, not opaque black.
+    const blank = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 0 };
+
+    // --- radius 0 is the DEGENERATE top-hat: a 1x1 element makes open and close both the source, so each residue is
+    //     uniformly zero -- a fully blank (transparent black) image, no feature at any scale below one pixel -------------
+    var scene = try make_canvas(garden, 7, 7, black);
+    set_pixel(&scene, 3, 3, white); // a lone bright speck an opening erases
+    const w0 = try white_tophat(garden, &scene, 0);
+    if (!all_zero(&w0)) return error.ZeroRadiusWhiteNotBlank;
+    const b0 = try black_tophat(garden, &scene, 0);
+    if (!all_zero(&b0)) return error.ZeroRadiusBlackNotBlank;
+
+    // --- the DEFINITION crux: white_tophat(x) equals src - open(x) and black_tophat(x) equals close(x) - src, each
+    //     byte-for-byte, computed independently through morphology's own compositions ----------------------------------
+    const wt = try white_tophat(garden, &scene, 1);
+    const opened = try morphology.open(garden, &scene, 1);
+    var wi: usize = 0;
+    while (wi < wt.pixels.len) : (wi += 1) {
+        // invariant: src >= open at every byte (opening is anti-extensive), so the reference difference is a real byte.
+        assert(scene.pixels[wi] >= opened.pixels[wi]);
+        if (wt.pixels[wi] != scene.pixels[wi] - opened.pixels[wi]) return error.WhiteNotSrcMinusOpen;
+    }
+    const bt = try black_tophat(garden, &scene, 1);
+    const closed = try morphology.close(garden, &scene, 1);
+    var bi: usize = 0;
+    while (bi < bt.pixels.len) : (bi += 1) {
+        // invariant: close >= src at every byte (closing is extensive), so the reference difference is a real byte.
+        assert(closed.pixels[bi] >= scene.pixels[bi]);
+        if (bt.pixels[bi] != closed.pixels[bi] - scene.pixels[bi]) return error.BlackNotCloseMinusSrc;
+    }
+
+    // --- the WHITE top-hat RECOVERS a bright speck: the lone white pixel at (3,3) is smaller than the radius-1 element,
+    //     so opening erases it and the residue lights exactly that pixel to full 255 in the color channels while every
+    //     other pixel stays blank -- the bright feature the opening removed, handed back --------------------------------
+    if (pixel_at(&wt, 3, 3).r != 255 or pixel_at(&wt, 3, 3).g != 255 or pixel_at(&wt, 3, 3).b != 255) return error.WhiteDidNotRecoverSpeck;
+    if (!pixel_at(&wt, 0, 0).eql(blank)) return error.WhiteLitFlatRegion;
+    if (!pixel_at(&wt, 3, 2).eql(blank)) return error.WhiteLitNeighbor;
+
+    // --- the BLACK top-hat RECOVERS a dark speck: a lone black pixel on a white field is filled by closing, so the
+    //     residue lights exactly that pixel to full 255 while every other pixel stays blank -----------------------------
+    var dark_scene = try make_canvas(garden, 7, 7, white);
+    set_pixel(&dark_scene, 3, 3, black);
+    const dbt = try black_tophat(garden, &dark_scene, 1);
+    if (pixel_at(&dbt, 3, 3).r != 255 or pixel_at(&dbt, 3, 3).g != 255 or pixel_at(&dbt, 3, 3).b != 255) return error.BlackDidNotRecoverSpeck;
+    if (!pixel_at(&dbt, 0, 0).eql(blank)) return error.BlackLitFlatRegion;
+
+    // --- the DUALITY crux: black_tophat(x) equals white_tophat(complement(x)) byte-for-byte, on a colored translucent
+    //     field so the parity is no black-and-white accident. Closing is the complemented opening of the complement, so
+    //     the black top-hat of an image is the white top-hat of its negative -- one primitive seen from both sides ------
+    var field = try make_canvas(garden, 6, 5, color.Rgba{ .r = 40, .g = 90, .b = 200, .a = 200 });
+    set_pixel(&field, 2, 2, color.Rgba{ .r = 255, .g = 30, .b = 10, .a = 255 });
+    set_pixel(&field, 4, 1, color.Rgba{ .r = 10, .g = 240, .b = 60, .a = 90 });
+    const fb = try black_tophat(garden, &field, 1);
+    var neg = try make_canvas(garden, 6, 5, black);
+    var ni: usize = 0;
+    while (ni < neg.pixels.len) : (ni += 1) neg.pixels[ni] = field.pixels[ni];
+    complement(&neg);
+    const fw = try white_tophat(garden, &neg, 1);
+    if (!fb.same_bytes(&fw)) return error.TophatDualityBroken;
+
+    // --- a FLAT field has no small feature: both residues are uniformly blank at any radius (open == close == the flat
+    //     value, so each difference is zero) --------------------------------------------------------------------------
+    const solid = try make_canvas(garden, 5, 5, color.Rgba{ .r = 70, .g = 130, .b = 30, .a = 210 });
+    const solid_white = try white_tophat(garden, &solid, 2);
+    if (!all_zero(&solid_white)) return error.FlatFieldWhiteNotBlank;
+    const solid_black = try black_tophat(garden, &solid, 2);
+    if (!all_zero(&solid_black)) return error.FlatFieldBlackNotBlank;
+
+    // --- ALPHA is measured like any channel: a 3x3 field flat in color with a lone bright-alpha peak at its center has
+    //     an alpha feature an opening erases, so the white top-hat's alpha lights that one pixel (255) and no other -----
+    const flat_gray = color.Rgba{ .r = 128, .g = 128, .b = 128, .a = 0 };
+    const alpha_peak = color.Rgba{ .r = 128, .g = 128, .b = 128, .a = 255 };
+    var ascene = try make_canvas(garden, 3, 3, flat_gray);
+    set_pixel(&ascene, 1, 1, alpha_peak);
+    const awt = try white_tophat(garden, &ascene, 1);
+    if (pixel_at(&awt, 1, 1).a != 255) return error.AlphaTophatDidNotRecover;
+    if (pixel_at(&awt, 0, 0).a != 0 or pixel_at(&awt, 1, 0).a != 0) return error.AlphaTophatLitFlatAlpha;
+
+    // --- a top-hat round-trips through the open QOI codec byte-for-byte -- a real image, not a private buffer ----------
+    const cap = qoi.encoded_bound(wt.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&wt, dst);
+    const backimg = try qoi.decode(garden, dst[0..enc.len]);
+    if (!backimg.same_bytes(&wt)) return error.TophatDidNotRoundTrip;
+
+    // --- refusals by name, each having allocated nothing (morphology's guard fires before this rung allocates) --------
+    if (white_tophat(garden, &scene, morphology.morphology_max_radius + 1)) |_| return error.OverRadiusNotRefused else |err| {
+        if (err != error.MorphologyRadiusTooLarge) return error.WrongRadiusError;
+    }
+    var empty = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (white_tophat(garden, &empty, 1)) |_| return error.EmptyWhiteNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongWhiteError;
+    }
+    if (black_tophat(garden, &empty, 1)) |_| return error.EmptyBlackNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongBlackError;
+    }
+
+    // --- determinism: the same top-hat reaches the same bytes twice ---------------------------------------------------
+    const wa = try white_tophat(garden, &scene, 1);
+    const wb = try white_tophat(garden, &scene, 1);
+    if (!wa.same_bytes(&wb)) return error.TophatNotDeterministic;
+
+    print("GREEN image-morphology-tophat: an RGBA image's small features recovered by the top-hat residues over a square structuring element -- radius 0 is the degenerate blank top-hat (open equals close equals the source); the white top-hat equals src - open(x) and the black top-hat equals close(x) - src byte-for-byte through morphology's own compositions (the definition crux); the white top-hat recovers a bright speck an opening erased and the black top-hat a dark speck a closing filled, each lit to full 255 in the color channels with every flat pixel blank; the DUALITY law holds, black_tophat(x) equals white_tophat(complement(x)) byte-for-byte on a colored translucent field; a flat field has no small feature and both residues are uniformly blank; alpha is measured like any channel (a real alpha peak lights the alpha residue); the top-hat round-trips through the open QOI codec byte-for-byte; an over-max radius and an empty source refuse by name having allocated nothing; the same top-hat is deterministic byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: morphology_tophat selftest\n", .{});
+    return 1;
+}

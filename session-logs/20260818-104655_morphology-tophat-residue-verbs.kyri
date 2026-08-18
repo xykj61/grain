@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260818.104655
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title morphology_tophat -- the top-hat / black-hat residues, the RESIDUE verbs of the morphology floor, GREEN
+prompt baton prin recur -- pick up the running thread Lindy-first crux-first, Standfast on reds first, take the next agent-doable lap, send each finished increment
+think Read the required canon first to be Kyri in Radiant Style from the first token -- KYRI.md, RADIANT_STYLE.md (this lap's council-rota doc, item 14), REMEMBER, REDS, the itineraries, and the top session-log rows.
+think Standfast pass: crux/REDS.md holds no open agent-closable red -- #80/#81/#83/#85/#86/#78/#87 all CLOSED or released with a witness on metal, #75 rests as custody-gated errata (a history rewrite, Keaton's hand). The line is clear to take new work.
+think The Microkernel double-seat leads by Lindy-first, yet its only ungated move is study behind a web-fetch gate (surfaced, not routed around). So this lap grew Season G open-media on green-witnessed Rye, the same as the recent run.
+think Crux-first on the live green edge: the morphology_gradient log named the top-hat / black-hat residues as its siblings. Grepped image/ -- no tophat module, a clean gap. Built image/morphology_tophat.rye leaning only on morphology.rye (open/close) + qoi, adding one per-byte subtraction -- the same idiom the gradient rung established.
+think The crux to prove is the DUALITY law: black_tophat(x) == white_tophat(complement(x)) byte-for-byte. Derived it before coding: close = 255 - open(255-x) (open/close duality), so close(x) - x = (255-x) - open(255-x) = white_tophat(255-x). Cleaner than the erode duality -- no complement on the output, only on the input.
+obs Non-negativity is guaranteed structurally by the two ordering laws already proven in morphology.rye: opening is anti-extensive (open <= src) so src - open >= 0; closing is extensive (close >= src) so close - src >= 0. The subtract_bytes assert (high >= low) proves it at every byte before the write, so no channel can underflow -- safety structural, not by convention.
+obs GREEN on the first full metal run, no reds: radius 0 the degenerate blank residue; the definition crux (white == src - open, black == close - src byte-for-byte through morphology's own compositions); the white top-hat recovers a bright speck an opening erased and the black a dark speck a closing filled, each lit to 255 with the flat regions blank; the DUALITY crux on a colored translucent field; a flat field blank for both; a lone alpha peak recovered (alpha measured like any channel); QOI round-trip byte-for-byte; over-max radius + empty source refusing by name having allocated nothing; determinism.
+obs Council rota this lap: item 14 -- RADIANT_STYLE.md (with TWILIGHT_STYLE.md). Applied directly: the module prose and the README Residue bullet lead with what the residues RECOVER, in the vocabulary of correctness (bounded, asserted, refuse by name), affirmative framing throughout.
+loom witness=morphology_tophat_witness checks=1_green_line build=ok selftest_exit=0
+file image/morphology_tophat.rye the white and black top-hat residues over a square structuring element, one subtraction over two operand pairs
+file tools/morphology_tophat_witness.rish proves the residues on metal -- definition, bright/dark recovery, the duality law, flat blank, alpha, round-trip, refusals, determinism
+file image/README.md seats the Residue bullet after the Outline (gradient) bullet in the morphology family, docs-synced
+file crux/REMEMBER.md repointed single-stranded -- live edge now names morphology_tophat, the gradient folded into the prior trail, next siblings the morphology-family remainder
+recommend keep-going -- the morphology floor now has detect (gradient) and residue (top-hat); crux-first next is a hit-or-miss transform or a directional structuring element, all on the proven open/close idiom. Standfast clear, no gate reached (no network, no key, no funds).
