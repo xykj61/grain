@@ -1,0 +1,266 @@
+//! image/morphology_gradient.rye -- an RGBA image's BOUNDARIES lit by the MORPHOLOGICAL GRADIENT: dilate minus erode over a
+//! square structuring element (Season G, the DETECT verb of the nonlinear morphology floor).
+//!
+//! Season G (Open Media Primitives) -- the first derived operation standing on image/morphology.rye's dilate (max) and
+//! erode (min). Where the convolution floor's detect verb is edges.rye (the Sobel gradient of a weighted sum), the
+//! morphology floor's detect verb is this: the gradient of a RANK filter. Dilate grows a bright mark, erode shrinks it, so
+//! the two disagree exactly at a TRANSITION and agree on any flat region -- and their difference `dilate(x) - erode(x)` is
+//! the THICKNESS of the transition at each pixel: zero on a flat interior or exterior, bright at every boundary. On an
+//! alpha mask it draws the mask's outline; on a photo it lights the contours where one region meets another, the first step
+//! of an outline, a mask border, or a shape-finding pass -- measured with no float, no square root, just a subtraction.
+//!
+//! One subtraction, three operand pairs -- the sameness-is-the-macro complete rung. The FULL gradient `dilate - erode`
+//! draws a boundary two pixels thick, straddling the edge. It decomposes exactly into two one-sided rings: the OUTER
+//! gradient `dilate - src` lights the ring just OUTSIDE a shape (where dilate reached in but the source was still ground),
+//! and the INNER gradient `src - erode` lights the shape's OWN edge pixels (where the source was lit but erode reached the
+//! ground). Because dilate is a max over a window that includes the center and erode a min over the same, extensivity gives
+//! `dilate(x) >= src >= erode(x)` at every pixel, so BOTH one-sided differences are non-negative -- no subtraction can ever
+//! underflow a byte -- and their sum is the full gradient exactly: `(dilate - src) + (src - erode) = dilate - erode`, a
+//! valid byte with no saturation. The additive law is the crux this rung proves: the two rings are disjoint halves of the
+//! one boundary. Every channel including alpha is measured the same way, so the gradient is a pure DIFFERENCE image: on a
+//! flat-alpha source the alpha channel of the gradient is uniformly zero (a flat channel has no transition), honest math
+//! rather than a ready-to-composite overlay.
+//!
+//! This rung owns no new window scan -- it leans on image/morphology.rye for the two rank passes and on image/qoi.rye for
+//! the pixel grid, adding only the per-channel subtraction; no blend, no codec, no color math. The radius is bounded by
+//! morphology's own `morphology_max_radius`, and a zero-extent source or an over-max radius refuses BY NAME (morphology's
+//! guard fires before any allocation) -- all-or-nothing, never a half-shaped image. No network, no key, no funds -- the
+//! outline and boundary work a surface runs the day it wants a mask border or a shape's contour, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/morphology_gradient.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const morphology = @import("morphology.rye");
+
+pub const morphology_gradient_version = "20260818.104307";
+
+/// Subtract `low` from `high` per byte into `out`: the one operation this rung adds. Every caller passes a `high` that is
+/// pixel-wise >= `low` (an extensivity fact -- dilate >= src >= erode), so the difference is always a real byte and the
+/// assert proves it before the write. Both inputs and the output hold exactly the same RGBA byte count.
+fn subtract_bytes(out: []u8, high: []const u8, low: []const u8) void {
+    // invariant: the three buffers hold the same number of bytes, so every index lands inside all three.
+    assert(out.len == high.len);
+    assert(out.len == low.len);
+    var i: usize = 0;
+    while (i < out.len) : (i += 1) {
+        // invariant: the caller guarantees high >= low at every byte (extensivity), so the subtraction never underflows.
+        assert(high[i] >= low[i]);
+        out[i] = high[i] - low[i];
+    }
+}
+
+/// The FULL morphological gradient of `src`: `dilate(src) - erode(src)` per channel, the boundary two pixels thick. Returns
+/// a newly allocated Pixmap the caller owns; `src` is read-only and untouched. A refusal (empty source, over-max radius)
+/// fires inside morphology's own guard before this rung allocates its result, so an error leaves nothing behind.
+pub fn gradient(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32) !qoi.Pixmap {
+    const dil = try morphology.dilate(allocator, src, radius);
+    // The two rank passes are intermediates; only the caller's difference outlives this call.
+    defer allocator.free(dil.pixels);
+    const ero = try morphology.erode(allocator, src, radius);
+    defer allocator.free(ero.pixels);
+    // invariant: both rank passes reshape the same source, so they share its exact byte count.
+    assert(dil.pixels.len == ero.pixels.len);
+    const out = try allocator.alloc(u8, dil.pixels.len);
+    subtract_bytes(out, dil.pixels, ero.pixels);
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+/// The OUTER (external) morphological gradient of `src`: `dilate(src) - src` per channel, the ring just OUTSIDE a shape --
+/// where the dilate reached the shape but the source was still ground. Returns a newly allocated Pixmap the caller owns.
+pub fn gradient_outer(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32) !qoi.Pixmap {
+    const dil = try morphology.dilate(allocator, src, radius);
+    defer allocator.free(dil.pixels);
+    // invariant: the dilate reshapes the same source, so it shares the source's exact byte count.
+    assert(dil.pixels.len == src.pixels.len);
+    const out = try allocator.alloc(u8, dil.pixels.len);
+    // dilate >= src everywhere (a max over a window that includes the center), so this never underflows.
+    subtract_bytes(out, dil.pixels, src.pixels);
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+/// The INNER (internal) morphological gradient of `src`: `src - erode(src)` per channel, the shape's OWN edge pixels --
+/// where the source was lit but the erode reached the ground. Returns a newly allocated Pixmap the caller owns.
+pub fn gradient_inner(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32) !qoi.Pixmap {
+    const ero = try morphology.erode(allocator, src, radius);
+    defer allocator.free(ero.pixels);
+    // invariant: the erode reshapes the same source, so it shares the source's exact byte count.
+    assert(ero.pixels.len == src.pixels.len);
+    const out = try allocator.alloc(u8, ero.pixels.len);
+    // src >= erode everywhere (a min over a window that includes the center), so this never underflows.
+    subtract_bytes(out, src.pixels, ero.pixels);
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+// --- selftest: definition, boundary ring, additive law, one-sided rings, flat blank, alpha, round-trip, refusals --------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// Set one pixel's RGBA at (x, y) -- a small writer the pattern builders share.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+/// True when every byte of `img` is zero -- the blank a flat region's gradient must be.
+fn all_zero(img: *const qoi.Pixmap) bool {
+    var i: usize = 0;
+    while (i < img.pixels.len) : (i += 1) {
+        if (img.pixels[i] != 0) return false;
+    }
+    return true;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+    // A gradient's DARK pixel is fully transparent: the scene's alpha is flat 255 everywhere, so the alpha channel has no
+    // transition and its gradient is 0 -- a flat region reads (0,0,0,0), the honest difference-image blank, not opaque black.
+    const blank = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 0 };
+
+    // A 7x7 black field with a 3x3 white block at its center (columns 2..4, rows 2..4) -- a shape with a clean boundary,
+    // a flat interior, and a flat exterior, so the gradient's ring, hollow, and blank all show plainly.
+    var scene = try make_canvas(garden, 7, 7, black);
+    var by: u32 = 2;
+    while (by <= 4) : (by += 1) {
+        var bx: u32 = 2;
+        while (bx <= 4) : (bx += 1) set_pixel(&scene, bx, by, white);
+    }
+
+    // --- radius 0 is the DEGENERATE gradient: a 1x1 element makes dilate and erode both the source, so their difference is
+    //     uniformly zero -- a fully blank (transparent black) image, no boundary at any scale below one pixel --------------
+    const g0 = try gradient(garden, &scene, 0);
+    if (!all_zero(&g0)) return error.ZeroRadiusGradientNotBlank;
+
+    // --- the DEFINITION crux: gradient(x) equals dilate(x) - erode(x) byte-for-byte, computed independently through
+    //     morphology's own two verbs -- the derived operation IS the difference of the two rank passes -------------------
+    const grad = try gradient(garden, &scene, 1);
+    const dil = try morphology.dilate(garden, &scene, 1);
+    const ero = try morphology.erode(garden, &scene, 1);
+    var di: usize = 0;
+    while (di < grad.pixels.len) : (di += 1) {
+        // invariant: dilate >= erode at every byte (extensivity), so the reference difference is a real byte.
+        assert(dil.pixels[di] >= ero.pixels[di]);
+        if (grad.pixels[di] != dil.pixels[di] - ero.pixels[di]) return error.GradientNotDilateMinusErode;
+    }
+
+    // --- the gradient LIGHTS the boundary and leaves both flat regions dark: the block's interior center (3,3) reads zero
+    //     (its whole neighborhood is white, so dilate == erode), a far exterior corner (0,0) reads zero, and a boundary
+    //     pixel where the 3x3 window straddles the edge reads full 255 in the color channels ---------------------------
+    if (!pixel_at(&grad, 3, 3).eql(blank)) return error.GradientInteriorNotDark;
+    if (!pixel_at(&grad, 0, 0).eql(blank)) return error.GradientExteriorNotDark;
+    const edge = pixel_at(&grad, 1, 2); // just outside the block's left edge: dilate reaches white, erode stays black
+    if (edge.r != 255 or edge.g != 255 or edge.b != 255) return error.GradientBoundaryNotLit;
+
+    // --- the ADDITIVE LAW crux: the outer ring plus the inner ring equal the full gradient byte-for-byte, on a colored
+    //     translucent field so the parity is no black-and-white accident. The two one-sided gradients are disjoint halves
+    //     of the one boundary, and their exact sum is a valid byte (no saturation, because it equals dilate - erode) -----
+    var field = try make_canvas(garden, 6, 5, color.Rgba{ .r = 40, .g = 90, .b = 200, .a = 200 });
+    set_pixel(&field, 2, 2, color.Rgba{ .r = 255, .g = 30, .b = 10, .a = 255 });
+    set_pixel(&field, 4, 1, color.Rgba{ .r = 10, .g = 240, .b = 60, .a = 90 });
+    const fg = try gradient(garden, &field, 1);
+    const fo = try gradient_outer(garden, &field, 1);
+    const fi = try gradient_inner(garden, &field, 1);
+    var fj: usize = 0;
+    while (fj < fg.pixels.len) : (fj += 1) {
+        const sum: u32 = @as(u32, fo.pixels[fj]) + @as(u32, fi.pixels[fj]);
+        // invariant: the two rings sum to the full gradient, itself a byte, so the sum never leaves 0..255.
+        assert(sum <= 255);
+        if (@as(u8, @intCast(sum)) != fg.pixels[fj]) return error.RingsDoNotSumToGradient;
+    }
+
+    // --- the two rings are DISJOINT and one-sided on the block scene: the outer gradient lights a pixel just OUTSIDE the
+    //     block (1,2) yet leaves the block's own edge pixel (2,2) dark, while the inner gradient does the exact opposite --
+    const outer = try gradient_outer(garden, &scene, 1);
+    const inner = try gradient_inner(garden, &scene, 1);
+    if (pixel_at(&outer, 1, 2).r != 255) return error.OuterDidNotLightOutside;
+    if (!pixel_at(&outer, 2, 2).eql(blank)) return error.OuterLitTheEdgeItself;
+    if (pixel_at(&inner, 2, 2).r != 255) return error.InnerDidNotLightEdge;
+    if (!pixel_at(&inner, 1, 2).eql(blank)) return error.InnerLitOutside;
+
+    // --- a FLAT field has no boundary: its gradient is uniformly blank at any radius (dilate == erode == the flat value) -
+    const solid = try make_canvas(garden, 5, 5, color.Rgba{ .r = 70, .g = 130, .b = 30, .a = 210 });
+    const solid_grad = try gradient(garden, &solid, 2);
+    if (!all_zero(&solid_grad)) return error.FlatFieldGradientNotBlank;
+
+    // --- ALPHA is measured like any channel: a 2px row [a=255, a=0] has an alpha transition, so the gradient's alpha is
+    //     the difference of the dilated and eroded alpha (255 - 0 = 255) rather than carried ----------------------------
+    const opaque_gray = color.Rgba{ .r = 128, .g = 128, .b = 128, .a = 255 };
+    const clear_gray = color.Rgba{ .r = 128, .g = 128, .b = 128, .a = 0 };
+    var arow = try make_canvas(garden, 2, 1, opaque_gray);
+    set_pixel(&arow, 1, 0, clear_gray);
+    const agrad = try gradient(garden, &arow, 1);
+    // each pixel's window spans both columns, so both dilate to a=255 and erode to a=0 -- the alpha gradient is 255
+    if (pixel_at(&agrad, 0, 0).a != 255 or pixel_at(&agrad, 1, 0).a != 255) return error.AlphaGradientWrong;
+
+    // --- the gradient round-trips through the open QOI codec byte-for-byte -- a real image, not a private buffer --------
+    const cap = qoi.encoded_bound(grad.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&grad, dst);
+    const backimg = try qoi.decode(garden, dst[0..enc.len]);
+    if (!backimg.same_bytes(&grad)) return error.GradientDidNotRoundTrip;
+
+    // --- refusals by name, each having allocated nothing (morphology's guard fires before this rung allocates) ---------
+    if (gradient(garden, &scene, morphology.morphology_max_radius + 1)) |_| return error.OverRadiusNotRefused else |err| {
+        if (err != error.MorphologyRadiusTooLarge) return error.WrongRadiusError;
+    }
+    var empty = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (gradient(garden, &empty, 1)) |_| return error.EmptySourceNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+    if (gradient_outer(garden, &empty, 1)) |_| return error.EmptyOuterNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongOuterError;
+    }
+
+    // --- determinism: the same gradient reaches the same bytes twice --------------------------------------------------
+    const ga = try gradient(garden, &scene, 1);
+    const gb = try gradient(garden, &scene, 1);
+    if (!ga.same_bytes(&gb)) return error.GradientNotDeterministic;
+
+    print("GREEN image-morphology-gradient: an RGBA image's boundaries lit by dilate minus erode over a square structuring element -- radius 0 is the degenerate blank gradient (dilate equals erode); the gradient equals dilate(x) - erode(x) byte-for-byte through morphology's own two verbs (the definition crux); the gradient lights a boundary to full 255 in the color channels and leaves both the flat interior and the flat exterior dark; the ADDITIVE LAW holds, the outer ring (dilate - src) plus the inner ring (src - erode) equal the full gradient byte-for-byte on a colored translucent field with no saturation; the two rings are disjoint and one-sided, the outer lighting just outside a shape and the inner the shape's own edge; a flat field has no boundary and its gradient is uniformly blank; alpha is measured like any channel (a real alpha transition lights the alpha gradient); the gradient round-trips through the open QOI codec byte-for-byte; an over-max radius and an empty source refuse by name having allocated nothing; the same gradient is deterministic byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: morphology_gradient selftest\n", .{});
+    return 1;
+}
