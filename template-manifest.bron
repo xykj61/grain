@@ -243,6 +243,7 @@ personal  session-logs                    # years of reasoning traces that name 
 personal  counsel                         # decision records — "on the maintainer's word"
 personal  bron-resins                     # compressed personal reasoning trails
 personal  crux                            # the live operator cards of one maintainer (renamed from work-in-progress 20260816)
+personal  nixos                           # the pier host NixOS config (hostname, disk, packages) -- host-specific, never public
 personal  press                           # personal announcements — name change, fund, ventures
 personal  saga                            # season-close narratives, one steward's arc
 personal  classical-vedic-astrology       # a personal-life study library, privacy-gated
