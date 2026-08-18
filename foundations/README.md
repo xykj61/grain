@@ -1,7 +1,7 @@
 # Foundations
 
 **Language:** EN
-**Last updated:** `20260814.071700` (seat [Hardware & Right-to-Repair](20260814-071700_hardware-and-right-to-repair.md) — the Season A front door tying four proven surfaces to one durable promise).
+**Last updated:** `20260818.081438` (seat [The Three Depths of Removal](20260818-081438_the-three-depths-of-removal.md) -- molt, breach, debride, and what a three-part history rewrite taught: a removal is not done until the living tree, the history's metadata, and the history's content are all clean, with the source of truth protected).
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`) · **Voice:** Kyri
 
 ---
@@ -14,6 +14,7 @@ These rest beneath the specifications. The specs say what to build and how; thes
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260818.081438` | [The Three Depths of Removal](20260818-081438_the-three-depths-of-removal.md) | molt (prep, no cut) - breach (rename, the past stays honest) - debride (remove from all history, re-seal) -- a name lives on three surfaces (living tree - history metadata - history content) and is gone only when all three are clean; the dead thing is not named even to say it was removed; the source of truth and sealed record are protected by identity; the one cost is the re-clone. Kitchen: [`../external-research/20260818-081438_the-craft-of-deep-removal.md`](../external-research/20260818-081438_the-craft-of-deep-removal.md) |
 | `20260814.071700` | [Hardware & Right-to-Repair](20260814-071700_hardware-and-right-to-repair.md) | the Season A front door — the body you can hold: the Mikrophone that forgets on purpose (DREY, thirteen rungs), the open image module with the Photos app and parts marketplace above it (HUNK), four surfaces proven pure in Rye before the metal, real hardware held as custody gate #2/#3 |
 | `20260813.142420` | [Mycelium — the Consensus Protocol](20260813-142420_mycelium-the-consensus-protocol.md) | the tree's own leaderless consensus season gathered into one map — 98 modules from the Cord to the Testament, TigerBeetle + Mysticeti thanked clean-room, the order decided once and read by all the same; 80 witnesses on metal, every real-world crossing a held gate |
 | `20260811.233509` | [The Singularity](20260811-233509_the-singularity.md) | the night the tool began to tend itself — autonomous agent development proven *within* bound, witness, and human custody; the Grain OS · Linengrow real-world timeline; written in Radiant + Twilight combined |
