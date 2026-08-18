@@ -1,0 +1,311 @@
+//! image/font5x7_greek_upper.rye -- the open Greek CAPITALS corpus: the seven distinct uppercase letters a formula sets.
+//!
+//! Season G (Open Media Primitives) - font content for the open glyph atlas image/glyph.rye (gfa1), the uppercase
+//! companion to the Greek marks image/font5x7_greek.rye already carries (the capitals Delta, Sigma, Omega and the nine
+//! lowercase alpha..omega). A science or engineering readout that names a quantity reaches past those three capitals for
+//! the rest of the Greek uppercase alphabet -- yet more than half of it (Alpha, Beta, Epsilon, Zeta, Eta, Iota, Kappa,
+//! Mu, Nu, Omicron, Rho, Tau, Upsilon, Chi) is drawn identically to a Latin capital, so a surface spells those from the
+//! ASCII font it already loads. What ASCII CANNOT fold are the capitals that carry a shape of their own: this corpus
+//! draws the seven DISTINCT uppercase Greek letters an equation actually needs -- Gamma, Theta, Lambda, Xi, Pi, Phi,
+//! Psi -- at their real Unicode codepoints U+0393 Gamma, U+0398 Theta, U+039B Lambda, U+039E Xi, U+03A0 Pi, U+03A6 Phi,
+//! U+03A8 Psi, in our own open hand on the same 5x7 body. With these seven plus the Delta, Sigma, and Omega already
+//! drawn, every uppercase Greek letter a formula sets that is not a Latin twin now stands drawn -- the gamma function,
+//! a summation's index set, the empty product Pi, a wavefunction Psi, a magnetic flux Phi, a grand partition Xi.
+//!
+//! The crux this corpus proves matches the family: these seven are NOT one shared body -- they are SEVEN DISTINCT
+//! CONSTRUCTIONS, each read by its own toothed guard rather than a shared placement check:
+//!   - Gamma (U+0393): a top bar over a left stem alone -- no right leg descends (the mark that tells Gamma from Pi);
+//!   - Theta (U+0398): an oval CROSSED by a middle bar -- the horizontal stroke that tells Theta from a plain O;
+//!   - Lambda (U+039B): an apex at the top center with legs that spread to both edges and NO stem down the middle;
+//!   - Xi (U+039E): three horizontal bars (top, middle, bottom) with NO vertical stem between them;
+//!   - Pi (U+03A0): a top bar over two full legs at both edges with the center open between them;
+//!   - Phi (U+03A6): a vertical stem that pokes out above and below an oval bowl crossed at its middle;
+//!   - Psi (U+03A8): three prongs at the top gathering to a single stem at the bottom.
+//! A lost bar, a missing stem, or a leg on the wrong side is a stopped line rather than a wrong glyph.
+//!
+//! The source stays plain ASCII (ASCII-first): the codepoints are written as numeric literals (0x0393 ...) and each
+//! letter is named in an ASCII comment, so no non-ASCII byte enters the file even though the glyphs it builds cover a
+//! non-ASCII range. The codepoints are NOT contiguous (the Latin-twin capitals sit between them in the Greek block), so
+//! this corpus carries an explicit ascending codepoint table -- the shape the gfa1 encoder trusts (strictly ascending,
+//! shared cell, coverage length == cell area). The drawings ARE the specification: each letter is seven rows of five
+//! cells in ASCII line art ('#' full ink, '.' none) that a reader audits by eye; the coverage bytes are derived from that
+//! art, never the reverse. No network, no key, no funds -- the Greek capitals a science surface reads the day it prints
+//! a formula on our own open font.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/font5x7_greek_upper.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const glyph = @import("glyph.rye");
+
+pub const font5x7_greek_upper_version = "20260817.235920";
+
+/// Every glyph in this corpus shares one 5-wide, 7-tall cell -- the same body the ASCII, Greek, and accent corpora carry.
+pub const cell_w: u8 = 5;
+pub const cell_h: u8 = 7;
+
+/// The pen advance: the cell width plus one column of daylight, the same advance the sibling corpora carry.
+pub const greek_upper_advance: u8 = cell_w + 1;
+
+/// The corpus holds exactly the seven distinct Greek capitals named in the table below.
+pub const greek_upper_count: u32 = 7;
+
+/// Cells per glyph -- the coverage length every letter carries, named at construction.
+pub const cell_area: u32 = @as(u32, cell_w) * @as(u32, cell_h);
+
+/// The named columns of the cell -- the left edge, the center, and the right edge. The construction proofs read a stem or
+/// a leg at one of these three columns.
+pub const left_col: u32 = 0;
+pub const center_col: u32 = 2;
+pub const right_col: u32 = 4;
+
+/// The named rows of the cell -- the top (row 0), the true middle (row 3), and the bottom (row 6). Theta's crossing bar,
+/// Xi's middle bar, and Phi's bowl all fall on the middle row; the top and bottom rows carry the bars, apex, prongs, and
+/// legs the proofs read.
+pub const top_row: u32 = 0;
+pub const inner_row: u32 = 1;
+pub const mid_row: u32 = 3;
+pub const bottom_row: u32 = 6;
+
+/// The seven Greek capital codepoints, strictly ascending -- the order the gfa1 encoder trusts. Each aligns by index with
+/// greek_upper_art below. Written as numeric literals so the source stays plain ASCII while the glyphs cover a non-ASCII
+/// range:
+///   0x0393 Gamma, 0x0398 Theta, 0x039B Lambda, 0x039E Xi, 0x03A0 Pi, 0x03A6 Phi, 0x03A8 Psi. The Latin-twin capitals
+///   between them (Alpha=A, Beta=B, ... ) are spelled from the ASCII font, so the codepoints here are named outright.
+const greek_upper_codepoints = [greek_upper_count]u32{
+    0x0393, 0x0398, 0x039B, 0x039E, 0x03A0, 0x03A6, 0x03A8,
+};
+
+/// The seven capitals, drawn in the open. Each is seven rows of five cells; '#' ink, '.' background. A reader audits every
+/// letter here by eye, and the coverage bytes are lifted from this art, never guessed. The seven are built seven ways:
+///   - Gamma (U+0393): a full top bar over the left stem alone, no right leg;
+///   - Theta (U+0398): a rounded oval with a full crossing bar on the middle row;
+///   - Lambda (U+039B): an apex at the top center, legs spreading to both edges, the center open at the foot;
+///   - Xi (U+039E): three horizontal bars (top full, middle short, bottom full) with blank rows and no stem between;
+///   - Pi (U+03A0): a full top bar over two legs at both edges, the center open between them;
+///   - Phi (U+03A6): a vertical stem poking above and below an oval bowl crossed at its middle;
+///   - Psi (U+03A8): three prongs at the top gathering into a single stem at the bottom.
+const greek_upper_art = [greek_upper_count][cell_h][]const u8{
+    .{ "#####", "#....", "#....", "#....", "#....", "#....", "#...." }, // U+0393 Gamma
+    .{ ".###.", "#...#", "#...#", "#####", "#...#", "#...#", ".###." }, // U+0398 Theta
+    .{ "..#..", "..#..", ".#.#.", ".#.#.", "#...#", "#...#", "#...#" }, // U+039B Lambda
+    .{ "#####", ".....", ".....", ".###.", ".....", ".....", "#####" }, // U+039E Xi
+    .{ "#####", "#...#", "#...#", "#...#", "#...#", "#...#", "#...#" }, // U+03A0 Pi
+    .{ "..#..", ".###.", "#.#.#", "#.#.#", "#.#.#", ".###.", "..#.." }, // U+03A6 Phi
+    .{ "#.#.#", "#.#.#", "#.#.#", ".###.", "..#..", "..#..", "..#.." }, // U+03A8 Psi
+};
+
+/// Lift one letter's ASCII art into a freshly allocated coverage grid of exactly cell_area bytes: 255 for ink,
+/// 0 for background. The art's own shape is asserted, so a mistyped row is a stopped line rather than a bad glyph.
+fn coverage_from_art(allocator: std.mem.Allocator, art: [cell_h][]const u8) ![]u8 {
+    // invariant: a coverage grid is exactly the shared cell area, within the atlas ceiling.
+    assert(cell_area >= 1);
+    assert(cell_area <= glyph.coverage_max);
+    const cov = try allocator.alloc(u8, cell_area);
+    var idx: u32 = 0;
+    var r: u32 = 0;
+    while (r < cell_h) : (r += 1) {
+        const row = art[r];
+        // invariant: every drawn row is exactly the cell width -- the art matches the grid.
+        assert(row.len == cell_w);
+        var c: u32 = 0;
+        while (c < cell_w) : (c += 1) {
+            cov[idx] = if (row[c] == '#') 255 else 0;
+            idx += 1;
+        }
+    }
+    // invariant: the whole grid was filled, no cell left unwritten.
+    assert(idx == cell_area);
+    return cov;
+}
+
+/// Build the Greek capitals atlas: seven glyphs at the named ascending codepoints, sharing the 5x7 cell and advance.
+/// The gfa1 encoder accepts the result directly (ascending codepoints, coverage length == cell area).
+pub fn build_atlas(allocator: std.mem.Allocator) !glyph.GlyphAtlas {
+    // invariant: the corpus is the seven named capitals and no more.
+    assert(greek_upper_count == 7);
+    assert(cell_area == 35);
+    const glyphs = try allocator.alloc(glyph.Glyph, greek_upper_count);
+    var i: u32 = 0;
+    var last_cp: u32 = 0;
+    while (i < greek_upper_count) : (i += 1) {
+        const cp = greek_upper_codepoints[i];
+        // invariant: codepoints are strictly ascending -- the ordering the gfa1 encoder trusts.
+        assert(i == 0 or cp > last_cp);
+        last_cp = cp;
+        const cov = try coverage_from_art(allocator, greek_upper_art[i]);
+        glyphs[i] = glyph.Glyph{
+            .codepoint = cp,
+            .advance = greek_upper_advance,
+            .coverage = cov,
+        };
+    }
+    // invariant: the last codepoint is Psi (U+03A8) -- the table ends where this set ends.
+    assert(glyphs[greek_upper_count - 1].codepoint == 0x03A8);
+    return glyph.GlyphAtlas{ .cell_w = cell_w, .cell_h = cell_h, .glyphs = glyphs };
+}
+
+/// Count the inked cells (coverage byte != 0) in a glyph -- the legibility signal a blank glyph would fail.
+fn ink_count(cov: []const u8) u32 {
+    // invariant: coverage is the shared, bounded grid.
+    assert(cov.len == cell_area);
+    var n: u32 = 0;
+    var i: u32 = 0;
+    while (i < cov.len) : (i += 1) {
+        if (cov[i] != 0) n += 1;
+    }
+    // invariant: the ink count never exceeds the grid it was counted over.
+    assert(n <= cell_area);
+    return n;
+}
+
+/// Count the inked cells in row r of a glyph, restricted to the half-open column band [c0, c1). Every construction proof
+/// reads a row band with this one reader. Row 0 is the top.
+fn row_band_ink(cov: []const u8, r: u32, c0: u32, c1: u32) u32 {
+    // invariant: the row index sits inside the shared cell, over the shared grid.
+    assert(r < cell_h);
+    assert(cov.len == cell_area);
+    // invariant: the column band is well-ordered and inside the cell width.
+    assert(c0 <= c1);
+    assert(c1 <= cell_w);
+    var n: u32 = 0;
+    var c: u32 = c0;
+    while (c < c1) : (c += 1) {
+        if (cov[r * cell_w + c] != 0) n += 1;
+    }
+    // invariant: the band count never exceeds the band it was counted over.
+    assert(n <= c1 - c0);
+    return n;
+}
+
+/// The whole-row ink of row r for a codepoint's glyph -- the reader the bar proofs (Gamma, Theta, Xi, Pi) share.
+fn full_row_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32, r: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return row_band_ink(g.coverage, r, 0, cell_w);
+    return error.GreekCapitalMissing;
+}
+
+/// The ink of a single cell at (r, c) for a codepoint's glyph -- the reader the stem, leg, apex, and prong proofs share.
+fn cell_ink_of(atlas: *const glyph.GlyphAtlas, codepoint: u32, r: u32, c: u32) !u32 {
+    if (atlas.lookup(codepoint)) |g| return row_band_ink(g.coverage, r, c, c + 1);
+    return error.GreekCapitalMissing;
+}
+
+// --- selftest: build the Greek capitals atlas, round-trip through gfa1, prove present, distinct, legible, seven-built ---
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const atlas = try build_atlas(garden);
+    const glyph_count: u32 = @intCast(atlas.glyphs.len);
+    // invariant: the built atlas is the seven-capital corpus at the shared cell.
+    assert(glyph_count == greek_upper_count);
+    assert(atlas.cell_area() == cell_area);
+
+    // Round-trip through the gfa1 encoder/decoder, byte-for-byte -- the crux inherited from the atlas rung.
+    const cap = glyph.encoded_bound(glyph_count, cell_area);
+    const dst = try garden.alloc(u8, cap);
+    const res = try glyph.encode(&atlas, dst);
+    const stream = dst[0..res.len];
+    const back = try glyph.decode(garden, stream);
+    assert(back.same_bytes(&atlas));
+
+    // Seven present capitals: every one looks up, carries the shared advance; a Latin-twin ASCII 'P' misses (Rho is
+    // spelled from ASCII, so this corpus must not carry a bare P).
+    var d: u32 = 0;
+    while (d < greek_upper_count) : (d += 1) {
+        const cp = greek_upper_codepoints[d];
+        if (back.lookup(cp)) |g| {
+            assert(g.codepoint == cp);
+            assert(g.advance == greek_upper_advance);
+        } else return error.GreekCapitalMissing;
+    }
+    if (back.lookup('P')) |_| return error.NonGreekCapitalFound else {}
+
+    // Distinctness: no two of the seven capitals share identical coverage (catches a copy slip that would set two
+    // symbols with one glyph).
+    var a: u32 = 0;
+    while (a < greek_upper_count) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b < greek_upper_count) : (b += 1) {
+            if (std.mem.eql(u8, atlas.glyphs[a].coverage, atlas.glyphs[b].coverage)) return error.GreekCapitalsNotDistinct;
+        }
+    }
+
+    // Legibility: each capital's ink count sits inside an honest band. The floor sits where Gamma (its lightest, a bar
+    // and a stem) still reads, the ceiling where Theta (its heaviest, a barred oval) still resolves as a letter.
+    const ink_min: u32 = 11;
+    const ink_max: u32 = 19;
+    var lo: u32 = cell_area;
+    var hi: u32 = 0;
+    var k: u32 = 0;
+    while (k < greek_upper_count) : (k += 1) {
+        const n = ink_count(atlas.glyphs[k].coverage);
+        if (n < ink_min or n > ink_max) return error.GreekCapitalIllegible;
+        if (n < lo) lo = n;
+        if (n > hi) hi = n;
+    }
+    // invariant: the observed ink band stayed inside the honest bounds.
+    assert(lo >= ink_min);
+    assert(hi <= ink_max);
+
+    // Construction 1 -- Gamma (U+0393): a top bar over the LEFT STEM ALONE. Three toothed guards read it: a full top bar,
+    // the left stem inked at the foot, and NO right leg (the mark that tells Gamma from Pi).
+    if ((try full_row_ink_of(&atlas, 0x0393, top_row)) < 4) return error.GreekGammaNoBar;
+    if ((try cell_ink_of(&atlas, 0x0393, bottom_row, left_col)) != 1) return error.GreekGammaNoStem;
+    if ((try cell_ink_of(&atlas, 0x0393, bottom_row, right_col)) != 0) return error.GreekGammaHasRightLeg;
+
+    // Construction 2 -- Theta (U+0398): an oval CROSSED by a middle bar. Three toothed guards read it: a full crossing bar
+    // on the middle row, both sides inked at the middle (a closed oval), and rounded top corners (the top corners blank,
+    // unlike Xi's or Pi's square top bar).
+    if ((try full_row_ink_of(&atlas, 0x0398, mid_row)) < 4) return error.GreekThetaNoBar;
+    if ((try cell_ink_of(&atlas, 0x0398, mid_row, left_col)) != 1 or (try cell_ink_of(&atlas, 0x0398, mid_row, right_col)) != 1) return error.GreekThetaNotClosed;
+    if ((try cell_ink_of(&atlas, 0x0398, top_row, left_col)) != 0 or (try cell_ink_of(&atlas, 0x0398, top_row, right_col)) != 0) return error.GreekThetaNotRounded;
+
+    // Construction 3 -- Lambda (U+039B): an APEX at the top center, legs spread, the foot open. Three toothed guards read
+    // it: the top row is the apex alone (a single inked center cell, no bar), the legs reach both edges at the foot, and
+    // the center is open at the foot (no stem, the mark that tells Lambda from Psi).
+    if ((try full_row_ink_of(&atlas, 0x039B, top_row)) != 1 or (try cell_ink_of(&atlas, 0x039B, top_row, center_col)) != 1) return error.GreekLambdaNoApex;
+    if ((try cell_ink_of(&atlas, 0x039B, bottom_row, left_col)) != 1 or (try cell_ink_of(&atlas, 0x039B, bottom_row, right_col)) != 1) return error.GreekLambdaNoLegs;
+    if ((try cell_ink_of(&atlas, 0x039B, bottom_row, center_col)) != 0) return error.GreekLambdaHasStem;
+
+    // Construction 4 -- Xi (U+039E): THREE horizontal bars with no stem between. Three toothed guards read it: a full top
+    // bar, a full bottom bar, and a blank row just below the top (no stem descending, the mark that tells Xi from Pi).
+    if ((try full_row_ink_of(&atlas, 0x039E, top_row)) < 4) return error.GreekXiNoBars;
+    if ((try full_row_ink_of(&atlas, 0x039E, bottom_row)) < 4) return error.GreekXiNoBars;
+    if ((try full_row_ink_of(&atlas, 0x039E, inner_row)) != 0) return error.GreekXiHasStem;
+
+    // Construction 5 -- Pi (U+03A0): a top bar over TWO LEGS at both edges. Three toothed guards read it: a full top bar,
+    // both legs inked at the foot, and the center open between them (a real Pi, not a solid block).
+    if ((try full_row_ink_of(&atlas, 0x03A0, top_row)) < 4) return error.GreekPiNoBar;
+    if ((try cell_ink_of(&atlas, 0x03A0, bottom_row, left_col)) != 1 or (try cell_ink_of(&atlas, 0x03A0, bottom_row, right_col)) != 1) return error.GreekPiNoLegs;
+    if ((try cell_ink_of(&atlas, 0x03A0, bottom_row, center_col)) != 0) return error.GreekPiHasStem;
+
+    // Construction 6 -- Phi (U+03A6): a vertical stem poking out ABOVE and BELOW a crossed bowl. Three toothed guards read
+    // it: the stem inks the top and bottom row center cells (it pokes out top and bottom), and both sides are inked at the
+    // middle (the bowl the stem crosses).
+    if ((try cell_ink_of(&atlas, 0x03A6, top_row, center_col)) != 1 or (try cell_ink_of(&atlas, 0x03A6, bottom_row, center_col)) != 1) return error.GreekPhiNoStem;
+    if ((try cell_ink_of(&atlas, 0x03A6, mid_row, left_col)) != 1 or (try cell_ink_of(&atlas, 0x03A6, mid_row, right_col)) != 1) return error.GreekPhiNoBowl;
+
+    // Construction 7 -- Psi (U+03A8): THREE PRONGS at the top gathering to a single stem. Three toothed guards read it:
+    // the top row inks all three columns (left, center, right prongs), the stem inks the bottom row center, and the foot
+    // sides are open (the mark that tells Psi from Pi's two legs).
+    if ((try cell_ink_of(&atlas, 0x03A8, top_row, left_col)) != 1 or (try cell_ink_of(&atlas, 0x03A8, top_row, center_col)) != 1 or (try cell_ink_of(&atlas, 0x03A8, top_row, right_col)) != 1) return error.GreekPsiNoProngs;
+    if ((try cell_ink_of(&atlas, 0x03A8, bottom_row, center_col)) != 1) return error.GreekPsiNoStem;
+    if ((try cell_ink_of(&atlas, 0x03A8, bottom_row, left_col)) != 0) return error.GreekPsiHasLegs;
+
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof.
+    const raw_coverage = glyph_count * cell_area;
+    print("GREEN image-font5x7-greek-upper: {d} Greek capitals U+0393,U+0398,U+039B,U+039E,U+03A0,U+03A6,U+03A8 at {d}x{d} round-trip byte-identical; all present, distinct, legible (ink {d}..{d} of {d}); seven distinct constructions (Gamma's bar-and-stem, Theta's crossed oval, Lambda's apex, Xi's three bars, Pi's two legs, Phi's crossed stem, Psi's prongs); encoded {d} bytes, raw {d}\n", .{
+        glyph_count, cell_w, cell_h, lo, hi, cell_area, res.len, raw_coverage,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: font5x7_greek_upper selftest\n", .{});
+    return 1;
+}
