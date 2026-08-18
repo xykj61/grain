@@ -1,0 +1,39 @@
+# tools/chain_code_witness.rish -- a traced OUTER BOUNDARY encoded as a FREEMAN 8-DIRECTION CHAIN CODE, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/contour.rye hands back the ORDERED clockwise ring of a component's boundary pixels;
+# this rung reads that ring down to the sequence of STEPS between consecutive pixels, each a single Freeman direction 0..7
+# (0=E, 1=SE, 2=S, 3=SW, 4=W, 5=NW, 6=N, 7=NE, clockwise from East, H. Freeman 1961) -- the same boundary carried as a compact
+# string of small numbers, an EXACT re-representation that, unlike every rotation/scale-invariant reader before it, KEEPS
+# orientation. Compose not braid: this rung owns only the step encoding, the reconstruction, and the two derived reads;
+# contour owns the ordered ring and its Point type.
+#
+# The crux this witness proves on metal: a 5x5 block's 16-point ring encodes to a 16-step closed code that reconstructs the ring
+# point-for-point (the encoding loses nothing); the ORIENTATION crux hu_moments throws away -- an axis-aligned block's boundary
+# is ALL axis steps (codes 0,2,4,6, never a diagonal), and a spread block's 90-degree turn reads a histogram that is a clean +2
+# cyclic shift; the TOPOLOGICAL turning invariant -- a block, a strip, and a triangle all turn through one full clockwise
+# revolution (+8), unchanged by translation, rotation, or scale; translation invariance (the same shape reads the identical code
+# byte-for-byte); degenerate cases and refusals by name. No network, no key, no funds -- the compact boundary a surface names the
+# day it matches, hashes, or vectorizes a shape's outline, on our own open geometry.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/chain_code_witness.rish
+
+say "chain_code: Language EN -- Season G Freeman 8-direction chain code over contour's ordered ring; chain_from_contour encodes each ring step as a direction 0..7, chain_to_points reconstructs the ring exactly, code_histogram and turning_sum read the two derived shape facts."
+say "chain_code: Style Radiant -- compose not braid: this rung owns only the step encoding, the reconstruction, and the two derived reads; contour owns the ordered ring and its Point type. No gather, no blend, no codec, no color, not even a pixel-writing loop -- a reading, not a render."
+say "chain_code: Lens TAME -- a code is sized to the image module's pixel ceiling and a longer ring refuses ChainTooLong; a step that is not a unit 8-move refuses NotAdjacent; an empty ring refuses EmptyContour; a reconstruction that leaves the grid or fails to close refuses by name; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/chain_code"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/chain_code.rye -femit-bin=${bin}"]
+assert build.ok else "chain_code: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "chain_code: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "chain_code: ${out}"
+
+assert selftest.out contains "GREEN image-chain-code" else "chain_code: selftest did not print the GREEN line"
+
+say "chain_code: GREEN -- the 5x5 block's ring reconstructs point-for-point from its code, an axis block carries no diagonal step and a 90-degree turn permutes the histogram by +2, a block, a strip, and a triangle all turn +8, the same shape reads the identical code under translation, the refusals fire by name, on metal."

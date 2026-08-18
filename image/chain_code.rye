@@ -1,0 +1,411 @@
+//! image/chain_code.rye -- encode a traced OUTER BOUNDARY as a FREEMAN 8-DIRECTION CHAIN CODE, the compact orientation-aware
+//! boundary representation (H. Freeman, 1961) that a shape number, a differential turning descriptor, and a corner reader all
+//! descend from, the ENCODING companion of image/contour.rye's ordered ring.
+//!
+//! Season G (Open Media Primitives) -- image/contour.rye hands back the ORDERED clockwise ring of a component's boundary pixels;
+//! this rung reads that ring down to the sequence of STEPS between consecutive pixels, each a single one of eight directions.
+//! Where contour lists a POINT per boundary pixel (a 5x5 block traces to a 16-point ring), a chain code lists a DIRECTION per
+//! step -- the same boundary carried as a string of small numbers 0..7, a re-representation that is EXACT (the ring reconstructs
+//! from it point-for-point given the start) yet far more compact and, unlike every rotation/scale/mirror-INVARIANT reader before
+//! it (image/hu_moments.rye), it KEEPS orientation: a shape and its 90-degree turn read chain codes whose direction histogram is
+//! a clean +2 cyclic shift, so the code tells which way a shape faces where the invariants deliberately cannot.
+//!
+//! The eight directions are the Freeman codes in screen coordinates (y downward), clockwise from East -- 0=E, 1=SE, 2=S, 3=SW,
+//! 4=W, 5=NW, 6=N, 7=NE -- exactly image/contour.rye's own clockwise neighbor ring, so a code is precisely the ring's step
+//! direction and the two rungs compose without a translation table. A traced ring is CLOSED, so the code is closed too: it holds
+//! one direction per boundary pixel (the last step closing back to the start), and a lone pixel encodes to the empty code.
+//!
+//! Two derived reads ride on the raw code, each a genuinely different shape fact. The DIRECTION HISTOGRAM counts how often each
+//! of the eight steps appears -- an axis-aligned rectangle's boundary is all axis steps (codes 0,2,4,6, never a diagonal), and a
+//! 90-degree turn permutes those counts by +2, the orientation the histogram carries. The TURNING SUM adds the signed turn at
+//! every step (how many 45-degree units the direction changed), a TOPOLOGICAL invariant: any simple closed clockwise ring turns
+//! through one full revolution, the same integer for a block, a triangle, or a spread strip, unchanged by translation, rotation,
+//! or scale -- the discrete Gauss-Bonnet fact a curvature-blind perimeter count cannot express.
+//!
+//! Compose not braid. This rung OWNS only the step encoding, the reconstruction, and the two derived reads -- no gather, no
+//! blend, no codec, no color, not even a pixel-writing loop; it is a READING like image/shape_match.rye's metric, not a render.
+//! image/contour.rye owns the ordered ring and its `Point` type; a caller traces once and encodes the ring it already holds.
+//!
+//! Everything is bounded before a byte: a ring holds at most the image module's pixel ceiling of points, so the code slice is
+//! sized to that ceiling and a longer ring refuses `ChainTooLong` by name; a step that is not a unit 8-move refuses `NotAdjacent`
+//! (defending contour's 8-adjacency contract); an empty ring refuses `EmptyContour`; a reconstruction that leaves the grid or
+//! fails to close refuses by name -- all-or-nothing, never a half-built code. No network, no key, no funds -- the compact
+//! boundary a surface names the day it wants to match, hash, or vectorize a shape's outline, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/chain_code.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const contour = @import("contour.rye");
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+
+pub const chain_code_version = "20260818.181132";
+
+pub const ChainError = error{
+    EmptyContour,
+    NotAdjacent,
+    ChainTooLong,
+    NotClosed,
+    OffGrid,
+};
+
+/// The eight Freeman directions in screen coordinates (y downward), CLOCKWISE from East: 0=E, 1=SE, 2=S, 3=SW, 4=W, 5=NW, 6=N,
+/// 7=NE. Identical to image/contour.rye's own clockwise neighbor ring, so a chain code IS the ring's step-direction sequence.
+const dir_dx = [8]i32{ 1, 1, 0, -1, -1, -1, 0, 1 };
+const dir_dy = [8]i32{ 0, 1, 1, 1, 0, -1, -1, -1 };
+
+/// A Freeman chain code of one closed boundary: `start` is the ring's first pixel (topmost-then-leftmost, as image/contour.rye
+/// traces), `codes` is one direction 0..7 per boundary pixel -- the step from each pixel to the next, the last closing back to
+/// the start. A lone-pixel ring encodes to the empty code (no steps). The caller owns `codes`.
+pub const ChainCode = struct {
+    start: contour.Point = .{},
+    codes: []u8 = &[_]u8{},
+
+    /// The number of steps in the code -- equal to the number of boundary pixels for a real ring, zero for a lone pixel.
+    pub fn length(self: *const ChainCode) u32 {
+        // invariant: a code never names more steps than the image module's pixel ceiling holds.
+        assert(self.codes.len <= label.label_max_pixels);
+        return @intCast(self.codes.len);
+    }
+};
+
+/// The Freeman direction of the unit step from `a` to `b`, or `NotAdjacent` when they are not exactly one 8-neighbor step apart.
+/// This defends image/contour.rye's contract that consecutive ring points are 8-adjacent; a real traced ring never trips it.
+fn direction_of(a: contour.Point, b: contour.Point) !u8 {
+    const dx: i64 = @as(i64, b.x) - @as(i64, a.x);
+    const dy: i64 = @as(i64, b.y) - @as(i64, a.y);
+    // invariant: a step must be a king move -- within one on each axis and not standing still.
+    if (dx < -1 or dx > 1 or dy < -1 or dy > 1) return error.NotAdjacent;
+    if (dx == 0 and dy == 0) return error.NotAdjacent;
+    var k: u8 = 0;
+    while (k < 8) : (k += 1) {
+        if (@as(i64, dir_dx[k]) == dx and @as(i64, dir_dy[k]) == dy) return k;
+    }
+    // invariant: every unit 8-move matches exactly one direction, so a fall-through cannot happen for a valid step.
+    return error.NotAdjacent;
+}
+
+/// Encode a traced contour's ordered ring as a closed Freeman chain code the caller owns. The code holds one direction per
+/// boundary pixel (the step to the next, the last closing back to the start); a lone-pixel ring encodes to the empty code. The
+/// contour is read-only.
+pub fn chain_from_contour(allocator: std.mem.Allocator, c: *const contour.Contour) !ChainCode {
+    // invariant: a real ring has at least its start pixel; the empty ring is not a boundary.
+    if (c.points.len == 0) return error.EmptyContour;
+    const el: usize = c.points.len;
+    // invariant: a ring never names more points than the image module's pixel ceiling holds.
+    if (el > label.label_max_pixels) return error.ChainTooLong;
+    // a lone pixel has no outgoing step -- its code is empty, its start the pixel itself.
+    if (el == 1) return ChainCode{ .start = c.points[0], .codes = &[_]u8{} };
+
+    const codes = try allocator.alloc(u8, el);
+    var k: usize = 0;
+    while (k < el) : (k += 1) {
+        const a = c.points[k];
+        const b = c.points[(k + 1) % el]; // the last step wraps to the start, closing the ring
+        codes[k] = try direction_of(a, b);
+    }
+    // invariant: a closed code holds exactly one step per boundary pixel.
+    assert(codes.len == el);
+    return ChainCode{ .start = c.points[0], .codes = codes };
+}
+
+/// Reconstruct the ordered ring of boundary points from a chain code the caller owns -- the EXACT inverse of encoding. The empty
+/// code reconstructs to the lone start pixel; a closed code reconstructs its N points and the final step must return to the
+/// start (else `NotClosed`). A step that would leave the grid refuses `OffGrid`. This proves the encoding loses nothing.
+pub fn chain_to_points(allocator: std.mem.Allocator, ch: *const ChainCode) ![]contour.Point {
+    const el: usize = ch.codes.len;
+    if (el == 0) {
+        const one = try allocator.alloc(contour.Point, 1);
+        one[0] = ch.start;
+        return one;
+    }
+    // invariant: a code never names more steps than the pixel ceiling holds.
+    if (el > label.label_max_pixels) return error.ChainTooLong;
+
+    const pts = try allocator.alloc(contour.Point, el);
+    pts[0] = ch.start;
+    var cx: i64 = ch.start.x;
+    var cy: i64 = ch.start.y;
+    var k: usize = 0;
+    // the first N-1 codes walk from the start to each of the N points; the last (Nth) code closes back to the start.
+    while (k < el - 1) : (k += 1) {
+        const d: usize = ch.codes[k];
+        // invariant: a stored code always indexes the eight-direction ring.
+        assert(d < 8);
+        cx += dir_dx[d];
+        cy += dir_dy[d];
+        // invariant: a real boundary pixel sits on the grid, never at a negative coordinate.
+        if (cx < 0 or cy < 0) return error.OffGrid;
+        pts[k + 1] = contour.Point{ .x = @intCast(cx), .y = @intCast(cy) };
+    }
+    const last: usize = ch.codes[el - 1];
+    assert(last < 8);
+    cx += dir_dx[last];
+    cy += dir_dy[last];
+    // invariant: the closing step of a real ring returns exactly to the start pixel.
+    if (cx != @as(i64, ch.start.x) or cy != @as(i64, ch.start.y)) return error.NotClosed;
+    return pts;
+}
+
+/// Count how often each of the eight directions appears in the code -- the DIRECTION HISTOGRAM, a shape fact carrying
+/// orientation: an axis-aligned rectangle's boundary is all axis steps (codes 0,2,4,6), and a 90-degree turn permutes the
+/// counts by +2.
+pub fn code_histogram(ch: *const ChainCode) [8]u32 {
+    var hist = [_]u32{0} ** 8;
+    var k: usize = 0;
+    while (k < ch.codes.len) : (k += 1) {
+        const d: usize = ch.codes[k];
+        // invariant: every stored code indexes the eight-bucket histogram.
+        assert(d < 8);
+        hist[d] += 1;
+    }
+    // invariant: the histogram accounts for every step exactly once.
+    var total: u32 = 0;
+    var b: usize = 0;
+    while (b < 8) : (b += 1) total += hist[b];
+    assert(total == ch.codes.len);
+    return hist;
+}
+
+/// The signed turn from direction `prev` to `cur` -- how many 45-degree units the heading changed, folded to (-4, 4] so a small
+/// boundary turn reads small. A left/right turn is +/-1 or +/-2; a straight run is 0; a full reversal is +4.
+fn step_turn(prev: u8, cur: u8) i32 {
+    // invariant: both directions index the eight-direction ring.
+    assert(prev < 8);
+    assert(cur < 8);
+    var d: i32 = @as(i32, cur) - @as(i32, prev); // -7..7
+    if (d > 4) d -= 8;
+    if (d <= -4) d += 8;
+    // invariant: the folded turn lands in the canonical (-4, 4] window.
+    assert(d > -4);
+    assert(d <= 4);
+    return d;
+}
+
+/// The total signed turning around the closed ring -- a TOPOLOGICAL invariant. Any simple closed clockwise boundary turns
+/// through exactly one full revolution (+8 forty-five-degree units), the same integer for a block, a triangle, or a strip, and
+/// unchanged by translation, rotation, or scale. The empty and single-step codes turn zero.
+pub fn turning_sum(ch: *const ChainCode) i32 {
+    const el: usize = ch.codes.len;
+    if (el < 2) return 0;
+    var sum: i32 = 0;
+    var k: usize = 0;
+    // cyclic: the turn INTO code[k] is measured from code[k-1], with code[0]'s predecessor the last code (a closed ring).
+    while (k < el) : (k += 1) {
+        const prev: u8 = if (k == 0) ch.codes[el - 1] else ch.codes[k - 1];
+        sum += step_turn(prev, ch.codes[k]);
+    }
+    return sum;
+}
+
+// --- selftest: reconstruction exactness, orientation via the histogram, the topological turning invariant, degenerate cases,
+//     refusals -----------------------------------------------------------------------------------------------------------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// Paint a filled right triangle: the top-left corner at (ox, oy), a `size`-tall staircase whose row y (0-based) fills
+/// `size - y` pixels, so the legs run along the top and left and the hypotenuse steps down the right -- a shape whose boundary
+/// carries DIAGONAL steps a rectangle never does.
+fn set_triangle(img: *qoi.Pixmap, ox: u32, oy: u32, size: u32) void {
+    // invariant: the triangle stays inside the buffer on both axes.
+    assert(ox + size <= img.width);
+    assert(oy + size <= img.height);
+    var yy: u32 = 0;
+    while (yy < size) : (yy += 1) {
+        var xx: u32 = 0;
+        while (xx < size - yy) : (xx += 1) set_dot(img, ox + xx, oy + yy);
+    }
+}
+
+/// Trace the single component of a one-shape canvas and return its ordered contour ring.
+fn ring_of(garden: std.mem.Allocator, img: *qoi.Pixmap) !contour.Contour {
+    const map = try label.label_components(garden, img);
+    // invariant: each selftest fixture holds exactly one component.
+    assert(map.count == 1);
+    return trace_only(garden, &map);
+}
+
+/// Trace component 1 of a labeling.
+fn trace_only(garden: std.mem.Allocator, map: *const label.LabelMap) !contour.Contour {
+    return contour.trace_contour(garden, map, 1);
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- RECONSTRUCTION EXACTNESS: a 5x5 block's 16-point ring encodes to a 16-step closed code that reconstructs the ring
+    //     point-for-point -- the encoding loses nothing (the compact code carries the whole outline) ---------------------
+    var big = try make_canvas(garden, 7, 7, 0);
+    set_block(&big, 1, 1, 5, 5);
+    const bring = try ring_of(garden, &big);
+    const bchain = try chain_from_contour(garden, &bring);
+    if (bchain.length() != bring.perimeter()) return error.CodeLengthWrong; // one step per boundary pixel
+    if (bchain.start.x != bring.points[0].x or bchain.start.y != bring.points[0].y) return error.StartWrong;
+    const rebuilt = try chain_to_points(garden, &bchain);
+    if (rebuilt.len != bring.points.len) return error.RebuildLengthWrong;
+    var i: usize = 0;
+    while (i < rebuilt.len) : (i += 1) {
+        if (rebuilt[i].x != bring.points[i].x or rebuilt[i].y != bring.points[i].y) return error.RebuildDiffers;
+    }
+
+    // --- ORIENTATION via the histogram (the decisive fact hu_moments deliberately throws away): an axis-aligned block's
+    //     boundary is ALL axis steps -- codes 0,2,4,6 -- and NEVER a diagonal (1,3,5,7 all zero) --------------------------
+    const bhist = code_histogram(&bchain);
+    if (bhist[1] != 0 or bhist[3] != 0 or bhist[5] != 0 or bhist[7] != 0) return error.BlockHasDiagonalStep;
+    if (bhist[0] == 0 or bhist[2] == 0 or bhist[4] == 0 or bhist[6] == 0) return error.BlockMissingAxisStep;
+
+    // a SPREAD 2x5 block and its 90-DEGREE TURN (a 5x2 block) read histograms that are a clean +2 CYCLIC SHIFT of each other
+    //     -- the orientation the code keeps: rotating the shape a quarter turn maps every step k to step (k+2) mod 8 -------
+    var wide = try make_canvas(garden, 7, 4, 0);
+    set_block(&wide, 1, 1, 5, 2); // 5 wide, 2 tall
+    const wring = try ring_of(garden, &wide);
+    const wchain = try chain_from_contour(garden, &wring);
+    const whist = code_histogram(&wchain);
+
+    var tall = try make_canvas(garden, 4, 7, 0);
+    set_block(&tall, 1, 1, 2, 5); // 2 wide, 5 tall -- the wide block turned 90 degrees
+    const tring = try ring_of(garden, &tall);
+    const tchain = try chain_from_contour(garden, &tring);
+    const thist = code_histogram(&tchain);
+
+    var d: usize = 0;
+    while (d < 8) : (d += 1) {
+        // rotating 90 degrees clockwise sends direction k to k+2, so the turned histogram at k equals the base at (k+6) mod 8
+        if (thist[d] != whist[(d + 6) % 8]) return error.RotationDidNotPermuteHistogram;
+    }
+    // the wide block leans horizontal (more E/W steps than N/S); its quarter-turn leans vertical -- orientation the code reads
+    if (whist[0] <= whist[2]) return error.WideNotHorizontalLeaning;
+    if (thist[2] <= thist[0]) return error.TallNotVerticalLeaning;
+
+    // --- the TOPOLOGICAL TURNING invariant: every simple closed clockwise ring turns through one full revolution (+8), the
+    //     SAME integer for a block, a spread strip, and a triangle, unchanged by translation, rotation, or scale ----------
+    const full_turn: i32 = 8; // one clockwise revolution in 45-degree units
+    if (turning_sum(&bchain) != full_turn) return error.BlockTurningWrong;
+    if (turning_sum(&wchain) != full_turn) return error.WideTurningWrong;
+    if (turning_sum(&tchain) != full_turn) return error.TallTurningWrong;
+
+    var tri = try make_canvas(garden, 8, 8, 0);
+    set_triangle(&tri, 1, 1, 5);
+    const triring = try ring_of(garden, &tri);
+    const trichain = try chain_from_contour(garden, &triring);
+    if (turning_sum(&trichain) != full_turn) return error.TriangleTurningWrong; // a different shape, the same total turning
+    // the triangle's staircase hypotenuse carries DIAGONAL steps a rectangle never does -- the code reads slope
+    const trihist = code_histogram(&trichain);
+    if (trihist[3] == 0 and trihist[5] == 0 and trihist[1] == 0 and trihist[7] == 0) return error.TriangleHasNoDiagonal;
+    const trirebuilt = try chain_to_points(garden, &trichain);
+    if (trirebuilt.len != triring.points.len) return error.TriangleRebuildLengthWrong;
+    i = 0;
+    while (i < trirebuilt.len) : (i += 1) {
+        if (trirebuilt[i].x != triring.points[i].x or trirebuilt[i].y != triring.points[i].y) return error.TriangleRebuildDiffers;
+    }
+
+    // --- TRANSLATION invariance: the SAME shape at two positions reads the IDENTICAL code (byte-for-byte) -- the deltas
+    //     between consecutive pixels are translation-free, so only the start moves ------------------------------------
+    var tri_a = try make_canvas(garden, 10, 10, 0);
+    set_triangle(&tri_a, 1, 1, 5);
+    const ra = try ring_of(garden, &tri_a);
+    const ca = try chain_from_contour(garden, &ra);
+    var tri_b = try make_canvas(garden, 10, 10, 0);
+    set_triangle(&tri_b, 3, 4, 5); // same triangle, shifted
+    const rb = try ring_of(garden, &tri_b);
+    const cb = try chain_from_contour(garden, &rb);
+    if (ca.codes.len != cb.codes.len) return error.TranslationChangedLength;
+    i = 0;
+    while (i < ca.codes.len) : (i += 1) {
+        if (ca.codes[i] != cb.codes[i]) return error.TranslationChangedCode; // identical code, different start
+    }
+    if (ca.start.x == cb.start.x and ca.start.y == cb.start.y) return error.TranslationDidNotMoveStart;
+
+    // --- DEGENERATE cases: a lone dot encodes to the EMPTY code (no steps) that reconstructs to the dot; a domino to two
+    //     OPPOSITE steps (there and back) -------------------------------------------------------------------------------
+    var dot = try make_canvas(garden, 3, 3, 0);
+    set_dot(&dot, 1, 1);
+    const dring = try ring_of(garden, &dot);
+    const dchain = try chain_from_contour(garden, &dring);
+    if (dchain.length() != 0) return error.DotNotEmptyCode;
+    const dback = try chain_to_points(garden, &dchain);
+    if (dback.len != 1 or dback[0].x != 1 or dback[0].y != 1) return error.DotRebuildWrong;
+    if (turning_sum(&dchain) != 0) return error.DotTurningNonZero;
+
+    var domino = try make_canvas(garden, 4, 3, 0);
+    set_dot(&domino, 1, 1);
+    set_dot(&domino, 2, 1);
+    const domring = try ring_of(garden, &domino);
+    const domchain = try chain_from_contour(garden, &domring);
+    if (domchain.length() != 2) return error.DominoCodeLengthWrong;
+    if (domchain.codes[1] != (domchain.codes[0] + 4) % 8) return error.DominoStepsNotOpposite; // back is the reverse of there
+
+    // --- REFUSALS by name, having allocated nothing ------------------------------------------------------------------
+    var empty_ring = contour.Contour{ .label = 1, .points = &[_]contour.Point{} };
+    if (chain_from_contour(garden, &empty_ring)) |_| return error.EmptyNotRefused else |err| {
+        if (err != error.EmptyContour) return error.WrongEmptyError;
+    }
+    // a hand-built ring with a 2-pixel jump is not 8-adjacent -- the encoder defends contour's contract
+    var jump_pts = [_]contour.Point{ .{ .x = 0, .y = 0 }, .{ .x = 2, .y = 0 } };
+    var jump_ring = contour.Contour{ .label = 1, .points = jump_pts[0..] };
+    if (chain_from_contour(garden, &jump_ring)) |_| return error.JumpNotRefused else |err| {
+        if (err != error.NotAdjacent) return error.WrongJumpError;
+    }
+
+    // --- DETERMINISM: the same ring encodes to the same code twice -------------------------------------------------
+    const e1 = try chain_from_contour(garden, &bring);
+    const e2 = try chain_from_contour(garden, &bring);
+    if (e1.codes.len != e2.codes.len) return error.CodeNotDeterministicLength;
+    i = 0;
+    while (i < e1.codes.len) : (i += 1) {
+        if (e1.codes[i] != e2.codes[i]) return error.CodeNotDeterministic;
+    }
+
+    print("GREEN image-chain-code: encode a traced OUTER BOUNDARY as a FREEMAN 8-DIRECTION CHAIN CODE (0=E..7=NE clockwise, H. Freeman 1961) over image/contour.rye's ordered ring -- a 5x5 block's 16-point ring encodes to a 16-step closed code that reconstructs the ring point-for-point (the encoding loses nothing); the ORIENTATION crux hu_moments throws away -- an axis-aligned block's boundary is ALL axis steps (codes 0,2,4,6, never a diagonal), and a spread 2x5 block's 90-degree turn (a 5x2 block) reads a histogram that is a clean +2 CYCLIC SHIFT of the base, so the code tells which way a shape faces; the TOPOLOGICAL turning invariant -- a block, a spread strip, and a triangle all turn through exactly one full clockwise revolution (+8 forty-five-degree units), the same integer unchanged by translation, rotation, or scale, where a triangle's staircase hypotenuse also carries diagonal steps a rectangle never does; TRANSLATION invariance -- the same triangle at two positions reads the identical code byte-for-byte (only the start moves); a lone dot encodes to the empty code that reconstructs to the dot, a domino to two opposite steps; an empty ring refuses EmptyContour and a 2-pixel jump refuses NotAdjacent, each having allocated nothing; the same ring encodes deterministically\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: chain_code selftest\n", .{});
+    return 1;
+}
