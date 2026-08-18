@@ -1,0 +1,39 @@
+# tools/zhang_suen_witness.rish -- the Zhang-Suen parallel thinning proves itself on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the crux-first sibling image/branch.rye named: "the crossing number this rung owns is
+# that algorithm's own connectivity test." image/thin.rye thins by iterated hit-or-miss subtraction with a template pack (the
+# Golay skeleton); Zhang-Suen is the other classic thinning, the parallel test most references teach -- delete every removable
+# boundary point in two alternating sub-iterations until a whole cycle removes nothing, so a solid shape reduces to a connected
+# unit-width medial figure while the ends of lines are preserved. It composes over image/branch.rye's crossing number (its A(P1)
+# connectivity test), the one source of truth for the eight-neighbor ring.
+#
+# The cruxes this witness proves on metal: a one-pixel horizontal line SURVIVES untouched in zero cycles where a plain erosion
+# would eat it (its interior has crossing number two, its ends one neighbor); a solid 3x3 block reduces to its single center pixel
+# in exactly one productive cycle (nine pixels to one, the medial point of a square); the skeleton holds no solid 2x2 square
+# and is anti-extensive; re-skeletonizing removes nothing (idempotent); the output is opaque white-on-black even from a
+# translucent source; the skeleton round-trips through the open QOI codec byte-for-byte; an empty source refuses by name; the
+# same thinning is deterministic. No network, no key, no funds -- the unit-width skeleton a surface reaches for the day it reads
+# a mask down to its bones, on our own open geometry.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/zhang_suen_witness.rish
+
+say "zhang_suen: Language EN -- Season G Zhang-Suen parallel thinning; thin an RGBA mask to a one-pixel-wide skeleton by the classic 1984 algorithm."
+say "zhang_suen: Style Radiant -- compose not braid: this rung owns only the neighbor-count B, the two directional sub-iteration conditions, and the parallel iterate-to-convergence loop; branch owns the ring gather and the crossing number A, qoi owns the buffers."
+say "zhang_suen: Lens TAME -- the crossing number A is read from image/branch.rye (one source of truth for the connectivity test); termination is a bound (at most the initial foreground count of productive cycles); the source is refused by name up front so a refusal allocates nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/zhang_suen"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/zhang_suen.rye -femit-bin=${bin}"]
+assert build.ok else "zhang_suen: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "zhang_suen: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "zhang_suen: ${out}"
+
+assert selftest.out contains "GREEN image-zhang-suen" else "zhang_suen: selftest did not print the GREEN line"
+
+say "zhang_suen: GREEN -- a one-pixel line survives untouched where an erosion would eat it, a solid 3x3 block reduces to its single center pixel in one productive cycle, the skeleton is unit-width, the crossing number read from branch as the one connectivity test, on metal."

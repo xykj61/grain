@@ -1,0 +1,386 @@
+//! image/zhang_suen.rye -- an RGBA mask THINNED to a one-pixel-wide skeleton by the classic ZHANG-SUEN parallel algorithm:
+//! delete every removable boundary pixel in two alternating sub-iterations, then repeat until a whole cycle removes nothing
+//! (Season G, the standard medial-axis thinning that OCR, fingerprint, and shape analysis have leaned on since 1984).
+//!
+//! Season G (Open Media Primitives) -- the crux-first sibling image/branch.rye named: "the crossing number this rung owns is
+//! that algorithm's own connectivity test." image/thin.rye already thins by ITERATED HIT-OR-MISS SUBTRACTION with a template
+//! pack (the Golay skeleton), a morphological subtraction. Zhang-Suen is the other classic thinning, and the one most
+//! references teach: a PARALLEL test that deletes, in each pass, every foreground pixel that is a removable boundary point
+//! while PRESERVING connectivity and the ends of lines, so a solid shape reduces to a connected unit-width medial figure.
+//!
+//! The per-pixel test reads only the eight ring neighbors P2..P9 (in image/branch.rye's ring order N, NE, E, SE, S, SW, W,
+//! NW). A foreground pixel is a removable boundary point in sub-iteration one when ALL of these hold:
+//!
+//!     (a) 2 <= B(P1) <= 6          -- B is the COUNT of foreground neighbors: a real boundary pixel, neither an isolated
+//!                                     speck nor a deep interior pixel, so removing it cannot open a hole or erase an end.
+//!     (b) A(P1) == 1               -- A is the CROSSING NUMBER (image/branch.rye's arc count): exactly one foreground arc
+//!                                     around the ring, so the pixel is SIMPLE -- deleting it never disconnects its neighbors.
+//!     (c) P2 * P4 * P6 == 0        -- at least one of North, East, South is background.
+//!     (d) P4 * P6 * P8 == 0        -- at least one of East, South, West is background.
+//!
+//! Sub-iteration two keeps (a) and (b) and swaps the directional pair to (c') P2*P4*P8 == 0 and (d') P2*P6*P8 == 0. The two
+//! sub-iterations peel opposite corners, so alternating them thins a shape symmetrically toward its center line rather than
+//! shaving it from one side. Every deletion in a sub-iteration is computed from the SAME input plane and applied together --
+//! that PARALLEL application is what makes the medial line land centered; a pixel's fate never depends on a neighbor already
+//! removed this pass.
+//!
+//! Condition (b) is exactly why a one-pixel line SURVIVES where a plain erosion would eat it: an interior line pixel has two
+//! arcs (A == 2), and a line end has one neighbor (B == 1 < 2), so neither is ever a removable point -- the skeleton keeps
+//! its length and its tips. A one-pixel plus is a fixed point for the same reason (its center has four arcs, its arms one
+//! neighbor).
+//!
+//! Termination is a BOUND, not a hope. Each PRODUCTIVE cycle (one whose two sub-iterations remove at least one pixel between
+//! them) deletes at least one foreground pixel, and the foreground count is a finite non-negative integer, so the number of
+//! productive cycles is at most the INITIAL foreground count -- the loop asserts both the total removed and the cycle index
+//! stay within that ceiling. A deletion never adds a pixel, so the on-set is a strictly decreasing bounded sequence until it
+//! settles into the fixed point a final zero-removal cycle proves.
+//!
+//! Compose not braid. This rung OWNS only three small things: the neighbor-count B(P1), the two directional sub-iteration
+//! conditions, and the parallel iterate-to-convergence loop. image/branch.rye OWNS the eight-neighbor ring gather and the
+//! crossing number A(P1) -- its `ring_neighbors` and `crossing_from` are the single source of the connectivity test, and its
+//! `is_on` the single door to the binary meaning of a pixel (foreground at or above `hitmiss.hitmiss_on_threshold`, one
+//! source of truth shared across the whole skeleton family). image/qoi.rye owns the RGBA buffers. No new gather, no blend, no
+//! codec, no color math. An empty source refuses BY NAME before any allocation -- all-or-nothing, never a half-thinned image.
+//! No network, no key, no funds -- the unit-width skeleton a surface reaches for the day it reads a mask down to its bones,
+//! on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/zhang_suen.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const branch = @import("branch.rye");
+
+pub const zhang_suen_version = "20260818.132000";
+
+pub const ZhangSuenError = error{
+    EmptySource,
+};
+
+/// Build a clean binary plane from `src`: opaque WHITE where a pixel is foreground, opaque BLACK where it is background,
+/// alpha pinned to 255. A thinned plane is itself a valid input for the next cycle, so the seed and every cycle speak the
+/// same two-color language and `same_bytes` can compare cycles exactly. Foreground is read through branch.is_on, one door.
+fn binarize(garden: std.mem.Allocator, src: *const qoi.Pixmap) !qoi.Pixmap {
+    // invariant: a real source has extent on both axes, so the plane has at least one pixel to set.
+    assert(src.width >= 1);
+    assert(src.height >= 1);
+    const n: usize = @as(usize, src.width) * @as(usize, src.height) * 4;
+    // invariant: the plane holds exactly one RGBA pixel per source pixel.
+    assert(src.pixels.len == n);
+    const plane = try garden.alloc(u8, n);
+    var i: usize = 0;
+    while (i < n) : (i += 4) {
+        const v: u8 = if (branch.is_on(src.pixels, i)) 255 else 0;
+        plane[i] = v;
+        plane[i + 1] = v;
+        plane[i + 2] = v;
+        plane[i + 3] = 255; // alpha pinned opaque -- a mask, not a translucent image
+    }
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = plane };
+}
+
+/// Count the foreground pixels of a binary plane -- the strictly-decreasing quantity that bounds the cycle count.
+fn count_on(img: *const qoi.Pixmap) u32 {
+    // invariant: the buffer is a whole RGBA grid, so the step of four never reads past its end.
+    assert(img.pixels.len == @as(usize, img.width) * @as(usize, img.height) * 4);
+    var lit: u32 = 0;
+    var i: usize = 0;
+    while (i < img.pixels.len) : (i += 4) {
+        if (branch.is_on(img.pixels, i)) lit += 1;
+    }
+    return lit;
+}
+
+/// True when the foreground pixel at `(x, y)` is a REMOVABLE BOUNDARY POINT for sub-iteration `sub` (0 or 1). A background
+/// pixel is never removable. The ring is gathered ONCE through image/branch.rye; B is the neighbor count this rung owns, A is
+/// branch's crossing number, and the directional pair is chosen by `sub`. All four conditions must hold to remove the pixel.
+fn removable(plane: *const qoi.Pixmap, x: u32, y: u32, sub: u32) bool {
+    // invariant: only the two sub-iterations exist; a caller may not ask for a third.
+    assert(sub < 2);
+    const ci = (@as(usize, y) * @as(usize, plane.width) + @as(usize, x)) * 4;
+    if (!branch.is_on(plane.pixels, ci)) return false; // a background pixel is never a boundary point
+
+    const on = branch.ring_neighbors(plane, x, y);
+
+    // B(P1): the count of foreground neighbors. A boundary pixel has between two and six -- fewer is an isolated speck or a
+    // line end (removing it would erase a tip), more is a deep interior pixel (removing it would gnaw a hole).
+    var b: u32 = 0;
+    var k: usize = 0;
+    while (k < 8) : (k += 1) {
+        if (on[k]) b += 1;
+    }
+    // invariant: eight neighbors bound the count.
+    assert(b <= 8);
+    if (b < 2 or b > 6) return false;
+
+    // A(P1): the crossing number -- image/branch.rye's arc count, read from its one definition, never recounted here. Exactly
+    // one foreground arc means the pixel is SIMPLE: deleting it cannot disconnect the arc that surrounds it.
+    if (branch.crossing_from(on) != 1) return false;
+
+    // the ring order is N, NE, E, SE, S, SW, W, NW, so P2=N=on[0], P4=E=on[2], P6=S=on[4], P8=W=on[6].
+    const p2 = on[0];
+    const p4 = on[2];
+    const p6 = on[4];
+    const p8 = on[6];
+    if (sub == 0) {
+        // sub-iteration one peels the south-east corner: at least one of N,E,S off AND at least one of E,S,W off.
+        if (p2 and p4 and p6) return false;
+        if (p4 and p6 and p8) return false;
+    } else {
+        // sub-iteration two peels the north-west corner: at least one of N,E,W off AND at least one of N,S,W off.
+        if (p2 and p4 and p8) return false;
+        if (p2 and p6 and p8) return false;
+    }
+    return true;
+}
+
+/// One PARALLEL sub-iteration: read the whole `plane`, mark every removable boundary point for `sub`, and return a fresh
+/// plane with exactly those pixels turned to background -- reporting how many were removed through `removed_out`. Every
+/// deletion is decided from the input plane and applied together, so a pixel's fate never depends on a neighbor already
+/// removed this pass. The result is a clean opaque binary mask, a valid input for the next sub-iteration.
+fn thin_step(allocator: std.mem.Allocator, plane: *const qoi.Pixmap, sub: u32, removed_out: *u32) !qoi.Pixmap {
+    // invariant: only the two sub-iterations exist.
+    assert(sub < 2);
+    const n: usize = @as(usize, plane.width) * @as(usize, plane.height) * 4;
+    // invariant: the plane is a whole RGBA grid, so the sweep reads it in lockstep.
+    assert(plane.pixels.len == n);
+
+    const out = try allocator.alloc(u8, n);
+    var removed: u32 = 0;
+    var y: u32 = 0;
+    while (y < plane.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x < plane.width) : (x += 1) {
+            const ci = (@as(usize, y) * @as(usize, plane.width) + @as(usize, x)) * 4;
+            const was_on = branch.is_on(plane.pixels, ci);
+            const cut = was_on and removable(plane, x, y, sub);
+            if (cut) removed += 1;
+            const v: u8 = if (was_on and !cut) 255 else 0;
+            out[ci] = v;
+            out[ci + 1] = v;
+            out[ci + 2] = v;
+            out[ci + 3] = 255; // the thinned plane stays a clean opaque mask
+        }
+    }
+    removed_out.* = removed;
+    return qoi.Pixmap{ .width = plane.width, .height = plane.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+/// Thin `src` to a one-pixel-wide skeleton by the Zhang-Suen algorithm: alternate the two sub-iterations, each removing its
+/// removable boundary points in parallel, until a whole CYCLE (both sub-iterations) removes nothing. Reports the number of
+/// productive cycles through `passes_out`. Returns a fresh binary RGBA Pixmap the caller owns. Termination is bounded: each
+/// productive cycle removes at least one foreground pixel, so the cycle count is at most the initial foreground count.
+pub fn skeletonize(allocator: std.mem.Allocator, src: *const qoi.Pixmap, passes_out: *u32) !qoi.Pixmap {
+    // invariant: a real source has extent on both axes; a zero-size source has nothing to thin.
+    if (src.width == 0 or src.height == 0) return error.EmptySource;
+
+    var cur = try binarize(allocator, src);
+    const initial_on = count_on(&cur);
+    // invariant: at most one productive cycle can be charged to each foreground pixel, so the cycle count never exceeds the
+    // initial foreground count -- crossing it would mean a cycle removed a pixel that was not there.
+    const ceiling: u32 = initial_on + 1;
+    var passes: u32 = 0;
+    var total_removed: u32 = 0;
+    while (true) {
+        var removed_a: u32 = 0;
+        const after1 = try thin_step(allocator, &cur, 0, &removed_a);
+        var removed_b: u32 = 0;
+        const after2 = try thin_step(allocator, &after1, 1, &removed_b);
+        const removed = removed_a + removed_b;
+        if (removed == 0) {
+            // a cycle that changed nothing -- the fixed point; `passes` counted only the productive cycles.
+            passes_out.* = passes;
+            return after2;
+        }
+        passes += 1;
+        total_removed += removed;
+        // invariant: the on-set only shrinks, so we never remove more pixels than we started with.
+        assert(total_removed <= initial_on);
+        // invariant: a productive cycle stays within the proven ceiling.
+        assert(passes < ceiling);
+        cur = after2;
+    }
+}
+
+// --- selftest: line survival (anti-erosion), the exact 3x3 block -> plus reduction, unit width, idempotence, round-trip ---
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// Set one pixel's RGBA at (x, y) -- a small writer the pattern builders share.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+/// Count the white (lit) pixels of a binary plane -- the foreground tally the reduction cruxes check.
+fn count_white(img: *const qoi.Pixmap, white: color.Rgba) u32 {
+    var lit: u32 = 0;
+    var y: u32 = 0;
+    while (y < img.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x < img.width) : (x += 1) {
+            if (pixel_at(img, x, y).eql(white)) lit += 1;
+        }
+    }
+    return lit;
+}
+
+/// True when `img` holds a 2x2 square of four foreground pixels anywhere -- the unit-width test. A Zhang-Suen skeleton is a
+/// one-pixel-wide figure, so no such solid square survives; a witness that finds one has caught a thinning that stopped short.
+fn has_solid_2x2(img: *const qoi.Pixmap, white: color.Rgba) bool {
+    if (img.width < 2 or img.height < 2) return false;
+    var y: u32 = 0;
+    while (y + 1 < img.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x + 1 < img.width) : (x += 1) {
+            if (pixel_at(img, x, y).eql(white) and pixel_at(img, x + 1, y).eql(white) and
+                pixel_at(img, x, y + 1).eql(white) and pixel_at(img, x + 1, y + 1).eql(white)) return true;
+        }
+    }
+    return false;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+    var passes: u32 = 0;
+
+    // --- the LINE-SURVIVAL crux (anti-erosion, the decisive one): a one-pixel horizontal line is already a skeleton, so
+    //     Zhang-Suen removes NOTHING and returns it unchanged in zero productive cycles. Condition (b) is why: an interior
+    //     line pixel has crossing number two (A != 1), and a line end has one neighbor (B == 1 < 2), so no pixel is ever a
+    //     removable point -- a plain erosion would eat the line from both ends instead ------------------------------------
+    var line = try make_canvas(garden, 7, 7, black);
+    var lx: u32 = 1;
+    while (lx <= 5) : (lx += 1) set_pixel(&line, lx, 3, white); // a horizontal 1-pixel line, clear of the border
+    const bin_line = try binarize(garden, &line);
+    const line_sk = try skeletonize(garden, &line, &passes);
+    if (passes != 0) return error.LineWasThinned; // an already-thin line is a fixed point
+    if (!line_sk.same_bytes(&bin_line)) return error.LineDidNotSurvive;
+
+    // --- the REDUCTION crux, exactly hand-verified: a solid 3x3 block thins to its single CENTER PIXEL -- the true medial
+    //     point of a square -- in EXACTLY ONE productive cycle. Sub-iteration one removes the six pixels whose corner opens
+    //     (the four true corners and the two edge midpoints where condition d leaves E,S,W not all on), leaving an L of three;
+    //     sub-iteration two removes two of those three; the center has crossing number two and survives; cycle two removes
+    //     nothing and converges. Nine pixels become one, centered ---------------------------------------------------------
+    var block = try make_canvas(garden, 5, 5, black);
+    var by: u32 = 1;
+    while (by <= 3) : (by += 1) {
+        var bx: u32 = 1;
+        while (bx <= 3) : (bx += 1) set_pixel(&block, bx, by, white); // a solid 3x3 block, clear of the border
+    }
+    const sk = try skeletonize(garden, &block, &passes);
+    if (passes != 1) return error.WrongProductiveCycleCount; // exactly one productive cycle
+    // the exact result: a single white pixel at the center (2,2); every other cell black
+    var cy: u32 = 0;
+    while (cy < 5) : (cy += 1) {
+        var cx: u32 = 0;
+        while (cx < 5) : (cx += 1) {
+            const want_on = (cx == 2 and cy == 2);
+            const got = pixel_at(&sk, cx, cy);
+            if (want_on) {
+                if (!got.eql(white)) return error.BlockSkeletonMissingCenter;
+            } else {
+                if (!got.eql(black)) return error.BlockSkeletonStrayPixel;
+            }
+        }
+    }
+    if (count_white(&sk, white) != 1) return error.BlockSkeletonWrongCount; // nine reduced to one
+    if (count_white(&sk, white) >= count_white(&block, white)) return error.BlockNotReduced; // strictly fewer
+
+    // --- ANTI-EXTENSIVE: every lit pixel of the skeleton was lit in the block; thinning never adds a pixel ----------------
+    var ai: usize = 0;
+    while (ai < sk.pixels.len) : (ai += 4) {
+        const sk_on = sk.pixels[ai] >= 128;
+        const block_on = block.pixels[ai] >= 128;
+        if (sk_on and !block_on) return error.ThinningAddedAPixel;
+    }
+
+    // --- UNIT WIDTH: the skeleton holds no solid 2x2 square -- a genuine one-pixel-wide medial figure, not a stalled thin --
+    if (has_solid_2x2(&sk, white)) return error.SkeletonNotUnitWidth;
+
+    // --- IDEMPOTENCE: re-skeletonizing the result removes nothing -- zero productive cycles, the same image ---------------
+    var again: u32 = 99;
+    const resettled = try skeletonize(garden, &sk, &again);
+    if (again != 0) return error.SkeletonNotAFixedPoint;
+    if (!resettled.same_bytes(&sk)) return error.FixedPointDrifted;
+
+    // --- the output is always OPAQUE, even from a translucent source: foreground is the red channel, the mask pins alpha ---
+    var faint = try make_canvas(garden, 5, 5, color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 40 });
+    var fy: u32 = 1;
+    while (fy <= 3) : (fy += 1) {
+        var fx: u32 = 1;
+        while (fx <= 3) : (fx += 1) set_pixel(&faint, fx, fy, color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 30 });
+    }
+    var fp: u32 = 0;
+    const from_faint = try skeletonize(garden, &faint, &fp);
+    if (pixel_at(&from_faint, 2, 2).a != 255) return error.SkeletonNotOpaque;
+    if (pixel_at(&from_faint, 0, 0).a != 255) return error.GroundNotOpaque;
+    if (!from_faint.same_bytes(&sk)) return error.FaintBlockThinnedDifferently; // foreground is red, not alpha
+
+    // --- a skeleton round-trips through the open QOI codec byte-for-byte -- a real image, not a private buffer ------------
+    const cap = qoi.encoded_bound(sk.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&sk, dst);
+    const backimg = try qoi.decode(garden, dst[0..enc.len]);
+    if (!backimg.same_bytes(&sk)) return error.SkeletonDidNotRoundTrip;
+
+    // --- the refusal by name, having allocated nothing (the guard fires before the seed is built) -----------------------
+    var empty_src = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (skeletonize(garden, &empty_src, &passes)) |_| return error.EmptySourceNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- determinism: the same thinning reaches the same skeleton in the same cycle count byte-for-byte ------------------
+    var pa: u32 = 0;
+    var pb: u32 = 0;
+    const a = try skeletonize(garden, &block, &pa);
+    const b = try skeletonize(garden, &block, &pb);
+    if (pa != pb) return error.CycleCountNotDeterministic;
+    if (!a.same_bytes(&b)) return error.SkeletonNotDeterministic;
+
+    print("GREEN image-zhang-suen: an RGBA mask thinned to a one-pixel-wide skeleton by the classic ZHANG-SUEN parallel algorithm -- delete every removable boundary point in two alternating sub-iterations (a pixel removable when 2 <= B <= 6 neighbors, crossing number A == 1, and the sub-iteration's directional pair leaves a corner open), all deletions decided from the input plane and applied together, until a whole cycle removes nothing; a one-pixel horizontal line SURVIVES untouched in zero cycles where a plain erosion would eat it (its interior has A == 2, its ends B == 1), a solid 3x3 block reduces to its single center pixel in exactly one productive cycle (nine pixels to one, the true medial point of a square), the skeleton holds no solid 2x2 square (genuine unit width) and is anti-extensive (every lit pixel was lit in the source); re-skeletonizing removes nothing (idempotent); the output is opaque white-on-black even from a translucent source; the skeleton round-trips through the open QOI codec byte-for-byte; an empty source refuses by name having allocated nothing; the same thinning is deterministic in both its cycle count and its pixels byte-for-byte. The crossing number A is read from image/branch.rye, one source of truth for the connectivity test\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: zhang_suen selftest\n", .{});
+    return 1;
+}

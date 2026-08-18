@@ -56,8 +56,9 @@ const ring_dx = [8]i32{ 0, 1, 1, 1, 0, -1, -1, -1 };
 const ring_dy = [8]i32{ -1, -1, 0, 1, 1, 1, 0, -1 };
 
 /// True when the pixel at byte index `i` reads as foreground -- its red channel is at or above the shared on-threshold. The
-/// binary meaning of a pixel is decided in one place, image/hitmiss.rye, shared with the endpoint detector.
-fn is_on(pixels: []const u8, i: usize) bool {
+/// binary meaning of a pixel is decided in one place, image/hitmiss.rye, shared with the endpoint detector. Public so a
+/// composing rung (image/zhang_suen.rye) reads foreground through the same one door.
+pub fn is_on(pixels: []const u8, i: usize) bool {
     // invariant: the read stays inside the buffer.
     assert(i < pixels.len);
     return pixels[i] >= hitmiss.hitmiss_on_threshold;
@@ -75,14 +76,21 @@ fn neighbor_on(src: *const qoi.Pixmap, x: u32, y: u32, dx: i32, dy: i32) bool {
     return is_on(src.pixels, i);
 }
 
-/// The CROSSING NUMBER at `(x, y)`: the count of foreground ARCS around the eight-neighbor ring, read as RISING EDGES -- a
-/// foreground neighbor whose clockwise predecessor is background begins a new arc. Endpoint one, path two, junction three or
-/// more; a lone dot and a solid interior zero. No division: the rising-edge count equals the crossing number directly.
-fn crossing_number(src: *const qoi.Pixmap, x: u32, y: u32) u32 {
+/// Gather the eight ring neighbors of `(x, y)` as foreground booleans in RING order -- N, NE, E, SE, S, SW, W, NW. This is the
+/// one place the eight-neighbor ring is read, so a composing rung (image/zhang_suen.rye, whose connectivity test IS this ring)
+/// reads exactly the same neighborhood the crossing number does -- an out-of-bounds neighbor ground, never a phantom.
+pub fn ring_neighbors(src: *const qoi.Pixmap, x: u32, y: u32) [8]bool {
     var on: [8]bool = undefined;
     var k: usize = 0;
     while (k < 8) : (k += 1) on[k] = neighbor_on(src, x, y, ring_dx[k], ring_dy[k]);
+    return on;
+}
 
+/// The CROSSING NUMBER of a gathered ring: the count of foreground ARCS, read as RISING EDGES -- a foreground cell whose
+/// clockwise predecessor is background begins a new arc. Endpoint one, path two, junction three or more; a lone dot and a
+/// solid interior zero. No division: the rising-edge count equals the crossing number directly. Public so image/zhang_suen.rye
+/// reads its `A(P1)` connectivity number from this one definition rather than counting arcs a second way.
+pub fn crossing_from(on: [8]bool) u32 {
     var arcs: u32 = 0;
     var i: usize = 0;
     while (i < 8) : (i += 1) {
@@ -93,6 +101,11 @@ fn crossing_number(src: *const qoi.Pixmap, x: u32, y: u32) u32 {
     // invariant: at most eight arcs can begin around eight cells, so the count stays a small bound.
     assert(arcs <= 8);
     return arcs;
+}
+
+/// The CROSSING NUMBER at `(x, y)`: gather the ring, count its arcs. Endpoint one, path two, junction three or more.
+fn crossing_number(src: *const qoi.Pixmap, x: u32, y: u32) u32 {
+    return crossing_from(ring_neighbors(src, x, y));
 }
 
 /// Mark every JUNCTION of `src` -- a foreground pixel whose crossing number is at least `branch_min_crossing` -- into a fresh
