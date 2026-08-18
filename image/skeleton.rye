@@ -1,0 +1,356 @@
+//! image/skeleton.rye -- an RGBA mask SKELETONIZED to its medial lines by the CLASSIC THINNING TEMPLATE PACK: sweep the
+//! eight Golay hit-or-miss template pairs in sequence, subtracting each match, until a whole sweep changes nothing (Season G,
+//! the medial-axis skeleton the general thinning driver was built to run).
+//!
+//! Season G (Open Media Primitives) -- the crux-first sibling image/thin.rye named. The thinning driver reduces a shape as
+//! far as ONE template pair can carry it. A real skeleton wants a SET of pairs, applied in turn: the classic morphological
+//! thinning pack is two structuring elements from the Golay alphabet, each in its four rotations, eight pairs in all --
+//!
+//!     A (an edge template)      B (a corner template)
+//!       0 0 0                     x 0 0
+//!       x 1 x                     1 1 0
+//!       1 1 1                     x 1 x
+//!
+//! where `1` is a foreground cell the pattern requires, `0` a background cell it requires, and `x` a don't-care cell in
+//! NEITHER template. One SWEEP applies all eight pairs in order, feeding each thin_once its predecessor's output, so every
+//! removable boundary orientation is peeled once per sweep. Repeat the sweep and the on-set shrinks monotonically toward a
+//! FIXED POINT: the moment a whole sweep removes nothing, the shape has been thinned to its skeleton.
+//!
+//! The pack is chosen so a skeleton PRESERVES a shape's medial structure rather than eroding it away. A one-pixel-wide line
+//! or cross matches no template -- every pair needs a full three-cell foreground side or an L of foreground, which a thin
+//! line never presents -- so a line SURVIVES a sweep untouched where a plain erosion would delete it entirely. That survival
+//! is the defining property of a skeleton: it thins a solid shape down to a connected one-pixel figure and then holds it,
+//! never past it.
+//!
+//! Termination is a bound, not a hope. Each thin_once is anti-extensive (`thin_once(A) <= A`), so a sweep of eight of them
+//! only ever removes pixels; a PRODUCTIVE sweep (one that changes the plane) therefore removes at least one foreground pixel,
+//! and the foreground count is a finite non-negative integer, so the number of productive sweeps is at most the INITIAL
+//! foreground count. The driver asserts the sweep index never crosses that ceiling.
+//!
+//! Compose not braid. This rung OWNS only the template geometry (the two base pairs and their rotations) and the multi-pair
+//! sweep loop. image/thin.rye OWNS the set-difference step, image/hitmiss.rye the match beneath it, image/structure.rye the
+//! fit gather, image/qoi.rye the RGBA buffers. No new gather, no blend, no codec, no color math -- a sweep is eight thin_once
+//! calls routed through the pack. The binary meaning of a pixel -- foreground at or above `hitmiss.hitmiss_on_threshold` --
+//! is read from hitmiss, one source of truth. An empty source refuses BY NAME before any allocation, all-or-nothing, never a
+//! half-skeletonized image. No network, no key, no funds -- the medial line a surface reaches for the day it reads a mask
+//! down to its bones, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/skeleton.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const structure = @import("structure.rye");
+const hitmiss = @import("hitmiss.rye");
+const thin = @import("thin.rye");
+
+pub const skeleton_version = "20260818.130000";
+
+/// The classic thinning pack holds exactly eight template pairs -- two base Golay elements, each in four rotations.
+pub const skeleton_pack_len: u32 = 8;
+
+pub const SkeletonError = error{
+    EmptySource,
+};
+
+/// One hit-or-miss template pair -- the foreground the pattern requires and the disjoint background it requires around it.
+/// A sweep applies the whole pack of these in order.
+pub const TemplatePair = struct {
+    fg: structure.StructuringElement,
+    bg: structure.StructuringElement,
+};
+
+/// True when the pixel at byte index `i` reads as foreground -- its red channel is at or above the shared on-threshold. The
+/// binary meaning of a pixel lives in hitmiss.rye, so the skeleton, the thinning step, and the match all agree exactly.
+fn is_on(pixels: []const u8, i: usize) bool {
+    // invariant: the read stays inside the buffer.
+    assert(i < pixels.len);
+    return pixels[i] >= hitmiss.hitmiss_on_threshold;
+}
+
+/// Build a clean binary plane from `src`: opaque WHITE where a pixel is foreground, opaque BLACK where it is background,
+/// alpha pinned to 255. The seed and every swept plane speak the same two-color language, so `same_bytes` compares sweeps
+/// exactly and `count_on` reads a true foreground count.
+fn binarize(garden: std.mem.Allocator, src: *const qoi.Pixmap) !qoi.Pixmap {
+    // invariant: a real source has extent, so the plane has at least one pixel to set.
+    assert(src.width >= 1);
+    assert(src.height >= 1);
+    const n: usize = @as(usize, src.width) * @as(usize, src.height) * 4;
+    // invariant: the plane holds exactly one RGBA pixel per source pixel.
+    assert(src.pixels.len == n);
+    const plane = try garden.alloc(u8, n);
+    var i: usize = 0;
+    while (i < n) : (i += 4) {
+        const v: u8 = if (is_on(src.pixels, i)) 255 else 0;
+        plane[i] = v;
+        plane[i + 1] = v;
+        plane[i + 2] = v;
+        plane[i + 3] = 255; // alpha pinned opaque -- a mask, not a translucent image
+    }
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = plane };
+}
+
+/// Count the foreground pixels of a binary plane -- the strictly-decreasing quantity that bounds the driver's sweep count.
+fn count_on(img: *const qoi.Pixmap) u32 {
+    // invariant: the buffer is a whole RGBA grid, so the step of four never reads past its end.
+    assert(img.pixels.len == @as(usize, img.width) * @as(usize, img.height) * 4);
+    var lit: u32 = 0;
+    var i: usize = 0;
+    while (i < img.pixels.len) : (i += 4) {
+        if (is_on(img.pixels, i)) lit += 1;
+    }
+    return lit;
+}
+
+/// Rotate an offset 90 degrees clockwise in image coordinates (y grows downward): (dx, dy) -> (-dy, dx). Four rotations
+/// return an offset to itself, so the four orientations of a base template are distinct and cover the compass.
+fn rotate90(o: structure.Offset) structure.Offset {
+    // invariant: a rotation is a pure relabeling of the same cell -- no offset grows past its source magnitude.
+    return structure.Offset{ .dx = -o.dy, .dy = o.dx };
+}
+
+/// Build a structuring element that is `base` rotated 90 degrees `times` times -- a fresh offset list the caller owns.
+fn rotated_element(garden: std.mem.Allocator, base: []const structure.Offset, times: u32) !structure.StructuringElement {
+    // invariant: a base template names at least one cell and stays within the general element's ceiling.
+    assert(base.len >= 1);
+    assert(base.len <= @as(usize, structure.structure_max_offsets));
+    const offs = try garden.alloc(structure.Offset, base.len);
+    var i: usize = 0;
+    while (i < base.len) : (i += 1) {
+        var o = base[i];
+        var t: u32 = 0;
+        while (t < times) : (t += 1) o = rotate90(o);
+        offs[i] = o;
+    }
+    return structure.StructuringElement{ .offsets = offs };
+}
+
+/// Build the classic eight-pair thinning pack -- the Golay edge template A and corner template B, each in four rotations,
+/// interleaved A0, B0, A1, B1, ... so a sweep peels an edge and a corner at each orientation in turn. Returns a fresh slice
+/// the caller owns.
+pub fn thinning_pack(garden: std.mem.Allocator) ![]TemplatePair {
+    // A -- an edge template: the top row is ground, the center and bottom row are shape. It matches a boundary pixel whose
+    // one side is open ground and whose body continues on the other, so thinning it peels that edge one layer.
+    const fg_a = [_]structure.Offset{
+        structure.Offset{ .dx = 0, .dy = 0 },
+        structure.Offset{ .dx = -1, .dy = 1 },
+        structure.Offset{ .dx = 0, .dy = 1 },
+        structure.Offset{ .dx = 1, .dy = 1 },
+    };
+    const bg_a = [_]structure.Offset{
+        structure.Offset{ .dx = -1, .dy = -1 },
+        structure.Offset{ .dx = 0, .dy = -1 },
+        structure.Offset{ .dx = 1, .dy = -1 },
+    };
+    // B -- a corner template: an L of shape (center, left, below) against an L of ground (above, above-right, right). It
+    // matches a convex corner pixel, so thinning it rounds that corner inward.
+    const fg_b = [_]structure.Offset{
+        structure.Offset{ .dx = -1, .dy = 0 },
+        structure.Offset{ .dx = 0, .dy = 0 },
+        structure.Offset{ .dx = 0, .dy = 1 },
+    };
+    const bg_b = [_]structure.Offset{
+        structure.Offset{ .dx = 0, .dy = -1 },
+        structure.Offset{ .dx = 1, .dy = -1 },
+        structure.Offset{ .dx = 1, .dy = 0 },
+    };
+
+    const pairs = try garden.alloc(TemplatePair, @as(usize, skeleton_pack_len));
+    var r: u32 = 0;
+    var idx: usize = 0;
+    while (r < 4) : (r += 1) {
+        pairs[idx] = TemplatePair{
+            .fg = try rotated_element(garden, &fg_a, r),
+            .bg = try rotated_element(garden, &bg_a, r),
+        };
+        idx += 1;
+        pairs[idx] = TemplatePair{
+            .fg = try rotated_element(garden, &fg_b, r),
+            .bg = try rotated_element(garden, &bg_b, r),
+        };
+        idx += 1;
+    }
+    // invariant: four rotations of two base pairs fill exactly the eight-pair pack.
+    assert(idx == @as(usize, skeleton_pack_len));
+    return pairs;
+}
+
+/// Skeletonize `src` to a FIXED POINT: sweep the eight-pair thinning pack again and again until a whole sweep removes
+/// nothing, and report the number of productive sweeps through `sweeps_out`. Returns a fresh binary RGBA Pixmap the caller
+/// owns. Termination is bounded: each productive sweep removes at least one foreground pixel, so the count of sweeps is at
+/// most the initial foreground count.
+pub fn skeletonize(allocator: std.mem.Allocator, src: *const qoi.Pixmap, sweeps_out: *u32) !qoi.Pixmap {
+    // invariant: a real source has extent on both axes; a zero-size source has nothing to skeletonize.
+    if (src.width == 0 or src.height == 0) return error.EmptySource;
+
+    const pack = try thinning_pack(allocator);
+    // invariant: the pack is the full classic eight, so every removable orientation is peeled once per sweep.
+    assert(pack.len == @as(usize, skeleton_pack_len));
+
+    var cur = try binarize(allocator, src);
+    var cur_on = count_on(&cur);
+    // invariant: the productive-sweep ceiling is the initial foreground count plus one -- at most one productive sweep per
+    // removable pixel, plus the final unproductive sweep that proves the fixed point.
+    const ceiling: u32 = cur_on + 1;
+    var sweeps: u32 = 0;
+    while (true) {
+        // one sweep -- apply every pack pair in order, each thin_once fed the prior step's output.
+        var stepped = cur;
+        var j: usize = 0;
+        while (j < pack.len) : (j += 1) {
+            stepped = try thin.thin_once(allocator, &stepped, pack[j].fg, pack[j].bg);
+        }
+        const next_on = count_on(&stepped);
+        // invariant: a sweep of anti-extensive steps only removes pixels, so the on-set never grows.
+        assert(next_on <= cur_on);
+        if (stepped.same_bytes(&cur)) {
+            // a whole sweep changed nothing -- the skeleton; `sweeps` counted only the productive sweeps.
+            sweeps_out.* = sweeps;
+            return stepped;
+        }
+        sweeps += 1;
+        // invariant: a productive sweep stays within the proven ceiling; crossing it would mean a sweep added a pixel.
+        assert(sweeps < ceiling);
+        cur = stepped;
+        cur_on = next_on;
+    }
+}
+
+// --- selftest: line-survival (anti-erosion), reduction, subset, idempotence, the bound, round-trip, determinism, refusal --
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// Set one pixel's RGBA at (x, y) -- a small writer the pattern builders share.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    // --- the pack is the full classic eight, each pair a real hit-or-miss template within the general ceiling -----------
+    const pack = try thinning_pack(garden);
+    if (pack.len != @as(usize, skeleton_pack_len)) return error.PackNotEight;
+    var pk: usize = 0;
+    while (pk < pack.len) : (pk += 1) {
+        if (pack[pk].fg.offsets.len == 0) return error.PackPairHasEmptyForeground;
+        if (pack[pk].bg.offsets.len == 0) return error.PackPairHasEmptyBackground;
+    }
+
+    // --- the LINE-SURVIVAL crux (anti-erosion): a one-pixel-wide plus survives skeletonize UNTOUCHED, zero productive
+    //     sweeps -- every template needs a full foreground side or an L of foreground, which a thin line never presents, so
+    //     a skeleton preserves the medial line where a plain erosion would delete it -----------------------------------
+    var plus = try make_canvas(garden, 7, 7, black);
+    var arm: u32 = 1;
+    while (arm <= 5) : (arm += 1) {
+        set_pixel(&plus, 3, arm, white); // the vertical arm, rows 1..5
+        set_pixel(&plus, arm, 3, white); // the horizontal arm, cols 1..5
+    }
+    var plus_sweeps: u32 = 99;
+    const plus_skel = try skeletonize(garden, &plus, &plus_sweeps);
+    if (plus_sweeps != 0) return error.LineWasThinned;
+    if (!plus_skel.same_bytes(&plus)) return error.LineDidNotSurvive;
+
+    // --- the REDUCTION crux: a solid 5x5 block held clear of every border thins to STRICTLY FEWER pixels, stays NON-EMPTY
+    //     (a skeleton never erodes a shape away), is a subset of the block, and settles to a fixed point -----------------
+    var block = try make_canvas(garden, 9, 9, black);
+    var by: u32 = 2;
+    while (by <= 6) : (by += 1) {
+        var bx: u32 = 2;
+        while (bx <= 6) : (bx += 1) set_pixel(&block, bx, by, white);
+    }
+    const block_on: u32 = 25; // a 5x5 solid square
+    var block_sweeps: u32 = 0;
+    const block_skel = try skeletonize(garden, &block, &block_sweeps);
+    if (block_sweeps == 0) return error.BlockWasNotThinned; // a solid block has removable edges, so a sweep must be productive
+    // subset: every lit skeleton pixel was lit in the block -- thinning never adds a pixel
+    var si: usize = 0;
+    var skel_on: u32 = 0;
+    while (si < block_skel.pixels.len) : (si += 4) {
+        const skel_lit = block_skel.pixels[si] >= hitmiss.hitmiss_on_threshold;
+        const block_lit = block.pixels[si] >= hitmiss.hitmiss_on_threshold;
+        if (skel_lit and !block_lit) return error.SkeletonAddedAPixel;
+        if (skel_lit) skel_on += 1;
+    }
+    if (skel_on >= block_on) return error.BlockDidNotReduce; // strictly fewer -- the block truly thinned
+    if (skel_on == 0) return error.BlockErodedAway; // never empty -- the anti-erosion property
+
+    // --- IDEMPOTENCE: re-skeletonizing the fixed point removes nothing -- zero productive sweeps, the same image ---------
+    var again: u32 = 99;
+    const resettled = try skeletonize(garden, &block_skel, &again);
+    if (again != 0) return error.SkeletonNotAFixedPoint;
+    if (!resettled.same_bytes(&block_skel)) return error.FixedPointDrifted;
+
+    // --- the CONVERGENCE bound: the productive-sweep count never exceeds the initial foreground count -------------------
+    if (block_sweeps > block_on) return error.SweepCountExceededBound;
+
+    // --- a skeletonized mask round-trips through the open QOI codec byte-for-byte -- a real image, not a private buffer ---
+    const cap = qoi.encoded_bound(block_skel.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&block_skel, dst);
+    const backimg = try qoi.decode(garden, dst[0..enc.len]);
+    if (!backimg.same_bytes(&block_skel)) return error.SkeletonDidNotRoundTrip;
+
+    // --- the refusal by name, having allocated nothing (the guard fires before the seed is built) ----------------------
+    var empty_src = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    var junk: u32 = 0;
+    if (skeletonize(garden, &empty_src, &junk)) |_| return error.EmptySourceNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- determinism: the same skeletonization reaches the same figure byte-for-byte over the same sweep count ----------
+    var pa: u32 = 0;
+    var pb: u32 = 0;
+    const a = try skeletonize(garden, &block, &pa);
+    const b = try skeletonize(garden, &block, &pb);
+    if (pa != pb) return error.SweepCountNotDeterministic;
+    if (!a.same_bytes(&b)) return error.SkeletonNotDeterministic;
+
+    print("GREEN image-skeleton: an RGBA mask skeletonized to its medial lines by the CLASSIC THINNING TEMPLATE PACK -- eight Golay hit-or-miss pairs (an edge template and a corner template, each in four rotations) swept in order, each thin_once subtracting its match, until a whole sweep changes nothing; a one-pixel-wide plus SURVIVES skeletonize untouched in zero productive sweeps (the anti-erosion property -- a plain erosion would delete it), while a solid 5x5 block thins to strictly fewer pixels, stays non-empty and a subset of the block, and settles to a fixed point re-skeletonizing cannot move; the productive-sweep count never exceeds the initial foreground count; the skeletonized mask round-trips through the open QOI codec byte-for-byte; an empty source refuses by name having allocated nothing; the same skeletonization is deterministic in both its sweep count and its pixels byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: skeleton selftest\n", .{});
+    return 1;
+}
