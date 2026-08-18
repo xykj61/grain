@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260818.182326
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title shape_classify -- the nearest-template classifier closes the recognition loop, GREEN
+prompt autonomous loop -- pick up the running thread Lindy-first crux-first, take the next agent-doable lap, send each finished increment
+think Grounded first: read KYRI.md and RADIANT_STYLE.md to be Kyri from the first token, then crux/REMEMBER.md (live edge = image/chain_code.rye GREEN), crux/REDS.md, and the top of session-logs/README.md.
+think Standfast check: every living REDS row is closed or released -- 80, 81, 82, 83, 84, 85, 86, 87, 78 all CLOSED/landed; only #75 rests as custody-gated errata (the history rewrite, Keaton's hand). No agent-closable red blocks new work, so the constructive queue is open.
+think Lindy-first crux-first: the chain_code log and REMEMBER both name the NEAREST-TEMPLATE classifier as the crux-first next sibling -- the argmin over shape_match's distance that closes the loop hu_moments -> shape_match -> classify. Highest-Lindy (it is the payoff that makes the whole recognition arc usable by a surface) and no network/key/funds gate. Took it.
+think Read image/shape_match.rye and image/hu_moments.rye to learn the API to compose over: shape_distance / shape_distance_oriented over hu_moments.HuSet, and the family's selftest builders (make_canvas, set_dot, paint_chiral, rotate90_cw, mirror_x, upscale, hu_of_image).
+think Designed compose-not-braid: the module OWNS only the argmin and its margin; shape_match owns the metric, hu_moments the fingerprints, label the LabelMap. Template{class_id, hu}; Match{index, class_id, distance, margin}; classify + classify_oriented; bounded by shape_classify_max_templates (256); ties to the earliest template (strict < never replaces an equal incumbent) so the choice is deterministic.
+obs First metal run tripped PlusMarginNotConfident -- my margin>1.0 for the plus was memory, not metal. Probed the real pairwise distances: plus->block 0.18, plus->L 10.1, tri->all 14+. A symmetric plus and a solid block are near-twins to Hu moments (both compact, odd invariants zero). Kept the honest fact rather than fighting it.
+obs Reframed the crux keyed to metal: the confident-margin test now uses the chiral L (nearest other class ~10 away), and the plus-vs-block near-collision (0.18) became an explicit THIN-MARGIN demonstration -- the margin surfacing near-twins is exactly its purpose, a stronger and more honest teaching than pretending Hu moments separate every shape.
+obs The decisive oriented-vs-blind crux stands: with a chiral shape AND its mirror as two classes, the reflection-blind classifier reads a mirror mark as indistinguishable from both (margin under 1e-8) while classify_oriented names the correct handed class (101) a real margin away -- the seventh Hu invariant's sign-flip surfacing as the right label, the payoff of the oriented metric inside a classifier.
+loom witness=shape_classify_witness result=GREEN checks=recognition+margin+chirality+determinism+2refusals templates=4 classify_max=256
+obs Discipline GREEN: tame_style_check bans clean, width-check exit 0, plain 7-bit ASCII, living_docs_lint advisory-only, living_card_ascii_witness GREEN (REMEMBER stays pure ASCII after the live-edge + git-nib refresh). image/README.md names shape_classify beside chain_code (docs-sync); the chain_code entry's named next sibling is now fulfilled.
+file image/shape_classify.rye the nearest-template classifier -- argmin over shape_match's distance with an honest margin, classify + classify_oriented
+file tools/shape_classify_witness.rish proves the classifier GREEN on metal (recognition among decoys, the thin margin, the oriented-vs-blind chirality crux, refusals)
+file image/README.md docs-sync -- the shape_classify entry beside chain_code, next sibling named (a shape number over chain_code)
+file crux/REMEMBER.md live edge + Git nib refreshed to shape_classify, chain_code rolled into a prior-nib comment, card kept single-stranded and ASCII
+recommend keep-going next crux-first sibling: a SHAPE NUMBER / differential turning descriptor over chain_code (the start-invariant canonical form) -- agent-doable, no gate; the round top-hat on a real photo still waits on a fetch gate.
