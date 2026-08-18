@@ -1,0 +1,293 @@
+//! image/threshold.rye -- turn a real image into the binary MASK the segmentation family consumes, by an AUTOMATIC threshold
+//! read from the image's own tones: the intensity HISTOGRAM plus OTSU'S METHOD (N. Otsu, 1979), the classic front door of
+//! image analysis (Season G, the maker of the mask every downstream reader already expects).
+//!
+//! Season G (Open Media Primitives) -- image/label.rye counts a mask's components, image/distance.rye reads its metric, and
+//! image/regions.rye, image/centroid.rye, image/watershed.rye all measure a mask a caller hands them. What none of them makes
+//! is the mask itself: they begin from a clean white-on-black plane a fixture drew by hand. This rung makes it from a real
+//! image. The skeleton readers that DO binarize (image/hitmiss.rye, image/zhang_suen.rye) cut at a FIXED mid-gray (red byte at
+//! least 128), which serves a strict two-color mask yet misplaces the split on a real photo whose two tones both sit below the
+//! middle, or both above it. Otsu cuts where the image's OWN histogram says to.
+//!
+//! The measurement is the histogram: one 256-bin tally of each pixel's Rec.601 luma. The algorithm is Otsu's: read the tally
+//! as two classes split at a threshold t (background = luma at most t, foreground = luma above t), and choose the t that
+//! MAXIMIZES the BETWEEN-CLASS VARIANCE `w0 * w1 * (mu0 - mu1)^2` -- the split that pulls the two class means as far apart as
+//! their weights allow, which for a two-humped histogram falls squarely in the valley between the humps. A single incremental
+//! pass over the 256 bins finds it: the class weights and the class sum both accrue as t rises, so each candidate costs a
+//! constant amount of work. Among equally-optimal thresholds (the flat valley of an ideal bimodal image) the LOWEST wins, so
+//! the pick is deterministic.
+//!
+//! Compose not braid. This rung OWNS only three small things: the LUMA projection (Rec.601 weights that sum to 256, so a gray
+//! pixel maps to its own value), the histogram tally, and the between-class-variance search. image/qoi.rye owns the RGBA
+//! buffers the histogram reads and the mask writes; the mask is the family's own convention -- opaque WHITE where a pixel is
+//! foreground, opaque BLACK where it is background, alpha pinned opaque so a translucent source can never punch a hole in the
+//! mask, read downstream through image/branch.rye's `is_on` door (red byte at least 128). No new gather, no blend, no codec.
+//!
+//! Everything is bounded before a byte is allocated: a source is an already-decoded Pixmap within the image module's pixel
+//! ceiling, so a histogram bin can never exceed that count and the class sums stay far inside u64. An empty source refuses
+//! `EmptySource` by name, having allocated nothing -- all-or-nothing, never a half-built mask. No network, no key, no funds --
+//! the mask a surface makes the day it turns a real photograph into a shape it can count, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/threshold.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+
+pub const threshold_version = "20260818.160453";
+
+/// The luma histogram holds one bin per possible 8-bit tone, so a real image's whole tonal range is tallied exactly.
+pub const luma_bins: u32 = 256;
+
+/// The Rec.601 luma weights, times 256 so the divide is an exact shift and a gray pixel (r == g == b) maps to its own value.
+const luma_r: u32 = 77;
+const luma_g: u32 = 150;
+const luma_b: u32 = 29;
+
+pub const ThresholdError = error{
+    EmptySource,
+};
+
+/// The Rec.601 luma of one RGB pixel, 0..255 -- the single tonal projection the histogram and the mask both read, so the
+/// threshold and the pixels it splits agree on what "brightness" means. Alpha plays no part: luma is a property of color.
+fn luma_of(r: u8, g: u8, b: u8) u8 {
+    // invariant: the weights sum to exactly 256, so a gray pixel maps to its own value with no drift.
+    assert(luma_r + luma_g + luma_b == 256);
+    const sum = @as(u32, r) * luma_r + @as(u32, g) * luma_g + @as(u32, b) * luma_b;
+    // invariant: the weighted sum divided by 256 stays inside the byte range.
+    assert((sum >> 8) <= 255);
+    return @intCast(sum >> 8);
+}
+
+/// Tally the luma of every pixel of `src` into a 256-bin histogram returned by value -- the measurement Otsu reads and a
+/// caller can chart directly. Pure: `src` is read-only, no allocation. A zero-size source has no tones to tally.
+pub fn histogram(src: *const qoi.Pixmap) [luma_bins]u32 {
+    // invariant: a real source has extent on both axes, so there is at least one pixel to tally.
+    assert(src.width >= 1);
+    assert(src.height >= 1);
+    const n: usize = @as(usize, src.width) * @as(usize, src.height) * 4;
+    // invariant: the buffer holds exactly one RGBA pixel per source pixel.
+    assert(src.pixels.len == n);
+
+    var bins = [_]u32{0} ** luma_bins;
+    var i: usize = 0;
+    while (i < n) : (i += 4) {
+        const y = luma_of(src.pixels[i], src.pixels[i + 1], src.pixels[i + 2]);
+        bins[@as(usize, y)] += 1;
+    }
+
+    // invariant: every pixel landed in exactly one bin, so the bins sum to the pixel count.
+    var summed: u64 = 0;
+    var b: usize = 0;
+    while (b < luma_bins) : (b += 1) summed += bins[b];
+    assert(summed == @as(u64, src.width) * @as(u64, src.height));
+    return bins;
+}
+
+/// Otsu's threshold: the tone `t` (0..255) that maximizes the between-class variance of the two classes a split at `t` makes
+/// (background luma at most `t`, foreground luma above `t`). `total` is the pixel count the histogram tallied. One incremental
+/// pass -- the background weight and sum accrue as `t` rises, the foreground is the remainder. Among equally-optimal thresholds
+/// the LOWEST wins (the update is a strict greater-than), so the pick is deterministic. A single-tone image has no valid split
+/// and returns 0.
+pub fn otsu_threshold(hist: [luma_bins]u32, total: u32) u8 {
+    // invariant: a threshold is asked only of a real image, so at least one pixel was tallied.
+    assert(total >= 1);
+
+    // sum_total is the luma-weighted pixel count, at most 255 * pixel-count, far inside u64.
+    var sum_total: u64 = 0;
+    var i: usize = 0;
+    while (i < luma_bins) : (i += 1) sum_total += @as(u64, i) * @as(u64, hist[i]);
+    // invariant: the histogram Otsu reads tallied exactly `total` pixels.
+    var tallied: u64 = 0;
+    var k: usize = 0;
+    while (k < luma_bins) : (k += 1) tallied += hist[k];
+    assert(tallied == @as(u64, total));
+
+    var weight_bg: u64 = 0; // pixels with luma at most t
+    var sum_bg: u64 = 0; // luma-weighted count of that class
+    var best_between: f64 = 0.0;
+    var best_t: u32 = 0;
+
+    var t: usize = 0;
+    while (t < luma_bins) : (t += 1) {
+        weight_bg += @as(u64, hist[t]);
+        sum_bg += @as(u64, t) * @as(u64, hist[t]);
+        if (weight_bg == 0) continue; // no background yet -- nothing below this tone
+        const weight_fg: u64 = @as(u64, total) - weight_bg;
+        if (weight_fg == 0) break; // foreground emptied -- every higher tone is empty too
+
+        const mean_bg: f64 = @as(f64, @floatFromInt(sum_bg)) / @as(f64, @floatFromInt(weight_bg));
+        const mean_fg: f64 = @as(f64, @floatFromInt(sum_total - sum_bg)) / @as(f64, @floatFromInt(weight_fg));
+        const delta: f64 = mean_bg - mean_fg;
+        // between-class variance w0 * w1 * (mu0 - mu1)^2 -- maximized at the valley between two tonal humps.
+        const between: f64 = @as(f64, @floatFromInt(weight_bg)) * @as(f64, @floatFromInt(weight_fg)) * delta * delta;
+        if (between > best_between) {
+            best_between = between;
+            best_t = @intCast(t);
+        }
+    }
+
+    // invariant: the chosen threshold is a real 8-bit tone.
+    assert(best_t < luma_bins);
+    return @intCast(best_t);
+}
+
+/// Render the binary mask `src` makes at an explicit threshold `t`: opaque WHITE where a pixel's luma is ABOVE `t`
+/// (foreground), opaque BLACK where it is at or below (background). A fresh Pixmap the caller owns; `src` is read-only. The one
+/// renderer both the Otsu path and a caller-chosen threshold share, so the split is defined the same way everywhere.
+pub fn threshold_mask_at(allocator: std.mem.Allocator, src: *const qoi.Pixmap, t: u8) !qoi.Pixmap {
+    // invariant: a real source has extent on both axes; a zero-size source has nothing to split.
+    if (src.width == 0 or src.height == 0) return error.EmptySource;
+    const n: usize = @as(usize, src.width) * @as(usize, src.height) * 4;
+    // invariant: the buffer holds exactly one RGBA pixel per source pixel.
+    assert(src.pixels.len == n);
+
+    const mask = try allocator.alloc(u8, n);
+    var i: usize = 0;
+    while (i < n) : (i += 4) {
+        const y = luma_of(src.pixels[i], src.pixels[i + 1], src.pixels[i + 2]);
+        const lit: bool = y > t; // foreground is strictly brighter than the threshold tone
+        const v: u8 = if (lit) 255 else 0;
+        mask[i] = v;
+        mask[i + 1] = v;
+        mask[i + 2] = v;
+        mask[i + 3] = 255; // alpha pinned opaque -- a mask is never translucent
+    }
+
+    // invariant: the mask holds exactly one RGBA pixel per source pixel.
+    assert(mask.len == n);
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = mask };
+}
+
+/// The whole front door in one call: tally `src`'s luma histogram, choose Otsu's automatic threshold, and render the mask at
+/// it. A fresh Pixmap the caller owns; `src` is read-only. The mask reads downstream through image/branch.rye's `is_on` door,
+/// so a real image flows straight into label, distance, regions, and the rest.
+pub fn threshold_mask(allocator: std.mem.Allocator, src: *const qoi.Pixmap) !qoi.Pixmap {
+    // invariant: a real source has extent on both axes; a zero-size source has nothing to threshold.
+    if (src.width == 0 or src.height == 0) return error.EmptySource;
+    const total: u32 = src.pixel_count();
+    // invariant: a real source tallied at least one pixel.
+    assert(total >= 1);
+    const hist = histogram(src);
+    const t = otsu_threshold(hist, total);
+    return threshold_mask_at(allocator, src, t);
+}
+
+// --- selftest: the histogram crux, the Otsu-valley crux (where a fixed cut fails), bright bimodal, uniform, round-trip ------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Paint a solid `bw` x `bh` gray block of value `v` with its top-left corner at (x, y).
+fn fill_gray(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32, v: u8) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) {
+            const di = (@as(usize, yy) * @as(usize, img.width) + @as(usize, xx)) * 4;
+            img.pixels[di] = v;
+            img.pixels[di + 1] = v;
+            img.pixels[di + 2] = v;
+            img.pixels[di + 3] = 255;
+        }
+    }
+}
+
+/// Count the foreground (opaque-white) pixels of a mask -- the small reader the fixtures share.
+fn count_lit(mask: *const qoi.Pixmap) u32 {
+    var lit: u32 = 0;
+    var i: usize = 0;
+    while (i < mask.pixels.len) : (i += 4) {
+        if (mask.pixels[i] == 255) lit += 1;
+    }
+    return lit;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- a DARK bimodal image: eight gray-40 pixels (top) and eight gray-90 pixels (bottom), both BELOW the fixed 128 cut ---
+    var dark = try make_canvas(garden, 4, 4, 40); // top two rows already gray 40
+    fill_gray(&dark, 0, 2, 4, 2, 90); // bottom two rows gray 90 -> 8 px at 40, 8 px at 90
+
+    // --- the HISTOGRAM crux: the tally reads the two tonal humps exactly, and sums to the pixel count -------------------
+    const dhist = histogram(&dark);
+    if (dhist[40] != 8 or dhist[90] != 8) return error.HistogramHumpsWrong;
+    if (dhist[0] != 0 or dhist[128] != 0) return error.HistogramSpuriousBin;
+
+    // --- the OTSU-VALLEY crux (the decisive one): Otsu splits at 40, the low edge of the valley between the humps, so the
+    //     bright hump is foreground; a FIXED 128 cut -- the one the skeleton binarizers use -- calls the WHOLE image
+    //     background because both humps sit below 128. Otsu adapts to the image's own tones where a fixed cut cannot ------
+    const dark_t = otsu_threshold(dhist, 16);
+    if (dark_t != 40) return error.DarkThresholdWrong; // the lowest maximizer in the flat [40, 89] valley
+    const dark_auto = try threshold_mask(garden, &dark);
+    if (count_lit(&dark_auto) != 8) return error.DarkAutoNotEight; // only the gray-90 hump lights
+    const dark_fixed = try threshold_mask_at(garden, &dark, 128);
+    if (count_lit(&dark_fixed) != 0) return error.DarkFixedNotEmpty; // a fixed 128 cut sees nothing here
+
+    // --- a BRIGHT bimodal image: eight gray-160 and eight gray-220 pixels, both ABOVE the fixed 128 cut ----------------
+    var bright = try make_canvas(garden, 4, 4, 160);
+    fill_gray(&bright, 0, 2, 4, 2, 220);
+    const bhist = histogram(&bright);
+    const bright_t = otsu_threshold(bhist, 16);
+    if (bright_t != 160) return error.BrightThresholdWrong; // the valley's low edge between 160 and 220
+    const bright_auto = try threshold_mask(garden, &bright);
+    if (count_lit(&bright_auto) != 8) return error.BrightAutoNotEight; // only the gray-220 hump lights
+    const bright_fixed = try threshold_mask_at(garden, &bright, 128);
+    if (count_lit(&bright_fixed) != 16) return error.BrightFixedNotAll; // a fixed 128 cut calls everything foreground
+
+    // --- the UNIFORM crux: a single-tone image has no valley, so Otsu returns 0 and the mask marks every pixel foreground
+    //     (luma 100 is above 0) -- the honest degenerate: no split exists, so nothing is called background --------------
+    const flat = try make_canvas(garden, 3, 3, 100);
+    const flat_t = otsu_threshold(histogram(&flat), 9);
+    if (flat_t != 0) return error.UniformThresholdNotZero;
+    const flat_mask = try threshold_mask(garden, &flat);
+    if (count_lit(&flat_mask) != 9) return error.UniformNotAllLit;
+
+    // --- the mask round-trips through the open QOI codec byte-for-byte -- a real image, not a private buffer -----------
+    const cap = qoi.encoded_bound(dark_auto.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&dark_auto, dst);
+    const backimg = try qoi.decode(garden, dst[0..enc.len]);
+    if (!backimg.same_bytes(&dark_auto)) return error.MaskDidNotRoundTrip;
+
+    // --- a refusal by name, having allocated nothing ----------------------------------------------------------------
+    var empty = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (threshold_mask(garden, &empty)) |_| return error.EmptyNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- determinism: the same image thresholds to the same mask byte-for-byte ---------------------------------------
+    const again = try threshold_mask(garden, &dark);
+    if (!again.same_bytes(&dark_auto)) return error.MaskNotDeterministic;
+
+    print("GREEN image-threshold: turn a real image into the mask the family consumes by an AUTOMATIC threshold read from its own tones -- the luma HISTOGRAM plus OTSU'S between-class-variance search. A dark bimodal image (gray-40 and gray-90, both below the fixed 128 cut) tallies two humps of eight, Otsu splits at 40 so the bright hump alone lights (eight pixels) where a fixed 128 cut sees nothing; a bright bimodal image (gray-160 and gray-220) splits at 160 where a fixed cut calls everything foreground; a single-tone image has no valley so Otsu returns 0 and marks all foreground; the mask round-trips through the open QOI codec byte-for-byte; an empty source refuses EmptySource having allocated nothing; the same image thresholds deterministically\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: threshold selftest\n", .{});
+    return 1;
+}
