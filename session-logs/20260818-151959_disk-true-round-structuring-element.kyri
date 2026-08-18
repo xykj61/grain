@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260818.151959
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title disk -- the true round structuring element for the general morphology gather, GREEN
+prompt baton prin recur -- pick up the running thread Lindy-first crux-first, take the next agent-doable open-media lap, send it as its own signed round
+think Read Kyri + Radiant Style to be the voice; read crux/REMEMBER.md (live edge image/hmaxima.rye GREEN), the top three session-log recommends, and crux/REDS.md. Standfast first: every living REDS row is closed or released; only #75 rests as custody-gated errata (a history rewrite, not agent-closable). No open agent-closable red -- the constructive queue is clear.
+think The hmaxima log named three crux-first siblings: a DISK-element builder for structure (true-disk morphology), a size-histogram/region-picker over regions, an extended-maxima render. Lindy-first crux-first takes the disk element: it is the most Lindy (a geometric primitive the whole morphology family descends from and reaches for by name) and a genuine crux (a round lattice element with no square footprint, the isotropic open/close the square window cannot draw).
+think Studied image/structure.rye: it already owns the general gather (dilate as MAX, erode as MIN over an arbitrary Offset set), names the disk as a shape it was built to carry, and bounds the offset count by structure_max_offsets=65536. So the disk rung composes -- it owns only the round geometry and routes through dilate_se/erode_se. Verified the disk membership rule dx^2+dy^2<=r^2 gives the cross at r=1 (5 cells), 13 cells at r=2, and 51433 at r=128 (< 65536), so disk_max_radius=128 keeps every disk within the general ceiling.
+think Distinct from image/distance_morph.rye on purpose, and named as an honest sibling not a rival: distance_morph does true-radius erode/dilate on a BINARY mask in two linear passes off the chamfer field (cheap at any radius, mask-only); this rung reshapes ANY RGBA as a reusable geometric element (grayscale morphology, real open/close), at the cost of the disk's area per pixel.
+obs Built image/disk.rye with five verbs from one geometry: disk_offsets (two-pass count-then-fill so the allocation is the disk's exact size), disk_element, dilate_disk, erode_disk, open_disk (erode then dilate), close_disk (dilate then erode). GREEN on the FIRST metal run, no reds -- the crux values (r=1 cross, r=2 far corner (2,2) outside the disk) traced by hand before coding.
+obs The headline crux is TRUE-ROUND-FOOTPRINT: a radius-2 disk lights the near diagonal (1,1) and both axis extremes yet leaves the far corner (2,2) dark, while a 5x5 square element (built in the selftest for the direct contrast) DOES light it -- true-disk morphology has no square footprint. The DISK-IS-A-CROSS crux ties the disk to a known element (radius-1 disk dilation == an explicit cross dilation byte-for-byte). Opening proven anti-extensive and idempotent, closing extensive, both by the foreground-subset test on real black/white scenes; radius-0 the identity; duality for the symmetric disk; QOI round-trip; two refusals by name; determinism.
+obs Compose not braid held: no new gather, blend, codec, or color -- structure owns the max/min, qoi the grid, color the channels. Witness tools/disk_witness.rish GREEN. tame_style_check bans clean (no new zero-assert file), width-check exit 0, plain 7-bit ASCII, living_docs_lint advisory-only GREEN, living_card_ascii_witness GREEN after the REMEMBER repoint. image/README.md names disk.rye as "Reshape (true disk element)" before the Light-and-color entry (docs-sync).
+obs REMEMBER repointed single-stranded: the live edge and the Git-nib block now name disk.rye, hmaxima folded to a one-line prior-nib comment (no cairn -- a one-line repoint, no living-card body swept away).
+loom witness=disk_witness checks=1_green selftest=green build=green
+file image/disk.rye the disk structuring element and its five verbs, composing over structure
+file tools/disk_witness.rish builds and runs the selftest on metal, asserts the GREEN line
+file image/README.md Reshape (true disk element) bullet before Light and color
+file crux/REMEMBER.md live edge + Git nib repointed to disk.rye, hmaxima folded to a prior-nib pointer
+recommend keep-going Season G open-media is a clean green edge with no gates; next crux-first sibling is the size-HISTOGRAM/region-picker over regions or a TOP-HAT by disk now that open_disk exists. No network, no key, no funds.

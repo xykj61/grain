@@ -1,0 +1,36 @@
+# tools/disk_witness.rish -- a true DISK structuring element for the general morphology gather, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/structure.rye grows dilate (max) and erode (min) over an arbitrary offset set
+# and names the disk as the round shape a square window cannot draw. This rung draws it: the offset set dx^2 + dy^2 <= r^2,
+# built once and reshaped through structure's general verbs, with open and close (the isotropic speck-remove and gap-fill)
+# as the payoff a disk exists for.
+#
+# The crux this witness proves on metal: a disk of radius 1 is exactly the four-neighbor CROSS (5 cells), so dilating a dot
+# grows a plus with dark diagonals byte-for-byte equal to a cross dilation; a disk of radius 2 (13 cells) reaches two pixels
+# along each axis and lights the near diagonal yet leaves the FAR corner (2,2) dark where a 5x5 SQUARE lights it -- true-disk
+# morphology has no square footprint; OPENING by a disk removes a lone speck smaller than the disk while keeping a blob core,
+# is anti-extensive and idempotent; CLOSING fills a 1px hole and stays extensive; a disk of radius 0 is the identity. No
+# network, no key, no funds -- the round element a mask cleanup wants.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/disk_witness.rish
+
+say "disk: Language EN -- Season G true-disk structuring element; the round offset set dx^2+dy^2<=r^2 reshaped through structure's general dilate/erode, with isotropic open and close."
+say "disk: Style Radiant -- compose not braid: this rung owns only the round disk geometry (the offset set, the two-pass count-then-fill); structure owns the general max/min gather, qoi the pixel grid, color the channels. A different route than distance_morph -- a reusable element on any RGBA, not a binary-mask distance threshold."
+say "disk: Lens TAME -- the radius is bounded by disk_max_radius so the lattice disk stays within structure_max_offsets; an over-max radius and an empty source refuse by name up front so a refusal allocates nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/disk"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/disk.rye -femit-bin=${bin}"]
+assert build.ok else "disk: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "disk: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "disk: ${out}"
+
+assert selftest.out contains "GREEN image-disk" else "disk: selftest did not print the GREEN line"
+
+say "disk: GREEN -- a disk of radius 1 is the cross, a disk of radius 2 leaves the far corner dark where a square lights it, opening removes a speck and is idempotent, closing fills a hole and is extensive, radius 0 is the identity, on metal."

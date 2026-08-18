@@ -1,0 +1,350 @@
+//! image/disk.rye -- a true DISK structuring element for the general morphology gather: build the round offset set
+//! `{(dx, dy) : dx^2 + dy^2 <= r^2}` and reshape an RGBA image by it -- dilate, erode, open, and close by a disk of
+//! radius `r` (Season G, the isotropic element the whole morphology family names but the square window cannot draw).
+//!
+//! Season G (Open Media Primitives) -- image/structure.rye grows the two general verbs (dilate as a MAX, erode as a MIN)
+//! over an ARBITRARY offset set, and names the shapes a surface reaches for the day a square is wrong: a cross, a line, a
+//! disk. This rung draws the DISK -- the one element whose footprint is ROUND, so a bright mark grows and shrinks the same
+//! amount in every direction rather than growing corners a square would. A disk of radius 1 is exactly the CROSS (the four
+//! offsets `dx^2 + dy^2 <= 1`); a disk of radius 2 is the 13-cell rounded diamond that reaches two pixels along each axis
+//! yet leaves the far corner `(2, 2)` out, where a 5x5 square lights it. That missing corner is the whole point: true-disk
+//! morphology has NO square footprint.
+//!
+//! Four verbs from one geometry. `dilate_disk` and `erode_disk` route the disk offset set straight through
+//! `structure.dilate_se`/`erode_se` -- the general gather owns the max/min, this rung owns only the round SHAPE. `open_disk`
+//! (erode then dilate by the same disk) removes a bright speck smaller than the disk while leaving a large blob's bulk;
+//! `close_disk` (dilate then erode) fills a dark gap smaller than the disk while leaving the blob's outline. Those two are
+//! the payoff a disk exists for: an ISOTROPIC cleanup -- a speck removed, a hole filled -- with no directional bias a square
+//! or a cross would leave. Opening obeys its two laws, proven on metal: it is ANTI-EXTENSIVE (an opened image sits inside
+//! the original, never outside it) and IDEMPOTENT (opening an opened image changes nothing); closing is its EXTENSIVE dual.
+//!
+//! This is a different route to round morphology than image/distance_morph.rye, and the two are honest siblings, not rivals.
+//! `distance_morph` erodes or dilates a BINARY mask by a true radius in two linear passes off the chamfer field, cheap at
+//! any radius yet only a mask transform; this rung reshapes ANY RGBA image (every channel including alpha, so grayscale
+//! morphology and real open/close), at the cost of the element's area per pixel -- the reusable geometric element the
+//! general gather was built to carry. `disk_offsets` returns the element for a caller to hold and reuse; the disk radius is
+//! bounded by `disk_max_radius` (a radius whose lattice disk stays within `structure_max_offsets`, so the general gather
+//! never refuses it), and an over-max radius, an empty source, or an empty element refuses BY NAME before any allocation.
+//! No network, no key, no funds -- the round element a mask cleanup wants, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/disk.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const structure = @import("structure.rye");
+
+pub const disk_version = "20260818.151959";
+
+/// The largest disk radius this rung draws. A radius-128 lattice disk holds 51433 offsets, comfortably within
+/// `structure.structure_max_offsets` (65536), so a disk element the builder returns is always one the general gather
+/// accepts; a larger radius is refused BY NAME rather than silently overrunning the general element ceiling.
+pub const disk_max_radius: u32 = 128;
+
+pub const DiskError = error{
+    DiskRadiusTooLarge,
+};
+
+/// Count the lattice points of a disk of radius `radius` -- the cells `(dx, dy)` with `dx^2 + dy^2 <= r^2`. Counted in a
+/// first pass so the offset buffer is allocated at exactly the disk's size, never the bounding square's. `radius` is
+/// bounded by `disk_max_radius` at the one public door, so the widest sweep here is 257x257, and the squared terms in i64
+/// (max `2 * 128^2 = 32768`) never approach an overflow.
+fn disk_count(radius: u32) u32 {
+    // invariant: the counted radius is within the module ceiling, so the sweep and the count stay bounded.
+    assert(radius <= disk_max_radius);
+    const r: i64 = @as(i64, radius);
+    const rr: i64 = r * r;
+    var count: u32 = 0;
+    var dy: i64 = -r;
+    while (dy <= r) : (dy += 1) {
+        var dx: i64 = -r;
+        while (dx <= r) : (dx += 1) {
+            if (dx * dx + dy * dy <= rr) count += 1;
+        }
+    }
+    // invariant: the center cell (0,0) is always inside any disk, so a real disk names at least one offset.
+    assert(count >= 1);
+    return count;
+}
+
+/// Build the DISK offset set of radius `radius` -- the round element `{(dx, dy) : dx^2 + dy^2 <= r^2}`, swept row by row
+/// (order does not matter to a max or a min). Radius 0 is the single center cell `{(0, 0)}` (the identity element); radius 1
+/// is the four-neighbor CROSS; radius 2 the 13-cell rounded diamond. An over-max radius refuses `DiskRadiusTooLarge` before
+/// any allocation. Returns a freshly allocated slice the caller owns and may reuse across verbs.
+pub fn disk_offsets(garden: std.mem.Allocator, radius: u32) ![]structure.Offset {
+    // invariant: the radius stays within the module ceiling so the disk fits the general element gather.
+    if (radius > disk_max_radius) return error.DiskRadiusTooLarge;
+    const count = disk_count(radius);
+    // invariant: the disk fits the general element ceiling, so `structure` never refuses the element it returns.
+    assert(count <= structure.structure_max_offsets);
+    const offs = try garden.alloc(structure.Offset, count);
+    const r: i32 = @intCast(radius);
+    const rr: i64 = @as(i64, r) * @as(i64, r);
+    var idx: u32 = 0;
+    var dy: i32 = -r;
+    while (dy <= r) : (dy += 1) {
+        var dx: i32 = -r;
+        while (dx <= r) : (dx += 1) {
+            const dd: i64 = @as(i64, dx) * @as(i64, dx) + @as(i64, dy) * @as(i64, dy);
+            if (dd <= rr) {
+                offs[idx] = structure.Offset{ .dx = dx, .dy = dy };
+                idx += 1;
+            }
+        }
+    }
+    // invariant: the fill placed exactly the counted number of offsets, no cell missed or doubled.
+    assert(idx == count);
+    return offs;
+}
+
+/// A `StructuringElement` carrying the disk of radius `radius` -- the convenience over `disk_offsets` for a caller that
+/// wants the element directly to hand to `structure.dilate_se`/`erode_se`.
+pub fn disk_element(garden: std.mem.Allocator, radius: u32) !structure.StructuringElement {
+    return structure.StructuringElement{ .offsets = try disk_offsets(garden, radius) };
+}
+
+/// Dilate `src` by a disk of radius `radius` -- the MAX over the round element, so a bright mark grows the same amount in
+/// every direction. Composes straight through `structure.dilate_se`; this rung owns only the disk geometry.
+pub fn dilate_disk(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32) !qoi.Pixmap {
+    const se = try disk_element(allocator, radius);
+    return try structure.dilate_se(allocator, src, se);
+}
+
+/// Erode `src` by a disk of radius `radius` -- the MIN over the round element, the isotropic shrink twin of `dilate_disk`,
+/// read over the same offset set.
+pub fn erode_disk(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32) !qoi.Pixmap {
+    const se = try disk_element(allocator, radius);
+    return try structure.erode_se(allocator, src, se);
+}
+
+/// Open `src` by a disk of radius `radius` -- erode then dilate by the SAME disk, so a bright feature smaller than the disk
+/// is removed while a larger blob's bulk survives. The element is built once and read by both steps. Opening is
+/// anti-extensive and idempotent.
+pub fn open_disk(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32) !qoi.Pixmap {
+    const se = try disk_element(allocator, radius);
+    const eroded = try structure.erode_se(allocator, src, se);
+    return try structure.dilate_se(allocator, &eroded, se);
+}
+
+/// Close `src` by a disk of radius `radius` -- dilate then erode by the SAME disk, the extensive dual of `open_disk`: a dark
+/// gap smaller than the disk is filled while the blob's outline is left. The element is built once and read by both steps.
+pub fn close_disk(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32) !qoi.Pixmap {
+    const se = try disk_element(allocator, radius);
+    const dilated = try structure.dilate_se(allocator, src, se);
+    return try structure.erode_se(allocator, &dilated, se);
+}
+
+// --- selftest: disk-is-cross, true round footprint vs a square, duality, opening laws, closing, identity, round-trip -----
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y).
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// Set one pixel's RGBA at (x, y).
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+/// True when pixel (x, y) reads foreground -- red channel at least 128, the one binary door the whole family shares.
+fn is_on(img: *const qoi.Pixmap, x: u32, y: u32) bool {
+    return pixel_at(img, x, y).r >= 128;
+}
+
+/// Complement every channel of `img` in place (255 - value) -- the reflection the duality law reads through.
+fn complement(img: *qoi.Pixmap) void {
+    // invariant: the buffer is a whole RGBA grid, so every byte is a channel to reflect.
+    assert(img.pixels.len == @as(usize, img.width) * @as(usize, img.height) * 4);
+    var i: usize = 0;
+    while (i < img.pixels.len) : (i += 1) {
+        img.pixels[i] = 255 - img.pixels[i];
+    }
+}
+
+/// True when `a`'s foreground sits entirely inside `b`'s -- every on-pixel of `a` is an on-pixel of `b`. Both images share
+/// the same extent. The subset test the anti-extensive (opening) and extensive (closing) laws read through.
+fn foreground_subset(a: *const qoi.Pixmap, b: *const qoi.Pixmap) bool {
+    // invariant: the two images share extent, so a pixel index into one is valid in the other.
+    assert(a.width == b.width);
+    assert(a.height == b.height);
+    var y: u32 = 0;
+    while (y < a.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x < a.width) : (x += 1) {
+            if (is_on(a, x, y) and !is_on(b, x, y)) return false;
+        }
+    }
+    return true;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    // --- the DISK-IS-A-CROSS crux: a disk of radius 1 is exactly the four-neighbor cross, so dilating a dot by it grows a
+    //     PLUS with dark diagonals -- the disk built here equals the cross structure proves by hand ----------------------
+    const r1 = try disk_offsets(garden, 1);
+    if (r1.len != 5) return error.DiskRadius1NotFiveCells;
+    const cross_offsets = try garden.alloc(structure.Offset, 5);
+    cross_offsets[0] = structure.Offset{ .dx = 0, .dy = 0 };
+    cross_offsets[1] = structure.Offset{ .dx = 1, .dy = 0 };
+    cross_offsets[2] = structure.Offset{ .dx = -1, .dy = 0 };
+    cross_offsets[3] = structure.Offset{ .dx = 0, .dy = 1 };
+    cross_offsets[4] = structure.Offset{ .dx = 0, .dy = -1 };
+    const cross = structure.StructuringElement{ .offsets = cross_offsets };
+    var dot5 = try make_canvas(garden, 5, 5, black);
+    set_pixel(&dot5, 2, 2, white);
+    const disk_plus = try dilate_disk(garden, &dot5, 1);
+    const cross_plus = try structure.dilate_se(garden, &dot5, cross);
+    if (!disk_plus.same_bytes(&cross_plus)) return error.DiskRadius1NotCross;
+    // and the plus shape itself: the four edge-neighbors lit, the four diagonal corners dark
+    if (!is_on(&disk_plus, 1, 2) or !is_on(&disk_plus, 3, 2)) return error.DiskCrossLostAnArm;
+    if (is_on(&disk_plus, 1, 1) or is_on(&disk_plus, 3, 3)) return error.DiskRadius1LitADiagonal;
+
+    // --- the TRUE-ROUND-FOOTPRINT crux: a disk of radius 2 reaches two pixels along each axis and lights the near diagonal
+    //     (1,1), yet leaves the FAR corner (2,2) dark where a 5x5 SQUARE fills it -- true-disk morphology has no square
+    //     footprint ------------------------------------------------------------------------------------------------------
+    const r2 = try disk_offsets(garden, 2);
+    if (r2.len != 13) return error.DiskRadius2NotThirteenCells;
+    var dot9 = try make_canvas(garden, 9, 9, black);
+    set_pixel(&dot9, 4, 4, white);
+    const round_blob = try dilate_disk(garden, &dot9, 2);
+    // the axis extremes two pixels out are lit
+    if (!is_on(&round_blob, 4, 2) or !is_on(&round_blob, 2, 4)) return error.DiskAxisReachLost;
+    // the near diagonal (1,1) from the center is lit -- a disk of radius 2 is fatter than a cross
+    if (!is_on(&round_blob, 5, 5) or !is_on(&round_blob, 3, 3)) return error.DiskNearDiagonalDark;
+    // yet the FAR corner (2,2) stays dark -- 4 + 4 = 8 > 4, outside the disk
+    if (is_on(&round_blob, 6, 6) or is_on(&round_blob, 2, 2)) return error.DiskFarCornerLit;
+    // the direct contrast: a 5x5 SQUARE element (structure over a radius-2 square) DOES light that far corner
+    const square2 = try garden.alloc(structure.Offset, 25);
+    var sidx: usize = 0;
+    var sdy: i32 = -2;
+    while (sdy <= 2) : (sdy += 1) {
+        var sdx: i32 = -2;
+        while (sdx <= 2) : (sdx += 1) {
+            square2[sidx] = structure.Offset{ .dx = sdx, .dy = sdy };
+            sidx += 1;
+        }
+    }
+    const square_blob = try structure.dilate_se(garden, &dot9, structure.StructuringElement{ .offsets = square2 });
+    if (!is_on(&square_blob, 6, 6)) return error.SquareDidNotLightFarCorner;
+
+    // --- the DUALITY law: the disk is symmetric through its center, so erode_disk(x) equals 255 - dilate_disk(255 - x)
+    //     byte-for-byte on a colored translucent field --------------------------------------------------------------------
+    var field = try make_canvas(garden, 7, 6, color.Rgba{ .r = 40, .g = 90, .b = 200, .a = 128 });
+    set_pixel(&field, 2, 2, color.Rgba{ .r = 255, .g = 30, .b = 10, .a = 255 });
+    set_pixel(&field, 5, 4, color.Rgba{ .r = 10, .g = 240, .b = 60, .a = 30 });
+    const ero2 = try erode_disk(garden, &field, 2);
+    var comp = try make_canvas(garden, 7, 6, black);
+    var ci: usize = 0;
+    while (ci < comp.pixels.len) : (ci += 1) comp.pixels[ci] = field.pixels[ci];
+    complement(&comp);
+    var dil_comp = try dilate_disk(garden, &comp, 2);
+    complement(&dil_comp);
+    if (!ero2.same_bytes(&dil_comp)) return error.DiskDualityBroken;
+
+    // --- the OPENING laws: a 5x5 blob with a lone 1px speck apart from it. open_disk(1) removes the speck (smaller than the
+    //     disk) yet keeps the blob's core; opening is ANTI-EXTENSIVE and IDEMPOTENT ---------------------------------------
+    var scene = try make_canvas(garden, 9, 9, black);
+    var by: u32 = 1;
+    while (by <= 5) : (by += 1) {
+        var bx: u32 = 1;
+        while (bx <= 5) : (bx += 1) set_pixel(&scene, bx, by, white);
+    }
+    set_pixel(&scene, 7, 7, white); // the lone speck
+    const opened = try open_disk(garden, &scene, 1);
+    if (is_on(&opened, 7, 7)) return error.OpeningKeptTheSpeck;
+    if (!is_on(&opened, 3, 3)) return error.OpeningAteTheBlobCore;
+    // anti-extensive: the opened foreground sits inside the original
+    if (!foreground_subset(&opened, &scene)) return error.OpeningNotAntiExtensive;
+    // idempotent: opening an opened image changes nothing
+    const opened2 = try open_disk(garden, &opened, 1);
+    if (!opened2.same_bytes(&opened)) return error.OpeningNotIdempotent;
+
+    // --- the CLOSING law: a 5x5 blob with a 1px interior hole. close_disk(1) fills the hole yet stays EXTENSIVE (the
+    //     original foreground sits inside the closed image) ---------------------------------------------------------------
+    var holed = try make_canvas(garden, 9, 9, black);
+    var hy: u32 = 1;
+    while (hy <= 5) : (hy += 1) {
+        var hx: u32 = 1;
+        while (hx <= 5) : (hx += 1) set_pixel(&holed, hx, hy, white);
+    }
+    set_pixel(&holed, 3, 3, black); // the interior hole
+    const closed = try close_disk(garden, &holed, 1);
+    if (!is_on(&closed, 3, 3)) return error.ClosingDidNotFillTheHole;
+    // extensive: the original foreground sits inside the closed image
+    if (!foreground_subset(&holed, &closed)) return error.ClosingNotExtensive;
+
+    // --- the IDENTITY crux: a disk of radius 0 is the single center cell, so dilate and erode by it copy the source -------
+    const r0 = try disk_offsets(garden, 0);
+    if (r0.len != 1) return error.DiskRadius0NotOneCell;
+    const dsame = try dilate_disk(garden, &field, 0);
+    if (!dsame.same_bytes(&field)) return error.DiskRadius0DilateNotIdentity;
+    const esame = try erode_disk(garden, &field, 0);
+    if (!esame.same_bytes(&field)) return error.DiskRadius0ErodeNotIdentity;
+
+    // --- a reshaped image round-trips through the open QOI codec byte-for-byte -----------------------------------------
+    const cap = qoi.encoded_bound(opened.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&opened, dst);
+    const backimg = try qoi.decode(garden, dst[0..enc.len]);
+    if (!backimg.same_bytes(&opened)) return error.DiskDidNotRoundTrip;
+
+    // --- refusals by name, each having allocated nothing ---------------------------------------------------------------
+    if (disk_offsets(garden, disk_max_radius + 1)) |_| return error.OversizeRadiusNotRefused else |err| {
+        if (err != error.DiskRadiusTooLarge) return error.WrongOversizeRadiusError;
+    }
+    var empty_src = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (dilate_disk(garden, &empty_src, 1)) |_| return error.EmptySourceNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptySourceError;
+    }
+
+    // --- determinism: the same disk opening reaches the same pixels byte-for-byte ---------------------------------------
+    const oa = try open_disk(garden, &scene, 1);
+    const ob = try open_disk(garden, &scene, 1);
+    if (!oa.same_bytes(&ob)) return error.OpenNotDeterministic;
+
+    print("GREEN image-disk: a true DISK structuring element for the general morphology gather -- the round offset set dx^2+dy^2<=r^2 built once and reshaped through structure's dilate_se/erode_se. A disk of radius 1 is exactly the four-neighbor CROSS (5 cells) so dilating a dot grows a plus with dark diagonals byte-for-byte equal to a cross dilation; a disk of radius 2 (13 cells) reaches two pixels along each axis and lights the near diagonal yet leaves the FAR corner (2,2) dark where a 5x5 SQUARE lights it (true-disk morphology has no square footprint); the DUALITY law holds for the symmetric disk, erode(x) equals 255 minus dilate of the complement byte-for-byte on a translucent field; OPENING by a disk removes a lone speck smaller than the disk while keeping the blob core, is anti-extensive (opened inside original) and idempotent; CLOSING fills a 1px hole and stays extensive (original inside closed); a disk of radius 0 is the single center cell, the identity for both verbs; the result round-trips through the open QOI codec byte-for-byte; an over-max radius and an empty source refuse by name having allocated nothing; the same opening is deterministic byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: disk selftest\n", .{});
+    return 1;
+}
