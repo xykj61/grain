@@ -31,7 +31,7 @@ grep -q 'witness:linn-open GREEN' "$PAGE"
 test -f counsel/20260728-034317_linn-capricorn-seat.md
 test -f counsel/20260728-035025_linn-helen-atthowe-dedication.md
 test -f gratitude/helen-atthowe.md
-test -f foundations/20260728-035025_linn-and-helen-atthowe.md
+test -f foundations/yonder/20260728-035025_linn-and-helen-atthowe.md
 test -f tools/sundial.rish
 
 name=Linn

@@ -4,7 +4,7 @@
 **Stamp:** `20260728.024417`  
 **Voice:** Quin  
 **Kind:** gratitude silo — honor naming for the **Trya** fund dedication  
-**Companion foundations:** [`../foundations/20260728-024417_trya-and-ariana-grande.md`](../foundations/20260728-024417_trya-and-ariana-grande.md) (Trya variant)
+**Companion foundations:** [`../foundations/yonder/20260728-024417_trya-and-ariana-grande.md`](../foundations/yonder/20260728-024417_trya-and-ariana-grande.md) (Trya variant)
 
 ---
 

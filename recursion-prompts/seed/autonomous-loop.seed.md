@@ -41,7 +41,7 @@ The lenses above load every lap. The **rota** is the supplement: deep-read **one
 10. `foundations/20260703-182612_sameness-is-the-macro.md`
 11. `active-designing/yonder/20260618-182412_single-stranded.md`
 12. `active-designing/yonder/20260618-184912_growing-a-language.md`
-13. `foundations/20260728-032134_keeh-and-kia.md` (the happy zone)
+13. `foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md` (the happy zone -- fast isolated tests, thin edge; gratitude J.B. Rainsberger)
 14. `context/RADIANT_STYLE.md` (with `context/TWILIGHT_STYLE.md`)
 15. `context/TAME_CORE.md` (with `context/TAME_GUIDANCE.md`)
 16. `context/SIMPLE_LOVABLE_COMPLETE.md` (SLC -- simple, lovable, complete)

@@ -4,7 +4,7 @@
 **Stamp:** `20260728.035025`  
 **Voice:** Quin  
 **Kind:** gratitude silo — honor naming for the **Linn** fund dedication  
-**Companion foundations:** [`../foundations/20260728-035025_linn-and-helen-atthowe.md`](../foundations/20260728-035025_linn-and-helen-atthowe.md) (Trya variant)
+**Companion foundations:** [`../foundations/yonder/20260728-035025_linn-and-helen-atthowe.md`](../foundations/yonder/20260728-035025_linn-and-helen-atthowe.md) (Trya variant)
 
 ---
 

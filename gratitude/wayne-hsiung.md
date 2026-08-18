@@ -4,7 +4,7 @@
 **Stamp:** `20260728.033404`  
 **Voice:** Quin  
 **Kind:** gratitude silo — honor naming for the **Shyu** fund dedication  
-**Companion foundations:** [`../foundations/20260728-033404_shyu-and-wayne-hsiung.md`](../foundations/20260728-033404_shyu-and-wayne-hsiung.md)  
+**Companion foundations:** [`../foundations/yonder/20260728-033404_shyu-and-wayne-hsiung.md`](../foundations/yonder/20260728-033404_shyu-and-wayne-hsiung.md)  
 **Fund:** **Shyu** — Libra · air · seat 7 · `%shyu`
 
 ---

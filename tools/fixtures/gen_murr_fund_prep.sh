@@ -34,7 +34,7 @@ grep -q 'witness:murr-open GREEN' "$PAGE"
 grep -q 'roadmap last' "$PAGE"
 test -f gratitude/kyler-murray.md
 test -f gratitude/mur-movement-aesthetics.md
-test -f foundations/20260728-025220_murr-and-kyler-murray.md
+test -f foundations/yonder/20260728-025220_murr-and-kyler-murray.md
 test -f counsel/20260728-025220_the-mur-season-innermost-charter.md
 test -f counsel/20260730-150702_pole-bozo-djinn-murr-keaton.md
 

@@ -194,7 +194,7 @@ INNERMOST SCOPE (this season — walk here):
   u126 and u127 MUST warn before handback (extend innermost · return inner i7 · other).
 
 Read whole: the MUR charter · u6 wave map · u14–u26 wave preps/readiness/rehearsal/GO ·
-foundations/20260728-025220_murr-and-kyler-murray.md ·
+foundations/yonder/20260728-025220_murr-and-kyler-murray.md ·
 gratitude/kyler-murray.md · gratitude/mur-movement-aesthetics.md ·
 LEXICON rows MUR/Murr/innermost · Gren charter (CLOSED) · Inner Scope + Fascia (paused).
 Companions: newest quin-workshop pair if attached; else verify origin/main nib.

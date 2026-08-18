@@ -28,7 +28,7 @@ grep -q 'Ariana Grande' "$PAGE"
 grep -q 'no live deploy' "$PAGE"
 grep -q 'witness:trya-open GREEN' "$PAGE"
 test -f gratitude/ariana-grande.md
-test -f foundations/20260728-024417_trya-and-ariana-grande.md
+test -f foundations/yonder/20260728-024417_trya-and-ariana-grande.md
 
 name=Trya
 len=$(printf '%s' "$name" | wc -c)

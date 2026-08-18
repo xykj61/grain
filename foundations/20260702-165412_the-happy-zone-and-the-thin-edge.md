@@ -8,6 +8,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME — safety first, performance second, the joy of the craft third
 **Status:** Foundations — testing teaching siloed. **Reviewed and kept** — standing audit rule ratified; metalsmoke kitchen twin [`../external-research/20260710-002017_metalsmoke-plainly.md`](../external-research/20260710-002017_metalsmoke-plainly.md).
+**Gratitude:** [`../gratitude/IntegratedTestsAreAScam.md`](../gratitude/IntegratedTestsAreAScam.md) — **J.B. Rainsberger**'s talk *"Integrated Tests Are A Scam"*, whose collaboration-and-contract mirror and fast-proven "happy zone" this house studied clean-room; the ideas stand here in our own voice, the teacher thanked by name there.
 
 *Written together by Kaeden and Rio 3.*
 Radiant pass `20260728.004954` — Tensegral Arc IV habitat fold `tools/tensegral_arc_iv_witness.rish` (path cite only; claims unchanged)

@@ -27,7 +27,7 @@ grep -q 'non-CVT' context/LEXICON.md
 grep -q 'quint' context/LEXICON.md
 test -f context/CIVIC_STYLE.md
 test -f gratitude/kia.md
-test -f foundations/20260728-032134_keeh-and-kia.md
+test -f foundations/yonder/20260728-032134_keeh-and-kia.md
 test -f counsel/20260728-032134_keeh-kia-sponsor.md
 test -f "$PAGE"
 grep -q 'Keeh' "$PAGE"

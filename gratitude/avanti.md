@@ -4,7 +4,7 @@
 **Stamp:** `20260728.021508`  
 **Voice:** Quin  
 **Kind:** gratitude silo — honor naming for the **Eyva** fund  
-**Companion foundations:** [`../foundations/20260728-021508_eyva-and-avanti.md`](../foundations/20260728-021508_eyva-and-avanti.md) (Reya variant)
+**Companion foundations:** [`../foundations/yonder/20260728-021508_eyva-and-avanti.md`](../foundations/yonder/20260728-021508_eyva-and-avanti.md) (Reya variant)
 
 ---
 

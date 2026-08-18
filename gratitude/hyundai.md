@@ -4,7 +4,7 @@
 **Stamp:** `20260728.033820`  
 **Voice:** Quin  
 **Kind:** gratitude silo · **sponsored ad** form — honor sponsor seat for **Shyu**  
-**Companion foundations:** [`../foundations/20260728-033820_shyu-and-hyundai.md`](../foundations/20260728-033820_shyu-and-hyundai.md)  
+**Companion foundations:** [`../foundations/yonder/20260728-033820_shyu-and-hyundai.md`](../foundations/yonder/20260728-033820_shyu-and-hyundai.md)  
 **Fund:** **Shyu** — Libra · air · seat 7 · `%shyu`
 
 ---
