@@ -16,7 +16,7 @@
 
 The kept files are cited heavily — live references outside `yonder/`/`archive/`: single-stranded **25**, usize-width-baseline **103**, explicit-width-audit **92**, growing-a-language **12**. Re-stamping any of them is a rename of a canonical reference, costing those many repoints and recurring on every future affirmation. **Do not re-stamp them.** Their citation density already marks them as kept; affirm that visibly at zero reference cost.
 
-**For each kept file** — `active-designing/yonder/20260618-182412_single-stranded.md`, `work-in-progress/20260620-212126_usize-width-baseline.md`, `expanding-prompts/20260620-210812_explicit-width-audit.md`, and `active-designing/yonder/20260618-184912_growing-a-language.md`:
+**For each kept file** — `active-designing/20260618-182412_single-stranded.md`, `work-in-progress/20260620-212126_usize-width-baseline.md`, `expanding-prompts/20260620-210812_explicit-width-audit.md`, and `active-designing/20260618-184912_growing-a-language.md`:
 
 - Update its `Last updated` to `2026-06-29`.
 - Add one affirmation line to the header, in the doc's own voice — for example: *Reviewed in the yonder sweep on 2026-06-29 and kept active.*
@@ -38,7 +38,7 @@ If a glanceable view helps, keep a short **Reviewed and Kept** list in `ORGANIZI
 
 ### Kept (affirmed in Part A, not moved)
 
-- **`active-designing/yonder/20260618-184912_growing-a-language.md`** — "Active Design," cited 12 times, the canonical brief on how the language family grows and how TAME Guidance is organized (root plus supplements — the live structure of `TAME_GUIDANCE`). Foundational. Affirmed in place above.
+- **`active-designing/20260618-184912_growing-a-language.md`** — "Active Design," cited 12 times, the canonical brief on how the language family grows and how TAME Guidance is organized (root plus supplements — the live structure of `TAME_GUIDANCE`). Foundational. Affirmed in place above.
 
 ### Lift the live thread first
 

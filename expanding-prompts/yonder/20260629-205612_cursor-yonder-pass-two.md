@@ -26,7 +26,7 @@ Add a line to the `yonder/` section, learned from this pass:
 
 These two came up by age and stay by relevance. Note the decision in the session log; do not move them.
 
-- **`active-designing/yonder/20260618-182412_single-stranded.md`** — a standing architectural brief (status: Active Design) naming the one-value-model, *no-seam-is-no-braid* principle, cited by seven-plus living documents. Foundational and current. (A possible future promotion to `foundations/`; not a `yonder/` move.)
+- **`active-designing/20260618-182412_single-stranded.md`** — a standing architectural brief (status: Active Design) naming the one-value-model, *no-seam-is-no-braid* principle, cited by seven-plus living documents. Foundational and current. (A possible future promotion to `foundations/`; not a `yonder/` move.)
 - **`work-in-progress/20260620-212126_usize-width-baseline.md`** (`992`) — a *living inventory* updated today, stating the width law still in force, cited by `TAME_GUIDANCE`, `TASKS`, the README, the crosswalk, and several strengthening docs. A finished migration makes its inventory all-green, not stale. (If it ever moves, it is an `archive/` candidate — backward-pointing — only after its law is confirmed fully held in `TAME_GUIDANCE` and its references repointed. Not this pass.)
 
 ---

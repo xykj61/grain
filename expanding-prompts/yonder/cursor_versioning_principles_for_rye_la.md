@@ -5461,7 +5461,7 @@ All three threads of your request are done, committed `ec41e13`, signed, on both
 
 **2. Woven into `997_SYSTEM` — with the radiant reframe you asked for.** A new section, *The Simple and the Easy*, sets out the distinction (simple = how a thing is *made*, single-stranded; easy = how *near* it lies), and reframes Hickey's negative-leaning vocabulary affirmatively: rather than dwelling on "complecting," we **compose** — *"threads kept free, set beside one another, each still its own,"* leading with what we want rather than what we shun. It's fed in at the most general sense (no construct lists), tied to TAME's "simplicity is the hardest revision," and threaded into *How the Voices Meet*. Stamp → `20260618.182312`.
 
-**3. Read our architecture through it — `active-designing/yonder/20260618-182412_single-stranded.md`** (quarantine-clean, the principles restated as our own). It takes the Pond/Caravan/Tally conclusions and shows each is **simple by choice**:
+**3. Read our architecture through it — `active-designing/20260618-182412_single-stranded.md`** (quarantine-clean, the principles restated as our own). It takes the Pond/Caravan/Tally conclusions and shows each is **simple by choice**:
 - each module about one thing, free to stand alone;
 - composed through **one value model** — *no seam is no braid*;
 - the enclosure a **value**, not braided flags;

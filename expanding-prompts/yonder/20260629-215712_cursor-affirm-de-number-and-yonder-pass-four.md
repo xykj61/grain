@@ -25,8 +25,8 @@ The `NNN ·` title prefixes are vestigial and now ambiguous — three different 
 
 Apply to the four previously affirmed, plus the new keep from this pass:
 
-- `active-designing/yonder/20260618-182412_single-stranded.md`
-- `active-designing/yonder/20260618-184912_growing-a-language.md`
+- `active-designing/20260618-182412_single-stranded.md`
+- `active-designing/20260618-184912_growing-a-language.md`
 - `active-designing/yonder/20260618-184912_recommended-architecture.md` *(new — Part B keep)*
 - `work-in-progress/20260620-212126_usize-width-baseline.md`
 - `expanding-prompts/20260620-210812_explicit-width-audit.md`
