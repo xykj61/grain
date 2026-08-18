@@ -1,0 +1,42 @@
+# tools/turning_witness.rish -- the DIFFERENTIAL TURNING DESCRIPTOR of a boundary, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/chain_code.rye reads a traced ring down to a Freeman chain code, and
+# image/shape_number.rye folds that code's FIRST DIFFERENCE to a rotation-and-start-invariant canonical form for asking whether
+# two outlines are the SAME shape. This rung reads the same first difference through a different lens: it FOLDS each difference
+# digit to the signed window (-4, 4], turning a mod-8 value into a signed CURVATURE -- a right turn positive, a left turn
+# negative, a straight run zero. One raw difference, two readings: the shape number keeps magnitude order for canonical
+# matching; the turning descriptor keeps SIGN for curvature, which a canonical matcher throws away. Compose not braid: this rung
+# owns only the signed fold and its reads; chain_code owns the code and its geometry.
+#
+# The crux this witness proves on metal: the profile is the signed fold of shape_number's own first difference (digit-for-
+# digit); the signed turns sum to +8 (discrete Gauss-Bonnet) -- the same integer for a block, a triangle, an L, and a plus,
+# indifferent to how dented the outline is; SIGN carries concavity where the shape number (unsigned 0..7) is blind -- the convex
+# block and diagonal-edged triangle read NON-NEGATIVE profiles while an L and a plus each carry negative entries; the total
+# heading variation (sum of |turn|) sits at +8 for the clean-edged convex shapes and spends more for the dented ones; a block
+# and its 90-degree turn read the identical profile while their codes differ (rotation invariance); degenerate cases and
+# refusals by name. Deciding convexity ROBUSTLY reads the simplified polygon's vertices (the named next sibling), since a raster
+# concave right angle spreads into two -1 steps and a shallow convex staircase also wobbles -1; this rung proves the raw signed
+# signal. No network, no key, no funds -- the curvature signature a surface names the day it reads a boundary's bends.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/turning_witness.rish
+
+say "turning: Language EN -- Season G differential turning descriptor over chain_code's Freeman code; turning_profile folds shape_number's first difference to the signed curvature window (-4,4], total_turning reads the +8 Gauss-Bonnet law, total_absolute_turning the heading variation, profile_has_negative surfaces a concavity the unsigned shape number is blind to."
+say "turning: Style Radiant -- compose not braid: this rung owns only the signed fold and its reads; chain_code owns the code and its geometry. No gather, no blend, no codec, no color, not even a pixel-writing loop -- a reading, not a render."
+say "turning: Lens TAME -- a profile holds one signed turn per boundary pixel, sized to the hard ceiling turning_max_len; a longer code refuses TurningTooLong and a value outside 0..7 refuses BadCode; all-or-nothing, never a half-built profile; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/turning"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/turning.rye -femit-bin=${bin}"]
+assert build.ok else "turning: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "turning: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "turning: ${out}"
+
+assert selftest.out contains "GREEN image-turning" else "turning: selftest did not print the GREEN line"
+
+say "turning: GREEN -- the profile is the signed fold of shape_number's first difference digit-for-digit, the signed turns sum to +8 for a block, a triangle, an L, and a plus alike, the sign lens surfaces the L's and plus's concavity (negative turning) the unsigned shape number cannot represent, the total heading variation sits at +8 for the clean convex shapes and higher for the dented ones, a block and its 90-degree turn read the identical profile while their codes differ, the refusals fire by name, on metal."

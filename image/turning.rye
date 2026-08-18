@@ -1,0 +1,382 @@
+//! image/turning.rye -- the DIFFERENTIAL TURNING DESCRIPTOR of a boundary: the SIGNED per-step curvature string of a Freeman
+//! chain code (how many 45-degree units the heading turns at each boundary pixel, left negative and right positive), the
+//! shape SIGNATURE a convexity test and a corner reader descend from, the SIGNED companion of image/shape_number.rye's unsigned
+//! canonical form. (H. Freeman's turning-function reading; the curvature signal behind Gauss-Bonnet.)
+//!
+//! Season G (Open Media Primitives) -- image/chain_code.rye reads a traced ring down to Freeman directions 0..7, and
+//! image/shape_number.rye folds that code's FIRST DIFFERENCE (each code minus its predecessor, mod 8, in 0..7) to a
+//! rotation-and-start-invariant canonical form for asking whether two outlines are the SAME shape. This rung reads the SAME
+//! first difference through a different lens: it FOLDS each difference digit to the signed window (-4, 4], turning a mod-8
+//! value into a signed CURVATURE -- a right turn reads small and positive, a left turn small and negative, a straight run zero.
+//! One raw difference, two readings: the shape number keeps magnitude order for canonical matching; the turning descriptor
+//! keeps SIGN for curvature, which is exactly what a canonical matcher throws away.
+//!
+//! Sign is what the signed string carries that a canonical matcher throws away: it SEES concavity. A boundary traced clockwise
+//! turns RIGHT (positive) at a convex corner and LEFT (negative) at a concave one, so a negative entry in the profile marks a
+//! dent -- a fact the shape number's unsigned first difference (every digit 0..7, no sign) cannot represent at all. The convex
+//! block and triangle read entirely NON-NEGATIVE profiles, while an L and a plus each carry negative entries, so the sign lens
+//! surfaces a concavity the canonical form is blind to.
+//!
+//! Reading convexity ROBUSTLY, however, is subtler than a per-step sign test, and this rung is honest about the boundary
+//! between the two: a raster concave right angle spreads into two -1 steps rather than one -2, and a shallow convex staircase
+//! also wobbles -1, so a single-step threshold cannot separate a true dent from diagonal roughness. The clean convexity oracle
+//! reads image/polygon.rye's SIMPLIFIED vertices (where the staircase noise is already gone) and checks the turn at each true
+//! corner -- the named next sibling. This rung proves the raw signed signal and two scalars over it, not that oracle.
+//!
+//! The whole descriptor obeys the discrete Gauss-Bonnet law image/chain_code.rye's turning sum names: the signed turns of any
+//! simple closed clockwise ring sum to +8 (one full revolution), the SAME integer for a block, a triangle, an L, or a plus --
+//! a topological invariant indifferent to how dented the outline is. The companion scalar, the TOTAL HEADING VARIATION (the sum
+//! of |turn|), is always at least that net magnitude: a clean-edged convex outline spends exactly +8, while each concavity
+//! spends more, since a dent must turn left and then recover -- a curvature-energy read the net total alone hides.
+//!
+//! Compose not braid. This rung OWNS only the signed fold and its reads (the profile, the net total, the heading variation) --
+//! no gather, no blend, no codec, no color, not even a pixel-writing loop; it is a READING over image/chain_code.rye's
+//! ChainCode, which owns the code and its geometry. Unlike the shape number, the profile KEEPS the trace start (a different
+//! start cyclically rotates it) -- it is rotation-invariant (a turn is relative, blind to absolute heading) yet not
+//! start-invariant, the honest complement of a form that folds out both.
+//!
+//! Everything is bounded before a byte: a profile holds one signed turn per boundary pixel, so it is sized to the same hard
+//! ceiling `turning_max_len` and a longer code refuses `TurningTooLong` by name; a code carrying a value outside 0..7 refuses
+//! `BadCode` (defending chain_code's contract); all-or-nothing, never a half-built profile. No network, no key, no funds -- the
+//! curvature signature a surface names the day it wants to read a boundary's bends, or hand a convexity oracle its simplified
+//! corners, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/turning.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const chain_code = @import("chain_code.rye");
+const shape_number = @import("shape_number.rye");
+const contour = @import("contour.rye");
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+
+pub const turning_version = "20260818.185043";
+
+/// A profile holds one signed turn per boundary pixel, so it shares image/shape_number.rye's hard ceiling: a real boundary is a
+/// perimeter far under 2^13, and a longer code refuses `TurningTooLong` rather than build an over-long descriptor.
+pub const turning_max_len: u32 = 1 << 13;
+
+pub const TurningError = error{
+    TurningTooLong,
+    BadCode,
+};
+
+/// Fold a mod-8 first-difference digit (0..7) to the SIGNED turning window (-4, 4]: 0..4 keep their value, 5..7 map to -3..-1.
+/// This turns an unsigned turn magnitude into a signed curvature -- a right turn small and positive, a left turn small and
+/// negative -- the one operation this rung owns.
+fn fold_signed(diff: u8) i8 {
+    // invariant: a first-difference digit is one of eight residues; a larger value breaks the mod-8 contract.
+    assert(diff < 8);
+    if (diff <= 4) return @intCast(diff);
+    // 5,6,7 are left turns -3,-2,-1: subtract 8 to land in the signed window.
+    return @as(i8, @intCast(diff)) - 8;
+}
+
+/// The DIFFERENTIAL TURNING DESCRIPTOR: the signed turn at each boundary pixel -- how many 45-degree units the heading changes
+/// entering that step, folded to (-4, 4] (right positive, left negative, straight zero), cyclic (the turn into code[0] measured
+/// from the last code, since the ring is closed). This is the SIGNED reading of image/shape_number.rye's first difference; the
+/// empty code of a lone pixel yields the empty profile. The caller owns the result.
+pub fn turning_profile(allocator: std.mem.Allocator, ch: *const chain_code.ChainCode) ![]i8 {
+    const el: usize = ch.codes.len;
+    // a lone pixel has no steps -- its turning profile is empty.
+    if (el == 0) return &[_]i8{};
+    // invariant: the profile stays within the shared hard ceiling so no descriptor grows unbounded.
+    if (el > turning_max_len) return error.TurningTooLong;
+    var v: usize = 0;
+    while (v < el) : (v += 1) {
+        // invariant: a chain code names one of eight directions; a value outside that breaks the signed-fold contract.
+        if (ch.codes[v] >= 8) return error.BadCode;
+    }
+
+    const prof = try allocator.alloc(i8, el);
+    var k: usize = 0;
+    while (k < el) : (k += 1) {
+        const prev: u8 = if (k == 0) ch.codes[el - 1] else ch.codes[k - 1];
+        // the same cyclic first difference image/shape_number.rye reads, then folded to the signed window.
+        const d: u8 = @intCast((@as(u32, ch.codes[k]) + 8 - @as(u32, prev)) % 8);
+        prof[k] = fold_signed(d);
+    }
+    // invariant: the profile holds exactly one signed turn per code, preserving the ring's order.
+    assert(prof.len == el);
+    return prof;
+}
+
+/// The total signed turning around the ring -- a TOPOLOGICAL invariant: any simple closed clockwise boundary sums to +8 (one
+/// full revolution, the discrete Gauss-Bonnet law). Read from the signed profile, it is the balance of convex right turns
+/// against concave left ones. The empty profile sums to zero.
+pub fn total_turning(profile: []const i8) i32 {
+    // invariant: a real profile never exceeds the shared hard ceiling.
+    assert(profile.len <= turning_max_len);
+    var sum: i32 = 0;
+    var k: usize = 0;
+    while (k < profile.len) : (k += 1) sum += @as(i32, profile[k]);
+    return sum;
+}
+
+/// The TOTAL HEADING VARIATION: the sum of the absolute per-step turns -- how much the heading changes in total around the
+/// ring, always at least the net magnitude (+8). A clean-edged convex outline spends exactly the net (no turning wasted); a
+/// concavity spends more, since a dent turns left and then must turn right again to recover. A curvature-energy scalar, not a
+/// convexity oracle: a shallow raster staircase also adds to it, so deciding convexity robustly reads the simplified polygon.
+pub fn total_absolute_turning(profile: []const i8) u32 {
+    // invariant: a real profile never exceeds the shared hard ceiling, so the magnitude sum fits u32.
+    assert(profile.len <= turning_max_len);
+    var sum: u32 = 0;
+    var k: usize = 0;
+    while (k < profile.len) : (k += 1) {
+        const mag: u32 = if (profile[k] < 0) @intCast(-@as(i32, profile[k])) else @intCast(profile[k]);
+        sum += mag;
+    }
+    return sum;
+}
+
+/// Does the boundary turn LEFT anywhere -- does the signed string carry a negative entry? A concave corner introduces negative
+/// turning the shape number's unsigned first difference cannot represent at all. This surfaces a dent; it does not decide
+/// convexity (a shallow convex staircase also wobbles negative), which the simplified-polygon sibling answers.
+pub fn profile_has_negative(profile: []const i8) bool {
+    // invariant: a real profile never exceeds the shared hard ceiling.
+    assert(profile.len <= turning_max_len);
+    var k: usize = 0;
+    while (k < profile.len) : (k += 1) {
+        if (profile[k] < 0) return true;
+    }
+    return false;
+}
+
+// --- selftest: the signed fold, complementarity with the shape number's first difference, the Gauss-Bonnet total (topological,
+//     +8 for block, triangle, L, plus alike), sign carrying concavity, total heading variation, rotation invariance,
+//     degenerate cases, refusals -------------------------------------------------------------------------------------------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// Paint a filled right triangle whose row y fills `size - y` pixels -- a CONVEX shape whose boundary carries DIAGONAL steps a
+/// rectangle never does, so its profile wobbles by single staircase units yet reads ZERO reflex vertices.
+fn set_triangle(img: *qoi.Pixmap, ox: u32, oy: u32, size: u32) void {
+    // invariant: the triangle stays inside the buffer on both axes.
+    assert(ox + size <= img.width);
+    assert(oy + size <= img.height);
+    var yy: u32 = 0;
+    while (yy < size) : (yy += 1) {
+        var xx: u32 = 0;
+        while (xx < size - yy) : (xx += 1) set_dot(img, ox + xx, oy + yy);
+    }
+}
+
+/// Trace the single component of a one-shape canvas and encode its ordered ring as a Freeman chain code.
+fn code_of(garden: std.mem.Allocator, img: *qoi.Pixmap) !chain_code.ChainCode {
+    const map = try label.label_components(garden, img);
+    // invariant: each selftest fixture holds exactly one component.
+    assert(map.count == 1);
+    const ring = try contour.trace_contour(garden, &map, 1);
+    return chain_code.chain_from_contour(garden, &ring);
+}
+
+/// Build a ChainCode that is `base` turned by `add` 45-degree units (every code + add mod 8) -- the same boundary at a different
+/// heading. Rotation adds a constant to every code, which the turning (a difference of consecutive codes) is blind to.
+fn turned(garden: std.mem.Allocator, base: *const chain_code.ChainCode, add: u8) !chain_code.ChainCode {
+    const el: usize = base.codes.len;
+    assert(el > 0);
+    const codes = try garden.alloc(u8, el);
+    var k: usize = 0;
+    while (k < el) : (k += 1) {
+        codes[k] = @intCast((@as(u32, base.codes[k]) + @as(u32, add)) % 8);
+    }
+    return chain_code.ChainCode{ .start = base.start, .codes = codes };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const full_turn: i32 = 8; // one clockwise revolution in 45-degree units (discrete Gauss-Bonnet)
+
+    // --- COMPLEMENTARITY: the turning profile is the SIGNED fold of image/shape_number.rye's own first difference -- one raw
+    //     difference, two lenses. Prove it digit-for-digit on a 5x5 block ------------------------------------------------
+    var big = try make_canvas(garden, 7, 7, 0);
+    set_block(&big, 1, 1, 5, 5);
+    const bcode = try code_of(garden, &big);
+    const bdiff = try shape_number.first_difference(garden, &bcode);
+    const bprof = try turning_profile(garden, &bcode);
+    if (bprof.len != bdiff.len) return error.ProfileDiffLengthDiverged;
+    var i: usize = 0;
+    while (i < bprof.len) : (i += 1) {
+        // the signed profile is exactly the first-difference digit folded to (-4, 4]
+        const want: i8 = if (bdiff[i] <= 4) @as(i8, @intCast(bdiff[i])) else @as(i8, @intCast(bdiff[i])) - 8;
+        if (bprof[i] != want) return error.ProfileNotSignedFirstDifference;
+    }
+
+    // --- THE GAUSS-BONNET TOTAL: a simple closed clockwise ring turns +8, read now from the signed profile -----------
+    if (total_turning(bprof) != full_turn) return error.BlockTotalTurningWrong;
+
+    // --- THE AXIS BLOCK'S PROFILE is entirely 0 and +2: straight runs read zero, and each of the four corners reads a +2
+    //     right angle -- the nonzero entries LOCATE the corners, and none is negative (a convex axis shape never turns left) --
+    i = 0;
+    while (i < bprof.len) : (i += 1) {
+        if (bprof[i] < 0) return error.BlockHadLeftTurn; // a convex axis shape never turns left
+        if (bprof[i] != 0 and bprof[i] != 2) return error.BlockTurnNotRightAngleOrStraight;
+    }
+    var block_corners: u32 = 0;
+    i = 0;
+    while (i < bprof.len) : (i += 1) {
+        if (bprof[i] == 2) block_corners += 1;
+    }
+    if (block_corners != 4) return error.BlockNotFourCorners; // a rectangle has exactly four right-angle corners
+
+    // a TRIANGLE's profile is ALSO entirely non-negative, even though its boundary carries DIAGONAL steps a rectangle never
+    //     does: where an axis run meets the 45-degree hypotenuse the corner turns +3 -- a sharper-than-right-angle convex
+    //     corner the rectangle's zero-or-plus-two profile never shows, so the descriptor reads how SHARP a corner is, not
+    //     merely that one is present, while no entry is negative (a diagonal edge is not a dent) ------------------------
+    var tri = try make_canvas(garden, 8, 8, 0);
+    set_triangle(&tri, 1, 1, 5);
+    const tricode = try code_of(garden, &tri);
+    const triprof = try turning_profile(garden, &tricode);
+    if (total_turning(triprof) != full_turn) return error.TriangleTotalTurningWrong;
+    var tri_had_sharp_corner = false;
+    i = 0;
+    while (i < triprof.len) : (i += 1) {
+        if (triprof[i] < 0) return error.TriangleHadLeftTurn; // a convex shape never turns left
+        if (triprof[i] == 3) tri_had_sharp_corner = true; // an axis run meeting the diagonal: sharper than a right angle
+    }
+    if (!tri_had_sharp_corner) return error.TriangleHadNoSharpCorner;
+
+    // --- GAUSS-BONNET IS TOPOLOGICAL: the net turning is +8 for a CONCAVE shape too -- an L and a plus each still sum to one
+    //     full clockwise revolution, the same integer as the block and triangle, indifferent to how dented the outline is ---
+    // an L: a vertical bar with a foot, one inner concave corner
+    var lshape = try make_canvas(garden, 8, 8, 0);
+    set_block(&lshape, 1, 1, 2, 5); // the upright
+    set_block(&lshape, 1, 5, 4, 2); // the foot
+    const lcode = try code_of(garden, &lshape);
+    const lprof = try turning_profile(garden, &lcode);
+    if (total_turning(lprof) != full_turn) return error.LTotalTurningWrong; // Gauss-Bonnet holds through the dent
+
+    // a PLUS: four arms, four inner concave corners
+    var plus = try make_canvas(garden, 9, 9, 0);
+    set_block(&plus, 3, 1, 2, 7); // the upright bar
+    set_block(&plus, 1, 3, 7, 2); // the crossbar
+    const pcode = try code_of(garden, &plus);
+    const pprof = try turning_profile(garden, &pcode);
+    if (total_turning(pprof) != full_turn) return error.PlusTotalTurningWrong;
+
+    // --- SIGN CARRIES CONCAVITY: the signed string SEES what the shape number (unsigned, 0..7) cannot represent at all -- a
+    //     concave corner introduces NEGATIVE turning. The convex block and triangle profiles are entirely NON-NEGATIVE, while
+    //     the L and the plus each carry negative entries, so the sign lens surfaces a dent the canonical form is blind to.
+    //     (A raster concave right angle spreads into two -1 steps rather than one -2, and a shallow convex staircase also
+    //     wobbles -1, so deciding convexity ROBUSTLY reads the simplified polygon's vertices -- the named next sibling; this
+    //     rung proves the raw signed signal, not that oracle.) ----------------------------------------------------------
+    if (profile_has_negative(bprof)) return error.BlockProfileHadNegative; // convex axis shape: no left turn anywhere
+    if (profile_has_negative(triprof)) return error.TriangleProfileHadNegative; // convex, clean diagonal edge: no left turn
+    if (!profile_has_negative(lprof)) return error.LProfileHadNoNegative; // the dent shows as negative turning
+    if (!profile_has_negative(pprof)) return error.PlusProfileHadNoNegative;
+
+    // --- TOTAL HEADING VARIATION: the sum of |turn| is the total curvature a boundary spends. For a clean-edged convex
+    //     outline it equals the net +8 (no turning is wasted); a concavity spends MORE (the L bends through 12, the plus
+    //     more still) -- a curvature-energy scalar, always >= the net magnitude, that the block and triangle sit exactly at --
+    if (total_absolute_turning(bprof) != full_turn) return error.BlockVariationNotEight; // convex + clean: variation == net
+    if (total_absolute_turning(triprof) != full_turn) return error.TriangleVariationNotEight;
+    if (total_absolute_turning(lprof) <= full_turn) return error.LVariationNotAboveEight; // the dent costs extra turning
+    if (total_absolute_turning(pprof) <= total_absolute_turning(lprof)) return error.PlusVariationNotAboveL; // four dents cost more
+
+    // --- ROTATION INVARIANCE: turning is relative to the heading, so a shape and its 90-degree turn read the IDENTICAL
+    //     profile before any start shift -- the descriptor is blind to absolute orientation ----------------------------
+    const bturned = try turned(garden, &bcode, 2); // +2 to every code: the whole block turned 90 degrees
+    const tprof = try turning_profile(garden, &bturned);
+    if (tprof.len != bprof.len) return error.RotationChangedProfileLength;
+    i = 0;
+    while (i < bprof.len) : (i += 1) {
+        if (tprof[i] != bprof[i]) return error.RotationChangedProfile; // turning eats the constant a rotation adds
+    }
+    // the turned CODE itself is NOT identical -- the invariance is real, not a trivial no-op
+    var any_code_diff = false;
+    i = 0;
+    while (i < bcode.codes.len) : (i += 1) {
+        if (bcode.codes[i] != bturned.codes[i]) any_code_diff = true;
+    }
+    if (!any_code_diff) return error.RotationLeftCodeUnchanged;
+
+    // --- DEGENERATE cases: a lone dot's empty code yields the empty profile (total zero, no variation, no negative turn) ----
+    var dot = try make_canvas(garden, 3, 3, 0);
+    set_dot(&dot, 1, 1);
+    const dcode = try code_of(garden, &dot);
+    const dprof = try turning_profile(garden, &dcode);
+    if (dprof.len != 0) return error.DotProfileNotEmpty;
+    if (total_turning(dprof) != 0) return error.DotTotalTurningNonZero;
+    if (total_absolute_turning(dprof) != 0) return error.DotVariationNonZero;
+    if (profile_has_negative(dprof)) return error.DotProfileHadNegative;
+
+    // --- REFUSALS by name, having allocated nothing ------------------------------------------------------------------
+    // a code carrying a value outside 0..7 breaks the signed-fold contract -- refuse BadCode
+    var bad_codes = [_]u8{ 0, 9, 2 };
+    var bad = chain_code.ChainCode{ .start = .{}, .codes = bad_codes[0..] };
+    if (turning_profile(garden, &bad)) |_| return error.BadCodeNotRefused else |err| {
+        if (err != error.BadCode) return error.WrongBadCodeError;
+    }
+    // a code longer than the hard ceiling refuses TurningTooLong (a valid all-zero code just past the bound)
+    const over_len: usize = @as(usize, turning_max_len) + 1;
+    const over = try garden.alloc(u8, over_len);
+    var z: usize = 0;
+    while (z < over_len) : (z += 1) over[z] = 0;
+    var over_ch = chain_code.ChainCode{ .start = .{}, .codes = over };
+    if (turning_profile(garden, &over_ch)) |_| return error.OverLenNotRefused else |err| {
+        if (err != error.TurningTooLong) return error.WrongOverLenError;
+    }
+
+    // --- DETERMINISM: the same code reads the same profile twice ------------------------------------------------------
+    const p1 = try turning_profile(garden, &bcode);
+    const p2 = try turning_profile(garden, &bcode);
+    if (p1.len != p2.len) return error.ProfileNotDeterministicLength;
+    i = 0;
+    while (i < p1.len) : (i += 1) {
+        if (p1[i] != p2[i]) return error.ProfileNotDeterministic;
+    }
+
+    print("GREEN image-turning: the DIFFERENTIAL TURNING DESCRIPTOR of a boundary over image/chain_code.rye -- the SIGNED per-step curvature, the signed fold of image/shape_number.rye's own first difference (proven digit-for-digit: one raw difference, two lenses -- the shape number keeps magnitude for canonical matching, the turning descriptor keeps SIGN for curvature); the signed turns sum to +8 (the discrete Gauss-Bonnet law, one full clockwise revolution) -- the SAME integer for a block, a triangle, an L, and a plus alike, a topological invariant indifferent to how dented the outline is; SIGN carries concavity where the shape number (unsigned 0..7) is blind -- the convex block and the diagonal-edged triangle read entirely NON-NEGATIVE profiles (a triangle's axis-run-meets-diagonal corner even reads a +3 sharper-than-right-angle turn its zero-or-plus-two rectangle never shows), while an L and a plus each carry NEGATIVE entries surfacing a dent; the TOTAL HEADING VARIATION (sum of |turn|) sits exactly at the net +8 for the clean-edged convex block and triangle and spends MORE for the L and more still for the plus -- a curvature-energy read the net alone hides (deciding convexity ROBUSTLY reads the simplified polygon's vertices, the named next sibling, since a raster concave right angle spreads into two -1 steps and a shallow convex staircase also wobbles -1); ROTATION invariance -- a block and its 90-degree turn read the IDENTICAL profile while their codes differ (turning eats the constant a rotation adds), yet the profile KEEPS the trace start where the shape number folds it out; a lone dot's empty code yields the empty profile (total zero); a value outside 0..7 refuses BadCode and a code past the ceiling refuses TurningTooLong, each having allocated nothing; the same code reads the same profile deterministically\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: turning selftest\n", .{});
+    return 1;
+}
