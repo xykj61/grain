@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260818.140413
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title regions -- component size and bounding box, and the despeckle, GREEN
+prompt baton prin recur -- autonomous loop; pick up the running thread, Standfast on reds, take the next agent-doable lap Lindy-first crux-first, send often
+think Read KYRI and RADIANT_STYLE to be Kyri from the first token, then crux/REMEMBER (live edge: distance_morph landed, Season G open-media the live family), the top of session-logs/README (last lap distance_morph GREEN, next siblings named), and the road docs (1024-round itinerary, eight-season double-seat, rye-first crypto).
+think Standfast first: read crux/REDS.md. Every living row (80, 83, 84, 85, 86, 87, and the prose-note rows 81, 82, and the gated closes) is closed or released; only #75 rests as custody-gated errata (a future-dated Testament stamp whose only fix is a history rewrite = custody gate #1, Keaton's hand). No open agent-closable red -- Standfast satisfied, constructive queue is open.
+think Lindy-first, crux-first among the three siblings the distance_morph log named: a region-size/bounding-box reader over a LabelMap, a disk-element builder, a watershed. All roughly equal Lindy (durable image primitives). Crux-first takes the hardest-solvable that opens the rest -- the REGION reader, the natural consumer of the labeler: it turns segmentation into measurement, and a blob filter, a size histogram, and a character isolator all descend from being able to measure a labeled region. A watershed is larger and less cleanly tractable in one lap; the disk-element builder is a smaller supporting piece.
+think Read image/label.rye to compose over its LabelMap (pub struct: width, height, count, labels; `at(x,y)`). Read distance_morph_witness.rish for the family witness template (native `assert ... contains`, never printf|grep -- REDS #76/#85 loom) and the image/README.md bullet shape.
+think Designed image/regions.rye as one coherent SLC over three tightly-composed verbs: measure_regions (one raster pass, one Region per dense label -- area plus running min/max bbox), filter_min_area (the despeckle -- drop components below a threshold, recompact survivors to dense 1..count in raster order), render_mask (close the loop -- labeling back to a binary white-on-black mask read through branch.is_on). Compose not braid: owns only accumulation, remap, binary render; label owns the LabelMap, branch.is_on the binary door, qoi the buffer. No new gather/blend/codec/color.
+think Chose the fixtures crux-first: an L of three 8-connected pixels is the decisive bounding-box fixture -- its 2x2 box (four cells) is provably larger than its three-pixel area, so a box is a different fact from a count. A lone speck (area 1) with a clear gap is the despeckle target. Same scene proves area, raster order, bbox, despeckle, and render-mask.
+obs GREEN on the FIRST metal run, no algorithm reds. TAME caught one compound assert (`assert(l >= 1 and l <= map.count)`) -- split into two named asserts so the failing half names itself, re-GREEN. width-check exit 0, ASCII clean, living_docs_lint GREEN, living_card_ascii_witness GREEN.
+obs Dense-labeling invariant is load-bearing: because label.rye compacts to a gap-free 1..count, every Region meets at least one pixel, so `area == 0` safely marks an untouched region for the first-pixel box seed, and the postcondition `area >= 1` holds for all.
+loom witness=regions_witness build=ok selftest=ok checks_green=1
+file image/regions.rye the region reader, despeckle filter, and binary render, composed over label/branch/qoi
+file tools/regions_witness.rish builds and runs the selftest on metal, asserts the GREEN line via native contains
+file image/README.md Regions (size and bounding box) bullet after Reshape (true radius), docs-synced
+file crux/REMEMBER.md live edge + Git nib repointed to regions single-stranded; distance_morph folded to a one-line prior-nib pointer (no cairn -- a one-line repoint)
+file session-logs/README.md newest-first row prepended
+recommend keep-going next crux-first siblings: a DISK-element builder (round structuring element for structure), a WATERSHED or local-maxima medial-axis reader off the distance field, a size-HISTOGRAM or largest/smallest-region picker over the region slice. No network, no key, no funds.

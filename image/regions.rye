@@ -1,0 +1,325 @@
+//! image/regions.rye -- read every LABELED COMPONENT's SIZE and BOUNDING BOX, then DESPECKLE a mask by an area threshold:
+//! the measurement floor a blob filter, a size histogram, a character isolator, and a smallest/largest-region picker all
+//! descend from (Season G, the natural consumer of image/label.rye the labeler named crux-first).
+//!
+//! Season G (Open Media Primitives) -- image/label.rye partitions a mask's whole foreground into its maximal 8-connected
+//! pieces and gives each a dense raster-ordered label; it answers HOW MANY marks a mask holds and WHICH pixels share one.
+//! This rung answers the next question a surface asks the moment it has a labeling: HOW BIG is each piece, and WHERE does it
+//! sit. `measure_regions` reads a LabelMap in one raster pass and returns one `Region` per component -- its area (foreground
+//! pixel count) and its tight bounding box (the smallest axis-aligned rectangle that encloses it). The bounding box is a
+//! genuinely different fact from the area: an L or a diagonal fills far fewer pixels than the box around it, so a surface can
+//! tell a compact blob from a sprawling one by comparing the two.
+//!
+//! `filter_min_area` is the measurement's first payoff -- the DESPECKLE a segmentation reaches for: drop every component
+//! smaller than a threshold to background and RECOMPACT the survivors to a dense 1..count, so a mask flecked with single-pixel
+//! noise comes back clean with only its real marks, still raster-ordered. `render_mask` closes the loop: it renders a labeling
+//! back to a plain binary mask (foreground white, background black, opaque), read through the same on-threshold door the whole
+//! family shares, so a despeckled labeling feeds straight back into label, distance, morphology, or the paint rungs.
+//!
+//! Compose not braid. This rung OWNS only the per-label accumulation (area and running min/max on both axes), the survivor
+//! remap, and the binary render. image/label.rye owns the LabelMap and its dense raster-ordered labels; image/branch.rye's
+//! `is_on` decides the binary meaning of a rendered pixel (foreground at or above the shared on-threshold, the one door
+//! image/hitmiss.rye, endpoints, zhang_suen, label, and distance all read); image/qoi.rye owns the RGBA buffer. No new gather,
+//! no blend, no codec, no color math -- a region is a count and four extents, a filter is a remap, a mask is white or black.
+//!
+//! Everything is bounded before a byte is allocated: a labeling holds at most one component per pixel, so the region slice is
+//! sized to the label count (itself bounded by the image module's pixel ceiling) and the survivor remap to count + 1. An empty
+//! source refuses BY NAME before any allocation -- all-or-nothing, never a half-measured map. No network, no key, no funds --
+//! the sizes a surface names the day it filters the noise out of a mask, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/regions.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const label = @import("label.rye");
+const branch = @import("branch.rye");
+
+pub const regions_version = "20260818.140413";
+
+pub const RegionsError = error{
+    EmptySource,
+};
+
+/// The measured statistics of one labeled component. `label` is the component's dense label (1..count in the source LabelMap).
+/// `area` is its foreground pixel count. The bounding box is the tight axis-aligned rectangle enclosing it, corners INCLUSIVE:
+/// `min_x`..`max_x` and `min_y`..`max_y` are the extreme pixel coordinates the component actually reaches.
+pub const Region = struct {
+    label: u32 = 0,
+    area: u32 = 0,
+    min_x: u32 = 0,
+    min_y: u32 = 0,
+    max_x: u32 = 0,
+    max_y: u32 = 0,
+
+    /// The bounding box width in pixels -- the inclusive span on x, always at least one for a real region.
+    pub fn bbox_width(self: *const Region) u32 {
+        // invariant: a measured region's box is well-formed on x, so the low corner never passes the high corner.
+        assert(self.max_x >= self.min_x);
+        return self.max_x - self.min_x + 1;
+    }
+
+    /// The bounding box height in pixels -- the inclusive span on y, always at least one for a real region.
+    pub fn bbox_height(self: *const Region) u32 {
+        // invariant: a measured region's box is well-formed on y, so the low corner never passes the high corner.
+        assert(self.max_y >= self.min_y);
+        return self.max_y - self.min_y + 1;
+    }
+};
+
+/// Measure every component of `map` into a fresh slice the caller owns: `regions[i]` is the component with label `i + 1`, so the
+/// slice is exactly `map.count` long and raster-ordered like the labels themselves. A single raster pass accumulates each
+/// component's area and running bounding box. `map` is read-only.
+pub fn measure_regions(allocator: std.mem.Allocator, map: *const label.LabelMap) ![]Region {
+    // invariant: a real labeling has extent on both axes; a zero-size map has nothing to measure.
+    if (map.width == 0 or map.height == 0) return error.EmptySource;
+
+    const w: u32 = map.width;
+    const h: u32 = map.height;
+    const n: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the label buffer holds exactly one label per pixel.
+    assert(map.labels.len == @as(usize, @intCast(n)));
+    // invariant: a dense labeling never names more components than it has pixels.
+    assert(map.count <= @as(u32, @intCast(n)));
+
+    const regions = try allocator.alloc(Region, @as(usize, map.count));
+    // open each region with its label and a zero area; the first pixel seen for a label seeds its box, so area == 0 marks
+    // a region not yet touched -- and because the labels are dense, every region is touched at least once by the sweep.
+    var r: usize = 0;
+    while (r < regions.len) : (r += 1) {
+        regions[r] = Region{ .label = @as(u32, @intCast(r)) + 1, .area = 0, .min_x = 0, .min_y = 0, .max_x = 0, .max_y = 0 };
+    }
+
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const l = map.labels[@as(usize, y) * @as(usize, w) + @as(usize, x)];
+            if (l == 0) continue; // background carries no region
+            // invariant: a foreground label is a real dense label (>= 1), so it is never the background sentinel here.
+            assert(l >= 1);
+            // invariant: a foreground label stays within the dense count, so it indexes inside the region slice.
+            assert(l <= map.count);
+            const idx: usize = @as(usize, l) - 1;
+            if (regions[idx].area == 0) {
+                // first pixel of this component: seed the box at this point.
+                regions[idx].min_x = x;
+                regions[idx].max_x = x;
+                regions[idx].min_y = y;
+                regions[idx].max_y = y;
+            } else {
+                if (x < regions[idx].min_x) regions[idx].min_x = x;
+                if (x > regions[idx].max_x) regions[idx].max_x = x;
+                if (y < regions[idx].min_y) regions[idx].min_y = y;
+                if (y > regions[idx].max_y) regions[idx].max_y = y;
+            }
+            regions[idx].area += 1;
+        }
+    }
+
+    // invariant: a dense labeling uses every label in 1..count, so every region met at least one pixel.
+    r = 0;
+    while (r < regions.len) : (r += 1) {
+        assert(regions[r].area >= 1);
+    }
+    return regions;
+}
+
+/// Despeckle `map`: return a fresh LabelMap holding only the components whose area is at least `min_area`, RECOMPACTED to a
+/// dense 1..count in the source's raster order (a survivor keeps its relative order, so the earliest-appearing survivor is
+/// label one). Every dropped component and all background map to 0. A `min_area` of 0 keeps every component. The caller owns
+/// the returned map's `labels`.
+pub fn filter_min_area(allocator: std.mem.Allocator, map: *const label.LabelMap, min_area: u32) !label.LabelMap {
+    // invariant: a real labeling has extent on both axes.
+    if (map.width == 0 or map.height == 0) return error.EmptySource;
+
+    const regions = try measure_regions(allocator, map);
+
+    // remap[old_label] = new dense label for a survivor, or 0 for a dropped component / background.
+    const remap = try allocator.alloc(u32, @as(usize, map.count) + 1);
+    remap[0] = 0; // background stays background
+    var new_count: u32 = 0;
+    var i: usize = 0;
+    while (i < regions.len) : (i += 1) {
+        if (regions[i].area >= min_area) {
+            new_count += 1;
+            remap[i + 1] = new_count; // survivors recompact in label order (= raster order of first appearance)
+        } else {
+            remap[i + 1] = 0;
+        }
+    }
+    // invariant: the survivor count never exceeds the source component count.
+    assert(new_count <= map.count);
+
+    const n: usize = @as(usize, map.width) * @as(usize, map.height);
+    const labels = try allocator.alloc(u32, n);
+    var pi: usize = 0;
+    while (pi < n) : (pi += 1) {
+        const old = map.labels[pi];
+        // invariant: every source label indexes inside the remap table.
+        assert(old <= map.count);
+        labels[pi] = remap[old];
+    }
+
+    return label.LabelMap{ .width = map.width, .height = map.height, .count = new_count, .labels = labels };
+}
+
+/// Render a labeling back to a plain BINARY mask the caller owns: every labeled pixel opaque WHITE, background opaque BLACK. The
+/// mask reads foreground through the same on-threshold door the whole family shares, so a measured or despeckled labeling feeds
+/// straight back into label, distance, morphology, or the paint rungs. This is the render that closes the region loop.
+pub fn render_mask(allocator: std.mem.Allocator, map: *const label.LabelMap) !qoi.Pixmap {
+    // invariant: a real labeling has extent on both axes.
+    if (map.width == 0 or map.height == 0) return error.EmptySource;
+    const n: usize = @as(usize, map.width) * @as(usize, map.height);
+    // invariant: the label buffer holds exactly one label per pixel.
+    assert(map.labels.len == n);
+
+    const out = try allocator.alloc(u8, n * 4);
+    var i: usize = 0;
+    while (i < n) : (i += 1) {
+        const v: u8 = if (map.labels[i] != 0) 255 else 0; // any labeled pixel is foreground; background is black
+        out[i * 4] = v;
+        out[i * 4 + 1] = v;
+        out[i * 4 + 2] = v;
+        out[i * 4 + 3] = 255; // alpha pinned opaque -- a clean binary plane, never translucent
+    }
+    // invariant: the sweep pinned every alpha byte to 255, so the mask is a clean opaque image.
+    assert(out[3] == 255);
+    return qoi.Pixmap{ .width = map.width, .height = map.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+// --- selftest: the area crux, the bounding-box-exceeds-area crux, raster order, the despeckle, render-mask round-trip --------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one pixel's red channel at (x, y) to `v` (foreground when v >= 128) -- the small writer the fixtures share.
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32, v: u8) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = v;
+    img.pixels[di + 1] = v;
+    img.pixels[di + 2] = v;
+    img.pixels[di + 3] = 255;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // A scene with two components separated by a clear gap: an L-shape (three 8-connected pixels) and a lone speck. The L
+    // is the decisive bounding-box fixture -- its box (2x2 = four cells) is larger than its area (three pixels), so a box is
+    // provably a different fact from a count. Raster order names the L (first pixel at (1,1)) label one, the speck label two.
+    var scene = try make_canvas(garden, 8, 5, 0);
+    set_dot(&scene, 1, 1, 255); // L: top of the vertical arm
+    set_dot(&scene, 1, 2, 255); // L: bottom of the vertical arm
+    set_dot(&scene, 2, 2, 255); // L: the foot, 8-connected to (1,2)
+    set_dot(&scene, 5, 3, 255); // the lone speck, a clear gap from the L
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 2) return error.SceneNotTwoComponents;
+
+    const regions = try measure_regions(garden, &map);
+    if (regions.len != 2) return error.RegionCountWrong;
+
+    // --- the AREA crux: each region's area is its exact foreground pixel count ----------------------------------------
+    if (regions[0].area != 3) return error.LAreaWrong; // the L holds three pixels
+    if (regions[1].area != 1) return error.SpeckAreaWrong; // the speck holds one
+
+    // --- the RASTER-ORDER crux: region[i] carries label i + 1, the L first -------------------------------------------
+    if (regions[0].label != 1) return error.FirstRegionNotLabelOne;
+    if (regions[1].label != 2) return error.SecondRegionNotLabelTwo;
+
+    // --- the BOUNDING-BOX crux (the decisive one): the box is the tight enclosing rectangle, a different fact from area.
+    //     The L's box spans (1,1)..(2,2) -- width 2, height 2, four cells -- while its area is only three pixels --------
+    if (regions[0].min_x != 1 or regions[0].min_y != 1) return error.LBoxMinWrong;
+    if (regions[0].max_x != 2 or regions[0].max_y != 2) return error.LBoxMaxWrong;
+    if (regions[0].bbox_width() != 2 or regions[0].bbox_height() != 2) return error.LBoxSpanWrong;
+    if (regions[0].bbox_width() * regions[0].bbox_height() == regions[0].area) return error.BoxEqualsAreaForL; // 4 != 3
+    // the speck's box is a single cell, exactly its one pixel
+    if (regions[1].min_x != 5 or regions[1].max_x != 5 or regions[1].min_y != 3 or regions[1].max_y != 3) return error.SpeckBoxWrong;
+    if (regions[1].bbox_width() != 1 or regions[1].bbox_height() != 1) return error.SpeckBoxSpanWrong;
+
+    // --- the DESPECKLE crux: filter at min area 2 drops the one-pixel speck and keeps the L, RECOMPACTED to label one --
+    const cleaned = try filter_min_area(garden, &map, 2);
+    if (cleaned.count != 1) return error.DespeckleCountWrong; // only the L survives
+    if (cleaned.at(1, 1) != 1 or cleaned.at(1, 2) != 1 or cleaned.at(2, 2) != 1) return error.SurvivorNotRecompacted; // L -> label one
+    if (cleaned.at(5, 3) != 0) return error.SpeckNotDropped; // the speck fell to background
+    if (cleaned.at(0, 0) != 0) return error.BackgroundLabeledAfterFilter;
+
+    // filter at min area 1 keeps BOTH (every real component has area >= 1), still two labels
+    const kept = try filter_min_area(garden, &map, 1);
+    if (kept.count != 2) return error.KeepAllCountWrong;
+    // filter at a min area above the largest drops EVERYTHING
+    const none = try filter_min_area(garden, &map, 5);
+    if (none.count != 0) return error.DropAllCountWrong;
+
+    // --- the RENDER-MASK crux: the cleaned labeling renders to a binary mask read through the same on-threshold door,
+    //     white where the survivor is and black elsewhere, round-tripping through the open QOI codec byte-for-byte ------
+    const mask = try render_mask(garden, &cleaned);
+    // the L pixels are foreground white through branch.is_on (one door), the dropped speck and background are off
+    if (!branch.is_on(mask.pixels, (@as(usize, 1) * @as(usize, mask.width) + @as(usize, 1)) * 4)) return error.MaskLNotOn;
+    if (!branch.is_on(mask.pixels, (@as(usize, 2) * @as(usize, mask.width) + @as(usize, 2)) * 4)) return error.MaskFootNotOn;
+    if (branch.is_on(mask.pixels, (@as(usize, 3) * @as(usize, mask.width) + @as(usize, 5)) * 4)) return error.MaskSpeckOn;
+    if (branch.is_on(mask.pixels, 0)) return error.MaskBackgroundOn;
+    // a foreground pixel is opaque white, background opaque black
+    const li = (@as(usize, 1) * @as(usize, mask.width) + @as(usize, 1)) * 4;
+    if (mask.pixels[li] != 255 or mask.pixels[li + 3] != 255) return error.MaskForegroundNotWhite;
+    if (mask.pixels[0] != 0 or mask.pixels[3] != 255) return error.MaskBackgroundNotBlack;
+
+    const cap = qoi.encoded_bound(mask.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&mask, dst);
+    const backimg = try qoi.decode(garden, dst[0..enc.len]);
+    if (!backimg.same_bytes(&mask)) return error.MaskDidNotRoundTrip;
+
+    // --- the DEGENERATE case: an all-background mask has zero regions, and a filter of it stays empty ------------------
+    var blank = try make_canvas(garden, 4, 4, 0);
+    const bm = try label.label_components(garden, &blank);
+    if (bm.count != 0) return error.BlankNotZeroComponents;
+    const bregions = try measure_regions(garden, &bm);
+    if (bregions.len != 0) return error.BlankRegionsNotEmpty;
+    const bfiltered = try filter_min_area(garden, &bm, 1);
+    if (bfiltered.count != 0) return error.BlankFilterNotEmpty;
+
+    // --- the refusal by name, having allocated nothing (the guard fires before the sweep) -----------------------------
+    var empty_map = label.LabelMap{ .width = 0, .height = 0, .count = 0, .labels = &[_]u32{} };
+    if (measure_regions(garden, &empty_map)) |_| return error.EmptySourceNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- determinism: the same labeling measures to the same regions --------------------------------------------------
+    const a = try measure_regions(garden, &map);
+    const b = try measure_regions(garden, &map);
+    var i: usize = 0;
+    while (i < a.len) : (i += 1) {
+        if (a[i].area != b[i].area or a[i].min_x != b[i].min_x or a[i].max_x != b[i].max_x or a[i].min_y != b[i].min_y or a[i].max_y != b[i].max_y) return error.RegionsNotDeterministic;
+    }
+
+    print("GREEN image-regions: read every LABELED COMPONENT's area and tight bounding box in one raster pass over a LabelMap, then DESPECKLE a mask by an area threshold -- an L of three pixels reads area three inside a two-by-two box (four cells, so a box is provably a different fact from a count), a lone speck reads area one in a single-cell box, the regions raster-ordered so region one is the earliest-appearing component; filter_min_area at min area two drops the one-pixel speck and keeps the L recompacted to label one, min area one keeps both, a min above the largest drops all; render_mask paints the survivors opaque white on opaque black read through the same branch.is_on door (one binary door shared with label, distance, hitmiss) and round-trips through the open QOI codec byte-for-byte; an all-background mask measures to zero regions; an empty source refuses by name having allocated nothing; the same labeling measures deterministically\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: regions selftest\n", .{});
+    return 1;
+}
