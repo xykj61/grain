@@ -24,6 +24,12 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260818.030354` -- waymark file *content* debrided from all history (deep debride, force-pushed)
+
+**Walk-back nib:** `d2b28a3e25` -- held **LOCALLY only** at the safety tag `pre-content-debride-d2b28a3e25` until git GC; no longer on the remotes after the rewrite.
+**Swept:** the last place the superseded marks lived -- the **file content** of dated testimony (kept session logs, the log index, counsel prose, and the historical body of every renamed file), swapped to the living marks (DREY, FORA, WADE, LOWE, Dimeroll) across all history. The corpus fixture `tools/fixtures/flw-four-letter.txt` (which holds several marks as legitimate dictionary words, the derivation source) and the sealed registry were **protected by path exclusion**; vendored trees (`rye/lib`, `gratitude`, `vendor`) were excluded as mark-free. Every rewritten commit re-signed; `origin` + `xykj61` force-pushed.
+**What waits there, worth recalling:** at nib `d2b28a3e25` (local safety tag only) every file still reads its superseded mark in prose and code, and `git show` recovers the full pre-content record. The registry (`crux/waymark-registry.bron`) holds every mark ever drawn, sealed and re-derivable (witness GREEN), so nothing canonical is lost. Recovery: `git reset --hard pre-content-debride-d2b28a3e25` locally **before GC**, or re-clone from a machine that still holds the old history.
+
 ### `20260818.003328` -- waymark filenames + commit messages debrided from all history (deep debride, force-pushed)
 
 **Walk-back nib:** `55e684485a` -- held **LOCALLY only** at the safety tag `pre-filename-debride-55e684485a` until git GC; no longer on the remotes after the rewrite.
