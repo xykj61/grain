@@ -1,0 +1,321 @@
+//! image/distance_morph.rye -- true-radius EROSION and DILATION of an RGBA mask, read in one pass off the chamfer distance
+//! field rather than gathered over a structuring element (Season G, the crux-first payoff image/distance.rye named).
+//!
+//! Season G (Open Media Primitives) -- image/morphology.rye grows a bright mark by a SQUARE window and image/structure.rye by
+//! an ARBITRARY offset set, each gathering the window at every pixel: the cost of a radius-r element is its area, so a wide
+//! true-radius disk is slow. image/distance.rye measured, for every foreground pixel, its chamfer distance to the nearest
+//! background pixel -- and that single field IS a morphology, read by a threshold. This rung is the read.
+//!
+//! The whole rung is one idea seen twice. EROSION by radius r removes every foreground pixel within distance r of the
+//! background, so a pixel SURVIVES an erosion exactly when its distance-to-background EXCEEDS the radius: `erode` keeps the
+//! foreground pixels whose chamfer distance is greater than the threshold. DILATION by radius r adds every background pixel
+//! within distance r of the foreground -- the same measure taken from the other side, so `dilate` runs the very same chamfer
+//! transform on the COMPLEMENT mask (foreground and background swapped) and keeps every pixel whose distance-to-foreground is
+//! at most the threshold. One transform, two thresholds: keep-above for erode over the source, keep-at-or-below for dilate
+//! over the complement. Because a chamfer distance step is 3 for an orthogonal move and 4 for a diagonal, the true-pixel
+//! radius scales to a chamfer threshold as `radius * dist_orthogonal` (a true unit reads as 3).
+//!
+//! This is a TRUE-RADIUS disk, not a square. A single dot dilated by radius 1 grows into a PLUS -- its four orthogonal
+//! neighbors sit one step away (chamfer 3, within the threshold) while its four diagonal neighbors sit a diagonal step away
+//! (chamfer 4, beyond it) -- exactly the Euclidean disk of radius 1, where a square-element dilate would have lit the corners
+//! too. And it runs in the distance transform's two linear passes no matter how large the radius, where a structuring-element
+//! gather costs the element's whole area.
+//!
+//! The two verbs are EXACT DUALS by construction, not by coincidence. `erode(A, r)` keeps the source-foreground pixels whose
+//! chamfer field is above the threshold; `dilate` runs the field on the complement of its input, so the complement of
+//! `dilate(complement(A), r)` is precisely the pixels whose chamfer-over-A field is above the threshold -- the same set. The
+//! selftest proves it byte-for-byte on the rendered masks.
+//!
+//! Compose not braid. This rung OWNS only two small things: the radius-to-threshold scale and the keep/drop threshold that
+//! turns a distance field into a binary mask. image/distance.rye owns the chamfer transform; image/branch.rye's `is_on`
+//! decides the binary meaning of a pixel (red at or above the shared on-threshold), the one door image/label.rye, hitmiss,
+//! endpoints, zhang_suen, and distance all read; image/qoi.rye owns the RGBA buffer. The output is a binary image -- opaque
+//! WHITE where the reshaped mask is on, opaque BLACK elsewhere -- so a reshaped mask feeds straight back into the family
+//! through the same `is_on` door. No new gather, no blend, no codec, no color math.
+//!
+//! Everything is bounded before a byte. The radius is bounded by `dist_morph_max_radius` so its threshold `radius * 3` stays
+//! far below `distance.dist_far`; a zero radius (a no-op the caller can skip) and an empty source refuse BY NAME before any
+//! allocation -- all-or-nothing, never a half-reshaped image. Edges follow the distance transform's own convention: the
+//! canvas boundary is not background, so a shape flush against no in-image ground is not eroded there (the field's honest
+//! "no background reached" reads as unbounded depth). No network, no key, no funds -- the true-radius grow and shrink a
+//! surface runs the day a square is the wrong shape and the radius is large, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/distance_morph.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const branch = @import("branch.rye");
+const distance = @import("distance.rye");
+
+pub const distance_morph_version = "20260818.135237";
+
+/// The widest true-pixel radius a single reshape may name. A radius this large already erodes or dilates across the whole
+/// image module's dimension ceiling; its chamfer threshold `radius * dist_orthogonal` = 8192 * 3 = 24576 stays far below
+/// `distance.dist_far`, so the threshold compare never meets a wrapped value. A caller wanting more runs the pass twice.
+pub const dist_morph_max_radius: u32 = qoi.qoi_max_dim;
+
+pub const DistanceMorphError = error{
+    EmptySource,
+    RadiusTooSmall,
+    RadiusTooLarge,
+};
+
+/// Scale a true-pixel radius to its chamfer threshold: a true unit distance reads as `dist_orthogonal` (3) in the 3-4 field,
+/// so a radius of r pixels is r orthogonal steps. Bounded so the product never overflows and stays below the field sentinel.
+fn threshold_of(radius: u32) u32 {
+    // invariant: the radius is within the named ceiling, so the threshold stays far below distance.dist_far.
+    assert(radius >= 1);
+    assert(radius <= dist_morph_max_radius);
+    const t: u32 = radius * distance.dist_orthogonal;
+    // invariant: the threshold sits below the "no background reached" sentinel, so a compare never meets a wrapped value.
+    assert(t < distance.dist_far);
+    return t;
+}
+
+/// Guard the source and radius shared by both verbs: a zero-extent source refuses `EmptySource`, a zero radius
+/// `RadiusTooSmall` (a no-op the caller can skip), an over-max radius `RadiusTooLarge`, all BY NAME before any allocation.
+fn guard(src: *const qoi.Pixmap, radius: u32) DistanceMorphError!void {
+    // invariant: a real source has extent on both axes; a zero-size source has nothing to reshape.
+    if (src.width == 0 or src.height == 0) return error.EmptySource;
+    // invariant: a radius of zero is the identity; the caller skips it rather than paying a transform for a copy.
+    if (radius == 0) return error.RadiusTooSmall;
+    // invariant: the radius stays within the named ceiling so its threshold never nears the field sentinel.
+    if (radius > dist_morph_max_radius) return error.RadiusTooLarge;
+}
+
+/// Build the COMPLEMENT of a mask into a fresh RGBA Pixmap the caller owns: each pixel's red channel becomes `255 - red`, so a
+/// pixel that read foreground through `branch.is_on` now reads background and the reverse, while the other channels are carried
+/// unchanged. The distance transform reads only the red channel, so this flip is exactly the foreground/background swap dilate
+/// measures from.
+fn complement_mask(allocator: std.mem.Allocator, src: *const qoi.Pixmap) !qoi.Pixmap {
+    // invariant: a real source has extent on both axes.
+    assert(src.width >= 1);
+    assert(src.height >= 1);
+    const n: usize = @as(usize, src.width) * @as(usize, src.height);
+    // invariant: the source buffer is one RGBA pixel per pixel.
+    assert(src.pixels.len == n * 4);
+    const out = try allocator.alloc(u8, n * 4);
+    var i: usize = 0;
+    while (i < n) : (i += 1) {
+        out[i * 4] = 255 - src.pixels[i * 4]; // red flips foreground <-> background through the is_on threshold
+        out[i * 4 + 1] = src.pixels[i * 4 + 1];
+        out[i * 4 + 2] = src.pixels[i * 4 + 2];
+        out[i * 4 + 3] = src.pixels[i * 4 + 3];
+    }
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+/// Render a distance field to a binary mask by a threshold: `out[i]` is opaque WHITE where the field keeps the pixel and
+/// opaque BLACK where it drops it. `keep_above` chooses the rule at compile time -- erosion keeps a pixel whose distance is
+/// GREATER than the threshold (deep inside the foreground), dilation keeps a pixel whose distance is AT OR BELOW it (within
+/// reach of the foreground). White reads as foreground and black as background through `branch.is_on`, so the mask round-trips.
+fn render_threshold(allocator: std.mem.Allocator, field: *const distance.DistanceMap, t: u32, comptime keep_above: bool) !qoi.Pixmap {
+    const n: usize = @as(usize, field.width) * @as(usize, field.height);
+    // invariant: the distance buffer holds exactly one measure per pixel.
+    assert(field.dist.len == n);
+    const out = try allocator.alloc(u8, n * 4);
+    var i: usize = 0;
+    while (i < n) : (i += 1) {
+        const d = field.dist[i];
+        const on: bool = if (keep_above) d > t else d <= t;
+        const v: u8 = if (on) 255 else 0;
+        out[i * 4] = v;
+        out[i * 4 + 1] = v;
+        out[i * 4 + 2] = v;
+        out[i * 4 + 3] = 255; // alpha pinned opaque -- a binary mask is a solid image, never translucent
+    }
+    // invariant: the sweep pinned every alpha byte opaque, so the mask is a clean solid image.
+    assert(out[3] == 255);
+    return qoi.Pixmap{ .width = field.width, .height = field.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+/// ERODE `src` by a true disk of `radius` pixels into a fresh binary RGBA mask the caller owns. A foreground pixel survives
+/// exactly when its chamfer distance to the nearest background exceeds the threshold `radius * dist_orthogonal`; every other
+/// pixel is background. `src` is read-only. The output is opaque white where the shrunk shape is on, opaque black elsewhere.
+pub fn erode_radius(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32) !qoi.Pixmap {
+    try guard(src, radius);
+    const t = threshold_of(radius);
+    // the chamfer field measures each foreground pixel's distance to the nearest background; keep the pixels deeper than t
+    const field = try distance.distance_chamfer(allocator, src);
+    return render_threshold(allocator, &field, t, true);
+}
+
+/// DILATE `src` by a true disk of `radius` pixels into a fresh binary RGBA mask the caller owns -- the dual of `erode_radius`,
+/// read off the SAME chamfer transform run on the complement mask. A pixel joins the grown shape exactly when its chamfer
+/// distance to the nearest foreground is at most `radius * dist_orthogonal` (the original foreground included, at distance 0).
+/// The output is opaque white where the grown shape is on, opaque black elsewhere.
+pub fn dilate_radius(allocator: std.mem.Allocator, src: *const qoi.Pixmap, radius: u32) !qoi.Pixmap {
+    try guard(src, radius);
+    const t = threshold_of(radius);
+    // measure distance to the nearest FOREGROUND by running the transform on the complement; keep every pixel within t
+    const comp = try complement_mask(allocator, src);
+    const field = try distance.distance_chamfer(allocator, &comp);
+    return render_threshold(allocator, &field, t, false);
+}
+
+// --- selftest: the erosion definition, the true-disk dilation, the duality, a wiped line, round-trip, refusals ------------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one pixel's RGBA at (x, y) -- the small writer the test shapes share.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+/// True when the mask pixel at (x, y) reads as foreground through the shared `branch.is_on` door -- the one binary meaning.
+fn mask_on(img: *const qoi.Pixmap, x: u32, y: u32) bool {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return branch.is_on(img.pixels, di);
+}
+
+/// Flip a binary mask's on/off in place (white <-> black), leaving alpha opaque -- the render-level complement the duality
+/// law reads through.
+fn flip_mask(img: *qoi.Pixmap) void {
+    // invariant: the buffer is a whole RGBA grid.
+    assert(img.pixels.len == @as(usize, img.width) * @as(usize, img.height) * 4);
+    const n: usize = @as(usize, img.width) * @as(usize, img.height);
+    var i: usize = 0;
+    while (i < n) : (i += 1) {
+        const v: u8 = if (branch.is_on(img.pixels, i * 4)) 0 else 255;
+        img.pixels[i * 4] = v;
+        img.pixels[i * 4 + 1] = v;
+        img.pixels[i * 4 + 2] = v;
+        img.pixels[i * 4 + 3] = 255;
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    // --- the EROSION DEFINITION crux: a solid 3x3 foreground block on a black border. Its outer ring is one orthogonal step
+    //     from the background (chamfer 3), its center two (chamfer 6). Erode by radius 1 (threshold 3) keeps only the pixels
+    //     DEEPER than 3 -- the single center survives, the whole ring is peeled away ----------------------------------------
+    var block = try make_canvas(garden, 5, 5, black);
+    var by: u32 = 1;
+    while (by <= 3) : (by += 1) {
+        var bx: u32 = 1;
+        while (bx <= 3) : (bx += 1) set_pixel(&block, bx, by, white);
+    }
+    const eroded = try erode_radius(garden, &block, 1);
+    if (!mask_on(&eroded, 2, 2)) return error.ErodeLostTheCenter; // center, chamfer 6 > 3, survives
+    if (mask_on(&eroded, 1, 1)) return error.ErodeKeptARingCorner; // ring corner, chamfer 3, peeled
+    if (mask_on(&eroded, 2, 1)) return error.ErodeKeptARingEdge; // ring edge-mid, chamfer 3, peeled
+    if (mask_on(&eroded, 0, 0)) return error.ErodeLitBackground; // background stays background
+
+    // --- the TRUE-DISK DILATION crux (the payoff over a square element): a lone dot dilated by radius 1 grows into a PLUS.
+    //     Its four orthogonal neighbors are one step away (chamfer 3, within the threshold); its four diagonal neighbors are a
+    //     diagonal step away (chamfer 4, beyond it), so the corners stay dark -- exactly the Euclidean disk of radius 1 ------
+    var dot = try make_canvas(garden, 5, 5, black);
+    set_pixel(&dot, 2, 2, white);
+    const grown = try dilate_radius(garden, &dot, 1);
+    if (!mask_on(&grown, 2, 2)) return error.DilateLostTheDot; // the dot itself, distance 0, kept
+    if (!mask_on(&grown, 1, 2)) return error.DilateMissedLeft; // orthogonal neighbors light (chamfer 3)
+    if (!mask_on(&grown, 3, 2)) return error.DilateMissedRight;
+    if (!mask_on(&grown, 2, 1)) return error.DilateMissedUp;
+    if (!mask_on(&grown, 2, 3)) return error.DilateMissedDown;
+    if (mask_on(&grown, 1, 1)) return error.DilateLitADiagonal; // diagonal corners stay dark -- a true disk, not a square
+    if (mask_on(&grown, 3, 3)) return error.DilateLitADiagonal;
+
+    // and the teeth of that claim: a SQUARE-element dilate (morphology, radius 1) DOES light those corners, so the two verbs
+    // genuinely differ -- our disk is round where the square is a box
+    const square_grown = try @import("morphology.rye").dilate(garden, &dot, 1);
+    if (!branch.is_on(square_grown.pixels, (@as(usize, 1) * @as(usize, 5) + @as(usize, 1)) * 4)) return error.SquareShouldLightDiagonal;
+
+    // --- the DUALITY crux: erode_radius(A, r) equals the render-complement of dilate_radius(complement(A), r), byte-for-byte.
+    //     One transform, two thresholds -- the erosion of a shape is the dilation of its background, flipped ----------------
+    var shape = try make_canvas(garden, 6, 6, black);
+    var sy: u32 = 1;
+    while (sy <= 4) : (sy += 1) {
+        var sx: u32 = 1;
+        while (sx <= 4) : (sx += 1) set_pixel(&shape, sx, sy, white);
+    }
+    const ero = try erode_radius(garden, &shape, 1);
+    const shape_comp = try complement_mask(garden, &shape);
+    var dil_of_comp = try dilate_radius(garden, &shape_comp, 1);
+    flip_mask(&dil_of_comp);
+    if (!ero.same_bytes(&dil_of_comp)) return error.DualityBroken;
+
+    // --- a WIPED LINE crux: a one-pixel-wide line is all boundary (every pixel one orthogonal step from ground, chamfer 3),
+    //     so erode by radius 1 removes it entirely -- unlike zhang_suen, which PRESERVES a line as a skeleton. Two different
+    //     questions of the same mask -----------------------------------------------------------------------------------
+    var line = try make_canvas(garden, 5, 3, black);
+    var lx: u32 = 0;
+    while (lx < 5) : (lx += 1) set_pixel(&line, lx, 1, white);
+    const wiped = try erode_radius(garden, &line, 1);
+    var any_on: bool = false;
+    var wy: u32 = 0;
+    while (wy < 3) : (wy += 1) {
+        var wx: u32 = 0;
+        while (wx < 5) : (wx += 1) {
+            if (mask_on(&wiped, wx, wy)) any_on = true;
+        }
+    }
+    if (any_on) return error.LineNotWiped;
+
+    // --- a reshaped mask round-trips through the open QOI codec byte-for-byte -- a real image, not a private buffer --------
+    const cap = qoi.encoded_bound(grown.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&grown, dst);
+    const backimg = try qoi.decode(garden, dst[0..enc.len]);
+    if (!backimg.same_bytes(&grown)) return error.ReshapeDidNotRoundTrip;
+
+    // --- refusals by name, each having allocated nothing --------------------------------------------------------------
+    if (erode_radius(garden, &block, 0)) |_| return error.ZeroRadiusNotRefused else |err| {
+        if (err != error.RadiusTooSmall) return error.WrongRadiusError;
+    }
+    if (dilate_radius(garden, &block, dist_morph_max_radius + 1)) |_| return error.OverMaxNotRefused else |err| {
+        if (err != error.RadiusTooLarge) return error.WrongOverMaxError;
+    }
+    var empty_src = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (erode_radius(garden, &empty_src, 1)) |_| return error.EmptySourceNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- determinism: the same reshape reaches the same mask byte-for-byte ----------------------------------------------
+    const a = try dilate_radius(garden, &dot, 1);
+    const b = try dilate_radius(garden, &dot, 1);
+    if (!a.same_bytes(&b)) return error.ReshapeNotDeterministic;
+
+    print("GREEN image-distance_morph: true-radius erode and dilate of an RGBA mask read in one pass off the chamfer distance field (image/distance.rye), not gathered over a structuring element -- erode by radius 1 peels a solid 3x3 block down to its single center (the ring at chamfer 3 removed, the center at 6 kept, so a pixel survives when its distance to background EXCEEDS radius*3); dilate a lone dot by radius 1 into a PLUS, the four orthogonal neighbors lit (chamfer 3, within reach) and the four diagonal corners dark (chamfer 4, beyond) -- a true Euclidean disk where a square-element dilate lights the corners too; the two verbs are EXACT DUALS, erode(A) equal to the render-complement of dilate(complement(A)) byte-for-byte; a one-pixel line is all boundary so erode wipes it whole (where zhang_suen would preserve it); the reshaped mask reads foreground through branch.is_on and round-trips through the open QOI codec byte-for-byte; a zero radius, an over-max radius, and an empty source refuse by name having allocated nothing; the same reshape is deterministic byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: distance_morph selftest\n", .{});
+    return 1;
+}
