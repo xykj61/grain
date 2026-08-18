@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260818.121105
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title prune -- the skeleton spur-pruner, short barbs shed and real branches restored whole, GREEN
+prompt autonomous loop -- pick up the running thread Lindy-first crux-first, take the next agent-doable lap, send often
+think Oriented: became Kyri (KYRI.md, RADIANT_STYLE.md), read the operator card, the itineraries, and the top of the log index. The running thread is Season G open-media: each lap a small GREEN Rye image primitive. The Microkernel double-seat leads by Lindy yet its only ungated moves sit behind a web-fetch/license gate (surfaced, never crossed), so the constructive lap grows Season G.
+think Standfast check: every living REDS row is closed or released; only #75 rests as custody-gated errata (a history rewrite behind Keaton's hand). Clear to take constructive work.
+think Found `image/prune.rye` already written and untracked (a prior lap in this loop), the crux-first sibling the endpoints log named -- the classic two-phase morphological prune composing over endpoints/structure/hitmiss/qoi. It had a full selftest but no witness and was uncommitted. So the crux-first lap is to FINISH and land it: build the witness, prove GREEN on metal, wire the docs, send.
+think Built and ran the selftest: it caught a real red, SpurBaseNotPruned. Root cause was FIXTURE geometry, not the algorithm -- a perpendicular spur rising off a solid horizontal line has its base pixel 8-adjacent to the two flanking line pixels, so under 8-connectivity that base is degree THREE (a junction), never a degree-one endpoint the strip can peel. The same "fixture wrong, code right" class the hitmiss isolated-dot red taught.
+think Hand-traced the honest fix: a clean DIAGONAL Y. A diagonal main line (2,2)..(14,14) with a diagonal spur (7,9),(6,10) off the center junction (8,8) makes every spur pixel a degree-two chain the strip peels, and the junction sits six pixels from each true end -- well past 2*length -- so the length-2 reconstruction from the surviving ends never floods into the spur. Traced strip-then-restore by hand: spur vanishes, the 13-pixel diagonal restores whole. Rewrote the three fixtures (spur, spur-free fixed point, whole-parasite) and the opacity crux to the diagonal, removed the now-dead paint_hline helper, updated the GREEN print line.
+think GREEN on the metal rerun. TAME style check then caught two banned compound asserts (`assert(a and b)`) in prune and strip_once; split each into two. Rebuilt GREEN, tame bans clean, width-check exit 0, plain 7-bit ASCII, living-card-ascii GREEN, living-docs advisory-GREEN.
+obs Compose not braid held: prune OWNS only the binary set algebra (union/intersect/difference), the 3x3 restore element, and the two-phase control flow; endpoints OWNS the endpoint set, structure the dilation gather, qoi the buffers. A prune is length endpoint strips and length conditional dilations, routed -- no new codec, blend, or color.
+obs The honest subtlety is named in the code, the README, and the card rather than hidden: clean removal is proven for a branch longer than 4*length; a spur based within length of a surviving end can partly regrow (the textbook approximate result). Witness before narrative -- the crux proved is the one the fixture actually exercises.
+obs Council rota lap read item 20, context/QUIN.md -- "Pruning as care: we grow what serves and release what no longer does." The lap lived its own rota reading.
+loom witness=prune_witness wall_ms=unmeasured checks=selftest_green fixtures=diagonal_y note=first-full-metal-run-green-after-fixture-fix
+file image/prune.rye the two-phase morphological prune; selftest fixtures rebuilt to a clean diagonal Y, compound asserts split, version stamped to the live clock
+file tools/prune_witness.rish proves prune GREEN on metal in the endpoints-witness idiom (native contains, no shell grep)
+file image/README.md seats the Prune (shed short spurs) bullet after Endpoints, naming the two phases and the 4*length honest subtlety
+file crux/REMEMBER.md live edge and Git nib repointed single-stranded to prune; endpoints folded to the prior-nib trail
+recommend keep-going the next Season G crux-first sibling: a BRANCH / JUNCTION detector (degree three or more, the other half of skeleton topology), then a DISK-element builder or an 8-connected-component labeler; the Microkernel double-seat still leads by Lindy but stays gated on a web fetch.

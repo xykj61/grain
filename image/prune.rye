@@ -1,0 +1,345 @@
+//! image/prune.rye -- an RGBA skeleton PRUNED of its short spurs: shed every parasitic branch no longer than a chosen
+//! length, then restore the surviving branches whole (Season G, the cleanup pass the endpoint detector opens).
+//!
+//! Season G (Open Media Primitives) -- the crux-first sibling image/endpoints.rye was built as the floor for. A skeleton
+//! read from a noisy mask carries SPURS: tiny one-or-two-pixel barbs a thinning leaves behind at every rough edge, each a
+//! false branch that a shape-analysis reads as real. Pruning removes them. The classic morphological pruning (Gonzalez &
+//! Woods) is two phases over a length `k`, and it composes exactly from the rungs already standing --
+//!
+//!     phase 1  STRIP:      X1 = A with its endpoints removed, k times over
+//!                          (strip_once(X) = X  AND NOT  endpoints(X))
+//!     phase 2  RESTORE:    X2 = endpoints(X1)                    -- the surviving skeleton's own ends
+//!                          X3 = X2 conditionally dilated k times within A
+//!                          (X3 <- (X3 dilate 3x3)  AND  A, repeated k times)
+//!     result               X4 = X1  OR  X3
+//!
+//! The stripping peels k pixels off every free end, so a spur of length <= k VANISHES entirely -- its whole run is eaten and
+//! its base becomes an ordinary interior pixel. A real branch longer than k is only shortened by k, and the restore phase
+//! regrows exactly those k pixels back along A from the surviving ends, so a long line comes back WHOLE. The one honest
+//! subtlety is the reconstruction's reach: the restore grows k pixels from each surviving end along A, so when a spur's base
+//! sits within k of a surviving end the barb can partly regrow -- the textbook approximate result. A spur set well inside a
+//! branch (its base farther than k from either surviving end, which holds whenever the branch is longer than 4k) is removed
+//! cleanly and the branch restored exactly, the crux this rung proves byte-for-byte.
+//!
+//! Compose not braid. This rung OWNS only the binary set algebra over two masks (union by a per-channel max, intersect by a
+//! min, difference by `on AND NOT on`, exactly the max image/endpoints.rye already unions with), the 3x3 restore element, and
+//! the two-phase control flow. image/endpoints.rye OWNS the endpoint set (both the strip and the surviving ends),
+//! image/structure.rye OWNS the dilation gather, image/qoi.rye the RGBA buffers. No new codec, no blend, no color math -- a
+//! prune is `length` endpoint strips and `length` conditional dilations, routed. The binary meaning of a pixel -- foreground
+//! at or above `hitmiss.hitmiss_on_threshold` -- is read from hitmiss, one source of truth, so a pruned plane and the
+//! endpoints it was cut from agree exactly. The output is a clean binary image, opaque WHITE at every surviving pixel and
+//! opaque BLACK elsewhere, deterministic byte-for-byte.
+//!
+//! An empty source, a zero length, or an over-max length refuses BY NAME before any allocation -- all-or-nothing, never a
+//! half-pruned image. No network, no key, no funds -- the clean skeleton a surface reaches for the day a mask's barbs would
+//! lie to it, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/prune.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const structure = @import("structure.rye");
+const hitmiss = @import("hitmiss.rye");
+const endpoints = @import("endpoints.rye");
+
+pub const prune_version = "20260818.121105";
+
+/// The longest spur a single prune may remove. A skeleton spur is a few pixels; a length past a large image's own extent is
+/// meaningless, and the strip and restore loops each run `length` passes, so this ceiling bounds the work up front. A branch
+/// longer than `4 * length` is restored exactly; shorter branches are the parasitic ones a prune is meant to shed.
+pub const prune_max_length: u32 = 4096;
+
+pub const PruneError = error{
+    EmptySource,
+    BadLength,
+    LengthTooLarge,
+};
+
+/// The three binary set operations over two masks, chosen at compile time so one gather loop serves all three.
+const SetOp = enum { union_op, intersect_op, difference_op };
+
+/// Combine two same-size binary planes into a fresh clean binary plane by `op`: union (a OR b), intersect (a AND b), or
+/// difference (a AND NOT b), read per pixel from the shared foreground threshold. The result is opaque WHITE where the
+/// operation holds and opaque BLACK elsewhere, so it is itself a valid mask for the next step. Both inputs are read-only.
+fn combine(garden: std.mem.Allocator, a: *const qoi.Pixmap, b: *const qoi.Pixmap, comptime op: SetOp) !qoi.Pixmap {
+    // invariant: the two planes share an extent, so every index reads the same pixel in each.
+    assert(a.width == b.width);
+    assert(a.height == b.height);
+    const n: usize = @as(usize, a.width) * @as(usize, a.height) * 4;
+    // invariant: both buffers hold exactly one RGBA pixel per pixel, so the step of four reads them in lockstep.
+    assert(a.pixels.len == n);
+    assert(b.pixels.len == n);
+
+    const out = try garden.alloc(u8, n);
+    var i: usize = 0;
+    while (i < n) : (i += 4) {
+        const a_on: bool = a.pixels[i] >= hitmiss.hitmiss_on_threshold;
+        const b_on: bool = b.pixels[i] >= hitmiss.hitmiss_on_threshold;
+        const lit: bool = switch (op) {
+            .union_op => a_on or b_on,
+            .intersect_op => a_on and b_on,
+            .difference_op => a_on and !b_on,
+        };
+        const v: u8 = if (lit) 255 else 0;
+        out[i] = v;
+        out[i + 1] = v;
+        out[i + 2] = v;
+        out[i + 3] = 255; // alpha pinned opaque -- a mask, not a translucent image
+    }
+    return qoi.Pixmap{ .width = a.width, .height = a.height, .channels = 4, .colorspace = 0, .pixels = out };
+}
+
+/// Build a clean binary plane from `src`: opaque WHITE where a pixel is foreground (red at or above the shared threshold),
+/// opaque BLACK where it is background. The pruned figure is grown from this plane, so it and the endpoints it is cut from
+/// speak the same two-color language and `same_bytes` compares passes exactly.
+fn binarize(garden: std.mem.Allocator, src: *const qoi.Pixmap) !qoi.Pixmap {
+    // invariant: a real source has extent, so the plane has at least one pixel to set.
+    assert(src.width >= 1);
+    assert(src.height >= 1);
+    const n: usize = @as(usize, src.width) * @as(usize, src.height) * 4;
+    // invariant: the plane holds exactly one RGBA pixel per source pixel.
+    assert(src.pixels.len == n);
+    const plane = try garden.alloc(u8, n);
+    var i: usize = 0;
+    while (i < n) : (i += 4) {
+        const v: u8 = if (src.pixels[i] >= hitmiss.hitmiss_on_threshold) 255 else 0;
+        plane[i] = v;
+        plane[i + 1] = v;
+        plane[i + 2] = v;
+        plane[i + 3] = 255; // alpha pinned opaque -- a mask, not a translucent image
+    }
+    return qoi.Pixmap{ .width = src.width, .height = src.height, .channels = 4, .colorspace = 0, .pixels = plane };
+}
+
+/// One strip step: the plane MINUS its own endpoints. Removes every degree-one tip, so `length` strips peel `length` pixels
+/// off every free end and eat any branch that short whole. Returns a fresh binary plane the caller owns; `x` is read-only.
+fn strip_once(garden: std.mem.Allocator, x: *const qoi.Pixmap) !qoi.Pixmap {
+    // invariant: a real plane has extent on both axes, so the endpoint detection and the difference read real pixels.
+    assert(x.width >= 1);
+    assert(x.height >= 1);
+    const tips = try endpoints.detect_endpoints(garden, x);
+    // invariant: the endpoint plane matches the source extent, so the difference reads them in lockstep.
+    assert(tips.width == x.width);
+    assert(tips.height == x.height);
+    return combine(garden, x, &tips, .difference_op);
+}
+
+/// Build the 3x3 square structuring element -- the nine offsets `(dx, dy)` with each axis in {-1, 0, 1} -- the restore phase
+/// dilates by. A fresh offset list the caller owns.
+fn square3(garden: std.mem.Allocator) !structure.StructuringElement {
+    const offs = try garden.alloc(structure.Offset, 9);
+    var idx: usize = 0;
+    var dy: i32 = -1;
+    while (dy <= 1) : (dy += 1) {
+        var dx: i32 = -1;
+        while (dx <= 1) : (dx += 1) {
+            offs[idx] = structure.Offset{ .dx = dx, .dy = dy };
+            idx += 1;
+        }
+    }
+    // invariant: a 3x3 element names exactly its nine cells.
+    assert(idx == 9);
+    return structure.StructuringElement{ .offsets = offs };
+}
+
+/// Prune `src` of every spur no longer than `length`: strip endpoints `length` times to shed the short barbs, then regrow
+/// the surviving branches `length` pixels back along the original figure. Returns a fresh binary RGBA Pixmap the caller owns
+/// -- opaque WHITE at every surviving pixel, opaque BLACK elsewhere; `src` is read-only. Bounded: both phases run exactly
+/// `length` passes, and `length` is capped at `prune_max_length`, so the whole prune is a finite, named amount of work.
+pub fn prune(allocator: std.mem.Allocator, src: *const qoi.Pixmap, length: u32) !qoi.Pixmap {
+    // invariant: a real source has extent on both axes; a zero-size source has nothing to prune.
+    if (src.width == 0 or src.height == 0) return error.EmptySource;
+    // invariant: a prune removes spurs of length one and up; a zero length would strip and restore nothing.
+    if (length == 0) return error.BadLength;
+    // invariant: the length stays within the named ceiling so both loops stay bounded.
+    if (length > prune_max_length) return error.LengthTooLarge;
+
+    // A -- the binarized original the restore phase intersects against, kept whole while X1 strips away from a copy.
+    const abin = try binarize(allocator, src);
+
+    // phase 1 -- strip endpoints `length` times: X1 is A with `length` pixels peeled off every free end.
+    var x1 = abin;
+    var s: u32 = 0;
+    while (s < length) : (s += 1) {
+        x1 = try strip_once(allocator, &x1);
+    }
+
+    // phase 2 -- restore: seed with the surviving skeleton's own endpoints, then conditionally dilate `length` times so the
+    // surviving branches regrow exactly the `length` pixels the strip took, and no farther (each grow intersected with A).
+    const seed = try endpoints.detect_endpoints(allocator, &x1);
+    const sq = try square3(allocator);
+    var x3 = seed;
+    var d: u32 = 0;
+    while (d < length) : (d += 1) {
+        const grown = try structure.dilate_se(allocator, &x3, sq);
+        x3 = try combine(allocator, &grown, &abin, .intersect_op);
+    }
+
+    // the pruned figure -- the surviving stripped skeleton, plus its restored branch pixels.
+    const out = try combine(allocator, &x1, &x3, .union_op);
+    // invariant: the prune preserves the source extent -- a cleaned figure, never a resized one.
+    assert(out.width == src.width);
+    assert(out.height == src.height);
+    return out;
+}
+
+// --- selftest: the spur crux, the spur-free line, the whole-parasite vanish, opacity, round-trip, refusals, determinism ---
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// Set one pixel's RGBA at (x, y) -- a small writer the pattern builders share.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+/// Count the white (surviving) pixels of a binary plane -- the tally the cruxes check.
+fn count_white(img: *const qoi.Pixmap, white: color.Rgba) u32 {
+    var lit: u32 = 0;
+    var y: u32 = 0;
+    while (y < img.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x < img.width) : (x += 1) {
+            if (pixel_at(img, x, y).eql(white)) lit += 1;
+        }
+    }
+    return lit;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    // --- the SPUR crux (the defining one): a long DIAGONAL main line (2,2)..(14,14), 13 pixels, with a short two-pixel spur
+    //     diverging DOWN-LEFT from its center junction (8,8): the base (7,9), then the tip (6,10). A diagonal spur off a
+    //     diagonal line is a clean degree-two chain -- the base (7,9) touches only the junction and its own tip, where a
+    //     perpendicular spur's base over a solid line would be 8-adjacent to the flanking line pixels and so never a
+    //     degree-one endpoint the strip can peel. The junction sits SIX pixels from each true end, well past 2*length, so the
+    //     reconstruction from the surviving ends never reaches the spur base. Pruned with length 2 the spur VANISHES entirely
+    //     and the main diagonal returns WHOLE -- its true end pixels restored, its interior untouched, the barb gone.
+    var spur = try make_canvas(garden, 16, 16, black);
+    var dd: u32 = 2;
+    while (dd <= 14) : (dd += 1) set_pixel(&spur, dd, dd, white); // the main diagonal, 13 pixels
+    set_pixel(&spur, 7, 9, white); // the spur base, one step down-left of the junction (8,8)
+    set_pixel(&spur, 6, 10, white); // the spur tip, two steps out
+    const pruned = try prune(garden, &spur, 2);
+    // the whole main diagonal survives, both true ends restored
+    var ld: u32 = 2;
+    while (ld <= 14) : (ld += 1) {
+        if (!pixel_at(&pruned, ld, ld).eql(white)) return error.MainLinePixelLost;
+    }
+    if (!pixel_at(&pruned, 2, 2).eql(white)) return error.LeftEndNotRestored;
+    if (!pixel_at(&pruned, 14, 14).eql(white)) return error.RightEndNotRestored;
+    // the spur is gone, both its pixels black
+    if (!pixel_at(&pruned, 7, 9).eql(black)) return error.SpurBaseNotPruned;
+    if (!pixel_at(&pruned, 6, 10).eql(black)) return error.SpurTipNotPruned;
+    // exactly the 13 main-diagonal pixels survive -- no spur, no stray
+    if (count_white(&pruned, white) != 13) return error.SpurPruneCountWrong;
+
+    // --- the SPUR-FREE crux: the SAME diagonal with NO spur, pruned with the same length, comes back byte-for-byte itself --
+    //     a prune shortens no real branch, so a clean skeleton is a fixed point of pruning -----------------------------
+    var clean = try make_canvas(garden, 16, 16, black);
+    var cd: u32 = 2;
+    while (cd <= 14) : (cd += 1) set_pixel(&clean, cd, cd, white);
+    const clean_pruned = try prune(garden, &clean, 2);
+    var cc: u32 = 2;
+    while (cc <= 14) : (cc += 1) {
+        if (!pixel_at(&clean_pruned, cc, cc).eql(white)) return error.CleanLineShortened;
+    }
+    if (count_white(&clean_pruned, white) != 13) return error.CleanLineCountWrong;
+    // the binarized clean diagonal and its prune are the same figure exactly
+    const clean_bin = try binarize(garden, &clean);
+    if (!clean_pruned.same_bytes(&clean_bin)) return error.CleanLineNotFixedPoint;
+
+    // --- the WHOLE-PARASITE crux: an isolated segment no longer than the prune length is entirely parasitic and VANISHES --
+    //     a two-pixel segment (both pixels endpoints) is stripped to nothing on the first pass and never regrows ---------
+    var stub = try make_canvas(garden, 16, 16, black);
+    set_pixel(&stub, 4, 4, white);
+    set_pixel(&stub, 5, 5, white); // a lone two-pixel diagonal segment, no long branch to survive
+    const stub_pruned = try prune(garden, &stub, 2);
+    if (count_white(&stub_pruned, white) != 0) return error.WholeParasiteSurvived;
+
+    // --- the output is always OPAQUE binary, even from a translucent source: the set-algebra planes pin alpha 255, and the
+    //     endpoints/dilation the prune leans on do too ----------------------------------------------------------------
+    var faint = try make_canvas(garden, 16, 16, color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 40 });
+    var fd: u32 = 2;
+    while (fd <= 14) : (fd += 1) set_pixel(&faint, fd, fd, color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 30 }); // fg by red, not alpha
+    set_pixel(&faint, 7, 9, color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 30 });
+    set_pixel(&faint, 6, 10, color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 30 });
+    const from_faint = try prune(garden, &faint, 2);
+    if (pixel_at(&from_faint, 2, 2).a != 255) return error.SurvivorNotOpaque;
+    if (pixel_at(&from_faint, 0, 0).a != 255) return error.GroundNotOpaque;
+    if (!pixel_at(&from_faint, 2, 2).eql(white)) return error.FaintLineNotPruned; // foreground is red, not alpha
+    if (!pixel_at(&from_faint, 6, 10).eql(black)) return error.FaintSpurNotPruned;
+
+    // --- a pruned figure round-trips through the open QOI codec byte-for-byte -- a real image, not a private buffer ------
+    const cap = qoi.encoded_bound(pruned.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&pruned, dst);
+    const backimg = try qoi.decode(garden, dst[0..enc.len]);
+    if (!backimg.same_bytes(&pruned)) return error.PruneDidNotRoundTrip;
+
+    // --- refusals by name, each having allocated nothing (the guard fires before the first strip) -----------------------
+    if (prune(garden, &spur, 0)) |_| return error.ZeroLengthNotRefused else |err| {
+        if (err != error.BadLength) return error.WrongBadLengthError;
+    }
+    if (prune(garden, &spur, prune_max_length + 1)) |_| return error.OverMaxLengthNotRefused else |err| {
+        if (err != error.LengthTooLarge) return error.WrongLengthTooLargeError;
+    }
+    var empty_src = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (prune(garden, &empty_src, 2)) |_| return error.EmptySourceNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- determinism: the same prune reaches the same figure byte-for-byte -----------------------------------------------
+    const a = try prune(garden, &spur, 2);
+    const b = try prune(garden, &spur, 2);
+    if (!a.same_bytes(&b)) return error.PruneNotDeterministic;
+
+    print("GREEN image-prune: an RGBA skeleton pruned of its short spurs by the classic two-phase morphological prune -- strip endpoints `length` times to peel every free end, then conditionally dilate the surviving ends `length` times back along the original figure; a long diagonal line with a short diagonal spur off its center junction keeps its whole length while the spur vanishes entirely (the spur is a clean degree-two chain the strip peels, the junction sits six pixels from each end so the reconstruction never reaches the spur base, 13 diagonal pixels surviving, the barb gone); the same diagonal with no spur comes back byte-for-byte itself (a clean skeleton is a fixed point of pruning); an isolated segment no longer than the prune length is wholly parasitic and vanishes; the output is opaque white-on-black even from a translucent source; the pruned figure round-trips through the open QOI codec byte-for-byte; a zero length, an over-max length, and an empty source refuse by name having allocated nothing; the same prune is deterministic byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: prune selftest\n", .{});
+    return 1;
+}
