@@ -1,0 +1,238 @@
+//! image/scale.rye -- an RGBA image RESAMPLED to a new size by nearest-neighbor (Season G, the resize floor the open-media family leans on).
+//!
+//! Season G (Open Media Primitives) -- the geometry floor beneath the paint rungs that changes a picture's SIZE, the
+//! verb a surface reaches for whenever the box and the picture disagree on extent: a thumbnail shrunk from a photo, a
+//! pixel-art sprite doubled to read at arm's length, a logo fit to a card, the responsive image a layout scales to its
+//! column. Where image/compose.rye lays one picture over another at its native size, this rung REMAKES the picture at a
+//! named `dst_w` x `dst_h` -- each destination pixel takes the color of the NEAREST source pixel, so an upscale doubles
+//! whole pixels into clean blocks and a downscale samples one source pixel per destination cell, never inventing a
+//! between-color. A keeper names a source and a target size and reads back the same picture at the new extent.
+//!
+//! Nearest, not blended: this rung owns the one new verb the family lacked -- a per-axis integer map from a destination
+//! index to its source index (`src_index`: sx = dx * src_w / dst_w, the classic nearest-neighbor floor), seen once per
+//! axis so a resize is the same rule twice. It writes each destination pixel by COPYING its nearest source pixel whole,
+//! so it adds no color math (nothing is mixed), no codec, no blend -- image/qoi.rye owns the buffers, and this module
+//! only ROUTES each destination pixel to its nearest source pixel. Integer only: no float ever enters the map, so a
+//! resize is deterministic byte-for-byte. The whole destination is bound-checked ONCE up front (its pixel count against
+//! the module's named ceiling, its dims against the codec's max), so a malformed resize refuses BY NAME having allocated
+//! nothing -- all-or-nothing, never a half-scaled image. No network, no key, no funds -- the resize a surface runs the
+//! day it wants a picture at another size, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/scale.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+
+pub const scale_version = "20260818.000000";
+
+/// The source index a destination index maps to under nearest-neighbor: `sx = dst_i * src_extent / dst_extent`, the
+/// integer floor that seats a whole source pixel under each destination cell. Both axes share this, so a resize is the
+/// same pure rule seen twice: an upscale (dst_extent > src_extent) repeats a source index across several destination
+/// cells (whole-pixel doubling), a downscale (dst_extent < src_extent) skips source indices between the ones it keeps,
+/// and an identity map (equal extents) returns the index unchanged. The caller has proven both extents are at least one.
+fn src_index(dst_i: u32, dst_extent: u32, src_extent: u32) u32 {
+    // invariant: the destination axis has real extent, so the division below never divides by zero.
+    assert(dst_extent >= 1);
+    // invariant: a real source has extent, so the mapped index names a real source pixel.
+    assert(src_extent >= 1);
+    // invariant: the index names a real destination pixel on this axis.
+    assert(dst_i < dst_extent);
+    // dst_i < dst_extent <= qoi_max_dim and src_extent <= qoi_max_dim, so the product stays well within u32.
+    const si = (dst_i * src_extent) / dst_extent;
+    // invariant: the nearest source index never passes the source's own extent (dst_i < dst_extent forces si < src).
+    assert(si < src_extent);
+    return si;
+}
+
+/// Resample `src` to a fresh `dst_w` x `dst_h` RGBA Pixmap by nearest-neighbor: each destination pixel takes the color of
+/// its nearest source pixel (via `src_index` on each axis), copied whole so no color is mixed. Returns a newly allocated
+/// Pixmap the caller owns; `src` is read-only and untouched. Refuses `BadScaleDims` if `dst_w` or `dst_h` is zero,
+/// `EmptySource` if the source has no extent, and `ScaleTooLarge` BY NAME if the target exceeds the codec's max dimension
+/// or the module's named pixel ceiling -- every check runs BEFORE any allocation, so a refusal leaves nothing behind.
+pub fn scale_nearest(allocator: std.mem.Allocator, src: *const qoi.Pixmap, dst_w: u32, dst_h: u32) !qoi.Pixmap {
+    // invariant: a resizable target has real extent on both axes.
+    if (dst_w == 0 or dst_h == 0) return error.BadScaleDims;
+    // invariant: a real source has extent; a zero-size source maps nothing and refuses by name.
+    if (src.width == 0 or src.height == 0) return error.EmptySource;
+    // invariant: the target stays within the codec's own max dimension, so a scaled image is always encodable.
+    if (dst_w > qoi.qoi_max_dim or dst_h > qoi.qoi_max_dim) return error.ScaleTooLarge;
+    // The target pixel count in u64 so the product can never wrap before the ceiling check refuses.
+    const total: u64 = @as(u64, dst_w) * @as(u64, dst_h);
+    if (total > qoi.qoi_max_pixels) return error.ScaleTooLarge;
+    // invariant: the bound proved the whole target fits the module's named pixel ceiling before any allocation.
+    assert(total <= qoi.qoi_max_pixels);
+
+    const pixels = try allocator.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var dy: u32 = 0;
+    while (dy < dst_h) : (dy += 1) {
+        const sy = src_index(dy, dst_h, src.height);
+        var dx: u32 = 0;
+        while (dx < dst_w) : (dx += 1) {
+            const sx = src_index(dx, dst_w, src.width);
+            // Both indices proven in range by src_index, so both offsets land inside their buffers.
+            const si = (@as(usize, sy) * @as(usize, src.width) + @as(usize, sx)) * 4;
+            const di = (@as(usize, dy) * @as(usize, dst_w) + @as(usize, dx)) * 4;
+            // invariant: the nearest source pixel lies wholly inside the source buffer.
+            assert(si + 4 <= src.pixels.len);
+            // Copy the nearest source pixel whole -- nearest-neighbor mixes nothing, so the four bytes carry across as-is.
+            pixels[di] = src.pixels[si];
+            pixels[di + 1] = src.pixels[si + 1];
+            pixels[di + 2] = src.pixels[si + 2];
+            pixels[di + 3] = src.pixels[si + 3];
+        }
+    }
+    return qoi.Pixmap{ .width = dst_w, .height = dst_h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+// --- selftest: prove identity, whole-pixel upscale, nearest downscale, a bent non-integer map, alpha carried, round-trip ---
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module
+/// (exactly as image/space_paint.rye keeps its own canvas).
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Read one pixel's RGBA at (x, y) -- a small reader the checks below share.
+fn pixel_at(img: *const qoi.Pixmap, x: u32, y: u32) color.Rgba {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    return color.Rgba{ .r = img.pixels[di], .g = img.pixels[di + 1], .b = img.pixels[di + 2], .a = img.pixels[di + 3] };
+}
+
+/// Set one pixel's RGBA at (x, y) -- a small writer the pattern builder shares.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+/// Mint a 2x2 four-color pattern -- red, green at the top; blue, black at the bottom -- so a resized copy is checkable by
+/// which of the four source corners a target pixel matches.
+fn make_pattern(garden: std.mem.Allocator) !qoi.Pixmap {
+    var p = try make_canvas(garden, 2, 2, color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 });
+    set_pixel(&p, 0, 0, color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 }); // red
+    set_pixel(&p, 1, 0, color.Rgba{ .r = 0, .g = 255, .b = 0, .a = 255 }); // green
+    set_pixel(&p, 0, 1, color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 }); // blue
+    set_pixel(&p, 1, 1, color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 }); // black
+    return p;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
+    const green = color.Rgba{ .r = 0, .g = 255, .b = 0, .a = 255 };
+    const blue = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 255 };
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+
+    const pattern = try make_pattern(garden); // 2x2: red, green / blue, black
+
+    // --- an IDENTITY resize reproduces the source byte-for-byte: the map returns each index unchanged ------------------
+    const same = try scale_nearest(garden, &pattern, 2, 2);
+    if (!same.same_bytes(&pattern)) return error.IdentityNotByteExact;
+
+    // --- a 2x UPSCALE doubles whole pixels into clean 2x2 blocks: each source pixel fills a block, no between-color ----
+    // dst 4x4 from src 2x2: cols map 0,0,1,1 and rows map 0,0,1,1, so the four source corners become four 2x2 blocks.
+    const up = try scale_nearest(garden, &pattern, 4, 4);
+    if (!pixel_at(&up, 0, 0).eql(red)) return error.UpTopLeftWrong; // red block, source (0,0)
+    if (!pixel_at(&up, 1, 1).eql(red)) return error.UpTopLeftWrong; // still inside the red block
+    if (!pixel_at(&up, 3, 0).eql(green)) return error.UpTopRightWrong; // green block, source (1,0)
+    if (!pixel_at(&up, 0, 3).eql(blue)) return error.UpBottomLeftWrong; // blue block, source (0,1)
+    if (!pixel_at(&up, 3, 3).eql(black)) return error.UpBottomRightWrong; // black block, source (1,1)
+    // Only the four source colors appear -- an upscale invents no new color (a between-blend would fail this).
+    var uy: u32 = 0;
+    while (uy < 4) : (uy += 1) {
+        var ux: u32 = 0;
+        while (ux < 4) : (ux += 1) {
+            const px = pixel_at(&up, ux, uy);
+            if (!px.eql(red) and !px.eql(green) and !px.eql(blue) and !px.eql(black)) return error.UpInventedColour;
+        }
+    }
+
+    // --- a 2x DOWNSCALE samples the nearest source pixel: a 4x4 to 2x2 keeps source cols/rows 0 and 2 -----------------
+    // Build a 4x4 where each pixel encodes its column in red so the sampled columns are checkable.
+    var wide = try make_canvas(garden, 4, 4, black);
+    var wy: u32 = 0;
+    while (wy < 4) : (wy += 1) {
+        var wx: u32 = 0;
+        while (wx < 4) : (wx += 1) {
+            set_pixel(&wide, wx, wy, color.Rgba{ .r = @as(u8, @intCast(wx * 60)), .g = 0, .b = 0, .a = 255 });
+        }
+    }
+    const down = try scale_nearest(garden, &wide, 2, 2);
+    // dst col 0 -> src col 0*4/2 = 0 (red 0); dst col 1 -> src col 1*4/2 = 2 (red 120): the nearest samples, not an average.
+    if (pixel_at(&down, 0, 0).r != 0) return error.DownColZeroWrong;
+    if (pixel_at(&down, 1, 0).r != 120) return error.DownColOneWrong;
+
+    // --- a NON-INTEGER scale bends the map: a 2-wide source to a 3-wide target maps cols 0,0,1 -----------------------
+    // dx=0 -> 0*2/3 = 0 (red), dx=1 -> 1*2/3 = 0 (red), dx=2 -> 2*2/3 = 1 (green): the middle cell repeats the first.
+    const wideen = try scale_nearest(garden, &pattern, 3, 2);
+    if (!pixel_at(&wideen, 0, 0).eql(red)) return error.BentColZeroWrong;
+    if (!pixel_at(&wideen, 1, 0).eql(red)) return error.BentColOneWrong; // the map repeats source col 0 here
+    if (!pixel_at(&wideen, 2, 0).eql(green)) return error.BentColTwoWrong;
+
+    // --- ALPHA is carried, never blended: a translucent source pixel keeps its exact alpha byte through the scale -----
+    const half = color.Rgba{ .r = 0, .g = 0, .b = 255, .a = 128 };
+    var trans = try make_canvas(garden, 2, 2, half);
+    const trans_up = try scale_nearest(garden, &trans, 4, 4);
+    if (!pixel_at(&trans_up, 0, 0).eql(half)) return error.AlphaNotCarried; // exact bytes, no src-over toward a ground
+    if (!pixel_at(&trans_up, 3, 3).eql(half)) return error.AlphaNotCarried;
+
+    // --- a scaled image round-trips through the open QOI codec byte-for-byte -- a real image, not a private buffer -----
+    const cap = qoi.encoded_bound(up.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&up, dst);
+    const back = try qoi.decode(garden, dst[0..enc.len]);
+    if (!back.same_bytes(&up)) return error.ScaleDidNotRoundTrip;
+
+    // --- refusals by name, each having allocated nothing --------------------------------------------------------------
+    if (scale_nearest(garden, &pattern, 0, 4)) |_| return error.ZeroDimsNotRefused else |err| {
+        if (err != error.BadScaleDims) return error.WrongDimsError;
+    }
+    var empty = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (scale_nearest(garden, &empty, 4, 4)) |_| return error.EmptySourceNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+    if (scale_nearest(garden, &pattern, qoi.qoi_max_dim + 1, 1)) |_| return error.OversizeNotRefused else |err| {
+        if (err != error.ScaleTooLarge) return error.WrongOversizeError;
+    }
+
+    // --- determinism: the same resize maps the same pixels byte-for-byte ----------------------------------------------
+    const up_a = try scale_nearest(garden, &pattern, 5, 3);
+    const up_b = try scale_nearest(garden, &pattern, 5, 3);
+    if (!up_a.same_bytes(&up_b)) return error.ScaleNotDeterministic;
+
+    print("GREEN image-scale: an RGBA image resampled to a new size by nearest-neighbor -- an identity resize reproduces the source byte-for-byte; a 2x upscale doubles the four source pixels into four clean 2x2 blocks inventing no between-color; a 2x downscale samples the nearest source columns (0 and 2), never an average; a non-integer 2-to-3 scale bends the map so the middle cell repeats the first source column; a translucent source keeps its exact alpha byte through the scale (carried, never blended); the scaled image round-trips through the open QOI codec byte-for-byte; a zero dimension, an empty source, and an over-max target refuse by name having allocated nothing; the same resize maps the same pixels byte-for-byte\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: scale selftest\n", .{});
+    return 1;
+}

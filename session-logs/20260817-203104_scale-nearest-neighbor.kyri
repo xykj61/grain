@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260817.203104
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title image/scale.rye -- the nearest-neighbor resize floor, GREEN
+prompt autonomous loop (baton prin recur): pick up the running thread, Standfast on reds, take the next agent-doable lap Lindy-first crux-first
+think Read KYRI, RADIANT_STYLE, REMEMBER, the itineraries, and the top session logs -- the running thread is Season G open-media, last GREEN space_paint.rye (background-repeat: space), nib the image-witness loom sweep
+think Standfast check: crux/REDS.md holds no open agent-closable red -- #75 is a deep-debride custody gate (Keaton's hand), all others (78,80,81,83,84,85,86) closed on metal; the line is clear for new work
+think Council rota lap deep-read SIMPLE_LOVABLE_COMPLETE (item 16): complete means the loop closes within its scope -- which pointed at a family gap
+think The CSS background-repeat family had repeat (compose_tiled), no-repeat (place_paint), space (space_paint) but not round -- and round SCALES the tile, a verb no image module owned; a bounded nearest-neighbor scale is both the Lindy floor (every surface resizes: thumbnails, zoom, the 2x sprite) and the crux that unlocks round
+think Confirmed no scale/resample verb exists; the README even named `scale` (nearest-neighbor) as a planned Photos Resample path, so this lands the floor it anticipated
+obs scale_nearest(allocator, src, dst_w, dst_h) maps each destination index to its source by one pure integer per-axis rule src_index = dx*src_w/dst_w (the classic nearest floor, si strictly < src_extent proven), copying the nearest pixel whole -- no color math, no blend, no codec; single-stranded over qoi buffers, integer only so deterministic
+obs Bounds all up front before any allocation: BadScaleDims (zero dim), EmptySource (no extent), ScaleTooLarge (past qoi_max_dim or qoi_max_pixels); all-or-nothing so a refusal allocates nothing
+obs Selftest crux proven on metal GREEN first run: identity byte-for-byte, 2x upscale into four clean 2x2 blocks inventing no between-color, 2x downscale sampling nearest cols 0 and 2 (not an average), a non-integer 2->3 map bending so the middle cell repeats col 0, a translucent source carrying its exact alpha byte (nearest carries, never blends), QOI round-trip byte-for-byte, three named refusals allocating nothing, determinism
+loom witness=scale_witness checks=1_green build=ok metal=green
+file image/scale.rye the nearest-neighbor resize floor -- new open-media primitive, GREEN
+file tools/scale_witness.rish proves the resize on metal, native contains check (REDS #76 loom)
+file image/README.md scale.rye entry seated beside space_paint.rye in Open Media Primitives (docs-sync)
+recommend keep-going the round backgrounds-repeat: round now has a scale to compose over; next open-media lap can build paint_rounded over scale_nearest + compose, or grow the area-average resample path the README names beside nearest
