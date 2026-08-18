@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260817.221911
+editor Claude Code
+model claude-opus-4-8
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title seat the immutable waymark registry -- sealed, self-verifying, re-derivable
+prompt Keaton: seat the immutable waymark registry (step 1 -- so the elders become meaningless noise and a later debride loses no canonical fact)
+think Compiled every waymark ever drawn from the canonical source (waymark_derive.rish seated-draws): 33 corpus draws re-derived ok, plus WADE (idx 3010) and DOCS (idx 1103) recovered from their historical inputs, plus the four hand-seated marks (SETU, SEVA, MAND, MONA)
+think Built crux/waymark-registry.bron: header (corpus_digest, corpus_size, SHA3-512 seal) over a sealed body of 39 rows (mark, input, index, status, note); status captures living, retired-superseded, abandoned, transient, hand-seated
+think Immutability by seal: the seal is SHA3-512 of the sealed body, so any edit to any row breaks it (the resins/proof tier discipline). Reproducibility by re-derivation: every corpus row re-derives SHA3-512(input) -> index -> corpus word, the same oracle waymark_derive uses
+obs Wrote the witness in two parts because Rishi could not parse a big inline multi-line shell string -- moved the crypto to tools/fixtures/waymark_registry_verify.sh (self-contained), and the Rishi witness runs it and asserts SEAL_OK, DERIVE_OK, REGISTRY_GREEN
+obs Witness GREEN: SEAL_OK, DERIVE_OK 35, REGISTRY_GREEN -- the registry is sealed and every corpus mark re-derived on metal; pointed the waymark-ladders canon at it as the single source of truth
+obs The registry lives in crux/ (personal, withheld from the public seed) because the inputs carry personal names (keaton-murr, djinn-bozo); the witness + verify.sh ship in tools/
+obs This is Keaton's step 1: with the canonical naming truth sealed and re-derivable, the elder marks in old logs and history are redundant noise -- a later deep debride would lose no canonical waymark fact (though it would still lose non-name reds-lessons and walk-backs, the caveat I named)
+file crux/waymark-registry.bron the sealed canonical registry (39 rows, SHA3-512 seal)
+file tools/waymark_registry_witness.rish the witness (seal + re-derivation)
+file tools/fixtures/waymark_registry_verify.sh the self-contained crypto verification
+file .claude/rules/waymark-ladders.md canon now points at the sealed registry as the single source of truth
+recommend check-in the immutable registry is seated and GREEN; run the nixos script to install filter-repo, then weigh the debride -- with the registry sealed, the elders are already harmless
