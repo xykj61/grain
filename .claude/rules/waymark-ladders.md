@@ -2,6 +2,8 @@
 
 **Canon:** `context/specs/20260716-115927_waymark-ladder-naming-and-g0-collision-fix.md` · witness `tools/waymark_derive.rish` · Lexicon **Waymark**.
 
+**Immutable registry (single source of truth, seated `20260817`):** [`../../crux/waymark-registry.bron`](../../crux/waymark-registry.bron) is the sealed, self-verifying canonical record of **every** waymark ever drawn -- living, retired, abandoned, transient, hand-seated -- each corpus row carrying its input, index, and status. Witness [`../../tools/waymark_registry_witness.rish`](../../tools/waymark_registry_witness.rish) proves it GREEN two ways: a **SHA3-512 seal** over the body (any edit breaks it) and a **re-derivation** of every corpus mark from its input on metal. This registry is the authority; the table below is its readable face. Because the canonical truth is sealed here, the elder marks in old logs and git history are redundant historical noise -- the naming truth no longer depends on them.
+
 ## When a ladder opens
 
 Before the first rung is written as `X0` / `X1` / … in TASKS, ROADMAP, compressors, module titles, or session logs that speak as *now*:

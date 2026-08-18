@@ -1,0 +1,50 @@
+format waymark-registry-v1
+stamp 20260817.221616
+voice Kyri
+corpus_digest 615dbeb79c631115505ba71713aabdae243dcf4c1ae77109f325583a2c0e282cf6fc009d54802a268f04e3c170f705f4bd7203e018f00f5c443ae5e79808d8cc
+corpus_size 5526
+seal d110f6f1cc23ba19d91ff8e69660bbde8dc7da90b4bd73da6fb4efa98d80629e6f632a9bb4b775c16786bcc733e690e4392f5ddd727eaa3612a72d7a5872c82f
+# The immutable, self-verifying registry of every waymark ever drawn (living, retired, abandoned, transient, hand-seated).
+# Each corpus-drawn row is proven on metal: SHA3-512(input)[:8] as hex, mod corpus_size, +1 = index; corpus[index] = mark.
+# The seal is the SHA3-512 of the sealed body below (from the marker line, exclusive). Any edit breaks the seal.
+# Witness: tools/waymark_registry_witness.rish -- verifies the seal AND re-derives every corpus mark. Corpus pin: tools/fixtures/flw-four-letter.txt.
+# ---- sealed body ----
+mark ALES | input season-c-lotus-creative-suite-audio-wire-shape | index 101 | status living | note seated
+mark AMBO | input bit-design-system-surface-and-greencandy-entities | index 127 | status transient | note greencandy-era draw for MIHI's season, re-breached to WADE
+mark AMUS | input constel-test-network-fake-pier-local-constellations | index 140 | status retired | note superseded by FORA (breach 20260817)
+mark AYRE | input harvest-season-equinox-2-trade | index 266 | status living | note seated
+mark BUHR | input realidream-surface-and-quin-inference-and-mcp-2 | index 572 | status living | note seated
+mark CAUM | input season-a-mikrophone-firmware-forgetful-session-capture | index 677 | status retired | note superseded by DREY (breach 20260817)
+mark CION | input meta-season-chronological-labeling-molt | index 748 | status living | note seated
+mark COIF | input source-identity-breach-onboarding-refresh-2 | index 798 | status abandoned | note redraw, never seated; Keaton chose SUNN
+mark DAHL | input harvest-season-equinox-3-commons | index 940 | status living | note seated
+mark DOCS | input realidream-surface-and-quin-inference-and-mcp | index 1103 | status abandoned | note BUHR first draw, redrawn -2 to BUHR
+mark DREY | input season-a-mikrophone-forgetful-capture | index 1189 | status living | note Season A Mikrophone firmware (renamed from CAUM)
+mark FORA | input constel-local-test-constellations | index 1594 | status living | note Constel test-network naming (renamed from AMUS)
+mark FUSS | input cion-meta-season-equinox-2-molt | index 1654 | status retired | note superseded by LOWE (breach 20260817)
+mark GISM | input harvest-season-equinox-1-yield | index 1784 | status living | note seated
+mark GRAD | input cion-meta-season-equinox-4-seal | index 1870 | status living | note seated
+mark HAWM | input grapheneos-pixel-mobile-emulation | index 2003 | status living | note seated
+mark HUNK | input season-a-open-image-decode-and-photos-surface | index 2172 | status living | note seated
+mark JABS | input sala-broadcast-live-session-fold | index 2267 | status living | note seated
+mark JARL | input kumara-identity-comlink-and-fractal-network | index 2284 | status living | note seated
+mark KOFF | input harvest-season-equinox-4-rest | index 2539 | status living | note seated
+mark LOWE | input cion-molt-living-mutants-and-fossils | index 2813 | status living | note CION Eq2 Molt (renamed from FUSS)
+mark LULU | input glow-glass-hearth-display-and-wired-sync | index 2833 | status living | note seated
+mark MAIR | input glow-language-rune-heads-nest-and-lowering | index 2885 | status abandoned | note superseded same-day by STOA
+mark MIHI | input bit-design-system-surface-takeover-and-greencandy-entities | index 3010 | status retired | note superseded by AMBO then WADE (breach 20260817)
+mark OFFY | input cion-meta-season-equinox-3-debride | index 3372 | status living | note seated
+mark POLE | input djinn-bozo-exec-keaton-murr-hats | index 3700 | status living | note seated
+mark QUIZ | input source-identity-breach-onboarding-refresh | index 3856 | status abandoned | note redraw, never seated; Keaton chose SUNN
+mark SOON | input glow-language-runes-stdlib-and-pipeline | index 4452 | status living | note seated
+mark STOA | input glow-language-rune-heads-nest-and-lowering-2 | index 4532 | status living | note seated
+mark SUNN | input source-pier-papers-identity-refresh | index 4568 | status living | note seated
+mark TACT | input ship-pilot-publishing-grainphone-and-commerce | index 4616 | status living | note seated
+mark TUBE | input glow-application-framework-and-publishing | index 4904 | status living | note seated
+mark VOLS | input cion-meta-season-equinox-1-survey | index 5123 | status living | note seated
+mark WADE | input dimeroll-hr-and-accounting-entities | index 5141 | status living | note Bit-Design/Dimeroll season (MIHI->AMBO->WADE)
+mark ZETA | input glow-english-qwerty-glass-keyboard-3 | index 5490 | status living | note seated
+mark SETU | input (hand-seated) | index 0 | status hand-seated | note USB hearth carry Glass<->Desk; absent from flw
+mark SEVA | input (hand-seated) | index 0 | status hand-seated | note viewer; absent from flw
+mark MAND | input (hand-seated) | index 0 | status hand-seated | note the M vane; in flw, excluded from draws
+mark MONA | input (hand-seated) | index 0 | status hand-seated | note prior name of MAND, one season
