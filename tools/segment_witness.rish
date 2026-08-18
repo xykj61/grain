@@ -1,0 +1,39 @@
+# tools/segment_witness.rish -- segment a bare mask into its separated objects with no hand-seated markers, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the capstone the topology arc climbed toward. image/watershed.rye separates two touching
+# objects by flooding the distance field from a MARKER at each object's deep center -- yet it asks the caller to seat those markers
+# by hand. This rung finds them automatically: the heart of a thick object reads deepest in the chamfer distance field
+# (image/distance.rye), so every object shows as its own PEAK (the medial ridge image/medial_axis.rye reads), and giving each
+# connected ridge component its own basin label (image/label.rye) is one marker per peak, seated at the deepest place, with no hand.
+# Then flood (image/watershed.rye). A bare mask comes back segmented into its objects, end to end.
+#
+# The crux this witness proves on metal: two 3x3 blocks touching only at a CORNER are ONE 8-connected component a labeler reads as a
+# single object, yet the distance field has TWO peaks, so auto-markers finds TWO markers and segment comes back TWO basins with a
+# watershed line between them -- from a BARE MASK, no hand-seated marker. A lone block has one peak and stays whole; the 9-wide bar
+# watershed splits with HAND markers comes back ONE basin under auto-markers (a uniform bar has one connected ridge, no second
+# object to find); segment equals distance -> markers_of_field -> watershed byte-for-byte; a zero-size source refuses EmptySource
+# and a mask with no foreground refuses NoMarkers by name. No network, no key, no funds -- the day a surface hands a bare mask of
+# touching cells and asks how many and which.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/segment_witness.rish
+
+say "segment: Language EN -- Season G segmentation capstone; seed the watershed from the regional maxima of the distance field, so a bare mask segments end to end with no hand-seated markers."
+say "segment: Style Radiant -- compose not braid: this rung owns only the marker-selection choice (watershed's markers ARE the connected components of the distance ridge) and the end-to-end wiring; distance owns the terrain, medial_axis the ridge, label the ridge-component labeling and marker type, watershed the flood and its colorize."
+say "segment: Lens TAME -- the distance field is built once and the markers seed from it; a zero-size source and a mask with no foreground each refuse by name up front so a refusal allocates nothing; the honest over-segmentation boundary (a single object with several distance peaks) is named in the module, not hidden; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/segment"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/segment.rye -femit-bin=${bin}"]
+assert build.ok else "segment: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "segment: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "segment: ${out}"
+
+assert selftest.out contains "GREEN image-segment" else "segment: selftest did not print the GREEN line"
+
+say "segment: GREEN -- two corner-touching blocks the labeler reads as one component segment into two basins from a bare mask, a lone block stays whole, a uniform bar stays one basin, segment equals the explicit composition byte-for-byte, on metal."

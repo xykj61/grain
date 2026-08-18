@@ -1,0 +1,284 @@
+//! image/segment.rye -- SEGMENT A BARE MASK INTO ITS SEPARATED OBJECTS with no hand-seated markers: seed the watershed from the
+//! REGIONAL MAXIMA of the distance field, so the whole distance -> ridge -> flood pipeline runs end to end off a plain mask
+//! (Season G, the crux-first sibling image/watershed.rye named: an auto-marker seeder so watershed runs off a bare mask).
+//!
+//! Season G (Open Media Primitives) -- image/watershed.rye separates two touching objects by flooding the distance field from a
+//! MARKER seated at each object's deep center. It is the segmentation move image/label.rye cannot make -- yet it asks the caller to
+//! seat those markers by hand. This rung finds them automatically. The heart of a thick object reads deepest in the chamfer
+//! distance field (image/distance.rye), so every distinct object shows as its own PEAK, and the peaks are exactly the medial ridge
+//! image/medial_axis.rye reads -- the local-maxima crest. Give each connected ridge component its own basin label (image/label.rye)
+//! and you have one marker per distance peak, seated at the deepest place, with no hand at all. Then flood: the pipeline is
+//! distance field -> regional-maxima markers -> Meyer's ordered flood, and a bare mask comes back segmented into its objects.
+//!
+//! This is the CAPSTONE the whole topology arc climbed toward -- image/distance.rye's own doc names a watershed as what its field
+//! descends to, image/medial_axis.rye's doc names the watershed as what its ridge seeds, and image/watershed.rye's doc names the
+//! medial ridge as exactly where a marker belongs. This rung wires those three together into one end-to-end verb.
+//!
+//! The honest subtlety, named plainly rather than hidden (as medial_axis names its non-unit-width and prune its short-branch
+//! caveat): regional-maxima seeding separates objects whose distance ridges are DISCONNECTED -- two blobs joined by a neck narrower
+//! than the blobs, or touching only at a point, each keep their own peak, so the ridge breaks between them and each becomes its own
+//! basin. Two objects fused so thickly that their ridges JOIN read as one peak, one marker, one basin -- which is honest, since a
+//! uniform bar has no two objects to find (to split a bar you must hand-seat markers, exactly what image/watershed.rye is for). And
+//! a single object with SEVERAL distinct distance peaks (a star, an L, a lumpy boundary) can OVER-segment, one basin per peak. The
+//! textbook remedy -- h-maxima suppression to keep only significant peaks, merging shallow ones -- is the named horizon this rung
+//! composes toward, a later sibling, not built here.
+//!
+//! Compose not braid. This rung OWNS only the marker-selection choice -- that watershed's markers ARE the connected components of
+//! the distance ridge -- and the end-to-end wiring. image/distance.rye owns the terrain, image/medial_axis.rye owns the ridge,
+//! image/label.rye owns the ridge-component labeling AND the marker/output type, image/watershed.rye owns the flood AND its
+//! colorize. No new gather, loop, blend, codec, or color. `segment` builds the distance field ONCE and seeds from it; a mask with
+//! no foreground has no regional maxima, so the flood refuses `NoMarkers` by name. No network, no key, no funds -- the day a surface
+//! hands a bare mask of touching cells and asks how many and which, answered on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/segment.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const color = @import("color.rye");
+const qoi = @import("qoi.rye");
+const branch = @import("branch.rye");
+const distance = @import("distance.rye");
+const medial_axis = @import("medial_axis.rye");
+const label = @import("label.rye");
+const watershed = @import("watershed.rye");
+
+pub const segment_version = "20260818.144722";
+
+/// The most pixels a mask may hold -- the image module's own pixel ceiling, shared with every rung this composes over.
+pub const segment_max_pixels: u32 = qoi.qoi_max_pixels;
+
+/// Seed watershed markers from a distance field's REGIONAL MAXIMA. Read the field's medial ridge (image/medial_axis.rye) -- the
+/// crest of local maxima, one connected plateau per distinct distance peak -- and give each connected ridge component its own dense
+/// basin label (image/label.rye). The returned LabelMap is exactly the marker map image/watershed.rye consumes: 0 for background
+/// and non-seed foreground, 1..count one basin per distance peak, seated at the deepest place. `dm` is read-only.
+pub fn markers_of_field(allocator: std.mem.Allocator, dm: *const distance.DistanceMap) !label.LabelMap {
+    // invariant: a real field holds exactly one distance per pixel (a zero-size field holds none) -- the DistanceMap contract,
+    // checked before any allocation; the zero-size refusal falls out of medial_mask by name below.
+    assert(dm.dist.len == @as(usize, dm.width) * @as(usize, dm.height));
+
+    const ridge = try medial_axis.medial_mask(allocator, dm); // regional maxima -> a binary ridge mask over the field's grid
+    // invariant: the ridge mask covers exactly the field's grid, so every marker names a real field pixel.
+    assert(ridge.width == dm.width);
+    assert(ridge.height == dm.height);
+
+    const markers = try label.label_components(allocator, &ridge); // one dense basin 1..count per connected ridge component
+    // invariant: the markers cover the same grid, and a basin count never exceeds the field's pixel count.
+    assert(markers.width == dm.width);
+    assert(markers.height == dm.height);
+    const npix: u64 = @as(u64, dm.width) * @as(u64, dm.height);
+    assert(@as(u64, markers.count) <= npix);
+    return markers;
+}
+
+/// Seed watershed markers from a bare mask: build the chamfer distance field (image/distance.rye), then read its regional maxima.
+/// The convenience over a mask for a caller that holds a mask rather than a field -- exactly `markers_of_field(distance_chamfer(src))`.
+/// `src` is read-only. A zero-size source refuses `EmptySource` by name (the distance rung's guard, before any allocation).
+pub fn auto_markers(allocator: std.mem.Allocator, src: *const qoi.Pixmap) !label.LabelMap {
+    // invariant: a real source holds one RGBA pixel per pixel (a zero-size source holds none) -- the Pixmap contract.
+    assert(src.pixels.len == @as(usize, src.width) * @as(usize, src.height) * 4);
+
+    const dm = try distance.distance_chamfer(allocator, src);
+    const markers = try markers_of_field(allocator, &dm);
+    // invariant: the markers cover the source's own grid.
+    assert(markers.width == src.width);
+    assert(markers.height == src.height);
+    return markers;
+}
+
+/// Segment a bare mask into its separated objects end to end: distance field -> auto markers (regional maxima) -> Meyer's flood
+/// (image/watershed.rye). The whole distance -> ridge -> flood pipeline off a plain mask with NO hand-seated markers. The result is
+/// a watershed LabelMap -- each object a basin 1..count, the cut between two touching objects a `watershed.wshed_mark` line,
+/// background 0 -- painted by `watershed.colorize`. The distance field is built ONCE and the markers seed from it. A mask with no
+/// foreground has no regional maxima, so the flood refuses `NoMarkers` by name. `src` is read-only.
+pub fn segment(allocator: std.mem.Allocator, src: *const qoi.Pixmap) !label.LabelMap {
+    // invariant: a real source holds one RGBA pixel per pixel -- the Pixmap contract, checked before any allocation.
+    assert(src.pixels.len == @as(usize, src.width) * @as(usize, src.height) * 4);
+
+    const dm = try distance.distance_chamfer(allocator, src); // the terrain, built once
+    const markers = try markers_of_field(allocator, &dm); // the regional-maxima markers over that terrain
+    // invariant: the markers and the terrain share the field's grid, so the flood can seat each basin.
+    assert(markers.width == dm.width);
+    assert(markers.height == dm.height);
+    return watershed.watershed(allocator, &dm, &markers); // Meyer's ordered flood -> basins + watershed lines
+}
+
+// --- selftest: the auto-split crux (one 8-connected component -> two basins), the single blob, the uniform bar (one peak, one
+//     basin), the end-to-end == the composition parity, the refusals, round-trip, determinism ------------------------------------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill.r;
+        pixels[i + 1] = fill.g;
+        pixels[i + 2] = fill.b;
+        pixels[i + 3] = fill.a;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one pixel's RGBA at (x, y) -- the small writer the test shapes share.
+fn set_pixel(img: *qoi.Pixmap, x: u32, y: u32, c: color.Rgba) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = c.r;
+    img.pixels[di + 1] = c.g;
+    img.pixels[di + 2] = c.b;
+    img.pixels[di + 3] = c.a;
+}
+
+/// Paint a filled `w` x `h` white block with its top-left corner at (x0, y0) -- the object the test shapes are built from.
+fn paint_block(img: *qoi.Pixmap, x0: u32, y0: u32, w: u32, h: u32, c: color.Rgba) void {
+    var dy: u32 = 0;
+    while (dy < h) : (dy += 1) {
+        var dx: u32 = 0;
+        while (dx < w) : (dx += 1) set_pixel(img, x0 + dx, y0 + dy, c);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    const black = color.Rgba{ .r = 0, .g = 0, .b = 0, .a = 255 };
+    const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
+
+    // --- the AUTO-SPLIT crux (the reason this rung exists): two 3x3 blocks touching only at a CORNER -- the left block cols 1..3
+    //     rows 1..3, the right block cols 4..6 rows 4..6, so (3,3) and (4,4) are diagonal neighbors. That is ONE 8-connected
+    //     component a labeler reads as a single object, yet the distance field has TWO peaks (each block center reads deep, the
+    //     corner touch reads shallow), so auto-markers finds TWO markers and the flood separates the two blocks -- end to end off
+    //     a BARE MASK, no hand-seated marker -----------------------------------------------------------------------------------
+    var dumbbell = try make_canvas(garden, 8, 8, black);
+    paint_block(&dumbbell, 1, 1, 3, 3, white); // left block, centered at (2,2)
+    paint_block(&dumbbell, 4, 4, 3, 3, white); // right block, centered at (5,5), touching the left only at the (3,3)-(4,4) corner
+
+    // the labeler reads the whole dumbbell as ONE component -- the very thing segment must overcome
+    const one = try label.label_components(garden, &dumbbell);
+    if (one.count != 1) return error.DumbbellNotOneComponent;
+
+    // auto-markers finds exactly TWO markers, one at each block's deep center, with no hand at all
+    const marks = try auto_markers(garden, &dumbbell);
+    if (marks.count != 2) return error.AutoMarkersNotTwo;
+    if (marks.at(2, 2) == 0) return error.LeftMarkerMissing; // the left block's deep center is seeded
+    if (marks.at(5, 5) == 0) return error.RightMarkerMissing; // the right block's deep center is seeded
+    if (marks.at(3, 3) != 0) return error.CornerTouchSeeded; // the shallow touch is NOT a peak, so never a marker
+
+    // segment floods from those auto-markers: the one 8-connected component comes back TWO basins with a watershed line between
+    const seg = try segment(garden, &dumbbell);
+    if (seg.count != 2) return error.SegmentNotTwoBasins;
+    if (seg.at(2, 2) != 1) return error.LeftBasinWrong; // the left center, first in raster order, is basin 1
+    if (seg.at(5, 5) != 2) return error.RightBasinWrong; // the right center is basin 2
+    if (seg.at(2, 2) == seg.at(5, 5)) return error.BlobsNotSeparated; // the crux: the two touching blocks are told apart
+
+    // a watershed line exists (the two floods met), every foreground pixel is a basin or a line, every background stays 0
+    var wshed_seen: bool = false;
+    var y: u32 = 0;
+    while (y < 8) : (y += 1) {
+        var x: u32 = 0;
+        while (x < 8) : (x += 1) {
+            const foreground = branch.is_on(dumbbell.pixels, (@as(usize, y) * 8 + @as(usize, x)) * 4);
+            const l = seg.at(x, y);
+            if (foreground) {
+                if (l == 0) return error.ForegroundLeftBackground; // no foreground pixel reads as background
+                if (watershed.is_watershed(l)) wshed_seen = true;
+            } else {
+                if (l != 0) return error.BackgroundBecameBasin; // no background pixel was flooded
+            }
+        }
+    }
+    if (!wshed_seen) return error.NoWatershedLine; // two basins met -- a line must fall
+
+    // --- the END-TO-END == THE COMPOSITION parity: segment is exactly distance -> markers_of_field -> watershed, byte-for-byte.
+    //     This is the owned contribution proven -- the marker-selection wiring, not a black box ------------------------------
+    const dm = try distance.distance_chamfer(garden, &dumbbell);
+    const m2 = try markers_of_field(garden, &dm);
+    if (m2.count != marks.count) return error.MarkersOfFieldDisagrees; // markers_of_field(field) == auto_markers(mask)
+    const composed = try watershed.watershed(garden, &dm, &m2);
+    if (composed.count != seg.count) return error.SegmentNotComposite;
+    var ci: usize = 0;
+    while (ci < seg.labels.len) : (ci += 1) {
+        if (seg.labels[ci] != composed.labels[ci]) return error.SegmentNotCompositeBytes;
+    }
+
+    // --- the SINGLE-BLOB case: one 3x3 block has one distance peak, so auto-markers finds ONE marker and segment keeps it whole
+    //     with NO watershed line -- a lone object is not split -----------------------------------------------------------------
+    var blob = try make_canvas(garden, 5, 5, black);
+    paint_block(&blob, 1, 1, 3, 3, white);
+    const blob_marks = try auto_markers(garden, &blob);
+    if (blob_marks.count != 1) return error.SingleBlobNotOneMarker;
+    const blob_seg = try segment(garden, &blob);
+    if (blob_seg.count != 1) return error.SingleBlobNotOneBasin;
+    var by: u32 = 1;
+    while (by <= 3) : (by += 1) {
+        var bx: u32 = 1;
+        while (bx <= 3) : (bx += 1) {
+            if (blob_seg.at(bx, by) != 1) return error.SingleBlobNotWhole; // every foreground pixel is the one basin
+            if (watershed.is_watershed(blob_seg.at(bx, by))) return error.SingleBlobHasLine; // nothing to meet -- no line
+        }
+    }
+
+    // --- the UNIFORM-BAR contrast (the honest boundary): the very 9-wide 3-tall bar image/watershed.rye splits into TWO basins
+    //     with HAND-seated markers comes back as ONE basin under auto-markers -- a uniform bar has a single connected distance
+    //     ridge (no distinct peaks), so there is no second object to find. To split a bar you must seat markers by hand; that is
+    //     what watershed is for. Auto-markers respects true object structure rather than inventing a cut ---------------------
+    var bar = try make_canvas(garden, 11, 5, black);
+    paint_block(&bar, 1, 1, 9, 3, white);
+    const bar_labeled = try label.label_components(garden, &bar);
+    if (bar_labeled.count != 1) return error.BarNotOneComponent;
+    const bar_marks = try auto_markers(garden, &bar);
+    if (bar_marks.count != 1) return error.BarNotOneMarker; // one connected ridge -> one marker, not two
+    const bar_seg = try segment(garden, &bar);
+    if (bar_seg.count != 1) return error.BarNotOneBasin;
+    var barpi: usize = 0;
+    while (barpi < bar_seg.labels.len) : (barpi += 1) {
+        if (watershed.is_watershed(bar_seg.labels[barpi])) return error.BarAutoSplit; // auto-markers never invents a bar cut
+    }
+
+    // --- COLORIZE the segmentation with watershed.colorize (compose not braid -- no new render): background black, and the image
+    //     round-trips through the open QOI codec byte-for-byte ------------------------------------------------------------
+    const painted = try watershed.colorize(garden, &seg);
+    if (!(color.Rgba{ .r = painted.pixels[0], .g = painted.pixels[1], .b = painted.pixels[2], .a = painted.pixels[3] }).eql(black)) return error.PaintedBackgroundNotBlack;
+    const cap = qoi.encoded_bound(painted.pixel_count());
+    const dst = try garden.alloc(u8, cap);
+    const enc = try qoi.encode(&painted, dst);
+    const backimg = try qoi.decode(garden, dst[0..enc.len]);
+    if (!backimg.same_bytes(&painted)) return error.ColorizeDidNotRoundTrip;
+
+    // --- the refusals by name: a zero-size source has nothing to segment; a mask with no foreground has no regional maxima ---
+    var empty_src = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (segment(garden, &empty_src)) |_| return error.EmptyNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+    var blank = try make_canvas(garden, 4, 4, black); // all background -> no ridge -> no markers
+    if (segment(garden, &blank)) |_| return error.BlankNotRefused else |err| {
+        if (err != error.NoMarkers) return error.WrongBlankError;
+    }
+
+    // --- determinism: the same mask segments to the same basins byte-for-byte -------------------------------------------
+    const a = try segment(garden, &dumbbell);
+    const bb = try segment(garden, &dumbbell);
+    if (a.count != bb.count) return error.CountNotDeterministic;
+    var di: usize = 0;
+    while (di < a.labels.len) : (di += 1) {
+        if (a.labels[di] != bb.labels[di]) return error.LabelsNotDeterministic;
+    }
+
+    print("GREEN image-segment: SEGMENT A BARE MASK INTO ITS SEPARATED OBJECTS end to end (distance -> regional-maxima markers -> Meyer's flood) with NO hand-seated markers -- two 3x3 blocks touching only at a CORNER are ONE 8-connected component a labeler reads as a single object, yet the distance field has TWO peaks so auto-markers finds TWO markers (one at each block's deep center, the shallow corner touch never seeded) and segment comes back TWO basins with a thin WATERSHED LINE between them (the left center basin 1, the right basin 2, the two blocks told apart from a bare mask); every foreground pixel is a basin or a line and every background stays 0; segment equals distance -> markers_of_field -> watershed byte-for-byte (the marker-selection wiring proven, not a black box); a lone 3x3 block has one distance peak so auto-markers keeps it whole with no line; the very 9-wide bar watershed splits into two with HAND markers comes back ONE basin under auto-markers, since a uniform bar has one connected ridge and no second object to find (auto-markers respects true structure, never inventing a cut); watershed.colorize renders the segmentation to a real image (background black) round-tripping through the open QOI codec byte-for-byte; a zero-size source refuses EmptySource and a mask with no foreground refuses NoMarkers by name; the same mask segments deterministically\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: segment selftest\n", .{});
+    return 1;
+}
