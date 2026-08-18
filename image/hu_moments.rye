@@ -1,0 +1,441 @@
+//! image/hu_moments.rye -- read every LABELED COMPONENT's SEVEN HU INVARIANT MOMENTS: the shape descriptor that stays the
+//! SAME when a mark is turned, moved, or resized, and whose seventh value CHANGES SIGN when the mark is mirrored (Season G, the
+//! rotation-and-scale-invariant companion of image/moments.rye's orientation and eccentricity).
+//!
+//! Season G (Open Media Primitives) -- image/centroid.rye reads a component's CENTER (the first moment), image/moments.rye its
+//! ORIENTATION and ECCENTRICITY (the second moment about that center). Those tell two marks apart by WHERE they sit and WHICH
+//! WAY they lean, yet they still MOVE when the mark is turned or resized: a rotated letter reads a different orientation, a
+//! larger blob a larger spread. This rung reads the fact that DOES NOT move -- Hu's seven invariant moments (M-K. Hu, 1962),
+//! built from the normalized central moments up to order three so that the seven numbers stay (near) constant under translation,
+//! rotation, and scale. That is what a shape CLASSIFIER wants: a fingerprint of a mark's form that a letter keeps whether it is
+//! typed large or small, upright or on its side -- the fact a text reader, an icon matcher, and a part recognizer all descend
+//! from. The seventh invariant carries one more gift: it is SKEW-invariant under rotation yet flips SIGN under reflection, so it
+//! tells a shape from its MIRROR image -- the chirality no area, box, center, second moment, or orientation can see.
+//!
+//! Compose not braid. This rung OWNS the raw-moment accumulation up to order three (a running sum of `x^p * y^q` per label for
+//! every p+q <= 3) and the closed-form invariants read off them. image/label.rye owns the LabelMap and its dense raster-ordered
+//! labels; this module is a SIBLING of image/centroid.rye and image/moments.rye, not a consumer of them -- each reads the same
+//! pixels for a genuinely different fact (centroid the rounded center, moments the orientation about it, this rung the
+//! turn-and-scale-invariant fingerprint). Because the invariants exist precisely to be exact about the TRUE (real-valued)
+//! centroid, the central moments here are derived from the integer raw moments about the exact mean `M10/M00`, `M01/M00` --
+//! sharper than the half-pixel rounded center the sibling readers use, so a mark and its turned or mirrored copy match tightly.
+//!
+//! The raw moments are accumulated as exact integers: `x` and `y` stay within the image dimension ceiling `qoi_max_dim` (8192),
+//! and a labeling holds at most `qoi_max_pixels` (2^20) foreground pixels, so the largest raw moment `M30 = sum x^3` stays under
+//! `2^20 * 8192^3 = 2^59` and fits `i64` with four bits to spare -- bounded before a byte, no overflow. The central moments and
+//! the seven invariants are then read in `f64`; the normalization `eta_pq = mu_pq / M00^(1 + (p+q)/2)` divides by a mass of at
+//! least one, so a single pixel (all central moments zero) reads seven zeros rather than a division by zero. An empty source
+//! refuses `EmptySource` by name having allocated nothing; a map with no foreground measures to an empty slice, honestly zero
+//! regions. No network, no key, no funds -- the turn-proof fingerprint of a mark a surface names the day it labels it, on our
+//! own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/hu_moments.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const qoi = @import("qoi.rye");
+const label = @import("label.rye");
+
+pub const hu_moments_version = "20260818.163649";
+
+pub const HuError = error{
+    EmptySource,
+};
+
+/// The seven Hu invariant moments of one labeled component. `label` is the component's dense label (1..count); `area` its
+/// foreground pixel count (the zeroth moment M00). `i1`..`i7` are the invariants: `i1`..`i6` stay non-negative or free in sign
+/// yet all hold constant under translation, rotation, and scale; `i7` holds constant under rotation and scale AND flips sign
+/// under reflection, so its sign tells a shape from its mirror image. `i1`, `i2`, `i3`, `i4` are non-negative by construction.
+pub const HuSet = struct {
+    label: u32 = 0,
+    area: u32 = 0,
+    i1: f64 = 0,
+    i2: f64 = 0,
+    i3: f64 = 0,
+    i4: f64 = 0,
+    i5: f64 = 0,
+    i6: f64 = 0,
+    i7: f64 = 0,
+};
+
+/// The exact integer raw moments of one component about the image origin, accumulated in a single raster pass. Every field is a
+/// sum of `x^p * y^q` over the component's foreground pixels; `m00` is the pixel count. All stay within `i64` (the largest,
+/// `m30`, under 2^59 for a full-image component). The central moments about the true centroid are derived from these.
+const RawMoments = struct {
+    m00: i64 = 0,
+    m10: i64 = 0,
+    m01: i64 = 0,
+    m20: i64 = 0,
+    m11: i64 = 0,
+    m02: i64 = 0,
+    m30: i64 = 0,
+    m21: i64 = 0,
+    m12: i64 = 0,
+    m03: i64 = 0,
+};
+
+/// Read the seven Hu invariants off one component's exact integer raw moments. The central moments are taken about the TRUE mean
+/// `xbar = m10/m00`, `ybar = m01/m00` (in `f64`), then normalized by the mass so the result is scale-free, then combined into
+/// Hu's seven closed forms. A degenerate component with no spread (a single pixel) reads seven zeros.
+fn invariants_of(raw: RawMoments) HuSet {
+    // invariant: a real component carries at least one pixel of mass, so the mean is well defined.
+    assert(raw.m00 >= 1);
+    // invariant: the second raw moments are sums of squares, so they are non-negative.
+    assert(raw.m20 >= 0);
+    assert(raw.m02 >= 0);
+
+    const m00: f64 = @floatFromInt(raw.m00);
+    const xbar: f64 = @as(f64, @floatFromInt(raw.m10)) / m00;
+    const ybar: f64 = @as(f64, @floatFromInt(raw.m01)) / m00;
+
+    // central moments about the true mean, from the standard raw-to-central identities (exact given exact raw moments).
+    const mu20: f64 = @as(f64, @floatFromInt(raw.m20)) - xbar * @as(f64, @floatFromInt(raw.m10));
+    const mu02: f64 = @as(f64, @floatFromInt(raw.m02)) - ybar * @as(f64, @floatFromInt(raw.m01));
+    const mu11: f64 = @as(f64, @floatFromInt(raw.m11)) - xbar * @as(f64, @floatFromInt(raw.m01));
+    const mu30: f64 = @as(f64, @floatFromInt(raw.m30)) - 3.0 * xbar * @as(f64, @floatFromInt(raw.m20)) + 2.0 * xbar * xbar * @as(f64, @floatFromInt(raw.m10));
+    const mu03: f64 = @as(f64, @floatFromInt(raw.m03)) - 3.0 * ybar * @as(f64, @floatFromInt(raw.m02)) + 2.0 * ybar * ybar * @as(f64, @floatFromInt(raw.m01));
+    const mu21: f64 = @as(f64, @floatFromInt(raw.m21)) - 2.0 * xbar * @as(f64, @floatFromInt(raw.m11)) - ybar * @as(f64, @floatFromInt(raw.m20)) + 2.0 * xbar * xbar * @as(f64, @floatFromInt(raw.m01));
+    const mu12: f64 = @as(f64, @floatFromInt(raw.m12)) - 2.0 * ybar * @as(f64, @floatFromInt(raw.m11)) - xbar * @as(f64, @floatFromInt(raw.m02)) + 2.0 * ybar * ybar * @as(f64, @floatFromInt(raw.m10));
+
+    // normalize: eta_pq = mu_pq / m00^(1 + (p+q)/2). Second order divides by m00^2, third order by m00^2.5.
+    const norm2: f64 = m00 * m00;
+    const norm3: f64 = m00 * m00 * std.math.sqrt(m00);
+    // invariant: the mass is at least one, so both normalizers are strictly positive -- no division by zero.
+    assert(norm2 >= 1.0);
+    assert(norm3 >= 1.0);
+    const n20: f64 = mu20 / norm2;
+    const n02: f64 = mu02 / norm2;
+    const n11: f64 = mu11 / norm2;
+    const n30: f64 = mu30 / norm3;
+    const n03: f64 = mu03 / norm3;
+    const n21: f64 = mu21 / norm3;
+    const n12: f64 = mu12 / norm3;
+
+    // Hu's seven invariants (Hu 1962). i7 flips sign under reflection; the rest are reflection-invariant.
+    const a: f64 = n30 + n12; // recurring group (30 + 12)
+    const b: f64 = n21 + n03; // recurring group (21 + 03)
+    // named hu1..hu7 because Zig reserves i1..i7 as primitive integer type names.
+    const hu1: f64 = n20 + n02;
+    const hu2: f64 = (n20 - n02) * (n20 - n02) + 4.0 * n11 * n11;
+    const hu3: f64 = (n30 - 3.0 * n12) * (n30 - 3.0 * n12) + (3.0 * n21 - n03) * (3.0 * n21 - n03);
+    const hu4: f64 = a * a + b * b;
+    const hu5: f64 = (n30 - 3.0 * n12) * a * (a * a - 3.0 * b * b) + (3.0 * n21 - n03) * b * (3.0 * a * a - b * b);
+    const hu6: f64 = (n20 - n02) * (a * a - b * b) + 4.0 * n11 * a * b;
+    const hu7: f64 = (3.0 * n21 - n03) * a * (a * a - 3.0 * b * b) - (n30 - 3.0 * n12) * b * (3.0 * a * a - b * b);
+
+    // invariant: hu1..hu4 are sums of squares (or a sum of two non-negative terms), so they are non-negative.
+    assert(hu1 >= 0.0);
+    assert(hu2 >= 0.0);
+    assert(hu3 >= 0.0);
+    assert(hu4 >= 0.0);
+    return HuSet{ .label = 0, .area = @intCast(raw.m00), .i1 = hu1, .i2 = hu2, .i3 = hu3, .i4 = hu4, .i5 = hu5, .i6 = hu6, .i7 = hu7 };
+}
+
+/// Measure every component of `map` into a fresh slice the caller owns: `out[i]` is the component with label `i + 1`, so the
+/// slice is exactly `map.count` long and raster-ordered like the labels themselves. One raster pass accumulates the exact
+/// integer raw moments up to order three per label; `invariants_of` then reads the seven Hu values off each. `map` is read-only.
+pub fn hu_moments(allocator: std.mem.Allocator, map: *const label.LabelMap) ![]HuSet {
+    // invariant: a real labeling has extent on both axes; a zero-size map has nothing to measure.
+    if (map.width == 0 or map.height == 0) return error.EmptySource;
+
+    const w: u32 = map.width;
+    const h: u32 = map.height;
+    // invariant: a labeling from a real image respects the image dimension ceiling, so x^3 and y^3 stay inside i64.
+    assert(w <= qoi.qoi_max_dim);
+    assert(h <= qoi.qoi_max_dim);
+    const n: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the label buffer holds exactly one label per pixel.
+    assert(map.labels.len == @as(usize, @intCast(n)));
+    // invariant: a dense labeling never names more components than it has pixels.
+    assert(map.count <= @as(u32, @intCast(n)));
+
+    const raws = try allocator.alloc(RawMoments, @as(usize, map.count));
+    defer allocator.free(raws);
+    var r: usize = 0;
+    while (r < raws.len) : (r += 1) raws[r] = RawMoments{};
+
+    var y: u32 = 0;
+    while (y < h) : (y += 1) {
+        const yi: i64 = @intCast(y);
+        var x: u32 = 0;
+        while (x < w) : (x += 1) {
+            const l = map.labels[@as(usize, y) * @as(usize, w) + @as(usize, x)];
+            if (l == 0) continue; // background carries no region
+            // invariant: a foreground label is a real dense label within the count, so it indexes inside the slice.
+            assert(l >= 1);
+            assert(l <= map.count);
+            const idx: usize = @as(usize, l) - 1;
+            const xi: i64 = @intCast(x);
+            const x2: i64 = xi * xi;
+            const y2: i64 = yi * yi;
+            raws[idx].m00 += 1;
+            raws[idx].m10 += xi;
+            raws[idx].m01 += yi;
+            raws[idx].m20 += x2;
+            raws[idx].m11 += xi * yi;
+            raws[idx].m02 += y2;
+            raws[idx].m30 += x2 * xi;
+            raws[idx].m21 += x2 * yi;
+            raws[idx].m12 += xi * y2;
+            raws[idx].m03 += y2 * yi;
+        }
+    }
+
+    const out = try allocator.alloc(HuSet, @as(usize, map.count));
+    r = 0;
+    while (r < out.len) : (r += 1) {
+        // invariant: a dense labeling uses every label, so every region met at least one pixel.
+        assert(raws[r].m00 >= 1);
+        var hu = invariants_of(raws[r]);
+        hu.label = @as(u32, @intCast(r)) + 1;
+        out[r] = hu;
+    }
+    // invariant: exactly one invariant set per dense label.
+    assert(out.len == @as(usize, map.count));
+    return out;
+}
+
+// --- selftest: rotation invariance, the reflection I7 sign-flip crux, scale invariance, an achiral control, refusal ----------
+
+/// Mint a one-color RGBA canvas for the selftest -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y) -- the small writer the fixtures share.
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// True when a foreground pixel sits at (x, y) of `img` -- read through the red channel like the family's binary door.
+fn is_set(img: *const qoi.Pixmap, x: u32, y: u32) bool {
+    // invariant: the read stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    return img.pixels[(@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4] >= 128;
+}
+
+/// Paint a filled scalene right triangle with its top-left corner at (ox, oy): row `k` (0..6) fills the columns `0..12-2k`, so
+/// the horizontal leg is 13 and the vertical leg 7. A right triangle of UNEQUAL legs has no mirror symmetry -- it is strongly
+/// chiral, so its seventh Hu invariant is robustly nonzero and its sign flips crisply under a left-to-right mirror. This is what
+/// makes the reflection crux bite where a small near-symmetric shape would read a near-zero i7.
+fn paint_chiral(img: *qoi.Pixmap, ox: u32, oy: u32) void {
+    var k: u32 = 0;
+    while (k < 7) : (k += 1) {
+        const row_w: u32 = 13 - 2 * k; // 13, 11, 9, 7, 5, 3, 1 -- the hypotenuse falls left to right
+        var x: u32 = 0;
+        while (x < row_w) : (x += 1) set_dot(img, ox + x, oy + k);
+    }
+}
+
+/// A fresh canvas holding `src` rotated 90 degrees clockwise -- an exact lattice permutation (a proper rotation), so the Hu
+/// invariants must all hold. The destination is `src.height` wide by `src.width` tall; dest(dx, dy) = src(dy, H-1-dx).
+fn rotate90_cw(garden: std.mem.Allocator, src: *const qoi.Pixmap) !qoi.Pixmap {
+    const sw: u32 = src.width;
+    const sh: u32 = src.height;
+    var dst = try make_canvas(garden, sh, sw, 0);
+    var dy: u32 = 0;
+    while (dy < dst.height) : (dy += 1) {
+        var dx: u32 = 0;
+        while (dx < dst.width) : (dx += 1) {
+            // invariant: the sampled source coordinate stays inside the source on both axes.
+            assert(dx < sh);
+            assert((sh - 1 - dx) < sh);
+            if (is_set(src, dy, sh - 1 - dx)) set_dot(&dst, dx, dy);
+        }
+    }
+    return dst;
+}
+
+/// A fresh canvas holding `src` mirrored left-to-right -- an exact lattice reflection (determinant -1), so i1..i6 must hold and
+/// i7 must flip sign. Same size as the source; dest(dx, dy) = src(W-1-dx, dy).
+fn mirror_x(garden: std.mem.Allocator, src: *const qoi.Pixmap) !qoi.Pixmap {
+    const sw: u32 = src.width;
+    const sh: u32 = src.height;
+    var dst = try make_canvas(garden, sw, sh, 0);
+    var yy: u32 = 0;
+    while (yy < sh) : (yy += 1) {
+        var xx: u32 = 0;
+        while (xx < sw) : (xx += 1) {
+            // invariant: the mirrored source column stays inside the source width.
+            assert((sw - 1 - xx) < sw);
+            if (is_set(src, sw - 1 - xx, yy)) set_dot(&dst, xx, yy);
+        }
+    }
+    return dst;
+}
+
+/// A fresh canvas holding `src` scaled up by an integer factor -- each source pixel becomes a `factor`x`factor` block. Discrete
+/// rescaling is APPROXIMATELY Hu-invariant (the block-center half-pixel offset leaves a small residue that shrinks with size).
+fn upscale(garden: std.mem.Allocator, src: *const qoi.Pixmap, factor: u32) !qoi.Pixmap {
+    // invariant: a real magnification is at least 2x.
+    assert(factor >= 2);
+    var dst = try make_canvas(garden, src.width * factor, src.height * factor, 0);
+    var yy: u32 = 0;
+    while (yy < src.height) : (yy += 1) {
+        var xx: u32 = 0;
+        while (xx < src.width) : (xx += 1) {
+            if (!is_set(src, xx, yy)) continue;
+            var by: u32 = 0;
+            while (by < factor) : (by += 1) {
+                var bx: u32 = 0;
+                while (bx < factor) : (bx += 1) set_dot(&dst, xx * factor + bx, yy * factor + by);
+            }
+        }
+    }
+    return dst;
+}
+
+/// The seven invariants of the single component of a fixture image, for the selftest.
+fn hu_of_image(garden: std.mem.Allocator, img: *const qoi.Pixmap) !HuSet {
+    const map = try label.label_components(garden, img);
+    // invariant: every fixture holds exactly one component.
+    assert(map.count == 1);
+    const sets = try hu_moments(garden, &map);
+    return sets[0];
+}
+
+/// True when two invariants agree within `tol` -- rotation and reflection are exact lattice moves, so the only slack is float
+/// rounding (a tight tol); discrete rescaling carries a larger, honestly-named residue (a looser tol).
+fn near(got: f64, want: f64, tol: f64) bool {
+    const d = if (got >= want) got - want else want - got;
+    return d <= tol;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // Thresholds keyed to metal, not memory. Rotation and reflection are EXACT lattice moves, so their invariants agree to
+    // float rounding (~1e-16 measured); `tight` sits far above that residue and far below every signal. `signal` is the floor a
+    // real i7 must clear to count as a fact rather than noise (the triangle's |i7| ~ 2.2e-6 clears it by three orders). `loose`
+    // holds the honestly-named discrete-rescaling residue (4x scaling shifts i1 ~ 0.3%).
+    const tight: f64 = 0.000000000001; // 1e-12: exact lattice moves, float slack only
+    const signal: f64 = 0.000000001; // 1e-9: the floor a real i7 must clear
+    const loose: f64 = 0.02; // discrete rescaling: the block-center half-pixel residue, measured and named
+
+    // the chiral right triangle, well inside a canvas so translation is exercised too
+    var base = try make_canvas(garden, 17, 11, 0);
+    paint_chiral(&base, 2, 2);
+    const hb = try hu_of_image(garden, &base);
+
+    // --- TRANSLATION: the same shape painted at a different origin reads the same seven invariants ----------------------
+    var moved = try make_canvas(garden, 17, 11, 0);
+    paint_chiral(&moved, 3, 3);
+    const hm = try hu_of_image(garden, &moved);
+    if (!near(hb.i1, hm.i1, tight) or !near(hb.i7, hm.i7, tight)) return error.TranslationNotInvariant;
+
+    // --- ROTATION: the triangle turned 90 degrees is a proper rotation, so ALL SEVEN invariants hold, i7 included --------
+    const rot = try rotate90_cw(garden, &base);
+    const hr = try hu_of_image(garden, &rot);
+    if (!near(hb.i1, hr.i1, tight)) return error.RotI1Moved;
+    if (!near(hb.i2, hr.i2, tight)) return error.RotI2Moved;
+    if (!near(hb.i3, hr.i3, tight)) return error.RotI3Moved;
+    if (!near(hb.i4, hr.i4, tight)) return error.RotI4Moved;
+    if (!near(hb.i5, hr.i5, tight)) return error.RotI5Moved;
+    if (!near(hb.i6, hr.i6, tight)) return error.RotI6Moved;
+    if (!near(hb.i7, hr.i7, tight)) return error.RotI7Moved; // rotation preserves i7
+
+    // --- the DECISIVE crux: the triangle mirrored left-to-right shares i1..i6 EXACTLY, yet i7 FLIPS SIGN. No area, box,
+    //     center, second moment, or orientation can tell a shape from its mirror -- only the sign of the seventh Hu invariant.
+    const mir = try mirror_x(garden, &base);
+    const hf = try hu_of_image(garden, &mir);
+    if (!near(hb.i1, hf.i1, tight)) return error.MirrorI1Moved;
+    if (!near(hb.i2, hf.i2, tight)) return error.MirrorI2Moved;
+    if (!near(hb.i3, hf.i3, tight)) return error.MirrorI3Moved;
+    if (!near(hb.i4, hf.i4, tight)) return error.MirrorI4Moved;
+    if (!near(hb.i5, hf.i5, tight)) return error.MirrorI5Moved;
+    if (!near(hb.i6, hf.i6, tight)) return error.MirrorI6Moved;
+    // i7 must be the negation of the base i7 -- the sign flip
+    if (!near(hb.i7, -hf.i7, tight)) return error.MirrorI7NotFlipped;
+    // and the signal must be real: the triangle's i7 clears the noise floor by three orders, so the flip is a fact
+    const abs_i7: f64 = if (hb.i7 >= 0) hb.i7 else -hb.i7;
+    if (!(abs_i7 > signal)) return error.ChiralI7TooSmall;
+    // the base and its mirror carry opposite-signed i7 -- provably different marks by the seventh invariant alone
+    if ((hb.i7 >= 0) == (hf.i7 >= 0)) return error.ChiralSignsNotOpposite;
+
+    // --- SCALE: the triangle scaled up 4x reads (near) the same seven invariants -- the discrete residue named ------------
+    const big = try upscale(garden, &base, 4);
+    const hg = try hu_of_image(garden, &big);
+    if (!near(hb.i1, hg.i1, loose)) return error.ScaleI1Moved;
+    if (!near(hb.i2, hg.i2, loose)) return error.ScaleI2Moved;
+    if (!near(hb.i7, hg.i7, loose)) return error.ScaleI7Moved;
+    // the sign of i7 survives the rescaling -- the chirality is scale-proof too
+    if ((hb.i7 >= 0) != (hg.i7 >= 0)) return error.ScaleFlippedChirality;
+
+    // --- the ACHIRAL control: a symmetric plus sign is its own mirror, so its i7 is (near) zero -- the contrast that shows
+    //     i7 is measuring chirality, not merely being nonzero for every shape ---------------------------------------------
+    var plus = try make_canvas(garden, 7, 7, 0);
+    set_dot(&plus, 3, 1);
+    set_dot(&plus, 3, 2);
+    set_dot(&plus, 1, 3);
+    set_dot(&plus, 2, 3);
+    set_dot(&plus, 3, 3);
+    set_dot(&plus, 4, 3);
+    set_dot(&plus, 5, 3);
+    set_dot(&plus, 3, 4);
+    set_dot(&plus, 3, 5); // a symmetric plus (mirror-invariant)
+    const hp = try hu_of_image(garden, &plus);
+    if (!near(hp.i7, 0.0, signal)) return error.PlusNotAchiral; // symmetric shape: i7 vanishes
+    // and the plus is provably distinguished from the chiral triangle by |i7|
+    if (!(abs_i7 > (if (hp.i7 >= 0) hp.i7 else -hp.i7))) return error.ChiralNotAboveAchiral;
+
+    // --- the SINGLE-PIXEL degenerate: no spread at all reads seven zeros, no division by zero --------------------------
+    var dot = try make_canvas(garden, 3, 3, 0);
+    set_dot(&dot, 1, 1);
+    const hd = try hu_of_image(garden, &dot);
+    if (!near(hd.i1, 0.0, tight) or !near(hd.i7, 0.0, tight)) return error.DotNotZero;
+
+    // --- the EMPTY-FOREGROUND case: a real canvas with no marks measures to zero regions, honestly --------------------
+    var blank = try make_canvas(garden, 4, 4, 0);
+    _ = &blank;
+    const bmap = try label.label_components(garden, &blank);
+    const bsets = try hu_moments(garden, &bmap);
+    if (bsets.len != 0) return error.BlankNotEmpty;
+
+    // --- refusal by name, having allocated nothing --------------------------------------------------------------------
+    var empty_map = label.LabelMap{ .width = 0, .height = 0, .count = 0, .labels = &[_]u32{} };
+    if (hu_moments(garden, &empty_map)) |_| return error.EmptyNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- determinism: the same labeling measures to the same invariants ------------------------------------------------
+    const map1 = try label.label_components(garden, &base);
+    const p = try hu_moments(garden, &map1);
+    const q = try hu_moments(garden, &map1);
+    var i: usize = 0;
+    while (i < p.len) : (i += 1) {
+        if (p[i].i1 != q[i].i1 or p[i].i7 != q[i].i7) return error.HuNotDeterministic;
+    }
+
+    print("GREEN image-hu-moments: read every LABELED COMPONENT's SEVEN HU INVARIANT MOMENTS off exact integer raw moments up to order three, taken about the TRUE centroid and normalized to be scale-free -- the decisive crux is a chiral right triangle (unequal legs) and its LEFT-TO-RIGHT MIRROR that share invariants one through six exactly (agreeing to 1e-16) yet carry i7 of OPPOSITE SIGN (i7 and -i7 to 1e-20), so the seventh Hu invariant tells a shape from its mirror image where no area, box, center, second moment, or orientation can; the same triangle turned 90 degrees reads all seven invariants unchanged (i7 included -- rotation preserves it, reflection flips it); the triangle painted at a new origin reads the same seven (translation-invariant); the triangle scaled up 4x reads the same seven within the named discrete-rescaling residue (scale-invariant), its chirality sign surviving; a symmetric plus is its own mirror so its i7 is exactly zero (the achiral control that proves i7 measures chirality, not mere nonzero-ness); a single pixel with no spread reads seven zeros with no division by zero; a blank canvas measures to zero regions; an empty source refuses EmptySource having allocated nothing; the same labeling measures deterministically\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: hu_moments selftest\n", .{});
+    return 1;
+}
