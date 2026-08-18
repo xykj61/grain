@@ -24,6 +24,13 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260817.215539` -- urbit lineage DROPPED: private history re-rooted at Grain's first commit (deep debride EXECUTED, force-pushed)
+
+**Walk-back nib:** `00d7eaff2d` -- the full **38,387-commit** urbit-descended history, held **LOCALLY only** at the safety tag `pre-urbit-drop-00d7eaff2d` until git GC. **It is no longer on the remotes** (origin + xykj61 were force-pushed to the rerooted history `c7b5e614c5`).
+**Swept:** the inherited **urbit/urbit + vere lineage -- 35,486 ancestor commits** before Grain's own fork commit `2383c13c` (*"veganreyklah2 content over urbit/urbit history"*). The private history was re-rooted at `2383c13c` (made parentless via graft + `filter-branch --commit-filter git commit-tree -S`), the **2,901 kept Grain commits were all re-signed** (1,774 previously unsigned now signed), tree byte-identical (`f7b6e7e4ca`), then `origin` and `xykj61` force-pushed. **Every clone must re-clone or hard-reset.** Keaton's explicit word; he accepted the re-clone (no dependents).
+**What waits there, worth recalling:** at nib `00d7eaff2d` (local safety tag only) the full urbit-descended history reads whole -- `old/` and `vere/` snapshots, every urbit commit and merge. Gratitude to Urbit **survives in the living tree** at `gratitude/Urbit.md` + `gratitude/grain-lineage/` and the honest root-commit message. Recovery: `git reset --hard pre-urbit-drop-00d7eaff2d` locally **before GC**, or re-clone from a machine that still holds the old history. Decision + reframe: [`../.claude/rules/urbit-reframe.md`](../.claude/rules/urbit-reframe.md).
+
+
 ### `20260817.173615` -- Five breach molt debride renames queued (prep, no cut yet)
 
 **Walk-back nib:** `27e1916049`
