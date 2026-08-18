@@ -111,17 +111,9 @@ Plan: `../active-designing/20260809-234413_loadable-topologies-and-pond-silo-bri
 
 The eventual "shedding" of the elder descriptor would be a **deep git-history debride** — it stays **RED** and word-gated, needs a **cairn** first, and is not opened here. Molt is prep only.
 
-### Molt seated — old-waymark session logs (breach round `20260817`)
+### Shed complete — old-waymark session logs (waymark debride `20260818`)
 
-**Seated (`20260817`, Keaton's word — "old logs with old waymarks... prepped for shedding across all these phases").** Five waymark/module **breaches** landed this day (cairn `crux/CAIRNS.md 20260817.173615`): **DREY → DREY**, **FORA → FORA**, **LOWE → LOWE**, **WADE → WADE → WADE**, and the module **Dimeroll → Dimeroll**. These are **breaches, not full debrides** (per [`../.claude/rules/debride.md`](../.claude/rules/debride.md)): the living tree carries the new names, yet the elders still live in git history and the **dated session logs**, kept whole as the historical account of the work built under them. The full **debride** — purging the elders from *all* history — is a later **deep debride** (history rewrite + force-push, custody gate #1, Keaton's hand).
-
-This molt is the **prep toward that eventual debride**: the elder-waymark logs are seated as shed-candidates (**Class H**), the census the roster rather than a hand-typed list:
-
-```
-git ls-files 'session-logs/*' | grep -iE 'mihi|dimeroll|fuss|drey|fora'
-```
-
-**80 dated logs** carry an elder waymark in name or content (drey 19 · fora 32 · lowe 18 · dimeroll 7 · wade 6, two overlapping). They are **prep only**: the fossils stay whole on disk, git history keeps every byte, and the **Class H shred stays RED until Keaton circles it** per phase or whole. The REDS ledger and the `crux/CAIRNS.md` walk-back rows are **not** in this batch — they are the reds record and the recovery markers, kept live. Measurement beats memory: the shed census (`tools/fixtures/shed_census_scan.sh` and the grep above) is authority for membership, never recall.
+**Executed (`20260818`, Keaton's word — "do it all").** The waymark debride carried the dead elder marks out of the living tree, the dated session logs, and all git history (deep debride, custody gate #1). The ~80 old-waymark dated logs were removed rather than rewritten; the living ladders (DREY · FORA · WADE · LOWE) and the module **Dimeroll** carry only their standing names. Canonical naming truth is sealed and self-verifying in [`waymark-registry.bron`](waymark-registry.bron), so no waymark fact was lost. The REDS ledger and `crux/CAIRNS.md` walk-back rows stayed live — the reds record and recovery markers are not shed.
 
 ### Pending molt — Bron → Kyri (by molt, not rewrite · opens after JARL)
 

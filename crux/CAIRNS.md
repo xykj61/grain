@@ -24,6 +24,12 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260817.231456` -- waymark-elder debride: dead elder marks + 76 elder-named logs purged (deep debride, force-pushed)
+
+**Walk-back nib:** `d87f9d76b1` -- the last commit that still carried the elder waymark tissue whole, held **LOCALLY only** at the safety tag `pre-elder-debride-d87f9d76b1` until git GC. After the deep debride it is **no longer on the remotes** (origin + xykj61 force-pushed to the rewritten history).
+**Swept:** the dead elder tissue of five superseded marks -- **DREY, FORA, WADE, LOWE, WADE** -- and the retired module name **Dimeroll**, from the living tree (rules, LEXICON, REMEMBER, `waymark_derive.rish`, SHRED_PREP, the eight-season doc, the Cursor twin) and from **76 elder-named session logs** (`drey* · fora* · fuss* · mihi* · *dimeroll* · the transitional debride-* records`), which were **removed rather than rewritten** and then purged from **all git history** (path removal across every commit + full re-sign, force-push). The living ladders **DREY · FORA · WADE · LOWE** and the module **Dimeroll** carry only their standing names.
+**What waits there, worth recalling:** at nib `d87f9d76b1` (local safety tag only) the tree still labels every site with the elder marks and holds all 76 elder logs whole -- `git show d87f9d76b1:.claude/rules/waymark-ladders.md`, `git log --oneline d87f9d76b1`. **No canonical waymark fact was lost:** every mark ever drawn is sealed and re-derivable in [`waymark-registry.bron`](waymark-registry.bron) (witness `tools/waymark_registry_witness.rish` GREEN), which is exactly why the elders were harmless before this cut. Counsel dated testimony that named Dimeroll, the REDS ledger, and the earlier CAIRNS walk-back rows were **kept** -- decision record, reds record, recovery markers. Recovery: `git reset --hard pre-elder-debride-d87f9d76b1` locally **before GC**, or re-clone from a machine that still holds the old history.
+
 ### `20260817.215539` -- urbit lineage DROPPED: private history re-rooted at Grain's first commit (deep debride EXECUTED, force-pushed)
 
 **Walk-back nib:** `00d7eaff2d` -- the full **38,387-commit** urbit-descended history, held **LOCALLY only** at the safety tag `pre-urbit-drop-00d7eaff2d` until git GC. **It is no longer on the remotes** (origin + xykj61 were force-pushed to the rerooted history `c7b5e614c5`).
