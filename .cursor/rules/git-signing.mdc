@@ -13,6 +13,24 @@ All commits MUST be GPG-signed. The global config already sets `commit.gpgsign=t
 
 After pushing, remind the user to upload their public GPG key to GitHub if commits show as "Unverified".
 
+## The one exception — the depersonalized public seed (`seed/` → `grain-os/grain`)
+
+The private field's commits are always signed, above. The **public seed is the deliberate exception**: `seed/` is its own gitignored repo that projects the depersonalized public seed (custody gate #1, force-pushed to `grain-os/grain`), committed as the anonymous **`Grain OS <grain-os@users.noreply.github.com>`** identity with a **single Option-B commit**.
+
+That identity **has no secret key on purpose.** Signing the public seed with the maintainer's own GPG key would cryptographically **link the anonymous seed back to the maintainer** — defeating the whole point of depersonalization (`tools/sow_witness.rish` proves `IDENT_CLEAN`/`NO_PERSONAL`; a signature would undo it). So the seed commit is **unsigned**, by design, on Keaton's word (`20260817`).
+
+Concretely, the seed repo sets `commit.gpgsign false` in its **own** `seed/.git/config` (never the private field's), and the projection commits + force-pushes unsigned:
+
+```
+cd ~/grain/seed
+git config commit.gpgsign false          # local to seed/ only
+git add -A
+git commit --amend -m "Grain OS -- the initial public seed"
+git push --force origin main             # origin here IS grain-os/grain
+```
+
+This is the **only** place `commit.gpgsign` is false anywhere in the tree, and it is a privacy safeguard, not a lapse.
+
 **Living remotes** (`20260730.030553` — Keaton's word): always push **both** `origin` (GitHub `autoproject96/grain`) and `xykj61` (GitHub `xykj61/grain`) from Cursor. Codeberg stays retired from living push (Terms July 2026). Canonical count: `context/REMOTE_ROSTER.md`. **Pier write Option 2** (`20260730.034136` — Keaton's word): Cloud may meet **auth-refused** on `origin`; name it, finish the `xykj61` path, and leave `origin`/`main` sync to the home pier — never spread a home credential onto Cloud.
 
 ## Commit message hygiene — no bare `@name` in subject or body
