@@ -1,0 +1,435 @@
+//! image/min_area_rect.rye -- the MINIMUM-AREA ORIENTED BOUNDING BOX of a point set by ROTATING CALIPERS over the convex hull's
+//! edges: the tightest rectangle of ANY orientation that encloses every point, its supporting edge chosen by an EXACT integer
+//! area comparison and NO tolerance -- the oriented companion of image/regions.rye's axis-aligned bounding box, and the
+//! exact-arithmetic primitive from which ORIENTATION, EXTENT, and ELONGATION descend.
+//!
+//! Season G (Open Media Primitives) -- image/convex_hull.rye reads a shape's tightest CONVEX wrapper by Andrew's monotone chain.
+//! This rung reads the tightest RECTANGLE around that wrapper. image/regions.rye already gives every component an axis-aligned
+//! bounding box, yet an axis box is blind to a shape's true orientation: a thin bar tilted 45 degrees fills only half of its
+//! axis-aligned box, so the axis box's area, elongation, and angle all lie about the bar. The minimum-area ORIENTED rectangle
+//! reads the truth -- it hugs the bar along its own axis, so its area is the honest one, its long-to-short ratio the true
+//! elongation, and its supporting edge the true orientation. Where regions.rye answers "what upright box holds this shape?",
+//! this rung answers "what is the tightest box of any angle?" -- and for a tilted shape the second is strictly smaller.
+//!
+//! ROTATING CALIPERS on the Freeman-Shapira theorem (H. Freeman & R. Shapira 1975): the minimum-area rectangle enclosing a
+//! convex polygon has at least one side FLUSH with a polygon edge. So the construction is exact and finite -- for each hull edge,
+//! orient a caliper along it and measure the shape's extent ALONG the edge (the projection range) and PERPENDICULAR to it (the
+//! cross-product range), whose product over the edge length squared is the rectangle's area; take the edge whose rectangle is
+//! smallest. Every projection and cross product is computed EXACTLY in i64 over integer pixel coordinates, and the area
+//! comparison between two candidate edges is an EXACT i128 cross-multiplication of two rationals (area_i = N_i / D_i, with
+//! D = edge length squared) -- so the WINNING edge is chosen by an exact arithmetic fact, never a floating-point threshold. Only
+//! the reported dimensions (length, breadth, angle), irrational in general because they divide by a square root, are read in f64,
+//! exactly as image/moments.rye reads orientation from its second moments.
+//!
+//! Three descendants ride on the oriented box, each a fact the axis-aligned box cannot give:
+//!
+//!   ORIENTATION -- the angle of the supporting edge (atan2 of its direction), the true axis a tilted shape lies along. An axis
+//!   box always reports zero; this box reports the real tilt.
+//!
+//!   EXTENT -- the box's LENGTH and BREADTH (the along-edge and perpendicular spans), the honest dimensions of a tilted shape
+//!   that its axis box inflates. A 45-degree bar's oriented breadth is its true thinness; its axis-box width is much larger.
+//!
+//!   ELONGATION -- the ratio of long side to short side (>= 1), rotation-invariant. A square reads 1 at any tilt; a 2:1 bar reads
+//!   2 whether upright or turned, where the axis box's width/height ratio swings with the angle.
+//!
+//! Compose not braid. This rung OWNS only the caliper sweep and the reads over the oriented box (the exact projection/cross
+//! ranges, the i128 area comparison, the orientation, the dimensions, the elongation) -- no gather, no blend, no codec, no color,
+//! no pixel-writing loop. image/convex_hull.rye owns the hull construction and the Point type; image/contour.rye owns the ring;
+//! a caller hands this rung any point set it already holds. The minimum-area rectangle of a boundary ring is the minimum-area
+//! rectangle of its whole shape -- interior pixels are inside the boundary and so inside its hull, never needed.
+//!
+//! Everything is bounded before a byte: the box is read over a hull of at most `convex_hull_max_points` vertices (a boundary
+//! perimeter far under 2^13), and a longer input refuses through the hull's own `HullTooLong`; an empty input refuses
+//! `EmptySource`; a hull of fewer than three vertices (a point or a segment) has no rectangle and refuses `DegenerateHull` by
+//! name. Coordinates stay under `min_rect_max_coord` (2^14), so a projection or cross range stays far under 2^30 in i64, an area
+//! numerator under 2^60, and the area comparison in i128 has room to spare -- no accumulator wraps. All-or-nothing, never a
+//! half-built box. No network, no key, no funds -- the oriented wrapper a surface names the day it wants a shape's true angle,
+//! its honest dimensions, or its rotation-invariant elongation, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/min_area_rect.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const contour = @import("contour.rye");
+const convex_hull = @import("convex_hull.rye");
+const polygon = @import("polygon.rye");
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+
+pub const min_area_rect_version = "20260818.193649";
+
+/// Every hull coordinate stays under this bound, so a projection (edge dot vertex) stays under 2^30 in i64, an area numerator
+/// (projection range times cross range) under 2^60, and the i128 area cross-multiplication far under its ceiling. The same order
+/// of magnitude image/convex_hull.rye keeps for its own cross product.
+pub const min_rect_max_coord: u32 = 1 << 14;
+
+pub const MinAreaRectError = error{
+    DegenerateHull,
+};
+
+/// The minimum-area oriented bounding box. The exact area is the rational `area_num / area_den` (the denominator is the supporting
+/// edge's length squared); the dimensions `length` (along the supporting edge) and `breadth` (perpendicular) and the `angle` of
+/// the supporting edge are read in f64 because they divide by a square root. `support_i` and `support_j` name the two hull
+/// vertices whose edge the box is flush with.
+pub const MinAreaRect = struct {
+    support_i: u32,
+    support_j: u32,
+    area_num: u64,
+    area_den: u64,
+    length: f64,
+    breadth: f64,
+    angle: f64,
+};
+
+/// The squared length of the edge a->b, exact in u64. Distinct hull vertices give a strictly positive value, so it is a safe
+/// denominator. Coordinates under `min_rect_max_coord` keep each squared difference under 2^28.
+fn edge_len_sq(a: contour.Point, b: contour.Point) u64 {
+    const dx: i64 = @as(i64, b.x) - @as(i64, a.x);
+    const dy: i64 = @as(i64, b.y) - @as(i64, a.y);
+    const s: i64 = dx * dx + dy * dy;
+    // invariant: two in-image points give a squared length far under the i64 ceiling.
+    assert(s >= 0);
+    assert(s < (@as(i64, 1) << 30));
+    return @intCast(s);
+}
+
+/// TRUE when rational area N_a/D_a is STRICTLY smaller than N_b/D_b, decided by an exact i128 cross-multiplication (N_a * D_b <
+/// N_b * D_a) so no rounding ever picks the wrong supporting edge. Denominators are positive edge-length squares, so the
+/// cross-multiplication preserves the inequality's direction.
+fn area_less(na: u64, da: u64, nb: u64, db: u64) bool {
+    // invariant: an area denominator is a squared edge length of distinct vertices, strictly positive.
+    assert(da >= 1);
+    assert(db >= 1);
+    const lhs: i128 = @as(i128, na) * @as(i128, db);
+    const rhs: i128 = @as(i128, nb) * @as(i128, da);
+    return lhs < rhs;
+}
+
+/// The MINIMUM-AREA ORIENTED bounding box of any point set -- build the convex hull, then rotate a caliper along each hull edge,
+/// measuring the shape's projection range along the edge and its cross-product range perpendicular to it, and keep the edge whose
+/// rectangle (their product over the edge length squared) is exactly smallest. Refuses `EmptySource` / `HullTooLong` through the
+/// hull, and `DegenerateHull` when the hull is a single point or segment (no rectangle to measure).
+pub fn min_area_rect(allocator: std.mem.Allocator, points: []const contour.Point) !MinAreaRect {
+    const hull = try convex_hull.convex_hull(allocator, points);
+    // invariant: a rectangle needs a real hull -- at least a triangle.
+    if (hull.len < 3) return error.DegenerateHull;
+    // invariant: the hull never exceeds the point ceiling, so every accumulator below stays bounded.
+    assert(hull.len <= convex_hull.convex_hull_max_points);
+
+    var best_num: u64 = 0;
+    var best_den: u64 = 0;
+    var best_i: usize = 0;
+    var best_j: usize = 0;
+    var best_dot_range: i64 = 0;
+    var best_cross_range: i64 = 0;
+    var have_best = false;
+
+    var e: usize = 0;
+    while (e < hull.len) : (e += 1) {
+        const a = hull[e];
+        const b = hull[(e + 1) % hull.len];
+        const ex: i64 = @as(i64, b.x) - @as(i64, a.x);
+        const ey: i64 = @as(i64, b.y) - @as(i64, a.y);
+        // invariant: consecutive hull vertices are distinct, so the supporting edge has real length.
+        assert(ex != 0 or ey != 0);
+
+        var min_dot: i64 = 0;
+        var max_dot: i64 = 0;
+        var min_cross: i64 = 0;
+        var max_cross: i64 = 0;
+        var v: usize = 0;
+        while (v < hull.len) : (v += 1) {
+            const vx: i64 = @as(i64, hull[v].x) - @as(i64, a.x);
+            const vy: i64 = @as(i64, hull[v].y) - @as(i64, a.y);
+            const dot: i64 = ex * vx + ey * vy;
+            const cr: i64 = ex * vy - ey * vx;
+            // invariant: a projection of an in-image edge onto an in-image vector stays far under the i64 ceiling.
+            assert(dot < (@as(i64, 1) << 40));
+            assert(dot > -(@as(i64, 1) << 40));
+            assert(cr < (@as(i64, 1) << 40));
+            assert(cr > -(@as(i64, 1) << 40));
+            if (v == 0) {
+                min_dot = dot;
+                max_dot = dot;
+                min_cross = cr;
+                max_cross = cr;
+            } else {
+                if (dot < min_dot) min_dot = dot;
+                if (dot > max_dot) max_dot = dot;
+                if (cr < min_cross) min_cross = cr;
+                if (cr > max_cross) max_cross = cr;
+            }
+        }
+
+        const dot_range: i64 = max_dot - min_dot;
+        const cross_range: i64 = max_cross - min_cross;
+        // invariant: a range is a difference of a max and a min, never negative.
+        assert(dot_range >= 0);
+        assert(cross_range >= 0);
+        const num: u64 = @as(u64, @intCast(dot_range)) * @as(u64, @intCast(cross_range));
+        const den: u64 = edge_len_sq(a, b);
+
+        if (!have_best or area_less(num, den, best_num, best_den)) {
+            best_num = num;
+            best_den = den;
+            best_i = e;
+            best_j = (e + 1) % hull.len;
+            best_dot_range = dot_range;
+            best_cross_range = cross_range;
+            have_best = true;
+        }
+    }
+
+    // invariant: a hull of three or more vertices always seats a best edge.
+    assert(have_best);
+    const edge_len: f64 = @sqrt(@as(f64, @floatFromInt(best_den)));
+    // invariant: distinct supporting-edge vertices give a positive length, a safe divisor.
+    assert(edge_len > 0.0);
+    const a0 = hull[best_i];
+    const b0 = hull[best_j];
+    const ang: f64 = std.math.atan2(
+        @as(f64, @floatFromInt(@as(i64, b0.y) - @as(i64, a0.y))),
+        @as(f64, @floatFromInt(@as(i64, b0.x) - @as(i64, a0.x))),
+    );
+    return MinAreaRect{
+        .support_i = @intCast(best_i),
+        .support_j = @intCast(best_j),
+        .area_num = best_num,
+        .area_den = best_den,
+        .length = @as(f64, @floatFromInt(best_dot_range)) / edge_len,
+        .breadth = @as(f64, @floatFromInt(best_cross_range)) / edge_len,
+        .angle = ang,
+    };
+}
+
+/// The oriented box's exact area as an f64 -- the rational `area_num / area_den`. The exact rational lives on the struct for a
+/// caller that needs a tolerance-free comparison; this read is the human-facing number.
+pub fn rect_area(r: MinAreaRect) f64 {
+    // invariant: the area denominator is a positive squared edge length.
+    assert(r.area_den >= 1);
+    return @as(f64, @floatFromInt(r.area_num)) / @as(f64, @floatFromInt(r.area_den));
+}
+
+/// ELONGATION -- the ratio of the oriented box's long side to its short side, always >= 1, rotation-invariant. A square reads 1
+/// at any tilt; a 2:1 bar reads 2 upright or turned. In f64 as the dimensions themselves.
+pub fn elongation(r: MinAreaRect) f64 {
+    const lo = if (r.length <= r.breadth) r.length else r.breadth;
+    const hi = if (r.length >= r.breadth) r.length else r.breadth;
+    // invariant: a real oriented box has a positive short side, a safe divisor.
+    assert(lo > 0.0);
+    return hi / lo;
+}
+
+/// The AXIS-ALIGNED bounding box area of a point set, exact in u64 -- the honest baseline the oriented box improves on. Equal to
+/// the oriented box's area for an upright shape, strictly larger for a tilted one. Refuses `EmptySource` on no points.
+pub fn aabb_area(points: []const contour.Point) !u64 {
+    // invariant: an axis box of nothing is undefined.
+    if (points.len == 0) return error.EmptySource;
+    var lox: u32 = points[0].x;
+    var hix: u32 = points[0].x;
+    var loy: u32 = points[0].y;
+    var hiy: u32 = points[0].y;
+    var i: usize = 1;
+    while (i < points.len) : (i += 1) {
+        if (points[i].x < lox) lox = points[i].x;
+        if (points[i].x > hix) hix = points[i].x;
+        if (points[i].y < loy) loy = points[i].y;
+        if (points[i].y > hiy) hiy = points[i].y;
+    }
+    const w: u64 = @as(u64, hix - lox);
+    const h: u64 = @as(u64, hiy - loy);
+    return w * h;
+}
+
+/// TRUE when the oriented box's exact area is STRICTLY smaller than an axis-aligned box area, decided by the same exact i128
+/// cross-multiplication (an axis area is a rational over one). The decisive read: a tilted shape's oriented box beats its axis
+/// box; an upright shape's two areas are equal, so this reads FALSE.
+pub fn rect_area_below(r: MinAreaRect, box_area: u64) bool {
+    return area_less(r.area_num, r.area_den, box_area, 1);
+}
+
+// --- selftest: an axis-aligned rectangle's oriented box IS its axis box (equal area); a tilted shape's oriented box is STRICTLY
+//     smaller (the decisive fact regions.rye's axis box cannot make); orientation, length/breadth, elongation on a tilt;
+//     rotation-invariant elongation; degenerate hulls and refusals by name ------------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn approx(a: f64, b: f64, tol: f64) bool {
+    const d = if (a >= b) a - b else b - a;
+    return d <= tol;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- AN AXIS-ALIGNED RECTANGLE'S ORIENTED BOX IS ITS AXIS BOX: the tightest box of any angle around an upright 6x4 rectangle
+    //     is the upright rectangle itself -- exact area 24, equal to the axis-aligned bounding box, and NOT strictly below it ---
+    var axis_pts = [_]contour.Point{
+        .{ .x = 0, .y = 0 },
+        .{ .x = 6, .y = 0 },
+        .{ .x = 6, .y = 4 },
+        .{ .x = 0, .y = 4 },
+    };
+    const axis_rect = try min_area_rect(garden, axis_pts[0..]);
+    // the exact rational area is 24 -- checked as a value (num == 24 * den), independent of which tied edge reduced it
+    if (axis_rect.area_num != 24 * axis_rect.area_den) return error.AxisRectAreaWrong;
+    const axis_box = try aabb_area(axis_pts[0..]); // 6 * 4 = 24
+    if (axis_box != 24) return error.AxisBoxAreaWrong;
+    if (rect_area_below(axis_rect, axis_box)) return error.AxisRectFalselyBelowBox; // upright: equal, never below
+    // the long side is 6, the short side 4, elongation 1.5 -- read off the oriented box, orientation-free
+    if (!approx(elongation(axis_rect), 1.5, 1e-9)) return error.AxisElongationWrong;
+    const axis_long = if (axis_rect.length >= axis_rect.breadth) axis_rect.length else axis_rect.breadth;
+    const axis_short = if (axis_rect.length <= axis_rect.breadth) axis_rect.length else axis_rect.breadth;
+    if (!approx(axis_long, 6.0, 1e-9)) return error.AxisLongWrong;
+    if (!approx(axis_short, 4.0, 1e-9)) return error.AxisShortWrong;
+
+    // --- THE DECISIVE TILT CRUX -- a square tilted 45 degrees (corners (2,0)(4,2)(2,4)(0,2)) fills only HALF of its axis box: the
+    //     oriented box hugs the square (exact area 8) while the axis-aligned box is a 4x4 = 16. The oriented box is STRICTLY below
+    //     the axis box -- the fact image/regions.rye's upright box cannot make, decided by an exact i128 comparison -------------
+    var tilt_pts = [_]contour.Point{
+        .{ .x = 2, .y = 0 },
+        .{ .x = 4, .y = 2 },
+        .{ .x = 2, .y = 4 },
+        .{ .x = 0, .y = 2 },
+    };
+    const tilt_rect = try min_area_rect(garden, tilt_pts[0..]);
+    // the exact rational area is 8 -- checked as a value (num == 8 * den), tolerance-free and reduction-independent
+    if (tilt_rect.area_num != 8 * tilt_rect.area_den) return error.TiltRectExactAreaWrong;
+    const tilt_box = try aabb_area(tilt_pts[0..]); // x 0..4, y 0..4 -> 4 * 4 = 16
+    if (tilt_box != 16) return error.TiltBoxAreaWrong;
+    if (!rect_area_below(tilt_rect, tilt_box)) return error.TiltRectNotBelowBox; // the decisive strict inequality, exact
+    // a tilted SQUARE is still a square: elongation 1, whatever its tilt
+    if (!approx(elongation(tilt_rect), 1.0, 1e-9)) return error.TiltSquareNotUnitElongation;
+
+    // --- A TILTED 2:1 RECTANGLE -- corners (2,2)(4,4)(3,5)(1,3), sides along (2,2) and (-1,1): the oriented box reads its TRUE
+    //     orientation (pi/4), its honest dimensions (long 2*sqrt2, short sqrt2), and its rotation-invariant elongation (exactly
+    //     2), all of which the axis-aligned box (a 3x3 = 9) inflates and confuses ------------------------------------------
+    var bar_pts = [_]contour.Point{
+        .{ .x = 2, .y = 2 },
+        .{ .x = 4, .y = 4 },
+        .{ .x = 3, .y = 5 },
+        .{ .x = 1, .y = 3 },
+    };
+    const bar_rect = try min_area_rect(garden, bar_pts[0..]);
+    // the exact rational area is 4 -- checked as a value (num == 4 * den), reduction-independent (a tied edge may seat 8/2)
+    if (bar_rect.area_num != 4 * bar_rect.area_den) return error.BarRectExactAreaWrong;
+    const bar_box = try aabb_area(bar_pts[0..]); // x 1..4 =3, y 2..5 =3 -> 9
+    if (bar_box != 9) return error.BarBoxAreaWrong;
+    if (!rect_area_below(bar_rect, bar_box)) return error.BarRectNotBelowBox; // 4 < 9, the tilt tightens the box
+    if (!approx(elongation(bar_rect), 2.0, 1e-9)) return error.BarElongationWrong; // a true 2:1, tilt notwithstanding
+    // the supporting edge lies along (2,2) or an equivalent, so the orientation is a 45-degree multiple
+    const bar_long = if (bar_rect.length >= bar_rect.breadth) bar_rect.length else bar_rect.breadth;
+    const bar_short = if (bar_rect.length <= bar_rect.breadth) bar_rect.length else bar_rect.breadth;
+    if (!approx(bar_long, 2.0 * @sqrt(2.0), 1e-9)) return error.BarLongWrong;
+    if (!approx(bar_short, @sqrt(2.0), 1e-9)) return error.BarShortWrong;
+    // angle of the supporting edge is a multiple of pi/4 for this fixture -- sin(4*angle) folds to zero
+    if (!approx(@sin(4.0 * bar_rect.angle), 0.0, 1e-9)) return error.BarAngleNotDiagonal;
+
+    // --- ROTATION INVARIANCE of elongation: the SAME 6x4 rectangle turned 90 degrees (a 4x6) reads the SAME elongation 1.5 --
+    //     the axis box's width/height ratio would flip to its reciprocal; the oriented elongation does not ------------------
+    var turned_pts = [_]contour.Point{
+        .{ .x = 0, .y = 0 },
+        .{ .x = 4, .y = 0 },
+        .{ .x = 4, .y = 6 },
+        .{ .x = 0, .y = 6 },
+    };
+    const turned_rect = try min_area_rect(garden, turned_pts[0..]);
+    if (!approx(elongation(turned_rect), elongation(axis_rect), 1e-9)) return error.ElongationNotRotationInvariant;
+
+    // --- AN INTEGRATED RASTER CRUX -- a solid 5x5 block traced through image/label.rye and image/contour.rye: its oriented box is
+    //     upright (equal to its axis box, exact area 16 over the 1..5 corner span) and NOT strictly below it ----------------
+    var big = try make_canvas(garden, 7, 7, 0);
+    set_block(&big, 1, 1, 5, 5);
+    const bmap = try label.label_components(garden, &big);
+    const bring = try contour.trace_contour(garden, &bmap, 1);
+    const block_rect = try min_area_rect(garden, bring.points);
+    const block_box = try aabb_area(bring.points); // corners 1..5 on each axis -> 4 * 4 = 16
+    if (block_box != 16) return error.BlockBoxAreaWrong;
+    if (rect_area(block_rect) < 15.999 or rect_area(block_rect) > 16.001) return error.BlockRectAreaWrong;
+    if (rect_area_below(block_rect, block_box)) return error.BlockRectFalselyBelowBox; // an upright block's boxes are equal
+    if (!approx(elongation(block_rect), 1.0, 1e-9)) return error.BlockNotSquareBox; // a square block, a square box
+
+    // --- COMPOSE OVER image/polygon.rye: a simplified polygon's vertices seat the same oriented box as the raw ring, since the
+    //     hull of the corners is the hull of the ring -- the reader is blind to which point list names the same shape ---------
+    const bpoly = try polygon.simplify(garden, &bring, 0.5);
+    const poly_rect = try min_area_rect(garden, bpoly.vertices);
+    if (poly_rect.area_num != block_rect.area_num or poly_rect.area_den != block_rect.area_den) return error.PolyRectDiffersFromRing;
+
+    // --- DEGENERATE hulls refuse DegenerateHull: a single point, and three COLLINEAR points (whose hull is a two-point segment)
+    //     have no rectangle to measure ------------------------------------------------------------------------------------
+    var one = [_]contour.Point{.{ .x = 4, .y = 7 }};
+    if (min_area_rect(garden, one[0..])) |_| return error.OnePointNotRefused else |err| {
+        if (err != error.DegenerateHull) return error.WrongOnePointError;
+    }
+    var colinear = [_]contour.Point{
+        .{ .x = 0, .y = 0 },
+        .{ .x = 3, .y = 0 },
+        .{ .x = 6, .y = 0 },
+    };
+    if (min_area_rect(garden, colinear[0..])) |_| return error.CollinearNotRefused else |err| {
+        if (err != error.DegenerateHull) return error.WrongCollinearError;
+    }
+
+    // --- REFUSALS through the hull: an empty input refuses EmptySource, having allocated nothing ------------------------
+    const empty: []const contour.Point = &[_]contour.Point{};
+    if (min_area_rect(garden, empty)) |_| return error.EmptyNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- DETERMINISM: the same point set reads the same oriented box twice ---------------------------------------------
+    const r1 = try min_area_rect(garden, tilt_pts[0..]);
+    const r2 = try min_area_rect(garden, tilt_pts[0..]);
+    if (r1.area_num != r2.area_num or r1.area_den != r2.area_den) return error.RectNotDeterministic;
+
+    print("GREEN image-min-area-rect: the MINIMUM-AREA ORIENTED bounding box of a point set by ROTATING CALIPERS over image/convex_hull.rye's edges, the supporting edge chosen by an EXACT i128 area comparison and NO tolerance -- an upright 6x4 rectangle's oriented box IS its axis box (exact area 24, equal, never strictly below), long side 6 short side 4 elongation 1.5; the DECISIVE TILT crux -- a square turned 45 degrees fills only HALF its axis box (oriented area EXACTLY 8 over an axis-aligned 16, strictly below by exact arithmetic), the fact image/regions.rye's upright box cannot make, and a tilted square is still a square (elongation 1); a tilted 2:1 rectangle reads its TRUE orientation (a 45-degree multiple), honest dimensions (long 2*sqrt2 short sqrt2), and rotation-invariant elongation (EXACTLY 2) where its axis box (a 3x3=9) inflates all three; elongation is ROTATION-INVARIANT (a 6x4 turned to a 4x6 reads the same 1.5); an integrated raster crux -- a solid 5x5 block traced through label and contour reads an upright square box (area 16, equal to its axis box), and image/polygon.rye's simplified corners seat the IDENTICAL oriented box as the raw ring; a single point and three collinear points refuse DegenerateHull, an empty input EmptySource, each having allocated nothing; the same point set reads deterministically\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: min_area_rect selftest\n", .{});
+    return 1;
+}

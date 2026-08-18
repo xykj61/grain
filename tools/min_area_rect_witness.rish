@@ -1,0 +1,41 @@
+# tools/min_area_rect_witness.rish -- the MINIMUM-AREA ORIENTED bounding box of a point set, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/convex_hull.rye reads a shape's tightest CONVEX wrapper, and image/regions.rye gives
+# every component an axis-aligned bounding box. This rung reads the tightest RECTANGLE of ANY orientation around the hull, by
+# ROTATING CALIPERS on the Freeman-Shapira theorem: the minimum-area enclosing rectangle of a convex polygon is flush with one of
+# its edges, so the construction is exact and finite -- measure each hull edge's along and perpendicular extents, keep the
+# smallest rectangle. The winning edge is chosen by an EXACT i128 cross-multiplication of two rational areas, never a float
+# threshold; only the reported orientation, dimensions, and elongation are read in f64, as image/moments.rye reads orientation.
+#
+# The crux this witness proves on metal: an UPRIGHT 6x4 rectangle's oriented box IS its axis box (exact area 24, equal, never
+# strictly below), long side 6 short side 4 elongation 1.5; the DECISIVE TILT crux -- a square turned 45 degrees fills only HALF
+# its axis-aligned box, so the oriented box (exact area 8) is STRICTLY below the axis box (16) by exact arithmetic, the fact
+# image/regions.rye's upright box cannot make, and a tilted square is still a square (elongation 1); a tilted 2:1 rectangle reads
+# its true orientation (a 45-degree multiple), honest dimensions (long 2*sqrt2, short sqrt2), and rotation-invariant elongation
+# (exactly 2) where its axis box inflates all three; elongation is rotation-invariant (a 6x4 turned to a 4x6 reads the same 1.5);
+# an integrated raster crux over image/label.rye and image/contour.rye, and the same oriented box off image/polygon.rye's
+# simplified corners; degenerate hulls and refusals by name. No network, no key, no funds -- the oriented wrapper a surface names
+# the day it wants a shape's true angle, honest dimensions, or rotation-invariant elongation.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/min_area_rect_witness.rish
+
+say "min_area_rect: Language EN -- Season G minimum-area ORIENTED bounding box over convex_hull's edges by rotating calipers; the supporting edge chosen by an EXACT i128 area comparison, no tolerance; orientation, length/breadth extent, and elongation descend from the oriented box the axis-aligned box cannot read."
+say "min_area_rect: Style Radiant -- compose not braid: this rung owns only the caliper sweep and the reads over the oriented box; convex_hull owns the hull and the Point type, regions the axis box it improves on. No gather, no blend, no codec, no color, no pixel-writing loop -- a reading, not a render."
+say "min_area_rect: Lens TAME -- the box is read over a hull under convex_hull_max_points; coordinates under min_rect_max_coord keep a projection under 2^30 in i64 and the area comparison in i128 with room to spare; a hull of fewer than three vertices refuses DegenerateHull, an empty input EmptySource; all-or-nothing, never a half-built box; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/min_area_rect"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/min_area_rect.rye -femit-bin=${bin}"]
+assert build.ok else "min_area_rect: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "min_area_rect: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "min_area_rect: ${out}"
+
+assert selftest.out contains "GREEN image-min-area-rect" else "min_area_rect: selftest did not print the GREEN line"
+
+say "min_area_rect: GREEN -- an upright rectangle's oriented box equals its axis box (never below), while a 45-degree square fills only half its axis box (exact oriented area 8 strictly below the axis 16), the decisive fact the axis-aligned box cannot make; a tilted 2:1 rectangle reads its true 45-degree orientation, honest dimensions (long 2*sqrt2, short sqrt2), and exact elongation 2; elongation stays rotation-invariant across a 90-degree turn; a raster block reads an upright square box and image/polygon.rye's simplified corners seat the identical box; degenerate hulls and the empty input refuse by name, on metal."
