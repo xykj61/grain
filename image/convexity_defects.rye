@@ -1,0 +1,435 @@
+//! image/convexity_defects.rye -- the DEPTH OF EACH DENT below the convex hull, read point-by-point: where image/convex_hull.rye
+//! summarizes a shape's concavity as ONE solidity scalar (region area / hull area), this rung reads WHERE the shape falls away from
+//! its convex wrapper and HOW FAR, one dent at a time -- the classic convexity defects of Sklansky's hull work, the fingers-of-a-hand
+//! reader (each gap between two fingers a defect, its depth the distance the boundary sinks below the chord across the two fingertips).
+//!
+//! Season G (Open Media Primitives) -- image/contour.rye walks a component's ordered boundary ring, and image/convex_hull.rye wraps
+//! that ring in its tightest convex polygon, DROPPING every reflex corner. A hull edge that skips a reflex corner leaves a gap: the
+//! boundary, instead of running straight along the chord between two consecutive hull vertices, dips INWARD to the reflex corner and
+//! back. That gap is a convexity DEFECT. Solidity reads the total emptiness as a single fraction; a defect reads each dent's own
+//! depth, so a hand's four finger-gaps come back as four measured defects rather than one blurred number.
+//!
+//! THE CONSTRUCTION. Every hull vertex is one of the ring's own boundary pixels (the hull is built from the ring), so each hull vertex
+//! locates back to a position along the ring, and consecutive hull vertices in ring order bound a RUN of boundary pixels between them.
+//! For each hull edge A->B, the defect is the run pixel FARTHEST below the chord A-B, and its depth is that pixel's perpendicular
+//! distance to the chord. The farthest pixel is the ARGMAX of the SIGNED CROSS PRODUCT magnitude |cross(A, B, P)| -- twice the area of
+//! triangle A-B-P, exact in i64 over integer pixel coordinates, NO tolerance. Within one edge the chord length is constant, so the
+//! deepest pixel is a pure integer argmax; a run that stays flush with the chord (every cross zero -- a straight or collinear edge)
+//! carries NO defect, which is exactly why a convex block reads zero defects while a plus reads four.
+//!
+//! THE DEEPEST DEFECT is chosen ACROSS edges by an EXACT i128 comparison, never a float. The true perpendicular depth is
+//! |cross| / sqrt(len_sq(A, B)), so comparing two defects' depths compares two rationals with square-root denominators -- yet squaring
+//! both sides clears the roots: defect i is deeper than defect j exactly when `cross_i^2 * len_sq_j > cross_j^2 * len_sq_i`, an exact
+//! i128 cross-multiplication (the same discipline image/min_area_rect.rye selects its supporting edge by). So the WINNING dent is a
+//! tolerance-free arithmetic fact; only the reported depth is read in f64 (it divides by a square root), as image/moments.rye reads
+//! orientation and image/min_area_rect.rye reports its dimensions. The decisive crux turns on this: a shallow dent on a LONG chord can
+//! carry a larger raw cross magnitude than a deeper dent on a SHORT chord, so the naive cross argmax picks the wrong dent -- the exact
+//! depth comparison picks the truly deeper one.
+//!
+//! Compose not braid. This rung OWNS only the run walk, the per-edge argmax, and the exact cross-edge depth comparison. image/contour.rye
+//! owns the Point type and the ordered ring; image/convex_hull.rye owns the hull and its exact cross product; a caller hands this rung a
+//! ring it already traced and the hull it already built. No gather, no blend, no codec, no color, no pixel-writing loop.
+//!
+//! Everything is bounded before a byte: a ring of at most `convex_hull_max_points` pixels (a boundary perimeter far under 2^13), a
+//! longer ring refuses `RingTooLong`; an empty ring refuses `EmptySource`; a hull whose vertex is not a ring pixel refuses
+//! `HullVertexNotOnRing` (the hull must be this ring's own hull). The cross of two in-image edge vectors (coordinates under 2^14) stays
+//! far under 2^40 in i64, its square under 2^80, times a len_sq under 2^29 under 2^109 in i128, so no accumulator wraps. All-or-nothing,
+//! never a half-built defect list. No network, no key, no funds -- the dent reader a surface names the day it wants to measure a hand's
+//! fingers, a gear's teeth, or how deeply a shape sinks below its convex wrapper, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/convexity_defects.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const contour = @import("contour.rye");
+const convex_hull = @import("convex_hull.rye");
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+
+pub const convexity_defects_version = "20260818.201500";
+
+/// A ring is walked over at most this many pixels -- the same hard boundary ceiling image/convex_hull.rye keeps over a perimeter, so a
+/// defect list is never built unbounded. A longer ring refuses `RingTooLong`.
+pub const defects_max_points: u32 = convex_hull.convex_hull_max_points;
+
+/// A defect list is bounded by the hull's edge count, itself bounded by the ring length. This ceiling names that bound explicitly.
+pub const defects_max_count: u32 = convex_hull.convex_hull_max_points;
+
+pub const ConvexityDefectsError = error{
+    EmptySource,
+    RingTooLong,
+    HullVertexNotOnRing,
+    DefectsTooMany,
+};
+
+/// One convexity defect: the hull edge `start`->`end` that skips it, the boundary pixel `far` that sinks deepest below that chord, the
+/// EXACT twice-area `cross_area` (= |cross(start, end, far)|, the integer the deepest-pixel argmax maximized), the EXACT `chord_len_sq`
+/// (= |start-end|^2, the comparison denominator), and the perpendicular `depth` in f64 (`cross_area / sqrt(chord_len_sq)`). The exact
+/// pair `(cross_area, chord_len_sq)` is what image/min_area_rect.rye's i128 discipline compares across edges; `depth` is only reported.
+pub const Defect = struct {
+    start: contour.Point,
+    end: contour.Point,
+    far: contour.Point,
+    cross_area: i64,
+    chord_len_sq: i64,
+    depth: f64,
+};
+
+/// The SIGNED CROSS PRODUCT of edge o->a with edge o->b, exact in i64 -- the same read image/convex_hull.rye makes, twice the signed
+/// area of triangle o-a-b. Coordinates are well under 2^14, so each product stays far under 2^28 and the difference never wraps.
+fn cross(o: contour.Point, a: contour.Point, b: contour.Point) i64 {
+    const ax: i64 = @as(i64, a.x) - @as(i64, o.x);
+    const ay: i64 = @as(i64, a.y) - @as(i64, o.y);
+    const bx: i64 = @as(i64, b.x) - @as(i64, o.x);
+    const by: i64 = @as(i64, b.y) - @as(i64, o.y);
+    const c = ax * by - ay * bx;
+    // invariant: the cross product of two in-image edge vectors stays far under the i64 ceiling (coords under 2^14).
+    assert(c < (@as(i64, 1) << 40));
+    assert(c > -(@as(i64, 1) << 40));
+    return c;
+}
+
+/// The absolute value of an i64 that is known to be far from the type floor -- a defect's twice-area magnitude.
+fn abs_i64(v: i64) i64 {
+    // invariant: the input is a bounded cross magnitude, never the i64 floor, so negation is safe.
+    assert(v > -(@as(i64, 1) << 40));
+    return if (v < 0) -v else v;
+}
+
+/// The squared length of the chord a->b, exact in i64. Two distinct in-image pixels give a strictly positive, bounded value.
+fn len_sq(a: contour.Point, b: contour.Point) i64 {
+    const dx: i64 = @as(i64, a.x) - @as(i64, b.x);
+    const dy: i64 = @as(i64, a.y) - @as(i64, b.y);
+    const l = dx * dx + dy * dy;
+    // invariant: a chord between two distinct hull vertices has strictly positive squared length, bounded well under 2^29.
+    assert(l >= 1);
+    assert(l < (@as(i64, 1) << 40));
+    return l;
+}
+
+/// The ring index of the first pixel equal to `v`, or null when `v` is not a ring pixel. Every hull vertex is one of the ring's own
+/// pixels (the hull was built from the ring), so a null here means the hull is not this ring's hull -- the caller refuses.
+fn index_in_ring(ring: []const contour.Point, v: contour.Point) ?usize {
+    var i: usize = 0;
+    while (i < ring.len) : (i += 1) {
+        if (ring[i].x == v.x and ring[i].y == v.y) return i;
+    }
+    return null;
+}
+
+/// TRUE when defect `i` is strictly deeper than defect `j`, decided EXACTLY in i128: depth = cross_area / sqrt(chord_len_sq), so
+/// depth_i > depth_j iff cross_i^2 * len_sq_j > cross_j^2 * len_sq_i (both sides non-negative, the square roots cleared by squaring).
+/// Tolerance-free -- the same cross-multiplication of two rationals image/min_area_rect.rye selects its supporting edge by.
+fn deeper_than(i: Defect, j: Defect) bool {
+    const ci: i128 = @as(i128, i.cross_area);
+    const cj: i128 = @as(i128, j.cross_area);
+    const li: i128 = @as(i128, i.chord_len_sq);
+    const lj: i128 = @as(i128, j.chord_len_sq);
+    // invariant: cross magnitudes and squared lengths are bounded so both i128 products stay far under the type ceiling.
+    assert(ci >= 0);
+    assert(cj >= 0);
+    assert(li >= 1);
+    assert(lj >= 1);
+    return ci * ci * lj > cj * cj * li;
+}
+
+/// The perpendicular depth of a defect in f64 -- `cross_area / sqrt(chord_len_sq)`. Read in f64 exactly as image/moments.rye reads
+/// orientation and image/min_area_rect.rye reports its dimensions; the SELECTION of the deepest defect never touches this float.
+fn depth_of(cross_area: i64, chord_len_sq: i64) f64 {
+    // invariant: a real chord has positive squared length, so the square root is real and non-zero.
+    assert(chord_len_sq >= 1);
+    const area_f: f64 = @floatFromInt(cross_area);
+    const len_f: f64 = @floatFromInt(chord_len_sq);
+    return area_f / @sqrt(len_f);
+}
+
+/// The scan of one hull edge `a`->`b` over the ring run STRICTLY between ring indices `ai` and `bi` (cyclic): find the run pixel of
+/// greatest |cross(a, b, P)| and return it as a Defect when that maximum is strictly positive, or null when the run is empty or every
+/// run pixel is flush with the chord (a straight edge carries no dent). The run walks forward from ai+1, wrapping past the ring end, up
+/// to bi-1 -- at most one full ring, so bounded.
+fn edge_defect(ring: []const contour.Point, a: contour.Point, b: contour.Point, ai: usize, bi: usize) ?Defect {
+    // invariant: the two hull-vertex indices are real ring positions.
+    assert(ai < ring.len);
+    assert(bi < ring.len);
+    var best_cross: i64 = 0;
+    var best: contour.Point = a;
+    var found = false;
+    var steps: usize = 0;
+    var k: usize = (ai + 1) % ring.len;
+    while (k != bi) {
+        // invariant: the walk visits each ring pixel at most once, so it can never exceed the ring length.
+        assert(steps <= ring.len);
+        const p = ring[k];
+        const m = abs_i64(cross(a, b, p));
+        if (m > best_cross) {
+            best_cross = m;
+            best = p;
+            found = true;
+        }
+        steps += 1;
+        k = (k + 1) % ring.len;
+    }
+    if (!found or best_cross == 0) return null;
+    const l = len_sq(a, b);
+    return Defect{
+        .start = a,
+        .end = b,
+        .far = best,
+        .cross_area = best_cross,
+        .chord_len_sq = l,
+        .depth = depth_of(best_cross, l),
+    };
+}
+
+/// The CONVEXITY DEFECTS of a boundary `ring` given its convex `hull` -- one Defect per hull edge that skips a reflex corner, in hull
+/// order, each carrying the deepest boundary pixel below that edge's chord and its exact and f64 depth. A convex shape (the boundary
+/// hugs its hull everywhere) returns an EMPTY list; each dent returns one defect. Refuses `EmptySource` on an empty ring, `RingTooLong`
+/// past the ceiling, `HullVertexNotOnRing` when a hull vertex is not one of the ring's pixels (the hull must be this ring's own hull).
+/// A hull of fewer than three vertices (a point or a segment) has no edges and so no defects -- an empty list. The caller owns the result.
+pub fn convexity_defects(allocator: std.mem.Allocator, ring: []const contour.Point, hull: []const contour.Point) ![]Defect {
+    // invariant: a ring of nothing has no boundary to read.
+    if (ring.len == 0) return error.EmptySource;
+    // invariant: the ring stays within the hard ceiling so no walk runs unbounded.
+    if (ring.len > defects_max_points) return error.RingTooLong;
+    // a degenerate hull (a point or a single segment) bounds no area and skips no corner: no defects.
+    if (hull.len < 3) return allocator.alloc(Defect, 0);
+
+    // locate each hull vertex in the ring, then order the hull vertices by their ring position -- so consecutive entries bound a real
+    // boundary run. Insertion sort over the hull's own modest vertex count.
+    const idx = try allocator.alloc(usize, hull.len);
+    var h: usize = 0;
+    while (h < hull.len) : (h += 1) {
+        idx[h] = index_in_ring(ring, hull[h]) orelse return error.HullVertexNotOnRing;
+    }
+    var s: usize = 1;
+    while (s < idx.len) : (s += 1) {
+        const key = idx[s];
+        var t: usize = s;
+        while (t > 0 and idx[t - 1] > key) : (t -= 1) idx[t] = idx[t - 1];
+        idx[t] = key;
+    }
+
+    // one candidate defect per hull edge (consecutive ring-ordered hull vertices, closing the ring); keep only the real dents.
+    const scratch = try allocator.alloc(Defect, hull.len);
+    var n: usize = 0;
+    var e: usize = 0;
+    while (e < idx.len) : (e += 1) {
+        const ai = idx[e];
+        const bi = idx[(e + 1) % idx.len];
+        const a = ring[ai];
+        const b = ring[bi];
+        if (edge_defect(ring, a, b, ai, bi)) |d| {
+            // invariant: the defect count never exceeds the hull's edge count, itself bounded by the ring length.
+            assert(n < scratch.len);
+            scratch[n] = d;
+            n += 1;
+        }
+    }
+    // invariant: the kept defects never outnumber the hull edges scanned.
+    assert(n <= hull.len);
+    if (n > defects_max_count) return error.DefectsTooMany;
+
+    const out = try allocator.alloc(Defect, n);
+    var i: usize = 0;
+    while (i < n) : (i += 1) out[i] = scratch[i];
+    return out;
+}
+
+/// The DEEPEST defect of a list, chosen by the EXACT i128 depth comparison -- null when the list is empty (a convex shape). The winner
+/// is a tolerance-free arithmetic fact even when the deepest dent sits on a shorter chord than a shallower dent with a larger raw cross.
+pub fn deepest_defect(defects: []const Defect) ?Defect {
+    if (defects.len == 0) return null;
+    var best: Defect = defects[0];
+    var i: usize = 1;
+    while (i < defects.len) : (i += 1) {
+        if (deeper_than(defects[i], best)) best = defects[i];
+    }
+    return best;
+}
+
+/// The number of real dents -- the point-by-point concavity count image/convex_hull.rye's single solidity scalar summarizes. Zero for
+/// a convex shape, one per reflex corner otherwise.
+pub fn defect_count(defects: []const Defect) u32 {
+    // invariant: a defect list is bounded by the hull edge ceiling, so its length fits u32.
+    assert(defects.len <= defects_max_count);
+    return @intCast(defects.len);
+}
+
+// --- selftest: a convex block reads ZERO defects; an L reads ONE; a plus reads FOUR; the deepest defect is chosen by exact i128 even
+//     when the naive raw-cross argmax would pick the wrong dent; refusals; determinism ----------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// Trace the single component of a one-shape canvas to its ordered boundary ring, and build its convex hull.
+fn ring_and_hull(garden: std.mem.Allocator, img: *qoi.Pixmap) !struct { ring: contour.Contour, hull: []contour.Point } {
+    const map = try label.label_components(garden, img);
+    // invariant: each selftest fixture holds exactly one component.
+    assert(map.count == 1);
+    const ring = try contour.trace_contour(garden, &map, 1);
+    const hull = try convex_hull.convex_hull(garden, ring.points);
+    return .{ .ring = ring, .hull = hull };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- A CONVEX BLOCK READS ZERO DEFECTS: every hull edge runs flush along the block's straight side, no pixel sinks below a chord --
+    var block = try make_canvas(garden, 7, 7, 0);
+    set_block(&block, 1, 1, 5, 5);
+    const bh = try ring_and_hull(garden, &block);
+    const bdef = try convexity_defects(garden, bh.ring.points, bh.hull);
+    if (defect_count(bdef) != 0) return error.BlockHasDefects; // a convex shape hugs its hull: no dent
+    if (deepest_defect(bdef) != null) return error.BlockDeepestNotNull;
+
+    // --- AN L READS EXACTLY ONE DEFECT: its single reentrant corner is the one dent below the hull ----------------------------------
+    var lshape = try make_canvas(garden, 8, 8, 0);
+    set_block(&lshape, 1, 1, 2, 5); // the upright: cols 1..2, rows 1..5
+    set_block(&lshape, 1, 5, 4, 2); // the foot: cols 1..4, rows 5..6
+    const lh = try ring_and_hull(garden, &lshape);
+    const ldef = try convexity_defects(garden, lh.ring.points, lh.hull);
+    if (defect_count(ldef) != 1) return error.LDefectCountNotOne; // one reflex corner -> one dent
+    const ldeep = deepest_defect(ldef) orelse return error.LDeepestMissing;
+    if (ldeep.depth <= 0.0) return error.LDepthNotPositive; // the dent sinks a real distance below the chord
+    // the deepest defect's far pixel is a real ring pixel that the hull dropped (interior to the hull -- a filled dent)
+    if (index_in_ring(lh.ring.points, ldeep.far) == null) return error.LFarNotOnRing;
+
+    // --- A PLUS READS FOUR DEFECTS: each of the four reentrant corners between the arms is its own dent, the point-by-point reading
+    //     image/convex_hull.rye's single solidity scalar blurs into one number -----------------------------------------------------
+    var plus = try make_canvas(garden, 9, 9, 0);
+    set_block(&plus, 3, 1, 2, 7); // the upright bar
+    set_block(&plus, 1, 3, 7, 2); // the crossbar
+    const ph = try ring_and_hull(garden, &plus);
+    const pdef = try convexity_defects(garden, ph.ring.points, ph.hull);
+    if (defect_count(pdef) != 4) return error.PlusDefectCountNotFour; // four gaps between the four arms
+    // every plus defect is a real dent with positive depth
+    var pi: usize = 0;
+    while (pi < pdef.len) : (pi += 1) {
+        if (pdef[pi].depth <= 0.0) return error.PlusDefectFlat;
+    }
+
+    // --- THE DECISIVE EXACT-i128 CRUX, pure integer point sets independent of any rasterization: a rectangle hull with two dents on
+    //     two DIFFERENT edges -- a shallow dent (depth 3) on the LONG top chord (length 10, raw cross 30), and a deeper dent (depth 4)
+    //     on the SHORT right chord (length 5, raw cross 20). The NAIVE raw-cross argmax would pick the top dent (30 > 20); the exact
+    //     depth comparison picks the right dent (4 > 3), because 30^2 * 25 = 22500 < 20^2 * 100 = 40000 -- the winner disagrees with
+    //     the naive read, and it is a tolerance-free arithmetic fact ----------------------------------------------------------------
+    var ring_pts = [_]contour.Point{
+        .{ .x = 0, .y = 0 }, //  0  hull corner (top-left)
+        .{ .x = 5, .y = 3 }, //  1  shallow top dent: perp 3 from the y=0 chord, cross 30
+        .{ .x = 10, .y = 0 }, //  2  hull corner (top-right)
+        .{ .x = 6, .y = 3 }, //  3  deep right dent: perp 4 from the x=10 chord, cross 20
+        .{ .x = 10, .y = 5 }, //  4  hull corner (bottom-right)
+        .{ .x = 0, .y = 5 }, //  5  hull corner (bottom-left)
+    };
+    var hull_pts = [_]contour.Point{
+        .{ .x = 0, .y = 0 },
+        .{ .x = 10, .y = 0 },
+        .{ .x = 10, .y = 5 },
+        .{ .x = 0, .y = 5 },
+    };
+    const cdef = try convexity_defects(garden, ring_pts[0..], hull_pts[0..]);
+    if (defect_count(cdef) != 2) return error.CruxDefectCountNotTwo; // the top and right dents; the flush bottom/left edges skip none
+    // find the two defects by their chord
+    var top: ?Defect = null;
+    var right: ?Defect = null;
+    var ci: usize = 0;
+    while (ci < cdef.len) : (ci += 1) {
+        const d = cdef[ci];
+        if (d.chord_len_sq == 100) top = d; // the length-10 top edge
+        if (d.chord_len_sq == 25) right = d; // the length-5 right edge
+    }
+    const td = top orelse return error.CruxTopDefectMissing;
+    const rd = right orelse return error.CruxRightDefectMissing;
+    // the EXACT integer facts: the top dent carries the LARGER raw cross, the right dent the SMALLER
+    if (td.cross_area != 30) return error.CruxTopCrossWrong;
+    if (rd.cross_area != 20) return error.CruxRightCrossWrong;
+    // yet the right dent is DEEPER by exact depth (4 > 3) -- the naive raw-cross argmax (30 > 20) would be wrong here
+    if (!deeper_than(rd, td)) return error.CruxRightNotDeeperExact;
+    if (deeper_than(td, rd)) return error.CruxTopReadDeeper;
+    // the deepest defect of the whole list is the right dent, chosen by exact i128 despite its smaller raw cross
+    const cdeep = deepest_defect(cdef) orelse return error.CruxDeepestMissing;
+    if (cdeep.far.x != 6 or cdeep.far.y != 3) return error.CruxDeepestNotRightDent;
+    // the reported depths land on their exact values (both chords have perfect-square lengths): 3.0 and 4.0
+    if (td.depth < 2.999 or td.depth > 3.001) return error.CruxTopDepthWrong;
+    if (rd.depth < 3.999 or rd.depth > 4.001) return error.CruxRightDepthWrong;
+
+    // --- REFUSALS by name -----------------------------------------------------------------------------------------------------------
+    const empty_ring: []const contour.Point = &[_]contour.Point{};
+    if (convexity_defects(garden, empty_ring, hull_pts[0..])) |_| return error.EmptyNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+    // a hull vertex that is not a ring pixel: the hull is not this ring's own hull
+    var alien_hull = [_]contour.Point{
+        .{ .x = 100, .y = 100 }, // not on ring_pts
+        .{ .x = 10, .y = 0 },
+        .{ .x = 10, .y = 5 },
+    };
+    if (convexity_defects(garden, ring_pts[0..], alien_hull[0..])) |_| return error.AlienHullNotRefused else |err| {
+        if (err != error.HullVertexNotOnRing) return error.WrongAlienError;
+    }
+    // a degenerate hull (a segment) has no edges: an empty defect list, not a refusal
+    var seg_hull = [_]contour.Point{ .{ .x = 0, .y = 0 }, .{ .x = 10, .y = 0 } };
+    const seg_def = try convexity_defects(garden, ring_pts[0..], seg_hull[0..]);
+    if (defect_count(seg_def) != 0) return error.SegmentHullHasDefects;
+
+    // --- DETERMINISM: the same ring and hull read the same defects twice ------------------------------------------------------------
+    const d1 = try convexity_defects(garden, ph.ring.points, ph.hull);
+    const d2 = try convexity_defects(garden, ph.ring.points, ph.hull);
+    if (d1.len != d2.len) return error.DefectsNotDeterministicLength;
+    var di: usize = 0;
+    while (di < d1.len) : (di += 1) {
+        if (d1[di].far.x != d2[di].far.x or d1[di].far.y != d2[di].far.y) return error.DefectsNotDeterministic;
+        if (d1[di].cross_area != d2[di].cross_area) return error.DefectsCrossNotDeterministic;
+    }
+
+    print("GREEN image-convexity-defects: the DEPTH OF EACH DENT below the convex hull over image/contour.rye's ring and image/convex_hull.rye's hull, read point-by-point where solidity summarizes concavity as ONE scalar -- a convex 5x5 block reads ZERO defects (its boundary hugs its hull, every edge run flush), an L reads EXACTLY ONE (its single reentrant corner sinks below the hull chord), a plus reads FOUR (one measured dent per gap between arms, the point-by-point concavity a single solidity number blurs); the DECISIVE EXACT-i128 crux, pure integer point sets -- a rectangle hull with a shallow dent (depth 3) on the LONG top chord (length 10, raw cross 30) and a deeper dent (depth 4) on the SHORT right chord (length 5, raw cross 20): the naive raw-cross argmax picks the top dent (30 > 20), yet deeper_than's exact cross-multiplication (30^2*25=22500 < 20^2*100=40000) picks the right dent as truly deeper, and deepest_defect returns it -- the winner a tolerance-free arithmetic fact that disagrees with the float-free naive read, only the reported depth (3.0, 4.0) in f64 as image/min_area_rect.rye reports its dimensions; an empty ring refuses EmptySource, a hull vertex off the ring HullVertexNotOnRing, a degenerate segment hull reads an empty list; the same ring and hull read the same defects twice\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: convexity_defects selftest\n", .{});
+    return 1;
+}
