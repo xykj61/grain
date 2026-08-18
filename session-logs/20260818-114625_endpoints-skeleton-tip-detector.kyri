@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260818.114625
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title endpoints -- the skeleton endpoint detector, degree-one tips by an eight-template hit-or-miss pack, GREEN
+prompt baton prin recur -- pick up the running thread Lindy-first crux-first; Standfast on reds; take the next agent-doable lap; send each finished increment
+think Read Kyri + Radiant Style to stand in voice, then the operator card, the three itineraries' shape, and the top of the session-logs index. The running thread is steady: the Microkernel double-seat leads by Lindy weight yet its only ungated moves are research behind a web-fetch/license gate (surfaced, never crossed), so each lap grows the Season G open-media image family on the live green edge.
+think Standfast first. Walked crux/REDS.md -- every living row reads CLOSED or RELEASED (#80, #83, #84, #85, #87 all closed; #75 rests as custody-gated errata). No open agent-closable red, so the constructive queue is clear.
+think Crux-first among the three siblings the skeleton log named -- a corner/endpoint pack, a pruning pass, a disk-element builder. The endpoint detector is the crux: the topological floor pruning directly needs (a pruning pass sheds spurs by detecting the spur tips and peeling them, so tips must be nameable first), and the hardest-solvable-yet-tractable (designing correct hit-or-miss templates for skeleton degree is genuinely subtle). Scoped to ENDPOINTS (degree exactly one) this lap, naming branch/junction detection (degree >= 3) as the next sibling, so the round stays one keystone.
+think Read skeleton.rye and hitmiss.rye to nail the idiom. An endpoint is exactly a hit-or-miss: center plus one neighbor foreground, all seven other neighbors ground. Eight single-neighbor directions -> two base templates (an edge base, a diagonal base) each in four rotations. Their UNION (per-channel max over the eight match planes) is exactly the endpoint set -- the clean dual of how hitmiss ANDs its two fit planes by a min.
+think Traced the templates by hand before coding: base A on-neighbor straight-below rotates through N/E/S/W; base B on-neighbor below-right rotates through the four diagonals. Verified the plus (four tips detected, degree-four center dark), the line (two tips, degree-two middle dark), the diagonal (two tips through B), and the crucial distinction that a degree-ZERO isolated dot is NOT an endpoint (every template needs one live neighbor).
+obs Compose not braid held exactly: the rung owns only the endpoint template geometry (endpoint_pack: two base templates + rotate90) and the union loop; hitmiss.hit_or_miss owns each match, structure the fit gather, qoi the buffers. No new gather, blend, codec, or color -- a detection is eight hit_or_miss calls unioned. The binary meaning of a pixel (red >= 128) is read from hitmiss, one source of truth.
+obs GREEN on the first full metal run, no reds -- the hand-traced templates matched. Kept every test shape >= 2 pixels clear of the border so no erode_se clamp fakes a neighbor, the same discipline skeleton and thin used.
+obs REMEMBER repointed single-stranded: the live-edge bullet and the Git nib now name endpoints, skeleton folded to the prior-nib trail, the oldest inline nib (tophat) dropped to keep the chain lean. A one-line repoint, no cairn.
+loom witness=endpoints_witness selftest=GREEN templates=8 fg_cells=2 bg_cells=7 cruxes=edge_tip,diag_tip,isolated_zero,plus_four
+file image/endpoints.rye the endpoint detector -- detect_endpoints unions an eight-template hit-or-miss pack by a per-channel max; degree-one tips light, degree-zero isolated points do not
+file tools/endpoints_witness.rish proves it on metal with native `contains` (REDS #85 discipline), no printf-grep over interpolated output
+file image/README.md Endpoints (skeleton tips) bullet seated after the Skeleton (Golay pack) entry, branch/junction named as the sibling
+file crux/REMEMBER.md live edge + Git nib repointed to endpoints, skeleton folded to the prior trail, single-stranded
+recommend keep-going the next crux-first sibling is a BRANCH / JUNCTION detector (degree three or more -- the other half of skeleton topology), then a PRUNING pass now composable over endpoints; Season G open-media stays the live green lane while the Microkernel research rungs wait behind their fetch/license gate
