@@ -1,0 +1,274 @@
+//! image/hit_test.rye -- given a PIXEL, name the OBJECT under it: the interaction primitive a surface needs the moment a keeper
+//! taps a photo or a marketplace tile. Exact integers, NO float and NO tolerance -- the label map is the arbiter, the bounding box
+//! only a prefilter.
+//!
+//! Season G (Open Media Primitives) -- image/scene_manifest.rye reads a whole scene as one ROW PER OBJECT (each component's area,
+//! bounding box, Euler number, and hole count). A manifest lets a surface ENUMERATE every object on a page; this rung lets it
+//! SELECT the one object under a point -- the hit test a tap-handler runs. `hit_test(manifest, map, x, y)` names the object whose
+//! foreground actually covers (x, y), or refuses `NoObjectAtPoint` when the pixel is background.
+//!
+//! The DECISIVE crux this rung exists to make plain: a bounding box is NECESSARY but NOT SUFFICIENT. A point can sit inside an
+//! object's bounding box while the object itself does not cover it, and a point can sit inside TWO objects' bounding boxes while
+//! belonging to exactly one. The box is a coarse prefilter; only the label map -- one exact integer per pixel -- is the arbiter.
+//! Two facts on metal say it:
+//!
+//!   OVERLAP -- an L-shape and a small block tucked into the L's concavity are distinct 8-connected components, yet the small
+//!   block's whole bounding box sits INSIDE the L's bounding box. A point on the small block falls in BOTH boxes
+//!   (`bbox_candidate_count` reads 2), yet `hit_test` names exactly one object -- the small block -- because the label at that
+//!   pixel is unambiguous where the boxes are not.
+//!
+//!   HOLE / CONCAVITY -- the center of a ring, or the notch of the L's concavity, is BACKGROUND that sits inside the shape's own
+//!   bounding box. `bbox_contains_point` reads true, yet `hit_test` refuses `NoObjectAtPoint` -- the box claims the point the
+//!   object does not hold. The hole crux mirrors image/euler_number.rye's own solid-versus-hollow separation, read now as a hit.
+//!
+//! Compose not braid. This rung OWNS only the point-to-object decision and the bounding-box prefilter reads. image/label.rye owns
+//! the component map and its `at` arbiter; image/scene_manifest.rye owns the per-object rows (`ObjectEntry`, `object_of`); image/
+//! regions.rye owns the bounding box each row carries. No plane of its own, no pixel written -- a reading, not a render.
+//!
+//! Everything is bounded before a byte: `bbox_candidate_count` runs `components` times, itself bounded by image/label.rye's
+//! `label_max_pixels` since a component needs at least one pixel; every point read is a single array index guarded by name. A
+//! point outside the map refuses `PointOutOfBounds`; a background point refuses `NoObjectAtPoint`. All-or-nothing, never a
+//! half-answered hit. No network, no key, no funds -- the hit test a surface names the day it must turn a tap into a selection,
+//! on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/hit_test.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+
+pub const hit_test_version = "20260818.222615";
+
+pub const HitTestError = error{
+    NoObjectAtPoint,
+    PointOutOfBounds,
+};
+
+/// The raw LABEL under `(x, y)` -- the arbiter: 0 for background, 1..count for the component that covers the pixel. Refuses
+/// `PointOutOfBounds` when the point lies outside the map, having read nothing.
+pub fn object_label_at(map: *const label.LabelMap, x: u32, y: u32) !u32 {
+    // invariant: a real label map carries one label per pixel across its whole extent.
+    assert(map.labels.len == @as(usize, map.width) * @as(usize, map.height));
+    if (x >= map.width or y >= map.height) return error.PointOutOfBounds;
+    const lbl = map.at(x, y);
+    // invariant: the arbiter reports either background or a dense, real label -- never a value past the component count.
+    assert(lbl <= map.count);
+    return lbl;
+}
+
+/// TRUE when `(x, y)` falls within object `entry`'s inclusive bounding box -- the coarse PREFILTER, a necessary-not-sufficient
+/// test that a real hit test confirms against the arbiter.
+pub fn bbox_contains_point(entry: scene_manifest.ObjectEntry, x: u32, y: u32) bool {
+    // invariant: a joined object's box is well-formed on both axes, so each low corner never passes its high corner.
+    assert(entry.max_x >= entry.min_x);
+    assert(entry.max_y >= entry.min_y);
+    return x >= entry.min_x and x <= entry.max_x and y >= entry.min_y and y <= entry.max_y;
+}
+
+/// HOW MANY objects' bounding boxes contain `(x, y)` -- the count of PREFILTER candidates. It reads 2 where two boxes overlap on
+/// a point, though at most one object truly covers it; the gap between this count and the single true hit is exactly why the box
+/// cannot be the arbiter.
+pub fn bbox_candidate_count(manifest: scene_manifest.Manifest, x: u32, y: u32) u32 {
+    // invariant: the manifest holds exactly one row per component.
+    assert(manifest.objects.len == @as(usize, manifest.components));
+    // invariant: the candidate scan is bounded by the component count, itself under image/label.rye's pixel ceiling.
+    assert(manifest.components <= label.label_max_pixels);
+    var candidates: u32 = 0;
+    var i: usize = 0;
+    while (i < manifest.objects.len) : (i += 1) {
+        if (bbox_contains_point(manifest.objects[i], x, y)) candidates += 1;
+    }
+    // invariant: no more boxes can contain a point than there are objects.
+    assert(candidates <= manifest.components);
+    return candidates;
+}
+
+/// The OBJECT under `(x, y)` -- the exact answer a tap resolves to. Reads the arbiter label at the pixel and returns that
+/// component's manifest row; refuses `NoObjectAtPoint` for a background pixel and `PointOutOfBounds` for a point off the map. The
+/// manifest and the map must describe the SAME scene, which the component-count invariant checks.
+pub fn hit_test(manifest: scene_manifest.Manifest, map: *const label.LabelMap, x: u32, y: u32) !scene_manifest.ObjectEntry {
+    // invariant: the manifest and the map are the same scene -- one row per component, the same component count.
+    assert(manifest.objects.len == @as(usize, manifest.components));
+    assert(manifest.components == map.count);
+
+    const lbl = try object_label_at(map, x, y);
+    if (lbl == 0) return error.NoObjectAtPoint;
+
+    // the arbiter handed back a dense label, so the manifest lookup can only succeed -- object_of would refuse only a label past
+    // the count, which the arbiter never returns.
+    const entry = try scene_manifest.object_of(manifest, lbl);
+    // invariant: the resolved row is the object the arbiter named -- the label carried through the lookup unchanged.
+    assert(entry.label == lbl);
+    // invariant: the named object's box actually contains the hit -- a real cover implies bounding-box membership, never the
+    // reverse (the box can claim a point the object does not hold).
+    assert(bbox_contains_point(entry, x, y));
+    return entry;
+}
+
+// --- selftest: the DECISIVE box-is-a-prefilter crux (an L and a small block tucked in its concavity -- overlapping boxes, one
+//     exact hit; the concavity notch and a ring's center -- background inside a box the object does not hold); a plain hit; a
+//     point outside every box; refusals by name; determinism --------------------------------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Set one pixel back to background at (x, y) -- carve a hole in a filled shape.
+fn clear_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 0;
+    img.pixels[di + 1] = 0;
+    img.pixels[di + 2] = 0;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- THE OVERLAP SCENE -- an L (label 1) with a small 2x2 block tucked into its concavity (label 2). The L is column x=1 rows
+    //     1..5 plus row y=5 cols 1..5, so its bounding box is (1,1)-(5,5). The small block is cols 3..4 rows 2..3, its whole box
+    //     (3,2)-(4,3) INSIDE the L's box, yet not 8-adjacent to the L (the nearest L pixel, x=1, is two columns away) -- a distinct
+    //     component. First appearance orders the labels: the L's (1,1) precedes the block's (3,2), so L is label 1, block label 2 --
+    var scene = try make_canvas(garden, 8, 8, 0);
+    // the L: left column then bottom row
+    var ly: u32 = 1;
+    while (ly <= 5) : (ly += 1) set_dot(&scene, 1, ly);
+    var lx: u32 = 1;
+    while (lx <= 5) : (lx += 1) set_dot(&scene, lx, 5);
+    // the small block in the concavity
+    set_block(&scene, 3, 2, 2, 2);
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 2) return error.SceneNotTwoComponents;
+
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    if (scene_manifest.object_count(manifest) != 2) return error.ManifestNotTwoObjects;
+
+    const l_obj = try scene_manifest.object_of(manifest, 1);
+    const block_obj = try scene_manifest.object_of(manifest, 2);
+    // confirm the geometry the crux leans on: the L's box (1,1)-(5,5) strictly contains the block's box (3,2)-(4,3)
+    if (l_obj.min_x != 1 or l_obj.min_y != 1 or l_obj.max_x != 5 or l_obj.max_y != 5) return error.LBoxWrong;
+    if (block_obj.min_x != 3 or block_obj.min_y != 2 or block_obj.max_x != 4 or block_obj.max_y != 3) return error.BlockBoxWrong;
+    // the block's box lies wholly within the L's box -- the overlap the crux needs
+    if (!(bbox_contains_point(l_obj, block_obj.min_x, block_obj.min_y) and bbox_contains_point(l_obj, block_obj.max_x, block_obj.max_y))) return error.BlockBoxNotInsideLBox;
+
+    // --- CRUX 1, OVERLAP -- a point ON the small block (3,2) falls in BOTH bounding boxes (two candidates), yet hit_test names
+    //     exactly ONE object -- the block (label 2) -- because the label map is unambiguous where the boxes are not ----------------
+    if (bbox_candidate_count(manifest, 3, 2) != 2) return error.OverlapCandidatesNotTwo;
+    const hit_block = try hit_test(manifest, &map, 3, 2);
+    if (hit_block.label != 2) return error.OverlapHitNotBlock;
+    if (try object_label_at(&map, 3, 2) != 2) return error.OverlapLabelNotBlock;
+
+    // --- CRUX 2, CONCAVITY -- the notch (2,2) is BACKGROUND that sits inside the L's bounding box: bbox_contains_point reads true
+    //     for the L, one candidate, yet hit_test refuses NoObjectAtPoint -- the box claims a point the object does not hold --------
+    if (!bbox_contains_point(l_obj, 2, 2)) return error.NotchNotInLBox;
+    if (bbox_candidate_count(manifest, 2, 2) != 1) return error.NotchCandidatesNotOne;
+    if (try object_label_at(&map, 2, 2) != 0) return error.NotchNotBackground;
+    if (hit_test(manifest, &map, 2, 2)) |_| return error.NotchHitNotRefused else |err| {
+        if (err != error.NoObjectAtPoint) return error.WrongNotchError;
+    }
+
+    // --- A PLAIN HIT -- a point squarely on the L's left column (1,3) resolves to the L (label 1), one candidate, one object -----
+    if (bbox_candidate_count(manifest, 1, 3) != 1) return error.PlainCandidatesNotOne;
+    const hit_l = try hit_test(manifest, &map, 1, 3);
+    if (hit_l.label != 1) return error.PlainHitNotL;
+
+    // --- A POINT OUTSIDE EVERY BOX -- (7,0) is background in no object's bounding box: zero candidates, hit_test refuses ---------
+    if (bbox_candidate_count(manifest, 7, 0) != 0) return error.OutsideCandidatesNotZero;
+    if (hit_test(manifest, &map, 7, 0)) |_| return error.OutsideHitNotRefused else |err| {
+        if (err != error.NoObjectAtPoint) return error.WrongOutsideError;
+    }
+
+    // --- CRUX 2 AGAIN, THE RING HOLE -- a 5x5 ring's center (2,2) is background inside the ring's own bounding box: the box claims
+    //     it, the object does not hold it. A fresh scene so the ring is the only component --------------------------------------
+    var ring_img = try make_canvas(garden, 7, 7, 0);
+    set_block(&ring_img, 1, 1, 5, 5);
+    var hy: u32 = 2;
+    while (hy <= 4) : (hy += 1) {
+        var hx: u32 = 2;
+        while (hx <= 4) : (hx += 1) clear_dot(&ring_img, hx, hy);
+    }
+    const ring_map = try label.label_components(garden, &ring_img);
+    if (ring_map.count != 1) return error.RingNotOneComponent;
+    const ring_manifest = try scene_manifest.build_manifest(garden, &ring_map);
+    const ring_obj = try scene_manifest.object_of(ring_manifest, 1);
+    // the ring's center is inside its bounding box yet background -- box true, object false
+    if (!bbox_contains_point(ring_obj, 3, 3)) return error.RingCenterNotInBox;
+    if (bbox_candidate_count(ring_manifest, 3, 3) != 1) return error.RingCenterCandidatesNotOne;
+    if (try object_label_at(&ring_map, 3, 3) != 0) return error.RingCenterNotBackground;
+    if (hit_test(ring_manifest, &ring_map, 3, 3)) |_| return error.RingCenterHitNotRefused else |err| {
+        if (err != error.NoObjectAtPoint) return error.WrongRingCenterError;
+    }
+    // the ring WALL, one pixel out from center (1,3), is a real hit on the ring
+    const hit_wall = try hit_test(ring_manifest, &ring_map, 1, 3);
+    if (hit_wall.label != 1) return error.RingWallHitWrong;
+
+    // --- A POINT OFF THE MAP -- refuses PointOutOfBounds, having read nothing -------------------------------------------------
+    if (object_label_at(&map, 8, 0)) |_| return error.OffMapLabelNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapError;
+    }
+    if (hit_test(manifest, &map, 0, 8)) |_| return error.OffMapHitNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapHitError;
+    }
+
+    // --- DETERMINISM -- the same point reads the same object twice ----------------------------------------------------------
+    const d1 = try hit_test(manifest, &map, 3, 2);
+    const d2 = try hit_test(manifest, &map, 3, 2);
+    if (d1.label != d2.label) return error.HitNotDeterministic;
+
+    print("GREEN image-hit-test: given a PIXEL, name the OBJECT under it -- the label map is the arbiter, the bounding box only a prefilter, exact integers, NO float and NO tolerance -- the DECISIVE box-is-a-prefilter crux: an L (label 1, box (1,1)-(5,5)) with a small 2x2 block tucked into its concavity (label 2, box (3,2)-(4,3) wholly INSIDE the L's box) -- a point on the block (3,2) falls in BOTH bounding boxes (bbox_candidate_count reads 2) yet hit_test names exactly ONE object, the block, because the label at that pixel is unambiguous where the boxes are not; the concavity notch (2,2) is BACKGROUND inside the L's box (bbox_contains_point true, one candidate) yet hit_test refuses NoObjectAtPoint, the box claiming a point the object does not hold; a plain hit on the L's column resolves to label 1; a point in no object's box reads zero candidates and refuses; the same crux on a 5x5 ring whose center (3,3) sits inside its own box yet is the hole (box true, object false, refuses) while the wall one pixel out is a real hit; a point off the map refuses PointOutOfBounds having read nothing; the same point reads the same object twice. Compose not braid over image/label.rye (the at arbiter), image/scene_manifest.rye (the per-object rows), and image/regions.rye (the bounding box)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: hit_test selftest\n", .{});
+    return 1;
+}
