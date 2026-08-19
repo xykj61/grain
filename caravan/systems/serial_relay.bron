@@ -1,0 +1,57 @@
+# serial_relay -- a chain: a client, a relay that both asks and answers, a backend.
+#
+# Every declaration in this arc so far has been one hop wide. serial_duplex
+# gave a pair two directions; serial_two_clients gave one server two
+# clients. In both, every domain is either an asker or an answerer, and the
+# region it writes says which.
+#
+# This declaration seats the first domain that is BOTH. `relay_virt`
+# answers `client` and asks `backend` in the same run, so its two roles have
+# to live somewhere that cannot confuse them -- and here they live in
+# separate regions, which is the only place isolation is ever real.
+#
+# Read the grants and the shape falls out without a single role word being
+# declared. `ask_up` flows client -> relay; `ask_down` flows relay ->
+# backend; `answer_down` flows backend -> relay; `answer_up` flows relay ->
+# client. One domain appears on both sides of two different peers, and that
+# domain is the relay.
+#
+# `taken` is the client's own tail -- the one number about answers that the
+# client alone may write. The relay may read it and never move it, which is
+# the stall ring's law carried one hop further: the side that bears a loss
+# is the only side that can report it drained.
+#
+# The two ends share nothing. `client` and `backend` are joined by no
+# channel and hold no grant on a single region in common, so a two-hop chain
+# can never quietly collapse into one hop. What that isolation costs is
+# named honestly by the ring: a client that shares no memory with the far
+# end cannot attest the far end, and takes the author of an answer on the
+# relay's word alone.
+#
+# Read whole by `caravan/read.rye`; exercised by `caravan/relay.rye`.
+
+system serial_relay
+
+domain client
+domain relay_virt
+domain backend
+
+channel relay_virt client
+channel relay_virt backend
+
+region ask_up 4096
+region ask_down 4096
+region answer_down 4096
+region answer_up 4096
+region taken 64
+
+grant ask_up client rw
+grant ask_up relay_virt r
+grant ask_down relay_virt rw
+grant ask_down backend r
+grant answer_down backend rw
+grant answer_down relay_virt r
+grant answer_up relay_virt rw
+grant answer_up client r
+grant taken client rw
+grant taken relay_virt r
