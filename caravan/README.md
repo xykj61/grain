@@ -1,7 +1,7 @@
 # Caravan -- Process Supervision
 
 **Language:** EN
-**Last updated:** `20260819.162747` (the cycle ring lands -- a shape with no ends, and no vantage point inside it)
+**Last updated:** `20260819.164844` (the gap ring lands -- a middle falls mid-lap, and a safe restart turns out to be a silent one)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable -- process supervision ladder
 
@@ -42,6 +42,7 @@ Every ring here composes over the one before it. A later ring imports an earlier
 | stall | [`stall.rye`](stall.rye) | a consumer stops reading and the rest keep going -- a full stream taking the door its plan declared rather than one the code preferred, refusing so nothing is lost or lapsing so nothing waits, a stalled peer costing its own stream alone, and the answers that fell out of the window counted by the consumer that lost them |
 | relay | [`relay.rye`](relay.rye) | one domain both asks and answers -- the chain's shape derived from its grants rather than declared, a middle that forwards a fresh ask while its whole backlog stands unanswered, the two ends sharing no region and no channel, and the far end's name reaching the client as a claim it takes on the relay's word |
 | cycle | [`cycle.rye`](cycle.rye) | a shape with no ends -- every domain spanning exactly two peers, the one lap that closes searched out of the flow graph rather than declared, an ask travelling a full circuit and arriving back at the domain that wrote it, and no domain inside the ring able to total the lap it belongs to |
+| gap | [`gap.rye`](gap.rye) | a middle of the ring falls mid-lap -- the debt standing in the region rather than in the process, and the one thing a fall swallows that a safe restart will not redo: the bell |
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
@@ -260,6 +261,20 @@ The third question is what the ring takes away, and this is the finding worth ca
 One wall keeps the origin honest around the circuit. A passer able to author asks in its predecessor's region would make every origin its own invention, so it holds read alone there and the attempt is refused `WriteDenied`.
 
 The numbers state the claim: four asks travelled a full lap and came home, two of them placed while the first pair was still travelling, and every arc settled at four. Witness: [`tools/caravan_cycle_witness.rish`](../tools/caravan_cycle_witness.rish), GREEN on metal, both RED paths proven before the green was trusted.
+
+## Why a Safe Restart Is Also a Silent One
+
+`cycle.rye` closed the ring and every domain in it ran to completion. A ring that only ever completes has proven nothing about the day one of its middles falls, and a middle is the only kind of domain a ring has. So `gap.rye` drops `birch` mid-lap, with asks standing in the arcs on either side of it, and asks what a lap owes a domain that was absent for part of it.
+
+The reassuring half of the answer is the one `restart.rye` already taught, now read around a circuit. A lap owes a returned domain nothing at all, because the debt is written where the domain can read it. A region belongs to the declaration rather than to a process, so the asks alder placed stand exactly where they stood, the bell alder rang stands on the channel, and the arithmetic that says how many wait -- the inbound head above the onward head -- reads the same on the attempt after the fall as it would have on the attempt that fell. A middle that falls before it writes costs the ring one attempt and nothing else.
+
+The finding is sharper. **Idempotence over bytes is what makes a restart safe, and it is also what makes a restart silent.** A step written to be safe to take twice finds, on its second taking, that there is nothing left to do -- and so it does nothing, including the one thing that was actually left undone. `birch` falls after writing its onward batch and before ringing `cedar`. The bytes are whole. The attempt that returns reads its arc, finds nothing pending, reports `nothing new`, and rings nobody. `cedar` hears an unrung bell, and the lap stands one arc short of home with every ask it was carrying safely on disk. Nothing was lost, and nothing arrives.
+
+So the honest answer to whether a circuit with a hole in it settles is that **it waits at the hole, and what it waits on is the wake rather than the bytes.** The cure is to make the wake idempotent too, and `gap.rye` names the two readings rather than baking one in. Under `wake-when-moved` a pass rings its successor only when that attempt actually moved bytes, which is the strict reading a whole ring runs under, where nothing ever falls. Under `wake-every-pass` a pass rings whenever it completes, whether or not it moved anything. One line apart, and the same hole closes: **a bell rung twice costs a wasted pass; a bell never rung costs the lap.** Both readings run in the self-test, so the stall is proven rather than asserted.
+
+A pass under either reading is held to where its arc **stands** once the move is done -- the onward head level with the inbound head, at the total the plan names -- rather than to how far this attempt moved it. A restarted step that measured its own progress would read a correct no-op as a failure. And every attempt, the first and the return after it, reloads the declaration from disk and derives the returning domain's line from that read, so a domain that comes back takes its rights from the document rather than from a parent's memory of it, exactly as `rederive.rye` asks.
+
+The numbers state the claim: one fall before the write costing one attempt and two asks still home, the same fall after the write costing the whole lap at zero asks home, and that lap closing again at two under a wake that rings on every pass -- five attempts across it, each deriving its rights from five fresh reads of the declaration. Witness: [`tools/caravan_gap_witness.rish`](../tools/caravan_gap_witness.rish), GREEN on metal, both RED paths proven before the green was trusted.
 
 ## Held
 

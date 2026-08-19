@@ -305,7 +305,13 @@ pub const Task = struct {
     count: u32,
 };
 
-fn verb_word(verb: Verb) []const u8 {
+/// Renders one verb as the word a plan carries it in.
+///
+/// Exported so a supervisor asking a different question of the same ring --
+/// `gap.rye` asks what a lap owes a domain that fell mid-lap -- writes the
+/// same plan words this module reads, rather than growing a second spelling
+/// that could drift from it.
+pub fn verb_word(verb: Verb) []const u8 {
     return switch (verb) {
         .place => "place",
         .pass => "pass",

@@ -1,0 +1,113 @@
+# caravan_gap_witness.rish -- Caravan ring-under-fall witness.
+#
+# Proves what happens when a ring loses a middle mid-lap. `cycle.rye` closed
+# the shape with no ends and every domain in it ran to completion; a ring
+# that only ever completes has proven nothing about the day one of its
+# middles falls, and a middle is the only kind of domain a ring has.
+#
+# Two questions ride here, and the second is the finding.
+#
+# What does a lap owe a domain that was absent for part of it? Nothing at
+# all, when the fall lands before the write. A region belongs to the
+# declaration rather than to a process, so the asks alder placed stand where
+# they stood, the bell alder rang stands on the channel, and the attempt
+# that returns simply does the whole step. One fall, one return, two asks
+# home.
+#
+# Does a circuit with a hole in it settle, or wait for the hole to close?
+# It waits -- and the thing it waits on is not the bytes. birch falls after
+# writing its onward batch and before ringing cedar. The bytes are whole.
+# The attempt that returns reads its arc, finds nothing left to move,
+# reports nothing new, and rings nobody; cedar hears an unrung bell and the
+# lap stands one arc short of home with every ask safely on disk.
+#
+#   Idempotence over bytes is what makes a restart safe, and it is also
+#   what makes a restart silent.
+#
+# The cure is to make the wake idempotent too. `wake-when-moved` rings only
+# when this attempt moved bytes, which is the strict reading a whole ring
+# runs under; `wake-every-pass` rings whenever the pass completes. One line
+# apart, and the same hole closes: a bell rung twice costs a wasted pass, a
+# bell never rung costs the lap.
+#
+# A pass under either reading is held to where its arc STANDS once the move
+# is done rather than to how far this attempt moved it, since a restarted
+# step that measured its own progress would read a correct no-op as a
+# failure. And every attempt -- the first and the return after it -- reloads
+# the declaration from disk and derives the returning domain's line from
+# that read, so a domain that comes back takes its rights from the document
+# rather than from a parent's memory of it (`rederive.rye`).
+#
+# Both RED paths were proven on metal before this witness was written.
+# Running the mended lap under `wake-when-moved` left the returning middle
+# reporting nothing new where the plan expected a carry, and the run refused
+# with OutcomeMismatch at exit 1. Injecting the fall on every attempt rather
+# than the first alone exhausted the attempt bound and refused with
+# FellTooOften at exit 1.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep
+# over interpolated output -- REDS #76 / #85, the apostrophe loom.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_gap_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/gap"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/gap.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan gap build failed"
+
+# The shape under test is the ring already proven, unchanged. The question
+# here is about a fall rather than about a shape, so nothing new is declared.
+let decl = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_cycle.bron 2>&1"]
+assert decl.ok else "the ring declaration could not be read"
+assert decl.out contains "system serial_cycle" else "the ring declaration lost its name"
+assert decl.out contains "domains 3 -- channels 3 -- regions 4 -- grants 8" else "the ring declaration changed shape"
+assert decl.out contains "verdict: whole" else "the ring declaration did not read whole"
+
+# A fresh provisioning each run, so every index starts at zero and a bell
+# found ringing was rung by this run rather than left standing by the last.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels"]
+assert clean.ok else "the region stores and doorbells could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan gap selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan gap selftest not GREEN"
+assert test.out contains "a hole in a ring closes on the bytes, once the wake is idempotent too" else "the ring-under-fall claim did not close"
+
+# The wire, before any process runs: a fall point and a wake reading this
+# ring never named are each refused, and a fall carries a code no named
+# outcome already spends.
+assert test.out contains "the fall and wake words read back as themselves, and a fall is nobody else's code" else "the fall and wake wire did not read back"
+
+# A fall before the write: nothing moved, nothing was announced, and the
+# attempt that returns does the whole step.
+assert test.out contains "birch: fall-after-hear -- fell" else "the middle never fell before its write"
+assert test.out contains "birch: fell at fall-after-hear -- the ring now has a hole" else "the hole was never named"
+assert test.out contains "birch: carried 2 from alder onward to cedar, arc standing at 2" else "the returned middle did not carry its standing debt"
+assert test.out contains "alder: took 2 home from cedar across a hole that closed" else "the lap did not close across the hole"
+assert test.out contains "a middle that falls before it writes costs one attempt: 1 fall, 1 return, 2 asks home" else "a clean fall cost more than one attempt"
+assert test.out contains "the debt stood in the region and the bell stood on the channel -- a lap owes a returned domain nothing" else "the debt was not named as a fact of the region"
+
+# A fall after the write: the bytes are whole, the wake was swallowed, and
+# the returning attempt is too safe to notice. This is the stall, run
+# rather than asserted.
+assert test.out contains "birch: fall-after-write -- fell" else "the middle never fell after its write"
+assert test.out contains "birch: run -- nothing new" else "the returning middle found work it should not have"
+assert test.out contains "cedar: run -- Unheard" else "the successor heard a bell nobody rang"
+assert test.out contains "a middle that falls after it writes returns to nothing left to do, and so does nothing at all" else "the silent restart was not named"
+assert test.out contains "idempotence over bytes makes a restart safe, and it makes a restart silent -- 0 asks home" else "the stall did not cost the lap"
+
+# The same fall under a wake that rings on every completed pass. The
+# returning middle moves nothing, rings anyway, and the lap comes home.
+assert test.out contains "birch: carried 0 from alder onward to cedar, arc standing at 2" else "the mended pass did not ring on an empty carry"
+assert test.out contains "cedar: carried 2 from birch onward to alder, arc standing at 2" else "the last arc did not carry the lap"
+assert test.out contains "ringing on every completed pass closes the same hole: 2 asks home across it" else "the mended lap did not close"
+assert test.out contains "a bell rung twice costs a wasted pass; a bell never rung costs the lap" else "the cure was not named"
+
+# Every attempt took its rights from a fresh read of the declaration rather
+# than from what the parent recalled granting.
+assert test.out contains "5 attempts, each deriving its rights from 5 fresh reads of the declaration" else "an attempt ran on the parent's memory of the document"
+
+say "GREEN: Caravan gap witness passed."
