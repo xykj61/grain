@@ -566,7 +566,7 @@ pub const NotifyError = error{
 };
 
 /// Collects the peers one domain's own declaration wired it to.
-fn peers_of(sys: *const system.System, domain: []const u8, out: *PeerList) void {
+pub fn peers_of(sys: *const system.System, domain: []const u8, out: *PeerList) void {
     // invariant: the channel roster stays within its bound
     assert(sys.graph.channel_count <= channels.max_channels);
     // invariant: a lookup always names a domain

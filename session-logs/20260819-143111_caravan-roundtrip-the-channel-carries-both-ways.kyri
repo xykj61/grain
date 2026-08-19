@@ -1,0 +1,26 @@
+format session-log-v1
+stamp 20260819.143111
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Caravan roundtrip -- one declared channel carries both ways, and no child hears its own ring
+prompt Keaton set the loop running: read the canon, stand fast on reds, take the next agent-doable lap Lindy-first crux-first on the Microkernel Target double-seat, send each finished increment.
+think Standfast first. Every living red in crux/REDS.md reads closed -- 80, 83, 84, 85 in the table, and 81, 82, 86, 87 as closed prose notes, with the 20260819.134229 reopen-and-close of 85 the newest. Nothing booked, so constructive work is honestly open.
+think The running thread came from the newest log's recommend line: notify carried the channel one direction, and the next crux is the round trip -- a client ringing back over the same declared channel, proving a channel carries both ways rather than only from the producer.
+think Reading notify.rye closely surfaced something better than a feature. Its bell path sorts its two endpoints, so ONE channel owns ONE counted store reached the same way from either side. That is correct for a one-way delivery and latently wrong for a reply: a child that rings and then listens hears its own ring come back as news. The round trip is not an addition to notify's bell -- it is the repair of it.
+think The declaration had to move too. serial_stack grants every client read alone, so a client there can hear a delivery and can never answer one. Wrote caravan/systems/serial_duplex.bron with tx_a owned the other way (client_a rw, serial_virt r) beside rx_a, plus client_b holding rx_b alone to carry the refusals. caravan/bin/read reports it whole -- 3 domains, 2 channels, 3 regions, 6 grants, 12288 declared bytes.
+think Designed the trip as three verbs run as four ordered processes: request (write the ask, ring), reply (hear, read the ask, write the answer on the region the answerer owns, ring back), collect (hear the reply, read the answer, find the ask still standing). Both regions are load-bearing for every verb, so the four-field plan wire carries no dead field.
+think The crux is the second step. The virtualiser requests, then collects immediately, and hears Unheard on a channel it rang moments before -- two identical assignments differing only in whether the reply has happened, which is what makes the ordering claim checkable rather than narrated.
+obs GREEN on the first metal pass, and both RED paths proven before the green was trusted. Probe one sorted the bell endpoints back into one undirected store: the wire invariant caught it outright, and with that invariant bypassed the trip caught it behaviorally -- the virtualiser heard its own ring, read an empty answer, and reported bytes differed where Unheard belonged. The echo is real, and the directed bell is exactly what prevents it.
+obs Probe two neutralized the peer-list wall and taught the same lesson notify's probe taught, now recurring and holding. An unwired ring degraded from NotWired into a WriteDenied that merely happened to fire first -- a channel refusal stops being a named answer the moment the child's own list stops being consulted. Zig itself refused the first form of that probe, since dropping the check made the peer list an unused parameter.
+obs One small accretion in notify.rye: peers_of became pub, so roundtrip derives a child's peer list from the same declaration walk rather than growing a second copy of it. The notify and carry witnesses both re-ran GREEN afterward, so the change carried no regression.
+obs Chose to add no outcome codes. The trip answers entirely in carry's vocabulary plus notify's two, which keeps the closed set closed and composes rather than braids.
+loom witness=caravan_roundtrip_witness processes=7 directed_bells=4 ask_bytes=22 answer_bytes=27 refusals=3
+file caravan/roundtrip.rye the eleventh Caravan ring -- directed doorbells, a four-field plan wire, the request-reply-collect trip, and the walls a two-way channel invites
+file caravan/systems/serial_duplex.bron the declaration a reply needs -- tx_a owned the other way, client_b beside it holding rx_b alone
+file tools/caravan_roundtrip_witness.rish proves the trip on metal -- the declaration whole, the crux Unheard, both bells measured from outside the program, every check native contains per the REDS 85 loom
+file caravan/notify.rye peers_of made pub so one declaration walk serves both rings
+file caravan/README.md the ladder gains its roundtrip row and a Why the Channel Carries Both Ways section, synced in the same commit as the code
+file crux/REMEMBER.md the live edge moves to the roundtrip ring, git nib following in the work commit
+recommend keep-going -- the channel carries both ways between two children, so the next crux is the third party: a virtualiser serving two clients in one run, each answered on its own channel with neither able to hear the other's bell, which is where the Microkit shape stops being a pair and becomes a system. No key, no funds.

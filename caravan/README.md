@@ -1,7 +1,7 @@
 # Caravan -- Process Supervision
 
 **Language:** EN
-**Last updated:** `20260819.142036` (the notify ring lands -- a declared channel rings between two real processes)
+**Last updated:** `20260819.143111` (the roundtrip ring lands -- one declared channel carries both ways, and no dependent hears its own ring)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable -- process supervision ladder
 
@@ -32,6 +32,7 @@ Every ring here composes over the one before it. A later ring imports an earlier
 | exercise | [`exercise.rye`](exercise.rye) | a granted region does real work -- bytes carried across a declared share, an ungranted reach refused before any door opens, a read-only grant refused at two walls, a region that never grows by being used |
 | carry | [`carry.rye`](carry.rye) | two real processes share one declared region -- a producer writes and exits, the granted consumer starts afterward and reads back exactly those bytes, and every refusal holds inside a dependent that knows only its own argv line |
 | notify | [`notify.rye`](notify.rye) | a declared channel rings between two real processes -- every channel its own silent doorbell, the producer writing the share then ringing, the consumer hearing before it reads, an unwired pair refusing NotWired and a bell that never rang heard as Unheard |
+| roundtrip | [`roundtrip.rye`](roundtrip.rye) | one declared channel carries both ways -- two directed doorbells per channel so a ring is unhearable by the dependent that rang it, a request answered on the region the answerer owns, and the ask still standing beside the answer when it comes home |
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
@@ -114,6 +115,16 @@ Two refusals carry the ring. Two clients sharing a virtualiser hold no channel t
 
 Witness: [`tools/caravan_notify_witness.rish`](../tools/caravan_notify_witness.rish), GREEN on its first metal pass, with both RED paths proven before the green was trusted. Neutralizing the peer-list wall let `client_a` reach for a bell it was never wired to, and the refusal degraded from `NotWired` into a bare `malformed` -- which is the argument for the first wall stated plainly: without the dependent's own list, a channel refusal stops being a named answer and becomes an accident of what happens to exist on disk. Dropping the hearing check let a consumer read an undelivered region and report `bytes differed` rather than `Unheard`, so the supervisor caught it by name at exit 1.
 
+
+## Why the Channel Carries Both Ways
+
+`notify.rye` made a channel ring, and it rang one direction only. The producer wrote the share, rang the bell, and exited; the consumer heard and read. Nothing in that arc let the consumer answer -- and the bell itself could not have told the difference, since one channel owned one counted store reached the same way from either side. A dependent that rang and then listened would have heard its own ring come back as news. `roundtrip.rye` closes the loop and repairs that latent echo in the same move: every declared channel is provisioned as two doorbells, one per direction, named by sender and receiver rather than by the unordered pair.
+
+The answer travels on memory the answerer holds. `serial_stack.bron` grants every client read alone, so a client there can hear a delivery and can never answer one; `serial_duplex.bron` declares `tx_a` beside `rx_a`, owned the other way, and the reply rides it. That is the declaration doing the work again -- a round trip is a property of what the document grants, rather than a convention two programs agree on at run time.
+
+The crux is the middle step of the trip. The virtualiser requests, then collects immediately, and hears `Unheard` on a channel it rang moments before -- because a directed bell carries a ring away from its sender and never back to it. Then the client replies, and the same collect answers `carried`: the answer arrived, and the ask it answers is still standing exactly where it was written. Two identical assignments, differing only in whether the reply has happened, are what make the ordering claim checkable rather than merely narrated.
+
+Witness: [`tools/caravan_roundtrip_witness.rish`](../tools/caravan_roundtrip_witness.rish), GREEN on its first metal pass, with both RED paths proven before the green was trusted. Sorting the bell's endpoints back into one undirected store let the virtualiser hear its own ring and read an empty answer, reporting `bytes differed` where `Unheard` belonged -- the echo made visible. Neutralizing the peer-list wall degraded an unwired ring from `NotWired` into a `WriteDenied` that merely happened to fire first, which is the same lesson `notify.rye` learned, holding here.
 
 ## Held
 
