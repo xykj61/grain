@@ -1,0 +1,50 @@
+# tools/lasso_summary_witness.rish -- read a query POLYGON (a free-form LASSO) as a small DIGEST TABLE, joining lasso_partition's three
+# window-versus-crossing classes with scene_manifest's per-object area and holes, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/lasso_summary.rye is the FREE-FORM companion of image/region_summary.rye. region_summary read
+# a RECTANGLE query as a digest; lasso_partition split a POLYGON's crossing set into CONTAINED, CLIPPED, OUTSIDE and read the three class
+# SIZES. This rung reads the three class FACTS over a polygon: lasso_summary folds each object's whole-scene area and hole count into its
+# class, largest_contained names the biggest object a window select keeps. A reading over readings -- no plane of its own.
+#
+# The crux this witness proves on metal, the box-is-a-prefilter lesson lifted from the OBJECT to its AREA one shape freer: region_summary
+# classified by the tight box, the EXACT arbiter for a rectangle, so its contained_area was exact by construction, yet for a CONCAVE LASSO
+# that box test BREAKS -- a slot carves pixels from an object whose whole box and both corners lie inside the loop, so a box-based digest
+# would fold its WHOLE area into contained_area, a lie. lasso_summary classifies by the even-odd PIXEL arbiter, keeping contained_area
+# honestly EXACT by DEMOTING the concavity-carved object to CLIPPED. Proven by a full pixel scan: contained_area (8) equals the ring's
+# in-poly foreground exactly, while a clipped bar's whole area (7) exceeds its in-poly pixels (5). The three counts partition the scene;
+# largest_contained refuses NoContained when nothing is whole; a degenerate polygon refuses DegeneratePoly; determinism. No network, no
+# key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/lasso_summary_witness.rish
+
+say "lasso_summary: Language EN -- Season G polygon-to-digest; the whole-object area is EXACT for the contained class where it OVER-COUNTS for the clipped class; NO float, NO tolerance."
+say "lasso_summary: Style Radiant -- compose not braid: this rung owns only the per-class fold of area and holes; lasso_partition owns the containment set and pixel arbiter, scene_manifest owns the per-object area and holes. No plane of its own, no pixel written -- a reading over readings."
+say "lasso_summary: Lens TAME -- the classification walk runs components times under label_max_pixels; each per-class accumulator sums at most components whole areas each under the pixel ceiling; a degenerate polygon refuses DegeneratePoly, an off-map lasso is an all-OUTSIDE digest, an empty contained class refuses NoContained; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/lasso_summary"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/lasso_summary.rye -femit-bin=${bin}"]
+assert build.ok else "lasso_summary: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "lasso_summary: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "lasso_summary: ${out}"
+
+assert selftest.out contains "GREEN image-lasso-summary" else "lasso_summary: selftest did not print the GREEN line"
+assert selftest.out contains "read a query POLYGON (a free-form LASSO) as a small DIGEST TABLE" else "lasso_summary: the digest-table claim did not print"
+assert selftest.out contains "lifts the box-is-a-prefilter lesson from the OBJECT to its AREA one shape freer" else "lasso_summary: the decisive area crux did not print"
+assert selftest.out contains "keeping contained_area honestly EXACT by DEMOTING the concavity-carved object to CLIPPED" else "lasso_summary: the demotion claim did not print"
+assert selftest.out contains "a full pixel scan confirms is exactly P's in-poly foreground" else "lasso_summary: the contained-exact claim did not print"
+assert selftest.out contains "a pixel scan finds only 5 of Q's pixels inside (its two middle carved by the slot)" else "lasso_summary: the pixel-scan over-count did not print"
+assert selftest.out contains "touched_area (19) equals the true in-poly foreground exactly, the bound tight at the no-clip fixed point" else "lasso_summary: the fixed-point tightness did not print"
+assert selftest.out contains "largest_contained refuses NoContained" else "lasso_summary: the NoContained refusal did not print"
+assert selftest.out contains "the three counts partition the scene" else "lasso_summary: the partition claim did not print"
+assert selftest.out contains "largest_contained names P the biggest window keep" else "lasso_summary: the largest-contained keep did not print"
+assert selftest.out contains "a two-vertex degenerate polygon refuses DegeneratePoly having read nothing" else "lasso_summary: the DegeneratePoly refusal did not print"
+assert selftest.out contains "the same lasso reads the same digest twice" else "lasso_summary: determinism did not print"
+
+say "lasso_summary: GREEN on metal -- a polygon read as a small digest table, the whole-object area exact for the contained class and an over-count for the clipped class, so touched_area is an upper bound tight only where nothing is clipped; the concavity moves area between classes where a box test would lie; refusals by name, determinism. Season G open-media."
