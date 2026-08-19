@@ -1,0 +1,49 @@
+# caravan_carry_witness.rish -- Caravan carry witness.
+#
+# Proves a declared region carries real bytes between two real PROCESSES:
+# the virtualiser writes in its own address space and exits, the granted
+# client starts afterward and reads back exactly those bytes, and every
+# refusal holds inside a dependent that knows only its own argv line -- a
+# read-only grant refusing WriteDenied, an ungranted region refusing
+# NotGranted both ways, an execute grant never growing a write door, and
+# the store standing at exactly its declared length after all of it.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep
+# over interpolated output -- REDS #76 / #85, the apostrophe loom.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_carry_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/carry"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/carry.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan carry build failed"
+
+# A fresh provisioning each run, so an arriving byte is this run's byte and
+# never a message left behind by the last one.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions"]
+assert clean.ok else "the region stores could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan carry selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan carry selftest not GREEN"
+assert test.out contains "two processes share one declared region" else "the selftest did not close the loop"
+assert test.out contains "the plan wire is closed" else "the plan vocabulary was not proven closed"
+assert test.out contains "36 bytes crossed rx_a between two processes" else "no bytes crossed the seam"
+assert test.out contains "serial_virt: produce rx_a -- carried" else "the producing process did not carry"
+assert test.out contains "client_a: consume rx_a -- carried" else "the consuming process did not receive"
+assert test.out contains "client_a: overwrite rx_a -- WriteDenied" else "a read-only grant wrote across the seam"
+assert test.out contains "client_b: reach rx_a -- NotGranted" else "an ungranted region opened in a dependent process"
+assert test.out contains "client_a: reach rx_b -- NotGranted" else "isolation held only one way"
+assert test.out contains "client_a: overwrite font_rom -- WriteDenied" else "an execute grant grew a write door"
+assert test.out contains "rx_a still stands at 4096 bytes" else "a region grew by being used"
+
+# The two halves of the carry ran as separate processes, so the message on
+# disk is what the first one actually left for the second.
+let landed = run ["sh" "-c" "head -c 36 caravan/.regions/rx_a.bin"]
+assert landed.ok else "the carried message could not be read back from the store"
+assert landed.out contains "serial: carried across the boot seam" else "the store holds something other than what was carried"
+
+say "GREEN: Caravan carry witness passed."

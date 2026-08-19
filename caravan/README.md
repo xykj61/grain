@@ -1,7 +1,7 @@
 # Caravan -- Process Supervision
 
 **Language:** EN
-**Last updated:** `20260819.134659` (the boot ring lands -- the supervisor spawns its dependents from the declaration)
+**Last updated:** `20260819.140726` (the carry ring lands -- two real processes share one declared region)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable -- process supervision ladder
 
@@ -30,6 +30,7 @@ Every ring here composes over the one before it. A later ring imports an earlier
 | roster | [`roster.rye`](roster.rye) | the supervisor's dependent table derived from the declaration -- every domain a dependent, every grant one capability, agreement with the map proven over the whole cross product |
 | boot | [`boot.rye`](boot.rye) | the supervisor spawns its dependents from the declaration -- every declared domain started in order, handed exactly its own grants, restarted on the same line, a wider document starting nothing |
 | exercise | [`exercise.rye`](exercise.rye) | a granted region does real work -- bytes carried across a declared share, an ungranted reach refused before any door opens, a read-only grant refused at two walls, a region that never grows by being used |
+| carry | [`carry.rye`](carry.rye) | two real processes share one declared region -- a producer writes and exits, the granted consumer starts afterward and reads back exactly those bytes, and every refusal holds inside a dependent that knows only its own argv line |
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
@@ -90,6 +91,18 @@ Two walls stand behind every refusal, and the order is the design. The **first**
 W xor X arrives here as a plain consequence rather than a new rule. A grant spelling `rx` carries no write bit, so `font_rom` reads and runs for both clients and refuses `WriteDenied` by the same path that refuses an ordinary reader -- execute never grows a write door, since the grammar three rings back cannot say both at once. And the extent is the honest part: a region is provisioned at its declared length and never grows, so a reach leaving that extent answers `PastEnd` while the store on disk stays exactly as wide as it was declared. Static allocation is the seL4 teaching this ring inherits -- what a system may touch is settled before it runs.
 
 Witness: [`tools/caravan_exercise_witness.rish`](../tools/caravan_exercise_witness.rish), GREEN on its first metal pass, with both walls proven RED in turn. Dropping the capability check made `client_a` reach a buffer it was never granted, and the self-test named it. Dropping the door's own write check let a read-only grant reach the host, where `NotOpenForWriting` caught it and the invariant aborted at exit 134 -- the second wall doing exactly the work it was built for.
+
+## Why the Carry Has To Cross a Real Seam
+
+`exercise.rye` made a grant do work, and both halves of that proof lived inside one process, holding two capability lists side by side in the same memory. That proved the policy. It could never prove the seam. `carry.rye` carries the same bytes between two real processes: the supervisor provisions each declared region, derives the table, and starts one dependent per assignment, each holding nothing beyond its own argv line. The producer writes and exits; the consumer starts afterward, opens the same region through its own read-only grant, and reads back what the first process left there. Two address spaces, one declared share, and thirty-six bytes arrive.
+
+Order becomes load-bearing rather than merely tidy. The carry works precisely because declaration order is startup order -- the document names `serial_virt` before `client_a`, so the producer has already exited by the time the consumer opens the region. A startup sequence written into a document is a real sequence at run time.
+
+Judgment stays with the supervisor. A dependent attempts exactly the one task its plan word names and reports the outcome as an exit code from a closed vocabulary -- carried, `NotGranted`, `WriteDenied`, `PastEnd`, or bytes that differed -- and the parent asserts which code it expected. A component never grades itself, so a dependent that quietly did nothing cannot report success. The plan wire is closed the same way the capability wire is: four verbs cross it, and `destroy:rx_a` or a plan naming no region reads as no task at all.
+
+The dependent learns nothing it was not handed. It never reads the declaration, so it has no idea how wide a region is; it takes the extent from the provisioned store, which the parent sized at exactly the declared length and which never grows by being used. Static allocation settles the bound before anything runs -- the seL4 teaching, arriving here as the reason a dependent needs no document to stay inside its region.
+
+Witness: [`tools/caravan_carry_witness.rish`](../tools/caravan_carry_witness.rish), GREEN on its first metal pass, with both RED paths proven before the green was trusted. Asking the producer to open the region without writing left the consumer reading zeros, and it reported `bytes differed` rather than success. Letting a dependent grant itself a capability its argv never carried let `client_b` reach `rx_a`, and the supervisor caught it by name at exit 1 -- which is what makes the refusals in the green run statements about the dependent's own line rather than about the file system.
 
 ## Held
 
