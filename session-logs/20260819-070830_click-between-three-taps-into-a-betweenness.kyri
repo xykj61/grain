@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260819.070830
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title click_between -- the THREE-CLICK BETWEENNESS relation, reading-order vs spatial betweenness differ in kind
+prompt baton prin recur -- pick up the running Season G scene-read thread, Standfast on reds first, take the next agent-doable lap Lindy-first crux-first, send it as its own signed round
+think Read KYRI.md and RADIANT_STYLE.md to be Kyri in Radiant Style, then crux/REMEMBER.md, then crux/REDS.md for the Standfast check.
+think Standfast: every living REDS row (80, 81, 82, 83, 84, 85, 86, 87) reads Closed or Released; #75 stays errata behind a custody gate (a history rewrite, Keaton's hand), not agent-closable. The line is clear of open agent-closable reds -- new work is licensed.
+think The running thread is the SCENE-READ open-media family (211 image modules). REMEMBER's NEXT line named the crux-first candidate first: a THREE-CLICK BETWEENNESS read, the ternary companion to the just-landed click_nearest. Lindy-first (deepens the durable interaction floor), crux-first (a genuinely new gesture, not another two-click variant).
+think Read image/click_nearest.rye (the just-landed sibling), image/click_order.rye (click_group_min_rank -- the reading register) and image/click_bounds.rye (click_bbox -- the spatial register) to confirm the exact APIs to compose over, plus tools/click_nearest_witness.rish as the witness template.
+think Designed the crux: reading-order betweenness (a STRICT TOTAL order, so exactly one of any three groups is the reading-middle) and spatial bounding-box betweenness (a PARTIAL relation over the plane, so a triple can have NO spatial middle) are DIFFERENT relations that differ in KIND -- the box-is-a-prefilter lesson lifted to a TRIPLE, a span box OVER-CLAIMING the between the order names exactly.
+think Built ONE 20x20 scene of six singletons yielding all four verdicts by choosing triples: P rank 1, V a TALL block rank 2, W rank 3, Q rank 4, S rank 5, R rank 6 (ranks keyed on top edge then left edge, all keys distinct so deterministic). BOTH (P,Q,R diagonal), ORDER_ONLY (P,V,R -- V's tall box escapes the span on x), SPACE_ONLY (V,S,W -- the tall V stretches the span box down over S while the page order seats S after both), NEITHER (P,R,Q). Plus totality of the reading middle over P,Q,R and NO spatial middle at all over Q,R,S (an L).
+obs GREEN on the FIRST full metal run, no code reds -- the scene arithmetic held exactly as designed.
+obs TAME style check flagged four compound asserts (assert(a and b)) -- split each into two positive asserts; re-ran the check GREEN and the witness re-GREEN. The lint caught it, not memory (the reds-first what-caught-it column pattern).
+obs width-check exit 0, plain 7-bit ASCII (ASCII-first), living-docs lint GREEN, living-card ASCII witness GREEN (operator card and REDS pure ASCII, mojibake control caught).
+obs Council rota this lap: item 1, foundations/README.md -- the why beneath the work at two scales (foundation briefs and vision documents), the compass return habit, the far-horizon layered stack. Kept in view for the long run.
+loom witness=click_between_witness checks=9 result=green first_metal_run=green code_reds=0
+file image/click_between.rye the THREE-CLICK BETWEENNESS module: between_in_order, between_in_space, classify_betweenness (both/order_only/space_only/neither), composing click_order and click_bounds
+file tools/click_between_witness.rish the on-metal witness: build, selftest, native contains asserts over the four verdicts, the two kind-parting shapes, refusals, determinism
+file image/README.md docs-sync: the Click-between entry seated after Click-nearest, naming the two-register crux and the total-vs-partial parting
+file crux/REMEMBER.md live edge appended with the click_between rung (212 image modules stand), NEXT line refreshed toward a four-click read now that betweenness landed, Git nib refreshed in the same work commit
+recommend keep-going the click family's arity climb has one crux-first rung left (a four-click collinearity/alignment or two-anchor which-side read) before the marquee-facts and click-then-cluster-facts reads; the Microkernel study and the real-photo top-hat still wait on fetch/license gates, surfaced not crossed
