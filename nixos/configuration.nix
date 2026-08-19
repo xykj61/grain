@@ -67,12 +67,15 @@
   # ai-jail's bwrap recipe ro-binds /opt; keep an empty dir so NixOS boots still satisfy it.
   systemd.tmpfiles.rules = [ "d /opt 0755 root root -" ];
 
-  # gnupg — signed commits · bubblewrap — enclosure study · s6 — supervision study
+  # gnupg -- signed commits - bubblewrap -- enclosure study - s6 -- supervision study
   # (s6 packages do not replace systemd as PID 1 on this host)
-  # gh — GitHub handshake (guide 2) · claude-code — agent on the pier (guide 2)
-  # vim · neovim · kakoune — steward editors (seated 20260808)
+  # gh -- GitHub handshake (guide 2) - claude-code -- agent on the pier (guide 2)
+  # vim - neovim - kakoune -- steward editors (seated 20260808)
+  # perl - python3 -- outer-terminal interpreters for legacy scripts the pier
+  #   still carries (the .sh/.pl fold to Rishi is in motion, not complete);
+  #   available in the outer host shell for Keaton to run (seated 20260819).
   environment.systemPackages = with pkgs; [
-    jq       # JSON — live stream-json rendering for the season loop (agent visibility)
+    jq       # JSON -- live stream-json rendering for the season loop (agent visibility)
     tmux
     git
     git-filter-repo  # deep-debride: safe history rewrite (git filter-repo)
@@ -86,6 +89,8 @@
     bubblewrap
     s6
     s6-rc
+    perl     # outer-terminal Perl -- legacy scripts pending the Rishi fold
+    python3  # outer-terminal Python 3 -- absent on the pier before this (REDS memory)
   ];
 
   system.stateVersion = "26.05";
