@@ -1,0 +1,297 @@
+//! image/click_bounds.rye -- the CLICK-THEN-BOUNDS read: turn ONE point into a whole-group selection, then read that group's FRAME -- the tight
+//! axis-aligned box that encloses every object the click grabs, the group-handle rectangle a surface draws the moment a tap must show, zoom to, or
+//! drag the whole thing it selected. A click names at most ONE object (the hit test), yet its EXPANSION reaches the whole connected cluster (image/
+//! click_expand.rye), so the frame a click reads is the GROUP's frame, not the clicked object's. Exact integers, NO float and NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/click_expand.rye bridges the first selector (image/hit_test.rye, a POINT names the ONE object under
+//! it) to the newest morphology (image/selection_neighbors.rye, GROW a selection to its fixed point, the whole connected cluster), so a click
+//! becomes a whole-group SELECTION -- an ascending `[]u32`. image/selection_bounds.rye reads a selection's EXTENT: `selection_bbox` unions every
+//! selected object's box into the group-handle frame. This rung JOINS the two ends -- it runs a click through the expand into a whole-group
+//! selection, then reads that selection's bounding box -- so one tap answers "where is the whole thing I just grabbed." A reading over readings --
+//! no plane of its own, no pixel written. It is the EXACT COMPLEMENT of image/click_facts.rye: where that rung reads how much a click grabs (its
+//! FACTS through image/selection_summary.rye), this rung reads how far a click grabs (its FRAME through image/selection_bounds.rye).
+//!
+//! The DECISIVE crux is the box-is-a-prefilter lesson lifted to the CLICK: a click's frame is the GROUP's frame, and the group frame OVER-CLAIMS.
+//! It is strictly larger than the clicked object's own box (the group spreads past the one thing under the cursor), and it can wholly hold an
+//! object that is NOT in the clicked group at all -- so a surface may draw the group-handle box, yet the box is never the membership test; the
+//! label set the click expands to is. Three facts on metal say it, over a 3-object chain (A a corner-L box (1,1)-(5,5), B box (4,4)-(8,8), C box
+//! (7,7)-(11,11)) whose boxes overlap 1-2 and 2-3 yet never 1-3 (box overlap is not transitive), a lone dot E inside the chain's frame yet in no
+//! chain box, and a far singleton block D:
+//!
+//!   THE CLICK'S FRAME IS THE GROUP'S, AND IT OVER-CLAIMS. A click on corner-L A expands to {1,2,3}, and `click_bbox` frames the box (1,1)-(11,11)
+//!   -- strictly larger on both axes than A's own box (1,1)-(5,5). `click_frame_contains` reads TRUE for the lone dot E, though E is NOT in the
+//!   clicked group -- E's box sits geometrically inside the union of the three chain members. The group-handle box holds an object the tap never
+//!   grabbed; only the label set the click expands to says what is chosen.
+//!
+//!   ANY OBJECT OF A GROUP FRAMES THE SAME BOX. Clicking A, B, or C all expand to the SAME cluster {1,2,3}, so all three frame the identical box
+//!   (1,1)-(11,11) -- exactly image/selection_bounds.rye's read over the cluster's membership, cross-checked. Where you click within a group never
+//!   changes the frame; that is the group-handle a surface promises.
+//!
+//!   A MISS FRAMES NOTHING. A click in a gap -- the background inside a corner-L's own bounding box -- expands to the EMPTY selection, which has no
+//!   extent, so `click_bbox` refuses `EmptyClick` by name (there is no frame of nothing) while `click_frame_area` reads zero -- image/hit_test.rye's
+//!   box-is-a-prefilter crux carried to the frame, where a phantom click frames no phantom group.
+//!
+//! Compose not braid. This rung OWNS only the join of the two ends -- the click-to-group-to-frame pipeline. image/click_expand.rye owns the
+//! seed-and-expand (`click_expand`); image/selection_bounds.rye owns the box union and the reads over it (`selection_bbox`, `box_contains_object`,
+//! `Box`); image/scene_manifest.rye owns the per-object rows. No matrix recomputed, no pixel re-read, no box re-derived.
+//!
+//! Everything is bounded before a byte: a click expands to at most the whole scene (image/click_expand.rye's own bound under image/label.rye's
+//! `label_max_pixels`), and the union runs the group length times, each a single manifest lookup and four min/max updates. A point off the map
+//! refuses `PointOutOfBounds` through the expand, having read nothing; a background point is a valid MISS, never an error -- a keeper may click
+//! empty canvas. A containment query naming a label past the component count refuses `BadTarget`, having read nothing. No network, no key, no funds
+//! -- the click-to-frame read a surface names the day a tap must show the whole box it grabbed.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/click_bounds.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const hit_test = @import("hit_test.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const click_expand = @import("click_expand.rye");
+const selection_bounds = @import("selection_bounds.rye");
+
+pub const click_bounds_version = "20260819.060029";
+
+pub const ClickBoundsError = error{
+    EmptyClick,
+    BadTarget,
+};
+
+/// The group-handle FRAME a click grabs -- expand the click to its whole group (image/click_expand.rye), then union every group object's box into
+/// the tight enclosing box (image/selection_bounds.rye). A member of a multi-object group frames the whole GROUP's box, strictly larger than the
+/// clicked object's own; a MISS has no extent, so it refuses `EmptyClick` by name (there is no frame of nothing). Refuses `PointOutOfBounds` off
+/// the map through the expand, having read nothing.
+pub fn click_bbox(garden: std.mem.Allocator, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, x: u32, y: u32) !selection_bounds.Box {
+    // invariant: the graph, the manifest, and the map all describe the SAME scene -- one component count.
+    assert(graph.components == map.count);
+    assert(manifest.components == map.count);
+
+    const group = try click_expand.click_expand(garden, graph, map, x, y);
+    if (group.len == 0) return error.EmptyClick;
+    // invariant: a hit's group holds at least the clicked object and no more than the scene.
+    assert(group.len >= 1);
+    assert(group.len <= @as(usize, graph.components));
+
+    const box = try selection_bounds.selection_bbox(manifest, group);
+    // invariant: the frame is well-formed on both axes -- a real union of real boxes.
+    assert(box.max_x >= box.min_x);
+    assert(box.max_y >= box.min_y);
+    return box;
+}
+
+/// The pixel AREA of the group-handle frame a click grabs -- the frame's inclusive width times height. A member of a multi-object group reads the
+/// GROUP frame's area, which covers the background between the members and so exceeds the sum of their own areas; a MISS reads zero, since the empty
+/// selection has no extent. Refuses `PointOutOfBounds` off the map, having read nothing.
+pub fn click_frame_area(garden: std.mem.Allocator, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, x: u32, y: u32) !u64 {
+    // invariant: the graph, the manifest, and the map all describe the SAME scene.
+    assert(graph.components == map.count);
+    assert(manifest.components == map.count);
+
+    const group = try click_expand.click_expand(garden, graph, map, x, y);
+    if (group.len == 0) return 0;
+    const box = try selection_bounds.selection_bbox(manifest, group);
+    const a = box.area();
+    // invariant: the frame's area is at least one pixel for a real frame, and never exceeds the whole canvas.
+    assert(a >= 1);
+    assert(a <= @as(u64, map.width) * @as(u64, map.height));
+    return a;
+}
+
+/// TRUE when object `target`'s box sits WHOLLY inside the group-handle frame a click grabs -- the read that makes the over-claim plain: it can be
+/// TRUE for an object the clicked group never held, whenever that object lies geometrically inside the union of the group's members. Containment of
+/// a box, never membership of the group. A MISS frames nothing, so it holds nothing: reads FALSE. Refuses `BadTarget` for a label past the count,
+/// `PointOutOfBounds` off the map, having read nothing.
+pub fn click_frame_contains(garden: std.mem.Allocator, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, x: u32, y: u32, target: u32) !bool {
+    // invariant: the graph, the manifest, and the map all describe the SAME scene.
+    assert(graph.components == map.count);
+    assert(manifest.components == map.count);
+    // the target must name a real, dense object before any box is read.
+    if (target == 0 or target > manifest.components) return error.BadTarget;
+
+    const group = try click_expand.click_expand(garden, graph, map, x, y);
+    if (group.len == 0) return false;
+    const box = try selection_bounds.selection_bbox(manifest, group);
+    const entry = try scene_manifest.object_of(manifest, target);
+    return selection_bounds.box_contains_object(box, entry);
+}
+
+// --- selftest: the DECISIVE click-frames-the-group over-claim crux over a 3-object CHAIN (A corner-L box (1,1)-(5,5), B corner-L box (4,4)-(8,8),
+//     C corner-L box (7,7)-(11,11)) whose boxes overlap 1-2 and 2-3 yet never 1-3, a lone dot E inside the chain's frame yet in no chain box, and a
+//     far singleton block D. Clicking A frames the whole group's box (1,1)-(11,11), larger than A's own and holding the UNSELECTED dot E; clicking
+//     A, B, or C frames the SAME box; a click in A's interior frames nothing and refuses a box ---------------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a corner bracket-L hugging TOP-LEFT: a vertical arm down column `x0` from `y0` to `y1`, and a horizontal arm along row `y0` from `x0`
+/// to `x1`. Its inclusive box is (x0,y0)-(x1,y1); its bottom-right corner stays empty so a box overlap there touches no pixel, and its interior
+/// stays background inside its own box -- the miss the click crux needs.
+fn set_corner_l(img: *qoi.Pixmap, x0: u32, y0: u32, x1: u32, y1: u32) void {
+    // invariant: the arms run in the positive direction and stay inside the buffer.
+    assert(x1 >= x0);
+    assert(y1 >= y0);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) set_dot(img, x0, yy);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) set_dot(img, xx, y0);
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// TRUE when two inclusive boxes match on all four corners -- a small helper the selftest leans on to compare a click's frame against a selection's.
+fn same_box(a: selection_bounds.Box, b: selection_bounds.Box) bool {
+    return a.min_x == b.min_x and a.min_y == b.min_y and a.max_x == b.max_x and a.max_y == b.max_y;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- BUILD THE SCENE on a 13x13 canvas: A corner-L box (1,1)-(5,5) label 1, B corner-L box (4,4)-(8,8) label 2, C corner-L box (7,7)-(11,11)
+    //     label 3 (the chain, one cluster {1,2,3}); E a lone 1x1 dot at (2,9) label 4 (INSIDE the chain's frame (1,1)-(11,11) yet its box overlaps
+    //     no chain box, so it is its OWN singleton cluster); D a 2x2 block box (0,11)-(1,12) label 5 (a far singleton). Raster labeling numbers by
+    //     first-encountered pixel top-to-bottom: A row1, B row4, C row7, E row9, D row11 -- so A=1, B=2, C=3, E=4, D=5 -----------------------------
+    var scene = try make_canvas(garden, 13, 13, 0);
+    set_corner_l(&scene, 1, 1, 5, 5); // A: corner-L, box (1,1)-(5,5)
+    set_corner_l(&scene, 4, 4, 8, 8); // B: corner-L, box (4,4)-(8,8)
+    set_corner_l(&scene, 7, 7, 11, 11); // C: corner-L, box (7,7)-(11,11)
+    set_dot(&scene, 2, 9); // E: lone dot, box (2,9)-(2,9), inside the chain's frame yet in no chain box
+    set_block(&scene, 0, 11, 2, 2); // D: 2x2 block, box (0,11)-(1,12), a far singleton
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 5) return error.SceneNotFiveComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+
+    // confirm the CHAIN and the lone dot the crux leans on: 1-2 and 2-3 overlap, 1-3 does NOT; {1,2,3} one cluster; E (4) and D (5) singletons; E's
+    // box sits inside the chain's frame yet overlaps no chain box
+    if (!(try scene_graph.relation_of(graph, 1, 2)).boxes_overlap) return error.OneTwoNotOverlapping;
+    if (!(try scene_graph.relation_of(graph, 2, 3)).boxes_overlap) return error.TwoThreeNotOverlapping;
+    if ((try scene_graph.relation_of(graph, 1, 3)).boxes_overlap) return error.OneThreeFalselyOverlapping;
+    if (try overlap_clusters.same_cluster(clustering, 1, 3) != true) return error.ChainNotOneCluster;
+    if (try overlap_clusters.same_cluster(clustering, 1, 4) != false) return error.ENotSingleton;
+    if (try overlap_clusters.same_cluster(clustering, 1, 5) != false) return error.DNotSingleton;
+    const e_obj = try scene_manifest.object_of(manifest, 4);
+    if (e_obj.min_x != 2 or e_obj.min_y != 9 or e_obj.max_x != 2 or e_obj.max_y != 9) return error.EDotBoxWrong;
+    if ((try scene_graph.relation_of(graph, 3, 4)).boxes_overlap) return error.EFalselyOverlapsC;
+
+    // --- THE CLICK'S FRAME IS THE GROUP'S, AND IT OVER-CLAIMS -- a click on corner-L A's left column (1,3) lands on A alone (box (1,1)-(5,5)), yet
+    //     frames the whole group's box (1,1)-(11,11), strictly larger on both axes, and that frame wholly holds the UNSELECTED dot E ---------------
+    if (try hit_test.object_label_at(&map, 1, 3) != 1) return error.ClickOnANotA;
+    const frame_a = try click_bbox(garden, graph, manifest, &map, 1, 3);
+    if (!same_box(frame_a, selection_bounds.Box{ .min_x = 1, .min_y = 1, .max_x = 11, .max_y = 11 })) return error.ClickFrameOnAWrong;
+    const a_obj = try scene_manifest.object_of(manifest, 1);
+    if (frame_a.width() <= a_obj.bbox_width() or frame_a.height() <= a_obj.bbox_height()) return error.FrameNotLargerThanClickedObject;
+    // the over-claim: the group frame holds the dot E, an object the clicked group {1,2,3} never named
+    if (try click_frame_contains(garden, graph, manifest, &map, 1, 3, 4) != true) return error.FrameDoesNotHoldE;
+    if (try overlap_clusters.same_cluster(clustering, 1, 4) != false) return error.EFalselyInGroup; // E is NOT in the clicked group
+    // the frame's area covers background the chain never fills: 11x11 = 121, far more than the chain members' own areas
+    if (try click_frame_area(garden, graph, manifest, &map, 1, 3) != 121) return error.ClickFrameAreaOnAWrong;
+
+    // --- ANY OBJECT OF A GROUP FRAMES THE SAME BOX -- clicking A (1,3), B (4,6), or C's border (7,9-... use 7,8) all expand to the SAME cluster
+    //     {1,2,3}, so all three frame the identical box (1,1)-(11,11) -- exactly selection_bounds over the cluster's membership, cross-checked ------
+    if (try hit_test.object_label_at(&map, 4, 6) != 2) return error.ClickOnBNotB;
+    const frame_b = try click_bbox(garden, graph, manifest, &map, 4, 6);
+    if (try hit_test.object_label_at(&map, 7, 8) != 3) return error.ClickOnCNotC;
+    const frame_c = try click_bbox(garden, graph, manifest, &map, 7, 8);
+    if (!same_box(frame_b, frame_a)) return error.BFrameDiffersFromA;
+    if (!same_box(frame_c, frame_a)) return error.CFrameDiffersFromA;
+    // cross-check against selection_bounds read directly over the connected cluster's ascending membership {1,2,3}
+    const cluster_members = [_]u32{ 1, 2, 3 };
+    const cluster_frame = try selection_bounds.selection_bbox(manifest, &cluster_members);
+    if (!same_box(cluster_frame, frame_a)) return error.ClusterFrameDisagrees;
+
+    // --- A MISS FRAMES NOTHING -- a click in A's interior (3,3) is BACKGROUND inside A's own box (1,1)-(5,5): the box claims the point yet the
+    //     click misses, so the group is EMPTY -- click_bbox refuses EmptyClick, click_frame_area reads zero, click_frame_contains reads FALSE ------
+    if (!hit_test.bbox_contains_point(a_obj, 3, 3)) return error.NotchNotInABox;
+    if (try hit_test.object_label_at(&map, 3, 3) != 0) return error.NotchNotBackground;
+    if (click_bbox(garden, graph, manifest, &map, 3, 3)) |_| return error.MissFrameNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissFrameError;
+    }
+    if (try click_frame_area(garden, graph, manifest, &map, 3, 3) != 0) return error.MissFrameAreaNotZero;
+    if (try click_frame_contains(garden, graph, manifest, &map, 3, 3, 4) != false) return error.MissFrameFalselyHolds;
+
+    // --- A SINGLETON'S FRAME IS ITS OWN BOX -- a click on the far block D (0,11) expands to just {5}, so its frame is D's own box (0,11)-(1,12),
+    //     holding nothing else; the expansion adds nothing where the object is already its whole group -------------------------------------------
+    if (try hit_test.object_label_at(&map, 0, 11) != 5) return error.ClickOnDNotD;
+    const frame_d = try click_bbox(garden, graph, manifest, &map, 0, 11);
+    if (!same_box(frame_d, selection_bounds.Box{ .min_x = 0, .min_y = 11, .max_x = 1, .max_y = 12 })) return error.SingletonFrameWrong;
+    if (try click_frame_contains(garden, graph, manifest, &map, 0, 11, 1) != false) return error.SingletonFrameFalselyHoldsA; // A is far away, not in D's frame
+
+    // --- A BAD TARGET -- a containment query naming a label past the component count refuses BadTarget, having read nothing ---------------------
+    if (click_frame_contains(garden, graph, manifest, &map, 1, 3, 6)) |_| return error.BadTargetNotRefused else |err| {
+        if (err != error.BadTarget) return error.WrongBadTargetError;
+    }
+    if (click_frame_contains(garden, graph, manifest, &map, 1, 3, 0)) |_| return error.ZeroTargetNotRefused else |err| {
+        if (err != error.BadTarget) return error.WrongZeroTargetError;
+    }
+
+    // --- A POINT OFF THE MAP -- every read refuses PointOutOfBounds through the expand, having read nothing -----------------------------------
+    if (click_bbox(garden, graph, manifest, &map, 13, 0)) |_| return error.OffMapFrameNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapFrameError;
+    }
+    if (click_frame_area(garden, graph, manifest, &map, 0, 13)) |_| return error.OffMapAreaNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapAreaError;
+    }
+
+    // --- DETERMINISM -- the same click frames the same box twice --------------------------------------------------------------------
+    const f1 = try click_bbox(garden, graph, manifest, &map, 4, 6);
+    const f2 = try click_bbox(garden, graph, manifest, &map, 4, 6);
+    if (!same_box(f1, f2)) return error.FrameNotDeterministic;
+
+    print("GREEN image-click-bounds: the CLICK-THEN-BOUNDS read -- turn ONE point into a whole-group selection, then read that group's FRAME (the group-handle box a tap grabs), the EXACT COMPLEMENT of click_facts: where that reads how much a click grabs (its facts), this reads how far a click grabs (its frame), joining image/click_expand.rye (the click-to-group expand) with image/selection_bounds.rye (the box union over a selection), exact integers, NO float and NO tolerance -- the DECISIVE crux the box-is-a-prefilter lesson lifted to the CLICK: a click's frame is the GROUP's frame and the group frame OVER-CLAIMS, in three shapes over a 3-object chain (A corner-L box (1,1)-(5,5), B box (4,4)-(8,8), C box (7,7)-(11,11), boxes overlapping 1-2 and 2-3 yet never 1-3), a lone dot E at (2,9) inside the chain's frame yet in no chain box, and a far singleton block D. THE CLICK'S FRAME IS THE GROUP'S, AND IT OVER-CLAIMS -- a click on corner-L A (1,3) (own box (1,1)-(5,5)) frames the whole group's box (1,1)-(11,11), strictly larger on both axes, and click_frame_contains reads TRUE for the dot E though E is NOT in the clicked group {{1,2,3}}, the group-handle box holding an object the tap never grabbed, its area 121 covering background the chain never fills. ANY OBJECT OF A GROUP FRAMES THE SAME BOX -- clicking A, B, or C all expand to the SAME cluster {{1,2,3}} so all three frame the identical box (1,1)-(11,11), exactly selection_bounds over the cluster's membership, cross-checked, so where you click within a group never changes the frame. A MISS FRAMES NOTHING -- a click in A's interior (3,3) is BACKGROUND inside A's own bounding box (the prefilter reads true) yet the click misses (the arbiter reads background), so the group is EMPTY, click_bbox refuses EmptyClick while click_frame_area reads zero and click_frame_contains reads FALSE, hit_test's box-is-a-prefilter crux carried to the frame where a phantom click frames no phantom group. A singleton's frame is its own box -- clicking the far block D frames exactly its own box (0,11)-(1,12) holding nothing else, the expansion adding nothing; a containment query past the count refuses BadTarget; a point off the map refuses PointOutOfBounds through the expand having read nothing; the same click frames the same box twice. Compose not braid over image/click_expand.rye (the seed-and-expand), image/selection_bounds.rye (the box union over a selection), image/scene_manifest.rye (the per-object rows), and image/overlap_clusters.rye (the whole-closure clustering the selftest cross-checks)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: click_bounds selftest\n", .{});
+    return 1;
+}

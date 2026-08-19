@@ -1,0 +1,47 @@
+# tools/click_bounds_witness.rish -- the CLICK-THEN-BOUNDS read on metal: turn ONE point into a whole-group selection, then read that group's
+# FRAME (the group-handle box a tap grabs), joining image/click_expand.rye (the click-to-group expand) with image/selection_bounds.rye (the box
+# union over a selection), over image/scene_manifest.rye's per-object rows (Season G).
+#
+# Season G (Open Media Primitives) -- image/click_expand.rye bridges the first selector (image/hit_test.rye, a POINT names the ONE object under
+# it) to the newest morphology (image/selection_neighbors.rye, grow a selection to its fixed point), so a click becomes a whole-group selection.
+# image/selection_bounds.rye reads a selection's extent -- the group-handle frame. This rung JOINS the two ends -- a click through the expand into
+# a whole-group selection, then that selection's bounding box -- so one tap answers "where is the whole thing I just grabbed." It is the EXACT
+# COMPLEMENT of image/click_facts.rye: where that reads how much a click grabs (its facts), this reads how far a click grabs (its frame).
+#
+# The crux this witness proves on metal, the box-is-a-prefilter lesson lifted to the CLICK: a click's frame is the GROUP's frame and the group
+# frame OVER-CLAIMS. A click on a small corner-L frames the whole group's box (1,1)-(11,11), strictly larger than the clicked object's own, and
+# that frame wholly holds a lone dot E that is NOT in the clicked group; clicking any object of the group frames the SAME box (selection_bounds
+# over the cluster's membership, cross-checked); a click in a corner-L's interior is background inside its own box, so the group is empty, the
+# frame refuses EmptyClick and its area reads zero (hit_test's box-is-a-prefilter crux carried to the frame); a singleton's frame is its own box;
+# a bad target refuses BadTarget; a point off the map refuses; determinism. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/click_bounds_witness.rish
+
+say "click_bounds: Language EN -- Season G click-then-bounds; a click frames the whole group's box, larger than the one object under the cursor and over-claiming an object the group never held, and a miss frames nothing; NO float, NO tolerance."
+say "click_bounds: Style Radiant -- compose not braid: this rung owns only the join of the two ends (click-to-group-to-frame); click_expand owns the seed-and-expand, selection_bounds owns the box union and the reads over it, scene_manifest owns the per-object rows, overlap_clusters owns the whole-closure clustering the selftest cross-checks. No plane of its own, no pixel written -- a reading over readings."
+say "click_bounds: Lens TAME -- a click expands to at most the whole scene (click_expand's bound under label_max_pixels), the union runs the group length times, each a single manifest lookup and four min/max updates; a point off the map refuses PointOutOfBounds having read nothing, a background point is a valid MISS framing nothing, a target past the count refuses BadTarget; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/click_bounds"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/click_bounds.rye -femit-bin=${bin}"]
+assert build.ok else "click_bounds: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "click_bounds: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "click_bounds: ${out}"
+
+assert selftest.out contains "GREEN image-click-bounds" else "click_bounds: selftest did not print the GREEN line"
+assert selftest.out contains "the CLICK-THEN-BOUNDS read" else "click_bounds: the click-then-bounds claim did not print"
+assert selftest.out contains "a click's frame is the GROUP's frame and the group frame OVER-CLAIMS" else "click_bounds: the decisive crux did not print"
+assert selftest.out contains "THE CLICK'S FRAME IS THE GROUP'S, AND IT OVER-CLAIMS" else "click_bounds: the group-frame claim did not print"
+assert selftest.out contains "ANY OBJECT OF A GROUP FRAMES THE SAME BOX" else "click_bounds: the same-frame claim did not print"
+assert selftest.out contains "A MISS FRAMES NOTHING" else "click_bounds: the miss claim did not print"
+assert selftest.out contains "a phantom click frames no phantom group" else "click_bounds: the phantom-click claim did not print"
+assert selftest.out contains "A singleton's frame is its own box" else "click_bounds: the singleton claim did not print"
+assert selftest.out contains "the same click frames the same box twice" else "click_bounds: determinism did not print"
+
+say "click_bounds: GREEN on metal -- the click-then-bounds read, a click framing the whole group's box larger than the one object under the cursor and over-claiming an object the group never held, a miss framing nothing, a singleton's frame its own box, refusals by name, determinism. Season G open-media."

@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260819.060029
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title click_bounds -- the CLICK-THEN-BOUNDS read, a point into a group's frame
+prompt baton prin recur -- pick up the running Season G thread, take the next agent-doable lap Lindy-first crux-first, Standfast on reds first, send often
+think Became Kyri: read context/KYRI.md and RADIANT_STYLE.md, then crux/REMEMBER.md and the top of session-logs/README.md. Last lap landed image/click_facts.rye (207 modules), Standfast clear.
+think Standfast: grepped crux/REDS.md -- no open agent reds; every living row Closed, Released, or custody-gated errata #75. Cleared to open constructive work.
+think Crux-first agent-doable pick from the card's NEXT: the click-then-bounds read, the EXACT COMPLEMENT of click_facts. click_facts reads a click's group FACTS (selection_summary); click_bounds reads its FRAME (selection_bounds) -- the group-handle box a tap grabs. The tightest, most natural close of the click gesture's other half, no fetch/license/custody gate.
+think Read the three modules I compose over: click_facts.rye (the join idiom), selection_bounds.rye (selection_bbox, box_contains_object, Box), click_expand.rye (the seed-and-expand). Confirmed selection_summary/scene_manifest/hit_test API by grep.
+think Designed the scene to prove the DECISIVE over-claim crux: the same 3-object corner-L chain {1,2,3} (boxes overlap 1-2 and 2-3 yet never 1-3), plus a lone dot E at (2,9) placed INSIDE the chain's union frame (1,1)-(11,11) yet whose box overlaps no chain box, so E is its own singleton -- the group frame wholly holds an object the click never grabbed. E at (2,9) checked 8-disconnected from the far singleton D (0,11)-(1,12) and box-disjoint from A/B/C. Raster labeling by first pixel: A row1, B row4, C row7, E row9, D row11 -> A=1,B=2,C=3,E=4,D=5.
+think Wrote image/click_bounds.rye: click_bbox (refuses EmptyClick on a miss), click_frame_area (0 on a miss, tolerant like click_area), click_frame_contains (the over-claim read, false on a miss, BadTarget past the count). >=2 asserts per fn, // invariant on each, u32 in-memory u64 for area, no usize in the authored API, no @memcpy. Wrote tools/click_bounds_witness.rish mirroring the click_facts witness.
+obs GREEN on the FIRST full metal run, no code reds -- the scene design held on the first build, the over-claim proved exactly (frame_a (1,1)-(11,11) larger than A's box on both axes, click_frame_contains(...,E)=TRUE though same_cluster(1,4)=false, area 121).
+obs Gates: tame_style_check GREEN (bans clean, ratchets only), width-check exit 0, ASCII scan clean (plain 7-bit), living-docs lint GREEN, living-card ASCII witness GREEN. Cross-checked click_bbox over {1,2,3} against selection_bounds.selection_bbox directly.
+obs Council rota lap re-read the voice items RADIANT_STYLE and KYRI (cycling by lap index) -- the four faculties held whole; the open-media rung is the agent-doable Lindy-first crux while the Microkernel seL4/Genode study and a real-photo top-hat wait on fetch/license/custody gates, surfaced not crossed.
+loom witness=click_bounds_witness native=contains scene=13x13 components=5 group_frame=121
+file image/click_bounds.rye the CLICK-THEN-BOUNDS read -- a click's frame is the group's and over-claims; joins click_expand with selection_bounds
+file tools/click_bounds_witness.rish builds and runs the selftest on metal, asserts the GREEN claim lines
+file image/README.md names the click-then-bounds rung after click-then-facts (docs-sync)
+file crux/REMEMBER.md live edge + Git nib repointed single-stranded, click_facts folded to a prior-nib comment, count 207 -> 208
+file session-logs/README.md prepends this row newest-first
+recommend keep-going -- Named next, crux-first: a marquee-facts read joining region_select/region_summary's window-vs-crossing with a grow-to-neighbors, a click-then-cluster-facts read expanding a click to whole-cluster facts across groups, or a codec read; the Microkernel study waits on a fetch/license gate, not crossed. No network, no key, no funds.
