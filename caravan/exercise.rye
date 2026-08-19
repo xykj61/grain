@@ -1,0 +1,548 @@
+//! Caravan exercise -- a granted region that does real work.
+//!
+//! Seven rings carried a system from a document on disk to running
+//! dependents, and every one of them stopped at the same place: a grant was
+//! something a dependent could NAME. `boot.rye` hands each dependent its own
+//! `region:perm` words and the dependent reads them back faithfully, yet no byte
+//! ever crossed a declared share. A capability that only reads true is a
+//! label; a capability that opens a door is a capability.
+//!
+//! This ring makes the grant do work. Each declared region is provisioned as
+//! a real backing store of exactly its declared length, and a dependent reaches
+//! one through a `Reach` -- a handle it may open only for a region its own
+//! capability list names, at rights its own capability list carries. A
+//! producer writes; a consumer reads back exactly those bytes; the share
+//! carried something.
+//!
+//! Two walls stand behind every refusal, and the order matters. The FIRST
+//! wall is the dependent's own capability list, consulted before any syscall, so
+//! an ungranted reach is refused with nothing opened at all. The SECOND is
+//! the open mode itself, derived from the same rights, so a read-only reach
+//! holds a read-only door even if the first wall were ever wrong. A system
+//! that refuses only at the outer wall has one mistake between it and a
+//! write it never granted.
+//!
+//! W xor X arrives here as a plain consequence rather than a new rule. A
+//! grant spelling `rx` carries no write bit, so `write_at` refuses it by the
+//! same path that refuses a reader -- execute never grows a write door,
+//! since the grammar three rings back cannot say both at once.
+//!
+//! The bound is the honest part. A region is provisioned at its declared
+//! length and never grows: a reach past the declared extent answers
+//! `PastEnd` and the store on disk is unchanged, so a region cannot be
+//! widened by being used. Static allocation is the seL4 teaching this ring
+//! inherits -- what a system may touch is settled before it runs.
+//!
+//! Hosted ground: real files, real bytes, pure policy, no kernel underneath
+//! it yet.
+//!
+//! Usage:
+//!   exercise selftest    Provision the worked example and exercise it
+//!   exercise             Same as selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const regions = @import("regions.rye");
+const capabilities = @import("capabilities.rye");
+const roster = @import("roster.rye");
+const read = @import("read.rye");
+
+const Dir = std.Io.Dir;
+const File = std.Io.File;
+
+const caravan_exercise_version = "20260819.135802";
+
+// =========================================================================
+// Bounds -- named before anything is opened
+// =========================================================================
+
+/// Where provisioned backing stores live. One directory, so an operator can
+/// see the whole memory a declaration asked for as files.
+pub const scratch_dir = "caravan/.regions";
+
+/// The longest path this ring builds: the directory, a separator, a region
+/// name at its own bound, and the suffix.
+pub const max_path_len: u32 = 96;
+
+/// The most bytes one reach carries in a single call. Bounded so a caller
+/// naming a huge span is refused rather than served from a huge stack.
+pub const max_reach_bytes: u32 = 4096;
+
+/// The zero-fill written per pass when a store is provisioned.
+const fill_chunk_bytes: u32 = 1024;
+
+/// The suffix every backing store carries.
+const store_suffix = ".bin";
+
+// =========================================================================
+// Refusals -- each reach that falls short says which wall it met
+// =========================================================================
+
+pub const ReachError = error{
+    /// The dependent's own capability list names no such region.
+    NotGranted,
+    /// The region is held, at rights that read and never write.
+    WriteDenied,
+    /// The reach leaves the declared extent of the region.
+    PastEnd,
+    /// More bytes than one reach carries in a single call.
+    ReachTooLarge,
+    /// The backing store is absent, or the host refused it.
+    RegionUnavailable,
+};
+
+pub const PathError = error{NameTooLong};
+
+pub const ProvisionError = PathError || error{StoreUnwritable};
+
+// =========================================================================
+// The store -- one file per declared region, at its declared length
+// =========================================================================
+
+/// Builds the path of one region's backing store.
+pub fn store_path(buf: *[max_path_len]u8, region_name: []const u8) PathError![]const u8 {
+    // invariant: a store always names a region
+    assert(region_name.len >= 1);
+    // invariant: a region name stays within the ring's own bound
+    assert(region_name.len <= regions.max_name_len);
+    const needed = scratch_dir.len + 1 + region_name.len + store_suffix.len;
+    if (needed > buf.len) return error.NameTooLong;
+    const written = std.fmt.bufPrint(
+        buf,
+        "{s}/{s}{s}",
+        .{ scratch_dir, region_name, store_suffix },
+    ) catch return error.NameTooLong;
+    // invariant: the built path agrees with the length that was checked
+    assert(written.len == needed);
+    return written;
+}
+
+/// Provisions one backing store at exactly the declared length.
+///
+/// The store is created truncated and then filled to its declared size, so
+/// every provisioned region begins as a known number of known bytes rather
+/// than whatever a previous run left behind.
+fn provision_region(io: std.Io, region: *const regions.Region) ProvisionError!void {
+    // invariant: a declared region spans at least one byte
+    assert(region.size_bytes >= 1);
+    // invariant: a declared region stays within the ring's bound
+    assert(region.size_bytes <= regions.max_region_bytes);
+    var path_buf: [max_path_len]u8 = undefined;
+    const path = try store_path(&path_buf, region.slot.name_slice());
+    const file = Dir.cwd().createFile(io, path, .{ .truncate = true }) catch
+        return error.StoreUnwritable;
+    defer file.close(io);
+
+    var zeros: [fill_chunk_bytes]u8 = @splat(0);
+    var written: u64 = 0;
+    while (written < region.size_bytes) {
+        const left = region.size_bytes - written;
+        const span: u64 = @min(left, @as(u64, fill_chunk_bytes));
+        // invariant: one pass never writes past the chunk it holds
+        assert(span <= fill_chunk_bytes);
+        const n: usize = @intCast(span); // seam: slicing takes usize
+        file.writePositionalAll(io, zeros[0..n], written) catch
+            return error.StoreUnwritable;
+        written += span;
+    }
+    // invariant: the store spans exactly what the declaration asked for
+    assert(written == region.size_bytes);
+}
+
+/// Provisions every region a declaration names, before a dependent runs.
+pub fn provision(io: std.Io, sys: *const system.System) ProvisionError!u32 {
+    // invariant: the region roster stays within its bound
+    assert(sys.map.region_count <= regions.max_regions);
+    // invariant: a system always carries a name
+    assert(sys.name_len >= 1);
+    Dir.cwd().createDirPath(io, scratch_dir) catch return error.StoreUnwritable;
+    var i: u32 = 0;
+    while (i < sys.map.region_count) : (i += 1) {
+        assert(i < regions.max_regions); // invariant: the walk stays in the array
+        try provision_region(io, &sys.map.regions[i]);
+    }
+    // invariant: every declared region was provisioned, none invented
+    assert(i == sys.map.region_count);
+    return i;
+}
+
+// =========================================================================
+// The reach -- a dependent's handle onto one region it was granted
+// =========================================================================
+
+/// Reads the rights a dependent's OWN capability list carries for a region.
+///
+/// The dependent re-derives nothing from the declaration. It answers from the
+/// words it was handed, which is what makes a refusal here a statement about
+/// the dependent rather than about the document.
+pub fn held_mask(slot: *const capabilities.DependentSlot, region_name: []const u8) ?u8 {
+    // invariant: the dependent's list stays within its bound
+    assert(slot.cap_count <= capabilities.max_caps_per_dependent);
+    // invariant: a lookup always names a region
+    assert(region_name.len >= 1);
+    var i: u32 = 0;
+    while (i < slot.cap_count) : (i += 1) {
+        assert(i < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        const cap = &slot.caps[i];
+        if (std.mem.eql(u8, cap.name_slice(), region_name)) return cap.rights_mask;
+    }
+    return null;
+}
+
+/// One open handle onto one region, carrying the rights it was opened with.
+///
+/// Invariant: `mask` always carries read, since a capability that permits
+/// nothing opens nothing.
+pub const Reach = struct {
+    file: File,
+    extent: u64,
+    mask: u8,
+
+    /// Opens a region a dependent holds, at the rights it holds.
+    ///
+    /// The capability list is consulted first, so an ungranted reach costs
+    /// no syscall; the open mode is then derived from the same rights, so a
+    /// reader's door cannot write even by mistake.
+    pub fn open(
+        io: std.Io,
+        slot: *const capabilities.DependentSlot,
+        region: *const regions.Region,
+    ) ReachError!Reach {
+        // invariant: a declared region spans at least one byte
+        assert(region.size_bytes >= 1);
+        // invariant: the dependent's list stays within its bound
+        assert(slot.cap_count <= capabilities.max_caps_per_dependent);
+        const name = region.slot.name_slice();
+        const mask = held_mask(slot, name) orelse return error.NotGranted;
+        // invariant: a held capability always reads
+        assert((mask & capabilities.right_read) != 0);
+        const writes = (mask & capabilities.right_write) != 0;
+        const mode: Dir.OpenFileOptions.Mode = if (writes) .read_write else .read_only;
+        var path_buf: [max_path_len]u8 = undefined;
+        const path = store_path(&path_buf, name) catch return error.RegionUnavailable;
+        const file = Dir.cwd().openFile(io, path, .{ .mode = mode }) catch
+            return error.RegionUnavailable;
+        return .{ .file = file, .extent = region.size_bytes, .mask = mask };
+    }
+
+    pub fn close(self: *const Reach, io: std.Io) void {
+        self.file.close(io);
+    }
+
+    /// Answers whether this reach may write.
+    pub fn writable(self: *const Reach) bool {
+        // invariant: a reach always reads
+        assert((self.mask & capabilities.right_read) != 0);
+        // invariant: a reach never writes and runs at once
+        assert(!self.write_and_exec());
+        return (self.mask & capabilities.right_write) != 0;
+    }
+
+    fn write_and_exec(self: *const Reach) bool {
+        const writes = (self.mask & capabilities.right_write) != 0;
+        const runs = (self.mask & capabilities.right_exec) != 0;
+        return writes and runs;
+    }
+
+    /// Reads bytes from the region into a caller's buffer.
+    pub fn read_at(self: *const Reach, io: std.Io, offset: u64, buf: []u8) ReachError!u32 {
+        // invariant: a read always names somewhere to put the bytes
+        assert(buf.len >= 1);
+        // invariant: the region's extent stays within the declarable bound
+        assert(self.extent <= regions.max_region_bytes);
+        if (buf.len > max_reach_bytes) return error.ReachTooLarge;
+        const span: u64 = @intCast(buf.len); // seam: a slice length arrives as usize
+        if (offset > self.extent) return error.PastEnd;
+        if (span > self.extent - offset) return error.PastEnd;
+        const got = self.file.readPositionalAll(io, buf, offset) catch
+            return error.RegionUnavailable;
+        // invariant: a read never reports more than the buffer that bounded it
+        assert(got <= buf.len);
+        return @intCast(got);
+    }
+
+    /// Writes bytes into the region, at rights the dependent actually holds.
+    pub fn write_at(self: *const Reach, io: std.Io, offset: u64, bytes: []const u8) ReachError!void {
+        // invariant: a write always names something to carry
+        assert(bytes.len >= 1);
+        // invariant: the region's extent stays within the declarable bound
+        assert(self.extent <= regions.max_region_bytes);
+        if (!self.writable()) return error.WriteDenied;
+        if (bytes.len > max_reach_bytes) return error.ReachTooLarge;
+        const span: u64 = @intCast(bytes.len); // seam: a slice length arrives as usize
+        if (offset > self.extent) return error.PastEnd;
+        if (span > self.extent - offset) return error.PastEnd;
+        self.file.writePositionalAll(io, bytes, offset) catch
+            return error.RegionUnavailable;
+    }
+};
+
+/// Reads the length of one region's backing store, so a witness can prove a
+/// refused reach left the store exactly as wide as it was declared.
+pub fn store_extent(io: std.Io, region_name: []const u8) ReachError!u64 {
+    // invariant: an extent always names a region
+    assert(region_name.len >= 1);
+    // invariant: a region name stays within the ring's own bound
+    assert(region_name.len <= regions.max_name_len);
+    var path_buf: [max_path_len]u8 = undefined;
+    const path = store_path(&path_buf, region_name) catch return error.RegionUnavailable;
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch
+        return error.RegionUnavailable;
+    defer file.close(io);
+    return file.length(io) catch error.RegionUnavailable;
+}
+
+// =========================================================================
+// Self-test -- the worked example, exercised as a running system would
+// =========================================================================
+
+/// The message the virtualiser writes into a client's receive buffer. Real
+/// bytes, so the carry is a fact rather than a description.
+const carried = "serial: hello from the virtualiser";
+
+/// Finds one declared region, which the worked example always carries.
+fn region_of(sys: *const system.System, name: []const u8) *const regions.Region {
+    // invariant: the region roster stays within its bound
+    assert(sys.map.region_count <= regions.max_regions);
+    // invariant: a lookup always names a region
+    assert(name.len >= 1);
+    const index = sys.map.find_region(name).?;
+    assert(index < regions.max_regions); // invariant: the index addresses the roster
+    return &sys.map.regions[index];
+}
+
+/// Finds one dependent's capability list, which the derived table always holds.
+fn dependent_of(table: *const capabilities.CapabilityTable, label: []const u8) *const capabilities.DependentSlot {
+    // invariant: the table stays within its bound
+    assert(table.dependent_count <= capabilities.max_dependents);
+    // invariant: a lookup always names a dependent
+    assert(label.len >= 1);
+    return table.find_dependent(label).?;
+}
+
+/// Proves a producer's bytes arrive in a consumer's hands.
+fn check_carry(
+    io: std.Io,
+    sys: *const system.System,
+    table: *const capabilities.CapabilityTable,
+) u8 {
+    // invariant: the worked example declares more than one domain
+    assert(table.dependent_count >= 2);
+    // invariant: the worked example declares more than one region
+    assert(sys.map.region_count >= 2);
+    const rx_a = region_of(sys, "rx_a");
+    const virt = dependent_of(table, "serial_virt");
+    const client = dependent_of(table, "client_a");
+
+    const writer = Reach.open(io, virt, rx_a) catch |err| {
+        print("  RED: the virtualiser could not reach rx_a: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    defer writer.close(io);
+    writer.write_at(io, 0, carried) catch |err| {
+        print("  RED: a granted write refused: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+
+    const reader = Reach.open(io, client, rx_a) catch |err| {
+        print("  RED: the client could not reach rx_a: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    defer reader.close(io);
+    var seen: [carried.len]u8 = undefined;
+    const got = reader.read_at(io, 0, &seen) catch |err| {
+        print("  RED: a granted read refused: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    if (got != carried.len or !std.mem.eql(u8, &seen, carried)) {
+        print("  RED: the share carried something other than what was written\n", .{});
+        return 1;
+    }
+    print("  the grant did work -- {d} bytes crossed rx_a from serial_virt to client_a\n", .{got});
+    return 0;
+}
+
+/// Proves a read-only grant refuses at the door and leaves the store whole.
+fn check_read_only(
+    io: std.Io,
+    sys: *const system.System,
+    table: *const capabilities.CapabilityTable,
+) u8 {
+    // invariant: the worked example declares its regions
+    assert(sys.map.region_count >= 2);
+    // invariant: the derived table holds its dependents
+    assert(table.dependent_count >= 2);
+    const rx_a = region_of(sys, "rx_a");
+    const client = dependent_of(table, "client_a");
+    const reach = Reach.open(io, client, rx_a) catch return 1;
+    defer reach.close(io);
+
+    if (reach.write_at(io, 0, "tamper")) |_| {
+        print("  RED: a read-only grant wrote\n", .{});
+        return 1;
+    } else |err| {
+        // invariant: a reader is refused by name, never by silence
+        assert(err == error.WriteDenied);
+    }
+
+    var seen: [carried.len]u8 = undefined;
+    _ = reach.read_at(io, 0, &seen) catch return 1;
+    if (!std.mem.eql(u8, &seen, carried)) {
+        print("  RED: the refused write changed the store\n", .{});
+        return 1;
+    }
+    const extent = store_extent(io, "rx_a") catch return 1;
+    if (extent != rx_a.size_bytes) {
+        print("  RED: rx_a is {d} bytes, declared {d}\n", .{ extent, rx_a.size_bytes });
+        return 1;
+    }
+    print("  a read-only grant refuses WriteDenied -- the store unchanged at {d} bytes\n", .{extent});
+    return 0;
+}
+
+/// Proves an ungranted region is refused before any door is opened, both ways.
+fn check_ungranted(
+    io: std.Io,
+    sys: *const system.System,
+    table: *const capabilities.CapabilityTable,
+) u8 {
+    // invariant: the worked example declares both receive buffers
+    assert(sys.map.region_count >= 2);
+    // invariant: the derived table holds both clients
+    assert(table.dependent_count >= 3);
+    const rx_a = region_of(sys, "rx_a");
+    const rx_b = region_of(sys, "rx_b");
+    const client_a = dependent_of(table, "client_a");
+    const client_b = dependent_of(table, "client_b");
+
+    if (Reach.open(io, client_a, rx_b)) |open| {
+        open.close(io);
+        print("  RED: client_a reached the buffer it was never granted\n", .{});
+        return 1;
+    } else |err| {
+        // invariant: an ungranted reach is refused by name
+        assert(err == error.NotGranted);
+    }
+    if (Reach.open(io, client_b, rx_a)) |open| {
+        open.close(io);
+        print("  RED: client_b reached the buffer it was never granted\n", .{});
+        return 1;
+    } else |err| {
+        // invariant: the refusal is symmetric across both clients
+        assert(err == error.NotGranted);
+    }
+    print("  an ungranted region refuses NotGranted, both ways, nothing opened\n", .{});
+    return 0;
+}
+
+/// Proves an execute grant never grows a write door.
+fn check_execute(
+    io: std.Io,
+    sys: *const system.System,
+    table: *const capabilities.CapabilityTable,
+) u8 {
+    // invariant: the worked example declares the shared font
+    assert(sys.map.region_count >= 3);
+    // invariant: the derived table holds its dependents
+    assert(table.dependent_count >= 2);
+    const font = region_of(sys, "font_rom");
+    const client = dependent_of(table, "client_a");
+    const reach = Reach.open(io, client, font) catch |err| {
+        print("  RED: an rx grant could not be reached: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    defer reach.close(io);
+
+    var seen: [16]u8 = undefined;
+    _ = reach.read_at(io, 0, &seen) catch |err| {
+        print("  RED: an rx grant could not read: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    if (reach.write_at(io, 0, "code")) |_| {
+        print("  RED: an execute grant wrote\n", .{});
+        return 1;
+    } else |err| {
+        // invariant: execute never carries write, so the door refuses by name
+        assert(err == error.WriteDenied);
+    }
+    print("  W xor X holds at the door -- font_rom reads and runs, never writes\n", .{});
+    return 0;
+}
+
+/// Proves a reach past the declared extent refuses and the region stays put.
+fn check_extent(
+    io: std.Io,
+    sys: *const system.System,
+    table: *const capabilities.CapabilityTable,
+) u8 {
+    // invariant: the worked example declares its regions
+    assert(sys.map.region_count >= 1);
+    // invariant: the derived table holds the virtualiser
+    assert(table.dependent_count >= 1);
+    const rx_a = region_of(sys, "rx_a");
+    const virt = dependent_of(table, "serial_virt");
+    const reach = Reach.open(io, virt, rx_a) catch return 1;
+    defer reach.close(io);
+
+    const edge: u64 = rx_a.size_bytes - 2;
+    if (reach.write_at(io, edge, "eight_by")) |_| {
+        print("  RED: a write past the declared extent widened the region\n", .{});
+        return 1;
+    } else |err| {
+        // invariant: a reach leaving the extent is refused by name
+        assert(err == error.PastEnd);
+    }
+    const extent = store_extent(io, "rx_a") catch return 1;
+    if (extent != rx_a.size_bytes) {
+        print("  RED: rx_a grew to {d} bytes from {d}\n", .{ extent, rx_a.size_bytes });
+        return 1;
+    }
+    print("  a reach past the extent refuses PastEnd -- rx_a still {d} bytes\n", .{extent});
+    return 0;
+}
+
+fn run_self_test(io: std.Io) u8 {
+    print("Caravan exercise {s} -- self-test\n", .{caravan_exercise_version});
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = read.load(io, read.serial_stack_path, &buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ read.serial_stack_path, @errorName(err) });
+        return 1;
+    };
+    const table = roster.from_system(&parsed) catch |err| {
+        print("  RED: the roster refused: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const provisioned = provision(io, &parsed) catch |err| {
+        print("  RED: provisioning refused: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    print("  provisioned {d} regions, {d} bytes declared\n", .{
+        provisioned, parsed.declared_bytes(),
+    });
+
+    const carry = check_carry(io, &parsed, &table);
+    if (carry != 0) return carry;
+    const only_read = check_read_only(io, &parsed, &table);
+    if (only_read != 0) return only_read;
+    const ungranted = check_ungranted(io, &parsed, &table);
+    if (ungranted != 0) return ungranted;
+    const execute = check_execute(io, &parsed, &table);
+    if (execute != 0) return execute;
+    const extent = check_extent(io, &parsed, &table);
+    if (extent != 0) return extent;
+    print("  GREEN: a granted region carries real bytes, and an ungranted one opens nothing\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    // invariant: this ring takes at most one word
+    assert(args.len <= 8);
+    if (args.len >= 3) return 1;
+    return run_self_test(io);
+}
