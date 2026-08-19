@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260819.051834
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title selection_neighbors -- the grow-selection gesture, one ring vs the transitive closure
+prompt autonomous loop -- take the next agent-doable open-media rung Lindy-first crux-first, standfast clear, send often
+think Read KYRI + RADIANT_STYLE to enter voice, then REMEMBER, the crypto/decision-wave itinerary, and the newest session-log rows. Standfast clear per the last log (every living REDS row Closed, Released, or custody-gated errata #75).
+think The scene-read family stands at 203 modules on a live green edge. The NEXT line named an agent-doable open-media rung composing over the floor with a GREEN witness. Chose the GROW-SELECTION gesture -- the incremental sibling of the all-at-once cluster expansion -- as the crux: it names a genuinely new primitive (expand-selection by one ring) and proves a decisive lesson the family circles, box-overlap-is-not-transitive, read now as one-ring vs iterated-closure.
+think Designed a 3-object chain of 8-disconnected corner-L brackets staggered down-right (A box (1,1)-(5,5), B (4,4)-(8,8), C (7,7)-(11,11)) so 1's box overlaps 2 and 2's overlaps 3 yet 1's never overlaps 3, plus a far singleton block D. Each L hugs top-left, leaving its bottom-right overlap corner empty so a box overlap there touches no pixel -- the cluster_facts trick, chained.
+think selection_neighbors names the one-ring neighborhood, grow_selection adds it once, grow_to_fixpoint iterates, is_stable/neighbor_count round it out. All read scene_graph's precomputed overlap matrix via relation_of -- compose not braid, no plane of its own. The selftest cross-checks grow_to_fixpoint against overlap_clusters' membership, proving iterated grow IS connectivity's transitive closure.
+obs GREEN on the first metal run; the only red was a witness assertion casing mismatch (lowercase "a grow never leaks" vs the printed capital "A grow"), fixed in the witness, not the code. width-check exit 0, TAME bans clean, plain 7-bit ASCII, living-docs lint GREEN.
+obs The crux carries two shapes in ONE chain without a second scene: one step stops short while the closure reaches through (from {1}), and the grow depth depends on the start while the fixed point does not (the middle {2} reaches the whole cluster in one step, an end {1} needs two). A grow never leaks across a boundary -- the far singleton stays its own fixed point.
+loom witness=selection_neighbors_witness build=ok selftest=green modules=204
+file image/selection_neighbors.rye the grow-selection rung: selection_neighbors, neighbor_count, grow_selection, is_stable, grow_to_fixpoint
+file tools/selection_neighbors_witness.rish builds and runs the selftest on metal, asserts the GREEN line and every crux claim
+file image/README.md new grow-selection bullet after selection_cluster_facts (docs-sync)
+file crux/REMEMBER.md live edge extended with the new rung, count 203 -> 204, NEXT repointed (marquee-grow-to-neighbors, a shrink/erode dual, or a codec read), Git nib refreshed
+recommend keep-going the next open-media rung is agent-doable and crux-first (a rectangle marquee-grow, or the shrink/erode dual of grow); the microkernel study still waits on a fetch/license gate, not crossed
