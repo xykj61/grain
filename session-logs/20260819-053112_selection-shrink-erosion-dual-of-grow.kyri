@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260819.053112
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title selection_shrink -- the SHRINK-SELECTION gesture, erosion the exact dual of grow's dilation
+prompt baton prin recur -- pick up the running thread Lindy-first crux-first, Standfast on reds, take the next agent-doable open-media lap, send it as its own signed round
+think Read KYRI and RADIANT_STYLE to be Kyri in Radiant Style from the first token, then crux/REMEMBER, crux/REDS, and the top of session-logs/README to pick up the thread. The live edge is Season G open-media; the last lap landed image/selection_neighbors.rye (grow-selection) GREEN at 20260819.051153, git nib 03556d4ecb, 204 image modules standing.
+think Standfast on reds first: crux/REDS.md shows every living row Closed, Released, or the custody-gated errata #75 (a history rewrite needing Keaton's hand). No open agent-closable red, so the constructive queue is open.
+think The card named three crux-first agent-doable options: a marquee-grow-to-neighbors over a rectangle, a shrink/erode dual of grow, or a codec read. The shrink/erode dual is the sharpest crux -- it proves a genuinely new lesson (erosion and dilation are DUAL not inverse, opening/closing are not the identity) and reuses the SAME clean path-graph scene selection_neighbors proved over, composing over its grow_selection (compose not braid).
+think Designed image/selection_shrink.rye: selection_boundary (the inner rim), shrink_selection (erosion = keep the interior), shrink_to_fixpoint (the union of whole clusters CONTAINED), is_solid, boundary_count, complement_of, and opening/closing composing grow and shrink. The module owns only the erosion and the composition; scene_graph owns the matrix, selection_neighbors owns the dilation, overlap_clusters owns the clustering the selftest cross-checks.
+think Worked the crux on paper over the reused scene (path 1-2-3 plus far singleton 4): shrink({1,2})={1} (object 2 touches 3 outside), shrink({2})={} (both neighbors outside), whole cluster {1,2,3} and singleton {4} each solid; closing {1,2} -> {1,2,3} (extensive), opening {2} -> {} (anti-extensive) yet opening {1,2} -> {1,2} unchanged; duality shrink(S)=complement(grow(complement(S))) verified for {1,2} and {2}; shrink_to_fixpoint {1,2} -> {} and {2,3,4} -> {4}.
+obs GREEN on the FIRST full metal run, no code reds -- the crux held exactly as designed on paper. The reused scene meant the graph shape was already witnessed by the grow rung; measurement beat memory before the commit rather than after.
+obs REDS #75 guarded: the version const 20260819.052417 was read straight from the live clock, no future stamp. REDS #85 guarded: the witness reads native `assert selftest.out contains "..."`, never a shell grep over interpolated output. Plain 7-bit ASCII throughout (ASCII-first).
+obs Council rota this lap re-read the voice items KYRI.md and RADIANT_STYLE.md (the four faculties held whole) plus the three road-ahead itineraries -- the open-media rung is the agent-doable Lindy-first crux while the Microkernel Target study waits on a seL4/Genode fetch+license gate and the real-photo top-hat on a fetch gate, neither crossed.
+loom witness=selection_shrink_witness build=ok selftest=green checks=10 modules=205
+file image/selection_shrink.rye the shrink/erode dual -- inner boundary, erosion, opening/closing, the two dual fixed points, GREEN
+file tools/selection_shrink_witness.rish the metal witness, native contains checks, GREEN
+file image/README.md names the shrink-selection rung after grow-selection (docs-sync)
+file crux/REMEMBER.md live edge + Git nib repointed single-stranded, selection_neighbors folded to a prior-nib comment, count 204 -> 205
+recommend keep-going the open-media floor stands broad and green; NEXT crux-first and agent-doable: a marquee-grow-to-neighbors read over a rectangle selection joining grow with a query rect, a hit-test-plus-grow "click then expand" read, or a codec read; the Microkernel study and real-photo top-hat wait on fetch/license/custody gates, not crossed. No network, no key, no funds.

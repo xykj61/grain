@@ -1,0 +1,46 @@
+# tools/selection_shrink_witness.rish -- the SHRINK-SELECTION gesture on metal: name a selection's inner boundary, shrink the selection by
+# that rim (erosion), and iterate the shrink to a fixed point, the exact DUAL of image/selection_neighbors.rye's grow, over
+# image/scene_graph.rye's precomputed box-overlap matrix (Season G).
+#
+# Season G (Open Media Primitives) -- image/selection_neighbors.rye GROWS a selection by its outer ring (dilation). This rung reads the OTHER
+# direction: selection_boundary names the selected objects on the rim, shrink_selection peels them away and keeps the interior, shrink_to_fixpoint
+# erodes until nothing more falls. Opening (grow after shrink) and closing (shrink after grow) compose the two. A reading over readings -- no
+# plane of its own.
+#
+# The crux this witness proves on metal: erosion and dilation are DUAL, never inverse. shrink(S) == complement(grow(complement(S))); CLOSING is
+# extensive (fills a partial selection out to a whole cluster) and OPENING is anti-extensive (deletes a protrusion whose whole neighborhood lies
+# outside), so neither is the identity; and the two fixed points are dual -- shrink_to_fixpoint is the union of whole clusters CONTAINED, grow's
+# is the union of whole clusters TOUCHED. A union of whole clusters is a fixed point of both; refusals by name; determinism. No network, no key,
+# no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/selection_shrink_witness.rish
+
+say "selection_shrink: Language EN -- Season G shrink-selection; EROSION is the exact dual of grow's dilation, the fixed point the whole clusters CONTAINED; NO float, NO tolerance."
+say "selection_shrink: Style Radiant -- compose not braid: this rung owns only the inner-boundary read, the erosion, and the opening/closing composition; scene_graph owns the overlap matrix, selection_neighbors owns the dilation, overlap_clusters owns the whole-closure clustering the selftest cross-checks. No plane of its own, no pixel written -- a reading over readings."
+say "selection_shrink: Lens TAME -- the boundary scan runs the object count squared over the matrix under label_max_pixels; each shrink drops at least one object or halts so the fixed-point loop runs at most the object count times; a malformed selection refuses BadSelection having read nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/selection_shrink"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/selection_shrink.rye -femit-bin=${bin}"]
+assert build.ok else "selection_shrink: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "selection_shrink: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "selection_shrink: ${out}"
+
+assert selftest.out contains "GREEN image-selection-shrink" else "selection_shrink: selftest did not print the GREEN line"
+assert selftest.out contains "the SHRINK-SELECTION gesture" else "selection_shrink: the shrink-selection claim did not print"
+assert selftest.out contains "erosion and dilation are DUAL never inverse so neither OPENING nor CLOSING is the identity" else "selection_shrink: the decisive crux did not print"
+assert selftest.out contains "SHRINK IS THE COMPLEMENT-DUAL OF GROW" else "selection_shrink: the complement-dual claim did not print"
+assert selftest.out contains "CLOSING IS EXTENSIVE, OPENING IS ANTI-EXTENSIVE, NEITHER IS THE IDENTITY" else "selection_shrink: the extensive/anti-extensive claim did not print"
+assert selftest.out contains "OPENING a solid" else "selection_shrink: the opening-is-no-blanket-delete claim did not print"
+assert selftest.out contains "THE TWO FIXED POINTS ARE DUAL" else "selection_shrink: the dual-fixed-points claim did not print"
+assert selftest.out contains "a union of whole clusters is a fixed point of BOTH grow and shrink" else "selection_shrink: the shared fixed-point claim did not print"
+assert selftest.out contains "each refuse BadSelection having read nothing" else "selection_shrink: the refusal claim did not print"
+assert selftest.out contains "the same selection shrinks to the same interior twice" else "selection_shrink: determinism did not print"
+
+say "selection_shrink: GREEN on metal -- the shrink-selection gesture, erosion the exact dual of dilation, closing extensive and opening anti-extensive so neither is the identity, the two fixed points dual, a union of whole clusters a shared fixed point, refusals by name, determinism. Season G open-media."

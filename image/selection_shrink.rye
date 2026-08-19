@@ -1,0 +1,447 @@
+//! image/selection_shrink.rye -- the SHRINK-SELECTION gesture: given a selection (an ascending label set any selector speaks), name the
+//! INNER BOUNDARY -- every SELECTED object whose box overlaps at least one object NOT in the selection -- then shrink the selection by that
+//! boundary. Shrink is EROSION over the box-overlap graph, the exact DUAL of image/selection_neighbors.rye's grow (dilation). Exact integers,
+//! NO float.
+//!
+//! Season G (Open Media Primitives) -- image/selection_neighbors.rye GROWS a selection by its one-ring neighborhood (dilation: add every
+//! outside object a selected box touches). This rung reads the OTHER direction: `selection_boundary` names the selected objects on the RIM
+//! (each touching something outside), `shrink_selection` peels that rim away and keeps only the INTERIOR (selected objects all of whose
+//! neighbors are also selected), `shrink_to_fixpoint` erodes until nothing more falls. It composes over image/scene_graph.rye's precomputed
+//! overlap matrix and over image/selection_neighbors.rye's `grow_selection`, so it invents no plane and no dilation of its own -- a reading
+//! over readings. A surface reads it the moment a marquee must SHRINK by one ring ("contract selection") or when an OPENING/CLOSING must
+//! smooth a selection's rim.
+//!
+//! The DECISIVE crux -- erosion and dilation are DUAL, never inverse, so neither OPENING (grow after shrink) nor CLOSING (shrink after grow)
+//! restores the original, in three shapes at once over one path graph:
+//!
+//!   SHRINK IS THE COMPLEMENT-DUAL OF GROW. Erosion equals the complement of the dilation of the complement:
+//!   `shrink_selection(S) == complement(grow_selection(complement(S)))`, proven on metal for several selections. A selected object survives
+//!   the shrink exactly when none of its neighbors lies outside -- which is exactly when the grown complement never reaches it.
+//!
+//!   CLOSING IS EXTENSIVE, OPENING IS ANTI-EXTENSIVE, NEITHER IS THE IDENTITY. Over a 3-object path (1's box overlaps 2, 2's overlaps 3, 1's
+//!   never overlaps 3), CLOSING a partial selection {1,2} -- grow to {1,2,3} then shrink -- yields the WHOLE cluster {1,2,3}, strictly LARGER
+//!   than {1,2}: closing fills a partial selection out to the whole connected group. OPENING the lone middle {2} -- shrink to {} then grow --
+//!   yields the EMPTY set, strictly SMALLER than {2}: opening deletes a protrusion whose whole neighborhood lies outside. Yet opening a solid
+//!   {1,2} returns {1,2} unchanged, so opening is no blanket delete -- it removes only what the structuring element cannot cover.
+//!
+//!   THE TWO FIXED POINTS ARE DUAL. `grow_to_fixpoint(S)` is the union of whole clusters S TOUCHES (a superset of S); `shrink_to_fixpoint(S)`
+//!   is the union of whole clusters ENTIRELY CONTAINED in S (a subset of S). A union of whole connected clusters is a fixed point of BOTH grow
+//!   and shrink -- the meeting point of the two morphologies. Over the path plus a far singleton, shrinking a partial {1,2} to a fixed point
+//!   peels to {} (it holds no whole cluster), while shrinking {2,3,4} peels to just the singleton {4} (the one whole cluster it contains).
+//!
+//! Compose not braid. This rung OWNS only the inner-boundary read, the erosion, and the opening/closing composition. image/scene_graph.rye
+//! owns the overlap matrix (`relation_of`); image/selection_neighbors.rye owns the dilation (`grow_selection`) the opening/closing and the
+//! duality check lean on; image/overlap_clusters.rye owns the whole-closure clustering the selftest cross-checks. No pixel re-read, no cluster
+//! recomputed here -- a reading over the graph the family already proved.
+//!
+//! Everything is bounded before a byte: a valid selection names at most one label per object, so its length is bounded by the object count,
+//! itself under image/label.rye's `label_max_pixels`; the presence tally is sized to the object count plus one; each shrink scans the object
+//! count squared cells of the matrix and drops at least one object or halts, so the fixed-point loop runs at most the object count times. A
+//! selection that names background (0), a label past the object count, or labels out of strictly-ascending order refuses `BadSelection`,
+//! having read nothing. No network, no key, no funds -- the contract-selection ring a surface names the day a marquee shrinks one step at a time.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/selection_shrink.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const selection_neighbors = @import("selection_neighbors.rye");
+
+pub const selection_shrink_version = "20260819.052417";
+
+pub const SelectionShrinkError = error{
+    BadSelection,
+};
+
+/// Check a selection is a valid label set against the scene -- every entry a real dense object label (1..components), the entries strictly
+/// ascending (hence distinct), and no more entries than objects. The contract every selector in the ladder keeps; a read enforces it at the
+/// edge and refuses `BadSelection` before touching the matrix, so no read ever indexes a phantom object. Reads nothing on refusal.
+fn validate_selection(graph: scene_graph.SceneGraph, selection: []const u32) SelectionShrinkError!void {
+    // invariant: the matrix holds exactly one cell per ordered pair.
+    assert(graph.relations.len == @as(usize, graph.components) * @as(usize, graph.components));
+    // invariant: the object count stays under image/label.rye's pixel ceiling, so the check loop is bounded.
+    assert(graph.components <= label.label_max_pixels);
+
+    // a valid selection names at most one label per object -- a longer slice cannot be strictly ascending within the dense range.
+    if (selection.len > @as(usize, graph.components)) return error.BadSelection;
+
+    var prev: u32 = 0;
+    var i: usize = 0;
+    while (i < selection.len) : (i += 1) {
+        const lbl = selection[i];
+        // a selection names foreground labels only, never background and never past the object count.
+        if (lbl == 0 or lbl > graph.components) return error.BadSelection;
+        // strictly ascending -- which also guarantees distinct, since equal or descending both fail here.
+        if (lbl <= prev) return error.BadSelection;
+        prev = lbl;
+    }
+}
+
+/// Mark a validated selection into a fresh presence tally sized to the object count plus one (index 0 unused -- there is no object 0). The
+/// caller owns the returned slice. A private helper the boundary and shrink reads share.
+fn mark_selection(allocator: std.mem.Allocator, graph: scene_graph.SceneGraph, selection: []const u32) ![]bool {
+    const present = try allocator.alloc(bool, @as(usize, graph.components) + 1);
+    var p: usize = 0;
+    while (p < present.len) : (p += 1) present[p] = false;
+    var i: usize = 0;
+    while (i < selection.len) : (i += 1) {
+        // invariant: validate_selection already proved every entry a real dense label, so it indexes a real slot.
+        assert(selection[i] >= 1);
+        assert(selection[i] <= graph.components);
+        present[@as(usize, selection[i])] = true;
+    }
+    return present;
+}
+
+/// TRUE when a selected object `v` sits on the INNER BOUNDARY -- at least one object NOT in the selection has a box overlapping `v`'s box. A
+/// selected object with no such outside neighbor is INTERIOR. A private helper the boundary and shrink reads share; `v` must be selected.
+fn on_boundary(graph: scene_graph.SceneGraph, in_sel: []const bool, v: u32) !bool {
+    // invariant: the read only asks about a selected object -- the caller guarantees membership.
+    assert(in_sel[@as(usize, v)]);
+    var u: u32 = 1;
+    while (u <= graph.components) : (u += 1) {
+        if (u == v) continue; // a self-overlap is never a boundary-making neighbor.
+        if (in_sel[@as(usize, u)]) continue; // an inside neighbor keeps `v` interior.
+        const rel = try scene_graph.relation_of(graph, v, u);
+        if (rel.boxes_overlap) return true; // an outside neighbor puts `v` on the rim.
+    }
+    return false;
+}
+
+/// The ascending COMPLEMENT of a selection -- every foreground object NOT in the selection, read against the dense object range. The caller
+/// owns the slice. The duality `shrink(S) = complement(grow(complement(S)))` leans on this. Refuses `BadSelection` for a malformed label set.
+pub fn complement_of(allocator: std.mem.Allocator, graph: scene_graph.SceneGraph, selection: []const u32) ![]u32 {
+    try validate_selection(graph, selection);
+    const in_sel = try mark_selection(allocator, graph, selection);
+
+    var found: u32 = 0;
+    var id: u32 = 1;
+    while (id <= graph.components) : (id += 1) {
+        if (!in_sel[@as(usize, id)]) found += 1;
+    }
+    const result = try allocator.alloc(u32, @as(usize, found));
+    var w: usize = 0;
+    id = 1;
+    while (id <= graph.components) : (id += 1) {
+        if (!in_sel[@as(usize, id)]) {
+            result[w] = id;
+            w += 1;
+        }
+    }
+    // invariant: the complement filled exactly the counted slots.
+    assert(w == @as(usize, found));
+    // invariant: the selection and its complement partition the objects -- their sizes sum to the object count.
+    assert(@as(u32, @intCast(selection.len)) + found == graph.components);
+    return result;
+}
+
+/// The ascending INNER BOUNDARY of a selection -- every SELECTED object whose box overlaps at least one object NOT in the selection, the rim
+/// a shrink peels away. This is the DUAL of image/selection_neighbors.rye's outer ring. Returns an empty slice when the selection is interior
+/// (a union of whole clusters). Refuses `BadSelection` for a malformed label set. The caller owns the slice.
+pub fn selection_boundary(allocator: std.mem.Allocator, graph: scene_graph.SceneGraph, selection: []const u32) ![]u32 {
+    try validate_selection(graph, selection);
+    const in_sel = try mark_selection(allocator, graph, selection);
+
+    // count then collect the boundary objects ascending -- they are a subset of the already-ascending selection.
+    var found: u32 = 0;
+    var i: usize = 0;
+    while (i < selection.len) : (i += 1) {
+        if (try on_boundary(graph, in_sel, selection[i])) found += 1;
+    }
+    const result = try allocator.alloc(u32, @as(usize, found));
+    var w: usize = 0;
+    i = 0;
+    while (i < selection.len) : (i += 1) {
+        if (try on_boundary(graph, in_sel, selection[i])) {
+            result[w] = selection[i];
+            w += 1;
+        }
+    }
+    // invariant: the boundary filled exactly the counted slots.
+    assert(w == @as(usize, found));
+    // invariant: the rim is a subset of the selection -- it can hold no more objects than the selection itself.
+    assert(found <= @as(u32, @intCast(selection.len)));
+    return result;
+}
+
+/// HOW MANY selected objects sit on the inner boundary -- the size of `selection_boundary`. Refuses `BadSelection` for a malformed label set.
+pub fn boundary_count(allocator: std.mem.Allocator, graph: scene_graph.SceneGraph, selection: []const u32) !u32 {
+    const rim = try selection_boundary(allocator, graph, selection);
+    // invariant: the rim can hold no more objects than the selection.
+    assert(rim.len <= selection.len);
+    return @as(u32, @intCast(rim.len));
+}
+
+/// SHRINK the selection by one ring -- EROSION: keep only the INTERIOR selected objects (each with no neighbor outside the selection), peel
+/// the inner boundary away. One step inward along the box-overlap graph, the exact dual of grow. A selection that is a union of whole clusters
+/// returns unchanged (a fixed point). Refuses `BadSelection` for a malformed label set. The caller owns the returned slice.
+pub fn shrink_selection(allocator: std.mem.Allocator, graph: scene_graph.SceneGraph, selection: []const u32) ![]u32 {
+    try validate_selection(graph, selection);
+    const in_sel = try mark_selection(allocator, graph, selection);
+
+    // count then collect the interior objects ascending -- a subset of the already-ascending selection.
+    var found: u32 = 0;
+    var i: usize = 0;
+    while (i < selection.len) : (i += 1) {
+        if (!(try on_boundary(graph, in_sel, selection[i]))) found += 1;
+    }
+    const result = try allocator.alloc(u32, @as(usize, found));
+    var w: usize = 0;
+    i = 0;
+    while (i < selection.len) : (i += 1) {
+        if (!(try on_boundary(graph, in_sel, selection[i]))) {
+            result[w] = selection[i];
+            w += 1;
+        }
+    }
+    // invariant: the interior filled exactly the counted slots.
+    assert(w == @as(usize, found));
+    // invariant: shrinking never grows a selection -- the interior holds no more than the original members.
+    assert(found <= @as(u32, @intCast(selection.len)));
+    return result;
+}
+
+/// TRUE when the selection is STABLE under shrink -- it has no inner boundary, so eroding it drops nothing. This holds for exactly the same
+/// selections that are stable under grow: a union of WHOLE connected clusters, the shared fixed point of both morphologies. Refuses
+/// `BadSelection` for a malformed label set.
+pub fn is_solid(allocator: std.mem.Allocator, graph: scene_graph.SceneGraph, selection: []const u32) !bool {
+    const n = try boundary_count(allocator, graph, selection);
+    return n == 0;
+}
+
+/// Shrink the selection REPEATEDLY until it stops changing -- the union of the whole connected clusters ENTIRELY CONTAINED in the selection,
+/// the exact dual of grow_to_fixpoint (the union of whole clusters TOUCHED). Each pass drops at least one object or halts, so the loop runs at
+/// most the object count times. Refuses `BadSelection` for a malformed label set. The caller owns the returned slice.
+pub fn shrink_to_fixpoint(allocator: std.mem.Allocator, graph: scene_graph.SceneGraph, selection: []const u32) ![]u32 {
+    try validate_selection(graph, selection);
+
+    var cur = try shrink_selection(allocator, graph, selection);
+    // invariant: the fixed point is reached within object-count passes -- each pass shrinks by >= 1 until stable.
+    var passes: u32 = 0;
+    while (passes <= graph.components) : (passes += 1) {
+        const next = try shrink_selection(allocator, graph, cur);
+        // shrink is anti-extensive, so next is a subset of cur; equal lengths mean the same set -- a fixed point.
+        if (next.len == cur.len) return next;
+        cur = next;
+    }
+    // unreachable in a well-formed scene: a strictly shrinking bounded set must stabilize within `components` passes.
+    unreachable;
+}
+
+/// The morphological OPENING -- GROW after SHRINK (dilation of the erosion). Anti-extensive: the opening is a subset of the selection, never
+/// larger. It removes protrusions the structuring element cannot cover, yet preserves any part solid enough to survive an erosion. Refuses
+/// `BadSelection` for a malformed label set. The caller owns the returned slice.
+pub fn opening(allocator: std.mem.Allocator, graph: scene_graph.SceneGraph, selection: []const u32) ![]u32 {
+    const eroded = try shrink_selection(allocator, graph, selection);
+    // invariant: the opening dilates a subset of the selection, so it can never exceed the object count.
+    assert(eroded.len <= @as(usize, graph.components));
+    return try selection_neighbors.grow_selection(allocator, graph, eroded);
+}
+
+/// The morphological CLOSING -- SHRINK after GROW (erosion of the dilation). Extensive: the closing is a superset of the selection, never
+/// smaller. It fills gaps and thin cuts, snapping a partial selection out toward the whole connected groups it touches. Refuses
+/// `BadSelection` for a malformed label set. The caller owns the returned slice.
+pub fn closing(allocator: std.mem.Allocator, graph: scene_graph.SceneGraph, selection: []const u32) ![]u32 {
+    const dilated = try selection_neighbors.grow_selection(allocator, graph, selection);
+    // invariant: the grown set is a valid ascending label set no larger than the object count, safe to erode.
+    assert(dilated.len <= @as(usize, graph.components));
+    return try shrink_selection(allocator, graph, dilated);
+}
+
+// --- selftest: the DECISIVE erosion-versus-dilation duality over the SAME 3-object CHAIN plus a far singleton image/selection_neighbors.rye
+//     proved grow over. Three corner-L brackets staggered down-right so each hugs its own TOP-LEFT and leaves its BOTTOM-RIGHT overlap corner
+//     empty: A box (1,1)-(5,5), B box (4,4)-(8,8), C box (7,7)-(11,11). A's box overlaps B's and B's overlaps C's, yet A's never overlaps C's
+//     -- a PATH graph 1-2-3. A lone block D far bottom-left is a singleton. Same scene, the dual read ------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a corner bracket-L hugging TOP-LEFT: a vertical arm down column `x0` from `y0` to `y1`, and a horizontal arm along row `y0` from
+/// `x0` to `x1`. Its inclusive box is (x0,y0)-(x1,y1); its bottom-right corner stays empty so a box overlap there touches no pixel.
+fn set_corner_l(img: *qoi.Pixmap, x0: u32, y0: u32, x1: u32, y1: u32) void {
+    // invariant: the arms run in the positive direction and stay inside the buffer.
+    assert(x1 >= x0);
+    assert(y1 >= y0);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) set_dot(img, x0, yy);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) set_dot(img, xx, y0);
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// TRUE when two ascending label sets hold exactly the same members -- a small set-equality the selftest leans on throughout.
+fn same_set(a: []const u32, b: []const u32) bool {
+    if (a.len != b.len) return false;
+    var i: usize = 0;
+    while (i < a.len) : (i += 1) {
+        if (a[i] != b[i]) return false;
+    }
+    return true;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- BUILD THE SAME CHAIN as selection_neighbors on a 13x13 canvas: A corner-L box (1,1)-(5,5) label 1, B corner-L box (4,4)-(8,8) label
+    //     2, C corner-L box (7,7)-(11,11) label 3, D a 2x2 block box (0,11)-(1,12) label 4 (a far singleton) -----------------------------------
+    var scene = try make_canvas(garden, 13, 13, 0);
+    set_corner_l(&scene, 1, 1, 5, 5); // A: box (1,1)-(5,5)
+    set_corner_l(&scene, 4, 4, 8, 8); // B: box (4,4)-(8,8)
+    set_corner_l(&scene, 7, 7, 11, 11); // C: box (7,7)-(11,11)
+    set_block(&scene, 0, 11, 2, 2); // D: block box (0,11)-(1,12), a far singleton
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 4) return error.SceneNotFourComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+
+    // confirm the PATH shape: 1-2 and 2-3 overlap, 1-3 does NOT, and 1,2,3 are one cluster with 4 a singleton
+    if (!(try scene_graph.relation_of(graph, 1, 2)).boxes_overlap) return error.OneTwoNotOverlapping;
+    if (!(try scene_graph.relation_of(graph, 2, 3)).boxes_overlap) return error.TwoThreeNotOverlapping;
+    if ((try scene_graph.relation_of(graph, 1, 3)).boxes_overlap) return error.OneThreeFalselyOverlapping;
+    if (try overlap_clusters.same_cluster(clustering, 1, 3) != true) return error.ChainNotOneCluster;
+    if (overlap_clusters.cluster_count(clustering) != 2) return error.ClusterCountNotTwo;
+
+    // --- SHRINK PEELS THE RIM -- erode the partial selection {1,2}: object 1's only neighbor 2 is inside so 1 is INTERIOR, object 2's neighbor
+    //     3 is outside so 2 is on the BOUNDARY. The boundary is {2}, the shrink keeps {1}. {1,2} is not solid --------------------------------
+    const sel_12 = [_]u32{ 1, 2 };
+    const rim_12 = try selection_boundary(garden, graph, &sel_12);
+    if (!same_set(rim_12, &[_]u32{2})) return error.BoundaryOnTwelveWrong;
+    const shrink_12 = try shrink_selection(garden, graph, &sel_12);
+    if (!same_set(shrink_12, &[_]u32{1})) return error.ShrinkOnTwelveWrong;
+    if (try is_solid(garden, graph, &sel_12) != false) return error.TwelveFalselySolid;
+    if (try boundary_count(garden, graph, &sel_12) != 1) return error.BoundaryCountWrong;
+
+    // --- THE LONE MIDDLE ERODES AWAY -- shrink {2}: object 2's neighbors 1 and 3 are BOTH outside, so 2 is all boundary and the interior is
+    //     empty. A single object thinner than the structuring element vanishes under erosion --------------------------------------------------
+    const sel_2 = [_]u32{2};
+    const shrink_2 = try shrink_selection(garden, graph, &sel_2);
+    if (shrink_2.len != 0) return error.ShrinkOnTwoNotEmpty;
+    const rim_2 = try selection_boundary(garden, graph, &sel_2);
+    if (!same_set(rim_2, &[_]u32{2})) return error.BoundaryOnTwoWrong;
+
+    // --- A UNION OF WHOLE CLUSTERS IS A FIXED POINT OF BOTH -- the whole cluster {1,2,3} has no inner boundary (every neighbor inside), so
+    //     shrink keeps it whole exactly as grow does; the far singleton {4} has no neighbor at all, interior by default -------------------------
+    const cluster_members = [_]u32{ 1, 2, 3 };
+    const shrink_cluster = try shrink_selection(garden, graph, &cluster_members);
+    if (!same_set(shrink_cluster, &cluster_members)) return error.WholeClusterNotSolid;
+    if (try is_solid(garden, graph, &cluster_members) != true) return error.WholeClusterNotStable;
+    const sel_4 = [_]u32{4};
+    const shrink_4 = try shrink_selection(garden, graph, &sel_4);
+    if (!same_set(shrink_4, &[_]u32{4})) return error.SingletonNotSolid;
+    if (try is_solid(garden, graph, &sel_4) != true) return error.SingletonNotStable;
+
+    // --- SHRINK IS THE COMPLEMENT-DUAL OF GROW -- shrink(S) == complement(grow(complement(S))) for {1,2} and {2}, proven on metal by building
+    //     the complement, growing it with selection_neighbors, and taking the complement back ------------------------------------------------
+    const comp_12 = try complement_of(garden, graph, &sel_12); // {3,4}
+    if (!same_set(comp_12, &[_]u32{ 3, 4 })) return error.ComplementOnTwelveWrong;
+    const grown_comp_12 = try selection_neighbors.grow_selection(garden, graph, comp_12); // {2,3,4}
+    const dual_12 = try complement_of(garden, graph, grown_comp_12); // {1}
+    if (!same_set(dual_12, shrink_12)) return error.DualityOnTwelveWrong;
+    const comp_2 = try complement_of(garden, graph, &sel_2); // {1,3,4}
+    const grown_comp_2 = try selection_neighbors.grow_selection(garden, graph, comp_2); // {1,2,3,4}
+    const dual_2 = try complement_of(garden, graph, grown_comp_2); // {}
+    if (!same_set(dual_2, shrink_2)) return error.DualityOnTwoWrong;
+
+    // --- CLOSING IS EXTENSIVE, OPENING IS ANTI-EXTENSIVE, NEITHER IS THE IDENTITY -- closing {1,2} (grow to {1,2,3} then shrink) fills out to
+    //     the WHOLE cluster {1,2,3}, larger than {1,2}; opening {2} (shrink to {} then grow) DELETES it to {}, smaller than {2}; yet opening a
+    //     solid {1,2} returns {1,2} unchanged -- opening is no blanket delete --------------------------------------------------------------
+    const close_12 = try closing(garden, graph, &sel_12);
+    if (!same_set(close_12, &cluster_members)) return error.ClosingOnTwelveWrong;
+    const open_2 = try opening(garden, graph, &sel_2);
+    if (open_2.len != 0) return error.OpeningOnTwoNotEmpty;
+    const open_12 = try opening(garden, graph, &sel_12);
+    if (!same_set(open_12, &sel_12)) return error.OpeningOnTwelveNotIdentity;
+
+    // --- THE TWO FIXED POINTS ARE DUAL -- shrink_to_fixpoint {1,2} peels to {} (it holds no whole cluster), shrink_to_fixpoint {2,3,4} peels to
+    //     just {4} (the one whole cluster contained), while grow_to_fixpoint {1,2} reaches the whole cluster {1,2,3} it TOUCHES ----------------
+    const fp_shrink_12 = try shrink_to_fixpoint(garden, graph, &sel_12);
+    if (fp_shrink_12.len != 0) return error.ShrinkFixpointOnTwelveWrong;
+    const sel_234 = [_]u32{ 2, 3, 4 };
+    const fp_shrink_234 = try shrink_to_fixpoint(garden, graph, &sel_234);
+    if (!same_set(fp_shrink_234, &[_]u32{4})) return error.ShrinkFixpointOnTwoThreeFourWrong;
+    const fp_grow_12 = try selection_neighbors.grow_to_fixpoint(garden, graph, &sel_12);
+    if (!same_set(fp_grow_12, &cluster_members)) return error.GrowFixpointCrossCheckWrong;
+    // the whole scene is solid, its own fixed point under shrink
+    const sel_all = [_]u32{ 1, 2, 3, 4 };
+    const fp_shrink_all = try shrink_to_fixpoint(garden, graph, &sel_all);
+    if (!same_set(fp_shrink_all, &sel_all)) return error.WholeSceneShrinkFixpointWrong;
+
+    // --- MALFORMED SELECTIONS -- a label past the object count, background 0, and a non-ascending pair all refuse BadSelection, having read
+    //     nothing --------------------------------------------------------------------------------------------------------------------------
+    const past = [_]u32{5};
+    if (selection_boundary(garden, graph, &past)) |_| return error.PastLabelNotRefused else |err| {
+        if (err != error.BadSelection) return error.WrongPastError;
+    }
+    const zero = [_]u32{0};
+    if (shrink_selection(garden, graph, &zero)) |_| return error.ZeroLabelNotRefused else |err| {
+        if (err != error.BadSelection) return error.WrongZeroError;
+    }
+    const descending = [_]u32{ 3, 2 };
+    if (shrink_to_fixpoint(garden, graph, &descending)) |_| return error.DescendingNotRefused else |err| {
+        if (err != error.BadSelection) return error.WrongDescendingError;
+    }
+
+    // --- DETERMINISM -- the same selection shrinks to the same interior twice ---------------------------------------------------------------
+    const d1 = try shrink_selection(garden, graph, &sel_12);
+    const d2 = try shrink_selection(garden, graph, &sel_12);
+    if (!same_set(d1, d2)) return error.ShrinkNotDeterministic;
+
+    print("GREEN image-selection-shrink: the SHRINK-SELECTION gesture -- name the INNER BOUNDARY of a selection (every selected object whose box overlaps something outside), shrink the selection by that rim (EROSION), and iterate the shrink to a fixed point, the exact DUAL of image/selection_neighbors.rye's grow, composing over image/scene_graph.rye's overlap matrix and over grow_selection, exact integers, NO float and NO tolerance -- the DECISIVE crux that erosion and dilation are DUAL never inverse so neither OPENING nor CLOSING is the identity, in three shapes over one path graph. SHRINK IS THE COMPLEMENT-DUAL OF GROW -- shrink_selection(S) == complement(grow_selection(complement(S))), proven on metal for {{1,2}} and {{2}}: a selected object survives the shrink exactly when the grown complement never reaches it. CLOSING IS EXTENSIVE, OPENING IS ANTI-EXTENSIVE, NEITHER IS THE IDENTITY -- over a 3-object path (1's box overlaps 2, 2's overlaps 3, 1's never overlaps 3), CLOSING {{1,2}} (grow to {{1,2,3}} then shrink) fills out to the WHOLE cluster {{1,2,3}} strictly larger than {{1,2}}, while OPENING {{2}} (shrink to {{}} then grow) DELETES it to the EMPTY set strictly smaller than {{2}} since 2's whole neighborhood lies outside, yet OPENING a solid {{1,2}} returns {{1,2}} unchanged so opening is no blanket delete. THE TWO FIXED POINTS ARE DUAL -- shrink_to_fixpoint(S) is the union of whole clusters ENTIRELY CONTAINED in S (a subset), the dual of grow_to_fixpoint's union of whole clusters TOUCHED (a superset): shrinking {{1,2}} to a fixed point peels to {{}} (it holds no whole cluster) while shrinking {{2,3,4}} peels to just the singleton {{4}} (the one whole cluster it contains), and a union of whole clusters is a fixed point of BOTH grow and shrink -- the whole cluster {{1,2,3}} and the far singleton {{4}} each erode to themselves. A label past the count, background 0, and a non-ascending pair each refuse BadSelection having read nothing; the same selection shrinks to the same interior twice. Compose not braid over image/scene_graph.rye (the overlap matrix), image/selection_neighbors.rye (the dilation the opening, closing, and duality lean on), and image/overlap_clusters.rye (the whole-closure clustering the selftest cross-checks)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: selection_shrink selftest\n", .{});
+    return 1;
+}
