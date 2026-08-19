@@ -1,0 +1,46 @@
+# tools/cluster_adjacency_witness.rish -- how two whole connected clusters sit relative to each other, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/object_relation.rye reads how a PAIR of objects sit; image/scene_graph.rye joins that over every
+# pair and reads each object's nearest NEIGHBOR; image/overlap_clusters.rye gathers objects into connected CLUSTERS; image/cluster_facts.rye
+# reads each cluster's union FRAME. This rung lifts the pair read to the clusters themselves: cluster_distance the true inter-cluster gap (min
+# nearest-pixel Chebyshev over member pairs), cluster_frames_overlap whether two union frames overlap, nearest_cluster the directed nearest.
+# Exact integers, NO float, NO tolerance.
+#
+# The crux this witness proves on metal, two shapes: TWO DISTINCT CLUSTERS SHARE NO EDGE YET THEIR FRAMES CAN OVERLAP -- one cluster's frame
+# holds another cluster's frame wholly inside, so cluster_frames_overlap reads true though the clusters share no member edge and stand apart,
+# frame overlap over-claiming a contact the members never make; THE TRUE CLUSTER DISTANCE IS A REAL GRADED GAP, FLOORED AT 2 -- the min over
+# member pairs grades 2, 3, 10 over three cluster pairs, and nearest_cluster is directed (a cluster can be another's nearest without that other
+# being its own). Refusals by name, determinism. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cluster_adjacency_witness.rish
+
+say "cluster_adjacency: Language EN -- Season G cluster-to-cluster read; cluster_distance the true inter-cluster gap, cluster_frames_overlap whether two union frames overlap, nearest_cluster the directed nearest cluster; NO float, NO tolerance."
+say "cluster_adjacency: Style Radiant -- compose not braid: this rung owns only the cluster-pair reads (the min over member pairs, the frame overlap test, the directed nearest); overlap_clusters owns the connectivity and labeling, cluster_facts owns each cluster's union frame, scene_graph owns the precomputed pair matrix, object_relation owns each pair's exact nearest-pixel distance. A reading over a reading over a reading over a reading."
+say "cluster_adjacency: Lens TAME -- every member-pair scan is bounded by the object count within the scene graph's ceiling, the nearest walk by the cluster count; a zero or past-the-count cluster id refuses BadClusterId, a cluster against itself refuses SameCluster, a lone-cluster scene refuses NoOtherCluster; all-or-nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/cluster_adjacency"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/cluster_adjacency.rye -femit-bin=${bin}"]
+assert build.ok else "cluster_adjacency: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "cluster_adjacency: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "cluster_adjacency: ${out}"
+
+assert selftest.out contains "GREEN image-cluster-adjacency" else "cluster_adjacency: selftest did not print the GREEN line"
+assert selftest.out contains "TWO DISTINCT CLUSTERS SHARE NO EDGE YET THEIR FRAMES CAN OVERLAP" else "cluster_adjacency: the frames-overlap-no-edge case did not print"
+assert selftest.out contains "over-claims a contact the members never make" else "cluster_adjacency: the over-claim fact did not print"
+assert selftest.out contains "THE TRUE CLUSTER DISTANCE IS A REAL GRADED GAP, FLOORED AT 2" else "cluster_adjacency: the graded-gap case did not print"
+assert selftest.out contains "cluster_distance grades 2, 3, 10 over the three pairs" else "cluster_adjacency: the graded distances did not print"
+assert selftest.out contains "nearest_cluster is DIRECTED" else "cluster_adjacency: the directedness fact did not print"
+assert selftest.out contains "a cluster can be another's nearest without that other being its own" else "cluster_adjacency: the directed-nearest statement did not print"
+assert selftest.out contains "refuses BadClusterId" else "cluster_adjacency: the bad-cluster-id refusal did not print"
+assert selftest.out contains "refuses SameCluster" else "cluster_adjacency: the same-cluster refusal did not print"
+assert selftest.out contains "refuses NoOtherCluster" else "cluster_adjacency: the no-other-cluster refusal did not print"
+assert selftest.out contains "the same clusters read the same distance and nearest twice" else "cluster_adjacency: the determinism statement did not print"
+
+say "cluster_adjacency: GREEN -- the cluster graph above the object graph stands on metal; two distinct clusters share no edge yet their frames can overlap, the true cluster distance is a real graded gap floored at 2, and nearest_cluster is directed. No network, no key, no funds."

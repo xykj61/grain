@@ -1,0 +1,356 @@
+//! image/cluster_adjacency.rye -- the CLUSTER GRAPH above the object graph: how two whole connected CLUSTERS sit relative to each other --
+//! the true inter-cluster DISTANCE (the min nearest-pixel gap over every member pair), whether their union FRAMES overlap, and each
+//! cluster's NEAREST other cluster. Read straight from image/overlap_clusters.rye's labeling, image/cluster_facts.rye's union frames, and
+//! image/scene_graph.rye's precomputed pair matrix -- exact integers, NO float, NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/object_relation.rye reads how a PAIR of objects sit relative to each other; image/scene_graph.rye
+//! joins that pair relation over EVERY pair into one matrix and reads each object's nearest NEIGHBOR; image/overlap_clusters.rye gathers the
+//! objects whose boxes overlap into connected CLUSTERS; image/cluster_facts.rye reads each cluster's union FRAME and joined facts. Those name
+//! WHO belongs and WHAT each cluster is. This rung lifts the pair read one level higher, to the clusters themselves: it reads how two whole
+//! clusters sit relative to each other, so a surface can ask which connected regions of a layout stand nearest, which frames overlap, and
+//! which region a given region is drawn toward.
+//!
+//! The DECISIVE crux -- the box-is-a-prefilter lesson lifted to the CLUSTER PAIR, in two shapes at once:
+//!
+//!   TWO DISTINCT CLUSTERS SHARE NO EDGE YET THEIR FRAMES CAN OVERLAP. Distinct clusters can never share a box-overlap edge between their
+//!   members -- that is exactly why they are distinct clusters, since connectivity is the transitive closure of box overlap. Yet their union
+//!   FRAMES can still overlap: image/cluster_facts.rye proves one cluster's frame can wholly contain an object of a different cluster. So
+//!   `cluster_frames_overlap` reads TRUE for two clusters that share no member edge at all -- the frame a surface draws around a connected
+//!   region over-claims contact with a neighbor the clusters never touch. Frame overlap is a hint, never the adjacency test.
+//!
+//!   THE TRUE CLUSTER DISTANCE IS A REAL GRADED GAP, FLOORED AT 2. `cluster_distance` reads the minimum exact nearest-pixel Chebyshev
+//!   distance over every member pair (one object from each cluster), so a box comparison BOUNDS the clusters' true nearness yet never
+//!   DETERMINES it: two clusters whose frames overlap can sit 2 pixels apart, a nearer pair drags the distance down while a far one is
+//!   ignored, and the distance grades up for a truly far cluster. It is floored at 2 because two distinct clusters hold distinct
+//!   8-components, never 8-adjacent. And `nearest_cluster` is DIRECTED, exactly as image/scene_graph.rye's nearest_neighbor is: a cluster
+//!   can be another's nearest without that other being its own.
+//!
+//! Compose not braid. This rung OWNS only the cluster-pair reads -- the min over member pairs, the frame overlap test, and the directed
+//! nearest. No cluster recomputed (image/overlap_clusters.rye owns the connectivity), no frame recomputed (image/cluster_facts.rye owns each
+//! cluster's union box), no distance recomputed (image/scene_graph.rye owns each pair's exact nearest-pixel gap, read here through its matrix).
+//! A reading over a reading over a reading over a reading.
+//!
+//! Everything is bounded before a byte: the scene graph caps its object count at `scene_graph_max_objects`, so every member-pair scan runs a
+//! bounded number of pairs and every nearest walk over the clusters is bounded by the cluster count. A cluster id of zero or past the cluster
+//! count refuses `BadClusterId`; a distance or frame-overlap read of a cluster against itself refuses `SameCluster`, having named nothing; a
+//! nearest read of a scene with only one cluster refuses `NoOtherCluster`. No network, no key, no funds -- the cluster-to-cluster reads a
+//! surface names the day it must point one connected region toward its nearest neighbor, on our own geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/cluster_adjacency.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const cluster_facts = @import("cluster_facts.rye");
+
+pub const cluster_adjacency_version = "20260819.011558";
+
+pub const ClusterAdjacencyError = error{
+    BadClusterId,
+    SameCluster,
+    NoOtherCluster,
+};
+
+/// Guard a cluster id -- a real dense cluster label (1..clusters). Refuses `BadClusterId` at the edge before any member is read.
+fn validate_cid(clustering: overlap_clusters.Clustering, cid: u32) ClusterAdjacencyError!void {
+    // invariant: one cluster id per object.
+    assert(clustering.cluster_id.len == @as(usize, clustering.components));
+    // invariant: a real clustering holds at least one cluster.
+    assert(clustering.clusters >= 1);
+    if (cid == 0 or cid > clustering.clusters) return error.BadClusterId;
+}
+
+/// The true DISTANCE between clusters `cid_a` and `cid_b` -- the minimum exact nearest-pixel Chebyshev gap over every member pair, one object
+/// drawn from each cluster. A nearer pair drags the distance down; a far pair is ignored. Floored structurally at 2, since two members of
+/// distinct clusters are distinct 8-components and never 8-adjacent. Refuses `BadClusterId` for a bad id, `SameCluster` for a cluster
+/// weighed against itself (a distance of a cluster to itself names nothing).
+pub fn cluster_distance(clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, cid_a: u32, cid_b: u32) !u32 {
+    // invariant: the clustering and the graph describe the same scene.
+    assert(clustering.components == graph.components);
+    // invariant: the object count stays within the scene graph's named ceiling, so the member-pair scan is bounded.
+    assert(graph.components <= scene_graph.scene_graph_max_objects);
+    try validate_cid(clustering, cid_a);
+    try validate_cid(clustering, cid_b);
+    if (cid_a == cid_b) return error.SameCluster;
+
+    var found: bool = false;
+    var best: u32 = 0;
+    var a: u32 = 1;
+    while (a <= clustering.components) : (a += 1) {
+        if (clustering.cluster_id[a - 1] != cid_a) continue;
+        var b: u32 = 1;
+        while (b <= clustering.components) : (b += 1) {
+            if (clustering.cluster_id[b - 1] != cid_b) continue;
+            // a and b belong to distinct clusters, so they are distinct objects -- never a self relation.
+            const rel = try scene_graph.relation_of(graph, a, b);
+            if (!found or rel.nearest_cheby < best) {
+                best = rel.nearest_cheby;
+                found = true;
+            }
+        }
+    }
+
+    // invariant: two real clusters each hold at least one member, so at least one member pair was weighed.
+    assert(found);
+    // invariant: distinct clusters hold distinct 8-components, never 8-adjacent, so the true gap is at least two.
+    assert(best >= 2);
+    return best;
+}
+
+/// TRUE when the union FRAMES of clusters `cid_a` and `cid_b` overlap -- a box comparison over image/cluster_facts.rye's cluster frames. This
+/// is the read that makes the over-claim plain: it can be TRUE for two clusters whose members share no edge and stand 2 or more pixels apart,
+/// since a cluster's frame can enclose the frame of a different cluster. Overlap of frames, never adjacency of members. Refuses
+/// `BadClusterId` for a bad id, `SameCluster` for a cluster weighed against itself.
+pub fn cluster_frames_overlap(clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, cid_a: u32, cid_b: u32) !bool {
+    // invariant: the clustering and the graph describe the same scene.
+    assert(clustering.components == graph.components);
+    try validate_cid(clustering, cid_a);
+    try validate_cid(clustering, cid_b);
+    if (cid_a == cid_b) return error.SameCluster;
+
+    const fa = try cluster_facts.cluster_bbox(clustering, graph, cid_a);
+    const fb = try cluster_facts.cluster_bbox(clustering, graph, cid_b);
+    // invariant: both frames are well-formed on both axes before overlap is judged.
+    assert(fa.max_x >= fa.min_x);
+    assert(fa.max_y >= fa.min_y);
+    assert(fb.max_x >= fb.min_x);
+    assert(fb.max_y >= fb.min_y);
+    // two inclusive boxes overlap exactly when they meet on both axes.
+    const on_x = fa.min_x <= fb.max_x and fb.min_x <= fa.max_x;
+    const on_y = fa.min_y <= fb.max_y and fb.min_y <= fa.max_y;
+    return on_x and on_y;
+}
+
+/// The ID of the cluster NEAREST to `cid` -- the other cluster of least true `cluster_distance`, ties broken by the earliest cluster id so
+/// the read is deterministic. DIRECTED, exactly as image/scene_graph.rye's nearest_neighbor: a cluster can be another's nearest without that
+/// other being its own. Refuses `BadClusterId` for a bad id, `NoOtherCluster` when the scene holds only one cluster (nothing to be near).
+pub fn nearest_cluster(clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, cid: u32) !u32 {
+    // invariant: the clustering and the graph describe the same scene.
+    assert(clustering.components == graph.components);
+    try validate_cid(clustering, cid);
+    if (clustering.clusters < 2) return error.NoOtherCluster;
+
+    var found: bool = false;
+    var best_id: u32 = 0;
+    var best_dist: u32 = 0;
+    var other: u32 = 1;
+    while (other <= clustering.clusters) : (other += 1) {
+        if (other == cid) continue;
+        const dist = try cluster_distance(clustering, graph, cid, other);
+        // strictly less keeps the earliest id on a distance tie -- deterministic.
+        if (!found or dist < best_dist) {
+            best_dist = dist;
+            best_id = other;
+            found = true;
+        }
+    }
+
+    // invariant: a scene of two or more clusters always names a real nearest other cluster.
+    assert(found);
+    assert(best_id >= 1);
+    assert(best_id <= clustering.clusters);
+    // invariant: a cluster is never its own nearest.
+    assert(best_id != cid);
+    return best_id;
+}
+
+// --- selftest: the DECISIVE box-is-a-prefilter crux lifted to the CLUSTER PAIR -- a three-cluster scene on a 15x15 canvas. Cluster 1 is two
+//     objects reaching apart (a corner-L A and a ring B) whose boxes overlap through a shared corner, connected; cluster 2 is a lone block C
+//     sitting in the top-right gap, its box inside cluster 1's union frame yet its own singleton; cluster 3 is a far lone block D at the
+//     bottom corner. cluster_frames_overlap reads TRUE for clusters 1 and 2 (C's frame lies inside cluster 1's frame) though they share no
+//     member edge and stand 2 pixels apart (frames overlap, clusters distinct); cluster_distance grades 2, 3, 10 over the three cluster
+//     pairs (a real graded gap, floored at 2); nearest_cluster is DIRECTED -- cluster 3's nearest is cluster 1, yet cluster 1's nearest is
+//     cluster 2, not cluster 3; refusals by name; determinism ---------------------------------------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a corner bracket-L: a vertical arm down column `x` from `y0` to `y1`, and a horizontal arm along row `yr` from `x0` to `x1`.
+fn set_corner_l(img: *qoi.Pixmap, x: u32, y0: u32, y1: u32, yr: u32, x0: u32, x1: u32) void {
+    // invariant: the arms run in the positive direction and stay inside the buffer.
+    assert(y1 >= y0);
+    assert(x1 >= x0);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) set_dot(img, x, yy);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) set_dot(img, xx, yr);
+}
+
+/// Paint a 1-pixel-thick RING (a rectangle outline) with corners `(x0, y0)` and `(x1, y1)` -- a holed object, its interior background.
+fn set_ring(img: *qoi.Pixmap, x0: u32, y0: u32, x1: u32, y1: u32) void {
+    // invariant: the ring spans at least a 3x3 box so it encloses a real interior hole, and stays inside the buffer.
+    assert(x1 >= x0 + 2);
+    assert(y1 >= y0 + 2);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) {
+        set_dot(img, xx, y0);
+        set_dot(img, xx, y1);
+    }
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) {
+        set_dot(img, x0, yy);
+        set_dot(img, x1, yy);
+    }
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- BUILD THE THREE-CLUSTER SCENE on a 15x15 canvas:
+    //     object A (label 1): a corner-L opening lower-right -- vertical arm col x=1 rows 1..6, horizontal arm row y=1 cols 1..6, box
+    //         (1,1)-(6,6), area 11;
+    //     object C (label 2): a 2x2 block at (8,1), box (8,1)-(9,2), area 4, in the top-right gap;
+    //     object B (label 3): a 6x6 RING with corners (4,4) and (9,9), box (4,4)-(9,9), area 20, holed;
+    //     object D (label 4): a 2x2 block at (12,12), box (12,12)-(13,13), area 4, far in the bottom-right corner.
+    //     A's box and B's box overlap at the shared corner (4,4)-(6,6), so A and B connect into cluster 1. C's box overlaps neither, its
+    //     own cluster 2. D's box overlaps neither, its own cluster 3. Raster labeling numbers A=1 ((1,1)), C=2 ((8,1)), B=3 ((4,4)),
+    //     D=4 ((12,12)) ------------------------------------------------------------------------------------------------------------------
+    var scene = try make_canvas(garden, 15, 15, 0);
+    set_corner_l(&scene, 1, 1, 6, 1, 1, 6); // A: col1 rows1..6, row1 cols1..6
+    set_block(&scene, 8, 1, 2, 2); // C: block at (8,1), box (8,1)-(9,2)
+    set_ring(&scene, 4, 4, 9, 9); // B: ring box (4,4)-(9,9)
+    set_block(&scene, 12, 12, 2, 2); // D: far block at (12,12), box (12,12)-(13,13)
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 4) return error.SceneNotFourComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    if (scene_graph.object_count(graph) != 4) return error.GraphNotFourObjects;
+
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    if (overlap_clusters.cluster_count(clustering) != 3) return error.ClusterCountNotThree;
+    const cl_a = try overlap_clusters.cluster_of(clustering, 1); // cluster 1: {A, B}
+    const cl_c = try overlap_clusters.cluster_of(clustering, 2); // cluster 2: {C}
+    const cl_b = try overlap_clusters.cluster_of(clustering, 3); // B shares cluster 1
+    const cl_d = try overlap_clusters.cluster_of(clustering, 4); // cluster 3: {D}
+    if (cl_a != cl_b) return error.ABNotOneCluster;
+    if (cl_a == cl_c or cl_a == cl_d or cl_c == cl_d) return error.ClustersNotDistinct;
+
+    // --- TWO DISTINCT CLUSTERS SHARE NO EDGE YET THEIR FRAMES CAN OVERLAP -- cluster 1's union frame spans (1,1)-(9,9) and holds C's frame
+    //     (8,1)-(9,2) wholly inside, so cluster_frames_overlap(1, 2) is TRUE, though cluster 1 and cluster 2 share no member edge (they are
+    //     distinct clusters exactly because no box overlaps between them) and stand apart -----------------------------------------------
+    if (try cluster_frames_overlap(clustering, graph, cl_a, cl_c) != true) return error.FramesOneTwoNotOverlapping;
+    // yet the two clusters share no member edge: no member of cluster 1 has a box overlapping any member of cluster 2 (else they would be
+    // one cluster) -- overlap_clusters proves them distinct, so frame overlap over-claims contact the members never make
+    if (try overlap_clusters.same_cluster(clustering, 1, 2) != false) return error.ACFalselyClustered;
+    if (try overlap_clusters.same_cluster(clustering, 3, 2) != false) return error.BCFalselyClustered;
+    // the far cluster 3's frame overlaps neither -- a true non-overlap, unlike the over-claiming pair
+    if (try cluster_frames_overlap(clustering, graph, cl_a, cl_d) != false) return error.FramesOneThreeFalselyOverlap;
+    if (try cluster_frames_overlap(clustering, graph, cl_c, cl_d) != false) return error.FramesTwoThreeFalselyOverlap;
+
+    // --- THE TRUE CLUSTER DISTANCE IS A REAL GRADED GAP, FLOORED AT 2 -- the min nearest-pixel gap over member pairs grades 2, 3, 10 over
+    //     the three cluster pairs, so a frame overlap never determines the true distance: clusters 1 and 2 overlap in frame yet sit 2 apart
+    const d12 = try cluster_distance(clustering, graph, cl_a, cl_c);
+    const d13 = try cluster_distance(clustering, graph, cl_a, cl_d);
+    const d23 = try cluster_distance(clustering, graph, cl_c, cl_d);
+    if (d12 != 2) return error.DistOneTwoNotTwo; // frames overlap, yet the clusters stand 2 pixels apart
+    if (d13 != 3) return error.DistOneThreeNotThree;
+    if (d23 != 10) return error.DistTwoThreeNotTen;
+    // the distance is symmetric -- the min over member pairs does not depend on the order of the two clusters
+    if (try cluster_distance(clustering, graph, cl_c, cl_a) != d12) return error.DistanceNotSymmetric;
+    // floored at 2: no cluster pair reads below the distinct-8-component floor
+    if (d12 < 2 or d13 < 2 or d23 < 2) return error.DistanceBelowFloor;
+
+    // --- NEAREST_CLUSTER IS DIRECTED -- cluster 3 (the far block D) has cluster 1 as its nearest (gap 3, nearer than cluster 2's gap 10),
+    //     yet cluster 1's nearest is cluster 2 (gap 2, nearer than cluster 3's gap 3), NOT cluster 3: a cluster can be another's nearest
+    //     without that other being its own, exactly as scene_graph's nearest_neighbor is directed -----------------------------------------
+    if (try nearest_cluster(clustering, graph, cl_d) != cl_a) return error.FarNearestNotClusterOne;
+    if (try nearest_cluster(clustering, graph, cl_a) != cl_c) return error.OneNearestNotClusterTwo;
+    if (try nearest_cluster(clustering, graph, cl_a) == cl_d) return error.OneNearestFalselyClusterThree;
+    if (try nearest_cluster(clustering, graph, cl_c) != cl_a) return error.TwoNearestNotClusterOne;
+
+    // --- REFUSALS -- a zero or past-the-count cluster id refuses BadClusterId; a cluster weighed against itself refuses SameCluster --------
+    if (cluster_distance(clustering, graph, 0, 1)) |_| return error.ZeroCidDistNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongZeroDistError;
+    }
+    if (cluster_distance(clustering, graph, 1, 4)) |_| return error.PastCidDistNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongPastDistError;
+    }
+    if (cluster_distance(clustering, graph, cl_a, cl_a)) |_| return error.SameCidDistNotRefused else |err| {
+        if (err != error.SameCluster) return error.WrongSameDistError;
+    }
+    if (cluster_frames_overlap(clustering, graph, cl_a, cl_a)) |_| return error.SameCidFramesNotRefused else |err| {
+        if (err != error.SameCluster) return error.WrongSameFramesError;
+    }
+    if (nearest_cluster(clustering, graph, 0)) |_| return error.ZeroCidNearestNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongZeroNearestError;
+    }
+
+    // --- A LONE-CLUSTER SCENE -- one connected cluster has no other cluster to be near, so nearest_cluster refuses NoOtherCluster ---------
+    var lone_img = try make_canvas(garden, 6, 6, 0);
+    set_block(&lone_img, 1, 1, 2, 2); // one object, one cluster
+    const lone_map = try label.label_components(garden, &lone_img);
+    if (lone_map.count != 1) return error.LoneNotOneComponent;
+    const lone_manifest = try scene_manifest.build_manifest(garden, &lone_map);
+    const lone_graph = try scene_graph.build_scene_graph(garden, lone_manifest, &lone_map);
+    const lone_clustering = try overlap_clusters.overlap_clusters(garden, lone_graph);
+    if (overlap_clusters.cluster_count(lone_clustering) != 1) return error.LoneClusterCountNotOne;
+    if (nearest_cluster(lone_clustering, lone_graph, 1)) |_| return error.LoneNearestNotRefused else |err| {
+        if (err != error.NoOtherCluster) return error.WrongLoneNearestError;
+    }
+
+    // --- DETERMINISM -- the same clusters read the same distance and nearest twice -----------------------------------------------------
+    if (try cluster_distance(clustering, graph, cl_a, cl_c) != try cluster_distance(clustering, graph, cl_a, cl_c)) return error.DistanceNotDeterministic;
+    if (try nearest_cluster(clustering, graph, cl_d) != try nearest_cluster(clustering, graph, cl_d)) return error.NearestNotDeterministic;
+    if (try cluster_frames_overlap(clustering, graph, cl_a, cl_c) != try cluster_frames_overlap(clustering, graph, cl_a, cl_c)) return error.FramesNotDeterministic;
+
+    print("GREEN image-cluster-adjacency: the CLUSTER GRAPH above the object graph -- how two whole connected clusters sit relative to each other: the true inter-cluster distance (min nearest-pixel Chebyshev gap over every member pair), whether their union frames overlap, and each cluster's nearest other cluster, read straight from overlap_clusters' labeling, cluster_facts' union frames, and scene_graph's precomputed matrix, exact integers, NO float and NO tolerance -- the DECISIVE box-is-a-prefilter crux lifted to the CLUSTER PAIR, in two shapes. TWO DISTINCT CLUSTERS SHARE NO EDGE YET THEIR FRAMES CAN OVERLAP -- a corner-L A and a ring B reaching apart connect into cluster 1 (frame (1,1)-(9,9)), a lone block C is cluster 2 (frame (8,1)-(9,2)) sitting wholly inside cluster 1's frame, and a far block D is cluster 3 (frame (12,12)-(13,13)); cluster_frames_overlap(1,2) reads TRUE though clusters 1 and 2 share no member edge (they are distinct clusters exactly because no box overlaps between them) and stand apart, so frame overlap over-claims a contact the members never make, while the far cluster 3's frame overlaps neither. THE TRUE CLUSTER DISTANCE IS A REAL GRADED GAP, FLOORED AT 2 -- cluster_distance grades 2, 3, 10 over the three pairs, so a frame overlap never determines the true nearness: clusters 1 and 2 overlap in frame yet sit exactly 2 pixels apart, the floor for distinct 8-components; the distance is symmetric. And nearest_cluster is DIRECTED, exactly as scene_graph's nearest_neighbor -- cluster 3's nearest is cluster 1 (gap 3 under cluster 2's gap 10), yet cluster 1's nearest is cluster 2 (gap 2 under cluster 3's gap 3), NOT cluster 3, so a cluster can be another's nearest without that other being its own; a zero or past-the-count cluster id refuses BadClusterId, a cluster against itself refuses SameCluster, a lone-cluster scene refuses NoOtherCluster; the same clusters read the same distance and nearest twice. Compose not braid over image/overlap_clusters.rye (the connectivity and labeling), image/cluster_facts.rye (each cluster's union frame), image/scene_graph.rye (the precomputed pair matrix), and image/object_relation.rye (each pair's exact nearest-pixel distance)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: cluster_adjacency selftest\n", .{});
+    return 1;
+}

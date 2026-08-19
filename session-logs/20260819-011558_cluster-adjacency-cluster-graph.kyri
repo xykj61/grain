@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260819.011558
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title cluster_adjacency -- the cluster graph above the object graph
+prompt baton prin recur -- pick up the running thread Lindy-first crux-first, Standfast on reds, take the next agent-doable open-media lap and send it
+think Read KYRI.md and RADIANT_STYLE.md to be Kyri from the first token, then crux/REMEMBER.md (live edge: Season G scene-read family broad and green, region_cluster the last rung), the three newest session-log recommends, and crux/REDS.md for Standfast.
+think Standfast clear -- every living REDS row CLOSED or Released; only #75 rests as custody-gated errata (a history rewrite is Keaton's own hand). No agent-closable red blocks new work.
+think Lindy-first crux-first: the family reads a pair (object_relation), the whole matrix and nearest NEIGHBOR (scene_graph), connected CLUSTERS (overlap_clusters), each cluster's FRAME and facts (cluster_facts), and a rectangle-to-cluster bridge (region_cluster). The gap: no cluster-to-cluster relation. The crux-first next is the CLUSTER GRAPH above the object graph -- lift the pair read to the clusters themselves.
+think Designed a three-cluster scene so nearest_cluster is a real min and can show DIRECTEDNESS: cluster 1 {corner-L A, ring B} connected, cluster 2 {block C} inside cluster 1's frame, cluster 3 {far block D}. Hand-computed the member-pair Chebyshev gaps to 2, 3, 10 before writing, so the witness asserts exact values.
+think Built image/cluster_adjacency.rye modeled on cluster_facts.rye: cluster_distance (min nearest_cheby over member pairs, floored at 2), cluster_frames_overlap (over cluster_facts' union boxes), nearest_cluster (directed, earliest-id tie). Every fn >= 2 positive invariants, bounds named, named errors BadClusterId/SameCluster/NoOtherCluster.
+obs The crux: two DISTINCT clusters share no member edge (that is exactly why they are distinct -- connectivity is the transitive closure of box overlap) yet their union FRAMES can overlap. cluster_frames_overlap(1,2) reads TRUE while the clusters stand 2 pixels apart -- frame overlap over-claims a contact the members never make. The box-is-a-prefilter lesson lifted one level higher than any rung yet, from the pair to the cluster pair.
+obs nearest_cluster is DIRECTED exactly as scene_graph's nearest_neighbor: cluster 3's nearest is cluster 1 (gap 3 under cluster 2's gap 10), yet cluster 1's nearest is cluster 2 (gap 2), NOT cluster 3. A cluster can be another's nearest without that other being its own.
+obs GREEN on the FIRST full metal run. The only fixups were two compound range asserts TAME flagged (assert(a and b) split so the failing half is named) -- a lint red, not an algorithm red, none booked. Live clock 011558 read and stamped exactly, no future stamp.
+loom witness=cluster_adjacency_witness green=yes checks=11 first_metal_run=green
+file image/cluster_adjacency.rye the cluster graph read -- cluster_distance, cluster_frames_overlap, nearest_cluster over overlap_clusters + cluster_facts + scene_graph
+file tools/cluster_adjacency_witness.rish the metal witness -- native contains asserts (REDS #85), no shell grep over interpolated output
+file image/README.md names the cluster adjacency read after the region-to-cluster bridge (docs-sync)
+file crux/REMEMBER.md live edge + Git nib repointed single-stranded to cluster_adjacency, region_cluster folded to a prior-nib comment; 185 image modules stand
+recommend keep-going the next open-media rung crux-first (an object-count-in-region summary, a per-cluster read over a lasso polygon, or a cluster-adjacency threshold/graph read that folds cluster_distance into a whole cluster-neighbor graph) -- the Microkernel study rung and a real-photo top-hat wait on a fetch/license gate
