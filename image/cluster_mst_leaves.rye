@@ -1,0 +1,328 @@
+//! image/cluster_mst_leaves.rye -- the TIPS and the JOINTS of the skeleton: the LEAF/INTERNAL partition of the cluster minimum spanning tree.
+//! `tree_degree` counts how many bridge edges meet a cluster; `is_leaf` names a TIP (one bridge, or the lone cluster with none); `is_internal`
+//! names a JOINT (two or more bridges); `leaf_count` and `internal_count` read the whole partition -- exact integers, NO float, NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/cluster_minimum_spanning_tree.rye grows the skeleton and names its bridge edges;
+//! image/cluster_tree_diameter.rye reads the longest reach and its two POLES; image/cluster_tree_radius.rye reads the CENTER of least reach;
+//! image/cluster_tree_centroid.rye reads the BALANCE point of most even removal. Each of those named a special cluster -- a pole, a center, a
+//! centroid. This rung reads the plainest structural fact underneath all of them: which clusters are TIPS of the skeleton and which are JOINTS.
+//! A surface names it the day it must draw the endpoints of the connecting lines differently from the branch-points -- a tip gets a handle to
+//! drag the whole limb, a joint gets a splitter to fold a subtree.
+//!
+//! The DECISIVE crux -- the tip/joint partition is COARSER than the pole/center/centroid reads, and it bounds every one of them:
+//!
+//!   THE POLES ARE ALWAYS LEAVES, YET NOT EVERY LEAF IS A POLE. A longest path through a tree must end at a tip (extend it further and it grows),
+//!   so both diameter endpoints are leaves. The reverse fails: on a SPROUT -- a main path 1-2-3-4 with a fifth cluster sprouting off the interior
+//!   joint 2 -- the poles are the path ends 1 and 4, both leaves, while cluster 5 is a genuine leaf whose farthest reach (8) falls short of the
+//!   diameter (9), so `is_diameter_endpoint(5)` reads FALSE though `is_leaf(5)` reads TRUE. The pole set is a strict SUBSET of the leaf set. On a
+//!   PATH the two coincide, because a path's only leaves are its two ends and both are poles -- so the sprout and the path stand as the two cases.
+//!
+//!   THE CENTER AND THE CENTROID ARE ALWAYS JOINTS (on a tree of three or more clusters). Removing a leaf leaves the rest in one lopsided piece,
+//!   the WORST possible balance, so a leaf is never a centroid; and a leaf's reach runs the whole way across the tree, the WORST eccentricity, so a
+//!   leaf is never a center. On the sprout both the center and the centroid are the interior joint cluster 2, cross-checked here against
+//!   image/cluster_tree_radius.rye and image/cluster_tree_centroid.rye and never re-derived. The special clusters live among the joints; the tips
+//!   hold the handles.
+//!
+//! Compose not braid. This rung OWNS only the degree read and the tip/joint partition over the tree's edges. No spanning tree recomputed
+//! (image/cluster_minimum_spanning_tree.rye owns `build_mst` and the edges), no diameter, center, or centroid recomputed (their modules own the
+//! poles, the center, and the centroid, cross-checked here to prove the bound, never re-derived). A reading over a reading over a reading over a
+//! reading over a reading over a reading over a reading.
+//!
+//! Everything is bounded before a byte: the cluster count can never exceed the object count, itself capped at `scene_graph_max_objects`, and the
+//! degree scan visits the tree's n-1 edges once per cluster. A lone-cluster layout is one TIP and no joints -- its spanning tree is empty, so its
+//! only cluster meets no bridge and reads as a leaf. A zero or past-the-count cluster id refuses `BadClusterId`. No network, no key, no funds --
+//! the tips and joints a surface draws, on our own geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/cluster_mst_leaves.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const cluster_graph = @import("cluster_graph.rye");
+const cluster_mst = @import("cluster_minimum_spanning_tree.rye");
+const cluster_tree_diameter = @import("cluster_tree_diameter.rye");
+const cluster_tree_radius = @import("cluster_tree_radius.rye");
+const cluster_tree_centroid = @import("cluster_tree_centroid.rye");
+
+pub const cluster_mst_leaves_version = "20260819.032203";
+
+pub const LeavesError = error{
+    BadClusterId,
+};
+
+/// The DEGREE of cluster `c` in the skeleton -- how many bridge edges meet it. A tip reads 1, a joint reads 2 or more, the lone cluster of a
+/// one-cluster layout reads 0. `c` is a 1-based cluster id; refuses `BadClusterId` for a zero or past-the-count id.
+pub fn tree_degree(tree: cluster_mst.MstTree, c: u32) !u32 {
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges (empty for a lone cluster).
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+    // invariant: a real cluster graph holds at least one cluster.
+    assert(tree.clusters >= 1);
+    if (c == 0 or c > tree.clusters) return error.BadClusterId;
+
+    var deg: u32 = 0;
+    var i: u32 = 0;
+    while (i < tree.edges.len) : (i += 1) {
+        const edge = tree.edges[i];
+        if (edge.a == c or edge.b == c) deg += 1;
+    }
+    // invariant: no cluster meets more edges than the tree holds.
+    assert(deg <= tree.edges.len);
+    // invariant: every cluster of a multi-cluster tree meets at least one bridge -- only the lone cluster reads zero.
+    assert(deg >= 1 or tree.clusters < 2);
+    return deg;
+}
+
+/// TRUE when cluster `c` is a TIP of the skeleton -- it meets one bridge, or it is the lone cluster of a one-cluster layout, which meets none. A
+/// tip is where a limb ends; a surface hangs the drag-handle here. Refuses `BadClusterId` for a zero or past-the-count id.
+pub fn is_leaf(tree: cluster_mst.MstTree, c: u32) !bool {
+    const deg = try tree_degree(tree, c);
+    // a lone cluster (degree 0) and a true tip (degree 1) both read as leaves -- neither is a branch-point.
+    return deg <= 1;
+}
+
+/// TRUE when cluster `c` is a JOINT of the skeleton -- it meets two or more bridges, so pulling it apart splits the tree. A surface puts the
+/// subtree-splitter here. Refuses `BadClusterId` for a zero or past-the-count id.
+pub fn is_internal(tree: cluster_mst.MstTree, c: u32) !bool {
+    const deg = try tree_degree(tree, c);
+    return deg >= 2;
+}
+
+/// Count the tips and the joints together in one pass, so the two public counts share one walk and one invariant. Returns the leaf count and the
+/// internal count, which always sum to the cluster total.
+const Partition = struct {
+    leaves: u32,
+    internal: u32,
+};
+
+fn partition_counts(tree: cluster_mst.MstTree) Partition {
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges.
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+    // invariant: a real cluster graph holds at least one cluster.
+    assert(tree.clusters >= 1);
+
+    const n: u32 = tree.clusters;
+    var leaves: u32 = 0;
+    var internal: u32 = 0;
+    var total_degree: u32 = 0;
+    var c: u32 = 1;
+    while (c <= n) : (c += 1) {
+        var deg: u32 = 0;
+        var i: u32 = 0;
+        while (i < tree.edges.len) : (i += 1) {
+            const edge = tree.edges[i];
+            if (edge.a == c or edge.b == c) deg += 1;
+        }
+        total_degree += deg;
+        if (deg <= 1) {
+            leaves += 1;
+        } else {
+            internal += 1;
+        }
+    }
+    // invariant: every cluster is either a tip or a joint, so the two counts partition the whole.
+    assert(leaves + internal == n);
+    // invariant: the handshake lemma -- the degrees of a tree sum to twice its edge count.
+    assert(total_degree == @as(u32, @intCast(tree.edges.len)) * 2);
+    return Partition{ .leaves = leaves, .internal = internal };
+}
+
+/// HOW MANY tips the skeleton holds -- clusters meeting at most one bridge. A path has exactly two; a star has one per arm; the lone cluster is
+/// one tip. Every tree of two or more clusters has at least two tips.
+pub fn leaf_count(tree: cluster_mst.MstTree) u32 {
+    const p = partition_counts(tree);
+    // invariant: any tree of two or more clusters has at least two tips (the ends of its longest path).
+    assert(p.leaves >= 2 or tree.clusters < 2);
+    return p.leaves;
+}
+
+/// HOW MANY joints the skeleton holds -- clusters meeting two or more bridges. A path of n clusters has n-2; a star has one; a lone cluster or a
+/// single edge has none.
+pub fn internal_count(tree: cluster_mst.MstTree) u32 {
+    const p = partition_counts(tree);
+    // invariant: the joint count never exceeds the cluster total.
+    assert(p.internal <= tree.clusters);
+    return p.internal;
+}
+
+// --- selftest: the tip/joint partition is COARSER than pole/center/centroid, and bounds every one. Scene ONE is a SPROUT -- a main path 1-2-3-4
+//     with a fifth cluster sprouting off the interior joint 2; the poles 1 and 4 are leaves, yet leaf 5 is a leaf that is NOT a pole, and the
+//     center and centroid both land on the interior joint 2. Scene TWO is the symmetric PATH (poles ARE all the leaves). Then a single-edge tree
+//     (every node a tip, no joint), a lone cluster, refusals, determinism ---------------------------------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// Build the cluster tree of a scene, checking the object and cluster counts along the way -- a local helper so every scene reads the same.
+fn tree_of(garden: std.mem.Allocator, img: *qoi.Pixmap, want_objects: u32, want_clusters: u32) !cluster_mst.MstTree {
+    // invariant: the caller names how many objects and clusters the scene must hold, so a mislaid pixel fails loud.
+    assert(want_objects >= 1);
+    assert(want_clusters >= 1);
+    const map = try label.label_components(garden, img);
+    if (map.count != want_objects) return error.SceneObjectCountWrong;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    if (overlap_clusters.cluster_count(clustering) != want_clusters) return error.SceneClusterCountWrong;
+    const cg = try cluster_graph.build_cluster_graph(garden, clustering, graph);
+    return cluster_mst.build_mst(garden, cg);
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- SCENE ONE: THE SPROUT on a 20x14 canvas. Five singleton 2x2 blocks, boxes disjoint -> five clusters in raster order. Four sit on the
+    //     main row (y 5-6) left to right, the fifth sprouts just below the second. Raster labels: c1..c4 the main row, c5 the sprout. Nearest-pixel
+    //     Chebyshev gaps: consecutive main blocks 3, the sprout 2 below cluster 2 (and 3 from clusters 1 and 3, so it attaches to 2 alone). Prim
+    //     from cluster 1 builds the tree 1-2, 2-3, 3-4, 2-5 -- a main path with a leaf sprouting off the interior joint 2 ----------------------
+    var sprout = try make_canvas(garden, 20, 14, 0);
+    set_block(&sprout, 1, 5, 2, 2); // c1 -> box cols 1-2   (main-row left end)
+    set_block(&sprout, 5, 5, 2, 2); // c2 -> box cols 5-6   (gap 3 to c1; the interior joint)
+    set_block(&sprout, 9, 5, 2, 2); // c3 -> box cols 9-10  (gap 3 to c2)
+    set_block(&sprout, 13, 5, 2, 2); // c4 -> box cols 13-14 (gap 3 to c3; main-row right end)
+    set_block(&sprout, 5, 8, 2, 2); // c5 -> box rows 8-9   (gap 2 below c2, gap 3 from c1 and c3)
+    const stt = try tree_of(garden, &sprout, 5, 5);
+
+    // --- CONFIRM THE SPROUT SKELETON -- the main path 1-2-3-4 plus the sprout edge 2-5, exactly n-1 = 4 edges --------------------------------
+    if (cluster_mst.edge_count(stt) != 4) return error.SproutEdgeCountNotFour;
+    if (try cluster_mst.is_bridge(stt, 1, 2) != true) return error.SproutMissingOneTwo;
+    if (try cluster_mst.is_bridge(stt, 2, 3) != true) return error.SproutMissingTwoThree;
+    if (try cluster_mst.is_bridge(stt, 3, 4) != true) return error.SproutMissingThreeFour;
+    if (try cluster_mst.is_bridge(stt, 2, 5) != true) return error.SproutMissingSprout;
+    if (try cluster_mst.is_bridge(stt, 1, 5) != false) return error.SproutLeafToWrongJoint; // the sprout hangs off 2, never 1
+
+    // --- THE DEGREE READ -- cluster 2 is the interior joint (degree 3), cluster 3 a joint (degree 2), and 1, 4, 5 the tips (degree 1) --------
+    if (try tree_degree(stt, 2) != 3) return error.SproutJointDegreeNotThree; // meets 1-2, 2-3, 2-5
+    if (try tree_degree(stt, 3) != 2) return error.SproutThreeDegreeNotTwo; // meets 2-3, 3-4
+    if (try tree_degree(stt, 1) != 1) return error.SproutOneDegreeNotOne;
+    if (try tree_degree(stt, 4) != 1) return error.SproutFourDegreeNotOne;
+    if (try tree_degree(stt, 5) != 1) return error.SproutFiveDegreeNotOne;
+
+    // --- THE TIP/JOINT PARTITION -- three tips {1,4,5}, two joints {2,3}, summing to five ------------------------------------------------------
+    if (leaf_count(stt) != 3) return error.SproutLeafCountNotThree;
+    if (internal_count(stt) != 2) return error.SproutInternalCountNotTwo;
+    if (try is_leaf(stt, 5) != true) return error.SproutFiveNotLeaf;
+    if (try is_internal(stt, 2) != true) return error.SproutTwoNotInternal;
+    if (try is_internal(stt, 5) != false) return error.SproutFiveIsInternal;
+
+    // --- THE POLES ARE ALWAYS LEAVES, YET NOT EVERY LEAF IS A POLE -- the diameter poles are the path ends 1 and 4, both tips; leaf 5's reach 8
+    //     falls short of the diameter 9, so is_diameter_endpoint(5) is FALSE though is_leaf(5) is TRUE -- the pole set a STRICT SUBSET of the tips
+    if (try cluster_tree_diameter.tree_diameter(garden, stt) != 9) return error.SproutDiameterNotNine;
+    if (try cluster_tree_diameter.is_diameter_endpoint(garden, stt, 1) != true) return error.SproutOneNotPole;
+    if (try cluster_tree_diameter.is_diameter_endpoint(garden, stt, 4) != true) return error.SproutFourNotPole;
+    if (try is_leaf(stt, 1) != true) return error.SproutOnePoleNotLeaf; // every pole is a leaf
+    if (try is_leaf(stt, 4) != true) return error.SproutFourPoleNotLeaf;
+    if (try is_leaf(stt, 5) != true) return error.SproutFiveNotLeafAgain; // 5 is a leaf...
+    if (try cluster_tree_diameter.is_diameter_endpoint(garden, stt, 5) != false) return error.SproutFiveIsPole; // ...yet not a pole
+
+    // --- THE CENTER AND THE CENTROID ARE ALWAYS JOINTS -- both land on the interior joint cluster 2, never a tip, cross-checked and not re-derived
+    if (try cluster_tree_radius.tree_center(garden, stt) != 2) return error.SproutCenterNotTwo;
+    if (try is_internal(stt, 2) != true) return error.SproutCenterNotJoint;
+    if (try cluster_tree_centroid.tree_centroid(garden, stt) != 2) return error.SproutCentroidNotTwo;
+    if (try is_leaf(stt, try cluster_tree_centroid.tree_centroid(garden, stt)) != false) return error.SproutCentroidIsLeaf;
+
+    // --- SCENE TWO: THE SYMMETRIC PATH -- three blocks in a row, MST a chain 1-2-3. Here the two tips {1,3} are EXACTLY the two poles, so on a
+    //     path the tip set and the pole set COINCIDE, the sprout's strict-subset case reduced to equality -----------------------------------
+    var row = try make_canvas(garden, 12, 4, 0);
+    set_block(&row, 1, 1, 2, 2); // c1: box (1,1)-(2,2)  (left end)
+    set_block(&row, 5, 1, 2, 2); // c2: box (5,1)-(6,2)  (middle)
+    set_block(&row, 9, 1, 2, 2); // c3: box (9,1)-(10,2) (right end)
+    const rt = try tree_of(garden, &row, 3, 3);
+    if (leaf_count(rt) != 2) return error.PathLeafCountNotTwo;
+    if (internal_count(rt) != 1) return error.PathInternalCountNotOne; // just the middle
+    if (try is_internal(rt, 2) != true) return error.PathMiddleNotJoint;
+    // on a path both tips are poles -- the tip set equals the pole set
+    if (try is_leaf(rt, 1) != true or try cluster_tree_diameter.is_diameter_endpoint(garden, rt, 1) != true) return error.PathEndNotPoleLeaf;
+    if (try is_leaf(rt, 3) != true or try cluster_tree_diameter.is_diameter_endpoint(garden, rt, 3) != true) return error.PathOtherEndNotPoleLeaf;
+
+    // --- SCENE THREE: A SINGLE EDGE -- two blocks, MST one bridge 1-2. Both clusters meet one edge, so BOTH are tips and there is NO joint: a
+    //     tree where every node is a leaf, the internal count zero for a multi-cluster layout -----------------------------------------------
+    var pair = try make_canvas(garden, 8, 4, 0);
+    set_block(&pair, 1, 1, 2, 2); // c1
+    set_block(&pair, 5, 1, 2, 2); // c2 (gap 3)
+    const pt = try tree_of(garden, &pair, 2, 2);
+    if (cluster_mst.edge_count(pt) != 1) return error.PairEdgeCountNotOne;
+    if (leaf_count(pt) != 2) return error.PairLeafCountNotTwo;
+    if (internal_count(pt) != 0) return error.PairInternalCountNotZero;
+    if (try is_leaf(pt, 1) != true or try is_leaf(pt, 2) != true) return error.PairNotBothLeaves;
+
+    // --- A LONE-CLUSTER LAYOUT IS ONE TIP, NO JOINTS -- an empty spanning tree, its only cluster meeting no bridge, degree zero, read as a leaf
+    var lone_img = try make_canvas(garden, 6, 6, 0);
+    set_block(&lone_img, 1, 1, 2, 2); // one object, one cluster
+    const lone_tree = try tree_of(garden, &lone_img, 1, 1);
+    if (try tree_degree(lone_tree, 1) != 0) return error.LoneDegreeNotZero;
+    if (try is_leaf(lone_tree, 1) != true) return error.LoneNotLeaf;
+    if (try is_internal(lone_tree, 1) != false) return error.LoneIsInternal;
+    if (leaf_count(lone_tree) != 1) return error.LoneLeafCountNotOne;
+    if (internal_count(lone_tree) != 0) return error.LoneInternalCountNotZero;
+
+    // --- REFUSALS -- a zero or past-the-count cluster id refuses BadClusterId in the degree read and both tests --------------------------------
+    if (tree_degree(stt, 0)) |_| return error.ZeroDegreeNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongZeroDegreeError;
+    }
+    if (is_leaf(stt, 6)) |_| return error.PastLeafNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongPastLeafError;
+    }
+    if (is_internal(stt, 6)) |_| return error.PastInternalNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongPastInternalError;
+    }
+
+    // --- DETERMINISM -- the same tree reads the same partition twice -------------------------------------------------------------------------
+    if (leaf_count(stt) != leaf_count(stt)) return error.LeafCountNotDeterministic;
+    if (try tree_degree(stt, 2) != try tree_degree(stt, 2)) return error.DegreeNotDeterministic;
+
+    print("GREEN image-cluster-mst-leaves: the TIPS and the JOINTS of the skeleton -- the LEAF/INTERNAL partition of the cluster minimum spanning tree, with tree_degree counting the bridges a cluster meets, is_leaf naming a tip (one bridge, or the lone cluster with none), is_internal naming a joint (two or more bridges), leaf_count and internal_count reading the whole partition, exact integers, NO float and NO tolerance -- the DECISIVE crux, the tip/joint partition is COARSER than the pole/center/centroid reads and bounds every one. THE POLES ARE ALWAYS LEAVES, YET NOT EVERY LEAF IS A POLE -- over a SPROUT (a main path 1-2-3-4 with a fifth cluster sprouting off the interior joint 2, MST edges 1-2, 2-3, 3-4, 2-5) the diameter poles are the path ends 1 and 4, both tips, while cluster 5 is a genuine leaf whose farthest reach 8 falls short of the diameter 9, so is_diameter_endpoint(5) reads FALSE though is_leaf(5) reads TRUE, the pole set a STRICT SUBSET of the tips; on a PATH the two coincide, the two tips exactly the two poles. THE CENTER AND THE CENTROID ARE ALWAYS JOINTS -- on the sprout both the center and the centroid are the interior joint cluster 2, cross-checked against cluster_tree_radius and cluster_tree_centroid and never re-derived, because pulling a leaf leaves one lopsided piece (the worst balance) and a leaf's reach runs the whole tree (the worst eccentricity), so the special clusters live among the joints while the tips hold the handles. A single-edge tree has two tips and no joint, a lone-cluster layout is one tip and no joints (degree zero, read as a leaf); a zero or past-the-count id refuses BadClusterId; the same tree reads the same partition twice. Compose not braid over image/cluster_minimum_spanning_tree.rye (build_mst and the edges), image/cluster_tree_diameter.rye (the poles), image/cluster_tree_radius.rye (the center), and image/cluster_tree_centroid.rye (the centroid), each cross-checked to prove the bound and never re-derived -- a reading over a reading over a reading over a reading over a reading over a reading over a reading\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: cluster_mst_leaves selftest\n", .{});
+    return 1;
+}

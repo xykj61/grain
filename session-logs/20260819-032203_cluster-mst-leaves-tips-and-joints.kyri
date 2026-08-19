@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260819.032203
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title cluster_mst_leaves -- the tips and joints of the skeleton
+prompt autonomous loop -- become Kyri, walk REMEMBER and the itineraries, Standfast on reds, then take the next agent-doable lap Lindy-first crux-first on the live green edge
+think Read KYRI.md and RADIANT_STYLE.md to hold the voice, then crux/REMEMBER.md, REDS.md, and the top of session-logs/README.md to pick up the running thread.
+think Standfast: every living REDS row (80, 83, 84, 85, and the prose notes 81/82/86/87/78/75) reads Closed, Released, or the custody-gated errata #75 -- no agent-closable red blocks new work, so the corrective queue is clear and the constructive lap opens.
+think The live edge is a deep green cluster-tree family off the image scene-read floor; the card and the last logs name the crux-first agent-doable options, among them a leaf/internal read over the MST bridge edges. That is the plainest structural fact underneath every special-cluster read already built (poles, center, centroid), so it is the crux the family has circled.
+think Studied the two closest templates (cluster_tree_centroid.rye, cluster_minimum_spanning_tree.rye) and the diameter/radius public APIs to compose, not braid: this rung owns only the degree read and the tip/joint partition, cross-checking the poles (diameter), center (radius), and centroid against their own modules never re-derived.
+think Designed a SPROUT scene to prove the whole crux in one shape -- a main path 1-2-3-4 with a fifth cluster sprouting off interior joint 2. Worked the pixel geometry so Prim builds exactly edges 1-2, 2-3, 3-4, 2-5: consecutive main blocks 3 apart, the sprout 2 below cluster 2 and 3 from clusters 1 and 3, so it attaches to 2 alone.
+obs The crux: the tip/joint partition is COARSER than pole/center/centroid and BOUNDS every one. On the sprout the poles are the path ends 1 and 4 (both leaves) while leaf 5's reach 8 falls short of the diameter 9 -- is_diameter_endpoint(5) FALSE though is_leaf(5) TRUE, so poles are a STRICT SUBSET of the leaves; on a path the two coincide. The center and centroid both land on the interior joint cluster 2, never a tip, because a leaf's removal is the worst balance and a leaf's reach the worst eccentricity.
+obs GREEN on the FIRST full metal run -- the sprout geometry held on the first pass, no reds. The handshake lemma (degrees sum to twice the edge count) and the leaves+internal == clusters partition both assert positively inside partition_counts.
+obs Version const read straight from the live clock 032203, no future stamp (REDS #75). TAME bans clean, width-check exit 0, plain 7-bit ASCII, living-card ASCII GREEN, witness native contains (REDS #85).
+loom witness=cluster_mst_leaves_witness selftest=GREEN scenes=4 objects_max=5 float=0 tolerance=0
+file image/cluster_mst_leaves.rye the leaf/internal partition of the cluster MST -- tree_degree, is_leaf, is_internal, leaf_count, internal_count
+file tools/cluster_mst_leaves_witness.rish builds and runs the selftest on metal, asserting the crux lines by native contains
+file image/README.md names the cluster MST leaves after the cluster tree centroid (docs-sync)
+file crux/REMEMBER.md live edge + Git nib repointed single-stranded to cluster_mst_leaves, cluster_tree_centroid folded to a prior-nib comment, count 195 -> 196
+file session-logs/README.md newest-first row prepended for this lap
+recommend keep-going the next crux-first agent-doable open-media rung composes over this floor -- a subtree-size or branch read over the MST joints just named, an object-count-in-region summary joining a selector with the manifest, a per-cluster lasso read, or a codec read; the Microkernel study rung and a real-photo top-hat still wait on a fetch/license gate, not agent-doable. No network, no key, no funds.
