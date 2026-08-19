@@ -1,0 +1,518 @@
+//! image/line_segment_distance.rye -- read a DIRECTED line named by TWO anchor taps (from anchor A toward anchor B) as the TRUE nearest gap
+//! to the FINITE stroke A..B: for every object, how far its GROUP center sits from the nearest point ON the drawn segment, ranking the whole
+//! scene nearest-to-farthest. This is the CORRECTED twin of image/line_distance.rye -- that module reads the distance to the INFINITE line
+//! (the cross-product magnitude), which UNDER-counts once a foot falls past an end, since the nearest point on a finite stroke is then the
+//! endpoint, not the perpendicular foot. `line_segment_distance` fuses image/line_distance.rye's off-line cross with image/line_span.rye's
+//! along-segment clamp into one exact-integer key. NO float, NO tolerance, NO square root, NO divide.
+//!
+//! Season G (Open Media Primitives) -- the segment triad read one INFINITE line three ways: line_partition the cross SIGN (which side),
+//! line_order the DOT (how far along), line_distance the cross MAGNITUDE (how far off). line_span then BOUNDED the dot to the drawn stroke.
+//! This rung BOUNDS the distance the same way. The true squared distance from a point C to the segment, TIMES the segment's squared length
+//! `len2`, is an exact integer -- `cross^2 + overshoot^2`, where `cross = (B - A) x (C - A)` is line_distance's own signed cross and
+//! `overshoot = proj - clamp(proj, 0, len2)` is how far line_span's projection `proj = (B - A) . (C - A)` overshoots the segment's two
+//! integer thresholds (zero on the span, negative before the A end, positive beyond the B end). Multiplying the true squared distance by the
+//! constant `len2` clears the only divide a finite-segment distance would need, so the key stays whole and still ranks objects exactly for a
+//! fixed segment. `segment_key_of` reads one object's key; `agrees_with_line` names when the infinite line got it right; `on_stroke` the
+//! zero-gap convenience; `nearer_segment` / `same_segment_distance` the pairwise reads; `line_segment_distance` the whole nearest-to-farthest
+//! order; `rank_by_segment_distance` / `nearest_to_segment` / `farthest_from_segment` the rank reads. A reading over readings, no plane of
+//! its own.
+//!
+//! The DECISIVE crux -- THE FINITE SEGMENT SEPARATES WHAT THE INFINITE LINE TIES. line_distance ranks by the cross magnitude alone, so two
+//! objects at the same perpendicular distance tie no matter where along the line they sit. The finite stroke breaks that tie by the
+//! overshoot. Three facts on metal say it:
+//!
+//!   THE INFINITE LINE UNDER-COUNTS EXACTLY OFF THE ENDS. `segment_key_of(lbl)` equals `distance_of(lbl)^2` (line_distance's magnitude,
+//!   squared) for every object whose foot lands ON the span, and STRICTLY EXCEEDS it for every object OFF the ends -- by exactly the
+//!   overshoot squared. So the objects the segment reads farther than the line reads are EXACTLY image/line_span.rye's `before_a` and
+//!   `beyond_b` sets, and the objects where the two agree are EXACTLY its `on_span` set. `agrees_with_line` is the on-span membership read
+//!   as a distance fact.
+//!
+//!   AN OBJECT ON THE INFINITE LINE CAN BE FAR FROM THE FINITE STROKE. Object X sits exactly ON the line (line_distance reads it 0, the
+//!   nearest possible to the infinite line) yet BEFORE the A end, so its nearest segment point is the A endpoint and its segment key is a
+//!   large positive number -- the sharpest under-count the line can make, zero against a real gap. On the stroke a distance of zero is the
+//!   truth (`on_stroke`); on the line it is a promise the finite stroke does not keep.
+//!
+//!   TWO OBJECTS THE LINE TIES, THE SEGMENT ORDERS. Objects P (on the span) and Q (beyond the B end) share one cross magnitude, so
+//!   line_distance ties them (`same_distance` TRUE). Yet Q's foot overshoots the B end while P's does not, so `nearer_segment(P, Q)` is TRUE
+//!   and `same_segment_distance(P, Q)` is FALSE -- the drawn length, blind to the infinite line, decides between them.
+//!
+//! Compose not braid. This rung OWNS only the fusion key `cross^2 + overshoot^2` and the order it induces. image/line_distance.rye owns the
+//! off-line cross magnitude (`distance_of`) the agreement crux squares and cross-checks; image/line_order.rye owns the along-line projection
+//! (`project_label`) the overshoot is measured from; image/line_span.rye owns the along-segment class (`span_of`) that names which objects
+//! the line under-counts; image/click_collinear.rye owns `click_group_center_doubled` and `CenterD` (the anchor centers whose squared delta
+//! is `len2`); image/overlap_clusters.rye and image/cluster_facts.rye own the object-to-group map and its union frame. No cross re-judged,
+//! no projection re-invented past the small exact kernel every line rung re-derives -- every fact cross-checked through the primitive that
+//! proved it.
+//!
+//! Everything is bounded before a byte: the distance walk runs `components` times, itself bounded by image/label.rye's `label_max_pixels`;
+//! the sort is an insertion sort over that same bounded count. The cross and the projection run in i64 so the doubled-coordinate products
+//! never overflow, and the fused key runs in i128 so squaring the cross and the overshoot -- each already a product of doubled deltas -- can
+//! never overflow either. A directed line needs two distinct points, so two anchor taps sharing a group refuse `SameGroup` by name; a tap on
+//! background refuses `EmptyClick`; a point off the map refuses `PointOutOfBounds`; a query naming a label past the object count refuses
+//! `BadTarget`, each having read nothing. No network, no key, no funds -- the "how close did my stroke actually pass each thing" a surface
+//! answers the day a keeper drags a finite line through the scene and wants the things it truly grazed, endpoints and all.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/line_segment_distance.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const hit_test = @import("hit_test.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const cluster_facts = @import("cluster_facts.rye");
+const click_order = @import("click_order.rye");
+const click_collinear = @import("click_collinear.rye");
+const line_order = @import("line_order.rye");
+const line_distance = @import("line_distance.rye");
+const line_span = @import("line_span.rye");
+
+pub const line_segment_distance_version = "20260819.091914";
+
+pub const LineSegmentDistanceError = error{
+    BadTarget,
+};
+
+/// The two anchor centers that name the directed line, held as doubled coordinates in i64 so the cross and the projection never overflow --
+/// exactly the line image/line_distance.rye and image/line_span.rye read from.
+const LineD = struct {
+    ax2: i64,
+    ay2: i64,
+    bx2: i64,
+    by2: i64,
+};
+
+/// Resolve the directed line from two anchor taps -- refuses `EmptyClick` on a miss and `PointOutOfBounds` off the map through the group id
+/// read, then `SameGroup` when the two anchors land in one group (a segment needs two distinct ends). Returns the two group centers as
+/// doubled coordinates, exactly the centers image/line_distance.rye reads from.
+fn resolve_line(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !LineD {
+    // invariant: the clustering and the map describe the same scene.
+    assert(clustering.components == map.count);
+    // invariant: the graph and the manifest describe that same scene.
+    assert(graph.components == manifest.components);
+
+    const ga = try click_order.click_group_id(clustering, map, ax, ay);
+    const gb = try click_order.click_group_id(clustering, map, bx, by);
+    // invariant: each anchor resolved to a real dense group id.
+    assert(ga >= 1);
+    assert(gb >= 1);
+    if (ga == gb) return error.SameGroup;
+
+    const ca = try click_collinear.click_group_center_doubled(garden, graph, manifest, map, ax, ay);
+    const cb = try click_collinear.click_group_center_doubled(garden, graph, manifest, map, bx, by);
+    return LineD{ .ax2 = @as(i64, ca.cx2), .ay2 = @as(i64, ca.cy2), .bx2 = @as(i64, cb.cx2), .by2 = @as(i64, cb.cy2) };
+}
+
+/// The doubled center of the GROUP object `lbl` belongs to -- the object-to-group map (`cluster_of`) followed by the group's union frame
+/// (`cluster_bbox`), whose doubled midpoint is the exact group center. Every member of a multi-object group reads the SAME center.
+fn label_group_center(clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, lbl: u32) !click_collinear.CenterD {
+    // invariant: a real object label, never background.
+    assert(lbl >= 1);
+    const cid = try overlap_clusters.cluster_of(clustering, lbl);
+    const box = try cluster_facts.cluster_bbox(clustering, graph, cid);
+    // invariant: the frame is well-formed on both axes -- a real box to center.
+    assert(box.max_x >= box.min_x);
+    assert(box.max_y >= box.min_y);
+    return click_collinear.CenterD{ .cx2 = box.min_x + box.max_x, .cy2 = box.min_y + box.max_y };
+}
+
+/// The signed cross product `(B - A) x (C - A)` over the doubled centers -- the exact key image/line_distance.rye reads the magnitude of.
+/// Its magnitude is the off-line distance; here the raw signed value is squared, so the sign washes out.
+fn cross_of(line: LineD, center: click_collinear.CenterD) i64 {
+    const abx: i64 = line.bx2 - line.ax2;
+    const aby: i64 = line.by2 - line.ay2;
+    const acx: i64 = @as(i64, center.cx2) - line.ax2;
+    const acy: i64 = @as(i64, center.cy2) - line.ay2;
+    return abx * acy - aby * acx;
+}
+
+/// The along-line PROJECTION `(B - A) . (C - A)` over the doubled centers -- the exact key image/line_order.rye ranks by and
+/// image/line_span.rye clamps. Larger is farther toward B.
+fn projection_of(line: LineD, center: click_collinear.CenterD) i64 {
+    const abx: i64 = line.bx2 - line.ax2;
+    const aby: i64 = line.by2 - line.ay2;
+    const acx: i64 = @as(i64, center.cx2) - line.ax2;
+    const acy: i64 = @as(i64, center.cy2) - line.ay2;
+    return abx * acx + aby * acy;
+}
+
+/// The squared length of the directed segment in DOUBLED coordinates -- `(B - A) . (B - A)`. The upper threshold of the closed span
+/// `[0, len2]`; the A end sits at the lower threshold 0.
+fn segment_len2(line: LineD) i64 {
+    const abx: i64 = line.bx2 - line.ax2;
+    const aby: i64 = line.by2 - line.ay2;
+    const len2: i64 = abx * abx + aby * aby;
+    // invariant: a squared length is never negative.
+    assert(len2 >= 0);
+    return len2;
+}
+
+/// The EXACT fused key: the true squared distance from the group center to the nearest point on the segment, TIMES the constant `len2`. It
+/// is `cross^2 + overshoot^2`, where `overshoot = proj - clamp(proj, 0, len2)` is how far the along-line projection overshoots the segment's
+/// two thresholds -- zero on the span (the key is then the perpendicular `cross^2`, exactly line_distance's magnitude squared), and the
+/// squared endpoint gap's contribution off the ends. Runs in i128 so squaring the cross and the overshoot can never overflow. Non-negative
+/// always: zero exactly when the center sits ON the drawn stroke.
+fn segment_key(line: LineD, center: click_collinear.CenterD) i128 {
+    const cross: i64 = cross_of(line, center);
+    const proj: i64 = projection_of(line, center);
+    const len2: i64 = segment_len2(line);
+    // clamp the projection to the segment's own two integer thresholds -- the overshoot is what the finite stroke adds past the line.
+    const clamped: i64 = if (proj < 0) 0 else if (proj > len2) len2 else proj;
+    const over: i64 = proj - clamped;
+    // invariant: the clamped projection rests inside the segment's own two thresholds -- the overshoot is what the finite stroke adds past it.
+    assert(clamped >= 0);
+    assert(clamped <= len2);
+    const ci: i128 = @as(i128, cross);
+    const oi: i128 = @as(i128, over);
+    const key: i128 = ci * ci + oi * oi;
+    // invariant: a squared-distance key is never negative.
+    assert(key >= 0);
+    return key;
+}
+
+/// TRUE when object `a` sorts strictly before object `b` in the nearest-to-farthest order -- ascending segment key, ties broken by ascending
+/// label. The tie-break makes the order total and deterministic; `same_segment_distance` names when the key itself tied.
+fn order_less(key_a: i128, lbl_a: u32, key_b: i128, lbl_b: u32) bool {
+    if (key_a < key_b) return true;
+    if (key_a > key_b) return false;
+    return lbl_a < lbl_b;
+}
+
+/// Guard that a query label names a real object -- refuses `BadTarget` for background or a label past the object count, having read nothing.
+fn check_target(manifest: scene_manifest.Manifest, lbl: u32) !void {
+    if (lbl < 1 or lbl > manifest.components) return error.BadTarget;
+}
+
+/// The segment KEY of object `lbl`'s GROUP center from the directed segment A..B -- the exact-integer `cross^2 + overshoot^2`
+/// (true squared distance times `len2`) this rung ranks by, zero exactly when the group sits on the drawn stroke. Refuses `SameGroup`,
+/// `EmptyClick`, `PointOutOfBounds` through the line resolution, and `BadTarget` for a label past the object count.
+pub fn segment_key_of(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, lbl: u32) !i128 {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+
+    try check_target(manifest, lbl);
+    const line = try resolve_line(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const center = try label_group_center(clustering, graph, lbl);
+    return segment_key(line, center);
+}
+
+/// TRUE when the infinite line reads object `lbl`'s distance rightly -- its segment key equals `distance_of(lbl)^2`, which holds exactly when
+/// its foot lands ON the span (image/line_span.rye's `on_span` class). FALSE off the ends, where the infinite line under-counts. The
+/// on-span membership read as a distance fact. Refuses `BadTarget`, `SameGroup`, `EmptyClick`, `PointOutOfBounds`.
+pub fn agrees_with_line(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, lbl: u32) !bool {
+    const seg = try segment_key_of(garden, clustering, graph, manifest, map, ax, ay, bx, by, lbl);
+    const line_mag: i64 = try line_distance.distance_of(garden, clustering, graph, manifest, map, ax, ay, bx, by, lbl);
+    const line_sq: i128 = @as(i128, line_mag) * @as(i128, line_mag);
+    return seg == line_sq;
+}
+
+/// TRUE when object `lbl`'s group center sits exactly ON the drawn stroke A..B -- the convenience over `segment_key_of == 0`. Its nearest
+/// segment point is the center itself, a true zero gap. Refuses `BadTarget`, `SameGroup`, `EmptyClick`, `PointOutOfBounds`.
+pub fn on_stroke(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, lbl: u32) !bool {
+    return (try segment_key_of(garden, clustering, graph, manifest, map, ax, ay, bx, by, lbl)) == 0;
+}
+
+/// TRUE when object `a` sits nearer the segment than object `b` -- ascending segment key, the strict pairwise order with the label tie-break.
+/// Refuses `BadTarget`, `SameGroup`, `EmptyClick`, `PointOutOfBounds`.
+pub fn nearer_segment(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, a: u32, b: u32) !bool {
+    const ka = try segment_key_of(garden, clustering, graph, manifest, map, ax, ay, bx, by, a);
+    const kb = try segment_key_of(garden, clustering, graph, manifest, map, ax, ay, bx, by, b);
+    return order_less(ka, a, kb, b);
+}
+
+/// TRUE when objects `a` and `b` sit the SAME true distance from the segment -- equal segment keys, decided only by the label tie-break in
+/// the total order. This is the segment analog of image/line_distance.rye's `same_distance`, and it can DISAGREE with it: the infinite line
+/// can tie two objects the finite stroke separates, or separate two the stroke ties. Refuses `BadTarget`, `SameGroup`, `EmptyClick`,
+/// `PointOutOfBounds`.
+pub fn same_segment_distance(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, a: u32, b: u32) !bool {
+    const ka = try segment_key_of(garden, clustering, graph, manifest, map, ax, ay, bx, by, a);
+    const kb = try segment_key_of(garden, clustering, graph, manifest, map, ax, ay, bx, by, b);
+    return ka == kb;
+}
+
+/// The whole scene sorted NEAREST-to-farthest from the directed segment A..B: every object label ranked by ascending segment key, ties broken
+/// by ascending label so the order is total and deterministic. The anchors, sitting on the stroke, rank first at key zero. The caller owns
+/// the returned slice. Refuses `SameGroup`, `EmptyClick`, `PointOutOfBounds` through the line resolution.
+pub fn line_segment_distance(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) ![]u32 {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+    // invariant: the distance walk and the sort are bounded by the component count, itself under image/label.rye's pixel ceiling.
+    assert(manifest.components <= label.label_max_pixels);
+
+    const line = try resolve_line(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const n: usize = @as(usize, manifest.components);
+    const order = try garden.alloc(u32, n);
+    const keys = try garden.alloc(i128, n);
+    var lbl: u32 = 1;
+    while (lbl <= manifest.components) : (lbl += 1) {
+        const center = try label_group_center(clustering, graph, lbl);
+        order[@as(usize, lbl - 1)] = lbl;
+        keys[@as(usize, lbl - 1)] = segment_key(line, center);
+    }
+
+    // insertion sort by (segment key, label) ascending -- bounded by the component count, stable and exact over the small scene
+    var i: usize = 1;
+    while (i < n) : (i += 1) {
+        const key_lbl = order[i];
+        const key_val = keys[i];
+        var j: usize = i;
+        while (j >= 1 and order_less(key_val, key_lbl, keys[j - 1], order[j - 1])) : (j -= 1) {
+            order[j] = order[j - 1];
+            keys[j] = keys[j - 1];
+        }
+        order[j] = key_lbl;
+        keys[j] = key_val;
+    }
+
+    // invariant: the result is a strict total order by (key, label) -- no adjacent pair out of order, so no label repeats.
+    var v: usize = 1;
+    while (v < n) : (v += 1) assert(order_less(keys[v - 1], order[v - 1], keys[v], order[v]));
+    return order;
+}
+
+/// The 0-based place of object `lbl` in the nearest-to-farthest segment order -- 0 is the closest to the stroke. Refuses `BadTarget` for a
+/// label past the object count, and `SameGroup` / `EmptyClick` / `PointOutOfBounds` through the line resolution.
+pub fn rank_by_segment_distance(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, lbl: u32) !u32 {
+    // invariant: the manifest and the map describe the same scene.
+    assert(manifest.components == map.count);
+    try check_target(manifest, lbl);
+
+    const order = try line_segment_distance(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    var i: usize = 0;
+    while (i < order.len) : (i += 1) {
+        if (order[i] == lbl) return @as(u32, @intCast(i));
+    }
+    // invariant: a real label always appears in the total order -- the search never falls through.
+    unreachable;
+}
+
+/// The object nearest the drawn segment -- the front of the nearest-to-farthest order. Refuses `SameGroup`, `EmptyClick`,
+/// `PointOutOfBounds` through the line resolution.
+pub fn nearest_to_segment(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !u32 {
+    const order = try line_segment_distance(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    // invariant: a real scene always has a nearest object -- the order is never empty.
+    assert(order.len >= 1);
+    return order[0];
+}
+
+/// The object farthest from the drawn segment -- the back of the nearest-to-farthest order. Refuses `SameGroup`, `EmptyClick`,
+/// `PointOutOfBounds` through the line resolution.
+pub fn farthest_from_segment(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !u32 {
+    const order = try line_segment_distance(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    // invariant: a real scene always has a farthest object -- the order is never empty.
+    assert(order.len >= 1);
+    return order[order.len - 1];
+}
+
+// --- selftest: the DECISIVE finite-vs-infinite crux (the segment separates what the line ties; an object ON the line can be FAR from the
+//     stroke; segment_key equals distance_of^2 on the span and strictly exceeds it off the ends, by exactly the overshoot squared); the
+//     agreement set is exactly line_span's on_span; refusals by name; determinism -- every cross-checked against line_distance and line_span
+//     ---------------------------------------------------------------------------------------------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y). A 2x2 block's inclusive box is (x,y)-(x+1,y+1), so its
+/// doubled center is (2x+1, 2y+1) -- exact integers the selftest predicts by hand.
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- THE SCENE on a 22x10 canvas: six 2x2 singletons around a HORIZONTAL segment A -> B. A center-doubled (11,13), B center-doubled
+    //     (31,13), so the segment points +x with squared length len2 = (31-11)^2 = 400, the two ends at projections 0 and 400. With a
+    //     horizontal line the cross magnitude is 20 * |row-gap from doubled row 13|, and the projection is 20 * (col-gap from doubled col 11).
+    //       P: col 10, row 2 -> center (21,5).  proj 200 (ON span),  cross -160.  seg_key = 160^2 = 25600.
+    //       Q: col 18, row 2 -> center (37,5).  proj 520 (BEYOND B), cross -160.  overshoot 120. seg_key = 160^2 + 120^2 = 40000.
+    //       X: col 1,  row 6 -> center (3,13).  proj -160 (BEFORE A), cross 0.    overshoot -160. seg_key = 0 + 160^2 = 25600.
+    //       A: col 5,  row 6 -> center (11,13). anchor, on the stroke. seg_key 0.
+    //       M: col 10, row 6 -> center (21,13). proj 200 (ON span), cross 0. on the stroke. seg_key 0.
+    //       B: col 15, row 6 -> center (31,13). anchor, the B end (proj 400 = len2). seg_key 0.
+    //     Raster order (row then col) gives dense labels P=1, Q=2, X=3, A=4, M=5, B=6 ---------------------------------------------------------
+    var scene = try make_canvas(garden, 22, 10, 0);
+    set_block(&scene, 10, 2, 2, 2); // P: box (10,2)-(11,3),  center-doubled (21,5)  -- ON the span, cross 160
+    set_block(&scene, 18, 2, 2, 2); // Q: box (18,2)-(19,3),  center-doubled (37,5)  -- BEYOND B, cross 160 (ties P on the infinite line)
+    set_block(&scene, 1, 6, 2, 2); //  X: box (1,6)-(2,7),    center-doubled (3,13)  -- ON the infinite line, BEFORE the A end
+    set_block(&scene, 5, 6, 2, 2); //  A: box (5,6)-(6,7),    center-doubled (11,13) -- anchor, the A end
+    set_block(&scene, 10, 6, 2, 2); // M: box (10,6)-(11,7),  center-doubled (21,13) -- ON the stroke
+    set_block(&scene, 15, 6, 2, 2); // B: box (15,6)-(16,7),  center-doubled (31,13) -- anchor, the B end
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 6) return error.SceneNotSixComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    if (clustering.clusters != 6) return error.NotSixClusters;
+
+    // dense labels: P=1, Q=2, X=3, A=4, M=5, B=6
+    const p_lbl: u32 = 1;
+    const q_lbl: u32 = 2;
+    const x_lbl: u32 = 3;
+    const a_lbl: u32 = 4;
+    const m_lbl: u32 = 5;
+    const b_lbl: u32 = 6;
+
+    // confirm the raster order landed the labels the scene predicts by their box corners
+    const p_entry = try scene_manifest.object_of(manifest, p_lbl);
+    if (p_entry.min_x != 10 or p_entry.min_y != 2) return error.PNotAtExpectedBox;
+    const q_entry = try scene_manifest.object_of(manifest, q_lbl);
+    if (q_entry.min_x != 18 or q_entry.min_y != 2) return error.QNotAtExpectedBox;
+    const x_entry = try scene_manifest.object_of(manifest, x_lbl);
+    if (x_entry.min_x != 1 or x_entry.min_y != 6) return error.XNotAtExpectedBox;
+
+    // the two anchor taps that name the HORIZONTAL directed segment A -> B (both taps land inside their own blocks)
+    const ax: u32 = 5;
+    const ay: u32 = 6;
+    const bx: u32 = 15;
+    const by: u32 = 6;
+
+    // --- THE FUSED KEYS -- exactly cross^2 + overshoot^2 -------------------------------------------------------------------------------
+    if (try segment_key_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, a_lbl) != 0) return error.AKeyNotZero;
+    if (try segment_key_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, m_lbl) != 0) return error.MKeyNotZero;
+    if (try segment_key_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, b_lbl) != 0) return error.BKeyNotZero;
+    if (try segment_key_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, p_lbl) != 25600) return error.PKeyNot25600;
+    if (try segment_key_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, x_lbl) != 25600) return error.XKeyNot25600;
+    if (try segment_key_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, q_lbl) != 40000) return error.QKeyNot40000;
+
+    // on_stroke reads the three zero-gap objects and refuses the rest
+    if (try on_stroke(garden, clustering, graph, manifest, &map, ax, ay, bx, by, m_lbl) != true) return error.MNotOnStroke;
+    if (try on_stroke(garden, clustering, graph, manifest, &map, ax, ay, bx, by, p_lbl) != false) return error.PWronglyOnStroke;
+
+    // --- THE INFINITE LINE UNDER-COUNTS EXACTLY OFF THE ENDS -- segment_key == distance_of^2 on the span, strictly greater off the ends by
+    //     exactly the overshoot squared; the agreement set is exactly line_span's on_span ------------------------------------------------
+    // P is ON the span: agrees with the line, key equals the cross magnitude squared (160^2 = 25600)
+    const p_mag = try line_distance.distance_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, p_lbl);
+    if (p_mag != 160) return error.PMagNot160;
+    if (try segment_key_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, p_lbl) != @as(i128, p_mag) * @as(i128, p_mag)) return error.PKeyNotMagSquared;
+    if (try agrees_with_line(garden, clustering, graph, manifest, &map, ax, ay, bx, by, p_lbl) != true) return error.PDoesNotAgree;
+    if (try line_span.span_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, p_lbl) != .on_span) return error.PNotOnSpan;
+
+    // Q is BEYOND B: the line under-counts by exactly the overshoot squared. proj 520, len2 400, overshoot 120.
+    const q_mag = try line_distance.distance_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, q_lbl);
+    if (q_mag != 160) return error.QMagNot160;
+    const q_proj = try line_order.project_label(garden, clustering, graph, manifest, &map, ax, ay, bx, by, q_lbl);
+    if (q_proj != 520) return error.QProjNot520;
+    const q_over: i128 = @as(i128, q_proj) - 400;
+    if (try segment_key_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, q_lbl) != @as(i128, q_mag) * @as(i128, q_mag) + q_over * q_over) return error.QKeyNotMagPlusOvershoot;
+    if (try agrees_with_line(garden, clustering, graph, manifest, &map, ax, ay, bx, by, q_lbl) != false) return error.QWronglyAgrees;
+    if (try line_span.span_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, q_lbl) != .beyond_b) return error.QNotBeyondB;
+
+    // --- AN OBJECT ON THE INFINITE LINE CAN BE FAR FROM THE FINITE STROKE -- X reads line_distance 0 (ON the line) yet a large segment key,
+    //     its nearest stroke point the A endpoint; it is line_span before_a ------------------------------------------------------------
+    const x_mag = try line_distance.distance_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, x_lbl);
+    if (x_mag != 0) return error.XMagNotZero;
+    if (try segment_key_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, x_lbl) != 25600) return error.XKeyNotEndpointGap;
+    if (try agrees_with_line(garden, clustering, graph, manifest, &map, ax, ay, bx, by, x_lbl) != false) return error.XWronglyAgrees;
+    if (try on_stroke(garden, clustering, graph, manifest, &map, ax, ay, bx, by, x_lbl) != false) return error.XWronglyOnStroke;
+    if (try line_span.span_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, x_lbl) != .before_a) return error.XNotBeforeA;
+
+    // --- TWO OBJECTS THE LINE TIES, THE SEGMENT ORDERS -- P and Q share a cross magnitude so line_distance ties them, yet the segment
+    //     separates them by the overshoot: nearer_segment(P, Q) TRUE while same_distance(P, Q) TRUE on the infinite line ----------------
+    if (try line_distance.same_distance(garden, clustering, graph, manifest, &map, ax, ay, bx, by, p_lbl, q_lbl) != true) return error.PQNotTiedOnLine;
+    if (try same_segment_distance(garden, clustering, graph, manifest, &map, ax, ay, bx, by, p_lbl, q_lbl) != false) return error.PQWronglyTiedOnSegment;
+    if (try nearer_segment(garden, clustering, graph, manifest, &map, ax, ay, bx, by, p_lbl, q_lbl) != true) return error.PNotNearerThanQ;
+    // and P and X, tied by the SEGMENT (both key 25600), are separated by the infinite LINE (P at 160, X at 0) -- the dual disagreement
+    if (try same_segment_distance(garden, clustering, graph, manifest, &map, ax, ay, bx, by, p_lbl, x_lbl) != true) return error.PXNotTiedOnSegment;
+    if (try line_distance.same_distance(garden, clustering, graph, manifest, &map, ax, ay, bx, by, p_lbl, x_lbl) != false) return error.PXWronglyTiedOnLine;
+
+    // --- THE TWO ORDERS DIFFER -- the infinite line reads X, A, M, B, P, Q (X nearest, ON the line); the segment reads A, M, B, P, X, Q
+    //     (X falls back to the middle, off the A end) ----------------------------------------------------------------------------------
+    const line_ord = try line_distance.line_distance(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    if (line_ord[0] != x_lbl or line_ord[1] != a_lbl or line_ord[2] != m_lbl or line_ord[3] != b_lbl or line_ord[4] != p_lbl or line_ord[5] != q_lbl) return error.LineOrderWrong;
+    const seg_ord = try line_segment_distance(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    if (seg_ord[0] != a_lbl or seg_ord[1] != m_lbl or seg_ord[2] != b_lbl or seg_ord[3] != p_lbl or seg_ord[4] != x_lbl or seg_ord[5] != q_lbl) return error.SegOrderWrong;
+    // X moves from the FRONT of the line order (rank 0) to the middle of the segment order (rank 4)
+    if (try line_distance.rank_by_distance(garden, clustering, graph, manifest, &map, ax, ay, bx, by, x_lbl) != 0) return error.XNotLineFront;
+    if (try rank_by_segment_distance(garden, clustering, graph, manifest, &map, ax, ay, bx, by, x_lbl) != 4) return error.XNotSegMiddle;
+    // nearest to the stroke is a zero-gap anchor; farthest is Q, past the B end
+    if (try nearest_to_segment(garden, clustering, graph, manifest, &map, ax, ay, bx, by) != a_lbl) return error.NearestNotA;
+    if (try farthest_from_segment(garden, clustering, graph, manifest, &map, ax, ay, bx, by) != q_lbl) return error.FarthestNotQ;
+
+    // --- REVERSAL FIXES THE GAP -- reading the SAME segment B -> A leaves every true distance unchanged (a segment is one set of points),
+    //     so every segment key and the whole nearest-to-farthest order stand identical ---------------------------------------------------
+    if (try segment_key_of(garden, clustering, graph, manifest, &map, bx, by, ax, ay, q_lbl) != 40000) return error.QKeyChangedOnReversal;
+    if (try segment_key_of(garden, clustering, graph, manifest, &map, bx, by, ax, ay, x_lbl) != 25600) return error.XKeyChangedOnReversal;
+    const seg_ord_rev = try line_segment_distance(garden, clustering, graph, manifest, &map, bx, by, ax, ay);
+    var r: usize = 0;
+    while (r < seg_ord.len) : (r += 1) {
+        if (seg_ord_rev[r] != seg_ord[r]) return error.ReversedOrderChanged;
+    }
+
+    // --- REFUSALS -- two anchors sharing a group refuse SameGroup; a background tap refuses EmptyClick; a point off the map refuses
+    //     PointOutOfBounds; a query label past the object count refuses BadTarget, each having read nothing ---------------------------
+    if (try hit_test.object_label_at(&map, 5, 6) != try hit_test.object_label_at(&map, 6, 7)) return error.APixelsNotSameObject;
+    if (segment_key_of(garden, clustering, graph, manifest, &map, 5, 6, 6, 7, p_lbl)) |_| return error.SameGroupNotRefused else |err| {
+        if (err != error.SameGroup) return error.WrongSameGroupError;
+    }
+    if (try hit_test.object_label_at(&map, 0, 0) != 0) return error.BackgroundNotEmpty;
+    if (segment_key_of(garden, clustering, graph, manifest, &map, 0, 0, bx, by, p_lbl)) |_| return error.MissNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissError;
+    }
+    if (segment_key_of(garden, clustering, graph, manifest, &map, ax, ay, 22, 0, p_lbl)) |_| return error.OffMapNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapError;
+    }
+    if (segment_key_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, 7)) |_| return error.BadTargetNotRefused else |err| {
+        if (err != error.BadTarget) return error.WrongBadTargetError;
+    }
+
+    // --- DETERMINISM -- the same directed segment reads the same order twice ----------------------------------------------------------
+    const o1 = try line_segment_distance(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    const o2 = try line_segment_distance(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    var d: usize = 0;
+    while (d < o1.len) : (d += 1) {
+        if (o1[d] != o2[d]) return error.SegmentOrderNotDeterministic;
+    }
+
+    print("GREEN image-line-segment-distance: read a DIRECTED line named by TWO anchor taps (from A toward B) as the TRUE nearest gap to the FINITE stroke A..B, ranking every object nearest-to-farthest from the nearest point ON the drawn segment. This is the CORRECTED twin of line_distance: that reads the distance to the INFINITE line (the cross magnitude), which UNDER-counts once a foot falls past an end, since the nearest point on a finite stroke is then the ENDPOINT. line_segment_distance fuses line_distance's off-line cross with line_span's along-segment clamp into one exact-integer key -- the true squared distance times len2 is cross^2 + overshoot^2, where overshoot = proj - clamp(proj, 0, len2), NO float, NO square root, NO divide. The DECISIVE crux is THE FINITE SEGMENT SEPARATES WHAT THE INFINITE LINE TIES. Over a 22x10 scene of six singletons around a horizontal segment A -> B, P (on the span) and Q (beyond the B end) share one cross magnitude, so line_distance ties them (same_distance TRUE) -- yet Q overshoots the B end while P does not, so nearer_segment(P, Q) is TRUE and same_segment_distance(P, Q) FALSE: the drawn length decides. THE INFINITE LINE UNDER-COUNTS EXACTLY OFF THE ENDS -- segment_key equals distance_of squared for P (ON the span, 160^2 = 25600) and strictly exceeds it for Q (BEYOND B) by exactly the overshoot squared (160^2 + 120^2 = 40000); the objects the line under-counts are EXACTLY line_span's before_a and beyond_b sets, agrees_with_line reading its on_span as a distance fact. AN OBJECT ON THE INFINITE LINE CAN BE FAR FROM THE FINITE STROKE -- X reads line_distance 0 (exactly ON the line) yet a large segment key 25600, its nearest stroke point the A endpoint, so it moves from the FRONT of the line order (rank 0) to the MIDDLE of the segment order (rank 4): the line order is X, A, M, B, P, Q and the segment order A, M, B, P, X, Q. REVERSAL FIXES THE GAP -- reading the same segment B -> A leaves every true distance and the whole order identical, a segment being one set of points. on_stroke reads the three zero-gap objects; nearest_to_segment names an anchor and farthest_from_segment names Q past the B end; two anchors sharing a group refuse SameGroup (a segment needs two ends); a background tap refuses EmptyClick; a point off the map refuses PointOutOfBounds; a label past the object count refuses BadTarget having read nothing; the same segment reads the same order twice. Compose not braid over image/line_distance.rye (the off-line cross magnitude every key is cross-checked against), image/line_order.rye (the along-line projection the overshoot is measured from), image/line_span.rye (the along-segment class naming which objects the line under-counts), and image/click_collinear.rye (the anchor centers whose squared delta is len2)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: line_segment_distance selftest\n", .{});
+    return 1;
+}

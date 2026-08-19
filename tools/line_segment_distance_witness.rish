@@ -1,0 +1,54 @@
+# tools/line_segment_distance_witness.rish -- read a DIRECTED line named by TWO anchor taps (from A toward B) as the TRUE nearest gap to the
+# FINITE stroke A..B, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- this rung is the CORRECTED twin of line_distance. That module reads the distance to the INFINITE line
+# (the cross-product magnitude), which UNDER-counts once a foot falls past an end: the nearest point on a finite stroke is then the ENDPOINT,
+# not the perpendicular foot. line_segment_distance fuses line_distance's off-line cross with line_span's along-segment clamp into one
+# exact-integer key -- the true squared distance to the segment, times the constant len2, is cross^2 + overshoot^2, where
+# overshoot = proj - clamp(proj, 0, len2). NO float, NO square root, NO divide. A reading over readings, no plane of its own.
+#
+# The crux this witness proves on metal: THE FINITE SEGMENT SEPARATES WHAT THE INFINITE LINE TIES. Over a horizontal segment A -> B, P (on
+# the span) and Q (beyond the B end) share one cross magnitude, so line_distance ties them, yet the segment separates them by the overshoot.
+# The infinite line under-counts EXACTLY off the ends (the segment key equals distance_of squared on the span, strictly exceeds it off it by
+# the overshoot squared -- the line_span before_a/beyond_b sets). An object ON the infinite line (X, distance 0) can be FAR from the finite
+# stroke, moving from the front of the line order to the middle of the segment order. Reversal fixes the gap; refusals by name; determinism.
+# No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/line_segment_distance_witness.rish
+
+say "line_segment_distance: Language EN -- Season G line-to-segment distance; a keeper's stroke is FINITE, so line_segment_distance corrects line_distance's infinite-line cross with line_span's clamp into one exact-integer key cross^2 + overshoot^2 (true squared distance times len2); NO float, NO square root, NO divide."
+say "line_segment_distance: Style Radiant -- compose not braid: this rung owns only the fusion key and the order it induces; line_distance owns the off-line cross magnitude every key is cross-checked against, line_order owns the along-line projection the overshoot is measured from, line_span owns the along-segment class naming which objects the line under-counts, click_collinear owns click_group_center_doubled whose squared delta is len2. No plane of its own, no pixel written -- a reading over readings."
+say "line_segment_distance: Lens TAME -- the distance walk and the insertion sort run components times under label_max_pixels; the cross and the projection run in i64 so the doubled-coordinate products stay whole, the fused key in i128 so squaring the cross and the overshoot never overflows; two anchors sharing a group refuse SameGroup, a background tap refuses EmptyClick, a point off the map refuses PointOutOfBounds, a label past the object count refuses BadTarget, each having read nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/line_segment_distance"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/line_segment_distance.rye -femit-bin=${bin}"]
+assert build.ok else "line_segment_distance: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "line_segment_distance: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "line_segment_distance: ${out}"
+
+assert selftest.out contains "GREEN image-line-segment-distance" else "line_segment_distance: selftest did not print the GREEN line"
+assert selftest.out contains "the TRUE nearest gap to the FINITE stroke A..B" else "line_segment_distance: the true-nearest-gap claim did not print"
+assert selftest.out contains "This is the CORRECTED twin of line_distance" else "line_segment_distance: the corrected-twin claim did not print"
+assert selftest.out contains "which UNDER-counts once a foot falls past an end" else "line_segment_distance: the under-count claim did not print"
+assert selftest.out contains "cross^2 + overshoot^2, where overshoot = proj - clamp(proj, 0, len2)" else "line_segment_distance: the exact-integer key formula did not print"
+assert selftest.out contains "THE FINITE SEGMENT SEPARATES WHAT THE INFINITE LINE TIES" else "line_segment_distance: the decisive crux did not print"
+assert selftest.out contains "nearer_segment(P, Q) is TRUE and same_segment_distance(P, Q) FALSE" else "line_segment_distance: the tie-separation crux did not print"
+assert selftest.out contains "THE INFINITE LINE UNDER-COUNTS EXACTLY OFF THE ENDS" else "line_segment_distance: the under-count-off-ends crux did not print"
+assert selftest.out contains "the objects the line under-counts are EXACTLY line_span's before_a and beyond_b sets" else "line_segment_distance: the line_span fusion claim did not print"
+assert selftest.out contains "AN OBJECT ON THE INFINITE LINE CAN BE FAR FROM THE FINITE STROKE" else "line_segment_distance: the on-line-far-from-stroke crux did not print"
+assert selftest.out contains "the line order is X, A, M, B, P, Q and the segment order A, M, B, P, X, Q" else "line_segment_distance: the two-orders-differ claim did not print"
+assert selftest.out contains "REVERSAL FIXES THE GAP" else "line_segment_distance: the reversal crux did not print"
+assert selftest.out contains "refuse SameGroup" else "line_segment_distance: the SameGroup refusal did not print"
+assert selftest.out contains "a background tap refuses EmptyClick" else "line_segment_distance: the EmptyClick refusal did not print"
+assert selftest.out contains "a point off the map refuses PointOutOfBounds" else "line_segment_distance: the PointOutOfBounds refusal did not print"
+assert selftest.out contains "a label past the object count refuses BadTarget" else "line_segment_distance: the BadTarget refusal did not print"
+assert selftest.out contains "the same segment reads the same order twice" else "line_segment_distance: determinism did not print"
+
+say "line_segment_distance: GREEN on metal -- a directed line read as a FINITE stroke's true nearest gap, correcting line_distance's infinite-line under-count with line_span's clamp; the finite segment separates what the infinite line ties, the line under-counts exactly off the ends, an object ON the line can be FAR from the stroke; reversal fixes the gap, refusals by name, determinism. Season G open-media."
