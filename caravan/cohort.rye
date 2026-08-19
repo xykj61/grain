@@ -460,14 +460,39 @@ pub fn spawn_one_extra(
     wake: gap.Wake,
     extra: []const []const u8,
 ) (RunError || boot.BootError)!Running {
+    const slot = table.find_dependent(step.domain) orelse return error.UnknownDomain;
+    // invariant: a derived line agrees with the declaration it came from
+    assert(boot.line_agrees(sys, slot));
+    return spawn_one_within(allocator, io, self_path, sys, table, step, wake, extra);
+}
+
+/// The same spawn once more, asking only that the line stay INSIDE the
+/// declaration rather than equal it.
+///
+/// A supervisor that narrows a dependent's line to the act of one turn --
+/// `intent.rye` hands a domain read alone on a region it holds `rw` yet
+/// only reads this hop -- hands strictly less than the derivation, so the
+/// equality above would refuse it for being too careful. Safety wants a
+/// ceiling, and `boot.line_within` is that ceiling. Everything past the
+/// assert is the one spawn every rung of this arc has used.
+pub fn spawn_one_within(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    table: *const capabilities.CapabilityTable,
+    step: Assignment,
+    wake: gap.Wake,
+    extra: []const []const u8,
+) (RunError || boot.BootError)!Running {
     // invariant: a step always names a domain, its arcs, and its peers
     assert(step.domain.len >= 1);
     assert(step.hops.len >= 1);
     assert(step.peers.len >= 1);
 
     const slot = table.find_dependent(step.domain) orelse return error.UnknownDomain;
-    // invariant: the line handed out agrees with the declaration it came from
-    assert(boot.line_agrees(sys, slot));
+    // invariant: the line handed out never exceeds what the document grants
+    assert(boot.line_within(sys, slot));
 
     var peers: notify.PeerList = .{};
     notify.peers_of(sys, step.domain, &peers);
