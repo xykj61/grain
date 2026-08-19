@@ -1,0 +1,322 @@
+//! image/inscribed_disk.rye -- the LARGEST INSCRIBED DISK of a mask: the biggest round peg the shape holds, read as the DEEPEST
+//! pixel of image/distance.rye's chamfer field by an EXACT integer argmax and NO tolerance -- the honest INNER bound the family's
+//! outer/edge bounds mirror, and the one read that SEES an interior hole every convex reader is blind to.
+//!
+//! Season G (Open Media Primitives) -- image/min_enclosing_circle.rye asks "what is the smallest round hole this shape clears
+//! FACE-FIRST?" -- the outer disk that covers the whole silhouette. image/min_width.rye asks "what parallel-sided SLOT does it pass
+//! EDGE-FIRST?" -- the outer-turned thinness. This rung asks the INNER question: "what is the biggest round disk that fits INSIDE
+//! the shape?" -- the largest inscribed circle, the shape's own reach measured from the middle out. A ring and a solid block can
+//! share one outer silhouette, one convex hull, one enclosing circle, and one bounding box, yet hold very different pegs: the block
+//! a disk to its heart, the ring only one within its wall. The inscribed disk is the fact that tells them apart.
+//!
+//! The chamfer distance field (image/distance.rye) already gives every foreground pixel its integer distance to the nearest
+//! background pixel, so the point deepest inside the foreground is exactly the pixel of GREATEST distance -- the center of the
+//! largest inscribed disk, and its distance the inscribed RADIUS (in chamfer units, a true unit reading as `dist_orthogonal` = 3).
+//! So this rung OWNS only one move over the field: the exact integer ARGMAX of the finite distances, earliest in raster order on a
+//! tie, deterministic. The DECISION -- which pixel is deepest, and whether a pixel lies inside the disk -- is integer arithmetic;
+//! only the reported `radius` (the chamfer depth divided by the orthogonal weight) is read in f64, exactly as
+//! image/min_enclosing_circle.rye reports its own radius.
+//!
+//! The DECISIVE facts:
+//!
+//!   THE INNER BOUND SEES THE HOLE -- a solid 5x5 block and a hollow 5x5 ring (a wall one pixel thick) trace the IDENTICAL outer
+//!   contour, so image/convex_hull.rye and image/min_enclosing_circle.rye read the SAME hull and the SAME enclosing circle for both.
+//!   Yet the block's largest inscribed disk reaches its center (chamfer depth 9, radius 3) while the ring's fits only within its wall
+//!   (chamfer depth 3, radius 1) -- the inner bound is three times smaller for the hollow shape the outer bounds cannot distinguish.
+//!
+//!   THICKNESS, NOT REACH -- a 2x8 bar holds an inscribed disk of radius only 1 (half its thickness), never anything like its length
+//!   8, while its minimum enclosing circle has radius ~4.12 (diameter sqrt(68)). The inscribed disk reads a shape's THINNESS from the
+//!   inside where the enclosing circle reads its REACH -- a robust inner-versus-outer pair for anything elongated.
+//!
+//! `disk_contains(disk, px, py)` re-decides membership from the center and depth with the exact integer rule
+//! `dist_orthogonal^2 * ((px-cx)^2 + (py-cy)^2) <= chamfer^2` (the square root cleared by squaring), never a float compare;
+//! `holds_round_peg(disk, r)` decides whether the shape admits a round peg of integer radius `r` by `dist_orthogonal * r <= chamfer`
+//! -- the honest INNER dual of image/min_enclosing_circle.rye's `fits_through_round_hole`.
+//!
+//! Compose not braid. This rung OWNS only the argmax over the distance field and the two exact reads over the disk -- no gather, no
+//! blend, no codec, no color, no pixel-writing loop. image/distance.rye owns the chamfer field and its weights; image/qoi.rye owns
+//! the RGBA buffer. The largest inscribed disk of a mask is the deepest point of its distance field -- nothing more is read.
+//!
+//! Everything is bounded before a byte: the field is measured under image/distance.rye's own pixel ceiling; a chamfer depth stays
+//! under `dist_diagonal * max(width, height)` <= 32768, so `dist_orthogonal^2 * depth^2` stays far under 2^40 in i64 and no
+//! accumulator wraps. An empty source refuses `EmptySource` (through image/distance.rye), and an all-background mask -- no foreground
+//! to hold any disk -- refuses `NoForeground` by name. All-or-nothing, never a half-read disk. No network, no key, no funds -- the
+//! inner reach a surface names the day it asks how big a round mark the shape can hold, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/inscribed_disk.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const distance = @import("distance.rye");
+const convex_hull = @import("convex_hull.rye");
+const contour = @import("contour.rye");
+const min_enclosing_circle = @import("min_enclosing_circle.rye");
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+
+pub const inscribed_disk_version = "20260818.204933";
+
+pub const InscribedDiskError = error{
+    NoForeground,
+};
+
+/// The LARGEST INSCRIBED DISK: its center pixel `(cx, cy)` (exact, the deepest pixel of the chamfer field), the `chamfer` depth at
+/// that pixel (exact integer, the decision quantity), and the reported inscribed `radius` in f64 (`chamfer / dist_orthogonal`,
+/// since a true unit distance reads as the orthogonal weight). Membership is decided from the center and depth with an exact integer
+/// predicate, never from `radius`; `radius` is for display and measurement, exactly as image/min_enclosing_circle.rye reports its own.
+pub const Disk = struct {
+    cx: u32,
+    cy: u32,
+    chamfer: u32,
+    radius: f64,
+};
+
+/// The LARGEST INSCRIBED DISK of `src` -- measure the chamfer 3-4 distance field (image/distance.rye), then take the pixel of
+/// GREATEST finite distance (earliest in raster order on a tie). That pixel is the center of the largest disk fitting inside the
+/// foreground, and its distance the inscribed radius in chamfer units. Refuses `EmptySource` (through image/distance.rye) on a
+/// zero-size source, and `NoForeground` when the mask holds no foreground pixel to inscribe any disk in.
+pub fn largest_inscribed_disk(allocator: std.mem.Allocator, src: *const qoi.Pixmap) !Disk {
+    const field = try distance.distance_chamfer(allocator, src);
+    // invariant: an all-background mask has no foreground, so no disk fits inside it -- refuse by name rather than return a zero disk.
+    if (field.max_distance == 0) return error.NoForeground;
+    // invariant: a real field carries one distance per pixel across its whole extent.
+    assert(field.dist.len == @as(usize, field.width) * @as(usize, field.height));
+
+    // the deepest pixel: the exact integer ARGMAX over the finite distances, earliest in raster order on a tie (strict `>` keeps the
+    // first). The max is finite (the sentinel `dist_far` is excluded from `max_distance`), so the search finds a real pixel.
+    var best_index: usize = 0;
+    var found = false;
+    var i: usize = 0;
+    while (i < field.dist.len) : (i += 1) {
+        if (field.dist[i] == field.max_distance) {
+            best_index = i;
+            found = true;
+            break;
+        }
+    }
+    // invariant: max_distance is a value present in the field, so the argmax search always seats a pixel.
+    assert(found);
+
+    const w: usize = @as(usize, field.width);
+    const cy: u32 = @intCast(best_index / w);
+    const cx: u32 = @intCast(best_index % w);
+    // invariant: the deepest pixel lies inside the field on both axes.
+    assert(cx < field.width);
+    assert(cy < field.height);
+
+    const depth: u32 = field.max_distance;
+    const radius: f64 = @as(f64, @floatFromInt(depth)) / @as(f64, @floatFromInt(distance.dist_orthogonal));
+    // invariant: a real inscribed disk has a positive radius (its depth is at least one orthogonal step).
+    assert(radius > 0.0);
+
+    return Disk{ .cx = cx, .cy = cy, .chamfer = depth, .radius = radius };
+}
+
+/// The inscribed RADIUS in f64 -- the largest round peg the shape holds, `chamfer / dist_orthogonal`. The inner bound the enclosing
+/// circle (image/min_enclosing_circle.rye) mirrors from the outside.
+pub fn inradius(disk: Disk) f64 {
+    // invariant: an inscribed disk of a real shape has a non-negative radius.
+    assert(disk.radius >= 0.0);
+    return disk.radius;
+}
+
+/// TRUE when pixel `(px, py)` lies inside or on the inscribed disk -- decided exactly from the center and the chamfer depth by
+/// `dist_orthogonal^2 * squared-distance <= chamfer^2` (the true radius is `chamfer / dist_orthogonal`, so squaring clears the
+/// division and the square root), never from the reported f64 radius. In-image coordinates keep every product far under the i64
+/// ceiling.
+pub fn disk_contains(disk: Disk, px: u32, py: u32) bool {
+    const dx: i64 = @as(i64, px) - @as(i64, disk.cx);
+    const dy: i64 = @as(i64, py) - @as(i64, disk.cy);
+    const d2: i64 = dx * dx + dy * dy;
+    // invariant: a squared distance is never negative and stays far under the i64 ceiling for in-image coordinates.
+    assert(d2 >= 0);
+    assert(d2 < (@as(i64, 1) << 30));
+    const ortho: i64 = @as(i64, distance.dist_orthogonal);
+    const lhs: i64 = ortho * ortho * d2;
+    const rhs: i64 = @as(i64, disk.chamfer) * @as(i64, disk.chamfer);
+    // invariant: the scaled squared distance and the squared depth both stay far under the i64 ceiling.
+    assert(lhs < (@as(i64, 1) << 40));
+    assert(rhs < (@as(i64, 1) << 40));
+    return lhs <= rhs;
+}
+
+/// TRUE when the shape ADMITS a round peg of integer radius `peg_radius` -- its inscribed radius is at least that wide, decided by
+/// the exact rule `dist_orthogonal * peg_radius <= chamfer` (the reported radius is `chamfer / dist_orthogonal`), never a float
+/// compare. The honest INNER dual of image/min_enclosing_circle.rye's `fits_through_round_hole` (which reads the outer round hole).
+pub fn holds_round_peg(disk: Disk, peg_radius: u32) bool {
+    // invariant: a real inscribed disk carries a positive chamfer depth.
+    assert(disk.chamfer >= 1);
+    const lhs: u64 = @as(u64, distance.dist_orthogonal) * @as(u64, peg_radius);
+    return lhs <= @as(u64, disk.chamfer);
+}
+
+// --- selftest: the DEFINITION on a solid block; the DECISIVE inner-sees-the-hole crux (block vs hollow ring, identical outer bounds
+//     proven against image/convex_hull.rye + image/min_enclosing_circle.rye, different inscribed disks); thickness-not-reach on a bar;
+//     disk_contains and holds_round_peg both ways; degenerate cases; refusals; determinism ---------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Set one pixel back to a background color at (x, y) -- carve a hole in a filled shape.
+fn clear_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 0;
+    img.pixels[di + 1] = 0;
+    img.pixels[di + 2] = 0;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn approx(a: f64, b: f64, tol: f64) bool {
+    const d = if (a >= b) a - b else b - a;
+    return d <= tol;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- THE DEFINITION -- a solid 5x5 block on a black border: the deepest pixel is the center (3,3), chamfer depth 9 (three
+    //     orthogonal steps from any edge, weight 3 each), so the inscribed radius is exactly 3 --------------------------------
+    var block = try make_canvas(garden, 7, 7, 0);
+    set_block(&block, 1, 1, 5, 5);
+    const block_disk = try largest_inscribed_disk(garden, &block);
+    if (block_disk.cx != 3 or block_disk.cy != 3) return error.BlockCenterWrong;
+    if (block_disk.chamfer != 9) return error.BlockChamferNotNine;
+    if (!approx(block_disk.radius, 3.0, 1e-9)) return error.BlockRadiusNotThree;
+    if (!approx(inradius(block_disk), 3.0, 1e-9)) return error.BlockInradiusNotThree;
+
+    // --- THE DECISIVE INNER-SEES-THE-HOLE CRUX -- carve the block's inner 3x3 hollow into a RING one pixel thick. Its OUTER contour
+    //     is byte-for-byte the solid block's, so image/convex_hull.rye and image/min_enclosing_circle.rye read the SAME hull and the
+    //     SAME enclosing circle for both -- yet the inscribed disk shrinks from radius 3 to radius 1, seeing the hole they cannot ----
+    var ring = try make_canvas(garden, 7, 7, 0);
+    set_block(&ring, 1, 1, 5, 5);
+    var hy: u32 = 2;
+    while (hy <= 4) : (hy += 1) {
+        var hx: u32 = 2;
+        while (hx <= 4) : (hx += 1) clear_dot(&ring, hx, hy);
+    }
+    const ring_disk = try largest_inscribed_disk(garden, &ring);
+    if (ring_disk.chamfer != 3) return error.RingChamferNotThree; // the wall is one pixel thick -> one orthogonal step -> depth 3
+    if (!approx(ring_disk.radius, 1.0, 1e-9)) return error.RingRadiusNotOne;
+    // the INNER bound sharply separates the two shapes the outer bounds cannot
+    if (!(block_disk.chamfer > ring_disk.chamfer)) return error.InnerBoundDoesNotSeparate;
+
+    // the OUTER bounds are IDENTICAL -- both trace the same 5x5 outer contour, so the same hull and the same enclosing circle
+    const block_map = try label.label_components(garden, &block);
+    const block_ring_trace = try contour.trace_contour(garden, &block_map, 1);
+    const block_hull = try convex_hull.convex_hull(garden, block_ring_trace.points);
+    const block_circle = try min_enclosing_circle.min_enclosing_circle(block_hull);
+    const ring_map = try label.label_components(garden, &ring);
+    const ring_trace = try contour.trace_contour(garden, &ring_map, 1);
+    const ring_hull = try convex_hull.convex_hull(garden, ring_trace.points);
+    const ring_circle = try min_enclosing_circle.min_enclosing_circle(ring_hull);
+    if (!approx(block_circle.radius, ring_circle.radius, 1e-9)) return error.OuterCirclesDiffer; // same silhouette, same outer disk
+    if (!approx(block_circle.cx, ring_circle.cx, 1e-9)) return error.OuterCentersDiffer;
+    if (!approx(block_circle.cy, ring_circle.cy, 1e-9)) return error.OuterCentersDiffer;
+
+    // --- THICKNESS, NOT REACH -- a 2x8 bar holds an inscribed disk of radius only 1 (half its thickness 2), never its length 8, while
+    //     its minimum enclosing circle has radius ~4.12 (diameter sqrt(68)); the inner bound reads thinness, the outer bound reach ---
+    var bar = try make_canvas(garden, 4, 10, 0);
+    set_block(&bar, 1, 1, 2, 8);
+    const bar_disk = try largest_inscribed_disk(garden, &bar);
+    if (bar_disk.chamfer != 3) return error.BarChamferNotThree; // half the thickness 2 -> one orthogonal step -> depth 3
+    if (!approx(bar_disk.radius, 1.0, 1e-9)) return error.BarRadiusNotOne;
+    var bar_pts = [_]contour.Point{
+        .{ .x = 0, .y = 0 },
+        .{ .x = 2, .y = 0 },
+        .{ .x = 2, .y = 8 },
+        .{ .x = 0, .y = 8 },
+    };
+    const bar_hull = try convex_hull.convex_hull(garden, bar_pts[0..]);
+    const bar_circle = try min_enclosing_circle.min_enclosing_circle(bar_hull);
+    if (!approx(bar_circle.radius, @sqrt(68.0) / 2.0, 1e-6)) return error.BarEnclosingRadiusWrong;
+    if (bar_disk.radius >= bar_circle.radius) return error.InnerNotBelowOuter; // 1 << 4.12, the reach-versus-thinness divergence
+    if (bar_circle.radius <= 3.0 * bar_disk.radius) return error.OuterNotFarWider; // the outer reach is over three times the inner
+
+    // --- disk_contains -- exact integer membership over the block's inscribed disk (center (3,3), depth 9, radius 3): the center is
+    //     in, a pixel exactly 3 away is on the circle, a pixel 4 away is out ----------------------------------------------------
+    if (!disk_contains(block_disk, 3, 3)) return error.CenterNotContained;
+    if (!disk_contains(block_disk, 3, 6)) return error.OnCircleNotContained; // squared distance 9, 9*9 == 81 == chamfer^2 -> on
+    if (disk_contains(block_disk, 3, 7)) return error.BeyondRadiusContained; // squared distance 16, 9*16 == 144 > 81 -> out
+
+    // --- holds_round_peg -- the block admits a peg of radius 3, refuses radius 4; the ring admits radius 1, refuses radius 2 ------
+    if (!holds_round_peg(block_disk, 3)) return error.BlockPegThreeRefused;
+    if (holds_round_peg(block_disk, 4)) return error.BlockPegFourAdmitted;
+    if (!holds_round_peg(ring_disk, 1)) return error.RingPegOneRefused;
+    if (holds_round_peg(ring_disk, 2)) return error.RingPegTwoAdmitted;
+
+    // --- DEGENERATE -- a lone foreground dot is one orthogonal step from its ground: chamfer depth 3, radius 1, centered on itself --
+    var speck = try make_canvas(garden, 5, 5, 0);
+    set_dot(&speck, 2, 2);
+    const speck_disk = try largest_inscribed_disk(garden, &speck);
+    if (speck_disk.cx != 2 or speck_disk.cy != 2) return error.SpeckCenterWrong;
+    if (speck_disk.chamfer != 3) return error.SpeckChamferNotThree;
+
+    // --- REFUSALS by name -- an all-background mask holds no foreground to inscribe, and a zero-size source is empty ------------
+    var blank = try make_canvas(garden, 4, 4, 0);
+    if (largest_inscribed_disk(garden, &blank)) |_| return error.BlankNotRefused else |err| {
+        if (err != error.NoForeground) return error.WrongBlankError;
+    }
+    var empty_src = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (largest_inscribed_disk(garden, &empty_src)) |_| return error.EmptyNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- DETERMINISM -- the same mask reads the same inscribed disk twice ------------------------------------------------------
+    const d1 = try largest_inscribed_disk(garden, &block);
+    const d2 = try largest_inscribed_disk(garden, &block);
+    if (d1.cx != d2.cx or d1.cy != d2.cy or d1.chamfer != d2.chamfer) return error.DiskNotDeterministic;
+
+    print("GREEN image-inscribed-disk: the LARGEST INSCRIBED DISK of a mask -- the biggest round peg the shape holds, read as the DEEPEST pixel of image/distance.rye's chamfer field by an EXACT integer argmax and NO tolerance -- the DECISIVE crux: a solid 5x5 block and a hollow 5x5 ring (a wall one pixel thick) trace the IDENTICAL outer contour, so image/convex_hull.rye and image/min_enclosing_circle.rye read the SAME hull and the SAME enclosing circle for both, yet the inscribed disk shrinks from chamfer depth 9 (radius 3, the block's center) to depth 3 (radius 1, the ring's wall) -- the inner bound SEES the interior hole every convex reader is blind to; THICKNESS not REACH -- a 2x8 bar holds an inscribed disk of radius only 1 (half its thickness) never its length 8, while its minimum enclosing circle has radius ~4.12 (diameter sqrt(68)), the inner bound reading thinness where the outer reads reach; disk_contains re-decides membership exactly (dist_orthogonal^2 * squared-distance <= chamfer^2, the center in, a pixel 3 away on the circle, 4 away out); holds_round_peg admits a peg up to the inscribed radius by exact integer arithmetic (the block a radius-3 peg not 4, the ring a radius-1 peg not 2); a lone dot reads depth 3; an all-background mask refuses NoForeground and a zero-size source EmptySource, each having read nothing; the same mask reads the same disk deterministically\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: inscribed_disk selftest\n", .{});
+    return 1;
+}
