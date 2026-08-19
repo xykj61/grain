@@ -1,0 +1,654 @@
+//! Caravan rolling -- a supervisor that refills a slot the moment a dependent
+//! finishes, rather than reaping a whole stage before the next begins.
+//!
+//! `cohort.rye` derived the widest set a document may run at once and spent
+//! it, three dependents of one declaration standing unreaped together. It
+//! reaped every stage whole, because with three in flight a verdict
+//! reported early strands a pair rather than a single sibling. That left
+//! one question standing: a stage is a barrier, and a barrier holds a slot
+//! empty while a dependent that could have used it waits behind the line.
+//!
+//! **Reaping is not reporting.** The rule `cohort.rye` proved was never
+//! "reap everything before you reap anything" -- it was "let no verdict
+//! leave while a sibling still runs." A rolling supervisor keeps that rule
+//! exactly by splitting the two acts: it reaps eagerly to free a slot, and
+//! it holds every verdict until the queue has drained. The reading that
+//! judges on the reaping stands in this module as a named control, and it
+//! re-opens exactly the hazard `cohort.rye` closed.
+//!
+//! **A rolling supervisor never reorders, so the order bounds the room.**
+//! Admission is head-of-line only: the item at the head enters when a slot
+//! is free and it is clear against every domain still running. Reaching
+//! past a blocked head for a later item that happens to fit would reorder
+//! the lap, and in these documents order is meaning -- an ask is placed
+//! before it is passed and passed before it comes home.
+//!
+//! **So rolling never creates room; it stops the supervisor from being the
+//! reason the room goes unspent.** The waste is counted by its cause. A
+//! slot standing empty with work still queued is idle **by barrier** when
+//! the discipline alone forbade the fill, and idle **by order** when the
+//! head conflicts with a domain still running. A staged supervisor over the
+//! ordered lap spends two turns idle by barrier; the rolling supervisor
+//! over the same lap spends two turns idle by order -- the same two turns,
+//! renamed to their true cause. Rolling converted no waiting into work
+//! there, and it proved who was doing the waiting.
+//!
+//! **Where the order agrees with the isolation, the same change converts
+//! the whole of it.** Three clients placing twice each into the regions
+//! they own share nothing at any point, so the rolling supervisor admits
+//! the fourth item the instant the first is reaped and never stands a slot
+//! empty at all: two idle turns become zero, over the same document and the
+//! same bound of three.
+//!
+//! **Both disciplines reap one dependent per turn.** They differ in one line --
+//! rolling may fill whenever a slot is free, staged may fill only an empty
+//! table -- which is what makes the two readings comparable rather than two
+//! programs that happen to disagree.
+//!
+//! Hosted ground: real processes, real files, pure policy, no kernel
+//! underneath it yet.
+//!
+//! Usage:
+//!   rolling selftest                  Run the disciplines against each other
+//!   rolling                           Same as selftest
+//!   rolling dependent <domain> <plan> ... Run as a supervised dependent (internal)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const channels = @import("channels.rye");
+const capabilities = @import("capabilities.rye");
+const roster = @import("roster.rye");
+const read = @import("read.rye");
+const boot = @import("boot.rye");
+const exercise = @import("exercise.rye");
+const carry = @import("carry.rye");
+const notify = @import("notify.rye");
+const roundtrip = @import("roundtrip.rye");
+const cycle = @import("cycle.rye");
+const gap = @import("gap.rye");
+const concurrent = @import("concurrent.rye");
+const cohort = @import("cohort.rye");
+
+const caravan_rolling_version = "20260819.182033";
+
+// =========================================================================
+// The bounds -- one table, one queue, and the order that feeds it
+// =========================================================================
+
+/// The same server-and-clients shape `cohort.rye` derived its widest set
+/// from. Rolling asks a different question of one document rather than
+/// growing a second one to ask it of.
+pub const declaration_path = cohort.declaration_path;
+
+/// How many dependents of one document this supervisor holds unreaped at once.
+///
+/// Three, taken from `cohort.rye` unchanged, so the two disciplines are
+/// compared over one table and differ only in when they may fill it.
+pub const max_in_flight: u32 = cohort.max_in_flight;
+
+/// How many items one ordered queue carries.
+///
+/// Sixteen, which holds the ordered lap of nine with room to spare and
+/// keeps every array in this module a fixed, named size.
+pub const max_queue_len: u32 = 16;
+
+/// A dependent's fixed argv, unchanged from the rung before it.
+pub const fixed_argv_words: u32 = cohort.fixed_argv_words;
+
+comptime {
+    // invariant: a queue holds more than one full table, or rolling is staged
+    assert(max_queue_len > max_in_flight);
+    // invariant: a table never asks for more dependents than one roster holds
+    assert(max_in_flight <= capabilities.max_dependents);
+}
+
+/// Renders one outcome code as the words an operator reads.
+pub fn outcome_name(code: u8) []const u8 {
+    return cohort.outcome_name(code);
+}
+
+// =========================================================================
+// The two disciplines, and the two moments a verdict may leave
+// =========================================================================
+
+/// When a supervisor may put a dependent into the table.
+///
+/// `rolling` fills whenever a slot stands free. `staged` fills only an
+/// empty table, which is the barrier `cohort.rye` ran under. One line apart
+/// on purpose: everything else about the two runs is identical.
+pub const Discipline = enum { rolling, staged };
+
+/// When a reaped dependent's outcome is judged.
+///
+/// `held` is the module's own reading and the only safe one -- every
+/// verdict waits for the queue to drain. `on_reap` exists to be proven
+/// wrong: it judges the instant a dependent is reaped, which sends a refusal
+/// out while its siblings are still running.
+pub const Verdicts = enum { held, on_reap };
+
+/// Why a queue may not run as it was handed over.
+pub const RunError = error{
+    QueueTooLong,
+    EmptyQueue,
+    OrderStalled,
+    OutcomeMismatch,
+};
+
+/// What one run did, reported whole.
+pub const Report = struct {
+    /// How many items the queue carried.
+    queued: u32 = 0,
+    /// How many turns the supervisor took -- one reaping each.
+    turns: u32 = 0,
+    admitted: u32 = 0,
+    reaped: u32 = 0,
+    succeeded: u32 = 0,
+    homed: u32 = 0,
+    bells: u32 = 0,
+    /// The most dependents this run held unreaped at one instant.
+    peak_in_flight: u32 = 0,
+    /// Turns a slot stood empty with work queued, held so by the discipline
+    /// alone -- the head would have fit. The rolling reading holds this at
+    /// zero on every queue.
+    idle_by_barrier: u32 = 0,
+    /// Turns a slot stood empty with work queued, held so by the head
+    /// conflicting with a domain still running. This is the document's
+    /// order rather than the supervisor's discipline, and no reading of the
+    /// supervisor removes it.
+    idle_by_order: u32 = 0,
+    /// Dependents still running when a verdict was reported. The held reading
+    /// keeps this at zero on every queue.
+    unreaped_at_report: u32 = 0,
+    /// Dependents reaped after a report had already gone out.
+    reaped_late: u32 = 0,
+
+    /// Answers the whole waiting of a run, whatever its cause.
+    pub fn idle_turns(self: Report) u32 {
+        return self.idle_by_barrier + self.idle_by_order;
+    }
+};
+
+// =========================================================================
+// Admission -- the head of the queue against the table standing now
+// =========================================================================
+
+/// One item of an ordered queue: the same assignment shape a stage carries.
+pub const Item = cohort.Assignment;
+
+/// Answers whether the head may enter beside the dependents running now.
+///
+/// The predicate is `concurrent.judge_pair`, unchanged, asked once per
+/// running dependent. A domain never enters beside itself, which the pair
+/// predicate answers as a shared region without needing a special case --
+/// yet it is named here anyway, since a domain running twice at once is a
+/// different mistake from two domains sharing a store.
+fn admissible(
+    sys: *const system.System,
+    live: []const cohort.Running,
+    head: Item,
+) bool {
+    // invariant: a queued item always names a domain
+    assert(head.domain.len >= 1);
+    const d = sys.graph.find_domain(head.domain) orelse return false;
+    var i: u32 = 0;
+    while (i < live.len) : (i += 1) {
+        const running = sys.graph.find_domain(live[i].domain) orelse return false;
+        if (running == d) return false;
+        if (concurrent.judge_pair(sys, d, running) != .may_run_together) return false;
+    }
+    // invariant: every running dependent was weighed against the head, none skipped
+    assert(i == live.len);
+    return true;
+}
+
+/// One dependent already reaped, held until the whole queue has drained.
+const Finished = struct {
+    domain: []const u8,
+    verb: cycle.Verb,
+    count: u32,
+    expect: u8,
+    code: u8,
+};
+
+/// Folds one reaped outcome into the report, or names the mismatch.
+fn judge_outcome(done: Finished, report_out: *Report) RunError!void {
+    // invariant: a judged dependent always names its domain
+    assert(done.domain.len >= 1);
+    // invariant: the report never counts more successes than dependents reaped
+    assert(report_out.succeeded <= report_out.reaped);
+    if (done.code != done.expect) {
+        print("    {s}: expected {s}, heard {s}\n", .{
+            done.domain, outcome_name(done.expect), outcome_name(done.code),
+        });
+        return error.OutcomeMismatch;
+    }
+    if (done.code == carry.Outcome.carried_ok) {
+        report_out.succeeded += 1;
+        if (done.verb == .home) report_out.homed += done.count;
+    }
+}
+
+// =========================================================================
+// The supervisor -- one queue, one table, one reaping per turn
+// =========================================================================
+
+/// Everything one turn of the supervisor reads and moves.
+///
+/// Held together in one place because the fill and the reaping both touch
+/// the same table and the same cursor, and threading five pointers through
+/// two helpers would say less about the shape than this does.
+const Table = struct {
+    live: [max_in_flight]cohort.Running = undefined,
+    in_flight: u32 = 0,
+    done: [max_queue_len]Finished = undefined,
+    finished: u32 = 0,
+    next: u32 = 0,
+};
+
+/// Admits as much of the queue's head as the order and the table allow.
+///
+/// Head-of-line only: the walk stops at the first item that conflicts and
+/// never reaches past it, so a lap runs in the order it was written.
+fn fill_table(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    caps: *const capabilities.CapabilityTable,
+    plan: []const Item,
+    wake: gap.Wake,
+    table: *Table,
+    report_out: *Report,
+) (RunError || cohort.RunError || boot.BootError)!u32 {
+    var admitted: u32 = 0;
+    while (table.in_flight < max_in_flight and table.next < plan.len) {
+        if (!admissible(sys, table.live[0..table.in_flight], plan[table.next])) break;
+        table.live[table.in_flight] = try cohort.spawn_one(
+            allocator,
+            io,
+            self_path,
+            sys,
+            caps,
+            plan[table.next],
+            wake,
+        );
+        table.in_flight += 1;
+        table.next += 1;
+        admitted += 1;
+        report_out.admitted += 1;
+    }
+    // invariant: a fill never overruns the table it fills
+    assert(table.in_flight <= max_in_flight);
+    return admitted;
+}
+
+/// Waits on the eldest dependent, records what it answered, and closes the table
+/// over the slot it leaves.
+///
+/// A hosted supervisor waits on a dependent it names, so the eldest is the one
+/// it can wait on. That is the honest limit of this ground: a long-running
+/// eldest holds a slot its younger siblings have already freed.
+fn reap_oldest(io: std.Io, table: *Table, report_out: *Report) cohort.RunError!void {
+    // invariant: a reaping always has a dependent to wait on
+    assert(table.in_flight >= 1);
+    // invariant: a reaping never overruns the record it is kept in
+    assert(table.finished < max_queue_len);
+    const code = try cohort.reap_one(io, &table.live[0]);
+    table.done[table.finished] = .{
+        .domain = table.live[0].domain,
+        .verb = table.live[0].verb,
+        .count = table.live[0].count,
+        .expect = table.live[0].expect,
+        .code = code,
+    };
+    table.finished += 1;
+    table.in_flight -= 1;
+    report_out.reaped += 1;
+    report_out.turns += 1;
+
+    var s: u32 = 0;
+    while (s < table.in_flight) : (s += 1) table.live[s] = table.live[s + 1];
+    // invariant: the table closed over the reaped dependent, none lost
+    assert(s == table.in_flight);
+}
+
+/// Waits on one dependent left running behind a verdict that already left.
+///
+/// Hygiene the loose reading needs and the held one never does: a report is
+/// already out, so nothing here is judged -- the dependents are simply not
+/// abandoned.
+fn drain_late(io: std.Io, table: *Table, report_out: *Report) RunError!void {
+    // invariant: a late reaping always has a dependent to wait on
+    assert(table.in_flight >= 1);
+    _ = cohort.reap_one(io, &table.live[0]) catch {};
+    table.in_flight -= 1;
+    var t: u32 = 0;
+    while (t < table.in_flight) : (t += 1) table.live[t] = table.live[t + 1];
+    // invariant: the table closed over the late dependent, none lost
+    assert(t == table.in_flight);
+    report_out.reaped_late += 1;
+}
+
+/// Runs an ordered queue under one discipline, reaping one dependent per turn.
+///
+/// The whole difference between the two readings is the `may_fill` line
+/// below. Everything after it -- the head-of-line admission, the reaping in
+/// spawn order, the held verdicts -- is shared, so a difference in the
+/// report is a difference in the discipline rather than in the program.
+pub fn run_queue(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Item,
+    wake: gap.Wake,
+    discipline: Discipline,
+    verdicts: Verdicts,
+    report_out: *Report,
+) (roster.RosterError || exercise.ProvisionError || notify.BellError || RunError || cohort.RunError || boot.BootError)!void {
+    // invariant: a run always knows what program to spawn
+    assert(self_path.len >= 1);
+    if (plan.len == 0) return error.EmptyQueue;
+    if (plan.len > max_queue_len) return error.QueueTooLong;
+
+    const provisioned = try exercise.provision(io, sys);
+    // invariant: every declared region has a backing store before any dependent runs
+    assert(provisioned == sys.map.region_count);
+    report_out.bells = try roundtrip.provision_directed(io, sys);
+
+    const table = try roster.from_system(sys);
+    // invariant: the derived table enforces exactly what the document permits
+    assert(roster.agrees(sys, &table));
+    report_out.queued = @intCast(plan.len);
+
+    var open: Table = .{};
+    while (open.next < plan.len or open.in_flight > 0) {
+        // The one line the two disciplines disagree on.
+        const may_fill = switch (discipline) {
+            .rolling => open.in_flight < max_in_flight,
+            .staged => open.in_flight == 0,
+        };
+        const admitted_now = if (may_fill)
+            try fill_table(allocator, io, self_path, sys, &table, plan, wake, &open, report_out)
+        else
+            0;
+        if (open.in_flight > report_out.peak_in_flight) report_out.peak_in_flight = open.in_flight;
+
+        // A slot standing free with work still queued is waiting on exactly
+        // one of two things, and the report names which.
+        if (open.next < plan.len and open.in_flight < max_in_flight and admitted_now == 0) {
+            if (may_fill) report_out.idle_by_order += 1 else report_out.idle_by_barrier += 1;
+        }
+
+        // With an empty table the head conflicts with nothing, so a stall
+        // here would mean the queue named a domain the document does not.
+        if (open.in_flight == 0) return error.OrderStalled;
+        try reap_oldest(io, &open, report_out);
+
+        // The unsafe reading reports here, with the rest of the table still
+        // running behind the verdict. It stands only to be proven wrong.
+        if (verdicts == .on_reap) {
+            judge_outcome(open.done[open.finished - 1], report_out) catch |err| {
+                report_out.unreaped_at_report += open.in_flight;
+                while (open.in_flight > 0) try drain_late(io, &open, report_out);
+                return err;
+            };
+        }
+    }
+    // invariant: the whole queue was admitted and every dependent reaped
+    assert(open.next == plan.len);
+    assert(open.in_flight == 0);
+    assert(report_out.reaped == report_out.admitted);
+    assert(open.finished == plan.len);
+
+    if (verdicts == .held) {
+        var j: u32 = 0;
+        while (j < open.finished) : (j += 1) try judge_outcome(open.done[j], report_out);
+        // invariant: every reaped dependent was judged, none skipped
+        assert(j == open.finished);
+    }
+}
+
+// =========================================================================
+// The two queues -- one whose order fights the shape, one that agrees
+// =========================================================================
+
+/// The ordered lap `cohort.rye` ran as five stages, flattened into a queue.
+///
+/// Every stage boundary in it is also a conflict boundary: the virtualiser
+/// touches all three clients, so it may enter only once all three are gone,
+/// and it may never stand beside itself. Rolling removes the barrier here
+/// and finds the order waiting in its place.
+const ordered_queue = [_]Item{
+    .{ .domain = "client_a", .verb = .place, .hops = "ask_a", .peers = "serial_virt", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_b", .verb = .place, .hops = "ask_b", .peers = "serial_virt", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_c", .verb = .place, .hops = "ask_c", .peers = "serial_virt", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "serial_virt", .verb = .pass, .hops = "ask_a,back_a", .peers = "client_a,client_a", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "serial_virt", .verb = .pass, .hops = "ask_b,back_b", .peers = "client_b,client_b", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "serial_virt", .verb = .pass, .hops = "ask_c,back_c", .peers = "client_c,client_c", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_a", .verb = .home, .hops = "back_a,taken_a", .peers = "serial_virt", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_b", .verb = .home, .hops = "back_b,taken_b", .peers = "serial_virt", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_c", .verb = .home, .hops = "back_c,taken_c", .peers = "serial_virt", .count = 2, .expect = carry.Outcome.carried_ok },
+};
+
+/// A queue whose order agrees with the isolation the document already has.
+///
+/// Each client places twice into the one region it owns, and no client
+/// touches another at any point. So the head is admissible at every turn,
+/// and a slot a reaping frees is filled at once. A client's second item
+/// still waits for its own first, which is the head-of-line rule doing its
+/// plainest work: a domain never runs beside itself.
+const refill_queue = [_]Item{
+    .{ .domain = "client_a", .verb = .place, .hops = "ask_a", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_b", .verb = .place, .hops = "ask_b", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_c", .verb = .place, .hops = "ask_c", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_a", .verb = .place, .hops = "ask_a", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_b", .verb = .place, .hops = "ask_b", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_c", .verb = .place, .hops = "ask_c", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok },
+};
+
+/// Three clients whose first answer differs from the plan, so a verdict is
+/// forced while two siblings are still running.
+///
+/// Every dependent carries a plan whose shape its verb does not take, so each is
+/// refused at its own door and none touches a region or a bell. The queue
+/// measures when a verdict leaves, and nothing else.
+const verdict_queue = [_]Item{
+    .{ .domain = "client_a", .verb = .stand, .hops = "ask_a", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_b", .verb = .stand, .hops = "ask_b", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.malformed },
+    .{ .domain = "client_c", .verb = .stand, .hops = "ask_c", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.malformed },
+};
+
+// =========================================================================
+// Self-test
+// =========================================================================
+
+/// Loads one declaration, or names why it could not be read.
+fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
+    const parsed = read.load(io, path, buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ path, @errorName(err) });
+        return null;
+    };
+    if (parsed.verify() != .whole) {
+        print("  RED: {s} did not read whole\n", .{path});
+        return null;
+    }
+    return parsed;
+}
+
+/// Runs one queue under one discipline and answers its report.
+fn run_one(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Item,
+    discipline: Discipline,
+    report_out: *Report,
+) bool {
+    run_queue(allocator, io, self_path, sys, plan, .when_moved, discipline, .held, report_out) catch |err| {
+        print("  RED: a queue did not survive its run: {s}\n", .{@errorName(err)});
+        return false;
+    };
+    return true;
+}
+
+/// The ordered lap under both disciplines: the same waiting, renamed.
+fn check_ordered(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const sys = load_one(io, declaration_path, &buf) orelse return 1;
+
+    var barred: Report = .{};
+    if (!run_one(allocator, io, self_path, &sys, &ordered_queue, .staged, &barred)) return 1;
+    var rolled: Report = .{};
+    if (!run_one(allocator, io, self_path, &sys, &ordered_queue, .rolling, &rolled)) return 1;
+
+    if (rolled.idle_by_barrier != 0) {
+        print("  RED: a rolling supervisor stood {d} turns idle by its own discipline\n", .{
+            rolled.idle_by_barrier,
+        });
+        return 1;
+    }
+    if (barred.idle_by_order != 0) {
+        print("  RED: a staged supervisor blamed the order for {d} turns\n", .{barred.idle_by_order});
+        return 1;
+    }
+    if (rolled.idle_turns() != barred.idle_turns()) {
+        print("  RED: rolling waited {d} turns where staging waited {d}\n", .{
+            rolled.idle_turns(), barred.idle_turns(),
+        });
+        return 1;
+    }
+    if (rolled.homed != barred.homed or rolled.homed != 6) {
+        print("  RED: {d} asks came home rolling and {d} staged\n", .{ rolled.homed, barred.homed });
+        return 1;
+    }
+    // invariant: both readings held the same table and spent it whole
+    assert(rolled.peak_in_flight == max_in_flight);
+    assert(barred.peak_in_flight == max_in_flight);
+    // invariant: neither reading let a verdict out while a sibling ran
+    assert(rolled.unreaped_at_report == 0);
+    assert(barred.unreaped_at_report == 0);
+    print("  the ordered lap waits {d} turns either way: {d} by barrier staged, {d} by order rolling\n", .{
+        barred.idle_turns(), barred.idle_by_barrier, rolled.idle_by_order,
+    });
+    print("  {d} asks come home under both, at a peak of {d} in flight\n", .{
+        rolled.homed, rolled.peak_in_flight,
+    });
+    return 0;
+}
+
+/// The queue whose order agrees with the shape: the waiting becomes work.
+fn check_refill(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const sys = load_one(io, declaration_path, &buf) orelse return 1;
+
+    var barred: Report = .{};
+    if (!run_one(allocator, io, self_path, &sys, &refill_queue, .staged, &barred)) return 1;
+    var rolled: Report = .{};
+    if (!run_one(allocator, io, self_path, &sys, &refill_queue, .rolling, &rolled)) return 1;
+
+    if (rolled.idle_turns() != 0) {
+        print("  RED: a rolling supervisor stood {d} turns idle where nothing conflicts\n", .{
+            rolled.idle_turns(),
+        });
+        return 1;
+    }
+    if (barred.idle_by_barrier == 0) {
+        print("  RED: a staged supervisor spent no barrier on a queue built to show one\n", .{});
+        return 1;
+    }
+    // invariant: the two readings ran the same queue to the same end
+    assert(rolled.reaped == barred.reaped);
+    assert(rolled.reaped == refill_queue.len);
+    // invariant: rolling reached the full table this queue has room for
+    assert(rolled.peak_in_flight == max_in_flight);
+    print("  where the order agrees with the shape, staging waits {d} turns and rolling waits {d}\n", .{
+        barred.idle_by_barrier, rolled.idle_turns(),
+    });
+    print("  {d} dependents run to the same end under both, at a peak of {d}\n", .{
+        rolled.reaped, rolled.peak_in_flight,
+    });
+    return 0;
+}
+
+/// The rule that survives the refill: a verdict waits for the drain.
+fn check_verdicts(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const sys = load_one(io, declaration_path, &buf) orelse return 1;
+
+    var loose: Report = .{};
+    run_queue(allocator, io, self_path, &sys, &verdict_queue, .every_pass, .rolling, .on_reap, &loose) catch |err| {
+        if (err != error.OutcomeMismatch) {
+            print("  RED: the loose reading refused as {s} rather than OutcomeMismatch\n", .{
+                @errorName(err),
+            });
+            return 1;
+        }
+    };
+    if (loose.unreaped_at_report != 2) {
+        print("  RED: judging on the reaping left {d} dependents running, not 2\n", .{
+            loose.unreaped_at_report,
+        });
+        return 1;
+    }
+    // invariant: the loose reading needed the late reapings the held one never does
+    assert(loose.reaped_late == 2);
+    print("  judging on the reaping leaves {d} dependents running behind the verdict\n", .{
+        loose.unreaped_at_report,
+    });
+
+    var kept: Report = .{};
+    run_queue(allocator, io, self_path, &sys, &verdict_queue, .every_pass, .rolling, .held, &kept) catch |err| {
+        if (err != error.OutcomeMismatch) {
+            print("  RED: the held reading refused as {s} rather than OutcomeMismatch\n", .{
+                @errorName(err),
+            });
+            return 1;
+        }
+    };
+    if (kept.unreaped_at_report != 0 or kept.reaped != kept.admitted) {
+        print("  RED: the held reading left {d} dependents running behind its verdict\n", .{
+            kept.unreaped_at_report,
+        });
+        return 1;
+    }
+    // invariant: the held reading never needs a late reaping
+    assert(kept.reaped_late == 0);
+    print("  holding the verdict until the drain reports the same refusal with {d} running\n", .{
+        kept.unreaped_at_report,
+    });
+    return 0;
+}
+
+fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    print("Caravan rolling {s} -- self-test\n", .{caravan_rolling_version});
+    const ordered = check_ordered(allocator, io, self_path);
+    if (ordered != 0) return ordered;
+    const refill = check_refill(allocator, io, self_path);
+    if (refill != 0) return refill;
+    const verdicts = check_verdicts(allocator, io, self_path);
+    if (verdicts != 0) return verdicts;
+    print("  GREEN: rolling never creates room; it stops the supervisor from being the reason it goes unspent\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
+        return cohort.run_dependent(io, args);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(allocator, io, self_path);
+    }
+    if (args.len >= 2) return 1;
+    return run_self_test(allocator, io, self_path);
+}

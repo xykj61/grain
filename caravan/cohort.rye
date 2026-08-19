@@ -310,7 +310,7 @@ fn slot_from_argv(args: []const [:0]const u8, domain: []const u8, cap_count: u32
 /// Nothing here knows two siblings are running. Isolation is proven on the
 /// declaration before any spawn, so a dependent of a cohort needs no lock, no
 /// wait, and no notion that it is one of three.
-fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
+pub fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
     // invariant: a dependent always receives its marker, domain, plan, fall, wake, and count
     assert(args.len >= fixed_argv_words);
     const domain = args[2];
@@ -420,7 +420,7 @@ pub const RunError = error{
 };
 
 /// One dependent of a stage, held from its spawn to its reaping.
-const Running = struct {
+pub const Running = struct {
     proc: std.process.Child,
     domain: []const u8,
     verb: cycle.Verb,
@@ -430,7 +430,7 @@ const Running = struct {
 
 /// Spawns one dependent against the document standing now, and returns without
 /// waiting on it.
-fn spawn_one(
+pub fn spawn_one(
     allocator: std.mem.Allocator,
     io: std.Io,
     self_path: []const u8,
@@ -498,7 +498,7 @@ fn spawn_one(
 }
 
 /// Waits on one running dependent and answers the code it exited with.
-fn reap_one(io: std.Io, dependent: *Running) RunError!u8 {
+pub fn reap_one(io: std.Io, dependent: *Running) RunError!u8 {
     // invariant: a reaping always names the domain it is waiting on
     assert(dependent.domain.len >= 1);
     // invariant: a reaping always knows what it expected to hear
