@@ -1,7 +1,7 @@
 # Caravan -- Process Supervision
 
 **Language:** EN
-**Last updated:** `20260819.131316` (the system-description ring lands; ASCII-first sweep on touch)
+**Last updated:** `20260819.133033` (the roster ring lands -- the supervisor derived from the declaration; ASCII-first sweep on touch)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable -- process supervision ladder
 
@@ -27,6 +27,7 @@ Every ring here composes over the one before it. A later ring imports an earlier
 | regions | [`regions.rye`](regions.rye) | the declared sharing surface -- named memory regions granted to named domains at named permissions, with write and execute held apart |
 | system | [`system.rye`](system.rye) | the whole architecture as one declaration -- a bounded Bron document naming domains, channels, regions, and grants, parsed once and verified whole |
 | reader | [`read.rye`](read.rye) | the architecture read from its own file -- a bounded load from disk, oversize refused rather than truncated, every refusal named |
+| roster | [`roster.rye`](roster.rye) | the supervisor's dependent table derived from the declaration -- every domain a dependent, every grant one capability, agreement with the map proven over the whole cross product |
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
@@ -59,6 +60,14 @@ The shape follows the single-stranded brief's own counsel: an enclosure is a val
 The bound arrives at the door. A document may span at most `max_lines` lines of `max_line_len` bytes, and `max_document_bytes` derives that same bound as a byte count, so the file bound and the parse bound can never drift apart. The truncation guard is the load-bearing detail: a short read fills the buffer and reports the bytes that arrived, which makes a file larger than the buffer and a file exactly filling it look identical from the inside. So the reader keeps one byte of headroom and refuses any read that reaches the buffer's own edge -- a declaration cut mid-line still parses and still describes a system nobody wrote, and that is the one outcome worth spending a byte to rule out.
 
 The refusal vocabulary stays whole across the seam. An absent file answers `NoSuchDocument`, an oversize one `DocumentTooLarge`, anything else unreadable `DocumentUnreadable`, and every line-level refusal keeps the name the parser already gave it -- so an operator reading a RED knows which happened without opening a thing. Three artifacts stand on disk: `serial_stack.bron` reads whole at 73728 declared bytes with no client-to-client path, `unheld_region.bron` parses line by line and still answers `unheld_region` for the whole, and `write_execute.bron` is refused at its own line by a grammar that holds `r`, `rw`, and `rx` and nothing else. Witness: [`tools/caravan_read_witness.rish`](../tools/caravan_read_witness.rish), GREEN on metal, its RED path proven by removing the truncation guard and watching a 257-byte buffer return a silently cut document that parsed happily.
+
+## Why the Supervisor Reads the Same Sentences
+
+Four rings named a system, and one gap stayed open across all of them: the declaration described an architecture, and the supervisor still held its roster somewhere else. Two sources of truth wearing one architecture's name is the oldest way a proof stops meaning anything. `roster.rye` closes that gap in one direction -- the capability table is **derived** from the parsed declaration rather than written beside it, so the rights a supervisor enforces and the grants a witness reads are the same sentences.
+
+Two properties make the derivation checkable rather than merely tidy. **Conservation:** every declared domain seats exactly one dependent and every declared grant seats exactly one capability, so the table holds as many capabilities as the document holds grants -- nothing invented, nothing dropped. **Agreement:** over the whole cross product of declared regions and declared domains, at read, write, and execute each, the table's answer equals the map's answer. The negative answers carry the weight: a client reaching a buffer it was never granted is the failure this whole arc exists to rule out, and both rings refuse it, each in its own vocabulary -- the map answering `not_granted`, the table answering `no_such_resource`. W xor X crosses the translation for free, since a grammar that cannot say `rwx` cannot derive a mask holding both.
+
+The bound is the honest part. A declaration may legally name more domains than a capability table seats, so `from_system` answers `TooManyDomains` rather than seating what fits and reporting itself ready -- a refusal naming the **supervisor's** bound, never a fault in the document. `wide_roster.bron` makes that distinction visible: five wired domains around one shared region, whole by every property `verify` reads, and still past the four dependents this table holds. Witness: [`tools/caravan_roster_witness.rish`](../tools/caravan_roster_witness.rish), GREEN on metal, its RED path proven by widening the derived mask with one right the document withheld and watching the agreement check abort.
 
 ## Held
 
