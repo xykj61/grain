@@ -1,0 +1,336 @@
+//! image/cluster_seams.rye -- the WHOLE-TREE seam decomposition: every bridge of the skeleton read at once as a SEAM a surface could cut to pull
+//! the layout into two halves. Where image/cluster_subtree_frames.rye read ONE bridge cut -- the two limbs' members, frames, and whether they
+//! overlap -- this rung reads EVERY bridge together, so a surface can offer the drag-apart handle at the RIGHT seam rather than an arbitrary one.
+//! `seam_decomposition` names, per bridge, its cluster pair, its gap, its count-balance (the larger of the two limb sizes), and whether cutting it
+//! splits the layout CLEANLY in space (the two limb frames disjoint); `is_clean_seam` is the per-seam spatial test; `clean_seam_count` how many of
+//! the tree's seams split cleanly; `most_balanced_seam_is_clean` whether the COUNT-most-balanced seam is also a clean spatial split -- exact
+//! integers, NO float, NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/cluster_minimum_spanning_tree.rye grows the skeleton and names its bridge edges;
+//! image/cluster_mst_subtrees.rye reads the count-balance of each edge cut and names the most-balanced-by-COUNT seam; image/cluster_subtree_frames
+//! .rye reads what one cut's two limbs hold in SPACE (their frames, and whether those frames overlap). This rung joins those two readings over
+//! EVERY bridge at once: a surface names it the day it must choose where to offer "drag these two groups apart" -- the seam whose halves come away
+//! with a clean visual gap, not the seam whose halves would draw over each other.
+//!
+//! The DECISIVE crux -- a COUNT balance and a SPATIAL cleanliness are two different optima, so the seam that splits the counts most evenly and the
+//! seam that splits the plane most cleanly can be OPPOSITE edges of the same tree:
+//!
+//!   ON A STAR-AND-TAIL THE TWO OPTIMA DIVERGE. Over five singleton clusters -- a square of four (L1 top-left hub, L2 top-right, L3 bottom-left, L4
+//!   bottom-right, mutual gaps tied so Prim builds a STAR on hub L1 with edges L1-L2, L1-L3, L1-L4) plus a far outlier L5 hanging off arm L4 (edge
+//!   L4-L5) -- the COUNT-most-balanced seam is the hub-arm edge L1-L4 (its cut leaves {L1,L2,L3} of 3 and {L4,L5} of 2, larger 3, the only cut below
+//!   4), yet that very seam's two limb frames (1,1)-(6,6) and (5,5)-(13,13) OVERLAP in the (5,5)-(6,6) corner -- it is NOT a clean spatial split. The
+//!   ONLY clean seam is the outlier edge L4-L5 (near {L1,L2,L3,L4} frame (1,1)-(6,6), far {L5} at (12,12)-(13,13), disjoint), and that seam is the
+//!   count-WORST, larger 4. So `most_balanced_seam_is_clean` reads FALSE and `clean_seam_count` reads 1 -- the count optimum and the spatial optimum
+//!   name opposite edges, the box-is-a-prefilter lesson lifted from one cut to the whole-tree CHOICE of where to pull apart.
+//!
+//!   ON A COLLINEAR PATH THE TWO OPTIMA COINCIDE. Over four blocks in a left-to-right row (MST a path 1-2-3-4) every seam splits cleanly in space --
+//!   each cut leaves a left frame and a right frame separated on the x axis -- so `clean_seam_count` reads 3, all of them, and the count-most-balanced
+//!   middle seam 2-3 (larger 2, exactly ceil(4/2)) is among the clean ones, so `most_balanced_seam_is_clean` reads TRUE. The same two reads that
+//!   diverged on the star agree here: the divergence is a fact about the LAYOUT, not a flaw in either read.
+//!
+//! Compose not braid. This rung OWNS only the whole-tree join -- it walks the tree's edges once and, per edge, reads its count-balance and its
+//! spatial cleanliness from the rungs that own each. No count-balance recomputed (image/cluster_mst_subtrees.rye owns `edge_balance` and
+//! `most_balanced_edge`), no frame overlap recomputed (image/cluster_subtree_frames.rye owns `frames_overlap` over the two limbs), no spanning tree
+//! recomputed (image/cluster_minimum_spanning_tree.rye owns `build_mst` and the edges). A reading over a reading over a reading over a reading over a
+//! reading over a reading over a reading over a reading over a reading.
+//!
+//! Everything is bounded before a byte: the cluster count can never exceed the object count, itself capped at `scene_graph_max_objects`, so the tree
+//! holds at most that many minus one seams and the decomposition array holds exactly one slot per seam. A lone-cluster layout has no seam to cut, so
+//! the whole-tree reads refuse `NoEdges`. A per-seam read of a pair that is not a bridge refuses `NotABridge`, a zero or past-the-count id refuses
+//! `BadClusterId`, a self pair refuses `SameCluster`. No network, no key, no funds -- the seam a surface offers to pull a group apart, on our own
+//! geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/cluster_seams.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const cluster_graph = @import("cluster_graph.rye");
+const cluster_mst = @import("cluster_minimum_spanning_tree.rye");
+const cluster_mst_subtrees = @import("cluster_mst_subtrees.rye");
+const cluster_subtree_frames = @import("cluster_subtree_frames.rye");
+
+pub const cluster_seams_version = "20260819.040828";
+
+pub const SeamsError = error{
+    BadClusterId,
+    SameCluster,
+    NotABridge,
+    NoEdges,
+};
+
+/// One SEAM of the skeleton read whole -- the bridge pair `(a, b)` with `a < b`, its true gap `weight`, its count-balance `larger` (the larger of
+/// the two limb sizes a cut leaves), and `clean` (TRUE when the two limbs' union frames are spatially DISJOINT). A surface reads `larger` to know how
+/// lopsided a cut would be and `clean` to know whether the two halves come away with a clean visual gap.
+pub const SeamFacts = struct {
+    a: u32,
+    b: u32,
+    weight: u32,
+    larger: u32,
+    clean: bool,
+};
+
+/// TRUE when cutting the bridge `(a, b)` splits the layout into two spatially DISJOINT limb frames -- the seam a surface can pull apart with a clean
+/// gap, no half drawing over the other. It is exactly the negation of image/cluster_subtree_frames.rye's `frames_overlap`, which validates the bridge
+/// and refuses `BadClusterId` for a zero or past-the-count id, `SameCluster` for a self pair, and `NotABridge` for a pair the spanning tree dropped.
+pub fn is_clean_seam(allocator: std.mem.Allocator, tree: cluster_mst.MstTree, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, a: u32, b: u32) !bool {
+    // invariant: the tree and the clustering describe the same scene -- the same cluster count.
+    assert(clustering.clusters == tree.clusters);
+    // invariant: the clustering and the graph describe the same scene.
+    assert(clustering.components == graph.components);
+    const overlap = try cluster_subtree_frames.frames_overlap(allocator, tree, clustering, graph, a, b);
+    return !overlap;
+}
+
+/// The WHOLE-TREE seam decomposition -- one `SeamFacts` per bridge, in the edge order Prim recorded, each carrying the seam's pair, gap, count-balance,
+/// and spatial cleanliness. This is the join a surface reads to lay every drag-apart handle at once. Refuses `NoEdges` for a lone-cluster layout,
+/// which has no seam to cut.
+pub fn seam_decomposition(allocator: std.mem.Allocator, tree: cluster_mst.MstTree, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph) ![]SeamFacts {
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges.
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+    // invariant: the tree and the clustering describe the same scene.
+    assert(clustering.clusters == tree.clusters);
+    if (tree.edges.len == 0) return error.NoEdges;
+
+    const facts = try allocator.alloc(SeamFacts, tree.edges.len);
+    var i: u32 = 0;
+    while (i < tree.edges.len) : (i += 1) {
+        const edge = tree.edges[i];
+        // invariant: every recorded seam joins two distinct clusters, low id first.
+        assert(edge.a >= 1);
+        assert(edge.a < edge.b);
+        const larger = try cluster_mst_subtrees.edge_balance(allocator, tree, edge.a, edge.b);
+        const clean = try is_clean_seam(allocator, tree, clustering, graph, edge.a, edge.b);
+        facts[i] = SeamFacts{ .a = edge.a, .b = edge.b, .weight = edge.weight, .larger = larger, .clean = clean };
+    }
+    // invariant: the decomposition holds exactly one slot per seam.
+    assert(facts.len == tree.edges.len);
+    return facts;
+}
+
+/// HOW MANY of the tree's seams split the layout cleanly in space -- the count of bridges whose cut leaves two spatially disjoint limb frames. Never
+/// exceeds the seam count, and can be as low as zero when every cut over-claims. Refuses `NoEdges` for a lone-cluster layout.
+pub fn clean_seam_count(allocator: std.mem.Allocator, tree: cluster_mst.MstTree, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph) !u32 {
+    const facts = try seam_decomposition(allocator, tree, clustering, graph); // refuses NoEdges for a lone cluster
+    // invariant: a real decomposition holds at least one seam.
+    assert(facts.len >= 1);
+    var count: u32 = 0;
+    var i: u32 = 0;
+    while (i < facts.len) : (i += 1) {
+        if (facts[i].clean) count += 1;
+    }
+    // invariant: the clean count never exceeds the seam count.
+    assert(count <= facts.len);
+    return count;
+}
+
+/// TRUE when the COUNT-most-balanced seam is also a CLEAN spatial split -- the decisive read, which can be FALSE though a clean seam exists elsewhere,
+/// because the count optimum and the spatial optimum need not be the same edge. Composes image/cluster_mst_subtrees.rye's `most_balanced_edge` (the
+/// count optimum) with this rung's spatial test, never re-deriving either. Refuses `NoEdges` for a lone-cluster layout.
+pub fn most_balanced_seam_is_clean(allocator: std.mem.Allocator, tree: cluster_mst.MstTree, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph) !bool {
+    // invariant: the tree and the clustering describe the same scene.
+    assert(clustering.clusters == tree.clusters);
+    // invariant: the clustering and the graph describe the same scene.
+    assert(clustering.components == graph.components);
+    const edge = try cluster_mst_subtrees.most_balanced_edge(allocator, tree); // refuses NoEdges for a lone cluster
+    // invariant: the count optimum is a real bridge, low id first.
+    assert(edge.a >= 1);
+    assert(edge.a < edge.b);
+    return is_clean_seam(allocator, tree, clustering, graph, edge.a, edge.b);
+}
+
+// --- selftest: a COUNT balance and a SPATIAL cleanliness are two different optima. Scene ONE is the STAR-AND-TAIL of image/cluster_subtree_frames.rye
+//     (five singleton blocks, a square of four on a star hub plus a far outlier on one arm): the count-most-balanced seam L1-L4 over-claims in space,
+//     while the only clean seam L4-L5 is the count-worst -- the two optima name OPPOSITE edges, most_balanced_seam_is_clean FALSE, clean_seam_count 1.
+//     Scene TWO is a COLLINEAR PATH of four blocks (MST a path 1-2-3-4): every seam splits cleanly, so clean_seam_count 3 and the count-most-balanced
+//     middle seam 2-3 is clean, most_balanced_seam_is_clean TRUE -- the two optima coincide. Then a lone cluster, refusals, determinism -------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// Build the cluster tree of a scene, checking the object and cluster counts along the way -- a local helper so every scene reads the same. Returns
+/// the tree, the clustering, and the graph, since the seam reads want all three.
+const SceneReads = struct {
+    tree: cluster_mst.MstTree,
+    clustering: overlap_clusters.Clustering,
+    graph: scene_graph.SceneGraph,
+};
+
+fn scene_of(garden: std.mem.Allocator, img: *qoi.Pixmap, want_objects: u32, want_clusters: u32) !SceneReads {
+    // invariant: the caller names how many objects and clusters the scene must hold, so a mislaid pixel fails loud.
+    assert(want_objects >= 1);
+    assert(want_clusters >= 1);
+    const map = try label.label_components(garden, img);
+    if (map.count != want_objects) return error.SceneObjectCountWrong;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    if (overlap_clusters.cluster_count(clustering) != want_clusters) return error.SceneClusterCountWrong;
+    const cg = try cluster_graph.build_cluster_graph(garden, clustering, graph);
+    const tree = try cluster_mst.build_mst(garden, cg);
+    return SceneReads{ .tree = tree, .clustering = clustering, .graph = graph };
+}
+
+/// Find the `SeamFacts` for the bridge `(a, b)` in a decomposition -- a small local helper so the per-seam checks read the same each time.
+fn seam_for(facts: []SeamFacts, a: u32, b: u32) ?SeamFacts {
+    var i: usize = 0;
+    while (i < facts.len) : (i += 1) {
+        if (facts[i].a == a and facts[i].b == b) return facts[i];
+    }
+    return null;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- SCENE ONE: THE STAR-AND-TAIL on a 15x15 canvas -- the exact geometry image/cluster_subtree_frames.rye proves: L1 hub (1,1)-(2,2), L2
+    //     (5,1)-(6,2), L3 (1,5)-(2,6), L4 (5,5)-(6,6), L5 (12,12)-(13,13). The square's mutual gaps tie at 3 so Prim builds a STAR on hub L1 (edges
+    //     L1-L2, L1-L3, L1-L4); L5's nearest cluster is L4 at gap 6 (edge L4-L5) --------------------------------------------------------------------
+    var scene = try make_canvas(garden, 15, 15, 0);
+    set_block(&scene, 1, 1, 2, 2); // L1: box (1,1)-(2,2)  (top-left hub)
+    set_block(&scene, 5, 1, 2, 2); // L2: box (5,1)-(6,2)  (top-right)
+    set_block(&scene, 1, 5, 2, 2); // L3: box (1,5)-(2,6)  (bottom-left)
+    set_block(&scene, 5, 5, 2, 2); // L4: box (5,5)-(6,6)  (bottom-right)
+    set_block(&scene, 12, 12, 2, 2); // L5: box (12,12)-(13,13) (far outlier)
+    const s1 = try scene_of(garden, &scene, 5, 5);
+
+    // --- CONFIRM THE STAR-AND-TAIL SKELETON -- edges L1-L2, L1-L3, L1-L4, L4-L5, exactly n-1 = 4 seams ------------------------------------------
+    if (cluster_mst.edge_count(s1.tree) != 4) return error.StarTailEdgeCountNotFour;
+
+    // --- THE WHOLE-TREE DECOMPOSITION -- one SeamFacts per bridge, four of them ---------------------------------------------------------------
+    const dec1 = try seam_decomposition(garden, s1.tree, s1.clustering, s1.graph);
+    if (dec1.len != 4) return error.StarTailDecompNotFour;
+
+    // --- THE COUNT-MOST-BALANCED SEAM IS THE HUB-ARM EDGE L1-L4, AND IT OVER-CLAIMS IN SPACE -- its cut leaves {L1,L2,L3} (3) and {L4,L5} (2),
+    //     larger 3, the only cut below 4, cross-checked against cluster_mst_subtrees; yet its two limb frames overlap so it is NOT clean --------
+    const balanced1 = try cluster_mst_subtrees.most_balanced_edge(garden, s1.tree);
+    if (balanced1.a != 1 or balanced1.b != 4) return error.StarTailBalancedNotHubArm;
+    const seam14 = seam_for(dec1, 1, 4) orelse return error.StarTailNoSeamOneFour;
+    if (seam14.larger != 3) return error.StarTailHubArmLargerNotThree; // {L1,L2,L3} of 3 is the larger limb
+    if (seam14.clean != false) return error.StarTailHubArmIsClean; // the count optimum over-claims in space
+
+    // --- THE ONLY CLEAN SEAM IS THE OUTLIER EDGE L4-L5, AND IT IS THE COUNT-WORST -- near {L1,L2,L3,L4} frame (1,1)-(6,6), far {L5} at
+    //     (12,12)-(13,13), disjoint; its larger is 4, the worst any cut on this tree offers ----------------------------------------------------
+    const seam45 = seam_for(dec1, 4, 5) orelse return error.StarTailNoSeamFourFive;
+    if (seam45.clean != true) return error.StarTailOutlierNotClean; // the only clean split
+    if (seam45.larger != 4) return error.StarTailOutlierLargerNotFour; // and it is the count-worst
+
+    // --- SO THE TWO OPTIMA NAME OPPOSITE EDGES -- only one seam of four splits cleanly, and the count-most-balanced seam is NOT it --------------
+    if (try clean_seam_count(garden, s1.tree, s1.clustering, s1.graph) != 1) return error.StarTailCleanCountNotOne;
+    if (try most_balanced_seam_is_clean(garden, s1.tree, s1.clustering, s1.graph) != false) return error.StarTailBalancedSeamClean;
+
+    // --- SCENE TWO: A COLLINEAR PATH of four 2x2 blocks in a left-to-right row on a 20x6 canvas, adjacent gaps all 3 so Prim builds a path
+    //     1-2-3-4. Every seam separates a left frame from a right frame on the x axis, so every cut is clean and the two optima coincide --------
+    var row = try make_canvas(garden, 20, 6, 0);
+    set_block(&row, 1, 1, 2, 2); // c1: box (1,1)-(2,2)
+    set_block(&row, 6, 1, 2, 2); // c2: box (6,1)-(7,2)   (gap 3 from c1)
+    set_block(&row, 11, 1, 2, 2); // c3: box (11,1)-(12,2) (gap 3 from c2)
+    set_block(&row, 16, 1, 2, 2); // c4: box (16,1)-(17,2) (gap 3 from c3)
+    const s2 = try scene_of(garden, &row, 4, 4);
+
+    // --- CONFIRM THE PATH SKELETON -- edges 1-2, 2-3, 3-4, exactly n-1 = 3 seams -------------------------------------------------------------
+    if (cluster_mst.edge_count(s2.tree) != 3) return error.PathEdgeCountNotThree;
+    if (try cluster_mst.is_bridge(s2.tree, 2, 3) != true) return error.PathMissingMiddle;
+    if (try cluster_mst.is_bridge(s2.tree, 1, 3) != false) return error.PathHasSkipEdge; // a path skips no rung
+
+    // --- EVERY SEAM SPLITS CLEANLY IN SPACE -- all three cuts leave a left frame and a right frame separated on the x axis ---------------------
+    if (try clean_seam_count(garden, s2.tree, s2.clustering, s2.graph) != 3) return error.PathCleanCountNotThree;
+
+    // --- AND THE COUNT-MOST-BALANCED SEAM IS AMONG THEM -- the middle seam 2-3 splits {1,2} from {3,4}, larger 2 = ceil(4/2), and it is clean, so
+    //     the two optima COINCIDE where on the star they diverged ----------------------------------------------------------------------------
+    const balanced2 = try cluster_mst_subtrees.most_balanced_edge(garden, s2.tree);
+    if (balanced2.a != 2 or balanced2.b != 3) return error.PathBalancedNotMiddle;
+    const dec2 = try seam_decomposition(garden, s2.tree, s2.clustering, s2.graph);
+    const seam23 = seam_for(dec2, 2, 3) orelse return error.PathNoSeamTwoThree;
+    if (seam23.larger != 2) return error.PathMiddleLargerNotTwo;
+    if (seam23.clean != true) return error.PathMiddleNotClean;
+    if (try most_balanced_seam_is_clean(garden, s2.tree, s2.clustering, s2.graph) != true) return error.PathBalancedSeamNotClean;
+
+    // --- A LONE-CLUSTER LAYOUT HAS NO SEAM TO CUT -- the whole-tree reads refuse NoEdges -----------------------------------------------------
+    var lone_img = try make_canvas(garden, 6, 6, 0);
+    set_block(&lone_img, 1, 1, 2, 2); // one object, one cluster
+    const lone = try scene_of(garden, &lone_img, 1, 1);
+    if (seam_decomposition(garden, lone.tree, lone.clustering, lone.graph)) |_| return error.LoneDecompNotRefused else |err| {
+        if (err != error.NoEdges) return error.WrongLoneDecompError;
+    }
+    if (clean_seam_count(garden, lone.tree, lone.clustering, lone.graph)) |_| return error.LoneCleanCountNotRefused else |err| {
+        if (err != error.NoEdges) return error.WrongLoneCleanCountError;
+    }
+    if (most_balanced_seam_is_clean(garden, lone.tree, lone.clustering, lone.graph)) |_| return error.LoneBalancedNotRefused else |err| {
+        if (err != error.NoEdges) return error.WrongLoneBalancedError;
+    }
+
+    // --- REFUSALS -- a per-seam test of a non-bridge pair refuses NotABridge, a zero or past-the-count id BadClusterId, a self pair SameCluster ---
+    if (is_clean_seam(garden, s1.tree, s1.clustering, s1.graph, 2, 3)) |_| return error.NonBridgeNotRefused else |err| { // 2 and 3 real, not an edge
+        if (err != error.NotABridge) return error.WrongNonBridgeError;
+    }
+    if (is_clean_seam(garden, s1.tree, s1.clustering, s1.graph, 0, 1)) |_| return error.ZeroNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongZeroError;
+    }
+    if (is_clean_seam(garden, s1.tree, s1.clustering, s1.graph, 1, 6)) |_| return error.PastNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongPastError;
+    }
+    if (is_clean_seam(garden, s1.tree, s1.clustering, s1.graph, 2, 2)) |_| return error.SelfNotRefused else |err| {
+        if (err != error.SameCluster) return error.WrongSelfError;
+    }
+
+    // --- DETERMINISM -- the same tree reads the same clean count and the same balanced-seam verdict twice ---------------------------------------
+    if (try clean_seam_count(garden, s1.tree, s1.clustering, s1.graph) != try clean_seam_count(garden, s1.tree, s1.clustering, s1.graph)) return error.CleanCountNotDeterministic;
+    if (try most_balanced_seam_is_clean(garden, s1.tree, s1.clustering, s1.graph) != try most_balanced_seam_is_clean(garden, s1.tree, s1.clustering, s1.graph)) return error.BalancedNotDeterministic;
+
+    print("GREEN image-cluster-seams: the WHOLE-TREE seam decomposition -- every bridge of the skeleton read at once as a SEAM a surface could cut to pull the layout into two halves, with seam_decomposition naming per bridge its pair, gap, count-balance (the larger of the two limb sizes), and whether the cut splits the layout CLEANLY in space (the two limb frames disjoint), is_clean_seam the per-seam spatial test, clean_seam_count how many seams split cleanly, most_balanced_seam_is_clean whether the COUNT-most-balanced seam is also a clean spatial split, exact integers, NO float and NO tolerance -- the DECISIVE crux, a COUNT balance and a SPATIAL cleanliness are two different optima, so the seam that splits the counts most evenly and the seam that splits the plane most cleanly can be OPPOSITE edges of the same tree. ON A STAR-AND-TAIL THE TWO OPTIMA DIVERGE -- over five singleton clusters (a square L1 L2 L3 L4 whose mutual gaps tie so Prim builds a STAR on hub L1 with edges L1-L2, L1-L3, L1-L4, plus a far outlier L5 hanging off arm L4 with edge L4-L5) the count-most-balanced seam is the hub-arm edge L1-L4 (its cut leaves {{L1,L2,L3}} of 3 and {{L4,L5}} of 2, larger 3, the only cut below 4) yet that seam's two limb frames (1,1)-(6,6) and (5,5)-(13,13) OVERLAP in the (5,5)-(6,6) corner, NOT a clean split, while the ONLY clean seam is the outlier edge L4-L5 (near {{L1,L2,L3,L4}} frame (1,1)-(6,6), far {{L5}} at (12,12)-(13,13), disjoint) and it is the count-WORST with larger 4, so most_balanced_seam_is_clean reads FALSE and clean_seam_count reads 1, the count optimum and the spatial optimum naming opposite edges, the box-is-a-prefilter lesson lifted from one cut to the whole-tree CHOICE of where to pull apart. ON A COLLINEAR PATH THE TWO OPTIMA COINCIDE -- over four blocks in a left-to-right row (MST a path 1-2-3-4) every seam splits cleanly in space so clean_seam_count reads 3, all of them, and the count-most-balanced middle seam 2-3 (larger 2, exactly ceil(4/2)) is among the clean ones so most_balanced_seam_is_clean reads TRUE, the same two reads that diverged on the star agreeing here, the divergence a fact about the LAYOUT not a flaw in either read. A lone-cluster layout has no seam to cut so the whole-tree reads refuse NoEdges; a per-seam test of a non-bridge pair refuses NotABridge, a zero or past-the-count id BadClusterId, a self pair SameCluster; the same tree reads the same clean count and the same balanced-seam verdict twice. Compose not braid over image/cluster_minimum_spanning_tree.rye (build_mst and the edges), image/cluster_mst_subtrees.rye (edge_balance and most_balanced_edge, the count optimum), and image/cluster_subtree_frames.rye (frames_overlap over the two limbs, the spatial read) -- a reading over a reading over a reading over a reading over a reading over a reading over a reading over a reading over a reading\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: cluster_seams selftest\n", .{});
+    return 1;
+}
