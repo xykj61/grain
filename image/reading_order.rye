@@ -1,0 +1,352 @@
+//! image/reading_order.rye -- the whole scene's TOTAL READING ORDER: fold image/scene_graph.rye's per-pair directional flags into one
+//! top-to-bottom, left-to-right page order a surface reads to lay objects out, narrate a scene, or number a form -- exact integers, NO
+//! float and NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- the scene-read family names a POINT's object (image/hit_test.rye), a RECTANGLE's or POLYGON's
+//! objects (image/region_select.rye, image/lasso_select.rye), a selection's FACTS and EXTENT (image/selection_summary.rye,
+//! image/selection_bounds.rye), a PAIR's spatial relation (image/object_relation.rye), and the whole scene's pairwise STRUCTURE
+//! (image/scene_graph.rye). This rung reads the whole scene as a SEQUENCE: `reading_order` returns every object's dense label in the
+//! order a reader meets them -- earliest top edge first, then leftmost, then the earliest label to seal the tie.
+//!
+//! The DECISIVE crux -- the box-is-a-prefilter lesson lifted one last step, from a PARTIAL relation to a TOTAL order. image/scene_graph.rye
+//! holds the four STRICT directional flags for every pair (a wholly above / below / left of / right of b). Those flags are a PARTIAL
+//! order: two objects whose boxes overlap on BOTH axes are strictly neither, so every flag reads FALSE and the pair is left UNORDERED.
+//! A reading order is a TOTAL order -- it must seat every object in one sequence, deciding even the pairs the flags leave silent -- so
+//! the strict flags can never be topologically sorted into it; a key-based total order (top edge, then left edge, then label) is what
+//! seats them. Two facts on metal say it:
+//!
+//!   THE READING ORDER OUTRUNS THE STRICT FLAGS. An L and a small block tucked in its concavity have OVERLAPPING boxes, so all four of
+//!   `object_relation`'s directional flags read FALSE -- the scene graph leaves the pair unordered. Yet the L's top edge sits above the
+//!   block's, so `reads_before(L, block)` is TRUE: the total order names a first where every strict flag is silent.
+//!
+//!   THE READING ORDER REFINES, IT NEVER CONTRADICTS. Where the boxes ARE strictly separated -- the L wholly above a lower object, so
+//!   `a_above_b` reads TRUE -- the reading order AGREES, seating the L first. The total order refines the partial one: it adds order
+//!   where the flags were silent, and never reverses order the flags asserted.
+//!
+//! And the order EARNS ITS KEEP over the raster label order it is built beside. Labels are assigned in raster order -- by each
+//! component's first-encountered pixel (its topmost row, then the leftmost pixel IN that row). Reading order sorts by the box's LEFT
+//! edge, the leftmost pixel ANYWHERE. A flag-shaped object whose top row sits to the right while its body reaches further left is
+//! labeled AFTER a small block yet reads BEFORE it -- so the reading order genuinely reorders the labels, it is no mere relabeling.
+//!
+//! Compose not braid. This rung OWNS only the total-order comparator, the permutation, and the rank -- no label re-derived, no box
+//! re-measured, no flag recomputed. image/scene_graph.rye owns the pairwise flag matrix the order refines; image/scene_manifest.rye owns
+//! the per-object boxes the comparator reads; image/label.rye owns the component map. A reading over a reading over a reading over a
+//! reading.
+//!
+//! Everything is bounded before a byte: the object count rode in under image/scene_graph.rye's `scene_graph_max_objects` cap, so the
+//! permutation is that long and the selection sort runs a bounded count-squared comparisons, each an exact-integer box compare. A
+//! background or past-the-count label refuses `BadObjectLabel`; a reads-before of an object with itself refuses `BadObjectLabel`, having
+//! read nothing. No network, no key, no funds -- the reading order a surface names the day it must lay out a page, narrate a scene in
+//! order, or number a form top to bottom, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/reading_order.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+
+pub const reading_order_version = "20260819.001046";
+
+pub const ReadingOrderError = error{
+    BadObjectLabel,
+};
+
+/// TRUE when the object described by `ea` reads BEFORE the one described by `eb` -- the total-order comparator, exact integers and no
+/// tolerance. The primary key is the top edge (`min_y`, earliest first), the secondary the left edge (`min_x`, leftmost first), and the
+/// final the dense `label` (earliest first), which is distinct for distinct objects and so seals the order into a STRICT TOTAL one: for
+/// any two distinct objects exactly one of `entry_reads_before(ea, eb)` and `entry_reads_before(eb, ea)` is true.
+pub fn entry_reads_before(ea: scene_manifest.ObjectEntry, eb: scene_manifest.ObjectEntry) bool {
+    // invariant: both entries name real, dense objects.
+    assert(ea.label >= 1);
+    assert(eb.label >= 1);
+    // invariant: the comparator seats two DISTINCT objects; a well-formed order never compares one with itself.
+    assert(ea.label != eb.label);
+    if (ea.min_y != eb.min_y) return ea.min_y < eb.min_y;
+    if (ea.min_x != eb.min_x) return ea.min_x < eb.min_x;
+    return ea.label < eb.label;
+}
+
+/// TRUE when object `a` reads before object `b` in the scene's reading order -- a single pairwise answer read from the two boxes,
+/// refining the scene graph's strict flags. Refuses `BadObjectLabel` for a background (0) or past-the-count label on either side, and
+/// for `a == b`, having read nothing.
+pub fn reads_before(graph: scene_graph.SceneGraph, a: u32, b: u32) !bool {
+    // invariant: the manifest holds exactly one row per component.
+    assert(graph.manifest.objects.len == @as(usize, graph.components));
+    if (a == 0 or a > graph.components) return error.BadObjectLabel;
+    if (b == 0 or b > graph.components) return error.BadObjectLabel;
+    if (a == b) return error.BadObjectLabel;
+    const ea = try scene_manifest.object_of(graph.manifest, a);
+    const eb = try scene_manifest.object_of(graph.manifest, b);
+    return entry_reads_before(ea, eb);
+}
+
+/// The whole scene's READING ORDER -- every object's dense label seated in one top-to-bottom, left-to-right sequence. A newly allocated
+/// slice `order` of length `components`, `order[0]` the first object read and `order[components-1]` the last, always a PERMUTATION of
+/// `1..components`. A selection sort by the total-order comparator, bounded count-squared under the scene graph's object cap.
+pub fn reading_order(allocator: std.mem.Allocator, graph: scene_graph.SceneGraph) ![]u32 {
+    // invariant: the manifest holds exactly one row per component.
+    assert(graph.manifest.objects.len == @as(usize, graph.components));
+    const n: u32 = graph.components;
+    // invariant: the object count rode in under the scene graph's cap, so the permutation and the sort are bounded before a byte.
+    assert(n <= scene_graph.scene_graph_max_objects);
+
+    const order = try allocator.alloc(u32, @as(usize, n));
+    // seed the sequence in dense label order, then sort it into reading order.
+    var i: u32 = 0;
+    while (i < n) : (i += 1) order[@as(usize, i)] = i + 1;
+
+    var s: u32 = 0;
+    while (s < n) : (s += 1) {
+        var best: u32 = s;
+        var t: u32 = s + 1;
+        while (t < n) : (t += 1) {
+            const e_t = try scene_manifest.object_of(graph.manifest, order[@as(usize, t)]);
+            const e_best = try scene_manifest.object_of(graph.manifest, order[@as(usize, best)]);
+            // strictly-before keeps the earliest-reading object at each seat -- deterministic, since the comparator is a total order.
+            if (entry_reads_before(e_t, e_best)) best = t;
+        }
+        if (best != s) {
+            const tmp = order[@as(usize, s)];
+            order[@as(usize, s)] = order[@as(usize, best)];
+            order[@as(usize, best)] = tmp;
+        }
+    }
+
+    // invariant: the reading order seats exactly one place per object.
+    assert(order.len == @as(usize, n));
+    return order;
+}
+
+/// The 1-based POSITION of object `a` in the reading order -- how many objects read before it, plus one. Read independently of
+/// `reading_order` by counting predecessors, so the two must agree: `reading_rank(graph, order[k]) == k + 1`. Refuses `BadObjectLabel`
+/// for a background or past-the-count label.
+pub fn reading_rank(graph: scene_graph.SceneGraph, a: u32) !u32 {
+    // invariant: the manifest holds exactly one row per component.
+    assert(graph.manifest.objects.len == @as(usize, graph.components));
+    if (a == 0 or a > graph.components) return error.BadObjectLabel;
+    const ea = try scene_manifest.object_of(graph.manifest, a);
+
+    var rank: u32 = 1;
+    var b: u32 = 1;
+    while (b <= graph.components) : (b += 1) {
+        if (b == a) continue;
+        const eb = try scene_manifest.object_of(graph.manifest, b);
+        if (entry_reads_before(eb, ea)) rank += 1;
+    }
+    // invariant: a real object holds a real seat, between the first and the last.
+    assert(rank >= 1);
+    assert(rank <= graph.components);
+    return rank;
+}
+
+// --- selftest: the DECISIVE partial-to-total crux -- an L and a block in its concavity (overlapping boxes, every strict flag FALSE, yet
+//     the reading order seats the L first: the total order outruns the flags); the L strictly above the lower objects (a_above_b TRUE and
+//     the reading order agrees: it refines, never contradicts); a flag-shaped object labeled AFTER a small block yet reading BEFORE it
+//     (the order reorders the labels, no mere relabeling); a strict total order (antisymmetry, totality, transitivity); rank agrees with
+//     the sequence; refusals by name; determinism ------------------------------------------------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- BUILD THE SCENE -- four objects on a 12x12 canvas, labeled in raster order (first-encountered pixel):
+    //     L (label 1): column x=1 rows 1..5 + row y=5 cols 1..5, box (1,1)-(5,5);
+    //     M (label 2): a 2x2 block cols 3..4 rows 2..3 tucked in L's concavity, box (3,2)-(4,3);
+    //     Y (label 3): a 2x1 block at (4,7),(5,7), box (4,7)-(5,7), its first pixel (4,7);
+    //     X (label 4): a flag -- a right-top nub at (8,7),(9,7),(8,8),(9,8) and a body along row 9 cols 3..9, box (3,7)-(9,9), first
+    //     pixel (8,7). X's TOP ROW starts at x=8 (later than Y's first pixel x=4, so X labels AFTER Y) while its BODY reaches to x=3
+    //     (leftward of Y's x=4, so X reads BEFORE Y) ---------------------------------------------------------------------------------
+    var scene = try make_canvas(garden, 12, 12, 0);
+    var ly: u32 = 1;
+    while (ly <= 5) : (ly += 1) set_dot(&scene, 1, ly); // L vertical arm
+    var lx: u32 = 1;
+    while (lx <= 5) : (lx += 1) set_dot(&scene, lx, 5); // L horizontal arm
+    // M -- the block in the concavity
+    set_dot(&scene, 3, 2);
+    set_dot(&scene, 4, 2);
+    set_dot(&scene, 3, 3);
+    set_dot(&scene, 4, 3);
+    // Y -- the small 2x1 block
+    set_dot(&scene, 4, 7);
+    set_dot(&scene, 5, 7);
+    // X -- the flag: right-top nub then a leftward body along row 9
+    set_dot(&scene, 8, 7);
+    set_dot(&scene, 9, 7);
+    set_dot(&scene, 8, 8);
+    set_dot(&scene, 9, 8);
+    var bx: u32 = 3;
+    while (bx <= 9) : (bx += 1) set_dot(&scene, bx, 9); // body row 9 cols 3..9
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 4) return error.SceneNotFourComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+
+    // confirm the raster labels and boxes are exactly the four intended
+    const l_obj = try scene_manifest.object_of(manifest, 1);
+    const m_obj = try scene_manifest.object_of(manifest, 2);
+    const y_obj = try scene_manifest.object_of(manifest, 3);
+    const x_obj = try scene_manifest.object_of(manifest, 4);
+    if (l_obj.min_x != 1 or l_obj.min_y != 1 or l_obj.max_x != 5 or l_obj.max_y != 5) return error.LBoxWrong;
+    if (m_obj.min_x != 3 or m_obj.min_y != 2 or m_obj.max_x != 4 or m_obj.max_y != 3) return error.MBoxWrong;
+    if (y_obj.min_x != 4 or y_obj.min_y != 7 or y_obj.max_x != 5 or y_obj.max_y != 7) return error.YBoxWrong;
+    if (x_obj.min_x != 3 or x_obj.min_y != 7 or x_obj.max_x != 9 or x_obj.max_y != 9) return error.XBoxWrong;
+
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+
+    // --- THE READING ORDER -- sort by (top edge, left edge, label): L (1,1), M (2,3), X (7,3), Y (7,4) -- so the sequence is
+    //     [1, 2, 4, 3]: X reads before Y though X is the LATER label -----------------------------------------------------------------
+    const order = try reading_order(garden, graph);
+    if (order.len != 4) return error.OrderNotFour;
+    if (order[0] != 1) return error.FirstNotL;
+    if (order[1] != 2) return error.SecondNotM;
+    if (order[2] != 4) return error.ThirdNotX;
+    if (order[3] != 3) return error.FourthNotY;
+
+    // the order is a PERMUTATION -- every label once, so the four seats hold the four distinct objects
+    var seen: [4]bool = .{ false, false, false, false };
+    var oi: usize = 0;
+    while (oi < order.len) : (oi += 1) {
+        const lbl = order[oi];
+        if (lbl < 1 or lbl > 4) return error.OrderLabelOutOfRange;
+        if (seen[@as(usize, lbl) - 1]) return error.OrderNotPermutation;
+        seen[@as(usize, lbl) - 1] = true;
+    }
+
+    // --- THE ORDER EARNS ITS KEEP -- X is the LATER raster label (4) than Y (3), yet X reads BEFORE Y: the reading order genuinely
+    //     reorders the labels, no mere relabeling -- because X's body reaches to x=3, leftward of Y's x=4 --------------------------
+    if (x_obj.label <= y_obj.label) return error.XNotLaterLabel; // 4 > 3
+    if (!try reads_before(graph, 4, 3)) return error.XNotBeforeY; // yet X reads first
+    if (try reads_before(graph, 3, 4)) return error.YFalselyBeforeX;
+    if (x_obj.min_x >= y_obj.min_x) return error.XBodyNotLeftOfY; // 3 < 4, the reason
+
+    // --- THE READING ORDER OUTRUNS THE STRICT FLAGS -- L and M have OVERLAPPING boxes (M in L's concavity), so every strict flag reads
+    //     FALSE, the scene graph leaving the pair unordered; yet reads_before(L, M) is TRUE, the total order seating a first where the
+    //     flags were silent. The reversal pair X and Y say it again: overlapping boxes, no flag, yet the order seats X first ---------
+    const rel_lm = try scene_graph.relation_of(graph, 1, 2);
+    if (!rel_lm.boxes_overlap) return error.LMBoxesNotOverlapping;
+    if (rel_lm.a_left_of_b or rel_lm.a_right_of_b or rel_lm.a_above_b or rel_lm.a_below_b) return error.LMFalselyDirectional;
+    if (!try reads_before(graph, 1, 2)) return error.LNotBeforeM; // total order decides the flag-silent pair
+    const rel_xy = try scene_graph.relation_of(graph, 4, 3);
+    if (!rel_xy.boxes_overlap) return error.XYBoxesNotOverlapping;
+    if (rel_xy.a_left_of_b or rel_xy.a_right_of_b or rel_xy.a_above_b or rel_xy.a_below_b) return error.XYFalselyDirectional;
+
+    // --- THE READING ORDER REFINES, IT NEVER CONTRADICTS -- where the boxes ARE strictly separated (L wholly above X, M wholly above Y,
+    //     so a_above_b reads TRUE), the reading order AGREES, seating the upper object first ------------------------------------------
+    const rel_lx = try scene_graph.relation_of(graph, 1, 4);
+    if (!rel_lx.a_above_b) return error.LNotStrictlyAboveX;
+    if (!try reads_before(graph, 1, 4)) return error.OrderContradictsFlagLX;
+    const rel_my = try scene_graph.relation_of(graph, 2, 3);
+    if (!rel_my.a_above_b) return error.MNotStrictlyAboveY;
+    if (!try reads_before(graph, 2, 3)) return error.OrderContradictsFlagMY;
+
+    // --- A STRICT TOTAL ORDER -- for every distinct pair exactly one of reads_before(a,b), reads_before(b,a) is true (antisymmetry and
+    //     totality together); and it is transitive: L before M and M before X gives L before X --------------------------------------
+    var pa: u32 = 1;
+    while (pa <= 4) : (pa += 1) {
+        var pb: u32 = 1;
+        while (pb <= 4) : (pb += 1) {
+            if (pa == pb) continue;
+            const ab = try reads_before(graph, pa, pb);
+            const ba = try reads_before(graph, pb, pa);
+            if (ab == ba) return error.OrderNotTotalOrAntisymmetric; // exactly one holds
+        }
+    }
+    if (!try reads_before(graph, 1, 2)) return error.TransSetupLM;
+    if (!try reads_before(graph, 2, 4)) return error.TransSetupMX;
+    if (!try reads_before(graph, 1, 4)) return error.OrderNotTransitive;
+
+    // --- RANK AGREES WITH THE SEQUENCE -- reading_rank, read independently by counting predecessors, gives each object's 1-based seat,
+    //     so it must equal its position in the order ---------------------------------------------------------------------------------
+    var ri: usize = 0;
+    while (ri < order.len) : (ri += 1) {
+        const seat = try reading_rank(graph, order[ri]);
+        if (seat != @as(u32, @intCast(ri)) + 1) return error.RankDisagreesWithOrder;
+    }
+
+    // --- REFUSALS -- a reads-before of an object with itself and a background or past-the-count label refuse BadObjectLabel; the rank of
+    //     a bad label refuses BadObjectLabel, all having read nothing ------------------------------------------------------------------
+    if (reads_before(graph, 2, 2)) |_| return error.SelfNotRefused else |err| {
+        if (err != error.BadObjectLabel) return error.WrongSelfError;
+    }
+    if (reads_before(graph, 1, 5)) |_| return error.PastNotRefused else |err| {
+        if (err != error.BadObjectLabel) return error.WrongPastError;
+    }
+    if (reads_before(graph, 0, 2)) |_| return error.ZeroNotRefused else |err| {
+        if (err != error.BadObjectLabel) return error.WrongZeroError;
+    }
+    if (reading_rank(graph, 5)) |_| return error.BadRankNotRefused else |err| {
+        if (err != error.BadObjectLabel) return error.WrongBadRankError;
+    }
+
+    // --- A SINGLE-OBJECT SCENE -- one block, so the order is [1], its rank 1, and reads_before refuses BadObjectLabel (no second object
+    //     to compare) --------------------------------------------------------------------------------------------------------------
+    var lone_img = try make_canvas(garden, 6, 6, 0);
+    var qy: u32 = 1;
+    while (qy <= 2) : (qy += 1) {
+        var qx: u32 = 1;
+        while (qx <= 2) : (qx += 1) set_dot(&lone_img, qx, qy);
+    }
+    const lone_map = try label.label_components(garden, &lone_img);
+    if (lone_map.count != 1) return error.LoneNotOneComponent;
+    const lone_manifest = try scene_manifest.build_manifest(garden, &lone_map);
+    const lone_graph = try scene_graph.build_scene_graph(garden, lone_manifest, &lone_map);
+    const lone_order = try reading_order(garden, lone_graph);
+    if (lone_order.len != 1 or lone_order[0] != 1) return error.LoneOrderWrong;
+    if (try reading_rank(lone_graph, 1) != 1) return error.LoneRankNotOne;
+    if (reads_before(lone_graph, 1, 2)) |_| return error.LonePairNotRefused else |err| {
+        if (err != error.BadObjectLabel) return error.WrongLoneError;
+    }
+
+    // --- DETERMINISM -- the same scene reads the same order twice ----------------------------------------------------------------
+    const o1 = try reading_order(garden, graph);
+    const o2 = try reading_order(garden, graph);
+    var di: usize = 0;
+    while (di < o1.len) : (di += 1) {
+        if (o1[di] != o2[di]) return error.OrderNotDeterministic;
+    }
+
+    print("GREEN image-reading-order: the whole scene's TOTAL READING ORDER -- fold scene_graph's per-pair directional flags into one top-to-bottom, left-to-right page order, exact integers, NO float and NO tolerance -- the DECISIVE box-is-a-prefilter crux lifted one last step, from a PARTIAL relation to a TOTAL order. THE READING ORDER OUTRUNS THE STRICT FLAGS -- an L (label 1, box (1,1)-(5,5)) and a small block tucked in its concavity (label 2, box (3,2)-(4,3)) have OVERLAPPING boxes, so all four of object_relation's strict directional flags read FALSE and the scene graph leaves the pair UNORDERED, yet the L's top edge sits above the block's so reads_before(L, block) is TRUE: the total order names a first where every strict flag is silent, and the same holds for the reversal pair. THE READING ORDER REFINES, IT NEVER CONTRADICTS -- where the boxes ARE strictly separated (the L wholly above a lower object, a_above_b TRUE), the reading order AGREES and seats the upper object first: it adds order where the flags were silent and reverses none they asserted. THE ORDER EARNS ITS KEEP -- a flag-shaped object whose top row starts at x=8 (labeled AFTER a small block at x=4) yet whose body reaches to x=3 (leftward of the block's x=4) reads BEFORE that block, so the sequence 1,2,4,3 genuinely reorders the raster labels 1,2,3,4, no mere relabeling. The order is a PERMUTATION and a STRICT TOTAL order -- for every distinct pair exactly one of reads_before holds (antisymmetry and totality), and it is transitive (L before M and M before X gives L before X); reading_rank read independently by counting predecessors agrees with each object's seat in the sequence; a reads-before of an object with itself and a background or past-the-count label refuse BadObjectLabel having read nothing, a single-object scene orders to one seat; the same scene reads the same order twice. Compose not braid over image/scene_graph.rye (the pairwise flag matrix the order refines), image/scene_manifest.rye (the per-object boxes the comparator reads), and image/label.rye (the component map)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: reading_order selftest\n", .{});
+    return 1;
+}
