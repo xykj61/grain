@@ -208,6 +208,48 @@ pub fn line_agrees(
     return true;
 }
 
+/// Answers whether the words about to be handed to one dependent stay inside
+/// the declaration -- every right on the line is a right the document
+/// grants, and none exceeds it.
+///
+/// `line_agrees` above asks for equality, which is exactly right when the
+/// line IS the derivation: a boot hands a domain everything it was granted
+/// and nothing else. A supervisor that narrows a line to the act of one
+/// turn hands strictly less, and equality would refuse it for being too
+/// careful. Safety never asked for equality; it asked for a ceiling. So
+/// this is the weaker reading, and the honest one for a narrowed line --
+/// `line_agrees` implies it, and a line that widens a right fails both.
+pub fn line_within(
+    sys: *const system.System,
+    slot: *const capabilities.DependentSlot,
+) bool {
+    // invariant: the capability list stays within its bound
+    assert(slot.cap_count <= capabilities.max_caps_per_dependent);
+    const domain = slot.label_slice();
+    // invariant: a dependent slot always names its domain
+    assert(domain.len >= 1);
+    var i: u32 = 0;
+    while (i < slot.cap_count) : (i += 1) {
+        assert(i < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        const cap = &slot.caps[i];
+        const region = cap.name_slice();
+        const word = perm_word(cap.rights_mask) orelse return false;
+        const mask = word_mask(word) orelse return false;
+        // The rendered word must survive the round trip unchanged, or the
+        // dependent would read rights the parent never meant to hand it.
+        if (mask != cap.rights_mask) return false;
+        const reads = (mask & capabilities.right_read) != 0;
+        if (reads and !sys.map.may_read(region, domain)) return false;
+        const writes = (mask & capabilities.right_write) != 0;
+        if (writes and !sys.map.may_write(region, domain)) return false;
+        const runs = (mask & capabilities.right_exec) != 0;
+        if (runs and !sys.map.may_execute(region, domain)) return false;
+    }
+    // invariant: every capability handed out was weighed against the document
+    assert(i == slot.cap_count);
+    return true;
+}
+
 // =========================================================================
 // The boot -- one document becomes running dependents
 // =========================================================================
