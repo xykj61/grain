@@ -1,0 +1,69 @@
+# serial_three_clients_menu -- one region every domain may reach, and only
+# one of them may write.
+#
+# `serial_three_clients.bron` gave three clients a server and no way at all
+# to touch each other: every region in it is held by a client and the
+# virtualiser, never by two clients, and that privacy is where the room for
+# three at once comes from. This declaration adds the one thing a real
+# server almost always has and that shape has never carried -- something
+# published once and read by everyone.
+#
+# `menu` is that region. The virtualiser writes it; all three clients hold
+# read alone. Nothing else moves: the same four domains, the same three
+# channels, the same nine private regions, the same arcs.
+#
+# What changes is what a reader of the grants can say. Two clients now share
+# a region, so any test that asks only WHICH regions a pair touches must
+# answer that they conflict -- they may not run at one instant, and they may
+# not be reordered. Both answers are wrong, and the document itself says so:
+# neither client may write `menu`, so neither can ever see the other's hand
+# in it. A region two domains only read is a fact they agree about, not a
+# hazard between them.
+#
+# `menu` carries a direction the way `ask_x` and `back_x` do -- one writer,
+# and readers -- so a flow derivation still finds a writer to name. It has
+# three readers rather than one, which is exactly what publishing means.
+#
+# Read whole by `caravan/read.rye`; exercised by `caravan/commute.rye`.
+
+system serial_three_clients_menu
+
+domain serial_virt
+domain client_a
+domain client_b
+domain client_c
+
+channel serial_virt client_a
+channel serial_virt client_b
+channel serial_virt client_c
+
+region ask_a 4096
+region back_a 4096
+region taken_a 64
+region ask_b 4096
+region back_b 4096
+region taken_b 64
+region ask_c 4096
+region back_c 4096
+region taken_c 64
+region menu 4096
+
+grant ask_a client_a rw
+grant ask_a serial_virt r
+grant back_a serial_virt rw
+grant back_a client_a r
+grant taken_a client_a rw
+grant ask_b client_b rw
+grant ask_b serial_virt r
+grant back_b serial_virt rw
+grant back_b client_b r
+grant taken_b client_b rw
+grant ask_c client_c rw
+grant ask_c serial_virt r
+grant back_c serial_virt rw
+grant back_c client_c r
+grant taken_c client_c rw
+grant menu serial_virt rw
+grant menu client_a r
+grant menu client_b r
+grant menu client_c r

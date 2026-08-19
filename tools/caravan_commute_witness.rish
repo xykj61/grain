@@ -1,0 +1,102 @@
+# caravan_commute_witness.rish -- Caravan commute witness.
+#
+# `overtake.rye` derived a lawful order from the declaration and kept two
+# questions apart: whether two items may run at the same INSTANT, and
+# whether one may run BEFORE another. Both asked the same thing of the
+# document -- which regions does each side touch -- and both stopped there.
+# This rung asks what the grants say past that point.
+#
+#   A SHARED REGION IS A HAZARD ONLY WHERE SOMEONE MAY WRITE IT.
+#
+# Every grant this arc has ever read carries a permission beside its region.
+# A region two domains hold read-only is a fact they agree about rather than
+# a hazard between them -- neither can see the other's hand in it, because
+# neither has a hand. Nothing new is declared;
+# `serial_three_clients_menu.bron` adds the one thing an ordinary server has
+# that the elder shape never carried, something published once and read by
+# everyone, and adds no new kind of word to say it.
+#
+# ONE REFINEMENT, TWO ROOMS, and the write closes exactly one of them:
+#
+#   * Over the READING LAP, where nobody writes what everybody holds, it
+#     converts the whole of it: 6 slot-turns unspent by region against 0 by
+#     grant, a table held at a peak of 1 against 3, and 2 lawful passes
+#     reaching 2 items back. Four dependents run to the same end under both.
+#   * Over the PUBLISHED LAP, whose head writes the very region the items
+#     behind it read, the ORDER half converts nothing -- 0 lawful passes
+#     under both readings -- while the ISOLATION half still converts 2
+#     slot-turns of 6, since two readers may hold the machine together even
+#     where no pass between them is lawful.
+#   * Read straight, the pair count says it in one number: 0 pairs of these
+#     four domains may run at once by region, and 3 by grant.
+#
+# THE CONTROL SPENDS DIRECTION TOO FREELY AND BREAKS ON METAL. `reads_free`
+# orders a pair only where BOTH sides may write, so it reads a write-then-
+# read pair as commuting -- and that pair is the arc itself. Handed a lap
+# where the taker sits behind its own passer, it takes 1 pass, the home
+# hears no bell that was never rung, and the run refuses.
+#
+# Both RED paths were proven on metal before this witness claimed GREEN.
+# Run the reading lap by region under the fine reading's own checks and it
+# reds at 6 slot-turns unspent -- so the conversion is real work rather than
+# a lap with nothing in it. Run the published lap under `reads_free` and 2
+# items pass a head that writes what they read -- so its zero passes is a
+# refusal earned rather than an absence of candidates.
+#
+# `gap.attempt` gained one word for this rung: `peek`, which reads an index
+# and changes nothing. The three verbs a ring under fall asks are untouched,
+# and the peek answers exactly what `cycle.rye`'s own peek answers.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep
+# over interpolated output -- REDS #76 / #85, the apostrophe loom.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_commute_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/commute"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/commute.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan commute build failed"
+
+# The elder shape with one published region added, and nothing else moved.
+let published = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_three_clients_menu.bron 2>&1"]
+assert published.ok else "the published declaration could not be read"
+assert published.out contains "domains 4 -- channels 3 -- regions 10 -- grants 19" else "the published document changed shape"
+assert published.out contains "verdict: whole" else "the published declaration did not read whole"
+
+# The elder shape itself is untouched by this rung.
+let clients = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_three_clients.bron 2>&1"]
+assert clients.ok else "the three-client declaration could not be read"
+assert clients.out contains "domains 4 -- channels 3 -- regions 9 -- grants 15" else "the three-client document moved beneath this rung"
+
+# A fresh provisioning each run, so every index starts at zero and a bell
+# found ringing was rung by this run rather than left standing by the last.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels"]
+assert clean.ok else "the region stores and doorbells could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan commute selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan commute selftest not GREEN"
+assert test.out contains "a shared region is a hazard only where someone may write it" else "the commute finding did not close"
+
+# Both tests read straight, before any supervisor spends them.
+assert test.out contains "a region two domains only read is a fact they agree about, never a hazard" else "the direction test ordered two readers"
+assert test.out contains "the publisher's write orders every reader behind it, in both readings" else "the direction test let a write slip past"
+assert test.out contains "pairs free to hold the machine at once: 0 by region, 3 by grant" else "the pair count did not widen with the grants"
+
+# The reading lap: nobody writes what everybody holds, so it all converts.
+assert test.out contains "the reading lap leaves 6 slot-turns unspent by region and 0 by grant" else "direction did not convert the slots a read was holding"
+assert test.out contains "nobody writes what everybody holds: 2 lawful passes, reaching 2 items back" else "the reading lap did not reach past its head"
+assert test.out contains "4 dependents run to the same end under both, at a peak of 1 against 3" else "the two readings did not run the same lap to the same end"
+
+# The published lap: the write closes the order and leaves the instant open.
+assert test.out contains "the published lap admits 0 lawful passes under both readings" else "an item passed a head that writes what it reads"
+assert test.out contains "the order half converts nothing; the isolation half converts 2 slot-turns of 6" else "the two rooms did not separate where the write stands"
+
+# The control: spending direction too freely is faster, and wrong.
+assert test.out contains "reading the grants refuses the pass and brings 2 asks home" else "the fine reading did not hold the arc it was handed"
+assert test.out contains "the home hears no bell: the run refuses" else "the control did not break where the document said it would"
+
+say "GREEN: Caravan commute witness passed."
