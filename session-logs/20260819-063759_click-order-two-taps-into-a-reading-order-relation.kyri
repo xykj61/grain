@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260819.063759
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title click_order -- two taps into a reading-order relation
+prompt autonomous loop -- take the next agent-doable lap Lindy-first crux-first; Standfast on reds; council rota; send often; stop at custody gates
+think Loaded the voice first (KYRI, RADIANT_STYLE), then REMEMBER, the three road-ahead itineraries, REDS, and the top session-log rows -- the last lap landed click_relation at nib 5f9584b88f, 209 image modules, Standfast reported clear.
+think Standfast check on metal: crux/REDS.md every living row Closed, Released, or custody-gated errata #75; working tree clean; 209 image/*.rye on disk matching the card. No agent-closable red open, so constructive work is licensed.
+think Council rota d27 this lap: deep-read item 26, the 1024-round itinerary, past the recent voice-item laps -- the calendar stays one crux ahead of the bench; the Microkernel Target leads by Lindy yet every rung is a fetch/license/hardware gate the loop surfaces, so the agent-doable crux is the live-green Season G scene-read family.
+think Crux-first pick among the card's named candidates: the two-click READING-ORDER relation is the sharpest genuinely-new move -- the click family reads groups, reading_order reads a total object sequence, and the two had never been composed. A marquee-facts read would largely duplicate selection_cluster_facts; a two-click nearest was already covered in click_relation's distance.
+think Designed image/click_order.rye: each click resolves to its group (hit_test + overlap_clusters' cluster_of), and a group reads at the rank of its FIRST-appearing member (min reading_rank). click_group_min_rank, click_group_lead_label, click_reads_before, over a scene whose object order is [P1, Q, P2] with P1,P2 one group and Q reading between them.
+obs Red-then-green in the same round: the first metal run failed SceneNotThreeComponents -- Q's block at (9,3) was 8-adjacent diagonally to P2's arm at (8,4), merging them. Shifted Q two columns right to box (10,2)-(11,3), 8-disconnected from P2 while its box still overlaps neither. GREEN on the next run, no code red -- a scene-build red the label count caught, exactly the machine-catches-it pattern REDS names.
+obs The crux proves two sharp facts: the group order is INVARIANT to the tap site (tapping P1 rank 1 or P2 rank 3 both read group min rank 1, lead label 1), and it DISAGREES with the tapped-object order (a tap on P2 then Q reads click_reads_before TRUE -- G1 before G2 -- yet reads_before(P2,Q) is FALSE, Q before P2 as objects; only each group's minimum decides). A strict total order over distinct groups; SameGroup/EmptyClick/PointOutOfBounds refusals by name; determinism.
+loom witness=click_order_witness checks=11 result=green modules=210
+file image/click_order.rye the two-click reading-order relation, a group reading at its first member's rank, GREEN on metal
+file tools/click_order_witness.rish native-contains witness (REDS #85), 11 GREEN-line asserts
+file image/README.md names the click-order rung after click-relation (docs-sync)
+file crux/REMEMBER.md live edge + Git nib repointed single-stranded, click_relation folded to a prior-nib comment, count 209 -> 210
+recommend keep-going -- Season G scene-read floor stands broad and green at 210 modules; next crux-first agent-doable candidates: a two-click nearest relation (which of two tapped groups is nearer a third), a marquee-grow-to-neighbors facts read, or a codec read. The Microkernel Target study and a real-photo top-hat still wait on fetch/license/custody gates, surfaced not crossed. No network, no key, no funds.

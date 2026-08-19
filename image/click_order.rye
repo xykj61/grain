@@ -1,0 +1,361 @@
+//! image/click_order.rye -- the TWO-CLICK READING-ORDER relation: turn TWO points into TWO whole-group selections, then read which group a
+//! surface would present FIRST on the page. Where image/click_relation.rye reads how two tapped groups sit in SPACE (same-group, true gap, frame
+//! overlap), this rung reads how they sit in the reading SEQUENCE -- which group reads before the other, top-to-bottom and left-to-right. The
+//! relation a surface answers the moment a keeper taps two things and asks "which of these comes first." Exact integers, NO float and NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/hit_test.rye names the ONE object under a point; image/overlap_clusters.rye's `cluster_of` names the
+//! connected group that object belongs to; image/reading_order.rye seats every object in one total top-to-bottom, left-to-right page order and reads
+//! each object's `reading_rank`. This rung LIFTS the reading order from the OBJECT to the GROUP: each click resolves to its group, and the group
+//! reads at the rank of its FIRST-appearing member -- the earliest-reading object it holds. A reading over readings -- no plane of its own, no pixel
+//! written, no box re-measured.
+//!
+//! The DECISIVE crux -- a group's reading order is a PROJECTION of the object order down to whole groups, coarser than it, and NOT recoverable from
+//! the two tapped objects' own ranks. It is the box-is-a-prefilter lesson lifted one dimension over: the tapped object's OWN rank is a misleading
+//! hint, the group's MINIMUM member rank the arbiter. Two shapes at once over a scene whose object reading order is [P1, Q, P2] -- P1 and P2 a single
+//! connected group G1, the block Q a distinct group G2 reading BETWEEN P1 and P2:
+//!
+//!   WHERE YOU TAP WITHIN A GROUP NEVER CHANGES THE GROUP'S PLACE. A tap on P1 (own rank 1) and a tap on P2 (own rank 3) both resolve to G1 and both
+//!   read `click_group_min_rank` 1 -- the group reads at its first member's rank, so `click_reads_before` is INVARIANT to which member a keeper taps.
+//!   A tap on P2, the group's LATEST-reading member, still names P1 as the group's `click_group_lead_label` -- the reading lead the surface would
+//!   scroll to. The relation belongs to the group, not the clicked pixel.
+//!
+//!   THE GROUP ORDER DISAGREES WITH THE TAPPED-OBJECT ORDER. A tap on P2 (own rank 3) and a tap on Q (own rank 2) read `click_reads_before` TRUE --
+//!   G1 reads before G2 -- yet the two tapped OBJECTS read the opposite way: `reads_before(P2, Q)` is FALSE, Q reads before P2 as objects. G1 wins
+//!   because it holds P1, an EARLIER-reading member than Q, though the member actually tapped (P2) reads later. The group order interleaves the object
+//!   order: you cannot decide which group reads first from the two tapped objects' ranks alone; only each group's MINIMUM decides. And the group rank
+//!   is BROADER than the tap -- `click_group_min_rank` under the P2 tap is 1, strictly less than P2's own rank 3, exactly as a click's group facts
+//!   outrun the clicked object.
+//!
+//! Compose not braid. This rung OWNS only the click-to-group resolution and the group-rank reduction (the minimum member rank). image/hit_test.rye
+//! owns the point-to-object arbiter (`object_label_at`); image/overlap_clusters.rye owns `cluster_of` (the object-to-group map); image/reading_order.rye
+//! owns `reading_rank` and the total-order comparator the group rank reduces. No order re-sorted, no matrix recomputed, no pixel re-read.
+//!
+//! Everything is bounded before a byte: each click resolves to at most one label through the hit test, and the group-rank scan walks the object count
+//! bounded by image/scene_graph.rye's `scene_graph_max_objects` cap, each step an exact-integer rank read. A point off the map refuses
+//! `PointOutOfBounds`, having read nothing; a click on background refuses `EmptyClick` by name (an empty tap belongs to no group); a reads-before of a
+//! group against itself refuses `SameGroup`, since a group never reads before itself. No network, no key, no funds -- the two-click reading-order
+//! relation a surface names the day a keeper taps two things and asks which one the page reaches first.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/click_order.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const hit_test = @import("hit_test.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const reading_order = @import("reading_order.rye");
+
+pub const click_order_version = "20260819.062739";
+
+pub const ClickOrderError = error{
+    EmptyClick,
+    SameGroup,
+};
+
+/// A group's READING LEAD -- the rank of its first-appearing member and that member's dense label. Read together in one scan so the two never
+/// disagree: `rank` is the minimum `reading_rank` over the group's members, `label` the member holding it.
+const GroupLead = struct {
+    rank: u32,
+    label: u32,
+};
+
+/// The dense GROUP ID a click lands in -- the connected cluster of the object under `(x, y)`. Runs image/hit_test.rye's arbiter for the object label,
+/// then image/overlap_clusters.rye's `cluster_of` for its group. A hit returns a real dense cluster id (1..clusters); a MISS (a background pixel, a
+/// hole, a concavity notch) refuses `EmptyClick` by name, since an empty tap belongs to no group; a point off the map refuses `PointOutOfBounds`
+/// through the arbiter, having read nothing.
+pub fn click_group_id(clustering: overlap_clusters.Clustering, map: *const label.LabelMap, x: u32, y: u32) !u32 {
+    // invariant: the clustering and the map describe the SAME scene -- one component count.
+    assert(clustering.components == map.count);
+    // invariant: the arbiter never names a component past image/label.rye's pixel ceiling.
+    assert(map.count <= label.label_max_pixels);
+
+    const lbl = try hit_test.object_label_at(map, x, y);
+    if (lbl == 0) return error.EmptyClick;
+    const gid = try overlap_clusters.cluster_of(clustering, lbl);
+    // invariant: a hit resolves to a real dense group id at least one.
+    assert(gid >= 1);
+    // invariant: the group id stays within the scene's cluster count.
+    assert(gid <= clustering.clusters);
+    return gid;
+}
+
+/// The READING LEAD of the group with dense id `gid` -- its first-appearing member's rank and label, the minimum over the group's members. A bounded
+/// scan of the object count, each step an exact `reading_rank`. Since `reading_rank` is a STRICT TOTAL order the ranks are distinct, so the minimum is
+/// unique and the lead well-defined. Every dense cluster id names a non-empty group, so the lead is always set.
+fn group_lead(clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, gid: u32) !GroupLead {
+    // invariant: the clustering and the graph describe the same scene -- one component count.
+    assert(clustering.components == graph.components);
+    // invariant: the group id is a real dense cluster label.
+    assert(gid >= 1);
+    assert(gid <= clustering.clusters);
+
+    var best_rank: u32 = 0; // 0 marks "unset" until the first member is seen
+    var best_label: u32 = 0;
+    var a: u32 = 1;
+    while (a <= clustering.components) : (a += 1) {
+        const cid = try overlap_clusters.cluster_of(clustering, a);
+        if (cid != gid) continue;
+        const rank = try reading_order.reading_rank(graph, a);
+        if (best_label == 0 or rank < best_rank) {
+            best_rank = rank;
+            best_label = a;
+        }
+    }
+    // invariant: a dense group id names at least one member, so the lead was set.
+    assert(best_label >= 1);
+    // invariant: a real member holds a real seat in the reading order.
+    assert(best_rank >= 1);
+    return GroupLead{ .rank = best_rank, .label = best_label };
+}
+
+/// The READING RANK of the group a click lands in -- the 1-based page position of the group's first-appearing member, so the value is INVARIANT to
+/// where within the group a keeper taps. Strictly at most the tapped object's own rank, since the group reads no later than any member it holds.
+/// Refuses `EmptyClick` on a miss, `PointOutOfBounds` off the map.
+pub fn click_group_min_rank(clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, map: *const label.LabelMap, x: u32, y: u32) !u32 {
+    // invariant: the clustering, the graph, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(clustering.components == map.count);
+
+    const gid = try click_group_id(clustering, map, x, y);
+    const lead = try group_lead(clustering, graph, gid);
+    // invariant: the group reads no later than the last object on the page.
+    assert(lead.rank <= graph.components);
+    return lead.rank;
+}
+
+/// The dense LABEL of the first-appearing member of the group a click lands in -- the reading lead a surface scrolls to when a group is grabbed. A
+/// tap on the group's LATEST-reading member still names its EARLIEST-reading member here, so the lead is a group fact, not a tap fact. Refuses
+/// `EmptyClick` on a miss, `PointOutOfBounds` off the map.
+pub fn click_group_lead_label(clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, map: *const label.LabelMap, x: u32, y: u32) !u32 {
+    // invariant: the clustering, the graph, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(clustering.components == map.count);
+
+    const gid = try click_group_id(clustering, map, x, y);
+    const lead = try group_lead(clustering, graph, gid);
+    // invariant: the lead is a real dense object label.
+    assert(lead.label >= 1);
+    assert(lead.label <= graph.components);
+    return lead.label;
+}
+
+/// TRUE when the group under tap 1 reads BEFORE the group under tap 2 -- compare the two groups' minimum member ranks. Distinct groups hold disjoint
+/// members with distinct ranks, so exactly one of `click_reads_before(a,b)`, `click_reads_before(b,a)` is true: a STRICT TOTAL order over the groups.
+/// The answer can DISAGREE with `reads_before` on the two tapped objects, since the group reads at its FIRST member, not the tapped one. Refuses
+/// `SameGroup` when both taps share one group (a group never reads before itself), `EmptyClick` on a miss, `PointOutOfBounds` off the map.
+pub fn click_reads_before(clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, map: *const label.LabelMap, x1: u32, y1: u32, x2: u32, y2: u32) !bool {
+    // invariant: the clustering, the graph, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(clustering.components == map.count);
+
+    const gid_a = try click_group_id(clustering, map, x1, y1);
+    const gid_b = try click_group_id(clustering, map, x2, y2);
+    if (gid_a == gid_b) return error.SameGroup;
+    const lead_a = try group_lead(clustering, graph, gid_a);
+    const lead_b = try group_lead(clustering, graph, gid_b);
+    // invariant: distinct groups hold disjoint members, so their lead ranks are distinct -- the order is decisive.
+    assert(lead_a.rank != lead_b.rank);
+    return lead_a.rank < lead_b.rank;
+}
+
+// --- selftest: the DECISIVE reading-order crux over a scene whose object reading order is [P1, Q, P2] -- P1 a corner-L box (1,1)-(5,5) and P2 a
+//     corner-L box (4,4)-(8,8) whose boxes overlap into ONE connected group G1 (yet stay 8-disconnected components), and Q a 2x2 block box (9,2)-(10,3)
+//     a DISTINCT group G2 reading BETWEEN P1 and P2. Tapping P1 (rank 1) or P2 (rank 3) both read the group's min rank 1 and lead label 1 (invariant to
+//     the tap site); tapping P2 then Q reads the group order G1-before-G2 TRUE while the tapped objects read the opposite (Q before P2) -- the group
+//     order projects the object order and disagrees with the tapped objects' own ranks --------------------------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a corner bracket-L hugging TOP-LEFT: a vertical arm down column `x0` from `y0` to `y1`, and a horizontal arm along row `y0` from `x0` to
+/// `x1`. Its inclusive box is (x0,y0)-(x1,y1); its bottom-right corner stays empty and its interior stays background inside its own box.
+fn set_corner_l(img: *qoi.Pixmap, x0: u32, y0: u32, x1: u32, y1: u32) void {
+    // invariant: the arms run in the positive direction and stay inside the buffer.
+    assert(x1 >= x0);
+    assert(y1 >= y0);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) set_dot(img, x0, yy);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) set_dot(img, xx, y0);
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- BUILD THE SCENE on a 12x12 canvas: P1 a corner-L box (1,1)-(5,5) label 1, Q a 2x2 block box (10,2)-(11,3) label 2, P2 a corner-L box
+    //     (4,4)-(8,8) label 3. P1's box overlaps P2's (they share (4,4)-(5,5)) so {P1,P2} is ONE connected group G1, yet the shapes stay 8-disconnected
+    //     (three components). Q sits two columns clear of P2's arm so it stays its own 8-component, and Q's box overlaps neither P1's nor P2's, so it
+    //     is a DISTINCT singleton group G2. Labels fall in raster order: P1 first pixel (1,1), Q first pixel (10,2), P2 first pixel (4,4) -----------
+    var scene = try make_canvas(garden, 12, 12, 0);
+    set_corner_l(&scene, 1, 1, 5, 5); // P1: corner-L, box (1,1)-(5,5), min_y 1
+    set_block(&scene, 10, 2, 2, 2); // Q: 2x2 block, box (10,2)-(11,3), min_y 2
+    set_corner_l(&scene, 4, 4, 8, 8); // P2: corner-L, box (4,4)-(8,8), min_y 4
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 3) return error.SceneNotThreeComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+
+    // confirm the labels and boxes are exactly the three intended
+    const p1_obj = try scene_manifest.object_of(manifest, 1);
+    const q_obj = try scene_manifest.object_of(manifest, 2);
+    const p2_obj = try scene_manifest.object_of(manifest, 3);
+    if (p1_obj.min_x != 1 or p1_obj.min_y != 1 or p1_obj.max_x != 5 or p1_obj.max_y != 5) return error.P1BoxWrong;
+    if (q_obj.min_x != 10 or q_obj.min_y != 2 or q_obj.max_x != 11 or q_obj.max_y != 3) return error.QBoxWrong;
+    if (p2_obj.min_x != 4 or p2_obj.min_y != 4 or p2_obj.max_x != 8 or p2_obj.max_y != 8) return error.P2BoxWrong;
+
+    // confirm the GROUP shape the crux leans on: P1-P2 boxes overlap into one group, Q a distinct group, exactly two groups
+    if (!(try scene_graph.relation_of(graph, 1, 3)).boxes_overlap) return error.P1P2NotOverlapping;
+    if ((try scene_graph.relation_of(graph, 1, 2)).boxes_overlap) return error.P1QFalselyOverlapping;
+    if ((try scene_graph.relation_of(graph, 2, 3)).boxes_overlap) return error.QP2FalselyOverlapping;
+    if (try overlap_clusters.same_cluster(clustering, 1, 3) != true) return error.P1P2NotOneGroup;
+    if (try overlap_clusters.same_cluster(clustering, 1, 2) != false) return error.QNotDistinct;
+    if (clustering.clusters != 2) return error.NotTwoGroups;
+
+    // --- THE OBJECT READING ORDER IS [P1, Q, P2] -- ranks 1, 2, 3 by (top edge, left edge, label): P1 (1,1), Q (2,10), P2 (4,4). Q reads BETWEEN
+    //     the two members of group G1 -- the interleaving the crux rests on ------------------------------------------------------------------------
+    const order = try reading_order.reading_order(garden, graph);
+    if (order.len != 3) return error.OrderNotThree;
+    if (order[0] != 1) return error.FirstNotP1;
+    if (order[1] != 2) return error.SecondNotQ;
+    if (order[2] != 3) return error.ThirdNotP2;
+    if (try reading_order.reading_rank(graph, 1) != 1) return error.P1RankNotOne;
+    if (try reading_order.reading_rank(graph, 2) != 2) return error.QRankNotTwo;
+    if (try reading_order.reading_rank(graph, 3) != 3) return error.P2RankNotThree;
+
+    // hit-test the three click points once so the crux rests on real arbiter reads: P1's left column (1,3) -> label 1, Q's block (10,2) -> label 2,
+    // P2's vertical arm (4,6) -> label 3
+    if (try hit_test.object_label_at(&map, 1, 3) != 1) return error.ClickOnP1NotP1;
+    if (try hit_test.object_label_at(&map, 10, 2) != 2) return error.ClickOnQNotQ;
+    if (try hit_test.object_label_at(&map, 4, 6) != 3) return error.ClickOnP2NotP2;
+
+    // click_group_id resolves each tap to its group: P1, P2 -> group 1 (G1); Q -> group 2 (G2)
+    if (try click_group_id(clustering, &map, 1, 3) != 1) return error.P1GroupNotOne;
+    if (try click_group_id(clustering, &map, 4, 6) != 1) return error.P2GroupNotOne;
+    if (try click_group_id(clustering, &map, 10, 2) != 2) return error.QGroupNotTwo;
+
+    // --- WHERE YOU TAP WITHIN A GROUP NEVER CHANGES THE GROUP'S PLACE -- a tap on P1 (own rank 1) and a tap on P2 (own rank 3) both read the group's
+    //     min rank 1 and lead label 1, though P1 and P2 have different own ranks -- the reading place is invariant to the tap site -----------------
+    if (try click_group_min_rank(clustering, graph, &map, 1, 3) != 1) return error.P1TapMinRankNotOne;
+    if (try click_group_min_rank(clustering, graph, &map, 4, 6) != 1) return error.P2TapMinRankNotOne; // the LATE member's tap, same group rank
+    if (try click_group_lead_label(clustering, graph, &map, 1, 3) != 1) return error.P1TapLeadNotP1;
+    if (try click_group_lead_label(clustering, graph, &map, 4, 6) != 1) return error.P2TapLeadNotP1; // tapping the late member names the early lead
+
+    // --- THE GROUP RANK IS BROADER THAN THE TAP -- the P2 tap reads group min rank 1, strictly less than P2's own reading rank 3: the group reads no
+    //     later than its earliest member, so a click's group place outruns the clicked object's -----------------------------------------------------
+    const p2_own_rank = try reading_order.reading_rank(graph, 3);
+    if (p2_own_rank != 3) return error.P2OwnRankNotThree;
+    if (try click_group_min_rank(clustering, graph, &map, 4, 6) >= p2_own_rank) return error.GroupRankNotBroaderThanTap;
+
+    // --- THE GROUP ORDER DISAGREES WITH THE TAPPED-OBJECT ORDER -- a tap on P2 (own rank 3) then Q (own rank 2) reads click_reads_before TRUE (G1
+    //     before G2) yet the two tapped OBJECTS read the opposite: reads_before(P2, Q) is FALSE, Q reads before P2 as objects. G1 wins on P1, an
+    //     earlier member than Q, though the member tapped (P2) reads later -- the group order projects the object order and interleaves it ---------
+    if (try click_reads_before(clustering, graph, &map, 4, 6, 10, 2) != true) return error.P2QGroupOrderWrong; // G1 before G2
+    if (try reading_order.reads_before(graph, 3, 2) != false) return error.TappedObjectsFalselyInGroupOrder; // Q(2) before P2(3) as objects
+    if (try reading_order.reads_before(graph, 2, 3) != true) return error.QNotBeforeP2AsObjects;
+    // so the group order (P2's group first) and the tapped-object order (Q first) genuinely DISAGREE -- the tapped object's rank is a misleading hint
+
+    // --- INVARIANT TO THE TAP SITE, THE OTHER WAY -- a tap on P1 (rank 1) then Q reads the SAME group order G1-before-G2 as the P2-then-Q tap, though
+    //     P1 and P2 have different own ranks: the relation belongs to the group ------------------------------------------------------------------
+    if (try click_reads_before(clustering, graph, &map, 1, 3, 10, 2) != true) return error.P1QGroupOrderWrong;
+
+    // --- A STRICT TOTAL ORDER OVER GROUPS -- for the two distinct groups exactly one of click_reads_before(a,b), click_reads_before(b,a) holds ----
+    const g1_before_g2 = try click_reads_before(clustering, graph, &map, 1, 3, 10, 2);
+    const g2_before_g1 = try click_reads_before(clustering, graph, &map, 10, 2, 1, 3);
+    if (g1_before_g2 == g2_before_g1) return error.GroupOrderNotTotalOrAntisymmetric; // exactly one holds
+    if (!g1_before_g2) return error.G1NotBeforeG2;
+
+    // --- A READS-BEFORE OF A GROUP AGAINST ITSELF REFUSES SameGroup -- two taps on one group (P1 and P2) name one group, which never reads before
+    //     itself, so the read refuses SameGroup by name rather than answering a meaningless FALSE ------------------------------------------------
+    if (click_reads_before(clustering, graph, &map, 1, 3, 4, 6)) |_| return error.SameGroupNotRefused else |err| {
+        if (err != error.SameGroup) return error.WrongSameGroupError;
+    }
+
+    // --- A MISS REFUSES EmptyClick -- a tap in P1's interior (3,3) is BACKGROUND inside P1's own box: the box claims the point yet the tap misses,
+    //     so it belongs to no group -- click_group_id, min_rank, lead, and reads_before each refuse EmptyClick by name ------------------------------
+    if (!hit_test.bbox_contains_point(p1_obj, 3, 3)) return error.NotchNotInP1Box;
+    if (try hit_test.object_label_at(&map, 3, 3) != 0) return error.NotchNotBackground;
+    if (click_group_id(clustering, &map, 3, 3)) |_| return error.MissGroupNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissGroupError;
+    }
+    if (click_group_min_rank(clustering, graph, &map, 3, 3)) |_| return error.MissMinRankNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissMinRankError;
+    }
+    if (click_group_lead_label(clustering, graph, &map, 3, 3)) |_| return error.MissLeadNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissLeadError;
+    }
+    if (click_reads_before(clustering, graph, &map, 3, 3, 10, 2)) |_| return error.MissReadsBeforeNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissReadsBeforeError;
+    }
+
+    // --- A POINT OFF THE MAP REFUSES PointOutOfBounds through the arbiter, having read nothing -----------------------------------------------------
+    if (click_group_min_rank(clustering, graph, &map, 12, 0)) |_| return error.OffMapMinRankNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapMinRankError;
+    }
+    if (click_reads_before(clustering, graph, &map, 1, 3, 0, 12)) |_| return error.OffMapReadsBeforeNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapReadsBeforeError;
+    }
+
+    // --- DETERMINISM -- the same pair of taps reads the same group order twice ---------------------------------------------------------------
+    const r1 = try click_reads_before(clustering, graph, &map, 4, 6, 10, 2);
+    const r2 = try click_reads_before(clustering, graph, &map, 4, 6, 10, 2);
+    if (r1 != r2) return error.GroupOrderNotDeterministic;
+
+    print("GREEN image-click-order: the TWO-CLICK READING-ORDER relation -- turn TWO points into TWO whole-group selections, then read which group a surface presents FIRST on the page, lifting image/reading_order.rye's per-object rank from the OBJECT to the GROUP through image/hit_test.rye and image/overlap_clusters.rye's cluster_of, exact integers, NO float and NO tolerance -- the DECISIVE crux: a group's reading order is a PROJECTION of the object order down to whole groups, coarser than it and NOT recoverable from the two tapped objects' own ranks, in two shapes over a scene whose object reading order is [P1, Q, P2] with P1 and P2 one connected group G1 and the block Q a distinct group G2 reading BETWEEN them. WHERE YOU TAP WITHIN A GROUP NEVER CHANGES THE GROUP'S PLACE -- a tap on P1 (own rank 1) and a tap on P2 (own rank 3) both read click_group_min_rank 1 and click_group_lead_label 1, the group reading at its first member's rank so the relation is invariant to the tap site, and a tap on the LATEST-reading member still names the EARLIEST-reading member as the group's lead. THE GROUP ORDER DISAGREES WITH THE TAPPED-OBJECT ORDER -- a tap on P2 (own rank 3) then Q (own rank 2) reads click_reads_before TRUE (G1 before G2) yet the two tapped OBJECTS read the opposite (reads_before(P2, Q) FALSE, Q reads before P2 as objects), G1 winning on P1 an earlier member than Q though the member tapped reads later, so the tapped object's own rank is a misleading hint and only each group's MINIMUM decides; and the group rank is BROADER than the tap, the P2 tap reading group min rank 1 strictly less than P2's own rank 3. For the two distinct groups exactly one of click_reads_before holds either way (a strict total order over groups); a reads-before of a group against itself refuses SameGroup by name; a tap on background inside an object's own box refuses EmptyClick (a phantom tap belongs to no group); a point off the map refuses PointOutOfBounds having read nothing; the same pair reads the same order twice. Compose not braid over image/hit_test.rye (the point-to-object arbiter), image/overlap_clusters.rye (cluster_of, the object-to-group map), and image/reading_order.rye (reading_rank and the total-order comparator the group rank reduces)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: click_order selftest\n", .{});
+    return 1;
+}
