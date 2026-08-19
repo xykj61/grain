@@ -1,0 +1,33 @@
+# wide_roster -- a declaration that reads whole and still outruns the roster.
+#
+# Five domains around one hub, every domain wired and every region held, so
+# `system.verify` answers `whole`. The capability table holds four dependents,
+# so `roster.from_system` refuses this document by name rather than seating
+# four of the five and calling the supervisor ready.
+#
+# The bound that refuses here belongs to the SUPERVISOR, not to the
+# declaration -- which is exactly the distinction this artifact exists to
+# make visible.
+#
+# Read by `caravan/roster.rye`; proven by tools/caravan_roster_witness.rish.
+
+system wide_roster
+
+domain hub
+domain client_a
+domain client_b
+domain client_c
+domain client_d
+
+channel hub client_a
+channel hub client_b
+channel hub client_c
+channel hub client_d
+
+region shared 4096
+
+grant shared hub rw
+grant shared client_a r
+grant shared client_b r
+grant shared client_c r
+grant shared client_d r

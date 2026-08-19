@@ -1,0 +1,440 @@
+//! Caravan roster -- the supervisor's dependent table, derived from the
+//! declaration a witness already checks.
+//!
+//! Four rings named a system: `capabilities.rye` says WHAT a dependent may do,
+//! `channels.rye` WHO it may talk to, `regions.rye` WHAT MEMORY it may
+//! touch, and `system.rye` gathers all three into one document that
+//! `read.rye` loads from disk. Each ring proved its own property, and one
+//! gap stayed open across all four: the declaration described a system, and
+//! the supervisor still held its roster somewhere else. Two sources of truth
+//! wearing one architecture's name is the oldest way a proof stops meaning
+//! anything.
+//!
+//! This ring closes that gap in one direction. The capability table is
+//! DERIVED from the parsed declaration rather than written beside it, so the
+//! rights a supervisor enforces and the grants a witness reads are the same
+//! sentences. Every domain becomes a dependent, every grant becomes exactly one
+//! capability, and the permission grammar (`r`, `rw`, `rx`) becomes the
+//! rights mask -- with W xor X carried across the translation for free,
+//! since a declaration that cannot say `rwx` cannot derive a mask holding
+//! both.
+//!
+//! Two properties make the derivation checkable rather than merely tidy.
+//! Conservation: the table seats exactly as many capabilities as the
+//! document declares grants, so nothing is invented and nothing is dropped.
+//! Agreement: over the whole cross product of declared regions and declared
+//! domains, at every right, the table's answer equals the map's answer --
+//! the negative answers most of all, since a client reaching a buffer it was
+//! never granted is the failure this whole arc exists to rule out.
+//!
+//! The bound is the honest part. A declaration may legally name more domains
+//! than a capability table seats, so `from_system` refuses by name rather
+//! than seating what fits and reporting itself ready. That refusal names the
+//! SUPERVISOR's bound, never a fault in the document -- the same honesty
+//! `read.rye` spends a byte of headroom on.
+//!
+//! Hosted ground, pure policy, no kernel underneath it yet.
+//!
+//! Usage:
+//!   roster <path>    Derive a roster from one declaration and report it
+//!   roster selftest  Run the self-test over the artifacts on disk
+//!   roster           Same as selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const regions = @import("regions.rye");
+const capabilities = @import("capabilities.rye");
+const read = @import("read.rye");
+
+const caravan_roster_version = "20260819.133033";
+
+comptime {
+    // invariant: a name legal in the declaration stays legal in the table,
+    // so the translation can never need to shorten what it carries across
+    assert(capabilities.max_name_len >= regions.max_name_len);
+    // invariant: the table seats fewer domains than a document may declare,
+    // which is why the shortfall below is named rather than assumed away
+    assert(capabilities.max_dependents <= regions.max_domains);
+}
+
+// =========================================================================
+// RosterError -- where a whole declaration outruns this supervisor
+// =========================================================================
+
+/// Named ways a legal declaration may exceed what one capability table
+/// seats. Each names a bound belonging to the SUPERVISOR, so an operator
+/// reading a refusal knows to widen the table rather than to doubt the
+/// document.
+pub const RosterError = error{
+    TooManyDomains,
+    TooManyGrants,
+};
+
+/// Everything a caller may hear from `load_roster` -- the read and parse
+/// refusals the document itself may earn, joined with the roster's own.
+pub const LoadRosterError = read.LoadError || RosterError;
+
+// =========================================================================
+// Translation -- one permission becomes one rights mask
+// =========================================================================
+
+/// Turns a declared permission into the rights mask a capability carries.
+///
+/// The three flags map one for one, so the translation adds no rights the
+/// document withheld. W xor X rides across untouched: a legal permission
+/// never holds write beside execute, so neither can the mask.
+pub fn rights_of(perm: regions.Perm) u8 {
+    // invariant: only a legal permission is worth translating
+    assert(perm.legal());
+    var mask: u8 = 0;
+    if (perm.read) mask |= capabilities.right_read;
+    if (perm.write) mask |= capabilities.right_write;
+    if (perm.execute) mask |= capabilities.right_exec;
+    const writes_and_runs = perm.write and perm.execute;
+    // invariant: write never stands beside execute in a derived mask
+    assert(!writes_and_runs);
+    // invariant: every legal permission reads, so no mask comes out empty
+    assert(mask != 0);
+    return mask;
+}
+
+/// Counts the grants one declared domain holds -- how many capabilities its
+/// dependent slot will need.
+pub fn grants_for(sys: *const system.System, domain: u32) u32 {
+    // invariant: the grant roster stays within its bound
+    assert(sys.map.grant_count <= regions.max_grants);
+    // invariant: the query addresses the bounded domain roster
+    assert(domain < regions.max_domains);
+    var held: u32 = 0;
+    var g: u32 = 0;
+    while (g < sys.map.grant_count) : (g += 1) {
+        assert(g < regions.max_grants); // invariant: the walk stays in the array
+        if (sys.map.grants[g].domain == domain) held += 1;
+    }
+    // invariant: a domain holds no more grants than the whole map declares
+    assert(held <= sys.map.grant_count);
+    return held;
+}
+
+/// Answers whether this supervisor's table can seat the whole declaration.
+///
+/// A caller that would rather branch than catch reads this first; the answer
+/// agrees with `from_system` by construction, since both read the same two
+/// bounds.
+pub fn fits(sys: *const system.System) bool {
+    // invariant: the domain roster stays within the map's bound
+    assert(sys.map.domain_count <= regions.max_domains);
+    // invariant: the grant roster stays within the map's bound
+    assert(sys.map.grant_count <= regions.max_grants);
+    if (sys.map.domain_count > capabilities.max_dependents) return false;
+    var d: u32 = 0;
+    while (d < sys.map.domain_count) : (d += 1) {
+        assert(d < regions.max_domains); // invariant: the walk stays in the array
+        if (grants_for(sys, d) > capabilities.max_caps_per_dependent) return false;
+    }
+    return true;
+}
+
+// =========================================================================
+// Derivation -- the declaration becomes the roster
+// =========================================================================
+
+/// Derives a capability table from a parsed declaration.
+///
+/// Every declared domain seats a dependent, in declaration order, so a roster
+/// index and a map index name the same component. Every grant of a region
+/// into that domain seats exactly one capability under the region's own
+/// name. Nothing else is added, which is what makes the conservation
+/// property below a fact rather than a hope.
+pub fn from_system(sys: *const system.System) RosterError!capabilities.CapabilityTable {
+    // invariant: the domain roster stays within the map's bound
+    assert(sys.map.domain_count <= regions.max_domains);
+    // invariant: the grant roster stays within the map's bound
+    assert(sys.map.grant_count <= regions.max_grants);
+    if (sys.map.domain_count > capabilities.max_dependents) {
+        return error.TooManyDomains;
+    }
+    var table: capabilities.CapabilityTable = .{};
+    var d: u32 = 0;
+    while (d < sys.map.domain_count) : (d += 1) {
+        assert(d < regions.max_domains); // invariant: the walk stays in the array
+        const label = sys.map.domains[d].name_slice();
+        const slot = table.add_dependent(label) catch return error.TooManyDomains;
+        var g: u32 = 0;
+        while (g < sys.map.grant_count) : (g += 1) {
+            assert(g < regions.max_grants); // invariant: the walk stays in the array
+            const held = &sys.map.grants[g];
+            if (held.domain != d) continue;
+            assert(held.region < regions.max_regions); // invariant: in bound
+            const region_name = sys.map.regions[held.region].slot.name_slice();
+            const cap = capabilities.Capability.init(region_name, rights_of(held.perm));
+            slot.grant(cap) catch return error.TooManyGrants;
+        }
+    }
+    // invariant: every declared domain seated a dependent, none dropped
+    assert(table.dependent_count == sys.map.domain_count);
+    // invariant: the finished table stays within the capability bound
+    assert(table.dependent_count <= capabilities.max_dependents);
+    return table;
+}
+
+/// Reads a declaration off disk and derives its roster in one step.
+pub fn load_roster(
+    io: std.Io,
+    path: []const u8,
+    buf: []u8,
+) LoadRosterError!capabilities.CapabilityTable {
+    // invariant: a load always names something to read
+    assert(path.len >= 1);
+    // invariant: the buffer holds one full line plus the headroom byte
+    assert(buf.len >= system.max_line_len + 1);
+    const parsed = try read.load(io, path, buf);
+    return from_system(&parsed);
+}
+
+// =========================================================================
+// Reads -- what the derived roster proves about the declaration
+// =========================================================================
+
+/// Counts every capability the table seats, across all its dependents.
+///
+/// This is half of the conservation property: a derived table seats exactly
+/// as many capabilities as the document declares grants.
+pub fn capability_count(table: *const capabilities.CapabilityTable) u32 {
+    // invariant: the dependent roster stays within its bound
+    assert(table.dependent_count <= capabilities.max_dependents);
+    var total: u32 = 0;
+    var i: u32 = 0;
+    while (i < table.dependent_count) : (i += 1) {
+        assert(i < capabilities.max_dependents); // invariant: the walk stays in the array
+        const slot = &table.dependents[i];
+        assert(slot.cap_count <= capabilities.max_caps_per_dependent); // invariant: in bound
+        total += slot.cap_count;
+    }
+    // invariant: the total stays within what the whole table could seat
+    assert(total <= capabilities.max_dependents * capabilities.max_caps_per_dependent);
+    return total;
+}
+
+/// Answers whether the table and the map give the same answer for one pair,
+/// at every right.
+///
+/// The negative answers carry the weight. A pair the document never granted
+/// must be refused by both rings, and a right the grant withheld must be
+/// refused by both -- each in its own vocabulary, agreeing on the outcome.
+fn pair_agrees(
+    sys: *const system.System,
+    table: *const capabilities.CapabilityTable,
+    region_name: []const u8,
+    domain_name: []const u8,
+) bool {
+    // invariant: a comparison always names a region
+    assert(region_name.len >= 1);
+    // invariant: a comparison always names a domain
+    assert(domain_name.len >= 1);
+    const reads = table.allows(domain_name, region_name, capabilities.right_read);
+    if (reads != sys.map.may_read(region_name, domain_name)) return false;
+    const writes = table.allows(domain_name, region_name, capabilities.right_write);
+    if (writes != sys.map.may_write(region_name, domain_name)) return false;
+    const runs = table.allows(domain_name, region_name, capabilities.right_exec);
+    if (runs != sys.map.may_execute(region_name, domain_name)) return false;
+    return true;
+}
+
+/// Answers whether the derived table enforces exactly what the declaration
+/// permits, over every declared region and every declared domain.
+///
+/// The walk is total rather than sampled: the whole cross product, at three
+/// rights each. A table agreeing here holds no right the document withheld
+/// and withholds no right the document granted.
+pub fn agrees(
+    sys: *const system.System,
+    table: *const capabilities.CapabilityTable,
+) bool {
+    // invariant: the region roster stays within its bound
+    assert(sys.map.region_count <= regions.max_regions);
+    // invariant: the dependent roster stays within its bound
+    assert(table.dependent_count <= capabilities.max_dependents);
+    var r: u32 = 0;
+    while (r < sys.map.region_count) : (r += 1) {
+        assert(r < regions.max_regions); // invariant: the walk stays in the array
+        const region_name = sys.map.regions[r].slot.name_slice();
+        var d: u32 = 0;
+        while (d < sys.map.domain_count) : (d += 1) {
+            assert(d < regions.max_domains); // invariant: the walk stays in the array
+            const domain_name = sys.map.domains[d].name_slice();
+            if (!pair_agrees(sys, table, region_name, domain_name)) return false;
+        }
+    }
+    return true;
+}
+
+/// Prints what one derived roster holds -- its dependents, its capabilities,
+/// and whether it enforces the declaration it came from.
+pub fn report(
+    sys: *const system.System,
+    table: *const capabilities.CapabilityTable,
+) void {
+    // invariant: the dependent roster stays within its bound
+    assert(table.dependent_count <= capabilities.max_dependents);
+    // invariant: the grant roster stays within its bound
+    assert(sys.map.grant_count <= regions.max_grants);
+    print("  roster for {s}\n", .{sys.name_slice()});
+    print("    dependents {d} -- capabilities {d} -- declared grants {d}\n", .{
+        table.dependent_count,
+        capability_count(table),
+        sys.map.grant_count,
+    });
+    var i: u32 = 0;
+    while (i < table.dependent_count) : (i += 1) {
+        assert(i < capabilities.max_dependents); // invariant: the walk stays in the array
+        const label = sys.map.domains[i].name_slice();
+        print("      {s} holds {d}\n", .{ label, table.dependents[i].cap_count });
+    }
+    if (agrees(sys, table)) {
+        print("    the roster enforces exactly what the document permits\n", .{});
+    } else {
+        print("    RED: the roster and the document disagree\n", .{});
+    }
+}
+
+// =========================================================================
+// Self-test -- the artifacts on disk, derived as a supervisor would
+// =========================================================================
+
+pub const wide_roster_path = "caravan/systems/wide_roster.bron";
+
+/// Derives the worked example's roster and checks every claim it makes.
+fn check_serial_stack(io: std.Io) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = read.load(io, read.serial_stack_path, &buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ read.serial_stack_path, @errorName(err) });
+        return 1;
+    };
+    const table = from_system(&parsed) catch |err| {
+        print("  RED: the worked example did not seat: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: one virtualiser and two clients each seated a dependent
+    assert(table.dependent_count == 3);
+    // invariant: conservation -- every declared grant seated one capability
+    assert(capability_count(&table) == parsed.map.grant_count);
+    // invariant: agreement over the whole declared cross product
+    assert(agrees(&parsed, &table));
+    report(&parsed, &table);
+    print("  {d} grants became {d} capabilities -- nothing invented, nothing dropped\n", .{
+        parsed.map.grant_count,
+        capability_count(&table),
+    });
+    return 0;
+}
+
+/// Checks the answers that matter most -- the ones both rings refuse.
+fn check_refusals(io: std.Io) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = read.load(io, read.serial_stack_path, &buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ read.serial_stack_path, @errorName(err) });
+        return 1;
+    };
+    const table = from_system(&parsed) catch |err| {
+        print("  RED: the worked example did not seat: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+
+    // invariant: a client reads its own receive buffer
+    assert(table.allows("client_a", "rx_a", capabilities.right_read));
+    // invariant: and reaches none of the other client's, through the roster
+    assert(!table.allows("client_a", "rx_b", capabilities.right_read));
+    // invariant: the map refuses the same pair, in its own vocabulary
+    assert(parsed.map.refusal_reason("rx_b", "client_a", regions.Perm.read_only()) ==
+        regions.Refusal.not_granted);
+    // invariant: and the table names its own reason for the same no
+    assert(table.refusal_reason("client_a", "rx_b", capabilities.right_read) ==
+        capabilities.Refusal.no_such_resource);
+    print("  a buffer never granted is refused by both rings, each in its own words\n", .{});
+
+    // invariant: the shared font runs for a client
+    assert(table.allows("client_a", "font_rom", capabilities.right_exec));
+    // invariant: and never takes a write, since W xor X crossed the translation
+    assert(!table.allows("client_a", "font_rom", capabilities.right_write));
+    // invariant: the map refuses that write by naming the right withheld
+    assert(parsed.map.refusal_reason("font_rom", "client_a", .{ .read = true, .write = true }) ==
+        regions.Refusal.write_denied);
+    // invariant: the table refuses it as rights falling short of the ask
+    assert(table.refusal_reason("client_a", "font_rom", capabilities.right_write) ==
+        capabilities.Refusal.rights_insufficient);
+    print("  W xor X survives the translation -- executable memory takes no write\n", .{});
+    return 0;
+}
+
+/// Checks that a whole declaration outrunning this supervisor says so by
+/// name, rather than seating what fits and reporting itself ready.
+fn check_wide_roster(io: std.Io) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = read.load(io, wide_roster_path, &buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ wide_roster_path, @errorName(err) });
+        return 1;
+    };
+    // invariant: the document itself is beyond reproach -- it reads whole
+    assert(parsed.is_whole());
+    // invariant: and it names more domains than this table seats
+    assert(parsed.map.domain_count > capabilities.max_dependents);
+    // invariant: so the roster answers no before seating anything
+    assert(!fits(&parsed));
+    if (from_system(&parsed)) |_| {
+        print("  RED: a document past the roster bound seated anyway\n", .{});
+        return 1;
+    } else |err| {
+        // invariant: the refusal names the supervisor's own bound
+        assert(err == error.TooManyDomains);
+    }
+    print("  a whole document past the roster answers TooManyDomains -- never half-seated\n", .{});
+    return 0;
+}
+
+fn run_self_test(io: std.Io) u8 {
+    print("Caravan roster {s} -- self-test\n", .{caravan_roster_version});
+    const worked = check_serial_stack(io);
+    if (worked != 0) return worked;
+    const refused = check_refusals(io);
+    if (refused != 0) return refused;
+    const wide = check_wide_roster(io);
+    if (wide != 0) return wide;
+    print("  GREEN: the supervisor obeys the declaration a witness checks\n", .{});
+    return 0;
+}
+
+/// Derives one path an operator names and reports it, answering 0 only when
+/// the roster seats whole and enforces the document exactly.
+fn run_path(io: std.Io, path: []const u8) u8 {
+    // invariant: a run always names something to read
+    assert(path.len >= 1);
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = read.load(io, path, &buf) catch |err| {
+        print("refused: {s} -- {s}\n", .{ path, @errorName(err) });
+        return 1;
+    };
+    const table = from_system(&parsed) catch |err| {
+        print("refused: {s} -- {s}\n", .{ path, @errorName(err) });
+        return 1;
+    };
+    report(&parsed, &table);
+    if (agrees(&parsed, &table)) return 0;
+    return 1;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(io);
+    }
+
+    if (args.len == 2) return run_path(io, args[1]);
+    if (args.len >= 3) return 1;
+    return run_self_test(io);
+}

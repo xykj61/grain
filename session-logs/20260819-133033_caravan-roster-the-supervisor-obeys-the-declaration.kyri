@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20260819.133033
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Caravan roster -- the supervisor derived from the declaration it obeys
+prompt Autonomous loop: read the voice and the live cards, pick up the running thread, take the next agent-doable lap Lindy-first crux-first, Standfast on reds, send the finished increment.
+think Read context/KYRI.md and context/RADIANT_STYLE.md first, so the voice shaped the lap from the first token, then crux/REMEMBER.md and the top rows of session-logs/README.md.
+think Standfast checked before new work -- the living REDS rows (80 through 87) all read Closed or Released, so the line was clear and constructive work could open.
+think The newest log's recommend named the crux exactly: teach a Caravan supervisor to take its child roster FROM a system document, so the declaration a witness checks is the same declaration the supervisor obeys. Lindy-first crux-first agreed -- the Microkernel Target double-seat leads, and this is the decisive move that makes every prior ring load-bearing rather than descriptive.
+think Read the ground before writing: capabilities.rye (CapabilityTable, ChildSlot, right bits, Refusal), regions.rye (Map, Perm, Grant, refusal_reason), system.rye (System gathering graph and map, verify, Verdict), read.rye (bounded load from disk, LoadError). The five rings each declared one thing well and left one gap between them.
+think Named the gap plainly -- the declaration described a system while the supervisor held its roster somewhere else. Two sources of truth wearing one architecture's name is the oldest way a proof stops meaning anything, so the roster is DERIVED rather than written beside.
+think Found the load-bearing bound while reading: capabilities.max_children is 4 and regions.max_domains is 8, so a legal declaration can outrun the table. Chose to refuse by name (TooManyDomains) rather than seat what fits -- the same honesty read.rye spends a byte of headroom on, and the refusal names the SUPERVISOR's bound rather than a fault in the document.
+think Chose two checkable properties over tidiness: conservation (every declared grant seats exactly one capability, so the counts must match) and agreement (the whole region-by-domain cross product at read, write, and execute each, table answer equal to map answer). The walk is total rather than sampled, which is what makes agreement a fact.
+think Wrote caravan/systems/wide_roster.bron so the distinction is visible on disk -- five wired domains around one shared region, whole by every property verify reads, and still past four children.
+think Built and ran: GREEN on the first metal pass. Refused to trust that -- proved the RED path by widening rights_of with one right the document withheld, rebuilt, and watched the agreement assert abort at check_serial_stack (exit 134). Restored the source and removed the probe binary.
+obs W xor X crosses the translation for free. A grammar holding r, rw, rx and nothing else cannot derive a mask carrying write beside execute, so the property is inherited by construction rather than re-checked -- structure doing the work a later check would otherwise repeat.
+obs The negative answers carry the round. A client reaching a buffer it was never granted is the failure this whole arc exists to rule out, and both rings refuse it, each in its own vocabulary: the map answers not_granted, the table answers no_such_resource. Two independent paths agreeing on a no is stronger evidence than either path agreeing on a yes.
+obs Council rota lap item 21 -- ORGANIZING.md. Its placement law confirmed this round's filing without a second thought: implementation goes to the module it belongs to, the witness to tools/, the artifact beside its readers under caravan/systems/. Its "references are promises" line governed the docs-sync touch in the same commit.
+obs Kept the round narrow -- one keystone, one new module, one new artifact, one witness, the README section that describes it, and the live card repointed. No unrelated sweep opened.
+loom witness=caravan_roster_witness result=GREEN domains=3 grants=6 capabilities=6 wide_domains=5 red_probe_exit=134
+file caravan/roster.rye the supervisor's capability table derived from the parsed declaration -- conservation and agreement both checkable, the roster bound refused by name
+file caravan/systems/wide_roster.bron a whole declaration that still outruns this supervisor, so the bound belongs visibly to the table rather than to the document
+file tools/caravan_roster_witness.rish proves the derivation on metal -- conservation, the shared refusal, the roster bound, and the grammar still refusing rwx before a roster is ever derived
+file caravan/README.md the ladder row and the "Why the Supervisor Reads the Same Sentences" section, seated after the reader section in ring order (docs-sync in the same commit)
+file crux/REMEMBER.md live edge repointed single-stranded to six green rings and the next crux, the prior edge's per-ring prose already condensed
+recommend keep-going -- the document and the supervisor now read the same sentences, so the next crux is the last step outward: a supervision loop that spawns its children FROM a roster and refuses a spawn the declaration never granted, closing the path from document to running process. No key, no funds.
