@@ -1,0 +1,398 @@
+//! image/selection_neighbors.rye -- the GROW-SELECTION gesture: given a selection (an ascending label set any selector speaks), name the
+//! NEIGHBOR RING -- every object NOT in the selection whose box overlaps at least one selected object -- then grow the selection by that ring.
+//! One ring is ONE STEP of the box-overlap graph; iterating the grow to a fixed point walks the transitive closure. Exact integers, NO float.
+//!
+//! Season G (Open Media Primitives) -- image/overlap_clusters.rye reads the WHOLE transitive closure at once (a bounded union-find over the
+//! box-overlap matrix), and image/selection_cluster_facts.rye EXPANDS a selection straight to the whole clusters it touches. This rung reads
+//! the SAME growth one STEP at a time: `selection_neighbors` names only the immediate ring a selection touches, `grow_selection` adds that
+//! ring once, `grow_to_fixpoint` repeats the grow until nothing new arrives. It composes over image/scene_graph.rye's precomputed overlap
+//! matrix, so it invents no plane -- a reading over a reading. A surface reads it the moment a marquee must GROW by one ring ("expand
+//! selection") rather than snap straight to whole groups: the incremental sibling of the all-at-once cluster expansion.
+//!
+//! The DECISIVE crux -- box overlap is NOT transitive, so ONE ring is strictly WEAKER than the transitive closure, yet ITERATING the ring
+//! REACHES it exactly, in two shapes at once over one chain:
+//!
+//!   ONE STEP STOPS SHORT, THE CLOSURE REACHES THROUGH. Over a 3-object chain where object 1's box overlaps 2 and 2's overlaps 3 yet 1's box
+//!   never overlaps 3 (box overlap is not transitive), growing the selection {1} by one ring reaches only {1,2} -- object 3 is a neighbor of
+//!   a neighbor, past the single ring. Iterating the grow reaches {1,2,3} THROUGH 2, exactly the connected cluster: connectivity is the
+//!   transitive closure of the one-ring relation, so `grow_to_fixpoint` equals image/overlap_clusters.rye's cluster membership, cross-checked.
+//!
+//!   THE DEPTH DEPENDS ON THE START, THE FIXED POINT DOES NOT. Growing from the chain's MIDDLE {2} reaches the whole cluster {1,2,3} in ONE
+//!   step (2's box overlaps both ends), while growing from an END {1} needs TWO. So the number of rings a grow spends depends on where the
+//!   selection begins, yet every start in a cluster converges to the SAME fixed point -- the whole cluster. A stable selection (no neighbors)
+//!   is exactly a union of WHOLE clusters, and a grow never leaks across a cluster boundary: a far singleton stays its own fixed point.
+//!
+//! Compose not braid. This rung OWNS only the one-ring neighbor read and the grow iteration over it. image/scene_graph.rye owns the overlap
+//! matrix (`relation_of`); image/overlap_clusters.rye owns the whole-closure clustering the selftest cross-checks against. No pixel re-read,
+//! no cluster recomputed here -- a reading over the graph the family already proved.
+//!
+//! Everything is bounded before a byte: a valid selection names at most one label per object, so its length is bounded by the object count,
+//! itself under image/label.rye's `label_max_pixels`; the presence tally is sized to the object count plus one; each grow scans the object
+//! count squared cells of the matrix and adds at least one object or halts, so the fixed-point loop runs at most the object count times. A
+//! selection that names background (0), a label past the object count, or labels out of strictly-ascending order refuses `BadSelection`,
+//! having read nothing. No network, no key, no funds -- the expand-selection ring a surface names the day a marquee grows one step at a time.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/selection_neighbors.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+
+pub const selection_neighbors_version = "20260819.051153";
+
+pub const SelectionNeighborsError = error{
+    BadSelection,
+};
+
+/// Check a selection is a valid label set against the scene -- every entry a real dense object label (1..components), the entries strictly
+/// ascending (hence distinct), and no more entries than objects. The contract every selector in the ladder keeps; a read enforces it at the
+/// edge and refuses `BadSelection` before touching the matrix, so no read ever indexes a phantom object. Reads nothing on refusal.
+fn validate_selection(graph: scene_graph.SceneGraph, selection: []const u32) SelectionNeighborsError!void {
+    // invariant: the matrix holds exactly one cell per ordered pair.
+    assert(graph.relations.len == @as(usize, graph.components) * @as(usize, graph.components));
+    // invariant: the object count stays under image/label.rye's pixel ceiling, so the check loop is bounded.
+    assert(graph.components <= label.label_max_pixels);
+
+    // a valid selection names at most one label per object -- a longer slice cannot be strictly ascending within the dense range.
+    if (selection.len > @as(usize, graph.components)) return error.BadSelection;
+
+    var prev: u32 = 0;
+    var i: usize = 0;
+    while (i < selection.len) : (i += 1) {
+        const lbl = selection[i];
+        // a selection names foreground labels only, never background and never past the object count.
+        if (lbl == 0 or lbl > graph.components) return error.BadSelection;
+        // strictly ascending -- which also guarantees distinct, since equal or descending both fail here.
+        if (lbl <= prev) return error.BadSelection;
+        prev = lbl;
+    }
+}
+
+/// Mark a validated selection into a fresh presence tally sized to the object count plus one (index 0 unused -- there is no object 0). The
+/// caller owns the returned slice. A private helper the neighbor and grow reads share.
+fn mark_selection(allocator: std.mem.Allocator, graph: scene_graph.SceneGraph, selection: []const u32) ![]bool {
+    const present = try allocator.alloc(bool, @as(usize, graph.components) + 1);
+    var p: usize = 0;
+    while (p < present.len) : (p += 1) present[p] = false;
+    var i: usize = 0;
+    while (i < selection.len) : (i += 1) {
+        // invariant: validate_selection already proved every entry a real dense label, so it indexes a real slot.
+        assert(selection[i] >= 1);
+        assert(selection[i] <= graph.components);
+        present[@as(usize, selection[i])] = true;
+    }
+    return present;
+}
+
+/// The ascending NEIGHBOR RING of a selection -- every object NOT in the selection whose box overlaps at least one SELECTED object, read
+/// straight from the scene graph's precomputed overlap matrix. This is exactly ONE step of the box-overlap graph out from the selection.
+/// Returns an empty slice when the selection touches nothing new. Refuses `BadSelection` for a malformed label set. The caller owns the slice.
+pub fn selection_neighbors(allocator: std.mem.Allocator, graph: scene_graph.SceneGraph, selection: []const u32) ![]u32 {
+    try validate_selection(graph, selection);
+    const in_sel = try mark_selection(allocator, graph, selection);
+
+    // a neighbor flag per dense object id (index 0 unused). Bounded by the object count.
+    const is_neighbor = try allocator.alloc(bool, @as(usize, graph.components) + 1);
+    var z: usize = 0;
+    while (z < is_neighbor.len) : (z += 1) is_neighbor[z] = false;
+
+    // for every candidate NOT in the selection, mark it a neighbor when any selected object's box overlaps it.
+    var b: u32 = 1;
+    while (b <= graph.components) : (b += 1) {
+        if (in_sel[@as(usize, b)]) continue;
+        var i: usize = 0;
+        while (i < selection.len) : (i += 1) {
+            const a = selection[i];
+            const rel = try scene_graph.relation_of(graph, a, b);
+            if (rel.boxes_overlap) {
+                is_neighbor[@as(usize, b)] = true;
+                break;
+            }
+        }
+    }
+
+    // count then collect the neighbors ascending -- dense, gap-free order.
+    var found: u32 = 0;
+    var id: u32 = 1;
+    while (id <= graph.components) : (id += 1) {
+        if (is_neighbor[@as(usize, id)]) found += 1;
+    }
+    const result = try allocator.alloc(u32, @as(usize, found));
+    var w: usize = 0;
+    id = 1;
+    while (id <= graph.components) : (id += 1) {
+        if (is_neighbor[@as(usize, id)]) {
+            result[w] = id;
+            w += 1;
+        }
+    }
+    // invariant: the collect loop filled exactly the counted slots.
+    assert(w == @as(usize, found));
+    // invariant: the ring can hold no more objects than the scene, minus at least the selected ones it excludes.
+    assert(found <= graph.components);
+    return result;
+}
+
+/// HOW MANY objects sit in the selection's one-ring neighborhood -- the size of `selection_neighbors`. Refuses `BadSelection` for a
+/// malformed label set.
+pub fn neighbor_count(allocator: std.mem.Allocator, graph: scene_graph.SceneGraph, selection: []const u32) !u32 {
+    const ring = try selection_neighbors(allocator, graph, selection);
+    // invariant: the ring can hold no more objects than the scene.
+    assert(ring.len <= @as(usize, graph.components));
+    return @as(u32, @intCast(ring.len));
+}
+
+/// GROW the selection by one ring -- the ascending union of the selection and its immediate neighbors. One step out along the box-overlap
+/// graph. A selection with no neighbors returns its own members unchanged (a fixed point). Refuses `BadSelection` for a malformed label set.
+/// The caller owns the returned slice.
+pub fn grow_selection(allocator: std.mem.Allocator, graph: scene_graph.SceneGraph, selection: []const u32) ![]u32 {
+    try validate_selection(graph, selection);
+    const in_sel = try mark_selection(allocator, graph, selection);
+
+    // an object is in the grown set when it is selected OR a neighbor of a selected object.
+    const in_grown = try allocator.alloc(bool, @as(usize, graph.components) + 1);
+    var z: usize = 0;
+    while (z < in_grown.len) : (z += 1) in_grown[z] = in_sel[z];
+
+    var b: u32 = 1;
+    while (b <= graph.components) : (b += 1) {
+        if (in_grown[@as(usize, b)]) continue;
+        var i: usize = 0;
+        while (i < selection.len) : (i += 1) {
+            const rel = try scene_graph.relation_of(graph, selection[i], b);
+            if (rel.boxes_overlap) {
+                in_grown[@as(usize, b)] = true;
+                break;
+            }
+        }
+    }
+
+    var found: u32 = 0;
+    var id: u32 = 1;
+    while (id <= graph.components) : (id += 1) {
+        if (in_grown[@as(usize, id)]) found += 1;
+    }
+    const result = try allocator.alloc(u32, @as(usize, found));
+    var w: usize = 0;
+    id = 1;
+    while (id <= graph.components) : (id += 1) {
+        if (in_grown[@as(usize, id)]) {
+            result[w] = id;
+            w += 1;
+        }
+    }
+    // invariant: the grown set filled exactly the counted slots.
+    assert(w == @as(usize, found));
+    // invariant: growing never shrinks a selection -- the union holds at least every original member.
+    assert(found >= @as(u32, @intCast(selection.len)));
+    return result;
+}
+
+/// TRUE when the selection is STABLE -- it has no neighbors, so growing it adds nothing. A stable selection is exactly a union of WHOLE
+/// connected clusters: the fixed point of the grow. Refuses `BadSelection` for a malformed label set.
+pub fn is_stable(allocator: std.mem.Allocator, graph: scene_graph.SceneGraph, selection: []const u32) !bool {
+    const n = try neighbor_count(allocator, graph, selection);
+    return n == 0;
+}
+
+/// Grow the selection REPEATEDLY until it stops changing -- the transitive closure of the one-ring grow, which is exactly the union of the
+/// whole connected clusters the selection touches. Each pass adds at least one object or halts, so the loop runs at most the object count
+/// times. Refuses `BadSelection` for a malformed label set. The caller owns the returned slice.
+pub fn grow_to_fixpoint(allocator: std.mem.Allocator, graph: scene_graph.SceneGraph, selection: []const u32) ![]u32 {
+    try validate_selection(graph, selection);
+
+    var cur = try grow_selection(allocator, graph, selection);
+    // invariant: the fixed point is reached within object-count passes -- each pass grows by >= 1 until stable.
+    var passes: u32 = 0;
+    while (passes <= graph.components) : (passes += 1) {
+        const next = try grow_selection(allocator, graph, cur);
+        if (next.len == cur.len) return next;
+        cur = next;
+    }
+    // unreachable in a well-formed scene: a strictly growing bounded set must stabilize within `components` passes.
+    unreachable;
+}
+
+// --- selftest: the DECISIVE one-ring-versus-transitive-closure crux over a 3-object CHAIN plus a far singleton. Three corner-L brackets
+//     staggered down-right so each hugs its own TOP-LEFT and leaves its BOTTOM-RIGHT overlap corner empty: A box (1,1)-(5,5), B box
+//     (4,4)-(8,8), C box (7,7)-(11,11). A's box overlaps B's (corner (4,4)-(5,5)) and B's overlaps C's (corner (7,7)-(8,8)), yet A's box
+//     never overlaps C's (A max x 5 < 7) -- box overlap is NOT transitive. The three L's pixels stay 8-disconnected (each offset by 3), so
+//     they are three components chained into ONE cluster. A lone block D far bottom-left is a singleton the grow never reaches ----------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a corner bracket-L hugging TOP-LEFT: a vertical arm down column `x0` from `y0` to `y1`, and a horizontal arm along row `y0` from
+/// `x0` to `x1`. Its inclusive box is (x0,y0)-(x1,y1); its bottom-right corner stays empty so a box overlap there touches no pixel.
+fn set_corner_l(img: *qoi.Pixmap, x0: u32, y0: u32, x1: u32, y1: u32) void {
+    // invariant: the arms run in the positive direction and stay inside the buffer.
+    assert(x1 >= x0);
+    assert(y1 >= y0);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) set_dot(img, x0, yy);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) set_dot(img, xx, y0);
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// TRUE when two ascending label sets hold exactly the same members -- a small set-equality the selftest leans on to compare a grow's fixed
+/// point against a cluster's membership.
+fn same_set(a: []const u32, b: []const u32) bool {
+    if (a.len != b.len) return false;
+    var i: usize = 0;
+    while (i < a.len) : (i += 1) {
+        if (a[i] != b[i]) return false;
+    }
+    return true;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- BUILD THE CHAIN on a 13x13 canvas: A corner-L box (1,1)-(5,5) label 1, B corner-L box (4,4)-(8,8) label 2, C corner-L box
+    //     (7,7)-(11,11) label 3, D a 2x2 block box (0,11)-(1,12) label 4 (a far singleton, labeled last in raster order) -------------------
+    var scene = try make_canvas(garden, 13, 13, 0);
+    set_corner_l(&scene, 1, 1, 5, 5); // A: hugs top-left, box (1,1)-(5,5)
+    set_corner_l(&scene, 4, 4, 8, 8); // B: box (4,4)-(8,8)
+    set_corner_l(&scene, 7, 7, 11, 11); // C: box (7,7)-(11,11)
+    set_block(&scene, 0, 11, 2, 2); // D: block box (0,11)-(1,12), a far singleton
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 4) return error.SceneNotFourComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+
+    // confirm the CHAIN shape the crux leans on: 1-2 and 2-3 overlap, 1-3 does NOT (box overlap is not transitive), and 1,2,3 are one cluster
+    if (!(try scene_graph.relation_of(graph, 1, 2)).boxes_overlap) return error.OneTwoNotOverlapping;
+    if (!(try scene_graph.relation_of(graph, 2, 3)).boxes_overlap) return error.TwoThreeNotOverlapping;
+    if ((try scene_graph.relation_of(graph, 1, 3)).boxes_overlap) return error.OneThreeFalselyOverlapping;
+    if (try overlap_clusters.same_cluster(clustering, 1, 3) != true) return error.ChainNotOneCluster;
+    if (try overlap_clusters.same_cluster(clustering, 1, 4) != false) return error.DNotSingleton;
+    if (overlap_clusters.cluster_count(clustering) != 2) return error.ClusterCountNotTwo;
+
+    // --- ONE STEP STOPS SHORT -- grow the selection {1} by ONE ring: object 1's box overlaps only 2, so the ring is {2} and the grown set is
+    //     {1,2}. Object 3 is a neighbor of a neighbor, PAST the single ring -- it is not reached in one step. {1} is not stable ---------------
+    const sel_1 = [_]u32{1};
+    const ring_1 = try selection_neighbors(garden, graph, &sel_1);
+    if (!same_set(ring_1, &[_]u32{2})) return error.RingOnOneWrong;
+    const grow_1 = try grow_selection(garden, graph, &sel_1);
+    if (!same_set(grow_1, &[_]u32{ 1, 2 })) return error.GrowOnOneWrong;
+    if (try is_stable(garden, graph, &sel_1) != false) return error.OneFalselyStable;
+
+    // --- THE DEPTH DEPENDS ON THE START -- grow from the chain's MIDDLE {2}: object 2's box overlaps BOTH 1 and 3, so ONE ring already reaches
+    //     the whole cluster {1,2,3}, and that grown set is stable. From the end {1} the same cluster needs TWO rings -- the depth is a fact
+    //     about where the selection begins, never about the cluster it converges to ---------------------------------------------------------
+    const sel_2 = [_]u32{2};
+    const ring_2 = try selection_neighbors(garden, graph, &sel_2);
+    if (!same_set(ring_2, &[_]u32{ 1, 3 })) return error.RingOnTwoWrong;
+    const grow_2 = try grow_selection(garden, graph, &sel_2);
+    if (!same_set(grow_2, &[_]u32{ 1, 2, 3 })) return error.GrowOnTwoWrong;
+    if (try is_stable(garden, graph, grow_2) != true) return error.MiddleGrowNotStable;
+
+    // --- THE CLOSURE REACHES THROUGH -- grow_to_fixpoint from EVERY start in the chain converges to the SAME whole cluster {1,2,3}, cross-
+    //     checked against overlap_clusters' membership: iterating the one-ring grow IS the transitive closure, which IS connectivity ----------
+    const cluster_members = [_]u32{ 1, 2, 3 };
+    const fp_1 = try grow_to_fixpoint(garden, graph, &sel_1);
+    if (!same_set(fp_1, &cluster_members)) return error.FixpointOnOneWrong;
+    const fp_2 = try grow_to_fixpoint(garden, graph, &sel_2);
+    if (!same_set(fp_2, &cluster_members)) return error.FixpointOnTwoWrong;
+    const sel_3 = [_]u32{3};
+    const fp_3 = try grow_to_fixpoint(garden, graph, &sel_3);
+    if (!same_set(fp_3, &cluster_members)) return error.FixpointOnThreeWrong;
+    // the fixed point equals the cluster: every member of cluster_of(1) is in fp_1 and vice versa (proven by same_set against the roster)
+    const cid_1 = try overlap_clusters.cluster_of(clustering, 1);
+    if (try overlap_clusters.cluster_size(clustering, cid_1) != 3) return error.ClusterSizeNotThree;
+
+    // --- A GROW NEVER LEAKS ACROSS A CLUSTER BOUNDARY -- the far singleton D (label 4) has no neighbor, so its ring is empty, {4} is stable,
+    //     and its fixed point is itself; and the whole chain's fixed point {1,2,3} never holds 4 -----------------------------------------------
+    const sel_4 = [_]u32{4};
+    const ring_4 = try selection_neighbors(garden, graph, &sel_4);
+    if (ring_4.len != 0) return error.SingletonRingNotEmpty;
+    if (try is_stable(garden, graph, &sel_4) != true) return error.SingletonNotStable;
+    const fp_4 = try grow_to_fixpoint(garden, graph, &sel_4);
+    if (!same_set(fp_4, &[_]u32{4})) return error.SingletonFixpointWrong;
+
+    // --- A STABLE SELECTION IS A UNION OF WHOLE CLUSTERS -- selecting the whole chain plus the singleton {1,2,3,4} is the whole scene, stable
+    //     with an empty ring, its own fixed point --------------------------------------------------------------------------------------------
+    const sel_all = [_]u32{ 1, 2, 3, 4 };
+    if (try is_stable(garden, graph, &sel_all) != true) return error.WholeSceneNotStable;
+    if (try neighbor_count(garden, graph, &sel_all) != 0) return error.WholeSceneRingNotEmpty;
+
+    // --- MALFORMED SELECTIONS -- a label past the object count, background 0, and a non-ascending pair all refuse BadSelection, having read
+    //     nothing --------------------------------------------------------------------------------------------------------------------------
+    const past = [_]u32{5};
+    if (selection_neighbors(garden, graph, &past)) |_| return error.PastLabelNotRefused else |err| {
+        if (err != error.BadSelection) return error.WrongPastError;
+    }
+    const zero = [_]u32{0};
+    if (grow_selection(garden, graph, &zero)) |_| return error.ZeroLabelNotRefused else |err| {
+        if (err != error.BadSelection) return error.WrongZeroError;
+    }
+    const descending = [_]u32{ 3, 2 };
+    if (grow_to_fixpoint(garden, graph, &descending)) |_| return error.DescendingNotRefused else |err| {
+        if (err != error.BadSelection) return error.WrongDescendingError;
+    }
+
+    // --- DETERMINISM -- the same selection grows to the same ring twice -----------------------------------------------------------------
+    const d1 = try selection_neighbors(garden, graph, &sel_1);
+    const d2 = try selection_neighbors(garden, graph, &sel_1);
+    if (!same_set(d1, d2)) return error.RingNotDeterministic;
+
+    print("GREEN image-selection-neighbors: the GROW-SELECTION gesture -- name the one-ring NEIGHBORHOOD of a selection (every object not selected whose box overlaps a selected one), grow the selection by that ring, and iterate the grow to a fixed point, composing over image/scene_graph.rye's overlap matrix, exact integers, NO float and NO tolerance -- the DECISIVE crux that box overlap is NOT transitive so ONE ring is strictly weaker than the transitive closure yet ITERATING the ring reaches it exactly, in two shapes over one chain. ONE STEP STOPS SHORT, THE CLOSURE REACHES THROUGH -- over a 3-object chain (A box (1,1)-(5,5), B box (4,4)-(8,8), C box (7,7)-(11,11), each an 8-disconnected corner-L, so 1's box overlaps 2 and 2's overlaps 3 yet 1's box never overlaps 3), growing {{1}} by one ring reaches only {{1,2}} (object 3 a neighbor of a neighbor, past the single ring), while grow_to_fixpoint reaches {{1,2,3}} THROUGH 2, exactly overlap_clusters' connected cluster (connectivity is the transitive closure of the one-ring relation, cross-checked against cluster membership). THE DEPTH DEPENDS ON THE START, THE FIXED POINT DOES NOT -- growing from the MIDDLE {{2}} reaches the whole cluster {{1,2,3}} in ONE step (2's box overlaps both ends) and is then stable, while from an END {{1}} the same cluster needs TWO rings, yet every start converges to the SAME fixed point. A grow never leaks across a cluster boundary -- the far singleton D (label 4) has an empty ring, is stable, and is its own fixed point, and the chain's fixed point {{1,2,3}} never holds 4; a stable selection (no neighbors) is exactly a union of WHOLE clusters, so the whole scene {{1,2,3,4}} is stable with an empty ring. A label past the count, background 0, and a non-ascending pair each refuse BadSelection having read nothing; the same selection grows to the same ring twice. Compose not braid over image/scene_graph.rye (the overlap matrix) and image/overlap_clusters.rye (the whole-closure clustering the selftest cross-checks)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: selection_neighbors selftest\n", .{});
+    return 1;
+}
