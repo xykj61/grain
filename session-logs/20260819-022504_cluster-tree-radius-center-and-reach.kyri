@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260819.022504
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title cluster_tree_radius -- the center of the skeleton and the reach from it
+prompt baton prin recur -- take the next agent-doable lap Lindy-first crux-first on the live green Season G scene-read edge; Standfast on reds first; send often; stop only at custody gates
+think Read KYRI.md and RADIANT_STYLE.md to hold the voice from the first token, then crux/REMEMBER.md, crux/REDS.md, and the top three session-log rows to pick up the running thread.
+think Standfast check: every living REDS row (80, 83, 84, 85, 86, 87 and the prose notes) reads Closed, Released, or the custody-gated errata #75. No open agent-closable red -- new work is clear to begin.
+think The thread is unbroken: the last lap built image/cluster_tree_diameter.rye, the DIAMETER of the cluster MST (the MAX eccentricity, poles the leaves), computing tree_eccentricity per cluster. The log itself named the crux-first next rung: a cluster-tree RADIUS/center read pairing the eccentricities.
+think Lindy-first crux-first: the radius is the same eccentricity vector read from its other end -- its MINIMUM, the center the hub where the diameter's poles are the leaves. It composes over the diameter module's pub tree_eccentricity with no walk re-derived (compose not braid). No fetch, no key, no funds.
+think Designed three scenes. ONE the three-cluster star (radius 3 = bottleneck 3 < diameter 5, center the hub, is_center(1) TRUE while is_diameter_endpoint(1) FALSE, vector bounded 3 <= 5 <= 6). TWO the four-cluster star arms 3,3,9 (center invariant at the hub yet radius climbs 3 -> 9 with the far member). THREE a symmetric PATH chain 1-2-3 edges both gap 3 (center the MIDDLE cluster 2 not the lowest id, proving the center is genuinely found; diameter 6 = twice the radius 6, the upper bound met where a star falls short 5 < 6 and 12 < 18).
+think The path scene earns its keep twice: it proves tree_center is a true argmin (a middle id, never assumed cluster 1) and it meets the radius/diameter upper bound diameter <= 2*radius exactly, contrasting the stars that fall strictly short.
+obs GREEN on the FIRST full metal run, no reds. TAME bans clean, width-check exit 0, plain 7-bit ASCII, living-card ASCII GREEN. Version const read straight from the live clock 021910, no future stamp (REDS #75's lesson).
+obs Cross-checks tie three modules together: radius = mst_bottleneck for a star (the hub's single longest arm), where the diameter's own selftest already proved ecc_hub = mst_bottleneck; the center is never a diameter pole and a pole is never the center -- the two ends of one eccentricity vector.
+loom witness=cluster_tree_radius_witness scenes=3 clusters_max=4 float_ops=0 result=GREEN
+file image/cluster_tree_radius.rye the RADIUS and CENTER of the cluster MST -- tree_radius, tree_center, is_center, composing over the diameter's tree_eccentricity
+file tools/cluster_tree_radius_witness.rish native-contains witness over the three scenes, the lone-cluster whole, the refusals, and determinism (REDS #85)
+file image/README.md names the cluster tree radius after the cluster tree diameter (docs-sync)
+file crux/REMEMBER.md live edge + Git nib repointed single-stranded, cluster_tree_diameter folded to a prior-nib comment; 191 image modules stand
+recommend keep-going the live green Season G edge stands broad; NEXT crux-first agent-doable: a longest-path EDGE-LIST read naming the bridges the diameter walks, a per-cluster lasso read, or a codec read; the Microkernel study rung and a real-photo top-hat wait on a fetch/license gate. No network, no key, no funds.

@@ -1,0 +1,337 @@
+//! image/cluster_tree_radius.rye -- the CENTER of the skeleton and the reach from it: the RADIUS of the cluster minimum spanning tree, the
+//! SMALLEST farthest-reach of any cluster, and the CENTER that achieves it. `tree_radius` reads the whole-tree smallest eccentricity;
+//! `tree_center` names the cluster that reaches every other for the least, the lowest id on a tie; `is_center` asks whether a cluster is a
+//! center -- exact integers, NO float, NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/cluster_tree_diameter.rye reads the DIAMETER, the GREATEST farthest-reach of any cluster (its two
+//! poles the leaves), off the ECCENTRICITY of each cluster: the weight from that cluster to the one it reaches for the most. The diameter is the
+//! MAXIMUM of that eccentricity over every cluster. This rung reads the same eccentricity vector from its OTHER end -- its MINIMUM, the RADIUS,
+//! and the cluster that holds it, the CENTER. A surface names the center the day it must place a group's handle, or the single label a whole
+//! connected region hangs from: not a pole of its span, but the cluster nearest to all of them at once.
+//!
+//! The DECISIVE crux -- the radius and the diameter are ONE eccentricity vector read from its two ends; the center is the hub where the poles are
+//! the leaves, and the vector is bounded on both sides:
+//!
+//!   THE RADIUS MEETS THE BOTTLENECK WHILE THE DIAMETER EXCEEDS IT; THE CENTER IS THE HUB, NEVER A POLE. Over the three-cluster star (the MST a
+//!   star on the hub cluster 1, edges 1-2 gap 2 and 1-3 gap 3) the hub's eccentricity is its single longest bridge (3), the SMALLEST of the three
+//!   -- so the radius (3) equals the tree's bottleneck (3), the largest single edge, while the diameter (5) strictly exceeds it. The center is the
+//!   hub cluster 1, exactly the cluster the diameter read proves is NEVER a pole; `is_center(1)` reads TRUE while `is_diameter_endpoint(1)` reads
+//!   FALSE. The vector is bounded on both sides: radius (3) <= diameter (5) <= twice the radius (6).
+//!
+//!   THE CENTER IS INVARIANT YET THE RADIUS CLIMBS WHEN A FAR MEMBER JOINS. Over the four-cluster star (edges 1-2 gap 3, 1-3 gap 3, 1-4 gap 9) the
+//!   center stays the hub cluster 1 -- the far outlier never changes WHO reaches all for the least -- yet the radius climbs from 3 to 9, the hub's
+//!   new longest arm, meeting the new bottleneck (9). The radius is set by the center's LONGEST arm, so a distant member lifts the radius without
+//!   moving the center; radius (9) <= diameter (12) <= twice the radius (18).
+//!
+//!   THE CENTER IS A MIDDLE ID, NOT THE LOWEST; A SYMMETRIC PATH MEETS THE UPPER BOUND. Over a three-cluster symmetric PATH (three blocks in a row,
+//!   the MST a chain 1-2-3, edges 1-2 gap 3 and 2-3 gap 3) the center is the MIDDLE cluster 2 -- not cluster 1, proving the center is genuinely
+//!   found and never assumed to be the lowest id -- its eccentricity 3 the radius, the two ends clusters 1 and 3 the poles at eccentricity 6. And
+//!   the diameter (6) EQUALS twice the radius (6), the upper bound met exactly, where a star falls strictly short: a balanced path is the tightest
+//!   layout, its poles equidistant from a center exactly halfway between them.
+//!
+//! Compose not braid. This rung OWNS only the radius and center reads -- the minimum over the eccentricities, the argmin, the center test. No
+//! eccentricity recomputed (image/cluster_tree_diameter.rye owns `tree_eccentricity`, the breadth-first walk over the tree's edges, and the
+//! diameter and endpoints cross-checked here and never re-derived), no spanning tree recomputed (image/cluster_minimum_spanning_tree.rye owns
+//! `build_mst`, the tree's weight and bottleneck), no cluster distance recomputed (image/cluster_graph.rye owns the matrix a level below). A
+//! reading over a reading over a reading over a reading over a reading over a reading over a reading over a reading over a reading.
+//!
+//! Everything is bounded before a byte: the cluster count can never exceed the object count, itself capped at `scene_graph_max_objects`, so the
+//! radius scan runs one eccentricity walk per cluster, each walk bounded by the n-1 edges. A lone-cluster layout is already one whole -- its radius
+//! is zero, and it is its own center (`tree_center` reads cluster 1, `is_center(1)` reads TRUE). A zero or past-the-count cluster id refuses
+//! `BadClusterId`. No network, no key, no funds -- the handle a surface hangs a connected group from, on our own geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/cluster_tree_radius.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const cluster_graph = @import("cluster_graph.rye");
+const cluster_mst = @import("cluster_minimum_spanning_tree.rye");
+const cluster_tree_diameter = @import("cluster_tree_diameter.rye");
+
+pub const cluster_tree_radius_version = "20260819.021910";
+
+pub const RadiusError = error{
+    BadClusterId,
+};
+
+/// The RADIUS of the spanning tree -- the SMALLEST eccentricity over every cluster, the farthest reach of the cluster that reaches all others for
+/// the least. A lone-cluster (empty) tree reaches nothing, so its radius is zero.
+pub fn tree_radius(allocator: std.mem.Allocator, tree: cluster_mst.MstTree) !u32 {
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges (empty for a lone cluster).
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+    // invariant: a real tree holds at least one cluster.
+    assert(tree.clusters >= 1);
+
+    const n: u32 = tree.clusters;
+    if (n < 2) return 0;
+
+    var best: u32 = std.math.maxInt(u32);
+    var c: u32 = 1;
+    while (c <= n) : (c += 1) {
+        const ecc = try cluster_tree_diameter.tree_eccentricity(allocator, tree, c);
+        if (ecc < best) best = ecc;
+    }
+    // invariant: some cluster set the minimum, so the radius is a real reached weight, not the sentinel.
+    assert(best != std.math.maxInt(u32));
+    return best;
+}
+
+/// The CENTER of the spanning tree -- the cluster whose eccentricity equals the radius, the lowest id chosen on a tie for determinism. A
+/// lone-cluster layout is its own center, so a single-cluster tree reads cluster 1.
+pub fn tree_center(allocator: std.mem.Allocator, tree: cluster_mst.MstTree) !u32 {
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges.
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+    // invariant: a real tree holds at least one cluster.
+    assert(tree.clusters >= 1);
+
+    const n: u32 = tree.clusters;
+    if (n < 2) return 1;
+
+    var best_ecc: u32 = std.math.maxInt(u32);
+    var best_c: u32 = 1;
+    var c: u32 = 1;
+    while (c <= n) : (c += 1) {
+        const ecc = try cluster_tree_diameter.tree_eccentricity(allocator, tree, c);
+        // strictly-less keeps the first cluster reaching the minimum in ascending id order -- the lowest id, deterministic.
+        if (ecc < best_ecc) {
+            best_ecc = ecc;
+            best_c = c;
+        }
+    }
+    // invariant: the center is a real 1-based cluster id.
+    assert(best_c >= 1);
+    assert(best_c <= n);
+    return best_c;
+}
+
+/// TRUE when cluster `c` is a CENTER -- its eccentricity equals the radius. A tie names more than one center, and every one reads TRUE. A
+/// lone-cluster layout is its own center. Refuses `BadClusterId` for a zero or past-the-count id.
+pub fn is_center(allocator: std.mem.Allocator, tree: cluster_mst.MstTree, c: u32) !bool {
+    // invariant: a real tree holds at least one cluster.
+    assert(tree.clusters >= 1);
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges.
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+
+    const n: u32 = tree.clusters;
+    if (c == 0 or c > n) return error.BadClusterId;
+    if (n < 2) return true; // the lone cluster is the center of a one-cluster layout
+
+    const ecc = try cluster_tree_diameter.tree_eccentricity(allocator, tree, c);
+    const radius = try tree_radius(allocator, tree);
+    return ecc == radius;
+}
+
+// --- selftest: the radius and the diameter are ONE eccentricity vector read from its two ends. Scene ONE is the MST's own three-cluster star
+//     (edges 1-2 gap 2, 1-3 gap 3): the radius meets the bottleneck while the diameter exceeds it, the center the hub and never a pole. Scene TWO
+//     is the four-cluster star (arms 3, 3, 9): the center is invariant yet the radius climbs with the far member. Scene THREE is a symmetric path
+//     (chain 1-2-3, edges both gap 3): the center is the MIDDLE id 2, and the diameter equals twice the radius, the upper bound met exactly ------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a corner bracket-L: a vertical arm down column `x` from `y0` to `y1`, and a horizontal arm along row `yr` from `x0` to `x1`.
+fn set_corner_l(img: *qoi.Pixmap, x: u32, y0: u32, y1: u32, yr: u32, x0: u32, x1: u32) void {
+    // invariant: the arms run in the positive direction and stay inside the buffer.
+    assert(y1 >= y0);
+    assert(x1 >= x0);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) set_dot(img, x, yy);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) set_dot(img, xx, yr);
+}
+
+/// Paint a 1-pixel-thick RING (a rectangle outline) with corners `(x0, y0)` and `(x1, y1)` -- a holed object, its interior background.
+fn set_ring(img: *qoi.Pixmap, x0: u32, y0: u32, x1: u32, y1: u32) void {
+    // invariant: the ring spans at least a 3x3 box so it encloses a real interior hole, and stays inside the buffer.
+    assert(x1 >= x0 + 2);
+    assert(y1 >= y0 + 2);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) {
+        set_dot(img, xx, y0);
+        set_dot(img, xx, y1);
+    }
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) {
+        set_dot(img, x0, yy);
+        set_dot(img, x1, yy);
+    }
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// Build the cluster graph of a scene, checking the object and cluster counts along the way -- a local helper so every scene reads the same.
+fn graph_of(garden: std.mem.Allocator, img: *qoi.Pixmap, want_objects: u32, want_clusters: u32) !cluster_graph.ClusterGraph {
+    // invariant: the caller names how many objects and clusters the scene must hold, so a mislaid pixel fails loud.
+    assert(want_objects >= 1);
+    assert(want_clusters >= 1);
+    const map = try label.label_components(garden, img);
+    if (map.count != want_objects) return error.SceneObjectCountWrong;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    if (overlap_clusters.cluster_count(clustering) != want_clusters) return error.SceneClusterCountWrong;
+    return cluster_graph.build_cluster_graph(garden, clustering, graph);
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- SCENE ONE: the three-cluster star -- corner-L A and ring B into cluster 1 (the hub), lone block C as cluster 2, far block D as cluster
+    //     3; the MST is a star, edges 1-2 (gap 2) and 1-3 (gap 3) -------------------------------------------------------------------------------
+    var scene = try make_canvas(garden, 15, 15, 0);
+    set_corner_l(&scene, 1, 1, 6, 1, 1, 6); // A: box (1,1)-(6,6)
+    set_block(&scene, 8, 1, 2, 2); // C: box (8,1)-(9,2)
+    set_ring(&scene, 4, 4, 9, 9); // B: box (4,4)-(9,9), overlaps A's corner -> cluster 1
+    set_block(&scene, 12, 12, 2, 2); // D: box (12,12)-(13,13)
+    const cg = try graph_of(garden, &scene, 4, 3);
+    const tree = try cluster_mst.build_mst(garden, cg);
+
+    // --- THE RADIUS MEETS THE BOTTLENECK WHILE THE DIAMETER EXCEEDS IT -- the hub's eccentricity is its single longest bridge (3), the smallest --
+    const radius = try tree_radius(garden, tree);
+    if (radius != 3) return error.SceneOneRadiusNotThree; // the hub reaches its farthest leaf across one bridge
+    if (radius != cluster_mst.mst_bottleneck(tree)) return error.SceneOneRadiusNotBottleneck; // the radius meets the largest single edge
+    const diameter = try cluster_tree_diameter.tree_diameter(garden, tree);
+    if (radius > diameter) return error.SceneOneRadiusAboveDiameter; // radius <= diameter, the vector bounded below by its min
+    if (diameter > 2 * radius) return error.SceneOneDiameterAboveTwiceRadius; // diameter <= 2*radius, the vector bounded above
+    if (diameter <= radius) return error.SceneOneDiameterNotAboveRadius; // a real star spreads: the diameter strictly exceeds the radius
+
+    // --- THE CENTER IS THE HUB, NEVER A POLE -- cluster 1, exactly the cluster the diameter read proves is never a pole ---------------------------
+    const center = try tree_center(garden, tree);
+    if (center != 1) return error.SceneOneCenterNotHub;
+    if (try is_center(garden, tree, 1) != true) return error.SceneOneHubNotCenter;
+    if (try is_center(garden, tree, 2) != false) return error.SceneOneLeafIsCenter;
+    if (try is_center(garden, tree, 3) != false) return error.SceneOneOtherLeafIsCenter;
+    // the center is never a diameter pole, and a pole is never the center -- the two ends of the same eccentricity vector
+    if (try cluster_tree_diameter.is_diameter_endpoint(garden, tree, 1) != false) return error.SceneOneCenterIsPole;
+    if (try is_center(garden, tree, 2) != false or try cluster_tree_diameter.is_diameter_endpoint(garden, tree, 2) != true) return error.SceneOnePoleIsCenter;
+
+    // --- SCENE TWO: the four-cluster star -- a tight triangle of three clusters all mutually 3 apart around a hub, plus a far outlier 9 away; the
+    //     MST is a star on the hub cluster 1, edges 1-2 (gap 3), 1-3 (gap 3), 1-4 (gap 9) --------------------------------------------------------
+    var quad = try make_canvas(garden, 15, 15, 0);
+    set_block(&quad, 2, 2, 2, 2); // A -> cluster 1 (the hub)
+    set_block(&quad, 6, 2, 2, 2); // C -> cluster 2 (same top row, right of A)
+    set_block(&quad, 2, 6, 2, 2); // B -> cluster 3 (below A)
+    set_block(&quad, 12, 12, 2, 2); // D -> cluster 4 (far outlier)
+    const cg2 = try graph_of(garden, &quad, 4, 4);
+    const tree2 = try cluster_mst.build_mst(garden, cg2);
+
+    // --- THE CENTER IS INVARIANT YET THE RADIUS CLIMBS -- still the hub cluster 1, yet the radius climbs 3 -> 9 with the far member -------------
+    const radius2 = try tree_radius(garden, tree2);
+    if (radius2 != 9) return error.SceneTwoRadiusNotNine; // the hub's new longest arm, the far outlier
+    if (radius2 != cluster_mst.mst_bottleneck(tree2)) return error.SceneTwoRadiusNotBottleneck; // the radius meets the new bottleneck
+    if (radius2 <= radius) return error.SceneTwoRadiusNotClimbed; // a far member lifts the radius above the three-cluster star's 3
+    const center2 = try tree_center(garden, tree2);
+    if (center2 != 1) return error.SceneTwoCenterNotHub; // the far member never moves the center
+    const diameter2 = try cluster_tree_diameter.tree_diameter(garden, tree2);
+    if (radius2 > diameter2) return error.SceneTwoRadiusAboveDiameter;
+    if (diameter2 > 2 * radius2) return error.SceneTwoDiameterAboveTwiceRadius; // 12 <= 18, still strictly short of the bound
+
+    // --- SCENE THREE: the symmetric path -- three blocks in a row, boxes disjoint, so three singleton clusters in a chain 1-2-3, edges 1-2 and
+    //     2-3 both gap 3 (columns 2->5 and 6->9), edge 1-3 gap 7 dropped ------------------------------------------------------------------------
+    var row = try make_canvas(garden, 12, 4, 0);
+    set_block(&row, 1, 1, 2, 2); // block 1: box (1,1)-(2,2) -> cluster 1 (leftmost)
+    set_block(&row, 5, 1, 2, 2); // block 2: box (5,1)-(6,2) -> cluster 2 (middle)
+    set_block(&row, 9, 1, 2, 2); // block 3: box (9,1)-(10,2) -> cluster 3 (rightmost)
+    const cg3 = try graph_of(garden, &row, 3, 3);
+    const tree3 = try cluster_mst.build_mst(garden, cg3);
+
+    // --- THE CENTER IS THE MIDDLE ID, NOT THE LOWEST -- cluster 2, proving the center is genuinely found and never assumed the lowest id --------
+    const radius3 = try tree_radius(garden, tree3);
+    if (radius3 != 3) return error.SceneThreeRadiusNotThree; // the middle reaches each end across one edge
+    const center3 = try tree_center(garden, tree3);
+    if (center3 != 2) return error.SceneThreeCenterNotMiddle; // NOT cluster 1 -- the center is the true argmin, a middle id
+    if (try is_center(garden, tree3, 2) != true) return error.SceneThreeMiddleNotCenter;
+    if (try is_center(garden, tree3, 1) != false) return error.SceneThreeLeftIsCenter;
+    if (try is_center(garden, tree3, 3) != false) return error.SceneThreeRightIsCenter;
+    // the two ends are the poles, the center between them at neither end
+    if (try cluster_tree_diameter.is_diameter_endpoint(garden, tree3, 2) != false) return error.SceneThreeCenterIsPole;
+
+    // --- A SYMMETRIC PATH MEETS THE UPPER BOUND -- the diameter equals twice the radius, where a star falls strictly short -----------------------
+    const diameter3 = try cluster_tree_diameter.tree_diameter(garden, tree3);
+    if (diameter3 != 6) return error.SceneThreeDiameterNotSix; // the two edges summed, end to end
+    if (diameter3 != 2 * radius3) return error.SceneThreeDiameterNotTwiceRadius; // the tight bound met exactly: 6 == 2 * 3
+    // contrast the stars, which fall strictly short of twice their radius
+    if (diameter >= 2 * radius) return error.SceneOneStarNotBelowBound; // 5 < 6
+    if (diameter2 >= 2 * radius2) return error.SceneTwoStarNotBelowBound; // 12 < 18
+
+    // --- A LONE-CLUSTER LAYOUT IS ALREADY ONE WHOLE -- zero radius, its own center -----------------------------------------------------------
+    var lone_img = try make_canvas(garden, 6, 6, 0);
+    set_block(&lone_img, 1, 1, 2, 2); // one object, one cluster
+    const lone_cg = try graph_of(garden, &lone_img, 1, 1);
+    const lone_tree = try cluster_mst.build_mst(garden, lone_cg);
+    if (try tree_radius(garden, lone_tree) != 0) return error.LoneRadiusNotZero;
+    if (try tree_center(garden, lone_tree) != 1) return error.LoneCenterNotOne;
+    if (try is_center(garden, lone_tree, 1) != true) return error.LoneClusterNotCenter;
+
+    // --- REFUSALS -- a zero or past-the-count cluster id refuses BadClusterId in the center test ----------------------------------------------
+    if (is_center(garden, tree, 0)) |_| return error.ZeroCenterNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongZeroCenterError;
+    }
+    if (is_center(garden, tree, 4)) |_| return error.PastCenterNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongPastCenterError;
+    }
+
+    // --- DETERMINISM -- the same graph reads the same radius and center twice ----------------------------------------------------------------
+    const tree_again = try cluster_mst.build_mst(garden, cg);
+    if (try tree_radius(garden, tree_again) != radius) return error.RadiusNotDeterministic;
+    if (try tree_center(garden, tree_again) != center) return error.CenterNotDeterministic;
+
+    print("GREEN image-cluster-tree-radius: the CENTER of the skeleton and the reach from it -- the RADIUS of the cluster minimum spanning tree, the SMALLEST farthest-reach of any cluster, and the CENTER that achieves it, with tree_radius the whole-tree smallest eccentricity, tree_center the cluster reaching all for the least (lowest id on a tie), is_center the center test, exact integers, NO float and NO tolerance -- the DECISIVE crux, the radius and the diameter are ONE eccentricity vector read from its two ends, the center the hub where the poles are the leaves. THE RADIUS MEETS THE BOTTLENECK WHILE THE DIAMETER EXCEEDS IT -- over the three-cluster star (edges 1-2 gap 2, 1-3 gap 3) the hub's eccentricity is its single longest bridge (3), the smallest, so the radius (3) equals the tree's bottleneck (3) while the diameter (5) strictly exceeds it; the center is the hub cluster 1, exactly the cluster the diameter read proves is NEVER a pole, is_center(1) TRUE while is_diameter_endpoint(1) FALSE, the vector bounded radius (3) <= diameter (5) <= twice the radius (6). THE CENTER IS INVARIANT YET THE RADIUS CLIMBS -- over the four-cluster star (arms 3, 3, 9) the center stays the hub cluster 1 while the radius climbs from 3 to 9, the hub's new longest arm meeting the new bottleneck, a far member lifting the radius without moving the center. THE CENTER IS A MIDDLE ID, NOT THE LOWEST; A SYMMETRIC PATH MEETS THE UPPER BOUND -- over a three-cluster symmetric path (chain 1-2-3, edges both gap 3) the center is the MIDDLE cluster 2, not cluster 1, proving the center is genuinely found and never assumed the lowest id, and the diameter (6) EQUALS twice the radius (6), the tight bound met exactly where a star falls strictly short (5 < 6, 12 < 18). A lone-cluster layout is already one whole (zero radius, its own center); a zero or past-the-count id refuses BadClusterId; the same graph reads the same radius and center twice. Compose not braid over image/cluster_tree_diameter.rye (tree_eccentricity, tree_diameter, is_diameter_endpoint, cross-checked never re-derived), image/cluster_minimum_spanning_tree.rye (build_mst and the bottleneck), and image/cluster_graph.rye (the matrix a level below) -- a reading over a reading over a reading over a reading over a reading over a reading over a reading over a reading over a reading\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: cluster_tree_radius selftest\n", .{});
+    return 1;
+}
