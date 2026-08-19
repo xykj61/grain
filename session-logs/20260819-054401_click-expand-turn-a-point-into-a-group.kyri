@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260819.054401
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title click_expand -- turn ONE point into a whole-group selection, bridging hit_test to the grow morphology
+prompt baton prin recur -- take the next agent-doable lap Lindy-first crux-first on the live green Season G scene-read edge, Standfast clear, send often.
+think Oriented first: read KYRI and RADIANT_STYLE (the voice), then the REMEMBER live card, REDS, and the top three session-log recommends. Standfast is clear -- every living REDS row Closed, Released, or the custody-gated errata #75; the last lap built selection_shrink (erosion, the dual of grow).
+think The card named the next agent-doable crux three ways: a marquee-grow read, a hit-test-plus-grow "click then expand" read, or a codec read. The Microkernel study and real-photo top-hat wait on fetch/license/custody gates, not agent-doable this lap. Crux-first, I took the click-then-expand: it BRIDGES the very first selector in the ladder (hit_test, the POINT) to the newest morphology (selection_neighbors' grow), closing the loop from the simplest selector to the newest gesture -- the highest-leverage single move.
+think Studied both APIs on metal before writing: hit_test.object_label_at (the arbiter, 0 for background) and selection_neighbors.grow_to_fixpoint (the whole-cluster closure, empty a fixed point). Composed them: click_seed reads a one-object selection (empty on a miss, never an error), click_expand grows it to a fixed point, click_expand_one_ring a single step, click_selects_group / click_expand_size / click_hits round it out.
+think The decisive crux, three shapes over the SAME 3-object chain selection_neighbors proved over: a click is BOUNDED to one object yet its expansion is UNBOUNDED by the cluster (click A seeds {1}, expands to {1,2,3}); ANY object of a group expands to the SAME group (A,B,C all reach {1,2,3}, cross-checked against overlap_clusters); and a MISS expands to nothing (a click in A's interior is background inside A's own box -- the box claims the point yet the click misses, the empty seed grows to empty). hit_test's box-is-a-prefilter crux carried into the expand.
+obs GREEN on the FIRST full metal run, no code reds. TAME bans clean, width-check exit 0, plain 7-bit ASCII, living-card ASCII GREEN, living-docs lint GREEN. Version const read straight from the live clock 053546, no future stamp (REDS #75). Witness native contains, never a shell grep over interpolated output (REDS #85).
+obs Compose not braid held: click_expand owns ONLY the seed-from-a-click read and the expand over it -- hit_test owns the point-to-object arbiter, selection_neighbors the grow and its fixed point, scene_graph the overlap matrix, overlap_clusters the whole-closure clustering the selftest cross-checks. No plane of its own, no pixel written.
+obs Council rota lap re-read the voice items (RADIANT_STYLE, KYRI) and the three road-ahead itineraries -- the four faculties held whole; the open-media rung is the agent-doable Lindy-first crux while the Microkernel study and real-photo top-hat wait on fetch/license/custody gates, surfaced not crossed.
+obs REMEMBER single-stranded: live edge + Git nib repointed to click_expand, selection_shrink folded to a prior-nib comment (the older selection_neighbors comment dropped, one strand kept), count 205 -> 206. image/README.md names the click-then-expand rung after selection_shrink (docs-sync).
+loom witness=click_expand_witness selftest_checks=11 modules=206 build=green
+file image/click_expand.rye the CLICK-THEN-EXPAND gesture -- a click seeds one object, expands to the whole cluster; a miss expands to nothing.
+file tools/click_expand_witness.rish native-contains witness, GREEN on metal (REDS #85).
+file image/README.md names the click-then-expand rung after selection_shrink (docs-sync).
+file crux/REMEMBER.md live edge + Git nib repointed single-stranded, count 205 -> 206.
+recommend keep-going next open-media rung crux-first: a click-then-select-facts read joining click_expand with selection_summary/cluster_facts, a marquee-grow-to-neighbors read, or a codec read; the Microkernel study and real-photo top-hat wait on fetch/license/custody gates, not crossed. No network, no key, no funds.

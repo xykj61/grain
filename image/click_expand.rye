@@ -1,0 +1,318 @@
+//! image/click_expand.rye -- the CLICK-THEN-EXPAND gesture: turn ONE point into a whole-group selection. A click names at most ONE object (the
+//! hit test), yet EXPANDING that seed reaches the whole CONNECTED CLUSTER through the box-overlap closure -- so "click to select the object"
+//! (depth 0) and "click to select the group" (depth infinity) are the SAME primitive read at two depths. Exact integers, NO float.
+//!
+//! Season G (Open Media Primitives) -- image/hit_test.rye is the very first selector in the ladder: given a PIXEL, it names the ONE object under
+//! it (the label map the arbiter, the box only a prefilter). image/selection_neighbors.rye is the newest morphology: it GROWS a selection by its
+//! outer ring and iterates that grow to a fixed point (the whole connected cluster). This rung BRIDGES the two ends -- `click_seed` runs the hit
+//! test into a one-object selection (empty on a miss), `click_expand` grows that seed to its fixed point, `click_expand_one_ring` grows it a
+//! single step, and `click_selects_group` tells a surface whether the click's object belongs to a multi-object group. A reading over readings --
+//! no plane of its own, no pixel written. A surface reads it the moment a tap must select the whole group a keeper pointed at, not just the sliver
+//! under the cursor.
+//!
+//! The DECISIVE crux -- a click is BOUNDED to one object, yet its expansion is UNBOUNDED by the cluster, and a MISS stays empty however far it
+//! expands, in three shapes at once:
+//!
+//!   THE CLICK IS AT MOST ONE, THE EXPANSION IS A WHOLE CLUSTER. Over a 3-object chain whose boxes overlap 1-2 and 2-3 yet never 1-3 (box overlap
+//!   is not transitive), a click on object 1 seeds the one-object selection {1}, yet `click_expand` reaches {1,2,3} -- a single point reaching a
+//!   set of three THROUGH the closure. The seed's size is one; the expansion's size is the whole cluster.
+//!
+//!   ANY OBJECT OF A GROUP EXPANDS TO THE SAME GROUP. Clicking object 1, object 2, or object 3 all seed different one-object selections, yet all
+//!   three expand to the SAME whole cluster {1,2,3} -- exactly image/overlap_clusters.rye's connected membership, cross-checked. Where you click
+//!   within a group never changes which group you select; that is the group-select a surface promises.
+//!
+//!   A MISS EXPANDS TO NOTHING. A click in a gap -- the background inside a corner-L's own bounding box -- seeds the EMPTY selection, and the
+//!   empty selection is grow's fixed point, so `click_expand` stays empty however far it iterates. The box claims the point (the prefilter reads
+//!   true) yet the click misses (the arbiter reads background): image/hit_test.rye's box-is-a-prefilter crux carried into the expand, where a
+//!   phantom click can never grow a phantom group.
+//!
+//! Compose not braid. This rung OWNS only the seed-from-a-click read and the expand over it. image/hit_test.rye owns the point-to-object arbiter
+//! (`object_label_at`); image/selection_neighbors.rye owns the grow and its fixed point; image/scene_graph.rye owns the overlap matrix; image/
+//! overlap_clusters.rye owns the whole-closure clustering the selftest cross-checks. No matrix recomputed, no pixel re-read here.
+//!
+//! Everything is bounded before a byte: a seed holds at most one label, so it is trivially a valid ascending selection; the expand delegates to
+//! image/selection_neighbors.rye's grow, itself bounded by the object count under image/label.rye's `label_max_pixels`. A point off the map
+//! refuses `PointOutOfBounds`, having read nothing; a background point is a valid MISS, never an error -- a keeper may click empty canvas. No
+//! network, no key, no funds -- the click-to-select-a-group gesture a surface names the day a tap must grab the whole thing under it.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/click_expand.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const hit_test = @import("hit_test.rye");
+const selection_neighbors = @import("selection_neighbors.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+
+pub const click_expand_version = "20260819.053546";
+
+pub const ClickExpandError = error{
+    PointOutOfBounds,
+};
+
+/// The SEED a click makes -- the one-object selection under `(x, y)`, read through image/hit_test.rye's arbiter. A hit returns a single-label
+/// slice `{lbl}`; a MISS (a background pixel, a hole, a concavity notch) returns an EMPTY slice, never an error, since a keeper may click empty
+/// canvas. A point off the map refuses `PointOutOfBounds`, having read nothing. The caller owns the returned slice.
+pub fn click_seed(allocator: std.mem.Allocator, map: *const label.LabelMap, x: u32, y: u32) ![]u32 {
+    // invariant: a real label map carries one label per pixel across its whole extent.
+    assert(map.labels.len == @as(usize, map.width) * @as(usize, map.height));
+    // invariant: the arbiter never names a component past the scene's count.
+    assert(map.count <= label.label_max_pixels);
+
+    const lbl = try hit_test.object_label_at(map, x, y);
+    if (lbl == 0) {
+        // a MISS: the empty selection, a valid seed a surface expands to nothing.
+        const empty = try allocator.alloc(u32, 0);
+        return empty;
+    }
+    const seed = try allocator.alloc(u32, 1);
+    seed[0] = lbl;
+    // invariant: a hit seeds exactly the object the arbiter named, a real dense label.
+    assert(seed[0] >= 1);
+    assert(seed[0] <= map.count);
+    return seed;
+}
+
+/// TRUE when a click LANDS on an object -- the seed is non-empty. FALSE for a miss (background, hole, notch). Refuses `PointOutOfBounds` off the
+/// map. The plain "did the tap hit anything" a surface asks before it bothers to expand.
+pub fn click_hits(allocator: std.mem.Allocator, map: *const label.LabelMap, x: u32, y: u32) !bool {
+    const seed = try click_seed(allocator, map, x, y);
+    // invariant: a click seeds at most one object -- a point covers one component or none.
+    assert(seed.len <= 1);
+    return seed.len == 1;
+}
+
+/// EXPAND a click to its whole group -- seed the one-object selection under `(x, y)`, then grow it to a fixed point (image/selection_neighbors.rye),
+/// reaching the whole connected cluster the clicked object belongs to. A MISS expands to the EMPTY selection, since the empty selection is grow's
+/// fixed point. Refuses `PointOutOfBounds` off the map. The caller owns the returned slice.
+pub fn click_expand(allocator: std.mem.Allocator, graph: scene_graph.SceneGraph, map: *const label.LabelMap, x: u32, y: u32) ![]u32 {
+    // invariant: the graph and the map describe the SAME scene -- the same component count.
+    assert(graph.components == map.count);
+    // invariant: the object count stays under image/label.rye's pixel ceiling, so the grow is bounded.
+    assert(graph.components <= label.label_max_pixels);
+
+    const seed = try click_seed(allocator, map, x, y);
+    const grown = try selection_neighbors.grow_to_fixpoint(allocator, graph, seed);
+    // invariant: expanding never drops below the seed -- the group holds at least the clicked object.
+    assert(grown.len >= seed.len);
+    // invariant: the expansion can hold no more objects than the whole scene.
+    assert(grown.len <= @as(usize, graph.components));
+    return grown;
+}
+
+/// EXPAND a click by exactly ONE ring -- seed the one-object selection, then grow it a single step (image/selection_neighbors.rye). One click,
+/// one expand: the incremental gesture between the bare hit and the whole group. A MISS grows to the empty selection. Refuses `PointOutOfBounds`
+/// off the map. The caller owns the returned slice.
+pub fn click_expand_one_ring(allocator: std.mem.Allocator, graph: scene_graph.SceneGraph, map: *const label.LabelMap, x: u32, y: u32) ![]u32 {
+    // invariant: the graph and the map describe the SAME scene.
+    assert(graph.components == map.count);
+    assert(graph.components <= label.label_max_pixels);
+
+    const seed = try click_seed(allocator, map, x, y);
+    const grown = try selection_neighbors.grow_selection(allocator, graph, seed);
+    // invariant: one ring never drops below the seed.
+    assert(grown.len >= seed.len);
+    return grown;
+}
+
+/// HOW MANY objects a click selects once expanded to its group -- the size of `click_expand`. Zero for a miss, one for a lone object, the whole
+/// cluster size for a member of a group. Refuses `PointOutOfBounds` off the map.
+pub fn click_expand_size(allocator: std.mem.Allocator, graph: scene_graph.SceneGraph, map: *const label.LabelMap, x: u32, y: u32) !u32 {
+    const grown = try click_expand(allocator, graph, map, x, y);
+    // invariant: the group can hold no more objects than the scene.
+    assert(grown.len <= @as(usize, graph.components));
+    return @as(u32, @intCast(grown.len));
+}
+
+/// TRUE when a click's object belongs to a MULTI-OBJECT group -- the expansion reaches more than the single clicked object. FALSE for a lone
+/// object (its own group) and FALSE for a miss (no object at all). The "does this tap select a group or just one thing" a surface asks. Refuses
+/// `PointOutOfBounds` off the map.
+pub fn click_selects_group(allocator: std.mem.Allocator, graph: scene_graph.SceneGraph, map: *const label.LabelMap, x: u32, y: u32) !bool {
+    const size = try click_expand_size(allocator, graph, map, x, y);
+    return size > 1;
+}
+
+// --- selftest: the DECISIVE click-is-one-expand-is-a-cluster crux over the SAME 3-object CHAIN plus a far singleton image/selection_neighbors.rye
+//     proved over. Three corner-L brackets staggered down-right so each hugs its TOP-LEFT and leaves its BOTTOM-RIGHT overlap corner empty:
+//     A box (1,1)-(5,5), B box (4,4)-(8,8), C box (7,7)-(11,11). A's box overlaps B's and B's overlaps C's yet A's never overlaps C's (box
+//     overlap is not transitive); the three L's pixels stay 8-disconnected, so they are three components chained into ONE cluster. A lone block D
+//     far bottom-left is a singleton a click never expands past. The corner-L's own interior is BACKGROUND inside its box -- the miss crux ---------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a corner bracket-L hugging TOP-LEFT: a vertical arm down column `x0` from `y0` to `y1`, and a horizontal arm along row `y0` from `x0`
+/// to `x1`. Its inclusive box is (x0,y0)-(x1,y1); its bottom-right corner stays empty so a box overlap there touches no pixel, and its interior
+/// stays background inside its own box -- the miss the click crux needs.
+fn set_corner_l(img: *qoi.Pixmap, x0: u32, y0: u32, x1: u32, y1: u32) void {
+    // invariant: the arms run in the positive direction and stay inside the buffer.
+    assert(x1 >= x0);
+    assert(y1 >= y0);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) set_dot(img, x0, yy);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) set_dot(img, xx, y0);
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// TRUE when two ascending label sets hold exactly the same members -- a small set-equality the selftest leans on to compare a click's expansion
+/// against a cluster's membership.
+fn same_set(a: []const u32, b: []const u32) bool {
+    if (a.len != b.len) return false;
+    var i: usize = 0;
+    while (i < a.len) : (i += 1) {
+        if (a[i] != b[i]) return false;
+    }
+    return true;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- BUILD THE CHAIN on a 13x13 canvas: A corner-L box (1,1)-(5,5) label 1, B corner-L box (4,4)-(8,8) label 2, C corner-L box
+    //     (7,7)-(11,11) label 3, D a 2x2 block box (0,11)-(1,12) label 4 (a far singleton, labeled last in raster order) ----------------------
+    var scene = try make_canvas(garden, 13, 13, 0);
+    set_corner_l(&scene, 1, 1, 5, 5); // A: hugs top-left, box (1,1)-(5,5)
+    set_corner_l(&scene, 4, 4, 8, 8); // B: box (4,4)-(8,8)
+    set_corner_l(&scene, 7, 7, 11, 11); // C: box (7,7)-(11,11)
+    set_block(&scene, 0, 11, 2, 2); // D: block box (0,11)-(1,12), a far singleton
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 4) return error.SceneNotFourComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+
+    // confirm the CHAIN shape the crux leans on: 1-2 and 2-3 overlap, 1-3 does NOT (box overlap is not transitive), 1,2,3 one cluster, 4 apart
+    if (!(try scene_graph.relation_of(graph, 1, 2)).boxes_overlap) return error.OneTwoNotOverlapping;
+    if (!(try scene_graph.relation_of(graph, 2, 3)).boxes_overlap) return error.TwoThreeNotOverlapping;
+    if ((try scene_graph.relation_of(graph, 1, 3)).boxes_overlap) return error.OneThreeFalselyOverlapping;
+    if (try overlap_clusters.same_cluster(clustering, 1, 3) != true) return error.ChainNotOneCluster;
+    if (try overlap_clusters.same_cluster(clustering, 1, 4) != false) return error.DNotSingleton;
+
+    // --- THE CLICK IS AT MOST ONE, THE EXPANSION IS A WHOLE CLUSTER -- a click on A's left column (1,3) seeds the one-object selection {1}, yet
+    //     click_expand reaches the whole cluster {1,2,3}: a single point reaching a set of three THROUGH the box-overlap closure -----------------
+    const seed_a = try click_seed(garden, &map, 1, 3);
+    if (!same_set(seed_a, &[_]u32{1})) return error.SeedOnAWrong;
+    if (try click_hits(garden, &map, 1, 3) != true) return error.ClickOnANotAHit;
+    const expand_a = try click_expand(garden, graph, &map, 1, 3);
+    if (!same_set(expand_a, &[_]u32{ 1, 2, 3 })) return error.ExpandOnAWrong;
+    if (try click_expand_size(garden, graph, &map, 1, 3) != 3) return error.ExpandSizeOnAWrong;
+    if (try click_selects_group(garden, graph, &map, 1, 3) != true) return error.AShouldSelectGroup;
+
+    // --- ANY OBJECT OF A GROUP EXPANDS TO THE SAME GROUP -- a click on B's vertical arm (4,6) seeds {2} and a click on C's vertical arm (7,9)
+    //     seeds {3}, yet BOTH expand to the SAME whole cluster {1,2,3}, exactly overlap_clusters' membership -- where you click never changes
+    //     which group you select -------------------------------------------------------------------------------------------------------------
+    const seed_b = try click_seed(garden, &map, 4, 6);
+    if (!same_set(seed_b, &[_]u32{2})) return error.SeedOnBWrong;
+    const expand_b = try click_expand(garden, graph, &map, 4, 6);
+    if (!same_set(expand_b, &[_]u32{ 1, 2, 3 })) return error.ExpandOnBWrong;
+    const seed_c = try click_seed(garden, &map, 7, 9);
+    if (!same_set(seed_c, &[_]u32{3})) return error.SeedOnCWrong;
+    const expand_c = try click_expand(garden, graph, &map, 7, 9);
+    if (!same_set(expand_c, &[_]u32{ 1, 2, 3 })) return error.ExpandOnCWrong;
+    // the three expansions are one and the same group, and it is the connected cluster the family already proved
+    if (!same_set(expand_a, expand_b)) return error.AAndBDifferentGroup;
+    if (!same_set(expand_b, expand_c)) return error.BAndCDifferentGroup;
+    const cid_a = try overlap_clusters.cluster_of(clustering, 1);
+    if (try overlap_clusters.cluster_size(clustering, cid_a) != 3) return error.ClusterSizeNotThree;
+
+    // --- A MISS EXPANDS TO NOTHING -- a click in A's interior (3,3) is BACKGROUND inside A's own box (1,1)-(5,5): the box claims the point (the
+    //     prefilter reads true) yet the click misses (the arbiter reads background), so the seed is EMPTY and click_expand stays empty however
+    //     far it iterates -- a phantom click grows no phantom group -------------------------------------------------------------------------
+    const a_obj = try scene_manifest.object_of(manifest, 1);
+    if (!hit_test.bbox_contains_point(a_obj, 3, 3)) return error.NotchNotInABox;
+    if (try hit_test.object_label_at(&map, 3, 3) != 0) return error.NotchNotBackground;
+    const seed_miss = try click_seed(garden, &map, 3, 3);
+    if (seed_miss.len != 0) return error.MissSeedNotEmpty;
+    if (try click_hits(garden, &map, 3, 3) != false) return error.MissFalselyHit;
+    const expand_miss = try click_expand(garden, graph, &map, 3, 3);
+    if (expand_miss.len != 0) return error.MissExpandNotEmpty;
+    if (try click_expand_size(garden, graph, &map, 3, 3) != 0) return error.MissSizeNotZero;
+    if (try click_selects_group(garden, graph, &map, 3, 3) != false) return error.MissFalselyGroup;
+
+    // --- ONE RING STOPS SHORT, THE FIXED POINT REACHES THROUGH -- a click on the chain END (1,3) expanded by ONE ring reaches only {1,2}
+    //     (object 3 a neighbor of a neighbor, past the single ring) while the full click_expand reaches {1,2,3}: the click inherits
+    //     selection_neighbors' own one-ring-versus-closure lesson ----------------------------------------------------------------------------
+    const ring_a = try click_expand_one_ring(garden, graph, &map, 1, 3);
+    if (!same_set(ring_a, &[_]u32{ 1, 2 })) return error.OneRingOnAWrong;
+
+    // --- A CLICK NEVER LEAKS ACROSS A GROUP BOUNDARY -- a click on the far singleton D (0,11) seeds {4}, and every depth stays {4}: one ring,
+    //     the fixed point, all the singleton itself; D is its own group, not part of the chain --------------------------------------------------
+    const seed_d = try click_seed(garden, &map, 0, 11);
+    if (!same_set(seed_d, &[_]u32{4})) return error.SeedOnDWrong;
+    const ring_d = try click_expand_one_ring(garden, graph, &map, 0, 11);
+    if (!same_set(ring_d, &[_]u32{4})) return error.OneRingOnDWrong;
+    const expand_d = try click_expand(garden, graph, &map, 0, 11);
+    if (!same_set(expand_d, &[_]u32{4})) return error.ExpandOnDWrong;
+    if (try click_selects_group(garden, graph, &map, 0, 11) != false) return error.DFalselyGroup;
+
+    // --- A POINT OFF THE MAP -- every read refuses PointOutOfBounds, having read nothing (a background point is a valid MISS, never an error) --
+    if (click_seed(garden, &map, 13, 0)) |_| return error.OffMapSeedNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapSeedError;
+    }
+    if (click_expand(garden, graph, &map, 0, 13)) |_| return error.OffMapExpandNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapExpandError;
+    }
+
+    // --- DETERMINISM -- the same click expands to the same group twice --------------------------------------------------------------------
+    const e1 = try click_expand(garden, graph, &map, 4, 6);
+    const e2 = try click_expand(garden, graph, &map, 4, 6);
+    if (!same_set(e1, e2)) return error.ExpandNotDeterministic;
+
+    print("GREEN image-click-expand: the CLICK-THEN-EXPAND gesture -- turn ONE point into a whole-group selection, bridging image/hit_test.rye (the POINT selector) to image/selection_neighbors.rye (the grow morphology), exact integers, NO float and NO tolerance -- the DECISIVE crux that a click is BOUNDED to one object yet its expansion is UNBOUNDED by the cluster, and a MISS stays empty however far it expands, in three shapes over one chain. THE CLICK IS AT MOST ONE, THE EXPANSION IS A WHOLE CLUSTER -- over a 3-object chain (A box (1,1)-(5,5), B box (4,4)-(8,8), C box (7,7)-(11,11), each an 8-disconnected corner-L, so 1's box overlaps 2 and 2's overlaps 3 yet 1's box never overlaps 3), a click on A's column (1,3) seeds the one-object selection {{1}} yet click_expand reaches {{1,2,3}}, a single point reaching a set of three THROUGH the box-overlap closure. ANY OBJECT OF A GROUP EXPANDS TO THE SAME GROUP -- clicking A (1,3), B (4,6), or C (7,9) seeds {{1}}, {{2}}, {{3}} yet ALL THREE expand to the SAME whole cluster {{1,2,3}}, exactly overlap_clusters' connected membership, so where you click within a group never changes which group you select. A MISS EXPANDS TO NOTHING -- a click in A's interior (3,3) is BACKGROUND inside A's own bounding box (the prefilter reads true) yet the click misses (the arbiter reads background), so the seed is EMPTY and click_expand stays empty however far it iterates, hit_test's box-is-a-prefilter crux carried into the expand where a phantom click grows no phantom group. ONE RING STOPS SHORT, THE FIXED POINT REACHES THROUGH -- a click on the END (1,3) expanded by one ring reaches only {{1,2}} while click_expand reaches {{1,2,3}}, inheriting selection_neighbors' one-ring-versus-closure lesson; a click on the far singleton D (0,11) seeds {{4}} and stays {{4}} at every depth, never leaking across a group boundary. A point off the map refuses PointOutOfBounds having read nothing, while a background point is a valid MISS never an error; the same click expands to the same group twice. Compose not braid over image/hit_test.rye (the point-to-object arbiter), image/selection_neighbors.rye (the grow and its fixed point), image/scene_graph.rye (the overlap matrix), and image/overlap_clusters.rye (the whole-closure clustering the selftest cross-checks)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: click_expand selftest\n", .{});
+    return 1;
+}

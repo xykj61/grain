@@ -1,0 +1,49 @@
+# tools/click_expand_witness.rish -- the CLICK-THEN-EXPAND gesture on metal: turn ONE point into a whole-group selection, bridging
+# image/hit_test.rye (the POINT selector) to image/selection_neighbors.rye (the grow morphology), over image/scene_graph.rye's
+# precomputed box-overlap matrix (Season G).
+#
+# Season G (Open Media Primitives) -- image/hit_test.rye is the first selector: a PIXEL names the ONE object under it. image/selection_neighbors.rye
+# is the newest morphology: it grows a selection to a fixed point (the whole connected cluster). This rung bridges the two -- click_seed runs the
+# hit test into a one-object selection (empty on a miss), click_expand grows that seed to its fixed point, click_expand_one_ring grows it a single
+# step, and click_selects_group tells a surface whether the click's object belongs to a multi-object group. A reading over readings -- no plane of
+# its own, no pixel written.
+#
+# The crux this witness proves on metal: a click is BOUNDED to one object yet its expansion is UNBOUNDED by the cluster, and a MISS stays empty
+# however far it expands. A click on any object of a 3-object chain seeds one object yet expands to the whole cluster {1,2,3}; clicking any of the
+# three reaches the SAME group (overlap_clusters' membership, cross-checked); a click in a corner-L's interior is background inside its own box, so
+# the seed is empty and the expansion stays empty (hit_test's box-is-a-prefilter crux carried into the expand); one ring stops short where the
+# fixed point reaches through; a click never leaks across a group boundary; a point off the map refuses, a background point is a valid miss;
+# determinism. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/click_expand_witness.rish
+
+say "click_expand: Language EN -- Season G click-then-expand; a click is bounded to one object yet its expansion reaches the whole connected cluster, and a miss stays empty; NO float, NO tolerance."
+say "click_expand: Style Radiant -- compose not braid: this rung owns only the seed-from-a-click read and the expand over it; hit_test owns the point-to-object arbiter, selection_neighbors owns the grow and its fixed point, scene_graph owns the overlap matrix, overlap_clusters owns the whole-closure clustering the selftest cross-checks. No plane of its own, no pixel written -- a reading over readings."
+say "click_expand: Lens TAME -- a seed holds at most one label so it is trivially a valid ascending selection; the expand delegates to selection_neighbors' bounded grow under label_max_pixels; a point off the map refuses PointOutOfBounds having read nothing, while a background point is a valid MISS; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/click_expand"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/click_expand.rye -femit-bin=${bin}"]
+assert build.ok else "click_expand: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "click_expand: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "click_expand: ${out}"
+
+assert selftest.out contains "GREEN image-click-expand" else "click_expand: selftest did not print the GREEN line"
+assert selftest.out contains "the CLICK-THEN-EXPAND gesture" else "click_expand: the click-then-expand claim did not print"
+assert selftest.out contains "a click is BOUNDED to one object yet its expansion is UNBOUNDED by the cluster" else "click_expand: the decisive crux did not print"
+assert selftest.out contains "THE CLICK IS AT MOST ONE, THE EXPANSION IS A WHOLE CLUSTER" else "click_expand: the click-is-one claim did not print"
+assert selftest.out contains "ANY OBJECT OF A GROUP EXPANDS TO THE SAME GROUP" else "click_expand: the same-group claim did not print"
+assert selftest.out contains "A MISS EXPANDS TO NOTHING" else "click_expand: the miss claim did not print"
+assert selftest.out contains "a phantom click grows no phantom group" else "click_expand: the phantom-click claim did not print"
+assert selftest.out contains "ONE RING STOPS SHORT, THE FIXED POINT REACHES THROUGH" else "click_expand: the one-ring claim did not print"
+assert selftest.out contains "never leaking across a group boundary" else "click_expand: the no-leak claim did not print"
+assert selftest.out contains "a background point is a valid MISS never an error" else "click_expand: the valid-miss claim did not print"
+assert selftest.out contains "the same click expands to the same group twice" else "click_expand: determinism did not print"
+
+say "click_expand: GREEN on metal -- the click-then-expand gesture, a click bounded to one object yet expanding to the whole cluster, a miss expanding to nothing, one ring short of the fixed point, no leak across a group boundary, refusals by name, determinism. Season G open-media."
