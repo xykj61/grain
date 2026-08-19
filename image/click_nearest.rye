@@ -1,0 +1,293 @@
+//! image/click_nearest.rye -- the THREE-CLICK NEAREST relation: turn THREE points into THREE whole-group selections -- an ANCHOR tap plus two
+//! CANDIDATE taps -- then read which candidate's group sits NEARER the anchor's group by the true inter-group gap. Where image/click_relation.rye
+//! reads how TWO tapped groups stand together (same-group, gap, frame overlap), this rung adds the third tap and answers the ternary question a
+//! keeper asks by pointing at three things: "of these two, which is closer to that one." Exact integers, NO float and NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/hit_test.rye names the ONE object under a point; image/overlap_clusters.rye's `cluster_of` names the
+//! connected group that object belongs to; image/cluster_adjacency.rye's `cluster_distance` reads the true nearest-pixel Chebyshev gap between two
+//! whole groups; image/click_relation.rye's `click_pair_distance` lifts that gap from two cluster IDS to two POINTS. This rung LIFTS the arity one
+//! step further -- from a PAIR of taps to a TRIPLE -- comparing the anchor-to-candidate gap for each of two candidates. A reading over readings: no
+//! plane of its own, no pixel written, no gap re-derived.
+//!
+//! The DECISIVE crux: nearness is a GROUP fact, not a PIXEL fact, so the candidate whose GROUP sits nearer the anchor's group can be the candidate
+//! whose tapped PIXEL sits FARTHER from the anchor's tapped pixel. The "nearest" a surface reports belongs to the groups the three taps expand to,
+//! never to the three clicked pixels -- the same lesson image/click_relation.rye proved for a pair, lifted to the ternary "which is nearer." Shapes
+//! over four singleton objects on a 20x20 canvas -- A the ANCHOR block box (1,1)-(2,2), B a large block box (4,1)-(9,6) two pixels from A, C a small
+//! block box (7,8)-(8,9) six pixels from A, F a block box (1,4)-(2,5) two pixels from A -- each its own group since no boxes overlap:
+//!
+//!   THE GROUP-NEARER CANDIDATE IS THE PIXEL-FARTHER TAP. An anchor tap on A's corner (1,1), a candidate tap on B's FAR corner (9,6), and a
+//!   candidate tap on C (7,8): `nearer_group` reads FIRST (B), since B's group gap to A is 2 while C's is 6 -- yet the clicked pixel (9,6) sits
+//!   Chebyshev 8 from the anchor pixel (1,1) while C's clicked pixel (7,8) sits only 7 away. The group-nearest candidate is the pixel-farthest tap;
+//!   only the groups the taps expand to decide the nearest.
+//!
+//!   THE VERDICT IS INVARIANT TO WHERE INSIDE A GROUP A KEEPER TAPS. Tapping B's NEAR corner (4,1) instead of its far corner (9,6) reads the SAME
+//!   verdict FIRST and the SAME nearest gap 2 -- `nearer_group` weighs the whole groups, so the tap site never moves the answer, though the two clicked
+//!   pixels now sit 3 and 7 from the anchor respectively.
+//!
+//!   TWO DISTINCT GROUPS CAN TIE. An anchor tap on A, a candidate tap on B (group gap 2), and a candidate tap on F (group gap 2) read `nearer_group`
+//!   TIE and `is_equidistant` TRUE -- two visibly separate groups equidistant from the anchor, the tie a real ternary outcome rather than an error.
+//!
+//! Compose not braid. This rung OWNS only the ternary comparison of two anchor-to-candidate gaps. image/click_relation.rye owns `click_pair_distance`
+//! (the true group gap between two taps, zero when they share a group); image/hit_test.rye owns the point-to-object arbiter; image/overlap_clusters.rye
+//! owns `cluster_of`; image/cluster_adjacency.rye owns `cluster_distance`. No matrix recomputed, no pixel re-read.
+//!
+//! Everything is bounded before a byte: each click resolves to at most one label through the hit test, and each gap read scans the object count
+//! bounded by image/label.rye's `label_max_pixels`. A candidate that shares the anchor's group reads gap 0 -- the nearest possible, no refusal, since a
+//! surface may well tap something already inside the anchor's group. A point off the map refuses `PointOutOfBounds`; a tap on background refuses
+//! `EmptyClick` by name, having no group. No network, no key, no funds -- the "which of these two is closer to that one" a surface names the day a
+//! keeper points at three things.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/click_nearest.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const hit_test = @import("hit_test.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const cluster_adjacency = @import("cluster_adjacency.rye");
+const click_relation = @import("click_relation.rye");
+
+pub const click_nearest_version = "20260819.064408";
+
+/// The verdict of a three-click nearest read -- which candidate's group sits nearer the anchor's group, or a tie when both gaps match.
+pub const Nearer = enum {
+    first_nearer, // candidate one's group is strictly nearer the anchor's group
+    second_nearer, // candidate two's group is strictly nearer the anchor's group
+    tie, // both candidates' groups sit at the same true gap from the anchor's group
+};
+
+/// The true group gap from the ANCHOR tap's group to a CANDIDATE tap's group -- image/click_relation.rye's `click_pair_distance`, ZERO when both
+/// taps share one group, else the minimum nearest-pixel Chebyshev over every member pair of the two distinct groups (floored structurally at 2). A
+/// thin, named face on the pair read so the ternary reads below speak in one word; it adds no new geometry. Refuses `EmptyClick` on a miss,
+/// `PointOutOfBounds` off the map -- through the pair read, having read nothing.
+fn anchor_gap(clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, map: *const label.LabelMap, ax: u32, ay: u32, cx: u32, cy: u32) !u32 {
+    // invariant: the clustering, the graph, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(clustering.components == map.count);
+
+    const gap = try click_relation.click_pair_distance(clustering, graph, map, ax, ay, cx, cy);
+    // invariant: a gap is either zero (same group) or the floored inter-group distance, never one.
+    assert(gap == 0 or gap >= 2);
+    return gap;
+}
+
+/// Which of TWO candidate taps lands in the group NEARER the ANCHOR tap's group -- read the anchor-to-candidate gap for each, then compare. A
+/// strictly smaller first gap reads `first_nearer`, a strictly smaller second gap `second_nearer`, equal gaps `tie`. INVARIANT to where inside each
+/// group a keeper taps: the verdict weighs the whole groups, never the three clicked pixels, so the group-nearer candidate may be the pixel-farther
+/// tap. Refuses `EmptyClick` when any of the three taps misses, `PointOutOfBounds` when any point lies off the map.
+pub fn nearer_group(clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, cx: u32, cy: u32) !Nearer {
+    // invariant: the clustering, the graph, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(clustering.components == map.count);
+
+    const gap_b = try anchor_gap(clustering, graph, map, ax, ay, bx, by);
+    const gap_c = try anchor_gap(clustering, graph, map, ax, ay, cx, cy);
+    // invariant: both gaps are valid group gaps -- zero or at least two.
+    assert(gap_b == 0 or gap_b >= 2);
+    assert(gap_c == 0 or gap_c >= 2);
+    if (gap_b < gap_c) return .first_nearer;
+    if (gap_c < gap_b) return .second_nearer;
+    return .tie;
+}
+
+/// The gap from the ANCHOR tap's group to the NEARER of the two candidate groups -- the smaller of the two anchor-to-candidate gaps, the true
+/// distance a surface reports for "the closest of these two." Zero when the nearer candidate shares the anchor's group. Refuses `EmptyClick` on any
+/// miss, `PointOutOfBounds` off the map.
+pub fn nearest_candidate_gap(clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, cx: u32, cy: u32) !u32 {
+    // invariant: the clustering, the graph, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(clustering.components == map.count);
+
+    const gap_b = try anchor_gap(clustering, graph, map, ax, ay, bx, by);
+    const gap_c = try anchor_gap(clustering, graph, map, ax, ay, cx, cy);
+    const nearer = @min(gap_b, gap_c);
+    // invariant: the nearer gap is one of the two candidate gaps.
+    assert(nearer == gap_b or nearer == gap_c);
+    // invariant: the nearer gap never exceeds either candidate gap.
+    assert(nearer <= gap_b);
+    assert(nearer <= gap_c);
+    return nearer;
+}
+
+/// TRUE when the two candidate taps' groups sit at the SAME true gap from the anchor's group -- the `tie` verdict of `nearer_group` read as a bool,
+/// so a surface can spot the ambiguous pointing (two things equally close to the anchor) without inspecting the enum. Refuses `EmptyClick` on any
+/// miss, `PointOutOfBounds` off the map.
+pub fn is_equidistant(clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, cx: u32, cy: u32) !bool {
+    // invariant: the clustering, the graph, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(clustering.components == map.count);
+
+    const gap_b = try anchor_gap(clustering, graph, map, ax, ay, bx, by);
+    const gap_c = try anchor_gap(clustering, graph, map, ax, ay, cx, cy);
+    // invariant: both gaps are valid group gaps.
+    assert(gap_b == 0 or gap_b >= 2);
+    assert(gap_c == 0 or gap_c >= 2);
+    return gap_b == gap_c;
+}
+
+// --- selftest: the DECISIVE three-click-nearest crux over four SINGLETON objects on a 20x20 canvas -- A the ANCHOR block box (1,1)-(2,2), B a large
+//     block box (4,1)-(9,6) (group gap 2 from A), C a small block box (7,8)-(8,9) (group gap 6 from A), F a block box (1,4)-(2,5) (group gap 2 from
+//     A). No boxes overlap, so four groups. B's group is nearer A than C's, yet B tapped at its far corner sits farther in pixels than C's tap; the
+//     verdict holds when B is tapped elsewhere; B and F tie ------------------------------------------------------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// Exact Chebyshev distance between two points -- the max of the axis gaps, u32 throughout since the canvas is small and bounded.
+fn cheby(x1: u32, y1: u32, x2: u32, y2: u32) u32 {
+    const dx: u32 = if (x1 >= x2) x1 - x2 else x2 - x1;
+    const dy: u32 = if (y1 >= y2) y1 - y2 else y2 - y1;
+    return @max(dx, dy);
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- BUILD FOUR SINGLETONS on a 20x20 canvas: A block box (1,1)-(2,2), B block box (4,1)-(9,6), F block box (1,4)-(2,5), C block box
+    //     (7,8)-(8,9). Every pair sits at least 2 pixels apart (8-disconnected), so four components; no boxes overlap, so four singleton groups -----
+    var scene = try make_canvas(garden, 20, 20, 0);
+    set_block(&scene, 1, 1, 2, 2); // A: anchor block, box (1,1)-(2,2)
+    set_block(&scene, 4, 1, 6, 6); // B: large block, box (4,1)-(9,6), 2 pixels from A
+    set_block(&scene, 1, 4, 2, 2); // F: block, box (1,4)-(2,5), 2 pixels from A
+    set_block(&scene, 7, 8, 2, 2); // C: small block, box (7,8)-(8,9), 6 pixels from A
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 4) return error.SceneNotFourComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    // no boxes overlap, so each object is its own singleton group
+    if (clustering.clusters != 4) return error.NotFourGroups;
+
+    // hit-test the anchor and the candidate taps once so the crux rests on real arbiter reads: A(1,1), B far corner (9,6), B near corner (4,1),
+    // C(7,8), F(1,4). Discover each object's label, then its group id.
+    const lbl_a = try hit_test.object_label_at(&map, 1, 1);
+    const lbl_b = try hit_test.object_label_at(&map, 9, 6);
+    const lbl_c = try hit_test.object_label_at(&map, 7, 8);
+    const lbl_f = try hit_test.object_label_at(&map, 1, 4);
+    if (lbl_a == 0 or lbl_b == 0 or lbl_c == 0 or lbl_f == 0) return error.ClickMissedAnObject;
+    // the four taps land on four distinct objects
+    if (lbl_a == lbl_b or lbl_a == lbl_c or lbl_a == lbl_f) return error.AnchorSharesACandidate;
+    if (lbl_b == lbl_c or lbl_b == lbl_f or lbl_c == lbl_f) return error.CandidatesNotDistinct;
+    // B's near corner (4,1) lands on the SAME object as its far corner (9,6)
+    if (try hit_test.object_label_at(&map, 4, 1) != lbl_b) return error.BNearNotB;
+
+    // confirm the group gaps the crux leans on through image/click_relation.rye's pair read: A-B is 2, A-C is 6, A-F is 2 (each floored min gap)
+    const gap_ab = try click_relation.click_pair_distance(clustering, graph, &map, 1, 1, 9, 6);
+    const gap_ac = try click_relation.click_pair_distance(clustering, graph, &map, 1, 1, 7, 8);
+    const gap_af = try click_relation.click_pair_distance(clustering, graph, &map, 1, 1, 1, 4);
+    if (gap_ab != 2) return error.GapABNotTwo;
+    if (gap_ac != 6) return error.GapACNotSix;
+    if (gap_af != 2) return error.GapAFNotTwo;
+
+    // --- THE GROUP-NEARER CANDIDATE IS THE PIXEL-FARTHER TAP -- anchor A(1,1), candidate B tapped at its FAR corner (9,6), candidate C(7,8):
+    //     nearer_group reads FIRST (B's group gap 2 < C's group gap 6) yet the B tap sits Chebyshev 8 from the anchor pixel while the C tap sits 7 --
+    if (try nearer_group(clustering, graph, &map, 1, 1, 9, 6, 7, 8) != .first_nearer) return error.BNotNearerThanC;
+    if (try nearest_candidate_gap(clustering, graph, &map, 1, 1, 9, 6, 7, 8) != 2) return error.NearestGapNotTwo;
+    // the clicked pixels' own Chebyshev distances INVERT the group order: the anchor-to-B-tap pixel gap exceeds the anchor-to-C-tap pixel gap
+    const px_ab = cheby(1, 1, 9, 6); // max(8,5) = 8
+    const px_ac = cheby(1, 1, 7, 8); // max(6,7) = 7
+    if (px_ab != 8) return error.PixelABNotEight;
+    if (px_ac != 7) return error.PixelACNotSeven;
+    if (!(px_ab > px_ac)) return error.PixelOrderNotInverted; // group-nearer B is the pixel-farther tap
+
+    // --- THE VERDICT IS INVARIANT TO WHERE INSIDE A GROUP A KEEPER TAPS -- tap B's NEAR corner (4,1) instead of its far corner: the verdict stays
+    //     FIRST and the nearest gap stays 2, though the two clicked pixels now sit 3 and 7 from the anchor ------------------------------------------
+    if (try nearer_group(clustering, graph, &map, 1, 1, 4, 1, 7, 8) != .first_nearer) return error.NearTapChangedVerdict;
+    if (try nearest_candidate_gap(clustering, graph, &map, 1, 1, 4, 1, 7, 8) != 2) return error.NearTapChangedGap;
+    const px_ab_near = cheby(1, 1, 4, 1); // max(3,0) = 3
+    if (px_ab_near != 3) return error.PixelABNearNotThree;
+    if (px_ab_near == px_ab) return error.TapSiteNotDistinct; // the two B taps sit at different pixel distances, yet read one verdict
+
+    // --- TWO DISTINCT GROUPS CAN TIE -- anchor A, candidate B (group gap 2), candidate F (group gap 2): nearer_group reads TIE and is_equidistant
+    //     TRUE, two visibly separate groups equidistant from the anchor -----------------------------------------------------------------------
+    if (try nearer_group(clustering, graph, &map, 1, 1, 9, 6, 1, 4) != .tie) return error.BFNotTie;
+    if (try is_equidistant(clustering, graph, &map, 1, 1, 9, 6, 1, 4) != true) return error.BFNotEquidistant;
+    // the symmetric read: swapping the two candidates keeps the tie
+    if (try nearer_group(clustering, graph, &map, 1, 1, 1, 4, 9, 6) != .tie) return error.SwappedNotTie;
+    // and C against B is second_nearer -- the mirror of the first crux, so the comparison is a real order
+    if (try nearer_group(clustering, graph, &map, 1, 1, 7, 8, 9, 6) != .second_nearer) return error.MirrorNotSecond;
+
+    // --- A CANDIDATE SHARING THE ANCHOR'S GROUP READS GAP 0 -- the nearest possible, no refusal: a candidate tap on ANOTHER pixel of A (2,2) shares
+    //     the anchor's group, so its gap is 0 and it wins against C's gap 6 ----------------------------------------------------------------------
+    if (try nearer_group(clustering, graph, &map, 1, 1, 2, 2, 7, 8) != .first_nearer) return error.AnchorOwnGroupNotNearer;
+    if (try nearest_candidate_gap(clustering, graph, &map, 1, 1, 2, 2, 7, 8) != 0) return error.AnchorOwnGroupGapNotZero;
+
+    // --- A MISS REFUSES EmptyClick -- a candidate tap on background (15,15) belongs to no group, so every ternary read refuses EmptyClick by name --
+    if (try hit_test.object_label_at(&map, 15, 15) != 0) return error.BackgroundNotEmpty;
+    if (nearer_group(clustering, graph, &map, 1, 1, 15, 15, 7, 8)) |_| return error.MissNearerNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissNearerError;
+    }
+    if (nearest_candidate_gap(clustering, graph, &map, 1, 1, 9, 6, 15, 15)) |_| return error.MissGapNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissGapError;
+    }
+    // a miss on the ANCHOR tap refuses EmptyClick too
+    if (nearer_group(clustering, graph, &map, 15, 15, 9, 6, 7, 8)) |_| return error.MissAnchorNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissAnchorError;
+    }
+
+    // --- A POINT OFF THE MAP REFUSES PointOutOfBounds through the arbiter, having read nothing --------------------------------------------------
+    if (nearer_group(clustering, graph, &map, 1, 1, 20, 0, 7, 8)) |_| return error.OffMapNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapError;
+    }
+
+    // --- DETERMINISM -- the same triple of taps reads the same verdict twice --------------------------------------------------------------------
+    const v1 = try nearer_group(clustering, graph, &map, 1, 1, 9, 6, 7, 8);
+    const v2 = try nearer_group(clustering, graph, &map, 1, 1, 9, 6, 7, 8);
+    if (v1 != v2) return error.VerdictNotDeterministic;
+
+    print("GREEN image-click-nearest: the THREE-CLICK NEAREST relation -- turn THREE points into THREE whole-group selections (an ANCHOR tap plus two CANDIDATE taps), then read which candidate's group sits NEARER the anchor's group by the true inter-group gap, lifting image/click_relation.rye's click_pair_distance from a PAIR of taps to a TRIPLE through image/hit_test.rye and image/overlap_clusters.rye's cluster_of, exact integers, NO float and NO tolerance -- the DECISIVE crux: nearness is a GROUP fact, not a PIXEL fact, so the candidate whose GROUP sits nearer the anchor's group can be the candidate whose tapped PIXEL sits FARTHER from the anchor's tapped pixel, in three shapes over four singleton objects (A the anchor block box (1,1)-(2,2), B a large block box (4,1)-(9,6) group gap 2 from A, C a small block box (7,8)-(8,9) group gap 6 from A, F a block box (1,4)-(2,5) group gap 2 from A). THE GROUP-NEARER CANDIDATE IS THE PIXEL-FARTHER TAP -- an anchor tap on A (1,1), a candidate tap on B's FAR corner (9,6), and a candidate tap on C (7,8) read nearer_group FIRST (B's group gap 2 beats C's 6) yet the B tap sits Chebyshev 8 from the anchor pixel while the C tap sits only 7, the group-nearest candidate the pixel-farthest tap, only the groups the taps expand to deciding the nearest. THE VERDICT IS INVARIANT TO WHERE INSIDE A GROUP A KEEPER TAPS -- tapping B's NEAR corner (4,1) reads the SAME verdict FIRST and the SAME nearest gap 2 though the clicked pixel now sits 3 from the anchor, nearer_group weighing whole groups so the tap site never moves the answer. TWO DISTINCT GROUPS CAN TIE -- an anchor tap on A, a candidate tap on B (group gap 2), and a candidate tap on F (group gap 2) read nearer_group TIE and is_equidistant TRUE, two visibly separate groups equidistant from the anchor, the tie a real ternary outcome rather than an error. A candidate sharing the anchor's group reads gap 0 (the nearest possible, no refusal); a tap on background refuses EmptyClick by name; a point off the map refuses PointOutOfBounds having read nothing; the same triple reads the same verdict twice. Compose not braid over image/click_relation.rye (click_pair_distance, the true group gap between two taps), image/hit_test.rye (the point-to-object arbiter), image/overlap_clusters.rye (cluster_of, the object-to-group map), and image/cluster_adjacency.rye (the true cluster_distance)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: click_nearest selftest\n", .{});
+    return 1;
+}
