@@ -1,0 +1,402 @@
+//! image/min_width.rye -- the MINIMUM-WIDTH SLOT of a point set: the narrowest parallel-sided gap a shape passes EDGE-FIRST,
+//! read as the minimum over the convex hull's edges of the shape's PERPENDICULAR extent, chosen by an EXACT integer comparison and
+//! NO tolerance -- the honest EDGE-FIRST companion of image/min_enclosing_circle.rye's face-first round hole, and the inner-turned
+//! sibling of image/min_area_rect.rye.
+//!
+//! Season G (Open Media Primitives) -- image/min_enclosing_circle.rye asks "what round hole does this shape clear FACE-FIRST?" --
+//! the smallest disk that covers the whole silhouette, so a flat shape passed face-first through a round hole clears it exactly
+//! when the enclosing radius is at most the hole's. This rung asks the complementary question: "what parallel-sided SLOT does this
+//! shape pass EDGE-FIRST?" -- the narrowest gap between two parallel lines the shape can be turned to slip through sideways. A long
+//! thin bar clears a wide round hole only face-on, yet slips edge-first through a slot barely wider than its thickness; the two
+//! bounds are the shape's face-first reach and its edge-first thinness, and they diverge sharply for anything elongated.
+//!
+//! ROTATING CALIPERS, the same finite exact construction image/min_area_rect.rye rides: the minimum width of a convex polygon is
+//! realized with one caliper line FLUSH with a hull edge (the width is the smallest of the per-edge perpendicular extents), so for
+//! each hull edge measure the shape's PERPENDICULAR extent -- the range of the cross product of the edge vector against every
+//! vertex, divided by the edge length -- and keep the edge whose extent is smallest. The width along edge e is `cross_range_e /
+//! sqrt(edge_len_sq_e)`, so its SQUARE is the exact rational `cross_range_e^2 / edge_len_sq_e`, and two edges' widths compare by an
+//! EXACT i128 cross-multiplication (`cross_i^2 * D_j` against `cross_j^2 * D_i`, the square roots cleared by squaring) -- the same
+//! tolerance-free discipline image/convexity_defects.rye selects its deepest dent by and image/min_area_rect.rye its smallest box.
+//! Every DECISION is integer arithmetic; only the reported `width` and `angle`, irrational because they divide by a square root,
+//! are read in f64, exactly as image/min_area_rect.rye reports its dimensions.
+//!
+//! The DECISIVE facts, each an exact integer point set:
+//!
+//!   THE NARROWEST SLOT IS DIAGONAL -- a right triangle (0,0)(6,0)(0,2) has an axis base of thickness 2, yet its narrowest slot lies
+//!   flush with the HYPOTENUSE, an exact width squared 18/5 (about 1.897) STRICTLY below the axis thickness 2 (18/5 < 4). An
+//!   axis-aligned reading (image/regions.rye's upright box) reports 2; the true edge-first slot is narrower and turned, decided by
+//!   exact arithmetic.
+//!
+//!   EDGE-FIRST IS NOT FACE-FIRST -- a 2x8 bar passes a parallel-sided slot of gap 2 EDGE-FIRST (its minimum width is exactly 2),
+//!   while its minimum enclosing circle (image/min_enclosing_circle.rye) has diameter sqrt(68) ~ 8.25, so FACE-FIRST it needs a
+//!   round hole more than four times wider. The same bar, two very different bounds -- the thinness and the reach.
+//!
+//! `passes_slot(w, gap)` decides edge-first passage through a parallel-sided gap by the same exact rule (`cross_range^2 <=
+//! gap^2 * edge_len_sq`), never a float compare -- the slot companion of image/min_enclosing_circle.rye's `fits_through_round_hole`.
+//!
+//! Compose not braid. This rung OWNS only the caliper sweep for the minimum width and the reads over it -- no gather, no blend, no
+//! codec, no color, no pixel-writing loop. image/convex_hull.rye owns the hull and the Point type; image/contour.rye owns the ring;
+//! image/min_enclosing_circle.rye owns the round bound this one mirrors edge-first. The minimum width of a boundary ring is the
+//! minimum width of its whole shape -- interior pixels lie inside the hull, never needed.
+//!
+//! Everything is bounded before a byte: the width is read over a hull of at most `convex_hull_max_points` vertices (a boundary
+//! perimeter far under 2^13), and a longer input refuses through the hull's own `HullTooLong`; an empty input refuses
+//! `EmptySource`; a hull of fewer than three vertices (a point or a segment) has no slot to measure and refuses `DegenerateHull` by
+//! name. Coordinates stay under `min_width_max_coord` (2^14), so a cross product stays far under 2^30 in i64, its square under 2^60,
+//! and the i128 comparison has room to spare -- no accumulator wraps. All-or-nothing, never a half-built read. No network, no key,
+//! no funds -- the edge-first slot a surface names the day it asks how thin a shape truly is, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/min_width.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const contour = @import("contour.rye");
+const convex_hull = @import("convex_hull.rye");
+const min_area_rect = @import("min_area_rect.rye");
+const min_enclosing_circle = @import("min_enclosing_circle.rye");
+const polygon = @import("polygon.rye");
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+
+pub const min_width_version = "20260818.203411";
+
+/// Every hull coordinate stays under this bound, so a cross product (edge vector against an in-image vector) stays under 2^30 in
+/// i64, its square under 2^60, and the i128 width cross-multiplication far under its ceiling. The same order of magnitude
+/// image/min_area_rect.rye keeps for its own projection and cross ranges.
+pub const min_width_max_coord: u32 = 1 << 14;
+
+pub const MinWidthError = error{
+    DegenerateHull,
+};
+
+/// The MINIMUM-WIDTH SLOT. The exact squared width is the rational `width_sq_num / width_sq_den` (the denominator is the supporting
+/// edge's length squared, the numerator the perpendicular cross range squared); `width` and `angle` are read in f64 because the
+/// width divides by a square root. `support_i` and `support_j` name the two hull vertices whose edge the narrowest slot is flush
+/// with; the slot itself runs PERPENDICULAR to that edge.
+pub const MinWidth = struct {
+    support_i: u32,
+    support_j: u32,
+    width_sq_num: u64,
+    width_sq_den: u64,
+    width: f64,
+    angle: f64,
+};
+
+/// The squared length of the edge a->b, exact in u64. Distinct hull vertices give a strictly positive value, a safe denominator.
+/// Coordinates under `min_width_max_coord` keep each squared difference under 2^28.
+fn edge_len_sq(a: contour.Point, b: contour.Point) u64 {
+    const dx: i64 = @as(i64, b.x) - @as(i64, a.x);
+    const dy: i64 = @as(i64, b.y) - @as(i64, a.y);
+    const s: i64 = dx * dx + dy * dy;
+    // invariant: two in-image points give a squared length far under the i64 ceiling.
+    assert(s >= 0);
+    assert(s < (@as(i64, 1) << 30));
+    return @intCast(s);
+}
+
+/// TRUE when squared width `na/da` is STRICTLY smaller than `nb/db`, decided by an exact i128 cross-multiplication (`na * db <
+/// nb * da`) so no rounding ever picks the wrong supporting edge. Because width is non-negative, comparing the squares compares the
+/// widths. Denominators are positive edge-length squares, so the cross-multiplication preserves the inequality's direction.
+fn width_less(na: u64, da: u64, nb: u64, db: u64) bool {
+    // invariant: a width denominator is a squared edge length of distinct vertices, strictly positive.
+    assert(da >= 1);
+    assert(db >= 1);
+    const lhs: i128 = @as(i128, na) * @as(i128, db);
+    const rhs: i128 = @as(i128, nb) * @as(i128, da);
+    return lhs < rhs;
+}
+
+/// The MINIMUM-WIDTH SLOT of any point set -- build the convex hull, then rotate a caliper along each hull edge, measuring the
+/// shape's perpendicular cross-product extent, and keep the edge whose extent (over its edge length) is exactly smallest. Refuses
+/// `EmptySource` / `HullTooLong` through the hull, and `DegenerateHull` when the hull is a single point or segment (no slot).
+pub fn min_width(allocator: std.mem.Allocator, points: []const contour.Point) !MinWidth {
+    const hull = try convex_hull.convex_hull(allocator, points);
+    // invariant: a slot needs a real hull -- at least a triangle.
+    if (hull.len < 3) return error.DegenerateHull;
+    // invariant: the hull never exceeds the point ceiling, so every accumulator below stays bounded.
+    assert(hull.len <= convex_hull.convex_hull_max_points);
+
+    var best_num: u64 = 0;
+    var best_den: u64 = 0;
+    var best_i: usize = 0;
+    var best_j: usize = 0;
+    var best_cross_range: i64 = 0;
+    var have_best = false;
+
+    var e: usize = 0;
+    while (e < hull.len) : (e += 1) {
+        const a = hull[e];
+        const b = hull[(e + 1) % hull.len];
+        const ex: i64 = @as(i64, b.x) - @as(i64, a.x);
+        const ey: i64 = @as(i64, b.y) - @as(i64, a.y);
+        // invariant: consecutive hull vertices are distinct, so the supporting edge has real length.
+        assert(ex != 0 or ey != 0);
+
+        var min_cross: i64 = 0;
+        var max_cross: i64 = 0;
+        var v: usize = 0;
+        while (v < hull.len) : (v += 1) {
+            const vx: i64 = @as(i64, hull[v].x) - @as(i64, a.x);
+            const vy: i64 = @as(i64, hull[v].y) - @as(i64, a.y);
+            const cr: i64 = ex * vy - ey * vx;
+            // invariant: a cross product of an in-image edge against an in-image vector stays far under the i64 ceiling.
+            assert(cr < (@as(i64, 1) << 40));
+            assert(cr > -(@as(i64, 1) << 40));
+            if (v == 0) {
+                min_cross = cr;
+                max_cross = cr;
+            } else {
+                if (cr < min_cross) min_cross = cr;
+                if (cr > max_cross) max_cross = cr;
+            }
+        }
+
+        const cross_range: i64 = max_cross - min_cross;
+        // invariant: a range is a difference of a max and a min, never negative.
+        assert(cross_range >= 0);
+        const num: u64 = @as(u64, @intCast(cross_range)) * @as(u64, @intCast(cross_range));
+        const den: u64 = edge_len_sq(a, b);
+
+        if (!have_best or width_less(num, den, best_num, best_den)) {
+            best_num = num;
+            best_den = den;
+            best_i = e;
+            best_j = (e + 1) % hull.len;
+            best_cross_range = cross_range;
+            have_best = true;
+        }
+    }
+
+    // invariant: a hull of three or more vertices always seats a best edge.
+    assert(have_best);
+    const edge_len: f64 = @sqrt(@as(f64, @floatFromInt(best_den)));
+    // invariant: distinct supporting-edge vertices give a positive length, a safe divisor.
+    assert(edge_len > 0.0);
+    const a0 = hull[best_i];
+    const b0 = hull[best_j];
+    const ang: f64 = std.math.atan2(
+        @as(f64, @floatFromInt(@as(i64, b0.y) - @as(i64, a0.y))),
+        @as(f64, @floatFromInt(@as(i64, b0.x) - @as(i64, a0.x))),
+    );
+    return MinWidth{
+        .support_i = @intCast(best_i),
+        .support_j = @intCast(best_j),
+        .width_sq_num = best_num,
+        .width_sq_den = best_den,
+        .width = @as(f64, @floatFromInt(best_cross_range)) / edge_len,
+        .angle = ang,
+    };
+}
+
+/// The exact squared width as an f64 -- the rational `width_sq_num / width_sq_den`. The exact rational lives on the struct for a
+/// caller that needs a tolerance-free comparison; this read is the human-facing number.
+pub fn width_sq(w: MinWidth) f64 {
+    // invariant: the width denominator is a positive squared edge length.
+    assert(w.width_sq_den >= 1);
+    return @as(f64, @floatFromInt(w.width_sq_num)) / @as(f64, @floatFromInt(w.width_sq_den));
+}
+
+/// TRUE when the shape passes EDGE-FIRST through a parallel-sided slot of integer gap `gap` -- its minimum width is at most `gap`,
+/// decided by the exact rule `width_sq_num <= gap^2 * width_sq_den` (the square root cleared by squaring), never a float compare.
+/// The slot companion of image/min_enclosing_circle.rye's `fits_through_round_hole` (which reads the face-first round hole).
+pub fn passes_slot(w: MinWidth, gap: u32) bool {
+    // invariant: a real slot read carries a positive edge-length denominator.
+    assert(w.width_sq_den >= 1);
+    // invariant: the gap stays in the coordinate range, so gap^2 * den stays far under the i128 ceiling.
+    assert(gap <= min_width_max_coord);
+    const lhs: i128 = @as(i128, w.width_sq_num);
+    const rhs: i128 = @as(i128, gap) * @as(i128, gap) * @as(i128, w.width_sq_den);
+    return lhs <= rhs;
+}
+
+/// TRUE when squared width `na/da` is STRICTLY smaller than the integer `gap` squared -- the exact read behind a "narrower than a
+/// known thickness" question, decided by the same i128 cross-multiplication against the denominator one.
+pub fn width_below(w: MinWidth, thickness: u32) bool {
+    // invariant: a real width read carries a positive denominator.
+    assert(w.width_sq_den >= 1);
+    // invariant: the thickness stays in the coordinate range, so thickness^2 * den stays far under the i128 ceiling.
+    assert(thickness <= min_width_max_coord);
+    const lhs: i128 = @as(i128, w.width_sq_num);
+    const rhs: i128 = @as(i128, thickness) * @as(i128, thickness) * @as(i128, w.width_sq_den);
+    return lhs < rhs;
+}
+
+// --- selftest: the narrowest slot of a right triangle is DIAGONAL (flush with the hypotenuse, strictly below the axis thickness);
+//     a 2x8 bar passes a slot of gap 2 EDGE-FIRST yet needs a round hole four times wider FACE-FIRST (composed against
+//     image/min_enclosing_circle.rye); a 6x2 bar's exact width 2; an integrated raster block; passes_slot both ways; refusals and
+//     determinism -----------------------------------------------------------------------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn approx(a: f64, b: f64, tol: f64) bool {
+    const d = if (a >= b) a - b else b - a;
+    return d <= tol;
+}
+
+/// TRUE when point p is one of the two support vertices -- an order-free check that the narrowest slot is flush with the expected
+/// edge, whichever hull direction seated it.
+fn is_support(w: MinWidth, hull: []const contour.Point, p: contour.Point) bool {
+    const si = hull[@as(usize, w.support_i)];
+    const sj = hull[@as(usize, w.support_j)];
+    const hit_i = si.x == p.x and si.y == p.y;
+    const hit_j = sj.x == p.x and sj.y == p.y;
+    return hit_i or hit_j;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- THE NARROWEST SLOT IS DIAGONAL -- a right triangle (0,0)(6,0)(0,2): its axis base has thickness 2, its vertical leg
+    //     thickness 6, yet the HYPOTENUSE gives the narrowest slot, exact squared width 18/5 (~1.897), STRICTLY below the axis
+    //     thickness 2 (18/5 < 4). image/regions.rye's upright box would report 2; the true edge-first slot is narrower and turned --
+    var tri_pts = [_]contour.Point{
+        .{ .x = 0, .y = 0 },
+        .{ .x = 6, .y = 0 },
+        .{ .x = 0, .y = 2 },
+    };
+    const tri_hull = try convex_hull.convex_hull(garden, tri_pts[0..]);
+    const tri = try min_width(garden, tri_pts[0..]);
+    // exact squared width 18/5 -- checked as a value (num * 5 == 18 * den), reduction-independent of how the rational reduced
+    if (tri.width_sq_num * 5 != 18 * tri.width_sq_den) return error.TriWidthSqWrong;
+    // the narrowest slot is flush with the hypotenuse (its two endpoints (6,0) and (0,2)), NOT the axis base
+    if (!is_support(tri, tri_hull, .{ .x = 6, .y = 0 })) return error.TriSupportNotHypotenuseA;
+    if (!is_support(tri, tri_hull, .{ .x = 0, .y = 2 })) return error.TriSupportNotHypotenuseB;
+    // strictly below the axis base thickness 2 -- the diagonal slot is narrower than any axis-aligned reading finds
+    if (!width_below(tri, 2)) return error.TriNotBelowAxisThickness;
+    if (!approx(tri.width, @sqrt(18.0 / 5.0), 1e-9)) return error.TriWidthReadWrong;
+
+    // --- EDGE-FIRST IS NOT FACE-FIRST -- a 2x8 bar: its minimum width is EXACTLY 2 (it slips edge-first through a gap-2 slot), yet
+    //     its minimum enclosing circle has diameter sqrt(68) ~ 8.25, so face-first it needs a round hole more than four times wider.
+    //     The same bar, two very different bounds -- proven against the real image/min_enclosing_circle.rye sibling -------------
+    var bar_pts = [_]contour.Point{
+        .{ .x = 0, .y = 0 },
+        .{ .x = 2, .y = 0 },
+        .{ .x = 2, .y = 8 },
+        .{ .x = 0, .y = 8 },
+    };
+    const bar = try min_width(garden, bar_pts[0..]);
+    if (bar.width_sq_num != 4 * bar.width_sq_den) return error.BarWidthSqNotFour; // width^2 == 4, so width == 2 exactly
+    if (!approx(bar.width, 2.0, 1e-9)) return error.BarWidthNotTwo;
+    // EDGE-FIRST: passes a gap-2 slot, refuses a gap-1 slot, both by exact integer arithmetic
+    if (!passes_slot(bar, 2)) return error.BarSlotTwoRefused;
+    if (passes_slot(bar, 1)) return error.BarSlotOneFalselyPassed;
+    // FACE-FIRST: the same bar's round bound -- the enclosing circle's diameter is sqrt(68), far wider than the edge-first slot
+    const bar_hull = try convex_hull.convex_hull(garden, bar_pts[0..]);
+    const bar_circle = try min_enclosing_circle.min_enclosing_circle(bar_hull);
+    const bar_diameter = 2.0 * bar_circle.radius;
+    if (!approx(bar_diameter, @sqrt(68.0), 1e-6)) return error.BarDiameterWrong;
+    if (bar.width >= bar_diameter) return error.EdgeFirstNotBelowFaceFirst; // 2 << 8.25, the decisive divergence
+    if (bar_diameter <= 4.0 * bar.width) return error.FaceFirstNotFarWider; // the face-first hole is over four times the slot
+
+    // --- A 6x2 BAR upright: the narrowest slot is along a LONG (length-6) edge, thickness EXACTLY 2 -- the slot is 2, never the 6
+    //     an along-the-length reading might suggest; exact squared width 4 -----------------------------------------------------
+    var flat_pts = [_]contour.Point{
+        .{ .x = 0, .y = 0 },
+        .{ .x = 6, .y = 0 },
+        .{ .x = 6, .y = 2 },
+        .{ .x = 0, .y = 2 },
+    };
+    const flat = try min_width(garden, flat_pts[0..]);
+    if (flat.width_sq_num != 4 * flat.width_sq_den) return error.FlatWidthSqNotFour;
+    if (!approx(flat.width, 2.0, 1e-9)) return error.FlatWidthNotTwo;
+    if (!passes_slot(flat, 2)) return error.FlatSlotTwoRefused;
+
+    // --- AN INTEGRATED RASTER CRUX -- a solid 5x5 block traced through image/label.rye and image/contour.rye: its narrowest slot is
+    //     its axis span, exact width EXACTLY 4 (the 1..5 corner extent) over one of its square sides -------------------------
+    var big = try make_canvas(garden, 7, 7, 0);
+    set_block(&big, 1, 1, 5, 5);
+    const bmap = try label.label_components(garden, &big);
+    const bring = try contour.trace_contour(garden, &bmap, 1);
+    const block = try min_width(garden, bring.points);
+    if (block.width_sq_num != 16 * block.width_sq_den) return error.BlockWidthSqNotSixteen; // width^2 == 16, width == 4
+    if (!approx(block.width, 4.0, 1e-9)) return error.BlockWidthNotFour;
+    // compose over image/polygon.rye: the simplified corners seat the same width as the raw ring (same hull, same slot)
+    const bpoly = try polygon.simplify(garden, &bring, 0.5);
+    const poly = try min_width(garden, bpoly.vertices);
+    if (poly.width_sq_num != block.width_sq_num or poly.width_sq_den != block.width_sq_den) return error.PolyWidthDiffersFromRing;
+
+    // --- MIN-WIDTH IS AT MOST THE MIN-AREA BOX BREADTH -- the width read over ALL edges can only be narrower than (or equal to) the
+    //     min-area box's short side, since the box seats one particular edge; on the right triangle the width is STRICTLY below it,
+    //     read against the real image/min_area_rect.rye sibling -------------------------------------------------------------
+    const tri_rect = try min_area_rect.min_area_rect(garden, tri_pts[0..]);
+    const tri_breadth = if (tri_rect.length <= tri_rect.breadth) tri_rect.length else tri_rect.breadth;
+    if (tri.width > tri_breadth + 1e-9) return error.WidthAboveBoxBreadth; // width never exceeds the box's short side
+
+    // --- DEGENERATE hulls refuse DegenerateHull: a single point, and three COLLINEAR points (whose hull is a two-point segment)
+    //     have no slot to measure ----------------------------------------------------------------------------------------
+    var one = [_]contour.Point{.{ .x = 4, .y = 7 }};
+    if (min_width(garden, one[0..])) |_| return error.OnePointNotRefused else |err| {
+        if (err != error.DegenerateHull) return error.WrongOnePointError;
+    }
+    var colinear = [_]contour.Point{
+        .{ .x = 0, .y = 0 },
+        .{ .x = 3, .y = 0 },
+        .{ .x = 6, .y = 0 },
+    };
+    if (min_width(garden, colinear[0..])) |_| return error.CollinearNotRefused else |err| {
+        if (err != error.DegenerateHull) return error.WrongCollinearError;
+    }
+
+    // --- REFUSALS through the hull: an empty input refuses EmptySource, having allocated nothing --------------------------
+    const empty: []const contour.Point = &[_]contour.Point{};
+    if (min_width(garden, empty)) |_| return error.EmptyNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- DETERMINISM: the same point set reads the same slot twice --------------------------------------------------------
+    const w1 = try min_width(garden, bar_pts[0..]);
+    const w2 = try min_width(garden, bar_pts[0..]);
+    if (w1.width_sq_num != w2.width_sq_num or w1.width_sq_den != w2.width_sq_den) return error.WidthNotDeterministic;
+
+    print("GREEN image-min-width: the MINIMUM-WIDTH SLOT of a point set -- the narrowest parallel-sided gap a shape passes EDGE-FIRST, the minimum over image/convex_hull.rye's edges of the perpendicular extent, chosen by an EXACT i128 comparison and NO tolerance -- a right triangle's narrowest slot is DIAGONAL (flush with the hypotenuse, exact squared width 18/5 ~ 1.897, STRICTLY below the axis base thickness 2), the turned slot an axis-aligned reading misses; EDGE-FIRST is NOT FACE-FIRST -- a 2x8 bar passes a gap-2 slot edge-first (minimum width EXACTLY 2, gap-1 refused by exact arithmetic) yet its minimum enclosing circle (image/min_enclosing_circle.rye) has diameter sqrt(68) ~ 8.25, a round hole over four times wider face-first, the same bar's thinness and reach; a 6x2 bar's narrowest slot is its thickness 2 (along a length-6 edge), never the length; an integrated raster crux -- a solid 5x5 block traced through label and contour reads width EXACTLY 4, and image/polygon.rye's simplified corners seat the IDENTICAL slot as the raw ring; the width is at most the min-area box breadth (image/min_area_rect.rye), strictly below it on the triangle; a single point and three collinear points refuse DegenerateHull, an empty input EmptySource, each having allocated nothing; the same point set reads deterministically\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: min_width selftest\n", .{});
+    return 1;
+}
