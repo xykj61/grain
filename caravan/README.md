@@ -1,7 +1,7 @@
 # Caravan -- Process Supervision
 
 **Language:** EN
-**Last updated:** `20260819.160020` (the stall ring lands -- a consumer stops reading, and the rest keep going)
+**Last updated:** `20260819.162747` (the cycle ring lands -- a shape with no ends, and no vantage point inside it)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable -- process supervision ladder
 
@@ -41,6 +41,7 @@ Every ring here composes over the one before it. A later ring imports an earlier
 | fanin | [`fanin.rye`](fanin.rye) | two producers write one server -- every ask attributed to the region it arrived in rather than to the author its bytes claim, a sweep bounded per stream so a full producer never delays a quiet one, and an ask that lies about its author refused rather than believed |
 | stall | [`stall.rye`](stall.rye) | a consumer stops reading and the rest keep going -- a full stream taking the door its plan declared rather than one the code preferred, refusing so nothing is lost or lapsing so nothing waits, a stalled peer costing its own stream alone, and the answers that fell out of the window counted by the consumer that lost them |
 | relay | [`relay.rye`](relay.rye) | one domain both asks and answers -- the chain's shape derived from its grants rather than declared, a middle that forwards a fresh ask while its whole backlog stands unanswered, the two ends sharing no region and no channel, and the far end's name reaching the client as a claim it takes on the relay's word |
+| cycle | [`cycle.rye`](cycle.rye) | a shape with no ends -- every domain spanning exactly two peers, the one lap that closes searched out of the flow graph rather than declared, an ask travelling a full circuit and arriving back at the domain that wrote it, and no domain inside the ring able to total the lap it belongs to |
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
@@ -241,6 +242,24 @@ The third question is what the isolation costs, and this is the finding worth ca
 One wall keeps the origin honest in the meantime. A relay able to author the asks it forwards would make the origin in every ask its own invention, so it holds read alone on the region the client writes and the attempt is refused `WriteDenied`.
 
 The numbers state the claim: four asks crossed two seams and came home, two of them asked while none stood answered, and every hop -- asked, forwarded, answered, delivered, taken -- settled at four. Witness: [`tools/caravan_relay_witness.rish`](../tools/caravan_relay_witness.rish), GREEN on metal, both RED paths proven before the green was trusted.
+
+## Why a Ring Has No Vantage Point
+
+Every declaration in this arc until now has had ends. `relay.rye` gave a chain a middle, and the client that only asks and the backend that only answers were the whole point of it -- the shape ran between two domains that each touched exactly one neighbor.
+
+`cycle.rye` removes the ends. `alder` writes `ask_ab` and reads `ask_ca`, `birch` writes `ask_bc` and reads `ask_ab`, `cedar` writes `ask_ca` and reads `ask_bc`. Every domain is a middle, the flow graph closes on itself, and three questions open that no chain poses.
+
+The first is whether a ring is derivable, and it is, twice over from the grants alone. In a chain, two domains span a single peer and those are its ends; here every domain spans exactly two, so nothing is an end -- **a ring is the shape with no ends.** And exactly one directed walk visits every domain once and returns where it began, searched out of the flow graph by a bounded backtracking walk, which gives the circulation order: alder to birch to cedar and home. Both halves are real checks rather than decoration, and the RED probes proved it. Reversing a single edge -- letting alder write `ask_ca` so cedar reads it -- leaves the grants looking much the same and closes the walk nowhere, and the search refused a declaration whose grants close on no single lap. Running the chain declaration `serial_relay.bron` through the same shape check found two domains spanning other than two peers and refused a shape with an end.
+
+The second is whether a closed graph still settles, and it does, for the reason the chain settled: no verb waits. A pass moves what stands, rings the neighbor that carries it further, reports what it moved, and returns. The run proves it the hard way -- alder places a second pair while the first is still mid-lap, and all four asks travel the whole circuit and come home. What a badly ordered pass costs is worth naming precisely: a domain reading for its lap before its predecessor has rung hears an **unrung bell** and returns, so the cost of bad ordering is a wasted pass rather than a stopped ring. **Circular wait is a property of waiting, never of circles.**
+
+An ask that travels a full lap arrives at the domain that wrote it, and that arrival has a signature. At one hop, the region an ask arrives in names its author and the bytes name its origin, and the two agree -- that is `fanin.rye`'s law. After a full lap they must disagree: bytes reaching alder from cedar, naming alder as their origin, are alder's own ask come home. **The disagreement is what a completed lap looks like**, and a homecoming refuses any ask still naming a stranger.
+
+The third question is what the ring takes away, and this is the finding worth carrying forward. No domain holds a grant on every region, so no domain can total the lap it belongs to. alder reads three of the four regions, and the arc between the other two is refused `NotGranted` before any permission is compared. In the chain, the relay could read every hop and report the whole run from inside it; **a ring has no vantage point.** Only the parent outside the ring sees the whole, which is exactly what a supervisor is for. That fact follows from the ends fact rather than standing beside it: a domain reaching every region would have to touch every other domain, which makes a star, and a star has ends. The check stands anyway, since a wider declaration may someday find a way to violate it, and a guard that has never fired costs nothing.
+
+One wall keeps the origin honest around the circuit. A passer able to author asks in its predecessor's region would make every origin its own invention, so it holds read alone there and the attempt is refused `WriteDenied`.
+
+The numbers state the claim: four asks travelled a full lap and came home, two of them placed while the first pair was still travelling, and every arc settled at four. Witness: [`tools/caravan_cycle_witness.rish`](../tools/caravan_cycle_witness.rish), GREEN on metal, both RED paths proven before the green was trusted.
 
 ## Held
 
