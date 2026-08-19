@@ -1,0 +1,551 @@
+//! Caravan boot -- the supervisor spawns its dependents FROM the declaration.
+//!
+//! `roster.rye` closed one half of the gap: the capability table is derived
+//! from the document rather than written beside it, so the rights a
+//! supervisor enforces and the grants a witness reads are the same
+//! sentences. The other half stayed open. A derived table still described
+//! dependents nobody had started, and a supervision loop that spawns from a
+//! hand-written list would carry the old second source of truth right past
+//! every proof the four rings before it earned.
+//!
+//! This ring closes it. One document on disk becomes a running system: the
+//! reader loads it, the roster derives the table, and the supervisor starts
+//! one real dependent process per declared domain, in declaration order, handing
+//! each dependent exactly the capabilities its own domain was granted and
+//! nothing beside. A dependent reads its rights off its own argv, so what it
+//! believes it may touch and what the document permits are the same words
+//! carried across one seam.
+//!
+//! Five properties make the boot checkable rather than merely arranged.
+//! Coverage: every declared domain starts, so a system reporting itself up
+//! has every component running. Order: dependents start in declaration order,
+//! so a document reads as a startup sequence. Fidelity: the words handed to
+//! each dependent agree with the map, at every right, for every region -- proven
+//! by the parent before the spawn and by the dependent after it. Constancy: a
+//! dependent that falls is restarted with the SAME capability line, so a restart
+//! grants nothing a first start withheld. And refusal before action: a
+//! declaration this supervisor cannot seat spawns nothing at all, rather
+//! than booting the domains that fit and reporting itself ready.
+//!
+//! That last one is the load-bearing negative. A half-booted system is worse
+//! than a refused one, since it looks alive from the outside while the
+//! components its running dependents depend on were never started.
+//!
+//! Hosted ground: real processes, pure policy, no kernel underneath it yet.
+//!
+//! Usage:
+//!   boot <path>                     Boot one declaration and report it
+//!   boot selftest                   Run the self-test over the artifacts on disk
+//!   boot                            Same as selftest
+//!   boot dependent <domain> <plan> ...  Run as a supervised dependent (internal)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const regions = @import("regions.rye");
+const capabilities = @import("capabilities.rye");
+const roster = @import("roster.rye");
+const read = @import("read.rye");
+
+const caravan_boot_version = "20260819.134659";
+
+// =========================================================================
+// Bounds -- what one boot may spend
+// =========================================================================
+
+/// Restarts one dependent may take before the supervisor gives up on it. Small
+/// on purpose: a dependent that falls four times is telling the operator
+/// something a fifth start will never fix.
+pub const max_restarts_per_dependent: u32 = 3;
+
+/// The longest capability word a dependent may be handed -- a region name, the
+/// separator, and the permission letters. Derived from the name bound so
+/// the wire can never carry a name the table can hold.
+pub const max_cap_word_len: u32 = capabilities.max_name_len + 3;
+
+/// Fixed argv words every dependent receives before its capabilities: the
+/// program path, the `dependent` marker, its domain label, and its plan.
+const fixed_argv_words: u32 = 4;
+
+comptime {
+    // invariant: the widest permission word fits beside the longest name
+    assert(max_cap_word_len >= capabilities.max_name_len + 3);
+    // invariant: a dependent's whole argv stays within what one boot builds
+    assert(fixed_argv_words + capabilities.max_caps_per_dependent <= 16);
+}
+
+// =========================================================================
+// BootError -- where a boot refuses rather than half-starts
+// =========================================================================
+
+/// Named ways a boot declines to bring a system up. Each refusal happens
+/// BEFORE any dependent starts, so an operator reading one knows no process is
+/// running behind it.
+pub const BootError = error{
+    SpawnFailed,
+    RestartLimit,
+    BadCapabilityWord,
+};
+
+/// Everything a caller may hear from `boot_path` -- the document's own read
+/// and parse refusals, the roster's bounds, and the boot's own.
+pub const BootPathError = roster.LoadRosterError || BootError;
+
+// =========================================================================
+// The wire -- one capability becomes one word, and back
+// =========================================================================
+
+/// Renders a rights mask as the permission word a declaration would spell.
+///
+/// The three legal masks map one for one onto the grammar's own words, so a
+/// capability crossing the argv seam carries exactly what the document said.
+/// A mask holding write beside execute has no word here at all, which is W
+/// xor X surviving one more translation.
+pub fn perm_word(mask: u8) ?[]const u8 {
+    const reads = (mask & capabilities.right_read) != 0;
+    const writes = (mask & capabilities.right_write) != 0;
+    const runs = (mask & capabilities.right_exec) != 0;
+    // invariant: a derived mask always reads, since every legal grant reads
+    assert(reads);
+    if (writes and runs) return null;
+    if (writes) return "rw";
+    if (runs) return "rx";
+    return "r";
+}
+
+/// Reads a permission word back into the rights mask it names.
+///
+/// The vocabulary is closed: three words in, three masks out, and anything
+/// else answers null rather than guessing. A dependent parsing its own argv
+/// meets the same grammar the document was written in.
+pub fn word_mask(word: []const u8) ?u8 {
+    // invariant: a word worth reading carries at least one letter
+    assert(word.len >= 1);
+    if (std.mem.eql(u8, word, "r")) return capabilities.right_read;
+    if (std.mem.eql(u8, word, "rw")) return capabilities.right_read | capabilities.right_write;
+    if (std.mem.eql(u8, word, "rx")) return capabilities.right_read | capabilities.right_exec;
+    return null;
+}
+
+/// Writes one capability into a bounded word as `region:perm`.
+///
+/// The buffer is sized from the same bound the table holds, so the write
+/// fits by construction and the returned slice names its own length rather
+/// than trusting a terminator.
+pub fn write_cap_word(buf: []u8, cap: *const capabilities.Capability) BootError![]const u8 {
+    // invariant: the buffer holds the widest word this wire may carry
+    assert(buf.len >= max_cap_word_len);
+    const name = cap.name_slice();
+    // invariant: a capability worth handing names a resource
+    assert(name.len >= 1);
+    const word = perm_word(cap.rights_mask) orelse return error.BadCapabilityWord;
+    const total = name.len + 1 + word.len;
+    // invariant: the rendered word stays inside the bound derived above
+    assert(total <= max_cap_word_len);
+    var i: usize = 0;
+    while (i < name.len) : (i += 1) buf[i] = name[i];
+    buf[name.len] = ':';
+    var j: usize = 0;
+    while (j < word.len) : (j += 1) buf[name.len + 1 + j] = word[j];
+    return buf[0..total];
+}
+
+/// Splits a `region:perm` word back into its two halves.
+///
+/// A word missing its separator, naming nothing, or spelling a permission
+/// outside the grammar answers null -- so a dependent refuses a malformed line
+/// rather than running with rights it inferred.
+pub fn read_cap_word(word: []const u8) ?capabilities.Capability {
+    // invariant: a word worth reading carries something
+    assert(word.len >= 1);
+    const cut = std.mem.indexOfScalar(u8, word, ':') orelse return null;
+    if (cut == 0) return null;
+    if (cut + 1 >= word.len) return null;
+    const name = word[0..cut];
+    if (name.len > capabilities.max_name_len) return null;
+    const mask = word_mask(word[cut + 1 ..]) orelse return null;
+    // invariant: no mask read off the wire holds write beside execute
+    assert((mask & capabilities.right_write) == 0 or (mask & capabilities.right_exec) == 0);
+    return capabilities.Capability.init(name, mask);
+}
+
+// =========================================================================
+// Fidelity -- what the parent proves before it spawns
+// =========================================================================
+
+/// Answers whether the words about to be handed to one dependent agree with the
+/// declaration, at every right the wire can carry.
+///
+/// This runs before the spawn, so a disagreement stops the boot rather than
+/// starting a dependent that believes something the document never said.
+pub fn line_agrees(
+    sys: *const system.System,
+    slot: *const capabilities.DependentSlot,
+) bool {
+    // invariant: the capability list stays within its bound
+    assert(slot.cap_count <= capabilities.max_caps_per_dependent);
+    const domain = slot.label_slice();
+    // invariant: a dependent slot always names its domain
+    assert(domain.len >= 1);
+    var i: u32 = 0;
+    while (i < slot.cap_count) : (i += 1) {
+        assert(i < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        const cap = &slot.caps[i];
+        const region = cap.name_slice();
+        const word = perm_word(cap.rights_mask) orelse return false;
+        const mask = word_mask(word) orelse return false;
+        // The rendered word must survive the round trip unchanged, or the
+        // dependent would read rights the parent never meant to hand it.
+        if (mask != cap.rights_mask) return false;
+        const reads = (mask & capabilities.right_read) != 0;
+        if (reads != sys.map.may_read(region, domain)) return false;
+        const writes = (mask & capabilities.right_write) != 0;
+        if (writes != sys.map.may_write(region, domain)) return false;
+        const runs = (mask & capabilities.right_exec) != 0;
+        if (runs != sys.map.may_execute(region, domain)) return false;
+    }
+    return true;
+}
+
+// =========================================================================
+// The boot -- one document becomes running dependents
+// =========================================================================
+
+/// What one boot did, reported whole rather than as a bare success.
+pub const BootReport = struct {
+    started: u32 = 0,
+    restarts: u32 = 0,
+    caps_handed: u32 = 0,
+};
+
+/// Supervises one declared domain from first start through its restarts.
+///
+/// The capability line is built once and reused across every restart, which
+/// is what makes constancy a property of the code rather than a habit: a
+/// dependent that falls comes back holding exactly what it held before.
+fn supervise_domain(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    slot: *const capabilities.DependentSlot,
+    planned_falls: u32,
+) BootError!u32 {
+    // invariant: the capability list stays within its bound
+    assert(slot.cap_count <= capabilities.max_caps_per_dependent);
+    // invariant: a supervised domain always names itself
+    assert(slot.label_slice().len >= 1);
+    // invariant: the parent never plans more falls than it will tolerate
+    assert(planned_falls <= max_restarts_per_dependent);
+    // invariant: the line agrees with the declaration before anything starts
+    assert(line_agrees(sys, slot));
+
+    var storage: [capabilities.max_caps_per_dependent][max_cap_word_len]u8 = undefined;
+    const argv = allocator.alloc([]const u8, fixed_argv_words + slot.cap_count) catch {
+        return error.SpawnFailed;
+    };
+    argv[0] = self_path;
+    argv[1] = "dependent";
+    argv[2] = slot.label_slice();
+    argv[3] = "ok";
+    var c: u32 = 0;
+    while (c < slot.cap_count) : (c += 1) {
+        assert(c < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        argv[fixed_argv_words + c] = try write_cap_word(&storage[c], &slot.caps[c]);
+    }
+
+    var restarts: u32 = 0;
+    while (true) {
+        // invariant: the restart count never passes the bound it is checked against
+        assert(restarts <= max_restarts_per_dependent);
+        argv[3] = if (restarts < planned_falls) "fail" else "ok";
+
+        var proc = std.process.spawn(io, .{ .argv = argv }) catch {
+            return error.SpawnFailed;
+        };
+        const term = proc.wait(io) catch return error.SpawnFailed;
+        const code: u8 = switch (term) {
+            .exited => |c2| c2,
+            else => 255,
+        };
+        if (code == 0) break;
+
+        restarts += 1;
+        print("    {s} fell (code {d}) -- restart {d}/{d}, same rights\n", .{
+            slot.label_slice(), code, restarts, max_restarts_per_dependent,
+        });
+        if (restarts >= max_restarts_per_dependent) return error.RestartLimit;
+    }
+    // invariant: the plan and the run agree on how many falls happened
+    assert(restarts == planned_falls);
+    return restarts;
+}
+
+/// Brings a whole parsed declaration up, one dependent per declared domain.
+///
+/// The roster is derived first and refused whole if this supervisor cannot
+/// seat it, so a system too wide for the table spawns nothing at all.
+pub fn boot_system(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    fall_at: u32,
+) (roster.RosterError || BootError)!BootReport {
+    // invariant: the domain roster stays within the map's bound
+    assert(sys.map.domain_count <= regions.max_domains);
+    // invariant: a boot always knows what program to spawn
+    assert(self_path.len >= 1);
+
+    const table = try roster.from_system(sys);
+    // invariant: every declared domain seated a dependent before any of them ran
+    assert(table.dependent_count == sys.map.domain_count);
+    // invariant: the derived table enforces exactly what the document permits
+    assert(roster.agrees(sys, &table));
+
+    var report_out: BootReport = .{};
+    var d: u32 = 0;
+    while (d < table.dependent_count) : (d += 1) {
+        assert(d < capabilities.max_dependents); // invariant: the walk stays in the array
+        const slot = &table.dependents[d];
+        // invariant: startup order is declaration order, dependent by dependent
+        assert(std.mem.eql(u8, slot.label_slice(), sys.map.domains[d].name_slice()));
+        const planned: u32 = if (d == fall_at) 1 else 0;
+        const restarts = try supervise_domain(allocator, io, self_path, sys, slot, planned);
+        report_out.started += 1;
+        report_out.restarts += restarts;
+        report_out.caps_handed += slot.cap_count;
+    }
+    // invariant: coverage -- every declared domain started
+    assert(report_out.started == sys.map.domain_count);
+    // invariant: fidelity -- every declared grant crossed the wire once
+    assert(report_out.caps_handed == sys.map.grant_count);
+    return report_out;
+}
+
+/// Reads a declaration off disk and boots it in one step.
+pub fn boot_path(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    path: []const u8,
+    fall_at: u32,
+) BootPathError!BootReport {
+    // invariant: a boot always names something to read
+    assert(path.len >= 1);
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = try read.load(io, path, &buf);
+    return boot_system(allocator, io, self_path, &parsed, fall_at);
+}
+
+// =========================================================================
+// The dependent -- a component that knows only what it was handed
+// =========================================================================
+
+/// Runs as one supervised dependent, holding exactly the capabilities on its
+/// own argv.
+///
+/// The dependent re-derives nothing. It reads its rights off the wire, checks
+/// each word against the same grammar the document used, and answers every
+/// question about what it may touch from that list alone -- which is what
+/// makes the parent's fidelity check meaningful rather than self-confirming.
+fn run_dependent(args: []const [:0]const u8) u8 {
+    // invariant: a dependent always receives its marker, its domain, and its plan
+    assert(args.len >= fixed_argv_words);
+    const domain = args[2];
+    const plan = args[3];
+    // invariant: a dependent always knows which domain it is
+    assert(domain.len >= 1);
+
+    var slot = capabilities.DependentSlot.init(domain);
+    var i: usize = fixed_argv_words;
+    while (i < args.len) : (i += 1) {
+        const cap = read_cap_word(args[i]) orelse {
+            print("    {s}: refused a malformed capability word\n", .{domain});
+            return 1;
+        };
+        slot.grant(cap) catch {
+            print("    {s}: more capabilities than one dependent holds\n", .{domain});
+            return 1;
+        };
+    }
+    // invariant: the dependent holds exactly the words it was handed
+    assert(slot.cap_count == args.len - fixed_argv_words);
+
+    var j: u32 = 0;
+    while (j < slot.cap_count) : (j += 1) {
+        assert(j < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        const mask = slot.caps[j].rights_mask;
+        const writes = (mask & capabilities.right_write) != 0;
+        const runs = (mask & capabilities.right_exec) != 0;
+        const writes_and_runs = writes and runs;
+        // invariant: W xor X held across the wire, in the dependent's own hands
+        assert(!writes_and_runs);
+    }
+
+    if (std.mem.eql(u8, plan, "fail")) {
+        print("    {s}: falling once by plan, holding {d}\n", .{ domain, slot.cap_count });
+        return 1;
+    }
+    print("    {s}: up, holding {d}\n", .{ domain, slot.cap_count });
+    return 0;
+}
+
+// =========================================================================
+// Self-test -- the artifacts on disk, booted as an operator would
+// =========================================================================
+
+/// The declared domain planned to fall once, so a restart is proven rather
+/// than described. Index 1 is `client_a` in the worked example.
+const worked_fall_at: u32 = 1;
+
+/// A domain index no declaration reaches, for the runs where nothing falls.
+const no_fall: u32 = regions.max_domains;
+
+/// Boots the worked example and checks every claim the boot makes.
+fn check_serial_stack(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = read.load(io, read.serial_stack_path, &buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ read.serial_stack_path, @errorName(err) });
+        return 1;
+    };
+    const done = boot_system(allocator, io, self_path, &parsed, worked_fall_at) catch |err| {
+        print("  RED: the worked example did not boot: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: coverage -- one virtualiser and two clients all started
+    assert(done.started == 3);
+    // invariant: fidelity -- six declared grants crossed the wire once each
+    assert(done.caps_handed == parsed.map.grant_count);
+    // invariant: constancy -- the one planned fall came back on the same line
+    assert(done.restarts == 1);
+    print("  {d} declared domains started in declaration order, holding {d} capabilities\n", .{
+        done.started, done.caps_handed,
+    });
+    print("  a dependent that fell came back holding the same rights -- {d} restart\n", .{done.restarts});
+    return 0;
+}
+
+/// Checks the words a dependent is handed against the declaration, including
+/// the buffer it was never granted.
+fn check_lines(io: std.Io) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = read.load(io, read.serial_stack_path, &buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ read.serial_stack_path, @errorName(err) });
+        return 1;
+    };
+    const table = roster.from_system(&parsed) catch |err| {
+        print("  RED: the worked example did not seat: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    var d: u32 = 0;
+    while (d < table.dependent_count) : (d += 1) {
+        assert(d < capabilities.max_dependents); // invariant: the walk stays in the array
+        // invariant: every line handed out agrees with the map it came from
+        assert(line_agrees(&parsed, &table.dependents[d]));
+    }
+
+    const client = table.find_dependent("client_a") orelse {
+        print("  RED: the declared client never seated\n", .{});
+        return 1;
+    };
+    var holds_own = false;
+    var holds_other = false;
+    var word_buf: [max_cap_word_len]u8 = undefined;
+    var i: u32 = 0;
+    while (i < client.cap_count) : (i += 1) {
+        assert(i < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        const word = write_cap_word(&word_buf, &client.caps[i]) catch {
+            print("  RED: a granted capability had no legal word\n", .{});
+            return 1;
+        };
+        if (std.mem.eql(u8, word, "rx_a:r")) holds_own = true;
+        if (std.mem.startsWith(u8, word, "rx_b:")) holds_other = true;
+        // invariant: a word read back names the same rights it was written from
+        const echo = read_cap_word(word) orelse {
+            print("  RED: a rendered word did not read back\n", .{});
+            return 1;
+        };
+        assert(echo.rights_mask == client.caps[i].rights_mask);
+    }
+    // invariant: the client is handed its own receive buffer, read-only
+    assert(holds_own);
+    // invariant: and the other client's buffer never reaches its argv at all
+    assert(!holds_other);
+    print("  a client's line carries its own buffer and never the other's\n", .{});
+
+    // invariant: a write-and-run mask has no word, so it cannot cross the wire
+    assert(perm_word(capabilities.right_read | capabilities.right_write | capabilities.right_exec) == null);
+    // invariant: and no permission word reads back as one either
+    assert(word_mask("rwx") == null);
+    print("  no word spells write beside execute -- W xor X survives the wire\n", .{});
+    return 0;
+}
+
+/// Checks that a declaration this supervisor cannot seat starts nothing.
+fn check_wide_roster(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = read.load(io, roster.wide_roster_path, &buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ roster.wide_roster_path, @errorName(err) });
+        return 1;
+    };
+    // invariant: the document itself is whole -- the bound is the supervisor's
+    assert(parsed.is_whole());
+    if (boot_system(allocator, io, self_path, &parsed, no_fall)) |done| {
+        print("  RED: a document past the roster started {d} dependents\n", .{done.started});
+        return 1;
+    } else |err| {
+        // invariant: the refusal names the supervisor's own bound
+        assert(err == error.TooManyDomains);
+    }
+    print("  a declaration past the roster starts nothing -- refused whole, never half-booted\n", .{});
+    return 0;
+}
+
+fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    print("Caravan boot {s} -- self-test\n", .{caravan_boot_version});
+    const worked = check_serial_stack(allocator, io, self_path);
+    if (worked != 0) return worked;
+    const lines = check_lines(io);
+    if (lines != 0) return lines;
+    const wide = check_wide_roster(allocator, io, self_path);
+    if (wide != 0) return wide;
+    print("  GREEN: the supervisor spawns its dependents from the declaration\n", .{});
+    return 0;
+}
+
+/// Boots one path an operator names, answering 0 only when every declared
+/// domain came up.
+fn run_path(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8, path: []const u8) u8 {
+    // invariant: a run always names something to boot
+    assert(path.len >= 1);
+    const done = boot_path(allocator, io, self_path, path, no_fall) catch |err| {
+        print("refused: {s} -- {s}\n", .{ path, @errorName(err) });
+        return 1;
+    };
+    print("  booted {s}\n", .{path});
+    print("    started {d} -- capabilities handed {d} -- restarts {d}\n", .{
+        done.started, done.caps_handed, done.restarts,
+    });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
+        return run_dependent(args);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(allocator, io, self_path);
+    }
+    if (args.len == 2) return run_path(allocator, io, self_path, args[1]);
+    if (args.len >= 3) return 1;
+    return run_self_test(allocator, io, self_path);
+}

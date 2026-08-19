@@ -1,7 +1,7 @@
 # Caravan -- Process Supervision
 
 **Language:** EN
-**Last updated:** `20260819.133033` (the roster ring lands -- the supervisor derived from the declaration; ASCII-first sweep on touch)
+**Last updated:** `20260819.134659` (the boot ring lands -- the supervisor spawns its dependents from the declaration)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable -- process supervision ladder
 
@@ -28,6 +28,7 @@ Every ring here composes over the one before it. A later ring imports an earlier
 | system | [`system.rye`](system.rye) | the whole architecture as one declaration -- a bounded Bron document naming domains, channels, regions, and grants, parsed once and verified whole |
 | reader | [`read.rye`](read.rye) | the architecture read from its own file -- a bounded load from disk, oversize refused rather than truncated, every refusal named |
 | roster | [`roster.rye`](roster.rye) | the supervisor's dependent table derived from the declaration -- every domain a dependent, every grant one capability, agreement with the map proven over the whole cross product |
+| boot | [`boot.rye`](boot.rye) | the supervisor spawns its dependents from the declaration -- every declared domain started in order, handed exactly its own grants, restarted on the same line, a wider document starting nothing |
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
@@ -68,6 +69,16 @@ Four rings named a system, and one gap stayed open across all of them: the decla
 Two properties make the derivation checkable rather than merely tidy. **Conservation:** every declared domain seats exactly one dependent and every declared grant seats exactly one capability, so the table holds as many capabilities as the document holds grants -- nothing invented, nothing dropped. **Agreement:** over the whole cross product of declared regions and declared domains, at read, write, and execute each, the table's answer equals the map's answer. The negative answers carry the weight: a client reaching a buffer it was never granted is the failure this whole arc exists to rule out, and both rings refuse it, each in its own vocabulary -- the map answering `not_granted`, the table answering `no_such_resource`. W xor X crosses the translation for free, since a grammar that cannot say `rwx` cannot derive a mask holding both.
 
 The bound is the honest part. A declaration may legally name more domains than a capability table seats, so `from_system` answers `TooManyDomains` rather than seating what fits and reporting itself ready -- a refusal naming the **supervisor's** bound, never a fault in the document. `wide_roster.bron` makes that distinction visible: five wired domains around one shared region, whole by every property `verify` reads, and still past the four dependents this table holds. Witness: [`tools/caravan_roster_witness.rish`](../tools/caravan_roster_witness.rish), GREEN on metal, its RED path proven by widening the derived mask with one right the document withheld and watching the agreement check abort.
+
+## Why the Dependents Are Spawned From the Document
+
+`roster.rye` closed one half of the gap between the declaration and the supervisor. The other half stayed open: a derived table still described dependents nobody had started, and a supervision loop spawning from a hand-written list would carry the old second source of truth right past every proof the four rings before it earned. `boot.rye` closes it -- one document on disk becomes a running system. The reader loads it, the roster derives the table, and the supervisor starts one real dependent process per declared domain, in declaration order, handing each dependent exactly the capabilities its own domain was granted and nothing beside.
+
+The seam is a capability line on argv. Each grant crosses as one `region:perm` word in the same three-word grammar the document is written in, so a dependent reads its rights off its own arguments and re-derives nothing -- which is what makes the parent's fidelity check meaningful rather than self-confirming. W xor X crosses here too, by absence: a mask holding write beside execute has no word at all, so it cannot be spelled onto the wire, and `rwx` reads back as no mask.
+
+Five properties make the boot checkable rather than merely arranged. **Coverage:** every declared domain starts, so a system reporting itself up has every component running. **Order:** dependents start in declaration order, so a document reads as a startup sequence. **Fidelity:** the words handed to each dependent agree with the map at every right, checked by the parent before the spawn and by the dependent after it. **Constancy:** the capability line is built once and reused across every restart, so a dependent that falls comes back holding exactly what it held before -- a restart grants nothing a first start withheld. And **refusal before action:** a declaration this supervisor cannot seat spawns nothing at all.
+
+That last one is the load-bearing negative. A half-booted system is worse than a refused one, since it looks alive from the outside while the components its running dependents depend on were never started -- so `wide_roster.bron`, whole by every property `verify` reads and still past the four dependents this table holds, answers `TooManyDomains` before a single process exists. Witness: [`tools/caravan_boot_witness.rish`](../tools/caravan_boot_witness.rish), GREEN on metal, its RED path proven by rendering a read-only grant as `rw` and watching the fidelity assert abort after the first dependent came up and before the widened line ever spawned.
 
 ## Held
 
