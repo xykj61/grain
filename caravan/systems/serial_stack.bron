@@ -1,0 +1,27 @@
+# serial_stack -- the worked example the Microkit brief describes.
+#
+# One serial virtualiser serves two clients. Each client reads its own
+# receive buffer and reaches none of the other's; both run a shared
+# read-execute font, which is sharing made deliberate and visible.
+#
+# Read whole by `caravan/read.rye`; proven by tools/caravan_read_witness.rish.
+
+system serial_stack
+
+domain serial_virt
+domain client_a
+domain client_b
+
+channel serial_virt client_a
+channel serial_virt client_b
+
+region rx_a 4096
+region rx_b 4096
+region font_rom 65536
+
+grant rx_a serial_virt rw
+grant rx_a client_a r
+grant rx_b serial_virt rw
+grant rx_b client_b r
+grant font_rom client_a rx
+grant font_rom client_b rx

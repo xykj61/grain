@@ -1,0 +1,284 @@
+//! Caravan system reader -- an architecture read from its own file on disk.
+//!
+//! `system.rye` gathers capabilities, channels, and regions into one bounded
+//! declaration and proves it whole. That ring reads a source literal, so the
+//! architecture still lived inside the program that checked it. This ring
+//! takes the last step the declaration was always reaching for: the document
+//! lives beside the code as its own `.bron` artifact, and the reader loads
+//! it from disk into a bounded buffer before a single line is parsed.
+//!
+//! Two properties make that step worth its own module. The read is bounded
+//! at the door -- a document larger than the declaration grammar could
+//! honestly carry is refused by name rather than truncated into something
+//! that parses and means something else. And the refusal vocabulary stays
+//! whole: a missing file, an oversize file, and a malformed line each answer
+//! under their own name, so an operator reading a RED knows which of the
+//! three happened without opening anything.
+//!
+//! The truncation guard is the load-bearing detail. A short read fills the
+//! buffer and reports the bytes that arrived, so a file larger than the
+//! buffer and a file exactly filling it look identical from the inside. This
+//! reader therefore keeps one byte of headroom: it reads into a buffer wider
+//! than the bound, and a read that reaches the buffer's own edge is refused
+//! as oversize rather than believed. A declaration cut mid-line can still
+//! parse and still describe a system nobody wrote, which is the one outcome
+//! worth spending a byte to rule out.
+//!
+//! The artifacts this ring reads live in `caravan/systems/`:
+//!
+//!     serial_stack.bron    the worked example, read whole
+//!     unheld_region.bron   parses line by line, falls short whole
+//!     write_execute.bron   refused at its own line by the grammar
+//!
+//! Hosted ground, pure policy, no kernel underneath it yet.
+//!
+//! Usage:
+//!   read <path>     Read one declaration and report what it proves
+//!   read selftest   Run the self-test over the artifacts on disk
+//!   read            Same as selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const channels = @import("channels.rye");
+const regions = @import("regions.rye");
+
+const Dir = std.Io.Dir;
+
+const caravan_read_version = "20260819.132319";
+
+/// Maximum bytes one system description may span on disk. The parser bounds
+/// a document at `max_lines` lines of `max_line_len` bytes, so this is that
+/// same bound read as a byte count -- one number, derived rather than typed,
+/// which is why the file bound and the parse bound can never drift apart.
+pub const max_document_bytes: u32 = system.max_lines * system.max_line_len;
+
+/// Buffer width a caller supplies to read a full-bound document -- the bound
+/// itself plus the single byte of headroom the truncation guard reads.
+pub const read_buffer_bytes: u32 = max_document_bytes + 1;
+
+comptime {
+    // invariant: the byte bound stays large enough for a full-width document
+    assert(max_document_bytes >= system.max_line_len);
+    // invariant: the byte bound stays small enough to hold on the stack
+    assert(max_document_bytes <= 64 * 1024);
+}
+
+/// Every way a document may be refused before its first line is read. Each
+/// name answers a different operator question, so a refusal teaches which of
+/// the three happened -- absent, oversize, or unreadable for another reason.
+pub const ReadError = error{
+    NoSuchDocument,
+    DocumentTooLarge,
+    DocumentUnreadable,
+};
+
+/// Everything a caller may hear back from `load` -- the read refusals above,
+/// joined with every line-level refusal the parser already names.
+pub const LoadError = ReadError || system.ParseError;
+
+/// Reads a whole document into the caller's buffer and answers the bytes
+/// that arrived.
+///
+/// The buffer the caller supplies carries the bound plus one byte of
+/// headroom, so the honest capacity is `buf.len - 1`. A read that reaches
+/// the buffer's own edge answers `DocumentTooLarge`, since at that edge a
+/// complete document and a truncated one are indistinguishable and only the
+/// refusal is honest.
+pub fn read_document(io: std.Io, path: []const u8, buf: []u8) ReadError![]const u8 {
+    // invariant: a read always names something to open
+    assert(path.len >= 1);
+    // invariant: the buffer holds one full line plus the headroom byte
+    assert(buf.len >= system.max_line_len + 1);
+    const cwd = Dir.cwd();
+    const text = cwd.readFile(io, path, buf) catch |err| return switch (err) {
+        error.FileNotFound => error.NoSuchDocument,
+        else => error.DocumentUnreadable,
+    };
+    // invariant: what arrived stays within the buffer that bounded it
+    assert(text.len <= buf.len);
+    // invariant: a read stopping at the buffer's edge is refused, never trusted
+    if (text.len == buf.len) return error.DocumentTooLarge;
+    return text;
+}
+
+/// Reads a document from disk and parses it into one system value.
+///
+/// The two steps stay separate above and join here, so a caller reading a
+/// declaration in the ordinary way writes one line and still hears every
+/// refusal under its own name.
+pub fn load(io: std.Io, path: []const u8, buf: []u8) LoadError!system.System {
+    // invariant: a load always names something to read
+    assert(path.len >= 1);
+    // invariant: the buffer holds one full line plus the headroom byte
+    assert(buf.len >= system.max_line_len + 1);
+    const text = try read_document(io, path, buf);
+    const parsed = try system.parse(text);
+    // invariant: a parsed system always carries a name
+    assert(parsed.name_len >= 1);
+    return parsed;
+}
+
+/// Names a verdict in the words an operator reads, so a report says what
+/// fell short rather than printing a number to look up.
+pub fn verdict_word(verdict: system.Verdict) []const u8 {
+    return switch (verdict) {
+        .whole => "whole",
+        .unnamed_system => "unnamed system",
+        .rosters_disagree => "rosters disagree",
+        .write_and_execute => "write and execute in one grant",
+        .unheld_region => "a region no domain holds",
+        .isolated_domain => "a domain standing an island",
+    };
+}
+
+/// Prints what one declaration proves -- its name, its three rosters, the
+/// memory it asks for, and its verdict.
+pub fn report(parsed: *const system.System) void {
+    // invariant: the domain roster stays within the ring's bound
+    assert(parsed.graph.domain_count <= channels.max_domains);
+    // invariant: the region roster stays within the ring's bound
+    assert(parsed.map.region_count <= regions.max_regions);
+    const verdict = parsed.verify();
+    print("  system {s}\n", .{parsed.name_slice()});
+    print("    domains {d} -- channels {d} -- regions {d} -- grants {d}\n", .{
+        parsed.graph.domain_count,
+        parsed.graph.channel_count,
+        parsed.map.region_count,
+        parsed.map.grant_count,
+    });
+    print("    declared bytes {d}\n", .{parsed.declared_bytes()});
+    print("    verdict: {s}\n", .{verdict_word(verdict)});
+}
+
+// =========================================================================
+// Self-test -- the artifacts on disk, read as an operator would read them
+// =========================================================================
+
+pub const serial_stack_path = "caravan/systems/serial_stack.bron";
+pub const unheld_region_path = "caravan/systems/unheld_region.bron";
+pub const write_execute_path = "caravan/systems/write_execute.bron";
+
+/// Answers whether reading this path was refused with the named error.
+/// Capturing the error keeps each check readable at its call site and off
+/// the `) == error.` call seam the tidy rules ban.
+fn load_refused(io: std.Io, path: []const u8, want: anyerror) bool {
+    // invariant: a refusal check always names something to read
+    assert(path.len >= 1);
+    // invariant: the expected error is a real one
+    assert(want != error.OutOfMemory);
+    var buf: [read_buffer_bytes]u8 = undefined;
+    if (load(io, path, &buf)) |_| {
+        return false;
+    } else |err| {
+        return err == want;
+    }
+}
+
+/// Reads the worked example off disk and checks every claim the file makes.
+fn check_serial_stack(io: std.Io) u8 {
+    var buf: [read_buffer_bytes]u8 = undefined;
+    const parsed = load(io, serial_stack_path, &buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ serial_stack_path, @errorName(err) });
+        return 1;
+    };
+    // invariant: the file declares the system its name promises
+    assert(std.mem.eql(u8, parsed.name_slice(), "serial_stack"));
+    // invariant: one virtualiser and two clients, read off the document
+    assert(parsed.graph.domain_count == 3);
+    // invariant: each client reaches the virtualiser, and only the virtualiser
+    assert(parsed.graph.channel_count == 2);
+    // invariant: two receive buffers and one shared font
+    assert(parsed.map.region_count == 3);
+    // invariant: the three regions span the bytes the document declares
+    assert(parsed.declared_bytes() == 73728);
+    // invariant: no client-to-client path exists in the file as written
+    assert(!parsed.graph.may_signal("client_a", "client_b"));
+    // invariant: the declaration reads whole
+    assert(parsed.is_whole());
+    report(&parsed);
+    print("  the document on disk reads whole -- 73728 bytes, no client-to-client path\n", .{});
+    return 0;
+}
+
+/// Checks that a document falling short whole says so by name, rather than
+/// passing because every line of it was legal.
+fn check_unheld_region(io: std.Io) u8 {
+    var buf: [read_buffer_bytes]u8 = undefined;
+    const parsed = load(io, unheld_region_path, &buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ unheld_region_path, @errorName(err) });
+        return 1;
+    };
+    // invariant: every line parsed, so the shortfall is genuinely above the line
+    assert(parsed.map.region_count == 2);
+    // invariant: the finished declaration names the region nobody holds
+    assert(parsed.verify() == .unheld_region);
+    report(&parsed);
+    print("  a document whose lines are each legal still answers for the whole\n", .{});
+    return 0;
+}
+
+/// Checks the three refusals an operator meets most: a grammar the document
+/// broke, a file that is absent, and a file larger than the bound.
+fn check_refusals(io: std.Io) void {
+    // invariant: the grammar refuses `rwx` at the line that asks for it
+    assert(load_refused(io, write_execute_path, error.BadPermission));
+    print("  W xor X held at the grammar -- rwx refused in the file itself\n", .{});
+
+    // invariant: an absent document answers by its own name
+    assert(load_refused(io, "caravan/systems/no_such_system.bron", error.NoSuchDocument));
+    print("  an absent document answers NoSuchDocument\n", .{});
+
+    // A buffer one line wide is the smallest legal bound, so reading the
+    // worked example through it proves the door refuses rather than truncates.
+    var small: [system.max_line_len + 1]u8 = undefined;
+    const oversize = read_document(io, serial_stack_path, &small);
+    if (oversize) |_| {
+        unreachable;
+    } else |err| {
+        // invariant: a document past the bound refuses rather than arriving cut
+        assert(err == error.DocumentTooLarge);
+    }
+    print("  a document past its bound answers DocumentTooLarge -- never truncated\n", .{});
+}
+
+fn run_self_test(io: std.Io) u8 {
+    print("Caravan system reader {s} -- self-test\n", .{caravan_read_version});
+    const worked = check_serial_stack(io);
+    if (worked != 0) return worked;
+    const short = check_unheld_region(io);
+    if (short != 0) return short;
+    check_refusals(io);
+    print("  GREEN: the architecture reads from disk -- bounded, named, refused by name\n", .{});
+    return 0;
+}
+
+/// Reads one path an operator names and reports what it proves, answering 0
+/// only when the declaration reads whole.
+fn run_path(io: std.Io, path: []const u8) u8 {
+    // invariant: a run always names something to read
+    assert(path.len >= 1);
+    var buf: [read_buffer_bytes]u8 = undefined;
+    const parsed = load(io, path, &buf) catch |err| {
+        print("refused: {s} -- {s}\n", .{ path, @errorName(err) });
+        return 1;
+    };
+    report(&parsed);
+    if (parsed.is_whole()) return 0;
+    return 1;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(io);
+    }
+
+    if (args.len == 2) return run_path(io, args[1]);
+    if (args.len >= 3) return 1;
+    return run_self_test(io);
+}
