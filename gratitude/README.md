@@ -1,7 +1,7 @@
 # Gratitude
 
 **Language:** EN
-**Last updated:** 2026-08-02 (e218 · openssh-portable + mosh study clones · gitignored nests)
+**Last updated:** 2026-08-19 (seL4 + Microkit microkernel study for Caravan, clean-room)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 
 ---
@@ -95,6 +95,7 @@ When we adapt one of these works into Radiant Style, the rewrite lives elsewhere
 - **`dvui/`** — David Vanderson's DVUI, an immediate-mode GUI toolkit for Zig: an interface redrawn from values every frame, with a backend abstraction that decouples drawing from platform, and — the part we study most — a **Web backend** that compiles to `wasm32-freestanding` and renders through WebGL with a small JavaScript bridge, so a whole GUI runs in the browser. Its essences — immediate mode, and one interface drawn to many backends — seed **Brushstroke**, our own TAME Rye drawn surface, explored in `../external-research/yonder/20260619-070612_brushstroke-and-the-docs-surface.md`. Cloned shallow (depth 1, rev `134905d`), MIT.
   - Source: <https://github.com/david-vanderson/dvui>
 - **`wayland.md`** — **libwayland-client**, MIT (Expat), quoted in the note. The host-seam display library the **hosted** Brushstroke build links on the development machine — never a dependency of Rye OS proper on bare metal. Clean room: study and run; never copy source into our modules.
+- **`sel4-microkit.md`** — the **seL4** microkernel (GPL-2.0, **never cloned**) and its **Microkit** framework (public docs, studied clean-room), the isolation and supervision teachers for **Caravan**: a kernel small enough to prove, a framework small enough to teach, mechanism kept apart from policy, capabilities not identities, static allocation as honesty, priority flowing one way. Clean-room study: [`../external-research/20260819-120534_sel4-microkit-caravan-cleanroom-study.md`](../external-research/20260819-120534_sel4-microkit-caravan-cleanroom-study.md).
 - **`river.md`** — Isaac Freund's **River** compositor, GPLv3, held at clean-room distance. Lodestar for the eventual Rye-native compositor; we learn from public design, never link or copy source.
 - **`zig-wayland.md`** — Isaac Freund's **zig-wayland** (MIT) — Zig protocol scanner + libwayland bindings. Study note only (Surface p4); not cloned. Distinct from River's GPLv3 compositor sources.
 - **`genesis-daw.md`** — Andrew Kelley's **Genesis** DAW (GPL-3, gitlink distance) — the hot loop that birthed Zig; honored in `../gratitude/genesis-daw.md`; **Lotus** is our own studio name.

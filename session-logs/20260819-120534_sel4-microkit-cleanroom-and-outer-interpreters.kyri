@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260819.120534
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title seL4/Microkit clean-room study, outer perl+python3, real-photo gate held
+prompt Keaton approved the pending fetches; add perl and python3 to the nix rebuild install config for the outer terminal; gratitude everything fetched in Radiant style for the project's purposes
+think Oriented -- the card's gated items were the Microkernel study (Caravan on seL4/Microkit) and a real-photo top-hat, both surfaced-not-crossed on fetch/license/custody gates. Read TASKS, REMEMBER, gratitude/, and found nixos/configuration.nix as the outer install surface.
+think Added perl + python3 to environment.systemPackages with a why-comment -- outer-terminal interpreters for legacy scripts pending the Rishi fold; python3 was absent on the pier (REDS memory), so this unblocks the outer conversion path.
+think Ran the microkernel fetch clean-room: seL4 whitepaper + site, Microkit manual, all public docs only. GPL-2.0 kernel never cloned -- study surface is the public web per gratitude-licenses.md.
+think Real-photo top-hat: no PNG/JPEG decoder and no unzip/python3 in-jail; qoi.rye owns decode+encode but needs QOI bytes. The one real-photos-in-QOI source (qoi_test_images) is CC0 in FORMAT yet has UNSTATED photo licensing -- so vendoring breaches the license gate. Held honest; removed the license-murky zip from scratch.
+obs The fetch itself resolved the real-photo gate the honest way: the source is license-murky, so we do not vendor. The clean path forward is a plainly-CC0/PD source (NASA/Wikimedia) converted through the outer terminal, now that python3 is approved there.
+obs Caravan inherits four teachings clean-room: mechanism apart from policy, capabilities not identities, static allocation as honesty, priority flows one way. Concept crosses the clean room; code never does.
+file nixos/configuration.nix perl + python3 added to systemPackages for outer-shell use, why-commented
+file gratitude/sel4-microkit.md Radiant gratitude for the seL4 kernel + Microkit framework, Caravan's isolation teachers
+file external-research/20260819-120534_sel4-microkit-caravan-cleanroom-study.md clean-room study brief, Acme-employee voice, license boundary + real-photo gate note
+file gratitude/README.md new sel4-microkit entry + refreshed last-updated line
+file crux/REMEMBER.md live edge updated -- study landed, real-photo gate held, perl+python3 in nix
+recommend keep-going -- next the nearest-crossing single-hit fold (first_hit as its own read), a codec read, or a clearly-CC0 real-photo top-hat once the outer conversion path is exercised
