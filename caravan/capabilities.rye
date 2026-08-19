@@ -74,7 +74,7 @@ pub const Capability = struct {
         return cap;
     }
 
-    fn name_slice(self: *const Capability) []const u8 {
+    pub fn name_slice(self: *const Capability) []const u8 {
         assert(self.name_len <= max_name_len);
         const n: usize = @intCast(self.name_len);
         assert(n <= self.name.len);
@@ -104,7 +104,7 @@ pub const DependentSlot = struct {
         return slot;
     }
 
-    fn label_slice(self: *const DependentSlot) []const u8 {
+    pub fn label_slice(self: *const DependentSlot) []const u8 {
         assert(self.label_len <= max_name_len);
         const n: usize = @intCast(self.label_len);
         return self.label[0..n];

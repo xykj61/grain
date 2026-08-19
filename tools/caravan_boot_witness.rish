@@ -1,0 +1,47 @@
+# caravan_boot_witness.rish -- Caravan boot witness.
+#
+# Proves the supervisor spawns its dependents FROM the declaration: every
+# declared domain started in declaration order, each handed exactly the
+# capabilities its own domain was granted, a fallen dependent restarted on the
+# same line, and a declaration wider than the roster starting nothing at all.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_boot_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/boot"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/boot.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan boot build failed"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan boot selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan boot selftest not GREEN"
+assert test.out contains "spawns its dependents from the declaration" else "caravan boot selftest did not close the loop"
+assert test.out contains "started in declaration order" else "caravan boot selftest did not prove coverage and order"
+assert test.out contains "came back holding the same rights" else "caravan boot selftest did not prove constancy across a restart"
+assert test.out contains "never the other's" else "caravan boot selftest did not prove the line carries only its own grants"
+assert test.out contains "W xor X survives the wire" else "caravan boot selftest did not carry W xor X across the seam"
+assert test.out contains "refused whole, never half-booted" else "caravan boot selftest did not refuse the wide declaration before spawning"
+
+# The worked example boots whole, handing every declared grant across once.
+let worked = run ["sh" "-c" "${bin} caravan/systems/serial_stack.bron 2>&1"]
+assert worked.ok else "the worked example did not boot"
+assert worked.out contains "started 3 -- capabilities handed 6 -- restarts 0" else "the worked example did not boot its declared shape"
+assert worked.out contains "serial_virt: up, holding 2" else "the virtualiser did not come up holding its grants"
+assert worked.out contains "client_b: up, holding 2" else "the second client did not come up holding its grants"
+
+# A declaration past the roster bound starts nothing and says so by name.
+let wide = run ["sh" "-c" "${bin} caravan/systems/wide_roster.bron 2>&1"]
+assert wide.out contains "TooManyDomains" else "the wide declaration was not refused by name"
+
+# The grammar still refuses rwx before any dependent is spawned.
+let refused = run ["sh" "-c" "${bin} caravan/systems/write_execute.bron 2>&1"]
+assert refused.out contains "BadPermission" else "the rwx document reached the boot"
+
+# An absent document refuses at the door, never as a spawn failure.
+let missing = run ["sh" "-c" "${bin} caravan/systems/no_such_system.bron 2>&1"]
+assert missing.out contains "NoSuchDocument" else "an absent document did not refuse at the door"
+
+say "GREEN: Caravan boot witness passed."
