@@ -263,3 +263,7 @@ __pycache__/
 
 # Local-only private vault-interim (never tracked; the Vault module is the real home)
 /personal/
+
+# NixOS rebuild backups -- rebuild-outer.sh drops these when /etc/nixos is a
+# separate file; never track them (and /etc/nixos is symlinked here anyway).
+nixos/*.bak-*
