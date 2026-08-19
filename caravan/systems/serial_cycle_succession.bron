@@ -1,0 +1,50 @@
+# serial_cycle_succession -- the same ring with `beech` standing exactly
+# where `birch` stood, and nothing else moved.
+#
+# This is the one repair a ring accepts. `serial_cycle_shadow.bron` failed
+# because a standby present beside the domain it replaces is a second
+# writer; `serial_cycle_bypass.bron` failed because a route drawn around a
+# domain gives the shape a choice of laps and a ring has exactly one. Both
+# refusals are about a document that names the standby WHILE the domain is
+# still there.
+#
+# So this document names it AFTER. The regions are the ring's own four,
+# byte for byte and name for name -- `ask_ab`, `ask_bc`, `ask_ca`, `taken`
+# -- because a region belongs to the declaration rather than to a process,
+# and every ask already standing in one is exactly where it was left.
+# `beech` takes birch's grants unchanged: `ask_ab` to read, `ask_bc` to
+# write. Every region still has one writer and one reader, every domain
+# still spans two peers, and one lap still closes: alder to beech to cedar
+# and home.
+#
+# What the succession does cost is the seam. A channel carries the names of
+# its two ends, so `alder->birch` and `birch->cedar` are gone and
+# `alder->beech` and `beech->cedar` are new, standing silent at zero. The
+# ring alder already spent on birch is spent for good, and the successor
+# must be woken again by name.
+#
+# Read whole by `caravan/read.rye`; carried home by `caravan/standby.rye`.
+
+system serial_cycle_succession
+
+domain alder
+domain beech
+domain cedar
+
+channel alder beech
+channel beech cedar
+channel cedar alder
+
+region ask_ab 4096
+region ask_bc 4096
+region ask_ca 4096
+region taken 64
+
+grant ask_ab alder rw
+grant ask_ab beech r
+grant ask_bc beech rw
+grant ask_bc cedar r
+grant ask_ca cedar rw
+grant ask_ca alder r
+grant taken alder rw
+grant taken cedar r
