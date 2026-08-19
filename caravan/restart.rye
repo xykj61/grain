@@ -1,0 +1,763 @@
+//! Caravan restart -- a served dependent falls mid-conversation, and the
+//! supervisor's three exit meanings meet a standing channel.
+//!
+//! `serve.rye` made the arc a system: one virtualiser, two clients, each
+//! answered on its own channel with neither hearing the other's bell.
+//! Every step in it ran to completion. A system that only ever completes
+//! has proven nothing about the day a dependent falls, and falling is the
+//! whole reason a supervisor exists.
+//!
+//! This ring drops a client mid-conversation and asks what survives. The
+//! answer separates cleanly into three things, and the separation is the
+//! finding:
+//!
+//!   The bell stands.       A doorbell holds a count until someone clears
+//!                          it, so the ring the fallen attempt heard is
+//!                          still ringing for the attempt that replaces
+//!                          it. Restart costs nothing on the channel.
+//!   The memory stands.     A region belongs to the declaration rather
+//!                          than to a process, so bytes a dependent wrote
+//!                          before it fell are exactly where it left them.
+//!   The progress does not. A restarted dependent knows only what its argv
+//!                          and the declaration tell it, so every step it
+//!                          takes must be safe to take twice.
+//!
+//! Together those give the property this ring is really about: **restart
+//! is safe when every step is idempotent over declared state.** The
+//! dependent that fell after writing its answer rewrites the same bytes and
+//! rings once; the dependent that fell before writing hears the standing bell
+//! and writes them for the first time. Neither needs the server to ask
+//! again, and neither leaves a half-answer behind.
+//!
+//! The three exit meanings are read here rather than assumed. A named
+//! outcome -- `carried`, `Unheard`, `NotWired`, `WriteDenied` -- is an
+//! ANSWER, and a supervisor that restarts an answer is restarting a
+//! dependent that did its job. `stop_requested` is a deliberate stop, and
+//! supervision of that domain ends without a restart. Anything the
+//! vocabulary cannot name is a FALL, which is also what a signal-killed
+//! dependent reports, so one meaning covers both causes.
+//!
+//! Hosted ground: real processes, real files, pure policy, no kernel
+//! underneath it yet.
+//!
+//! Usage:
+//!   restart selftest                  Fall, restart, and check what stood
+//!   restart                           Same as selftest
+//!   restart dependent <domain> <plan> ... Run as a supervised dependent (internal)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const regions = @import("regions.rye");
+const channels = @import("channels.rye");
+const capabilities = @import("capabilities.rye");
+const roster = @import("roster.rye");
+const read = @import("read.rye");
+const boot = @import("boot.rye");
+const exercise = @import("exercise.rye");
+const carry = @import("carry.rye");
+const notify = @import("notify.rye");
+const roundtrip = @import("roundtrip.rye");
+const serve = @import("serve.rye");
+const se = @import("supervisor_exit.rye");
+
+const caravan_restart_version = "20260819.144641";
+
+// =========================================================================
+// Bounds -- what one supervised conversation may spend
+// =========================================================================
+
+/// The same two-client declaration `serve.rye` serves, since a fall is
+/// worth watching exactly where a working system already stands.
+pub const declaration_path = serve.serial_two_clients_path;
+
+/// What a dependent reports when it falls: a code the outcome vocabulary
+/// cannot name, which is also what a signal-killed dependent reports.
+pub const fell: u8 = 255;
+
+/// How many falls one assignment may take before the supervisor declines
+/// rather than restarting forever.
+pub const max_restarts: u32 = 3;
+
+/// Fixed argv words a supervised dependent receives: the program path, the
+/// `dependent` marker, the domain label, the plan word, the fall word, and
+/// the count of capability words that follow.
+const fixed_argv_words: u32 = 6;
+
+comptime {
+    // invariant: a fall names nothing the outcome vocabulary already spends
+    assert(fell != carry.Outcome.carried_ok);
+    assert(fell != carry.Outcome.malformed);
+    assert(fell != carry.Outcome.not_granted);
+    assert(fell != carry.Outcome.write_denied);
+    assert(fell != carry.Outcome.past_end);
+    assert(fell != carry.Outcome.bytes_differed);
+    assert(fell != notify.Bell.not_wired);
+    assert(fell != notify.Bell.unheard);
+    // invariant: a fall is never read as the deliberate stop
+    assert(fell != se.stop_requested);
+    // invariant: a whole dependent argv stays within what one run builds
+    assert(fixed_argv_words + capabilities.max_caps_per_dependent + notify.max_peers_per_dependent <= 32);
+}
+
+// =========================================================================
+// The three meanings -- what a supervisor reads in an exit code
+// =========================================================================
+
+/// What one exit code means to the supervisor that heard it.
+pub const Meaning = enum { answered, stopped, fallen };
+
+/// Says whether one code is an answer this world already names.
+///
+/// A named refusal is work done correctly: the dependent was asked something
+/// it must decline, and it declined by name. Restarting it would restart
+/// a dependent that did its job, so the vocabulary is consulted first.
+pub fn is_named_outcome(code: u8) bool {
+    return code == carry.Outcome.carried_ok or
+        code == carry.Outcome.malformed or
+        code == carry.Outcome.not_granted or
+        code == carry.Outcome.write_denied or
+        code == carry.Outcome.past_end or
+        code == carry.Outcome.bytes_differed or
+        code == notify.Bell.not_wired or
+        code == notify.Bell.unheard;
+}
+
+/// Reads one exit code as one of the three meanings, and only three.
+pub fn meaning_of(code: u8) Meaning {
+    if (code == se.stop_requested) return .stopped;
+    if (is_named_outcome(code)) return .answered;
+    return .fallen;
+}
+
+/// Names one meaning for an operator reading a report.
+pub fn meaning_word(m: Meaning) []const u8 {
+    return switch (m) {
+        .answered => "answered",
+        .stopped => "stopped",
+        .fallen => "fell",
+    };
+}
+
+// =========================================================================
+// The fall wire -- where in a dependent's life the supervisor drops it
+// =========================================================================
+
+/// Where an injected fall lands inside one dependent's step.
+///
+/// The two interesting points sit either side of the write, since that is
+/// the only moment a step changes declared state. `stop` is the third
+/// meaning arriving deliberately rather than by accident.
+pub const Fall = enum { none, before_write, after_write, stop };
+
+/// Renders one fall point as the word its dependent will read.
+pub fn fall_word(f: Fall) []const u8 {
+    return switch (f) {
+        .none => "run",
+        .before_write => "fall-before-write",
+        .after_write => "fall-after-write",
+        .stop => "stop",
+    };
+}
+
+/// Reads a fall word back, refusing anything it cannot name.
+pub fn read_fall(word: []const u8) ?Fall {
+    // invariant: a fall word worth reading carries something
+    assert(word.len >= 1);
+    if (std.mem.eql(u8, word, "run")) return .none;
+    if (std.mem.eql(u8, word, "fall-before-write")) return .before_write;
+    if (std.mem.eql(u8, word, "fall-after-write")) return .after_write;
+    if (std.mem.eql(u8, word, "stop")) return .stop;
+    return null;
+}
+
+// =========================================================================
+// The dependent -- one process, one step, one place it may be dropped
+// =========================================================================
+
+/// Asks one client, with the fall landing either side of the ask's write.
+fn do_request(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const notify.PeerList,
+    self_name: []const u8,
+    task: roundtrip.Task,
+    fall: Fall,
+) u8 {
+    if (!peers.wired_to(task.peer)) return notify.Bell.not_wired;
+    if (fall == .before_write) return fell;
+    var text_buf: [serve.max_message_len]u8 = undefined;
+    const text = serve.ask_for(&text_buf, task.peer);
+    serve.place_message(io, slot, task.ask, text) catch |err| return serve.reach_code(err);
+    if (fall == .after_write) return fell;
+    const count = roundtrip.ring_to(io, peers, self_name, task.peer) catch |err|
+        return serve.bell_code(err);
+    // invariant: the bell an ask rang stands above silence
+    assert(count >= 1);
+    return carry.Outcome.carried_ok;
+}
+
+/// Hears its own ask and signs an answer, with the fall either side of it.
+///
+/// A fall before the write leaves the region exactly as the virtualiser
+/// left it; a fall after the write leaves the answer standing with no
+/// bell rung for it. The restart that follows must handle both, and it
+/// handles both the same way -- by doing the whole step again.
+fn do_reply(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const notify.PeerList,
+    self_name: []const u8,
+    task: roundtrip.Task,
+    fall: Fall,
+) u8 {
+    const heard = roundtrip.hear_from(io, peers, self_name, task.peer) catch |err|
+        return serve.bell_code(err);
+    if (heard == 0) return notify.Bell.unheard;
+    var ask_buf: [serve.max_message_len]u8 = undefined;
+    const mine = serve.ask_for(&ask_buf, self_name);
+    const ask_ok = serve.message_stands(io, slot, task.ask, mine) catch |err|
+        return serve.reach_code(err);
+    if (!ask_ok) return carry.Outcome.bytes_differed;
+    if (fall == .before_write) return fell;
+    var answer_buf: [serve.max_message_len]u8 = undefined;
+    const signed = serve.answer_from(&answer_buf, self_name);
+    serve.place_message(io, slot, task.answer, signed) catch |err|
+        return serve.reach_code(err);
+    if (fall == .after_write) return fell;
+    const count = roundtrip.ring_to(io, peers, self_name, task.peer) catch |err|
+        return serve.bell_code(err);
+    // invariant: the reply bell stands above silence once the answer is written
+    assert(count >= 1);
+    return carry.Outcome.carried_ok;
+}
+
+/// Collects one client's answer, unchanged from the served ring.
+fn do_collect(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const notify.PeerList,
+    self_name: []const u8,
+    task: roundtrip.Task,
+) u8 {
+    const heard = roundtrip.hear_from(io, peers, self_name, task.peer) catch |err|
+        return serve.bell_code(err);
+    if (heard == 0) return notify.Bell.unheard;
+    var answer_buf: [serve.max_message_len]u8 = undefined;
+    const signed = serve.answer_from(&answer_buf, task.peer);
+    const answer_ok = serve.message_stands(io, slot, task.answer, signed) catch |err|
+        return serve.reach_code(err);
+    if (!answer_ok) return carry.Outcome.bytes_differed;
+    return carry.Outcome.carried_ok;
+}
+
+/// Attempts one step, dropping the dependent where the supervisor asked.
+fn attempt(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const notify.PeerList,
+    self_name: []const u8,
+    task: roundtrip.Task,
+    fall: Fall,
+) u8 {
+    // invariant: a task always names both regions and a peer
+    assert(task.ask.len >= 1);
+    assert(task.answer.len >= 1);
+    assert(task.peer.len >= 1);
+    if (fall == .stop) return se.stop_requested;
+    return switch (task.verb) {
+        .request => do_request(io, slot, peers, self_name, task, fall),
+        .reply => do_reply(io, slot, peers, self_name, task, fall),
+        .collect => do_collect(io, slot, peers, self_name, task),
+    };
+}
+
+/// Runs as one supervised dependent, holding exactly the capabilities, the
+/// peers, the one step, and the one place it may be dropped.
+fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
+    // invariant: a dependent always receives its marker, domain, plan, fall, and count
+    assert(args.len >= fixed_argv_words);
+    const domain = args[2];
+    const plan = args[3];
+    // invariant: a dependent always knows which domain it is
+    assert(domain.len >= 1);
+
+    const fall = read_fall(args[4]) orelse {
+        print("    {s}: refused a fall word it could not read\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+
+    const cap_count = std.fmt.parseInt(u32, args[5], 10) catch {
+        print("    {s}: refused an unreadable capability count\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    if (cap_count > capabilities.max_caps_per_dependent) {
+        print("    {s}: more capabilities than one dependent holds\n", .{domain});
+        return carry.Outcome.malformed;
+    }
+    if (fixed_argv_words + cap_count > args.len) {
+        print("    {s}: a capability count past the words it was handed\n", .{domain});
+        return carry.Outcome.malformed;
+    }
+
+    var slot = capabilities.DependentSlot.init(domain);
+    var i: u32 = 0;
+    while (i < cap_count) : (i += 1) {
+        const cap = boot.read_cap_word(args[fixed_argv_words + i]) orelse {
+            print("    {s}: refused a malformed capability word\n", .{domain});
+            return carry.Outcome.malformed;
+        };
+        slot.grant(cap) catch return carry.Outcome.malformed;
+    }
+    // invariant: the dependent holds exactly the capability words it was handed
+    assert(slot.cap_count == cap_count);
+
+    var peers: notify.PeerList = .{};
+    var p: usize = fixed_argv_words + cap_count;
+    while (p < args.len) : (p += 1) {
+        peers.add(args[p]) catch {
+            print("    {s}: more peers than one dependent holds\n", .{domain});
+            return carry.Outcome.malformed;
+        };
+    }
+    // invariant: the dependent holds exactly the peer words it was handed
+    assert(peers.count == args.len - fixed_argv_words - cap_count);
+
+    const task = roundtrip.read_plan(plan) orelse {
+        print("    {s}: refused a plan it could not read\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    const code = attempt(io, &slot, &peers, domain, task, fall);
+    print("    {s}: {s} {s} then {s} via {s} [{s}] -- {s}\n", .{
+        domain, verb_word(task.verb), task.ask, task.answer, task.peer,
+        fall_word(fall), report_word(code),
+    });
+    return code;
+}
+
+/// Names one verb for an operator, matching the plan wire it rode in on.
+fn verb_word(verb: roundtrip.Verb) []const u8 {
+    return switch (verb) {
+        .request => "request",
+        .reply => "reply",
+        .collect => "collect",
+    };
+}
+
+/// Names one exit code, whether the vocabulary holds it or not.
+pub fn report_word(code: u8) []const u8 {
+    if (code == se.stop_requested) return "StopRequested";
+    if (code == fell) return "Fell";
+    return notify.outcome_name(code);
+}
+
+// =========================================================================
+// The supervisor -- one assignment, held until it answers or declines
+// =========================================================================
+
+/// One domain's step, and where its first attempt is dropped.
+pub const Assignment = struct {
+    domain: []const u8,
+    verb: roundtrip.Verb,
+    ask: []const u8,
+    answer: []const u8,
+    peer: []const u8,
+    fall: Fall = .none,
+    /// How many attempts carry the injected fall before it lifts. The
+    /// supervisor owns this, so a fall is always the parent's injection
+    /// rather than a dependent inventing its own bad day.
+    falls: u32 = 1,
+    expect: u8,
+};
+
+/// What one supervised assignment did, reported whole.
+pub const AttemptReport = struct {
+    attempts: u32 = 0,
+    restarts: u32 = 0,
+    meaning: Meaning = .answered,
+    code: u8 = carry.Outcome.carried_ok,
+};
+
+/// What a whole supervised run did.
+pub const RunReport = struct {
+    assignments: u32 = 0,
+    restarts: u32 = 0,
+    stops: u32 = 0,
+    bells: u32 = 0,
+};
+
+/// Named ways a supervised run declines rather than reporting a hollow
+/// success.
+pub const SuperviseError = error{
+    SpawnFailed,
+    UnknownDomain,
+    PlanTooLong,
+    RestartLimit,
+    OutcomeMismatch,
+};
+
+/// Spawns one dependent, once, and reports the code it exited with.
+fn spawn_once(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    table: *const capabilities.CapabilityTable,
+    step: Assignment,
+    fall: Fall,
+) (SuperviseError || boot.BootError)!u8 {
+    // invariant: an assignment always names a domain, both regions, and a peer
+    assert(step.domain.len >= 1);
+    assert(step.ask.len >= 1);
+    assert(step.answer.len >= 1);
+    assert(step.peer.len >= 1);
+    const slot = table.find_dependent(step.domain) orelse return error.UnknownDomain;
+    // invariant: the line handed out agrees with the declaration it came from
+    assert(boot.line_agrees(sys, slot));
+
+    var peers: notify.PeerList = .{};
+    notify.peers_of(sys, step.domain, &peers);
+
+    var plan_buf: [roundtrip.max_plan_len]u8 = undefined;
+    const plan = roundtrip.write_plan(&plan_buf, .{
+        .verb = step.verb,
+        .ask = step.ask,
+        .answer = step.answer,
+        .peer = step.peer,
+    }) orelse return error.PlanTooLong;
+
+    var count_buf: [8]u8 = undefined;
+    const count_word = std.fmt.bufPrint(&count_buf, "{d}", .{slot.cap_count}) catch
+        return error.PlanTooLong;
+
+    var storage: [capabilities.max_caps_per_dependent][boot.max_cap_word_len]u8 = undefined;
+    const argv = allocator.alloc(
+        []const u8,
+        fixed_argv_words + slot.cap_count + peers.count,
+    ) catch return error.SpawnFailed;
+    argv[0] = self_path;
+    argv[1] = "dependent";
+    argv[2] = slot.label_slice();
+    argv[3] = plan;
+    argv[4] = fall_word(fall);
+    argv[5] = count_word;
+    var c: u32 = 0;
+    while (c < slot.cap_count) : (c += 1) {
+        assert(c < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        argv[fixed_argv_words + c] = try boot.write_cap_word(&storage[c], &slot.caps[c]);
+    }
+    var q: u32 = 0;
+    while (q < peers.count) : (q += 1) {
+        argv[fixed_argv_words + slot.cap_count + q] = peers.name_at(q);
+    }
+
+    var proc = std.process.spawn(io, .{ .argv = argv }) catch return error.SpawnFailed;
+    const term = proc.wait(io) catch return error.SpawnFailed;
+    return switch (term) {
+        .exited => |c2| c2,
+        // A signal-killed dependent reports the same meaning an unnamed exit
+        // does, because to a supervisor both are simply a fall.
+        else => fell,
+    };
+}
+
+/// Holds one assignment until it answers, stops, or exhausts its restarts.
+///
+/// The declaration, the regions, and the bells are untouched between
+/// attempts -- which is the whole claim. Restarting means running the
+/// same step again against state that never went away.
+pub fn supervise(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    table: *const capabilities.CapabilityTable,
+    step: Assignment,
+) (SuperviseError || boot.BootError)!AttemptReport {
+    // invariant: a supervised assignment always has an attempt to make
+    assert(step.falls <= max_restarts + 1);
+    var report_out: AttemptReport = .{};
+    while (true) {
+        // invariant: one attempt stands above every restart the bound allows
+        assert(report_out.attempts <= max_restarts);
+        const fall: Fall = if (report_out.attempts < step.falls) step.fall else .none;
+        const code = try spawn_once(allocator, io, self_path, sys, table, step, fall);
+        report_out.attempts += 1;
+        report_out.code = code;
+        report_out.meaning = meaning_of(code);
+        switch (report_out.meaning) {
+            // An answer is work done, welcome or unwelcome, and the
+            // supervisor takes it as final.
+            .answered => return report_out,
+            // A deliberate stop ends supervision of this domain with no
+            // restart at all.
+            .stopped => return report_out,
+            .fallen => {
+                if (report_out.restarts == max_restarts) {
+                    // invariant: the limit is reached only once every restart was spent
+                    assert(report_out.attempts == max_restarts + 1);
+                    print("    {s}: fell again with {d} restarts spent -- declined\n", .{
+                        step.domain, max_restarts,
+                    });
+                    return error.RestartLimit;
+                }
+                report_out.restarts += 1;
+                print("    {s}: fell -- restart {d}/{d}\n", .{
+                    step.domain, report_out.restarts, max_restarts,
+                });
+            },
+        }
+    }
+}
+
+/// Runs a whole ordered plan, supervising each assignment in turn.
+pub fn run_plan(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Assignment,
+) (roster.RosterError || exercise.ProvisionError || notify.BellError ||
+    SuperviseError || boot.BootError)!RunReport {
+    // invariant: a run always knows what program to spawn
+    assert(self_path.len >= 1);
+    const provisioned = try exercise.provision(io, sys);
+    // invariant: every declared region has a backing store before any dependent runs
+    assert(provisioned == sys.map.region_count);
+    const bells = try roundtrip.provision_directed(io, sys);
+    // invariant: every declared channel has two silent bells before any dependent runs
+    assert(bells == sys.graph.channel_count * 2);
+
+    const table = try roster.from_system(sys);
+    // invariant: the derived table enforces exactly what the document permits
+    assert(roster.agrees(sys, &table));
+
+    var report_out: RunReport = .{ .bells = bells };
+    var i: u32 = 0;
+    while (i < plan.len) : (i += 1) {
+        const step = plan[i];
+        const done = try supervise(allocator, io, self_path, sys, &table, step);
+        if (done.code != step.expect) {
+            print("    {s}: expected {s}, heard {s}\n", .{
+                step.domain, report_word(step.expect), report_word(done.code),
+            });
+            return error.OutcomeMismatch;
+        }
+        report_out.assignments += 1;
+        report_out.restarts += done.restarts;
+        if (done.meaning == .stopped) report_out.stops += 1;
+    }
+    // invariant: every assignment in the plan was supervised to its expectation
+    assert(report_out.assignments == plan.len);
+    return report_out;
+}
+
+// =========================================================================
+// Self-test -- three meanings, two falls, and what stood through both
+// =========================================================================
+
+/// The conversation that falls before the answer is written.
+///
+/// `client_b` hears the standing bell on its first attempt and is dropped
+/// before writing. Its restart hears the SAME bell -- nobody rang it
+/// again -- and completes, so the virtualiser collects an answer it never
+/// had to ask for twice.
+const before_write_plan = [_]Assignment{
+    .{ .domain = "serial_virt", .verb = .request, .ask = "rx_b", .answer = "tx_b", .peer = "client_b", .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_b", .verb = .reply, .ask = "rx_b", .answer = "tx_b", .peer = "serial_virt", .fall = .before_write, .falls = 1, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "serial_virt", .verb = .collect, .ask = "rx_b", .answer = "tx_b", .peer = "client_b", .expect = carry.Outcome.carried_ok },
+};
+
+/// The conversation that falls after the answer is written.
+///
+/// The answer stands in `tx_a` with no bell rung for it, which is the
+/// half-done state a supervisor most fears. The restart writes the same
+/// bytes over themselves and rings once, so the step is idempotent and
+/// the virtualiser cannot tell the difference from the outside.
+const after_write_plan = [_]Assignment{
+    .{ .domain = "serial_virt", .verb = .request, .ask = "rx_a", .answer = "tx_a", .peer = "client_a", .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_a", .verb = .reply, .ask = "rx_a", .answer = "tx_a", .peer = "serial_virt", .fall = .after_write, .falls = 1, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "serial_virt", .verb = .collect, .ask = "rx_a", .answer = "tx_a", .peer = "client_a", .expect = carry.Outcome.carried_ok },
+};
+
+/// A deliberate stop, which is an ending rather than an accident.
+const stop_plan = [_]Assignment{
+    .{ .domain = "client_b", .verb = .reply, .ask = "rx_b", .answer = "tx_b", .peer = "serial_virt", .fall = .stop, .falls = 1, .expect = se.stop_requested },
+};
+
+/// A named refusal, which a supervisor must take as an answer.
+///
+/// `client_a` rings `client_b` across a channel the document never
+/// declared. `NotWired` is the dependent working correctly, so a supervisor
+/// that restarted it would be restarting success.
+const refusal_plan = [_]Assignment{
+    .{ .domain = "client_a", .verb = .request, .ask = "rx_a", .answer = "tx_a", .peer = "client_b", .expect = notify.Bell.not_wired },
+};
+
+/// Proves the three meanings are three, and that they cover every code.
+fn check_meanings() u8 {
+    // invariant: every named outcome is an answer rather than a fall
+    assert(meaning_of(carry.Outcome.carried_ok) == .answered);
+    assert(meaning_of(carry.Outcome.bytes_differed) == .answered);
+    assert(meaning_of(notify.Bell.not_wired) == .answered);
+    assert(meaning_of(notify.Bell.unheard) == .answered);
+    // invariant: the reserved stop is its own meaning, never a fall
+    assert(meaning_of(se.stop_requested) == .stopped);
+    // invariant: a code the vocabulary cannot name is a fall
+    assert(meaning_of(fell) == .fallen);
+    assert(meaning_of(2) == .fallen);
+    // invariant: the elder supervisor vocabulary agrees on both of its own
+    assert(se.supervisor_stops(se.stop_requested));
+    assert(se.supervisor_restarts_after_fall(fell));
+
+    var code: u32 = 0;
+    var answered: u32 = 0;
+    var stopped: u32 = 0;
+    var fallen: u32 = 0;
+    while (code <= 255) : (code += 1) {
+        switch (meaning_of(@intCast(code))) {
+            .answered => answered += 1,
+            .stopped => stopped += 1,
+            .fallen => fallen += 1,
+        }
+    }
+    // invariant: every code in the byte lands in exactly one meaning
+    assert(answered + stopped + fallen == 256);
+    // invariant: the vocabulary names eight answers and exactly one stop
+    assert(answered == 8);
+    assert(stopped == 1);
+    print("  256 exit codes read as 3 meanings: {d} answered, {d} stopped, {d} fallen\n", .{
+        answered, stopped, fallen,
+    });
+    return 0;
+}
+
+/// Loads the two-client declaration, or names why it could not be read.
+fn load_declaration(io: std.Io, buf: []u8) ?system.System {
+    const parsed = read.load(io, declaration_path, buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ declaration_path, @errorName(err) });
+        return null;
+    };
+    if (parsed.verify() != .whole) {
+        print("  RED: {s} did not read whole\n", .{declaration_path});
+        return null;
+    }
+    return parsed;
+}
+
+/// Runs one plan against a fresh provisioning and reports what it cost.
+fn run_fresh(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    plan: []const Assignment,
+) ?RunReport {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = load_declaration(io, &buf) orelse return null;
+    return run_plan(allocator, io, self_path, &parsed, plan) catch |err| {
+        print("  RED: the supervised run did not complete: {s}\n", .{@errorName(err)});
+        return null;
+    };
+}
+
+/// The fall before the write: the bell stands, and the restart hears it.
+fn check_before_write(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    const done = run_fresh(allocator, io, self_path, &before_write_plan) orelse return 1;
+    // invariant: exactly one fall was injected, so exactly one restart was spent
+    assert(done.restarts == 1);
+    // invariant: every assignment still reached the outcome it was held to
+    assert(done.assignments == before_write_plan.len);
+    print("  a client dropped before writing hears the standing bell on restart\n", .{});
+    return 0;
+}
+
+/// The fall after the write: the bytes stand, and the restart rewrites them.
+fn check_after_write(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    const done = run_fresh(allocator, io, self_path, &after_write_plan) orelse return 1;
+    // invariant: exactly one fall was injected, so exactly one restart was spent
+    assert(done.restarts == 1);
+    assert(done.assignments == after_write_plan.len);
+    print("  a client dropped after writing rewrites the same answer and rings once\n", .{});
+    return 0;
+}
+
+/// The deliberate stop: supervision ends, and no restart is spent.
+fn check_stop(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    const done = run_fresh(allocator, io, self_path, &stop_plan) orelse return 1;
+    // invariant: a stop is never a fall, so it costs no restart
+    assert(done.restarts == 0);
+    // invariant: the run counted the stop it was given
+    assert(done.stops == 1);
+    print("  a deliberate stop ends supervision with no restart spent\n", .{});
+    return 0;
+}
+
+/// The named refusal: an answer the supervisor takes as final.
+fn check_refusal(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    const done = run_fresh(allocator, io, self_path, &refusal_plan) orelse return 1;
+    // invariant: a named refusal is an answer, so nothing was restarted
+    assert(done.restarts == 0);
+    assert(done.stops == 0);
+    print("  a named refusal is an answer, and a supervisor never restarts one\n", .{});
+    return 0;
+}
+
+/// The bound: a dependent that falls every time is declined by name.
+fn check_limit(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = load_declaration(io, &buf) orelse return 1;
+    // A request falls before it touches anything, so this dependent is dropped
+    // on every attempt rather than answering on one of them.
+    const forever = [_]Assignment{
+        .{ .domain = "client_b", .verb = .request, .ask = "tx_b", .answer = "rx_b", .peer = "serial_virt", .fall = .before_write, .falls = max_restarts + 1, .expect = carry.Outcome.carried_ok },
+    };
+    const done = run_plan(allocator, io, self_path, &parsed, &forever);
+    if (done) |_| {
+        print("  RED: a dependent that always falls was reported as a success\n", .{});
+        return 1;
+    } else |err| {
+        if (err != error.RestartLimit) {
+            print("  RED: expected RestartLimit, heard {s}\n", .{@errorName(err)});
+            return 1;
+        }
+    }
+    print("  a dependent that falls every time is declined by name after {d} restarts\n", .{max_restarts});
+    return 0;
+}
+
+fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    print("Caravan restart {s} -- self-test\n", .{caravan_restart_version});
+    const meanings = check_meanings();
+    if (meanings != 0) return meanings;
+    const refusal = check_refusal(allocator, io, self_path);
+    if (refusal != 0) return refusal;
+    const stopped = check_stop(allocator, io, self_path);
+    if (stopped != 0) return stopped;
+    const limited = check_limit(allocator, io, self_path);
+    if (limited != 0) return limited;
+    const before = check_before_write(allocator, io, self_path);
+    if (before != 0) return before;
+    const after = check_after_write(allocator, io, self_path);
+    if (after != 0) return after;
+    print("  GREEN: a dependent falls, the channel and the memory stand, and the restart finishes the conversation\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
+        return run_dependent(io, args);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(allocator, io, self_path);
+    }
+    if (args.len >= 2) return 1;
+    return run_self_test(allocator, io, self_path);
+}
