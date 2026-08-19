@@ -1,0 +1,465 @@
+//! image/line_cross.rye -- read TWO directed lines, each named by two anchor taps (stroke 1 from anchor A toward B, stroke 2 from C toward D),
+//! and answer how the two strokes RELATE: do the FINITE strokes cross, do their INFINITE lines cross, are their directions PARALLEL, and where do
+//! the infinite lines MEET. The whole line family until now read one directed line over a scene of objects -- image/line_distance.rye how far off
+//! it a center sits, image/line_project.rye the exact foot, image/line_pierce.rye whether the stroke crosses an object's box. `line_cross` lifts
+//! the family from ONE line and its objects to TWO lines and each other: the read a surface wants the day a keeper draws a second stroke and means
+//! "does this cross the one I just drew, and if so, exactly where." NO float, NO tolerance, NO square root.
+//!
+//! Season G (Open Media Primitives) -- the crux this rung faces is that a segment-versus-segment crossing is EXACT with integers, and the MEETING
+//! POINT of two lines is RATIONAL, held exact without a divide. Two finite strokes cross exactly when each straddles the other's infinite line --
+//! the four ORIENTATIONS `d1 = orient(C,D,A)`, `d2 = orient(C,D,B)`, `d3 = orient(A,B,C)`, `d4 = orient(A,B,D)` split into two opposite-sign pairs
+//! (a proper crossing), with a collinear endpoint touch caught by the on-segment bounding-box test -- every branch an exact integer compare.
+//! `directions_parallel` reads whether the two direction vectors have a zero cross (they never meet, or meet everywhere); `lines_cross` is its
+//! negation, the two infinite lines meeting at exactly one point. That point is `A + (t_num / den) * (B - A)` where `den` is the cross of the two
+//! directions and `t_num = (C - A) x (D - C)`; the foot needs a divide only to round, so `line_cross` holds the point TIMES `den` as an exact
+//! `i128` pair -- the same clear-the-divide move image/line_project.rye made for its foot. `cross_is_lattice` reads whether `den` divides both
+//! numerators (the meeting point is a lattice point), and `cross_point_doubled` returns it exactly or refuses `CrossNotWhole`. `cross_only_infinite`
+//! names the pair whose infinite lines meet yet whose finite strokes stop short -- exactly image/line_pierce.rye's finite-versus-infinite gap, now
+//! read between two strokes rather than one stroke and a box.
+//!
+//! Three facts on metal say the crux:
+//!
+//!   TWO FINITE STROKES CAN MISS WHERE THEIR INFINITE LINES MEET. A vertical stroke that stops short of a horizontal one has `segments_cross`
+//!   FALSE yet `lines_cross` TRUE, and `cross_only_infinite` names exactly that pair; `cross_point_doubled` still returns the point the infinite
+//!   lines meet at, computed off the lines whether or not the drawn strokes reach it -- the box twin of the foot clamping past an end, lifted to
+//!   two strokes.
+//!
+//!   THE MEETING POINT IS RATIONAL, HELD EXACT. Two diagonal strokes can cross at a point no lattice holds -- `(31/3, 47/3)` in doubled
+//!   coordinates -- so `cross_point_scaled` holds `(num_x, num_y, den)` with `den` never dividing the numerators, `cross_is_lattice` reads FALSE,
+//!   and `cross_point_doubled` refuses `CrossNotWhole` rather than rounding a lie. The scaled point provably lies on BOTH lines: the cross product
+//!   of each direction with `(point - anchor)` is exactly zero in scaled terms.
+//!
+//!   PARALLEL LINES NEVER MEET AT A POINT. Two strokes sharing a direction have a zero direction cross, so `directions_parallel` is TRUE,
+//!   `lines_cross` is FALSE, and `cross_point_scaled` refuses `Parallel` -- there is no single meeting point to hold.
+//!
+//! Compose not braid. This rung OWNS only the two-stroke crossing test -- the four orientations and the rational meeting point over two lines'
+//! endpoints. image/click_order.rye owns `click_group_id` (the group a tap lands in); image/click_collinear.rye owns `click_group_center_doubled`
+//! and `CenterD` (the anchor centers that name each stroke); image/line_pierce.rye owns the finite-versus-infinite reading this lifts from one
+//! stroke to two. No projection re-invented -- the crossing needs only endpoints and the cross product every line rung already owns.
+//!
+//! Everything is bounded before a byte: no scene walk at all, only the four fixed anchors of two strokes. The orientation products run in i64
+//! (doubled coordinate differences stay under twice the canvas extent, so a product never overflows), and the scaled meeting point runs in i128
+//! (the coordinate times the direction determinant stays far under the i128 ceiling for any canvas within image/qoi.rye's pixel bound). Each
+//! stroke needs two distinct points, so two anchor taps sharing a group refuse `SameGroup` by name; a tap on background refuses `EmptyClick`; a
+//! point off the map refuses `PointOutOfBounds`, each having read nothing further. No network, no key, no funds -- the "does my second stroke
+//! cross the first, and exactly where" a surface answers the day a keeper draws two lines and means their intersection.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/line_cross.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const hit_test = @import("hit_test.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const click_order = @import("click_order.rye");
+const click_collinear = @import("click_collinear.rye");
+
+pub const line_cross_version = "20260819.110940";
+
+pub const LineCrossError = error{
+    Parallel,
+    CrossNotWhole,
+};
+
+/// The two anchor centers that name one directed line, held as doubled coordinates in i64 -- exactly the stroke image/line_pierce.rye and
+/// image/line_project.rye read from. A doubled coordinate is `min + max` on each axis, so the center of a group frame is exact.
+const LineD = struct {
+    ax2: i64,
+    ay2: i64,
+    bx2: i64,
+    by2: i64,
+};
+
+/// The exact meeting point of two INFINITE lines, held TIMES the direction determinant so it stays whole: the true point is `(num_x, num_y) /
+/// den`. `den` is normalized strictly positive, so `cross_is_lattice` is a plain divisibility test and two representations of one point compare
+/// equal. i128 so the coordinate-times-determinant product never overflows for any canvas within image/qoi.rye's pixel bound.
+pub const CrossScaled = struct {
+    num_x: i128,
+    num_y: i128,
+    den: i128,
+};
+
+/// Resolve one directed line from two anchor taps -- refuses `EmptyClick` on a miss and `PointOutOfBounds` off the map through the group id read,
+/// then `SameGroup` when the two anchors land in one group (a line needs two distinct ends). Returns the two group centers as doubled
+/// coordinates, exactly the centers image/line_pierce.rye reads from.
+fn resolve_line(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !LineD {
+    // invariant: the clustering and the map describe the same scene.
+    assert(clustering.components == map.count);
+    // invariant: the graph and the manifest describe that same scene.
+    assert(graph.components == manifest.components);
+
+    const ga = try click_order.click_group_id(clustering, map, ax, ay);
+    const gb = try click_order.click_group_id(clustering, map, bx, by);
+    // invariant: each anchor resolved to a real dense group id.
+    assert(ga >= 1);
+    assert(gb >= 1);
+    if (ga == gb) return error.SameGroup;
+
+    const ca = try click_collinear.click_group_center_doubled(garden, graph, manifest, map, ax, ay);
+    const cb = try click_collinear.click_group_center_doubled(garden, graph, manifest, map, bx, by);
+    return LineD{ .ax2 = @as(i64, ca.cx2), .ay2 = @as(i64, ca.cy2), .bx2 = @as(i64, cb.cx2), .by2 = @as(i64, cb.cy2) };
+}
+
+/// The exact ORIENTATION `(b - a) x (c - a)` over doubled coordinates -- positive when c sits left of the directed segment a -> b, negative to
+/// the right, zero exactly on the line through a and b. Runs in i64: differences stay under twice the canvas extent, so the product never
+/// overflows.
+fn orient(ax: i64, ay: i64, bx: i64, by: i64, cx: i64, cy: i64) i64 {
+    return (bx - ax) * (cy - ay) - (by - ay) * (cx - ax);
+}
+
+/// TRUE when point (rx, ry), already known collinear with segment a -> b, lies within that segment's bounding box on both axes -- the closed
+/// interval, so an endpoint touch counts. The collinear-touch arm of the crossing test.
+fn on_seg(ax: i64, ay: i64, bx: i64, by: i64, rx: i64, ry: i64) bool {
+    const lox: i64 = if (ax < bx) ax else bx;
+    const hix: i64 = if (ax > bx) ax else bx;
+    const loy: i64 = if (ay < by) ay else by;
+    const hiy: i64 = if (ay > by) ay else by;
+    return lox <= rx and rx <= hix and loy <= ry and ry <= hiy;
+}
+
+/// The cross of the two direction vectors `(B - A) x (D - C)` -- zero exactly when the two lines are parallel (or coincident). The determinant
+/// that both the parallel test and the meeting-point denominator lean on. Runs in i64.
+fn direction_det(l1: LineD, l2: LineD) i64 {
+    const abx: i64 = l1.bx2 - l1.ax2;
+    const aby: i64 = l1.by2 - l1.ay2;
+    const cdx: i64 = l2.bx2 - l2.ax2;
+    const cdy: i64 = l2.by2 - l2.ay2;
+    return abx * cdy - aby * cdx;
+}
+
+/// TRUE when the two FINITE strokes cross -- the four orientations split into two opposite-sign pairs (a proper crossing), or a collinear
+/// endpoint lies within the other segment (a touch). Every branch an exact integer compare.
+fn segs_intersect(l1: LineD, l2: LineD) bool {
+    const d1 = orient(l2.ax2, l2.ay2, l2.bx2, l2.by2, l1.ax2, l1.ay2);
+    const d2 = orient(l2.ax2, l2.ay2, l2.bx2, l2.by2, l1.bx2, l1.by2);
+    const d3 = orient(l1.ax2, l1.ay2, l1.bx2, l1.by2, l2.ax2, l2.ay2);
+    const d4 = orient(l1.ax2, l1.ay2, l1.bx2, l1.by2, l2.bx2, l2.by2);
+    const cross_1 = (d1 > 0 and d2 < 0) or (d1 < 0 and d2 > 0);
+    const cross_2 = (d3 > 0 and d4 < 0) or (d3 < 0 and d4 > 0);
+    if (cross_1 and cross_2) return true;
+    if (d1 == 0 and on_seg(l2.ax2, l2.ay2, l2.bx2, l2.by2, l1.ax2, l1.ay2)) return true;
+    if (d2 == 0 and on_seg(l2.ax2, l2.ay2, l2.bx2, l2.by2, l1.bx2, l1.by2)) return true;
+    if (d3 == 0 and on_seg(l1.ax2, l1.ay2, l1.bx2, l1.by2, l2.ax2, l2.ay2)) return true;
+    if (d4 == 0 and on_seg(l1.ax2, l1.ay2, l1.bx2, l1.by2, l2.bx2, l2.by2)) return true;
+    return false;
+}
+
+/// The exact meeting point of the two infinite lines, scaled by the direction determinant -- refuses `Parallel` when the determinant is zero.
+/// `den` is normalized strictly positive so the representation is canonical. Runs in i128.
+fn compute_cross_scaled(l1: LineD, l2: LineD) !CrossScaled {
+    const den64 = direction_det(l1, l2);
+    if (den64 == 0) return error.Parallel;
+    const abx: i128 = @as(i128, l1.bx2 - l1.ax2);
+    const aby: i128 = @as(i128, l1.by2 - l1.ay2);
+    const cdx: i128 = @as(i128, l2.bx2 - l2.ax2);
+    const cdy: i128 = @as(i128, l2.by2 - l2.ay2);
+    // t_num = (C - A) x (D - C), the numerator of the parameter t along stroke 1.
+    const cax: i128 = @as(i128, l2.ax2 - l1.ax2);
+    const cay: i128 = @as(i128, l2.ay2 - l1.ay2);
+    const t_num: i128 = cax * cdy - cay * cdx;
+    var den: i128 = @as(i128, den64);
+    var num_x: i128 = @as(i128, l1.ax2) * den + t_num * abx;
+    var num_y: i128 = @as(i128, l1.ay2) * den + t_num * aby;
+    if (den < 0) {
+        den = -den;
+        num_x = -num_x;
+        num_y = -num_y;
+    }
+    // invariant: the denominator is normalized strictly positive -- a real single meeting point.
+    assert(den > 0);
+    return CrossScaled{ .num_x = num_x, .num_y = num_y, .den = den };
+}
+
+/// TRUE when the two strokes share a direction -- the direction determinant is zero, so the infinite lines are parallel (never meet) or
+/// coincident (meet everywhere). Refuses `SameGroup`, `EmptyClick`, `PointOutOfBounds` through the resolution.
+pub fn directions_parallel(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, cx: u32, cy: u32, dx: u32, dy: u32) !bool {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+
+    const l1 = try resolve_line(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const l2 = try resolve_line(garden, clustering, graph, manifest, map, cx, cy, dx, dy);
+    return direction_det(l1, l2) == 0;
+}
+
+/// TRUE when the two INFINITE lines meet at exactly one point -- the negation of `directions_parallel`. Refuses `SameGroup`, `EmptyClick`,
+/// `PointOutOfBounds` through the resolution.
+pub fn lines_cross(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, cx: u32, cy: u32, dx: u32, dy: u32) !bool {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+
+    const l1 = try resolve_line(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const l2 = try resolve_line(garden, clustering, graph, manifest, map, cx, cy, dx, dy);
+    return direction_det(l1, l2) != 0;
+}
+
+/// TRUE when the two FINITE strokes cross -- a proper interior crossing or a collinear endpoint touch. Refuses `SameGroup`, `EmptyClick`,
+/// `PointOutOfBounds` through the resolution.
+pub fn segments_cross(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, cx: u32, cy: u32, dx: u32, dy: u32) !bool {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+
+    const l1 = try resolve_line(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const l2 = try resolve_line(garden, clustering, graph, manifest, map, cx, cy, dx, dy);
+    return segs_intersect(l1, l2);
+}
+
+/// TRUE when the two infinite lines meet yet the two finite strokes do NOT -- the lines cross, the drawn strokes stop short. The two-stroke twin
+/// of image/line_pierce.rye's `pierce_only_infinite`. Refuses `SameGroup`, `EmptyClick`, `PointOutOfBounds` through the resolution.
+pub fn cross_only_infinite(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, cx: u32, cy: u32, dx: u32, dy: u32) !bool {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+
+    const l1 = try resolve_line(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const l2 = try resolve_line(garden, clustering, graph, manifest, map, cx, cy, dx, dy);
+    return direction_det(l1, l2) != 0 and !segs_intersect(l1, l2);
+}
+
+/// The exact meeting point of the two infinite lines, scaled by the direction determinant -- `(num_x, num_y) / den`, `den` strictly positive.
+/// Refuses `Parallel` when the lines share a direction. Refuses `SameGroup`, `EmptyClick`, `PointOutOfBounds` through the resolution.
+pub fn cross_point_scaled(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, cx: u32, cy: u32, dx: u32, dy: u32) !CrossScaled {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+
+    const l1 = try resolve_line(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const l2 = try resolve_line(garden, clustering, graph, manifest, map, cx, cy, dx, dy);
+    return compute_cross_scaled(l1, l2);
+}
+
+/// TRUE when the meeting point of the two infinite lines is a lattice point in doubled coordinates -- the determinant divides both numerators.
+/// Refuses `Parallel` when the lines share a direction. Refuses `SameGroup`, `EmptyClick`, `PointOutOfBounds` through the resolution.
+pub fn cross_is_lattice(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, cx: u32, cy: u32, dx: u32, dy: u32) !bool {
+    const p = try cross_point_scaled(garden, clustering, graph, manifest, map, ax, ay, bx, by, cx, cy, dx, dy);
+    // invariant: the denominator is a real strictly-positive divisor to test against.
+    assert(p.den > 0);
+    return @rem(p.num_x, p.den) == 0 and @rem(p.num_y, p.den) == 0;
+}
+
+/// The doubled center of a group frame -- one coordinate pair, both axes exact integers.
+pub const CrossPoint = struct {
+    x2: i64,
+    y2: i64,
+};
+
+/// The exact meeting point of the two infinite lines in doubled coordinates -- returned only when it is a lattice point, else refuses
+/// `CrossNotWhole` rather than rounding a fractional intersection. Refuses `Parallel`, `SameGroup`, `EmptyClick`, `PointOutOfBounds`.
+pub fn cross_point_doubled(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, cx: u32, cy: u32, dx: u32, dy: u32) !CrossPoint {
+    const p = try cross_point_scaled(garden, clustering, graph, manifest, map, ax, ay, bx, by, cx, cy, dx, dy);
+    // invariant: the denominator is a real strictly-positive divisor.
+    assert(p.den > 0);
+    if (@rem(p.num_x, p.den) != 0 or @rem(p.num_y, p.den) != 0) return error.CrossNotWhole;
+    const x2 = @divTrunc(p.num_x, p.den);
+    const y2 = @divTrunc(p.num_y, p.den);
+    return CrossPoint{ .x2 = @as(i64, @intCast(x2)), .y2 = @as(i64, @intCast(y2)) };
+}
+
+// --- selftest: the TWO-STROKE crux (two finite strokes can miss where their infinite lines meet; the meeting point is rational, held exact;
+//     parallel lines never meet); the scaled point lies on both lines exactly; reversal invariant; refusals by name; determinism -----------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y). A 2x2 block's inclusive box is (x,y)-(x+1,y+1), so its doubled
+/// center is (2x+1, 2y+1) -- exact odd integers the selftest predicts by hand.
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- SCENE 1 on a 30x26 canvas: seven 2x2 singletons whose doubled centers are hand-predicted. A HORIZONTAL stroke A -> B runs along
+    //     doubled-y 21, a VERTICAL stroke C -> D along doubled-x 25 (they cross at the lattice point (25,21)); C -> F is the vertical stroke
+    //     STOPPED SHORT above the horizontal one; G -> H is a second horizontal stroke, PARALLEL to A -> B:
+    //       G: block (2,4)   center (5,9)     A: block (2,10)  center (5,21)
+    //       C: block (12,4)  center (25,9)    F: block (12,7)  center (25,15)   D: block (12,18) center (25,37)
+    //       H: block (22,4)  center (45,9)    B: block (22,10) center (45,21)
+    //     Every stroke is named by TAPPING inside its two anchor blocks -- no per-object label is read -----------------------------------------
+    var scene = try make_canvas(garden, 30, 26, 0);
+    set_block(&scene, 2, 4, 2, 2); //  G: center (5,9)
+    set_block(&scene, 12, 4, 2, 2); // C: center (25,9)
+    set_block(&scene, 22, 4, 2, 2); // H: center (45,9)
+    set_block(&scene, 12, 7, 2, 2); // F: center (25,15)
+    set_block(&scene, 2, 10, 2, 2); // A: center (5,21)
+    set_block(&scene, 22, 10, 2, 2); // B: center (45,21)
+    set_block(&scene, 12, 18, 2, 2); // D: center (25,37)
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 7) return error.SceneNotSevenComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    if (clustering.clusters != 7) return error.NotSevenClusters;
+
+    // the anchor taps (each lands inside its own block)
+    const gx: u32 = 2; //  G tap
+    const gy: u32 = 4;
+    const cx: u32 = 12; // C tap
+    const cy: u32 = 4;
+    const hx: u32 = 22; // H tap
+    const hy: u32 = 4;
+    const fx: u32 = 12; // F tap
+    const fy: u32 = 7;
+    const axp: u32 = 2; // A tap
+    const ayp: u32 = 10;
+    const bxp: u32 = 22; // B tap
+    const byp: u32 = 10;
+    const dxp: u32 = 12; // D tap
+    const dyp: u32 = 18;
+
+    // --- THE INTEGER X -- horizontal A -> B crosses vertical C -> D at the lattice point (25,21) doubled ---------------------------------------
+    if (try segments_cross(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, cx, cy, dxp, dyp) != true) return error.XNotCrossing;
+    if (try lines_cross(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, cx, cy, dxp, dyp) != true) return error.XLinesNotCrossing;
+    if (try directions_parallel(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, cx, cy, dxp, dyp) != false) return error.XWronglyParallel;
+    if (try cross_only_infinite(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, cx, cy, dxp, dyp) != false) return error.XWronglyOnlyInfinite;
+    if (try cross_is_lattice(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, cx, cy, dxp, dyp) != true) return error.XNotLattice;
+    const xp = try cross_point_scaled(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, cx, cy, dxp, dyp);
+    if (xp.num_x != 28000 or xp.num_y != 23520 or xp.den != 1120) return error.XScaledWrong;
+    const xd = try cross_point_doubled(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, cx, cy, dxp, dyp);
+    if (xd.x2 != 25 or xd.y2 != 21) return error.XDoubledWrong;
+    // the scaled point lies on BOTH lines exactly -- cross(dir, point - anchor) == 0 in scaled terms
+    if ((45 - 5) * (xp.num_y - 21 * xp.den) - (21 - 21) * (xp.num_x - 5 * xp.den) != 0) return error.XNotOnLine1;
+    if ((25 - 25) * (xp.num_y - 9 * xp.den) - (37 - 9) * (xp.num_x - 25 * xp.den) != 0) return error.XNotOnLine2;
+
+    // --- TWO FINITE STROKES MISS WHERE THEIR INFINITE LINES MEET -- C -> F stops short of the horizontal stroke, yet the lines meet at (25,21) --
+    if (try segments_cross(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, cx, cy, fx, fy) != false) return error.ShortWronglyCrossing;
+    if (try lines_cross(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, cx, cy, fx, fy) != true) return error.ShortLinesNotCrossing;
+    if (try cross_only_infinite(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, cx, cy, fx, fy) != true) return error.ShortNotOnlyInfinite;
+    const sp = try cross_point_scaled(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, cx, cy, fx, fy);
+    if (sp.num_x != 6000 or sp.num_y != 5040 or sp.den != 240) return error.ShortScaledWrong;
+    const sd = try cross_point_doubled(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, cx, cy, fx, fy);
+    if (sd.x2 != 25 or sd.y2 != 21) return error.ShortDoubledWrong; // the meeting point of the INFINITE lines, though the strokes miss
+
+    // --- PARALLEL LINES NEVER MEET -- G -> H shares the horizontal stroke's direction ----------------------------------------------------------
+    if (try directions_parallel(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, gx, gy, hx, hy) != true) return error.ParallelNotParallel;
+    if (try lines_cross(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, gx, gy, hx, hy) != false) return error.ParallelLinesCross;
+    if (try segments_cross(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, gx, gy, hx, hy) != false) return error.ParallelSegmentsCross;
+    if (try cross_only_infinite(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, gx, gy, hx, hy) != false) return error.ParallelOnlyInfinite;
+    if (cross_point_scaled(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, gx, gy, hx, hy)) |_| return error.ParallelPointNotRefused else |err| {
+        if (err != error.Parallel) return error.WrongParallelError;
+    }
+    if (cross_point_doubled(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, gx, gy, hx, hy)) |_| return error.ParallelDoubledNotRefused else |err| {
+        if (err != error.Parallel) return error.WrongParallelDoubledError;
+    }
+
+    // --- REVERSAL -- reading either stroke from its other end leaves the crossing verdict and the meeting point IDENTICAL -----------------------
+    if (try segments_cross(garden, clustering, graph, manifest, &map, bxp, byp, axp, ayp, dxp, dyp, cx, cy) != true) return error.ReversedNotCrossing;
+    const rd = try cross_point_doubled(garden, clustering, graph, manifest, &map, bxp, byp, axp, ayp, dxp, dyp, cx, cy);
+    if (rd.x2 != 25 or rd.y2 != 21) return error.ReversedDoubledChanged;
+    const rd2 = try cross_point_doubled(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, dxp, dyp, cx, cy);
+    if (rd2.x2 != 25 or rd2.y2 != 21) return error.ReversedOneEndChanged;
+    if (try cross_is_lattice(garden, clustering, graph, manifest, &map, bxp, byp, axp, ayp, dxp, dyp, cx, cy) != true) return error.ReversedLatticeChanged;
+
+    // --- REFUSALS -- two anchors sharing a group refuse SameGroup; a background tap refuses EmptyClick; a point off the map refuses
+    //     PointOutOfBounds, each having read nothing -----------------------------------------------------------------------------------------
+    if (try hit_test.object_label_at(&map, 2, 10) != try hit_test.object_label_at(&map, 3, 10)) return error.APixelsNotSameObject;
+    if (segments_cross(garden, clustering, graph, manifest, &map, 2, 10, 3, 10, cx, cy, dxp, dyp)) |_| return error.SameGroupNotRefused else |err| {
+        if (err != error.SameGroup) return error.WrongSameGroupError;
+    }
+    if (try hit_test.object_label_at(&map, 0, 0) != 0) return error.BackgroundNotEmpty;
+    if (segments_cross(garden, clustering, graph, manifest, &map, 0, 0, bxp, byp, cx, cy, dxp, dyp)) |_| return error.MissNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissError;
+    }
+    if (segments_cross(garden, clustering, graph, manifest, &map, axp, ayp, 30, 0, cx, cy, dxp, dyp)) |_| return error.OffMapNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapError;
+    }
+
+    // --- SCENE 2 on a 14x14 canvas: the RATIONAL crossing -- two DIAGONAL strokes meeting at (31/3, 47/3) doubled, no lattice holds it ---------
+    //       J: block (2,2)  center (5,5)     K: block (6,10) center (13,21)   (stroke 1, direction (8,16))
+    //       L: block (10,2) center (21,5)    M: block (2,10) center (5,21)    (stroke 2, direction (-16,16))
+    var scene2 = try make_canvas(garden, 14, 14, 0);
+    set_block(&scene2, 2, 2, 2, 2); //   J: center (5,5)
+    set_block(&scene2, 10, 2, 2, 2); //  L: center (21,5)
+    set_block(&scene2, 6, 10, 2, 2); //  K: center (13,21)
+    set_block(&scene2, 2, 10, 2, 2); //  M: center (5,21)
+
+    const map2 = try label.label_components(garden, &scene2);
+    if (map2.count != 4) return error.Scene2NotFourComponents;
+    const manifest2 = try scene_manifest.build_manifest(garden, &map2);
+    const graph2 = try scene_graph.build_scene_graph(garden, manifest2, &map2);
+    const clustering2 = try overlap_clusters.overlap_clusters(garden, graph2);
+    if (clustering2.clusters != 4) return error.Scene2NotFourClusters;
+
+    const jx: u32 = 2; // J tap
+    const jy: u32 = 2;
+    const kx: u32 = 6; // K tap
+    const ky: u32 = 10;
+    const lx: u32 = 10; // L tap
+    const ly: u32 = 2;
+    const mx: u32 = 2; // M tap
+    const my: u32 = 10;
+
+    // the two diagonals cross, their infinite lines cross, they are not parallel
+    if (try segments_cross(garden, clustering2, graph2, manifest2, &map2, jx, jy, kx, ky, lx, ly, mx, my) != true) return error.RationalNotCrossing;
+    if (try lines_cross(garden, clustering2, graph2, manifest2, &map2, jx, jy, kx, ky, lx, ly, mx, my) != true) return error.RationalLinesNotCrossing;
+    // the meeting point is RATIONAL -- held exact, no lattice holds it
+    if (try cross_is_lattice(garden, clustering2, graph2, manifest2, &map2, jx, jy, kx, ky, lx, ly, mx, my) != false) return error.RationalWronglyLattice;
+    const rp = try cross_point_scaled(garden, clustering2, graph2, manifest2, &map2, jx, jy, kx, ky, lx, ly, mx, my);
+    if (rp.num_x != 3968 or rp.num_y != 6016 or rp.den != 384) return error.RationalScaledWrong; // 3968/384 = 31/3, 6016/384 = 47/3
+    // the scaled rational point lies on BOTH diagonals exactly
+    if ((13 - 5) * (rp.num_y - 5 * rp.den) - (21 - 5) * (rp.num_x - 5 * rp.den) != 0) return error.RationalNotOnLine1;
+    if ((5 - 21) * (rp.num_y - 5 * rp.den) - (21 - 5) * (rp.num_x - 21 * rp.den) != 0) return error.RationalNotOnLine2;
+    // a fractional meeting asked as a lattice point refuses CrossNotWhole
+    if (cross_point_doubled(garden, clustering2, graph2, manifest2, &map2, jx, jy, kx, ky, lx, ly, mx, my)) |_| return error.RationalDoubledNotRefused else |err| {
+        if (err != error.CrossNotWhole) return error.WrongCrossNotWholeError;
+    }
+
+    // --- DETERMINISM -- the same two strokes read the same crossing twice ------------------------------------------------------------------
+    const c1 = try segments_cross(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, cx, cy, dxp, dyp);
+    const c2 = try segments_cross(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, cx, cy, dxp, dyp);
+    if (c1 != c2) return error.CrossNotDeterministic;
+
+    print("GREEN image-line-cross: read TWO directed lines, each named by two anchor taps (stroke 1 from A toward B, stroke 2 from C toward D), and answer how the two strokes RELATE -- do the FINITE strokes cross, do their INFINITE lines cross, are their directions PARALLEL, and where do the infinite lines MEET. The whole line family until now read ONE directed line over a scene of objects: line_distance how far off it a center sits, line_project the exact foot, line_pierce whether the stroke crosses an object's box; line_cross lifts the family from one line and its objects to TWO lines and each other. The crux it faces is that a segment-versus-segment crossing is EXACT with integers -- the four ORIENTATIONS d1=orient(C,D,A), d2=orient(C,D,B), d3=orient(A,B,C), d4=orient(A,B,D) split into two opposite-sign pairs (a proper crossing), a collinear endpoint touch caught by the on-segment bounding-box test -- and the MEETING POINT of two lines is RATIONAL, A + (t_num/den)*(B-A) with den the cross of the two directions, held TIMES den as an exact i128 pair the same clear-the-divide move line_project made for its foot. Over a 30x26 scene, a HORIZONTAL stroke A -> B crosses a VERTICAL stroke C -> D at the lattice point (25,21) doubled, cross_is_lattice TRUE. TWO FINITE STROKES CAN MISS WHERE THEIR INFINITE LINES MEET -- the vertical stroke C -> F stops short of the horizontal one, so segments_cross is FALSE yet lines_cross TRUE, cross_only_infinite naming exactly that pair, and cross_point_doubled still returns the point the infinite lines meet at (25,21) computed off the lines whether or not the strokes reach it, the two-stroke twin of line_pierce's pierce_only_infinite. THE MEETING POINT IS RATIONAL, HELD EXACT -- over a 14x14 scene two DIAGONAL strokes cross at (31/3, 47/3) doubled, cross_point_scaled holding (3968, 6016, 384) with 384 dividing neither numerator, cross_is_lattice FALSE, and cross_point_doubled refusing CrossNotWhole rather than rounding a lie; the scaled point provably lies on BOTH lines, the cross product of each direction with (point - anchor) exactly zero in scaled terms. PARALLEL LINES NEVER MEET AT A POINT -- the second horizontal stroke G -> H shares A -> B's direction, so directions_parallel is TRUE, lines_cross FALSE, cross_point_scaled refusing Parallel. Reading either stroke from its other end leaves the crossing verdict and the meeting point identical, a stroke being one set of points; two anchors sharing a group refuse SameGroup, a background tap refuses EmptyClick, a point off the map refuses PointOutOfBounds, each having read nothing further; the same two strokes read the same crossing twice. Compose not braid over image/click_order.rye (the group a tap lands in), image/click_collinear.rye (the anchor centers that name each stroke), and image/line_pierce.rye (the finite-versus-infinite reading this lifts from one stroke to two)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: line_cross selftest\n", .{});
+    return 1;
+}
