@@ -1,0 +1,423 @@
+//! image/cluster_subtree_frames.rye -- what the BRANCHES of the skeleton HOLD: the member set and the union FRAME of each limb a bridge cut
+//! leaves behind. Where image/cluster_mst_subtrees.rye read only the SIZES of the two pieces a severed bridge yields (the near count and the far
+//! count), this rung reads what each piece IS -- `subtree_members` names the exact cluster ids on each side of a cut (near the low-id endpoint,
+//! far the high-id endpoint), `subtree_frame` the union group-handle box that side spans, `subtree_area` its total foreground substance, and
+//! `frames_overlap` whether the two limbs' frames intersect in the plane -- exact integers, NO float, NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/cluster_minimum_spanning_tree.rye grows the skeleton and names its bridge edges;
+//! image/cluster_mst_subtrees.rye reads the two component SIZES when a bridge is cut; image/cluster_facts.rye reads one whole cluster's union
+//! frame and substance. This rung is the geometric PAYOFF of the subtree read: it lifts the per-cluster frame of image/cluster_facts.rye to the
+//! whole LIMB a cut produces, so a surface names it the day a keeper drags a group apart at a seam -- grab the connecting line between two regions,
+//! cut it, and draw the two halves it was carrying, each with its own handle box and its own substance.
+//!
+//! The DECISIVE crux -- the two limbs partition the clusters cleanly, YET their frames need not: the box-is-a-prefilter lesson lifted from one
+//! cluster to the two halves of a cut, in two shapes at once:
+//!
+//!   THE MEMBER SETS ALWAYS PARTITION, THE FRAMES SOMETIMES OVERLAP. Cutting a bridge splits the cluster set into two disjoint, complementary
+//!   pieces whose union is every cluster -- a clean division of WHO belongs, exact at the set level. Over a scene of five singleton clusters -- a
+//!   square of four (L1 top-left, L2 top-right, L3 bottom-left, L4 bottom-right, mutual gaps all tied so Prim builds a STAR on hub L1 with edges
+//!   L1-L2, L1-L3, L1-L4) plus a far outlier L5 hanging off arm L4 (edge L4-L5) -- cutting the hub-arm edge L1-L4 leaves the near limb {L1, L2, L3}
+//!   and the far limb {L4, L5}: disjoint members. Yet the near limb's union frame (1,1)-(6,6) and the far limb's frame (5,5)-(13,13) OVERLAP in the
+//!   (5,5)-(6,6) corner where L4 sits, so `frames_overlap` reads TRUE -- the two halves a surface would draw overlap in the plane though not a single
+//!   cluster is shared. The frame over-claims contact the membership never makes; only the member set says which half a cluster falls to.
+//!
+//!   A CUT CAN ALSO SPLIT CLEANLY IN SPACE. Cutting the outlier edge L4-L5 of the same tree leaves the near limb {L1, L2, L3, L4} spanning frame
+//!   (1,1)-(6,6) and the far limb {L5} at (12,12)-(13,13): here the frames are DISJOINT (the far limb stands wholly outside the near frame), so
+//!   `frames_overlap` reads FALSE. The same tree yields an over-claiming cut and a clean cut depending on which seam is severed -- the member
+//!   partition is invariant, the frame overlap is not.
+//!
+//! Compose not braid. This rung OWNS only the limb reads -- the flood that names each side's clusters after a validated bridge is cut, and the
+//! union of their frames and areas. No spanning tree recomputed (image/cluster_minimum_spanning_tree.rye owns `build_mst`, the edges, and
+//! `is_bridge`), no per-cluster frame re-measured (image/cluster_facts.rye owns `cluster_bbox` and `cluster_area`, read here over each side's
+//! members). A reading over a reading over a reading over a reading over a reading over a reading over a reading over a reading.
+//!
+//! Everything is bounded before a byte: the cluster count can never exceed the object count, itself capped at `scene_graph_max_objects`, so the
+//! flood over a severed tree visits each cluster at most once and the member lists hold exactly one slot per cluster. A pair that is not a bridge
+//! refuses `NotABridge` (a redundant within-reach pair a spanning tree dropped is not a cut you can make). A zero or past-the-count cluster id
+//! refuses `BadClusterId`, a self pair refuses `SameCluster`. No network, no key, no funds -- the two halves a surface draws when it cuts a seam,
+//! on our own geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/cluster_subtree_frames.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const cluster_graph = @import("cluster_graph.rye");
+const cluster_mst = @import("cluster_minimum_spanning_tree.rye");
+const cluster_facts = @import("cluster_facts.rye");
+
+pub const cluster_subtree_frames_version = "20260819.034757";
+
+pub const SubtreeFramesError = error{
+    BadClusterId,
+    SameCluster,
+    NotABridge,
+};
+
+/// The two limbs a severed bridge leaves, each as a sorted list of cluster ids -- `near` holds the component with the low-id endpoint of the cut
+/// edge, `far` the high-id endpoint. They are a partition: disjoint, complementary, and together every cluster.
+pub const MemberSplit = struct {
+    near: []u32,
+    far: []u32,
+};
+
+/// Flood the component containing `lo` after the single bridge `(lo, hi)` is cut, marking `visited[c-1]` for every cluster on the near limb -- a
+/// private walk the caller reaches only after `(lo, hi)` is validated as a real bridge. The one `lo`-`hi` edge is never traversed, so `hi` and its
+/// side stay unreached; a tree carries no cycle, so exactly the near limb is marked.
+fn side_membership(allocator: std.mem.Allocator, tree: cluster_mst.MstTree, lo: u32, hi: u32) ![]bool {
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges.
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+    // invariant: the cut edge joins two distinct real clusters, low id first.
+    assert(lo >= 1);
+    assert(lo < hi);
+    assert(hi <= tree.clusters);
+
+    const n: u32 = tree.clusters;
+    const visited = try allocator.alloc(bool, n);
+    const queue = try allocator.alloc(u32, n);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) visited[i] = false;
+
+    var head: u32 = 0;
+    var tail: u32 = 0;
+    queue[tail] = lo;
+    tail += 1;
+    visited[lo - 1] = true;
+    while (head < tail) {
+        const node = queue[head]; // a 1-based cluster id
+        head += 1;
+        var e: u32 = 0;
+        while (e < tree.edges.len) : (e += 1) {
+            const edge = tree.edges[e];
+            var other: u32 = 0;
+            if (edge.a == node) {
+                other = edge.b;
+            } else if (edge.b == node) {
+                other = edge.a;
+            } else {
+                continue;
+            }
+            // never cross the one severed bridge -- the flood stays on the near limb.
+            if ((node == lo and other == hi) or (node == hi and other == lo)) continue;
+            if (!visited[other - 1]) {
+                visited[other - 1] = true;
+                // invariant: the queue never holds more than the cluster count -- each cluster is enqueued at most once.
+                assert(tail < n);
+                queue[tail] = other;
+                tail += 1;
+            }
+        }
+    }
+
+    var count: u32 = 0;
+    i = 0;
+    while (i < n) : (i += 1) {
+        if (visited[i]) count += 1;
+    }
+    // invariant: the near limb holds at least the cluster it started from, and never the whole tree (the far endpoint sits outside it).
+    assert(count >= 1);
+    assert(count <= n - 1);
+    return visited;
+}
+
+/// The two limbs a cut of bridge `(a, b)` leaves -- `near` the sorted cluster ids on the low-id endpoint's side, `far` on the high-id endpoint's
+/// side, together a partition of every cluster. Refuses `BadClusterId` for a zero or past-the-count id, `SameCluster` for a self pair, and
+/// `NotABridge` when the pair is not one of the skeleton's edges.
+pub fn subtree_members(allocator: std.mem.Allocator, tree: cluster_mst.MstTree, a: u32, b: u32) !MemberSplit {
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges.
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+    // invariant: a real cluster graph holds at least one cluster.
+    assert(tree.clusters >= 1);
+    if (a == 0 or a > tree.clusters) return error.BadClusterId;
+    if (b == 0 or b > tree.clusters) return error.BadClusterId;
+    if (a == b) return error.SameCluster;
+    if (try cluster_mst.is_bridge(tree, a, b) != true) return error.NotABridge;
+
+    const lo = if (a < b) a else b;
+    const hi = if (a < b) b else a;
+    const visited = try side_membership(allocator, tree, lo, hi);
+
+    const n: u32 = tree.clusters;
+    var near_count: u32 = 0;
+    var c: u32 = 0;
+    while (c < n) : (c += 1) {
+        if (visited[c]) near_count += 1;
+    }
+    const far_count: u32 = n - near_count;
+    // invariant: an edge cut of a tree yields exactly two non-empty complementary pieces summing to the whole.
+    assert(near_count >= 1);
+    assert(far_count >= 1);
+    assert(near_count + far_count == n);
+
+    const near = try allocator.alloc(u32, near_count);
+    const far = try allocator.alloc(u32, far_count);
+    var ni: u32 = 0;
+    var fi: u32 = 0;
+    c = 0;
+    while (c < n) : (c += 1) {
+        if (visited[c]) {
+            near[ni] = c + 1;
+            ni += 1;
+        } else {
+            far[fi] = c + 1;
+            fi += 1;
+        }
+    }
+    // invariant: every cluster fell to exactly one side -- the two lists are the full partition.
+    assert(ni == near_count);
+    assert(fi == far_count);
+    return MemberSplit{ .near = near, .far = far };
+}
+
+/// The union FRAME of one limb -- the bounding box that encloses every cluster on the chosen side of cutting bridge `(a, b)`, the group-handle a
+/// surface draws around that half. `near_side` picks the low-id endpoint's limb; false picks the far limb. Refuses exactly as `subtree_members`.
+pub fn subtree_frame(allocator: std.mem.Allocator, tree: cluster_mst.MstTree, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, a: u32, b: u32, near_side: bool) !cluster_facts.Box {
+    // invariant: the tree and the clustering describe the same scene -- the same cluster count.
+    assert(clustering.clusters == tree.clusters);
+    // invariant: the clustering and the graph describe the same scene.
+    assert(clustering.components == graph.components);
+    const split = try subtree_members(allocator, tree, a, b);
+    const members = if (near_side) split.near else split.far;
+    // invariant: a limb always holds at least one cluster.
+    assert(members.len >= 1);
+    const m: u32 = @intCast(members.len);
+    // invariant: a limb never holds more clusters than the tree.
+    assert(m <= tree.clusters);
+
+    var box = cluster_facts.Box{};
+    var i: u32 = 0;
+    while (i < m) : (i += 1) {
+        const cid = members[i];
+        const cb = try cluster_facts.cluster_bbox(clustering, graph, cid);
+        if (i == 0) {
+            box = cb;
+        } else {
+            if (cb.min_x < box.min_x) box.min_x = cb.min_x;
+            if (cb.min_y < box.min_y) box.min_y = cb.min_y;
+            if (cb.max_x > box.max_x) box.max_x = cb.max_x;
+            if (cb.max_y > box.max_y) box.max_y = cb.max_y;
+        }
+    }
+    // invariant: the union is well-formed on both axes -- it began well-formed and only ever widened.
+    assert(box.max_x >= box.min_x);
+    assert(box.max_y >= box.min_y);
+    return box;
+}
+
+/// The total foreground SUBSTANCE of one limb -- the sum of every member cluster's area on the chosen side of cutting bridge `(a, b)`. The two
+/// limbs' areas always sum to the whole layout's foreground. Refuses exactly as `subtree_members`.
+pub fn subtree_area(allocator: std.mem.Allocator, tree: cluster_mst.MstTree, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, a: u32, b: u32, near_side: bool) !u32 {
+    // invariant: the tree and the clustering describe the same scene.
+    assert(clustering.clusters == tree.clusters);
+    // invariant: the clustering and the graph describe the same scene.
+    assert(clustering.components == graph.components);
+    const split = try subtree_members(allocator, tree, a, b);
+    const members = if (near_side) split.near else split.far;
+    const m: u32 = @intCast(members.len);
+    // invariant: a limb holds at least one cluster and never more than the tree.
+    assert(m >= 1);
+    assert(m <= tree.clusters);
+
+    var total: u32 = 0;
+    var i: u32 = 0;
+    while (i < m) : (i += 1) {
+        const ca = try cluster_facts.cluster_area(clustering, graph, members[i]);
+        // invariant: each cluster carries at least one pixel, and the running sum stays within the pixel ceiling so u32 never overflows.
+        assert(ca >= 1);
+        assert(@as(u64, total) + @as(u64, ca) <= label.label_max_pixels);
+        total += ca;
+    }
+    // invariant: a limb of at least one cluster carries at least one foreground pixel.
+    assert(total >= 1);
+    return total;
+}
+
+/// TRUE when the two limbs' union frames INTERSECT in the plane -- the read that makes the over-claim plain: it can be TRUE though the two limbs
+/// share not a single cluster, whenever one limb's frame reaches over the other's. The member partition is always clean; the frame overlap is not.
+/// Refuses exactly as `subtree_members`.
+pub fn frames_overlap(allocator: std.mem.Allocator, tree: cluster_mst.MstTree, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, a: u32, b: u32) !bool {
+    const near = try subtree_frame(allocator, tree, clustering, graph, a, b, true);
+    const far = try subtree_frame(allocator, tree, clustering, graph, a, b, false);
+    // invariant: both frames are well-formed on both axes before intersection is judged.
+    assert(near.max_x >= near.min_x);
+    assert(near.max_y >= near.min_y);
+    assert(far.max_x >= far.min_x);
+    assert(far.max_y >= far.min_y);
+    // two inclusive boxes overlap iff their ranges intersect on both axes.
+    const on_x = near.min_x <= far.max_x and far.min_x <= near.max_x;
+    const on_y = near.min_y <= far.max_y and far.min_y <= near.max_y;
+    return on_x and on_y;
+}
+
+// --- selftest: the two limbs partition the clusters cleanly, yet their frames need not. The scene is five singleton solid blocks on a 15x15
+//     canvas -- a square of four (L1 (1,1)-(2,2) top-left, L2 (5,1)-(6,2) top-right, L3 (1,5)-(2,6) bottom-left, L4 (5,5)-(6,6) bottom-right),
+//     whose mutual nearest-pixel gaps all tie at 3 so Prim builds a STAR on hub L1 (edges L1-L2, L1-L3, L1-L4), plus a far outlier L5
+//     (12,12)-(13,13) whose nearest cluster is L4 at gap 6 (edge L4-L5). Cutting the hub-arm edge L1-L4 leaves near {L1,L2,L3} frame (1,1)-(6,6)
+//     and far {L4,L5} frame (5,5)-(13,13), OVERLAPPING in the (5,5)-(6,6) corner; cutting the outlier edge L4-L5 leaves near {L1,L2,L3,L4} frame
+//     (1,1)-(6,6) and far {L5} at (12,12)-(13,13), DISJOINT. Then refusals, a lone cluster, and determinism ---------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// Assert two cluster id lists match, in order -- a small local helper so the partition checks read the same each time.
+fn members_are(got: []u32, want: []const u32) bool {
+    if (got.len != want.len) return false;
+    var i: usize = 0;
+    while (i < got.len) : (i += 1) {
+        if (got[i] != want[i]) return false;
+    }
+    return true;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- BUILD THE FIVE-CLUSTER SCENE on a 15x15 canvas -- four singleton blocks in a square plus a far outlier, no boxes overlapping. Raster
+    //     labels: L1=1 ((1,1)), L2=2 ((5,1)), L3=3 ((1,5)), L4=4 ((5,5)), L5=5 ((12,12)). The square's mutual gaps all tie at 3 so Prim builds a
+    //     STAR on hub L1 with edges L1-L2, L1-L3, L1-L4; L5's nearest cluster is L4 at gap 6, so it hangs off arm L4 with edge L4-L5 -----------
+    var scene = try make_canvas(garden, 15, 15, 0);
+    set_block(&scene, 1, 1, 2, 2); // L1: box (1,1)-(2,2), area 4  (top-left hub)
+    set_block(&scene, 5, 1, 2, 2); // L2: box (5,1)-(6,2), area 4  (top-right)
+    set_block(&scene, 1, 5, 2, 2); // L3: box (1,5)-(2,6), area 4  (bottom-left)
+    set_block(&scene, 5, 5, 2, 2); // L4: box (5,5)-(6,6), area 4  (bottom-right)
+    set_block(&scene, 12, 12, 2, 2); // L5: box (12,12)-(13,13), area 4 (far outlier)
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 5) return error.SceneNotFiveComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    if (overlap_clusters.cluster_count(clustering) != 5) return error.SceneNotFiveClusters; // five singletons
+    const cg = try cluster_graph.build_cluster_graph(garden, clustering, graph);
+    const tree = try cluster_mst.build_mst(garden, cg);
+
+    // --- CONFIRM THE STAR-AND-TAIL SKELETON -- the star edges L1-L2, L1-L3, L1-L4 plus the outlier edge L4-L5, exactly n-1 = 4 edges ---------
+    if (cluster_mst.edge_count(tree) != 4) return error.SkeletonEdgeCountNotFour;
+    if (try cluster_mst.is_bridge(tree, 1, 2) != true) return error.SkeletonMissingOneTwo;
+    if (try cluster_mst.is_bridge(tree, 1, 3) != true) return error.SkeletonMissingOneThree;
+    if (try cluster_mst.is_bridge(tree, 1, 4) != true) return error.SkeletonMissingOneFour;
+    if (try cluster_mst.is_bridge(tree, 4, 5) != true) return error.SkeletonMissingFourFive;
+    if (try cluster_mst.is_bridge(tree, 2, 3) != false) return error.SkeletonHasArmToArm; // two arms never bridge directly
+
+    // --- THE MEMBER SETS ALWAYS PARTITION -- cutting the hub-arm edge L1-L4 (1-4) leaves near {1,2,3} (the flood from 1 reaching the other two
+    //     arms, L4 and its tail blocked) and far {4,5}, disjoint and complementary and together every cluster ------------------------------
+    const cut_hub = try subtree_members(garden, tree, 1, 4);
+    if (!members_are(cut_hub.near, &[_]u32{ 1, 2, 3 })) return error.CutHubNearNotStar; // {L1,L2,L3}
+    if (!members_are(cut_hub.far, &[_]u32{ 4, 5 })) return error.CutHubFarNotTail; // {L4,L5}
+    if (cut_hub.near.len + cut_hub.far.len != 5) return error.CutHubNotWhole;
+
+    // --- YET THE FRAMES OVERLAP -- the near limb {L1,L2,L3} frame (1,1)-(6,6) and the far limb {L4,L5} frame (5,5)-(13,13) meet in the
+    //     (5,5)-(6,6) corner where L4 sits, so the two halves a surface draws overlap though not a single cluster is shared -----------------
+    const near_hub = try subtree_frame(garden, tree, clustering, graph, 1, 4, true);
+    if (near_hub.min_x != 1 or near_hub.min_y != 1 or near_hub.max_x != 6 or near_hub.max_y != 6) return error.CutHubNearFrameWrong;
+    const far_hub = try subtree_frame(garden, tree, clustering, graph, 1, 4, false);
+    if (far_hub.min_x != 5 or far_hub.min_y != 5 or far_hub.max_x != 13 or far_hub.max_y != 13) return error.CutHubFarFrameWrong;
+    if (try frames_overlap(garden, tree, clustering, graph, 1, 4) != true) return error.CutHubFramesNotOverlapping; // the over-claim
+    if (try subtree_area(garden, tree, clustering, graph, 1, 4, true) != 12) return error.CutHubNearAreaNotTwelve; // L1+L2+L3 = 12
+    if (try subtree_area(garden, tree, clustering, graph, 1, 4, false) != 8) return error.CutHubFarAreaNotEight; // L4+L5 = 8
+
+    // --- A CUT CAN ALSO SPLIT CLEANLY IN SPACE -- cutting the outlier edge L4-L5 (4-5) leaves near {1,2,3,4} frame (1,1)-(6,6) and far {5} at
+    //     (12,12)-(13,13), the frames DISJOINT (the far limb stands wholly outside the near frame) --------------------------------------------
+    const cut_tail = try subtree_members(garden, tree, 4, 5);
+    if (!members_are(cut_tail.near, &[_]u32{ 1, 2, 3, 4 })) return error.CutTailNearNotSquare; // {L1,L2,L3,L4}
+    if (!members_are(cut_tail.far, &[_]u32{5})) return error.CutTailFarNotOutlier; // {L5}
+    const near_tail = try subtree_frame(garden, tree, clustering, graph, 4, 5, true);
+    if (near_tail.min_x != 1 or near_tail.min_y != 1 or near_tail.max_x != 6 or near_tail.max_y != 6) return error.CutTailNearFrameWrong;
+    const far_tail = try subtree_frame(garden, tree, clustering, graph, 4, 5, false);
+    if (far_tail.min_x != 12 or far_tail.min_y != 12 or far_tail.max_x != 13 or far_tail.max_y != 13) return error.CutTailFarFrameWrong;
+    if (try frames_overlap(garden, tree, clustering, graph, 4, 5) != false) return error.CutTailFramesOverlapping; // the clean split
+
+    // --- THE PARTITION IS INVARIANT WHILE THE FRAME OVERLAP IS NOT -- the same tree yields an over-claiming cut (L1-L4) and a clean cut (L4-L5) -
+    if (cut_tail.near.len + cut_tail.far.len != 5) return error.CutTailNotWhole;
+    // the two limbs' areas always sum to the whole layout's foreground (5 blocks of 4 = 20) on either cut
+    if (try subtree_area(garden, tree, clustering, graph, 1, 4, true) + try subtree_area(garden, tree, clustering, graph, 1, 4, false) != 20) return error.CutHubAreaNotWhole;
+    if (try subtree_area(garden, tree, clustering, graph, 4, 5, true) + try subtree_area(garden, tree, clustering, graph, 4, 5, false) != 20) return error.CutTailAreaNotWhole;
+
+    // --- REFUSALS -- a non-bridge pair refuses NotABridge, a zero or past-the-count id refuses BadClusterId, a self pair refuses SameCluster ---
+    if (subtree_members(garden, tree, 2, 3)) |_| return error.NonBridgeNotRefused else |err| { // 2 and 3 are real clusters, yet not an edge
+        if (err != error.NotABridge) return error.WrongNonBridgeError;
+    }
+    if (subtree_members(garden, tree, 0, 1)) |_| return error.ZeroNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongZeroError;
+    }
+    if (subtree_members(garden, tree, 1, 6)) |_| return error.PastNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongPastError;
+    }
+    if (subtree_members(garden, tree, 2, 2)) |_| return error.SelfNotRefused else |err| {
+        if (err != error.SameCluster) return error.WrongSelfError;
+    }
+
+    // --- A LONE-CLUSTER LAYOUT HAS NO BRIDGE TO CUT -- any pair refuses (a self pair SameCluster, a past-the-count id BadClusterId) ------------
+    var lone_img = try make_canvas(garden, 6, 6, 0);
+    set_block(&lone_img, 1, 1, 2, 2); // one object, one cluster
+    const lone_map = try label.label_components(garden, &lone_img);
+    const lone_manifest = try scene_manifest.build_manifest(garden, &lone_map);
+    const lone_graph = try scene_graph.build_scene_graph(garden, lone_manifest, &lone_map);
+    const lone_clustering = try overlap_clusters.overlap_clusters(garden, lone_graph);
+    const lone_cg = try cluster_graph.build_cluster_graph(garden, lone_clustering, lone_graph);
+    const lone_tree = try cluster_mst.build_mst(garden, lone_cg);
+    if (subtree_members(garden, lone_tree, 1, 2)) |_| return error.LonePastNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongLonePastError; // no cluster 2 exists
+    }
+
+    // --- DETERMINISM -- the same tree reads the same partition and the same overlap verdict twice ------------------------------------------
+    const again = try subtree_members(garden, tree, 1, 4);
+    if (!members_are(again.near, cut_hub.near) or !members_are(again.far, cut_hub.far)) return error.MembersNotDeterministic;
+    if (try frames_overlap(garden, tree, clustering, graph, 1, 4) != try frames_overlap(garden, tree, clustering, graph, 1, 4)) return error.OverlapNotDeterministic;
+
+    print("GREEN image-cluster-subtree-frames: what the BRANCHES of the skeleton HOLD -- the member set and the union FRAME of each limb a bridge cut leaves, with subtree_members naming the exact cluster ids on each side (near the low-id endpoint, far the high-id endpoint), subtree_frame the union group-handle box that side spans, subtree_area its total foreground substance, frames_overlap whether the two limbs' frames intersect in the plane, exact integers, NO float and NO tolerance -- the DECISIVE crux, the two limbs partition the clusters cleanly yet their frames need not, the box-is-a-prefilter lesson lifted from one cluster to the two halves of a cut. THE MEMBER SETS ALWAYS PARTITION, THE FRAMES SOMETIMES OVERLAP -- over five singleton clusters (a square L1 L2 L3 L4 whose mutual gaps tie so Prim builds a STAR on hub L1 with edges L1-L2, L1-L3, L1-L4, plus a far outlier L5 hanging off arm L4 with edge L4-L5) cutting the hub-arm edge L1-L4 leaves the near limb {{L1,L2,L3}} and the far limb {{L4,L5}}, disjoint members, yet the near limb's union frame (1,1)-(6,6) and the far limb's frame (5,5)-(13,13) OVERLAP in the (5,5)-(6,6) corner where L4 sits so frames_overlap reads TRUE, the two halves a surface would draw overlapping in the plane though not a single cluster is shared, the frame over-claiming a contact the membership never makes. A CUT CAN ALSO SPLIT CLEANLY IN SPACE -- cutting the outlier edge L4-L5 of the same tree leaves the near limb {{L1,L2,L3,L4}} spanning frame (1,1)-(6,6) and the far limb {{L5}} at (12,12)-(13,13), the frames DISJOINT since the far limb stands wholly outside the near frame, so frames_overlap reads FALSE; the same tree yields an over-claiming cut and a clean cut depending on which seam is severed, the member partition invariant while the frame overlap is not, and the two limbs' areas always sum to the whole layout's foreground (5 blocks of 4 = 20) on either cut. A non-bridge pair refuses NotABridge, a zero or past-the-count id refuses BadClusterId, a self pair refuses SameCluster, a lone-cluster layout has no bridge to cut; the same tree reads the same partition and the same overlap verdict twice. Compose not braid over image/cluster_minimum_spanning_tree.rye (build_mst, the edges, is_bridge) and image/cluster_facts.rye (cluster_bbox and cluster_area, read over each side's members) -- a reading over a reading over a reading over a reading over a reading over a reading over a reading over a reading\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: cluster_subtree_frames selftest\n", .{});
+    return 1;
+}
