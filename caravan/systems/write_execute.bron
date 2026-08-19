@@ -1,0 +1,14 @@
+# write_execute -- a declaration the grammar itself refuses.
+#
+# The permission grammar holds `r`, `rw`, and `rx`, and nothing else. A
+# document asking for `rwx` is refused at its own line with `BadPermission`,
+# so W xor X is a property of what a declaration CAN SAY rather than a check
+# run afterward on what it happened to say.
+
+system write_execute
+
+domain worker
+
+region code 4096
+
+grant code worker rwx

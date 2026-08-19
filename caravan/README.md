@@ -26,6 +26,7 @@ Every ring here composes over the one before it. A later ring imports an earlier
 | channels | [`channels.rye`](channels.rye) | the static supervision graph -- a bounded roster of protection domains, channels joining exactly two of them, every refusal named |
 | regions | [`regions.rye`](regions.rye) | the declared sharing surface -- named memory regions granted to named domains at named permissions, with write and execute held apart |
 | system | [`system.rye`](system.rye) | the whole architecture as one declaration -- a bounded Bron document naming domains, channels, regions, and grants, parsed once and verified whole |
+| reader | [`read.rye`](read.rye) | the architecture read from its own file -- a bounded load from disk, oversize refused rather than truncated, every refusal named |
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
@@ -50,6 +51,14 @@ Order carries meaning. A channel or a grant names domains and regions already de
 Four properties live above the line level, and `verify` reads them off the finished value: the two rosters agree, W xor X holds across every grant, every declared region reaches at least one domain, and no domain stands an island. Each shortfall answers with its own name -- `rosters_disagree`, `write_and_execute`, `unheld_region`, `isolated_domain` -- so a refused architecture teaches its author what to change. The write-and-run permission word never enters the grammar at all, which makes W xor X a property of what a declaration *can say*, rather than only of what a later check happens to find.
 
 The shape follows the single-stranded brief's own counsel: an enclosure is a value, rather than flags braided through the code that builds it. Witness: [`tools/caravan_system_witness.rish`](../tools/caravan_system_witness.rish), GREEN on metal, its RED path proven by admitting `rwx` into the grammar and watching the self-test refuse the weakened door.
+
+## Why the Document Lives Beside the Code
+
+`system.rye` proves a declaration whole, and it read that declaration from a source literal -- so the architecture still lived inside the program that checked it. `read.rye` takes the last step: the description lives beside the code as its own `.bron` artifact under [`systems/`](systems/), and the reader loads it from disk into a bounded buffer before a single line is parsed. An architecture is now a file a reviewer can open, a diff can show, and a witness can check without building anything that embeds it.
+
+The bound arrives at the door. A document may span at most `max_lines` lines of `max_line_len` bytes, and `max_document_bytes` derives that same bound as a byte count, so the file bound and the parse bound can never drift apart. The truncation guard is the load-bearing detail: a short read fills the buffer and reports the bytes that arrived, which makes a file larger than the buffer and a file exactly filling it look identical from the inside. So the reader keeps one byte of headroom and refuses any read that reaches the buffer's own edge -- a declaration cut mid-line still parses and still describes a system nobody wrote, and that is the one outcome worth spending a byte to rule out.
+
+The refusal vocabulary stays whole across the seam. An absent file answers `NoSuchDocument`, an oversize one `DocumentTooLarge`, anything else unreadable `DocumentUnreadable`, and every line-level refusal keeps the name the parser already gave it -- so an operator reading a RED knows which happened without opening a thing. Three artifacts stand on disk: `serial_stack.bron` reads whole at 73728 declared bytes with no client-to-client path, `unheld_region.bron` parses line by line and still answers `unheld_region` for the whole, and `write_execute.bron` is refused at its own line by a grammar that holds `r`, `rw`, and `rx` and nothing else. Witness: [`tools/caravan_read_witness.rish`](../tools/caravan_read_witness.rish), GREEN on metal, its RED path proven by removing the truncation guard and watching a 257-byte buffer return a silently cut document that parsed happily.
 
 ## Held
 

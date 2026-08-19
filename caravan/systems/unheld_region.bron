@@ -1,0 +1,19 @@
+# unheld_region -- a declaration that parses line by line and falls short whole.
+#
+# Every line here is legal on its own. Read together, `scratch` is memory
+# reserved for no one, so the finished declaration answers `unheld_region`
+# rather than `whole`. The property lives above the line level, which is
+# exactly why `verify` exists beside the parser.
+
+system unheld_region
+
+domain worker
+domain helper
+
+channel worker helper
+
+region inbox 4096
+region scratch 8192
+
+grant inbox worker rw
+grant inbox helper r

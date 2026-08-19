@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260819.132705
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Caravan read -- the architecture loaded from its own file on disk
+prompt Autonomous loop lap: Lindy-first crux-first, Standfast on reds first, take the next agent-doable rung of the Microkernel Target double-seat and send it as its own signed round.
+think Standfast first -- walked crux/REDS.md end to end. Living rows 80, 83, 84, 85 and prose notes 81, 82, 86, 87 all carry an explicit close or a Released line; verified #84 on metal by reading .gitignore, which now holds `!/crux/` beside `!/work-in-progress/`. No open agent-closable red, so the line is clear for constructive work.
+think Picked up the running thread from the newest three logs. The last three laps built Caravan's three declaration rings -- channels, regions, and the system document that gathers them -- and the newest recommend named the next crux exactly: a reader that takes a system description from a FILE rather than a source literal, so an architecture lives beside the code as its own .bron artifact.
+think Council rota, lap 444 mod 27 = item 12, active-designing/20260618-184912_growing-a-language.md. Its method landed on this lap directly: wear a thin costume first, diverge by accretion, and let the gate be the specification. The reader is the thin next rung, and the witness over the real documents is its spec.
+think Wrote the three artifacts before the code, so the module had something honest to read: serial_stack.bron (the worked example), unheld_region.bron (every line legal, the whole falling short), write_execute.bron (rwx refused at its own line).
+obs The first build refused a StreamTooLong mapping that does not exist -- reading std/Io/Dir.zig showed readFile uses readSliceShort, which FILLS the buffer and returns the bytes that arrived. So an oversize file arrives SILENTLY TRUNCATED, which is precisely the failure this ring claims to rule out. Measurement beat memory at the seam: the API's real behavior, read from its source, changed the design rather than the error mapping.
+obs The fix is one byte of headroom. The reader takes a buffer wider than the bound and refuses any read reaching the buffer's own edge, since at that edge a complete document and a truncated one are indistinguishable and only the refusal is honest. read_buffer_bytes derives from max_document_bytes, which derives from the parser's own max_lines * max_line_len, so three bounds are one number and cannot drift.
+obs GREEN came on the first build after that fix, so I proved the RED path before trusting it -- removed the truncation guard, built to a scratch binary, and watched a 257-byte buffer hand back a silently cut serial_stack that parsed happily, tripping the self-test's unreachable (exit 134). Guard restored, scratch binary removed, all four caravan witnesses re-GREEN.
+obs The refusal vocabulary stays whole across the seam: NoSuchDocument, DocumentTooLarge, DocumentUnreadable, plus every line-level ParseError name the parser already gave. An operator reading a RED learns which of the three happened without opening anything.
+obs Ran tame_style_check and width-check -- bans clean, widths clean, read.rye in no ratchet list. Swept caravan/README.md in the same commit rather than as a follow-up, so the doc and the code state the same behavior.
+loom witness=caravan_read_witness build_and_run=GREEN documents=3 declared_bytes=73728 domains=3 channels=2 regions=3 grants=6
+file caravan/read.rye the reader -- bounded load from disk, truncation refused rather than believed, every refusal named
+file caravan/systems/serial_stack.bron the worked example as its own artifact -- 73728 bytes, no client-to-client path
+file caravan/systems/unheld_region.bron every line legal, the whole answering unheld_region
+file caravan/systems/write_execute.bron rwx refused at its own line by the grammar
+file tools/caravan_read_witness.rish the witness -- selftest plus the CLI over all three real documents
+file caravan/README.md ladder row and the Why the Document Lives Beside the Code section, synced in the same commit
+recommend keep-going -- the architecture now lives on disk as a readable artifact, so the next crux is the one that makes it load-bearing: teach a Caravan supervisor to take its child roster FROM a system document, so the declaration that a witness checks is the same declaration the supervisor obeys. No key, no funds.
