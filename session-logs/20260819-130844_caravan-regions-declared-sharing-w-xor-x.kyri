@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260819.130844
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Caravan regions -- declared sharing, W xor X held structurally
+prompt Autonomous loop lap -- Lindy-first crux-first on the Microkernel Target double-seat; the prior lap recommended the memory-region ring or the declarative Brix/Bron system description.
+think Standfast first -- walked crux/REDS.md: living rows 80-87 all read CLOSED or released, nothing agent-closable open. Line clear, constructive work may begin.
+think Rota lap 20 of 27 -- deep-read context/QUIN.md. Quin keeps the fifth OS variant and the inference Q-vane; the four voices (Lattice, Scribble, Lantern, Ember) are carried by Kyri, and the report-never-urge practice governs the close of this lap.
+think Chose the memory-region ring over the declarative system description, crux-first: a description that names the whole static architecture wants all three primitives declared beneath it. Capabilities and channels stood; regions was the missing leg. The description round becomes cheaper and truer once it has three real things to describe.
+think Shaped the ring against the Microkit clean-room brief -- regions explicitly declared and explicitly mapped, granted to named domains with named permissions, sharing deliberate and visible rather than ambient. Kept the concept, wrote our own Rye; no source crossed the clean room.
+think Chose two load-bearing invariants rather than a permission bitmask. Every grant reads, since a grant permitting nothing declares nothing. And write never stands beside execute in one grant -- the W xor X rule, asserted at Grant.init and refused by name at the door, so the property is structural rather than remembered.
+think Named six refusals so the map can audit itself -- no_such_region, no_such_domain, not_granted, write_denied, execute_denied, allowed. A bare no covers five different situations, and a map that cannot say which one cannot be reviewed.
+think Added two summarizing reads a human can check a declaration by: holders counts how widely one region is shared, footprint sums the bytes one domain reaches across every grant. Both bounded, both asserted.
+think Ran the tame style check after the first GREEN -- bans clean, yet run_self_test printed at 89 lines on the length ratchet. Turned the ratchet in the same round: split into check_declared_access, check_reads, check_refusals, each with its own contract assert. Second run no longer names the file.
+obs The witness went GREEN on the first build, so I proved the RED path before trusting it -- removed the WriteExecute guard, rebuilt to a scratch binary, and watched Grant.init's own legality assert abort the run (exit 134). Defense in depth confirmed: the door refuses, and the constructor asserts. Scratch binary removed, tree restored, both caravan witnesses re-GREEN.
+obs The version constant first carried a stamp ahead of the live clock; read TZ=America/New_York date and corrected it to 20260819.130844 before the send. A fabricated stamp is a red even when it is only a string.
+obs Kept the ring self-contained rather than importing channels.rye's roster. One shared roster would be the truer composition eventually; the happy zone wins for now -- a fast isolated test, no build coupling, and the declarative system description is the round where the three rings genuinely converge.
+loom witness=caravan_regions_witness domains=4 regions=4 grants=7 checks=44 build_ok=1
+file caravan/regions.rye the memory-region ring -- declared regions, named grants, six refusals, W xor X, holders and footprint
+file tools/caravan_regions_witness.rish builds and runs the self-test, asserting GREEN and the W xor X report line
+file caravan/README.md the module roster gains regions, and a new section names why sharing is granted rather than assumed
+file crux/REMEMBER.md live edge refreshed to the region ring; git nib pinned in the same commit
+recommend keep-going -- the three primitives now stand, so the declarative Brix/Bron system description is the next crux: one bounded declaration naming domains, channels, regions, and grants, parsed and asserted, with a witness that proves the graph whole. No key, no funds.

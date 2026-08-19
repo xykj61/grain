@@ -24,6 +24,7 @@ Every ring here composes over the one before it. A later ring imports an earlier
 | signal ring | [`supervisor_signal.rye`](supervisor_signal.rye) | a real `SIGTERM`/`SIGINT` handler whose entire body is one atomic store; the loop top creates the same sentinel a manual `touch` would |
 | poll service (C) | [`subscribe_poll_service.rye`](subscribe_poll_service.rye) | production scheduling — Caravan supervises Mantra's real subscribe-poll wire work, single pair and host-mirror pair-list alike |
 | channels | [`channels.rye`](channels.rye) | the static supervision graph -- a bounded roster of protection domains, channels joining exactly two of them, every refusal named |
+| regions | [`regions.rye`](regions.rye) | the declared sharing surface -- named memory regions granted to named domains at named permissions, with write and execute held apart |
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
@@ -32,6 +33,12 @@ A supervisor that only knows "zero means done, anything else means retry" stalls
 ## Why the Graph Is Declared, Rather Than Discovered
 
 `capabilities.rye` names what each dependent may do; `channels.rye` names who each dependent may talk to. Both are declared at construction and readable whole, so the complete communication graph of a supervised system lives in the declaration rather than emerging at runtime -- and a static graph is a graph a witness can check whole. Two clients wired to the same virtualiser still hold no path to each other, since sharing here is deliberate and visible rather than ambient. The shape comes from the Microkit clean-room brief, [`20260819-094721_clean-room-microkit-protection-domains-channels.md`](../active-designing/20260819-094721_clean-room-microkit-protection-domains-channels.md), studied from public docs alone -- concepts crossed the clean room, no source did. This is the first Rye rung of the Microkernel Target's Equinox 1, and it stands on hosted ground: pure policy, asserted and witnessed, with no kernel underneath it yet.
+
+## Why Sharing Is Granted, Rather Than Assumed
+
+`regions.rye` completes the triad: capabilities name **what** a dependent may do, channels name **who** it may talk to, and regions name **what memory** it may touch and how far. Every share is a declared grant of a named region into a named domain at a named permission, so a domain reaches exactly what its declaration hands it and nothing beside. Two clients served by one virtualiser each read their own receive buffer while reaching none of the other's, and the map answers *why* a refusal happened -- an undeclared region, an undeclared domain, an ungranted pair, a denied write, a denied execute -- rather than a bare no.
+
+Two invariants carry the ring. Every grant reads, since a grant permitting nothing declares nothing. And write never stands beside execute in the same grant -- the W xor X rule, held structurally at the constructor and refused by name at the door, so the whole declaration can be checked at once by `write_xor_execute`. Two reads summarize a map for a human: `holders` counts how widely a region is shared, and `footprint` sums the bytes a domain reaches in total. Witness: [`tools/caravan_regions_witness.rish`](../tools/caravan_regions_witness.rish), GREEN on metal, its RED path proven by removing the guard and watching the constructor's own assert catch it.
 
 ## Held
 
