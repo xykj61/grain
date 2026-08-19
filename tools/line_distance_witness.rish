@@ -1,0 +1,49 @@
+# tools/line_distance_witness.rish -- read a DIRECTED line named by TWO anchor taps (from A toward B) as a DISTANCE FROM THE LINE, on
+# metal (Season G).
+#
+# Season G (Open Media Primitives) -- this rung CLOSES the three-read decomposition of one directed line over the SAME two anchor centers.
+# line_partition reads the cross product's SIGN (which side); line_order reads the DOT (how far along); this rung reads the cross product's
+# MAGNITUDE (how far off the line). Side is the sign, along is the dot, distance is the magnitude -- the complete reading, and this is the
+# third and last. A reading over readings, no plane of its own.
+#
+# The crux this witness proves on metal: distance and side are the MAGNITUDE and the SIGN of the SAME cross product, so a line_distance is
+# the exact DUAL of a line_order. Over line_order's own six-object scene the horizontal line A -> B gives distances A=0, B=0, P=168, Q=168,
+# D=224, U=280 -- P and Q are EQUIDISTANT yet line_partition places them on OPPOSITE sides, the dual of line_order's order-tie/opposite-side,
+# and the two cruxes trade partners (U/D tie in order but differ in distance; P/Q tie in distance but differ in order). Distance is BLIND to
+# the drawn direction (side swaps, order reverses, distance stands still); the equidistance is a property of the line; on_line is the zero
+# floor; nearest/farthest and rank; refusals by name; determinism. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/line_distance_witness.rish
+
+say "line_distance: Language EN -- Season G line-to-distance; the MAGNITUDE of the cross product ranks objects by how far they sit FROM the line where line_partition's SIGN split them across it and line_order's DOT ranked them along it; NO float, NO tolerance."
+say "line_distance: Style Radiant -- compose not braid: this rung owns only the distance magnitude and the sort it induces; line_partition owns the cross-product side arbiter the crux cross-checks, line_order owns the along-line order the dual trades partners with, click_collinear owns click_group_center_doubled, cluster_facts owns the group frame. No plane of its own, no pixel written -- a reading over readings."
+say "line_distance: Lens TAME -- the distance walk runs components times under label_max_pixels and the insertion sort over that same bounded count; the cross product runs in i64 so doubled-coordinate products never overflow and the magnitude is a single negate; two anchors sharing a group refuse SameGroup, a background tap refuses EmptyClick, a point off the map refuses PointOutOfBounds, a label past the object count refuses BadTarget having read nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/line_distance"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/line_distance.rye -femit-bin=${bin}"]
+assert build.ok else "line_distance: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "line_distance: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "line_distance: ${out}"
+
+assert selftest.out contains "GREEN image-line-distance" else "line_distance: selftest did not print the GREEN line"
+assert selftest.out contains "read a DIRECTED line named by TWO anchor taps (from A toward B) as a DISTANCE FROM THE LINE" else "line_distance: the distance-from-line claim did not print"
+assert selftest.out contains "This CLOSES the three-read decomposition of one line" else "line_distance: the three-read closure claim did not print"
+assert selftest.out contains "line_partition reads the cross's SIGN (which side), line_order reads the DOT (how far along), this rung reads the cross's MAGNITUDE (how far off)" else "line_distance: the sign/dot/magnitude decomposition did not print"
+assert selftest.out contains "TWO OBJECTS ARE EQUIDISTANT YET SPLIT TO OPPOSITE SIDES" else "line_distance: the equidistant-yet-opposite-sides crux did not print"
+assert selftest.out contains "same_distance(P, Q) is TRUE (168 each) yet line_partition places P LEFT and Q RIGHT" else "line_distance: the P/Q equidistant-opposite claim did not print"
+assert selftest.out contains "The cruxes TRADE PARTNERS over one scene" else "line_distance: the dual trade-partners claim did not print"
+assert selftest.out contains "DISTANCE IS BLIND TO THE DRAWN DIRECTION" else "line_distance: the direction-blind crux did not print"
+assert selftest.out contains "THE EQUIDISTANCE IS A PROPERTY OF THE LINE" else "line_distance: the equidistance-is-the-line's crux did not print"
+assert selftest.out contains "on_line is line_partition's .on class read as a distance of zero" else "line_distance: the on_line-as-zero claim did not print"
+assert selftest.out contains "refuse SameGroup" else "line_distance: the SameGroup refusal did not print"
+assert selftest.out contains "refuses BadTarget having read nothing" else "line_distance: the BadTarget refusal did not print"
+assert selftest.out contains "the same line reads the same order twice" else "line_distance: determinism did not print"
+
+say "line_distance: GREEN on metal -- a directed line read as a distance from itself, the third read (magnitude) closing the sign/dot/magnitude decomposition of one line; two objects equidistant yet on opposite sides, the exact dual of line_order's order-tie/opposite-side, the cruxes trading partners over one scene; distance blind to the drawn direction where side swaps and order reverses; refusals by name, determinism. Season G open-media."

@@ -1,0 +1,474 @@
+//! image/line_distance.rye -- read a DIRECTED line named by TWO anchor taps (from anchor A toward anchor B) as a DISTANCE FROM THE LINE:
+//! rank every object by how FAR its GROUP center sits from the line, so a keeper who draws a line through the scene reads back which things
+//! hug it and which stand away. Exact integers, NO float and NO tolerance -- the ranking key is the MAGNITUDE of the cross product of the
+//! doubled centers, and dividing by the line's length is constant per line, so the perpendicular distance ranks objects exactly without a
+//! square root and without a divide.
+//!
+//! Season G (Open Media Primitives) -- this rung CLOSES the three-read decomposition of a single directed line over the SAME two anchor
+//! centers. image/line_partition.rye reads the SIGN of the cross product `(B - A) x (C - A)`, splitting the plane PERPENDICULAR to A -> B
+//! into LEFT / ON / RIGHT. image/line_order.rye reads the DOT product `(B - A) . (C - A)`, the position PARALLEL to A -> B (how far along).
+//! This rung reads the MAGNITUDE of that very cross product, `|(B - A) x (C - A)|` -- how far FROM the line each group center falls, the
+//! perpendicular DISTANCE with its side stripped away. Side is the cross's SIGN; distance is the cross's MAGNITUDE; along is the dot. Dot,
+//! cross-sign, cross-magnitude -- the complete reading of one line, and this is the third and last. `line_distance` returns every object
+//! label sorted NEAREST-to-farthest from the line; `distance_of` reads one object's distance key; `closer_to_line` the pairwise order;
+//! `same_distance` whether two objects are equidistant; `on_line` whether a group sits exactly on the line (distance zero); `rank_by_distance`
+//! a label's place; `nearest_to_line` and `farthest_from_line` the closest and the farthest. It composes over the same public primitives
+//! line_partition and line_order resolve their line from -- a reading over readings, no plane of its own.
+//!
+//! The DECISIVE crux -- distance and side are the MAGNITUDE and the SIGN of the SAME cross product, so a line_distance is the exact DUAL of
+//! a line_order over the same scene, and three facts on metal say it:
+//!
+//!   TWO OBJECTS CAN BE EQUIDISTANT FROM THE LINE YET SPLIT TO OPPOSITE SIDES. Over a horizontal line A -> B, object P (above) and object Q
+//!   (below) sit the SAME perpendicular distance from the line -- `same_distance(P, Q)` is TRUE, their cross magnitudes equal. Yet
+//!   line_partition places P LEFT and Q RIGHT: equal distance key, opposite sign. This is the EXACT DUAL of line_order's own crux, where two
+//!   column-shared objects TIE in along-line ORDER yet split to opposite sides. Over the very same six-object scene the two cruxes trade
+//!   partners: the objects that tie in ORDER (U and D, one column) DIFFER in distance, while the objects that tie in DISTANCE (P and Q, one
+//!   depth each side) DIFFER in order -- order is the dot, distance is the cross magnitude, and a tie in one says nothing about the other.
+//!
+//!   DISTANCE IS BLIND TO THE DRAWN DIRECTION. Reversing the anchors to B -> A negates the cross product -- so line_partition's sides SWAP
+//!   and line_order's whole order REVERSES -- yet the MAGNITUDE is unchanged, so the distance ranking is IDENTICAL. Of the three reads of a
+//!   directed line, distance is the one that does not care which end a keeper drew from: side flips, order reverses, distance stands still.
+//!
+//!   THE EQUIDISTANCE IS A PROPERTY OF THE LINE, NOT THE SCENE. P and Q are equidistant from the HORIZONTAL line; drawn VERTICALLY (the
+//!   anchors U -> D), the SAME two objects fall at different distances, and the former anchors A and B -- exactly on the horizontal line, a
+//!   distance of zero each -- now stand off the vertical line at distances of their own. Every distance is measured from the line drawn, so
+//!   the ties and the zeros move with the stroke, exactly as line_order's ties do.
+//!
+//! Compose not braid. This rung OWNS only the distance MAGNITUDE and the sort it induces. image/line_partition.rye owns the cross-product
+//! side arbiter (`object_side`) the crux cross-checks against; image/line_order.rye owns the along-line order (`project_label`) the dual
+//! trades partners with; image/click_order.rye owns `click_group_id` (the anchor-distinctness guard); image/click_collinear.rye owns
+//! `click_group_center_doubled` and `CenterD` (the anchor centers); image/overlap_clusters.rye and image/cluster_facts.rye own the
+//! object-to-group map and its union frame, whose doubled midpoint is the exact group center. No side re-judged, no order re-invented, no
+//! center re-computed -- every fact looked up through the primitive that already proved it.
+//!
+//! Everything is bounded before a byte: the distance walk runs `components` times, itself bounded by image/label.rye's `label_max_pixels`;
+//! the sort is an insertion sort over that same bounded count; the cross product runs in i64 so the doubled-coordinate products never
+//! overflow, and the magnitude is a single negate of a non-positive value. A directed line needs two distinct points, so two anchor taps
+//! sharing a group refuse `SameGroup` by name; a tap on background refuses `EmptyClick`; a point off the map refuses `PointOutOfBounds`; a
+//! query naming a label past the object count refuses `BadTarget`, each having read nothing. No network, no key, no funds -- the "read the
+//! scene by how close each thing hugs the line I just drew" a surface answers the day a keeper sweeps a line through the picture and asks
+//! which objects lie on it, which crowd it, and which stand away.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/line_distance.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const hit_test = @import("hit_test.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const cluster_facts = @import("cluster_facts.rye");
+const click_order = @import("click_order.rye");
+const click_collinear = @import("click_collinear.rye");
+const line_partition = @import("line_partition.rye");
+const line_order = @import("line_order.rye");
+
+pub const line_distance_version = "20260819.083257";
+
+pub const LineDistanceError = error{
+    BadTarget,
+};
+
+/// The directed line as the two anchor GROUP centers in doubled coordinates -- exactly the line image/line_partition.rye and
+/// image/line_order.rye resolve. Held as i64 so the cross product's doubled-coordinate products never overflow.
+const LineD = struct {
+    ax2: i64,
+    ay2: i64,
+    bx2: i64,
+    by2: i64,
+};
+
+/// Resolve the directed line from two anchor taps -- refuses `EmptyClick` on a miss and `PointOutOfBounds` off the map through the group id
+/// read, then `SameGroup` when the two anchors land in one group (a line needs two distinct points). Returns the two group centers as
+/// doubled coordinates, the same line image/line_partition.rye reads its sides from.
+fn resolve_line(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !LineD {
+    // invariant: the clustering and the map describe the same scene.
+    assert(clustering.components == map.count);
+    // invariant: the graph and the manifest describe that same scene.
+    assert(graph.components == manifest.components);
+
+    const ga = try click_order.click_group_id(clustering, map, ax, ay);
+    const gb = try click_order.click_group_id(clustering, map, bx, by);
+    // invariant: each anchor resolved to a real dense group id.
+    assert(ga >= 1);
+    assert(gb >= 1);
+    if (ga == gb) return error.SameGroup;
+
+    const ca = try click_collinear.click_group_center_doubled(garden, graph, manifest, map, ax, ay);
+    const cb = try click_collinear.click_group_center_doubled(garden, graph, manifest, map, bx, by);
+    return LineD{ .ax2 = @as(i64, ca.cx2), .ay2 = @as(i64, ca.cy2), .bx2 = @as(i64, cb.cx2), .by2 = @as(i64, cb.cy2) };
+}
+
+/// The doubled center of the GROUP object `lbl` belongs to -- the object-to-group map (`cluster_of`) followed by the group's union frame
+/// (`cluster_bbox`), whose doubled midpoint is the exact group center. Every member of a multi-object group reads the SAME center.
+fn label_group_center(clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, lbl: u32) !click_collinear.CenterD {
+    // invariant: a real object label, never background.
+    assert(lbl >= 1);
+    const cid = try overlap_clusters.cluster_of(clustering, lbl);
+    const box = try cluster_facts.cluster_bbox(clustering, graph, cid);
+    // invariant: the frame is well-formed on both axes -- a real box to center.
+    assert(box.max_x >= box.min_x);
+    assert(box.max_y >= box.min_y);
+    return click_collinear.CenterD{ .cx2 = box.min_x + box.max_x, .cy2 = box.min_y + box.max_y };
+}
+
+/// The distance KEY of a group center from the directed line: the MAGNITUDE of the cross product `(B - A) x (C - A)` over the doubled
+/// centers. The true perpendicular distance is this magnitude divided by the line's length, and that length is constant per line, so the
+/// raw magnitude ranks objects exactly -- monotone in perpendicular distance, with no square root and no divide. Non-negative always:
+/// zero exactly on the line, larger the farther off it.
+fn distance_key(line: LineD, center: click_collinear.CenterD) i64 {
+    const abx: i64 = line.bx2 - line.ax2;
+    const aby: i64 = line.by2 - line.ay2;
+    const acx: i64 = @as(i64, center.cx2) - line.ax2;
+    const acy: i64 = @as(i64, center.cy2) - line.ay2;
+    const cross: i64 = abx * acy - aby * acx;
+    // invariant: distance is the magnitude of the signed cross -- side stripped away, never negative.
+    const mag: i64 = if (cross < 0) -cross else cross;
+    assert(mag >= 0);
+    return mag;
+}
+
+/// TRUE when object `a` sorts strictly before object `b` in the nearest-to-farthest order -- ascending distance key, ties broken by
+/// ascending label. The tie-break makes the order total and deterministic; `same_distance` names when the distance itself tied.
+fn order_less(key_a: i64, lbl_a: u32, key_b: i64, lbl_b: u32) bool {
+    if (key_a < key_b) return true;
+    if (key_a > key_b) return false;
+    return lbl_a < lbl_b;
+}
+
+/// Guard that a query label names a real object -- refuses `BadTarget` for background or a label past the object count, having read nothing.
+fn check_target(manifest: scene_manifest.Manifest, lbl: u32) !void {
+    if (lbl < 1 or lbl > manifest.components) return error.BadTarget;
+}
+
+/// The distance KEY of object `lbl`'s GROUP center from the directed line A -> B -- the exact-integer magnitude `line_distance` ranks by,
+/// zero exactly when the group sits on the line. Refuses `SameGroup`, `EmptyClick`, `PointOutOfBounds` through the line resolution, and
+/// `BadTarget` for a label past the object count.
+pub fn distance_of(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, lbl: u32) !i64 {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+
+    try check_target(manifest, lbl);
+    const line = try resolve_line(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const center = try label_group_center(clustering, graph, lbl);
+    return distance_key(line, center);
+}
+
+/// The whole scene sorted NEAREST-to-farthest from the directed line A -> B: every object label ranked by ascending distance key, ties
+/// broken by ascending label so the order is total and deterministic. The anchors, sitting on the line, rank first at distance zero. The
+/// caller owns the returned slice. Refuses `SameGroup`, `EmptyClick`, `PointOutOfBounds` through the line resolution.
+pub fn line_distance(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) ![]u32 {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+    // invariant: the distance walk and the sort are bounded by the component count, itself under image/label.rye's pixel ceiling.
+    assert(manifest.components <= label.label_max_pixels);
+
+    const line = try resolve_line(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const n: usize = @as(usize, manifest.components);
+    const order = try garden.alloc(u32, n);
+    const dist = try garden.alloc(i64, n);
+    var lbl: u32 = 1;
+    while (lbl <= manifest.components) : (lbl += 1) {
+        const center = try label_group_center(clustering, graph, lbl);
+        order[@as(usize, lbl - 1)] = lbl;
+        dist[@as(usize, lbl - 1)] = distance_key(line, center);
+    }
+
+    // insertion sort by (distance, label) ascending -- bounded by the component count, stable and exact over the small scene
+    var i: usize = 1;
+    while (i < n) : (i += 1) {
+        const key_lbl = order[i];
+        const key_dist = dist[i];
+        var j: usize = i;
+        while (j >= 1 and order_less(key_dist, key_lbl, dist[j - 1], order[j - 1])) : (j -= 1) {
+            order[j] = order[j - 1];
+            dist[j] = dist[j - 1];
+        }
+        order[j] = key_lbl;
+        dist[j] = key_dist;
+    }
+
+    // invariant: the result is a strict total order by (distance, label) -- no adjacent pair out of order, so no label repeats.
+    var v: usize = 1;
+    while (v < n) : (v += 1) assert(order_less(dist[v - 1], order[v - 1], dist[v], order[v]));
+    return order;
+}
+
+/// The 0-based place of object `lbl` in the nearest-to-farthest order -- 0 is the closest to the line. Refuses `BadTarget` for a label
+/// past the object count, and `SameGroup` / `EmptyClick` / `PointOutOfBounds` through the line resolution.
+pub fn rank_by_distance(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, lbl: u32) !u32 {
+    // invariant: the manifest and the map describe the same scene.
+    assert(manifest.components == map.count);
+    try check_target(manifest, lbl);
+
+    const order = try line_distance(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    var i: usize = 0;
+    while (i < order.len) : (i += 1) {
+        if (order[i] == lbl) return @as(u32, @intCast(i));
+    }
+    // invariant: a real label always appears in the total order -- the search never falls through.
+    unreachable;
+}
+
+/// TRUE when object `a` sits strictly CLOSER to the directed line A -> B than object `b` -- ascending distance, ties broken by ascending
+/// label. Two distinct labels are required; `a == b` reads FALSE (nothing is closer than itself). Refuses `BadTarget`, `SameGroup`,
+/// `EmptyClick`, `PointOutOfBounds`.
+pub fn closer_to_line(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, a: u32, b: u32) !bool {
+    // invariant: the manifest and the map describe the same scene.
+    assert(manifest.components == map.count);
+    try check_target(manifest, a);
+    try check_target(manifest, b);
+    if (a == b) return false;
+
+    const da = try distance_of(garden, clustering, graph, manifest, map, ax, ay, bx, by, a);
+    const db = try distance_of(garden, clustering, graph, manifest, map, ax, ay, bx, by, b);
+    return order_less(da, a, db, b);
+}
+
+/// TRUE when objects `a` and `b` sit the SAME perpendicular distance from the directed line -- they are EQUIDISTANT, their order settled
+/// only by the label tie-break. This is the magnitude read on its own, the fact that holds ACROSS a side split (equidistant on opposite
+/// sides) and MOVES with the drawn line. Refuses `BadTarget`, `SameGroup`, `EmptyClick`, `PointOutOfBounds`.
+pub fn same_distance(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, a: u32, b: u32) !bool {
+    // invariant: the manifest and the map describe the same scene.
+    assert(manifest.components == map.count);
+    try check_target(manifest, a);
+    try check_target(manifest, b);
+
+    const da = try distance_of(garden, clustering, graph, manifest, map, ax, ay, bx, by, a);
+    const db = try distance_of(garden, clustering, graph, manifest, map, ax, ay, bx, by, b);
+    return da == db;
+}
+
+/// TRUE when object `lbl`'s GROUP sits exactly ON the directed line -- distance zero, the cross product vanishing. This is exactly
+/// line_partition's `.on` class read as a distance fact (`distance_of` is zero iff `object_side` is `.on`). Refuses `BadTarget`,
+/// `SameGroup`, `EmptyClick`, `PointOutOfBounds`.
+pub fn on_line(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, lbl: u32) !bool {
+    // invariant: the manifest and the map describe the same scene.
+    assert(manifest.components == map.count);
+    const d = try distance_of(garden, clustering, graph, manifest, map, ax, ay, bx, by, lbl);
+    // invariant: a distance key is never negative -- on-line is the zero floor.
+    assert(d >= 0);
+    return d == 0;
+}
+
+/// The NEAREST object to the directed line A -> B -- the head of the nearest-to-farthest order. Refuses `SameGroup`, `EmptyClick`,
+/// `PointOutOfBounds`.
+pub fn nearest_to_line(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !u32 {
+    // invariant: the manifest and the map describe the same scene.
+    assert(manifest.components == map.count);
+    const order = try line_distance(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    // invariant: a real scene always holds at least one object to be nearest.
+    assert(order.len >= 1);
+    return order[0];
+}
+
+/// The FARTHEST object from the directed line A -> B -- the tail of the nearest-to-farthest order. Refuses `SameGroup`, `EmptyClick`,
+/// `PointOutOfBounds`.
+pub fn farthest_from_line(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !u32 {
+    // invariant: the manifest and the map describe the same scene.
+    assert(manifest.components == map.count);
+    const order = try line_distance(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    // invariant: a real scene always holds at least one object to be farthest.
+    assert(order.len >= 1);
+    return order[order.len - 1];
+}
+
+// --- selftest: the DECISIVE dual crux (distance and side are the MAGNITUDE and the SIGN of the same cross product -- two objects can be
+//     EQUIDISTANT yet split to opposite sides, the exact dual of line_order's order-tie/opposite-side, and the two cruxes trade partners
+//     over ONE scene); distance is BLIND to the drawn direction where order reverses and side swaps; the equidistance moves with the line;
+//     on_line is the zero floor cross-checked against line_partition's .on; nearest/farthest and rank; refusals by name; determinism -------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y). A 2x2 block's inclusive box is (x,y)-(x+1,y+1), so its
+/// doubled center is (2x+1, 2y+1) -- exact integers the selftest predicts by hand.
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- THE SCENE is line_order's own 20x14 six-singleton scene, so the DUAL is read over ONE picture. Raster order gives dense labels
+    //     U=1, P=2, A=3, B=4, Q=5, D=6. Anchors A and B share row-doubled 13 (the horizontal line A -> B, +x); U and D share column-doubled
+    //     15 (the vertical line U -> D, +y). For the horizontal line the cross magnitudes are the vertical gaps from row 13: A=0, B=0,
+    //     P=|7-13|*28=168, Q=|19-13|*28=168, D=|21-13|*28=224, U=|3-13|*28=280 -- so P and Q are EQUIDISTANT (168 each) yet opposite sides,
+    //     while U and D (the along-tied pair) differ (280 vs 224). The two cruxes trade partners over the same six objects ------------------
+    var scene = try make_canvas(garden, 20, 14, 0);
+    set_block(&scene, 7, 1, 2, 2); // U: box (7,1)-(8,2),  center-doubled (15,3)  -- ABOVE the A-B line, shares column 15 with D
+    set_block(&scene, 4, 3, 2, 2); // P: box (4,3)-(5,4),  center-doubled (9,7)   -- ABOVE the A-B line, distance 168
+    set_block(&scene, 1, 6, 2, 2); // A: box (1,6)-(2,7),  center-doubled (3,13)  -- anchor, ON the A-B line, distance 0
+    set_block(&scene, 15, 6, 2, 2); // B: box (15,6)-(16,7), center-doubled (31,13) -- anchor, ON the A-B line, distance 0
+    set_block(&scene, 11, 9, 2, 2); // Q: box (11,9)-(12,10), center-doubled (23,19) -- BELOW the A-B line, distance 168
+    set_block(&scene, 7, 10, 2, 2); // D: box (7,10)-(8,11), center-doubled (15,21) -- BELOW the A-B line, shares column 15 with U
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 6) return error.SceneNotSixComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    // six disjoint singletons -- six clusters over six objects
+    if (clustering.clusters != 6) return error.NotSixClusters;
+
+    // dense labels: U=1, P=2, A=3, B=4, Q=5, D=6
+    const u_lbl: u32 = 1;
+    const p_lbl: u32 = 2;
+    const a_lbl: u32 = 3;
+    const b_lbl: u32 = 4;
+    const q_lbl: u32 = 5;
+    const d_lbl: u32 = 6;
+
+    // confirm the raster order landed the labels the scene predicts by their box corners
+    const p_entry = try scene_manifest.object_of(manifest, p_lbl);
+    if (p_entry.min_x != 4 or p_entry.min_y != 3) return error.PNotAtExpectedBox;
+    const q_entry = try scene_manifest.object_of(manifest, q_lbl);
+    if (q_entry.min_x != 11 or q_entry.min_y != 9) return error.QNotAtExpectedBox;
+
+    // the two anchor taps that name the HORIZONTAL directed line A -> B (both taps land inside their own blocks)
+    const ax: u32 = 1;
+    const ay: u32 = 6;
+    const bx: u32 = 15;
+    const by: u32 = 6;
+
+    // --- THE HORIZONTAL DISTANCE ORDER -- nearest to farthest by cross magnitude: A(0), B(0), P(168), Q(168), D(224), U(280). Ties broken
+    //     by ascending label, so A before B and P before Q ---------------------------------------------------------------------------------
+    const order_h = try line_distance(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    if (order_h.len != 6) return error.HDistanceNotSix;
+    if (order_h[0] != a_lbl or order_h[1] != b_lbl or order_h[2] != p_lbl or order_h[3] != q_lbl or order_h[4] != d_lbl or order_h[5] != u_lbl) return error.HDistanceWrong;
+
+    // the exact distance keys, predicted by hand
+    if (try distance_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, a_lbl) != 0) return error.ADistNotZero;
+    if (try distance_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, p_lbl) != 168) return error.PDistNot168;
+    if (try distance_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, q_lbl) != 168) return error.QDistNot168;
+    if (try distance_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, d_lbl) != 224) return error.DDistNot224;
+    if (try distance_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, u_lbl) != 280) return error.UDistNot280;
+
+    // nearest and farthest -- A is nearest (on the line), U the farthest
+    if (try nearest_to_line(garden, clustering, graph, manifest, &map, ax, ay, bx, by) != a_lbl) return error.HNearestNotA;
+    if (try farthest_from_line(garden, clustering, graph, manifest, &map, ax, ay, bx, by) != u_lbl) return error.HFarthestNotU;
+    // rank_by_distance reads the 0-based place -- P is third (index 2), Q fourth (index 3)
+    if (try rank_by_distance(garden, clustering, graph, manifest, &map, ax, ay, bx, by, p_lbl) != 2) return error.PRankNotTwo;
+    if (try rank_by_distance(garden, clustering, graph, manifest, &map, ax, ay, bx, by, q_lbl) != 3) return error.QRankNotThree;
+
+    // on_line is the zero floor -- A and B on the line, cross-checked against line_partition's .on; P and Q off it
+    if (!try on_line(garden, clustering, graph, manifest, &map, ax, ay, bx, by, a_lbl)) return error.ANotOnLine;
+    if (!try on_line(garden, clustering, graph, manifest, &map, ax, ay, bx, by, b_lbl)) return error.BNotOnLine;
+    if (try on_line(garden, clustering, graph, manifest, &map, ax, ay, bx, by, p_lbl)) return error.PWronglyOnLine;
+    if (try line_partition.object_side(garden, clustering, graph, manifest, &map, ax, ay, bx, by, a_lbl) != .on) return error.ASideNotOn;
+    if (try line_partition.object_side(garden, clustering, graph, manifest, &map, ax, ay, bx, by, b_lbl) != .on) return error.BSideNotOn;
+
+    // --- THE DECISIVE DUAL CRUX -- P and Q are EQUIDISTANT (same_distance TRUE, both 168) yet line_partition places P LEFT and Q RIGHT:
+    //     equal magnitude, opposite sign. And over the SAME scene the cruxes trade partners -- U and D, along-TIED in line_order (one
+    //     column), DIFFER in distance (280 vs 224); P and Q, distance-TIED here, DIFFER in along-line order ---------------------------------
+    if (!try same_distance(garden, clustering, graph, manifest, &map, ax, ay, bx, by, p_lbl, q_lbl)) return error.PQNotEquidistant;
+    if (try line_partition.object_side(garden, clustering, graph, manifest, &map, ax, ay, bx, by, p_lbl) != .left) return error.PNotLeft;
+    if (try line_partition.object_side(garden, clustering, graph, manifest, &map, ax, ay, bx, by, q_lbl) != .right) return error.QNotRight;
+    // equidistant, yet the total order still separates them by ascending label -- P strictly closer-ranked than Q
+    if (!try closer_to_line(garden, clustering, graph, manifest, &map, ax, ay, bx, by, p_lbl, q_lbl)) return error.PNotBeforeQ;
+    if (try closer_to_line(garden, clustering, graph, manifest, &map, ax, ay, bx, by, q_lbl, p_lbl)) return error.QWronglyBeforeP;
+    // the partners trade: U and D are along-tied (line_order) yet NOT distance-tied here; P and Q are distance-tied yet NOT along-tied
+    if (!try line_order.along_tie(garden, clustering, graph, manifest, &map, ax, ay, bx, by, u_lbl, d_lbl)) return error.UDNotAlongTied;
+    if (try same_distance(garden, clustering, graph, manifest, &map, ax, ay, bx, by, u_lbl, d_lbl)) return error.UDWronglyEquidistant;
+    if (try line_order.along_tie(garden, clustering, graph, manifest, &map, ax, ay, bx, by, p_lbl, q_lbl)) return error.PQWronglyAlongTied;
+
+    // --- DISTANCE IS BLIND TO THE DRAWN DIRECTION -- reversing to B -> A negates the cross so line_partition's sides SWAP and line_order
+    //     reverses, yet the magnitude is unchanged: the distance order is IDENTICAL --------------------------------------------------------
+    const order_r = try line_distance(garden, clustering, graph, manifest, &map, bx, by, ax, ay);
+    var ri: usize = 0;
+    while (ri < order_h.len) : (ri += 1) {
+        if (order_r[ri] != order_h[ri]) return error.ReversedDistanceOrderMoved;
+    }
+    // the side truly swaps under the reversal (P was left, now right), while its distance stands still
+    if (try line_partition.object_side(garden, clustering, graph, manifest, &map, bx, by, ax, ay, p_lbl) != .right) return error.PSideNotSwapped;
+    if (try distance_of(garden, clustering, graph, manifest, &map, bx, by, ax, ay, p_lbl) != 168) return error.PDistanceMovedOnReversal;
+
+    // --- THE EQUIDISTANCE IS A PROPERTY OF THE LINE -- drawn VERTICALLY (U -> D), P and Q fall at DIFFERENT distances, and the former
+    //     anchors A and B (distance zero on the horizontal line) now stand OFF the vertical line ---------------------------------------------
+    const ux: u32 = 7;
+    const uy: u32 = 1;
+    const dx: u32 = 7;
+    const dy: u32 = 10;
+    if (try same_distance(garden, clustering, graph, manifest, &map, ux, uy, dx, dy, p_lbl, q_lbl)) return error.PQStillEquidistantVertically;
+    if (try on_line(garden, clustering, graph, manifest, &map, ux, uy, dx, dy, a_lbl)) return error.AStillOnLineVertically;
+    if (try on_line(garden, clustering, graph, manifest, &map, ux, uy, dx, dy, b_lbl)) return error.BStillOnLineVertically;
+    // U and D, the vertical line's own anchors, sit on it now -- distance zero each
+    if (!try on_line(garden, clustering, graph, manifest, &map, ux, uy, dx, dy, u_lbl)) return error.UNotOnVerticalLine;
+    if (!try on_line(garden, clustering, graph, manifest, &map, ux, uy, dx, dy, d_lbl)) return error.DNotOnVerticalLine;
+
+    // --- REFUSALS -- two anchors sharing a group refuse SameGroup; a background tap refuses EmptyClick; a point off the map refuses
+    //     PointOutOfBounds; a query label past the object count refuses BadTarget, each having read nothing -------------------------------
+    if (try hit_test.object_label_at(&map, 1, 6) != try hit_test.object_label_at(&map, 2, 7)) return error.APixelsNotSameObject;
+    if (line_distance(garden, clustering, graph, manifest, &map, 1, 6, 2, 7)) |_| return error.SameGroupNotRefused else |err| {
+        if (err != error.SameGroup) return error.WrongSameGroupError;
+    }
+    if (try hit_test.object_label_at(&map, 0, 0) != 0) return error.BackgroundNotEmpty;
+    if (line_distance(garden, clustering, graph, manifest, &map, 0, 0, bx, by)) |_| return error.MissNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissError;
+    }
+    if (line_distance(garden, clustering, graph, manifest, &map, ax, ay, 20, 0)) |_| return error.OffMapNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapError;
+    }
+    if (distance_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, 7)) |_| return error.BadTargetNotRefused else |err| {
+        if (err != error.BadTarget) return error.WrongBadTargetError;
+    }
+
+    // --- DETERMINISM -- the same directed line reads the same distance order twice -----------------------------------------------------
+    const o1 = try line_distance(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    const o2 = try line_distance(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    var k: usize = 0;
+    while (k < o1.len) : (k += 1) {
+        if (o1[k] != o2[k]) return error.OrderNotDeterministic;
+    }
+
+    print("GREEN image-line-distance: read a DIRECTED line named by TWO anchor taps (from A toward B) as a DISTANCE FROM THE LINE -- rank every object by how FAR its GROUP center sits from the line, exact integers, NO float and NO tolerance, the ranking key the MAGNITUDE of the cross product the length scales out of. This CLOSES the three-read decomposition of one line: line_partition reads the cross's SIGN (which side), line_order reads the DOT (how far along), this rung reads the cross's MAGNITUDE (how far off). The DECISIVE crux is the exact DUAL of line_order's: over line_order's own 20x14 six-singleton scene, the horizontal line A -> B gives distances A=0, B=0, P=168, Q=168, D=224, U=280, so TWO OBJECTS ARE EQUIDISTANT YET SPLIT TO OPPOSITE SIDES -- same_distance(P, Q) is TRUE (168 each) yet line_partition places P LEFT and Q RIGHT: equal magnitude, opposite sign, the label tie-break settling the order (P before Q) while same_distance names the distance itself as tied. The cruxes TRADE PARTNERS over one scene -- U and D, along-TIED in line_order (one column), DIFFER in distance (280 vs 224); P and Q, distance-TIED here, DIFFER in along-line order. DISTANCE IS BLIND TO THE DRAWN DIRECTION -- reversing to B -> A negates the cross so line_partition's sides swap and line_order reverses, yet the magnitude stands still and the distance order is identical. THE EQUIDISTANCE IS A PROPERTY OF THE LINE -- drawn vertically (U -> D), P and Q fall at different distances and the former anchors A and B stand off the line, on_line reading zero only for the line's own anchors. nearest_to_line and farthest_from_line name the closest and farthest; rank_by_distance a label's place; on_line is line_partition's .on class read as a distance of zero. Two anchors sharing a group refuse SameGroup (a line needs two points); a background tap refuses EmptyClick; a point off the map refuses PointOutOfBounds; a label past the object count refuses BadTarget having read nothing; the same line reads the same order twice. Compose not braid over image/line_partition.rye (the cross-product side arbiter the crux cross-checks), image/line_order.rye (the along-line order the dual trades partners with), image/click_collinear.rye (click_group_center_doubled), and image/cluster_facts.rye (the group frame whose doubled midpoint is the exact center)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: line_distance selftest\n", .{});
+    return 1;
+}
