@@ -1,0 +1,375 @@
+//! image/scene_graph.rye -- the whole scene's PAIRWISE STRUCTURE: join image/object_relation.rye over EVERY pair of objects into one
+//! graph a surface reads to arrange a page, nest objects, or find each object's nearest kin -- exact integers, NO float and NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- the scene-read family names a POINT's object (image/hit_test.rye), a RECTANGLE's objects
+//! (image/region_select.rye), a POLYGON's objects (image/lasso_select.rye), a selection's FACTS and EXTENT (image/selection_summary.rye,
+//! image/selection_bounds.rye), and a PAIR's spatial relation (image/object_relation.rye). Every one of those reads a single object, a
+//! set, or a lone pair. This rung reads the WHOLE: `build_scene_graph` calls `object_relation` for every ordered pair once and holds the
+//! relations in a matrix, so a surface asks the scene-level questions no single pair can answer -- who is nearest to whom, and which
+//! object nests inside which.
+//!
+//! The DECISIVE crux -- the box-is-a-prefilter lesson lifted from a PAIR to the scene's whole STRUCTURE, in two shapes at once:
+//!
+//!   THE NESTING FOREST OVER-CLAIMS ENCLOSURE. `box_parent(a)` names the object whose bounding box is the TIGHTEST box wholly
+//!   containing a's box -- the immediate parent in a box-nesting forest. Yet a box containing another's box never means the objects
+//!   enclose each other. A big bracket-L, a middle bracket-L tucked in its concavity, and a dot tucked in the middle-L's concavity
+//!   have three nested BOXES (big contains middle contains dot), so the forest reads dot's parent as the middle-L and the middle-L's
+//!   parent as the big-L -- a clean three-level nesting -- while `object_relation` proves each child sits 2 pixels APART from its box
+//!   parent, disjoint, touched by neither. The box hierarchy is a hierarchy of frames, never of substance.
+//!
+//!   THE NEAREST NEIGHBOR IS DIRECTED, NOT SYMMETRIC. `nearest_neighbor(a)` names the object whose nearest pixel is closest to a's --
+//!   a whole-scene read, since it must weigh every other object, which no pair relation holds. The relation it builds is DIRECTED: the
+//!   dot's nearest neighbor is the middle-L (2 apart), yet the middle-L's nearest neighbor is the big-L (also 2 apart, and the earlier
+//!   label on the tie), NOT the dot. An object can be someone's nearest without their being its own.
+//!
+//! Compose not braid. This rung OWNS only the pairwise matrix, the nearest-neighbor read, and the box-containment forest -- no label
+//! re-derived, no box re-measured, no distance recomputed. image/object_relation.rye owns each pair's overlap, direction, and exact
+//! nearest-pixel distance; image/scene_manifest.rye owns the per-object boxes the containment forest reads; image/label.rye owns the
+//! component map. A reading over a reading over a reading.
+//!
+//! Everything is bounded before a byte: the object count is capped at `scene_graph_max_objects`, so the relation matrix is at most
+//! that squared and the build loop runs a bounded number of pairs, each an `object_relation` call already bounded by the pixel ceiling.
+//! A background or past-the-count label refuses `BadObjectLabel`; a graph of fewer than two objects has no neighbor to name and refuses
+//! `NoNeighbor`; a scene past the object cap refuses `TooManyObjects`, having built nothing. No network, no key, no funds -- the scene
+//! graph a surface names the day it must lay out a page, discover a nesting, or point each object at its nearest kin, on our own geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/scene_graph.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const object_relation = @import("object_relation.rye");
+
+pub const scene_graph_version = "20260818.235843";
+
+/// The largest object count this rung reads at once -- a named ceiling so the pairwise matrix (count squared) and the build loop are
+/// bounded before a byte. A real scene lays out far fewer objects than this; the cap is a guard, not a target.
+pub const scene_graph_max_objects: u32 = 256;
+
+pub const SceneGraphError = error{
+    BadObjectLabel,
+    NoNeighbor,
+    TooManyObjects,
+};
+
+/// The whole scene as a GRAPH: the per-object manifest joined with a full matrix of pairwise relations. `relations[(a-1)*components +
+/// (b-1)]` is `object_relation`'s reading from object `a` to object `b` for `a != b`; the diagonal (`a == b`) holds a zeroed
+/// placeholder that the reads never touch. The manifest travels with the graph so the box-containment forest reads real boxes.
+pub const SceneGraph = struct {
+    components: u32,
+    manifest: scene_manifest.Manifest,
+    relations: []object_relation.Relation,
+};
+
+/// TRUE when box `ea` wholly contains box `eb` -- every corner of b's inclusive bounding box lies within a's. The containment
+/// PREFILTER the nesting forest reads; like every box predicate in this family, a true box containment never proves the objects
+/// enclose each other, only that one frame holds the other.
+pub fn box_contains(ea: scene_manifest.ObjectEntry, eb: scene_manifest.ObjectEntry) bool {
+    // invariant: both boxes are well-formed on both axes before their containment is judged.
+    assert(ea.max_x >= ea.min_x);
+    assert(eb.max_x >= eb.min_x);
+    assert(ea.max_y >= ea.min_y);
+    assert(eb.max_y >= eb.min_y);
+    return ea.min_x <= eb.min_x and eb.max_x <= ea.max_x and ea.min_y <= eb.min_y and eb.max_y <= ea.max_y;
+}
+
+/// The area of an object's inclusive bounding box in pixel cells -- the width times the height. The tightest box on a nesting tie is
+/// the one of least box area, so the forest reads this to choose an object's immediate parent.
+fn box_area(e: scene_manifest.ObjectEntry) u64 {
+    // invariant: a well-formed box spans at least one cell on each axis.
+    assert(e.max_x >= e.min_x);
+    assert(e.max_y >= e.min_y);
+    const w: u64 = @as(u64, e.max_x - e.min_x) + 1;
+    const h: u64 = @as(u64, e.max_y - e.min_y) + 1;
+    return w * h;
+}
+
+/// Build the whole scene GRAPH -- for every ordered pair of distinct objects call `object_relation` once and store its reading in the
+/// matrix, keeping the manifest alongside so the containment forest reads real boxes. The diagonal stays a zeroed placeholder. Refuses
+/// `TooManyObjects` when the scene exceeds the object cap, having built nothing.
+pub fn build_scene_graph(allocator: std.mem.Allocator, manifest: scene_manifest.Manifest, map: *const label.LabelMap) !SceneGraph {
+    // invariant: the manifest holds exactly one row per component.
+    assert(manifest.objects.len == @as(usize, manifest.components));
+    // invariant: the manifest and the map describe the same scene -- the same component count.
+    assert(manifest.components == map.count);
+
+    const n: u32 = manifest.components;
+    if (n > scene_graph_max_objects) return error.TooManyObjects;
+
+    const cells: usize = @as(usize, n) * @as(usize, n);
+    const relations = try allocator.alloc(object_relation.Relation, cells);
+    // seed every cell with a zeroed placeholder, so the untouched diagonal is well-defined and never garbage.
+    var z: usize = 0;
+    while (z < relations.len) : (z += 1) relations[z] = object_relation.Relation{};
+
+    var a: u32 = 1;
+    while (a <= n) : (a += 1) {
+        var b: u32 = 1;
+        while (b <= n) : (b += 1) {
+            if (a == b) continue;
+            const rel = try object_relation.object_relation(allocator, manifest, map, a, b);
+            relations[(@as(usize, a) - 1) * @as(usize, n) + (@as(usize, b) - 1)] = rel;
+        }
+    }
+
+    // invariant: the matrix holds exactly one cell per ordered pair, the object count squared.
+    assert(relations.len == @as(usize, n) * @as(usize, n));
+    return SceneGraph{ .components = n, .manifest = manifest, .relations = relations };
+}
+
+/// HOW MANY objects the graph holds -- the scene's component count.
+pub fn object_count(graph: SceneGraph) u32 {
+    // invariant: the matrix holds exactly one cell per ordered pair.
+    assert(graph.relations.len == @as(usize, graph.components) * @as(usize, graph.components));
+    return graph.components;
+}
+
+/// The stored RELATION from object `a` to object `b` -- read straight from the precomputed matrix, never recomputed. Refuses
+/// `BadObjectLabel` for a background or past-the-count label, and a relation of an object with itself is not stored, so it too refuses
+/// `BadObjectLabel` when `a == b`.
+pub fn relation_of(graph: SceneGraph, a: u32, b: u32) !object_relation.Relation {
+    // invariant: the matrix holds exactly one cell per ordered pair.
+    assert(graph.relations.len == @as(usize, graph.components) * @as(usize, graph.components));
+    if (a == 0 or a > graph.components) return error.BadObjectLabel;
+    if (b == 0 or b > graph.components) return error.BadObjectLabel;
+    if (a == b) return error.BadObjectLabel;
+    const rel = graph.relations[(@as(usize, a) - 1) * @as(usize, graph.components) + (@as(usize, b) - 1)];
+    // invariant: a stored relation names the very pair asked for.
+    assert(rel.a == a);
+    assert(rel.b == b);
+    return rel;
+}
+
+/// The LABEL of the object whose nearest pixel sits closest to object `a` -- a's nearest neighbor, weighed over every other object in
+/// the scene, ties broken by the earliest label. A whole-scene read no pair relation can answer, and a DIRECTED one: a's nearest
+/// neighbor need not have a as its own. Refuses `NoNeighbor` when the scene holds fewer than two objects, and `BadObjectLabel` for a
+/// background or past-the-count `a`.
+pub fn nearest_neighbor(graph: SceneGraph, a: u32) !u32 {
+    // invariant: the matrix holds exactly one cell per ordered pair.
+    assert(graph.relations.len == @as(usize, graph.components) * @as(usize, graph.components));
+    if (a == 0 or a > graph.components) return error.BadObjectLabel;
+    if (graph.components < 2) return error.NoNeighbor;
+
+    var found: bool = false;
+    var best_label: u32 = 0;
+    var best_gap: u32 = 0;
+    var b: u32 = 1;
+    while (b <= graph.components) : (b += 1) {
+        if (b == a) continue;
+        const rel = graph.relations[(@as(usize, a) - 1) * @as(usize, graph.components) + (@as(usize, b) - 1)];
+        // strictly less keeps the earliest label on a distance tie -- deterministic.
+        if (!found or rel.nearest_cheby < best_gap) {
+            found = true;
+            best_gap = rel.nearest_cheby;
+            best_label = b;
+        }
+    }
+    // invariant: a scene of two or more objects always yields a neighbor.
+    assert(found);
+    // invariant: distinct components are at least 2 apart, so the nearest gap honors the structural floor.
+    assert(best_gap >= 2);
+    return best_label;
+}
+
+/// The LABEL of object `a`'s immediate box PARENT in the nesting forest -- the object whose bounding box is the TIGHTEST (least box
+/// area) box that wholly contains a's box, ties broken by the earliest label. Returns 0 when no object's box contains a's, marking a
+/// as a forest ROOT. The forest is a hierarchy of BOXES: a box parent never means the parent object encloses the child, exactly the
+/// family's box-is-a-prefilter lesson lifted to the scene's structure. Refuses `BadObjectLabel` for a background or past-the-count `a`.
+pub fn box_parent(graph: SceneGraph, a: u32) !u32 {
+    // invariant: the manifest holds exactly one row per component.
+    assert(graph.manifest.objects.len == @as(usize, graph.components));
+    if (a == 0 or a > graph.components) return error.BadObjectLabel;
+
+    const child = try scene_manifest.object_of(graph.manifest, a);
+    var found: bool = false;
+    var best_label: u32 = 0;
+    var best_box: u64 = 0;
+    var b: u32 = 1;
+    while (b <= graph.components) : (b += 1) {
+        if (b == a) continue;
+        const cand = try scene_manifest.object_of(graph.manifest, b);
+        if (!box_contains(cand, child)) continue;
+        const cand_box = box_area(cand);
+        // strictly less keeps the earliest label on an equal-box tie -- deterministic; the tightest box is the immediate parent.
+        if (!found or cand_box < best_box) {
+            found = true;
+            best_box = cand_box;
+            best_label = b;
+        }
+    }
+    if (!found) return 0;
+    // invariant: a real parent is a dense label, and its box is no smaller than the child's it contains.
+    assert(best_label >= 1);
+    assert(best_box >= box_area(child));
+    return best_label;
+}
+
+/// TRUE when object `a` is a forest ROOT -- no other object's box contains a's box. A convenience over `box_parent`.
+pub fn is_root(graph: SceneGraph, a: u32) !bool {
+    // invariant: the manifest holds exactly one row per component.
+    assert(graph.manifest.objects.len == @as(usize, graph.components));
+    assert(a >= 1);
+    const parent = try box_parent(graph, a);
+    return parent == 0;
+}
+
+// --- selftest: the DECISIVE box-is-a-prefilter crux lifted to the whole scene's STRUCTURE -- three nested bracket-L / dot objects whose
+//     BOXES nest (big contains middle contains dot) build a clean three-level containment forest, yet object_relation proves each child
+//     sits 2 pixels APART from its box parent (the forest over-claims enclosure); nearest_neighbor is directed and asymmetric (the dot's
+//     nearest is the middle-L, whose nearest is the big-L, not the dot); refusals by name; determinism ------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a bracket-L: a vertical arm down column `x` from `y0` to `y1`, and a horizontal arm along row `y1` from `x` to `x1`. Its
+/// concavity (the upper-right quadrant) is background, ready to hold a smaller object without touching it.
+fn set_bracket_l(img: *qoi.Pixmap, x: u32, y0: u32, y1: u32, x1: u32) void {
+    // invariant: the arms run in the positive direction and stay inside the buffer.
+    assert(y1 >= y0);
+    assert(x1 >= x);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) set_dot(img, x, yy);
+    var xx: u32 = x;
+    while (xx <= x1) : (xx += 1) set_dot(img, xx, y1);
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- BUILD THE NESTED SCENE -- three bracket-L / dot objects whose BOXES nest, each child disjoint from its parent by 2 pixels:
+    //     big-L (label 1): column x=1 rows 1..9 + row y=9 cols 1..9, box (1,1)-(9,9);
+    //     middle-L (label 2): column x=3 rows 3..7 + row y=7 cols 3..7 tucked in big-L's concavity, box (3,3)-(7,7);
+    //     dot (label 3): a single pixel at (5,5) tucked in middle-L's concavity, box (5,5)-(5,5). Canvas 11x11 -----------------------
+    var scene_img = try make_canvas(garden, 11, 11, 0);
+    set_bracket_l(&scene_img, 1, 1, 9, 9); // big-L
+    set_bracket_l(&scene_img, 3, 3, 7, 7); // middle-L
+    set_dot(&scene_img, 5, 5); // the dot
+
+    const map = try label.label_components(garden, &scene_img);
+    if (map.count != 3) return error.SceneNotThreeComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+
+    // confirm the raster-order boxes are exactly the three nested frames
+    const big = try scene_manifest.object_of(manifest, 1);
+    const mid = try scene_manifest.object_of(manifest, 2);
+    const dot = try scene_manifest.object_of(manifest, 3);
+    if (big.min_x != 1 or big.min_y != 1 or big.max_x != 9 or big.max_y != 9) return error.BigBoxWrong;
+    if (mid.min_x != 3 or mid.min_y != 3 or mid.max_x != 7 or mid.max_y != 7) return error.MidBoxWrong;
+    if (dot.min_x != 5 or dot.min_y != 5 or dot.max_x != 5 or dot.max_y != 5) return error.DotBoxWrong;
+
+    const graph = try build_scene_graph(garden, manifest, &map);
+    if (object_count(graph) != 3) return error.GraphNotThreeObjects;
+
+    // --- THE NESTING FOREST -- the boxes nest big > middle > dot, so box_parent reads a clean three-level forest, each parent the
+    //     TIGHTEST containing box: dot's parent is the MIDDLE-L (not the big-L, which also contains it), the middle-L's parent is the
+    //     big-L, the big-L is a root ----------------------------------------------------------------------------------------------
+    if (try box_parent(graph, 3) != 2) return error.DotParentNotMiddle;
+    if (try box_parent(graph, 2) != 1) return error.MiddleParentNotBig;
+    if (try box_parent(graph, 1) != 0) return error.BigNotRoot;
+    if (!try is_root(graph, 1)) return error.BigNotReadRoot;
+    if (try is_root(graph, 3)) return error.DotFalselyRoot;
+    // the big-L's box ALSO contains the dot's box, yet box_parent chose the tighter middle-L -- the immediate parent, not any ancestor
+    if (!box_contains(big, dot)) return error.BigBoxDoesNotContainDot;
+    if (box_area(mid) >= box_area(big)) return error.MiddleBoxNotTighter;
+
+    // --- THE FOREST OVER-CLAIMS ENCLOSURE -- object_relation proves each child sits 2 pixels APART from its box parent, disjoint,
+    //     touched by neither: the box hierarchy is a hierarchy of frames, never of substance ----------------------------------------
+    const rel_mid_dot = try relation_of(graph, 2, 3);
+    if (!box_contains(mid, dot)) return error.MidBoxDoesNotContainDot;
+    if (rel_mid_dot.nearest_cheby != 2) return error.MidDotNotTwoApart;
+    const rel_big_mid = try relation_of(graph, 1, 2);
+    if (!box_contains(big, mid)) return error.BigBoxDoesNotContainMid;
+    if (rel_big_mid.nearest_cheby != 2) return error.BigMidNotTwoApart;
+
+    // --- THE NEAREST NEIGHBOR IS DIRECTED, NOT SYMMETRIC -- the dot's nearest is the middle-L (2 apart), yet the middle-L's nearest is
+    //     the big-L (2 apart and the earlier label on the tie), NOT the dot; the big-L's nearest is the middle-L ---------------------
+    if (try nearest_neighbor(graph, 3) != 2) return error.DotNearestNotMiddle;
+    if (try nearest_neighbor(graph, 2) != 1) return error.MiddleNearestNotBig;
+    if (try nearest_neighbor(graph, 1) != 2) return error.BigNearestNotMiddle;
+    // the crux stated plainly: 3 points at 2, yet 2 does NOT point back at 3 -- the nearest-neighbor relation is directed
+    const dot_nn = try nearest_neighbor(graph, 3);
+    const mid_nn = try nearest_neighbor(graph, dot_nn);
+    if (mid_nn == 3) return error.NearestNeighborFalselySymmetric;
+    // the dot is farther from the big-L than the middle-L is, which is why the middle-L's nearest breaks toward the big-L
+    const rel_big_dot = try relation_of(graph, 1, 3);
+    if (rel_big_dot.nearest_cheby <= rel_big_mid.nearest_cheby) return error.DotNotFartherFromBigThanMid;
+
+    // --- REFUSALS -- a self relation is not stored (BadObjectLabel); a past-the-count or background label refuses BadObjectLabel; a
+    //     single-object graph has no neighbor to name (NoNeighbor) ------------------------------------------------------------------
+    if (relation_of(graph, 2, 2)) |_| return error.SelfRelationNotRefused else |err| {
+        if (err != error.BadObjectLabel) return error.WrongSelfError;
+    }
+    if (relation_of(graph, 1, 4)) |_| return error.PastRelationNotRefused else |err| {
+        if (err != error.BadObjectLabel) return error.WrongPastError;
+    }
+    if (nearest_neighbor(graph, 0)) |_| return error.ZeroNeighborNotRefused else |err| {
+        if (err != error.BadObjectLabel) return error.WrongZeroError;
+    }
+    if (box_parent(graph, 5)) |_| return error.BadParentNotRefused else |err| {
+        if (err != error.BadObjectLabel) return error.WrongBadParentError;
+    }
+
+    // a single-object scene -- one solid block, so the graph holds one object and nearest_neighbor refuses NoNeighbor
+    var lone_img = try make_canvas(garden, 6, 6, 0);
+    set_bracket_l(&lone_img, 1, 1, 3, 3); // one object
+    const lone_map = try label.label_components(garden, &lone_img);
+    if (lone_map.count != 1) return error.LoneNotOneComponent;
+    const lone_manifest = try scene_manifest.build_manifest(garden, &lone_map);
+    const lone_graph = try build_scene_graph(garden, lone_manifest, &lone_map);
+    if (object_count(lone_graph) != 1) return error.LoneGraphNotOne;
+    if (nearest_neighbor(lone_graph, 1)) |_| return error.LoneNeighborNotRefused else |err| {
+        if (err != error.NoNeighbor) return error.WrongLoneError;
+    }
+    // a lone object is a forest root -- nothing contains it
+    if (try box_parent(lone_graph, 1) != 0) return error.LoneNotRoot;
+
+    // --- DETERMINISM -- the same scene builds the same graph twice ----------------------------------------------------------------
+    const g1 = try build_scene_graph(garden, manifest, &map);
+    const g2 = try build_scene_graph(garden, manifest, &map);
+    if (try nearest_neighbor(g1, 3) != try nearest_neighbor(g2, 3)) return error.GraphNotDeterministic;
+    if (try box_parent(g1, 3) != try box_parent(g2, 3)) return error.GraphNotDeterministic;
+
+    print("GREEN image-scene-graph: the whole scene's PAIRWISE STRUCTURE -- join object_relation over EVERY pair into one matrix, exact integers, NO float and NO tolerance -- the DECISIVE box-is-a-prefilter crux lifted from a PAIR to the scene's whole STRUCTURE, in two shapes. THE NESTING FOREST OVER-CLAIMS ENCLOSURE -- three bracket-L / dot objects whose BOXES nest (big-L box (1,1)-(9,9) contains middle-L box (3,3)-(7,7) contains dot box (5,5)-(5,5)) build a clean three-level containment forest, box_parent reading dot's parent as the TIGHTEST containing box the middle-L (not the big-L which also contains it) and the middle-L's parent as the big-L, a root -- yet object_relation proves each child sits Chebyshev distance 2 APART from its box parent, disjoint, touched by neither: the box hierarchy is a hierarchy of frames, never of substance. THE NEAREST NEIGHBOR IS DIRECTED, NOT SYMMETRIC -- nearest_neighbor weighs every other object (a whole-scene read no pair holds), reading the dot's nearest as the middle-L (2 apart), yet the middle-L's nearest is the big-L (2 apart and the earlier label on the tie), NOT the dot: an object can be someone's nearest without their being its own. The nearest gap honors the structural floor of 2 (distinct 8-connected components are never 8-adjacent); a self relation and a past-the-count label refuse BadObjectLabel, a single-object graph refuses NoNeighbor having no neighbor to name, a scene past the object cap refuses TooManyObjects; the same scene builds the same graph twice. Compose not braid over image/object_relation.rye (each pair's overlap, direction, and exact distance), image/scene_manifest.rye (the per-object boxes), and image/label.rye (the component map)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: scene_graph selftest\n", .{});
+    return 1;
+}

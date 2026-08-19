@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260818.235843
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title scene_graph -- the whole scene's pairwise structure; box-nesting forest over-claims enclosure, nearest neighbor is directed, GREEN
+prompt baton prin recur -- pick up the running thread Lindy-first crux-first, Standfast on reds first, take the next agent-doable open-media lap, send it as its own signed round
+think Read KYRI + RADIANT_STYLE to be Kyri in Radiant from the first token, then REMEMBER, the itineraries, REDS, and the top of session-logs/README to find the running thread.
+think Standfast first -- read crux/REDS.md whole: living rows 80, 83, 84, 85 all CLOSED or fixed, #86 and #87 Released, only #75 rests as custody-gated errata (a deep debride, Keaton's hand). No open agent-closable red, so the line is clear to take new work.
+think The live green edge is Season G's scene-read family. Last lap built image/object_relation.rye (a PAIR read). The card and newest log both name the crux-first next rung: a directional/containment SCENE GRAPH joining object_relation over every pair -- the most Lindy-durable of the named candidates, a relational primitive read for years.
+think Read the three parents to compose correctly: object_relation.rye (Relation struct, boxes_overlap, nearest_chebyshev, refusals SameObject/BadObjectLabel), scene_manifest.rye (ObjectEntry boxes, Manifest, object_of), and the object_relation witness template (native contains, REDS #85).
+think Designed one scene to carry BOTH decisive facts at once -- three nested bracket-L / dot objects whose BOXES nest (big-L (1,1)-(9,9) contains middle-L (3,3)-(7,7) contains dot (5,5)), each child disjoint from its box parent by 2 pixels. Hand-verified distinctness and boxes before coding: big-L pixels at x=1 and y=9, middle-L at x=3 and y=7 (nearest 2 apart), dot at (5,5) 2 from middle-L, 4 from big-L.
+think Two cruxes fall out of that one scene: box_parent builds a clean three-level forest choosing each child's TIGHTEST containing box (dot->middle-L not big-L, proving immediate-parent selection over any ancestor), yet object_relation proves each child sits 2 apart from its box parent -- the forest OVER-CLAIMS enclosure, frames not substance. And nearest_neighbor is DIRECTED: dot->middle-L (2), middle-L->big-L (2, earlier label on the tie), NOT dot -- an object can be someone's nearest without their being its own; the middle-L/big-L tie also tests deterministic tie-break by earliest label.
+think Bounded before a byte: object count capped at scene_graph_max_objects=256, so the relation matrix (count squared) and build loop are bounded; each cell an object_relation call already bounded by the pixel ceiling. Refuses TooManyObjects past the cap, BadObjectLabel for background/past-count/self, NoNeighbor for a single-object graph -- all having built or read nothing.
+obs GREEN on the FIRST full metal run, no reds -- the hand-verified fixtures and the bounded design held; no braces in the print format string and no compound asserts, avoiding the traps earlier scene-read laps hit.
+obs TAME style bans clean, width-check exit 0, both new files plain 7-bit ASCII, living_card_ascii_witness stays GREEN after the REMEMBER edits (mojibake control still caught).
+obs Kept single-stranded: REMEMBER live edge names scene_graph as the newest WHOLE-scene read above the pair, Git nib repointed with object_relation folded to a prior-nib comment, image/README.md names the scene graph after object_relation (docs-sync). REMEMBER module count 177 -> 178.
+loom witness=scene_graph_witness green=yes first_metal_run=yes reds=0 objects_cap=256 matrix_cells=9
+file image/scene_graph.rye the whole-scene pairwise structure -- build_scene_graph, relation_of, nearest_neighbor, box_contains, box_parent, is_root over a bounded relation matrix
+file tools/scene_graph_witness.rish proves it on metal -- native contains checks (REDS #85), the two cruxes, refusals by name, determinism
+file image/README.md names the scene graph after the object relation, docs synced with the code
+file crux/REMEMBER.md live edge + Git nib repointed single-stranded to scene_graph, object_relation folded to a prior-nib comment, count 178
+recommend keep-going the next crux-first open-media rung composes over this floor: an alignment/reading-order read folding the scene graph's directional flags into a total page order, an object-count-in-region summary, or a descriptor join over a selection; the Microkernel study rung and a real-photo top-hat still wait on a fetch/license gate. No network, no key, no funds.
