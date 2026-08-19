@@ -1,0 +1,351 @@
+//! image/line_slice.rye -- read ONE directed line, named by two anchor taps (from anchor A toward B), as a CUT across the scene: the ordered
+//! sequence of objects the FINITE stroke truly pierces, front-to-back along the drawn direction. image/line_pierce.rye answers whether the stroke
+//! crosses each object's box, yet returns its selection as an unordered ascending-label set; image/line_order.rye ranks EVERY object along the
+//! stroke, yet includes the objects the stroke misses. `line_slice` is exactly their intersection -- the pierced set, in stroke order -- the read a
+//! surface wants the day a keeper drags a cutting stroke across a scene and means "what did I slice, and in what order did my stroke enter them."
+//! NO float, NO tolerance, NO square root.
+//!
+//! Season G (Open Media Primitives) -- the crux this rung faces is that the slice is a FILTER of the order, not a new geometry: it owns no
+//! projection and no crossing test of its own. It takes image/line_pierce.rye's `pierced_labels` (the objects the finite stroke crosses, by the
+//! separating-axis test over each box) and re-sorts them by image/line_order.rye's `project_label` (the along-line dot product of each group
+//! center), with the SAME `(projection, label)` tie-break image/line_order.rye uses. Because the key matches, `line_slice` is provably the
+//! SUBSEQUENCE of `line_order` restricted to the pierced set -- a pierced object's place in the slice equals its relative place among pierced
+//! objects in the full order. Every branch an exact integer compare; the only allocation is the pierced set itself, bounded by the component count.
+//!
+//! Three facts on metal say the crux:
+//!
+//!   THE SLICE IS THE ORDER WITH THE MISSES REMOVED. Over a scene whose full along-line order is [A, P, U, Q, B, Z], the finite stroke A -> B
+//!   slices exactly [A, P, Q, B] -- U and Z fall out, and walking `line_order` while keeping only the pierced labels reproduces the slice label
+//!   for label. The slice is not a re-derivation; it is the order seen through the stroke's own reach.
+//!
+//!   TWO OBJECTS LEAVE THE ORDER FOR TWO DIFFERENT REASONS. U sits OFF the stroke's line entirely (its box never straddles the line, a
+//!   perpendicular-distance fact), while Z sits ON the line's order yet BEYOND the finite stroke's far end (its box straddles the infinite line,
+//!   yet the segment's bounding box stops short -- image/line_pierce.rye's `pierce_only_infinite`). One is dropped for being off the line, the
+//!   other for being past the end; both are present in `line_order` and absent from `line_slice`.
+//!
+//!   THE CUT REVERSES WITH THE STROKE, THE SELECTION DOES NOT. Reading the same stroke B -> A reverses the slice to [B, Q, P, A] exactly, since a
+//!   box crossing is blind to the drawn direction while the along-line order flips -- the sliced SET is invariant, only its front-to-back reading
+//!   turns around. `first_sliced` and `last_sliced` name the object the cut enters first and the one it leaves last, and they trade places under
+//!   reversal.
+//!
+//! Compose not braid. This rung OWNS only the ordered filter -- taking the pierced labels and sorting them by the along-line key. image/line_pierce.rye
+//! owns `pierced_labels` and the finite-stroke crossing test; image/line_order.rye owns `project_label` and the along-line projection. No crossing
+//! re-tested, no projection re-invented; `line_slice` reads only over its two green-witnessed neighbors.
+//!
+//! Everything is bounded before a byte: the pierced set is at most the component count, itself under image/label.rye's pixel ceiling, and the sort
+//! is an insertion sort over that same small set. Each stroke needs two distinct anchor points, so two anchor taps sharing a group refuse
+//! `SameGroup`; a tap on background refuses `EmptyClick`; a point off the map refuses `PointOutOfBounds`; a query label past the object count
+//! refuses `BadTarget`; asking the rank of an object the stroke MISSED refuses `NotPierced`; the entry or exit of an EMPTY cut refuses `SliceEmpty`
+//! -- each having read nothing further. No network, no key, no funds -- the "what did my cutting stroke slice, and in what order" a surface answers
+//! the day a keeper drags a line across a scene.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/line_slice.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const hit_test = @import("hit_test.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const line_pierce = @import("line_pierce.rye");
+const line_order = @import("line_order.rye");
+
+pub const line_slice_version = "20260819.113500";
+
+pub const LineSliceError = error{
+    NotPierced,
+    SliceEmpty,
+};
+
+/// TRUE when object `a` sorts strictly before object `b` in the along-line total order -- ascending projection, ties broken by ascending label.
+/// The SAME key image/line_order.rye sorts by, so the sliced order is exactly image/line_order.rye's order restricted to the pierced set.
+fn order_less(proj_a: i64, lbl_a: u32, proj_b: i64, lbl_b: u32) bool {
+    if (proj_a < proj_b) return true;
+    if (proj_a > proj_b) return false;
+    return lbl_a < lbl_b;
+}
+
+/// Guard that a query label names a real object -- refuses `BadTarget` for background or a label past the object count, having read nothing.
+fn check_target(manifest: scene_manifest.Manifest, lbl: u32) !void {
+    if (lbl < 1 or lbl > manifest.components) return error.BadTarget;
+}
+
+/// The objects the FINITE stroke A -> B pierces, ordered FRONT-TO-BACK along the drawn direction -- `line_pierce.pierced_labels` re-sorted by
+/// `line_order.project_label`, ties broken by ascending label. The caller owns the returned slice; its length equals `slice_count`. Refuses
+/// `SameGroup`, `EmptyClick`, `PointOutOfBounds` through the line resolution.
+pub fn line_slice(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) ![]u32 {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+    // invariant: the slice walk is bounded by the component count, itself under image/label.rye's pixel ceiling.
+    assert(manifest.components <= label.label_max_pixels);
+
+    const sliced = try line_pierce.pierced_labels(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const n: usize = sliced.len;
+    // invariant: the pierced set never exceeds the objects walked.
+    assert(n <= @as(usize, manifest.components));
+    const proj = try garden.alloc(i64, n);
+    var i: usize = 0;
+    while (i < n) : (i += 1) proj[i] = try line_order.project_label(garden, clustering, graph, manifest, map, ax, ay, bx, by, sliced[i]);
+
+    // insertion sort the pierced labels by (projection, label) ascending -- bounded by the pierced-set size, stable and exact
+    var k: usize = 1;
+    while (k < n) : (k += 1) {
+        const key_lbl = sliced[k];
+        const key_proj = proj[k];
+        var j: usize = k;
+        while (j >= 1 and order_less(key_proj, key_lbl, proj[j - 1], sliced[j - 1])) : (j -= 1) {
+            sliced[j] = sliced[j - 1];
+            proj[j] = proj[j - 1];
+        }
+        sliced[j] = key_lbl;
+        proj[j] = key_proj;
+    }
+
+    // invariant: the result is a strict total order by (projection, label) -- no adjacent pair out of order, so no label repeats.
+    var v: usize = 1;
+    while (v < n) : (v += 1) assert(order_less(proj[v - 1], sliced[v - 1], proj[v], sliced[v]));
+    return sliced;
+}
+
+/// How many objects the FINITE stroke slices -- the length of `line_slice`, equal to `line_pierce.pierce_count`. Refuses `SameGroup`,
+/// `EmptyClick`, `PointOutOfBounds`.
+pub fn slice_count(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !u32 {
+    const n = try line_pierce.pierce_count(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    // invariant: the sliced count never exceeds the objects in the scene.
+    assert(n <= manifest.components);
+    return n;
+}
+
+/// TRUE when the FINITE stroke slices object `lbl` -- exactly `line_pierce.pierces`, the finite-stroke crossing. Refuses `BadTarget`,
+/// `SameGroup`, `EmptyClick`, `PointOutOfBounds`.
+pub fn is_sliced(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, lbl: u32) !bool {
+    try check_target(manifest, lbl);
+    return line_pierce.pierces(garden, clustering, graph, manifest, map, ax, ay, bx, by, lbl);
+}
+
+/// The 0-based place of object `lbl` in the slice -- 0 is the object the cut enters first (nearest the A end). Refuses `NotPierced` when the stroke
+/// misses `lbl`, `BadTarget` for a label past the object count, and `SameGroup` / `EmptyClick` / `PointOutOfBounds` through the resolution.
+pub fn slice_rank(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, lbl: u32) !u32 {
+    try check_target(manifest, lbl);
+    const sliced = try line_slice(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    var r: u32 = 0;
+    while (r < sliced.len) : (r += 1) {
+        if (sliced[r] == lbl) {
+            // invariant: the found rank sits inside the slice.
+            assert(r < sliced.len);
+            return r;
+        }
+    }
+    return error.NotPierced;
+}
+
+/// The object the cut ENTERS first -- the front of the slice along the drawn direction. Refuses `SliceEmpty` when the stroke pierces nothing, and
+/// `SameGroup` / `EmptyClick` / `PointOutOfBounds` through the resolution.
+pub fn first_sliced(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !u32 {
+    const sliced = try line_slice(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    if (sliced.len == 0) return error.SliceEmpty;
+    // invariant: a non-empty slice has a real front object.
+    assert(sliced[0] >= 1);
+    return sliced[0];
+}
+
+/// The object the cut LEAVES last -- the back of the slice along the drawn direction. Refuses `SliceEmpty` when the stroke pierces nothing, and
+/// `SameGroup` / `EmptyClick` / `PointOutOfBounds` through the resolution.
+pub fn last_sliced(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !u32 {
+    const sliced = try line_slice(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    if (sliced.len == 0) return error.SliceEmpty;
+    // invariant: a non-empty slice has a real back object.
+    assert(sliced[sliced.len - 1] >= 1);
+    return sliced[sliced.len - 1];
+}
+
+/// TRUE when object `a` is entered before object `b` along the cut -- both must be sliced, else refuses `NotPierced`. Refuses `BadTarget` for a
+/// label past the object count, and `SameGroup` / `EmptyClick` / `PointOutOfBounds` through the resolution.
+pub fn slice_reads_before(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, a: u32, b: u32) !bool {
+    try check_target(manifest, a);
+    try check_target(manifest, b);
+    const ra = try slice_rank(garden, clustering, graph, manifest, map, ax, ay, bx, by, a);
+    const rb = try slice_rank(garden, clustering, graph, manifest, map, ax, ay, bx, by, b);
+    // invariant: distinct labels never share a rank in a strict total order.
+    assert(a == b or ra != rb);
+    return ra < rb;
+}
+
+// --- selftest: the ORDERED-FILTER crux (the slice is the order with the misses removed; two objects leave the order for two different reasons --
+//     off the line versus past the end; the cut reverses with the stroke while the selection does not); slice is a subsequence of line_order;
+//     first/last name entry and exit; refusals by name; determinism -------------------------------------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid 2x2 foreground block with its top-left corner at (x, y). Its inclusive box is (x,y)-(x+1,y+1), so its doubled center is
+/// (2x+1, 2y+1) -- exact odd integers the selftest predicts by hand.
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + 2 <= img.width);
+    assert(y + 2 <= img.height);
+    var yy: u32 = y;
+    while (yy < y + 2) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + 2) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- SCENE on a 30x14 canvas: six 2x2 singletons. Four sit on ROW 10 (doubled-y 21) so a HORIZONTAL stroke A -> B slices them; one (U) sits
+    //     high OFF the stroke's line, and one (Z) sits on row 10 BEYOND the B end. The along-line order is [A, P, U, Q, B, Z]; the finite slice is
+    //     [A, P, Q, B] -- U dropped for being off the line, Z dropped for being past the end:
+    //       A: block (2,10)  center (5,21)     P: block (8,10)  center (17,21)   Q: block (14,10) center (29,21)
+    //       B: block (20,10) center (41,21)    U: block (11,3)  center (23,7)    Z: block (26,10) center (53,21)
+    //     Every stroke is named by TAPPING inside its two anchor blocks; every query object is named by tapping inside it -------------------------
+    var scene = try make_canvas(garden, 30, 14, 0);
+    set_block(&scene, 11, 3); //  U: center (23,7)   -- off the stroke's line
+    set_block(&scene, 2, 10); //  A: center (5,21)
+    set_block(&scene, 8, 10); //  P: center (17,21)
+    set_block(&scene, 14, 10); // Q: center (29,21)
+    set_block(&scene, 20, 10); // B: center (41,21)
+    set_block(&scene, 26, 10); // Z: center (53,21)  -- beyond the B end
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 6) return error.SceneNotSixComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    if (clustering.clusters != 6) return error.NotSixClusters;
+
+    // derive each object's dense label from a tap inside it -- no fragile raster assumption
+    const la = try hit_test.object_label_at(&map, 2, 10); //  A
+    const lp = try hit_test.object_label_at(&map, 8, 10); //  P
+    const lq = try hit_test.object_label_at(&map, 14, 10); // Q
+    const lb = try hit_test.object_label_at(&map, 20, 10); // B
+    const lu = try hit_test.object_label_at(&map, 11, 3); //  U
+    const lz = try hit_test.object_label_at(&map, 26, 10); // Z
+    if (la == 0 or lp == 0 or lq == 0 or lb == 0 or lu == 0 or lz == 0) return error.TapMissedObject;
+
+    // the anchor taps (each lands inside its own block)
+    const axp: u32 = 2; // A tap
+    const ayp: u32 = 10;
+    const bxp: u32 = 20; // B tap
+    const byp: u32 = 10;
+
+    // --- THE SLICE IS THE ORDER WITH THE MISSES REMOVED -- line_slice(A->B) == [A, P, Q, B] ----------------------------------------------------
+    const sliced = try line_slice(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp);
+    if (sliced.len != 4) return error.SliceNotFour;
+    if (sliced[0] != la or sliced[1] != lp or sliced[2] != lq or sliced[3] != lb) return error.SliceOrderWrong;
+    if (try slice_count(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp) != 4) return error.SliceCountWrong;
+    if (try first_sliced(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp) != la) return error.FirstWrong;
+    if (try last_sliced(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp) != lb) return error.LastWrong;
+    if (try slice_rank(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, lp) != 1) return error.RankPWrong;
+    if (try slice_rank(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, la) != 0) return error.RankAWrong;
+    if (try slice_rank(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, lb) != 3) return error.RankBWrong;
+    if (try slice_reads_before(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, lp, lq) != true) return error.PBeforeQWrong;
+    if (try slice_reads_before(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, lq, lp) != false) return error.QBeforePWrong;
+
+    // the slice is EXACTLY line_order restricted to the pierced set -- walk line_order, keep the pierced labels, match the slice label for label
+    const order = try line_order.line_order(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp);
+    if (order.len != 6) return error.OrderNotSix;
+    var w: usize = 0;
+    for (order) |lbl| {
+        if (try is_sliced(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, lbl)) {
+            if (w >= sliced.len or sliced[w] != lbl) return error.SliceNotSubsequence;
+            w += 1;
+        }
+    }
+    if (w != sliced.len) return error.SubsequenceLengthWrong;
+
+    // --- TWO OBJECTS LEAVE THE ORDER FOR TWO DIFFERENT REASONS -- U off the line, Z past the end, both in line_order, neither in the slice ------
+    if (try is_sliced(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, lu) != false) return error.UWronglySliced;
+    if (try is_sliced(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, lz) != false) return error.ZWronglySliced;
+    // U is off the infinite line entirely; Z is on the infinite line yet past the finite end
+    if (try line_pierce.line_pierces(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, lu) != false) return error.UWronglyOnLine;
+    if (try line_pierce.line_pierces(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, lz) != true) return error.ZNotOnLine;
+    if (try line_pierce.pierce_only_infinite(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, lz) != true) return error.ZNotOnlyInfinite;
+    // asking the slice rank of a missed object refuses NotPierced
+    if (slice_rank(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, lu)) |_| return error.MissedRankNotRefused else |err| {
+        if (err != error.NotPierced) return error.WrongNotPiercedError;
+    }
+    if (slice_reads_before(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, lp, lu)) |_| return error.MissedBeforeNotRefused else |err| {
+        if (err != error.NotPierced) return error.WrongBeforeNotPiercedError;
+    }
+
+    // --- THE CUT REVERSES WITH THE STROKE, THE SELECTION DOES NOT -- B -> A slices [B, Q, P, A]; the SET is invariant, only the reading turns ---
+    const rev = try line_slice(garden, clustering, graph, manifest, &map, bxp, byp, axp, ayp);
+    if (rev.len != 4) return error.ReversedNotFour;
+    if (rev[0] != lb or rev[1] != lq or rev[2] != lp or rev[3] != la) return error.ReversedOrderWrong;
+    if (try first_sliced(garden, clustering, graph, manifest, &map, bxp, byp, axp, ayp) != lb) return error.ReversedFirstWrong;
+    if (try last_sliced(garden, clustering, graph, manifest, &map, bxp, byp, axp, ayp) != la) return error.ReversedLastWrong;
+    // the sliced set is the same under reversal -- every member still sliced, U and Z still missed
+    if (try is_sliced(garden, clustering, graph, manifest, &map, bxp, byp, axp, ayp, lq) != true) return error.ReversedSetChanged;
+    if (try is_sliced(garden, clustering, graph, manifest, &map, bxp, byp, axp, ayp, lu) != false) return error.ReversedMissChanged;
+
+    // --- REFUSALS -- two anchors sharing a group refuse SameGroup; a background tap refuses EmptyClick; a point off the map refuses
+    //     PointOutOfBounds; a label past the object count refuses BadTarget; each having read nothing --------------------------------------------
+    if (try hit_test.object_label_at(&map, 2, 10) != try hit_test.object_label_at(&map, 3, 10)) return error.APixelsNotSameObject;
+    if (line_slice(garden, clustering, graph, manifest, &map, 2, 10, 3, 10)) |_| return error.SameGroupNotRefused else |err| {
+        if (err != error.SameGroup) return error.WrongSameGroupError;
+    }
+    if (try hit_test.object_label_at(&map, 0, 0) != 0) return error.BackgroundNotEmpty;
+    if (line_slice(garden, clustering, graph, manifest, &map, 0, 0, bxp, byp)) |_| return error.MissNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissError;
+    }
+    if (line_slice(garden, clustering, graph, manifest, &map, axp, ayp, 30, 0)) |_| return error.OffMapNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapError;
+    }
+    if (slice_rank(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, manifest.components + 1)) |_| return error.BadTargetNotRefused else |err| {
+        if (err != error.BadTarget) return error.WrongBadTargetError;
+    }
+
+    // --- DETERMINISM -- the same stroke slices the same objects in the same order twice -----------------------------------------------------
+    const s1 = try line_slice(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp);
+    const s2 = try line_slice(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp);
+    if (s1.len != s2.len) return error.SliceNotDeterministic;
+    var d: usize = 0;
+    while (d < s1.len) : (d += 1) {
+        if (s1[d] != s2[d]) return error.SliceNotDeterministic;
+    }
+
+    print("GREEN image-line-slice: read ONE directed line, named by two anchor taps (from A toward B), as a CUT across the scene -- the ordered sequence of objects the FINITE stroke truly pierces, front-to-back along the drawn direction. line_pierce answers whether the stroke crosses each object's box yet returns an unordered ascending-label set; line_order ranks EVERY object along the stroke yet includes the ones the stroke misses; line_slice is exactly their intersection -- the pierced set in stroke order. The crux it faces is that the slice is a FILTER of the order, not a new geometry: it takes line_pierce's pierced_labels and re-sorts them by line_order's project_label with the SAME (projection, label) tie-break, so line_slice is provably the SUBSEQUENCE of line_order restricted to the pierced set. Over a 30x14 scene whose full along-line order is [A, P, U, Q, B, Z], the finite stroke A -> B slices exactly [A, P, Q, B] -- and walking line_order while keeping only the pierced labels reproduces the slice label for label. TWO OBJECTS LEAVE THE ORDER FOR TWO DIFFERENT REASONS -- U sits OFF the stroke's line entirely (its box never straddles the line, line_pierces FALSE) while Z sits ON the line's order yet BEYOND the finite stroke's far end (line_pierces TRUE, pierce_only_infinite TRUE); one dropped for being off the line, the other for being past the end, both present in line_order and absent from line_slice, and asking the slice rank of a missed object refuses NotPierced. THE CUT REVERSES WITH THE STROKE, THE SELECTION DOES NOT -- reading the same stroke B -> A reverses the slice to [B, Q, P, A] exactly, since a box crossing is blind to the drawn direction while the along-line order flips, so first_sliced and last_sliced trade places while the sliced SET stays invariant. Two anchors sharing a group refuse SameGroup, a background tap refuses EmptyClick, a point off the map refuses PointOutOfBounds, a label past the object count refuses BadTarget, the entry or exit of an empty cut refuses SliceEmpty, each having read nothing further; the same stroke slices the same objects in the same order twice. Compose not braid over image/line_pierce.rye (pierced_labels and the finite crossing) and image/line_order.rye (project_label and the along-line projection) -- no crossing re-tested, no projection re-invented\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: line_slice selftest\n", .{});
+    return 1;
+}
