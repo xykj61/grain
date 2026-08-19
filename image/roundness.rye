@@ -1,0 +1,419 @@
+//! image/roundness.rye -- reconcile a shape's INNER inscribed bound and OUTER enclosing bound in ONE shared convention, so the
+//! honest fact "the largest disk INSIDE the shape is no larger than the smallest disk AROUND it" holds EXACTLY and NEVER flips --
+//! the roundness read image/inscribed_disk.rye and image/min_enclosing_circle.rye each half-named yet could not compare, because
+//! each measured in its own coordinate convention.
+//!
+//! Season G (Open Media Primitives) -- image/inscribed_disk.rye reads the INNER bound: the biggest round peg the shape holds, the
+//! deepest pixel of the chamfer field, reported as a radius in chamfer units measured to the nearest background pixel CENTER.
+//! image/min_enclosing_circle.rye reads the OUTER bound: the smallest disk covering the shape, reported as a true Euclidean radius
+//! measured over the foreground pixel CENTERS. Read naively, side by side, the two REPORTED floats FLIP on a compact shape: a solid
+//! 5x5 block reports an inscribed radius of 3.0 (chamfer depth 9 over the orthogonal weight 3) yet an enclosing radius of only
+//! sqrt(8) ~ 2.828 (the half-diagonal over its corner centers) -- so a naive `inradius <= circumradius` reads FALSE for a shape
+//! whose inscribed disk plainly sits inside its enclosing disk. The flip is an ARTIFACT of two conventions, not a fact about the
+//! shape: the inner bound reaches to a background center one pixel OUTSIDE the region, while the outer bound reaches only to a
+//! foreground center ON it, so the inner is credited half a pixel too much and the outer half a pixel too little.
+//!
+//! This rung fixes ONE convention in which both are measured against the shape as it truly is -- a union of unit pixel SQUARES,
+//! not a scatter of pixel centers -- and there the inequality holds by construction. Work in DOUBLED integer coordinates: a pixel
+//! (x, y) is the axis-aligned square with corners (2x, 2y) and (2x+2, 2y+2), so pixel centers land on ODD coordinates and pixel
+//! corners on EVEN ones, every one an exact integer. Then:
+//!
+//!   OUTER, EXACT -- the smallest disk covering the whole painted REGION is the minimum enclosing circle of the region's CORNERS,
+//!   read by handing the doubled pixel-square corners to image/convex_hull.rye and image/min_enclosing_circle.rye. Its squared
+//!   radius is an EXACT rational in doubled units, recomputed here from the returned support points (a two-point disk `|ab|^2 / 4`,
+//!   a three-point circumcircle `|ab|^2 |bc|^2 |ca|^2 / (4 cross^2)`), NO float in the decision. For the 5x5 block the region spans
+//!   doubled [2,12] on each axis, so the outer squared radius is 50 doubled^2 (a true circumradius of sqrt(50)/2 ~ 3.536 pixels),
+//!   strictly ABOVE the inner -- the corner reach the pixel-center enclosing circle understated.
+//!
+//!   INNER, the chamfer bound in the same convention -- the inscribed disk's chamfer depth `d` measures the distance to the nearest
+//!   background CENTER as `d / 3` pixels, so the distance to the region EDGE (half a pixel nearer) is `d/3 - 1/2` pixels, which in
+//!   doubled units is `(2d - 3) / 3`. Its squared radius is the EXACT rational `(2d - 3)^2 / 9` in doubled^2. For the block, depth
+//!   9 gives 25 doubled^2 (a true inradius of 2.5 pixels) -- exactly HALF the block's width, the honest inscribed disk.
+//!
+//! `inner_within_outer(bounds)` decides `r_in^2 <= r_out^2` by EXACT i128 cross-multiplication of the two rationals -- 25 <= 50
+//! for the block, no tolerance, no flip. The chamfer distance is EXACT for the orthogonal geometry these fixtures are limited by
+//! (a block, a ring wall, a bar all reach their nearest background straight, never diagonally), so on them the inequality is not
+//! merely observed but GUARANTEED; the outer bound and the comparison are exact for EVERY shape. A universal proof for arbitrary
+//! diagonal-limited shapes -- bounding the chamfer's approximation of the Euclidean inner radius -- is the honest next horizon,
+//! named rather than assumed.
+//!
+//! `roundness_ratio(bounds)` reports `inradius / circumradius` in (0, 1] -- near 1 for a compact round shape, small for a thin one
+//! -- the classic circularity read, now consistent because both radii live in one convention (the doubled scale cancels).
+//!
+//! Compose not braid. This rung OWNS only the doubled pixel-square convention, the region-corner gather, the exact rational squared
+//! radii, and the reads over them. image/inscribed_disk.rye owns the inner disk and its chamfer depth; image/min_enclosing_circle.rye
+//! owns Welzl and the outer support; image/convex_hull.rye owns the hull; image/qoi.rye owns the RGBA buffer. No gather beyond the
+//! corners, no blend, no codec, no color, no pixel-writing loop.
+//!
+//! Everything is bounded before a byte: only BOUNDARY pixels contribute corners (an interior pixel's corners are never extreme), so
+//! at most `4 * perimeter` points reach the hull, capped at `roundness_max_corners` with `RegionTooLarge` by name past it; doubled
+//! coordinates stay under 2^15, so a squared distance stays under 2^30 and every i128 product far under the ceiling. An empty source
+//! refuses `EmptySource` and an all-background mask `NoForeground`, each through image/inscribed_disk.rye before a corner is read.
+//! All-or-nothing, never a half-read bound. No network, no key, no funds -- the roundness a surface names the day it asks whether a
+//! shape is round or thin, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/roundness.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const inscribed_disk = @import("inscribed_disk.rye");
+const min_enclosing_circle = @import("min_enclosing_circle.rye");
+const convex_hull = @import("convex_hull.rye");
+const contour = @import("contour.rye");
+const branch = @import("branch.rye");
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+
+pub const roundness_version = "20260818.221250";
+
+/// The most doubled pixel-square corners the region gather may emit before the hull -- only boundary pixels contribute (4 corners
+/// each), so this bounds `4 * perimeter`. Held at image/convex_hull.rye's own input ceiling so the hull is never built unbounded;
+/// a larger region refuses `RegionTooLarge` rather than overrun it (the boundary-only gather makes this reachable for real shapes).
+pub const roundness_max_corners: u32 = convex_hull.convex_hull_max_points;
+
+pub const RoundnessError = error{
+    RegionTooLarge,
+};
+
+/// A non-negative squared radius as an EXACT rational `num / den` with `den > 0`, in DOUBLED^2 units. Every bound decision compares
+/// two of these by cross-multiplication; only the reported pixel radii take a square root into f64.
+pub const SquaredRadius = struct {
+    num: i128,
+    den: i128,
+};
+
+/// The reconciled INNER and OUTER disk bounds of a shape, both in the shared doubled pixel-square convention. `inner` and `outer`
+/// are EXACT squared radii in doubled^2 (the decision quantities); `inradius` and `circumradius` are the reported pixel radii for
+/// display and measurement (square roots into f64), exactly as the parent readers report their own. `chamfer` and `(cx, cy)` carry
+/// the inscribed disk's provenance.
+pub const DiskBounds = struct {
+    inner: SquaredRadius,
+    outer: SquaredRadius,
+    inradius: f64,
+    circumradius: f64,
+    chamfer: u32,
+    cx: u32,
+    cy: u32,
+};
+
+/// The SIGNED CROSS PRODUCT of edge o->a with edge o->b in doubled coordinates, exact in i128 -- twice the signed area of triangle
+/// o-a-b, the denominator of a three-point circumradius. Doubled coordinates stay under 2^15, so each product stays far under 2^30
+/// and the difference never wraps.
+fn cross_i128(o: contour.Point, a: contour.Point, b: contour.Point) i128 {
+    const ax: i128 = @as(i128, a.x) - @as(i128, o.x);
+    const ay: i128 = @as(i128, a.y) - @as(i128, o.y);
+    const bx: i128 = @as(i128, b.x) - @as(i128, o.x);
+    const by: i128 = @as(i128, b.y) - @as(i128, o.y);
+    const c: i128 = ax * by - ay * bx;
+    // invariant: the cross of two doubled edge vectors stays far under the i128 ceiling.
+    assert(c < (@as(i128, 1) << 60));
+    assert(c > -(@as(i128, 1) << 60));
+    return c;
+}
+
+/// The EXACT squared distance between two doubled-coordinate points -- `dx*dx + dy*dy`, an integer over doubled^2. Doubled
+/// coordinates under 2^15 keep the sum far under 2^31.
+fn dist_sq_i128(a: contour.Point, b: contour.Point) i128 {
+    const dx: i128 = @as(i128, a.x) - @as(i128, b.x);
+    const dy: i128 = @as(i128, a.y) - @as(i128, b.y);
+    const d2: i128 = dx * dx + dy * dy;
+    // invariant: a squared distance is never negative and stays far under the i128 ceiling for doubled in-image coordinates.
+    assert(d2 >= 0);
+    assert(d2 < (@as(i128, 1) << 40));
+    return d2;
+}
+
+/// The EXACT squared radius of the disk pinned by a minimum-enclosing-circle SUPPORT set (1, 2, or 3 doubled-coordinate points), as
+/// a rational in doubled^2 -- recomputed here from the support so the OUTER bound is an exact fact, never the reported f64 radius. A
+/// one-point disk has squared radius 0; a two-point disk `|ab|^2 / 4`; a three-point circumcircle `|ab|^2 |bc|^2 |ca|^2 / (4 cross^2)`.
+fn support_radius_sq(support: []const contour.Point, slen: u32) SquaredRadius {
+    // invariant: a support set always names between one and three points.
+    assert(slen >= 1);
+    assert(slen <= 3);
+    if (slen == 1) return SquaredRadius{ .num = 0, .den = 1 };
+    if (slen == 2) return SquaredRadius{ .num = dist_sq_i128(support[0], support[1]), .den = 4 };
+    const sab = dist_sq_i128(support[0], support[1]);
+    const sbc = dist_sq_i128(support[1], support[2]);
+    const sca = dist_sq_i128(support[2], support[0]);
+    const cr: i128 = cross_i128(support[0], support[1], support[2]);
+    // invariant: a three-point support of a real hull is never collinear, so its area is nonzero and the denominator is positive.
+    assert(cr != 0);
+    const den: i128 = 4 * cr * cr;
+    // invariant: the circumradius denominator stays far under the i128 ceiling.
+    assert(den > 0);
+    assert(den < (@as(i128, 1) << 90));
+    return SquaredRadius{ .num = sab * sbc * sca, .den = den };
+}
+
+/// TRUE when the doubled pixel `(x, y)` is a BOUNDARY foreground pixel -- foreground, and touching either the image edge or an
+/// off-pixel through one of its four orthogonal neighbors. Only boundary pixels contribute corners to the region hull; an interior
+/// pixel's corners lie strictly inside and are never extreme.
+fn is_boundary(src: *const qoi.Pixmap, x: u32, y: u32) bool {
+    // invariant: the read stays inside the source buffer on both axes.
+    assert(x < src.width);
+    assert(y < src.height);
+    const here: usize = (@as(usize, y) * @as(usize, src.width) + @as(usize, x)) * 4;
+    if (!branch.is_on(src.pixels, here)) return false;
+    if (x == 0 or y == 0 or x + 1 == src.width or y + 1 == src.height) return true;
+    if (!branch.is_on(src.pixels, here - 4)) return true; // W
+    if (!branch.is_on(src.pixels, here + 4)) return true; // E
+    const row: usize = @as(usize, src.width) * 4;
+    if (!branch.is_on(src.pixels, here - row)) return true; // N
+    if (!branch.is_on(src.pixels, here + row)) return true; // S
+    return false;
+}
+
+/// The reconciled INNER and OUTER disk bounds of `src` in the shared doubled pixel-square convention. Reads the inner inscribed
+/// disk (image/inscribed_disk.rye), gathers the doubled pixel-square corners of every boundary foreground pixel, and takes the
+/// minimum enclosing circle of those corners (image/convex_hull.rye -> image/min_enclosing_circle.rye) for the exact outer squared
+/// radius. Refuses `EmptySource` / `NoForeground` (through image/inscribed_disk.rye) and `RegionTooLarge` past the corner ceiling.
+pub fn disk_bounds(allocator: std.mem.Allocator, src: *const qoi.Pixmap) !DiskBounds {
+    // the INNER bound: the deepest chamfer pixel, refusing an empty or all-background source before any corner is read.
+    const disk = try inscribed_disk.largest_inscribed_disk(allocator, src);
+    // invariant: a real inscribed disk carries at least one orthogonal step of depth, so `2d - 3` is non-negative.
+    assert(disk.chamfer >= inscribed_disk_ortho());
+    const two_d_minus_three: i128 = 2 * @as(i128, disk.chamfer) - 3;
+    // invariant: the inner doubled radius `(2d - 3)/3` is non-negative, so its square is well-defined.
+    assert(two_d_minus_three >= 0);
+    const inner = SquaredRadius{ .num = two_d_minus_three * two_d_minus_three, .den = 9 };
+
+    // the OUTER bound: gather the doubled pixel-square corners of every boundary foreground pixel (4 each), bounded before a byte.
+    const cap: usize = @as(usize, roundness_max_corners);
+    const corners = try allocator.alloc(contour.Point, cap);
+    var n: usize = 0;
+    var y: u32 = 0;
+    while (y < src.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x < src.width) : (x += 1) {
+            if (!is_boundary(src, x, y)) continue;
+            // invariant: four corners must fit under the cap, or the region is too large to bound the hull.
+            if (n + 4 > cap) return error.RegionTooLarge;
+            const x0: u32 = 2 * x;
+            const y0: u32 = 2 * y;
+            corners[n] = .{ .x = x0, .y = y0 };
+            corners[n + 1] = .{ .x = x0 + 2, .y = y0 };
+            corners[n + 2] = .{ .x = x0, .y = y0 + 2 };
+            corners[n + 3] = .{ .x = x0 + 2, .y = y0 + 2 };
+            n += 4;
+        }
+    }
+    // invariant: a shape with an inscribed disk has at least one foreground pixel, so at least one boundary pixel and four corners.
+    assert(n >= 4);
+
+    const hull = try convex_hull.convex_hull(allocator, corners[0..n]);
+    const circle = try min_enclosing_circle.min_enclosing_circle(hull);
+    const outer = support_radius_sq(circle.support[0..], circle.support_len);
+    // invariant: the outer squared radius is a proper non-negative rational.
+    assert(outer.den > 0);
+    assert(outer.num >= 0);
+
+    // reported pixel radii -- the doubled radius halved into pixel units, square roots into f64 only for display.
+    const inradius: f64 = @as(f64, @floatFromInt(two_d_minus_three)) / 6.0; // (2d-3)/3 doubled, /2 into pixels
+    const outer_ratio: f64 = @as(f64, @floatFromInt(outer.num)) / @as(f64, @floatFromInt(outer.den));
+    const circumradius: f64 = @sqrt(outer_ratio) / 2.0;
+
+    return DiskBounds{
+        .inner = inner,
+        .outer = outer,
+        .inradius = inradius,
+        .circumradius = circumradius,
+        .chamfer = disk.chamfer,
+        .cx = disk.cx,
+        .cy = disk.cy,
+    };
+}
+
+/// The orthogonal chamfer weight (image/distance.rye reads a foreground pixel at least this deep) -- named locally so the inner
+/// invariant reads plainly without importing the distance module.
+fn inscribed_disk_ortho() u32 {
+    return 3;
+}
+
+/// TRUE when the inner inscribed disk lies within the outer enclosing disk -- `r_in^2 <= r_out^2`, decided by EXACT i128
+/// cross-multiplication of the two squared-radius rationals (both denominators positive), NO tolerance and NO flip. The reconciled
+/// fact the naive reported-float reading gets wrong on a compact shape.
+pub fn inner_within_outer(bounds: DiskBounds) bool {
+    // invariant: both squared radii are proper rationals with positive denominators, so cross-multiplication preserves the order.
+    assert(bounds.inner.den > 0);
+    assert(bounds.outer.den > 0);
+    const lhs: i128 = bounds.inner.num * bounds.outer.den;
+    const rhs: i128 = bounds.outer.num * bounds.inner.den;
+    // invariant: both sides stay far under the i128 ceiling for doubled in-image coordinates.
+    assert(lhs < (@as(i128, 1) << 120));
+    assert(rhs < (@as(i128, 1) << 120));
+    return lhs <= rhs;
+}
+
+/// The ROUNDNESS RATIO `inradius / circumradius` in (0, 1] -- near 1 for a compact round shape, small for a thin one. Reported in
+/// f64; the doubled scale cancels, so the ratio is convention-independent. A degenerate zero-circumradius shape reads 0.
+pub fn roundness_ratio(bounds: DiskBounds) f64 {
+    // invariant: a real shape has a non-negative inner radius and a non-negative outer radius.
+    assert(bounds.inradius >= 0.0);
+    assert(bounds.circumradius >= 0.0);
+    if (bounds.circumradius == 0.0) return 0.0;
+    return bounds.inradius / bounds.circumradius;
+}
+
+// --- selftest: the DECISIVE flip crux (a 5x5 block whose naive reported inradius 3.0 EXCEEDS its enclosing radius 2.828, yet whose
+//     reconciled squared radii read 25 <= 50 exactly); the inner-sees-the-hole separation preserved (block vs hollow ring); a bar's
+//     tiny inner against its long outer; the roundness ratio ordering; refusals; determinism ------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Set one pixel back to background at (x, y) -- carve a hole in a filled shape.
+fn clear_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 0;
+    img.pixels[di + 1] = 0;
+    img.pixels[di + 2] = 0;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn approx(a: f64, b: f64, tol: f64) bool {
+    const d = if (a >= b) a - b else b - a;
+    return d <= tol;
+}
+
+/// The naive enclosing radius over foreground pixel CENTERS -- what image/min_enclosing_circle.rye reports over the contour hull,
+/// used only to PROVE the flip the reconciliation resolves. Test-only.
+fn naive_center_circumradius(garden: std.mem.Allocator, src: *const qoi.Pixmap) !f64 {
+    const map = try label.label_components(garden, src);
+    const ring = try contour.trace_contour(garden, &map, 1);
+    const hull = try convex_hull.convex_hull(garden, ring.points);
+    const circle = try min_enclosing_circle.min_enclosing_circle(hull);
+    return circle.radius;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- THE DECISIVE FLIP CRUX -- a solid 5x5 block. Naive: image/inscribed_disk.rye reports inradius 3.0 (chamfer depth 9 over
+    //     the orthogonal weight 3), image/min_enclosing_circle.rye over the pixel centers reports ~2.828 (half-diagonal), so a
+    //     naive `inradius <= circumradius` reads FALSE. Reconciled: inner 25 <= outer 50 in doubled^2, the inequality restored -----
+    var block = try make_canvas(garden, 7, 7, 0);
+    set_block(&block, 1, 1, 5, 5);
+    const block_bounds = try disk_bounds(garden, &block);
+
+    // the NAIVE reported reading FLIPS -- the inscribed radius strictly EXCEEDS the pixel-center enclosing radius
+    const block_disk = try inscribed_disk.largest_inscribed_disk(garden, &block);
+    const block_naive_outer = try naive_center_circumradius(garden, &block);
+    if (!approx(block_disk.radius, 3.0, 1e-9)) return error.BlockNaiveInradiusNotThree;
+    if (!approx(block_naive_outer, @sqrt(8.0), 1e-6)) return error.BlockNaiveOuterNotHalfDiagonal;
+    if (!(block_disk.radius > block_naive_outer)) return error.BlockNaiveDoesNotFlip; // 3.0 > 2.828 -- the artifact flip
+
+    // the RECONCILED reading does NOT flip -- exact doubled^2 squared radii. inner is (2*9-3)^2 / 9 = 225/9 (= 25), the exact
+    // unreduced rational this rung carries
+    if (!(block_bounds.inner.num == 225 and block_bounds.inner.den == 9)) return error.BlockInnerNot25;
+    // outer squared radius is 50 doubled^2 (region corners (2,2)-(12,12), a 2-point diameter disk: 200/4 = 50)
+    if (!(block_bounds.outer.num == 200 and block_bounds.outer.den == 4)) return error.BlockOuterNot50;
+    if (!inner_within_outer(block_bounds)) return error.BlockReconciledStillFlips; // 25 <= 50 -- resolved
+    // the reported pixel radii read the true region geometry: inradius exactly half the width (2.5), circumradius the region
+    // half-diagonal (sqrt(50)/2 ~ 3.536), and now inradius <= circumradius as the shape demands
+    if (!approx(block_bounds.inradius, 2.5, 1e-9)) return error.BlockReconciledInradiusNotTwoAndHalf;
+    if (!approx(block_bounds.circumradius, @sqrt(50.0) / 2.0, 1e-9)) return error.BlockReconciledCircumWrong;
+    if (block_bounds.inradius > block_bounds.circumradius) return error.BlockReportedStillFlips;
+
+    // --- THE INNER-SEES-THE-HOLE SEPARATION PRESERVED -- carve the block's inner 3x3 into a hollow RING. Its outer contour is the
+    //     block's byte-for-byte, so the OUTER bound is IDENTICAL (same region corners), yet the INNER bound shrinks from 25 to 1 --
+    var ring = try make_canvas(garden, 7, 7, 0);
+    set_block(&ring, 1, 1, 5, 5);
+    var hy: u32 = 2;
+    while (hy <= 4) : (hy += 1) {
+        var hx: u32 = 2;
+        while (hx <= 4) : (hx += 1) clear_dot(&ring, hx, hy);
+    }
+    const ring_bounds = try disk_bounds(garden, &ring);
+    // the ring's inner is (2*3-3)^2/9 = 9/9 = 1 doubled^2 (a wall one pixel thick, inradius 0.5 pixels)
+    if (!(ring_bounds.inner.num == 9 and ring_bounds.inner.den == 9)) return error.RingInnerNotOne;
+    // the OUTER bound is identical to the block's -- the same region squares, so the same corners and the same enclosing circle
+    if (!(ring_bounds.outer.num == block_bounds.outer.num and ring_bounds.outer.den == block_bounds.outer.den)) return error.RingOuterDiffersFromBlock;
+    if (!inner_within_outer(ring_bounds)) return error.RingFlips;
+    // the inner bound separates the two shapes the outer bound cannot: block inner 25 strictly above ring inner 1
+    const block_inner_over_ring: bool = block_bounds.inner.num * ring_bounds.inner.den > ring_bounds.inner.num * block_bounds.inner.den;
+    if (!block_inner_over_ring) return error.InnerDoesNotSeparate;
+
+    // --- A BAR -- a 2x8 bar holds a tiny inner disk (thickness 2, inradius 0.5) against a long outer reach; the roundness ratio
+    //     reads far below the block's, and the inequality holds with a wide margin ---------------------------------------------
+    var bar = try make_canvas(garden, 4, 10, 0);
+    set_block(&bar, 1, 1, 2, 8);
+    const bar_bounds = try disk_bounds(garden, &bar);
+    if (!(bar_bounds.inner.num == 9 and bar_bounds.inner.den == 9)) return error.BarInnerNotOne; // depth 3 -> (2*3-3)^2/9 = 1
+    if (!inner_within_outer(bar_bounds)) return error.BarFlips;
+    // roundness ordering: the block is far rounder than the bar (a compact square nearer 1, a thin bar near 0)
+    const block_round = roundness_ratio(block_bounds);
+    const bar_round = roundness_ratio(bar_bounds);
+    if (!(block_round > bar_round)) return error.BlockNotRounderThanBar;
+    if (!(block_round > 0.0 and block_round <= 1.0)) return error.BlockRoundnessOutOfRange;
+    if (!(bar_round > 0.0 and bar_round < block_round)) return error.BarRoundnessOutOfRange;
+
+    // --- REFUSALS by name -- an all-background mask holds no inscribed disk, and a zero-size source is empty (both through the
+    //     inner reader before a corner is gathered) ---------------------------------------------------------------------------
+    var blank = try make_canvas(garden, 4, 4, 0);
+    if (disk_bounds(garden, &blank)) |_| return error.BlankNotRefused else |err| {
+        if (err != error.NoForeground) return error.WrongBlankError;
+    }
+    var empty_src = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (disk_bounds(garden, &empty_src)) |_| return error.EmptyNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- DETERMINISM -- the same mask reads the same bounds twice --------------------------------------------------------------
+    const b1 = try disk_bounds(garden, &block);
+    const b2 = try disk_bounds(garden, &block);
+    if (b1.inner.num != b2.inner.num or b1.outer.num != b2.outer.num or b1.outer.den != b2.outer.den) return error.BoundsNotDeterministic;
+
+    print("GREEN image-roundness: reconcile a shape's INNER inscribed bound and OUTER enclosing bound in ONE shared doubled pixel-square convention, so `the largest disk INSIDE the shape is no larger than the smallest disk AROUND it` holds EXACTLY and NEVER flips -- the DECISIVE crux: a solid 5x5 block reads a NAIVE inscribed radius of 3.0 (image/inscribed_disk.rye, chamfer depth 9 over the orthogonal weight 3) yet a NAIVE enclosing radius of only sqrt(8) ~ 2.828 (image/min_enclosing_circle.rye over the pixel CENTERS), so a naive inradius <= circumradius reads FALSE for a shape whose inscribed disk plainly sits inside its enclosing disk -- an ARTIFACT of two conventions, the inner credited half a pixel too much (it reaches a background center one pixel OUTSIDE the region) and the outer half a pixel too little (it reaches only a foreground center ON it); RECONCILED in doubled pixel-square coordinates the flip is gone -- the inner squared radius is the EXACT rational (2d-3)^2/9 = 225/9 = 25 doubled^2 (inradius 2.5 pixels, exactly half the block's width) and the outer squared radius is the EXACT minimum enclosing circle of the region CORNERS, 200/4 = 50 doubled^2 (circumradius sqrt(50)/2 ~ 3.536 pixels), so inner_within_outer decides 25 <= 50 by exact i128 cross-multiplication, NO tolerance and NO flip; the chamfer is EXACT for the orthogonal geometry these fixtures are limited by, so on them the inequality is GUARANTEED, the outer bound and the comparison exact for every shape; the INNER-SEES-THE-HOLE separation is preserved -- a hollow ring shares the block's outer contour so reads the IDENTICAL outer 50 doubled^2, yet its inner shrinks to 9/9 = 1 doubled^2 (a wall one pixel thick), the inner bound separating what the outer cannot; a 2x8 bar holds a tiny inner (thickness 2) against a long outer, its roundness_ratio far below the compact block's (both in (0,1]); an all-background mask refuses NoForeground and a zero-size source EmptySource before a corner is read; the same mask reads the same bounds deterministically\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: roundness selftest\n", .{});
+    return 1;
+}
