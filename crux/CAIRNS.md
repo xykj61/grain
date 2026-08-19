@@ -24,6 +24,12 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260819.131316` -- REMEMBER's Microkernel-Target ring chronicle folded to a pointer as the fourth ring lands
+
+**Walk-back nib:** `307f588750` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.
+**Swept:** the **Live edge** bullet's per-ring inline chronicle -- `channels.rye` named rung by rung (the canonical low-then-high link, the four refusals, `may_signal` / `refusal_reason` / `degree`) and `regions.rye` likewise (its six refusals spelled out, `holders` and `footprint`, the constructor-and-door account of W xor X). The triad stands whole and green, and a fourth ring now gathers all three into one declaration, so the card keeps a pointer where the chronicle stood and refills Now with the live front.
+**What waits there, worth recalling:** at nib `307f588750` the departing card holds the full prose for each ring's refusal vocabulary and the reasoning for why the negative assertions are the load-bearing ones -- two clients on one virtualiser reaching neither each other nor each other's buffers. No fact was lost: each ring carries its dated log in `session-logs/` and a durable row in `caravan/README.md`.
+
 ### `20260819.125806` -- REMEMBER's Season-G scene-read chronicle folded to a pointer as the live edge moves to the Microkernel Target
 
 **Walk-back nib:** `4a50722016` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.

@@ -1,0 +1,633 @@
+//! Caravan system description -- the whole static architecture as one value.
+//!
+//! Three rings name a dependent's surface: `capabilities.rye` names WHAT a dependent
+//! may do, `channels.rye` names WHO it may talk to, and `regions.rye` names
+//! WHAT MEMORY it may touch. Each has been declared in Rye, by hand, at a
+//! constructor. This ring gathers all three into a single readable
+//! declaration -- a bounded Bron document naming domains, channels, regions,
+//! and grants, parsed once and asserted whole.
+//!
+//! The point is the one the single-stranded brief makes plainly: an
+//! enclosure is a VALUE, rather than flags braided through the code that
+//! builds it. A system whose whole architecture reads as one document is a
+//! system a witness can check in one pass, a reviewer can read in one
+//! sitting, and a build can refuse before anything runs.
+//!
+//! The grammar is flat Bron -- `key value...` per line, `#` comments and
+//! blank lines skipped -- the same shape `brix/infuse.rye` already merges:
+//!
+//!     system serial_stack
+//!     domain serial_virt
+//!     domain client_a
+//!     channel serial_virt client_a
+//!     region rx_a 4096
+//!     grant rx_a serial_virt rw
+//!     grant rx_a client_a r
+//!
+//! Order carries meaning: a channel or grant names domains and regions
+//! already declared above it, so a document reads top-down and a forward
+//! reference is refused by name rather than silently accepted.
+//!
+//! Parsing builds the graph and the map; `verify` then reads the finished
+//! declaration for the four properties no single line can carry alone -- the
+//! two rosters agreeing, W xor X holding across every grant, every declared
+//! region actually reaching someone, and no domain left an island.
+//!
+//! Hosted ground, pure policy, no kernel underneath it yet.
+//!
+//! Usage:
+//!   system          Run the self-test (default)
+//!   system selftest Same as default
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const channels = @import("channels.rye");
+const regions = @import("regions.rye");
+
+const caravan_system_version = "20260819.131316";
+
+/// Maximum lines one system description may carry. A static architecture
+/// names its whole shape at build time, so the document stays small enough
+/// to read in one sitting -- which is the property this ring exists to keep.
+pub const max_lines: u32 = 96;
+
+/// Maximum bytes in one line. A declaration line holds at most four short
+/// fields, so this bound sits well above any honest line and well below
+/// anything that could hide a payload.
+pub const max_line_len: u32 = 256;
+
+/// Maximum fields on one line -- `grant region domain perm` is the widest
+/// form the grammar holds.
+pub const max_fields: u32 = 4;
+
+/// Maximum bytes in a system name. Matches the name bound the sibling rings
+/// publish, so a label reads the same everywhere in Caravan.
+pub const max_name_len: u32 = channels.max_name_len;
+
+comptime {
+    // invariant: both rings count domains the same way, so one roster of
+    // names can be mirrored into each without either truncating the other
+    assert(channels.max_domains == regions.max_domains);
+    // invariant: both rings bound a name the same way, so a name legal in
+    // the graph is legal in the map
+    assert(channels.max_name_len == regions.max_name_len);
+}
+
+// =========================================================================
+// ParseError -- every way a declaration may be refused, named
+// =========================================================================
+
+/// A refused declaration always says which line-level rule it broke. A
+/// document rejected with a bare no teaches its author nothing, and the
+/// whole reason to declare an architecture is so a mistake surfaces here,
+/// at the door, rather than at run time.
+pub const ParseError = error{
+    TooManyLines,
+    LineTooLong,
+    UnknownKey,
+    MissingField,
+    ExtraField,
+    NameTooLong,
+    BadSize,
+    BadPermission,
+    NoSystemName,
+    DuplicateSystemName,
+    DuplicateDomain,
+    NoSuchDomain,
+    SelfLink,
+    AlreadyLinked,
+    DuplicateRegion,
+    RegionEmpty,
+    RegionTooLarge,
+    NoSuchRegion,
+    AlreadyGranted,
+    WriteExecute,
+    NoAccess,
+    SystemFull,
+};
+
+// =========================================================================
+// Verdict -- what the finished declaration proves, or where it falls short
+// =========================================================================
+
+/// Named outcome of reading a whole parsed declaration. Each value beyond
+/// `.whole` names a property that no single line could carry by itself, so
+/// the verdict is genuinely a statement about the system rather than about
+/// its last line.
+pub const Verdict = enum(u8) {
+    whole = 0,
+    unnamed_system = 1,
+    rosters_disagree = 2,
+    write_and_execute = 3,
+    unheld_region = 4,
+    isolated_domain = 5,
+};
+
+// =========================================================================
+// Fields -- one line split into its bounded parts
+// =========================================================================
+
+// Invariant: count <= max_fields whenever the value is read.
+const Fields = struct {
+    parts: [max_fields][]const u8 = undefined,
+    count: u32 = 0,
+};
+
+/// Splits one trimmed line into at most `max_fields` space-delimited parts.
+/// Runs of spaces collapse, so a line stays readable when a writer aligns
+/// its columns. A line carrying more parts than the grammar holds is
+/// refused rather than truncated, since a dropped field is a silent change
+/// of meaning.
+fn split_fields(line: []const u8) ParseError!Fields {
+    // invariant: a line reaching the splitter is non-empty
+    assert(line.len >= 1);
+    // invariant: a line reaching the splitter is already within its bound
+    assert(line.len <= max_line_len);
+    var fields: Fields = .{};
+    var i: usize = 0; // seam: slice index over a std source buffer
+    while (i < line.len) {
+        while (i < line.len and line[i] == ' ') : (i += 1) {}
+        if (i >= line.len) break;
+        const start = i;
+        while (i < line.len and line[i] != ' ') : (i += 1) {}
+        if (fields.count >= max_fields) return error.ExtraField;
+        fields.parts[fields.count] = line[start..i];
+        fields.count += 1;
+    }
+    // invariant: the split stays within the bounded field roster
+    assert(fields.count <= max_fields);
+    return fields;
+}
+
+/// Reads a decimal byte count, refusing anything the region ring could not
+/// hold. Overflow is refused before it happens rather than wrapped, so a
+/// mistyped size can never become a small legal one.
+fn parse_bytes(text: []const u8) ParseError!u64 {
+    // invariant: a size field is non-empty
+    if (text.len == 0) return error.BadSize;
+    // invariant: a size field stays within a readable length
+    assert(text.len <= max_line_len);
+    var total: u64 = 0;
+    for (text) |c| {
+        if (c < '0' or c > '9') return error.BadSize;
+        if (total > regions.max_region_bytes) return error.BadSize;
+        total = total * 10 + @as(u64, c - '0');
+    }
+    if (total > regions.max_region_bytes) return error.BadSize;
+    // invariant: the parsed size stays within what a region may declare
+    assert(total <= regions.max_region_bytes);
+    return total;
+}
+
+/// Reads a permission word. Three words stand: `r` looks, `rw` looks and
+/// changes, `rx` looks and runs. The write-and-run word is deliberately
+/// absent from the grammar, so W xor X is a property of what can be
+/// WRITTEN, rather than only of what is checked afterward.
+fn parse_perm(word: []const u8) ParseError!regions.Perm {
+    // invariant: a permission word is non-empty
+    if (word.len == 0) return error.BadPermission;
+    // invariant: every word this grammar holds is short
+    assert(word.len <= max_line_len);
+    if (std.mem.eql(u8, word, "r")) return regions.Perm.read_only();
+    if (std.mem.eql(u8, word, "rw")) return regions.Perm.read_write();
+    if (std.mem.eql(u8, word, "rx")) return regions.Perm.read_execute();
+    return error.BadPermission;
+}
+
+// =========================================================================
+// System -- the whole declared architecture, held as one value
+// =========================================================================
+
+// Invariant: the graph and the map always name the same domains, in the
+// same order, since every domain line declares into both.
+pub const System = struct {
+    name: [max_name_len]u8 = undefined,
+    name_len: u32 = 0,
+    graph: channels.Graph = .{},
+    map: regions.Map = .{},
+
+    /// Reads the system's declared name.
+    pub fn name_slice(self: *const System) []const u8 {
+        // invariant: the stored length stays within the ring's bound
+        assert(self.name_len <= max_name_len);
+        // invariant: a parsed system always carries a name
+        assert(self.name_len >= 1);
+        const n: usize = @intCast(self.name_len); // seam: slicing takes usize
+        return self.name[0..n];
+    }
+
+    /// Sums the bytes every declared region spans -- the whole memory this
+    /// architecture asks for, readable straight off the declaration.
+    pub fn declared_bytes(self: *const System) u64 {
+        // invariant: the region roster stays within its bound
+        assert(self.map.region_count <= regions.max_regions);
+        var total: u64 = 0;
+        var i: u32 = 0;
+        while (i < self.map.region_count) : (i += 1) {
+            assert(i < regions.max_regions); // invariant: the walk stays in the array
+            total += self.map.regions[i].size_bytes;
+        }
+        // invariant: the sum stays within what the whole map could declare
+        assert(total <= regions.max_region_bytes * @as(u64, regions.max_regions));
+        return total;
+    }
+
+    /// Answers whether a domain holds any grant at all -- whether the map
+    /// hands it any memory to reach.
+    fn holds_memory(self: *const System, domain: u32) bool {
+        // invariant: the grant roster stays within its bound
+        assert(self.map.grant_count <= regions.max_grants);
+        // invariant: the query addresses the bounded roster
+        assert(domain < regions.max_domains);
+        var i: u32 = 0;
+        while (i < self.map.grant_count) : (i += 1) {
+            assert(i < regions.max_grants); // invariant: the walk stays in the array
+            if (self.map.grants[i].domain == domain) return true;
+        }
+        return false;
+    }
+
+    /// Reads the finished declaration whole and names what it proves.
+    ///
+    /// Four properties live above the line level. The two rosters must agree,
+    /// since a domain known to the wiring and unknown to the sharing is two
+    /// systems wearing one name. W xor X must hold across every grant. Every
+    /// declared region must reach at least one domain, since a region nobody
+    /// holds is memory reserved for no one. And no domain may stand an
+    /// island, since a component wired to nothing and handed nothing cannot
+    /// take part in the system that declares it.
+    pub fn verify(self: *const System) Verdict {
+        // invariant: both domain rosters stay within their bounds
+        assert(self.graph.domain_count <= channels.max_domains);
+        assert(self.map.domain_count <= regions.max_domains);
+        if (self.name_len == 0) return .unnamed_system;
+        if (self.graph.domain_count != self.map.domain_count) return .rosters_disagree;
+        var d: u32 = 0;
+        while (d < self.graph.domain_count) : (d += 1) {
+            assert(d < channels.max_domains); // invariant: the walk stays in the array
+            const label = self.graph.domains[d].name_slice();
+            const mirrored = self.map.find_domain(label) orelse return .rosters_disagree;
+            if (mirrored != d) return .rosters_disagree;
+        }
+        if (!self.map.write_xor_execute()) return .write_and_execute;
+        var r: u32 = 0;
+        while (r < self.map.region_count) : (r += 1) {
+            assert(r < regions.max_regions); // invariant: the walk stays in the array
+            const label = self.map.regions[r].slot.name_slice();
+            if (self.map.holders(label) == 0) return .unheld_region;
+        }
+        if (self.graph.domain_count >= 2) {
+            var i: u32 = 0;
+            while (i < self.graph.domain_count) : (i += 1) {
+                assert(i < channels.max_domains); // invariant: the walk stays in the array
+                const label = self.graph.domains[i].name_slice();
+                if (self.graph.degree(label) >= 1) continue;
+                if (self.holds_memory(i)) continue;
+                return .isolated_domain;
+            }
+        }
+        return .whole;
+    }
+
+    /// Answers whether the declaration reads whole -- the one-word form of
+    /// `verify`, for a caller that wants the yes rather than the reason.
+    pub fn is_whole(self: *const System) bool {
+        // invariant: a whole system always carries a name
+        assert(self.map.domain_count <= regions.max_domains);
+        // invariant: both grant and channel rosters stay within their bounds
+        assert(self.map.grant_count <= regions.max_grants);
+        return self.verify() == .whole;
+    }
+};
+
+/// Seats the system's own name, refusing a second `system` line so one
+/// document always names exactly one architecture.
+fn take_name(system: *System, text: []const u8) ParseError!void {
+    // invariant: a name field reaching here is non-empty
+    assert(text.len >= 1);
+    // invariant: the target still fits the ring's bound
+    assert(system.name_len <= max_name_len);
+    if (system.name_len != 0) return error.DuplicateSystemName;
+    if (text.len > max_name_len) return error.NameTooLong;
+    var i: u32 = 0;
+    while (i < text.len) : (i += 1) {
+        assert(i < max_name_len); // invariant: the copy stays in the array
+        system.name[i] = text[i];
+    }
+    system.name_len = @intCast(text.len); // seam: a bounded length published as u32
+    // invariant: the copied name reads back at its declared length
+    assert(system.name_len == text.len);
+}
+
+/// Declares one domain into both rings at once, so the two rosters can never
+/// drift apart by construction rather than by later repair.
+fn take_domain(system: *System, name: []const u8) ParseError!void {
+    // invariant: a domain name reaching here is non-empty
+    assert(name.len >= 1);
+    // invariant: both rosters stay within their bounds before growing
+    assert(system.graph.domain_count <= channels.max_domains);
+    if (name.len > max_name_len) return error.NameTooLong;
+    const wired = system.graph.declare_domain(name) catch |err| switch (err) {
+        error.DuplicateDomain => return error.DuplicateDomain,
+        error.GraphFull => return error.SystemFull,
+    };
+    const shared = system.map.declare_domain(name) catch |err| switch (err) {
+        error.DuplicateDomain => return error.DuplicateDomain,
+        error.MapFull => return error.SystemFull,
+    };
+    // invariant: a domain lands at the same index in both rings
+    assert(wired == shared);
+}
+
+/// Declares one channel between two already-named domains.
+fn take_channel(system: *System, a: []const u8, b: []const u8) ParseError!void {
+    // invariant: both endpoint names are non-empty
+    assert(a.len >= 1);
+    assert(b.len >= 1);
+    _ = system.graph.declare_channel(a, b) catch |err| switch (err) {
+        error.NoSuchDomain => return error.NoSuchDomain,
+        error.SelfLink => return error.SelfLink,
+        error.AlreadyLinked => return error.AlreadyLinked,
+        error.GraphFull => return error.SystemFull,
+    };
+}
+
+/// Declares one memory region of a named size.
+fn take_region(system: *System, name: []const u8, size_text: []const u8) ParseError!void {
+    // invariant: a region name reaching here is non-empty
+    assert(name.len >= 1);
+    // invariant: the region roster stays within its bound before growing
+    assert(system.map.region_count <= regions.max_regions);
+    if (name.len > max_name_len) return error.NameTooLong;
+    const size_bytes = try parse_bytes(size_text);
+    _ = system.map.declare_region(name, size_bytes) catch |err| switch (err) {
+        error.DuplicateRegion => return error.DuplicateRegion,
+        error.RegionEmpty => return error.RegionEmpty,
+        error.RegionTooLarge => return error.RegionTooLarge,
+        error.MapFull => return error.SystemFull,
+    };
+}
+
+/// Maps one named region into one named domain at one named permission.
+fn take_grant(
+    system: *System,
+    region_name: []const u8,
+    domain_name: []const u8,
+    perm_word: []const u8,
+) ParseError!void {
+    // invariant: both names reaching here are non-empty
+    assert(region_name.len >= 1);
+    assert(domain_name.len >= 1);
+    const perm = try parse_perm(perm_word);
+    _ = system.map.grant(region_name, domain_name, perm) catch |err| switch (err) {
+        error.NoSuchRegion => return error.NoSuchRegion,
+        error.NoSuchDomain => return error.NoSuchDomain,
+        error.AlreadyGranted => return error.AlreadyGranted,
+        error.WriteExecute => return error.WriteExecute,
+        error.NoAccess => return error.NoAccess,
+        error.MapFull => return error.SystemFull,
+    };
+}
+
+/// Reads one declaration line into the growing system.
+fn take_line(system: *System, line: []const u8) ParseError!void {
+    // invariant: a line reaching here is non-empty
+    assert(line.len >= 1);
+    // invariant: a line reaching here is within its bound
+    assert(line.len <= max_line_len);
+    const fields = try split_fields(line);
+    if (fields.count == 0) return;
+    const key = fields.parts[0];
+    if (std.mem.eql(u8, key, "system")) {
+        if (fields.count < 2) return error.MissingField;
+        if (fields.count > 2) return error.ExtraField;
+        return take_name(system, fields.parts[1]);
+    }
+    if (std.mem.eql(u8, key, "domain")) {
+        if (fields.count < 2) return error.MissingField;
+        if (fields.count > 2) return error.ExtraField;
+        return take_domain(system, fields.parts[1]);
+    }
+    if (std.mem.eql(u8, key, "channel")) {
+        if (fields.count < 3) return error.MissingField;
+        if (fields.count > 3) return error.ExtraField;
+        return take_channel(system, fields.parts[1], fields.parts[2]);
+    }
+    if (std.mem.eql(u8, key, "region")) {
+        if (fields.count < 3) return error.MissingField;
+        if (fields.count > 3) return error.ExtraField;
+        return take_region(system, fields.parts[1], fields.parts[2]);
+    }
+    if (std.mem.eql(u8, key, "grant")) {
+        if (fields.count < 4) return error.MissingField;
+        return take_grant(system, fields.parts[1], fields.parts[2], fields.parts[3]);
+    }
+    return error.UnknownKey;
+}
+
+/// Parses a whole system description into one value.
+///
+/// Comments and blank lines pass through untouched, so a declaration can
+/// carry its own reasoning beside its wiring -- which is most of why an
+/// architecture written as a document beats the same architecture written as
+/// a sequence of calls.
+pub fn parse(src: []const u8) ParseError!System {
+    var system: System = .{};
+    var seen: u32 = 0;
+    var lines = std.mem.splitScalar(u8, src, '\n');
+    while (lines.next()) |raw| {
+        const line = std.mem.trim(u8, raw, " \t\r");
+        if (line.len == 0) continue;
+        if (line[0] == '#') continue;
+        // invariant: a description stays within its bounded line count
+        if (seen >= max_lines) return error.TooManyLines;
+        // invariant: a line stays within its bounded length
+        if (line.len > max_line_len) return error.LineTooLong;
+        seen += 1;
+        try take_line(&system, line);
+    }
+    if (system.name_len == 0) return error.NoSystemName;
+    // invariant: a parsed system always names itself
+    assert(system.name_len >= 1);
+    // invariant: the two domain rosters grew together
+    assert(system.graph.domain_count == system.map.domain_count);
+    return system;
+}
+
+// =========================================================================
+// Refusal helper -- capture the named error, so the checks read plainly
+// =========================================================================
+
+/// Answers whether this source was refused with the named error. Capturing
+/// the error keeps each check readable at its call site and keeps the
+/// self-test off the `) == error.` call seam the tidy rules ban.
+fn parse_refused(src: []const u8, want: anyerror) bool {
+    // invariant: a refusal check always has something to read
+    assert(src.len >= 1);
+    // invariant: the expected error is a real one
+    assert(want != error.OutOfMemory);
+    if (parse(src)) |_| {
+        return false;
+    } else |err| {
+        return err == want;
+    }
+}
+
+/// Reads a source expected to parse, and answers what the finished
+/// declaration proves. A source that refuses at the line level answers
+/// `.rosters_disagree`, since an unparsed document proves nothing whole.
+fn verdict_of(src: []const u8) Verdict {
+    // invariant: a verdict check always has something to read
+    assert(src.len >= 1);
+    // invariant: the source stays within what the parser will read
+    assert(src.len <= @as(usize, max_lines) * @as(usize, max_line_len));
+    const system = parse(src) catch return .rosters_disagree;
+    return system.verify();
+}
+
+// =========================================================================
+// Self-test -- the serial stack, declared once and read whole
+// =========================================================================
+
+/// The worked example the Microkit brief describes: one virtualiser serving
+/// two clients, each client holding its own receive buffer and reaching
+/// none of the other's.
+const serial_stack =
+    \\# The serial stack -- one virtualiser, two clients, no client-to-client path.
+    \\system serial_stack
+    \\domain serial_virt
+    \\domain client_a
+    \\domain client_b
+    \\channel serial_virt client_a
+    \\channel serial_virt client_b
+    \\region rx_a 4096
+    \\region rx_b 4096
+    \\region font_rom 65536
+    \\grant rx_a serial_virt rw
+    \\grant rx_a client_a r
+    \\grant rx_b serial_virt rw
+    \\grant rx_b client_b r
+    \\grant font_rom client_a rx
+    \\grant font_rom client_b rx
+;
+
+/// Reads the worked example whole and checks every claim the declaration
+/// makes -- the wiring, the sharing, the summarizing reads, and the verdict.
+fn check_serial_stack() u8 {
+    const system = parse(serial_stack) catch |err| {
+        print("  RED: the serial stack refused to parse: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+
+    // invariant: the document names itself, and the name survives the parse
+    assert(std.mem.eql(u8, system.name_slice(), "serial_stack"));
+    // invariant: every declared line landed in the roster it belongs to
+    assert(system.graph.domain_count == 3);
+    assert(system.map.domain_count == 3);
+    assert(system.graph.channel_count == 2);
+    assert(system.map.region_count == 3);
+    assert(system.map.grant_count == 6);
+    print("  declared: 3 domains, 2 channels, 3 regions, 6 grants\n", .{});
+
+    // The wiring the declaration hands us, read back through the graph.
+    assert(system.graph.may_signal("serial_virt", "client_a"));
+    assert(system.graph.may_signal("serial_virt", "client_b"));
+    assert(!system.graph.may_signal("client_a", "client_b"));
+    print("  the two clients share a virtualiser and hold no path to each other\n", .{});
+
+    // The sharing the declaration hands us, read back through the map.
+    assert(system.map.may_write("rx_a", "serial_virt"));
+    assert(system.map.may_read("rx_a", "client_a"));
+    assert(!system.map.may_write("rx_a", "client_a"));
+    assert(!system.map.may_read("rx_a", "client_b"));
+    assert(system.map.may_execute("font_rom", "client_a"));
+    assert(!system.map.may_write("font_rom", "client_a"));
+    print("  each client reads its own buffer, runs the shared font, writes neither\n", .{});
+
+    // The reads that summarize a declaration for a human.
+    assert(system.map.holders("rx_a") == 2);
+    assert(system.map.holders("font_rom") == 2);
+    assert(system.map.footprint("client_a") == 4096 + 65536);
+    assert(system.declared_bytes() == 4096 + 4096 + 65536);
+    print("  declared memory: {d} bytes across 3 regions\n", .{system.declared_bytes()});
+
+    // The whole-declaration verdict.
+    assert(system.verify() == .whole);
+    assert(system.is_whole());
+    print("  verdict: the declaration reads whole\n", .{});
+    return 0;
+}
+
+/// Checks that every grammar rule refuses by name at the door, including the
+/// permission words. The write-and-run word never enters the grammar, so
+/// W xor X is a property of what a declaration CAN say rather than only of
+/// what a later check finds.
+fn check_refusals() void {
+    // invariant: a well-formed document is the baseline these refusals depart from
+    assert(serial_stack.len >= 1);
+    // invariant: the grammar holds exactly the five keys the parser reads
+    assert(max_fields == 4);
+    assert(parse_refused("system a\nvirtue b\n", error.UnknownKey));
+    assert(parse_refused("system a\ndomain\n", error.MissingField));
+    assert(parse_refused("system a\ndomain one two\n", error.ExtraField));
+    assert(parse_refused("domain lonely\n", error.NoSystemName));
+    assert(parse_refused("system a\nsystem b\n", error.DuplicateSystemName));
+    assert(parse_refused("system a\ndomain x\ndomain x\n", error.DuplicateDomain));
+    assert(parse_refused("system a\ndomain x\nchannel x y\n", error.NoSuchDomain));
+    assert(parse_refused("system a\ndomain x\nchannel x x\n", error.SelfLink));
+    assert(parse_refused("system a\ndomain x\ndomain y\nchannel x y\nchannel y x\n", error.AlreadyLinked));
+    assert(parse_refused("system a\nregion r 0\n", error.RegionEmpty));
+    assert(parse_refused("system a\nregion r 99999999999\n", error.BadSize));
+    assert(parse_refused("system a\nregion r 4k\n", error.BadSize));
+    assert(parse_refused("system a\ndomain x\ngrant r x r\n", error.NoSuchRegion));
+    print("  every line-level refusal answers by name\n", .{});
+
+    assert(parse_refused("system a\ndomain x\nregion r 8\ngrant r x rwx\n", error.BadPermission));
+    assert(parse_refused("system a\ndomain x\nregion r 8\ngrant r x w\n", error.BadPermission));
+    print("  W xor X held at the grammar: no word writes and runs\n", .{});
+}
+
+/// Checks the verdicts that live above the line level -- the properties no
+/// single declaration line could carry by itself.
+fn check_verdicts() void {
+    // invariant: a verdict is only meaningful over a bounded document
+    assert(max_lines >= 1);
+    // invariant: the whole verdict is the zero value, so a silent default reads as a claim
+    assert(@intFromEnum(Verdict.whole) == 0);
+    assert(verdict_of("system a\ndomain x\ndomain y\nchannel x y\n") == .whole);
+    assert(verdict_of("system a\ndomain x\ndomain y\nregion r 8\ngrant r x r\n") == .isolated_domain);
+    assert(verdict_of("system a\ndomain x\nregion r 8\n") == .unheld_region);
+    assert(verdict_of("system a\ndomain solo\n") == .whole);
+    print("  an island domain and an unheld region each answer by name\n", .{});
+
+    // A comment-only body still needs a name; a named body may carry nothing
+    // else and still read whole, since an empty architecture is honest.
+    assert(parse_refused("# only a thought\n", error.NoSystemName));
+    const bare = parse("system empty\n") catch unreachable;
+    assert(bare.verify() == .whole);
+    assert(bare.declared_bytes() == 0);
+    print("  a bare named system reads whole and declares nothing\n", .{});
+}
+
+fn run_self_test() u8 {
+    print("Caravan system description {s} -- self-test\n", .{caravan_system_version});
+    const worked = check_serial_stack();
+    if (worked != 0) return worked;
+    check_refusals();
+    check_verdicts();
+    print("  GREEN: the declaration reads whole -- one document, four properties proven\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test();
+    }
+
+    if (args.len >= 2) return 1;
+    return run_self_test();
+}

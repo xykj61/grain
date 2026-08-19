@@ -1,0 +1,26 @@
+format session-log-v1
+stamp 20260819.131316
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Caravan system description -- the whole architecture as one declaration
+prompt Autonomous loop lap -- Lindy-first crux-first on the Microkernel Target double-seat; the prior lap recommended the declarative Brix/Bron system description as the next crux.
+think Read KYRI and RADIANT_STYLE first, then crux/REMEMBER, the three newest session-log rows, and the newest log's recommend line -- which named this crux exactly: one bounded declaration naming domains, channels, regions, and grants, parsed and asserted, with a witness that proves the graph whole.
+think Standfast on reds first -- walked crux/REDS.md living rows. 82 closed (mldsa_encode line 238 now reads r0 >= -gamma_2 on metal), 84 closed (.gitignore line 70 carries !/crux/), 85, 86, 87 all carry CLOSED or Released notes. No agent-closable red stands open, so the constructive queue opens honestly.
+think Council rota this lap -- active-designing/20260618-182412_single-stranded.md, deep-read. Its line "the enclosure is a value, not braided flags" named the shape of this crux before the code did: the whole architecture belongs in one readable value rather than braided through the calls that build it.
+think Read channels.rye and regions.rye whole for their public surfaces, and brix/infuse.rye for the flat-Bron parsing idiom already seated in the tree. Reused the idiom rather than inventing a second one.
+think Designed five keys -- system, domain, channel, region, grant -- with order carrying meaning: a channel or grant names what stands declared above it, so a forward reference refuses by name rather than passing quietly.
+think Each domain line declares into BOTH rings at once, so the graph's roster and the map's roster agree by construction with an assert that the two indices match, rather than by later repair.
+think Named the four properties that live above the line level and put them in verify: rosters agree, W xor X across every grant, every region reaches a holder, no domain stands an island. Each shortfall answers with its own Verdict name.
+think The permission grammar holds r, rw, rx and nothing else -- so W xor X is a property of what a declaration CAN SAY, not only of what a later check happens to find. That felt like the real design win of the lap.
+obs The RED path is proven, not claimed: admitting rwx into parse_perm made the self-test panic at its own BadPermission assert; restoring the grammar returned GREEN. A grammar that cannot express the unsafe thing is stronger than a check that catches it.
+obs The 70-line ratchet flagged run_self_test at 84 lines, so the self-test split at its natural seams into check_serial_stack, check_refusals, and check_verdicts. Ratchets turn on touch; this one turned.
+obs Swept caravan/README.md to plain ASCII while touching it, and corrected its Held paragraph -- the old line claimed Caravan reached toward no Brix layer, and system.rye now reads the same flat Bron that Brix descriptors use. Docs and implementation stay synced in the same commit.
+obs The worked example is the Microkit brief's serial stack: one virtualiser, two clients, each reading its own buffer, both running a shared read-execute font, neither holding any path to the other. 73728 declared bytes across three regions, read straight off the document.
+loom witness=caravan_system_witness wall_status=GREEN domains=3 channels=2 regions=3 grants=6 declared_bytes=73728 refusals_named=15 verdicts_checked=4
+file caravan/system.rye the ring -- flat-Bron parse into a graph and a map, four whole-declaration properties, every refusal named
+file tools/caravan_system_witness.rish the witness -- builds, runs the self-test, and reads back GREEN with the whole-declaration and grammar-level W xor X claims
+file caravan/README.md the ladder row, the why-one-document section, an ASCII sweep, and an honest Held paragraph
+file crux/REMEMBER.md the live edge and git nib move to this declaration
+recommend keep-going -- the declaration now reads whole on hosted ground, so the next crux is the one it makes reachable: a Rye reader that takes a system description from a FILE rather than a source literal, so an architecture lives beside the code as its own .bron artifact and a witness checks the real document on disk. No key, no funds.
