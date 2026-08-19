@@ -1,0 +1,116 @@
+# caravan_standby_witness.rish -- Caravan ring-rebuilt-around-its-loss witness.
+#
+# `decline.rye` proved that no neighbor may reach around a hole: a ring has
+# no detour, and the capability table refuses by absence and by rights.
+# That answered what a NEIGHBOR may do, and left the sharper question
+# standing -- may the DECLARATION draw the detour, naming a standby that
+# legitimately holds the lost domain's regions, and what does a grant
+# written for an absent domain cost the ring while the hole is closed?
+#
+# Both halves answer the same way, and the answer is about time.
+#
+# A standby present beside the domain it would replace is a second writer.
+# `serial_cycle_shadow.bron` gives beech exactly birch's grants, and the
+# refusal lands a whole layer earlier than any capability check: a directed
+# region carries one writer and one reader, this document carries two of
+# each, and there is no shape to name at all.
+#
+# A standby given regions of its own is a different shape.
+# `serial_cycle_bypass.bron` keeps every flow directed and content, and
+# loses the ring instead -- alder spans three peers, and no single lap
+# visits all four domains once and comes home.
+#
+# So the repair is a re-declaration, and it is the finding:
+#
+#   A ring is repaired by being declared again, never by being routed
+#   around -- and the asks pay nothing for it, because a region belongs to
+#   the document rather than to the domain that was lost.
+#
+# `serial_cycle_succession.bron` names beech where birch stood and moves
+# nothing else, so the two asks alder placed before the loss stand exactly
+# where it left them and four come home across the repair.
+#
+# The succession is not free, and its cost is at the seam. A channel
+# carries the names of both its ends, so replacing a domain replaces its
+# channels: six fresh bells stand silent at zero beside the ring's own six,
+# and the ring alder already spent on birch is spent for good.
+#
+# Both RED paths were proven on metal before this witness was written. A
+# succession that renamed one region was refused for moving a region out
+# from under the asks standing in it, at exit 1. And a standby holding
+# every one of the lost domain's grants, never woken by name, heard its
+# bell rung zero times and reported Unheard against a plan that wanted a
+# carry -- OutcomeMismatch at exit 1, which is the seam cost proven rather
+# than asserted.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep
+# over interpolated output -- REDS #76 / #85, the apostrophe loom.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_standby_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/standby"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/standby.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan standby build failed"
+
+# Three documents for one ring: the shape before the loss, and the two a
+# ring refuses, and the one it accepts.
+let ring = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_cycle.bron 2>&1"]
+assert ring.ok else "the ring declaration could not be read"
+assert ring.out contains "domains 3 -- channels 3 -- regions 4 -- grants 8" else "the ring declaration changed shape"
+
+let shadow = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_cycle_shadow.bron 2>&1"]
+assert shadow.ok else "the shadow declaration could not be read"
+assert shadow.out contains "domains 4 -- channels 5 -- regions 4 -- grants 10" else "the shadow declaration changed shape"
+assert shadow.out contains "verdict: whole" else "the shadow declaration did not read whole"
+
+let bypass = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_cycle_bypass.bron 2>&1"]
+assert bypass.ok else "the bypass declaration could not be read"
+assert bypass.out contains "domains 4 -- channels 5 -- regions 6 -- grants 12" else "the bypass declaration changed shape"
+assert bypass.out contains "verdict: whole" else "the bypass declaration did not read whole"
+
+let next = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_cycle_succession.bron 2>&1"]
+assert next.ok else "the succession declaration could not be read"
+assert next.out contains "domains 3 -- channels 3 -- regions 4 -- grants 8" else "the succession did not keep the ring's own shape"
+assert next.out contains "verdict: whole" else "the succession declaration did not read whole"
+
+# A fresh provisioning each run, so every index starts at zero and a bell
+# found ringing was rung by this run rather than left standing by the last.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels"]
+assert clean.ok else "the region stores and doorbells could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan standby selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan standby selftest not GREEN"
+assert test.out contains "a ring is repaired by being declared again, and the asks pay nothing for it" else "the succession finding did not close"
+
+# The wire, before any document is read: four distinct verdicts, so a
+# refusal tells an operator which layer refused rather than only that one did.
+assert test.out contains "a shape reads back as one of four verdicts" else "the shape verdicts did not read back"
+
+# A standby named beside the domain it would replace: two writers on one
+# region, refused before any capability check.
+assert test.out contains "a standby present beside the domain it would replace gives no directed flow to derive" else "a second writer was read as a shape"
+assert test.out contains "the refusal lands before any capability check" else "the shadow refusal was placed at the wrong layer"
+
+# A detour drawn in advance: perfectly directed, and no longer a ring.
+assert test.out contains "keeps every flow directed and still gives a domain spanning other than two peers" else "a pre-drawn detour was read as a ring"
+assert test.out contains "a ring with a spare route is a shape with a choice of laps, and a ring has exactly one" else "the bypass finding was not named"
+
+# The repair: the same ring declared again, over the very regions the loss
+# left standing, and four asks home across it.
+assert test.out contains "the succession reads as a ring, over the very regions the loss left standing" else "the succession did not read as the ring it repairs"
+assert test.out contains "birch: declined after 2 attempts -- the hole stays open" else "the lost domain was never declined by name"
+assert test.out contains "beech: carried 4 from alder onward to cedar, arc standing at 4" else "the standby did not carry the ring's standing asks"
+assert test.out contains "alder: took 4 home from cedar" else "the lap did not come home across the repair"
+assert test.out contains "a middle lost for good costs 2 attempts and one decline, and the ring is declared again" else "the repair did not report its own cost"
+assert test.out contains "the standby takes the lost domain's grants unchanged and 4 asks come home -- 2 of them placed before the loss" else "the asks placed before the loss did not come home"
+
+# The seam cost, counted: a standby inherits regions and never inherits a bell.
+assert test.out contains "the succession brings 6 directed bells of its own beside the ring's 6" else "the succession's own bells were not counted"
+assert test.out contains "a standby inherits regions and never inherits a bell" else "the seam cost was not named"
+
+say "GREEN: Caravan standby witness passed."

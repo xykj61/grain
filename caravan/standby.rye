@@ -1,0 +1,724 @@
+//! Caravan standby -- the ring rebuilt around its loss, and the one repair
+//! a ring accepts.
+//!
+//! `decline.rye` left a hole open and found that nobody may reach around
+//! it: a ring has no detour, and the capability table refuses in two
+//! distinct ways -- by absence and by rights. That answered what a
+//! *neighbor* may do. It left the sharper question standing: may the
+//! *declaration* draw the detour, naming a standby that legitimately holds
+//! the lost domain's regions -- and what does a grant written for an absent
+//! domain cost the ring on every day the hole is closed?
+//!
+//! Both halves of that question turn out to have the same answer, and it is
+//! about time rather than about rights.
+//!
+//! **A standby present beside the domain it would replace is a second
+//! writer.** `serial_cycle_shadow.bron` writes the tempting version:
+//! `beech` holds exactly what `birch` holds, so the ring already has a hand
+//! on the regions the day birch is lost. The refusal lands a whole layer
+//! earlier than any capability check. A directed region has exactly one
+//! writer and exactly one reader, and this document gives `ask_bc` two of
+//! the first and `ask_ab` two of the second, so there is no flow to derive,
+//! no shape to name, and nothing for a ring order to search. The cost of a
+//! detour drawn in advance is charged every day the hole is closed.
+//!
+//! **A standby given regions of its own is a different shape.**
+//! `serial_cycle_bypass.bron` answers that refusal honestly: `dogwood` gets
+//! its own arcs, every region keeps one writer and one reader, and the flow
+//! derivation is content. What falls away is the ring. alder now writes to
+//! two successors and cedar reads from two predecessors, so alder spans
+//! three peers, and no single directed walk visits all four domains once
+//! and comes home. A ring with a spare route is not a ring with a spare
+//! route; it is a shape with a choice of laps, and `ring_order` answers
+//! null rather than picking one.
+//!
+//! **So the repair is a re-declaration, and it is the finding:**
+//!
+//!   A ring is repaired by being declared again, never by being routed
+//!   around -- and the asks pay nothing for it, because a region belongs
+//!   to the document rather than to the domain that was lost.
+//!
+//! `serial_cycle_succession.bron` names `beech` where `birch` stood and
+//! moves nothing else. The four regions are the ring's own, name for name
+//! and byte for byte, so the two asks alder placed before the loss are
+//! exactly where it left them. Every attempt in this module already
+//! reloads its document from disk and derives the dependent's line from that
+//! read, so handing a later step a later document is the ordinary act this
+//! ring has been performing all along -- the standby takes the lost
+//! domain's grants unchanged, and the lap closes on four asks home, two of
+//! them placed before the domain that was carrying them was declined.
+//!
+//! The succession is not free, and the cost is at the seam rather than in
+//! the work. A channel carries the names of both its ends, so replacing a
+//! domain replaces its channels: `alder->birch` and `birch->cedar` are
+//! gone, `alder->beech` and `beech->cedar` stand new and silent at zero,
+//! and the ring alder already spent on birch is spent for good. A standby
+//! inherits regions and never inherits a bell, so the successor is woken
+//! again by name.
+//!
+//! Hosted ground: real processes, real files, pure policy, no kernel
+//! underneath it yet.
+//!
+//! Usage:
+//!   standby selftest                  Rebuild the ring around its loss
+//!   standby                           Same as selftest
+//!   standby dependent <domain> <plan> ... Run as a supervised dependent (internal)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const capabilities = @import("capabilities.rye");
+const roster = @import("roster.rye");
+const read = @import("read.rye");
+const boot = @import("boot.rye");
+const exercise = @import("exercise.rye");
+const carry = @import("carry.rye");
+const notify = @import("notify.rye");
+const roundtrip = @import("roundtrip.rye");
+const serve = @import("serve.rye");
+const relay = @import("relay.rye");
+const cycle = @import("cycle.rye");
+const restart = @import("restart.rye");
+const gap = @import("gap.rye");
+const decline = @import("decline.rye");
+const tally_parse_int = @import("parse_int.rye");
+
+const caravan_standby_version = "20260819.170944";
+
+// =========================================================================
+// The bounds -- three documents for one ring, and one hole that is filled
+// =========================================================================
+
+/// The ring as it stands before the loss, unchanged from `cycle.rye`.
+pub const ring_path = cycle.declaration_path;
+
+/// A standby named beside the domain it would replace, which no ring reads.
+pub const shadow_path = "caravan/systems/serial_cycle_shadow.bron";
+
+/// A detour drawn in advance, which reads whole and is a different shape.
+pub const bypass_path = "caravan/systems/serial_cycle_bypass.bron";
+
+/// The same ring with the standby standing where the lost domain stood.
+pub const succession_path = "caravan/systems/serial_cycle_succession.bron";
+
+/// How many times one assigned step is attempted before the supervisor
+/// declines the domain by name -- the bound `decline.rye` runs under.
+pub const max_attempts: u32 = decline.max_attempts;
+
+/// A dependent's fixed argv: the program, the marker, its domain, its plan, the
+/// point it may be dropped at, how it wakes its successor, and how many
+/// capability words follow.
+///
+/// The same seven words `gap.rye` proved. No detour is ever taken here, so
+/// the role word `decline.rye` added has nothing to say in this ring.
+pub const fixed_argv_words: u32 = gap.fixed_argv_words;
+
+/// How many distinct documents one run may derive from.
+///
+/// A succession replaces one document with one document, so two is the
+/// whole need; the bound is named so a run can never quietly grow a third.
+pub const max_declarations: u32 = 2;
+
+comptime {
+    // invariant: a decline always follows at least one real attempt
+    assert(max_attempts >= 2);
+    // invariant: a whole dependent argv stays within what one run builds
+    assert(fixed_argv_words + capabilities.max_caps_per_dependent + notify.max_peers_per_dependent <= 32);
+    // invariant: a succession swaps one document for one document
+    assert(max_declarations == 2);
+}
+
+/// Names one outcome for an operator, in the words the ring already spends.
+pub fn outcome_name(code: u8) []const u8 {
+    return gap.outcome_name(code);
+}
+
+// =========================================================================
+// The reading -- what a document says about a shape before anyone runs
+// =========================================================================
+
+/// Why one declaration cannot serve as the ring it was written for.
+pub const ShapeVerdict = enum {
+    /// A region carries other than exactly one writer and one reader.
+    no_flow,
+    /// Some domain touches other than two peers, so the shape has an end.
+    has_end,
+    /// No single directed lap visits every domain once and comes home.
+    no_single_lap,
+    /// A ring: directed throughout, every domain a middle, one lap.
+    ring,
+};
+
+/// Renders one verdict as the words an operator reads.
+pub fn verdict_words(v: ShapeVerdict) []const u8 {
+    return switch (v) {
+        .no_flow => "no directed flow to derive",
+        .has_end => "a domain spanning other than two peers",
+        .no_single_lap => "no single lap closing on every domain",
+        .ring => "a ring",
+    };
+}
+
+/// Reads one declaration and answers what shape its grants actually make.
+///
+/// Every step of the reading already exists and is reused rather than
+/// restated: `flows_of` for direction, `peer_span` for ends, `ring_order`
+/// for the lap. What this function adds is a name for each way the answer
+/// can come back negative, so a refusal tells an operator which layer
+/// refused rather than only that something did.
+pub fn shape_of(sys: *const system.System) ShapeVerdict {
+    // invariant: a shape is read from a roster that fits its bounds
+    assert(sys.map.domain_count >= 1);
+    const set = relay.flows_of(sys) orelse return .no_flow;
+    // invariant: a derived flow set covers every declared region
+    assert(set.count == sys.map.region_count);
+
+    var d: u32 = 0;
+    while (d < sys.map.domain_count) : (d += 1) {
+        if (relay.peer_span(&set, d) != 2) return .has_end;
+    }
+    // invariant: the whole roster was measured, none skipped
+    assert(d == sys.map.domain_count);
+
+    _ = cycle.ring_order(&set, sys.map.domain_count) orelse return .no_single_lap;
+    return .ring;
+}
+
+/// Answers whether two declarations name exactly the same regions, by name
+/// and by size, in any order.
+///
+/// This is the whole reason a succession costs the asks nothing. A region's
+/// backing store is addressed by the region's own name, so a document that
+/// names the same regions inherits every byte already standing in them --
+/// and a document that renames even one would silently start that arc over.
+pub fn same_regions(a: *const system.System, b: *const system.System) bool {
+    // invariant: both rosters stay within the region bound
+    assert(a.map.region_count <= regions_bound);
+    assert(b.map.region_count <= regions_bound);
+    if (a.map.region_count != b.map.region_count) return false;
+    var i: u32 = 0;
+    while (i < a.map.region_count) : (i += 1) {
+        const one = &a.map.regions[i];
+        var found = false;
+        var j: u32 = 0;
+        while (j < b.map.region_count) : (j += 1) {
+            const other = &b.map.regions[j];
+            if (!std.mem.eql(u8, one.slot.name_slice(), other.slot.name_slice())) continue;
+            if (one.size_bytes != other.size_bytes) return false;
+            found = true;
+            break;
+        }
+        if (!found) return false;
+    }
+    // invariant: every region of the first document was matched in the second
+    assert(i == a.map.region_count);
+    return true;
+}
+
+/// The region roster bound both documents are held to.
+const regions_bound: u32 = @import("regions.rye").max_regions;
+
+// =========================================================================
+// The dependent -- one process, one arc, and the document it was derived from
+// =========================================================================
+
+/// Reads the capability words a dependent was handed into its own slot.
+fn slot_from_argv(args: []const [:0]const u8, domain: []const u8, cap_count: u32) ?capabilities.DependentSlot {
+    // invariant: a dependent always knows which domain it is
+    assert(domain.len >= 1);
+    // invariant: the count stays within what one dependent may hold
+    assert(cap_count <= capabilities.max_caps_per_dependent);
+    var slot = capabilities.DependentSlot.init(domain);
+    var i: u32 = 0;
+    while (i < cap_count) : (i += 1) {
+        const cap = boot.read_cap_word(args[fixed_argv_words + i]) orelse return null;
+        slot.grant(cap) catch return null;
+    }
+    // invariant: the dependent holds exactly the capability words it was handed
+    assert(slot.cap_count == cap_count);
+    return slot;
+}
+
+/// Runs as one supervised dependent, holding exactly the capabilities, the
+/// neighbors, the one arc, the place it may be dropped, and the reading by
+/// which it wakes its successor.
+///
+/// A standby dependent is told nothing about being a standby. It reads the
+/// words it was handed, exactly as every domain in this ring always has,
+/// which is the point: succession is a fact about the document rather than
+/// a state a process carries.
+fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
+    // invariant: a dependent always receives its marker, domain, plan, fall, wake, and count
+    assert(args.len >= fixed_argv_words);
+    const domain = args[2];
+    const plan = args[3];
+    // invariant: a dependent always knows which domain it is
+    assert(domain.len >= 1);
+
+    const fall = gap.read_fall(args[4]) orelse {
+        print("    {s}: refused a fall word it could not read\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    const wake = gap.read_wake(args[5]) orelse {
+        print("    {s}: refused a wake word it could not read\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+
+    const cap_count = tally_parse_int.parse_int(u32, args[6], .{}) catch {
+        print("    {s}: refused an unreadable capability count\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    if (cap_count > capabilities.max_caps_per_dependent) {
+        print("    {s}: more capabilities than one dependent holds\n", .{domain});
+        return carry.Outcome.malformed;
+    }
+    if (fixed_argv_words + cap_count > args.len) {
+        print("    {s}: a capability count past the words it was handed\n", .{domain});
+        return carry.Outcome.malformed;
+    }
+
+    var slot = slot_from_argv(args, domain, cap_count) orelse {
+        print("    {s}: refused a malformed capability word\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+
+    var peers: notify.PeerList = .{};
+    var p: usize = fixed_argv_words + cap_count;
+    while (p < args.len) : (p += 1) {
+        peers.add(args[p]) catch {
+            print("    {s}: more peers than one dependent holds\n", .{domain});
+            return carry.Outcome.malformed;
+        };
+    }
+    // invariant: the dependent holds exactly the peer words it was handed
+    assert(peers.count == args.len - fixed_argv_words - cap_count);
+
+    const task = cycle.read_plan(plan) orelse {
+        print("    {s}: refused a plan it could not read\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    const code = gap.attempt(io, &slot, &peers, domain, task, fall, wake);
+    print("    {s}: {s} -- {s}\n", .{ domain, gap.fall_word(fall), outcome_name(code) });
+    return code;
+}
+
+// =========================================================================
+// The supervisor -- one document per attempt, and a later one after a loss
+// =========================================================================
+
+/// One declared step, together with the document it derives its rights from.
+///
+/// The document is named per step rather than per run, because a succession
+/// is exactly the act of a later step standing on a later declaration while
+/// the earlier steps stand on the one they were written against.
+pub const Assignment = struct {
+    decl: []const u8,
+    domain: []const u8,
+    verb: cycle.Verb,
+    hops: []const u8,
+    peers: []const u8,
+    count: u32,
+    fall: gap.Fall = .none,
+    /// Whether the fall lands on every attempt rather than the first alone.
+    permanent: bool = false,
+    expect: u8,
+};
+
+/// What one run did, reported whole.
+pub const Report = struct {
+    started: u32 = 0,
+    attempts: u32 = 0,
+    derivations: u32 = 0,
+    falls: u32 = 0,
+    declined: u32 = 0,
+    succeeded: u32 = 0,
+    homed: u32 = 0,
+    bells: u32 = 0,
+    /// The bells a later declaration brought that the ring never had --
+    /// the whole price of a succession, counted.
+    new_bells: u32 = 0,
+};
+
+/// Named ways a run declines rather than reporting a hollow success.
+pub const RunError = error{
+    SpawnFailed,
+    UnknownDomain,
+    PlanTooLong,
+    DeclarationUnreadable,
+    OutcomeMismatch,
+    NeverDeclined,
+    RegionsMoved,
+};
+
+/// How one assigned step ended, from the supervisor's side.
+const StepEnd = enum { ran, declined };
+
+/// Spawns one dependent once, against the document this step derives from.
+fn spawn_once(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    table: *const capabilities.CapabilityTable,
+    step: Assignment,
+    fall: gap.Fall,
+    wake: gap.Wake,
+) (RunError || boot.BootError)!u8 {
+    const slot = table.find_dependent(step.domain) orelse return error.UnknownDomain;
+    // invariant: the line handed out agrees with the declaration it came from
+    assert(boot.line_agrees(sys, slot));
+
+    var peers: notify.PeerList = .{};
+    notify.peers_of(sys, step.domain, &peers);
+
+    var plan_buf: [cycle.max_plan_len]u8 = undefined;
+    const plan = std.fmt.bufPrint(&plan_buf, "{s}:{s}:{s}:{d}", .{
+        cycle.verb_word(step.verb), step.hops, step.peers, step.count,
+    }) catch return error.PlanTooLong;
+
+    var count_buf: [8]u8 = undefined;
+    const count_word = std.fmt.bufPrint(&count_buf, "{d}", .{slot.cap_count}) catch
+        return error.PlanTooLong;
+
+    var storage: [capabilities.max_caps_per_dependent][boot.max_cap_word_len]u8 = undefined;
+    const argv = allocator.alloc(
+        []const u8,
+        fixed_argv_words + slot.cap_count + peers.count,
+    ) catch return error.SpawnFailed;
+    argv[0] = self_path;
+    argv[1] = "dependent";
+    argv[2] = slot.label_slice();
+    argv[3] = plan;
+    argv[4] = gap.fall_word(fall);
+    argv[5] = gap.wake_word(wake);
+    argv[6] = count_word;
+    var c: u32 = 0;
+    while (c < slot.cap_count) : (c += 1) {
+        assert(c < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        argv[fixed_argv_words + c] = try boot.write_cap_word(&storage[c], &slot.caps[c]);
+    }
+    var q: u32 = 0;
+    while (q < peers.count) : (q += 1) {
+        argv[fixed_argv_words + slot.cap_count + q] = peers.name_at(q);
+    }
+
+    var proc = std.process.spawn(io, .{ .argv = argv }) catch return error.SpawnFailed;
+    const term = proc.wait(io) catch return error.SpawnFailed;
+    return switch (term) {
+        .exited => |code| code,
+        else => restart.fell,
+    };
+}
+
+/// Runs one assigned step against its own document, declining the domain by
+/// name once it has spent everything a supervisor allows it.
+///
+/// Every attempt reloads that document from disk and derives the dependent's
+/// line from the read, so a step written against a later declaration takes
+/// its rights from the later declaration and nowhere else.
+fn run_assignment(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    step: Assignment,
+    wake: gap.Wake,
+    report_out: *Report,
+) (roster.RosterError || RunError || boot.BootError)!StepEnd {
+    // invariant: an assignment always names a document, a domain, its regions, and its peers
+    assert(step.decl.len >= 1);
+    assert(step.domain.len >= 1);
+    assert(step.hops.len >= 1);
+    assert(step.peers.len >= 1);
+
+    var tries: u32 = 0;
+    while (tries < max_attempts) : (tries += 1) {
+        var buf: [read.read_buffer_bytes]u8 = undefined;
+        const fresh = read.load(io, step.decl, &buf) catch
+            return error.DeclarationUnreadable;
+        if (fresh.verify() != .whole) return error.DeclarationUnreadable;
+        const table = try roster.from_system(&fresh);
+        // invariant: the freshly derived table enforces exactly what the document permits
+        assert(roster.agrees(&fresh, &table));
+        report_out.derivations += 1;
+
+        const fall: gap.Fall = if (step.permanent or tries == 0) step.fall else .none;
+        const code = try spawn_once(allocator, io, self_path, &fresh, &table, step, fall, wake);
+        report_out.attempts += 1;
+        if (code == restart.fell) {
+            report_out.falls += 1;
+            continue;
+        }
+        if (step.permanent) {
+            print("    {s}: returned where the run expected a domain lost for good\n", .{step.domain});
+            return error.NeverDeclined;
+        }
+        if (code != step.expect) {
+            print("    {s}: expected {s}, heard {s}\n", .{
+                step.domain, outcome_name(step.expect), outcome_name(code),
+            });
+            return error.OutcomeMismatch;
+        }
+        return .ran;
+    }
+    // invariant: a domain is only declined after spending every attempt
+    assert(tries == max_attempts);
+    print("    {s}: declined after {d} attempts -- the hole stays open\n", .{
+        step.domain, max_attempts,
+    });
+    return .declined;
+}
+
+/// The bells a run provisions: the ones the ring already had, and the ones
+/// a later declaration brought with it.
+const Bells = struct { standing: u32, fresh: u32 };
+
+/// Provisions the regions once, and the bells of every document the run
+/// will derive from.
+///
+/// The asymmetry here IS the cost of a succession, stated as code. Regions
+/// are addressed by their own names, so one provisioning serves every
+/// document that names the same ones, and every ask already standing keeps
+/// standing. A bell is addressed by the names of both its ends, so a
+/// document that renames a domain brings brand-new bells, silent at zero,
+/// and the ring already spent on the lost domain is spent for good.
+fn provision_all(
+    io: std.Io,
+    ring: *const system.System,
+    later: []const []const u8,
+) (roster.RosterError || exercise.ProvisionError || notify.BellError || RunError)!Bells {
+    // invariant: a run never derives from more documents than it declared
+    assert(later.len < max_declarations);
+    const provisioned = try exercise.provision(io, ring);
+    // invariant: every declared region has a backing store before any dependent runs
+    assert(provisioned == ring.map.region_count);
+
+    const standing = try roundtrip.provision_directed(io, ring);
+    var fresh: u32 = 0;
+    var i: u32 = 0;
+    while (i < later.len) : (i += 1) {
+        var buf: [read.read_buffer_bytes]u8 = undefined;
+        const next = read.load(io, later[i], &buf) catch return error.DeclarationUnreadable;
+        if (next.verify() != .whole) return error.DeclarationUnreadable;
+        // A successor document that renamed a region would quietly start
+        // that arc over, so the run refuses rather than reporting a lap
+        // that closed over bytes nobody placed.
+        if (!same_regions(ring, &next)) return error.RegionsMoved;
+        fresh += try roundtrip.provision_directed(io, &next);
+    }
+    // invariant: every document the run derives from has its bells standing
+    assert(i == later.len);
+    return .{ .standing = standing, .fresh = fresh };
+}
+
+/// Runs a whole ordered lap, where a later step may stand on a later
+/// declaration than the one the run opened against.
+pub fn run_plan(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    ring: *const system.System,
+    later: []const []const u8,
+    plan: []const Assignment,
+    wake: gap.Wake,
+) (roster.RosterError || exercise.ProvisionError || notify.BellError || RunError || boot.BootError)!Report {
+    // invariant: a run always knows what program to spawn
+    assert(self_path.len >= 1);
+    // invariant: a run always carries at least one step
+    assert(plan.len >= 1);
+    const bells = try provision_all(io, ring, later);
+
+    var report_out: Report = .{ .bells = bells.standing + bells.fresh, .new_bells = bells.fresh };
+    var i: u32 = 0;
+    while (i < plan.len) : (i += 1) {
+        const step = plan[i];
+        const end = try run_assignment(allocator, io, self_path, step, wake, &report_out);
+        if (end == .declined) {
+            report_out.declined += 1;
+            continue;
+        }
+        report_out.started += 1;
+        if (step.expect == carry.Outcome.carried_ok) {
+            report_out.succeeded += 1;
+            if (step.verb == .home) report_out.homed += step.count;
+        }
+    }
+    // invariant: no step ever ran without a fresh derivation standing behind it
+    assert(report_out.derivations == report_out.attempts);
+    // invariant: every step in the plan either ran or was declined
+    assert(report_out.started + report_out.declined == plan.len);
+    return report_out;
+}
+
+// =========================================================================
+// Self-test -- two documents a ring refuses, and one it carries home on
+// =========================================================================
+
+/// A middle lost for good, and a standby that carries the ring home.
+///
+/// Steps one and two stand on the ring as it was declared. birch falls on
+/// every attempt, spends them, and is declined by name. From step three the
+/// run stands on the succession, where beech holds birch's grants and
+/// nothing else moved -- so alder wakes its new successor by placing two
+/// more asks, beech carries all four, cedar carries all four, and alder
+/// takes four home. Two of those four were placed before the domain
+/// carrying them was lost.
+const succession_plan = [_]Assignment{
+    .{ .decl = ring_path, .domain = "alder", .verb = .place, .hops = "ask_ab", .peers = "birch", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .decl = ring_path, .domain = "birch", .verb = .pass, .hops = "ask_ab,ask_bc", .peers = "alder,cedar", .count = 2, .fall = .after_hear, .permanent = true, .expect = restart.fell },
+    .{ .decl = succession_path, .domain = "alder", .verb = .place, .hops = "ask_ab", .peers = "beech", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .decl = succession_path, .domain = "beech", .verb = .pass, .hops = "ask_ab,ask_bc", .peers = "alder,cedar", .count = 4, .expect = carry.Outcome.carried_ok },
+    .{ .decl = succession_path, .domain = "cedar", .verb = .pass, .hops = "ask_bc,ask_ca", .peers = "beech,alder", .count = 4, .expect = carry.Outcome.carried_ok },
+    .{ .decl = succession_path, .domain = "alder", .verb = .home, .hops = "ask_ca,taken", .peers = "cedar", .count = 4, .expect = carry.Outcome.carried_ok },
+};
+
+/// Proves the shape verdicts hold as words before any document is read.
+fn check_wire() u8 {
+    // invariant: every way a shape can be refused carries its own verdict
+    assert(shape_of_words_distinct());
+    print("  a shape reads back as one of four verdicts: {s}, {s}, {s}, {s}\n", .{
+        verdict_words(.no_flow), verdict_words(.has_end),
+        verdict_words(.no_single_lap), verdict_words(.ring),
+    });
+    return 0;
+}
+
+/// Answers whether the four verdicts really do read as four distinct words.
+fn shape_of_words_distinct() bool {
+    const all = [_]ShapeVerdict{ .no_flow, .has_end, .no_single_lap, .ring };
+    var i: u32 = 0;
+    while (i < all.len) : (i += 1) {
+        var j: u32 = i + 1;
+        while (j < all.len) : (j += 1) {
+            if (std.mem.eql(u8, verdict_words(all[i]), verdict_words(all[j]))) return false;
+        }
+    }
+    return true;
+}
+
+/// Loads one declaration, or names why it could not be read.
+fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
+    const parsed = read.load(io, path, buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ path, @errorName(err) });
+        return null;
+    };
+    if (parsed.verify() != .whole) {
+        print("  RED: {s} did not read whole\n", .{path});
+        return null;
+    }
+    return parsed;
+}
+
+/// A standby named beside the domain it would replace, refused for having
+/// two hands on one region.
+fn check_shadow(io: std.Io) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = load_one(io, shadow_path, &buf) orelse return 1;
+    const verdict = shape_of(&parsed);
+    if (verdict != .no_flow) {
+        print("  RED: a standby beside the domain it replaces read as {s}\n", .{verdict_words(verdict)});
+        return 1;
+    }
+    print("  a standby present beside the domain it would replace gives {s}\n", .{verdict_words(verdict)});
+    print("  the refusal lands before any capability check -- two writers on one region is not a shape\n", .{});
+    return 0;
+}
+
+/// A detour drawn in advance, directed throughout and no longer a ring.
+fn check_bypass(io: std.Io) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = load_one(io, bypass_path, &buf) orelse return 1;
+    const verdict = shape_of(&parsed);
+    if (verdict != .has_end) {
+        print("  RED: a pre-drawn detour read as {s}\n", .{verdict_words(verdict)});
+        return 1;
+    }
+    // invariant: the detour really is directed throughout -- only the shape fell away
+    assert(relay.flows_of(&parsed) != null);
+    print("  a standby given regions of its own keeps every flow directed and still gives {s}\n", .{
+        verdict_words(verdict),
+    });
+    print("  a ring with a spare route is a shape with a choice of laps, and a ring has exactly one\n", .{});
+    return 0;
+}
+
+/// The succession: the same ring declared again, with the standby standing
+/// where the lost domain stood.
+fn check_succession(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var ring_buf: [read.read_buffer_bytes]u8 = undefined;
+    const ring = load_one(io, ring_path, &ring_buf) orelse return 1;
+    var next_buf: [read.read_buffer_bytes]u8 = undefined;
+    const next = load_one(io, succession_path, &next_buf) orelse return 1;
+
+    const verdict = shape_of(&next);
+    if (verdict != .ring) {
+        print("  RED: the succession read as {s}\n", .{verdict_words(verdict)});
+        return 1;
+    }
+    if (!same_regions(&ring, &next)) {
+        print("  RED: the succession moved a region out from under the asks standing in it\n", .{});
+        return 1;
+    }
+    print("  the succession reads as {s}, over the very regions the loss left standing\n", .{
+        verdict_words(verdict),
+    });
+
+    const later = [_][]const u8{succession_path};
+    const done = run_plan(allocator, io, self_path, &ring, &later, &succession_plan, .when_moved) catch |err| {
+        print("  RED: the ring was not rebuilt around its loss: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: the middle spent every attempt and was declined once
+    assert(done.falls == max_attempts);
+    assert(done.declined == 1);
+    // invariant: every step past the loss carried, none half-ran
+    assert(done.succeeded == 5);
+    // invariant: the whole lap came home, the pair placed before the loss among it
+    assert(done.homed == 4);
+    // invariant: the succession brought its own bells rather than inheriting any
+    assert(done.new_bells == 6);
+    // invariant: the ring's own bells stand beside them, spent and unreachable
+    assert(done.bells == done.new_bells * 2);
+    print("  a middle lost for good costs {d} attempts and one decline, and the ring is declared again\n", .{
+        done.falls,
+    });
+    print("  the standby takes the lost domain's grants unchanged and {d} asks come home -- 2 of them placed before the loss\n", .{
+        done.homed,
+    });
+    print("  the succession brings {d} directed bells of its own beside the ring's {d}: a standby inherits regions and never inherits a bell\n", .{
+        done.new_bells, done.bells - done.new_bells,
+    });
+    return 0;
+}
+
+fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    print("Caravan standby {s} -- self-test\n", .{caravan_standby_version});
+    const wire = check_wire();
+    if (wire != 0) return wire;
+    const shadow = check_shadow(io);
+    if (shadow != 0) return shadow;
+    const bypass = check_bypass(io);
+    if (bypass != 0) return bypass;
+    const succeeded = check_succession(allocator, io, self_path);
+    if (succeeded != 0) return succeeded;
+    print("  GREEN: a ring is repaired by being declared again, and the asks pay nothing for it\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
+        return run_dependent(io, args);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(allocator, io, self_path);
+    }
+    if (args.len >= 2) return 1;
+    return run_self_test(allocator, io, self_path);
+}

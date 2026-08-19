@@ -1,7 +1,7 @@
 # Caravan -- Process Supervision
 
 **Language:** EN
-**Last updated:** `20260819.165722` (the decline ring lands -- a middle lost for good, and a ring proven to have no detour)
+**Last updated:** `20260819.170944` (the standby ring lands -- a ring rebuilt around its loss, and the one repair a ring accepts)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable -- process supervision ladder
 
@@ -44,6 +44,7 @@ Every ring here composes over the one before it. A later ring imports an earlier
 | cycle | [`cycle.rye`](cycle.rye) | a shape with no ends -- every domain spanning exactly two peers, the one lap that closes searched out of the flow graph rather than declared, an ask travelling a full circuit and arriving back at the domain that wrote it, and no domain inside the ring able to total the lap it belongs to |
 | gap | [`gap.rye`](gap.rye) | a middle of the ring falls mid-lap -- the debt standing in the region rather than in the process, and the one thing a fall swallows that a safe restart will not redo: the bell |
 | decline | [`decline.rye`](decline.rye) | a middle lost for good -- the domain declined by name once its attempts are spent, the circuit behind the hole free to run and report and wait, and no neighbor able to reach around it, refused by absence on one side and by rights on the other |
+| standby | [`standby.rye`](standby.rye) | a ring repaired around a domain it lost -- a standby named beside that domain refused as a second writer, a detour drawn in advance refused as a shape with a choice of laps, and the succession carrying every ask home over regions the loss left standing, at the price of bells it never inherits |
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
@@ -292,6 +293,24 @@ The third answer is the finding, and it is structural rather than policed:
 `alder` reaches for the arc behind the hole, `ask_ab` onward to `ask_bc`, with two real asks standing in it, and is refused `NotGranted`: the declaration hands alder no word for `ask_bc` at all. `cedar` reaches for alder's own homeward arc, `ask_ca` onward to `taken`, and gets further, since it holds both regions -- then it is stopped at the claim with `WriteDenied`, because it holds `taken` at rights that read and never write. Neither refusal is a rule this module enforces. Both are the grants, read back by the dependent from the words it was handed. So the entitlement question closes cleanly: the circuit is entitled to run, to report, and to wait, and it is never entitled to reach around. Nothing had to forbid that, because nothing ever permitted it.
 
 The numbers state the claim: two attempts spent and one decline, two steps never started under `halt` and two reporting `Unheard` under `carry-on`, two neighbors reaching around the hole and two refused, and zero asks home across it either way. Witness: [`tools/caravan_decline_witness.rish`](../tools/caravan_decline_witness.rish), GREEN on metal, both RED paths proven before the green was trusted.
+
+## Why a Ring Is Repaired by Being Declared Again
+
+`decline.rye` proved that no neighbor may reach around an open hole -- a ring has no detour, and the capability table refuses by absence and by rights. That answered what a *neighbor* may do, and left the sharper question standing. May the *declaration* draw the detour, naming a standby that legitimately holds the lost domain's regions, and what does a grant written for an absent domain cost the ring on every day the hole is closed? `standby.rye` writes both tempting versions out plainly and lets each refuse itself.
+
+**A standby present beside the domain it would replace is a second writer.** [`serial_cycle_shadow.bron`](systems/serial_cycle_shadow.bron) gives `beech` exactly `birch`'s grants, so the ring already has a hand on the regions the day birch is lost. The refusal lands a whole layer earlier than any capability check. A directed region carries exactly one writer and exactly one reader; this document carries two of each, so there is no flow to derive, no shape to name, and nothing for a ring order to search. The cost of a detour drawn in advance is charged every day the hole is closed.
+
+**A standby given regions of its own is a different shape.** [`serial_cycle_bypass.bron`](systems/serial_cycle_bypass.bron) answers that refusal honestly: `dogwood` gets its own arcs, every region keeps one writer and one reader, and the flow derivation is content. What falls away is the ring. alder writes to two successors and cedar reads from two predecessors, so alder spans three peers, and no single directed walk visits all four domains once and comes home. A ring with a spare route is not a ring with a spare route; it is a shape with a choice of laps, and `ring_order` answers null rather than picking one.
+
+So the repair is a re-declaration, and it is the finding:
+
+**A ring is repaired by being declared again, never by being routed around -- and the asks pay nothing for it, because a region belongs to the document rather than to the domain that was lost.**
+
+[`serial_cycle_succession.bron`](systems/serial_cycle_succession.bron) names `beech` where `birch` stood and moves nothing else. The four regions are the ring's own, name for name and byte for byte, so the two asks alder placed before the loss stand exactly where it left them. Every attempt in this arc already reloads its document from disk and derives the dependent's line from that read, so handing a later step a later document is the ordinary act the ring has been performing all along. The standby takes the lost domain's grants unchanged, and four asks come home -- two of them placed before the domain carrying them was declined.
+
+The succession is not free, and the cost sits at the seam rather than in the work. A channel carries the names of both its ends, so replacing a domain replaces its channels: `alder->birch` and `birch->cedar` are gone, `alder->beech` and `beech->cedar` stand new and silent at zero, and the ring alder already spent on birch is spent for good. **A standby inherits regions and never inherits a bell**, so the successor is woken again by name. That cost is proven rather than asserted: a probe that gave beech every one of birch's grants and never woke it by name heard its bell rung zero times and reported `Unheard`.
+
+The numbers state the claim: one middle declined after two attempts, six fresh directed bells standing beside the ring's own six, and four asks home across the repair. Witness: [`tools/caravan_standby_witness.rish`](../tools/caravan_standby_witness.rish), GREEN on metal, both RED paths proven before the green.
 
 ## Held
 

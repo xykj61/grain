@@ -1,0 +1,54 @@
+# serial_cycle_bypass -- a detour drawn in the document itself, and the
+# reason the shape stops being a ring the moment it is drawn.
+#
+# `serial_cycle_shadow.bron` gave a standby the very regions the domain it
+# would replace already holds, and the flow derivation refused it for
+# having two writers on one region. This declaration answers that refusal
+# honestly: `dogwood` gets regions of its own, so every region here keeps
+# exactly one writer and exactly one reader, and the flow derivation is
+# perfectly happy.
+#
+# What it loses instead is the shape. alder now writes to two successors,
+# `ask_ab` onward to birch and `ask_ad` onward to dogwood, and cedar reads
+# from two predecessors. So alder spans three peers rather than two, and no
+# single directed walk visits all four domains once and comes home -- every
+# lap that reaches cedar has left somebody out.
+#
+# The finding this declaration exists to state: a ring with a spare route
+# is not a ring with a spare route. It is a different shape, one with a
+# choice of laps, and `ring_order` answers null rather than picking one.
+#
+# Read whole by `caravan/read.rye`; refused by `caravan/standby.rye`.
+
+system serial_cycle_bypass
+
+domain alder
+domain birch
+domain cedar
+domain dogwood
+
+channel alder birch
+channel birch cedar
+channel cedar alder
+channel alder dogwood
+channel dogwood cedar
+
+region ask_ab 4096
+region ask_bc 4096
+region ask_ca 4096
+region ask_ad 4096
+region ask_dc 4096
+region taken 64
+
+grant ask_ab alder rw
+grant ask_ab birch r
+grant ask_bc birch rw
+grant ask_bc cedar r
+grant ask_ca cedar rw
+grant ask_ca alder r
+grant ask_ad alder rw
+grant ask_ad dogwood r
+grant ask_dc dogwood rw
+grant ask_dc cedar r
+grant taken alder rw
+grant taken cedar r
