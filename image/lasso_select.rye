@@ -1,0 +1,402 @@
+//! image/lasso_select.rye -- given a query POLYGON (a free-form LASSO), name every OBJECT it actually covers: the lasso / free-select
+//! primitive a surface runs the moment a keeper draws a loop around a scene. Exact integers, NO float and NO tolerance -- a pixel is
+//! covered exactly when it is foreground AND inside the polygon, decided by an even-odd ray cast in DOUBLED coordinates. The label map
+//! is the arbiter, each object's bounding box only a prefilter.
+//!
+//! Season G (Open Media Primitives) -- image/hit_test.rye names the ONE object under a POINT, image/region_select.rye names EVERY
+//! object a RECTANGLE covers; this rung names EVERY object an ARBITRARY POLYGON covers. It is the marquee one shape freer: where a
+//! rectangle is bound to four right angles, a lasso follows the keeper's hand, so it can hug a curved subject or reach around a
+//! neighbor. `select_in_poly(manifest, map, poly)` returns the ascending set of labels whose foreground truly falls inside the
+//! polygon, a valid empty set when the lasso catches nothing.
+//!
+//! The DECISIVE crux this rung earns, strictly sharper than the rectangle's: a bounding box that OVERLAPS is necessary but not
+//! sufficient, AND a CONCAVE lasso can EXCLUDE an object that any convex query would include. A polygon's own bounding box (and even
+//! its convex hull) can hold an object the polygon's concavity carves out -- an object tucked in the notch of a chevron sits inside
+//! the box, inside the hull, yet OUTSIDE the drawn loop. Only the even-odd arbiter, run pixel by pixel against the label map, names
+//! the true set. Two facts on metal say it:
+//!
+//!   THE NOTCH -- a right-pointing chevron (a concave dart) drawn so its tip covers one object while its notch opens around a second:
+//!   the second object's box overlaps the chevron's box (`poly_bbox_overlap_count` reads 2), and the second object sits inside the
+//!   chevron's convex hull too, yet every one of its pixels falls in the concavity, OUTSIDE the polygon, so the selection names
+//!   exactly the tip object. A rectangle -- or any convex region -- whose box catches the notch object would hold it; the lasso's
+//!   concavity is the capability a marquee cannot express.
+//!
+//!   COMPLETENESS -- the exclusion is geometry, never a blind spot: a small polygon drawn tightly AROUND the notch object selects it
+//!   exactly, so the same arbiter that carved it out grabs it the moment the loop is drawn around it.
+//!
+//! The parity is EXACT by two devices, no float anywhere. Working in DOUBLED coordinates -- each pixel sampled at its half-integer
+//! center, an ODD number, while every vertex sits on an EVEN one -- means a ray's scanline NEVER lands on a vertex, so a crossing is
+//! never the double-count-or-drop ambiguity a scanline through a corner would be (the same device image/fill_polygon.rye fills by).
+//! And each edge crossing is judged strictly-to-the-right by i128 CROSS-MULTIPLICATION rather than a divided intersection x, so the
+//! even-odd count is an exact integer parity, never a rounded compare. A pixel center that lands exactly on an edge resolves
+//! deterministically by the strict-right rule (it takes the parity of a point just to its right).
+//!
+//! Compose not braid. This rung OWNS the point-in-polygon arbiter, the polygon's bounding box, and the box-overlap prefilter reads.
+//! image/label.rye owns the component map and its `at` arbiter; image/scene_manifest.rye owns the per-object rows (`ObjectEntry`,
+//! `Manifest`); image/regions.rye owns the object bounding box each row carries; image/contour.rye owns the `Point` vertex type. No
+//! plane of its own, no pixel written -- a reading, not a render.
+//!
+//! Everything is bounded before a byte: a lasso carries at least three and at most `max_poly_vertices` vertices; `poly_bbox_overlap_
+//! count` runs `components` times, bounded by image/label.rye's `label_max_pixels`; the arbiter scan reads the polygon's box clamped
+//! to the map, at most `width * height` pixels under qoi's pixel ceiling, each pixel testing at most `max_poly_vertices` edges; the
+//! presence tally is sized to `count + 1` and the collect loop runs `count` times. A polygon with fewer than three vertices refuses
+//! `DegeneratePoly`, having read nothing; a lasso whose whole box lies off the map is a valid EMPTY selection, never a refusal -- a
+//! loop drawn past the edge legitimately selects what lies under its on-map part. No network, no key, no funds -- the lasso a surface
+//! names the day it must turn a hand-drawn loop into a set of objects, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/lasso_select.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const contour = @import("contour.rye");
+const scene_manifest = @import("scene_manifest.rye");
+
+pub const lasso_select_version = "20260818.231441";
+
+/// The most vertices a single lasso path may carry -- a generous ceiling for a hand-drawn loop, so every scan is bounded.
+pub const max_poly_vertices: u32 = 4096;
+
+pub const LassoSelectError = error{
+    DegeneratePoly,
+};
+
+/// A query POLYGON in pixel coordinates -- the closed loop a lasso traces, `verts` its ordered corner vertices with the closing edge
+/// from the last back to the first implied. A well-formed lasso carries at least three vertices (a real area) and no more than
+/// `max_poly_vertices`. Vertices may lie past the map; the arbiter clamps its scan to the map's real extent.
+pub const LassoPoly = struct {
+    verts: []const contour.Point,
+
+    /// TRUE when the lasso encloses a real area -- three vertices or more, within the vertex ceiling.
+    pub fn is_well_formed(self: *const LassoPoly) bool {
+        return self.verts.len >= 3 and self.verts.len <= @as(usize, max_poly_vertices);
+    }
+
+    /// The inclusive bounding box of the polygon's vertices -- `[min_x, min_y, max_x, max_y]`, the coarse extent a prefilter reads.
+    pub fn bbox(self: *const LassoPoly) [4]u32 {
+        // invariant: a box is read only from a well-formed lasso, so there is at least one vertex to seed the extent.
+        assert(self.verts.len >= 3);
+        assert(self.verts.len <= @as(usize, max_poly_vertices));
+        var min_x: u32 = self.verts[0].x;
+        var min_y: u32 = self.verts[0].y;
+        var max_x: u32 = self.verts[0].x;
+        var max_y: u32 = self.verts[0].y;
+        var i: usize = 1;
+        while (i < self.verts.len) : (i += 1) {
+            const v = self.verts[i];
+            if (v.x < min_x) min_x = v.x;
+            if (v.y < min_y) min_y = v.y;
+            if (v.x > max_x) max_x = v.x;
+            if (v.y > max_y) max_y = v.y;
+        }
+        // invariant: a bounding box never runs backward on either axis.
+        assert(max_x >= min_x);
+        assert(max_y >= min_y);
+        return [4]u32{ min_x, min_y, max_x, max_y };
+    }
+};
+
+/// TRUE when pixel (px, py) lies INSIDE the polygon by the EVEN-ODD rule -- the arbiter. Casts a ray from the pixel's half-integer
+/// center in +x and counts the edges strictly to its right; an odd count is inside. Works in DOUBLED coordinates (the sample center
+/// is odd, every vertex even) so a scanline never lands on a vertex, and judges each crossing by i128 cross-multiplication so the
+/// parity is an exact integer, no float and no divided intersection.
+pub fn point_in_poly(poly: *const LassoPoly, px: u32, py: u32) bool {
+    // invariant: the arbiter is asked only of a well-formed lasso -- a real closed area.
+    assert(poly.verts.len >= 3);
+    assert(poly.verts.len <= @as(usize, max_poly_vertices));
+    // the sample sits at the pixel's half-integer center in doubled coordinates: both odd, so never on an even-coordinate vertex.
+    const xs: i128 = 2 * @as(i128, px) + 1;
+    const ys: i128 = 2 * @as(i128, py) + 1;
+
+    var crossings: u32 = 0;
+    var i: usize = 0;
+    const n = poly.verts.len;
+    while (i < n) : (i += 1) {
+        const a = poly.verts[i];
+        const b = poly.verts[(i + 1) % n]; // the closing edge wraps from the last vertex back to the first
+        const ay: i128 = 2 * @as(i128, a.y);
+        const by: i128 = 2 * @as(i128, b.y);
+        // order the endpoints low-to-high in doubled y so the straddle test and the right-of test share one orientation.
+        const yl: i128 = if (ay < by) ay else by;
+        const yu: i128 = if (ay < by) by else ay;
+        const xl: i128 = if (ay < by) 2 * @as(i128, a.x) else 2 * @as(i128, b.x);
+        const xu: i128 = if (ay < by) 2 * @as(i128, b.x) else 2 * @as(i128, a.x);
+        // a horizontal edge (yl == yu) never straddles the odd scanline; a real crossing needs yl < ys < yu strictly.
+        if (ys <= yl or ys >= yu) continue;
+        const den: i128 = yu - yl; // > 0 by the straddle test
+        // invariant: the sample lies strictly inside the edge's vertical span, so the denominator is positive.
+        assert(den > 0);
+        const t: i128 = ys - yl; // 0 < t < den
+        // crossing_x = xl + (xu - xl) * t / den; count it when crossing_x > xs, cleared of the division: (xu-xl)*t > (xs-xl)*den.
+        const lhs: i128 = (xu - xl) * t;
+        const rhs: i128 = (xs - xl) * den;
+        if (lhs > rhs) crossings += 1;
+    }
+    // invariant: no edge is counted more than once, so the tally never exceeds the vertex count.
+    assert(crossings <= @as(u32, @intCast(n)));
+    return (crossings & 1) == 1;
+}
+
+/// TRUE when object `entry`'s inclusive bounding box OVERLAPS the polygon's bounding box -- the coarse PREFILTER, necessary but not
+/// sufficient. Two inclusive axis-aligned boxes overlap exactly when neither lies wholly to one side of the other on either axis.
+pub fn poly_bbox_overlaps(entry: scene_manifest.ObjectEntry, poly: *const LassoPoly) bool {
+    // invariant: a joined object's box is well-formed on both axes.
+    assert(entry.max_x >= entry.min_x);
+    assert(entry.max_y >= entry.min_y);
+    const box = poly.bbox();
+    const pmin_x = box[0];
+    const pmin_y = box[1];
+    const pmax_x = box[2];
+    const pmax_y = box[3];
+    return entry.min_x <= pmax_x and pmin_x <= entry.max_x and entry.min_y <= pmax_y and pmin_y <= entry.max_y;
+}
+
+/// HOW MANY objects' bounding boxes overlap the polygon's bounding box -- the count of PREFILTER candidates. It over-counts the true
+/// selection wherever a box overlaps the polygon's box but the object's foreground never falls inside the loop; the gap between this
+/// number and the selection size is exactly why the box cannot be the arbiter. Refuses `DegeneratePoly` for a lasso with too few
+/// vertices.
+pub fn poly_bbox_overlap_count(manifest: scene_manifest.Manifest, poly: *const LassoPoly) !u32 {
+    // invariant: the manifest holds exactly one row per component.
+    assert(manifest.objects.len == @as(usize, manifest.components));
+    // invariant: the candidate scan is bounded by the component count, itself under image/label.rye's pixel ceiling.
+    assert(manifest.components <= label.label_max_pixels);
+    if (!poly.is_well_formed()) return error.DegeneratePoly;
+
+    var candidates: u32 = 0;
+    var i: usize = 0;
+    while (i < manifest.objects.len) : (i += 1) {
+        if (poly_bbox_overlaps(manifest.objects[i], poly)) candidates += 1;
+    }
+    // invariant: no more boxes can overlap the polygon's box than there are objects.
+    assert(candidates <= manifest.components);
+    return candidates;
+}
+
+/// The ascending SET of object labels the lasso truly covers -- the arbiter's answer. Scans the polygon's bounding box CLAMPED to the
+/// map, and for each pixel that is BOTH foreground and inside the polygon, records its label; then collects every distinct label
+/// present, ascending (dense order). Returns an empty slice when the lasso catches only background or lies wholly off the map. Refuses
+/// `DegeneratePoly` for a lasso with too few vertices, having read nothing. `map` is read-only; the caller owns the returned slice.
+pub fn select_in_poly(allocator: std.mem.Allocator, manifest: scene_manifest.Manifest, map: *const label.LabelMap, poly: *const LassoPoly) ![]u32 {
+    // invariant: the manifest and the map are the same scene -- one row per component, the same component count.
+    assert(manifest.objects.len == @as(usize, manifest.components));
+    assert(manifest.components == map.count);
+    // invariant: a real label map carries one label per pixel across its whole extent.
+    assert(map.labels.len == @as(usize, map.width) * @as(usize, map.height));
+    if (!poly.is_well_formed()) return error.DegeneratePoly;
+
+    const count: u32 = map.count;
+    // a presence flag per dense label (index 0 unused -- background is never selected), sized to count + 1 and bounded by the pixel
+    // ceiling since a component needs at least one pixel.
+    // invariant: the component count never exceeds image/label.rye's pixel ceiling, so the presence tally is bounded.
+    assert(count <= label.label_max_pixels);
+    const present = try allocator.alloc(bool, @as(usize, count) + 1);
+    var p: usize = 0;
+    while (p < present.len) : (p += 1) present[p] = false;
+
+    const box = poly.bbox();
+    // scan the polygon's box clamped to the map; a box whose top-left starts past the map holds no on-map pixel -- a valid empty set.
+    if (box[0] < map.width and box[1] < map.height) {
+        const cx1: u32 = if (box[2] < map.width) box[2] else map.width - 1;
+        const cy1: u32 = if (box[3] < map.height) box[3] else map.height - 1;
+        // invariant: clamping only lowers a high corner, so the clamped box stays well-formed on both axes.
+        assert(cx1 >= box[0]);
+        assert(cy1 >= box[1]);
+
+        var y: u32 = box[1];
+        while (y <= cy1) : (y += 1) {
+            var x: u32 = box[0];
+            while (x <= cx1) : (x += 1) {
+                const lbl = map.at(x, y);
+                // invariant: the arbiter reports background or a dense, real label -- never a value past the component count.
+                assert(lbl <= count);
+                if (lbl != 0 and point_in_poly(poly, x, y)) present[@as(usize, lbl)] = true;
+            }
+        }
+    }
+
+    // collect the present labels ascending -- one pass over the dense range, so the result is sorted and duplicate-free by
+    // construction. Sized to count so it never overflows; the true length is the number of distinct labels found.
+    const scratch = try allocator.alloc(u32, @as(usize, count));
+    var found: u32 = 0;
+    var c: u32 = 1;
+    while (c <= count) : (c += 1) {
+        if (present[@as(usize, c)]) {
+            scratch[@as(usize, found)] = c;
+            found += 1;
+        }
+    }
+    // invariant: no more labels can be selected than the scene holds.
+    assert(found <= count);
+
+    const selection = try allocator.alloc(u32, @as(usize, found));
+    var k: usize = 0;
+    while (k < selection.len) : (k += 1) selection[k] = scratch[k];
+    return selection;
+}
+
+/// TRUE when `want` appears in an ascending selection -- a bounded membership read over the sorted result.
+pub fn is_selected(selection: []const u32, want: u32) bool {
+    // invariant: a real query names a foreground label, never background.
+    assert(want >= 1);
+    var i: usize = 0;
+    while (i < selection.len) : (i += 1) {
+        if (selection[i] == want) return true;
+    }
+    return false;
+}
+
+// --- selftest: the DECISIVE concavity crux (a concave chevron whose notch opens around one object while its tip covers another --
+//     the notch object sits inside the polygon's box AND its convex hull yet OUTSIDE the loop, so the selection names only the tip
+//     object); completeness (a small lasso drawn around the notch object selects it exactly); a whole-scene lasso selects both; a
+//     lasso off the map is a valid empty selection; a degenerate polygon refuses DegeneratePoly; determinism ----------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- THE SCENE -- two small objects on a 12x12 field. The NOTCH object (a vertical bar at x=2, rows 5..7) is painted first in
+    //     raster order, so it takes label 1; the TIP object (a horizontal bar at (5,6),(6,6)) takes label 2. They are three columns
+    //     apart, so they stay distinct 8-connected components. The notch bar sits at x=2 (pixel center 2.5) so every one of its rows
+    //     lands strictly inside the chevron's excluded triangle (2,2)-(4,6)-(2,10), whose right boundary slopes from x=3.25 at the
+    //     wings to x=3.75 at the apex row -- a bar one column further right would poke a low row THROUGH that sloped edge into the loop
+    var scene = try make_canvas(garden, 12, 12, 0);
+    set_dot(&scene, 2, 5);
+    set_dot(&scene, 2, 6);
+    set_dot(&scene, 2, 7); // notch object -> label 1
+    set_dot(&scene, 5, 6);
+    set_dot(&scene, 6, 6); // tip object -> label 2
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 2) return error.SceneNotTwoComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    if (scene_manifest.object_count(manifest) != 2) return error.ManifestNotTwoObjects;
+    // confirm the raster labeling: the notch bar is label 1, the tip bar is label 2.
+    if (map.at(2, 5) != 1) return error.NotchNotLabelOne;
+    if (map.at(5, 6) != 2) return error.TipNotLabelTwo;
+
+    // --- THE CHEVRON -- a right-pointing concave dart: back-top (2,2), tip (8,6), back-bottom (2,10), and the concave notch vertex
+    //     (4,6) pulled inward. Its bounding box is x[2,8], y[2,10], covering BOTH objects' boxes; its convex hull is the triangle
+    //     (2,2)-(8,6)-(2,10), which also contains the notch object. Yet the notch object's pixels all fall in the concavity ----------
+    const chevron_verts = [_]contour.Point{
+        .{ .x = 2, .y = 2 },
+        .{ .x = 8, .y = 6 },
+        .{ .x = 2, .y = 10 },
+        .{ .x = 4, .y = 6 },
+    };
+    const chevron = LassoPoly{ .verts = chevron_verts[0..] };
+    if (!chevron.is_well_formed()) return error.ChevronNotWellFormed;
+
+    // the raw arbiter: a point near the tip is inside, a point in the notch is outside -- the exact even-odd read.
+    if (!point_in_poly(&chevron, 6, 6)) return error.TipPointNotInside;
+    if (point_in_poly(&chevron, 2, 6)) return error.NotchPointFalselyInside;
+
+    // --- THE CONCAVITY CRUX -- the chevron's box overlaps BOTH objects (two candidates), yet the arbiter selects only the TIP
+    //     object (label 2): every pixel of the notch object falls in the concavity, outside the loop, though its box and even the
+    //     convex hull hold it. The prefilter over-counts the arbiter by exactly the concavity a marquee could never carve -----------
+    if (try poly_bbox_overlap_count(manifest, &chevron) != 2) return error.ChevronCandidatesNotTwo;
+    const sel_chevron = try select_in_poly(garden, manifest, &map, &chevron);
+    if (sel_chevron.len != 1) return error.ChevronSelectNotOne;
+    if (sel_chevron[0] != 2) return error.ChevronSelectNotTip;
+    if (is_selected(sel_chevron, 1)) return error.ChevronFalselyHoldsNotch;
+
+    // --- COMPLETENESS -- a small quad drawn tightly AROUND the notch object (x[2,4], y[4,8]) selects it exactly (label 1), and not
+    //     the tip object, whose box lies outside this lasso's box entirely -- the exclusion above was geometry, never a blind spot --
+    const around_verts = [_]contour.Point{
+        .{ .x = 2, .y = 4 },
+        .{ .x = 4, .y = 4 },
+        .{ .x = 4, .y = 8 },
+        .{ .x = 2, .y = 8 },
+    };
+    const around = LassoPoly{ .verts = around_verts[0..] };
+    if (try poly_bbox_overlap_count(manifest, &around) != 1) return error.AroundCandidatesNotOne;
+    const sel_around = try select_in_poly(garden, manifest, &map, &around);
+    if (sel_around.len != 1) return error.AroundSelectNotOne;
+    if (sel_around[0] != 1) return error.AroundSelectNotNotch;
+    if (is_selected(sel_around, 2)) return error.AroundFalselyHoldsTip;
+
+    // --- A WHOLE-SCENE LASSO -- a big quad over the entire canvas selects EVERY object, ascending: {1, 2} --------------------------
+    const whole_verts = [_]contour.Point{
+        .{ .x = 0, .y = 0 },
+        .{ .x = 11, .y = 0 },
+        .{ .x = 11, .y = 11 },
+        .{ .x = 0, .y = 11 },
+    };
+    const whole = LassoPoly{ .verts = whole_verts[0..] };
+    if (try poly_bbox_overlap_count(manifest, &whole) != 2) return error.WholeCandidatesNotTwo;
+    const sel_whole = try select_in_poly(garden, manifest, &map, &whole);
+    if (sel_whole.len != 2) return error.WholeSelectNotTwo;
+    if (sel_whole[0] != 1 or sel_whole[1] != 2) return error.WholeSelectNotAscendingOneTwo;
+
+    // --- A LASSO OFF THE MAP -- a triangle drawn wholly past the canvas holds no on-map pixel: a valid EMPTY selection, never a
+    //     refusal -- the loop-drawn-past-the-edge case a surface must tolerate ----------------------------------------------------
+    const off_verts = [_]contour.Point{
+        .{ .x = 20, .y = 20 },
+        .{ .x = 25, .y = 20 },
+        .{ .x = 22, .y = 25 },
+    };
+    const off = LassoPoly{ .verts = off_verts[0..] };
+    const sel_off = try select_in_poly(garden, manifest, &map, &off);
+    if (sel_off.len != 0) return error.OffMapSelectNotEmpty;
+
+    // --- A DEGENERATE POLYGON -- two vertices enclose no area: both reads refuse DegeneratePoly, having read nothing ------------
+    const line_verts = [_]contour.Point{
+        .{ .x = 1, .y = 1 },
+        .{ .x = 5, .y = 5 },
+    };
+    const line = LassoPoly{ .verts = line_verts[0..] };
+    if (line.is_well_formed()) return error.DegenerateClaimedWellFormed;
+    if (poly_bbox_overlap_count(manifest, &line)) |_| return error.DegenerateCountNotRefused else |err| {
+        if (err != error.DegeneratePoly) return error.WrongDegenerateCountError;
+    }
+    if (select_in_poly(garden, manifest, &map, &line)) |_| return error.DegenerateSelectNotRefused else |err| {
+        if (err != error.DegeneratePoly) return error.WrongDegenerateSelectError;
+    }
+
+    // --- DETERMINISM -- the same lasso reads the same selection twice ------------------------------------------------------------
+    const d1 = try select_in_poly(garden, manifest, &map, &whole);
+    const d2 = try select_in_poly(garden, manifest, &map, &whole);
+    if (d1.len != d2.len or d1[0] != d2[0] or d1[1] != d2[1]) return error.SelectNotDeterministic;
+
+    print("GREEN image-lasso-select: given a query POLYGON (a free-form LASSO), name every OBJECT it actually covers -- a pixel is covered exactly when it is foreground AND inside the polygon, decided by an EVEN-ODD ray cast in DOUBLED coordinates (each pixel sampled at its half-integer center, an ODD number, so a scanline never lands on an EVEN-coordinate vertex) with each crossing judged strictly-to-the-right by i128 CROSS-MULTIPLICATION, exact integers, NO float and NO tolerance -- the DECISIVE concavity crux, strictly sharper than the rectangle marquee: a right-pointing concave chevron (back (2,2), tip (8,6), back (2,10), notch (4,6)) drawn so its tip covers one object (label 2) while its notch opens around another (label 1, a bar at x=2 rows 5..7) selects EXACTLY the tip object, though the chevron's bounding box overlaps BOTH objects (poly_bbox_overlap_count reads 2) and its convex hull holds the notch object too -- every pixel of that object falls in the excluded triangle (2,2)-(4,6)-(2,10), OUTSIDE the loop, the capability a marquee or any convex query could never carve; completeness proves the exclusion is geometry not a blind spot (a small quad drawn tightly around the notch object selects it exactly, label 1); a whole-scene lasso selects every object ascending, label 1 then label 2; a lasso off the map is a valid empty selection; a two-vertex degenerate polygon refuses DegeneratePoly having read nothing; the same lasso reads the same selection twice. Compose not braid over image/label.rye (the at arbiter), image/scene_manifest.rye (the per-object rows), image/regions.rye (the bounding box), and image/contour.rye (the Point vertex)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: lasso_select selftest\n", .{});
+    return 1;
+}
