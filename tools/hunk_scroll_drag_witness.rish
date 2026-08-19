@@ -32,28 +32,20 @@ assert selftest.ok else "hunk-scroll-drag: selftest exited non-zero — ${selfte
 let out = trim selftest.out
 say "hunk-scroll-drag: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN preset-scroll-drag' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-scroll-drag: selftest did not print the GREEN preset-scroll-drag line"
+assert out contains "GREEN preset-scroll-drag" else "hunk-scroll-drag: selftest did not print the GREEN preset-scroll-drag line"
 
-let full = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a full-cell drag scrolls exactly one line reversibly' && echo yes"]
-assert (trim full.out) == "yes" else "hunk-scroll-drag: the reversible full-cell drag was not proven"
+assert out contains "a full-cell drag scrolls exactly one line reversibly" else "hunk-scroll-drag: the reversible full-cell drag was not proven"
 
-let carry = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'accumulate the carry and emit 0,0,0,1' && echo yes"]
-assert (trim carry.out) == "yes" else "hunk-scroll-drag: the accumulating carry was not proven"
+assert out contains "accumulate the carry and emit 0,0,0,1" else "hunk-scroll-drag: the accumulating carry was not proven"
 
-let bound = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the residual stays strictly within one cell after every feed' && echo yes"]
-assert (trim bound.out) == "yes" else "hunk-scroll-drag: the bounded carry was not proven"
+assert out contains "the residual stays strictly within one cell after every feed" else "hunk-scroll-drag: the bounded carry was not proven"
 
-let wrap = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'an i32-min delta onto a negative carry quantizes without wrap' && echo yes"]
-assert (trim wrap.out) == "yes" else "hunk-scroll-drag: the i32-min quantize without wrap was not proven"
+assert out contains "an i32-min delta onto a negative carry quantizes without wrap" else "hunk-scroll-drag: the i32-min quantize without wrap was not proven"
 
-let clamp = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the composed drag inherits HUNK43 clamps' && echo yes"]
-assert (trim clamp.out) == "yes" else "hunk-scroll-drag: the inherited HUNK43 clamps were not proven"
+assert out contains "the composed drag inherits HUNK43 clamps" else "hunk-scroll-drag: the inherited HUNK43 clamps were not proven"
 
-let fits = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a fitting library counts the lines yet never moves' && echo yes"]
-assert (trim fits.out) == "yes" else "hunk-scroll-drag: the fitting-library no-op was not proven"
+assert out contains "a fitting library counts the lines yet never moves" else "hunk-scroll-drag: the fitting-library no-op was not proven"
 
-let cell = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a zero or over-ceiling cell refuses BadCellHeight' && echo yes"]
-assert (trim cell.out) == "yes" else "hunk-scroll-drag: the BadCellHeight refusal was not proven"
+assert out contains "a zero or over-ceiling cell refuses BadCellHeight" else "hunk-scroll-drag: the BadCellHeight refusal was not proven"
 
 say "hunk-scroll-drag: GREEN — a touch drag in pixels drives the cursor over the cell height with a carried remainder; a full-cell drag walks reversibly, sub-cell drags accumulate to a whole line, the carry stays bounded, an i32-min delta never wraps, and the composed drag inherits every HUNK43 clamp. HUNK43 input and HUNK40 cursor GREEN beneath."
