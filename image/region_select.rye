@@ -1,0 +1,361 @@
+//! image/region_select.rye -- given a query RECTANGLE, name every OBJECT it actually covers: the marquee / drag-select and
+//! crop-region primitive a surface runs the moment a keeper drags a box across a scene. Exact integers, NO float and NO tolerance --
+//! the label map is the arbiter, each object's bounding box only a prefilter.
+//!
+//! Season G (Open Media Primitives) -- image/hit_test.rye names the ONE object under a POINT; this rung names EVERY object a
+//! RECTANGLE covers. It is the point hit test one dimension up: where a tap resolves to a single object, a drag selects a set of
+//! them. `select_in_rect(manifest, map, rect)` returns the ascending set of labels whose foreground actually enters the rectangle,
+//! a valid empty set when the rectangle catches nothing.
+//!
+//! The DECISIVE crux this rung exists to make plain -- the same lesson hit_test carries, lifted from a point to a rectangle: a
+//! bounding box that OVERLAPS the query rectangle is NECESSARY but NOT SUFFICIENT for the object to enter it. An object's box can
+//! overlap the rectangle while the object places NO pixel inside it -- the concavity of an L, the hole of a ring, the gap between a
+//! box's corners. So the box is a coarse prefilter that over-counts, and only the label map -- one exact integer per pixel -- is the
+//! arbiter of which objects a rectangle truly holds. Two facts on metal say it:
+//!
+//!   BOX OVERLAPS, OBJECT ABSENT -- an L (box (1,1)-(5,5)) with a small block tucked in its concavity: a rectangle drawn tightly on
+//!   the block OVERLAPS the L's box too (`bbox_overlap_count` reads 2), yet only the block places a pixel inside it, so the
+//!   selection names exactly the block. A rectangle drawn in the empty concavity overlaps the L's box (one candidate) yet selects
+//!   NOTHING -- the box claims a rectangle the object does not fill.
+//!
+//!   THE HOLE -- a rectangle drawn wholly inside a ring's hole sits within the ring's own bounding box (`bbox_overlap_count` reads
+//!   1), yet every pixel it covers is background, so the selection is EMPTY. The hole crux mirrors image/euler_number.rye's own
+//!   solid-versus-hollow separation, read now as a marquee that lands on nothing.
+//!
+//! Compose not braid. This rung OWNS only the rectangle-to-object-set decision and the box-overlap prefilter reads. image/label.rye
+//! owns the component map and its `at` arbiter; image/scene_manifest.rye owns the per-object rows (`ObjectEntry`, `Manifest`); image/
+//! regions.rye owns the bounding box each row carries. No plane of its own, no pixel written -- a reading, not a render.
+//!
+//! Everything is bounded before a byte: `bbox_overlap_count` runs `components` times, itself bounded by image/label.rye's
+//! `label_max_pixels`; the arbiter scan reads the rectangle clamped to the map, so it visits at most `width * height` pixels, under
+//! qoi's own pixel ceiling; the presence tally is sized to `count + 1` and the collect loop runs `count` times. A malformed
+//! rectangle (a low corner past its high corner) refuses `BadRect`, having read nothing; a rectangle wholly off the map is a valid
+//! EMPTY selection, never a refusal -- a marquee dragged past the edge legitimately selects what lies under its on-map part. No
+//! network, no key, no funds -- the region select a surface names the day it must turn a dragged box into a set of objects, on our
+//! own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/region_select.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+
+pub const region_select_version = "20260818.230130";
+
+pub const RegionSelectError = error{
+    BadRect,
+};
+
+/// A query RECTANGLE in pixel coordinates, corners INCLUSIVE -- `(min_x, min_y)` the top-left pixel, `(max_x, max_y)` the
+/// bottom-right, both covered. A well-formed rectangle keeps each low corner at or before its high corner; a marquee may extend past
+/// the map, and the arbiter clamps it to the map's real extent before reading.
+pub const QueryRect = struct {
+    min_x: u32 = 0,
+    min_y: u32 = 0,
+    max_x: u32 = 0,
+    max_y: u32 = 0,
+
+    /// TRUE when the rectangle is well-formed -- neither low corner passes its high corner.
+    pub fn is_well_formed(self: *const QueryRect) bool {
+        return self.max_x >= self.min_x and self.max_y >= self.min_y;
+    }
+
+    /// The inclusive pixel WIDTH of a well-formed rectangle.
+    pub fn width(self: *const QueryRect) u32 {
+        // invariant: a rectangle read for its width is well-formed on x.
+        assert(self.max_x >= self.min_x);
+        return self.max_x - self.min_x + 1;
+    }
+
+    /// The inclusive pixel HEIGHT of a well-formed rectangle.
+    pub fn height(self: *const QueryRect) u32 {
+        // invariant: a rectangle read for its height is well-formed on y.
+        assert(self.max_y >= self.min_y);
+        return self.max_y - self.min_y + 1;
+    }
+};
+
+/// TRUE when object `entry`'s inclusive bounding box OVERLAPS the query rectangle -- the coarse PREFILTER, necessary but not
+/// sufficient. Two inclusive axis-aligned boxes overlap exactly when neither lies wholly to one side of the other on either axis.
+pub fn bbox_overlaps_rect(entry: scene_manifest.ObjectEntry, rect: QueryRect) bool {
+    // invariant: a joined object's box is well-formed on both axes.
+    assert(entry.max_x >= entry.min_x);
+    assert(entry.max_y >= entry.min_y);
+    // invariant: the query rectangle is well-formed before an overlap is judged.
+    assert(rect.max_x >= rect.min_x);
+    assert(rect.max_y >= rect.min_y);
+    return entry.min_x <= rect.max_x and rect.min_x <= entry.max_x and entry.min_y <= rect.max_y and rect.min_y <= entry.max_y;
+}
+
+/// HOW MANY objects' bounding boxes overlap the query rectangle -- the count of PREFILTER candidates. It over-counts against the
+/// true selection wherever a box overlaps the rectangle but the object places no pixel there; the gap between this number and the
+/// selection size is exactly why the box cannot be the arbiter. Refuses `BadRect` for a malformed rectangle.
+pub fn bbox_overlap_count(manifest: scene_manifest.Manifest, rect: QueryRect) !u32 {
+    // invariant: the manifest holds exactly one row per component.
+    assert(manifest.objects.len == @as(usize, manifest.components));
+    // invariant: the candidate scan is bounded by the component count, itself under image/label.rye's pixel ceiling.
+    assert(manifest.components <= label.label_max_pixels);
+    if (!rect.is_well_formed()) return error.BadRect;
+
+    var candidates: u32 = 0;
+    var i: usize = 0;
+    while (i < manifest.objects.len) : (i += 1) {
+        if (bbox_overlaps_rect(manifest.objects[i], rect)) candidates += 1;
+    }
+    // invariant: no more boxes can overlap the rectangle than there are objects.
+    assert(candidates <= manifest.components);
+    return candidates;
+}
+
+/// The ascending SET of object labels the query rectangle truly covers -- the arbiter's answer. Scans the rectangle CLAMPED to the
+/// map, reads the exact label at each pixel, and collects every distinct foreground label present, ascending (dense order). Returns
+/// an empty slice when the rectangle catches only background or lies wholly off the map. Refuses `BadRect` for a malformed
+/// rectangle, having read nothing. `map` is read-only; the caller owns the returned slice.
+pub fn select_in_rect(allocator: std.mem.Allocator, manifest: scene_manifest.Manifest, map: *const label.LabelMap, rect: QueryRect) ![]u32 {
+    // invariant: the manifest and the map are the same scene -- one row per component, the same component count.
+    assert(manifest.objects.len == @as(usize, manifest.components));
+    assert(manifest.components == map.count);
+    // invariant: a real label map carries one label per pixel across its whole extent.
+    assert(map.labels.len == @as(usize, map.width) * @as(usize, map.height));
+    if (!rect.is_well_formed()) return error.BadRect;
+
+    const count: u32 = map.count;
+    // a presence flag per dense label (index 0 unused -- background is never selected). Sized to count + 1, bounded by the pixel
+    // ceiling since a component needs at least one pixel.
+    // invariant: the component count never exceeds image/label.rye's pixel ceiling, so the presence tally is bounded.
+    assert(count <= label.label_max_pixels);
+    const present = try allocator.alloc(bool, @as(usize, count) + 1);
+    var p: usize = 0;
+    while (p < present.len) : (p += 1) present[p] = false;
+
+    // A rectangle whose top-left corner starts past the map holds no on-map pixel -- a valid empty selection, not a refusal.
+    if (rect.min_x < map.width and rect.min_y < map.height) {
+        // clamp the high corners to the last on-map pixel; the low corners are already on the map by the guard above.
+        const cx1: u32 = if (rect.max_x < map.width) rect.max_x else map.width - 1;
+        const cy1: u32 = if (rect.max_y < map.height) rect.max_y else map.height - 1;
+        // invariant: clamping only lowers a high corner, so the clamped rectangle stays well-formed on both axes.
+        assert(cx1 >= rect.min_x);
+        assert(cy1 >= rect.min_y);
+
+        var y: u32 = rect.min_y;
+        while (y <= cy1) : (y += 1) {
+            var x: u32 = rect.min_x;
+            while (x <= cx1) : (x += 1) {
+                const lbl = map.at(x, y);
+                // invariant: the arbiter reports background or a dense, real label -- never a value past the component count.
+                assert(lbl <= count);
+                if (lbl != 0) present[@as(usize, lbl)] = true;
+            }
+        }
+    }
+
+    // collect the present labels ascending -- one pass over the dense range, so the result is sorted and duplicate-free by
+    // construction. Sized to count so it never overflows; the true length is the number of distinct labels found.
+    const scratch = try allocator.alloc(u32, @as(usize, count));
+    var found: u32 = 0;
+    var c: u32 = 1;
+    while (c <= count) : (c += 1) {
+        if (present[@as(usize, c)]) {
+            scratch[@as(usize, found)] = c;
+            found += 1;
+        }
+    }
+    // invariant: no more labels can be selected than the scene holds.
+    assert(found <= count);
+
+    const selection = try allocator.alloc(u32, @as(usize, found));
+    var k: usize = 0;
+    while (k < selection.len) : (k += 1) selection[k] = scratch[k];
+    return selection;
+}
+
+/// TRUE when `want` appears in an ascending selection -- a bounded membership read over the sorted result.
+pub fn is_selected(selection: []const u32, want: u32) bool {
+    // invariant: a real query names a foreground label, never background.
+    assert(want >= 1);
+    var i: usize = 0;
+    while (i < selection.len) : (i += 1) {
+        if (selection[i] == want) return true;
+    }
+    return false;
+}
+
+// --- selftest: the DECISIVE box-is-a-prefilter crux one dimension up (an L and a small block in its concavity -- a rectangle on
+//     the block overlaps BOTH boxes yet selects one; a rectangle in the empty concavity overlaps the L's box yet selects nothing;
+//     a rectangle in a ring's hole sits inside the ring's box yet selects nothing); a whole-scene rectangle selects every object;
+//     a rectangle off the map is a valid empty selection; a malformed rectangle refuses BadRect; determinism -----------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Set one pixel back to background at (x, y) -- carve a hole in a filled shape.
+fn clear_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 0;
+    img.pixels[di + 1] = 0;
+    img.pixels[di + 2] = 0;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- THE OVERLAP SCENE -- the same L-and-block scene image/hit_test.rye proves the point crux over. The L (label 1) is column
+    //     x=1 rows 1..5 plus row y=5 cols 1..5, box (1,1)-(5,5). The small 2x2 block (label 2) is cols 3..4 rows 2..3, box (3,2)-(4,3)
+    //     wholly INSIDE the L's box, yet two columns from the nearest L pixel -- a distinct 8-connected component ---------------------
+    var scene = try make_canvas(garden, 8, 8, 0);
+    var ly: u32 = 1;
+    while (ly <= 5) : (ly += 1) set_dot(&scene, 1, ly);
+    var lx: u32 = 1;
+    while (lx <= 5) : (lx += 1) set_dot(&scene, lx, 5);
+    set_block(&scene, 3, 2, 2, 2);
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 2) return error.SceneNotTwoComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    if (scene_manifest.object_count(manifest) != 2) return error.ManifestNotTwoObjects;
+
+    // --- A WHOLE-SCENE RECTANGLE -- a box over the entire canvas selects EVERY object, ascending: {1, 2} -----------------------
+    const whole = QueryRect{ .min_x = 0, .min_y = 0, .max_x = 7, .max_y = 7 };
+    if (try bbox_overlap_count(manifest, whole) != 2) return error.WholeCandidatesNotTwo;
+    const sel_whole = try select_in_rect(garden, manifest, &map, whole);
+    if (sel_whole.len != 2) return error.WholeSelectNotTwo;
+    if (sel_whole[0] != 1 or sel_whole[1] != 2) return error.WholeSelectNotAscendingOneTwo;
+
+    // --- CRUX 1, BOX OVERLAPS YET OBJECT ABSENT -- a rectangle drawn tightly on the block (3,2)-(4,3) OVERLAPS the L's box too
+    //     (two candidates), yet only the block places a pixel inside it (the L is at x=1 and y=5, nowhere in this rectangle), so the
+    //     selection names exactly the block -- the prefilter over-counts the arbiter by one -----------------------------------------
+    const on_block = QueryRect{ .min_x = 3, .min_y = 2, .max_x = 4, .max_y = 3 };
+    if (try bbox_overlap_count(manifest, on_block) != 2) return error.BlockCandidatesNotTwo;
+    const sel_block = try select_in_rect(garden, manifest, &map, on_block);
+    if (sel_block.len != 1) return error.BlockSelectNotOne;
+    if (sel_block[0] != 2) return error.BlockSelectNotBlock;
+    if (is_selected(sel_block, 1)) return error.BlockSelectFalselyHoldsL;
+
+    // --- CRUX 1 AGAIN, THE EMPTY CONCAVITY -- a rectangle in the L's concavity clear of the block (column x=2, rows 1..4) OVERLAPS
+    //     the L's box (one candidate) yet every pixel it covers is background, so the selection is EMPTY -- the box claims a
+    //     rectangle the object does not fill. The block's box is x 3..4, so this rectangle misses it entirely (zero of its candidates
+    //     is the block) -------------------------------------------------------------------------------------------------------------
+    const concavity = QueryRect{ .min_x = 2, .min_y = 1, .max_x = 2, .max_y = 4 };
+    if (try bbox_overlap_count(manifest, concavity) != 1) return error.ConcavityCandidatesNotOne;
+    const sel_concavity = try select_in_rect(garden, manifest, &map, concavity);
+    if (sel_concavity.len != 0) return error.ConcavitySelectNotEmpty;
+
+    // --- A PLAIN SELECT -- a rectangle squarely on the L's left column (1,1)-(1,3) selects exactly the L ------------------------
+    const on_l = QueryRect{ .min_x = 1, .min_y = 1, .max_x = 1, .max_y = 3 };
+    if (try bbox_overlap_count(manifest, on_l) != 1) return error.LCandidatesNotOne;
+    const sel_l = try select_in_rect(garden, manifest, &map, on_l);
+    if (sel_l.len != 1 or sel_l[0] != 1) return error.LSelectNotL;
+
+    // --- A RECTANGLE FULLY OUTSIDE EVERY BOX -- (6,6)-(7,7) overlaps no object's box (the L's box maxes at (5,5), the block inside):
+    //     zero candidates, an empty selection --------------------------------------------------------------------------------------
+    const outside = QueryRect{ .min_x = 6, .min_y = 6, .max_x = 7, .max_y = 7 };
+    if (try bbox_overlap_count(manifest, outside) != 0) return error.OutsideCandidatesNotZero;
+    const sel_outside = try select_in_rect(garden, manifest, &map, outside);
+    if (sel_outside.len != 0) return error.OutsideSelectNotEmpty;
+
+    // --- CRUX 2, THE RING HOLE -- a fresh scene with a single 5x5 ring, box (1,1)-(5,5), hole (2,2)-(4,4). A rectangle drawn wholly
+    //     inside the hole (2,2)-(4,4) sits within the ring's own box (one candidate) yet covers only background, so the selection is
+    //     EMPTY -- the hole crux, a marquee that lands on nothing ---------------------------------------------------------------------
+    var ring_img = try make_canvas(garden, 7, 7, 0);
+    set_block(&ring_img, 1, 1, 5, 5);
+    var hy: u32 = 2;
+    while (hy <= 4) : (hy += 1) {
+        var hx: u32 = 2;
+        while (hx <= 4) : (hx += 1) clear_dot(&ring_img, hx, hy);
+    }
+    const ring_map = try label.label_components(garden, &ring_img);
+    if (ring_map.count != 1) return error.RingNotOneComponent;
+    const ring_manifest = try scene_manifest.build_manifest(garden, &ring_map);
+
+    const in_hole = QueryRect{ .min_x = 2, .min_y = 2, .max_x = 4, .max_y = 4 };
+    if (try bbox_overlap_count(ring_manifest, in_hole) != 1) return error.HoleCandidatesNotOne;
+    const sel_hole = try select_in_rect(garden, ring_manifest, &ring_map, in_hole);
+    if (sel_hole.len != 0) return error.HoleSelectNotEmpty;
+    // a rectangle that crosses the ring's wall (0,0)-(1,6) does select the ring -- the wall carries real foreground
+    const on_wall = QueryRect{ .min_x = 0, .min_y = 0, .max_x = 1, .max_y = 6 };
+    const sel_wall = try select_in_rect(garden, ring_manifest, &ring_map, on_wall);
+    if (sel_wall.len != 1 or sel_wall[0] != 1) return error.WallSelectNotRing;
+
+    // --- A RECTANGLE OFF THE MAP -- a marquee whose top-left starts past the canvas holds no on-map pixel: a valid EMPTY selection,
+    //     never a refusal -- the drag-past-the-edge case a surface must tolerate ---------------------------------------------------
+    const off_map = QueryRect{ .min_x = 8, .min_y = 8, .max_x = 12, .max_y = 12 };
+    const sel_off = try select_in_rect(garden, manifest, &map, off_map);
+    if (sel_off.len != 0) return error.OffMapSelectNotEmpty;
+    // a marquee that STARTS on the map and runs past the edge clamps and still selects what lies under its on-map part
+    const overhang = QueryRect{ .min_x = 1, .min_y = 1, .max_x = 40, .max_y = 40 };
+    const sel_overhang = try select_in_rect(garden, manifest, &map, overhang);
+    if (sel_overhang.len != 2) return error.OverhangSelectNotTwo;
+
+    // --- A MALFORMED RECTANGLE -- a low corner past its high corner refuses BadRect, having read nothing ----------------------
+    const bad = QueryRect{ .min_x = 5, .min_y = 1, .max_x = 2, .max_y = 3 };
+    if (bad.is_well_formed()) return error.BadRectClaimedWellFormed;
+    if (bbox_overlap_count(manifest, bad)) |_| return error.BadRectCountNotRefused else |err| {
+        if (err != error.BadRect) return error.WrongBadRectCountError;
+    }
+    if (select_in_rect(garden, manifest, &map, bad)) |_| return error.BadRectSelectNotRefused else |err| {
+        if (err != error.BadRect) return error.WrongBadRectSelectError;
+    }
+
+    // --- DETERMINISM -- the same rectangle reads the same selection twice ------------------------------------------------------
+    const d1 = try select_in_rect(garden, manifest, &map, whole);
+    const d2 = try select_in_rect(garden, manifest, &map, whole);
+    if (d1.len != d2.len or d1[0] != d2[0] or d1[1] != d2[1]) return error.SelectNotDeterministic;
+
+    print("GREEN image-region-select: given a query RECTANGLE, name every OBJECT it actually covers -- the label map is the arbiter, each object's bounding box only a prefilter, exact integers, NO float and NO tolerance -- the DECISIVE box-is-a-prefilter crux one dimension up from the point hit test: an L (label 1, box (1,1)-(5,5)) with a small 2x2 block tucked in its concavity (label 2, box (3,2)-(4,3) wholly INSIDE the L's box) -- a rectangle drawn tightly on the block (3,2)-(4,3) OVERLAPS both boxes (bbox_overlap_count reads 2) yet selects exactly ONE object, the block, because only its foreground enters the rectangle; a rectangle in the empty concavity (column x=2) overlaps the L's box (one candidate) yet selects NOTHING, the box claiming a rectangle the object does not fill; a rectangle wholly inside a 5x5 ring's hole (2,2)-(4,4) sits within the ring's own box (one candidate) yet selects EMPTY while a rectangle crossing the wall selects the ring; a whole-scene rectangle selects every object ascending, label 1 then label 2; a rectangle outside every box selects empty; a marquee off the map is a valid empty selection and one that overhangs the edge clamps and still selects; a malformed rectangle refuses BadRect having read nothing; the same rectangle reads the same selection twice. Compose not braid over image/label.rye (the at arbiter), image/scene_manifest.rye (the per-object rows), and image/regions.rye (the bounding box)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: region_select selftest\n", .{});
+    return 1;
+}
