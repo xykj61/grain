@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260819.115633
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title line_raycast -- the nearest-crossing fold reads each object's OWN box, where line_slice reads the cluster
+prompt autonomous loop -- take the next agent-doable lap Lindy-first crux-first; the Season G scene-read line family; the named next crux is a nearest-crossing fold
+think Grounded as Kyri: read KYRI.md and RADIANT_STYLE.md, then REMEMBER, then REDS for the Standfast check. All living reds CLOSED/released/errata (only #75 waits on custody gate #1) -- no open agent-closable red blocks new work.
+think Running thread from session-logs/README top rows: line_slice landed (226 modules), recommend keep-going the Season G scene-read edge. REMEMBER names the next agent-doable crux as "a nearest-crossing fold". Council rota this lap: item 10, foundations/20260703-182612_sameness-is-the-macro.md (sameness is the macro -- one value model, one fold, one vocabulary; compress by public similarity).
+think Read line_slice.rye and line_pierce.rye to learn the idiom: exact integers, doubled coordinates, separating-axis crossing, compose-not-braid, insertion sort by an along-line key. line_slice orders pierced objects by line_order.project_label -- the CENTER projection.
+think The crux for line_raycast: a physical drag enters the box whose NEAR FACE it reaches first (the slab-method entry parameter), which can differ from center order. Designed line_raycast reading the pierced set ordered by t_enter = max(t_x_lo, t_y_lo), each axis entry a rational (near_face - a)/d, held (num, den) den>0, compared by i128 cross-multiply. No float, no sqrt, no divide.
+obs First scene tried (disjoint singletons) failed: proved a theorem on the way. line_order/line_slice project the CLUSTER center, not each object's box -- and objects whose bounding boxes overlap merge into one cluster. For a horizontal stroke, two objects both crossed with overlapping x-ranges necessarily share a bounding box (both y-ranges contain the stroke) -> same cluster. So genuine near-face-vs-center divergence happens exactly where line_slice already ties the objects on their shared cluster center and falls back to label order. That is the sharper, more honest crux.
+obs Redesigned: a wide L shape P (box x[5,20]) swallowing a narrow block Q (box x[12,15]) into one cluster, pixels disjoint. Horizontal stroke A->B casts [A,P,Q,B] by near x-face; line_slice ties P,Q on the cluster center and orders by label -> [A,Q,P,B]. P and Q swap at ranks 1,2 -- the divergence on metal.
+obs Deeper fact discovered and kept: the raycast is NOT a clean mirror under reversal. B->A casts [B,P,Q,A], not the reverse [B,Q,P,A], because a box nested in a wider one is entered AFTER it from BOTH ends (near-face order is not the mirror of far-face order). line_slice reverses cleanly by center-projection negation; line_raycast is direction-truthful and deeper.
+obs Entry parameter proven exact: start anchor A's entry is NEGATIVE (-1/44, stroke begins inside its own box), entries strictly ascend (-1/44, 7/44, 21/44, 43/44 over dx=44), and an oblique A->D exercises the max path: max(-1/18, -1/14) = -1/18, the x face winning, asserted by exact fraction on metal.
+loom witness=line_raycast_witness build_and_selftest_green=1 image_modules=227
+file image/line_raycast.rye the ray-cast rung -- entry_param, line_raycast, hit_count, hit_rank, first_hit, last_hit, hit_reads_before; slab-method entry parameter as an exact i128 rational
+file tools/line_raycast_witness.rish the on-metal witness -- native assert-contains (REDS #85 discipline), builds and runs the selftest, asserts every crux string
+file image/README.md docs-sync -- the Line raycast entry seated after Line slice, same round as the code
+file crux/REMEMBER.md live edge + Git nib updated to line_raycast, 226 -> 227 modules, in the same work commit
+recommend keep-going the Season G scene-read edge -- a single-hit nearest-crossing fold (first_hit as its own read), a codec read, or another Season-G / double-seat journey; Microkernel study and real-photo top-hat still wait on fetch/license/custody gates, surfaced not crossed. No network, no key, no funds.

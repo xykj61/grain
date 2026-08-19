@@ -1,0 +1,504 @@
+//! image/line_raycast.rye -- read ONE directed line, named by two anchor taps (from anchor A toward B), as a RAY CAST across the scene: the objects
+//! the FINITE stroke pierces, ordered by the exact parameter at which the stroke ENTERS each object's box -- the true front-to-back a drag
+//! physically experiences. image/line_slice.rye already orders the pierced objects front-to-back, yet it orders them by each object's CLUSTER center
+//! projected on the line, so two objects whose boxes overlap into one cluster share a projection and fall back to label order. `line_raycast` orders
+//! them by the NEAR FACE the stroke actually reaches first -- the slab-method entry parameter over each object's OWN box -- so a keeper's stroke
+//! reads the true order it entered them, even the two the cluster read cannot tell apart. NO float, NO tolerance, NO square root; the entry parameter
+//! is kept as an exact rational and every compare is a cross-multiply.
+//!
+//! Season G (Open Media Primitives) -- the crux this rung faces is that the nearest crossing is the NEAR FACE, not the midpoint, and it is exact
+//! with integers by the slab method. A finite stroke A + t*(B - A) enters an axis-aligned box's x-slab and y-slab each at one parameter; the box is
+//! entered at `t_enter = max(t_x_lo, t_y_lo)`, the later of the two axis entries. Each axis entry is a rational `(near_face - a) / d` over the
+//! direction component `d`; a zero component means the stroke runs parallel to that axis and the slab imposes no lower bound (a `-infinity`
+//! sentinel that loses every max). So `entry_param` is a single exact fraction held as `(num, den)` with `den > 0`, and `line_raycast` sorts the
+//! pierced labels by that fraction, ties broken by ascending label. Every branch an exact integer compare in i128; the only allocation is the
+//! pierced set itself, bounded by the component count.
+//!
+//! Three facts on metal say the crux:
+//!
+//!   THE BOX YOU ENTER FIRST IS NOT THE ONE THE CLUSTER ORDERS FIRST. Over a scene where a narrow block Q is nested in the x-span of a wide L shape
+//!   P -- their boxes overlapping into one cluster -- the horizontal stroke A -> B casts [A, P, Q, B], since the stroke reaches P's left face first,
+//!   while image/line_slice.rye orders the same pierced set [A, Q, P, B]: the two share a cluster center, so line_slice ties them and falls back to
+//!   ascending label, where Q rasterized first. The near face, read on each object's OWN box, is what line_raycast sees where the cluster read is
+//!   blind.
+//!
+//!   THE ENTRY PARAMETER IS EXACT AND RATIONAL. `entry_param` of the start anchor A is NEGATIVE -- the stroke begins inside its own anchor box, so it
+//!   entered that box before t = 0 -- and the entry parameters strictly ascend along the cast order, each a fraction over the direction with no
+//!   rounding. Along an oblique stroke A -> D the entry of A is the LATER of its two axis entries, `max(-1/18, -1/14) = -1/18`, the x face winning the
+//!   max exactly.
+//!
+//!   THE RAY CAST IS DIRECTION-TRUTHFUL, NOT A MIRROR. image/line_slice.rye reverses cleanly under B -> A because a center projection simply negates;
+//!   `line_raycast` does not. Reading the same stroke B -> A casts [B, P, Q, A], NOT the reverse [B, Q, P, A] of the forward order -- the narrow Q
+//!   nested inside the wide P is entered AFTER P from BOTH ends, because entry depends on the near face and the near-face order is not the mirror of
+//!   the far-face order. The pierced SET stays invariant; the order is the honest one the drawn direction produces, deeper than a mirror.
+//!
+//! Compose not braid. This rung OWNS only the entry-parameter geometry -- the slab-method near-face parameter and the rational order over it.
+//! image/line_pierce.rye owns `pierced_labels`, `pierces`, and `pierce_count` (the finite-stroke crossing that names the set); image/scene_manifest.rye
+//! owns the per-object box; image/click_collinear.rye owns the anchor centers that name the stroke. No crossing re-tested -- the set comes straight
+//! from image/line_pierce.rye; only the ORDER within it is this rung's own.
+//!
+//! Everything is bounded before a byte: the cast set is at most the component count, itself under image/label.rye's pixel ceiling, and the sort is an
+//! insertion sort over that same small set. Doubled coordinates never exceed twice the canvas extent (under 2^21), so an entry-parameter cross
+//! product `num * den` stays far inside i128. Each stroke needs two distinct anchor points, so two anchor taps sharing a group refuse `SameGroup`; a
+//! tap on background refuses `EmptyClick`; a point off the map refuses `PointOutOfBounds`; a query label past the object count refuses `BadTarget`;
+//! asking the entry or rank of an object the stroke MISSED refuses `NotHit`; the first or last of an EMPTY cast refuses `HitEmpty` -- each having read
+//! nothing further. No network, no key, no funds -- the "what did my stroke hit, and in what true order did it enter them" a surface answers the day
+//! a keeper drags a line across a scene.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/line_raycast.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const hit_test = @import("hit_test.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const click_order = @import("click_order.rye");
+const click_collinear = @import("click_collinear.rye");
+const line_pierce = @import("line_pierce.rye");
+const line_slice = @import("line_slice.rye");
+
+pub const line_raycast_version = "20260819.120000";
+
+pub const LineRaycastError = error{
+    NotHit,
+    HitEmpty,
+};
+
+/// The two anchor centers that name the directed line, held as doubled coordinates in i128 so the entry-parameter numerators and denominators never
+/// overflow -- exactly the stroke image/line_pierce.rye resolves and image/line_project.rye projects onto.
+const LineD = struct {
+    ax2: i128,
+    ay2: i128,
+    bx2: i128,
+    by2: i128,
+};
+
+/// An object's box in DOUBLED coordinates -- the corners of its pixel-center rectangle, `2 * (min, max)` on each axis, the same units the stroke
+/// endpoints live in. A well-formed box has `x1 >= x0` and `y1 >= y0`.
+const BoxD = struct {
+    x0: i128,
+    y0: i128,
+    x1: i128,
+    y1: i128,
+};
+
+/// An exact entry parameter `num / den` with `den > 0` -- the slab-method parameter at which the stroke enters a box, kept whole so no rounding ever
+/// enters the order.
+const EntryT = struct {
+    num: i128,
+    den: i128,
+};
+
+/// One axis's lower slab entry. `finite = false` is the `-infinity` sentinel a zero direction component produces -- the stroke runs parallel to that
+/// axis, so the slab imposes no lower bound and this axis loses every max.
+const AxisEntry = struct {
+    finite: bool,
+    num: i128,
+    den: i128,
+};
+
+/// Resolve the directed line from two anchor taps -- refuses `EmptyClick` on a miss and `PointOutOfBounds` off the map through the group id read,
+/// then `SameGroup` when the two anchors land in one group (a segment needs two distinct ends). Returns the two group centers as doubled
+/// coordinates in i128, exactly the centers image/line_pierce.rye reads from.
+fn resolve_line(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !LineD {
+    // invariant: the clustering and the map describe the same scene.
+    assert(clustering.components == map.count);
+    // invariant: the graph and the manifest describe that same scene.
+    assert(graph.components == manifest.components);
+
+    const ga = try click_order.click_group_id(clustering, map, ax, ay);
+    const gb = try click_order.click_group_id(clustering, map, bx, by);
+    // invariant: each anchor resolved to a real dense group id.
+    assert(ga >= 1);
+    assert(gb >= 1);
+    if (ga == gb) return error.SameGroup;
+
+    const ca = try click_collinear.click_group_center_doubled(garden, graph, manifest, map, ax, ay);
+    const cb = try click_collinear.click_group_center_doubled(garden, graph, manifest, map, bx, by);
+    return LineD{ .ax2 = @as(i128, ca.cx2), .ay2 = @as(i128, ca.cy2), .bx2 = @as(i128, cb.cx2), .by2 = @as(i128, cb.cy2) };
+}
+
+/// The doubled box of a query object -- image/scene_manifest.rye's per-object frame, each corner scaled by two so it shares the doubled units the
+/// stroke endpoints live in. Refuses `BadTarget` for background or a label past the object count.
+fn object_box(manifest: scene_manifest.Manifest, lbl: u32) !BoxD {
+    if (lbl < 1 or lbl > manifest.components) return error.BadTarget;
+    const e = try scene_manifest.object_of(manifest, lbl);
+    // invariant: a manifest box is well-formed on both axes -- a real rectangle to enter.
+    assert(e.max_x >= e.min_x);
+    assert(e.max_y >= e.min_y);
+    return BoxD{
+        .x0 = @as(i128, e.min_x) * 2,
+        .y0 = @as(i128, e.min_y) * 2,
+        .x1 = @as(i128, e.max_x) * 2,
+        .y1 = @as(i128, e.max_y) * 2,
+    };
+}
+
+/// One axis's lower slab entry `(near_face - a) / d`, normalized to a positive denominator. `d == 0` returns the `-infinity` sentinel (the stroke is
+/// parallel to this axis, so it never imposes a lower bound). When `d > 0` the near face is `lo`; when `d < 0` it is `hi`.
+fn axis_lower_entry(a2: i128, d: i128, lo: i128, hi: i128) AxisEntry {
+    // invariant: the box slab is well-formed on this axis.
+    assert(hi >= lo);
+    if (d == 0) return AxisEntry{ .finite = false, .num = 0, .den = 1 };
+    var num: i128 = if (d > 0) lo - a2 else hi - a2;
+    var den: i128 = d;
+    if (den < 0) {
+        num = -num;
+        den = -den;
+    }
+    // invariant: the entry parameter is normalized to a strictly positive denominator.
+    assert(den > 0);
+    return AxisEntry{ .finite = true, .num = num, .den = den };
+}
+
+/// TRUE when `n1 / d1 < n2 / d2` -- both denominators strictly positive, so the cross-multiply keeps the sign. Runs in i128 so the doubled-coordinate
+/// products never overflow.
+fn rat_lt(n1: i128, d1: i128, n2: i128, d2: i128) bool {
+    // invariant: both denominators are strictly positive, so cross-multiplying preserves the inequality.
+    assert(d1 > 0);
+    assert(d2 > 0);
+    return n1 * d2 < n2 * d1;
+}
+
+/// The exact entry parameter of the stroke into a box -- `max(t_x_lo, t_y_lo)`, the LATER of the two axis slab entries, the parameter at which the
+/// stroke has crossed into the box on both axes. At least one axis is finite (a resolved segment has a non-zero direction), so the max is defined.
+fn entry_param_of(line: LineD, box: BoxD) EntryT {
+    const ex = axis_lower_entry(line.ax2, line.bx2 - line.ax2, box.x0, box.x1);
+    const ey = axis_lower_entry(line.ay2, line.by2 - line.ay2, box.y0, box.y1);
+    // invariant: a resolved stroke moves, so at least one axis constrains the entry.
+    assert(ex.finite or ey.finite);
+    if (!ey.finite) return EntryT{ .num = ex.num, .den = ex.den };
+    if (!ex.finite) return EntryT{ .num = ey.num, .den = ey.den };
+    // both finite: the box is entered at the later of the two axis entries
+    if (rat_lt(ex.num, ex.den, ey.num, ey.den)) return EntryT{ .num = ey.num, .den = ey.den };
+    return EntryT{ .num = ex.num, .den = ex.den };
+}
+
+/// TRUE when object `a`'s entry sorts strictly before object `b`'s in the cast order -- ascending entry parameter, ties broken by ascending label.
+fn cast_less(n_a: i128, d_a: i128, lbl_a: u32, n_b: i128, d_b: i128, lbl_b: u32) bool {
+    if (rat_lt(n_a, d_a, n_b, d_b)) return true;
+    if (rat_lt(n_b, d_b, n_a, d_a)) return false;
+    return lbl_a < lbl_b;
+}
+
+/// Guard that a query label names a real object -- refuses `BadTarget` for background or a label past the object count, having read nothing.
+fn check_target(manifest: scene_manifest.Manifest, lbl: u32) !void {
+    if (lbl < 1 or lbl > manifest.components) return error.BadTarget;
+}
+
+/// The exact entry parameter of the FINITE stroke into object `lbl`'s box, `num / den` with `den > 0` -- the slab-method parameter at which the
+/// stroke first crosses into the box. Refuses `NotHit` when the stroke misses `lbl`, `BadTarget` for a label past the object count, and
+/// `SameGroup` / `EmptyClick` / `PointOutOfBounds` through the resolution.
+pub fn entry_param(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, lbl: u32) !EntryT {
+    try check_target(manifest, lbl);
+    if (!try line_pierce.pierces(garden, clustering, graph, manifest, map, ax, ay, bx, by, lbl)) return error.NotHit;
+    const line = try resolve_line(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const box = try object_box(manifest, lbl);
+    const t = entry_param_of(line, box);
+    // invariant: the returned entry parameter keeps a strictly positive denominator.
+    assert(t.den > 0);
+    return t;
+}
+
+/// The objects the FINITE stroke pierces, ordered by ENTRY PARAMETER along the drawn direction -- the true front-to-back a drag experiences,
+/// image/line_pierce.rye's `pierced_labels` re-sorted by `entry_param_of`, ties broken by ascending label. The caller owns the returned slice; its
+/// length equals `hit_count`. Refuses `SameGroup`, `EmptyClick`, `PointOutOfBounds` through the resolution.
+pub fn line_raycast(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) ![]u32 {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+    // invariant: the cast walk is bounded by the component count, itself under image/label.rye's pixel ceiling.
+    assert(manifest.components <= label.label_max_pixels);
+
+    const cast = try line_pierce.pierced_labels(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const n: usize = cast.len;
+    // invariant: the pierced set never exceeds the objects walked.
+    assert(n <= @as(usize, manifest.components));
+    const line = try resolve_line(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const num = try garden.alloc(i128, n);
+    const den = try garden.alloc(i128, n);
+    var i: usize = 0;
+    while (i < n) : (i += 1) {
+        const t = entry_param_of(line, try object_box(manifest, cast[i]));
+        num[i] = t.num;
+        den[i] = t.den;
+    }
+
+    // insertion sort the pierced labels by (entry parameter, label) ascending -- bounded by the cast size, stable and exact
+    var k: usize = 1;
+    while (k < n) : (k += 1) {
+        const key_lbl = cast[k];
+        const key_num = num[k];
+        const key_den = den[k];
+        var j: usize = k;
+        while (j >= 1 and cast_less(key_num, key_den, key_lbl, num[j - 1], den[j - 1], cast[j - 1])) : (j -= 1) {
+            cast[j] = cast[j - 1];
+            num[j] = num[j - 1];
+            den[j] = den[j - 1];
+        }
+        cast[j] = key_lbl;
+        num[j] = key_num;
+        den[j] = key_den;
+    }
+
+    // invariant: the result is a strict total order by (entry parameter, label) -- no adjacent pair out of order, so no label repeats.
+    var v: usize = 1;
+    while (v < n) : (v += 1) assert(cast_less(num[v - 1], den[v - 1], cast[v - 1], num[v], den[v], cast[v]));
+    return cast;
+}
+
+/// How many objects the FINITE stroke casts across -- the length of `line_raycast`, equal to `line_pierce.pierce_count`. Refuses `SameGroup`,
+/// `EmptyClick`, `PointOutOfBounds`.
+pub fn hit_count(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !u32 {
+    const n = try line_pierce.pierce_count(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    // invariant: the cast count never exceeds the objects in the scene.
+    assert(n <= manifest.components);
+    return n;
+}
+
+/// The 0-based place of object `lbl` in the cast order -- 0 is the object the stroke enters first (the nearest crossing). Refuses `NotHit` when the
+/// stroke misses `lbl`, `BadTarget` for a label past the object count, and `SameGroup` / `EmptyClick` / `PointOutOfBounds` through the resolution.
+pub fn hit_rank(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, lbl: u32) !u32 {
+    try check_target(manifest, lbl);
+    const cast = try line_raycast(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    var r: u32 = 0;
+    while (r < cast.len) : (r += 1) {
+        if (cast[r] == lbl) {
+            // invariant: the found rank sits inside the cast.
+            assert(r < cast.len);
+            return r;
+        }
+    }
+    return error.NotHit;
+}
+
+/// The object the stroke ENTERS first -- the nearest crossing, the front of the cast along the drawn direction. Refuses `HitEmpty` when the stroke
+/// pierces nothing, and `SameGroup` / `EmptyClick` / `PointOutOfBounds` through the resolution.
+pub fn first_hit(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !u32 {
+    const cast = try line_raycast(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    if (cast.len == 0) return error.HitEmpty;
+    // invariant: a non-empty cast has a real front object.
+    assert(cast[0] >= 1);
+    return cast[0];
+}
+
+/// The object the stroke enters LAST -- the far end of the cast along the drawn direction. Refuses `HitEmpty` when the stroke pierces nothing, and
+/// `SameGroup` / `EmptyClick` / `PointOutOfBounds` through the resolution.
+pub fn last_hit(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !u32 {
+    const cast = try line_raycast(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    if (cast.len == 0) return error.HitEmpty;
+    // invariant: a non-empty cast has a real far object.
+    assert(cast[cast.len - 1] >= 1);
+    return cast[cast.len - 1];
+}
+
+/// TRUE when object `a` is entered before object `b` along the cast -- both must be hit, else refuses `NotHit`. Refuses `BadTarget` for a label past
+/// the object count, and `SameGroup` / `EmptyClick` / `PointOutOfBounds` through the resolution.
+pub fn hit_reads_before(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, a: u32, b: u32) !bool {
+    try check_target(manifest, a);
+    try check_target(manifest, b);
+    const ra = try hit_rank(garden, clustering, graph, manifest, map, ax, ay, bx, by, a);
+    const rb = try hit_rank(garden, clustering, graph, manifest, map, ax, ay, bx, by, b);
+    // invariant: distinct labels never share a rank in a strict total order.
+    assert(a == b or ra != rb);
+    return ra < rb;
+}
+
+// --- selftest: the NEAREST-CROSSING crux (the box you enter first is not the one the cluster orders first, so line_raycast disagrees with
+//     line_slice exactly where two objects share a cluster center; the entry parameter is exact, rational, and negative for the start anchor; the
+//     ray cast is direction-truthful, not a mirror, so a nested object is entered after its container from both ends); refusals by name; determinism.
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- SCENE on a 28x14 canvas: four objects the horizontal stroke crosses, plus one high block D for an oblique entry check. P is a wide L shape
+    //     whose bounding box x-span [5,20] holds the narrow block Q (x-span [12,15]) inside it; their boxes OVERLAP into one cluster, yet their pixels
+    //     stay clear, so they are two distinct components. All four horizontal boxes straddle doubled-y 17 (the anchor centers' row):
+    //       A: block (1,8)   doubled box x(2,4)   y(16,18) center (3,17)   -- left anchor, always hit
+    //       Q: block (12,6)  doubled box x(24,30) y(12,18) center (27,15)  -- narrow, nested in P's x-span, near x-face 24, RASTERS FIRST (label 2)
+    //       P: L = column x=5 y8..11 + row y=11 x5..20, box x(10,40) y(16,22) center (25,19) -- WIDE, near x-face 10, rasters later (label 4)
+    //       B: block (23,8)  doubled box x(46,48) y(16,18) center (47,17)  -- right anchor, always hit
+    //       D: block (10,1)  doubled box x(20,22) y(2,4)   center (21,3)   -- high, for the oblique A -> D entry; the horizontal stroke misses it
+    //     P and Q share a cluster, so image/line_slice.rye gives them one projection and orders them by label: [A, Q, P, B]. line_raycast reads each
+    //     OWN box's near x-face: A(2), P(10), Q(24), B(46) -> [A, P, Q, B] -- P and Q swap, the crux made visible. Everything named by TAPPING -------
+    var scene = try make_canvas(garden, 28, 14, 0);
+    set_block(&scene, 10, 1, 2, 2); //  D: high block, above the horizontal stroke
+    set_block(&scene, 12, 6, 4, 4); //  Q: narrow block, top row y=6 (rasters before P)
+    set_block(&scene, 1, 8, 2, 2); //   A: left anchor
+    // P: an L shape -- a left column and a bottom row, one connected component with a wide box that swallows Q's x-span
+    var py: u32 = 8;
+    while (py <= 11) : (py += 1) set_dot(&scene, 5, py); // column x=5, y 8..11
+    var px: u32 = 5;
+    while (px <= 20) : (px += 1) set_dot(&scene, px, 11); // row y=11, x 5..20
+    set_block(&scene, 23, 8, 2, 2); //  B: right anchor
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 5) return error.SceneNotFiveComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    // P's wide box OVERLAPS Q's -- the shared cluster the crux needs -- so overlap_clusters merges them: five components, four visual clusters. The
+    // raycast reads over per-object LABELS, not clusters, so P and Q stay distinct objects the cast orders by their own boxes.
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    if (clustering.clusters != 4) return error.NotFourClusters;
+
+    // derive each object's dense label from a tap inside it -- no fragile raster assumption
+    const la = try hit_test.object_label_at(&map, 1, 8); //  A
+    const lq = try hit_test.object_label_at(&map, 12, 6); // Q
+    const lp = try hit_test.object_label_at(&map, 5, 8); //  P (its top column pixel)
+    const lb = try hit_test.object_label_at(&map, 23, 8); // B
+    const ld = try hit_test.object_label_at(&map, 10, 1); // D
+    if (la == 0 or lq == 0 or lp == 0 or lb == 0 or ld == 0) return error.TapMissedObject;
+    // P really is one component with a wide box -- a tap on its far bottom-row pixel names the same object as its top column pixel
+    if (try hit_test.object_label_at(&map, 20, 11) != lp) return error.PNotOneComponent;
+    // Q rasters before P, so it takes the smaller label -- the label tie-break line_slice will fall back to
+    if (!(lq < lp)) return error.QNotBeforePByLabel;
+
+    // the horizontal anchor taps (each lands inside its own block); centers (3,17) and (47,17)
+    const axp: u32 = 1; //  A tap
+    const ayp: u32 = 8;
+    const bxp: u32 = 23; // B tap
+    const byp: u32 = 8;
+
+    // --- THE BOX YOU ENTER FIRST IS NOT THE ONE THE CLUSTER ORDERS FIRST -- raycast [A, P, Q, B] vs line_slice [A, Q, P, B] --------------------
+    const cast = try line_raycast(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp);
+    if (cast.len != 4) return error.CastNotFour;
+    if (cast[0] != la or cast[1] != lp or cast[2] != lq or cast[3] != lb) return error.CastOrderWrong;
+    const sliced = try line_slice.line_slice(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp);
+    if (sliced.len != 4) return error.SliceNotFour;
+    if (sliced[0] != la or sliced[1] != lq or sliced[2] != lp or sliced[3] != lb) return error.SliceOrderWrong;
+    // the two reads carry the SAME pierced set yet DISAGREE on order -- P and Q trade places at ranks 1 and 2
+    if (cast[1] == sliced[1] or cast[2] == sliced[2]) return error.CastMatchesSliceWrongly;
+    if (try hit_count(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp) != 4) return error.HitCountWrong;
+    if (try first_hit(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp) != la) return error.FirstWrong;
+    if (try last_hit(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp) != lb) return error.LastWrong;
+    if (try hit_rank(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, lp) != 1) return error.RankPWrong;
+    if (try hit_rank(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, lq) != 2) return error.RankQWrong;
+    if (try hit_reads_before(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, lp, lq) != true) return error.PBeforeQWrong;
+    if (try hit_reads_before(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, lq, lp) != false) return error.QBeforePWrong;
+
+    // --- THE ENTRY PARAMETER IS EXACT AND RATIONAL -- A's entry is negative (starts inside its anchor), and entries strictly ascend along the cast
+    const ta = try entry_param(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, la);
+    if (ta.den <= 0) return error.EntryDenNotPositive;
+    if (ta.num >= 0) return error.StartEntryNotNegative; // A begins inside box A: entered before t = 0
+    // A(-1/44), P(7/44), Q(21/44), B(43/44) -- dx = 44, near x faces 2,10,24,46 minus ax2 = 3
+    const tp = try entry_param(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, lp);
+    const tq = try entry_param(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, lq);
+    const tb = try entry_param(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, lb);
+    // strictly ascending: ta < tp < tq < tb, by cross-multiply (all dens positive)
+    if (!(rat_lt(ta.num, ta.den, tp.num, tp.den) and rat_lt(tp.num, tp.den, tq.num, tq.den) and rat_lt(tq.num, tq.den, tb.num, tb.den))) return error.EntriesNotAscending;
+    // the exact fractions the horizontal stroke predicts by hand (dx = 44)
+    if (ta.num * 44 != -1 * ta.den or tp.num * 44 != 7 * tp.den or tq.num * 44 != 21 * tq.den or tb.num * 44 != 43 * tb.den) return error.EntryFractionWrong;
+
+    // asking the entry of an object the stroke MISSED refuses NotHit -- D is above the horizontal stroke
+    if (try line_pierce.pierces(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, ld) != false) return error.DWronglyHit;
+    if (entry_param(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, ld)) |_| return error.MissedEntryNotRefused else |err| {
+        if (err != error.NotHit) return error.WrongNotHitError;
+    }
+    if (hit_rank(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, ld)) |_| return error.MissedRankNotRefused else |err| {
+        if (err != error.NotHit) return error.WrongRankNotHitError;
+    }
+
+    // --- THE OBLIQUE ENTRY IS THE LATER OF TWO AXES -- along A -> D (dx = 18, dy = -14), A's entry is max(-1/18, -1/14) = -1/18, the x face winning
+    const oxp: u32 = 1; //  A tap
+    const oyp: u32 = 8;
+    const odx: u32 = 10; // D tap
+    const ody: u32 = 1;
+    const toa = try entry_param(garden, clustering, graph, manifest, &map, oxp, oyp, odx, ody, la);
+    // exactly -1/18: num/den == -1/18 with a positive denominator, so num * 18 == -1 * den
+    if (toa.den <= 0 or toa.num * 18 != -1 * toa.den) return error.ObliqueEntryWrong;
+
+    // --- THE RAY CAST IS DIRECTION-TRUTHFUL, NOT A MIRROR -- B -> A casts [B, P, Q, A], NOT the reverse [B, Q, P, A]; the SET is invariant --------
+    const rev = try line_raycast(garden, clustering, graph, manifest, &map, bxp, byp, axp, ayp);
+    if (rev.len != 4) return error.ReversedNotFour;
+    if (rev[0] != lb or rev[1] != lp or rev[2] != lq or rev[3] != la) return error.ReversedOrderWrong;
+    // the nested Q is entered AFTER the wide P from BOTH ends -- not a mirror of the forward order
+    if (try hit_reads_before(garden, clustering, graph, manifest, &map, bxp, byp, axp, ayp, lp, lq) != true) return error.ReversedNestingWrong;
+    // the plain reverse of the forward list would put Q before P at rank 1, and it does not
+    if (rev[1] == lq) return error.ReversedIsAMirrorWrongly;
+    if (try first_hit(garden, clustering, graph, manifest, &map, bxp, byp, axp, ayp) != lb) return error.ReversedFirstWrong;
+    if (try last_hit(garden, clustering, graph, manifest, &map, bxp, byp, axp, ayp) != la) return error.ReversedLastWrong;
+
+    // --- REFUSALS -- two anchors sharing a group refuse SameGroup; a background tap refuses EmptyClick; a point off the map refuses
+    //     PointOutOfBounds; a label past the object count refuses BadTarget; each having read nothing ------------------------------------------
+    if (try hit_test.object_label_at(&map, 1, 8) != try hit_test.object_label_at(&map, 2, 9)) return error.APixelsNotSameObject;
+    if (line_raycast(garden, clustering, graph, manifest, &map, 1, 8, 2, 9)) |_| return error.SameGroupNotRefused else |err| {
+        if (err != error.SameGroup) return error.WrongSameGroupError;
+    }
+    if (try hit_test.object_label_at(&map, 0, 0) != 0) return error.BackgroundNotEmpty;
+    if (line_raycast(garden, clustering, graph, manifest, &map, 0, 0, bxp, byp)) |_| return error.MissNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissError;
+    }
+    if (line_raycast(garden, clustering, graph, manifest, &map, axp, ayp, 28, 0)) |_| return error.OffMapNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapError;
+    }
+    if (hit_rank(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp, manifest.components + 1)) |_| return error.BadTargetNotRefused else |err| {
+        if (err != error.BadTarget) return error.WrongBadTargetError;
+    }
+
+    // --- DETERMINISM -- the same stroke casts the same objects in the same order twice -----------------------------------------------------
+    const c1 = try line_raycast(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp);
+    const c2 = try line_raycast(garden, clustering, graph, manifest, &map, axp, ayp, bxp, byp);
+    if (c1.len != c2.len) return error.CastNotDeterministic;
+    var d: usize = 0;
+    while (d < c1.len) : (d += 1) {
+        if (c1[d] != c2[d]) return error.CastNotDeterministic;
+    }
+
+    print("GREEN image-line-raycast: read ONE directed line, named by two anchor taps (from A toward B), as a RAY CAST across the scene -- the objects the FINITE stroke pierces, ordered by the exact parameter at which the stroke ENTERS each object's box, the true front-to-back a drag physically experiences. line_slice orders the same pierced set front-to-back yet by each object's CLUSTER center projected on the line, so two objects whose boxes overlap into one cluster share a projection and fall back to label order; line_raycast orders by the NEAR FACE the stroke reaches first -- the slab-method entry parameter over each object's OWN box, kept as an exact rational with every compare a cross-multiply, NO float and NO rounding. THE BOX YOU ENTER FIRST IS NOT THE ONE THE CLUSTER ORDERS FIRST -- over a scene where a narrow block Q is nested in the x-span of a wide L shape P (their boxes overlapping into one cluster), the horizontal stroke A -> B casts [A, P, Q, B] (P leads because the stroke reaches its left face first) while line_slice orders the same set [A, Q, P, B] (P and Q share a cluster center, so it ties them and falls back to ascending label where Q rasterized first); P and Q trade places at ranks 1 and 2, the near face read on each OWN box seeing what the cluster read is blind to. THE ENTRY PARAMETER IS EXACT AND RATIONAL -- entry_param of the start anchor A is NEGATIVE (the stroke begins inside its own anchor box, entered before t = 0), the entries strictly ascend along the cast (-1/44, 7/44, 21/44, 43/44 over dx = 44), and along an oblique stroke A -> D the entry of A is the LATER of its two axis entries, max(-1/18, -1/14) = -1/18, the x face winning the max exactly. THE RAY CAST IS DIRECTION-TRUTHFUL, NOT A MIRROR -- line_slice reverses cleanly under B -> A because a center projection negates, yet line_raycast casts [B, P, Q, A], NOT the reverse [B, Q, P, A]: the narrow Q nested inside the wide P is entered AFTER P from BOTH ends, because entry depends on the near face and the near-face order is not the mirror of the far-face order; the pierced SET stays invariant while the order stays the honest one the drawn direction produces. Asking the entry or rank of a missed object refuses NotHit, two anchors sharing a group refuse SameGroup, a background tap refuses EmptyClick, a point off the map refuses PointOutOfBounds, a label past the object count refuses BadTarget, the first or last of an empty cast refuses HitEmpty, each having read nothing further; the same stroke casts the same objects in the same order twice. Compose not braid over image/line_pierce.rye (pierced_labels and the finite crossing that names the set), image/scene_manifest.rye (the per-object box), and image/click_collinear.rye (the anchor centers that name the stroke) -- no crossing re-tested, only the order within the set this rung's own\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: line_raycast selftest\n", .{});
+    return 1;
+}
