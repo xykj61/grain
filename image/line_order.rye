@@ -1,0 +1,429 @@
+//! image/line_order.rye -- read a DIRECTED line named by TWO anchor taps (from anchor A toward anchor B) as a READING ORDER ALONG the
+//! line: rank every object by how far FORWARD its GROUP center projects in the line's direction, so a keeper who draws a line through the
+//! scene reads it back in the order the line sweeps. Exact integers, NO float and NO tolerance -- the ranking key is the dot product of
+//! the doubled centers, and scaling by the line's length is constant per line, so the projection ranks objects exactly without dividing.
+//!
+//! Season G (Open Media Primitives) -- image/line_partition.rye reads the SIGN of the cross product `(B - A) x (C - A)` over the doubled
+//! group centers, splitting the plane PERPENDICULAR to A -> B into LEFT / ON / RIGHT. This rung reads the OTHER projection of the same
+//! directed line: the DOT product `(B - A) . (C - A)`, the position PARALLEL to A -> B -- how far along the line's own direction each
+//! object's group center falls. `line_order` returns every object label sorted front-to-back along the line; `project_label` reads one
+//! object's along-line key; `reads_before` the pairwise order; `along_tie` whether two objects share a projection; `rank_of` a label's
+//! place; `first_along` and `last_along` the frontmost and backmost. It composes over the same public primitives line_partition resolves
+//! its line from -- a reading over readings, no plane of its own.
+//!
+//! The DECISIVE crux -- along-line ORDER and across-line SIDE are ORTHOGONAL, the dot and the cross of the same two anchors. The cross
+//! product names the PERPENDICULAR (which side); the dot product names the PARALLEL (how far along). One says nothing about the other, and
+//! two facts on metal say it:
+//!
+//!   TWO OBJECTS CAN TIE IN ORDER YET SPLIT TO OPPOSITE SIDES. Over a horizontal line A -> B, object U (above) and object D (below) sit at
+//!   the SAME column, so their group centers share a projection -- `along_tie(U, D)` is TRUE, they read at one along-line depth. Yet
+//!   line_partition places U LEFT and D RIGHT: the identical along-line rank-key, opposite sides. Rank is invariant to side exactly where
+//!   side is invariant to rank. The label tie-break gives the pair a deterministic total order, while `along_tie` names the projection
+//!   itself as tied -- the honest distinction between a real along-line difference and a bare tie-break.
+//!
+//!   THE ORDER READS THE DRAWN DIRECTION, AND THE TIE MOVES WITH IT. Drawn horizontally (A -> B), the order is the x-order of the centers
+//!   and U and D tie (same column). Drawn vertically (the anchors U -> D), the SAME six objects reorder to the y-order of the centers, and
+//!   now the former anchors A and B tie (same row) while U and D no longer do. A line_order is not a fixed axis read -- it generalizes
+//!   image/reading_order.rye's top-to-bottom sweep to ANY direction a keeper draws, and every tie is a property of the line, not the scene.
+//!   Reversing the anchors to B -> A negates every projection, so the whole order reverses (each tie keeping its ascending-label break) --
+//!   the along-line analog of line_partition's side-swap antisymmetry.
+//!
+//! Compose not braid. This rung OWNS only the along-line PROJECTION and the sort it induces. image/line_partition.rye owns the cross-product
+//! side arbiter (`object_side`) the crux cross-checks against; image/click_order.rye owns `click_group_id` (the anchor-distinctness guard);
+//! image/click_collinear.rye owns `click_group_center_doubled` and `CenterD` (the anchor centers); image/overlap_clusters.rye and
+//! image/cluster_facts.rye own the object-to-group map and its union frame, whose doubled midpoint is the exact group center. No side
+//! re-judged, no center re-invented -- every fact looked up through the primitive that already proved it.
+//!
+//! Everything is bounded before a byte: the projection walk runs `components` times, itself bounded by image/label.rye's `label_max_pixels`;
+//! the sort is an insertion sort over that same bounded count; the dot product runs in i64 so the doubled-coordinate products never
+//! overflow. A directed line needs two distinct points, so two anchor taps sharing a group refuse `SameGroup` by name; a tap on background
+//! refuses `EmptyClick`; a point off the map refuses `PointOutOfBounds`; a query naming a label past the object count refuses `BadTarget`,
+//! each having read nothing. No network, no key, no funds -- the "read the scene in the order I just swept" a surface answers the day a
+//! keeper draws a line through the whole picture and asks it to line up along the stroke.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/line_order.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const hit_test = @import("hit_test.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const cluster_facts = @import("cluster_facts.rye");
+const click_order = @import("click_order.rye");
+const click_collinear = @import("click_collinear.rye");
+const line_partition = @import("line_partition.rye");
+
+pub const line_order_version = "20260819.081651";
+
+pub const LineOrderError = error{
+    BadTarget,
+};
+
+/// The directed line as the two anchor GROUP centers in doubled coordinates -- exactly the line image/line_partition.rye resolves. Held as
+/// i64 so the dot product's doubled-coordinate products never overflow.
+const LineD = struct {
+    ax2: i64,
+    ay2: i64,
+    bx2: i64,
+    by2: i64,
+};
+
+/// Resolve the directed line from two anchor taps -- refuses `EmptyClick` on a miss and `PointOutOfBounds` off the map through the group id
+/// read, then `SameGroup` when the two anchors land in one group (a line needs two distinct points). Returns the two group centers as
+/// doubled coordinates, the same line image/line_partition.rye reads its sides from.
+fn resolve_line(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !LineD {
+    // invariant: the clustering and the map describe the same scene.
+    assert(clustering.components == map.count);
+    // invariant: the graph and the manifest describe that same scene.
+    assert(graph.components == manifest.components);
+
+    const ga = try click_order.click_group_id(clustering, map, ax, ay);
+    const gb = try click_order.click_group_id(clustering, map, bx, by);
+    // invariant: each anchor resolved to a real dense group id.
+    assert(ga >= 1);
+    assert(gb >= 1);
+    if (ga == gb) return error.SameGroup;
+
+    const ca = try click_collinear.click_group_center_doubled(garden, graph, manifest, map, ax, ay);
+    const cb = try click_collinear.click_group_center_doubled(garden, graph, manifest, map, bx, by);
+    return LineD{ .ax2 = @as(i64, ca.cx2), .ay2 = @as(i64, ca.cy2), .bx2 = @as(i64, cb.cx2), .by2 = @as(i64, cb.cy2) };
+}
+
+/// The doubled center of the GROUP object `lbl` belongs to -- the object-to-group map (`cluster_of`) followed by the group's union frame
+/// (`cluster_bbox`), whose doubled midpoint is the exact group center. Every member of a multi-object group reads the SAME center.
+fn label_group_center(clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, lbl: u32) !click_collinear.CenterD {
+    // invariant: a real object label, never background.
+    assert(lbl >= 1);
+    const cid = try overlap_clusters.cluster_of(clustering, lbl);
+    const box = try cluster_facts.cluster_bbox(clustering, graph, cid);
+    // invariant: the frame is well-formed on both axes -- a real box to center.
+    assert(box.max_x >= box.min_x);
+    assert(box.max_y >= box.min_y);
+    return click_collinear.CenterD{ .cx2 = box.min_x + box.max_x, .cy2 = box.min_y + box.max_y };
+}
+
+/// The along-line PROJECTION of a group center: the dot product `(B - A) . (C - A)` over the doubled centers. Monotone in how far forward
+/// the center sits in the line's direction -- larger is farther toward B. Scaling by the line's length is constant per line, so the raw
+/// dot product ranks objects exactly, with no division and no float.
+fn projection_of(line: LineD, center: click_collinear.CenterD) i64 {
+    const abx: i64 = line.bx2 - line.ax2;
+    const aby: i64 = line.by2 - line.ay2;
+    const acx: i64 = @as(i64, center.cx2) - line.ax2;
+    const acy: i64 = @as(i64, center.cy2) - line.ay2;
+    return abx * acx + aby * acy;
+}
+
+/// TRUE when object `a` sorts strictly before object `b` in the along-line total order -- ascending projection, ties broken by ascending
+/// label. The tie-break makes the order total and deterministic; `along_tie` names when the projection itself tied.
+fn order_less(proj_a: i64, lbl_a: u32, proj_b: i64, lbl_b: u32) bool {
+    if (proj_a < proj_b) return true;
+    if (proj_a > proj_b) return false;
+    return lbl_a < lbl_b;
+}
+
+/// Guard that a query label names a real object -- refuses `BadTarget` for background or a label past the object count, having read nothing.
+fn check_target(manifest: scene_manifest.Manifest, lbl: u32) !void {
+    if (lbl < 1 or lbl > manifest.components) return error.BadTarget;
+}
+
+/// The along-line projection of object `lbl`'s GROUP center under the directed line A -> B -- the exact-integer key `line_order` ranks by.
+/// Refuses `SameGroup`, `EmptyClick`, `PointOutOfBounds` through the line resolution, and `BadTarget` for a label past the object count.
+pub fn project_label(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, lbl: u32) !i64 {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+
+    try check_target(manifest, lbl);
+    const line = try resolve_line(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const center = try label_group_center(clustering, graph, lbl);
+    return projection_of(line, center);
+}
+
+/// The whole scene sorted FRONT-TO-BACK along the directed line A -> B: every object label ranked by ascending along-line projection, ties
+/// broken by ascending label so the order is total and deterministic. The anchors are included, ranked by their own projection like any
+/// object. The caller owns the returned slice. Refuses `SameGroup`, `EmptyClick`, `PointOutOfBounds` through the line resolution.
+pub fn line_order(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) ![]u32 {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+    // invariant: the projection walk and the sort are bounded by the component count, itself under image/label.rye's pixel ceiling.
+    assert(manifest.components <= label.label_max_pixels);
+
+    const line = try resolve_line(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const n: usize = @as(usize, manifest.components);
+    const order = try garden.alloc(u32, n);
+    const proj = try garden.alloc(i64, n);
+    var lbl: u32 = 1;
+    while (lbl <= manifest.components) : (lbl += 1) {
+        const center = try label_group_center(clustering, graph, lbl);
+        order[@as(usize, lbl - 1)] = lbl;
+        proj[@as(usize, lbl - 1)] = projection_of(line, center);
+    }
+
+    // insertion sort by (projection, label) ascending -- bounded by the component count, stable and exact over the small scene
+    var i: usize = 1;
+    while (i < n) : (i += 1) {
+        const key_lbl = order[i];
+        const key_proj = proj[i];
+        var j: usize = i;
+        while (j >= 1 and order_less(key_proj, key_lbl, proj[j - 1], order[j - 1])) : (j -= 1) {
+            order[j] = order[j - 1];
+            proj[j] = proj[j - 1];
+        }
+        order[j] = key_lbl;
+        proj[j] = key_proj;
+    }
+
+    // invariant: the result is a strict total order by (projection, label) -- no adjacent pair out of order, so no label repeats.
+    var v: usize = 1;
+    while (v < n) : (v += 1) assert(order_less(proj[v - 1], order[v - 1], proj[v], order[v]));
+    return order;
+}
+
+/// The 0-based place of object `lbl` in the along-line order -- 0 is the frontmost (nearest the A end). Refuses `BadTarget` for a label
+/// past the object count, and `SameGroup` / `EmptyClick` / `PointOutOfBounds` through the line resolution.
+pub fn rank_of(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, lbl: u32) !u32 {
+    // invariant: the manifest and the map describe the same scene.
+    assert(manifest.components == map.count);
+    try check_target(manifest, lbl);
+
+    const order = try line_order(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    var i: usize = 0;
+    while (i < order.len) : (i += 1) {
+        if (order[i] == lbl) return @as(u32, @intCast(i));
+    }
+    // invariant: a real label always appears in the total order -- the search never falls through.
+    unreachable;
+}
+
+/// TRUE when object `a` sorts strictly before object `b` along the directed line A -> B -- ascending projection, ties broken by ascending
+/// label. Two distinct labels are required; `a == b` reads FALSE (nothing sorts before itself). Refuses `BadTarget`, `SameGroup`,
+/// `EmptyClick`, `PointOutOfBounds`.
+pub fn reads_before(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, a: u32, b: u32) !bool {
+    // invariant: the manifest and the map describe the same scene.
+    assert(manifest.components == map.count);
+    try check_target(manifest, a);
+    try check_target(manifest, b);
+    if (a == b) return false;
+
+    const pa = try project_label(garden, clustering, graph, manifest, map, ax, ay, bx, by, a);
+    const pb = try project_label(garden, clustering, graph, manifest, map, ax, ay, bx, by, b);
+    return order_less(pa, a, pb, b);
+}
+
+/// TRUE when objects `a` and `b` share an along-line PROJECTION -- they sit at one depth along the line, their order settled only by the
+/// label tie-break. This is the projection component of the total order read on its own, the fact that MOVES with the drawn direction.
+/// Refuses `BadTarget`, `SameGroup`, `EmptyClick`, `PointOutOfBounds`.
+pub fn along_tie(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, a: u32, b: u32) !bool {
+    // invariant: the manifest and the map describe the same scene.
+    assert(manifest.components == map.count);
+    try check_target(manifest, a);
+    try check_target(manifest, b);
+
+    const pa = try project_label(garden, clustering, graph, manifest, map, ax, ay, bx, by, a);
+    const pb = try project_label(garden, clustering, graph, manifest, map, ax, ay, bx, by, b);
+    return pa == pb;
+}
+
+/// The FRONTMOST object along the directed line A -> B -- the head of the along-line order, nearest the A end. Refuses `SameGroup`,
+/// `EmptyClick`, `PointOutOfBounds`.
+pub fn first_along(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !u32 {
+    // invariant: the manifest and the map describe the same scene.
+    assert(manifest.components == map.count);
+    const order = try line_order(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    // invariant: a real scene always holds at least one object to be first.
+    assert(order.len >= 1);
+    return order[0];
+}
+
+/// The BACKMOST object along the directed line A -> B -- the tail of the along-line order, farthest toward the B end. Refuses `SameGroup`,
+/// `EmptyClick`, `PointOutOfBounds`.
+pub fn last_along(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !u32 {
+    // invariant: the manifest and the map describe the same scene.
+    assert(manifest.components == map.count);
+    const order = try line_order(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    // invariant: a real scene always holds at least one object to be last.
+    assert(order.len >= 1);
+    return order[order.len - 1];
+}
+
+// --- selftest: the DECISIVE orthogonality crux (along-line ORDER and across-line SIDE are the dot and the cross of the same two anchors --
+//     a projection tie can hold across a side split, and the tie MOVES with the drawn direction); the order generalizes a fixed axis read
+//     to any direction; antisymmetry reverses the order under the anchor reversal; first/last and rank; refusals by name; determinism ----
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y). A 2x2 block's inclusive box is (x,y)-(x+1,y+1), so its
+/// doubled center is (2x+1, 2y+1) -- exact integers the selftest predicts by hand.
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- THE SCENE on a 20x14 canvas: six 2x2 singletons whose doubled centers the projection ranks by hand. Raster order gives dense
+    //     labels U=1, P=2, A=3, B=4, Q=5, D=6. The two anchors A and B share row-doubled 13, so A -> B is a HORIZONTAL line pointing +x;
+    //     U and D share column-doubled 15, so U -> D is a VERTICAL line pointing +y. That pair of shared coordinates is the whole crux --
+    //     the horizontal line ties U and D (same column) while the vertical line ties A and B (same row) --------------------------------
+    var scene = try make_canvas(garden, 20, 14, 0);
+    set_block(&scene, 7, 1, 2, 2); // U: box (7,1)-(8,2),  center-doubled (15,3)  -- ABOVE the A-B line, shares column 15 with D
+    set_block(&scene, 4, 3, 2, 2); // P: box (4,3)-(5,4),  center-doubled (9,7)   -- ABOVE the A-B line
+    set_block(&scene, 1, 6, 2, 2); // A: box (1,6)-(2,7),  center-doubled (3,13)  -- anchor, ON the A-B line, shares row 13 with B
+    set_block(&scene, 15, 6, 2, 2); // B: box (15,6)-(16,7), center-doubled (31,13) -- anchor, ON the A-B line, shares row 13 with A
+    set_block(&scene, 11, 9, 2, 2); // Q: box (11,9)-(12,10), center-doubled (23,19) -- BELOW the A-B line
+    set_block(&scene, 7, 10, 2, 2); // D: box (7,10)-(8,11), center-doubled (15,21) -- BELOW the A-B line, shares column 15 with U
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 6) return error.SceneNotSixComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    // six disjoint singletons -- six clusters over six objects
+    if (clustering.clusters != 6) return error.NotSixClusters;
+
+    // dense labels: U=1, P=2, A=3, B=4, Q=5, D=6
+    const u_lbl: u32 = 1;
+    const p_lbl: u32 = 2;
+    const a_lbl: u32 = 3;
+    const b_lbl: u32 = 4;
+    const q_lbl: u32 = 5;
+    const d_lbl: u32 = 6;
+
+    // confirm the raster order landed the labels the scene predicts by their box corners
+    const u_entry = try scene_manifest.object_of(manifest, u_lbl);
+    if (u_entry.min_x != 7 or u_entry.min_y != 1) return error.UNotAtExpectedBox;
+    const a_entry = try scene_manifest.object_of(manifest, a_lbl);
+    if (a_entry.min_x != 1 or a_entry.min_y != 6) return error.ANotAtExpectedBox;
+    const d_entry = try scene_manifest.object_of(manifest, d_lbl);
+    if (d_entry.min_x != 7 or d_entry.min_y != 10) return error.DNotAtExpectedBox;
+
+    // the two anchor taps that name the HORIZONTAL directed line A -> B (both taps land inside their own blocks)
+    const ax: u32 = 1;
+    const ay: u32 = 6;
+    const bx: u32 = 15;
+    const by: u32 = 6;
+
+    // --- THE HORIZONTAL ORDER -- projection along +x ranks by doubled column: A(3) at 3, P(9), U/D(15), Q(23), B(31). The order front to
+    //     back is A, P, then the U/D tie (ascending label U before D), then Q, then B ------------------------------------------------------
+    const order_h = try line_order(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    if (order_h.len != 6) return error.HOrderNotSix;
+    if (order_h[0] != a_lbl or order_h[1] != p_lbl or order_h[2] != u_lbl or order_h[3] != d_lbl or order_h[4] != q_lbl or order_h[5] != b_lbl) return error.HOrderWrong;
+
+    // first and last along the horizontal line -- A is the frontmost (the A end), B the backmost (the B end)
+    if (try first_along(garden, clustering, graph, manifest, &map, ax, ay, bx, by) != a_lbl) return error.HFirstNotA;
+    if (try last_along(garden, clustering, graph, manifest, &map, ax, ay, bx, by) != b_lbl) return error.HLastNotB;
+    // rank_of reads the 0-based place -- U is third (index 2), D fourth (index 3)
+    if (try rank_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, u_lbl) != 2) return error.URankNotTwo;
+    if (try rank_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, d_lbl) != 3) return error.DRankNotThree;
+
+    // --- THE DECISIVE CRUX -- along-line ORDER and across-line SIDE are ORTHOGONAL. U and D share the column, so along_tie(U, D) is TRUE:
+    //     one along-line depth. Yet line_partition places U LEFT and D RIGHT: identical rank-key, opposite sides. The label tie-break gives
+    //     the deterministic total order (U before D), while along_tie names the projection itself as tied -----------------------------------
+    if (!try along_tie(garden, clustering, graph, manifest, &map, ax, ay, bx, by, u_lbl, d_lbl)) return error.UDNotAlongTied;
+    if (try project_label(garden, clustering, graph, manifest, &map, ax, ay, bx, by, u_lbl) != try project_label(garden, clustering, graph, manifest, &map, ax, ay, bx, by, d_lbl)) return error.UDProjectionsDiffer;
+    if (try line_partition.object_side(garden, clustering, graph, manifest, &map, ax, ay, bx, by, u_lbl) != .left) return error.UNotLeft;
+    if (try line_partition.object_side(garden, clustering, graph, manifest, &map, ax, ay, bx, by, d_lbl) != .right) return error.DNotRight;
+    // tied in projection, yet the total order still separates them by ascending label -- U strictly before D
+    if (!try reads_before(garden, clustering, graph, manifest, &map, ax, ay, bx, by, u_lbl, d_lbl)) return error.UNotBeforeD;
+    if (try reads_before(garden, clustering, graph, manifest, &map, ax, ay, bx, by, d_lbl, u_lbl)) return error.DWronglyBeforeU;
+
+    // --- THE ORDER READS THE DRAWN DIRECTION, AND THE TIE MOVES WITH IT -- the SAME six objects under the VERTICAL line U -> D reorder to
+    //     the y-order of the centers: U(3), P(7), A/B(13), Q(19), D(21). Now the former anchors A and B TIE (same row) while U and D no
+    //     longer do -- every tie a property of the line, not the scene ------------------------------------------------------------------
+    const ux: u32 = 7;
+    const uy: u32 = 1;
+    const dx: u32 = 7;
+    const dy: u32 = 10;
+    const order_v = try line_order(garden, clustering, graph, manifest, &map, ux, uy, dx, dy);
+    if (order_v[0] != u_lbl or order_v[1] != p_lbl or order_v[2] != a_lbl or order_v[3] != b_lbl or order_v[4] != q_lbl or order_v[5] != d_lbl) return error.VOrderWrong;
+    // the vertical order differs from the horizontal at the head -- U leads vertically, A leads horizontally
+    if (order_v[0] == order_h[0]) return error.OrderNotDirectionSensitive;
+    // A and B now tie (same row-doubled 13), and U and D no longer do
+    if (!try along_tie(garden, clustering, graph, manifest, &map, ux, uy, dx, dy, a_lbl, b_lbl)) return error.ABNotAlongTiedVertically;
+    if (try along_tie(garden, clustering, graph, manifest, &map, ux, uy, dx, dy, u_lbl, d_lbl)) return error.UDWronglyTiedVertically;
+
+    // --- ANTISYMMETRY -- reversing the anchors to B -> A negates every projection, so the horizontal order reverses. A non-tied pair flips:
+    //     P reads before Q along A -> B, and Q reads before P along B -> A ----------------------------------------------------------------
+    if (!try reads_before(garden, clustering, graph, manifest, &map, ax, ay, bx, by, p_lbl, q_lbl)) return error.PNotBeforeQ;
+    if (!try reads_before(garden, clustering, graph, manifest, &map, bx, by, ax, ay, q_lbl, p_lbl)) return error.QNotBeforePReversed;
+    // the reversed head is the un-reversed tail's neighborhood -- B leads the B -> A order
+    const order_r = try line_order(garden, clustering, graph, manifest, &map, bx, by, ax, ay);
+    if (order_r[0] != b_lbl or order_r[5] != a_lbl) return error.ReversedEndsWrong;
+
+    // --- REFUSALS -- two anchors sharing a group refuse SameGroup; a background tap refuses EmptyClick; a point off the map refuses
+    //     PointOutOfBounds; a query label past the object count refuses BadTarget, each having read nothing -------------------------------
+    if (try hit_test.object_label_at(&map, 1, 6) != try hit_test.object_label_at(&map, 2, 7)) return error.APixelsNotSameObject;
+    if (line_order(garden, clustering, graph, manifest, &map, 1, 6, 2, 7)) |_| return error.SameGroupNotRefused else |err| {
+        if (err != error.SameGroup) return error.WrongSameGroupError;
+    }
+    if (try hit_test.object_label_at(&map, 0, 0) != 0) return error.BackgroundNotEmpty;
+    if (line_order(garden, clustering, graph, manifest, &map, 0, 0, bx, by)) |_| return error.MissNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissError;
+    }
+    if (line_order(garden, clustering, graph, manifest, &map, ax, ay, 20, 0)) |_| return error.OffMapNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapError;
+    }
+    if (project_label(garden, clustering, graph, manifest, &map, ax, ay, bx, by, 7)) |_| return error.BadTargetNotRefused else |err| {
+        if (err != error.BadTarget) return error.WrongBadTargetError;
+    }
+
+    // --- DETERMINISM -- the same directed line reads the same order twice -------------------------------------------------------------
+    const o1 = try line_order(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    const o2 = try line_order(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    var k: usize = 0;
+    while (k < o1.len) : (k += 1) {
+        if (o1[k] != o2[k]) return error.OrderNotDeterministic;
+    }
+
+    print("GREEN image-line-order: read a DIRECTED line named by TWO anchor taps (from A toward B) as a READING ORDER ALONG the line -- rank every object by how far FORWARD its GROUP center projects in the line's direction, exact integers, NO float and NO tolerance. The DECISIVE crux is that along-line ORDER and across-line SIDE are ORTHOGONAL, the DOT and the CROSS of the same two anchors: the cross product names the PERPENDICULAR (which side, line_partition), the dot product names the PARALLEL (how far along, this rung). Over a 20x14 scene of six singletons (U above, P above, anchors A and B on a shared row, Q below, D below), the horizontal line A -> B orders them A, P, U, D, Q, B by doubled column. TWO OBJECTS TIE IN ORDER YET SPLIT TO OPPOSITE SIDES -- U and D share the column so along_tie(U, D) is TRUE (one along-line depth), yet line_partition places U LEFT and D RIGHT: identical rank-key, opposite sides, the label tie-break settling the total order (U before D) while along_tie names the projection itself as tied. THE ORDER READS THE DRAWN DIRECTION, AND THE TIE MOVES WITH IT -- the SAME six objects under the vertical line U -> D reorder to U, P, A, B, Q, D by doubled row, and now the former anchors A and B tie (same row) while U and D no longer do, so a line_order generalizes reading_order's fixed top-to-bottom sweep to ANY direction a keeper draws. Reversing the anchors to B -> A negates every projection so the whole order reverses (P before Q becomes Q before P); first_along and last_along name the A end and the B end; rank_of reads a label's 0-based place. Two anchors sharing a group refuse SameGroup (a line needs two points); a background tap refuses EmptyClick; a point off the map refuses PointOutOfBounds; a label past the object count refuses BadTarget having read nothing; the same line reads the same order twice. Compose not braid over image/line_partition.rye (the cross-product side arbiter the crux cross-checks), image/click_order.rye (click_group_id), image/click_collinear.rye (click_group_center_doubled), and image/cluster_facts.rye (the group frame whose doubled midpoint is the exact center)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: line_order selftest\n", .{});
+    return 1;
+}

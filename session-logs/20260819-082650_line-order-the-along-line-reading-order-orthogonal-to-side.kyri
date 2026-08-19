@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260819.082650
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title line_order -- the along-line reading order, orthogonal to line_partition's side
+prompt baton prin recur -- Standfast on reds then take the next agent-doable lap Lindy-first crux-first on the live green Season G scene-read edge, send each increment as its own signed round
+think Grounded as Kyri: read KYRI.md and RADIANT_STYLE.md, then crux/REMEMBER.md (giant live-edge lines 16/38/99 accreted; Git nib line 23 reasonable), the three road-ahead itineraries by reference, and the top session-log rows -- the running thread is a long green march of image/ scene-read modules, now 216, last lap line_summary, NEXT pointed at a line_order distance-ranking read.
+think Standfast first: crux/REDS.md living rows are 80, 83, 84, 85. Rows 83/84 fixed and closed; row 85's image-family sweep already landed (compose_tiled and conic_paint both read native contains); row 80's count-guard loom already built as tools/crypto_count_guard_witness.rish. Ran it GREEN -- 80 crypto/*.rye primitives, a bijection with the suite; the 85-vs-80 gap is exactly the 5 symlink shims the guard's -type f correctly excludes. Standfast genuinely clear, matching the recent logs.
+think Chose the lap crux-first: line_partition reads the SIGN of the cross product (which side, PERPENDICULAR to A->B). The orthogonal complement is the DOT product (how far ALONG the line, PARALLEL). Built line_order to read the along-line projection and rank the whole scene front-to-back -- a reading order along the drawn stroke, generalizing reading_order to any direction.
+think The DECISIVE crux is the orthogonality of ORDER and SIDE: two objects sharing a column tie in projection (along_tie TRUE) yet split to opposite sides (line_partition LEFT vs RIGHT), identical rank-key opposite sides; and the tie MOVES with the drawn direction -- a horizontal line ties objects sharing x, a vertical line ties objects sharing y, proven over the SAME six singletons by tapping A->B (horizontal) then U->D (vertical) with zero new pixels.
+think Compose not braid: line_order owns only the projection and the sort; it cross-checks its crux against line_partition.object_side and resolves the line and centers through the same public primitives (click_order.click_group_id, click_collinear.click_group_center_doubled, cluster_facts.cluster_bbox). Exact integers throughout -- the dot product in i64, no division, no float, since a fixed line's length is a constant normalizer that preserves order.
+obs REMEMBER's NEXT had sketched the CROSS-magnitude (perpendicular distance) reading under the name line_order; I built the stronger DOT (parallel order) reading instead and named the cross-magnitude twin `line_distance` as the next door, so the two line reads pair as parallel and perpendicular rather than collide on a name.
+obs GREEN on the FIRST full metal run of both selftest and witness, no code reds; TAME bans clean, width-check exit 0, living-docs lint GREEN, living-card ASCII GREEN, both new files pure 7-bit ASCII.
+obs Council rota lap deep-read item 14 by lap cycling -- the digest twin lap read item 13 (the happy zone), so this lap I held RADIANT_STYLE and KYRI in view directly (the voice items), the four faculties whole: Lattice's exact integers, Scribble naming each coined term on first use, Lantern marking the DOT-vs-CROSS choice openly, Ember baking the crux into a scene that proves itself.
+loom witness=line_order_witness selftest=GREEN modules=217 metal_run=first_pass reds=0
+file image/line_order.rye the along-line reading-order twin of line_partition -- DOT product ranks along the stroke where the CROSS product split across it, GREEN
+file tools/line_order_witness.rish native-contains witness proving the orthogonality crux, the direction-sensitive tie, antisymmetry, refusals, determinism on metal
+file image/README.md line_order entry seated after line_summary (docs-sync), the line family kept together
+file crux/REMEMBER.md live edge + NEXT + Git nib repointed single-stranded, line_summary folded to the prior nib, count 216 -> 217
+recommend keep-going the next agent-doable open-media crux is line_distance (the cross-product MAGNITUDE, perpendicular distance across the line, the ON set the zero-rank band) -- the perpendicular twin of this parallel read; the Microkernel study and the real-photo top-hat still wait on fetch/license gates, surfaced not crossed
