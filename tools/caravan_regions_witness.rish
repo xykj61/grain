@@ -1,0 +1,18 @@
+# caravan_regions_witness.rish -- Caravan memory-region map self-test witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_regions_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/regions"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/regions.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan regions build failed"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan regions selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan regions selftest not GREEN"
+assert test.out contains "W xor X held" else "caravan regions selftest did not report the W xor X rule"
+
+say "GREEN: Caravan memory-region map witness passed."

@@ -1,0 +1,654 @@
+//! Caravan memory regions -- shared memory declared, named, and permissioned.
+//!
+//! Three rings now name a dependent's whole surface. `capabilities.rye` names
+//! WHAT a dependent may do, `channels.rye` names WHO it may talk to, and this
+//! ring names WHAT MEMORY it may touch and how. Each is declared at
+//! construction, so the entire surface is a thing a witness reads whole.
+//!
+//! The shape comes from the Microkit clean-room brief
+//! (`active-designing/20260819-094721_clean-room-microkit-protection-domains-channels.md`):
+//! memory regions are explicitly declared and explicitly mapped, granted to
+//! named domains with named permissions. Sharing is deliberate and visible,
+//! never ambient -- a domain reaches exactly the regions its declaration
+//! grants it, and reaches them exactly as far as the permission says.
+//!
+//! Two invariants carry the safety of the ring. Every grant carries read,
+//! since a grant that permits nothing is a declaration that means nothing.
+//! And write never stands beside execute in the same grant -- the classic
+//! W xor X rule, held structurally here rather than remembered later.
+//!
+//! Hosted ground, pure policy, no kernel underneath it yet.
+//!
+//! Usage:
+//!   regions          Run the self-test (default)
+//!   regions selftest Same as default
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const tally_copy = @import("tally_copy.rye");
+
+const caravan_regions_version = "20260819.130844";
+
+/// Maximum protection domains in one map. Matches `channels.rye`'s roster
+/// bound, so the same static architecture reads the same in both rings.
+pub const max_domains: u32 = 8;
+
+/// Maximum declared regions in one map. A static architecture names its
+/// shared memory at build time, so the roster stays small enough to read in
+/// one sitting and to assert over completely.
+pub const max_regions: u32 = 12;
+
+/// Maximum grants in one map. Every region may reach every domain at most
+/// once, so the fully-shared map would need 96 -- this bound sits far below
+/// that on purpose, since memory shared with everyone is memory isolated
+/// from no one.
+pub const max_grants: u32 = 24;
+
+/// Maximum bytes in a domain or region name. Matches the sibling rings, so a
+/// label reads the same everywhere it appears.
+pub const max_name_len: u32 = 48;
+
+/// Maximum size of one declared region, in bytes. Bounded so a declaration
+/// can never name an address space larger than the machine it describes.
+pub const max_region_bytes: u64 = 16 * 1024 * 1024;
+
+fn buf_len_u32(buf: []const u8) u32 {
+    // invariant: a name always fits the width we publish it in
+    assert(buf.len <= std.math.maxInt(u32));
+    // invariant: names stay within the ring's own bound
+    assert(buf.len <= max_name_len);
+    return @intCast(buf.len);
+}
+
+// =========================================================================
+// Refusal -- why an access is denied, or that it is allowed
+// =========================================================================
+
+/// Named outcome of an access question -- `.allowed`, or the reason it was
+/// refused. A bare no covers five different situations, and a map that
+/// cannot say which one cannot audit its own refusals.
+pub const Refusal = enum(u8) {
+    allowed = 0,
+    no_such_domain = 1,
+    no_such_region = 2,
+    not_granted = 3,
+    write_denied = 4,
+    execute_denied = 5,
+};
+
+// =========================================================================
+// Perm -- what a grant permits, held as three plain flags
+// =========================================================================
+
+// Invariant: read holds on every live grant, and write never stands beside
+// execute in the same grant.
+pub const Perm = struct {
+    read: bool = false,
+    write: bool = false,
+    execute: bool = false,
+
+    /// A domain that may look and nothing more.
+    pub fn read_only() Perm {
+        return .{ .read = true };
+    }
+
+    /// A domain that may look and change -- the shape of a shared buffer.
+    pub fn read_write() Perm {
+        return .{ .read = true, .write = true };
+    }
+
+    /// A domain that may look and run -- the shape of mapped code.
+    pub fn read_execute() Perm {
+        return .{ .read = true, .execute = true };
+    }
+
+    /// Answers whether this permission is one a grant may legally carry:
+    /// it reads, and it keeps write and execute apart.
+    pub fn legal(self: Perm) bool {
+        const writes_and_runs = self.write and self.execute;
+        return self.read and !writes_and_runs;
+    }
+
+    /// Answers whether this permission covers everything `want` asks for.
+    /// A read-write grant answers yes to a read request and yes to a write
+    /// request; a read-only grant answers yes only to the read.
+    pub fn covers(self: Perm, want: Perm) bool {
+        // invariant: a legal permission is the only thing worth comparing
+        assert(self.legal());
+        const reads_ok = self.read or !want.read;
+        const writes_ok = self.write or !want.write;
+        const runs_ok = self.execute or !want.execute;
+        return reads_ok and writes_ok and runs_ok;
+    }
+};
+
+// =========================================================================
+// Named -- one domain or region slot, carrying its label
+// =========================================================================
+
+// Invariant: name_len <= max_name_len whenever the slot is live.
+pub const Named = struct {
+    name: [max_name_len]u8 = undefined,
+    name_len: u32 = 0,
+    live: bool = false,
+
+    pub fn init(name: []const u8) Named {
+        // invariant: a name is non-empty, so every slot is addressable
+        assert(name.len >= 1);
+        var slot: Named = .{};
+        slot.name_len = buf_len_u32(name);
+        tally_copy.copy_disjoint(u8, slot.name[0..name.len], name);
+        slot.live = true;
+        // invariant: the copied name reads back at its declared length
+        assert(slot.name_len == buf_len_u32(name));
+        return slot;
+    }
+
+    pub fn name_slice(self: *const Named) []const u8 {
+        // invariant: the stored length stays within the ring's bound
+        assert(self.name_len <= max_name_len);
+        // invariant: only a live slot carries a readable name
+        assert(self.live);
+        const n: usize = @intCast(self.name_len); // seam: slicing takes usize
+        return self.name[0..n];
+    }
+};
+
+// =========================================================================
+// Region -- one declared span of shared memory
+// =========================================================================
+
+// Invariant: size_bytes stays within max_region_bytes on every live region.
+pub const Region = struct {
+    slot: Named = .{},
+    size_bytes: u64 = 0,
+
+    pub fn init(name: []const u8, size_bytes: u64) Region {
+        // invariant: a region spans at least one byte
+        assert(size_bytes >= 1);
+        // invariant: a region stays within the declarable bound
+        assert(size_bytes <= max_region_bytes);
+        return .{ .slot = Named.init(name), .size_bytes = size_bytes };
+    }
+};
+
+// =========================================================================
+// Grant -- one mapping of one region into one domain, at one permission
+// =========================================================================
+
+// Invariant: both indices address live rosters, and perm is legal.
+pub const Grant = struct {
+    region: u32 = 0,
+    domain: u32 = 0,
+    perm: Perm = .{},
+
+    pub fn init(region: u32, domain: u32, perm: Perm) Grant {
+        // invariant: the region index addresses the bounded roster
+        assert(region < max_regions);
+        // invariant: the domain index addresses the bounded roster
+        assert(domain < max_domains);
+        // invariant: a grant reads, and never writes and runs at once
+        assert(perm.legal());
+        return .{ .region = region, .domain = domain, .perm = perm };
+    }
+
+    /// Answers whether this grant maps the given region into the given domain.
+    pub fn maps(self: *const Grant, region: u32, domain: u32) bool {
+        // invariant: the stored permission stays legal for the whole lifetime
+        assert(self.perm.legal());
+        // invariant: the query addresses both bounded rosters
+        assert(region < max_regions);
+        assert(domain < max_domains);
+        return self.region == region and self.domain == domain;
+    }
+};
+
+// =========================================================================
+// Map -- the whole declared sharing surface, read whole
+// =========================================================================
+
+// Invariant: every roster count stays within its own bound.
+pub const Map = struct {
+    domains: [max_domains]Named = undefined,
+    domain_count: u32 = 0,
+    regions: [max_regions]Region = undefined,
+    region_count: u32 = 0,
+    grants: [max_grants]Grant = undefined,
+    grant_count: u32 = 0,
+
+    /// Declares a protection domain and returns its index.
+    pub fn declare_domain(self: *Map, name: []const u8) error{ MapFull, DuplicateDomain }!u32 {
+        // invariant: the roster stays within its bound before growing
+        assert(self.domain_count <= max_domains);
+        // invariant: a domain name is non-empty
+        assert(name.len >= 1);
+        if (self.find_domain(name) != null) return error.DuplicateDomain;
+        if (self.domain_count >= max_domains) return error.MapFull;
+        const index = self.domain_count;
+        self.domains[index] = Named.init(name);
+        self.domain_count += 1;
+        // invariant: the roster stays within its bound after growing
+        assert(self.domain_count <= max_domains);
+        return index;
+    }
+
+    /// Declares a shared memory region and returns its index.
+    pub fn declare_region(
+        self: *Map,
+        name: []const u8,
+        size_bytes: u64,
+    ) error{ MapFull, DuplicateRegion, RegionTooLarge, RegionEmpty }!u32 {
+        // invariant: the roster stays within its bound before growing
+        assert(self.region_count <= max_regions);
+        // invariant: a region name is non-empty
+        assert(name.len >= 1);
+        if (size_bytes == 0) return error.RegionEmpty;
+        if (size_bytes > max_region_bytes) return error.RegionTooLarge;
+        if (self.find_region(name) != null) return error.DuplicateRegion;
+        if (self.region_count >= max_regions) return error.MapFull;
+        const index = self.region_count;
+        self.regions[index] = Region.init(name, size_bytes);
+        self.region_count += 1;
+        // invariant: the roster stays within its bound after growing
+        assert(self.region_count <= max_regions);
+        return index;
+    }
+
+    /// Finds a declared domain by name, or answers that it was never declared.
+    pub fn find_domain(self: *const Map, name: []const u8) ?u32 {
+        // invariant: the roster stays within its bound
+        assert(self.domain_count <= max_domains);
+        // invariant: a lookup name fits the ring's bound
+        assert(name.len <= max_name_len);
+        var i: u32 = 0;
+        while (i < self.domain_count) : (i += 1) {
+            assert(i < max_domains); // invariant: the walk stays in the array
+            const slot = &self.domains[i];
+            if (slot.live and std.mem.eql(u8, slot.name_slice(), name)) return i;
+        }
+        return null;
+    }
+
+    /// Finds a declared region by name, or answers that it was never declared.
+    pub fn find_region(self: *const Map, name: []const u8) ?u32 {
+        // invariant: the roster stays within its bound
+        assert(self.region_count <= max_regions);
+        // invariant: a lookup name fits the ring's bound
+        assert(name.len <= max_name_len);
+        var i: u32 = 0;
+        while (i < self.region_count) : (i += 1) {
+            assert(i < max_regions); // invariant: the walk stays in the array
+            const slot = &self.regions[i].slot;
+            if (slot.live and std.mem.eql(u8, slot.name_slice(), name)) return i;
+        }
+        return null;
+    }
+
+    /// Maps a named region into a named domain at a named permission.
+    ///
+    /// Every refusal is named: an undeclared region, an undeclared domain, a
+    /// mapping already standing, a permission that reads nothing, a
+    /// permission that would write and run at once, or a map at its bound.
+    /// Regranting the same pair is a design error worth surfacing, since the
+    /// declaration is meant to read as the whole truth about the sharing.
+    pub fn grant(
+        self: *Map,
+        region_name: []const u8,
+        domain_name: []const u8,
+        perm: Perm,
+    ) error{ NoSuchRegion, NoSuchDomain, AlreadyGranted, WriteExecute, NoAccess, MapFull }!u32 {
+        // invariant: the grant roster stays within its bound before growing
+        assert(self.grant_count <= max_grants);
+        // invariant: both name rosters stay within their bounds
+        assert(self.region_count <= max_regions);
+        assert(self.domain_count <= max_domains);
+        const r = self.find_region(region_name) orelse return error.NoSuchRegion;
+        const d = self.find_domain(domain_name) orelse return error.NoSuchDomain;
+        if (!perm.read) return error.NoAccess;
+        if (perm.write and perm.execute) return error.WriteExecute;
+        if (self.find_grant(r, d) != null) return error.AlreadyGranted;
+        if (self.grant_count >= max_grants) return error.MapFull;
+        const index = self.grant_count;
+        self.grants[index] = Grant.init(r, d, perm);
+        self.grant_count += 1;
+        // invariant: the grant roster stays within its bound after growing
+        assert(self.grant_count <= max_grants);
+        return index;
+    }
+
+    /// Finds the grant mapping a region into a domain, or answers that the
+    /// pair was never mapped.
+    pub fn find_grant(self: *const Map, region: u32, domain: u32) ?u32 {
+        // invariant: the grant roster stays within its bound
+        assert(self.grant_count <= max_grants);
+        // invariant: the query addresses both bounded rosters
+        assert(region < max_regions);
+        assert(domain < max_domains);
+        var i: u32 = 0;
+        while (i < self.grant_count) : (i += 1) {
+            assert(i < max_grants); // invariant: the walk stays in the array
+            if (self.grants[i].maps(region, domain)) return i;
+        }
+        return null;
+    }
+
+    /// Names why a domain may touch a region as it asks, or why it may not.
+    pub fn refusal_reason(
+        self: *const Map,
+        region_name: []const u8,
+        domain_name: []const u8,
+        want: Perm,
+    ) Refusal {
+        // invariant: every roster stays within its bound
+        assert(self.region_count <= max_regions);
+        assert(self.domain_count <= max_domains);
+        assert(self.grant_count <= max_grants);
+        const r = self.find_region(region_name) orelse return .no_such_region;
+        const d = self.find_domain(domain_name) orelse return .no_such_domain;
+        const g = self.find_grant(r, d) orelse return .not_granted;
+        // invariant: a found grant index addresses the bounded roster
+        assert(g < max_grants);
+        const held = self.grants[g].perm;
+        if (want.write and !held.write) return .write_denied;
+        if (want.execute and !held.execute) return .execute_denied;
+        if (held.covers(want)) return .allowed;
+        return .not_granted;
+    }
+
+    /// Answers whether a domain may touch a region as it asks.
+    ///
+    /// An unmapped pair answers no, which is the whole point: sharing is
+    /// deliberate and visible, never ambient. Two clients served by the same
+    /// virtualiser still reach none of each other's buffers.
+    pub fn may_access(
+        self: *const Map,
+        region_name: []const u8,
+        domain_name: []const u8,
+        want: Perm,
+    ) bool {
+        // invariant: every roster stays within its bound
+        assert(self.region_count <= max_regions);
+        assert(self.grant_count <= max_grants);
+        return self.refusal_reason(region_name, domain_name, want) == .allowed;
+    }
+
+    /// Answers whether a domain may read a region.
+    pub fn may_read(self: *const Map, region_name: []const u8, domain_name: []const u8) bool {
+        // invariant: the grant roster stays within its bound
+        assert(self.grant_count <= max_grants);
+        return self.may_access(region_name, domain_name, Perm.read_only());
+    }
+
+    /// Answers whether a domain may write a region.
+    pub fn may_write(self: *const Map, region_name: []const u8, domain_name: []const u8) bool {
+        // invariant: the grant roster stays within its bound
+        assert(self.grant_count <= max_grants);
+        return self.may_access(region_name, domain_name, .{ .read = true, .write = true });
+    }
+
+    /// Answers whether a domain may execute from a region.
+    pub fn may_execute(self: *const Map, region_name: []const u8, domain_name: []const u8) bool {
+        // invariant: the grant roster stays within its bound
+        assert(self.grant_count <= max_grants);
+        return self.may_access(region_name, domain_name, .{ .read = true, .execute = true });
+    }
+
+    /// Counts the domains holding a named region -- how widely it is shared.
+    /// An undeclared region has no holders, since it carries no mapping.
+    pub fn holders(self: *const Map, region_name: []const u8) u32 {
+        // invariant: the grant roster stays within its bound
+        assert(self.grant_count <= max_grants);
+        const r = self.find_region(region_name) orelse return 0;
+        // invariant: a found index addresses the bounded roster
+        assert(r < max_regions);
+        var count: u32 = 0;
+        var i: u32 = 0;
+        while (i < self.grant_count) : (i += 1) {
+            assert(i < max_grants); // invariant: the walk stays in the array
+            if (self.grants[i].region == r) count += 1;
+        }
+        // invariant: a region reaches at most every grant once
+        assert(count <= self.grant_count);
+        return count;
+    }
+
+    /// Sums the bytes a named domain may reach across every region granted
+    /// to it -- its whole memory footprint, readable from the declaration.
+    /// An undeclared domain reaches nothing, so its footprint is zero.
+    pub fn footprint(self: *const Map, domain_name: []const u8) u64 {
+        // invariant: the grant roster stays within its bound
+        assert(self.grant_count <= max_grants);
+        const d = self.find_domain(domain_name) orelse return 0;
+        // invariant: a found index addresses the bounded roster
+        assert(d < max_domains);
+        var total: u64 = 0;
+        var i: u32 = 0;
+        while (i < self.grant_count) : (i += 1) {
+            assert(i < max_grants); // invariant: the walk stays in the array
+            const g = &self.grants[i];
+            if (g.domain != d) continue;
+            assert(g.region < max_regions); // invariant: the region index is addressable
+            total += self.regions[g.region].size_bytes;
+        }
+        // invariant: a footprint stays within what the whole map could declare
+        assert(total <= max_region_bytes * @as(u64, max_grants));
+        return total;
+    }
+
+    /// Answers whether the map holds no grant that both writes and runs --
+    /// the W xor X rule, checked over the whole declaration at once.
+    pub fn write_xor_execute(self: *const Map) bool {
+        // invariant: the grant roster stays within its bound
+        assert(self.grant_count <= max_grants);
+        var i: u32 = 0;
+        while (i < self.grant_count) : (i += 1) {
+            assert(i < max_grants); // invariant: the walk stays in the array
+            const p = self.grants[i].perm;
+            if (p.write and p.execute) return false;
+        }
+        return true;
+    }
+};
+
+// =========================================================================
+// Refusal helpers -- capture the named error, so the checks read plainly
+// =========================================================================
+
+/// Answers whether this grant was refused with the named error. Capturing
+/// the error keeps each check at its call site readable and keeps the
+/// self-test off the `) == error.` call seam the tidy rules ban.
+fn grant_refused(
+    map: *Map,
+    region_name: []const u8,
+    domain_name: []const u8,
+    perm: Perm,
+    want: anyerror,
+) bool {
+    // invariant: both names are addressable
+    assert(region_name.len >= 1);
+    assert(domain_name.len >= 1);
+    // invariant: the map stays within its grant bound throughout
+    assert(map.grant_count <= max_grants);
+    _ = map.grant(region_name, domain_name, perm) catch |err| return err == want;
+    return false;
+}
+
+/// Answers whether declaring this region was refused with the named error.
+fn region_refused(map: *Map, name: []const u8, size_bytes: u64, want: anyerror) bool {
+    // invariant: the name is addressable
+    assert(name.len >= 1);
+    // invariant: the map stays within its region bound throughout
+    assert(map.region_count <= max_regions);
+    _ = map.declare_region(name, size_bytes) catch |err| return err == want;
+    return false;
+}
+
+// =========================================================================
+// Demo map -- a serial line, its virtualiser, two clients, and mapped code
+// =========================================================================
+
+/// Builds the sharing surface beside the channel graph the sibling ring
+/// declares: a driver and its virtualiser sharing a transmit buffer, each
+/// client holding its own receive buffer read-only while the virtualiser
+/// fills it, and the driver running from its own mapped code.
+fn demo_map() !Map {
+    var map: Map = .{};
+
+    _ = try map.declare_domain("serial_driver");
+    _ = try map.declare_domain("serial_virt");
+    _ = try map.declare_domain("client_a");
+    _ = try map.declare_domain("client_b");
+
+    _ = try map.declare_region("tx_buffer", 4096);
+    _ = try map.declare_region("client_a_rx", 2048);
+    _ = try map.declare_region("client_b_rx", 2048);
+    _ = try map.declare_region("driver_text", 8192);
+
+    _ = try map.grant("tx_buffer", "serial_driver", Perm.read_write());
+    _ = try map.grant("tx_buffer", "serial_virt", Perm.read_write());
+    _ = try map.grant("client_a_rx", "serial_virt", Perm.read_write());
+    _ = try map.grant("client_a_rx", "client_a", Perm.read_only());
+    _ = try map.grant("client_b_rx", "serial_virt", Perm.read_write());
+    _ = try map.grant("client_b_rx", "client_b", Perm.read_only());
+    _ = try map.grant("driver_text", "serial_driver", Perm.read_execute());
+
+    // invariant: the demo declares exactly the roster it names
+    assert(map.domain_count == 4);
+    assert(map.region_count == 4);
+    // invariant: the demo declares exactly the sharing it names
+    assert(map.grant_count == 7);
+    return map;
+}
+
+// =========================================================================
+// Self-test -- assert the map enforces its declared boundaries
+// =========================================================================
+
+/// Asserts that the declaration grants exactly what it says, and that a
+/// domain reaches nothing beyond it -- the isolation half of the ring.
+fn check_declared_access(map: *const Map) void {
+    // invariant: the map under test carries its whole declared roster
+    assert(map.domain_count == 4);
+    assert(map.region_count == 4);
+
+    // Every declared grant reads, and the read-write ones write.
+    assert(map.may_read("tx_buffer", "serial_driver"));
+    assert(map.may_write("tx_buffer", "serial_driver"));
+    assert(map.may_write("tx_buffer", "serial_virt"));
+    assert(map.may_write("client_a_rx", "serial_virt"));
+
+    // A client reads its own buffer and never writes it.
+    assert(map.may_read("client_a_rx", "client_a"));
+    assert(!map.may_write("client_a_rx", "client_a"));
+    const denied = map.refusal_reason("client_a_rx", "client_a", .{ .read = true, .write = true });
+    assert(denied == .write_denied);
+
+    // Sharing a virtualiser grants no reach into the other client's buffer.
+    assert(!map.may_read("client_b_rx", "client_a"));
+    assert(map.refusal_reason("client_b_rx", "client_a", Perm.read_only()) == .not_granted);
+    assert(!map.may_read("client_a_rx", "client_b"));
+
+    // Mapped code runs where it was granted, and nowhere else.
+    assert(map.may_execute("driver_text", "serial_driver"));
+    assert(!map.may_write("driver_text", "serial_driver"));
+    assert(!map.may_execute("tx_buffer", "serial_driver"));
+    assert(map.refusal_reason("tx_buffer", "serial_driver", .{ .read = true, .execute = true }) == .execute_denied);
+
+    // An undeclared region or domain is refused by absence, and named as such.
+    assert(!map.may_read("network_rx", "client_a"));
+    assert(map.refusal_reason("network_rx", "client_a", Perm.read_only()) == .no_such_region);
+    assert(map.refusal_reason("tx_buffer", "network_driver", Perm.read_only()) == .no_such_domain);
+}
+
+/// Asserts the two reads that summarize a declaration -- how widely each
+/// region is shared, and how much memory each domain reaches in total.
+fn check_reads(map: *const Map) void {
+    // invariant: the map under test carries its whole declared sharing
+    assert(map.grant_count == 7);
+
+    // The W xor X rule holds over the whole declaration at once.
+    assert(map.write_xor_execute());
+    assert(Perm.read_write().legal());
+    assert(Perm.read_execute().legal());
+    assert(!(Perm{ .read = true, .write = true, .execute = true }).legal());
+    assert(!(Perm{ .write = true }).legal());
+
+    // Holders read the sharing: a transmit buffer two, a client buffer two.
+    assert(map.holders("tx_buffer") == 2);
+    assert(map.holders("client_a_rx") == 2);
+    assert(map.holders("driver_text") == 1);
+    assert(map.holders("network_rx") == 0);
+
+    // A footprint sums exactly what the declaration granted.
+    assert(map.footprint("serial_driver") == 4096 + 8192);
+    assert(map.footprint("serial_virt") == 4096 + 2048 + 2048);
+    assert(map.footprint("client_a") == 2048);
+    assert(map.footprint("network_driver") == 0);
+}
+
+/// Asserts that every illegal declaration is refused by its own name, and
+/// that a refusal leaves the map exactly as it stood.
+fn check_refusals(map: *Map) void {
+    // invariant: the map under test starts from its declared shape
+    assert(map.grant_count == 7);
+
+    // A grant that would write and run at once is refused by name.
+    assert(grant_refused(
+        map,
+        "tx_buffer",
+        "client_a",
+        .{ .read = true, .write = true, .execute = true },
+        error.WriteExecute,
+    ));
+
+    // A grant that permits nothing is refused by name.
+    assert(grant_refused(map, "tx_buffer", "client_a", .{}, error.NoAccess));
+
+    // Regranting a standing mapping is refused by name, rather than doubled.
+    assert(grant_refused(map, "tx_buffer", "serial_driver", Perm.read_only(), error.AlreadyGranted));
+
+    // Granting an undeclared region or domain is refused by name.
+    assert(grant_refused(map, "network_rx", "client_a", Perm.read_only(), error.NoSuchRegion));
+    assert(grant_refused(map, "tx_buffer", "network_driver", Perm.read_only(), error.NoSuchDomain));
+
+    // A region larger than the bound, or spanning nothing, is refused by name.
+    assert(region_refused(map, "huge_frame", max_region_bytes + 1, error.RegionTooLarge));
+    assert(region_refused(map, "empty_frame", 0, error.RegionEmpty));
+    assert(region_refused(map, "tx_buffer", 4096, error.DuplicateRegion));
+
+    // The refusals left the map exactly as it was declared.
+    assert(map.domain_count == 4);
+    assert(map.region_count == 4);
+    assert(map.grant_count == 7);
+}
+
+fn run_self_test() u8 {
+    var map = demo_map() catch {
+        print("regions: demo map build failed\n", .{});
+        return 1;
+    };
+
+    check_declared_access(&map);
+    check_reads(&map);
+    check_refusals(&map);
+
+    print("regions: version {s}\n", .{caravan_regions_version});
+    print(
+        "regions: {d} domains, {d} regions, {d} grants, W xor X held -- GREEN.\n",
+        .{ map.domain_count, map.region_count, map.grant_count },
+    );
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test();
+    }
+
+    if (args.len >= 2) return 1;
+    return run_self_test();
+}
