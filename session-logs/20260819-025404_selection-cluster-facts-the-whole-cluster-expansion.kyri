@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260819.025404
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title selection_cluster_facts -- the whole-cluster facts a selection expands to
+prompt baton prin recur -- pick up the running thread, Lindy-first crux-first, one agent-doable open-media lap; Standfast on reds first
+think Grounded as Kyri: read KYRI.md and RADIANT_STYLE.md, then crux/REMEMBER.md, crux/REDS.md, the top of session-logs/README.md.
+think Standfast check: every living REDS row is Closed, Released, or the custody-gated errata (#75, a history rewrite only Keaton's hand can do). The line is clear to build.
+think The thread is a steady cadence -- one new image/*.rye scene-read module per lap, a pure fold over proven readings, GREEN witness on metal, docs synced, REMEMBER single-stranded, then a signed send. 193 image modules stood at lasso_cluster.
+think The card and the last log both named the next crux-first candidate: "a per-cluster facts read over a lasso or rectangle selection joining cluster_facts." Chose that -- and made it strictly more general by taking the selected label set directly, so it composes over ANY selector (hit_test, region_select, lasso_select, region_cluster, lasso_cluster) rather than a rectangle alone.
+think Studied region_cluster.rye (the closest sibling), cluster_facts.rye (the per-cluster join), and selection_summary.rye (the selection's own subset area) to match style and API exactly; confirmed overlap_clusters and scene_manifest public shapes by grep.
+think Designed the crux: a selection EXPANDS to whole clusters, so its cluster-substance STRICTLY EXCEEDS its own -- because a selection can touch a cluster only in part (region_cluster's selects_whole_cluster FALSE), snapping it to whole groups adds the members the box never covered. Two shapes plus the fixed point (a whole-scene selection, expands FALSE).
+obs Reused the same reaching-apart 11x11 scene cluster_facts and region_cluster build (A corner-L box (1,1)-(6,6) area 11, C block box (8,1)-(9,2) area 4, B ring box (4,4)-(9,9) area 20; {A,B} cluster 1, {C} cluster 2), so the arithmetic is anchored to numbers three prior witnesses already prove.
+obs One print-string red on the first build: the GREEN prose held literal braces {A,B} and {1,2,3} that Zig read as format placeholders ("too few arguments"). Doubled them per the selection_summary precedent. A print-string fix, not an algorithm red; none booked.
+obs Version const set from the live clock (TZ=America/New_York date = 20260819.025404) before commit, never a future stamp (REDS #75).
+loom witness=selection_cluster_facts_witness checks=9 result=GREEN modules_image=194
+file image/selection_cluster_facts.rye the whole-cluster facts a selection expands to -- selection_cluster_ids/count/frame/area, expands_beyond_selection
+file tools/selection_cluster_facts_witness.rish native-contains witness (REDS #85), build + selftest + 9 crux/refusal/determinism asserts, GREEN on metal
+file image/README.md names the selection-to-whole-cluster read after lasso_cluster (docs-sync)
+file crux/REMEMBER.md live edge + Git nib repointed single-stranded, lasso_cluster folded to a prior-nib comment, 193 -> 194 image modules
+recommend keep-going next open-media rung, crux-first: an object-count-in-region summary joining a selector with the manifest, a per-cluster read over a lasso polygon, or a codec read; the Microkernel study rung and a real-photo top-hat wait on a fetch/license gate. No network, no key, no funds.
