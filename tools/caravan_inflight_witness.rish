@@ -1,0 +1,120 @@
+# caravan_inflight_witness.rish -- Caravan two-documents-at-once witness.
+#
+# `standby.rye` repaired a ring by declaring it again, and every swap it
+# made happened between steps: one domain had returned, the next had not
+# begun, and the supervisor stood alone with both documents in its hands.
+# This rung asks the sharper question -- may a ring be re-declared while a
+# lap is IN FLIGHT, and what does a domain still running under the elder
+# document owe a successor already derived from the newer one?
+#
+# The answer begins with something a supervisor cannot have. Between the
+# spawn and the reaping there is no outcome to read: the dependent may be
+# mid-write, or it may have exited a microsecond ago and simply not been
+# waited on. This module derives the successor exactly there, holding one
+# unreaped dependent, and the ignorance is the permanent condition of the act
+# rather than an accident of the test.
+#
+# So the rights of a running domain are frozen at its spawn. `serial_cycle`
+# spawns birch; before that dependent is reaped the run derives
+# `serial_cycle_succession.bron`, whose table has no birch in it at all;
+# and birch carries two asks from ask_ab to ask_bc anyway, under grants the
+# newer document has already retired. The domain the successor replaced
+# carried the ask that came home.
+#
+# And a re-declaration governs from the swap forward: a step naming birch
+# after the swap is turned away UnknownDomain, because a spawn derives from
+# the document standing at that instant.
+#
+# Those two halves give the finding:
+#
+#   A declaration reaches a domain at the moment it is spawned, never
+#   after -- so a ring may be re-declared mid-lap, and the only documents
+#   safe to swap in are the ones that are safe under both readings at
+#   once, whether the replaced domain has finished or is still writing.
+#
+# Exactly one property answers to both readings: the regions may not move.
+# `serial_cycle_moved.bron` reads as a whole ring and renames one arc, so a
+# domain still writing would fill a store nobody under the newer document
+# ever reads, while a domain that had already finished would be harmed not
+# at all. A supervisor cannot tell those apart, so it refuses the document
+# rather than the risk.
+#
+# What the swap does not carry is the ring itself. birch spent its ring on
+# birch->cedar, a channel the succession no longer has, so the lap resumes
+# only once the successor's side is woken by name -- the seam cost
+# `standby.rye` named, now paid mid-lap.
+#
+# Both RED paths were proven on metal before this witness was written. With
+# the region guard disabled, the moved document read back as "safe whether
+# the replaced domain finished or is still writing" -- a false clearance --
+# and the lap fell through to a bare OutcomeMismatch, which is the guard
+# proven load-bearing rather than asserted. And a refusal at the swap was
+# found abandoning the dependent it had spawned, so the supervisor now reaps
+# what it started before reporting why the successor was turned away.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep
+# over interpolated output -- REDS #76 / #85, the apostrophe loom.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_inflight_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/inflight"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/inflight.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan inflight build failed"
+
+# Three documents for one ring: the shape the lap opens on, the successor
+# derived mid-flight, and the successor a supervisor must refuse.
+let ring = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_cycle.bron 2>&1"]
+assert ring.ok else "the ring declaration could not be read"
+assert ring.out contains "domains 3 -- channels 3 -- regions 4 -- grants 8" else "the ring declaration changed shape"
+
+let next = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_cycle_succession.bron 2>&1"]
+assert next.ok else "the succession declaration could not be read"
+assert next.out contains "domains 3 -- channels 3 -- regions 4 -- grants 8" else "the succession did not keep the ring's own shape"
+assert next.out contains "verdict: whole" else "the succession declaration did not read whole"
+
+let moved = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_cycle_moved.bron 2>&1"]
+assert moved.ok else "the moved declaration could not be read"
+assert moved.out contains "domains 3 -- channels 3 -- regions 4 -- grants 8" else "the moved declaration changed shape"
+assert moved.out contains "verdict: whole" else "the moved declaration did not read whole"
+
+# A fresh provisioning each run, so every index starts at zero and a bell
+# found ringing was rung by this run rather than left standing by the last.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels"]
+assert clean.ok else "the region stores and doorbells could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan inflight selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan inflight selftest not GREEN"
+assert test.out contains "a declaration reaches a domain at the moment it is spawned, never after" else "the mid-flight finding did not close"
+
+# The wire, before any document is read: three distinct verdicts, so a
+# refusal tells an operator which reading refused rather than only that one did.
+assert test.out contains "a mid-flight swap reads back as one of three verdicts" else "the swap verdicts did not read back"
+
+# The swap itself, taken with the dependent unreaped beneath it.
+assert test.out contains "swap to caravan/systems/serial_cycle_succession.bron while birch is unreaped: safe whether the replaced domain finished or is still writing" else "the successor was not derived mid-flight"
+assert test.out contains "a successor was derived 1 time with 1 dependent unreaped beneath it" else "the unreaped dependent was not counted at the swap"
+
+# The freeze: a domain runs to completion under a document that has already
+# retired it, and the work it carried comes home.
+assert test.out contains "birch: carried 2 from alder onward to cedar, arc standing at 2" else "the retired domain did not carry its arc"
+assert test.out contains "1 step ran to completion under a document that had already retired it" else "the freeze was not counted"
+assert test.out contains "beech: carried 2 from alder onward to cedar, arc standing at 4" else "the successor did not pick up the retired domain's work"
+assert test.out contains "alder: took 4 home from cedar" else "the lap did not come home across the swap"
+assert test.out contains "4 asks come home, 2 of them carried by the domain the newer document had already retired" else "the asks the retired domain carried did not come home"
+
+# The refusal: a successor that moves a region, judged while its writer may
+# still be writing, refused under both readings at once.
+assert test.out contains "the moved successor reads as a ring, so shape alone would have waved it through" else "the moved successor did not read as a ring"
+assert test.out contains "swap to caravan/systems/serial_cycle_moved.bron while birch is unreaped: a region moved under a writer that may still be writing" else "a moved region was not named at the swap"
+assert test.out contains "a successor moving one region is refused mid-flight, with the writer still unreaped" else "a moved region was carried anyway"
+assert test.out contains "the refusal refuses the successor and never the running dependent, which is reaped first" else "a refusal abandoned the dependent it had spawned"
+
+# The effect: the swap governs from that instant forward.
+assert test.out contains "a step naming the replaced domain after the swap is turned away UnknownDomain" else "a retired domain was spawned from the document that retired it"
+
+say "GREEN: Caravan inflight witness passed."

@@ -1,0 +1,676 @@
+//! Caravan inflight -- two documents standing at once, and the rule a
+//! supervisor must keep when it cannot know which one is true.
+//!
+//! `standby.rye` repaired a ring by declaring it again, and every swap it
+//! made happened between steps: one domain had returned, the next had not
+//! begun, and the supervisor stood alone with both documents in its hands.
+//! That left the sharper question standing. May a ring be re-declared while
+//! a lap is *in flight* -- and what does a domain still running under the
+//! elder document owe a successor already derived from the newer one?
+//!
+//! The answer begins with something a supervisor cannot have.
+//!
+//! **A supervisor re-declaring mid-lap cannot know whether the domain it is
+//! replacing has finished.** Between the spawn and the reaping there is no
+//! outcome to read: the dependent may be mid-write, or it may have exited a
+//! microsecond ago and simply not been waited on. This module derives the
+//! successor exactly there, holding one unreaped dependent, and the ignorance is
+//! not an accident of the test -- it is the permanent condition of the act.
+//!
+//! **So the rights of a running domain are frozen at its spawn.** A dependent
+//! takes its grants from the words it was handed, and those words were
+//! written from the document that stood when it started. `serial_cycle`
+//! spawns `birch`; before that dependent is reaped the run derives
+//! `serial_cycle_succession.bron`, whose table has no `birch` in it at all;
+//! and birch runs to completion anyway, carrying two asks from `ask_ab` to
+//! `ask_bc` under grants that the newer document has already retired. **The
+//! domain the successor replaced carried the ask that came home.**
+//!
+//! **And a re-declaration governs from the swap forward.** The same table
+//! that could not touch the running birch refuses the next one absolutely:
+//! a step naming `birch` after the swap is turned away `UnknownDomain`,
+//! since a spawn derives from the document standing at that instant.
+//!
+//! Those two halves together give the rule, and it is the finding:
+//!
+//!   A declaration reaches a domain at the moment it is spawned, never
+//!   after -- so a ring may be re-declared mid-lap, and the only documents
+//!   safe to swap in are the ones that are safe under both readings at
+//!   once, whether the replaced domain has finished or is still writing.
+//!
+//! Exactly one property answers to both readings: the regions may not move.
+//! `serial_cycle_moved.bron` reads as a whole ring and renames one arc, so
+//! a domain still writing would fill a store nobody under the newer
+//! document ever reads, while a domain that had already finished would be
+//! harmed not at all. A supervisor cannot tell those apart, so it refuses
+//! the document rather than the risk -- `RegionsMoved`, mid-flight, with
+//! the dependent still unreaped.
+//!
+//! Hosted ground: real processes, real files, pure policy, no kernel
+//! underneath it yet.
+//!
+//! Usage:
+//!   inflight selftest                  Re-declare a ring mid-lap
+//!   inflight                           Same as selftest
+//!   inflight dependent <domain> <plan> ... Run as a supervised dependent (internal)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const capabilities = @import("capabilities.rye");
+const roster = @import("roster.rye");
+const read = @import("read.rye");
+const boot = @import("boot.rye");
+const exercise = @import("exercise.rye");
+const carry = @import("carry.rye");
+const notify = @import("notify.rye");
+const roundtrip = @import("roundtrip.rye");
+const cycle = @import("cycle.rye");
+const restart = @import("restart.rye");
+const gap = @import("gap.rye");
+const standby = @import("standby.rye");
+const tally_parse_int = @import("parse_int.rye");
+
+const caravan_inflight_version = "20260819.172105";
+
+// =========================================================================
+// The bounds -- one ring, one successor, and one document it must refuse
+// =========================================================================
+
+/// The ring as it stands when the lap opens.
+pub const ring_path = cycle.declaration_path;
+
+/// The successor derived while a domain of the elder ring is still unreaped.
+pub const succession_path = standby.succession_path;
+
+/// A successor that reads as a whole ring and moves one region under a
+/// writer that may still be writing.
+pub const moved_path = "caravan/systems/serial_cycle_moved.bron";
+
+/// A dependent's fixed argv: the program, the marker, its domain, its plan, the
+/// point it may be dropped at, how it wakes its successor, and how many
+/// capability words follow. The same seven words `gap.rye` proved.
+pub const fixed_argv_words: u32 = gap.fixed_argv_words;
+
+/// How many distinct documents one run may derive from -- a swap replaces
+/// one document with one document, exactly as a succession does.
+pub const max_declarations: u32 = standby.max_declarations;
+
+comptime {
+    // invariant: a swap exchanges one document for one document
+    assert(max_declarations == 2);
+    // invariant: a whole dependent argv stays within what one run builds
+    assert(fixed_argv_words + capabilities.max_caps_per_dependent + notify.max_peers_per_dependent <= 32);
+}
+
+/// Names one outcome for an operator, in the words the ring already spends.
+pub fn outcome_name(code: u8) []const u8 {
+    return gap.outcome_name(code);
+}
+
+// =========================================================================
+// The swap -- what a supervisor may learn while it holds an unreaped dependent
+// =========================================================================
+
+/// What a mid-flight derivation found in the document it was handed.
+pub const SwapVerdict = enum {
+    /// The successor keeps every region, so it is safe under both readings.
+    safe_either_way,
+    /// The successor moved a region out from under a possible writer.
+    regions_moved,
+    /// The successor still names the domain it was meant to replace.
+    still_named,
+};
+
+/// Renders one verdict as the words an operator reads.
+pub fn swap_words(v: SwapVerdict) []const u8 {
+    return switch (v) {
+        .safe_either_way => "safe whether the replaced domain finished or is still writing",
+        .regions_moved => "a region moved under a writer that may still be writing",
+        .still_named => "the replaced domain still named in the document replacing it",
+    };
+}
+
+/// Judges one successor document against the ring it would replace, and the
+/// domain that is unreaped at this instant.
+///
+/// The judgement asks only what holds under **both** readings of a running
+/// dependent. A document that keeps every region is safe whether the replaced
+/// domain has already exited or is mid-write, because a region's backing
+/// store is addressed by the region's own name and the writes land where
+/// the successor reads either way. A document that moves a region is safe
+/// under exactly one reading, and a supervisor holding an unreaped dependent
+/// cannot tell which reading it is in.
+pub fn judge_swap(
+    elder: *const system.System,
+    next: *const system.System,
+    replaced: []const u8,
+) SwapVerdict {
+    // invariant: a swap always names the domain it is replacing
+    assert(replaced.len >= 1);
+    // invariant: both documents carry at least one domain to compare
+    assert(elder.map.domain_count >= 1);
+    assert(next.map.domain_count >= 1);
+    if (!standby.same_regions(elder, next)) return .regions_moved;
+    var d: u32 = 0;
+    while (d < next.map.domain_count) : (d += 1) {
+        if (std.mem.eql(u8, cycle.domain_name(next, d), replaced)) return .still_named;
+    }
+    // invariant: the whole successor roster was read, none skipped
+    assert(d == next.map.domain_count);
+    return .safe_either_way;
+}
+
+// =========================================================================
+// The dependent -- one process, one arc, and the words it was handed at spawn
+// =========================================================================
+
+/// Reads the capability words a dependent was handed into its own slot.
+fn slot_from_argv(args: []const [:0]const u8, domain: []const u8, cap_count: u32) ?capabilities.DependentSlot {
+    // invariant: a dependent always knows which domain it is
+    assert(domain.len >= 1);
+    // invariant: the count stays within what one dependent may hold
+    assert(cap_count <= capabilities.max_caps_per_dependent);
+    var slot = capabilities.DependentSlot.init(domain);
+    var i: u32 = 0;
+    while (i < cap_count) : (i += 1) {
+        const cap = boot.read_cap_word(args[fixed_argv_words + i]) orelse return null;
+        slot.grant(cap) catch return null;
+    }
+    // invariant: the dependent holds exactly the capability words it was handed
+    assert(slot.cap_count == cap_count);
+    return slot;
+}
+
+/// Runs as one supervised dependent, holding exactly the capabilities and
+/// neighbors it was handed at spawn.
+///
+/// Nothing here can be told that a newer document exists. That is the whole
+/// mechanism behind the freeze: a dependent's rights arrived as words, and words
+/// already handed over do not change when the file they were read from does.
+fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
+    // invariant: a dependent always receives its marker, domain, plan, fall, wake, and count
+    assert(args.len >= fixed_argv_words);
+    const domain = args[2];
+    const plan = args[3];
+    // invariant: a dependent always knows which domain it is
+    assert(domain.len >= 1);
+
+    const fall = gap.read_fall(args[4]) orelse {
+        print("    {s}: refused a fall word it could not read\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    const wake = gap.read_wake(args[5]) orelse {
+        print("    {s}: refused a wake word it could not read\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+
+    const cap_count = tally_parse_int.parse_int(u32, args[6], .{}) catch {
+        print("    {s}: refused an unreadable capability count\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    if (cap_count > capabilities.max_caps_per_dependent) {
+        print("    {s}: more capabilities than one dependent holds\n", .{domain});
+        return carry.Outcome.malformed;
+    }
+    if (fixed_argv_words + cap_count > args.len) {
+        print("    {s}: a capability count past the words it was handed\n", .{domain});
+        return carry.Outcome.malformed;
+    }
+
+    var slot = slot_from_argv(args, domain, cap_count) orelse {
+        print("    {s}: refused a malformed capability word\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+
+    var peers: notify.PeerList = .{};
+    var p: usize = fixed_argv_words + cap_count;
+    while (p < args.len) : (p += 1) {
+        peers.add(args[p]) catch {
+            print("    {s}: more peers than one dependent holds\n", .{domain});
+            return carry.Outcome.malformed;
+        };
+    }
+    // invariant: the dependent holds exactly the peer words it was handed
+    assert(peers.count == args.len - fixed_argv_words - cap_count);
+
+    const task = cycle.read_plan(plan) orelse {
+        print("    {s}: refused a plan it could not read\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    const code = gap.attempt(io, &slot, &peers, domain, task, fall, wake);
+    print("    {s}: {s}\n", .{ domain, outcome_name(code) });
+    return code;
+}
+
+// =========================================================================
+// The supervisor -- a derivation taken while one dependent is unreaped
+// =========================================================================
+
+/// One declared step, the document it derives from, and the document the
+/// supervisor derives while this step is still unreaped.
+pub const Assignment = struct {
+    decl: []const u8,
+    domain: []const u8,
+    verb: cycle.Verb,
+    hops: []const u8,
+    peers: []const u8,
+    count: u32,
+    /// The successor to derive after this dependent is spawned and before it is
+    /// reaped -- the whole point of the module when it is set.
+    swap_to: ?[]const u8 = null,
+    expect: u8,
+};
+
+/// What one run did, reported whole.
+pub const Report = struct {
+    started: u32 = 0,
+    derivations: u32 = 0,
+    succeeded: u32 = 0,
+    homed: u32 = 0,
+    bells: u32 = 0,
+    /// How many successors were derived while a dependent stood unreaped.
+    swaps: u32 = 0,
+    /// How many dependents were unreaped at the instant of a swap -- the
+    /// ignorance the rule is built to survive, counted rather than assumed.
+    unreaped_at_swap: u32 = 0,
+    /// How many steps ran under a document that had already been replaced.
+    ran_under_elder: u32 = 0,
+};
+
+/// Named ways a run declines rather than reporting a hollow success.
+pub const RunError = error{
+    SpawnFailed,
+    UnknownDomain,
+    PlanTooLong,
+    DeclarationUnreadable,
+    OutcomeMismatch,
+    RegionsMoved,
+    StillNamed,
+};
+
+/// Derives one successor while a dependent of the elder document stands
+/// unreaped, and answers how many derivations that cost.
+///
+/// The order of the three acts in `spawn_and_swap` is the module's whole
+/// claim, so it is stated here rather than left to the reader: the dependent is
+/// already running when this is called, and it has not been waited on when
+/// this returns.
+fn derive_successor(
+    io: std.Io,
+    elder: *const system.System,
+    path: []const u8,
+    replaced: []const u8,
+    report_out: *Report,
+) RunError!void {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const next = read.load(io, path, &buf) catch return error.DeclarationUnreadable;
+    if (next.verify() != .whole) return error.DeclarationUnreadable;
+    const verdict = judge_swap(elder, &next, replaced);
+    print("    swap to {s} while {s} is unreaped: {s}\n", .{ path, replaced, swap_words(verdict) });
+    switch (verdict) {
+        .regions_moved => return error.RegionsMoved,
+        .still_named => return error.StillNamed,
+        .safe_either_way => {},
+    }
+    const table = try_from(&next) orelse return error.DeclarationUnreadable;
+    // invariant: the successor's own table has no place for the replaced domain
+    assert(table.find_dependent(replaced) == null);
+    report_out.derivations += 1;
+    report_out.swaps += 1;
+    report_out.unreaped_at_swap += 1;
+}
+
+/// Derives a capability table, answering null rather than a named error, so
+/// the mid-flight path keeps one refusal word for an unreadable successor.
+fn try_from(sys: *const system.System) ?capabilities.CapabilityTable {
+    return roster.from_system(sys) catch null;
+}
+
+/// Spawns one dependent against its own document, derives the successor while
+/// that dependent is unreaped, and only then waits.
+///
+/// A supervisor that waited first would be re-declaring between steps, which
+/// `standby.rye` already proved safe. Everything this module adds lives in
+/// the three lines between the spawn and the wait.
+fn spawn_and_swap(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    table: *const capabilities.CapabilityTable,
+    step: Assignment,
+    wake: gap.Wake,
+    report_out: *Report,
+) (RunError || boot.BootError)!u8 {
+    const slot = table.find_dependent(step.domain) orelse return error.UnknownDomain;
+    // invariant: the line handed out agrees with the declaration it came from
+    assert(boot.line_agrees(sys, slot));
+
+    var peers: notify.PeerList = .{};
+    notify.peers_of(sys, step.domain, &peers);
+
+    var plan_buf: [cycle.max_plan_len]u8 = undefined;
+    const plan = std.fmt.bufPrint(&plan_buf, "{s}:{s}:{s}:{d}", .{
+        cycle.verb_word(step.verb), step.hops, step.peers, step.count,
+    }) catch return error.PlanTooLong;
+
+    var count_buf: [8]u8 = undefined;
+    const count_word = std.fmt.bufPrint(&count_buf, "{d}", .{slot.cap_count}) catch
+        return error.PlanTooLong;
+
+    var storage: [capabilities.max_caps_per_dependent][boot.max_cap_word_len]u8 = undefined;
+    const argv = allocator.alloc(
+        []const u8,
+        fixed_argv_words + slot.cap_count + peers.count,
+    ) catch return error.SpawnFailed;
+    argv[0] = self_path;
+    argv[1] = "dependent";
+    argv[2] = slot.label_slice();
+    argv[3] = plan;
+    argv[4] = gap.fall_word(.none);
+    argv[5] = gap.wake_word(wake);
+    argv[6] = count_word;
+    var c: u32 = 0;
+    while (c < slot.cap_count) : (c += 1) {
+        assert(c < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        argv[fixed_argv_words + c] = try boot.write_cap_word(&storage[c], &slot.caps[c]);
+    }
+    var q: u32 = 0;
+    while (q < peers.count) : (q += 1) {
+        argv[fixed_argv_words + slot.cap_count + q] = peers.name_at(q);
+    }
+
+    var proc = std.process.spawn(io, .{ .argv = argv }) catch return error.SpawnFailed;
+
+    // The dependent is running and its outcome is unknown. Everything a
+    // supervisor may learn about a successor, it learns from here.
+    var refused: ?RunError = null;
+    if (step.swap_to) |path| {
+        derive_successor(io, sys, path, step.domain, report_out) catch |err| {
+            refused = err;
+        };
+    }
+
+    // A refusal at the swap refuses the successor, never the running dependent.
+    // That dependent was spawned under a document that permitted every word of
+    // it, so the supervisor waits on what it started before it reports why
+    // the newer document was turned away -- an abandoned dependent would be a
+    // leak dressed as a safety check.
+    const term = proc.wait(io) catch return error.SpawnFailed;
+    if (refused) |err| return err;
+    return switch (term) {
+        .exited => |code| code,
+        else => restart.fell,
+    };
+}
+
+/// Runs one assigned step against the document it names, deriving that
+/// document fresh so a step written after a swap stands on the newer words.
+fn run_assignment(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    step: Assignment,
+    wake: gap.Wake,
+    report_out: *Report,
+) (roster.RosterError || RunError || boot.BootError)!void {
+    // invariant: an assignment always names a document, a domain, its regions, and its peers
+    assert(step.decl.len >= 1);
+    assert(step.domain.len >= 1);
+    assert(step.hops.len >= 1);
+    assert(step.peers.len >= 1);
+
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const fresh = read.load(io, step.decl, &buf) catch return error.DeclarationUnreadable;
+    if (fresh.verify() != .whole) return error.DeclarationUnreadable;
+    const table = try roster.from_system(&fresh);
+    // invariant: the freshly derived table enforces exactly what the document permits
+    assert(roster.agrees(&fresh, &table));
+    report_out.derivations += 1;
+
+    const code = try spawn_and_swap(allocator, io, self_path, &fresh, &table, step, wake, report_out);
+    if (code != step.expect) {
+        print("    {s}: expected {s}, heard {s}\n", .{
+            step.domain, outcome_name(step.expect), outcome_name(code),
+        });
+        return error.OutcomeMismatch;
+    }
+    report_out.started += 1;
+    if (step.swap_to != null) report_out.ran_under_elder += 1;
+    if (step.expect == carry.Outcome.carried_ok) {
+        report_out.succeeded += 1;
+        if (step.verb == .home) report_out.homed += step.count;
+    }
+}
+
+/// Provisions the regions once and the bells of every document a run will
+/// derive from, so a swap never waits on a store or a doorbell.
+fn provision_all(
+    io: std.Io,
+    ring: *const system.System,
+    later: []const []const u8,
+) (roster.RosterError || exercise.ProvisionError || notify.BellError || RunError)!u32 {
+    // invariant: a run never derives from more documents than it declared
+    assert(later.len < max_declarations);
+    const provisioned = try exercise.provision(io, ring);
+    // invariant: every declared region has a backing store before any dependent runs
+    assert(provisioned == ring.map.region_count);
+
+    var bells = try roundtrip.provision_directed(io, ring);
+    var i: u32 = 0;
+    while (i < later.len) : (i += 1) {
+        var buf: [read.read_buffer_bytes]u8 = undefined;
+        const next = read.load(io, later[i], &buf) catch return error.DeclarationUnreadable;
+        if (next.verify() != .whole) return error.DeclarationUnreadable;
+        bells += try roundtrip.provision_directed(io, &next);
+    }
+    // invariant: every document the run derives from has its bells standing
+    assert(i == later.len);
+    return bells;
+}
+
+/// Runs a whole ordered lap in which one step's successor is derived while
+/// that step is still unreaped.
+pub fn run_lap(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    ring: *const system.System,
+    later: []const []const u8,
+    plan: []const Assignment,
+    wake: gap.Wake,
+) (roster.RosterError || exercise.ProvisionError || notify.BellError || RunError || boot.BootError)!Report {
+    // invariant: a run always knows what program to spawn
+    assert(self_path.len >= 1);
+    // invariant: a run always carries at least one step
+    assert(plan.len >= 1);
+    const bells = try provision_all(io, ring, later);
+
+    var report_out: Report = .{ .bells = bells };
+    var i: u32 = 0;
+    while (i < plan.len) : (i += 1) {
+        try run_assignment(allocator, io, self_path, plan[i], wake, &report_out);
+    }
+    // invariant: every step in the plan ran, none half-counted
+    assert(report_out.started == plan.len);
+    // invariant: a swap is only ever taken with a dependent unreaped beneath it
+    assert(report_out.unreaped_at_swap == report_out.swaps);
+    return report_out;
+}
+
+// =========================================================================
+// Self-test -- a ring re-declared under a domain that is still running
+// =========================================================================
+
+/// The lap that carries. alder places two asks under the ring; birch is
+/// spawned under the ring and the succession is derived before birch is
+/// reaped, so the document that retires birch stands complete while birch is
+/// still carrying. birch carries anyway, and its work stands in `ask_bc`
+/// where the successor reads.
+///
+/// What the swap does not carry is the ring itself. birch spent its ring on
+/// `birch->cedar`, a channel the succession no longer has, so the lap
+/// resumes by waking the successor's side by name -- alder places two more
+/// under the newer document and rings `beech`. beech then finds four
+/// standing where it wrote none, two of them carried by the very domain the
+/// document it runs under had already retired.
+const inflight_plan = [_]Assignment{
+    .{ .decl = ring_path, .domain = "alder", .verb = .place, .hops = "ask_ab", .peers = "birch", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .decl = ring_path, .domain = "birch", .verb = .pass, .hops = "ask_ab,ask_bc", .peers = "alder,cedar", .count = 2, .swap_to = succession_path, .expect = carry.Outcome.carried_ok },
+    .{ .decl = succession_path, .domain = "alder", .verb = .place, .hops = "ask_ab", .peers = "beech", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .decl = succession_path, .domain = "beech", .verb = .pass, .hops = "ask_ab,ask_bc", .peers = "alder,cedar", .count = 4, .expect = carry.Outcome.carried_ok },
+    .{ .decl = succession_path, .domain = "cedar", .verb = .pass, .hops = "ask_bc,ask_ca", .peers = "beech,alder", .count = 4, .expect = carry.Outcome.carried_ok },
+    .{ .decl = succession_path, .domain = "alder", .verb = .home, .hops = "ask_ca,taken", .peers = "cedar", .count = 4, .expect = carry.Outcome.carried_ok },
+};
+
+/// A successor that moves one region, derived while its writer may still be
+/// writing -- refused under both readings at once.
+const moved_probe = [_]Assignment{
+    .{ .decl = ring_path, .domain = "birch", .verb = .pass, .hops = "ask_ab,ask_bc", .peers = "alder,cedar", .count = 2, .swap_to = moved_path, .expect = carry.Outcome.carried_ok },
+};
+
+/// A step naming the replaced domain after the swap has landed -- turned
+/// away, because a spawn derives from the document standing at that instant.
+const after_probe = [_]Assignment{
+    .{ .decl = succession_path, .domain = "birch", .verb = .pass, .hops = "ask_ab,ask_bc", .peers = "alder,cedar", .count = 2, .expect = carry.Outcome.carried_ok },
+};
+
+/// Proves the swap verdicts read back as three distinct words.
+fn check_wire() u8 {
+    const all = [_]SwapVerdict{ .safe_either_way, .regions_moved, .still_named };
+    var i: u32 = 0;
+    while (i < all.len) : (i += 1) {
+        var j: u32 = i + 1;
+        while (j < all.len) : (j += 1) {
+            if (std.mem.eql(u8, swap_words(all[i]), swap_words(all[j]))) {
+                print("  RED: two swap verdicts read as one word\n", .{});
+                return 1;
+            }
+        }
+    }
+    // invariant: every way a swap can be judged carries its own word
+    assert(i == all.len);
+    print("  a mid-flight swap reads back as one of three verdicts\n", .{});
+    return 0;
+}
+
+/// Loads one declaration, or names why it could not be read.
+fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
+    const parsed = read.load(io, path, buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ path, @errorName(err) });
+        return null;
+    };
+    if (parsed.verify() != .whole) {
+        print("  RED: {s} did not read whole\n", .{path});
+        return null;
+    }
+    return parsed;
+}
+
+/// The lap that carries across a re-declaration taken mid-flight.
+fn check_inflight(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var ring_buf: [read.read_buffer_bytes]u8 = undefined;
+    const ring = load_one(io, ring_path, &ring_buf) orelse return 1;
+
+    const later = [_][]const u8{succession_path};
+    const done = run_lap(allocator, io, self_path, &ring, &later, &inflight_plan, .when_moved) catch |err| {
+        print("  RED: the lap did not survive a mid-flight re-declaration: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: exactly one successor was derived, and a dependent stood unreaped beneath it
+    assert(done.swaps == 1);
+    assert(done.unreaped_at_swap == 1);
+    // invariant: exactly one step ran under a document already replaced
+    assert(done.ran_under_elder == 1);
+    // invariant: every step of the lap carried
+    assert(done.succeeded == inflight_plan.len);
+    // invariant: the whole lap came home, the pair the retired domain carried among it
+    assert(done.homed == 4);
+    print("  a successor was derived {d} time with {d} dependent unreaped beneath it\n", .{
+        done.swaps, done.unreaped_at_swap,
+    });
+    print("  {d} step ran to completion under a document that had already retired it\n", .{
+        done.ran_under_elder,
+    });
+    print("  {d} asks come home, 2 of them carried by the domain the newer document had already retired\n", .{done.homed});
+    return 0;
+}
+
+/// A successor that moves a region, refused mid-flight.
+fn check_moved(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var ring_buf: [read.read_buffer_bytes]u8 = undefined;
+    const ring = load_one(io, ring_path, &ring_buf) orelse return 1;
+
+    var moved_buf: [read.read_buffer_bytes]u8 = undefined;
+    const moved = load_one(io, moved_path, &moved_buf) orelse return 1;
+    if (standby.shape_of(&moved) != .ring) {
+        print("  RED: the moved successor did not read as a ring, so the refusal proves nothing\n", .{});
+        return 1;
+    }
+    print("  the moved successor reads as a ring, so shape alone would have waved it through\n", .{});
+
+    const later = [_][]const u8{};
+    _ = run_lap(allocator, io, self_path, &ring, &later, &moved_probe, .every_pass) catch |err| {
+        if (err != error.RegionsMoved) {
+            print("  RED: a moved region was refused as {s} rather than RegionsMoved\n", .{@errorName(err)});
+            return 1;
+        }
+        print("  a successor moving one region is refused mid-flight, with the writer still unreaped\n", .{});
+        print("  the refusal refuses the successor and never the running dependent, which is reaped first\n", .{});
+        return 0;
+    };
+    print("  RED: a successor moved a region under a possible writer and was carried anyway\n", .{});
+    return 1;
+}
+
+/// A step naming the replaced domain after the swap, turned away.
+fn check_after(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var ring_buf: [read.read_buffer_bytes]u8 = undefined;
+    const ring = load_one(io, ring_path, &ring_buf) orelse return 1;
+
+    const later = [_][]const u8{};
+    _ = run_lap(allocator, io, self_path, &ring, &later, &after_probe, .every_pass) catch |err| {
+        if (err != error.UnknownDomain) {
+            print("  RED: a retired domain was refused as {s} rather than UnknownDomain\n", .{@errorName(err)});
+            return 1;
+        }
+        print("  a step naming the replaced domain after the swap is turned away UnknownDomain\n", .{});
+        return 0;
+    };
+    print("  RED: a retired domain was spawned from the document that retired it\n", .{});
+    return 1;
+}
+
+fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    print("Caravan inflight {s} -- self-test\n", .{caravan_inflight_version});
+    const wire = check_wire();
+    if (wire != 0) return wire;
+    const lap = check_inflight(allocator, io, self_path);
+    if (lap != 0) return lap;
+    const moved = check_moved(allocator, io, self_path);
+    if (moved != 0) return moved;
+    const after = check_after(allocator, io, self_path);
+    if (after != 0) return after;
+    print("  GREEN: a declaration reaches a domain at the moment it is spawned, never after\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
+        return run_dependent(io, args);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(allocator, io, self_path);
+    }
+    if (args.len >= 2) return 1;
+    return run_self_test(allocator, io, self_path);
+}
