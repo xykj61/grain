@@ -1,0 +1,1310 @@
+//! Caravan relay -- a chain crosses two seams without any domain waiting.
+//!
+//! `stall.rye` closed the last question a single hop can ask. A server held
+//! a full queue for a consumer that had gone silent, took the door its plan
+//! declared, and never once waited -- so a stalled peer cost its own stream
+//! and nothing else. Every domain in that ring was either an asker or an
+//! answerer, and the region it wrote said which.
+//!
+//! The crux here: **a domain that is both.** `relay_virt` answers `client`
+//! and asks `backend` in the same run, and the moment one domain holds two
+//! roles, three questions open that no single hop ever poses.
+//!
+//! **Can the two roles be told apart?** They can, and the declaration is
+//! where. The relay reads asks on `ask_up` and answers on `answer_down` --
+//! two different regions, both read-only to it, so an answer can never be
+//! mistaken for an ask by a server that guessed wrong about its own inbox.
+//! This is the fanin lesson raised one level: there, the region named the
+//! author; here, the region names the role.
+//!
+//! **Does a chain deadlock?** It cannot, and the reason is structural. No
+//! verb in this ring waits. A client's ask cannot be answered on the pass
+//! it arrives, since the answer lives two hops away -- so the relay
+//! forwards what is pending and returns, holding nothing open. The run
+//! proves it the hard way: the client asks a second time while the first
+//! pair is still unanswered, and the relay forwards the new pair with a
+//! full backlog standing behind it.
+//!
+//! **What does the isolation cost?** This is the honest finding, and it is
+//! the one worth carrying forward. `client` and `backend` share no channel
+//! and no region -- the two ends of the chain never meet, which is exactly
+//! what keeps a two-hop system from quietly collapsing into one. Yet a
+//! client that shares no memory with the far end has nothing to attest it
+//! with. The author named in an answer reaches the client as a **claim it
+//! takes on the relay's word**, where a one-hop client could have taken it
+//! from the region the bytes arrived in. Memory attests a neighbor; it
+//! cannot attest a stranger. Everything past one hop wants a signature the
+//! bytes carry themselves.
+//!
+//! The shape is read from the grants rather than declared. A region with
+//! one writer and one reader is a directed flow, five flows fall out of ten
+//! grants, and the one domain spanning two peers is the relay -- named by
+//! the document's own arithmetic, never by a role word.
+//!
+//! Hosted ground: real processes, real files, pure policy, no kernel
+//! underneath it yet.
+//!
+//! Usage:
+//!   relay selftest                    Run the chain and check
+//!   relay                             Same as selftest
+//!   relay dependent <domain> <plan> ...   Run as a supervised dependent (internal)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const regions = @import("regions.rye");
+const channels = @import("channels.rye");
+const capabilities = @import("capabilities.rye");
+const roster = @import("roster.rye");
+const read = @import("read.rye");
+const boot = @import("boot.rye");
+const exercise = @import("exercise.rye");
+const carry = @import("carry.rye");
+const notify = @import("notify.rye");
+const roundtrip = @import("roundtrip.rye");
+const serve = @import("serve.rye");
+const queue = @import("queue.rye");
+const fanin = @import("fanin.rye");
+const tally_parse_int = @import("parse_int.rye");
+
+const caravan_relay_version = "20260819.162139";
+
+// =========================================================================
+// Bounds -- what one relay run may spend
+// =========================================================================
+
+/// The chain declaration: a client, a relay that holds both roles, a
+/// backend, and the five directed regions that join them.
+pub const declaration_path = "caravan/systems/serial_relay.bron";
+
+/// How many regions one step may name. The settling step reads the whole
+/// chain at once, so the bound is the chain's own width rather than a
+/// stream count borrowed from a one-hop ring.
+pub const max_hops: u32 = 6;
+
+/// How many peers one step may name -- the domain it hears and the domain
+/// it rings, which for a middle domain are two different neighbors.
+pub const max_peers: u32 = 2;
+
+/// The longest plan word this ring builds: a verb, a region list, a peer
+/// list, a count, and the separators between them.
+pub const max_plan_len: u32 = 512;
+
+/// Fixed argv words every dependent receives, matching `serve.rye`.
+const fixed_argv_words: u32 = 5;
+
+/// What one ask says on the wire, before its sequence and its origin.
+pub const ask_prefix = "relay: ask ";
+
+/// What one answer says on the wire, before its sequence, its claimed
+/// author, and the origin it travels back to.
+pub const answer_prefix = "relay: answer ";
+
+comptime {
+    // invariant: a chain is at least three domains long
+    assert(max_hops >= 3);
+    // invariant: the whole chain fits the regions one declaration may hold
+    assert(max_hops <= regions.max_regions);
+    // invariant: a middle domain names both the peer it hears and the one it rings
+    assert(max_peers >= 2);
+    // invariant: a step never names more peers than a dependent is wired to
+    assert(max_peers <= notify.max_peers_per_dependent);
+    // invariant: the longest legal step still fits the plan word that carries it
+    assert(8 + (max_hops * (regions.max_name_len + 1)) +
+        (max_peers * (channels.max_name_len + 1)) + 8 <= max_plan_len);
+    // invariant: a whole dependent argv stays within what one run builds
+    assert(fixed_argv_words + capabilities.max_caps_per_dependent + notify.max_peers_per_dependent <= 32);
+}
+
+/// Names one outcome for an operator, deferring wholly to the vocabulary
+/// this arc already speaks -- a chain needed no new word for how it ends.
+pub fn outcome_name(code: u8) []const u8 {
+    return fanin.outcome_name(code);
+}
+
+// =========================================================================
+// The shape, derived -- roles read off the grants, never declared
+// =========================================================================
+
+/// One directed flow: a region with exactly one writer and one reader, so
+/// the bytes in it can only move one way.
+pub const Flow = struct {
+    region: u32,
+    from: u32,
+    to: u32,
+};
+
+/// Every directed flow a declaration carries, derived from its grants.
+pub const FlowSet = struct {
+    flows: [regions.max_regions]Flow = undefined,
+    count: u32 = 0,
+
+    pub fn flow_at(self: *const FlowSet, index: u32) Flow {
+        // invariant: a read stays inside the flows this set holds
+        assert(index < self.count);
+        return self.flows[index];
+    }
+};
+
+/// Derives the directed flows of a declaration from its grant table alone.
+///
+/// A region granted read-write to exactly one domain and read-only to
+/// exactly one other is a one-way street, and the direction is the grant's
+/// to state. A region shaped any other way answers null for the whole set,
+/// since a ring that read a chain out of a declaration that is not one
+/// would be inventing the very structure it claims to have found.
+pub fn flows_of(sys: *const system.System) ?FlowSet {
+    // invariant: both rosters stay within their bounds
+    assert(sys.map.region_count <= regions.max_regions);
+    assert(sys.map.grant_count <= regions.max_grants);
+    var out: FlowSet = .{};
+    var r: u32 = 0;
+    while (r < sys.map.region_count) : (r += 1) {
+        assert(r < regions.max_regions); // invariant: the walk stays in the array
+        var writer: ?u32 = null;
+        var reader: ?u32 = null;
+        var writers: u32 = 0;
+        var readers: u32 = 0;
+        var g: u32 = 0;
+        while (g < sys.map.grant_count) : (g += 1) {
+            assert(g < regions.max_grants); // invariant: the walk stays in the array
+            const one = &sys.map.grants[g];
+            if (one.region != r) continue;
+            if (one.perm.write) {
+                writer = one.domain;
+                writers += 1;
+            } else {
+                reader = one.domain;
+                readers += 1;
+            }
+        }
+        if (writers != 1 or readers != 1) return null;
+        out.flows[out.count] = .{
+            .region = r,
+            .from = writer orelse return null,
+            .to = reader orelse return null,
+        };
+        out.count += 1;
+    }
+    // invariant: every declared region became exactly one flow
+    assert(out.count == sys.map.region_count);
+    return out;
+}
+
+/// Counts how many distinct neighbors one domain exchanges bytes with.
+///
+/// A domain at the end of a chain touches one neighbor; the domain in the
+/// middle touches two. No role is declared anywhere -- the span is simply
+/// what the grants add up to.
+pub fn peer_span(set: *const FlowSet, domain: u32) u32 {
+    // invariant: the flow set stays within its bound
+    assert(set.count <= regions.max_regions);
+    var seen: [regions.max_domains]bool = @splat(false);
+    var span: u32 = 0;
+    var i: u32 = 0;
+    while (i < set.count) : (i += 1) {
+        assert(i < regions.max_regions); // invariant: the walk stays in the array
+        const flow = set.flows[i];
+        const other: u32 = if (flow.from == domain)
+            flow.to
+        else if (flow.to == domain)
+            flow.from
+        else
+            continue;
+        assert(other < regions.max_domains); // invariant: the peer addresses the roster
+        if (seen[other]) continue;
+        seen[other] = true;
+        span += 1;
+    }
+    // invariant: a span never counts more neighbors than the roster holds
+    assert(span <= regions.max_domains);
+    return span;
+}
+
+/// Answers whether two domains hold a grant on any one region in common.
+///
+/// The two ends of a chain answer no, and that no is the isolation the
+/// whole shape rests on: bytes reach the far end only by the relay's carry.
+pub fn share_a_region(sys: *const system.System, a: u32, b: u32) bool {
+    // invariant: the grant roster stays within its bound
+    assert(sys.map.grant_count <= regions.max_grants);
+    // invariant: sharing is a question about two different domains
+    assert(a != b);
+    var i: u32 = 0;
+    while (i < sys.map.grant_count) : (i += 1) {
+        assert(i < regions.max_grants); // invariant: the walk stays in the array
+        if (sys.map.grants[i].domain != a) continue;
+        var k: u32 = 0;
+        while (k < sys.map.grant_count) : (k += 1) {
+            assert(k < regions.max_grants); // invariant: the walk stays in the array
+            if (sys.map.grants[k].domain != b) continue;
+            if (sys.map.grants[k].region == sys.map.grants[i].region) return true;
+        }
+    }
+    return false;
+}
+
+// =========================================================================
+// The messages -- an ask that names its origin, an answer that claims one
+// =========================================================================
+
+/// Writes one ask, naming the domain it started from.
+pub fn ask_text(buf: *[serve.max_message_len]u8, origin: []const u8, seq: u32) []const u8 {
+    // invariant: an ask always names where it started
+    assert(origin.len >= 1);
+    // invariant: the longest ask this ring writes fits the buffer that holds it
+    assert(ask_prefix.len + 10 + 6 + origin.len <= serve.max_message_len);
+    const text = std.fmt.bufPrint(buf, "{s}{d} from {s}", .{ ask_prefix, seq, origin }) catch
+        buf[0..0];
+    // invariant: an ask always carries bytes
+    assert(text.len >= 1);
+    return text;
+}
+
+/// Reads the origin an ask names, or null when the bytes never carried this
+/// ring's shape.
+pub fn asked_origin(text: []const u8) ?[]const u8 {
+    // invariant: an ask worth reading carries something
+    assert(text.len >= 1);
+    const marker = " from ";
+    const at = std.mem.indexOf(u8, text, marker) orelse return null;
+    const name = text[at + marker.len ..];
+    if (name.len == 0) return null;
+    // invariant: an origin read off the wire carries bytes
+    assert(name.len >= 1);
+    return name;
+}
+
+/// Writes one answer, naming both the domain that authored it and the
+/// origin it travels back to.
+pub fn answer_text(
+    buf: *[serve.max_message_len]u8,
+    author: []const u8,
+    origin: []const u8,
+    seq: u32,
+) []const u8 {
+    // invariant: an answer always names its author and the origin it returns to
+    assert(author.len >= 1);
+    assert(origin.len >= 1);
+    // invariant: the longest answer this ring writes fits the buffer that holds it
+    assert(answer_prefix.len + 10 + 9 + author.len + origin.len <= serve.max_message_len);
+    const text = std.fmt.bufPrint(buf, "{s}{d} by {s} for {s}", .{
+        answer_prefix, seq, author, origin,
+    }) catch buf[0..0];
+    // invariant: an answer always carries bytes
+    assert(text.len >= 1);
+    return text;
+}
+
+/// Reads the author an answer claims, once its sequence and its origin
+/// check out.
+///
+/// The name that comes back is a **claim**, deliberately. A client two hops
+/// from the author shares no region with it, so nothing in the memory
+/// system can attest who wrote these bytes -- only the relay's honest
+/// carry, or a signature the bytes carry themselves.
+pub fn claimed_author(text: []const u8, origin: []const u8, seq: u32) ?[]const u8 {
+    // invariant: a claim worth reading carries something
+    assert(text.len >= 1);
+    // invariant: a reader always knows which origin it is
+    assert(origin.len >= 1);
+    var head_buf: [serve.max_message_len]u8 = undefined;
+    const head = std.fmt.bufPrint(&head_buf, "{s}{d} by ", .{ answer_prefix, seq }) catch
+        return null;
+    if (!std.mem.startsWith(u8, text, head)) return null;
+    const rest = text[head.len..];
+    const marker = " for ";
+    const at = std.mem.indexOf(u8, rest, marker) orelse return null;
+    if (at == 0) return null;
+    if (!std.mem.eql(u8, rest[at + marker.len ..], origin)) return null;
+    const name = rest[0..at];
+    // invariant: a claimed author read off the wire carries bytes
+    assert(name.len >= 1);
+    return name;
+}
+
+// =========================================================================
+// The plan wire -- a verb, the regions it touches, the peers it speaks to
+// =========================================================================
+
+/// A bounded list of names read off one comma-joined plan field, wide
+/// enough for the whole chain at once.
+pub const HopList = struct {
+    names: [max_hops][]const u8 = @splat(""),
+    count: u32 = 0,
+
+    /// Reads one comma-joined field into its names.
+    ///
+    /// An empty entry answers null rather than a nameless hop, and a list
+    /// wider than the chain answers null rather than dropping the hops past
+    /// the bound in silence.
+    pub fn parse(field: []const u8, max_len: u32) ?HopList {
+        // invariant: a field worth parsing carries something
+        assert(field.len >= 1);
+        var out: HopList = .{};
+        var rest = field;
+        while (true) {
+            const cut = std.mem.indexOfScalar(u8, rest, ',');
+            const one = if (cut) |at| rest[0..at] else rest;
+            if (one.len == 0 or one.len > max_len) return null;
+            if (out.count == max_hops) return null;
+            out.names[out.count] = one;
+            out.count += 1;
+            if (cut) |at| rest = rest[at + 1 ..] else break;
+        }
+        // invariant: a parsed list always holds at least one name
+        assert(out.count >= 1);
+        return out;
+    }
+
+    /// Writes the names back as the comma-joined field they came from.
+    pub fn render(self: *const HopList, buf: []u8) ?[]const u8 {
+        // invariant: a rendered list always holds at least one name
+        assert(self.count >= 1);
+        var used: u32 = 0;
+        var i: u32 = 0;
+        while (i < self.count) : (i += 1) {
+            const one = self.names[i];
+            if (i > 0) {
+                if (used == buf.len) return null;
+                buf[used] = ',';
+                used += 1;
+            }
+            if (used + one.len > buf.len) return null;
+            var k: u32 = 0;
+            while (k < one.len) : (k += 1) buf[used + k] = one[k];
+            used += @intCast(one.len); // seam: a slice length arrives as usize
+        }
+        // invariant: a rendered field always carries bytes
+        assert(used >= 1);
+        return buf[0..used];
+    }
+
+    pub fn name_at(self: *const HopList, index: u32) []const u8 {
+        // invariant: a read stays inside the names this list holds
+        assert(index < self.count);
+        return self.names[index];
+    }
+};
+
+/// The eight steps this ring runs, each as its own process.
+pub const Verb = enum { ask, forward, answer, deliver, collect, settled, shortcut, forge };
+
+/// How many regions and how many peers each verb is entitled to name.
+///
+/// A verb's shape is checked against the verb, so a step can never be
+/// handed the regions for a different job -- a forwarding pass that arrived
+/// with a collector's two regions would otherwise read its backlog out of
+/// whichever name happened to sit at the third index.
+const Arity = struct { hops: u32, peers: u32 };
+
+fn arity_of(verb: Verb) Arity {
+    return switch (verb) {
+        .ask => .{ .hops = 1, .peers = 1 },
+        .forward => .{ .hops = 3, .peers = 2 },
+        .answer => .{ .hops = 2, .peers = 1 },
+        .deliver => .{ .hops = 2, .peers = 2 },
+        .collect => .{ .hops = 2, .peers = 1 },
+        .settled => .{ .hops = 5, .peers = 2 },
+        .shortcut => .{ .hops = 1, .peers = 1 },
+        .forge => .{ .hops = 1, .peers = 1 },
+    };
+}
+
+/// One task: a verb, the regions it touches in the order its job reads
+/// them, the peers it hears and rings, and how many messages it expects.
+pub const Task = struct {
+    verb: Verb,
+    hops: HopList,
+    peers: fanin.NameList,
+    count: u32,
+};
+
+fn verb_word(verb: Verb) []const u8 {
+    return switch (verb) {
+        .ask => "ask",
+        .forward => "forward",
+        .answer => "answer",
+        .deliver => "deliver",
+        .collect => "collect",
+        .settled => "settled",
+        .shortcut => "shortcut",
+        .forge => "forge",
+    };
+}
+
+fn read_verb(word: []const u8) ?Verb {
+    if (std.mem.eql(u8, word, "ask")) return .ask;
+    if (std.mem.eql(u8, word, "forward")) return .forward;
+    if (std.mem.eql(u8, word, "answer")) return .answer;
+    if (std.mem.eql(u8, word, "deliver")) return .deliver;
+    if (std.mem.eql(u8, word, "collect")) return .collect;
+    if (std.mem.eql(u8, word, "settled")) return .settled;
+    if (std.mem.eql(u8, word, "shortcut")) return .shortcut;
+    if (std.mem.eql(u8, word, "forge")) return .forge;
+    return null;
+}
+
+/// Renders one task as the plan word its dependent will read.
+pub fn write_plan(buf: []u8, task: Task) ?[]const u8 {
+    // invariant: a task always carries the shape its verb is entitled to
+    assert(task.hops.count == arity_of(task.verb).hops);
+    assert(task.peers.count == arity_of(task.verb).peers);
+    var hop_buf: [max_plan_len]u8 = undefined;
+    var peer_buf: [max_plan_len]u8 = undefined;
+    const hops = task.hops.render(&hop_buf) orelse return null;
+    const peers = task.peers.render(&peer_buf) orelse return null;
+    const word = std.fmt.bufPrint(buf, "{s}:{s}:{s}:{d}", .{
+        verb_word(task.verb), hops, peers, task.count,
+    }) catch return null;
+    // invariant: a rendered plan always carries bytes
+    assert(word.len >= 1);
+    return word;
+}
+
+/// Reads a plan word back into the task it names.
+///
+/// Four fields, eight verbs, and a shape held to the verb's own arity.
+/// Anything else answers null, so a step arriving with the wrong number of
+/// regions or peers is refused rather than run against whatever names it
+/// happened to bring.
+pub fn read_plan(word: []const u8) ?Task {
+    // invariant: a plan worth reading carries something
+    assert(word.len >= 1);
+    var parts: [4][]const u8 = @splat("");
+    var found: u32 = 0;
+    var rest = word;
+    while (found < 3) : (found += 1) {
+        const cut = std.mem.indexOfScalar(u8, rest, ':') orelse return null;
+        if (cut == 0) return null;
+        parts[found] = rest[0..cut];
+        rest = rest[cut + 1 ..];
+    }
+    if (rest.len == 0) return null;
+    parts[3] = rest;
+    const verb = read_verb(parts[0]) orelse return null;
+    const hops = HopList.parse(parts[1], regions.max_name_len) orelse return null;
+    const peers = fanin.NameList.parse(parts[2], channels.max_name_len) orelse return null;
+    const shape = arity_of(verb);
+    if (hops.count != shape.hops) return null;
+    if (peers.count != shape.peers) return null;
+    // A count word is parsed strictly, so "03" is refused rather than read
+    // as 3 -- a plan word means exactly what it says (tally/parse_int.rye).
+    const count = tally_parse_int.parse_int(u32, parts[3], .{}) catch return null;
+    // invariant: every task read off the wire carries its verb's own shape
+    assert(hops.count == shape.hops);
+    assert(peers.count == shape.peers);
+    return .{ .verb = verb, .hops = hops, .peers = peers, .count = count };
+}
+
+// =========================================================================
+// The dependent -- one process, one hop, one reported outcome
+// =========================================================================
+
+/// Reads how far a producer's head stands against a consumer's own, and
+/// answers how many messages wait -- or names why the pair is unreadable.
+fn pending_between(head: u32, tail: u32) ?u32 {
+    if (head < tail) return null;
+    const waiting = head - tail;
+    if (waiting > queue.max_outstanding) return null;
+    return waiting;
+}
+
+/// Writes a batch of asks and rings the neighbor that will forward them.
+fn do_ask(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const notify.PeerList,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    if (task.count == 0 or task.count > queue.max_outstanding) return carry.Outcome.malformed;
+    const mine = task.hops.name_at(0);
+    const neighbor = task.peers.name_at(0);
+    if (!peers.wired_to(neighbor)) return notify.Bell.not_wired;
+
+    const head = queue.read_index(io, slot, mine) catch |err| return serve.reach_code(err);
+    var k: u32 = 0;
+    while (k < task.count) : (k += 1) {
+        var text_buf: [serve.max_message_len]u8 = undefined;
+        const text = ask_text(&text_buf, self_name, head + k);
+        queue.write_slot(io, slot, mine, head + k, text) catch |err|
+            return serve.reach_code(err);
+    }
+    queue.write_index(io, slot, mine, head + task.count) catch |err|
+        return serve.reach_code(err);
+    const rung = roundtrip.ring_to(io, peers, self_name, neighbor) catch |err|
+        return serve.bell_code(err);
+    // invariant: a batch that landed spends exactly one ring
+    assert(rung >= 1);
+    print("    {s}: asked {d}, head now {d}\n", .{ self_name, task.count, head + task.count });
+    return carry.Outcome.carried_ok;
+}
+
+/// Reads every pending ask and forwards it onward, unchanged.
+///
+/// The pass never waits. It moves what is standing, rings the neighbor that
+/// will answer, reports how much is still outstanding behind it, and
+/// returns -- which is the whole reason a chain cannot deadlock here.
+fn do_forward(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const notify.PeerList,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    const inbound = task.hops.name_at(0);
+    const onward = task.hops.name_at(1);
+    const answers = task.hops.name_at(2);
+    const upstream = task.peers.name_at(0);
+    const downstream = task.peers.name_at(1);
+    if (!peers.wired_to(upstream)) return notify.Bell.not_wired;
+    if (!peers.wired_to(downstream)) return notify.Bell.not_wired;
+
+    const rung = roundtrip.hear_from(io, peers, self_name, upstream) catch |err|
+        return serve.bell_code(err);
+    if (rung == 0) return notify.Bell.unheard;
+
+    const head = queue.read_index(io, slot, inbound) catch |err| return serve.reach_code(err);
+    const sent = queue.read_index(io, slot, onward) catch |err| return serve.reach_code(err);
+    const pending = pending_between(head, sent) orelse return carry.Outcome.bytes_differed;
+    if (pending == 0) return queue.nothing_new;
+
+    var seq = sent;
+    while (seq < head) : (seq += 1) {
+        var seen_buf: [serve.max_message_len]u8 = undefined;
+        const seen = queue.read_slot(io, slot, inbound, seq, &seen_buf) catch |err|
+            return serve.reach_code(err);
+        const message = seen orelse return carry.Outcome.bytes_differed;
+        // An ask whose bytes never carried this ring's shape is refused
+        // here rather than handed onward to a domain that would have to
+        // guess what it means.
+        _ = asked_origin(message) orelse return carry.Outcome.bytes_differed;
+        queue.write_slot(io, slot, onward, seq, message) catch |err|
+            return serve.reach_code(err);
+    }
+    // invariant: the walk stopped exactly where the upstream head stands
+    assert(seq == head);
+    queue.write_index(io, slot, onward, head) catch |err| return serve.reach_code(err);
+
+    const answered = queue.read_index(io, slot, answers) catch |err| return serve.reach_code(err);
+    if (head < answered) return carry.Outcome.bytes_differed;
+    const awaiting = head - answered;
+
+    const rang = roundtrip.ring_to(io, peers, self_name, downstream) catch |err|
+        return serve.bell_code(err);
+    // invariant: a batch that moved onward spends exactly one ring
+    assert(rang >= 1);
+    if (pending != task.count) {
+        print("    {s}: expected {d} asks, forwarded {d}\n", .{ self_name, task.count, pending });
+        return carry.Outcome.bytes_differed;
+    }
+    print("    {s}: forwarded {d}, {d} awaiting an answer\n", .{ self_name, pending, awaiting });
+    return carry.Outcome.carried_ok;
+}
+
+/// Answers every pending ask, naming itself as the author and returning
+/// each answer to the origin the ask carried.
+fn do_answer(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const notify.PeerList,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    const inbound = task.hops.name_at(0);
+    const mine = task.hops.name_at(1);
+    const neighbor = task.peers.name_at(0);
+    if (!peers.wired_to(neighbor)) return notify.Bell.not_wired;
+
+    const rung = roundtrip.hear_from(io, peers, self_name, neighbor) catch |err|
+        return serve.bell_code(err);
+    if (rung == 0) return notify.Bell.unheard;
+
+    const head = queue.read_index(io, slot, inbound) catch |err| return serve.reach_code(err);
+    const done = queue.read_index(io, slot, mine) catch |err| return serve.reach_code(err);
+    const pending = pending_between(head, done) orelse return carry.Outcome.bytes_differed;
+    if (pending == 0) return queue.nothing_new;
+
+    var seq = done;
+    while (seq < head) : (seq += 1) {
+        var seen_buf: [serve.max_message_len]u8 = undefined;
+        const seen = queue.read_slot(io, slot, inbound, seq, &seen_buf) catch |err|
+            return serve.reach_code(err);
+        const message = seen orelse return carry.Outcome.bytes_differed;
+        const origin = asked_origin(message) orelse return carry.Outcome.bytes_differed;
+        var text_buf: [serve.max_message_len]u8 = undefined;
+        const text = answer_text(&text_buf, self_name, origin, seq);
+        queue.write_slot(io, slot, mine, seq, text) catch |err| return serve.reach_code(err);
+    }
+    // invariant: the walk stopped exactly where the inbound head stands
+    assert(seq == head);
+    queue.write_index(io, slot, mine, head) catch |err| return serve.reach_code(err);
+
+    const rang = roundtrip.ring_to(io, peers, self_name, neighbor) catch |err|
+        return serve.bell_code(err);
+    // invariant: a batch that landed spends exactly one ring
+    assert(rang >= 1);
+    if (pending != task.count) {
+        print("    {s}: expected {d} asks, answered {d}\n", .{ self_name, task.count, pending });
+        return carry.Outcome.bytes_differed;
+    }
+    print("    {s}: answered {d} for the origin each ask named\n", .{ self_name, pending });
+    return carry.Outcome.carried_ok;
+}
+
+/// Carries every standing answer back to the origin, byte for byte.
+///
+/// The relay copies rather than composes. Whatever the far end wrote is
+/// what the client reads, which is the most a memory system can offer a
+/// domain two hops away -- and rather less than an attestation.
+fn do_deliver(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const notify.PeerList,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    const inbound = task.hops.name_at(0);
+    const onward = task.hops.name_at(1);
+    const upstream = task.peers.name_at(0);
+    const downstream = task.peers.name_at(1);
+    if (!peers.wired_to(upstream)) return notify.Bell.not_wired;
+    if (!peers.wired_to(downstream)) return notify.Bell.not_wired;
+
+    const rung = roundtrip.hear_from(io, peers, self_name, upstream) catch |err|
+        return serve.bell_code(err);
+    if (rung == 0) return notify.Bell.unheard;
+
+    const head = queue.read_index(io, slot, inbound) catch |err| return serve.reach_code(err);
+    const sent = queue.read_index(io, slot, onward) catch |err| return serve.reach_code(err);
+    const pending = pending_between(head, sent) orelse return carry.Outcome.bytes_differed;
+    if (pending == 0) return queue.nothing_new;
+
+    var seq = sent;
+    while (seq < head) : (seq += 1) {
+        var seen_buf: [serve.max_message_len]u8 = undefined;
+        const seen = queue.read_slot(io, slot, inbound, seq, &seen_buf) catch |err|
+            return serve.reach_code(err);
+        const message = seen orelse return carry.Outcome.bytes_differed;
+        queue.write_slot(io, slot, onward, seq, message) catch |err|
+            return serve.reach_code(err);
+    }
+    // invariant: the walk stopped exactly where the far end's head stands
+    assert(seq == head);
+    queue.write_index(io, slot, onward, head) catch |err| return serve.reach_code(err);
+
+    const rang = roundtrip.ring_to(io, peers, self_name, downstream) catch |err|
+        return serve.bell_code(err);
+    // invariant: a batch that moved onward spends exactly one ring
+    assert(rang >= 1);
+    if (pending != task.count) {
+        print("    {s}: expected {d} answers, delivered {d}\n", .{
+            self_name, task.count, pending,
+        });
+        return carry.Outcome.bytes_differed;
+    }
+    print("    {s}: delivered {d} unchanged\n", .{ self_name, pending });
+    return carry.Outcome.carried_ok;
+}
+
+/// Reads every answer standing for this origin and names who they claim.
+///
+/// The client checks the two things it can know for itself -- the sequence
+/// it asked under and the origin the answer returns to. The author it reads
+/// out and reports as a claim, since the domain that wrote these bytes
+/// shares no region with it and no wall in the system can speak for it.
+fn do_collect(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const notify.PeerList,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    const inbound = task.hops.name_at(0);
+    const mine = task.hops.name_at(1);
+    const neighbor = task.peers.name_at(0);
+    if (!peers.wired_to(neighbor)) return notify.Bell.not_wired;
+
+    const rung = roundtrip.hear_from(io, peers, self_name, neighbor) catch |err|
+        return serve.bell_code(err);
+    if (rung == 0) return notify.Bell.unheard;
+
+    const head = queue.read_index(io, slot, inbound) catch |err| return serve.reach_code(err);
+    const tail = queue.read_index(io, slot, mine) catch |err| return serve.reach_code(err);
+    const pending = pending_between(head, tail) orelse return carry.Outcome.bytes_differed;
+    if (pending == 0) return queue.nothing_new;
+
+    var claim_buf: [channels.max_name_len]u8 = undefined;
+    var claim_len: u32 = 0;
+    var seq = tail;
+    while (seq < head) : (seq += 1) {
+        var seen_buf: [serve.max_message_len]u8 = undefined;
+        const seen = queue.read_slot(io, slot, inbound, seq, &seen_buf) catch |err|
+            return serve.reach_code(err);
+        const message = seen orelse return carry.Outcome.bytes_differed;
+        const author = claimed_author(message, self_name, seq) orelse
+            return carry.Outcome.bytes_differed;
+        if (author.len > channels.max_name_len) return carry.Outcome.bytes_differed;
+        if (claim_len == 0) {
+            var k: u32 = 0;
+            while (k < author.len) : (k += 1) claim_buf[k] = author[k];
+            claim_len = @intCast(author.len); // seam: a slice length arrives as usize
+        } else if (!std.mem.eql(u8, claim_buf[0..claim_len], author)) {
+            // A batch that claims two different authors is refused rather
+            // than reported under whichever name arrived first.
+            return carry.Outcome.bytes_differed;
+        }
+    }
+    // invariant: the walk stopped exactly where the delivering head stands
+    assert(seq == head);
+    // invariant: a collected batch always read a claimed author
+    assert(claim_len >= 1);
+    queue.write_index(io, slot, mine, head) catch |err| return serve.reach_code(err);
+
+    if (pending != task.count) {
+        print("    {s}: expected {d} answers, collected {d}\n", .{
+            self_name, task.count, pending,
+        });
+        return carry.Outcome.bytes_differed;
+    }
+    print("    {s}: collected {d}, each claiming {s} -- a claim, never an attestation\n", .{
+        self_name, pending, claim_buf[0..claim_len],
+    });
+    return carry.Outcome.carried_ok;
+}
+
+/// Reads the whole chain's arithmetic from the one domain that can see it.
+///
+/// The relay holds a grant on every region here, so it alone reads both
+/// ends -- and even it holds read only on the client's own tail, so the
+/// last number in the chain is one it can report and never move.
+fn do_settled(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    var stood: [max_hops]u32 = @splat(0);
+    var i: u32 = 0;
+    while (i < task.hops.count) : (i += 1) {
+        stood[i] = queue.read_index(io, slot, task.hops.name_at(i)) catch |err|
+            return serve.reach_code(err);
+    }
+    // invariant: the whole chain was read, hop for hop
+    assert(i == task.hops.count);
+    print("    {s}: asked {d}, forwarded {d}, answered {d}, delivered {d}, taken {d}\n", .{
+        self_name, stood[0], stood[1], stood[2], stood[3], stood[4],
+    });
+    var k: u32 = 0;
+    while (k < task.hops.count) : (k += 1) {
+        if (stood[k] != task.count) return carry.Outcome.bytes_differed;
+    }
+    print("    {s}: every hop settled at {d} between {s} and {s}\n", .{
+        self_name, task.count, task.peers.name_at(0), task.peers.name_at(1),
+    });
+    return carry.Outcome.carried_ok;
+}
+
+/// Attempts to reach past the relay and write the client's answer region.
+///
+/// This is the wall that keeps a two-hop chain two hops long. The far end
+/// holds no grant on that region at all, so the reach is refused before any
+/// permission is even compared.
+fn do_shortcut(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    task: Task,
+) u8 {
+    queue.write_index(io, slot, task.hops.name_at(0), task.count) catch |err|
+        return serve.reach_code(err);
+    return carry.Outcome.bytes_differed;
+}
+
+/// Attempts to write an ask into the region the client owns.
+///
+/// A relay that could author the asks it forwards would make the origin in
+/// every ask its own invention. It holds read alone there, so the attempt
+/// is refused at the permission rather than at the door.
+fn do_forge(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    task: Task,
+) u8 {
+    queue.write_index(io, slot, task.hops.name_at(0), task.count) catch |err|
+        return serve.reach_code(err);
+    return carry.Outcome.bytes_differed;
+}
+
+/// Attempts one step and reports its outcome.
+fn attempt(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const notify.PeerList,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    // invariant: a task always carries the shape its verb is entitled to
+    assert(task.hops.count == arity_of(task.verb).hops);
+    assert(task.peers.count == arity_of(task.verb).peers);
+    return switch (task.verb) {
+        .ask => do_ask(io, slot, peers, self_name, task),
+        .forward => do_forward(io, slot, peers, self_name, task),
+        .answer => do_answer(io, slot, peers, self_name, task),
+        .deliver => do_deliver(io, slot, peers, self_name, task),
+        .collect => do_collect(io, slot, peers, self_name, task),
+        .settled => do_settled(io, slot, self_name, task),
+        .shortcut => do_shortcut(io, slot, task),
+        .forge => do_forge(io, slot, task),
+    };
+}
+
+/// Reads the capability words a dependent was handed into its own slot.
+fn slot_from_argv(args: []const [:0]const u8, domain: []const u8, cap_count: u32) ?capabilities.DependentSlot {
+    // invariant: a dependent always knows which domain it is
+    assert(domain.len >= 1);
+    // invariant: the count stays within what one dependent may hold
+    assert(cap_count <= capabilities.max_caps_per_dependent);
+    var slot = capabilities.DependentSlot.init(domain);
+    var i: u32 = 0;
+    while (i < cap_count) : (i += 1) {
+        const cap = boot.read_cap_word(args[fixed_argv_words + i]) orelse return null;
+        slot.grant(cap) catch return null;
+    }
+    // invariant: the dependent holds exactly the capability words it was handed
+    assert(slot.cap_count == cap_count);
+    return slot;
+}
+
+/// Runs as one supervised dependent, holding exactly the capabilities, the
+/// peers, and the one hop on its own argv.
+fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
+    // invariant: a dependent always receives its marker, domain, plan, and count
+    assert(args.len >= fixed_argv_words);
+    const domain = args[2];
+    const plan = args[3];
+    // invariant: a dependent always knows which domain it is
+    assert(domain.len >= 1);
+
+    const cap_count = tally_parse_int.parse_int(u32, args[4], .{}) catch {
+        print("    {s}: refused an unreadable capability count\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    if (cap_count > capabilities.max_caps_per_dependent) {
+        print("    {s}: more capabilities than one dependent holds\n", .{domain});
+        return carry.Outcome.malformed;
+    }
+    if (fixed_argv_words + cap_count > args.len) {
+        print("    {s}: a capability count past the words it was handed\n", .{domain});
+        return carry.Outcome.malformed;
+    }
+    var slot = slot_from_argv(args, domain, cap_count) orelse {
+        print("    {s}: refused a malformed capability word\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+
+    var peers: notify.PeerList = .{};
+    var p: usize = fixed_argv_words + cap_count;
+    while (p < args.len) : (p += 1) {
+        peers.add(args[p]) catch {
+            print("    {s}: more peers than one dependent holds\n", .{domain});
+            return carry.Outcome.malformed;
+        };
+    }
+    // invariant: the dependent holds exactly the peer words it was handed
+    assert(peers.count == args.len - fixed_argv_words - cap_count);
+
+    const task = read_plan(plan) orelse {
+        print("    {s}: refused a plan it could not read\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    const code = attempt(io, &slot, &peers, domain, task);
+    print("    {s}: {s} across {d} hop(s) -- {s}\n", .{
+        domain, verb_word(task.verb), task.hops.count, outcome_name(code),
+    });
+    return code;
+}
+
+// =========================================================================
+// The supervisor -- one document, three domains, one ordered chain
+// =========================================================================
+
+/// One declared domain's step in a relay run.
+pub const Assignment = struct {
+    domain: []const u8,
+    verb: Verb,
+    hops: []const u8,
+    peers: []const u8,
+    count: u32,
+    expect: u8,
+};
+
+/// What one run did, reported whole.
+pub const Report = struct {
+    started: u32 = 0,
+    matched: u32 = 0,
+    bells: u32 = 0,
+    asked: u32 = 0,
+    forwarded: u32 = 0,
+    answered: u32 = 0,
+    delivered: u32 = 0,
+    collected: u32 = 0,
+};
+
+/// Named ways a run declines rather than reporting a hollow success.
+pub const RunError = error{
+    SpawnFailed,
+    UnknownDomain,
+    PlanTooLong,
+    OutcomeMismatch,
+};
+
+/// Starts one assigned dependent and holds it to the outcome the parent expects.
+fn run_assignment(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    table: *const capabilities.CapabilityTable,
+    step: Assignment,
+) (RunError || boot.BootError)!void {
+    // invariant: an assignment always names a domain, its hops, and its peers
+    assert(step.domain.len >= 1);
+    assert(step.hops.len >= 1);
+    assert(step.peers.len >= 1);
+    const slot = table.find_dependent(step.domain) orelse return error.UnknownDomain;
+    // invariant: the line handed out agrees with the declaration it came from
+    assert(boot.line_agrees(sys, slot));
+
+    var peers: notify.PeerList = .{};
+    notify.peers_of(sys, step.domain, &peers);
+
+    var plan_buf: [max_plan_len]u8 = undefined;
+    const plan = std.fmt.bufPrint(&plan_buf, "{s}:{s}:{s}:{d}", .{
+        verb_word(step.verb), step.hops, step.peers, step.count,
+    }) catch return error.PlanTooLong;
+
+    var count_buf: [8]u8 = undefined;
+    const count_word = std.fmt.bufPrint(&count_buf, "{d}", .{slot.cap_count}) catch
+        return error.PlanTooLong;
+
+    var storage: [capabilities.max_caps_per_dependent][boot.max_cap_word_len]u8 = undefined;
+    const argv = allocator.alloc(
+        []const u8,
+        fixed_argv_words + slot.cap_count + peers.count,
+    ) catch return error.SpawnFailed;
+    argv[0] = self_path;
+    argv[1] = "dependent";
+    argv[2] = slot.label_slice();
+    argv[3] = plan;
+    argv[4] = count_word;
+    var c: u32 = 0;
+    while (c < slot.cap_count) : (c += 1) {
+        assert(c < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        argv[fixed_argv_words + c] = try boot.write_cap_word(&storage[c], &slot.caps[c]);
+    }
+    var q: u32 = 0;
+    while (q < peers.count) : (q += 1) {
+        argv[fixed_argv_words + slot.cap_count + q] = peers.name_at(q);
+    }
+
+    var proc = std.process.spawn(io, .{ .argv = argv }) catch return error.SpawnFailed;
+    const term = proc.wait(io) catch return error.SpawnFailed;
+    const code: u8 = switch (term) {
+        .exited => |c2| c2,
+        else => 255,
+    };
+    if (code != step.expect) {
+        print("    {s}: expected {s}, heard {s}\n", .{
+            step.domain, outcome_name(step.expect), outcome_name(code),
+        });
+        return error.OutcomeMismatch;
+    }
+}
+
+/// Runs a whole ordered chain against one parsed declaration.
+pub fn run_plan(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Assignment,
+) (roster.RosterError || exercise.ProvisionError || notify.BellError || RunError || boot.BootError)!Report {
+    // invariant: a run always knows what program to spawn
+    assert(self_path.len >= 1);
+    // invariant: a run always carries at least one step
+    assert(plan.len >= 1);
+    const provisioned = try exercise.provision(io, sys);
+    // invariant: every declared region has a backing store before any dependent runs
+    assert(provisioned == sys.map.region_count);
+    const bells = try roundtrip.provision_directed(io, sys);
+    // invariant: every declared channel has two silent bells before any dependent runs
+    assert(bells == sys.graph.channel_count * 2);
+
+    const table = try roster.from_system(sys);
+    // invariant: the derived table enforces exactly what the document permits
+    assert(roster.agrees(sys, &table));
+
+    var report_out: Report = .{ .bells = bells };
+    var i: u32 = 0;
+    while (i < plan.len) : (i += 1) {
+        try run_assignment(allocator, io, self_path, sys, &table, plan[i]);
+        report_out.started += 1;
+        report_out.matched += 1;
+        const step = plan[i];
+        if (step.expect != carry.Outcome.carried_ok) continue;
+        switch (step.verb) {
+            .ask => report_out.asked += step.count,
+            .forward => report_out.forwarded += step.count,
+            .answer => report_out.answered += step.count,
+            .deliver => report_out.delivered += step.count,
+            .collect => report_out.collected += step.count,
+            else => {},
+        }
+    }
+    // invariant: every step that started also matched what was expected
+    assert(report_out.matched == report_out.started);
+    return report_out;
+}
+
+// =========================================================================
+// Self-test -- a chain that never waits, and an end it cannot attest
+// =========================================================================
+
+/// The chain, in the order its meaning depends on.
+///
+/// Steps one and two carry the first pair one hop. Step three is the crux:
+/// the client asks again while nothing at all has been answered, and step
+/// four forwards that new pair with four asks standing unanswered behind
+/// it. Nothing waits anywhere, and the backlog is printed as it grows.
+/// Steps five through seven bring all four answers home across two seams,
+/// and step eight reads the whole chain's arithmetic from the one domain
+/// that can see both ends.
+const chain_plan = [_]Assignment{
+    .{ .domain = "client", .verb = .ask, .hops = "ask_up", .peers = "relay_virt", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "relay_virt", .verb = .forward, .hops = "ask_up,ask_down,answer_down", .peers = "client,backend", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client", .verb = .ask, .hops = "ask_up", .peers = "relay_virt", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "relay_virt", .verb = .forward, .hops = "ask_up,ask_down,answer_down", .peers = "client,backend", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "backend", .verb = .answer, .hops = "ask_down,answer_down", .peers = "relay_virt", .count = 4, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "relay_virt", .verb = .deliver, .hops = "answer_down,answer_up", .peers = "backend,client", .count = 4, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client", .verb = .collect, .hops = "answer_up,taken", .peers = "relay_virt", .count = 4, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "relay_virt", .verb = .settled, .hops = "ask_up,ask_down,answer_down,answer_up,taken", .peers = "client,backend", .count = 4, .expect = carry.Outcome.carried_ok },
+};
+
+/// The walls a chain invites.
+///
+/// The first keeps the two ends apart: the backend holds no grant at all on
+/// the client's answer region, so a two-hop chain can never collapse into
+/// one. The second keeps the origin honest: the relay holds read alone on
+/// the region the client writes, so it can never author the asks it carries.
+const wall_plan = [_]Assignment{
+    .{ .domain = "backend", .verb = .shortcut, .hops = "answer_up", .peers = "relay_virt", .count = 99, .expect = carry.Outcome.not_granted },
+    .{ .domain = "relay_virt", .verb = .forge, .hops = "ask_up", .peers = "client", .count = 99, .expect = carry.Outcome.write_denied },
+};
+
+/// Proves the plan wire holds every step to its own verb's shape before any
+/// process runs.
+fn check_wire() u8 {
+    var buf: [max_plan_len]u8 = undefined;
+    var task: Task = .{ .verb = .forward, .hops = .{}, .peers = .{}, .count = 2 };
+    task.hops = HopList.parse("ask_up,ask_down,answer_down", regions.max_name_len) orelse {
+        print("  RED: a legal region list did not parse\n", .{});
+        return 1;
+    };
+    task.peers = fanin.NameList.parse("client,backend", channels.max_name_len) orelse return 1;
+    const written = write_plan(&buf, task) orelse {
+        print("  RED: a legal forwarding step had no plan word\n", .{});
+        return 1;
+    };
+    const back = read_plan(written) orelse {
+        print("  RED: a plan word this ring wrote did not read back\n", .{});
+        return 1;
+    };
+    // invariant: a step survives the wire it rode in on, hop for hop
+    assert(back.verb == .forward);
+    assert(back.hops.count == 3);
+    assert(back.peers.count == 2);
+    assert(std.mem.eql(u8, back.hops.name_at(2), "answer_down"));
+    assert(std.mem.eql(u8, back.peers.name_at(1), "backend"));
+    assert(back.count == 2);
+
+    if (read_plan("forward:ask_up,ask_down:client,backend:2") != null) {
+        print("  RED: a forwarding step ran without the region it counts backlog in\n", .{});
+        return 1;
+    }
+    if (read_plan("collect:answer_up,taken:relay_virt,backend:4") != null) {
+        print("  RED: a collecting step was handed a peer its verb never names\n", .{});
+        return 1;
+    }
+    if (read_plan("carry:ask_up:relay_virt:2") != null) {
+        print("  RED: a verb this ring never named was accepted\n", .{});
+        return 1;
+    }
+    if (read_plan("ask:ask_up:relay_virt:03") != null) {
+        print("  RED: a padded count was read as the number it resembles\n", .{});
+        return 1;
+    }
+    if (HopList.parse("a,b,c,d,e,f,g", regions.max_name_len) != null) {
+        print("  RED: more hops than the chain holds were accepted\n", .{});
+        return 1;
+    }
+
+    // The far end's own name reaches the client inside the bytes, and the
+    // client reads it as exactly that -- a name in a message.
+    var text_buf: [serve.max_message_len]u8 = undefined;
+    const answer = answer_text(&text_buf, "backend", "client", 3);
+    const author = claimed_author(answer, "client", 3) orelse {
+        print("  RED: an answer this ring wrote carried no readable author\n", .{});
+        return 1;
+    };
+    assert(std.mem.eql(u8, author, "backend")); // invariant: the claim reads back whole
+    if (claimed_author(answer, "client", 4) != null) {
+        print("  RED: an answer was collected under a sequence it never named\n", .{});
+        return 1;
+    }
+    if (claimed_author(answer, "backend", 3) != null) {
+        print("  RED: an answer was collected by a domain it never returned to\n", .{});
+        return 1;
+    }
+    print("  the wire holds every step to its verb's own shape, {d} hops and {d} peers here\n", .{
+        back.hops.count, back.peers.count,
+    });
+    return 0;
+}
+
+/// Loads the chain declaration, or names why it could not be read.
+fn load_declaration(io: std.Io, buf: []u8) ?system.System {
+    const parsed = read.load(io, declaration_path, buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ declaration_path, @errorName(err) });
+        return null;
+    };
+    if (parsed.verify() != .whole) {
+        print("  RED: {s} did not read whole\n", .{declaration_path});
+        return null;
+    }
+    return parsed;
+}
+
+/// Reads the chain's shape out of its grants, before a single process runs.
+fn check_shape(io: std.Io) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = load_declaration(io, &buf) orelse return 1;
+    const set = flows_of(&parsed) orelse {
+        print("  RED: the declaration carried no directed flows to derive\n", .{});
+        return 1;
+    };
+    // invariant: every declared region became exactly one directed flow
+    assert(set.count == parsed.map.region_count);
+
+    const client = parsed.map.find_domain("client") orelse return 1;
+    const middle = parsed.map.find_domain("relay_virt") orelse return 1;
+    const far = parsed.map.find_domain("backend") orelse return 1;
+
+    var relays: u32 = 0;
+    var d: u32 = 0;
+    while (d < parsed.map.domain_count) : (d += 1) {
+        if (peer_span(&set, d) >= 2) relays += 1;
+    }
+    if (relays != 1) {
+        print("  RED: {d} domains span two peers -- the chain has no single middle\n", .{relays});
+        return 1;
+    }
+    if (peer_span(&set, middle) != 2) {
+        print("  RED: the middle domain does not span both ends\n", .{});
+        return 1;
+    }
+    if (peer_span(&set, client) != 1 or peer_span(&set, far) != 1) {
+        print("  RED: an end of the chain reaches more than its one neighbor\n", .{});
+        return 1;
+    }
+    if (share_a_region(&parsed, client, far)) {
+        print("  RED: the two ends of the chain share a region\n", .{});
+        return 1;
+    }
+    if (parsed.graph.may_signal("client", "backend")) {
+        print("  RED: the two ends of the chain are wired together\n", .{});
+        return 1;
+    }
+    print("  {d} directed flows derived from {d} grants, with no role word declared\n", .{
+        set.count, parsed.map.grant_count,
+    });
+    print("  relay_virt spans 2 peers and is the only domain that does -- the middle, by arithmetic\n", .{});
+    print("  client and backend share no region and no channel -- the two ends never meet\n", .{});
+    return 0;
+}
+
+/// Runs the chain and reads the numbers that carry the claim.
+fn check_chain(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = load_declaration(io, &buf) orelse return 1;
+    const done = run_plan(allocator, io, self_path, &parsed, &chain_plan) catch |err| {
+        print("  RED: a hop did not complete: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: every step ran, each as its own process
+    assert(done.started == chain_plan.len);
+    // invariant: both directions of both declared channels stood silent first
+    assert(done.bells == parsed.graph.channel_count * 2);
+    // invariant: every ask asked crossed both seams and came home
+    assert(done.asked == 4);
+    assert(done.forwarded == 4);
+    assert(done.answered == 4);
+    assert(done.delivered == 4);
+    assert(done.collected == 4);
+    print("  {d} directed bells provisioned silent across {d} declared channels\n", .{
+        done.bells, parsed.graph.channel_count,
+    });
+    print("  {d} asks crossed two seams and came home, {d} of them asked while none stood answered\n", .{
+        done.collected, 2,
+    });
+    print("  every hop settled at 4, and no domain ever waited on another\n", .{});
+    return 0;
+}
+
+/// Proves the walls, each in its own dependent.
+fn check_walls(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = load_declaration(io, &buf) orelse return 1;
+    const done = run_plan(allocator, io, self_path, &parsed, &wall_plan) catch |err| {
+        print("  RED: a wall did not hold: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: every wall ran as its own process and answered by name
+    assert(done.matched == wall_plan.len);
+    print("  the far end holds no grant on the near end's memory -- NotGranted\n", .{});
+    print("  the relay holds read alone on the asks it carries -- WriteDenied\n", .{});
+    return 0;
+}
+
+fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    print("Caravan relay {s} -- self-test\n", .{caravan_relay_version});
+    const wire = check_wire();
+    if (wire != 0) return wire;
+    const shape = check_shape(io);
+    if (shape != 0) return shape;
+    const chain = check_chain(allocator, io, self_path);
+    if (chain != 0) return chain;
+    const walls = check_walls(allocator, io, self_path);
+    if (walls != 0) return walls;
+    print("  GREEN: a chain crosses two seams without waiting, and the far end is taken on the relay's word\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
+        return run_dependent(io, args);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(allocator, io, self_path);
+    }
+    if (args.len >= 2) return 1;
+    return run_self_test(allocator, io, self_path);
+}
