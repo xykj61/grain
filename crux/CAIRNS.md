@@ -24,6 +24,13 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260819.140253` -- REMEMBER's seven-ring boot chronicle folded to a pointer as the grant begins to do work
+
+**Walk-back nib:** `b9e7b65507` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.
+**Swept:** the **Live edge** bullet's inline account of all seven rings -- `capabilities` / `channels` / `regions` / `system` / `read` / `roster` / `boot` each spelled out at length, together with boot's five properties written twice over and the fidelity RED path narrated in full. Every one of those sentences now stands in [`caravan/README.md`](../caravan/README.md) as its own why-section, and each ring carries a dated log in `session-logs/`.
+**What waits there, worth recalling:** the phrasing that first named W xor X crossing the argv seam *by absence*, and the account of why a half-booted system is worse than a refused one. Both survive in the module doc comments and the README; the card keeps the pointer so Now can hold the live front.
+
+
 ### `20260819.131316` -- REMEMBER's Microkernel-Target ring chronicle folded to a pointer as the fourth ring lands
 
 **Walk-back nib:** `307f588750` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.

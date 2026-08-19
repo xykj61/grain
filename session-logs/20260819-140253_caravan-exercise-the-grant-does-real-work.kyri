@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260819.140253
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Caravan exercise -- a granted region carries real bytes
+prompt Autonomous loop -- next agent-doable lap Lindy-first crux-first; Standfast on reds; council rota; send often
+think Standfast first -- read crux/REDS.md whole; every living row (81, 82, 83, 85, 86, 87) reads Closed or Released, and 85 was closed with a loom only one lap ago. The line is clear, so constructive work may open.
+think The running thread named its own next crux twice -- the newest log recommend and the REMEMBER live edge both say a child that EXERCISES a granted region rather than only naming it. That is the Lindy-first crux: seven rings carried a declaration to running children, and a grant was still only a word a child could read back.
+think Council rota item 24 -- active-designing/20260702-184312_the-grain-and-the-crossing.md. The grain's strands shaped this ring directly: bounded everything (max_reach_bytes, a region provisioned at its declared length and never grown), seam honesty (the host's filesystem named openly as the hosted stand-in for a kernel mapping), witnesses first, and values apart never braided.
+think Design shape -- a region becomes a real backing store of exactly its declared length under caravan/.regions/, and a child reaches one through a Reach it may open only for a region its own capability list names. The child re-derives nothing from the declaration; it answers from the words boot.rye handed it, which is what makes a refusal a statement about the child rather than about the document.
+think Two walls, and the order is the design. The FIRST wall is the capability list, consulted before any syscall, so an ungranted reach costs no descriptor. The SECOND is the open mode, derived from the same rights, so a read-only reach holds a read-only door even if the first wall were ever wrong.
+think W xor X needed no new rule here. A grant spelling rx carries no write bit, so font_rom refuses WriteDenied by the same path that refuses an ordinary reader -- the grammar three rings back cannot say both at once, so execute can never grow a write door.
+think Composed rather than duplicated -- read.load for the document, roster.from_system for the derived table, regions.Region for the declared extent, capabilities.ChildSlot for the held rights. The ring adds the doing, and borrows every naming that already stood.
+obs GREEN on the first metal pass, so the RED paths were proven before the green was trusted. Plant one dropped the capability check and let an ungranted reach fall back to read-only -- the self-test named it: client_a reached the buffer it was never granted. Plant two dropped the door's own write check and let a read-only grant reach the host, where NotOpenForWriting caught it and the invariant aborted at exit 134. Both walls doing exactly the work they were built for.
+obs The extent refusal is the quiet one worth keeping -- a write at 4094 spanning eight bytes answers PastEnd, and rx_a is still 4096 bytes afterward. A region cannot be widened by being used, which is static allocation as honesty, the seL4 teaching this ring inherits.
+obs The isolation reads the same from either side -- client_a refused rx_b and client_b refused rx_a, both NotGranted. A one-sided proof would have left the other direction to trust.
+obs Chose the filesystem over an mmap for the hosted store deliberately. A file has a length the witness can measure from outside the program, so the claim that a refused write left the region unchanged is checkable by wc rather than by the module's own word.
+loom witness=caravan_exercise_witness regions=3 declared_bytes=73728 carried_bytes=34 walls=2 refusals_named=5
+file caravan/exercise.rye the ring -- provisioning, the Reach, five named refusals, and the self-test over the worked example
+file tools/caravan_exercise_witness.rish the witness -- native assert-contains throughout, plus an outside measurement of both provisioned stores
+file caravan/README.md ladder row and the why-section, docs synced in the same commit as the behavior
+file .gitignore the provisioned stores are generated artifacts, held out of the tree
+recommend keep-going -- next a child PROCESS that exercises its granted region across the boot seam, so the carry happens between two real processes rather than two capability lists in one. No key, no funds.
