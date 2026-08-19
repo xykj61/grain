@@ -1,0 +1,525 @@
+//! image/line_project.rye -- read a DIRECTED line named by TWO anchor taps (from anchor A toward anchor B) as an EXACT NEAREST POINT: for
+//! every object, WHERE on the finite stroke A..B its GROUP center's nearest point lands. This is the POINT the whole line family measured TO
+//! but never named -- image/line_distance.rye reads how far OFF the line a center sits, image/line_segment_distance.rye the true gap to the
+//! finite stroke, image/line_span.rye which side of the ends the foot falls; `line_project` returns the FOOT itself, the exact nearest point
+//! on the stroke, so a surface can DRAW it. NO float, NO tolerance, NO square root.
+//!
+//! Season G (Open Media Primitives) -- the DECISIVE crux this rung faces is the one the family carefully deferred: THE EXACT FOOT IS
+//! RATIONAL. The perpendicular foot of a center C onto the line is `A + (proj / len2) * (B - A)`, where `proj = (B - A) . (C - A)` is
+//! image/line_order.rye's own projection and `len2 = (B - A) . (B - A)`. That point is a LATTICE POINT in doubled coordinates only when
+//! `len2` divides `proj * (B - A)` on both axes -- always at the two anchors (proj `0` and `len2`), only sometimes in the interior. A finite
+//! stroke needs the CLAMPED projection `clamp(proj, 0, len2)`, since a foot past an end falls back to the endpoint. So `line_project` holds
+//! the foot TIMES `len2` as an exact `i128` pair -- `foot_scaled = A * len2 + clamp(proj, 0, len2) * (B - A)`, whose true doubled foot is
+//! `foot_scaled / len2`. Multiplying by the constant `len2` is the same move image/line_segment_distance.rye made to clear its one divide:
+//! the family stays whole. `foot_of` reads the clamped SEGMENT foot; `line_foot_of` the unclamped INFINITE-line foot; `foot_is_whole` names
+//! when the true doubled foot is a lattice point; `foot_doubled` reads that lattice point, refusing `FootNotWhole` when it is fractional
+//! rather than rounding a lie; `foot_at_end` names when the clamp fired (the segment foot is an endpoint); `same_foot` the pairwise read;
+//! `foot_gap_scaled` the exact squared gap that cross-checks image/line_segment_distance.rye; `feet_scaled` the whole scene's feet at once. A
+//! reading over readings, no plane of its own.
+//!
+//! Three facts on metal say the crux:
+//!
+//!   THE SCALED FOOT SATISFIES THE EXACT DISTANCE IDENTITY. `foot_gap_scaled(lbl)` -- the squared distance from the center to its scaled foot,
+//!   `(foot_scaled_x - C_x * len2)^2 + (foot_scaled_y - C_y * len2)^2` -- equals `segment_key_of(lbl) * len2` EXACTLY, an integer identity with
+//!   no divide. The point `line_project` returns is provably the nearest point image/line_segment_distance.rye measured its gap to.
+//!
+//!   THE SEGMENT FOOT DIFFERS FROM THE INFINITE-LINE FOOT EXACTLY OFF THE ENDS. For an object whose foot lands ON the span
+//!   (image/line_span.rye's `on_span`), the clamped segment foot equals the unclamped perpendicular foot -- the clamp did nothing. For an
+//!   object OFF the ends (`before_a` or `beyond_b`) the segment foot is the ENDPOINT while the infinite-line foot runs past it. `foot_at_end`
+//!   is exactly image/line_span.rye's "not on_span" read as a foot fact -- the line_project twin of image/line_segment_distance.rye's
+//!   `agrees_with_line`.
+//!
+//!   TWO OBJECTS CAN SHARE ONE FOOT. Two objects at different perpendicular distances, or both past the same end, land on the SAME nearest
+//!   stroke point -- `same_foot` TRUE though the objects are distinct. Two objects both before the A end share the A endpoint as their foot;
+//!   the drawn stroke folds a whole half-plane of centers onto one point.
+//!
+//! Compose not braid. This rung OWNS only the foot point -- the scaled coordinates `A * len2 + clamp(proj, 0, len2) * (B - A)` and the
+//! lattice test on them. image/line_order.rye owns the along-line projection (`project_label`) the foot is placed along; image/line_span.rye
+//! owns the along-segment class (`span_of`) that names when the clamp fires; image/line_segment_distance.rye owns the fused gap key
+//! (`segment_key_of`) the distance identity cross-checks; image/line_distance.rye owns the off-line magnitude the gap decomposes; and
+//! image/click_collinear.rye owns `click_group_center_doubled` and `CenterD` (the anchor centers whose squared delta is `len2`). No projection
+//! re-invented past the small exact kernel every line rung re-derives -- every fact cross-checked through the primitive that proved it.
+//!
+//! Everything is bounded before a byte: the foot walk runs `components` times, itself bounded by image/label.rye's `label_max_pixels`. The
+//! projection and the squared length run in i64 so the doubled-coordinate products never overflow, and the scaled foot and its squared gap run
+//! in i128 so multiplying a doubled coordinate by `len2` and squaring the result can never overflow either. A directed line needs two distinct
+//! points, so two anchor taps sharing a group refuse `SameGroup` by name; a tap on background refuses `EmptyClick`; a point off the map refuses
+//! `PointOutOfBounds`; a query naming a label past the object count refuses `BadTarget`; a fractional foot asked for as a lattice point refuses
+//! `FootNotWhole`, each having read nothing further. No network, no key, no funds -- the "exactly where did my stroke pass this thing" a
+//! surface answers the day a keeper drags a finite line through the scene and wants a dot drawn on the nearest point of each thing it grazed.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/line_project.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const hit_test = @import("hit_test.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const cluster_facts = @import("cluster_facts.rye");
+const click_order = @import("click_order.rye");
+const click_collinear = @import("click_collinear.rye");
+const line_order = @import("line_order.rye");
+const line_span = @import("line_span.rye");
+const line_distance = @import("line_distance.rye");
+const line_segment_distance = @import("line_segment_distance.rye");
+
+pub const line_project_version = "20260819.101356";
+
+pub const LineProjectError = error{
+    BadTarget,
+    FootNotWhole,
+};
+
+/// The exact foot of a center on the stroke, held as its DOUBLED coordinates TIMES `len2` so it stays a whole integer even when the true foot
+/// is fractional. The true doubled foot is `(sx / len2, sy / len2)`; the true pixel foot is `(sx / (2 * len2), sy / (2 * len2))`. `len2 > 0`
+/// always, since a resolved segment has two distinct ends. Runs in i128 so a doubled coordinate times `len2` never overflows.
+pub const FootScaled = struct {
+    sx: i128,
+    sy: i128,
+    len2: i64,
+
+    /// TRUE when the true doubled foot is a LATTICE POINT -- `len2` divides both scaled coordinates exactly, so `foot_doubled` can name it.
+    pub fn is_lattice(self: *const FootScaled) bool {
+        // invariant: the scale is a real squared length, never zero -- a resolved segment has two distinct ends.
+        assert(self.len2 > 0);
+        const d: i128 = @as(i128, self.len2);
+        return @rem(self.sx, d) == 0 and @rem(self.sy, d) == 0;
+    }
+};
+
+/// The two anchor centers that name the directed line, held as doubled coordinates in i64 so the projection and squared length never overflow
+/// -- exactly the line image/line_order.rye projects along and image/line_segment_distance.rye measures to.
+const LineD = struct {
+    ax2: i64,
+    ay2: i64,
+    bx2: i64,
+    by2: i64,
+};
+
+/// Resolve the directed line from two anchor taps -- refuses `EmptyClick` on a miss and `PointOutOfBounds` off the map through the group id
+/// read, then `SameGroup` when the two anchors land in one group (a segment needs two distinct ends). Returns the two group centers as
+/// doubled coordinates, exactly the centers image/line_order.rye projects from.
+fn resolve_line(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !LineD {
+    // invariant: the clustering and the map describe the same scene.
+    assert(clustering.components == map.count);
+    // invariant: the graph and the manifest describe that same scene.
+    assert(graph.components == manifest.components);
+
+    const ga = try click_order.click_group_id(clustering, map, ax, ay);
+    const gb = try click_order.click_group_id(clustering, map, bx, by);
+    // invariant: each anchor resolved to a real dense group id.
+    assert(ga >= 1);
+    assert(gb >= 1);
+    if (ga == gb) return error.SameGroup;
+
+    const ca = try click_collinear.click_group_center_doubled(garden, graph, manifest, map, ax, ay);
+    const cb = try click_collinear.click_group_center_doubled(garden, graph, manifest, map, bx, by);
+    return LineD{ .ax2 = @as(i64, ca.cx2), .ay2 = @as(i64, ca.cy2), .bx2 = @as(i64, cb.cx2), .by2 = @as(i64, cb.cy2) };
+}
+
+/// The doubled center of the GROUP object `lbl` belongs to -- the object-to-group map (`cluster_of`) followed by the group's union frame
+/// (`cluster_bbox`), whose doubled midpoint is the exact group center. Every member of a multi-object group reads the SAME center.
+fn label_group_center(clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, lbl: u32) !click_collinear.CenterD {
+    // invariant: a real object label, never background.
+    assert(lbl >= 1);
+    const cid = try overlap_clusters.cluster_of(clustering, lbl);
+    const box = try cluster_facts.cluster_bbox(clustering, graph, cid);
+    // invariant: the frame is well-formed on both axes -- a real box to center.
+    assert(box.max_x >= box.min_x);
+    assert(box.max_y >= box.min_y);
+    return click_collinear.CenterD{ .cx2 = box.min_x + box.max_x, .cy2 = box.min_y + box.max_y };
+}
+
+/// The along-line PROJECTION `(B - A) . (C - A)` over the doubled centers -- the exact key image/line_order.rye ranks by, re-derived here as
+/// the small exact kernel every line rung owns. Larger is farther toward B.
+fn projection_of(line: LineD, center: click_collinear.CenterD) i64 {
+    const abx: i64 = line.bx2 - line.ax2;
+    const aby: i64 = line.by2 - line.ay2;
+    const acx: i64 = @as(i64, center.cx2) - line.ax2;
+    const acy: i64 = @as(i64, center.cy2) - line.ay2;
+    return abx * acx + aby * acy;
+}
+
+/// The squared length of the directed segment in DOUBLED coordinates -- `(B - A) . (B - A)`. The upper clamp threshold `len2`; the A end sits
+/// at the lower threshold 0. Strictly positive, since a resolved segment has two distinct ends.
+fn segment_len2(line: LineD) i64 {
+    const abx: i64 = line.bx2 - line.ax2;
+    const aby: i64 = line.by2 - line.ay2;
+    const len2: i64 = abx * abx + aby * aby;
+    // invariant: two distinct anchor centers give a strictly positive squared length.
+    assert(len2 > 0);
+    return len2;
+}
+
+/// The scaled foot of a center on the line -- `A * len2 + t * (B - A)`, where `t` is the projection, CLAMPED to `[0, len2]` when `clamp` is
+/// TRUE (the finite SEGMENT foot) or left raw when FALSE (the infinite-LINE foot). Held times `len2` so it stays whole; runs in i128 so a
+/// doubled coordinate times `len2` never overflows. The true doubled foot is `foot_scaled / len2`.
+fn scaled_foot(line: LineD, center: click_collinear.CenterD, clamp: bool) FootScaled {
+    const len2: i64 = segment_len2(line);
+    const proj: i64 = projection_of(line, center);
+    const t: i64 = if (!clamp) proj else if (proj < 0) 0 else if (proj > len2) len2 else proj;
+    if (clamp) {
+        // invariant: the clamped parameter rests inside the segment's own two thresholds -- the raw one is unbounded by design.
+        assert(t >= 0);
+        assert(t <= len2);
+    }
+    const abx: i64 = line.bx2 - line.ax2;
+    const aby: i64 = line.by2 - line.ay2;
+    const l: i128 = @as(i128, len2);
+    const sx: i128 = @as(i128, line.ax2) * l + @as(i128, t) * @as(i128, abx);
+    const sy: i128 = @as(i128, line.ay2) * l + @as(i128, t) * @as(i128, aby);
+    return FootScaled{ .sx = sx, .sy = sy, .len2 = len2 };
+}
+
+/// Guard that a query label names a real object -- refuses `BadTarget` for background or a label past the object count, having read nothing.
+fn check_target(manifest: scene_manifest.Manifest, lbl: u32) !void {
+    if (lbl < 1 or lbl > manifest.components) return error.BadTarget;
+}
+
+/// The exact SEGMENT foot of object `lbl`'s GROUP center on the stroke A..B -- the nearest point ON the finite stroke, held as doubled
+/// coordinates times `len2`. At the anchors and the on-span interior it is the perpendicular foot; off the ends it is the nearer endpoint.
+/// Refuses `BadTarget`, `SameGroup`, `EmptyClick`, `PointOutOfBounds`.
+pub fn foot_of(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, lbl: u32) !FootScaled {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+
+    try check_target(manifest, lbl);
+    const line = try resolve_line(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const center = try label_group_center(clustering, graph, lbl);
+    return scaled_foot(line, center, true);
+}
+
+/// The exact INFINITE-line foot of object `lbl`'s GROUP center -- the perpendicular foot on the unbounded line, held scaled, WITHOUT the
+/// segment clamp. Equal to `foot_of` for an on-span object; runs past the endpoint for an off-the-ends one. Refuses `BadTarget`, `SameGroup`,
+/// `EmptyClick`, `PointOutOfBounds`.
+pub fn line_foot_of(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, lbl: u32) !FootScaled {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+
+    try check_target(manifest, lbl);
+    const line = try resolve_line(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const center = try label_group_center(clustering, graph, lbl);
+    return scaled_foot(line, center, false);
+}
+
+/// TRUE when object `lbl`'s exact SEGMENT foot is a LATTICE POINT in doubled coordinates -- `len2` divides its scaled coordinates, so
+/// `foot_doubled` names an exact integer point rather than refusing. Refuses `BadTarget`, `SameGroup`, `EmptyClick`, `PointOutOfBounds`.
+pub fn foot_is_whole(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, lbl: u32) !bool {
+    const f = try foot_of(garden, clustering, graph, manifest, map, ax, ay, bx, by, lbl);
+    return f.is_lattice();
+}
+
+/// The exact DOUBLED foot of object `lbl` on the stroke -- the true integer point, valid only when the foot is a lattice point. Refuses
+/// `FootNotWhole` when the true foot is fractional (rather than rounding a lie), and `BadTarget`, `SameGroup`, `EmptyClick`,
+/// `PointOutOfBounds` through the resolution.
+pub fn foot_doubled(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, lbl: u32) !click_collinear.CenterD {
+    const f = try foot_of(garden, clustering, graph, manifest, map, ax, ay, bx, by, lbl);
+    if (!f.is_lattice()) return error.FootNotWhole;
+    const d: i128 = @as(i128, f.len2);
+    const dx: i128 = @divExact(f.sx, d);
+    const dy: i128 = @divExact(f.sy, d);
+    // invariant: a foot on the stroke between two on-canvas anchors is non-negative on both axes -- a real doubled coordinate.
+    assert(dx >= 0);
+    assert(dy >= 0);
+    return click_collinear.CenterD{ .cx2 = @as(u32, @intCast(dx)), .cy2 = @as(u32, @intCast(dy)) };
+}
+
+/// TRUE when object `lbl`'s SEGMENT foot is an ENDPOINT because the perpendicular foot fell OFF the finite stroke -- the clamp fired. Exactly
+/// image/line_span.rye's "not on_span": FALSE on the closed span, TRUE before the A end or beyond the B end. Refuses `BadTarget`, `SameGroup`,
+/// `EmptyClick`, `PointOutOfBounds`.
+pub fn foot_at_end(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, lbl: u32) !bool {
+    const seg = try foot_of(garden, clustering, graph, manifest, map, ax, ay, bx, by, lbl);
+    const raw = try line_foot_of(garden, clustering, graph, manifest, map, ax, ay, bx, by, lbl);
+    // invariant: the clamp only ever moves the foot -- the two feet share the same scale.
+    assert(seg.len2 == raw.len2);
+    return seg.sx != raw.sx or seg.sy != raw.sy;
+}
+
+/// TRUE when objects `a` and `b` land on the SAME nearest stroke point -- equal scaled SEGMENT feet. Two objects at different perpendicular
+/// distances, or both past the same end, can fold onto one foot. Refuses `BadTarget`, `SameGroup`, `EmptyClick`, `PointOutOfBounds`.
+pub fn same_foot(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, a: u32, b: u32) !bool {
+    const fa = try foot_of(garden, clustering, graph, manifest, map, ax, ay, bx, by, a);
+    const fb = try foot_of(garden, clustering, graph, manifest, map, ax, ay, bx, by, b);
+    // invariant: two feet on the same resolved segment share the same scale.
+    assert(fa.len2 == fb.len2);
+    return fa.sx == fb.sx and fa.sy == fb.sy;
+}
+
+/// The exact SQUARED gap between object `lbl`'s center and its scaled SEGMENT foot, in the scaled units -- `(sx - C_x * len2)^2 +
+/// (sy - C_y * len2)^2`. It equals `segment_key_of(lbl) * len2` exactly, an integer identity with no divide, so the foot this rung returns is
+/// provably the nearest point image/line_segment_distance.rye measured to. Runs in i128. Refuses `BadTarget`, `SameGroup`, `EmptyClick`,
+/// `PointOutOfBounds`.
+pub fn foot_gap_scaled(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, lbl: u32) !i128 {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+
+    try check_target(manifest, lbl);
+    const line = try resolve_line(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const center = try label_group_center(clustering, graph, lbl);
+    const f = scaled_foot(line, center, true);
+    const l: i128 = @as(i128, f.len2);
+    const dx: i128 = f.sx - @as(i128, center.cx2) * l;
+    const dy: i128 = f.sy - @as(i128, center.cy2) * l;
+    const gap: i128 = dx * dx + dy * dy;
+    // invariant: a squared gap is never negative.
+    assert(gap >= 0);
+    return gap;
+}
+
+/// Every object's exact SEGMENT foot, one per dense label 1..components, indexed by `lbl - 1`. One resolve, one bounded pass -- the whole
+/// scene's nearest stroke points at once, so a surface can draw a dot on each. The caller owns the slice. Refuses `SameGroup`, `EmptyClick`,
+/// `PointOutOfBounds` through the resolution.
+pub fn feet_scaled(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) ![]FootScaled {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+    // invariant: the foot walk is bounded by the component count, itself under image/label.rye's pixel ceiling.
+    assert(manifest.components <= label.label_max_pixels);
+
+    const line = try resolve_line(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const out = try garden.alloc(FootScaled, @as(usize, manifest.components));
+    var lbl: u32 = 1;
+    while (lbl <= manifest.components) : (lbl += 1) {
+        const center = try label_group_center(clustering, graph, lbl);
+        out[@as(usize, lbl - 1)] = scaled_foot(line, center, true);
+    }
+    // invariant: every foot shares the one segment's scale -- a single resolved line.
+    var v: usize = 1;
+    while (v < out.len) : (v += 1) assert(out[v].len2 == out[0].len2);
+    return out;
+}
+
+// --- selftest: the DECISIVE rational-foot crux (the exact foot is held scaled by len2, whole only at lattice points; the scaled foot
+//     satisfies the exact distance identity foot_gap_scaled == segment_key * len2; the segment foot differs from the infinite-line foot
+//     exactly off the ends, foot_at_end == not on_span; two objects share one foot); a fractional interior foot refuses FootNotWhole; refusals
+//     by name; determinism -- every fact cross-checked against line_order, line_span, and line_segment_distance -------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y). A 2x2 block's inclusive box is (x,y)-(x+1,y+1), so its
+/// doubled center is (2x+1, 2y+1) -- exact integers the selftest predicts by hand.
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- THE SCENE on a 26x16 canvas: seven 2x2 singletons around a DIAGONAL segment A -> B. A center-doubled (9,9), B center-doubled
+    //     (33,21), so B - A = (24,12), len2 = 24^2 + 12^2 = 720, the two ends at projections 0 and 720. A diagonal is chosen on purpose:
+    //     with it the exact foot is genuinely FRACTIONAL for some interior object, the crux this rung faces. Per-object, proj = 24*(cx2-9) +
+    //     12*(cy2-9); the scaled foot is (9*720 + t*24, 9*720 + t*12) with t = clamp(proj, 0, 720):
+    //       X: box (1,3)  center (3,7).   proj -168 (BEFORE A). segment foot = A (9,9), whole. line foot runs past, fractional. at_end.
+    //       F: box (10,3) center (21,7).  proj 264  (ON span).  foot scaled (12816, 9648) -- 720 divides NEITHER, FRACTIONAL foot.
+    //       A: box (4,4)  center (9,9).   proj 0    (the A end). foot = A itself (9,9), whole.
+    //       Z: box (1,7)  center (3,15).  proj -72  (BEFORE A). segment foot = A (9,9), whole -- SAME foot as X.
+    //       M: box (7,8)  center (15,17). proj 240  (ON span).  foot = (17,13), whole though M is OFF the line. clamp did nothing.
+    //       B: box (16,10) center (33,21). proj 720 (the B end). foot = B itself (33,21), whole.
+    //       Y: box (21,12) center (43,25). proj 1008 (BEYOND B). segment foot = B (33,21), whole. at_end.
+    //     Raster order (row then col) gives dense labels X=1, F=2, A=3, Z=4, M=5, B=6, Y=7 ----------------------------------------------------
+    var scene = try make_canvas(garden, 26, 16, 0);
+    set_block(&scene, 1, 3, 2, 2); //  X: box (1,3)-(2,4),   center-doubled (3,7)   -- BEFORE the A end, on the infinite line's far reach
+    set_block(&scene, 10, 3, 2, 2); // F: box (10,3)-(11,4), center-doubled (21,7)  -- ON the span, its exact foot FRACTIONAL
+    set_block(&scene, 4, 4, 2, 2); //  A: box (4,4)-(5,5),   center-doubled (9,9)   -- anchor, the A end
+    set_block(&scene, 1, 7, 2, 2); //  Z: box (1,7)-(2,8),   center-doubled (3,15)  -- BEFORE the A end, SAME foot as X (the A endpoint)
+    set_block(&scene, 7, 8, 2, 2); //  M: box (7,8)-(8,9),   center-doubled (15,17) -- OFF the line yet its foot a lattice point (17,13)
+    set_block(&scene, 16, 10, 2, 2); // B: box (16,10)-(17,11), center-doubled (33,21) -- anchor, the B end
+    set_block(&scene, 21, 12, 2, 2); // Y: box (21,12)-(22,13), center-doubled (43,25) -- BEYOND the B end, foot the B endpoint
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 7) return error.SceneNotSevenComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    if (clustering.clusters != 7) return error.NotSevenClusters;
+
+    // dense labels: X=1, F=2, A=3, Z=4, M=5, B=6, Y=7
+    const x_lbl: u32 = 1;
+    const f_lbl: u32 = 2;
+    const a_lbl: u32 = 3;
+    const z_lbl: u32 = 4;
+    const m_lbl: u32 = 5;
+    const b_lbl: u32 = 6;
+    const y_lbl: u32 = 7;
+
+    // confirm the raster order landed the labels the scene predicts by their box corners
+    const x_entry = try scene_manifest.object_of(manifest, x_lbl);
+    if (x_entry.min_x != 1 or x_entry.min_y != 3) return error.XNotAtExpectedBox;
+    const f_entry = try scene_manifest.object_of(manifest, f_lbl);
+    if (f_entry.min_x != 10 or f_entry.min_y != 3) return error.FNotAtExpectedBox;
+    const m_entry = try scene_manifest.object_of(manifest, m_lbl);
+    if (m_entry.min_x != 7 or m_entry.min_y != 8) return error.MNotAtExpectedBox;
+
+    // the two anchor taps that name the DIAGONAL directed segment A -> B (both taps land inside their own blocks)
+    const ax: u32 = 4;
+    const ay: u32 = 4;
+    const bx: u32 = 16;
+    const by: u32 = 10;
+
+    // --- THE SCALED FEET -- exactly A * len2 + clamp(proj, 0, len2) * (B - A) -----------------------------------------------------------
+    const fa = try foot_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, a_lbl);
+    if (fa.len2 != 720) return error.Len2Not720;
+    if (fa.sx != 9 * 720 or fa.sy != 9 * 720) return error.AFootNotA; // A's foot is A itself: (9,9) doubled
+    const fb = try foot_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, b_lbl);
+    if (fb.sx != 33 * 720 or fb.sy != 21 * 720) return error.BFootNotB; // B's foot is B itself: (33,21) doubled
+
+    // --- THE FOOT IS WHOLE ONLY AT LATTICE POINTS -- the anchors and M whole, F fractional --------------------------------------------
+    if (try foot_is_whole(garden, clustering, graph, manifest, &map, ax, ay, bx, by, a_lbl) != true) return error.AFootNotWhole;
+    if (try foot_is_whole(garden, clustering, graph, manifest, &map, ax, ay, bx, by, b_lbl) != true) return error.BFootNotWhole;
+    // M sits OFF the line (its center is not on the stroke) yet its exact foot is the lattice point (17,13)
+    if (try foot_is_whole(garden, clustering, graph, manifest, &map, ax, ay, bx, by, m_lbl) != true) return error.MFootNotWhole;
+    const fm = try foot_doubled(garden, clustering, graph, manifest, &map, ax, ay, bx, by, m_lbl);
+    if (fm.cx2 != 17 or fm.cy2 != 13) return error.MFootNotAt1713;
+    // M's center is genuinely off the line -- the foot is a real projection, not the point itself
+    if (try line_distance.distance_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, m_lbl) == 0) return error.MWronglyOnLine;
+
+    // F's exact foot is FRACTIONAL -- 720 divides neither scaled coordinate, so foot_doubled refuses FootNotWhole rather than rounding a lie
+    const ff = try foot_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, f_lbl);
+    if (ff.sx != 12816 or ff.sy != 9648) return error.FFootScaledWrong;
+    if (@rem(ff.sx, 720) == 0 or @rem(ff.sy, 720) == 0) return error.FFootWronglyWhole;
+    if (try foot_is_whole(garden, clustering, graph, manifest, &map, ax, ay, bx, by, f_lbl) != false) return error.FFootWronglyWholeBool;
+    if (foot_doubled(garden, clustering, graph, manifest, &map, ax, ay, bx, by, f_lbl)) |_| return error.FractionalFootNotRefused else |err| {
+        if (err != error.FootNotWhole) return error.WrongFootNotWholeError;
+    }
+
+    // --- THE SCALED FOOT SATISFIES THE EXACT DISTANCE IDENTITY -- foot_gap_scaled == segment_key_of * len2, EXACTLY, no divide ---------
+    var id_lbl: u32 = 1;
+    while (id_lbl <= manifest.components) : (id_lbl += 1) {
+        const gap = try foot_gap_scaled(garden, clustering, graph, manifest, &map, ax, ay, bx, by, id_lbl);
+        const key = try line_segment_distance.segment_key_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, id_lbl);
+        if (gap != key * 720) return error.DistanceIdentityBroken;
+    }
+    // spot the fractional case by hand: F's gap is 36864 * 720 = 26542080 (segment_key 192^2 = 36864)
+    if (try foot_gap_scaled(garden, clustering, graph, manifest, &map, ax, ay, bx, by, f_lbl) != 26542080) return error.FGapWrong;
+
+    // --- THE SEGMENT FOOT DIFFERS FROM THE INFINITE-LINE FOOT EXACTLY OFF THE ENDS -- foot_at_end == not on_span -----------------------
+    // M on the span: the clamp does nothing, segment foot equals line foot, foot_at_end FALSE
+    const mseg = try foot_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, m_lbl);
+    const mline = try line_foot_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, m_lbl);
+    if (mseg.sx != mline.sx or mseg.sy != mline.sy) return error.MFeetDiffer;
+    if (try foot_at_end(garden, clustering, graph, manifest, &map, ax, ay, bx, by, m_lbl) != false) return error.MWronglyAtEnd;
+    if (try line_span.span_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, m_lbl) != .on_span) return error.MNotOnSpan;
+    // X before the A end: the clamp pins the segment foot to A while the line foot runs past, foot_at_end TRUE
+    const xseg = try foot_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, x_lbl);
+    const xline = try line_foot_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, x_lbl);
+    if (xseg.sx == xline.sx and xseg.sy == xline.sy) return error.XFeetSame;
+    if (xseg.sx != 9 * 720 or xseg.sy != 9 * 720) return error.XSegFootNotA; // clamped to the A endpoint
+    if (try foot_at_end(garden, clustering, graph, manifest, &map, ax, ay, bx, by, x_lbl) != true) return error.XNotAtEnd;
+    if (try line_span.span_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, x_lbl) != .before_a) return error.XNotBeforeA;
+    // Y beyond the B end: segment foot pinned to B, foot_at_end TRUE
+    if (try foot_at_end(garden, clustering, graph, manifest, &map, ax, ay, bx, by, y_lbl) != true) return error.YNotAtEnd;
+    if (try line_span.span_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, y_lbl) != .beyond_b) return error.YNotBeyondB;
+
+    // --- TWO OBJECTS CAN SHARE ONE FOOT -- X and Z both before the A end fold onto the A endpoint, though they are distinct objects at
+    //     different perpendicular distances; F, on the span, lands on its own foot ---------------------------------------------------------
+    const zseg = try foot_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, z_lbl);
+    if (zseg.sx != 9 * 720 or zseg.sy != 9 * 720) return error.ZSegFootNotA;
+    if (try same_foot(garden, clustering, graph, manifest, &map, ax, ay, bx, by, x_lbl, z_lbl) != true) return error.XZNotSameFoot;
+    // yet X and Z sit at different off-line distances -- one foot, two objects
+    if (try line_distance.distance_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, x_lbl) == try line_distance.distance_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, z_lbl)) return error.XZWronglySameDistance;
+    // X and F do NOT share a foot (F is on the span, X clamped to A)
+    if (try same_foot(garden, clustering, graph, manifest, &map, ax, ay, bx, by, x_lbl, f_lbl) != false) return error.XFWronglySameFoot;
+    // Y also shares the B endpoint with B itself
+    if (try same_foot(garden, clustering, graph, manifest, &map, ax, ay, bx, by, y_lbl, b_lbl) != true) return error.YBNotSameFoot;
+
+    // --- COMPOSE NOT BRAID -- every projection matches line_order.project_label, so the foot is placed along the family's own dot --------
+    if (try line_order.project_label(garden, clustering, graph, manifest, &map, ax, ay, bx, by, x_lbl) != -168) return error.XProjNotMinus168;
+    if (try line_order.project_label(garden, clustering, graph, manifest, &map, ax, ay, bx, by, f_lbl) != 264) return error.FProjNot264;
+    if (try line_order.project_label(garden, clustering, graph, manifest, &map, ax, ay, bx, by, m_lbl) != 240) return error.MProjNot240;
+    if (try line_order.project_label(garden, clustering, graph, manifest, &map, ax, ay, bx, by, y_lbl) != 1008) return error.YProjNot1008;
+
+    // --- FEET_SCALED -- the whole scene's feet at once, each matching foot_of -----------------------------------------------------------
+    const all = try feet_scaled(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    if (all.len != 7) return error.FeetCountWrong;
+    var w: u32 = 1;
+    while (w <= manifest.components) : (w += 1) {
+        const one = try foot_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, w);
+        const many = all[@as(usize, w - 1)];
+        if (one.sx != many.sx or one.sy != many.sy or one.len2 != many.len2) return error.FeetScaledMismatch;
+    }
+
+    // --- REVERSAL -- reading the SAME segment B -> A leaves every SEGMENT foot identical (a stroke is one set of points), though the
+    //     projection reflects. Every foot stands still ----------------------------------------------------------------------------------
+    var rev_lbl: u32 = 1;
+    while (rev_lbl <= manifest.components) : (rev_lbl += 1) {
+        const fwd = try foot_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, rev_lbl);
+        const rev = try foot_of(garden, clustering, graph, manifest, &map, bx, by, ax, ay, rev_lbl);
+        if (fwd.sx != rev.sx or fwd.sy != rev.sy) return error.ReversedFootChanged;
+    }
+
+    // --- REFUSALS -- two anchors sharing a group refuse SameGroup; a background tap refuses EmptyClick; a point off the map refuses
+    //     PointOutOfBounds; a query label past the object count refuses BadTarget, each having read nothing ------------------------------
+    if (try hit_test.object_label_at(&map, 4, 4) != try hit_test.object_label_at(&map, 5, 5)) return error.APixelsNotSameObject;
+    if (foot_of(garden, clustering, graph, manifest, &map, 4, 4, 5, 5, m_lbl)) |_| return error.SameGroupNotRefused else |err| {
+        if (err != error.SameGroup) return error.WrongSameGroupError;
+    }
+    if (try hit_test.object_label_at(&map, 0, 0) != 0) return error.BackgroundNotEmpty;
+    if (foot_of(garden, clustering, graph, manifest, &map, 0, 0, bx, by, m_lbl)) |_| return error.MissNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissError;
+    }
+    if (foot_of(garden, clustering, graph, manifest, &map, ax, ay, 26, 0, m_lbl)) |_| return error.OffMapNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapError;
+    }
+    if (foot_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, 8)) |_| return error.BadTargetNotRefused else |err| {
+        if (err != error.BadTarget) return error.WrongBadTargetError;
+    }
+
+    // --- DETERMINISM -- the same directed segment reads the same foot twice ------------------------------------------------------------
+    const d1 = try foot_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, f_lbl);
+    const d2 = try foot_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, f_lbl);
+    if (d1.sx != d2.sx or d1.sy != d2.sy or d1.len2 != d2.len2) return error.FootNotDeterministic;
+
+    print("GREEN image-line-project: read a DIRECTED line named by TWO anchor taps (from A toward B) as an EXACT NEAREST POINT -- for every object, WHERE on the finite stroke A..B its group center's nearest point lands. This is the POINT the whole line family measured TO but never named: line_distance reads how far OFF a center sits, line_segment_distance the true gap to the stroke, line_span which side of the ends the foot falls; line_project returns the FOOT itself so a surface can draw it. The DECISIVE crux is THE EXACT FOOT IS RATIONAL. The perpendicular foot A + (proj/len2)(B - A) is a lattice point in doubled coordinates only when len2 divides proj*(B - A) on both axes -- always at the anchors, only sometimes inside -- so line_project holds the foot TIMES len2 as an exact i128 pair, the same clear-the-divide move line_segment_distance made, and the family stays whole. Over a 26x16 scene of seven singletons around a DIAGONAL segment A -> B (len2 = 720), M sits OFF the line yet its exact foot is the lattice point (17,13), while F on the span has a genuinely FRACTIONAL foot (scaled 12816, 9648) 720 divides neither, so foot_doubled refuses FootNotWhole rather than rounding a lie. THE SCALED FOOT SATISFIES THE EXACT DISTANCE IDENTITY -- foot_gap_scaled equals segment_key_of times len2 for every object, an integer identity with no divide, so the foot returned is provably the nearest point line_segment_distance measured to (F: 36864 * 720 = 26542080). THE SEGMENT FOOT DIFFERS FROM THE INFINITE-LINE FOOT EXACTLY OFF THE ENDS -- for M on the span the clamp does nothing (segment foot equals line foot, foot_at_end FALSE), for X before the A end the clamp pins the segment foot to the A endpoint while the infinite-line foot runs past (foot_at_end TRUE), exactly line_span's not-on_span read as a foot fact. TWO OBJECTS CAN SHARE ONE FOOT -- X and Z, both before the A end at different perpendicular distances, fold onto the SAME A endpoint (same_foot TRUE), and Y shares the B endpoint with B itself; the drawn stroke folds a whole half-plane of centers onto one point. Reading the same segment B -> A leaves every segment foot identical, a stroke being one set of points. feet_scaled reads the whole scene's feet at once; two anchors sharing a group refuse SameGroup, a background tap refuses EmptyClick, a point off the map refuses PointOutOfBounds, a label past the object count refuses BadTarget, a fractional foot asked as a lattice point refuses FootNotWhole, each having read nothing further; the same segment reads the same foot twice. Compose not braid over image/line_order.rye (the projection the foot is placed along), image/line_span.rye (the along-segment class naming when the clamp fires), image/line_segment_distance.rye (the fused gap key the distance identity cross-checks), and image/click_collinear.rye (the anchor centers whose squared delta is len2)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: line_project selftest\n", .{});
+    return 1;
+}
