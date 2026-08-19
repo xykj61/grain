@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260819.033349
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title cluster_mst_subtrees -- the branches of the skeleton
+prompt autonomous loop -- take the next agent-doable lap Lindy-first crux-first on the live green Season G scene-read edge
+think Oriented as Kyri in Radiant Style, then read REMEMBER, REDS, the newest three session-log recommends, and the latest module + witness. Standfast first: every living REDS row is Closed, Released, or custody-gated errata (#75) -- no open agent-closable red, so constructive work is clear.
+think Picked the next rung crux-first and Lindy-grounded. cluster_mst_leaves's own doc promised the payoff -- "a joint gets a splitter to fold a subtree" -- so the branch/subtree read over the MST edges was the continuous crux, the first candidate the card and prior logs named. It composes straight over cluster_mst (edges, is_bridge) and cross-checks cluster_tree_centroid (the vertex-removal balance) and cluster_mst_leaves (is_leaf on the leaf-edge cut).
+think The decisive crux: an EDGE cut and a VERTEX removal are two different splits of the same tree, the edge cut the blunter. A tree has no cycle, so cutting any single edge yields exactly two complementary pieces summing to the whole, where pulling a joint vertex yields as many pieces as its degree. Chose three scenes: the SPROUT (rich -- edge 2-3 gives two pieces {1,2,5}|{3,4} where vertex 2 of degree 3 gives three, so centroid_max_subtree reads 2 below the edge cut's 3; the leaf edge 2-5 cuts a singleton, agreeing with is_leaf(5)); the STAR (widest gap -- every edge cuts one leaf so the separator is n-1 while the centroid hub is 1); the SINGLE EDGE (the only shape where the two meet, at 1). Reused the sprout geometry cluster_mst_leaves already witnessed GREEN.
+think Verbs: edge_split (near/far sizes, refuses NotABridge/BadClusterId/SameCluster), edge_balance (larger side, asserted >= ceil(n/2)), edge_separator_balance (min over bridges, refuses NoEdges on a lone cluster), most_balanced_edge (argmin, lowest edge on tie), is_balanced_edge. Every allocation bounded by the object ceiling; the flood over a severed tree skips the one lo-hi edge so it never reaches the far side.
+obs GREEN on the first full metal run once the {near,far} literal braces in the GREEN prose were doubled for the format string -- a print-string fix, not a code red, the same lesson the centroid and selection_cluster_facts laps met. The algorithm and the sprout/star/single-edge geometry were sound on the first pass.
+obs Council-rota lap deep-read item 3, the Lindy effect foundation -- the why beneath Lindy-first crux-first: the longest-lived artifacts (front doors, foundations, invariants, witnesses) compound, so the hours go to what will still read true on the long return. This rung's crux is exactly such an invariant, bound to a green witness rather than asserted.
+loom witness=cluster_mst_subtrees_witness build=ok selftest=green checks=8 scenes=3
+file image/cluster_mst_subtrees.rye the branches of the skeleton -- edge_split, edge_balance, edge_separator_balance, most_balanced_edge, is_balanced_edge over the MST bridge edges
+file tools/cluster_mst_subtrees_witness.rish builds and runs the selftest on metal, native contains checks (REDS #85), asserts the two crux cases print
+file image/README.md names the cluster MST subtrees after the cluster MST leaves (docs-sync)
+file crux/REMEMBER.md live edge + Git nib repointed single-stranded, cluster_mst_leaves folded to a prior-nib comment, 197 image modules stand
+file session-logs/README.md prepended the newest-first row for this lap
+recommend keep-going next crux-first agent-doable: a per-edge or per-subtree read building on the branches just named (a subtree membership or the two-way split's members, not just sizes), an object-count-in-region summary joining a selector with the manifest, a per-cluster lasso read, or a codec read; the Microkernel study rung and a real-photo top-hat wait on a fetch/license gate. No network, no key, no funds.

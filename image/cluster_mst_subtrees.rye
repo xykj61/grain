@@ -1,0 +1,438 @@
+//! image/cluster_mst_subtrees.rye -- the BRANCHES of the skeleton: the subtree split of each bridge EDGE. Where image/cluster_mst_leaves.rye
+//! named which clusters are TIPS and which are JOINTS, this rung reads what a JOINT'S splitter actually cuts -- pull one bridge edge and the tree
+//! falls into exactly TWO pieces. `edge_split` reads the two component sizes when a bridge is cut (the near side and the far side, summing to the
+//! cluster count); `edge_balance` reads the larger of those two; `edge_separator_balance` reads the smallest such larger-piece over every bridge
+//! (the most even single-edge cut); `most_balanced_edge` names the bridge that achieves it; `is_balanced_edge` is the test -- exact integers, NO
+//! float, NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/cluster_minimum_spanning_tree.rye grows the skeleton and names its bridge edges;
+//! image/cluster_tree_centroid.rye reads the BALANCE point of pulling a whole cluster OUT (a VERTEX removal, which drops the tree into as many
+//! pieces as that cluster's degree); image/cluster_mst_leaves.rye names the TIPS and the JOINTS. This rung reads the plainest cut of all -- pull one
+//! BRIDGE, and the two limbs it held together come apart. A surface names it the day a keeper drags a group apart at a seam: grab the connecting
+//! line between two regions, cut it, and the layout splits into exactly the two halves that line was carrying.
+//!
+//! The DECISIVE crux -- an EDGE cut and a VERTEX removal are two different splits of the same tree, and the edge cut is the blunter of the two:
+//!
+//!   EVERY EDGE CUT YIELDS EXACTLY TWO COMPLEMENTARY PIECES, WHERE A VERTEX REMOVAL YIELDS AS MANY AS THE VERTEX'S DEGREE. A tree has no cycle, so
+//!   removing any single edge disconnects it into exactly two components whose sizes sum to the whole. Over a SPROUT -- a main path 1-2-3-4 with a
+//!   fifth cluster off the interior joint 2 -- cutting edge 2-3 splits the tree into {1,2,5} (near, size 3) and {3,4} (far, size 2), two pieces
+//!   summing to 5; yet pulling the VERTEX 2 (degree 3) drops the tree into THREE pieces, so image/cluster_tree_centroid.rye's largest-piece read is
+//!   only 2. A LEAF EDGE always cuts off a singleton on its tip side -- cutting 2-5 splits {5} (size 1) from {1,2,3,4} (size 4), agreeing with
+//!   image/cluster_mst_leaves.rye that cluster 5 is a tip.
+//!
+//!   THE EDGE SEPARATOR AND THE CENTROID VERTEX ARE DIFFERENT BALANCE POINTS, AND THE EDGE CUT CAN NEVER BALANCE BELOW THE LARGER HALF. Cutting a
+//!   tree of n clusters into two pieces leaves a larger piece of at least ceil(n/2) -- an edge can do no better. On the sprout the most even single
+//!   edge (2-3) leaves a larger piece of 3, exactly ceil(5/2), while the centroid VERTEX 2 leaves only 2, because a vertex may split into three
+//!   pieces where an edge splits into two. On a STAR the gap is widest: every edge cuts off a single leaf, so the edge separator is n-1 -- the worst
+//!   any tree offers -- while the centroid hub leaves singletons, a balance of 1. Only where a single edge already halves the tree do the two meet:
+//!   over a SINGLE EDGE the cut leaves 1 and 1, and pulling either endpoint leaves the other alone, both reading 1.
+//!
+//! Compose not braid. This rung OWNS only the edge-cut split -- the two component sizes of a severed bridge, the larger piece, the min over bridges,
+//! the separator edge. No spanning tree recomputed (image/cluster_minimum_spanning_tree.rye owns `build_mst`, the edges, and `is_bridge`), no
+//! vertex-removal balance recomputed (image/cluster_tree_centroid.rye owns `centroid_max_subtree`, cross-checked here to prove the divergence and
+//! never re-derived), no tip/joint partition recomputed (image/cluster_mst_leaves.rye owns `is_leaf`, cross-checked here on the leaf-edge cut). A
+//! reading over a reading over a reading over a reading over a reading over a reading over a reading.
+//!
+//! Everything is bounded before a byte: the cluster count can never exceed the object count, itself capped at `scene_graph_max_objects`, so the
+//! flood over a severed tree visits each cluster at most once over the tree's n-1 edges, and the separator scan runs one flood per bridge -- the
+//! scratch `visited` and `queue` buffers hold exactly one slot per cluster. A lone-cluster layout has no bridge to cut, so the separator reads
+//! refuse `NoEdges`, and a pair that is not a bridge refuses `NotABridge`. A zero or past-the-count cluster id refuses `BadClusterId`, a self pair
+//! refuses `SameCluster`. No network, no key, no funds -- the seam a surface cuts to pull a group apart, on our own geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/cluster_mst_subtrees.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const cluster_graph = @import("cluster_graph.rye");
+const cluster_mst = @import("cluster_minimum_spanning_tree.rye");
+const cluster_tree_centroid = @import("cluster_tree_centroid.rye");
+const cluster_mst_leaves = @import("cluster_mst_leaves.rye");
+
+pub const cluster_mst_subtrees_version = "20260819.033349";
+
+pub const SubtreesError = error{
+    BadClusterId,
+    SameCluster,
+    NotABridge,
+    NoEdges,
+};
+
+/// The two limbs a severed bridge leaves behind -- `near` is the component holding the low-id endpoint of the cut edge, `far` the component holding
+/// the high-id endpoint. They are complementary: `near + far` equals the cluster count, and each is at least one.
+pub const EdgeSplit = struct {
+    near: u32,
+    far: u32,
+};
+
+/// Flood the component containing `lo` after the single bridge `(lo, hi)` is cut, and count its clusters -- a private walk the caller reaches only
+/// after `(lo, hi)` is validated as a real bridge. The one `lo`-`hi` edge is never traversed, so `hi` and its side stay unreached; a tree carries
+/// no cycle, so the flood covers exactly the near limb.
+fn near_side_size(allocator: std.mem.Allocator, tree: cluster_mst.MstTree, lo: u32, hi: u32) !u32 {
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges.
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+    // invariant: the cut edge joins two distinct real clusters, low id first.
+    assert(lo >= 1);
+    assert(lo < hi);
+    assert(hi <= tree.clusters);
+
+    const n: u32 = tree.clusters;
+    const visited = try allocator.alloc(bool, n);
+    const queue = try allocator.alloc(u32, n);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) visited[i] = false;
+
+    var size: u32 = 0;
+    var head: u32 = 0;
+    var tail: u32 = 0;
+    queue[tail] = lo;
+    tail += 1;
+    visited[lo - 1] = true;
+    while (head < tail) {
+        const node = queue[head]; // a 1-based cluster id
+        head += 1;
+        size += 1;
+        var e: u32 = 0;
+        while (e < tree.edges.len) : (e += 1) {
+            const edge = tree.edges[e];
+            var other: u32 = 0;
+            if (edge.a == node) {
+                other = edge.b;
+            } else if (edge.b == node) {
+                other = edge.a;
+            } else {
+                continue;
+            }
+            // never cross the one severed bridge -- the flood stays on the near limb.
+            if ((node == lo and other == hi) or (node == hi and other == lo)) continue;
+            if (!visited[other - 1]) {
+                visited[other - 1] = true;
+                // invariant: the queue never holds more than the cluster count -- each cluster is enqueued at most once.
+                assert(tail < n);
+                queue[tail] = other;
+                tail += 1;
+            }
+        }
+    }
+    // invariant: the near limb holds at least the cluster it started from, and never the whole tree (the far endpoint sits outside it).
+    assert(size >= 1);
+    assert(size <= n - 1);
+    return size;
+}
+
+/// The two component sizes left when the bridge `(a, b)` is cut -- `near` holding the low-id endpoint, `far` the high-id endpoint, summing to the
+/// cluster count. Refuses `BadClusterId` for a zero or past-the-count id, `SameCluster` for a self pair, and `NotABridge` when the pair is not one of
+/// the skeleton's edges (a redundant within-reach pair a spanning tree dropped is not a cut you can make).
+pub fn edge_split(allocator: std.mem.Allocator, tree: cluster_mst.MstTree, a: u32, b: u32) !EdgeSplit {
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges.
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+    // invariant: a real cluster graph holds at least one cluster.
+    assert(tree.clusters >= 1);
+    if (a == 0 or a > tree.clusters) return error.BadClusterId;
+    if (b == 0 or b > tree.clusters) return error.BadClusterId;
+    if (a == b) return error.SameCluster;
+    if (try cluster_mst.is_bridge(tree, a, b) != true) return error.NotABridge;
+
+    const lo = if (a < b) a else b;
+    const hi = if (a < b) b else a;
+    const near = try near_side_size(allocator, tree, lo, hi);
+    const far = tree.clusters - near;
+    // invariant: an edge cut of a tree yields exactly two non-empty complementary pieces.
+    assert(near >= 1);
+    assert(far >= 1);
+    assert(near + far == tree.clusters);
+    return EdgeSplit{ .near = near, .far = far };
+}
+
+/// The LARGER of the two pieces a bridge cut leaves -- the max-side of the split, the number a surface reads to know how lopsided cutting this seam
+/// would be. A low value marks an even seam, a high value a lopsided one. Refuses exactly as `edge_split`.
+pub fn edge_balance(allocator: std.mem.Allocator, tree: cluster_mst.MstTree, a: u32, b: u32) !u32 {
+    const split = try edge_split(allocator, tree, a, b);
+    const larger = if (split.near > split.far) split.near else split.far;
+    // invariant: the larger piece is at least half the tree -- a single cut can never balance below the larger half.
+    assert(larger * 2 >= tree.clusters);
+    // invariant: the larger piece never exceeds the tree minus the other endpoint's side.
+    assert(larger <= tree.clusters - 1);
+    return larger;
+}
+
+/// The EDGE SEPARATOR balance -- the smallest max-side over every bridge, the most even any single-edge cut can be. A star reads n-1 (every edge cuts
+/// off one leaf); a path near ceil(n/2) at its middle edge. Refuses `NoEdges` for a lone-cluster layout, which has no bridge to cut.
+pub fn edge_separator_balance(allocator: std.mem.Allocator, tree: cluster_mst.MstTree) !u32 {
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges.
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+    if (tree.edges.len == 0) return error.NoEdges;
+
+    var best: u32 = std.math.maxInt(u32);
+    var i: u32 = 0;
+    while (i < tree.edges.len) : (i += 1) {
+        const edge = tree.edges[i];
+        const m = try edge_balance(allocator, tree, edge.a, edge.b);
+        if (m < best) best = m;
+    }
+    // invariant: some bridge set the minimum, so the separator is a real max-side, not the sentinel.
+    assert(best != std.math.maxInt(u32));
+    // invariant: the most even single cut still leaves a larger piece of at least half the tree.
+    assert(best * 2 >= tree.clusters);
+    return best;
+}
+
+/// The MOST BALANCED bridge -- the edge whose cut leaves the smallest larger-piece, the seam a surface picks to split a group most evenly with a
+/// single cut. Ties break to the lowest `(a, b)` in the edge order Prim recorded, for determinism. Refuses `NoEdges` for a lone-cluster layout.
+pub fn most_balanced_edge(allocator: std.mem.Allocator, tree: cluster_mst.MstTree) !cluster_mst.MstEdge {
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges.
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+    if (tree.edges.len == 0) return error.NoEdges;
+
+    var best_val: u32 = std.math.maxInt(u32);
+    var best_lo: u32 = 0;
+    var best_hi: u32 = 0;
+    var best_w: u32 = 0;
+    var i: u32 = 0;
+    while (i < tree.edges.len) : (i += 1) {
+        const edge = tree.edges[i];
+        const m = try edge_balance(allocator, tree, edge.a, edge.b);
+        // strictly-less keeps the first bridge reaching the minimum -- the lowest (a, b) since Prim records edges low id first.
+        const lower = (edge.a < best_lo) or (edge.a == best_lo and edge.b < best_hi);
+        if (m < best_val or (m == best_val and lower)) {
+            best_val = m;
+            best_lo = edge.a;
+            best_hi = edge.b;
+            best_w = edge.weight;
+        }
+    }
+    // invariant: a real bridge was chosen, low id first.
+    assert(best_lo >= 1);
+    assert(best_lo < best_hi);
+    return cluster_mst.MstEdge{ .a = best_lo, .b = best_hi, .weight = best_w };
+}
+
+/// TRUE when cutting the bridge `(a, b)` splits the tree as evenly as any single edge can -- its max-side equals the edge separator. A tree may hold
+/// one or two such seams; every one reads TRUE. Refuses exactly as `edge_split`, and `NoEdges` is impossible here since a named bridge implies an edge.
+pub fn is_balanced_edge(allocator: std.mem.Allocator, tree: cluster_mst.MstTree, a: u32, b: u32) !bool {
+    const larger = try edge_balance(allocator, tree, a, b); // validates the bridge and refuses a non-edge
+    const separator = try edge_separator_balance(allocator, tree);
+    return larger == separator;
+}
+
+// --- selftest: an EDGE cut yields exactly two pieces where a VERTEX removal yields the vertex's degree. Scene ONE is a SPROUT -- a main path
+//     1-2-3-4 with a fifth cluster off the interior joint 2; cutting edge 2-3 gives two pieces {1,2,5} and {3,4} where pulling VERTEX 2 gives
+//     three, and the edge separator (3, ceil(5/2)) sits above the centroid vertex balance (2). Scene TWO is the three-cluster STAR (every edge
+//     cuts a singleton, separator n-1, the widest gap from the centroid). Scene THREE is a SINGLE EDGE (edge cut and vertex removal meet at 1).
+//     Then a lone cluster (NoEdges), refusals, determinism -------------------------------------------------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a corner bracket-L: a vertical arm down column `x` from `y0` to `y1`, and a horizontal arm along row `yr` from `x0` to `x1`.
+fn set_corner_l(img: *qoi.Pixmap, x: u32, y0: u32, y1: u32, yr: u32, x0: u32, x1: u32) void {
+    // invariant: the arms run in the positive direction and stay inside the buffer.
+    assert(y1 >= y0);
+    assert(x1 >= x0);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) set_dot(img, x, yy);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) set_dot(img, xx, yr);
+}
+
+/// Paint a 1-pixel-thick RING (a rectangle outline) with corners `(x0, y0)` and `(x1, y1)` -- a holed object, its interior background.
+fn set_ring(img: *qoi.Pixmap, x0: u32, y0: u32, x1: u32, y1: u32) void {
+    // invariant: the ring spans at least a 3x3 box so it encloses a real interior hole, and stays inside the buffer.
+    assert(x1 >= x0 + 2);
+    assert(y1 >= y0 + 2);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) {
+        set_dot(img, xx, y0);
+        set_dot(img, xx, y1);
+    }
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) {
+        set_dot(img, x0, yy);
+        set_dot(img, x1, yy);
+    }
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// Build the cluster tree of a scene, checking the object and cluster counts along the way -- a local helper so every scene reads the same.
+fn tree_of(garden: std.mem.Allocator, img: *qoi.Pixmap, want_objects: u32, want_clusters: u32) !cluster_mst.MstTree {
+    // invariant: the caller names how many objects and clusters the scene must hold, so a mislaid pixel fails loud.
+    assert(want_objects >= 1);
+    assert(want_clusters >= 1);
+    const map = try label.label_components(garden, img);
+    if (map.count != want_objects) return error.SceneObjectCountWrong;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    if (overlap_clusters.cluster_count(clustering) != want_clusters) return error.SceneClusterCountWrong;
+    const cg = try cluster_graph.build_cluster_graph(garden, clustering, graph);
+    return cluster_mst.build_mst(garden, cg);
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- SCENE ONE: THE SPROUT on a 20x14 canvas -- the same geometry image/cluster_mst_leaves.rye proves: five singleton 2x2 blocks, four on the
+    //     main row (y 5-6) and a fifth just below the second, so Prim builds the tree 1-2, 2-3, 3-4, 2-5 -- a main path with a leaf off joint 2 ---
+    var sprout = try make_canvas(garden, 20, 14, 0);
+    set_block(&sprout, 1, 5, 2, 2); // c1 -> box cols 1-2   (main-row left end)
+    set_block(&sprout, 5, 5, 2, 2); // c2 -> box cols 5-6   (the interior joint)
+    set_block(&sprout, 9, 5, 2, 2); // c3 -> box cols 9-10
+    set_block(&sprout, 13, 5, 2, 2); // c4 -> box cols 13-14 (main-row right end)
+    set_block(&sprout, 5, 8, 2, 2); // c5 -> box rows 8-9   (the sprout, gap 2 below c2)
+    const stt = try tree_of(garden, &sprout, 5, 5);
+
+    // --- CONFIRM THE SPROUT SKELETON -- the main path plus the sprout edge, n-1 = 4 edges -----------------------------------------------------
+    if (cluster_mst.edge_count(stt) != 4) return error.SproutEdgeCountNotFour;
+    if (try cluster_mst.is_bridge(stt, 2, 3) != true) return error.SproutMissingTwoThree;
+    if (try cluster_mst.is_bridge(stt, 2, 5) != true) return error.SproutMissingSprout;
+
+    // --- EVERY EDGE CUT YIELDS EXACTLY TWO COMPLEMENTARY PIECES -- cutting the interior edge 2-3 splits into {1,2,5} (near 3) and {3,4} (far 2),
+    //     two pieces summing to five ---------------------------------------------------------------------------------------------------------
+    const cut23 = try edge_split(garden, stt, 2, 3);
+    if (cut23.near != 3) return error.SproutCutTwoThreeNearNotThree; // {1,2,5}: the sprout rides with cluster 2
+    if (cut23.far != 2) return error.SproutCutTwoThreeFarNotTwo; // {3,4}
+    if (cut23.near + cut23.far != 5) return error.SproutCutTwoThreeNotWhole;
+    if (try edge_balance(garden, stt, 2, 3) != 3) return error.SproutTwoThreeBalanceNotThree;
+
+    // --- YET PULLING THE VERTEX 2 (degree 3) DROPS THE TREE INTO THREE PIECES -- so the vertex read leaves a largest piece of only 2, below the
+    //     edge cut's 3, cross-checked against image/cluster_tree_centroid.rye and never re-derived -----------------------------------------------
+    if (try cluster_tree_centroid.centroid_max_subtree(garden, stt, 2) != 2) return error.SproutVertexTwoNotTwo;
+    // the edge through the same joint is blunter than pulling the joint itself: 3 (two pieces) vs 2 (three pieces)
+    if (try edge_balance(garden, stt, 2, 3) <= try cluster_tree_centroid.centroid_max_subtree(garden, stt, 2)) return error.SproutEdgeNotBlunterThanVertex;
+
+    // --- A LEAF EDGE CUTS OFF A SINGLETON ON ITS TIP SIDE -- cutting 2-5 splits {5} (size 1) from the rest (size 4), agreeing with cluster 5 being
+    //     a tip in image/cluster_mst_leaves.rye ----------------------------------------------------------------------------------------------
+    const cut25 = try edge_split(garden, stt, 2, 5);
+    if (cut25.far != 1) return error.SproutLeafEdgeFarNotOne; // {5} alone on the high-id side
+    if (cut25.near != 4) return error.SproutLeafEdgeNearNotFour; // {1,2,3,4}
+    if (try cluster_mst_leaves.is_leaf(stt, 5) != true) return error.SproutFiveNotLeaf; // the singleton side is exactly the tip
+
+    // --- THE EDGE SEPARATOR AND THE CENTROID VERTEX ARE DIFFERENT BALANCE POINTS -- the most even single edge is 2-3 leaving a larger piece of 3,
+    //     exactly ceil(5/2), while the centroid vertex 2 leaves only 2 (a vertex may split into three pieces where an edge splits into two) -------
+    if (try edge_separator_balance(garden, stt) != 3) return error.SproutSeparatorNotThree;
+    const sep_edge = try most_balanced_edge(garden, stt);
+    if (sep_edge.a != 2 or sep_edge.b != 3) return error.SproutSeparatorEdgeNotTwoThree;
+    if (try is_balanced_edge(garden, stt, 2, 3) != true) return error.SproutTwoThreeNotBalanced;
+    if (try is_balanced_edge(garden, stt, 1, 2) != false) return error.SproutOneTwoIsBalanced; // cutting 1-2 leaves {2,3,4,5}, a lopsided 4
+    // the edge separator strictly exceeds the centroid vertex balance -- the two balance points diverge
+    if (try edge_separator_balance(garden, stt) <= try cluster_tree_centroid.centroid_balance(garden, stt)) return error.SproutSeparatorNotAboveCentroid;
+
+    // --- SCENE TWO: THE THREE-CLUSTER STAR -- corner-L A and ring B into cluster 1 (the hub), lone block C cluster 2, far block D cluster 3; the
+    //     MST is a star on the hub. Every edge cuts off one leaf, so the edge separator is n-1 = 2 -- the worst any tree offers -- while the
+    //     centroid hub leaves singletons, a balance of 1. The widest gap between the edge cut and the vertex removal --------------------------
+    var star = try make_canvas(garden, 15, 15, 0);
+    set_corner_l(&star, 1, 1, 6, 1, 1, 6); // A: box (1,1)-(6,6)
+    set_block(&star, 8, 1, 2, 2); // C: box (8,1)-(9,2) -> cluster 2
+    set_ring(&star, 4, 4, 9, 9); // B: ring box (4,4)-(9,9), overlaps A's corner -> cluster 1 (the hub)
+    set_block(&star, 12, 12, 2, 2); // D: box (12,12)-(13,13) -> cluster 3
+    const sctt = try tree_of(garden, &star, 4, 3);
+    if (cluster_mst.edge_count(sctt) != 2) return error.StarEdgeCountNotTwo;
+    // every edge of a star cuts off a single leaf -- larger piece n-1 = 2 on both edges
+    if (try edge_balance(garden, sctt, 1, 2) != 2) return error.StarEdgeOneTwoNotTwo;
+    if (try edge_balance(garden, sctt, 1, 3) != 2) return error.StarEdgeOneThreeNotTwo;
+    if (try edge_separator_balance(garden, sctt) != 2) return error.StarSeparatorNotTwo; // n-1, the worst
+    // the centroid hub leaves two singletons -- balance 1, strictly below the edge separator of 2
+    if (try cluster_tree_centroid.centroid_balance(garden, sctt) != 1) return error.StarCentroidBalanceNotOne;
+    if (try edge_separator_balance(garden, sctt) <= try cluster_tree_centroid.centroid_balance(garden, sctt)) return error.StarSeparatorNotAboveCentroid;
+
+    // --- SCENE THREE: A SINGLE EDGE -- two blocks, MST one bridge 1-2. The edge cut leaves 1 and 1, and pulling either endpoint leaves the other
+    //     alone -- edge cut and vertex removal MEET at 1, the only shape where they agree --------------------------------------------------------
+    var pair = try make_canvas(garden, 8, 4, 0);
+    set_block(&pair, 1, 1, 2, 2); // c1
+    set_block(&pair, 5, 1, 2, 2); // c2 (gap 3)
+    const pt = try tree_of(garden, &pair, 2, 2);
+    const cut12 = try edge_split(garden, pt, 1, 2);
+    if (cut12.near != 1 or cut12.far != 1) return error.PairCutNotOneOne;
+    if (try edge_separator_balance(garden, pt) != 1) return error.PairSeparatorNotOne;
+    if (try cluster_tree_centroid.centroid_balance(garden, pt) != 1) return error.PairCentroidNotOne; // edge and vertex meet at 1
+    if (try edge_separator_balance(garden, pt) != try cluster_tree_centroid.centroid_balance(garden, pt)) return error.PairEdgeVertexNotEqual;
+
+    // --- A LONE-CLUSTER LAYOUT HAS NO BRIDGE TO CUT -- the separator reads refuse NoEdges ---------------------------------------------------------
+    var lone_img = try make_canvas(garden, 6, 6, 0);
+    set_block(&lone_img, 1, 1, 2, 2); // one object, one cluster
+    const lone_tree = try tree_of(garden, &lone_img, 1, 1);
+    if (edge_separator_balance(garden, lone_tree)) |_| return error.LoneSeparatorNotRefused else |err| {
+        if (err != error.NoEdges) return error.WrongLoneSeparatorError;
+    }
+    if (most_balanced_edge(garden, lone_tree)) |_| return error.LoneEdgeNotRefused else |err| {
+        if (err != error.NoEdges) return error.WrongLoneEdgeError;
+    }
+
+    // --- REFUSALS -- a non-bridge pair refuses NotABridge, a zero or past-the-count id refuses BadClusterId, a self pair refuses SameCluster ------
+    if (edge_split(garden, stt, 1, 3)) |_| return error.NonBridgeNotRefused else |err| { // 1 and 3 are real clusters, yet not an edge
+        if (err != error.NotABridge) return error.WrongNonBridgeError;
+    }
+    if (edge_split(garden, stt, 0, 2)) |_| return error.ZeroSplitNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongZeroSplitError;
+    }
+    if (edge_split(garden, stt, 2, 6)) |_| return error.PastSplitNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongPastSplitError;
+    }
+    if (edge_split(garden, stt, 2, 2)) |_| return error.SelfSplitNotRefused else |err| {
+        if (err != error.SameCluster) return error.WrongSelfSplitError;
+    }
+
+    // --- DETERMINISM -- the same tree reads the same split and separator twice -----------------------------------------------------------------
+    const again = try edge_split(garden, stt, 2, 3);
+    if (again.near != cut23.near or again.far != cut23.far) return error.SplitNotDeterministic;
+    if (try edge_separator_balance(garden, stt) != try edge_separator_balance(garden, stt)) return error.SeparatorNotDeterministic;
+
+    print("GREEN image-cluster-mst-subtrees: the BRANCHES of the skeleton -- the subtree split of each bridge EDGE, with edge_split reading the two component sizes when a bridge is cut (near the low-id side, far the high-id side, summing to the cluster count), edge_balance the larger of the two, edge_separator_balance the smallest such larger-piece over every bridge, most_balanced_edge the bridge that achieves it, is_balanced_edge the test, exact integers, NO float and NO tolerance -- the DECISIVE crux, an EDGE cut and a VERTEX removal are two different splits of the same tree and the edge cut is the blunter of the two. EVERY EDGE CUT YIELDS EXACTLY TWO COMPLEMENTARY PIECES, WHERE A VERTEX REMOVAL YIELDS AS MANY AS THE VERTEX'S DEGREE -- over a SPROUT (a main path 1-2-3-4 with a fifth cluster off the interior joint 2, MST edges 1-2, 2-3, 3-4, 2-5) cutting edge 2-3 splits the tree into {{1,2,5}} (near 3) and {{3,4}} (far 2), two pieces summing to 5, yet pulling the VERTEX 2 of degree 3 drops the tree into THREE pieces so cluster_tree_centroid's largest-piece read is only 2, the edge cut blunter than the vertex; and a LEAF EDGE cuts off a singleton on its tip side, cutting 2-5 splitting {{5}} (size 1) from {{1,2,3,4}} (size 4), agreeing with cluster_mst_leaves that cluster 5 is a tip. THE EDGE SEPARATOR AND THE CENTROID VERTEX ARE DIFFERENT BALANCE POINTS, AND THE EDGE CUT CAN NEVER BALANCE BELOW THE LARGER HALF -- on the sprout the most even single edge (2-3) leaves a larger piece of 3, exactly ceil(5/2), while the centroid vertex 2 leaves only 2; on a STAR the gap is widest, every edge cutting off one leaf so the edge separator is n-1 while the centroid hub leaves singletons a balance of 1; only over a SINGLE EDGE do the two meet, the cut leaving 1 and 1 and pulling either endpoint leaving the other alone, both reading 1. A lone-cluster layout has no bridge to cut so the separator reads refuse NoEdges; a non-bridge pair refuses NotABridge, a zero or past-the-count id refuses BadClusterId, a self pair refuses SameCluster; the same tree reads the same split twice. Compose not braid over image/cluster_minimum_spanning_tree.rye (build_mst, the edges, is_bridge), image/cluster_tree_centroid.rye (centroid_max_subtree and centroid_balance, cross-checked to prove the divergence and never re-derived), and image/cluster_mst_leaves.rye (is_leaf, cross-checked on the leaf-edge cut) -- a reading over a reading over a reading over a reading over a reading over a reading over a reading\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: cluster_mst_subtrees selftest\n", .{});
+    return 1;
+}
