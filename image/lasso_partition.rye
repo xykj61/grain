@@ -1,0 +1,414 @@
+//! image/lasso_partition.rye -- given a query POLYGON (a free-form LASSO), PARTITION the scene's objects into three disjoint classes:
+//! CONTAINED (every foreground pixel inside the loop), CLIPPED (some pixels inside, some outside -- the objects a lasso-crop would cut),
+//! and OUTSIDE (no pixel inside). This is the WINDOW-versus-CROSSING selection region_partition names for a rectangle, carried one shape
+//! freer to an arbitrary loop: a window select keeps only what the loop wholly holds, a crossing select keeps everything it touches, and
+//! the difference is exactly the CLIPPED set. Exact integers, NO float and NO tolerance -- the even-odd arbiter, run pixel by pixel.
+//!
+//! Season G (Open Media Primitives) -- image/region_partition.rye splits a RECTANGLE's crossing set by CONTAINMENT; this rung is its
+//! free-form companion, and the free-select companion of image/lasso_select.rye. `contained_in_poly` names the objects the lasso holds
+//! WHOLE, `clipped_in_poly` the objects it holds only in PART, and `partition_counts` reads all three class sizes at once. It composes
+//! over lasso_select for the crossing set and the point-in-polygon arbiter, and over scene_manifest for the per-object rows.
+//!
+//! The DECISIVE crux -- the EXACT INVERSION of region_partition's own lesson, which was itself the inversion of region_select's. For a
+//! RECTANGLE, region_partition proved the tight bounding box is the EXACT arbiter of containment: an object lies wholly inside the
+//! rectangle IF AND ONLY IF its box does, so `contained_in_rect` reads the containment set from the boxes ALONE, no pixel scan. For a
+//! CONCAVE LASSO that lesson BREAKS. A polygon's concavity can carve pixels out of the middle of a region whose whole bounding box --
+//! and even both bounding-box corners -- lie inside the loop, so box containment is NECESSARY yet NOT SUFFICIENT, and the pixel scan
+//! comes BACK as the only arbiter. Two facts on metal say it:
+//!
+//!   THE CONCAVITY DEFEATS THE BOX -- a notched square (a rectilinear "C" opening upward, a vertical slot cut down from the top edge) is
+//!   drawn so a horizontal bar's two ends fall in the solid arms while its middle falls in the slot. The bar's entire bounding box lies
+//!   wholly inside the polygon's bounding box, AND both of the bar's bounding-box corners lie inside the loop, so a box-approximation --
+//!   the exact arbiter for a rectangle -- would call the bar CONTAINED. Yet a full pixel scan finds the middle pixels in the slot,
+//!   OUTSIDE the loop, so the bar is CLIPPED. Where region_partition's box test never over- or under-counts, the polygon box test
+//!   OVER-counts containment by exactly the concavity, and only `all_pixels_in_poly`, the even-odd arbiter run over every foreground
+//!   pixel, decides the truth.
+//!
+//!   TWO INDEPENDENT SCANS AGREE -- `contained_in_poly` builds the containment set in ONE pass over the map (a per-label "any pixel
+//!   outside" tally), and for every object it agrees with `all_pixels_in_poly`, a plain per-label full re-scan. The efficient one-pass
+//!   read and the obvious ground-truth read name the same set, so the containment is proven, not merely computed. CONTAINED is a subset
+//!   of CROSSING (a wholly-inside object holds at least one inside pixel), so CLIPPED = CROSSING \ CONTAINED is exactly the crop-cut set,
+//!   and CONTAINED + CLIPPED + OUTSIDE always sums to the component count.
+//!
+//! Compose not braid. This rung OWNS only the containment split of a polygon query. image/lasso_select.rye owns the crossing decision
+//! (`select_in_poly`), the point-in-polygon even-odd arbiter (`point_in_poly`), and the `LassoPoly` type; image/scene_manifest.rye owns
+//! the per-object rows (`ObjectEntry`, `Manifest`, `object_of`); image/label.rye owns the component map and its `at` arbiter;
+//! image/contour.rye owns the `Point` vertex. No plane of its own, no pixel written -- a reading over a reading.
+//!
+//! Everything is bounded before a byte: the containment scan reads the map once, at most `width * height` pixels under qoi's ceiling,
+//! each pixel testing at most `max_poly_vertices` edges; the clip scan runs over the crossing set, no longer than the component count;
+//! every result slice is sized to the component count. A polygon with fewer than three vertices refuses `DegeneratePoly`, having read
+//! nothing; a lasso whose whole box lies off the map holds no object whole and crosses none -- a valid all-OUTSIDE partition, never a
+//! refusal. No network, no key, no funds -- the window-versus-crossing partition a surface names the day a keeper draws a loop and the
+//! mode key decides whole-or-touched, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/lasso_partition.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const contour = @import("contour.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const lasso_select = @import("lasso_select.rye");
+
+pub const lasso_partition_version = "20260819.043443";
+
+pub const LassoPartitionError = error{
+    DegeneratePoly,
+};
+
+/// The size of each partition class -- CONTAINED (whole), CLIPPED (partly in), OUTSIDE (none in). The three always sum to the scene's
+/// component count, since every object lands in exactly one class.
+pub const PartitionCounts = struct {
+    contained: u32 = 0,
+    clipped: u32 = 0,
+    outside: u32 = 0,
+
+    /// The total objects accounted for -- the invariant sum a caller can cross-check against the component count.
+    pub fn total(self: *const PartitionCounts) u32 {
+        return self.contained + self.clipped + self.outside;
+    }
+};
+
+/// TRUE when EVERY foreground pixel of object `want` lies inside the polygon by the even-odd arbiter -- the ground-truth definition of
+/// containment for a concave lasso, where no bounding-box shortcut holds. Scans the whole map; an object with no pixel is not a real
+/// object here (every dense label 1..count has at least one pixel), so a label truly present returns whether all its pixels are inside.
+pub fn all_pixels_in_poly(map: *const label.LabelMap, poly: *const lasso_select.LassoPoly, want: u32) bool {
+    // invariant: a real query names a foreground label, never background.
+    assert(want >= 1);
+    // invariant: the arbiter is asked only of a well-formed lasso -- a real closed area.
+    assert(poly.verts.len >= 3);
+    var any: bool = false;
+    var y: u32 = 0;
+    while (y < map.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x < map.width) : (x += 1) {
+            if (map.at(x, y) == want) {
+                any = true;
+                if (!lasso_select.point_in_poly(poly, x, y)) return false;
+            }
+        }
+    }
+    return any;
+}
+
+/// The ascending SET of object labels the lasso holds WHOLE -- every foreground pixel inside the loop. Unlike a rectangle, a concave
+/// polygon has NO box shortcut, so this reads the map ONCE, marking a label the moment any of its pixels falls OUTSIDE the loop; a label
+/// present yet never marked outside is contained. The manifest's dense raster order makes the collect pass ascending and duplicate-free.
+/// Refuses `DegeneratePoly` for a lasso with too few vertices, having read nothing. `map` is read-only; the caller owns the slice.
+pub fn contained_in_poly(allocator: std.mem.Allocator, manifest: scene_manifest.Manifest, map: *const label.LabelMap, poly: *const lasso_select.LassoPoly) ![]u32 {
+    // invariant: the manifest and the map are the same scene -- one row per component, the same component count.
+    assert(manifest.objects.len == @as(usize, manifest.components));
+    assert(manifest.components == map.count);
+    // invariant: a real label map carries one label per pixel across its whole extent.
+    assert(map.labels.len == @as(usize, map.width) * @as(usize, map.height));
+    if (!poly.is_well_formed()) return error.DegeneratePoly;
+
+    const count: u32 = map.count;
+    // invariant: the component count never exceeds image/label.rye's pixel ceiling, so the per-label tallies are bounded.
+    assert(count <= label.label_max_pixels);
+    // a "present" and an "any pixel outside the loop" flag per dense label (index 0 unused -- background is never contained).
+    const present = try allocator.alloc(bool, @as(usize, count) + 1);
+    const has_outside = try allocator.alloc(bool, @as(usize, count) + 1);
+    var p: usize = 0;
+    while (p < present.len) : (p += 1) {
+        present[p] = false;
+        has_outside[p] = false;
+    }
+
+    // ONE pass over the whole map: mark presence, and mark a label the instant one of its pixels sits outside the loop.
+    var y: u32 = 0;
+    while (y < map.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x < map.width) : (x += 1) {
+            const lbl = map.at(x, y);
+            // invariant: the map reports background or a dense, real label -- never a value past the component count.
+            assert(lbl <= count);
+            if (lbl != 0) {
+                present[@as(usize, lbl)] = true;
+                if (!lasso_select.point_in_poly(poly, x, y)) has_outside[@as(usize, lbl)] = true;
+            }
+        }
+    }
+
+    // collect the contained labels ascending -- present and never marked outside -- one pass over the dense range.
+    const scratch = try allocator.alloc(u32, @as(usize, count));
+    var found: u32 = 0;
+    var c: u32 = 1;
+    while (c <= count) : (c += 1) {
+        if (present[@as(usize, c)] and !has_outside[@as(usize, c)]) {
+            scratch[@as(usize, found)] = c;
+            found += 1;
+        }
+    }
+    // invariant: no more objects can be contained than the scene holds.
+    assert(found <= count);
+
+    const contained = try allocator.alloc(u32, @as(usize, found));
+    var k: usize = 0;
+    while (k < contained.len) : (k += 1) contained[k] = scratch[k];
+    // invariant: the result is strictly ascending -- the dense range walked in order, so a caller may binary-read it.
+    var v: usize = 1;
+    while (v < contained.len) : (v += 1) assert(contained[v] > contained[v - 1]);
+    return contained;
+}
+
+/// The ascending SET of object labels the lasso holds only in PART -- some foreground inside, some outside: the objects a lasso-crop
+/// would CUT, and exactly the set a crossing select keeps while a window select drops. Computed as CROSSING (lasso_select) minus
+/// CONTAINED, so it needs BOTH the arbiter (to know a pixel is inside) and the whole-object scan (to know the object is not whole).
+/// Refuses `DegeneratePoly` for a lasso with too few vertices, having read nothing. The caller owns the returned slice.
+pub fn clipped_in_poly(allocator: std.mem.Allocator, manifest: scene_manifest.Manifest, map: *const label.LabelMap, poly: *const lasso_select.LassoPoly) ![]u32 {
+    // invariant: the manifest and the map are the same scene -- one row per component, the same component count.
+    assert(manifest.objects.len == @as(usize, manifest.components));
+    assert(manifest.components == map.count);
+    if (!poly.is_well_formed()) return error.DegeneratePoly;
+
+    const crossing = try lasso_select.select_in_poly(allocator, manifest, map, poly);
+    const contained = try contained_in_poly(allocator, manifest, map, poly);
+    const scratch = try allocator.alloc(u32, crossing.len);
+    var found: u32 = 0;
+    var i: usize = 0;
+    while (i < crossing.len) : (i += 1) {
+        // a crossing object NOT wholly contained is clipped -- part of it fell in the concavity or past the loop.
+        if (!lasso_select.is_selected(contained, crossing[i])) {
+            scratch[@as(usize, found)] = crossing[i];
+            found += 1;
+        }
+    }
+    // invariant: the clipped set is a subset of the crossing set.
+    assert(found <= @as(u32, @intCast(crossing.len)));
+
+    const clipped = try allocator.alloc(u32, @as(usize, found));
+    var k: usize = 0;
+    while (k < clipped.len) : (k += 1) clipped[k] = scratch[k];
+    return clipped;
+}
+
+/// The three class SIZES at once -- CONTAINED, CLIPPED, OUTSIDE -- summing to the component count. Reads the crossing set once and the
+/// contained set once: CONTAINED is a subset of CROSSING (a wholly-inside object holds at least one inside pixel), so CLIPPED is their
+/// size difference and OUTSIDE is the components the lasso never crosses. Refuses `DegeneratePoly` for a lasso with too few vertices.
+pub fn partition_counts(allocator: std.mem.Allocator, manifest: scene_manifest.Manifest, map: *const label.LabelMap, poly: *const lasso_select.LassoPoly) !PartitionCounts {
+    // invariant: the manifest and the map are the same scene.
+    assert(manifest.objects.len == @as(usize, manifest.components));
+    assert(manifest.components == map.count);
+    if (!poly.is_well_formed()) return error.DegeneratePoly;
+
+    const crossing = try lasso_select.select_in_poly(allocator, manifest, map, poly);
+    const contained = try contained_in_poly(allocator, manifest, map, poly);
+    const crossing_n: u32 = @as(u32, @intCast(crossing.len));
+    const contained_n: u32 = @as(u32, @intCast(contained.len));
+    // invariant: every contained object crosses (it holds at least one inside pixel), so contained is a subset of crossing.
+    assert(contained_n <= crossing_n);
+    // invariant: no more objects cross the lasso than the scene holds.
+    assert(crossing_n <= manifest.components);
+
+    const counts = PartitionCounts{
+        .contained = contained_n,
+        .clipped = crossing_n - contained_n,
+        .outside = manifest.components - crossing_n,
+    };
+    // invariant: the three classes partition the scene -- every object lands in exactly one.
+    assert(counts.total() == manifest.components);
+    return counts;
+}
+
+/// TRUE when `want` appears in an ascending partition set -- a bounded membership read over the sorted result.
+pub fn is_in(set: []const u32, want: u32) bool {
+    // invariant: a real query names a foreground label, never background.
+    assert(want >= 1);
+    var i: usize = 0;
+    while (i < set.len) : (i += 1) {
+        if (set[i] == want) return true;
+    }
+    return false;
+}
+
+// --- selftest: the DECISIVE concavity-defeats-the-box crux (a notched square whose slot carves the middle of a bar whose whole box, and
+//     both box corners, lie inside the loop, so the box would call it CONTAINED yet a pixel scan finds it CLIPPED); the two independent
+//     containment scans agree for every object; a contained object exists; a convex whole-scene lasso contains all; an off-map lasso is
+//     all-outside; a degenerate polygon refuses DegeneratePoly; the three classes partition the scene; determinism -------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- THE PARTITION SCENE -- three objects on a 13x13 field, placed so raster order gives dense labels 1..3. R an OUTSIDE block at
+    //     x[5,6] y[2,3] (it sits in the slot, so no pixel enters the loop) [label 1]; Q a CLIPPED horizontal bar y=5, x[3,9] (its ends in
+    //     the solid arms, its middle in the slot) [label 2]; P a CONTAINED block at x[3,5] y[8,9] (below the slot's reach, all inside)
+    //     [label 3] ------------------------------------------------------------------------------------------------------------------
+    var scene = try make_canvas(garden, 13, 13, 0);
+    set_block(&scene, 5, 2, 2, 2); // R: outside block, box (5,2)-(6,3) -- lives in the slot
+    set_block(&scene, 3, 5, 7, 1); // Q: clipped bar, box (3,5)-(9,5) -- ends inside, middle in the slot
+    set_block(&scene, 3, 8, 3, 2); // P: contained block, box (3,8)-(5,9) -- below the slot
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 3) return error.SceneNotThreeComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    if (scene_manifest.object_count(manifest) != 3) return error.ManifestNotThreeObjects;
+
+    // confirm the dense labels landed where the raster order predicts: R=1, Q=2, P=3
+    const r_entry = try scene_manifest.object_of(manifest, 1);
+    const q_entry = try scene_manifest.object_of(manifest, 2);
+    const p_entry = try scene_manifest.object_of(manifest, 3);
+    if (r_entry.min_x != 5 or r_entry.max_x != 6 or r_entry.min_y != 2 or r_entry.max_y != 3) return error.RNotAtExpectedBox;
+    if (q_entry.min_x != 3 or q_entry.max_x != 9 or q_entry.min_y != 5 or q_entry.max_y != 5) return error.QNotAtExpectedBox;
+    if (p_entry.min_x != 3 or p_entry.max_x != 5 or p_entry.min_y != 8 or p_entry.max_y != 9) return error.PNotAtExpectedBox;
+
+    // --- THE NOTCHED SQUARE -- a rectilinear concave polygon: the square (1,1)-(11,11) with a vertical SLOT cut down from the top edge,
+    //     x in (5,7), y in (1,7). Its bounding box is the whole square [1,11] x [1,11]. Inside is the square MINUS the slot: a pixel with
+    //     center x in {5,6} AND center y in {1..6} falls in the slot, outside the loop; every other on-map pixel of the square is inside
+    const notch_verts = [_]contour.Point{
+        .{ .x = 1, .y = 1 },
+        .{ .x = 5, .y = 1 },
+        .{ .x = 5, .y = 7 },
+        .{ .x = 7, .y = 7 },
+        .{ .x = 7, .y = 1 },
+        .{ .x = 11, .y = 1 },
+        .{ .x = 11, .y = 11 },
+        .{ .x = 1, .y = 11 },
+    };
+    const notch = lasso_select.LassoPoly{ .verts = notch_verts[0..] };
+    if (!notch.is_well_formed()) return error.NotchNotWellFormed;
+
+    // the raw arbiter on Q's row y=5: the ends are inside (x=3,4 and x=7,8,9), the middle is in the slot (x=5,6 outside).
+    if (!lasso_select.point_in_poly(&notch, 3, 5)) return error.QLeftEndNotInside;
+    if (!lasso_select.point_in_poly(&notch, 9, 5)) return error.QRightEndNotInside;
+    if (lasso_select.point_in_poly(&notch, 5, 5)) return error.QSlotPixelFalselyInside;
+    if (lasso_select.point_in_poly(&notch, 6, 5)) return error.QSlotPixelFalselyInside2;
+
+    // --- THE CONCAVITY DEFEATS THE BOX -- the DECISIVE crux. Q's whole bounding box (3,5)-(9,5) lies inside the polygon's bounding box
+    //     (1,1)-(11,11), AND both of Q's box corners (3,5) and (9,5) lie inside the loop, so a box-approximation -- the EXACT arbiter for
+    //     a rectangle in region_partition -- would call Q CONTAINED. Yet the pixel scan finds Q's middle in the slot, so Q is CLIPPED.
+    //     Only the even-odd arbiter, run over every pixel, decides the truth for a concave lasso ----------------------------------------
+    const pbox = notch.bbox(); // the polygon's own bounding box, [min_x, min_y, max_x, max_y]
+    // Q's box lies wholly inside the polygon's box -- the rectangle test that region_partition proved exact says "contained"...
+    if (!(pbox[0] <= q_entry.min_x and q_entry.max_x <= pbox[2] and pbox[1] <= q_entry.min_y and q_entry.max_y <= pbox[3])) return error.QBoxNotInsidePolyBox;
+    // ...and both of Q's box corners lie inside the loop -- an even stronger box-approximation still says "contained"...
+    if (!lasso_select.point_in_poly(&notch, q_entry.min_x, q_entry.min_y)) return error.QCornerLoNotInside;
+    if (!lasso_select.point_in_poly(&notch, q_entry.max_x, q_entry.max_y)) return error.QCornerHiNotInside;
+    // ...yet the pixel scan says CLIPPED, never CONTAINED -- the concavity the box could never see.
+    const contained_n = try contained_in_poly(garden, manifest, &map, &notch);
+    if (is_in(contained_n, 2)) return error.NotchFalselyContainsQ;
+    const clipped_n = try clipped_in_poly(garden, manifest, &map, &notch);
+    if (!is_in(clipped_n, 2)) return error.NotchDoesNotClipQ;
+
+    // --- A CONTAINED OBJECT EXISTS -- P (label 3), wholly below the slot's reach, is held whole; R (label 1), wholly in the slot, is
+    //     outside. So the notched square CONTAINS {P}, CLIPS {Q}, leaves {R} OUTSIDE -- one object in each class ---------------------
+    if (contained_n.len != 1 or contained_n[0] != 3) return error.NotchContainedNotPOnly;
+    if (clipped_n.len != 1 or clipped_n[0] != 2) return error.NotchClippedNotQOnly;
+    const counts_notch = try partition_counts(garden, manifest, &map, &notch);
+    if (counts_notch.contained != 1 or counts_notch.clipped != 1 or counts_notch.outside != 1) return error.CountsNotchNotOneOneOne;
+    if (counts_notch.total() != 3) return error.CountsNotchNotSumThree;
+
+    // --- TWO INDEPENDENT SCANS AGREE -- the DECISIVE cross-check: contained_in_poly (one pass, "any pixel outside" tally) names the same
+    //     containment as all_pixels_in_poly (a plain per-label full re-scan), for EVERY object. The efficient read and the obvious
+    //     ground-truth read agree, so the containment is proven, not merely computed ------------------------------------------------
+    var lbl: u32 = 1;
+    while (lbl <= manifest.components) : (lbl += 1) {
+        const by_set = is_in(contained_n, lbl);
+        const by_scan = all_pixels_in_poly(&map, &notch, lbl);
+        if (by_set != by_scan) return error.OnePassDisagreesWithGroundTruth;
+    }
+
+    // --- A CONVEX WHOLE-SCENE LASSO CONTAINS ALL -- a big quad over the entire canvas has no concavity, so it holds every object whole:
+    //     all three CONTAINED, none clipped, none outside -- window and crossing agree when the loop holds everything ----------------
+    const whole_verts = [_]contour.Point{
+        .{ .x = 0, .y = 0 },
+        .{ .x = 12, .y = 0 },
+        .{ .x = 12, .y = 12 },
+        .{ .x = 0, .y = 12 },
+    };
+    const whole = lasso_select.LassoPoly{ .verts = whole_verts[0..] };
+    const contained_w = try contained_in_poly(garden, manifest, &map, &whole);
+    if (contained_w.len != 3) return error.WholeContainedNotThree;
+    const counts_w = try partition_counts(garden, manifest, &map, &whole);
+    if (counts_w.contained != 3 or counts_w.clipped != 0 or counts_w.outside != 0) return error.CountsWholeNotThreeZeroZero;
+
+    // --- A LASSO OFF THE MAP -- a triangle drawn wholly past the canvas holds no object whole and crosses none: a valid all-OUTSIDE
+    //     partition, never a refusal ---------------------------------------------------------------------------------------------
+    const off_verts = [_]contour.Point{
+        .{ .x = 20, .y = 20 },
+        .{ .x = 25, .y = 20 },
+        .{ .x = 22, .y = 25 },
+    };
+    const off = lasso_select.LassoPoly{ .verts = off_verts[0..] };
+    const counts_off = try partition_counts(garden, manifest, &map, &off);
+    if (counts_off.contained != 0 or counts_off.clipped != 0 or counts_off.outside != 3) return error.CountsOffNotAllOutside;
+
+    // --- A DEGENERATE POLYGON -- two vertices enclose no area: every read refuses DegeneratePoly, having touched nothing -----------
+    const line_verts = [_]contour.Point{
+        .{ .x = 1, .y = 1 },
+        .{ .x = 5, .y = 5 },
+    };
+    const line = lasso_select.LassoPoly{ .verts = line_verts[0..] };
+    if (line.is_well_formed()) return error.DegenerateClaimedWellFormed;
+    if (contained_in_poly(garden, manifest, &map, &line)) |_| return error.DegenerateContainedNotRefused else |err| {
+        if (err != error.DegeneratePoly) return error.WrongDegenerateContainedError;
+    }
+    if (clipped_in_poly(garden, manifest, &map, &line)) |_| return error.DegenerateClippedNotRefused else |err| {
+        if (err != error.DegeneratePoly) return error.WrongDegenerateClippedError;
+    }
+    if (partition_counts(garden, manifest, &map, &line)) |_| return error.DegenerateCountsNotRefused else |err| {
+        if (err != error.DegeneratePoly) return error.WrongDegenerateCountsError;
+    }
+
+    // --- DETERMINISM -- the same lasso reads the same partition twice ------------------------------------------------------------
+    const c1 = try partition_counts(garden, manifest, &map, &notch);
+    const c2 = try partition_counts(garden, manifest, &map, &notch);
+    if (c1.contained != c2.contained or c1.clipped != c2.clipped or c1.outside != c2.outside) return error.PartitionNotDeterministic;
+
+    print("GREEN image-lasso-partition: given a query POLYGON (a free-form LASSO), PARTITION the scene's objects into CONTAINED (whole), CLIPPED (partly in -- the crop cut), and OUTSIDE (none in), exact integers, NO float and NO tolerance -- the window-versus-crossing selection one shape freer than region_partition's rectangle, the DECISIVE EXACT INVERSION of region_partition's own lesson: region_partition proved the tight bounding box is the EXACT arbiter of RECTANGLE containment (an object lies wholly inside if and only if its box does, no pixel scan), yet for a CONCAVE LASSO that lesson BREAKS -- box containment is necessary but NOT sufficient, and the pixel scan comes back as the only arbiter. THE CONCAVITY DEFEATS THE BOX: a notched square (the square (1,1)-(11,11) with a vertical slot cut down from the top, x in (5,7) y in (1,7)) holds a horizontal bar Q box (3,5)-(9,5) whose WHOLE box lies inside the polygon's box (1,1)-(11,11) AND whose BOTH box corners (3,5) and (9,5) lie inside the loop, so a box-approximation (the exact arbiter for a rectangle) would call Q CONTAINED, yet a full pixel scan finds Q's middle pixels x=5,6 in the slot OUTSIDE the loop, so Q is CLIPPED -- only the even-odd arbiter run over every pixel decides the truth. TWO INDEPENDENT SCANS AGREE: contained_in_poly (one pass, an any-pixel-outside tally) names the same containment as all_pixels_in_poly (a plain per-label full re-scan) for every object, so the containment is proven not merely computed. Over the notched square the partition CONTAINS {{P}}, CLIPS {{Q}}, leaves {{R}} OUTSIDE, one object in each class; a convex whole-scene lasso contains all three none clipped; an off-map lasso is a valid all-OUTSIDE partition; CONTAINED + CLIPPED + OUTSIDE always sums to the component count; a two-vertex degenerate polygon refuses DegeneratePoly having read nothing; the same lasso reads the same partition twice. Compose not braid over image/lasso_select.rye (the crossing decision, the point-in-polygon arbiter, and the LassoPoly) and image/scene_manifest.rye (the per-object rows)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: lasso_partition selftest\n", .{});
+    return 1;
+}
