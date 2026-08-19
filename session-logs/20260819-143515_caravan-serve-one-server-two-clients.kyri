@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20260819.143515
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Caravan serve -- one virtualiser serves two clients, and neither hears the other's bell
+prompt Autonomous loop -- read Kyri and Radiant Style, then REMEMBER, the itineraries, and the newest log recommends; close open agent-closable reds first, then take the next agent-doable lap Lindy-first crux-first; send each finished increment as its own signed round.
+think Read context/KYRI.md and context/RADIANT_STYLE.md first, so the voice shaped the lap from the first token; then crux/REMEMBER.md, the double-seat itinerary's Microkernel Target section, and the top rows of session-logs/README.md.
+think Standfast first -- crux/REDS.md read whole. Every living row is closed and released (80, 83, 84, 85 including the 20260819.134229 reopen-and-close), and both prevention looms run GREEN on metal this lap: witness_claim_check_witness and living_card_ascii_witness. No open agent-closable red stands, so constructive work may begin.
+think The running thread is unambiguous. The 20260819.143111 recommend named the next crux by name -- the third party: one virtualiser serving two clients in one run, each answered on its own channel with neither able to hear the other's bell, where the shape stops being a pair and becomes a system.
+think Council rota deep-read this lap: foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md. Its teaching lands squarely here -- two small answers at every seam, the multiplication of wholes collapsed into an addition of parts. The serve ring is exactly that: the seam between one server and two clients checked by the refusals on both sides rather than by one large integrated run.
+think Named the module serve.rye under the Comlink tendency -- the clearest warm word for what it does, no forced coinage.
+think Wrote caravan/systems/serial_two_clients.bron first, since the declaration is where isolation belongs. Both clients get the duplex shape (rx_X the virtualiser writes and the client reads, tx_X the client writes and the virtualiser reads); no channel joins the clients and neither holds a grant on the other's memory, so isolation is what the document SAYS rather than a habit the code keeps. It read whole on the first pass -- domains 3, channels 2, regions 4, grants 8.
+think Reused roundtrip's directed bells and four-field plan wire rather than re-growing them, since the per-pair direction is exactly the property the third party tests. What serve adds of its own is the addressed message: every ask reads `serve: ask for <client>` and every answer `serve: answer from <client>`, each derived from what the child already knows -- the requester from the peer it serves, the replier from its own domain label.
+think Ordered the nine-step plan so the crux is step two. The virtualiser rings client_b and nobody else; client_a then collects and answers Unheard. Steps six through nine serve client_a in the same run and collect from client_b a second time, proving the newer conversation left the older one standing.
+obs GREEN on the first metal pass, walls and trip together. Then both RED paths proven before the green was trusted, each on a temporary probe copy that was removed after: naming a bell by its sender alone let client_a hear the ring meant for client_b and walk on into the regions, reporting `bytes differed` where `Unheard` belonged -- one server broadcasting to every client it serves, which is precisely what a per-pair direction prevents. Addressing every ask to a fixed client made client_a read its neighbor's question and decline to answer it.
+obs The addressed message is a second wall on the same seam, and it is the one that survives a bell going wrong. A ring can only say something happened; the bytes say for whom. Two small answers at the seam, exactly as the rota doc asks.
+obs Isolation between clients now stops being an absence of traffic and becomes a refusal a witness watches happen -- the difference between a server that has no second client to leak to and one that would refuse if it did.
+obs The witness measures from outside the program too: four directed bells each rung exactly once, and each client's answer standing in its own region signed by the client that wrote it.
+obs One correction taken in-lap: the region stores are `.bin`, never `.store` -- the first witness draft guessed the extension and its own assert caught it before any claim was made. Measurement beats memory, at the smallest possible scale.
+loom witness=caravan_serve_witness result=green steps=9 walls=3 bells=4 rings_each=1 regions=4 declared_bytes=16384
+file caravan/systems/serial_two_clients.bron the declaration where isolation lives -- both clients duplex, no channel or grant joining them
+file caravan/serve.rye the serve ring -- addressed messages, per-client walls, and the nine-step served run
+file tools/caravan_serve_witness.rish the witness -- the crux Unheard, the three walls, four bells measured from outside, each answer signed by its own client
+file caravan/README.md the module row and the "Why One Server Serves Two Clients" section, synced in the same commit
+file crux/REMEMBER.md live edge condensed to twelve rings and refilled with the next crux; git nib pinned
+recommend keep-going -- the arc is a system now rather than a pair. Next crux: either the unprompted ask (a client ringing a server that has not spoken first, which inverts who starts the conversation) or restart-under-load, where a served child falls mid-conversation and the supervisor's three exit meanings meet a standing channel. No key, no funds, no gate.
