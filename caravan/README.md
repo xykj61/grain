@@ -1,7 +1,7 @@
 # Caravan -- Process Supervision
 
 **Language:** EN
-**Last updated:** `20260819.152347` (the unprompted ring lands -- a client rings a server that never spoke first, and the bytes say what the bell could not)
+**Last updated:** `20260819.153717` (the queue ring lands -- a bell says look, and the two indices say how much)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable -- process supervision ladder
 
@@ -37,6 +37,7 @@ Every ring here composes over the one before it. A later ring imports an earlier
 | restart | [`restart.rye`](restart.rye) | a served dependent falls mid-conversation and the supervisor carries it home -- eight named outcomes read as answers, one reserved code as a deliberate stop, every other code as a fall, the declared bell and the declared bytes standing through the fall, and a dependent that always falls declined by name after a bounded three restarts |
 | rederive | [`rederive.rye`](rederive.rye) | a restarted dependent's rights come from the document, never from the parent's memory -- every attempt reloads the declaration and derives its own line, a remembered line kept as a claim to check, and a disagreement met by a named policy: refuse, heal, or report |
 | unprompted | [`unprompted.rye`](unprompted.rye) | a client rings a server that has not spoken first -- one attending verb carrying both directions, an ask told from an answer by the bytes rather than by the bell, and a forged ask refused at the wall the declaration already stands |
+| queue | [`queue.rye`](queue.rye) | more than one ask stands on one channel at once -- a head the producer owns and a tail the consumer owns, a drain bounded by the queue rather than by the bell, a ring with nothing behind it draining zero by name, and a full queue refusing rather than overwriting an unread ask |
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
@@ -176,6 +177,20 @@ What makes an unprompted ask trustworthy is the wall the declaration already sta
 Witness: [`tools/caravan_unprompted_witness.rish`](../tools/caravan_unprompted_witness.rish), GREEN on metal, both RED paths proven before the green was trusted. Making `attend` look only for an answer -- classifying by expectation rather than by what stands -- turned the unprompted ask into `bytes differed` and stopped the client-first conversation dead. Dropping the heard-count check let the server attend a peer that had never rung, which is the `Unheard` wall stated in reverse.
 
 One seam is named rather than assumed: this ring's `answer seen` report lives beside the shared outcome vocabulary in `carry.rye` rather than inside it, since `restart.rye` proves a partition over exactly the codes that vocabulary names today. A supervisor that ever runs both rings widens that partition deliberately.
+
+## Why the Queue Says How Much, and the Bell Only Says Look
+
+Every ring through `unprompted.rye` carried exactly one message at a time. A producer wrote at offset zero of a region and rang, so a second message written before the first was read would have quietly replaced it -- correct precisely while no more than one ask is ever outstanding, which is a schedule, and this arc has been retiring schedules one ring at a time.
+
+`queue.rye` names the reason a bell cannot carry the rest. A doorbell coalesces: rings arriving before the receiver runs are indistinguishable from one, and a producer batching many asks behind a single ring is doing the efficient thing rather than a wrong one. So the ring count never answers *how many asks are waiting*. **A ring says something happened; how much happened is a fact of the queue.** Two indices in shared memory answer it -- a head counting asks ever written, a tail counting asks ever drained -- and a drain reads until the two agree rather than once per ring.
+
+Ownership places those indices, which is the quiet finding of the ring. A producer's head must live in memory the producer writes; a consumer's tail must live in memory the consumer writes. The declaration already grants exactly that pair of regions per channel, so a queue spans both and needs no new wiring at all -- and neither side can move the other's number. A producer able to advance the tail could claim its asks were consumed; a consumer able to advance the head could invent asks nobody made. Both are refused `WriteDenied` at the wall the declaration already stands, and the producer still *reads* the consumer's tail freely, so progress is visible to the side that cannot forge it.
+
+Order carries meaning one level in from `notify.rye`'s own. There the bytes were written before the bell, since a bell rung early sends a reader to look at nothing. Here the slots are written before the head, since a head raised early promises a consumer messages that have not landed -- and the head, rather than the bell, is what a drain believes.
+
+Capacity is declared rather than hoped for. A producer reads the tail, computes what stands outstanding, and answers `QueueFull` rather than writing over an ask nobody has read, so a full queue is a refusal an operator can see instead of a message that silently went missing. A ring with nothing behind it answers `nothing new` -- a named success, since a ring did arrive and the honest count was zero.
+
+The numbers state the claim: seven asks carried on three rings across three drains, three of them landing behind a single ring. Witness: [`tools/caravan_queue_witness.rish`](../tools/caravan_queue_witness.rish), GREEN on metal, both RED paths proven before the green was trusted. Driving the drain from the bell count rather than from `head - tail` carried one ask of three, and the producer caught it by reading the consumer's own tail standing at 1 against a head of 3. Dropping the capacity refusal let a fifth ask land in a four-slot queue, overwriting an unread one, and the next drain read a sequence number it never expected.
 
 ## Held
 
