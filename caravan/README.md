@@ -1,7 +1,7 @@
 # Caravan -- Process Supervision
 
 **Language:** EN
-**Last updated:** `20260819.140726` (the carry ring lands -- two real processes share one declared region)
+**Last updated:** `20260819.142036` (the notify ring lands -- a declared channel rings between two real processes)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable -- process supervision ladder
 
@@ -31,6 +31,7 @@ Every ring here composes over the one before it. A later ring imports an earlier
 | boot | [`boot.rye`](boot.rye) | the supervisor spawns its dependents from the declaration -- every declared domain started in order, handed exactly its own grants, restarted on the same line, a wider document starting nothing |
 | exercise | [`exercise.rye`](exercise.rye) | a granted region does real work -- bytes carried across a declared share, an ungranted reach refused before any door opens, a read-only grant refused at two walls, a region that never grows by being used |
 | carry | [`carry.rye`](carry.rye) | two real processes share one declared region -- a producer writes and exits, the granted consumer starts afterward and reads back exactly those bytes, and every refusal holds inside a dependent that knows only its own argv line |
+| notify | [`notify.rye`](notify.rye) | a declared channel rings between two real processes -- every channel its own silent doorbell, the producer writing the share then ringing, the consumer hearing before it reads, an unwired pair refusing NotWired and a bell that never rang heard as Unheard |
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
@@ -103,6 +104,16 @@ Judgment stays with the supervisor. A dependent attempts exactly the one task it
 The dependent learns nothing it was not handed. It never reads the declaration, so it has no idea how wide a region is; it takes the extent from the provisioned store, which the parent sized at exactly the declared length and which never grows by being used. Static allocation settles the bound before anything runs -- the seL4 teaching, arriving here as the reason a dependent needs no document to stay inside its region.
 
 Witness: [`tools/caravan_carry_witness.rish`](../tools/caravan_carry_witness.rish), GREEN on its first metal pass, with both RED paths proven before the green was trusted. Asking the producer to open the region without writing left the consumer reading zeros, and it reported `bytes differed` rather than success. Letting a dependent grant itself a capability its argv never carried let `client_b` reach `rx_a`, and the supervisor caught it by name at exit 1 -- which is what makes the refusals in the green run statements about the dependent's own line rather than about the file system.
+## Why the Channel Has To Ring
+
+`carry.rye` carried bytes across the seam and left the other half of the Microkit shape unbuilt. A share answers *what*; it never answers *when*. A consumer holding a granted region has no way to learn that anything arrived in it, so it either polls forever or reads whatever happens to be there -- and the declaration had named channels since `channels.rye` without a running dependent ever being able to ring one. `notify.rye` makes the channel real: every declared channel is provisioned as its own doorbell, a small store holding one count, and a dependent may ring only a peer its own declaration wired it to. The producer writes the region and rings the bell in the same process, then exits; the consumer starts afterward, hears the bell, and only then reads the share. Notify says *something happened*, the region says *what*, and neither half pretends to be the other.
+
+Writing before ringing is the discipline, and it lives in the code rather than in a comment on the consumer -- a bell that rang before the bytes landed would tell a reader to go look at something not yet there. One channel owns exactly one bell no matter which endpoint reaches for it, since the path orders its two domain names; a pair that rang two different stores would be two channels wearing one declaration's name.
+
+Two refusals carry the ring. Two clients sharing a virtualiser hold no channel to each other, so `client_a` ringing `client_b` answers `NotWired` with no bell opened at all, both ways -- the wall is the dependent's own peer list, consulted before any path is built, the same ordering the region walls already keep. And hearing is a real check rather than a courtesy: a dependent told to hear a bell that never rang answers `Unheard` and reads nothing, so a consumer cannot mistake an untouched region for a delivered one. That single refusal is what makes the ordering claim mean anything -- the consumer reads the share because the bell rang, rather than because two processes happened to run in a convenient order.
+
+Witness: [`tools/caravan_notify_witness.rish`](../tools/caravan_notify_witness.rish), GREEN on its first metal pass, with both RED paths proven before the green was trusted. Neutralizing the peer-list wall let `client_a` reach for a bell it was never wired to, and the refusal degraded from `NotWired` into a bare `malformed` -- which is the argument for the first wall stated plainly: without the dependent's own list, a channel refusal stops being a named answer and becomes an accident of what happens to exist on disk. Dropping the hearing check let a consumer read an undelivered region and report `bytes differed` rather than `Unheard`, so the supervisor caught it by name at exit 1.
+
 
 ## Held
 

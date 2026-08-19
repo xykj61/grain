@@ -1,0 +1,808 @@
+//! Caravan notify -- a declared channel rings between two real processes.
+//!
+//! `carry.rye` carried bytes across the boot seam and left one half of the
+//! Microkit shape unbuilt. A share answers *what*; it never answers *when*.
+//! A consumer holding a granted region has no way to learn that anything
+//! arrived in it, so it either polls forever or reads whatever happens to be
+//! there. The declaration has named channels since `channels.rye`, and until
+//! now a channel was something a witness could check and nothing a running
+//! dependent could ring.
+//!
+//! This ring makes the channel real. Every declared channel is provisioned
+//! as its own doorbell -- a small store holding one count -- and a dependent may
+//! ring only a peer its own declaration wired it to. The producer writes the
+//! region and rings the bell in the same process, then exits. The consumer
+//! starts afterward, hears the bell, and only then reads the share. Notify
+//! says *something happened*; the region says *what*. Both halves stand,
+//! and neither pretends to be the other.
+//!
+//! The refusal is the load-bearing half, exactly as it was for regions. Two
+//! clients wired to the same virtualiser hold no channel to each other, so
+//! `client_a` ringing `client_b` answers `NotWired` with no bell touched at
+//! all -- sharing stays deliberate and visible rather than ambient, and the
+//! wall is the dependent's own peer list rather than a lookup it could skip.
+//!
+//! Hearing is a real check rather than a courtesy. A dependent told to hear a
+//! bell that never rang answers `Unheard` and reads nothing, so a consumer
+//! cannot mistake an untouched region for a delivered one. That single
+//! refusal is what makes the ordering claim mean something: the consumer
+//! reads the share because the bell rang, rather than because the two
+//! processes happened to run in a convenient order.
+//!
+//! Hosted ground: real processes, real files, pure policy, no kernel
+//! underneath it yet.
+//!
+//! Usage:
+//!   notify selftest                     Ring the worked example and check it
+//!   notify                              Same as selftest
+//!   notify dependent <domain> <plan> ...    Run as a supervised dependent (internal)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const regions = @import("regions.rye");
+const channels = @import("channels.rye");
+const capabilities = @import("capabilities.rye");
+const roster = @import("roster.rye");
+const read = @import("read.rye");
+const boot = @import("boot.rye");
+const exercise = @import("exercise.rye");
+const carry = @import("carry.rye");
+
+const Dir = std.Io.Dir;
+
+const caravan_notify_version = "20260819.141325";
+
+// =========================================================================
+// Bounds -- what one notify run may spend
+// =========================================================================
+
+/// Where the doorbells live, beside the region stores rather than among
+/// them, so a bell is never mistaken for declared memory.
+pub const bell_dir = "caravan/.channels";
+
+/// The longest doorbell path this ring builds -- the directory, two domain
+/// names, the separator between them, and the suffix.
+pub const max_bell_path_len: u32 = 160;
+
+/// Fixed argv words every dependent receives: the program path, the `dependent`
+/// marker, its domain label, its plan word, and the count of capability
+/// words that follow. The count is explicit so the peer words after them
+/// are found by arithmetic rather than by guessing at a word's shape.
+const fixed_argv_words: u32 = 5;
+
+/// The most peers one dependent may be handed, matching the channel roster --
+/// a domain wired to every channel in the graph is still bounded by it.
+pub const max_peers_per_dependent: u32 = channels.max_channels;
+
+/// The message the producing process leaves in the declared share.
+pub const delivered = "serial: rung, then read";
+
+comptime {
+    // invariant: the delivered message fits inside the smallest declared region
+    assert(delivered.len <= 4096);
+    // invariant: a whole dependent argv stays within what one run builds
+    assert(fixed_argv_words + capabilities.max_caps_per_dependent + max_peers_per_dependent <= 32);
+}
+
+// =========================================================================
+// The outcome vocabulary -- carry's codes, plus what a channel can answer
+// =========================================================================
+
+/// The two outcomes a doorbell adds to `carry.Outcome`.
+///
+/// `not_wired` is the channel wall, answered before any bell is opened.
+/// `unheard` is an honest negative: the bell exists and stands at zero, so
+/// nothing was delivered. Both avoid `supervisor_exit.stop_requested` (8)
+/// and every code `carry.rye` already spends.
+pub const Bell = struct {
+    pub const not_wired: u8 = 7;
+    pub const unheard: u8 = 9;
+};
+
+comptime {
+    // invariant: the channel codes collide with nothing carry already spends
+    assert(Bell.not_wired != carry.Outcome.carried_ok);
+    assert(Bell.not_wired != carry.Outcome.malformed);
+    assert(Bell.not_wired != carry.Outcome.not_granted);
+    assert(Bell.not_wired != carry.Outcome.write_denied);
+    assert(Bell.not_wired != carry.Outcome.past_end);
+    assert(Bell.not_wired != carry.Outcome.bytes_differed);
+    assert(Bell.unheard != Bell.not_wired);
+    // invariant: neither code is the supervisor's deliberate stop
+    assert(Bell.not_wired != 8);
+    assert(Bell.unheard != 8);
+}
+
+/// Names one outcome for an operator, over carry's vocabulary and this
+/// ring's two additions.
+pub fn outcome_name(code: u8) []const u8 {
+    if (code == Bell.not_wired) return "NotWired";
+    if (code == Bell.unheard) return "Unheard";
+    return carry.outcome_name(code);
+}
+
+// =========================================================================
+// The doorbell -- one declared channel, one counted store
+// =========================================================================
+
+/// Named ways a doorbell declines rather than ringing quietly.
+pub const BellError = error{
+    NotWired,
+    BellUnavailable,
+    PathTooLong,
+};
+
+/// Writes the store path for the channel joining two domains.
+///
+/// The endpoints are ordered by name, so one channel owns exactly one bell
+/// no matter which side reaches for it -- a pair that rang two different
+/// stores would be two channels wearing one declaration's name.
+pub fn bell_path(buf: *[max_bell_path_len]u8, a: []const u8, b: []const u8) BellError![]const u8 {
+    // invariant: a bell always names both of its endpoints
+    assert(a.len >= 1);
+    assert(b.len >= 1);
+    const first = if (std.mem.order(u8, a, b) == .lt) a else b;
+    const second = if (std.mem.order(u8, a, b) == .lt) b else a;
+    const total = bell_dir.len + 1 + first.len + 2 + second.len + 5;
+    if (total > max_bell_path_len) return error.PathTooLong;
+    var w: usize = 0;
+    for (bell_dir) |c| {
+        buf[w] = c;
+        w += 1;
+    }
+    buf[w] = '/';
+    w += 1;
+    for (first) |c| {
+        buf[w] = c;
+        w += 1;
+    }
+    buf[w] = '-';
+    w += 1;
+    buf[w] = '-';
+    w += 1;
+    for (second) |c| {
+        buf[w] = c;
+        w += 1;
+    }
+    for (".bell") |c| {
+        buf[w] = c;
+        w += 1;
+    }
+    // invariant: the path written is exactly the length computed for it
+    assert(w == total);
+    return buf[0..w];
+}
+
+/// Provisions one doorbell per declared channel, standing at zero.
+///
+/// Every run starts silent, so a bell found ringing was rung by this run's
+/// producer rather than left over from the last one.
+pub fn provision_bells(io: std.Io, sys: *const system.System) BellError!u32 {
+    // invariant: the channel roster stays within its bound
+    assert(sys.graph.channel_count <= channels.max_channels);
+    Dir.cwd().createDirPath(io, bell_dir) catch return error.BellUnavailable;
+    var i: u32 = 0;
+    while (i < sys.graph.channel_count) : (i += 1) {
+        assert(i < channels.max_channels); // invariant: the walk stays in the array
+        const link = &sys.graph.channels[i];
+        // invariant: both endpoints address the bounded domain roster
+        assert(link.low < channels.max_domains);
+        assert(link.high < channels.max_domains);
+        const a = sys.graph.domains[link.low].name_slice();
+        const b = sys.graph.domains[link.high].name_slice();
+        var path_buf: [max_bell_path_len]u8 = undefined;
+        const path = try bell_path(&path_buf, a, b);
+        const file = Dir.cwd().createFile(io, path, .{ .truncate = true }) catch
+            return error.BellUnavailable;
+        defer file.close(io);
+        const silent = [_]u8{0};
+        file.writePositionalAll(io, &silent, 0) catch return error.BellUnavailable;
+    }
+    // invariant: every declared channel got a bell, none invented
+    assert(i == sys.graph.channel_count);
+    return i;
+}
+
+/// One dependent's own list of the peers its declaration wired it to.
+///
+/// The dependent answers every channel question from this list alone, so a
+/// refusal here is a statement about what the dependent was handed rather than
+/// about what some table elsewhere happens to hold.
+pub const PeerList = struct {
+    names: [max_peers_per_dependent][channels.max_name_len]u8 = undefined,
+    lens: [max_peers_per_dependent]u32 = @splat(0),
+    count: u32 = 0,
+
+    pub fn add(self: *PeerList, name: []const u8) error{PeerListFull}!void {
+        // invariant: a peer worth holding has a name
+        assert(name.len >= 1);
+        if (name.len > channels.max_name_len) return error.PeerListFull;
+        if (self.count >= max_peers_per_dependent) return error.PeerListFull;
+        const at = self.count;
+        var i: usize = 0;
+        while (i < name.len) : (i += 1) self.names[at][i] = name[i];
+        self.lens[at] = @intCast(name.len); // seam: a slice length arrives as usize
+        self.count += 1;
+        // invariant: the list never passes the bound it was checked against
+        assert(self.count <= max_peers_per_dependent);
+    }
+
+    pub fn name_at(self: *const PeerList, index: u32) []const u8 {
+        // invariant: the index addresses a live entry
+        assert(index < self.count);
+        return self.names[index][0..self.lens[index]];
+    }
+
+    /// Answers whether this dependent's declaration wired it to a named peer.
+    pub fn wired_to(self: *const PeerList, name: []const u8) bool {
+        // invariant: the list stays within its bound
+        assert(self.count <= max_peers_per_dependent);
+        // invariant: a question always names a peer
+        assert(name.len >= 1);
+        var i: u32 = 0;
+        while (i < self.count) : (i += 1) {
+            if (std.mem.eql(u8, self.name_at(i), name)) return true;
+        }
+        return false;
+    }
+};
+
+/// Rings the bell a dependent shares with one peer, once.
+///
+/// The peer list is consulted before any path is built, so an unwired ring
+/// opens nothing at all -- the same ordering the region walls already keep.
+pub fn ring(io: std.Io, peers: *const PeerList, self_name: []const u8, peer: []const u8) BellError!u8 {
+    // invariant: a ring always names both sides
+    assert(self_name.len >= 1);
+    assert(peer.len >= 1);
+    if (!peers.wired_to(peer)) return error.NotWired;
+    var path_buf: [max_bell_path_len]u8 = undefined;
+    const path = try bell_path(&path_buf, self_name, peer);
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_write }) catch
+        return error.BellUnavailable;
+    defer file.close(io);
+    var seen = [_]u8{0};
+    _ = file.readPositionalAll(io, &seen, 0) catch return error.BellUnavailable;
+    if (seen[0] == 255) return error.BellUnavailable;
+    const next = [_]u8{seen[0] + 1};
+    file.writePositionalAll(io, &next, 0) catch return error.BellUnavailable;
+    // invariant: a ring always leaves the count higher than it found it
+    assert(next[0] > seen[0]);
+    return next[0];
+}
+
+/// Reads how many times the bell a dependent shares with one peer has rung.
+pub fn hear(io: std.Io, peers: *const PeerList, self_name: []const u8, peer: []const u8) BellError!u8 {
+    // invariant: hearing always names both sides
+    assert(self_name.len >= 1);
+    assert(peer.len >= 1);
+    if (!peers.wired_to(peer)) return error.NotWired;
+    var path_buf: [max_bell_path_len]u8 = undefined;
+    const path = try bell_path(&path_buf, self_name, peer);
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch
+        return error.BellUnavailable;
+    defer file.close(io);
+    var seen = [_]u8{0};
+    _ = file.readPositionalAll(io, &seen, 0) catch return error.BellUnavailable;
+    return seen[0];
+}
+
+// =========================================================================
+// The plan wire -- a verb, a region, and the peer it concerns
+// =========================================================================
+
+/// What a dependent is asked to attempt over one region and one peer.
+pub const Verb = enum { deliver, receive, ring_only, hear_only };
+
+/// One task: a verb, the region it touches, and the peer it rings or hears.
+pub const Task = struct {
+    verb: Verb,
+    region: []const u8,
+    peer: []const u8,
+};
+
+fn verb_word(verb: Verb) []const u8 {
+    return switch (verb) {
+        .deliver => "deliver",
+        .receive => "receive",
+        .ring_only => "ring",
+        .hear_only => "hear",
+    };
+}
+
+/// Renders one task as the plan word its dependent will read.
+pub fn write_plan(buf: []u8, verb: Verb, region: []const u8, peer: []const u8) ?[]const u8 {
+    // invariant: a task always names a region and a peer
+    assert(region.len >= 1);
+    assert(peer.len >= 1);
+    const word = verb_word(verb);
+    const total = word.len + 1 + region.len + 1 + peer.len;
+    if (total > buf.len) return null;
+    var w: usize = 0;
+    for (word) |c| {
+        buf[w] = c;
+        w += 1;
+    }
+    buf[w] = ':';
+    w += 1;
+    for (region) |c| {
+        buf[w] = c;
+        w += 1;
+    }
+    buf[w] = ':';
+    w += 1;
+    for (peer) |c| {
+        buf[w] = c;
+        w += 1;
+    }
+    // invariant: the word written is exactly the length computed for it
+    assert(w == total);
+    return buf[0..w];
+}
+
+/// Reads a plan word back into the task it names.
+///
+/// Three fields, four verbs, and anything else answers null -- a dependent
+/// refuses a plan it cannot read rather than inferring what to do.
+pub fn read_plan(word: []const u8) ?Task {
+    // invariant: a plan worth reading carries something
+    assert(word.len >= 1);
+    const first = std.mem.indexOfScalar(u8, word, ':') orelse return null;
+    if (first == 0) return null;
+    const rest = word[first + 1 ..];
+    const second = std.mem.indexOfScalar(u8, rest, ':') orelse return null;
+    if (second == 0) return null;
+    const region = rest[0..second];
+    const peer = rest[second + 1 ..];
+    if (peer.len == 0) return null;
+    if (region.len > regions.max_name_len) return null;
+    if (peer.len > channels.max_name_len) return null;
+    const head = word[0..first];
+    const verb: Verb = if (std.mem.eql(u8, head, "deliver"))
+        .deliver
+    else if (std.mem.eql(u8, head, "receive"))
+        .receive
+    else if (std.mem.eql(u8, head, "ring"))
+        .ring_only
+    else if (std.mem.eql(u8, head, "hear"))
+        .hear_only
+    else
+        return null;
+    // invariant: every task read off the wire names both a region and a peer
+    assert(region.len >= 1);
+    assert(peer.len >= 1);
+    return .{ .verb = verb, .region = region, .peer = peer };
+}
+
+// =========================================================================
+// The dependent -- one process, its own two lists, one reported outcome
+// =========================================================================
+
+/// Maps one doorbell refusal onto the outcome code that names it.
+fn bell_code(err: BellError) u8 {
+    return switch (err) {
+        error.NotWired => Bell.not_wired,
+        else => carry.Outcome.malformed,
+    };
+}
+
+/// Maps one reach refusal onto the outcome code that names it.
+fn reach_code(err: exercise.ReachError) u8 {
+    return switch (err) {
+        error.NotGranted => carry.Outcome.not_granted,
+        error.WriteDenied => carry.Outcome.write_denied,
+        error.PastEnd => carry.Outcome.past_end,
+        else => carry.Outcome.malformed,
+    };
+}
+
+/// Opens one region by name, taking its extent from the provisioned store.
+fn reach_by_name(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    region_name: []const u8,
+) exercise.ReachError!exercise.Reach {
+    // invariant: a reach always names a region
+    assert(region_name.len >= 1);
+    const extent = try exercise.store_extent(io, region_name);
+    if (extent == 0 or extent > regions.max_region_bytes) return error.RegionUnavailable;
+    const region = regions.Region.init(region_name, extent);
+    // invariant: the extent a dependent works from is the store's own length
+    assert(region.size_bytes == extent);
+    return exercise.Reach.open(io, slot, &region);
+}
+
+/// Writes the share and rings the peer, in that order, from one process.
+///
+/// Writing first is the whole discipline: a bell that rings before the
+/// bytes land would tell a consumer to read something that is not there
+/// yet. The ordering lives here rather than in a comment on the consumer.
+fn do_deliver(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const PeerList,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    const handle = reach_by_name(io, slot, task.region) catch |err| return reach_code(err);
+    defer handle.close(io);
+    handle.write_at(io, 0, delivered) catch |err| return reach_code(err);
+    const count = ring(io, peers, self_name, task.peer) catch |err| return bell_code(err);
+    // invariant: the bell a delivery rang stands above silence
+    assert(count >= 1);
+    return carry.Outcome.carried_ok;
+}
+
+/// Hears the bell first, then reads the share -- and reads nothing at all
+/// when the bell stands silent.
+fn do_receive(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const PeerList,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    const count = hear(io, peers, self_name, task.peer) catch |err| return bell_code(err);
+    if (count == 0) return Bell.unheard;
+    const handle = reach_by_name(io, slot, task.region) catch |err| return reach_code(err);
+    defer handle.close(io);
+    var seen: [delivered.len]u8 = undefined;
+    const got = handle.read_at(io, 0, &seen) catch |err| return reach_code(err);
+    if (got != delivered.len) return carry.Outcome.bytes_differed;
+    if (!std.mem.eql(u8, &seen, delivered)) return carry.Outcome.bytes_differed;
+    return carry.Outcome.carried_ok;
+}
+
+/// Attempts one task and reports its outcome.
+fn attempt(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const PeerList,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    // invariant: a task always names a region and a peer
+    assert(task.region.len >= 1);
+    assert(task.peer.len >= 1);
+    return switch (task.verb) {
+        .deliver => do_deliver(io, slot, peers, self_name, task),
+        .receive => do_receive(io, slot, peers, self_name, task),
+        .ring_only => blk: {
+            _ = ring(io, peers, self_name, task.peer) catch |err| break :blk bell_code(err);
+            break :blk carry.Outcome.carried_ok;
+        },
+        .hear_only => blk: {
+            const count = hear(io, peers, self_name, task.peer) catch |err| break :blk bell_code(err);
+            break :blk if (count == 0) Bell.unheard else carry.Outcome.carried_ok;
+        },
+    };
+}
+
+/// Runs as one supervised dependent, holding exactly the capabilities, the
+/// peers, and the one task on its own argv.
+fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
+    // invariant: a dependent always receives its marker, domain, plan, and count
+    assert(args.len >= fixed_argv_words);
+    const domain = args[2];
+    const plan = args[3];
+    // invariant: a dependent always knows which domain it is
+    assert(domain.len >= 1);
+
+    const cap_count = std.fmt.parseInt(u32, args[4], 10) catch {
+        print("    {s}: refused an unreadable capability count\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    if (cap_count > capabilities.max_caps_per_dependent) {
+        print("    {s}: more capabilities than one dependent holds\n", .{domain});
+        return carry.Outcome.malformed;
+    }
+    if (fixed_argv_words + cap_count > args.len) {
+        print("    {s}: a capability count past the words it was handed\n", .{domain});
+        return carry.Outcome.malformed;
+    }
+
+    var slot = capabilities.DependentSlot.init(domain);
+    var i: u32 = 0;
+    while (i < cap_count) : (i += 1) {
+        const cap = boot.read_cap_word(args[fixed_argv_words + i]) orelse {
+            print("    {s}: refused a malformed capability word\n", .{domain});
+            return carry.Outcome.malformed;
+        };
+        slot.grant(cap) catch return carry.Outcome.malformed;
+    }
+    // invariant: the dependent holds exactly the capability words it was handed
+    assert(slot.cap_count == cap_count);
+
+    var peers: PeerList = .{};
+    var p: usize = fixed_argv_words + cap_count;
+    while (p < args.len) : (p += 1) {
+        peers.add(args[p]) catch {
+            print("    {s}: more peers than one dependent holds\n", .{domain});
+            return carry.Outcome.malformed;
+        };
+    }
+    // invariant: the dependent holds exactly the peer words it was handed
+    assert(peers.count == args.len - fixed_argv_words - cap_count);
+
+    const task = read_plan(plan) orelse {
+        print("    {s}: refused a plan it could not read\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    const code = attempt(io, &slot, &peers, domain, task);
+    print("    {s}: {s} {s} via {s} -- {s}\n", .{
+        domain, verb_word(task.verb), task.region, task.peer, outcome_name(code),
+    });
+    return code;
+}
+
+// =========================================================================
+// The supervisor -- one document, one delivery, judged by the parent
+// =========================================================================
+
+/// One declared domain's assignment for a notify run.
+pub const Assignment = struct {
+    domain: []const u8,
+    verb: Verb,
+    region: []const u8,
+    peer: []const u8,
+    expect: u8,
+};
+
+/// What one notify run did, reported whole.
+pub const NotifyReport = struct {
+    started: u32 = 0,
+    matched: u32 = 0,
+    bells: u32 = 0,
+};
+
+/// Named ways a notify run declines rather than reporting a hollow success.
+pub const NotifyError = error{
+    SpawnFailed,
+    UnknownDomain,
+    PlanTooLong,
+    OutcomeMismatch,
+};
+
+/// Collects the peers one domain's own declaration wired it to.
+fn peers_of(sys: *const system.System, domain: []const u8, out: *PeerList) void {
+    // invariant: the channel roster stays within its bound
+    assert(sys.graph.channel_count <= channels.max_channels);
+    // invariant: a lookup always names a domain
+    assert(domain.len >= 1);
+    const self_index = sys.graph.find_domain(domain) orelse return;
+    var i: u32 = 0;
+    while (i < sys.graph.channel_count) : (i += 1) {
+        assert(i < channels.max_channels); // invariant: the walk stays in the array
+        const link = &sys.graph.channels[i];
+        if (!link.touches(self_index)) continue;
+        const other = if (link.low == self_index) link.high else link.low;
+        assert(other < channels.max_domains); // invariant: the index addresses the roster
+        out.add(sys.graph.domains[other].name_slice()) catch return;
+    }
+    // invariant: a domain's peer list matches the degree the graph reports
+    assert(out.count == sys.graph.degree(domain));
+}
+
+/// Starts one assigned dependent and holds it to the outcome the parent expects.
+fn run_assignment(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    table: *const capabilities.CapabilityTable,
+    task: Assignment,
+) (NotifyError || boot.BootError)!void {
+    // invariant: an assignment always names a domain, a region, and a peer
+    assert(task.domain.len >= 1);
+    assert(task.region.len >= 1);
+    assert(task.peer.len >= 1);
+    const slot = table.find_dependent(task.domain) orelse return error.UnknownDomain;
+    // invariant: the line handed out agrees with the declaration it came from
+    assert(boot.line_agrees(sys, slot));
+
+    var peers: PeerList = .{};
+    peers_of(sys, task.domain, &peers);
+
+    var plan_buf: [max_bell_path_len]u8 = undefined;
+    const plan = write_plan(&plan_buf, task.verb, task.region, task.peer) orelse
+        return error.PlanTooLong;
+
+    var count_buf: [8]u8 = undefined;
+    const count_word = std.fmt.bufPrint(&count_buf, "{d}", .{slot.cap_count}) catch
+        return error.PlanTooLong;
+
+    var storage: [capabilities.max_caps_per_dependent][boot.max_cap_word_len]u8 = undefined;
+    const argv = allocator.alloc(
+        []const u8,
+        fixed_argv_words + slot.cap_count + peers.count,
+    ) catch return error.SpawnFailed;
+    argv[0] = self_path;
+    argv[1] = "dependent";
+    argv[2] = slot.label_slice();
+    argv[3] = plan;
+    argv[4] = count_word;
+    var c: u32 = 0;
+    while (c < slot.cap_count) : (c += 1) {
+        assert(c < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        argv[fixed_argv_words + c] = try boot.write_cap_word(&storage[c], &slot.caps[c]);
+    }
+    var q: u32 = 0;
+    while (q < peers.count) : (q += 1) {
+        argv[fixed_argv_words + slot.cap_count + q] = peers.name_at(q);
+    }
+
+    var proc = std.process.spawn(io, .{ .argv = argv }) catch return error.SpawnFailed;
+    const term = proc.wait(io) catch return error.SpawnFailed;
+    const code: u8 = switch (term) {
+        .exited => |c2| c2,
+        else => 255,
+    };
+    if (code != task.expect) {
+        print("    {s}: expected {s}, heard {s}\n", .{
+            task.domain, outcome_name(task.expect), outcome_name(code),
+        });
+        return error.OutcomeMismatch;
+    }
+}
+
+/// Runs a whole ordered assignment list against one parsed declaration.
+pub fn notify_system(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Assignment,
+) (roster.RosterError || exercise.ProvisionError || BellError || NotifyError || boot.BootError)!NotifyReport {
+    // invariant: a run always knows what program to spawn
+    assert(self_path.len >= 1);
+    const provisioned = try exercise.provision(io, sys);
+    // invariant: every declared region has a backing store before any dependent runs
+    assert(provisioned == sys.map.region_count);
+    const bells = try provision_bells(io, sys);
+    // invariant: every declared channel has a silent bell before any dependent runs
+    assert(bells == sys.graph.channel_count);
+
+    const table = try roster.from_system(sys);
+    // invariant: the derived table enforces exactly what the document permits
+    assert(roster.agrees(sys, &table));
+
+    var report_out: NotifyReport = .{ .bells = bells };
+    var i: u32 = 0;
+    while (i < plan.len) : (i += 1) {
+        try run_assignment(allocator, io, self_path, sys, &table, plan[i]);
+        report_out.started += 1;
+        report_out.matched += 1;
+    }
+    // invariant: every assignment that started also matched what was expected
+    assert(report_out.matched == report_out.started);
+    return report_out;
+}
+
+// =========================================================================
+// Self-test -- the worked example, rung and read between real processes
+// =========================================================================
+
+/// The delivery itself: the virtualiser writes the share and rings the
+/// client, then the client hears the bell and only then reads the share.
+const delivery_plan = [_]Assignment{
+    .{ .domain = "serial_virt", .verb = .deliver, .region = "rx_a", .peer = "client_a", .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_a", .verb = .receive, .region = "rx_a", .peer = "serial_virt", .expect = carry.Outcome.carried_ok },
+};
+
+/// The refusals: an unwired pair rings nothing, and a bell that never rang
+/// is heard as silence rather than as a delivery.
+const refusal_plan = [_]Assignment{
+    .{ .domain = "client_a", .verb = .ring_only, .region = "rx_a", .peer = "client_b", .expect = Bell.not_wired },
+    .{ .domain = "client_b", .verb = .ring_only, .region = "rx_b", .peer = "client_a", .expect = Bell.not_wired },
+    .{ .domain = "client_b", .verb = .receive, .region = "rx_b", .peer = "serial_virt", .expect = Bell.unheard },
+};
+
+/// Proves the plan wire and the bell path are both closed shapes.
+fn check_wire() u8 {
+    var plan_buf: [max_bell_path_len]u8 = undefined;
+    const word = write_plan(&plan_buf, .receive, "rx_a", "serial_virt") orelse {
+        print("  RED: a legal task had no plan word\n", .{});
+        return 1;
+    };
+    const back = read_plan(word) orelse {
+        print("  RED: a rendered plan did not read back\n", .{});
+        return 1;
+    };
+    // invariant: a task survives the wire unchanged, in all three fields
+    assert(back.verb == .receive);
+    assert(std.mem.eql(u8, back.region, "rx_a"));
+    assert(std.mem.eql(u8, back.peer, "serial_virt"));
+    // invariant: a verb outside the vocabulary reads as no task at all
+    assert(read_plan("shout:rx_a:client_a") == null);
+    // invariant: and a plan naming no peer reads as no task either
+    assert(read_plan("receive:rx_a:") == null);
+
+    var one: [max_bell_path_len]u8 = undefined;
+    var two: [max_bell_path_len]u8 = undefined;
+    const from_a = bell_path(&one, "serial_virt", "client_a") catch {
+        print("  RED: a legal channel had no bell path\n", .{});
+        return 1;
+    };
+    const from_b = bell_path(&two, "client_a", "serial_virt") catch {
+        print("  RED: a legal channel had no bell path\n", .{});
+        return 1;
+    };
+    // invariant: one channel owns one bell, reached the same way from either side
+    assert(std.mem.eql(u8, from_a, from_b));
+    print("  the plan wire is closed, and one channel owns one bell from either side\n", .{});
+    return 0;
+}
+
+/// Delivers the worked example between two real processes and checks it.
+fn check_delivery(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = read.load(io, read.serial_stack_path, &buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ read.serial_stack_path, @errorName(err) });
+        return 1;
+    };
+    const done = notify_system(allocator, io, self_path, &parsed, &delivery_plan) catch |err| {
+        print("  RED: the delivery did not complete: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: both halves of the delivery ran as their own process
+    assert(done.started == 2);
+    // invariant: every declared channel stood silent before either of them ran
+    assert(done.bells == parsed.graph.channel_count);
+    print("  {d} declared channels provisioned silent, and the bell rang before the read\n", .{
+        done.bells,
+    });
+    print("  {d} bytes crossed rx_a after the bell -- serial_virt rang, client_a heard, then read\n", .{
+        delivered.len,
+    });
+    return 0;
+}
+
+/// Proves an unwired ring touches nothing and a silent bell is heard as silence.
+fn check_refusals(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = read.load(io, read.serial_stack_path, &buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ read.serial_stack_path, @errorName(err) });
+        return 1;
+    };
+    const done = notify_system(allocator, io, self_path, &parsed, &refusal_plan) catch |err| {
+        print("  RED: a channel refusal did not hold: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: every refusal ran as its own process and answered by name
+    assert(done.matched == refusal_plan.len);
+    print("  two clients sharing a virtualiser ring each other NotWired, both ways\n", .{});
+    print("  a bell that never rang is heard as Unheard -- the share stays unread\n", .{});
+    return 0;
+}
+
+fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    print("Caravan notify {s} -- self-test\n", .{caravan_notify_version});
+    const wire = check_wire();
+    if (wire != 0) return wire;
+    const refusals = check_refusals(allocator, io, self_path);
+    if (refusals != 0) return refusals;
+    const delivery = check_delivery(allocator, io, self_path);
+    if (delivery != 0) return delivery;
+    print("  GREEN: a declared channel rings between two real processes, and notify stands beside share\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
+        return run_dependent(io, args);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(allocator, io, self_path);
+    }
+    if (args.len >= 2) return 1;
+    return run_self_test(allocator, io, self_path);
+}

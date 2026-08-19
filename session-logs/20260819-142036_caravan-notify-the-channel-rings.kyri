@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260819.142036
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Caravan notify -- a declared channel rings between two real processes
+prompt Autonomous loop -- second lap of the run, continuing the Microkernel Target double-seat Lindy-first crux-first and sending each finished increment as its own signed round.
+think The lap before this one carried bytes across the boot seam and named its own next crux in the same breath: the channel made real, so notify stands beside share. Took it directly rather than opening a new front.
+think Read channels.rye before writing, since the ring composes over it -- Channel stores its endpoints canonically as low and high rather than a and b, and Graph.degree already counts a domain's wiring, which gave the peer-list derivation a free postcondition to assert against.
+think Design call -- a notification is a count, never a message. Microkit's notify says that something happened and the shared region says what; folding data into the bell would have collapsed two honest halves into one muddy one. Each declared channel gets its own doorbell store holding a single counted byte, provisioned silent before any child runs.
+think Design call -- one channel owns exactly one bell. The path orders its two domain names, so either endpoint reaches the same store; a pair that rang two different files would be two channels wearing one declaration's name.
+think Design call -- the producer writes the region and rings the bell in that order, inside one process, and the ordering lives in do_deliver rather than in a comment on the consumer. A bell that rang before the bytes landed would send a reader to look at something not yet there.
+think Design call -- the argv wire gained an explicit capability count as its fifth fixed word, so the peer words following the capability words are found by arithmetic rather than by guessing at a word's shape. Two lists, one line, no ambiguity.
+think Kept carry.rye untouched. The two new outcome codes live in notify's own Bell struct with comptime asserts proving they collide with none of carry's six and with neither supervisor_exit.stop_requested -- accrete beside a just-shipped ring rather than reopening it.
+think GREEN on the first metal pass again, so both RED paths were proven before the green was trusted. The first attempt at RED probe one failed to compile at all, since removing the peer check left the parameter unused -- the compiler caught the neutered wall before the witness could.
+obs The RED probe taught something the green run could not say. With the child's own peer list neutralized, client_a's ring of an unwired peer degraded from NotWired into a bare malformed, because the only thing left refusing it was the absence of a file. That is the argument for the first wall stated plainly: without the list the child was handed, a channel refusal stops being a named answer and becomes an accident of what happens to exist on disk.
+obs Hearing had to be a real check rather than a courtesy. Dropping the count-is-zero test let a consumer read an undelivered region and report bytes differed instead of Unheard -- and that single refusal is what makes the ordering claim mean anything, since the consumer now reads the share because the bell rang rather than because two processes happened to run in a convenient order.
+obs Ten rings stand in Caravan's Microkernel arc now, and the Microkit shape is whole across real processes: the declaration names domains, channels, regions, and grants; the supervisor derives its table and spawns from that document; a grant opens a door; bytes cross a seam; and a channel rings.
+loom witness=caravan_notify_witness processes=5 bells_provisioned=2 delivered_bytes=23 refusals=3
+file caravan/notify.rye the tenth Caravan ring -- doorbells per declared channel, a peer list a child answers from, ring and hear, a three-field plan wire, and two outcome codes accreted beside carry's six
+file tools/caravan_notify_witness.rish proves the ring on metal -- the bell rung before the read, both unwired directions refused, a silent bell heard as silence, and the doorbells measured on disk
+file caravan/README.md the ladder gains its notify row and a Why the Channel Has To Ring section, synced in the same commit as the code
+file crux/REMEMBER.md the live edge moves to the notify ring, git nib following in the work commit
+recommend keep-going -- the Microkit shape is whole across processes one direction at a time, so the next crux is the round trip: a client that rings back over the same declared channel and a virtualiser that hears it, proving a channel carries both ways rather than only from the producer. No key, no funds.
