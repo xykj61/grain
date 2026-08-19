@@ -1,0 +1,423 @@
+//! image/cluster_tree_diameter.rye -- the LONGEST REACH across the skeleton: the DIAMETER of the cluster minimum spanning tree, the greatest
+//! path weight between any two clusters through the bridge edges, and the ECCENTRICITY of each cluster (its farthest reach). `tree_diameter`
+//! reads the whole-tree longest path; `diameter_endpoints` names the two most distant clusters and the weight between them; `tree_eccentricity`
+//! reads one cluster's farthest reach; `is_diameter_endpoint` asks whether a cluster is one of the two poles -- exact integers, NO float, NO
+//! tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/cluster_minimum_spanning_tree.rye grows the SKELETON that holds a scattered layout together, the
+//! minimum spanning tree of the cluster-distance graph, and reads two whole-tree numbers off it: `mst_weight` (the SUM of every bridge edge) and
+//! `mst_bottleneck` (its LARGEST single edge, which equals the connectivity threshold). Neither answers the question a surface asks when it must
+//! label "these two regions are the FARTHEST apart of the whole group, connected only through the bridges between them" -- the longest walk along
+//! the skeleton. That walk is the tree's DIAMETER, and it is a THIRD number: not the largest edge, not the sum of all edges, but the greatest
+//! sum along any single root-to-root path. A layout names it the day it must draw the span of a connected group, or place the two clusters that
+//! bound its reach.
+//!
+//! The DECISIVE crux -- the diameter is a THIRD tree invariant, and it coincides with the weight only when the tree is a single path:
+//!
+//!   THE DIAMETER EQUALS THE WEIGHT YET EXCEEDS THE BOTTLENECK -- A STAR OF TWO EDGES IS ALSO A PATH. Over the three-cluster scene (the MST a
+//!   star on the hub cluster 1, edges 1-2 gap 2 and 1-3 gap 3) the longest path runs 2 -> 1 -> 3, weight 5, spending BOTH edges: the diameter (5)
+//!   EQUALS the tree's whole weight (5), because a two-edge tree is a single path and every edge lies on it. Yet the diameter (5) strictly EXCEEDS
+//!   the bottleneck (3): the longest reach spans two bridges, more than the largest single one. The two endpoints are the LEAVES (clusters 2 and
+//!   3), never the hub -- and the hub cluster 1 has the SMALLEST eccentricity (3), the CENTER the whole layout reaches through.
+//!
+//!   THE DIAMETER SITS STRICTLY BETWEEN THE BOTTLENECK AND THE WEIGHT WHEN A THIRD ARM BRANCHES OFF. Over the four-cluster scene (the MST a star
+//!   on the hub cluster 1, edges 1-2 gap 3, 1-3 gap 3, 1-4 gap 9) the longest path runs 2 -> 1 -> 4, weight 12: it spends the 9-arm and one 3-arm,
+//!   yet the OTHER 3-arm (cluster 3) branches off the path and is never walked. So the diameter (12) is strictly LESS than the tree's weight (15),
+//!   the third arm lost, and strictly MORE than the bottleneck (9), the two longest arms summed -- the bottleneck, the diameter, and the weight
+//!   are three distinct numbers, 9 < 12 < 15. The far outlier cluster 4 is a diameter endpoint, the hub cluster 1 still the center of least
+//!   eccentricity, never a pole.
+//!
+//! Compose not braid. This rung OWNS only the diameter and eccentricity reads -- the breadth-first walk over the spanning tree's own edges, the
+//! longest-path search, the eccentricity of a cluster, the endpoint test. No spanning tree recomputed (image/cluster_minimum_spanning_tree.rye
+//! owns `build_mst` and the tree's edges, weight, and bottleneck, cross-checked here and never re-derived), no cluster distance recomputed
+//! (image/cluster_graph.rye owns the matrix a level below). A reading over a reading over a reading over a reading over a reading over a reading
+//! over a reading over a reading.
+//!
+//! Everything is bounded before a byte: the cluster count can never exceed the object count, itself capped at `scene_graph_max_objects`, so the
+//! tree holds at most that many minus one edges, each breadth-first walk visits every cluster at most once over the n-1 edges, and the all-pairs
+//! longest-path search runs one walk per cluster. A lone-cluster layout is already one whole -- its tree is empty, its diameter zero, its one
+//! cluster's eccentricity zero, and it has no endpoints (`diameter_endpoints` refuses `EmptyTree`). A zero or past-the-count cluster id refuses
+//! `BadClusterId`. No network, no key, no funds -- the span a surface draws across a connected group, on our own geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/cluster_tree_diameter.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const cluster_graph = @import("cluster_graph.rye");
+const cluster_connectivity = @import("cluster_connectivity.rye");
+const cluster_mst = @import("cluster_minimum_spanning_tree.rye");
+
+pub const cluster_tree_diameter_version = "20260819.020913";
+
+pub const DiameterError = error{
+    BadClusterId,
+    EmptyTree,
+};
+
+/// The DIAMETER PATH of a spanning tree -- the two most distant clusters `(a, b)` with `a < b` and the `weight` of the unique tree path between
+/// them, the greatest such weight over every pair. A surface draws the span of a connected group between these two poles.
+pub const DiameterPath = struct {
+    a: u32,
+    b: u32,
+    weight: u32,
+};
+
+/// Fill `dist[i]` with the weight of the unique tree path from cluster `source` (a 1-based id) to cluster `i + 1`, walking the spanning tree's
+/// edges breadth-first. A spanning tree connects every cluster, so every slot is reached exactly once; the start reads zero. `dist` must hold one
+/// slot per cluster, and `queue` one scratch slot per cluster.
+fn walk_from(tree: cluster_mst.MstTree, source: u32, dist: []u32, queue: []u32) void {
+    const n: u32 = tree.clusters;
+    // invariant: the scratch buffers hold exactly one slot per cluster.
+    assert(dist.len == @as(usize, n));
+    assert(queue.len == @as(usize, n));
+    // invariant: the source is a real 1-based cluster id.
+    assert(source >= 1);
+    assert(source <= n);
+
+    const unvisited: u32 = std.math.maxInt(u32);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) dist[i] = unvisited;
+    dist[source - 1] = 0;
+
+    var head: u32 = 0;
+    var tail: u32 = 0;
+    queue[tail] = source;
+    tail += 1;
+
+    // each cluster enters the queue at most once (a tree has no cycle), so the walk is bounded by n dequeues, each scanning the n-1 edges once.
+    while (head < tail) {
+        const node = queue[head]; // a 1-based cluster id
+        head += 1;
+        // invariant: a dequeued node was reached, so its distance is settled.
+        assert(dist[node - 1] != unvisited);
+        var e: u32 = 0;
+        while (e < tree.edges.len) : (e += 1) {
+            const edge = tree.edges[e];
+            var other: u32 = 0;
+            if (edge.a == node) {
+                other = edge.b;
+            } else if (edge.b == node) {
+                other = edge.a;
+            } else {
+                continue;
+            }
+            if (dist[other - 1] == unvisited) {
+                dist[other - 1] = dist[node - 1] + edge.weight;
+                // invariant: the queue never holds more than the cluster count -- each cluster is enqueued at most once.
+                assert(tail < n);
+                queue[tail] = other;
+                tail += 1;
+            }
+        }
+    }
+}
+
+/// The DIAMETER of the spanning tree -- the greatest weight of any unique tree path between two clusters, the longest reach across the skeleton.
+/// A lone-cluster (empty) tree has no path, so its diameter is zero.
+pub fn tree_diameter(allocator: std.mem.Allocator, tree: cluster_mst.MstTree) !u32 {
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges (empty for a lone cluster).
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+    // invariant: a real tree holds at least one cluster.
+    assert(tree.clusters >= 1);
+
+    const n: u32 = tree.clusters;
+    if (n < 2) return 0;
+
+    const dist = try allocator.alloc(u32, n);
+    const queue = try allocator.alloc(u32, n);
+    var best: u32 = 0;
+    var s: u32 = 0;
+    while (s < n) : (s += 1) {
+        walk_from(tree, s + 1, dist, queue);
+        var t: u32 = s + 1;
+        while (t < n) : (t += 1) {
+            if (dist[t] > best) best = dist[t];
+        }
+    }
+    return best;
+}
+
+/// The two most distant clusters and the weight between them -- the DIAMETER PATH, `a < b` with the lowest such pair chosen on a tie for
+/// determinism. Refuses `EmptyTree` for a lone-cluster layout, which has no path.
+pub fn diameter_endpoints(allocator: std.mem.Allocator, tree: cluster_mst.MstTree) !DiameterPath {
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges.
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+    // invariant: a real tree holds at least one cluster.
+    assert(tree.clusters >= 1);
+
+    const n: u32 = tree.clusters;
+    if (n < 2) return error.EmptyTree;
+
+    const dist = try allocator.alloc(u32, n);
+    const queue = try allocator.alloc(u32, n);
+    var best_weight: u32 = 0;
+    var best_a: u32 = 1;
+    var best_b: u32 = 2;
+    var s: u32 = 0;
+    while (s < n) : (s += 1) {
+        walk_from(tree, s + 1, dist, queue);
+        var t: u32 = s + 1;
+        while (t < n) : (t += 1) {
+            // strictly-greater keeps the first pair reaching the maximum in ascending (a, b) order -- the lowest pair, deterministic.
+            if (dist[t] > best_weight) {
+                best_weight = dist[t];
+                best_a = s + 1;
+                best_b = t + 1;
+            }
+        }
+    }
+    // invariant: the endpoints are two distinct clusters, low id first.
+    assert(best_a < best_b);
+    return DiameterPath{ .a = best_a, .b = best_b, .weight = best_weight };
+}
+
+/// The ECCENTRICITY of cluster `c` -- the greatest weight from `c` to any other cluster through the tree, its farthest reach across the skeleton.
+/// The lone cluster of a single-cluster layout reads zero. Refuses `BadClusterId` for a zero or past-the-count id.
+pub fn tree_eccentricity(allocator: std.mem.Allocator, tree: cluster_mst.MstTree, c: u32) !u32 {
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges.
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+    // invariant: a real tree holds at least one cluster.
+    assert(tree.clusters >= 1);
+
+    const n: u32 = tree.clusters;
+    if (c == 0 or c > n) return error.BadClusterId;
+    if (n < 2) return 0;
+
+    const dist = try allocator.alloc(u32, n);
+    const queue = try allocator.alloc(u32, n);
+    walk_from(tree, c, dist, queue);
+    var most: u32 = 0;
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        if (i == c - 1) continue; // skip the source's own zero distance
+        if (dist[i] > most) most = dist[i];
+    }
+    return most;
+}
+
+/// TRUE when cluster `c` is one of the diameter's two poles -- the farthest-apart clusters of the whole layout. A hub the whole layout reaches
+/// through is never a pole. A lone-cluster layout has no poles, so every id reads FALSE. Refuses `BadClusterId` for a zero or past-the-count id.
+pub fn is_diameter_endpoint(allocator: std.mem.Allocator, tree: cluster_mst.MstTree, c: u32) !bool {
+    // invariant: a real tree holds at least one cluster.
+    assert(tree.clusters >= 1);
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges.
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+    if (c == 0 or c > tree.clusters) return error.BadClusterId;
+    if (tree.clusters < 2) return false;
+    const path = try diameter_endpoints(allocator, tree);
+    return c == path.a or c == path.b;
+}
+
+// --- selftest: the diameter is a THIRD tree invariant, distinct from the bottleneck (largest edge) and the weight (sum of edges). Scene ONE is
+//     the MST's own three-cluster star (edges 1-2 gap 2, 1-3 gap 3): the diameter equals the whole weight yet exceeds the bottleneck, a star of
+//     two edges also a path. Scene TWO is the four-cluster star (edges 1-2, 1-3 gap 3, 1-4 gap 9): the diameter sits strictly between the
+//     bottleneck and the weight, a third arm branching off the longest path --------------------------------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a corner bracket-L: a vertical arm down column `x` from `y0` to `y1`, and a horizontal arm along row `yr` from `x0` to `x1`.
+fn set_corner_l(img: *qoi.Pixmap, x: u32, y0: u32, y1: u32, yr: u32, x0: u32, x1: u32) void {
+    // invariant: the arms run in the positive direction and stay inside the buffer.
+    assert(y1 >= y0);
+    assert(x1 >= x0);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) set_dot(img, x, yy);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) set_dot(img, xx, yr);
+}
+
+/// Paint a 1-pixel-thick RING (a rectangle outline) with corners `(x0, y0)` and `(x1, y1)` -- a holed object, its interior background.
+fn set_ring(img: *qoi.Pixmap, x0: u32, y0: u32, x1: u32, y1: u32) void {
+    // invariant: the ring spans at least a 3x3 box so it encloses a real interior hole, and stays inside the buffer.
+    assert(x1 >= x0 + 2);
+    assert(y1 >= y0 + 2);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) {
+        set_dot(img, xx, y0);
+        set_dot(img, xx, y1);
+    }
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) {
+        set_dot(img, x0, yy);
+        set_dot(img, x1, yy);
+    }
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// Build the cluster graph of a scene, checking the object and cluster counts along the way -- a local helper so every scene reads the same.
+fn graph_of(garden: std.mem.Allocator, img: *qoi.Pixmap, want_objects: u32, want_clusters: u32) !cluster_graph.ClusterGraph {
+    // invariant: the caller names how many objects and clusters the scene must hold, so a mislaid pixel fails loud.
+    assert(want_objects >= 1);
+    assert(want_clusters >= 1);
+    const map = try label.label_components(garden, img);
+    if (map.count != want_objects) return error.SceneObjectCountWrong;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    if (overlap_clusters.cluster_count(clustering) != want_clusters) return error.SceneClusterCountWrong;
+    return cluster_graph.build_cluster_graph(garden, clustering, graph);
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- SCENE ONE: the three-cluster star -- corner-L A and ring B into cluster 1 (the hub), lone block C as cluster 2, far block D as cluster
+    //     3; the MST is a star, edges 1-2 (gap 2) and 1-3 (gap 3) -------------------------------------------------------------------------------
+    var scene = try make_canvas(garden, 15, 15, 0);
+    set_corner_l(&scene, 1, 1, 6, 1, 1, 6); // A: box (1,1)-(6,6)
+    set_block(&scene, 8, 1, 2, 2); // C: box (8,1)-(9,2)
+    set_ring(&scene, 4, 4, 9, 9); // B: box (4,4)-(9,9), overlaps A's corner -> cluster 1
+    set_block(&scene, 12, 12, 2, 2); // D: box (12,12)-(13,13)
+    const cg = try graph_of(garden, &scene, 4, 3);
+    const tree = try cluster_mst.build_mst(garden, cg);
+
+    // --- THE DIAMETER EQUALS THE WEIGHT YET EXCEEDS THE BOTTLENECK -- the longest path 2 -> 1 -> 3 spends both edges, weight 5 --------------------
+    const diameter = try tree_diameter(garden, tree);
+    if (diameter != 5) return error.SceneOneDiameterNotFive; // 2 + 3, the two bridges of the star summed
+    // a two-edge tree is a single path, so every edge lies on the longest path: the diameter equals the tree's whole weight
+    if (diameter != cluster_mst.mst_weight(tree)) return error.SceneOneDiameterNotWeight;
+    // yet the longest reach spans TWO bridges, strictly more than the largest single one
+    if (diameter <= cluster_mst.mst_bottleneck(tree)) return error.SceneOneDiameterNotAboveBottleneck;
+
+    // --- THE ENDPOINTS ARE THE LEAVES, THE HUB THE CENTER -- the two poles are clusters 2 and 3, never the hub cluster 1 ----------------------
+    const ends = try diameter_endpoints(garden, tree);
+    if (ends.a != 2 or ends.b != 3) return error.SceneOneEndpointsNotTwoThree;
+    if (ends.weight != 5) return error.SceneOneEndpointWeightNotFive;
+    if (try is_diameter_endpoint(garden, tree, 2) != true) return error.SceneOneTwoNotEndpoint;
+    if (try is_diameter_endpoint(garden, tree, 3) != true) return error.SceneOneThreeNotEndpoint;
+    if (try is_diameter_endpoint(garden, tree, 1) != false) return error.SceneOneHubIsEndpoint; // the hub is never a pole
+
+    // --- THE HUB HAS THE SMALLEST ECCENTRICITY -- the CENTER the whole layout reaches through; the leaves reach the full diameter --------------
+    const ecc_hub = try tree_eccentricity(garden, tree, 1);
+    const ecc_two = try tree_eccentricity(garden, tree, 2);
+    const ecc_three = try tree_eccentricity(garden, tree, 3);
+    if (ecc_hub != 3) return error.SceneOneHubEccentricityNotThree; // the hub reaches its farthest leaf across one bridge
+    if (ecc_hub != cluster_mst.mst_bottleneck(tree)) return error.SceneOneHubEccentricityNotBottleneck;
+    if (ecc_two != 5 or ecc_three != 5) return error.SceneOneLeafEccentricityNotDiameter; // a leaf reaches the far leaf across both bridges
+    if (ecc_hub >= ecc_two) return error.SceneOneHubNotSmallestEccentricity; // the hub is strictly the center
+
+    // --- SCENE TWO: the four-cluster star -- a tight triangle of three clusters all mutually 3 apart around a hub, plus a far outlier 9 away; the
+    //     MST is a star on the hub cluster 1, edges 1-2 (gap 3), 1-3 (gap 3), 1-4 (gap 9) --------------------------------------------------------
+    var quad = try make_canvas(garden, 15, 15, 0);
+    set_block(&quad, 2, 2, 2, 2); // A -> cluster 1 (the hub)
+    set_block(&quad, 6, 2, 2, 2); // C -> cluster 2 (same top row, right of A)
+    set_block(&quad, 2, 6, 2, 2); // B -> cluster 3 (below A)
+    set_block(&quad, 12, 12, 2, 2); // D -> cluster 4 (far outlier)
+    const cg2 = try graph_of(garden, &quad, 4, 4);
+    const tree2 = try cluster_mst.build_mst(garden, cg2);
+
+    // --- THE DIAMETER SITS STRICTLY BETWEEN THE BOTTLENECK AND THE WEIGHT -- the longest path 2 -> 1 -> 4 spends the 9-arm and one 3-arm, weight
+    //     12; the other 3-arm (cluster 3) branches off the path and is never walked ------------------------------------------------------------
+    const diameter2 = try tree_diameter(garden, tree2);
+    if (diameter2 != 12) return error.SceneTwoDiameterNotTwelve; // 9 + 3, the two longest arms summed
+    // strictly LESS than the whole weight (15): the third arm is lost off the longest path
+    if (diameter2 >= cluster_mst.mst_weight(tree2)) return error.SceneTwoDiameterNotBelowWeight;
+    // strictly MORE than the bottleneck (9): the path spends two arms, not one
+    if (diameter2 <= cluster_mst.mst_bottleneck(tree2)) return error.SceneTwoDiameterNotAboveBottleneck;
+    // the three numbers are distinct: bottleneck 9 < diameter 12 < weight 15
+    if (cluster_mst.mst_bottleneck(tree2) != 9) return error.SceneTwoBottleneckNotNine;
+    if (cluster_mst.mst_weight(tree2) != 15) return error.SceneTwoWeightNotFifteen;
+
+    // --- THE FAR OUTLIER IS A POLE, THE HUB STILL THE CENTER -- one endpoint is the outlier cluster 4, the hub cluster 1 never a pole ----------
+    const ends2 = try diameter_endpoints(garden, tree2);
+    if (ends2.a != 2 or ends2.b != 4) return error.SceneTwoEndpointsNotTwoFour; // the lowest pair reaching 12 on the tie with (3,4)
+    if (ends2.weight != 12) return error.SceneTwoEndpointWeightNotTwelve;
+    if (try is_diameter_endpoint(garden, tree2, 4) != true) return error.SceneTwoOutlierNotEndpoint;
+    if (try is_diameter_endpoint(garden, tree2, 1) != false) return error.SceneTwoHubIsEndpoint;
+    const ecc_hub2 = try tree_eccentricity(garden, tree2, 1);
+    if (ecc_hub2 != 9) return error.SceneTwoHubEccentricityNotNine; // the hub reaches the outlier across one bridge, its farthest
+    if (ecc_hub2 >= diameter2) return error.SceneTwoHubNotSmallestEccentricity; // the hub is strictly the center, below the diameter
+
+    // --- A LONE-CLUSTER LAYOUT IS ALREADY ONE WHOLE -- an empty tree, zero diameter, zero eccentricity, and NO endpoints -----------------------
+    var lone_img = try make_canvas(garden, 6, 6, 0);
+    set_block(&lone_img, 1, 1, 2, 2); // one object, one cluster
+    const lone_cg = try graph_of(garden, &lone_img, 1, 1);
+    const lone_tree = try cluster_mst.build_mst(garden, lone_cg);
+    if (try tree_diameter(garden, lone_tree) != 0) return error.LoneDiameterNotZero;
+    if (try tree_eccentricity(garden, lone_tree, 1) != 0) return error.LoneEccentricityNotZero;
+    if (try is_diameter_endpoint(garden, lone_tree, 1) != false) return error.LoneClusterIsEndpoint;
+    if (diameter_endpoints(garden, lone_tree)) |_| return error.LoneEndpointsNotRefused else |err| {
+        if (err != error.EmptyTree) return error.WrongLoneEndpointsError;
+    }
+
+    // --- REFUSALS -- a zero or past-the-count cluster id refuses BadClusterId across the per-cluster reads -----------------------------------
+    if (tree_eccentricity(garden, tree, 0)) |_| return error.ZeroEccentricityNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongZeroEccentricityError;
+    }
+    if (tree_eccentricity(garden, tree, 4)) |_| return error.PastEccentricityNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongPastEccentricityError;
+    }
+    if (is_diameter_endpoint(garden, tree, 0)) |_| return error.ZeroEndpointNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongZeroEndpointError;
+    }
+    if (is_diameter_endpoint(garden, tree, 4)) |_| return error.PastEndpointNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongPastEndpointError;
+    }
+
+    // --- DETERMINISM -- the same graph reads the same diameter and endpoints twice ------------------------------------------------------------
+    const tree_again = try cluster_mst.build_mst(garden, cg);
+    if (try tree_diameter(garden, tree_again) != diameter) return error.DiameterNotDeterministic;
+    const ends_again = try diameter_endpoints(garden, tree_again);
+    if (ends_again.a != ends.a or ends_again.b != ends.b or ends_again.weight != ends.weight) return error.EndpointsNotDeterministic;
+
+    print("GREEN image-cluster-tree-diameter: the LONGEST REACH across the skeleton -- the DIAMETER of the cluster minimum spanning tree, the greatest path weight between any two clusters through the bridge edges, with tree_eccentricity each cluster's farthest reach, diameter_endpoints the two poles, is_diameter_endpoint the pole test, exact integers, NO float and NO tolerance -- the DECISIVE crux, the diameter is a THIRD tree invariant distinct from the bottleneck (largest edge) and the weight (sum of edges), coinciding with the weight only when the tree is a single path. THE DIAMETER EQUALS THE WEIGHT YET EXCEEDS THE BOTTLENECK -- over the three-cluster star (edges 1-2 gap 2, 1-3 gap 3) the longest path runs 2 -> 1 -> 3, weight 5, spending BOTH edges, so the diameter (5) equals the tree's whole weight (5) because a two-edge tree is a single path, yet strictly exceeds the bottleneck (3) because the longest reach spans two bridges; the endpoints are the LEAVES (clusters 2 and 3), never the hub, and the hub cluster 1 has the SMALLEST eccentricity (3), the CENTER the whole layout reaches through. THE DIAMETER SITS STRICTLY BETWEEN THE BOTTLENECK AND THE WEIGHT WHEN A THIRD ARM BRANCHES OFF -- over the four-cluster star (edges 1-2 gap 3, 1-3 gap 3, 1-4 gap 9) the longest path runs 2 -> 1 -> 4, weight 12, spending the 9-arm and one 3-arm while the other 3-arm branches off unwalked, so the diameter (12) is strictly less than the weight (15) and strictly more than the bottleneck (9), three distinct numbers 9 < 12 < 15; the far outlier cluster 4 is a pole, the hub cluster 1 still the center of least eccentricity. A lone-cluster layout is already one whole (an empty tree, zero diameter and eccentricity, no endpoints, refusing EmptyTree); a zero or past-the-count id refuses BadClusterId; the same graph reads the same diameter and endpoints twice. Compose not braid over image/cluster_minimum_spanning_tree.rye (build_mst and the tree's weight and bottleneck, cross-checked never re-derived) and image/cluster_graph.rye (the matrix a level below) -- a reading over a reading over a reading over a reading over a reading over a reading over a reading over a reading\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: cluster_tree_diameter selftest\n", .{});
+    return 1;
+}

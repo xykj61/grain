@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260819.020913
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title cluster_tree_diameter -- the LONGEST REACH across the skeleton
+prompt autonomous loop -- pick up the running Season G scene-read thread, take the next agent-doable lap Lindy-first crux-first, Standfast on reds first
+think Grounded first: read KYRI.md and RADIANT_STYLE.md to write in voice, then crux/REMEMBER.md, crux/REDS.md, and the top rows of session-logs/README.md. Standfast clear -- every living REDS row is Closed, Released, or the custody-gated errata #75, so no red blocks new work.
+think The running thread is the Season G scene-read floor. The prior lap built image/cluster_minimum_spanning_tree.rye (the skeleton, the MST bridge edges), which reads mst_weight (sum of edges) and mst_bottleneck (largest edge). The REMEMBER NEXT line named a cluster-tree DIAMETER read as one crux-first, agent-doable option -- the longest walk across the skeleton, a whole-tree number no single edge holds. Chose it: Lindy-first (a relational tree primitive read for years), crux-first (the hardest-solvable move that opens the rest), no fetch/license/key gate.
+think Read the MST module and witness to compose cleanly. Built image/cluster_tree_diameter.rye: tree_diameter (all-pairs longest path via a bounded breadth-first walk over the tree's own edges, one walk per cluster), diameter_endpoints (the two poles, lowest pair on a tie for determinism), tree_eccentricity (a cluster's farthest reach), is_diameter_endpoint (the pole test). Composed over cluster_mst.build_mst / mst_weight / mst_bottleneck, cross-checked never re-derived.
+think Designed the crux as two shapes over the MST's own two scenes. THREE-CLUSTER STAR (edges 1-2 gap 2, 1-3 gap 3): longest path 2->1->3 = 5 spends both edges, so diameter EQUALS the whole weight 5 (a two-edge tree is a single path) yet EXCEEDS the bottleneck 3; poles the leaves, hub the center of least eccentricity 3. FOUR-CLUSTER STAR (edges 1-2, 1-3 gap 3, 1-4 gap 9): longest path 2->1->4 = 12 spends the 9-arm and one 3-arm while the third arm branches off unwalked, so diameter sits STRICTLY BETWEEN bottleneck and weight, 9 < 12 < 15 -- three distinct numbers; far outlier a pole, hub still the center. The decisive lesson: the diameter is a THIRD tree invariant, coinciding with the weight only when the tree is a single path.
+obs GREEN on the FIRST full metal run, no reds. TAME bans clean, width-check exit 0, plain 7-bit ASCII, living-card ASCII GREEN.
+obs Version const read straight from the live clock 020913, no future stamp (REDS #75's lesson). No compound asserts, no brace trap in the print.
+obs Council rota lap deep-read RADIANT_STYLE.md and KYRI.md (voice items) -- the four faculties (Lattice's exact numbers, Scribble's named-on-first-use terms, Lantern's settled-vs-proposed, Ember's proven craft) held whole through the lap.
+loom witness=cluster_tree_diameter_witness result=GREEN metal_run=1 reds=0 image_modules=190
+file image/cluster_tree_diameter.rye the diameter/eccentricity reads over the MST, a reading over eight readings
+file tools/cluster_tree_diameter_witness.rish proves the two-shape crux on metal, native contains (REDS #85)
+file image/README.md names the cluster tree diameter after the cluster minimum spanning tree (docs-sync)
+file crux/REMEMBER.md live edge + Git nib repointed single-stranded, cluster_minimum_spanning_tree folded to a prior-nib comment
+recommend keep-going the next open-media rung crux-first: a cluster-tree RADIUS/center read pairing the eccentricities just named, a longest-path EDGE-LIST read naming the bridges the diameter walks, a per-cluster lasso read, or a codec read; the Microkernel study rung and a real-photo top-hat wait on a fetch/license gate. No network, no key, no funds.
