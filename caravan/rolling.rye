@@ -184,7 +184,10 @@ pub const Item = cohort.Assignment;
 /// predicate answers as a shared region without needing a special case --
 /// yet it is named here anyway, since a domain running twice at once is a
 /// different mistake from two domains sharing a store.
-fn admissible(
+/// Exported so a supervisor that changes only which dependent it reaps
+/// (`harvest.rye`) asks the same admission question this rung proved,
+/// rather than restating it one reaping later.
+pub fn admissible(
     sys: *const system.System,
     live: []const cohort.Running,
     head: Item,
