@@ -1,0 +1,334 @@
+//! image/click_facts.rye -- the CLICK-THEN-FACTS read: turn ONE point into a whole-group selection, then read that group's FACTS -- how
+//! much the group holds (area), which object in it is largest, how many of its objects are holed. A click names at most ONE object (the hit
+//! test), yet its EXPANSION reaches the whole connected cluster (image/click_expand.rye), so the facts a click reads are the GROUP's facts,
+//! not the clicked object's. Exact integers, NO float and NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/click_expand.rye bridges the first selector (image/hit_test.rye, a POINT names the ONE object
+//! under it) to the newest morphology (image/selection_neighbors.rye, GROW a selection to its fixed point, the whole connected cluster), so a
+//! click becomes a whole-group SELECTION -- an ascending `[]u32`. image/selection_summary.rye is what a surface DOES with a selection: it joins
+//! image/scene_manifest.rye's per-object rows over the selected labels and reads the selection as a whole. This rung JOINS the two ends -- it
+//! runs a click through the expand into a whole-group selection, then reads that selection's summary -- so one tap answers "what did I just
+//! grab, all of it." A reading over readings -- no plane of its own, no pixel written.
+//!
+//! The DECISIVE crux is the EXACT COMPLEMENT of image/selection_summary.rye's own: a selection is a SUBSET, so its summary is strictly SHARPER
+//! than the whole scene (the scene's largest can lie outside the selection); a click's expansion is a SUPERSET of the clicked object, so its
+//! facts are strictly BROADER than the one thing under the cursor. A click reads the group, and the group outruns the click, in three shapes at
+//! once over a 3-object chain (A a corner-L area 9, B a corner-L area 9, C a 5x5 ring area 16 with one hole) whose boxes overlap 1-2 and 2-3 yet
+//! never 1-3 (box overlap is not transitive), plus a far singleton block D area 4:
+//!
+//!   THE CLICK'S FACTS ARE THE GROUP'S, NOT THE CLICKED OBJECT'S. A click on corner-L A (area 9, unholed, not the largest) reads `click_area`
+//!   34 -- the whole group's area, the sum over A, B, and C -- far more than A's own 9; `click_largest` names the RING C (label 3), an object
+//!   the click never landed on; `click_holed_count` reads 1, though A itself encloses no hole. Every fact outruns the one object under the point.
+//!
+//!   ANY OBJECT OF A GROUP READS THE SAME FACTS. Clicking A, B, or C all expand to the SAME whole cluster {1,2,3}, so all three read the identical
+//!   area 34, the identical largest C, the identical holed count 1 -- exactly image/selection_summary.rye's reads over the cluster's membership,
+//!   cross-checked. Where you click within a group never changes the facts you read; that is the group-select a surface promises.
+//!
+//!   A MISS READS ZERO FACTS. A click in a gap -- the background inside a corner-L's own bounding box -- expands to the EMPTY selection, so
+//!   `click_area` and `click_holed_count` read zero (a phantom click holds no substance) while `click_largest` refuses `EmptyClick` by name (there
+//!   is no largest of nothing) -- image/hit_test.rye's box-is-a-prefilter crux carried all the way to the facts, where a phantom click reads no
+//!   phantom group.
+//!
+//! Compose not braid. This rung OWNS only the join of the two ends -- the click-to-group-to-facts pipeline. image/click_expand.rye owns the
+//! seed-and-expand (`click_expand`); image/selection_summary.rye owns the reads over a selection (`total_selected_area`, `largest_in_selection`,
+//! `holed_in_selection_count`); image/scene_manifest.rye owns the per-object rows. No matrix recomputed, no pixel re-read, no fact re-derived.
+//!
+//! Everything is bounded before a byte: a click expands to at most the whole scene (image/click_expand.rye's own bound under image/label.rye's
+//! `label_max_pixels`), and each summary read runs the group length times, each a single manifest lookup. A point off the map refuses
+//! `PointOutOfBounds` through the expand, having read nothing; a background point is a valid MISS, never an error -- a keeper may click empty
+//! canvas. No network, no key, no funds -- the click-to-facts read a surface names the day a tap must report the whole thing it grabbed.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/click_facts.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const hit_test = @import("hit_test.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const click_expand = @import("click_expand.rye");
+const selection_summary = @import("selection_summary.rye");
+
+pub const click_facts_version = "20260819.054914";
+
+pub const ClickFactsError = error{
+    EmptyClick,
+};
+
+/// The whole bundle a HIT reports -- the facts of the group a click expands to, read from ONE expansion so the pipeline runs once. `size` is the
+/// number of objects in the group, `area` its total foreground area, `largest` the label of its biggest object (ties broken by the earliest
+/// label), `holed_count` how many of its objects enclose a hole. A MISS has no largest, so it refuses `EmptyClick` by name; the thin readers
+/// below tolerate a miss where a single number still makes sense.
+pub const ClickFacts = struct {
+    size: u32,
+    area: u64,
+    largest: u32,
+    holed_count: u32,
+};
+
+/// The TOTAL foreground area of the whole group a click selects -- expand the click to its group (image/click_expand.rye), then sum every group
+/// object's area (image/selection_summary.rye). A member of a multi-object group reads the GROUP's area, strictly more than the clicked object's
+/// own; a MISS reads zero, since the empty selection holds no substance. Refuses `PointOutOfBounds` off the map, having read nothing.
+pub fn click_area(garden: std.mem.Allocator, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, x: u32, y: u32) !u64 {
+    // invariant: the graph, the manifest, and the map all describe the SAME scene -- one component count.
+    assert(graph.components == map.count);
+    assert(manifest.components == map.count);
+
+    const group = try click_expand.click_expand(garden, graph, map, x, y);
+    // invariant: a click's group can hold no more objects than the scene.
+    assert(group.len <= @as(usize, graph.components));
+    const area = try selection_summary.total_selected_area(manifest, group);
+    // invariant: the group's area never exceeds the whole scene's total area.
+    assert(area <= scene_manifest.total_area(manifest));
+    return area;
+}
+
+/// The LABEL of the LARGEST object in the group a click selects -- expand the click, then read the group's largest by area (image/
+/// selection_summary.rye), ties broken by the earliest label. May name an object the click never landed on, whenever a bigger member shares the
+/// group. Refuses `EmptyClick` by name on a MISS (no largest of nothing), `PointOutOfBounds` off the map.
+pub fn click_largest(garden: std.mem.Allocator, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, x: u32, y: u32) !u32 {
+    // invariant: the graph, the manifest, and the map all describe the SAME scene.
+    assert(graph.components == map.count);
+    assert(manifest.components == map.count);
+
+    const group = try click_expand.click_expand(garden, graph, map, x, y);
+    if (group.len == 0) return error.EmptyClick;
+    const lbl = try selection_summary.largest_in_selection(manifest, group);
+    // invariant: the chosen label is a real, dense label within the scene's range.
+    assert(lbl >= 1);
+    assert(lbl <= manifest.components);
+    return lbl;
+}
+
+/// HOW MANY objects in the group a click selects enclose at least one hole -- expand the click, then filter the group by holes (image/
+/// selection_summary.rye). A member of a group reads the GROUP's holed count, which can exceed the clicked object's own zero-or-one; a MISS reads
+/// zero. Refuses `PointOutOfBounds` off the map, having read nothing.
+pub fn click_holed_count(garden: std.mem.Allocator, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, x: u32, y: u32) !u32 {
+    // invariant: the graph, the manifest, and the map all describe the SAME scene.
+    assert(graph.components == map.count);
+    assert(manifest.components == map.count);
+
+    const group = try click_expand.click_expand(garden, graph, map, x, y);
+    const holed = try selection_summary.holed_in_selection_count(manifest, group);
+    // invariant: no more objects can be holed than the group holds.
+    assert(holed <= @as(u32, @intCast(group.len)));
+    return holed;
+}
+
+/// The WHOLE fact bundle for a HIT -- expand the click ONCE, then read size, area, largest, and holed count from that single group, so a surface
+/// gets everything one tap grabbed in a single call without re-expanding. Refuses `EmptyClick` by name on a MISS (a bundle names a largest, and a
+/// miss has none), `PointOutOfBounds` off the map.
+pub fn click_facts(garden: std.mem.Allocator, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, x: u32, y: u32) !ClickFacts {
+    // invariant: the graph, the manifest, and the map all describe the SAME scene.
+    assert(graph.components == map.count);
+    assert(manifest.components == map.count);
+
+    const group = try click_expand.click_expand(garden, graph, map, x, y);
+    if (group.len == 0) return error.EmptyClick;
+    // invariant: a hit's group holds at least the clicked object and no more than the scene.
+    assert(group.len >= 1);
+    assert(group.len <= @as(usize, graph.components));
+
+    const area = try selection_summary.total_selected_area(manifest, group);
+    const largest = try selection_summary.largest_in_selection(manifest, group);
+    const holed = try selection_summary.holed_in_selection_count(manifest, group);
+    // invariant: the largest label is real and dense, and the group's area is bounded by the scene.
+    assert(largest >= 1);
+    assert(largest <= manifest.components);
+    assert(area <= scene_manifest.total_area(manifest));
+    return ClickFacts{
+        .size = @as(u32, @intCast(group.len)),
+        .area = area,
+        .largest = largest,
+        .holed_count = holed,
+    };
+}
+
+// --- selftest: the DECISIVE click-reads-the-group crux over a 3-object CHAIN (A corner-L area 9, B corner-L area 9, C 5x5 ring area 16 one hole)
+//     whose boxes overlap 1-2 and 2-3 yet never 1-3, plus a far singleton block D area 4. Clicking A reads the whole group's facts (area 34,
+//     largest the RING C, holed 1); clicking A, B, or C reads the SAME facts; a click in A's interior reads zero facts and refuses a largest ----
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a corner bracket-L hugging TOP-LEFT: a vertical arm down column `x0` from `y0` to `y1`, and a horizontal arm along row `y0` from `x0`
+/// to `x1`. Its inclusive box is (x0,y0)-(x1,y1); its bottom-right corner stays empty so a box overlap there touches no pixel, and its interior
+/// stays background inside its own box -- the miss the click crux needs.
+fn set_corner_l(img: *qoi.Pixmap, x0: u32, y0: u32, x1: u32, y1: u32) void {
+    // invariant: the arms run in the positive direction and stay inside the buffer.
+    assert(x1 >= x0);
+    assert(y1 >= y0);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) set_dot(img, x0, yy);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) set_dot(img, xx, y0);
+}
+
+/// Paint a hollow rectangle BORDER (a ring) with inclusive box (x0,y0)-(x1,y1) -- the four edges filled, the interior left background as one
+/// enclosed hole. Its top-left corner (x0,y0) is filled, so a neighbor's box overlapping there in the ring's own border still stays disconnected
+/// only where the neighbor places no pixel.
+fn set_ring(img: *qoi.Pixmap, x0: u32, y0: u32, x1: u32, y1: u32) void {
+    // invariant: the ring has a real interior to enclose -- at least a 3x3 box.
+    assert(x1 >= x0 + 2);
+    assert(y1 >= y0 + 2);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) {
+        set_dot(img, xx, y0);
+        set_dot(img, xx, y1);
+    }
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) {
+        set_dot(img, x0, yy);
+        set_dot(img, x1, yy);
+    }
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- BUILD THE CHAIN on a 13x13 canvas: A corner-L box (1,1)-(5,5) label 1 (area 9), B corner-L box (4,4)-(8,8) label 2 (area 9), C a 5x5
+    //     RING box (7,7)-(11,11) label 3 (area 16, one hole), D a 2x2 block box (0,11)-(1,12) label 4 (area 4, a far singleton). A's box overlaps
+    //     B's and B's overlaps C's yet A's never overlaps C's (box overlap is not transitive); the shapes stay 8-disconnected, so they are three
+    //     components chained into ONE cluster, plus the singleton D ----------------------------------------------------------------------------
+    var scene = try make_canvas(garden, 13, 13, 0);
+    set_corner_l(&scene, 1, 1, 5, 5); // A: corner-L, box (1,1)-(5,5), area 9
+    set_corner_l(&scene, 4, 4, 8, 8); // B: corner-L, box (4,4)-(8,8), area 9
+    set_ring(&scene, 7, 7, 11, 11); // C: 5x5 ring, box (7,7)-(11,11), area 16, one hole
+    set_block(&scene, 0, 11, 2, 2); // D: 2x2 block, box (0,11)-(1,12), area 4, a far singleton
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 4) return error.SceneNotFourComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+
+    // confirm the CHAIN shape and the members' facts the crux leans on: 1-2 and 2-3 overlap, 1-3 does NOT; {1,2,3} one cluster, 4 apart; the ring
+    // C is the group's largest (area 16) and its only holed member, the corner-Ls A and B each area 9 and unholed
+    if (!(try scene_graph.relation_of(graph, 1, 2)).boxes_overlap) return error.OneTwoNotOverlapping;
+    if (!(try scene_graph.relation_of(graph, 2, 3)).boxes_overlap) return error.TwoThreeNotOverlapping;
+    if ((try scene_graph.relation_of(graph, 1, 3)).boxes_overlap) return error.OneThreeFalselyOverlapping;
+    if (try overlap_clusters.same_cluster(clustering, 1, 3) != true) return error.ChainNotOneCluster;
+    if (try overlap_clusters.same_cluster(clustering, 1, 4) != false) return error.DNotSingleton;
+    if ((try scene_manifest.object_of(manifest, 1)).area != 9) return error.ANotNine;
+    if ((try scene_manifest.object_of(manifest, 2)).area != 9) return error.BNotNine;
+    if ((try scene_manifest.object_of(manifest, 3)).area != 16) return error.CRingNotSixteen;
+    if ((try scene_manifest.object_of(manifest, 3)).holes != 1) return error.CRingNotHoled;
+    if ((try scene_manifest.object_of(manifest, 4)).area != 4) return error.DNotFour;
+
+    // --- THE CLICK'S FACTS ARE THE GROUP'S, NOT THE CLICKED OBJECT'S -- a click on corner-L A's left column (1,3) lands on A alone (area 9,
+    //     unholed, not the largest), yet reads the whole group's facts: area 34 (9+9+16), largest the RING C (label 3, never clicked), holed 1 --
+    if (try hit_test.object_label_at(&map, 1, 3) != 1) return error.ClickOnANotA;
+    if (try click_area(garden, graph, manifest, &map, 1, 3) != 34) return error.ClickAreaOnANotGroup; // 9+9+16, not A's own 9
+    if (try click_largest(garden, graph, manifest, &map, 1, 3) != 3) return error.ClickLargestOnANotRing; // C, an object never clicked
+    if (try click_holed_count(garden, graph, manifest, &map, 1, 3) != 1) return error.ClickHoledOnANotOne; // C holed, though A is not
+    const facts_a = try click_facts(garden, graph, manifest, &map, 1, 3);
+    if (facts_a.size != 3) return error.FactsSizeOnANotThree;
+    if (facts_a.area != 34) return error.FactsAreaOnANotGroup;
+    if (facts_a.largest != 3) return error.FactsLargestOnANotRing;
+    if (facts_a.holed_count != 1) return error.FactsHoledOnANotOne;
+
+    // --- ANY OBJECT OF A GROUP READS THE SAME FACTS -- clicking A (1,3), B (4,6), or C's border (7,9) all expand to the SAME cluster {1,2,3},
+    //     so all three read the identical area 34, largest C, holed 1 -- exactly selection_summary over the cluster's membership, cross-checked --
+    const facts_b = try click_facts(garden, graph, manifest, &map, 4, 6);
+    const facts_c = try click_facts(garden, graph, manifest, &map, 7, 9);
+    if (facts_b.area != facts_a.area or facts_b.largest != facts_a.largest or facts_b.holed_count != facts_a.holed_count) return error.BFactsDifferFromA;
+    if (facts_c.area != facts_a.area or facts_c.largest != facts_a.largest or facts_c.holed_count != facts_a.holed_count) return error.CFactsDifferFromA;
+    // cross-check against selection_summary read directly over the connected cluster's ascending membership {1,2,3}
+    const cluster_members = [_]u32{ 1, 2, 3 };
+    if (try selection_summary.total_selected_area(manifest, &cluster_members) != facts_a.area) return error.ClusterAreaDisagrees;
+    if (try selection_summary.largest_in_selection(manifest, &cluster_members) != facts_a.largest) return error.ClusterLargestDisagrees;
+    if (try selection_summary.holed_in_selection_count(manifest, &cluster_members) != facts_a.holed_count) return error.ClusterHoledDisagrees;
+
+    // --- A MISS READS ZERO FACTS -- a click in A's interior (3,3) is BACKGROUND inside A's own box (1,1)-(5,5): the box claims the point yet the
+    //     click misses, so the group is EMPTY -- click_area and click_holed_count read zero, click_largest and click_facts refuse EmptyClick ----
+    const a_obj = try scene_manifest.object_of(manifest, 1);
+    if (!hit_test.bbox_contains_point(a_obj, 3, 3)) return error.NotchNotInABox;
+    if (try hit_test.object_label_at(&map, 3, 3) != 0) return error.NotchNotBackground;
+    if (try click_area(garden, graph, manifest, &map, 3, 3) != 0) return error.MissAreaNotZero;
+    if (try click_holed_count(garden, graph, manifest, &map, 3, 3) != 0) return error.MissHoledNotZero;
+    if (click_largest(garden, graph, manifest, &map, 3, 3)) |_| return error.MissLargestNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissLargestError;
+    }
+    if (click_facts(garden, graph, manifest, &map, 3, 3)) |_| return error.MissFactsNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissFactsError;
+    }
+
+    // --- A SINGLETON'S GROUP IS ITSELF -- a click on the far block D (0,11) expands to just {4}, so its facts are D's own: area 4, largest D,
+    //     holed 0, size 1 -- the expansion adds nothing where the object is already its whole group -----------------------------------------
+    if (try click_area(garden, graph, manifest, &map, 0, 11) != 4) return error.SingletonAreaNotFour;
+    if (try click_largest(garden, graph, manifest, &map, 0, 11) != 4) return error.SingletonLargestNotD;
+    if (try click_holed_count(garden, graph, manifest, &map, 0, 11) != 0) return error.SingletonHoledNotZero;
+    const facts_d = try click_facts(garden, graph, manifest, &map, 0, 11);
+    if (facts_d.size != 1 or facts_d.area != 4 or facts_d.largest != 4 or facts_d.holed_count != 0) return error.SingletonFactsWrong;
+
+    // --- A POINT OFF THE MAP -- every read refuses PointOutOfBounds through the expand, having read nothing --------------------------------
+    if (click_area(garden, graph, manifest, &map, 13, 0)) |_| return error.OffMapAreaNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapAreaError;
+    }
+    if (click_facts(garden, graph, manifest, &map, 0, 13)) |_| return error.OffMapFactsNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapFactsError;
+    }
+
+    // --- DETERMINISM -- the same click reads the same facts twice --------------------------------------------------------------------
+    const f1 = try click_facts(garden, graph, manifest, &map, 4, 6);
+    const f2 = try click_facts(garden, graph, manifest, &map, 4, 6);
+    if (f1.area != f2.area or f1.largest != f2.largest or f1.holed_count != f2.holed_count or f1.size != f2.size) return error.FactsNotDeterministic;
+
+    print("GREEN image-click-facts: the CLICK-THEN-FACTS read -- turn ONE point into a whole-group selection, then read that group's FACTS (area, largest, holed count), joining image/click_expand.rye (the click-to-group expand) with image/selection_summary.rye (the reads over a selection), exact integers, NO float and NO tolerance -- the DECISIVE crux the EXACT COMPLEMENT of selection_summary's own: a selection is a SUBSET so its summary is strictly SHARPER than the whole scene, yet a click's expansion is a SUPERSET of the clicked object so its facts are strictly BROADER than the one thing under the cursor, in three shapes over a 3-object chain (A a corner-L area 9, B a corner-L area 9, C a 5x5 ring area 16 with one hole, boxes overlapping 1-2 and 2-3 yet never 1-3) plus a far singleton block D area 4. THE CLICK'S FACTS ARE THE GROUP'S, NOT THE CLICKED OBJECT'S -- a click on corner-L A (area 9, unholed, not the largest) reads click_area 34 (the whole group A+B+C, far more than A's own 9), click_largest the RING C (label 3, an object never clicked), click_holed_count 1 (C holed though A is not), every fact outrunning the one object under the point. ANY OBJECT OF A GROUP READS THE SAME FACTS -- clicking A, B, or C all expand to the SAME cluster {{1,2,3}} so all three read the identical area 34, largest C, holed 1, exactly selection_summary over the cluster's membership, cross-checked, so where you click within a group never changes the facts. A MISS READS ZERO FACTS -- a click in A's interior (3,3) is BACKGROUND inside A's own bounding box (the prefilter reads true) yet the click misses (the arbiter reads background), so the group is EMPTY, click_area and click_holed_count read zero while click_largest and click_facts refuse EmptyClick, hit_test's box-is-a-prefilter crux carried all the way to the facts where a phantom click reads no phantom group. A singleton's group is itself -- clicking the far block D reads its own facts (area 4, largest D, holed 0, size 1), the expansion adding nothing; a point off the map refuses PointOutOfBounds through the expand having read nothing; the same click reads the same facts twice. Compose not braid over image/click_expand.rye (the seed-and-expand), image/selection_summary.rye (the reads over a selection), image/scene_manifest.rye (the per-object rows), and image/overlap_clusters.rye (the whole-closure clustering the selftest cross-checks)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: click_facts selftest\n", .{});
+    return 1;
+}
