@@ -1,0 +1,26 @@
+format session-log-v1
+stamp 20260819.145920
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Caravan rederive -- a restarted child's rights come from the document, never from the parent's memory
+prompt Autonomous loop -- read KYRI and RADIANT_STYLE first, then REMEMBER, the itineraries, and the newest log recommends; Standfast on reds; take the next agent-doable lap Lindy-first crux-first on the Microkernel Target double-seat; send each finished increment as its own signed round; stop at the custody gates.
+think Lap 453 by log count, so the council rota reads item 21 of 27 -- ORGANIZING.md, the evergreen filing guide. Read it before placing anything: caravan code beside its module, the witness in tools/, the prose in caravan/README.md, the record in session-logs/. Nothing this round wanted a new home.
+think Standfast first. Living REDS rows are 80, 83, 84, 85. Rows 80, 83, 85 all carry closure notes; 85 was reopened and closed last lap. Row 84 -- the crux/ allowlist the work-in-progress rename left out of .gitignore -- carried no closure note at all. Measured rather than believed: line 70 reads !/crux/, and git check-ignore on a fresh file under crux/ answers not-ignored. The fix shipped in a196bad32b and the ledger never said so, which is its own small red. Wrote the closure note; the lesson is that the ledger is part of the fix, since the next reader inherits the ledger rather than the commit.
+think The newest log's recommend named two next cruxes: the unprompted ask, and a restarted child whose capabilities are re-derived from the declaration rather than re-handed by the parent. Chose the second, Lindy-first: a child's rights coming only from the declaration is seL4's own teaching (capabilities, not identities), and it hardens the ring that had just landed rather than opening a new direction beside it.
+think The shape: every attempt reloads the declaration from disk and derives the capability table from that read. The supervisor's remembered table is kept as a claim to check rather than a source to obey, and a disagreement meets a named policy -- refuse, or heal.
+think Refactored restart.rye at one seam rather than duplicating it: spawn_once split into a spawn_slot the caller hands a chosen line, and run_child exported. Which line a child receives is the whole question this ring asks, so the choosing and the spawning became two acts.
+think First metal run failed at the healing check -- the child reported malformed. Root: rederive's run_plan skipped provisioning entirely, so the child opened a region store that did not exist. restart.run_plan had done it; mine had not. Added a provisioning derivation of its own, so even the ground a run stands on comes from the file.
+obs Then the finding that shaped the round. RED probe 1 -- hand the child the REMEMBERED line rather than the fresh one -- came back GREEN. The claim was not observable: under refuse nothing spawns, and under heal the memory is replaced before any line is chosen, so at the moment of the lookup the two tables always agreed. A ring that cannot state its own claim is not yet a ring.
+obs Added a third policy, report: name the drift, keep the memory exactly as it stands, and continue. Now the two descriptions still disagree at the spawn, and the supervisor asks the widened child to do exactly the act its memory wrongly permits. WriteDenied comes back -- the document's line arriving at the child, visible from outside the program. The policy earns its place as the observable form of the claim rather than as a convenience.
+obs Both RED paths then proven on metal. Handing the remembered line tripped line_agrees inside spawn_slot and panicked before a process started -- the wall boot.rye built, holding here. Deriving once before the loop and reusing it broke assert(derivations == attempts) in run_plan, the same claim stated in reverse.
+obs TAME ratchet turned on touch: supervise came out at 78 lines, past the 70 bound, so the drift handling split into meet_drift at its natural seam. An unused regions import dropped. Bans clean, width-check clean, restart's own witness still GREEN after the seam refactor.
+loom witness=caravan_rederive_witness attempts=4 derivations=4 restarts=1 policies=3 children=3 declared_grants=8
+file caravan/rederive.rye the ring -- per-attempt derivation, table comparison, three drift policies, five checks
+file tools/caravan_rederive_witness.rish the witness -- GREEN on metal, both RED paths named in its head
+file caravan/restart.rye the seam -- spawn_once split into spawn_slot, run_child and fixed_argv_words exported
+file caravan/README.md the durable prose -- why the rights are derived again, and why report exists
+file crux/REDS.md REDS #84 closure note -- the fix landed in a196bad32b and the ledger never said so
+file crux/REMEMBER.md live edge refreshed to the fourteenth ring; the prior edge's second next-crux marked landed
+recommend keep-going -- the remaining next crux is the unprompted ask: a client ringing a server that has not spoken first, which inverts who starts the conversation and is the last shape of the Microkit arc still unbuilt. No key, no funds, no gate.
