@@ -32,16 +32,12 @@ assert selftest.ok else "hunk-cursor-preview: selftest exited non-zero — ${sel
 let out = trim selftest.out
 say "hunk-cursor-preview: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN cursor-preview' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-cursor-preview: selftest did not print the GREEN cursor-preview line"
+assert out contains "GREEN cursor-preview" else "hunk-cursor-preview: selftest did not print the GREEN cursor-preview line"
 
-let neighbors = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'preview_redo shows the retained tail cell-for-cell' && echo yes"]
-assert (trim neighbors.out) == "yes" else "hunk-cursor-preview: preview_redo did not show the retained tail cell-for-cell"
+assert out contains "preview_redo shows the retained tail cell-for-cell" else "hunk-cursor-preview: preview_redo did not show the retained tail cell-for-cell"
 
-let pure = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a preview never mutates the cursor' && echo yes"]
-assert (trim pure.out) == "yes" else "hunk-cursor-preview: a preview was not proven to leave the cursor untouched"
+assert out contains "a preview never mutates the cursor" else "hunk-cursor-preview: a preview was not proven to leave the cursor untouched"
 
-let forget = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a fresh push forgets the redo tail so preview_redo falls back' && echo yes"]
-assert (trim forget.out) == "yes" else "hunk-cursor-preview: the forget-the-tail fallback was not proven"
+assert out contains "a fresh push forgets the redo tail so preview_redo falls back" else "hunk-cursor-preview: the forget-the-tail fallback was not proven"
 
 say "hunk-cursor-preview: GREEN — a cursor previews its neighbors: undo and redo seen before the walk, the redo tail a cursor keeps and a fresh edit forgets, the cursor untouched by any look; no network, no key, no funds."

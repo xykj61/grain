@@ -33,19 +33,14 @@ assert selftest.ok else "hunk-preset-detail: selftest exited non-zero — ${self
 let out = trim selftest.out
 say "hunk-preset-detail: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN preset-detail' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-preset-detail: selftest did not print the GREEN preset-detail line"
+assert out contains "GREEN preset-detail" else "hunk-preset-detail: selftest did not print the GREEN preset-detail line"
 
-let names = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'vivid pop mono noir bright auto soft sharp sketch' && echo yes"]
-assert (trim names.out) == "yes" else "hunk-preset-detail: the stock book did not read to its nine preset names in defined order"
+assert out contains "vivid pop mono noir bright auto soft sharp sketch" else "hunk-preset-detail: the stock book did not read to its nine preset names in defined order"
 
-let travels = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'travels BOTH ways' && echo yes"]
-assert (trim travels.out) == "yes" else "hunk-preset-detail: the detailing was not proven to travel both ways as a fixed point"
+assert out contains "travels BOTH ways" else "hunk-preset-detail: the detailing was not proven to travel both ways as a fixed point"
 
-let selfcheck = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'does not match its listed names refuses BadDetail both directions' && echo yes"]
-assert (trim selfcheck.out) == "yes" else "hunk-preset-detail: the count/name self-consistency invariant was not proven"
+assert out contains "does not match its listed names refuses BadDetail both directions" else "hunk-preset-detail: the count/name self-consistency invariant was not proven"
 
-let honest = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'refuse DigestMismatch rather than advertise a phantom' && echo yes"]
-assert (trim honest.out) == "yes" else "hunk-preset-detail: the whole-detailing honesty guarantee was not proven"
+assert out contains "refuse DigestMismatch rather than advertise a phantom" else "hunk-preset-detail: the whole-detailing honesty guarantee was not proven"
 
 say "hunk-preset-detail: GREEN — a keeper reads which filters each installed book holds; the detailing travels both ways; the count never drifts from the names; refusals named."

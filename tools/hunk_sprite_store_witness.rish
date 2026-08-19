@@ -33,19 +33,15 @@ assert selftest.ok else "hunk-sprite-store: selftest exited non-zero — ${selft
 let out = trim selftest.out
 say "hunk-sprite-store: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN sprite-store' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-sprite-store: selftest did not print the GREEN store line"
+assert out contains "GREEN sprite-store" else "hunk-sprite-store: selftest did not print the GREEN store line"
 
-let verified = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'opens over the verified sheet' && echo yes"]
-assert (trim verified.out) == "yes" else "hunk-sprite-store: the selftest did not prove a market opens over the verified sheet"
+assert out contains "opens over the verified sheet" else "hunk-sprite-store: the selftest did not prove a market opens over the verified sheet"
 
-let tamper = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'refuses DigestMismatch' && echo yes"]
-assert (trim tamper.out) == "yes" else "hunk-sprite-store: the selftest did not prove a tampered sheet refuses before a product renders"
+assert out contains "refuses DigestMismatch" else "hunk-sprite-store: the selftest did not prove a tampered sheet refuses before a product renders"
 
 # HUNK1 stays GREEN — the store reuses image_artifact; the verified fetch underneath must still hold.
 let artifact = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/image_artifact.rye -femit-bin=pond/apps/bin/image_artifact && pond/apps/bin/image_artifact selftest 2>&1"]
 assert artifact.ok else "hunk-sprite-store: HUNK1 image_artifact re-run failed — ${artifact.out}"
-let artifact_green = run ["sh" "-c" "printf '%s' '${artifact.out}' | grep -q 'GREEN image-artifact' && echo yes"]
-assert (trim artifact_green.out) == "yes" else "hunk-sprite-store: HUNK1 image_artifact selftest did not stay GREEN"
+assert artifact.out contains "GREEN image-artifact" else "hunk-sprite-store: HUNK1 image_artifact selftest did not stay GREEN"
 
 say "hunk-sprite-store: GREEN — the marketplace sheet is content-addressed and a tampered sheet refuses before any product renders; HUNK1 verified fetch underneath stays GREEN. HUNK6 lands."

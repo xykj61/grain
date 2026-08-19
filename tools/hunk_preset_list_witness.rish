@@ -32,19 +32,14 @@ assert selftest.ok else "hunk-preset-list: selftest exited non-zero — ${selfte
 let out = trim selftest.out
 say "hunk-preset-list: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN preset-list' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-preset-list: selftest did not print the GREEN preset-list line"
+assert out contains "GREEN preset-list" else "hunk-preset-list: selftest did not print the GREEN preset-list line"
 
-let exact = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'lists exactly its 2 installed preset books in held order' && echo yes"]
-assert (trim exact.out) == "yes" else "hunk-preset-list: the listing did not name exactly the installed books in held order"
+assert out contains "lists exactly its 2 installed preset books in held order" else "hunk-preset-list: the listing did not name exactly the installed books in held order"
 
-let verified = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'each preset count read from a verified reopen' && echo yes"]
-assert (trim verified.out) == "yes" else "hunk-preset-list: the preset counts were not proven read from a verified reopen"
+assert out contains "each preset count read from a verified reopen" else "hunk-preset-list: the preset counts were not proven read from a verified reopen"
 
-let travels = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'travels BOTH ways' && echo yes"]
-assert (trim travels.out) == "yes" else "hunk-preset-list: the listing was not proven to travel both ways as a fixed point"
+assert out contains "travels BOTH ways" else "hunk-preset-list: the listing was not proven to travel both ways as a fixed point"
 
-let honest = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'refuse DigestMismatch rather than advertise a phantom' && echo yes"]
-assert (trim honest.out) == "yes" else "hunk-preset-list: the whole-listing honesty guarantee was not proven"
+assert out contains "refuse DigestMismatch rather than advertise a phantom" else "hunk-preset-list: the whole-listing honesty guarantee was not proven"
 
 say "hunk-preset-list: GREEN — a keeper's installed preset books are indexed honestly; the listing travels both ways; refusals named."

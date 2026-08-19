@@ -33,19 +33,14 @@ assert selftest.ok else "hunk-edit-preview: selftest exited non-zero — ${selft
 let out = trim selftest.out
 say "hunk-edit-preview: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN edit-preview' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-edit-preview: selftest did not print the GREEN edit-preview line"
+assert out contains "GREEN edit-preview" else "hunk-edit-preview: selftest did not print the GREEN edit-preview line"
 
-let faithful = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'down_map(apply(source,list)) cell-for-cell' && echo yes"]
-assert (trim faithful.out) == "yes" else "hunk-edit-preview: the preview was not proven equal to a direct apply cell-for-cell"
+assert out contains "down_map(apply(source,list)) cell-for-cell" else "hunk-edit-preview: the preview was not proven equal to a direct apply cell-for-cell"
 
-let nondestructive = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the empty list previews to the plain source down-map' && echo yes"]
-assert (trim nondestructive.out) == "yes" else "hunk-edit-preview: the non-destructive empty-list baseline was not proven"
+assert out contains "the empty list previews to the plain source down-map" else "hunk-edit-preview: the non-destructive empty-list baseline was not proven"
 
-let changes = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the pending edit changes the view' && echo yes"]
-assert (trim changes.out) == "yes" else "hunk-edit-preview: a pending edit was not proven to change the view"
+assert out contains "the pending edit changes the view" else "hunk-edit-preview: a pending edit was not proven to change the view"
 
-let committed = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'seen, not committed' && echo yes"]
-assert (trim committed.out) == "yes" else "hunk-edit-preview: the seen-not-committed guarantee was not stated"
+assert out contains "seen, not committed" else "hunk-edit-preview: the seen-not-committed guarantee was not stated"
 
 say "hunk-edit-preview: GREEN — a pending edit is seen before it is committed; the view faithfully shows the replayed result; refusals named."

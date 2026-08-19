@@ -32,25 +32,18 @@ assert selftest.ok else "hunk-scroll-input: selftest exited non-zero — ${selft
 let out = trim selftest.out
 say "hunk-scroll-input: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN preset-scroll-input' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-scroll-input: selftest did not print the GREEN preset-scroll-input line"
+assert out contains "GREEN preset-scroll-input" else "hunk-scroll-input: selftest did not print the GREEN preset-scroll-input line"
 
-let walk = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a signed scroll delta walks the offset reversibly' && echo yes"]
-assert (trim walk.out) == "yes" else "hunk-scroll-input: the reversible signed-delta walk was not proven"
+assert out contains "a signed scroll delta walks the offset reversibly" else "hunk-scroll-input: the reversible signed-delta walk was not proven"
 
-let clamp = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'clamps to the bottom-pinned offset and a huge negative one to the top without wrap' && echo yes"]
-assert (trim clamp.out) == "yes" else "hunk-scroll-input: the extreme-delta clamp without wrap was not proven"
+assert out contains "clamps to the bottom-pinned offset and a huge negative one to the top without wrap" else "hunk-scroll-input: the extreme-delta clamp without wrap was not proven"
 
-let extremes = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the i32 min and max deltas both clamp cleanly' && echo yes"]
-assert (trim extremes.out) == "yes" else "hunk-scroll-input: the i32-extremes clamp was not proven"
+assert out contains "the i32 min and max deltas both clamp cleanly" else "hunk-scroll-input: the i32-extremes clamp was not proven"
 
-let kinds = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the page and edge kinds match the cursor gestures' && echo yes"]
-assert (trim kinds.out) == "yes" else "hunk-scroll-input: the page/edge kinds matching the cursor were not proven"
+assert out contains "the page and edge kinds match the cursor gestures" else "hunk-scroll-input: the page/edge kinds matching the cursor were not proven"
 
-let fits = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a library that fits never moves whatever the input' && echo yes"]
-assert (trim fits.out) == "yes" else "hunk-scroll-input: the fitting-library-never-moves guarantee was not proven"
+assert out contains "a library that fits never moves whatever the input" else "hunk-scroll-input: the fitting-library-never-moves guarantee was not proven"
 
-let stream = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a long mixed stream of wheel deltas and page keys never leaves the library' && echo yes"]
-assert (trim stream.out) == "yes" else "hunk-scroll-input: the mixed-stream safety was not proven"
+assert out contains "a long mixed stream of wheel deltas and page keys never leaves the library" else "hunk-scroll-input: the mixed-stream safety was not proven"
 
 say "hunk-scroll-input: GREEN — a keeper's raw gesture drives the cursor with its full safety; a signed delta walks reversibly, an extreme delta clamps without wrap, the page and edge keys match the cursor's gestures, and a fitting library never moves. HUNK40 cursor GREEN beneath."

@@ -32,19 +32,14 @@ assert selftest.ok else "hunk-touch-view: selftest exited non-zero — ${selftes
 let out = trim selftest.out
 say "hunk-touch-view: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN preset-touch-view' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-touch-view: selftest did not print the GREEN preset-touch-view line"
+assert out contains "GREEN preset-touch-view" else "hunk-touch-view: selftest did not print the GREEN preset-touch-view line"
 
-let track = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'tracks the finger so the painted top book is a later book and the thumb walks down the bar' && echo yes"]
-assert (trim track.out) == "yes" else "hunk-touch-view: the page-tracks-the-finger property was not proven"
+assert out contains "tracks the finger so the painted top book is a later book and the thumb walks down the bar" else "hunk-touch-view: the page-tracks-the-finger property was not proven"
 
-let flick = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'coasts and settles the painted page bottom-pinned' && echo yes"]
-assert (trim flick.out) == "yes" else "hunk-touch-view: the flick-coasts-on-glass property was not proven"
+assert out contains "coasts and settles the painted page bottom-pinned" else "hunk-touch-view: the flick-coasts-on-glass property was not proven"
 
-let drift = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the picture never drifts (paint equals scroll_view of the shared cursor, two paints byte-identical)' && echo yes"]
-assert (trim drift.out) == "yes" else "hunk-touch-view: the picture-never-drifts property was not proven"
+assert out contains "the picture never drifts (paint equals scroll_view of the shared cursor, two paints byte-identical)" else "hunk-touch-view: the picture-never-drifts property was not proven"
 
-let refuse = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a bad bar refuses at open by name' && echo yes"]
-assert (trim refuse.out) == "yes" else "hunk-touch-view: the open-time refusal was not proven"
+assert out contains "a bad bar refuses at open by name" else "hunk-touch-view: the open-time refusal was not proven"
 
 say "hunk-touch-view: GREEN — a touchable painted surface shows the page scrolling under the finger: the painted page tracks a drag, a flick coasts to a bottom-pinned page on glass, the picture never drifts from the cursor, and a bad bar refuses at open. HUNK46 session, HUNK42 view, and the whole touch-scroll journey GREEN beneath."

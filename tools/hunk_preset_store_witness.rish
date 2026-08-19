@@ -32,22 +32,16 @@ assert selftest.ok else "hunk-preset-store: selftest exited non-zero — ${selft
 let out = trim selftest.out
 say "hunk-preset-store: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN preset-store' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-preset-store: selftest did not print the GREEN preset-store line"
+assert out contains "GREEN preset-store" else "hunk-preset-store: selftest did not print the GREEN preset-store line"
 
-let cold = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'reopens from cold out of its name, every preset intact' && echo yes"]
-assert (trim cold.out) == "yes" else "hunk-preset-store: the cold reopen was not proven with every preset intact"
+assert out contains "reopens from cold out of its name, every preset intact" else "hunk-preset-store: the cold reopen was not proven with every preset intact"
 
-let byte = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'applies to the same bytes byte-for-byte' && echo yes"]
-assert (trim byte.out) == "yes" else "hunk-preset-store: a reopened preset did not apply to the same bytes"
+assert out contains "applies to the same bytes byte-for-byte" else "hunk-preset-store: a reopened preset did not apply to the same bytes"
 
-let dedup = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the same book under two names is stored once' && echo yes"]
-assert (trim dedup.out) == "yes" else "hunk-preset-store: the book dedup dividend was not proven"
+assert out contains "the same book under two names is stored once" else "hunk-preset-store: the book dedup dividend was not proven"
 
-let tamper = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a tampered book refuses DigestMismatch' && echo yes"]
-assert (trim tamper.out) == "yes" else "hunk-preset-store: a tampered book did not refuse before a preset was defined"
+assert out contains "a tampered book refuses DigestMismatch" else "hunk-preset-store: a tampered book did not refuse before a preset was defined"
 
-let before = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'each before a preset is defined' && echo yes"]
-assert (trim before.out) == "yes" else "hunk-preset-store: the refusals were not proven to land before parse"
+assert out contains "each before a preset is defined" else "hunk-preset-store: the refusals were not proven to land before parse"
 
 say "hunk-preset-store: GREEN — a curated filter-preset book is content-addressed; it reopens from cold, verified bead by bead, before a preset is defined; refusals named."

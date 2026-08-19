@@ -33,22 +33,16 @@ assert selftest.ok else "hunk-touch-scroll: selftest exited non-zero — ${selft
 let out = trim selftest.out
 say "hunk-touch-scroll: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN preset-touch-scroll' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-touch-scroll: selftest did not print the GREEN preset-touch-scroll line"
+assert out contains "GREEN preset-touch-scroll" else "hunk-touch-scroll: selftest did not print the GREEN preset-touch-scroll line"
 
-let drag = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'moves the cursor and returns to idle with no fling' && echo yes"]
-assert (trim drag.out) == "yes" else "hunk-touch-scroll: the pure-drag no-fling gesture was not proven"
+assert out contains "moves the cursor and returns to idle with no fling" else "hunk-touch-scroll: the pure-drag no-fling gesture was not proven"
 
-let flick = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'flings and the coast advances the cursor to the bottom-pinned offset before settling idle' && echo yes"]
-assert (trim flick.out) == "yes" else "hunk-touch-scroll: the flick-that-coasts gesture was not proven"
+assert out contains "flings and the coast advances the cursor to the bottom-pinned offset before settling idle" else "hunk-touch-scroll: the flick-that-coasts gesture was not proven"
 
-let grab = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'grab-to-stop (a finger_down during a coast) freezes the cursor exactly where it was caught' && echo yes"]
-assert (trim grab.out) == "yes" else "hunk-touch-scroll: grab-to-stop was not proven"
+assert out contains "grab-to-stop (a finger_down during a coast) freezes the cursor exactly where it was caught" else "hunk-touch-scroll: grab-to-stop was not proven"
 
-let clamp = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a hard flick lands bottom-pinned with no overshoot' && echo yes"]
-assert (trim clamp.out) == "yes" else "hunk-touch-scroll: the inherited clamp was not proven"
+assert out contains "a hard flick lands bottom-pinned with no overshoot" else "hunk-touch-scroll: the inherited clamp was not proven"
 
-let refuse = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a bad cell height and a bad friction refuse at open by name' && echo yes"]
-assert (trim refuse.out) == "yes" else "hunk-touch-scroll: the open-time refusals were not proven"
+assert out contains "a bad cell height and a bad friction refuse at open by name" else "hunk-touch-scroll: the open-time refusals were not proven"
 
 say "hunk-touch-scroll: GREEN — a touchscreen's finger down, move, and up drive a live cursor: a pure drag returns to idle with no fling, a flick coasts to rest, grab-to-stop freezes the cursor where caught, a hard flick clamps with no overshoot, and a bad cell or friction refuses at open. HUNK45 fling, HUNK44 drag, HUNK43 input, and HUNK40 cursor GREEN beneath."

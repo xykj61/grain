@@ -33,19 +33,14 @@ assert selftest.ok else "hunk-revert-preview: selftest exited non-zero — ${sel
 let out = trim selftest.out
 say "hunk-revert-preview: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN revert-preview' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-revert-preview: selftest did not print the GREEN revert-preview line"
+assert out contains "GREEN revert-preview" else "hunk-revert-preview: selftest did not print the GREEN revert-preview line"
 
-let restored = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the original restored' && echo yes"]
-assert (trim restored.out) == "yes" else "hunk-revert-preview: the restored view did not equal the source down-map"
+assert out contains "the original restored" else "hunk-revert-preview: the restored view did not equal the source down-map"
 
-let clamp = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'clamps to the original' && echo yes"]
-assert (trim clamp.out) == "yes" else "hunk-revert-preview: an over-count revert did not clamp to the original"
+assert out contains "clamps to the original" else "hunk-revert-preview: an over-count revert did not clamp to the original"
 
-let pure = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'input list is untouched' && echo yes"]
-assert (trim pure.out) == "yes" else "hunk-revert-preview: the caller's list was not proven untouched"
+assert out contains "input list is untouched" else "hunk-revert-preview: the caller's list was not proven untouched"
 
-let rescue = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'rescues a refusing list' && echo yes"]
-assert (trim rescue.out) == "yes" else "hunk-revert-preview: reverting a bad edit did not rescue a refusing list"
+assert out contains "rescues a refusing list" else "hunk-revert-preview: reverting a bad edit did not rescue a refusing list"
 
 say "hunk-revert-preview: GREEN — the Skate view of a revert: the earlier image seen before it is committed, the original restored by reverting all, a revert rescuing a refusing list; no network, no key, no funds."

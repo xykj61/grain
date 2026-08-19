@@ -33,28 +33,20 @@ assert selftest.ok else "hunk-scroll-view: selftest exited non-zero — ${selfte
 let out = trim selftest.out
 say "hunk-scroll-view: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN preset-scroll-view' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-scroll-view: selftest did not print the GREEN preset-scroll-view line"
+assert out contains "GREEN preset-scroll-view" else "hunk-scroll-view: selftest did not print the GREEN preset-scroll-view line"
 
-let left = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the cursor page fills the left' && echo yes"]
-assert (trim left.out) == "yes" else "hunk-scroll-view: the page filling the left region was not proven"
+assert out contains "the cursor page fills the left" else "hunk-scroll-view: the page filling the left region was not proven"
 
-let toppin = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the thumb sits on the top bar cell' && echo yes"]
-assert (trim toppin.out) == "yes" else "hunk-scroll-view: the thumb-at-top seat was not proven"
+assert out contains "the thumb sits on the top bar cell" else "hunk-scroll-view: the thumb-at-top seat was not proven"
 
-let botpin = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the thumb walks to the bottom bar cell (start + len == track)' && echo yes"]
-assert (trim botpin.out) == "yes" else "hunk-scroll-view: the thumb-walks-to-bottom pin was not proven"
+assert out contains "the thumb walks to the bottom bar cell (start + len == track)" else "hunk-scroll-view: the thumb-walks-to-bottom pin was not proven"
 
-let seen = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the bar adds pixels beyond the text alone (a scroll bar you can see)' && echo yes"]
-assert (trim seen.out) == "yes" else "hunk-scroll-view: the bar-genuinely-seen guarantee was not proven"
+assert out contains "the bar adds pixels beyond the text alone (a scroll bar you can see)" else "hunk-scroll-view: the bar-genuinely-seen guarantee was not proven"
 
-let pure = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the view is pure and deterministic (built twice, byte-identical' && echo yes"]
-assert (trim pure.out) == "yes" else "hunk-scroll-view: the pure-and-deterministic guarantee was not proven"
+assert out contains "the view is pure and deterministic (built twice, byte-identical" else "hunk-scroll-view: the pure-and-deterministic guarantee was not proven"
 
-let fits = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'fills the whole bar (nothing to scroll)' && echo yes"]
-assert (trim fits.out) == "yes" else "hunk-scroll-view: the fitting-library-fills-the-bar guarantee was not proven"
+assert out contains "fills the whole bar (nothing to scroll)" else "hunk-scroll-view: the fitting-library-fills-the-bar guarantee was not proven"
 
-let refuse = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'refuses BadBar, a zero grid EmptyView' && echo yes"]
-assert (trim refuse.out) == "yes" else "hunk-scroll-view: the BadBar / EmptyView refusals were not proven"
+assert out contains "refuses BadBar, a zero grid EmptyView" else "hunk-scroll-view: the BadBar / EmptyView refusals were not proven"
 
 say "hunk-scroll-view: GREEN — a keeper sees the page they are on and a live scroll bar beside it on one glass grid; the thumb walks top to bottom with the cursor, the bar rasterizes genuinely lit, the composed surface is pure and deterministic, a fitting library fills the whole bar, and the refusals fire. HUNK40 cursor and HUNK41 scroll bar GREEN beneath."

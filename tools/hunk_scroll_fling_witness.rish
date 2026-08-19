@@ -32,25 +32,18 @@ assert selftest.ok else "hunk-scroll-fling: selftest exited non-zero — ${selft
 let out = trim selftest.out
 say "hunk-scroll-fling: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN preset-scroll-fling' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-scroll-fling: selftest did not print the GREEN preset-scroll-fling line"
+assert out contains "GREEN preset-scroll-fling" else "hunk-scroll-fling: selftest did not print the GREEN preset-scroll-fling line"
 
-let decay = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'decays strictly to rest without flipping sign' && echo yes"]
-assert (trim decay.out) == "yes" else "hunk-scroll-fling: the monotone sign-stable decay was not proven"
+assert out contains "decays strictly to rest without flipping sign" else "hunk-scroll-fling: the monotone sign-stable decay was not proven"
 
-let up = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'its velocity never turning positive' && echo yes"]
-assert (trim up.out) == "yes" else "hunk-scroll-fling: the upward-fling sign stability was not proven"
+assert out contains "its velocity never turning positive" else "hunk-scroll-fling: the upward-fling sign stability was not proven"
 
-let overshoot = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'lands exactly on the bottom-pinned offset and a hard upward one on the top with no overshoot' && echo yes"]
-assert (trim overshoot.out) == "yes" else "hunk-scroll-fling: the no-overshoot clamp was not proven"
+assert out contains "lands exactly on the bottom-pinned offset and a hard upward one on the top with no overshoot" else "hunk-scroll-fling: the no-overshoot clamp was not proven"
 
-let ceiling = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the gentlest allowed friction (7/8) at a large speed still settles within the ceiling' && echo yes"]
-assert (trim ceiling.out) == "yes" else "hunk-scroll-fling: the bounded-tick ceiling was not proven"
+assert out contains "the gentlest allowed friction (7/8) at a large speed still settles within the ceiling" else "hunk-scroll-fling: the bounded-tick ceiling was not proven"
 
-let zero = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a zero-velocity fling is immediately done and never moves' && echo yes"]
-assert (trim zero.out) == "yes" else "hunk-scroll-fling: the immediate-done zero fling was not proven"
+assert out contains "a zero-velocity fling is immediately done and never moves" else "hunk-scroll-fling: the immediate-done zero fling was not proven"
 
-let refuse = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'each refuse by name' && echo yes"]
-assert (trim refuse.out) == "yes" else "hunk-scroll-fling: the friction/velocity refusals were not proven"
+assert out contains "each refuse by name" else "hunk-scroll-fling: the friction/velocity refusals were not proven"
 
 say "hunk-scroll-fling: GREEN — a lifted finger's fling coasts and always settles: the velocity decays strictly without flipping sign, a hard flick clamps at the ends with no overshoot, a zero fling never moves, and the friction and velocity bounds refuse by name. HUNK44 drag, HUNK43 input, and HUNK40 cursor GREEN beneath."
