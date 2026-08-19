@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20260819.160020
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Caravan stall -- a stalled peer costs its own stream alone, and its loss is a number
+prompt Autonomous loop -- take the next agent-doable lap Lindy-first crux-first on the Microkernel Target double-seat, Standfast on reds first, one council-rota doc deep-read, condense REMEMBER, send the finished increment.
+think Standfast first. Read every living row and prose note in crux/REDS.md: 80 closed by the count guard, 83's prevention landed as the ASCII loom, 84 closed on measurement 20260819.145920, 85 reopened and closed with a real check behind it, 86 and 87 released. No agent-closable red stood open. Confirmed rather than assumed -- tools/living_card_ascii_witness.rish run on metal, GREEN, its planted mojibake control still caught.
+think Council rota, lap 457 of the 27-doc d27 -- item 25, active-designing/20260816-205859_double-seat-expansion-eight-seasons.md. Its study-weight recenter names the posture this ring keeps: seL4 and Microkit first, verification-minded and static, because that matches Safety over Performance over Joy more tightly than a large dynamic userland. A declared per-stream policy is exactly that posture -- the document decides, never the code's preference.
+think The last lap's recommend named the crux exactly: a stream whose peer never drains. Reading fanin.rye showed why fairness cannot answer it. A per-pass bound divides attention among peers that are working; a peer that has stopped working is a different fact, and no division of attention reaches it.
+think The direction reverses, and the declaration already grants it. serial_two_clients gives the server rw on rx_a and the client r; the client rw on tx_a and the server r. So an answer queue is queue.rye's own two indices running the other way -- head in rx_a where the server writes, tail in tx_a where the client writes. No new wiring at all, which is the fourth ring in a row the document has absorbed without changing.
+think Three doors, and naming the worst one first was the honest ordering. Blocking looks safest and is worst: a server that waits on a stalled tail hands one silent domain the power to stop every other domain it serves. Refusing keeps every byte. Lapsing keeps moving. The ring implements refuse and lapse and rules blocking out by construction -- the pass never waits on any stream.
+think Which door a stream takes had to be declared per stream rather than chosen by the server. A server that quietly picked a door for an undeclared stream would be making a policy decision the document never made, so the plan wire grew a fourth parallel list and a pass naming fewer doors than streams is refused as malformed rather than defaulted.
+think The lapse had to be countable or it would be a silence wearing a policy's clothes. A consumer knows its own tail and can read the server's head, and a head standing further ahead than the queue is wide says exactly how many answers the window slid past. Arithmetic out of two numbers neither side can forge -- which is why the wall matters: a server able to advance the tail could mark every dropped answer read and erase the count.
+think Reused fanin.NameList and fanin.max_streams rather than restating them, and let PolicyList stand as its own shape beside them. Compose, never braid -- a policy is not a name, and giving it its own parse and render kept the unknown-word refusal in one place.
+obs GREEN on the first metal pass, before either probe. The two RED probes were then run to earn the green rather than assume it.
+obs The blocking probe taught more than expected. With the stalled stream second in the list, client_a was still served and only the pass outcome changed; reversing the list so the stalled stream came first showed the true starvation -- client_a never reached at all, served zero by a peer it shares nothing with. Order-dependence is exactly what a per-stream continue removes.
+obs The compiler caught the first draft of that probe before it ran -- planting an early return left `refused` never mutated, and Zig refused to build it. A probe that cannot compile is a small proof the code has no dead path.
+obs The silent-lapse probe went RED twice, in layers. The bound assert `taking <= max_outstanding` fired first, before any wrong byte was read; with that bound relaxed as well, the consumer read slot zero, found answer 4 where 0 belonged, and answered `bytes differed`. Sequence numbers in the bytes turned a silent overwrite into a mismatch, and the window check turns that mismatch into a count.
+obs Chose `lapsed` as a report on a successful drain rather than a refusal. The answers still standing were read whole; the honest addition is the number that fell out first. A plain success here would hide a loss the consumer can measure exactly.
+loom witness=caravan_stall_witness answers=12 passes=3 streams=6 drains=4 refused=2 lapsed=2 rings=5 capacity=4
+loom red_probe=blocking_door result=stalled_stream_first_starved_sibling outcome=client_a_served_zero
+loom red_probe=silent_lapse result=bound_assert_fired_then_slot_read_wrong outcome=bytes_differed
+file caravan/stall.rye the ring itself -- two declared doors, a pass that never waits, a loss the consumer counts
+file tools/caravan_stall_witness.rish the witness -- GREEN on metal, every claim read natively with contains
+file caravan/README.md the ladder gains its eighteenth row and the prose that says why a stalled peer costs its own stream alone
+file crux/REMEMBER.md the live edge moves to stall; the fanin edge condenses into the prior-edges line
+recommend keep-going -- next the many-to-many shape: two servers and two clients on one declaration, where a domain both asks and answers and a cycle in the wiring becomes possible for the first time. No key, no funds, no gate.
