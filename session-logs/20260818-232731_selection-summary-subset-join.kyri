@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260818.232731
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title selection_summary -- read a selection as a small table, the join over the subset, GREEN
+prompt autonomous loop (baton prin recur) -- take the next agent-doable lap Lindy-first crux-first on the live green Season G scene-read edge, prove it, send it
+think Picked up the running thread: read KYRI + RADIANT_STYLE (voice first), then REMEMBER, the top three README rows, and the newest recommend line. The lasso_select lap just landed and named the next crux -- a further scene read (sort/filter a selection by joined facts, an object-count-in-region summary, a per-selection descriptor join) or a codec read. Not a set boundary, so no REMEMBER condense; take the next lap.
+think Standfast first: every living REDS row is CLOSED or Released, only #75 rests as custody-gated errata. No open agent-closable red. Line clear to build.
+think Read the selection ladder to see how a selection is represented: hit_test, region_select, lasso_select all return an ASCENDING SET of dense labels []u32. scene_manifest carries per-object rows (area, box, Euler, holes). The crux-first next rung is what a surface DOES with a selection: JOIN scene_manifest facts over just the selected subset. It composes over ANY selector since all speak the same label-set language -- the natural cap of the selection family, closing cleanly with a GREEN witness, no fetch/key/funds gate.
+think The decisive crux: a selection is a SUBSET, so a read over it is strictly sharper than the same read over the whole scene -- the scene's largest object AND its largest_holed can both lie outside the selection. Chose fixtures that make it concrete: {small ring, small block} excludes both the scene largest (block 25) and largest_holed (large ring 16), so largest_in_selection and largest_holed_in_selection both name the small ring; the filter counts one holed of two; {small ring, large ring} sorts by area to reverse the ascending label order 2,3 -> 3,2.
+think Confirmed no name collision: part_query is the marketplace text-search box, region_stats operates over []Region; selection_summary is free and composes over scene_manifest + []u32.
+obs Built image/selection_summary.rye (total_selected_area, largest_in_selection, holed_in_selection_count, largest_holed_in_selection, sort_selection_by_area over a validated selection; validate_selection refuses BadSelection at the edge) + tools/selection_summary_witness.rish (native contains, REDS #85).
+obs Two reds caught before GREEN, both by the build/lint on metal, neither an algorithm red so neither booked: (1) the print's `{small ring, small block}` braces read as Zig format placeholders -- the same brace-escape trap region_select hit -- fixed by doubling to `{{...}}`; (2) TAME flagged two compound `assert(a and b)` lines, split so the failing half is named. Witness GREEN on the next run, tame_style_check GREEN, width-check exit 0, both files plain 7-bit ASCII.
+obs Sort is a bounded insertion sort by (area descending, label ascending); since a selection arrives ascending by label, equal-area ties keep ascending label order. Postcondition asserts the result is non-increasing by area over the whole slice.
+loom witness=selection_summary_witness build=green selftest=green files=2 image_modules=175
+file image/selection_summary.rye the selection read: join scene_manifest facts over the subset a selector named, exact integers no float no tolerance
+file tools/selection_summary_witness.rish proves the subset crux on metal, native contains checks, refusals by name, determinism
+file image/README.md names the selection summary after the lasso select (docs-sync)
+file crux/REMEMBER.md live edge + Git nib repointed to selection_summary single-stranded, lasso_select folded to a prior-nib comment
+file session-logs/20260818-232731_selection-summary-subset-join.kyri this log
+recommend keep-going name the next open-media rung crux-first (an object-count-in-region summary, a per-selection bounding-box union, a descriptor join over a selection, or a codec read), OR advance the Microkernel Target study rungs -- yet the seL4/Genode clean-room study waits on a fetch/license gate, surfaced not crossed; the real-photo top-hat waits on a fetch gate. No network, no key, no funds.
