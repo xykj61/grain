@@ -1,0 +1,45 @@
+# tools/scene_manifest_witness.rish -- one ROW PER OBJECT for a whole scene, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/euler_scene.rye reads a scene's TOPOLOGY (how many objects, how many holes, which object
+# is holed); image/regions.rye reads a scene's GEOMETRY (each object's area and bounding box). This rung JOINS the two into one
+# manifest row per object -- geometry beside topology in dense label order -- exact integers, NO float, NO tolerance.
+#
+# The crux this witness proves on metal: a scene of a large solid block (area 25, biggest overall, no hole), a small 3x3 ring
+# (area 8, one hole), a large 5x5 ring (area 16, one hole), and a small solid block (area 4, no hole) reads largest_holed = the
+# LARGE RING (label 3) -- the largest object that is holed. The pure-geometry largest picks the unholed block (label 1) and the
+# pure-topology most-holed ties the two rings and breaks to the smaller one (label 2), so only the join names label 3; every row
+# carries both halves; an all-simply-connected scene refuses NoHoledObject; an empty scene reads a valid empty manifest and refuses
+# by name; determinism. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/scene_manifest_witness.rish
+
+say "scene_manifest: Language EN -- Season G per-object scene manifest; JOIN each component's topology (Euler number, hole count) with its geometry (area, bounding box) into one row per object, in dense label order; NO float, NO tolerance."
+say "scene_manifest: Style Radiant -- compose not braid: this rung owns only the per-object join and the reads over it; label owns the component map, regions owns the area and bounding box, euler_number owns the single-region topology. No bit-quad convention of its own, no pixel written -- a reading, not a render."
+say "scene_manifest: Lens TAME -- the object slice is sized to label's count under label_max_pixels; the join loop runs count times, calling regions once and euler_number once each; an empty scene reads a valid empty manifest; largest_holed refuses NoHoledObject and object_of refuses BadObjectLabel; all-or-nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/scene_manifest"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/scene_manifest.rye -femit-bin=${bin}"]
+assert build.ok else "scene_manifest: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "scene_manifest: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "scene_manifest: ${out}"
+
+assert selftest.out contains "GREEN image-scene-manifest" else "scene_manifest: selftest did not print the GREEN line"
+assert selftest.out contains "the DECISIVE join crux" else "scene_manifest: the decisive join crux did not print"
+assert selftest.out contains "largest_holed = the LARGE RING (label 3)" else "scene_manifest: the largest-holed answer did not print"
+assert selftest.out contains "the pure-geometry largest picks the unholed solid block" else "scene_manifest: the geometry-only contrast did not print"
+assert selftest.out contains "the pure-topology most-holed ties the two rings and breaks to the smaller one" else "scene_manifest: the topology-only contrast did not print"
+assert selftest.out contains "only the join, area AND holes side by side, names it" else "scene_manifest: the join claim did not print"
+assert selftest.out contains "every manifest row carries both halves" else "scene_manifest: the both-halves claim did not print"
+assert selftest.out contains "total_area sums the per-object areas to the whole foreground 53" else "scene_manifest: the total-area aggregate did not print"
+assert selftest.out contains "refuses NoHoledObject even though objects exist" else "scene_manifest: the no-holed refusal did not print"
+assert selftest.out contains "a label past the count refuses BadObjectLabel" else "scene_manifest: the bad-label refusal did not print"
+assert selftest.out contains "reads deterministically" else "scene_manifest: determinism did not print"
+
+say "scene_manifest: GREEN on metal -- the per-object scene manifest joins each object's geometry and topology into one row, and largest_holed names the biggest holed object where neither the pure-geometry largest nor the pure-topology most-holed can; refusals by name, determinism. Season G open-media."

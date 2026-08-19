@@ -1,0 +1,393 @@
+//! image/scene_manifest.rye -- one ROW PER OBJECT for a whole scene: JOIN each component's TOPOLOGY (its Euler number and hole count)
+//! with its GEOMETRY (its area and bounding box) into a single manifest a surface reads to enumerate and describe every object at
+//! once -- exact integers, NO float and NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/euler_scene.rye reads a scene's TOPOLOGY (how many objects, how many holes, and which
+//! object is holed); image/regions.rye reads a scene's GEOMETRY (how big each object is, and where it sits). Each answers half the
+//! question a surface asks the moment it has a labeling. This rung JOINS the two halves: for every component it carries, in dense
+//! label order, its area and tight bounding box beside its Euler number and hole count -- so a single manifest row describes an
+//! object both as a shape and as a topology, and a surface can enumerate a whole page of objects from one read.
+//!
+//! The JOIN is strictly sharper than either half alone, and one read makes that plain:
+//!
+//!   `largest_holed(manifest)` -- the label of the LARGEST object that encloses at least one hole. Neither parent can answer it.
+//!   image/region_stats.rye's `largest_region` is pure geometry: it names the biggest object whether or not it is holed. Image
+//!   image/euler_scene.rye's `most_holed` is pure topology: it names the object with the MOST holes regardless of its size. The
+//!   biggest holed object is a fact about BOTH -- the manifest joins the area and the hole count, so it alone can name it.
+//!
+//! The DECISIVE crux: a scene of a large solid block (biggest overall, no hole), a small ring (holed, small), a large ring (holed,
+//! big), and a small solid block reads `largest_holed` = the LARGE RING. The pure-geometry largest picks the solid block (unholed);
+//! the pure-topology most-holed ties the two rings and breaks to the smaller one -- neither lands on the large ring the join names.
+//! Two objects can share an area yet split on topology, and two can share a topology yet split on area; the manifest separates every
+//! such pair because it holds both axes side by side.
+//!
+//! Compose not braid. This rung OWNS only the per-object JOIN and the reads over it -- no bit-quad convention of its own, no label
+//! plane, no box accumulation, no pixel written. image/label.rye owns the component map and its 8-connectivity; image/regions.rye
+//! owns the area and bounding box (`measure_regions`); image/euler_number.rye owns the single-region bit-quad topology; this rung
+//! calls each and stitches one `ObjectEntry` per label, never re-deriving either half.
+//!
+//! Everything is bounded before a byte: the object slice is sized to image/label.rye's `count`, itself bounded by
+//! image/label.rye's `label_max_pixels` since a component needs at least one pixel; the per-object join runs `count` times, each
+//! calling `regions` once and `euler_number` once. An empty labeling (no components) reads a valid empty manifest; `largest_holed`
+//! refuses `NoHoledObject` by name when no object encloses a hole, and `object_of` refuses `BadObjectLabel` for a label outside the
+//! dense range. All-or-nothing, never a half-stitched manifest. No network, no key, no funds -- the per-object scene manifest a
+//! surface names the day it must list every object on a page with both its shape and its holes, not one at a time.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/scene_manifest.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const regions = @import("regions.rye");
+const euler_number = @import("euler_number.rye");
+
+pub const scene_manifest_version = "20260818.220205";
+
+pub const SceneManifestError = error{
+    NoHoledObject,
+    BadObjectLabel,
+};
+
+/// One manifest ROW: a single object described as BOTH a shape and a topology. `label` is the component's dense label (1..count).
+/// `area` is its foreground pixel count and `min_x`..`max_y` its tight inclusive bounding box (image/regions.rye's geometry).
+/// `euler` is its Euler number and `holes` its interior-hole count (image/euler_number.rye's topology). Every field is exact.
+pub const ObjectEntry = struct {
+    label: u32 = 0,
+    area: u32 = 0,
+    min_x: u32 = 0,
+    min_y: u32 = 0,
+    max_x: u32 = 0,
+    max_y: u32 = 0,
+    euler: i32 = 0,
+    holes: u32 = 0,
+
+    /// The bounding box width in pixels -- the inclusive span on x, always at least one for a real object.
+    pub fn bbox_width(self: *const ObjectEntry) u32 {
+        // invariant: a joined object's box is well-formed on x, so the low corner never passes the high corner.
+        assert(self.max_x >= self.min_x);
+        return self.max_x - self.min_x + 1;
+    }
+
+    /// The bounding box height in pixels -- the inclusive span on y, always at least one for a real object.
+    pub fn bbox_height(self: *const ObjectEntry) u32 {
+        // invariant: a joined object's box is well-formed on y, so the low corner never passes the high corner.
+        assert(self.max_y >= self.min_y);
+        return self.max_y - self.min_y + 1;
+    }
+
+    /// TRUE when this object encloses at least one interior hole -- a topological fact its geometry cannot report.
+    pub fn is_holed(self: *const ObjectEntry) bool {
+        // invariant: a hole count is exactly components(1) - euler, so a positive hole count means euler below one.
+        assert(@as(i64, self.holes) == 1 - @as(i64, self.euler));
+        return self.holes >= 1;
+    }
+};
+
+/// The whole scene as a MANIFEST: one `ObjectEntry` per component, `objects[c-1]` the object with label `c`, so the slice is exactly
+/// `components` long and raster-ordered like the labels themselves. Each row joins geometry and topology; the manifest is the scene
+/// read as a small table of exact integers.
+pub const Manifest = struct {
+    components: u32,
+    objects: []ObjectEntry,
+};
+
+/// Build the scene MANIFEST -- measure every component's geometry once (image/regions.rye), read every component's topology once
+/// (image/euler_number.rye), and JOIN the two into one `ObjectEntry` per label in dense order. Returns a valid empty manifest for
+/// an all-background labeling (zero components). `map` is read-only.
+pub fn build_manifest(allocator: std.mem.Allocator, map: *const label.LabelMap) !Manifest {
+    // invariant: a real label map carries one label per pixel across its whole extent.
+    assert(map.labels.len == @as(usize, map.width) * @as(usize, map.height));
+    const count: u32 = map.count;
+    // invariant: a component needs at least one pixel, so the component count never exceeds image/label.rye's pixel ceiling and the
+    // per-object join loop is bounded.
+    assert(count <= label.label_max_pixels);
+
+    const objects = try allocator.alloc(ObjectEntry, @as(usize, count));
+
+    // an empty labeling has no geometry to measure -- return the valid empty manifest before calling a reader that would refuse a
+    // zero-size map. A count of zero over a real-extent map is a legitimate all-background scene, not an error.
+    if (count == 0) return Manifest{ .components = 0, .objects = objects };
+
+    // image/regions.rye reads every component's area and bounding box in one raster pass -- the geometry half of every row.
+    const measured = try regions.measure_regions(allocator, map);
+    // invariant: image/regions.rye returns exactly one region per component, in the same dense label order.
+    assert(measured.len == @as(usize, count));
+
+    var c: u32 = 1;
+    while (c <= count) : (c += 1) {
+        const idx: usize = @as(usize, c) - 1;
+        const reg = measured[idx];
+        // invariant: image/regions.rye labels its slice in dense order, so row c-1 is exactly label c.
+        assert(reg.label == c);
+        // invariant: a measured component holds at least one pixel -- a dense label names a real region.
+        assert(reg.area >= 1);
+
+        // compose not braid: the topology is image/euler_number.rye's own single-region read, never re-derived here.
+        const topo = try euler_number.euler_number(map, c);
+        // invariant: a single labeled region is one 8-connected component, so its component count is exactly one.
+        assert(topo.components == 1);
+
+        objects[idx] = ObjectEntry{
+            .label = c,
+            .area = reg.area,
+            .min_x = reg.min_x,
+            .min_y = reg.min_y,
+            .max_x = reg.max_x,
+            .max_y = reg.max_y,
+            .euler = topo.euler,
+            .holes = topo.holes,
+        };
+    }
+
+    return Manifest{ .components = count, .objects = objects };
+}
+
+/// HOW MANY objects the scene holds -- the manifest's row count.
+pub fn object_count(manifest: Manifest) u32 {
+    // invariant: the manifest holds exactly one row per component.
+    assert(manifest.objects.len == @as(usize, manifest.components));
+    return manifest.components;
+}
+
+/// The manifest ROW for label `want` -- the object's joined geometry and topology. Refuses `BadObjectLabel` when `want` is
+/// background (0) or past the component count, having read nothing.
+pub fn object_of(manifest: Manifest, want: u32) !ObjectEntry {
+    // invariant: the manifest holds exactly one row per component.
+    assert(manifest.objects.len == @as(usize, manifest.components));
+    if (want == 0 or want > manifest.components) return error.BadObjectLabel;
+    const entry = manifest.objects[@as(usize, want) - 1];
+    // invariant: a looked-up row carries the very label asked for -- the dense order holds.
+    assert(entry.label == want);
+    return entry;
+}
+
+/// HOW MANY objects enclose at least one hole -- the count of holed objects, read off the joined manifest.
+pub fn holed_object_count(manifest: Manifest) u32 {
+    // invariant: the manifest holds exactly one row per component.
+    assert(manifest.objects.len == @as(usize, manifest.components));
+    var holed: u32 = 0;
+    var i: usize = 0;
+    while (i < manifest.objects.len) : (i += 1) {
+        if (manifest.objects[i].holes >= 1) holed += 1;
+    }
+    // invariant: no more objects can be holed than exist.
+    assert(holed <= manifest.components);
+    return holed;
+}
+
+/// The LABEL of the LARGEST object (by area) that encloses at least one hole -- the read that needs BOTH halves of the join, ties
+/// broken by the earliest label. Refuses `NoHoledObject` by name when no object in the scene is holed.
+pub fn largest_holed(manifest: Manifest) !u32 {
+    // invariant: the manifest holds exactly one row per component.
+    assert(manifest.objects.len == @as(usize, manifest.components));
+
+    var found: bool = false;
+    var best_label: u32 = 0;
+    var best_area: u32 = 0;
+    var i: usize = 0;
+    while (i < manifest.objects.len) : (i += 1) {
+        const entry = manifest.objects[i];
+        if (entry.holes >= 1) {
+            // strictly greater keeps the earliest label on an area tie -- deterministic.
+            if (!found or entry.area > best_area) {
+                found = true;
+                best_area = entry.area;
+                best_label = entry.label;
+            }
+        }
+    }
+    if (!found) return error.NoHoledObject;
+    // invariant: the chosen label is a real, dense label -- at least one and no larger than the component count.
+    assert(best_label >= 1);
+    assert(best_label <= manifest.components);
+    return best_label;
+}
+
+/// The TOTAL foreground area of the scene -- the sum of every object's area, which equals the whole labeling's foreground pixel
+/// count (a geometry aggregate over the join).
+pub fn total_area(manifest: Manifest) u64 {
+    // invariant: the manifest holds exactly one row per component.
+    assert(manifest.objects.len == @as(usize, manifest.components));
+    var sum: u64 = 0;
+    var i: usize = 0;
+    while (i < manifest.objects.len) : (i += 1) {
+        sum += @as(u64, manifest.objects[i].area);
+    }
+    return sum;
+}
+
+// --- selftest: the DECISIVE join crux (a large solid block, a small ring, a large ring, a small solid block -- largest_holed names
+//     the LARGE RING, which the pure-geometry largest and the pure-topology most-holed both miss); the manifest carries both halves
+//     of each row (area and bounding box beside euler and holes); an all-simply-connected scene refuses NoHoledObject; an empty
+//     scene reads a valid empty manifest; refusals by name; determinism -----------------------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Set one pixel back to background at (x, y) -- carve a hole in a filled shape.
+fn clear_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 0;
+    img.pixels[di + 1] = 0;
+    img.pixels[di + 2] = 0;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- BUILD THE CRUX SCENE -- four objects stacked with a blank row between each so they are distinct 8-connected components in
+    //     known raster order: (1) a solid 5x5 block -- area 25, the BIGGEST overall, no hole; (2) a 3x3 ring (1-pixel hole) -- area 8,
+    //     holed, small; (3) a 5x5 ring (3x3 hole) -- area 16, holed, big; (4) a solid 2x2 block -- area 4, no hole. Width 7 ----------
+    var scene_img = try make_canvas(garden, 7, 20, 0);
+
+    // object 1: a solid 5x5 block, rows 1..5 -- area 25, Euler 1, no hole
+    set_block(&scene_img, 1, 1, 5, 5);
+
+    // object 2: a 3x3 ring, rows 7..9, center (2,8) carved -- area 8, Euler 0, one hole
+    set_block(&scene_img, 1, 7, 3, 3);
+    clear_dot(&scene_img, 2, 8);
+
+    // object 3: a 5x5 ring, rows 11..15, inner 3x3 (rows 12..14, cols 2..4) carved -- area 16, Euler 0, one hole
+    set_block(&scene_img, 1, 11, 5, 5);
+    var ry: u32 = 12;
+    while (ry <= 14) : (ry += 1) {
+        var rx: u32 = 2;
+        while (rx <= 4) : (rx += 1) clear_dot(&scene_img, rx, ry);
+    }
+
+    // object 4: a solid 2x2 block, rows 17..18 -- area 4, Euler 1, no hole
+    set_block(&scene_img, 1, 17, 2, 2);
+
+    const map = try label.label_components(garden, &scene_img);
+    if (map.count != 4) return error.SceneNotFourComponents;
+
+    const manifest = try build_manifest(garden, &map);
+    if (object_count(manifest) != 4) return error.ManifestNotFourObjects;
+
+    // --- EVERY ROW CARRIES BOTH HALVES -- geometry (area, bounding box) beside topology (euler, holes) -----------------------------
+    const o1 = try object_of(manifest, 1);
+    const o2 = try object_of(manifest, 2);
+    const o3 = try object_of(manifest, 3);
+    const o4 = try object_of(manifest, 4);
+    // geometry: the areas the join reads from image/regions.rye
+    if (o1.area != 25) return error.Block1AreaWrong;
+    if (o2.area != 8) return error.Ring2AreaWrong;
+    if (o3.area != 16) return error.Ring3AreaWrong;
+    if (o4.area != 4) return error.Block4AreaWrong;
+    // geometry: the bounding boxes -- the small ring is 3x3, the large ring 5x5
+    if (o2.bbox_width() != 3 or o2.bbox_height() != 3) return error.Ring2BoxWrong;
+    if (o3.bbox_width() != 5 or o3.bbox_height() != 5) return error.Ring3BoxWrong;
+    // topology: the hole counts the join reads from image/euler_number.rye
+    if (o1.holes != 0 or o1.is_holed()) return error.Block1TopologyWrong;
+    if (o2.holes != 1 or !o2.is_holed()) return error.Ring2TopologyWrong;
+    if (o3.holes != 1 or !o3.is_holed()) return error.Ring3TopologyWrong;
+    if (o4.holes != 0 or o4.is_holed()) return error.Block4TopologyWrong;
+
+    // --- THE DECISIVE JOIN CRUX -- largest_holed names the LARGE RING (label 3): the largest object that is holed. The pure-geometry
+    //     largest is the solid block (label 1, area 25, UNHOLED); the pure-topology most-holed ties the two rings and breaks to the
+    //     SMALLER one (label 2). Only the join -- area AND holes together -- lands on label 3 --------------------------------------
+    if (holed_object_count(manifest) != 2) return error.HoledCountNotTwo;
+    if (try largest_holed(manifest) != 3) return error.LargestHoledNotLargeRing;
+    // the largest object overall is the UNHOLED block -- proving largest_holed is not just "the largest"
+    if (o1.area <= o3.area) return error.BlockNotLargerThanRing;
+    if (o1.is_holed()) return error.LargestObjectFalselyHoled;
+
+    // --- THE TOTAL AREA AGGREGATE -- the sum of the per-object areas equals the whole foreground pixel count (25 + 8 + 16 + 4) -----
+    if (total_area(manifest) != 53) return error.TotalAreaWrong;
+
+    // --- AN ALL-SIMPLY-CONNECTED SCENE -- two solid blocks, no holes at all: largest_holed refuses NoHoledObject even though objects
+    //     exist -- the refusal is about holes, not emptiness ----------------------------------------------------------------------
+    var filled_img = try make_canvas(garden, 9, 4, 0);
+    set_block(&filled_img, 1, 1, 2, 2); // block A (label 1)
+    set_block(&filled_img, 5, 1, 3, 2); // block B (label 2), separated by two blank columns
+    const filled_map = try label.label_components(garden, &filled_img);
+    if (filled_map.count != 2) return error.FilledNotTwoComponents;
+    const filled = try build_manifest(garden, &filled_map);
+    if (holed_object_count(filled) != 0) return error.FilledHoledCountNotZero;
+    if (largest_holed(filled)) |_| return error.FilledLargestHoledNotRefused else |err| {
+        if (err != error.NoHoledObject) return error.WrongFilledError;
+    }
+
+    // --- AN EMPTY SCENE -- an all-background canvas: zero objects, a valid empty manifest; both reads refuse by name --------------
+    var empty_img = try make_canvas(garden, 5, 5, 0);
+    const empty_map = try label.label_components(garden, &empty_img);
+    if (empty_map.count != 0) return error.EmptyNotZeroComponents;
+    const empty = try build_manifest(garden, &empty_map);
+    if (object_count(empty) != 0) return error.EmptyManifestNotZero;
+    if (holed_object_count(empty) != 0) return error.EmptyHoledCountNotZero;
+    if (total_area(empty) != 0) return error.EmptyTotalAreaNotZero;
+    if (largest_holed(empty)) |_| return error.EmptyLargestHoledNotRefused else |err| {
+        if (err != error.NoHoledObject) return error.WrongEmptyError;
+    }
+    if (object_of(empty, 1)) |_| return error.EmptyObjectOfNotRefused else |err| {
+        if (err != error.BadObjectLabel) return error.WrongEmptyLabelError;
+    }
+
+    // --- A BAD LABEL -- a label past the component count refuses BadObjectLabel ----------------------------------------------------
+    if (object_of(manifest, 5)) |_| return error.BadLabelNotRefused else |err| {
+        if (err != error.BadObjectLabel) return error.WrongBadLabelError;
+    }
+
+    // --- DETERMINISM -- the same scene reads the same manifest twice ---------------------------------------------------------------
+    const m1 = try build_manifest(garden, &map);
+    const m2 = try build_manifest(garden, &map);
+    if (try largest_holed(m1) != try largest_holed(m2)) return error.ManifestNotDeterministic;
+    if (total_area(m1) != total_area(m2) or object_count(m1) != object_count(m2)) return error.ManifestNotDeterministic;
+
+    print("GREEN image-scene-manifest: one ROW PER OBJECT for a whole scene -- JOIN each component's TOPOLOGY (Euler number, hole count) with its GEOMETRY (area, bounding box) into a single manifest, exact integers, NO float and NO tolerance -- the DECISIVE join crux: a scene of a large solid block (area 25, biggest overall, no hole), a small 3x3 ring (area 8, one hole), a large 5x5 ring (area 16, one hole), and a small solid block (area 4, no hole) reads largest_holed = the LARGE RING (label 3), the largest object that is holed; the pure-geometry largest picks the unholed solid block (label 1, area 25) and the pure-topology most-holed ties the two rings and breaks to the smaller one (label 2), so neither parent lands on label 3 -- only the join, area AND holes side by side, names it; every manifest row carries both halves (the small ring's 3x3 box and the large ring's 5x5 box beside their equal hole counts, the solid blocks' zero holes beside their areas); holed_object_count reports two of four objects holed, total_area sums the per-object areas to the whole foreground 53; an all-simply-connected two-block scene refuses NoHoledObject even though objects exist (the refusal is about holes, not emptiness); an empty scene reads a valid empty manifest and both reads refuse by name; a label past the count refuses BadObjectLabel; the same scene reads deterministically. Compose not braid over image/label.rye, image/regions.rye, and image/euler_number.rye\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: scene_manifest selftest\n", .{});
+    return 1;
+}
