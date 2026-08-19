@@ -134,7 +134,7 @@ pub fn answer_from(buf: *[max_message_len]u8, client: []const u8) []const u8 {
 // =========================================================================
 
 /// Maps one doorbell refusal onto the outcome code that names it.
-fn bell_code(err: notify.BellError) u8 {
+pub fn bell_code(err: notify.BellError) u8 {
     return switch (err) {
         error.NotWired => notify.Bell.not_wired,
         else => carry.Outcome.malformed,
@@ -142,7 +142,7 @@ fn bell_code(err: notify.BellError) u8 {
 }
 
 /// Maps one reach refusal onto the outcome code that names it.
-fn reach_code(err: exercise.ReachError) u8 {
+pub fn reach_code(err: exercise.ReachError) u8 {
     return switch (err) {
         error.NotGranted => carry.Outcome.not_granted,
         error.WriteDenied => carry.Outcome.write_denied,
@@ -152,7 +152,7 @@ fn reach_code(err: exercise.ReachError) u8 {
 }
 
 /// Opens one region by name, taking its extent from the provisioned store.
-fn reach_by_name(
+pub fn reach_by_name(
     io: std.Io,
     slot: *const capabilities.DependentSlot,
     region_name: []const u8,
@@ -168,7 +168,7 @@ fn reach_by_name(
 }
 
 /// Writes one addressed message into a region this dependent holds.
-fn place_message(
+pub fn place_message(
     io: std.Io,
     slot: *const capabilities.DependentSlot,
     region_name: []const u8,
@@ -183,7 +183,7 @@ fn place_message(
 }
 
 /// Reads one expected message out of a region and says whether it stands.
-fn message_stands(
+pub fn message_stands(
     io: std.Io,
     slot: *const capabilities.DependentSlot,
     region_name: []const u8,

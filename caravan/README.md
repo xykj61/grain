@@ -1,7 +1,7 @@
 # Caravan -- Process Supervision
 
 **Language:** EN
-**Last updated:** `20260819.143515` (the serve ring lands -- one virtualiser serves two clients, and neither hears the other's bell)
+**Last updated:** `20260819.144641` (the restart ring lands -- a dependent falls mid-conversation, and the standing channel and the declared memory carry the restart home)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable -- process supervision ladder
 
@@ -34,6 +34,7 @@ Every ring here composes over the one before it. A later ring imports an earlier
 | notify | [`notify.rye`](notify.rye) | a declared channel rings between two real processes -- every channel its own silent doorbell, the producer writing the share then ringing, the consumer hearing before it reads, an unwired pair refusing NotWired and a bell that never rang heard as Unheard |
 | roundtrip | [`roundtrip.rye`](roundtrip.rye) | one declared channel carries both ways -- two directed doorbells per channel so a ring is unhearable by the dependent that rang it, a request answered on the region the answerer owns, and the ask still standing beside the answer when it comes home |
 | serve | [`serve.rye`](serve.rye) | one virtualiser serves two clients in one run -- each asked and answered on its own channel, a ring addressed to one client unhearable by the other, every message naming the client it belongs to, and the neighbor's memory refused at the wall |
+| restart | [`restart.rye`](restart.rye) | a served dependent falls mid-conversation and the supervisor carries it home -- eight named outcomes read as answers, one reserved code as a deliberate stop, every other code as a fall, the declared bell and the declared bytes standing through the fall, and a dependent that always falls declined by name after a bounded three restarts |
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
@@ -136,6 +137,17 @@ The crux is the second step. The virtualiser rings `client_b` and nobody else, a
 Every message names the client it belongs to, which is the crossed-wire wall stated in bytes. An ask reads `serve: ask for client_a` and an answer reads `serve: answer from client_a`, each derived from what the dependent already knows -- the requester from the peer it is serving, the replier from its own domain label. A client handed its neighbor's question refuses it rather than answering somebody else's mail, and the virtualiser collecting an answer signed by the wrong domain refuses it the same way.
 
 Witness: [`tools/caravan_serve_witness.rish`](../tools/caravan_serve_witness.rish), GREEN on its first metal pass, with both RED paths proven before the green was trusted. Naming a bell by its sender alone let `client_a` hear the ring meant for `client_b` and walk on into the regions, reporting `bytes differed` where `Unheard` belonged -- one server broadcasting to every client it serves, which is precisely what a per-pair direction prevents. Addressing every ask to a fixed client made `client_a` read its neighbor's question, and it declined to answer rather than replying to mail addressed elsewhere.
+
+## Why a Fall Is Survivable
+
+`serve.rye` made the arc a system, and every step in it ran to completion. A system that only ever completes has proven nothing about the day a dependent falls, and falling is the whole reason a supervisor exists. `restart.rye` drops a served client mid-conversation and asks what survives -- and the answer separates into three things, which is the finding.
+
+The bell stands. A doorbell holds a count until someone clears it, so the ring the fallen attempt heard is still ringing for the attempt that replaces it. The memory stands too: a region belongs to the declaration rather than to a process, so bytes a dependent wrote before it fell are exactly where it left them. The progress does not stand, and it should not -- a restarted dependent knows only what its argv and the declaration tell it. Together those give the property this ring is really about: **restart is safe when every step is idempotent over declared state.** The client dropped before writing hears the standing bell and writes its answer for the first time; the client dropped after writing rewrites the same bytes over themselves and rings once. Neither needs the server to ask again, and the virtualiser collecting afterward cannot tell from the outside that anything fell.
+
+The three exit meanings are read here rather than assumed, and reading them right is the wall. A named outcome -- `carried`, `Unheard`, `NotWired`, `WriteDenied` -- is an **answer**, so a supervisor that restarts one is restarting a dependent that did its job. `stop_requested` is a **deliberate stop**, and supervision of that domain ends with no restart spent. Every code the vocabulary cannot name is a **fall**, which is also what a signal-killed dependent reports, so one meaning covers both causes. The whole byte partitions into exactly those three -- eight answers, one stop, and the remaining two hundred forty-seven falls -- checked as pure policy before any process runs, and restarts stay bounded at three so a dependent that falls every time is declined by name rather than restarted forever.
+
+Witness: [`tools/caravan_restart_witness.rish`](../tools/caravan_restart_witness.rish), GREEN on its first metal pass, with both RED paths proven before the green was trusted. Reading every non-zero exit as a fall -- the elder rule applied without this world's outcome vocabulary -- restarted a correct `NotWired` refusal four times and then declined it, which is a supervisor spending its whole budget on success. Re-silencing the bells between attempts left the restarted client answering `Unheard` where `carried` belonged, which is the standing-bell claim stated in reverse.
+
 
 ## Held
 

@@ -1,0 +1,99 @@
+# caravan_restart_witness.rish -- Caravan restart witness.
+#
+# Proves what survives when a served dependent falls mid-conversation: the
+# declared channel's bell keeps standing, the declared region keeps its
+# bytes, and the restarted dependent finishes the conversation without the
+# server ever asking again.
+#
+# The three exit meanings are checked as a partition of the whole byte:
+# eight named outcomes are ANSWERS a supervisor takes as final, the one
+# reserved code is a deliberate STOP, and every remaining code is a FALL
+# -- which is also what a signal-killed dependent reports.
+#
+# Both RED paths were proven on metal before this witness was written.
+# Reading every non-zero exit as a fall restarted a correct `NotWired`
+# refusal four times and then declined it; re-silencing the bells between
+# attempts left the restarted dependent answering `Unheard` where `carried`
+# belonged, which is the standing-bell claim stated in reverse.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep
+# over interpolated output -- REDS #76 / #85, the apostrophe loom.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_restart_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/restart"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/restart.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan restart build failed"
+
+# The declaration a fall is worth watching in reads whole before anything
+# runs on it -- the same two-client system `serve.rye` already serves.
+let decl = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_two_clients.bron 2>&1"]
+assert decl.ok else "the two-client declaration could not be read"
+assert decl.out contains "domains 3 -- channels 2 -- regions 4 -- grants 8" else "the two-client declaration changed shape"
+assert decl.out contains "verdict: whole" else "the two-client declaration did not read whole"
+
+# A fresh provisioning each run, so a bell found ringing was rung by this
+# run rather than left standing by the last one.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels"]
+assert clean.ok else "the region stores and doorbells could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan restart selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan restart selftest not GREEN"
+assert test.out contains "the channel and the memory stand" else "the survival claim did not close"
+
+# The three meanings partition the whole byte, checked as pure policy
+# before any process runs -- the happy zone doing its own job.
+assert test.out contains "256 exit codes read as 3 meanings: 8 answered, 1 stopped, 247 fallen" else "the exit vocabulary changed shape"
+
+# A named refusal is an answer. A supervisor that restarts one is
+# restarting a dependent that did its job.
+assert test.out contains "client_a: request rx_a then tx_a via client_b [run] -- NotWired" else "the unwired refusal did not stand"
+assert test.out contains "a named refusal is an answer" else "a refusal was read as a fall"
+
+# The deliberate stop ends supervision with no restart spent.
+assert test.out contains "client_b: reply rx_b then tx_b via serial_virt [stop] -- StopRequested" else "the deliberate stop did not report"
+assert test.out contains "no restart spent" else "a stop cost a restart"
+
+# The bound holds: a dependent that falls on every attempt is declined by
+# name after exactly three restarts rather than restarted forever.
+assert test.out contains "client_b: fell -- restart 1/3" else "the first restart was not counted"
+assert test.out contains "client_b: fell -- restart 3/3" else "the restart budget was not spent"
+assert test.out contains "fell again with 3 restarts spent -- declined" else "a dependent that always falls was not declined"
+
+# The fall before the write: the bell stands, and the restart hears the
+# same ring the fallen attempt heard.
+assert test.out contains "client_b: reply rx_b then tx_b via serial_virt [fall-before-write] -- Fell" else "the client was not dropped before writing"
+assert test.out contains "client_b: reply rx_b then tx_b via serial_virt [run] -- carried" else "the restarted client did not answer"
+assert test.out contains "serial_virt: collect rx_b then tx_b via client_b [run] -- carried" else "the answer did not come home after a restart"
+assert test.out contains "hears the standing bell on restart" else "the standing-bell claim did not close"
+
+# The fall after the write: the answer stands with no bell rung for it,
+# and the restart rewrites the same bytes and rings once.
+assert test.out contains "client_a: reply rx_a then tx_a via serial_virt [fall-after-write] -- Fell" else "the client was not dropped after writing"
+assert test.out contains "client_a: reply rx_a then tx_a via serial_virt [run] -- carried" else "the restarted client did not rewrite its answer"
+assert test.out contains "serial_virt: collect rx_a then tx_a via client_a [run] -- carried" else "the rewritten answer did not come home"
+assert test.out contains "rewrites the same answer and rings once" else "the idempotence claim did not close"
+
+# Measured from outside the program: after the last plan, each direction
+# of the first client's channel rang exactly once. A restart that had
+# needed a second ask, or a dependent that had rung twice, would read 2 here.
+let ask_a = run ["sh" "-c" "od -An -tu1 -N1 caravan/.channels/serial_virt.to.client_a.bell"]
+assert ask_a.ok else "the client's inbound bell could not be measured"
+assert ask_a.out contains "1" else "the server asked more than once across a restart"
+let reply_a = run ["sh" "-c" "od -An -tu1 -N1 caravan/.channels/client_a.to.serial_virt.bell"]
+assert reply_a.ok else "the client's outbound bell could not be measured"
+assert reply_a.out contains "1" else "the restarted client rang more than once"
+
+# And the answer standing in memory is the client's own, written once by
+# a dependent that fell and once by the dependent that replaced it -- the same
+# bytes either way, which is what idempotent means here.
+let answer_a = run ["sh" "-c" "head -c 27 caravan/.regions/tx_a.bin"]
+assert answer_a.ok else "the client's answer could not be read"
+assert answer_a.out contains "serve: answer from client_a" else "the answer did not survive the fall"
+
+say "GREEN: Caravan restart witness passed."
