@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260819.124821
+editor Claude Code
+model claude-opus-4-8
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title autonomous loop broken on Fable 5, pinned Opus 5; corrected this session's log model fields
+prompt Keaton pasted the outer loop output -- every lap failing with a Fable 5 safeguard error [reasoning_extraction] -- then asked whether Opus 5 is available
+think Root cause: the loop runs claude with no --model, so it takes the user default from /home/keeper/.claude/settings.json, which is "model": "fable". Fable 5 throws the [reasoning_extraction] AUP safeguard on this stream-json loop prompt every lap. GLOW_PROFILE.bron (the clone's declared model source of truth) says claude-opus-4-8, so "fable" was already a divergence.
+think Opus 5 availability: Anthropic's own promo text in ~/.claude.json references Opus 5 ("switch anytime with /model"), yet the concrete model roster there enumerates only fable-5, sonnet-5, opus-4-8, opus-4-7, haiku-4-5 -- no claude-opus-5 entry. So it is likely plan-available but unconfirmed on this box; pinning it lets the next lap prove or disprove it, falling back to opus-4-8 on error.
+think Keaton chose Opus 5. Pinned "model": "claude-opus-5" into .claude/settings.local.json (local-only, gitignored, in the persistent project dir) via jq so the 214-rule permissions block is preserved byte-for-byte. Local project settings override the user "fable" default, and each lap is a fresh claude invocation, so the next lap picks it up with no restart.
+think Also corrected a factual error I introduced: six session logs from this session recorded model claude-fable-5, but this interactive session runs on claude-opus-4-8 (the environment statement and GLOW_PROFILE both say so). Corrected all six to claude-opus-4-8 -- a factual model fix, not a style rewrite.
+obs settings.local.json is gitignored, so the model pin stays local to this pier and never forces a model on the macOS clone or any other checkout -- exactly right for a machine-local choice.
+obs If Opus 5 is not on the plan, the next lap errors loudly (not silently), and the fallback is one edit away: jq '.model="claude-opus-4-8"' into the same file.
+file .claude/settings.local.json (untracked) model pinned to claude-opus-5, overriding the broken fable default
+file session-logs/20260819-120534..124014 (six logs) model field corrected claude-fable-5 -> claude-opus-4-8
+recommend keep-going -- watch the next loop lap: if it runs on Opus 5 the autonomous thread resumes; if it errors on model availability, drop to claude-opus-4-8 in settings.local.json
