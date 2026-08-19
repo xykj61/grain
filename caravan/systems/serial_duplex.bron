@@ -1,0 +1,35 @@
+# serial_duplex -- the worked example a REPLY needs.
+#
+# serial_stack is one-way by construction: every client holds read on its
+# own receive buffer and holds nothing it may write, so a client can hear a
+# delivery and can never answer one. A round trip needs a second region
+# owned the other way -- `tx_a`, which client_a may write and the
+# virtualiser may only read -- so the answer travels on memory the answerer
+# actually holds.
+#
+# client_b stands beside them holding rx_b alone. It is wired to the
+# virtualiser and to no client, so it proves the two refusals a round trip
+# invites: a ring across an undeclared channel, and a write into a region
+# granted to someone else.
+#
+# Read whole by `caravan/read.rye`; exercised by `caravan/roundtrip.rye`.
+
+system serial_duplex
+
+domain serial_virt
+domain client_a
+domain client_b
+
+channel serial_virt client_a
+channel serial_virt client_b
+
+region rx_a 4096
+region tx_a 4096
+region rx_b 4096
+
+grant rx_a serial_virt rw
+grant rx_a client_a r
+grant tx_a client_a rw
+grant tx_a serial_virt r
+grant rx_b serial_virt rw
+grant rx_b client_b r
