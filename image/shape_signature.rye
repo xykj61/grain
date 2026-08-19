@@ -1,0 +1,331 @@
+//! image/shape_signature.rye -- the SHAPE SIGNATURE of a segmented region: the exact-integer FUSION of two orthogonal descriptors,
+//! image/width_profile.rye's ISOTROPY verdict (is the shape as wide as it is thin?) paired against image/convex_hull.rye's SOLIDITY
+//! verdict (does the shape fill its convex hull?), joined into one 2x2 taxonomy that separates shapes NEITHER axis alone can tell
+//! apart.
+//!
+//! Season G (Open Media Primitives) -- image/width_profile.rye reads how a shape's thickness TURNS: a square is ISOTROPIC (as wide
+//! as it is thin), a bar ANISOTROPIC (thin one way, long the other). image/convex_hull.rye reads how full a shape is: a convex block
+//! is SOLID (fills its hull pixel-for-pixel), a plus or an L DENTED (empty wedges left inside the hull). Each descriptor is one axis
+//! of shape, and each axis alone MERGES pairs of shapes the other keeps apart. Anisotropy cannot tell a solid square from a dented
+//! plus -- both read isotropic. Solidity cannot tell a solid square from a solid bar -- both fill their hull. This rung reads BOTH
+//! and joins them, so the four archetypes fall into four distinct cells:
+//!
+//!     class        | ISOTROPIC (as wide as thin)   | ANISOTROPIC (elongated)
+//!     -------------|-------------------------------|-------------------------------
+//!     SOLID        | a compact block (round-ish)   | a straight bar
+//!     DENTED       | a symmetric plus / star       | an L, a T, a bent limb
+//!
+//! Compose not braid. This rung OWNS only the JOINING of the two verdicts and the reads over the joined signature -- it makes no
+//! hull, measures no width, counts no pixel it did not delegate. image/width_profile.rye owns the anisotropy (the exact min and max
+//! edge-normal squared widths of the hull); image/convex_hull.rye owns the solidity (the region's foreground pixel count over the
+//! pixel count its hull encloses); image/contour.rye owns the boundary ring both descriptors read; image/label.rye owns the
+//! component map the region comes from. The signature carries every EXACT rational forward -- the four squared-width integers and the
+//! two pixel counts -- so every VERDICT is an integer decision (i128 for isotropy, plain u32 equality for solidity), NEVER a float
+//! compare; only the reported `anisotropy` and `solidity` ratios, irrational or fractional, are read in f64, exactly as the two
+//! parent modules report their own.
+//!
+//! The DECISIVE crux:
+//!
+//!   THE FUSION SEES WHAT NEITHER AXIS ALONE SEES -- a solid block, a solid bar, a dented plus, and a dented L fall into four
+//!   distinct classes, yet EACH single projection collapses one pair: solidity alone cannot separate the block from the bar (both
+//!   SOLID) nor the plus from the L (both DENTED); anisotropy alone cannot separate the block from the plus (both ISOTROPIC) nor the
+//!   bar from the L (both ANISOTROPIC). `same_class` reads all six pairs as distinct where each lone axis merges two of them -- the
+//!   join is strictly sharper than either descriptor, proven on metal with the very fixtures image/convex_hull.rye and
+//!   image/width_profile.rye already trust.
+//!
+//! `is_solid(sig)` decides whether the region fills its hull by EXACT pixel-count equality (`region_area == filled_hull_area`), so
+//! solidity reads exactly 1; `is_isotropic(sig)` reuses image/width_profile.rye's exact rule (`max_num * min_den == min_num *
+//! max_den`); `class_code(sig)` folds the two verdicts into one small integer in 0..3 -- bit 0 SOLID, bit 1 ISOTROPIC -- the shape's
+//! quadrant in the taxonomy; `same_class(a, b)` decides whether two regions share both verdicts, the honest join predicate.
+//!
+//! Everything is bounded before a byte: the signature reads one boundary ring (a perimeter far under 2^13 through the contour's own
+//! `BoundaryTooLong`), one hull (at most `convex_hull_max_points` vertices), and two pixel counts (a region area under the image
+//! module's pixel ceiling). A single-point or two-point region has no hull to measure and refuses `DegenerateHull` through
+//! image/width_profile.rye; an empty source refuses `EmptySource`; a label outside the map refuses `BadLabel` through
+//! image/contour.rye. All-or-nothing, never a half-built signature. No network, no key, no funds -- the shape taxonomy a surface
+//! names the day it wants to sort marks into round blobs, straight bars, stars, and bent limbs, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/shape_signature.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const contour = @import("contour.rye");
+const convex_hull = @import("convex_hull.rye");
+const width_profile = @import("width_profile.rye");
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+
+pub const shape_signature_version = "20260818.211336";
+
+/// Every region coordinate stays under this bound -- the same order of magnitude image/width_profile.rye keeps for its own read, so
+/// the isotropy cross-multiplication carried here inherits that headroom.
+pub const shape_signature_max_coord: u32 = width_profile.width_profile_max_coord;
+
+/// The SHAPE SIGNATURE -- the two orthogonal verdicts of a region kept as EXACT integers. `aniso_min_*` and `aniso_max_*` are
+/// image/width_profile.rye's narrowest and widest edge-normal SQUARED widths as rationals (numerator over denominator), so isotropy
+/// is decided by cross-multiplication with no float. `region_area` is the region's foreground pixel count and `filled_hull_area` the
+/// pixel count its convex hull encloses, so solidity is decided by exact equality (`region_area == filled_hull_area` means the shape
+/// fills its hull). `anisotropy` and `solidity` are read in f64 for reporting only -- every VERDICT below rests on the integers.
+pub const ShapeSignature = struct {
+    aniso_min_num: u64,
+    aniso_min_den: u64,
+    aniso_max_num: u64,
+    aniso_max_den: u64,
+    region_area: u32,
+    filled_hull_area: u32,
+    anisotropy: f64,
+    solidity: f64,
+};
+
+/// Count the foreground pixels of the component labeled `want` -- the region area solidity divides by, read straight off the map so
+/// this rung owns its own numerator rather than reaching into a sibling's private counter.
+fn region_area_of(map: *const label.LabelMap, want: u32) u32 {
+    // invariant: a real component was asked for, never the background label.
+    assert(want >= 1);
+    var count: u32 = 0;
+    var i: usize = 0;
+    while (i < map.labels.len) : (i += 1) {
+        if (map.labels[i] == want) count += 1;
+    }
+    // invariant: the count never exceeds the map it was read from.
+    assert(count <= map.labels.len);
+    return count;
+}
+
+/// The SHAPE SIGNATURE of one labeled region -- trace its boundary ring, read the anisotropy off image/width_profile.rye and the
+/// solidity off image/convex_hull.rye over that same ring, and join the two exact verdicts. Refuses `EmptySource` / `BadLabel`
+/// through the contour, and `DegenerateHull` / `HullTooLong` through the width profile -- a region with no measurable hull has no
+/// signature.
+pub fn shape_signature(allocator: std.mem.Allocator, map: *const label.LabelMap, want: u32) !ShapeSignature {
+    const ring = try contour.trace_contour(allocator, map, want);
+    const profile = try width_profile.width_profile(allocator, ring.points);
+    const hull = try convex_hull.convex_hull(allocator, ring.points);
+
+    const lo = width_profile.min_sample(profile);
+    const hi = width_profile.max_sample(profile);
+    const area = region_area_of(map, want);
+    const filled = convex_hull.hull_filled_area(hull);
+
+    // invariant: a region with a real hull has at least one foreground pixel.
+    assert(area >= 1);
+    // invariant: the convex hull encloses the region, so it never counts fewer pixels than the region fills.
+    assert(filled >= area);
+    // invariant: both denominators are positive squared edge lengths, safe divisors for the isotropy comparison.
+    assert(lo.width_sq_den >= 1);
+    assert(hi.width_sq_den >= 1);
+
+    return ShapeSignature{
+        .aniso_min_num = lo.width_sq_num,
+        .aniso_min_den = lo.width_sq_den,
+        .aniso_max_num = hi.width_sq_num,
+        .aniso_max_den = hi.width_sq_den,
+        .region_area = area,
+        .filled_hull_area = filled,
+        .anisotropy = width_profile.anisotropy(profile),
+        .solidity = convex_hull.solidity(area, filled),
+    };
+}
+
+/// TRUE when the region fills its convex hull exactly -- SOLID, solidity reads exactly 1, decided by exact pixel-count equality and
+/// never a float compare. A convex block is solid; a plus or an L, leaving empty wedges inside its hull, is not.
+pub fn is_solid(sig: ShapeSignature) bool {
+    // invariant: the hull encloses the region, so the region area never exceeds the filled hull area.
+    assert(sig.filled_hull_area >= sig.region_area);
+    // invariant: a real region carries at least one pixel.
+    assert(sig.region_area >= 1);
+    return sig.region_area == sig.filled_hull_area;
+}
+
+/// TRUE when the shape is as wide as it is thin in every hull-edge direction -- ISOTROPIC, its widest edge-normal width equal to its
+/// breadth EXACTLY (`max_num * min_den == min_num * max_den`), the same exact rule image/width_profile.rye decides by. A square or a
+/// symmetric plus is isotropic; any non-square rectangle or bent limb is not.
+pub fn is_isotropic(sig: ShapeSignature) bool {
+    // invariant: both denominators are positive squared edge lengths.
+    assert(sig.aniso_min_den >= 1);
+    assert(sig.aniso_max_den >= 1);
+    const lhs: i128 = @as(i128, sig.aniso_max_num) * @as(i128, sig.aniso_min_den);
+    const rhs: i128 = @as(i128, sig.aniso_min_num) * @as(i128, sig.aniso_max_den);
+    return lhs == rhs;
+}
+
+/// The CLASS CODE -- the shape's quadrant in the taxonomy folded into one integer in 0..3: bit 0 set when SOLID, bit 1 set when
+/// ISOTROPIC. So 0 is a dented elongated limb, 1 a solid bar, 2 a dented star, 3 a solid compact blob.
+pub fn class_code(sig: ShapeSignature) u8 {
+    var code: u8 = 0;
+    if (is_solid(sig)) code |= 1;
+    if (is_isotropic(sig)) code |= 2;
+    // invariant: the code names one of exactly four quadrants.
+    assert(code <= 3);
+    return code;
+}
+
+/// TRUE when two regions share BOTH verdicts -- the same solidity and the same isotropy, so the same quadrant of the taxonomy. The
+/// honest join predicate: sharper than either axis alone, since two shapes agreeing on one descriptor may still differ on the other.
+pub fn same_class(a: ShapeSignature, b: ShapeSignature) bool {
+    // invariant: a class code names one of four quadrants, so equality of codes is equality of both verdicts.
+    assert(class_code(a) <= 3);
+    assert(class_code(b) <= 3);
+    return class_code(a) == class_code(b);
+}
+
+// --- selftest: the FUSION sees what neither axis alone sees -- a solid block, a solid bar, a dented plus, and a dented L fall into
+//     four distinct classes, yet solidity alone merges block/bar and plus/L, and anisotropy alone merges block/plus and bar/L;
+//     class_code names each quadrant; the exact verdicts hold; refusals and determinism --
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// The shape signature of the single component on a one-shape canvas.
+fn signature_of(garden: std.mem.Allocator, img: *qoi.Pixmap) !ShapeSignature {
+    const map = try label.label_components(garden, img);
+    // invariant: each selftest fixture holds exactly one component.
+    assert(map.count == 1);
+    return shape_signature(garden, &map, 1);
+}
+
+fn approx(a: f64, b: f64, tol: f64) bool {
+    const d = if (a >= b) a - b else b - a;
+    return d <= tol;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- THE FOUR ARCHETYPES, each in its own quadrant --------------------------------------------------------------------
+
+    // a SOLID ISOTROPIC block -- a 5x5 square fills its hull (solid) and is as wide as it is thin (isotropic): class 3
+    var block_img = try make_canvas(garden, 7, 7, 0);
+    set_block(&block_img, 1, 1, 5, 5);
+    const block = try signature_of(garden, &block_img);
+    if (!is_solid(block)) return error.BlockNotSolid;
+    if (!is_isotropic(block)) return error.BlockNotIsotropic;
+    if (class_code(block) != 3) return error.BlockClassWrong;
+    if (!approx(block.solidity, 1.0, 1e-9)) return error.BlockSolidityNotOne;
+    if (!approx(block.anisotropy, 1.0, 1e-9)) return error.BlockAnisotropyNotOne;
+
+    // a SOLID ANISOTROPIC bar -- a 3-wide, 9-tall block spans coordinate extents 2 by 8 (a raster block's coordinate span is one
+    //     less than its pixel count), so it fills its hull (solid) yet is four times longer than thin (anisotropy 4): class 1
+    var bar_img = try make_canvas(garden, 5, 11, 0);
+    set_block(&bar_img, 1, 1, 3, 9);
+    const bar = try signature_of(garden, &bar_img);
+    if (!is_solid(bar)) return error.BarNotSolid;
+    if (is_isotropic(bar)) return error.BarFalselyIsotropic;
+    if (class_code(bar) != 1) return error.BarClassWrong;
+    if (!approx(bar.anisotropy, 4.0, 1e-9)) return error.BarAnisotropyNotFour;
+
+    // a DENTED ISOTROPIC plus -- a symmetric thin-armed cross hulls to a DIAMOND (isotropic, anisotropy 1) yet leaves four empty
+    //     wedges inside it (dented): class 2. The vertical arm is col x=4 (y 1..7); the crossbar row y=4 (x 1..7)
+    var plus_img = try make_canvas(garden, 9, 9, 0);
+    set_block(&plus_img, 4, 1, 1, 7);
+    set_block(&plus_img, 1, 4, 7, 1);
+    const plus = try signature_of(garden, &plus_img);
+    if (is_solid(plus)) return error.PlusFalselySolid;
+    if (!is_isotropic(plus)) return error.PlusNotIsotropic; // the diamond hull is as wide as it is thin
+    if (class_code(plus) != 2) return error.PlusClassWrong;
+    if (plus.solidity >= 1.0) return error.PlusNotDented;
+    if (!approx(plus.anisotropy, 1.0, 1e-9)) return error.PlusAnisotropyNotOne;
+
+    // a DENTED ANISOTROPIC L -- the upright (cols 1..2, rows 1..5) plus the foot (cols 1..4, rows 5..6): dented (a filled corner
+    //     inside its hull) and elongated (its hull is a slanted pentagon, never isotropic): class 0
+    var l_img = try make_canvas(garden, 8, 8, 0);
+    set_block(&l_img, 1, 1, 2, 5);
+    set_block(&l_img, 1, 5, 4, 2);
+    const lshape = try signature_of(garden, &l_img);
+    if (is_solid(lshape)) return error.LFalselySolid;
+    if (is_isotropic(lshape)) return error.LFalselyIsotropic;
+    if (class_code(lshape) != 0) return error.LClassWrong;
+    if (lshape.solidity >= 1.0) return error.LNotDented;
+
+    // --- THE DECISIVE CRUX -- each single axis MERGES a pair the joined signature separates ---------------------------------
+
+    // SOLIDITY ALONE merges block and bar (both fill their hull) -- yet they are different classes: anisotropy separates them
+    if (is_solid(block) != is_solid(bar)) return error.BlockBarSolidityDiffers;
+    if (same_class(block, bar)) return error.SolidityMergedBlockBar;
+
+    // SOLIDITY ALONE merges plus and L (both dented) -- yet they are different classes: anisotropy separates them
+    if (is_solid(plus) != is_solid(lshape)) return error.PlusLSolidityDiffers;
+    if (same_class(plus, lshape)) return error.SolidityMergedPlusL;
+
+    // ANISOTROPY ALONE merges block and plus (both isotropic) -- yet they are different classes: solidity separates them
+    if (is_isotropic(block) != is_isotropic(plus)) return error.BlockPlusIsotropyDiffers;
+    if (same_class(block, plus)) return error.AnisotropyMergedBlockPlus;
+
+    // ANISOTROPY ALONE merges bar and L (both anisotropic) -- yet they are different classes: solidity separates them
+    if (is_isotropic(bar) != is_isotropic(lshape)) return error.BarLIsotropyDiffers;
+    if (same_class(bar, lshape)) return error.AnisotropyMergedBarL;
+
+    // ALL SIX PAIRS distinct -- the four archetypes fill four quadrants, no two share a class
+    if (same_class(block, bar) or same_class(block, plus) or same_class(block, lshape)) return error.BlockCollides;
+    if (same_class(bar, plus) or same_class(bar, lshape)) return error.BarCollides;
+    if (same_class(plus, lshape)) return error.PlusCollides;
+
+    // --- REFUSAL -- a lone dot has no hull to measure, so it has no signature: DegenerateHull through the width profile --------
+    var dot_img = try make_canvas(garden, 5, 5, 0);
+    set_dot(&dot_img, 2, 2);
+    const dmap = try label.label_components(garden, &dot_img);
+    if (shape_signature(garden, &dmap, 1)) |_| return error.DotNotRefused else |err| {
+        if (err != error.DegenerateHull) return error.WrongDotError;
+    }
+
+    // --- REFUSAL -- a label the map does not carry refuses BadLabel through the contour ------------------------------------
+    if (shape_signature(garden, &dmap, 2)) |_| return error.BadLabelNotRefused else |err| {
+        if (err != error.BadLabel) return error.WrongBadLabelError;
+    }
+
+    // --- DETERMINISM -- the same region reads the same signature twice ---------------------------------------------------
+    const s1 = try signature_of(garden, &block_img);
+    const s2 = try signature_of(garden, &block_img);
+    if (class_code(s1) != class_code(s2) or s1.region_area != s2.region_area or s1.filled_hull_area != s2.filled_hull_area)
+        return error.SignatureNotDeterministic;
+
+    print("GREEN image-shape-signature: the SHAPE SIGNATURE of a segmented region -- the exact-integer FUSION of image/width_profile.rye's ISOTROPY verdict and image/convex_hull.rye's SOLIDITY verdict, joined into one 2x2 taxonomy -- the DECISIVE crux: a solid block, a solid bar, a dented plus, and a dented L fall into FOUR distinct classes, yet EACH single axis merges one pair the join separates -- solidity alone cannot tell the block from the bar (both SOLID) nor the plus from the L (both DENTED), anisotropy alone cannot tell the block from the plus (both ISOTROPIC) nor the bar from the L (both ANISOTROPIC), so same_class reads all six pairs distinct where either lone descriptor collapses two of them; is_solid decides by EXACT pixel-count equality (region area == filled hull area, solidity exactly 1) and is_isotropic by EXACT rational equality (max_num * min_den == min_num * max_den, anisotropy exactly 1), never a float compare; class_code names each quadrant 0..3 (0 a bent limb, 1 a bar, 2 a star, 3 a compact blob); a lone dot refuses DegenerateHull and an absent label BadLabel, each having allocated nothing; the same region reads deterministically\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: shape_signature selftest\n", .{});
+    return 1;
+}
