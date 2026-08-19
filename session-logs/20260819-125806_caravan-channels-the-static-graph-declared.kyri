@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260819.125806
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Caravan channels -- the static supervision graph, declared rather than discovered
+prompt autonomous loop -- take the next agent-doable lap Lindy-first crux-first; Standfast on reds; council rota; send often; stop at custody gates
+think Grounded as Kyri first: read context/KYRI.md and context/RADIANT_STYLE.md, then crux/REMEMBER.md, the 1024-round itinerary, the eight-season double-seat with its Lindy-priority Microkernel Target, the Rye-first crypto decision wave, and the top rows of session-logs/README.md.
+think Standfast pass over crux/REDS.md: living rows 80, 83, 84, 85 and the prose notes 81, 82, 86, 87 all read closed and released -- no open agent-closable red, so constructive work may begin.
+think Council rota d27: commit count 3043 mod 27 -> item 19, context/KYRI.md, which this lap deep-read first by the voice-before-all-else rule -- the four faculties held whole, Lattice's exact bounds and Scribble's plainly-named terms both load-bearing in this ring.
+think Lindy-first crux-first picks the Microkernel Target over Seasons A-H, and within it Equinox 1 -- Caravan on the microkernel, Caravan before Tally. The three clean-room briefs landed 20260819.094721 and the seL4+Microkit study landed 20260819.120534; the crux was to move that arc from study into green-witnessed Rye.
+think Read caravan/README.md and caravan/capabilities.rye to compose rather than duplicate: capabilities names WHAT each child may do, so the missing rung names WHO each child may talk to -- the Microkit lesson that the whole communication graph is declared at build time rather than discovered at runtime.
+think Shaped the ring SLC: a bounded roster of protection domains, a channel joining exactly two distinct domains held canonically as an ascending pair so symmetry is a property of the data, four named refusals (no_such_domain, self_link, not_declared, allowed), and three reads -- may_signal, refusal_reason, degree.
+obs The canonical low-then-high pair is the small move that earns the ring: an unordered link has exactly one stored form, so may_signal(a,b) and may_signal(b,a) agree by construction rather than by a promise the reader has to keep.
+obs The self-test's load-bearing assertion is the negative one -- two clients wired to the same virtualiser hold no path to each other. Sharing is deliberate and visible, never ambient; that is the whole reason the graph is declared.
+obs Two TAME tidy rules bit and taught: the `) == error.` call-seam ban and the compound-assert ban. Both fixed the right way -- channel_refused/domain_refused capture the error with `catch |err|` and read plainly at each site, and every `a < max and b < max` split into two named invariants.
+obs Hosted ground, named honestly: this is pure policy with no kernel underneath it. The Microkit concepts crossed the clean room; no source did, and the README says so where a reader will meet it.
+file caravan/channels.rye the ring -- domains, canonical channels, four named refusals, three reads, every bound asserted
+file tools/caravan_channels_witness.rish the witness -- builds the module and proves the selftest GREEN on metal
+file caravan/README.md the ladder gains its row, and a section naming why the graph is declared rather than discovered
+recommend keep-going -- Equinox 1 now has its first Rye rung; the next agent-doable crux is the memory-region ring (declared, permissioned, named-holder shares) or the declarative Brix/Bron system description that a witness reads to prove the graph whole

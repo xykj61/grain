@@ -24,6 +24,12 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260819.125806` -- REMEMBER's Season-G scene-read chronicle folded to a pointer as the live edge moves to the Microkernel Target
+
+**Walk-back nib:** `4a50722016` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.
+**Swept:** the **Live edge** bullet's whole Season-G scene-read chronicle (~5 KB of one run-on line) -- the four selectors named inline (`scene_manifest`, `hit_test`, `region_select`, `lasso_select`), the composing reads (`selection_summary`, `selection_bounds`, `object_relation`, `scene_graph`), and the entire line family rung by rung with its stamps and GREEN notes (`line_distance` through `line_corridor_summary`, `line_pierce`, `line_cross` and its rational meeting point, `line_raycast` and its slab-method entry parameter). The family stands whole and green at 227 image modules; the live front has moved to the Lindy-priority Microkernel Target, so the card keeps a pointer where the chronicle stood and refills Now with the live arc.
+**What waits there, worth recalling:** at nib `4a50722016` the departing card holds the complete inline prose for the scene-read and line families -- the exact-integer reasoning, the `CrossNotWhole` refusal rather than a rounded intersection, and why `line_raycast` diverges from `line_slice` exactly where a wide box swallows a narrow one. No fact was lost: every rung carries its own dated log in `session-logs/` and a durable entry in `image/README.md`.
+
 ### `20260819.104554` -- REMEMBER's three giant prose run-ons (167 KB of a 197 KB card) folded to single-stranded pointers at the line-family set-close
 
 **Walk-back nib:** `82b7ee3342` -- reachable in normal history (a working-tree condense, not a history rewrite); the full departing card is one `git show` away.
