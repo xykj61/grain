@@ -1,0 +1,308 @@
+//! image/region_cluster.rye -- which CONNECTED CLUSTERS a query RECTANGLE lands on: run the marquee (image/region_select.rye) to name the
+//! objects a dragged box truly covers, then map those objects to the connected clusters they belong to (image/overlap_clusters.rye), so a
+//! surface learns which connected regions a selection touches -- exact integers, NO float, NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/region_select.rye names EVERY object a query RECTANGLE covers (a geometric question, the
+//! label map its arbiter); image/overlap_clusters.rye partitions the scene into the CONNECTED CLUSTERS of the box-overlap graph (a
+//! topological question, connectivity its answer). This rung joins the two: `clusters_in_rect` names the ascending set of clusters the
+//! rectangle's selected objects belong to, and `selects_whole_cluster` asks whether the rectangle catches EVERY member of a cluster or
+//! only some. A surface reads it the moment a marquee must respect groups -- "did this drag land on a whole connected region, or split one?"
+//!
+//! The DECISIVE crux -- a GEOMETRIC query and a TOPOLOGICAL grouping do not refine each other, in two shapes at once:
+//!
+//!   A RECTANGLE SELECTS ONLY PART OF A CLUSTER. Two objects reaching apart connect into one cluster, yet a rectangle drawn tightly on
+//!   one member selects that member alone -- the connected group is split by a box that knows nothing of connectivity. So the selected
+//!   label set can be a STRICT SUBSET of a cluster: `clusters_in_rect` names the cluster (the selected member belongs to it) while
+//!   `selects_whole_cluster` reads FALSE (the other member lies outside the box). The rectangle touches a cluster without holding it whole.
+//!
+//!   A RECTANGLE SPANS MULTIPLE CLUSTERS. The same rectangle, widened to cross a cluster boundary, selects one object from a connected
+//!   cluster and another from a different singleton cluster -- so `clusters_in_rect` names TWO clusters and `cluster_count_in_rect` reads
+//!   2. A geometric box freely crosses topological boundaries; the two structures cut the scene along different seams.
+//!
+//! Compose not braid. This rung OWNS only the object-set-to-cluster-set map and the whole-cluster test. image/region_select.rye owns the
+//! rectangle-to-object decision and the label-map arbiter; image/overlap_clusters.rye owns the connectivity and the dense cluster labeling;
+//! image/scene_graph.rye owns the per-object manifest. No pixel re-read here beyond the marquee's own scan -- a reading over a reading.
+//!
+//! Everything is bounded before a byte: the marquee scan is bounded by the map's pixel ceiling; the selected set holds at most `components`
+//! labels; the cluster-presence tally is sized to the cluster count plus one. A malformed rectangle refuses `BadRect` (image/
+//! region_select.rye's own guard, propagated); a zero or past-the-count cluster id refuses `BadClusterId`. No network, no key, no funds --
+//! the region-to-cluster read a surface names the day a marquee must respect the connected groups a layout has grouped its objects into.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/region_cluster.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const region_select = @import("region_select.rye");
+
+pub const region_cluster_version = "20260819.010655";
+
+pub const RegionClusterError = error{
+    BadClusterId,
+};
+
+/// Guard a cluster id -- a real dense cluster label (1..clusters). Refuses `BadClusterId` at the edge before any member is read.
+fn validate_cid(clustering: overlap_clusters.Clustering, cid: u32) RegionClusterError!void {
+    // invariant: one cluster id per object.
+    assert(clustering.cluster_id.len == @as(usize, clustering.components));
+    // invariant: a real clustering holds at least one cluster.
+    assert(clustering.clusters >= 1);
+    if (cid == 0 or cid > clustering.clusters) return error.BadClusterId;
+}
+
+/// The ascending SET of connected clusters the query rectangle lands on -- run the marquee, then map each selected object to its cluster
+/// and collect the distinct cluster ids ascending. Returns an empty slice when the rectangle catches no object. Refuses `BadRect` for a
+/// malformed rectangle (image/region_select.rye's guard). The caller owns the returned slice.
+pub fn clusters_in_rect(allocator: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, map: *const label.LabelMap, rect: region_select.QueryRect) ![]u32 {
+    // invariant: the clustering and the graph describe the same scene.
+    assert(clustering.components == graph.components);
+    // invariant: the manifest and the map are the same scene, so the marquee's labels index the clustering.
+    assert(graph.manifest.components == map.count);
+
+    const selected = try region_select.select_in_rect(allocator, graph.manifest, map, rect);
+
+    // a presence flag per dense cluster id (index 0 unused -- there is no cluster 0). Bounded by the cluster count.
+    const present = try allocator.alloc(bool, @as(usize, clustering.clusters) + 1);
+    var p: usize = 0;
+    while (p < present.len) : (p += 1) present[p] = false;
+
+    var i: usize = 0;
+    while (i < selected.len) : (i += 1) {
+        const cid = try overlap_clusters.cluster_of(clustering, selected[i]);
+        // invariant: a real cluster id indexes a slot in the presence tally.
+        assert(cid >= 1);
+        assert(cid <= clustering.clusters);
+        present[@as(usize, cid)] = true;
+    }
+
+    // count the distinct clusters present, then collect them ascending -- dense, gap-free order.
+    var found: u32 = 0;
+    var cid: u32 = 1;
+    while (cid <= clustering.clusters) : (cid += 1) {
+        if (present[@as(usize, cid)]) found += 1;
+    }
+    const result = try allocator.alloc(u32, @as(usize, found));
+    var w: usize = 0;
+    cid = 1;
+    while (cid <= clustering.clusters) : (cid += 1) {
+        if (present[@as(usize, cid)]) {
+            result[w] = cid;
+            w += 1;
+        }
+    }
+    // invariant: the collect loop filled exactly the counted slots.
+    assert(w == @as(usize, found));
+    return result;
+}
+
+/// HOW MANY distinct connected clusters the query rectangle lands on -- the size of `clusters_in_rect`. Refuses `BadRect` for a malformed
+/// rectangle.
+pub fn cluster_count_in_rect(allocator: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, map: *const label.LabelMap, rect: region_select.QueryRect) !u32 {
+    const clusters = try clusters_in_rect(allocator, clustering, graph, map, rect);
+    // invariant: the rectangle can land on no more clusters than the scene holds.
+    assert(clusters.len <= @as(usize, clustering.clusters));
+    return @as(u32, @intCast(clusters.len));
+}
+
+/// TRUE when the query rectangle selects EVERY member of cluster `cid` -- the whole connected group, not merely some of it. FALSE when the
+/// rectangle catches only part of the cluster (a geometric box splitting a connected group) or none of it. Refuses `BadClusterId` for a
+/// zero or past-the-count cluster id, `BadRect` for a malformed rectangle.
+pub fn selects_whole_cluster(allocator: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, map: *const label.LabelMap, rect: region_select.QueryRect, cid: u32) !bool {
+    // invariant: the clustering and the graph describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(graph.manifest.components == map.count);
+    try validate_cid(clustering, cid);
+
+    const selected = try region_select.select_in_rect(allocator, graph.manifest, map, rect);
+
+    // a presence flag per dense object label (index 0 unused -- background is never selected). Bounded by the object count.
+    const present = try allocator.alloc(bool, @as(usize, clustering.components) + 1);
+    var p: usize = 0;
+    while (p < present.len) : (p += 1) present[p] = false;
+    var i: usize = 0;
+    while (i < selected.len) : (i += 1) present[@as(usize, selected[i])] = true;
+
+    // every member of the cluster must be present in the selection, or the rectangle holds the cluster only in part.
+    var a: u32 = 1;
+    while (a <= clustering.components) : (a += 1) {
+        if (clustering.cluster_id[a - 1] != cid) continue;
+        if (!present[@as(usize, a)]) return false;
+    }
+    return true;
+}
+
+// --- selftest: the DECISIVE crux -- the same reaching-apart scene image/cluster_facts.rye builds (A a corner-L box (1,1)-(6,6) and B a
+//     ring box (4,4)-(9,9), their boxes overlapping through the shared corner, connect into ONE cluster; a lone block C box (8,1)-(9,2) is
+//     its own singleton). A rectangle tight on A's arm selects A ALONE -- part of cluster 1, not the whole (selects_whole_cluster FALSE); a
+//     top strip crossing A and C selects one object from each of TWO clusters (cluster_count_in_rect 2); the whole map selects every member
+//     of every cluster (selects_whole_cluster TRUE for both); an off-map rectangle lands on no cluster; refusals by name; determinism -----
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a corner bracket-L: a vertical arm down column `x` from `y0` to `y1`, and a horizontal arm along row `yr` from `x0` to `x1`.
+fn set_corner_l(img: *qoi.Pixmap, x: u32, y0: u32, y1: u32, yr: u32, x0: u32, x1: u32) void {
+    // invariant: the arms run in the positive direction and stay inside the buffer.
+    assert(y1 >= y0);
+    assert(x1 >= x0);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) set_dot(img, x, yy);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) set_dot(img, xx, yr);
+}
+
+/// Paint a 1-pixel-thick RING (a rectangle outline) with corners `(x0, y0)` and `(x1, y1)` -- a holed object, its interior background.
+fn set_ring(img: *qoi.Pixmap, x0: u32, y0: u32, x1: u32, y1: u32) void {
+    // invariant: the ring spans at least a 3x3 box so it encloses a real interior hole, and stays inside the buffer.
+    assert(x1 >= x0 + 2);
+    assert(y1 >= y0 + 2);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) {
+        set_dot(img, xx, y0);
+        set_dot(img, xx, y1);
+    }
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) {
+        set_dot(img, x0, yy);
+        set_dot(img, x1, yy);
+    }
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- BUILD THE REACHING-APART SCENE on an 11x11 canvas (the same as image/cluster_facts.rye): A a corner-L (label 1) box (1,1)-(6,6);
+    //     C a 2x2 block (label 2) box (8,1)-(9,2); B a ring (label 3) box (4,4)-(9,9). A and B connect into cluster 1 (boxes overlap through
+    //     the corner (4,4)-(6,6)); C is singleton cluster 2. Raster labels A=1, C=2, B=3 -------------------------------------------------
+    var scene = try make_canvas(garden, 11, 11, 0);
+    set_corner_l(&scene, 1, 1, 6, 1, 1, 6); // A: col1 rows1..6, row1 cols1..6
+    set_block(&scene, 8, 1, 2, 2); // C: block at (8,1)
+    set_ring(&scene, 4, 4, 9, 9); // B: ring box (4,4)-(9,9)
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 3) return error.SceneNotThreeComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    // confirm the two-cluster shape the crux leans on: A and B one cluster, C a singleton
+    if (try overlap_clusters.same_cluster(clustering, 1, 3) != true) return error.ABNotClustered;
+    if (overlap_clusters.cluster_count(clustering) != 2) return error.ClusterCountNotTwo;
+    const ab_cid = try overlap_clusters.cluster_of(clustering, 1);
+    const c_cid = try overlap_clusters.cluster_of(clustering, 2);
+
+    // --- A RECTANGLE SELECTS ONLY PART OF A CLUSTER -- a rectangle tight on A's vertical arm (x in 1..2, y in 3..6) selects A alone; A
+    //     belongs to cluster 1, so clusters_in_rect names cluster 1, yet selects_whole_cluster reads FALSE because B (the other member)
+    //     lies outside the box: the connected group is split by a box that knows nothing of connectivity --------------------------------
+    const on_a = region_select.QueryRect{ .min_x = 1, .min_y = 3, .max_x = 2, .max_y = 6 };
+    const sel_a = try region_select.select_in_rect(garden, manifest, &map, on_a);
+    if (sel_a.len != 1 or sel_a[0] != 1) return error.RectOnANotJustA; // selects A alone
+    const cl_a = try clusters_in_rect(garden, clustering, graph, &map, on_a);
+    if (cl_a.len != 1 or cl_a[0] != ab_cid) return error.ClustersOnAWrong; // names cluster 1
+    if (try selects_whole_cluster(garden, clustering, graph, &map, on_a, ab_cid) != false) return error.WholeClusterFalsePositive; // only part
+    if (try cluster_count_in_rect(garden, clustering, graph, &map, on_a) != 1) return error.CountOnANotOne;
+
+    // --- A RECTANGLE SPANS MULTIPLE CLUSTERS -- a top strip (y in 1..2) crosses A's top arm and C's block, selecting one object from each
+    //     of two different clusters (B's pixels start at y=4, outside the strip); clusters_in_rect names TWO clusters ----------------------
+    const strip = region_select.QueryRect{ .min_x = 1, .min_y = 1, .max_x = 9, .max_y = 2 };
+    const sel_strip = try region_select.select_in_rect(garden, manifest, &map, strip);
+    if (sel_strip.len != 2 or sel_strip[0] != 1 or sel_strip[1] != 2) return error.StripNotAandC; // selects A and C
+    const cl_strip = try clusters_in_rect(garden, clustering, graph, &map, strip);
+    if (cl_strip.len != 2) return error.StripNotTwoClusters;
+    if (cl_strip[0] != ab_cid or cl_strip[1] != c_cid) return error.StripClustersWrong; // clusters 1 and 2, ascending
+    if (try cluster_count_in_rect(garden, clustering, graph, &map, strip) != 2) return error.StripCountNotTwo;
+    // yet the strip holds neither cluster whole: cluster 1 is missing B, cluster 2's lone member C is fully caught
+    if (try selects_whole_cluster(garden, clustering, graph, &map, strip, ab_cid) != false) return error.StripWholeABWrong;
+    if (try selects_whole_cluster(garden, clustering, graph, &map, strip, c_cid) != true) return error.StripWholeCWrong;
+
+    // --- THE WHOLE MAP -- a rectangle covering the whole scene selects every object, so it lands on both clusters and holds each whole ----
+    const whole = region_select.QueryRect{ .min_x = 0, .min_y = 0, .max_x = 10, .max_y = 10 };
+    const cl_whole = try clusters_in_rect(garden, clustering, graph, &map, whole);
+    if (cl_whole.len != 2) return error.WholeNotTwoClusters;
+    if (try selects_whole_cluster(garden, clustering, graph, &map, whole, ab_cid) != true) return error.WholeABNotWhole;
+    if (try selects_whole_cluster(garden, clustering, graph, &map, whole, c_cid) != true) return error.WholeCNotWhole;
+
+    // --- AN OFF-MAP RECTANGLE -- a marquee dragged wholly past the edge lands on no object, hence no cluster; whole-cluster is FALSE for
+    //     every cluster since none of its members are caught ---------------------------------------------------------------------------
+    const off = region_select.QueryRect{ .min_x = 20, .min_y = 20, .max_x = 25, .max_y = 25 };
+    const cl_off = try clusters_in_rect(garden, clustering, graph, &map, off);
+    if (cl_off.len != 0) return error.OffMapNotEmpty;
+    if (try cluster_count_in_rect(garden, clustering, graph, &map, off) != 0) return error.OffMapCountNotZero;
+    if (try selects_whole_cluster(garden, clustering, graph, &map, off, ab_cid) != false) return error.OffMapWholeWrong;
+
+    // --- REFUSALS -- a zero or past-the-count cluster id refuses BadClusterId; a malformed rectangle refuses BadRect ---------------------
+    if (selects_whole_cluster(garden, clustering, graph, &map, whole, 0)) |_| return error.ZeroCidNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongZeroCidError;
+    }
+    if (selects_whole_cluster(garden, clustering, graph, &map, whole, 3)) |_| return error.PastCidNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongPastCidError;
+    }
+    const bad = region_select.QueryRect{ .min_x = 5, .min_y = 5, .max_x = 2, .max_y = 8 };
+    if (clusters_in_rect(garden, clustering, graph, &map, bad)) |_| return error.BadRectNotRefused else |err| {
+        if (err != error.BadRect) return error.WrongBadRectError;
+    }
+
+    // --- DETERMINISM -- the same rectangle lands on the same clusters twice --------------------------------------------------------------
+    const d1 = try cluster_count_in_rect(garden, clustering, graph, &map, strip);
+    const d2 = try cluster_count_in_rect(garden, clustering, graph, &map, strip);
+    if (d1 != d2) return error.CountNotDeterministic;
+
+    print("GREEN image-region-cluster: which CONNECTED CLUSTERS a query RECTANGLE lands on -- run the marquee (region_select) to name the objects a dragged box covers, then map them to the connected clusters they belong to (overlap_clusters), exact integers, NO float and NO tolerance -- the DECISIVE crux that a GEOMETRIC query and a TOPOLOGICAL grouping do not refine each other, in two shapes. A RECTANGLE SELECTS ONLY PART OF A CLUSTER -- two objects reaching apart (A a corner-L box (1,1)-(6,6), B a ring box (4,4)-(9,9)) connect into ONE cluster, yet a rectangle tight on A's arm (x 1..2, y 3..6) selects A ALONE, so clusters_in_rect names cluster 1 while selects_whole_cluster reads FALSE (B lies outside the box) -- the connected group split by a box that knows nothing of connectivity, the selected set a strict subset of the cluster. A RECTANGLE SPANS MULTIPLE CLUSTERS -- a top strip (y 1..2) crossing A's top arm and a lone block C (box (8,1)-(9,2), its own singleton cluster) selects one object from each of TWO clusters, so cluster_count_in_rect reads 2, a geometric box freely crossing topological boundaries; the strip holds cluster 1 only in part (B missing) yet holds cluster 2 whole (its lone member C caught). The whole map lands on both clusters and holds each whole; an off-map marquee lands on no cluster; a zero or past-the-count cluster id refuses BadClusterId and a malformed rectangle refuses BadRect; the same rectangle lands on the same clusters twice. Compose not braid over image/region_select.rye (the rectangle-to-object decision), image/overlap_clusters.rye (the connectivity and cluster labeling), and image/scene_graph.rye (the per-object manifest)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: region_cluster selftest\n", .{});
+    return 1;
+}

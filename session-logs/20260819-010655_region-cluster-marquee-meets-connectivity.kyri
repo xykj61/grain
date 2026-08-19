@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260819.010655
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title region_cluster -- which connected clusters a query rectangle lands on
+prompt autonomous loop -- continue Lindy-first crux-first on the live green Season G scene-read edge after cluster_facts shipped; send each finished increment as its own signed round; stop at the custody gates
+think Continued the loop after shipping cluster_facts (signed 3f884e6359, pushed origin + xykj61). Standfast still clear -- no new red opened by that lap, crux/REDS.md living rows all closed, only #75 rests as custody-gated errata.
+think Chose the crux-first bridge the recommends named: a per-cluster read over a query rectangle -- joining the two freshest families, region_select (the geometric marquee) and overlap_clusters (the topological connectivity). Lindy-first (a marquee that respects connected groups is a surface primitive read for years), crux-first (the decisive move showing the two structures cut the scene along different seams).
+think The DECISIVE crux: a geometric rectangle query and a topological cluster grouping do NOT refine each other. A rectangle can select only PART of a connected cluster (a box splitting a group that knows nothing of connectivity), and a rectangle can SPAN multiple clusters (a box crossing a topological boundary). Reused the reaching-apart scene cluster_facts built (A corner-L box (1,1)-(6,6), B ring box (4,4)-(9,9) connected into cluster 1; C block box (8,1)-(9,2) a singleton cluster 2) so the two laps cross-check on one geometry.
+think Verified the query rectangles by hand before building: a rectangle tight on A's vertical arm (x 1..2, y 3..6) catches A's col-1 pixels only, no B (B leftmost x=4) and no C (C at x>=8), so it selects {A}=label 1 -- part of cluster 1; a top strip (y 1..2) catches A's top row and C's block but not B (B topmost y=4), so it selects {A,C}=labels 1,2 across two clusters.
+think Built region_cluster.rye: clusters_in_rect runs select_in_rect then maps each selected label to cluster_of and collects the distinct cluster ids ascending (a bounded presence tally sized to clusters+1); cluster_count_in_rect its size; selects_whole_cluster builds an object-presence tally and checks every member of the cluster is present. Refusals: BadRect propagated from region_select, BadClusterId at the edge.
+obs GREEN on the FIRST full metal run -- no brace trap, no compound assert. The whole-map boundary (holds every cluster whole) and the off-map boundary (lands on no cluster) frame the crux from both ends; the strip proving cluster 1 partial yet cluster 2 whole shows selects_whole_cluster is per-cluster, not per-rectangle.
+obs Live clock 010655 read from TZ=America/New_York before stamping; no future stamp (REDS #75's lesson). No red booked this lap.
+obs Council rota lap deep-read context/KYRI.md (item 19, cycling past TWO_ROOMS at 18) -- the voice and its four faculties; this lap held Lattice's exactness (every count a measured integer), Scribble's legibility (each coined read named on first use), Ember's craft (proved before GREEN).
+file image/region_cluster.rye the bridge: clusters_in_rect maps a rectangle's selected objects to their connected clusters, cluster_count_in_rect the count, selects_whole_cluster the whole-vs-part test; BadRect/BadClusterId refusals
+file tools/region_cluster_witness.rish builds and runs the selftest on metal, native contains over the GREEN line and both crux shapes (REDS #85 template)
+file image/README.md names the region-to-cluster read after the cluster facts (docs-sync)
+file crux/REMEMBER.md live edge + Git nib repointed single-stranded to region_cluster, cluster_facts folded to a prior-nib comment; 184 image modules stand; next crux named
+loom witness=region_cluster_witness build=green metal_run=first reds=0 clusters=2 rect_part_count=1 rect_span_count=2
+recommend keep-going next agent-doable Season G scene read crux-first -- a per-cluster read over a lasso polygon (join lasso_select with overlap_clusters), an object-count-in-region summary, or a nearest-cluster/cluster-adjacency read; the Microkernel study rung and a real-photo top-hat wait on a fetch/license gate (surfaced, not crossed). No network, no key, no funds.
