@@ -1,0 +1,395 @@
+//! image/cluster_facts.rye -- the FACTS of each connected CLUSTER: for one cluster of the box-overlap graph, the union FRAME its members
+//! span and the joined facts over just that group -- total foreground area, holed-member count, and the largest member. Read straight from
+//! image/overlap_clusters.rye's cluster labeling and image/scene_graph.rye's per-object manifest -- exact integers, NO float, NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/overlap_clusters.rye partitions a scene into the CONNECTED CLUSTERS of the box-overlap graph
+//! (objects whose boxes overlap, directly or through a chain, gathered into one group). That rung answers WHO belongs to which cluster.
+//! This rung answers WHAT each cluster is: its bounding FRAME (the union of its members' boxes -- the group-handle a surface draws around a
+//! whole connected region) and its joined facts (image/selection_summary.rye read over a cluster instead of a hand-picked selection). The
+//! cluster join composes over image/scene_graph.rye's manifest, so a surface reads a connected region's extent and substance in one call.
+//!
+//! The DECISIVE crux -- the box-is-a-prefilter lesson lifted to the CLUSTER, in two shapes at once:
+//!
+//!   THE CLUSTER FRAME OVER-CLAIMS MEMBERSHIP ACROSS CLUSTERS. A cluster is a set of objects, named by the label set, never by the frame
+//!   that encloses them. Two objects reaching apart, their boxes overlapping through a shared corner, connect into one cluster whose union
+//!   frame spans the whole region between them -- and that frame can wholly CONTAIN a third object that belongs to a DIFFERENT cluster,
+//!   sitting in a gap outside either member's own box. So `box_contains_object` reads TRUE for an object the cluster never named. The frame
+//!   a surface draws around a connected group is a hint, never the membership test; only `cluster_of` says who belongs.
+//!
+//!   THE CLUSTER IS FRAMES, NOT SUBSTANCE. The members of a connected cluster overlap only by their BOXES -- image/object_relation.rye
+//!   proves they sit 2 or more pixels APART, touched by neither. So the cluster's total foreground AREA (its real substance) is far less
+//!   than its frame's area (which covers all the background between the standing-apart members). A connected group is a group of frames;
+//!   its substance is the sum of the members, and the frame holds far more than they fill.
+//!
+//! Compose not braid. This rung OWNS only the per-cluster join -- the union of a cluster's member boxes and the aggregate reads over that
+//! subset. No cluster recomputed (image/overlap_clusters.rye owns the connectivity and the dense cluster labeling), no box re-measured
+//! (image/scene_manifest.rye owns the per-object boxes and areas), no distance recomputed (image/object_relation.rye owns each pair's exact
+//! nearest-pixel distance, read here only to prove the members stand apart). A reading over a reading over a reading.
+//!
+//! Everything is bounded before a byte: the scene graph caps its object count at `scene_graph_max_objects`, so every member scan runs a
+//! bounded number of objects and every area sum stays under the image module's pixel ceiling. A cluster id of zero or past the cluster count
+//! refuses `BadClusterId`; a facts read of an empty scene refuses `NoObjects`, having named nothing. No network, no key, no funds -- the
+//! per-cluster read a surface names the day it must frame a connected region, weigh its substance, or point at the biggest object in a group.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/cluster_facts.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+
+pub const cluster_facts_version = "20260819.005852";
+
+pub const ClusterFactsError = error{
+    BadClusterId,
+    NoObjects,
+};
+
+/// An inclusive axis-aligned BOX in pixel coordinates -- `(min_x, min_y)` the top-left pixel, `(max_x, max_y)` the bottom-right, both
+/// covered. The union of a cluster's member boxes, well-formed on both axes by construction. A local builder so this rung leans on no
+/// higher module for its own return shape.
+pub const Box = struct {
+    min_x: u32 = 0,
+    min_y: u32 = 0,
+    max_x: u32 = 0,
+    max_y: u32 = 0,
+
+    /// The inclusive pixel WIDTH of the box -- always at least one for a real box.
+    pub fn width(self: *const Box) u32 {
+        // invariant: a real box is well-formed on x, so the low corner never passes the high corner.
+        assert(self.max_x >= self.min_x);
+        return self.max_x - self.min_x + 1;
+    }
+
+    /// The inclusive pixel HEIGHT of the box -- always at least one for a real box.
+    pub fn height(self: *const Box) u32 {
+        // invariant: a real box is well-formed on y, so the low corner never passes the high corner.
+        assert(self.max_y >= self.min_y);
+        return self.max_y - self.min_y + 1;
+    }
+
+    /// The pixel AREA of the box -- its inclusive width times its inclusive height. The FRAME's area, always at least the sum of the
+    /// cluster's members' own areas and usually far more, since the frame covers the background between the standing-apart members.
+    pub fn area(self: *const Box) u64 {
+        return @as(u64, self.width()) * @as(u64, self.height());
+    }
+};
+
+/// Guard a cluster id -- a real dense cluster label (1..clusters). Refuses `BadClusterId` at the edge before any member is read.
+fn validate_cid(clustering: overlap_clusters.Clustering, cid: u32) ClusterFactsError!void {
+    // invariant: one cluster id per object.
+    assert(clustering.cluster_id.len == @as(usize, clustering.components));
+    // invariant: a real clustering holds at least one cluster.
+    assert(clustering.clusters >= 1);
+    if (cid == 0 or cid > clustering.clusters) return error.BadClusterId;
+}
+
+/// The tight BOUNDING FRAME enclosing every member of cluster `cid` -- the union of the cluster's member boxes. This is the group-handle a
+/// surface draws around a whole connected region. Refuses `BadClusterId` for a zero or past-the-count cluster id.
+pub fn cluster_bbox(clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, cid: u32) !Box {
+    // invariant: the clustering and the graph describe the same scene -- the same object count.
+    assert(clustering.components == graph.components);
+    // invariant: the manifest holds exactly one row per object, so a member index names a real box.
+    assert(graph.manifest.objects.len == @as(usize, graph.components));
+    try validate_cid(clustering, cid);
+
+    var seeded: bool = false;
+    var box = Box{};
+    var a: u32 = 1;
+    while (a <= clustering.components) : (a += 1) {
+        // invariant: every member is a real dense object label, so its manifest row exists.
+        assert(a <= graph.manifest.components);
+        if (clustering.cluster_id[a - 1] != cid) continue;
+        const entry = graph.manifest.objects[a - 1];
+        if (!seeded) {
+            box = Box{ .min_x = entry.min_x, .min_y = entry.min_y, .max_x = entry.max_x, .max_y = entry.max_y };
+            seeded = true;
+        } else {
+            if (entry.min_x < box.min_x) box.min_x = entry.min_x;
+            if (entry.min_y < box.min_y) box.min_y = entry.min_y;
+            if (entry.max_x > box.max_x) box.max_x = entry.max_x;
+            if (entry.max_y > box.max_y) box.max_y = entry.max_y;
+        }
+    }
+
+    // invariant: a valid cluster holds at least one member, so the frame was seeded.
+    assert(seeded);
+    // invariant: the union is well-formed on both axes -- it began well-formed and only ever widened.
+    assert(box.max_x >= box.min_x);
+    assert(box.max_y >= box.min_y);
+    return box;
+}
+
+/// The total foreground AREA of cluster `cid` -- the sum of its members' pixel areas, the cluster's real SUBSTANCE. Always at most the
+/// frame's area and usually far less, since the frame covers the background between the standing-apart members. Refuses `BadClusterId`.
+pub fn cluster_area(clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, cid: u32) !u32 {
+    // invariant: the clustering and the graph describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(graph.manifest.objects.len == @as(usize, graph.components));
+    try validate_cid(clustering, cid);
+
+    var total: u32 = 0;
+    var a: u32 = 1;
+    while (a <= clustering.components) : (a += 1) {
+        if (clustering.cluster_id[a - 1] != cid) continue;
+        const entry = graph.manifest.objects[a - 1];
+        // invariant: a member's area is at least one pixel and the running sum stays within the pixel ceiling, so u32 never overflows.
+        assert(entry.area >= 1);
+        assert(@as(u64, total) + @as(u64, entry.area) <= label.label_max_pixels);
+        total += entry.area;
+    }
+
+    // invariant: a valid cluster holds at least one member of at least one pixel.
+    assert(total >= 1);
+    return total;
+}
+
+/// HOW MANY members of cluster `cid` enclose at least one interior HOLE -- a topological fact joined over just the connected group.
+/// Refuses `BadClusterId` for a zero or past-the-count cluster id.
+pub fn cluster_holed_count(clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, cid: u32) !u32 {
+    // invariant: the clustering and the graph describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(graph.manifest.objects.len == @as(usize, graph.components));
+    try validate_cid(clustering, cid);
+
+    var holed: u32 = 0;
+    var a: u32 = 1;
+    while (a <= clustering.components) : (a += 1) {
+        if (clustering.cluster_id[a - 1] != cid) continue;
+        const entry = graph.manifest.objects[a - 1];
+        if (entry.is_holed()) holed += 1;
+    }
+
+    // invariant: the holed count never exceeds the cluster's member count, itself never exceeding the whole scene.
+    assert(holed <= clustering.components);
+    return holed;
+}
+
+/// The LABEL of the LARGEST member of cluster `cid` -- the member of greatest foreground area, ties broken by the earliest label so the
+/// read is deterministic. Refuses `BadClusterId` for a zero or past-the-count cluster id.
+pub fn largest_in_cluster(clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, cid: u32) !u32 {
+    // invariant: the clustering and the graph describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(graph.manifest.objects.len == @as(usize, graph.components));
+    try validate_cid(clustering, cid);
+
+    var best_label: u32 = 0;
+    var best_area: u32 = 0;
+    var a: u32 = 1;
+    while (a <= clustering.components) : (a += 1) {
+        if (clustering.cluster_id[a - 1] != cid) continue;
+        const entry = graph.manifest.objects[a - 1];
+        // strictly greater keeps the earliest label on an area tie -- deterministic.
+        if (best_label == 0 or entry.area > best_area) {
+            best_area = entry.area;
+            best_label = a;
+        }
+    }
+
+    // invariant: a valid cluster always names a real largest member.
+    assert(best_label >= 1);
+    assert(best_label <= clustering.components);
+    return best_label;
+}
+
+/// TRUE when object `entry`'s bounding box sits WHOLLY inside `box` -- the read that makes the over-claim plain: it can be TRUE for an
+/// object that belongs to a DIFFERENT cluster, whenever that object lies geometrically inside a cluster's frame. Containment of a box,
+/// never membership of a cluster.
+pub fn box_contains_object(box: Box, entry: scene_manifest.ObjectEntry) bool {
+    // invariant: both boxes are well-formed on both axes before containment is judged.
+    assert(box.max_x >= box.min_x);
+    assert(box.max_y >= box.min_y);
+    assert(entry.max_x >= entry.min_x);
+    assert(entry.max_y >= entry.min_y);
+    return box.min_x <= entry.min_x and entry.max_x <= box.max_x and box.min_y <= entry.min_y and entry.max_y <= box.max_y;
+}
+
+// --- selftest: the DECISIVE box-is-a-prefilter crux lifted to the CLUSTER -- two bracket-L's reaching apart (top-left opening lower-right,
+//     bottom-right opening upper-left) whose boxes overlap through a shared corner and connect into ONE cluster whose union frame spans the
+//     whole region, plus a small block standing alone in a gap outside either member's box (its own singleton cluster). The connected
+//     cluster's frame wholly CONTAINS the block though the block belongs to a different cluster (the frame over-claims membership across
+//     clusters), and the cluster's total area is far less than its frame's area (frames, not substance); refusals by name; determinism ----
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a corner bracket-L: a vertical arm down column `x` from `y0` to `y1`, and a horizontal arm along row `yr` from `x0` to `x1`. The
+/// two arms share the corner `(x, yr)` when `yr` is `y0` or `y1`, leaving the opposite quadrant background to hold objects without touch.
+fn set_corner_l(img: *qoi.Pixmap, x: u32, y0: u32, y1: u32, yr: u32, x0: u32, x1: u32) void {
+    // invariant: the arms run in the positive direction and stay inside the buffer.
+    assert(y1 >= y0);
+    assert(x1 >= x0);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) set_dot(img, x, yy);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) set_dot(img, xx, yr);
+}
+
+/// Paint a 1-pixel-thick RING (a rectangle outline) with corners `(x0, y0)` and `(x1, y1)` -- a holed object, its interior background.
+fn set_ring(img: *qoi.Pixmap, x0: u32, y0: u32, x1: u32, y1: u32) void {
+    // invariant: the ring spans at least a 3x3 box so it encloses a real interior hole, and stays inside the buffer.
+    assert(x1 >= x0 + 2);
+    assert(y1 >= y0 + 2);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) {
+        set_dot(img, xx, y0);
+        set_dot(img, xx, y1);
+    }
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) {
+        set_dot(img, x0, yy);
+        set_dot(img, x1, yy);
+    }
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- BUILD THE REACHING-APART SCENE on an 11x11 canvas:
+    //     object A (label 1): a corner-L opening lower-right -- vertical arm col x=1 rows 1..6, horizontal arm row y=1 cols 1..6, box
+    //         (1,1)-(6,6), area 11, its concavity the lower-right background;
+    //     object C (label 2): a 2x2 block at (8,1), box (8,1)-(9,2), area 4, standing alone in the top-right gap;
+    //     object B (label 3): a 6x6 RING with corners (4,4) and (9,9), box (4,4)-(9,9), area 20, holed, opening upper-left.
+    //     A's box (1,1)-(6,6) and B's box (4,4)-(9,9) OVERLAP at the shared corner (4,4)-(6,6), so A and B connect into ONE cluster; C's
+    //     box (8,1)-(9,2) overlaps neither (x>6 clears A, y<4 clears B), so C stands as its own singleton. Every object sits 2+ pixels
+    //     from every other (distinct 8-components). Raster labeling numbers A=1 (first pixel (1,1)), C=2 ((8,1)), B=3 ((4,4)) --------------
+    var scene = try make_canvas(garden, 11, 11, 0);
+    set_corner_l(&scene, 1, 1, 6, 1, 1, 6); // A: col1 rows1..6, row1 cols1..6
+    set_block(&scene, 8, 1, 2, 2); // C: block at (8,1), box (8,1)-(9,2)
+    set_ring(&scene, 4, 4, 9, 9); // B: ring box (4,4)-(9,9)
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 3) return error.SceneNotThreeComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    if (scene_graph.object_count(graph) != 3) return error.GraphNotThreeObjects;
+
+    // confirm the placement the crux leans on -- the raster labels and boxes
+    const oa = try scene_manifest.object_of(manifest, 1);
+    const oc = try scene_manifest.object_of(manifest, 2);
+    const ob = try scene_manifest.object_of(manifest, 3);
+    if (oa.min_x != 1 or oa.min_y != 1 or oa.max_x != 6 or oa.max_y != 6) return error.ABoxWrong;
+    if (oc.min_x != 8 or oc.min_y != 1 or oc.max_x != 9 or oc.max_y != 2) return error.CBoxWrong;
+    if (ob.min_x != 4 or ob.min_y != 4 or ob.max_x != 9 or ob.max_y != 9) return error.BBoxWrong;
+    if (oa.area != 11) return error.AAreaWrong;
+    if (oc.area != 4) return error.CAreaWrong;
+    if (ob.area != 20 or !ob.is_holed()) return error.BNotHoledRing;
+
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    // A and B reach apart yet their boxes overlap through the shared corner -- one cluster; C is its own singleton
+    if (try overlap_clusters.same_cluster(clustering, 1, 3) != true) return error.ABNotClustered;
+    if (try overlap_clusters.same_cluster(clustering, 1, 2) != false) return error.ACFalselyClustered;
+    if (overlap_clusters.cluster_count(clustering) != 2) return error.ClusterCountNotTwo;
+    const ab_cid = try overlap_clusters.cluster_of(clustering, 1);
+    const c_cid = try overlap_clusters.cluster_of(clustering, 2);
+    if (ab_cid == c_cid) return error.ClustersNotDistinct;
+
+    // --- THE CLUSTER FRAME OVER-CLAIMS MEMBERSHIP ACROSS CLUSTERS -- the {A,B} cluster's union frame spans (1,1)-(9,9), and
+    //     box_contains_object reads TRUE for C, whose box (8,1)-(9,2) sits wholly inside that frame, though C belongs to a DIFFERENT
+    //     cluster: the frame is a hint, only cluster_of says who belongs --------------------------------------------------------------
+    const frame = try cluster_bbox(clustering, graph, ab_cid);
+    if (frame.min_x != 1 or frame.min_y != 1 or frame.max_x != 9 or frame.max_y != 9) return error.ClusterFrameWrong;
+    if (!box_contains_object(frame, oc)) return error.FrameDoesNotHoldForeignC; // the over-claim: C is inside the frame
+    // yet C is NOT in this cluster -- containment of a box is not membership of a cluster
+    if (try overlap_clusters.cluster_of(clustering, 2) == ab_cid) return error.CFalselyInABCluster;
+    // the frame also holds both its own members, of course
+    if (!box_contains_object(frame, oa) or !box_contains_object(frame, ob)) return error.FrameMissesOwnMembers;
+
+    // --- THE CLUSTER IS FRAMES, NOT SUBSTANCE -- the members overlap only by their boxes; object_relation proves A and B sit 2+ pixels
+    //     APART, so the cluster's total area (its substance) is far less than its frame's area (which covers the background between them) --
+    const rel_ab = try scene_graph.relation_of(graph, 1, 3);
+    if (rel_ab.nearest_cheby < 2) return error.MembersTouch; // connected by boxes, yet standing apart
+    const substance = try cluster_area(clustering, graph, ab_cid);
+    if (substance != 31) return error.ClusterAreaWrong; // A(11) + B(20) = 31 real foreground pixels
+    if (!(@as(u64, substance) < frame.area())) return error.SubstanceNotLessThanFrame; // 31 < 81, frames not substance
+    if (frame.area() != 81) return error.FrameAreaWrong; // a 9x9 frame
+
+    // --- THE JOINED FACTS over just the cluster -- the largest member is the ring (area 20, the biggest of the two), and exactly one
+    //     member is holed (the ring); the singleton cluster is the lone block, area 4, no holed member --------------------------------
+    if (try largest_in_cluster(clustering, graph, ab_cid) != 3) return error.LargestNotRing;
+    if (try cluster_holed_count(clustering, graph, ab_cid) != 1) return error.HoledCountNotOne;
+    const c_frame = try cluster_bbox(clustering, graph, c_cid);
+    if (c_frame.min_x != 8 or c_frame.min_y != 1 or c_frame.max_x != 9 or c_frame.max_y != 2) return error.CFrameWrong;
+    if (try cluster_area(clustering, graph, c_cid) != 4) return error.CClusterAreaWrong;
+    if (try cluster_holed_count(clustering, graph, c_cid) != 0) return error.CClusterHoledWrong;
+    if (try largest_in_cluster(clustering, graph, c_cid) != 2) return error.CLargestWrong;
+    // the singleton's frame is exactly its own object's box, holding no foreign object
+    if (box_contains_object(c_frame, oa) or box_contains_object(c_frame, ob)) return error.CFrameHoldsOthers;
+
+    // --- REFUSALS -- a zero or past-the-count cluster id refuses BadClusterId, having named nothing ------------------------------------
+    if (cluster_bbox(clustering, graph, 0)) |_| return error.ZeroCidBboxNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongZeroBboxError;
+    }
+    if (cluster_area(clustering, graph, 3)) |_| return error.PastCidAreaNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongPastAreaError;
+    }
+    if (largest_in_cluster(clustering, graph, 0)) |_| return error.ZeroCidLargestNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongZeroLargestError;
+    }
+
+    // --- DETERMINISM -- the same cluster reads the same frame and facts twice -----------------------------------------------------------
+    const f1 = try cluster_bbox(clustering, graph, ab_cid);
+    const f2 = try cluster_bbox(clustering, graph, ab_cid);
+    if (f1.min_x != f2.min_x or f1.min_y != f2.min_y or f1.max_x != f2.max_x or f1.max_y != f2.max_y) return error.FrameNotDeterministic;
+    if (try cluster_area(clustering, graph, ab_cid) != try cluster_area(clustering, graph, ab_cid)) return error.AreaNotDeterministic;
+    if (try largest_in_cluster(clustering, graph, ab_cid) != try largest_in_cluster(clustering, graph, ab_cid)) return error.LargestNotDeterministic;
+
+    print("GREEN image-cluster-facts: the FACTS of each connected CLUSTER -- for one cluster of the box-overlap graph, the union FRAME its members span and the joined facts over just that group (total foreground area, holed-member count, largest member), read straight from overlap_clusters' cluster labeling and scene_graph's per-object manifest, exact integers, NO float and NO tolerance -- the DECISIVE box-is-a-prefilter crux lifted to the CLUSTER, in two shapes. THE CLUSTER FRAME OVER-CLAIMS MEMBERSHIP ACROSS CLUSTERS -- two bracket-L's reaching apart (A box (1,1)-(6,6), B a ring box (4,4)-(9,9)) whose boxes overlap through the shared corner (4,4)-(6,6) connect into ONE cluster whose union frame spans (1,1)-(9,9), and box_contains_object reads TRUE for a lone block C (box (8,1)-(9,2)) sitting in the top-right gap outside either member's box, though C belongs to a DIFFERENT singleton cluster -- the frame a surface draws around a connected group holds an object the cluster never named, so containment of a box is never membership of a cluster, only cluster_of says who belongs. THE CLUSTER IS FRAMES, NOT SUBSTANCE -- object_relation proves A and B sit Chebyshev distance 2 or more APART (connected only by their overlapping boxes, touched by neither), so the cluster's total foreground area 31 (A's 11 plus the ring's 20) is far less than its frame's area 81, the frame covering all the background between the standing-apart members; the largest member is the ring of area 20, exactly one member is holed (the ring), and the singleton cluster is the lone block of area 4 with no holed member, its frame exactly its own box holding no foreign object; a zero or past-the-count cluster id refuses BadClusterId; the same cluster reads the same frame and facts twice. Compose not braid over image/overlap_clusters.rye (the connectivity and dense cluster labeling), image/scene_graph.rye (the per-object manifest), image/scene_manifest.rye (the per-object boxes and areas), and image/object_relation.rye (each pair's exact nearest-pixel distance)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: cluster_facts selftest\n", .{});
+    return 1;
+}
