@@ -40,6 +40,7 @@ Every ring here composes over the one before it. A later ring imports an earlier
 | queue | [`queue.rye`](queue.rye) | more than one ask stands on one channel at once -- a head the producer owns and a tail the consumer owns, a drain bounded by the queue rather than by the bell, a ring with nothing behind it draining zero by name, and a full queue refusing rather than overwriting an unread ask |
 | fanin | [`fanin.rye`](fanin.rye) | two producers write one server -- every ask attributed to the region it arrived in rather than to the author its bytes claim, a sweep bounded per stream so a full producer never delays a quiet one, and an ask that lies about its author refused rather than believed |
 | stall | [`stall.rye`](stall.rye) | a consumer stops reading and the rest keep going -- a full stream taking the door its plan declared rather than one the code preferred, refusing so nothing is lost or lapsing so nothing waits, a stalled peer costing its own stream alone, and the answers that fell out of the window counted by the consumer that lost them |
+| relay | [`relay.rye`](relay.rye) | one domain both asks and answers -- the chain's shape derived from its grants rather than declared, a middle that forwards a fresh ask while its whole backlog stands unanswered, the two ends sharing no region and no channel, and the far end's name reaching the client as a claim it takes on the relay's word |
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
@@ -221,6 +222,25 @@ Which door a stream takes is declared per stream, and a pass naming fewer doors 
 Underneath both doors stands a wall the declaration already keeps. A server able to advance a consumer's tail could mark every lapsed answer read and leave nothing to count, so the loss would become invisible rather than named. It holds read alone on that region, and the attempt is refused `WriteDenied` before a byte moves. **The side that bears the loss is the only side that can report it drained.**
 
 The numbers state the claim: twelve answers drained across three passes of six streams while one consumer slept, the reading consumer taking eight of eight on every pass, and the silent one waking to name the two it lost. Witness: [`tools/caravan_stall_witness.rish`](../tools/caravan_stall_witness.rish), GREEN on metal, both RED paths proven before the green was trusted. Dropping the window resync in the drain made the loss silent, and two layers caught it in turn: the bound assert fired first, and with that bound relaxed as well, the consumer read the answer standing in slot zero, found number 4 where it expected 0, and answered `bytes differed` -- a mismatch where a count belongs.
+
+
+## Why a Chain Crosses Two Seams Without Waiting
+
+Every ring before this one was a single hop wide. A domain either asked or answered, and the region it wrote said which -- `serve.rye` gave one server two clients, `fanin.rye` gave one server two producers, `stall.rye` gave it a consumer that stopped reading. In all of them, roles and domains stood in one-to-one correspondence.
+
+`relay.rye` seats the first domain that holds two roles at once. `relay_virt` answers `client` and asks `backend` in the same run, and three questions open that no single hop ever poses.
+
+The first is whether the two roles can be told apart, and the declaration is where they are. The relay reads asks on `ask_up` and answers on `answer_down` -- two different regions, both read-only to it, so an answer can never be mistaken for an ask by a server that guessed wrong about its own inbox. This is the fanin lesson raised one level: there the region named the author, here it names the role.
+
+The shape itself is derived rather than declared. A region granted read-write to exactly one domain and read-only to exactly one other is a one-way street, and the direction is the grant's to state. Five such flows fall out of ten grants, and the single domain that spans two peers is the relay -- found by the document's own arithmetic, with no role word written anywhere. The RED probe proved the derivation is a real check rather than decoration: opening a back channel between the two ends made three domains span two peers, and the shape refused a chain with no single middle.
+
+The second question is whether a chain deadlocks, and it cannot, for a structural reason. No verb in this ring waits. A client's ask has no answer on the pass it arrives, since the answer lives two hops away, so the relay forwards what is pending, rings the neighbor that will answer, reports the backlog standing behind it, and returns. The run proves it the hard way: the client asks a second time while nothing at all has been answered, and the relay forwards that new pair with four asks outstanding. The blocking RED probe made the cost plain -- a relay that waited until its backlog cleared stopped the second forwarding pass dead at `QueueFull`, with two asks in hand and the whole chain frozen behind it. **Forwarding is a pass, never a wait.**
+
+The third question is what the isolation costs, and this is the finding worth carrying forward. `client` and `backend` share no channel and hold no grant on a single region in common, which is exactly what keeps a two-hop system from quietly collapsing into one -- the far end's attempt to write the near end's memory is refused `NotGranted` before any permission is even compared. Yet a client that shares no memory with the far end has nothing to attest it with. The author named in an answer reaches the client as a **claim it takes on the relay's word**, where a one-hop client could have taken it from the region the bytes arrived in. **Memory attests a neighbor; it cannot attest a stranger.** Everything past one hop wants a signature the bytes carry themselves, which is Kumara's work rather than Caravan's, and this ring names the seam honestly rather than papering it.
+
+One wall keeps the origin honest in the meantime. A relay able to author the asks it forwards would make the origin in every ask its own invention, so it holds read alone on the region the client writes and the attempt is refused `WriteDenied`.
+
+The numbers state the claim: four asks crossed two seams and came home, two of them asked while none stood answered, and every hop -- asked, forwarded, answered, delivered, taken -- settled at four. Witness: [`tools/caravan_relay_witness.rish`](../tools/caravan_relay_witness.rish), GREEN on metal, both RED paths proven before the green was trusted.
 
 ## Held
 
