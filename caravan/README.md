@@ -1,7 +1,7 @@
 # Caravan -- Process Supervision
 
 **Language:** EN
-**Last updated:** `20260819.164844` (the gap ring lands -- a middle falls mid-lap, and a safe restart turns out to be a silent one)
+**Last updated:** `20260819.165722` (the decline ring lands -- a middle lost for good, and a ring proven to have no detour)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable -- process supervision ladder
 
@@ -43,6 +43,7 @@ Every ring here composes over the one before it. A later ring imports an earlier
 | relay | [`relay.rye`](relay.rye) | one domain both asks and answers -- the chain's shape derived from its grants rather than declared, a middle that forwards a fresh ask while its whole backlog stands unanswered, the two ends sharing no region and no channel, and the far end's name reaching the client as a claim it takes on the relay's word |
 | cycle | [`cycle.rye`](cycle.rye) | a shape with no ends -- every domain spanning exactly two peers, the one lap that closes searched out of the flow graph rather than declared, an ask travelling a full circuit and arriving back at the domain that wrote it, and no domain inside the ring able to total the lap it belongs to |
 | gap | [`gap.rye`](gap.rye) | a middle of the ring falls mid-lap -- the debt standing in the region rather than in the process, and the one thing a fall swallows that a safe restart will not redo: the bell |
+| decline | [`decline.rye`](decline.rye) | a middle lost for good -- the domain declined by name once its attempts are spent, the circuit behind the hole free to run and report and wait, and no neighbor able to reach around it, refused by absence on one side and by rights on the other |
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
@@ -275,6 +276,22 @@ So the honest answer to whether a circuit with a hole in it settles is that **it
 A pass under either reading is held to where its arc **stands** once the move is done -- the onward head level with the inbound head, at the total the plan names -- rather than to how far this attempt moved it. A restarted step that measured its own progress would read a correct no-op as a failure. And every attempt, the first and the return after it, reloads the declaration from disk and derives the returning domain's line from that read, so a domain that comes back takes its rights from the document rather than from a parent's memory of it, exactly as `rederive.rye` asks.
 
 The numbers state the claim: one fall before the write costing one attempt and two asks still home, the same fall after the write costing the whole lap at zero asks home, and that lap closing again at two under a wake that rings on every pass -- five attempts across it, each deriving its rights from five fresh reads of the declaration. Witness: [`tools/caravan_gap_witness.rish`](../tools/caravan_gap_witness.rish), GREEN on metal, both RED paths proven before the green was trusted.
+
+## Why a Ring Has No Detour
+
+Every hole `gap.rye` opened eventually closed. `decline.rye` leaves one open: `birch` falls on every attempt rather than on the first alone, spends what the supervisor allows it, and is **declined by name** -- a domain the ring will not get back. The question is what the rest of the circuit is entitled to do with a lap it can no longer finish.
+
+The first answer holds the previous rung to its own bound. `wake-every-pass` mended a hole that closed by replacing a bell a fall had swallowed, and a domain that never completes a pass never reaches the line that rings. So the carry-on lap runs under that very reading and is unchanged by it: **a cure for a silent restart is no cure for an absent domain.** Running it proves that rather than assuming it.
+
+The second answer is calm. The rest of the circuit may run, and it finds nothing. Under `carry-on` every domain behind the hole starts, hears the bell it was waiting on ringing zero times, and reports `Unheard` -- nobody hangs, nobody invents work, and nobody advances. A hole that stays open is announced by the same honest silence at every arc behind it. Under `halt` those steps never start, and the report names them skipped. **The choice is about what an operator learns rather than about what the ring achieves:** halting says where the circuit stopped, carrying on proves the rest of it healthy and every ask parked at exactly one place. The work is safe either way, because it stands on disk in a region that belongs to the declaration.
+
+The third answer is the finding, and it is structural rather than policed:
+
+**A ring has no detour, and the capability table refuses in two distinct ways -- by absence and by rights.**
+
+`alder` reaches for the arc behind the hole, `ask_ab` onward to `ask_bc`, with two real asks standing in it, and is refused `NotGranted`: the declaration hands alder no word for `ask_bc` at all. `cedar` reaches for alder's own homeward arc, `ask_ca` onward to `taken`, and gets further, since it holds both regions -- then it is stopped at the claim with `WriteDenied`, because it holds `taken` at rights that read and never write. Neither refusal is a rule this module enforces. Both are the grants, read back by the dependent from the words it was handed. So the entitlement question closes cleanly: the circuit is entitled to run, to report, and to wait, and it is never entitled to reach around. Nothing had to forbid that, because nothing ever permitted it.
+
+The numbers state the claim: two attempts spent and one decline, two steps never started under `halt` and two reporting `Unheard` under `carry-on`, two neighbors reaching around the hole and two refused, and zero asks home across it either way. Witness: [`tools/caravan_decline_witness.rish`](../tools/caravan_decline_witness.rish), GREEN on metal, both RED paths proven before the green was trusted.
 
 ## Held
 
