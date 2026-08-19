@@ -1,0 +1,377 @@
+//! image/euler_scene.rye -- the EULER NUMBER of a WHOLE LABELING: drop image/euler_number.rye's single-region assumption and read the
+//! topology of an entire scene of many objects at once -- how many components, how many holes total, and how many holes EACH object
+//! carries -- exact integers, NO float and NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/euler_number.rye reads ONE labeled region, the region image/label.rye guarantees is a
+//! single 8-connected component, so its `components` is always 1 and its Euler number is at most 1. A real segmented photo holds MANY
+//! objects: three coins on a table, a page of printed letters, a handful of cells under a microscope. This rung reads the topology of
+//! the whole labeling -- every component and every hole -- so the family's one topological descriptor works on a real multi-object
+//! scene rather than the single-region toy.
+//!
+//! The EULER NUMBER of the whole foreground is `E = components - holes` summed over every object (its Euler-Poincare characteristic),
+//! and it is ADDITIVE over the disjoint components: the whole-scene Euler equals the SUM of each component's own Euler number. That
+//! additivity is EXACT here, and provably so. image/label.rye hands back 8-connected components, so two pixels in a 2x2 window that
+//! belong to DIFFERENT components would have to be 8-adjacent -- yet 8-adjacent foreground pixels are BY DEFINITION one component. So
+//! no 2x2 bit-quad window ever straddles two objects, and the whole-foreground tally is BYTE-FOR-BYTE the sum of the per-object
+//! tallies. The Euler characteristic of a disjoint union is the sum of the parts -- measured on metal, not assumed.
+//!
+//! This rung reads the scene two ways and proves they agree:
+//!
+//!   `scene_euler(map)` -- ONE bit-quad sweep over the whole foreground (any non-zero label), the total Euler number in a single pass.
+//!   `scene_topology(map)` -- the per-component read: image/euler_number.rye's `euler_number(map, c)` for every label `c` in 1..count,
+//!       so each object carries its OWN hole count, and the whole-scene Euler and total holes are the sums of the parts.
+//!
+//! The DECISIVE facts:
+//!
+//!   THE WHOLE EQUALS THE SUM OF THE PARTS -- a scene of a solid block (Euler 1, no hole), a ring (Euler 0, one hole), and a
+//!   twice-pierced block (Euler -1, two holes) reads a total Euler of 0 = 1 + 0 + (-1), three components, three holes -- and the
+//!   single whole-foreground sweep lands on the SAME 0 the per-object sum does. Topological additivity, proven both ways.
+//!
+//!   THE PER-OBJECT READ DISTINGUISHES WHAT THE TOTAL BLURS -- the total hole count (three) cannot say WHICH object is holed. The
+//!   per-component read does: the block carries zero, the ring one, the pierced block two. `most_holed(scene)` names the pierced
+//!   block; `holed_component_count(scene)` reports that two of the three objects enclose a hole. The scene's topology is a small
+//!   vector of exact integers, one hole count per object, never a threshold on a float.
+//!
+//! Compose not braid. This rung OWNS only the whole-foreground sweep, the per-component aggregation, and the reads over the result --
+//! no bit-quad convention of its own beyond the any-foreground sweep, no hull, no distance field, no pixel written. image/label.rye
+//! owns the component map and its 8-connectivity; image/euler_number.rye owns the single-region bit-quad theorem this rung sums; the
+//! per-object hole counts come from calling `euler_number` per label, never re-deriving it.
+//!
+//! Everything is bounded before a byte: the whole-foreground sweep visits `(width+1) * (height+1)` windows under
+//! image/euler_number.rye's own `euler_max_windows` ceiling; the per-component loop runs `count` times, and `count` is bounded by
+//! image/label.rye's `label_max_pixels` since a component needs at least one pixel; the per-object hole slice is sized to `count`.
+//! An empty labeling (no components) reads a valid empty scene -- Euler 0, no holes; `most_holed` refuses `NoComponents` by name when
+//! asked to pick an object from an empty scene. All-or-nothing, never a half-summed topology. No network, no key, no funds -- the
+//! scene topology a surface names the day it must count the holes across a whole page, not one letter at a time.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/euler_scene.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const euler_number = @import("euler_number.rye");
+
+pub const euler_scene_version = "20260818.214956";
+
+pub const EulerSceneError = error{
+    NoComponents,
+};
+
+/// The TOPOLOGY of a whole labeling: its `components` count (image/label.rye's own `count`), its `total_euler` number (the sum of
+/// every component's Euler number, equal to the single whole-foreground sweep), its `total_holes` (`components - total_euler`, never
+/// negative), and `holes`, a per-component hole count where `holes[c-1]` is the hole count of label `c`. Every field is an exact
+/// integer; the scene carries its topology as a small vector.
+pub const SceneTopology = struct {
+    components: u32,
+    total_euler: i32,
+    total_holes: u32,
+    holes: []u32,
+};
+
+/// TRUE when the cell at `(cx, cy)` is ANY foreground -- in-bounds and carrying any non-zero label. A coordinate outside the map is
+/// background, so the whole-foreground sweep reads a one-pixel background border for free and every edge window is well-defined.
+fn is_any_fg(map: *const label.LabelMap, cx: i64, cy: i64) bool {
+    if (cx < 0 or cy < 0) return false;
+    if (cx >= @as(i64, map.width) or cy >= @as(i64, map.height)) return false;
+    return map.at(@intCast(cx), @intCast(cy)) != 0;
+}
+
+/// The whole-scene EULER NUMBER -- ONE bit-quad sweep over the whole foreground (any non-zero label), reading `E = (Q1 - Q3 - 2*QD)/4`
+/// for the 8-connected foreground exactly as image/euler_number.rye reads one region, only over every object at once. The total Euler
+/// number of the scene in a single pass, `components - total_holes`.
+pub fn scene_euler(map: *const label.LabelMap) i32 {
+    // invariant: a real label map carries one label per pixel across its whole extent.
+    assert(map.labels.len == @as(usize, map.width) * @as(usize, map.height));
+
+    const w: u32 = map.width;
+    const h: u32 = map.height;
+    // invariant: the whole-foreground sweep obeys image/euler_number.rye's own window ceiling, so every tally and the signed
+    // numerator stay far under the i32/i64 limits.
+    const windows: u64 = (@as(u64, w) + 1) * (@as(u64, h) + 1);
+    assert(windows <= euler_number.euler_max_windows);
+
+    var q1: u32 = 0;
+    var q3: u32 = 0;
+    var qd: u32 = 0;
+
+    // one window per lattice corner: the window at (wx, wy) covers cells (wx-1,wy-1), (wx,wy-1), (wx-1,wy), (wx,wy). A cell coordinate
+    // of -1 or of w/h lands outside the map and reads as background, so the border is implicit and every edge is counted once.
+    var wy: u32 = 0;
+    while (wy <= h) : (wy += 1) {
+        var wx: u32 = 0;
+        while (wx <= w) : (wx += 1) {
+            const x: i64 = @as(i64, wx) - 1;
+            const y: i64 = @as(i64, wy) - 1;
+            const tl = is_any_fg(map, x, y);
+            const tr = is_any_fg(map, x + 1, y);
+            const bl = is_any_fg(map, x, y + 1);
+            const br = is_any_fg(map, x + 1, y + 1);
+
+            var n: u32 = 0;
+            if (tl) n += 1;
+            if (tr) n += 1;
+            if (bl) n += 1;
+            if (br) n += 1;
+
+            if (n == 1) {
+                q1 += 1;
+            } else if (n == 3) {
+                q3 += 1;
+            } else if (n == 2) {
+                // a DIAGONAL two is a corner-touch pinch; an adjacent two is a flat edge and contributes nothing. Two foreground
+                // pixels in one window are always one component (they are 8-adjacent), so a pinch never straddles two objects.
+                const main_diag = tl and br and !tr and !bl;
+                const anti_diag = tr and bl and !tl and !br;
+                if (main_diag or anti_diag) qd += 1;
+            }
+        }
+    }
+
+    const numerator: i64 = @as(i64, q1) - @as(i64, q3) - 2 * @as(i64, qd);
+    // invariant: the corner counts of a closed foreground balance to a multiple of four -- the bit-quad theorem, checked on metal.
+    assert(@rem(numerator, 4) == 0);
+    const euler: i64 = @divTrunc(numerator, 4);
+    return @intCast(euler);
+}
+
+/// The full SCENE TOPOLOGY -- read every component's own hole count by calling image/euler_number.rye per label, sum the parts, and
+/// prove the sum equals the single whole-foreground sweep. Returns a valid empty scene (zero components, zero holes, Euler zero) for
+/// an all-background labeling.
+pub fn scene_topology(allocator: std.mem.Allocator, map: *const label.LabelMap) !SceneTopology {
+    // invariant: a real label map carries one label per pixel across its whole extent.
+    assert(map.labels.len == @as(usize, map.width) * @as(usize, map.height));
+    const count: u32 = map.count;
+    // invariant: a component needs at least one pixel, so the component count never exceeds image/label.rye's pixel ceiling and the
+    // per-component loop is bounded.
+    assert(count <= label.label_max_pixels);
+
+    const holes = try allocator.alloc(u32, @as(usize, count));
+
+    var euler_sum: i64 = 0;
+    var holes_sum: u64 = 0;
+    var c: u32 = 1;
+    while (c <= count) : (c += 1) {
+        // compose not braid: the per-object topology is image/euler_number.rye's own single-region read, never re-derived here.
+        const topo = try euler_number.euler_number(map, c);
+        holes[@as(usize, c - 1)] = topo.holes;
+        euler_sum += @as(i64, topo.euler);
+        holes_sum += @as(u64, topo.holes);
+    }
+
+    const whole: i32 = scene_euler(map);
+    // invariant: topological additivity -- the whole-foreground Euler number equals the sum of the per-component Euler numbers,
+    // because no 2x2 window straddles two 8-connected components. Proven on metal, the decisive fact of this rung.
+    assert(@as(i64, whole) == euler_sum);
+    // invariant: total components minus total Euler is the total hole count, and it matches the summed per-object holes exactly.
+    assert(@as(i64, count) - @as(i64, whole) == @as(i64, @intCast(holes_sum)));
+
+    return SceneTopology{
+        .components = count,
+        .total_euler = whole,
+        .total_holes = @intCast(holes_sum),
+        .holes = holes,
+    };
+}
+
+/// The TOTAL hole count of the scene -- every interior background region across every object, exact.
+pub fn total_holes(scene: SceneTopology) u32 {
+    // invariant: total components minus total Euler is the total hole count, the two faces of one topological fact.
+    assert(@as(i64, scene.components) - @as(i64, scene.total_euler) == @as(i64, scene.total_holes));
+    // invariant: the per-component hole slice holds one entry per component.
+    assert(scene.holes.len == @as(usize, scene.components));
+    return scene.total_holes;
+}
+
+/// HOW MANY components enclose at least one hole -- the count of holed objects, which the total hole count alone cannot report.
+pub fn holed_component_count(scene: SceneTopology) u32 {
+    // invariant: the per-component hole slice holds one entry per component.
+    assert(scene.holes.len == @as(usize, scene.components));
+    var holed: u32 = 0;
+    var i: usize = 0;
+    while (i < scene.holes.len) : (i += 1) {
+        if (scene.holes[i] >= 1) holed += 1;
+    }
+    // invariant: no more objects can be holed than exist.
+    assert(holed <= scene.components);
+    return holed;
+}
+
+/// The LABEL of the object carrying the most holes, ties broken by the earliest label. Refuses `NoComponents` when the scene is empty
+/// -- there is no object to pick.
+pub fn most_holed(scene: SceneTopology) !u32 {
+    // invariant: the per-component hole slice holds one entry per component.
+    assert(scene.holes.len == @as(usize, scene.components));
+    if (scene.components == 0) return error.NoComponents;
+
+    var best_label: u32 = 1;
+    var best_holes: u32 = scene.holes[0];
+    var i: usize = 1;
+    while (i < scene.holes.len) : (i += 1) {
+        // strictly greater keeps the earliest label on a tie -- deterministic.
+        if (scene.holes[i] > best_holes) {
+            best_holes = scene.holes[i];
+            best_label = @as(u32, @intCast(i)) + 1;
+        }
+    }
+    // invariant: the chosen label is a real, dense label -- at least one and no larger than the component count.
+    assert(best_label >= 1);
+    assert(best_label <= scene.components);
+    return best_label;
+}
+
+/// TRUE when NO object in the scene encloses a hole -- every component simply connected, the whole scene free of interior background.
+pub fn is_all_simply_connected(scene: SceneTopology) bool {
+    // invariant: total holes is the sum of the per-object holes; zero total means no object is holed.
+    assert(@as(i64, scene.components) - @as(i64, scene.total_euler) == @as(i64, scene.total_holes));
+    return scene.total_holes == 0;
+}
+
+// --- selftest: the WHOLE-EQUALS-SUM crux (a scene of a block, a ring, and a twice-pierced block reads total Euler 0 = 1 + 0 + (-1),
+//     three components, three holes, the single sweep agreeing with the per-object sum); the PER-OBJECT-DISTINGUISHES crux (holes
+//     [0,1,2], two objects holed, the pierced block most holed where the total blurs them); an empty scene; refusal by name;
+//     determinism ------------------------------------------------------------------------------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Set one pixel back to background at (x, y) -- carve a hole in a filled shape.
+fn clear_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 0;
+    img.pixels[di + 1] = 0;
+    img.pixels[di + 2] = 0;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- BUILD THE SCENE -- three objects stacked with a blank row between each so they are distinct 8-connected components in known
+    //     raster order: a solid 5x5 block (label 1, Euler 1, no hole), a hollow 5x5 ring (label 2, Euler 0, one hole), and a 5x9 block
+    //     pierced twice (label 3, Euler -1, two holes). Width 7 (5 + a one-pixel border each side); height 23 -----------------------
+    var scene_img = try make_canvas(garden, 7, 23, 0);
+
+    // object 1: a solid 5x5 block, rows 1..5
+    set_block(&scene_img, 1, 1, 5, 5);
+
+    // object 2: a hollow 5x5 ring, rows 7..11, inner 3x3 (rows 8..10, cols 2..4) carved out -- one hole
+    set_block(&scene_img, 1, 7, 5, 5);
+    var ry: u32 = 8;
+    while (ry <= 10) : (ry += 1) {
+        var rx: u32 = 2;
+        while (rx <= 4) : (rx += 1) clear_dot(&scene_img, rx, ry);
+    }
+
+    // object 3: a 5x9 block, rows 13..21, pierced at (3,15) and (3,18) with a foreground wall between -- two holes
+    set_block(&scene_img, 1, 13, 5, 9);
+    clear_dot(&scene_img, 3, 15);
+    clear_dot(&scene_img, 3, 18);
+
+    const map = try label.label_components(garden, &scene_img);
+    if (map.count != 3) return error.SceneNotThreeComponents;
+
+    const scene = try scene_topology(garden, &map);
+
+    // --- THE WHOLE-EQUALS-SUM CRUX -- total Euler 0 = 1 + 0 + (-1); three components; three holes; and the single whole-foreground
+    //     sweep lands on the SAME total the per-object sum does ---------------------------------------------------------------------
+    if (scene.components != 3) return error.SceneComponentsNotThree;
+    if (scene.total_euler != 0) return error.SceneEulerNotZero;
+    if (total_holes(scene) != 3) return error.SceneHolesNotThree;
+    // the single sweep and the per-object aggregate agree -- topological additivity, proven both ways
+    if (scene_euler(&map) != scene.total_euler) return error.WholeSweepDisagreesWithSum;
+
+    // --- THE PER-OBJECT-DISTINGUISHES CRUX -- the total (three holes) cannot say WHICH object is holed; the per-component read does:
+    //     block 0, ring 1, pierced block 2 -----------------------------------------------------------------------------------------
+    if (scene.holes.len != 3) return error.HoleSliceNotThree;
+    if (scene.holes[0] != 0) return error.BlockHolesNotZero;
+    if (scene.holes[1] != 1) return error.RingHolesNotOne;
+    if (scene.holes[2] != 2) return error.PiercedHolesNotTwo;
+    // two of the three objects enclose a hole, and the pierced block carries the most
+    if (holed_component_count(scene) != 2) return error.HoledCountNotTwo;
+    if (try most_holed(scene) != 3) return error.MostHoledNotThird;
+    if (is_all_simply_connected(scene)) return error.SceneFalselyAllSimple;
+
+    // --- A FILLED SCENE -- two solid blocks, no holes at all: every object simply connected, total Euler equals the component count
+    var filled_img = try make_canvas(garden, 9, 4, 0);
+    set_block(&filled_img, 1, 1, 2, 2); // block A (label 1)
+    set_block(&filled_img, 5, 1, 3, 2); // block B (label 2), separated by two blank columns
+    const filled_map = try label.label_components(garden, &filled_img);
+    if (filled_map.count != 2) return error.FilledNotTwoComponents;
+    const filled = try scene_topology(garden, &filled_map);
+    if (filled.total_holes != 0) return error.FilledHasHoles;
+    if (filled.total_euler != 2) return error.FilledEulerNotTwo; // 2 components, 0 holes
+    if (!is_all_simply_connected(filled)) return error.FilledNotAllSimple;
+    if (holed_component_count(filled) != 0) return error.FilledHoledCountNotZero;
+
+    // --- AN EMPTY SCENE -- an all-background canvas: zero components, zero holes, Euler zero, a valid empty read; most_holed refuses
+    var empty_img = try make_canvas(garden, 5, 5, 0);
+    const empty_map = try label.label_components(garden, &empty_img);
+    if (empty_map.count != 0) return error.EmptyNotZeroComponents;
+    const empty = try scene_topology(garden, &empty_map);
+    if (empty.components != 0) return error.EmptySceneNotZero;
+    if (empty.total_euler != 0) return error.EmptyEulerNotZero;
+    if (empty.total_holes != 0) return error.EmptyHolesNotZero;
+    if (most_holed(empty)) |_| return error.EmptyMostHoledNotRefused else |err| {
+        if (err != error.NoComponents) return error.WrongEmptyError;
+    }
+
+    // --- DETERMINISM -- the same scene reads the same topology twice ----------------------------------------------------------
+    const s1 = try scene_topology(garden, &map);
+    const s2 = try scene_topology(garden, &map);
+    if (s1.total_euler != s2.total_euler or s1.total_holes != s2.total_holes) return error.SceneNotDeterministic;
+
+    print("GREEN image-euler-scene: the EULER NUMBER of a WHOLE LABELING -- drop image/euler_number.rye's single-region assumption and read the topology of a scene of many objects at once, exact integers, NO float and NO tolerance -- the WHOLE-EQUALS-SUM crux: a scene of a solid block (Euler 1, no hole), a hollow ring (Euler 0, one hole), and a twice-pierced block (Euler -1, two holes) reads a total Euler of 0 = 1 + 0 + (-1), three components, three holes, and the single whole-foreground bit-quad sweep lands on the SAME total the per-object sum does -- topological additivity proven both ways, exact because no 2x2 window ever straddles two 8-connected components; the PER-OBJECT-DISTINGUISHES crux -- the total hole count (three) cannot say WHICH object is holed, yet the per-component read does (block 0, ring 1, pierced block 2), holed_component_count reports two of three objects holed and most_holed names the pierced block where the total blurs them; a filled two-block scene reads total Euler 2 (two components, no holes) and is_all_simply_connected true; an empty scene reads a valid zero topology and most_holed refuses NoComponents; the same scene reads deterministically. Compose not braid over image/label.rye and image/euler_number.rye\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: euler_scene selftest\n", .{});
+    return 1;
+}
