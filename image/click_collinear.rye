@@ -1,0 +1,374 @@
+//! image/click_collinear.rye -- the THREE-CLICK COLLINEARITY read: turn THREE points into THREE whole-group selections, then read whether the three
+//! tapped groups LINE UP -- read it TWO ways at once: EXACT center collinearity (do the three group-frame centers fall on one straight line) and
+//! AXIS-BAND alignment (do the three group frames share a common horizontal or vertical band, a surface's "same row / same column" snap). Where
+//! image/click_nearest.rye reads which of two candidates is nearer an anchor and image/click_between.rye reads whether a candidate sits between two
+//! others, this rung reads whether all three line up -- the third and closing ternary spatial relation the click family climbs to. Exact integers,
+//! NO float and NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/hit_test.rye names the ONE object under a point; image/overlap_clusters.rye's `cluster_of` names the
+//! connected group; image/click_bounds.rye's `click_bbox` reads a tapped group's handle FRAME (the tight box over the whole group). This rung LIFTS
+//! the arity to the last ternary spatial question -- from "is this one between those two" to "do these three line up" -- and reads collinearity in
+//! two registers: the EXACT register (the cross product of the three group-frame centers, zero iff they are truly collinear) and the AXIS register
+//! (whether the three frames share a horizontal or vertical band, the alignment guide a layout surface actually draws). A reading over readings: no
+//! plane of its own, no pixel written, no box re-measured.
+//!
+//! The DECISIVE crux: exact center-collinearity and axis-band alignment are DIFFERENT relations -- NEITHER a subset of the other. The axis band catches
+//! only horizontal and vertical lines and OVER-CLAIMS a true line within them (three groups can share a row band while their centers are staggered off
+//! any line), while exact collinearity catches EVERY line -- most of all the diagonal the axis band completely MISSES. It is the box-is-a-prefilter
+//! lesson lifted to a TRIPLE and split in two: the band is a coarse 1-D projection-overlap fact, collinearity a sharp 2-D area fact (the cross product
+//! IS twice the signed area of the center triangle, zero exactly when the triangle is degenerate -- a line). Shapes over six singleton objects on a
+//! 16x12 canvas -- P block box (1,1)-(2,2) center-doubled (3,3), Q block box (5,1)-(6,2) center (11,3), R block box (9,1)-(10,2) center (19,3), D
+//! block box (5,5)-(6,6) center (11,11), E block box (9,9)-(10,10) center (19,19), F a TALL block box (13,1)-(14,4) center (27,5) -- no boxes
+//! overlapping, so six singleton groups:
+//!
+//!   BOTH -- P, Q, R: three centers all on the top row (cy doubled 3), exactly collinear on a horizontal line AND sharing the row band y in [1,2].
+//!   `classify_collinear` reads `both`.
+//!
+//!   EXACT_ONLY -- P, D, E: centers (3,3), (11,11), (19,19) fall on the main diagonal, exactly collinear, yet the three frames share NO common row or
+//!   column band (their x-ranges and y-ranges step apart). A diagonal line the axis snap misses entirely -- `exact_only`.
+//!
+//!   BAND_ONLY -- P, Q, F: the three frames share the row band y in [1,2] (F is tall, box (13,1)-(14,4), yet its top reaches the band), so an "align
+//!   to row" guide fires, yet the centers (3,3), (11,3), (27,5) are NOT collinear (F's center sits above the P-Q line) -- the band OVER-CLAIMS a line
+//!   that is not there -- `band_only`.
+//!
+//!   NEITHER -- P, D, R: centers (3,3), (11,11), (19,3) form a real triangle (not collinear), and the frames share no row or column band -- `neither`.
+//!
+//! And the two relations part in KIND. SYMMETRY -- both relations are properties of the UNORDERED triple, invariant under every permutation of the
+//! three taps (a line does not care which end you name first). DIMENSION -- exact collinearity is a 2-D degeneracy (zero triangle area), axis alignment
+//! a 1-D interval overlap; the same three frames, read in two different dimensions, so a band can hold no line and a line can escape every band.
+//!
+//! Compose not braid. This rung OWNS only the ternary collinearity tests over the two registers. image/click_bounds.rye owns `click_bbox` (the group's
+//! handle frame the centers and bands are read from); image/click_order.rye owns `click_group_id` (the click-to-group id for the three-distinct check);
+//! image/hit_test.rye owns the point-to-object arbiter; image/overlap_clusters.rye owns `cluster_of`. No box re-derived, no matrix recomputed, no pixel
+//! re-read.
+//!
+//! Everything is bounded before a byte: each click resolves to at most one label through the hit test, each frame read the group length bounded by
+//! image/label.rye's `label_max_pixels`; the cross product runs in i64 so the doubled-coordinate differences never overflow. A collinearity needs three
+//! DISTINCT groups, so any two taps sharing a group refuse `SameGroup` by name (three things that line up must be three things); a tap on background
+//! refuses `EmptyClick`; a point off the map refuses `PointOutOfBounds`, having read nothing. No network, no key, no funds -- the "do these three line
+//! up" a surface names the day a keeper points at three things and asks for an alignment guide.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/click_collinear.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const hit_test = @import("hit_test.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const click_order = @import("click_order.rye");
+const click_bounds = @import("click_bounds.rye");
+const selection_bounds = @import("selection_bounds.rye");
+
+pub const click_collinear_version = "20260819.071424";
+
+pub const ClickCollinearError = error{
+    SameGroup,
+};
+
+/// The DOUBLED center of a tapped group's handle frame -- `(min_x + max_x, min_y + max_y)`. Doubling avoids a fractional midpoint, so the center stays
+/// an EXACT integer point with no float and no rounding; the collinearity cross product below is invariant to the doubling (it scales the cross by a
+/// constant, preserving the zero test exactly).
+pub const CenterD = struct {
+    cx2: u32, // doubled x-center of the group frame -- exact, min_x + max_x
+    cy2: u32, // doubled y-center of the group frame -- exact, min_y + max_y
+};
+
+/// How three tapped groups line up, read in both registers at once -- EXACT center collinearity and AXIS-BAND alignment. The four cases are exhaustive
+/// and name exactly where the two alignment relations agree and disagree.
+pub const Collinearity = enum {
+    both, // the three centers are exactly collinear AND the three frames share a row or column band
+    exact_only, // the centers are exactly collinear (a diagonal), yet the frames share no axis band
+    band_only, // the frames share an axis band, yet the centers are not collinear -- the band over-claims a line
+    neither, // aligned in neither register
+};
+
+/// Read the doubled center of the group a click grabs -- expand the click to its whole group and read that group's handle frame (image/
+/// click_bounds.rye), then double its midpoint. A member of a multi-object group reads the GROUP frame's center, invariant to where inside the group
+/// the keeper taps. Refuses `EmptyClick` on a miss, `PointOutOfBounds` off the map, having read nothing.
+pub fn click_group_center_doubled(garden: std.mem.Allocator, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, x: u32, y: u32) !CenterD {
+    // invariant: the graph, the manifest, and the map all describe the same scene.
+    assert(graph.components == map.count);
+    assert(manifest.components == map.count);
+
+    const box = try click_bounds.click_bbox(garden, graph, manifest, map, x, y);
+    // invariant: the frame is well-formed on both axes -- a real box to center.
+    assert(box.max_x >= box.min_x);
+    assert(box.max_y >= box.min_y);
+    return CenterD{ .cx2 = box.min_x + box.max_x, .cy2 = box.min_y + box.max_y };
+}
+
+/// Guard that the THREE taps land in three DISTINCT groups -- collinearity of three things needs three things, so any two taps sharing a group refuse
+/// `SameGroup`. Resolving each tap to its group first means a MISS refuses `EmptyClick` and an off-map point refuses `PointOutOfBounds` before the
+/// distinctness test.
+fn assert_three_distinct(clustering: overlap_clusters.Clustering, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, cx: u32, cy: u32) !void {
+    // invariant: the clustering and the map describe the same scene.
+    assert(clustering.components == map.count);
+
+    const ga = try click_order.click_group_id(clustering, map, ax, ay);
+    const gb = try click_order.click_group_id(clustering, map, bx, by);
+    const gc = try click_order.click_group_id(clustering, map, cx, cy);
+    // invariant: each tap resolved to a real dense group id.
+    assert(ga >= 1);
+    assert(ga <= clustering.clusters);
+    assert(gc >= 1);
+    assert(gc <= clustering.clusters);
+    if (ga == gb or gb == gc or ga == gc) return error.SameGroup;
+}
+
+/// TRUE when the three tapped groups' frame centers are EXACTLY collinear -- the cross product of `(B - A)` and `(C - A)` over the doubled centers is
+/// zero. The cross product IS twice the signed area of the center triangle, so zero means the triangle is degenerate: the three centers fall on one
+/// straight line, of any slope. Exact integer math in i64, no float and no tolerance. Fully symmetric in the three taps. Refuses `SameGroup` when any
+/// two taps share a group, `EmptyClick` on any miss, `PointOutOfBounds` off the map.
+pub fn three_collinear(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, cx: u32, cy: u32) !bool {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(graph.components == manifest.components);
+    assert(manifest.components == map.count);
+
+    try assert_three_distinct(clustering, map, ax, ay, bx, by, cx, cy);
+    const ca = try click_group_center_doubled(garden, graph, manifest, map, ax, ay);
+    const cb = try click_group_center_doubled(garden, graph, manifest, map, bx, by);
+    const cc = try click_group_center_doubled(garden, graph, manifest, map, cx, cy);
+
+    // the signed differences fit i64 easily (doubled pixel coordinates), so the cross product never overflows.
+    const abx: i64 = @as(i64, cb.cx2) - @as(i64, ca.cx2);
+    const aby: i64 = @as(i64, cb.cy2) - @as(i64, ca.cy2);
+    const acx: i64 = @as(i64, cc.cx2) - @as(i64, ca.cx2);
+    const acy: i64 = @as(i64, cc.cy2) - @as(i64, ca.cy2);
+    const cross: i64 = abx * acy - aby * acx;
+    return cross == 0;
+}
+
+/// TRUE when the three tapped groups' frames share a common HORIZONTAL band -- the greatest of the three top edges is at or above the least of the
+/// three bottom edges, so one row of pixels lies inside all three frames. This is a surface's "these are in the same row" alignment test. A 1-D
+/// projection-overlap fact, distinct from collinearity. Refuses `SameGroup`, `EmptyClick`, `PointOutOfBounds` as above.
+pub fn share_row_band(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, cx: u32, cy: u32) !bool {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(graph.components == manifest.components);
+    assert(manifest.components == map.count);
+
+    try assert_three_distinct(clustering, map, ax, ay, bx, by, cx, cy);
+    const ba = try click_bounds.click_bbox(garden, graph, manifest, map, ax, ay);
+    const bb = try click_bounds.click_bbox(garden, graph, manifest, map, bx, by);
+    const bc = try click_bounds.click_bbox(garden, graph, manifest, map, cx, cy);
+    const lo = @max(ba.min_y, @max(bb.min_y, bc.min_y));
+    const hi = @min(ba.max_y, @min(bb.max_y, bc.max_y));
+    return lo <= hi;
+}
+
+/// TRUE when the three tapped groups' frames share a common VERTICAL band -- the greatest of the three left edges is at or before the least of the
+/// three right edges, so one column of pixels lies inside all three frames. A surface's "same column" alignment test, the vertical twin of
+/// `share_row_band`. Refuses `SameGroup`, `EmptyClick`, `PointOutOfBounds` as above.
+pub fn share_col_band(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, cx: u32, cy: u32) !bool {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(graph.components == manifest.components);
+    assert(manifest.components == map.count);
+
+    try assert_three_distinct(clustering, map, ax, ay, bx, by, cx, cy);
+    const ba = try click_bounds.click_bbox(garden, graph, manifest, map, ax, ay);
+    const bb = try click_bounds.click_bbox(garden, graph, manifest, map, bx, by);
+    const bc = try click_bounds.click_bbox(garden, graph, manifest, map, cx, cy);
+    const lo = @max(ba.min_x, @max(bb.min_x, bc.min_x));
+    const hi = @min(ba.max_x, @min(bb.max_x, bc.max_x));
+    return lo <= hi;
+}
+
+/// TRUE when the three tapped groups' frames share a row OR a column band -- axis-aligned in either direction, the alignment guide a layout surface
+/// draws. The coarse register of the collinearity read. Refuses `SameGroup`, `EmptyClick`, `PointOutOfBounds` as above.
+pub fn axis_aligned(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, cx: u32, cy: u32) !bool {
+    const row = try share_row_band(garden, clustering, graph, manifest, map, ax, ay, bx, by, cx, cy);
+    const col = try share_col_band(garden, clustering, graph, manifest, map, ax, ay, bx, by, cx, cy);
+    return row or col;
+}
+
+/// The full alignment verdict of three tapped groups -- read both registers and name where they agree and disagree. `both` when the centers are
+/// exactly collinear and the frames share an axis band, `exact_only` when the centers are collinear yet the band snap misses (a diagonal), `band_only`
+/// when the frames share a band yet the centers are not collinear (the band over-claims), `neither` when both say no. Refuses `SameGroup` when any two
+/// taps share a group, `EmptyClick` on any miss, `PointOutOfBounds` off the map.
+pub fn classify_collinear(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, cx: u32, cy: u32) !Collinearity {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(graph.components == manifest.components);
+    assert(manifest.components == map.count);
+
+    const exact = try three_collinear(garden, clustering, graph, manifest, map, ax, ay, bx, by, cx, cy);
+    const band = try axis_aligned(garden, clustering, graph, manifest, map, ax, ay, bx, by, cx, cy);
+    if (exact and band) return .both;
+    if (exact) return .exact_only;
+    if (band) return .band_only;
+    return .neither;
+}
+
+// --- selftest: the DECISIVE exact-vs-band alignment disagreement over SIX singleton objects on a 16x12 canvas -- P box (1,1)-(2,2) center-doubled
+//     (3,3), Q box (5,1)-(6,2) center (11,3), R box (9,1)-(10,2) center (19,3), D box (5,5)-(6,6) center (11,11), E box (9,9)-(10,10) center (19,19),
+//     F a TALL block box (13,1)-(14,4) center (27,5). No boxes overlap, so six groups. The four verdicts read from ONE scene by choosing triples, and
+//     the two relations part in KIND: the band is a 1-D projection fact, collinearity a 2-D area fact ---------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- BUILD SIX SINGLETONS on a 16x12 canvas. Every pair sits at least 2 pixels apart (8-disconnected) and no boxes overlap, so six singleton
+    //     groups. F is tall so its top edge reaches the row band shared with P and Q while its center rises off the P-Q line ----------------------
+    var scene = try make_canvas(garden, 16, 12, 0);
+    set_block(&scene, 1, 1, 2, 2); // P: box (1,1)-(2,2), center-doubled (3,3)
+    set_block(&scene, 5, 1, 2, 2); // Q: box (5,1)-(6,2), center-doubled (11,3)
+    set_block(&scene, 9, 1, 2, 2); // R: box (9,1)-(10,2), center-doubled (19,3)
+    set_block(&scene, 5, 5, 2, 2); // D: box (5,5)-(6,6), center-doubled (11,11)
+    set_block(&scene, 9, 9, 2, 2); // E: box (9,9)-(10,10), center-doubled (19,19)
+    set_block(&scene, 13, 1, 2, 4); // F: TALL block, box (13,1)-(14,4), center-doubled (27,5)
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 6) return error.SceneNotSixComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    // no boxes overlap, so each object is its own singleton group
+    if (clustering.clusters != 6) return error.NotSixGroups;
+
+    // one representative tap per object, so every read below rests on real hit-test arbiter reads
+    const p_x: u32 = 1;
+    const p_y: u32 = 1;
+    const q_x: u32 = 5;
+    const q_y: u32 = 1;
+    const r_x: u32 = 9;
+    const r_y: u32 = 1;
+    const d_x: u32 = 5;
+    const d_y: u32 = 5;
+    const e_x: u32 = 9;
+    const e_y: u32 = 9;
+    const f_x: u32 = 13;
+    const f_y: u32 = 1;
+
+    // confirm the six doubled centers the crux leans on through image/click_bounds.rye
+    const cp = try click_group_center_doubled(garden, graph, manifest, &map, p_x, p_y);
+    if (cp.cx2 != 3 or cp.cy2 != 3) return error.CenterPWrong;
+    const cq = try click_group_center_doubled(garden, graph, manifest, &map, q_x, q_y);
+    if (cq.cx2 != 11 or cq.cy2 != 3) return error.CenterQWrong;
+    const cr = try click_group_center_doubled(garden, graph, manifest, &map, r_x, r_y);
+    if (cr.cx2 != 19 or cr.cy2 != 3) return error.CenterRWrong;
+    const cf = try click_group_center_doubled(garden, graph, manifest, &map, f_x, f_y);
+    if (cf.cx2 != 27 or cf.cy2 != 5) return error.CenterFWrong;
+
+    // --- BOTH -- P, Q, R on the top row: centers all cy-doubled 3, exactly collinear on a horizontal line AND sharing the row band y in [1,2] -------
+    if (try three_collinear(garden, clustering, graph, manifest, &map, p_x, p_y, q_x, q_y, r_x, r_y) != true) return error.PQRNotCollinear;
+    if (try axis_aligned(garden, clustering, graph, manifest, &map, p_x, p_y, q_x, q_y, r_x, r_y) != true) return error.PQRNotAxisAligned;
+    if (try share_row_band(garden, clustering, graph, manifest, &map, p_x, p_y, q_x, q_y, r_x, r_y) != true) return error.PQRNotRowBand;
+    if (try classify_collinear(garden, clustering, graph, manifest, &map, p_x, p_y, q_x, q_y, r_x, r_y) != .both) return error.PQRNotBoth;
+
+    // --- EXACT_ONLY -- P, D, E on the diagonal: centers (3,3), (11,11), (19,19) exactly collinear, yet the frames share no row or column band --------
+    if (try three_collinear(garden, clustering, graph, manifest, &map, p_x, p_y, d_x, d_y, e_x, e_y) != true) return error.PDENotCollinear;
+    if (try axis_aligned(garden, clustering, graph, manifest, &map, p_x, p_y, d_x, d_y, e_x, e_y) != false) return error.PDEAxisAligned;
+    if (try classify_collinear(garden, clustering, graph, manifest, &map, p_x, p_y, d_x, d_y, e_x, e_y) != .exact_only) return error.PDENotExactOnly;
+
+    // --- BAND_ONLY -- P, Q, F: the three frames share the row band y in [1,2] (F's top reaches it) yet centers (3,3), (11,3), (27,5) are NOT collinear
+    if (try three_collinear(garden, clustering, graph, manifest, &map, p_x, p_y, q_x, q_y, f_x, f_y) != false) return error.PQFCollinear;
+    if (try share_row_band(garden, clustering, graph, manifest, &map, p_x, p_y, q_x, q_y, f_x, f_y) != true) return error.PQFNotRowBand;
+    if (try classify_collinear(garden, clustering, graph, manifest, &map, p_x, p_y, q_x, q_y, f_x, f_y) != .band_only) return error.PQFNotBandOnly;
+
+    // --- NEITHER -- P, D, R: centers (3,3), (11,11), (19,3) form a real triangle, and the frames share no row or column band --------------------
+    if (try three_collinear(garden, clustering, graph, manifest, &map, p_x, p_y, d_x, d_y, r_x, r_y) != false) return error.PDRCollinear;
+    if (try axis_aligned(garden, clustering, graph, manifest, &map, p_x, p_y, d_x, d_y, r_x, r_y) != false) return error.PDRAxisAligned;
+    if (try classify_collinear(garden, clustering, graph, manifest, &map, p_x, p_y, d_x, d_y, r_x, r_y) != .neither) return error.PDRNotNeither;
+
+    // --- A DIAGONAL LINE ESCAPES EVERY BAND while a BAND HOLDS NO LINE -- the two relations part in KIND, neither a subset of the other -----------
+    // P, D, E: collinear yet no band (exact_only); P, Q, F: a band yet no line (band_only) -- proven distinct above, restated as the direct claim
+    if (try three_collinear(garden, clustering, graph, manifest, &map, p_x, p_y, d_x, d_y, e_x, e_y) != true) return error.DiagonalNotCollinear;
+    if (try axis_aligned(garden, clustering, graph, manifest, &map, p_x, p_y, d_x, d_y, e_x, e_y) != false) return error.DiagonalInBand;
+    if (try axis_aligned(garden, clustering, graph, manifest, &map, p_x, p_y, q_x, q_y, f_x, f_y) != true) return error.BandTripleNotAligned;
+    if (try three_collinear(garden, clustering, graph, manifest, &map, p_x, p_y, q_x, q_y, f_x, f_y) != false) return error.BandTripleCollinear;
+
+    // --- SYMMETRY -- collinearity and axis alignment are properties of the UNORDERED triple: every permutation reads the same verdict --------------
+    if (try three_collinear(garden, clustering, graph, manifest, &map, r_x, r_y, p_x, p_y, q_x, q_y) != true) return error.CollinearNotSymmetric1;
+    if (try three_collinear(garden, clustering, graph, manifest, &map, e_x, e_y, p_x, p_y, d_x, d_y) != true) return error.CollinearNotSymmetric2;
+    if (try classify_collinear(garden, clustering, graph, manifest, &map, f_x, f_y, q_x, q_y, p_x, p_y) != .band_only) return error.ClassifyNotSymmetric;
+
+    // --- A COLUMN BAND reads on the vertical twin -- Q, D share the column x in [5,6]; a third in that column would band on col. Q box (5,1)-(6,2) and
+    //     D box (5,5)-(6,6) share x-range [5,6]; pair them with F to break it, or read the row band absent between D and E -------------------------
+    if (try share_col_band(garden, clustering, graph, manifest, &map, q_x, q_y, d_x, d_y, p_x, p_y) != false) return error.QDPColBandWrong; // P's x [1,2] breaks the [5,6] column
+    if (try share_row_band(garden, clustering, graph, manifest, &map, p_x, p_y, d_x, d_y, e_x, e_y) != false) return error.PDERowBandWrong; // the diagonal shares no row
+
+    // --- THREE TAPS SHARING A GROUP REFUSE SameGroup -- two of the three taps on the SAME object P leave no triple to line up --------------------
+    if (try hit_test.object_label_at(&map, 1, 1) != try hit_test.object_label_at(&map, 2, 2)) return error.PPixelsNotSameObject;
+    if (classify_collinear(garden, clustering, graph, manifest, &map, 1, 1, q_x, q_y, 2, 2)) |_| return error.SameGroupNotRefused else |err| {
+        if (err != error.SameGroup) return error.WrongSameGroupError;
+    }
+    if (three_collinear(garden, clustering, graph, manifest, &map, 1, 1, 2, 2, q_x, q_y)) |_| return error.CollinearSameGroupNotRefused else |err| {
+        if (err != error.SameGroup) return error.WrongCollinearSameGroupError;
+    }
+
+    // --- A MISS REFUSES EmptyClick -- a tap on background (7,7) belongs to no group, so every alignment read refuses EmptyClick -------------------
+    if (try hit_test.object_label_at(&map, 7, 7) != 0) return error.BackgroundNotEmpty;
+    if (classify_collinear(garden, clustering, graph, manifest, &map, p_x, p_y, 7, 7, r_x, r_y)) |_| return error.MissNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissError;
+    }
+
+    // --- A POINT OFF THE MAP REFUSES PointOutOfBounds through the arbiter, having read nothing ---------------------------------------------------
+    if (classify_collinear(garden, clustering, graph, manifest, &map, p_x, p_y, 16, 0, r_x, r_y)) |_| return error.OffMapNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapError;
+    }
+
+    // --- DETERMINISM -- the same triple reads the same verdict twice ---------------------------------------------------------------------------
+    const c1 = try classify_collinear(garden, clustering, graph, manifest, &map, p_x, p_y, q_x, q_y, f_x, f_y);
+    const c2 = try classify_collinear(garden, clustering, graph, manifest, &map, p_x, p_y, q_x, q_y, f_x, f_y);
+    if (c1 != c2) return error.VerdictNotDeterministic;
+
+    print("GREEN image-click-collinear: the THREE-CLICK COLLINEARITY read -- turn THREE points into THREE whole-group selections, then read whether the three tapped groups LINE UP in TWO registers at once: EXACT center collinearity (image/click_bounds.rye's click_bbox centers, the cross product zero iff truly collinear) and AXIS-BAND alignment (the three frames sharing a row or column band), the third and closing ternary spatial relation past image/click_nearest.rye and image/click_between.rye, exact integers, NO float and NO tolerance -- the DECISIVE crux: exact center-collinearity and axis-band alignment are DIFFERENT relations, NEITHER a subset of the other, the box-is-a-prefilter lesson lifted to a TRIPLE and split by DIMENSION (the band a 1-D projection-overlap fact, collinearity a 2-D area fact, the cross product twice the signed triangle area), in four verdicts over six singleton objects (P box (1,1)-(2,2) center (3,3), Q box (5,1)-(6,2) center (11,3), R box (9,1)-(10,2) center (19,3), D box (5,5)-(6,6) center (11,11), E box (9,9)-(10,10) center (19,19), F a tall block box (13,1)-(14,4) center (27,5)). BOTH -- P, Q, R collinear on the top row AND sharing the row band. EXACT_ONLY -- P, D, E collinear on the diagonal yet sharing no axis band, a line the band snap misses. BAND_ONLY -- P, Q, F sharing the row band yet not collinear, the band over-claiming a line that is not there. NEITHER -- P, D, R a real triangle sharing no band. And the two part in KIND: a DIAGONAL line escapes every band while a BAND holds no line, and both relations are SYMMETRIC in the unordered triple, invariant under every permutation of the three taps. Three taps sharing a group refuse SameGroup by name (three things that line up must be three things); a background tap refuses EmptyClick; a point off the map refuses PointOutOfBounds having read nothing; the same triple reads the same verdict twice. Compose not braid over image/click_bounds.rye (click_bbox), image/click_order.rye (click_group_id), image/hit_test.rye (the point-to-object arbiter), and image/overlap_clusters.rye (cluster_of)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: click_collinear selftest\n", .{});
+    return 1;
+}

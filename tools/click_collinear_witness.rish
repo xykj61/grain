@@ -1,0 +1,47 @@
+# tools/click_collinear_witness.rish -- the THREE-CLICK COLLINEARITY read on metal: turn THREE points into THREE whole-group selections, then read
+# whether the three tapped groups LINE UP in two registers at once -- EXACT center collinearity (the cross product of the three group-frame centers)
+# and AXIS-BAND alignment (the three frames sharing a row or column band) -- the third and closing ternary spatial relation past image/click_nearest.rye
+# and image/click_between.rye, through image/click_bounds.rye and image/click_order.rye (Season G).
+#
+# Season G (Open Media Primitives) -- image/click_nearest.rye reads which of two candidates is nearer an anchor, image/click_between.rye whether a
+# candidate sits between two others. This rung reads whether all three line up. image/hit_test.rye names the ONE object under a point, image/
+# overlap_clusters.rye's cluster_of names the connected group, image/click_bounds.rye's click_bbox reads a group's handle frame, image/click_order.rye's
+# click_group_id resolves a tap to its group. A reading over readings -- no plane of its own, no pixel written.
+#
+# The crux this witness proves on metal: exact center-collinearity and axis-band alignment are DIFFERENT relations, neither a subset of the other. A
+# diagonal line escapes every band (the axis snap catches only horizontal and vertical lines) while a band can hold no line (three groups sharing a row
+# band with staggered centers). The band is a 1-D projection-overlap fact, collinearity a 2-D area fact -- the cross product is twice the signed area of
+# the center triangle, zero iff degenerate. Over six singleton objects (P center-doubled (3,3), Q (11,3), R (19,3), D (11,11), E (19,19), F a tall block
+# (27,5)): P/Q/R read both, P/D/E exact_only, P/Q/F band_only, P/D/R neither; both relations symmetric in the unordered triple. Three taps sharing a group
+# refuse SameGroup; a background tap refuses EmptyClick; an off-map point refuses PointOutOfBounds; determinism. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/click_collinear_witness.rish
+
+say "click_collinear: Language EN -- Season G three-click collinearity; exact center-collinearity and axis-band alignment are DIFFERENT relations, neither a subset of the other, a diagonal line escaping every band while a band holds no line; NO float, NO tolerance."
+say "click_collinear: Style Radiant -- compose not braid: this rung owns only the ternary collinearity tests over the two registers; click_bounds owns click_bbox, click_order owns click_group_id, hit_test owns the point-to-object arbiter, overlap_clusters owns cluster_of. No plane of its own, no pixel written -- a reading over readings."
+say "click_collinear: Lens TAME -- each click resolves to at most one label through the hit test, each frame the group length bounded by label_max_pixels, the cross product in i64 so the doubled-coordinate differences never overflow; three taps sharing a group refuse SameGroup, a background tap refuses EmptyClick, a point off the map refuses PointOutOfBounds having read nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/click_collinear"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/click_collinear.rye -femit-bin=${bin}"]
+assert build.ok else "click_collinear: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "click_collinear: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "click_collinear: ${out}"
+
+assert selftest.out contains "GREEN image-click-collinear" else "click_collinear: selftest did not print the GREEN line"
+assert selftest.out contains "the THREE-CLICK COLLINEARITY read" else "click_collinear: the three-click-collinearity claim did not print"
+assert selftest.out contains "exact center-collinearity and axis-band alignment are DIFFERENT relations" else "click_collinear: the decisive crux did not print"
+assert selftest.out contains "EXACT_ONLY" else "click_collinear: the exact_only verdict did not print"
+assert selftest.out contains "BAND_ONLY" else "click_collinear: the band_only verdict did not print"
+assert selftest.out contains "a DIAGONAL line escapes every band while a BAND holds no line" else "click_collinear: the part-in-kind claim did not print"
+assert selftest.out contains "SYMMETRIC in the unordered triple" else "click_collinear: the symmetry claim did not print"
+assert selftest.out contains "refuse SameGroup by name" else "click_collinear: the SameGroup refusal did not print"
+assert selftest.out contains "the same triple reads the same verdict twice" else "click_collinear: determinism did not print"
+
+say "click_collinear: GREEN on metal -- the three-click collinearity read, three taps resolving to three whole groups then read for alignment in the exact register (the center cross product) and the axis register (a shared row or column band), the two relations differing in verdict and in kind, refusals by name, determinism. Season G open-media."
