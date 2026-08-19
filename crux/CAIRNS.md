@@ -24,6 +24,12 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260819.194255` -- REMEMBER's phases chronicle folded to a pointer as the fence rung lands
+
+**Walk-back nib:** `54e2d94f10` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.
+**Swept:** the **Live edge** bullet's whole inline account of `caravan/phases.rye` -- the cut riding beside the Task, the link speaking about the queue rather than the document, the concurrency half needing no new word, and the three cost numbers named turn by turn -- roughly 2 KB, folded into the standing **Prior live edges** pointer beside its elder rungs.
+**What waits there, worth recalling:** at nib `54e2d94f10` the departing card holds the full prose for why a cut turn needs the queue to see the cut, and why `plan_is_ordered` reads the cut once at the door rather than trusting it forever. Both survive in `caravan/phases.rye`'s own doc comment, the caravan README's Phases section, and the dated session log; the card keeps the pointer so Now holds the live front alone.
+
 ### `20260819.183640` -- REMEMBER's rolling and cohort chronicles folded to a pointer as the harvest rung lands
 
 **Walk-back nib:** `07a88280d7` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.
