@@ -1,0 +1,382 @@
+//! image/line_summary.rye -- read a DIRECTED line named by TWO anchor taps (from anchor A toward anchor B) as a small DIGEST TABLE: join
+//! image/line_partition.rye's three side classes (LEFT, ON, RIGHT) with image/scene_manifest.rye's per-object facts (area, holes) into
+//! one struct a surface reads to fill a status line -- how many objects fall on each side of a keeper's line, how much foreground each
+//! side carries, and how many holed objects sit on each. Exact integers, NO float and NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/line_partition.rye sorts every object into LEFT / ON / RIGHT of a two-anchor directed line
+//! by its GROUP center; it reads the three class SIZES. This rung reads the three class FACTS: `line_summary` walks the manifest once,
+//! classifies each object by line_partition's exact side arbiter, and folds each object's whole-scene area and hole count into its side,
+//! then `heavier_side` names which of the two open half-planes carries more foreground. It composes over line_partition for the
+//! classification and over scene_manifest for the per-object area and holes -- a reading over two readings, no plane of its own.
+//!
+//! The DECISIVE crux -- the EXACT INVERSION of region_summary's own lesson. image/region_summary.rye proved that a rectangle's per-class
+//! area OVER-COUNTS for the CLIPPED class, because a rectangle splits an object's PIXELS: a clipped object holds some foreground outside
+//! the box, so its whole area strictly EXCEEDS the pixels the marquee actually covers, and `touched_area` is only an UPPER BOUND. A line
+//! is the opposite in kind. A line splits whole GROUPS, never pixels (image/line_partition.rye's lesson: a line never splits a connected
+//! group), so EVERY object lands wholly on ONE side and contributes its WHOLE area there. No side ever holds a fraction of an object, so
+//! every per-side area is EXACT -- there is no clipped class to over-count, and `total_area` (LEFT + ON + RIGHT) equals the whole scene's
+//! foreground exactly, always, for every line. Two facts on metal say it:
+//!
+//!   THE STRADDLING GROUP'S AREA STAYS WHOLE ON ONE SIDE. A connected group G of two members -- P1 whose OWN box center sits ABOVE the
+//!   horizontal line A -> B (its own cross negative, LEFT) and P2 whose own box center sits BELOW it (RIGHT) -- lands WHOLLY on its group
+//!   center's side (RIGHT), so `right_area` carries BOTH P1's and P2's full areas and `left_area` carries NONE of them. Were the digest to
+//!   read each object by its OWN box center, P1's area would bleed LEFT (left_area 9, right_area 21); the group keeps them together
+//!   (left_area 4, right_area 26). A full pixel scan confirms the LEFT region holds exactly the LEFT object's pixels and not one pixel of
+//!   the straddling group -- the group-fact-not-pixel-fact lesson read as area.
+//!
+//!   EVERY PER-SIDE AREA IS EXACT, THE SUM IS THE WHOLE SCENE. A pixel scan tallying each foreground pixel to its object's group side
+//!   finds left_area, on_area, and right_area exactly -- no over-count anywhere, since no object is split. LEFT + ON + RIGHT area equals
+//!   scene_manifest's total foreground for the whole scene, and reversing the anchors to B -> A swaps left_area with right_area and
+//!   left_count with right_count while the ON facts stay fixed -- the whole-scene analog of which_side's antisymmetry, read as a digest.
+//!
+//! Compose not braid. This rung OWNS only the per-side FOLD of area and holes over a directed line, and the `heavier_side` balance read.
+//! image/line_partition.rye owns the classification (`object_side`, the exact cross-product side arbiter) and the `SameGroup` /
+//! `EmptyClick` / `PointOutOfBounds` refusals it draws; image/click_side.rye owns the `Side` enum (its three cases the digest's three
+//! classes); image/scene_manifest.rye owns the per-object rows (`ObjectEntry`, `Manifest`, area and hole count). No count re-derived, no
+//! side re-judged -- every fact looked up through the arbiter that already proved it.
+//!
+//! Everything is bounded before a byte: the classification walk runs `components` times, itself bounded by image/label.rye's
+//! `label_max_pixels`; each per-side accumulator sums at most `components` whole areas, each under image/label.rye's pixel ceiling, so a
+//! u32 total never overflows. A directed line needs two distinct points, so two anchor taps sharing a group refuse `SameGroup` by name; a
+//! tap on background refuses `EmptyClick`; a point off the map refuses `PointOutOfBounds`, having read nothing. `heavier_side` refuses
+//! `Balanced` by name when the two sides carry equal area (a true tie, never a guess). No network, no key, no funds -- the status line a
+//! surface fills the day a keeper draws a line through two things and asks which side of it carries the weight.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/line_summary.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const hit_test = @import("hit_test.rye");
+const click_side = @import("click_side.rye");
+const line_partition = @import("line_partition.rye");
+
+pub const line_summary_version = "20260819.075700";
+
+pub const LineSummaryError = error{
+    Balanced,
+};
+
+/// The whole digest of a directed-line query as one small table. The three counts partition the scene (they sum to the component count),
+/// and the three areas partition the whole foreground (they sum to the scene's total area) -- because a line splits whole GROUPS, never
+/// pixels, EVERY per-side area is exact, with no clipped class to over-count. `left_holed`, `on_holed`, and `right_holed` count the holed
+/// objects on each side. Every field is an exact integer.
+pub const LineSummary = struct {
+    left_count: u32 = 0,
+    on_count: u32 = 0,
+    right_count: u32 = 0,
+    left_area: u32 = 0,
+    on_area: u32 = 0,
+    right_area: u32 = 0,
+    left_holed: u32 = 0,
+    on_holed: u32 = 0,
+    right_holed: u32 = 0,
+
+    /// The total objects accounted for -- the invariant sum a caller cross-checks against the component count.
+    pub fn object_total(self: *const LineSummary) u32 {
+        return self.left_count + self.on_count + self.right_count;
+    }
+
+    /// The whole foreground the three sides carry -- LEFT plus ON plus RIGHT. Because no object is split, this equals the scene's total
+    /// foreground area exactly, for every line.
+    pub fn total_area(self: *const LineSummary) u32 {
+        return self.left_area + self.on_area + self.right_area;
+    }
+
+    /// Which of the two OPEN half-planes carries more foreground -- `left` when the left side is heavier, `right` when the right is. The
+    /// ON class is the divider itself and takes no part in the balance. Refuses `Balanced` by name on an exact area tie, and never returns
+    /// `on` -- a balance verdict names a side or refuses.
+    pub fn heavier_side(self: *const LineSummary) !click_side.Side {
+        // invariant: a well-formed digest never carries more area on one side than the whole scene holds.
+        assert(self.left_area <= self.total_area());
+        assert(self.right_area <= self.total_area());
+        if (self.left_area > self.right_area) return .left;
+        if (self.right_area > self.left_area) return .right;
+        return error.Balanced;
+    }
+};
+
+/// Read a directed line A -> B as a small DIGEST TABLE. Walk the manifest once and fold every object's whole-scene area and hole count
+/// into its side of the line -- LEFT, ON, or RIGHT -- each object classified by image/line_partition.rye's exact side arbiter, so every
+/// object lands wholly on one side. Refuses `SameGroup` when the two anchors share a group, `EmptyClick` on an anchor miss,
+/// `PointOutOfBounds` off the map, through the line resolution -- having read nothing.
+pub fn line_summary(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !LineSummary {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(graph.components == manifest.components);
+    assert(manifest.components == map.count);
+    // invariant: the classification walk is bounded by the component count, itself under image/label.rye's pixel ceiling.
+    assert(manifest.components <= label.label_max_pixels);
+
+    var out = LineSummary{};
+    var i: usize = 0;
+    while (i < manifest.objects.len) : (i += 1) {
+        const entry = manifest.objects[i];
+        const holed: u32 = if (entry.holes >= 1) 1 else 0;
+        const side = try line_partition.object_side(garden, clustering, graph, manifest, map, ax, ay, bx, by, entry.label);
+        switch (side) {
+            .left => {
+                out.left_count += 1;
+                out.left_area += entry.area;
+                out.left_holed += holed;
+            },
+            .on => {
+                out.on_count += 1;
+                out.on_area += entry.area;
+                out.on_holed += holed;
+            },
+            .right => {
+                out.right_count += 1;
+                out.right_area += entry.area;
+                out.right_holed += holed;
+            },
+        }
+    }
+    // invariant: the three classes partition the scene -- every object lands in exactly one.
+    assert(out.object_total() == manifest.components);
+    // invariant: the three areas partition the whole foreground -- no object split, so the sum is exact.
+    assert(@as(u64, out.total_area()) == scene_manifest.total_area(manifest));
+    return out;
+}
+
+// --- selftest: the DECISIVE area-is-exact crux (a line splits whole groups not pixels, so every per-side area is exact and the
+//     straddling group's whole area stays on one side, where region_summary's clipped_area would over-count); the per-side holed fold;
+//     heavier_side the balance verdict; the three counts partition the scene and the three areas partition the foreground; antisymmetry
+//     swaps LEFT and RIGHT under the anchor reversal; refusals by name; determinism -------------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Set one pixel back to background at (x, y) -- carve a hole in a filled shape.
+fn clear_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 0;
+    img.pixels[di + 1] = 0;
+    img.pixels[di + 2] = 0;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// Paint a corner bracket-L hugging TOP-LEFT: a vertical arm down column `x0` from `y0` to `y1`, and a horizontal arm along row `y0` from
+/// `x0` to `x1`. Its inclusive box is (x0,y0)-(x1,y1); its bottom-right corner stays empty, so a box overlap there touches no pixel and
+/// the shape stays an 8-disconnected component from a neighbor whose box reaches only that empty corner.
+fn set_corner_l(img: *qoi.Pixmap, x0: u32, y0: u32, x1: u32, y1: u32) void {
+    // invariant: the L's box is well-formed on both axes.
+    assert(x1 >= x0);
+    assert(y1 >= y0);
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) set_dot(img, x0, yy);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) set_dot(img, xx, y0);
+}
+
+/// The foreground pixels on the given `want` side of the directed line -- each foreground pixel tallied to its object's GROUP side through
+/// the same arbiter the digest folds by. The ground-truth per-side area, against which the digest's per-side area is proven EXACT.
+fn side_pixels(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, want: click_side.Side) !u32 {
+    // invariant: the classification span is bounded by the component count under the pixel ceiling.
+    assert(manifest.components <= label.label_max_pixels);
+    // pre-read each label's side ONCE, so the pixel scan is a lookup, never a re-resolve per pixel.
+    const label_side = try garden.alloc(click_side.Side, @as(usize, manifest.components));
+    var lbl: u32 = 1;
+    while (lbl <= manifest.components) : (lbl += 1) {
+        label_side[@as(usize, lbl - 1)] = try line_partition.object_side(garden, clustering, graph, manifest, map, ax, ay, bx, by, lbl);
+    }
+    var count: u32 = 0;
+    var y: u32 = 0;
+    while (y < map.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x < map.width) : (x += 1) {
+            const at = map.at(x, y);
+            if (at >= 1 and label_side[@as(usize, at - 1)] == want) count += 1;
+        }
+    }
+    // invariant: no side can hold more foreground than the whole scene carries.
+    assert(@as(u64, count) <= scene_manifest.total_area(manifest));
+    return count;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- THE PARTITION SCENE on a 22x15 canvas, image/line_partition.rye's own proven scene with W grown to a holed ring so the digest's
+    //     holed fold has something to count. The directed line A -> B is horizontal at doubled-y 11. Raster order gives dense labels:
+    //     U label 1 (a singleton ABOVE, area 4), the STRADDLING GROUP G = P1 label 2 (corner-L, area 5) + P2 label 3 (corner-L, area 13)
+    //     whose boxes overlap at (18,3) yet stay 8-disconnected -- P1's own center ABOVE the line, P2's own center BELOW it, the group
+    //     center BELOW; A label 4 and B label 5 (the two anchors, ON, area 4 each), N label 6 (a singleton ON, area 4), W label 7 (a 3x3
+    //     ring BELOW the line, area 8, one hole) -----------------------------------------------------------------------------------------
+    var scene = try make_canvas(garden, 22, 15, 0);
+    set_block(&scene, 6, 1, 2, 2); // U: box (6,1)-(7,2), center-doubled (13,3), area 4 -- ABOVE the A-B line
+    set_corner_l(&scene, 16, 1, 18, 3); // P1: corner-L box (16,1)-(18,3), center-doubled (34,4), area 5 -- own center ABOVE
+    set_corner_l(&scene, 18, 3, 20, 13); // P2: corner-L box (18,3)-(20,13), center-doubled (38,16), area 13 -- own center BELOW; box overlaps P1 at (18,3)
+    set_block(&scene, 2, 5, 2, 2); // A: box (2,5)-(3,6), center-doubled (5,11), area 4 -- anchor, ON
+    set_block(&scene, 10, 5, 2, 2); // B: box (10,5)-(11,6), center-doubled (21,11), area 4 -- anchor, ON
+    set_block(&scene, 14, 5, 2, 2); // N: box (14,5)-(15,6), center-doubled (29,11), area 4 -- ON
+    set_block(&scene, 6, 9, 3, 3); // W: 3x3 ring...
+    clear_dot(&scene, 7, 10); // ...hole carved, box (6,9)-(8,11), center-doubled (14,20), area 8, one hole -- BELOW
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 7) return error.SceneNotSevenComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    // P1 and P2's boxes overlap at (18,3), so they form ONE cluster; the other five objects are singletons -- 6 clusters over 7 objects
+    if (clustering.clusters != 6) return error.NotSixClusters;
+
+    // dense labels: U=1, P1=2, P2=3, A=4, B=5, N=6, W=7
+    const u_lbl: u32 = 1;
+    const p1_lbl: u32 = 2;
+    const p2_lbl: u32 = 3;
+    const w_lbl: u32 = 7;
+    // confirm the raster order landed the areas the scene predicts, and W is holed
+    const u_entry = try scene_manifest.object_of(manifest, u_lbl);
+    if (u_entry.area != 4) return error.UNotAreaFour;
+    const p1_entry = try scene_manifest.object_of(manifest, p1_lbl);
+    if (p1_entry.area != 5) return error.P1NotAreaFive;
+    const p2_entry = try scene_manifest.object_of(manifest, p2_lbl);
+    if (p2_entry.area != 13) return error.P2NotAreaThirteen;
+    const w_entry = try scene_manifest.object_of(manifest, w_lbl);
+    if (!w_entry.is_holed() or w_entry.area != 8) return error.WNotHoledAreaEight;
+    // P1 and P2 are ONE cluster -- the connectivity the crux leans on
+    if (try overlap_clusters.cluster_of(clustering, p1_lbl) != try overlap_clusters.cluster_of(clustering, p2_lbl)) return error.P1P2NotOneCluster;
+
+    // the two anchor taps that name the horizontal directed line A -> B
+    const ax: u32 = 2;
+    const ay: u32 = 5;
+    const bx: u32 = 10;
+    const by: u32 = 5;
+
+    // --- THE DIGEST -- LEFT {U} count 1 area 4, ON {A,B,N} count 3 area 12, RIGHT {P1,P2,W} count 3 area 26, W the one holed object on
+    //     the RIGHT. The counts partition the scene (sum 7), the areas partition the foreground (sum 42) --------------------------------
+    const s = try line_summary(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    if (s.left_count != 1 or s.on_count != 3 or s.right_count != 3) return error.CountsNotOneThreeThree;
+    if (s.object_total() != 7) return error.ObjectTotalNotSeven;
+    if (s.left_area != 4 or s.on_area != 12 or s.right_area != 26) return error.AreasNotFourTwelveTwentySix;
+    if (s.left_holed != 0 or s.on_holed != 0 or s.right_holed != 1) return error.HoledFoldWrong;
+    if (s.total_area() != 42) return error.TotalAreaNotFortyTwo;
+    // the areas partition the WHOLE foreground -- no object split, so the sum is scene_manifest's total exactly
+    if (@as(u64, s.total_area()) != scene_manifest.total_area(manifest)) return error.TotalAreaNotWholeScene;
+
+    // --- THE STRADDLING GROUP'S AREA STAYS WHOLE ON ONE SIDE -- the DECISIVE crux. P1 and P2 are one connected group; both land RIGHT (the
+    //     group-center's side), so right_area carries BOTH their areas (5 + 13 = 18) and left_area carries NONE of them, though P1's OWN box
+    //     center sits ABOVE the line (LEFT). Were the digest to read each object by its own center, P1's 5 would bleed LEFT: left 9, right
+    //     21. The group keeps them together: left 4, right 26 ---------------------------------------------------------------------------
+    if (p1_entry.area + p2_entry.area != 18) return error.StraddlingGroupNotEighteen;
+    if (s.left_area != u_entry.area) return error.LeftAreaNotUOnly;
+    // the "own-center" digest P1 would force: left would gain P1's 5, right would lose it -- the divergence the group heals
+    const own_center_left: u32 = u_entry.area + p1_entry.area; // 4 + 5 = 9
+    const own_center_right: u32 = p2_entry.area + w_entry.area; // 13 + 8 = 21
+    if (own_center_left != 9 or own_center_right != 21) return error.OwnCenterSplitWrong;
+    if (s.left_area == own_center_left) return error.GroupWronglySplitLeft;
+    if (s.right_area == own_center_right) return error.GroupWronglySplitRight;
+
+    // --- EVERY PER-SIDE AREA IS EXACT -- a full pixel scan tallying each foreground pixel to its object's GROUP side finds left_area,
+    //     on_area, and right_area exactly, no over-count anywhere, since no object is split. The LEFT region holds exactly U's 4 pixels and
+    //     NOT ONE pixel of the straddling group -- where region_summary's clipped_area would strictly exceed the pixels covered ----------
+    const left_pixels = try side_pixels(garden, clustering, graph, manifest, &map, ax, ay, bx, by, .left);
+    const on_pixels = try side_pixels(garden, clustering, graph, manifest, &map, ax, ay, bx, by, .on);
+    const right_pixels = try side_pixels(garden, clustering, graph, manifest, &map, ax, ay, bx, by, .right);
+    if (left_pixels != s.left_area) return error.LeftAreaNotExactByPixels;
+    if (on_pixels != s.on_area) return error.OnAreaNotExactByPixels;
+    if (right_pixels != s.right_area) return error.RightAreaNotExactByPixels;
+    if (left_pixels != 4) return error.LeftPixelsNotFour;
+    if (right_pixels != 26) return error.RightPixelsNotTwentySix;
+
+    // --- HEAVIER SIDE -- RIGHT carries {P1,P2,W} area 26 against LEFT {U} area 4, so the right half-plane is heavier; the ON divider takes
+    //     no part ----------------------------------------------------------------------------------------------------------------------
+    if (try s.heavier_side() != .right) return error.HeavierNotRight;
+
+    // --- ANTISYMMETRY -- reverse the anchors to B -> A: left_area swaps with right_area and left_count with right_count while the ON facts
+    //     stay fixed, so heavier_side flips to LEFT ---------------------------------------------------------------------------------------
+    const s_rev = try line_summary(garden, clustering, graph, manifest, &map, bx, by, ax, ay);
+    if (s_rev.left_count != 3 or s_rev.right_count != 1) return error.RevCountsNotSwapped;
+    if (s_rev.left_area != 26 or s_rev.right_area != 4) return error.RevAreasNotSwapped;
+    if (s_rev.on_count != s.on_count or s_rev.on_area != s.on_area or s_rev.on_holed != s.on_holed) return error.RevOnChanged;
+    if (try s_rev.heavier_side() != .left) return error.RevHeavierNotLeft;
+
+    // --- BALANCED -- a digest whose two sides carry equal area refuses Balanced by name, never a guess. heavier_side is a pure read over
+    //     the struct, so a hand-built tie proves the refusal directly -----------------------------------------------------------------
+    const tie = LineSummary{ .left_count = 1, .right_count = 1, .left_area = 5, .right_area = 5 };
+    if (tie.heavier_side()) |_| return error.BalancedNotRefused else |err| {
+        if (err != error.Balanced) return error.WrongBalancedError;
+    }
+
+    // --- TWO ANCHORS SHARING A GROUP REFUSE SameGroup -- both anchor taps on the SAME object A leave no line, so the digest reads nothing --
+    if (try hit_test.object_label_at(&map, 2, 5) != try hit_test.object_label_at(&map, 3, 6)) return error.APixelsNotSameObject;
+    if (line_summary(garden, clustering, graph, manifest, &map, 2, 5, 3, 6)) |_| return error.SameGroupNotRefused else |err| {
+        if (err != error.SameGroup) return error.WrongSameGroupError;
+    }
+
+    // --- A MISS REFUSES EmptyClick -- a tap on background (0,0) belongs to no group, so the line resolution refuses EmptyClick ----------
+    if (try hit_test.object_label_at(&map, 0, 0) != 0) return error.BackgroundNotEmpty;
+    if (line_summary(garden, clustering, graph, manifest, &map, 0, 0, bx, by)) |_| return error.MissNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissError;
+    }
+
+    // --- A POINT OFF THE MAP REFUSES PointOutOfBounds through the arbiter, having read nothing --------------------------------------------
+    if (line_summary(garden, clustering, graph, manifest, &map, ax, ay, 22, 0)) |_| return error.OffMapNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapError;
+    }
+
+    // --- DETERMINISM -- the same directed line reads the same digest twice -----------------------------------------------------------
+    const d1 = try line_summary(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    const d2 = try line_summary(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    if (d1.left_area != d2.left_area or d1.on_area != d2.on_area or d1.right_area != d2.right_area) return error.SummaryNotDeterministic;
+
+    print("GREEN image-line-summary: read a DIRECTED line named by TWO anchor taps (from A toward B) as a small DIGEST TABLE, joining line_partition's three side classes (LEFT, ON, RIGHT) with scene_manifest's per-object area and holes, exact integers, NO float and NO tolerance -- the status line a surface fills the moment a keeper draws a line. The DECISIVE crux is the EXACT INVERSION of region_summary's lesson: region_summary proved a rectangle's clipped_area OVER-COUNTS because a rectangle splits an object's PIXELS (some foreground falls outside the box), yet a line splits whole GROUPS and never pixels (line_partition's lesson: a line never splits a connected group), so EVERY object lands wholly on ONE side and contributes its WHOLE area there -- every per-side area is EXACT, with no clipped class to over-count. Over line_partition's own 7-object scene on a 22x15 canvas (U a singleton above area 4, a straddling group G = P1 corner-L area 5 + P2 corner-L area 13 whose boxes overlap at (18,3) yet stay 8-disconnected, anchors A and B ON area 4 each, N ON area 4, W a 3x3 ring below area 8 holed): the horizontal line A -> B reads LEFT count 1 area 4, ON count 3 area 12, RIGHT count 3 area 26, W the one holed object on the right. THE STRADDLING GROUP'S AREA STAYS WHOLE ON ONE SIDE -- P1 and P2 both land RIGHT (the group center's side), so right_area carries both their areas (5 + 13 = 18) and left_area carries none of them, though P1's OWN box center sits ABOVE the line; an own-center digest would bleed P1's 5 to LEFT (left 9, right 21), yet the group keeps them together (left 4, right 26). EVERY PER-SIDE AREA IS EXACT -- a full pixel scan tallying each foreground pixel to its object's group side finds left_area 4, on_area 12, and right_area 26 exactly, the LEFT region holding exactly U's 4 pixels and not one pixel of the straddling group. LEFT + ON + RIGHT area (42) equals scene_manifest's total foreground exactly, always. heavier_side names RIGHT the heavier half-plane, the ON divider taking no part; reversing the anchors to B -> A swaps left_area with right_area and left_count with right_count while the ON facts stay fixed, so heavier_side flips to LEFT; a digest whose two sides carry equal area refuses Balanced by name. Two anchors sharing a group refuse SameGroup (a line needs two points); a background tap refuses EmptyClick; a point off the map refuses PointOutOfBounds having read nothing; the same line reads the same digest twice. Compose not braid over image/line_partition.rye (the exact side arbiter object_side and its refusals), image/click_side.rye (the Side enum), and image/scene_manifest.rye (the per-object area and holes)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: line_summary selftest\n", .{});
+    return 1;
+}

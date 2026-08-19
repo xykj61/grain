@@ -1,0 +1,50 @@
+# tools/line_summary_witness.rish -- read a DIRECTED line named by TWO anchor taps (from A toward B) as a small DIGEST TABLE, joining
+# line_partition's three side classes with scene_manifest's per-object area and holes, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/line_partition.rye sorts every object into LEFT / ON / RIGHT of a two-anchor directed line by
+# its GROUP center and reads the three class SIZES. This rung reads the three class FACTS: line_summary folds each object's whole-scene
+# area and hole count into its side, heavier_side names which half-plane carries more foreground. A reading over two readings -- no plane
+# of its own.
+#
+# The crux this witness proves on metal, the EXACT INVERSION of region_summary's lesson: region_summary's clipped_area OVER-COUNTS because
+# a rectangle splits an object's PIXELS, yet a line splits whole GROUPS and never pixels (line_partition's lesson), so EVERY object lands
+# wholly on ONE side and contributes its WHOLE area there -- every per-side area is EXACT, no clipped class to over-count. Proven by a full
+# pixel scan: left_area, on_area, and right_area each equal the foreground the side actually holds, the straddling group's whole area
+# staying RIGHT with not one pixel bleeding LEFT. LEFT + ON + RIGHT area equals the whole scene's foreground exactly; heavier_side names
+# the heavier side and refuses Balanced on a tie; antisymmetry swaps the sides under the anchor reversal; refusals by name; determinism.
+# No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/line_summary_witness.rish
+
+say "line_summary: Language EN -- Season G line-to-digest; a line splits whole GROUPS not pixels, so every per-side area is EXACT where region_summary's clipped area OVER-COUNTS; NO float, NO tolerance."
+say "line_summary: Style Radiant -- compose not braid: this rung owns only the per-side fold of area and holes and the heavier_side balance; line_partition owns the exact side arbiter object_side and its refusals, click_side owns the Side enum, scene_manifest owns the per-object area and holes. No plane of its own, no pixel written -- a reading over two readings."
+say "line_summary: Lens TAME -- the classification walk runs components times under label_max_pixels; each per-side accumulator sums at most components whole areas each under the pixel ceiling; two anchors sharing a group refuse SameGroup, a background tap refuses EmptyClick, a point off the map refuses PointOutOfBounds having read nothing, an equal-area tie refuses Balanced; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/line_summary"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/line_summary.rye -femit-bin=${bin}"]
+assert build.ok else "line_summary: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "line_summary: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "line_summary: ${out}"
+
+assert selftest.out contains "GREEN image-line-summary" else "line_summary: selftest did not print the GREEN line"
+assert selftest.out contains "read a DIRECTED line named by TWO anchor taps (from A toward B) as a small DIGEST TABLE" else "line_summary: the digest-table claim did not print"
+assert selftest.out contains "the EXACT INVERSION of region_summary's lesson" else "line_summary: the decisive inversion crux did not print"
+assert selftest.out contains "a line splits whole GROUPS and never pixels" else "line_summary: the line-splits-groups claim did not print"
+assert selftest.out contains "every per-side area is EXACT, with no clipped class to over-count" else "line_summary: the area-exact claim did not print"
+assert selftest.out contains "THE STRADDLING GROUP'S AREA STAYS WHOLE ON ONE SIDE" else "line_summary: the whole-group-on-one-side crux did not print"
+assert selftest.out contains "the group keeps them together (left 4, right 26)" else "line_summary: the group-heals-the-split claim did not print"
+assert selftest.out contains "a full pixel scan tallying each foreground pixel to its object's group side finds left_area 4, on_area 12, and right_area 26 exactly" else "line_summary: the pixel-scan exactness did not print"
+assert selftest.out contains "LEFT + ON + RIGHT area (42) equals scene_manifest's total foreground exactly" else "line_summary: the whole-scene-sum claim did not print"
+assert selftest.out contains "heavier_side names RIGHT the heavier half-plane" else "line_summary: the heavier-side verdict did not print"
+assert selftest.out contains "refuses Balanced by name" else "line_summary: the Balanced refusal did not print"
+assert selftest.out contains "refuse SameGroup" else "line_summary: the SameGroup refusal did not print"
+assert selftest.out contains "the same line reads the same digest twice" else "line_summary: determinism did not print"
+
+say "line_summary: GREEN on metal -- a directed line read as a small digest table, every per-side area EXACT because a line splits whole groups not pixels, the straddling group's whole area staying on one side; heavier_side the balance verdict, refusals by name, determinism. Season G open-media."

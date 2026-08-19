@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260819.080706
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title line_summary -- the DIGEST twin of line_partition whose per-side area never over-counts
+prompt baton prin recur -- pick up the running thread, standfast on reds, take the next agent-doable lap Lindy-first crux-first, deep-read one council-rota doc, send each finished increment
+think Became Kyri: read context/KYRI.md and context/RADIANT_STYLE.md, then crux/REMEMBER.md (INNER LOOP + live edge), the top rows of session-logs/README.md, and the newest recommend lines. The running thread is Season G's image/ scene-read family: five laps climbed the click-relation arity (nearest, between, collinear, side) and landed line_partition (20260819.074115), whose named NEXT was a line_summary DIGEST twin, count 215.
+think Standfast first: grep crux/REDS.md for open rows -- none. Every living red Closed or Released; the line is clear for new work.
+think Council rota: last lap read item 12, so this lap read item 13, foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md -- the happy zone (fast isolated witnesses at the pure center) and the thin edge (a few honest integrated tests at the world seam). Honored by a fully-isolated selftest folding a pure scene with no device, a reading over readings.
+think Confirmed the house shape: region_summary twins region_partition and lasso_summary twins lasso_partition, so line_summary is the exact digest twin of line_partition. Read region_summary.rye (the closest model) and line_partition.rye in full.
+think The DECISIVE crux is the EXACT INVERSION of region_summary's lesson. region_summary's clipped_area OVER-COUNTS because a rectangle splits an object's PIXELS. A line splits whole GROUPS and never pixels (line_partition's own lesson), so every object lands wholly on one side and contributes its WHOLE area there -- every per-side area is EXACT, no clipped class, and LEFT+ON+RIGHT area equals the whole scene's foreground exactly for every line.
+think Composed line_summary purely over line_partition.object_side (the exact side arbiter) plus scene_manifest per-object area/holes -- no side re-judged, no plane of its own. Reused line_partition's proven 7-object scene, growing W from a 2x2 block to a 3x3 holed ring so the holed fold has something real to count (area 8, one hole, still label 7, still BELOW).
+think heavier_side is a pure read over the LineSummary struct returning click_side.Side (left or right), refusing Balanced by name on an equal-area tie and never returning on -- so the tie is a named refusal proven by a hand-built symmetric struct, no contrived scene needed.
+think Proved on metal: LEFT count 1 area 4, ON count 3 area 12, RIGHT count 3 area 26; the straddling group P1(5)+P2(13) both land RIGHT though P1's own box center is ABOVE the line (an own-center digest would bleed P1's 5 to LEFT, left 9 right 21); a full pixel scan tallying each foreground pixel to its object's group side finds left 4, on 12, right 26 EXACTLY, the LEFT region holding not one pixel of the straddling group; antisymmetry swaps the sides under anchor reversal while ON stays fixed; SameGroup/EmptyClick/PointOutOfBounds/Balanced refusals by name; determinism.
+obs GREEN on the FIRST full metal run of both selftest and witness, no code reds. TAME bans clean, width-check exit 0, living-docs lint GREEN, living-card ASCII GREEN. A rye run needs `-- selftest` (the bare arg was read as a file) -- a runner quirk, not a module fault.
+obs Single-stranded REMEMBER: folded line_partition's detail into the prior-nib comment (9f9f083872), made line_summary the live edge, bumped 215 -> 216, and refreshed NEXT toward a line_order read -- the SAME cross product whose SIGN gave the side and whose ZERO gave collinearity now read as MAGNITUDE for an exact distance ordering (a fixed line's constant normalizer preserves order, so no float). image/README.md ratcheted the line_summary entry into sync.
+loom witness=line_summary_witness result=GREEN modules=216 scene_objects=7 canvas=22x15 total_area=42 left_area=4 on_area=12 right_area=26
+file image/line_summary.rye the digest twin: per-side area/holes fold + heavier_side balance, every per-side area EXACT since a line splits whole groups not pixels
+file tools/line_summary_witness.rish builds and runs the selftest on metal, asserting the GREEN line and the decisive-crux claims
+file image/README.md line_summary entry seated beside line_partition (docs-sync, same commit)
+file crux/REMEMBER.md live edge -> line_summary, count 216, NEXT -> line_order, prior-nib folded to line_partition
+recommend keep-going line_order next -- the third register of the cross product (sign, zero, magnitude): rank every object by exact signed cross-product magnitude from a directed line, the ON set the zero-rank band, no float. No network, no key, no funds; no gate reached.
