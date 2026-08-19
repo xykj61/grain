@@ -1,0 +1,39 @@
+# serial_two_clients -- one virtualiser, two clients, two private channels.
+#
+# serial_duplex proved a channel carries both ways, and it proved it with a
+# pair: one virtualiser and one client answering each other while a third
+# domain stood by holding read alone. A pair is not yet a system. This
+# declaration gives BOTH clients the duplex shape -- a receive region the
+# virtualiser writes and the client reads, and a transmit region the client
+# writes and the virtualiser reads -- so one server answers two askers in
+# one run, each on its own channel.
+#
+# The clients are wired to the virtualiser and to nothing else. No channel
+# joins client_a to client_b, and neither holds a single grant on the
+# other's memory, so isolation between them is what the document SAYS
+# rather than a habit the code happens to keep.
+#
+# Read whole by `caravan/read.rye`; exercised by `caravan/serve.rye`.
+
+system serial_two_clients
+
+domain serial_virt
+domain client_a
+domain client_b
+
+channel serial_virt client_a
+channel serial_virt client_b
+
+region rx_a 4096
+region tx_a 4096
+region rx_b 4096
+region tx_b 4096
+
+grant rx_a serial_virt rw
+grant rx_a client_a r
+grant tx_a client_a rw
+grant tx_a serial_virt r
+grant rx_b serial_virt rw
+grant rx_b client_b r
+grant tx_b client_b rw
+grant tx_b serial_virt r
