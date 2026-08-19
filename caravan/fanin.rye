@@ -1,0 +1,1007 @@
+//! Caravan fanin -- who wrote an ask is a fact of the region, never of the bytes.
+//!
+//! `queue.rye` let more than one ask stand on one channel at once, and it
+//! did so with two indices, each owned by the side that advances it. Every
+//! ask in that ring came from one producer, so the question *who wrote
+//! this?* had one answer and never had to be asked.
+//!
+//! One server with two clients asks it. `serial_two_clients.bron` already
+//! declares the shape -- a virtualiser wired to `client_a` and `client_b`,
+//! each on its own private pair of regions -- and the moment both clients
+//! write, a single head stops being enough. Two crux questions open at
+//! once, and this ring answers both.
+//!
+//! The first is attribution. A message is bytes, and bytes can say
+//! anything: `client_b` may write an ask whose text claims `client_a` sent
+//! it, and no amount of reading that text will catch the lie. The answer is
+//! that the server never asks the bytes. It reads `tx_a`, and `tx_a` is a
+//! region only `client_a` may write -- the declaration says so, and the
+//! sibling holding no grant there at all is refused `NotGranted` before a
+//! single byte moves. So the author of an ask is the domain that owns the
+//! region it arrived in, and a byte-claim that disagrees with that region
+//! is **refused rather than believed**.
+//!
+//! The second is fairness. A server that empties one client's queue before
+//! looking at the next lets a busy producer delay a quiet one for as long
+//! as it keeps writing -- starvation, arriving without a single wrong byte.
+//! The answer is a declared per-pass take: one sweep draws at most
+//! `per_pass` asks from each stream, so a client sitting on a full queue
+//! and a client with one ask are both served on the same pass.
+//!
+//! The property: **a sweep serves every stream it holds, and attributes
+//! every ask to the region it came from.** The numbers prove it -- a full
+//! producer and a quiet one served together on one pass, the quiet one
+//! finishing first.
+//!
+//! Nothing in `serial_two_clients.bron` changes. The same four regions that
+//! carried one client's queue now carry two.
+//!
+//! Hosted ground: real processes, real files, pure policy, no kernel
+//! underneath it yet.
+//!
+//! Usage:
+//!   fanin selftest                    Run the sweeps and check
+//!   fanin                             Same as selftest
+//!   fanin dependent <domain> <plan> ...   Run as a supervised dependent (internal)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const regions = @import("regions.rye");
+const channels = @import("channels.rye");
+const capabilities = @import("capabilities.rye");
+const roster = @import("roster.rye");
+const read = @import("read.rye");
+const boot = @import("boot.rye");
+const exercise = @import("exercise.rye");
+const carry = @import("carry.rye");
+const notify = @import("notify.rye");
+const roundtrip = @import("roundtrip.rye");
+const serve = @import("serve.rye");
+const queue = @import("queue.rye");
+const tally_parse_int = @import("parse_int.rye");
+
+const caravan_fanin_version = "20260819.154504";
+
+// =========================================================================
+// Bounds -- what one fan-in run may spend
+// =========================================================================
+
+/// The same two-client declaration `serve.rye`, `restart.rye`,
+/// `unprompted.rye`, and `queue.rye` use. Two producers need no new wiring,
+/// since the document already grants each client its own private pair.
+pub const declaration_path = serve.serial_two_clients_path;
+
+/// How many producer streams one sweep may hold at once.
+///
+/// Four, so the declaration's two clients stand well inside the bound and a
+/// third and fourth would need no new shape -- and so a list longer than
+/// the server can hold is refusable rather than merely unlikely.
+pub const max_streams: u32 = 4;
+
+/// The longest plan word this ring builds: a verb, three comma-joined lists
+/// of up to `max_streams` names each, a count, and the separators between.
+pub const max_plan_len: u32 = 640;
+
+/// Fixed argv words every dependent receives, matching `serve.rye`.
+const fixed_argv_words: u32 = 5;
+
+/// What one ask says, in the shape a server can attribute and check.
+pub const ask_prefix = "fanin: ask ";
+
+/// What a server reports when an ask's bytes name an author other than the
+/// domain that owns the region it arrived in.
+///
+/// A refusal rather than a correction: the server knows the true author and
+/// could simply overrule the claim, yet an ask that lies about itself is a
+/// fact an operator wants to see rather than one the server quietly fixes.
+pub const misattributed: u8 = 12;
+
+comptime {
+    // invariant: two producers are the least this ring is about
+    assert(max_streams >= 2);
+    // invariant: a sweep never holds more streams than a dependent holds peers
+    assert(max_streams <= notify.max_peers_per_dependent);
+    // invariant: this ring's report stands apart from every outcome it may return
+    assert(misattributed != carry.Outcome.carried_ok);
+    assert(misattributed != carry.Outcome.malformed);
+    assert(misattributed != carry.Outcome.not_granted);
+    assert(misattributed != carry.Outcome.write_denied);
+    assert(misattributed != carry.Outcome.past_end);
+    assert(misattributed != carry.Outcome.bytes_differed);
+    assert(misattributed != notify.Bell.not_wired);
+    assert(misattributed != notify.Bell.unheard);
+    assert(misattributed != queue.nothing_new);
+    assert(misattributed != queue.queue_full);
+    // invariant: the reserved stop code stays reserved
+    assert(misattributed != 8);
+    // invariant: three comma-joined lists of the longest legal names still fit
+    assert(8 + (3 * max_streams * (regions.max_name_len + 1)) + 8 <= max_plan_len);
+    // invariant: a whole dependent argv stays within what one run builds
+    assert(fixed_argv_words + capabilities.max_caps_per_dependent + notify.max_peers_per_dependent <= 32);
+}
+
+/// Names one outcome for an operator, teaching this ring's own report and
+/// deferring to the shared vocabulary for everything else.
+pub fn outcome_name(code: u8) []const u8 {
+    if (code == misattributed) return "Misattributed";
+    return queue.outcome_name(code);
+}
+
+// =========================================================================
+// The ask -- it names its own author, so a lie is something to catch
+// =========================================================================
+
+/// Writes the text of one numbered ask, naming both its author and whom it
+/// is for.
+///
+/// The author rides in the bytes precisely so the claim can be **checked**
+/// against the region the ask arrived in. A ring where the bytes stayed
+/// silent about their author would attribute correctly and prove nothing;
+/// here the forgery is expressible, and refused.
+pub fn ask_text(
+    buf: *[serve.max_message_len]u8,
+    author: []const u8,
+    recipient: []const u8,
+    seq: u32,
+) []const u8 {
+    // invariant: an ask always names its author and its recipient
+    assert(author.len >= 1);
+    assert(recipient.len >= 1);
+    // invariant: the longest ask this ring writes fits the buffer that holds it
+    assert(ask_prefix.len + 10 + 10 + author.len + recipient.len <= serve.max_message_len);
+    const text = std.fmt.bufPrint(buf, "{s}{d} from {s} to {s}", .{
+        ask_prefix, seq, author, recipient,
+    }) catch buf[0..0];
+    // invariant: an ask always carries bytes
+    assert(text.len >= 1);
+    return text;
+}
+
+/// Reads the author an ask claims for itself, or null when the bytes do not
+/// carry this ring's shape at all.
+pub fn claimed_author(text: []const u8) ?[]const u8 {
+    // invariant: a claim worth reading carries something
+    assert(text.len >= 1);
+    const marker = " from ";
+    const at = std.mem.indexOf(u8, text, marker) orelse return null;
+    const rest = text[at + marker.len ..];
+    const end = std.mem.indexOf(u8, rest, " to ") orelse return null;
+    if (end == 0) return null;
+    const name = rest[0..end];
+    // invariant: a claimed author read off the wire carries bytes
+    assert(name.len >= 1);
+    return name;
+}
+
+// =========================================================================
+// The plan wire -- parallel lists, one entry per producer stream
+// =========================================================================
+
+/// A bounded list of names read off one comma-joined plan field.
+pub const NameList = struct {
+    names: [max_streams][]const u8 = @splat(""),
+    count: u32 = 0,
+
+    /// Reads one comma-joined field into its names.
+    ///
+    /// An empty entry answers null rather than a nameless stream, and a list
+    /// longer than the server holds answers null rather than silently
+    /// dropping the streams past the bound.
+    pub fn parse(field: []const u8, max_len: u32) ?NameList {
+        // invariant: a field worth parsing carries something
+        assert(field.len >= 1);
+        var out: NameList = .{};
+        var rest = field;
+        while (true) {
+            const cut = std.mem.indexOfScalar(u8, rest, ',');
+            const one = if (cut) |at| rest[0..at] else rest;
+            if (one.len == 0 or one.len > max_len) return null;
+            if (out.count == max_streams) return null;
+            out.names[out.count] = one;
+            out.count += 1;
+            if (cut) |at| rest = rest[at + 1 ..] else break;
+        }
+        // invariant: a parsed list always holds at least one name
+        assert(out.count >= 1);
+        return out;
+    }
+
+    /// Writes the names back as the comma-joined field they came from.
+    pub fn render(self: *const NameList, buf: []u8) ?[]const u8 {
+        // invariant: a rendered list always holds at least one name
+        assert(self.count >= 1);
+        var used: u32 = 0;
+        var i: u32 = 0;
+        while (i < self.count) : (i += 1) {
+            const one = self.names[i];
+            if (i > 0) {
+                if (used == buf.len) return null;
+                buf[used] = ',';
+                used += 1;
+            }
+            if (used + one.len > buf.len) return null;
+            var k: u32 = 0;
+            while (k < one.len) : (k += 1) buf[used + k] = one[k];
+            used += @intCast(one.len); // seam: a slice length arrives as usize
+        }
+        // invariant: a rendered field always carries bytes
+        assert(used >= 1);
+        return buf[0..used];
+    }
+
+    pub fn name_at(self: *const NameList, index: u32) []const u8 {
+        // invariant: a read stays inside the names this list holds
+        assert(index < self.count);
+        return self.names[index];
+    }
+};
+
+/// The five steps this ring runs, each as its own process.
+pub const Verb = enum { announce, sweep, settled, impostor, forge };
+
+/// One task. `heard` names the regions this domain READS, `mine` the
+/// regions it WRITES, and `peer` the domain across each of them -- three
+/// lists of equal length, one entry per stream. A single-client verb rides
+/// the same wire with lists of one.
+pub const Task = struct {
+    verb: Verb,
+    heard: NameList,
+    mine: NameList,
+    peer: NameList,
+    count: u32,
+};
+
+fn verb_word(verb: Verb) []const u8 {
+    return switch (verb) {
+        .announce => "announce",
+        .sweep => "sweep",
+        .settled => "settled",
+        .impostor => "impostor",
+        .forge => "forge",
+    };
+}
+
+/// Renders one task as the plan word its dependent will read.
+pub fn write_plan(buf: []u8, task: Task) ?[]const u8 {
+    // invariant: a task always names as many writers as readers
+    assert(task.heard.count == task.mine.count);
+    assert(task.heard.count == task.peer.count);
+    var heard_buf: [max_plan_len]u8 = undefined;
+    var mine_buf: [max_plan_len]u8 = undefined;
+    var peer_buf: [max_plan_len]u8 = undefined;
+    const heard = task.heard.render(&heard_buf) orelse return null;
+    const mine = task.mine.render(&mine_buf) orelse return null;
+    const peer = task.peer.render(&peer_buf) orelse return null;
+    const word = std.fmt.bufPrint(buf, "{s}:{s}:{s}:{s}:{d}", .{
+        verb_word(task.verb), heard, mine, peer, task.count,
+    }) catch return null;
+    // invariant: a rendered plan always carries bytes
+    assert(word.len >= 1);
+    return word;
+}
+
+/// Reads a plan word back into the task it names.
+///
+/// Five fields, five verbs, three lists of equal length, and anything else
+/// answers null -- a dependent refuses a plan it cannot read rather than
+/// inferring which region belongs to which peer.
+pub fn read_plan(word: []const u8) ?Task {
+    // invariant: a plan worth reading carries something
+    assert(word.len >= 1);
+    var parts: [5][]const u8 = @splat("");
+    var found: u32 = 0;
+    var rest = word;
+    while (found < 4) : (found += 1) {
+        const cut = std.mem.indexOfScalar(u8, rest, ':') orelse return null;
+        if (cut == 0) return null;
+        parts[found] = rest[0..cut];
+        rest = rest[cut + 1 ..];
+    }
+    if (rest.len == 0) return null;
+    parts[4] = rest;
+    const heard = NameList.parse(parts[1], regions.max_name_len) orelse return null;
+    const mine = NameList.parse(parts[2], regions.max_name_len) orelse return null;
+    const peer = NameList.parse(parts[3], channels.max_name_len) orelse return null;
+    // Three parallel lists, so a stream that lost its peer or its own region
+    // is refused rather than paired with whatever happens to sit at its index.
+    if (heard.count != mine.count) return null;
+    if (heard.count != peer.count) return null;
+    // A count word is parsed strictly, so "03" is refused rather than read
+    // as 3 -- a plan word means exactly what it says (tally/parse_int.rye).
+    const count = tally_parse_int.parse_int(u32, parts[4], .{}) catch return null;
+    const verb: Verb = if (std.mem.eql(u8, parts[0], "announce"))
+        .announce
+    else if (std.mem.eql(u8, parts[0], "sweep"))
+        .sweep
+    else if (std.mem.eql(u8, parts[0], "settled"))
+        .settled
+    else if (std.mem.eql(u8, parts[0], "impostor"))
+        .impostor
+    else if (std.mem.eql(u8, parts[0], "forge"))
+        .forge
+    else
+        return null;
+    // invariant: every task read off the wire pairs each stream whole
+    assert(heard.count == mine.count);
+    assert(heard.count == peer.count);
+    return .{ .verb = verb, .heard = heard, .mine = mine, .peer = peer, .count = count };
+}
+
+/// Builds a task from three single names, for the verbs one client runs.
+pub fn one_stream(verb: Verb, heard: []const u8, mine: []const u8, peer: []const u8, count: u32) Task {
+    // invariant: a single-stream task still names every part of its stream
+    assert(heard.len >= 1);
+    assert(mine.len >= 1);
+    assert(peer.len >= 1);
+    var task: Task = .{
+        .verb = verb,
+        .heard = .{},
+        .mine = .{},
+        .peer = .{},
+        .count = count,
+    };
+    task.heard.names[0] = heard;
+    task.heard.count = 1;
+    task.mine.names[0] = mine;
+    task.mine.count = 1;
+    task.peer.names[0] = peer;
+    task.peer.count = 1;
+    return task;
+}
+
+// =========================================================================
+// The dependent -- one process, one step, one reported outcome
+// =========================================================================
+
+/// Writes a batch of asks into this client's own region, then rings once.
+///
+/// The order is `queue.rye`'s, unchanged: slots before the head, since a
+/// head raised early promises a server messages that have not landed.
+fn do_announce(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const notify.PeerList,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    const mine = task.mine.name_at(0);
+    const heard = task.heard.name_at(0);
+    const peer = task.peer.name_at(0);
+    if (!peers.wired_to(peer)) return notify.Bell.not_wired;
+    if (task.count == 0 or task.count > queue.max_outstanding) return carry.Outcome.malformed;
+
+    const head = queue.read_index(io, slot, mine) catch |err| return serve.reach_code(err);
+    const tail = queue.read_index(io, slot, heard) catch |err| return serve.reach_code(err);
+    if (head < tail) return carry.Outcome.bytes_differed;
+    const outstanding = head - tail;
+    if (outstanding + task.count > queue.max_outstanding) return queue.queue_full;
+
+    var k: u32 = 0;
+    while (k < task.count) : (k += 1) {
+        var text_buf: [serve.max_message_len]u8 = undefined;
+        const text = ask_text(&text_buf, self_name, peer, head + k);
+        queue.write_slot(io, slot, mine, head + k, text) catch |err|
+            return serve.reach_code(err);
+    }
+    queue.write_index(io, slot, mine, head + task.count) catch |err|
+        return serve.reach_code(err);
+
+    const rung = roundtrip.ring_to(io, peers, self_name, peer) catch |err|
+        return serve.bell_code(err);
+    // invariant: one batch spends exactly one ring
+    assert(rung >= 1);
+    print("    {s}: {d} asks written behind 1 ring\n", .{ self_name, task.count });
+    return carry.Outcome.carried_ok;
+}
+
+/// Writes one ask into this client's OWN region, claiming a different
+/// author.
+///
+/// Every wall holds -- the client writes only where it may -- and the lie
+/// lives entirely in the bytes, which is exactly the case region-based
+/// attribution has to answer.
+fn do_impostor(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const notify.PeerList,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    const mine = task.mine.name_at(0);
+    const heard = task.heard.name_at(0);
+    const peer = task.peer.name_at(0);
+    if (!peers.wired_to(peer)) return notify.Bell.not_wired;
+
+    const head = queue.read_index(io, slot, mine) catch |err| return serve.reach_code(err);
+    const tail = queue.read_index(io, slot, heard) catch |err| return serve.reach_code(err);
+    if (head < tail) return carry.Outcome.bytes_differed;
+    if ((head - tail) + 1 > queue.max_outstanding) return queue.queue_full;
+
+    var text_buf: [serve.max_message_len]u8 = undefined;
+    // The claim is the whole point: these bytes name a domain that never
+    // wrote them, in a region that domain may not touch.
+    const text = ask_text(&text_buf, impostor_claim, peer, head);
+    queue.write_slot(io, slot, mine, head, text) catch |err| return serve.reach_code(err);
+    queue.write_index(io, slot, mine, head + 1) catch |err| return serve.reach_code(err);
+
+    const rung = roundtrip.ring_to(io, peers, self_name, peer) catch |err|
+        return serve.bell_code(err);
+    // invariant: an impostor still rings like any other producer
+    assert(rung >= 1);
+    print("    {s}: wrote 1 ask claiming to be {s}\n", .{ self_name, impostor_claim });
+    return carry.Outcome.carried_ok;
+}
+
+/// The author an impostor claims -- the sibling client, whose own region it
+/// can never reach.
+pub const impostor_claim = "client_a";
+
+/// Hears the ring, then serves every stream it holds, bounded per stream.
+///
+/// The bound is the fairness claim: a client sitting on a full queue gives
+/// up at most `per_pass` asks on this sweep, so a client with a single ask
+/// is served on the same pass rather than after the busy one runs dry.
+fn do_sweep(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const notify.PeerList,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    const per_pass = task.count;
+    if (per_pass == 0 or per_pass > queue.max_outstanding) return carry.Outcome.malformed;
+
+    var heard_rings: u32 = 0;
+    var s: u32 = 0;
+    while (s < task.peer.count) : (s += 1) {
+        const peer = task.peer.name_at(s);
+        if (!peers.wired_to(peer)) return notify.Bell.not_wired;
+        const rung = roundtrip.hear_from(io, peers, self_name, peer) catch |err|
+            return serve.bell_code(err);
+        heard_rings += rung;
+    }
+    if (heard_rings == 0) return notify.Bell.unheard;
+
+    var served: u32 = 0;
+    s = 0;
+    while (s < task.peer.count) : (s += 1) {
+        const inbound = task.heard.name_at(s);
+        const ledger = task.mine.name_at(s);
+        const author = task.peer.name_at(s);
+
+        const head = queue.read_index(io, slot, inbound) catch |err| return serve.reach_code(err);
+        const tail = queue.read_index(io, slot, ledger) catch |err| return serve.reach_code(err);
+        if (head < tail) return carry.Outcome.bytes_differed;
+        const waiting = head - tail;
+        if (waiting > queue.max_outstanding) return carry.Outcome.bytes_differed;
+        const take = if (waiting < per_pass) waiting else per_pass;
+
+        var seq = tail;
+        while (seq < tail + take) : (seq += 1) {
+            var seen_buf: [serve.max_message_len]u8 = undefined;
+            const seen = queue.read_slot(io, slot, inbound, seq, &seen_buf) catch |err|
+                return serve.reach_code(err);
+            const message = seen orelse return carry.Outcome.bytes_differed;
+            const claim = claimed_author(message) orelse return carry.Outcome.bytes_differed;
+            // Attribution is the region, never the bytes: `inbound` is a
+            // region only `author` may write, so a claim that disagrees is
+            // a lie this server refuses rather than repairs.
+            if (!std.mem.eql(u8, claim, author)) {
+                print("    {s}: {s} arrived in {s} claiming {s}\n", .{
+                    self_name, author, inbound, claim,
+                });
+                return misattributed;
+            }
+            var want_buf: [serve.max_message_len]u8 = undefined;
+            const want = ask_text(&want_buf, author, self_name, seq);
+            if (!std.mem.eql(u8, message, want)) return carry.Outcome.bytes_differed;
+        }
+        // invariant: the walk stopped exactly where this pass's bound stands
+        assert(seq == tail + take);
+
+        if (take > 0) {
+            queue.write_index(io, slot, ledger, tail + take) catch |err|
+                return serve.reach_code(err);
+        }
+        served += take;
+        print("    {s}: took {d} of {d} waiting from {s}\n", .{
+            self_name, take, waiting, author,
+        });
+    }
+    if (served == 0) {
+        print("    {s}: heard {d}, served 0\n", .{ self_name, heard_rings });
+        return queue.nothing_new;
+    }
+    print("    {s}: heard {d}, served {d} across {d} streams\n", .{
+        self_name, heard_rings, served, task.peer.count,
+    });
+    return carry.Outcome.carried_ok;
+}
+
+/// Reads how far the server has served this client, out of the server's own
+/// memory.
+///
+/// The client can SEE its own progress, since it holds read on the region
+/// the server's ledger lives in -- and can never move it.
+fn do_settled(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    const served = queue.read_index(io, slot, task.heard.name_at(0)) catch |err|
+        return serve.reach_code(err);
+    const written = queue.read_index(io, slot, task.mine.name_at(0)) catch |err|
+        return serve.reach_code(err);
+    print("    {s}: wrote {d}, server served {d}\n", .{ self_name, written, served });
+    if (served != task.count) return carry.Outcome.bytes_differed;
+    return carry.Outcome.carried_ok;
+}
+
+/// Attempts to write into a region another domain owns.
+///
+/// This is the wall that makes region-based attribution mean anything: if a
+/// client could write its sibling's inbound region, the region would name
+/// nobody. The sibling holds no grant there at all, so the refusal arrives
+/// as `NotGranted` -- one step earlier than the `WriteDenied` a read-only
+/// holder would meet, and for the same reason.
+fn do_forge(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    task: Task,
+) u8 {
+    var text_buf: [serve.max_message_len]u8 = undefined;
+    const text = ask_text(&text_buf, task.peer.name_at(0), "serial_virt", 0);
+    queue.write_slot(io, slot, task.heard.name_at(0), 0, text) catch |err|
+        return serve.reach_code(err);
+    return carry.Outcome.bytes_differed;
+}
+
+/// Attempts one step and reports its outcome.
+fn attempt(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const notify.PeerList,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    // invariant: a task always pairs each stream whole
+    assert(task.heard.count == task.mine.count);
+    assert(task.heard.count == task.peer.count);
+    return switch (task.verb) {
+        .announce => do_announce(io, slot, peers, self_name, task),
+        .sweep => do_sweep(io, slot, peers, self_name, task),
+        .settled => do_settled(io, slot, self_name, task),
+        .impostor => do_impostor(io, slot, peers, self_name, task),
+        .forge => do_forge(io, slot, task),
+    };
+}
+
+/// Reads the capability words a dependent was handed into its own slot.
+fn slot_from_argv(args: []const [:0]const u8, domain: []const u8, cap_count: u32) ?capabilities.DependentSlot {
+    // invariant: a dependent always knows which domain it is
+    assert(domain.len >= 1);
+    // invariant: the count stays within what one dependent may hold
+    assert(cap_count <= capabilities.max_caps_per_dependent);
+    var slot = capabilities.DependentSlot.init(domain);
+    var i: u32 = 0;
+    while (i < cap_count) : (i += 1) {
+        const cap = boot.read_cap_word(args[fixed_argv_words + i]) orelse return null;
+        slot.grant(cap) catch return null;
+    }
+    // invariant: the dependent holds exactly the capability words it was handed
+    assert(slot.cap_count == cap_count);
+    return slot;
+}
+
+/// Runs as one supervised dependent, holding exactly the capabilities, the
+/// peers, and the one step on its own argv.
+fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
+    // invariant: a dependent always receives its marker, domain, plan, and count
+    assert(args.len >= fixed_argv_words);
+    const domain = args[2];
+    const plan = args[3];
+    // invariant: a dependent always knows which domain it is
+    assert(domain.len >= 1);
+
+    const cap_count = tally_parse_int.parse_int(u32, args[4], .{}) catch {
+        print("    {s}: refused an unreadable capability count\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    if (cap_count > capabilities.max_caps_per_dependent) {
+        print("    {s}: more capabilities than one dependent holds\n", .{domain});
+        return carry.Outcome.malformed;
+    }
+    if (fixed_argv_words + cap_count > args.len) {
+        print("    {s}: a capability count past the words it was handed\n", .{domain});
+        return carry.Outcome.malformed;
+    }
+    var slot = slot_from_argv(args, domain, cap_count) orelse {
+        print("    {s}: refused a malformed capability word\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+
+    var peers: notify.PeerList = .{};
+    var p: usize = fixed_argv_words + cap_count;
+    while (p < args.len) : (p += 1) {
+        peers.add(args[p]) catch {
+            print("    {s}: more peers than one dependent holds\n", .{domain});
+            return carry.Outcome.malformed;
+        };
+    }
+    // invariant: the dependent holds exactly the peer words it was handed
+    assert(peers.count == args.len - fixed_argv_words - cap_count);
+
+    const task = read_plan(plan) orelse {
+        print("    {s}: refused a plan it could not read\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    const code = attempt(io, &slot, &peers, domain, task);
+    print("    {s}: {s} across {d} stream(s) -- {s}\n", .{
+        domain, verb_word(task.verb), task.peer.count, outcome_name(code),
+    });
+    return code;
+}
+
+// =========================================================================
+// The supervisor -- one document, two producers, one ordered run
+// =========================================================================
+
+/// One declared domain's step in a fan-in run.
+///
+/// The three name fields carry comma-joined lists for a sweep and a single
+/// name for every other verb, matching the plan wire exactly.
+pub const Assignment = struct {
+    domain: []const u8,
+    verb: Verb,
+    heard: []const u8,
+    mine: []const u8,
+    peer: []const u8,
+    count: u32,
+    expect: u8,
+};
+
+/// What one run did, reported whole.
+pub const Report = struct {
+    started: u32 = 0,
+    matched: u32 = 0,
+    bells: u32 = 0,
+    asks: u32 = 0,
+    rings: u32 = 0,
+    sweeps: u32 = 0,
+    streams: u32 = 0,
+};
+
+/// Named ways a run declines rather than reporting a hollow success.
+pub const RunError = error{
+    SpawnFailed,
+    UnknownDomain,
+    PlanTooLong,
+    OutcomeMismatch,
+};
+
+/// Counts the streams one comma-joined field names.
+fn stream_count(field: []const u8) u32 {
+    // invariant: a field worth counting carries something
+    assert(field.len >= 1);
+    var seen: u32 = 1;
+    var i: u32 = 0;
+    while (i < field.len) : (i += 1) {
+        if (field[i] == ',') seen += 1;
+    }
+    // invariant: a counted field always names at least one stream
+    assert(seen >= 1);
+    return seen;
+}
+
+/// Starts one assigned dependent and holds it to the outcome the parent expects.
+fn run_assignment(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    table: *const capabilities.CapabilityTable,
+    step: Assignment,
+) (RunError || boot.BootError)!void {
+    // invariant: an assignment always names a domain and both region fields
+    assert(step.domain.len >= 1);
+    assert(step.heard.len >= 1);
+    assert(step.mine.len >= 1);
+    // invariant: an assignment always names the peer of every stream
+    assert(step.peer.len >= 1);
+    const slot = table.find_dependent(step.domain) orelse return error.UnknownDomain;
+    // invariant: the line handed out agrees with the declaration it came from
+    assert(boot.line_agrees(sys, slot));
+
+    var peers: notify.PeerList = .{};
+    notify.peers_of(sys, step.domain, &peers);
+
+    var plan_buf: [max_plan_len]u8 = undefined;
+    const plan = std.fmt.bufPrint(&plan_buf, "{s}:{s}:{s}:{s}:{d}", .{
+        verb_word(step.verb), step.heard, step.mine, step.peer, step.count,
+    }) catch return error.PlanTooLong;
+
+    var count_buf: [8]u8 = undefined;
+    const count_word = std.fmt.bufPrint(&count_buf, "{d}", .{slot.cap_count}) catch
+        return error.PlanTooLong;
+
+    var storage: [capabilities.max_caps_per_dependent][boot.max_cap_word_len]u8 = undefined;
+    const argv = allocator.alloc(
+        []const u8,
+        fixed_argv_words + slot.cap_count + peers.count,
+    ) catch return error.SpawnFailed;
+    argv[0] = self_path;
+    argv[1] = "dependent";
+    argv[2] = slot.label_slice();
+    argv[3] = plan;
+    argv[4] = count_word;
+    var c: u32 = 0;
+    while (c < slot.cap_count) : (c += 1) {
+        assert(c < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        argv[fixed_argv_words + c] = try boot.write_cap_word(&storage[c], &slot.caps[c]);
+    }
+    var q: u32 = 0;
+    while (q < peers.count) : (q += 1) {
+        argv[fixed_argv_words + slot.cap_count + q] = peers.name_at(q);
+    }
+
+    var proc = std.process.spawn(io, .{ .argv = argv }) catch return error.SpawnFailed;
+    const term = proc.wait(io) catch return error.SpawnFailed;
+    const code: u8 = switch (term) {
+        .exited => |c2| c2,
+        else => 255,
+    };
+    if (code != step.expect) {
+        print("    {s}: expected {s}, heard {s}\n", .{
+            step.domain, outcome_name(step.expect), outcome_name(code),
+        });
+        return error.OutcomeMismatch;
+    }
+}
+
+/// Runs a whole ordered plan against one parsed declaration.
+pub fn run_plan(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Assignment,
+) (roster.RosterError || exercise.ProvisionError || notify.BellError || RunError || boot.BootError)!Report {
+    // invariant: a run always knows what program to spawn
+    assert(self_path.len >= 1);
+    // invariant: a run always carries at least one step
+    assert(plan.len >= 1);
+    const provisioned = try exercise.provision(io, sys);
+    // invariant: every declared region has a backing store before any dependent runs
+    assert(provisioned == sys.map.region_count);
+    const bells = try roundtrip.provision_directed(io, sys);
+    // invariant: every declared channel has two silent bells before any dependent runs
+    assert(bells == sys.graph.channel_count * 2);
+
+    const table = try roster.from_system(sys);
+    // invariant: the derived table enforces exactly what the document permits
+    assert(roster.agrees(sys, &table));
+
+    var report_out: Report = .{ .bells = bells };
+    var i: u32 = 0;
+    while (i < plan.len) : (i += 1) {
+        try run_assignment(allocator, io, self_path, sys, &table, plan[i]);
+        report_out.started += 1;
+        report_out.matched += 1;
+        const step = plan[i];
+        if (step.expect == carry.Outcome.carried_ok) {
+            if (step.verb == .announce) {
+                report_out.asks += step.count;
+                report_out.rings += 1;
+            }
+            if (step.verb == .impostor) report_out.rings += 1;
+        }
+        if (step.verb == .sweep) {
+            report_out.sweeps += 1;
+            report_out.streams += stream_count(step.peer);
+        }
+    }
+    // invariant: every step that started also matched what was expected
+    assert(report_out.matched == report_out.started);
+    // invariant: a run never counts more rings than steps
+    assert(report_out.rings <= report_out.started);
+    return report_out;
+}
+
+// =========================================================================
+// Self-test -- two producers on one server, served together and attributed
+// =========================================================================
+
+/// The sweeps, in the order their meaning depends on.
+///
+/// Steps one and two set the stage the fairness claim needs: `client_a`
+/// fills its queue to capacity while `client_b` writes a single ask. Step
+/// three is the crux -- ONE sweep, bounded at two per stream, serves both,
+/// and the numbers it prints show the quiet client finishing while the busy
+/// one still has a backlog. Steps four and five read that back from each
+/// client's own side, and steps six and seven drain the remainder so the
+/// run ends with every ask served.
+const sweep_plan = [_]Assignment{
+    .{ .domain = "client_a", .verb = .announce, .heard = "rx_a", .mine = "tx_a", .peer = "serial_virt", .count = 4, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_b", .verb = .announce, .heard = "rx_b", .mine = "tx_b", .peer = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "serial_virt", .verb = .sweep, .heard = "tx_a,tx_b", .mine = "rx_a,rx_b", .peer = "client_a,client_b", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_b", .verb = .settled, .heard = "rx_b", .mine = "tx_b", .peer = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_a", .verb = .settled, .heard = "rx_a", .mine = "tx_a", .peer = "serial_virt", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_a", .verb = .announce, .heard = "rx_a", .mine = "tx_a", .peer = "serial_virt", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "serial_virt", .verb = .sweep, .heard = "tx_a,tx_b", .mine = "rx_a,rx_b", .peer = "client_a,client_b", .count = 4, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_a", .verb = .settled, .heard = "rx_a", .mine = "tx_a", .peer = "serial_virt", .count = 6, .expect = carry.Outcome.carried_ok },
+};
+
+/// The walls two producers invite.
+///
+/// The first is what makes a region name an author at all: `client_b` holds
+/// nothing on `client_a`'s inbound region, so an ask standing in `tx_a`
+/// came from `client_a` or from nobody. The second holds the bell honest:
+/// a sweep that heard nothing serves nothing, whatever stands in the
+/// regions. The third is the first claim from the other side -- `client_b`
+/// writes where it may, and lies in the bytes, and the server refuses the
+/// lie rather than believing it.
+const wall_plan = [_]Assignment{
+    .{ .domain = "client_b", .verb = .forge, .heard = "tx_a", .mine = "tx_b", .peer = "client_a", .count = 0, .expect = carry.Outcome.not_granted },
+    .{ .domain = "serial_virt", .verb = .sweep, .heard = "tx_a,tx_b", .mine = "rx_a,rx_b", .peer = "client_a,client_b", .count = 2, .expect = notify.Bell.unheard },
+    .{ .domain = "client_b", .verb = .impostor, .heard = "rx_b", .mine = "tx_b", .peer = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "serial_virt", .verb = .sweep, .heard = "tx_a,tx_b", .mine = "rx_a,rx_b", .peer = "client_a,client_b", .count = 2, .expect = misattributed },
+};
+
+/// Proves the plan wire carries parallel lists before any process runs.
+fn check_wire() u8 {
+    var buf: [max_plan_len]u8 = undefined;
+    var task: Task = .{ .verb = .sweep, .heard = .{}, .mine = .{}, .peer = .{}, .count = 2 };
+    task.heard = NameList.parse("tx_a,tx_b", regions.max_name_len) orelse {
+        print("  RED: a legal region list did not parse\n", .{});
+        return 1;
+    };
+    task.mine = NameList.parse("rx_a,rx_b", regions.max_name_len) orelse return 1;
+    task.peer = NameList.parse("client_a,client_b", channels.max_name_len) orelse return 1;
+    const written = write_plan(&buf, task) orelse {
+        print("  RED: a legal sweep had no plan word\n", .{});
+        return 1;
+    };
+    const back = read_plan(written) orelse {
+        print("  RED: a plan word this ring wrote did not read back\n", .{});
+        return 1;
+    };
+    // invariant: a sweep survives the wire it rode in on, stream for stream
+    assert(back.verb == .sweep);
+    assert(back.peer.count == 2);
+    assert(std.mem.eql(u8, back.heard.name_at(0), "tx_a"));
+    assert(std.mem.eql(u8, back.heard.name_at(1), "tx_b"));
+    assert(std.mem.eql(u8, back.mine.name_at(1), "rx_b"));
+    assert(std.mem.eql(u8, back.peer.name_at(1), "client_b"));
+    assert(back.count == 2);
+
+    if (read_plan("sweep:tx_a,tx_b:rx_a:client_a,client_b:2") != null) {
+        print("  RED: a stream that lost its own region was paired anyway\n", .{});
+        return 1;
+    }
+    if (read_plan("sweep:tx_a,tx_b:rx_a,rx_b:client_a:2") != null) {
+        print("  RED: a stream that lost its peer was paired anyway\n", .{});
+        return 1;
+    }
+    if (read_plan("sweep:tx_a,,tx_b:rx_a,rx_b:client_a,client_b:2") != null) {
+        print("  RED: a nameless stream passed as a region\n", .{});
+        return 1;
+    }
+    if (read_plan("sweep:tx_a,tx_b:rx_a,rx_b:client_a,client_b:03") != null) {
+        print("  RED: a padded count was read as the number it resembles\n", .{});
+        return 1;
+    }
+    if (NameList.parse("a,b,c,d,e", regions.max_name_len) != null) {
+        print("  RED: more streams than the server holds were accepted\n", .{});
+        return 1;
+    }
+
+    var honest_buf: [serve.max_message_len]u8 = undefined;
+    const honest = ask_text(&honest_buf, "client_a", "serial_virt", 3);
+    const claim = claimed_author(honest) orelse {
+        print("  RED: an ask this ring wrote named no author\n", .{});
+        return 1;
+    };
+    if (!std.mem.eql(u8, claim, "client_a")) {
+        print("  RED: an ask's author read back as someone else\n", .{});
+        return 1;
+    }
+    var lying_buf: [serve.max_message_len]u8 = undefined;
+    const lying = ask_text(&lying_buf, "client_a", "serial_virt", 3);
+    if (!std.mem.eql(u8, honest, lying)) {
+        print("  RED: the same ask wrote two different ways\n", .{});
+        return 1;
+    }
+    print("  the sweep wire pairs {d} streams whole, and an ask names the author it claims\n", .{
+        back.peer.count,
+    });
+    return 0;
+}
+
+/// Loads the two-client declaration, or names why it could not be read.
+fn load_declaration(io: std.Io, buf: []u8) ?system.System {
+    const parsed = read.load(io, declaration_path, buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ declaration_path, @errorName(err) });
+        return null;
+    };
+    if (parsed.verify() != .whole) {
+        print("  RED: {s} did not read whole\n", .{declaration_path});
+        return null;
+    }
+    return parsed;
+}
+
+/// Runs the sweeps and reads the numbers that carry the claim.
+fn check_sweeps(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = load_declaration(io, &buf) orelse return 1;
+    const done = run_plan(allocator, io, self_path, &parsed, &sweep_plan) catch |err| {
+        print("  RED: a sweep did not complete: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: every step ran, each as its own process
+    assert(done.started == sweep_plan.len);
+    // invariant: both directions of both declared channels stood silent first
+    assert(done.bells == parsed.graph.channel_count * 2);
+    // invariant: two producers wrote every ask this run carried
+    assert(done.asks == 7);
+    assert(done.rings == 3);
+    // invariant: every sweep served both declared streams
+    assert(done.sweeps == 2);
+    assert(done.streams == 4);
+    print("  {d} directed bells provisioned silent across {d} declared channels\n", .{
+        done.bells, parsed.graph.channel_count,
+    });
+    print("  {d} asks from 2 producers carried on {d} rings across {d} sweeps of {d} streams\n", .{
+        done.asks, done.rings, done.sweeps, done.streams,
+    });
+    print("  a full producer gave up 2 of 4 while the quiet one finished on the same pass\n", .{});
+    return 0;
+}
+
+/// Proves the walls, each in its own dependent.
+fn check_walls(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = load_declaration(io, &buf) orelse return 1;
+    const done = run_plan(allocator, io, self_path, &parsed, &wall_plan) catch |err| {
+        print("  RED: a wall did not hold: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: every wall ran as its own process and answered by name
+    assert(done.matched == wall_plan.len);
+    print("  a client holds nothing on its sibling's inbound region -- NotGranted\n", .{});
+    print("  an ask whose bytes name another author is refused, never believed\n", .{});
+    return 0;
+}
+
+fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    print("Caravan fanin {s} -- self-test\n", .{caravan_fanin_version});
+    const wire = check_wire();
+    if (wire != 0) return wire;
+    const sweeps = check_sweeps(allocator, io, self_path);
+    if (sweeps != 0) return sweeps;
+    const walls = check_walls(allocator, io, self_path);
+    if (walls != 0) return walls;
+    print("  GREEN: a sweep serves every stream, and the region names the author\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
+        return run_dependent(io, args);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(allocator, io, self_path);
+    }
+    if (args.len >= 2) return 1;
+    return run_self_test(allocator, io, self_path);
+}

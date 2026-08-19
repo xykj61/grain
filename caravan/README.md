@@ -1,7 +1,7 @@
 # Caravan -- Process Supervision
 
 **Language:** EN
-**Last updated:** `20260819.153717` (the queue ring lands -- a bell says look, and the two indices say how much)
+**Last updated:** `20260819.154504` (the fan-in ring lands -- two producers, one server, and the region that names the author)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable -- process supervision ladder
 
@@ -38,6 +38,7 @@ Every ring here composes over the one before it. A later ring imports an earlier
 | rederive | [`rederive.rye`](rederive.rye) | a restarted dependent's rights come from the document, never from the parent's memory -- every attempt reloads the declaration and derives its own line, a remembered line kept as a claim to check, and a disagreement met by a named policy: refuse, heal, or report |
 | unprompted | [`unprompted.rye`](unprompted.rye) | a client rings a server that has not spoken first -- one attending verb carrying both directions, an ask told from an answer by the bytes rather than by the bell, and a forged ask refused at the wall the declaration already stands |
 | queue | [`queue.rye`](queue.rye) | more than one ask stands on one channel at once -- a head the producer owns and a tail the consumer owns, a drain bounded by the queue rather than by the bell, a ring with nothing behind it draining zero by name, and a full queue refusing rather than overwriting an unread ask |
+| fanin | [`fanin.rye`](fanin.rye) | two producers write one server -- every ask attributed to the region it arrived in rather than to the author its bytes claim, a sweep bounded per stream so a full producer never delays a quiet one, and an ask that lies about its author refused rather than believed |
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
@@ -191,6 +192,16 @@ Order carries meaning one level in from `notify.rye`'s own. There the bytes were
 Capacity is declared rather than hoped for. A producer reads the tail, computes what stands outstanding, and answers `QueueFull` rather than writing over an ask nobody has read, so a full queue is a refusal an operator can see instead of a message that silently went missing. A ring with nothing behind it answers `nothing new` -- a named success, since a ring did arrive and the honest count was zero.
 
 The numbers state the claim: seven asks carried on three rings across three drains, three of them landing behind a single ring. Witness: [`tools/caravan_queue_witness.rish`](../tools/caravan_queue_witness.rish), GREEN on metal, both RED paths proven before the green was trusted. Driving the drain from the bell count rather than from `head - tail` carried one ask of three, and the producer caught it by reading the consumer's own tail standing at 1 against a head of 3. Dropping the capacity refusal let a fifth ask land in a four-slot queue, overwriting an unread one, and the next drain read a sequence number it never expected.
+
+## Why the Region Names the Author, and the Bytes Never Do
+
+Every ask in `queue.rye` came from one producer, so the question *who wrote this?* had a single answer and never had to be asked. A second client asks it, and `fanin.rye` answers it twice over.
+
+Attribution comes first. A message is bytes, and bytes can say anything: `client_b` may write an ask whose text names `client_a` as its author, and no amount of reading that text will catch the lie. So the server never asks the bytes. It reads `tx_a`, and `tx_a` is a region only `client_a` may write -- the sibling holds no grant there at all and is refused `NotGranted` before a single byte moves. **The author of an ask is the domain that owns the region it arrived in**, and a byte-claim disagreeing with that region is refused `Misattributed` rather than believed. The server knows the true author and could simply overrule the claim; an ask that lies about itself is a fact an operator wants to see instead of one the server quietly repairs.
+
+Fairness comes second, and it arrives without a single wrong byte. A server that empties one client's queue before looking at the next lets a busy producer delay a quiet one for as long as it keeps writing. A declared per-pass take answers it: one sweep draws at most `per_pass` asks from **each** stream, so a client sitting on a full queue and a client holding one ask are both served on the same pass, and the quiet one finishes first.
+
+The numbers state the claim: seven asks from two producers carried on three rings across two sweeps of two streams, the busy client giving up two of its four while the quiet client finished. Witness: [`tools/caravan_fanin_witness.rish`](../tools/caravan_fanin_witness.rish), GREEN on metal, both RED paths proven before the green was trusted. Trusting the claimed author rather than the region carried the impostor's forged ask home as genuine. Spending one shared budget across the streams rather than a bound per stream let the busy client consume the whole pass, and the quiet client's single ask was served zero -- caught by that client reading the server's own ledger.
 
 ## Held
 
