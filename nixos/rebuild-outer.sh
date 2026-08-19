@@ -36,10 +36,10 @@ echo "== witness =="
 command -v perl    && perl    --version | head -n 2 | tail -n 1
 command -v python3 && python3 --version
 
-# 5. Report the claude-code version this build shipped. nixpkgs nixos-26.05
-#    tracks its own pin, so this may LAG upstream -- latest upstream at this
-#    writing is 2.1.235 (2026-08-18, code.claude.com/docs/en/changelog). If the
-#    pin is too old, bump nixpkgs or add a version overlay like cursor-cli's.
+# 5. Confirm the claude-code version overlay took effect. configuration.nix
+#    pins claude-code to 2.1.235 (2026-08-18) via an overlay, past nixos-26.05's
+#    lagging pin (the locked flake held 2.1.187). Expect 2.1.235 below; the build
+#    already self-verified the binary hash and ran `claude --version` internally.
 command -v claude && claude --version || echo "claude not on PATH"
 
 echo "== rebuild-outer GREEN if perl + python3 printed a version above =="
