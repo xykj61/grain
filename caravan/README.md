@@ -50,6 +50,7 @@ Every ring here composes over the one before it. A later ring imports an earlier
 | cohort | [`cohort.rye`](cohort.rye) | the widest set of domains a document may run at once -- derived by weighing every subset rather than by taking the first domain that fits, a ring's widest set held to `floor(n / 2)` so no ring offers a triple at all, one server and its three clients offering three where a first fit takes one, and the whole cohort reaped before any verdict about any of it leaves the supervisor |
 | harvest | [`harvest.rye`](harvest.rye) | reaping by readiness rather than by age -- a bounded no-hang sweep tells the supervisor which dependents have already exited, and the answer arrives in two halves: where the head waits on a domain readiness converts nothing, and where the head waits on a slot it converts the whole of it, one lingering eldest turning one idle turn into zero |
 | rolling | [`rolling.rye`](rolling.rye) | a slot refilled the moment a dependent finishes rather than a whole stage reaped first -- reaping split from reporting so a verdict still waits for the drain, admission held head-of-line so a lap never reorders itself, and the waiting that remains counted by its true cause: idle by barrier where the discipline held the slot, idle by order where the document did |
+| overtake | [`overtake.rye`](overtake.rye) | reaching past a blocked head, and what a document must declare for the reordering to keep its meaning -- the lawful order derived from the regions the declaration already names rather than added to it, isolation and order kept as two questions so a domain that may not stand beside itself may still be passed freely, no lawful pass at all over the ordered lap where the order is the arc, and every slot converted over a lap whose head blocks on its own domain |
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
@@ -401,6 +402,20 @@ The numbers state the claim: two idle turns either way over the ordered lap -- t
 **Reaping out of order keeps every rule the rung before it proved.** A verdict still waits for the whole queue to drain, so nothing leaves while a sibling runs, and every outcome is judged against the expectation its own item carried -- the judging never depended on reap order.
 
 The numbers state the claim: two idle turns by age and two by readiness over the ordered lap with six asks home at a peak of three; one idle turn by age against zero by readiness over the stagger lap, with five of six dependents reaped out of order and the run finishing a shade sooner on the wall. Witness: [`tools/caravan_harvest_witness.rish`](../tools/caravan_harvest_witness.rish), GREEN on metal.
+
+## Overtake -- a document that names its regions has already named its lawful order
+
+`rolling.rye` admitted head-of-line only and named its reason plainly: reaching past a blocked head would reorder the lap, and in these documents order is meaning -- an ask is placed before it is passed and passed before it comes home. `harvest.rye` then answered which dependent a turn reaps. `overtake.rye` answers the question both of them left standing: may a supervisor look past a blocked head at all?
+
+**It may, and the document already says when.** The order a queue is written in carries two different things at once, and only one of them is meaning. Where two items touch a region in common, their order is the arc itself. Where they touch no region in common, the order between them is incidental -- the queue had to write one of them first, and either first is the same run. So the test for a lawful pass is *derived* from the declaration rather than added to it, which is `cohort.rye`'s lesson one turn further on: the widest set is derived, and so is the lawful order. Nothing new is declared, and that is the finding.
+
+**Isolation and order are two questions, kept apart.** Whether two items may run at the same instant is `rolling.admissible`, unchanged, and it refuses a domain beside itself. Whether one may run *before* another is `share_a_hop`, and it never asks which domain an item belongs to at all. A domain may not stand beside itself, yet an item of another domain touching none of its regions may pass it freely -- and the difference between those two sentences is the whole of the room this rung finds.
+
+**Overtaking converts a slot the order was holding, never one the shape holds.** Over the ordered lap it converts nothing: not one pass is lawful, since every candidate is refused either by the running table, the virtualiser touching all three clients, or by a region it shares with the head. Over a lap whose head blocks on its own domain it converts the whole of it -- a head-of-line supervisor stands a table two-thirds empty while two items of other domains, sharing not one region with it, wait behind the line.
+
+**The unchecked reading is carried as a named control and breaks on metal.** It keeps the isolation exactly and drops only the order test. Handed a lap where a taker sits behind its own passer, it takes first, the home hears no bell that was never rung, and the run refuses. Faster and wrong, proven rather than argued. The probe reaches further still: drop the order test from the *checked* reading and the ordered lap itself refuses, so its zero lawful passes is real work rather than an absence of candidates.
+
+The numbers state the claim: nine slot-turns unspent under both readings over the ordered lap, with zero lawful passes and six asks home either way; two slot-turns unspent in line against zero overtaking on the self-blocking lap, with two lawful passes reaching two items back, the same four dependents and the same peak of three. Witness: [`tools/caravan_overtake_witness.rish`](../tools/caravan_overtake_witness.rish), GREEN on metal.
 
 ## Held
 
