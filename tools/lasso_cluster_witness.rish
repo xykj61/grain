@@ -1,0 +1,41 @@
+# tools/lasso_cluster_witness.rish -- which connected clusters a free-form lasso lands on, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/lasso_select.rye names every object a free-form polygon covers (a geometric question, an even-odd
+# arbiter its judge); image/overlap_clusters.rye partitions the scene into connected clusters (a topological question). This rung joins the two:
+# clusters_in_poly names the ascending set of clusters the lasso's selected objects belong to, cluster_count_in_poly their count,
+# selects_whole_cluster_poly whether the lasso catches a whole cluster or only part. Exact integers, NO float, NO tolerance.
+#
+# The crux this witness proves on metal, strictly sharper than the rectangle marquee: a CONCAVE LASSO EXCLUDES A WHOLE CLUSTER FROM INSIDE ITS OWN
+# CONVEX HULL -- a chevron whose tip covers one object and whose notch opens around another selects only the tip's cluster, though the excluded
+# object's box sits inside the chevron's convex hull, a carve no box could make; completeness (a loop around the excluded object holds its cluster
+# whole), a whole-scene loop lands on both clusters whole, refusals by name, determinism. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/lasso_cluster_witness.rish
+
+say "lasso_cluster: Language EN -- Season G lasso-to-cluster read; clusters_in_poly names the connected clusters a free-form lasso lands on, cluster_count_in_poly their count, selects_whole_cluster_poly whether a whole cluster is caught or only part; NO float, NO tolerance."
+say "lasso_cluster: Style Radiant -- compose not braid: this rung owns only the object-set-to-cluster-set map and the whole-cluster test; lasso_select owns the polygon-to-object even-odd arbiter, overlap_clusters owns the connectivity and cluster labeling, scene_graph owns the per-object manifest. A reading over a reading."
+say "lasso_cluster: Lens TAME -- the lasso scan is bounded by the pixel ceiling, the selected set holds at most the object count, the cluster-presence tally is sized to the cluster count plus one; a degenerate polygon refuses DegeneratePoly, a zero or past-the-count cluster id refuses BadClusterId; all-or-nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/lasso_cluster"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/lasso_cluster.rye -femit-bin=${bin}"]
+assert build.ok else "lasso_cluster: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "lasso_cluster: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "lasso_cluster: ${out}"
+
+assert selftest.out contains "GREEN image-lasso-cluster" else "lasso_cluster: selftest did not print the GREEN line"
+assert selftest.out contains "CONCAVE LASSO EXCLUDES A WHOLE CLUSTER FROM INSIDE ITS OWN CONVEX HULL" else "lasso_cluster: the concavity-excludes-a-cluster case did not print"
+assert selftest.out contains "the lasso-to-cluster map is strictly finer than the rectangle-to-cluster map" else "lasso_cluster: the strictly-finer fact did not print"
+assert selftest.out contains "Completeness proves the exclusion is geometry not a blind spot" else "lasso_cluster: the completeness fact did not print"
+assert selftest.out contains "lands on both clusters ascending and holds each whole" else "lasso_cluster: the whole-scene fact did not print"
+assert selftest.out contains "refuses BadClusterId" else "lasso_cluster: the bad-cluster-id refusal did not print"
+assert selftest.out contains "refuses DegeneratePoly" else "lasso_cluster: the degenerate-polygon refusal did not print"
+assert selftest.out contains "the same lasso lands on the same clusters twice" else "lasso_cluster: the determinism statement did not print"
+
+say "lasso_cluster: GREEN on metal -- which connected clusters a free-form lasso lands on; a concave lasso excludes a whole cluster from inside its own convex hull (a carve no box could make), completeness proves it is geometry not a blind spot, a whole-scene loop holds each cluster whole; refusals by name, determinism. Season G open-media."

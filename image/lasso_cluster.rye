@@ -1,0 +1,301 @@
+//! image/lasso_cluster.rye -- which CONNECTED CLUSTERS a free-form LASSO lands on: run the lasso (image/lasso_select.rye) to name the objects
+//! an arbitrary POLYGON truly covers, then map those objects to the connected clusters they belong to (image/overlap_clusters.rye), so a surface
+//! learns which connected regions a hand-drawn loop touches -- exact integers, NO float, NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/region_cluster.rye already bridges the RECTANGLE marquee to the connected clusters; this rung is that
+//! bridge one shape freer, over the free-form LASSO. `clusters_in_poly` names the ascending set of clusters the lasso's selected objects belong to,
+//! `cluster_count_in_poly` their count, and `selects_whole_cluster_poly` whether the lasso catches EVERY member of a cluster or only some. A surface
+//! reads it the moment a hand-drawn loop must respect groups -- "did this loop land on a whole connected region, or reach into it and carve part
+//! out?"
+//!
+//! The DECISIVE crux -- strictly sharper than the rectangle's, because a CONCAVE selector can carve where no convex marquee can. Two shapes:
+//!
+//!   A CONCAVE LASSO EXCLUDES A WHOLE CLUSTER FROM INSIDE ITS OWN CONVEX HULL. A right-pointing concave chevron drawn so its tip covers one object
+//!   while its notch opens around a second: the second object's bounding box sits inside the chevron's box AND inside its convex hull, yet every one
+//!   of its pixels falls in the concavity, OUTSIDE the loop. So `clusters_in_poly` names ONLY the tip object's cluster, and the notch object's whole
+//!   cluster is excluded -- a capability image/region_cluster.rye's rectangle could never express, since a box holding the tip's box in this
+//!   arrangement must also hold the notch object that sits between the box corner and the tip. The lasso-to-cluster map is strictly finer than the
+//!   rectangle-to-cluster map.
+//!
+//!   A LASSO STILL SPLITS AND SPANS LIKE ANY GEOMETRIC QUERY. Drawn tightly around one object, the same arbiter selects that object exactly, so
+//!   `selects_whole_cluster_poly` reads TRUE for a lone-member cluster and FALSE for the excluded one; a whole-scene loop lands on every cluster and
+//!   holds each whole. A geometric loop and a topological grouping cut the scene along different seams, exactly as the marquee does -- the concavity
+//!   only sharpens the geometric side.
+//!
+//! Compose not braid. This rung OWNS only the object-set-to-cluster-set map and the whole-cluster test. image/lasso_select.rye owns the
+//! polygon-to-object decision and the even-odd label-map arbiter; image/overlap_clusters.rye owns the connectivity and the dense cluster labeling;
+//! image/scene_graph.rye owns the per-object manifest. No pixel re-read here beyond the lasso's own scan -- a reading over a reading.
+//!
+//! Everything is bounded before a byte: the lasso scan is bounded by the map's pixel ceiling; the selected set holds at most `components` labels;
+//! the cluster-presence tally is sized to the cluster count plus one, the object-presence tally to the object count plus one. A degenerate polygon
+//! refuses `DegeneratePoly` (image/lasso_select.rye's own guard, propagated); a zero or past-the-count cluster id refuses `BadClusterId`. No network,
+//! no key, no funds -- the lasso-to-cluster read a surface names the day a free-form loop must respect the connected groups a layout has grouped its
+//! objects into.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/lasso_cluster.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const contour = @import("contour.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const lasso_select = @import("lasso_select.rye");
+
+pub const lasso_cluster_version = "20260819.024036";
+
+pub const LassoClusterError = error{
+    BadClusterId,
+};
+
+/// Guard a cluster id -- a real dense cluster label (1..clusters). Refuses `BadClusterId` at the edge before any member is read.
+fn validate_cid(clustering: overlap_clusters.Clustering, cid: u32) LassoClusterError!void {
+    // invariant: one cluster id per object.
+    assert(clustering.cluster_id.len == @as(usize, clustering.components));
+    // invariant: a real clustering holds at least one cluster.
+    assert(clustering.clusters >= 1);
+    if (cid == 0 or cid > clustering.clusters) return error.BadClusterId;
+}
+
+/// The ascending SET of connected clusters the query lasso lands on -- run the lasso, then map each selected object to its cluster and collect the
+/// distinct cluster ids ascending. Returns an empty slice when the lasso catches no object. Refuses `DegeneratePoly` for a lasso with too few
+/// vertices (image/lasso_select.rye's guard). The caller owns the returned slice.
+pub fn clusters_in_poly(allocator: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, map: *const label.LabelMap, poly: *const lasso_select.LassoPoly) ![]u32 {
+    // invariant: the clustering and the graph describe the same scene.
+    assert(clustering.components == graph.components);
+    // invariant: the manifest and the map are the same scene, so the lasso's labels index the clustering.
+    assert(graph.manifest.components == map.count);
+
+    const selected = try lasso_select.select_in_poly(allocator, graph.manifest, map, poly);
+
+    // a presence flag per dense cluster id (index 0 unused -- there is no cluster 0). Bounded by the cluster count.
+    const present = try allocator.alloc(bool, @as(usize, clustering.clusters) + 1);
+    var p: usize = 0;
+    while (p < present.len) : (p += 1) present[p] = false;
+
+    var i: usize = 0;
+    while (i < selected.len) : (i += 1) {
+        const cid = try overlap_clusters.cluster_of(clustering, selected[i]);
+        // invariant: a real cluster id indexes a slot in the presence tally.
+        assert(cid >= 1);
+        assert(cid <= clustering.clusters);
+        present[@as(usize, cid)] = true;
+    }
+
+    // count the distinct clusters present, then collect them ascending -- dense, gap-free order.
+    var found: u32 = 0;
+    var cid: u32 = 1;
+    while (cid <= clustering.clusters) : (cid += 1) {
+        if (present[@as(usize, cid)]) found += 1;
+    }
+    const result = try allocator.alloc(u32, @as(usize, found));
+    var w: usize = 0;
+    cid = 1;
+    while (cid <= clustering.clusters) : (cid += 1) {
+        if (present[@as(usize, cid)]) {
+            result[w] = cid;
+            w += 1;
+        }
+    }
+    // invariant: the collect loop filled exactly the counted slots.
+    assert(w == @as(usize, found));
+    return result;
+}
+
+/// HOW MANY distinct connected clusters the query lasso lands on -- the size of `clusters_in_poly`. Refuses `DegeneratePoly` for a lasso with too
+/// few vertices.
+pub fn cluster_count_in_poly(allocator: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, map: *const label.LabelMap, poly: *const lasso_select.LassoPoly) !u32 {
+    const clusters = try clusters_in_poly(allocator, clustering, graph, map, poly);
+    // invariant: the lasso can land on no more clusters than the scene holds.
+    assert(clusters.len <= @as(usize, clustering.clusters));
+    return @as(u32, @intCast(clusters.len));
+}
+
+/// TRUE when the query lasso selects EVERY member of cluster `cid` -- the whole connected group, not merely some of it. FALSE when the lasso catches
+/// only part of the cluster (a free-form loop carving a connected group, which a concavity can do where a box cannot) or none of it. Refuses
+/// `BadClusterId` for a zero or past-the-count cluster id, `DegeneratePoly` for a degenerate polygon.
+pub fn selects_whole_cluster_poly(allocator: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, map: *const label.LabelMap, poly: *const lasso_select.LassoPoly, cid: u32) !bool {
+    // invariant: the clustering and the graph describe the same scene.
+    assert(clustering.components == graph.components);
+    // invariant: the manifest and the map are the same scene.
+    assert(graph.manifest.components == map.count);
+    try validate_cid(clustering, cid);
+
+    const selected = try lasso_select.select_in_poly(allocator, graph.manifest, map, poly);
+
+    // a presence flag per dense object label (index 0 unused -- background is never selected). Bounded by the object count.
+    const present = try allocator.alloc(bool, @as(usize, clustering.components) + 1);
+    var p: usize = 0;
+    while (p < present.len) : (p += 1) present[p] = false;
+    var i: usize = 0;
+    while (i < selected.len) : (i += 1) present[@as(usize, selected[i])] = true;
+
+    // every member of the cluster must be present in the selection, or the lasso holds the cluster only in part.
+    var a: u32 = 1;
+    while (a <= clustering.components) : (a += 1) {
+        if (clustering.cluster_id[a - 1] != cid) continue;
+        if (!present[@as(usize, a)]) return false;
+    }
+    return true;
+}
+
+// --- selftest: the DECISIVE concavity crux -- the same chevron scene image/lasso_select.rye proves (a notch object, a vertical bar at x=2 rows
+//     5..7, label 1; a tip object, a horizontal bar (5,6)-(6,6), label 2; their boxes disjoint, so each is a singleton cluster). A right-pointing
+//     concave chevron whose tip covers the tip object and whose notch opens around the notch object selects ONLY the tip object, so clusters_in_poly
+//     names only the tip's cluster -- the notch object's whole cluster excluded though its box sits inside the chevron's convex hull, the capability
+//     a rectangle marquee could never carve. A loop drawn around the notch object holds its cluster whole; a whole-scene loop lands on both clusters
+//     whole; an off-map lasso lands on no cluster; refusals by name; determinism -----------------------------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- BUILD THE CHEVRON SCENE on a 12x12 field (the same as image/lasso_select.rye): the NOTCH object is a vertical bar at x=2, rows 5..7,
+    //     painted first so it takes label 1 (box (2,5)-(2,7)); the TIP object is a horizontal bar (5,6)-(6,6), label 2 (box (5,6)-(6,6)). Their
+    //     boxes are disjoint, so overlap_clusters gives two singleton clusters ------------------------------------------------------------------
+    var scene = try make_canvas(garden, 12, 12, 0);
+    set_dot(&scene, 2, 5);
+    set_dot(&scene, 2, 6);
+    set_dot(&scene, 2, 7); // notch object -> label 1
+    set_dot(&scene, 5, 6);
+    set_dot(&scene, 6, 6); // tip object -> label 2
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 2) return error.SceneNotTwoComponents;
+    if (map.at(2, 5) != 1) return error.NotchNotLabelOne;
+    if (map.at(5, 6) != 2) return error.TipNotLabelTwo;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    // confirm the two-singleton shape the crux leans on: the notch and tip objects are separate clusters.
+    if (overlap_clusters.cluster_count(clustering) != 2) return error.ClusterCountNotTwo;
+    if (try overlap_clusters.same_cluster(clustering, 1, 2) != false) return error.NotchTipSameCluster;
+    const notch_cid = try overlap_clusters.cluster_of(clustering, 1);
+    const tip_cid = try overlap_clusters.cluster_of(clustering, 2);
+
+    // --- A CONCAVE LASSO EXCLUDES A WHOLE CLUSTER FROM INSIDE ITS HULL -- the chevron (back (2,2), tip (8,6), back (2,10), notch (4,6)) covers the
+    //     tip object and opens its notch around the notch object; its box x[2,8] y[2,10] and its convex hull (2,2)-(8,6)-(2,10) both hold the notch
+    //     object, yet the lasso selects only the tip object, so clusters_in_poly names only the tip's cluster -----------------------------------
+    const chevron_verts = [_]contour.Point{
+        .{ .x = 2, .y = 2 },
+        .{ .x = 8, .y = 6 },
+        .{ .x = 2, .y = 10 },
+        .{ .x = 4, .y = 6 },
+    };
+    const chevron = lasso_select.LassoPoly{ .verts = chevron_verts[0..] };
+    // the lasso itself selects only the tip object (label 2) -- lasso_select's proven read, cross-checked here.
+    const sel_chevron = try lasso_select.select_in_poly(garden, manifest, &map, &chevron);
+    if (sel_chevron.len != 1 or sel_chevron[0] != 2) return error.ChevronNotJustTip;
+    const cl_chevron = try clusters_in_poly(garden, clustering, graph, &map, &chevron);
+    if (cl_chevron.len != 1 or cl_chevron[0] != tip_cid) return error.ChevronClusterNotTip; // only the tip's cluster
+    if (try cluster_count_in_poly(garden, clustering, graph, &map, &chevron) != 1) return error.ChevronCountNotOne;
+    // the decisive contrast: the notch object's whole cluster is excluded though its box sits inside the lasso's convex hull
+    if (try selects_whole_cluster_poly(garden, clustering, graph, &map, &chevron, notch_cid) != false) return error.ChevronHoldsNotchCluster;
+    // the tip's lone-member cluster is caught whole
+    if (try selects_whole_cluster_poly(garden, clustering, graph, &map, &chevron, tip_cid) != true) return error.ChevronTipClusterNotWhole;
+
+    // --- COMPLETENESS -- a small quad drawn tightly AROUND the notch object (x[2,4], y[4,8]) holds the notch object's cluster whole: the exclusion
+    //     above was geometry, never a blind spot -- a loop drawn around the cluster grabs it ---------------------------------------------------
+    const around_verts = [_]contour.Point{
+        .{ .x = 2, .y = 4 },
+        .{ .x = 4, .y = 4 },
+        .{ .x = 4, .y = 8 },
+        .{ .x = 2, .y = 8 },
+    };
+    const around = lasso_select.LassoPoly{ .verts = around_verts[0..] };
+    const cl_around = try clusters_in_poly(garden, clustering, graph, &map, &around);
+    if (cl_around.len != 1 or cl_around[0] != notch_cid) return error.AroundClusterNotNotch;
+    if (try selects_whole_cluster_poly(garden, clustering, graph, &map, &around, notch_cid) != true) return error.AroundNotchNotWhole;
+
+    // --- A WHOLE-SCENE LASSO -- a big quad over the whole canvas lands on BOTH clusters and holds each whole -------------------------------------
+    const whole_verts = [_]contour.Point{
+        .{ .x = 0, .y = 0 },
+        .{ .x = 11, .y = 0 },
+        .{ .x = 11, .y = 11 },
+        .{ .x = 0, .y = 11 },
+    };
+    const whole = lasso_select.LassoPoly{ .verts = whole_verts[0..] };
+    const cl_whole = try clusters_in_poly(garden, clustering, graph, &map, &whole);
+    if (cl_whole.len != 2) return error.WholeNotTwoClusters;
+    if (cl_whole[0] >= cl_whole[1]) return error.WholeClustersNotAscending; // dense, ascending
+    if (try selects_whole_cluster_poly(garden, clustering, graph, &map, &whole, notch_cid) != true) return error.WholeNotchNotWhole;
+    if (try selects_whole_cluster_poly(garden, clustering, graph, &map, &whole, tip_cid) != true) return error.WholeTipNotWhole;
+
+    // --- AN OFF-MAP LASSO -- a triangle drawn wholly past the canvas lands on no object, hence no cluster; whole-cluster is FALSE since no member
+    //     is caught --------------------------------------------------------------------------------------------------------------------------
+    const off_verts = [_]contour.Point{
+        .{ .x = 20, .y = 20 },
+        .{ .x = 25, .y = 20 },
+        .{ .x = 22, .y = 25 },
+    };
+    const off = lasso_select.LassoPoly{ .verts = off_verts[0..] };
+    const cl_off = try clusters_in_poly(garden, clustering, graph, &map, &off);
+    if (cl_off.len != 0) return error.OffMapNotEmpty;
+    if (try cluster_count_in_poly(garden, clustering, graph, &map, &off) != 0) return error.OffMapCountNotZero;
+    if (try selects_whole_cluster_poly(garden, clustering, graph, &map, &off, notch_cid) != false) return error.OffMapWholeWrong;
+
+    // --- REFUSALS -- a zero or past-the-count cluster id refuses BadClusterId; a two-vertex degenerate polygon refuses DegeneratePoly ----------
+    if (selects_whole_cluster_poly(garden, clustering, graph, &map, &whole, 0)) |_| return error.ZeroCidNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongZeroCidError;
+    }
+    if (selects_whole_cluster_poly(garden, clustering, graph, &map, &whole, 3)) |_| return error.PastCidNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongPastCidError;
+    }
+    const line_verts = [_]contour.Point{
+        .{ .x = 1, .y = 1 },
+        .{ .x = 5, .y = 5 },
+    };
+    const line = lasso_select.LassoPoly{ .verts = line_verts[0..] };
+    if (clusters_in_poly(garden, clustering, graph, &map, &line)) |_| return error.DegenerateNotRefused else |err| {
+        if (err != error.DegeneratePoly) return error.WrongDegenerateError;
+    }
+
+    // --- DETERMINISM -- the same lasso lands on the same clusters twice -------------------------------------------------------------------------
+    const d1 = try cluster_count_in_poly(garden, clustering, graph, &map, &whole);
+    const d2 = try cluster_count_in_poly(garden, clustering, graph, &map, &whole);
+    if (d1 != d2) return error.CountNotDeterministic;
+
+    print("GREEN image-lasso-cluster: which CONNECTED CLUSTERS a free-form LASSO lands on -- run the lasso (lasso_select) to name the objects an arbitrary POLYGON covers, then map them to the connected clusters they belong to (overlap_clusters), exact integers, NO float and NO tolerance -- the DECISIVE crux, strictly sharper than the rectangle marquee: a CONCAVE LASSO EXCLUDES A WHOLE CLUSTER FROM INSIDE ITS OWN CONVEX HULL. A right-pointing concave chevron (back (2,2), tip (8,6), back (2,10), notch (4,6)) drawn so its tip covers the tip object (label 2) while its notch opens around the notch object (label 1, a bar at x=2 rows 5..7) selects EXACTLY the tip object, so clusters_in_poly names only the tip object's cluster -- the notch object's whole cluster excluded though its bounding box sits inside the chevron's box AND its convex hull, every one of its pixels falling in the concavity OUTSIDE the loop, a capability region_cluster's rectangle could never carve since a box holding the tip's box in this arrangement must also hold the notch object between them; the lasso-to-cluster map is strictly finer than the rectangle-to-cluster map. Completeness proves the exclusion is geometry not a blind spot (a small quad drawn tightly around the notch object holds its cluster whole, selects_whole_cluster_poly TRUE); a whole-scene loop lands on both clusters ascending and holds each whole; an off-map lasso lands on no cluster; a zero or past-the-count cluster id refuses BadClusterId and a two-vertex degenerate polygon refuses DegeneratePoly; the same lasso lands on the same clusters twice. Compose not braid over image/lasso_select.rye (the polygon-to-object even-odd arbiter), image/overlap_clusters.rye (the connectivity and cluster labeling), and image/scene_graph.rye (the per-object manifest) -- a reading over a reading over a reading\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: lasso_cluster selftest\n", .{});
+    return 1;
+}
