@@ -1,0 +1,606 @@
+//! image/min_enclosing_circle.rye -- the MINIMUM ENCLOSING CIRCLE of a shape: the SMALLEST disk that covers every convex hull
+//! vertex, read by WELZL's incremental move-to-front with EXACT integer containment predicates and NO tolerance -- the round bound
+//! the farthest pair alone does not fix, the round companion of image/convex_diameter.rye's greatest span.
+//!
+//! Season G (Open Media Primitives) -- image/convex_diameter.rye reads a shape's DIAMETER, the farthest pair of hull vertices, the
+//! maximum Feret span. A natural mistake is to read that diameter as the shape's circle -- the disk whose diameter is the farthest
+//! pair. That disk does NOT always cover the shape. Take an acute (near-equilateral) triangle: its farthest pair is its longest
+//! edge, yet the disk on that edge as diameter leaves the third vertex OUTSIDE it -- the smallest covering disk is the triangle's
+//! CIRCUMCIRCLE, determined by all THREE vertices, whose own diameter is strictly larger than any edge. This rung reads that
+//! smallest covering disk directly: the minimum enclosing circle (the smallest bounding circle, the 1-center of the point set),
+//! the round outer bound a surface names the day it asks "what is the smallest disk this whole shape fits inside?" -- a fact the
+//! diameter leaves unspoken exactly when the shape is round rather than long.
+//!
+//! WELZL's algorithm (E. Welzl 1991) reads it incrementally. Grow a working disk over the vertices one at a time; when a vertex
+//! falls outside the current disk, that vertex must lie ON the boundary of the new smallest disk, so rebuild the disk with it
+//! pinned and re-admit the earlier vertices. The disk is always determined by 1, 2, or 3 boundary points (the classic theorem: a
+//! minimum enclosing circle is pinned by at most three points), so the whole state is a SUPPORT SET of at most three hull vertices,
+//! and "is this vertex inside the current disk?" is an EXACT integer predicate over that support -- never a floating-point radius
+//! comparison:
+//!
+//!   TWO-POINT disk (a, b as diameter) -- a point p is inside or on it exactly when the angle a-p-b is right or obtuse, that is
+//!   `(a - p) . (b - p) <= 0`, an exact i64 dot product.
+//!
+//!   THREE-POINT disk (the circumcircle of a, b, c) -- p is inside or on it by the classic INCIRCLE determinant (the Delaunay
+//!   predicate): the sign of a 3x3 integer determinant, read against the triangle's orientation, an exact i128 fact. No center is
+//!   computed to decide containment; the determinant alone settles it, tolerance-free.
+//!
+//! So every DECISION the algorithm makes is exact integer arithmetic. Only the REPORTED geometry -- the center and the radius --
+//! is read in f64 (the circumcenter is rational and the radius takes a square root), exactly as image/convex_diameter.rye reports
+//! its length and image/min_area_rect.rye its dimensions. The result carries its support points, so `disk_contains` re-decides
+//! containment for any pixel with the same exact predicate.
+//!
+//! Two reads ride on the circle: CONTAINMENT RADIUS -- the radius itself, the smallest disk the whole shape fits inside; and a
+//! FITS-THROUGH-A-ROUND-HOLE test -- a flat shape passed face-first through a circular hole needs the hole at least as wide as the
+//! shape's silhouette, so it clears a hole of radius r exactly when the enclosing radius is at most r (the honest face-first read,
+//! distinct from an edge-first minimum-width passage the oriented box would measure).
+//!
+//! Compose not braid. This rung OWNS only Welzl's sweep, the exact containment predicates, and the reads over the circle -- no
+//! gather, no blend, no codec, no color, no pixel-writing loop. image/contour.rye owns the Point type; image/convex_hull.rye owns
+//! the hull; a caller hands this rung a convex hull it already built (its vertices in ring order with no collinear triples --
+//! exactly what image/convex_hull.rye returns), and the minimum enclosing circle of a shape is the minimum enclosing circle of its
+//! hull (an interior point is covered by any disk that covers the hull around it).
+//!
+//! Everything is bounded before a byte: a circle is read over a hull of at most `min_circle_max_points` vertices (a boundary
+//! perimeter far under 2^13), a longer hull refuses `HullTooLong`, an empty hull `EmptySource`. Two in-image coordinates (under
+//! 2^14) give a dot product far under 2^31 in i64 and an incircle determinant far under 2^60 in i128, so no accumulator wraps. A
+//! three-point support of a real hull is never collinear (image/convex_hull.rye drops collinear points), and a collinear support
+//! refuses `NotConvex` rather than build a degenerate circle. All-or-nothing, never a half-read circle. No network, no key, no
+//! funds -- the smallest-covering-disk reader a surface names the day it wants a shape's round outer bound, its containment radius,
+//! or whether it clears a round hole, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/min_enclosing_circle.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const contour = @import("contour.rye");
+const convex_hull = @import("convex_hull.rye");
+const convex_diameter = @import("convex_diameter.rye");
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+
+pub const min_enclosing_circle_version = "20260818.202005";
+
+/// A circle is read over a hull of at most this many vertices -- the same hard boundary ceiling image/convex_hull.rye and
+/// image/convex_diameter.rye keep over a perimeter, so Welzl's sweep never runs unbounded. A longer hull refuses `HullTooLong`.
+pub const min_circle_max_points: u32 = convex_hull.convex_hull_max_points;
+
+/// Pi in f64, for the reported radius geometry only -- every containment DECISION is exact integer arithmetic and never touches a
+/// float.
+const pi: f64 = 3.14159265358979323846;
+
+pub const MinCircleError = error{
+    EmptySource,
+    HullTooLong,
+    NotConvex,
+};
+
+/// The MINIMUM ENCLOSING CIRCLE: its center `(cx, cy)` and `radius` in f64 (reported), and the SUPPORT points that pin it (1, 2,
+/// or 3 hull vertices lying on the circle). Containment is decided from the support with an exact integer predicate, never from
+/// the reported radius; `cx`, `cy`, `radius` are for display and measurement, exactly as image/convex_diameter.rye reports its
+/// `dist` in f64.
+pub const Circle = struct {
+    cx: f64,
+    cy: f64,
+    radius: f64,
+    support: [3]contour.Point,
+    support_len: u32,
+};
+
+/// The SIGNED CROSS PRODUCT of edge o->a with edge o->b, exact in i64 -- twice the signed area of triangle o-a-b, the same read
+/// image/convex_hull.rye makes. Its SIGN names the triangle's orientation; the incircle predicate reads against it. Coordinates
+/// are well under 2^14, so each product stays far under 2^28 and the difference never wraps.
+fn cross(o: contour.Point, a: contour.Point, b: contour.Point) i64 {
+    const ax: i64 = @as(i64, a.x) - @as(i64, o.x);
+    const ay: i64 = @as(i64, a.y) - @as(i64, o.y);
+    const bx: i64 = @as(i64, b.x) - @as(i64, o.x);
+    const by: i64 = @as(i64, b.y) - @as(i64, o.y);
+    const c = ax * by - ay * bx;
+    // invariant: the cross of two in-image edge vectors stays far under the i64 ceiling (coords under 2^14).
+    assert(c < (@as(i64, 1) << 40));
+    assert(c > -(@as(i64, 1) << 40));
+    return c;
+}
+
+/// TRUE when two points are the same pixel -- the degenerate one-point disk contains only its own point.
+fn same_point(a: contour.Point, b: contour.Point) bool {
+    return a.x == b.x and a.y == b.y;
+}
+
+/// TRUE when pixel `p` lies inside or on the TWO-POINT disk with diameter `a`-`b` -- decided exactly by the angle a-p-b: the point
+/// sits within the circle on diameter ab exactly when that angle is right or obtuse, i.e. the dot product `(a - p) . (b - p) <= 0`.
+/// An exact i64 read (coordinate differences under 2^15, each product under 2^30, the sum under 2^31), no tolerance.
+fn in_disk_2(a: contour.Point, b: contour.Point, p: contour.Point) bool {
+    const apx: i64 = @as(i64, a.x) - @as(i64, p.x);
+    const apy: i64 = @as(i64, a.y) - @as(i64, p.y);
+    const bpx: i64 = @as(i64, b.x) - @as(i64, p.x);
+    const bpy: i64 = @as(i64, b.y) - @as(i64, p.y);
+    const dot: i64 = apx * bpx + apy * bpy;
+    // invariant: the dot of two in-image difference vectors stays far under the i64 ceiling.
+    assert(dot < (@as(i64, 1) << 40));
+    assert(dot > -(@as(i64, 1) << 40));
+    return dot <= 0;
+}
+
+/// TRUE when pixel `p` lies inside or on the THREE-POINT disk (the circumcircle of `a`, `b`, `c`) -- decided exactly by the classic
+/// INCIRCLE determinant (the Delaunay predicate) read against the triangle's orientation, so no center or radius is computed. The
+/// determinant of the three lifted difference vectors is positive inside the circle when a-b-c wind counterclockwise; the sign is
+/// folded by the orientation so the read is inside-or-on for either winding. Exact in i128 (each term far under 2^60), tolerance
+/// free. The three support points of a real hull are never collinear; a collinear triple is refused before this is reached.
+fn in_disk_3(a: contour.Point, b: contour.Point, c: contour.Point, p: contour.Point) bool {
+    const adx: i128 = @as(i128, a.x) - @as(i128, p.x);
+    const ady: i128 = @as(i128, a.y) - @as(i128, p.y);
+    const bdx: i128 = @as(i128, b.x) - @as(i128, p.x);
+    const bdy: i128 = @as(i128, b.y) - @as(i128, p.y);
+    const cdx: i128 = @as(i128, c.x) - @as(i128, p.x);
+    const cdy: i128 = @as(i128, c.y) - @as(i128, p.y);
+    const a2: i128 = adx * adx + ady * ady;
+    const b2: i128 = bdx * bdx + bdy * bdy;
+    const c2: i128 = cdx * cdx + cdy * cdy;
+    const det: i128 = a2 * (bdx * cdy - cdx * bdy) - b2 * (adx * cdy - cdx * ady) + c2 * (adx * bdy - bdx * ady);
+    // invariant: the incircle determinant of in-image points stays far under the i128 ceiling.
+    assert(det < (@as(i128, 1) << 100));
+    assert(det > -(@as(i128, 1) << 100));
+    // the orientation of a-b-c decides which determinant sign means "inside": positive winding wants det >= 0.
+    const orient: i64 = cross(a, b, c);
+    // invariant: three support points of a convex hull are never collinear, so the orientation is decided.
+    assert(orient != 0);
+    if (orient > 0) return det >= 0;
+    return det <= 0;
+}
+
+/// TRUE when pixel `p` lies inside or on the disk pinned by the current SUPPORT set (1, 2, or 3 points) -- the one exact predicate
+/// Welzl's sweep asks at every step, dispatched by support size. A one-point disk (radius zero) contains only its own point.
+fn in_support_disk(support: []const contour.Point, slen: u32, p: contour.Point) bool {
+    // invariant: a support set always names between one and three points.
+    assert(slen >= 1);
+    assert(slen <= 3);
+    if (slen == 1) return same_point(support[0], p);
+    if (slen == 2) return in_disk_2(support[0], support[1], p);
+    return in_disk_3(support[0], support[1], support[2], p);
+}
+
+/// Read the reported f64 CENTER and RADIUS of the disk pinned by the support set. A one-point disk is its own point at radius zero;
+/// a two-point disk centers at the midpoint with the half-distance radius; a three-point disk reads the exact rational circumcenter
+/// in f64 and the radius as the distance from that center to a support point. A collinear three-point support (never a real hull's)
+/// refuses `NotConvex` rather than divide by a zero orientation.
+fn circle_from_support(support: []const contour.Point, slen: u32) !Circle {
+    // invariant: a support set always names between one and three points.
+    assert(slen >= 1);
+    assert(slen <= 3);
+    var out = Circle{ .cx = 0.0, .cy = 0.0, .radius = 0.0, .support = undefined, .support_len = slen };
+    var s: u32 = 0;
+    while (s < slen) : (s += 1) out.support[s] = support[s];
+    // fill any unused support slot with the first point so the array is always well-defined.
+    while (s < 3) : (s += 1) out.support[s] = support[0];
+
+    if (slen == 1) {
+        out.cx = @floatFromInt(support[0].x);
+        out.cy = @floatFromInt(support[0].y);
+        out.radius = 0.0;
+        return out;
+    }
+    if (slen == 2) {
+        const ax: f64 = @floatFromInt(support[0].x);
+        const ay: f64 = @floatFromInt(support[0].y);
+        const bx: f64 = @floatFromInt(support[1].x);
+        const by: f64 = @floatFromInt(support[1].y);
+        out.cx = (ax + bx) / 2.0;
+        out.cy = (ay + by) / 2.0;
+        const dx: f64 = ax - bx;
+        const dy: f64 = ay - by;
+        out.radius = @sqrt(dx * dx + dy * dy) / 2.0;
+        return out;
+    }
+
+    // three-point circumcenter -- the exact rational solved in f64 for the report. The denominator is twice the signed area, zero
+    // only for a collinear support a real hull never produces.
+    const a = support[0];
+    const b = support[1];
+    const c = support[2];
+    const orient: i64 = cross(a, b, c);
+    // invariant: a real three-point support of a convex hull is never collinear.
+    if (orient == 0) return error.NotConvex;
+    const ax: f64 = @floatFromInt(a.x);
+    const ay: f64 = @floatFromInt(a.y);
+    const bx: f64 = @floatFromInt(b.x);
+    const by: f64 = @floatFromInt(b.y);
+    const cx: f64 = @floatFromInt(c.x);
+    const cy: f64 = @floatFromInt(c.y);
+    const d: f64 = 2.0 * (ax * (by - cy) + bx * (cy - ay) + cx * (ay - by));
+    // invariant: the circumcenter denominator is twice the signed area, nonzero for a non-collinear support.
+    assert(d != 0.0);
+    const a_sq: f64 = ax * ax + ay * ay;
+    const b_sq: f64 = bx * bx + by * by;
+    const c_sq: f64 = cx * cx + cy * cy;
+    const ux: f64 = (a_sq * (by - cy) + b_sq * (cy - ay) + c_sq * (ay - by)) / d;
+    const uy: f64 = (a_sq * (cx - bx) + b_sq * (ax - cx) + c_sq * (bx - ax)) / d;
+    out.cx = ux;
+    out.cy = uy;
+    const rdx: f64 = ux - ax;
+    const rdy: f64 = uy - ay;
+    out.radius = @sqrt(rdx * rdx + rdy * rdy);
+    return out;
+}
+
+/// The MINIMUM ENCLOSING CIRCLE of a convex `hull` (its vertices in ring order, no collinear triples -- what image/convex_hull.rye
+/// returns): the smallest disk covering every vertex, by WELZL's incremental move-to-front. Refuses `EmptySource` on an empty
+/// hull, `HullTooLong` past the ceiling, and `NotConvex` on a collinear three-point support. A one-vertex hull is its own point at
+/// radius zero; a two-vertex hull is the disk on that segment as diameter.
+pub fn min_enclosing_circle(hull: []const contour.Point) !Circle {
+    // invariant: a circle of nothing is undefined; a real hull has at least one vertex.
+    if (hull.len == 0) return error.EmptySource;
+    // invariant: the hull stays within the hard ceiling so Welzl's sweep never runs unbounded.
+    if (hull.len > min_circle_max_points) return error.HullTooLong;
+    const n: usize = hull.len;
+
+    // the working disk is a support set of at most three vertices; it starts as the single vertex hull[0] at radius zero.
+    var support: [3]contour.Point = undefined;
+    support[0] = hull[0];
+    support[1] = hull[0];
+    support[2] = hull[0];
+    var slen: u32 = 1;
+
+    // Welzl's move-to-front: when a vertex falls outside the working disk, it must lie ON the boundary of the new smallest disk,
+    // so pin it and re-admit the earlier vertices. Three nested passes, each pinning one more boundary point; a support never
+    // grows past three (the minimum enclosing circle theorem).
+    var i: usize = 1;
+    while (i < n) : (i += 1) {
+        if (!in_support_disk(support[0..], slen, hull[i])) {
+            // hull[i] pins the boundary -- restart the disk as just hull[i] and re-admit hull[0..i].
+            support[0] = hull[i];
+            slen = 1;
+            var j: usize = 0;
+            while (j < i) : (j += 1) {
+                if (!in_support_disk(support[0..], slen, hull[j])) {
+                    // hull[i] and hull[j] pin the boundary -- the disk on their segment as diameter.
+                    support[0] = hull[i];
+                    support[1] = hull[j];
+                    slen = 2;
+                    var k: usize = 0;
+                    while (k < j) : (k += 1) {
+                        if (!in_support_disk(support[0..], slen, hull[k])) {
+                            // three points pin the boundary -- the circumcircle, the final support for this inner sweep.
+                            support[0] = hull[i];
+                            support[1] = hull[j];
+                            support[2] = hull[k];
+                            slen = 3;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    // invariant: the sweep ends with a well-formed support of one to three pinned vertices.
+    assert(slen >= 1);
+    assert(slen <= 3);
+    return circle_from_support(support[0..], slen);
+}
+
+/// TRUE when pixel `(px, py)` lies inside or on the circle -- re-decided from the SUPPORT points with the same exact integer
+/// predicate the sweep used, never from the reported f64 radius. The tolerance-free "is this pixel covered by the enclosing disk?"
+/// read a surface asks when testing a shape against a round mask.
+pub fn disk_contains(circle: Circle, px: u32, py: u32) bool {
+    const p = contour.Point{ .x = px, .y = py };
+    return in_support_disk(circle.support[0..], circle.support_len, p);
+}
+
+/// CONTAINMENT RADIUS -- the radius of the minimum enclosing circle, the smallest disk the whole shape fits inside, in f64. The
+/// round outer bound the diameter (image/convex_diameter.rye) leaves unspoken for a round shape.
+pub fn containment_radius(circle: Circle) f64 {
+    // invariant: an enclosing circle of a real shape has a non-negative radius.
+    assert(circle.radius >= 0.0);
+    return circle.radius;
+}
+
+/// TRUE when the shape clears a round hole of radius `hole_radius` face-first -- a flat shape passed straight through a circular
+/// hole needs the hole at least as wide as the shape's silhouette, so it fits exactly when the enclosing radius is at most the
+/// hole's. The honest face-first read; an edge-first minimum-width passage is a different question the oriented box measures.
+pub fn fits_through_round_hole(circle: Circle, hole_radius: f64) bool {
+    // invariant: a hole with real width is asked about; a non-positive radius admits nothing round.
+    assert(hole_radius >= 0.0);
+    return circle.radius <= hole_radius;
+}
+
+// --- selftest: Welzl AGREES with the exact-rational brute-force MEC oracle on every fixture; an ACUTE triangle needs its 3-point
+//     circumcircle (its farthest-pair diameter disk leaves the third vertex OUTSIDE, an exact predicate) while a RIGHT triangle's
+//     MEC IS its hypotenuse-diameter disk; every hull vertex is enclosed; roundness/containment reads; degenerate hulls; refusals;
+//     determinism ------------------------------------------------------------------------------------------------------------------
+
+/// A rational (num / den) with den > 0 -- the exact squared radius the oracle compares. Test-only: fixtures use tiny coordinates so
+/// every product stays far under the i128 ceiling.
+const Rational = struct {
+    num: i128,
+    den: i128,
+};
+
+/// TRUE when rational `x` is strictly less than rational `y`, by cross-multiplication (both denominators positive). Exact.
+fn rat_lt(x: Rational, y: Rational) bool {
+    // invariant: both denominators are strictly positive so cross-multiplication preserves the order.
+    assert(x.den > 0);
+    assert(y.den > 0);
+    return x.num * y.den < y.num * x.den;
+}
+
+/// TRUE when rationals `x` and `y` are equal, by cross-multiplication (both denominators positive). Exact.
+fn rat_eq(x: Rational, y: Rational) bool {
+    // invariant: both denominators are strictly positive so cross-multiplication preserves equality.
+    assert(x.den > 0);
+    assert(y.den > 0);
+    return x.num * y.den == y.num * x.den;
+}
+
+/// The EXACT squared distance between two pixels as an integer -- `dx*dx + dy*dy`. Test-only reference arithmetic.
+fn dist_sq_int(a: contour.Point, b: contour.Point) i128 {
+    const dx: i128 = @as(i128, a.x) - @as(i128, b.x);
+    const dy: i128 = @as(i128, a.y) - @as(i128, b.y);
+    return dx * dx + dy * dy;
+}
+
+/// The EXACT squared radius of the disk pinned by a support set, as a rational -- the oracle's currency. A two-point disk has
+/// squared radius `|ab|^2 / 4`; a three-point circumcircle has squared radius `(|ab|^2 |bc|^2 |ca|^2) / (4 * cross^2)` where cross
+/// is twice the triangle area. Test-only: tiny fixture coordinates keep every product far under the i128 ceiling.
+fn support_radius_sq(support: []const contour.Point, slen: u32) Rational {
+    assert(slen >= 1);
+    assert(slen <= 3);
+    if (slen == 1) return Rational{ .num = 0, .den = 1 };
+    if (slen == 2) return Rational{ .num = dist_sq_int(support[0], support[1]), .den = 4 };
+    const sab = dist_sq_int(support[0], support[1]);
+    const sbc = dist_sq_int(support[1], support[2]);
+    const sca = dist_sq_int(support[2], support[0]);
+    const cr: i128 = @intCast(cross(support[0], support[1], support[2]));
+    // invariant: a three-point support of a real fixture is never collinear, so its area is nonzero.
+    assert(cr != 0);
+    return Rational{ .num = sab * sbc * sca, .den = 4 * cr * cr };
+}
+
+/// TRUE when every point of `pts` lies inside or on the disk pinned by the support -- the exact enclosure test the oracle and the
+/// verification both read.
+fn support_encloses_all(support: []const contour.Point, slen: u32, pts: []const contour.Point) bool {
+    var i: usize = 0;
+    while (i < pts.len) : (i += 1) {
+        if (!in_support_disk(support, slen, pts[i])) return false;
+    }
+    return true;
+}
+
+/// The exact minimum enclosing circle's squared radius by BRUTE FORCE over every 2- and 3-subset that encloses all points -- the
+/// oracle Welzl must agree with, the same discipline image/convex_diameter.rye proves its linear caliper against an O(n^2) oracle.
+/// The minimum enclosing circle is pinned by at most three points, so one of these candidate disks IS it. Test-only: quadratic and
+/// cubic over tiny fixtures.
+fn brute_mec_radius_sq(pts: []const contour.Point) Rational {
+    // invariant: the oracle needs at least one point to have any circle at all.
+    assert(pts.len >= 1);
+    var have = false;
+    var best = Rational{ .num = 0, .den = 1 };
+    // every unordered pair as a diameter disk.
+    var i: usize = 0;
+    while (i < pts.len) : (i += 1) {
+        var j: usize = i + 1;
+        while (j < pts.len) : (j += 1) {
+            var sup2 = [_]contour.Point{ pts[i], pts[j] };
+            if (support_encloses_all(sup2[0..], 2, pts)) {
+                const r = Rational{ .num = dist_sq_int(pts[i], pts[j]), .den = 4 };
+                if (!have or rat_lt(r, best)) {
+                    best = r;
+                    have = true;
+                }
+            }
+        }
+    }
+    // every non-collinear triple as a circumcircle disk.
+    i = 0;
+    while (i < pts.len) : (i += 1) {
+        var j: usize = i + 1;
+        while (j < pts.len) : (j += 1) {
+            var k: usize = j + 1;
+            while (k < pts.len) : (k += 1) {
+                if (cross(pts[i], pts[j], pts[k]) == 0) continue; // collinear triple pins no finite circumcircle
+                var sup3 = [_]contour.Point{ pts[i], pts[j], pts[k] };
+                if (support_encloses_all(sup3[0..], 3, pts)) {
+                    const r = support_radius_sq(sup3[0..], 3);
+                    if (!have or rat_lt(r, best)) {
+                        best = r;
+                        have = true;
+                    }
+                }
+            }
+        }
+    }
+    // invariant: some 2- or 3-subset disk encloses every point (the minimum enclosing circle theorem), so the oracle found one.
+    assert(have);
+    return best;
+}
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// Count the foreground pixels of the component labeled `want` -- the region area a roundness read divides into the circle.
+fn region_area_of(map: *const label.LabelMap, want: u32) u32 {
+    var count: u32 = 0;
+    var i: usize = 0;
+    while (i < map.labels.len) : (i += 1) {
+        if (map.labels[i] == want) count += 1;
+    }
+    return count;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- THE DECISIVE CRUX -- the MINIMUM ENCLOSING CIRCLE is NOT the diameter disk: an ACUTE (near-equilateral) triangle's
+    //     farthest pair is its longest edge, yet the disk on that edge as DIAMETER leaves the third vertex OUTSIDE (an exact
+    //     predicate), so the smallest covering disk is the 3-point CIRCUMCIRCLE -- the round bound the diameter cannot express ---
+    var acute = [_]contour.Point{
+        .{ .x = 0, .y = 0 },
+        .{ .x = 10, .y = 0 },
+        .{ .x = 5, .y = 8 },
+    };
+    const acute_hull = try convex_hull.convex_hull(garden, acute[0..]);
+    const acute_circle = try min_enclosing_circle(acute_hull);
+    if (acute_circle.support_len != 3) return error.AcuteNotThreeSupport; // all three vertices pin the circle
+    // the farthest pair (the diameter) is the base edge (0,0)-(10,0), squared span 100; its diameter DISK does NOT cover the apex
+    const acute_diam = try convex_diameter.convex_diameter(acute_hull);
+    if (acute_diam.dist_sq != 100) return error.AcuteDiameterNotBase; // the base is the longest edge
+    const base_diam = [_]contour.Point{ acute_diam.a, acute_diam.b };
+    // the apex (5,8) is the vertex NOT on the base diameter -- it lies OUTSIDE the diameter disk, the exact predicate the MEC fixes
+    const apex = contour.Point{ .x = 5, .y = 8 };
+    if (in_disk_2(base_diam[0], base_diam[1], apex)) return error.ApexInsideDiameterDisk; // the diameter disk fails to cover it
+    if (!disk_contains(acute_circle, 5, 8)) return error.ApexNotInMEC; // yet the minimum enclosing circle covers it
+    // and the MEC is strictly larger than the diameter disk would be: 4*radius^2 (MEC diameter squared) exceeds the base span 100
+    const acute_mec_diam_sq: f64 = 4.0 * acute_circle.radius * acute_circle.radius;
+    if (acute_mec_diam_sq <= 100.0) return error.MECDiameterNotAboveFarthestPair; // the round bound outreaches the farthest pair
+    // Welzl AGREES with the exact-rational brute-force oracle -- the correctness proof
+    const acute_r = support_radius_sq(acute_circle.support[0..], acute_circle.support_len);
+    const acute_oracle = brute_mec_radius_sq(acute_hull);
+    if (!rat_eq(acute_r, acute_oracle)) return error.AcuteWelzlDisagreesOracle;
+
+    // --- THE CONTRAST -- a RIGHT triangle's minimum enclosing circle IS its hypotenuse-diameter disk (2-point support): here the
+    //     farthest pair (the hypotenuse) DOES cover the shape, so the MEC diameter EQUALS the farthest-pair span, no third vertex
+    //     needed -- the case the diameter reads correctly, distinguishing exactly when the round bound is the extra fact --------
+    var right = [_]contour.Point{
+        .{ .x = 0, .y = 0 },
+        .{ .x = 6, .y = 0 },
+        .{ .x = 0, .y = 8 },
+    };
+    const right_hull = try convex_hull.convex_hull(garden, right[0..]);
+    const right_circle = try min_enclosing_circle(right_hull);
+    if (right_circle.support_len != 2) return error.RightNotTwoSupport; // the hypotenuse alone pins the circle
+    const right_diam = try convex_diameter.convex_diameter(right_hull);
+    if (right_diam.dist_sq != 100) return error.RightHypotenuseWrong; // 6^2 + 8^2 = 100, the hypotenuse
+    // the MEC diameter squared EQUALS the farthest-pair span exactly: radius 5, 4*25 = 100
+    const right_mec_diam_sq: f64 = 4.0 * right_circle.radius * right_circle.radius;
+    if (right_mec_diam_sq < 99.99 or right_mec_diam_sq > 100.01) return error.RightMECDiameterNotHypotenuse;
+    if (right_circle.radius < 4.999 or right_circle.radius > 5.001) return error.RightRadiusNotFive; // circumradius of a right triangle is half the hypotenuse
+    const right_r = support_radius_sq(right_circle.support[0..], right_circle.support_len);
+    const right_oracle = brute_mec_radius_sq(right_hull);
+    if (!rat_eq(right_r, right_oracle)) return error.RightWelzlDisagreesOracle;
+
+    // --- EVERY HULL VERTEX IS ENCLOSED -- the containment guarantee, checked on metal with the exact predicate over the acute
+    //     triangle's hull; and the support points lie ON the circle (each is enclosed, none can be dropped) --------------------
+    if (!support_encloses_all(acute_circle.support[0..], acute_circle.support_len, acute_hull)) return error.AcuteHullNotEnclosed;
+
+    // --- INTEGRATION crux -- a real 5x5 raster block through label -> contour -> convex_hull: a square's minimum enclosing circle
+    //     is centered at its center with the half-diagonal radius, and its MEC diameter EQUALS the corner-to-corner diagonal (the
+    //     farthest pair), a 2-point support of two opposite corners ------------------------------------------------------------
+    var block = try make_canvas(garden, 7, 7, 0);
+    set_block(&block, 1, 1, 5, 5);
+    const bmap = try label.label_components(garden, &block);
+    const bring = try contour.trace_contour(garden, &bmap, 1);
+    const bhull = try convex_hull.convex_hull(garden, bring.points);
+    const bcircle = try min_enclosing_circle(bhull);
+    if (!support_encloses_all(bcircle.support[0..], bcircle.support_len, bhull)) return error.BlockHullNotEnclosed;
+    // the center is the square's center (3,3) and the radius the half-diagonal sqrt(8) ~ 2.828
+    if (bcircle.cx < 2.999 or bcircle.cx > 3.001) return error.BlockCenterXWrong;
+    if (bcircle.cy < 2.999 or bcircle.cy > 3.001) return error.BlockCenterYWrong;
+    if (bcircle.radius < 2.827 or bcircle.radius > 2.829) return error.BlockRadiusNotHalfDiagonal;
+    // the MEC diameter squared equals the block's farthest-pair diagonal (squared distance 32)
+    const bdiam = try convex_diameter.convex_diameter(bhull);
+    if (bdiam.dist_sq != 32) return error.BlockDiameterWrong;
+    const block_mec_diam_sq: f64 = 4.0 * bcircle.radius * bcircle.radius;
+    if (block_mec_diam_sq < 31.98 or block_mec_diam_sq > 32.02) return error.BlockMECDiameterNotDiagonal;
+    const block_r = support_radius_sq(bcircle.support[0..], bcircle.support_len);
+    const block_oracle = brute_mec_radius_sq(bhull);
+    if (!rat_eq(block_r, block_oracle)) return error.BlockWelzlDisagreesOracle;
+
+    // --- CONTAINMENT and FITS-THROUGH-A-ROUND-HOLE reads: the enclosing radius is the smallest disk the block fits inside; it
+    //     clears a hole at least that wide and no narrower ---------------------------------------------------------------------
+    const rad = containment_radius(bcircle);
+    if (rad != bcircle.radius) return error.ContainmentRadiusWrong;
+    if (!fits_through_round_hole(bcircle, rad + 0.5)) return error.DoesNotFitWiderHole; // a wider hole admits it
+    if (fits_through_round_hole(bcircle, rad - 0.5)) return error.FitsNarrowerHole; // a narrower one does not
+
+    // --- AN IRREGULAR HEXAGON -- Welzl agrees with the exact oracle on a non-trivial convex shape, and the whole hull is enclosed
+    var hex = [_]contour.Point{
+        .{ .x = 2, .y = 0 },
+        .{ .x = 8, .y = 1 },
+        .{ .x = 10, .y = 6 },
+        .{ .x = 7, .y = 10 },
+        .{ .x = 1, .y = 9 },
+        .{ .x = 0, .y = 3 },
+    };
+    const hex_hull = try convex_hull.convex_hull(garden, hex[0..]);
+    const hex_circle = try min_enclosing_circle(hex_hull);
+    if (!support_encloses_all(hex_circle.support[0..], hex_circle.support_len, hex_hull)) return error.HexHullNotEnclosed;
+    const hex_r = support_radius_sq(hex_circle.support[0..], hex_circle.support_len);
+    const hex_oracle = brute_mec_radius_sq(hex_hull);
+    if (!rat_eq(hex_r, hex_oracle)) return error.HexWelzlDisagreesOracle;
+
+    // --- DEGENERATE hulls: a single point is its own circle at radius zero; two points are the disk on their segment as diameter -
+    var one = [_]contour.Point{.{ .x = 4, .y = 7 }};
+    const one_hull = try convex_hull.convex_hull(garden, one[0..]);
+    const one_circle = try min_enclosing_circle(one_hull);
+    if (one_circle.support_len != 1) return error.OnePointNotOneSupport;
+    if (one_circle.radius != 0.0) return error.OnePointRadiusNonZero;
+    if (one_circle.cx != 4.0 or one_circle.cy != 7.0) return error.OnePointCenterMoved;
+    var two = [_]contour.Point{ .{ .x = 2, .y = 2 }, .{ .x = 8, .y = 2 } };
+    const two_hull = try convex_hull.convex_hull(garden, two[0..]);
+    const two_circle = try min_enclosing_circle(two_hull);
+    if (two_circle.support_len != 2) return error.TwoPointNotTwoSupport;
+    if (two_circle.cx < 4.999 or two_circle.cx > 5.001) return error.TwoPointCenterWrong; // midpoint (5,2)
+    if (two_circle.radius < 2.999 or two_circle.radius > 3.001) return error.TwoPointRadiusWrong; // half of 6
+
+    // --- REFUSALS by name, having read nothing --------------------------------------------------------------------------------
+    const empty: []const contour.Point = &[_]contour.Point{};
+    if (min_enclosing_circle(empty)) |_| return error.EmptyNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- DETERMINISM: the same hull reads the same circle twice ---------------------------------------------------------------
+    const c1 = try min_enclosing_circle(hex_hull);
+    const c2 = try min_enclosing_circle(hex_hull);
+    if (c1.support_len != c2.support_len) return error.CircleNotDeterministicSupport;
+    if (c1.radius != c2.radius) return error.CircleNotDeterministicRadius;
+    if (c1.cx != c2.cx or c1.cy != c2.cy) return error.CircleNotDeterministicCenter;
+
+    print("GREEN image-min-enclosing-circle: the MINIMUM ENCLOSING CIRCLE (smallest covering disk) of a convex hull by WELZL's incremental move-to-front, EXACT integer containment predicates and NO tolerance -- the DECISIVE crux: an ACUTE (near-equilateral) triangle's farthest pair is its longest edge, yet the disk on that edge as DIAMETER leaves the third vertex OUTSIDE (an exact dot-product predicate), so the smallest covering disk is the 3-point CIRCUMCIRCLE whose diameter STRICTLY exceeds the farthest-pair span -- the round bound image/convex_diameter.rye's greatest span cannot express; the CONTRAST -- a RIGHT triangle's minimum enclosing circle IS its hypotenuse-diameter disk (a 2-point support, radius exactly half the hypotenuse), so its MEC diameter EQUALS the farthest pair, distinguishing exactly when the round bound is the extra fact; Welzl AGREES with an exact-RATIONAL brute-force oracle (every enclosing 2- and 3-subset disk, minimized by i128 cross-multiplication) on the acute and right triangles, a 5x5 raster block, and an irregular hexagon, so the incremental sweep is proven correct against the exhaustive reference; INTEGRATION -- a 5x5 block through label -> contour -> convex_hull centers its circle at (3,3) with the half-diagonal radius, its MEC diameter equal to the corner diagonal (squared distance 32); every hull vertex ENCLOSED by the exact predicate, the CONTAINMENT RADIUS and a FITS-THROUGH-A-ROUND-HOLE read riding on it; a lone point is its own circle at radius zero and two points the disk on their segment; an empty hull refuses EmptySource; the same hull reads the same circle twice\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: min_enclosing_circle selftest\n", .{});
+    return 1;
+}
