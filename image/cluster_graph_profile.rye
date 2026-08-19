@@ -1,0 +1,418 @@
+//! image/cluster_graph_profile.rye -- the cluster graph read as a DISTRIBUTION over thresholds: the distance HISTOGRAM (how many cluster
+//! pairs sit at each distinct true distance -- the profile's derivative) and the cumulative EDGE PROFILE it generates (how many edges the
+//! true-distance graph holds at a threshold -- the profile's integral). Read straight from image/cluster_graph.rye's precomputed cluster
+//! matrix through its `graph_distance` and `within_edges` reads -- exact integers, NO float, NO tolerance, NO bucketing by width.
+//!
+//! Season G (Open Media Primitives) -- image/object_relation.rye reads how a PAIR of objects sit; image/scene_graph.rye joins that over
+//! every pair and reads each object's nearest NEIGHBOR; image/overlap_clusters.rye gathers objects into connected CLUSTERS; image/cluster_
+//! facts.rye reads each cluster's union FRAME; image/cluster_adjacency.rye reads how a PAIR of whole clusters sit; image/cluster_graph.rye
+//! joins that pair read over every cluster pair into one matrix and reads the thresholded neighbors, degree, and edge counts. This rung reads
+//! the whole cluster graph as a FUNCTION of the threshold -- so a surface can ask not "how many regions lie within reach `r`" for one `r`, but
+//! "how does the layout's connectedness grow as the reach grows," the whole step curve at once, and read its closest gap, its diameter, and
+//! the multiplicity of every distance between.
+//!
+//! The DECISIVE crux -- the histogram is the profile's DERIVATIVE, the cumulative edge count its INTEGRAL, and the two paths agree exactly:
+//!
+//!   CUMULATING THE HISTOGRAM REPRODUCES `within_edges`, BY TWO INDEPENDENT PATHS. `distance_histogram` folds every cluster pair into one bin
+//!   per distinct true distance, carrying its multiplicity -- the count of pairs sitting exactly that far apart. `cumulative_edges` then sums
+//!   the bins with distance at most a threshold. That cumulative-of-the-histogram (a distribution read) equals `cluster_graph.within_edges`
+//!   at the same threshold (a raw-matrix scan) for every threshold -- the PDF's running sum is the CDF, proven by two paths that never share
+//!   a line. So the edge-count curve is a STEP function: it changes only at a threshold equal to some pairwise distance, and the size of each
+//!   jump is exactly that distance's multiplicity -- a distance shared by two pairs lifts the curve by two at once, while between two distinct
+//!   distances the curve is flat. `within_edges(cg, d) - within_edges(cg, d - 1)` is exactly the histogram's count at `d`, zero where no pair
+//!   sits.
+//!
+//!   THE CURVE IS BOUNDED BY THE CLOSEST GAP AND THE DIAMETER. Below `min_pair_distance` -- the closest any two clusters sit -- the curve is
+//!   zero; at and above `max_pair_distance` -- the layout's diameter -- it saturates at `pair_total`, the complete graph. The histogram's bin
+//!   distances span exactly `[min_pair_distance, max_pair_distance]`, and the sum of its multiplicities is exactly `pair_total`, so nothing is
+//!   lost or double-counted in the fold.
+//!
+//! Compose not braid. This rung OWNS only the distribution reads -- the histogram fold, the cumulative sum, the closest gap and diameter, the
+//! pair total. No cluster distance recomputed (image/cluster_graph.rye owns the precomputed matrix and the raw edge scan), no cluster pair
+//! distance recomputed (image/cluster_adjacency.rye owns the true inter-cluster gap), no connectivity recomputed (image/overlap_clusters.rye
+//! owns the clusters). A reading over a reading over a reading over a reading over a reading over a reading.
+//!
+//! Everything is bounded before a byte: the cluster count can never exceed the object count, itself capped at `scene_graph_max_objects`, so
+//! the unordered cluster pairs are at most `cluster_graph_profile_max_bins` and the histogram holds at most one bin per distinct distance,
+//! never more than the pair count. A lone-cluster graph has no pairs: its histogram is empty and `min_pair_distance` / `max_pair_distance`
+//! refuse `NoPairs`. No network, no key, no funds -- the distance distribution a surface names the day it must show how a layout's regions
+//! draw together as reach grows, on our own geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/cluster_graph_profile.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const cluster_graph = @import("cluster_graph.rye");
+
+pub const cluster_graph_profile_version = "20260819.013740";
+
+// the unordered distinct cluster pairs can never exceed n*(n-1)/2 with n capped at the cluster ceiling, so the histogram bin count is bounded
+// by this constant -- a compile-time ceiling, never a guess.
+pub const cluster_graph_profile_max_bins: u32 = cluster_graph.cluster_graph_max_clusters * (cluster_graph.cluster_graph_max_clusters - 1) / 2;
+
+pub const ClusterGraphProfileError = error{
+    NoPairs,
+};
+
+/// One bin of the distance HISTOGRAM -- a distinct true inter-cluster distance and the count of unordered cluster pairs sitting exactly that
+/// far apart (its multiplicity). Bins are read ascending by `distance`, one per distinct distance present.
+pub const DistanceBin = struct {
+    distance: u32,
+    count: u32,
+};
+
+/// HOW MANY unordered distinct cluster pairs the graph holds -- `n * (n - 1) / 2`, the complete-graph edge count and the saturation value of
+/// the edge-count curve. A lone-cluster graph reads zero.
+pub fn pair_total(cg: cluster_graph.ClusterGraph) u32 {
+    // invariant: the matrix holds exactly one cell per ordered cluster pair.
+    assert(cg.dist.len == @as(usize, cg.clusters) * @as(usize, cg.clusters));
+    // invariant: a real cluster graph holds at least one cluster.
+    assert(cg.clusters >= 1);
+
+    const n: u64 = @as(u64, cg.clusters);
+    const pairs: u64 = n * (n - 1) / 2;
+    // invariant: the pair count fits an in-memory u32 count, bounded by the compile-time ceiling.
+    assert(pairs <= @as(u64, cluster_graph_profile_max_bins));
+    return @intCast(pairs);
+}
+
+/// The distance HISTOGRAM -- the ascending distinct true inter-cluster distances, each carrying the count of unordered cluster pairs sitting
+/// exactly that far apart. One bin per distinct distance; the sum of the bin counts equals `pair_total`. A lone-cluster graph yields an empty
+/// histogram (no pairs). The bins are the profile's derivative: cumulating them by distance reproduces `cluster_graph.within_edges`.
+pub fn distance_histogram(allocator: std.mem.Allocator, cg: cluster_graph.ClusterGraph) ![]DistanceBin {
+    // invariant: the matrix holds exactly one cell per ordered cluster pair.
+    assert(cg.dist.len == @as(usize, cg.clusters) * @as(usize, cg.clusters));
+    // invariant: a real cluster graph holds at least one cluster.
+    assert(cg.clusters >= 1);
+
+    const capacity: u32 = pair_total(cg);
+    // at most one bin per unordered pair; a lone cluster allocates zero and returns the empty histogram.
+    const bins = try allocator.alloc(DistanceBin, capacity);
+    var nbins: u32 = 0;
+
+    var a: u32 = 1;
+    while (a <= cg.clusters) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b <= cg.clusters) : (b += 1) {
+            const d = try cluster_graph.graph_distance(cg, a, b);
+            // find the ascending slot for this distance: bump an existing bin, or open a fresh one keeping the slice sorted.
+            var i: u32 = 0;
+            var placed = false;
+            while (i < nbins) : (i += 1) {
+                if (bins[i].distance == d) {
+                    bins[i].count += 1;
+                    placed = true;
+                    break;
+                }
+                if (bins[i].distance > d) break;
+            }
+            if (!placed) {
+                var j: u32 = nbins;
+                while (j > i) : (j -= 1) bins[j] = bins[j - 1];
+                bins[i] = DistanceBin{ .distance = d, .count = 1 };
+                nbins += 1;
+            }
+        }
+    }
+
+    // invariant: the histogram holds one bin per distinct distance, never more than the pair count.
+    assert(nbins <= capacity);
+    return bins[0..nbins];
+}
+
+/// The cumulative EDGE PROFILE at threshold `thr` -- the number of unordered cluster pairs whose true distance is at most `thr`, read by
+/// folding the HISTOGRAM (a distribution read). Bins ascend, so the sum stops at the first bin past the threshold. This equals `cluster_graph
+/// .within_edges(cg, thr)` computed from the raw matrix -- the same curve by two independent paths.
+pub fn cumulative_edges(hist: []const DistanceBin, thr: u32) u32 {
+    // invariant: the histogram stays within the pair-count ceiling -- one bin per distinct distance.
+    assert(hist.len <= @as(usize, cluster_graph_profile_max_bins));
+
+    var sum: u32 = 0;
+    var prev: u32 = 0;
+    var i: usize = 0;
+    while (i < hist.len) : (i += 1) {
+        // invariant: bins ascend strictly by distance, so once one bin sits past the threshold the fold is complete.
+        assert(hist[i].distance > prev);
+        prev = hist[i].distance;
+        if (hist[i].distance > thr) break;
+        sum += hist[i].count;
+    }
+    return sum;
+}
+
+/// The total multiplicity of the HISTOGRAM -- the sum of every bin's count. This equals `pair_total`: the fold loses no pair and
+/// double-counts none.
+pub fn bin_total(hist: []const DistanceBin) u32 {
+    // invariant: the histogram stays within the pair-count ceiling.
+    assert(hist.len <= @as(usize, cluster_graph_profile_max_bins));
+
+    var sum: u32 = 0;
+    var i: usize = 0;
+    while (i < hist.len) : (i += 1) {
+        // invariant: every bin carries at least one pair -- an empty bin would be a bin that should not exist.
+        assert(hist[i].count >= 1);
+        sum += hist[i].count;
+    }
+    return sum;
+}
+
+/// The CLOSEST any two clusters sit -- the smallest true inter-cluster distance, the threshold at which the edge-count curve first rises above
+/// zero (its connectivity floor). Refuses `NoPairs` for a lone-cluster graph, which has no pair to measure.
+pub fn min_pair_distance(cg: cluster_graph.ClusterGraph) !u32 {
+    // invariant: the matrix holds exactly one cell per ordered cluster pair.
+    assert(cg.dist.len == @as(usize, cg.clusters) * @as(usize, cg.clusters));
+    // invariant: a real cluster graph holds at least one cluster.
+    assert(cg.clusters >= 1);
+    if (cg.clusters < 2) return error.NoPairs;
+
+    var best: u32 = 0;
+    var seen = false;
+    var a: u32 = 1;
+    while (a <= cg.clusters) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b <= cg.clusters) : (b += 1) {
+            const d = try cluster_graph.graph_distance(cg, a, b);
+            if (!seen or d < best) {
+                best = d;
+                seen = true;
+            }
+        }
+    }
+
+    // invariant: a graph with two or more clusters always measured at least one pair.
+    assert(seen);
+    return best;
+}
+
+/// The FARTHEST any two clusters sit -- the largest true inter-cluster distance, the layout's diameter and the threshold at which the
+/// edge-count curve saturates at `pair_total`. Refuses `NoPairs` for a lone-cluster graph.
+pub fn max_pair_distance(cg: cluster_graph.ClusterGraph) !u32 {
+    // invariant: the matrix holds exactly one cell per ordered cluster pair.
+    assert(cg.dist.len == @as(usize, cg.clusters) * @as(usize, cg.clusters));
+    // invariant: a real cluster graph holds at least one cluster.
+    assert(cg.clusters >= 1);
+    if (cg.clusters < 2) return error.NoPairs;
+
+    var best: u32 = 0;
+    var a: u32 = 1;
+    while (a <= cg.clusters) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b <= cg.clusters) : (b += 1) {
+            const d = try cluster_graph.graph_distance(cg, a, b);
+            if (d > best) best = d;
+        }
+    }
+
+    // invariant: distinct 8-components never sit closer than the floor of two, so the diameter is at least that floor.
+    assert(best >= 2);
+    return best;
+}
+
+// --- selftest: the DECISIVE crux -- the histogram is the edge-curve's derivative and cumulating it reproduces `within_edges` by two paths.
+//     Scene ONE is the same three-cluster scene image/cluster_graph.rye reads (distances 2, 3, 10 -- all distinct, three bins of count 1).
+//     Scene TWO is a symmetric three-block row (left, center, right) whose two (center, side) gaps are EQUAL, so one distance is shared by two
+//     pairs -- a histogram bin of count 2, a curve that jumps by two at a single threshold, the multiplicity a sorted distance list could not
+//     show ------------------------------------------------------------------------------------------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a corner bracket-L: a vertical arm down column `x` from `y0` to `y1`, and a horizontal arm along row `yr` from `x0` to `x1`.
+fn set_corner_l(img: *qoi.Pixmap, x: u32, y0: u32, y1: u32, yr: u32, x0: u32, x1: u32) void {
+    // invariant: the arms run in the positive direction and stay inside the buffer.
+    assert(y1 >= y0);
+    assert(x1 >= x0);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) set_dot(img, x, yy);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) set_dot(img, xx, yr);
+}
+
+/// Paint a 1-pixel-thick RING (a rectangle outline) with corners `(x0, y0)` and `(x1, y1)` -- a holed object, its interior background.
+fn set_ring(img: *qoi.Pixmap, x0: u32, y0: u32, x1: u32, y1: u32) void {
+    // invariant: the ring spans at least a 3x3 box so it encloses a real interior hole, and stays inside the buffer.
+    assert(x1 >= x0 + 2);
+    assert(y1 >= y0 + 2);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) {
+        set_dot(img, xx, y0);
+        set_dot(img, xx, y1);
+    }
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) {
+        set_dot(img, x0, yy);
+        set_dot(img, x1, yy);
+    }
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// Build the cluster graph of a scene, checking the object and cluster counts along the way -- a local helper so both scenes read the same.
+fn graph_of(garden: std.mem.Allocator, img: *qoi.Pixmap, want_objects: u32, want_clusters: u32) !cluster_graph.ClusterGraph {
+    // invariant: the caller names how many objects and clusters the scene must hold, so a mislaid pixel fails loud.
+    assert(want_objects >= 1);
+    assert(want_clusters >= 1);
+    const map = try label.label_components(garden, img);
+    if (map.count != want_objects) return error.SceneObjectCountWrong;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    if (overlap_clusters.cluster_count(clustering) != want_clusters) return error.SceneClusterCountWrong;
+    return cluster_graph.build_cluster_graph(garden, clustering, graph);
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- SCENE ONE: the three-cluster scene from image/cluster_graph.rye -- corner-L A and ring B into cluster 1, lone block C as cluster 2,
+    //     far block D as cluster 3; the cluster distances grade 2, 3, 10 over the three pairs, all distinct ----------------------------------
+    var scene = try make_canvas(garden, 15, 15, 0);
+    set_corner_l(&scene, 1, 1, 6, 1, 1, 6); // A: box (1,1)-(6,6)
+    set_block(&scene, 8, 1, 2, 2); // C: box (8,1)-(9,2)
+    set_ring(&scene, 4, 4, 9, 9); // B: box (4,4)-(9,9), overlaps A's corner -> cluster 1
+    set_block(&scene, 12, 12, 2, 2); // D: box (12,12)-(13,13)
+    const cg = try graph_of(garden, &scene, 4, 3);
+
+    // --- THE HISTOGRAM IS THE DISTINCT DISTANCES WITH MULTIPLICITY -- three bins, each count 1, ascending 2, 3, 10 ----------------------------
+    const hist = try distance_histogram(garden, cg);
+    if (hist.len != 3) return error.SceneOneNotThreeBins;
+    if (hist[0].distance != 2 or hist[0].count != 1) return error.SceneOneBinZeroWrong;
+    if (hist[1].distance != 3 or hist[1].count != 1) return error.SceneOneBinOneWrong;
+    if (hist[2].distance != 10 or hist[2].count != 1) return error.SceneOneBinTwoWrong;
+    if (pair_total(cg) != 3) return error.SceneOnePairTotalNotThree;
+    if (bin_total(hist) != pair_total(cg)) return error.SceneOneBinTotalDisagrees; // the fold loses no pair
+
+    // --- CUMULATING THE HISTOGRAM REPRODUCES within_edges, BY TWO INDEPENDENT PATHS -- for every threshold from 0 through the diameter plus a
+    //     margin, the histogram fold equals the raw-matrix scan ----------------------------------------------------------------------------
+    var thr: u32 = 0;
+    while (thr <= 12) : (thr += 1) {
+        if (cumulative_edges(hist, thr) != try cluster_graph.within_edges(cg, thr)) return error.SceneOneCumulativeDisagrees;
+    }
+    // the named waypoints of that curve, spelled out: 0 below the floor, 1 at the closest gap, 2 mid, 3 at saturation
+    if (cumulative_edges(hist, 1) != 0) return error.SceneOneAtOneNotZero; // below min_pair_distance the curve is zero
+    if (cumulative_edges(hist, 2) != 1) return error.SceneOneAtTwoNotOne;
+    if (cumulative_edges(hist, 3) != 2) return error.SceneOneAtThreeNotTwo;
+    if (cumulative_edges(hist, 9) != 2) return error.SceneOneAtNineNotTwo; // flat between distinct distances 3 and 10
+    if (cumulative_edges(hist, 10) != 3) return error.SceneOneAtTenNotThree; // saturated at pair_total
+
+    // --- THE HISTOGRAM IS THE CURVE'S DERIVATIVE -- within_edges(d) - within_edges(d-1) is exactly the bin count at d, zero where no pair sits
+    if ((try cluster_graph.within_edges(cg, 2)) - (try cluster_graph.within_edges(cg, 1)) != 1) return error.SceneOneJumpAtTwoNotOne;
+    if ((try cluster_graph.within_edges(cg, 3)) - (try cluster_graph.within_edges(cg, 2)) != 1) return error.SceneOneJumpAtThreeNotOne;
+    if ((try cluster_graph.within_edges(cg, 10)) - (try cluster_graph.within_edges(cg, 9)) != 1) return error.SceneOneJumpAtTenNotOne;
+    if ((try cluster_graph.within_edges(cg, 5)) - (try cluster_graph.within_edges(cg, 4)) != 0) return error.SceneOneFlatAtFiveNotZero; // no bin at 5
+
+    // --- THE CURVE IS BOUNDED BY THE CLOSEST GAP AND THE DIAMETER ---------------------------------------------------------------------------
+    if (try min_pair_distance(cg) != 2) return error.SceneOneMinNotTwo;
+    if (try max_pair_distance(cg) != 10) return error.SceneOneMaxNotTen;
+    if (try min_pair_distance(cg) != hist[0].distance) return error.SceneOneMinNotFirstBin; // the histogram spans [min, max]
+    if (try max_pair_distance(cg) != hist[hist.len - 1].distance) return error.SceneOneMaxNotLastBin;
+
+    // --- SCENE TWO: three blocks in a symmetric row -- P at cols 2-3, Q at cols 6-7, R at cols 10-11, all rows 6-7. The gap P-Q and the gap
+    //     Q-R are BOTH 3 (facing edges three columns apart), while P-R is 7. So the histogram holds a bin of COUNT 2 at distance 3, the
+    //     multiplicity a sorted distance list could never show, and the edge-count curve jumps by TWO at threshold 3 ------------------------
+    var row = try make_canvas(garden, 14, 10, 0);
+    set_block(&row, 2, 6, 2, 2); // P: box (2,6)-(3,7)
+    set_block(&row, 6, 6, 2, 2); // Q: box (6,6)-(7,7)
+    set_block(&row, 10, 6, 2, 2); // R: box (10,6)-(11,7)
+    const cg2 = try graph_of(garden, &row, 3, 3);
+
+    const hist2 = try distance_histogram(garden, cg2);
+    if (hist2.len != 2) return error.SceneTwoNotTwoBins; // two distinct distances: 3 (shared) and 7
+    if (hist2[0].distance != 3 or hist2[0].count != 2) return error.SceneTwoBinZeroNotThreeTwice; // the multiplicity bin
+    if (hist2[1].distance != 7 or hist2[1].count != 1) return error.SceneTwoBinOneNotSevenOnce;
+    if (pair_total(cg2) != 3) return error.SceneTwoPairTotalNotThree;
+    if (bin_total(hist2) != 3) return error.SceneTwoBinTotalNotThree;
+
+    // the curve jumps by TWO at threshold 3 -- both (center, side) pairs cross at once, a single step of height two
+    if (cumulative_edges(hist2, 2) != 0) return error.SceneTwoAtTwoNotZero;
+    if (cumulative_edges(hist2, 3) != 2) return error.SceneTwoAtThreeNotTwo; // the height-two jump
+    if ((try cluster_graph.within_edges(cg2, 3)) - (try cluster_graph.within_edges(cg2, 2)) != 2) return error.SceneTwoJumpAtThreeNotTwo;
+    if (cumulative_edges(hist2, 6) != 2) return error.SceneTwoAtSixNotTwo; // flat between 3 and 7
+    if (cumulative_edges(hist2, 7) != 3) return error.SceneTwoAtSevenNotThree;
+    // the two paths still agree across every threshold
+    var thr2: u32 = 0;
+    while (thr2 <= 9) : (thr2 += 1) {
+        if (cumulative_edges(hist2, thr2) != try cluster_graph.within_edges(cg2, thr2)) return error.SceneTwoCumulativeDisagrees;
+    }
+    if (try min_pair_distance(cg2) != 3) return error.SceneTwoMinNotThree;
+    if (try max_pair_distance(cg2) != 7) return error.SceneTwoMaxNotSeven;
+
+    // --- A LONE-CLUSTER GRAPH HAS NO PAIRS -- an empty histogram, zero pair total, and min/max refuse NoPairs -----------------------------
+    var lone_img = try make_canvas(garden, 6, 6, 0);
+    set_block(&lone_img, 1, 1, 2, 2); // one object, one cluster
+    const lone_cg = try graph_of(garden, &lone_img, 1, 1);
+    if (pair_total(lone_cg) != 0) return error.LonePairTotalNotZero;
+    const lone_hist = try distance_histogram(garden, lone_cg);
+    if (lone_hist.len != 0) return error.LoneHistNotEmpty;
+    if (bin_total(lone_hist) != 0) return error.LoneBinTotalNotZero;
+    if (cumulative_edges(lone_hist, 100) != 0) return error.LoneCumulativeNotZero;
+    if (min_pair_distance(lone_cg)) |_| return error.LoneMinNotRefused else |err| {
+        if (err != error.NoPairs) return error.WrongLoneMinError;
+    }
+    if (max_pair_distance(lone_cg)) |_| return error.LoneMaxNotRefused else |err| {
+        if (err != error.NoPairs) return error.WrongLoneMaxError;
+    }
+
+    // --- DETERMINISM -- the same graph reads the same histogram length and the same cumulative curve twice ---------------------------------
+    if ((try distance_histogram(garden, cg)).len != (try distance_histogram(garden, cg)).len) return error.HistNotDeterministic;
+    if (cumulative_edges(hist, 3) != cumulative_edges(hist, 3)) return error.CumulativeNotDeterministic;
+
+    print("GREEN image-cluster-graph-profile: the cluster graph read as a DISTRIBUTION over thresholds -- the distance HISTOGRAM (one bin per distinct true inter-cluster distance, carrying its multiplicity) and the cumulative EDGE PROFILE it generates, read straight from cluster_graph's precomputed matrix through graph_distance and within_edges, exact integers, NO float and NO tolerance -- the DECISIVE crux, the histogram is the edge-curve's DERIVATIVE and cumulating it reproduces within_edges by two INDEPENDENT paths. CUMULATING THE HISTOGRAM REPRODUCES within_edges, BY TWO INDEPENDENT PATHS -- over the three-cluster scene (distances 2, 3, 10, all distinct, three bins of count 1) the histogram fold cumulative_edges equals the raw-matrix scan within_edges at every threshold 0 through the diameter, so the edge-count curve is a STEP function: zero below the closest gap of 2, one at 2, two at 3, flat through 9, saturated at three at the diameter 10, and within_edges(d) - within_edges(d-1) is exactly the histogram's count at d (one at each of 2, 3, 10, zero at 5 where no pair sits). THE MULTIPLICITY A SORTED LIST COULD NOT SHOW -- over a symmetric three-block row whose two (center, side) gaps are both 3 while the outer gap is 7, the histogram holds a bin of COUNT 2 at distance 3, and the edge-count curve jumps by TWO at threshold 3 (both pairs cross at once), the two paths still agreeing across every threshold. THE CURVE IS BOUNDED BY THE CLOSEST GAP AND THE DIAMETER -- min_pair_distance is the first bin's distance and the threshold the curve first rises, max_pair_distance the last bin's distance and the threshold it saturates at pair_total, the sum of the bin multiplicities exactly pair_total so the fold loses no pair; a lone-cluster graph has no pairs, an empty histogram and zero pair total, min and max refusing NoPairs; the same graph reads the same histogram and curve twice. Compose not braid over image/cluster_graph.rye (the precomputed cluster matrix and the raw edge scan), image/cluster_adjacency.rye (each cluster pair's true gap), and image/overlap_clusters.rye (the connectivity) -- a reading over a reading over a reading over a reading over a reading over a reading\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: cluster_graph_profile selftest\n", .{});
+    return 1;
+}
