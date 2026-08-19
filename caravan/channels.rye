@@ -1,0 +1,405 @@
+//! Caravan channels -- the static supervision graph, declared rather than discovered.
+//!
+//! `capabilities.rye` names what each dependent may do. This ring names who each
+//! dependent may talk to: a bounded roster of protection domains and the channels
+//! that link them, every link declared at construction and readable whole.
+//!
+//! The shape comes from the Microkit clean-room brief
+//! (`active-designing/20260819-094721_clean-room-microkit-protection-domains-channels.md`):
+//! a channel joins exactly two domains, channels are the only way domains
+//! talk, and the entire communication graph is visible in the declaration
+//! rather than emerging at runtime. A static graph is a graph a witness can
+//! check whole -- which is why this ring is pure policy on hosted ground,
+//! asserted and witnessed, with no kernel underneath it yet.
+//!
+//! Usage:
+//!   channels          Run the self-test (default)
+//!   channels selftest Same as default
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const tally_copy = @import("tally_copy.rye");
+
+const caravan_channels_version = "20260819.125806";
+
+/// Maximum protection domains in one graph. Bounded on purpose: a static
+/// architecture names its components at build time, so the roster is small
+/// enough to read in one sitting and to assert over completely.
+pub const max_domains: u32 = 8;
+
+/// Maximum channels in one graph. Every pair of domains may hold at most one
+/// channel, so the complete graph over `max_domains` needs 28 -- this bound
+/// deliberately sits below that, since a supervision tree that wires every
+/// component to every other has stopped being a tree.
+pub const max_channels: u32 = 16;
+
+/// Maximum bytes in a domain name. Matches `capabilities.rye`'s own name
+/// bound, so a label reads the same in both rings.
+pub const max_name_len: u32 = 48;
+
+fn buf_len_u32(buf: []const u8) u32 {
+    // invariant: a name always fits the width we publish it in
+    assert(buf.len <= std.math.maxInt(u32));
+    // invariant: names stay within the ring's own bound
+    assert(buf.len <= max_name_len);
+    return @intCast(buf.len);
+}
+
+// =========================================================================
+// Refusal -- why a pair may not signal, or that it may
+// =========================================================================
+
+/// Named outcome of a signalling question -- `.allowed`, or the reason it was
+/// refused. A bare no covers three different situations, and a graph that
+/// cannot say which one cannot audit its own refusals.
+pub const Refusal = enum(u8) {
+    allowed = 0,
+    no_such_domain = 1,
+    self_link = 2,
+    not_declared = 3,
+};
+
+// =========================================================================
+// Domain -- one protection domain, single responsibility, named
+// =========================================================================
+
+// Invariant: name_len <= max_name_len whenever the slot is live.
+pub const Domain = struct {
+    name: [max_name_len]u8 = undefined,
+    name_len: u32 = 0,
+    live: bool = false,
+
+    pub fn init(name: []const u8) Domain {
+        // invariant: a domain name is non-empty, so every slot is addressable
+        assert(name.len >= 1);
+        var domain: Domain = .{};
+        domain.name_len = buf_len_u32(name);
+        tally_copy.copy_disjoint(u8, domain.name[0..name.len], name);
+        domain.live = true;
+        // invariant: the copied name reads back at its declared length
+        assert(domain.name_len == buf_len_u32(name));
+        return domain;
+    }
+
+    pub fn name_slice(self: *const Domain) []const u8 {
+        // invariant: the stored length stays within the ring's bound
+        assert(self.name_len <= max_name_len);
+        // invariant: only a live slot carries a readable name
+        assert(self.live);
+        const n: usize = @intCast(self.name_len); // seam: slicing takes usize
+        return self.name[0..n];
+    }
+};
+
+// =========================================================================
+// Channel -- a link between exactly two domains, held canonically
+// =========================================================================
+
+// Invariant: low < high, both indices addressing live domains.
+pub const Channel = struct {
+    low: u32 = 0,
+    high: u32 = 0,
+
+    /// Builds a channel from two domain indices, ordered low-then-high so an
+    /// unordered link has exactly one stored form. Storing the pair
+    /// canonically is what makes symmetry a property of the data rather than
+    /// a promise the reader has to keep.
+    pub fn init(a: u32, b: u32) Channel {
+        // invariant: a channel joins two distinct domains
+        assert(a != b);
+        // invariant: both endpoints address the bounded roster
+        assert(a < max_domains);
+        assert(b < max_domains);
+        const low = if (a < b) a else b;
+        const high = if (a < b) b else a;
+        // invariant: the canonical form always ascends
+        assert(low < high);
+        return .{ .low = low, .high = high };
+    }
+
+    /// Answers whether this channel joins the given unordered pair.
+    pub fn joins(self: *const Channel, a: u32, b: u32) bool {
+        // invariant: the stored pair stays canonical for the whole lifetime
+        assert(self.low < self.high);
+        // invariant: the query addresses the bounded roster
+        assert(a < max_domains);
+        assert(b < max_domains);
+        const low = if (a < b) a else b;
+        const high = if (a < b) b else a;
+        return self.low == low and self.high == high;
+    }
+
+    /// Answers whether this channel touches the given domain at either end.
+    pub fn touches(self: *const Channel, d: u32) bool {
+        // invariant: the stored pair stays canonical
+        assert(self.low < self.high);
+        // invariant: the query addresses the bounded roster
+        assert(d < max_domains);
+        return self.low == d or self.high == d;
+    }
+};
+
+// =========================================================================
+// Graph -- the whole static wiring, declared once and read whole
+// =========================================================================
+
+// Invariant: domain_count <= max_domains and channel_count <= max_channels.
+pub const Graph = struct {
+    domains: [max_domains]Domain = undefined,
+    domain_count: u32 = 0,
+    channels: [max_channels]Channel = undefined,
+    channel_count: u32 = 0,
+
+    /// Declares a protection domain and returns its index.
+    pub fn declare_domain(self: *Graph, name: []const u8) error{ GraphFull, DuplicateDomain }!u32 {
+        // invariant: the roster stays within its bound before growing
+        assert(self.domain_count <= max_domains);
+        // invariant: a domain name is non-empty
+        assert(name.len >= 1);
+        if (self.find_domain(name) != null) return error.DuplicateDomain;
+        if (self.domain_count >= max_domains) return error.GraphFull;
+        const index = self.domain_count;
+        self.domains[index] = Domain.init(name);
+        self.domain_count += 1;
+        // invariant: the roster stays within its bound after growing
+        assert(self.domain_count <= max_domains);
+        return index;
+    }
+
+    /// Finds a declared domain by name, or answers that it was never declared.
+    pub fn find_domain(self: *const Graph, name: []const u8) ?u32 {
+        // invariant: the roster stays within its bound
+        assert(self.domain_count <= max_domains);
+        // invariant: a lookup name fits the ring's bound
+        assert(name.len <= max_name_len);
+        var i: u32 = 0;
+        while (i < self.domain_count) : (i += 1) {
+            assert(i < max_domains); // invariant: the walk stays in the array
+            const domain = &self.domains[i];
+            if (domain.live and std.mem.eql(u8, domain.name_slice(), name)) return i;
+        }
+        return null;
+    }
+
+    /// Declares a channel between two named domains and returns its index.
+    ///
+    /// Every refusal is named: an undeclared endpoint, a domain wired to
+    /// itself, a link already standing, or a graph at its bound. Declaring
+    /// the same pair twice is a design error worth surfacing rather than a
+    /// harmless repeat, since the declaration is meant to read as the whole
+    /// truth about the wiring.
+    pub fn declare_channel(
+        self: *Graph,
+        a_name: []const u8,
+        b_name: []const u8,
+    ) error{ NoSuchDomain, SelfLink, AlreadyLinked, GraphFull }!u32 {
+        // invariant: the channel roster stays within its bound before growing
+        assert(self.channel_count <= max_channels);
+        // invariant: the domain roster stays within its bound
+        assert(self.domain_count <= max_domains);
+        const a = self.find_domain(a_name) orelse return error.NoSuchDomain;
+        const b = self.find_domain(b_name) orelse return error.NoSuchDomain;
+        if (a == b) return error.SelfLink;
+        if (self.find_channel(a, b) != null) return error.AlreadyLinked;
+        if (self.channel_count >= max_channels) return error.GraphFull;
+        const index = self.channel_count;
+        self.channels[index] = Channel.init(a, b);
+        self.channel_count += 1;
+        // invariant: the channel roster stays within its bound after growing
+        assert(self.channel_count <= max_channels);
+        return index;
+    }
+
+    /// Finds the channel joining two domain indices, or answers that the pair
+    /// was never wired.
+    pub fn find_channel(self: *const Graph, a: u32, b: u32) ?u32 {
+        // invariant: the channel roster stays within its bound
+        assert(self.channel_count <= max_channels);
+        // invariant: both endpoints address the bounded roster
+        assert(a < max_domains);
+        assert(b < max_domains);
+        if (a == b) return null;
+        var i: u32 = 0;
+        while (i < self.channel_count) : (i += 1) {
+            assert(i < max_channels); // invariant: the walk stays in the array
+            if (self.channels[i].joins(a, b)) return i;
+        }
+        return null;
+    }
+
+    /// Names why a pair may signal, or why it may not.
+    pub fn refusal_reason(self: *const Graph, a_name: []const u8, b_name: []const u8) Refusal {
+        // invariant: both rosters stay within their bounds
+        assert(self.domain_count <= max_domains);
+        assert(self.channel_count <= max_channels);
+        const a = self.find_domain(a_name) orelse return .no_such_domain;
+        const b = self.find_domain(b_name) orelse return .no_such_domain;
+        if (a == b) return .self_link;
+        if (self.find_channel(a, b) == null) return .not_declared;
+        return .allowed;
+    }
+
+    /// Answers whether a declared channel joins the two named domains.
+    ///
+    /// An undeclared pair answers no, which is the whole point: sharing is
+    /// deliberate and visible, never ambient. Two clients wired to the same
+    /// virtualiser still cannot reach each other.
+    pub fn may_signal(self: *const Graph, a_name: []const u8, b_name: []const u8) bool {
+        // invariant: the domain roster stays within its bound
+        assert(self.domain_count <= max_domains);
+        // invariant: the channel roster stays within its bound
+        assert(self.channel_count <= max_channels);
+        return self.refusal_reason(a_name, b_name) == .allowed;
+    }
+
+    /// Counts the channels touching a named domain -- its degree in the graph.
+    /// An undeclared domain has degree zero, since it holds no wiring at all.
+    pub fn degree(self: *const Graph, name: []const u8) u32 {
+        // invariant: the channel roster stays within its bound
+        assert(self.channel_count <= max_channels);
+        const d = self.find_domain(name) orelse return 0;
+        // invariant: a found index addresses the bounded roster
+        assert(d < max_domains);
+        var count: u32 = 0;
+        var i: u32 = 0;
+        while (i < self.channel_count) : (i += 1) {
+            assert(i < max_channels); // invariant: the walk stays in the array
+            if (self.channels[i].touches(d)) count += 1;
+        }
+        // invariant: a domain touches at most every channel once
+        assert(count <= self.channel_count);
+        return count;
+    }
+};
+
+// =========================================================================
+// Refusal helpers -- capture the named error, so the checks read plainly
+// =========================================================================
+
+/// Answers whether declaring this channel was refused with the named error.
+/// Capturing the error keeps each check at its call site readable and keeps
+/// the self-test off the `) == error.` call seam the tidy rules ban.
+fn channel_refused(graph: *Graph, a_name: []const u8, b_name: []const u8, want: anyerror) bool {
+    // invariant: both endpoint names are addressable
+    assert(a_name.len >= 1);
+    assert(b_name.len >= 1);
+    // invariant: the graph stays within its channel bound throughout
+    assert(graph.channel_count <= max_channels);
+    _ = graph.declare_channel(a_name, b_name) catch |err| return err == want;
+    return false;
+}
+
+/// Answers whether declaring this domain was refused with the named error.
+fn domain_refused(graph: *Graph, name: []const u8, want: anyerror) bool {
+    // invariant: the name is addressable
+    assert(name.len >= 1);
+    // invariant: the graph stays within its domain bound throughout
+    assert(graph.domain_count <= max_domains);
+    _ = graph.declare_domain(name) catch |err| return err == want;
+    return false;
+}
+
+// =========================================================================
+// Demo graph -- a serial line, its virtualiser, two clients, and a timer
+// =========================================================================
+
+/// Builds the shape the Microkit brief describes: a device driver talking
+/// only to its virtualiser, the virtualiser talking to each client, and a
+/// timer driver reaching one client directly. The two clients share a
+/// virtualiser and stay unable to reach each other.
+fn demo_graph() !Graph {
+    var graph: Graph = .{};
+
+    _ = try graph.declare_domain("serial_driver");
+    _ = try graph.declare_domain("serial_virt");
+    _ = try graph.declare_domain("client_a");
+    _ = try graph.declare_domain("client_b");
+    _ = try graph.declare_domain("timer_driver");
+
+    _ = try graph.declare_channel("serial_driver", "serial_virt");
+    _ = try graph.declare_channel("serial_virt", "client_a");
+    _ = try graph.declare_channel("serial_virt", "client_b");
+    _ = try graph.declare_channel("timer_driver", "client_a");
+
+    // invariant: the demo declares exactly the roster it names
+    assert(graph.domain_count == 5);
+    // invariant: the demo declares exactly the wiring it names
+    assert(graph.channel_count == 4);
+    return graph;
+}
+
+// =========================================================================
+// Self-test -- assert the graph enforces its declared boundaries
+// =========================================================================
+
+fn run_self_test() u8 {
+    var graph = demo_graph() catch {
+        print("channels: demo graph build failed\n", .{});
+        return 1;
+    };
+
+    // Every declared link signals, in both directions -- a channel is unordered.
+    assert(graph.may_signal("serial_driver", "serial_virt"));
+    assert(graph.may_signal("serial_virt", "serial_driver"));
+    assert(graph.may_signal("serial_virt", "client_a"));
+    assert(graph.may_signal("client_a", "serial_virt"));
+    assert(graph.may_signal("timer_driver", "client_a"));
+
+    // Sharing a virtualiser grants no path between the clients themselves.
+    assert(!graph.may_signal("client_a", "client_b"));
+    assert(graph.refusal_reason("client_a", "client_b") == .not_declared);
+
+    // A driver reaches only what it was wired to.
+    assert(!graph.may_signal("serial_driver", "client_a"));
+    assert(!graph.may_signal("timer_driver", "serial_virt"));
+
+    // An undeclared domain is refused by absence, and named as such.
+    assert(!graph.may_signal("client_a", "network_driver"));
+    assert(graph.refusal_reason("client_a", "network_driver") == .no_such_domain);
+    assert(graph.refusal_reason("network_driver", "client_a") == .no_such_domain);
+
+    // A domain never reaches itself -- a channel joins two distinct domains.
+    assert(!graph.may_signal("client_a", "client_a"));
+    assert(graph.refusal_reason("client_a", "client_a") == .self_link);
+
+    // Degree reads the wiring: the virtualiser holds three, a client one.
+    assert(graph.degree("serial_virt") == 3);
+    assert(graph.degree("client_a") == 2);
+    assert(graph.degree("client_b") == 1);
+    assert(graph.degree("serial_driver") == 1);
+    assert(graph.degree("network_driver") == 0);
+
+    // Redeclaring a standing link is refused by name, rather than duplicated.
+    assert(channel_refused(&graph, "serial_virt", "client_a", error.AlreadyLinked));
+    assert(channel_refused(&graph, "client_a", "serial_virt", error.AlreadyLinked));
+
+    // Wiring a domain to itself is refused by name.
+    assert(channel_refused(&graph, "client_a", "client_a", error.SelfLink));
+
+    // Wiring an undeclared endpoint is refused by name.
+    assert(channel_refused(&graph, "client_a", "network_driver", error.NoSuchDomain));
+
+    // Redeclaring a standing domain is refused by name.
+    assert(domain_refused(&graph, "client_a", error.DuplicateDomain));
+
+    // The refusals left the graph exactly as it was declared.
+    assert(graph.domain_count == 5);
+    assert(graph.channel_count == 4);
+
+    print("channels: version {s}\n", .{caravan_channels_version});
+    print("channels: {d} domains, {d} channels, boundaries asserted -- GREEN.\n", .{ graph.domain_count, graph.channel_count });
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test();
+    }
+
+    if (args.len >= 2) return 1;
+    return run_self_test();
+}
