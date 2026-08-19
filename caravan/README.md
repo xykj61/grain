@@ -48,6 +48,7 @@ Every ring here composes over the one before it. A later ring imports an earlier
 | inflight | [`inflight.rye`](inflight.rye) | a ring re-declared while a lap is in flight -- the successor derived with one dependent unreaped beneath it, that dependent carrying its arc home under grants the newer document had already retired, the next spawn governed by the newer words absolutely, and a successor that moves one region refused under both readings at once |
 | concurrent | [`concurrent.rye`](concurrent.rye) | two dependents of one ring running at the same moment -- the pairs that may run together derived from the grants and the wiring rather than declared, a ring of three admitting none at all and a ring of four exactly two, a bare channel across region-disjoint domains refusing them as surely as shared memory would, and every dependent of a stage reaped before any verdict about it leaves the supervisor |
 | cohort | [`cohort.rye`](cohort.rye) | the widest set of domains a document may run at once -- derived by weighing every subset rather than by taking the first domain that fits, a ring's widest set held to `floor(n / 2)` so no ring offers a triple at all, one server and its three clients offering three where a first fit takes one, and the whole cohort reaped before any verdict about any of it leaves the supervisor |
+| rolling | [`rolling.rye`](rolling.rye) | a slot refilled the moment a dependent finishes rather than a whole stage reaped first -- reaping split from reporting so a verdict still waits for the drain, admission held head-of-line so a lap never reorders itself, and the waiting that remains counted by its true cause: idle by barrier where the discipline held the slot, idle by order where the document did |
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
@@ -370,6 +371,21 @@ The numbers state the claim: a ring of three admitting zero pairs and a ring of 
 
 The numbers state the claim: sixteen subsets weighed to derive a widest set of three where the first fit takes one, nine dependents across five stages with two of them holding three at once, a peak of three unreaped and none reported behind, and six asks home. Witness: [`tools/caravan_cohort_witness.rish`](../tools/caravan_cohort_witness.rish), GREEN on metal, with the greedy reading carried in-module as a named control so the derivation is proven against it rather than merely asserted.
 
+## Why Rolling Never Creates Room
+
+`cohort.rye` spent the widest set and reaped every stage whole, which left the barrier standing: a stage holds a slot empty while a dependent that could have used it waits behind the line. `rolling.rye` refills instead, and finds that the gain is smaller and stranger than it looks.
+
+**Reaping is not reporting.** The rule `cohort.rye` proved was never *reap everything before you reap anything*; it was *let no verdict leave while a sibling still runs*. A rolling supervisor keeps that rule exactly by splitting the two acts -- reap eagerly to free a slot, hold every verdict until the queue drains. The reading that judges on the reaping stands in the module as a named control, and it re-opens the very hazard the rung before it closed, two dependents deep.
+
+**A rolling supervisor never reorders, so the order bounds the room.** Admission is head-of-line only: the head enters when a slot is free and it is clear against every domain still running. Reaching past a blocked head for a later item that happens to fit would reorder the lap, and in these documents order is meaning -- an ask is placed before it is passed, and passed before it comes home.
+
+**So rolling never creates room; it stops the supervisor from being the reason the room goes unspent.** The waste is counted by its cause. Over the ordered lap the two disciplines wait the *same two turns*: staged calls them barriers, rolling calls them the order, and the slot stands empty either way. Rolling converted no waiting into work there. What it did was prove who was doing the waiting.
+
+**Where the order agrees with the isolation, the whole of it converts.** Three clients placing twice each into the regions they own touch nothing of one another, so the rolling supervisor fills a freed slot at once and stands idle zero turns where staging stands idle two -- the same document, the same bound of three, the same six dependents run to the same end.
+
+**And the two readings differ in one line.** Both reap one dependent per turn; rolling may fill whenever a slot is free, staged may fill only an empty table. A difference in the report is therefore a difference in the discipline rather than in the program. The honest limit of hosted ground is named beside it: a supervisor waits on a dependent it can name, so it reaps the eldest, and a long-running eldest holds a slot its younger siblings have already freed.
+
+The numbers state the claim: two idle turns either way over the ordered lap -- two by barrier staged, two by order rolling -- with six asks home under both at a peak of three; two turns idle staged against zero rolling where the order agrees; and a refusal that strands two dependents under the loose reading and none under the held one. Witness: [`tools/caravan_rolling_witness.rish`](../tools/caravan_rolling_witness.rish), GREEN on metal.
 
 ## Held
 
