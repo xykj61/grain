@@ -1,0 +1,74 @@
+# serial_three_clients -- the ordinary shape that has room for three at once.
+#
+# `serial_cycle_wide.bron` was the first document with any room in it: a ring
+# of four, two non-adjacent pairs, both spent in one lap. A ring cannot give
+# more than a pair here, and the arithmetic says why. Every domain in a ring
+# is adjacent to two others, so a ring of n admits n * (n - 3) / 2 pairs and
+# its widest set of mutually-isolated domains is floor(n / 2) -- one at
+# three, two at four. A non-adjacent triple wants a ring of six, past the
+# four dependents one supervisor holds.
+#
+# So the shape with room for three is not a ring at all. It is the most
+# ordinary shape in this tree: one server and its clients. `serve.rye` gave
+# two clients the duplex shape and proved neither hears the other's bell.
+# This declaration adds the third, and the isolation `serve.rye` proved by
+# refusal becomes room a supervisor can spend.
+#
+# Each client owns `ask_x`, which it writes and the virtualiser reads; the
+# virtualiser owns `back_x`, which it writes and the client reads; and each
+# client owns `taken_x` alone, the tail of its own arc, held by no one else.
+# No region and no channel joins any client to any other client, so all
+# three may hold the machine at the same moment. The virtualiser touches
+# every one of them, so it may run beside none.
+#
+# That last line is the whole finding. A supervisor picking the first domain
+# that fits, in the order the document declares them, takes the virtualiser
+# and runs one dependent. The widest set here is three, and the two answers
+# differ by the shape rather than by the search.
+#
+# The private tail costs this document a shape verdict, and the cost is
+# stated rather than hidden. `taken_x` is held by its client alone, so it
+# carries no direction at all -- one writer and no reader -- and a reading
+# that derives flow from the grants answers `no directed flow to derive`
+# rather than naming a ring. That is honest: a region only one domain can
+# reach is memory rather than a wire, and the room this shape has comes from
+# exactly that privacy.
+#
+# Read whole by `caravan/read.rye`; exercised by `caravan/cohort.rye`.
+
+system serial_three_clients
+
+domain serial_virt
+domain client_a
+domain client_b
+domain client_c
+
+channel serial_virt client_a
+channel serial_virt client_b
+channel serial_virt client_c
+
+region ask_a 4096
+region back_a 4096
+region taken_a 64
+region ask_b 4096
+region back_b 4096
+region taken_b 64
+region ask_c 4096
+region back_c 4096
+region taken_c 64
+
+grant ask_a client_a rw
+grant ask_a serial_virt r
+grant back_a serial_virt rw
+grant back_a client_a r
+grant taken_a client_a rw
+grant ask_b client_b rw
+grant ask_b serial_virt r
+grant back_b serial_virt rw
+grant back_b client_b r
+grant taken_b client_b rw
+grant ask_c client_c rw
+grant ask_c serial_virt r
+grant back_c serial_virt rw
+grant back_c client_c r
+grant taken_c client_c rw

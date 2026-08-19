@@ -47,6 +47,7 @@ Every ring here composes over the one before it. A later ring imports an earlier
 | standby | [`standby.rye`](standby.rye) | a ring repaired around a domain it lost -- a standby named beside that domain refused as a second writer, a detour drawn in advance refused as a shape with a choice of laps, and the succession carrying every ask home over regions the loss left standing, at the price of bells it never inherits |
 | inflight | [`inflight.rye`](inflight.rye) | a ring re-declared while a lap is in flight -- the successor derived with one dependent unreaped beneath it, that dependent carrying its arc home under grants the newer document had already retired, the next spawn governed by the newer words absolutely, and a successor that moves one region refused under both readings at once |
 | concurrent | [`concurrent.rye`](concurrent.rye) | two dependents of one ring running at the same moment -- the pairs that may run together derived from the grants and the wiring rather than declared, a ring of three admitting none at all and a ring of four exactly two, a bare channel across region-disjoint domains refusing them as surely as shared memory would, and every dependent of a stage reaped before any verdict about it leaves the supervisor |
+| cohort | [`cohort.rye`](cohort.rye) | the widest set of domains a document may run at once -- derived by weighing every subset rather than by taking the first domain that fits, a ring's widest set held to `floor(n / 2)` so no ring offers a triple at all, one server and its three clients offering three where a first fit takes one, and the whole cohort reaped before any verdict about any of it leaves the supervisor |
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
@@ -352,6 +353,22 @@ The numbers state the claim: one successor derived with one dependent unreaped b
 **And a supervisor holding two unreaped outcomes owes both a reaping before it reports either.** `inflight.rye` learned that rule with one dependent standing -- an abandoned dependent is a leak dressed as a safety check. With two in flight it gains a second edge: the first outcome may be a refusal, and reporting it the instant it arrives leaves a sibling running behind the verdict. The unsafe reading stands in the module as a named control, so the safe one is proven against it rather than merely asserted.
 
 The numbers state the claim: a ring of three admitting zero pairs and a ring of four admitting two, ten dependents across eight stages with two of them holding a pair at once, a peak of two unreaped and none reported behind, and four asks home. Witness: [`tools/caravan_concurrent_witness.rish`](../tools/caravan_concurrent_witness.rish), GREEN on metal, with both guards proven load-bearing first -- the region test disabled waved the mute pair through, and the channel test disabled waved the wired pair through.
+
+## Why the Widest Set Is Derived, Rather Than Chosen
+
+`concurrent.rye` answered the pair question and left the next one standing. A supervisor with three slots wants the widest **set** it may run, and a pair is only the smallest such set. `cohort.rye` derives it.
+
+**A set may run together exactly when every pair in it may.** Both hazards are relations between two domains -- a region one may write while the other reads, a bell one may ring while the other clears -- so a set carries no hazard its pairs do not already carry. The pair predicate is reused whole rather than restated one size up.
+
+**A ring has no room for three.** Its widest set is `floor(n / 2)`: one at three, two at four. A non-adjacent triple wants a ring of six, past the four dependents one supervisor holds. So the shape with room for three is not a ring at all -- it is the most ordinary shape in this tree, one server and its clients. `serve.rye` proved two clients never hear each other's bell, and [`serial_three_clients.bron`](systems/serial_three_clients.bron) turns that isolation into room a supervisor can spend.
+
+**The widest set is not what you get by taking the first domain that fits.** In that document the virtualiser is declared first and touches every client, so a first fit takes it and runs one dependent where the widest set runs three. The first fit is never unsafe; it is simply narrow, threefold, on the plainest shape in the tree -- which is exactly why the derivation is exhaustive.
+
+**The cost of exhaustive is named rather than hidden.** Weighing every subset costs `2^n`, and `n` is bounded at the roster bound, so the search is bounded at 256 subsets by the same constant. A supervisor bounds its roster; it never bounds its search and then calls the narrower answer the widest.
+
+**And the room comes from privacy, which costs a shape verdict.** Each client keeps a tail region no other domain may reach, and a region only one domain can reach carries no direction at all -- so the declaration answers `no directed flow to derive` rather than naming a ring. That is the same kind of price the mute document paid for silent sharing, stated rather than hidden.
+
+The numbers state the claim: sixteen subsets weighed to derive a widest set of three where the first fit takes one, nine dependents across five stages with two of them holding three at once, a peak of three unreaped and none reported behind, and six asks home. Witness: [`tools/caravan_cohort_witness.rish`](../tools/caravan_cohort_witness.rish), GREEN on metal, with the greedy reading carried in-module as a named control so the derivation is proven against it rather than merely asserted.
 
 
 ## Held
