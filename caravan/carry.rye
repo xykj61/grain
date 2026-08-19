@@ -1,0 +1,553 @@
+//! Caravan carry -- two real processes share one declared region.
+//!
+//! `exercise.rye` made a grant do work: a producer wrote into a declared
+//! share and a consumer read exactly those bytes back. Both of them lived
+//! inside one process, holding two capability lists side by side in the
+//! same memory. That proved the policy. It could never prove the seam.
+//!
+//! This ring carries the same bytes across the boot seam. The supervisor
+//! provisions each declared region, derives the capability table from the
+//! document, and starts one real dependent process per declared domain in
+//! declaration order -- each holding nothing beyond its own argv line. The
+//! producer writes and exits. The consumer starts afterward, opens the same
+//! region through its own read-only grant, and reads back what the first
+//! process left there. Two address spaces, one declared share, and the
+//! bytes arrive.
+//!
+//! Order becomes load-bearing here rather than merely tidy. The carry works
+//! precisely because declaration order is startup order: the document names
+//! `serial_virt` before `client_a`, so the producer has already exited by
+//! the time the consumer opens the region. A startup sequence written into
+//! a document is a real sequence at run time.
+//!
+//! Judgment stays with the supervisor. A dependent attempts exactly the one
+//! task its plan word names and reports the outcome as an exit code from a
+//! closed vocabulary -- carried, refused NotGranted, refused WriteDenied,
+//! refused PastEnd, or bytes that differed. The parent asserts which code
+//! it expected. A component never grades itself, so a dependent that silently
+//! did nothing cannot report success.
+//!
+//! Every run provisions its regions fresh, so each store opens zeroed and
+//! an arriving byte belongs to this run rather than to the one before it.
+//! The self-test therefore proves the refusals first and the carry last,
+//! leaving the message the producer actually wrote standing on disk where a
+//! witness can read it back.
+//!
+//! The dependent learns nothing it was not handed. It never reads the
+//! declaration, so it has no idea how wide a region is; it takes the extent
+//! from the provisioned store itself, which the parent sized at exactly the
+//! declared length and which never grows by being used. Static allocation
+//! settles the bound before anything runs -- the seL4 teaching, arriving
+//! here as the reason a dependent needs no document to stay inside its region.
+//!
+//! Hosted ground: real processes, real files, pure policy, no kernel
+//! underneath it yet.
+//!
+//! Usage:
+//!   carry selftest                     Carry the worked example and check it
+//!   carry                              Same as selftest
+//!   carry dependent <domain> <plan> ...    Run as a supervised dependent (internal)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const regions = @import("regions.rye");
+const capabilities = @import("capabilities.rye");
+const roster = @import("roster.rye");
+const read = @import("read.rye");
+const boot = @import("boot.rye");
+const exercise = @import("exercise.rye");
+
+const caravan_carry_version = "20260819.140726";
+
+// =========================================================================
+// Bounds -- what one carry may spend
+// =========================================================================
+
+/// Fixed argv words every dependent receives before its capabilities: the
+/// program path, the `dependent` marker, its domain label, and its plan word.
+/// The same four `boot.rye` hands out, so one wire serves both rings.
+const fixed_argv_words: u32 = 4;
+
+/// The longest plan word a dependent may be handed -- a verb, the separator,
+/// and a region name. Sized from the name bound so a legal plan always fits.
+pub const max_plan_len: u32 = regions.max_name_len + 16;
+
+/// The message the producing process writes into the declared share. Real
+/// bytes, chosen once, so both processes agree on what arrival means.
+pub const carried = "serial: carried across the boot seam";
+
+comptime {
+    // invariant: the carried message fits inside the smallest declared region
+    assert(carried.len <= 4096);
+    // invariant: a whole dependent argv stays within what one carry builds
+    assert(fixed_argv_words + capabilities.max_caps_per_dependent <= 16);
+}
+
+// =========================================================================
+// The outcome vocabulary -- what a dependent reports, and nothing else
+// =========================================================================
+
+/// Closed set of outcomes one dependent may report by exit code.
+///
+/// `carried` is the only success. Every refusal has its own number, so a
+/// supervisor reading an exit code knows which wall stopped the dependent
+/// rather than merely that something did. The numbers avoid
+/// `supervisor_exit.stop_requested` (8), which already means something else
+/// to a Caravan supervisor.
+pub const Outcome = struct {
+    pub const carried_ok: u8 = 0;
+    pub const malformed: u8 = 1;
+    pub const not_granted: u8 = 3;
+    pub const write_denied: u8 = 4;
+    pub const past_end: u8 = 5;
+    pub const bytes_differed: u8 = 6;
+};
+
+comptime {
+    // invariant: no outcome collides with the supervisor's deliberate stop
+    assert(Outcome.not_granted != 8);
+    assert(Outcome.write_denied != 8);
+    assert(Outcome.past_end != 8);
+    assert(Outcome.bytes_differed != 8);
+}
+
+/// Names one outcome code for an operator reading a report.
+pub fn outcome_name(code: u8) []const u8 {
+    return switch (code) {
+        Outcome.carried_ok => "carried",
+        Outcome.malformed => "malformed",
+        Outcome.not_granted => "NotGranted",
+        Outcome.write_denied => "WriteDenied",
+        Outcome.past_end => "PastEnd",
+        Outcome.bytes_differed => "bytes differed",
+        else => "unknown",
+    };
+}
+
+// =========================================================================
+// The plan wire -- one task becomes one word, and back
+// =========================================================================
+
+/// What a dependent is asked to attempt against one region.
+pub const Verb = enum { produce, consume, overwrite, reach };
+
+/// One task: a verb and the region it names.
+pub const Task = struct {
+    verb: Verb,
+    region: []const u8,
+};
+
+/// Renders one task as the plan word its dependent will read.
+pub fn write_plan(buf: []u8, verb: Verb, region: []const u8) ?[]const u8 {
+    // invariant: the buffer holds the widest plan word this wire may carry
+    assert(buf.len >= max_plan_len);
+    // invariant: a task always names a region
+    assert(region.len >= 1);
+    const word = verb_word(verb);
+    const total = word.len + 1 + region.len;
+    if (total > max_plan_len) return null;
+    var i: usize = 0;
+    while (i < word.len) : (i += 1) buf[i] = word[i];
+    buf[word.len] = ':';
+    var j: usize = 0;
+    while (j < region.len) : (j += 1) buf[word.len + 1 + j] = region[j];
+    return buf[0..total];
+}
+
+/// Spells one verb, in the single vocabulary both sides of the seam read.
+fn verb_word(verb: Verb) []const u8 {
+    return switch (verb) {
+        .produce => "produce",
+        .consume => "consume",
+        .overwrite => "overwrite",
+        .reach => "reach",
+    };
+}
+
+/// Reads a plan word back into the task it names.
+///
+/// The vocabulary is closed: four verbs in, four tasks out, and anything
+/// else answers null -- so a dependent refuses a plan it cannot read rather
+/// than guessing at what it was asked to do.
+pub fn read_plan(word: []const u8) ?Task {
+    // invariant: a plan worth reading carries something
+    assert(word.len >= 1);
+    const cut = std.mem.indexOfScalar(u8, word, ':') orelse return null;
+    if (cut == 0) return null;
+    if (cut + 1 >= word.len) return null;
+    const region = word[cut + 1 ..];
+    if (region.len > regions.max_name_len) return null;
+    const head = word[0..cut];
+    const verb: Verb = if (std.mem.eql(u8, head, "produce"))
+        .produce
+    else if (std.mem.eql(u8, head, "consume"))
+        .consume
+    else if (std.mem.eql(u8, head, "overwrite"))
+        .overwrite
+    else if (std.mem.eql(u8, head, "reach"))
+        .reach
+    else
+        return null;
+    // invariant: every task read off the wire names a region
+    assert(region.len >= 1);
+    return .{ .verb = verb, .region = region };
+}
+
+// =========================================================================
+// The dependent -- one process, one task, one reported outcome
+// =========================================================================
+
+/// Opens one region by name alone, taking its extent from the provisioned
+/// store.
+///
+/// A dependent never reads the declaration, so the store's own length is the
+/// only extent it can honestly know. The parent provisioned that store at
+/// exactly the declared length and nothing widens it, which is why a bound
+/// settled before the run still holds inside a process that never saw the
+/// document.
+fn reach_by_name(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    region_name: []const u8,
+) exercise.ReachError!exercise.Reach {
+    // invariant: a reach always names a region
+    assert(region_name.len >= 1);
+    // invariant: the dependent's list stays within its bound
+    assert(slot.cap_count <= capabilities.max_caps_per_dependent);
+    const extent = try exercise.store_extent(io, region_name);
+    if (extent == 0 or extent > regions.max_region_bytes) return error.RegionUnavailable;
+    const region = regions.Region.init(region_name, extent);
+    // invariant: the extent a dependent works from is the store's own length
+    assert(region.size_bytes == extent);
+    return exercise.Reach.open(io, slot, &region);
+}
+
+/// Maps one reach refusal onto the outcome code that names it.
+fn refusal_code(err: exercise.ReachError) u8 {
+    return switch (err) {
+        error.NotGranted => Outcome.not_granted,
+        error.WriteDenied => Outcome.write_denied,
+        error.PastEnd => Outcome.past_end,
+        else => Outcome.malformed,
+    };
+}
+
+/// Attempts one task and reports its outcome.
+///
+/// Every path answers with a code from the closed vocabulary, so a dependent
+/// that reached nothing cannot report the same thing as a dependent that
+/// carried bytes.
+fn attempt(io: std.Io, slot: *const capabilities.DependentSlot, task: Task) u8 {
+    // invariant: a task always names a region
+    assert(task.region.len >= 1);
+    const handle = reach_by_name(io, slot, task.region) catch |err| {
+        return refusal_code(err);
+    };
+    defer handle.close(io);
+
+    switch (task.verb) {
+        .reach => return Outcome.carried_ok,
+        .produce, .overwrite => {
+            handle.write_at(io, 0, carried) catch |err| return refusal_code(err);
+            return Outcome.carried_ok;
+        },
+        .consume => {
+            var seen: [carried.len]u8 = undefined;
+            const got = handle.read_at(io, 0, &seen) catch |err| return refusal_code(err);
+            if (got != carried.len) return Outcome.bytes_differed;
+            if (!std.mem.eql(u8, &seen, carried)) return Outcome.bytes_differed;
+            return Outcome.carried_ok;
+        },
+    }
+}
+
+/// Runs as one supervised dependent, holding exactly the capabilities and the
+/// one task on its own argv.
+///
+/// The dependent re-derives nothing and grades nothing. It reads its rights off
+/// the wire through the same grammar the document was written in, attempts
+/// what it was asked, and hands the outcome back as a number the supervisor
+/// interprets.
+fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
+    // invariant: a dependent always receives its marker, its domain, and its plan
+    assert(args.len >= fixed_argv_words);
+    const domain = args[2];
+    const plan = args[3];
+    // invariant: a dependent always knows which domain it is
+    assert(domain.len >= 1);
+
+    var slot = capabilities.DependentSlot.init(domain);
+    var i: usize = fixed_argv_words;
+    while (i < args.len) : (i += 1) {
+        const cap = boot.read_cap_word(args[i]) orelse {
+            print("    {s}: refused a malformed capability word\n", .{domain});
+            return Outcome.malformed;
+        };
+        slot.grant(cap) catch {
+            print("    {s}: more capabilities than one dependent holds\n", .{domain});
+            return Outcome.malformed;
+        };
+    }
+    // invariant: the dependent holds exactly the words it was handed
+    assert(slot.cap_count == args.len - fixed_argv_words);
+
+    const task = read_plan(plan) orelse {
+        print("    {s}: refused a plan it could not read\n", .{domain});
+        return Outcome.malformed;
+    };
+    const code = attempt(io, &slot, task);
+    print("    {s}: {s} {s} -- {s}\n", .{
+        domain, verb_word(task.verb), task.region, outcome_name(code),
+    });
+    return code;
+}
+
+// =========================================================================
+// The supervisor -- one document, one carry, judged by the parent
+// =========================================================================
+
+/// One declared domain's assignment for a carry run.
+pub const Assignment = struct {
+    domain: []const u8,
+    verb: Verb,
+    region: []const u8,
+    expect: u8,
+};
+
+/// What one carry run did, reported whole rather than as a bare success.
+pub const CarryReport = struct {
+    started: u32 = 0,
+    matched: u32 = 0,
+    caps_handed: u32 = 0,
+};
+
+/// Named ways a carry declines rather than reporting a hollow success.
+pub const CarryError = error{
+    SpawnFailed,
+    UnknownDomain,
+    PlanTooLong,
+    OutcomeMismatch,
+};
+
+/// Starts one assigned dependent and holds it to the outcome the parent expects.
+///
+/// The capability line is built from the derived table and checked against
+/// the declaration before the spawn, so a dependent that starts at all is
+/// already known to hold exactly what the document granted it.
+fn run_assignment(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    table: *const capabilities.CapabilityTable,
+    task: Assignment,
+) (CarryError || boot.BootError)!u32 {
+    // invariant: an assignment always names a domain and a region
+    assert(task.domain.len >= 1);
+    assert(task.region.len >= 1);
+    const slot = table.find_dependent(task.domain) orelse return error.UnknownDomain;
+    // invariant: the line handed out agrees with the declaration it came from
+    assert(boot.line_agrees(sys, slot));
+
+    var plan_buf: [max_plan_len]u8 = undefined;
+    const plan = write_plan(&plan_buf, task.verb, task.region) orelse
+        return error.PlanTooLong;
+
+    var storage: [capabilities.max_caps_per_dependent][boot.max_cap_word_len]u8 = undefined;
+    const argv = allocator.alloc([]const u8, fixed_argv_words + slot.cap_count) catch {
+        return error.SpawnFailed;
+    };
+    argv[0] = self_path;
+    argv[1] = "dependent";
+    argv[2] = slot.label_slice();
+    argv[3] = plan;
+    var c: u32 = 0;
+    while (c < slot.cap_count) : (c += 1) {
+        assert(c < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        argv[fixed_argv_words + c] = try boot.write_cap_word(&storage[c], &slot.caps[c]);
+    }
+
+    var proc = std.process.spawn(io, .{ .argv = argv }) catch return error.SpawnFailed;
+    const term = proc.wait(io) catch return error.SpawnFailed;
+    const code: u8 = switch (term) {
+        .exited => |c2| c2,
+        else => 255,
+    };
+    if (code != task.expect) {
+        print("    {s}: expected {s}, heard {s}\n", .{
+            task.domain, outcome_name(task.expect), outcome_name(code),
+        });
+        return error.OutcomeMismatch;
+    }
+    return slot.cap_count;
+}
+
+/// Runs a whole ordered assignment list against one parsed declaration.
+///
+/// The regions are provisioned and the table derived before anything
+/// starts, so a document this supervisor cannot seat carries nothing at all
+/// rather than half a message.
+pub fn carry_system(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Assignment,
+) (roster.RosterError || exercise.ProvisionError || CarryError || boot.BootError)!CarryReport {
+    // invariant: a carry always knows what program to spawn
+    assert(self_path.len >= 1);
+    // invariant: the domain roster stays within the map's bound
+    assert(sys.map.domain_count <= regions.max_domains);
+
+    const provisioned = try exercise.provision(io, sys);
+    // invariant: every declared region has a backing store before any dependent runs
+    assert(provisioned == sys.map.region_count);
+
+    const table = try roster.from_system(sys);
+    // invariant: the derived table enforces exactly what the document permits
+    assert(roster.agrees(sys, &table));
+
+    var report_out: CarryReport = .{};
+    var i: u32 = 0;
+    while (i < plan.len) : (i += 1) {
+        const handed = try run_assignment(allocator, io, self_path, sys, &table, plan[i]);
+        report_out.started += 1;
+        report_out.matched += 1;
+        report_out.caps_handed += handed;
+    }
+    // invariant: every assignment that started also matched what was expected
+    assert(report_out.matched == report_out.started);
+    return report_out;
+}
+
+// =========================================================================
+// Self-test -- the worked example, carried between real processes
+// =========================================================================
+
+/// The carry itself, in declaration order: the virtualiser writes, then the
+/// granted client reads back exactly those bytes in its own process.
+const carry_plan = [_]Assignment{
+    .{ .domain = "serial_virt", .verb = .produce, .region = "rx_a", .expect = Outcome.carried_ok },
+    .{ .domain = "client_a", .verb = .consume, .region = "rx_a", .expect = Outcome.carried_ok },
+};
+
+/// The refusals, each proven in a dependent process that holds only its own
+/// line: a read-only grant cannot write, an ungranted region opens nothing,
+/// and an execute grant never grew a write door.
+const refusal_plan = [_]Assignment{
+    .{ .domain = "client_a", .verb = .overwrite, .region = "rx_a", .expect = Outcome.write_denied },
+    .{ .domain = "client_b", .verb = .reach, .region = "rx_a", .expect = Outcome.not_granted },
+    .{ .domain = "client_a", .verb = .reach, .region = "rx_b", .expect = Outcome.not_granted },
+    .{ .domain = "client_a", .verb = .overwrite, .region = "font_rom", .expect = Outcome.write_denied },
+};
+
+/// Carries the worked example between two real processes and checks it.
+fn check_carry(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = read.load(io, read.serial_stack_path, &buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ read.serial_stack_path, @errorName(err) });
+        return 1;
+    };
+    const done = carry_system(allocator, io, self_path, &parsed, &carry_plan) catch |err| {
+        print("  RED: the carry did not complete: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: both halves of the carry ran as their own process
+    assert(done.started == 2);
+    // invariant: and both reported the outcome the supervisor expected
+    assert(done.matched == 2);
+    print("  {d} bytes crossed rx_a between two processes -- serial_virt wrote, client_a read\n", .{
+        carried.len,
+    });
+    return 0;
+}
+
+/// Proves every refusal holds in a dependent that holds only its own argv line.
+fn check_refusals(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = read.load(io, read.serial_stack_path, &buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ read.serial_stack_path, @errorName(err) });
+        return 1;
+    };
+    const done = carry_system(allocator, io, self_path, &parsed, &refusal_plan) catch |err| {
+        print("  RED: a refusal did not hold across the seam: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: every refusal ran as its own process and answered by name
+    assert(done.matched == refusal_plan.len);
+    print("  a read-only grant refuses WriteDenied in its own process\n", .{});
+    print("  an ungranted region refuses NotGranted, both ways, nothing opened\n", .{});
+    print("  an execute grant refuses WriteDenied -- W xor X holds across the seam\n", .{});
+    return 0;
+}
+
+/// Proves the bytes that arrived were the ones the producer wrote, read
+/// back once more from the store the supervisor itself provisioned.
+fn check_store(io: std.Io) u8 {
+    const extent = exercise.store_extent(io, "rx_a") catch |err| {
+        print("  RED: rx_a could not be measured: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    if (extent != 4096) {
+        print("  RED: rx_a stands at {d} bytes rather than its declared 4096\n", .{extent});
+        return 1;
+    }
+    print("  rx_a still stands at {d} bytes -- a region never grows by being used\n", .{extent});
+    return 0;
+}
+
+/// Proves the plan wire itself is a closed vocabulary.
+fn check_plan_wire() u8 {
+    var plan_buf: [max_plan_len]u8 = undefined;
+    const word = write_plan(&plan_buf, .consume, "rx_a") orelse {
+        print("  RED: a legal task had no plan word\n", .{});
+        return 1;
+    };
+    const back = read_plan(word) orelse {
+        print("  RED: a rendered plan did not read back\n", .{});
+        return 1;
+    };
+    // invariant: a task survives the wire unchanged, verb and region alike
+    assert(back.verb == .consume);
+    assert(std.mem.eql(u8, back.region, "rx_a"));
+    // invariant: a verb outside the vocabulary reads as no task at all
+    assert(read_plan("destroy:rx_a") == null);
+    // invariant: and a plan naming no region reads as no task either
+    assert(read_plan("consume:") == null);
+    print("  the plan wire is closed -- four verbs cross, anything else refuses\n", .{});
+    return 0;
+}
+
+fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    print("Caravan carry {s} -- self-test\n", .{caravan_carry_version});
+    const wire = check_plan_wire();
+    if (wire != 0) return wire;
+    const refusals = check_refusals(allocator, io, self_path);
+    if (refusals != 0) return refusals;
+    const carry = check_carry(allocator, io, self_path);
+    if (carry != 0) return carry;
+    const store = check_store(io);
+    if (store != 0) return store;
+    print("  GREEN: two processes share one declared region, and every refusal holds\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
+        return run_dependent(io, args);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(allocator, io, self_path);
+    }
+    if (args.len >= 2) return 1;
+    return run_self_test(allocator, io, self_path);
+}
