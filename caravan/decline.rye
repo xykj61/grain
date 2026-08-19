@@ -1,0 +1,709 @@
+//! Caravan decline -- a hole that stays open, and the two ways the
+//! declaration itself refuses to let anyone close it.
+//!
+//! `gap.rye` dropped a middle mid-lap and let it come back. The reassuring
+//! half was that a lap owes a returned domain nothing, since the debt is
+//! written in a region rather than carried by a process. The finding was
+//! sharper: idempotence over bytes makes a restart safe, and it also makes
+//! a restart silent, so the cure was a declared wake reading -- ring on
+//! every completed pass, and the hole closes.
+//!
+//! Every hole there closed. This module asks the harder question, the one
+//! `gap.rye` left standing at its own bound: **what is the rest of the
+//! circuit entitled to do with a lap whose hole stays open?** So `birch`
+//! falls on every attempt rather than on the first alone, exhausts what a
+//! supervisor allows it, and is **declined by name** -- a domain the ring
+//! will not get back.
+//!
+//! Three answers fall out, and the third is the finding.
+//!
+//! **The wake cure does nothing here.** `wake-every-pass` replaces a bell
+//! swallowed by a fall, and a domain that never completes a pass never
+//! reaches the line that rings. A cure for a silent restart is no cure for
+//! an absent domain, and running the open hole under the mended reading
+//! proves it rather than assuming it.
+//!
+//! **The rest of the circuit may run, and finds nothing.** Under
+//! `carry-on`, every domain behind the hole starts, hears the bell it was
+//! waiting on ringing zero times, and reports `Unheard`. Nobody stalls in
+//! the sense of hanging, nobody invents work, and nobody advances: a hole
+//! that stays open is announced by the same honest silence at every arc
+//! behind it. Under `halt` those steps never start at all, and the report
+//! names them as skipped. **The choice is about what an operator learns,
+//! never about what the ring achieves** -- halting says where the hole is,
+//! carrying on proves the rest of the circuit is healthy and every ask is
+//! parked at exactly one place. The work is safe either way, because it is
+//! on disk in a region that belongs to the declaration.
+//!
+//! **And no neighbor may relieve the declined domain.** This is the answer
+//! to whether a ring can be routed around, and it is structural rather than
+//! policed:
+//!
+//!   **A ring has no detour, and the capability table refuses in two
+//!   distinct ways -- by absence and by rights.**
+//!
+//! `alder` reaches for the arc behind the hole, `ask_ab` onward to
+//! `ask_bc`, with two real asks standing in it, and is refused
+//! `NotGranted`: the declaration hands alder no word for `ask_bc` at all.
+//! `cedar` reaches for alder's own homeward arc, `ask_ca` onward to
+//! `taken`, and gets further -- it holds both regions -- then is refused
+//! `WriteDenied` at the claim, because it holds `taken` at rights that read
+//! and never write. Neither refusal is a rule this module enforces. Both
+//! are the grants, read back by the dependent from the words it was handed.
+//!
+//! So the entitlement question has a clean answer: the circuit is entitled
+//! to run, to report, and to wait. It is never entitled to reach around,
+//! and nothing had to forbid that, because nothing ever permitted it.
+//!
+//! Hosted ground: real processes, real files, pure policy, no kernel
+//! underneath it yet.
+//!
+//! Usage:
+//!   decline selftest                  Leave the hole open and see what stands
+//!   decline                           Same as selftest
+//!   decline dependent <domain> <plan> ... Run as a supervised dependent (internal)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const capabilities = @import("capabilities.rye");
+const roster = @import("roster.rye");
+const read = @import("read.rye");
+const boot = @import("boot.rye");
+const exercise = @import("exercise.rye");
+const carry = @import("carry.rye");
+const notify = @import("notify.rye");
+const roundtrip = @import("roundtrip.rye");
+const serve = @import("serve.rye");
+const queue = @import("queue.rye");
+const relay = @import("relay.rye");
+const cycle = @import("cycle.rye");
+const restart = @import("restart.rye");
+const gap = @import("gap.rye");
+const tally_parse_int = @import("parse_int.rye");
+
+const caravan_decline_version = "20260819.165722";
+
+// =========================================================================
+// The bounds -- one ring, one hole, and a hole that never closes
+// =========================================================================
+
+/// The ring this module leaves a hole in, unchanged from `cycle.rye`.
+///
+/// The question here is about a domain that stays gone rather than about a
+/// shape, so the shape stays exactly the one already proven.
+pub const declaration_path = cycle.declaration_path;
+
+/// How many times one assigned step is attempted before the supervisor
+/// declines the domain by name.
+///
+/// The same bound `gap.rye` runs under, so the only thing that differs
+/// between a hole that closes and a hole that stays open is whether the
+/// fall lands once or every time.
+pub const max_attempts: u32 = gap.max_attempts;
+
+/// A dependent's fixed argv: the program, the marker, its domain, its plan, the
+/// point it may be dropped at, how it wakes its successor, which part it
+/// plays, and how many capability words follow.
+pub const fixed_argv_words: u32 = 8;
+
+comptime {
+    // invariant: a decline always follows at least one real attempt
+    assert(max_attempts >= 2);
+    // invariant: a whole dependent argv stays within what one run builds
+    assert(fixed_argv_words + capabilities.max_caps_per_dependent + notify.max_peers_per_dependent <= 32);
+    // invariant: this ring reads the same fall and wake wire the last one proved
+    assert(fixed_argv_words == gap.fixed_argv_words + 1);
+}
+
+/// Names one outcome for an operator, in the words the ring already spends.
+pub fn outcome_name(code: u8) []const u8 {
+    return gap.outcome_name(code);
+}
+
+// =========================================================================
+// The role wire -- which part a spawned domain plays in the lap
+// =========================================================================
+
+/// Which part one spawned domain plays.
+///
+/// A `carrier` runs its own declared arc, which is every domain in a whole
+/// ring. A `reliever` reaches for an arc that belongs to somebody else --
+/// the act a circuit would need if a ring could be routed around a domain
+/// it has lost.
+pub const Role = enum { carrier, reliever };
+
+/// Renders one role as the word its dependent will read.
+pub fn role_word(r: Role) []const u8 {
+    return switch (r) {
+        .carrier => "carrier",
+        .reliever => "reliever",
+    };
+}
+
+/// Reads a role word back, refusing anything it cannot name.
+pub fn read_role(word: []const u8) ?Role {
+    // invariant: a role word worth reading carries something
+    assert(word.len >= 1);
+    if (std.mem.eql(u8, word, "carrier")) return .carrier;
+    if (std.mem.eql(u8, word, "reliever")) return .reliever;
+    return null;
+}
+
+/// What the rest of the lap does once a domain has been declined.
+///
+/// `halt` stops the run at the hole, so the steps behind it never start.
+/// `carry_on` runs them, so each reports for itself what a lap with an open
+/// hole looks like from where it stands.
+pub const Disposition = enum { halt, carry_on };
+
+/// Renders one disposition as the word an operator reads.
+pub fn disposition_word(d: Disposition) []const u8 {
+    return switch (d) {
+        .halt => "halt",
+        .carry_on => "carry-on",
+    };
+}
+
+// =========================================================================
+// The dependent -- one process, one arc, and one part it may play
+// =========================================================================
+
+/// Reaches for an arc that belongs to another domain, and reports what the
+/// capability words it was handed allow.
+///
+/// A relief rings nobody. A bell would answer a different question first --
+/// whether the neighbor spoke -- and the question here is whether the
+/// declaration lets this domain touch the arc at all. The reliever claims
+/// the onward arc caught up whether or not it moved anything, because
+/// taking over is the act under test rather than the carrying.
+fn do_relieve(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    self_name: []const u8,
+    task: cycle.Task,
+) u8 {
+    const inbound = task.hops.name_at(0);
+    const onward = task.hops.name_at(1);
+
+    const head = queue.read_index(io, slot, inbound) catch |err| return serve.reach_code(err);
+    const sent = queue.read_index(io, slot, onward) catch |err| return serve.reach_code(err);
+    const pending = gap.pending_between(head, sent) orelse return carry.Outcome.bytes_differed;
+
+    var seq = sent;
+    while (seq < head) : (seq += 1) {
+        var seen_buf: [serve.max_message_len]u8 = undefined;
+        const seen = queue.read_slot(io, slot, inbound, seq, &seen_buf) catch |err|
+            return serve.reach_code(err);
+        const message = seen orelse return carry.Outcome.bytes_differed;
+        // An ask whose bytes never carried this ring's shape is refused
+        // here rather than handed onward by a domain that is already
+        // reaching past what it owns.
+        const origin = relay.asked_origin(message) orelse return carry.Outcome.bytes_differed;
+        if (std.mem.eql(u8, origin, self_name)) return carry.Outcome.bytes_differed;
+        queue.write_slot(io, slot, onward, seq, message) catch |err|
+            return serve.reach_code(err);
+    }
+    // invariant: the walk stopped exactly where the inbound head stands
+    assert(seq == head);
+    queue.write_index(io, slot, onward, head) catch |err| return serve.reach_code(err);
+    print("    {s}: relieved {s} onward to {s}, {d} carried\n", .{
+        self_name, inbound, onward, pending,
+    });
+    return carry.Outcome.carried_ok;
+}
+
+/// Runs one assigned step in whichever part the supervisor named.
+fn attempt(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const notify.PeerList,
+    self_name: []const u8,
+    task: cycle.Task,
+    fall: gap.Fall,
+    wake: gap.Wake,
+    role: Role,
+) u8 {
+    return switch (role) {
+        // A carrier runs the three verbs the whole ring already proved,
+        // through the module that proved them, rather than a second copy
+        // that could drift from it.
+        .carrier => gap.attempt(io, slot, peers, self_name, task, fall, wake),
+        .reliever => do_relieve(io, slot, self_name, task),
+    };
+}
+
+/// Reads the capability words a dependent was handed into its own slot.
+fn slot_from_argv(args: []const [:0]const u8, domain: []const u8, cap_count: u32) ?capabilities.DependentSlot {
+    // invariant: a dependent always knows which domain it is
+    assert(domain.len >= 1);
+    // invariant: the count stays within what one dependent may hold
+    assert(cap_count <= capabilities.max_caps_per_dependent);
+    var slot = capabilities.DependentSlot.init(domain);
+    var i: u32 = 0;
+    while (i < cap_count) : (i += 1) {
+        const cap = boot.read_cap_word(args[fixed_argv_words + i]) orelse return null;
+        slot.grant(cap) catch return null;
+    }
+    // invariant: the dependent holds exactly the capability words it was handed
+    assert(slot.cap_count == cap_count);
+    return slot;
+}
+
+/// Runs as one supervised dependent, holding exactly the capabilities, the
+/// neighbors, the one arc, the place it may be dropped, the reading by
+/// which it wakes its successor, and the part it plays.
+fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
+    // invariant: a dependent always receives its marker, domain, plan, fall, wake, role, and count
+    assert(args.len >= fixed_argv_words);
+    const domain = args[2];
+    const plan = args[3];
+    // invariant: a dependent always knows which domain it is
+    assert(domain.len >= 1);
+
+    const fall = gap.read_fall(args[4]) orelse {
+        print("    {s}: refused a fall word it could not read\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    const wake = gap.read_wake(args[5]) orelse {
+        print("    {s}: refused a wake word it could not read\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    const role = read_role(args[6]) orelse {
+        print("    {s}: refused a role word it could not read\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+
+    const cap_count = tally_parse_int.parse_int(u32, args[7], .{}) catch {
+        print("    {s}: refused an unreadable capability count\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    if (cap_count > capabilities.max_caps_per_dependent) {
+        print("    {s}: more capabilities than one dependent holds\n", .{domain});
+        return carry.Outcome.malformed;
+    }
+    if (fixed_argv_words + cap_count > args.len) {
+        print("    {s}: a capability count past the words it was handed\n", .{domain});
+        return carry.Outcome.malformed;
+    }
+
+    var slot = slot_from_argv(args, domain, cap_count) orelse {
+        print("    {s}: refused a malformed capability word\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+
+    var peers: notify.PeerList = .{};
+    var p: usize = fixed_argv_words + cap_count;
+    while (p < args.len) : (p += 1) {
+        peers.add(args[p]) catch {
+            print("    {s}: more peers than one dependent holds\n", .{domain});
+            return carry.Outcome.malformed;
+        };
+    }
+    // invariant: the dependent holds exactly the peer words it was handed
+    assert(peers.count == args.len - fixed_argv_words - cap_count);
+
+    const task = cycle.read_plan(plan) orelse {
+        print("    {s}: refused a plan it could not read\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    const code = attempt(io, &slot, &peers, domain, task, fall, wake, role);
+    print("    {s}: {s} {s} -- {s}\n", .{
+        domain, role_word(role), gap.fall_word(fall), outcome_name(code),
+    });
+    return code;
+}
+
+// =========================================================================
+// The supervisor -- one document per attempt, one hole, and no detour
+// =========================================================================
+
+/// One declared step in a ring that may lose a middle for good.
+pub const Assignment = struct {
+    domain: []const u8,
+    verb: cycle.Verb,
+    hops: []const u8,
+    peers: []const u8,
+    count: u32,
+    fall: gap.Fall,
+    /// Whether the fall lands on every attempt rather than the first alone.
+    /// A permanent fall is the whole subject here: it is what turns a hole
+    /// that closes into a hole that stays open.
+    permanent: bool = false,
+    role: Role = .carrier,
+    expect: u8,
+};
+
+/// What one run did, reported whole -- including the two totals no domain
+/// inside a ring can ever read for itself: which domain was lost, and what
+/// the rest of the circuit did about it.
+pub const Report = struct {
+    started: u32 = 0,
+    attempts: u32 = 0,
+    derivations: u32 = 0,
+    falls: u32 = 0,
+    declined: u32 = 0,
+    skipped: u32 = 0,
+    behind: u32 = 0,
+    refused: u32 = 0,
+    homed: u32 = 0,
+    bells: u32 = 0,
+};
+
+/// Named ways a run declines rather than reporting a hollow success.
+pub const RunError = error{
+    SpawnFailed,
+    UnknownDomain,
+    PlanTooLong,
+    DeclarationUnreadable,
+    OutcomeMismatch,
+    NeverDeclined,
+};
+
+/// How one assigned step ended, from the supervisor's side.
+const StepEnd = enum { ran, declined };
+
+/// Spawns one dependent once, with the fall, wake, and role words it carries.
+fn spawn_once(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    table: *const capabilities.CapabilityTable,
+    step: Assignment,
+    fall: gap.Fall,
+    wake: gap.Wake,
+) (RunError || boot.BootError)!u8 {
+    const slot = table.find_dependent(step.domain) orelse return error.UnknownDomain;
+    // invariant: the line handed out agrees with the declaration it came from
+    assert(boot.line_agrees(sys, slot));
+
+    var peers: notify.PeerList = .{};
+    notify.peers_of(sys, step.domain, &peers);
+
+    var plan_buf: [cycle.max_plan_len]u8 = undefined;
+    const plan = std.fmt.bufPrint(&plan_buf, "{s}:{s}:{s}:{d}", .{
+        cycle.verb_word(step.verb), step.hops, step.peers, step.count,
+    }) catch return error.PlanTooLong;
+
+    var count_buf: [8]u8 = undefined;
+    const count_word = std.fmt.bufPrint(&count_buf, "{d}", .{slot.cap_count}) catch
+        return error.PlanTooLong;
+
+    var storage: [capabilities.max_caps_per_dependent][boot.max_cap_word_len]u8 = undefined;
+    const argv = allocator.alloc(
+        []const u8,
+        fixed_argv_words + slot.cap_count + peers.count,
+    ) catch return error.SpawnFailed;
+    argv[0] = self_path;
+    argv[1] = "dependent";
+    argv[2] = slot.label_slice();
+    argv[3] = plan;
+    argv[4] = gap.fall_word(fall);
+    argv[5] = gap.wake_word(wake);
+    argv[6] = role_word(step.role);
+    argv[7] = count_word;
+    var c: u32 = 0;
+    while (c < slot.cap_count) : (c += 1) {
+        assert(c < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        argv[fixed_argv_words + c] = try boot.write_cap_word(&storage[c], &slot.caps[c]);
+    }
+    var q: u32 = 0;
+    while (q < peers.count) : (q += 1) {
+        argv[fixed_argv_words + slot.cap_count + q] = peers.name_at(q);
+    }
+
+    var proc = std.process.spawn(io, .{ .argv = argv }) catch return error.SpawnFailed;
+    const term = proc.wait(io) catch return error.SpawnFailed;
+    return switch (term) {
+        .exited => |code| code,
+        else => restart.fell,
+    };
+}
+
+/// Runs one assigned step, and declines the domain by name once it has
+/// spent everything a supervisor allows it.
+///
+/// Every attempt reloads the declaration from disk and derives the dependent's
+/// line from that read, so even a domain being lost spends its last attempt
+/// on rights the document grants rather than on a parent's memory of them.
+/// A permanent fall lands on every attempt; an accidental one lands on the
+/// first alone, which is the shape `gap.rye` proved.
+fn run_assignment(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    step: Assignment,
+    wake: gap.Wake,
+    report_out: *Report,
+) (roster.RosterError || RunError || boot.BootError)!StepEnd {
+    // invariant: an assignment always names a domain, its regions, and its peers
+    assert(step.domain.len >= 1);
+    assert(step.hops.len >= 1);
+    assert(step.peers.len >= 1);
+
+    var tries: u32 = 0;
+    while (tries < max_attempts) : (tries += 1) {
+        var buf: [read.read_buffer_bytes]u8 = undefined;
+        const fresh = read.load(io, declaration_path, &buf) catch
+            return error.DeclarationUnreadable;
+        if (fresh.verify() != .whole) return error.DeclarationUnreadable;
+        const table = try roster.from_system(&fresh);
+        // invariant: the freshly derived table enforces exactly what the document permits
+        assert(roster.agrees(&fresh, &table));
+        report_out.derivations += 1;
+
+        const fall: gap.Fall = if (step.permanent or tries == 0) step.fall else .none;
+        const code = try spawn_once(allocator, io, self_path, &fresh, &table, step, fall, wake);
+        report_out.attempts += 1;
+        if (code == restart.fell) {
+            report_out.falls += 1;
+            continue;
+        }
+        if (step.permanent) {
+            print("    {s}: returned where the run expected a domain lost for good\n", .{step.domain});
+            return error.NeverDeclined;
+        }
+        if (code != step.expect) {
+            print("    {s}: expected {s}, heard {s}\n", .{
+                step.domain, outcome_name(step.expect), outcome_name(code),
+            });
+            return error.OutcomeMismatch;
+        }
+        return .ran;
+    }
+    // invariant: a domain is only declined after spending every attempt
+    assert(tries == max_attempts);
+    print("    {s}: declined after {d} attempts -- the hole stays open\n", .{
+        step.domain, max_attempts,
+    });
+    return .declined;
+}
+
+/// Runs a whole ordered lap against the ring declaration, under one reading
+/// of how a pass wakes its successor and one disposition for the steps that
+/// stand behind a hole.
+pub fn run_plan(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Assignment,
+    wake: gap.Wake,
+    disposition: Disposition,
+) (roster.RosterError || exercise.ProvisionError || notify.BellError || RunError || boot.BootError)!Report {
+    // invariant: a run always knows what program to spawn
+    assert(self_path.len >= 1);
+    // invariant: a run always carries at least one step
+    assert(plan.len >= 1);
+    const provisioned = try exercise.provision(io, sys);
+    // invariant: every declared region has a backing store before any dependent runs
+    assert(provisioned == sys.map.region_count);
+    const bells = try roundtrip.provision_directed(io, sys);
+    // invariant: every declared channel has two silent bells before any dependent runs
+    assert(bells == sys.graph.channel_count * 2);
+
+    var report_out: Report = .{ .bells = bells };
+    var lost = false;
+    var i: u32 = 0;
+    while (i < plan.len) : (i += 1) {
+        const step = plan[i];
+        if (lost and disposition == .halt) {
+            report_out.skipped += 1;
+            print("    {s}: never started -- the run halted at the hole\n", .{step.domain});
+            continue;
+        }
+        const end = try run_assignment(allocator, io, self_path, step, wake, &report_out);
+        if (end == .declined) {
+            report_out.declined += 1;
+            lost = true;
+            continue;
+        }
+        report_out.started += 1;
+        if (lost) report_out.behind += 1;
+        if (step.role == .reliever and step.expect != carry.Outcome.carried_ok) {
+            report_out.refused += 1;
+        }
+        if (step.expect == carry.Outcome.carried_ok and step.verb == .home) {
+            report_out.homed += step.count;
+        }
+    }
+    // invariant: no step ever ran without a fresh derivation standing behind it
+    assert(report_out.derivations == report_out.attempts);
+    // invariant: every step in the plan either ran, was declined, or was skipped
+    assert(report_out.started + report_out.declined + report_out.skipped == plan.len);
+    return report_out;
+}
+
+// =========================================================================
+// Self-test -- the hole stays open, and nobody may reach around it
+// =========================================================================
+
+/// A middle lost for good, with the run halting where it fell.
+///
+/// birch falls on every attempt it is given, spends them, and is declined.
+/// cedar and alder never start, so the report names two steps skipped and
+/// the operator learns exactly where the circuit stopped.
+const halt_plan = [_]Assignment{
+    .{ .domain = "alder", .verb = .place, .hops = "ask_ab", .peers = "birch", .count = 2, .fall = .none, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "birch", .verb = .pass, .hops = "ask_ab,ask_bc", .peers = "alder,cedar", .count = 2, .fall = .after_hear, .permanent = true, .expect = restart.fell },
+    .{ .domain = "cedar", .verb = .pass, .hops = "ask_bc,ask_ca", .peers = "birch,alder", .count = 2, .fall = .none, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "alder", .verb = .home, .hops = "ask_ca,taken", .peers = "cedar", .count = 2, .fall = .none, .expect = carry.Outcome.carried_ok },
+};
+
+/// The same loss, with the rest of the circuit running anyway, and under
+/// the very wake reading that mended a hole which closed.
+///
+/// cedar and alder each start, hear a bell rung zero times, and report
+/// Unheard. The cure for a silent restart is no cure for an absent domain,
+/// and this plan runs that rather than asserting it.
+const carry_on_plan = [_]Assignment{
+    .{ .domain = "alder", .verb = .place, .hops = "ask_ab", .peers = "birch", .count = 2, .fall = .none, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "birch", .verb = .pass, .hops = "ask_ab,ask_bc", .peers = "alder,cedar", .count = 2, .fall = .after_hear, .permanent = true, .expect = restart.fell },
+    .{ .domain = "cedar", .verb = .pass, .hops = "ask_bc,ask_ca", .peers = "birch,alder", .count = 2, .fall = .none, .expect = notify.Bell.unheard },
+    .{ .domain = "alder", .verb = .home, .hops = "ask_ca,taken", .peers = "cedar", .count = 2, .fall = .none, .expect = notify.Bell.unheard },
+};
+
+/// Two neighbors reaching for arcs they do not own, and two refusals that
+/// come straight from the grants.
+///
+/// alder reaches for the arc behind the hole with two real asks standing in
+/// it, and holds no word at all for `ask_bc`. cedar reaches for alder's
+/// homeward arc, holds both regions, and is stopped at the claim because it
+/// holds `taken` at rights that read and never write.
+const relief_plan = [_]Assignment{
+    .{ .domain = "alder", .verb = .place, .hops = "ask_ab", .peers = "birch", .count = 2, .fall = .none, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "birch", .verb = .pass, .hops = "ask_ab,ask_bc", .peers = "alder,cedar", .count = 2, .fall = .after_hear, .permanent = true, .expect = restart.fell },
+    .{ .domain = "alder", .verb = .pass, .hops = "ask_ab,ask_bc", .peers = "birch,cedar", .count = 2, .fall = .none, .role = .reliever, .expect = carry.Outcome.not_granted },
+    .{ .domain = "cedar", .verb = .pass, .hops = "ask_ca,taken", .peers = "alder,birch", .count = 2, .fall = .none, .role = .reliever, .expect = carry.Outcome.write_denied },
+};
+
+/// Proves the role and disposition words hold before any process runs.
+fn check_wire() u8 {
+    if (read_role("standin") != null) {
+        print("  RED: a part this ring never named was accepted\n", .{});
+        return 1;
+    }
+    // invariant: every role word this ring writes reads back as itself
+    assert(read_role(role_word(.carrier)).? == .carrier);
+    assert(read_role(role_word(.reliever)).? == .reliever);
+    // invariant: a declined domain and a refused reach are told apart by code
+    assert(restart.fell != carry.Outcome.not_granted);
+    assert(restart.fell != carry.Outcome.write_denied);
+    assert(carry.Outcome.not_granted != carry.Outcome.write_denied);
+    print("  the role words read back as themselves, and a loss is told from a refusal by its code\n", .{});
+    print("  the two dispositions are {s} and {s}\n", .{
+        disposition_word(.halt), disposition_word(.carry_on),
+    });
+    return 0;
+}
+
+/// Loads the ring declaration, or names why it could not be read.
+fn load_declaration(io: std.Io, buf: []u8) ?system.System {
+    const parsed = read.load(io, declaration_path, buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ declaration_path, @errorName(err) });
+        return null;
+    };
+    if (parsed.verify() != .whole) {
+        print("  RED: {s} did not read whole\n", .{declaration_path});
+        return null;
+    }
+    return parsed;
+}
+
+/// A domain lost for good, with the run halting at the hole.
+fn check_halt(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = load_declaration(io, &buf) orelse return 1;
+    const done = run_plan(allocator, io, self_path, &parsed, &halt_plan, .when_moved, .halt) catch |err| {
+        print("  RED: a lap halting at an open hole did not report itself: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: the middle spent every attempt and was declined once
+    assert(done.falls == max_attempts);
+    assert(done.declined == 1);
+    // invariant: every step behind the hole was named rather than run
+    assert(done.skipped == 2);
+    // invariant: nothing came home across a hole that stayed open
+    assert(done.homed == 0);
+    print("  a middle lost for good costs {d} attempts and one decline, and {d} steps never start\n", .{
+        done.falls, done.skipped,
+    });
+    print("  halting names where the circuit stopped, and every ask stands where it was placed\n", .{});
+    return 0;
+}
+
+/// The same loss, with the rest of the circuit running anyway.
+fn check_carry_on(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = load_declaration(io, &buf) orelse return 1;
+    const done = run_plan(allocator, io, self_path, &parsed, &carry_on_plan, .every_pass, .carry_on) catch |err| {
+        print("  RED: the circuit behind the hole did not report for itself: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: the same loss landed, and this time nothing was skipped
+    assert(done.declined == 1);
+    assert(done.skipped == 0);
+    // invariant: every step behind the hole started and reported
+    assert(done.behind == 2);
+    // invariant: running past an open hole still brings nothing home
+    assert(done.homed == 0);
+    print("  {d} steps behind the hole each start, hear a bell rung zero times, and report Unheard\n", .{done.behind});
+    print("  ringing on every completed pass mends a hole that closes and does nothing for one that stays open\n", .{});
+    print("  carrying on proves the rest of the circuit healthy and every ask parked at one place: {d} home\n", .{done.homed});
+    return 0;
+}
+
+/// Two neighbors reaching around the hole, and two refusals from the grants.
+fn check_no_detour(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = load_declaration(io, &buf) orelse return 1;
+    const done = run_plan(allocator, io, self_path, &parsed, &relief_plan, .when_moved, .carry_on) catch |err| {
+        print("  RED: a reach around the hole was not refused: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: both relief attempts were refused, neither carried
+    assert(done.refused == 2);
+    // invariant: the domain the relief reached for stayed lost
+    assert(done.declined == 1);
+    // invariant: no ask reached home by a route the declaration never drew
+    assert(done.homed == 0);
+    print("  {d} neighbors reached around the hole and {d} were refused -- by absence and by rights\n", .{
+        done.refused, done.refused,
+    });
+    print("  a ring has no detour, and nothing had to forbid one, because nothing ever permitted it\n", .{});
+    return 0;
+}
+
+fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    print("Caravan decline {s} -- self-test\n", .{caravan_decline_version});
+    const wire = check_wire();
+    if (wire != 0) return wire;
+    const halted = check_halt(allocator, io, self_path);
+    if (halted != 0) return halted;
+    const carried = check_carry_on(allocator, io, self_path);
+    if (carried != 0) return carried;
+    const detour = check_no_detour(allocator, io, self_path);
+    if (detour != 0) return detour;
+    print("  GREEN: a circuit may run, report, and wait at an open hole, and may never reach around it\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
+        return run_dependent(io, args);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(allocator, io, self_path);
+    }
+    if (args.len >= 2) return 1;
+    return run_self_test(allocator, io, self_path);
+}

@@ -195,7 +195,11 @@ pub fn read_wake(word: []const u8) ?Wake {
 
 /// Reads how far a writer's head stands against a reader's own, and answers
 /// how many messages wait -- or names why the pair is unreadable.
-fn pending_between(head: u32, tail: u32) ?u32 {
+///
+/// Exported so a supervisor asking a further question of the same ring --
+/// `decline.rye` asks what the circuit may do when the hole stays open --
+/// reads the arc by the same arithmetic rather than growing a second one.
+pub fn pending_between(head: u32, tail: u32) ?u32 {
     if (head < tail) return null;
     const waiting = head - tail;
     if (waiting > queue.max_outstanding) return null;
@@ -357,7 +361,11 @@ fn do_home(
 }
 
 /// Attempts one step, dropping the dependent where the supervisor asked.
-fn attempt(
+///
+/// Exported so a ring under a hole that stays open (`decline.rye`) runs the
+/// same three verbs this module already proved, and adds only the one act
+/// its own question needs.
+pub fn attempt(
     io: std.Io,
     slot: *const capabilities.DependentSlot,
     peers: *const notify.PeerList,

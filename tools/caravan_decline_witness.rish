@@ -1,0 +1,105 @@
+# caravan_decline_witness.rish -- Caravan ring-under-open-hole witness.
+#
+# Proves what the rest of a circuit is entitled to do when a middle is lost
+# for good. `gap.rye` dropped a middle mid-lap and let it come back, and
+# every hole it opened eventually closed; this witness leaves one open.
+# `birch` falls on every attempt rather than on the first alone, spends
+# what the supervisor allows it, and is DECLINED by name -- a domain the
+# ring will not get back.
+#
+# Three answers ride here, and the third is the finding.
+#
+# The wake cure does nothing for an absent domain. `wake-every-pass`
+# replaces a bell swallowed by a fall, and a domain that never completes a
+# pass never reaches the line that rings, so the carry-on lap runs under
+# the very reading that mended a closing hole and is unchanged by it.
+#
+# The rest of the circuit may run, and finds nothing. Under `carry-on`
+# every domain behind the hole starts, hears the bell it waited on ringing
+# zero times, and reports Unheard -- nobody hangs, nobody invents work,
+# nobody advances. Under `halt` those steps never start, and the report
+# names them skipped. The choice is about what an operator learns rather
+# than about what the ring achieves, and the work is safe either way,
+# because it stands on disk in a region that belongs to the declaration.
+#
+# And no neighbor may relieve the declined domain:
+#
+#   A ring has no detour, and the capability table refuses in two distinct
+#   ways -- by absence and by rights.
+#
+# alder reaches for the arc behind the hole, with two real asks standing in
+# it, and is refused NotGranted -- the declaration hands it no word for
+# `ask_bc` at all. cedar reaches for alder's homeward arc, holds both
+# regions, and is stopped at the claim with WriteDenied, because it holds
+# `taken` at rights that read and never write. Neither refusal is a rule
+# this module enforces; both are the grants, read back by the dependent from
+# the words it was handed.
+#
+# Both RED paths were proven on metal before this witness was written.
+# Declaring the loss while letting birch run left the domain returning
+# where the plan expected one lost for good, and the run refused with
+# NeverDeclined at exit 1. Expecting a relief to succeed made the reliever
+# refuse WriteDenied against a plan that wanted a carry, and the run
+# refused with OutcomeMismatch at exit 1.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep
+# over interpolated output -- REDS #76 / #85, the apostrophe loom.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_decline_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/decline"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/decline.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan decline build failed"
+
+# The shape under test is the ring already proven, unchanged. The question
+# here is about a domain that stays gone rather than about a shape.
+let decl = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_cycle.bron 2>&1"]
+assert decl.ok else "the ring declaration could not be read"
+assert decl.out contains "system serial_cycle" else "the ring declaration lost its name"
+assert decl.out contains "domains 3 -- channels 3 -- regions 4 -- grants 8" else "the ring declaration changed shape"
+assert decl.out contains "verdict: whole" else "the ring declaration did not read whole"
+
+# A fresh provisioning each run, so every index starts at zero and a bell
+# found ringing was rung by this run rather than left standing by the last.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels"]
+assert clean.ok else "the region stores and doorbells could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan decline selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan decline selftest not GREEN"
+assert test.out contains "a circuit may run, report, and wait at an open hole, and may never reach around it" else "the open-hole claim did not close"
+
+# The wire, before any process runs: a part this ring never named is
+# refused, and a domain lost is told from a reach refused by its code.
+assert test.out contains "the role words read back as themselves, and a loss is told from a refusal by its code" else "the role wire did not read back"
+assert test.out contains "the two dispositions are halt and carry-on" else "the dispositions were not named"
+
+# A middle lost for good: every attempt spent, the domain declined by name,
+# and the run halting where it fell.
+assert test.out contains "birch: carrier fall-after-hear -- fell" else "the middle never fell"
+assert test.out contains "birch: declined after 2 attempts -- the hole stays open" else "the lost domain was never declined by name"
+assert test.out contains "cedar: never started -- the run halted at the hole" else "a step behind the hole started under halt"
+assert test.out contains "a middle lost for good costs 2 attempts and one decline, and 2 steps never start" else "the halt did not report its own shape"
+assert test.out contains "halting names where the circuit stopped, and every ask stands where it was placed" else "the halted lap did not name what it preserved"
+
+# The same loss under carry-on, and under the wake reading that mended a
+# hole which closed: each domain behind the hole starts and reports Unheard.
+assert test.out contains "cedar: carrier run -- Unheard" else "the successor heard a bell nobody rang"
+assert test.out contains "alder: carrier run -- Unheard" else "the homeward step heard a bell nobody rang"
+assert test.out contains "2 steps behind the hole each start, hear a bell rung zero times, and report Unheard" else "the circuit behind the hole did not report for itself"
+assert test.out contains "ringing on every completed pass mends a hole that closes and does nothing for one that stays open" else "the wake cure was not held to its own bound"
+assert test.out contains "carrying on proves the rest of the circuit healthy and every ask parked at one place: 0 home" else "carrying on brought something home across an open hole"
+
+# The finding: two neighbors reach around the hole, and the grants refuse
+# them in two distinct ways -- one holding no word for the region at all,
+# the other holding it at rights that read and never write.
+assert test.out contains "alder: reliever run -- NotGranted" else "a neighbor holding no grant was allowed to reach around the hole"
+assert test.out contains "cedar: reliever run -- WriteDenied" else "a read-only neighbor was allowed to claim an arc it cannot write"
+assert test.out contains "2 neighbors reached around the hole and 2 were refused -- by absence and by rights" else "a reach around the hole was not refused"
+assert test.out contains "a ring has no detour, and nothing had to forbid one, because nothing ever permitted it" else "the no-detour finding was not named"
+
+say "GREEN: Caravan decline witness passed."

@@ -1,0 +1,46 @@
+format session-log-v1
+stamp 20260819.165722
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Caravan decline -- a middle lost for good, and a ring proven to have no detour
+prompt Autonomous loop -- take the next agent-doable lap Lindy-first crux-first on the Microkernel Target double-seat, Standfast on reds first, one council-rota doc deep-read, condense REMEMBER, send the finished increment.
+
+think Standfast first, before any new work. Read crux/REDS.md whole: living rows 80, 83, 84, 85 and the prose notes 81, 82, 85-reopened, 86, 87 all read closed or released, each with a witness on metal behind it. Confirmed the two standing guards still hold by running them rather than by reading their closure notes -- witness_claim_check_witness GREEN across 1,663 runnable witnesses, living_card_ascii_witness GREEN with the mojibake control caught. No open agent-closable red, so the constructive queue is free.
+
+think Council rota by lap index: 461 .kyri logs on disk, 461 mod 27 = 2, so the deep-read was foundations/20260706-185112_follow-our-compass.md. Its read order landed on this lap directly -- brief and green witnesses win over the plan, and the return walk now orders Lindy-first crux-first. The lap's crux came from the newest log's recommend rather than from a fresh survey, which is exactly the compass habit: read what was already decided rather than rediscovering direction.
+
+think The running thread named the crux plainly. gap.rye closed with the ring under a fall that returns, and left standing the ring under a fall that never does -- a middle declined by name after its bounded attempts, and what the rest of the circuit is entitled to do with a lap whose hole stays open. Lindy-first crux-first agrees: the Microkernel Target double-seat leads, and within it the entitlement question is the hardest still-tractable move on this ground.
+
+think Designed the module around three questions rather than one, because the entitlement question splits cleanly. Does the previous rung's cure help? Does the circuit behind the hole run? May anyone reach around it? The third is the finding, and the first two are the honest context that makes the third mean something.
+
+think The first answer holds gap.rye to its own bound. wake-every-pass replaces a bell a fall swallowed, and a domain that never completes a pass never reaches the line that rings -- so a cure for a silent restart is no cure for an absent domain. Ran the carry-on lap under that very reading rather than reasoning about it, so the limit is measured instead of assumed.
+
+think The second answer turned out calmer than expected. Under carry-on, cedar and alder each start, hear a bell rung zero times, and report Unheard. Nobody hangs, nobody invents work, nobody advances. So a hole that stays open is announced by the same honest silence at every arc behind it, and the choice between halt and carry-on is about what an operator learns rather than about what the ring achieves.
+
+think The third answer is the rung. Read the grants in serial_cycle.bron and the two refusals fell straight out of the document: alder holds no word at all for ask_bc, so its reach for the arc behind the hole refuses NotGranted; cedar holds ask_ca rw and taken r, so it gets past both reads and is stopped at the claim with WriteDenied. Two neighbors, two refusals, two distinct reasons -- absence on one side, rights on the other -- and neither is a rule this module enforces.
+
+think Chose the reliever's shape so the refusal is about the region rather than about the bell. A relief rings nobody, because a bell would answer a different question first -- whether the neighbor spoke -- and the question here is whether the declaration lets this domain touch the arc at all. And a reliever claims the onward arc caught up whether or not it moved anything, since taking over is the act under test rather than the carrying; that is what puts cedar's refusal at the claim rather than behind an early nothing-new.
+
+think Narrow scope held by reuse rather than by restraint. Made gap.rye's attempt and pending_between pub with comments naming their second reader, so the three carrier verbs run through the module that proved them rather than a second copy that could drift. The only new vocabulary is the role word (carrier or reliever), the disposition (halt or carry-on), and a permanent fall -- each of which is the question the rung asks.
+
+think Proved both RED paths on metal before trusting the green, as this arc always does. Declaring the loss while letting birch run left the domain returning where the plan expected one lost for good, refused NeverDeclined at exit 1. Expecting the relief to succeed made cedar refuse WriteDenied against a plan that wanted a carry, refused OutcomeMismatch at exit 1. Reverted both probes and rebuilt before claiming anything.
+
+obs A first RED probe attempt was the wrong shape and taught something. Setting permanent to false made the check fail on an invariant assert rather than on the named error, which is a real RED yet a less honest one. Re-aimed it at the named path -- permanent loss declared while the domain never falls -- and NeverDeclined fired exactly where it was designed to. A probe should exercise the refusal you built, never merely make the program stop.
+
+obs The rung landed GREEN on its first metal pass. Every claim in the new witness reads the self-test output natively (assert out contains) rather than handing captured output to a shell -- REDS #76/#85, the apostrophe loom, honored by construction rather than retrofitted.
+
+obs Ran gap.rye's own witness after making two of its functions pub, so the export is proven not to have moved anything. GREEN, unchanged. tame_style_check GREEN with bans clean; width-check clean at exit 0.
+
+obs REMEMBER stayed single-stranded: the gap edge folded into the prior-edges pointer with its finding kept in two sentences, and the decline edge seated as the live work-front with its next crux named.
+
+loom witness=caravan_decline_witness result=GREEN rings=3 attempts_spent=2 declines=1 skipped=2 unheard_behind=2 reliefs_refused=2 asks_home=0 red_probes=2
+
+file caravan/decline.rye the rung itself -- a middle lost for good, the disposition for the circuit behind the hole, and the two refusals that prove a ring has no detour
+file tools/caravan_decline_witness.rish the witness, GREEN on metal, both RED paths proven before the green was trusted
+file caravan/gap.rye attempt and pending_between made pub with comments naming their second reader, so one proven implementation serves both rings
+file caravan/README.md the ladder row and the durable prose -- why a ring has no detour
+file crux/REMEMBER.md the live edge moves to the decline, the gap edge condensed into the prior-edges pointer
+
+recommend keep-going -- next the ring rebuilt around its loss: whether a declaration may name a standby that legitimately holds the lost domain's regions, and what a grant written for a domain that is absent costs the ring while it is present. decline.rye proved no neighbor may reach around a hole; the open crux is whether a document may draw a second path in advance, and whether a ring that can be routed around is still a ring. No key, no funds, no gate.
