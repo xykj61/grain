@@ -1,0 +1,1067 @@
+//! Caravan cycle -- a ring with no ends, and no vantage point inside it.
+//!
+//! `relay.rye` closed the last question a chain can ask. One domain held
+//! two roles, a middle forwarded a fresh ask while its whole backlog stood
+//! unanswered, and the two ends of the chain shared nothing at all. Every
+//! declaration in this arc until now has had ends: a domain that only asks,
+//! a domain that only answers, and the shape running between them.
+//!
+//! The crux here: **a shape with no ends.** `alder` writes `ask_ab` and
+//! reads `ask_ca`, `birch` writes `ask_bc` and reads `ask_ab`, `cedar`
+//! writes `ask_ca` and reads `ask_bc`. Every domain is a middle, the flow
+//! graph closes on itself, and three questions open that no chain poses.
+//!
+//! **Is the ring derivable?** It is, twice over, from the grants alone. In
+//! a chain, two domains span a single peer and those are its ends; here
+//! every domain spans exactly two, so nothing is an end -- a ring is the
+//! shape with no ends. And exactly one directed walk visits every domain
+//! once and returns where it began, which is the circulation order,
+//! searched out of the flow graph rather than declared. A reversed edge
+//! leaves the grants looking much the same and the walk closing nowhere,
+//! and the search says so.
+//!
+//! **Does a closed graph still settle?** It does, for the reason the chain
+//! settled: no verb waits. A pass moves what stands, rings the neighbor
+//! that carries it further, and returns. An ask placed by alder travels a
+//! full lap and comes home while a second pair is still mid-lap behind it.
+//! What a badly ordered pass costs is a wasted pass rather than a stopped
+//! ring -- a domain that reads for its lap before the lap has moved simply
+//! hears an unrung bell and returns, and the ring settles on the passes that
+//! follow.
+//!
+//! **What does the ring take away?** This is the honest finding. No domain
+//! holds a grant on every region, so no domain can total the lap it is part
+//! of: alder reads three of the four regions and cedar's segment is closed
+//! to it, refused `NotGranted` before any permission is compared. In the
+//! chain, the relay could read every hop and report the whole. **A ring has
+//! no vantage point.** Only the parent outside it sees the whole, which is
+//! exactly what a supervisor is for.
+//!
+//! One more fact turns on the closure. At one hop, the region an ask
+//! arrives in names its author and the bytes name its origin, and the two
+//! agree. After a full lap they must disagree: an ask arriving at alder
+//! from cedar, naming alder as its origin, is alder's own ask come home --
+//! and that disagreement is what a completed lap looks like.
+//!
+//! Hosted ground: real processes, real files, pure policy, no kernel
+//! underneath it yet.
+//!
+//! Usage:
+//!   cycle selftest                    Run the ring and check
+//!   cycle                             Same as selftest
+//!   cycle dependent <domain> <plan> ...   Run as a supervised dependent (internal)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const regions = @import("regions.rye");
+const channels = @import("channels.rye");
+const capabilities = @import("capabilities.rye");
+const roster = @import("roster.rye");
+const read = @import("read.rye");
+const boot = @import("boot.rye");
+const exercise = @import("exercise.rye");
+const carry = @import("carry.rye");
+const notify = @import("notify.rye");
+const roundtrip = @import("roundtrip.rye");
+const serve = @import("serve.rye");
+const queue = @import("queue.rye");
+const fanin = @import("fanin.rye");
+const relay = @import("relay.rye");
+const tally_parse_int = @import("parse_int.rye");
+
+const caravan_cycle_version = "20260819.162747";
+
+// =========================================================================
+// Bounds -- what one ring run may spend
+// =========================================================================
+
+/// The ring declaration: three domains, three circulating regions, and one
+/// tail owned by the domain that counts its own laps.
+pub const declaration_path = "caravan/systems/serial_cycle.bron";
+
+/// How many regions one step may name. The widest step here reads every
+/// region one domain can reach, which is the ring's own width less the
+/// segment closed to it.
+pub const max_hops: u32 = 4;
+
+/// How many peers one step may name -- the neighbor it hears and the one it
+/// rings, which around a ring are always two different domains.
+pub const max_peers: u32 = 2;
+
+/// The longest plan word this ring builds: a verb, a region list, a peer
+/// list, a count, and the separators between them.
+pub const max_plan_len: u32 = 512;
+
+/// Fixed argv words every dependent receives, matching `serve.rye`.
+const fixed_argv_words: u32 = 5;
+
+comptime {
+    // invariant: a ring is at least three domains around
+    assert(max_hops >= 3);
+    // invariant: the whole ring fits the regions one declaration may hold
+    assert(max_hops <= regions.max_regions);
+    // invariant: every domain names both the neighbor it hears and the one it rings
+    assert(max_peers >= 2);
+    // invariant: a step never names more peers than a dependent is wired to
+    assert(max_peers <= notify.max_peers_per_dependent);
+    // invariant: the longest legal step still fits the plan word that carries it
+    assert(8 + (max_hops * (regions.max_name_len + 1)) +
+        (max_peers * (channels.max_name_len + 1)) + 8 <= max_plan_len);
+    // invariant: a whole dependent argv stays within what one run builds
+    assert(fixed_argv_words + capabilities.max_caps_per_dependent + notify.max_peers_per_dependent <= 32);
+    // invariant: a ring's own hop list fits the list that carries it
+    assert(max_hops <= relay.max_hops);
+}
+
+/// Names one outcome for an operator, deferring wholly to the vocabulary
+/// this arc already speaks -- a ring needed no new word for how it ends.
+pub fn outcome_name(code: u8) []const u8 {
+    return relay.outcome_name(code);
+}
+
+// =========================================================================
+// The shape, derived -- a ring read off the grants, never declared
+// =========================================================================
+
+/// Answers whether the flow set carries a directed region from one domain
+/// to another.
+pub fn has_flow(set: *const relay.FlowSet, from: u32, to: u32) bool {
+    // invariant: the flow set stays within its bound
+    assert(set.count <= regions.max_regions);
+    // invariant: a flow is a question about two different domains
+    assert(from != to);
+    var i: u32 = 0;
+    while (i < set.count) : (i += 1) {
+        assert(i < regions.max_regions); // invariant: the walk stays in the array
+        const flow = set.flows[i];
+        if (flow.from == from and flow.to == to) return true;
+    }
+    return false;
+}
+
+/// The circulation order of a ring: every domain once, closing where it
+/// began.
+pub const RingOrder = struct {
+    order: [regions.max_domains]u32 = @splat(0),
+    count: u32 = 0,
+
+    pub fn at(self: *const RingOrder, index: u32) u32 {
+        // invariant: a read stays inside the order this ring holds
+        assert(index < self.count);
+        return self.order[index];
+    }
+};
+
+/// Searches the flow graph for the one directed walk that visits every
+/// domain once and returns to where it started.
+///
+/// A chain has no such walk at all, since its ends carry bytes in only one
+/// direction between them. A ring has exactly one, and that one is its
+/// circulation order -- derived here rather than declared, so a declaration
+/// whose grants do not actually close answers null instead of being read as
+/// a ring it never was. Two or more walks answer null as well: a shape with
+/// a choice of laps is not the single ring this module runs.
+///
+/// The search is a bounded backtracking walk. Depth never passes the
+/// domain roster, and each level tries each domain once, so the whole
+/// search is bounded by the declaration itself.
+pub fn ring_order(set: *const relay.FlowSet, domain_count: u32) ?RingOrder {
+    // invariant: a ring is searched only within the roster that holds it
+    assert(domain_count <= regions.max_domains);
+    if (domain_count < 3) return null;
+
+    var path: [regions.max_domains]u32 = @splat(0);
+    var next: [regions.max_domains]u32 = @splat(0);
+    var visited: [regions.max_domains]bool = @splat(false);
+    var found: RingOrder = .{};
+    var laps: u32 = 0;
+
+    path[0] = 0;
+    visited[0] = true;
+    next[0] = 0;
+    var depth: u32 = 1;
+    next[1] = 0;
+
+    // Each level advances its candidate or falls back one, so the walk
+    // spends at most domain_count steps per level and always terminates.
+    while (depth >= 1) {
+        assert(depth <= domain_count); // invariant: the walk stays inside the roster
+        if (next[depth] >= domain_count) {
+            depth -= 1;
+            if (depth == 0) break;
+            visited[path[depth]] = false;
+            next[depth] += 1;
+            continue;
+        }
+        const candidate = next[depth];
+        if (visited[candidate] or !has_flow(set, path[depth - 1], candidate)) {
+            next[depth] += 1;
+            continue;
+        }
+        path[depth] = candidate;
+        visited[candidate] = true;
+        if (depth + 1 == domain_count) {
+            if (has_flow(set, candidate, path[0])) {
+                laps += 1;
+                if (laps == 1) {
+                    var k: u32 = 0;
+                    while (k < domain_count) : (k += 1) found.order[k] = path[k];
+                    found.count = domain_count;
+                }
+            }
+            visited[candidate] = false;
+            next[depth] += 1;
+            continue;
+        }
+        depth += 1;
+        next[depth] = 0;
+    }
+
+    if (laps != 1) return null;
+    // invariant: the one lap found visits every declared domain
+    assert(found.count == domain_count);
+    return found;
+}
+
+/// Counts the regions one domain holds any grant on at all.
+///
+/// In a chain the middle reaches every region and can total the whole run.
+/// Around a ring this number stays below the region count for every domain,
+/// which is the ring's own cost stated as arithmetic.
+pub fn reach_of(sys: *const system.System, domain: u32) u32 {
+    // invariant: the grant roster stays within its bound
+    assert(sys.map.grant_count <= regions.max_grants);
+    var seen: [regions.max_regions]bool = @splat(false);
+    var held: u32 = 0;
+    var i: u32 = 0;
+    while (i < sys.map.grant_count) : (i += 1) {
+        assert(i < regions.max_grants); // invariant: the walk stays in the array
+        const one = sys.map.grants[i];
+        if (one.domain != domain) continue;
+        assert(one.region < regions.max_regions); // invariant: the grant addresses the roster
+        if (seen[one.region]) continue;
+        seen[one.region] = true;
+        held += 1;
+    }
+    // invariant: a domain never reaches more regions than the document declares
+    assert(held <= sys.map.region_count);
+    return held;
+}
+
+/// Reads one declared domain's own name out of the roster it sits in.
+pub fn domain_name(sys: *const system.System, index: u32) []const u8 {
+    // invariant: a name is read from inside the roster that holds it
+    assert(index < sys.map.domain_count);
+    const slot = &sys.map.domains[index];
+    // invariant: a domain read off the roster is a live one
+    assert(slot.live);
+    return slot.name_slice();
+}
+
+/// The widest reach any one domain holds across a declaration.
+pub fn widest_reach(sys: *const system.System) u32 {
+    // invariant: the domain roster stays within its bound
+    assert(sys.map.domain_count <= regions.max_domains);
+    var widest: u32 = 0;
+    var d: u32 = 0;
+    while (d < sys.map.domain_count) : (d += 1) {
+        const held = reach_of(sys, d);
+        if (held > widest) widest = held;
+    }
+    // invariant: no domain reaches past the regions declared
+    assert(widest <= sys.map.region_count);
+    return widest;
+}
+
+// =========================================================================
+// The plan wire -- a verb, the regions it touches, the neighbors it speaks to
+// =========================================================================
+
+/// The six steps this ring runs, each as its own process.
+pub const Verb = enum { place, pass, home, stand, peek, forge };
+
+/// How many regions and how many peers each verb is entitled to name.
+const Arity = struct { hops: u32, peers: u32 };
+
+fn arity_of(verb: Verb) Arity {
+    return switch (verb) {
+        .place => .{ .hops = 1, .peers = 1 },
+        .pass => .{ .hops = 2, .peers = 2 },
+        .home => .{ .hops = 2, .peers = 1 },
+        .stand => .{ .hops = 3, .peers = 2 },
+        .peek => .{ .hops = 1, .peers = 1 },
+        .forge => .{ .hops = 1, .peers = 1 },
+    };
+}
+
+/// One task: a verb, the regions it touches in the order its job reads
+/// them, the neighbors it hears and rings, and how many messages it expects.
+pub const Task = struct {
+    verb: Verb,
+    hops: relay.HopList,
+    peers: fanin.NameList,
+    count: u32,
+};
+
+fn verb_word(verb: Verb) []const u8 {
+    return switch (verb) {
+        .place => "place",
+        .pass => "pass",
+        .home => "home",
+        .stand => "stand",
+        .peek => "peek",
+        .forge => "forge",
+    };
+}
+
+fn read_verb(word: []const u8) ?Verb {
+    if (std.mem.eql(u8, word, "place")) return .place;
+    if (std.mem.eql(u8, word, "pass")) return .pass;
+    if (std.mem.eql(u8, word, "home")) return .home;
+    if (std.mem.eql(u8, word, "stand")) return .stand;
+    if (std.mem.eql(u8, word, "peek")) return .peek;
+    if (std.mem.eql(u8, word, "forge")) return .forge;
+    return null;
+}
+
+/// Renders one task as the plan word its dependent will read.
+pub fn write_plan(buf: []u8, task: Task) ?[]const u8 {
+    // invariant: a task always carries the shape its verb is entitled to
+    assert(task.hops.count == arity_of(task.verb).hops);
+    assert(task.peers.count == arity_of(task.verb).peers);
+    var hop_buf: [max_plan_len]u8 = undefined;
+    var peer_buf: [max_plan_len]u8 = undefined;
+    const hops = task.hops.render(&hop_buf) orelse return null;
+    const peers = task.peers.render(&peer_buf) orelse return null;
+    const word = std.fmt.bufPrint(buf, "{s}:{s}:{s}:{d}", .{
+        verb_word(task.verb), hops, peers, task.count,
+    }) catch return null;
+    // invariant: a rendered plan always carries bytes
+    assert(word.len >= 1);
+    return word;
+}
+
+/// Reads a plan word back into the task it names.
+///
+/// Four fields, six verbs, and a shape held to the verb's own arity, so a
+/// step arriving with the wrong number of regions or neighbors is refused
+/// rather than run against whatever names it happened to bring.
+pub fn read_plan(word: []const u8) ?Task {
+    // invariant: a plan worth reading carries something
+    assert(word.len >= 1);
+    var parts: [4][]const u8 = @splat("");
+    var found: u32 = 0;
+    var rest = word;
+    while (found < 3) : (found += 1) {
+        const cut = std.mem.indexOfScalar(u8, rest, ':') orelse return null;
+        if (cut == 0) return null;
+        parts[found] = rest[0..cut];
+        rest = rest[cut + 1 ..];
+    }
+    if (rest.len == 0) return null;
+    parts[3] = rest;
+    const verb = read_verb(parts[0]) orelse return null;
+    const hops = relay.HopList.parse(parts[1], regions.max_name_len) orelse return null;
+    const peers = fanin.NameList.parse(parts[2], channels.max_name_len) orelse return null;
+    const shape = arity_of(verb);
+    if (hops.count != shape.hops) return null;
+    if (peers.count != shape.peers) return null;
+    // A count word is parsed strictly, so "03" is refused rather than read
+    // as 3 -- a plan word means exactly what it says (tally/parse_int.rye).
+    const count = tally_parse_int.parse_int(u32, parts[3], .{}) catch return null;
+    // invariant: every task read off the wire carries its verb's own shape
+    assert(hops.count == shape.hops);
+    assert(peers.count == shape.peers);
+    return .{ .verb = verb, .hops = hops, .peers = peers, .count = count };
+}
+
+// =========================================================================
+// The dependent -- one process, one arc of the ring, one reported outcome
+// =========================================================================
+
+/// Reads how far a writer's head stands against a reader's own, and answers
+/// how many messages wait -- or names why the pair is unreadable.
+fn pending_between(head: u32, tail: u32) ?u32 {
+    if (head < tail) return null;
+    const waiting = head - tail;
+    if (waiting > queue.max_outstanding) return null;
+    return waiting;
+}
+
+/// Writes a batch of asks naming this domain as their origin, and rings the
+/// successor that will carry them onward.
+fn do_place(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const notify.PeerList,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    if (task.count == 0 or task.count > queue.max_outstanding) return carry.Outcome.malformed;
+    const mine = task.hops.name_at(0);
+    const successor = task.peers.name_at(0);
+    if (!peers.wired_to(successor)) return notify.Bell.not_wired;
+
+    const head = queue.read_index(io, slot, mine) catch |err| return serve.reach_code(err);
+    var k: u32 = 0;
+    while (k < task.count) : (k += 1) {
+        var text_buf: [serve.max_message_len]u8 = undefined;
+        const text = relay.ask_text(&text_buf, self_name, head + k);
+        queue.write_slot(io, slot, mine, head + k, text) catch |err|
+            return serve.reach_code(err);
+    }
+    queue.write_index(io, slot, mine, head + task.count) catch |err|
+        return serve.reach_code(err);
+    const rung = roundtrip.ring_to(io, peers, self_name, successor) catch |err|
+        return serve.bell_code(err);
+    // invariant: a batch that landed spends exactly one ring
+    assert(rung >= 1);
+    print("    {s}: placed {d}, head now {d}\n", .{ self_name, task.count, head + task.count });
+    return carry.Outcome.carried_ok;
+}
+
+/// Carries every standing ask one arc further around the ring, unchanged.
+///
+/// The pass never waits. It moves what stands, rings the successor that
+/// carries it further, and returns -- which is why a closed graph settles
+/// exactly as a chain does.
+fn do_pass(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const notify.PeerList,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    const inbound = task.hops.name_at(0);
+    const onward = task.hops.name_at(1);
+    const predecessor = task.peers.name_at(0);
+    const successor = task.peers.name_at(1);
+    if (!peers.wired_to(predecessor)) return notify.Bell.not_wired;
+    if (!peers.wired_to(successor)) return notify.Bell.not_wired;
+
+    const rung = roundtrip.hear_from(io, peers, self_name, predecessor) catch |err|
+        return serve.bell_code(err);
+    if (rung == 0) return notify.Bell.unheard;
+
+    const head = queue.read_index(io, slot, inbound) catch |err| return serve.reach_code(err);
+    const sent = queue.read_index(io, slot, onward) catch |err| return serve.reach_code(err);
+    const pending = pending_between(head, sent) orelse return carry.Outcome.bytes_differed;
+    if (pending == 0) return queue.nothing_new;
+
+    var seq = sent;
+    while (seq < head) : (seq += 1) {
+        var seen_buf: [serve.max_message_len]u8 = undefined;
+        const seen = queue.read_slot(io, slot, inbound, seq, &seen_buf) catch |err|
+            return serve.reach_code(err);
+        const message = seen orelse return carry.Outcome.bytes_differed;
+        // An ask whose bytes never carried this ring's shape is refused
+        // here rather than handed to a neighbor that would have to guess.
+        const origin = relay.asked_origin(message) orelse return carry.Outcome.bytes_differed;
+        // A passer carries what it was handed; an ask it authored itself
+        // would make the origin its own invention rather than a fact.
+        if (std.mem.eql(u8, origin, self_name)) return carry.Outcome.bytes_differed;
+        queue.write_slot(io, slot, onward, seq, message) catch |err|
+            return serve.reach_code(err);
+    }
+    // invariant: the walk stopped exactly where the inbound head stands
+    assert(seq == head);
+    queue.write_index(io, slot, onward, head) catch |err| return serve.reach_code(err);
+
+    const rang = roundtrip.ring_to(io, peers, self_name, successor) catch |err|
+        return serve.bell_code(err);
+    // invariant: a batch that moved onward spends exactly one ring
+    assert(rang >= 1);
+    if (pending != task.count) {
+        print("    {s}: expected {d} asks, passed {d}\n", .{ self_name, task.count, pending });
+        return carry.Outcome.bytes_differed;
+    }
+    print("    {s}: passed {d} from {s} onward to {s}\n", .{
+        self_name, pending, predecessor, successor,
+    });
+    return carry.Outcome.carried_ok;
+}
+
+/// Reads the asks standing in from the predecessor and takes home the ones
+/// this domain wrote itself.
+///
+/// At one hop the region names the author and the bytes name the origin,
+/// and the two agree. After a full lap they disagree by design: these bytes
+/// arrive from the predecessor and name this domain as where they began,
+/// which is exactly what a completed lap looks like.
+fn do_home(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const notify.PeerList,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    const inbound = task.hops.name_at(0);
+    const mine = task.hops.name_at(1);
+    const predecessor = task.peers.name_at(0);
+    if (!peers.wired_to(predecessor)) return notify.Bell.not_wired;
+
+    const rung = roundtrip.hear_from(io, peers, self_name, predecessor) catch |err|
+        return serve.bell_code(err);
+    if (rung == 0) return notify.Bell.unheard;
+
+    const head = queue.read_index(io, slot, inbound) catch |err| return serve.reach_code(err);
+    const tail = queue.read_index(io, slot, mine) catch |err| return serve.reach_code(err);
+    const pending = pending_between(head, tail) orelse return carry.Outcome.bytes_differed;
+    if (pending == 0) return queue.nothing_new;
+
+    var seq = tail;
+    while (seq < head) : (seq += 1) {
+        var seen_buf: [serve.max_message_len]u8 = undefined;
+        const seen = queue.read_slot(io, slot, inbound, seq, &seen_buf) catch |err|
+            return serve.reach_code(err);
+        const message = seen orelse return carry.Outcome.bytes_differed;
+        const origin = relay.asked_origin(message) orelse return carry.Outcome.bytes_differed;
+        // An ask that came home names this domain as its origin. Anything
+        // else is a stranger's ask still travelling, and taking it home
+        // would close a lap that never happened.
+        if (!std.mem.eql(u8, origin, self_name)) return carry.Outcome.bytes_differed;
+    }
+    // invariant: the walk stopped exactly where the predecessor's head stands
+    assert(seq == head);
+    queue.write_index(io, slot, mine, head) catch |err| return serve.reach_code(err);
+
+    if (pending != task.count) {
+        print("    {s}: expected {d} asks home, took {d}\n", .{ self_name, task.count, pending });
+        return carry.Outcome.bytes_differed;
+    }
+    print("    {s}: took {d} home from {s}, each naming {s} as its origin -- a full lap\n", .{
+        self_name, pending, predecessor, self_name,
+    });
+    return carry.Outcome.carried_ok;
+}
+
+/// Reads every region this domain can reach and reports how much of the
+/// ring that is.
+///
+/// The count is the finding: a domain inside a ring reads its own arc and
+/// nothing more, so the lap it belongs to is a total only the parent holds.
+fn do_stand(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    var stood: [max_hops]u32 = @splat(0);
+    var i: u32 = 0;
+    while (i < task.hops.count) : (i += 1) {
+        assert(i < max_hops); // invariant: the walk stays in the array
+        stood[i] = queue.read_index(io, slot, task.hops.name_at(i)) catch |err|
+            return serve.reach_code(err);
+    }
+    // invariant: every region this domain reaches was read
+    assert(i == task.hops.count);
+    var k: u32 = 0;
+    while (k < task.hops.count) : (k += 1) {
+        if (stood[k] != task.count) return carry.Outcome.bytes_differed;
+    }
+    print("    {s}: reads {d} regions, each standing at {d}, between {s} and {s}\n", .{
+        self_name, task.hops.count, task.count, task.peers.name_at(0), task.peers.name_at(1),
+    });
+    return carry.Outcome.carried_ok;
+}
+
+/// Attempts to read the arc of the ring closed to this domain.
+///
+/// This is the wall that makes the ring's cost real rather than rhetorical.
+/// The segment between the other two domains carries no grant for this one
+/// at all, so the reach is refused before any permission is compared.
+fn do_peek(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    task: Task,
+) u8 {
+    _ = queue.read_index(io, slot, task.hops.name_at(0)) catch |err|
+        return serve.reach_code(err);
+    return carry.Outcome.bytes_differed;
+}
+
+/// Attempts to write an ask into the region the predecessor owns.
+///
+/// A domain that could author asks in its predecessor's region would make
+/// every origin around the ring its own invention. It holds read alone
+/// there, so the attempt is refused at the permission rather than the door.
+fn do_forge(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    task: Task,
+) u8 {
+    queue.write_index(io, slot, task.hops.name_at(0), task.count) catch |err|
+        return serve.reach_code(err);
+    return carry.Outcome.bytes_differed;
+}
+
+/// Attempts one step and reports its outcome.
+fn attempt(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const notify.PeerList,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    // invariant: a task always carries the shape its verb is entitled to
+    assert(task.hops.count == arity_of(task.verb).hops);
+    assert(task.peers.count == arity_of(task.verb).peers);
+    return switch (task.verb) {
+        .place => do_place(io, slot, peers, self_name, task),
+        .pass => do_pass(io, slot, peers, self_name, task),
+        .home => do_home(io, slot, peers, self_name, task),
+        .stand => do_stand(io, slot, self_name, task),
+        .peek => do_peek(io, slot, task),
+        .forge => do_forge(io, slot, task),
+    };
+}
+
+/// Reads the capability words a dependent was handed into its own slot.
+fn slot_from_argv(args: []const [:0]const u8, domain: []const u8, cap_count: u32) ?capabilities.DependentSlot {
+    // invariant: a dependent always knows which domain it is
+    assert(domain.len >= 1);
+    // invariant: the count stays within what one dependent may hold
+    assert(cap_count <= capabilities.max_caps_per_dependent);
+    var slot = capabilities.DependentSlot.init(domain);
+    var i: u32 = 0;
+    while (i < cap_count) : (i += 1) {
+        const cap = boot.read_cap_word(args[fixed_argv_words + i]) orelse return null;
+        slot.grant(cap) catch return null;
+    }
+    // invariant: the dependent holds exactly the capability words it was handed
+    assert(slot.cap_count == cap_count);
+    return slot;
+}
+
+/// Runs as one supervised dependent, holding exactly the capabilities, the
+/// neighbors, and the one arc on its own argv.
+fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
+    // invariant: a dependent always receives its marker, domain, plan, and count
+    assert(args.len >= fixed_argv_words);
+    const domain = args[2];
+    const plan = args[3];
+    // invariant: a dependent always knows which domain it is
+    assert(domain.len >= 1);
+
+    const cap_count = tally_parse_int.parse_int(u32, args[4], .{}) catch {
+        print("    {s}: refused an unreadable capability count\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    if (cap_count > capabilities.max_caps_per_dependent) {
+        print("    {s}: more capabilities than one dependent holds\n", .{domain});
+        return carry.Outcome.malformed;
+    }
+    if (fixed_argv_words + cap_count > args.len) {
+        print("    {s}: a capability count past the words it was handed\n", .{domain});
+        return carry.Outcome.malformed;
+    }
+    var slot = slot_from_argv(args, domain, cap_count) orelse {
+        print("    {s}: refused a malformed capability word\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+
+    var peers: notify.PeerList = .{};
+    var p: usize = fixed_argv_words + cap_count;
+    while (p < args.len) : (p += 1) {
+        peers.add(args[p]) catch {
+            print("    {s}: more peers than one dependent holds\n", .{domain});
+            return carry.Outcome.malformed;
+        };
+    }
+    // invariant: the dependent holds exactly the peer words it was handed
+    assert(peers.count == args.len - fixed_argv_words - cap_count);
+
+    const task = read_plan(plan) orelse {
+        print("    {s}: refused a plan it could not read\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    const code = attempt(io, &slot, &peers, domain, task);
+    print("    {s}: {s} across {d} region(s) -- {s}\n", .{
+        domain, verb_word(task.verb), task.hops.count, outcome_name(code),
+    });
+    return code;
+}
+
+// =========================================================================
+// The supervisor -- one document, three domains, one lap
+// =========================================================================
+
+/// One declared domain's step in a ring run.
+pub const Assignment = struct {
+    domain: []const u8,
+    verb: Verb,
+    hops: []const u8,
+    peers: []const u8,
+    count: u32,
+    expect: u8,
+};
+
+/// What one run did, reported whole -- the total no domain inside the ring
+/// can read for itself.
+pub const Report = struct {
+    started: u32 = 0,
+    matched: u32 = 0,
+    bells: u32 = 0,
+    placed: u32 = 0,
+    passed: u32 = 0,
+    homed: u32 = 0,
+};
+
+/// Named ways a run declines rather than reporting a hollow success.
+pub const RunError = error{
+    SpawnFailed,
+    UnknownDomain,
+    PlanTooLong,
+    OutcomeMismatch,
+};
+
+/// Starts one assigned dependent and holds it to the outcome the parent expects.
+fn run_assignment(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    table: *const capabilities.CapabilityTable,
+    step: Assignment,
+) (RunError || boot.BootError)!void {
+    // invariant: an assignment always names a domain, its regions, and its peers
+    assert(step.domain.len >= 1);
+    assert(step.hops.len >= 1);
+    assert(step.peers.len >= 1);
+    const slot = table.find_dependent(step.domain) orelse return error.UnknownDomain;
+    // invariant: the line handed out agrees with the declaration it came from
+    assert(boot.line_agrees(sys, slot));
+
+    var peers: notify.PeerList = .{};
+    notify.peers_of(sys, step.domain, &peers);
+
+    var plan_buf: [max_plan_len]u8 = undefined;
+    const plan = std.fmt.bufPrint(&plan_buf, "{s}:{s}:{s}:{d}", .{
+        verb_word(step.verb), step.hops, step.peers, step.count,
+    }) catch return error.PlanTooLong;
+
+    var count_buf: [8]u8 = undefined;
+    const count_word = std.fmt.bufPrint(&count_buf, "{d}", .{slot.cap_count}) catch
+        return error.PlanTooLong;
+
+    var storage: [capabilities.max_caps_per_dependent][boot.max_cap_word_len]u8 = undefined;
+    const argv = allocator.alloc(
+        []const u8,
+        fixed_argv_words + slot.cap_count + peers.count,
+    ) catch return error.SpawnFailed;
+    argv[0] = self_path;
+    argv[1] = "dependent";
+    argv[2] = slot.label_slice();
+    argv[3] = plan;
+    argv[4] = count_word;
+    var c: u32 = 0;
+    while (c < slot.cap_count) : (c += 1) {
+        assert(c < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        argv[fixed_argv_words + c] = try boot.write_cap_word(&storage[c], &slot.caps[c]);
+    }
+    var q: u32 = 0;
+    while (q < peers.count) : (q += 1) {
+        argv[fixed_argv_words + slot.cap_count + q] = peers.name_at(q);
+    }
+
+    var proc = std.process.spawn(io, .{ .argv = argv }) catch return error.SpawnFailed;
+    const term = proc.wait(io) catch return error.SpawnFailed;
+    const code: u8 = switch (term) {
+        .exited => |c2| c2,
+        else => 255,
+    };
+    if (code != step.expect) {
+        print("    {s}: expected {s}, heard {s}\n", .{
+            step.domain, outcome_name(step.expect), outcome_name(code),
+        });
+        return error.OutcomeMismatch;
+    }
+}
+
+/// Runs a whole ordered lap against one parsed declaration.
+pub fn run_plan(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Assignment,
+) (roster.RosterError || exercise.ProvisionError || notify.BellError || RunError || boot.BootError)!Report {
+    // invariant: a run always knows what program to spawn
+    assert(self_path.len >= 1);
+    // invariant: a run always carries at least one step
+    assert(plan.len >= 1);
+    const provisioned = try exercise.provision(io, sys);
+    // invariant: every declared region has a backing store before any dependent runs
+    assert(provisioned == sys.map.region_count);
+    const bells = try roundtrip.provision_directed(io, sys);
+    // invariant: every declared channel has two silent bells before any dependent runs
+    assert(bells == sys.graph.channel_count * 2);
+
+    const table = try roster.from_system(sys);
+    // invariant: the derived table enforces exactly what the document permits
+    assert(roster.agrees(sys, &table));
+
+    var report_out: Report = .{ .bells = bells };
+    var i: u32 = 0;
+    while (i < plan.len) : (i += 1) {
+        try run_assignment(allocator, io, self_path, sys, &table, plan[i]);
+        report_out.started += 1;
+        report_out.matched += 1;
+        const step = plan[i];
+        if (step.expect != carry.Outcome.carried_ok) continue;
+        switch (step.verb) {
+            .place => report_out.placed += step.count,
+            .pass => report_out.passed += step.count,
+            .home => report_out.homed += step.count,
+            else => {},
+        }
+    }
+    // invariant: every step that started also matched what was expected
+    assert(report_out.matched == report_out.started);
+    return report_out;
+}
+
+// =========================================================================
+// Self-test -- a lap that closes, and a whole no domain can see
+// =========================================================================
+
+/// The lap, in the order its meaning depends on.
+///
+/// Step one places the first pair. Step two carries it one arc. Step three
+/// is the crux: alder places a second pair while the first is still
+/// travelling, and step four carries that pair with the lap still open.
+/// Step five brings all four around the last arc, and step six takes them
+/// home -- each arriving from cedar and naming alder, which is what a
+/// closed lap looks like. Step seven reads what one domain inside the ring
+/// can see, which is three regions of four.
+const lap_plan = [_]Assignment{
+    .{ .domain = "alder", .verb = .place, .hops = "ask_ab", .peers = "birch", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "birch", .verb = .pass, .hops = "ask_ab,ask_bc", .peers = "alder,cedar", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "alder", .verb = .place, .hops = "ask_ab", .peers = "birch", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "birch", .verb = .pass, .hops = "ask_ab,ask_bc", .peers = "alder,cedar", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "cedar", .verb = .pass, .hops = "ask_bc,ask_ca", .peers = "birch,alder", .count = 4, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "alder", .verb = .home, .hops = "ask_ca,taken", .peers = "cedar", .count = 4, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "alder", .verb = .stand, .hops = "ask_ab,ask_ca,taken", .peers = "birch,cedar", .count = 4, .expect = carry.Outcome.carried_ok },
+};
+
+/// The step that costs a pass rather than the ring.
+///
+/// A domain reading for its lap before its predecessor has rung hears an
+/// unrung bell and returns. Badly ordered work is wasted work here, never a
+/// stopped ring, because no verb in this module waits on another domain.
+const early_plan = [_]Assignment{
+    .{ .domain = "alder", .verb = .home, .hops = "ask_ca,taken", .peers = "cedar", .count = 4, .expect = notify.Bell.unheard },
+};
+
+/// The walls a ring invites.
+///
+/// The first makes the ring's cost real: the arc between the other two
+/// domains carries no grant for alder at all, so no domain inside the ring
+/// can total the lap it belongs to. The second keeps the origin honest:
+/// birch holds read alone on the region alder writes.
+const wall_plan = [_]Assignment{
+    .{ .domain = "alder", .verb = .peek, .hops = "ask_bc", .peers = "birch", .count = 0, .expect = carry.Outcome.not_granted },
+    .{ .domain = "birch", .verb = .forge, .hops = "ask_ab", .peers = "alder", .count = 99, .expect = carry.Outcome.write_denied },
+};
+
+/// Proves the plan wire holds every step to its own verb's shape before any
+/// process runs.
+fn check_wire() u8 {
+    var buf: [max_plan_len]u8 = undefined;
+    var task: Task = .{ .verb = .pass, .hops = .{}, .peers = .{}, .count = 2 };
+    task.hops = relay.HopList.parse("ask_ab,ask_bc", regions.max_name_len) orelse {
+        print("  RED: a legal region list did not parse\n", .{});
+        return 1;
+    };
+    task.peers = fanin.NameList.parse("alder,cedar", channels.max_name_len) orelse return 1;
+    const written = write_plan(&buf, task) orelse {
+        print("  RED: a legal passing step had no plan word\n", .{});
+        return 1;
+    };
+    const back = read_plan(written) orelse {
+        print("  RED: a plan word this ring wrote did not read back\n", .{});
+        return 1;
+    };
+    // invariant: a step survives the wire it rode in on, arc for arc
+    assert(back.verb == .pass);
+    assert(back.hops.count == 2);
+    assert(back.peers.count == 2);
+    assert(std.mem.eql(u8, back.hops.name_at(1), "ask_bc"));
+    assert(std.mem.eql(u8, back.peers.name_at(1), "cedar"));
+    assert(back.count == 2);
+
+    if (read_plan("pass:ask_ab:alder,cedar:2") != null) {
+        print("  RED: a passing step ran without the region it carries into\n", .{});
+        return 1;
+    }
+    if (read_plan("home:ask_ca,taken:cedar,birch:4") != null) {
+        print("  RED: a homecoming step was handed a neighbor its verb never names\n", .{});
+        return 1;
+    }
+    if (read_plan("deliver:ask_ab:birch:2") != null) {
+        print("  RED: a verb this ring never named was accepted\n", .{});
+        return 1;
+    }
+    if (read_plan("place:ask_ab:birch:03") != null) {
+        print("  RED: a padded count was read as the number it resembles\n", .{});
+        return 1;
+    }
+
+    // An ask carries where it began, so a domain meeting it again after a
+    // full lap can tell its own from a stranger's still travelling.
+    var text_buf: [serve.max_message_len]u8 = undefined;
+    const ask = relay.ask_text(&text_buf, "alder", 3);
+    const origin = relay.asked_origin(ask) orelse {
+        print("  RED: an ask this ring wrote carried no readable origin\n", .{});
+        return 1;
+    };
+    assert(std.mem.eql(u8, origin, "alder")); // invariant: the origin reads back whole
+    print("  the wire holds every step to its verb's own shape, {d} regions and {d} neighbors here\n", .{
+        back.hops.count, back.peers.count,
+    });
+    return 0;
+}
+
+/// Loads the ring declaration, or names why it could not be read.
+fn load_declaration(io: std.Io, buf: []u8) ?system.System {
+    const parsed = read.load(io, declaration_path, buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ declaration_path, @errorName(err) });
+        return null;
+    };
+    if (parsed.verify() != .whole) {
+        print("  RED: {s} did not read whole\n", .{declaration_path});
+        return null;
+    }
+    return parsed;
+}
+
+/// Reads the ring's shape out of its grants, before a single process runs.
+fn check_shape(io: std.Io) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = load_declaration(io, &buf) orelse return 1;
+    const set = relay.flows_of(&parsed) orelse {
+        print("  RED: the declaration carried no directed flows to derive\n", .{});
+        return 1;
+    };
+    // invariant: every declared region became exactly one directed flow
+    assert(set.count == parsed.map.region_count);
+
+    var ends: u32 = 0;
+    var d: u32 = 0;
+    while (d < parsed.map.domain_count) : (d += 1) {
+        if (relay.peer_span(&set, d) != 2) ends += 1;
+    }
+    if (ends != 0) {
+        print("  RED: {d} domains span other than two peers -- the shape has an end\n", .{ends});
+        return 1;
+    }
+
+    const order = ring_order(&set, parsed.map.domain_count) orelse {
+        print("  RED: the grants close on no single lap\n", .{});
+        return 1;
+    };
+    // invariant: the lap found visits every declared domain
+    assert(order.count == parsed.map.domain_count);
+    const first = domain_name(&parsed, order.at(0));
+    const second = domain_name(&parsed, order.at(1));
+    const third = domain_name(&parsed, order.at(2));
+
+    const widest = widest_reach(&parsed);
+    if (widest >= parsed.map.region_count) {
+        print("  RED: one domain reaches every region -- the ring has a vantage point\n", .{});
+        return 1;
+    }
+
+    print("  {d} directed flows derived from {d} grants, with no role word declared\n", .{
+        set.count, parsed.map.grant_count,
+    });
+    print("  every domain spans exactly 2 peers -- a ring is the shape with no ends\n", .{});
+    print("  one lap closes and only one: {s} to {s} to {s} and home\n", .{ first, second, third });
+    print("  the widest reach any domain holds is {d} of {d} regions -- a ring has no vantage point\n", .{
+        widest, parsed.map.region_count,
+    });
+    return 0;
+}
+
+/// Runs the lap and reads the numbers that carry the claim.
+fn check_lap(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = load_declaration(io, &buf) orelse return 1;
+    const early = run_plan(allocator, io, self_path, &parsed, &early_plan) catch |err| {
+        print("  RED: an early read did not report itself: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: the early step ran and answered by name
+    assert(early.matched == early_plan.len);
+    print("  a domain reading before its predecessor rang hears an unrung bell -- a wasted pass, never a stopped ring\n", .{});
+
+    const done = run_plan(allocator, io, self_path, &parsed, &lap_plan) catch |err| {
+        print("  RED: an arc did not complete: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: every step ran, each as its own process
+    assert(done.started == lap_plan.len);
+    // invariant: both directions of all three declared channels stood silent first
+    assert(done.bells == parsed.graph.channel_count * 2);
+    // invariant: every ask placed travelled the whole ring and came home
+    assert(done.placed == 4);
+    assert(done.passed == 8);
+    assert(done.homed == 4);
+    print("  {d} directed bells provisioned silent across {d} declared channels\n", .{
+        done.bells, parsed.graph.channel_count,
+    });
+    print("  {d} asks travelled a full lap and came home, {d} of them placed while the first pair was still travelling\n", .{
+        done.homed, 2,
+    });
+    print("  every arc settled at 4, and no domain ever waited on another\n", .{});
+    return 0;
+}
+
+/// Proves the walls, each in its own dependent.
+fn check_walls(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = load_declaration(io, &buf) orelse return 1;
+    const done = run_plan(allocator, io, self_path, &parsed, &wall_plan) catch |err| {
+        print("  RED: a wall did not hold: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: every wall ran as its own process and answered by name
+    assert(done.matched == wall_plan.len);
+    print("  the arc between the other two domains is closed to alder -- NotGranted\n", .{});
+    print("  a passer holds read alone on the region it carries from -- WriteDenied\n", .{});
+    return 0;
+}
+
+fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    print("Caravan cycle {s} -- self-test\n", .{caravan_cycle_version});
+    const wire = check_wire();
+    if (wire != 0) return wire;
+    const shape = check_shape(io);
+    if (shape != 0) return shape;
+    const lap = check_lap(allocator, io, self_path);
+    if (lap != 0) return lap;
+    const walls = check_walls(allocator, io, self_path);
+    if (walls != 0) return walls;
+    print("  GREEN: a ring closes its lap without waiting, and no domain inside it sees the whole\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
+        return run_dependent(io, args);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(allocator, io, self_path);
+    }
+    if (args.len >= 2) return 1;
+    return run_self_test(allocator, io, self_path);
+}
