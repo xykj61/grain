@@ -1,0 +1,45 @@
+# tools/object_relation_witness.rish -- the spatial relation between two objects in a scene, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the scene-read family names a POINT's object (image/hit_test.rye), a RECTANGLE's objects
+# (image/region_select.rye), a POLYGON's objects (image/lasso_select.rye), and a selection's FACTS and EXTENT (image/selection_summary.rye,
+# image/selection_bounds.rye). This rung reads a PAIR: object_relation returns whether two objects' boxes overlap, which of the four
+# strict directions holds, and the EXACT nearest-pixel Chebyshev distance between the two components. Exact integers, NO float, NO tolerance.
+#
+# The crux this witness proves on metal: a box comparison BOUNDS the objects' true nearness yet never DETERMINES it, both directions.
+# An L and a block in its concavity have OVERLAPPING boxes yet nearest pixels 2 apart (the box over-claims nearness); two diagonal
+# blocks are box-disjoint and directionally upper-left yet nearest pixels 2 apart (the box over-claims farness). The nearest distance
+# is graded (a far dot reads 5) with a structural floor of 2 (distinct 8-components can never be 8-adjacent). The mirror relation, the
+# refusals by name, determinism. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/object_relation_witness.rish
+
+say "object_relation: Language EN -- Season G pair-relation read; object_relation returns box overlap, the four strict directional flags, and the exact nearest-pixel Chebyshev distance between two objects; NO float, NO tolerance."
+say "object_relation: Style Radiant -- compose not braid: this rung owns only the pair relation and the nearest-pixel scan; label owns the at arbiter and 8-connectivity, scene_manifest owns the per-object boxes. No plane of its own, no pixel written -- a reading over a reading."
+say "object_relation: Lens TAME -- the nearest scan gathers object b's pixels into a list sized to b's area (bounded by label_max_pixels), then sweeps object a's pixels once against it; a background or past-the-count label refuses BadObjectLabel and a self-relation refuses SameObject at the edge; all-or-nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/object_relation"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/object_relation.rye -femit-bin=${bin}"]
+assert build.ok else "object_relation: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "object_relation: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "object_relation: ${out}"
+
+assert selftest.out contains "GREEN image-object-relation" else "object_relation: selftest did not print the GREEN line"
+assert selftest.out contains "the exact nearest-pixel Chebyshev distance as the ARBITER" else "object_relation: the arbiter rule did not print"
+assert selftest.out contains "a box comparison BOUNDS the objects' true nearness yet never DETERMINES it" else "object_relation: the decisive crux did not print"
+assert selftest.out contains "THE BOX OVER-CLAIMS NEARNESS" else "object_relation: the over-claims-nearness case did not print"
+assert selftest.out contains "OVERLAPPING boxes (boxes_overlap TRUE), yet their nearest pixels are Chebyshev distance 2 apart" else "object_relation: the overlap-yet-apart fact did not print"
+assert selftest.out contains "THE BOX OVER-CLAIMS FARNESS" else "object_relation: the over-claims-farness case did not print"
+assert selftest.out contains "the TIGHTEST two distinct 8-connected components can sit" else "object_relation: the tightest-separation fact did not print"
+assert selftest.out contains "a real graded measure" else "object_relation: the graded-metric claim did not print"
+assert selftest.out contains "the nearest Chebyshev distance is always at least 2" else "object_relation: the structural floor did not print"
+assert selftest.out contains "refuses SameObject" else "object_relation: the self-relation refusal did not print"
+assert selftest.out contains "refuses BadObjectLabel having read nothing" else "object_relation: the bad-label refusal did not print"
+
+say "object_relation: GREEN on metal -- the pair relation whose box comparison bounds but never determines true nearness; the nearest-pixel distance the arbiter, floored at 2; the mirror relation, refusals by name, determinism. Season G open-media."

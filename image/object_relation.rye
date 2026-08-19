@@ -1,0 +1,356 @@
+//! image/object_relation.rye -- the SPATIAL RELATION between two objects in a scene: how they sit relative to each other, read as a
+//! small record a surface uses to arrange, order, or reason about a page of objects. Exact integers, NO float and NO tolerance -- the
+//! bounding boxes are the prefilter, the label map is the arbiter.
+//!
+//! Season G (Open Media Primitives) -- the scene-read family names a POINT's object (image/hit_test.rye), a RECTANGLE's objects
+//! (image/region_select.rye), a POLYGON's objects (image/lasso_select.rye), a selection's FACTS (image/selection_summary.rye) and its
+//! EXTENT (image/selection_bounds.rye). Those read ONE object or a SET at once. This rung reads a PAIR: `object_relation(manifest, map,
+//! a, b)` returns whether their boxes overlap, which of the four strict directions (a left/right/above/below b) holds, and the EXACT
+//! nearest-pixel Chebyshev distance between the two components -- the graded separation a box comparison can only bound.
+//!
+//! The DECISIVE crux -- the box-is-a-prefilter lesson lifted to a RELATION: a box comparison BOUNDS the objects' true nearness, yet
+//! never DETERMINES it. Only the label map measures how near two objects actually sit. Two facts on metal say it, in opposite
+//! directions:
+//!
+//!   THE BOX OVER-CLAIMS NEARNESS -- an L and a small block tucked into the L's concavity have OVERLAPPING bounding boxes (the block's
+//!   box sits wholly inside the L's), so `boxes_overlap` reads TRUE -- yet the two components' nearest pixels are Chebyshev distance 2
+//!   apart, they do not touch. A box overlap never means the objects are near; the map says they are held apart by background.
+//!
+//!   THE BOX OVER-CLAIMS FARNESS -- two diagonal blocks are box-DISJOINT and `a_left_of_b` and `a_above_b` both read TRUE, so the boxes
+//!   say "a sits to the upper-left of b" -- yet their nearest pixels are Chebyshev distance 2 apart, exactly the TIGHTEST two distinct
+//!   8-connected components can sit. Strict directional separation never means the objects are far.
+//!
+//! The nearest distance carries a structural floor the map guarantees: two DIFFERENT labels are two distinct 8-connected components, so
+//! no pixel of one is 8-adjacent to a pixel of the other (that would have merged them into one component), and the nearest Chebyshev
+//! distance between two different labels is therefore always at least 2 -- a proven invariant, never a measured accident.
+//!
+//! Compose not braid. This rung OWNS only the pair relation and the nearest-pixel scan -- no plane of its own, no label re-derived, no
+//! box re-measured. image/label.rye owns the component map and its `at` arbiter and 8-connectivity; image/scene_manifest.rye owns the
+//! per-object boxes (`ObjectEntry`, `object_of`) the box relations read. A reading over a reading.
+//!
+//! Everything is bounded before a byte: the nearest-pixel scan gathers object b's pixels into a list sized to b's area (bounded by
+//! image/label.rye's `label_max_pixels`), then sweeps object a's pixels once against it -- `area_a * area_b` distance reads, both areas
+//! under the pixel ceiling. A background or past-the-count label refuses `BadObjectLabel`; a relation of an object with itself refuses
+//! `SameObject`, having read nothing. No network, no key, no funds -- the pair relation a surface names the day it must arrange objects
+//! left-to-right, ask whether two sit apart, or measure how far, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/object_relation.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+
+pub const object_relation_version = "20260818.234525";
+
+pub const ObjectRelationError = error{
+    BadObjectLabel,
+    SameObject,
+};
+
+/// One foreground pixel coordinate -- a local, bounded row the nearest-pixel scan gathers for object b.
+const Point = struct {
+    x: u32 = 0,
+    y: u32 = 0,
+};
+
+/// The SPATIAL RELATION between two objects, read as a small record of exact facts. `a` and `b` are the two dense labels.
+/// `boxes_overlap` is the coarse box PREFILTER; the four directional flags are the strict box relations (each true only when a's box
+/// sits WHOLLY to that side of b's, so the two never overlap on that axis); `nearest_cheby` is the ARBITER -- the exact minimum
+/// Chebyshev distance between any a-pixel and any b-pixel, always at least 2 for two distinct components.
+pub const Relation = struct {
+    a: u32 = 0,
+    b: u32 = 0,
+    boxes_overlap: bool = false,
+    a_left_of_b: bool = false,
+    a_right_of_b: bool = false,
+    a_above_b: bool = false,
+    a_below_b: bool = false,
+    nearest_cheby: u32 = 0,
+};
+
+/// TRUE when the two objects' inclusive bounding boxes intersect -- the coarse box PREFILTER. It reads TRUE whenever the boxes share
+/// any pixel cell, which a box tucked inside another does; a true overlap never proves the objects are near, only that their frames
+/// cross.
+pub fn boxes_overlap(ea: scene_manifest.ObjectEntry, eb: scene_manifest.ObjectEntry) bool {
+    // invariant: both boxes are well-formed on both axes before their overlap is judged.
+    assert(ea.max_x >= ea.min_x);
+    assert(eb.max_x >= eb.min_x);
+    assert(ea.max_y >= ea.min_y);
+    assert(eb.max_y >= eb.min_y);
+    return ea.min_x <= eb.max_x and eb.min_x <= ea.max_x and ea.min_y <= eb.max_y and eb.min_y <= ea.max_y;
+}
+
+/// The EXACT minimum Chebyshev distance between any pixel of object `a` and any pixel of object `b` -- the ARBITER of how near two
+/// objects truly sit. Gathers b's pixels into a bounded list, then sweeps a's pixels once against it. Always at least 2, since two
+/// different labels are two distinct 8-connected components that no single 8-step can bridge.
+pub fn nearest_chebyshev(allocator: std.mem.Allocator, map: *const label.LabelMap, a: u32, b: u32) !u32 {
+    // invariant: a real label map carries one label per pixel across its whole extent.
+    assert(map.labels.len == @as(usize, map.width) * @as(usize, map.height));
+    // invariant: both labels are real, dense, and distinct -- the caller's contract, restated here.
+    assert(a >= 1);
+    assert(b >= 1);
+    assert(a != b);
+    assert(a <= map.count);
+    assert(b <= map.count);
+
+    // first pass -- count b's pixels so the coordinate list is bounded before it is filled.
+    var count_b: u32 = 0;
+    var y: u32 = 0;
+    while (y < map.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x < map.width) : (x += 1) {
+            if (map.at(x, y) == b) count_b += 1;
+        }
+    }
+    // invariant: a real dense label names at least one pixel, and never more than the module's pixel ceiling.
+    assert(count_b >= 1);
+    assert(count_b <= label.label_max_pixels);
+
+    const b_pixels = try allocator.alloc(Point, @as(usize, count_b));
+    var fill: u32 = 0;
+    y = 0;
+    while (y < map.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x < map.width) : (x += 1) {
+            if (map.at(x, y) == b) {
+                b_pixels[@as(usize, fill)] = Point{ .x = x, .y = y };
+                fill += 1;
+            }
+        }
+    }
+    // invariant: the fill exactly matched the count -- the two passes read the same map.
+    assert(fill == count_b);
+
+    // second sweep -- for every a-pixel, the smallest Chebyshev distance to any b-pixel; track the global minimum.
+    var found: bool = false;
+    var best: u32 = 0;
+    y = 0;
+    while (y < map.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x < map.width) : (x += 1) {
+            if (map.at(x, y) != a) continue;
+            var i: usize = 0;
+            while (i < b_pixels.len) : (i += 1) {
+                const bx = b_pixels[i].x;
+                const by = b_pixels[i].y;
+                const dx = if (x >= bx) x - bx else bx - x;
+                const dy = if (y >= by) y - by else by - y;
+                const d = if (dx >= dy) dx else dy;
+                if (!found or d < best) {
+                    found = true;
+                    best = d;
+                }
+            }
+        }
+    }
+    // invariant: both labels name real pixels, so a nearest distance was found.
+    assert(found);
+    // invariant: distinct 8-connected components can never be 8-adjacent -- that would have merged them -- so the nearest Chebyshev
+    // distance between two different labels is at least 2. A structural floor the labeling guarantees, not a measured accident.
+    assert(best >= 2);
+    return best;
+}
+
+/// The SPATIAL RELATION between objects `a` and `b` -- box overlap, the four strict directional flags, and the exact nearest-pixel
+/// Chebyshev distance, joined into one record. Refuses `BadObjectLabel` for background (0) or a label past the component count, and
+/// `SameObject` when `a` equals `b`, having read nothing. The manifest and map must describe the SAME scene, which the component-count
+/// invariant checks.
+pub fn object_relation(allocator: std.mem.Allocator, manifest: scene_manifest.Manifest, map: *const label.LabelMap, a: u32, b: u32) !Relation {
+    // invariant: the manifest holds exactly one row per component.
+    assert(manifest.objects.len == @as(usize, manifest.components));
+    // invariant: the manifest and the map are the same scene -- the same component count.
+    assert(manifest.components == map.count);
+
+    if (a == 0 or a > manifest.components) return error.BadObjectLabel;
+    if (b == 0 or b > manifest.components) return error.BadObjectLabel;
+    if (a == b) return error.SameObject;
+
+    const ea = try scene_manifest.object_of(manifest, a);
+    const eb = try scene_manifest.object_of(manifest, b);
+
+    const overlap = boxes_overlap(ea, eb);
+    // each strict direction holds only when a's box sits WHOLLY to that side of b's, so the boxes never overlap on that axis.
+    const left = ea.max_x < eb.min_x;
+    const right = eb.max_x < ea.min_x;
+    const above = ea.max_y < eb.min_y;
+    const below = eb.max_y < ea.min_y;
+    const gap = try nearest_chebyshev(allocator, map, a, b);
+
+    // invariant: box overlap and strict side-separation are mutually exclusive -- an overlapping box cannot also sit wholly to a side.
+    if (overlap) {
+        assert(!left);
+        assert(!right);
+        assert(!above);
+        assert(!below);
+    }
+    // invariant: a and b are distinct components, so their nearest pixels are at least 2 apart.
+    assert(gap >= 2);
+
+    return Relation{
+        .a = a,
+        .b = b,
+        .boxes_overlap = overlap,
+        .a_left_of_b = left,
+        .a_right_of_b = right,
+        .a_above_b = above,
+        .a_below_b = below,
+        .nearest_cheby = gap,
+    };
+}
+
+// --- selftest: the DECISIVE box-is-a-prefilter crux, both directions -- an L and a block in its concavity (overlapping boxes, nearest
+//     pixels 2 apart: the box over-claims nearness); two diagonal blocks (box-disjoint and directionally upper-left, nearest pixels 2
+//     apart: the box over-claims farness); a far third block (nearest pixels 5 apart: the metric grows); the mirror relation; refusals
+//     by name; determinism --------------------------------------------------------------------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- SCENE 1, THE BOX OVER-CLAIMS NEARNESS -- an L (label 1) with a small 2x2 block tucked into its concavity (label 2). The L is
+    //     column x=1 rows 1..5 plus row y=5 cols 1..5, box (1,1)-(5,5); the block is cols 3..4 rows 2..3, box (3,2)-(4,3) wholly INSIDE
+    //     the L's box, yet 2 columns from the nearest L pixel -- a distinct component. Canvas 8x8 ------------------------------------
+    var scene1 = try make_canvas(garden, 8, 8, 0);
+    var ly: u32 = 1;
+    while (ly <= 5) : (ly += 1) set_dot(&scene1, 1, ly);
+    var lx: u32 = 1;
+    while (lx <= 5) : (lx += 1) set_dot(&scene1, lx, 5);
+    set_block(&scene1, 3, 2, 2, 2);
+
+    const map1 = try label.label_components(garden, &scene1);
+    if (map1.count != 2) return error.Scene1NotTwoComponents;
+    const manifest1 = try scene_manifest.build_manifest(garden, &map1);
+
+    const l_obj = try scene_manifest.object_of(manifest1, 1);
+    const block_obj = try scene_manifest.object_of(manifest1, 2);
+    if (l_obj.min_x != 1 or l_obj.min_y != 1 or l_obj.max_x != 5 or l_obj.max_y != 5) return error.LBoxWrong;
+    if (block_obj.min_x != 3 or block_obj.min_y != 2 or block_obj.max_x != 4 or block_obj.max_y != 3) return error.BlockBoxWrong;
+
+    const rel_lb = try object_relation(garden, manifest1, &map1, 1, 2);
+    // the boxes OVERLAP (the block's box sits inside the L's), yet the objects do NOT touch: nearest pixels are 2 apart
+    if (!rel_lb.boxes_overlap) return error.LBlockBoxesNotOverlapping;
+    if (rel_lb.a_left_of_b or rel_lb.a_right_of_b or rel_lb.a_above_b or rel_lb.a_below_b) return error.LBlockFalselyDirectional;
+    if (rel_lb.nearest_cheby != 2) return error.LBlockNearestNotTwo;
+    // the crux stated plainly: box overlap TRUE while nearest distance is 2 -- the box over-claims nearness
+
+    // the mirror relation reads the same overlap and the same distance (the relation of a pair is symmetric in these facts)
+    const rel_bl = try object_relation(garden, manifest1, &map1, 2, 1);
+    if (rel_bl.boxes_overlap != rel_lb.boxes_overlap) return error.MirrorOverlapDiffers;
+    if (rel_bl.nearest_cheby != rel_lb.nearest_cheby) return error.MirrorDistanceDiffers;
+
+    // --- SCENE 2, THE BOX OVER-CLAIMS FARNESS -- two diagonal 2x2 blocks and a far dot. A at (1,1)-(2,2) label 1; B at (4,4)-(5,5)
+    //     label 2, one background pixel (3,3) between them on the diagonal; C a single dot at (7,7) label 3. Canvas 9x9 -------------
+    var scene2 = try make_canvas(garden, 9, 9, 0);
+    set_block(&scene2, 1, 1, 2, 2); // A: box (1,1)-(2,2)
+    set_block(&scene2, 4, 4, 2, 2); // B: box (4,4)-(5,5)
+    set_dot(&scene2, 7, 7); // C: box (7,7)-(7,7)
+
+    const map2 = try label.label_components(garden, &scene2);
+    if (map2.count != 3) return error.Scene2NotThreeComponents;
+    const manifest2 = try scene_manifest.build_manifest(garden, &map2);
+
+    const a_obj = try scene_manifest.object_of(manifest2, 1);
+    const b_obj = try scene_manifest.object_of(manifest2, 2);
+    const c_obj = try scene_manifest.object_of(manifest2, 3);
+    if (a_obj.min_x != 1 or a_obj.min_y != 1 or a_obj.max_x != 2 or a_obj.max_y != 2) return error.ABoxWrong;
+    if (b_obj.min_x != 4 or b_obj.min_y != 4 or b_obj.max_x != 5 or b_obj.max_y != 5) return error.BBoxWrong;
+    if (c_obj.min_x != 7 or c_obj.min_y != 7 or c_obj.max_x != 7 or c_obj.max_y != 7) return error.CBoxWrong;
+
+    const rel_ab = try object_relation(garden, manifest2, &map2, 1, 2);
+    // the boxes are DISJOINT and a sits strictly to the upper-left of b -- yet the nearest pixels are 2 apart, the tightest two
+    // distinct components can sit. Directional box separation over-claims farness.
+    if (rel_ab.boxes_overlap) return error.ABBoxesFalselyOverlapping;
+    if (!rel_ab.a_left_of_b) return error.ANotLeftOfB;
+    if (!rel_ab.a_above_b) return error.ANotAboveB;
+    if (rel_ab.a_right_of_b or rel_ab.a_below_b) return error.ABFalselyRightOrBelow;
+    if (rel_ab.nearest_cheby != 2) return error.ABNearestNotTwo;
+
+    // the mirror: b sits to the lower-right of a, same distance
+    const rel_ba = try object_relation(garden, manifest2, &map2, 2, 1);
+    if (!rel_ba.a_right_of_b) return error.BNotRightOfA;
+    if (!rel_ba.a_below_b) return error.BNotBelowA;
+    if (rel_ba.a_left_of_b or rel_ba.a_above_b) return error.BAFalselyLeftOrAbove;
+    if (rel_ba.nearest_cheby != rel_ab.nearest_cheby) return error.MirrorABDistanceDiffers;
+
+    // --- THE METRIC GROWS -- a and the far dot c are box-disjoint (a upper-left of c) with nearest pixels 5 apart, strictly larger
+    //     than the 2 between the tightly-set a and b -- the nearest distance is a real graded measure, not a touch/no-touch flag ----
+    const rel_ac = try object_relation(garden, manifest2, &map2, 1, 3);
+    if (rel_ac.boxes_overlap) return error.ACBoxesFalselyOverlapping;
+    if (!rel_ac.a_left_of_b or !rel_ac.a_above_b) return error.ANotUpperLeftOfC;
+    if (rel_ac.nearest_cheby != 5) return error.ACNearestNotFive;
+    if (rel_ac.nearest_cheby <= rel_ab.nearest_cheby) return error.MetricDidNotGrow;
+
+    // --- REFUSALS -- a relation of an object with itself refuses SameObject; a background or past-the-count label refuses
+    //     BadObjectLabel, having read nothing -------------------------------------------------------------------------------------
+    if (object_relation(garden, manifest2, &map2, 1, 1)) |_| return error.SameNotRefused else |err| {
+        if (err != error.SameObject) return error.WrongSameError;
+    }
+    if (object_relation(garden, manifest2, &map2, 1, 4)) |_| return error.PastNotRefused else |err| {
+        if (err != error.BadObjectLabel) return error.WrongPastError;
+    }
+    if (object_relation(garden, manifest2, &map2, 0, 2)) |_| return error.ZeroNotRefused else |err| {
+        if (err != error.BadObjectLabel) return error.WrongZeroError;
+    }
+
+    // --- DETERMINISM -- the same pair reads the same relation twice ---------------------------------------------------------------
+    const d1 = try object_relation(garden, manifest2, &map2, 1, 2);
+    const d2 = try object_relation(garden, manifest2, &map2, 1, 2);
+    if (d1.boxes_overlap != d2.boxes_overlap or d1.nearest_cheby != d2.nearest_cheby) return error.RelationNotDeterministic;
+    if (d1.a_left_of_b != d2.a_left_of_b or d1.a_above_b != d2.a_above_b) return error.RelationNotDeterministic;
+
+    print("GREEN image-object-relation: the SPATIAL RELATION between two objects -- box overlap and the four strict directional flags as the PREFILTER, the exact nearest-pixel Chebyshev distance as the ARBITER, exact integers, NO float and NO tolerance -- the DECISIVE box-is-a-prefilter crux lifted to a relation, both directions: a box comparison BOUNDS the objects' true nearness yet never DETERMINES it. THE BOX OVER-CLAIMS NEARNESS -- an L (label 1, box (1,1)-(5,5)) and a small block tucked in its concavity (label 2, box (3,2)-(4,3) wholly INSIDE the L's box) have OVERLAPPING boxes (boxes_overlap TRUE), yet their nearest pixels are Chebyshev distance 2 apart, they do not touch -- a box overlap never means the objects are near. THE BOX OVER-CLAIMS FARNESS -- two diagonal 2x2 blocks are box-DISJOINT and a_left_of_b and a_above_b both read TRUE (a sits to the upper-left of b), yet their nearest pixels are Chebyshev distance 2 apart, exactly the TIGHTEST two distinct 8-connected components can sit -- strict directional separation never means the objects are far. The nearest distance is a real graded measure: a far dot at (7,7) reads Chebyshev distance 5 from the first block, strictly larger than the 2 between the tightly-set pair, not a mere touch flag. Its floor is structural -- two different labels are two distinct components, so no pixel of one is 8-adjacent to a pixel of the other and the nearest Chebyshev distance is always at least 2. The mirror relation reads the symmetric direction and the same distance; a relation of an object with itself refuses SameObject and a background or past-the-count label refuses BadObjectLabel having read nothing; the same pair reads the same relation twice. Compose not braid over image/label.rye (the at arbiter and 8-connectivity) and image/scene_manifest.rye (the per-object boxes)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: object_relation selftest\n", .{});
+    return 1;
+}
