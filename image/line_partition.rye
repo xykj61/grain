@@ -1,0 +1,432 @@
+//! image/line_partition.rye -- given a DIRECTED line named by TWO anchor taps (from anchor A toward anchor B), PARTITION the WHOLE scene's
+//! objects into three disjoint classes by which SIDE of that line each object's GROUP center falls: LEFT (a negative cross), ON (a zero
+//! cross -- the object's group center is collinear with the two anchors), and RIGHT (a positive cross). This is image/click_side.rye's
+//! per-query which-side read lifted from ONE tapped group to the WHOLE scene, exactly as image/region_partition.rye lifted
+//! image/region_select.rye's one-rectangle crossing to a whole-scene CONTAINED / CLIPPED / OUTSIDE partition. Exact integers, NO float
+//! and NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/click_side.rye names which side of a directed line a THIRD query tap's group falls on, from
+//! the SIGN of the cross product over exact doubled group-frame centers. This rung reads that same sign for EVERY object at once:
+//! `left_of_line`, `on_line_objects`, and `right_of_line` name the three ascending label sets, and `partition_counts` reads all three
+//! class sizes, summing to the component count. It composes over image/overlap_clusters.rye's `cluster_of` (the object-to-group map) and
+//! image/cluster_facts.rye's `cluster_bbox` (each group's union frame, whose doubled midpoint is the group center) for the per-object
+//! side, and over image/click_order.rye's `click_group_id` plus image/click_collinear.rye's `click_group_center_doubled` for the two
+//! anchor taps that name the line.
+//!
+//! The DECISIVE crux -- the EXACT INVERSION of region_partition's own lesson. image/region_partition.rye proved that for CONTAINMENT the
+//! tight bounding box is the EXACT arbiter: an object lies wholly inside a rectangle IF AND ONLY IF its own box does, so its class is a
+//! per-object GEOMETRIC fact read pixel-for-pixel from the object alone. This partition is the opposite in kind: an object's side is read
+//! not from the object's own center but from the center of the GROUP it belongs to, so the class is a CONNECTIVITY fact, deliberately
+//! COARSER than a true geometric split of the plane. The consequence is sharp -- A LINE NEVER SPLITS A CONNECTED GROUP. Two facts on
+//! metal say it:
+//!
+//!   THE GROUP IS NEVER SPLIT, EVEN WHERE ITS PIXELS STRADDLE THE LINE. A connected group G of two members -- P1 whose OWN box center sits
+//!   ABOVE the horizontal line A -> B (its own cross negative, LEFT) and P2 whose own box center sits BELOW it (RIGHT) -- has one union
+//!   frame whose center lands on ONE side, so BOTH P1 and P2 classify to that one side. The directed line passes geometrically between the
+//!   two members' own centers, yet the group is not cut: where region_partition would clip an object its rectangle straddles, this
+//!   partition keeps a whole group on its group-center's side. The object's own box would say LEFT for P1; the group says RIGHT, and the
+//!   group is what a keeper grabbed -- the group-fact-not-pixel-fact lesson at the whole-scene partition.
+//!
+//!   THE ON SET IS click_side's ZERO SET, LIFTED TO EVERY OBJECT. An object is ON exactly when its group center is collinear with the two
+//!   anchors -- the same zero cross image/click_side.rye's `is_on_line` reads for a single query. The two anchor groups themselves are
+//!   always ON (a group center on the line it helps define), and LEFT + ON + RIGHT always sums to the component count, every object landing
+//!   in exactly one class. Reversing the anchors to B -> A flips the SIGN of every cross, so the LEFT and RIGHT sets SWAP while ON stays
+//!   fixed -- the whole-scene analog of `which_side`'s antisymmetry, read over the entire scene at once.
+//!
+//! Compose not braid. This rung OWNS only the whole-scene side partition. image/click_side.rye owns the `Side` enum (its three cases the
+//! partition's three classes) and the single-query which-side read this rung cross-checks against; image/overlap_clusters.rye owns
+//! `cluster_of` (the object-to-group map); image/cluster_facts.rye owns `cluster_bbox` (the group's union frame); image/click_order.rye
+//! owns `click_group_id` (the anchor-distinctness guard); image/click_collinear.rye owns `click_group_center_doubled` (the anchor centers).
+//! No plane of its own, no pixel written, no box re-measured -- a reading over readings.
+//!
+//! Everything is bounded before a byte: the partition scan runs `components` times, itself bounded by image/label.rye's
+//! `label_max_pixels`; each result slice is sized to the component count; the cross product runs in i64 so the doubled-coordinate
+//! differences never overflow. A directed line needs two distinct points, so two anchor taps sharing a group refuse `SameGroup` by name; a
+//! tap on background refuses `EmptyClick`; a point off the map refuses `PointOutOfBounds`, having read nothing. No network, no key, no
+//! funds -- the "which side of this divider does each thing fall on" a surface names the day a keeper draws a line through two things and
+//! asks the whole scene to sort itself left and right of it.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/line_partition.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const hit_test = @import("hit_test.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const cluster_facts = @import("cluster_facts.rye");
+const click_order = @import("click_order.rye");
+const click_collinear = @import("click_collinear.rye");
+const click_side = @import("click_side.rye");
+
+pub const line_partition_version = "20260819.074115";
+
+pub const LinePartitionError = error{
+    SameGroup,
+};
+
+/// The size of each partition class -- LEFT, ON, RIGHT. The three always sum to the scene's component count, since every object lands in
+/// exactly one class of the directed line.
+pub const LineCounts = struct {
+    left: u32 = 0,
+    on: u32 = 0,
+    right: u32 = 0,
+
+    /// The total objects accounted for -- the invariant sum a caller can cross-check against the component count.
+    pub fn total(self: *const LineCounts) u32 {
+        return self.left + self.on + self.right;
+    }
+};
+
+/// The two anchor centers that name the directed line, held as doubled coordinates in i64 so the cross product never overflows.
+const LineD = struct {
+    ax2: i64,
+    ay2: i64,
+    bx2: i64,
+    by2: i64,
+};
+
+/// Resolve the directed line from two anchor taps -- refuses `EmptyClick` on a miss and `PointOutOfBounds` off the map through the group
+/// id read, then `SameGroup` when the two anchors land in one group (a line needs two distinct points). Returns the two group centers as
+/// doubled coordinates, exactly the centers image/click_side.rye's `which_side` reads.
+fn resolve_line(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !LineD {
+    // invariant: the clustering and the map describe the same scene.
+    assert(clustering.components == map.count);
+
+    const ga = try click_order.click_group_id(clustering, map, ax, ay);
+    const gb = try click_order.click_group_id(clustering, map, bx, by);
+    // invariant: each anchor resolved to a real dense group id in range.
+    assert(ga >= 1);
+    assert(gb >= 1);
+    if (ga == gb) return error.SameGroup;
+
+    const ca = try click_collinear.click_group_center_doubled(garden, graph, manifest, map, ax, ay);
+    const cb = try click_collinear.click_group_center_doubled(garden, graph, manifest, map, bx, by);
+    return LineD{ .ax2 = @as(i64, ca.cx2), .ay2 = @as(i64, ca.cy2), .bx2 = @as(i64, cb.cx2), .by2 = @as(i64, cb.cy2) };
+}
+
+/// The doubled center of the GROUP that object `lbl` belongs to -- the object-to-group map (`cluster_of`) followed by the group's union
+/// frame (`cluster_bbox`), whose doubled midpoint is the exact group center. A member of a multi-object group reads the GROUP center,
+/// invariant to which member is asked.
+fn label_group_center(clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, lbl: u32) !click_collinear.CenterD {
+    // invariant: a real object label, never background.
+    assert(lbl >= 1);
+    const cid = try overlap_clusters.cluster_of(clustering, lbl);
+    const box = try cluster_facts.cluster_bbox(clustering, graph, cid);
+    // invariant: the frame is well-formed on both axes -- a real box to center.
+    assert(box.max_x >= box.min_x);
+    assert(box.max_y >= box.min_y);
+    return click_collinear.CenterD{ .cx2 = box.min_x + box.max_x, .cy2 = box.min_y + box.max_y };
+}
+
+/// The SIGN of the cross product `(B - A) x (C - A)` over the doubled centers -- negative reads `left`, zero reads `on`, positive reads
+/// `right`, exactly the three-way split image/click_side.rye reads for a single query.
+fn side_of(line: LineD, center: click_collinear.CenterD) click_side.Side {
+    const abx: i64 = line.bx2 - line.ax2;
+    const aby: i64 = line.by2 - line.ay2;
+    const acx: i64 = @as(i64, center.cx2) - line.ax2;
+    const acy: i64 = @as(i64, center.cy2) - line.ay2;
+    const cross: i64 = abx * acy - aby * acx;
+    // invariant: the sign partitions the plane -- a value reads exactly one of the three sides.
+    if (cross < 0) return .left;
+    if (cross > 0) return .right;
+    return .on;
+}
+
+/// Which SIDE of the directed line A -> B object `lbl`'s GROUP falls on -- `left`, `on`, or `right`. Reads the object's group center, not
+/// its own box center, so every member of a connected group reads the SAME side. Refuses `SameGroup` when the two anchors share a group,
+/// `EmptyClick` on an anchor miss, `PointOutOfBounds` off the map.
+pub fn object_side(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, lbl: u32) !click_side.Side {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(graph.components == manifest.components);
+    assert(manifest.components == map.count);
+
+    const line = try resolve_line(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const center = try label_group_center(clustering, graph, lbl);
+    return side_of(line, center);
+}
+
+/// Collect the ascending SET of object labels whose group falls on the given `want` side of the directed line. One pass over the dense
+/// labels 1..components, so the result is strictly ascending and duplicate-free. The caller owns the returned slice.
+fn collect_side(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, want: click_side.Side) ![]u32 {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+    // invariant: the partition scan is bounded by the component count, itself under image/label.rye's pixel ceiling.
+    assert(manifest.components <= label.label_max_pixels);
+
+    const line = try resolve_line(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const scratch = try garden.alloc(u32, @as(usize, manifest.components));
+    var found: u32 = 0;
+    var lbl: u32 = 1;
+    while (lbl <= manifest.components) : (lbl += 1) {
+        const center = try label_group_center(clustering, graph, lbl);
+        if (side_of(line, center) == want) {
+            scratch[@as(usize, found)] = lbl;
+            found += 1;
+        }
+    }
+    // invariant: no more objects can land on one side than the scene holds.
+    assert(found <= manifest.components);
+
+    const out = try garden.alloc(u32, @as(usize, found));
+    var k: usize = 0;
+    while (k < out.len) : (k += 1) out[k] = scratch[k];
+    // invariant: the result is strictly ascending -- the dense label order carried through the filter.
+    var v: usize = 1;
+    while (v < out.len) : (v += 1) assert(out[v] > out[v - 1]);
+    return out;
+}
+
+/// The ascending SET of object labels whose group falls to the LEFT of the directed line A -> B. Refuses `SameGroup`, `EmptyClick`,
+/// `PointOutOfBounds` through the line resolution.
+pub fn left_of_line(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) ![]u32 {
+    return collect_side(garden, clustering, graph, manifest, map, ax, ay, bx, by, .left);
+}
+
+/// The ascending SET of object labels whose group center lies exactly ON the directed line A -> B -- collinear with the two anchors. This
+/// is image/click_side.rye's zero set lifted to every object; the two anchor groups are always members. Refuses `SameGroup`,
+/// `EmptyClick`, `PointOutOfBounds`.
+pub fn on_line_objects(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) ![]u32 {
+    return collect_side(garden, clustering, graph, manifest, map, ax, ay, bx, by, .on);
+}
+
+/// The ascending SET of object labels whose group falls to the RIGHT of the directed line A -> B. Refuses `SameGroup`, `EmptyClick`,
+/// `PointOutOfBounds`.
+pub fn right_of_line(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) ![]u32 {
+    return collect_side(garden, clustering, graph, manifest, map, ax, ay, bx, by, .right);
+}
+
+/// The three class SIZES at once -- LEFT, ON, RIGHT -- summing to the component count. One pass over the dense labels, classifying each by
+/// its group center. Refuses `SameGroup`, `EmptyClick`, `PointOutOfBounds` through the line resolution.
+pub fn partition_counts(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !LineCounts {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+
+    const line = try resolve_line(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    var counts = LineCounts{};
+    var lbl: u32 = 1;
+    while (lbl <= manifest.components) : (lbl += 1) {
+        const center = try label_group_center(clustering, graph, lbl);
+        switch (side_of(line, center)) {
+            .left => counts.left += 1,
+            .on => counts.on += 1,
+            .right => counts.right += 1,
+        }
+    }
+    // invariant: the three classes partition the scene -- every object lands in exactly one.
+    assert(counts.total() == manifest.components);
+    return counts;
+}
+
+/// TRUE when `want` appears in an ascending partition set -- a bounded membership read over the sorted result.
+pub fn is_in(set: []const u32, want: u32) bool {
+    // invariant: a real query names a foreground label, never background.
+    assert(want >= 1);
+    var i: usize = 0;
+    while (i < set.len) : (i += 1) {
+        if (set[i] == want) return true;
+    }
+    return false;
+}
+
+// --- selftest: the DECISIVE group-never-split crux (a connected group whose two members straddle the line lands wholly on its group-
+//     center's side, where its own box centers would fall on opposite sides); the ON set is click_side's zero set lifted; the three
+//     classes partition the scene; antisymmetry swaps LEFT and RIGHT under the anchor reversal; refusals by name; determinism ---------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// Paint a corner bracket-L hugging TOP-LEFT: a vertical arm down column `x0` from `y0` to `y1`, and a horizontal arm along row `y0` from
+/// `x0` to `x1`. Its inclusive box is (x0,y0)-(x1,y1); its bottom-right corner stays empty, so a box overlap there touches no pixel and
+/// the shape stays an 8-disconnected component from a neighbor whose box reaches only that empty corner.
+fn set_corner_l(img: *qoi.Pixmap, x0: u32, y0: u32, x1: u32, y1: u32) void {
+    // invariant: the L's box is well-formed on both axes.
+    assert(x1 >= x0);
+    assert(y1 >= y0);
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) set_dot(img, x0, yy);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) set_dot(img, xx, y0);
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- THE PARTITION SCENE on a 22x15 canvas. The directed line A -> B is horizontal at doubled-y 11. Raster order gives dense labels:
+    //     U label 1 (a singleton ABOVE the line), the STRADDLING GROUP G = P1 label 2 + P2 label 3 (two corner-L's whose boxes overlap at
+    //     P1's empty bottom-right corner yet stay 8-disconnected components -- P1's own center ABOVE the line, P2's own center BELOW it, the
+    //     group center BELOW), A label 4 and B label 5 (the two anchors, ON the line), N label 6 (a singleton ON the line), W label 7 (a
+    //     singleton BELOW the line) -------------------------------------------------------------------------------------------------------
+    var scene = try make_canvas(garden, 22, 15, 0);
+    set_block(&scene, 6, 1, 2, 2); // U: box (6,1)-(7,2), center-doubled (13,3) -- ABOVE the A-B line
+    set_corner_l(&scene, 16, 1, 18, 3); // P1: corner-L box (16,1)-(18,3), center-doubled (34,4) -- own center ABOVE
+    set_corner_l(&scene, 18, 3, 20, 13); // P2: corner-L box (18,3)-(20,13), center-doubled (38,16) -- own center BELOW; box overlaps P1 at (18,3)
+    set_block(&scene, 2, 5, 2, 2); // A: box (2,5)-(3,6), center-doubled (5,11) -- anchor, ON
+    set_block(&scene, 10, 5, 2, 2); // B: box (10,5)-(11,6), center-doubled (21,11) -- anchor, ON
+    set_block(&scene, 14, 5, 2, 2); // N: box (14,5)-(15,6), center-doubled (29,11) -- ON
+    set_block(&scene, 6, 9, 2, 2); // W: box (6,9)-(7,10), center-doubled (13,19) -- BELOW
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 7) return error.SceneNotSevenComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    // P1 and P2's boxes overlap at (18,3), so they form ONE cluster; the other five objects are singletons -- 6 clusters over 7 objects
+    if (clustering.clusters != 6) return error.NotSixClusters;
+
+    // dense labels: U=1, P1=2, P2=3, A=4, B=5, N=6, W=7
+    const u_lbl: u32 = 1;
+    const p1_lbl: u32 = 2;
+    const p2_lbl: u32 = 3;
+    const a_lbl: u32 = 4;
+    const b_lbl: u32 = 5;
+    const n_lbl: u32 = 6;
+    const w_lbl: u32 = 7;
+    // confirm the raster order landed the labels where the scene predicts
+    const p1_entry = try scene_manifest.object_of(manifest, p1_lbl);
+    if (p1_entry.min_x != 16 or p1_entry.max_x != 18 or p1_entry.min_y != 1 or p1_entry.max_y != 3) return error.P1NotAtExpectedBox;
+    const p2_entry = try scene_manifest.object_of(manifest, p2_lbl);
+    if (p2_entry.min_x != 18 or p2_entry.max_x != 20 or p2_entry.min_y != 3 or p2_entry.max_y != 13) return error.P2NotAtExpectedBox;
+    const a_entry = try scene_manifest.object_of(manifest, a_lbl);
+    if (a_entry.min_x != 2 or a_entry.min_y != 5) return error.ANotAtExpectedBox;
+    // P1 and P2 are ONE cluster, U is its own cluster -- the connectivity the crux leans on
+    if (try overlap_clusters.cluster_of(clustering, p1_lbl) != try overlap_clusters.cluster_of(clustering, p2_lbl)) return error.P1P2NotOneCluster;
+    if (try overlap_clusters.cluster_of(clustering, p1_lbl) == try overlap_clusters.cluster_of(clustering, u_lbl)) return error.P1UWronglyOneCluster;
+
+    // the two anchor taps that name the horizontal directed line A -> B
+    const ax: u32 = 2;
+    const ay: u32 = 5;
+    const bx: u32 = 10;
+    const by: u32 = 5;
+
+    // --- THE THREE CLASSES -- LEFT {U}, ON {A,B,N}, RIGHT {P1,P2,W}. Every set ascending, the anchors ON, and the two group members P1,P2
+    //     both RIGHT (their group center below the line) -----------------------------------------------------------------------------------
+    const left = try left_of_line(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    if (left.len != 1 or left[0] != u_lbl) return error.LeftNotUOnly;
+    const on = try on_line_objects(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    if (on.len != 3 or on[0] != a_lbl or on[1] != b_lbl or on[2] != n_lbl) return error.OnNotABN;
+    const right = try right_of_line(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    if (right.len != 3 or right[0] != p1_lbl or right[1] != p2_lbl or right[2] != w_lbl) return error.RightNotP1P2W;
+
+    // --- THE GROUP IS NEVER SPLIT -- P1 and P2 are one connected group; both read RIGHT (the group-center's side), invariant to which
+    //     member is asked, though P1's OWN box center sits ABOVE the line (LEFT) and P2's OWN box center sits BELOW it (RIGHT) -------------
+    if (try object_side(garden, clustering, graph, manifest, &map, ax, ay, bx, by, p1_lbl) != .right) return error.P1NotRightByGroup;
+    if (try object_side(garden, clustering, graph, manifest, &map, ax, ay, bx, by, p2_lbl) != .right) return error.P2NotRightByGroup;
+    // P1's OWN box center (34,4) is ABOVE the line at doubled-y 11: a cross of 16*(4-11) < 0 reads LEFT -- the divergence the group heals.
+    // The line A -> B doubled is (5,11)->(21,11), so (B-A)=(16,0); for P1's own center (34,4), cross = 16*(4-11) - 0*(34-5) = -112 < 0.
+    const p1_own_cross: i64 = @as(i64, 16) * (@as(i64, p1_entry.min_y + p1_entry.max_y) - @as(i64, 11));
+    if (p1_own_cross >= 0) return error.P1OwnCenterNotLeft;
+    // P2's OWN box center (38,16) is BELOW the line: cross = 16*(16-11) = 80 > 0 reads RIGHT -- the two members' own sides differ
+    const p2_own_cross: i64 = @as(i64, 16) * (@as(i64, p2_entry.min_y + p2_entry.max_y) - @as(i64, 11));
+    if (p2_own_cross <= 0) return error.P2OwnCenterNotRight;
+
+    // --- THE ON SET IS click_side's ZERO SET, LIFTED -- object_side reads ON exactly where click_side.which_side reads .on for a
+    //     representative tap, cross-checked on metal object by object over every label -----------------------------------------------------
+    const taps_x = [_]u32{ 6, 16, 18, 2, 10, 14, 6 };
+    const taps_y = [_]u32{ 1, 1, 3, 5, 5, 5, 9 };
+    var li: u32 = 1;
+    while (li <= manifest.components) : (li += 1) {
+        const by_group = try object_side(garden, clustering, graph, manifest, &map, ax, ay, bx, by, li);
+        const tx = taps_x[@as(usize, li - 1)];
+        const ty = taps_y[@as(usize, li - 1)];
+        const by_tap = try click_side.which_side(garden, clustering, graph, manifest, &map, ax, ay, bx, by, tx, ty);
+        if (by_group != by_tap) return error.ObjectSideDisagreesWithClickSide;
+    }
+    // the anchors themselves are ON the line they define
+    if (try object_side(garden, clustering, graph, manifest, &map, ax, ay, bx, by, a_lbl) != .on) return error.AnchorANotOn;
+    if (try object_side(garden, clustering, graph, manifest, &map, ax, ay, bx, by, b_lbl) != .on) return error.AnchorBNotOn;
+
+    // --- THE THREE CLASSES PARTITION THE SCENE -- LEFT + ON + RIGHT sums to the component count, every object in exactly one class -------
+    const counts = try partition_counts(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    if (counts.left != 1 or counts.on != 3 or counts.right != 3) return error.CountsNotOneThreeThree;
+    if (counts.total() != manifest.components) return error.CountsNotSumComponents;
+
+    // --- ANTISYMMETRY -- reverse the anchors to B -> A: the LEFT and RIGHT sets SWAP while ON stays fixed, the whole-scene analog of
+    //     which_side's antisymmetry ------------------------------------------------------------------------------------------------------
+    const left_rev = try left_of_line(garden, clustering, graph, manifest, &map, bx, by, ax, ay);
+    if (left_rev.len != 3 or left_rev[0] != p1_lbl or left_rev[1] != p2_lbl or left_rev[2] != w_lbl) return error.LeftRevNotRightSet;
+    const right_rev = try right_of_line(garden, clustering, graph, manifest, &map, bx, by, ax, ay);
+    if (right_rev.len != 1 or right_rev[0] != u_lbl) return error.RightRevNotLeftSet;
+    const on_rev = try on_line_objects(garden, clustering, graph, manifest, &map, bx, by, ax, ay);
+    if (on_rev.len != 3 or on_rev[0] != a_lbl or on_rev[1] != b_lbl or on_rev[2] != n_lbl) return error.OnRevChanged;
+
+    // --- TWO ANCHORS SHARING A GROUP REFUSE SameGroup -- a directed line needs two points, so both anchor taps on the SAME object A leave
+    //     no line ------------------------------------------------------------------------------------------------------------------------
+    if (try hit_test.object_label_at(&map, 2, 5) != try hit_test.object_label_at(&map, 3, 6)) return error.APixelsNotSameObject;
+    if (partition_counts(garden, clustering, graph, manifest, &map, 2, 5, 3, 6)) |_| return error.SameGroupNotRefused else |err| {
+        if (err != error.SameGroup) return error.WrongSameGroupError;
+    }
+
+    // --- A MISS REFUSES EmptyClick -- a tap on background (0,0) belongs to no group, so the line resolution refuses EmptyClick ----------
+    if (try hit_test.object_label_at(&map, 0, 0) != 0) return error.BackgroundNotEmpty;
+    if (left_of_line(garden, clustering, graph, manifest, &map, 0, 0, bx, by)) |_| return error.MissNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissError;
+    }
+
+    // --- A POINT OFF THE MAP REFUSES PointOutOfBounds through the arbiter, having read nothing --------------------------------------------
+    if (partition_counts(garden, clustering, graph, manifest, &map, ax, ay, 22, 0)) |_| return error.OffMapNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapError;
+    }
+
+    // --- DETERMINISM -- the same directed line reads the same partition twice -----------------------------------------------------------
+    const c1 = try partition_counts(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    const c2 = try partition_counts(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    if (c1.left != c2.left or c1.on != c2.on or c1.right != c2.right) return error.PartitionNotDeterministic;
+
+    print("GREEN image-line-partition: given a DIRECTED line named by TWO anchor taps (from A toward B), PARTITION the WHOLE scene's objects into LEFT / ON / RIGHT by which SIDE of the line each object's GROUP center falls, exact integers, NO float and NO tolerance -- image/click_side.rye's per-query which-side read lifted from ONE tapped group to the whole scene, the DECISIVE EXACT INVERSION of region_partition's lesson: region_partition proved the tight box is the EXACT arbiter of containment (a per-object GEOMETRIC fact, pixel-exact), yet this partition reads each object's side from the center of the GROUP it belongs to (a CONNECTIVITY fact), deliberately COARSER -- so A LINE NEVER SPLITS A CONNECTED GROUP. Over a 7-object scene on a 22x15 canvas (U a singleton above, a straddling group G = P1 corner-L box (16,1)-(18,3) + P2 corner-L box (18,3)-(20,13) whose boxes overlap at (18,3) yet stay 8-disconnected components, anchors A box (2,5)-(3,6) and B box (10,5)-(11,6), N box (14,5)-(15,6), W box (6,9)-(7,10)): the horizontal line A -> B partitions LEFT {{U}}, ON {{A,B,N}}, RIGHT {{P1,P2,W}}. THE GROUP IS NEVER SPLIT -- P1's OWN box center (34,4) sits ABOVE the line (its own cross negative, LEFT) and P2's OWN box center (38,16) sits BELOW it (RIGHT), yet both P1 and P2 classify RIGHT (the group center below the line), the directed line passing geometrically between the two members' own centers while the group stays whole, the group-fact-not-pixel-fact lesson at the whole-scene partition. THE ON SET IS click_side's ZERO SET, LIFTED -- object_side reads ON exactly where click_side.which_side reads .on for a representative tap, cross-checked on metal object by object, and the two anchor groups are always ON (a group center on the line it defines). LEFT + ON + RIGHT always sums to the component count. ANTISYMMETRY -- reversing the anchors to B -> A flips the SIGN of every cross, so the LEFT and RIGHT sets SWAP while ON stays fixed, the whole-scene analog of which_side's antisymmetry. Two anchors sharing a group refuse SameGroup by name (a line needs two points); a background tap refuses EmptyClick; a point off the map refuses PointOutOfBounds having read nothing; the same line reads the same partition twice. Compose not braid over image/click_side.rye (the Side enum and the single-query which-side cross-check), image/overlap_clusters.rye (cluster_of), image/cluster_facts.rye (cluster_bbox), image/click_order.rye (click_group_id), and image/click_collinear.rye (click_group_center_doubled)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: line_partition selftest\n", .{});
+    return 1;
+}

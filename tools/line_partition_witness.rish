@@ -1,0 +1,49 @@
+# tools/line_partition_witness.rish -- the WHOLE-SCENE LINE PARTITION on metal: given a DIRECTED line named by TWO anchor taps (from A toward B),
+# partition every object into LEFT / ON / RIGHT by which SIDE of the line its GROUP center falls, through image/click_side.rye, image/cluster_facts.rye,
+# image/overlap_clusters.rye, image/click_order.rye, and image/click_collinear.rye (Season G).
+#
+# Season G (Open Media Primitives) -- image/click_side.rye names which side of a directed line a THIRD query tap's group falls on (the cross product's
+# sign); this rung lifts that per-query read to the WHOLE scene, classifying every object by its group center, exactly as image/region_partition.rye
+# lifted image/region_select.rye's one-rectangle crossing to a scene-wide CONTAINED / CLIPPED / OUTSIDE partition. image/overlap_clusters.rye's
+# cluster_of maps object to group, image/cluster_facts.rye's cluster_bbox reads each group's union frame (its doubled midpoint the group center),
+# image/click_order.rye's click_group_id and image/click_collinear.rye's click_group_center_doubled resolve the two anchor taps. A reading over
+# readings -- no plane of its own, no pixel written.
+#
+# The crux this witness proves on metal: the EXACT INVERSION of region_partition's lesson. region_partition proved the tight box is the EXACT arbiter of
+# containment (a per-object geometric fact, pixel-exact), yet this partition reads each object's side from the center of the GROUP it belongs to (a
+# connectivity fact), deliberately COARSER -- so A LINE NEVER SPLITS A CONNECTED GROUP. Over a 7-object scene (U a singleton above, a straddling group
+# G = P1 + P2 whose boxes overlap yet stay 8-disconnected, anchors A and B, N on the line, W below): the horizontal line A -> B partitions LEFT {U}, ON
+# {A,B,N}, RIGHT {P1,P2,W}; P1's own box center sits above the line (LEFT) and P2's below it (RIGHT) yet both classify RIGHT (the group center below),
+# the line passing between the members' own centers while the group stays whole. The ON set is click_side's zero set lifted (object_side agrees with
+# which_side for a representative tap, object by object), the anchors always ON; LEFT + ON + RIGHT sums to the component count; reversing the anchors
+# swaps LEFT and RIGHT while ON stays fixed; SameGroup / EmptyClick / PointOutOfBounds refusals by name; determinism. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/line_partition_witness.rish
+
+say "line_partition: Language EN -- Season G whole-scene line partition; every object sorted LEFT/ON/RIGHT of a two-anchor directed line by its GROUP center, lifting click_side's per-query which-side read to the whole scene; NO float, NO tolerance."
+say "line_partition: Style Radiant -- compose not braid: this rung owns only the whole-scene side partition; click_side owns the Side enum and the single-query which-side read, overlap_clusters owns cluster_of, cluster_facts owns cluster_bbox, click_order owns click_group_id, click_collinear owns click_group_center_doubled. No plane of its own, no pixel written -- a reading over readings."
+say "line_partition: Lens TAME -- the partition scan runs components times, bounded by label_max_pixels, each result slice sized to the component count, the cross product in i64 so the doubled-coordinate differences never overflow; two anchors sharing a group refuse SameGroup, a background tap refuses EmptyClick, a point off the map refuses PointOutOfBounds having read nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/line_partition"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/line_partition.rye -femit-bin=${bin}"]
+assert build.ok else "line_partition: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "line_partition: selftest exited non-zero -- ${selftest.out}"
+
+assert selftest.out contains "GREEN image-line-partition" else "line_partition: selftest did not print the GREEN line"
+assert selftest.out contains "PARTITION the WHOLE scene's objects into LEFT / ON / RIGHT" else "line_partition: the whole-scene partition claim did not print"
+assert selftest.out contains "the DECISIVE EXACT INVERSION of region_partition's lesson" else "line_partition: the decisive crux did not print"
+assert selftest.out contains "A LINE NEVER SPLITS A CONNECTED GROUP" else "line_partition: the group-never-split claim did not print"
+assert selftest.out contains "THE GROUP IS NEVER SPLIT" else "line_partition: the straddling-group shape did not print"
+assert selftest.out contains "THE ON SET IS click_side's ZERO SET, LIFTED" else "line_partition: the lifted-zero-set claim did not print"
+assert selftest.out contains "the two anchor groups are always ON" else "line_partition: the anchors-always-on claim did not print"
+assert selftest.out contains "LEFT + ON + RIGHT always sums to the component count" else "line_partition: the partition-sum claim did not print"
+assert selftest.out contains "the LEFT and RIGHT sets SWAP while ON stays fixed" else "line_partition: the antisymmetry claim did not print"
+assert selftest.out contains "refuse SameGroup by name" else "line_partition: the SameGroup refusal did not print"
+assert selftest.out contains "the same line reads the same partition twice" else "line_partition: determinism did not print"
+
+say "line_partition: GREEN on metal -- the whole-scene line partition, every object sorted LEFT/ON/RIGHT of a two-anchor directed line by its group center, a line never splitting a connected group (the group-fact-not-pixel-fact inversion of region_partition's pixel-exact containment), the ON set click_side's zero set lifted with the anchors always ON, the classes summing to the component count, LEFT and RIGHT swapping under the anchor reversal while ON stays fixed, refusals by name, determinism. Season G open-media."
