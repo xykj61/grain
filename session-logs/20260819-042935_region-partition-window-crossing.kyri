@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260819.042935
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title region_partition -- the window-versus-crossing selection, the exact inversion of region_select's box lesson
+prompt baton prin recur -- pick up the running thread, Standfast on reds, take the next agent-doable lap Lindy-first crux-first on the Season G scene-read edge, send it as its own signed round.
+think Read KYRI and RADIANT_STYLE to be Kyri in voice; read REMEMBER, REDS, and the top session-log rows. Standfast clear -- every living REDS row Closed, Released, or the custody-gated errata #75; no agent-closable red open, so constructive work is licensed.
+think The cluster-tree family has drilled very deep into graph theory (seams, subtree frames, MST leaves, centroid, radius, diameter, diameter path). Lindy-first crux-first, the strongest next move turns back to what a real surface DOES rather than one more tree invariant -- reconnecting to pixels and to a keeper's hand.
+think Found a genuine still-open crux inside region_select itself: it reads the CROSSING set (any pixel enters), where the bounding box is a loose over-approximating prefilter. The dual question -- which objects a rectangle fully CONTAINS vs merely CLIPS -- is the window-versus-crossing selection every editor offers, and it carries the EXACT INVERSION of region_select's lesson: for containment the tight bounding box is not loose but EXACT, since the box is the object's own min/max pixel envelope, so all-pixels-inside iff box-inside.
+think Designed image/region_partition.rye: contained_in_rect (boxes alone, no pixel scan), clipped_in_rect (crossing minus contained -- the crop-cut set, needing both map and boxes), partition_counts (the three class sizes summing to the component count), rect_contains_bbox (the exact test). Composes over region_select (crossing decision + QueryRect) and scene_manifest (per-object boxes) -- compose not braid, no new plane, a reading over a reading.
+think Proved the inversion on metal: a full pixel scan (all_pixels_inside) agrees with the pure box test for every object and every rectangle -- no concavity gap, no hole gap, a holed ring contained by its box exactly. Three rectangles span the modes: contains-some (window keeps 2, crossing keeps 3, the clipped block the difference), contains-all, contains-none (clips three, the widest divergence), plus inclusive-corner containment, off-map all-OUTSIDE, BadRect refusals, determinism.
+obs GREEN on the first full metal run after the {A,D} braces in the GREEN prose were doubled for the format string -- a print-string fix, not a code red, exactly the lantern the cluster-tree logs already named. width-check exit 0, tame_style_check bans clean (my module carries its asserts, not on the zero-assert list), living-card ASCII GREEN after the REMEMBER edits.
+obs Single-stranded card discipline kept: REMEMBER live edge and Git nib repointed to region_partition, cluster_seams folded to a prior-nib comment; image/README.md names the region partition after region select (docs-sync); 200 image modules stand.
+obs Council rota lap re-read the voice items (RADIANT_STYLE.md, KYRI.md) -- the four faculties held whole through the lap; Lattice for the exact box arithmetic, Scribble for the plain first-use naming of contained/clipped/outside, Ember for the metal proof.
+loom witness=region_partition_witness checks=15 wall_ms=fast result=GREEN modules=200
+file image/region_partition.rye the window-versus-crossing partition -- contained/clipped/outside, the box exact for containment
+file tools/region_partition_witness.rish proves the partition GREEN on metal -- the inversion crux, the three modes, refusals, determinism
+file image/README.md names the region partition after region select in the selector family (docs-sync)
+file crux/REMEMBER.md live edge + Git nib repointed single-stranded to region_partition, cluster_seams folded to a prior-nib comment, 200 modules
+recommend keep-going -- crux-first next: a lasso partition (contained/clipped/outside over an arbitrary POLYGON, strictly sharper by a concave carve), an object-count-in-region summary, or a codec read; the Microkernel study rung and a real-photo top-hat wait on a fetch/license gate. No network, no key, no funds.

@@ -1,0 +1,391 @@
+//! image/region_partition.rye -- given a query RECTANGLE, PARTITION the scene's objects into three disjoint classes: CONTAINED (every
+//! foreground pixel inside the rectangle), CLIPPED (some pixels inside, some outside -- the objects a crop would cut), and OUTSIDE (no
+//! pixel inside). This is the WINDOW-versus-CROSSING selection every editor surface offers: a window select keeps only what a marquee
+//! wholly holds, a crossing select keeps everything the marquee touches, and the difference is exactly the CLIPPED set. Exact integers,
+//! NO float and NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/region_select.rye names EVERY object a rectangle CROSSES (any foreground pixel enters).
+//! This rung splits that crossing set by CONTAINMENT: `contained_in_rect` names the objects the rectangle holds WHOLE, `clipped_in_rect`
+//! the objects it holds only in PART, and `partition_counts` reads all three class sizes at once. It composes over region_select for the
+//! crossing set and over image/scene_manifest.rye's per-object boxes for the containment test.
+//!
+//! The DECISIVE crux -- the EXACT INVERSION of region_select's own lesson. region_select proved that a bounding box which OVERLAPS the
+//! rectangle is NECESSARY but NOT SUFFICIENT for the object to cross it: the box over-counts, and only the label map -- one exact
+//! integer per pixel -- arbitrates crossing. For CONTAINMENT the tight bounding box is not a loose prefilter but the EXACT arbiter: an
+//! object lies wholly inside the rectangle IF AND ONLY IF its bounding box does, because the box is the pixels' own min/max envelope, so
+//! every pixel inside is exactly the box inside. The consequence is sharp -- `contained_in_rect` needs NO pixel scan at all, reading the
+//! containment set from the object boxes alone, where region_select needed a full clamped scan to resolve crossing. Two facts on metal
+//! say it:
+//!
+//!   THE BOX IS EXACT FOR CONTAINMENT -- for every object and every query rectangle, `rect_contains_bbox(entry, rect)` (pure box
+//!   arithmetic) agrees pixel-for-pixel with a full scan of the object's foreground against the rectangle. There is no concavity gap, no
+//!   hole gap, no over-count: where region_select's overlap prefilter could claim a rectangle the object does not fill, the containment
+//!   box can claim nothing the object does not fill, since the box IS what the object fills at its extremes. A holed ring wholly inside
+//!   the rectangle is CONTAINED by its box exactly, its background hole irrelevant -- containment reads the object's foreground extent.
+//!
+//!   THE CLIP SET IS WHERE THE TWO SELECTION MODES DIVERGE -- CONTAINED is a subset of CROSSING (every object with all pixels inside has
+//!   at least one pixel inside, since an object holds at least one pixel), so CLIPPED = CROSSING \ CONTAINED is exactly the set a window
+//!   select drops and a crossing select keeps: the objects the rectangle's edge cuts through. A block straddling the rectangle's right
+//!   edge is CLIPPED (its box not contained, yet its left pixels inside); the same block under a wider rectangle that holds its whole box
+//!   becomes CONTAINED, and under a tight interior rectangle that catches only its corner stays CLIPPED -- the class is a fact about the
+//!   object AND the rectangle together, and CONTAINED + CLIPPED + OUTSIDE always sums to the component count.
+//!
+//! Compose not braid. This rung OWNS only the containment split of a rectangle query. image/region_select.rye owns the crossing
+//! decision and the `QueryRect` (the shared rectangle type, its corners, its well-formed test); image/scene_manifest.rye owns the
+//! per-object rows (`ObjectEntry`, `Manifest`, `object_of`) and the bounding box each carries; image/label.rye owns the component map.
+//! No plane of its own, no pixel written -- a reading over a reading.
+//!
+//! Everything is bounded before a byte: the containment scan runs `components` times, itself bounded by image/label.rye's
+//! `label_max_pixels`; the clip scan runs over the crossing set, no longer than the component count; every result slice is sized to the
+//! component count. A malformed rectangle (a low corner past its high corner) refuses `BadRect`, having read nothing; a rectangle wholly
+//! off the map holds no object whole and crosses none -- a valid all-OUTSIDE partition, never a refusal. No network, no key, no funds --
+//! the window-versus-crossing partition a surface names the day a keeper drags a box and the mode key decides whole-or-touched, on our
+//! own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/region_partition.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const region_select = @import("region_select.rye");
+
+pub const region_partition_version = "20260819.042935";
+
+pub const RegionPartitionError = error{
+    BadRect,
+};
+
+/// The size of each partition class -- CONTAINED (whole), CLIPPED (partly in), OUTSIDE (none in). The three always sum to the scene's
+/// component count, since every object lands in exactly one class.
+pub const PartitionCounts = struct {
+    contained: u32 = 0,
+    clipped: u32 = 0,
+    outside: u32 = 0,
+
+    /// The total objects accounted for -- the invariant sum a caller can cross-check against the component count.
+    pub fn total(self: *const PartitionCounts) u32 {
+        return self.contained + self.clipped + self.outside;
+    }
+};
+
+/// TRUE when object `entry`'s inclusive bounding box lies WHOLLY inside the query rectangle -- the EXACT containment arbiter. Because the
+/// box is the object's own min/max pixel envelope, the box inside the rectangle is exactly every pixel inside the rectangle: no
+/// prefilter gap, unlike the overlap test region_select uses for crossing. Corners inclusive on both sides.
+pub fn rect_contains_bbox(entry: scene_manifest.ObjectEntry, rect: region_select.QueryRect) bool {
+    // invariant: a joined object's box is well-formed on both axes.
+    assert(entry.max_x >= entry.min_x);
+    assert(entry.max_y >= entry.min_y);
+    // invariant: the query rectangle is well-formed before a containment is judged.
+    assert(rect.max_x >= rect.min_x);
+    assert(rect.max_y >= rect.min_y);
+    return rect.min_x <= entry.min_x and entry.max_x <= rect.max_x and rect.min_y <= entry.min_y and entry.max_y <= rect.max_y;
+}
+
+/// The ascending SET of object labels the query rectangle holds WHOLE -- every foreground pixel inside. Read from the object boxes
+/// ALONE, no pixel scan, because the box is exact for containment. The manifest is raster-ordered by dense label, so one pass yields an
+/// ascending, duplicate-free set. Refuses `BadRect` for a malformed rectangle, having read nothing. The caller owns the returned slice.
+pub fn contained_in_rect(allocator: std.mem.Allocator, manifest: scene_manifest.Manifest, rect: region_select.QueryRect) ![]u32 {
+    // invariant: the manifest holds exactly one row per component.
+    assert(manifest.objects.len == @as(usize, manifest.components));
+    // invariant: the containment scan is bounded by the component count, itself under image/label.rye's pixel ceiling.
+    assert(manifest.components <= label.label_max_pixels);
+    if (!rect.is_well_formed()) return error.BadRect;
+
+    const scratch = try allocator.alloc(u32, @as(usize, manifest.components));
+    var found: u32 = 0;
+    var i: usize = 0;
+    while (i < manifest.objects.len) : (i += 1) {
+        const entry = manifest.objects[i];
+        if (rect_contains_bbox(entry, rect)) {
+            scratch[@as(usize, found)] = entry.label;
+            found += 1;
+        }
+    }
+    // invariant: no more objects can be contained than the scene holds.
+    assert(found <= manifest.components);
+
+    const contained = try allocator.alloc(u32, @as(usize, found));
+    var k: usize = 0;
+    while (k < contained.len) : (k += 1) contained[k] = scratch[k];
+    // invariant: the result is strictly ascending -- the manifest's dense order carried through the filter, so a caller may binary-read it.
+    var v: usize = 1;
+    while (v < contained.len) : (v += 1) assert(contained[v] > contained[v - 1]);
+    return contained;
+}
+
+/// The ascending SET of object labels the query rectangle holds only in PART -- some foreground inside, some outside: the objects a
+/// crop would CUT, and exactly the set a crossing select keeps while a window select drops. Computed as CROSSING (region_select) minus
+/// CONTAINED, so it needs BOTH the label map (to know a pixel is inside) and the boxes (to know the object is not whole). Refuses
+/// `BadRect` for a malformed rectangle, having read nothing. The caller owns the returned slice.
+pub fn clipped_in_rect(allocator: std.mem.Allocator, manifest: scene_manifest.Manifest, map: *const label.LabelMap, rect: region_select.QueryRect) ![]u32 {
+    // invariant: the manifest and the map are the same scene -- one row per component, the same component count.
+    assert(manifest.objects.len == @as(usize, manifest.components));
+    assert(manifest.components == map.count);
+    if (!rect.is_well_formed()) return error.BadRect;
+
+    const crossing = try region_select.select_in_rect(allocator, manifest, map, rect);
+    const scratch = try allocator.alloc(u32, crossing.len);
+    var found: u32 = 0;
+    var i: usize = 0;
+    while (i < crossing.len) : (i += 1) {
+        const entry = try scene_manifest.object_of(manifest, crossing[i]);
+        // a crossing object NOT wholly contained is clipped -- its box straddles the rectangle's edge.
+        if (!rect_contains_bbox(entry, rect)) {
+            scratch[@as(usize, found)] = crossing[i];
+            found += 1;
+        }
+    }
+    // invariant: the clipped set is a subset of the crossing set.
+    assert(found <= @as(u32, @intCast(crossing.len)));
+
+    const clipped = try allocator.alloc(u32, @as(usize, found));
+    var k: usize = 0;
+    while (k < clipped.len) : (k += 1) clipped[k] = scratch[k];
+    return clipped;
+}
+
+/// The three class SIZES at once -- CONTAINED, CLIPPED, OUTSIDE -- summing to the component count. Reads the crossing set once and the
+/// contained set once: CONTAINED is a subset of CROSSING (every object holds a pixel), so CLIPPED is their size difference and OUTSIDE
+/// is the components the rectangle never crosses. Refuses `BadRect` for a malformed rectangle, having read nothing.
+pub fn partition_counts(allocator: std.mem.Allocator, manifest: scene_manifest.Manifest, map: *const label.LabelMap, rect: region_select.QueryRect) !PartitionCounts {
+    // invariant: the manifest and the map are the same scene.
+    assert(manifest.objects.len == @as(usize, manifest.components));
+    assert(manifest.components == map.count);
+    if (!rect.is_well_formed()) return error.BadRect;
+
+    const crossing = try region_select.select_in_rect(allocator, manifest, map, rect);
+    const contained = try contained_in_rect(allocator, manifest, rect);
+    const crossing_n: u32 = @as(u32, @intCast(crossing.len));
+    const contained_n: u32 = @as(u32, @intCast(contained.len));
+    // invariant: every contained object crosses (it holds at least one pixel, all inside), so contained is a subset of crossing.
+    assert(contained_n <= crossing_n);
+    // invariant: no more objects cross the rectangle than the scene holds.
+    assert(crossing_n <= manifest.components);
+
+    const counts = PartitionCounts{
+        .contained = contained_n,
+        .clipped = crossing_n - contained_n,
+        .outside = manifest.components - crossing_n,
+    };
+    // invariant: the three classes partition the scene -- every object lands in exactly one.
+    assert(counts.total() == manifest.components);
+    return counts;
+}
+
+/// TRUE when `want` appears in an ascending partition set -- a bounded membership read over the sorted result.
+pub fn is_in(set: []const u32, want: u32) bool {
+    // invariant: a real query names a foreground label, never background.
+    assert(want >= 1);
+    var i: usize = 0;
+    while (i < set.len) : (i += 1) {
+        if (set[i] == want) return true;
+    }
+    return false;
+}
+
+// --- selftest: the DECISIVE containment-is-exact crux (the box is exact for containment where region_select's overlap box is loose for
+//     crossing, proven by a full pixel scan agreeing with the box test for every object and rectangle); the window-versus-crossing
+//     divergence (a rectangle that contains some, contains all, contains none); inclusive-corner containment; the three classes
+//     partition the scene; a rectangle off the map is all-outside; a malformed rectangle refuses BadRect; determinism ----------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Set one pixel back to background at (x, y) -- carve a hole in a filled shape.
+fn clear_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 0;
+    img.pixels[di + 1] = 0;
+    img.pixels[di + 2] = 0;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// Scan the WHOLE map and decide, pixel by pixel, whether every foreground pixel of `want` lies inside `rect` -- the ground-truth
+/// definition of containment, against which the box test is proven exact. Reads the object present at all only when it has a pixel.
+fn all_pixels_inside(map: *const label.LabelMap, rect: region_select.QueryRect, want: u32) bool {
+    // invariant: a real query names a foreground label, never background.
+    assert(want >= 1);
+    // invariant: the rectangle is well-formed before a pixel is judged against it.
+    assert(rect.max_x >= rect.min_x);
+    var any: bool = false;
+    var y: u32 = 0;
+    while (y < map.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x < map.width) : (x += 1) {
+            if (map.at(x, y) == want) {
+                any = true;
+                if (x < rect.min_x or x > rect.max_x or y < rect.min_y or y > rect.max_y) return false;
+            }
+        }
+    }
+    // an object with no pixel is not a real object here; every label 1..count has at least one pixel.
+    return any;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- THE PARTITION SCENE -- four objects placed so raster order gives dense labels 1..4. Top band rows 1..3: A a solid 3x3 block at
+    //     (1,1)-(3,3) [label 1], C a solid 3x3 block at (9,1)-(11,3) [label 2]. Lower band rows 5..7: D a 3x3 ring at (1,5)-(3,7) [label
+    //     3, holed], B a solid 4x2 block at (5,5)-(8,6) [label 4]. Canvas 14 x 8 ----------------------------------------------------------
+    var scene = try make_canvas(garden, 14, 8, 0);
+    set_block(&scene, 1, 1, 3, 3); // A: solid block, box (1,1)-(3,3)
+    set_block(&scene, 9, 1, 3, 3); // C: solid block, box (9,1)-(11,3)
+    set_block(&scene, 1, 5, 3, 3); // D: 3x3 ring...
+    clear_dot(&scene, 2, 6); // ...hole carved, box (1,5)-(3,7), one hole
+    set_block(&scene, 5, 5, 4, 2); // B: solid block, box (5,5)-(8,6)
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 4) return error.SceneNotFourComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    if (scene_manifest.object_count(manifest) != 4) return error.ManifestNotFourObjects;
+
+    // confirm the dense labels landed where the raster order predicts: A=1, C=2, D=3 (holed), B=4
+    const a_entry = try scene_manifest.object_of(manifest, 1);
+    const c_entry = try scene_manifest.object_of(manifest, 2);
+    const d_entry = try scene_manifest.object_of(manifest, 3);
+    const b_entry = try scene_manifest.object_of(manifest, 4);
+    if (a_entry.min_x != 1 or a_entry.max_x != 3 or a_entry.min_y != 1 or a_entry.max_y != 3) return error.ANotAtExpectedBox;
+    if (c_entry.min_x != 9 or c_entry.max_x != 11) return error.CNotAtExpectedBox;
+    if (!d_entry.is_holed()) return error.DNotHoled;
+    if (b_entry.min_x != 5 or b_entry.max_x != 8 or b_entry.min_y != 5 or b_entry.max_y != 6) return error.BNotAtExpectedBox;
+
+    // --- CONTAINS SOME -- R = (0,0)-(6,7). A box (1,1)-(3,3) and D box (1,5)-(3,7) lie WHOLLY inside; B box (5,5)-(8,6) STRADDLES the
+    //     right edge x=6 (pixels x=5,6 inside, x=7,8 outside) so it is CLIPPED; C box (9,1)-(11,3) is wholly OUTSIDE. The window mode
+    //     keeps {A,D}, the crossing mode keeps {A,D,B}, and the difference is exactly the clipped block B ------------------------------
+    const r = region_select.QueryRect{ .min_x = 0, .min_y = 0, .max_x = 6, .max_y = 7 };
+    const contained_r = try contained_in_rect(garden, manifest, r);
+    if (contained_r.len != 2 or contained_r[0] != 1 or contained_r[1] != 3) return error.ContainedRNotADAscending;
+    const clipped_r = try clipped_in_rect(garden, manifest, &map, r);
+    if (clipped_r.len != 1 or clipped_r[0] != 4) return error.ClippedRNotB;
+    if (is_in(contained_r, 4)) return error.ContainedRFalselyHoldsB;
+    // the crossing set (region_select) is the union CONTAINED + CLIPPED -- window {A,D} inside crossing {A,D,B}
+    const crossing_r = try region_select.select_in_rect(garden, manifest, &map, r);
+    if (crossing_r.len != 3) return error.CrossingRNotThree;
+    const counts_r = try partition_counts(garden, manifest, &map, r);
+    if (counts_r.contained != 2 or counts_r.clipped != 1 or counts_r.outside != 1) return error.CountsRNotTwoOneOne;
+    if (counts_r.total() != 4) return error.CountsRNotSumFour;
+
+    // --- CONTAINS ALL -- R2 = the whole canvas (0,0)-(13,7). Every box lies inside, so all four are CONTAINED, none clipped, none
+    //     outside -- when the rectangle holds the whole scene, window and crossing agree completely -----------------------------------
+    const r2 = region_select.QueryRect{ .min_x = 0, .min_y = 0, .max_x = 13, .max_y = 7 };
+    const contained_r2 = try contained_in_rect(garden, manifest, r2);
+    if (contained_r2.len != 4) return error.ContainedR2NotFour;
+    const counts_r2 = try partition_counts(garden, manifest, &map, r2);
+    if (counts_r2.contained != 4 or counts_r2.clipped != 0 or counts_r2.outside != 0) return error.CountsR2NotFourZeroZero;
+
+    // --- CONTAINS NONE -- R3 = a tight interior box (2,2)-(6,6). It cuts A's corner, D's corner, and B's left edge (all three CROSS
+    //     yet none is whole) while missing C entirely: CONTAINED empty, CLIPPED {A,D,B}, OUTSIDE {C}. A crossing select would keep
+    //     three objects here where a window select keeps zero -- the widest divergence of the two modes ----------------------------
+    const r3 = region_select.QueryRect{ .min_x = 2, .min_y = 2, .max_x = 6, .max_y = 6 };
+    const contained_r3 = try contained_in_rect(garden, manifest, r3);
+    if (contained_r3.len != 0) return error.ContainedR3NotEmpty;
+    const clipped_r3 = try clipped_in_rect(garden, manifest, &map, r3);
+    if (clipped_r3.len != 3 or clipped_r3[0] != 1 or clipped_r3[1] != 3 or clipped_r3[2] != 4) return error.ClippedR3NotADB;
+    const counts_r3 = try partition_counts(garden, manifest, &map, r3);
+    if (counts_r3.contained != 0 or counts_r3.clipped != 3 or counts_r3.outside != 1) return error.CountsR3NotZeroThreeOne;
+
+    // --- INCLUSIVE-CORNER CONTAINMENT -- R4 exactly on A's box (1,1)-(3,3). A is CONTAINED (box equals rectangle, corners inclusive),
+    //     and it alone; nothing is clipped -- the tight-box containment a window select relies on at the boundary ---------------------
+    const r4 = region_select.QueryRect{ .min_x = 1, .min_y = 1, .max_x = 3, .max_y = 3 };
+    const contained_r4 = try contained_in_rect(garden, manifest, r4);
+    if (contained_r4.len != 1 or contained_r4[0] != 1) return error.ContainedR4NotAOnly;
+    const counts_r4 = try partition_counts(garden, manifest, &map, r4);
+    if (counts_r4.contained != 1 or counts_r4.clipped != 0 or counts_r4.outside != 3) return error.CountsR4NotOneZeroThree;
+
+    // --- THE BOX IS EXACT FOR CONTAINMENT -- the DECISIVE crux, on metal: for EVERY object and EVERY rectangle above, the pure box
+    //     test rect_contains_bbox agrees with a full pixel scan (all_pixels_inside). Where region_select's overlap box over-counts
+    //     crossing, the containment box never over- or under-counts -- the box IS the object's extent, so box-inside is pixel-inside --
+    const rects = [_]region_select.QueryRect{ r, r2, r3, r4 };
+    var ri: usize = 0;
+    while (ri < rects.len) : (ri += 1) {
+        var lbl: u32 = 1;
+        while (lbl <= manifest.components) : (lbl += 1) {
+            const entry = try scene_manifest.object_of(manifest, lbl);
+            const by_box = rect_contains_bbox(entry, rects[ri]);
+            const by_pixels = all_pixels_inside(&map, rects[ri], lbl);
+            if (by_box != by_pixels) return error.BoxNotExactForContainment;
+        }
+    }
+
+    // --- A RECTANGLE OFF THE MAP -- a marquee whose top-left starts past the canvas contains no object whole and crosses none: a valid
+    //     all-OUTSIDE partition, never a refusal ------------------------------------------------------------------------------------
+    const off_map = region_select.QueryRect{ .min_x = 20, .min_y = 20, .max_x = 30, .max_y = 30 };
+    const counts_off = try partition_counts(garden, manifest, &map, off_map);
+    if (counts_off.contained != 0 or counts_off.clipped != 0 or counts_off.outside != 4) return error.CountsOffNotAllOutside;
+
+    // --- A MALFORMED RECTANGLE -- a low corner past its high corner refuses BadRect from every read, having touched nothing -------
+    const bad = region_select.QueryRect{ .min_x = 6, .min_y = 1, .max_x = 2, .max_y = 3 };
+    if (bad.is_well_formed()) return error.BadRectClaimedWellFormed;
+    if (contained_in_rect(garden, manifest, bad)) |_| return error.BadContainedNotRefused else |err| {
+        if (err != error.BadRect) return error.WrongBadContainedError;
+    }
+    if (clipped_in_rect(garden, manifest, &map, bad)) |_| return error.BadClippedNotRefused else |err| {
+        if (err != error.BadRect) return error.WrongBadClippedError;
+    }
+    if (partition_counts(garden, manifest, &map, bad)) |_| return error.BadCountsNotRefused else |err| {
+        if (err != error.BadRect) return error.WrongBadCountsError;
+    }
+
+    // --- DETERMINISM -- the same rectangle reads the same partition twice ------------------------------------------------------
+    const p1 = try partition_counts(garden, manifest, &map, r);
+    const p2 = try partition_counts(garden, manifest, &map, r);
+    if (p1.contained != p2.contained or p1.clipped != p2.clipped or p1.outside != p2.outside) return error.PartitionNotDeterministic;
+
+    print("GREEN image-region-partition: given a query RECTANGLE, PARTITION the scene's objects into CONTAINED (whole), CLIPPED (partly in -- the crop cut), and OUTSIDE (none in), exact integers, NO float and NO tolerance -- the window-versus-crossing selection, the DECISIVE EXACT INVERSION of region_select's lesson: region_select proved a bounding box that OVERLAPS the rectangle is necessary but not sufficient for crossing (the box over-counts, only the label map arbitrates), yet for CONTAINMENT the tight bounding box is the EXACT arbiter -- an object lies wholly inside the rectangle IF AND ONLY IF its box does, because the box is the object's own min/max pixel envelope, so contained_in_rect reads the containment set from the boxes ALONE with no pixel scan; proven on metal by a full pixel scan agreeing with the box test for every object and every rectangle (no concavity gap, no hole gap, a holed ring contained by its box exactly). Over a scene of A a solid block box (1,1)-(3,3), C a solid block box (9,1)-(11,3), D a 3x3 ring box (1,5)-(3,7), B a solid block box (5,5)-(8,6): a rectangle (0,0)-(6,7) CONTAINS {{A,D}}, CLIPS B (its box straddling the edge x=6), and leaves C OUTSIDE, so a window select keeps two where a crossing select keeps three and the difference is exactly the clipped block; the whole canvas contains all four, none clipped; a tight interior box (2,2)-(6,6) contains NONE and clips three, the widest divergence of the two modes; a rectangle exactly on A's box contains A alone at inclusive corners; CONTAINED + CLIPPED + OUTSIDE always sums to the component count; a rectangle off the map is a valid all-OUTSIDE partition; a malformed rectangle refuses BadRect having read nothing; the same rectangle reads the same partition twice. Compose not braid over image/region_select.rye (the crossing decision and the QueryRect) and image/scene_manifest.rye (the per-object boxes)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: region_partition selftest\n", .{});
+    return 1;
+}

@@ -1,0 +1,52 @@
+# tools/region_partition_witness.rish -- given a query RECTANGLE, PARTITION the scene's objects into CONTAINED, CLIPPED, OUTSIDE, on
+# metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/region_select.rye names EVERY object a rectangle CROSSES (any foreground pixel enters).
+# This rung splits that crossing set by CONTAINMENT: contained_in_rect names the objects a rectangle holds WHOLE, clipped_in_rect the
+# objects it holds only in PART (the crop cut), partition_counts the three class sizes at once. It is the WINDOW-versus-CROSSING
+# selection every editor offers -- a window select keeps only what a marquee wholly holds, a crossing select keeps everything it
+# touches, and the difference is exactly the CLIPPED set. Exact integers, NO float, NO tolerance.
+#
+# The crux this witness proves on metal, the EXACT INVERSION of region_select's lesson: region_select proved a bounding box that
+# OVERLAPS the rectangle is necessary but not sufficient for crossing (the box over-counts, only the label map arbitrates), yet for
+# CONTAINMENT the tight bounding box is the EXACT arbiter -- an object lies wholly inside the rectangle if and only if its box does,
+# because the box is the object's own min/max pixel envelope, so contained_in_rect reads the containment set from the boxes alone with
+# no pixel scan; proven by a full pixel scan agreeing with the box test for every object and every rectangle. A rectangle that
+# contains some, contains all, and contains none spans the two modes; CONTAINED + CLIPPED + OUTSIDE sums to the component count; an
+# off-map rectangle is a valid all-OUTSIDE partition; a malformed rectangle refuses BadRect; determinism. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/region_partition_witness.rish
+
+say "region_partition: Language EN -- Season G rectangle-to-partition; the bounding box is the EXACT arbiter for containment where it is only a prefilter for crossing; NO float, NO tolerance."
+say "region_partition: Style Radiant -- compose not braid: this rung owns only the containment split; region_select owns the crossing decision and the QueryRect, scene_manifest owns the per-object boxes. No plane of its own, no pixel written -- a reading over a reading."
+say "region_partition: Lens TAME -- the containment scan runs components times under label_max_pixels; the clip scan runs over the crossing set, no longer than the component count; every result slice sized to the component count; a malformed rectangle refuses BadRect, an off-map marquee is all-OUTSIDE; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/region_partition"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/region_partition.rye -femit-bin=${bin}"]
+assert build.ok else "region_partition: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "region_partition: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "region_partition: ${out}"
+
+assert selftest.out contains "GREEN image-region-partition" else "region_partition: selftest did not print the GREEN line"
+assert selftest.out contains "the window-versus-crossing selection" else "region_partition: the window-versus-crossing claim did not print"
+assert selftest.out contains "the DECISIVE EXACT INVERSION of region_select's lesson" else "region_partition: the decisive inversion crux did not print"
+assert selftest.out contains "for CONTAINMENT the tight bounding box is the EXACT arbiter" else "region_partition: the exact-arbiter claim did not print"
+assert selftest.out contains "contained_in_rect reads the containment set from the boxes ALONE with no pixel scan" else "region_partition: the no-pixel-scan claim did not print"
+assert selftest.out contains "proven on metal by a full pixel scan agreeing with the box test" else "region_partition: the pixel-scan agreement did not print"
+assert selftest.out contains "a window select keeps two where a crossing select keeps three and the difference is exactly the clipped block" else "region_partition: the window-versus-crossing divergence did not print"
+assert selftest.out contains "the whole canvas contains all four, none clipped" else "region_partition: the contains-all case did not print"
+assert selftest.out contains "a tight interior box (2,2)-(6,6) contains NONE and clips three" else "region_partition: the contains-none case did not print"
+assert selftest.out contains "contains A alone at inclusive corners" else "region_partition: the inclusive-corner case did not print"
+assert selftest.out contains "CONTAINED + CLIPPED + OUTSIDE always sums to the component count" else "region_partition: the partition sum did not print"
+assert selftest.out contains "a rectangle off the map is a valid all-OUTSIDE partition" else "region_partition: the off-map case did not print"
+assert selftest.out contains "a malformed rectangle refuses BadRect having read nothing" else "region_partition: the BadRect refusal did not print"
+assert selftest.out contains "the same rectangle reads the same partition twice" else "region_partition: determinism did not print"
+
+say "region_partition: GREEN on metal -- given a rectangle, the partition names what it holds WHOLE, what it CLIPS, and what it leaves OUTSIDE, the window-versus-crossing modes and the crop-cut set between them; the bounding box exact for containment where it is only a prefilter for crossing; refusals by name, determinism. Season G open-media."
