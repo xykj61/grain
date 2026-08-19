@@ -35,4 +35,11 @@ sudo nixos-rebuild switch --flake "$ETC#pier"
 echo "== witness =="
 command -v perl    && perl    --version | head -n 2 | tail -n 1
 command -v python3 && python3 --version
-echo "== rebuild-outer GREEN if both printed a version above =="
+
+# 5. Report the claude-code version this build shipped. nixpkgs nixos-26.05
+#    tracks its own pin, so this may LAG upstream -- latest upstream at this
+#    writing is 2.1.235 (2026-08-18, code.claude.com/docs/en/changelog). If the
+#    pin is too old, bump nixpkgs or add a version overlay like cursor-cli's.
+command -v claude && claude --version || echo "claude not on PATH"
+
+echo "== rebuild-outer GREEN if perl + python3 printed a version above =="
