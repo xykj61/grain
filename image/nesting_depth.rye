@@ -1,0 +1,282 @@
+//! image/nesting_depth.rye -- the nesting DEPTH of every object in a scene's box-containment FOREST: walk image/scene_graph.rye's
+//! `box_parent` from an object up to its root and count the steps, so a surface reads how deeply each object is framed -- exact
+//! integers, NO float and NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/scene_graph.rye joins image/object_relation.rye over EVERY pair into one matrix, then
+//! reads the whole-scene questions a pair cannot: who is nearest to whom (`nearest_neighbor`), and which object's box is the tightest
+//! frame around another's (`box_parent`, `is_root`). `box_parent` names only the IMMEDIATE parent -- one step up the box-nesting
+//! forest. This rung reads the TRANSITIVE fact that one step hides: `nesting_depth` walks the tightest-parent chain to a root and
+//! counts it, `forest_height` names the deepest such chain in the whole scene, and `is_leaf` names an object no other object nests
+//! under -- a tip of the forest.
+//!
+//! The DECISIVE crux -- two shapes at once, both a step past what `box_parent` alone can say:
+//!
+//!   THE DEPTH IS THE BOX-ANCESTOR CHAIN, WHICH THE IMMEDIATE PARENT HIDES. An object contained by a middle frame that is itself
+//!   contained by a big frame has TWO box-ancestors, yet `box_parent` names only the tightest, the middle one. `nesting_depth`
+//!   recovers the full count: depth 2 is the two frames stacked above it, the chain the single immediate read never showed.
+//!
+//!   THE FOREST BRANCHES, SO SAME DEPTH IS NEITHER NEARNESS NOR NESTING. Two objects can share a depth under one root while sitting
+//!   nowhere near each other: a middle frame (depth 1) and a lone dot dropped elsewhere inside the big frame (also depth 1, its
+//!   parent the big frame directly) are both one step down, yet image/object_relation.rye proves them disjoint and box-unnested --
+//!   neither contains the other. Depth counts frames above you, never who stands beside you.
+//!
+//! And the family's own lesson carries up whole: the depth is a depth of FRAMES, never of substance. Each parent-child step of the
+//! forest is a box wholly containing a box, and image/object_relation.rye proves each such child sits pixels APART from its box
+//! parent, touched by neither. A three-deep nesting is three frames stacked, not three shapes enclosing each other.
+//!
+//! Compose not braid. This rung OWNS only the depth walk, the forest height, and the leaf read -- no box re-measured, no parent
+//! re-chosen, no distance recomputed. image/scene_graph.rye owns `box_parent` and the pairwise matrix; image/scene_manifest.rye owns
+//! the per-object boxes; image/object_relation.rye owns each pair's exact nearest-pixel distance. A reading over a reading over a
+//! reading over a reading.
+//!
+//! Everything is bounded before a byte: a box-parent chain visits each object at most once, so the walk is capped at the object
+//! count -- a longer walk means a box-parent cycle and refuses `NestingCycle`, having climbed nothing false. A background or
+//! past-the-count label refuses `BadObjectLabel`. No network, no key, no funds -- the nesting depth a surface names the day it must
+//! indent an outline, size a frame by its depth, or find the tips of a nesting, on our own geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/nesting_depth.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const object_relation = @import("object_relation.rye");
+const scene_graph = @import("scene_graph.rye");
+
+pub const nesting_depth_version = "20260819.002845";
+
+pub const NestingDepthError = error{
+    BadObjectLabel,
+    NestingCycle,
+};
+
+/// The nesting DEPTH of object `a` -- how many box-frames stand above it in the containment forest. Walk `box_parent` from `a` up
+/// the tightest-parent chain, counting one step per frame, until a root (parent 0) is reached; a root reads depth 0. The walk is
+/// bounded by the object count, since a valid forest chain visits each object at most once; a longer walk means a box-parent cycle
+/// and refuses `NestingCycle`. Refuses `BadObjectLabel` for a background or past-the-count `a`.
+pub fn nesting_depth(graph: scene_graph.SceneGraph, a: u32) !u32 {
+    // invariant: the manifest holds exactly one row per component, so every parent label the walk visits is real.
+    assert(graph.manifest.objects.len == @as(usize, graph.components));
+    if (a == 0 or a > graph.components) return error.BadObjectLabel;
+
+    var depth: u32 = 0;
+    var cur: u32 = a;
+    var steps: u32 = 0;
+    while (true) : (steps += 1) {
+        // a valid forest chain visits at most `components` objects; one more step means a cycle -- refuse rather than loop.
+        if (steps > graph.components) return error.NestingCycle;
+        const parent = try scene_graph.box_parent(graph, cur);
+        if (parent == 0) break;
+        depth += 1;
+        cur = parent;
+    }
+    // invariant: a depth counts frames above, so it never exceeds the object count it climbed through.
+    assert(depth <= graph.components);
+    return depth;
+}
+
+/// The forest HEIGHT of the whole scene -- the greatest nesting depth any object reaches. Weighs every object's depth and keeps the
+/// deepest. A scene of one object, or of objects none of whose boxes nest, reads height 0.
+pub fn forest_height(graph: scene_graph.SceneGraph) !u32 {
+    // invariant: a real scene carries at least one object to measure.
+    assert(graph.components >= 1);
+
+    var height: u32 = 0;
+    var a: u32 = 1;
+    while (a <= graph.components) : (a += 1) {
+        const d = try nesting_depth(graph, a);
+        if (d > height) height = d;
+    }
+    // invariant: the deepest chain is shorter than the object count -- a forest of n objects nests at most n-1 frames deep.
+    assert(height < graph.components);
+    return height;
+}
+
+/// TRUE when object `a` is a LEAF of the nesting forest -- no other object names `a` as its immediate box parent, so nothing nests
+/// one step under it. A tip of the forest, reached only after weighing every other object. Refuses `BadObjectLabel` for a background
+/// or past-the-count `a`.
+pub fn is_leaf(graph: scene_graph.SceneGraph, a: u32) !bool {
+    // invariant: the manifest holds exactly one row per component.
+    assert(graph.manifest.objects.len == @as(usize, graph.components));
+    if (a == 0 or a > graph.components) return error.BadObjectLabel;
+
+    var b: u32 = 1;
+    while (b <= graph.components) : (b += 1) {
+        if (b == a) continue;
+        const p = try scene_graph.box_parent(graph, b);
+        if (p == a) return false;
+    }
+    // invariant: a leaf is a real dense label, judged only after the whole scene was weighed against it.
+    assert(a >= 1);
+    return true;
+}
+
+// --- selftest: the DECISIVE crux -- a BRANCHING three-object forest under one root. A big-L frames a middle-L (depth 1) framing a dot
+//     (depth 2), and a lone dot dropped elsewhere inside the big-L reads depth 1 too, its parent the big-L directly. So nesting_depth
+//     recovers the two-frame ancestor chain box_parent hides, and two objects share depth 1 while object_relation proves them disjoint
+//     and box-unnested -- same depth is neither nearness nor nesting; every step of the forest is 2 pixels apart, a depth of frames --
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a bracket-L: a vertical arm down column `x` from `y0` to `y1`, and a horizontal arm along row `y1` from `x` to `x1`. Its
+/// concavity (the upper-right quadrant) is background, ready to hold a smaller object without touching it.
+fn set_bracket_l(img: *qoi.Pixmap, x: u32, y0: u32, y1: u32, x1: u32) void {
+    // invariant: the arms run in the positive direction and stay inside the buffer.
+    assert(y1 >= y0);
+    assert(x1 >= x);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) set_dot(img, x, yy);
+    var xx: u32 = x;
+    while (xx <= x1) : (xx += 1) set_dot(img, xx, y1);
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- BUILD THE BRANCHING SCENE on a 13x13 canvas:
+    //     big-L (label 1): column x=1 rows 1..11 + row y=11 cols 1..11, box (1,1)-(11,11), a forest root;
+    //     middle-L (label 2): column x=3 rows 3..7 + row y=7 cols 3..7 tucked in big-L's concavity, box (3,3)-(7,7), 2 apart from big-L;
+    //     dot-B (label 3): a single pixel at (9,3) dropped in big-L's concavity but OUTSIDE middle-L's box, box (9,3)-(9,3);
+    //     dot-A (label 4): a single pixel at (5,5) tucked in middle-L's concavity, box (5,5)-(5,5). Raster order labels big<mid<dotB<dotA
+    var scene_img = try make_canvas(garden, 13, 13, 0);
+    set_bracket_l(&scene_img, 1, 1, 11, 11); // big-L, label 1
+    set_bracket_l(&scene_img, 3, 3, 7, 7); // middle-L, label 2
+    set_dot(&scene_img, 9, 3); // dot-B, label 3 (in big-L, outside middle-L)
+    set_dot(&scene_img, 5, 5); // dot-A, label 4 (in middle-L)
+
+    const map = try label.label_components(garden, &scene_img);
+    if (map.count != 4) return error.SceneNotFourComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+
+    // confirm the raster-order labels and boxes are exactly the four frames we drew
+    const big = try scene_manifest.object_of(manifest, 1);
+    const mid = try scene_manifest.object_of(manifest, 2);
+    const dot_b = try scene_manifest.object_of(manifest, 3);
+    const dot_a = try scene_manifest.object_of(manifest, 4);
+    if (big.min_x != 1 or big.min_y != 1 or big.max_x != 11 or big.max_y != 11) return error.BigBoxWrong;
+    if (mid.min_x != 3 or mid.min_y != 3 or mid.max_x != 7 or mid.max_y != 7) return error.MidBoxWrong;
+    if (dot_b.min_x != 9 or dot_b.min_y != 3 or dot_b.max_x != 9 or dot_b.max_y != 3) return error.DotBBoxWrong;
+    if (dot_a.min_x != 5 or dot_a.min_y != 5 or dot_a.max_x != 5 or dot_a.max_y != 5) return error.DotABoxWrong;
+
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    if (scene_graph.object_count(graph) != 4) return error.GraphNotFourObjects;
+
+    // --- THE BOX-PARENT FOREST BRANCHES -- big-L is the root; middle-L and dot-B both parent to the big-L (depth 1); dot-A parents to
+    //     the middle-L (depth 2). Two children under one root, one of them itself a parent ---------------------------------------------
+    if (try scene_graph.box_parent(graph, 1) != 0) return error.BigNotRoot;
+    if (try scene_graph.box_parent(graph, 2) != 1) return error.MiddleParentNotBig;
+    if (try scene_graph.box_parent(graph, 3) != 1) return error.DotBParentNotBig;
+    if (try scene_graph.box_parent(graph, 4) != 2) return error.DotAParentNotMiddle;
+
+    // --- THE DEPTH IS THE BOX-ANCESTOR CHAIN -- nesting_depth walks the tightest-parent chain to a root and counts it: big-L 0,
+    //     middle-L 1, dot-B 1, dot-A 2. dot-A's depth 2 recovers the TWO frames above it -- the middle-L AND the big-L -- though
+    //     box_parent named only the tightest, the middle-L. The chain the single immediate read hides -----------------------------------
+    if (try nesting_depth(graph, 1) != 0) return error.BigDepthNotZero;
+    if (try nesting_depth(graph, 2) != 1) return error.MiddleDepthNotOne;
+    if (try nesting_depth(graph, 3) != 1) return error.DotBDepthNotOne;
+    if (try nesting_depth(graph, 4) != 2) return error.DotADepthNotTwo;
+    // dot-A sits inside BOTH the middle-L's box and the big-L's box -- two ancestors -- yet box_parent named only the middle-L
+    if (!scene_graph.box_contains(mid, dot_a)) return error.MidBoxDoesNotContainDotA;
+    if (!scene_graph.box_contains(big, dot_a)) return error.BigBoxDoesNotContainDotA;
+    // the depth (2) equals the number of box-ancestors the immediate parent read could not name at once
+    if (try nesting_depth(graph, 4) != 2) return error.DepthDoesNotCountAncestors;
+
+    // --- THE FOREST HEIGHT is the deepest chain -- two frames, big-L over middle-L over dot-A ---------------------------------------
+    if (try forest_height(graph) != 2) return error.ForestHeightNotTwo;
+
+    // --- SAME DEPTH IS NEITHER NEARNESS NOR NESTING -- middle-L (depth 1) and dot-B (depth 1) share a depth under the one root, yet
+    //     object_relation proves them disjoint and box-unnested: neither box contains the other, and their nearest pixels are apart.
+    //     Depth counts frames above you, never who stands beside you -----------------------------------------------------------------
+    if (try nesting_depth(graph, 2) != try nesting_depth(graph, 3)) return error.SameDepthPairDiffered;
+    if (scene_graph.box_contains(mid, dot_b)) return error.MidFalselyContainsDotB;
+    if (scene_graph.box_contains(dot_b, mid)) return error.DotBFalselyContainsMid;
+    const rel_mid_dotb = try scene_graph.relation_of(graph, 2, 3);
+    if (rel_mid_dotb.nearest_cheby < 2) return error.SameDepthPairNotApart;
+
+    // --- THE DEPTH IS A DEPTH OF FRAMES, NEVER OF SUBSTANCE -- every parent-child step is a box wholly containing a box, yet
+    //     object_relation proves each child sits 2 pixels APART from its box parent, touched by neither ---------------------------------
+    const rel_mid_dota = try scene_graph.relation_of(graph, 2, 4);
+    if (!scene_graph.box_contains(mid, dot_a)) return error.MidBoxDoesNotContainDotAStep;
+    if (rel_mid_dota.nearest_cheby < 2) return error.MidDotANotApart;
+    const rel_big_mid = try scene_graph.relation_of(graph, 1, 2);
+    if (!scene_graph.box_contains(big, mid)) return error.BigBoxDoesNotContainMid;
+    if (rel_big_mid.nearest_cheby < 2) return error.BigMidNotApart;
+
+    // --- THE LEAVES are the tips -- dot-B and dot-A have nothing nesting under them; the big-L and middle-L are inner frames ----------
+    if (!try is_leaf(graph, 3)) return error.DotBNotLeaf;
+    if (!try is_leaf(graph, 4)) return error.DotANotLeaf;
+    if (try is_leaf(graph, 2)) return error.MiddleFalselyLeaf;
+    if (try is_leaf(graph, 1)) return error.BigFalselyLeaf;
+
+    // --- REFUSALS -- a background or past-the-count label refuses BadObjectLabel, having climbed nothing ---------------------------------
+    if (nesting_depth(graph, 0)) |_| return error.ZeroDepthNotRefused else |err| {
+        if (err != error.BadObjectLabel) return error.WrongZeroDepthError;
+    }
+    if (nesting_depth(graph, 5)) |_| return error.PastDepthNotRefused else |err| {
+        if (err != error.BadObjectLabel) return error.WrongPastDepthError;
+    }
+    if (is_leaf(graph, 0)) |_| return error.ZeroLeafNotRefused else |err| {
+        if (err != error.BadObjectLabel) return error.WrongZeroLeafError;
+    }
+
+    // --- A SINGLE-OBJECT SCENE reads height 0, depth 0, and its one object is a leaf and a root at once --------------------------------
+    var lone_img = try make_canvas(garden, 6, 6, 0);
+    set_bracket_l(&lone_img, 1, 1, 3, 3); // one object
+    const lone_map = try label.label_components(garden, &lone_img);
+    if (lone_map.count != 1) return error.LoneNotOneComponent;
+    const lone_manifest = try scene_manifest.build_manifest(garden, &lone_map);
+    const lone_graph = try scene_graph.build_scene_graph(garden, lone_manifest, &lone_map);
+    if (try forest_height(lone_graph) != 0) return error.LoneHeightNotZero;
+    if (try nesting_depth(lone_graph, 1) != 0) return error.LoneDepthNotZero;
+    if (!try is_leaf(lone_graph, 1)) return error.LoneNotLeaf;
+
+    // --- DETERMINISM -- the same scene reads the same depth and height twice ------------------------------------------------------------
+    const g1 = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const g2 = try scene_graph.build_scene_graph(garden, manifest, &map);
+    if (try nesting_depth(g1, 4) != try nesting_depth(g2, 4)) return error.DepthNotDeterministic;
+    if (try forest_height(g1) != try forest_height(g2)) return error.HeightNotDeterministic;
+
+    print("GREEN image-nesting-depth: the nesting DEPTH of every object in a scene's box-containment FOREST -- walk scene_graph's box_parent from an object up to its root and count the steps, exact integers, NO float and NO tolerance -- two shapes past what box_parent alone can say. THE DEPTH IS THE BOX-ANCESTOR CHAIN, WHICH THE IMMEDIATE PARENT HIDES -- a branching three-object forest under one root: a big-L (box (1,1)-(11,11), a root, depth 0) frames a middle-L (box (3,3)-(7,7), depth 1) framing a dot (box (5,5)-(5,5), depth 2), so nesting_depth reads the dot's depth 2 as the TWO frames stacked above it -- the middle-L AND the big-L -- though box_parent named only the tightest, the middle-L: the chain the single immediate read never showed, and the forest height 2 the deepest such chain. THE FOREST BRANCHES, SO SAME DEPTH IS NEITHER NEARNESS NOR NESTING -- the middle-L (depth 1) and a lone dot dropped elsewhere in the big-L (box (9,3)-(9,3), also depth 1, its parent the big-L directly) share a depth under the one root, yet object_relation proves them disjoint and box-unnested, neither box containing the other and their nearest pixels apart: depth counts frames above you, never who stands beside you. THE DEPTH IS A DEPTH OF FRAMES, NEVER OF SUBSTANCE -- every parent-child step is a box wholly containing a box, yet object_relation proves each child sits 2 pixels APART from its box parent, touched by neither. The leaves are the tips (the two dots, nothing nesting under them); a background or past-the-count label refuses BadObjectLabel, a chain longer than the object count refuses NestingCycle; a single-object scene reads height 0, depth 0, a leaf and a root at once; the same scene reads the same depth twice. Compose not braid over scene_graph (box_parent and the pairwise matrix), scene_manifest (the per-object boxes), and object_relation (each pair's exact nearest-pixel distance)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: nesting_depth selftest\n", .{});
+    return 1;
+}
