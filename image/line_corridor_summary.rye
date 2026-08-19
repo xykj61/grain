@@ -1,0 +1,408 @@
+//! image/line_corridor_summary.rye -- read a DIRECTED line named by TWO anchor taps (from anchor A toward anchor B) as a DISTRIBUTION over
+//! half-widths: the distance HISTOGRAM (how many objects sit at each distinct distance OFF the line, and how much area and how many holed
+//! objects each distance carries -- the corridor profile's derivative) and the cumulative BAND PROFILE it generates (how many objects, how
+//! much area, and how many holed objects the corridor of a given half-width holds -- the profile's integral). Exact integers, NO float and
+//! NO tolerance, NO bucketing by pixel width -- one bin per distinct distance key.
+//!
+//! Season G (Open Media Primitives) -- this rung is the line_band twin of image/cluster_graph_profile.rye. image/line_distance.rye ranks
+//! every object by the MAGNITUDE of its distance off a two-anchor directed line; image/line_band.rye reads a THRESHOLD on that magnitude as a
+//! corridor, and `band_count` reads how many objects a half-width holds; image/line_summary.rye folds each object's area and holes by SIDE
+//! (LEFT, ON, RIGHT). This rung folds the SAME per-object facts by DISTANCE BAND: it walks the manifest once, reads each object's exact
+//! distance key through image/line_distance.rye's arbiter, and gathers one bin per distinct key carrying that key's object count, whole area,
+//! and holed-object count. So line_summary decomposes the scene by a line's HANDEDNESS and this rung by its RADIUS -- two orthogonal reads of
+//! one set of facts, both exact because a line splits whole GROUPS, never pixels.
+//!
+//! The DECISIVE crux -- the histogram is the band-count curve's DERIVATIVE, the cumulative count its INTEGRAL, and the two paths agree exactly:
+//!
+//!   CUMULATING THE HISTOGRAM REPRODUCES `line_band.band_count`, BY TWO INDEPENDENT PATHS. `corridor_histogram` folds every object into one bin
+//!   per distinct distance key, carrying its multiplicity. `cumulative` then sums the bins whose key clears the corridor bound of a half-width
+//!   -- the same closed threshold `key * key <= 4 * half_width * half_width * len2` image/line_band.rye owns. That cumulative-of-the-histogram
+//!   (a distribution read) equals `line_band.band_count` at the same half-width (a raw prefix scan) for every half-width -- the PDF's running
+//!   sum is the CDF, proven by two paths that never share a line. So the band-count curve is a STEP function: it rises only at a half-width
+//!   whose corridor edge lands on some object's distance, and the size of each jump is exactly that distance's multiplicity -- a distance
+//!   shared by two objects lifts the curve by two at once, while between two distinct distances the curve is flat.
+//!
+//!   THE MULTIPLICITY A SORTED DISTANCE LIST COULD NOT SHOW. Over image/line_distance.rye's own six-object scene the horizontal line A -> B
+//!   gives distance keys A=0, B=0, P=168, Q=168, D=224, U=280, so P and Q -- one above the line, one below, at equal remove -- share a bin of
+//!   COUNT 2, and the band-count curve jumps by two at the half-width whose edge reaches distance 168. The histogram spans exactly
+//!   `[min_key, max_key]`, and the sum of its bin counts is exactly the object count, its bin areas the whole foreground, its holed counts the
+//!   whole holed-object tally -- so the fold loses nothing and double-counts nothing.
+//!
+//! Compose not braid. This rung OWNS only the distribution reads -- the histogram fold and the cumulative sum over count, area, and holed
+//! objects. image/line_distance.rye owns the distance key (`distance_of`) each object is binned by and the `SameGroup` / `EmptyClick` /
+//! `PointOutOfBounds` / `BadTarget` refusals it draws; image/line_band.rye owns the corridor bound (`corridor_bound`, `line_len2_doubled`) the
+//! cumulative threshold reads and the `band_count` the crux cross-checks against; image/scene_manifest.rye owns the per-object area and holes
+//! the bins fold. No distance re-measured, no corridor bound re-derived, no area re-scanned -- every fact looked up through the primitive that
+//! already proved it.
+//!
+//! Everything is bounded before a byte: the fold walks `components` objects, itself bounded by image/label.rye's `label_max_pixels`, so the
+//! histogram holds at most one bin per object; each bin's area sums whole object areas each under the pixel ceiling, so a u32 total never
+//! overflows; the distance key and its square stay in i64, the same width image/line_band.rye ranks in. A directed line needs two distinct
+//! points, so two anchor taps sharing a group refuse `SameGroup` by name; a tap on background refuses `EmptyClick`; a point off the map refuses
+//! `PointOutOfBounds`, each having read nothing. No network, no key, no funds -- the distance distribution a surface names the day a keeper
+//! draws a line through the picture and asks how its things stack up as the corridor widens.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/line_corridor_summary.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const hit_test = @import("hit_test.rye");
+const line_distance = @import("line_distance.rye");
+const line_band = @import("line_band.rye");
+
+pub const line_corridor_summary_version = "20260819.103255";
+
+/// One bin of the distance HISTOGRAM -- a distinct distance `key` off the directed line, the `count` of objects sitting exactly that far off,
+/// the whole `area` those objects carry, and how many of them are `holed` (enclose at least one hole). Bins are read ascending by `key`, one
+/// per distinct distance present.
+pub const KeyBin = struct {
+    key: i64,
+    count: u32,
+    area: u32,
+    holed: u32,
+};
+
+/// The running total of a corridor read -- the object count, whole foreground area, and holed-object count a band or the whole scene carries.
+/// The cumulative and the whole-histogram totals share this shape so a caller reads one struct either way.
+pub const BandTotals = struct {
+    count: u32 = 0,
+    area: u32 = 0,
+    holed: u32 = 0,
+};
+
+/// The distance HISTOGRAM of the directed line A -> B -- the ascending distinct distance keys, each carrying the count, whole area, and
+/// holed-object count of the objects sitting exactly that far off the line. One bin per distinct key; the sum of the bin counts equals the
+/// object count, the bin areas the whole foreground, the holed counts the whole holed-object tally. The bins are the corridor profile's
+/// derivative: cumulating them by half-width reproduces `line_band.band_count`. Refuses `SameGroup` / `EmptyClick` / `PointOutOfBounds`
+/// through the line resolution, having read nothing. The caller owns the returned slice.
+pub fn corridor_histogram(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) ![]KeyBin {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(graph.components == manifest.components);
+    assert(manifest.components == map.count);
+    // invariant: the fold is bounded by the component count, itself under image/label.rye's pixel ceiling.
+    assert(manifest.components <= label.label_max_pixels);
+
+    // at most one bin per object; a scene with a valid line always carries at least its two anchor objects.
+    const bins = try garden.alloc(KeyBin, @as(usize, manifest.components));
+    var nbins: u32 = 0;
+
+    var oi: usize = 0;
+    while (oi < manifest.objects.len) : (oi += 1) {
+        const entry = manifest.objects[oi];
+        const holed: u32 = if (entry.holes >= 1) 1 else 0;
+        const key = try line_distance.distance_of(garden, clustering, graph, manifest, map, ax, ay, bx, by, entry.label);
+        // invariant: a distance key is never negative -- the magnitude image/line_distance.rye ranks by.
+        assert(key >= 0);
+
+        // find the ascending slot for this key: fold into an existing bin, or open a fresh one keeping the slice sorted.
+        var i: u32 = 0;
+        var placed = false;
+        while (i < nbins) : (i += 1) {
+            if (bins[i].key == key) {
+                bins[i].count += 1;
+                bins[i].area += entry.area;
+                bins[i].holed += holed;
+                placed = true;
+                break;
+            }
+            if (bins[i].key > key) break;
+        }
+        if (!placed) {
+            var j: u32 = nbins;
+            while (j > i) : (j -= 1) bins[j] = bins[j - 1];
+            bins[i] = KeyBin{ .key = key, .count = 1, .area = entry.area, .holed = holed };
+            nbins += 1;
+        }
+    }
+
+    // invariant: the histogram holds one bin per distinct key, never more than the object count.
+    assert(nbins <= manifest.components);
+    return bins[0..nbins];
+}
+
+/// The whole-histogram totals -- the object count, whole foreground area, and holed-object count summed over every bin. The count equals the
+/// component count, the area the scene's total foreground, the holed the whole holed-object tally: the fold loses nothing.
+pub fn bin_totals(hist: []const KeyBin) BandTotals {
+    // invariant: the histogram stays within the object-count ceiling -- one bin per distinct key.
+    assert(hist.len <= @as(usize, label.label_max_pixels));
+
+    var out = BandTotals{};
+    var i: usize = 0;
+    while (i < hist.len) : (i += 1) {
+        // invariant: every bin carries at least one object -- an empty bin would be a bin that should not exist.
+        assert(hist[i].count >= 1);
+        out.count += hist[i].count;
+        out.area += hist[i].area;
+        out.holed += hist[i].holed;
+    }
+    return out;
+}
+
+/// The cumulative BAND totals at half-width `half_width` -- the object count, whole area, and holed-object count of the objects the corridor
+/// holds, read by folding the HISTOGRAM (a distribution read). A bin is inside when its key clears image/line_band.rye's closed corridor bound
+/// `key * key <= 4 * half_width * half_width * len2`; bins ascend by key, so the fold stops at the first bin past the bound. The `count` field
+/// equals `line_band.band_count` at the same half-width -- the same curve by two independent paths.
+pub fn cumulative(hist: []const KeyBin, half_width: u32, len2: i64) BandTotals {
+    // invariant: the histogram stays within the object-count ceiling.
+    assert(hist.len <= @as(usize, label.label_max_pixels));
+    const bound = line_band.corridor_bound(half_width, len2);
+
+    var out = BandTotals{};
+    var prev: i64 = -1;
+    var i: usize = 0;
+    while (i < hist.len) : (i += 1) {
+        // invariant: bins ascend strictly by key, so once one bin sits past the bound the fold is complete.
+        assert(hist[i].key > prev);
+        prev = hist[i].key;
+        if (hist[i].key * hist[i].key > bound) break;
+        out.count += hist[i].count;
+        out.area += hist[i].area;
+        out.holed += hist[i].holed;
+    }
+    return out;
+}
+
+// --- selftest: the DECISIVE crux -- cumulating the corridor histogram reproduces line_band.band_count by two independent paths, and the
+//     histogram carries a MULTIPLICITY bin (two objects at equal remove) a sorted distance list could not show. Scene ONE is image/line_
+//     distance.rye's own six-object scene (keys 0, 0, 168, 168, 224, 280 -- a count-2 bin at 0 and at 168). Scene TWO carries a holed ring and
+//     a wide block at distinct distances, so the area and holed folds are non-uniform and the per-band area cumulative is proven by a second
+//     path against a manifest scan over line_band's own members -----------------------------------------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Set one pixel back to background at (x, y) -- carve a hole in a filled shape.
+fn clear_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 0;
+    img.pixels[di + 1] = 0;
+    img.pixels[di + 2] = 0;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y). A 2x2 block's inclusive box is (x,y)-(x+1,y+1), so its
+/// doubled center is (2x+1, 2y+1) -- exact integers the selftest predicts by hand.
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// Build the scene primitives of an image, checking the object and cluster counts along the way -- a local helper both scenes lean on.
+const Scene = struct {
+    map: label.LabelMap,
+    manifest: scene_manifest.Manifest,
+    graph: scene_graph.SceneGraph,
+    clustering: overlap_clusters.Clustering,
+};
+
+fn scene_of(garden: std.mem.Allocator, img: *qoi.Pixmap, want_objects: u32, want_clusters: u32) !Scene {
+    // invariant: the caller names how many objects and clusters the scene must hold, so a mislaid pixel fails loud.
+    assert(want_objects >= 1);
+    assert(want_clusters >= 1);
+    const map = try label.label_components(garden, img);
+    if (map.count != want_objects) return error.SceneObjectCountWrong;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    if (clustering.clusters != want_clusters) return error.SceneClusterCountWrong;
+    return Scene{ .map = map, .manifest = manifest, .graph = graph, .clustering = clustering };
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- SCENE ONE: image/line_distance.rye's own 20x14 six-singleton scene. Raster order gives dense labels U=1, P=2, A=3, B=4, Q=5, D=6.
+    //     The horizontal line A -> B gives distance keys A=0, B=0, P=168, Q=168, D=224, U=280 (perpendicular distances 0, 0, 3, 3, 4, 5 times
+    //     the constant line length). Every block is 2x2, area 4, no holes -- so the histogram's MULTIPLICITY is the whole story here: a bin of
+    //     count 2 at key 0 (the anchors) and a bin of count 2 at key 168 (P above, Q below, at equal remove) --------------------------------
+    var one = try make_canvas(garden, 20, 14, 0);
+    set_block(&one, 7, 1, 2, 2); // U: center-doubled (15,3),  key 280
+    set_block(&one, 4, 3, 2, 2); // P: center-doubled (9,7),   key 168, ABOVE
+    set_block(&one, 1, 6, 2, 2); // A: center-doubled (3,13),  key 0, anchor
+    set_block(&one, 15, 6, 2, 2); // B: center-doubled (31,13), key 0, anchor
+    set_block(&one, 11, 9, 2, 2); // Q: center-doubled (23,19), key 168, BELOW
+    set_block(&one, 7, 10, 2, 2); // D: center-doubled (15,21), key 224, BELOW
+    const s1 = try scene_of(garden, &one, 6, 6);
+
+    // the two anchor taps that name the HORIZONTAL directed line A -> B (both land inside their own blocks)
+    const ax1: u32 = 1;
+    const ay1: u32 = 6;
+    const bx1: u32 = 15;
+    const by1: u32 = 6;
+
+    // --- THE HISTOGRAM IS THE DISTINCT KEYS WITH MULTIPLICITY -- four bins ascending: key 0 count 2 (A,B), key 168 count 2 (P,Q), key 224
+    //     count 1 (D), key 280 count 1 (U). Every area is 4-per-object, no holes -----------------------------------------------------------
+    const h1 = try corridor_histogram(garden, s1.clustering, s1.graph, s1.manifest, &s1.map, ax1, ay1, bx1, by1);
+    if (h1.len != 4) return error.SceneOneNotFourBins;
+    if (h1[0].key != 0 or h1[0].count != 2 or h1[0].area != 8) return error.SceneOneBinZeroWrong;
+    if (h1[1].key != 168 or h1[1].count != 2 or h1[1].area != 8) return error.SceneOneBinOneWrong; // the multiplicity bin: P above, Q below
+    if (h1[2].key != 224 or h1[2].count != 1 or h1[2].area != 4) return error.SceneOneBinTwoWrong;
+    if (h1[3].key != 280 or h1[3].count != 1 or h1[3].area != 4) return error.SceneOneBinThreeWrong;
+    // the fold loses nothing: bin counts sum to the object count, bin areas to the whole foreground, no holed object anywhere
+    const t1 = bin_totals(h1);
+    if (t1.count != 6) return error.SceneOneTotalCountNotSix;
+    if (@as(u64, t1.area) != scene_manifest.total_area(s1.manifest)) return error.SceneOneTotalAreaNotWhole;
+    if (t1.holed != 0) return error.SceneOneHoledNotZero;
+    // the histogram spans [min_key, max_key]
+    if (h1[0].key != 0 or h1[h1.len - 1].key != 280) return error.SceneOneSpanWrong;
+
+    // --- CUMULATING THE HISTOGRAM REPRODUCES line_band.band_count, BY TWO INDEPENDENT PATHS -- for every half-width 0 through 6 the
+    //     distribution fold cumulative(...).count equals the raw prefix scan line_band.band_count -----------------------------------------
+    const len2_one = try line_band.line_len2_doubled(garden, s1.graph, s1.manifest, &s1.map, ax1, ay1, bx1, by1);
+    var w1: u32 = 0;
+    while (w1 <= 6) : (w1 += 1) {
+        const from_hist = cumulative(h1, w1, len2_one).count;
+        const from_band = try line_band.band_count(garden, s1.clustering, s1.graph, s1.manifest, &s1.map, ax1, ay1, bx1, by1, w1);
+        if (from_hist != from_band) return error.SceneOneTwoPathsDisagree;
+    }
+    // the named waypoints of that curve, spelled out: the anchors below the first ring, the count-2 jump at 168, saturation at the diameter
+    if (cumulative(h1, 0, len2_one).count != 2) return error.SceneOneAtZeroNotTwo;
+    if (cumulative(h1, 2, len2_one).count != 2) return error.SceneOneAtTwoNotTwo; // flat below distance 3
+    if (cumulative(h1, 3, len2_one).count != 4) return error.SceneOneAtThreeNotFour; // the count-2 jump: BOTH P and Q cross at once
+    if (cumulative(h1, 4, len2_one).count != 5) return error.SceneOneAtFourNotFive;
+    if (cumulative(h1, 5, len2_one).count != 6) return error.SceneOneAtFiveNotSix; // saturated at the object count
+
+    // --- THE HISTOGRAM IS THE CURVE'S DERIVATIVE -- band_count(w) - band_count(w-1) is exactly the multiplicity crossing at w, two at the
+    //     half-width whose edge reaches distance 168 (P and Q together), one at the singletons ---------------------------------------------
+    const c3 = try line_band.band_count(garden, s1.clustering, s1.graph, s1.manifest, &s1.map, ax1, ay1, bx1, by1, 3);
+    const c2 = try line_band.band_count(garden, s1.clustering, s1.graph, s1.manifest, &s1.map, ax1, ay1, bx1, by1, 2);
+    if (c3 - c2 != 2) return error.SceneOneJumpAtThreeNotTwo; // the shared-distance bin lifts the curve by two at once
+
+    // --- SCENE TWO: a 16x14 canvas with a holed RING and a WIDE block at distinct distances, so the area and holed folds are non-uniform.
+    //     Raster order gives dense labels R=1 (3x3 ring, area 8, one hole, center-doubled (12,4)), A=2 (anchor 2x2, center-doubled (3,11)),
+    //     B=3 (anchor 2x2, center-doubled (23,11)), K=4 (3x2 block, area 6, center-doubled (12,17)). The horizontal line A -> B has len 20,
+    //     so keys are R=140, A=0, B=0, K=120 ------------------------------------------------------------------------------------------------
+    var two = try make_canvas(garden, 16, 14, 0);
+    // R: a 3x3 ring, box (5,1)-(7,3), one carved hole -- area 8, holed
+    set_block(&two, 5, 1, 3, 3);
+    clear_dot(&two, 6, 2);
+    set_block(&two, 1, 5, 2, 2); // A: box (1,5)-(2,6), anchor, key 0
+    set_block(&two, 11, 5, 2, 2); // B: box (11,5)-(12,6), anchor, key 0
+    set_block(&two, 5, 8, 3, 2); // K: box (5,8)-(7,9), area 6, key 120
+    const s2 = try scene_of(garden, &two, 4, 4);
+
+    // confirm the raster order landed R holed area 8 and K area 6, so the non-uniform folds mean what the scene predicts
+    const r_entry = try scene_manifest.object_of(s2.manifest, 1);
+    if (!r_entry.is_holed() or r_entry.area != 8) return error.SceneTwoRingNotHoledEight;
+    const k_entry = try scene_manifest.object_of(s2.manifest, 4);
+    if (k_entry.is_holed() or k_entry.area != 6) return error.SceneTwoBlockNotSolidSix;
+
+    const ax2: u32 = 1;
+    const ay2: u32 = 5;
+    const bx2: u32 = 11;
+    const by2: u32 = 5;
+
+    // --- THE NON-UNIFORM AREA AND HOLED FOLD -- three bins: key 0 count 2 area 8 holed 0 (the anchors), key 120 count 1 area 6 holed 0 (K),
+    //     key 140 count 1 area 8 holed 1 (the ring). The whole-histogram area is the scene foreground, the whole holed count is one --------
+    const h2 = try corridor_histogram(garden, s2.clustering, s2.graph, s2.manifest, &s2.map, ax2, ay2, bx2, by2);
+    if (h2.len != 3) return error.SceneTwoNotThreeBins;
+    if (h2[0].key != 0 or h2[0].count != 2 or h2[0].area != 8 or h2[0].holed != 0) return error.SceneTwoBinZeroWrong;
+    if (h2[1].key != 120 or h2[1].count != 1 or h2[1].area != 6 or h2[1].holed != 0) return error.SceneTwoBinOneWrong;
+    if (h2[2].key != 140 or h2[2].count != 1 or h2[2].area != 8 or h2[2].holed != 1) return error.SceneTwoBinTwoWrong; // the holed ring
+    const t2 = bin_totals(h2);
+    if (t2.count != 4) return error.SceneTwoTotalCountNotFour;
+    if (@as(u64, t2.area) != scene_manifest.total_area(s2.manifest)) return error.SceneTwoTotalAreaNotWhole;
+    if (t2.holed != 1) return error.SceneTwoTotalHoledNotOne;
+
+    // --- THE PER-BAND AREA CUMULATIVE, PROVEN BY A SECOND PATH -- for every half-width the histogram's cumulative area equals a manifest scan
+    //     summing object areas over image/line_band.rye's own corridor members, and its holed count equals a scan of holed members ----------
+    const len2_two = try line_band.line_len2_doubled(garden, s2.graph, s2.manifest, &s2.map, ax2, ay2, bx2, by2);
+    var w2: u32 = 0;
+    while (w2 <= 5) : (w2 += 1) {
+        const from_hist = cumulative(h2, w2, len2_two);
+        const members = try line_band.line_band(garden, s2.clustering, s2.graph, s2.manifest, &s2.map, ax2, ay2, bx2, by2, w2);
+        var scan = BandTotals{};
+        var mi: usize = 0;
+        while (mi < members.len) : (mi += 1) {
+            const me = try scene_manifest.object_of(s2.manifest, members[mi]);
+            scan.count += 1;
+            scan.area += me.area;
+            scan.holed += if (me.holes >= 1) @as(u32, 1) else 0;
+        }
+        if (from_hist.count != scan.count) return error.SceneTwoBandCountDisagrees;
+        if (from_hist.area != scan.area) return error.SceneTwoBandAreaDisagrees;
+        if (from_hist.holed != scan.holed) return error.SceneTwoBandHoledDisagrees;
+    }
+    // the named waypoints: only the anchors below the block, the block joins at width 3, the holed ring joins at width 4 (its own area and hole)
+    if (cumulative(h2, 0, len2_two).area != 8) return error.SceneTwoAtZeroAreaNotEight;
+    if (cumulative(h2, 3, len2_two).area != 14 or cumulative(h2, 3, len2_two).holed != 0) return error.SceneTwoAtThreeWrong; // A,B,K
+    if (cumulative(h2, 4, len2_two).area != 22 or cumulative(h2, 4, len2_two).holed != 1) return error.SceneTwoAtFourWrong; // the ring's area and hole enter
+
+    // --- REFUSALS -- two anchors sharing a group refuse SameGroup (a line needs two points); a background tap refuses EmptyClick; a point off
+    //     the map refuses PointOutOfBounds, each having read nothing -------------------------------------------------------------------------
+    if (try hit_test.object_label_at(&s2.map, 1, 5) != try hit_test.object_label_at(&s2.map, 2, 6)) return error.APixelsNotSameObject;
+    if (corridor_histogram(garden, s2.clustering, s2.graph, s2.manifest, &s2.map, 1, 5, 2, 6)) |_| return error.SameGroupNotRefused else |err| {
+        if (err != error.SameGroup) return error.WrongSameGroupError;
+    }
+    if (try hit_test.object_label_at(&s2.map, 0, 0) != 0) return error.BackgroundNotEmpty;
+    if (corridor_histogram(garden, s2.clustering, s2.graph, s2.manifest, &s2.map, 0, 0, bx2, by2)) |_| return error.MissNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissError;
+    }
+    if (corridor_histogram(garden, s2.clustering, s2.graph, s2.manifest, &s2.map, ax2, ay2, 16, 0)) |_| return error.OffMapNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapError;
+    }
+
+    // --- DETERMINISM -- the same directed line reads the same histogram twice -------------------------------------------------------------
+    const d1 = try corridor_histogram(garden, s1.clustering, s1.graph, s1.manifest, &s1.map, ax1, ay1, bx1, by1);
+    const d2 = try corridor_histogram(garden, s1.clustering, s1.graph, s1.manifest, &s1.map, ax1, ay1, bx1, by1);
+    if (d1.len != d2.len) return error.HistNotDeterministic;
+    var di: usize = 0;
+    while (di < d1.len) : (di += 1) {
+        if (d1[di].key != d2[di].key or d1[di].count != d2[di].count or d1[di].area != d2[di].area or d1[di].holed != d2[di].holed) return error.HistNotDeterministic;
+    }
+
+    print("GREEN image-line-corridor-summary: read a DIRECTED line named by TWO anchor taps (from A toward B) as a DISTRIBUTION over half-widths -- the distance HISTOGRAM (one bin per distinct distance key off the line, carrying that distance's object count, whole area, and holed-object count) and the cumulative BAND PROFILE it generates, exact integers, NO float and NO tolerance -- the line_band twin of cluster_graph_profile, folding image/line_summary's per-object area and holes by RADIUS where line_summary folds them by HANDEDNESS. The DECISIVE crux: cumulating the histogram reproduces line_band.band_count by two INDEPENDENT paths. Over line_distance's own six-object scene (keys A=0, B=0, P=168, Q=168, D=224, U=280) the histogram holds four bins -- a MULTIPLICITY bin of count 2 at key 168 (P above the line, Q below, at equal remove), which a sorted distance list could never show -- and cumulative(...).count equals line_band.band_count at every half-width 0 through 6: two below distance 3, a count-2 JUMP to four at width 3 (both P and Q cross at once), five at width 4, saturated at six at width 5. The band-count curve is a STEP function whose jumps are the bin multiplicities: band_count(3) - band_count(2) = 2. THE NON-UNIFORM AREA AND HOLED FOLD -- over a second scene carrying a holed ring (area 8) and a wide block (area 6) at distinct distances, the histogram folds key 0 area 8 holed 0, key 120 area 6 holed 0, key 140 area 8 holed 1, and for every half-width the cumulative area and holed count equal a manifest scan over line_band's own corridor members, a second independent path: area 8 at width 0, 14 at width 3 (A, B, K), 22 with the ring's hole entering at width 4. The fold loses nothing -- bin counts sum to the object count, bin areas to the whole foreground, holed counts to the whole holed-object tally. Two anchors sharing a group refuse SameGroup (a line needs two points); a background tap refuses EmptyClick; a point off the map refuses PointOutOfBounds having read nothing; the same line reads the same histogram twice. Compose not braid over image/line_distance.rye (the distance key each object is binned by), image/line_band.rye (the corridor bound the cumulative threshold reads and the band_count the crux cross-checks), and image/scene_manifest.rye (the per-object area and holes the bins fold)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: line_corridor_summary selftest\n", .{});
+    return 1;
+}
