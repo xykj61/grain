@@ -1,0 +1,712 @@
+//! Caravan rederive -- a restarted dependent's rights come from the document,
+//! never from the parent's memory of it.
+//!
+//! `restart.rye` proved a fall survivable: the bell stands, the bytes
+//! stand, and the restart finishes the conversation. Every one of those
+//! restarts took its capability line from a table the supervisor derived
+//! once, at boot, and then carried in memory for the life of the run. That
+//! is exactly one assumption too many. A supervisor that remembers what a
+//! dependent may do is a second authority standing beside the declaration, and
+//! the day the two disagree, the running system obeys the copy rather than
+//! the document.
+//!
+//! This ring removes the second authority. Every attempt -- the first and
+//! each restart after it -- reloads the declaration from disk and derives
+//! the dependent's line from that read, so a restarted dependent is handed rights
+//! the document granted moments ago rather than rights the parent recalls
+//! granting. The property it names: **a dependent's rights are a function of
+//! the declaration, evaluated per attempt, never a value the supervisor
+//! holds.**
+//!
+//! Memory is kept, and it is kept as a claim to check rather than as a
+//! source to obey. Each derivation is compared against what the supervisor
+//! remembered, and a disagreement is met by a named policy:
+//!
+//!   refuse   The supervisor declines the spawn by name. Nothing runs on a
+//!            system whose two descriptions of itself have parted.
+//!   heal     The supervisor reports the drift, replaces its memory with
+//!            the fresh derivation, and continues -- so the document wins
+//!            and the run goes on.
+//!   report   The supervisor names the drift, keeps its own memory exactly
+//!            as it stands, and continues anyway. This is the lenient
+//!            reading, and it is the one that makes the whole claim
+//!            checkable: with the two descriptions still disagreeing, the
+//!            dependent that runs shows plainly which one it was handed.
+//!
+//! All three readings of a disagreement are honest; which one a system
+//! wants is a policy its operator chooses, so this names them rather than
+//! baking one in. What none of them does is hand a dependent the remembered
+//! line -- under `report`, the memory is still widened and the dependent still
+//! refuses the widened act by name.
+//!
+//! Hosted ground: real processes, real files, pure policy, no kernel
+//! underneath it yet.
+//!
+//! Usage:
+//!   rederive selftest                  Drift the memory and see who wins
+//!   rederive                           Same as selftest
+//!   rederive dependent <domain> <plan> ... Run as a supervised dependent (internal)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const capabilities = @import("capabilities.rye");
+const roster = @import("roster.rye");
+const read = @import("read.rye");
+const boot = @import("boot.rye");
+const exercise = @import("exercise.rye");
+const carry = @import("carry.rye");
+const notify = @import("notify.rye");
+const roundtrip = @import("roundtrip.rye");
+const serve = @import("serve.rye");
+const restart = @import("restart.rye");
+
+const caravan_rederive_version = "20260819.145920";
+
+// =========================================================================
+// Bounds -- what one re-deriving run may spend
+// =========================================================================
+
+/// The two-client declaration `restart.rye` already falls inside, since a
+/// question about authority is worth asking where a working system stands.
+pub const declaration_path = serve.serial_two_clients_path;
+
+/// How many derivations one supervised run may spend. Every attempt costs
+/// exactly one, so this bound is the restart bound plus the attempts that
+/// never fell -- named here so a run that derived more than it attempted
+/// stops rather than spinning.
+pub const max_derivations: u32 = (restart.max_restarts + 1) * 8;
+
+// =========================================================================
+// The policy -- what a supervisor does when memory and document disagree
+// =========================================================================
+
+/// What a supervisor does the moment its memory parts from the document.
+pub const DriftPolicy = enum { refuse, heal, report };
+
+/// Names one policy for an operator reading a report.
+pub fn policy_word(p: DriftPolicy) []const u8 {
+    return switch (p) {
+        .refuse => "refuse",
+        .heal => "heal",
+        .report => "report",
+    };
+}
+
+/// How a supervisor's memory is corrupted, for the sake of watching what
+/// the document does about it.
+///
+/// A widened right is the dangerous shape: the remembered line still names
+/// only regions the document named, so nothing about it looks malformed --
+/// it simply permits more than the declaration ever said. Drift that adds
+/// a whole region is easier to catch and therefore less interesting.
+pub const Drift = enum { none, widen_right };
+
+/// Names one drift for an operator reading a report.
+pub fn drift_word(d: Drift) []const u8 {
+    return switch (d) {
+        .none => "intact",
+        .widen_right => "widened",
+    };
+}
+
+// =========================================================================
+// Comparison -- whether two derivations describe the same rights
+// =========================================================================
+
+/// Answers whether two capability lines name the same region at the same
+/// rights.
+pub fn caps_agree(
+    a: *const capabilities.Capability,
+    b: *const capabilities.Capability,
+) bool {
+    if (a.rights_mask != b.rights_mask) return false;
+    return std.mem.eql(u8, a.name_slice(), b.name_slice());
+}
+
+/// Answers whether two dependent slots hold the same label and the same
+/// capability list, in the same order.
+///
+/// Order matters here rather than being incidental: both lists are derived
+/// from one document by one walk, so two derivations of the same file
+/// produce the same order. A difference in order is itself a difference
+/// worth reporting.
+pub fn slots_agree(
+    a: *const capabilities.DependentSlot,
+    b: *const capabilities.DependentSlot,
+) bool {
+    // invariant: both lists stay within the bound one dependent may hold
+    assert(a.cap_count <= capabilities.max_caps_per_dependent);
+    assert(b.cap_count <= capabilities.max_caps_per_dependent);
+    if (a.cap_count != b.cap_count) return false;
+    if (!std.mem.eql(u8, a.label_slice(), b.label_slice())) return false;
+    var i: u32 = 0;
+    while (i < a.cap_count) : (i += 1) {
+        assert(i < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        if (!caps_agree(&a.caps[i], &b.caps[i])) return false;
+    }
+    return true;
+}
+
+/// Answers whether two derived tables describe exactly the same rights for
+/// exactly the same dependents.
+pub fn tables_agree(
+    a: *const capabilities.CapabilityTable,
+    b: *const capabilities.CapabilityTable,
+) bool {
+    // invariant: both tables stay within the dependent bound
+    assert(a.dependent_count <= capabilities.max_dependents);
+    assert(b.dependent_count <= capabilities.max_dependents);
+    if (a.dependent_count != b.dependent_count) return false;
+    var i: u32 = 0;
+    while (i < a.dependent_count) : (i += 1) {
+        assert(i < capabilities.max_dependents); // invariant: the walk stays in the array
+        if (!slots_agree(&a.dependents[i], &b.dependents[i])) return false;
+    }
+    return true;
+}
+
+/// Names the first dependent whose remembered line parts from the fresh one,
+/// so a drift report says which dependent rather than merely that one exists.
+pub fn first_drifted_dependent(
+    remembered: *const capabilities.CapabilityTable,
+    fresh: *const capabilities.CapabilityTable,
+) ?[]const u8 {
+    // invariant: the fresh table stays within the dependent bound
+    assert(fresh.dependent_count <= capabilities.max_dependents);
+    var i: u32 = 0;
+    while (i < fresh.dependent_count) : (i += 1) {
+        assert(i < capabilities.max_dependents); // invariant: the walk stays in the array
+        const label = fresh.dependents[i].label_slice();
+        const mine = remembered.find_dependent(label) orelse return label;
+        if (!slots_agree(mine, &fresh.dependents[i])) return label;
+    }
+    return null;
+}
+
+// =========================================================================
+// Derivation -- the document read again, every single attempt
+// =========================================================================
+
+/// One reading of the declaration and the table derived from it.
+///
+/// The two travel together because a table means nothing without the
+/// document it came from: `roster.agrees` is the sentence that binds them,
+/// and a caller holding only one half cannot say it.
+pub const Derivation = struct {
+    sys: system.System,
+    table: capabilities.CapabilityTable,
+};
+
+/// Named ways a derivation declines rather than returning a hollow table.
+pub const DeriveError = error{
+    DeclarationUnreadable,
+    DeclarationTorn,
+    RosterDisagrees,
+};
+
+/// Reads the declaration from disk and derives the capability table from
+/// that read, refusing anything short of a whole document.
+///
+/// Every attempt calls this, which is the entire point of the ring. The
+/// cost is one file read per attempt, and what it buys is that no running
+/// dependent's rights ever depend on how long the supervisor has been awake.
+pub fn derive(
+    io: std.Io,
+    path: []const u8,
+    buf: []u8,
+) (DeriveError || roster.RosterError)!Derivation {
+    // invariant: a derivation always knows which document to read
+    assert(path.len >= 1);
+    // invariant: the buffer offered holds a whole declaration
+    assert(buf.len >= read.read_buffer_bytes);
+    const parsed = read.load(io, path, buf) catch return error.DeclarationUnreadable;
+    if (parsed.verify() != .whole) return error.DeclarationTorn;
+    const table = try roster.from_system(&parsed);
+    // The derived table is checked against the document it came from
+    // before any caller is allowed to spawn from it, so a table that
+    // permits more than the declaration never reaches a dependent.
+    if (!roster.agrees(&parsed, &table)) return error.RosterDisagrees;
+    return .{ .sys = parsed, .table = table };
+}
+
+/// Which dependent and which region a drift widened, so a caller can ask that
+/// dependent to attempt exactly the act its memory now wrongly permits.
+pub const Widened = struct {
+    domain: []const u8,
+    region: []const u8,
+};
+
+/// Widens one remembered right, standing in for a supervisor's memory
+/// going wrong however it goes wrong.
+///
+/// The corruption is deliberately quiet: a region the document already
+/// granted, at a right it never granted. Nothing about the resulting line
+/// is malformed, so only a comparison against the document finds it.
+pub fn drift_memory(table: *capabilities.CapabilityTable, d: Drift) ?Widened {
+    // invariant: the table stays within the dependent bound
+    assert(table.dependent_count <= capabilities.max_dependents);
+    if (d == .none) return null;
+    var i: u32 = 0;
+    while (i < table.dependent_count) : (i += 1) {
+        assert(i < capabilities.max_dependents); // invariant: the walk stays in the array
+        const slot = &table.dependents[i];
+        var c: u32 = 0;
+        while (c < slot.cap_count) : (c += 1) {
+            assert(c < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+            const cap = &slot.caps[c];
+            if ((cap.rights_mask & capabilities.right_write) == 0) {
+                cap.rights_mask |= capabilities.right_write;
+                return .{ .domain = slot.label_slice(), .region = cap.name_slice() };
+            }
+        }
+    }
+    return null;
+}
+
+// =========================================================================
+// The supervisor -- memory as a claim, the document as the authority
+// =========================================================================
+
+/// One domain's step, its injected fall, and the drift its supervisor's
+/// memory carries into it.
+pub const Assignment = restart.Assignment;
+
+/// What one re-deriving run did, reported whole.
+pub const RunReport = struct {
+    assignments: u32 = 0,
+    attempts: u32 = 0,
+    restarts: u32 = 0,
+    derivations: u32 = 0,
+    drifts_found: u32 = 0,
+    heals: u32 = 0,
+};
+
+/// Named ways a re-deriving run declines rather than reporting a hollow
+/// success.
+pub const RederiveError = error{
+    MemoryDrifted,
+    DerivationBudget,
+};
+
+/// Meets one disagreement between memory and document under the policy an
+/// operator chose, and reports whether the run may go on.
+///
+/// The remembered table travels by pointer because a healing supervisor
+/// updates it in place: after a heal, the memory and the document agree
+/// again, and the next attempt finds nothing to report.
+fn meet_drift(
+    remembered: *capabilities.CapabilityTable,
+    fresh: *const Derivation,
+    policy: DriftPolicy,
+    domain: []const u8,
+    report_out: *RunReport,
+) RederiveError!void {
+    // invariant: a drift always belongs to a named domain
+    assert(domain.len >= 1);
+    if (tables_agree(remembered, &fresh.table)) return;
+    report_out.drifts_found += 1;
+    const who = first_drifted_dependent(remembered, &fresh.table) orelse domain;
+    print("    {s}: memory and document disagree about {s} -- {s}\n", .{
+        domain, who, policy_word(policy),
+    });
+    switch (policy) {
+        .refuse => return error.MemoryDrifted,
+        .heal => {
+            remembered.* = fresh.table;
+            report_out.heals += 1;
+            // invariant: a healed memory agrees with the document again
+            assert(tables_agree(remembered, &fresh.table));
+        },
+        // The lenient reading keeps its own memory and runs on the
+        // document's line anyway, so the disagreement stays visible for as
+        // long as it stands.
+        .report => {},
+    }
+}
+
+/// Holds one assignment until it answers, stops, or exhausts its restarts,
+/// deriving the dependent's rights afresh before every single attempt.
+pub fn supervise(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    remembered: *capabilities.CapabilityTable,
+    policy: DriftPolicy,
+    step: Assignment,
+    report_out: *RunReport,
+) (RederiveError || DeriveError || roster.RosterError ||
+    restart.SuperviseError || boot.BootError)!restart.AttemptReport {
+    // invariant: a supervised assignment always has an attempt to make
+    assert(step.falls <= restart.max_restarts + 1);
+    var done: restart.AttemptReport = .{};
+    while (true) {
+        // invariant: one attempt stands above every restart the bound allows
+        assert(done.attempts <= restart.max_restarts);
+        if (report_out.derivations >= max_derivations) return error.DerivationBudget;
+
+        var buf: [read.read_buffer_bytes]u8 = undefined;
+        const fresh = try derive(io, declaration_path, &buf);
+        report_out.derivations += 1;
+
+        try meet_drift(remembered, &fresh, policy, step.domain, report_out);
+
+        const slot = fresh.table.find_dependent(step.domain) orelse
+            return error.UnknownDomain;
+        const fall: restart.Fall = if (done.attempts < step.falls) step.fall else .none;
+        const code = try restart.spawn_slot(
+            allocator,
+            io,
+            self_path,
+            &fresh.sys,
+            slot,
+            step,
+            fall,
+        );
+        done.attempts += 1;
+        report_out.attempts += 1;
+        done.code = code;
+        done.meaning = restart.meaning_of(code);
+        switch (done.meaning) {
+            .answered, .stopped => return done,
+            .fallen => {
+                if (done.restarts == restart.max_restarts) {
+                    // invariant: the limit is reached only once every restart was spent
+                    assert(done.attempts == restart.max_restarts + 1);
+                    print("    {s}: fell again with {d} restarts spent -- declined\n", .{
+                        step.domain, restart.max_restarts,
+                    });
+                    return error.RestartLimit;
+                }
+                done.restarts += 1;
+                report_out.restarts += 1;
+                print("    {s}: fell -- restart {d}/{d}, rights derived again\n", .{
+                    step.domain, done.restarts, restart.max_restarts,
+                });
+            },
+        }
+    }
+}
+
+/// Runs a whole ordered plan, re-deriving before every attempt in it.
+pub fn run_plan(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    remembered: *capabilities.CapabilityTable,
+    policy: DriftPolicy,
+    plan: []const Assignment,
+) (RederiveError || DeriveError || roster.RosterError || restart.SuperviseError ||
+    exercise.ProvisionError || notify.BellError || boot.BootError)!RunReport {
+    // invariant: a run always knows what program to spawn
+    assert(self_path.len >= 1);
+
+    // The ground a run stands on -- every declared region backed and every
+    // declared channel silent -- comes from its own reading of the
+    // document, so even the provisioning obeys the file rather than the
+    // table a caller happened to hand in.
+    var ground_buf: [read.read_buffer_bytes]u8 = undefined;
+    const ground = try derive(io, declaration_path, &ground_buf);
+    const provisioned = try exercise.provision(io, &ground.sys);
+    // invariant: every declared region has a backing store before any dependent runs
+    assert(provisioned == ground.sys.map.region_count);
+    const bells = try roundtrip.provision_directed(io, &ground.sys);
+    // invariant: every declared channel has two silent bells before any dependent runs
+    assert(bells == ground.sys.graph.channel_count * 2);
+
+    var report_out: RunReport = .{};
+    var i: u32 = 0;
+    while (i < plan.len) : (i += 1) {
+        const step = plan[i];
+        const done = try supervise(
+            allocator,
+            io,
+            self_path,
+            remembered,
+            policy,
+            step,
+            &report_out,
+        );
+        if (done.code != step.expect) {
+            print("    {s}: expected {s}, heard {s}\n", .{
+                step.domain, restart.report_word(step.expect), restart.report_word(done.code),
+            });
+            return error.OutcomeMismatch;
+        }
+        report_out.assignments += 1;
+    }
+    // invariant: every assignment in the plan was supervised to its expectation
+    assert(report_out.assignments == plan.len);
+    // invariant: every attempt derived the rights it ran on, exactly once
+    assert(report_out.derivations == report_out.attempts);
+    return report_out;
+}
+
+// =========================================================================
+// Self-test -- the document wins, and the count proves it was asked
+// =========================================================================
+
+/// The conversation the drift rides into: a client dropped before writing,
+/// so a restart is spent and a second derivation is forced.
+const served_plan = [_]Assignment{
+    .{ .domain = "serial_virt", .verb = .request, .ask = "rx_b", .answer = "tx_b", .peer = "client_b", .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_b", .verb = .reply, .ask = "rx_b", .answer = "tx_b", .peer = "serial_virt", .fall = .before_write, .falls = 1, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "serial_virt", .verb = .collect, .ask = "rx_b", .answer = "tx_b", .peer = "client_b", .expect = carry.Outcome.carried_ok },
+};
+
+/// A single step, enough to watch one drifted memory meet one document.
+const one_step_plan = [_]Assignment{
+    .{ .domain = "serial_virt", .verb = .request, .ask = "rx_a", .answer = "tx_a", .peer = "client_a", .expect = carry.Outcome.carried_ok },
+};
+
+/// Derives twice from one unchanged document and proves the two readings
+/// are the same table.
+///
+/// This is the sentence every other check leans on. Re-deriving per attempt
+/// only buys anything if a derivation is a function of the file rather than
+/// of when it happened to run.
+fn check_derivation_is_a_function(io: std.Io) u8 {
+    var buf_a: [read.read_buffer_bytes]u8 = undefined;
+    var buf_b: [read.read_buffer_bytes]u8 = undefined;
+    const first = derive(io, declaration_path, &buf_a) catch |err| {
+        print("  RED: the first derivation refused: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const second = derive(io, declaration_path, &buf_b) catch |err| {
+        print("  RED: the second derivation refused: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    if (!tables_agree(&first.table, &second.table)) {
+        print("  RED: two readings of one document derived different rights\n", .{});
+        return 1;
+    }
+    // invariant: each derivation enforces exactly what its own document permits
+    assert(roster.agrees(&first.sys, &first.table));
+    assert(roster.agrees(&second.sys, &second.table));
+    print("  two readings of one unchanged document derive the same {d} dependents\n", .{
+        first.table.dependent_count,
+    });
+    return 0;
+}
+
+/// Widens one remembered right and proves the widened line contradicts the
+/// declaration -- pure policy, before any process runs.
+fn check_widened_memory_contradicts(io: std.Io) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const fresh = derive(io, declaration_path, &buf) catch |err| {
+        print("  RED: the derivation refused: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    var remembered = fresh.table;
+    const widened = drift_memory(&remembered, .widen_right) orelse {
+        print("  RED: no read-only right stood in the table to widen\n", .{});
+        return 1;
+    };
+    if (tables_agree(&remembered, &fresh.table)) {
+        print("  RED: a widened memory read as agreeing with the document\n", .{});
+        return 1;
+    }
+    const who = first_drifted_dependent(&remembered, &fresh.table) orelse {
+        print("  RED: a drifted table named no drifted dependent\n", .{});
+        return 1;
+    };
+    const drifted = remembered.find_dependent(who) orelse {
+        print("  RED: the named dependent was absent from the memory holding it\n", .{});
+        return 1;
+    };
+    // invariant: the drift the memory carries is the one the comparison found
+    assert(std.mem.eql(u8, widened.domain, who));
+    // invariant: a widened line disagrees with the document it claims to obey
+    assert(!boot.line_agrees(&fresh.sys, drifted));
+    // invariant: the document's own line still agrees, so the drift is the memory's
+    assert(boot.line_agrees(&fresh.sys, fresh.table.find_dependent(who).?));
+    print("  a widened remembered right contradicts the declaration: {s} may write {s}\n", .{
+        widened.domain, widened.region,
+    });
+    return 0;
+}
+
+/// The refusing policy: a supervisor whose memory has parted from the
+/// document declines the spawn by name rather than running on either one.
+fn check_refuse(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const fresh = derive(io, declaration_path, &buf) catch |err| {
+        print("  RED: the derivation refused: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    var remembered = fresh.table;
+    _ = drift_memory(&remembered, .widen_right) orelse {
+        print("  RED: no read-only right stood in the table to widen\n", .{});
+        return 1;
+    };
+    const done = run_plan(allocator, io, self_path, &remembered, .refuse, &one_step_plan);
+    if (done) |_| {
+        print("  RED: a drifted memory was allowed to start a dependent\n", .{});
+        return 1;
+    } else |err| {
+        if (err != error.MemoryDrifted) {
+            print("  RED: expected MemoryDrifted, heard {s}\n", .{@errorName(err)});
+            return 1;
+        }
+    }
+    print("  a supervisor whose memory drifted refuses the spawn by name\n", .{});
+    return 0;
+}
+
+/// The healing policy: the document wins, the memory is replaced, and the
+/// dependent runs on rights the declaration granted this second.
+fn check_heal(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const fresh = derive(io, declaration_path, &buf) catch |err| {
+        print("  RED: the derivation refused: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    var remembered = fresh.table;
+    _ = drift_memory(&remembered, .widen_right) orelse {
+        print("  RED: no read-only right stood in the table to widen\n", .{});
+        return 1;
+    };
+    const done = run_plan(allocator, io, self_path, &remembered, .heal, &one_step_plan) catch |err| {
+        print("  RED: the healing run did not complete: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: the drift was seen and healed exactly once
+    assert(done.drifts_found == 1);
+    assert(done.heals == 1);
+    // invariant: the healed memory now agrees with the document again
+    if (!tables_agree(&remembered, &fresh.table)) {
+        print("  RED: a healed memory still disagrees with the document\n", .{});
+        return 1;
+    }
+    print("  a healed supervisor takes the document's line and runs on it\n", .{});
+    return 0;
+}
+
+/// The lenient policy: the memory stays widened, the run goes on, and the
+/// dependent refuses the widened act anyway.
+///
+/// This check is the observable form of the whole claim, and it was written
+/// because the first cut of this ring could not state it. Under `refuse`
+/// nothing spawns, and under `heal` the memory agrees again before any line
+/// is chosen -- so in neither case can a reader tell which of the two
+/// descriptions the dependent was handed. Here the two still disagree at the
+/// moment of the spawn. The supervisor asks the drifted dependent to do exactly
+/// the thing its memory wrongly permits, and `WriteDenied` comes back:
+/// proof that the line crossing to the dependent came from the document.
+fn check_report_lenient(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const fresh = derive(io, declaration_path, &buf) catch |err| {
+        print("  RED: the derivation refused: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    var remembered = fresh.table;
+    const widened = drift_memory(&remembered, .widen_right) orelse {
+        print("  RED: no read-only right stood in the table to widen\n", .{});
+        return 1;
+    };
+    // invariant: the memory now permits the very write the document withholds
+    assert(remembered.allows(widened.domain, widened.region, capabilities.right_write));
+    assert(!fresh.table.allows(widened.domain, widened.region, capabilities.right_write));
+
+    // The widened dependent is asked to write the widened region. Its answer
+    // names which description it was running on.
+    const lenient = [_]Assignment{
+        .{
+            .domain = widened.domain,
+            .verb = .request,
+            .ask = widened.region,
+            .answer = widened.region,
+            .peer = "client_a",
+            .expect = carry.Outcome.write_denied,
+        },
+    };
+    const done = run_plan(allocator, io, self_path, &remembered, .report, &lenient) catch |err| {
+        print("  RED: the lenient run did not complete: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: the drift was named rather than quietly repaired
+    assert(done.drifts_found == 1);
+    assert(done.heals == 0);
+    // invariant: the memory is still widened, so the refusal came from the document
+    if (tables_agree(&remembered, &fresh.table)) {
+        print("  RED: the lenient policy repaired the memory it was told to keep\n", .{});
+        return 1;
+    }
+    print("  a widened memory still standing, {s} is refused the write to {s}\n", .{
+        widened.domain, widened.region,
+    });
+    return 0;
+}
+
+/// The restart: every attempt derived its own rights, and the count says so.
+///
+/// A run that derived once and remembered would report fewer derivations
+/// than attempts, which is exactly the claim this ring exists to make
+/// checkable from outside the program.
+fn check_every_attempt_derives(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const fresh = derive(io, declaration_path, &buf) catch |err| {
+        print("  RED: the derivation refused: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    var remembered = fresh.table;
+    const done = run_plan(allocator, io, self_path, &remembered, .refuse, &served_plan) catch |err| {
+        print("  RED: the supervised run did not complete: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: one injected fall spent exactly one restart
+    assert(done.restarts == 1);
+    // invariant: three assignments and one restart make four attempts
+    assert(done.attempts == 4);
+    // invariant: an intact memory found nothing to report across the whole run
+    assert(done.drifts_found == 0);
+    print("  {d} attempts across a restart derived their rights {d} times\n", .{
+        done.attempts, done.derivations,
+    });
+    return 0;
+}
+
+fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    print("Caravan rederive {s} -- self-test\n", .{caravan_rederive_version});
+    const pure = check_derivation_is_a_function(io);
+    if (pure != 0) return pure;
+    const widened = check_widened_memory_contradicts(io);
+    if (widened != 0) return widened;
+    const refused = check_refuse(allocator, io, self_path);
+    if (refused != 0) return refused;
+    const healed = check_heal(allocator, io, self_path);
+    if (healed != 0) return healed;
+    const lenient = check_report_lenient(allocator, io, self_path);
+    if (lenient != 0) return lenient;
+    const derived = check_every_attempt_derives(allocator, io, self_path);
+    if (derived != 0) return derived;
+    print("  GREEN: a dependent's rights come from the document, derived again for every attempt\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    if (args.len >= restart.fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
+        return restart.run_dependent(io, args);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(allocator, io, self_path);
+    }
+    if (args.len >= 2) return 1;
+    return run_self_test(allocator, io, self_path);
+}

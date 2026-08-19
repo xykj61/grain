@@ -83,7 +83,7 @@ pub const max_restarts: u32 = 3;
 /// Fixed argv words a supervised dependent receives: the program path, the
 /// `dependent` marker, the domain label, the plan word, the fall word, and
 /// the count of capability words that follow.
-const fixed_argv_words: u32 = 6;
+pub const fixed_argv_words: u32 = 6;
 
 comptime {
     // invariant: a fall names nothing the outcome vocabulary already spends
@@ -275,7 +275,11 @@ fn attempt(
 
 /// Runs as one supervised dependent, holding exactly the capabilities, the
 /// peers, the one step, and the one place it may be dropped.
-fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
+///
+/// Exported so a supervisor asking a different question -- `rederive.rye`
+/// asks where a dependent's rights came from -- reuses this dependent whole rather
+/// than growing a second one that could drift from it.
+pub fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
     // invariant: a dependent always receives its marker, domain, plan, fall, and count
     assert(args.len >= fixed_argv_words);
     const domain = args[2];
@@ -407,12 +411,30 @@ fn spawn_once(
     step: Assignment,
     fall: Fall,
 ) (SuperviseError || boot.BootError)!u8 {
+    const slot = table.find_dependent(step.domain) orelse return error.UnknownDomain;
+    return spawn_slot(allocator, io, self_path, sys, slot, step, fall);
+}
+
+/// Spawns one dependent from a capability line the caller chose, rather than
+/// from a lookup this function performed.
+///
+/// Which line a dependent receives is the whole question `rederive.rye` asks,
+/// so the choosing and the spawning are two acts rather than one. The line
+/// still has to agree with the declaration before any process starts.
+pub fn spawn_slot(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    slot: *const capabilities.DependentSlot,
+    step: Assignment,
+    fall: Fall,
+) (SuperviseError || boot.BootError)!u8 {
     // invariant: an assignment always names a domain, both regions, and a peer
     assert(step.domain.len >= 1);
     assert(step.ask.len >= 1);
     assert(step.answer.len >= 1);
     assert(step.peer.len >= 1);
-    const slot = table.find_dependent(step.domain) orelse return error.UnknownDomain;
     // invariant: the line handed out agrees with the declaration it came from
     assert(boot.line_agrees(sys, slot));
 
