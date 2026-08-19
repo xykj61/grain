@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260819.055558
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title click_facts -- the CLICK-THEN-FACTS read, a click's facts the group's not the clicked object's
+prompt baton prin recur -- pick up the running thread Lindy-first crux-first, Standfast on reds first, take the next agent-doable open-media lap and send it
+think Became Kyri: read KYRI.md and RADIANT_STYLE.md, then crux/REMEMBER.md, the three road-ahead itineraries are named in the card's NEXT and the recent logs -- the open-media rung is the agent-doable Lindy-first crux while the Microkernel study and real-photo top-hat wait on fetch/license/custody gates, not crossed.
+think Standfast: read crux/REDS.md -- rows 80, 85 CLOSED, 83 and 84 both fixed (past tense), 81/82/86/87 closed prose notes, 75 custody-gated errata. Every living row Closed, Released, or errata #75. No open agent-closable red blocks new work.
+think Council rota lap: re-read the voice items (RADIANT_STYLE, KYRI) and confirmed the four faculties held -- Lattice for the exact integer facts, Scribble for naming the coined reads on first use, Lantern for marking the fetch/license gate not crossed, Ember for building the rung soundly before claiming GREEN.
+think Crux-first choice: the card named three candidate next rungs -- a click-then-select-facts read, a marquee-grow read, a codec read. Chose click-then-facts: it closes the click gesture's own loop (click_expand made a group selection; a surface then needs that group's facts) and its crux is the EXACT COMPLEMENT of selection_summary's subset-sharper lesson, the highest-leverage single move.
+think Design: image/click_facts.rye joins click_expand (a point -> a whole-group ascending selection) with selection_summary (a selection -> its facts). Verified click_expand returns an ascending dense []u32 that selection_summary accepts. Exposed click_area (0 on miss), click_largest (refuses EmptyClick on miss), click_holed_count (0 on miss), and a ClickFacts bundle read from ONE expansion.
+think Scene: reused the proven corner-L chain (A,B corner-Ls, boxes overlap 1-2 and 2-3 yet never 1-3, 8-disconnected) and made C a 5x5 RING (area 16, one hole) so the group's largest and its holed count both differ from any clicked corner-L; a far singleton block D. Worked the ring-in-a-chain geometry: B's box overlaps C's box in (7,7)-(8,8) where B places no pixel while C's border does, so boxes overlap yet pixels stay 3 apart (8-disconnected).
+think Crux proven three ways: the click's facts are the group's (click A reads area 34, largest the ring C never clicked, holed 1); any object of a group reads the same facts (A,B,C identical, cross-checked against selection_summary over {1,2,3}); a miss reads zero facts (interior notch -> empty group -> zero area, EmptyClick refused). Plus a singleton's group is itself, off-map refuses PointOutOfBounds, determinism.
+obs GREEN on the FIRST full metal run, no code reds. The only guard catch was one compound assert (`largest >= 1 and largest <= components`) the TAME ban named; split into two named asserts, re-GREEN. Width-check exit 0, plain 7-bit ASCII, living-docs lint GREEN, living-card ASCII GREEN, 207 image modules.
+obs Version const read straight from the live clock 054914, no future stamp (REDS #75). Witness reads native `contains`, never a shell grep over interpolated output (REDS #76/#85). image/README.md names the click-then-facts rung after click_expand (docs-sync).
+obs REMEMBER repointed single-stranded: click_facts the live edge, click_expand folded to a prior-nib comment, count 206 -> 207, NEXT renamed (a marquee-facts read, a click-then-bounds read, or a codec read) -- the Microkernel study and real-photo top-hat still gated on fetch/license/custody, not crossed.
+loom witness=click_facts_witness selftest=green image_modules=207 checks_passed=all
+file image/click_facts.rye the CLICK-THEN-FACTS read joining click_expand with selection_summary; a click's facts are the group's not the clicked object's
+file tools/click_facts_witness.rish the witness proving the join on metal (native contains, build + selftest + eight claim asserts)
+file image/README.md names the click-then-facts rung after click-then-expand (docs-sync)
+file crux/REMEMBER.md live edge + Git nib repointed single-stranded, click_expand folded to a prior-nib comment, 206 -> 207
+recommend keep-going the open-media floor stays broad and green; the next agent-doable Lindy-first crux is a marquee-facts or click-then-bounds read composing over this floor, or a codec read -- the Microkernel study and real-photo top-hat wait on fetch/license/custody gates, not crossed
