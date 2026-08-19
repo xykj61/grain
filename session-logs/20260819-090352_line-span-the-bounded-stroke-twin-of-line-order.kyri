@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260819.090352
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title line_span -- the bounded-stroke twin of line_order
+prompt baton prin recur -- pick up the running thread, take the next agent-doable lap Lindy-first crux-first, standfast on reds, send often
+think Read KYRI and RADIANT_STYLE to write and reason as Kyri from the first token, then the operator card, the newest three session-log recommends, and the line family's own modules (line_order, line_partition, line_band). Confirmed Standfast clear -- every living REDS row (80, 83, 84, 85, 86, 87) reads Closed or Released in the closed-notes below the table, echoed by the recent logs.
+think The decisive crux surfaced by reading the whole family at once: line_partition, line_order, line_distance, and line_band ALL treat the two anchor taps as an INFINITE line, yet a keeper draws a FINITE stroke. That latent over-reach is the next crux, and correcting it is Lindy (more faithful to the actual gesture) and crux (the hardest-solvable move that stays in the family's exact-integer discipline).
+think line_span is the BOUNDED twin of line_order: the along-line projection line_order already computes runs 0 at the A end and len2 = (B-A).(B-A) at the B end, so clamping it to the closed band [0, len2] classifies every object before_a / on_span / beyond_b with two integer thresholds, no float and no divide. Chose line_span over line_project (whose rational foot departs the exact-integer discipline) precisely to stay in the family's discipline while still advancing the crux.
+think Proved the reversal identity by hand before coding: reading B -> A gives proj' = (A-B).(C-B) = len2 - proj, so on_span (0 <= proj <= len2) is INVARIANT while before_a and beyond_b trade places -- the segment's middle class stands still where line_partition's sides swap and line_order's whole order flips. This is the sharpest fact the module carries.
+think Built a fresh 24x12 six-singleton scene (N above the line on the span, X on the line before the A end, anchors A and M and B on the span, Y on the line beyond the B end) so line_order ranks X frontmost and Y backmost on the infinite line yet line_span classes both off the drawn stroke, and cross-checked every projection against line_order.project_label, every side against line_partition.object_side, and X's zero distance against line_distance.distance_of.
+obs Composed maximally not braided: OWNED only the along-segment classification (the two thresholds and the three-way split), re-derived the small exact projection/len2 kernel every line rung owns, and cross-checked the siblings in the selftest exactly as line_order cross-checks line_partition and line_band cross-checks line_distance.
+obs GREEN on the FIRST full metal run after doubling the literal {A, N, M, B} braces in the GREEN print string for the format string -- a print-string fix, not a code red, the same lesson line_band and line_partition already recorded. TAME bans clean, width-check exit 0, living-docs lint GREEN, living-card ASCII GREEN, both new files pure ASCII.
+obs NEXT names line_segment_distance as the natural crux the segment opens: the TRUE nearest gap to the finite stroke (the endpoint distance when the foot falls beyond an end), where the infinite-line distance UNDER-counts -- composing line_span's clamp with line_distance's magnitude.
+loom witness=line_span_witness build=ok selftest=green checks=18 modules=220
+file image/line_span.rye the bounded-stroke twin of line_order -- before_a / on_span / beyond_b by the exact clamp 0 <= proj <= len2
+file tools/line_span_witness.rish proves line_span GREEN on metal, the bounded-vs-unbounded crux and the reversal identity asserted by name
+file image/README.md docs-sync -- seated the line_span entry after line_band in the scene-read ladder
+file crux/REMEMBER.md live edge + NEXT + Git nib repointed single-stranded, line_band folded to a compact pointer, count 219 -> 220
+recommend keep-going the line family's finite-stroke reads open cleanly -- line_segment_distance is the next crux-first lap, staying in the exact-integer discipline; no network, no key, no funds
