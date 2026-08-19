@@ -424,7 +424,11 @@ pub fn run_queue(
 /// touches all three clients, so it may enter only once all three are gone,
 /// and it may never stand beside itself. Rolling removes the barrier here
 /// and finds the order waiting in its place.
-const ordered_queue = [_]Item{
+///
+/// Exported so a supervisor that changes only whether it may reach past a
+/// blocked head (`overtake.rye`) asks its question of the very lap this
+/// rung measured, rather than restating the queue one reading later.
+pub const ordered_queue = [_]Item{
     .{ .domain = "client_a", .verb = .place, .hops = "ask_a", .peers = "serial_virt", .count = 2, .expect = carry.Outcome.carried_ok },
     .{ .domain = "client_b", .verb = .place, .hops = "ask_b", .peers = "serial_virt", .count = 2, .expect = carry.Outcome.carried_ok },
     .{ .domain = "client_c", .verb = .place, .hops = "ask_c", .peers = "serial_virt", .count = 2, .expect = carry.Outcome.carried_ok },

@@ -1,0 +1,752 @@
+//! Caravan overtake -- reaching past a blocked head, and what a document
+//! must declare for the reordering to keep its meaning.
+//!
+//! `rolling.rye` refilled a slot the moment a dependent finished and admitted
+//! head-of-line only, naming its reason plainly: reaching past a blocked
+//! head for a later item that happens to fit would reorder the lap, and in
+//! these documents order is meaning -- an ask is placed before it is passed
+//! and passed before it comes home. `harvest.rye` then answered which dependent
+//! a turn reaps, and found that readiness converts a slot and never a
+//! domain. This rung answers the question both of them left standing: may a
+//! supervisor look past a blocked head at all?
+//!
+//! **It may, and the document already says when.** The order a queue is
+//! written in carries two different things at once, and only one of them is
+//! meaning. Where two items touch a region in common, their order is the
+//! arc itself -- the ask reaches the passer before the passer reaches the
+//! taker. Where two items touch no region in common, the order between them
+//! is incidental: the queue had to write one of them first, and either
+//! first is the same run. So the test for a lawful overtake is derived from
+//! the declaration rather than added to it. **An item may pass a blocked
+//! head when it shares no region with the head, and none with any item
+//! still waiting between them.**
+//!
+//! **Nothing new is declared, and that is the finding.** A document that
+//! already names its regions and its grants has already said everything a
+//! reordering supervisor needs, which is `cohort.rye`'s lesson one turn
+//! further on: the widest set is derived, and so is the lawful order.
+//!
+//! **Isolation and order are two questions, and the module keeps them
+//! apart.** Whether two items may run at the same instant is
+//! `rolling.admissible`, unchanged -- it asks the running table, and it
+//! refuses a domain beside itself. Whether one item may run *before*
+//! another is this module's own `share_a_hop`, and it never asks about
+//! domains at all. A domain may not stand beside itself, yet an item of
+//! another domain touching none of its regions may pass it freely, and the
+//! difference between those two sentences is the whole of the room this
+//! rung finds.
+//!
+//! **Overtaking converts a slot the order was holding, never one the shape
+//! holds.** The module measures both halves over one document:
+//!
+//!   * Over the ordered lap it converts **nothing** -- not one pass is
+//!     lawful. Every candidate is refused either by the table, since the
+//!     virtualiser touches all three clients, or by a region it shares with
+//!     the head. The same slot-turns stand unspent under both readings, and
+//!     the same asks come home.
+//!   * Over a lap whose head blocks on its **own domain**, it converts the
+//!     whole of it. A domain never runs beside itself, so a head-of-line
+//!     supervisor stands a table two-thirds empty while two items of other
+//!     domains, sharing not one region with it, wait behind the line.
+//!
+//! **The unchecked reading is carried as a named control, and it breaks on
+//! metal rather than in argument.** It keeps the isolation exactly -- every
+//! candidate is still weighed against the running table -- and drops only
+//! the order test. Handed a lap where a taker sits behind its own passer,
+//! it runs the taking first, the home hears no bell that was never rung,
+//! and the run refuses. Faster and wrong, proven rather than asserted.
+//!
+//! Hosted ground: real processes, real files, pure policy, no kernel
+//! underneath it yet.
+//!
+//! Usage:
+//!   overtake selftest                  Run the readings against each other
+//!   overtake                           Same as selftest
+//!   overtake dependent <domain> <plan> ... Run as a supervised dependent (internal)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const capabilities = @import("capabilities.rye");
+const roster = @import("roster.rye");
+const read = @import("read.rye");
+const boot = @import("boot.rye");
+const exercise = @import("exercise.rye");
+const carry = @import("carry.rye");
+const notify = @import("notify.rye");
+const roundtrip = @import("roundtrip.rye");
+const cycle = @import("cycle.rye");
+const gap = @import("gap.rye");
+const cohort = @import("cohort.rye");
+const rolling = @import("rolling.rye");
+
+const caravan_overtake_version = "20260819.191500";
+
+// =========================================================================
+// The bounds -- one table, one queue, and how far a turn may look
+// =========================================================================
+
+/// The same server-and-clients shape the three rungs before it measured. A
+/// fourth question of one declaration rather than a fourth declaration.
+pub const declaration_path = cohort.declaration_path;
+
+/// How many dependents of one document this supervisor holds unreaped at once.
+pub const max_in_flight: u32 = cohort.max_in_flight;
+
+/// How many items one ordered queue carries.
+pub const max_queue_len: u32 = rolling.max_queue_len;
+
+/// How many still-waiting items past the head one turn may weigh.
+///
+/// Six, which reaches the tail of every lap in this module and keeps the
+/// search a named, bounded walk rather than a scan of whatever a queue
+/// happens to hold. A supervisor that looked without a bound would spend
+/// its turn deciding rather than running.
+pub const max_lookahead: u32 = 6;
+
+/// A dependent's fixed argv, unchanged from the rungs before it.
+pub const fixed_argv_words: u32 = cohort.fixed_argv_words;
+
+comptime {
+    // invariant: a queue holds more than one full table, or overtaking is moot
+    assert(max_queue_len > max_in_flight);
+    // invariant: a look reaches past a full table, or it could never find room
+    assert(max_lookahead >= max_in_flight);
+    // invariant: a look stays inside the queue it walks
+    assert(max_lookahead < max_queue_len);
+}
+
+/// Renders one outcome code as the words an operator reads.
+pub fn outcome_name(code: u8) []const u8 {
+    return cohort.outcome_name(code);
+}
+
+// =========================================================================
+// The three readings, and what each one is for
+// =========================================================================
+
+/// Whether a supervisor may admit an item ahead of the queue's head.
+///
+/// `head_of_line` is `rolling.rye`'s own reading, carried here unchanged so
+/// the two are compared over one program. `checked` may reach past a
+/// blocked head, and asks the document first. `unchecked` exists to be
+/// proven wrong: it reaches past on isolation alone, which is faster and
+/// says something the declaration never did.
+pub const Reorder = enum { head_of_line, checked, unchecked };
+
+/// Renders one reading as the words an operator reads.
+pub fn reorder_words(r: Reorder) []const u8 {
+    return switch (r) {
+        .head_of_line => "head-of-line",
+        .checked => "overtaking, asked of the document",
+        .unchecked => "overtaking on isolation alone",
+    };
+}
+
+/// Why a queue may not run as it was handed over.
+pub const RunError = error{
+    QueueTooLong,
+    EmptyQueue,
+    OrderStalled,
+    OutcomeMismatch,
+};
+
+/// What one run did, reported whole.
+pub const Report = struct {
+    /// How many items the queue carried.
+    queued: u32 = 0,
+    /// How many turns the supervisor took -- one reaping each.
+    turns: u32 = 0,
+    admitted: u32 = 0,
+    reaped: u32 = 0,
+    succeeded: u32 = 0,
+    homed: u32 = 0,
+    bells: u32 = 0,
+    /// The most dependents this run held unreaped at one instant.
+    peak_in_flight: u32 = 0,
+    /// Turns where a fill admitted nobody while a slot stood free and work
+    /// still waited -- the coarse count `rolling.rye` reports.
+    idle_turns: u32 = 0,
+    /// Slots standing free at the end of a fill, summed over every turn
+    /// that still had work waiting.
+    ///
+    /// The finer measure, and the one this rung needs. A turn that admits
+    /// one dependent of three leaves two slots unspent and reads as busy to the
+    /// coarse count; overtaking converts exactly those.
+    slots_unspent: u32 = 0,
+    /// Items admitted ahead of the queue's head.
+    passes: u32 = 0,
+    /// The furthest one pass reached, counted in items still waiting.
+    pass_reach: u32 = 0,
+    /// Dependents still running when a verdict was reported. Every reading
+    /// here holds the verdict until the drain, so this stays zero.
+    unreaped_at_report: u32 = 0,
+};
+
+// =========================================================================
+// The order test -- asked of the declaration, never of the queue
+// =========================================================================
+
+/// One item of an ordered queue: the same assignment shape a stage carries.
+pub const Item = rolling.Item;
+
+/// Answers whether two items touch a region in common.
+///
+/// This is the whole order test, and it asks the document rather than the
+/// queue: each item names the arcs it works, every arc is looked up in the
+/// declaration's own region map, and two items whose arcs never meet may be
+/// run in either order for the same result. A hop the declaration does not
+/// name answers `true` -- an item whose ground cannot be found is never
+/// safe to reorder, so the unknown case refuses rather than permits.
+///
+/// Note what it never asks: which domain each item belongs to. Two items of
+/// one domain may not run at the same instant, which is
+/// `rolling.admissible`'s question and stays there. Whether one may run
+/// before the other is this, and this alone.
+pub fn share_a_hop(sys: *const system.System, a: Item, b: Item) bool {
+    // invariant: an item always names at least one arc to work
+    assert(a.hops.len >= 1);
+    assert(b.hops.len >= 1);
+    var walked_a: u32 = 0;
+    var arcs_a = std.mem.splitScalar(u8, a.hops, ',');
+    while (arcs_a.next()) |hop_a| {
+        // invariant: the walk stays inside the hops one plan may carry
+        assert(walked_a < cycle.max_hops);
+        walked_a += 1;
+        const region_a = sys.map.find_region(hop_a) orelse return true;
+        var walked_b: u32 = 0;
+        var arcs_b = std.mem.splitScalar(u8, b.hops, ',');
+        while (arcs_b.next()) |hop_b| {
+            // invariant: the walk stays inside the hops one plan may carry
+            assert(walked_b < cycle.max_hops);
+            walked_b += 1;
+            const region_b = sys.map.find_region(hop_b) orelse return true;
+            if (region_a == region_b) return true;
+        }
+    }
+    // invariant: every arc the first item works was weighed, none skipped
+    assert(walked_a >= 1);
+    return false;
+}
+
+/// One dependent already reaped, held until the whole queue has drained.
+const Finished = struct {
+    domain: []const u8,
+    verb: cycle.Verb,
+    count: u32,
+    expect: u8,
+    code: u8,
+};
+
+/// Folds one reaped outcome into the report, or names the mismatch.
+fn judge_outcome(done: Finished, report_out: *Report) RunError!void {
+    // invariant: a judged dependent always names its domain
+    assert(done.domain.len >= 1);
+    // invariant: the report never counts more successes than dependents reaped
+    assert(report_out.succeeded <= report_out.reaped);
+    if (done.code != done.expect) {
+        print("    {s}: expected {s}, heard {s}\n", .{
+            done.domain, outcome_name(done.expect), outcome_name(done.code),
+        });
+        return error.OutcomeMismatch;
+    }
+    if (done.code == carry.Outcome.carried_ok) {
+        report_out.succeeded += 1;
+        if (done.verb == .home) report_out.homed += done.count;
+    }
+}
+
+// =========================================================================
+// The supervisor -- one queue that may no longer be walked in order
+// =========================================================================
+
+/// Everything one turn of the supervisor reads and moves.
+///
+/// A head-of-line supervisor consumes its queue front to back, so a cursor
+/// is enough. Once an item may be admitted from behind the head, the queue
+/// stops being a line and becomes a set with an order over it -- so the
+/// table carries which items are already taken, and the head is simply the
+/// first that is not.
+const Table = struct {
+    live: [max_in_flight]cohort.Running = undefined,
+    in_flight: u32 = 0,
+    done: [max_queue_len]Finished = undefined,
+    finished: u32 = 0,
+    taken: [max_queue_len]bool = @splat(false),
+    head: u32 = 0,
+    left: u32 = 0,
+};
+
+/// Moves the head to the first item still waiting.
+fn advance_head(table: *Table, queued: u32) void {
+    // invariant: a head never points past the queue it walks
+    assert(table.head <= queued);
+    while (table.head < queued and table.taken[table.head]) table.head += 1;
+}
+
+/// Answers whether an item may be admitted ahead of the queue's head.
+///
+/// Every item still waiting between the head and this one is weighed,
+/// inclusive of the head itself, since passing a line means passing each
+/// of them. The unchecked reading answers yes without asking, which is
+/// exactly the mistake it is here to make visible.
+fn may_overtake(
+    sys: *const system.System,
+    table: *const Table,
+    plan: []const Item,
+    candidate: u32,
+    reorder: Reorder,
+) bool {
+    // invariant: a pass always reaches forward, never at the head itself
+    assert(candidate > table.head);
+    if (reorder == .unchecked) return true;
+    var i: u32 = table.head;
+    while (i < candidate) : (i += 1) {
+        if (table.taken[i]) continue;
+        if (share_a_hop(sys, plan[i], plan[candidate])) return false;
+    }
+    // invariant: the walk reached the candidate, weighing every item before it
+    assert(i == candidate);
+    return true;
+}
+
+/// Chooses one item from behind a blocked head, or answers that none may go.
+///
+/// The walk is bounded twice over: it weighs at most `max_lookahead` items
+/// still waiting, and it stops at the end of the queue. It asks isolation
+/// first and order second, so a candidate that could not run at this
+/// instant is never weighed for an order it will never need.
+fn choose_pass(
+    sys: *const system.System,
+    table: *const Table,
+    plan: []const Item,
+    reorder: Reorder,
+) ?u32 {
+    // invariant: a pass is only ever sought while the head stands blocked
+    assert(table.head < plan.len);
+    var looked: u32 = 0;
+    var i: u32 = table.head + 1;
+    while (i < plan.len and looked < max_lookahead) : (i += 1) {
+        if (table.taken[i]) continue;
+        looked += 1;
+        if (!rolling.admissible(sys, table.live[0..table.in_flight], plan[i])) continue;
+        if (!may_overtake(sys, table, plan, i, reorder)) continue;
+        return i;
+    }
+    // invariant: the look stayed inside the bound it was given
+    assert(looked <= max_lookahead);
+    return null;
+}
+
+/// Admits as much of the queue as the table, the isolation, and the reading
+/// allow, and answers how many dependents it started.
+fn fill_table(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    caps: *const capabilities.CapabilityTable,
+    plan: []const Item,
+    wake: gap.Wake,
+    reorder: Reorder,
+    table: *Table,
+    report_out: *Report,
+) (RunError || cohort.RunError || boot.BootError)!u32 {
+    var admitted: u32 = 0;
+    while (table.in_flight < max_in_flight and table.left > 0) {
+        advance_head(table, @intCast(plan.len));
+        // invariant: work still waiting always leaves a head to weigh
+        assert(table.head < plan.len);
+
+        var pick: u32 = table.head;
+        if (!rolling.admissible(sys, table.live[0..table.in_flight], plan[table.head])) {
+            if (reorder == .head_of_line) break;
+            pick = choose_pass(sys, table, plan, reorder) orelse break;
+            report_out.passes += 1;
+            const reach = pick - table.head;
+            if (reach > report_out.pass_reach) report_out.pass_reach = reach;
+        }
+
+        table.live[table.in_flight] = try cohort.spawn_one(
+            allocator,
+            io,
+            self_path,
+            sys,
+            caps,
+            plan[pick],
+            wake,
+        );
+        table.in_flight += 1;
+        table.taken[pick] = true;
+        table.left -= 1;
+        admitted += 1;
+        report_out.admitted += 1;
+    }
+    // invariant: a fill never overruns the table it fills
+    assert(table.in_flight <= max_in_flight);
+    return admitted;
+}
+
+/// Waits on the eldest dependent, records what it answered, and closes the table
+/// over the slot it leaves.
+///
+/// Eldest-first, exactly as `rolling.rye` reaps. `harvest.rye` already
+/// measured what readiness converts, and holding the reaping still here is
+/// what keeps this rung's numbers a statement about admission alone.
+fn reap_oldest(io: std.Io, table: *Table, report_out: *Report) cohort.RunError!void {
+    // invariant: a reaping always has a dependent to wait on
+    assert(table.in_flight >= 1);
+    // invariant: a reaping never overruns the record it is kept in
+    assert(table.finished < max_queue_len);
+    const code = try cohort.reap_one(io, &table.live[0]);
+    table.done[table.finished] = .{
+        .domain = table.live[0].domain,
+        .verb = table.live[0].verb,
+        .count = table.live[0].count,
+        .expect = table.live[0].expect,
+        .code = code,
+    };
+    table.finished += 1;
+    table.in_flight -= 1;
+    report_out.reaped += 1;
+    report_out.turns += 1;
+
+    var s: u32 = 0;
+    while (s < table.in_flight) : (s += 1) table.live[s] = table.live[s + 1];
+    // invariant: the table closed over the reaped dependent, none lost
+    assert(s == table.in_flight);
+}
+
+/// Runs an ordered queue under one reading, reaping one dependent per turn.
+///
+/// The whole difference between the three readings lives in `fill_table`.
+/// Everything after it -- the eldest-first reaping, the verdicts held until
+/// the drain, the judging of each outcome against the expectation its own
+/// item carried -- is shared, so a difference in the report is a difference
+/// in the admission rather than in the program.
+pub fn run_queue(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Item,
+    wake: gap.Wake,
+    reorder: Reorder,
+    report_out: *Report,
+) (roster.RosterError || exercise.ProvisionError || notify.BellError || RunError || cohort.RunError || boot.BootError)!void {
+    // invariant: a run always knows what program to spawn
+    assert(self_path.len >= 1);
+    if (plan.len == 0) return error.EmptyQueue;
+    if (plan.len > max_queue_len) return error.QueueTooLong;
+
+    const provisioned = try exercise.provision(io, sys);
+    // invariant: every declared region has a backing store before any dependent runs
+    assert(provisioned == sys.map.region_count);
+    report_out.bells = try roundtrip.provision_directed(io, sys);
+
+    const caps = try roster.from_system(sys);
+    // invariant: the derived table enforces exactly what the document permits
+    assert(roster.agrees(sys, &caps));
+    report_out.queued = @intCast(plan.len);
+
+    var open: Table = .{};
+    open.left = @intCast(plan.len);
+    while (open.left > 0 or open.in_flight > 0) {
+        const admitted_now = try fill_table(
+            allocator, io, self_path, sys, &caps, plan, wake, reorder, &open, report_out,
+        );
+        if (open.in_flight > report_out.peak_in_flight) report_out.peak_in_flight = open.in_flight;
+
+        // A slot standing free while work still waits is room the order
+        // held rather than room the shape denied. The coarse count names a
+        // turn that admitted nobody; the fine one names every slot.
+        if (open.left > 0) {
+            const free = max_in_flight - open.in_flight;
+            report_out.slots_unspent += free;
+            if (admitted_now == 0 and free > 0) report_out.idle_turns += 1;
+        }
+
+        // With an empty table nothing conflicts, so a stall here would mean
+        // the queue named a domain the document does not.
+        if (open.in_flight == 0) return error.OrderStalled;
+        try reap_oldest(io, &open, report_out);
+    }
+    // invariant: the whole queue was admitted and every dependent reaped
+    assert(open.left == 0);
+    assert(open.in_flight == 0);
+    assert(report_out.reaped == report_out.admitted);
+    assert(open.finished == plan.len);
+
+    var j: u32 = 0;
+    while (j < open.finished) : (j += 1) try judge_outcome(open.done[j], report_out);
+    // invariant: every reaped dependent was judged, none skipped
+    assert(j == open.finished);
+}
+
+// =========================================================================
+// The three laps -- one where order is meaning, one where it is incidental,
+// and one that proves the difference matters
+// =========================================================================
+
+/// A lap whose head blocks on its own domain rather than on the shape.
+///
+/// The first two items are one domain placing twice, so the second may
+/// never stand beside the first. Behind them wait two other clients that
+/// share not one region with it. A head-of-line supervisor holds a table
+/// two-thirds empty until the first dependent is reaped; the document says
+/// plainly that it never had to.
+const self_block_queue = [_]Item{
+    .{ .domain = "client_a", .verb = .place, .hops = "ask_a", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_a", .verb = .place, .hops = "ask_a", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_b", .verb = .place, .hops = "ask_b", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_c", .verb = .place, .hops = "ask_c", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok },
+};
+
+/// A lap where a taker sits behind its own passer, with room to pass it.
+///
+/// Once the first client is reaped, the taking of `back_b` is admissible
+/// against the client still running -- it shares no region and no channel
+/// with it -- and only the order forbids it. The checked reading refuses
+/// the pass on `back_b`, which the passer has not yet written; the
+/// unchecked reading takes it, and the home hears no bell.
+const arc_queue = [_]Item{
+    .{ .domain = "client_b", .verb = .place, .hops = "ask_b", .peers = "serial_virt", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_c", .verb = .place, .hops = "ask_c", .peers = "serial_virt", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "serial_virt", .verb = .pass, .hops = "ask_b,back_b", .peers = "client_b,client_b", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_b", .verb = .home, .hops = "back_b,taken_b", .peers = "serial_virt", .count = 2, .expect = carry.Outcome.carried_ok },
+};
+
+// =========================================================================
+// Self-test
+// =========================================================================
+
+/// Loads one declaration, or names why it could not be read.
+fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
+    const parsed = read.load(io, path, buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ path, @errorName(err) });
+        return null;
+    };
+    if (parsed.verify() != .whole) {
+        print("  RED: {s} did not read whole\n", .{path});
+        return null;
+    }
+    return parsed;
+}
+
+/// Runs one queue under one reading and answers its report.
+fn run_one(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Item,
+    reorder: Reorder,
+    report_out: *Report,
+) bool {
+    run_queue(allocator, io, self_path, sys, plan, .when_moved, reorder, report_out) catch |err| {
+        print("  RED: a queue did not survive its run: {s}\n", .{@errorName(err)});
+        return false;
+    };
+    return true;
+}
+
+/// The order test read straight, before any supervisor spends it.
+fn check_order_test(io: std.Io) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const sys = load_one(io, declaration_path, &buf) orelse return 1;
+
+    const place_a = rolling.ordered_queue[0];
+    const pass_a = rolling.ordered_queue[3];
+    const home_a = rolling.ordered_queue[6];
+    const place_b = rolling.ordered_queue[1];
+
+    if (!share_a_hop(&sys, place_a, pass_a)) {
+        print("  RED: an ask and its passer read as free to swap\n", .{});
+        return 1;
+    }
+    if (!share_a_hop(&sys, pass_a, home_a)) {
+        print("  RED: a passer and its taker read as free to swap\n", .{});
+        return 1;
+    }
+    if (share_a_hop(&sys, place_a, place_b)) {
+        print("  RED: two clients placing into their own regions read as ordered\n", .{});
+        return 1;
+    }
+    if (!share_a_hop(&sys, place_a, self_block_queue[1])) {
+        print("  RED: one domain placing twice into one region read as free to swap\n", .{});
+        return 1;
+    }
+    if (share_a_hop(&sys, place_a, home_a)) {
+        print("  RED: one domain's two items over different regions read as ordered\n", .{});
+        return 1;
+    }
+    // invariant: the test is symmetric, since swapping a pair is one act
+    assert(share_a_hop(&sys, home_a, pass_a));
+    assert(!share_a_hop(&sys, place_b, place_a));
+    print("  the order test reads the arc as meaning and the rest as incidental\n", .{});
+    print("  an ask, its passer, and its taker share a region; two clients share none\n", .{});
+    print("  and it never asks which domain: one domain's own items over separate regions swap freely\n", .{});
+    return 0;
+}
+
+/// The ordered lap: the order is the arc, so no pass is lawful.
+fn check_ordered(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const sys = load_one(io, declaration_path, &buf) orelse return 1;
+
+    var lined: Report = .{};
+    if (!run_one(allocator, io, self_path, &sys, &rolling.ordered_queue, .head_of_line, &lined)) return 1;
+    var passed: Report = .{};
+    if (!run_one(allocator, io, self_path, &sys, &rolling.ordered_queue, .checked, &passed)) return 1;
+
+    if (passed.passes != 0) {
+        print("  RED: {d} items passed a head whose arc they share\n", .{passed.passes});
+        return 1;
+    }
+    if (passed.slots_unspent != lined.slots_unspent) {
+        print("  RED: overtaking spent {d} slot-turns where head-of-line spent {d}\n", .{
+            passed.slots_unspent, lined.slots_unspent,
+        });
+        return 1;
+    }
+    if (passed.homed != lined.homed or passed.homed != 6) {
+        print("  RED: {d} asks came home overtaking and {d} in line\n", .{ passed.homed, lined.homed });
+        return 1;
+    }
+    // invariant: both readings held the same table and spent it whole
+    assert(passed.peak_in_flight == max_in_flight);
+    assert(lined.peak_in_flight == max_in_flight);
+    // invariant: neither reading let a verdict out while a sibling ran
+    assert(passed.unreaped_at_report == 0);
+    assert(lined.unreaped_at_report == 0);
+    print("  the ordered lap leaves {d} slot-turns unspent -- in line {d}, overtaking {d}\n", .{
+        lined.slots_unspent, lined.idle_turns, passed.idle_turns,
+    });
+    print("  the head waits on its own arc: {d} lawful passes, {d} asks home under both\n", .{
+        passed.passes, passed.homed,
+    });
+    return 0;
+}
+
+/// The self-blocking lap: the order is incidental, so the pass converts it.
+fn check_self_block(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const sys = load_one(io, declaration_path, &buf) orelse return 1;
+
+    var lined: Report = .{};
+    if (!run_one(allocator, io, self_path, &sys, &self_block_queue, .head_of_line, &lined)) return 1;
+    var passed: Report = .{};
+    if (!run_one(allocator, io, self_path, &sys, &self_block_queue, .checked, &passed)) return 1;
+
+    if (lined.slots_unspent == 0) {
+        print("  RED: head-of-line spent every slot on a lap built to hold two\n", .{});
+        return 1;
+    }
+    if (passed.slots_unspent != 0) {
+        print("  RED: overtaking left {d} slot-turns unspent where nothing is shared\n", .{
+            passed.slots_unspent,
+        });
+        return 1;
+    }
+    if (passed.passes == 0) {
+        print("  RED: no item passed a head that shares no region with it\n", .{});
+        return 1;
+    }
+    // invariant: the two readings ran the same queue to the same end
+    assert(passed.reaped == lined.reaped);
+    assert(passed.reaped == self_block_queue.len);
+    assert(passed.succeeded == lined.succeeded);
+    // invariant: overtaking reached the full table this lap has room for
+    assert(passed.peak_in_flight == max_in_flight);
+    print("  the self-blocking lap leaves {d} slot-turns unspent in line and {d} overtaking\n", .{
+        lined.slots_unspent, passed.slots_unspent,
+    });
+    print("  the head waits on its own domain: {d} lawful passes, reaching {d} items back\n", .{
+        passed.passes, passed.pass_reach,
+    });
+    print("  {d} dependents run to the same end under both, at a peak of {d}\n", .{
+        passed.reaped, passed.peak_in_flight,
+    });
+    return 0;
+}
+
+/// The control: dropping the order test is faster, and wrong.
+fn check_unchecked(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const sys = load_one(io, declaration_path, &buf) orelse return 1;
+
+    var kept: Report = .{};
+    if (!run_one(allocator, io, self_path, &sys, &arc_queue, .checked, &kept)) return 1;
+    if (kept.passes != 0) {
+        print("  RED: the checked reading passed a taker over its own passer\n", .{});
+        return 1;
+    }
+    if (kept.homed != 2) {
+        print("  RED: the checked reading brought {d} asks home, not 2\n", .{kept.homed});
+        return 1;
+    }
+
+    var loose: Report = .{};
+    var refused = false;
+    run_queue(allocator, io, self_path, &sys, &arc_queue, .when_moved, .unchecked, &loose) catch |err| {
+        if (err != error.OutcomeMismatch) {
+            print("  RED: the unchecked reading refused as {s} rather than OutcomeMismatch\n", .{
+                @errorName(err),
+            });
+            return 1;
+        }
+        refused = true;
+    };
+    if (!refused) {
+        print("  RED: the unchecked reading ran a taker before its passer and reported success\n", .{});
+        return 1;
+    }
+    if (loose.passes == 0) {
+        print("  RED: the unchecked reading passed nobody, so it proved nothing\n", .{});
+        return 1;
+    }
+    if (loose.homed != 0) {
+        print("  RED: the unchecked reading brought {d} asks home after refusing\n", .{loose.homed});
+        return 1;
+    }
+    // invariant: the loose reading kept the isolation and dropped only the order
+    assert(loose.peak_in_flight <= max_in_flight);
+    print("  the checked reading refuses the pass and brings {d} asks home\n", .{kept.homed});
+    print("  dropping the order test takes {d} pass and the home hears no bell: the run refuses\n", .{
+        loose.passes,
+    });
+    return 0;
+}
+
+fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    print("Caravan overtake {s} -- self-test\n", .{caravan_overtake_version});
+    const order_test = check_order_test(io);
+    if (order_test != 0) return order_test;
+    const ordered = check_ordered(allocator, io, self_path);
+    if (ordered != 0) return ordered;
+    const blocked = check_self_block(allocator, io, self_path);
+    if (blocked != 0) return blocked;
+    const loose = check_unchecked(allocator, io, self_path);
+    if (loose != 0) return loose;
+    print("  GREEN: a document that names its regions has already named its lawful order\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
+        return cohort.run_dependent(io, args);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(allocator, io, self_path);
+    }
+    if (args.len >= 2) return 1;
+    return run_self_test(allocator, io, self_path);
+}
