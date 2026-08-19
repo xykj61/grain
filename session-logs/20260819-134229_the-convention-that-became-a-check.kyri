@@ -1,0 +1,31 @@
+format session-log-v1
+stamp 20260819.134229
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Standfast -- the apostrophe convention becomes a check, and 129 fragile witness claims read natively
+prompt Kyri, read the canon and the card, take the next agent-doable lap Lindy-first crux-first, Standfast on reds first, send often
+think Standfast before new work. Walked crux/REDS.md for open agent-closable reds and found #85 marked CLOSED on 20260817 with the claim that the loom now guarded the class.
+think Measurement beats memory, so I grepped the whole tools/ surface for the banned shape rather than trusting the closure note. 21 HUNK witnesses still carried it -- 126 sites of `printf '%s' '${out}' | grep -q` plus three more interpolating a different captured variable.
+think The prior sweep was real and honest for the 97 image_* witnesses; what it never had was a mechanical check. A convention lives only where a reader remembers it, so a template written before the rule kept seeding fragile checks forward. That is the root, one layer above the sites.
+think Verified the 126 sites were one uniform shape before touching them -- every `let X = run [...grep...]` paired with `assert (trim X.out) == "yes" else "MSG"`, zero mismatches -- so the conversion could be exact rather than approximate.
+think Converted all 129 to one honest line each: `assert out contains "PHRASE" else "MSG"`, reading the captured string in the interpreter where an apostrophe is only a letter.
+think Ran seven of the converted witnesses GREEN on metal rather than re-reading the diffs -- a conversion that compiles is not a conversion that holds.
+think Built the loom so the class can never re-enter: a scan enforcing zero captured-output interpolations inside shell quotes across every runnable tools/*.rish, with two ratchets reported honestly rather than pretended away.
+think The first cut of the guard was too wide and fired on a path interpolation in the key-generation script -- a false positive. Tightened it to the exact hazard class (a captured `.out` quoted into a shell word) and demoted the wider printf-into-grep shape to an advisory report.
+think Proved both RED paths on metal: the tracked fragile control caught by prove-red, and a fragile line planted in a real witness making the enforce leg name that file by path and refuse.
+obs The honest correction is that a fix can convince its own author. The 20260817 note read the class as guarded because the sweep it ran was thorough within its own family; the HUNK family simply was never in view. Recorded as a reopening that points back rather than a quiet edit.
+obs Two ratchets stay named rather than swept blind. The four device-gated host scripts (HAWM adb/Seva, SETU hearth carry, TUBE install proof) want a phone or an outer terminal to witness, so converting them from the jail would be an unproven claim. The wider shape in waymark_derive is structurally safe -- a derived four-letter word cannot carry an apostrophe -- so it is debt rather than a red.
+obs Appending the reopening note pushed crux/REDS.md past its 24576-byte bound, exactly the drift REDS #87 taught. Folded the five oldest closed prose notes (73, 74, 75, 78, 80) to crux/archive/ under the same closed-range discipline as the four folds before it -- every byte kept.
+obs Rota item 22 read this lap: context/SILO_TECHNIQUE.md.
+loom witness=witness_claim_check_witness sites_converted=129 witnesses_converted=21 enforce_files=1663 advisory_device_gated_sites=10 advisory_shape_sites=8
+loom green_on_metal=7 witnesses=hunk_artifact,hunk_scroll_cursor,hunk_session_list,hunk_preset_shelf,hunk_scroll_fling,hunk_sprite_store,hunk_sprite_shelf
+loom reds_bytes_before=26136 reds_bytes_after=22138 bound=24576 notes_folded=5
+file tools/witness_claim_check_witness.rish the loom -- every runnable witness reads its own claim natively, both RED paths proven
+file tools/fixtures/witness_claim_check_scan.sh the scan behind it -- enforce roster, two advisory ratchets, prove-red mode
+file tools/fixtures/witness_claim_check_control/fragile_control.rish the planted fragile control, deliberately wrong so prove-red keeps proving
+file crux/REDS.md REDS #85 reopened and closed with a check standing behind the claim; folded back under bound
+file crux/archive/REDS-closed-prose-notes-73-80.md the closed prose notes lifted whole, nothing removed
+file crux/REMEMBER.md the Now line refilled with this lap's lesson
+recommend keep-going -- the Microkernel Target crux waits: a supervision loop that spawns its children FROM a roster and refuses a spawn the declaration never granted. No key, no funds.

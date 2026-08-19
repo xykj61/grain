@@ -34,43 +34,30 @@ assert selftest.ok else "hunk-scroll-cursor: selftest exited non-zero — ${self
 let out = trim selftest.out
 say "hunk-scroll-cursor: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN preset-scroll' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-scroll-cursor: selftest did not print the GREEN preset-scroll line"
+assert out contains "GREEN preset-scroll" else "hunk-scroll-cursor: selftest did not print the GREEN preset-scroll line"
 
-let top = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a fresh cursor sits at the top' && echo yes"]
-assert (trim top.out) == "yes" else "hunk-scroll-cursor: the fresh-cursor-at-top seat was not proven"
+assert out contains "a fresh cursor sits at the top" else "hunk-scroll-cursor: the fresh-cursor-at-top seat was not proven"
 
-let walk = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'walk the offset reversibly' && echo yes"]
-assert (trim walk.out) == "yes" else "hunk-scroll-cursor: the reversible line walk was not proven"
+assert out contains "walk the offset reversibly" else "hunk-scroll-cursor: the reversible line walk was not proven"
 
-let pin = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'bottom-pins the last book to the bottom row' && echo yes"]
-assert (trim pin.out) == "yes" else "hunk-scroll-cursor: the bottom-pin guarantee was not proven"
+assert out contains "bottom-pins the last book to the bottom row" else "hunk-scroll-cursor: the bottom-pin guarantee was not proven"
 
-let clamp = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'without under/overflow' && echo yes"]
-assert (trim clamp.out) == "yes" else "hunk-scroll-cursor: the clamp-without-under/overflow guarantee was not proven"
+assert out contains "without under/overflow" else "hunk-scroll-cursor: the clamp-without-under/overflow guarantee was not proven"
 
-let real = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the window is a real page (never BadOffset)' && echo yes"]
-assert (trim real.out) == "yes" else "hunk-scroll-cursor: the window-never-refuses guarantee was not proven"
+assert out contains "the window is a real page (never BadOffset)" else "hunk-scroll-cursor: the window-never-refuses guarantee was not proven"
 
-let cover = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'paging top-to-bottom shows every one of the five books' && echo yes"]
-assert (trim cover.out) == "yes" else "hunk-scroll-cursor: top-to-bottom coverage was not proven"
+assert out contains "paging top-to-bottom shows every one of the five books" else "hunk-scroll-cursor: top-to-bottom coverage was not proven"
 
-let fits = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'fits the screen has max_offset 0 and never scrolls' && echo yes"]
-assert (trim fits.out) == "yes" else "hunk-scroll-cursor: the fitting-library-never-scrolls guarantee was not proven"
+assert out contains "fits the screen has max_offset 0 and never scrolls" else "hunk-scroll-cursor: the fitting-library-never-scrolls guarantee was not proven"
 
-let refuse = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'refuses EmptyViewport' && echo yes"]
-assert (trim refuse.out) == "yes" else "hunk-scroll-cursor: the EmptyViewport refusal was not proven"
+assert out contains "refuses EmptyViewport" else "hunk-scroll-cursor: the EmptyViewport refusal was not proven"
 
-let bar = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'HUNK41 the scrollbar' && echo yes"]
-assert (trim bar.out) == "yes" else "hunk-scroll-cursor: HUNK41 the scrollbar thumb was not proven"
+assert out contains "HUNK41 the scrollbar" else "hunk-scroll-cursor: HUNK41 the scrollbar thumb was not proven"
 
-let barpin = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'pinned to the top edge at the top and the bottom edge at the bottom (start + len == track exactly)' && echo yes"]
-assert (trim barpin.out) == "yes" else "hunk-scroll-cursor: the scrollbar edge-pin (start + len == track) was not proven"
+assert out contains "pinned to the top edge at the top and the bottom edge at the bottom (start + len == track exactly)" else "hunk-scroll-cursor: the scrollbar edge-pin (start + len == track) was not proven"
 
-let barmono = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'start monotone as the offset walks down and the thumb always wholly inside the track' && echo yes"]
-assert (trim barmono.out) == "yes" else "hunk-scroll-cursor: the scrollbar monotone-and-inside guarantee was not proven"
+assert out contains "start monotone as the offset walks down and the thumb always wholly inside the track" else "hunk-scroll-cursor: the scrollbar monotone-and-inside guarantee was not proven"
 
-let bartrack = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'a zero or over-ceiling track refuses BadTrack' && echo yes"]
-assert (trim bartrack.out) == "yes" else "hunk-scroll-cursor: the BadTrack refusal was not proven"
+assert out contains "a zero or over-ceiling track refuses BadTrack" else "hunk-scroll-cursor: the BadTrack refusal was not proven"
 
 say "hunk-scroll-cursor: GREEN — a keeper's scroll offset walks a library larger than the screen and pins at both ends; every gesture lands on a real page (the window never refuses), scrolling loses nothing, and a library that fits never scrolls. HUNK41 the scrollbar thumb reads a keeper's position honestly — proportional length, edges pinned true, monotone and always inside the track. HUNK37 pager GREEN beneath."

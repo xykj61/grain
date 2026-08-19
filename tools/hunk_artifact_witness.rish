@@ -32,13 +32,10 @@ assert selftest.ok else "hunk-artifact: selftest exited non-zero — ${selftest.
 let out = trim selftest.out
 say "hunk-artifact: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-artifact' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-artifact: selftest did not print the GREEN content-addressed line"
+assert out contains "GREEN image-artifact" else "hunk-artifact: selftest did not print the GREEN content-addressed line"
 
-let round = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'round-tripped THROUGH the content-addressed store byte-for-byte' && echo yes"]
-assert (trim round.out) == "yes" else "hunk-artifact: round-trip through the store was not byte-for-byte"
+assert out contains "round-tripped THROUGH the content-addressed store byte-for-byte" else "hunk-artifact: round-trip through the store was not byte-for-byte"
 
-let refuse = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'before a pixel was read' && echo yes"]
-assert (trim refuse.out) == "yes" else "hunk-artifact: the tampered/unknown refusals did not land before decode"
+assert out contains "before a pixel was read" else "hunk-artifact: the tampered/unknown refusals did not land before decode"
 
 say "hunk-artifact: GREEN — an image is content-addressed; a name pins its bytes, a tampered bead refuses before a pixel is read."

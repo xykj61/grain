@@ -33,16 +33,12 @@ assert selftest.ok else "hunk-preset-preview: selftest exited non-zero — ${sel
 let out = trim selftest.out
 say "hunk-preset-preview: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN preset-preview' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-preset-preview: selftest did not print the GREEN preset-preview line"
+assert out contains "GREEN preset-preview" else "hunk-preset-preview: selftest did not print the GREEN preset-preview line"
 
-let byname = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'looked up by name previews to exactly edit_preview.preview over its recipe cell-for-cell' && echo yes"]
-assert (trim byname.out) == "yes" else "hunk-preset-preview: the by-name preview was not proven equal to the recipe's own preview"
+assert out contains "looked up by name previews to exactly edit_preview.preview over its recipe cell-for-cell" else "hunk-preset-preview: the by-name preview was not proven equal to the recipe's own preview"
 
-let strip = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the filter strip fills' && echo yes"]
-assert (trim strip.out) == "yes" else "hunk-preset-preview: the filter strip was not proven to fill one grid per preset"
+assert out contains "the filter strip fills" else "hunk-preset-preview: the filter strip was not proven to fill one grid per preset"
 
-let committed = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'seen by name, not committed' && echo yes"]
-assert (trim committed.out) == "yes" else "hunk-preset-preview: the seen-not-committed guarantee was not stated"
+assert out contains "seen by name, not committed" else "hunk-preset-preview: the seen-not-committed guarantee was not stated"
 
 say "hunk-preset-preview: GREEN — a filter is seen by its name before it is committed; the strip previews the whole book; refusals named."

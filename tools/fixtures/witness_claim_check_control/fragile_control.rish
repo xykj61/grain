@@ -1,0 +1,13 @@
+# tools/fixtures/witness_claim_check_control/fragile_control.rish -- the planted RED control (REDS #85).
+#
+# This file is deliberately WRONG, and it is the only place in the tree allowed to be. It carries the
+# exact fragile shape the claim-check guard bans: captured program output interpolated into a shell
+# single-quoted word and piped to grep. An apostrophe anywhere in that output -- "the source's window"
+# -- closes the quote early, the grep misses a truly-GREEN run, and the shell lies about the code.
+#
+# The guard's prove-red mode reads this control and must catch it. Keep the fragile line exactly as it
+# is; a repair here would silently stop the RED path from proving anything. This file is never run.
+
+let selftest = run ["sh" "-c" "echo GREEN control 2>&1"]
+let green = run ["sh" "-c" "printf '%s' '${selftest.out}' | grep -q 'GREEN control' && echo yes"]
+assert (trim green.out) == "yes" else "control: the fragile shape this guard exists to catch"

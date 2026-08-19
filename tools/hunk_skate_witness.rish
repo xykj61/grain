@@ -32,13 +32,10 @@ assert selftest.ok else "hunk-skate: selftest exited non-zero — ${selftest.out
 let out = trim selftest.out
 say "hunk-skate: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN image-skate' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-skate: selftest did not print the GREEN down-map line"
+assert out contains "GREEN image-skate" else "hunk-skate: selftest did not print the GREEN down-map line"
 
-let lit = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'one glyph block per cell' && echo yes"]
-assert (trim lit.out) == "yes" else "hunk-skate: lit pixels did not reach the canvas as a glyph block per cell"
+assert out contains "one glyph block per cell" else "hunk-skate: lit pixels did not reach the canvas as a glyph block per cell"
 
-let spatial = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'left cell red, right cell blue' && echo yes"]
-assert (trim spatial.out) == "yes" else "hunk-skate: the down-map did not carry color spatially"
+assert out contains "left cell red, right cell blue" else "hunk-skate: the down-map did not carry color spatially"
 
 say "hunk-skate: GREEN — a decoded image reaches the canvas; the down-map is bounded, spatial, and deterministic."

@@ -32,31 +32,22 @@ assert selftest.ok else "hunk-session-list: selftest exited non-zero — ${selft
 let out = trim selftest.out
 say "hunk-session-list: ${out}"
 
-let green = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'GREEN session-list' && echo yes"]
-assert (trim green.out) == "yes" else "hunk-session-list: selftest did not print the GREEN session-list line"
+assert out contains "GREEN session-list" else "hunk-session-list: selftest did not print the GREEN session-list line"
 
-let exact = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'lists exactly its 2 saved sessions in held order' && echo yes"]
-assert (trim exact.out) == "yes" else "hunk-session-list: the listing did not name exactly the saved sessions"
+assert out contains "lists exactly its 2 saved sessions in held order" else "hunk-session-list: the listing did not name exactly the saved sessions"
 
-let skipped = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the non-session skipped, never opened' && echo yes"]
-assert (trim skipped.out) == "yes" else "hunk-session-list: the non-session artifact was not proven skipped"
+assert out contains "the non-session skipped, never opened" else "hunk-session-list: the non-session artifact was not proven skipped"
 
-let verified = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'each summary read from a verified reopen' && echo yes"]
-assert (trim verified.out) == "yes" else "hunk-session-list: the summaries were not proven read from a verified reopen"
+assert out contains "each summary read from a verified reopen" else "hunk-session-list: the summaries were not proven read from a verified reopen"
 
-let redo = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'portrait.session at 2/3 (redo depth 1)' && echo yes"]
-assert (trim redo.out) == "yes" else "hunk-session-list: the rewound session's redo depth was not surfaced"
+assert out contains "portrait.session at 2/3 (redo depth 1)" else "hunk-session-list: the rewound session's redo depth was not surfaced"
 
-let phantom = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'refuse DigestMismatch rather than advertise a phantom' && echo yes"]
-assert (trim phantom.out) == "yes" else "hunk-session-list: a tampered session did not make the whole listing refuse"
+assert out contains "refuse DigestMismatch rather than advertise a phantom" else "hunk-session-list: a tampered session did not make the whole listing refuse"
 
-let roundtrip = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'travels BOTH ways' && echo yes"]
-assert (trim roundtrip.out) == "yes" else "hunk-session-list: the listing round-trip (HUNK20 parse) was not proven"
+assert out contains "travels BOTH ways" else "hunk-session-list: the listing round-trip (HUNK20 parse) was not proven"
 
-let fixed = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'render(parse(render)) a fixed point' && echo yes"]
-assert (trim fixed.out) == "yes" else "hunk-session-list: render(parse(render)) was not proven a fixed point"
+assert out contains "render(parse(render)) a fixed point" else "hunk-session-list: render(parse(render)) was not proven a fixed point"
 
-let refuse = run ["sh" "-c" "printf '%s' '${out}' | grep -q 'each refusing BadListing' && echo yes"]
-assert (trim refuse.out) == "yes" else "hunk-session-list: the parser's named refusals were not proven"
+assert out contains "each refusing BadListing" else "hunk-session-list: the parser's named refusals were not proven"
 
 say "hunk-session-list: GREEN — a keeper's saved sessions list honestly and travel both ways as a fixed-point record; each verified before it is named; a tampered session refuses the whole index rather than advertise a phantom."
