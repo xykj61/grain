@@ -1,0 +1,1016 @@
+//! Caravan stall -- one stalled peer never stops the rest, and a loss is counted.
+//!
+//! `fanin.rye` put two producers on one server and answered who wrote an
+//! ask, then bounded each sweep per stream so a busy client could never
+//! delay a quiet one. Every consumer in that ring kept reading. The moment
+//! one stops, a question opens that fairness alone cannot answer.
+//!
+//! The crux: a server holds a full queue for a client that has gone
+//! silent. Its queue is at capacity, the client's tail has not moved in
+//! passes, and another answer is ready to write. Three doors stand open,
+//! and only one of them is a system.
+//!
+//! **Blocking** is the door that looks safest and is worst. A server that
+//! waits for a stalled tail to move hands one silent domain the power to
+//! stop every other domain it serves -- a client that crashed mid-read, or
+//! simply went to sleep, takes the whole server down with it. That is the
+//! failure this ring exists to rule out.
+//!
+//! **Refusing** keeps every byte. The server writes nothing for that
+//! stream, reports the refusal, and moves straight on to the next one. The
+//! stalled client loses nothing at all; the answer it never received is
+//! simply one the server declined to write, which is a fact an operator can
+//! read.
+//!
+//! **Lapsing** keeps moving. The server writes anyway, the oldest unread
+//! answers fall out of the window, and the client learns exactly how many
+//! it missed the moment it wakes -- because the head ran further past its
+//! tail than the queue is wide. A dropped answer is arithmetic here, never
+//! a silence.
+//!
+//! Which door a stream takes is **declared per stream**, and a plan that
+//! names no policy for a stream is refused rather than defaulted -- a
+//! server that quietly picked a door for an undeclared stream would be
+//! making a policy decision the document never made.
+//!
+//! The property: **a stalled peer costs its own stream and no other, and
+//! whatever it costs is a number.** The run proves both -- a client served
+//! its full eight answers on every pass while its sibling sat silent, and
+//! that sibling waking to name the two answers it lost rather than reading
+//! two it was never sent.
+//!
+//! The wall underneath it is the one the declaration already stands. A
+//! server that could advance a client's tail could mark a lapsed answer
+//! read and erase the whole loss; it holds read alone on `tx_a`, so the
+//! attempt is refused `WriteDenied` before a byte moves. **The side that
+//! bears the loss is the only side that can report it drained.**
+//!
+//! Nothing in `serial_two_clients.bron` changes. The same regions that
+//! carried asks toward a server now carry answers back.
+//!
+//! Hosted ground: real processes, real files, pure policy, no kernel
+//! underneath it yet.
+//!
+//! Usage:
+//!   stall selftest                    Run the passes and check
+//!   stall                             Same as selftest
+//!   stall dependent <domain> <plan> ...   Run as a supervised dependent (internal)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const regions = @import("regions.rye");
+const channels = @import("channels.rye");
+const capabilities = @import("capabilities.rye");
+const roster = @import("roster.rye");
+const read = @import("read.rye");
+const boot = @import("boot.rye");
+const exercise = @import("exercise.rye");
+const carry = @import("carry.rye");
+const notify = @import("notify.rye");
+const roundtrip = @import("roundtrip.rye");
+const serve = @import("serve.rye");
+const queue = @import("queue.rye");
+const fanin = @import("fanin.rye");
+const tally_parse_int = @import("parse_int.rye");
+
+const caravan_stall_version = "20260819.160020";
+
+// =========================================================================
+// Bounds -- what one stall run may spend
+// =========================================================================
+
+/// The same two-client declaration this whole arc runs on. A stalled
+/// consumer needs no new wiring: the answer direction of each channel is
+/// already granted, and a queue running that way is the queue running back.
+pub const declaration_path = serve.serial_two_clients_path;
+
+/// How many consumer streams one answering pass may hold at once.
+pub const max_streams: u32 = fanin.max_streams;
+
+/// The longest plan word this ring builds: a verb, four comma-joined lists
+/// of up to `max_streams` entries each, a count, and the separators.
+pub const max_plan_len: u32 = 768;
+
+/// Fixed argv words every dependent receives, matching `serve.rye`.
+const fixed_argv_words: u32 = 5;
+
+/// The longest policy word this ring reads off the wire.
+pub const max_policy_len: u32 = 8;
+
+/// What one answer says, in the shape a drain can check by reading.
+pub const answer_prefix = "stall: answer ";
+
+/// What a consumer reports when the head ran further past its tail than the
+/// queue is wide.
+///
+/// A report rather than a refusal: the drain succeeded, the answers still
+/// standing were read whole, and the honest addition is the count of the
+/// ones that fell out of the window first. A consumer that returned plain
+/// success here would be hiding a loss it can measure exactly.
+pub const lapsed: u8 = 13;
+
+/// What a server reports when every stream it holds was full and refusing,
+/// so the pass moved nothing at all.
+///
+/// A named outcome rather than a hollow success: a pass that wrote zero
+/// answers because every consumer stalled is a different fact from a pass
+/// that had nothing to say.
+pub const all_stalled: u8 = 14;
+
+comptime {
+    // invariant: two consumers are the least this ring is about
+    assert(max_streams >= 2);
+    // invariant: a pass never holds more streams than a dependent holds peers
+    assert(max_streams <= notify.max_peers_per_dependent);
+    // invariant: this ring's two reports stand apart from every code already spent
+    assert(lapsed != carry.Outcome.carried_ok);
+    assert(lapsed != carry.Outcome.malformed);
+    assert(lapsed != carry.Outcome.not_granted);
+    assert(lapsed != carry.Outcome.write_denied);
+    assert(lapsed != carry.Outcome.past_end);
+    assert(lapsed != carry.Outcome.bytes_differed);
+    assert(lapsed != notify.Bell.not_wired);
+    assert(lapsed != notify.Bell.unheard);
+    assert(lapsed != queue.nothing_new);
+    assert(lapsed != queue.queue_full);
+    assert(lapsed != fanin.misattributed);
+    assert(all_stalled != carry.Outcome.carried_ok);
+    assert(all_stalled != carry.Outcome.malformed);
+    assert(all_stalled != carry.Outcome.not_granted);
+    assert(all_stalled != carry.Outcome.write_denied);
+    assert(all_stalled != carry.Outcome.past_end);
+    assert(all_stalled != carry.Outcome.bytes_differed);
+    assert(all_stalled != notify.Bell.not_wired);
+    assert(all_stalled != notify.Bell.unheard);
+    assert(all_stalled != queue.nothing_new);
+    assert(all_stalled != queue.queue_full);
+    assert(all_stalled != fanin.misattributed);
+    assert(all_stalled != lapsed);
+    // invariant: the reserved stop code stays reserved
+    assert(lapsed != 8);
+    assert(all_stalled != 8);
+    // invariant: four comma-joined lists of the longest legal entries still fit
+    assert(8 + (3 * max_streams * (regions.max_name_len + 1)) +
+        (max_streams * (max_policy_len + 1)) + 8 <= max_plan_len);
+    // invariant: a whole dependent argv stays within what one run builds
+    assert(fixed_argv_words + capabilities.max_caps_per_dependent + notify.max_peers_per_dependent <= 32);
+}
+
+/// Names one outcome for an operator, teaching this ring's own two reports
+/// and deferring to the shared vocabulary for everything else.
+pub fn outcome_name(code: u8) []const u8 {
+    if (code == lapsed) return "Lapsed";
+    if (code == all_stalled) return "AllStalled";
+    return fanin.outcome_name(code);
+}
+
+// =========================================================================
+// The policy -- which door a full stream takes, declared per stream
+// =========================================================================
+
+/// What a server does for one stream whose queue has no room left.
+pub const Policy = enum {
+    /// Write nothing and report it. The stalled consumer loses no byte.
+    refuse,
+    /// Write anyway and let the oldest unread answers fall out of the
+    /// window. The consumer learns the count the moment it wakes.
+    lapse,
+};
+
+/// Reads one declared policy word, or null for a word this ring never named.
+///
+/// An unknown word answers null rather than falling back to a default,
+/// since a server that picks a door on its own is making a policy decision
+/// the declaration never made.
+pub fn read_policy(word: []const u8) ?Policy {
+    // invariant: a policy worth reading carries something
+    assert(word.len >= 1);
+    if (std.mem.eql(u8, word, "refuse")) return .refuse;
+    if (std.mem.eql(u8, word, "lapse")) return .lapse;
+    return null;
+}
+
+fn policy_word(policy: Policy) []const u8 {
+    return switch (policy) {
+        .refuse => "refuse",
+        .lapse => "lapse",
+    };
+}
+
+/// A bounded list of policies, one per stream, read off one plan field.
+pub const PolicyList = struct {
+    policies: [max_streams]Policy = @splat(.refuse),
+    count: u32 = 0,
+
+    /// Reads one comma-joined policy field.
+    ///
+    /// A word this ring never named answers null for the whole list, so a
+    /// single unreadable policy refuses the plan rather than leaving one
+    /// stream quietly on a door nobody declared.
+    pub fn parse(field: []const u8) ?PolicyList {
+        // invariant: a field worth parsing carries something
+        assert(field.len >= 1);
+        var out: PolicyList = .{};
+        var rest = field;
+        while (true) {
+            const cut = std.mem.indexOfScalar(u8, rest, ',');
+            const one = if (cut) |at| rest[0..at] else rest;
+            if (one.len == 0 or one.len > max_policy_len) return null;
+            if (out.count == max_streams) return null;
+            out.policies[out.count] = read_policy(one) orelse return null;
+            out.count += 1;
+            if (cut) |at| rest = rest[at + 1 ..] else break;
+        }
+        // invariant: a parsed list always holds at least one policy
+        assert(out.count >= 1);
+        return out;
+    }
+
+    /// Writes the policies back as the comma-joined field they came from.
+    pub fn render(self: *const PolicyList, buf: []u8) ?[]const u8 {
+        // invariant: a rendered list always holds at least one policy
+        assert(self.count >= 1);
+        var used: u32 = 0;
+        var i: u32 = 0;
+        while (i < self.count) : (i += 1) {
+            const one = policy_word(self.policies[i]);
+            if (i > 0) {
+                if (used == buf.len) return null;
+                buf[used] = ',';
+                used += 1;
+            }
+            if (used + one.len > buf.len) return null;
+            var k: u32 = 0;
+            while (k < one.len) : (k += 1) buf[used + k] = one[k];
+            used += @intCast(one.len); // seam: a slice length arrives as usize
+        }
+        // invariant: a rendered field always carries bytes
+        assert(used >= 1);
+        return buf[0..used];
+    }
+
+    pub fn policy_at(self: *const PolicyList, index: u32) Policy {
+        // invariant: a read stays inside the policies this list holds
+        assert(index < self.count);
+        return self.policies[index];
+    }
+};
+
+// =========================================================================
+// The answer -- numbered, so a drain proves which ones it missed
+// =========================================================================
+
+/// Writes the text of one numbered answer addressed to its consumer.
+///
+/// The sequence number rides in the bytes precisely so a lapse is provable
+/// by reading: a consumer that resynced to the wrong place would read an
+/// answer whose number is not the one it expected, and say so.
+pub fn answer_text(buf: *[serve.max_message_len]u8, consumer: []const u8, seq: u32) []const u8 {
+    // invariant: an answer always names whom it is for
+    assert(consumer.len >= 1);
+    // invariant: the longest answer this ring writes fits the buffer that holds it
+    assert(answer_prefix.len + 10 + 5 + consumer.len <= serve.max_message_len);
+    const text = std.fmt.bufPrint(buf, "{s}{d} for {s}", .{ answer_prefix, seq, consumer }) catch
+        buf[0..0];
+    // invariant: an answer always carries bytes
+    assert(text.len >= 1);
+    return text;
+}
+
+// =========================================================================
+// The plan wire -- parallel lists, one entry per consumer stream
+// =========================================================================
+
+/// The four steps this ring runs, each as its own process.
+pub const Verb = enum { answer, drain, settled, overrun };
+
+/// One task. `heard` names the regions this domain READS, `mine` the
+/// regions it WRITES, `peer` the domain across each of them, and `policy`
+/// the door a full stream takes -- four lists of equal length, one entry per
+/// stream. A single-stream verb rides the same wire with lists of one.
+pub const Task = struct {
+    verb: Verb,
+    heard: fanin.NameList,
+    mine: fanin.NameList,
+    peer: fanin.NameList,
+    policy: PolicyList,
+    count: u32,
+};
+
+fn verb_word(verb: Verb) []const u8 {
+    return switch (verb) {
+        .answer => "answer",
+        .drain => "drain",
+        .settled => "settled",
+        .overrun => "overrun",
+    };
+}
+
+/// Renders one task as the plan word its dependent will read.
+pub fn write_plan(buf: []u8, task: Task) ?[]const u8 {
+    // invariant: a task always names as many writers, peers, and policies as readers
+    assert(task.heard.count == task.mine.count);
+    assert(task.heard.count == task.peer.count);
+    assert(task.heard.count == task.policy.count);
+    var heard_buf: [max_plan_len]u8 = undefined;
+    var mine_buf: [max_plan_len]u8 = undefined;
+    var peer_buf: [max_plan_len]u8 = undefined;
+    var policy_buf: [max_plan_len]u8 = undefined;
+    const heard = task.heard.render(&heard_buf) orelse return null;
+    const mine = task.mine.render(&mine_buf) orelse return null;
+    const peer = task.peer.render(&peer_buf) orelse return null;
+    const policy = task.policy.render(&policy_buf) orelse return null;
+    const word = std.fmt.bufPrint(buf, "{s}:{s}:{s}:{s}:{s}:{d}", .{
+        verb_word(task.verb), heard, mine, peer, policy, task.count,
+    }) catch return null;
+    // invariant: a rendered plan always carries bytes
+    assert(word.len >= 1);
+    return word;
+}
+
+/// Reads a plan word back into the task it names.
+///
+/// Six fields, four verbs, four lists of equal length, and anything else
+/// answers null. The policy list is held to the same length as the streams
+/// on purpose: a stream arriving without a declared door would otherwise
+/// take whichever one the code happened to prefer.
+pub fn read_plan(word: []const u8) ?Task {
+    // invariant: a plan worth reading carries something
+    assert(word.len >= 1);
+    var parts: [6][]const u8 = @splat("");
+    var found: u32 = 0;
+    var rest = word;
+    while (found < 5) : (found += 1) {
+        const cut = std.mem.indexOfScalar(u8, rest, ':') orelse return null;
+        if (cut == 0) return null;
+        parts[found] = rest[0..cut];
+        rest = rest[cut + 1 ..];
+    }
+    if (rest.len == 0) return null;
+    parts[5] = rest;
+    const heard = fanin.NameList.parse(parts[1], regions.max_name_len) orelse return null;
+    const mine = fanin.NameList.parse(parts[2], regions.max_name_len) orelse return null;
+    const peer = fanin.NameList.parse(parts[3], channels.max_name_len) orelse return null;
+    const policy = PolicyList.parse(parts[4]) orelse return null;
+    // Four parallel lists, so a stream that lost its region, its peer, or
+    // its declared door is refused rather than paired with whatever happens
+    // to sit at its index.
+    if (heard.count != mine.count) return null;
+    if (heard.count != peer.count) return null;
+    if (heard.count != policy.count) return null;
+    // A count word is parsed strictly, so "03" is refused rather than read
+    // as 3 -- a plan word means exactly what it says (tally/parse_int.rye).
+    const count = tally_parse_int.parse_int(u32, parts[5], .{}) catch return null;
+    const verb: Verb = if (std.mem.eql(u8, parts[0], "answer"))
+        .answer
+    else if (std.mem.eql(u8, parts[0], "drain"))
+        .drain
+    else if (std.mem.eql(u8, parts[0], "settled"))
+        .settled
+    else if (std.mem.eql(u8, parts[0], "overrun"))
+        .overrun
+    else
+        return null;
+    // invariant: every task read off the wire pairs each stream whole
+    assert(heard.count == mine.count);
+    assert(heard.count == peer.count);
+    assert(heard.count == policy.count);
+    return .{
+        .verb = verb,
+        .heard = heard,
+        .mine = mine,
+        .peer = peer,
+        .policy = policy,
+        .count = count,
+    };
+}
+
+// =========================================================================
+// The dependent -- one process, one step, one reported outcome
+// =========================================================================
+
+/// Writes a batch of answers to every stream it holds, taking each full
+/// stream's declared door and never waiting on any of them.
+///
+/// The order is the arc's own, unchanged: slots before the head, since a
+/// head raised early promises a consumer answers that have not landed.
+fn do_answer(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const notify.PeerList,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    if (task.count == 0 or task.count > queue.max_outstanding) return carry.Outcome.malformed;
+
+    var written: u32 = 0;
+    var refused: u32 = 0;
+    var lost: u32 = 0;
+    var rings: u32 = 0;
+    var s: u32 = 0;
+    while (s < task.peer.count) : (s += 1) {
+        const mine = task.mine.name_at(s);
+        const ledger = task.heard.name_at(s);
+        const consumer = task.peer.name_at(s);
+        if (!peers.wired_to(consumer)) return notify.Bell.not_wired;
+
+        const head = queue.read_index(io, slot, mine) catch |err| return serve.reach_code(err);
+        const tail = queue.read_index(io, slot, ledger) catch |err| return serve.reach_code(err);
+        if (head < tail) return carry.Outcome.bytes_differed;
+        const outstanding = head - tail;
+        if (outstanding > queue.max_outstanding) return carry.Outcome.bytes_differed;
+        const room = queue.max_outstanding - outstanding;
+
+        if (room < task.count) {
+            switch (task.policy.policy_at(s)) {
+                // Nothing written, nothing lost, and the next stream is
+                // reached on this same pass rather than after a wait.
+                .refuse => {
+                    refused += task.count;
+                    print("    {s}: {s} full at {d} -- refused {d}, nothing lost\n", .{
+                        self_name, consumer, outstanding, task.count,
+                    });
+                    continue;
+                },
+                // Written anyway: the head runs past the window, and the
+                // oldest unread answers fall out of it by declaration.
+                .lapse => lost += task.count - room,
+            }
+        }
+
+        var k: u32 = 0;
+        while (k < task.count) : (k += 1) {
+            var text_buf: [serve.max_message_len]u8 = undefined;
+            const text = answer_text(&text_buf, consumer, head + k);
+            queue.write_slot(io, slot, mine, head + k, text) catch |err|
+                return serve.reach_code(err);
+        }
+        queue.write_index(io, slot, mine, head + task.count) catch |err|
+            return serve.reach_code(err);
+        written += task.count;
+
+        const rung = roundtrip.ring_to(io, peers, self_name, consumer) catch |err|
+            return serve.bell_code(err);
+        // invariant: a batch that landed spends exactly one ring
+        assert(rung >= 1);
+        rings += 1;
+
+        if (room < task.count) {
+            print("    {s}: {s} full at {d} -- lapsed {d} by policy\n", .{
+                self_name, consumer, outstanding, task.count - room,
+            });
+        } else {
+            print("    {s}: wrote {d} answers to {s}\n", .{ self_name, task.count, consumer });
+        }
+    }
+
+    if (written == 0) {
+        print("    {s}: every stream full -- {d} refused, nothing written\n", .{
+            self_name, refused,
+        });
+        return all_stalled;
+    }
+    print("    {s}: answered {d} across {d} streams, refused {d}, lapsed {d}\n", .{
+        self_name, written, task.peer.count, refused, lost,
+    });
+    // invariant: a pass that wrote something rang for what it wrote
+    assert(rings >= 1);
+    return carry.Outcome.carried_ok;
+}
+
+/// Reads every answer still standing, and names how many fell out first.
+///
+/// The whole finding of the ring lives in one comparison. A consumer knows
+/// its own tail and can read the server's head, so a head standing further
+/// ahead than the queue is wide says exactly how many answers the window
+/// slid past -- arithmetic the consumer does for itself, out of two numbers
+/// neither side can forge.
+fn do_drain(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const notify.PeerList,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    const inbound = task.heard.name_at(0);
+    const mine = task.mine.name_at(0);
+    const server = task.peer.name_at(0);
+    if (!peers.wired_to(server)) return notify.Bell.not_wired;
+
+    const rung = roundtrip.hear_from(io, peers, self_name, server) catch |err|
+        return serve.bell_code(err);
+    if (rung == 0) return notify.Bell.unheard;
+
+    const head = queue.read_index(io, slot, inbound) catch |err| return serve.reach_code(err);
+    const tail = queue.read_index(io, slot, mine) catch |err| return serve.reach_code(err);
+    if (head < tail) return carry.Outcome.bytes_differed;
+    const waiting = head - tail;
+
+    // The window is the queue's width, so anything standing further back
+    // than that was overwritten while this consumer was silent.
+    var lost: u32 = 0;
+    var seq = tail;
+    if (waiting > queue.max_outstanding) {
+        lost = waiting - queue.max_outstanding;
+        seq = head - queue.max_outstanding;
+    }
+    const taking = head - seq;
+    // invariant: a drain never reads further back than the window holds
+    assert(taking <= queue.max_outstanding);
+
+    while (seq < head) : (seq += 1) {
+        var seen_buf: [serve.max_message_len]u8 = undefined;
+        const seen = queue.read_slot(io, slot, inbound, seq, &seen_buf) catch |err|
+            return serve.reach_code(err);
+        const message = seen orelse return carry.Outcome.bytes_differed;
+        var want_buf: [serve.max_message_len]u8 = undefined;
+        const want = answer_text(&want_buf, self_name, seq);
+        if (!std.mem.eql(u8, message, want)) return carry.Outcome.bytes_differed;
+    }
+    // invariant: the walk stopped exactly where the server's head stands
+    assert(seq == head);
+
+    if (taking > 0) {
+        queue.write_index(io, slot, mine, head) catch |err| return serve.reach_code(err);
+    }
+    if (taking != task.count) {
+        print("    {s}: expected {d} answers, drained {d}\n", .{ self_name, task.count, taking });
+        return carry.Outcome.bytes_differed;
+    }
+    print("    {s}: drained {d}, lost {d}\n", .{ self_name, taking, lost });
+    if (lost > 0) return lapsed;
+    if (taking == 0) return queue.nothing_new;
+    return carry.Outcome.carried_ok;
+}
+
+/// Reads how far the server wrote against how far this consumer drained.
+fn do_settled(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    const wrote = queue.read_index(io, slot, task.heard.name_at(0)) catch |err|
+        return serve.reach_code(err);
+    const drained = queue.read_index(io, slot, task.mine.name_at(0)) catch |err|
+        return serve.reach_code(err);
+    print("    {s}: server wrote {d}, drained {d}\n", .{ self_name, wrote, drained });
+    if (wrote != task.count) return carry.Outcome.bytes_differed;
+    if (drained != wrote) return carry.Outcome.bytes_differed;
+    return carry.Outcome.carried_ok;
+}
+
+/// Attempts to advance a consumer's own tail from the server's side.
+///
+/// This is the wall that makes a lapse honest. A server able to move the
+/// tail could mark every dropped answer read and leave the consumer no
+/// arithmetic to do -- the loss would become invisible rather than counted.
+/// It holds read alone on that region, so the attempt is refused before a
+/// byte moves.
+fn do_overrun(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    task: Task,
+) u8 {
+    queue.write_index(io, slot, task.heard.name_at(0), task.count) catch |err|
+        return serve.reach_code(err);
+    return carry.Outcome.bytes_differed;
+}
+
+/// Attempts one step and reports its outcome.
+fn attempt(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const notify.PeerList,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    // invariant: a task always pairs each stream whole
+    assert(task.heard.count == task.mine.count);
+    assert(task.heard.count == task.peer.count);
+    assert(task.heard.count == task.policy.count);
+    return switch (task.verb) {
+        .answer => do_answer(io, slot, peers, self_name, task),
+        .drain => do_drain(io, slot, peers, self_name, task),
+        .settled => do_settled(io, slot, self_name, task),
+        .overrun => do_overrun(io, slot, task),
+    };
+}
+
+/// Reads the capability words a dependent was handed into its own slot.
+fn slot_from_argv(args: []const [:0]const u8, domain: []const u8, cap_count: u32) ?capabilities.DependentSlot {
+    // invariant: a dependent always knows which domain it is
+    assert(domain.len >= 1);
+    // invariant: the count stays within what one dependent may hold
+    assert(cap_count <= capabilities.max_caps_per_dependent);
+    var slot = capabilities.DependentSlot.init(domain);
+    var i: u32 = 0;
+    while (i < cap_count) : (i += 1) {
+        const cap = boot.read_cap_word(args[fixed_argv_words + i]) orelse return null;
+        slot.grant(cap) catch return null;
+    }
+    // invariant: the dependent holds exactly the capability words it was handed
+    assert(slot.cap_count == cap_count);
+    return slot;
+}
+
+/// Runs as one supervised dependent, holding exactly the capabilities, the
+/// peers, and the one step on its own argv.
+fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
+    // invariant: a dependent always receives its marker, domain, plan, and count
+    assert(args.len >= fixed_argv_words);
+    const domain = args[2];
+    const plan = args[3];
+    // invariant: a dependent always knows which domain it is
+    assert(domain.len >= 1);
+
+    const cap_count = tally_parse_int.parse_int(u32, args[4], .{}) catch {
+        print("    {s}: refused an unreadable capability count\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    if (cap_count > capabilities.max_caps_per_dependent) {
+        print("    {s}: more capabilities than one dependent holds\n", .{domain});
+        return carry.Outcome.malformed;
+    }
+    if (fixed_argv_words + cap_count > args.len) {
+        print("    {s}: a capability count past the words it was handed\n", .{domain});
+        return carry.Outcome.malformed;
+    }
+    var slot = slot_from_argv(args, domain, cap_count) orelse {
+        print("    {s}: refused a malformed capability word\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+
+    var peers: notify.PeerList = .{};
+    var p: usize = fixed_argv_words + cap_count;
+    while (p < args.len) : (p += 1) {
+        peers.add(args[p]) catch {
+            print("    {s}: more peers than one dependent holds\n", .{domain});
+            return carry.Outcome.malformed;
+        };
+    }
+    // invariant: the dependent holds exactly the peer words it was handed
+    assert(peers.count == args.len - fixed_argv_words - cap_count);
+
+    const task = read_plan(plan) orelse {
+        print("    {s}: refused a plan it could not read\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    const code = attempt(io, &slot, &peers, domain, task);
+    print("    {s}: {s} across {d} stream(s) -- {s}\n", .{
+        domain, verb_word(task.verb), task.peer.count, outcome_name(code),
+    });
+    return code;
+}
+
+// =========================================================================
+// The supervisor -- one document, one silent consumer, one ordered run
+// =========================================================================
+
+/// One declared domain's step in a stall run.
+///
+/// The four name fields carry comma-joined lists for an answering pass and a
+/// single entry for every other verb, matching the plan wire exactly.
+pub const Assignment = struct {
+    domain: []const u8,
+    verb: Verb,
+    heard: []const u8,
+    mine: []const u8,
+    peer: []const u8,
+    policy: []const u8,
+    count: u32,
+    expect: u8,
+};
+
+/// What one run did, reported whole.
+pub const Report = struct {
+    started: u32 = 0,
+    matched: u32 = 0,
+    bells: u32 = 0,
+    answers: u32 = 0,
+    passes: u32 = 0,
+    drains: u32 = 0,
+    streams: u32 = 0,
+};
+
+/// Named ways a run declines rather than reporting a hollow success.
+pub const RunError = error{
+    SpawnFailed,
+    UnknownDomain,
+    PlanTooLong,
+    OutcomeMismatch,
+};
+
+/// Counts the streams one comma-joined field names.
+fn stream_count(field: []const u8) u32 {
+    // invariant: a field worth counting carries something
+    assert(field.len >= 1);
+    var seen: u32 = 1;
+    var i: u32 = 0;
+    while (i < field.len) : (i += 1) {
+        if (field[i] == ',') seen += 1;
+    }
+    // invariant: a counted field always names at least one stream
+    assert(seen >= 1);
+    return seen;
+}
+
+/// Starts one assigned dependent and holds it to the outcome the parent expects.
+fn run_assignment(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    table: *const capabilities.CapabilityTable,
+    step: Assignment,
+) (RunError || boot.BootError)!void {
+    // invariant: an assignment always names a domain and both region fields
+    assert(step.domain.len >= 1);
+    assert(step.heard.len >= 1);
+    assert(step.mine.len >= 1);
+    // invariant: an assignment always names the peer and door of every stream
+    assert(step.peer.len >= 1);
+    assert(step.policy.len >= 1);
+    const slot = table.find_dependent(step.domain) orelse return error.UnknownDomain;
+    // invariant: the line handed out agrees with the declaration it came from
+    assert(boot.line_agrees(sys, slot));
+
+    var peers: notify.PeerList = .{};
+    notify.peers_of(sys, step.domain, &peers);
+
+    var plan_buf: [max_plan_len]u8 = undefined;
+    const plan = std.fmt.bufPrint(&plan_buf, "{s}:{s}:{s}:{s}:{s}:{d}", .{
+        verb_word(step.verb), step.heard, step.mine, step.peer, step.policy, step.count,
+    }) catch return error.PlanTooLong;
+
+    var count_buf: [8]u8 = undefined;
+    const count_word = std.fmt.bufPrint(&count_buf, "{d}", .{slot.cap_count}) catch
+        return error.PlanTooLong;
+
+    var storage: [capabilities.max_caps_per_dependent][boot.max_cap_word_len]u8 = undefined;
+    const argv = allocator.alloc(
+        []const u8,
+        fixed_argv_words + slot.cap_count + peers.count,
+    ) catch return error.SpawnFailed;
+    argv[0] = self_path;
+    argv[1] = "dependent";
+    argv[2] = slot.label_slice();
+    argv[3] = plan;
+    argv[4] = count_word;
+    var c: u32 = 0;
+    while (c < slot.cap_count) : (c += 1) {
+        assert(c < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        argv[fixed_argv_words + c] = try boot.write_cap_word(&storage[c], &slot.caps[c]);
+    }
+    var q: u32 = 0;
+    while (q < peers.count) : (q += 1) {
+        argv[fixed_argv_words + slot.cap_count + q] = peers.name_at(q);
+    }
+
+    var proc = std.process.spawn(io, .{ .argv = argv }) catch return error.SpawnFailed;
+    const term = proc.wait(io) catch return error.SpawnFailed;
+    const code: u8 = switch (term) {
+        .exited => |c2| c2,
+        else => 255,
+    };
+    if (code != step.expect) {
+        print("    {s}: expected {s}, heard {s}\n", .{
+            step.domain, outcome_name(step.expect), outcome_name(code),
+        });
+        return error.OutcomeMismatch;
+    }
+}
+
+/// Runs a whole ordered plan against one parsed declaration.
+pub fn run_plan(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Assignment,
+) (roster.RosterError || exercise.ProvisionError || notify.BellError || RunError || boot.BootError)!Report {
+    // invariant: a run always knows what program to spawn
+    assert(self_path.len >= 1);
+    // invariant: a run always carries at least one step
+    assert(plan.len >= 1);
+    const provisioned = try exercise.provision(io, sys);
+    // invariant: every declared region has a backing store before any dependent runs
+    assert(provisioned == sys.map.region_count);
+    const bells = try roundtrip.provision_directed(io, sys);
+    // invariant: every declared channel has two silent bells before any dependent runs
+    assert(bells == sys.graph.channel_count * 2);
+
+    const table = try roster.from_system(sys);
+    // invariant: the derived table enforces exactly what the document permits
+    assert(roster.agrees(sys, &table));
+
+    var report_out: Report = .{ .bells = bells };
+    var i: u32 = 0;
+    while (i < plan.len) : (i += 1) {
+        try run_assignment(allocator, io, self_path, sys, &table, plan[i]);
+        report_out.started += 1;
+        report_out.matched += 1;
+        const step = plan[i];
+        if (step.verb == .answer) {
+            report_out.passes += 1;
+            report_out.streams += stream_count(step.peer);
+        }
+        if (step.verb == .drain and step.expect != notify.Bell.unheard) {
+            report_out.drains += 1;
+            report_out.answers += step.count;
+        }
+    }
+    // invariant: every step that started also matched what was expected
+    assert(report_out.matched == report_out.started);
+    return report_out;
+}
+
+// =========================================================================
+// Self-test -- one consumer reading, one gone silent, neither delaying the other
+// =========================================================================
+
+/// The passes, in the order their meaning depends on.
+///
+/// `client_a` reads after every pass; `client_b` never reads at all until
+/// the very end. Steps one through six are the crux: three answering passes
+/// while one consumer sits silent, and `client_a` served in full on every
+/// one of them. Step three shows the refusing door -- nothing written for
+/// the stalled stream, nothing lost. Step five shows the lapsing door --
+/// written anyway, two answers falling out of the window. Steps seven
+/// through nine read both sides back, and the silent consumer wakes to name
+/// exactly what it missed.
+const stall_plan = [_]Assignment{
+    .{ .domain = "serial_virt", .verb = .answer, .heard = "tx_a,tx_b", .mine = "rx_a,rx_b", .peer = "client_a,client_b", .policy = "refuse,refuse", .count = 4, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_a", .verb = .drain, .heard = "rx_a", .mine = "tx_a", .peer = "serial_virt", .policy = "refuse", .count = 4, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "serial_virt", .verb = .answer, .heard = "tx_a,tx_b", .mine = "rx_a,rx_b", .peer = "client_a,client_b", .policy = "refuse,refuse", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_a", .verb = .drain, .heard = "rx_a", .mine = "tx_a", .peer = "serial_virt", .policy = "refuse", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "serial_virt", .verb = .answer, .heard = "tx_a,tx_b", .mine = "rx_a,rx_b", .peer = "client_a,client_b", .policy = "refuse,lapse", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_a", .verb = .drain, .heard = "rx_a", .mine = "tx_a", .peer = "serial_virt", .policy = "refuse", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_a", .verb = .settled, .heard = "rx_a", .mine = "tx_a", .peer = "serial_virt", .policy = "refuse", .count = 8, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_b", .verb = .drain, .heard = "rx_b", .mine = "tx_b", .peer = "serial_virt", .policy = "refuse", .count = 4, .expect = lapsed },
+    .{ .domain = "client_b", .verb = .settled, .heard = "rx_b", .mine = "tx_b", .peer = "serial_virt", .policy = "refuse", .count = 6, .expect = carry.Outcome.carried_ok },
+};
+
+/// The walls a stalled consumer invites.
+///
+/// The first is what makes a lapse honest at all: the server holds read
+/// alone on `tx_a`, so it can never mark a consumer's dropped answers read.
+/// The second holds the declaration in charge of policy -- a pass naming
+/// fewer doors than it holds streams is refused rather than defaulted.
+const wall_plan = [_]Assignment{
+    .{ .domain = "serial_virt", .verb = .overrun, .heard = "tx_a", .mine = "rx_a", .peer = "client_a", .policy = "refuse", .count = 99, .expect = carry.Outcome.write_denied },
+    .{ .domain = "serial_virt", .verb = .answer, .heard = "tx_a,tx_b", .mine = "rx_a,rx_b", .peer = "client_a,client_b", .policy = "refuse", .count = 2, .expect = carry.Outcome.malformed },
+};
+
+/// Proves the plan wire carries a declared door per stream before any
+/// process runs.
+fn check_wire() u8 {
+    var buf: [max_plan_len]u8 = undefined;
+    var task: Task = .{
+        .verb = .answer,
+        .heard = .{},
+        .mine = .{},
+        .peer = .{},
+        .policy = .{},
+        .count = 2,
+    };
+    task.heard = fanin.NameList.parse("tx_a,tx_b", regions.max_name_len) orelse {
+        print("  RED: a legal region list did not parse\n", .{});
+        return 1;
+    };
+    task.mine = fanin.NameList.parse("rx_a,rx_b", regions.max_name_len) orelse return 1;
+    task.peer = fanin.NameList.parse("client_a,client_b", channels.max_name_len) orelse return 1;
+    task.policy = PolicyList.parse("refuse,lapse") orelse {
+        print("  RED: a legal policy list did not parse\n", .{});
+        return 1;
+    };
+    const written = write_plan(&buf, task) orelse {
+        print("  RED: a legal answering pass had no plan word\n", .{});
+        return 1;
+    };
+    const back = read_plan(written) orelse {
+        print("  RED: a plan word this ring wrote did not read back\n", .{});
+        return 1;
+    };
+    // invariant: a pass survives the wire it rode in on, stream for stream
+    assert(back.verb == .answer);
+    assert(back.peer.count == 2);
+    assert(back.policy.count == 2);
+    assert(back.policy.policy_at(0) == .refuse);
+    assert(back.policy.policy_at(1) == .lapse);
+    assert(std.mem.eql(u8, back.mine.name_at(1), "rx_b"));
+    assert(back.count == 2);
+
+    if (read_plan("answer:tx_a,tx_b:rx_a,rx_b:client_a,client_b:refuse:2") != null) {
+        print("  RED: a stream that named no door was given one anyway\n", .{});
+        return 1;
+    }
+    if (read_plan("answer:tx_a,tx_b:rx_a,rx_b:client_a,client_b:refuse,sulk:2") != null) {
+        print("  RED: a door this ring never declared was accepted\n", .{});
+        return 1;
+    }
+    if (read_plan("answer:tx_a,tx_b:rx_a:client_a,client_b:refuse,lapse:2") != null) {
+        print("  RED: a stream that lost its own region was paired anyway\n", .{});
+        return 1;
+    }
+    if (read_plan("answer:tx_a,tx_b:rx_a,rx_b:client_a,client_b:refuse,lapse:03") != null) {
+        print("  RED: a padded count was read as the number it resembles\n", .{});
+        return 1;
+    }
+    if (PolicyList.parse("refuse,lapse,refuse,lapse,refuse") != null) {
+        print("  RED: more doors than the server holds streams were accepted\n", .{});
+        return 1;
+    }
+    print("  the answer wire pairs {d} streams whole, each with the door its plan declared\n", .{
+        back.peer.count,
+    });
+    return 0;
+}
+
+/// Loads the two-client declaration, or names why it could not be read.
+fn load_declaration(io: std.Io, buf: []u8) ?system.System {
+    const parsed = read.load(io, declaration_path, buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ declaration_path, @errorName(err) });
+        return null;
+    };
+    if (parsed.verify() != .whole) {
+        print("  RED: {s} did not read whole\n", .{declaration_path});
+        return null;
+    }
+    return parsed;
+}
+
+/// Runs the passes and reads the numbers that carry the claim.
+fn check_passes(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = load_declaration(io, &buf) orelse return 1;
+    const done = run_plan(allocator, io, self_path, &parsed, &stall_plan) catch |err| {
+        print("  RED: a pass did not complete: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: every step ran, each as its own process
+    assert(done.started == stall_plan.len);
+    // invariant: both directions of both declared channels stood silent first
+    assert(done.bells == parsed.graph.channel_count * 2);
+    // invariant: three answering passes ran while one consumer sat silent
+    assert(done.passes == 3);
+    assert(done.streams == 6);
+    // invariant: the reading consumer took every answer it was sent
+    assert(done.drains == 4);
+    assert(done.answers == 12);
+    print("  {d} directed bells provisioned silent across {d} declared channels\n", .{
+        done.bells, parsed.graph.channel_count,
+    });
+    print("  {d} answers drained across {d} passes of {d} streams while one consumer slept\n", .{
+        done.answers, done.passes, done.streams,
+    });
+    print("  the reading consumer took 8 of 8 on every pass, and the silent one named the 2 it lost\n", .{});
+    return 0;
+}
+
+/// Proves the walls, each in its own dependent.
+fn check_walls(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = load_declaration(io, &buf) orelse return 1;
+    const done = run_plan(allocator, io, self_path, &parsed, &wall_plan) catch |err| {
+        print("  RED: a wall did not hold: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: every wall ran as its own process and answered by name
+    assert(done.matched == wall_plan.len);
+    print("  a server holds read alone on a consumer's tail -- WriteDenied\n", .{});
+    print("  a pass naming fewer doors than streams is refused, never defaulted\n", .{});
+    return 0;
+}
+
+fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    print("Caravan stall {s} -- self-test\n", .{caravan_stall_version});
+    const wire = check_wire();
+    if (wire != 0) return wire;
+    const passes = check_passes(allocator, io, self_path);
+    if (passes != 0) return passes;
+    const walls = check_walls(allocator, io, self_path);
+    if (walls != 0) return walls;
+    print("  GREEN: a stalled peer costs its own stream alone, and its loss is a number\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
+        return run_dependent(io, args);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(allocator, io, self_path);
+    }
+    if (args.len >= 2) return 1;
+    return run_self_test(allocator, io, self_path);
+}

@@ -1,7 +1,7 @@
 # Caravan -- Process Supervision
 
 **Language:** EN
-**Last updated:** `20260819.154504` (the fan-in ring lands -- two producers, one server, and the region that names the author)
+**Last updated:** `20260819.160020` (the stall ring lands -- a consumer stops reading, and the rest keep going)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable -- process supervision ladder
 
@@ -39,6 +39,7 @@ Every ring here composes over the one before it. A later ring imports an earlier
 | unprompted | [`unprompted.rye`](unprompted.rye) | a client rings a server that has not spoken first -- one attending verb carrying both directions, an ask told from an answer by the bytes rather than by the bell, and a forged ask refused at the wall the declaration already stands |
 | queue | [`queue.rye`](queue.rye) | more than one ask stands on one channel at once -- a head the producer owns and a tail the consumer owns, a drain bounded by the queue rather than by the bell, a ring with nothing behind it draining zero by name, and a full queue refusing rather than overwriting an unread ask |
 | fanin | [`fanin.rye`](fanin.rye) | two producers write one server -- every ask attributed to the region it arrived in rather than to the author its bytes claim, a sweep bounded per stream so a full producer never delays a quiet one, and an ask that lies about its author refused rather than believed |
+| stall | [`stall.rye`](stall.rye) | a consumer stops reading and the rest keep going -- a full stream taking the door its plan declared rather than one the code preferred, refusing so nothing is lost or lapsing so nothing waits, a stalled peer costing its own stream alone, and the answers that fell out of the window counted by the consumer that lost them |
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
@@ -202,6 +203,24 @@ Attribution comes first. A message is bytes, and bytes can say anything: `client
 Fairness comes second, and it arrives without a single wrong byte. A server that empties one client's queue before looking at the next lets a busy producer delay a quiet one for as long as it keeps writing. A declared per-pass take answers it: one sweep draws at most `per_pass` asks from **each** stream, so a client sitting on a full queue and a client holding one ask are both served on the same pass, and the quiet one finishes first.
 
 The numbers state the claim: seven asks from two producers carried on three rings across two sweeps of two streams, the busy client giving up two of its four while the quiet client finished. Witness: [`tools/caravan_fanin_witness.rish`](../tools/caravan_fanin_witness.rish), GREEN on metal, both RED paths proven before the green was trusted. Trusting the claimed author rather than the region carried the impostor's forged ask home as genuine. Spending one shared budget across the streams rather than a bound per stream let the busy client consume the whole pass, and the quiet client's single ask was served zero -- caught by that client reading the server's own ledger.
+
+## Why a Stalled Peer Costs Its Own Stream Alone
+
+`fanin.rye` bounded every sweep per stream, so a busy producer could never delay a quiet one. Every consumer in that ring kept reading. `stall.rye` asks what happens when one of them stops, and it is a different question entirely -- fairness divides attention among peers that are working, and says nothing about a peer that has gone silent.
+
+The situation is plain. The server holds a queue at capacity for a client whose tail has not moved in passes, and another answer is ready to write. Three doors stand open, and only one of them is a system.
+
+Blocking is the door that looks safest and is worst. A server that waits for a stalled tail to move hands one silent domain the power to stop every other domain it serves; a client that crashed mid-read, or simply went to sleep, takes the whole server down with it. That is the failure this ring exists to rule out, and the RED probe showed it plainly -- returning `QueueFull` for the whole pass on one full stream stopped the pass at `client_b` and never reached `client_a` at all, so a consumer with an empty queue was served zero by a peer it shares nothing with.
+
+Refusing keeps every byte. The server writes nothing for that stream, reports the refusal, and moves straight on to the next one, which is served on the same pass. The stalled client loses nothing; the answer it never received is one the server declined to write, and an operator can read that.
+
+Lapsing keeps moving. The server writes anyway, the oldest unread answers fall out of the window, and the consumer learns exactly how many it missed the moment it wakes -- because the head stands further ahead than the queue is wide, and that difference is the count. **A dropped answer is arithmetic here, never a silence.**
+
+Which door a stream takes is declared per stream, and a pass naming fewer doors than it holds streams is refused rather than defaulted. A server that quietly picked a door for an undeclared stream would be making a policy decision the document never made, which is the one thing this arc has been retiring ring after ring.
+
+Underneath both doors stands a wall the declaration already keeps. A server able to advance a consumer's tail could mark every lapsed answer read and leave nothing to count, so the loss would become invisible rather than named. It holds read alone on that region, and the attempt is refused `WriteDenied` before a byte moves. **The side that bears the loss is the only side that can report it drained.**
+
+The numbers state the claim: twelve answers drained across three passes of six streams while one consumer slept, the reading consumer taking eight of eight on every pass, and the silent one waking to name the two it lost. Witness: [`tools/caravan_stall_witness.rish`](../tools/caravan_stall_witness.rish), GREEN on metal, both RED paths proven before the green was trusted. Dropping the window resync in the drain made the loss silent, and two layers caught it in turn: the bound assert fired first, and with that bound relaxed as well, the consumer read the answer standing in slot zero, found number 4 where it expected 0, and answered `bytes differed` -- a mismatch where a count belongs.
 
 ## Held
 
