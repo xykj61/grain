@@ -1,0 +1,937 @@
+//! Caravan queue -- a bell says look, the queue says how much.
+//!
+//! Every ring in this arc so far carried exactly one message at a time.
+//! `notify.rye` rang once and the consumer read once; `roundtrip.rye`,
+//! `serve.rye`, and `unprompted.rye` each placed a message at offset zero
+//! of a region and rang, so a second message written before the first was
+//! read would have quietly replaced it. That works precisely as long as no
+//! more than one ask is ever outstanding, which is a schedule -- and this
+//! arc has been retiring schedules one ring at a time.
+//!
+//! The crux this ring names: a doorbell coalesces. Two rings that arrive
+//! before the receiver runs are indistinguishable from one, and a producer
+//! batching a hundred asks behind a single ring is doing the efficient,
+//! correct thing rather than a wrong one. So the count of rings never
+//! answers *how many asks are waiting*. Only the shared memory answers
+//! that, and it answers it with two indices.
+//!
+//! The property: **a ring says something happened; how much happened is a
+//! fact of the queue.** A drain reads until the queue is empty rather than
+//! once per ring, and the numbers prove it -- three asks carried home on
+//! one ring, and a ring with nothing behind it draining zero by name.
+//!
+//! The two indices land where ownership already put them, which is the
+//! quiet finding of the ring. A producer's head must live in memory the
+//! producer writes; a consumer's tail must live in memory the consumer
+//! writes. The declaration already grants exactly that pair of regions per
+//! channel, so the queue spans both -- and neither side can forge the
+//! other's progress. A producer that could advance the tail could claim
+//! its asks were consumed; a consumer that could advance the head could
+//! invent asks nobody made. Both are refused `WriteDenied` at the wall the
+//! declaration already stands.
+//!
+//! Capacity is declared rather than hoped for. A producer reads the tail,
+//! computes what is outstanding, and refuses `QueueFull` rather than
+//! overwriting an ask nobody has read -- so a full queue is a refusal an
+//! operator can see, never a message that silently went missing.
+//!
+//! Nothing in `serial_two_clients.bron` changes. The same two regions per
+//! channel that carried one message now carry four.
+//!
+//! Hosted ground: real processes, real files, pure policy, no kernel
+//! underneath it yet.
+//!
+//! Usage:
+//!   queue selftest                    Run the batches and check
+//!   queue                             Same as selftest
+//!   queue dependent <domain> <plan> ...   Run as a supervised dependent (internal)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const regions = @import("regions.rye");
+const channels = @import("channels.rye");
+const capabilities = @import("capabilities.rye");
+const roster = @import("roster.rye");
+const read = @import("read.rye");
+const boot = @import("boot.rye");
+const exercise = @import("exercise.rye");
+const carry = @import("carry.rye");
+const notify = @import("notify.rye");
+const roundtrip = @import("roundtrip.rye");
+const serve = @import("serve.rye");
+const tally_parse_int = @import("parse_int.rye");
+
+const caravan_queue_version = "20260819.152915";
+
+// =========================================================================
+// Bounds -- what one queue run may spend
+// =========================================================================
+
+/// The same two-client declaration `serve.rye`, `restart.rye`, and
+/// `unprompted.rye` use. A queue needs no new wiring, since the pair of
+/// regions a channel already grants is exactly the pair a queue wants.
+pub const declaration_path = serve.serial_two_clients_path;
+
+/// How many asks may stand unread on one channel at once.
+///
+/// Four, so a batch larger than the queue is reachable in a witness and a
+/// refusal can be proven rather than described.
+pub const max_outstanding: u32 = 4;
+
+/// Bytes the head or tail index spends at the front of a region.
+///
+/// Four, holding a `u32` little-endian. The index is a count bounded by
+/// `max_outstanding` in its *difference*, never in its value, so it is
+/// carried at full width rather than narrowed to a byte that would wrap
+/// after 256 asks and read as a queue running backward.
+pub const index_bytes: u32 = 4;
+
+/// Bytes one slot spends: one length byte, then the message.
+pub const slot_stride: u32 = 1 + serve.max_message_len;
+
+/// The longest plan word this ring builds -- a verb, two region names, a
+/// peer name, a count, and the four separators between them.
+pub const max_plan_len: u32 = 192;
+
+/// Fixed argv words every dependent receives, matching `serve.rye`.
+const fixed_argv_words: u32 = 5;
+
+/// The text every ask carries, addressed to its recipient and numbered.
+pub const ask_prefix = "queue: ask ";
+
+/// What a drain reports when the ring it heard had no new ask behind it.
+///
+/// A named success rather than a refusal: a ring arrived, the queue was
+/// read, and the honest answer was zero. A consumer that treated this as a
+/// failure would be trusting the bell to count.
+pub const nothing_new: u8 = 10;
+
+/// What a producer reports when the queue has no room for the batch.
+///
+/// A refusal, and the one that keeps an unread ask safe: the producer
+/// declines rather than writing over a message the consumer has not seen.
+pub const queue_full: u8 = 11;
+
+comptime {
+    // invariant: the whole queue fits inside the smallest declared region
+    assert(index_bytes + (max_outstanding * slot_stride) <= 4096);
+    // invariant: a queue holds more than one ask, which is the ring's point
+    assert(max_outstanding >= 2);
+    // invariant: this ring's two reports stand apart from every shared outcome
+    assert(nothing_new != carry.Outcome.carried_ok);
+    assert(nothing_new != carry.Outcome.malformed);
+    assert(nothing_new != carry.Outcome.not_granted);
+    assert(nothing_new != carry.Outcome.write_denied);
+    assert(nothing_new != carry.Outcome.past_end);
+    assert(nothing_new != carry.Outcome.bytes_differed);
+    assert(nothing_new != notify.Bell.not_wired);
+    assert(nothing_new != notify.Bell.unheard);
+    assert(queue_full != carry.Outcome.carried_ok);
+    assert(queue_full != carry.Outcome.malformed);
+    assert(queue_full != carry.Outcome.not_granted);
+    assert(queue_full != carry.Outcome.write_denied);
+    assert(queue_full != carry.Outcome.past_end);
+    assert(queue_full != carry.Outcome.bytes_differed);
+    assert(queue_full != notify.Bell.not_wired);
+    assert(queue_full != notify.Bell.unheard);
+    assert(nothing_new != queue_full);
+    // invariant: the reserved stop code stays reserved
+    assert(nothing_new != 8);
+    assert(queue_full != 8);
+    // invariant: a whole dependent argv stays within what one run builds
+    assert(fixed_argv_words + capabilities.max_caps_per_dependent + notify.max_peers_per_dependent <= 32);
+    // invariant: a plan word for the longest legal names still fits its buffer
+    assert(6 + 4 + (regions.max_name_len * 2) + channels.max_name_len + 8 <= max_plan_len);
+}
+
+/// Names one outcome for an operator, teaching this ring's own two reports
+/// and deferring to the shared vocabulary for everything else.
+pub fn outcome_name(code: u8) []const u8 {
+    if (code == nothing_new) return "nothing new";
+    if (code == queue_full) return "QueueFull";
+    return notify.outcome_name(code);
+}
+
+// =========================================================================
+// The ask -- addressed and numbered, so a drain proves order
+// =========================================================================
+
+/// Writes the text of one numbered ask addressed to its recipient.
+///
+/// The sequence number rides in the bytes, so a drain that returned two
+/// messages out of order, or the same message twice, is caught by reading
+/// rather than by trusting the indices that produced them.
+pub fn ask_text(buf: *[serve.max_message_len]u8, recipient: []const u8, seq: u32) []const u8 {
+    // invariant: an ask always names whom it is for
+    assert(recipient.len >= 1);
+    // invariant: the longest ask this ring writes fits the buffer that holds it
+    assert(ask_prefix.len + 10 + 5 + recipient.len <= serve.max_message_len);
+    const text = std.fmt.bufPrint(buf, "{s}{d} for {s}", .{ ask_prefix, seq, recipient }) catch
+        buf[0..0];
+    // invariant: an ask always carries bytes
+    assert(text.len >= 1);
+    return text;
+}
+
+// =========================================================================
+// The queue -- two indices, each owned by the side that advances it
+// =========================================================================
+
+/// Reads the index standing at the front of a region.
+///
+/// A freshly provisioned store reads zero, which is the honest starting
+/// value: nothing written and nothing drained.
+pub fn read_index(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    region_name: []const u8,
+) exercise.ReachError!u32 {
+    // invariant: an index read always names a region
+    assert(region_name.len >= 1);
+    const handle = try serve.reach_by_name(io, slot, region_name);
+    defer handle.close(io);
+    var raw: [index_bytes]u8 = @splat(0);
+    const got = try handle.read_at(io, 0, &raw);
+    if (got != index_bytes) return error.PastEnd;
+    return std.mem.readInt(u32, &raw, .little);
+}
+
+/// Writes the index at the front of a region this dependent owns.
+pub fn write_index(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    region_name: []const u8,
+    value: u32,
+) exercise.ReachError!void {
+    // invariant: an index write always names a region
+    assert(region_name.len >= 1);
+    const handle = try serve.reach_by_name(io, slot, region_name);
+    defer handle.close(io);
+    var raw: [index_bytes]u8 = @splat(0);
+    std.mem.writeInt(u32, &raw, value, .little);
+    try handle.write_at(io, 0, &raw);
+}
+
+/// Byte offset of the slot one sequence number lands in.
+fn slot_offset(seq: u32) u64 {
+    const ring: u32 = seq % max_outstanding;
+    // invariant: the slot chosen addresses the declared ring
+    assert(ring < max_outstanding);
+    return @as(u64, index_bytes) + (@as(u64, ring) * @as(u64, slot_stride));
+}
+
+/// Writes one message into the slot its sequence number owns.
+pub fn write_slot(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    region_name: []const u8,
+    seq: u32,
+    text: []const u8,
+) exercise.ReachError!void {
+    // invariant: a slot write always carries bytes
+    assert(text.len >= 1);
+    // invariant: a message always fits the slot that holds it
+    assert(text.len <= serve.max_message_len);
+    const handle = try serve.reach_by_name(io, slot, region_name);
+    defer handle.close(io);
+    var framed: [slot_stride]u8 = @splat(0);
+    framed[0] = @intCast(text.len); // seam: a slice length arrives as usize
+    var i: usize = 0;
+    while (i < text.len) : (i += 1) framed[1 + i] = text[i];
+    try handle.write_at(io, slot_offset(seq), &framed);
+}
+
+/// Reads back the message standing in one sequence number's slot.
+///
+/// A length past what a slot holds answers null rather than a slice into
+/// bytes nobody wrote.
+pub fn read_slot(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    region_name: []const u8,
+    seq: u32,
+    buf: *[serve.max_message_len]u8,
+) exercise.ReachError!?[]const u8 {
+    // invariant: a slot read always names a region
+    assert(region_name.len >= 1);
+    const handle = try serve.reach_by_name(io, slot, region_name);
+    defer handle.close(io);
+    var framed: [slot_stride]u8 = @splat(0);
+    const got = try handle.read_at(io, slot_offset(seq), &framed);
+    if (got != slot_stride) return null;
+    const span: u32 = framed[0];
+    if (span == 0) return null;
+    if (span > serve.max_message_len) return null;
+    var i: u32 = 0;
+    while (i < span) : (i += 1) buf[i] = framed[1 + i];
+    // invariant: the message returned is exactly as long as its frame said
+    assert(span <= serve.max_message_len);
+    return buf[0..span];
+}
+
+// =========================================================================
+// The plan wire -- a verb, both regions, the peer, and a count
+// =========================================================================
+
+/// The four steps this ring runs, each as its own process.
+pub const Verb = enum { announce, nudge, drain, settled, forge };
+
+/// One task. `heard` is the region the PEER writes and this domain reads;
+/// `mine` is the region this domain writes. `count` means asks for
+/// `announce` and drained asks for `settled`, and stands unread otherwise.
+pub const Task = struct {
+    verb: Verb,
+    heard: []const u8,
+    mine: []const u8,
+    peer: []const u8,
+    count: u32,
+};
+
+fn verb_word(verb: Verb) []const u8 {
+    return switch (verb) {
+        .announce => "announce",
+        .nudge => "nudge",
+        .drain => "drain",
+        .settled => "settled",
+        .forge => "forge",
+    };
+}
+
+/// Renders one task as the plan word its dependent will read.
+pub fn write_plan(buf: []u8, task: Task) ?[]const u8 {
+    // invariant: a task always names both regions
+    assert(task.heard.len >= 1);
+    assert(task.mine.len >= 1);
+    // invariant: a task always names the peer across the channel
+    assert(task.peer.len >= 1);
+    const word = std.fmt.bufPrint(buf, "{s}:{s}:{s}:{s}:{d}", .{
+        verb_word(task.verb), task.heard, task.mine, task.peer, task.count,
+    }) catch return null;
+    // invariant: a rendered plan always carries bytes
+    assert(word.len >= 1);
+    return word;
+}
+
+/// Reads a plan word back into the task it names.
+///
+/// Five fields, five verbs, and anything else answers null -- a dependent
+/// refuses a plan it cannot read rather than inferring what to do.
+pub fn read_plan(word: []const u8) ?Task {
+    // invariant: a plan worth reading carries something
+    assert(word.len >= 1);
+    var parts: [5][]const u8 = @splat("");
+    var found: u32 = 0;
+    var rest = word;
+    while (found < 4) : (found += 1) {
+        const cut = std.mem.indexOfScalar(u8, rest, ':') orelse return null;
+        if (cut == 0) return null;
+        parts[found] = rest[0..cut];
+        rest = rest[cut + 1 ..];
+    }
+    if (rest.len == 0) return null;
+    parts[4] = rest;
+    const heard = parts[1];
+    const mine = parts[2];
+    const peer = parts[3];
+    if (heard.len > regions.max_name_len) return null;
+    if (mine.len > regions.max_name_len) return null;
+    if (peer.len > channels.max_name_len) return null;
+    // A count word is parsed strictly, so "03" is refused rather than read
+    // as 3 -- a plan word means exactly what it says (tally/parse_int.rye).
+    const count = tally_parse_int.parse_int(u32, parts[4], .{}) catch return null;
+    const verb: Verb = if (std.mem.eql(u8, parts[0], "announce"))
+        .announce
+    else if (std.mem.eql(u8, parts[0], "nudge"))
+        .nudge
+    else if (std.mem.eql(u8, parts[0], "drain"))
+        .drain
+    else if (std.mem.eql(u8, parts[0], "settled"))
+        .settled
+    else if (std.mem.eql(u8, parts[0], "forge"))
+        .forge
+    else
+        return null;
+    // invariant: every task read off the wire names both regions
+    assert(heard.len >= 1);
+    assert(mine.len >= 1);
+    // invariant: every task read off the wire names a peer
+    assert(peer.len >= 1);
+    return .{ .verb = verb, .heard = heard, .mine = mine, .peer = peer, .count = count };
+}
+
+// =========================================================================
+// The dependent -- one process, one step, one reported outcome
+// =========================================================================
+
+/// Writes a batch of asks, then advances the head, then rings once.
+///
+/// The order is the invariant, one level in from `notify.rye`'s own. There
+/// the bytes were written before the bell, since a bell rung early sends a
+/// reader to look at nothing. Here the SLOTS are written before the HEAD,
+/// since a head raised early promises a consumer messages that have not
+/// landed -- and the head, rather than the bell, is what a drain believes.
+fn do_announce(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const notify.PeerList,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    // invariant: an announcement always names whom it is for
+    assert(task.peer.len >= 1);
+    if (!peers.wired_to(task.peer)) return notify.Bell.not_wired;
+    if (task.count == 0 or task.count > max_outstanding) return carry.Outcome.malformed;
+
+    const head = read_index(io, slot, task.mine) catch |err| return serve.reach_code(err);
+    const tail = read_index(io, slot, task.heard) catch |err| return serve.reach_code(err);
+    if (head < tail) return carry.Outcome.bytes_differed;
+    const outstanding = head - tail;
+    if (outstanding + task.count > max_outstanding) {
+        print("    {s}: {d} outstanding leaves no room for {d} more\n", .{
+            self_name, outstanding, task.count,
+        });
+        return queue_full;
+    }
+
+    var k: u32 = 0;
+    while (k < task.count) : (k += 1) {
+        var text_buf: [serve.max_message_len]u8 = undefined;
+        const text = ask_text(&text_buf, task.peer, head + k);
+        write_slot(io, slot, task.mine, head + k, text) catch |err|
+            return serve.reach_code(err);
+    }
+    write_index(io, slot, task.mine, head + task.count) catch |err|
+        return serve.reach_code(err);
+
+    const rung = roundtrip.ring_to(io, peers, self_name, task.peer) catch |err|
+        return serve.bell_code(err);
+    // invariant: one batch spends exactly one ring
+    assert(rung >= 1);
+    print("    {s}: {d} asks written behind 1 ring\n", .{ self_name, task.count });
+    return carry.Outcome.carried_ok;
+}
+
+/// Rings without writing anything.
+///
+/// A legal thing for a producer to do, and the case that separates the bell
+/// from the queue: something happened, and none of it was a new ask.
+fn do_nudge(
+    io: std.Io,
+    peers: *const notify.PeerList,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    if (!peers.wired_to(task.peer)) return notify.Bell.not_wired;
+    const rung = roundtrip.ring_to(io, peers, self_name, task.peer) catch |err|
+        return serve.bell_code(err);
+    // invariant: a nudge still rings
+    assert(rung >= 1);
+    return carry.Outcome.carried_ok;
+}
+
+/// Hears a ring, then drains the queue until it is empty.
+///
+/// The loop is bounded by the indices rather than by the bell, which is the
+/// whole claim: however many rings arrived, the answer to *how many asks*
+/// comes from `head - tail`.
+fn do_drain(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const notify.PeerList,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    const heard = roundtrip.hear_from(io, peers, self_name, task.peer) catch |err|
+        return serve.bell_code(err);
+    if (heard == 0) return notify.Bell.unheard;
+
+    const head = read_index(io, slot, task.heard) catch |err| return serve.reach_code(err);
+    const tail = read_index(io, slot, task.mine) catch |err| return serve.reach_code(err);
+    if (head < tail) return carry.Outcome.bytes_differed;
+    const waiting = head - tail;
+    if (waiting == 0) {
+        print("    {s}: heard {d}, drained 0\n", .{ self_name, heard });
+        return nothing_new;
+    }
+    if (waiting > max_outstanding) return carry.Outcome.bytes_differed;
+
+    var seq = tail;
+    while (seq < head) : (seq += 1) {
+        var seen_buf: [serve.max_message_len]u8 = undefined;
+        const seen = read_slot(io, slot, task.heard, seq, &seen_buf) catch |err|
+            return serve.reach_code(err);
+        const message = seen orelse return carry.Outcome.bytes_differed;
+        var want_buf: [serve.max_message_len]u8 = undefined;
+        const want = ask_text(&want_buf, self_name, seq);
+        if (!std.mem.eql(u8, message, want)) return carry.Outcome.bytes_differed;
+    }
+    // invariant: the walk stopped exactly where the peer's head stands
+    assert(seq == head);
+
+    write_index(io, slot, task.mine, head) catch |err| return serve.reach_code(err);
+    print("    {s}: heard {d}, drained {d}\n", .{ self_name, heard, waiting });
+    return carry.Outcome.carried_ok;
+}
+
+/// Reads the peer's progress out of the peer's own memory.
+///
+/// This is why the tail lives where it does. The producer can SEE how far
+/// the consumer has drained, since it holds read on that region -- and can
+/// never move it, since it holds nothing else there.
+fn do_settled(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    const tail = read_index(io, slot, task.heard) catch |err| return serve.reach_code(err);
+    const head = read_index(io, slot, task.mine) catch |err| return serve.reach_code(err);
+    print("    {s}: head {d}, peer drained {d}\n", .{ self_name, head, tail });
+    if (tail != task.count) return carry.Outcome.bytes_differed;
+    if (head != tail) return carry.Outcome.bytes_differed;
+    return carry.Outcome.carried_ok;
+}
+
+/// Attempts to move the index in the region the PEER owns.
+///
+/// Neither side may do this, and the refusal is the same wall a forged
+/// message met in `unprompted.rye` -- read here as a statement about
+/// progress rather than about content.
+fn do_forge(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    task: Task,
+) u8 {
+    write_index(io, slot, task.heard, task.count) catch |err| return serve.reach_code(err);
+    return carry.Outcome.bytes_differed;
+}
+
+/// Attempts one step and reports its outcome.
+fn attempt(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    peers: *const notify.PeerList,
+    self_name: []const u8,
+    task: Task,
+) u8 {
+    // invariant: a task always names both regions
+    assert(task.heard.len >= 1);
+    assert(task.mine.len >= 1);
+    // invariant: a task always names a peer
+    assert(task.peer.len >= 1);
+    return switch (task.verb) {
+        .announce => do_announce(io, slot, peers, self_name, task),
+        .nudge => do_nudge(io, peers, self_name, task),
+        .drain => do_drain(io, slot, peers, self_name, task),
+        .settled => do_settled(io, slot, self_name, task),
+        .forge => do_forge(io, slot, task),
+    };
+}
+
+/// Reads the capability words a dependent was handed into its own slot.
+fn slot_from_argv(args: []const [:0]const u8, domain: []const u8, cap_count: u32) ?capabilities.DependentSlot {
+    // invariant: a dependent always knows which domain it is
+    assert(domain.len >= 1);
+    // invariant: the count stays within what one dependent may hold
+    assert(cap_count <= capabilities.max_caps_per_dependent);
+    var slot = capabilities.DependentSlot.init(domain);
+    var i: u32 = 0;
+    while (i < cap_count) : (i += 1) {
+        const cap = boot.read_cap_word(args[fixed_argv_words + i]) orelse return null;
+        slot.grant(cap) catch return null;
+    }
+    // invariant: the dependent holds exactly the capability words it was handed
+    assert(slot.cap_count == cap_count);
+    return slot;
+}
+
+/// Runs as one supervised dependent, holding exactly the capabilities, the
+/// peers, and the one step on its own argv.
+fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
+    // invariant: a dependent always receives its marker, domain, plan, and count
+    assert(args.len >= fixed_argv_words);
+    const domain = args[2];
+    const plan = args[3];
+    // invariant: a dependent always knows which domain it is
+    assert(domain.len >= 1);
+
+    const cap_count = tally_parse_int.parse_int(u32, args[4], .{}) catch {
+        print("    {s}: refused an unreadable capability count\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    if (cap_count > capabilities.max_caps_per_dependent) {
+        print("    {s}: more capabilities than one dependent holds\n", .{domain});
+        return carry.Outcome.malformed;
+    }
+    if (fixed_argv_words + cap_count > args.len) {
+        print("    {s}: a capability count past the words it was handed\n", .{domain});
+        return carry.Outcome.malformed;
+    }
+    var slot = slot_from_argv(args, domain, cap_count) orelse {
+        print("    {s}: refused a malformed capability word\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+
+    var peers: notify.PeerList = .{};
+    var p: usize = fixed_argv_words + cap_count;
+    while (p < args.len) : (p += 1) {
+        peers.add(args[p]) catch {
+            print("    {s}: more peers than one dependent holds\n", .{domain});
+            return carry.Outcome.malformed;
+        };
+    }
+    // invariant: the dependent holds exactly the peer words it was handed
+    assert(peers.count == args.len - fixed_argv_words - cap_count);
+
+    const task = read_plan(plan) orelse {
+        print("    {s}: refused a plan it could not read\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    const code = attempt(io, &slot, &peers, domain, task);
+    print("    {s}: {s} on {s} answering {s} via {s} -- {s}\n", .{
+        domain, verb_word(task.verb), task.heard, task.mine, task.peer, outcome_name(code),
+    });
+    return code;
+}
+
+// =========================================================================
+// The supervisor -- one document, batches of asks, one ordered run
+// =========================================================================
+
+/// One declared domain's step in a queue run.
+pub const Assignment = struct {
+    domain: []const u8,
+    verb: Verb,
+    heard: []const u8,
+    mine: []const u8,
+    peer: []const u8,
+    count: u32,
+    expect: u8,
+};
+
+/// What one run did, reported whole.
+pub const Report = struct {
+    started: u32 = 0,
+    matched: u32 = 0,
+    bells: u32 = 0,
+    asks: u32 = 0,
+    rings: u32 = 0,
+    drains: u32 = 0,
+};
+
+/// Named ways a run declines rather than reporting a hollow success.
+pub const RunError = error{
+    SpawnFailed,
+    UnknownDomain,
+    PlanTooLong,
+    OutcomeMismatch,
+};
+
+/// Starts one assigned dependent and holds it to the outcome the parent expects.
+fn run_assignment(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    table: *const capabilities.CapabilityTable,
+    step: Assignment,
+) (RunError || boot.BootError)!void {
+    // invariant: an assignment always names a domain and both regions
+    assert(step.domain.len >= 1);
+    assert(step.heard.len >= 1);
+    assert(step.mine.len >= 1);
+    // invariant: an assignment always names a peer
+    assert(step.peer.len >= 1);
+    const slot = table.find_dependent(step.domain) orelse return error.UnknownDomain;
+    // invariant: the line handed out agrees with the declaration it came from
+    assert(boot.line_agrees(sys, slot));
+
+    var peers: notify.PeerList = .{};
+    notify.peers_of(sys, step.domain, &peers);
+
+    var plan_buf: [max_plan_len]u8 = undefined;
+    const plan = write_plan(&plan_buf, .{
+        .verb = step.verb,
+        .heard = step.heard,
+        .mine = step.mine,
+        .peer = step.peer,
+        .count = step.count,
+    }) orelse return error.PlanTooLong;
+
+    var count_buf: [8]u8 = undefined;
+    const count_word = std.fmt.bufPrint(&count_buf, "{d}", .{slot.cap_count}) catch
+        return error.PlanTooLong;
+
+    var storage: [capabilities.max_caps_per_dependent][boot.max_cap_word_len]u8 = undefined;
+    const argv = allocator.alloc(
+        []const u8,
+        fixed_argv_words + slot.cap_count + peers.count,
+    ) catch return error.SpawnFailed;
+    argv[0] = self_path;
+    argv[1] = "dependent";
+    argv[2] = slot.label_slice();
+    argv[3] = plan;
+    argv[4] = count_word;
+    var c: u32 = 0;
+    while (c < slot.cap_count) : (c += 1) {
+        assert(c < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        argv[fixed_argv_words + c] = try boot.write_cap_word(&storage[c], &slot.caps[c]);
+    }
+    var q: u32 = 0;
+    while (q < peers.count) : (q += 1) {
+        argv[fixed_argv_words + slot.cap_count + q] = peers.name_at(q);
+    }
+
+    var proc = std.process.spawn(io, .{ .argv = argv }) catch return error.SpawnFailed;
+    const term = proc.wait(io) catch return error.SpawnFailed;
+    const code: u8 = switch (term) {
+        .exited => |c2| c2,
+        else => 255,
+    };
+    if (code != step.expect) {
+        print("    {s}: expected {s}, heard {s}\n", .{
+            step.domain, outcome_name(step.expect), outcome_name(code),
+        });
+        return error.OutcomeMismatch;
+    }
+}
+
+/// Runs a whole ordered plan against one parsed declaration.
+///
+/// The counts are the claim stated in numbers: how many asks were written,
+/// how many rings carried them, and how many drains read them home.
+pub fn run_plan(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Assignment,
+) (roster.RosterError || exercise.ProvisionError || notify.BellError || RunError || boot.BootError)!Report {
+    // invariant: a run always knows what program to spawn
+    assert(self_path.len >= 1);
+    // invariant: a run always carries at least one step
+    assert(plan.len >= 1);
+    const provisioned = try exercise.provision(io, sys);
+    // invariant: every declared region has a backing store before any dependent runs
+    assert(provisioned == sys.map.region_count);
+    const bells = try roundtrip.provision_directed(io, sys);
+    // invariant: every declared channel has two silent bells before any dependent runs
+    assert(bells == sys.graph.channel_count * 2);
+
+    const table = try roster.from_system(sys);
+    // invariant: the derived table enforces exactly what the document permits
+    assert(roster.agrees(sys, &table));
+
+    var report_out: Report = .{ .bells = bells };
+    var i: u32 = 0;
+    while (i < plan.len) : (i += 1) {
+        try run_assignment(allocator, io, self_path, sys, &table, plan[i]);
+        report_out.started += 1;
+        report_out.matched += 1;
+        const step = plan[i];
+        if (step.verb == .announce and step.expect == carry.Outcome.carried_ok) {
+            report_out.asks += step.count;
+            report_out.rings += 1;
+        }
+        if (step.verb == .nudge and step.expect == carry.Outcome.carried_ok) {
+            report_out.rings += 1;
+        }
+        if (step.verb == .drain) report_out.drains += 1;
+    }
+    // invariant: every step that started also matched what was expected
+    assert(report_out.matched == report_out.started);
+    // invariant: a run never counts more rings than steps
+    assert(report_out.rings <= report_out.started);
+    return report_out;
+}
+
+// =========================================================================
+// Self-test -- more asks than rings, and a ring with no asks behind it
+// =========================================================================
+
+/// The batches, in the order their meaning depends on.
+///
+/// Steps one through three are the crux: three asks ride behind ONE ring,
+/// and one drain carries all three home. Steps four and five are the same
+/// claim inverted -- a ring with nothing behind it drains zero by name
+/// rather than reading a slot the last batch left standing. Steps six
+/// through nine fill the queue to its declared capacity, prove the refusal
+/// that keeps an unread ask safe, and then drain the full four.
+const batch_plan = [_]Assignment{
+    .{ .domain = "client_a", .verb = .announce, .heard = "rx_a", .mine = "tx_a", .peer = "serial_virt", .count = 3, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "serial_virt", .verb = .drain, .heard = "tx_a", .mine = "rx_a", .peer = "client_a", .count = 0, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_a", .verb = .settled, .heard = "rx_a", .mine = "tx_a", .peer = "serial_virt", .count = 3, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_a", .verb = .nudge, .heard = "rx_a", .mine = "tx_a", .peer = "serial_virt", .count = 0, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "serial_virt", .verb = .drain, .heard = "tx_a", .mine = "rx_a", .peer = "client_a", .count = 0, .expect = nothing_new },
+    .{ .domain = "client_a", .verb = .announce, .heard = "rx_a", .mine = "tx_a", .peer = "serial_virt", .count = 4, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_a", .verb = .announce, .heard = "rx_a", .mine = "tx_a", .peer = "serial_virt", .count = 1, .expect = queue_full },
+    .{ .domain = "serial_virt", .verb = .drain, .heard = "tx_a", .mine = "rx_a", .peer = "client_a", .count = 0, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_a", .verb = .settled, .heard = "rx_a", .mine = "tx_a", .peer = "serial_virt", .count = 7, .expect = carry.Outcome.carried_ok },
+};
+
+/// The walls a shared queue invites.
+///
+/// The first two are the pair that makes the indices trustworthy: neither
+/// side can move the other's. A producer that could advance the tail would
+/// claim its asks were consumed; a consumer that could advance the head
+/// would invent asks nobody made.
+const wall_plan = [_]Assignment{
+    .{ .domain = "client_a", .verb = .forge, .heard = "rx_a", .mine = "tx_a", .peer = "serial_virt", .count = 9, .expect = carry.Outcome.write_denied },
+    .{ .domain = "serial_virt", .verb = .forge, .heard = "tx_a", .mine = "rx_a", .peer = "client_a", .count = 9, .expect = carry.Outcome.write_denied },
+    .{ .domain = "client_a", .verb = .announce, .heard = "rx_a", .mine = "tx_a", .peer = "client_b", .count = 1, .expect = notify.Bell.not_wired },
+    .{ .domain = "serial_virt", .verb = .drain, .heard = "tx_a", .mine = "rx_a", .peer = "client_a", .count = 0, .expect = notify.Bell.unheard },
+};
+
+/// Proves the plan wire and the slot frame are closed shapes before any
+/// process runs on them.
+fn check_wire() u8 {
+    var buf: [max_plan_len]u8 = undefined;
+    const written = write_plan(&buf, .{
+        .verb = .announce,
+        .heard = "rx_a",
+        .mine = "tx_a",
+        .peer = "serial_virt",
+        .count = 3,
+    }) orelse {
+        print("  RED: a legal task had no plan word\n", .{});
+        return 1;
+    };
+    const back = read_plan(written) orelse {
+        print("  RED: a plan word this ring wrote did not read back\n", .{});
+        return 1;
+    };
+    // invariant: a task survives the wire it rode in on
+    assert(back.verb == .announce);
+    assert(std.mem.eql(u8, back.heard, "rx_a"));
+    assert(std.mem.eql(u8, back.mine, "tx_a"));
+    assert(std.mem.eql(u8, back.peer, "serial_virt"));
+    assert(back.count == 3);
+    if (read_plan("flush:rx_a:tx_a:serial_virt:3") != null) {
+        print("  RED: a verb this ring never named was read anyway\n", .{});
+        return 1;
+    }
+    if (read_plan("announce:rx_a:tx_a:serial_virt:many") != null) {
+        print("  RED: an unreadable count passed as a number\n", .{});
+        return 1;
+    }
+    if (read_plan("announce:rx_a:tx_a:serial_virt:03") != null) {
+        print("  RED: a padded count was read as the number it resembles\n", .{});
+        return 1;
+    }
+
+    // invariant: every sequence number in one full queue lands in its own slot
+    var seen: [max_outstanding]bool = @splat(false);
+    var seq: u32 = 0;
+    while (seq < max_outstanding) : (seq += 1) {
+        const at = slot_offset(seq);
+        const from_front = at - @as(u64, index_bytes);
+        const ring: u32 = @intCast(from_front / @as(u64, slot_stride)); // seam: an offset arrives as u64
+        assert(!seen[ring]);
+        seen[ring] = true;
+    }
+    // invariant: a full queue wraps back onto the slot it started from
+    assert(slot_offset(max_outstanding) == slot_offset(0));
+
+    var a_buf: [serve.max_message_len]u8 = undefined;
+    var b_buf: [serve.max_message_len]u8 = undefined;
+    const first = ask_text(&a_buf, "serial_virt", 0);
+    const second = ask_text(&b_buf, "serial_virt", 1);
+    if (std.mem.eql(u8, first, second)) {
+        print("  RED: two numbered asks read as the same bytes\n", .{});
+        return 1;
+    }
+    print("  the plan wire reads back whole, and {d} sequence numbers land in {d} distinct slots\n", .{
+        max_outstanding, max_outstanding,
+    });
+    return 0;
+}
+
+/// Loads the two-client declaration, or names why it could not be read.
+fn load_declaration(io: std.Io, buf: []u8) ?system.System {
+    const parsed = read.load(io, declaration_path, buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ declaration_path, @errorName(err) });
+        return null;
+    };
+    if (parsed.verify() != .whole) {
+        print("  RED: {s} did not read whole\n", .{declaration_path});
+        return null;
+    }
+    return parsed;
+}
+
+/// Proves the walls, each in its own dependent.
+fn check_walls(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = load_declaration(io, &buf) orelse return 1;
+    const done = run_plan(allocator, io, self_path, &parsed, &wall_plan) catch |err| {
+        print("  RED: a wall did not hold: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: every wall ran as its own process and answered by name
+    assert(done.matched == wall_plan.len);
+    // invariant: no wall step ever rang a bell
+    assert(done.rings == 0);
+    print("  neither side moves the other's index -- both forgeries refused WriteDenied\n", .{});
+    print("  an unwired announcement rings nothing, and a drain hears nothing unrung\n", .{});
+    return 0;
+}
+
+/// Runs the batches and reads the numbers that carry the claim.
+fn check_batches(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const parsed = load_declaration(io, &buf) orelse return 1;
+    const done = run_plan(allocator, io, self_path, &parsed, &batch_plan) catch |err| {
+        print("  RED: a batch did not complete: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: every step ran, each as its own process
+    assert(done.started == batch_plan.len);
+    // invariant: both directions of both declared channels stood silent first
+    assert(done.bells == parsed.graph.channel_count * 2);
+    // invariant: this run carried more asks than it spent rings
+    assert(done.asks > done.rings);
+    // invariant: the asks that landed are exactly the pair of batches that stood
+    assert(done.asks == 7);
+    assert(done.rings == 3);
+    assert(done.drains == 3);
+    print("  {d} directed bells provisioned silent across {d} declared channels\n", .{
+        done.bells, parsed.graph.channel_count,
+    });
+    print("  {d} asks carried on {d} rings across {d} drains\n", .{
+        done.asks, done.rings, done.drains,
+    });
+    print("  a full queue refuses QueueFull rather than overwriting an unread ask\n", .{});
+    return 0;
+}
+
+fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    print("Caravan queue {s} -- self-test\n", .{caravan_queue_version});
+    const wire = check_wire();
+    if (wire != 0) return wire;
+    const walls = check_walls(allocator, io, self_path);
+    if (walls != 0) return walls;
+    const batches = check_batches(allocator, io, self_path);
+    if (batches != 0) return batches;
+    print("  GREEN: a ring says something happened, and the queue says how much\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
+        return run_dependent(io, args);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(allocator, io, self_path);
+    }
+    if (args.len >= 2) return 1;
+    return run_self_test(allocator, io, self_path);
+}
