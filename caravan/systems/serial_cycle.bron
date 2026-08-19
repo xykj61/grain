@@ -1,0 +1,54 @@
+# serial_cycle -- a ring: three domains, each asked by one neighbor and
+# asking the other, with no end anywhere in it.
+#
+# Every declaration in this arc has had ends. serial_duplex gave a pair two
+# directions; serial_relay gave a chain a middle, and its two ends were the
+# whole point -- a client that only asks, a backend that only answers, and
+# one domain between them holding both roles.
+#
+# This declaration removes the ends. `alder` writes `ask_ab` and reads
+# `ask_ca`; `birch` writes `ask_bc` and reads `ask_ab`; `cedar` writes
+# `ask_ca` and reads `ask_bc`. Every domain is a middle, so the flow graph
+# closes on itself and an ask placed by alder can travel a full lap and
+# arrive back at the domain that wrote it.
+#
+# Read the grants and two facts fall out without a role word anywhere.
+# Every domain spans exactly two peers, so nothing here is an end. And
+# exactly one directed walk visits all three domains once and returns to
+# where it began -- alder to birch to cedar to alder -- which is the
+# circulation order, found by arithmetic rather than declared.
+#
+# `taken` is alder's own tail, the one number about a completed lap that
+# alder alone may write. Its reader is cedar, alder's predecessor, so the
+# tail stays a one-way street like every other region here.
+#
+# The ring's honest cost is what it takes away: no domain holds a grant on
+# every region, so no domain can total the lap it is part of. alder reads
+# three of four regions and cedar's segment is closed to it. A ring has no
+# vantage point, and only the parent outside it sees the whole.
+#
+# Read whole by `caravan/read.rye`; exercised by `caravan/cycle.rye`.
+
+system serial_cycle
+
+domain alder
+domain birch
+domain cedar
+
+channel alder birch
+channel birch cedar
+channel cedar alder
+
+region ask_ab 4096
+region ask_bc 4096
+region ask_ca 4096
+region taken 64
+
+grant ask_ab alder rw
+grant ask_ab birch r
+grant ask_bc birch rw
+grant ask_bc cedar r
+grant ask_ca cedar rw
+grant ask_ca alder r
+grant taken alder rw
+grant taken cedar r
