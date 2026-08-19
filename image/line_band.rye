@@ -72,7 +72,7 @@ pub const LineBandError = error{
 /// The squared length of the directed line in DOUBLED coordinates -- `(bx2 - ax2)^2 + (by2 - ay2)^2` over the two anchor GROUP centers, the
 /// same centers image/line_distance.rye ranks distances from. Held in i64 so the doubled-coordinate squares never overflow. The corridor
 /// scales the squared half-width by this, so the sharp threshold `key^2 <= 4 * hw^2 * len2` needs no square root.
-fn line_len2_doubled(garden: std.mem.Allocator, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !i64 {
+pub fn line_len2_doubled(garden: std.mem.Allocator, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !i64 {
     const ca = try click_collinear.click_group_center_doubled(garden, graph, manifest, map, ax, ay);
     const cb = try click_collinear.click_group_center_doubled(garden, graph, manifest, map, bx, by);
     const abx: i64 = @as(i64, cb.cx2) - @as(i64, ca.cx2);
@@ -86,7 +86,7 @@ fn line_len2_doubled(garden: std.mem.Allocator, graph: scene_graph.SceneGraph, m
 /// The corridor bound `4 * half_width^2 * len2` -- the squared distance key an object must not exceed to sit inside the corridor of the given
 /// half-width. In DOUBLED coordinates the perpendicular distance is `key / (2 * line_length)`, so `distance <= half_width` becomes
 /// `key <= 2 * half_width * line_length`, and squaring both sides clears the root: `key^2 <= 4 * half_width^2 * len2`.
-fn corridor_bound(half_width: u32, len2: i64) i64 {
+pub fn corridor_bound(half_width: u32, len2: i64) i64 {
     const hw: i64 = @as(i64, half_width);
     const bound: i64 = 4 * hw * hw * len2;
     // invariant: the corridor bound is non-negative -- a squared threshold over a squared length.
