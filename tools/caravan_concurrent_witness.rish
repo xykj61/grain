@@ -1,0 +1,122 @@
+# caravan_concurrent_witness.rish -- Caravan two-dependents-at-once witness.
+#
+# `inflight.rye` held one unreaped dependent and re-declared the ring around it,
+# and found that a declaration reaches a domain at the moment it is spawned,
+# never after. Every ring in the arc, that one included, ran its lap one
+# domain at a time: spawn, wait, spawn the next. That is a schedule, and
+# this arc has been retiring schedules one ring at a time.
+#
+# So this rung asks whether two domains of one ring may run at once, and the
+# answer is a fact of the document rather than a choice of the supervisor:
+#
+#   Two domains may run together exactly when they share no region and no
+#   channel -- a region is a store one may be writing while the other reads
+#   it, and a channel is a doorbell one may be ringing while the other
+#   clears it, and a bell is state too.
+#
+# Both halves are needed, and two mirror documents prove it. The wired
+# document keeps every region and grant of the ring and lays one bare
+# channel across a region-disjoint pair, so a test reading only the grants
+# would wave it through. The mute document is its mirror -- a store shared
+# in silence with no channel over it, which a test reading only the channels
+# would clear. The two tests separate only outside a ring, and the
+# separation costs the shape: a region joining two domains makes them
+# neighbors, so the mute document is no longer a ring, exactly the price
+# `serial_cycle_bypass.bron` paid for a spare route.
+#
+# How much concurrency a ring permits is arithmetic rather than policy. In a
+# ring every domain is adjacent to two others, so the pairs left over are
+# the non-adjacent ones -- n * (n - 3) / 2 of them. A ring of three has none
+# at all, which is why every earlier ring in this arc was entirely serial
+# and nothing in this module could have made it otherwise. A ring of four
+# has two, and the lap spends both.
+#
+# And a supervisor holding two unreaped outcomes owes both a reaping before
+# it reports either. `inflight.rye` learned that with one dependent standing --
+# an abandoned dependent is a leak dressed as a safety check. With two in flight
+# the rule gains a second edge: the first outcome may be a refusal, and
+# reporting it the instant it arrives leaves a sibling running behind the
+# verdict. The module carries that unsafe reading as a named control so the
+# safe one is proven against it rather than merely asserted.
+#
+# Both guards were proven load-bearing on metal before this witness was
+# written. With the region test disabled, the mute pair read back as safe --
+# a region shared in silence waved through. With the channel test disabled,
+# the wired pair read back as safe in the same way. Neither refusal is a
+# rule this module enforces; both are the declaration, read back.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep
+# over interpolated output -- REDS #76 / #85, the apostrophe loom. Every
+# check is order-independent, since two dependents printing at the same moment
+# genuinely interleave differently from run to run.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_concurrent_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/concurrent"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/concurrent.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan concurrent build failed"
+
+# Four documents: the ring of three that has no room, the ring of four that
+# has two pairs of it, and the two mirrors that separate the tests.
+let narrow = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_cycle.bron 2>&1"]
+assert narrow.ok else "the ring of three could not be read"
+assert narrow.out contains "domains 3 -- channels 3 -- regions 4 -- grants 8" else "the ring of three changed shape"
+
+let wide = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_cycle_wide.bron 2>&1"]
+assert wide.ok else "the ring of four could not be read"
+assert wide.out contains "domains 4 -- channels 4 -- regions 5 -- grants 10" else "the ring of four changed shape"
+assert wide.out contains "verdict: whole" else "the ring of four did not read whole"
+
+let wired = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_cycle_wide_wired.bron 2>&1"]
+assert wired.ok else "the wired declaration could not be read"
+assert wired.out contains "domains 4 -- channels 5 -- regions 5 -- grants 10" else "the wired document changed other than its channels"
+assert wired.out contains "verdict: whole" else "the wired declaration did not read whole"
+
+let mute = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_cycle_wide_mute.bron 2>&1"]
+assert mute.ok else "the mute declaration could not be read"
+assert mute.out contains "domains 4 -- channels 4 -- regions 6 -- grants 12" else "the mute document changed other than its regions"
+assert mute.out contains "verdict: whole" else "the mute declaration did not read whole"
+
+# A fresh provisioning each run, so every index starts at zero and a bell
+# found ringing was rung by this run rather than left standing by the last.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels"]
+assert clean.ok else "the region stores and doorbells could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan concurrent selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan concurrent selftest not GREEN"
+assert test.out contains "two domains may run at once exactly when they share no region and no channel" else "the concurrency finding did not close"
+
+# The wire, before any document is read: three distinct verdicts, so a
+# refusal tells an operator which hazard refused rather than only that one did.
+assert test.out contains "a pair reads back as one of three verdicts" else "the pair verdicts did not read back"
+
+# The room, derived from the grants and held to the ring's own arithmetic.
+assert test.out contains "a ring of 3 admits 0 concurrent pairs; a ring of 4 admits 2" else "the room a ring has was not derived"
+
+# The two mirrors, each waving through what the other catches.
+assert test.out contains "the same regions with one channel across them admit 1 pair rather than 2" else "a bare channel cost no room"
+assert test.out contains "alder and cedar share no region and still may not run together" else "a channel-only pair was waved through"
+assert test.out contains "alder and cedar hold no channel and still may not run together" else "a region-only pair was waved through"
+assert test.out contains "the shape that separates the two tests reads back as a domain spanning other than two peers, never a ring" else "the mute document kept a ring's shape, so its sharing cost nothing"
+
+# The lap: both pairs spent, two dependents unreaped at the peak, four home.
+assert test.out contains "cedar beside alder: no region and no channel in common" else "the first pair was not cleared to run together"
+assert test.out contains "dogwood beside birch: no region and no channel in common" else "the second pair was not cleared to run together"
+assert test.out contains "10 dependents ran across 8 stages, 2 of them holding two at once" else "the lap did not spend both of the ring's pairs"
+assert test.out contains "2 dependents stood unreaped at the peak, 10 reaped, 0 reported behind" else "the peak in flight or the reaping did not hold"
+assert test.out contains "4 asks come home over a ring that spent both its concurrent pairs" else "the lap did not come home"
+
+# The refusal: two neighbors never reach the point of running at all.
+assert test.out contains "alder beside birch: a region held by both" else "two neighbors were not judged before spawning"
+assert test.out contains "two neighbors are refused SharedRegion with 0 dependents spawned" else "two domains sharing a region ran at the same moment"
+
+# The reaping, with its unsafe reading carried as a named control.
+assert test.out contains "reporting on the first outcome leaves 1 dependent running behind the verdict" else "the loose reading did not leave a dependent behind"
+assert test.out contains "reaping the whole stage first reports the same refusal with 0 running" else "a refusal left a dependent running behind its verdict"
+
+say "GREEN: Caravan concurrent witness passed."

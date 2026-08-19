@@ -1,0 +1,55 @@
+# serial_cycle_wide -- a ring of four, and the first ring with room in it.
+#
+# serial_cycle closed a lap over three domains and proved a ring has no
+# vantage point. It also, quietly, had no room: in a ring of three every
+# pair of domains is adjacent, so any two of them share a region and no two
+# may ever run at the same moment. A ring of three is entirely serial, and
+# nothing about that is a policy -- it is what the grants add up to.
+#
+# This declaration adds one domain and keeps every other property. `alder`
+# writes `ask_ab` and reads `ask_da`; `birch` writes `ask_bc` and reads
+# `ask_ab`; `cedar` writes `ask_cd` and reads `ask_bc`; `dogwood` writes
+# `ask_da` and reads `ask_cd`. Every region keeps exactly one writer and one
+# reader, every domain spans exactly two peers, and exactly one directed
+# walk visits all four domains once and comes home.
+#
+# What the fourth domain buys is the pairs that are not adjacent. `alder`
+# and `cedar` sit opposite one another and hold no region in common;
+# `birch` and `dogwood` do the same. Those two pairs are the whole
+# concurrency this shape permits, and a ring of n domains permits
+# n * (n - 3) / 2 of them -- zero at three, two at four.
+#
+# `taken` is alder's own tail, the one number about a completed lap that
+# alder alone may write, read by dogwood, its predecessor. It joins a pair
+# that is already adjacent, so it takes no concurrency away.
+#
+# Read whole by `caravan/read.rye`; exercised by `caravan/concurrent.rye`.
+
+system serial_cycle_wide
+
+domain alder
+domain birch
+domain cedar
+domain dogwood
+
+channel alder birch
+channel birch cedar
+channel cedar dogwood
+channel dogwood alder
+
+region ask_ab 4096
+region ask_bc 4096
+region ask_cd 4096
+region ask_da 4096
+region taken 64
+
+grant ask_ab alder rw
+grant ask_ab birch r
+grant ask_bc birch rw
+grant ask_bc cedar r
+grant ask_cd cedar rw
+grant ask_cd dogwood r
+grant ask_da dogwood rw
+grant ask_da alder r
+grant taken alder rw
+grant taken dogwood r
