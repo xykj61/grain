@@ -1,0 +1,51 @@
+# serial_cycle_shadow -- a standby written BESIDE the domain it would
+# replace, and the reason a ring refuses to read it at all.
+#
+# The tempting repair for a lost middle is to name its replacement in
+# advance: let `beech` hold exactly what `birch` holds, so the day birch is
+# declined the ring already has a hand on its regions. This declaration
+# writes that idea out plainly and it stops one layer earlier than a
+# capability check.
+#
+# `ask_ab` now has two readers, birch and beech. `ask_bc` now has two
+# writers, birch and beech. The flow derivation asks each region for
+# exactly one writer and exactly one reader, and this document answers two
+# of each -- so there is no directed flow to derive, no shape to name, and
+# nothing for a ring order to search.
+#
+# The lesson is about time rather than rights. A standby that holds the
+# lost domain's regions while that domain is still present is not a spare;
+# it is a second writer, and a second writer is what a directed region
+# exists to rule out. The cost of a detour drawn in advance is charged
+# every day the hole is closed.
+#
+# Read whole by `caravan/read.rye`; refused by `caravan/standby.rye`.
+
+system serial_cycle_shadow
+
+domain alder
+domain birch
+domain beech
+domain cedar
+
+channel alder birch
+channel birch cedar
+channel cedar alder
+channel alder beech
+channel beech cedar
+
+region ask_ab 4096
+region ask_bc 4096
+region ask_ca 4096
+region taken 64
+
+grant ask_ab alder rw
+grant ask_ab birch r
+grant ask_ab beech r
+grant ask_bc birch rw
+grant ask_bc beech rw
+grant ask_bc cedar r
+grant ask_ca cedar rw
+grant ask_ca alder r
+grant taken alder rw
+grant taken cedar r
