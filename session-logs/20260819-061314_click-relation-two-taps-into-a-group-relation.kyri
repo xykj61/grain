@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260819.061314
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title click_relation -- the TWO-CLICK RELATION read, turning two points into two whole groups then reading how they stand together
+prompt Autonomous loop -- pick up the running thread Lindy-first crux-first, Standfast on reds, take the next agent-doable open-media lap, send it as its own signed round.
+think Read the voice (KYRI, RADIANT_STYLE), the operator card, the newest three session-log rows and the newest recommend. Standfast: every living REDS row is Closed, Released, or the custody-gated errata #75 -- no agent-closable red open, so the corrective queue is clear and the constructive queue is next.
+think The live green edge is the Season G SCENE-READ family (208 image modules). The newest laps closed the single-click gesture: click_expand (point->group), click_facts (point->group facts), click_bounds (point->group frame). The crux-completion is the TWO-click read -- what a PAIR of taps means together, the relation a surface answers when a keeper taps two things.
+think Verified the composition API before building: hit_test.object_label_at (PointOutOfBounds off-map, 0 on a background miss), overlap_clusters.cluster_of (object label -> dense group id), cluster_adjacency.cluster_distance (true nearest-pixel Chebyshev gap, floored at 2, refuses SameCluster) and cluster_frames_overlap. Reused the click_facts chain scene (A/B/C one connected group {1,2,3}, far singleton D) so one scene carries all three crux shapes.
+think Designed image/click_relation.rye: click_group_id (a tap's group, EmptyClick on a miss), click_pair_same_group, click_pair_distance (0 when same group, else cluster_distance), click_pair_frames_overlap (SameGroup refusal on one group). Computed the geometry by hand: min chain-to-D pair gap 3 via B's (4,8) to D's (1,11); clicked-pixel distances 8 (A->D) vs 7 (C->D) differ while the group gap is one number 3; chain frame (1,1)-(11,11) and D frame (0,11)-(1,12) meet on both axes so frames_overlap TRUE while members sit 3 apart.
+obs GREEN on the FIRST full metal run, no code reds. The only correction was a TAME ban: two compound asserts (assert(a and b)) split into single asserts -- caught by tame_style_check before commit, exactly the check's job. The crux is the exact lift of cluster_adjacency's cluster-pair reads from two cluster IDs to two POINTS: the relation belongs to the groups the taps expand to, invariant to where within each group a keeper taps.
+obs Council rota lap re-read the voice items (KYRI, RADIANT_STYLE) this lap -- the four faculties held whole; lead with what is, name a coined term on first use, benediction spent only where earned. The next open-media rung is the agent-doable Lindy-first crux; the Microkernel seL4/Genode study still waits on a fetch/license gate, surfaced not crossed.
+loom witness=click_relation_witness native=contains scene=13x13 components=4 groups=2 group_gap=3
+file image/click_relation.rye the TWO-CLICK RELATION read -- two taps resolve to two whole groups, weighed by their true gap and frame overlap; the relation a group fact not a pixel fact
+file tools/click_relation_witness.rish builds and runs the selftest on metal, asserts the GREEN claim lines with native contains
+file image/README.md names the click-relation rung after click-then-bounds (docs-sync)
+file crux/REMEMBER.md live edge + Git nib repointed single-stranded, click_bounds folded to a prior-nib comment, count 208 -> 209
+file session-logs/README.md prepends this row newest-first
+recommend keep-going -- Named next, crux-first: a marquee-facts read joining region_select/region_summary's window-vs-crossing with a grow-to-neighbors, a click-then-cluster-facts read expanding a click to whole-cluster facts across groups, a two-click nearest/reading-order relation, or a codec read; the Microkernel study waits on a fetch/license gate, not crossed. No network, no key, no funds.

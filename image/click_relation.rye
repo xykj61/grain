@@ -1,0 +1,326 @@
+//! image/click_relation.rye -- the TWO-CLICK RELATION read: turn TWO points into TWO whole-group selections, then read how the two groups sit
+//! relative to each other -- whether the two taps land on the SAME group, the true GAP between two distinct groups, and whether their group
+//! frames overlap. Where the single-click family reads what ONE tap grabs (image/click_facts.rye its facts, image/click_bounds.rye its frame),
+//! this rung reads what a PAIR of taps means together -- the relation a surface answers the moment a keeper taps two things and asks "are these
+//! the same, and how far apart are they." Exact integers, NO float and NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/hit_test.rye names the ONE object under a point; image/overlap_clusters.rye's `cluster_of` names the
+//! connected group that object belongs to; image/cluster_adjacency.rye reads how two whole clusters sit (the true inter-cluster Chebyshev gap, the
+//! frame overlap). This rung LIFTS that cluster-pair read from two cluster IDS to two POINTS -- each click resolves to its group through the hit
+//! test and the clustering, then the two groups are weighed by the cluster-pair reads. A reading over readings -- no plane of its own, no pixel
+//! written.
+//!
+//! The DECISIVE crux: the relation two clicks read is a GROUP fact, not a PIXEL fact -- it is INVARIANT to where within each group a keeper taps,
+//! and it reads two visibly separate taps as the SAME group whenever the closure joins them. Three shapes at once over a 3-object chain (A a
+//! corner-L, B a corner-L, C a ring) whose boxes overlap 1-2 and 2-3 yet never 1-3 (box overlap is not transitive), one connected group {1,2,3},
+//! plus a far singleton block D:
+//!
+//!   TWO TAPS ON ONE GROUP READ THE SAME GROUP, THOUGH THE OBJECTS ARE DISCONNECTED. A tap on corner-L A and a tap on the ring C read
+//!   `click_pair_same_group` TRUE and `click_pair_distance` 0, even though objects A and C are 8-disconnected and their boxes never overlap -- the
+//!   two clicks resolve to the same connected group through B, so a surface treats them as one thing. Connectivity is the transitive closure of box
+//!   overlap; two taps that look far apart name one group.
+//!
+//!   THE GAP IS THE GROUP'S, NOT THE PIXELS'. A tap on A then D and a tap on C then D read the IDENTICAL group gap (3) though the two clicked pixels'
+//!   own Chebyshev distances differ (8 versus 7) -- `click_pair_distance` is the minimum member-pair gap between the two whole groups, so where
+//!   inside each group a keeper taps never changes the distance the surface reports. The relation belongs to the groups the taps expand to.
+//!
+//!   THE GROUP FRAME OVER-CLAIMS AT THE TWO-CLICK LEVEL. A tap on the chain and a tap on D land on DISTINCT groups (`click_pair_same_group` FALSE),
+//!   yet `click_pair_frames_overlap` reads TRUE because the chain's group frame (1,1)-(11,11) and D's frame (0,11)-(1,12) meet on both axes, while
+//!   the true `click_pair_distance` stays 3 -- image/cluster_adjacency.rye's frame-over-claim lifted to a pair of taps, a box comparison naming a
+//!   contact the members never make.
+//!
+//! Compose not braid. This rung OWNS only the click-to-group resolution and the two-group pairing. image/hit_test.rye owns the point-to-object
+//! arbiter (`object_label_at`); image/overlap_clusters.rye owns `cluster_of` (the object-to-group map); image/cluster_adjacency.rye owns the true
+//! `cluster_distance` and `cluster_frames_overlap`. No matrix recomputed, no pixel re-read, no gap re-derived.
+//!
+//! Everything is bounded before a byte: each click resolves to at most one label through the hit test, and the cluster-pair reads scan the object
+//! count bounded by image/label.rye's `label_max_pixels`. A point off the map refuses `PointOutOfBounds`, having read nothing; a click on
+//! background refuses `EmptyClick` by name (there is no group of an empty tap); a frame overlap of a group against itself refuses `SameGroup`, since
+//! a group's frame trivially meets its own. No network, no key, no funds -- the two-click relation a surface names the day a keeper taps two things
+//! and asks how they stand together.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/click_relation.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const hit_test = @import("hit_test.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const cluster_adjacency = @import("cluster_adjacency.rye");
+
+pub const click_relation_version = "20260819.061314";
+
+pub const ClickRelationError = error{
+    EmptyClick,
+    SameGroup,
+};
+
+/// The dense GROUP ID a click lands in -- the connected cluster of the object under `(x, y)`. Runs image/hit_test.rye's arbiter for the object
+/// label, then image/overlap_clusters.rye's `cluster_of` for its group. A hit returns a real dense cluster id (1..clusters); a MISS (a background
+/// pixel, a hole, a concavity notch) refuses `EmptyClick` by name, since an empty tap belongs to no group; a point off the map refuses
+/// `PointOutOfBounds` through the arbiter, having read nothing.
+pub fn click_group_id(clustering: overlap_clusters.Clustering, map: *const label.LabelMap, x: u32, y: u32) !u32 {
+    // invariant: the clustering and the map describe the SAME scene -- one component count.
+    assert(clustering.components == map.count);
+    // invariant: the arbiter never names a component past the scene's count.
+    assert(map.count <= label.label_max_pixels);
+
+    const lbl = try hit_test.object_label_at(map, x, y);
+    if (lbl == 0) return error.EmptyClick;
+    const gid = try overlap_clusters.cluster_of(clustering, lbl);
+    // invariant: a hit resolves to a real dense group id within the cluster count.
+    assert(gid >= 1);
+    assert(gid <= clustering.clusters);
+    return gid;
+}
+
+/// TRUE when TWO clicks land in the SAME connected group -- resolve each click to its group id and compare. May read TRUE for two objects whose
+/// own boxes never overlap, since a group is the transitive closure of box overlap: two taps on the far ends of a chain share one group. Refuses
+/// `EmptyClick` when either click misses, `PointOutOfBounds` when either point lies off the map.
+pub fn click_pair_same_group(clustering: overlap_clusters.Clustering, map: *const label.LabelMap, x1: u32, y1: u32, x2: u32, y2: u32) !bool {
+    // invariant: the clustering and the map describe the same scene.
+    assert(clustering.components == map.count);
+
+    const gid_a = try click_group_id(clustering, map, x1, y1);
+    const gid_b = try click_group_id(clustering, map, x2, y2);
+    // invariant: both resolved ids are real dense group labels.
+    assert(gid_a >= 1);
+    assert(gid_a <= clustering.clusters);
+    assert(gid_b >= 1);
+    assert(gid_b <= clustering.clusters);
+    return gid_a == gid_b;
+}
+
+/// The true GAP between the two groups two clicks land in -- ZERO when both taps share one group, else the minimum nearest-pixel Chebyshev over
+/// every member pair of the two distinct groups (image/cluster_adjacency.rye's `cluster_distance`), floored structurally at 2 since distinct
+/// groups hold distinct 8-components. INVARIANT to where inside each group a keeper taps: the gap belongs to the groups, not the clicked pixels.
+/// Refuses `EmptyClick` when either click misses, `PointOutOfBounds` when either point lies off the map.
+pub fn click_pair_distance(clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, map: *const label.LabelMap, x1: u32, y1: u32, x2: u32, y2: u32) !u32 {
+    // invariant: the clustering, the graph, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(clustering.components == map.count);
+
+    const gid_a = try click_group_id(clustering, map, x1, y1);
+    const gid_b = try click_group_id(clustering, map, x2, y2);
+    if (gid_a == gid_b) return 0;
+    const gap = try cluster_adjacency.cluster_distance(clustering, graph, gid_a, gid_b);
+    // invariant: two distinct groups hold distinct 8-components, so the true gap is at least two.
+    assert(gap >= 2);
+    return gap;
+}
+
+/// TRUE when the union FRAMES of the two groups two clicks land in overlap -- image/cluster_adjacency.rye's `cluster_frames_overlap`. This is the
+/// read that makes the over-claim plain at the two-click level: it can read TRUE for two clicks on distinct groups whose members share no edge and
+/// stand two or more pixels apart, since one group's frame can enclose the other's. Overlap of frames, never contact of members. Refuses
+/// `SameGroup` when both taps share one group (a frame trivially meets itself), `EmptyClick` on a miss, `PointOutOfBounds` off the map.
+pub fn click_pair_frames_overlap(clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, map: *const label.LabelMap, x1: u32, y1: u32, x2: u32, y2: u32) !bool {
+    // invariant: the clustering, the graph, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(clustering.components == map.count);
+
+    const gid_a = try click_group_id(clustering, map, x1, y1);
+    const gid_b = try click_group_id(clustering, map, x2, y2);
+    if (gid_a == gid_b) return error.SameGroup;
+    return cluster_adjacency.cluster_frames_overlap(clustering, graph, gid_a, gid_b);
+}
+
+// --- selftest: the DECISIVE two-click-relation crux over a 3-object CHAIN (A corner-L box (1,1)-(5,5), B corner-L box (4,4)-(8,8), C 5x5 ring box
+//     (7,7)-(11,11)) whose boxes overlap 1-2 and 2-3 yet never 1-3, one connected group {1,2,3}, plus a far singleton block D box (0,11)-(1,12).
+//     Two taps on A and C read the SAME group and gap 0 though the objects are disconnected; A-then-D and C-then-D read the IDENTICAL group gap 3
+//     though the clicked pixels differ; the chain and D land on distinct groups whose frames OVERLAP while the true gap stays 3 --------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a corner bracket-L hugging TOP-LEFT: a vertical arm down column `x0` from `y0` to `y1`, and a horizontal arm along row `y0` from `x0` to
+/// `x1`. Its inclusive box is (x0,y0)-(x1,y1); its bottom-right corner stays empty and its interior stays background inside its own box.
+fn set_corner_l(img: *qoi.Pixmap, x0: u32, y0: u32, x1: u32, y1: u32) void {
+    // invariant: the arms run in the positive direction and stay inside the buffer.
+    assert(x1 >= x0);
+    assert(y1 >= y0);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) set_dot(img, x0, yy);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) set_dot(img, xx, y0);
+}
+
+/// Paint a hollow rectangle BORDER (a ring) with inclusive box (x0,y0)-(x1,y1) -- the four edges filled, the interior left background as one
+/// enclosed hole.
+fn set_ring(img: *qoi.Pixmap, x0: u32, y0: u32, x1: u32, y1: u32) void {
+    // invariant: the ring has a real interior to enclose -- at least a 3x3 box.
+    assert(x1 >= x0 + 2);
+    assert(y1 >= y0 + 2);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) {
+        set_dot(img, xx, y0);
+        set_dot(img, xx, y1);
+    }
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) {
+        set_dot(img, x0, yy);
+        set_dot(img, x1, yy);
+    }
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- BUILD THE CHAIN on a 13x13 canvas: A corner-L box (1,1)-(5,5) label 1, B corner-L box (4,4)-(8,8) label 2, C a 5x5 RING box (7,7)-(11,11)
+    //     label 3, D a 2x2 block box (0,11)-(1,12) label 4. A's box overlaps B's and B's overlaps C's yet A's never overlaps C's (box overlap is
+    //     not transitive); the shapes stay 8-disconnected, so they are three components chained into ONE group {1,2,3}, plus the singleton D -------
+    var scene = try make_canvas(garden, 13, 13, 0);
+    set_corner_l(&scene, 1, 1, 5, 5); // A: corner-L, box (1,1)-(5,5)
+    set_corner_l(&scene, 4, 4, 8, 8); // B: corner-L, box (4,4)-(8,8)
+    set_ring(&scene, 7, 7, 11, 11); // C: 5x5 ring, box (7,7)-(11,11), one hole
+    set_block(&scene, 0, 11, 2, 2); // D: 2x2 block, box (0,11)-(1,12), a far singleton
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 4) return error.SceneNotFourComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+
+    // confirm the CHAIN shape the crux leans on: 1-2 and 2-3 overlap, 1-3 does NOT; {1,2,3} one group; D a distinct group; the two groups' ids
+    if (!(try scene_graph.relation_of(graph, 1, 2)).boxes_overlap) return error.OneTwoNotOverlapping;
+    if (!(try scene_graph.relation_of(graph, 2, 3)).boxes_overlap) return error.TwoThreeNotOverlapping;
+    if ((try scene_graph.relation_of(graph, 1, 3)).boxes_overlap) return error.OneThreeFalselyOverlapping;
+    if (try overlap_clusters.same_cluster(clustering, 1, 3) != true) return error.ChainNotOneGroup;
+    if (try overlap_clusters.same_cluster(clustering, 1, 4) != false) return error.DNotSingleton;
+    if (clustering.clusters != 2) return error.NotTwoGroups;
+
+    // hit-test the four click points once so the crux rests on real arbiter reads: A's left column (1,3) -> label 1, B's arm (4,6) -> label 2,
+    // C's border (7,9) -> label 3, D's block (0,11) -> label 4
+    if (try hit_test.object_label_at(&map, 1, 3) != 1) return error.ClickOnANotA;
+    if (try hit_test.object_label_at(&map, 4, 6) != 2) return error.ClickOnBNotB;
+    if (try hit_test.object_label_at(&map, 7, 9) != 3) return error.ClickOnCNotC;
+    if (try hit_test.object_label_at(&map, 0, 11) != 4) return error.ClickOnDNotD;
+
+    // click_group_id resolves each tap to its group: A, B, C -> group 1; D -> group 2
+    if (try click_group_id(clustering, &map, 1, 3) != 1) return error.AGroupNotOne;
+    if (try click_group_id(clustering, &map, 4, 6) != 1) return error.BGroupNotOne;
+    if (try click_group_id(clustering, &map, 7, 9) != 1) return error.CGroupNotOne;
+    if (try click_group_id(clustering, &map, 0, 11) != 2) return error.DGroupNotTwo;
+
+    // --- TWO TAPS ON ONE GROUP READ THE SAME GROUP, THOUGH THE OBJECTS ARE DISCONNECTED -- a tap on A (1,3) and a tap on the ring C (7,9) read
+    //     same_group TRUE and distance 0, even though objects 1 and 3 are 8-disconnected and their boxes never overlap (box overlap not transitive)
+    if (try click_pair_same_group(clustering, &map, 1, 3, 7, 9) != true) return error.ACNotSameGroup;
+    if (try click_pair_distance(clustering, graph, &map, 1, 3, 7, 9) != 0) return error.ACGapNotZero;
+    // and A with B, the directly-overlapping pair, likewise one group, gap 0
+    if (try click_pair_same_group(clustering, &map, 1, 3, 4, 6) != true) return error.ABNotSameGroup;
+    if (try click_pair_distance(clustering, graph, &map, 1, 3, 4, 6) != 0) return error.ABGapNotZero;
+
+    // --- THE GAP IS THE GROUP'S, NOT THE PIXELS' -- a tap on A then D and a tap on C then D read the IDENTICAL group gap 3, though the clicked
+    //     pixels' own Chebyshev distances differ: A(1,3)->D(0,11) is max(1,8)=8 while C(7,9)->D(0,11) is max(7,2)=7 -----------------------------
+    if (try click_pair_same_group(clustering, &map, 1, 3, 0, 11) != false) return error.ADFalselySameGroup;
+    const gap_ad = try click_pair_distance(clustering, graph, &map, 1, 3, 0, 11);
+    const gap_cd = try click_pair_distance(clustering, graph, &map, 7, 9, 0, 11);
+    if (gap_ad != 3) return error.ADGapNotThree; // min chain-to-D pair gap, via B's (4,8) to D's (1,11)
+    if (gap_cd != gap_ad) return error.GapNotInvariantToClickSite; // the gap belongs to the groups, not the taps
+    // the clicked pixels' own Chebyshev distances truly differ (A(1,3)->D(0,11) = max(1,8) = 8; C(7,9)->D(0,11) = max(7,2) = 7), so the invariant
+    // group gap of 3 is no coincidence of geometry -- two taps at different pixel distances read one group distance.
+    const px_ad: u32 = @max(@as(u32, 1 - 0), @as(u32, 11 - 3)); // |1-0| vs |11-3| = max(1,8) = 8
+    const px_cd: u32 = @max(@as(u32, 7 - 0), @as(u32, 11 - 9)); // |7-0| vs |11-9| = max(7,2) = 7
+    if (px_ad != 8) return error.PixelADNotEight;
+    if (px_cd != 7) return error.PixelCDNotSeven;
+    if (px_ad == px_cd) return error.PixelDistancesNotDistinct; // clicked pixels differ, yet the group gap is one number
+
+    // --- THE GROUP FRAME OVER-CLAIMS AT THE TWO-CLICK LEVEL -- a tap on the chain and a tap on D land on DISTINCT groups yet their group frames
+    //     OVERLAP (chain frame (1,1)-(11,11) meets D's frame (0,11)-(1,12) on both axes) while the true gap stays 3 ---------------------------
+    if (try click_pair_frames_overlap(clustering, graph, &map, 1, 3, 0, 11) != true) return error.ADFramesNotOverlapping;
+    if (try click_pair_distance(clustering, graph, &map, 1, 3, 0, 11) != 3) return error.ADGapNotThreeAgain; // frames overlap, members 3 apart
+    // clicking B or C against D reads the SAME frame-overlap TRUE and the SAME gap 3 -- the relation is the groups', not the taps'
+    if (try click_pair_frames_overlap(clustering, graph, &map, 7, 9, 0, 11) != true) return error.CDFramesNotOverlapping;
+
+    // --- A FRAME OVERLAP OF A GROUP AGAINST ITSELF REFUSES SameGroup -- two taps on one group (A and C) name one group, whose frame trivially
+    //     meets itself, so the read refuses SameGroup by name rather than answering a meaningless TRUE ----------------------------------------
+    if (click_pair_frames_overlap(clustering, graph, &map, 1, 3, 7, 9)) |_| return error.SameGroupFrameNotRefused else |err| {
+        if (err != error.SameGroup) return error.WrongSameGroupError;
+    }
+
+    // --- A MISS REFUSES EmptyClick -- a tap in A's interior (3,3) is BACKGROUND inside A's own box: the box claims the point yet the tap misses,
+    //     so it belongs to no group -- click_group_id and every pair read refuse EmptyClick by name -------------------------------------------
+    const a_obj = try scene_manifest.object_of(manifest, 1);
+    if (!hit_test.bbox_contains_point(a_obj, 3, 3)) return error.NotchNotInABox;
+    if (try hit_test.object_label_at(&map, 3, 3) != 0) return error.NotchNotBackground;
+    if (click_group_id(clustering, &map, 3, 3)) |_| return error.MissGroupNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissGroupError;
+    }
+    if (click_pair_same_group(clustering, &map, 3, 3, 0, 11)) |_| return error.MissSameGroupNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissSameGroupError;
+    }
+    if (click_pair_distance(clustering, graph, &map, 1, 3, 3, 3)) |_| return error.MissDistanceNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissDistanceError;
+    }
+
+    // --- A POINT OFF THE MAP REFUSES PointOutOfBounds through the arbiter, having read nothing -----------------------------------------------
+    if (click_group_id(clustering, &map, 13, 0)) |_| return error.OffMapGroupNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapGroupError;
+    }
+    if (click_pair_distance(clustering, graph, &map, 1, 3, 0, 13)) |_| return error.OffMapDistanceNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapDistanceError;
+    }
+
+    // --- DETERMINISM -- the same pair of taps reads the same relation twice --------------------------------------------------------------
+    const d1 = try click_pair_distance(clustering, graph, &map, 1, 3, 0, 11);
+    const d2 = try click_pair_distance(clustering, graph, &map, 1, 3, 0, 11);
+    if (d1 != d2) return error.DistanceNotDeterministic;
+
+    print("GREEN image-click-relation: the TWO-CLICK RELATION read -- turn TWO points into TWO whole-group selections, then read how the groups sit relative to each other (same-group, true gap, frame overlap), lifting image/cluster_adjacency.rye's cluster-pair reads from two cluster IDS to two POINTS through image/hit_test.rye and image/overlap_clusters.rye's cluster_of, exact integers, NO float and NO tolerance -- the DECISIVE crux: the relation two clicks read is a GROUP fact, not a PIXEL fact, INVARIANT to where within each group a keeper taps, in three shapes over a 3-object chain (A a corner-L, B a corner-L, C a 5x5 ring, boxes overlapping 1-2 and 2-3 yet never 1-3) plus a far singleton block D. TWO TAPS ON ONE GROUP READ THE SAME GROUP, THOUGH THE OBJECTS ARE DISCONNECTED -- a tap on A and a tap on the ring C read click_pair_same_group TRUE and click_pair_distance 0, even though objects 1 and 3 are 8-disconnected and their boxes never overlap, the two taps resolving to one group through B (connectivity is the transitive closure of box overlap). THE GAP IS THE GROUP'S, NOT THE PIXELS' -- a tap on A then D and a tap on C then D read the IDENTICAL group gap 3 though the clicked pixels' own Chebyshev distances differ (8 versus 7), click_pair_distance the minimum member-pair gap between the two whole groups so where inside each group a keeper taps never changes the reported distance. THE GROUP FRAME OVER-CLAIMS AT THE TWO-CLICK LEVEL -- a tap on the chain and a tap on D land on DISTINCT groups (same_group FALSE) yet click_pair_frames_overlap reads TRUE because the chain's group frame (1,1)-(11,11) and D's frame (0,11)-(1,12) meet on both axes, while the true gap stays 3, cluster_adjacency's frame-over-claim lifted to a pair of taps, a box comparison naming a contact the members never make. A frame overlap of a group against itself refuses SameGroup by name; a tap on background inside an object's own box refuses EmptyClick (a phantom tap belongs to no group); a point off the map refuses PointOutOfBounds having read nothing; the same pair reads the same relation twice. Compose not braid over image/hit_test.rye (the point-to-object arbiter), image/overlap_clusters.rye (cluster_of, the object-to-group map), and image/cluster_adjacency.rye (the true cluster_distance and cluster_frames_overlap)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: click_relation selftest\n", .{});
+    return 1;
+}
