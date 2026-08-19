@@ -1,0 +1,54 @@
+# tools/line_pierce_witness.rish -- read a DIRECTED line named by TWO anchor taps (from A toward B) as a BOX CROSSING: for every object, does
+# the FINITE stroke A..B pass THROUGH that object's pixel box, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the whole line family until now approximated each object by its GROUP CENTER: line_distance reads how far
+# OFF the line a center sits, line_project the exact foot, line_band a corridor of half-width r the center may fall inside. line_pierce reads
+# the object's ACTUAL EXTENT -- not "is the center near the line" but "does the drawn stroke cross this thing's box", the read a stroke-selection
+# surface wants the day a keeper drags a line across the scene and means every thing it truly grazed. NO float, NO tolerance, NO square root.
+#
+# The crux this witness proves on metal: a segment-versus-box crossing is EXACT with integers by the separating axis theorem in two dimensions
+# -- three axes, the box's two face normals (the segment's bounding box overlapping the box range) and the segment's own perpendicular (the four
+# corner CROSS products sharing one strict sign). Over a 26x10 scene of six singletons, a HORIZONTAL stroke pierces A, P, B and misses H, D
+# above it; line_distance == 0 forces line_pierces; E beyond the B end is line_pierced yet not pierced (pierce_only_infinite); a DIAGONAL stroke
+# shows bounding-box overlap alone is not enough -- P overlaps yet the straddle rejects it. Reversal invariant; refusals by name; determinism.
+# No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/line_pierce_witness.rish
+
+say "line_pierce: Language EN -- Season G line-to-box crossing; a keeper's stroke is FINITE and an object is a BOX, so line_pierce reads whether the drawn stroke A..B passes THROUGH each object's pixel box rather than near its center; the crossing is EXACT by the separating axis theorem in two dimensions; NO float, NO tolerance, NO square root."
+say "line_pierce: Style Radiant -- compose not braid: this rung owns only the box-crossing test over three separating axes; scene_manifest owns the per-object box the stroke is tested against, click_collinear owns the anchor centers that name the stroke, line_distance owns the off-line magnitude the zero-distance cross-check leans on, line_span owns the along-segment class the anchors read on_span. No plane of its own, no pixel written -- a reading over readings."
+say "line_pierce: Lens TAME -- the crossing walk runs components times under label_max_pixels; the doubled coordinates never exceed twice the canvas extent, so the cross products and their differences stay whole in i64; two anchors sharing a group refuse SameGroup, a background tap refuses EmptyClick, a point off the map refuses PointOutOfBounds, a label past the object count refuses BadTarget, each having read nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/line_pierce"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/line_pierce.rye -femit-bin=${bin}"]
+assert build.ok else "line_pierce: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "line_pierce: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "line_pierce: ${out}"
+
+assert selftest.out contains "GREEN image-line-pierce" else "line_pierce: selftest did not print the GREEN line"
+assert selftest.out contains "as a BOX CROSSING" else "line_pierce: the box-crossing claim did not print"
+assert selftest.out contains "approximated each object by its GROUP CENTER" else "line_pierce: the center-approximation claim did not print"
+assert selftest.out contains "line_pierce reads the object's ACTUAL EXTENT" else "line_pierce: the actual-extent claim did not print"
+assert selftest.out contains "EXACT with integers by the separating axis theorem" else "line_pierce: the separating-axis crux did not print"
+assert selftest.out contains "THE OBJECT'S BOX, NOT ITS CENTER" else "line_pierce: the box-not-center fact did not print"
+assert selftest.out contains "the anchors are pierced BECAUSE a group's box holds its own center" else "line_pierce: the anchor fact did not print"
+assert selftest.out contains "forces line_pierces TRUE" else "line_pierce: the zero-distance cross-check did not print"
+assert selftest.out contains "THE FINITE STROKE DIFFERS FROM THE INFINITE LINE EXACTLY BEYOND THE ENDS" else "line_pierce: the finite-vs-infinite crux did not print"
+assert selftest.out contains "pierce_only_infinite naming exactly that gap" else "line_pierce: the pierce_only_infinite fact did not print"
+assert selftest.out contains "BOUNDING-BOX OVERLAP ALONE IS NOT ENOUGH" else "line_pierce: the straddle-does-real-work crux did not print"
+assert selftest.out contains "the straddle does the real work a naive box-overlap cannot" else "line_pierce: the straddle claim did not print"
+assert selftest.out contains "pierce_count folds them (3: A, P, B)" else "line_pierce: the whole-scene fold did not print"
+assert selftest.out contains "refuse SameGroup" else "line_pierce: the SameGroup refusal did not print"
+assert selftest.out contains "a background tap refuses EmptyClick" else "line_pierce: the EmptyClick refusal did not print"
+assert selftest.out contains "a point off the map refuses PointOutOfBounds" else "line_pierce: the PointOutOfBounds refusal did not print"
+assert selftest.out contains "a label past the object count refuses BadTarget" else "line_pierce: the BadTarget refusal did not print"
+assert selftest.out contains "the same stroke pierces the same objects twice" else "line_pierce: determinism did not print"
+
+say "line_pierce: GREEN on metal -- a directed line read as a BOX CROSSING over a FINITE stroke, whether the drawn stroke passes through each object's actual pixel box rather than near its center; exact by the separating axis theorem in two dimensions, the box's two face normals and the segment's perpendicular; the object's box not its center, the finite stroke differing from the infinite line exactly beyond the ends, bounding-box overlap alone not enough on a diagonal; whole-scene flags/count/labels agree, reversal invariant, refusals by name, determinism. Season G open-media."

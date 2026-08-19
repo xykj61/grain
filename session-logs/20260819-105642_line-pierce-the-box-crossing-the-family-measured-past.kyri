@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260819.105642
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title line_pierce -- a directed line read as a BOX CROSSING, the object's extent not its center
+prompt ty every1 baton prin recur -- pick up the running Season G scene-read thread after the line-family set-close and REMEMBER condense; take the next agent-doable lap Lindy-first crux-first
+think Read KYRI, RADIANT_STYLE, REMEMBER, the three itineraries, and the top session-log recommends. The line family closed as a nine-module set at line_corridor_summary and REMEMBER was condensed single-stranded; the recommend was keep-going on the Season G scene-read edge.
+think Standfast: swept crux/REDS.md -- living rows 80, 83, 84, 85 all Closed or fixed-in-round; 81/78/86/87 Released; 75 stays errata behind custody gate #1 (deep debride, Keaton's hand). No open agent-closable red. Ledger under its byte bound; living_card_ascii GREEN. Standfast satisfied before new work.
+think Lindy-first crux-first: checked whether Season G's NAMED cruxes were unbuilt -- color algebra (18 color_*.rye modules) and the marquee-facts read (region_summary) both already landed and green, so they do not outrank a new scene-read rung. The true live crux is the next scene-read primitive.
+think Chose the honest gap the whole line family deferred: every line read (line_distance, line_segment_distance, line_span, line_project, line_band, line_summary, line_corridor_summary) approximates each object by its GROUP CENTER. line_pierce reads the object's ACTUAL BOX -- does the FINITE stroke cross each object's pixel box -- the read a stroke-selection surface wants.
+think The crux is that a segment-versus-box crossing is EXACT with integers by the separating axis theorem in two dimensions: three axes -- the box's two face normals (segment bounding-box overlap) and the segment's perpendicular (four corner cross products (B-A)x(corner-A) sharing one strict sign = straddle). pierces = bbox-overlap AND straddle; line_pierces = straddle alone; pierce_only_infinite = straddle and not bbox-overlap, the box twin of line_project's foot_at_end.
+think Modelled the object box in doubled corners (2*min .. 2*max), consistent with the family's min+max center convention, so all arithmetic stays in i64 with no +1 subtlety and no overflow (doubled coords <= 2*canvas extent, cross products well within i64).
+obs Designed a 26x10 scene of six 2x2 singletons hand-computed: a horizontal stroke A->B along doubled-y 13 pierces A,P,B and misses H,D above it; E beyond the B end is line_pierced yet not pierced (the twin case); a diagonal stroke A->D proves bounding-box overlap alone is not enough -- P's box overlaps yet all four crosses share a sign so the straddle rejects it. Cross-checked line_distance==0 forces line_pierces, and line_span reads the anchors on_span.
+obs GREEN on the first metal pass; tame_style_check clean (bans clean, ratchet counts unchanged); living_card_ascii GREEN after the REMEMBER edit. 224 image modules stand.
+obs Docs-sync ratchet closed on touch: line_corridor_summary had never been added to image/README.md either -- added it beside the new line_pierce entry so the family README stays honest (docs-implementation-sync).
+obs Council rota lap (item 7): read foundations/20260813-142420_mycelium-the-consensus-protocol.md -- the leaderless consensus, ninety-eight witnessed modules, one law: the order is decided once, by everyone, and read by everyone the same way.
+loom witness=line_pierce_witness wall_ms_first_green=first_pass image_modules=224 scene=26x10 components=6
+file image/line_pierce.rye the box-crossing read: pierces / line_pierces / pierce_only_infinite / pierce_flags / pierce_count / pierced_labels, exact by the 2D separating axis theorem
+file tools/line_pierce_witness.rish proves the GREEN line and every crux claim on metal
+file image/README.md added the line_pierce entry and the missing line_corridor_summary entry, family region
+file crux/REMEMBER.md live edge names line_pierce closing the line family (box not center), count 224, next crux a two-line crossing read
+recommend keep-going the live Season G scene-read edge crux-first (a two-line crossing read, or another double-seat journey); no open red, no gate reached, no network/key/funds

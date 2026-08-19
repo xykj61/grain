@@ -1,0 +1,447 @@
+//! image/line_pierce.rye -- read a DIRECTED line named by TWO anchor taps (from anchor A toward anchor B) as a BOX CROSSING: for every object,
+//! does the FINITE stroke A..B actually pass THROUGH that object's pixel box. The whole line family until now approximated each object by its
+//! GROUP CENTER -- image/line_distance.rye reads how far OFF the line a center sits, image/line_segment_distance.rye the true gap to the finite
+//! stroke, image/line_project.rye the exact foot, image/line_band.rye a corridor of half-width r around the line the center may fall inside.
+//! `line_pierce` reads the object's ACTUAL EXTENT instead: not "is the center near the line" but "does the drawn stroke cross this thing's
+//! box." That is the read a stroke-selection surface wants the day a keeper drags a line across the scene and means every thing it truly grazed,
+//! not every thing whose midpoint happened to sit within some radius. NO float, NO tolerance, NO square root.
+//!
+//! Season G (Open Media Primitives) -- the crux this rung faces is that a segment-versus-box crossing is EXACT with integers, by the separating
+//! axis theorem read in two dimensions. A finite segment (a degenerate one-dimensional shape) and an axis-aligned box are separated if and only
+//! if they are separated on one of THREE axes: the box's two face normals (the x and y axes) and the segment's own perpendicular. On the two box
+//! axes, separation is simply the segment's own bounding box failing to overlap the box's range -- integer compares. On the segment's
+//! perpendicular, the whole segment projects to a single point while the box projects to the interval of its four corners' CROSS PRODUCTS
+//! `(B - A) x (corner - A)`; the box is strictly on one side (separated) exactly when all four crosses share one strict sign. So the box is
+//! STRADDLED when the four crosses are not all positive and not all negative -- a mixed sign, or a corner exactly on the line, each an exact
+//! integer test. `pierces` is bounding-box overlap AND straddle; `line_pierces` drops the segment bound and keeps only the straddle -- whether
+//! the INFINITE line through A..B crosses the box; `pierce_only_infinite` names the object the infinite line would hit yet the finite stroke
+//! stops short of, exactly image/line_project.rye's `foot_at_end` read as a box fact. `pierce_flags` reads the whole scene's crossings at once,
+//! `pierce_count` folds them to a number, `pierced_labels` lists the crossed objects ascending -- the stroke's selection.
+//!
+//! Three facts on metal say the crux:
+//!
+//!   THE OBJECT'S BOX, NOT ITS CENTER. `line_band` folds an object into its corridor by whether its CENTER falls within a half-width; `pierce`
+//!   asks whether the drawn stroke enters the object's actual pixel box. An object the stroke passes through is pierced even when its center is
+//!   nowhere near the line's midpoint, and the two anchor objects -- whose centers ARE the stroke's own endpoints -- are always pierced, since a
+//!   group's box holds its own center.
+//!
+//!   BOUNDING-BOX OVERLAP ALONE IS NOT ENOUGH -- THE STRADDLE DOES REAL WORK. Read against a DIAGONAL stroke, an object whose box overlaps the
+//!   segment's bounding box on BOTH axes can still sit entirely to one side of the line, all four corner crosses one sign, so `pierces` is FALSE
+//!   though a naive box-overlap would say TRUE. The cross-product straddle is what separates a true crossing from a mere shared bounding box.
+//!
+//!   THE FINITE STROKE DIFFERS FROM THE INFINITE LINE EXACTLY BEYOND THE ENDS. An object beyond the B end whose box the line's direction would
+//!   cross is `line_pierces` TRUE yet `pierces` FALSE -- the infinite line reaches it, the finite stroke halts at B. `pierce_only_infinite` is
+//!   exactly that gap, the box twin of the foot clamping to an endpoint. And `line_distance.distance_of` equal to zero -- a center exactly ON
+//!   the line -- forces `line_pierces` TRUE, since the center is a box point the line passes through.
+//!
+//! Compose not braid. This rung OWNS only the box-crossing test -- the three separating axes over an object's own box and the two stroke
+//! endpoints. image/scene_manifest.rye owns the per-object box (`object_of`) the stroke is tested against; image/click_collinear.rye owns
+//! `click_group_center_doubled` and `CenterD` (the anchor centers that name the stroke); image/click_order.rye owns `click_group_id` (the group
+//! a tap lands in); image/line_distance.rye owns the off-line magnitude the zero-distance cross-check leans on; image/line_span.rye owns the
+//! along-segment class the anchors read `on_span`. No projection re-invented -- the box test needs only endpoints, corners, and the cross
+//! product every line rung already owns.
+//!
+//! Everything is bounded before a byte: the crossing walk runs `components` times, itself bounded by image/label.rye's `label_max_pixels`. The
+//! doubled coordinates never exceed twice the canvas extent, so the cross products and their differences run in i64 without overflow. A directed
+//! line needs two distinct points, so two anchor taps sharing a group refuse `SameGroup` by name; a tap on background refuses `EmptyClick`; a
+//! point off the map refuses `PointOutOfBounds`; a query naming a label past the object count refuses `BadTarget`, each having read nothing
+//! further. No network, no key, no funds -- the "which things did my stroke actually cross" a surface answers the day a keeper drags a finite
+//! line through the scene and wants exactly the objects it truly passed through, boxes and all.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/line_pierce.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const hit_test = @import("hit_test.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const click_order = @import("click_order.rye");
+const click_collinear = @import("click_collinear.rye");
+const line_distance = @import("line_distance.rye");
+const line_span = @import("line_span.rye");
+
+pub const line_pierce_version = "20260819.105642";
+
+pub const LinePierceError = error{
+    BadTarget,
+};
+
+/// The two anchor centers that name the directed line, held as doubled coordinates in i64 so the cross products never overflow -- exactly the
+/// stroke image/line_project.rye projects onto and image/line_segment_distance.rye measures to.
+const LineD = struct {
+    ax2: i64,
+    ay2: i64,
+    bx2: i64,
+    by2: i64,
+};
+
+/// An object's box in DOUBLED coordinates -- the corners of its pixel-center rectangle, `2 * (min, max)` on each axis. Consistent with the
+/// family's `min + max` center convention: the doubled center is the midpoint of `[2*min, 2*max]`. A well-formed box has `x1 >= x0` and
+/// `y1 >= y0`.
+const BoxD = struct {
+    x0: i64,
+    y0: i64,
+    x1: i64,
+    y1: i64,
+};
+
+/// Resolve the directed line from two anchor taps -- refuses `EmptyClick` on a miss and `PointOutOfBounds` off the map through the group id
+/// read, then `SameGroup` when the two anchors land in one group (a segment needs two distinct ends). Returns the two group centers as doubled
+/// coordinates, exactly the centers image/line_project.rye reads from.
+fn resolve_line(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !LineD {
+    // invariant: the clustering and the map describe the same scene.
+    assert(clustering.components == map.count);
+    // invariant: the graph and the manifest describe that same scene.
+    assert(graph.components == manifest.components);
+
+    const ga = try click_order.click_group_id(clustering, map, ax, ay);
+    const gb = try click_order.click_group_id(clustering, map, bx, by);
+    // invariant: each anchor resolved to a real dense group id.
+    assert(ga >= 1);
+    assert(gb >= 1);
+    if (ga == gb) return error.SameGroup;
+
+    const ca = try click_collinear.click_group_center_doubled(garden, graph, manifest, map, ax, ay);
+    const cb = try click_collinear.click_group_center_doubled(garden, graph, manifest, map, bx, by);
+    return LineD{ .ax2 = @as(i64, ca.cx2), .ay2 = @as(i64, ca.cy2), .bx2 = @as(i64, cb.cx2), .by2 = @as(i64, cb.cy2) };
+}
+
+/// The doubled box of a query object -- image/scene_manifest.rye's per-object frame, each corner scaled by two so it shares the doubled units
+/// the stroke endpoints live in. Refuses `BadTarget` for background or a label past the object count.
+fn object_box(manifest: scene_manifest.Manifest, lbl: u32) !BoxD {
+    if (lbl < 1 or lbl > manifest.components) return error.BadTarget;
+    const e = try scene_manifest.object_of(manifest, lbl);
+    // invariant: a manifest box is well-formed on both axes -- a real rectangle to test.
+    assert(e.max_x >= e.min_x);
+    assert(e.max_y >= e.min_y);
+    return BoxD{
+        .x0 = @as(i64, e.min_x) * 2,
+        .y0 = @as(i64, e.min_y) * 2,
+        .x1 = @as(i64, e.max_x) * 2,
+        .y1 = @as(i64, e.max_y) * 2,
+    };
+}
+
+/// The exact CROSS PRODUCT `(B - A) x (P - A)` over doubled coordinates -- positive when P sits to the left of the directed line A -> B,
+/// negative to the right, zero exactly on it. Runs in i64: differences stay under twice the canvas extent, so the product never overflows.
+fn cross(line: LineD, px: i64, py: i64) i64 {
+    const abx: i64 = line.bx2 - line.ax2;
+    const aby: i64 = line.by2 - line.ay2;
+    const apx: i64 = px - line.ax2;
+    const apy: i64 = py - line.ay2;
+    return abx * apy - aby * apx;
+}
+
+/// TRUE when the INFINITE line through A..B STRADDLES the box -- the four corner crosses are not all strictly positive and not all strictly
+/// negative, so the line is not separated from the box on its own perpendicular axis. A mixed sign, or a corner exactly on the line, straddles.
+fn straddles(line: LineD, box: BoxD) bool {
+    const c00 = cross(line, box.x0, box.y0);
+    const c10 = cross(line, box.x1, box.y0);
+    const c01 = cross(line, box.x0, box.y1);
+    const c11 = cross(line, box.x1, box.y1);
+    const any_ge0 = c00 >= 0 or c10 >= 0 or c01 >= 0 or c11 >= 0;
+    const any_le0 = c00 <= 0 or c10 <= 0 or c01 <= 0 or c11 <= 0;
+    // invariant: straddle is exactly "some corner is not strictly right AND some corner is not strictly left".
+    return any_ge0 and any_le0;
+}
+
+/// TRUE when the SEGMENT's own bounding box overlaps the object box on BOTH axes -- the two box-face separating axes. A closed-interval overlap:
+/// `max(lo) <= min(hi)` on each axis, so a segment endpoint grazing a box edge still counts.
+fn seg_bbox_overlap(line: LineD, box: BoxD) bool {
+    const sx_lo: i64 = if (line.ax2 < line.bx2) line.ax2 else line.bx2;
+    const sx_hi: i64 = if (line.ax2 > line.bx2) line.ax2 else line.bx2;
+    const sy_lo: i64 = if (line.ay2 < line.by2) line.ay2 else line.by2;
+    const sy_hi: i64 = if (line.ay2 > line.by2) line.ay2 else line.by2;
+    const x_over = (if (sx_lo > box.x0) sx_lo else box.x0) <= (if (sx_hi < box.x1) sx_hi else box.x1);
+    const y_over = (if (sy_lo > box.y0) sy_lo else box.y0) <= (if (sy_hi < box.y1) sy_hi else box.y1);
+    return x_over and y_over;
+}
+
+/// TRUE when the FINITE stroke A..B crosses object `lbl`'s box -- the three separating axes all fail to separate: the segment's bounding box
+/// overlaps the box on both axes AND the infinite line straddles it. Refuses `BadTarget`, `SameGroup`, `EmptyClick`, `PointOutOfBounds`.
+pub fn pierces(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, lbl: u32) !bool {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+
+    const box = try object_box(manifest, lbl);
+    const line = try resolve_line(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    return seg_bbox_overlap(line, box) and straddles(line, box);
+}
+
+/// TRUE when the INFINITE line through A..B crosses object `lbl`'s box -- only the straddle test, without the segment's finite bound. Equal to
+/// `pierces` for an object the stroke reaches; TRUE where the finite stroke stops short of a box its direction would cross. Refuses `BadTarget`,
+/// `SameGroup`, `EmptyClick`, `PointOutOfBounds`.
+pub fn line_pierces(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, lbl: u32) !bool {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+
+    const box = try object_box(manifest, lbl);
+    const line = try resolve_line(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    return straddles(line, box);
+}
+
+/// TRUE when the INFINITE line crosses object `lbl`'s box yet the FINITE stroke does not -- the line's direction would reach it, the stroke
+/// halts at an end first. The box twin of image/line_project.rye's `foot_at_end`: straddle holds, segment bounding-box overlap does not. Refuses
+/// `BadTarget`, `SameGroup`, `EmptyClick`, `PointOutOfBounds`.
+pub fn pierce_only_infinite(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, lbl: u32) !bool {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+
+    const box = try object_box(manifest, lbl);
+    const line = try resolve_line(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    return straddles(line, box) and !seg_bbox_overlap(line, box);
+}
+
+/// Every object's FINITE-stroke crossing, one bool per dense label 1..components, indexed by `lbl - 1`. One resolve, one bounded pass -- the
+/// whole scene's crossings at once, so a surface can light every thing the stroke passed through. The caller owns the slice. Refuses
+/// `SameGroup`, `EmptyClick`, `PointOutOfBounds` through the resolution.
+pub fn pierce_flags(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) ![]bool {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+    // invariant: the crossing walk is bounded by the component count, itself under image/label.rye's pixel ceiling.
+    assert(manifest.components <= label.label_max_pixels);
+
+    const line = try resolve_line(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const out = try garden.alloc(bool, @as(usize, manifest.components));
+    var lbl: u32 = 1;
+    while (lbl <= manifest.components) : (lbl += 1) {
+        const box = try object_box(manifest, lbl);
+        out[@as(usize, lbl - 1)] = seg_bbox_overlap(line, box) and straddles(line, box);
+    }
+    return out;
+}
+
+/// How many objects the FINITE stroke pierces -- the fold of `pierce_flags`. Refuses `SameGroup`, `EmptyClick`, `PointOutOfBounds`.
+pub fn pierce_count(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !u32 {
+    const flags = try pierce_flags(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    var n: u32 = 0;
+    for (flags) |f| {
+        if (f) n += 1;
+    }
+    // invariant: the count never exceeds the objects walked.
+    assert(n <= manifest.components);
+    return n;
+}
+
+/// The ascending labels of the objects the FINITE stroke pierces -- the stroke's selection, one pass over `pierce_flags`. The caller owns the
+/// slice; its length equals `pierce_count`. Refuses `SameGroup`, `EmptyClick`, `PointOutOfBounds`.
+pub fn pierced_labels(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) ![]u32 {
+    const flags = try pierce_flags(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const n = try pierce_count(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const out = try garden.alloc(u32, @as(usize, n));
+    var w: usize = 0;
+    var lbl: u32 = 1;
+    while (lbl <= manifest.components) : (lbl += 1) {
+        if (flags[@as(usize, lbl - 1)]) {
+            out[w] = lbl;
+            w += 1;
+        }
+    }
+    // invariant: exactly `n` labels were written -- the count and the list agree.
+    assert(w == @as(usize, n));
+    return out;
+}
+
+// --- selftest: the BOX-CROSSING crux (the object's box not its center; bounding-box overlap alone is not enough, the straddle does real work
+//     on a diagonal; the finite stroke differs from the infinite line exactly beyond the ends); anchors always pierced; line_distance == 0
+//     forces line_pierces; whole-scene flags/count/labels agree; reversal invariant; refusals by name; determinism -------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y). A 2x2 block's inclusive box is (x,y)-(x+1,y+1), so its doubled
+/// box corners are (2x, 2y)-(2x+2, 2y+2) and its doubled center (2x+1, 2y+1) -- exact integers the selftest predicts by hand.
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- THE SCENE on a 26x10 canvas: six 2x2 singletons. A HORIZONTAL stroke A -> B runs along doubled-y 13; a DIAGONAL stroke A -> D falls
+    //     away to the top. Boxes are read in DOUBLED corners (2*min .. 2*max):
+    //       H: box (10,1)-(11,2), doubled corners (20,2)-(22,4)   -- entirely ABOVE the horizontal stroke (y-range 2..4 misses 13)
+    //       D: box (16,1)-(17,2), doubled corners (32,2)-(34,4), center (33,3)  -- the DIAGONAL anchor; above the horizontal stroke
+    //       A: box (4,6)-(5,7),   doubled corners (8,12)-(10,14),  center (9,13)  -- horizontal anchor, always pierced
+    //       P: box (10,6)-(11,7), doubled corners (20,12)-(22,14), center (21,13) -- ON the horizontal stroke, PIERCED
+    //       B: box (16,6)-(17,7), doubled corners (32,12)-(34,14), center (33,13) -- horizontal anchor, always pierced
+    //       E: box (21,6)-(22,7), doubled corners (42,12)-(44,14), center (43,13) -- BEYOND the B end: line crosses, stroke stops short
+    //     Raster order (row then col) gives dense labels H=1, D=2, A=3, P=4, B=5, E=6 --------------------------------------------------------
+    var scene = try make_canvas(garden, 26, 10, 0);
+    set_block(&scene, 10, 1, 2, 2); // H: doubled box (20,2)-(22,4)   -- above the horizontal stroke
+    set_block(&scene, 16, 1, 2, 2); // D: doubled box (32,2)-(34,4)   -- diagonal anchor, above the horizontal stroke
+    set_block(&scene, 4, 6, 2, 2); //  A: doubled box (8,12)-(10,14)  -- horizontal anchor
+    set_block(&scene, 10, 6, 2, 2); // P: doubled box (20,12)-(22,14) -- on the horizontal stroke, pierced
+    set_block(&scene, 16, 6, 2, 2); // B: doubled box (32,12)-(34,14) -- horizontal anchor
+    set_block(&scene, 21, 6, 2, 2); // E: doubled box (42,12)-(44,14) -- beyond the B end
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 6) return error.SceneNotSixComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    if (clustering.clusters != 6) return error.NotSixClusters;
+
+    // dense labels: H=1, D=2, A=3, P=4, B=5, E=6
+    const h_lbl: u32 = 1;
+    const d_lbl: u32 = 2;
+    const a_lbl: u32 = 3;
+    const p_lbl: u32 = 4;
+    const b_lbl: u32 = 5;
+    const e_lbl: u32 = 6;
+
+    // confirm the raster order landed the labels the scene predicts by their box corners
+    const h_entry = try scene_manifest.object_of(manifest, h_lbl);
+    if (h_entry.min_x != 10 or h_entry.min_y != 1) return error.HNotAtExpectedBox;
+    const a_entry = try scene_manifest.object_of(manifest, a_lbl);
+    if (a_entry.min_x != 4 or a_entry.min_y != 6) return error.ANotAtExpectedBox;
+    const e_entry = try scene_manifest.object_of(manifest, e_lbl);
+    if (e_entry.min_x != 21 or e_entry.min_y != 6) return error.ENotAtExpectedBox;
+
+    // the two anchor taps that name the HORIZONTAL directed stroke A -> B (both taps land inside their own blocks); centers (9,13) and (33,13)
+    const ax: u32 = 4;
+    const ay: u32 = 6;
+    const bx: u32 = 16;
+    const by: u32 = 6;
+
+    // --- THE OBJECT'S BOX, NOT ITS CENTER -- the horizontal stroke pierces A, P, B; misses H and D (above it) -------------------------------
+    if (try pierces(garden, clustering, graph, manifest, &map, ax, ay, bx, by, a_lbl) != true) return error.ANotPierced;
+    if (try pierces(garden, clustering, graph, manifest, &map, ax, ay, bx, by, p_lbl) != true) return error.PNotPierced;
+    if (try pierces(garden, clustering, graph, manifest, &map, ax, ay, bx, by, b_lbl) != true) return error.BNotPierced;
+    if (try pierces(garden, clustering, graph, manifest, &map, ax, ay, bx, by, h_lbl) != false) return error.HWronglyPierced;
+    if (try pierces(garden, clustering, graph, manifest, &map, ax, ay, bx, by, d_lbl) != false) return error.DWronglyPierced;
+    // the anchors are pierced BECAUSE a group's box holds its own center -- the stroke's endpoints sit inside A and B
+    if (try line_span.span_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, a_lbl) != .on_span) return error.ANotOnSpan;
+
+    // --- line_distance == 0 (a center exactly ON the line) FORCES line_pierces -- A, P, B, E all sit on doubled-y 13 -----------------------
+    var on_lbl: u32 = 1;
+    while (on_lbl <= manifest.components) : (on_lbl += 1) {
+        const d0 = try line_distance.distance_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, on_lbl);
+        if (d0 == 0) {
+            if (try line_pierces(garden, clustering, graph, manifest, &map, ax, ay, bx, by, on_lbl) != true) return error.OnLineNotLinePierced;
+        }
+    }
+    // P's center (21,13) is exactly on the stroke, so its off-line distance is zero
+    if (try line_distance.distance_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, p_lbl) != 0) return error.PNotOnLine;
+
+    // --- THE FINITE STROKE DIFFERS FROM THE INFINITE LINE EXACTLY BEYOND THE ENDS -- E is line_pierced yet not pierced --------------------
+    if (try line_pierces(garden, clustering, graph, manifest, &map, ax, ay, bx, by, e_lbl) != true) return error.ELineNotPierced;
+    if (try pierces(garden, clustering, graph, manifest, &map, ax, ay, bx, by, e_lbl) != false) return error.EWronglyPierced;
+    if (try pierce_only_infinite(garden, clustering, graph, manifest, &map, ax, ay, bx, by, e_lbl) != true) return error.ENotOnlyInfinite;
+    // an object the stroke truly crosses is NOT pierce_only_infinite
+    if (try pierce_only_infinite(garden, clustering, graph, manifest, &map, ax, ay, bx, by, p_lbl) != false) return error.PWronglyOnlyInfinite;
+    // H is above the line entirely -- neither the stroke nor the infinite line crosses it
+    if (try line_pierces(garden, clustering, graph, manifest, &map, ax, ay, bx, by, h_lbl) != false) return error.HWronglyLinePierced;
+
+    // --- BOUNDING-BOX OVERLAP ALONE IS NOT ENOUGH -- read against a DIAGONAL stroke A -> D (centers (9,13) -> (33,3)), P's box overlaps the
+    //     segment bounding box on BOTH axes (x 20..22 in 9..33, y 12..14 meeting 3..13 at 12..13) yet all four corner crosses are one sign, so
+    //     P sits entirely to one side and is NOT pierced -- the straddle does the real work a naive box-overlap cannot -----------------------
+    const dax: u32 = 4; // A tap
+    const day: u32 = 6;
+    const ddx: u32 = 16; // D tap
+    const ddy: u32 = 1;
+    // the diagonal pierces its own anchors A and D
+    if (try pierces(garden, clustering, graph, manifest, &map, dax, day, ddx, ddy, a_lbl) != true) return error.DiagANotPierced;
+    if (try pierces(garden, clustering, graph, manifest, &map, dax, day, ddx, ddy, d_lbl) != true) return error.DiagDNotPierced;
+    // P: bounding boxes overlap, yet the straddle rejects it -- the decisive general-orientation case
+    if (try pierces(garden, clustering, graph, manifest, &map, dax, day, ddx, ddy, p_lbl) != false) return error.DiagPWronglyPierced;
+    // H sits on the OPPOSITE side of the diagonal from P -- also not pierced
+    if (try pierces(garden, clustering, graph, manifest, &map, dax, day, ddx, ddy, h_lbl) != false) return error.DiagHWronglyPierced;
+
+    // --- WHOLE-SCENE FLAGS, COUNT, LABELS agree with the per-object read (horizontal stroke) --------------------------------------------
+    const flags = try pierce_flags(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    if (flags.len != 6) return error.FlagsCountWrong;
+    var v: u32 = 1;
+    while (v <= manifest.components) : (v += 1) {
+        const one = try pierces(garden, clustering, graph, manifest, &map, ax, ay, bx, by, v);
+        if (flags[@as(usize, v - 1)] != one) return error.FlagsMismatch;
+    }
+    if (try pierce_count(garden, clustering, graph, manifest, &map, ax, ay, bx, by) != 3) return error.CountNot3; // A, P, B
+    const picks = try pierced_labels(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    if (picks.len != 3) return error.LabelsCountWrong;
+    if (picks[0] != a_lbl or picks[1] != p_lbl or picks[2] != b_lbl) return error.LabelsWrong;
+
+    // --- REVERSAL -- reading the SAME stroke B -> A pierces exactly the same objects (a stroke is one set of points) ---------------------
+    var rev_lbl: u32 = 1;
+    while (rev_lbl <= manifest.components) : (rev_lbl += 1) {
+        const fwd = try pierces(garden, clustering, graph, manifest, &map, ax, ay, bx, by, rev_lbl);
+        const rev = try pierces(garden, clustering, graph, manifest, &map, bx, by, ax, ay, rev_lbl);
+        if (fwd != rev) return error.ReversedPierceChanged;
+    }
+
+    // --- REFUSALS -- two anchors sharing a group refuse SameGroup; a background tap refuses EmptyClick; a point off the map refuses
+    //     PointOutOfBounds; a query label past the object count refuses BadTarget, each having read nothing --------------------------------
+    if (try hit_test.object_label_at(&map, 4, 6) != try hit_test.object_label_at(&map, 5, 7)) return error.APixelsNotSameObject;
+    if (pierces(garden, clustering, graph, manifest, &map, 4, 6, 5, 7, p_lbl)) |_| return error.SameGroupNotRefused else |err| {
+        if (err != error.SameGroup) return error.WrongSameGroupError;
+    }
+    if (try hit_test.object_label_at(&map, 0, 0) != 0) return error.BackgroundNotEmpty;
+    if (pierces(garden, clustering, graph, manifest, &map, 0, 0, bx, by, p_lbl)) |_| return error.MissNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissError;
+    }
+    if (pierces(garden, clustering, graph, manifest, &map, ax, ay, 26, 0, p_lbl)) |_| return error.OffMapNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapError;
+    }
+    if (pierces(garden, clustering, graph, manifest, &map, ax, ay, bx, by, 7)) |_| return error.BadTargetNotRefused else |err| {
+        if (err != error.BadTarget) return error.WrongBadTargetError;
+    }
+
+    // --- DETERMINISM -- the same directed stroke pierces the same objects twice -----------------------------------------------------------
+    const c1 = try pierce_count(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    const c2 = try pierce_count(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    if (c1 != c2) return error.PierceNotDeterministic;
+
+    print("GREEN image-line-pierce: read a DIRECTED line named by TWO anchor taps (from A toward B) as a BOX CROSSING -- for every object, does the FINITE stroke A..B pass THROUGH that object's pixel box. The whole line family until now approximated each object by its GROUP CENTER: line_distance reads how far OFF the line a center sits, line_project the exact foot, line_band a corridor of half-width r the center may fall inside; line_pierce reads the object's ACTUAL EXTENT -- not is the center near the line but does the drawn stroke cross this thing's box, the read a stroke-selection surface wants. The crux it faces is that a segment-versus-box crossing is EXACT with integers by the separating axis theorem in two dimensions: a finite segment and an axis-aligned box are separated exactly on one of three axes -- the box's two face normals (the segment's bounding box failing to overlap the box range) and the segment's own perpendicular (all four corner CROSS products (B - A) x (corner - A) sharing one strict sign). So pierces is bounding-box overlap AND straddle; line_pierces drops the segment bound and keeps only the straddle. Over a 26x10 scene of six singletons, a HORIZONTAL stroke A -> B along doubled-y 13 pierces A, P, B and misses H, D above it; the anchors are pierced BECAUSE a group's box holds its own center. THE OBJECT'S BOX, NOT ITS CENTER. line_distance equal to zero -- a center exactly ON the line (A, P, B, E all on doubled-y 13) -- forces line_pierces TRUE. THE FINITE STROKE DIFFERS FROM THE INFINITE LINE EXACTLY BEYOND THE ENDS -- E beyond the B end is line_pierces TRUE yet pierces FALSE, pierce_only_infinite naming exactly that gap, the box twin of the foot clamping to an endpoint. BOUNDING-BOX OVERLAP ALONE IS NOT ENOUGH -- read against a DIAGONAL stroke A -> D, P's box overlaps the segment bounding box on both axes yet all four corner crosses are one sign, so P sits entirely to one side and is NOT pierced: the straddle does the real work a naive box-overlap cannot. pierce_flags reads the whole scene's crossings at once, pierce_count folds them (3: A, P, B), pierced_labels lists them ascending; reversal B -> A pierces the same objects; two anchors sharing a group refuse SameGroup, a background tap refuses EmptyClick, a point off the map refuses PointOutOfBounds, a label past the object count refuses BadTarget, each having read nothing further; the same stroke pierces the same objects twice. Compose not braid over image/scene_manifest.rye (the per-object box), image/click_collinear.rye (the anchor centers that name the stroke), image/line_distance.rye (the off-line magnitude the zero-distance cross-check leans on), and image/line_span.rye (the along-segment class the anchors read on_span)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: line_pierce selftest\n", .{});
+    return 1;
+}
