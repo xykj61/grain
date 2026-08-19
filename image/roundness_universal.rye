@@ -1,0 +1,341 @@
+//! image/roundness_universal.rye -- close the UNIVERSAL inner-<=-outer roundness proof image/roundness.rye named as its honest next
+//! horizon: read the EXACT Euclidean inscribed radius at the shape's deepest point, so `the largest disk INSIDE the shape is no
+//! larger than the smallest disk AROUND it` holds for ARBITRARY diagonal-limited shapes, not only the orthogonal fixtures the
+//! chamfer bound was EXACT on.
+//!
+//! Season G (Open Media Primitives) -- image/roundness.rye reconciled the INNER inscribed bound and the OUTER enclosing bound in one
+//! shared doubled pixel-square convention, and proved `r_in^2 <= r_out^2` EXACTLY for the orthogonal geometry its fixtures were
+//! limited by. Its inner bound reads the chamfer 3-4 depth `d` and reports `(2d - 3)^2 / 9` doubled^2. The chamfer is EXACT when the
+//! nearest background is reached STRAIGHT (a block, a ring wall, a bar), yet it OVERCREDITS when the nearest background is reached
+//! DIAGONALLY: for a small filled diamond the deepest pixel's nearest background sits at pixel offset (1, 2), a chamfer depth of 7,
+//! so image/roundness.rye reports an inner squared radius of `(2*7 - 3)^2 / 9 = 121/9 ~ 13.44` doubled^2 -- yet the true inscribed
+//! disk there reaches only the corner of that background pixel, squared radius EXACTLY 10 doubled^2. The chamfer disk of the claimed
+//! radius pokes PAST that corner into background: it is not truly inscribed. So image/roundness.rye's own inequality, while never
+//! observed to flip, rests on the orthogonal caveat it stated honestly; a universal proof wants an EXACT inner.
+//!
+//! This rung reads that exact inner directly, sidestepping the chamfer approximation entirely. The largest disk that fits inside the
+//! foreground region, centered at the deepest pixel `(cx, cy)`, has a radius equal to the EXACT Euclidean distance from that pixel's
+//! center to the nearest BACKGROUND -- and that distance is an exact integer in the doubled pixel-square convention. In doubled
+//! coordinates a pixel `(x, y)` is the axis-aligned square with corners `(2x, 2y)` and `(2x+2, 2y+2)`, so a pixel center lands on the
+//! ODD point `(2x+1, 2y+1)`, every coordinate an exact integer. The exact inner squared radius is then:
+//!
+//!   `exact_inner_sq(src, cx, cy)` = the MINIMUM, over every background pixel SQUARE and the image exterior, of the exact squared
+//!   distance from the center `(2cx+1, 2cy+1)` to the nearest point of that square (each coordinate CLAMPED into the square's doubled
+//!   bounds, the difference squared and summed). An integer in doubled^2, NO float, NO tolerance.
+//!
+//! Why this is the UNIVERSAL proof, with no orthogonal caveat -- the geometric lemma stated positively. The open disk of squared
+//! radius `R = exact_inner_sq` centered at `c` contains NO background point: any point nearer than `sqrt(R)` to `c` lies in no
+//! background square (each is farther than `sqrt(R)` by construction) and outside no image edge (the exterior folded into the
+//! minimum), so it lies in a FOREGROUND square -- the disk sits inside the region. The region sits inside the outer enclosing disk
+//! (image/min_enclosing_circle.rye covers every region corner). A disk inside a region inside a covering disk has radius no larger
+//! than the covering radius: the point on the inner disk's rim farthest along the ray from the outer center is in the region, hence
+//! in the outer disk, so `r_in <= r_out`. This holds for EVERY shape -- diagonal, concave, holed -- because it verifies containment
+//! rather than approximating a distance. `inner_within_outer_universal(bounds)` decides `exact_inner <= outer` by EXACT i128
+//! cross-multiplication of the two squared-radius rationals, and it is always TRUE.
+//!
+//! `chamfer_overcredits(bounds)` names the artifact plainly: TRUE when image/roundness.rye's chamfer inner strictly EXCEEDS this exact
+//! inner (`121/9 > 10` for the diamond), FALSE when they agree (`25 == 25` for the orthogonal block, `1 == 1` for the ring wall) --
+//! the exact reader confirming the chamfer's orthogonal-exactness claim where it holds and correcting it where it does not.
+//!
+//! Compose not braid. This rung OWNS only the exact nearest-background-square scan and the universal comparison over it.
+//! image/roundness.rye owns the shared doubled convention, the outer enclosing bound, and the deepest-pixel center; image/branch.rye
+//! owns the on/off read; image/qoi.rye owns the RGBA buffer. No gather beyond the background scan, no hull, no codec, no color, no
+//! pixel-writing loop.
+//!
+//! Everything is bounded before a byte: the background scan visits each pixel once under image/qoi.rye's pixel ceiling; doubled
+//! coordinates stay under 2^15, so a squared distance stays under 2^30 and every i128 product far under the ceiling. An empty source
+//! refuses `EmptySource` and an all-background mask `NoForeground`, each through image/roundness.rye before a background pixel is
+//! scanned. All-or-nothing, never a half-read bound. No network, no key, no funds -- the roundness a surface trusts the day it asks
+//! whether a shape is round, proven for any shape and not only the straight ones, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/roundness_universal.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const roundness = @import("roundness.rye");
+const branch = @import("branch.rye");
+const qoi = @import("qoi.rye");
+
+pub const roundness_universal_version = "20260818.224242";
+
+/// The reconciled UNIVERSAL disk bounds of a shape. `exact_inner` is the EXACT Euclidean inscribed squared radius at the deepest
+/// pixel (doubled^2, den 1); `chamfer_inner` is image/roundness.rye's chamfer-derived inner squared radius (the bound this rung
+/// proves exact against); `outer` is the exact outer enclosing squared radius, both carried straight from image/roundness.rye. `(cx,
+/// cy)` and `chamfer` name the deepest pixel's provenance. `exact_inradius` and `circumradius` are the reported pixel radii (square
+/// roots into f64) for display, exactly as the parent readers report their own.
+pub const UniversalBounds = struct {
+    exact_inner: roundness.SquaredRadius,
+    chamfer_inner: roundness.SquaredRadius,
+    outer: roundness.SquaredRadius,
+    exact_inradius: f64,
+    circumradius: f64,
+    chamfer: u32,
+    cx: u32,
+    cy: u32,
+};
+
+/// Clamp the doubled center coordinate `c` into the doubled pixel-square bounds `[lo, hi]`, returning the signed offset `c - clamped`
+/// -- the exact one-axis distance from the center to the nearest point of that square's extent on this axis. Exact in i128.
+fn axis_offset(c: i128, lo: i128, hi: i128) i128 {
+    // invariant: a doubled pixel square has a real extent, its low bound below its high bound.
+    assert(lo < hi);
+    if (c < lo) return lo - c;
+    if (c > hi) return c - hi;
+    return 0;
+}
+
+/// The EXACT inscribed squared radius at pixel `(cx, cy)` -- the minimum, over every background pixel square and the image exterior,
+/// of the exact squared distance from the center `(2cx+1, 2cy+1)` to the nearest point of that square, in DOUBLED^2 units. The
+/// largest disk that fits inside the foreground region centered here; an exact integer, NO float, NO tolerance. Assumes at least one
+/// background bound exists (the image edge always supplies one), so the returned radius is finite and positive.
+pub fn exact_inradius_sq(src: *const qoi.Pixmap, cx: u32, cy: u32) roundness.SquaredRadius {
+    // invariant: the deepest pixel lies inside the source on both axes.
+    assert(cx < src.width);
+    assert(cy < src.height);
+    const cx2: i128 = 2 * @as(i128, cx) + 1;
+    const cy2: i128 = 2 * @as(i128, cy) + 1;
+    const w2: i128 = 2 * @as(i128, src.width);
+    const h2: i128 = 2 * @as(i128, src.height);
+
+    // the image EXTERIOR is background: the disk cannot reach past any image edge. The nearest exterior point sits on the closest
+    // edge, so its squared distance is the smallest edge gap squared. This alone bounds the minimum, so the scan below never leaves
+    // `best` unset even for an all-foreground image.
+    const gap_left: i128 = cx2;
+    const gap_right: i128 = w2 - cx2;
+    const gap_top: i128 = cy2;
+    const gap_bottom: i128 = h2 - cy2;
+    var edge: i128 = gap_left;
+    if (gap_right < edge) edge = gap_right;
+    if (gap_top < edge) edge = gap_top;
+    if (gap_bottom < edge) edge = gap_bottom;
+    // invariant: an interior pixel center sits a positive distance from every image edge.
+    assert(edge > 0);
+    var best: i128 = edge * edge;
+
+    // scan every BACKGROUND pixel square for a nearer bound. Each is visited once; the loop is bounded by the source extent, itself
+    // under image/qoi.rye's pixel ceiling.
+    var y: u32 = 0;
+    while (y < src.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x < src.width) : (x += 1) {
+            const here: usize = (@as(usize, y) * @as(usize, src.width) + @as(usize, x)) * 4;
+            if (branch.is_on(src.pixels, here)) continue;
+            const x_lo: i128 = 2 * @as(i128, x);
+            const y_lo: i128 = 2 * @as(i128, y);
+            const dx: i128 = axis_offset(cx2, x_lo, x_lo + 2);
+            const dy: i128 = axis_offset(cy2, y_lo, y_lo + 2);
+            const d2: i128 = dx * dx + dy * dy;
+            // invariant: a doubled squared distance is non-negative and stays far under the i128 ceiling.
+            assert(d2 >= 0);
+            assert(d2 < (@as(i128, 1) << 40));
+            if (d2 < best) best = d2;
+        }
+    }
+    // invariant: the exact inner squared radius is positive -- the center sits strictly inside the foreground.
+    assert(best > 0);
+    return roundness.SquaredRadius{ .num = best, .den = 1 };
+}
+
+/// The reconciled UNIVERSAL disk bounds of `src` -- read image/roundness.rye's reconciled bounds (the deepest-pixel center, the
+/// chamfer inner, and the exact outer), then read the EXACT inner squared radius at that center. Refuses `EmptySource` /
+/// `NoForeground` (through image/roundness.rye -> image/inscribed_disk.rye) and `RegionTooLarge` past the outer's corner ceiling.
+pub fn universal_bounds(allocator: std.mem.Allocator, src: *const qoi.Pixmap) !UniversalBounds {
+    const rb = try roundness.disk_bounds(allocator, src);
+    const exact = exact_inradius_sq(src, rb.cx, rb.cy);
+    // invariant: the exact inner never exceeds the chamfer inner -- the chamfer bound is an over-estimate, exact for straight reach.
+    assert(exact.num * rb.inner.den <= rb.inner.num * exact.den);
+
+    const exact_ratio: f64 = @as(f64, @floatFromInt(exact.num)) / @as(f64, @floatFromInt(exact.den));
+    const exact_inradius: f64 = @sqrt(exact_ratio) / 2.0; // doubled radius halved into pixels
+
+    return UniversalBounds{
+        .exact_inner = exact,
+        .chamfer_inner = rb.inner,
+        .outer = rb.outer,
+        .exact_inradius = exact_inradius,
+        .circumradius = rb.circumradius,
+        .chamfer = rb.chamfer,
+        .cx = rb.cx,
+        .cy = rb.cy,
+    };
+}
+
+/// TRUE when the EXACT inner inscribed disk lies within the outer enclosing disk -- `exact_inner <= outer`, decided by EXACT i128
+/// cross-multiplication of the two squared-radius rationals (both denominators positive), NO tolerance. The UNIVERSAL reconciliation
+/// -- always true, for arbitrary diagonal-limited shapes, because the exact inner is verified inside the region rather than
+/// approximated. The proof image/roundness.rye could GUARANTEE only for orthogonal geometry, now closed for every shape.
+pub fn inner_within_outer_universal(bounds: UniversalBounds) bool {
+    // invariant: both squared radii are proper rationals with positive denominators, so cross-multiplication preserves the order.
+    assert(bounds.exact_inner.den > 0);
+    assert(bounds.outer.den > 0);
+    const lhs: i128 = bounds.exact_inner.num * bounds.outer.den;
+    const rhs: i128 = bounds.outer.num * bounds.exact_inner.den;
+    // invariant: both sides stay far under the i128 ceiling for doubled in-image coordinates.
+    assert(lhs < (@as(i128, 1) << 120));
+    assert(rhs < (@as(i128, 1) << 120));
+    return lhs <= rhs;
+}
+
+/// TRUE when image/roundness.rye's chamfer inner strictly EXCEEDS this exact inner -- the diagonal-reach OVERCREDIT, named plainly.
+/// FALSE when the two agree (the straight-reach geometry the chamfer is exact on). Decided by EXACT i128 cross-multiplication, NO
+/// tolerance -- the exact reader confirming the chamfer where it holds and correcting it where it does not.
+pub fn chamfer_overcredits(bounds: UniversalBounds) bool {
+    // invariant: both squared radii are proper rationals with positive denominators.
+    assert(bounds.chamfer_inner.den > 0);
+    assert(bounds.exact_inner.den > 0);
+    const cham: i128 = bounds.chamfer_inner.num * bounds.exact_inner.den;
+    const exact: i128 = bounds.exact_inner.num * bounds.chamfer_inner.den;
+    return cham > exact;
+}
+
+// --- selftest: the DECISIVE overcredit crux (an orthogonal 5x5 block where the exact inner EQUALS the chamfer inner 25, against a
+//     filled diamond where the chamfer OVERCREDITS 121/9 past the exact 10 because its nearest background is reached diagonally); the
+//     UNIVERSAL inequality holding on both, and on the ring; refusals; determinism ------------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Set one pixel back to background at (x, y) -- carve a hole in a filled shape.
+fn clear_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 0;
+    img.pixels[di + 1] = 0;
+    img.pixels[di + 2] = 0;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn approx(a: f64, b: f64, tol: f64) bool {
+    const d = if (a >= b) a - b else b - a;
+    return d <= tol;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- THE ORTHOGONAL BLOCK -- the chamfer is EXACT for straight reach, so the exact inner EQUALS the chamfer inner. A solid 5x5
+    //     block: deepest pixel (3,3), chamfer depth 9, chamfer inner (2*9-3)^2/9 = 225/9 = 25 doubled^2; the exact inner reads the
+    //     nearest background square straight out at squared distance 25 -- identical, no overcredit --------------------------------
+    var block = try make_canvas(garden, 7, 7, 0);
+    set_block(&block, 1, 1, 5, 5);
+    const block_b = try universal_bounds(garden, &block);
+    if (!(block_b.exact_inner.num == 25 and block_b.exact_inner.den == 1)) return error.BlockExactNot25;
+    // the chamfer inner is 225/9, which EQUALS the exact 25 by cross-multiplication (225 == 25*9)
+    if (!(block_b.chamfer_inner.num == 225 and block_b.chamfer_inner.den == 9)) return error.BlockChamferNot25;
+    if (chamfer_overcredits(block_b)) return error.BlockFalselyOvercredits; // 25 == 25, the chamfer exact here
+    if (!inner_within_outer_universal(block_b)) return error.BlockUniversalFlips; // 25 <= 50
+    if (!approx(block_b.exact_inradius, 2.5, 1e-9)) return error.BlockExactInradiusNotTwoAndHalf;
+
+    // --- THE DIAGONAL DIAMOND -- the chamfer OVERCREDITS where the nearest background is reached DIAGONALLY. A filled diamond of L1
+    //     radius 2: deepest pixel (2,2), its nearest background pixel at offset (1,2), chamfer depth 3*2+1 = 7, so image/roundness.rye
+    //     reports an inner of (2*7-3)^2/9 = 121/9 ~ 13.44 doubled^2. Yet the true inscribed disk reaches only the CORNER of that
+    //     background pixel, exact squared radius 10 doubled^2 -- the chamfer disk of radius 121/9 pokes PAST that corner, not truly
+    //     inscribed. The exact reader corrects it, and the UNIVERSAL inequality holds where the orthogonal caveat could not reach ---
+    var diamond = try make_canvas(garden, 5, 5, 0);
+    set_dot(&diamond, 2, 0);
+    set_dot(&diamond, 1, 1);
+    set_dot(&diamond, 2, 1);
+    set_dot(&diamond, 3, 1);
+    set_block(&diamond, 0, 2, 5, 1); // the full middle row
+    set_dot(&diamond, 1, 3);
+    set_dot(&diamond, 2, 3);
+    set_dot(&diamond, 3, 3);
+    set_dot(&diamond, 2, 4);
+    const diamond_b = try universal_bounds(garden, &diamond);
+    // the deepest pixel is the diamond's center (2,2), chamfer depth 7 (its nearest background at offset (1,2), a DIAGONAL reach)
+    if (!(diamond_b.cx == 2 and diamond_b.cy == 2 and diamond_b.chamfer == 7)) return error.DiamondCenterWrong;
+    // image/roundness.rye's chamfer inner is 121/9 -- the overcredit
+    if (!(diamond_b.chamfer_inner.num == 121 and diamond_b.chamfer_inner.den == 9)) return error.DiamondChamferNot121Ninths;
+    // the EXACT inner is 10 doubled^2 -- the true inscribed disk reaching the nearest background pixel's corner
+    if (!(diamond_b.exact_inner.num == 10 and diamond_b.exact_inner.den == 1)) return error.DiamondExactNot10;
+    // the chamfer OVERCREDITS: 121/9 ~ 13.44 strictly exceeds the exact 10 (121 > 90 by cross-multiplication)
+    if (!chamfer_overcredits(diamond_b)) return error.DiamondDoesNotOvercredit;
+    // yet the UNIVERSAL inequality holds -- the EXACT inner 10 sits within the outer enclosing disk, with no orthogonal caveat
+    if (!inner_within_outer_universal(diamond_b)) return error.DiamondUniversalFlips;
+
+    // --- THE RING WALL -- a hollow 5x5 ring, the deepest pixel a one-pixel-thick wall (chamfer depth 3), reaches its nearest
+    //     background STRAIGHT (the hole on one side, the outside on the other), so the exact inner EQUALS the chamfer inner 1 -------
+    var ring = try make_canvas(garden, 7, 7, 0);
+    set_block(&ring, 1, 1, 5, 5);
+    var hy: u32 = 2;
+    while (hy <= 4) : (hy += 1) {
+        var hx: u32 = 2;
+        while (hx <= 4) : (hx += 1) clear_dot(&ring, hx, hy);
+    }
+    const ring_b = try universal_bounds(garden, &ring);
+    if (!(ring_b.exact_inner.num == 1 and ring_b.exact_inner.den == 1)) return error.RingExactNotOne;
+    if (chamfer_overcredits(ring_b)) return error.RingFalselyOvercredits; // 1 == 1, the wall reach straight
+    if (!inner_within_outer_universal(ring_b)) return error.RingUniversalFlips;
+    // the exact inner separates the block from the ring the outer bound cannot: block 25 strictly above ring 1
+    const block_over_ring: bool = block_b.exact_inner.num * ring_b.exact_inner.den > ring_b.exact_inner.num * block_b.exact_inner.den;
+    if (!block_over_ring) return error.ExactInnerDoesNotSeparate;
+
+    // --- REFUSALS by name -- an all-background mask holds no inscribed disk, a zero-size source is empty (both through
+    //     image/roundness.rye -> image/inscribed_disk.rye before a background pixel is scanned) -----------------------------------
+    var blank = try make_canvas(garden, 4, 4, 0);
+    if (universal_bounds(garden, &blank)) |_| return error.BlankNotRefused else |err| {
+        if (err != error.NoForeground) return error.WrongBlankError;
+    }
+    var empty_src = qoi.Pixmap{ .width = 0, .height = 0, .channels = 4, .colorspace = 0, .pixels = &[_]u8{} };
+    if (universal_bounds(garden, &empty_src)) |_| return error.EmptyNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- DETERMINISM -- the same mask reads the same exact bounds twice ---------------------------------------------------------
+    const d1 = try universal_bounds(garden, &diamond);
+    const d2 = try universal_bounds(garden, &diamond);
+    if (d1.exact_inner.num != d2.exact_inner.num or d1.exact_inner.den != d2.exact_inner.den) return error.BoundsNotDeterministic;
+
+    print("GREEN image-roundness-universal: close the UNIVERSAL inner-<=-outer roundness proof for ARBITRARY diagonal-limited shapes by reading the EXACT Euclidean inscribed radius at the deepest pixel -- the nearest-background-square distance in the shared doubled pixel-square convention, an exact integer, NO float, NO tolerance, sidestepping the chamfer approximation entirely; the DECISIVE overcredit crux: an orthogonal 5x5 block reaches its nearest background STRAIGHT so the exact inner 25 EQUALS image/roundness.rye's chamfer inner 225/9 (the chamfer exact for orthogonal geometry, as it claimed), yet a filled DIAMOND reaches its nearest background DIAGONALLY (deepest pixel (2,2), nearest background at pixel offset (1,2), chamfer depth 7) so the chamfer OVERCREDITS an inner of (2*7-3)^2/9 = 121/9 ~ 13.44 doubled^2 while the true inscribed disk reaches only the CORNER of that background pixel, exact squared radius EXACTLY 10 doubled^2 -- the chamfer disk of the claimed radius pokes PAST that corner into background, not truly inscribed; chamfer_overcredits reads TRUE on the diamond (121 > 90 by exact i128 cross-multiplication) and FALSE on the block and the ring wall (25 == 25, 1 == 1) where the chamfer is exact; the UNIVERSAL proof holds by the geometric lemma -- a disk verified inside the region sits inside any disk covering the region -- so inner_within_outer_universal decides exact_inner <= outer exactly and is ALWAYS true, closing the horizon image/roundness.rye could only GUARANTEE for orthogonal shapes; the exact inner separates the block (25) from the ring wall (1) the outer bound cannot; an all-background mask refuses NoForeground and a zero-size source EmptySource before a background pixel is scanned; the same mask reads the same exact bounds deterministically\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: roundness_universal selftest\n", .{});
+    return 1;
+}
