@@ -24,6 +24,12 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260819.104554` -- REMEMBER's three giant prose run-ons (167 KB of a 197 KB card) folded to single-stranded pointers at the line-family set-close
+
+**Walk-back nib:** `82b7ee3342` -- reachable in normal history (a working-tree condense, not a history rewrite); the full departing card is one `git show` away.
+**Swept:** the three accreted run-on lines that had survived every prior condense -- the current **Live edge** chronicle (line 16, ~64 KB: every scene-read module named inline with its stamp and GREEN status, a second copy of the log index), the stale **Latest lap `20260813`** Season-A/HUNK snapshot (line 38, ~56 KB), and the **BUHR OPENED `20260812`** exploration bullet that had drifted *into* the custody-gates numbered list (line 99, ~47 KB). Folded to short pointers naming only the live edge and the next crux, directing to `session-logs/` and `image/README.md` for per-rung detail. The card fell from ~197 KB to under its advisory bound.
+**What waits there, worth recalling:** at nib `82b7ee3342` the departing card holds the complete inline prose for the whole Season G scene-read line and cluster family (line_distance through line_corridor_summary, the selection ladder, object_relation, scene_graph), the full HUNK Season-A opening account, and the whole BUHR intelligence-equinox exploration -- `git show 82b7ee3342:crux/REMEMBER.md`. No fact was lost: each rung's crux, bounds, and metal-GREEN account lives verbatim in its dated `.kyri` session log, `image/README.md` carries the durable per-module entries, and the season table plus the double-seat itineraries hold the arc-level record. The condense keeps the operator card the live card of what is next, never a second copy of the log index.
+
 ### `20260818.225452` -- REMEMBER prior-nib comment wall folded to a pointer; Now reaimed at the roundness + Season G completion boundary
 
 **Walk-back nib:** `d2368cb9db` -- reachable in normal history (a working-tree condense, not a history rewrite); the full departing card is one `git show` away.
