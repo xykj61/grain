@@ -1,0 +1,342 @@
+//! image/cluster_connectivity.rye -- WHEN the whole cluster layout becomes one connected region as reach grows: the CONNECTIVITY THRESHOLD
+//! (the smallest reach at which the thresholded true-distance graph spans every cluster in one component -- the MST bottleneck) and the
+//! COMPONENT COUNT at any reach (how many connected pieces the layout falls into at a threshold). Read straight from image/cluster_graph.rye's
+//! precomputed cluster matrix through `graph_distance`, and its ascending distinct distances through image/cluster_graph_profile.rye's
+//! histogram -- exact integers, NO float, NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/cluster_graph.rye joins the cluster-pair read over every cluster pair into one matrix and reads
+//! the thresholded neighbors, degree, and edge counts; image/cluster_graph_profile.rye reads the whole edge-count CURVE as a distribution over
+//! thresholds (the distance histogram and its cumulative edge count). This rung reads the one question the edge COUNT can never answer -- not
+//! how many edges a reach holds, but whether those edges CONNECT the whole layout, and the smallest reach at which they do. A surface names it
+//! the day it must ask "at what reach do these scattered regions read as one group," rather than merely "how many pairs are near."
+//!
+//! The DECISIVE crux -- connectivity is NOT the edge count and NOT the diameter; it needs the graph's STRUCTURE, which pair bridges which:
+//!
+//!   THE CONNECTIVITY THRESHOLD IS THE MST BOTTLENECK, BELOW THE DIAMETER WHEN A HUB BRIDGES. Over the three-cluster scene (distances 2, 3,
+//!   10) the layout becomes one connected region at reach 3 -- the median edge, NOT the diameter 10 -- because one cluster is the hub the far
+//!   pair reaches THROUGH, so their own direct edge of 10 is never needed. The connectivity threshold sits strictly between the closest gap
+//!   (2, not yet connected) and the diameter (10, far past connected): a genuinely new quantity, the largest edge of the minimum spanning
+//!   tree, exactly the star-not-clique lesson of image/cluster_graph.rye read as a single reach.
+//!
+//!   MORE EDGES IS NOT MORE CONNECTED. Over a four-cluster scene -- a tight triangle of three clusters all mutually within reach 3, plus one
+//!   far outlier 9 away -- the edge count at reach 3 is already three (the whole triangle), yet the layout is still in TWO components (the
+//!   triangle and the lone outlier): `within_edges` counts three edges while `component_count_at` reads two pieces. The count curve rises while
+//!   connectivity waits on the single bridge to the outlier, so the connectivity threshold (9) is decided by the one far edge, not by the many
+//!   near ones. A box comparison, an edge count, a distance histogram -- none of them decides connectivity; only the union of the real edges does.
+//!
+//! Compose not braid. This rung OWNS only the connectivity reads -- the union-find over thresholded edges, the component count, the bottleneck
+//! sweep. No cluster distance recomputed (image/cluster_graph.rye owns the precomputed matrix), no ascending distinct distance re-sorted
+//! (image/cluster_graph_profile.rye owns the histogram), no connectivity of OBJECTS recomputed (image/overlap_clusters.rye owns that, a level
+//! below). A reading over a reading over a reading over a reading over a reading over a reading over a reading.
+//!
+//! Everything is bounded before a byte: the cluster count can never exceed the object count, itself capped at `scene_graph_max_objects`, so
+//! the union-find forest is at most that many slots, every find walks a chain no longer than the cluster count, and the bottleneck sweep runs
+//! at most one round per distinct distance. A lone-cluster layout is already one whole -- its connectivity threshold is zero and its component
+//! count one, at every reach. Every threshold is a valid input and every cluster matrix is valid, so these reads never refuse. No network, no
+//! key, no funds -- the reach at which a layout reads as one, on our own geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/cluster_connectivity.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const cluster_graph = @import("cluster_graph.rye");
+const cluster_graph_profile = @import("cluster_graph_profile.rye");
+
+pub const cluster_connectivity_version = "20260819.015409";
+
+/// Find the representative root of slot `x` in the union-find forest, halving the path as it climbs so later finds are shorter. Iterative and
+/// bounded -- the chain is at most the cluster count long -- so no unbounded recursion.
+fn uf_find(parent: []u32, x: u32) u32 {
+    // invariant: the index names a real slot in the forest.
+    assert(x < parent.len);
+    var r: u32 = x;
+    var guard: u32 = 0;
+    while (parent[r] != r) : (guard += 1) {
+        // invariant: a valid forest chain is no longer than the cluster count, so the walk terminates.
+        assert(guard <= parent.len);
+        parent[r] = parent[parent[r]];
+        r = parent[r];
+    }
+    // invariant: the returned root is its own parent -- a true representative.
+    assert(parent[r] == r);
+    return r;
+}
+
+/// Union the sets of slots `x` and `y` -- attach the larger-numbered root beneath the smaller, so the forest stays deterministic regardless of
+/// the order edges are read in. Returns true when a real merge happened (the two were in different sets), false when they already shared a root.
+fn uf_union(parent: []u32, x: u32, y: u32) bool {
+    // invariant: both indices name real slots in the forest.
+    assert(x < parent.len);
+    assert(y < parent.len);
+    const rx = uf_find(parent, x);
+    const ry = uf_find(parent, y);
+    if (rx == ry) return false;
+    if (rx < ry) {
+        parent[ry] = rx;
+    } else {
+        parent[rx] = ry;
+    }
+    return true;
+}
+
+/// HOW MANY connected COMPONENTS the layout falls into at reach `thr` -- union every cluster pair whose true distance is at most `thr`, then
+/// count the distinct roots. At reach zero every cluster is its own piece (distinct 8-components never sit closer than the floor of two); at a
+/// reach past the diameter the whole layout is one piece. A lone-cluster layout reads one at every reach.
+pub fn component_count_at(allocator: std.mem.Allocator, cg: cluster_graph.ClusterGraph, thr: u32) !u32 {
+    // invariant: the matrix holds exactly one cell per ordered cluster pair.
+    assert(cg.dist.len == @as(usize, cg.clusters) * @as(usize, cg.clusters));
+    // invariant: a real cluster graph holds at least one cluster.
+    assert(cg.clusters >= 1);
+
+    const n: u32 = cg.clusters;
+    const parent = try allocator.alloc(u32, n);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) parent[i] = i;
+
+    var comps: u32 = n;
+    var a: u32 = 1;
+    while (a <= n) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b <= n) : (b += 1) {
+            const d = try cluster_graph.graph_distance(cg, a, b);
+            if (d <= thr) {
+                if (uf_union(parent, a - 1, b - 1)) comps -= 1;
+            }
+        }
+    }
+
+    // invariant: the component count is at least one whole, and never more than every cluster standing alone.
+    assert(comps >= 1);
+    assert(comps <= n);
+    return comps;
+}
+
+/// TRUE when the whole layout is one connected region at reach `thr` -- every cluster reachable from every other through edges no longer than
+/// `thr`. A lone-cluster layout is trivially connected at every reach.
+pub fn is_connected_at(allocator: std.mem.Allocator, cg: cluster_graph.ClusterGraph, thr: u32) !bool {
+    // invariant: the matrix holds exactly one cell per ordered cluster pair.
+    assert(cg.dist.len == @as(usize, cg.clusters) * @as(usize, cg.clusters));
+    // invariant: a real cluster graph holds at least one cluster.
+    assert(cg.clusters >= 1);
+    if (cg.clusters < 2) return true;
+    return (try component_count_at(allocator, cg, thr)) == 1;
+}
+
+/// The CONNECTIVITY THRESHOLD -- the smallest reach at which the whole layout becomes one connected region, the MST bottleneck (the largest
+/// edge of a minimum spanning tree). Sweep the ascending distinct distances, accreting edges into one union-find until every cluster shares a
+/// root, and return the distance that closed the last gap. A lone-cluster layout is already one whole, so its threshold is zero.
+pub fn connectivity_threshold(allocator: std.mem.Allocator, cg: cluster_graph.ClusterGraph) !u32 {
+    // invariant: the matrix holds exactly one cell per ordered cluster pair.
+    assert(cg.dist.len == @as(usize, cg.clusters) * @as(usize, cg.clusters));
+    // invariant: a real cluster graph holds at least one cluster.
+    assert(cg.clusters >= 1);
+
+    const n: u32 = cg.clusters;
+    if (n < 2) return 0;
+
+    // ascending distinct distances -- the only reaches at which the component count can change (an edge appears only at its own distance).
+    const hist = try cluster_graph_profile.distance_histogram(allocator, cg);
+    const parent = try allocator.alloc(u32, n);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) parent[i] = i;
+
+    var comps: u32 = n;
+    var bi: usize = 0;
+    while (bi < hist.len) : (bi += 1) {
+        const d = hist[bi].distance;
+        // add every edge at exactly this distance, then ask whether the layout has become one whole.
+        var a: u32 = 1;
+        while (a <= n) : (a += 1) {
+            var b: u32 = a + 1;
+            while (b <= n) : (b += 1) {
+                if ((try cluster_graph.graph_distance(cg, a, b)) == d) {
+                    if (uf_union(parent, a - 1, b - 1)) comps -= 1;
+                }
+            }
+        }
+        if (comps == 1) return d;
+    }
+
+    // invariant: at the diameter every pair is an edge, so a complete graph is always connected -- the sweep must have returned inside.
+    assert(comps == 1);
+    // unreachable in practice; the last distinct distance is the diameter, which always connects.
+    return hist[hist.len - 1].distance;
+}
+
+// --- selftest: connectivity is NOT the edge count and NOT the diameter -- it needs the graph's STRUCTURE. Scene ONE is cluster_graph's own
+//     three-cluster scene (distances 2, 3, 10): the connectivity threshold is the MEDIAN edge 3, below the diameter 10, because one cluster is
+//     the hub the far pair reaches through. Scene TWO is a four-cluster scene -- a tight triangle plus a far outlier -- where the edge count at
+//     reach 3 is already three yet the layout is still TWO components, so more edges is not more connected ---------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a corner bracket-L: a vertical arm down column `x` from `y0` to `y1`, and a horizontal arm along row `yr` from `x0` to `x1`.
+fn set_corner_l(img: *qoi.Pixmap, x: u32, y0: u32, y1: u32, yr: u32, x0: u32, x1: u32) void {
+    // invariant: the arms run in the positive direction and stay inside the buffer.
+    assert(y1 >= y0);
+    assert(x1 >= x0);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) set_dot(img, x, yy);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) set_dot(img, xx, yr);
+}
+
+/// Paint a 1-pixel-thick RING (a rectangle outline) with corners `(x0, y0)` and `(x1, y1)` -- a holed object, its interior background.
+fn set_ring(img: *qoi.Pixmap, x0: u32, y0: u32, x1: u32, y1: u32) void {
+    // invariant: the ring spans at least a 3x3 box so it encloses a real interior hole, and stays inside the buffer.
+    assert(x1 >= x0 + 2);
+    assert(y1 >= y0 + 2);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) {
+        set_dot(img, xx, y0);
+        set_dot(img, xx, y1);
+    }
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) {
+        set_dot(img, x0, yy);
+        set_dot(img, x1, yy);
+    }
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// Build the cluster graph of a scene, checking the object and cluster counts along the way -- a local helper so every scene reads the same.
+fn graph_of(garden: std.mem.Allocator, img: *qoi.Pixmap, want_objects: u32, want_clusters: u32) !cluster_graph.ClusterGraph {
+    // invariant: the caller names how many objects and clusters the scene must hold, so a mislaid pixel fails loud.
+    assert(want_objects >= 1);
+    assert(want_clusters >= 1);
+    const map = try label.label_components(garden, img);
+    if (map.count != want_objects) return error.SceneObjectCountWrong;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    if (overlap_clusters.cluster_count(clustering) != want_clusters) return error.SceneClusterCountWrong;
+    return cluster_graph.build_cluster_graph(garden, clustering, graph);
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- SCENE ONE: the three-cluster scene from image/cluster_graph.rye -- corner-L A and ring B into cluster 1, lone block C as cluster 2,
+    //     far block D as cluster 3; cluster distances grade 2, 3, 10 over the three pairs, cluster 1 the hub between clusters 2 and 3 --------
+    var scene = try make_canvas(garden, 15, 15, 0);
+    set_corner_l(&scene, 1, 1, 6, 1, 1, 6); // A: box (1,1)-(6,6)
+    set_block(&scene, 8, 1, 2, 2); // C: box (8,1)-(9,2)
+    set_ring(&scene, 4, 4, 9, 9); // B: box (4,4)-(9,9), overlaps A's corner -> cluster 1
+    set_block(&scene, 12, 12, 2, 2); // D: box (12,12)-(13,13)
+    const cg = try graph_of(garden, &scene, 4, 3);
+
+    // --- THE COMPONENT COUNT FALLS MONOTONICALLY AS REACH GROWS -- 3 pieces at reach 0, 2 at reach 2 (the closest pair merges), 1 at reach 3
+    if (try component_count_at(garden, cg, 0) != 3) return error.SceneOneAtZeroNotThree; // every cluster alone
+    if (try component_count_at(garden, cg, 1) != 3) return error.SceneOneAtOneNotThree; // below the floor of 2, still all alone
+    if (try component_count_at(garden, cg, 2) != 2) return error.SceneOneAtTwoNotTwo; // the gap-2 pair merges, one bridge short of whole
+    if (try component_count_at(garden, cg, 3) != 1) return error.SceneOneAtThreeNotOne; // the hub closes the last gap
+    if (try component_count_at(garden, cg, 10) != 1) return error.SceneOneAtTenNotOne; // stays one past connected
+
+    // --- IS-CONNECTED FLIPS EXACTLY ONCE, AT THE CONNECTIVITY THRESHOLD ---------------------------------------------------------------------
+    if (try is_connected_at(garden, cg, 2) != false) return error.SceneOneConnectedAtTwo; // not yet whole
+    if (try is_connected_at(garden, cg, 3) != true) return error.SceneOneNotConnectedAtThree;
+
+    // --- THE CONNECTIVITY THRESHOLD IS THE MST BOTTLENECK -- the MEDIAN edge 3, NOT the diameter 10, because cluster 1 is the hub the far pair
+    //     reaches through, so its own direct edge of 10 is never needed -----------------------------------------------------------------------
+    const ct = try connectivity_threshold(garden, cg);
+    if (ct != 3) return error.SceneOneConnectivityNotThree;
+    // it sits strictly between the closest gap and the diameter -- a genuinely new quantity, distinct from both
+    if (ct <= try cluster_graph_profile.min_pair_distance(cg)) return error.SceneOneConnectivityNotAboveMin; // above min 2
+    if (ct >= try cluster_graph_profile.max_pair_distance(cg)) return error.SceneOneConnectivityNotBelowDiameter; // below diameter 10
+    // and the layout is connected exactly at and above the threshold, disconnected exactly below it
+    if (try is_connected_at(garden, cg, ct - 1) != false) return error.SceneOneConnectedBelowThreshold;
+    if (try is_connected_at(garden, cg, ct) != true) return error.SceneOneNotConnectedAtThreshold;
+
+    // --- SCENE TWO: MORE EDGES IS NOT MORE CONNECTED -- a tight triangle (A, B, C mutually 3 apart) plus a far outlier D (9 away from each).
+    //     A block (2,2)-(3,3); C block (6,2)-(7,3); B block (2,6)-(3,7); D block (12,12)-(13,13). A-B, A-C, B-C are all 3; D is 9 from each ----
+    var quad = try make_canvas(garden, 15, 15, 0);
+    set_block(&quad, 2, 2, 2, 2); // A
+    set_block(&quad, 6, 2, 2, 2); // C (same top row, right of A)
+    set_block(&quad, 2, 6, 2, 2); // B (below A)
+    set_block(&quad, 12, 12, 2, 2); // D (far outlier)
+    const cg2 = try graph_of(garden, &quad, 4, 4);
+
+    // at reach 3 the triangle is fully wired -- three edges present -- yet the layout is TWO components, the triangle and the lone outlier
+    if (try cluster_graph.within_edges(cg2, 3) != 3) return error.SceneTwoEdgesAtThreeNotThree; // the whole triangle wired
+    if (try component_count_at(garden, cg2, 3) != 2) return error.SceneTwoAtThreeNotTwo; // still two pieces, despite three edges
+    if (try is_connected_at(garden, cg2, 3) != false) return error.SceneTwoConnectedAtThree; // more edges, still not connected
+    // connectivity waits on the single bridge to the outlier -- the connectivity threshold is 9, the outlier's gap, the diameter here
+    const ct2 = try connectivity_threshold(garden, cg2);
+    if (ct2 != 9) return error.SceneTwoConnectivityNotNine;
+    if (ct2 != try cluster_graph_profile.max_pair_distance(cg2)) return error.SceneTwoConnectivityNotDiameter; // here the bridge IS the diameter
+    // the edge count keeps rising from 3 while the layout is still split -- more edges is not more connected
+    if (try cluster_graph.within_edges(cg2, 3) <= try component_count_at(garden, cg2, 3)) return error.SceneTwoEdgesNotAboveComponents;
+
+    // --- A LONE-CLUSTER LAYOUT IS ALREADY ONE WHOLE -- zero connectivity threshold, one component, connected at every reach --------------
+    var lone_img = try make_canvas(garden, 6, 6, 0);
+    set_block(&lone_img, 1, 1, 2, 2); // one object, one cluster
+    const lone_cg = try graph_of(garden, &lone_img, 1, 1);
+    if (try connectivity_threshold(garden, lone_cg) != 0) return error.LoneConnectivityNotZero;
+    if (try component_count_at(garden, lone_cg, 0) != 1) return error.LoneComponentsNotOne;
+    if (try is_connected_at(garden, lone_cg, 0) != true) return error.LoneNotConnected;
+
+    // --- DETERMINISM -- the same graph reads the same connectivity threshold and component count twice ---------------------------------------
+    if (try connectivity_threshold(garden, cg) != try connectivity_threshold(garden, cg)) return error.ConnectivityNotDeterministic;
+    if (try component_count_at(garden, cg, 2) != try component_count_at(garden, cg, 2)) return error.ComponentsNotDeterministic;
+
+    print("GREEN image-cluster-connectivity: WHEN the whole cluster layout becomes one connected region as reach grows -- the CONNECTIVITY THRESHOLD (the smallest reach at which the thresholded true-distance graph spans every cluster, the MST bottleneck) and the COMPONENT COUNT at any reach, read straight from cluster_graph's precomputed matrix through graph_distance and cluster_graph_profile's ascending distinct distances, exact integers, NO float and NO tolerance -- the DECISIVE crux, connectivity is NOT the edge count and NOT the diameter, it needs the graph's STRUCTURE. THE CONNECTIVITY THRESHOLD IS THE MST BOTTLENECK, BELOW THE DIAMETER WHEN A HUB BRIDGES -- over the three-cluster scene (distances 2, 3, 10) the layout becomes one connected region at reach 3, the MEDIAN edge, not the diameter 10, because cluster 1 is the hub clusters 2 and 3 reach through, so their direct edge of 10 is never needed; the component count falls 3, 2, 1 as reach passes 2 then 3, is-connected flips exactly once at 3, and the threshold sits strictly between the closest gap 2 and the diameter 10, a genuinely new quantity distinct from both. MORE EDGES IS NOT MORE CONNECTED -- over a four-cluster scene (a tight triangle mutually 3 apart plus a far outlier 9 away) the edge count at reach 3 is already three, the whole triangle wired, yet the layout is still TWO components (the triangle and the lone outlier), so within_edges reads three while component_count_at reads two; the count curve rises while connectivity waits on the single bridge to the outlier, so the connectivity threshold 9 is decided by the one far edge, not the many near ones -- a box comparison, an edge count, a distance histogram, none of them decides connectivity, only the union of the real edges does. A lone-cluster layout is already one whole (zero threshold, one component, connected at every reach); the same graph reads the same threshold and component count twice. Compose not braid over image/cluster_graph.rye (the precomputed cluster matrix), image/cluster_graph_profile.rye (the ascending distinct distances), and image/overlap_clusters.rye (the object connectivity a level below) -- a reading over a reading over a reading over a reading over a reading over a reading over a reading\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: cluster_connectivity selftest\n", .{});
+    return 1;
+}

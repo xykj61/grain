@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260819.015409
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title cluster_connectivity -- when the whole layout becomes one connected region (the MST bottleneck)
+prompt baton prin recur -- the autonomous loop: continue Lindy-first crux-first on the live green Season G scene-read edge, send each finished increment as its own signed round.
+think Second lap of this turn. The first sent image/cluster_graph_profile.rye (the cluster graph as a distribution over thresholds, nib a8f95bb420, pushed origin + xykj61). Its recommend named the next crux -- the cluster CONNECTIVITY threshold -- genuinely new work the histogram cannot decide since it forgets which pairs sit at each distance.
+think Built image/cluster_connectivity.rye: connectivity_threshold (the MST bottleneck, the smallest reach spanning every cluster), component_count_at (the pieces at a reach, a bounded union-find over cluster_graph's matrix), is_connected_at (whether the whole is one). Reused overlap_clusters' union-find pattern locally and cluster_graph_profile's ascending distinct distances for the bottleneck sweep -- compose not braid, a reading seven deep now.
+think Sharpened the crux mid-design. My first "the histogram can't decide it" framing was WRONG for three clusters: with three edges the MST bottleneck is always the median distance, which the histogram knows. The honest statement is that connectivity needs the graph STRUCTURE and is not a function of the edge-COUNT curve (within_edges) -- provable at any size. So scene two became a four-cluster proof: a tight triangle (three edges at reach 3) plus a far outlier, where within_edges reads 3 yet component_count_at reads 2 -- more edges is not more connected.
+think Scene one (cluster_graph's own three-cluster scene, distances 2, 3, 10): connectivity_threshold is the MEDIAN edge 3, strictly between the closest gap 2 (not yet connected) and the diameter 10 (far past connected), because cluster 1 is the hub clusters 2 and 3 reach through -- their direct edge of 10 never needed. The component count falls 3, 2, 1 as reach passes 2 then 3; is_connected_at flips exactly once at 3. This is the star-not-clique lesson of cluster_graph read as a single reach.
+think Scene two (four-cluster triangle-plus-outlier, verified distances: triangle A-B, A-C, B-C all 3; outlier D 9 from each): within_edges(3)=3 while component_count_at(3)=2, is_connected_at(3)=false. The connectivity threshold is 9 -- the outlier's single bridge, the diameter here -- decided by the one far edge, not the many near ones. A box comparison, an edge count, a distance histogram: none decides connectivity, only the union of the real edges does.
+obs GREEN on the FIRST full metal run. One clarity fix before green: a compound `assert(comps >= 1 and comps <= n)` tripped the TAME compound-assert ban; split into two positively-stated asserts so the failing half names itself (not an algorithm red, none booked). TAME bans clean after the split; plain 7-bit ASCII on both new files.
+obs Guarded against REDS #75's future-stamp lesson: the module version const was first written 015512, a stamp LATER than the live clock 015409 read this lap -- a future stamp. Corrected the const to the real read stamp before committing, and reconfirmed GREEN.
+loom witness=cluster_connectivity_witness scenes=2 modules_image=188 metal_run=first_green reds=0
+file image/cluster_connectivity.rye the new rung -- when the layout becomes one connected region (connectivity_threshold, component_count_at, is_connected_at), GREEN
+file tools/cluster_connectivity_witness.rish the metal witness -- builds, runs the selftest, asserts the two crux shapes print
+file image/README.md a durable family entry for the connectivity rung
+file crux/REMEMBER.md live edge advanced to the connectivity rung; git nib refreshed in the same work commit
+recommend keep-going the next open-media rung crux-first -- a cluster minimum-spanning-tree read that names the actual bridge EDGES (not just the bottleneck value), so a surface can draw the skeleton that holds a layout together, or a per-cluster read over a lasso polygon; the Microkernel study rung and a real-photo top-hat still wait on a fetch/license gate, surfaced not crossed.
