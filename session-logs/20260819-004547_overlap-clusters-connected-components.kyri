@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260819.004547
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title overlap_clusters -- the box-overlap graph's connected components
+prompt baton prin recur -- pick up the running thread, Standfast on reds, take the next agent-doable lap Lindy-first crux-first, send each finished increment
+think Became Kyri: read KYRI.md and RADIANT_STYLE.md, then the living cards -- REMEMBER, REDS, the top session logs, the scene-read family modules.
+think Standfast check: every living REDS row (80, 83, 84, 85, plus the prose notes) is CLOSED or Released; only #75 rests as custody-gated errata (a history-rewrite gate, not agent-closable). No open agent-closable red -- new work is clear.
+think Lindy-first crux-first: the live green edge is the Season G scene-read family. The just-landed overlap_degree built the box-overlap adjacency graph (per-object degree, edge count). The crux-first next rung composes directly over that same matrix: the graph's CONNECTED COMPONENTS -- a distinct, sharp crux, connectivity as the transitive closure of the non-transitive overlap relation.
+think Read overlap_degree.rye and scene_graph.rye to match the family's conventions exactly (opening triad, local make_canvas/set_dot/set_bracket_l builders, the star scene, native-contains witness).
+think Read the live clock (TZ=America/New_York) -> 20260819.004547; stamped the version there, never a future stamp (REDS #75's lesson).
+think Built image/overlap_clusters.rye: a bounded union-find (iterative find with path halving, no unbounded recursion) over scene_graph's matrix, roots relabeled into dense cluster ids 1..k in ascending-object order for determinism. Reads: overlap_clusters, cluster_of, same_cluster, cluster_size, largest_cluster, cluster_count, object_count.
+think The crux on metal, two shapes over the star scene (hub + two dots in concavity + far dot): CONNECTIVITY IS THE TRANSITIVE CLOSURE OF A NON-TRANSITIVE RELATION -- the two dots do not overlap each other (object_relation proves their boxes disjoint) yet share a cluster THROUGH the hub, a cluster holding a pair that shares no edge, box overlap not transitive while connectivity is exactly its closure; THE CLUSTER OVER-CLAIMS A TOUCHING GROUP -- every object in the star's cluster sits 2+ pixels apart from every other, a group of frames never of touching substance, while the far dot is its own singleton and the cluster count 2 is strictly fewer than the object count 4.
+think Cross-checked against overlap_degree.total_overlap_edges (2) and is_isolated (far dot) to show the star's two edges bind three objects into one cluster -- a cluster of 3 needs only n-1 edges, never the clique's 3. Compose not braid.
+obs GREEN on the FIRST full metal run. TAME flagged three compound range asserts (`x >= lo and x <= hi`); split each so the failing half is named -- a lint red, not an algorithm red, none booked. Then witness GREEN, TAME bans clean, width-check exit 0, living-card ASCII GREEN.
+obs Council rota lap (item 17): deep-read context/LEXICON.md -- the living vocabulary this run speaks; its own Lap entry ("an SLC-sized whole at a named scope -- the smallest loop that closes fully within its bounds") names exactly this round's shape, one graph fact closed by a GREEN witness with refusals and determinism.
+obs Docs-sync: image/README.md names the overlap clusters after the overlap degree. REMEMBER live edge + Git nib repointed single-stranded, overlap_degree folded to a prior-nib comment; nib set PENDING for the post-commit amend (remember-git-nib rule).
+loom witness=overlap_clusters_witness checks=11 wall_first_run_green=yes reds_booked=0
+file image/overlap_clusters.rye the connected clusters of the box-overlap graph -- union-find over scene_graph's matrix, connectivity the transitive closure of a non-transitive relation
+file tools/overlap_clusters_witness.rish proves the two crux shapes, refusals, and determinism on metal (native contains, REDS #85)
+file image/README.md names the overlap clusters after the overlap degree (docs-sync)
+file crux/REMEMBER.md live edge + Git nib repointed single-stranded to the connected-components rung, overlap_degree folded to a prior-nib comment
+recommend keep-going the next open-media rung, crux-first: a per-cluster bounding-box/facts join over the connected components just built, or an object-count-in-region summary joining region_select with the manifest, or a codec read; the Microkernel study rung and a real-photo top-hat wait on a fetch/license gate. No network, no key, no funds.

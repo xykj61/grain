@@ -1,0 +1,400 @@
+//! image/overlap_clusters.rye -- the CONNECTED CLUSTERS of the scene's box-overlap graph: gather objects whose boxes overlap, directly or
+//! through a chain, into one cluster, read straight from image/scene_graph.rye's precomputed matrix -- exact integers, NO float, NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- the scene-read family names a POINT's object (image/hit_test.rye), a RECTANGLE's or POLYGON's
+//! objects (image/region_select.rye, image/lasso_select.rye), a selection's FACTS and EXTENT (image/selection_summary.rye,
+//! image/selection_bounds.rye), a PAIR's spatial relation (image/object_relation.rye), the WHOLE scene's pairwise matrix and nesting
+//! forest (image/scene_graph.rye), the forest's DEPTH (image/nesting_depth.rye), the scene's TOTAL page order (image/reading_order.rye),
+//! and each object's overlap DEGREE (image/overlap_degree.rye). That degree is a LOCAL count over one object's edges. This rung reads the
+//! GLOBAL shape those edges build: the connected clusters of the box-overlap graph.
+//!
+//! The DECISIVE crux -- the box-is-a-prefilter lesson lifted to CONNECTIVITY, in two shapes at once:
+//!
+//!   CONNECTIVITY IS THE TRANSITIVE CLOSURE OF A NON-TRANSITIVE RELATION. Box overlap is NOT transitive -- image/overlap_degree.rye proves
+//!   a star scene is never a clique: a hub overlaps two dots, yet the two dots do not overlap each other. Connectivity is exactly the
+//!   transitive closure of that non-transitive relation, so the two non-overlapping dots land in the SAME cluster, connected THROUGH the
+//!   hub. A cluster holds a pair that shares no edge. The relation the cluster is built from is not transitive; the cluster itself is.
+//!
+//!   THE CLUSTER OVER-CLAIMS A TOUCHING GROUP. Every object in the star's one cluster sits 2 or more pixels APART from every other --
+//!   image/object_relation.rye proves hub-dot and dot-dot alike disjoint -- so the connected cluster is a group of FRAMES, never of
+//!   touching substance. A surface that gathers "the connected group" holds three objects, none of which touch. And the cluster count is
+//!   strictly FEWER than the object count exactly because connectivity merges the star's three boxes into one, while a far dot outside
+//!   every box stands as its own singleton cluster: connectivity groups the frames, and only object_relation says who truly touches.
+//!
+//! Compose not braid. This rung OWNS only the connectivity -- the union of objects across overlap edges and the dense cluster labeling. No
+//! box re-measured, no overlap recomputed: image/scene_graph.rye owns the pairwise matrix each `boxes_overlap` flag is read from,
+//! image/object_relation.rye owns each pair's overlap and exact nearest-pixel distance, image/scene_manifest.rye owns the per-object boxes.
+//! A reading over a reading over a reading.
+//!
+//! Everything is bounded before a byte: the scene graph caps its object count at `scene_graph_max_objects`, so the union loop runs a bounded
+//! number of pairs and every find walks a chain at most that long. A background or past-the-count object label refuses `BadObjectLabel`; a
+//! cluster id of zero or past the cluster count refuses `BadClusterId`; the largest-cluster read of an empty scene refuses `NoObjects`,
+//! having named nothing. No network, no key, no funds -- the clusters a surface names the day it must gather the connected regions of a
+//! layout, or the objects standing alone, on our own geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/overlap_clusters.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const overlap_degree = @import("overlap_degree.rye");
+
+pub const overlap_clusters_version = "20260819.004547";
+
+pub const OverlapClustersError = error{
+    BadObjectLabel,
+    BadClusterId,
+    NoObjects,
+};
+
+/// The whole scene partitioned into CONNECTED CLUSTERS of the box-overlap graph. `cluster_id[a-1]` is object `a`'s dense cluster label,
+/// numbered 1..`clusters` in ascending-object-label order so the labeling is deterministic. Two objects share a cluster id exactly when a
+/// chain of overlapping boxes connects them, directly or through others. `components` is the object count, `clusters` the cluster count.
+pub const Clustering = struct {
+    components: u32,
+    clusters: u32,
+    cluster_id: []u32,
+};
+
+/// Find the representative root of `x` in the union-find forest, halving the path as it climbs so later finds are shorter. Iterative and
+/// bounded -- the chain is at most the object count long -- so no unbounded recursion.
+fn uf_find(parent: []u32, x: u32) u32 {
+    // invariant: the index names a real slot in the forest.
+    assert(x < parent.len);
+    var r: u32 = x;
+    var guard: u32 = 0;
+    while (parent[r] != r) : (guard += 1) {
+        // invariant: a valid forest chain is no longer than the object count, so the walk terminates.
+        assert(guard <= parent.len);
+        parent[r] = parent[parent[r]];
+        r = parent[r];
+    }
+    // invariant: the returned root is its own parent -- a true representative.
+    assert(parent[r] == r);
+    return r;
+}
+
+/// Union the sets of `x` and `y` -- attach the larger-numbered root beneath the smaller, so the forest stays deterministic regardless of
+/// the order overlaps are read in.
+fn uf_union(parent: []u32, x: u32, y: u32) void {
+    // invariant: both indices name real slots in the forest.
+    assert(x < parent.len);
+    assert(y < parent.len);
+    const rx = uf_find(parent, x);
+    const ry = uf_find(parent, y);
+    if (rx == ry) return;
+    if (rx < ry) {
+        parent[ry] = rx;
+    } else {
+        parent[rx] = ry;
+    }
+}
+
+/// Build the scene's CONNECTED CLUSTERS -- union every pair of objects whose boxes overlap, then relabel the roots into dense cluster ids
+/// 1..k in ascending-object-label order. Reads the overlap flags straight from the scene graph's matrix, never recomputing a box. Refuses
+/// `NoObjects` when the scene holds no object to cluster, having built nothing.
+pub fn overlap_clusters(allocator: std.mem.Allocator, graph: scene_graph.SceneGraph) !Clustering {
+    // invariant: the matrix holds exactly one cell per ordered pair.
+    assert(graph.relations.len == @as(usize, graph.components) * @as(usize, graph.components));
+    // invariant: the object count stays within the scene graph's named ceiling, so the union loop is bounded.
+    assert(graph.components <= scene_graph.scene_graph_max_objects);
+    const n: u32 = graph.components;
+    if (n < 1) return error.NoObjects;
+
+    const parent = try allocator.alloc(u32, n);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) parent[i] = i;
+
+    // union across every unordered overlapping pair -- the symmetric matrix, so a < b names each edge once.
+    var a: u32 = 1;
+    while (a <= n) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b <= n) : (b += 1) {
+            const rel = graph.relations[(@as(usize, a) - 1) * @as(usize, n) + (@as(usize, b) - 1)];
+            if (rel.boxes_overlap) uf_union(parent, a - 1, b - 1);
+        }
+    }
+
+    // relabel roots into dense cluster ids in ascending-object-label order -- deterministic, gap-free.
+    const cluster_id = try allocator.alloc(u32, n);
+    const root_to_id = try allocator.alloc(u32, n);
+    var r: u32 = 0;
+    while (r < n) : (r += 1) root_to_id[r] = 0; // 0 marks an unassigned root
+    var next_id: u32 = 0;
+    var k: u32 = 0;
+    while (k < n) : (k += 1) {
+        const root = uf_find(parent, k);
+        if (root_to_id[root] == 0) {
+            next_id += 1;
+            root_to_id[root] = next_id;
+        }
+        cluster_id[k] = root_to_id[root];
+    }
+
+    // invariant: the cluster count is at least one and never exceeds the object count -- every object lands in exactly one cluster.
+    assert(next_id >= 1);
+    assert(next_id <= n);
+    return Clustering{ .components = n, .clusters = next_id, .cluster_id = cluster_id };
+}
+
+/// HOW MANY objects the clustering covers -- the scene's object count.
+pub fn object_count(c: Clustering) u32 {
+    // invariant: one cluster id per object.
+    assert(c.cluster_id.len == @as(usize, c.components));
+    // invariant: a real clustering holds at least one cluster.
+    assert(c.clusters >= 1);
+    return c.components;
+}
+
+/// HOW MANY connected clusters the box-overlap graph holds -- fewer than the object count exactly when some boxes overlap into a group.
+pub fn cluster_count(c: Clustering) u32 {
+    // invariant: one cluster id per object.
+    assert(c.cluster_id.len == @as(usize, c.components));
+    // invariant: the cluster count never exceeds the object count.
+    assert(c.clusters <= c.components);
+    return c.clusters;
+}
+
+/// The dense CLUSTER ID of object `a` -- the connected cluster its box belongs to. Refuses `BadObjectLabel` for a background or
+/// past-the-count label.
+pub fn cluster_of(c: Clustering, a: u32) !u32 {
+    // invariant: one cluster id per object.
+    assert(c.cluster_id.len == @as(usize, c.components));
+    // invariant: a real clustering holds at least one cluster.
+    assert(c.clusters >= 1);
+    if (a == 0 or a > c.components) return error.BadObjectLabel;
+    const id = c.cluster_id[a - 1];
+    // invariant: every stored id is a dense cluster label at least one.
+    assert(id >= 1);
+    // invariant: every stored id is a dense cluster label within the cluster count.
+    assert(id <= c.clusters);
+    return id;
+}
+
+/// TRUE when objects `a` and `b` share a connected cluster -- a chain of overlapping boxes joins them, directly or through others. This is
+/// the transitive closure of box overlap: `a` and `b` may share a cluster while their own boxes never overlap. Refuses `BadObjectLabel`
+/// for a background or past-the-count label.
+pub fn same_cluster(c: Clustering, a: u32, b: u32) !bool {
+    // invariant: one cluster id per object.
+    assert(c.cluster_id.len == @as(usize, c.components));
+    assert(c.clusters >= 1);
+    const ida = try cluster_of(c, a);
+    const idb = try cluster_of(c, b);
+    return ida == idb;
+}
+
+/// HOW MANY objects belong to cluster `cid` -- its size. Refuses `BadClusterId` for a zero or past-the-count cluster id.
+pub fn cluster_size(c: Clustering, cid: u32) !u32 {
+    // invariant: one cluster id per object.
+    assert(c.cluster_id.len == @as(usize, c.components));
+    assert(c.clusters >= 1);
+    if (cid == 0 or cid > c.clusters) return error.BadClusterId;
+    var size: u32 = 0;
+    var i: u32 = 0;
+    while (i < c.components) : (i += 1) {
+        if (c.cluster_id[i] == cid) size += 1;
+    }
+    // invariant: a named cluster holds at least one object.
+    assert(size >= 1);
+    // invariant: a named cluster holds never more objects than the whole scene.
+    assert(size <= c.components);
+    return size;
+}
+
+/// The ID of the LARGEST connected cluster -- the biggest connected group of objects, ties broken by the earliest cluster id. Refuses
+/// `NoObjects` when the scene holds no object to weigh.
+pub fn largest_cluster(c: Clustering) !u32 {
+    // invariant: one cluster id per object.
+    assert(c.cluster_id.len == @as(usize, c.components));
+    assert(c.clusters >= 1);
+    if (c.components < 1) return error.NoObjects;
+    var best_id: u32 = 1;
+    var best_size: u32 = 0;
+    var cid: u32 = 1;
+    while (cid <= c.clusters) : (cid += 1) {
+        const size = try cluster_size(c, cid);
+        // strictly greater keeps the earliest id on a size tie -- deterministic.
+        if (cid == 1 or size > best_size) {
+            best_size = size;
+            best_id = cid;
+        }
+    }
+    // invariant: a scene of one or more objects always names a real largest cluster.
+    assert(best_id >= 1);
+    // invariant: the largest cluster is a dense id within the cluster count.
+    assert(best_id <= c.clusters);
+    return best_id;
+}
+
+// --- selftest: the DECISIVE box-is-a-prefilter crux lifted to CONNECTIVITY -- a big bracket-L hub framing two dots in its concavity, plus
+//     a far dot standing alone; the hub overlaps both dots, so all three land in ONE cluster (the two dots connected THROUGH the hub though
+//     their own boxes never overlap: connectivity is the transitive closure of a non-transitive relation), yet object_relation proves every
+//     object in that cluster sits 2+ pixels APART from every other (the cluster over-claims a touching group); the far dot is its own
+//     singleton cluster; the cluster count is fewer than the object count; refusals by name; determinism --------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a bracket-L: a vertical arm down column `x` from `y0` to `y1`, and a horizontal arm along row `y1` from `x` to `x1`. Its
+/// concavity (the upper-right quadrant) is background, ready to hold smaller objects without touching them.
+fn set_bracket_l(img: *qoi.Pixmap, x: u32, y0: u32, y1: u32, x1: u32) void {
+    // invariant: the arms run in the positive direction and stay inside the buffer.
+    assert(y1 >= y0);
+    assert(x1 >= x);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) set_dot(img, x, yy);
+    var xx: u32 = x;
+    while (xx <= x1) : (xx += 1) set_dot(img, xx, y1);
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- BUILD THE STAR SCENE -- a big bracket-L hub framing two dots in its concavity, plus a far dot standing alone (the same scene
+    //     image/overlap_degree.rye reads), so this rung's clustering can be cross-checked against that module's degree and edge counts:
+    //     big-L (label 1): column x=1 rows 1..9 + row y=9 cols 1..9, box (1,1)-(9,9), its concavity the upper-right background;
+    //     dot A (label 2): single pixel (4,4), box (4,4)-(4,4), tucked in the concavity;
+    //     dot B (label 3): single pixel (6,6), box (6,6)-(6,6), also in the concavity yet its box disjoint from dot A's;
+    //     far dot (label 4): single pixel (11,11), box (11,11)-(11,11), outside the hub's box entirely. Canvas 13x13 --------------------
+    var scene_img = try make_canvas(garden, 13, 13, 0);
+    set_bracket_l(&scene_img, 1, 1, 9, 9); // the hub
+    set_dot(&scene_img, 4, 4); // dot A
+    set_dot(&scene_img, 6, 6); // dot B
+    set_dot(&scene_img, 11, 11); // the far dot
+
+    const map = try label.label_components(garden, &scene_img);
+    if (map.count != 4) return error.SceneNotFourComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    if (scene_graph.object_count(graph) != 4) return error.GraphNotFourObjects;
+
+    const clustering = try overlap_clusters(garden, graph);
+    if (object_count(clustering) != 4) return error.ClusteringNotFourObjects;
+
+    // --- CONNECTIVITY IS THE TRANSITIVE CLOSURE OF A NON-TRANSITIVE RELATION -- the hub overlaps both dots, so the hub, dot A, and dot B
+    //     all land in ONE cluster; the two dots share that cluster THROUGH the hub though their own boxes never overlap -----------------
+    if (try same_cluster(clustering, 1, 2) != true) return error.HubDotANotClustered;
+    if (try same_cluster(clustering, 1, 3) != true) return error.HubDotBNotClustered;
+    if (try same_cluster(clustering, 2, 3) != true) return error.DotsNotClustered;
+    // the two dots do NOT overlap each other -- object_relation proves their boxes disjoint -- yet they share a cluster: box overlap is
+    // not transitive (image/overlap_degree.rye proves the star is not a clique), while connectivity is exactly its transitive closure
+    const rel_a_b = try scene_graph.relation_of(graph, 2, 3);
+    if (rel_a_b.boxes_overlap) return error.DotsFalselyOverlap;
+    // and the star's two edges (hub-A, hub-B) are all that bind the three into one cluster -- a cluster of 3 needs only 2 edges, never the
+    // 3 a clique would hold, so overlap_degree's edge count agrees with a single connected cluster
+    if (overlap_degree.total_overlap_edges(graph) != 2) return error.EdgeCountNotTwo;
+
+    // --- THE CLUSTER OVER-CLAIMS A TOUCHING GROUP -- every object in the star's cluster sits 2+ pixels APART from every other: the
+    //     connected cluster is a group of frames, never of touching substance -----------------------------------------------------------
+    const rel_hub_a = try scene_graph.relation_of(graph, 1, 2);
+    const rel_hub_b = try scene_graph.relation_of(graph, 1, 3);
+    if (rel_hub_a.nearest_cheby < 2) return error.HubTouchesA;
+    if (rel_hub_b.nearest_cheby < 2) return error.HubTouchesB;
+    if (rel_a_b.nearest_cheby < 2) return error.DotsTouch;
+
+    // --- THE FAR DOT IS ITS OWN SINGLETON CLUSTER -- its box overlaps nothing (isolated in the graph), so it stands alone; the cluster
+    //     count is 2, strictly fewer than the object count 4, exactly because connectivity merged the star's three boxes into one -------
+    if (try is_far_dot_alone(clustering)) {} else return error.FarDotNotAlone;
+    if (cluster_count(clustering) != 2) return error.ClusterCountNotTwo;
+    if (!(cluster_count(clustering) < object_count(clustering))) return error.ClustersNotFewerThanObjects;
+    if (try overlap_degree.is_isolated(graph, 4) != true) return error.FarNotIsolated;
+
+    // the star cluster holds all three inner objects, the far cluster exactly one
+    const star_id = try cluster_of(clustering, 1);
+    const far_id = try cluster_of(clustering, 4);
+    if (star_id == far_id) return error.StarAndFarNotDistinct;
+    if (try cluster_size(clustering, star_id) != 3) return error.StarClusterNotThree;
+    if (try cluster_size(clustering, far_id) != 1) return error.FarClusterNotOne;
+    if (try largest_cluster(clustering) != star_id) return error.LargestNotStar;
+
+    // --- REFUSALS -- a background or past-the-count object label refuses BadObjectLabel; a zero or past-the-count cluster id refuses
+    //     BadClusterId, having named nothing --------------------------------------------------------------------------------------------
+    if (cluster_of(clustering, 0)) |_| return error.ZeroLabelNotRefused else |err| {
+        if (err != error.BadObjectLabel) return error.WrongZeroLabelError;
+    }
+    if (cluster_of(clustering, 5)) |_| return error.PastLabelNotRefused else |err| {
+        if (err != error.BadObjectLabel) return error.WrongPastLabelError;
+    }
+    if (cluster_size(clustering, 0)) |_| return error.ZeroCidNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongZeroCidError;
+    }
+    if (cluster_size(clustering, 3)) |_| return error.PastCidNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongPastCidError;
+    }
+
+    // --- A LONE SCENE -- one solid object is a single cluster of size one, trivially the largest, and it shares its cluster with itself
+    var lone_img = try make_canvas(garden, 6, 6, 0);
+    set_bracket_l(&lone_img, 1, 1, 3, 3); // one object
+    const lone_map = try label.label_components(garden, &lone_img);
+    if (lone_map.count != 1) return error.LoneNotOneComponent;
+    const lone_manifest = try scene_manifest.build_manifest(garden, &lone_map);
+    const lone_graph = try scene_graph.build_scene_graph(garden, lone_manifest, &lone_map);
+    const lone_clustering = try overlap_clusters(garden, lone_graph);
+    if (cluster_count(lone_clustering) != 1) return error.LoneClusterCountNotOne;
+    if (try cluster_size(lone_clustering, 1) != 1) return error.LoneClusterSizeNotOne;
+    if (try largest_cluster(lone_clustering) != 1) return error.LoneLargestNotOne;
+    if (try same_cluster(lone_clustering, 1, 1) != true) return error.LoneNotSelfClustered;
+
+    // --- DETERMINISM -- the same scene clusters the same way twice ---------------------------------------------------------------------
+    const c1 = try overlap_clusters(garden, graph);
+    const c2 = try overlap_clusters(garden, graph);
+    if (cluster_count(c1) != cluster_count(c2)) return error.ClusterCountNotDeterministic;
+    if (try cluster_of(c1, 2) != try cluster_of(c2, 2)) return error.ClusterOfNotDeterministic;
+    if (try largest_cluster(c1) != try largest_cluster(c2)) return error.LargestNotDeterministic;
+
+    print("GREEN image-overlap-clusters: the CONNECTED CLUSTERS of the scene's box-overlap graph -- gather objects whose boxes overlap, directly or through a chain, into one cluster, read straight from scene_graph's precomputed matrix, exact integers, NO float and NO tolerance -- the DECISIVE box-is-a-prefilter crux lifted to CONNECTIVITY, in two shapes. CONNECTIVITY IS THE TRANSITIVE CLOSURE OF A NON-TRANSITIVE RELATION -- a big bracket-L hub (box (1,1)-(9,9)) framing two dots in its concavity (dot A at (4,4), dot B at (6,6)) overlaps both, so the hub, dot A, and dot B all land in ONE cluster; the two dots share that cluster THROUGH the hub though their own single-pixel boxes never overlap, so a cluster holds a pair that shares no edge -- box overlap is not transitive (the star is never a clique, its three inner objects bound by only two edges), while connectivity is exactly its transitive closure. THE CLUSTER OVER-CLAIMS A TOUCHING GROUP -- object_relation proves every object in the star's cluster sits Chebyshev distance 2 or more APART from every other (hub-dot and dot-dot alike disjoint), so the connected cluster is a group of frames, never of touching substance, and only object_relation says who truly touches. A far dot outside the hub's box (box (11,11)-(11,11)) overlaps nothing, so it stands as its own singleton cluster; the cluster count is 2, strictly FEWER than the object count 4, exactly because connectivity merged the star's three boxes into one; the largest cluster is the star of three, the far cluster exactly one; a background or past-the-count object label refuses BadObjectLabel, a zero or past-the-count cluster id refuses BadClusterId; a lone scene is one cluster of size one; the same scene clusters the same way twice. Compose not braid over image/scene_graph.rye (the pairwise matrix), image/overlap_degree.rye (the degree and edge count), image/object_relation.rye (each pair's overlap and exact distance), and image/scene_manifest.rye (the per-object boxes)\n", .{});
+    return 0;
+}
+
+/// TRUE when the far dot (label 4 in the star scene) stands as its own cluster -- a small selftest helper keeping the far-dot check
+/// off the main path's compound-assert line.
+fn is_far_dot_alone(c: Clustering) !bool {
+    // invariant: the clustering describes the four-object star scene.
+    assert(c.components == 4);
+    assert(c.clusters >= 1);
+    const far_id = try cluster_of(c, 4);
+    const size = try cluster_size(c, far_id);
+    return size == 1;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: overlap_clusters selftest\n", .{});
+    return 1;
+}
