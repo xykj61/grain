@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260818.201501
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title convex_diameter -- the convex hull diameter (maximum Feret span) by rotating calipers, GREEN
+prompt baton prin recur -- pick up the running thread Lindy-first crux-first on the live green edge, take the next agent-doable lap, send it as its own signed round
+think Read Kyri + Radiant Style to be in voice, then crux/REMEMBER, the session-log README top rows, and crux/REDS. Standfast clear -- every living REDS row closed or released, only #75 rests as custody-gated errata (a history rewrite, Keaton's hand). No open agent-closable red, so this lap grows constructive work.
+think The card and the newest logs named the crux-first next sibling outright: the CONVEX HULL DIAMETER (farthest pair / maximum Feret) by rotating calipers over antipodal hull-vertex pairs, exact integer squared distance, the isotropic span the oriented box's length does not name. Lindy-first crux-first takes it -- a durable geometry primitive from which a shape's greatest span and a roundness read descend. No network, key, or funds gate.
+think Read image/convex_hull.rye and image/convexity_defects.rye for the family pattern (compose not braid, exact integer arithmetic, contour.Point, bounded, named refusals, GREEN print string, native-contains witness), and min_area_rect's MinAreaRect struct (length f64) so the decisive crux against the oriented box is exact.
+think Designed the module around correctness-by-oracle: the production path is rotating calipers (Shamos 1978) in one linear pass -- for each hull edge advance the antipodal pointer while |cross| grows (integer argmax), measure BOTH endpoints against it (catches the parallel-edge span), compare an EXACT squared distance dx*dx+dy*dy in i64, only the reported length in f64. The selftest carries an O(n^2) all-pairs brute-force ORACLE and asserts rotating calipers agrees with it on every fixture -- so the linear primitive is proven correct against the quadratic reference rather than trusted by eye.
+think Decisive cruxes: an irregular hexagon whose farthest pair is NON-ADJACENT (caliper == oracle); a 6x4 rectangle whose diameter is the DIAGONAL sqrt(52)~7.21 strictly above the min-area box's length 6 (the isotropic span the oriented box does not name, checked against the real min_area_rect sibling); a 5x5 raster block through label -> contour -> convex_hull reading its opposite-corner diagonal (squared distance 32); a long kite; ROUNDNESS (the round companion of solidity) reading a compact block near 1 and a thin 2x8 bar far below; degenerate one/two-point hulls; EmptySource refusal; determinism.
+obs GREEN on the FIRST full metal run, no reds -- the oracle agreement held on every fixture, so rotating calipers is proven correct, not merely plausible. TAME bans clean, width-check exit 0, plain 7-bit ASCII, living-card ASCII GREEN.
+obs Bounded honestly: the antipodal pointer laps the hull at most twice, so a 4n advance guard refuses NotConvex -- a non-convex input can never spin the caliper forever, the O(n) claim resting on the amortized antipodal-advance argument in the doc comment.
+obs Stamp skew noted: the wall clock read 20260818.201208, behind the last committed log stamp 20260818.201500 (the known future-dated skew, kin to REDS #75). Held the one-clock monotone guarantee (later always larger) with 20260818.201501, one second past the head.
+obs Council rota lap deep-read context/SIMPLE_LOVABLE_COMPLETE.md (item 16) -- this rung is a clean SLC lap: simple (one caliper sweep), lovable (a real greatest-span capability, proven), complete (the loop closes -- oracle agreement, degenerate cases, refusals, determinism, docs synced).
+loom witness=convex_diameter_witness fixtures=hexagon+rectangle+block+kite+degenerate build=green oracle_agreement=all
+file image/convex_diameter.rye the diameter by rotating calipers + roundness, exact integer squared distance, oracle-proven
+file tools/convex_diameter_witness.rish the metal witness, native contains checks (REDS #76/#85), GREEN
+file image/README.md the Convex hull diameter bullet after Convexity defects (docs-implementation-sync)
+file crux/REMEMBER.md live edge + Git nib repointed single-stranded to convex_diameter, convexity_defects folded to a prior-rung pointer; next sibling named the minimum enclosing circle
+recommend keep-going -- crux-first next sibling is the MINIMUM ENCLOSING CIRCLE (smallest circle covering every hull vertex, Welzl or diameter-seeded), the round bound the farthest pair alone does not fix; the round top-hat on a real photo still waits on a fetch gate. No network, key, or funds.
