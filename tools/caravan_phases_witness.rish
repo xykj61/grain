@@ -1,0 +1,82 @@
+# caravan_phases_witness.rish -- Caravan phases witness.
+#
+# `intent.rye` let an item say what it will do -- one letter per hop -- and
+# never took it at its word: the supervisor schedules by those letters and
+# hands them out as the dependent's line. That refinement reads one item whole,
+# so a hop's letter describes the item's whole turn. An author who wants a
+# finer grain has one honest move left: cut the turn into smaller items,
+# each naming one hop and declaring one letter.
+#
+#   A TURN CUT INTO PHASES KEEPS AN ORDER ITS REGIONS NEVER NAME.
+#
+# Two phases of one turn that share no region read, to every rung before
+# this one, as two unrelated items: `overtake.share_a_hop` finds nothing in
+# common, so nothing orders them, and a lookahead may admit the second while
+# the first still waits. The author wrote the order; the regions never
+# carried it. THE LINK IS THE FACT THE QUEUE ALREADY HOLDS -- each phase
+# names its turn, and phases of one turn keep the order they were written
+# in, absolutely. The declaration grows NO SECOND DIALECT: the document
+# still speaks in ceilings, the item still speaks in letters, and the link
+# speaks about the queue, which is the only place authorship has ever lived.
+#
+# ONE ROOM GAINS THE ORDER, AND THE OTHER NEEDED NOTHING:
+#
+#   * Over the CUT LAP, whose middle turn is cut into a place into `ask_b`
+#     and a peek at `menu`, reading acts alone admits 1 phase out of turn
+#     and the linked reading admits 0. Five dependents run to the same end
+#     under both.
+#   * The ISOLATION half needed no new word, and the cut is why: two phases
+#     of one turn share a domain, and `commute.admissible` already refuses
+#     to stand a domain beside itself.
+#
+# WHAT THE LINK COSTS, NAMED PLAINLY. A link is a constraint, so it can only
+# take passes away. The act reading takes 1 pass -- exactly the one that
+# runs the turn's second phase ahead of its first -- and the linked reading
+# takes 0, finishing at a peak of 1 against 2. Safety first, then the slot.
+#
+# Both RED paths were proven on metal before this witness claimed GREEN.
+# Remove the link from `items_contend` and the cut read straight reds at two
+# phases of one turn reading as free to swap. Keep the link and hide it from
+# the choosing alone, and the linked run's own `fill_table` invariant fires
+# on metal -- so the assert that says a linked reading never runs a turn's
+# phases out of order is load-bearing rather than decorative.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep
+# over interpolated output -- REDS #76 / #85, the apostrophe loom.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_phases_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/phases"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/phases.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan phases build failed"
+
+# Nothing new is declared: the cut rides on the queue, where authorship
+# belongs, rather than in the document, where a ceiling belongs.
+let published = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_three_clients_menu.bron 2>&1"]
+assert published.ok else "the published declaration could not be read"
+assert published.out contains "domains 4 -- channels 3 -- regions 10 -- grants 19" else "the published document changed shape"
+assert published.out contains "verdict: whole" else "the published declaration did not read whole"
+
+# A fresh provisioning each run, so every index starts at zero and a bell
+# found ringing was rung by this run rather than left standing by the last.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels"]
+assert clean.ok else "the region stores and doorbells could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan phases selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan phases selftest not GREEN"
+assert test.out contains "a turn cut into phases keeps an order its regions never name" else "the phases finding did not close"
+
+# The cut read straight, before any supervisor spends it.
+assert test.out contains "the link speaks about the queue: two phases of one turn are ordered, two turns are not" else "the link reached past the turn it was cut from"
+
+# The cut lap: reading acts alone runs a turn's second phase ahead of its first.
+assert test.out contains "the cut lap admits 1 phase out of turn by act, and 0 linked" else "the link did not keep the cut it was given"
+assert test.out contains "the link declines the pass that broke the cut: 1 passes by act, 0 linked" else "the link cost nothing, so it constrained nothing"
+assert test.out contains "5 dependents run to the same end under both, at a peak of 2 against 1" else "the two readings did not run the same lap to the same end"
+
+say "GREEN: Caravan phases witness passed."

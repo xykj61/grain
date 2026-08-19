@@ -1,0 +1,675 @@
+//! Caravan phases -- a turn cut into phases keeps an order its regions never name.
+//!
+//! `intent.rye` let an item say what it will do -- one letter per hop, `r`
+//! or `w` -- and never took it at its word: the supervisor schedules by
+//! those letters and hands them out as the dependent's line, so the effective
+//! write is the grant AND the word. That refinement reads one item whole.
+//! A hop's letter describes the item's whole turn, so an author who wants a
+//! finer grain has one honest move left: cut the turn into smaller items,
+//! each naming one hop and declaring one letter.
+//!
+//! **Cutting is safe only once the queue can see the cut.** Two phases of
+//! one turn that share no region read, to every rung before this one, as
+//! two unrelated items -- `overtake.share_a_hop` finds nothing in common,
+//! so nothing orders them, and a lookahead may admit the second while the
+//! first still waits. The author wrote the order; the regions never carried
+//! it; so the supervisor breaks it wherever the footprints happen to miss.
+//!
+//! **The link is the fact the queue already holds.** Each phase names the
+//! turn it belongs to, and phases of one turn keep the order they were
+//! written in, absolutely. The declaration grows no second dialect: the
+//! document still speaks in ceilings, the item still speaks in letters, and
+//! the link speaks about the *queue* -- which is the only place authorship
+//! has ever lived.
+//!
+//! **What the link costs, named plainly.** A link is a constraint, so it
+//! can only take passes away, never add one. Over the cut lap the act
+//! reading takes a pass that runs a turn's second phase ahead of its first,
+//! and the linked reading declines exactly that pass: the same five
+//! dependents reach the same end, one turn later, in the order their author
+//! wrote. Safety first, then the slot.
+//!
+//! **The concurrency half needs no new word, and the document says why.**
+//! Two phases of one turn share a domain, and `commute.admissible` already
+//! refuses to stand a domain beside itself. So the link is asked in the
+//! order room alone; the isolation room had closed this door before the
+//! cut was ever made.
+//!
+//! Usage:
+//!   phases selftest                  Run the readings against each other
+//!   phases                           Same as selftest
+//!   phases dependent <domain> <plan> ... Run as a supervised dependent (internal)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const capabilities = @import("capabilities.rye");
+const roster = @import("roster.rye");
+const read = @import("read.rye");
+const boot = @import("boot.rye");
+const exercise = @import("exercise.rye");
+const carry = @import("carry.rye");
+const notify = @import("notify.rye");
+const roundtrip = @import("roundtrip.rye");
+const cycle = @import("cycle.rye");
+const gap = @import("gap.rye");
+const cohort = @import("cohort.rye");
+const overtake = @import("overtake.rye");
+const intent = @import("intent.rye");
+
+const caravan_phases_version = "20260819.194500";
+
+// =========================================================================
+// The bounds -- the shape `intent.rye` read, carried whole
+// =========================================================================
+
+/// The three-client shape with one published region, unchanged.
+pub const declaration_path = intent.declaration_path;
+
+/// How many dependents of one document this supervisor holds unreaped at once.
+pub const max_in_flight: u32 = intent.max_in_flight;
+
+/// How many phases one ordered queue carries.
+pub const max_queue_len: u32 = intent.max_queue_len;
+
+/// How many still-waiting phases past the head one turn may weigh.
+pub const max_lookahead: u32 = intent.max_lookahead;
+
+/// A dependent's fixed argv, unchanged from the rungs before it.
+pub const fixed_argv_words: u32 = intent.fixed_argv_words;
+
+/// How many turns one queue may cut its work into.
+///
+/// A turn holds at least one phase, so a queue can never name more turns
+/// than it holds phases.
+pub const max_turns: u32 = max_queue_len;
+
+comptime {
+    // invariant: a queue holds more than one full table, or a pass is moot
+    assert(max_queue_len > max_in_flight);
+    // invariant: a look reaches past a full table, or it could never find room
+    assert(max_lookahead >= max_in_flight);
+    // invariant: a look stays inside the queue it walks
+    assert(max_lookahead < max_queue_len);
+    // invariant: every phase may stand alone as its own turn
+    assert(max_turns >= max_queue_len);
+}
+
+/// Renders one outcome code as the words an operator reads.
+pub fn outcome_name(code: u8) []const u8 {
+    return intent.outcome_name(code);
+}
+
+/// Why a queue may not run as it was handed over.
+pub const RunError = overtake.RunError;
+
+/// One queued item and the letters it declares, carried from `intent.rye`.
+pub const Task = intent.Task;
+
+/// What one run did, reported whole.
+///
+/// The shared numbers are `overtake.Report` unconverted, so this rung's
+/// laps stand beside every rung before it. `out_of_turn` is this rung's own
+/// measure: how many phases were admitted while an earlier phase of their
+/// own turn still waited.
+pub const Report = struct {
+    run: overtake.Report = .{},
+    out_of_turn: u32 = 0,
+};
+
+// =========================================================================
+// The cut -- a phase, and the turn it belongs to
+// =========================================================================
+
+/// How deeply a reading looks at the queue's own authorship.
+///
+/// `by_act` is `intent.rye`'s finding carried here unchanged, so the two
+/// readings are compared over one program: it reads regions and letters and
+/// knows nothing of the cut. `linked` is this rung: phases of one turn keep
+/// the order they were written in.
+pub const Reading = enum { by_act, linked };
+
+/// Renders one reading as the words an operator reads.
+pub fn reading_words(r: Reading) []const u8 {
+    return switch (r) {
+        .by_act => "what the regions and the letters say",
+        .linked => "the same, and the order the author cut",
+    };
+}
+
+/// One phase of one turn.
+///
+/// The turn rides beside the task rather than inside it, so every rung
+/// before this one reads the same `Task` it always read, and a turn nobody
+/// cut is simply a turn of one phase.
+pub const Phase = struct {
+    task: Task,
+    /// Which turn this phase belongs to; phases sharing a turn keep order.
+    turn: u32,
+    /// Where this phase stands inside its own turn, counting from zero.
+    step: u32,
+};
+
+/// Answers whether two phases were cut from one turn.
+pub fn same_turn(a: Phase, b: Phase) bool {
+    // invariant: a phase always names a turn inside the bound
+    assert(a.turn < max_turns);
+    assert(b.turn < max_turns);
+    return a.turn == b.turn;
+}
+
+/// Answers whether a plan writes each turn's phases in step order.
+///
+/// An authoring check rather than a safety one: the link keeps whatever
+/// order the queue holds, so a plan that lists a turn's steps out of order
+/// would be kept faithfully in the wrong order. Reading it here means the
+/// cut is checked once, at the door, rather than trusted forever after.
+pub fn plan_is_ordered(plan: []const Phase) bool {
+    // invariant: a plan always carries work
+    assert(plan.len >= 1);
+    // invariant: a plan stays inside the queue one supervisor may hold
+    assert(plan.len <= max_queue_len);
+    var seen: [max_turns]bool = @splat(false);
+    var next_step: [max_turns]u32 = @splat(0);
+    var i: u32 = 0;
+    while (i < plan.len) : (i += 1) {
+        const turn = plan[i].turn;
+        if (turn >= max_turns) return false;
+        if (!seen[turn]) {
+            seen[turn] = true;
+            if (plan[i].step != 0) return false;
+            next_step[turn] = 1;
+            continue;
+        }
+        if (plan[i].step != next_step[turn]) return false;
+        next_step[turn] += 1;
+    }
+    // invariant: every phase in the plan was weighed, none skipped
+    assert(i == plan.len);
+    return true;
+}
+
+/// Answers whether two phases must keep the order the queue wrote them in.
+///
+/// `intent.items_contend` answers the act reading whole, unchanged. Past
+/// it, this rung adds exactly one fact: two phases cut from one turn keep
+/// their order whatever their regions say, because the order is the
+/// author's and the regions were never asked to carry it.
+pub fn items_contend(sys: *const system.System, a: Phase, b: Phase, reading: Reading) bool {
+    // invariant: a phase always names at least one arc to work
+    assert(a.task.item.hops.len >= 1);
+    assert(b.task.item.hops.len >= 1);
+    if (reading == .linked and same_turn(a, b)) return true;
+    return intent.items_contend(sys, a.task, b.task, .by_intent);
+}
+
+/// Answers whether the head may enter beside the dependents running now.
+///
+/// Left where `intent.rye` left it, under both readings, and the cut is why
+/// it needs nothing more: two phases of one turn share a domain, and
+/// `commute.admissible` already refuses to stand a domain beside itself.
+/// The link is asked in the order room alone.
+pub fn admissible(
+    sys: *const system.System,
+    live: []const cohort.Running,
+    head: Phase,
+    reading: Reading,
+) bool {
+    // invariant: a queued phase always names a domain
+    assert(head.task.item.domain.len >= 1);
+    _ = reading;
+    return intent.admissible(sys, live, head.task.item, .by_intent);
+}
+
+// =========================================================================
+// The supervisor -- one program, differing only in what orders a pair
+// =========================================================================
+
+/// One dependent already reaped, held until the whole queue has drained.
+const Finished = struct {
+    domain: []const u8,
+    verb: cycle.Verb,
+    count: u32,
+    expect: u8,
+    code: u8,
+};
+
+/// Folds one reaped outcome into the report, or names the mismatch.
+fn judge_outcome(done: Finished, report_out: *Report) RunError!void {
+    // invariant: a judged dependent always names its domain
+    assert(done.domain.len >= 1);
+    // invariant: the report never counts more successes than dependents reaped
+    assert(report_out.run.succeeded <= report_out.run.reaped);
+    if (done.code != done.expect) {
+        print("    {s}: expected {s}, heard {s}\n", .{
+            done.domain, outcome_name(done.expect), outcome_name(done.code),
+        });
+        return error.OutcomeMismatch;
+    }
+    if (done.code == carry.Outcome.carried_ok) {
+        report_out.run.succeeded += 1;
+        if (done.verb == .home) report_out.run.homed += done.count;
+    }
+}
+
+/// Everything one turn of the supervisor reads and moves.
+const Table = struct {
+    live: [max_in_flight]cohort.Running = undefined,
+    in_flight: u32 = 0,
+    done: [max_queue_len]Finished = undefined,
+    finished: u32 = 0,
+    taken: [max_queue_len]bool = @splat(false),
+    head: u32 = 0,
+    left: u32 = 0,
+};
+
+/// Moves the head to the first phase still waiting.
+fn advance_head(table: *Table, queued: u32) void {
+    // invariant: a head never points past the queue it walks
+    assert(table.head <= queued);
+    while (table.head < queued and table.taken[table.head]) table.head += 1;
+}
+
+/// Answers whether an earlier phase of one phase's own turn still waits.
+///
+/// A sibling already running cannot be found here, and needs no finding: a
+/// domain never stands beside itself, so an in-flight sibling has already
+/// closed the door this question asks about.
+fn earlier_phase_waits(table: *const Table, plan: []const Phase, pick: u32) bool {
+    // invariant: a pick always names a phase inside the plan
+    assert(pick < plan.len);
+    var i: u32 = 0;
+    while (i < pick) : (i += 1) {
+        // invariant: the walk stays inside the queue it reads
+        assert(i < max_queue_len);
+        if (table.taken[i]) continue;
+        if (plan[i].turn == plan[pick].turn) return true;
+    }
+    // invariant: the walk reached the pick, weighing every phase before it
+    assert(i == pick);
+    return false;
+}
+
+/// Answers whether a phase may be admitted ahead of the queue's head.
+fn may_pass(
+    sys: *const system.System,
+    table: *const Table,
+    plan: []const Phase,
+    candidate: u32,
+    reading: Reading,
+) bool {
+    // invariant: a pass always reaches forward, never at the head itself
+    assert(candidate > table.head);
+    // invariant: a candidate always stands inside the queue
+    assert(candidate < plan.len);
+    var i: u32 = table.head;
+    while (i < candidate) : (i += 1) {
+        if (table.taken[i]) continue;
+        if (items_contend(sys, plan[i], plan[candidate], reading)) return false;
+    }
+    // invariant: the walk reached the candidate, weighing every phase before it
+    assert(i == candidate);
+    return true;
+}
+
+/// Chooses one phase from behind a blocked head, or answers that none may go.
+fn choose_pass(
+    sys: *const system.System,
+    table: *const Table,
+    plan: []const Phase,
+    reading: Reading,
+) ?u32 {
+    // invariant: a pass is only ever sought while the head stands blocked
+    assert(table.head < plan.len);
+    // invariant: a queue never grows past the table's own bound
+    assert(plan.len <= max_queue_len);
+    var looked: u32 = 0;
+    var i: u32 = table.head + 1;
+    while (i < plan.len and looked < max_lookahead) : (i += 1) {
+        if (table.taken[i]) continue;
+        looked += 1;
+        if (!admissible(sys, table.live[0..table.in_flight], plan[i], reading)) continue;
+        if (!may_pass(sys, table, plan, i, reading)) continue;
+        return i;
+    }
+    // invariant: the look stayed inside the bound it was given
+    assert(looked <= max_lookahead);
+    return null;
+}
+
+/// Starts one phase, handing the line it declared and nothing more.
+///
+/// Both readings hand the narrowed line, which is `intent.rye`'s finding
+/// kept whole: the only thing this rung changes is what orders a pair, so
+/// the line stays exactly where the rung before it left it.
+fn start_one(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    caps: *const capabilities.CapabilityTable,
+    phase: Phase,
+    wake: gap.Wake,
+) (RunError || cohort.RunError || boot.BootError)!cohort.Running {
+    // invariant: a start always names the domain it starts
+    assert(phase.task.item.domain.len >= 1);
+    const narrowed = intent.narrow(caps, phase.task) orelse return error.UnknownDomain;
+    const slot = narrowed.find_dependent(phase.task.item.domain) orelse return error.UnknownDomain;
+    // invariant: a narrowed line stays inside what the document grants
+    assert(boot.line_within(sys, slot));
+    return cohort.spawn_one_within(
+        allocator, io, self_path, sys, &narrowed, phase.task.item, wake, &.{},
+    );
+}
+
+/// Admits as much of the queue as the table, the isolation, and the reading
+/// allow, and answers how many dependents it started.
+fn fill_table(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    caps: *const capabilities.CapabilityTable,
+    plan: []const Phase,
+    wake: gap.Wake,
+    reading: Reading,
+    table: *Table,
+    report_out: *Report,
+) (RunError || cohort.RunError || boot.BootError)!u32 {
+    var admitted: u32 = 0;
+    while (table.in_flight < max_in_flight and table.left > 0) {
+        advance_head(table, @intCast(plan.len));
+        // invariant: work still waiting always leaves a head to weigh
+        assert(table.head < plan.len);
+
+        var pick: u32 = table.head;
+        if (!admissible(sys, table.live[0..table.in_flight], plan[table.head], reading)) {
+            pick = choose_pass(sys, table, plan, reading) orelse break;
+            report_out.run.passes += 1;
+            const reach = pick - table.head;
+            if (reach > report_out.run.pass_reach) report_out.run.pass_reach = reach;
+        }
+        if (earlier_phase_waits(table, plan, pick)) report_out.out_of_turn += 1;
+
+        table.live[table.in_flight] = try start_one(
+            allocator, io, self_path, sys, caps, plan[pick], wake,
+        );
+        table.in_flight += 1;
+        table.taken[pick] = true;
+        table.left -= 1;
+        admitted += 1;
+        report_out.run.admitted += 1;
+    }
+    // invariant: a fill never overruns the table it fills
+    assert(table.in_flight <= max_in_flight);
+    // invariant: a linked reading never runs a turn's phases out of order
+    assert(reading != .linked or report_out.out_of_turn == 0);
+    return admitted;
+}
+
+/// Waits on the eldest dependent, records what it answered, and closes the table
+/// over the slot it leaves.
+fn reap_oldest(io: std.Io, table: *Table, report_out: *Report) cohort.RunError!void {
+    // invariant: a reaping always has a dependent to wait on
+    assert(table.in_flight >= 1);
+    // invariant: a reaping never overruns the record it is kept in
+    assert(table.finished < max_queue_len);
+    const code = try cohort.reap_one(io, &table.live[0]);
+    table.done[table.finished] = .{
+        .domain = table.live[0].domain,
+        .verb = table.live[0].verb,
+        .count = table.live[0].count,
+        .expect = table.live[0].expect,
+        .code = code,
+    };
+    table.finished += 1;
+    table.in_flight -= 1;
+    report_out.run.reaped += 1;
+    report_out.run.turns += 1;
+
+    var s: u32 = 0;
+    while (s < table.in_flight) : (s += 1) table.live[s] = table.live[s + 1];
+    // invariant: the table closed over the reaped dependent, none lost
+    assert(s == table.in_flight);
+}
+
+/// Runs an ordered queue of phases under one reading, reaping one dependent per
+/// turn.
+///
+/// The program is `intent.rye`'s, and the whole difference between the
+/// readings lives in `items_contend`. Everything after it is shared, so a
+/// difference in the report is a difference in whether the supervisor could
+/// see the cut its author made.
+pub fn run_queue(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Phase,
+    wake: gap.Wake,
+    reading: Reading,
+    report_out: *Report,
+) (roster.RosterError || exercise.ProvisionError || notify.BellError || RunError || cohort.RunError || boot.BootError)!void {
+    // invariant: a run always knows what program to spawn
+    assert(self_path.len >= 1);
+    // invariant: a run always reports into a fresh report
+    assert(report_out.out_of_turn == 0);
+    if (plan.len == 0) return error.EmptyQueue;
+    if (plan.len > max_queue_len) return error.QueueTooLong;
+    if (!plan_is_ordered(plan)) return error.OrderStalled;
+
+    const provisioned = try exercise.provision(io, sys);
+    // invariant: every declared region has a backing store before any dependent runs
+    assert(provisioned == sys.map.region_count);
+    report_out.run.bells = try roundtrip.provision_directed(io, sys);
+    const caps = try roster.from_system(sys);
+    // invariant: the derived table enforces exactly what the document permits
+    assert(roster.agrees(sys, &caps));
+    report_out.run.queued = @intCast(plan.len);
+
+    var open: Table = .{};
+    open.left = @intCast(plan.len);
+    while (open.left > 0 or open.in_flight > 0) {
+        const admitted_now = try fill_table(
+            allocator, io, self_path, sys, &caps, plan, wake, reading, &open, report_out,
+        );
+        if (open.in_flight > report_out.run.peak_in_flight) {
+            report_out.run.peak_in_flight = open.in_flight;
+        }
+
+        if (open.left > 0) {
+            const free = max_in_flight - open.in_flight;
+            report_out.run.slots_unspent += free;
+            if (admitted_now == 0 and free > 0) report_out.run.idle_turns += 1;
+        }
+
+        // With an empty table nothing conflicts, so a stall here would mean
+        // the queue named a domain the document does not.
+        if (open.in_flight == 0) return error.OrderStalled;
+        try reap_oldest(io, &open, report_out);
+    }
+    // invariant: the whole queue was admitted and every dependent reaped
+    assert(open.left == 0);
+    assert(open.in_flight == 0);
+    assert(report_out.run.reaped == report_out.run.admitted);
+    assert(open.finished == plan.len);
+
+    var j: u32 = 0;
+    while (j < open.finished) : (j += 1) try judge_outcome(open.done[j], report_out);
+    // invariant: every reaped dependent was judged, none skipped
+    assert(j == open.finished);
+}
+
+// =========================================================================
+// The lap -- one turn cut in two, and a queue that may or may not see it
+// =========================================================================
+
+/// A lap whose middle turn is cut into two phases that share no region.
+///
+/// The head places and starts at once. Behind it its own domain waits,
+/// blocked for standing beside itself, and the virtualiser waits for the
+/// channel it holds to whoever is running. Then comes the cut turn:
+/// `client_b` places into `ask_b`, which the waiting virtualiser reads, so
+/// that phase cannot pass; and `client_b` peeks `menu`, which nothing ahead
+/// of it touches with a write, so that phase can. Reading acts alone, the
+/// second phase goes first. Reading the cut, it waits its turn.
+const cut_queue = [_]Phase{
+    .{ .turn = 0, .step = 0, .task = .{ .effects = "w", .item = .{ .domain = "client_a", .verb = .place, .hops = "ask_a", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok } } },
+    .{ .turn = 1, .step = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_a", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 2, .step = 0, .task = .{ .effects = "r", .item = .{ .domain = "serial_virt", .verb = .peek, .hops = "ask_b", .peers = "client_b", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 3, .step = 0, .task = .{ .effects = "w", .item = .{ .domain = "client_b", .verb = .place, .hops = "ask_b", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok } } },
+    .{ .turn = 3, .step = 1, .task = .{ .effects = "r", .item = .{ .domain = "client_b", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+};
+
+// =========================================================================
+// Self-test
+// =========================================================================
+
+/// Loads one declaration, or names why it could not be read.
+fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
+    const parsed = read.load(io, path, buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ path, @errorName(err) });
+        return null;
+    };
+    if (parsed.verify() != .whole) {
+        print("  RED: {s} did not read whole\n", .{path});
+        return null;
+    }
+    return parsed;
+}
+
+/// Runs one queue under one reading and answers its report.
+fn run_one(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Phase,
+    reading: Reading,
+    report_out: *Report,
+) bool {
+    run_queue(allocator, io, self_path, sys, plan, .when_moved, reading, report_out) catch |err| {
+        print("  RED: a queue did not survive its run: {s}\n", .{@errorName(err)});
+        return false;
+    };
+    return true;
+}
+
+/// The cut read straight, before any supervisor spends it.
+fn check_cut(io: std.Io) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const sys = load_one(io, declaration_path, &buf) orelse return 1;
+
+    const first = cut_queue[3];
+    const second = cut_queue[4];
+    const stranger = cut_queue[1];
+
+    if (!plan_is_ordered(&cut_queue)) {
+        print("  RED: the cut lap lists a turn's phases out of step order\n", .{});
+        return 1;
+    }
+    if (items_contend(&sys, first, second, .by_act)) {
+        print("  RED: two phases sharing no region already ordered each other\n", .{});
+        return 1;
+    }
+    if (!items_contend(&sys, first, second, .linked)) {
+        print("  RED: two phases of one turn read as free to swap\n", .{});
+        return 1;
+    }
+    if (items_contend(&sys, stranger, second, .linked)) {
+        print("  RED: the link ordered a pair cut from two different turns\n", .{});
+        return 1;
+    }
+    if (!same_turn(first, second) or same_turn(stranger, second)) {
+        print("  RED: the cut named the wrong turns\n", .{});
+        return 1;
+    }
+    // invariant: keeping a pair in order is one act, so the question is symmetric
+    assert(items_contend(&sys, second, first, .linked));
+    // invariant: the link only ever adds order, never removes any
+    assert(!items_contend(&sys, stranger, second, .by_act));
+
+    var out_of_order = [_]Phase{ second, first };
+    out_of_order[0].step = 1;
+    out_of_order[1].step = 0;
+    if (plan_is_ordered(&out_of_order)) {
+        print("  RED: a turn whose phases arrive out of step order read as ordered\n", .{});
+        return 1;
+    }
+
+    print("  a turn cut into phases keeps an order its regions never name\n", .{});
+    print("  the link speaks about the queue: two phases of one turn are ordered, two turns are not\n", .{});
+    return 0;
+}
+
+/// The cut lap: reading the act runs a turn's second phase ahead of its first.
+fn check_order(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const sys = load_one(io, declaration_path, &buf) orelse return 1;
+
+    var acts: Report = .{};
+    if (!run_one(allocator, io, self_path, &sys, &cut_queue, .by_act, &acts)) return 1;
+    var linked: Report = .{};
+    if (!run_one(allocator, io, self_path, &sys, &cut_queue, .linked, &linked)) return 1;
+
+    if (acts.out_of_turn == 0) {
+        print("  RED: reading acts alone kept every turn's phases in order\n", .{});
+        return 1;
+    }
+    if (linked.out_of_turn != 0) {
+        print("  RED: the link let {d} phases run out of turn\n", .{linked.out_of_turn});
+        return 1;
+    }
+    if (linked.run.passes >= acts.run.passes) {
+        print("  RED: the link took {d} passes against {d}, so it cost nothing\n", .{
+            linked.run.passes, acts.run.passes,
+        });
+        return 1;
+    }
+    // invariant: the two readings ran the same queue to the same end
+    assert(acts.run.reaped == linked.run.reaped);
+    assert(acts.run.reaped == cut_queue.len);
+    assert(acts.run.succeeded == linked.run.succeeded);
+    // invariant: a constraint never widens a table it did not open
+    assert(linked.run.peak_in_flight <= acts.run.peak_in_flight);
+
+    print("  the cut lap admits {d} phase out of turn by act, and {d} linked\n", .{
+        acts.out_of_turn, linked.out_of_turn,
+    });
+    print("  the link declines the pass that broke the cut: {d} passes by act, {d} linked\n", .{
+        acts.run.passes, linked.run.passes,
+    });
+    print("  {d} dependents run to the same end under both, at a peak of {d} against {d}\n", .{
+        acts.run.reaped, acts.run.peak_in_flight, linked.run.peak_in_flight,
+    });
+    return 0;
+}
+
+fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    print("Caravan phases {s} -- self-test\n", .{caravan_phases_version});
+    const cut = check_cut(io);
+    if (cut != 0) return cut;
+    const order = check_order(allocator, io, self_path);
+    if (order != 0) return order;
+    print("  GREEN: a turn cut into phases keeps an order its regions never name\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
+        return cohort.run_dependent(io, args);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(allocator, io, self_path);
+    }
+    if (args.len >= 2) return 1;
+    return run_self_test(allocator, io, self_path);
+}
