@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260818.210717
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title width_profile -- the per-orientation width(theta) anisotropy signature, GREEN
+prompt Autonomous loop -- pick up the running thread Lindy-first crux-first, take the next agent-doable lap on the Season G open-media image family, send it as its own signed round.
+think Loaded voice and style first (context/KYRI.md, context/RADIANT_STYLE.md), then crux/REMEMBER.md, the reds ledger, and the top rows of session-logs/README.md -- the running thread is unmistakable: one GREEN open-media rung per lap, the last being image/inscribed_disk.rye.
+think Standfast check first: every living REDS row (80, 81, 82, 83, 84, 85, 86, 87) reads CLOSED or Released; only #75 rests as custody-gated errata. No open agent-closable red -- the line is clear for new work.
+think The card named two crux candidates: a per-orientation WIDTH PROFILE reusing min_width's machinery, or an inscribed-versus-enclosing roundness FUSION. Deep-read of inscribed_disk.rye's own log surfaced the trap in the fusion: the chamfer-inradius and the hull-Euclidean circumradius use different pixel conventions, so a naive r_in/R_out flips past 1 on a compact square -- the last rung deliberately sidestepped exactly this by comparing two same-convention reads. The width profile is the cleaner crux: ONE convention, exact integer throughout.
+think Read min_width.rye whole to reuse its exact rotating-calipers arithmetic: per hull edge the width is cross_range/sqrt(edge_len_sq), so the squared width is the exact rational cross_range^2/edge_len_sq, and two widths compare by an exact i128 cross-multiplication. The profile keeps EVERY per-edge sample rather than only the minimum, and tracks both extremes.
+think The decisive design fact: the profile's minimum sample EQUALS min_width's breadth by construction (the minimum width of a convex polygon is realized flush with a hull edge -- a theorem), while the maximum sample is EDGE-FLUSH, honestly distinct from the true diameter, whose antipodal span need not be edge-aligned. I proved both against the real sibling modules (min_width for the floor, convex_diameter for the ceiling gap).
+obs Rota this lap: context/SIMPLE_LOVABLE_COMPLETE.md -- it steered the scope. The profile is one narrow thing done wholly (Simple), a fingerprint that reads elongation at a glance (Lovable), with the loop closed by exact reads and refusals (Complete). I resisted widening it into a multi-factor roundness module.
+obs GREEN on the FIRST metal run, no algorithm reds -- every predicted anisotropy landed exact: a 2x2 square 1 (isotropic), a 2x8 bar 4, a 6x2 rectangle 3, a raster 5x5 block 1. The decisive crux holds: the square and the bar share a minimum width of EXACTLY 2 yet read anisotropy 1 versus 4, so the profile sees the elongation the single breadth number is blind to.
+obs The max-is-not-the-diameter distinction proved cleanly: the bar's widest edge-normal width is EXACTLY 8, strictly below the true diameter sqrt(68) ~ 8.25 -- an honest edge-flush sample, never over-claimed as the antipodal span.
+loom witness=width_profile_witness build_and_selftest=GREEN checks=5 samples_per_edge=1 anisotropy_square=1 anisotropy_bar=4 anisotropy_rect=3
+file image/width_profile.rye the width profile module -- the per-orientation anisotropy signature over convex_hull's edges, min_width's exact machinery kept whole, min and max by exact i128, GREEN
+file tools/width_profile_witness.rish the witness on metal -- builds and runs the selftest, asserts the GREEN line and the three decisive cruxes with native contains (never a shell grep over interpolated output, REDS #76/#85)
+file crux/REMEMBER.md live edge advanced to width_profile; inscribed_disk moved to a prior-nib comment; Git nib pending the signed commit's amend
+recommend keep-going -- the open-media family has another agent-doable rung: an honest inscribed-versus-enclosing roundness read (reconciling the two pixel conventions first), or a convexity/anisotropy fusion pairing this profile against solidity. Standfast stays clear.

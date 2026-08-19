@@ -1,0 +1,43 @@
+# tools/width_profile_witness.rish -- the WIDTH PROFILE (per-orientation anisotropy signature) of a point set, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/min_width.rye reads the ONE narrowest slot a shape passes edge-first, the minimum over
+# image/convex_hull.rye's edges of the perpendicular extent. That floor is a single fact and cannot tell a 2x2 square from a 2x8
+# bar, for both are exactly 2 thin. This rung reads the WHOLE width(theta) function instead of its floor: one perpendicular-extent
+# sample flush with EVERY hull edge, so the shape's thickness as it turns becomes visible, min and max selected by the SAME EXACT
+# i128 comparison and NO tolerance; only the reported width, angle, and anisotropy ratio are read in f64, as image/min_width.rye
+# reports its own width.
+#
+# The crux this witness proves on metal: the profile SEES elongation the breadth is blind to -- a 2x2 square and a 2x8 bar share a
+# minimum width of EXACTLY 2 (proven against the real image/min_width.rye), yet the square is ISOTROPIC (anisotropy 1) while the bar
+# runs 2 and 8 (anisotropy EXACTLY 4); the minimum sample IS the breadth byte-for-byte; the maximum sample is EDGE-FLUSH not the
+# diameter -- for the bar the widest edge-normal width is exactly 8, strictly below the true diameter sqrt(68) ~ 8.25, proven against
+# the real image/convex_diameter.rye; is_isotropic and at_least_as_elongated decide both ways by exact integer arithmetic; a raster
+# block is isotropic; refusals by name and determinism. No network, no key, no funds -- the anisotropy signature a surface names the
+# day it asks not how thin a shape is, but how its thinness turns.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/width_profile_witness.rish
+
+say "width_profile: Language EN -- Season G width profile over image/convex_hull.rye's hull; the full per-orientation width(theta) anisotropy signature, one perpendicular cross-product extent flush with every hull edge, the minimum of which is exactly image/min_width.rye's breadth, min and max chosen by an EXACT i128 comparison and no tolerance; only the reported width, angle, and anisotropy are read in f64, as image/min_width.rye reports its own."
+say "width_profile: Style Radiant -- compose not braid: this rung owns only the per-edge caliper sweep, the min/max selection, and the reads over the profile (anisotropy, is_isotropic, at_least_as_elongated); convex_hull owns the hull and the Point type, min_width owns the single breadth this floor agrees with, convex_diameter owns the antipodal span this ceiling is honestly distinct from. No gather, no blend, no codec, no color, no pixel-writing loop -- a reading, not a render."
+say "width_profile: Lens TAME -- the profile holds one sample per hull edge under convex_hull_max_points; two in-image coordinates give a cross product under 2^30 in i64 and its square under 2^60 in i128, so no accumulator wraps; a single point or a segment hull refuses DegenerateHull, an empty input EmptySource, an over-long input HullTooLong; all-or-nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/width_profile"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/width_profile.rye -femit-bin=${bin}"]
+assert build.ok else "width_profile: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "width_profile: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "width_profile: ${out}"
+
+assert selftest.out contains "GREEN image-width-profile" else "width_profile: selftest did not print the GREEN line"
+assert selftest.out contains "SEES the elongation the single breadth number is blind to" else "width_profile: the elongation crux did not print"
+assert selftest.out contains "the minimum sample IS the breadth byte-for-byte" else "width_profile: the breadth-agreement crux did not print"
+assert selftest.out contains "the maximum sample is EDGE-FLUSH not the diameter" else "width_profile: the edge-flush-versus-diameter crux did not print"
+assert selftest.out contains "refuse DegenerateHull" else "width_profile: the degenerate refusal did not print"
+
+say "width_profile: GREEN -- the width profile on metal, the anisotropy signature the single breadth number is blind to. No network, no key, no funds."

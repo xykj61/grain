@@ -1,0 +1,429 @@
+//! image/width_profile.rye -- the WIDTH PROFILE of a point set: the full per-orientation width(theta) anisotropy signature, read as
+//! the shape's PERPENDICULAR extent flush with EVERY convex-hull edge (not only the narrowest), the minimum of which is exactly
+//! image/min_width.rye's breadth, chosen by the SAME EXACT integer comparison and NO tolerance -- the anisotropy fingerprint the
+//! single min-width number is blind to.
+//!
+//! Season G (Open Media Primitives) -- image/min_width.rye reads the ONE narrowest slot a shape passes edge-first, the minimum over
+//! the convex hull's edges of the perpendicular extent. That minimum is a single fact: how THIN the shape is at its thinnest. It
+//! cannot tell a 2x2 square from a 2x8 bar, for both are exactly 2 thin. This rung reads the WHOLE function instead of its floor:
+//! one width sample per hull edge, in hull order, so the shape's thickness as it TURNS becomes visible. The square reads the same
+//! width from every edge -- isotropic, as wide as it is thin. The bar reads 2 across its length and 8 across its thickness -- an
+//! anisotropy of four. Two shapes one breadth cannot separate, the profile tells apart at a glance.
+//!
+//! The SAME ROTATING-CALIPERS construction image/min_width.rye rides, kept whole: for each hull edge measure the shape's
+//! PERPENDICULAR extent -- the range of the cross product of the edge vector against every vertex -- and the width along that edge is
+//! `cross_range_e / sqrt(edge_len_sq_e)`, so its SQUARE is the exact rational `cross_range_e^2 / edge_len_sq_e`. This rung keeps
+//! every sample rather than only the minimum, then selects the min AND the max edge-normal width by the SAME EXACT i128
+//! cross-multiplication (`cross_i^2 * D_j` against `cross_j^2 * D_i`, the square roots cleared by squaring) -- no tolerance ever
+//! picks the wrong extreme. Every DECISION is integer arithmetic; only the reported `width`, `angle`, and the `anisotropy` ratio,
+//! irrational because they divide by a square root, are read in f64, exactly as image/min_width.rye reports its own width.
+//!
+//! The DECISIVE facts:
+//!
+//!   THE PROFILE SEES ELONGATION THE BREADTH IS BLIND TO -- a 2x2 square and a 2x8 bar share a minimum width of EXACTLY 2 (proven
+//!   against the real image/min_width.rye), yet the square's every edge-normal width is 2 (ISOTROPIC, anisotropy 1) while the bar's
+//!   run 2 and 8 (anisotropy EXACTLY 4). One number cannot separate them; the whole profile does.
+//!
+//!   THE MINIMUM SAMPLE IS THE BREADTH -- the smallest width in the profile is byte-for-byte image/min_width.rye's result (same exact
+//!   rational), because the minimum width of a convex polygon is always realized flush with a hull edge (a theorem the caliper sweep
+//!   rests on). This rung's floor and image/min_width.rye agree by construction, not by rounding.
+//!
+//!   THE MAXIMUM SAMPLE IS EDGE-FLUSH, NOT THE DIAMETER -- the widest edge-normal width is the maximum over the hull's OWN edge
+//!   orientations, a distinct fact from the true diameter (image/convex_diameter.rye), whose antipodal span need not be edge-aligned.
+//!   For the 2x8 bar the widest edge-normal width is EXACTLY 8, STRICTLY below the diameter sqrt(68) ~ 8.25 -- the profile samples
+//!   edge directions, never the farthest vertex pair.
+//!
+//! `is_isotropic(profile)` decides whether a shape is as wide as it is thin in every edge direction (max width equals min width
+//! EXACTLY, by `max_num * min_den == min_num * max_den`), never a float compare; `at_least_as_elongated(profile, ratio)` decides
+//! whether the widest edge-normal width is at least `ratio` times the breadth by the exact rule `max_num * min_den >= ratio^2 *
+//! min_num * max_den` -- the honest anisotropy dual of image/min_width.rye's `passes_slot`.
+//!
+//! Compose not braid. This rung OWNS only the per-edge caliper sweep, the min/max selection, and the reads over the profile -- no
+//! gather, no blend, no codec, no color, no pixel-writing loop. image/convex_hull.rye owns the hull and the Point type;
+//! image/min_width.rye owns the single breadth this profile's floor agrees with; image/convex_diameter.rye owns the antipodal span
+//! this profile's ceiling is honestly distinct from. The width profile of a boundary ring is the width profile of its whole shape --
+//! interior pixels lie inside the hull, never needed.
+//!
+//! Everything is bounded before a byte: the profile holds one sample per hull edge, a hull of at most `convex_hull_max_points`
+//! vertices (a boundary perimeter far under 2^13), and a longer input refuses through the hull's own `HullTooLong`; an empty input
+//! refuses `EmptySource`; a hull of fewer than three vertices (a point or a segment) has no slot to measure and refuses
+//! `DegenerateHull` by name. Coordinates stay under `width_profile_max_coord` (2^14), so a cross product stays far under 2^30 in i64,
+//! its square under 2^60, and the i128 comparison has room to spare -- no accumulator wraps. All-or-nothing, never a half-built
+//! profile. No network, no key, no funds -- the anisotropy signature a surface names the day it asks not how thin a shape is, but how
+//! its thinness turns, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/width_profile.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const contour = @import("contour.rye");
+const convex_hull = @import("convex_hull.rye");
+const min_width = @import("min_width.rye");
+const convex_diameter = @import("convex_diameter.rye");
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+
+pub const width_profile_version = "20260818.210717";
+
+/// Every hull coordinate stays under this bound, so a cross product stays under 2^30 in i64, its square under 2^60, and the i128
+/// anisotropy cross-multiplication far under its ceiling. The same order of magnitude image/min_width.rye keeps for its own read.
+pub const width_profile_max_coord: u32 = min_width.min_width_max_coord;
+
+/// The most a caller may ask of `at_least_as_elongated` -- a ratio in the coordinate range, so `ratio^2 * min_num * max_den` stays
+/// far under the i128 ceiling.
+pub const width_profile_max_ratio: u32 = 1 << 14;
+
+pub const WidthProfileError = error{
+    DegenerateHull,
+};
+
+/// One WIDTH SAMPLE -- the shape's perpendicular extent flush with a single hull edge. The exact squared width is the rational
+/// `width_sq_num / width_sq_den` (the denominator the supporting edge's length squared, the numerator the perpendicular cross range
+/// squared); `width` and `angle` are read in f64 because the width divides by a square root. `support_i` and `support_j` name the two
+/// hull vertices whose edge this width is flush with; the width itself runs PERPENDICULAR to that edge.
+pub const WidthSample = struct {
+    support_i: u32,
+    support_j: u32,
+    width_sq_num: u64,
+    width_sq_den: u64,
+    width: f64,
+    angle: f64,
+};
+
+/// The WIDTH PROFILE -- one `WidthSample` per hull edge in hull order, and the indices of the narrowest (`min_index`, the breadth =
+/// image/min_width.rye) and the widest edge-normal (`max_index`) samples, both selected by exact i128 comparison.
+pub const WidthProfile = struct {
+    samples: []WidthSample,
+    min_index: u32,
+    max_index: u32,
+};
+
+/// The squared length of the edge a->b, exact in u64. Distinct hull vertices give a strictly positive value, a safe denominator.
+/// Coordinates under `width_profile_max_coord` keep each squared difference under 2^28.
+fn edge_len_sq(a: contour.Point, b: contour.Point) u64 {
+    const dx: i64 = @as(i64, b.x) - @as(i64, a.x);
+    const dy: i64 = @as(i64, b.y) - @as(i64, a.y);
+    const s: i64 = dx * dx + dy * dy;
+    // invariant: two in-image points give a squared length far under the i64 ceiling.
+    assert(s >= 0);
+    assert(s < (@as(i64, 1) << 30));
+    return @intCast(s);
+}
+
+/// TRUE when squared width `na/da` is STRICTLY smaller than `nb/db`, decided by an exact i128 cross-multiplication (`na * db <
+/// nb * da`). Because width is non-negative, comparing the squares compares the widths; positive edge-length denominators preserve
+/// the inequality's direction. The same exact rule image/min_width.rye selects its floor by.
+fn width_less(na: u64, da: u64, nb: u64, db: u64) bool {
+    // invariant: a width denominator is a squared edge length of distinct vertices, strictly positive.
+    assert(da >= 1);
+    assert(db >= 1);
+    const lhs: i128 = @as(i128, na) * @as(i128, db);
+    const rhs: i128 = @as(i128, nb) * @as(i128, da);
+    return lhs < rhs;
+}
+
+/// TRUE when squared width `na/da` is STRICTLY greater than `nb/db`, the exact mirror of `width_less` for selecting the widest
+/// edge-normal sample.
+fn width_greater(na: u64, da: u64, nb: u64, db: u64) bool {
+    // invariant: a width denominator is a squared edge length of distinct vertices, strictly positive.
+    assert(da >= 1);
+    assert(db >= 1);
+    const lhs: i128 = @as(i128, na) * @as(i128, db);
+    const rhs: i128 = @as(i128, nb) * @as(i128, da);
+    return lhs > rhs;
+}
+
+/// The WIDTH PROFILE of any point set -- build the convex hull, then for each hull edge measure the shape's perpendicular
+/// cross-product extent over that edge, keeping every sample and tracking the exact minimum and maximum. Refuses `EmptySource` /
+/// `HullTooLong` through the hull, and `DegenerateHull` when the hull is a single point or segment (no width to measure).
+pub fn width_profile(allocator: std.mem.Allocator, points: []const contour.Point) !WidthProfile {
+    const hull = try convex_hull.convex_hull(allocator, points);
+    // invariant: a width profile needs a real hull -- at least a triangle.
+    if (hull.len < 3) return error.DegenerateHull;
+    // invariant: the hull never exceeds the point ceiling, so the sample buffer and every accumulator below stay bounded.
+    assert(hull.len <= convex_hull.convex_hull_max_points);
+
+    const samples = try allocator.alloc(WidthSample, hull.len);
+    var min_index: usize = 0;
+    var max_index: usize = 0;
+
+    var e: usize = 0;
+    while (e < hull.len) : (e += 1) {
+        const a = hull[e];
+        const b = hull[(e + 1) % hull.len];
+        const ex: i64 = @as(i64, b.x) - @as(i64, a.x);
+        const ey: i64 = @as(i64, b.y) - @as(i64, a.y);
+        // invariant: consecutive hull vertices are distinct, so the supporting edge has real length.
+        assert(ex != 0 or ey != 0);
+
+        var min_cross: i64 = 0;
+        var max_cross: i64 = 0;
+        var v: usize = 0;
+        while (v < hull.len) : (v += 1) {
+            const vx: i64 = @as(i64, hull[v].x) - @as(i64, a.x);
+            const vy: i64 = @as(i64, hull[v].y) - @as(i64, a.y);
+            const cr: i64 = ex * vy - ey * vx;
+            // invariant: a cross product of an in-image edge against an in-image vector stays far under the i64 ceiling.
+            assert(cr < (@as(i64, 1) << 40));
+            assert(cr > -(@as(i64, 1) << 40));
+            if (v == 0) {
+                min_cross = cr;
+                max_cross = cr;
+            } else {
+                if (cr < min_cross) min_cross = cr;
+                if (cr > max_cross) max_cross = cr;
+            }
+        }
+
+        const cross_range: i64 = max_cross - min_cross;
+        // invariant: a range is a difference of a max and a min, never negative.
+        assert(cross_range >= 0);
+        const num: u64 = @as(u64, @intCast(cross_range)) * @as(u64, @intCast(cross_range));
+        const den: u64 = edge_len_sq(a, b);
+        const edge_len: f64 = @sqrt(@as(f64, @floatFromInt(den)));
+        // invariant: distinct supporting-edge vertices give a positive length, a safe divisor.
+        assert(edge_len > 0.0);
+        const ang: f64 = std.math.atan2(@as(f64, @floatFromInt(ey)), @as(f64, @floatFromInt(ex)));
+
+        samples[e] = WidthSample{
+            .support_i = @intCast(e),
+            .support_j = @intCast((e + 1) % hull.len),
+            .width_sq_num = num,
+            .width_sq_den = den,
+            .width = @as(f64, @floatFromInt(cross_range)) / edge_len,
+            .angle = ang,
+        };
+
+        if (width_less(num, den, samples[min_index].width_sq_num, samples[min_index].width_sq_den)) min_index = e;
+        if (width_greater(num, den, samples[max_index].width_sq_num, samples[max_index].width_sq_den)) max_index = e;
+    }
+
+    // invariant: both extremes seat a real sample inside the profile.
+    assert(min_index < samples.len);
+    assert(max_index < samples.len);
+    // invariant: the maximum edge-normal width is never below the minimum -- the two extremes bound the profile.
+    assert(!width_less(samples[max_index].width_sq_num, samples[max_index].width_sq_den, samples[min_index].width_sq_num, samples[min_index].width_sq_den));
+
+    return WidthProfile{ .samples = samples, .min_index = @intCast(min_index), .max_index = @intCast(max_index) };
+}
+
+/// The narrowest sample -- the shape's BREADTH, byte-for-byte image/min_width.rye's result.
+pub fn min_sample(profile: WidthProfile) WidthSample {
+    // invariant: a real profile carries at least one sample and a valid minimum index.
+    assert(profile.samples.len >= 1);
+    assert(profile.min_index < profile.samples.len);
+    return profile.samples[@as(usize, profile.min_index)];
+}
+
+/// The widest edge-normal sample -- the maximum over the hull's own edge orientations, honestly distinct from the true diameter.
+pub fn max_sample(profile: WidthProfile) WidthSample {
+    // invariant: a real profile carries at least one sample and a valid maximum index.
+    assert(profile.samples.len >= 1);
+    assert(profile.max_index < profile.samples.len);
+    return profile.samples[@as(usize, profile.max_index)];
+}
+
+/// The ANISOTROPY -- the widest edge-normal width over the breadth, a dimensionless elongation in [1, inf). A square reads 1
+/// (isotropic); a 2x8 bar reads 4. Read in f64 because it divides a square root by a square root; the extremes were selected by
+/// exact integer arithmetic.
+pub fn anisotropy(profile: WidthProfile) f64 {
+    const lo = min_sample(profile);
+    const hi = max_sample(profile);
+    // invariant: the breadth of a real shape is strictly positive, a safe divisor.
+    assert(lo.width > 0.0);
+    // invariant: the widest width is never below the breadth, so the ratio is at least one.
+    assert(hi.width >= lo.width);
+    return hi.width / lo.width;
+}
+
+/// TRUE when the shape is as wide as it is thin in every edge direction -- its widest edge-normal width equals its breadth EXACTLY,
+/// decided by `max_num * min_den == min_num * max_den`, never a float compare. A square is isotropic; any non-square rectangle is not.
+pub fn is_isotropic(profile: WidthProfile) bool {
+    const lo = min_sample(profile);
+    const hi = max_sample(profile);
+    // invariant: both denominators are positive squared edge lengths.
+    assert(lo.width_sq_den >= 1);
+    assert(hi.width_sq_den >= 1);
+    const lhs: i128 = @as(i128, hi.width_sq_num) * @as(i128, lo.width_sq_den);
+    const rhs: i128 = @as(i128, lo.width_sq_num) * @as(i128, hi.width_sq_den);
+    return lhs == rhs;
+}
+
+/// TRUE when the widest edge-normal width is at least `ratio` times the breadth -- the shape is at least that elongated, decided by
+/// the exact rule `max_num * min_den >= ratio^2 * min_num * max_den` (the square root cleared by squaring), never a float compare.
+/// The honest anisotropy dual of image/min_width.rye's `passes_slot`.
+pub fn at_least_as_elongated(profile: WidthProfile, ratio: u32) bool {
+    const lo = min_sample(profile);
+    const hi = max_sample(profile);
+    // invariant: both denominators are positive squared edge lengths.
+    assert(lo.width_sq_den >= 1);
+    assert(hi.width_sq_den >= 1);
+    // invariant: the ratio stays in the coordinate range, so ratio^2 * min_num * max_den stays far under the i128 ceiling.
+    assert(ratio <= width_profile_max_ratio);
+    const lhs: i128 = @as(i128, hi.width_sq_num) * @as(i128, lo.width_sq_den);
+    const rhs: i128 = @as(i128, ratio) * @as(i128, ratio) * @as(i128, lo.width_sq_num) * @as(i128, hi.width_sq_den);
+    return lhs >= rhs;
+}
+
+// --- selftest: the profile SEES elongation the breadth is blind to (a 2x2 square anisotropy 1 vs a 2x8 bar anisotropy 4, same min
+//     width 2 proven against image/min_width.rye); the minimum sample IS the breadth; the maximum sample is edge-flush NOT the
+//     diameter (proven against image/convex_diameter.rye); is_isotropic and at_least_as_elongated both ways; refusals; determinism --
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn approx(a: f64, b: f64, tol: f64) bool {
+    const d = if (a >= b) a - b else b - a;
+    return d <= tol;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- THE PROFILE SEES ELONGATION THE BREADTH IS BLIND TO -- a 2x2 square and a 2x8 bar share a minimum width of EXACTLY 2, yet
+    //     the square is ISOTROPIC (every edge-normal width 2, anisotropy 1) while the bar runs 2 and 8 (anisotropy EXACTLY 4) -----
+    var square_pts = [_]contour.Point{
+        .{ .x = 0, .y = 0 },
+        .{ .x = 2, .y = 0 },
+        .{ .x = 2, .y = 2 },
+        .{ .x = 0, .y = 2 },
+    };
+    const square = try width_profile(garden, square_pts[0..]);
+    if (!approx(min_sample(square).width, 2.0, 1e-9)) return error.SquareBreadthNotTwo;
+    if (!approx(max_sample(square).width, 2.0, 1e-9)) return error.SquareMaxNotTwo;
+    if (!is_isotropic(square)) return error.SquareNotIsotropic;
+    if (!approx(anisotropy(square), 1.0, 1e-9)) return error.SquareAnisotropyNotOne;
+
+    var bar_pts = [_]contour.Point{
+        .{ .x = 0, .y = 0 },
+        .{ .x = 2, .y = 0 },
+        .{ .x = 2, .y = 8 },
+        .{ .x = 0, .y = 8 },
+    };
+    const bar = try width_profile(garden, bar_pts[0..]);
+    if (!approx(min_sample(bar).width, 2.0, 1e-9)) return error.BarBreadthNotTwo;
+    if (!approx(max_sample(bar).width, 8.0, 1e-9)) return error.BarMaxNotEight;
+    if (is_isotropic(bar)) return error.BarFalselyIsotropic;
+    if (!approx(anisotropy(bar), 4.0, 1e-9)) return error.BarAnisotropyNotFour;
+    // the square and the bar share one breadth the profile separates: exact squared widths 4/1 == 4/1
+    if (min_sample(square).width_sq_num * min_sample(bar).width_sq_den != min_sample(bar).width_sq_num * min_sample(square).width_sq_den)
+        return error.SharedBreadthDiffers;
+
+    // --- THE MINIMUM SAMPLE IS THE BREADTH -- the profile's floor is byte-for-byte image/min_width.rye's result (same exact rational)
+    const bar_breadth = try min_width.min_width(garden, bar_pts[0..]);
+    if (min_sample(bar).width_sq_num != bar_breadth.width_sq_num or min_sample(bar).width_sq_den != bar_breadth.width_sq_den)
+        return error.ProfileFloorDiffersFromMinWidth;
+
+    // --- THE MAXIMUM SAMPLE IS EDGE-FLUSH, NOT THE DIAMETER -- for the bar the widest edge-normal width is EXACTLY 8, STRICTLY below
+    //     the true diameter sqrt(68) ~ 8.25 (image/convex_diameter.rye), whose antipodal span is not edge-aligned ---------------
+    const bar_hull = try convex_hull.convex_hull(garden, bar_pts[0..]);
+    const bar_diam = try convex_diameter.convex_diameter(bar_hull);
+    if (!approx(bar_diam.dist, @sqrt(68.0), 1e-6)) return error.BarDiameterWrong;
+    if (max_sample(bar).width >= bar_diam.dist) return error.MaxNotBelowDiameter; // 8 << 8.25, the edge-flush-versus-antipodal gap
+
+    // --- is_isotropic BOTH WAYS -- a 6x2 rectangle is anisotropic (3x), never isotropic -----------------------------------
+    var rect_pts = [_]contour.Point{
+        .{ .x = 0, .y = 0 },
+        .{ .x = 6, .y = 0 },
+        .{ .x = 6, .y = 2 },
+        .{ .x = 0, .y = 2 },
+    };
+    const rect = try width_profile(garden, rect_pts[0..]);
+    if (is_isotropic(rect)) return error.RectFalselyIsotropic;
+    if (!approx(anisotropy(rect), 3.0, 1e-9)) return error.RectAnisotropyNotThree;
+
+    // --- at_least_as_elongated -- the bar is at least 4x elongated, refuses 5x; the square is not even 2x (it is 1x) --------
+    if (!at_least_as_elongated(bar, 4)) return error.BarNotFourElongated;
+    if (at_least_as_elongated(bar, 5)) return error.BarFalselyFiveElongated;
+    if (at_least_as_elongated(square, 2)) return error.SquareFalselyTwoElongated;
+    if (!at_least_as_elongated(square, 1)) return error.SquareNotOneElongated; // every shape is at least 1x elongated
+
+    // --- AN INTEGRATED RASTER CRUX -- a solid 5x5 block traced through image/label.rye and image/contour.rye is ISOTROPIC (every
+    //     edge-normal width EXACTLY 4, the 1..5 corner extent), anisotropy 1 ----------------------------------------------
+    var big = try make_canvas(garden, 7, 7, 0);
+    set_block(&big, 1, 1, 5, 5);
+    const bmap = try label.label_components(garden, &big);
+    const bring = try contour.trace_contour(garden, &bmap, 1);
+    const block = try width_profile(garden, bring.points);
+    if (!approx(min_sample(block).width, 4.0, 1e-9)) return error.BlockBreadthNotFour;
+    if (!is_isotropic(block)) return error.BlockNotIsotropic;
+    if (!approx(anisotropy(block), 1.0, 1e-9)) return error.BlockAnisotropyNotOne;
+
+    // --- DEGENERATE hulls refuse DegenerateHull: a single point, and three COLLINEAR points (whose hull is a two-point segment)
+    //     have no width to measure ---------------------------------------------------------------------------------------
+    var one = [_]contour.Point{.{ .x = 4, .y = 7 }};
+    if (width_profile(garden, one[0..])) |_| return error.OnePointNotRefused else |err| {
+        if (err != error.DegenerateHull) return error.WrongOnePointError;
+    }
+    var colinear = [_]contour.Point{
+        .{ .x = 0, .y = 0 },
+        .{ .x = 3, .y = 0 },
+        .{ .x = 6, .y = 0 },
+    };
+    if (width_profile(garden, colinear[0..])) |_| return error.CollinearNotRefused else |err| {
+        if (err != error.DegenerateHull) return error.WrongCollinearError;
+    }
+
+    // --- REFUSALS through the hull: an empty input refuses EmptySource, having allocated nothing --------------------------
+    const empty: []const contour.Point = &[_]contour.Point{};
+    if (width_profile(garden, empty)) |_| return error.EmptyNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- DETERMINISM: the same point set reads the same profile twice --------------------------------------------------
+    const p1 = try width_profile(garden, bar_pts[0..]);
+    const p2 = try width_profile(garden, bar_pts[0..]);
+    if (p1.min_index != p2.min_index or p1.max_index != p2.max_index or p1.samples.len != p2.samples.len)
+        return error.ProfileNotDeterministic;
+
+    print("GREEN image-width-profile: the WIDTH PROFILE of a point set -- the full per-orientation width(theta) anisotropy signature, one perpendicular-extent sample flush with EVERY image/convex_hull.rye edge, the minimum of which is exactly image/min_width.rye's breadth, min and max selected by the SAME EXACT i128 comparison and NO tolerance -- the DECISIVE crux: a 2x2 square and a 2x8 bar share a minimum width of EXACTLY 2 (proven against image/min_width.rye), yet the square's every edge-normal width is 2 (ISOTROPIC, anisotropy 1) while the bar's run 2 and 8 (anisotropy EXACTLY 4), so the profile SEES the elongation the single breadth number is blind to; the minimum sample IS the breadth byte-for-byte; the maximum sample is EDGE-FLUSH not the diameter -- for the bar the widest edge-normal width is EXACTLY 8, STRICTLY below the true diameter sqrt(68) ~ 8.25 (image/convex_diameter.rye), whose antipodal span is not edge-aligned; is_isotropic decides a square true and a 6x2 rectangle false (anisotropy 3) by exact equality; at_least_as_elongated reads the bar 4x not 5x and the square 1x not 2x by exact integer arithmetic; a solid 5x5 raster block traced through label and contour is isotropic; a single point and three collinear points refuse DegenerateHull, an empty input EmptySource, each having allocated nothing; the same point set reads deterministically\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: width_profile selftest\n", .{});
+    return 1;
+}
