@@ -1,0 +1,42 @@
+# tools/convex_diameter_witness.rish -- the DIAMETER (maximum Feret span) of a convex hull, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/min_area_rect.rye reads a shape's tightest ORIENTED box, whose length is measured
+# along the minimum-area orientation. That length is not a shape's greatest span: a rectangle W by H has a box of length W, yet
+# its farthest corners are the DIAGONAL apart. This rung reads that greatest span directly -- the maximum distance between any two
+# boundary points, always realized by two convex-hull vertices -- by ROTATING CALIPERS (Shamos 1978) in ONE pass over the hull,
+# with an EXACT integer squared distance and NO tolerance; only the reported length is read in f64, as image/min_area_rect.rye
+# reports its dimensions.
+#
+# The crux this witness proves on metal: rotating calipers AGREES with the O(n^2) all-pairs oracle on every convex fixture (an
+# irregular hexagon whose farthest pair is non-adjacent, a rectangle, a raster block, a long kite), so the linear span is proven
+# correct against the quadratic reference; the DECISIVE crux -- a 6x4 rectangle's min-area box has LENGTH 6 (its own side), yet
+# its diameter is the DIAGONAL sqrt(52) ~ 7.21, strictly longer than any side, the isotropic greatest span the oriented box does
+# not name; ROUNDNESS (the round companion of solidity) reads a compact block near 1 and a thin bar far below it; refusals by name
+# and determinism. No network, no key, no funds -- the greatest-span reader a surface names the day it wants a shape's width, its
+# longest reach, or how round it is.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/convex_diameter_witness.rish
+
+say "convex_diameter: Language EN -- Season G convex hull diameter (maximum Feret span) over image/convex_hull.rye's hull; the farthest pair of hull vertices by ROTATING CALIPERS over antipodal pairs, an EXACT integer squared distance, no tolerance; only the reported length is read in f64, as image/min_area_rect.rye reports its dimensions."
+say "convex_diameter: Style Radiant -- compose not braid: this rung owns only the caliper sweep and the reads over the diameter (the antipodal advance, the exact squared-distance argmax, the roundness ratio); convex_hull owns the hull, contour the Point type. No gather, no blend, no codec, no color, no pixel-writing loop -- a reading, not a render."
+say "convex_diameter: Lens TAME -- the hull is swept under convex_diameter_max_points; two in-image coordinates give a squared distance under 2^29 in u64 and a cross magnitude under 2^28 in i64, so no accumulator wraps; the antipodal pointer laps at most twice, a 4n guard refusing NotConvex; an empty hull refuses EmptySource, an over-long hull HullTooLong; all-or-nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/convex_diameter"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/convex_diameter.rye -femit-bin=${bin}"]
+assert build.ok else "convex_diameter: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "convex_diameter: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "convex_diameter: ${out}"
+
+assert selftest.out contains "GREEN image-convex-diameter" else "convex_diameter: selftest did not print the GREEN line"
+assert selftest.out contains "the linear caliper AGREES with the O(n^2) all-pairs oracle" else "convex_diameter: the oracle-agreement crux did not print"
+assert selftest.out contains "its diameter is the DIAGONAL" else "convex_diameter: the diameter-vs-oriented-box crux did not print"
+assert selftest.out contains "ROUNDNESS" else "convex_diameter: the roundness read did not print"
+
+say "convex_diameter: GREEN -- the farthest pair of a convex hull by rotating calipers agrees with the O(n^2) all-pairs oracle on every convex fixture; a rectangle's diameter is its diagonal, strictly longer than the min-area box's length (the isotropic span the oriented box does not name); roundness reads a compact block above a thin bar; refusals by name and determinism, on metal."

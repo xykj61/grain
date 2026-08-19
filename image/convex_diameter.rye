@@ -1,0 +1,374 @@
+//! image/convex_diameter.rye -- the DIAMETER of a shape: the FARTHEST PAIR of its convex hull vertices, the MAXIMUM FERET span,
+//! read by ROTATING CALIPERS over antipodal hull-vertex pairs with an EXACT integer squared distance and NO tolerance -- the
+//! isotropic size the oriented bounding box does not name, the convex companion of image/min_area_rect.rye's oriented extent.
+//!
+//! Season G (Open Media Primitives) -- image/convex_hull.rye wraps a boundary ring in its tightest convex polygon, and
+//! image/min_area_rect.rye reads the tightest ORIENTED rectangle around it, whose LENGTH is measured along the minimum-area
+//! orientation. That length is not a shape's greatest span: a rectangle W by H has a min-area box of length W, yet its two
+//! farthest corners are the DIAGONAL apart, sqrt(W^2 + H^2), strictly longer than any side. This rung reads that greatest span
+//! directly -- the maximum distance between any two boundary points, which for a convex shape is always realized by two HULL
+//! vertices (a point interior to the hull is closer to everything than the hull vertex beyond it). It is the classic maximum
+//! Feret diameter, the single longest caliper across a shape, and the isotropic size a surface names the day it asks "how wide
+//! is this at its widest, in ANY direction?" -- a fact the axis box and the oriented box both leave unspoken.
+//!
+//! ROTATING CALIPERS (Shamos 1978) reads it in ONE pass over the hull rather than the O(n^2) of every pair. The diameter is
+//! realized by an ANTIPODAL pair -- two hull vertices that admit parallel supporting lines -- and as an edge pointer walks the
+//! hull once, the antipodal pointer opposite it advances monotonically, so the total work is linear. For each hull edge, advance
+//! the antipodal vertex while its perpendicular distance from the edge grows (the ARGMAX of the exact cross-product magnitude,
+//! since the chord length is constant for a fixed edge), then measure BOTH edge endpoints against that farthest vertex -- the
+//! second measurement catches the parallel-edge case where the diameter spans two vertices a single-endpoint check would miss.
+//! The distance itself is compared as an EXACT integer SQUARED distance (dx*dx + dy*dy in i64), so the farthest pair is a
+//! tolerance-free arithmetic fact, never a floating-point threshold; only the reported length is read in f64 (it takes a square
+//! root), exactly as image/min_area_rect.rye reports its dimensions and image/moments.rye reads orientation.
+//!
+//! A descendant rides on the diameter, the round companion of image/convex_hull.rye's solidity: ROUNDNESS -- how nearly a shape
+//! fills the circle of its own greatest span, `4 * region_area / (pi * diameter^2)`, in (0, 1]. A disk fills that circle
+//! completely (roundness near 1); a long thin bar spans a large diameter yet fills little of the circle it inscribes, so its
+//! roundness falls far below 1 -- a compactness read the oriented box's elongation measures differently (extent ratio) and the
+//! diameter measures as area against greatest span.
+//!
+//! Compose not braid. This rung OWNS only the caliper sweep and the reads over the diameter (the antipodal advance, the exact
+//! squared-distance argmax, the roundness ratio) -- no gather, no blend, no codec, no color, no pixel-writing loop.
+//! image/contour.rye owns the Point type; image/convex_hull.rye owns the hull; a caller hands this rung a convex hull it already
+//! built (its vertices in ring order with no collinear triples -- exactly what image/convex_hull.rye returns).
+//!
+//! Everything is bounded before a byte: a hull of at most `convex_diameter_max_points` vertices (a boundary perimeter far under
+//! 2^13), a longer hull refuses `HullTooLong`; an empty hull refuses `EmptySource`. Two in-image coordinates (under 2^14) give a
+//! squared distance far under 2^29 in u64 and a cross magnitude far under 2^28 in i64, so no accumulator wraps. The antipodal
+//! pointer laps the hull at most twice (2n advances), and a hard ceiling of 4n refuses `NotConvex` so a non-convex input can
+//! never spin the caliper forever. All-or-nothing, never a half-read diameter. No network, no key, no funds -- the greatest-span
+//! reader a surface names the day it wants a shape's width, its longest reach, or how round it is, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/convex_diameter.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const contour = @import("contour.rye");
+const convex_hull = @import("convex_hull.rye");
+const min_area_rect = @import("min_area_rect.rye");
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+
+pub const convex_diameter_version = "20260818.201501";
+
+/// A diameter is read over a hull of at most this many vertices -- the same hard boundary ceiling image/convex_hull.rye keeps over
+/// a perimeter, so the caliper never sweeps unbounded. A longer hull refuses `HullTooLong`.
+pub const convex_diameter_max_points: u32 = convex_hull.convex_hull_max_points;
+
+/// Pi in f64, for the roundness ratio only -- the exact diameter selection never touches a float.
+const pi: f64 = 3.14159265358979323846;
+
+pub const ConvexDiameterError = error{
+    EmptySource,
+    HullTooLong,
+    NotConvex,
+};
+
+/// The DIAMETER of a shape: the two farthest hull vertices `a` and `b`, their EXACT squared distance `dist_sq` (the integer the
+/// caliper maximized), and the perpendicular span `dist` in f64 (`sqrt(dist_sq)`, reported only). The exact `dist_sq` is what a
+/// comparison reads; `dist` is only for display, exactly as image/min_area_rect.rye reports its `length` in f64.
+pub const Diameter = struct {
+    a: contour.Point,
+    b: contour.Point,
+    dist_sq: u64,
+    dist: f64,
+};
+
+/// The SIGNED CROSS PRODUCT of edge o->a with edge o->b, exact in i64 -- the same read image/convex_hull.rye makes, twice the
+/// signed area of triangle o-a-b. Only its MAGNITUDE and how that magnitude grows is read here, never a sign threshold.
+/// Coordinates are well under 2^14, so each product stays far under 2^28 and the difference never wraps.
+fn cross(o: contour.Point, a: contour.Point, b: contour.Point) i64 {
+    const ax: i64 = @as(i64, a.x) - @as(i64, o.x);
+    const ay: i64 = @as(i64, a.y) - @as(i64, o.y);
+    const bx: i64 = @as(i64, b.x) - @as(i64, o.x);
+    const by: i64 = @as(i64, b.y) - @as(i64, o.y);
+    const c = ax * by - ay * bx;
+    // invariant: the cross of two in-image edge vectors stays far under the i64 ceiling (coords under 2^14).
+    assert(c < (@as(i64, 1) << 40));
+    assert(c > -(@as(i64, 1) << 40));
+    return c;
+}
+
+/// The absolute value of an i64 known to be far from the type floor -- a caliper's twice-area magnitude.
+fn abs_i64(v: i64) i64 {
+    // invariant: the input is a bounded cross magnitude, never the i64 floor, so negation is safe.
+    assert(v > -(@as(i64, 1) << 40));
+    assert(v < (@as(i64, 1) << 40));
+    return if (v < 0) -v else v;
+}
+
+/// The EXACT squared distance between two pixels, in u64 -- `dx*dx + dy*dy`. Two in-image points give a value far under 2^29, so
+/// the caliper compares spans with no tolerance and no square root.
+fn dist_sq_of(a: contour.Point, b: contour.Point) u64 {
+    const dx: i64 = @as(i64, a.x) - @as(i64, b.x);
+    const dy: i64 = @as(i64, a.y) - @as(i64, b.y);
+    const s: i64 = dx * dx + dy * dy;
+    // invariant: the squared distance of two in-image pixels is non-negative and far under the u64 ceiling.
+    assert(s >= 0);
+    assert(s < (@as(i64, 1) << 40));
+    return @intCast(s);
+}
+
+/// The DIAMETER of a convex `hull` (its vertices in ring order, no collinear triples -- what image/convex_hull.rye returns): the
+/// farthest pair of vertices by ROTATING CALIPERS, the maximum Feret span. Refuses `EmptySource` on an empty hull, `HullTooLong`
+/// past the ceiling, and `NotConvex` if the antipodal pointer laps past its 4n guard (a non-convex input). A one-vertex hull has
+/// diameter zero (the point to itself); a two-vertex hull is its own single segment.
+pub fn convex_diameter(hull: []const contour.Point) !Diameter {
+    // invariant: a diameter of nothing is undefined; a real hull has at least one vertex.
+    if (hull.len == 0) return error.EmptySource;
+    // invariant: the hull stays within the hard ceiling so the caliper never sweeps unbounded.
+    if (hull.len > convex_diameter_max_points) return error.HullTooLong;
+    const n: usize = hull.len;
+
+    // a single point is its own degenerate diameter -- zero span, no pair to measure.
+    if (n == 1) {
+        return Diameter{ .a = hull[0], .b = hull[0], .dist_sq = 0, .dist = 0.0 };
+    }
+    // a single segment IS the diameter -- the only pair there is.
+    if (n == 2) {
+        const d = dist_sq_of(hull[0], hull[1]);
+        return Diameter{ .a = hull[0], .b = hull[1], .dist_sq = d, .dist = @sqrt(@as(f64, @floatFromInt(d))) };
+    }
+
+    // rotating calipers over the convex hull (n >= 3): the edge pointer i walks the hull once, and the antipodal pointer j
+    // advances monotonically to the vertex farthest from edge i->ni; measuring both edge endpoints against j catches the
+    // parallel-edge diameter. The abs cross keeps the read blind to the hull's ring orientation.
+    var best_sq: u64 = 0;
+    var best_a: contour.Point = hull[0];
+    var best_b: contour.Point = hull[1];
+    var j: usize = 1;
+    var advances: usize = 0;
+    // the antipodal pointer laps the hull at most twice (2n); 4n is the hard guard a non-convex input cannot outrun.
+    const advance_ceiling: usize = 4 * n;
+
+    var i: usize = 0;
+    while (i < n) : (i += 1) {
+        const ni: usize = (i + 1) % n;
+        // advance j while the next vertex sits strictly farther from the edge than the current j -- a pure integer argmax of the
+        // cross magnitude, since for a fixed edge the perpendicular distance grows exactly as |cross| does.
+        while (abs_i64(cross(hull[i], hull[ni], hull[(j + 1) % n])) > abs_i64(cross(hull[i], hull[ni], hull[j]))) {
+            j = (j + 1) % n;
+            advances += 1;
+            // invariant: a convex hull's antipodal pointer laps at most twice; past the 4n guard the input is not convex.
+            if (advances > advance_ceiling) return error.NotConvex;
+        }
+        // measure the antipodal vertex against BOTH endpoints of the current edge -- the second catches a parallel-edge span.
+        const da = dist_sq_of(hull[i], hull[j]);
+        if (da > best_sq) {
+            best_sq = da;
+            best_a = hull[i];
+            best_b = hull[j];
+        }
+        const db = dist_sq_of(hull[ni], hull[j]);
+        if (db > best_sq) {
+            best_sq = db;
+            best_a = hull[ni];
+            best_b = hull[j];
+        }
+    }
+    // invariant: a hull of three or more distinct vertices spans a strictly positive diameter.
+    assert(best_sq >= 1);
+    assert(advances <= advance_ceiling);
+    return Diameter{ .a = best_a, .b = best_b, .dist_sq = best_sq, .dist = @sqrt(@as(f64, @floatFromInt(best_sq))) };
+}
+
+/// ROUNDNESS -- how nearly a shape fills the circle of its own greatest span, `4 * region_area / (pi * diameter^2)`, in (0, 1]. A
+/// disk fills that circle (near 1); a long thin bar spans a large diameter yet fills little of it, so it reads far below 1. The
+/// round companion of image/convex_hull.rye's solidity, in f64 as image/moments.rye reads shape geometry.
+pub fn roundness(region_area: u32, diam: Diameter) f64 {
+    // invariant: a real diameter has a strictly positive squared span, so the circle has area -- no division by zero.
+    assert(diam.dist_sq >= 1);
+    // invariant: a shape sits inside the circle of its own diameter, so its area never exceeds that circle's -- roundness <= 1.
+    const area_f: f64 = @floatFromInt(region_area);
+    const dsq_f: f64 = @floatFromInt(diam.dist_sq);
+    return (4.0 * area_f) / (pi * dsq_f);
+}
+
+// --- selftest: rotating calipers AGREES with the O(n^2) all-pairs oracle on every convex fixture; a rectangle's diameter is its
+//     DIAGONAL, strictly longer than the min-area box's length; roundness reads a compact block above a thin bar; degenerate hulls
+//     and refusals; determinism --------------------------------------------------------------------------------------------------
+
+/// The brute-force O(n^2) diameter squared over ALL vertex pairs -- the oracle rotating calipers must agree with. Never the
+/// production path (quadratic); the honest reference that proves the linear caliper correct.
+fn brute_diameter_sq(pts: []const contour.Point) u64 {
+    // invariant: a real point set handed to the oracle has at least one point.
+    assert(pts.len >= 1);
+    assert(pts.len <= convex_diameter_max_points);
+    var best: u64 = 0;
+    var i: usize = 0;
+    while (i < pts.len) : (i += 1) {
+        var k: usize = i + 1;
+        while (k < pts.len) : (k += 1) {
+            const d = dist_sq_of(pts[i], pts[k]);
+            if (d > best) best = d;
+        }
+    }
+    return best;
+}
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// Count the foreground pixels of the component labeled `want` -- the region area roundness divides into the diameter circle.
+fn region_area_of(map: *const label.LabelMap, want: u32) u32 {
+    var count: u32 = 0;
+    var i: usize = 0;
+    while (i < map.labels.len) : (i += 1) {
+        if (map.labels[i] == want) count += 1;
+    }
+    return count;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- ROTATING CALIPERS AGREES WITH THE O(n^2) ORACLE, decisive crux one: an irregular convex hexagon whose farthest pair is
+    //     NON-ADJACENT and not the obvious pair -- the linear caliper must find the same span the quadratic all-pairs finds -----
+    var hex = [_]contour.Point{
+        .{ .x = 2, .y = 0 },
+        .{ .x = 8, .y = 1 },
+        .{ .x = 10, .y = 6 },
+        .{ .x = 7, .y = 10 },
+        .{ .x = 1, .y = 9 },
+        .{ .x = 0, .y = 3 },
+    };
+    const hex_hull = try convex_hull.convex_hull(garden, hex[0..]);
+    const hex_diam = try convex_diameter(hex_hull);
+    const hex_brute = brute_diameter_sq(hex_hull);
+    if (hex_diam.dist_sq != hex_brute) return error.HexCaliperDisagreesOracle; // linear == quadratic, the correctness proof
+    // the farthest pair is a real span between two hull vertices, and its exact squared distance is the pairwise max
+    if (hex_diam.dist_sq == 0) return error.HexDiameterZero;
+
+    // --- DECISIVE CRUX TWO -- the DIAMETER vs the ORIENTED BOX: a 6x4 rectangle's min-area box has LENGTH 6, yet its diameter is
+    //     the DIAGONAL sqrt(52) ~ 7.21, strictly longer than any side -- the isotropic span the oriented box does not name ------
+    var rect = [_]contour.Point{
+        .{ .x = 0, .y = 0 },
+        .{ .x = 6, .y = 0 },
+        .{ .x = 6, .y = 4 },
+        .{ .x = 0, .y = 4 },
+    };
+    const rect_hull = try convex_hull.convex_hull(garden, rect[0..]);
+    const rect_diam = try convex_diameter(rect_hull);
+    if (rect_diam.dist_sq != 52) return error.RectDiameterNotDiagonal; // 6^2 + 4^2 = 52, the corner-to-corner diagonal, exact
+    const rect_brute = brute_diameter_sq(rect_hull);
+    if (rect_diam.dist_sq != rect_brute) return error.RectCaliperDisagreesOracle;
+    // the min-area oriented box's LENGTH is the rectangle's own longer side (6.0); the diameter strictly exceeds it
+    const rect_box = try min_area_rect.min_area_rect(garden, rect[0..]);
+    if (rect_box.length < 5.999 or rect_box.length > 6.001) return error.RectBoxLengthNotSix; // the box length is the side
+    if (rect_diam.dist <= rect_box.length) return error.DiameterNotAboveBoxLength; // the diagonal outreaches the side
+    // the reported diameter lands on its exact value sqrt(52) ~ 7.2111
+    if (rect_diam.dist < 7.21 or rect_diam.dist > 7.212) return error.RectDiameterLengthWrong;
+
+    // --- INTEGRATION crux -- a real 5x5 raster block through label -> contour -> convex_hull: its diameter is the opposite-corner
+    //     diagonal, (1,1) to (5,5), squared distance 32, and the caliper agrees with the oracle over the block's four corners ---
+    var block = try make_canvas(garden, 7, 7, 0);
+    set_block(&block, 1, 1, 5, 5);
+    const bmap = try label.label_components(garden, &block);
+    const bring = try contour.trace_contour(garden, &bmap, 1);
+    const bhull = try convex_hull.convex_hull(garden, bring.points);
+    const bdiam = try convex_diameter(bhull);
+    if (bdiam.dist_sq != 32) return error.BlockDiameterWrong; // (5-1)^2 + (5-1)^2 = 32, corner to opposite corner
+    if (bdiam.dist_sq != brute_diameter_sq(bhull)) return error.BlockCaliperDisagreesOracle;
+
+    // --- ROUNDNESS -- the round companion of solidity: a compact 5x5 block reads near 1 (it nearly fills the circle of its
+    //     diagonal), while a thin 2x8 bar spans a large diameter yet fills little of that circle, so it reads far below the block --
+    const block_area = region_area_of(&bmap, 1); // 25 pixels
+    const block_round = roundness(block_area, bdiam);
+    if (block_round <= 0.0 or block_round > 1.0001) return error.BlockRoundnessOutOfRange; // a real ratio in (0, 1]
+    var bar = try make_canvas(garden, 10, 4, 0);
+    set_block(&bar, 1, 1, 8, 2); // a 8-wide, 2-tall bar
+    const barmap = try label.label_components(garden, &bar);
+    const barring = try contour.trace_contour(garden, &barmap, 1);
+    const barhull = try convex_hull.convex_hull(garden, barring.points);
+    const bardiam = try convex_diameter(barhull);
+    const bar_area = region_area_of(&barmap, 1); // 16 pixels
+    const bar_round = roundness(bar_area, bardiam);
+    if (bar_round >= block_round) return error.BarNotLessRoundThanBlock; // the elongated bar fills its diameter circle less
+
+    // --- A PURE-ALGEBRAIC crux independent of any rasterization: a long thin quadrilateral whose diameter is a specific
+    //     non-trivial span, the caliper agreeing with the oracle exactly ----------------------------------------------------
+    var kite = [_]contour.Point{
+        .{ .x = 0, .y = 5 },
+        .{ .x = 20, .y = 4 },
+        .{ .x = 40, .y = 5 },
+        .{ .x = 20, .y = 7 },
+    };
+    const kite_hull = try convex_hull.convex_hull(garden, kite[0..]);
+    const kite_diam = try convex_diameter(kite_hull);
+    if (kite_diam.dist_sq != 1600) return error.KiteDiameterWrong; // (40-0)^2 + (5-5)^2 = 1600, the long axis tip to tip
+    if (kite_diam.dist_sq != brute_diameter_sq(kite_hull)) return error.KiteCaliperDisagreesOracle;
+
+    // --- DEGENERATE hulls: a single point has diameter zero (itself); two points are their own segment span -----------------
+    var one = [_]contour.Point{.{ .x = 4, .y = 7 }};
+    const one_hull = try convex_hull.convex_hull(garden, one[0..]);
+    const one_diam = try convex_diameter(one_hull);
+    if (one_diam.dist_sq != 0) return error.OnePointDiameterNonZero;
+    if (one_diam.a.x != 4 or one_diam.a.y != 7) return error.OnePointDiameterMoved;
+    var two = [_]contour.Point{ .{ .x = 2, .y = 2 }, .{ .x = 6, .y = 5 } };
+    const two_hull = try convex_hull.convex_hull(garden, two[0..]);
+    const two_diam = try convex_diameter(two_hull);
+    if (two_diam.dist_sq != 25) return error.TwoPointDiameterWrong; // (6-2)^2 + (5-2)^2 = 16 + 9 = 25
+
+    // --- REFUSALS by name, having read nothing --------------------------------------------------------------------------------
+    const empty: []const contour.Point = &[_]contour.Point{};
+    if (convex_diameter(empty)) |_| return error.EmptyNotRefused else |err| {
+        if (err != error.EmptySource) return error.WrongEmptyError;
+    }
+
+    // --- DETERMINISM: the same hull reads the same diameter twice -------------------------------------------------------------
+    const d1 = try convex_diameter(hex_hull);
+    const d2 = try convex_diameter(hex_hull);
+    if (d1.dist_sq != d2.dist_sq) return error.DiameterNotDeterministic;
+    if (d1.a.x != d2.a.x or d1.a.y != d2.a.y or d1.b.x != d2.b.x or d1.b.y != d2.b.y) return error.DiameterPairNotDeterministic;
+
+    print("GREEN image-convex-diameter: the DIAMETER (farthest pair / maximum Feret span) of a convex hull by ROTATING CALIPERS over antipodal vertex pairs, EXACT integer squared distance and NO tolerance -- the linear caliper AGREES with the O(n^2) all-pairs oracle on an irregular hexagon (its farthest pair non-adjacent), on a rectangle hull, a raster block, and a long kite, so the one-pass span is proven correct against the quadratic reference; the DECISIVE crux -- a 6x4 rectangle's min-area oriented box has LENGTH 6 (its own side), yet its diameter is the DIAGONAL sqrt(52) ~ 7.21, strictly longer than any side, the isotropic greatest span image/min_area_rect.rye's oriented extent does not name; INTEGRATION -- a 5x5 raster block through label -> contour -> convex_hull reads its opposite-corner diagonal (squared distance 32); ROUNDNESS (the round companion of solidity) reads a compact block near 1 and a thin 2x8 bar far below it, the bar spanning a large diameter yet filling little of its circle; a lone point has diameter zero and two points their own segment (squared span 25); an empty hull refuses EmptySource; the same hull reads the same diameter twice\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: convex_diameter selftest\n", .{});
+    return 1;
+}
