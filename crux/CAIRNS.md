@@ -24,6 +24,12 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260818.225452` -- REMEMBER prior-nib comment wall folded to a pointer; Now reaimed at the roundness + Season G completion boundary
+
+**Walk-back nib:** `d2368cb9db` -- reachable in normal history (a working-tree condense, not a history rewrite); the full departing card is one `git show` away.
+**Swept:** the ~38-line wall of dead `<!-- prior nib -->` HTML comments in REMEMBER's INNER LOOP (the whole roundness quest -- roundness_universal, roundness, hit_test, scene_manifest, euler_scene, euler_number, and every earlier shape descriptor back through regions -- each a former live edge stacked as a comment), plus the ~4,600-char roundness_universal Git-nib paragraph, folded to short single-stranded pointers naming only the newest rung and directing to `session-logs/` for the per-rung detail. The card had grown back to ~187 KB, over its advisory bound; this is the same condense the `20260818.101851` cairn recorded, one boundary later.
+**What waits there, worth recalling:** at nib `d2368cb9db` the REMEMBER card holds the complete per-nib prose for the entire roundness quest and the earlier shape-descriptor family inline -- `git show d2368cb9db:crux/REMEMBER.md`. No fact was lost: each rung's crux, bounds, and metal-GREEN account is preserved verbatim in its dated `.kyri` session log, and `image/README.md` carries the durable per-module entries. The condense keeps the operator card the live card of what is next, not a second copy of the log index.
+
 ### `20260818.101851` -- REMEMBER Now condensed: the giant per-nib live-edge and git-nib paragraphs folded to pointers
 
 **Walk-back nib:** `01b4c302c9` -- reachable in normal history (a working-tree condense, not a history rewrite); the full departing card is one `git show` away.
