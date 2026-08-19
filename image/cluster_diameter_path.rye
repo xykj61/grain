@@ -1,0 +1,409 @@
+//! image/cluster_diameter_path.rye -- the ACTUAL EDGE LIST the diameter walks: the ordered sequence of bridge edges the longest reach crosses
+//! between the two poles of the cluster minimum spanning tree, where image/cluster_tree_diameter.rye gave only the WEIGHT of that reach and the
+//! two clusters it runs between. `diameter_path` reconstructs the whole walk -- the clusters visited in order from pole to pole and the bridge
+//! edges crossed in order; `diameter_path_hops` reads how many edges the walk spends; `is_on_diameter_path` asks whether a given cluster pair is
+//! one of the edges the walk crosses -- exact integers, NO float, NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/cluster_tree_diameter.rye reads the DIAMETER of the skeleton, the greatest path weight between any
+//! two clusters, and names the two poles it runs between; yet it stops at the value and the endpoints. A surface that must DRAW the span of a
+//! connected group -- highlight the chain of links that carries its longest reach, or step a viewer along it link by link -- asks the next
+//! question: WHICH bridge edges does that longest walk actually cross? That is the diameter PATH, the ordered edge sequence between the poles, and
+//! it is a strictly sharper reading than the diameter's single number: two layouts can share a diameter yet cross a different set of bridges to
+//! reach it.
+//!
+//! The DECISIVE crux -- the diameter path is a SUBSET of the tree's bridge edges, equal to the whole tree only when the tree is a single path:
+//!
+//!   EVERY TREE EDGE IS ON THE PATH WHEN THE TREE IS A SINGLE PATH -- A STAR OF TWO EDGES IS ALSO A PATH. Over the three-cluster scene (the MST a
+//!   star on the hub cluster 1, edges 1-2 gap 2 and 1-3 gap 3) the longest walk runs 2 -> 1 -> 3, crossing BOTH bridges: the path holds two edges,
+//!   exactly the tree's whole edge count, and its two edge weights sum to 5, the diameter itself. `is_on_diameter_path` reads TRUE for both 1-2 and
+//!   1-3, and `is_bridge` agrees -- when the tree is a single path, the path IS the tree.
+//!
+//!   THE PATH DROPS THE BRANCHING ARM -- FEWER EDGES THAN THE TREE WHEN A THIRD ARM BRANCHES OFF. Over the four-cluster scene (the MST a star on the
+//!   hub cluster 1, edges 1-2 gap 3, 1-3 gap 3, 1-4 gap 9) the longest walk runs 2 -> 1 -> 4, crossing the 9-arm and one 3-arm -- two edges, whose
+//!   weights sum to 12, the diameter. Yet the tree holds THREE edges: the third arm 1-3 branches off the walk and is never crossed, so
+//!   `is_on_diameter_path(1, 3)` reads FALSE for an edge `is_bridge(1, 3)` reads TRUE. The path is a STRICT SUBSET of the tree's bridges (two of
+//!   three), where the diameter's single number 12 could never say which two. The walk names the bridges; the diameter only weighs them.
+//!
+//! Compose not braid. This rung OWNS only the path reconstruction -- the parent-recording breadth-first walk from pole to pole, the ordered node
+//! and edge sequence, the on-path test. No diameter recomputed (image/cluster_tree_diameter.rye owns `diameter_endpoints` and `tree_diameter`,
+//! cross-checked here and never re-derived -- the path's edge weights are proven to sum to the diameter it reads), no spanning tree recomputed
+//! (image/cluster_minimum_spanning_tree.rye owns `build_mst`, `is_bridge`, and `edge_count`, cross-checked here), no cluster distance recomputed
+//! (image/cluster_graph.rye owns the matrix a level below). A reading over a reading over a reading over a reading over a reading over a reading
+//! over a reading over a reading over a reading.
+//!
+//! Everything is bounded before a byte: the cluster count can never exceed the object count, itself capped at `scene_graph_max_objects`, so the
+//! tree holds at most that many minus one edges, the parent-recording walk visits every cluster at most once, and the path holds at most one node
+//! per cluster and one edge per bridge. A lone-cluster layout is already one whole -- its tree is empty and it has no two poles to walk between, so
+//! `diameter_path` and `diameter_path_hops` refuse `EmptyTree` exactly as `diameter_endpoints` does, and `is_on_diameter_path` reads FALSE for
+//! every pair. A zero or past-the-count cluster id refuses `BadClusterId`, a self pair refuses `SameCluster`. No network, no key, no funds -- the
+//! chain of links a surface highlights across a connected group, on our own geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/cluster_diameter_path.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const cluster_graph = @import("cluster_graph.rye");
+const cluster_mst = @import("cluster_minimum_spanning_tree.rye");
+const cluster_tree_diameter = @import("cluster_tree_diameter.rye");
+
+pub const cluster_diameter_path_version = "20260819.022817";
+
+pub const PathError = error{
+    BadClusterId,
+    SameCluster,
+    EmptyTree,
+};
+
+/// The DIAMETER WALK across a spanning tree -- the ordered clusters `nodes` from pole to pole (low-id pole first), the ordered bridge `edges`
+/// crossed between them (each an unordered pair `a < b` with its gap `weight`), and the total `weight` of the walk, which equals the tree's
+/// diameter. A surface highlights this chain of links as the span of a connected group. The walk holds one more node than edge.
+pub const DiameterWalk = struct {
+    nodes: []u32,
+    edges: []cluster_mst.MstEdge,
+    weight: u32,
+};
+
+/// Fill `parent[i]` with the 1-based cluster that reached cluster `i + 1` first from `source`, and `parent_w[i]` with the weight of that reaching
+/// edge, walking the spanning tree's edges breadth-first. The source's parent reads zero (a sentinel, no parent). A spanning tree connects every
+/// cluster, so every slot is reached exactly once. `parent`, `parent_w`, and `queue` each hold one slot per cluster.
+fn walk_parents(tree: cluster_mst.MstTree, source: u32, parent: []u32, parent_w: []u32, queue: []u32) void {
+    const n: u32 = tree.clusters;
+    // invariant: the scratch buffers hold exactly one slot per cluster.
+    assert(parent.len == @as(usize, n));
+    assert(parent_w.len == @as(usize, n));
+    assert(queue.len == @as(usize, n));
+    // invariant: the source is a real 1-based cluster id.
+    assert(source >= 1);
+    assert(source <= n);
+
+    const unvisited: u32 = std.math.maxInt(u32);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) parent[i] = unvisited;
+    parent[source - 1] = 0; // the source has no parent
+    parent_w[source - 1] = 0;
+
+    var head: u32 = 0;
+    var tail: u32 = 0;
+    queue[tail] = source;
+    tail += 1;
+
+    // each cluster enters the queue at most once (a tree has no cycle), so the walk is bounded by n dequeues, each scanning the n-1 edges once.
+    while (head < tail) {
+        const node = queue[head]; // a 1-based cluster id
+        head += 1;
+        var e: u32 = 0;
+        while (e < tree.edges.len) : (e += 1) {
+            const edge = tree.edges[e];
+            var other: u32 = 0;
+            if (edge.a == node) {
+                other = edge.b;
+            } else if (edge.b == node) {
+                other = edge.a;
+            } else {
+                continue;
+            }
+            if (parent[other - 1] == unvisited) {
+                parent[other - 1] = node;
+                parent_w[other - 1] = edge.weight;
+                // invariant: the queue never holds more than the cluster count -- each cluster is enqueued at most once.
+                assert(tail < n);
+                queue[tail] = other;
+                tail += 1;
+            }
+        }
+    }
+}
+
+/// The DIAMETER PATH of a spanning tree -- the ordered walk from the low-id pole to the high-id pole, the exact chain of bridge edges the longest
+/// reach crosses. Refuses `EmptyTree` for a lone-cluster layout, which has no two poles.
+pub fn diameter_path(allocator: std.mem.Allocator, tree: cluster_mst.MstTree) !DiameterWalk {
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges.
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+    // invariant: a real tree holds at least one cluster.
+    assert(tree.clusters >= 1);
+
+    const n: u32 = tree.clusters;
+    if (n < 2) return error.EmptyTree;
+
+    // the poles are owned by image/cluster_tree_diameter.rye -- cross-checked here, never re-derived.
+    const ends = try cluster_tree_diameter.diameter_endpoints(allocator, tree);
+
+    const parent = try allocator.alloc(u32, n);
+    const parent_w = try allocator.alloc(u32, n);
+    const queue = try allocator.alloc(u32, n);
+    walk_parents(tree, ends.a, parent, parent_w, queue);
+
+    // count the hops from the far pole back to the source pole -- a tree path is simple, so this terminates in at most n-1 steps.
+    var hops: u32 = 0;
+    var cur: u32 = ends.b;
+    while (cur != ends.a) : (cur = parent[cur - 1]) {
+        // invariant: the walk stays within the cluster count -- a simple tree path never revisits a node.
+        assert(hops < n);
+        hops += 1;
+    }
+    // invariant: the two distinct poles are joined by at least one edge.
+    assert(hops >= 1);
+
+    const nodes = try allocator.alloc(u32, hops + 1);
+    const edges = try allocator.alloc(cluster_mst.MstEdge, hops);
+
+    var total: u32 = 0;
+    var idx: u32 = hops;
+    nodes[idx] = ends.b; // the far pole sits at the tail of the ordered walk
+    cur = ends.b;
+    while (cur != ends.a) {
+        const p: u32 = parent[cur - 1];
+        const w: u32 = parent_w[cur - 1];
+        idx -= 1;
+        const lo: u32 = if (p < cur) p else cur;
+        const hi: u32 = if (p < cur) cur else p;
+        edges[idx] = cluster_mst.MstEdge{ .a = lo, .b = hi, .weight = w };
+        nodes[idx] = p;
+        total += w;
+        cur = p;
+    }
+
+    // invariant: the ordered walk begins at the low-id pole and ends at the high-id pole.
+    assert(nodes[0] == ends.a);
+    assert(nodes[hops] == ends.b);
+    // invariant: the path's edge weights sum to the diameter the endpoint read gives -- the walk carries exactly the longest reach.
+    assert(total == ends.weight);
+    return DiameterWalk{ .nodes = nodes, .edges = edges, .weight = total };
+}
+
+/// The number of bridge EDGES the diameter walk crosses -- its hop count, distinct from its weight. A two-hop walk can weigh 5 or 12; the hop
+/// count reads how many links, the weight how far. Refuses `EmptyTree` for a lone-cluster layout.
+pub fn diameter_path_hops(allocator: std.mem.Allocator, tree: cluster_mst.MstTree) !u32 {
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges.
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+    if (tree.clusters < 2) return error.EmptyTree;
+    const walk = try diameter_path(allocator, tree);
+    // invariant: a walk holds one more node than edge.
+    assert(walk.nodes.len == walk.edges.len + 1);
+    return @intCast(walk.edges.len);
+}
+
+/// TRUE when the unordered cluster pair `(a, b)` is one of the bridge edges the diameter walk crosses. A real bridge of the tree can still read
+/// FALSE when it branches off the longest walk -- the path is a subset of the tree's edges. A lone-cluster layout has no walk, so every pair reads
+/// FALSE. Refuses `BadClusterId` for a zero or past-the-count id and `SameCluster` for a self pair.
+pub fn is_on_diameter_path(allocator: std.mem.Allocator, tree: cluster_mst.MstTree, a: u32, b: u32) !bool {
+    // invariant: a real tree holds at least one cluster.
+    assert(tree.clusters >= 1);
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges.
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+    if (a == 0 or a > tree.clusters) return error.BadClusterId;
+    if (b == 0 or b > tree.clusters) return error.BadClusterId;
+    if (a == b) return error.SameCluster;
+    if (tree.clusters < 2) return false;
+
+    const lo: u32 = if (a < b) a else b;
+    const hi: u32 = if (a < b) b else a;
+    const walk = try diameter_path(allocator, tree);
+    var i: u32 = 0;
+    while (i < walk.edges.len) : (i += 1) {
+        if (walk.edges[i].a == lo and walk.edges[i].b == hi) return true;
+    }
+    return false;
+}
+
+// --- selftest: the diameter gave a WEIGHT and two POLES; this rung names the EDGE SEQUENCE the longest walk crosses between them. Scene ONE is
+//     the diameter module's own three-cluster star (edges 1-2 gap 2, 1-3 gap 3): the walk crosses BOTH bridges, the path is the whole tree, its
+//     weights sum to the diameter. Scene TWO is the four-cluster star (edges 1-2, 1-3 gap 3, 1-4 gap 9): the walk crosses two of three bridges,
+//     the third arm branching off, so the path is a STRICT SUBSET of the tree ---------------------------------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a corner bracket-L: a vertical arm down column `x` from `y0` to `y1`, and a horizontal arm along row `yr` from `x0` to `x1`.
+fn set_corner_l(img: *qoi.Pixmap, x: u32, y0: u32, y1: u32, yr: u32, x0: u32, x1: u32) void {
+    // invariant: the arms run in the positive direction and stay inside the buffer.
+    assert(y1 >= y0);
+    assert(x1 >= x0);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) set_dot(img, x, yy);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) set_dot(img, xx, yr);
+}
+
+/// Paint a 1-pixel-thick RING (a rectangle outline) with corners `(x0, y0)` and `(x1, y1)` -- a holed object, its interior background.
+fn set_ring(img: *qoi.Pixmap, x0: u32, y0: u32, x1: u32, y1: u32) void {
+    // invariant: the ring spans at least a 3x3 box so it encloses a real interior hole, and stays inside the buffer.
+    assert(x1 >= x0 + 2);
+    assert(y1 >= y0 + 2);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) {
+        set_dot(img, xx, y0);
+        set_dot(img, xx, y1);
+    }
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) {
+        set_dot(img, x0, yy);
+        set_dot(img, x1, yy);
+    }
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// Build the cluster graph of a scene, checking the object and cluster counts along the way -- a local helper so every scene reads the same.
+fn graph_of(garden: std.mem.Allocator, img: *qoi.Pixmap, want_objects: u32, want_clusters: u32) !cluster_graph.ClusterGraph {
+    // invariant: the caller names how many objects and clusters the scene must hold, so a mislaid pixel fails loud.
+    assert(want_objects >= 1);
+    assert(want_clusters >= 1);
+    const map = try label.label_components(garden, img);
+    if (map.count != want_objects) return error.SceneObjectCountWrong;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    if (overlap_clusters.cluster_count(clustering) != want_clusters) return error.SceneClusterCountWrong;
+    return cluster_graph.build_cluster_graph(garden, clustering, graph);
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- SCENE ONE: the three-cluster star -- corner-L A and ring B into cluster 1 (the hub), lone block C as cluster 2, far block D as cluster
+    //     3; the MST is a star, edges 1-2 (gap 2) and 1-3 (gap 3) -------------------------------------------------------------------------------
+    var scene = try make_canvas(garden, 15, 15, 0);
+    set_corner_l(&scene, 1, 1, 6, 1, 1, 6); // A: box (1,1)-(6,6)
+    set_block(&scene, 8, 1, 2, 2); // C: box (8,1)-(9,2)
+    set_ring(&scene, 4, 4, 9, 9); // B: box (4,4)-(9,9), overlaps A's corner -> cluster 1
+    set_block(&scene, 12, 12, 2, 2); // D: box (12,12)-(13,13)
+    const cg = try graph_of(garden, &scene, 4, 3);
+    const tree = try cluster_mst.build_mst(garden, cg);
+
+    // --- EVERY TREE EDGE IS ON THE PATH -- the walk 2 -> 1 -> 3 crosses BOTH bridges, the path is the whole tree ------------------------------
+    const walk = try diameter_path(garden, tree);
+    if (walk.nodes.len != 3) return error.SceneOneNotThreeNodes;
+    if (walk.nodes[0] != 2 or walk.nodes[1] != 1 or walk.nodes[2] != 3) return error.SceneOneWalkNotTwoOneThree; // pole 2, hub 1, pole 3
+    if (walk.edges.len != 2) return error.SceneOneNotTwoEdges;
+    if (walk.edges[0].a != 1 or walk.edges[0].b != 2 or walk.edges[0].weight != 2) return error.SceneOneFirstEdgeWrong; // 1-2 gap 2
+    if (walk.edges[1].a != 1 or walk.edges[1].b != 3 or walk.edges[1].weight != 3) return error.SceneOneSecondEdgeWrong; // 1-3 gap 3
+    // the path's edge weights sum to the diameter -- an independent cross-check of tree_diameter
+    if (walk.weight != 5) return error.SceneOneWalkWeightNotFive;
+    if (walk.weight != try cluster_tree_diameter.tree_diameter(garden, tree)) return error.SceneOneWalkWeightNotDiameter;
+    // the path holds exactly the tree's whole edge count -- a two-edge star is a single path, the path IS the tree
+    if (try diameter_path_hops(garden, tree) != cluster_mst.edge_count(tree)) return error.SceneOnePathNotWholeTree;
+    // every bridge reads on-path, and is_bridge agrees
+    if (try is_on_diameter_path(garden, tree, 1, 2) != true) return error.SceneOneOneTwoNotOnPath;
+    if (try is_on_diameter_path(garden, tree, 1, 3) != true) return error.SceneOneOneThreeNotOnPath;
+    if (try cluster_mst.is_bridge(tree, 1, 2) != true) return error.SceneOneOneTwoNotBridge;
+    if (try cluster_mst.is_bridge(tree, 1, 3) != true) return error.SceneOneOneThreeNotBridge;
+
+    // --- SCENE TWO: the four-cluster star -- a tight triangle of three clusters all mutually 3 apart around a hub, plus a far outlier 9 away; the
+    //     MST is a star on the hub cluster 1, edges 1-2 (gap 3), 1-3 (gap 3), 1-4 (gap 9) --------------------------------------------------------
+    var quad = try make_canvas(garden, 15, 15, 0);
+    set_block(&quad, 2, 2, 2, 2); // A -> cluster 1 (the hub)
+    set_block(&quad, 6, 2, 2, 2); // C -> cluster 2 (same top row, right of A)
+    set_block(&quad, 2, 6, 2, 2); // B -> cluster 3 (below A)
+    set_block(&quad, 12, 12, 2, 2); // D -> cluster 4 (far outlier)
+    const cg2 = try graph_of(garden, &quad, 4, 4);
+    const tree2 = try cluster_mst.build_mst(garden, cg2);
+
+    // --- THE PATH DROPS THE BRANCHING ARM -- the walk 2 -> 1 -> 4 crosses two of three bridges, the third arm 1-3 branches off ---------------
+    const walk2 = try diameter_path(garden, tree2);
+    if (walk2.nodes.len != 3) return error.SceneTwoNotThreeNodes;
+    if (walk2.nodes[0] != 2 or walk2.nodes[1] != 1 or walk2.nodes[2] != 4) return error.SceneTwoWalkNotTwoOneFour; // pole 2, hub 1, pole 4
+    if (walk2.edges.len != 2) return error.SceneTwoNotTwoEdges;
+    if (walk2.edges[0].a != 1 or walk2.edges[0].b != 2 or walk2.edges[0].weight != 3) return error.SceneTwoFirstEdgeWrong; // 1-2 gap 3
+    if (walk2.edges[1].a != 1 or walk2.edges[1].b != 4 or walk2.edges[1].weight != 9) return error.SceneTwoSecondEdgeWrong; // 1-4 gap 9
+    if (walk2.weight != 12) return error.SceneTwoWalkWeightNotTwelve;
+    if (walk2.weight != try cluster_tree_diameter.tree_diameter(garden, tree2)) return error.SceneTwoWalkWeightNotDiameter;
+    // the path holds FEWER edges than the tree -- the branching arm is dropped, a strict subset
+    if (try diameter_path_hops(garden, tree2) != 2) return error.SceneTwoHopsNotTwo;
+    if (try diameter_path_hops(garden, tree2) >= cluster_mst.edge_count(tree2)) return error.SceneTwoPathNotStrictSubset;
+    // the third arm 1-3 is a real bridge yet branches OFF the longest walk -- the decisive contrast
+    if (try cluster_mst.is_bridge(tree2, 1, 3) != true) return error.SceneTwoOneThreeNotBridge;
+    if (try is_on_diameter_path(garden, tree2, 1, 3) != false) return error.SceneTwoOneThreeOnPath;
+    // the two crossed bridges do read on-path
+    if (try is_on_diameter_path(garden, tree2, 1, 2) != true) return error.SceneTwoOneTwoNotOnPath;
+    if (try is_on_diameter_path(garden, tree2, 1, 4) != true) return error.SceneTwoOneFourNotOnPath;
+
+    // --- A LONE-CLUSTER LAYOUT IS ALREADY ONE WHOLE -- an empty tree, no two poles, so the walk reads refuse EmptyTree ------------------------
+    var lone_img = try make_canvas(garden, 6, 6, 0);
+    set_block(&lone_img, 1, 1, 2, 2); // one object, one cluster
+    const lone_cg = try graph_of(garden, &lone_img, 1, 1);
+    const lone_tree = try cluster_mst.build_mst(garden, lone_cg);
+    if (diameter_path(garden, lone_tree)) |_| return error.LonePathNotRefused else |err| {
+        if (err != error.EmptyTree) return error.WrongLonePathError;
+    }
+    if (diameter_path_hops(garden, lone_tree)) |_| return error.LoneHopsNotRefused else |err| {
+        if (err != error.EmptyTree) return error.WrongLoneHopsError;
+    }
+
+    // --- REFUSALS -- a zero or past-the-count id refuses BadClusterId, a self pair refuses SameCluster ---------------------------------------
+    if (is_on_diameter_path(garden, tree, 0, 2)) |_| return error.ZeroIdNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongZeroIdError;
+    }
+    if (is_on_diameter_path(garden, tree, 1, 4)) |_| return error.PastIdNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongPastIdError;
+    }
+    if (is_on_diameter_path(garden, tree, 2, 2)) |_| return error.SelfPairNotRefused else |err| {
+        if (err != error.SameCluster) return error.WrongSelfPairError;
+    }
+
+    // --- DETERMINISM -- the same graph reads the same walk twice ---------------------------------------------------------------------------
+    const tree_again = try cluster_mst.build_mst(garden, cg);
+    const walk_again = try diameter_path(garden, tree_again);
+    if (walk_again.nodes.len != walk.nodes.len or walk_again.edges.len != walk.edges.len) return error.WalkNotDeterministic;
+    if (walk_again.weight != walk.weight) return error.WalkWeightNotDeterministic;
+    if (walk_again.nodes[0] != walk.nodes[0] or walk_again.nodes[2] != walk.nodes[2]) return error.WalkNodesNotDeterministic;
+
+    print("GREEN image-cluster-diameter-path: the ACTUAL EDGE LIST the diameter walks -- the ordered sequence of bridge edges the longest reach crosses between the two poles of the cluster minimum spanning tree, where cluster_tree_diameter gave only the WEIGHT of that reach and the two clusters it runs between; diameter_path reconstructs the whole walk (the clusters visited in order and the bridge edges crossed in order), diameter_path_hops reads how many edges the walk spends, is_on_diameter_path asks whether a cluster pair is one of the crossed edges, exact integers, NO float and NO tolerance -- the DECISIVE crux, the diameter path is a SUBSET of the tree's bridge edges, equal to the whole tree only when the tree is a single path. EVERY TREE EDGE IS ON THE PATH WHEN THE TREE IS A SINGLE PATH -- over the three-cluster star (edges 1-2 gap 2, 1-3 gap 3) the walk runs 2 -> 1 -> 3 crossing BOTH bridges, the path holds two edges (exactly the tree's whole edge count) whose weights sum to 5 (the diameter itself), is_on_diameter_path TRUE for both 1-2 and 1-3 and is_bridge agrees, a star of two edges also a path so the path IS the tree. THE PATH DROPS THE BRANCHING ARM -- over the four-cluster star (edges 1-2 gap 3, 1-3 gap 3, 1-4 gap 9) the walk runs 2 -> 1 -> 4 crossing the 9-arm and one 3-arm (two edges summing to 12, the diameter), yet the tree holds THREE edges: the third arm 1-3 branches off the walk and is never crossed, so is_on_diameter_path(1,3) reads FALSE for an edge is_bridge(1,3) reads TRUE, the path a STRICT SUBSET of the tree's bridges where the diameter's single number 12 could never say which two. A lone-cluster layout is already one whole (an empty tree, no two poles, the walk reads refusing EmptyTree); a zero or past-the-count id refuses BadClusterId, a self pair refuses SameCluster; the same graph reads the same walk twice. Compose not braid over image/cluster_tree_diameter.rye (diameter_endpoints and tree_diameter, cross-checked never re-derived, the path's weights proven to sum to the diameter), image/cluster_minimum_spanning_tree.rye (build_mst, is_bridge, edge_count), and image/cluster_graph.rye (the matrix a level below) -- a reading over a reading over a reading over a reading over a reading over a reading over a reading over a reading over a reading\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: cluster_diameter_path selftest\n", .{});
+    return 1;
+}
