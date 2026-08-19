@@ -1,0 +1,53 @@
+# serial_cycle_wide_wired -- the same ring of four, with one bare channel
+# across it, and the reason disjoint memory is not the whole question.
+#
+# serial_cycle_wide gives `alder` and `cedar` no region in common, which is
+# what lets them run at the same moment: neither can see a byte the other
+# writes. This declaration keeps every region and every grant exactly as
+# that document has them, and adds one line -- `channel alder cedar`.
+#
+# Nothing about the memory changed. The flows are the same four one-way
+# streets, the shape still reads as a ring, and `share_a_region` still
+# answers no for that pair. What changed is that alder and cedar now hold a
+# doorbell between them, and a doorbell is state: one side rings it, the
+# other hears it and clears it, and two dependents racing on one counter is
+# the same hazard a shared region carries, one layer up.
+#
+# So this document exists to state a boundary. Channels are declared apart
+# from grants, so a document may wire two domains that share no memory at
+# all, and a concurrency test that read only the grants would wave this
+# pair through. Two domains may run at once when they share no region *and*
+# no channel; either alone is a half-answer.
+#
+# Read whole by `caravan/read.rye`; refused for that pair by
+# `caravan/concurrent.rye`.
+
+system serial_cycle_wide_wired
+
+domain alder
+domain birch
+domain cedar
+domain dogwood
+
+channel alder birch
+channel birch cedar
+channel cedar dogwood
+channel dogwood alder
+channel alder cedar
+
+region ask_ab 4096
+region ask_bc 4096
+region ask_cd 4096
+region ask_da 4096
+region taken 64
+
+grant ask_ab alder rw
+grant ask_ab birch r
+grant ask_bc birch rw
+grant ask_bc cedar r
+grant ask_cd cedar rw
+grant ask_cd dogwood r
+grant ask_da dogwood rw
+grant ask_da alder r
+grant taken alder rw
+grant taken dogwood r

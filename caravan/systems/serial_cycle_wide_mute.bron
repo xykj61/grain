@@ -1,0 +1,55 @@
+# serial_cycle_wide_mute -- shared memory with no doorbell over it, and the
+# reason the other half of the concurrency test is needed too.
+#
+# serial_cycle_wide_wired showed a channel across a pair that shares no
+# region. This declaration is its mirror: `spill` is a small store `alder`
+# writes and `cedar` reads, and no channel joins them at all. They share
+# memory in silence.
+#
+# A concurrency test that read only the channels would wave that pair
+# through, exactly as a test reading only the grants waved the wired pair
+# through. Two domains may run at once when they share no region AND no
+# channel; each test alone is a half-answer, and this document and the
+# wired one are the two halves proving it.
+#
+# The shape pays for the extra region, and honestly. alder now touches
+# birch, dogwood, and cedar, so it spans three peers and the walk no longer
+# closes on every domain once -- this is a ring with a shortcut across it
+# rather than a ring, which is what serial_cycle_bypass already taught. So
+# inside a true ring the two tests always agree, since a region joining two
+# domains makes them neighbors; they separate only in a shape like this one.
+#
+# Read whole by `caravan/read.rye`; measured, never run, by
+# `caravan/concurrent.rye`.
+
+system serial_cycle_wide_mute
+
+domain alder
+domain birch
+domain cedar
+domain dogwood
+
+channel alder birch
+channel birch cedar
+channel cedar dogwood
+channel dogwood alder
+
+region ask_ab 4096
+region ask_bc 4096
+region ask_cd 4096
+region ask_da 4096
+region taken 64
+region spill 64
+
+grant ask_ab alder rw
+grant ask_ab birch r
+grant ask_bc birch rw
+grant ask_bc cedar r
+grant ask_cd cedar rw
+grant ask_cd dogwood r
+grant ask_da dogwood rw
+grant ask_da alder r
+grant taken alder rw
+grant taken dogwood r
+grant spill alder rw
+grant spill cedar r

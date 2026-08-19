@@ -46,6 +46,7 @@ Every ring here composes over the one before it. A later ring imports an earlier
 | decline | [`decline.rye`](decline.rye) | a middle lost for good -- the domain declined by name once its attempts are spent, the circuit behind the hole free to run and report and wait, and no neighbor able to reach around it, refused by absence on one side and by rights on the other |
 | standby | [`standby.rye`](standby.rye) | a ring repaired around a domain it lost -- a standby named beside that domain refused as a second writer, a detour drawn in advance refused as a shape with a choice of laps, and the succession carrying every ask home over regions the loss left standing, at the price of bells it never inherits |
 | inflight | [`inflight.rye`](inflight.rye) | a ring re-declared while a lap is in flight -- the successor derived with one dependent unreaped beneath it, that dependent carrying its arc home under grants the newer document had already retired, the next spawn governed by the newer words absolutely, and a successor that moves one region refused under both readings at once |
+| concurrent | [`concurrent.rye`](concurrent.rye) | two dependents of one ring running at the same moment -- the pairs that may run together derived from the grants and the wiring rather than declared, a ring of three admitting none at all and a ring of four exactly two, a bare channel across region-disjoint domains refusing them as surely as shared memory would, and every dependent of a stage reaped before any verdict about it leaves the supervisor |
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
@@ -335,6 +336,23 @@ What the swap does not carry is the ring itself. birch spent its ring on `birch-
 One further thing the round found by running it: a refusal at the swap refuses the *successor*, never the running dependent. The first cut returned the refusal straight from between the spawn and the wait, abandoning a dependent it had spawned under a document that permitted every word of it. The supervisor now reaps what it started before it reports why the newer document was turned away.
 
 The numbers state the claim: one successor derived with one dependent unreaped beneath it, one step run to completion under a document that had already retired it, and four asks home with two of them carried by that retired domain. Witness: [`tools/caravan_inflight_witness.rish`](../tools/caravan_inflight_witness.rish), GREEN on metal, with the region guard proven load-bearing first -- disabled, the moved document read back as safe and the lap fell through to a bare outcome mismatch.
+
+## Why Two Domains May Run at Once, and When They May Not
+
+`inflight.rye` held one unreaped dependent and re-declared the ring around it. Every ring in this arc, that one included, ran its lap one domain at a time: spawn, wait, spawn the next. That is a schedule, and this arc has been retiring schedules one ring at a time. `concurrent.rye` asks whether two domains of one ring may run at the same moment, and the answer turns out to belong to the document rather than to the supervisor.
+
+**Two domains may run together exactly when they share no region and no channel.** A region held by two running dependents is a store one may be writing while the other reads it, and neither can tell from inside. A channel joining two running dependents is a doorbell one may be ringing while the other clears it, which is the same hazard one layer up -- a bell is state too. Both tests read the declaration alone, and neither is declared anywhere.
+
+**Both halves are needed, because a channel is declared apart from the grants.** [`serial_cycle_wide_wired.bron`](systems/serial_cycle_wide_wired.bron) keeps every region and every grant of the ring and adds one line, `channel alder cedar`, so that pair shares no memory at all and still may not run together. Its mirror, [`serial_cycle_wide_mute.bron`](systems/serial_cycle_wide_mute.bron), shares a small store in silence with no channel over it -- a pair the channels alone would have cleared.
+
+**The two tests separate only outside a ring, and the separation costs the shape.** A region joining two domains makes them neighbors, so inside a true ring region-adjacency and channel-adjacency coincide and either test alone would answer correctly. The mute document earns its silent sharing by ceasing to be a ring, exactly the price [`serial_cycle_bypass.bron`](systems/serial_cycle_bypass.bron) paid for a spare route. So the pair of tests is what a supervisor keeps, since the shape it is handed may not be a ring at all.
+
+**How much concurrency a ring permits is arithmetic rather than policy.** In a ring every domain is adjacent to two others, so the pairs that may run together are the non-adjacent ones -- `n * (n - 3) / 2` of them. A ring of three has none, which is why [`serial_cycle.bron`](systems/serial_cycle.bron) was entirely serial and nothing in this module could have made it otherwise. A ring of four has two, and [`serial_cycle_wide.bron`](systems/serial_cycle_wide.bron) spends both in one lap: cedar carries the first pair of asks onward while alder places the second, then dogwood carries the first pair home-ward while birch moves the second.
+
+**And a supervisor holding two unreaped outcomes owes both a reaping before it reports either.** `inflight.rye` learned that rule with one dependent standing -- an abandoned dependent is a leak dressed as a safety check. With two in flight it gains a second edge: the first outcome may be a refusal, and reporting it the instant it arrives leaves a sibling running behind the verdict. The unsafe reading stands in the module as a named control, so the safe one is proven against it rather than merely asserted.
+
+The numbers state the claim: a ring of three admitting zero pairs and a ring of four admitting two, ten dependents across eight stages with two of them holding a pair at once, a peak of two unreaped and none reported behind, and four asks home. Witness: [`tools/caravan_concurrent_witness.rish`](../tools/caravan_concurrent_witness.rish), GREEN on metal, with both guards proven load-bearing first -- the region test disabled waved the mute pair through, and the channel test disabled waved the wired pair through.
+
 
 ## Held
 

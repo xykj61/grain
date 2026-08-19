@@ -1,0 +1,896 @@
+//! Caravan concurrent -- two dependents of one ring running at the same
+//! moment, and the two things a document must say before they may.
+//!
+//! `inflight.rye` held one unreaped dependent and re-declared the ring around
+//! it, and found that a declaration reaches a domain at the moment it is
+//! spawned, never after. Every ring in this arc, that one included, has run
+//! its lap one domain at a time: spawn, wait, spawn the next. That is a
+//! schedule, and this arc has been retiring schedules one ring at a time.
+//!
+//! So the question is whether two domains of one ring may run at once, and
+//! it turns out to be a question about the document rather than about the
+//! supervisor.
+//!
+//! **Two domains may run together exactly when they share no region and no
+//! channel.** A region shared by two running dependents is a store one may be
+//! writing while the other reads it, and neither the writer nor the reader
+//! can tell from inside. A channel shared by two running dependents is a
+//! doorbell one may be ringing while the other clears it, which is the same
+//! hazard one layer up -- a bell is state too. Both tests are derived from
+//! the declaration alone, and neither is declared anywhere.
+//!
+//! **Both tests are needed, because a channel is declared apart from the
+//! grants.** `serial_cycle_wide_wired.bron` keeps every region and every
+//! grant of the ring and adds one line, `channel alder cedar`, so that pair
+//! shares no memory at all and still may not run together. A concurrency
+//! test that read only the grants would wave it through, and
+//! `serial_cycle_wide_mute.bron` is its mirror -- a store shared in silence
+//! that a test reading only the channels would clear.
+//!
+//! **The two tests separate only outside a ring, and the separation costs
+//! the shape.** A region joining two domains makes them neighbors, so
+//! inside a true ring region-adjacency and channel-adjacency coincide and
+//! either test alone would answer correctly. The mute document earns its
+//! silent sharing by ceasing to be a ring, which is the same price
+//! `serial_cycle_bypass.bron` paid for a spare route. So the pair of tests
+//! is what a supervisor keeps: the shape it is handed may not be a ring.
+//!
+//! **How much concurrency a ring permits is arithmetic, not policy.** In a
+//! ring every domain is adjacent to two others, so the pairs that may run
+//! together are exactly the non-adjacent ones -- `n * (n - 3) / 2` of them.
+//! A ring of three has none at all, which is why `serial_cycle.bron` was
+//! entirely serial and nothing in this module could have made it otherwise.
+//! A ring of four has two, and `serial_cycle_wide.bron` spends both of them
+//! in one lap.
+//!
+//! **And a supervisor holding two unreaped outcomes owes both a reaping
+//! before it reports either.** `inflight.rye` learned this with one dependent
+//! standing: an abandoned dependent is a leak dressed as a safety check. With
+//! two in flight the same rule has a second edge -- the first outcome may
+//! be a refusal, and reporting it the instant it arrives leaves a sibling
+//! running behind the report. So the whole stage is reaped, and only then
+//! judged.
+//!
+//! Hosted ground: real processes, real files, pure policy, no kernel
+//! underneath it yet.
+//!
+//! Usage:
+//!   concurrent selftest                  Run a lap with two in flight
+//!   concurrent                           Same as selftest
+//!   concurrent dependent <domain> <plan> ... Run as a supervised dependent (internal)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const channels = @import("channels.rye");
+const capabilities = @import("capabilities.rye");
+const roster = @import("roster.rye");
+const read = @import("read.rye");
+const boot = @import("boot.rye");
+const exercise = @import("exercise.rye");
+const carry = @import("carry.rye");
+const notify = @import("notify.rye");
+const roundtrip = @import("roundtrip.rye");
+const relay = @import("relay.rye");
+const cycle = @import("cycle.rye");
+const restart = @import("restart.rye");
+const gap = @import("gap.rye");
+const standby = @import("standby.rye");
+const tally_parse_int = @import("parse_int.rye");
+
+const caravan_concurrent_version = "20260819.174843";
+
+// =========================================================================
+// The bounds -- one wider ring, and the two pairs it has room for
+// =========================================================================
+
+/// A ring of four: the first shape in this arc with any room in it.
+pub const declaration_path = "caravan/systems/serial_cycle_wide.bron";
+
+/// The same ring with one bare channel laid across a region-disjoint pair.
+pub const wired_path = "caravan/systems/serial_cycle_wide_wired.bron";
+
+/// The mirror of the wired document: a region shared in silence, with no
+/// channel over it, by a pair the channels alone would have cleared.
+pub const mute_path = "caravan/systems/serial_cycle_wide_mute.bron";
+
+/// The ring of three, kept here to be measured rather than run: every pair
+/// in it is adjacent, so it admits no concurrency at all.
+pub const serial_path = cycle.declaration_path;
+
+/// How many dependents of one ring this supervisor holds unreaped at once.
+///
+/// Two, because a pair is the smallest unit of concurrency and the widest
+/// this ring has room for. A ring of four permits exactly two non-adjacent
+/// pairs, never a non-adjacent triple, so a bound of two is the shape's
+/// own answer rather than an arbitrary ceiling.
+pub const max_in_flight: u32 = 2;
+
+/// A dependent's fixed argv: the program, the marker, its domain, its plan, the
+/// point it may be dropped at, how it wakes its successor, and how many
+/// capability words follow. The same seven words `gap.rye` proved.
+pub const fixed_argv_words: u32 = gap.fixed_argv_words;
+
+comptime {
+    // invariant: concurrency means at least two dependents stand at once
+    assert(max_in_flight == 2);
+    // invariant: a whole dependent argv stays within what one run builds
+    assert(fixed_argv_words + capabilities.max_caps_per_dependent + notify.max_peers_per_dependent <= 32);
+}
+
+/// Names one outcome for an operator, in the words the ring already spends.
+pub fn outcome_name(code: u8) []const u8 {
+    return gap.outcome_name(code);
+}
+
+// =========================================================================
+// The pairing -- what a document says before two dependents are spawned
+// =========================================================================
+
+/// What a declaration answers about running two of its domains at once.
+pub const PairVerdict = enum {
+    /// Neither can see a byte or a bell the other touches.
+    may_run_together,
+    /// Some region is held by both, so one may be writing what the other reads.
+    shares_a_region,
+    /// Some channel joins them, so one may be ringing what the other clears.
+    shares_a_channel,
+};
+
+/// Renders one verdict as the words an operator reads.
+pub fn pair_words(v: PairVerdict) []const u8 {
+    return switch (v) {
+        .may_run_together => "no region and no channel in common",
+        .shares_a_region => "a region held by both",
+        .shares_a_channel => "a channel joining them",
+    };
+}
+
+/// Judges whether two declared domains may hold the ring at the same moment.
+///
+/// The order of the two tests is the order of the two hazards. Memory comes
+/// first because it is the one a reader expects; the doorbell comes second
+/// because it is the one a reader forgets, and a document may wire two
+/// domains that share no memory at all.
+pub fn judge_pair(sys: *const system.System, a: u32, b: u32) PairVerdict {
+    // invariant: concurrency is a question about two different domains
+    assert(a != b);
+    // invariant: both indices address the declared roster
+    assert(a < sys.graph.domain_count);
+    assert(b < sys.graph.domain_count);
+    if (relay.share_a_region(sys, a, b)) return .shares_a_region;
+    if (sys.graph.find_channel(a, b) != null) return .shares_a_channel;
+    return .may_run_together;
+}
+
+/// Counts how many pairs of a declaration's domains may run at once.
+///
+/// For a ring this is arithmetic an operator can check by hand: every
+/// domain is adjacent to exactly two others, so the pairs left over are the
+/// non-adjacent ones, `n * (n - 3) / 2`. The count is derived here rather
+/// than computed from that formula, so the formula stays a claim the run
+/// can disagree with.
+pub fn concurrent_pairs(sys: *const system.System) u32 {
+    // invariant: the roster stays within the bound a graph holds
+    assert(sys.graph.domain_count <= channels.max_domains);
+    var found: u32 = 0;
+    var a: u32 = 0;
+    while (a < sys.graph.domain_count) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b < sys.graph.domain_count) : (b += 1) {
+            if (judge_pair(sys, a, b) == .may_run_together) found += 1;
+        }
+    }
+    // invariant: the whole roster was paired, none skipped
+    assert(a == sys.graph.domain_count);
+    return found;
+}
+
+/// The pair count a ring of `n` domains permits, by the ring's own shape.
+pub fn ring_room(n: u32) u32 {
+    // invariant: a ring needs at least three domains to close
+    assert(n >= 3);
+    return n * (n - 3) / 2;
+}
+
+// =========================================================================
+// The dependent -- one process, one arc, and the words it was handed at spawn
+// =========================================================================
+
+/// Reads the capability words a dependent was handed into its own slot.
+fn slot_from_argv(args: []const [:0]const u8, domain: []const u8, cap_count: u32) ?capabilities.DependentSlot {
+    // invariant: a dependent always knows which domain it is
+    assert(domain.len >= 1);
+    // invariant: the count stays within what one dependent may hold
+    assert(cap_count <= capabilities.max_caps_per_dependent);
+    var slot = capabilities.DependentSlot.init(domain);
+    var i: u32 = 0;
+    while (i < cap_count) : (i += 1) {
+        const cap = boot.read_cap_word(args[fixed_argv_words + i]) orelse return null;
+        slot.grant(cap) catch return null;
+    }
+    // invariant: the dependent holds exactly the capability words it was handed
+    assert(slot.cap_count == cap_count);
+    return slot;
+}
+
+/// Runs as one supervised dependent, holding exactly the capabilities and
+/// neighbors it was handed at spawn.
+///
+/// Nothing here knows a sibling is running. That is the whole point of the
+/// pairing test standing where it does: isolation is proven by the document
+/// before the spawn, so the dependent needs no lock, no wait, and no notion
+/// that it is one of two.
+fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
+    // invariant: a dependent always receives its marker, domain, plan, fall, wake, and count
+    assert(args.len >= fixed_argv_words);
+    const domain = args[2];
+    const plan = args[3];
+    // invariant: a dependent always knows which domain it is
+    assert(domain.len >= 1);
+
+    const fall = gap.read_fall(args[4]) orelse {
+        print("    {s}: refused a fall word it could not read\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    const wake = gap.read_wake(args[5]) orelse {
+        print("    {s}: refused a wake word it could not read\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+
+    const cap_count = tally_parse_int.parse_int(u32, args[6], .{}) catch {
+        print("    {s}: refused an unreadable capability count\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    if (cap_count > capabilities.max_caps_per_dependent) {
+        print("    {s}: more capabilities than one dependent holds\n", .{domain});
+        return carry.Outcome.malformed;
+    }
+    if (fixed_argv_words + cap_count > args.len) {
+        print("    {s}: a capability count past the words it was handed\n", .{domain});
+        return carry.Outcome.malformed;
+    }
+
+    var slot = slot_from_argv(args, domain, cap_count) orelse {
+        print("    {s}: refused a malformed capability word\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+
+    var peers: notify.PeerList = .{};
+    var p: usize = fixed_argv_words + cap_count;
+    while (p < args.len) : (p += 1) {
+        peers.add(args[p]) catch {
+            print("    {s}: more peers than one dependent holds\n", .{domain});
+            return carry.Outcome.malformed;
+        };
+    }
+    // invariant: the dependent holds exactly the peer words it was handed
+    assert(peers.count == args.len - fixed_argv_words - cap_count);
+
+    const task = cycle.read_plan(plan) orelse {
+        print("    {s}: refused a plan it could not read\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    const code = gap.attempt(io, &slot, &peers, domain, task, fall, wake);
+    print("    {s}: {s}\n", .{ domain, outcome_name(code) });
+    return code;
+}
+
+// =========================================================================
+// The supervisor -- a stage of one dependent, or a stage of two at once
+// =========================================================================
+
+/// One declared step: a domain, the arc it works, and what it should answer.
+pub const Assignment = struct {
+    domain: []const u8,
+    verb: cycle.Verb,
+    hops: []const u8,
+    peers: []const u8,
+    count: u32,
+    expect: u8,
+};
+
+/// One stage of a lap: one step alone, or two that run at the same moment.
+pub const Stage = struct {
+    first: Assignment,
+    second: ?Assignment = null,
+};
+
+/// When a supervisor reaps the dependents of a stage.
+///
+/// `both` is the module's own reading and the only safe one. `first_only`
+/// exists to be proven wrong: it reports the first outcome the instant it
+/// arrives, leaving a sibling running behind the report.
+pub const Reaping = enum { both, first_only };
+
+/// What one run did, reported whole.
+pub const Report = struct {
+    stages: u32 = 0,
+    concurrent_stages: u32 = 0,
+    spawned: u32 = 0,
+    reaped: u32 = 0,
+    succeeded: u32 = 0,
+    homed: u32 = 0,
+    bells: u32 = 0,
+    /// The most dependents this run held unreaped at one instant -- the whole
+    /// claim of the module, counted rather than asserted.
+    peak_in_flight: u32 = 0,
+    /// How many dependents were still running when a verdict was reported.
+    /// The safe reading holds this at zero for every stage.
+    unreaped_at_report: u32 = 0,
+    /// Dependents reaped after a report had already gone out -- hygiene the
+    /// unsafe reading needs and the safe one never does.
+    reaped_late: u32 = 0,
+};
+
+/// Named ways a run declines rather than reporting a hollow success.
+pub const RunError = error{
+    SpawnFailed,
+    UnknownDomain,
+    PlanTooLong,
+    DeclarationUnreadable,
+    OutcomeMismatch,
+    SharedRegion,
+    SharedChannel,
+    NotAShape,
+};
+
+/// One dependent of a stage, held from its spawn to its reaping.
+const Running = struct {
+    proc: std.process.Child,
+    domain: []const u8,
+    verb: cycle.Verb,
+    count: u32,
+    expect: u8,
+};
+
+/// Spawns one dependent against the document standing now, and returns without
+/// waiting on it.
+fn spawn_one(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    table: *const capabilities.CapabilityTable,
+    step: Assignment,
+    wake: gap.Wake,
+) (RunError || boot.BootError)!Running {
+    // invariant: a step always names a domain, its arcs, and its peers
+    assert(step.domain.len >= 1);
+    assert(step.hops.len >= 1);
+    assert(step.peers.len >= 1);
+
+    const slot = table.find_dependent(step.domain) orelse return error.UnknownDomain;
+    // invariant: the line handed out agrees with the declaration it came from
+    assert(boot.line_agrees(sys, slot));
+
+    var peers: notify.PeerList = .{};
+    notify.peers_of(sys, step.domain, &peers);
+
+    const plan = std.fmt.allocPrint(allocator, "{s}:{s}:{s}:{d}", .{
+        cycle.verb_word(step.verb), step.hops, step.peers, step.count,
+    }) catch return error.PlanTooLong;
+    if (plan.len > cycle.max_plan_len) return error.PlanTooLong;
+
+    const count_word = std.fmt.allocPrint(allocator, "{d}", .{slot.cap_count}) catch
+        return error.PlanTooLong;
+
+    // A stage holds two dependents at once, so every word each of them was
+    // handed must outlive the spawn of the other. The arena carries them
+    // both rather than a stack buffer that the second spawn would reuse.
+    const argv = allocator.alloc(
+        []const u8,
+        fixed_argv_words + slot.cap_count + peers.count,
+    ) catch return error.SpawnFailed;
+    argv[0] = self_path;
+    argv[1] = "dependent";
+    argv[2] = slot.label_slice();
+    argv[3] = plan;
+    argv[4] = gap.fall_word(.none);
+    argv[5] = gap.wake_word(wake);
+    argv[6] = count_word;
+    var c: u32 = 0;
+    while (c < slot.cap_count) : (c += 1) {
+        assert(c < capabilities.max_caps_per_dependent); // invariant: the walk stays in the array
+        const word = allocator.alloc(u8, boot.max_cap_word_len) catch return error.SpawnFailed;
+        argv[fixed_argv_words + c] = try boot.write_cap_word(word, &slot.caps[c]);
+    }
+    var q: u32 = 0;
+    while (q < peers.count) : (q += 1) {
+        argv[fixed_argv_words + slot.cap_count + q] = peers.name_at(q);
+    }
+    // invariant: every capability and every peer became one handed word
+    assert(c == slot.cap_count);
+    assert(q == peers.count);
+
+    const proc = std.process.spawn(io, .{ .argv = argv }) catch return error.SpawnFailed;
+    return .{
+        .proc = proc,
+        .domain = step.domain,
+        .verb = step.verb,
+        .count = step.count,
+        .expect = step.expect,
+    };
+}
+
+/// Waits on one running dependent and answers the code it exited with.
+fn reap_one(io: std.Io, dependent: *Running) RunError!u8 {
+    // invariant: a reaping always names the domain it is waiting on
+    assert(dependent.domain.len >= 1);
+    // invariant: a reaping always knows what it expected to hear
+    assert(dependent.expect <= 255);
+    const term = dependent.proc.wait(io) catch return error.SpawnFailed;
+    return switch (term) {
+        .exited => |code| code,
+        else => restart.fell,
+    };
+}
+
+/// Folds one reaped outcome into the report, or names the mismatch.
+fn judge_outcome(dependent: *const Running, code: u8, report_out: *Report) RunError!void {
+    // invariant: a judged dependent always names its domain
+    assert(dependent.domain.len >= 1);
+    // invariant: the report never counts more successes than dependents reaped
+    assert(report_out.succeeded <= report_out.reaped);
+    if (code != dependent.expect) {
+        print("    {s}: expected {s}, heard {s}\n", .{
+            dependent.domain, outcome_name(dependent.expect), outcome_name(code),
+        });
+        return error.OutcomeMismatch;
+    }
+    if (code == carry.Outcome.carried_ok) {
+        report_out.succeeded += 1;
+        if (dependent.verb == .home) report_out.homed += dependent.count;
+    }
+}
+
+/// Clears two named domains to run at once, or names what forbids it.
+///
+/// This stands before any spawn on purpose. A document that gives two
+/// domains a region or a bell in common never reaches the point where two
+/// processes are running against it, so the isolation is a property proven
+/// on the declaration rather than a race the supervisor survives.
+fn clear_pair(sys: *const system.System, first: []const u8, second: []const u8) RunError!void {
+    // invariant: a pairing always names both of its domains
+    assert(first.len >= 1);
+    assert(second.len >= 1);
+    const a = sys.graph.find_domain(first) orelse return error.UnknownDomain;
+    const b = sys.graph.find_domain(second) orelse return error.UnknownDomain;
+    if (a == b) return error.SharedRegion;
+    const verdict = judge_pair(sys, a, b);
+    print("  {s} beside {s}: {s}\n", .{ first, second, pair_words(verdict) });
+    return switch (verdict) {
+        .shares_a_region => error.SharedRegion,
+        .shares_a_channel => error.SharedChannel,
+        .may_run_together => {},
+    };
+}
+
+/// Runs one stage: one dependent alone, or two spawned before either is reaped.
+///
+/// The pairing is cleared before the first spawn, above. What this function
+/// adds is the second half of the module's claim: every dependent it starts is
+/// waited on before any verdict leaves it.
+fn run_stage(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    table: *const capabilities.CapabilityTable,
+    stage: Stage,
+    wake: gap.Wake,
+    reaping: Reaping,
+    report_out: *Report,
+) (RunError || boot.BootError)!void {
+    // invariant: a stage always carries a first step
+    assert(stage.first.domain.len >= 1);
+    // invariant: a stage never holds more dependents than the run allows
+    assert(max_in_flight == 2);
+
+    if (stage.second) |second| try clear_pair(sys, stage.first.domain, second.domain);
+
+    var first = try spawn_one(allocator, io, self_path, sys, table, stage.first, wake);
+    report_out.spawned += 1;
+    var in_flight: u32 = 1;
+
+    var second_dependent: ?Running = null;
+    if (stage.second) |second| {
+        second_dependent = try spawn_one(allocator, io, self_path, sys, table, second, wake);
+        report_out.spawned += 1;
+        in_flight += 1;
+        report_out.concurrent_stages += 1;
+    }
+    if (in_flight > report_out.peak_in_flight) report_out.peak_in_flight = in_flight;
+
+    const first_code = try reap_one(io, &first);
+    report_out.reaped += 1;
+    in_flight -= 1;
+
+    // The unsafe reading reports here, with a sibling still running behind
+    // the verdict. It stands in the module only so the safe reading below
+    // has something to be proven against.
+    if (reaping == .first_only) {
+        judge_outcome(&first, first_code, report_out) catch |err| {
+            report_out.unreaped_at_report += in_flight;
+            if (second_dependent) |*late| {
+                _ = reap_one(io, late) catch {};
+                report_out.reaped_late += 1;
+            }
+            return err;
+        };
+    }
+
+    var second_code: ?u8 = null;
+    if (second_dependent) |*dependent| {
+        second_code = try reap_one(io, dependent);
+        report_out.reaped += 1;
+        in_flight -= 1;
+    }
+    // invariant: every dependent this stage started was waited on before any verdict
+    assert(in_flight == 0);
+
+    if (reaping == .both) try judge_outcome(&first, first_code, report_out);
+    if (second_dependent) |*dependent| {
+        try judge_outcome(dependent, second_code orelse restart.fell, report_out);
+    }
+    report_out.stages += 1;
+}
+
+/// Runs a whole ordered lap, deriving the document once and spending every
+/// pair of it the shape has room for.
+pub fn run_lap(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Stage,
+    wake: gap.Wake,
+    reaping: Reaping,
+    report_out: *Report,
+) (roster.RosterError || exercise.ProvisionError || notify.BellError || RunError || boot.BootError)!void {
+    // invariant: a run always knows what program to spawn
+    assert(self_path.len >= 1);
+    // invariant: a run always carries at least one stage
+    assert(plan.len >= 1);
+
+    const provisioned = try exercise.provision(io, sys);
+    // invariant: every declared region has a backing store before any dependent runs
+    assert(provisioned == sys.map.region_count);
+    report_out.bells = try roundtrip.provision_directed(io, sys);
+
+    const table = try roster.from_system(sys);
+    // invariant: the derived table enforces exactly what the document permits
+    assert(roster.agrees(sys, &table));
+
+    var i: u32 = 0;
+    while (i < plan.len) : (i += 1) {
+        try run_stage(allocator, io, self_path, sys, &table, plan[i], wake, reaping, report_out);
+    }
+    // invariant: every stage of the plan ran, none half-counted
+    assert(report_out.stages == plan.len);
+    // invariant: a safe lap reaped every dependent it started
+    assert(report_out.reaped == report_out.spawned);
+}
+
+// =========================================================================
+// Self-test -- a ring of four, spending both pairs it has room for
+// =========================================================================
+
+/// The lap that carries. alder places a pair and birch moves it on, which
+/// is serial because those two are neighbors. Then the ring's own room
+/// opens twice: cedar carries the first pair onward while alder places the
+/// second, and dogwood carries the first pair home-ward while birch moves
+/// the second, each pair of domains sitting opposite one another in the
+/// ring and touching nothing in common. The tail of the lap is serial
+/// again, and four asks come home in two takings.
+const concurrent_plan = [_]Stage{
+    .{ .first = .{ .domain = "alder", .verb = .place, .hops = "ask_ab", .peers = "birch", .count = 2, .expect = carry.Outcome.carried_ok } },
+    .{ .first = .{ .domain = "birch", .verb = .pass, .hops = "ask_ab,ask_bc", .peers = "alder,cedar", .count = 2, .expect = carry.Outcome.carried_ok } },
+    .{
+        .first = .{ .domain = "cedar", .verb = .pass, .hops = "ask_bc,ask_cd", .peers = "birch,dogwood", .count = 2, .expect = carry.Outcome.carried_ok },
+        .second = .{ .domain = "alder", .verb = .place, .hops = "ask_ab", .peers = "birch", .count = 2, .expect = carry.Outcome.carried_ok },
+    },
+    .{
+        .first = .{ .domain = "dogwood", .verb = .pass, .hops = "ask_cd,ask_da", .peers = "cedar,alder", .count = 2, .expect = carry.Outcome.carried_ok },
+        .second = .{ .domain = "birch", .verb = .pass, .hops = "ask_ab,ask_bc", .peers = "alder,cedar", .count = 4, .expect = carry.Outcome.carried_ok },
+    },
+    .{ .first = .{ .domain = "alder", .verb = .home, .hops = "ask_da,taken", .peers = "dogwood", .count = 2, .expect = carry.Outcome.carried_ok } },
+    .{ .first = .{ .domain = "cedar", .verb = .pass, .hops = "ask_bc,ask_cd", .peers = "birch,dogwood", .count = 4, .expect = carry.Outcome.carried_ok } },
+    .{ .first = .{ .domain = "dogwood", .verb = .pass, .hops = "ask_cd,ask_da", .peers = "cedar,alder", .count = 4, .expect = carry.Outcome.carried_ok } },
+    .{ .first = .{ .domain = "alder", .verb = .home, .hops = "ask_da,taken", .peers = "dogwood", .count = 2, .expect = carry.Outcome.carried_ok } },
+};
+
+/// Two neighbors asked to run at once -- refused before either is spawned,
+/// so what these two would have done never comes up.
+const adjacent_probe = [_]Stage{
+    .{
+        .first = .{ .domain = "alder", .verb = .stand, .hops = "ask_ab", .peers = "birch", .count = 1, .expect = carry.Outcome.malformed },
+        .second = .{ .domain = "birch", .verb = .stand, .hops = "ask_ab", .peers = "alder", .count = 1, .expect = carry.Outcome.malformed },
+    },
+};
+
+/// A stage whose first dependent answers other than the plan expected, with a
+/// sibling running beside it.
+///
+/// Both dependents carry a plan whose shape their verb does not take, so each
+/// is refused at its own door and neither touches a region or a bell. The
+/// probe measures the reaping alone, and the ring's state after it stands
+/// exactly where the lap left it.
+const reaping_probe = [_]Stage{
+    .{
+        .first = .{ .domain = "alder", .verb = .stand, .hops = "ask_ab", .peers = "birch", .count = 1, .expect = carry.Outcome.carried_ok },
+        .second = .{ .domain = "cedar", .verb = .stand, .hops = "ask_bc", .peers = "birch", .count = 1, .expect = carry.Outcome.malformed },
+    },
+};
+
+/// Proves the pair verdicts read back as three distinct words.
+fn check_wire() u8 {
+    const all = [_]PairVerdict{ .may_run_together, .shares_a_region, .shares_a_channel };
+    var i: u32 = 0;
+    while (i < all.len) : (i += 1) {
+        var j: u32 = i + 1;
+        while (j < all.len) : (j += 1) {
+            if (std.mem.eql(u8, pair_words(all[i]), pair_words(all[j]))) {
+                print("  RED: two pair verdicts read as one word\n", .{});
+                return 1;
+            }
+        }
+    }
+    // invariant: every way a pair can be judged carries its own word
+    assert(i == all.len);
+    print("  a pair reads back as one of three verdicts\n", .{});
+    return 0;
+}
+
+/// Loads one declaration, or names why it could not be read.
+fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
+    const parsed = read.load(io, path, buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ path, @errorName(err) });
+        return null;
+    };
+    if (parsed.verify() != .whole) {
+        print("  RED: {s} did not read whole\n", .{path});
+        return null;
+    }
+    return parsed;
+}
+
+/// Measures how much room each ring has, and holds the arithmetic to it.
+fn check_room(io: std.Io) u8 {
+    var serial_buf: [read.read_buffer_bytes]u8 = undefined;
+    const serial = load_one(io, serial_path, &serial_buf) orelse return 1;
+    var wide_buf: [read.read_buffer_bytes]u8 = undefined;
+    const wide = load_one(io, declaration_path, &wide_buf) orelse return 1;
+
+    if (standby.shape_of(&serial) != .ring or standby.shape_of(&wide) != .ring) {
+        print("  RED: a document measured for room did not read as a ring\n", .{});
+        return 1;
+    }
+
+    const narrow_room = concurrent_pairs(&serial);
+    const wide_room = concurrent_pairs(&wide);
+    if (narrow_room != ring_room(serial.graph.domain_count)) {
+        print("  RED: a ring of {d} derived {d} pairs, not {d}\n", .{
+            serial.graph.domain_count, narrow_room, ring_room(serial.graph.domain_count),
+        });
+        return 1;
+    }
+    if (wide_room != ring_room(wide.graph.domain_count)) {
+        print("  RED: a ring of {d} derived {d} pairs, not {d}\n", .{
+            wide.graph.domain_count, wide_room, ring_room(wide.graph.domain_count),
+        });
+        return 1;
+    }
+    // invariant: a ring of three is entirely serial, by its own grants
+    assert(narrow_room == 0);
+    // invariant: a ring of four has room for exactly its two opposite pairs
+    assert(wide_room == 2);
+    print("  a ring of {d} admits {d} concurrent pairs; a ring of {d} admits {d}\n", .{
+        serial.graph.domain_count, narrow_room, wide.graph.domain_count, wide_room,
+    });
+    return 0;
+}
+
+/// One bare channel across a region-disjoint pair, and the room it costs.
+fn check_wired(io: std.Io) u8 {
+    var wide_buf: [read.read_buffer_bytes]u8 = undefined;
+    const wide = load_one(io, declaration_path, &wide_buf) orelse return 1;
+    var wired_buf: [read.read_buffer_bytes]u8 = undefined;
+    const wired = load_one(io, wired_path, &wired_buf) orelse return 1;
+
+    if (!standby.same_regions(&wide, &wired)) {
+        print("  RED: the wired document changed a region, so the channel proves nothing\n", .{});
+        return 1;
+    }
+    const a = wired.graph.find_domain("alder") orelse return 1;
+    const c = wired.graph.find_domain("cedar") orelse return 1;
+    if (relay.share_a_region(&wired, a, c)) {
+        print("  RED: the wired pair shares a region, so the channel is not what refuses it\n", .{});
+        return 1;
+    }
+    if (judge_pair(&wired, a, c) != .shares_a_channel) {
+        print("  RED: a bare channel across a region-disjoint pair was waved through\n", .{});
+        return 1;
+    }
+    const room = concurrent_pairs(&wired);
+    // invariant: one channel costs exactly the one pair it joins
+    assert(room == concurrent_pairs(&wide) - 1);
+    print("  the same regions with one channel across them admit {d} pair rather than {d}\n", .{
+        room, concurrent_pairs(&wide),
+    });
+    print("  alder and cedar share no region and still may not run together\n", .{});
+    return 0;
+}
+
+/// The mirror: memory shared in silence, which the channels alone clear.
+///
+/// This is where the two tests genuinely separate, and the separation costs
+/// the shape. A region joining two domains makes them neighbors, so inside
+/// a true ring region-adjacency and channel-adjacency always coincide and
+/// either test would answer correctly. A document that shares memory across
+/// a ring is no longer a ring -- and that is exactly the document where
+/// reading only the channels would wave a sharing pair through.
+fn check_mute(io: std.Io) u8 {
+    var mute_buf: [read.read_buffer_bytes]u8 = undefined;
+    const mute = load_one(io, mute_path, &mute_buf) orelse return 1;
+
+    const a = mute.graph.find_domain("alder") orelse return 1;
+    const c = mute.graph.find_domain("cedar") orelse return 1;
+    if (mute.graph.find_channel(a, c) != null) {
+        print("  RED: the mute pair holds a channel, so the region is not what refuses it\n", .{});
+        return 1;
+    }
+    if (judge_pair(&mute, a, c) != .shares_a_region) {
+        print("  RED: a region shared in silence was waved through\n", .{});
+        return 1;
+    }
+    if (standby.shape_of(&mute) == .ring) {
+        print("  RED: memory shared across a ring left it a ring, so the shape cost is unpaid\n", .{});
+        return 1;
+    }
+    // invariant: the silent sharing costs exactly the one pair it joins
+    assert(concurrent_pairs(&mute) == 1);
+    print("  alder and cedar hold no channel and still may not run together\n", .{});
+    print("  the shape that separates the two tests reads back as {s}, never a ring\n", .{
+        standby.verdict_words(standby.shape_of(&mute)),
+    });
+    return 0;
+}
+
+/// The lap that carries, spending both pairs the ring has room for.
+fn check_lap(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const wide = load_one(io, declaration_path, &buf) orelse return 1;
+
+    var done: Report = .{};
+    run_lap(allocator, io, self_path, &wide, &concurrent_plan, .when_moved, .both, &done) catch |err| {
+        print("  RED: the lap did not survive two dependents at once: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: both of the ring's pairs were spent
+    assert(done.concurrent_stages == 2);
+    // invariant: two dependents stood unreaped at once, and never three
+    assert(done.peak_in_flight == max_in_flight);
+    // invariant: every dependent started was reaped, and none behind a report
+    assert(done.reaped == done.spawned);
+    assert(done.unreaped_at_report == 0);
+    // invariant: every step of the lap carried
+    assert(done.succeeded == done.spawned);
+    // invariant: the whole lap came home
+    assert(done.homed == 4);
+    print("  {d} dependents ran across {d} stages, {d} of them holding two at once\n", .{
+        done.spawned, done.stages, done.concurrent_stages,
+    });
+    print("  {d} dependents stood unreaped at the peak, {d} reaped, {d} reported behind\n", .{
+        done.peak_in_flight, done.reaped, done.unreaped_at_report,
+    });
+    print("  {d} asks come home over a ring that spent both its concurrent pairs\n", .{done.homed});
+    return 0;
+}
+
+/// Two neighbors, refused before either is spawned.
+fn check_adjacent(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const wide = load_one(io, declaration_path, &buf) orelse return 1;
+
+    var done: Report = .{};
+    run_lap(allocator, io, self_path, &wide, &adjacent_probe, .every_pass, .both, &done) catch |err| {
+        if (err != error.SharedRegion) {
+            print("  RED: two neighbors were refused as {s} rather than SharedRegion\n", .{@errorName(err)});
+            return 1;
+        }
+        if (done.spawned != 0) {
+            print("  RED: {d} dependents were spawned before the pair was judged\n", .{done.spawned});
+            return 1;
+        }
+        print("  two neighbors are refused SharedRegion with 0 dependents spawned\n", .{});
+        return 0;
+    };
+    print("  RED: two domains sharing a region ran at the same moment\n", .{});
+    return 1;
+}
+
+/// A refusal that arrives while a sibling is still running, and the reading
+/// that never lets it.
+fn check_reaping(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const wide = load_one(io, declaration_path, &buf) orelse return 1;
+
+    var loose: Report = .{};
+    run_lap(allocator, io, self_path, &wide, &reaping_probe, .every_pass, .first_only, &loose) catch |err| {
+        if (err != error.OutcomeMismatch) {
+            print("  RED: the loose reading refused as {s} rather than OutcomeMismatch\n", .{@errorName(err)});
+            return 1;
+        }
+    };
+    if (loose.unreaped_at_report != 1) {
+        print("  RED: the loose reading reported with {d} dependents running, not 1\n", .{
+            loose.unreaped_at_report,
+        });
+        return 1;
+    }
+    // invariant: the loose reading needed a late reaping the safe one never does
+    assert(loose.reaped_late == 1);
+    print("  reporting on the first outcome leaves {d} dependent running behind the verdict\n", .{
+        loose.unreaped_at_report,
+    });
+
+    var safe: Report = .{};
+    run_lap(allocator, io, self_path, &wide, &reaping_probe, .every_pass, .both, &safe) catch |err| {
+        if (err != error.OutcomeMismatch) {
+            print("  RED: the safe reading refused as {s} rather than OutcomeMismatch\n", .{@errorName(err)});
+            return 1;
+        }
+    };
+    if (safe.unreaped_at_report != 0 or safe.reaped != safe.spawned) {
+        print("  RED: the safe reading left {d} dependents running behind its verdict\n", .{
+            safe.unreaped_at_report,
+        });
+        return 1;
+    }
+    // invariant: the safe reading never needs a late reaping
+    assert(safe.reaped_late == 0);
+    print("  reaping the whole stage first reports the same refusal with {d} running\n", .{
+        safe.unreaped_at_report,
+    });
+    return 0;
+}
+
+fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    print("Caravan concurrent {s} -- self-test\n", .{caravan_concurrent_version});
+    const wire = check_wire();
+    if (wire != 0) return wire;
+    const room = check_room(io);
+    if (room != 0) return room;
+    const wired = check_wired(io);
+    if (wired != 0) return wired;
+    const mute = check_mute(io);
+    if (mute != 0) return mute;
+    const lap = check_lap(allocator, io, self_path);
+    if (lap != 0) return lap;
+    const adjacent = check_adjacent(allocator, io, self_path);
+    if (adjacent != 0) return adjacent;
+    const reaping = check_reaping(allocator, io, self_path);
+    if (reaping != 0) return reaping;
+    print("  GREEN: two domains may run at once exactly when they share no region and no channel\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
+        return run_dependent(io, args);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(allocator, io, self_path);
+    }
+    if (args.len >= 2) return 1;
+    return run_self_test(allocator, io, self_path);
+}
