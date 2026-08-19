@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260818.233655
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title selection_bounds -- the group-handle frame, a union box that holds an unselected object, GREEN
+prompt autonomous loop (baton prin recur) -- keep climbing agent-doable laps Lindy-first crux-first on the live green Season G scene-read edge, prove and send each
+think Continued the loop from the selection_summary lap. That lap named the next crux-first siblings: an object-count-in-region summary, a per-selection bounding-box union, a descriptor join over a selection, or a codec read. Took the per-selection bounding-box union -- the group frame -- as the extent companion to the summary's facts, a distinct durable surface primitive that closes cleanly with a GREEN witness and no gate.
+think Standfast first: every living REDS row is CLOSED or Released, only #75 rests as custody-gated errata. Line clear.
+think Designed the decisive crux to mirror box-is-a-prefilter one level up, at the selection: a union box CONTAINS more than it SELECTS. Placed three blocks at corner, middle, far corner; selecting the two corners (skipping the middle) frames a box that wholly holds the UNSELECTED middle block, so box_contains_object is TRUE for an object the selection never named -- containment of a box is not membership of the set. The union also exceeds either member on both axes and its area covers the background between them.
+obs Built image/selection_bounds.rye (selection_bbox unions the selected boxes with a running min/max; Box with width/height/area; box_contains_object; validate_selection refuses BadSelection at the edge, empty refuses EmptySelection) + tools/selection_bounds_witness.rish (native contains, REDS #85).
+obs GREEN on the FIRST full metal run, no reds -- avoided the brace trap (no curly braces in the print prose) and split asserts preemptively from the summary lap's lesson. tame_style_check GREEN, width-check exit 0, both files plain 7-bit ASCII. living_card_ascii_witness GREEN after the REMEMBER edit.
+loom witness=selection_bounds_witness build=green selftest=green files=2 image_modules=176
+file image/selection_bounds.rye the group-bounds read: union of the selected objects' boxes, exact integers no float no tolerance
+file tools/selection_bounds_witness.rish proves the over-claim crux on metal, native contains, refusals by name, determinism
+file image/README.md names the selection bounds after the selection summary (docs-sync)
+file crux/REMEMBER.md live edge + Git nib repointed to selection_bounds single-stranded, selection_summary folded to a prior-nib comment
+file session-logs/20260818-233655_selection-bounds-group-frame.kyri this log
+recommend keep-going name the next open-media rung crux-first (an object-count-in-region summary, a descriptor join over a selection, a spatial relation between two objects, or a codec read), OR advance the Microkernel Target study rungs -- yet the seL4/Genode clean-room study waits on a fetch/license gate, surfaced not crossed; the real-photo top-hat waits on a fetch gate. No network, no key, no funds.

@@ -1,0 +1,271 @@
+//! image/selection_bounds.rye -- the tight BOUNDING BOX that encloses a whole SELECTION: the union of every selected object's box,
+//! the "frame the selection" / group-handle rectangle a surface draws the moment a keeper has objects chosen and wants to zoom to
+//! them, drag them as a group, or draw one handle around them all. Exact integers, NO float and NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- the selection ladder (image/hit_test.rye a POINT, image/region_select.rye a RECTANGLE, image/
+//! lasso_select.rye a POLYGON) each returns an ASCENDING SET of dense labels, and image/selection_summary.rye reads that set's FACTS
+//! (area, holes, sort). This rung reads that set's EXTENT: `selection_bbox(manifest, selection)` returns the smallest axis-aligned box
+//! that contains every selected object's bounding box -- the union, the group's outer frame. It composes over image/scene_manifest.rye's
+//! per-object boxes and ANY selector.
+//!
+//! The DECISIVE crux -- the box-is-a-prefilter lesson lifted to the SELECTION: a union box CONTAINS more than it SELECTS. The frame
+//! that encloses a spread-out selection can wholly hold an object that is NOT in the selection, and covers background neither selected
+//! object fills. So a surface may draw the group frame, yet the frame is never the membership test -- the label set is. Two facts on
+//! metal say it, over three blocks placed corner, middle, and far corner:
+//!
+//!   THE FRAME OVER-CLAIMS -- for the selection {corner block, far-corner block}, `selection_bbox` spans nearly the whole scene, and
+//!   `box_contains_object` reads TRUE for the MIDDLE block though the middle block is NOT selected -- its box sits wholly inside the
+//!   union of the two corners. The group frame holds an object the selection never named; only the label set says what is chosen.
+//!
+//!   THE UNION EXCEEDS EITHER MEMBER -- that same union box is strictly larger than either selected object's own box, on both axes,
+//!   because the two objects sit apart. A single object's box is never the group's box unless the group is that one object.
+//!
+//! Compose not braid. This rung OWNS only the box union and the reads over it -- no plane, no pixel, no fact re-derived. image/
+//! scene_manifest.rye owns the per-object rows (`ObjectEntry`, `object_of`) whose boxes it unions; the selectors own the label set.
+//! A reading over a reading.
+//!
+//! Everything is bounded before a byte: a valid selection names at most one label per component, so its length is bounded by the
+//! component count, itself under image/label.rye's `label_max_pixels`; the union runs the selection length times, each a single
+//! manifest lookup and four min/max updates. A selection naming background (0), a label past the component count, or labels out of
+//! strictly-ascending order refuses `BadSelection`, having read nothing. An empty selection has no extent: `selection_bbox` refuses
+//! `EmptySelection` by name rather than inventing a degenerate box. No network, no key, no funds -- the group-bounds read a surface
+//! names the day it must frame, zoom to, or handle a set of chosen objects at once, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/selection_bounds.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+
+pub const selection_bounds_version = "20260818.233655";
+
+pub const SelectionBoundsError = error{
+    BadSelection,
+    EmptySelection,
+};
+
+/// An inclusive axis-aligned BOX in pixel coordinates -- `(min_x, min_y)` the top-left pixel, `(max_x, max_y)` the bottom-right, both
+/// covered. The union of a selection's object boxes, well-formed on both axes by construction.
+pub const Box = struct {
+    min_x: u32 = 0,
+    min_y: u32 = 0,
+    max_x: u32 = 0,
+    max_y: u32 = 0,
+
+    /// The inclusive pixel WIDTH of the box -- always at least one for a real box.
+    pub fn width(self: *const Box) u32 {
+        // invariant: a real box is well-formed on x, so the low corner never passes the high corner.
+        assert(self.max_x >= self.min_x);
+        return self.max_x - self.min_x + 1;
+    }
+
+    /// The inclusive pixel HEIGHT of the box -- always at least one for a real box.
+    pub fn height(self: *const Box) u32 {
+        // invariant: a real box is well-formed on y, so the low corner never passes the high corner.
+        assert(self.max_y >= self.min_y);
+        return self.max_y - self.min_y + 1;
+    }
+
+    /// The pixel AREA of the box -- its inclusive width times its inclusive height. This is the FRAME's area, always at least the sum
+    /// of the selected objects' own areas and usually more, since the frame covers the background between them.
+    pub fn area(self: *const Box) u64 {
+        return @as(u64, self.width()) * @as(u64, self.height());
+    }
+};
+
+/// Check a selection is a valid label set -- every entry a real dense label (1..components), strictly ascending (hence distinct), no
+/// more entries than components. The contract every selector keeps; refuses `BadSelection` at the edge before any box is read.
+fn validate_selection(manifest: scene_manifest.Manifest, selection: []const u32) SelectionBoundsError!void {
+    // invariant: the manifest holds exactly one row per component.
+    assert(manifest.objects.len == @as(usize, manifest.components));
+    // invariant: the component count stays under image/label.rye's pixel ceiling, so the check loop is bounded.
+    assert(manifest.components <= label.label_max_pixels);
+
+    if (selection.len > @as(usize, manifest.components)) return error.BadSelection;
+
+    var prev: u32 = 0;
+    var i: usize = 0;
+    while (i < selection.len) : (i += 1) {
+        const lbl = selection[i];
+        if (lbl == 0 or lbl > manifest.components) return error.BadSelection;
+        if (lbl <= prev) return error.BadSelection;
+        prev = lbl;
+    }
+}
+
+/// The tight BOUNDING BOX enclosing every selected object -- the union of the selection's per-object boxes. Refuses `EmptySelection`
+/// when the selection holds no object (an empty set has no extent), `BadSelection` for a malformed label set.
+pub fn selection_bbox(manifest: scene_manifest.Manifest, selection: []const u32) !Box {
+    // invariant: the manifest holds exactly one row per component.
+    assert(manifest.objects.len == @as(usize, manifest.components));
+    try validate_selection(manifest, selection);
+    if (selection.len == 0) return error.EmptySelection;
+
+    // seed the union with the first selected object's box, then widen it over the rest -- a running min/max on each axis.
+    const first = try scene_manifest.object_of(manifest, selection[0]);
+    var box = Box{ .min_x = first.min_x, .min_y = first.min_y, .max_x = first.max_x, .max_y = first.max_y };
+
+    var i: usize = 1;
+    while (i < selection.len) : (i += 1) {
+        const entry = try scene_manifest.object_of(manifest, selection[i]);
+        if (entry.min_x < box.min_x) box.min_x = entry.min_x;
+        if (entry.min_y < box.min_y) box.min_y = entry.min_y;
+        if (entry.max_x > box.max_x) box.max_x = entry.max_x;
+        if (entry.max_y > box.max_y) box.max_y = entry.max_y;
+    }
+
+    // invariant: the union is well-formed on both axes -- it began well-formed and only ever widened.
+    assert(box.max_x >= box.min_x);
+    assert(box.max_y >= box.min_y);
+    return box;
+}
+
+/// TRUE when object `entry`'s bounding box sits WHOLLY inside `box` -- the read that makes the over-claim plain: it can be TRUE for an
+/// object the selection never named, whenever that object lies geometrically between selected ones. Containment of a box, never
+/// membership of a set.
+pub fn box_contains_object(box: Box, entry: scene_manifest.ObjectEntry) bool {
+    // invariant: both boxes are well-formed on both axes before containment is judged.
+    assert(box.max_x >= box.min_x);
+    assert(box.max_y >= box.min_y);
+    assert(entry.max_x >= entry.min_x);
+    assert(entry.max_y >= entry.min_y);
+    return box.min_x <= entry.min_x and entry.max_x <= box.max_x and box.min_y <= entry.min_y and entry.max_y <= box.max_y;
+}
+
+// --- selftest: the DECISIVE over-claim crux (three blocks at corner, middle, far corner -- the selection of the two corners frames a
+//     box that wholly contains the UNSELECTED middle block, and exceeds either corner's own box); a single-object selection's frame is
+//     that object's own box; an empty selection refuses EmptySelection; malformed selections refuse BadSelection; determinism --------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- THREE BLOCKS: corner, middle, far corner -- three distinct 8-connected components separated by blank rows and columns, in
+    //     dense raster order (raster labeling numbers top-to-bottom): object 1 a 2x2 block at (1,1); object 2 a 2x2 block at (5,5) (the
+    //     MIDDLE, geometrically between the corners); object 3 a 2x2 block at (9,9) (the FAR corner). Canvas 12x12 ----------------------
+    var scene = try make_canvas(garden, 12, 12, 0);
+    set_block(&scene, 1, 1, 2, 2); // object 1: corner, box (1,1)-(2,2)
+    set_block(&scene, 5, 5, 2, 2); // object 2: middle, box (5,5)-(6,6)
+    set_block(&scene, 9, 9, 2, 2); // object 3: far corner, box (9,9)-(10,10)
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 3) return error.SceneNotThreeComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    if (scene_manifest.object_count(manifest) != 3) return error.ManifestNotThreeObjects;
+
+    const o1 = try scene_manifest.object_of(manifest, 1);
+    const o2 = try scene_manifest.object_of(manifest, 2);
+    const o3 = try scene_manifest.object_of(manifest, 3);
+    // confirm the placement the crux leans on: object 2 is the geometric middle
+    if (o1.min_x != 1 or o1.min_y != 1 or o1.max_x != 2 or o1.max_y != 2) return error.Object1BoxWrong;
+    if (o2.min_x != 5 or o2.min_y != 5 or o2.max_x != 6 or o2.max_y != 6) return error.Object2BoxWrong;
+    if (o3.min_x != 9 or o3.min_y != 9 or o3.max_x != 10 or o3.max_y != 10) return error.Object3BoxWrong;
+
+    // --- THE DECISIVE OVER-CLAIM -- select the two CORNERS {1, 3}, skipping the middle. The union box spans (1,1)-(10,10), and
+    //     box_contains_object reads TRUE for the UNSELECTED middle block (its box (5,5)-(6,6) sits wholly inside the union) -- the frame
+    //     holds an object the selection never named -------------------------------------------------------------------------------
+    const corners = [_]u32{ 1, 3 };
+    const frame = try selection_bbox(manifest, &corners);
+    if (frame.min_x != 1 or frame.min_y != 1 or frame.max_x != 10 or frame.max_y != 10) return error.CornerFrameWrong;
+    if (!box_contains_object(frame, o2)) return error.FrameDoesNotHoldMiddle; // the over-claim: middle is inside the frame
+    // yet the middle is NOT in the selection -- containment of a box is not membership of the set
+    if (box_contains_object(frame, o1) == false or box_contains_object(frame, o3) == false) return error.FrameMissesItsOwnMembers;
+
+    // --- THE UNION EXCEEDS EITHER MEMBER -- the frame is strictly larger than either selected object's own box, on both axes --------
+    if (frame.width() <= o1.bbox_width() or frame.height() <= o1.bbox_height()) return error.FrameNotLargerThanCorner1;
+    if (frame.width() <= o3.bbox_width() or frame.height() <= o3.bbox_height()) return error.FrameNotLargerThanCorner3;
+    // the frame's area covers background the two 2x2 blocks never fill: 10x10 = 100, far more than the two objects' 4 + 4 = 8 pixels
+    if (frame.area() != 100) return error.FrameAreaWrong;
+
+    // --- A SINGLE-OBJECT SELECTION -- the frame of {2} is exactly the middle block's own box, contains nothing else --------------
+    const just_middle = [_]u32{2};
+    const middle_frame = try selection_bbox(manifest, &just_middle);
+    if (middle_frame.min_x != 5 or middle_frame.min_y != 5 or middle_frame.max_x != 6 or middle_frame.max_y != 6) return error.MiddleFrameWrong;
+    if (box_contains_object(middle_frame, o1) or box_contains_object(middle_frame, o3)) return error.MiddleFrameHoldsOthers;
+
+    // --- THE WHOLE SELECTION -- {1,2,3} frames the same union as the two corners, since the corners already reach the extremes -----
+    const whole = [_]u32{ 1, 2, 3 };
+    const whole_frame = try selection_bbox(manifest, &whole);
+    if (whole_frame.min_x != frame.min_x or whole_frame.min_y != frame.min_y or whole_frame.max_x != frame.max_x or whole_frame.max_y != frame.max_y) return error.WholeFrameNotCornerFrame;
+
+    // --- AN EMPTY SELECTION -- no extent: selection_bbox refuses EmptySelection rather than inventing a degenerate box -----------
+    const empty = [_]u32{};
+    if (selection_bbox(manifest, &empty)) |_| return error.EmptyFrameNotRefused else |err| {
+        if (err != error.EmptySelection) return error.WrongEmptyError;
+    }
+
+    // --- MALFORMED SELECTIONS -- a label past the count, background 0, and a non-ascending pair all refuse BadSelection ----------
+    const past = [_]u32{4};
+    if (selection_bbox(manifest, &past)) |_| return error.PastNotRefused else |err| {
+        if (err != error.BadSelection) return error.WrongPastError;
+    }
+    const zero = [_]u32{0};
+    if (selection_bbox(manifest, &zero)) |_| return error.ZeroNotRefused else |err| {
+        if (err != error.BadSelection) return error.WrongZeroError;
+    }
+    const descending = [_]u32{ 3, 1 };
+    if (selection_bbox(manifest, &descending)) |_| return error.DescendingNotRefused else |err| {
+        if (err != error.BadSelection) return error.WrongDescendingError;
+    }
+
+    // --- DETERMINISM -- the same selection frames the same box twice --------------------------------------------------------------
+    const d1 = try selection_bbox(manifest, &corners);
+    const d2 = try selection_bbox(manifest, &corners);
+    if (d1.min_x != d2.min_x or d1.min_y != d2.min_y or d1.max_x != d2.max_x or d1.max_y != d2.max_y) return error.FrameNotDeterministic;
+
+    print("GREEN image-selection-bounds: the tight BOUNDING BOX enclosing a whole SELECTION -- the union of every selected object's box, the group-handle frame a surface draws to zoom to, drag, or handle a set of chosen objects at once, exact integers, NO float and NO tolerance -- the DECISIVE over-claim crux, the box-is-a-prefilter lesson lifted to the selection: over three 2x2 blocks at the corner (1,1), the middle (5,5), and the far corner (9,9), the selection of the two CORNERS (labels 1 and 3, skipping the middle) frames the box (1,1)-(10,10), and box_contains_object reads TRUE for the UNSELECTED middle block (its box (5,5)-(6,6) sits wholly inside the union) -- the frame holds an object the selection never named, so containment of a box is never membership of the set, only the label set says what is chosen; the union exceeds either selected object's own box on both axes and its area 100 covers the background the two 4-pixel blocks never fill; a single-object selection frames exactly that object's box and holds nothing else; the whole selection frames the same union as the two corners since the corners already reach the extremes; an empty selection has no extent and refuses EmptySelection rather than inventing a degenerate box; a label past the count, background 0, and a non-ascending pair all refuse BadSelection having read nothing; the same selection frames the same box twice. Compose not braid over image/scene_manifest.rye (the per-object boxes) and the selection ladder that speaks the label set\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: selection_bounds selftest\n", .{});
+    return 1;
+}
