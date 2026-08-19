@@ -1,0 +1,383 @@
+//! image/selection_cluster_facts.rye -- the WHOLE-CLUSTER facts a SELECTION expands to: map each selected object to the connected cluster
+//! it belongs to, then read the joined facts of every WHOLE cluster the selection touches -- the union FRAME those clusters span, their
+//! total foreground SUBSTANCE, and whether snapping the selection to whole groups adds anything at all. Exact integers, NO float, NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/selection_summary.rye reads a selection as a SUBSET: it joins image/scene_manifest.rye's rows
+//! over just the selected labels, so its area and its largest are strictly sharper than the whole scene's. This rung reads the OTHER
+//! direction: it EXPANDS a selection to the whole connected clusters its objects belong to (image/overlap_clusters.rye) and reads those
+//! clusters' facts (image/cluster_facts.rye). It composes over ANY selector, since a selection is just the ascending `[]u32` a tap, a drag,
+//! a lasso, or a marquee-to-cluster read all speak -- strictly more general than image/region_cluster.rye, which owns only the rectangle.
+//! A surface reads it the moment a marquee must SNAP to whole connected groups -- "which whole groups did this selection land in, and how
+//! big is the region once I grow it to hold each group whole?"
+//!
+//! The DECISIVE crux -- a selection EXPANDS to whole clusters, so its cluster-substance STRICTLY EXCEEDS its own, in two shapes at once:
+//!
+//!   A PARTIAL TOUCH EXPANDS. image/region_cluster.rye proved a selection can touch a cluster only in PART (a box splitting a connected
+//!   group, selects_whole_cluster FALSE). So snapping that selection to the whole cluster it touches adds the members the box never covered:
+//!   selecting one member of a two-member cluster (its own area alone) expands to the WHOLE cluster's substance and a FRAME wider than the
+//!   member's own box. `expands_beyond_selection` reads TRUE -- the whole-cluster substance strictly above the selection's own area.
+//!
+//!   A MULTI-CLUSTER SELECTION EXPANDS EACH WHOLE. A selection crossing a cluster boundary expands EACH cluster it touches to whole: one
+//!   cluster grows by the member outside the box, another (a singleton already held whole) contributes exactly itself. So the expanded
+//!   substance is the sum of the WHOLE clusters, the frame their union, and a selection that already holds every cluster whole (the whole
+//!   scene) is the FIXED POINT -- `expands_beyond_selection` FALSE, snapping to groups adding nothing.
+//!
+//! Compose not braid. This rung OWNS only the selection-to-whole-cluster expansion -- the distinct-cluster collection, the union of those
+//! clusters' frames, the sum of their substance, and the strict-growth test. image/overlap_clusters.rye owns the connectivity and the
+//! `cluster_of` map; image/cluster_facts.rye owns each cluster's frame and area; image/selection_summary.rye owns the selection's own subset
+//! area; image/scene_graph.rye owns the per-object manifest. No pixel re-read, no cluster recomputed -- a reading over a reading over a reading.
+//!
+//! Everything is bounded before a byte: a valid selection names at most one label per object, so its length is bounded by the object count,
+//! itself under image/label.rye's `label_max_pixels`; the cluster-presence tally is sized to the cluster count plus one; the frame union and
+//! the substance sum each run the cluster count times, a single cluster_facts read apiece. A selection that names background (0), a label past
+//! the object count, or labels out of strictly-ascending order refuses `BadSelection`, having read nothing; a frame read of a selection that
+//! lands on no cluster refuses `NoClustersSelected` by name, having nothing to frame. No network, no key, no funds -- the snap-to-groups read
+//! a surface names the day a marquee must grow to hold whole connected regions.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/selection_cluster_facts.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const cluster_facts = @import("cluster_facts.rye");
+const selection_summary = @import("selection_summary.rye");
+
+pub const selection_cluster_facts_version = "20260819.025404";
+
+pub const SelectionClusterError = error{
+    BadSelection,
+    NoClustersSelected,
+};
+
+/// Check a selection is a valid label set against the clustering -- every entry a real dense object label (1..components), the entries
+/// strictly ascending (hence distinct), and no more entries than objects. The contract every selector in the ladder keeps; a read enforces
+/// it at the edge and refuses `BadSelection` before touching a cluster, so no read ever indexes a phantom object. Reads nothing on refusal.
+fn validate_selection(clustering: overlap_clusters.Clustering, selection: []const u32) SelectionClusterError!void {
+    // invariant: one cluster id per object.
+    assert(clustering.cluster_id.len == @as(usize, clustering.components));
+    // invariant: the object count stays under image/label.rye's pixel ceiling, so the check loop is bounded.
+    assert(clustering.components <= label.label_max_pixels);
+
+    // a valid selection names at most one label per object -- a longer slice cannot be strictly ascending within the dense range.
+    if (selection.len > @as(usize, clustering.components)) return error.BadSelection;
+
+    var prev: u32 = 0;
+    var i: usize = 0;
+    while (i < selection.len) : (i += 1) {
+        const lbl = selection[i];
+        // a selection names foreground labels only, never background and never past the object count.
+        if (lbl == 0 or lbl > clustering.components) return error.BadSelection;
+        // strictly ascending -- which also guarantees distinct, since equal or descending both fail here.
+        if (lbl <= prev) return error.BadSelection;
+        prev = lbl;
+    }
+}
+
+/// The ascending SET of connected clusters the selection lands on -- map each selected object to its cluster and collect the distinct
+/// cluster ids ascending. Returns an empty slice when the selection names no object. Refuses `BadSelection` for a malformed label set. The
+/// caller owns the returned slice.
+pub fn selection_cluster_ids(allocator: std.mem.Allocator, clustering: overlap_clusters.Clustering, selection: []const u32) ![]u32 {
+    // invariant: one cluster id per object, and a real clustering holds at least one cluster (unless the scene is empty).
+    assert(clustering.cluster_id.len == @as(usize, clustering.components));
+    try validate_selection(clustering, selection);
+
+    // a presence flag per dense cluster id (index 0 unused -- there is no cluster 0). Bounded by the cluster count.
+    const present = try allocator.alloc(bool, @as(usize, clustering.clusters) + 1);
+    var p: usize = 0;
+    while (p < present.len) : (p += 1) present[p] = false;
+
+    var i: usize = 0;
+    while (i < selection.len) : (i += 1) {
+        const cid = try overlap_clusters.cluster_of(clustering, selection[i]);
+        // invariant: a real cluster id indexes a slot in the presence tally.
+        assert(cid >= 1);
+        assert(cid <= clustering.clusters);
+        present[@as(usize, cid)] = true;
+    }
+
+    // count the distinct clusters present, then collect them ascending -- dense, gap-free order.
+    var found: u32 = 0;
+    var cid: u32 = 1;
+    while (cid <= clustering.clusters) : (cid += 1) {
+        if (present[@as(usize, cid)]) found += 1;
+    }
+    const result = try allocator.alloc(u32, @as(usize, found));
+    var w: usize = 0;
+    cid = 1;
+    while (cid <= clustering.clusters) : (cid += 1) {
+        if (present[@as(usize, cid)]) {
+            result[w] = cid;
+            w += 1;
+        }
+    }
+    // invariant: the collect loop filled exactly the counted slots.
+    assert(w == @as(usize, found));
+    return result;
+}
+
+/// HOW MANY distinct connected clusters the selection lands on -- the size of `selection_cluster_ids`. Refuses `BadSelection` for a
+/// malformed label set.
+pub fn selection_cluster_count(allocator: std.mem.Allocator, clustering: overlap_clusters.Clustering, selection: []const u32) !u32 {
+    const ids = try selection_cluster_ids(allocator, clustering, selection);
+    // invariant: the selection can land on no more clusters than the scene holds.
+    assert(ids.len <= @as(usize, clustering.clusters));
+    return @as(u32, @intCast(ids.len));
+}
+
+/// The union FRAME of every WHOLE cluster the selection lands on -- the group-handle a surface draws when it snaps a selection to hold each
+/// connected group whole. Always at least as wide as the selection's own bounds, since it holds every touched cluster whole. Refuses
+/// `NoClustersSelected` when the selection lands on no cluster (nothing to frame), `BadSelection` for a malformed label set.
+pub fn selection_cluster_frame(allocator: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, selection: []const u32) !cluster_facts.Box {
+    // invariant: the clustering and the graph describe the same scene.
+    assert(clustering.components == graph.components);
+    const ids = try selection_cluster_ids(allocator, clustering, selection);
+    if (ids.len == 0) return error.NoClustersSelected;
+
+    var box = try cluster_facts.cluster_bbox(clustering, graph, ids[0]);
+    var i: usize = 1;
+    while (i < ids.len) : (i += 1) {
+        const cb = try cluster_facts.cluster_bbox(clustering, graph, ids[i]);
+        if (cb.min_x < box.min_x) box.min_x = cb.min_x;
+        if (cb.min_y < box.min_y) box.min_y = cb.min_y;
+        if (cb.max_x > box.max_x) box.max_x = cb.max_x;
+        if (cb.max_y > box.max_y) box.max_y = cb.max_y;
+    }
+    // invariant: the union is well-formed on both axes -- it began well-formed and only ever widened.
+    assert(box.max_x >= box.min_x);
+    assert(box.max_y >= box.min_y);
+    return box;
+}
+
+/// The total foreground SUBSTANCE of every WHOLE cluster the selection lands on -- the sum of each touched cluster's area. Always at least
+/// the selection's own area, since every touched cluster is held whole; strictly more when the selection touched any cluster only in part.
+/// A selection landing on no cluster reads zero. Refuses `BadSelection` for a malformed label set.
+pub fn selection_cluster_area(allocator: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, selection: []const u32) !u64 {
+    // invariant: the clustering and the graph describe the same scene.
+    assert(clustering.components == graph.components);
+    const ids = try selection_cluster_ids(allocator, clustering, selection);
+
+    var sum: u64 = 0;
+    var i: usize = 0;
+    while (i < ids.len) : (i += 1) {
+        const ca = try cluster_facts.cluster_area(clustering, graph, ids[i]);
+        // invariant: each cluster holds at least one pixel and the running sum stays within the pixel ceiling, so u64 never overflows.
+        assert(ca >= 1);
+        sum += @as(u64, ca);
+    }
+    // invariant: the whole-cluster substance never exceeds the whole scene's total foreground area.
+    assert(sum <= scene_manifest.total_area(graph.manifest));
+    return sum;
+}
+
+/// TRUE when snapping the selection to whole clusters ADDS substance -- the whole-cluster substance strictly exceeds the selection's own
+/// area, which happens exactly when the selection touched at least one cluster only in part. FALSE when the selection already holds every
+/// cluster it touches whole (the fixed point), so growing to groups adds nothing. Refuses `BadSelection` for a malformed label set.
+pub fn expands_beyond_selection(allocator: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, selection: []const u32) !bool {
+    // invariant: the clustering and the graph describe the same scene.
+    assert(clustering.components == graph.components);
+    const own = try selection_summary.total_selected_area(graph.manifest, selection);
+    const whole = try selection_cluster_area(allocator, clustering, graph, selection);
+    // invariant: the whole-cluster substance is never LESS than the selection's own -- every touched cluster is held whole.
+    assert(whole >= own);
+    return whole > own;
+}
+
+// --- selftest: the DECISIVE expansion crux -- the same reaching-apart scene image/cluster_facts.rye and image/region_cluster.rye build (A
+//     a corner-L box (1,1)-(6,6) and B a ring box (4,4)-(9,9) connect into ONE cluster; a lone block C box (8,1)-(9,2) is its own singleton).
+//     Selecting A alone expands to the whole {A,B} cluster (area 31 > A's 11, frame wider than A's box); selecting A and C expands each whole
+//     (31 + 4, count 2); a whole-scene selection is the fixed point (expands FALSE); refusals by name; determinism ----------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a corner bracket-L: a vertical arm down column `x` from `y0` to `y1`, and a horizontal arm along row `yr` from `x0` to `x1`.
+fn set_corner_l(img: *qoi.Pixmap, x: u32, y0: u32, y1: u32, yr: u32, x0: u32, x1: u32) void {
+    // invariant: the arms run in the positive direction and stay inside the buffer.
+    assert(y1 >= y0);
+    assert(x1 >= x0);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) set_dot(img, x, yy);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) set_dot(img, xx, yr);
+}
+
+/// Paint a 1-pixel-thick RING (a rectangle outline) with corners `(x0, y0)` and `(x1, y1)` -- a holed object, its interior background.
+fn set_ring(img: *qoi.Pixmap, x0: u32, y0: u32, x1: u32, y1: u32) void {
+    // invariant: the ring spans at least a 3x3 box so it encloses a real interior hole, and stays inside the buffer.
+    assert(x1 >= x0 + 2);
+    assert(y1 >= y0 + 2);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) {
+        set_dot(img, xx, y0);
+        set_dot(img, xx, y1);
+    }
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) {
+        set_dot(img, x0, yy);
+        set_dot(img, x1, yy);
+    }
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- BUILD THE REACHING-APART SCENE on an 11x11 canvas (the same as image/cluster_facts.rye and image/region_cluster.rye): A a corner-L
+    //     (label 1) box (1,1)-(6,6) area 11; C a 2x2 block (label 2) box (8,1)-(9,2) area 4; B a ring (label 3) box (4,4)-(9,9) area 20. A and
+    //     B connect into cluster 1 (boxes overlap through the corner (4,4)-(6,6)); C is singleton cluster 2. Raster labels A=1, C=2, B=3 -----
+    var scene = try make_canvas(garden, 11, 11, 0);
+    set_corner_l(&scene, 1, 1, 6, 1, 1, 6); // A: col1 rows1..6, row1 cols1..6
+    set_block(&scene, 8, 1, 2, 2); // C: block at (8,1), box (8,1)-(9,2)
+    set_ring(&scene, 4, 4, 9, 9); // B: ring box (4,4)-(9,9)
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 3) return error.SceneNotThreeComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    // confirm the two-cluster shape the crux leans on: A and B one cluster, C a singleton
+    if (try overlap_clusters.same_cluster(clustering, 1, 3) != true) return error.ABNotClustered;
+    if (overlap_clusters.cluster_count(clustering) != 2) return error.ClusterCountNotTwo;
+    const ab_cid = try overlap_clusters.cluster_of(clustering, 1);
+    const c_cid = try overlap_clusters.cluster_of(clustering, 2);
+    if (ab_cid == c_cid) return error.ClustersNotDistinct;
+    // the per-object areas the expansion arithmetic leans on
+    if ((try scene_manifest.object_of(manifest, 1)).area != 11) return error.AAreaWrong;
+    if ((try scene_manifest.object_of(manifest, 2)).area != 4) return error.CAreaWrong;
+    if ((try scene_manifest.object_of(manifest, 3)).area != 20) return error.BAreaWrong;
+
+    // --- A PARTIAL TOUCH EXPANDS -- select A alone (label 1). A's own area is 11, yet A belongs to cluster 1 = {A,B}, so the selection
+    //     expands to the WHOLE cluster: selection_cluster_area reads 31 (A 11 + B 20), the frame widens to (1,1)-(9,9) past A's own box
+    //     (1,1)-(6,6), and expands_beyond_selection reads TRUE -- snapping to the group added B, the member the selection never touched ------
+    const sel_a = [_]u32{1};
+    const ids_a = try selection_cluster_ids(garden, clustering, &sel_a);
+    if (ids_a.len != 1 or ids_a[0] != ab_cid) return error.IdsOnAWrong;
+    if (try selection_cluster_area(garden, clustering, graph, &sel_a) != 31) return error.AreaOnANotThirtyOne;
+    if (try selection_summary.total_selected_area(manifest, &sel_a) != 11) return error.OwnAreaOnANotEleven;
+    const frame_a = try selection_cluster_frame(garden, clustering, graph, &sel_a);
+    if (frame_a.min_x != 1 or frame_a.min_y != 1 or frame_a.max_x != 9 or frame_a.max_y != 9) return error.FrameOnAWrong;
+    if (try expands_beyond_selection(garden, clustering, graph, &sel_a) != true) return error.AExpandsNotTrue;
+
+    // selecting B alone expands the same way, the other member: B's own area 20 grows to the whole cluster's 31
+    const sel_b = [_]u32{3};
+    if (try selection_cluster_area(garden, clustering, graph, &sel_b) != 31) return error.AreaOnBNotThirtyOne;
+    if (try expands_beyond_selection(garden, clustering, graph, &sel_b) != true) return error.BExpandsNotTrue;
+
+    // --- A MULTI-CLUSTER SELECTION EXPANDS EACH WHOLE -- select A and C (labels 1, 2), one member of cluster 1 and the whole singleton
+    //     cluster 2. The selection's own area is 15 (A 11 + C 4), yet it expands to BOTH whole clusters: 31 + 4 = 35, count 2, the union
+    //     frame (1,1)-(9,9). C contributes wholly (a singleton held whole) while cluster 1 grows by B -- expands TRUE by cluster 1 alone -----
+    const sel_ac = [_]u32{ 1, 2 };
+    const ids_ac = try selection_cluster_ids(garden, clustering, &sel_ac);
+    if (ids_ac.len != 2 or ids_ac[0] != ab_cid or ids_ac[1] != c_cid) return error.IdsOnACWrong;
+    if (try selection_cluster_count(garden, clustering, &sel_ac) != 2) return error.CountOnACNotTwo;
+    if (try selection_summary.total_selected_area(manifest, &sel_ac) != 15) return error.OwnAreaOnACNotFifteen;
+    if (try selection_cluster_area(garden, clustering, graph, &sel_ac) != 35) return error.AreaOnACNotThirtyFive;
+    const frame_ac = try selection_cluster_frame(garden, clustering, graph, &sel_ac);
+    if (frame_ac.min_x != 1 or frame_ac.min_y != 1 or frame_ac.max_x != 9 or frame_ac.max_y != 9) return error.FrameOnACWrong;
+    if (try expands_beyond_selection(garden, clustering, graph, &sel_ac) != true) return error.ACExpandsNotTrue;
+
+    // --- THE FIXED POINT -- select C alone (label 2), a singleton cluster already whole: own area 4 equals the whole-cluster area 4, so
+    //     expands_beyond_selection reads FALSE, the frame exactly C's own box; and a whole-scene selection {1,2,3} holds every cluster whole,
+    //     own area 35 = whole-cluster area 35, expands FALSE -- snapping to groups adds nothing at the fixed point ---------------------------
+    const sel_c = [_]u32{2};
+    if (try selection_cluster_area(garden, clustering, graph, &sel_c) != 4) return error.AreaOnCNotFour;
+    if (try expands_beyond_selection(garden, clustering, graph, &sel_c) != false) return error.CExpandsNotFalse;
+    const frame_c = try selection_cluster_frame(garden, clustering, graph, &sel_c);
+    if (frame_c.min_x != 8 or frame_c.min_y != 1 or frame_c.max_x != 9 or frame_c.max_y != 2) return error.FrameOnCWrong;
+
+    const sel_whole = [_]u32{ 1, 2, 3 };
+    if (try selection_cluster_count(garden, clustering, &sel_whole) != 2) return error.WholeCountNotTwo;
+    if (try selection_summary.total_selected_area(manifest, &sel_whole) != 35) return error.WholeOwnAreaNotThirtyFive;
+    if (try selection_cluster_area(garden, clustering, graph, &sel_whole) != 35) return error.WholeClusterAreaNotThirtyFive;
+    if (try expands_beyond_selection(garden, clustering, graph, &sel_whole) != false) return error.WholeExpandsNotFalse;
+
+    // --- AN EMPTY SELECTION -- valid: no cluster, zero substance, expands FALSE (0 > 0 is false); the frame refuses NoClustersSelected,
+    //     having nothing to frame -------------------------------------------------------------------------------------------------------
+    const empty = [_]u32{};
+    const ids_empty = try selection_cluster_ids(garden, clustering, &empty);
+    if (ids_empty.len != 0) return error.EmptyIdsNotEmpty;
+    if (try selection_cluster_area(garden, clustering, graph, &empty) != 0) return error.EmptyAreaNotZero;
+    if (try expands_beyond_selection(garden, clustering, graph, &empty) != false) return error.EmptyExpandsNotFalse;
+    if (selection_cluster_frame(garden, clustering, graph, &empty)) |_| return error.EmptyFrameNotRefused else |err| {
+        if (err != error.NoClustersSelected) return error.WrongEmptyFrameError;
+    }
+
+    // --- MALFORMED SELECTIONS -- a label past the object count, background 0, and a non-ascending pair all refuse BadSelection, having read
+    //     nothing --------------------------------------------------------------------------------------------------------------------------
+    const past = [_]u32{4};
+    if (selection_cluster_area(garden, clustering, graph, &past)) |_| return error.PastLabelNotRefused else |err| {
+        if (err != error.BadSelection) return error.WrongPastError;
+    }
+    const zero = [_]u32{0};
+    if (selection_cluster_ids(garden, clustering, &zero)) |_| return error.ZeroLabelNotRefused else |err| {
+        if (err != error.BadSelection) return error.WrongZeroError;
+    }
+    const descending = [_]u32{ 3, 2 };
+    if (expands_beyond_selection(garden, clustering, graph, &descending)) |_| return error.DescendingNotRefused else |err| {
+        if (err != error.BadSelection) return error.WrongDescendingError;
+    }
+
+    // --- DETERMINISM -- the same selection expands to the same substance twice --------------------------------------------------------
+    const d1 = try selection_cluster_area(garden, clustering, graph, &sel_ac);
+    const d2 = try selection_cluster_area(garden, clustering, graph, &sel_ac);
+    if (d1 != d2) return error.AreaNotDeterministic;
+
+    print("GREEN image-selection-cluster-facts: the WHOLE-CLUSTER facts a SELECTION expands to -- map each selected object to the connected cluster it belongs to, then read the joined facts of every WHOLE cluster the selection touches (the union FRAME those clusters span, their total foreground SUBSTANCE, the count, and whether snapping to whole groups adds anything), composing over ANY selector's ascending label set, exact integers, NO float and NO tolerance -- the DECISIVE crux that a selection EXPANDS to whole clusters so its cluster-substance STRICTLY EXCEEDS its own, in two shapes. A PARTIAL TOUCH EXPANDS -- over the reaching-apart scene (A a corner-L box (1,1)-(6,6) area 11 and B a ring box (4,4)-(9,9) area 20 connected into cluster 1, C a lone block box (8,1)-(9,2) area 4 a singleton cluster 2), selecting A alone (own area 11) expands to the WHOLE {{A,B}} cluster area 31 with the frame widening to (1,1)-(9,9) past A's own box, so expands_beyond_selection reads TRUE -- snapping to the group added B, the member the box never touched; selecting B alone expands the same way, 20 to 31. A MULTI-CLUSTER SELECTION EXPANDS EACH WHOLE -- selecting A and C (own area 15) expands to BOTH clusters, 31 + 4 = 35 over count 2, the union frame (1,1)-(9,9), C contributing wholly as a singleton while cluster 1 grows by B. THE FIXED POINT -- selecting C alone (a singleton already whole) reads 4 = 4 so expands FALSE, its frame exactly C's box, and a whole-scene selection {{1,2,3}} holds every cluster whole (own 35 = whole 35, expands FALSE) -- snapping to groups adds nothing where the selection already holds each group whole. An empty selection is valid (no cluster, zero substance, expands FALSE) yet the frame refuses NoClustersSelected; a label past the count, background 0, and a non-ascending pair refuse BadSelection having read nothing; the same selection expands to the same substance twice. Compose not braid over image/overlap_clusters.rye (the cluster_of map), image/cluster_facts.rye (each cluster's frame and area), image/selection_summary.rye (the selection's own subset area), and image/scene_graph.rye (the per-object manifest)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: selection_cluster_facts selftest\n", .{});
+    return 1;
+}
