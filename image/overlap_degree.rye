@@ -1,0 +1,292 @@
+//! image/overlap_degree.rye -- every object's DEGREE in the scene's box-overlap adjacency graph: how many other objects each object's
+//! bounding box overlaps, read straight from image/scene_graph.rye's precomputed matrix -- exact integers, NO float and NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- the scene-read family names a POINT's object (image/hit_test.rye), a RECTANGLE's or POLYGON's
+//! objects (image/region_select.rye, image/lasso_select.rye), a selection's FACTS and EXTENT (image/selection_summary.rye,
+//! image/selection_bounds.rye), a PAIR's spatial relation (image/object_relation.rye), the WHOLE scene's pairwise matrix and nesting
+//! forest (image/scene_graph.rye), the forest's DEPTH (image/nesting_depth.rye), and the scene's TOTAL page order
+//! (image/reading_order.rye). This rung reads a scene-wide GRAPH FACT no pair and no chain holds: each object's overlap DEGREE.
+//!
+//! The DECISIVE crux -- the box-is-a-prefilter lesson lifted to a GRAPH DEGREE, in two shapes at once:
+//!
+//!   THE DEGREE IS SYMMETRIC, UNLIKE THE NEAREST NEIGHBOR. Box overlap is a symmetric relation -- a's box overlaps b's box exactly when
+//!   b's overlaps a's -- so the overlap adjacency is an UNDIRECTED graph and `overlap_degree` is well-defined without a direction. This
+//!   is the sharp contrast to image/scene_graph.rye's `nearest_neighbor`, which is DIRECTED: a's nearest need not have a as its own. Two
+//!   scene-wide reads over the same matrix, one an undirected degree, the other a directed pointer.
+//!
+//!   THE HUB OVERLAPS ALL YET TOUCHES NONE, AND THE GRAPH IS A STAR, NEVER A CLIQUE. A big bracket-L framing two dots in its concavity
+//!   has the highest overlap degree -- its box contains, so overlaps, both dots' boxes -- yet object_relation proves it sits 2 or more
+//!   pixels APART from each dot, touched by neither. And the two dots, both overlapping the hub, do NOT overlap each other (their tiny
+//!   boxes are disjoint), so the overlap graph is a STAR centered on the hub, never the clique a transitive relation would build: box
+//!   overlap is not transitive, and degree is a LOCAL count, never a cluster measure. The high-degree object can be the loneliest.
+//!
+//! Compose not braid. This rung OWNS only the degree count, the edge total, the busiest-object read, and the isolated read -- no box
+//! re-measured, no overlap recomputed. image/scene_graph.rye owns the pairwise matrix each `boxes_overlap` flag is read from;
+//! image/object_relation.rye owns each pair's overlap, direction, and exact nearest-pixel distance; image/scene_manifest.rye owns the
+//! per-object boxes. A reading over a reading over a reading.
+//!
+//! Everything is bounded before a byte: the scene graph caps its object count, so a degree loop runs a bounded number of cells and the
+//! edge total is at most the object count choose two. A background or past-the-count label refuses `BadObjectLabel`; the busiest read of
+//! an empty scene refuses `NoObjects`, having named nothing. No network, no key, no funds -- the overlap graph a surface names the day it
+//! must find the busiest region of a layout, or the objects standing alone, on our own geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/overlap_degree.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+
+pub const overlap_degree_version = "20260819.003915";
+
+pub const OverlapDegreeError = error{
+    BadObjectLabel,
+    NoObjects,
+};
+
+/// The overlap DEGREE of object `a` -- how many OTHER objects in the scene have a bounding box that overlaps a's, read straight from the
+/// scene graph's precomputed matrix, never recomputed. Because box overlap is symmetric, this degree is the same whether counted over a's
+/// row or a's column of the matrix. Refuses `BadObjectLabel` for a background or past-the-count label.
+pub fn overlap_degree(graph: scene_graph.SceneGraph, a: u32) !u32 {
+    // invariant: the matrix holds exactly one cell per ordered pair.
+    assert(graph.relations.len == @as(usize, graph.components) * @as(usize, graph.components));
+    // invariant: a real scene holds at least one object to ask a degree of.
+    assert(graph.components >= 1);
+    if (a == 0 or a > graph.components) return error.BadObjectLabel;
+
+    var deg: u32 = 0;
+    var b: u32 = 1;
+    while (b <= graph.components) : (b += 1) {
+        if (b == a) continue;
+        const rel = graph.relations[(@as(usize, a) - 1) * @as(usize, graph.components) + (@as(usize, b) - 1)];
+        if (rel.boxes_overlap) deg += 1;
+    }
+    // invariant: an object can overlap at most every other object, never more.
+    assert(deg <= graph.components - 1);
+    return deg;
+}
+
+/// TRUE when object `a` overlaps NO other object -- its box stands alone in the scene, degree zero. A convenience over `overlap_degree`.
+pub fn is_isolated(graph: scene_graph.SceneGraph, a: u32) !bool {
+    // invariant: the matrix holds exactly one cell per ordered pair.
+    assert(graph.relations.len == @as(usize, graph.components) * @as(usize, graph.components));
+    assert(a >= 1);
+    const deg = try overlap_degree(graph, a);
+    return deg == 0;
+}
+
+/// The number of EDGES in the undirected box-overlap graph -- how many unordered pairs of objects have overlapping boxes. Each edge is
+/// counted once: the loop weighs only pairs `a < b`, so the symmetric matrix never double-counts. Equal to the sum of every degree
+/// divided by two, the handshake identity.
+pub fn total_overlap_edges(graph: scene_graph.SceneGraph) u32 {
+    // invariant: the matrix holds exactly one cell per ordered pair.
+    assert(graph.relations.len == @as(usize, graph.components) * @as(usize, graph.components));
+    var edges: u32 = 0;
+    var a: u32 = 1;
+    while (a <= graph.components) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b <= graph.components) : (b += 1) {
+            const rel = graph.relations[(@as(usize, a) - 1) * @as(usize, graph.components) + (@as(usize, b) - 1)];
+            if (rel.boxes_overlap) edges += 1;
+        }
+    }
+    // invariant: the edge count cannot exceed the count of unordered pairs, n*(n-1)/2.
+    const n: u64 = graph.components;
+    assert(@as(u64, edges) <= n * (n - 1) / 2);
+    return edges;
+}
+
+/// The LABEL of the object with the greatest overlap degree -- the busiest object in the box-overlap graph, the box that overlaps the most
+/// others, ties broken by the earliest label. A whole-scene read; a high degree names the box that frames the most, never the object that
+/// touches the most. Refuses `NoObjects` when the scene holds no object to weigh.
+pub fn most_overlapping(graph: scene_graph.SceneGraph) !u32 {
+    // invariant: the matrix holds exactly one cell per ordered pair.
+    assert(graph.relations.len == @as(usize, graph.components) * @as(usize, graph.components));
+    if (graph.components < 1) return error.NoObjects;
+
+    var best_label: u32 = 0;
+    var best_deg: u32 = 0;
+    var a: u32 = 1;
+    while (a <= graph.components) : (a += 1) {
+        const deg = try overlap_degree(graph, a);
+        // strictly greater keeps the earliest label on a degree tie -- deterministic.
+        if (a == 1 or deg > best_deg) {
+            best_deg = deg;
+            best_label = a;
+        }
+    }
+    // invariant: a scene of one or more objects always names a busiest object.
+    assert(best_label >= 1);
+    assert(best_label <= graph.components);
+    return best_label;
+}
+
+// --- selftest: the DECISIVE box-is-a-prefilter crux lifted to a GRAPH DEGREE -- a big bracket-L framing two dots in its concavity is the
+//     high-degree HUB (its box overlaps both dots) yet object_relation proves it sits 2+ pixels APART from each, and the two dots do not
+//     overlap each other, so the graph is a STAR never a clique (box overlap is not transitive); the degree is symmetric (unlike the
+//     directed nearest neighbor); a far dot is isolated (degree 0); refusals by name; determinism ---------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a bracket-L: a vertical arm down column `x` from `y0` to `y1`, and a horizontal arm along row `y1` from `x` to `x1`. Its
+/// concavity (the upper-right quadrant) is background, ready to hold smaller objects without touching them.
+fn set_bracket_l(img: *qoi.Pixmap, x: u32, y0: u32, y1: u32, x1: u32) void {
+    // invariant: the arms run in the positive direction and stay inside the buffer.
+    assert(y1 >= y0);
+    assert(x1 >= x);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) set_dot(img, x, yy);
+    var xx: u32 = x;
+    while (xx <= x1) : (xx += 1) set_dot(img, xx, y1);
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- BUILD THE STAR SCENE -- a big bracket-L hub framing two dots in its concavity, plus a far dot standing alone:
+    //     big-L (label 1): column x=1 rows 1..9 + row y=9 cols 1..9, box (1,1)-(9,9), its concavity the upper-right background;
+    //     dot A (label 2): single pixel (4,4), box (4,4)-(4,4), tucked in the concavity;
+    //     dot B (label 3): single pixel (6,6), box (6,6)-(6,6), also in the concavity yet its box disjoint from dot A's;
+    //     far dot (label 4): single pixel (11,11), box (11,11)-(11,11), outside the hub's box entirely. Canvas 13x13 --------------------
+    var scene_img = try make_canvas(garden, 13, 13, 0);
+    set_bracket_l(&scene_img, 1, 1, 9, 9); // the hub
+    set_dot(&scene_img, 4, 4); // dot A
+    set_dot(&scene_img, 6, 6); // dot B
+    set_dot(&scene_img, 11, 11); // the far dot
+
+    const map = try label.label_components(garden, &scene_img);
+    if (map.count != 4) return error.SceneNotFourComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+
+    // confirm the raster-order boxes are exactly the four frames
+    const hub = try scene_manifest.object_of(manifest, 1);
+    const da = try scene_manifest.object_of(manifest, 2);
+    const db = try scene_manifest.object_of(manifest, 3);
+    const far = try scene_manifest.object_of(manifest, 4);
+    if (hub.min_x != 1 or hub.min_y != 1 or hub.max_x != 9 or hub.max_y != 9) return error.HubBoxWrong;
+    if (da.min_x != 4 or da.min_y != 4 or da.max_x != 4 or da.max_y != 4) return error.DotABoxWrong;
+    if (db.min_x != 6 or db.min_y != 6 or db.max_x != 6 or db.max_y != 6) return error.DotBBoxWrong;
+    if (far.min_x != 11 or far.min_y != 11 or far.max_x != 11 or far.max_y != 11) return error.FarBoxWrong;
+
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    if (scene_graph.object_count(graph) != 4) return error.GraphNotFourObjects;
+
+    // --- THE HUB OVERLAPS ALL YET TOUCHES NONE -- the big-L has degree 2 (its box overlaps both dots' boxes), the highest in the scene,
+    //     yet object_relation proves it sits 2 or more pixels APART from each dot, disjoint, touched by neither -------------------------
+    if (try overlap_degree(graph, 1) != 2) return error.HubDegreeNotTwo;
+    const rel_hub_a = try scene_graph.relation_of(graph, 1, 2);
+    const rel_hub_b = try scene_graph.relation_of(graph, 1, 3);
+    if (!rel_hub_a.boxes_overlap) return error.HubBoxDoesNotOverlapA;
+    if (!rel_hub_b.boxes_overlap) return error.HubBoxDoesNotOverlapB;
+    if (rel_hub_a.nearest_cheby < 2) return error.HubTouchesA;
+    if (rel_hub_b.nearest_cheby < 2) return error.HubTouchesB;
+
+    // --- THE GRAPH IS A STAR, NEVER A CLIQUE -- the two dots each overlap the hub (degree 1) yet do NOT overlap each other, so the
+    //     overlap graph is a star centered on the hub, never the clique a transitive relation would build: box overlap is not transitive
+    if (try overlap_degree(graph, 2) != 1) return error.DotADegreeNotOne;
+    if (try overlap_degree(graph, 3) != 1) return error.DotBDegreeNotOne;
+    const rel_a_b = try scene_graph.relation_of(graph, 2, 3);
+    if (rel_a_b.boxes_overlap) return error.DotsFalselyOverlap;
+    // the star has exactly two edges (hub-A, hub-B), not the three a clique of the three inner objects would hold
+    if (total_overlap_edges(graph) != 2) return error.EdgeCountNotTwo;
+
+    // --- THE DEGREE IS SYMMETRIC, UNLIKE THE NEAREST NEIGHBOR -- a overlaps b exactly when b overlaps a, so the adjacency is undirected;
+    //     yet scene_graph's nearest_neighbor is directed: the far dot's nearest is dot B, whose nearest is the hub, not the far dot ------
+    const rel_ab = try scene_graph.relation_of(graph, 2, 3);
+    const rel_ba = try scene_graph.relation_of(graph, 3, 2);
+    if (rel_ab.boxes_overlap != rel_ba.boxes_overlap) return error.OverlapNotSymmetric;
+    const rel_ha = try scene_graph.relation_of(graph, 1, 2);
+    const rel_ah = try scene_graph.relation_of(graph, 2, 1);
+    if (rel_ha.boxes_overlap != rel_ah.boxes_overlap) return error.HubOverlapNotSymmetric;
+    // the directed contrast lives in image/scene_graph.rye, whose own selftest proves nearest_neighbor asymmetric; here we prove the
+    // positive: every overlap flag agrees with its mirror, so the adjacency this rung counts is genuinely undirected
+    var sa: u32 = 1;
+    while (sa <= scene_graph.object_count(graph)) : (sa += 1) {
+        var sb: u32 = sa + 1;
+        while (sb <= scene_graph.object_count(graph)) : (sb += 1) {
+            const fwd = try scene_graph.relation_of(graph, sa, sb);
+            const bwd = try scene_graph.relation_of(graph, sb, sa);
+            if (fwd.boxes_overlap != bwd.boxes_overlap) return error.OverlapMatrixNotSymmetric;
+        }
+    }
+
+    // --- THE FAR DOT IS ISOLATED -- its box overlaps no other, degree zero, standing alone though it shares the scene --------------------
+    if (try overlap_degree(graph, 4) != 0) return error.FarDegreeNotZero;
+    if (!try is_isolated(graph, 4)) return error.FarNotIsolated;
+    if (try is_isolated(graph, 1)) return error.HubFalselyIsolated;
+
+    // --- THE BUSIEST OBJECT IS THE HUB -- most_overlapping names label 1, the box that frames the most, never the object that touches
+    //     the most: the high-degree object here is the loneliest, 2+ pixels from all it overlaps ---------------------------------------
+    if (try most_overlapping(graph) != 1) return error.BusiestNotHub;
+
+    // --- REFUSALS -- a past-the-count or background label refuses BadObjectLabel, having named no degree ---------------------------------
+    if (overlap_degree(graph, 0)) |_| return error.ZeroDegreeNotRefused else |err| {
+        if (err != error.BadObjectLabel) return error.WrongZeroError;
+    }
+    if (overlap_degree(graph, 5)) |_| return error.PastDegreeNotRefused else |err| {
+        if (err != error.BadObjectLabel) return error.WrongPastError;
+    }
+
+    // --- A LONE SCENE -- one solid object overlaps nothing, degree 0, isolated, zero edges, and it is trivially the busiest --------------
+    var lone_img = try make_canvas(garden, 6, 6, 0);
+    set_bracket_l(&lone_img, 1, 1, 3, 3); // one object
+    const lone_map = try label.label_components(garden, &lone_img);
+    if (lone_map.count != 1) return error.LoneNotOneComponent;
+    const lone_manifest = try scene_manifest.build_manifest(garden, &lone_map);
+    const lone_graph = try scene_graph.build_scene_graph(garden, lone_manifest, &lone_map);
+    if (try overlap_degree(lone_graph, 1) != 0) return error.LoneDegreeNotZero;
+    if (!try is_isolated(lone_graph, 1)) return error.LoneNotIsolated;
+    if (total_overlap_edges(lone_graph) != 0) return error.LoneEdgeCountNotZero;
+    if (try most_overlapping(lone_graph) != 1) return error.LoneBusiestNotOne;
+
+    // --- DETERMINISM -- the same scene reads the same degrees twice ------------------------------------------------------------------
+    const g1 = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const g2 = try scene_graph.build_scene_graph(garden, manifest, &map);
+    if (try overlap_degree(g1, 1) != try overlap_degree(g2, 1)) return error.DegreeNotDeterministic;
+    if (try most_overlapping(g1) != try most_overlapping(g2)) return error.BusiestNotDeterministic;
+
+    print("GREEN image-overlap-degree: every object's DEGREE in the scene's box-overlap adjacency graph -- how many other objects each object's box overlaps, read straight from scene_graph's precomputed matrix, exact integers, NO float and NO tolerance -- the DECISIVE box-is-a-prefilter crux lifted to a GRAPH DEGREE, in two shapes. THE HUB OVERLAPS ALL YET TOUCHES NONE, AND THE GRAPH IS A STAR, NEVER A CLIQUE -- a big bracket-L (box (1,1)-(9,9)) framing two dots in its concavity (dot A at (4,4), dot B at (6,6)) has the highest overlap degree 2, its box overlapping both dots' boxes, yet object_relation proves it sits Chebyshev distance 2 or more APART from each dot, touched by neither; and the two dots, both overlapping the hub, do NOT overlap each other (their single-pixel boxes are disjoint), so the overlap graph is a STAR centered on the hub with exactly two edges, never the three-edge clique a transitive relation would build -- box overlap is not transitive, and degree is a LOCAL count, so the high-degree object can be the loneliest. THE DEGREE IS SYMMETRIC, UNLIKE THE NEAREST NEIGHBOR -- box overlap is symmetric, a overlapping b exactly when b overlaps a, so the adjacency is an undirected graph and the degree is well-defined without a direction; every overlap flag here agrees with its mirror, while scene_graph's nearest_neighbor over the same matrix is DIRECTED, an object's nearest not always having it as its own. A far dot outside the hub's box (box (11,11)-(11,11)) is ISOLATED, degree zero, standing alone though it shares the scene; most_overlapping names the hub, the box that frames the most never the object that touches the most; a background or past-the-count label refuses BadObjectLabel, a lone scene reads degree zero and zero edges; the same scene reads the same degrees twice. Compose not braid over image/scene_graph.rye (the pairwise matrix), image/object_relation.rye (each pair's overlap and exact distance), and image/scene_manifest.rye (the per-object boxes)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: overlap_degree selftest\n", .{});
+    return 1;
+}

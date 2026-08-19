@@ -1,0 +1,43 @@
+# tools/overlap_degree_witness.rish -- every object's degree in the scene's box-overlap adjacency graph, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/scene_graph.rye joins object_relation over every pair into one matrix; nearest_neighbor reads
+# a DIRECTED pointer over it. This rung reads a symmetric, UNDIRECTED graph fact: overlap_degree counts how many other objects each
+# object's box overlaps, total_overlap_edges the whole graph's edge count, most_overlapping the busiest object, is_isolated the objects
+# standing alone. Exact integers, NO float, NO tolerance.
+#
+# The crux this witness proves on metal, two shapes: THE HUB OVERLAPS ALL YET TOUCHES NONE, AND THE GRAPH IS A STAR NEVER A CLIQUE -- a
+# big bracket-L framing two dots has the highest degree yet sits 2+ pixels from each, and the two dots do not overlap each other, so the
+# overlap graph is a star, box overlap not being transitive; THE DEGREE IS SYMMETRIC, UNLIKE THE NEAREST NEIGHBOR -- a overlaps b exactly
+# when b overlaps a, an undirected graph, while nearest_neighbor over the same matrix is directed. Refusals by name, determinism.
+# No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/overlap_degree_witness.rish
+
+say "overlap_degree: Language EN -- Season G box-overlap-degree read; overlap_degree counts how many other objects each object's box overlaps, total_overlap_edges the whole graph's edges, most_overlapping the busiest object, is_isolated the lone objects; NO float, NO tolerance."
+say "overlap_degree: Style Radiant -- compose not braid: this rung owns only the degree count, the edge total, the busiest read, and the isolated read; scene_graph owns the pairwise matrix, object_relation owns each pair's overlap and exact distance, scene_manifest owns the per-object boxes. A reading over a reading over a reading."
+say "overlap_degree: Lens TAME -- the scene graph caps its object count, so a degree loop runs a bounded number of cells and the edge total is at most the object count choose two; a background or past-the-count label refuses BadObjectLabel; the busiest read of an empty scene refuses NoObjects; all-or-nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/overlap_degree"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/overlap_degree.rye -femit-bin=${bin}"]
+assert build.ok else "overlap_degree: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "overlap_degree: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "overlap_degree: ${out}"
+
+assert selftest.out contains "GREEN image-overlap-degree" else "overlap_degree: selftest did not print the GREEN line"
+assert selftest.out contains "THE HUB OVERLAPS ALL YET TOUCHES NONE, AND THE GRAPH IS A STAR, NEVER A CLIQUE" else "overlap_degree: the hub/star case did not print"
+assert selftest.out contains "box overlap is not transitive" else "overlap_degree: the not-transitive fact did not print"
+assert selftest.out contains "the high-degree object can be the loneliest" else "overlap_degree: the loneliest-hub fact did not print"
+assert selftest.out contains "THE DEGREE IS SYMMETRIC, UNLIKE THE NEAREST NEIGHBOR" else "overlap_degree: the symmetric-vs-directed case did not print"
+assert selftest.out contains "an undirected graph" else "overlap_degree: the undirected-graph fact did not print"
+assert selftest.out contains "is ISOLATED, degree zero" else "overlap_degree: the isolated-dot fact did not print"
+assert selftest.out contains "refuses BadObjectLabel" else "overlap_degree: the bad-label refusal did not print"
+assert selftest.out contains "the same scene reads the same degrees twice" else "overlap_degree: the determinism statement did not print"
+
+say "overlap_degree: GREEN on metal -- every object's degree in the box-overlap adjacency graph; the hub overlaps all yet touches none, the graph a star never a clique; the degree symmetric where the nearest neighbor is directed; refusals by name, determinism. Season G open-media."
