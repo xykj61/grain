@@ -1,7 +1,7 @@
 # Caravan -- Process Supervision
 
 **Language:** EN
-**Last updated:** `20260819.143111` (the roundtrip ring lands -- one declared channel carries both ways, and no dependent hears its own ring)
+**Last updated:** `20260819.143515` (the serve ring lands -- one virtualiser serves two clients, and neither hears the other's bell)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable -- process supervision ladder
 
@@ -33,6 +33,7 @@ Every ring here composes over the one before it. A later ring imports an earlier
 | carry | [`carry.rye`](carry.rye) | two real processes share one declared region -- a producer writes and exits, the granted consumer starts afterward and reads back exactly those bytes, and every refusal holds inside a dependent that knows only its own argv line |
 | notify | [`notify.rye`](notify.rye) | a declared channel rings between two real processes -- every channel its own silent doorbell, the producer writing the share then ringing, the consumer hearing before it reads, an unwired pair refusing NotWired and a bell that never rang heard as Unheard |
 | roundtrip | [`roundtrip.rye`](roundtrip.rye) | one declared channel carries both ways -- two directed doorbells per channel so a ring is unhearable by the dependent that rang it, a request answered on the region the answerer owns, and the ask still standing beside the answer when it comes home |
+| serve | [`serve.rye`](serve.rye) | one virtualiser serves two clients in one run -- each asked and answered on its own channel, a ring addressed to one client unhearable by the other, every message naming the client it belongs to, and the neighbor's memory refused at the wall |
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
@@ -125,6 +126,16 @@ The answer travels on memory the answerer holds. `serial_stack.bron` grants ever
 The crux is the middle step of the trip. The virtualiser requests, then collects immediately, and hears `Unheard` on a channel it rang moments before -- because a directed bell carries a ring away from its sender and never back to it. Then the client replies, and the same collect answers `carried`: the answer arrived, and the ask it answers is still standing exactly where it was written. Two identical assignments, differing only in whether the reply has happened, are what make the ordering claim checkable rather than merely narrated.
 
 Witness: [`tools/caravan_roundtrip_witness.rish`](../tools/caravan_roundtrip_witness.rish), GREEN on its first metal pass, with both RED paths proven before the green was trusted. Sorting the bell's endpoints back into one undirected store let the virtualiser hear its own ring and read an empty answer, reporting `bytes differed` where `Unheard` belonged -- the echo made visible. Neutralizing the peer-list wall degraded an unwired ring from `NotWired` into a `WriteDenied` that merely happened to fire first, which is the same lesson `notify.rye` learned, holding here.
+
+## Why One Server Serves Two Clients
+
+`roundtrip.rye` closed the loop between two domains, and every claim it proved was a claim about a pair. A pair cannot tell an isolated server from one that simply had no second client to leak to. `serve.rye` adds the third party: `serial_two_clients.bron` gives both clients the duplex shape -- a receive region the virtualiser writes and the client reads, a transmit region the client writes and the virtualiser reads -- and one run serves them both, each on its own channel, with the two answers standing side by side.
+
+The crux is the second step. The virtualiser rings `client_b` and nobody else, and `client_a` then collects and answers `Unheard`. One sender, two receivers, and the ring reaches exactly the one it was addressed to -- so isolation stops being an absence of traffic and becomes a refusal a witness watches happen. The four steps that follow serve `client_a` in the same run and collect from `client_b` a second time, proving the newer conversation left the older one standing exactly where it was.
+
+Every message names the client it belongs to, which is the crossed-wire wall stated in bytes. An ask reads `serve: ask for client_a` and an answer reads `serve: answer from client_a`, each derived from what the dependent already knows -- the requester from the peer it is serving, the replier from its own domain label. A client handed its neighbor's question refuses it rather than answering somebody else's mail, and the virtualiser collecting an answer signed by the wrong domain refuses it the same way.
+
+Witness: [`tools/caravan_serve_witness.rish`](../tools/caravan_serve_witness.rish), GREEN on its first metal pass, with both RED paths proven before the green was trusted. Naming a bell by its sender alone let `client_a` hear the ring meant for `client_b` and walk on into the regions, reporting `bytes differed` where `Unheard` belonged -- one server broadcasting to every client it serves, which is precisely what a per-pair direction prevents. Addressing every ask to a fixed client made `client_a` read its neighbor's question, and it declined to answer rather than replying to mail addressed elsewhere.
 
 ## Held
 
