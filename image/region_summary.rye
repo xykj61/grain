@@ -1,0 +1,356 @@
+//! image/region_summary.rye -- read a query RECTANGLE as a small DIGEST TABLE: join image/region_partition.rye's three window-versus-
+//! crossing classes (CONTAINED, CLIPPED, OUTSIDE) with image/scene_manifest.rye's per-object facts (area, holes) into one struct a
+//! surface reads to fill a marquee status line -- how many objects a window select keeps, how many a crossing select would add, how much
+//! foreground each class carries, and how many holed objects sit in each. Exact integers, NO float and NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/region_partition.rye splits a rectangle's crossing set into the objects it holds WHOLE and
+//! the objects it holds only in PART; it reads the three class SIZES. This rung reads the three class FACTS: `region_summary` walks the
+//! manifest once, classifies each object by the exact box test, and folds each object's whole-scene area and hole count into its class,
+//! then `largest_contained` names the biggest object a window select keeps. It composes over region_partition for the classification and
+//! over scene_manifest for the per-object area and holes -- a reading over two readings, no plane of its own, no pixel written.
+//!
+//! The DECISIVE crux -- the box-is-a-prefilter lesson lifted from the OBJECT to its AREA. A per-class area sum reads each object's WHOLE
+//! foreground area, the area scene_manifest carries regardless of any rectangle. For the CONTAINED class that whole area IS the pixels
+//! inside the rectangle, since every foreground pixel of a wholly-held object lies inside -- so `contained_area` is exact. For the
+//! CLIPPED class the whole area STRICTLY EXCEEDS the pixels inside, since a clipped object holds some foreground outside the rectangle by
+//! definition -- so `clipped_area` OVER-COUNTS what the marquee actually covers, and `touched_area` (contained plus clipped) is only an
+//! UPPER BOUND on the true in-rect foreground, never the count itself. Two facts on metal say it:
+//!
+//!   THE CONTAINED AREA IS EXACT, THE CLIPPED AREA OVER-COUNTS -- over the partition scene, a rectangle (0,0)-(6,7) holds {A,D} whole and
+//!   clips B. `contained_area` reads 17 (A's 9 plus D's 8), which a full pixel scan confirms is exactly the in-rect foreground of A and
+//!   D; `clipped_area` reads 8 (B's whole area), yet a pixel scan finds only 4 of B's pixels inside the rectangle (its right half is cut
+//!   off at x=6). So the whole-area sum names 8 where the marquee covers 4 -- the box-is-a-prefilter over-count, now at the level of area.
+//!
+//!   THE TOUCHED AREA IS AN UPPER BOUND, TIGHT ONLY WHEN NOTHING IS CLIPPED -- `touched_area` reads 25 (17 contained plus 8 clipped)
+//!   while the true in-rect foreground is 21 (17 exact plus B's 4). The gap is exactly the clipped-away pixels. When the rectangle holds
+//!   the whole scene nothing is clipped, so `touched_area` (34) equals the true in-rect foreground exactly -- the bound is tight at the
+//!   fixed point where window and crossing agree, and loose exactly where they diverge.
+//!
+//! Compose not braid. This rung OWNS only the per-class FOLD of area and holes over a rectangle query. image/region_partition.rye owns
+//! the classification (`rect_contains_bbox`, the exact box test) and the crossing set it draws from region_select; image/scene_manifest
+//! .rye owns the per-object rows (`ObjectEntry`, `Manifest`, `object_of`) and the area and hole count each carries; image/region_select
+//! .rye owns the `QueryRect`. No count re-derived, no box re-measured -- every fact looked up, never recomputed.
+//!
+//! Everything is bounded before a byte: the classification walk runs `components` times, itself bounded by image/label.rye's
+//! `label_max_pixels`; each per-class accumulator sums at most `components` whole areas, each under image/label.rye's pixel ceiling, so a
+//! u32 total never overflows. A malformed rectangle refuses `BadRect`, having read nothing; a rectangle wholly off the map is a valid
+//! all-OUTSIDE digest with zero area in every touched class, never a refusal; `largest_contained` refuses `NoContained` by name when a
+//! window select keeps nothing. No network, no key, no funds -- the marquee status line a surface fills the moment a keeper drags a box,
+//! on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/region_summary.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const region_select = @import("region_select.rye");
+const region_partition = @import("region_partition.rye");
+
+pub const region_summary_version = "20260819.045412";
+
+pub const RegionSummaryError = error{
+    BadRect,
+    NoContained,
+};
+
+/// The whole digest of a rectangle query as one small table. The three counts partition the scene (they sum to the component count).
+/// `contained_area` is the EXACT in-rect foreground of the objects held whole; `clipped_area` is the WHOLE-object area of the objects
+/// held in part, which strictly EXCEEDS their in-rect foreground; `contained_holed` and `clipped_holed` count the holed objects in each
+/// touched class. Every field is an exact integer.
+pub const RegionSummary = struct {
+    contained_count: u32 = 0,
+    clipped_count: u32 = 0,
+    outside_count: u32 = 0,
+    contained_area: u32 = 0,
+    clipped_area: u32 = 0,
+    contained_holed: u32 = 0,
+    clipped_holed: u32 = 0,
+
+    /// The total objects accounted for -- the invariant sum a caller cross-checks against the component count.
+    pub fn object_total(self: *const RegionSummary) u32 {
+        return self.contained_count + self.clipped_count + self.outside_count;
+    }
+
+    /// The whole-object area of everything the rectangle CROSSES -- contained plus clipped. This is an UPPER BOUND on the true in-rect
+    /// foreground, exact when nothing is clipped and strictly loose otherwise, since a clipped object contributes pixels outside the box.
+    pub fn touched_area(self: *const RegionSummary) u32 {
+        return self.contained_area + self.clipped_area;
+    }
+};
+
+/// TRUE when `want` appears in an ascending crossing set -- a bounded membership read over the sorted result.
+fn is_in(set: []const u32, want: u32) bool {
+    // invariant: a real query names a foreground label, never background.
+    assert(want >= 1);
+    // invariant: the set is no longer than a full scene's component span could be.
+    assert(set.len <= @as(usize, label.label_max_pixels));
+    var i: usize = 0;
+    while (i < set.len) : (i += 1) {
+        if (set[i] == want) return true;
+    }
+    return false;
+}
+
+/// Walk the manifest once and fold every object's area and hole count into its window-versus-crossing class, reading the whole DIGEST in
+/// one pass. Each object is CONTAINED when its box lies wholly inside (region_partition's exact box test), CLIPPED when it crosses yet is
+/// not whole, OUTSIDE when it never crosses -- so a box-contained object is always crossing (its pixels are all inside), never double
+/// counted. Refuses `BadRect` for a malformed rectangle, having read nothing.
+pub fn region_summary(allocator: std.mem.Allocator, manifest: scene_manifest.Manifest, map: *const label.LabelMap, rect: region_select.QueryRect) !RegionSummary {
+    // invariant: the manifest holds exactly one row per component.
+    assert(manifest.objects.len == @as(usize, manifest.components));
+    // invariant: the manifest and the map are the same scene -- one row per component, the same component count.
+    assert(manifest.components == map.count);
+    if (!rect.is_well_formed()) return error.BadRect;
+
+    const crossing = try region_select.select_in_rect(allocator, manifest, map, rect);
+    // invariant: no more objects cross the rectangle than the scene holds.
+    assert(crossing.len <= @as(usize, manifest.components));
+
+    var out = RegionSummary{};
+    var i: usize = 0;
+    while (i < manifest.objects.len) : (i += 1) {
+        const entry = manifest.objects[i];
+        const holed: u32 = if (entry.holes >= 1) 1 else 0;
+        if (region_partition.rect_contains_bbox(entry, rect)) {
+            out.contained_count += 1;
+            out.contained_area += entry.area;
+            out.contained_holed += holed;
+        } else if (is_in(crossing, entry.label)) {
+            out.clipped_count += 1;
+            out.clipped_area += entry.area;
+            out.clipped_holed += holed;
+        } else {
+            out.outside_count += 1;
+        }
+    }
+    // invariant: the three classes partition the scene -- every object lands in exactly one.
+    assert(out.object_total() == manifest.components);
+    // invariant: contained plus clipped is exactly the crossing set (contained is a subset of crossing).
+    assert(out.contained_count + out.clipped_count == @as(u32, @intCast(crossing.len)));
+    // invariant: the touched area never exceeds the whole scene's foreground -- a subset carries no more than the whole.
+    assert(@as(u64, out.touched_area()) <= scene_manifest.total_area(manifest));
+    return out;
+}
+
+/// The LABEL of the LARGEST object the rectangle holds WHOLE -- the biggest keep a window select makes, ties broken by the earliest
+/// label. Reads the containment set from the boxes alone (no pixel scan), then the manifest for each area. Refuses `NoContained` by name
+/// when the rectangle holds nothing whole (a fact about containment, not emptiness of the scene), `BadRect` for a malformed rectangle.
+pub fn largest_contained(allocator: std.mem.Allocator, manifest: scene_manifest.Manifest, rect: region_select.QueryRect) !u32 {
+    // invariant: the manifest holds exactly one row per component.
+    assert(manifest.objects.len == @as(usize, manifest.components));
+    // invariant: the containment scan is bounded by the component count, itself under image/label.rye's pixel ceiling.
+    assert(manifest.components <= label.label_max_pixels);
+    if (!rect.is_well_formed()) return error.BadRect;
+
+    const contained = try region_partition.contained_in_rect(allocator, manifest, rect);
+    if (contained.len == 0) return error.NoContained;
+
+    var best_label: u32 = 0;
+    var best_area: u32 = 0;
+    var found: bool = false;
+    var i: usize = 0;
+    while (i < contained.len) : (i += 1) {
+        const entry = try scene_manifest.object_of(manifest, contained[i]);
+        // strictly greater keeps the earliest label on an area tie -- the contained set is ascending, so the earliest label wins.
+        if (!found or entry.area > best_area) {
+            found = true;
+            best_label = entry.label;
+            best_area = entry.area;
+        }
+    }
+    // invariant: a non-empty contained set names a real winner.
+    assert(found);
+    // invariant: the winner is a real foreground label.
+    assert(best_label >= 1);
+    return best_label;
+}
+
+// --- selftest: the DECISIVE area-over-count crux (contained_area exact against a pixel scan, clipped_area strictly over the in-rect
+//     foreground, touched_area an upper bound tight only at the no-clip fixed point); the per-class holed fold; largest_contained the
+//     biggest window keep; the three counts partition the scene; a rectangle off the map is an all-outside digest; largest_contained
+//     refuses NoContained when nothing is whole; a malformed rectangle refuses BadRect; determinism ----------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Set one pixel back to background at (x, y) -- carve a hole in a filled shape.
+fn clear_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 0;
+    img.pixels[di + 1] = 0;
+    img.pixels[di + 2] = 0;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// Count the foreground pixels of `want` that lie INSIDE `rect` -- the ground-truth in-rect foreground, against which the whole-area sum
+/// is proven exact for CONTAINED objects and strictly larger for CLIPPED ones. Corners inclusive on both sides.
+fn pixels_in_rect(map: *const label.LabelMap, rect: region_select.QueryRect, want: u32) u32 {
+    // invariant: a real query names a foreground label, never background.
+    assert(want >= 1);
+    // invariant: the rectangle is well-formed before a pixel is judged against it.
+    assert(rect.max_x >= rect.min_x);
+    var count: u32 = 0;
+    var y: u32 = 0;
+    while (y < map.height) : (y += 1) {
+        var x: u32 = 0;
+        while (x < map.width) : (x += 1) {
+            if (map.at(x, y) == want and x >= rect.min_x and x <= rect.max_x and y >= rect.min_y and y <= rect.max_y) count += 1;
+        }
+    }
+    return count;
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- THE PARTITION SCENE -- four objects placed so raster order gives dense labels 1..4. Top band rows 1..3: A a solid 3x3 block at
+    //     (1,1)-(3,3) [label 1, area 9], C a solid 3x3 block at (9,1)-(11,3) [label 2, area 9]. Lower band rows 5..7: D a 3x3 ring at
+    //     (1,5)-(3,7) [label 3, holed, area 8], B a solid 4x2 block at (5,5)-(8,6) [label 4, area 8]. Canvas 14 x 8 --------------------
+    var scene = try make_canvas(garden, 14, 8, 0);
+    set_block(&scene, 1, 1, 3, 3); // A: solid block, box (1,1)-(3,3), area 9
+    set_block(&scene, 9, 1, 3, 3); // C: solid block, box (9,1)-(11,3), area 9
+    set_block(&scene, 1, 5, 3, 3); // D: 3x3 ring...
+    clear_dot(&scene, 2, 6); // ...hole carved, box (1,5)-(3,7), area 8, one hole
+    set_block(&scene, 5, 5, 4, 2); // B: solid block, box (5,5)-(8,6), area 8
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 4) return error.SceneNotFourComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    if (scene_manifest.object_count(manifest) != 4) return error.ManifestNotFourObjects;
+
+    // confirm the dense labels and areas landed where the raster order predicts: A=1 area 9, C=2 area 9, D=3 holed area 8, B=4 area 8
+    const a_entry = try scene_manifest.object_of(manifest, 1);
+    const d_entry = try scene_manifest.object_of(manifest, 3);
+    const b_entry = try scene_manifest.object_of(manifest, 4);
+    if (a_entry.area != 9) return error.ANotAreaNine;
+    if (!d_entry.is_holed() or d_entry.area != 8) return error.DNotHoledAreaEight;
+    if (b_entry.min_x != 5 or b_entry.max_x != 8 or b_entry.area != 8) return error.BNotAtExpectedBox;
+
+    // --- THE DIGEST -- R = (0,0)-(6,7). A box (1,1)-(3,3) and D box (1,5)-(3,7) lie WHOLLY inside [CONTAINED]; B box (5,5)-(8,6)
+    //     straddles the right edge x=6 [CLIPPED]; C box (9,1)-(11,3) is wholly OUTSIDE. Counts 2 contained, 1 clipped, 1 outside ------
+    const r = region_select.QueryRect{ .min_x = 0, .min_y = 0, .max_x = 6, .max_y = 7 };
+    const s = try region_summary(garden, manifest, &map, r);
+    if (s.contained_count != 2 or s.clipped_count != 1 or s.outside_count != 1) return error.CountsRNotTwoOneOne;
+    if (s.object_total() != 4) return error.TotalRNotFour;
+    // contained_area = A(9) + D(8) = 17; clipped_area = B whole = 8; contained_holed = D = 1; clipped_holed = 0
+    if (s.contained_area != 17) return error.ContainedAreaRNotSeventeen;
+    if (s.clipped_area != 8) return error.ClippedAreaRNotEight;
+    if (s.contained_holed != 1 or s.clipped_holed != 0) return error.HoledFoldRWrong;
+    if (s.touched_area() != 25) return error.TouchedAreaRNotTwentyFive;
+
+    // --- THE CONTAINED AREA IS EXACT, THE CLIPPED AREA OVER-COUNTS -- the DECISIVE crux, on metal. A full pixel scan confirms the
+    //     contained whole-area sum (17) equals the in-rect foreground of A and D exactly, while B's whole area (8) strictly EXCEEDS its
+    //     in-rect foreground (4 of its 8 pixels, the right half cut off at x=6). The whole-area sum names 8 where the marquee covers 4 --
+    const contained_pixels = pixels_in_rect(&map, r, 1) + pixels_in_rect(&map, r, 3);
+    if (contained_pixels != s.contained_area) return error.ContainedAreaNotExactByPixels;
+    const b_in_rect = pixels_in_rect(&map, r, 4);
+    if (b_in_rect != 4) return error.BInRectNotFour;
+    if (!(s.clipped_area > b_in_rect)) return error.ClippedAreaNotStrictOverCount;
+    // touched_area (25) is an UPPER BOUND -- the true in-rect foreground is 17 + 4 = 21, the gap exactly B's clipped-away pixels
+    const true_in_rect = contained_pixels + b_in_rect;
+    if (true_in_rect != 21) return error.TrueInRectRNotTwentyOne;
+    if (!(s.touched_area() > true_in_rect)) return error.TouchedNotUpperBound;
+
+    // --- LARGEST CONTAINED -- over the whole keeps {A(9), D(8)} the biggest window keep is A (label 1), ties to the earliest label ----
+    const big = try largest_contained(garden, manifest, r);
+    if (big != 1) return error.LargestContainedRNotA;
+
+    // --- THE FIXED POINT -- R2 the whole canvas (0,0)-(13,7). Every object is CONTAINED, nothing clipped, so touched_area equals the
+    //     true in-rect foreground exactly -- the bound is tight where window and crossing agree ----------------------------------------
+    const r2 = region_select.QueryRect{ .min_x = 0, .min_y = 0, .max_x = 13, .max_y = 7 };
+    const s2 = try region_summary(garden, manifest, &map, r2);
+    if (s2.contained_count != 4 or s2.clipped_count != 0 or s2.outside_count != 0) return error.CountsR2NotFourZeroZero;
+    if (s2.contained_area != 34 or s2.clipped_area != 0) return error.AreaR2NotThirtyFourZero;
+    if (s2.touched_area() != @as(u32, @intCast(scene_manifest.total_area(manifest)))) return error.TouchedR2NotWholeScene;
+    if (s2.contained_holed != 1) return error.HoledR2NotOne;
+
+    // --- ALL CLIPPED, NONE WHOLE -- R3 a tight interior box (2,2)-(6,6) cuts A, D, and B (all cross, none whole) and misses C:
+    //     contained empty, clipped {A,D,B}, so contained_area is zero and largest_contained refuses NoContained ---------------------
+    const r3 = region_select.QueryRect{ .min_x = 2, .min_y = 2, .max_x = 6, .max_y = 6 };
+    const s3 = try region_summary(garden, manifest, &map, r3);
+    if (s3.contained_count != 0 or s3.clipped_count != 3 or s3.outside_count != 1) return error.CountsR3NotZeroThreeOne;
+    if (s3.contained_area != 0) return error.ContainedAreaR3NotZero;
+    if (s3.clipped_area != 25) return error.ClippedAreaR3NotTwentyFive;
+    if (s3.clipped_holed != 1) return error.ClippedHoledR3NotOne;
+    if (largest_contained(garden, manifest, r3)) |_| return error.NoContainedNotRefused else |err| {
+        if (err != error.NoContained) return error.WrongNoContainedError;
+    }
+
+    // --- A RECTANGLE OFF THE MAP -- a marquee past the canvas is a valid all-OUTSIDE digest, every touched class zero, never a refusal --
+    const off_map = region_select.QueryRect{ .min_x = 20, .min_y = 20, .max_x = 30, .max_y = 30 };
+    const s_off = try region_summary(garden, manifest, &map, off_map);
+    if (s_off.contained_count != 0 or s_off.clipped_count != 0 or s_off.outside_count != 4) return error.OffNotAllOutside;
+    if (s_off.touched_area() != 0) return error.OffTouchedNotZero;
+
+    // --- A MALFORMED RECTANGLE -- a low corner past its high corner refuses BadRect from both reads, having touched nothing ---------
+    const bad = region_select.QueryRect{ .min_x = 6, .min_y = 1, .max_x = 2, .max_y = 3 };
+    if (bad.is_well_formed()) return error.BadRectClaimedWellFormed;
+    if (region_summary(garden, manifest, &map, bad)) |_| return error.BadSummaryNotRefused else |err| {
+        if (err != error.BadRect) return error.WrongBadSummaryError;
+    }
+    if (largest_contained(garden, manifest, bad)) |_| return error.BadLargestNotRefused else |err| {
+        if (err != error.BadRect) return error.WrongBadLargestError;
+    }
+
+    // --- DETERMINISM -- the same rectangle reads the same digest twice ---------------------------------------------------------
+    const d1 = try region_summary(garden, manifest, &map, r);
+    const d2 = try region_summary(garden, manifest, &map, r);
+    if (d1.contained_area != d2.contained_area or d1.clipped_area != d2.clipped_area or d1.touched_area() != d2.touched_area()) return error.SummaryNotDeterministic;
+
+    print("GREEN image-region-summary: read a query RECTANGLE as a small DIGEST TABLE, joining region_partition's three window-versus-crossing classes (CONTAINED, CLIPPED, OUTSIDE) with scene_manifest's per-object area and holes, exact integers, NO float and NO tolerance -- the marquee status line a surface fills. The DECISIVE crux lifts the box-is-a-prefilter lesson from the OBJECT to its AREA: a per-class area sum reads each object's WHOLE foreground area, which for a CONTAINED object IS its in-rect foreground (every pixel inside) so contained_area is EXACT, yet for a CLIPPED object STRICTLY EXCEEDS its in-rect foreground (some pixels outside by definition) so clipped_area OVER-COUNTS and touched_area is only an UPPER BOUND on the true in-rect foreground. Over a scene of A a solid block area 9, C a solid block area 9, D a 3x3 ring area 8 holed, B a solid block area 8: a rectangle (0,0)-(6,7) holds {{A,D}} whole and clips B, so contained_area reads 17 which a full pixel scan confirms is exactly A and D's in-rect foreground, while clipped_area reads B's whole 8 though a pixel scan finds only 4 of B's pixels inside (its right half cut off at x=6), and touched_area reads 25 where the true in-rect foreground is 21, the gap exactly B's clipped-away pixels; the whole canvas holds all four whole so touched_area (34) equals the true in-rect foreground exactly, the bound tight at the no-clip fixed point; a tight interior box holds none whole so contained_area is zero and largest_contained refuses NoContained; the per-class holed fold counts D's hole in whichever class holds it; the three counts partition the scene; largest_contained names A the biggest window keep; a rectangle off the map is a valid all-outside digest; a malformed rectangle refuses BadRect having read nothing; the same rectangle reads the same digest twice. Compose not braid over image/region_partition.rye (the classification and exact box test) and image/scene_manifest.rye (the per-object area and holes)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: region_summary selftest\n", .{});
+    return 1;
+}
