@@ -24,6 +24,12 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260819.183640` -- REMEMBER's rolling and cohort chronicles folded to a pointer as the harvest rung lands
+
+**Walk-back nib:** `07a88280d7` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.
+**Swept:** the **Live edge** bullet's whole inline account of `rolling.rye` (reaping split from reporting, the judge-on-reap control two children deep, head-of-line admission, the same-two-turns finding named turn by turn) and the ~7 KB **Prior live edges** run-on beneath it, which carried `cohort.rye`'s derivation, `concurrent.rye`'s pair predicate, and the `inflight` / `standby` / `gap` rungs each spelled out at length. Roughly 9 KB of two run-on lines, replaced by two short pointers and the live harvest edge.
+**What waits there, worth recalling:** at nib `07a88280d7` the departing card holds the full prose for why the safe reaping rule was narrower than the discipline enforcing it, the 2^n-bounded-at-256 cost reasoning for the widest-set derivation, and the account of a tail region carrying no directed flow. Every one of those survives in the module doc comments, the caravan README, and the dated session logs; the card keeps the pointer so Now holds the live front alone.
+
 ### `20260819.140253` -- REMEMBER's seven-ring boot chronicle folded to a pointer as the grant begins to do work
 
 **Walk-back nib:** `b9e7b65507` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.

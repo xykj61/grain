@@ -439,6 +439,27 @@ pub fn spawn_one(
     step: Assignment,
     wake: gap.Wake,
 ) (RunError || boot.BootError)!Running {
+    return spawn_one_extra(allocator, io, self_path, sys, table, step, wake, &.{});
+}
+
+/// The same spawn, with a caller's own words appended after the peers.
+///
+/// A supervisor that hands its dependents one word this module knows nothing
+/// of -- `harvest.rye` hands each dependent how long to linger before it exits
+/// -- reuses this spawn whole rather than copying it. The extra words land
+/// last, so every fixed index above stays exactly where it was, and the
+/// caller's own dependent entry strips them before delegating to `run_dependent`,
+/// which would otherwise read them as peers.
+pub fn spawn_one_extra(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    table: *const capabilities.CapabilityTable,
+    step: Assignment,
+    wake: gap.Wake,
+    extra: []const []const u8,
+) (RunError || boot.BootError)!Running {
     // invariant: a step always names a domain, its arcs, and its peers
     assert(step.domain.len >= 1);
     assert(step.hops.len >= 1);
@@ -464,7 +485,7 @@ pub fn spawn_one(
     // them all rather than a stack buffer the next spawn would reuse.
     const argv = allocator.alloc(
         []const u8,
-        fixed_argv_words + slot.cap_count + peers.count,
+        fixed_argv_words + slot.cap_count + peers.count + extra.len,
     ) catch return error.SpawnFailed;
     argv[0] = self_path;
     argv[1] = "dependent";
@@ -486,6 +507,12 @@ pub fn spawn_one(
     // invariant: every capability and every peer became one handed word
     assert(c == slot.cap_count);
     assert(q == peers.count);
+    var e: u32 = 0;
+    while (e < extra.len) : (e += 1) {
+        argv[fixed_argv_words + slot.cap_count + peers.count + e] = extra[e];
+    }
+    // invariant: the caller's own words ride last, none dropped
+    assert(e == extra.len);
 
     const proc = std.process.spawn(io, .{ .argv = argv }) catch return error.SpawnFailed;
     return .{

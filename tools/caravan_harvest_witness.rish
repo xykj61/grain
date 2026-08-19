@@ -1,0 +1,89 @@
+# caravan_harvest_witness.rish -- Caravan harvest witness.
+#
+# `rolling.rye` refilled a slot the moment a dependent finished and named its own
+# honest limit plainly: a hosted supervisor waits on a dependent it can name, so
+# it waits on the eldest, and a long-running eldest holds a slot its younger
+# siblings have already freed. This rung asks whether a supervisor that is
+# *told* which dependent finished converts any of that waiting.
+#
+# It can be told -- a bounded no-hang sweep across the table asks the ground
+# which dependents have already exited -- and the answer comes in two halves,
+# each measured rather than argued:
+#
+#   READINESS CONVERTS A SLOT, NEVER A DOMAIN.
+#
+# Where the head waits on a DOMAIN, readiness converts nothing. Over the
+# ordered lap the virtualiser conflicts with all three clients at once, so no
+# reaping order empties the table faster than one dependent per turn: both
+# readings stand idle the same 2 turns and 6 asks come home either way.
+#
+# Where the head waits on a SLOT, readiness converts the whole of it. Give
+# one dependent a deliberate 250 ms linger and the eldest-first reading blocks on
+# it while a sibling that has already exited holds the very slot the head is
+# asking for: 1 idle turn by age, 0 by readiness, over one document and one
+# bound of three.
+#
+# THE LINGER IS THE WHOLE OF THE CONVERSION, and the probe proves it. With
+# the linger set to zero the dependents of the stagger lap finish in roughly
+# the order they were spawned, and the readiness reading stands idle exactly
+# where age does -- the check goes RED. Alike dependents make the question
+# unmeasurable, which is why the stagger is deliberate and named.
+#
+# REAPING OUT OF ORDER KEEPS EVERY RULE THE RUNG BEFORE IT PROVED. A verdict
+# still waits for the whole queue to drain, and every outcome is judged
+# against the expectation its own item carried, so the judging never depended
+# on reap order.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep
+# over interpolated output -- REDS #76 / #85, the apostrophe loom. Wall-clock
+# milliseconds vary run to run, so the witness reads that the run reported
+# them and holds its claims to the counters that are the document's own. The
+# same care governs the two counters that ordinary scheduling jitter can move
+# by one -- the selftest holds their load-bearing claims itself, and the
+# witness reads the sentences rather than pinning a number the ground owns.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_harvest_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/harvest"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/harvest.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan harvest build failed"
+
+# A third question of one declaration rather than a third declaration.
+let clients = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_three_clients.bron 2>&1"]
+assert clients.ok else "the three-client declaration could not be read"
+assert clients.out contains "domains 4 -- channels 3 -- regions 9 -- grants 15" else "the three-client document changed shape"
+assert clients.out contains "verdict: whole" else "the three-client declaration did not read whole"
+
+# A fresh provisioning each run, so every index starts at zero and a bell
+# found ringing was rung by this run rather than left standing by the last.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels"]
+assert clean.ok else "the region stores and doorbells could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan harvest selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan harvest selftest not GREEN"
+assert test.out contains "readiness converts a slot and never a domain" else "the harvest finding did not close"
+
+# The ordered lap: the head waits on a domain, so readiness converts none.
+assert test.out contains "the ordered lap stands idle -- by age 2, by readiness 2" else "readiness moved waiting the order was holding"
+assert test.out contains "the head waits on a domain" else "the ordered lap did not name what it waits on"
+assert test.out contains "6 asks come home under both, at a peak of 3 in flight" else "the ordered lap did not come home at the full table"
+
+# The stagger lap: the head waits on a slot, so readiness converts it whole.
+assert test.out contains "the stagger lap stands idle -- by age 1, by readiness 0" else "readiness did not convert the waiting a lingering eldest held"
+assert test.out contains "the head waits on a slot" else "the stagger lap did not name what it waits on"
+# The count here is at least one and occasionally two: alike siblings finish
+# in roughly spawn order, yet ordinary jitter sometimes lets one finish ahead
+# of its eldest even where nothing lingers. The module holds the load-bearing
+# claim -- a count of zero is RED inside the selftest, since it would mean the
+# linger held nobody -- and the witness reads that the sentence was printed.
+assert test.out contains "the eldest outlived a reaped sibling on" else "the linger never held a sibling behind the eldest"
+assert test.out contains "dependents out of order" else "readiness never reaped past the eldest"
+assert test.out contains "over a 250 ms linger" else "the stagger lap did not report the linger it spent"
+assert test.out contains "ms by readiness" else "the run reported no wall time for either reading"
+
+say "GREEN: Caravan harvest witness passed."
