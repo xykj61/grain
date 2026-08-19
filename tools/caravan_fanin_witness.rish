@@ -1,0 +1,114 @@
+# caravan_fanin_witness.rish -- Caravan fan-in witness.
+#
+# Proves what a second producer changes. `queue.rye` let many asks stand on
+# one channel at once, with a head the producer owns and a tail the consumer
+# owns. Every ask there came from one client, so the question who wrote this
+# had a single answer and was never asked.
+#
+# One server with two clients asks it, and two crux questions open together.
+#
+# Attribution: bytes can say anything, so `client_b` may write an ask whose
+# text claims `client_a` sent it. The server never asks the bytes. It reads
+# `tx_a`, a region only `client_a` may write, so the author of an ask is the
+# domain that owns the region it arrived in -- and a byte-claim that
+# disagrees with that region is refused rather than believed.
+#
+# Fairness: a server that empties one client's queue before looking at the
+# next lets a busy producer delay a quiet one indefinitely -- starvation,
+# arriving without a single wrong byte. A declared per-pass take answers it:
+# one sweep draws at most `per_pass` asks from each stream.
+#
+# Both RED paths were proven on metal before this witness was written.
+# Trusting the claimed author rather than the region carried the impostor's
+# forged ask home as genuine -- `serial_virt` served it and answered
+# `carried`. Spending one shared budget across the streams rather than a
+# bound per stream let `client_a` consume the whole pass, and `client_b`'s
+# single ask was served zero -- caught by `client_b` reading the server's
+# own ledger and answering `bytes differed`.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep
+# over interpolated output -- REDS #76 / #85, the apostrophe loom.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_fanin_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/fanin"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/fanin.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan fanin build failed"
+
+# The declaration stands unchanged. Two producers need no new wiring -- the
+# document already grants each client its own private pair of regions, and
+# that private pair is exactly what makes a region name an author.
+let decl = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_two_clients.bron 2>&1"]
+assert decl.ok else "the two-client declaration could not be read"
+assert decl.out contains "domains 3 -- channels 2 -- regions 4 -- grants 8" else "the two-client declaration changed shape"
+assert decl.out contains "verdict: whole" else "the two-client declaration did not read whole"
+
+# A fresh provisioning each run, so every index starts at zero and a bell
+# found ringing was rung by this run rather than left standing by the last.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels"]
+assert clean.ok else "the region stores and doorbells could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan fanin selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan fanin selftest not GREEN"
+assert test.out contains "a sweep serves every stream, and the region names the author" else "the fanin claim did not close"
+
+# The wire carries parallel lists, one entry per stream. A stream that lost
+# its own region or its peer is refused rather than paired with whatever
+# happens to sit at its index, and a list longer than the server holds is
+# refused rather than silently truncated.
+assert test.out contains "the sweep wire pairs 2 streams whole, and an ask names the author it claims" else "the sweep wire did not read back"
+
+# The stage the fairness claim needs: one client fills its queue to
+# capacity while the other writes a single ask.
+assert test.out contains "client_a: 4 asks written behind 1 ring" else "the busy producer did not fill its queue"
+assert test.out contains "client_b: 1 asks written behind 1 ring" else "the quiet producer did not write"
+
+# The crux, in one sweep bounded at two per stream: the busy client gives up
+# two of its four, and the quiet client finishes on the same pass. A server
+# spending one shared budget in stream order would serve the quiet client
+# zero here.
+assert test.out contains "serial_virt: took 2 of 4 waiting from client_a" else "the busy stream was not bounded per pass"
+assert test.out contains "serial_virt: took 1 of 1 waiting from client_b" else "the quiet stream was starved by the busy one"
+assert test.out contains "serial_virt: heard 2, served 3 across 2 streams" else "the sweep did not serve both streams"
+
+# And each client reads that progress from the server's own ledger -- which
+# it may see and may never move.
+assert test.out contains "client_b: wrote 1, server served 1" else "the quiet client did not finish on the first pass"
+assert test.out contains "client_a: wrote 4, server served 2" else "the busy client was not left with a backlog"
+
+# The backlog drains on the next pass, and the run ends with every ask
+# served, so fairness costs nothing in throughput.
+assert test.out contains "serial_virt: took 4 of 4 waiting from client_a" else "the backlog did not drain"
+assert test.out contains "serial_virt: took 0 of 0 waiting from client_b" else "a finished stream was not visited"
+assert test.out contains "client_a: wrote 6, server served 6" else "the run did not settle empty"
+
+# The totals, measured across the whole run.
+assert test.out contains "7 asks from 2 producers carried on 3 rings across 2 sweeps of 4 streams" else "the run did not carry two producers"
+assert test.out contains "4 directed bells provisioned silent across 2 declared channels" else "the run did not start silent both ways"
+assert test.out contains "a full producer gave up 2 of 4 while the quiet one finished on the same pass" else "the fairness claim did not close"
+
+# The wall that makes a region name an author at all: a client holds nothing
+# on its sibling's inbound region, so an ask standing in `tx_a` came from
+# `client_a` or from nobody.
+assert test.out contains "client_b: forge across 1 stream(s) -- NotGranted" else "a client wrote its sibling's inbound region"
+assert test.out contains "a client holds nothing on its sibling's inbound region -- NotGranted" else "the forgery wall did not close"
+
+# The bell stays honest: a sweep that heard nothing serves nothing, whatever
+# stands in the regions.
+assert test.out contains "serial_virt: sweep across 2 stream(s) -- Unheard" else "a sweep ran on a bell that never rang"
+
+# And the lie the walls cannot stop: `client_b` writes where it may, and
+# claims another author in the bytes. The server refuses rather than
+# believing -- trusting the claim carried this ask home as genuine on the
+# RED probe.
+assert test.out contains "client_b: wrote 1 ask claiming to be client_a" else "the impostor did not write its claim"
+assert test.out contains "serial_virt: client_b arrived in tx_b claiming client_a" else "the server did not name the lie it found"
+assert test.out contains "serial_virt: sweep across 2 stream(s) -- Misattributed" else "an ask that lied about its author was believed"
+assert test.out contains "an ask whose bytes name another author is refused, never believed" else "the attribution wall did not close"
+
+say "GREEN: Caravan fanin witness passed."
