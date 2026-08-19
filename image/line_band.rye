@@ -1,0 +1,357 @@
+//! image/line_band.rye -- read a DIRECTED line named by TWO anchor taps (from anchor A toward anchor B) as a CORRIDOR MARQUEE: select every
+//! object whose GROUP center sits within a half-width of the line, so a keeper who sweeps a line through the scene and asks for a band of
+//! give around it reads back exactly the things that hug the stroke. Exact integers, NO float and NO tolerance -- the corridor test is
+//! `key * key <= 4 * half_width * half_width * len2`, the distance MAGNITUDE line_distance ranks by compared against the squared half-width
+//! scaled by the line's squared length, so a corridor is a sharp threshold with a closed boundary, no square root and no divide.
+//!
+//! Season G (Open Media Primitives) -- this rung TURNS the just-closed three-read decomposition of a directed line into a GESTURE. The triad
+//! reads each object's SIGN (image/line_partition.rye: which side), DOT (image/line_order.rye: how far along), and MAGNITUDE
+//! (image/line_distance.rye: how far off) of the same cross product. A band reads the MAGNITUDE against a THRESHOLD -- the answer to "what is
+//! the distance FOR" -- so a keeper drops a line and lassoes a corridor of chosen width around it. `line_band` returns every in-corridor
+//! label nearest-first; `in_band` whether one object falls inside; `band_count` how many the corridor holds; `nearest_outside_band` the
+//! closest object the corridor MISSED -- the one a slightly wider band would catch next, refusing `BandCatchesAll` when the corridor holds
+//! the whole scene. It composes over image/line_distance.rye's public reads and owns only the threshold; it invents no plane of its own.
+//!
+//! The DECISIVE crux -- a corridor is a SUBLEVEL SET of a sorted key, so THE CORRIDOR IS A PREFIX OF THE DISTANCE ORDER, and three facts on
+//! metal say what that buys:
+//!
+//!   THE THRESHOLD IS CLOSED AND EXACT -- an object at perpendicular distance EQUAL to the half-width is INCLUDED, and one epsilon past it
+//!   is OUT, with no float fuzz to blur the edge. Over line_distance's own six-object scene the horizontal line A -> B places P at distance
+//!   exactly 3: a corridor of half-width 3 HOLDS P (`in_band` TRUE, the boundary closed), a corridor of half-width 2 DROPS it (`in_band`
+//!   FALSE). The band's edge is a sharp integer, proven by an object sitting exactly on it.
+//!
+//!   THE BAND NESTS -- because membership is a threshold on ONE ascending scalar, a wider corridor holds every object a narrower one held and
+//!   never drops a thing. `band_count` is nondecreasing in the half-width: 2 (holds A, B) at width 0, 4 (adds P, Q) at width 3, 5 (adds D) at
+//!   width 4, 6 (adds U) at width 5. The half-width-0 corridor is the LINE ITSELF -- `line_band` at width zero equals image/line_distance.rye's
+//!   `on_line` set exactly, the corridor collapsed to the stroke.
+//!
+//!   THE BAND IS BLIND TO THE DRAWN DIRECTION. line_distance is blind to which end a keeper drew from -- reversing the anchors negates the
+//!   cross yet leaves its magnitude unchanged -- so the band is blind too: A -> B and B -> A select the IDENTICAL corridor, though
+//!   image/line_partition.rye would SWAP the sides of the very same objects. A side has a handedness; a corridor has none.
+//!
+//! Compose not braid. This rung OWNS only the threshold and the prefix it induces. image/line_distance.rye owns the distance MAGNITUDE
+//! (`distance_of`), the nearest-to-farthest order (`line_distance`), and the on-line floor (`on_line`) the corridor is built from;
+//! image/line_partition.rye owns the side arbiter (`object_side`) the direction-blind crux cross-checks against; image/click_collinear.rye
+//! owns the doubled anchor centers (`click_group_center_doubled`, `CenterD`) the squared length is read from. No distance re-measured, no
+//! order re-sorted, no center re-computed -- every fact looked up through the primitive that already proved it.
+//!
+//! Everything is bounded before a byte: the prefix walk runs `components` times, itself bounded by image/label.rye's `label_max_pixels`; the
+//! half-width is bounded by `band_max_half_width` so the squared corridor bound never overflows i64, refusing `BandTooWide` past it; the
+//! corridor test runs in i64 so the doubled-coordinate products stay whole. A directed line needs two distinct points, so two anchor taps
+//! sharing a group refuse `SameGroup` by name; a tap on background refuses `EmptyClick`; a point off the map refuses `PointOutOfBounds`; a
+//! query naming a label past the object count refuses `BadTarget`, each having read nothing. No network, no key, no funds -- the "sweep a
+//! line and grab everything hugging it" a surface answers the day a keeper draws a stroke through the picture and asks for a corridor of
+//! give around it.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/line_band.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const hit_test = @import("hit_test.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const click_collinear = @import("click_collinear.rye");
+const line_partition = @import("line_partition.rye");
+const line_distance = @import("line_distance.rye");
+
+pub const line_band_version = "20260819.085613";
+
+/// The widest half-width a corridor may name -- generous past any real canvas, yet bounded so `4 * half_width * half_width * len2` stays whole
+/// in i64 for every scene this family reads. A request past it refuses `BandTooWide`, having read nothing.
+pub const band_max_half_width: u32 = 4096;
+
+pub const LineBandError = error{
+    BandTooWide,
+    BandCatchesAll,
+};
+
+/// The squared length of the directed line in DOUBLED coordinates -- `(bx2 - ax2)^2 + (by2 - ay2)^2` over the two anchor GROUP centers, the
+/// same centers image/line_distance.rye ranks distances from. Held in i64 so the doubled-coordinate squares never overflow. The corridor
+/// scales the squared half-width by this, so the sharp threshold `key^2 <= 4 * hw^2 * len2` needs no square root.
+fn line_len2_doubled(garden: std.mem.Allocator, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !i64 {
+    const ca = try click_collinear.click_group_center_doubled(garden, graph, manifest, map, ax, ay);
+    const cb = try click_collinear.click_group_center_doubled(garden, graph, manifest, map, bx, by);
+    const abx: i64 = @as(i64, cb.cx2) - @as(i64, ca.cx2);
+    const aby: i64 = @as(i64, cb.cy2) - @as(i64, ca.cy2);
+    const len2: i64 = abx * abx + aby * aby;
+    // invariant: a squared length is never negative.
+    assert(len2 >= 0);
+    return len2;
+}
+
+/// The corridor bound `4 * half_width^2 * len2` -- the squared distance key an object must not exceed to sit inside the corridor of the given
+/// half-width. In DOUBLED coordinates the perpendicular distance is `key / (2 * line_length)`, so `distance <= half_width` becomes
+/// `key <= 2 * half_width * line_length`, and squaring both sides clears the root: `key^2 <= 4 * half_width^2 * len2`.
+fn corridor_bound(half_width: u32, len2: i64) i64 {
+    const hw: i64 = @as(i64, half_width);
+    const bound: i64 = 4 * hw * hw * len2;
+    // invariant: the corridor bound is non-negative -- a squared threshold over a squared length.
+    assert(bound >= 0);
+    return bound;
+}
+
+/// TRUE when object `lbl`'s GROUP center sits within `half_width` of the directed line A -> B -- inside the corridor, the boundary CLOSED so
+/// an object exactly `half_width` away is held. Refuses `BandTooWide` past the half-width ceiling, then `SameGroup` / `EmptyClick` /
+/// `PointOutOfBounds` through the line resolution and `BadTarget` for a label past the object count, each having read nothing.
+pub fn in_band(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, half_width: u32, lbl: u32) !bool {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+    if (half_width > band_max_half_width) return error.BandTooWide;
+
+    const key = try line_distance.distance_of(garden, clustering, graph, manifest, map, ax, ay, bx, by, lbl);
+    // invariant: a distance key is never negative -- the magnitude line_distance ranks by.
+    assert(key >= 0);
+    const len2 = try line_len2_doubled(garden, graph, manifest, map, ax, ay, bx, by);
+    return key * key <= corridor_bound(half_width, len2);
+}
+
+/// The whole corridor of half-width `half_width` around the directed line A -> B: every in-band object label, nearest-first. Because the
+/// corridor is a THRESHOLD on the ascending distance key, the selected set is exactly a PREFIX of image/line_distance.rye's nearest-to-farthest
+/// order -- the walk asserts no in-band object ever follows an out-of-band one. The caller owns the returned slice. Refuses `BandTooWide`,
+/// `SameGroup`, `EmptyClick`, `PointOutOfBounds`.
+pub fn line_band(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, half_width: u32) ![]u32 {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+    if (half_width > band_max_half_width) return error.BandTooWide;
+
+    const order = try line_distance.line_distance(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const len2 = try line_len2_doubled(garden, graph, manifest, map, ax, ay, bx, by);
+    const bound = corridor_bound(half_width, len2);
+
+    // count the in-band PREFIX -- membership is monotone in the ascending distance key, so an out-of-band object is never followed by an
+    // in-band one; the walk proves it on metal
+    var cnt: usize = 0;
+    var seen_out: bool = false;
+    var i: usize = 0;
+    while (i < order.len) : (i += 1) {
+        const key = try line_distance.distance_of(garden, clustering, graph, manifest, map, ax, ay, bx, by, order[i]);
+        // invariant: a distance key is never negative.
+        assert(key >= 0);
+        if (key * key <= bound) {
+            // invariant: the corridor is a PREFIX -- no in-band object follows an out-of-band one in the distance order.
+            assert(!seen_out);
+            cnt += 1;
+        } else {
+            seen_out = true;
+        }
+    }
+
+    const out = try garden.alloc(u32, cnt);
+    var j: usize = 0;
+    while (j < cnt) : (j += 1) out[j] = order[j];
+    return out;
+}
+
+/// How many objects the corridor of half-width `half_width` holds -- the length of the in-band prefix. Nondecreasing in the half-width: a
+/// wider corridor never holds fewer. Refuses `BandTooWide`, `SameGroup`, `EmptyClick`, `PointOutOfBounds`.
+pub fn band_count(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, half_width: u32) !u32 {
+    // invariant: the manifest and the map describe the same scene.
+    assert(manifest.components == map.count);
+    const band = try line_band(garden, clustering, graph, manifest, map, ax, ay, bx, by, half_width);
+    // invariant: the corridor holds no more objects than the scene has.
+    assert(band.len <= manifest.components);
+    return @as(u32, @intCast(band.len));
+}
+
+/// The NEAREST object the corridor of half-width `half_width` MISSED -- the head of the distance order that falls OUTSIDE the corridor, the
+/// one a slightly wider band would catch next. Refuses `BandCatchesAll` when the corridor holds the whole scene (nothing sits outside it),
+/// and `BandTooWide` / `SameGroup` / `EmptyClick` / `PointOutOfBounds` through the resolution.
+pub fn nearest_outside_band(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, half_width: u32) !u32 {
+    // invariant: the manifest and the map describe the same scene.
+    assert(manifest.components == map.count);
+    if (half_width > band_max_half_width) return error.BandTooWide;
+
+    const order = try line_distance.line_distance(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const cnt = try band_count(garden, clustering, graph, manifest, map, ax, ay, bx, by, half_width);
+    const held: usize = @as(usize, cnt);
+    // invariant: the held prefix never runs past the ordered scene.
+    assert(held <= order.len);
+    if (held >= order.len) return error.BandCatchesAll;
+    return order[held];
+}
+
+// --- selftest: the DECISIVE prefix crux (a corridor is a sublevel set of the sorted distance key, so line_band is a PREFIX of the distance
+//     order); the threshold is CLOSED and EXACT (an object at distance exactly the half-width is IN, one past it OUT); the band NESTS
+//     (band_count nondecreasing, width 0 collapses to the on_line set); the band is BLIND to the drawn direction where line_partition's sides
+//     swap; nearest_outside_band and BandCatchesAll; refusals by name; determinism ---------------------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y). A 2x2 block's inclusive box is (x,y)-(x+1,y+1), so its
+/// doubled center is (2x+1, 2y+1) -- exact integers the selftest predicts by hand.
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- THE SCENE is line_distance's own 20x14 six-singleton scene, so the corridor is read over the SAME picture the triad closed on.
+    //     Raster order gives dense labels U=1, P=2, A=3, B=4, Q=5, D=6. The horizontal line A -> B (anchors on doubled row 13) gives the
+    //     distance keys A=0, B=0, P=168, Q=168, D=224, U=280, which are perpendicular distances 0, 0, 3, 3, 4, 5 (the key is the true distance
+    //     times the constant line length). So a corridor of half-width 3 holds exactly {A, B, P, Q}, width 2 drops P and Q, width 4 adds D,
+    //     width 5 adds U -- every boundary predicted by hand -----------------------------------------------------------------------------
+    var scene = try make_canvas(garden, 20, 14, 0);
+    set_block(&scene, 7, 1, 2, 2); // U: box (7,1)-(8,2),   center-doubled (15,3)  -- distance 5 from the A-B line
+    set_block(&scene, 4, 3, 2, 2); // P: box (4,3)-(5,4),   center-doubled (9,7)   -- distance 3, ABOVE
+    set_block(&scene, 1, 6, 2, 2); // A: box (1,6)-(2,7),   center-doubled (3,13)  -- anchor, ON the line, distance 0
+    set_block(&scene, 15, 6, 2, 2); // B: box (15,6)-(16,7), center-doubled (31,13) -- anchor, ON the line, distance 0
+    set_block(&scene, 11, 9, 2, 2); // Q: box (11,9)-(12,10), center-doubled (23,19) -- distance 3, BELOW
+    set_block(&scene, 7, 10, 2, 2); // D: box (7,10)-(8,11), center-doubled (15,21) -- distance 4, BELOW
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 6) return error.SceneNotSixComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    if (clustering.clusters != 6) return error.NotSixClusters;
+
+    // dense labels: U=1, P=2, A=3, B=4, Q=5, D=6
+    const u_lbl: u32 = 1;
+    const p_lbl: u32 = 2;
+    const a_lbl: u32 = 3;
+    const b_lbl: u32 = 4;
+    const q_lbl: u32 = 5;
+    const d_lbl: u32 = 6;
+
+    // the two anchor taps that name the HORIZONTAL directed line A -> B (both taps land inside their own blocks)
+    const ax: u32 = 1;
+    const ay: u32 = 6;
+    const bx: u32 = 15;
+    const by: u32 = 6;
+
+    // --- THE PREFIX CRUX -- a corridor of half-width 3 selects exactly {A, B, P, Q}, the PREFIX of the distance order [A, B, P, Q, D, U].
+    //     The band is nearest-first, and every out-of-band object (D, U) follows every in-band one -----------------------------------------
+    const band3 = try line_band(garden, clustering, graph, manifest, &map, ax, ay, bx, by, 3);
+    if (band3.len != 4) return error.Band3NotFour;
+    if (band3[0] != a_lbl or band3[1] != b_lbl or band3[2] != p_lbl or band3[3] != q_lbl) return error.Band3WrongPrefix;
+    // it is exactly the prefix of the full distance order
+    const order_h = try line_distance.line_distance(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    if (order_h.len != 6) return error.OrderNotSix;
+    var pi: usize = 0;
+    while (pi < band3.len) : (pi += 1) {
+        if (band3[pi] != order_h[pi]) return error.BandNotOrderPrefix;
+    }
+
+    // --- THE THRESHOLD IS CLOSED AND EXACT -- P sits at distance exactly 3: in_band TRUE at half-width 3 (boundary closed), FALSE at
+    //     half-width 2. The corridor's edge is a sharp integer, proven by an object standing on it ------------------------------------------
+    if (!try in_band(garden, clustering, graph, manifest, &map, ax, ay, bx, by, 3, p_lbl)) return error.PNotInBand3;
+    if (try in_band(garden, clustering, graph, manifest, &map, ax, ay, bx, by, 2, p_lbl)) return error.PWronglyInBand2;
+    // D sits at distance exactly 4: out at width 3, in at width 4 (its own closed boundary)
+    if (try in_band(garden, clustering, graph, manifest, &map, ax, ay, bx, by, 3, d_lbl)) return error.DWronglyInBand3;
+    if (!try in_band(garden, clustering, graph, manifest, &map, ax, ay, bx, by, 4, d_lbl)) return error.DNotInBand4;
+
+    // --- THE BAND NESTS -- band_count is nondecreasing in the half-width, and width 0 collapses the corridor to the LINE ITSELF -----------
+    if (try band_count(garden, clustering, graph, manifest, &map, ax, ay, bx, by, 0) != 2) return error.Count0NotTwo;
+    if (try band_count(garden, clustering, graph, manifest, &map, ax, ay, bx, by, 2) != 2) return error.Count2NotTwo;
+    if (try band_count(garden, clustering, graph, manifest, &map, ax, ay, bx, by, 3) != 4) return error.Count3NotFour;
+    if (try band_count(garden, clustering, graph, manifest, &map, ax, ay, bx, by, 4) != 5) return error.Count4NotFive;
+    if (try band_count(garden, clustering, graph, manifest, &map, ax, ay, bx, by, 5) != 6) return error.Count5NotSix;
+    // the width-0 corridor is exactly image/line_distance.rye's on_line set -- {A, B} and nothing else
+    const band0 = try line_band(garden, clustering, graph, manifest, &map, ax, ay, bx, by, 0);
+    if (band0.len != 2 or band0[0] != a_lbl or band0[1] != b_lbl) return error.Band0NotOnLineSet;
+    if (!try line_distance.on_line(garden, clustering, graph, manifest, &map, ax, ay, bx, by, a_lbl)) return error.AWrongNotOnLine;
+    if (try line_distance.on_line(garden, clustering, graph, manifest, &map, ax, ay, bx, by, p_lbl)) return error.PWronglyOnLine;
+
+    // --- THE BAND IS BLIND TO THE DRAWN DIRECTION -- reversing to B -> A selects the IDENTICAL corridor, though line_partition SWAPS the
+    //     sides of the very same objects. A side has a handedness; a corridor has none ---------------------------------------------------
+    const band3_rev = try line_band(garden, clustering, graph, manifest, &map, bx, by, ax, ay, 3);
+    if (band3_rev.len != band3.len) return error.ReversedBandSizeMoved;
+    var ri: usize = 0;
+    while (ri < band3.len) : (ri += 1) {
+        if (band3_rev[ri] != band3[ri]) return error.ReversedBandMoved;
+    }
+    // yet the side of P truly swaps under the reversal (left forward, right reversed) -- the corridor stripped that handedness away
+    if (try line_partition.object_side(garden, clustering, graph, manifest, &map, ax, ay, bx, by, p_lbl) != .left) return error.PSideNotLeft;
+    if (try line_partition.object_side(garden, clustering, graph, manifest, &map, bx, by, ax, ay, p_lbl) != .right) return error.PSideNotSwapped;
+
+    // --- NEAREST OUTSIDE THE BAND -- D is the closest object width 3 missed (distance 4, the first past the corridor); a width-5 corridor
+    //     holds the whole scene so nothing sits outside it, refusing BandCatchesAll -------------------------------------------------------
+    if (try nearest_outside_band(garden, clustering, graph, manifest, &map, ax, ay, bx, by, 3) != d_lbl) return error.NearestOutsideNotD;
+    if (try nearest_outside_band(garden, clustering, graph, manifest, &map, ax, ay, bx, by, 4) != u_lbl) return error.NearestOutsideNotU;
+    if (nearest_outside_band(garden, clustering, graph, manifest, &map, ax, ay, bx, by, 5)) |_| return error.CatchesAllNotRefused else |err| {
+        if (err != error.BandCatchesAll) return error.WrongCatchesAllError;
+    }
+
+    // --- REFUSALS -- two anchors sharing a group refuse SameGroup; a background tap refuses EmptyClick; a point off the map refuses
+    //     PointOutOfBounds; a query label past the object count refuses BadTarget; a half-width past the ceiling refuses BandTooWide -------
+    if (try hit_test.object_label_at(&map, 1, 6) != try hit_test.object_label_at(&map, 2, 7)) return error.APixelsNotSameObject;
+    if (line_band(garden, clustering, graph, manifest, &map, 1, 6, 2, 7, 3)) |_| return error.SameGroupNotRefused else |err| {
+        if (err != error.SameGroup) return error.WrongSameGroupError;
+    }
+    if (try hit_test.object_label_at(&map, 0, 0) != 0) return error.BackgroundNotEmpty;
+    if (line_band(garden, clustering, graph, manifest, &map, 0, 0, bx, by, 3)) |_| return error.MissNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissError;
+    }
+    if (line_band(garden, clustering, graph, manifest, &map, ax, ay, 20, 0, 3)) |_| return error.OffMapNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapError;
+    }
+    if (in_band(garden, clustering, graph, manifest, &map, ax, ay, bx, by, 3, 7)) |_| return error.BadTargetNotRefused else |err| {
+        if (err != error.BadTarget) return error.WrongBadTargetError;
+    }
+    if (in_band(garden, clustering, graph, manifest, &map, ax, ay, bx, by, band_max_half_width + 1, p_lbl)) |_| return error.BandTooWideNotRefused else |err| {
+        if (err != error.BandTooWide) return error.WrongBandTooWideError;
+    }
+
+    // --- DETERMINISM -- the same corridor reads the same band twice -----------------------------------------------------------------------
+    const c1 = try line_band(garden, clustering, graph, manifest, &map, ax, ay, bx, by, 3);
+    const c2 = try line_band(garden, clustering, graph, manifest, &map, ax, ay, bx, by, 3);
+    if (c1.len != c2.len) return error.BandNotDeterministic;
+    var k: usize = 0;
+    while (k < c1.len) : (k += 1) {
+        if (c1[k] != c2[k]) return error.BandNotDeterministic;
+    }
+
+    print("GREEN image-line-band: read a DIRECTED line named by TWO anchor taps (from A toward B) as a CORRIDOR MARQUEE -- select every object whose GROUP center sits within a half-width of the line, exact integers, NO float and NO tolerance, the test key*key <= 4*half_width*half_width*len2 so the boundary is a sharp closed threshold with no square root and no divide. This TURNS the just-closed three-read decomposition into a GESTURE: line_partition reads the cross's SIGN (which side), line_order the DOT (how far along), line_distance the MAGNITUDE (how far off), and a band reads that magnitude against a THRESHOLD -- what the distance is FOR. The DECISIVE crux is that a corridor is a SUBLEVEL SET of the sorted distance key, so line_band is a PREFIX of line_distance's nearest-to-farthest order: over line_distance's own six-object scene the horizontal line A -> B gives distances A=0, B=0, P=3, Q=3, D=4, U=5, so a corridor of half-width 3 selects exactly {{A, B, P, Q}}, the prefix of [A, B, P, Q, D, U]. THE THRESHOLD IS CLOSED AND EXACT -- P at distance exactly 3 is IN at half-width 3 and OUT at half-width 2, D at distance exactly 4 out at 3 and in at 4, every boundary a sharp integer proven by an object standing on it. THE BAND NESTS -- band_count is nondecreasing (2 at width 0, 4 at width 3, 5 at width 4, 6 at width 5), and width 0 collapses the corridor to the LINE ITSELF, line_band(0) equal to line_distance's on_line set {{A, B}}. THE BAND IS BLIND TO THE DRAWN DIRECTION -- reversing to B -> A selects the identical corridor though line_partition swaps the sides of the very same objects: a side has a handedness, a corridor has none. nearest_outside_band names the closest object the corridor missed (D at width 3, the one a wider band catches next), refusing BandCatchesAll when the corridor holds the whole scene. Two anchors sharing a group refuse SameGroup (a line needs two points); a background tap refuses EmptyClick; a point off the map refuses PointOutOfBounds; a label past the object count refuses BadTarget; a half-width past band_max_half_width refuses BandTooWide, each having read nothing; the same corridor reads the same band twice. Compose not braid over image/line_distance.rye (the distance magnitude, order, and on-line floor the corridor is built from), image/line_partition.rye (the side arbiter the direction-blind crux cross-checks), and image/click_collinear.rye (click_group_center_doubled, the doubled anchor centers the squared length is read from)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: line_band selftest\n", .{});
+    return 1;
+}
