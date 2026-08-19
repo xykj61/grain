@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260819.094721
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title microkernel-target study-weight recenter (one adjustment round, outer loop paused)
+prompt Keaton paused the outer image-module loop for one adjustment round -- recenter the Microkernel Target study/design weight toward the static, verification-minded seL4 ecosystem (seL4, Microkit, LionsOS) over dynamic Genode/Sculpt, factoring the handed prompt into the seated season without moving any gate, then resume the outer loop.
+think Read the two seated documents first -- the eight-season itinerary (Lindy-priority Microkernel Target section) and the microkernel-target research capture (the three blind spots) -- so the recenter links and matches them faithfully rather than inventing new road geometry.
+think The prompt shifts reading WEIGHT, not gates: equinox order, Caravan-before-Tally, RISC-V/QEMU-first, clean-room-only, and the parity-witness close all stand. So the correct act is one dated recenter note plus three clean-room briefs, then accretive links into the two seated docs -- no ring rewritten, no road moved.
+think Placement by rule: gratitude-licenses puts clean-room briefs in active-designing/; the recenter note captures the world's reading order with attribution, so it belongs in external-research/. Both link each other and the seated arc.
+think Each brief ends in the two sections the prompt named -- what Caravan can re-express in Rye under TAME, and what stays out -- keeping the clean-room boundary explicit even for the friendlier-licensed Microkit and LionsOS (docs and concepts only, no source in-tree regardless of license).
+obs No gratitude/ entries exist yet for seL4/Genode/Microkit/LionsOS, and none were added -- the prompt forbids fetch/vendor, so the briefs are pure study captures with attribution, not fetched-source silos. Gratitude entries can seat the day any source is actually studied deeper.
+obs Blind spots kept visible and unchanged: license (copyleft = study only), compiler target (past the deferred Rye fork or Zig freestanding), hardware freedom vs speed (RISC-V/QEMU first). Nothing fetched, no license read performed, no hardware decision -- all still gated.
+obs This round wrote no code and ran no witness -- it is a design/itinerary adjustment, so there is no GREEN to claim; the honest close is the note-and-link, not a metal run.
+file external-research/20260819-094721_microkernel-target-study-weight-recenter.md the recenter note -- new reading order (seL4 -> Microkit -> LionsOS -> s6 -> selective Genode) and reasons, gates restated
+file active-designing/20260819-094721_clean-room-sel4-capability-ipc-resource-model.md clean-room brief -- capabilities, endpoint IPC, untyped/retype, MCS -> Caravan capability tables and resource budgets
+file active-designing/20260819-094721_clean-room-microkit-protection-domains-channels.md clean-room brief -- PDs, channels, memory regions, static system description -> Caravan's static supervision graph
+file active-designing/20260819-094721_clean-room-lionsos-modularity-thesis.md clean-room brief -- radical simplicity, separation of concerns, sDDF queue drivers, measured performance -> safe-then-fast Caravan rings
+file active-designing/20260816-205859_double-seat-expansion-eight-seasons.md accreted a study-weight-recenter line into the Microkernel Target section, linking the note; no equinox changed
+file external-research/20260817-185851_microkernel-target-and-the-os-parity-question.md accreted a study-weight-recenter section linking the note; the direction and blind spots stand unchanged
+recommend keep-going the one adjustment round is landed and cross-linked with no gate moved -- the outer image-module loop can resume from its live green Season G scene-read edge (line_span at count 220), the Microkernel study still waiting on its fetch/license/custody gates, not crossed.
