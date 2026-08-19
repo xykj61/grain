@@ -1,0 +1,329 @@
+//! image/euler_number.rye -- the EULER NUMBER of a segmented region: its exact-integer TOPOLOGY, read as `components - holes` by
+//! BIT-QUAD counting (S.B. Gray 1971), NO float and NO tolerance -- the one descriptor that COUNTS the interior hole the whole
+//! metric family has pointed at for a dozen rungs yet never measured.
+//!
+//! Season G (Open Media Primitives) -- every shape reader before this one measures a region's GEOMETRY: its area, its hull, its
+//! widths, its inscribed and enclosing disks. Geometry is blind to TOPOLOGY. A solid 5x5 block and a hollow 5x5 ring (a wall one
+//! pixel thick) trace the IDENTICAL outer contour, so image/convex_hull.rye reads the same hull, image/min_enclosing_circle.rye the
+//! same circle, image/width_profile.rye the same widths for both. image/inscribed_disk.rye is the first to notice the difference --
+//! its disk shrinks over the hole -- yet even it reads DEPTH, a metric hint, never the hole itself. This rung reads the topological
+//! fact directly: HOW MANY holes the region has, an integer, exact.
+//!
+//! The EULER NUMBER of a binary shape is `E = components - holes` (its Euler-Poincare characteristic). This rung reads ONE region,
+//! which image/label.rye guarantees is a single 8-connected component, so `components = 1` and `holes = 1 - E`. The count comes from
+//! BIT-QUADS: slide a 2x2 window over the region (with a one-pixel background border, so windows straddle every edge) and tally three
+//! window kinds by their foreground-pixel count --
+//!
+//!     Q1 -- exactly ONE foreground pixel in the 2x2 window (an outer corner of the shape)
+//!     Q3 -- exactly THREE foreground pixels (an inner corner, a concavity)
+//!     QD -- exactly TWO foreground pixels on a DIAGONAL (a pinch point where two parts touch corner-to-corner)
+//!
+//! For an 8-connected foreground (image/label.rye's own connectivity, its dual a 4-connected background), the Euler number is the
+//! exact integer `E = (Q1 - Q3 - 2*QD) / 4` -- a theorem, not an approximation: every closed shape's corner counts balance so the
+//! numerator is always a multiple of four. (A 4-connected foreground would read `+2*QD`; the sign is the connectivity, and this rung
+//! keeps image/label.rye's 8-connected choice so a shape's component count here and there always agree.)
+//!
+//! The DECISIVE facts:
+//!
+//!   TOPOLOGY SEES THE HOLE THE OUTER BOUNDS CANNOT -- a solid 5x5 block reads Euler 1 (one part, no hole), a hollow 5x5 ring reads
+//!   Euler 0 (one part, one hole), though their outer contour, hull, and enclosing circle are byte-for-byte identical. The inscribed
+//!   disk HINTED the hole with a shrunken depth; the Euler number COUNTS it.
+//!
+//!   TOPOLOGY IS ORTHOGONAL TO SOLIDITY -- image/shape_signature.rye reads a plus and a ring both as DENTED (each leaves empty wedges
+//!   inside its hull, solidity below one), so solidity MERGES them. Yet the plus has NO hole (Euler 1) and the ring has ONE (Euler 0):
+//!   the Euler number is the axis that separates a pair solidity collapses, a genuinely new dimension of shape.
+//!
+//! `hole_count(topo)` reports the holes; `is_simply_connected(topo)` is true exactly when there are none (a filled shape, no
+//! interior background); `has_hole(topo)` is its negation. Every one is an integer read -- the region carries its topology as a
+//! small exact number, never a threshold on a float.
+//!
+//! Compose not braid. This rung OWNS only the bit-quad sweep and the reads over the count -- no hull, no distance field, no contour,
+//! no codec, no color, no pixel written. image/label.rye owns the component map and its 8-connectivity; image/qoi.rye owns the pixel
+//! ceiling. The Euler number of a region is a tally over its own label plane, nothing more.
+//!
+//! Everything is bounded before a byte: the sweep visits `(width+1) * (height+1)` windows, each under a count far below the i32
+//! ceiling since the region lives under image/qoi.rye's `qoi_max_pixels` (2^20), so `Q1 + Q3 + QD` never approaches 2^31 and the
+//! signed numerator never wraps an i64. A label of zero or past the map's component count refuses `BadLabel` by name, having tallied
+//! nothing. All-or-nothing, never a half-counted topology. No network, no key, no funds -- the hole count a surface names the day it
+//! must tell a ring from a disk, a doughnut from a coin, on our own open geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/euler_number.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+
+pub const euler_number_version = "20260818.213633";
+
+/// The most windows a sweep may visit stays far under this ceiling -- image/qoi.rye's pixel ceiling grown by one row and column, so
+/// `(width+1) * (height+1)` bit-quad windows fit under 2^31 and every u32 tally is safe. A region larger than the pixel ceiling
+/// never reaches this rung; image/label.rye refuses it first.
+pub const euler_max_windows: u64 = (@as(u64, qoi.qoi_max_pixels) + 1) * 2;
+
+pub const EulerError = error{
+    BadLabel,
+};
+
+/// The TOPOLOGY of one labeled region: its `euler` number (`components - holes`, exact, possibly negative for a many-holed shape),
+/// its `components` count (always 1 here, since image/label.rye hands each call a single 8-connected region), and its `holes` count
+/// (`components - euler`, never negative). Every field is an exact integer; the region carries its topology as a small number.
+pub const Topology = struct {
+    euler: i32,
+    components: u32,
+    holes: u32,
+};
+
+/// TRUE when the cell at `(cx, cy)` belongs to the region labeled `want` -- in-bounds and carrying that label. A coordinate outside
+/// the map is background, so the sweep reads a one-pixel background border for free and every edge window is well-defined.
+fn is_fg(map: *const label.LabelMap, want: u32, cx: i64, cy: i64) bool {
+    // invariant: a real region label is asked for, never the background sentinel.
+    assert(want >= 1);
+    if (cx < 0 or cy < 0) return false;
+    if (cx >= @as(i64, map.width) or cy >= @as(i64, map.height)) return false;
+    return map.at(@intCast(cx), @intCast(cy)) == want;
+}
+
+/// The EULER NUMBER of the region labeled `want` -- slide a 2x2 window over the region with a one-pixel background border, tally the
+/// Q1 (one-foreground), Q3 (three-foreground), and QD (diagonal-two) windows, and read `E = (Q1 - Q3 - 2*QD) / 4` for the 8-connected
+/// foreground. Refuses `BadLabel` when `want` is background (0) or past the map's component count, having tallied nothing.
+pub fn euler_number(map: *const label.LabelMap, want: u32) !Topology {
+    // invariant: image/label.rye labels a region 1..count densely, so a label outside that range names no region.
+    if (want == 0 or want > map.count) return error.BadLabel;
+    // invariant: a real label map carries one label per pixel across its whole extent.
+    assert(map.labels.len == @as(usize, map.width) * @as(usize, map.height));
+
+    const w: u32 = map.width;
+    const h: u32 = map.height;
+    // invariant: the window sweep stays far under the i32 ceiling, so every u32 tally and the signed numerator are safe.
+    const windows: u64 = (@as(u64, w) + 1) * (@as(u64, h) + 1);
+    assert(windows <= euler_max_windows);
+
+    var q1: u32 = 0;
+    var q3: u32 = 0;
+    var qd: u32 = 0;
+
+    // one window per lattice corner: the window at (wx, wy) covers cells (wx-1,wy-1), (wx,wy-1), (wx-1,wy), (wx,wy). A cell coordinate
+    // of -1 or of w/h lands outside the map and reads as background, so the border is implicit and every edge is counted once.
+    var wy: u32 = 0;
+    while (wy <= h) : (wy += 1) {
+        var wx: u32 = 0;
+        while (wx <= w) : (wx += 1) {
+            const x: i64 = @as(i64, wx) - 1;
+            const y: i64 = @as(i64, wy) - 1;
+            const tl = is_fg(map, want, x, y);
+            const tr = is_fg(map, want, x + 1, y);
+            const bl = is_fg(map, want, x, y + 1);
+            const br = is_fg(map, want, x + 1, y + 1);
+
+            var n: u32 = 0;
+            if (tl) n += 1;
+            if (tr) n += 1;
+            if (bl) n += 1;
+            if (br) n += 1;
+
+            if (n == 1) {
+                q1 += 1;
+            } else if (n == 3) {
+                q3 += 1;
+            } else if (n == 2) {
+                // a DIAGONAL two (both cells on one diagonal, the other diagonal empty) is a corner-touch pinch; an adjacent two is
+                // a flat edge and contributes nothing to the corner balance.
+                const main_diag = tl and br and !tr and !bl;
+                const anti_diag = tr and bl and !tl and !br;
+                if (main_diag or anti_diag) qd += 1;
+            }
+        }
+    }
+
+    // the bit-quad theorem: for an 8-connected foreground the numerator Q1 - Q3 - 2*QD is always a multiple of four, and the quotient
+    // is the Euler number. Compute in i64 (the shape may have more inner than outer corners, so the numerator can be negative).
+    const numerator: i64 = @as(i64, q1) - @as(i64, q3) - 2 * @as(i64, qd);
+    // invariant: the corner counts of a closed shape balance to a multiple of four -- a theorem, checked on metal, never assumed.
+    assert(@rem(numerator, 4) == 0);
+    const euler: i64 = @divTrunc(numerator, 4);
+    // invariant: a single 8-connected component has one part and non-negative holes, so its Euler number is at most one.
+    assert(euler <= 1);
+
+    const holes: i64 = 1 - euler;
+    // invariant: a single component can never carry a negative number of holes.
+    assert(holes >= 0);
+
+    return Topology{
+        .euler = @intCast(euler),
+        .components = 1,
+        .holes = @intCast(holes),
+    };
+}
+
+/// The HOLE COUNT -- how many interior background regions the shape encloses, exact. Zero for a filled shape, one for a ring, more
+/// for a shape pierced many times.
+pub fn hole_count(topo: Topology) u32 {
+    // invariant: the topology of a real region names exactly one component here.
+    assert(topo.components == 1);
+    // invariant: holes and the Euler number are the two faces of one fact -- holes = components - euler.
+    assert(@as(i64, topo.components) - @as(i64, topo.euler) == @as(i64, topo.holes));
+    return topo.holes;
+}
+
+/// TRUE when the region has NO interior hole -- SIMPLY CONNECTED, a filled shape with no background trapped inside. A block, a plus,
+/// and an L are simply connected; a ring is not.
+pub fn is_simply_connected(topo: Topology) bool {
+    // invariant: a single component with no holes reads Euler exactly one.
+    assert(topo.components == 1);
+    return topo.holes == 0;
+}
+
+/// TRUE when the region encloses at least one hole -- the negation of simple connectedness, the "is this a ring, not a disk?" read.
+pub fn has_hole(topo: Topology) bool {
+    // invariant: has_hole is exactly the negation of simple connectedness.
+    assert(topo.components == 1);
+    return topo.holes >= 1;
+}
+
+// --- selftest: the DEFINITION on a solid block (Euler 1, no hole); the DECISIVE topology-sees-the-hole crux (block vs ring, identical
+//     outer contour yet Euler 1 vs 0); the ORTHOGONALITY crux (a plus and a ring both dented, yet plus no hole and ring one); a
+//     two-hole shape (Euler -1); refusals by name; determinism -----------------------------------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent within the image module's named pixel ceiling.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Set one pixel back to background at (x, y) -- carve a hole in a filled shape.
+fn clear_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 0;
+    img.pixels[di + 1] = 0;
+    img.pixels[di + 2] = 0;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// The topology of the single component on a one-shape canvas.
+fn topology_of(garden: std.mem.Allocator, img: *qoi.Pixmap) !Topology {
+    const map = try label.label_components(garden, img);
+    // invariant: each selftest fixture holds exactly one component.
+    assert(map.count == 1);
+    return euler_number(&map, 1);
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- THE DEFINITION -- a solid 5x5 block on a black border: one part, no hole, Euler 1, simply connected --------------------
+    var block_img = try make_canvas(garden, 7, 7, 0);
+    set_block(&block_img, 1, 1, 5, 5);
+    const block = try topology_of(garden, &block_img);
+    if (block.euler != 1) return error.BlockEulerNotOne;
+    if (hole_count(block) != 0) return error.BlockHasHole;
+    if (!is_simply_connected(block)) return error.BlockNotSimplyConnected;
+    if (has_hole(block)) return error.BlockFalselyHoled;
+
+    // --- THE DECISIVE TOPOLOGY-SEES-THE-HOLE CRUX -- carve the block's inner 3x3 into a hole, leaving a RING one pixel thick. Its
+    //     OUTER contour is byte-for-byte the solid block's (image/inscribed_disk.rye proves the same hull and enclosing circle for
+    //     both), yet the Euler number falls from 1 to 0: one part, ONE hole ---------------------------------------------------------
+    var ring_img = try make_canvas(garden, 7, 7, 0);
+    set_block(&ring_img, 1, 1, 5, 5);
+    var hy: u32 = 2;
+    while (hy <= 4) : (hy += 1) {
+        var hx: u32 = 2;
+        while (hx <= 4) : (hx += 1) clear_dot(&ring_img, hx, hy);
+    }
+    const ring = try topology_of(garden, &ring_img);
+    if (ring.euler != 0) return error.RingEulerNotZero;
+    if (hole_count(ring) != 1) return error.RingHoleNotOne;
+    if (is_simply_connected(ring)) return error.RingFalselySimple;
+    if (!has_hole(ring)) return error.RingHasNoHole;
+    // the topology sharply separates the two shapes the outer bounds cannot tell apart
+    if (block.euler == ring.euler) return error.TopologyDoesNotSeparate;
+
+    // --- THE ORTHOGONALITY CRUX -- a PLUS is DENTED just as the ring is (image/shape_signature.rye reads both solidity below one),
+    //     so solidity MERGES the two. Yet the plus has NO hole (Euler 1) and the ring has ONE (Euler 0): topology separates a pair
+    //     solidity collapses -- a genuinely new axis of shape -----------------------------------------------------------------------
+    var plus_img = try make_canvas(garden, 7, 7, 0);
+    set_block(&plus_img, 3, 1, 1, 5); // vertical arm, col x=3, rows 1..5
+    set_block(&plus_img, 1, 3, 5, 1); // horizontal arm, row y=3, cols 1..5
+    const plus = try topology_of(garden, &plus_img);
+    if (plus.euler != 1) return error.PlusEulerNotOne;
+    if (hole_count(plus) != 0) return error.PlusHasHole; // dented, yet not holed
+    if (!is_simply_connected(plus)) return error.PlusNotSimplyConnected;
+    // the plus and the ring are both dented, yet topology tells them apart where solidity cannot
+    if (plus.euler == ring.euler) return error.OrthogonalityFailed;
+
+    // --- A TWO-HOLE SHAPE -- a 5x9 block pierced twice (a single-pixel hole at (3,3) and another at (3,6), separated by a foreground
+    //     wall): one part, TWO holes, Euler -1 -- the count runs negative and stays exact -----------------------------------------
+    var twohole_img = try make_canvas(garden, 7, 11, 0);
+    set_block(&twohole_img, 1, 1, 5, 9);
+    clear_dot(&twohole_img, 3, 3);
+    clear_dot(&twohole_img, 3, 6);
+    const twohole = try topology_of(garden, &twohole_img);
+    if (twohole.euler != -1) return error.TwoHoleEulerNotMinusOne;
+    if (hole_count(twohole) != 2) return error.TwoHoleCountNotTwo;
+    if (!has_hole(twohole)) return error.TwoHoleHasNoHole;
+
+    // --- REFUSAL -- a label of zero (background) or past the component count refuses BadLabel, having tallied nothing -------------
+    const bmap = try label.label_components(garden, &block_img);
+    if (euler_number(&bmap, 0)) |_| return error.ZeroLabelNotRefused else |err| {
+        if (err != error.BadLabel) return error.WrongZeroError;
+    }
+    if (euler_number(&bmap, 2)) |_| return error.AbsentLabelNotRefused else |err| {
+        if (err != error.BadLabel) return error.WrongAbsentError;
+    }
+
+    // --- DETERMINISM -- the same region reads the same topology twice ---------------------------------------------------------
+    const t1 = try topology_of(garden, &ring_img);
+    const t2 = try topology_of(garden, &ring_img);
+    if (t1.euler != t2.euler or t1.holes != t2.holes) return error.TopologyNotDeterministic;
+
+    print("GREEN image-euler-number: the EULER NUMBER of a segmented region -- its exact-integer TOPOLOGY (components - holes) by BIT-QUAD counting (S.B. Gray 1971), NO float and NO tolerance -- the DECISIVE crux: a solid 5x5 block reads Euler 1 (one part, no hole) and a hollow 5x5 ring reads Euler 0 (one part, one hole) though their outer contour, hull, and enclosing circle are byte-for-byte identical -- topology SEES the interior hole every convex reader is blind to and the inscribed disk only HINTS with a shrunken depth; the ORTHOGONALITY crux -- a plus and a ring are BOTH dented (image/shape_signature.rye reads solidity below one for each), so solidity MERGES them, yet the plus has no hole (Euler 1) and the ring has one (Euler 0), the Euler number the axis that separates a pair solidity collapses; a 5x9 block pierced twice reads Euler -1 (one part, two holes), the count running negative and staying exact by the bit-quad theorem E = (Q1 - Q3 - 2*QD) / 4 for the 8-connected foreground; hole_count / is_simply_connected / has_hole read the topology as a small integer; a label of zero or past the component count refuses BadLabel having tallied nothing; the same region reads deterministically\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: euler_number selftest\n", .{});
+    return 1;
+}
