@@ -1,0 +1,45 @@
+# serial_cycle_moved -- the succession with one region moved, which is the
+# one thing a re-declaration may never do while a lap is in flight.
+#
+# Every line here matches `serial_cycle_succession.bron` except one: the
+# arc `beech` writes and `cedar` reads is named `ask_bd` rather than
+# `ask_bc`. The shape survives the rename whole -- three domains, three
+# channels, every region one writer and one reader, one lap closing alder
+# to beech to cedar and home -- so a reader that only asks about shape
+# reports a ring and hands this document on.
+#
+# The move is invisible to shape and fatal to the work. A region's backing
+# store is addressed by the region's own name, so the asks a running domain
+# is placing into `ask_bc` at this very moment land in a store that nobody
+# under this document ever reads, and `ask_bd` opens empty at zero. A
+# supervisor swapping documents cannot know whether the domain it is
+# replacing has already exited or is still writing -- the outcome is
+# unreaped by definition -- so a document that is safe under one reading
+# and ruinous under the other must be refused under both.
+#
+# Read whole by `caravan/read.rye`; refused mid-flight by
+# `caravan/inflight.rye`.
+
+system serial_cycle_moved
+
+domain alder
+domain beech
+domain cedar
+
+channel alder beech
+channel beech cedar
+channel cedar alder
+
+region ask_ab 4096
+region ask_bd 4096
+region ask_ca 4096
+region taken 64
+
+grant ask_ab alder rw
+grant ask_ab beech r
+grant ask_bd beech rw
+grant ask_bd cedar r
+grant ask_ca cedar rw
+grant ask_ca alder r
+grant taken alder rw
+grant taken cedar r

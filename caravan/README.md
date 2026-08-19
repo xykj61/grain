@@ -1,7 +1,7 @@
 # Caravan -- Process Supervision
 
 **Language:** EN
-**Last updated:** `20260819.170944` (the standby ring lands -- a ring rebuilt around its loss, and the one repair a ring accepts)
+**Last updated:** `20260819.172105` (the inflight ring lands -- two documents standing at once, and the rule a supervisor keeps when it cannot know which one is true)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable -- process supervision ladder
 
@@ -45,6 +45,7 @@ Every ring here composes over the one before it. A later ring imports an earlier
 | gap | [`gap.rye`](gap.rye) | a middle of the ring falls mid-lap -- the debt standing in the region rather than in the process, and the one thing a fall swallows that a safe restart will not redo: the bell |
 | decline | [`decline.rye`](decline.rye) | a middle lost for good -- the domain declined by name once its attempts are spent, the circuit behind the hole free to run and report and wait, and no neighbor able to reach around it, refused by absence on one side and by rights on the other |
 | standby | [`standby.rye`](standby.rye) | a ring repaired around a domain it lost -- a standby named beside that domain refused as a second writer, a detour drawn in advance refused as a shape with a choice of laps, and the succession carrying every ask home over regions the loss left standing, at the price of bells it never inherits |
+| inflight | [`inflight.rye`](inflight.rye) | a ring re-declared while a lap is in flight -- the successor derived with one dependent unreaped beneath it, that dependent carrying its arc home under grants the newer document had already retired, the next spawn governed by the newer words absolutely, and a successor that moves one region refused under both readings at once |
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
@@ -311,6 +312,29 @@ So the repair is a re-declaration, and it is the finding:
 The succession is not free, and the cost sits at the seam rather than in the work. A channel carries the names of both its ends, so replacing a domain replaces its channels: `alder->birch` and `birch->cedar` are gone, `alder->beech` and `beech->cedar` stand new and silent at zero, and the ring alder already spent on birch is spent for good. **A standby inherits regions and never inherits a bell**, so the successor is woken again by name. That cost is proven rather than asserted: a probe that gave beech every one of birch's grants and never woke it by name heard its bell rung zero times and reported `Unheard`.
 
 The numbers state the claim: one middle declined after two attempts, six fresh directed bells standing beside the ring's own six, and four asks home across the repair. Witness: [`tools/caravan_standby_witness.rish`](../tools/caravan_standby_witness.rish), GREEN on metal, both RED paths proven before the green.
+
+
+## Why a Declaration Reaches a Domain Only at Its Spawn
+
+`standby.rye` repaired a ring by declaring it again, and every swap it made happened between steps: one domain had returned, the next had not begun, and the supervisor stood alone with both documents in its hands. `inflight.rye` asks the sharper question -- may a ring be re-declared while a lap is *in flight*, and what does a domain still running under the elder document owe a successor already derived from the newer one?
+
+The answer begins with something a supervisor cannot have. **A supervisor re-declaring mid-lap cannot know whether the domain it is replacing has finished.** Between the spawn and the reaping there is no outcome to read: the dependent may be mid-write, or it may have exited a microsecond ago and simply not been waited on. This module derives the successor exactly there, holding one unreaped dependent, and the ignorance is the permanent condition of the act rather than an accident of the test.
+
+**So the rights of a running domain are frozen at its spawn.** A dependent takes its grants from the words it was handed, and those words were written from the document that stood when it started. [`serial_cycle.bron`](systems/serial_cycle.bron) spawns `birch`; before that dependent is reaped the run derives [`serial_cycle_succession.bron`](systems/serial_cycle_succession.bron), whose table has no `birch` in it at all; and birch carries two asks from `ask_ab` to `ask_bc` anyway, under grants the newer document has already retired. The domain the successor replaced carried the ask that came home.
+
+**And a re-declaration governs from the swap forward.** The same table that could not touch the running birch refuses the next one absolutely: a step naming `birch` after the swap is turned away `UnknownDomain`, since a spawn derives from the document standing at that instant.
+
+Those two halves give the finding:
+
+> A declaration reaches a domain at the moment it is spawned, never after -- so a ring may be re-declared mid-lap, and the only documents safe to swap in are the ones that are safe under both readings at once, whether the replaced domain has finished or is still writing.
+
+Exactly one property answers to both readings: the regions may not move. [`serial_cycle_moved.bron`](systems/serial_cycle_moved.bron) reads as a whole ring and renames one arc, so a domain still writing would fill a store nobody under the newer document ever reads, while a domain that had already finished would be harmed not at all. A supervisor cannot tell those apart, so it refuses the document rather than the risk -- `RegionsMoved`, mid-flight, with the dependent still unreaped.
+
+What the swap does not carry is the ring itself. birch spent its ring on `birch->cedar`, a channel the succession no longer has, so the lap resumes only once the successor's side is woken by name -- the seam cost `standby.rye` named, now paid mid-lap. alder places two more under the newer document and rings `beech`, which finds four standing where it wrote none.
+
+One further thing the round found by running it: a refusal at the swap refuses the *successor*, never the running dependent. The first cut returned the refusal straight from between the spawn and the wait, abandoning a dependent it had spawned under a document that permitted every word of it. The supervisor now reaps what it started before it reports why the newer document was turned away.
+
+The numbers state the claim: one successor derived with one dependent unreaped beneath it, one step run to completion under a document that had already retired it, and four asks home with two of them carried by that retired domain. Witness: [`tools/caravan_inflight_witness.rish`](../tools/caravan_inflight_witness.rish), GREEN on metal, with the region guard proven load-bearing first -- disabled, the moved document read back as safe and the lap fell through to a bare outcome mismatch.
 
 ## Held
 
