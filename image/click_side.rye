@@ -1,0 +1,317 @@
+//! image/click_side.rye -- the TWO-ANCHOR WHICH-SIDE read: name a DIRECTED line by TWO anchor taps (from anchor A toward anchor B), then read
+//! which SIDE of that line a THIRD query tap's group falls on -- `left`, `on`, or `right`. Where image/click_collinear.rye collapsed the cross
+//! product's SIGN to a single yes/no (zero iff the three centers line up), this rung LIFTS that same sign to the full three-way orientation: the
+//! sign splits the plane into the two half-planes the collinearity read had merged, and the zero set (`on`) is exactly click_collinear's collinear
+//! case. Exact integers, NO float and NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/hit_test.rye names the ONE object under a point; image/overlap_clusters.rye's `cluster_of` names the
+//! connected group; image/click_bounds.rye's `click_bbox` reads a tapped group's handle FRAME; image/click_collinear.rye's
+//! `click_group_center_doubled` reads that frame's doubled (exact-integer) center and `three_collinear` reads the cross product's zero test. This
+//! rung reads the cross product's SIGN. A reading over readings: no plane of its own, no pixel written, no box re-measured.
+//!
+//! The DECISIVE crux: this relation is DIRECTED and ROLE-BEARING where collinearity was symmetric. Collinearity is a property of the UNORDERED
+//! triple -- every permutation reads the same verdict, because a line does not care which end you name first. WHICH-SIDE is not: the two anchors are
+//! an ORDERED pair naming a direction, and the query is a distinct third role, so the read is ANTISYMMETRIC in the anchors -- swapping A and B
+//! flips `left` <-> `right` while leaving `on` fixed. The cross product IS twice the signed area of the triangle (A, B, C), and its SIGN is the
+//! triangle's orientation: walking the canvas with x rightward and y downward, a query to your LEFT hand as you walk from A toward B reads `left`
+//! (a negative cross), a query to your right reads `right` (a positive cross), a query on the line reads `on` (a zero cross). The half-plane split
+//! is the box-is-a-prefilter lesson carried one step past collinearity: collinearity read only WHETHER the area vanished, this reads its SIGN.
+//!
+//! Shapes over six singleton objects on an 18x13 canvas -- A block box (2,5)-(3,6) center-doubled (5,11), B block box (10,5)-(11,6) center (21,11),
+//! U block box (6,1)-(7,2) center (13,3), W block box (6,9)-(7,10) center (13,19), N block box (14,5)-(15,6) center (29,11), E block box
+//! (10,9)-(11,10) center (21,19) -- no boxes overlap, so six singleton groups:
+//!
+//!   LEFT / ON / RIGHT on the horizontal line A -> B (pointing +x). U's center (13,3) sits ABOVE the line (smaller y, your left hand walking east) --
+//!   `left`. W's center (13,19) sits BELOW -- `right`. N's center (29,11) sits exactly ON the line (same doubled y) -- `on`, and `on` reads TRUE
+//!   exactly when image/click_collinear.rye's `three_collinear(A, B, N)` reads TRUE, the two rungs' zero sets identical.
+//!
+//!   ANTISYMMETRY -- reverse the anchors to B -> A and U flips to `right`, W to `left`, N stays `on`. The directed line has a handedness; the query's
+//!   own group never moved, only the direction we read it against.
+//!
+//!   ANY SLOPE -- the diagonal line A -> E (down-right) splits the plane too: B's center reads `left`, W's center reads `right`, so left/right is not
+//!   merely above/below -- the sign is the orientation against the actual directed line, of any slope.
+//!
+//!   SAME-SIDE -- given the directed line and TWO query taps, `same_side` reads whether both fall in the SAME open half-plane (both `left` or both
+//!   `right`). It is the exact DUAL of which_side's antisymmetry: reversing the anchors flips both queries together, so `same_side` is INVARIANT
+//!   under the swap where `which_side` is antisymmetric. A query `on` the line belongs to neither open side, so `same_side` reads FALSE if either is
+//!   `on` -- a point on the divider takes no side.
+//!
+//! A DEGENERATE line -- two distinct anchor groups whose frames happen to share a center -- has zero length and zero signed area with every query,
+//! so every query reads `on`, mathematically honest (a single point is a line every point lies on). For singleton groups this never arises: two
+//! distinct 8-components cannot share a bounding-box center, so a distinct-group line is always a real line. The refusal a real line DOES need is
+//! the two anchors being the SAME group -- a line needs two points -- which refuses `SameGroup` by name.
+//!
+//! Compose not braid. This rung OWNS only the sign-of-the-cross-product reads and the same-side test. image/click_collinear.rye owns
+//! `click_group_center_doubled` (the group's exact doubled center) and `three_collinear` (the zero test this rung cross-checks its `on` against);
+//! image/click_order.rye owns `click_group_id` (the click-to-group id for the anchor-distinctness guard); image/hit_test.rye owns the point-to-object
+//! arbiter; image/overlap_clusters.rye owns `cluster_of`. No box re-derived, no matrix recomputed, no pixel re-read.
+//!
+//! Everything is bounded before a byte: each tap resolves to at most one label through the hit test, each frame read the group length bounded by
+//! image/label.rye's `label_max_pixels`; the cross product runs in i64 so the doubled-coordinate differences never overflow. A which-side needs a
+//! real directed line, so two anchor taps sharing a group refuse `SameGroup` by name; a tap on background refuses `EmptyClick`; a point off the map
+//! refuses `PointOutOfBounds`, having read nothing. No network, no key, no funds -- the "which side of this divider" a surface names the day a keeper
+//! draws a line through two things and asks where a third one falls.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/click_side.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const hit_test = @import("hit_test.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const click_order = @import("click_order.rye");
+const click_collinear = @import("click_collinear.rye");
+
+pub const click_side_version = "20260819.073000";
+
+pub const ClickSideError = error{
+    SameGroup,
+};
+
+/// Which side of the DIRECTED line (from anchor A toward anchor B) a query group's center falls on. Read from the SIGN of the cross product of
+/// `(B - A)` and `(C - A)` over the exact doubled group centers -- the sign is the orientation of the triangle (A, B, C). The three cases partition
+/// the plane: two open half-planes plus the line itself.
+pub const Side = enum {
+    left, // the query center lies to the LEFT of the directed line A -> B (a negative cross, x-right y-down canvas)
+    on, // the query center lies exactly ON the line A -> B (a zero cross -- collinear with the two anchors)
+    right, // the query center lies to the RIGHT of the directed line A -> B (a positive cross)
+};
+
+/// Guard that the two ANCHOR taps land in two DISTINCT groups -- a directed line needs two points, so anchors sharing a group refuse `SameGroup`.
+/// Resolving each anchor to its group first means a MISS refuses `EmptyClick` and an off-map point refuses `PointOutOfBounds` before the
+/// distinctness test. The QUERY is a separate role and may coincide with an anchor (it then reads `on`), so it is not guarded here.
+fn assert_line_distinct(clustering: overlap_clusters.Clustering, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !void {
+    // invariant: the clustering and the map describe the same scene.
+    assert(clustering.components == map.count);
+
+    const ga = try click_order.click_group_id(clustering, map, ax, ay);
+    const gb = try click_order.click_group_id(clustering, map, bx, by);
+    // invariant: each anchor resolved to a real dense group id in range.
+    assert(ga >= 1);
+    assert(ga <= clustering.clusters);
+    assert(gb >= 1);
+    assert(gb <= clustering.clusters);
+    if (ga == gb) return error.SameGroup;
+}
+
+/// Read which SIDE of the directed line A -> B the query group C falls on. Expand each of the three taps to its whole group and read that group's
+/// doubled frame center (image/click_collinear.rye), then take the sign of the cross product `(B - A) x (C - A)`: negative reads `left`, zero reads
+/// `on`, positive reads `right`. Exact integer math in i64, no float and no tolerance. ANTISYMMETRIC in the two anchors -- reversing A and B flips
+/// `left` <-> `right` while `on` stays `on`. Refuses `SameGroup` when the two anchors share a group, `EmptyClick` on any miss, `PointOutOfBounds`
+/// off the map.
+pub fn which_side(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, cx: u32, cy: u32) !Side {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(graph.components == manifest.components);
+    assert(manifest.components == map.count);
+
+    try assert_line_distinct(clustering, map, ax, ay, bx, by);
+    const ca = try click_collinear.click_group_center_doubled(garden, graph, manifest, map, ax, ay);
+    const cb = try click_collinear.click_group_center_doubled(garden, graph, manifest, map, bx, by);
+    const cc = try click_collinear.click_group_center_doubled(garden, graph, manifest, map, cx, cy);
+
+    // the signed differences fit i64 easily (doubled pixel coordinates), so the cross product never overflows.
+    const abx: i64 = @as(i64, cb.cx2) - @as(i64, ca.cx2);
+    const aby: i64 = @as(i64, cb.cy2) - @as(i64, ca.cy2);
+    const acx: i64 = @as(i64, cc.cx2) - @as(i64, ca.cx2);
+    const acy: i64 = @as(i64, cc.cy2) - @as(i64, ca.cy2);
+    const cross: i64 = abx * acy - aby * acx;
+    // invariant: the sign partitions the plane -- a value reads exactly one of the three sides.
+    if (cross < 0) return .left;
+    if (cross > 0) return .right;
+    return .on;
+}
+
+/// TRUE when the query group C lies exactly ON the directed line A -> B -- the convenience read over `which_side`, equal to `three_collinear` over
+/// the three groups (this rung's zero set IS image/click_collinear.rye's collinear set). Refuses `SameGroup`, `EmptyClick`, `PointOutOfBounds` as
+/// `which_side` does.
+pub fn is_on_line(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, cx: u32, cy: u32) !bool {
+    const side = try which_side(garden, clustering, graph, manifest, map, ax, ay, bx, by, cx, cy);
+    return side == .on;
+}
+
+/// TRUE when TWO query groups C and D fall in the SAME open half-plane of the directed line A -> B -- both `left` or both `right`. A query `on` the
+/// line takes no side, so `same_side` reads FALSE when either is `on`. The exact DUAL of `which_side`'s antisymmetry: reversing the anchors flips
+/// both queries together, so `same_side` is INVARIANT under the swap. Refuses `SameGroup` when the anchors share a group, `EmptyClick` on any miss,
+/// `PointOutOfBounds` off the map.
+pub fn same_side(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, cx: u32, cy: u32, dx: u32, dy: u32) !bool {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+
+    const sc = try which_side(garden, clustering, graph, manifest, map, ax, ay, bx, by, cx, cy);
+    const sd = try which_side(garden, clustering, graph, manifest, map, ax, ay, bx, by, dx, dy);
+    return (sc == .left and sd == .left) or (sc == .right and sd == .right);
+}
+
+// --- selftest: the WHICH-SIDE sign lift over SIX singleton objects on an 18x13 canvas -- A box (2,5)-(3,6) center-doubled (5,11), B box
+//     (10,5)-(11,6) center (21,11), U box (6,1)-(7,2) center (13,3), W box (6,9)-(7,10) center (13,19), N box (14,5)-(15,6) center (29,11), E box
+//     (10,9)-(11,10) center (21,19). The directed line A -> B splits the plane, its sign the orientation; the two relations part in KIND from
+//     collinearity: which_side is ANTISYMMETRIC in the anchors, same_side INVARIANT under the swap ----------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- BUILD SIX SINGLETONS on an 18x13 canvas. Every pair sits at least 2 pixels apart (8-disconnected) and no boxes overlap, so six singleton
+    //     groups. A and B name the horizontal directed line; U above it, W below it, N on it, E for the diagonal line A -> E ---------------------
+    var scene = try make_canvas(garden, 18, 13, 0);
+    set_block(&scene, 2, 5, 2, 2); // A: box (2,5)-(3,6), center-doubled (5,11)
+    set_block(&scene, 10, 5, 2, 2); // B: box (10,5)-(11,6), center-doubled (21,11)
+    set_block(&scene, 6, 1, 2, 2); // U: box (6,1)-(7,2), center-doubled (13,3) -- ABOVE the A-B line
+    set_block(&scene, 6, 9, 2, 2); // W: box (6,9)-(7,10), center-doubled (13,19) -- BELOW the A-B line
+    set_block(&scene, 14, 5, 2, 2); // N: box (14,5)-(15,6), center-doubled (29,11) -- ON the A-B line
+    set_block(&scene, 10, 9, 2, 2); // E: box (10,9)-(11,10), center-doubled (21,19) -- for the diagonal A -> E
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 6) return error.SceneNotSixComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    // no boxes overlap, so each object is its own singleton group
+    if (clustering.clusters != 6) return error.NotSixGroups;
+
+    // one representative tap per object, so every read below rests on real hit-test arbiter reads
+    const a_x: u32 = 2;
+    const a_y: u32 = 5;
+    const b_x: u32 = 10;
+    const b_y: u32 = 5;
+    const u_x: u32 = 6;
+    const u_y: u32 = 1;
+    const w_x: u32 = 6;
+    const w_y: u32 = 9;
+    const n_x: u32 = 14;
+    const n_y: u32 = 5;
+    const e_x: u32 = 10;
+    const e_y: u32 = 9;
+
+    // confirm the doubled centers the crux leans on through image/click_collinear.rye
+    const ca = try click_collinear.click_group_center_doubled(garden, graph, manifest, &map, a_x, a_y);
+    if (ca.cx2 != 5 or ca.cy2 != 11) return error.CenterAWrong;
+    const cb = try click_collinear.click_group_center_doubled(garden, graph, manifest, &map, b_x, b_y);
+    if (cb.cx2 != 21 or cb.cy2 != 11) return error.CenterBWrong;
+    const cn = try click_collinear.click_group_center_doubled(garden, graph, manifest, &map, n_x, n_y);
+    if (cn.cx2 != 29 or cn.cy2 != 11) return error.CenterNWrong;
+
+    // --- LEFT / ON / RIGHT on the horizontal line A -> B (pointing +x). U above reads left, W below reads right, N on the line reads on ---------
+    if (try which_side(garden, clustering, graph, manifest, &map, a_x, a_y, b_x, b_y, u_x, u_y) != .left) return error.UNotLeft;
+    if (try which_side(garden, clustering, graph, manifest, &map, a_x, a_y, b_x, b_y, w_x, w_y) != .right) return error.WNotRight;
+    if (try which_side(garden, clustering, graph, manifest, &map, a_x, a_y, b_x, b_y, n_x, n_y) != .on) return error.NNotOn;
+
+    // --- THE `on` SET IS EXACTLY click_collinear's COLLINEAR SET -- which_side reads `on` iff three_collinear reads true, proven on metal --------
+    if (try is_on_line(garden, clustering, graph, manifest, &map, a_x, a_y, b_x, b_y, n_x, n_y) != true) return error.NNotOnLine;
+    if (try click_collinear.three_collinear(garden, clustering, graph, manifest, &map, a_x, a_y, b_x, b_y, n_x, n_y) != true) return error.NNotCollinear;
+    if (try is_on_line(garden, clustering, graph, manifest, &map, a_x, a_y, b_x, b_y, u_x, u_y) != false) return error.UOnLine;
+    if (try click_collinear.three_collinear(garden, clustering, graph, manifest, &map, a_x, a_y, b_x, b_y, u_x, u_y) != false) return error.UCollinear;
+
+    // --- ANTISYMMETRY -- reverse the anchors to B -> A: U flips left -> right, W flips right -> left, N stays on. The directed line has a hand ----
+    if (try which_side(garden, clustering, graph, manifest, &map, b_x, b_y, a_x, a_y, u_x, u_y) != .right) return error.UNotRightReversed;
+    if (try which_side(garden, clustering, graph, manifest, &map, b_x, b_y, a_x, a_y, w_x, w_y) != .left) return error.WNotLeftReversed;
+    if (try which_side(garden, clustering, graph, manifest, &map, b_x, b_y, a_x, a_y, n_x, n_y) != .on) return error.NNotOnReversed;
+
+    // --- ANY SLOPE -- the diagonal line A -> E (down-right) splits the plane too: B reads left, W reads right, so left/right is the orientation
+    //     against the actual directed line, NOT merely above/below ------------------------------------------------------------------------------
+    if (try which_side(garden, clustering, graph, manifest, &map, a_x, a_y, e_x, e_y, b_x, b_y) != .left) return error.BNotLeftDiagonal;
+    if (try which_side(garden, clustering, graph, manifest, &map, a_x, a_y, e_x, e_y, w_x, w_y) != .right) return error.WNotRightDiagonal;
+
+    // --- SAME-SIDE -- W and E both below the A-B line read same_side TRUE (both right); U and W on opposite sides read FALSE --------------------
+    if (try same_side(garden, clustering, graph, manifest, &map, a_x, a_y, b_x, b_y, w_x, w_y, e_x, e_y) != true) return error.WESameSideWrong;
+    if (try same_side(garden, clustering, graph, manifest, &map, a_x, a_y, b_x, b_y, u_x, u_y, w_x, w_y) != false) return error.UWSameSideWrong;
+
+    // --- SAME-SIDE IS INVARIANT UNDER THE ANCHOR SWAP where which_side is ANTISYMMETRIC -- reversing A,B flips both queries together, so W and E
+    //     still read same_side TRUE (now both left) ----------------------------------------------------------------------------------------------
+    if (try same_side(garden, clustering, graph, manifest, &map, b_x, b_y, a_x, a_y, w_x, w_y, e_x, e_y) != true) return error.WESameSideNotInvariant;
+
+    // --- A QUERY ON THE LINE TAKES NO SIDE -- N is on the A-B line, so same_side of N with the right-side W reads FALSE (a point on the divider
+    //     belongs to neither open half-plane) ---------------------------------------------------------------------------------------------------
+    if (try same_side(garden, clustering, graph, manifest, &map, a_x, a_y, b_x, b_y, n_x, n_y, w_x, w_y) != false) return error.OnLineTakesASide;
+
+    // --- THE QUERY MAY COINCIDE WITH AN ANCHOR (it then reads `on`) -- only the two ANCHORS must differ, the query is a separate role ----------
+    if (try which_side(garden, clustering, graph, manifest, &map, a_x, a_y, b_x, b_y, a_x, a_y) != .on) return error.QueryOnAnchorNotOn;
+
+    // --- TWO ANCHORS SHARING A GROUP REFUSE SameGroup -- a directed line needs two points, so both anchor taps on the SAME object A leave no line -
+    if (try hit_test.object_label_at(&map, 2, 5) != try hit_test.object_label_at(&map, 3, 6)) return error.APixelsNotSameObject;
+    if (which_side(garden, clustering, graph, manifest, &map, 2, 5, 3, 6, w_x, w_y)) |_| return error.SameGroupNotRefused else |err| {
+        if (err != error.SameGroup) return error.WrongSameGroupError;
+    }
+    if (same_side(garden, clustering, graph, manifest, &map, 2, 5, 3, 6, u_x, u_y, w_x, w_y)) |_| return error.SameSideSameGroupNotRefused else |err| {
+        if (err != error.SameGroup) return error.WrongSameSideSameGroupError;
+    }
+
+    // --- A MISS REFUSES EmptyClick -- a tap on background (0,0) belongs to no group, so which_side refuses EmptyClick whether the miss is an
+    //     anchor or the query -------------------------------------------------------------------------------------------------------------------
+    if (try hit_test.object_label_at(&map, 0, 0) != 0) return error.BackgroundNotEmpty;
+    if (which_side(garden, clustering, graph, manifest, &map, a_x, a_y, b_x, b_y, 0, 0)) |_| return error.MissQueryNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissQueryError;
+    }
+    if (which_side(garden, clustering, graph, manifest, &map, 0, 0, b_x, b_y, w_x, w_y)) |_| return error.MissAnchorNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissAnchorError;
+    }
+
+    // --- A POINT OFF THE MAP REFUSES PointOutOfBounds through the arbiter, having read nothing ---------------------------------------------------
+    if (which_side(garden, clustering, graph, manifest, &map, a_x, a_y, b_x, b_y, 18, 0)) |_| return error.OffMapNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapError;
+    }
+
+    // --- DETERMINISM -- the same directed line and query read the same side twice --------------------------------------------------------------
+    const s1 = try which_side(garden, clustering, graph, manifest, &map, a_x, a_y, b_x, b_y, u_x, u_y);
+    const s2 = try which_side(garden, clustering, graph, manifest, &map, a_x, a_y, b_x, b_y, u_x, u_y);
+    if (s1 != s2) return error.SideNotDeterministic;
+
+    print("GREEN image-click-side: the TWO-ANCHOR WHICH-SIDE read -- name a DIRECTED line by TWO anchor taps (from A toward B), then read which SIDE of it a THIRD query tap's group falls on (left / on / right), lifting image/click_collinear.rye's cross-product SIGN from a single zero-or-not test to the full three-way orientation, exact integers, NO float and NO tolerance -- the DECISIVE crux: this relation is DIRECTED and ROLE-BEARING where collinearity was symmetric, so which_side is ANTISYMMETRIC in the anchors (swapping A and B flips left <-> right while on stays on) where three_collinear was invariant under every permutation, the cross product twice the signed triangle area and its sign the triangle's orientation, the half-plane split the box-is-a-prefilter lesson carried one step past collinearity (collinearity read WHETHER the area vanished, this reads its SIGN). Over six singleton objects (A box (2,5)-(3,6) center (5,11), B box (10,5)-(11,6) center (21,11), U box (6,1)-(7,2) center (13,3), W box (6,9)-(7,10) center (13,19), N box (14,5)-(15,6) center (29,11), E box (10,9)-(11,10) center (21,19)): on the horizontal line A -> B, U above reads LEFT, W below reads RIGHT, N on the line reads ON -- and the ON set is EXACTLY click_collinear's collinear set (is_on_line iff three_collinear, proven on metal). ANTISYMMETRY -- reversing to B -> A flips U to right, W to left, N stays on. ANY SLOPE -- the diagonal A -> E splits the plane too (B left, W right), so left/right is the orientation against the actual line, not merely above/below. SAME-SIDE -- W and E both below read same_side TRUE, U and W opposite read FALSE, and same_side is INVARIANT under the anchor swap (both queries flip together) where which_side is antisymmetric; a query ON the line takes NO side (same_side of N with W reads FALSE, a point on the divider belongs to neither open half-plane). The query may coincide with an anchor (reads on) -- only the two anchors must differ. Two anchors sharing a group refuse SameGroup by name (a line needs two points); a background tap refuses EmptyClick; a point off the map refuses PointOutOfBounds having read nothing; the same line and query read the same side twice. Compose not braid over image/click_collinear.rye (click_group_center_doubled, three_collinear), image/click_order.rye (click_group_id), image/hit_test.rye (the point-to-object arbiter), and image/overlap_clusters.rye (cluster_of)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: click_side selftest\n", .{});
+    return 1;
+}
