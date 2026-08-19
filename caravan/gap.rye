@@ -360,6 +360,29 @@ fn do_home(
     return carry.Outcome.carried_ok;
 }
 
+/// Reads the index at the front of one region and changes nothing.
+///
+/// The one word this supervised path had no way to say. `place`, `pass`,
+/// and `home` each write something before they finish, so a rung whose
+/// whole question is DIRECTION -- who may write a region two domains hold
+/// -- had no step to put behind a reader. Peeking answers exactly what
+/// `cycle.rye`'s own peek answers, so one word keeps one spelling.
+/// Accreted for `commute.rye`; the three verbs a ring under fall asks are
+/// untouched by it.
+fn do_peek(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    task: cycle.Task,
+) u8 {
+    // invariant: a peek always names the one region it reads
+    assert(task.hops.count == 1);
+    // invariant: a peek names a region, never an empty word
+    assert(task.hops.name_at(0).len >= 1);
+    _ = queue.read_index(io, slot, task.hops.name_at(0)) catch |err|
+        return serve.reach_code(err);
+    return carry.Outcome.bytes_differed;
+}
+
 /// Attempts one step, dropping the dependent where the supervisor asked.
 ///
 /// Exported so a ring under a hole that stays open (`decline.rye`) runs the
@@ -378,7 +401,8 @@ pub fn attempt(
         .place => do_place(io, slot, peers, self_name, task),
         .pass => do_pass(io, slot, peers, self_name, task, fall, wake),
         .home => do_home(io, slot, peers, self_name, task),
-        // A ring under fall asks nothing the other three verbs answer, so
+        .peek => do_peek(io, slot, task),
+        // A ring under fall asks nothing the remaining verbs answer, so
         // they are refused here rather than half-carried.
         else => carry.Outcome.malformed,
     };

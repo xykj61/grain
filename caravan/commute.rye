@@ -1,0 +1,803 @@
+//! Caravan commute -- a region two domains only read, and the two rooms it
+//! opens at once.
+//!
+//! `overtake.rye` derived a lawful order from the declaration and named the
+//! discipline that made it safe: isolation and order are two questions, and
+//! neither borrows the other's answer. Whether two items may run at the
+//! same instant is `rolling.admissible`; whether one may run before another
+//! is `share_a_hop`. Both ask the same thing of the document -- which
+//! regions does each side touch -- and both stop there. This rung asks what
+//! the grants say past that point.
+//!
+//! **They say who writes.** Every grant in every declaration this arc has
+//! read carries a permission beside its region, and a region held read-only
+//! by two domains is a fact they agree about rather than a hazard between
+//! them. Neither can see the other's hand in it, because neither has a
+//! hand. So a shared region conflicts only when at least one of the two
+//! sides may write it -- and that sentence is true in **both** rooms.
+//!
+//! **One refinement, two rooms, and the write closes exactly one of them.**
+//! The module measures that separation rather than assuming it:
+//!
+//!   * Over a lap of three clients reading one published region, direction
+//!     converts the whole of it. A test that counts any shared region as a
+//!     hazard holds the table at one dependent and leaves **6 slot-turns**
+//!     unspent; reading the grants fills the table to **3** and leaves
+//!     **none**, taking **2 lawful passes** two items back.
+//!   * Over a lap whose head *writes* that region, the order half converts
+//!     **nothing** -- zero lawful passes under both readings, since the
+//!     publisher's write orders every reader behind it. The isolation half
+//!     still converts **2 slot-turns**, because two clients reading may
+//!     hold the machine together even while no pass between them is
+//!     lawful. Two rooms, one refinement, one closed and one open.
+//!
+//! **The control keeps direction and spends it too freely.** `reads_free`
+//! orders a pair only when **both** sides may write, which reads a
+//! write-then-read pair as commuting. That pair is the arc itself: the
+//! passer writes `back_b` and the taker reads it. Handed a lap where the
+//! taker sits behind its own passer, the control takes first, the home
+//! hears no bell that was never rung, and the run refuses -- faster and
+//! wrong, measured rather than argued.
+//!
+//! **Nothing new is declared, again.** `serial_three_clients_menu.bron`
+//! adds the one thing an ordinary server has that the elder shape never
+//! carried -- something published once and read by everyone -- and adds no
+//! new kind of word to say it. The direction was in the grants from the
+//! first declaration this arc ever read.
+//!
+//! Hosted ground: real processes, real files, pure policy, no kernel
+//! underneath it yet.
+//!
+//! Usage:
+//!   commute selftest                  Run the readings against each other
+//!   commute                           Same as selftest
+//!   commute dependent <domain> <plan> ... Run as a supervised dependent (internal)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const capabilities = @import("capabilities.rye");
+const roster = @import("roster.rye");
+const read = @import("read.rye");
+const boot = @import("boot.rye");
+const exercise = @import("exercise.rye");
+const carry = @import("carry.rye");
+const notify = @import("notify.rye");
+const roundtrip = @import("roundtrip.rye");
+const cycle = @import("cycle.rye");
+const gap = @import("gap.rye");
+const relay = @import("relay.rye");
+const cohort = @import("cohort.rye");
+const rolling = @import("rolling.rye");
+const overtake = @import("overtake.rye");
+
+const caravan_commute_version = "20260819.190500";
+
+// =========================================================================
+// The bounds -- the elder shape, plus one region everybody reads
+// =========================================================================
+
+/// The three-client shape with a published region added and nothing else
+/// changed. A fifth question of one declaration, asked of one more grant.
+pub const declaration_path = "caravan/systems/serial_three_clients_menu.bron";
+
+/// How many dependents of one document this supervisor holds unreaped at once.
+pub const max_in_flight: u32 = cohort.max_in_flight;
+
+/// How many items one ordered queue carries.
+pub const max_queue_len: u32 = rolling.max_queue_len;
+
+/// How many still-waiting items past the head one turn may weigh.
+pub const max_lookahead: u32 = overtake.max_lookahead;
+
+/// A dependent's fixed argv, unchanged from the rungs before it.
+pub const fixed_argv_words: u32 = cohort.fixed_argv_words;
+
+comptime {
+    // invariant: a queue holds more than one full table, or a pass is moot
+    assert(max_queue_len > max_in_flight);
+    // invariant: a look reaches past a full table, or it could never find room
+    assert(max_lookahead >= max_in_flight);
+    // invariant: a look stays inside the queue it walks
+    assert(max_lookahead < max_queue_len);
+}
+
+/// Renders one outcome code as the words an operator reads.
+pub fn outcome_name(code: u8) []const u8 {
+    return cohort.outcome_name(code);
+}
+
+// =========================================================================
+// The three readings -- how much of a grant each one spends
+// =========================================================================
+
+/// How deeply a reading looks into a shared region.
+///
+/// `by_region` is the elder answer, carried here unchanged so the two are
+/// compared over one program: any region held by both sides is a conflict,
+/// in both rooms. `by_grant` is this rung: a shared region conflicts only
+/// where one of the two sides may write it. `reads_free` exists to be
+/// proven wrong -- it spends direction too freely, ordering a pair only
+/// where both sides write.
+pub const Direction = enum { by_region, by_grant, reads_free };
+
+/// Renders one reading as the words an operator reads.
+pub fn direction_words(d: Direction) []const u8 {
+    return switch (d) {
+        .by_region => "any shared region",
+        .by_grant => "a shared region one side writes",
+        .reads_free => "a shared region both sides write",
+    };
+}
+
+/// Why a queue may not run as it was handed over.
+pub const RunError = overtake.RunError;
+
+/// What one run did, reported whole -- the same shape `overtake.rye`
+/// reports, so the two rungs' numbers stand side by side unconverted.
+pub const Report = overtake.Report;
+
+/// One item of an ordered queue: the same assignment shape a stage carries.
+pub const Item = rolling.Item;
+
+// =========================================================================
+// Direction -- read from the grants, declared nowhere
+// =========================================================================
+
+/// Answers whether a named domain may write a named region.
+///
+/// The whole of this rung's new knowledge, and it is one call into the map
+/// the declaration already built. A region a domain holds read-only answers
+/// false; a region it was never granted answers false too, which is safe in
+/// both rooms since a domain that cannot reach a region can never disturb
+/// one.
+pub fn writes(sys: *const system.System, domain_name: []const u8, region_name: []const u8) bool {
+    // invariant: a direction question always names both sides
+    assert(domain_name.len >= 1);
+    assert(region_name.len >= 1);
+    return sys.map.may_write(region_name, domain_name);
+}
+
+/// Answers whether two declared domains hold a region one of them may write.
+///
+/// The isolation half. `relay.share_a_region` already walks the grant pairs
+/// and answers which regions two domains hold in common; this asks the same
+/// walk one question further, so the elder reading stays exactly itself and
+/// the new one is the elder plus a permission.
+pub fn pair_contends(sys: *const system.System, a: u32, b: u32, dir: Direction) bool {
+    // invariant: sharing is a question about two different domains
+    assert(a != b);
+    // invariant: both indices address the declared roster
+    assert(a < sys.graph.domain_count);
+    assert(b < sys.graph.domain_count);
+    if (dir == .by_region) return relay.share_a_region(sys, a, b);
+    if (!relay.share_a_region(sys, a, b)) return false;
+
+    const name_a = sys.graph.domains[a].name_slice();
+    const name_b = sys.graph.domains[b].name_slice();
+    var i: u32 = 0;
+    while (i < sys.map.region_count) : (i += 1) {
+        // invariant: the walk stays inside the declared region roster
+        assert(i < sys.map.region_count);
+        const region = sys.map.regions[i].slot.name_slice();
+        if (!sys.map.may_read(region, name_a)) continue;
+        if (!sys.map.may_read(region, name_b)) continue;
+        if (writes(sys, name_a, region) or writes(sys, name_b, region)) return true;
+    }
+    // invariant: every declared region was weighed, none skipped
+    assert(i == sys.map.region_count);
+    return false;
+}
+
+/// Answers whether the head may enter beside the dependents running now.
+///
+/// `rolling.admissible` unchanged for the elder reading, and the same
+/// question asked of the grants for the other two. The doorbell test stays
+/// exactly where it was: a channel joins two domains whatever they may do
+/// to their memory, so direction has nothing to say about it.
+pub fn admissible(
+    sys: *const system.System,
+    live: []const cohort.Running,
+    head: Item,
+    dir: Direction,
+) bool {
+    // invariant: a queued item always names a domain
+    assert(head.domain.len >= 1);
+    if (dir == .by_region) return rolling.admissible(sys, live, head);
+    const d = sys.graph.find_domain(head.domain) orelse return false;
+    var i: u32 = 0;
+    while (i < live.len) : (i += 1) {
+        const running = sys.graph.find_domain(live[i].domain) orelse return false;
+        if (running == d) return false;
+        if (pair_contends(sys, d, running, dir)) return false;
+        if (sys.graph.find_channel(d, running) != null) return false;
+    }
+    // invariant: every running dependent was weighed against the head, none skipped
+    assert(i == live.len);
+    return true;
+}
+
+/// Answers whether two items must keep the order the queue wrote them in.
+///
+/// The order half. `overtake.share_a_hop` answers the elder reading whole;
+/// past it, each region the two items hold in common is asked who may write
+/// it. A hop the declaration does not name orders the pair, since an item
+/// whose ground cannot be found is never safe to reorder.
+pub fn items_contend(sys: *const system.System, a: Item, b: Item, dir: Direction) bool {
+    // invariant: an item always names at least one arc to work
+    assert(a.hops.len >= 1);
+    assert(b.hops.len >= 1);
+    if (dir == .by_region) return overtake.share_a_hop(sys, a, b);
+    if (!overtake.share_a_hop(sys, a, b)) return false;
+
+    var walked: u32 = 0;
+    var arcs_a = std.mem.splitScalar(u8, a.hops, ',');
+    while (arcs_a.next()) |hop_a| {
+        // invariant: the walk stays inside the hops one plan may carry
+        assert(walked < cycle.max_hops);
+        walked += 1;
+        const region_a = sys.map.find_region(hop_a) orelse return true;
+        var arcs_b = std.mem.splitScalar(u8, b.hops, ',');
+        while (arcs_b.next()) |hop_b| {
+            const region_b = sys.map.find_region(hop_b) orelse return true;
+            if (region_a != region_b) continue;
+            const wrote_a = writes(sys, a.domain, hop_a);
+            const wrote_b = writes(sys, b.domain, hop_b);
+            if (dir == .reads_free) {
+                if (wrote_a and wrote_b) return true;
+            } else if (wrote_a or wrote_b) return true;
+        }
+    }
+    // invariant: every arc the first item works was weighed, none skipped
+    assert(walked >= 1);
+    return false;
+}
+
+/// Counts the pairs of declared domains that may hold the machine at once.
+///
+/// Derived from `pair_contends` rather than from a formula, so a reading
+/// that changes the answer changes this number and says so out loud.
+pub fn free_pairs(sys: *const system.System, dir: Direction) u32 {
+    // invariant: the roster stays within the bound a graph holds
+    assert(sys.graph.domain_count >= 2);
+    var found: u32 = 0;
+    var a: u32 = 0;
+    while (a < sys.graph.domain_count) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b < sys.graph.domain_count) : (b += 1) {
+            if (pair_contends(sys, a, b, dir)) continue;
+            if (sys.graph.find_channel(a, b) != null) continue;
+            found += 1;
+        }
+    }
+    // invariant: the whole roster was paired, none skipped
+    assert(a == sys.graph.domain_count);
+    return found;
+}
+
+// =========================================================================
+// The supervisor -- one program, differing from `overtake.rye` in two calls
+// =========================================================================
+
+/// One dependent already reaped, held until the whole queue has drained.
+const Finished = struct {
+    domain: []const u8,
+    verb: cycle.Verb,
+    count: u32,
+    expect: u8,
+    code: u8,
+};
+
+/// Folds one reaped outcome into the report, or names the mismatch.
+fn judge_outcome(done: Finished, report_out: *Report) RunError!void {
+    // invariant: a judged dependent always names its domain
+    assert(done.domain.len >= 1);
+    // invariant: the report never counts more successes than dependents reaped
+    assert(report_out.succeeded <= report_out.reaped);
+    if (done.code != done.expect) {
+        print("    {s}: expected {s}, heard {s}\n", .{
+            done.domain, outcome_name(done.expect), outcome_name(done.code),
+        });
+        return error.OutcomeMismatch;
+    }
+    if (done.code == carry.Outcome.carried_ok) {
+        report_out.succeeded += 1;
+        if (done.verb == .home) report_out.homed += done.count;
+    }
+}
+
+/// Everything one turn of the supervisor reads and moves.
+const Table = struct {
+    live: [max_in_flight]cohort.Running = undefined,
+    in_flight: u32 = 0,
+    done: [max_queue_len]Finished = undefined,
+    finished: u32 = 0,
+    taken: [max_queue_len]bool = @splat(false),
+    head: u32 = 0,
+    left: u32 = 0,
+};
+
+/// Moves the head to the first item still waiting.
+fn advance_head(table: *Table, queued: u32) void {
+    // invariant: a head never points past the queue it walks
+    assert(table.head <= queued);
+    while (table.head < queued and table.taken[table.head]) table.head += 1;
+}
+
+/// Answers whether an item may be admitted ahead of the queue's head.
+fn may_pass(
+    sys: *const system.System,
+    table: *const Table,
+    plan: []const Item,
+    candidate: u32,
+    dir: Direction,
+) bool {
+    // invariant: a pass always reaches forward, never at the head itself
+    assert(candidate > table.head);
+    var i: u32 = table.head;
+    while (i < candidate) : (i += 1) {
+        if (table.taken[i]) continue;
+        if (items_contend(sys, plan[i], plan[candidate], dir)) return false;
+    }
+    // invariant: the walk reached the candidate, weighing every item before it
+    assert(i == candidate);
+    return true;
+}
+
+/// Chooses one item from behind a blocked head, or answers that none may go.
+fn choose_pass(
+    sys: *const system.System,
+    table: *const Table,
+    plan: []const Item,
+    dir: Direction,
+) ?u32 {
+    // invariant: a pass is only ever sought while the head stands blocked
+    assert(table.head < plan.len);
+    var looked: u32 = 0;
+    var i: u32 = table.head + 1;
+    while (i < plan.len and looked < max_lookahead) : (i += 1) {
+        if (table.taken[i]) continue;
+        looked += 1;
+        if (!admissible(sys, table.live[0..table.in_flight], plan[i], dir)) continue;
+        if (!may_pass(sys, table, plan, i, dir)) continue;
+        return i;
+    }
+    // invariant: the look stayed inside the bound it was given
+    assert(looked <= max_lookahead);
+    return null;
+}
+
+/// Admits as much of the queue as the table, the isolation, and the reading
+/// allow, and answers how many dependents it started.
+fn fill_table(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    caps: *const capabilities.CapabilityTable,
+    plan: []const Item,
+    wake: gap.Wake,
+    dir: Direction,
+    table: *Table,
+    report_out: *Report,
+) (RunError || cohort.RunError || boot.BootError)!u32 {
+    var admitted: u32 = 0;
+    while (table.in_flight < max_in_flight and table.left > 0) {
+        advance_head(table, @intCast(plan.len));
+        // invariant: work still waiting always leaves a head to weigh
+        assert(table.head < plan.len);
+
+        var pick: u32 = table.head;
+        if (!admissible(sys, table.live[0..table.in_flight], plan[table.head], dir)) {
+            pick = choose_pass(sys, table, plan, dir) orelse break;
+            report_out.passes += 1;
+            const reach = pick - table.head;
+            if (reach > report_out.pass_reach) report_out.pass_reach = reach;
+        }
+
+        table.live[table.in_flight] = try cohort.spawn_one(
+            allocator,
+            io,
+            self_path,
+            sys,
+            caps,
+            plan[pick],
+            wake,
+        );
+        table.in_flight += 1;
+        table.taken[pick] = true;
+        table.left -= 1;
+        admitted += 1;
+        report_out.admitted += 1;
+    }
+    // invariant: a fill never overruns the table it fills
+    assert(table.in_flight <= max_in_flight);
+    return admitted;
+}
+
+/// Waits on the eldest dependent, records what it answered, and closes the table
+/// over the slot it leaves.
+fn reap_oldest(io: std.Io, table: *Table, report_out: *Report) cohort.RunError!void {
+    // invariant: a reaping always has a dependent to wait on
+    assert(table.in_flight >= 1);
+    // invariant: a reaping never overruns the record it is kept in
+    assert(table.finished < max_queue_len);
+    const code = try cohort.reap_one(io, &table.live[0]);
+    table.done[table.finished] = .{
+        .domain = table.live[0].domain,
+        .verb = table.live[0].verb,
+        .count = table.live[0].count,
+        .expect = table.live[0].expect,
+        .code = code,
+    };
+    table.finished += 1;
+    table.in_flight -= 1;
+    report_out.reaped += 1;
+    report_out.turns += 1;
+
+    var s: u32 = 0;
+    while (s < table.in_flight) : (s += 1) table.live[s] = table.live[s + 1];
+    // invariant: the table closed over the reaped dependent, none lost
+    assert(s == table.in_flight);
+}
+
+/// Runs an ordered queue under one reading, reaping one dependent per turn.
+///
+/// The program is `overtake.rye`'s, and the whole difference between the
+/// readings lives in two calls inside `fill_table` -- `admissible` and
+/// `items_contend`. Everything after them is shared, so a difference in the
+/// report is a difference in how deeply a grant was read.
+pub fn run_queue(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Item,
+    wake: gap.Wake,
+    dir: Direction,
+    report_out: *Report,
+) (roster.RosterError || exercise.ProvisionError || notify.BellError || RunError || cohort.RunError || boot.BootError)!void {
+    // invariant: a run always knows what program to spawn
+    assert(self_path.len >= 1);
+    if (plan.len == 0) return error.EmptyQueue;
+    if (plan.len > max_queue_len) return error.QueueTooLong;
+
+    const provisioned = try exercise.provision(io, sys);
+    // invariant: every declared region has a backing store before any dependent runs
+    assert(provisioned == sys.map.region_count);
+    report_out.bells = try roundtrip.provision_directed(io, sys);
+
+    const caps = try roster.from_system(sys);
+    // invariant: the derived table enforces exactly what the document permits
+    assert(roster.agrees(sys, &caps));
+    report_out.queued = @intCast(plan.len);
+
+    var open: Table = .{};
+    open.left = @intCast(plan.len);
+    while (open.left > 0 or open.in_flight > 0) {
+        const admitted_now = try fill_table(
+            allocator, io, self_path, sys, &caps, plan, wake, dir, &open, report_out,
+        );
+        if (open.in_flight > report_out.peak_in_flight) report_out.peak_in_flight = open.in_flight;
+
+        if (open.left > 0) {
+            const free = max_in_flight - open.in_flight;
+            report_out.slots_unspent += free;
+            if (admitted_now == 0 and free > 0) report_out.idle_turns += 1;
+        }
+
+        // With an empty table nothing conflicts, so a stall here would mean
+        // the queue named a domain the document does not.
+        if (open.in_flight == 0) return error.OrderStalled;
+        try reap_oldest(io, &open, report_out);
+    }
+    // invariant: the whole queue was admitted and every dependent reaped
+    assert(open.left == 0);
+    assert(open.in_flight == 0);
+    assert(report_out.reaped == report_out.admitted);
+    assert(open.finished == plan.len);
+
+    var j: u32 = 0;
+    while (j < open.finished) : (j += 1) try judge_outcome(open.done[j], report_out);
+    // invariant: every reaped dependent was judged, none skipped
+    assert(j == open.finished);
+}
+
+// =========================================================================
+// The three laps -- one read together, one published, one that breaks
+// =========================================================================
+
+/// A lap where a blocked head and the items behind it only read one region.
+///
+/// The first client places into its own arc and the second item is that
+/// same client again, so the head can never stand beside it. Behind them
+/// two other clients wait to read `menu`, which nobody in that group may
+/// write. A reading that counts any shared region as a hazard holds the
+/// table at one dependent through the whole lap.
+const shared_read_queue = [_]Item{
+    .{ .domain = "client_a", .verb = .place, .hops = "ask_a", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_a", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed },
+    .{ .domain = "client_b", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed },
+    .{ .domain = "client_c", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed },
+};
+
+/// A lap whose head writes the very region the items behind it read.
+///
+/// The publisher stands at the head, and every reader behind it holds the
+/// region it is about to change. No pass is lawful under either reading,
+/// and the two readers still meet at the end of the lap -- the order half
+/// closed, the isolation half open.
+const published_queue = [_]Item{
+    .{ .domain = "client_a", .verb = .place, .hops = "ask_a", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "serial_virt", .verb = .place, .hops = "menu", .peers = "client_a", .count = 1, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_b", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed },
+    .{ .domain = "client_c", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed },
+};
+
+/// A lap where a taker sits behind its own passer, with room to pass it.
+///
+/// The passer writes `back_b` and the taker reads it, so the pair carries
+/// the arc. `by_grant` refuses the pass on exactly that write; `reads_free`
+/// wants both sides writing before it will order anything, reads the pair
+/// as commuting, and takes what was never passed.
+const arc_queue = [_]Item{
+    .{ .domain = "client_b", .verb = .place, .hops = "ask_b", .peers = "serial_virt", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_c", .verb = .place, .hops = "ask_c", .peers = "serial_virt", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "serial_virt", .verb = .pass, .hops = "ask_b,back_b", .peers = "client_b,client_b", .count = 2, .expect = carry.Outcome.carried_ok },
+    .{ .domain = "client_b", .verb = .home, .hops = "back_b,taken_b", .peers = "serial_virt", .count = 2, .expect = carry.Outcome.carried_ok },
+};
+
+// =========================================================================
+// Self-test
+// =========================================================================
+
+/// Loads one declaration, or names why it could not be read.
+fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
+    const parsed = read.load(io, path, buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ path, @errorName(err) });
+        return null;
+    };
+    if (parsed.verify() != .whole) {
+        print("  RED: {s} did not read whole\n", .{path});
+        return null;
+    }
+    return parsed;
+}
+
+/// Runs one queue under one reading and answers its report.
+fn run_one(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Item,
+    dir: Direction,
+    report_out: *Report,
+) bool {
+    run_queue(allocator, io, self_path, sys, plan, .when_moved, dir, report_out) catch |err| {
+        print("  RED: a queue did not survive its run: {s}\n", .{@errorName(err)});
+        return false;
+    };
+    return true;
+}
+
+/// Both tests read straight, before any supervisor spends them.
+fn check_direction(io: std.Io) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const sys = load_one(io, declaration_path, &buf) orelse return 1;
+
+    const read_b = shared_read_queue[2];
+    const read_c = shared_read_queue[3];
+    const publish = published_queue[1];
+    const place_b = arc_queue[0];
+    const passer = arc_queue[2];
+    const taker = arc_queue[3];
+
+    if (!items_contend(&sys, read_b, read_c, .by_region)) {
+        print("  RED: the elder reading let two readers of one region swap\n", .{});
+        return 1;
+    }
+    if (items_contend(&sys, read_b, read_c, .by_grant)) {
+        print("  RED: two readers of one region read as ordered\n", .{});
+        return 1;
+    }
+    if (!items_contend(&sys, publish, read_b, .by_grant)) {
+        print("  RED: a publisher and its reader read as free to swap\n", .{});
+        return 1;
+    }
+    if (!items_contend(&sys, place_b, passer, .by_grant)) {
+        print("  RED: an ask and its passer read as free to swap\n", .{});
+        return 1;
+    }
+    if (!items_contend(&sys, passer, taker, .by_grant)) {
+        print("  RED: a passer and its taker read as free to swap\n", .{});
+        return 1;
+    }
+    if (items_contend(&sys, passer, taker, .reads_free)) {
+        print("  RED: the control ordered a pair only one side writes\n", .{});
+        return 1;
+    }
+
+    const virt = sys.graph.find_domain("serial_virt") orelse return 1;
+    const a = sys.graph.find_domain("client_a") orelse return 1;
+    const b = sys.graph.find_domain("client_b") orelse return 1;
+    if (!pair_contends(&sys, a, b, .by_region)) {
+        print("  RED: the elder reading let two readers hold the machine at once\n", .{});
+        return 1;
+    }
+    if (pair_contends(&sys, a, b, .by_grant)) {
+        print("  RED: two clients sharing only a read read as unable to run together\n", .{});
+        return 1;
+    }
+    if (!pair_contends(&sys, virt, a, .by_grant)) {
+        print("  RED: the publisher and a client read as isolated\n", .{});
+        return 1;
+    }
+    // invariant: both tests are symmetric, since swapping a pair is one act
+    assert(!items_contend(&sys, read_c, read_b, .by_grant));
+    assert(!pair_contends(&sys, b, a, .by_grant));
+
+    const narrow = free_pairs(&sys, .by_region);
+    const wide = free_pairs(&sys, .by_grant);
+    if (narrow != 0 or wide != 3) {
+        print("  RED: {d} pairs may run together by region and {d} by grant\n", .{ narrow, wide });
+        return 1;
+    }
+    print("  a region two domains only read is a fact they agree about, never a hazard\n", .{});
+    print("  the publisher's write orders every reader behind it, in both readings\n", .{});
+    print("  pairs free to hold the machine at once: {d} by region, {d} by grant\n", .{ narrow, wide });
+    return 0;
+}
+
+/// The reading lap: nobody writes what everybody holds, so it all converts.
+fn check_shared_read(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const sys = load_one(io, declaration_path, &buf) orelse return 1;
+
+    var coarse: Report = .{};
+    if (!run_one(allocator, io, self_path, &sys, &shared_read_queue, .by_region, &coarse)) return 1;
+    var fine: Report = .{};
+    if (!run_one(allocator, io, self_path, &sys, &shared_read_queue, .by_grant, &fine)) return 1;
+
+    if (coarse.slots_unspent == 0) {
+        print("  RED: the elder reading spent every slot on a lap built to hold three\n", .{});
+        return 1;
+    }
+    if (fine.slots_unspent != 0) {
+        print("  RED: reading the grants left {d} slot-turns unspent\n", .{fine.slots_unspent});
+        return 1;
+    }
+    if (fine.passes == 0) {
+        print("  RED: no item passed a head it shares only a read with\n", .{});
+        return 1;
+    }
+    // invariant: the two readings ran the same queue to the same end
+    assert(fine.reaped == coarse.reaped);
+    assert(fine.reaped == shared_read_queue.len);
+    assert(fine.succeeded == coarse.succeeded);
+    // invariant: the elder reading never found room for a second dependent
+    assert(coarse.peak_in_flight == 1);
+    print("  the reading lap leaves {d} slot-turns unspent by region and {d} by grant\n", .{
+        coarse.slots_unspent, fine.slots_unspent,
+    });
+    print("  nobody writes what everybody holds: {d} lawful passes, reaching {d} items back\n", .{
+        fine.passes, fine.pass_reach,
+    });
+    print("  {d} dependents run to the same end under both, at a peak of {d} against {d}\n", .{
+        fine.reaped, coarse.peak_in_flight, fine.peak_in_flight,
+    });
+    return 0;
+}
+
+/// The published lap: the write closes the order and leaves the instant open.
+fn check_published(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const sys = load_one(io, declaration_path, &buf) orelse return 1;
+
+    var coarse: Report = .{};
+    if (!run_one(allocator, io, self_path, &sys, &published_queue, .by_region, &coarse)) return 1;
+    var fine: Report = .{};
+    if (!run_one(allocator, io, self_path, &sys, &published_queue, .by_grant, &fine)) return 1;
+
+    if (coarse.passes != 0 or fine.passes != 0) {
+        print("  RED: {d} items passed a head that writes what they read\n", .{fine.passes});
+        return 1;
+    }
+    if (fine.slots_unspent >= coarse.slots_unspent) {
+        print("  RED: the isolation half converted nothing: {d} against {d}\n", .{
+            fine.slots_unspent, coarse.slots_unspent,
+        });
+        return 1;
+    }
+    // invariant: both readings ran the whole lap and judged every dependent
+    assert(fine.reaped == published_queue.len);
+    assert(coarse.reaped == published_queue.len);
+    // invariant: reading the grants never narrowed the table the elder held
+    assert(fine.peak_in_flight >= coarse.peak_in_flight);
+    print("  the published lap admits {d} lawful passes under both readings\n", .{fine.passes});
+    print("  the order half converts nothing; the isolation half converts {d} slot-turns of {d}\n", .{
+        coarse.slots_unspent - fine.slots_unspent, coarse.slots_unspent,
+    });
+    return 0;
+}
+
+/// The control: spending direction too freely is faster, and wrong.
+fn check_reads_free(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const sys = load_one(io, declaration_path, &buf) orelse return 1;
+
+    var kept: Report = .{};
+    if (!run_one(allocator, io, self_path, &sys, &arc_queue, .by_grant, &kept)) return 1;
+    if (kept.passes != 0) {
+        print("  RED: reading the grants passed a taker over its own passer\n", .{});
+        return 1;
+    }
+    if (kept.homed != 2) {
+        print("  RED: reading the grants brought {d} asks home, not 2\n", .{kept.homed});
+        return 1;
+    }
+
+    var loose: Report = .{};
+    var refused = false;
+    run_queue(allocator, io, self_path, &sys, &arc_queue, .when_moved, .reads_free, &loose) catch |err| {
+        if (err != error.OutcomeMismatch) {
+            print("  RED: the control refused as {s} rather than OutcomeMismatch\n", .{
+                @errorName(err),
+            });
+            return 1;
+        }
+        refused = true;
+    };
+    if (!refused) {
+        print("  RED: the control ran a taker before its passer and reported success\n", .{});
+        return 1;
+    }
+    if (loose.passes == 0) {
+        print("  RED: the control passed nobody, so it proved nothing\n", .{});
+        return 1;
+    }
+    if (loose.homed != 0) {
+        print("  RED: the control brought {d} asks home after refusing\n", .{loose.homed});
+        return 1;
+    }
+    // invariant: the control kept the isolation and spent only the order
+    assert(loose.peak_in_flight <= max_in_flight);
+    print("  reading the grants refuses the pass and brings {d} asks home\n", .{kept.homed});
+    print("  wanting both sides to write takes {d} pass and the home hears no bell: the run refuses\n", .{
+        loose.passes,
+    });
+    return 0;
+}
+
+fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    print("Caravan commute {s} -- self-test\n", .{caravan_commute_version});
+    const direction = check_direction(io);
+    if (direction != 0) return direction;
+    const shared = check_shared_read(allocator, io, self_path);
+    if (shared != 0) return shared;
+    const published = check_published(allocator, io, self_path);
+    if (published != 0) return published;
+    const loose = check_reads_free(allocator, io, self_path);
+    if (loose != 0) return loose;
+    print("  GREEN: a shared region is a hazard only where someone may write it\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
+        return cohort.run_dependent(io, args);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(allocator, io, self_path);
+    }
+    if (args.len >= 2) return 1;
+    return run_self_test(allocator, io, self_path);
+}
