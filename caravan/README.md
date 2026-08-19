@@ -1,7 +1,7 @@
 # Caravan -- Process Supervision
 
 **Language:** EN
-**Last updated:** `20260819.144641` (the restart ring lands -- a dependent falls mid-conversation, and the standing channel and the declared memory carry the restart home)
+**Last updated:** `20260819.152347` (the unprompted ring lands -- a client rings a server that never spoke first, and the bytes say what the bell could not)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable -- process supervision ladder
 
@@ -35,6 +35,8 @@ Every ring here composes over the one before it. A later ring imports an earlier
 | roundtrip | [`roundtrip.rye`](roundtrip.rye) | one declared channel carries both ways -- two directed doorbells per channel so a ring is unhearable by the dependent that rang it, a request answered on the region the answerer owns, and the ask still standing beside the answer when it comes home |
 | serve | [`serve.rye`](serve.rye) | one virtualiser serves two clients in one run -- each asked and answered on its own channel, a ring addressed to one client unhearable by the other, every message naming the client it belongs to, and the neighbor's memory refused at the wall |
 | restart | [`restart.rye`](restart.rye) | a served dependent falls mid-conversation and the supervisor carries it home -- eight named outcomes read as answers, one reserved code as a deliberate stop, every other code as a fall, the declared bell and the declared bytes standing through the fall, and a dependent that always falls declined by name after a bounded three restarts |
+| rederive | [`rederive.rye`](rederive.rye) | a restarted dependent's rights come from the document, never from the parent's memory -- every attempt reloads the declaration and derives its own line, a remembered line kept as a claim to check, and a disagreement met by a named policy: refuse, heal, or report |
+| unprompted | [`unprompted.rye`](unprompted.rye) | a client rings a server that has not spoken first -- one attending verb carrying both directions, an ask told from an answer by the bytes rather than by the bell, and a forged ask refused at the wall the declaration already stands |
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
@@ -160,6 +162,20 @@ That third policy is the crux, and it exists because the first cut of this ring 
 The count carries the other half. Four attempts across a real restart derive their rights four times, so a supervisor that read the file once and remembered it afterward would report fewer derivations than attempts. The cost of the whole property is one file read per attempt, and what it buys is that no running dependent's rights ever depend on how long its parent has been awake.
 
 Witness: [`tools/caravan_rederive_witness.rish`](../tools/caravan_rederive_witness.rish), GREEN on metal, with both RED paths proven before the green was trusted. Handing the dependent the remembered line rather than the freshly derived one tripped `line_agrees` inside `spawn_slot`, refusing the widened line before a process started -- which is the wall `boot.rye` built, holding here. Deriving once before the loop and reusing it broke the per-attempt count in `run_plan`, which is the same claim stated in reverse.
+
+## Why the Bytes Say What the Bell Cannot
+
+Every conversation up to `rederive.rye` began at the server. The virtualiser asked, the client answered, and a dependent waiting on a channel already knew what the next bell would mean, because its own parent had scheduled the ask that caused it. `unprompted.rye` inverts that: a client writes an ask into the memory it owns and rings a server that asked for nothing.
+
+The inversion raises the question the ring exists to answer. A doorbell carries no payload -- it is a count that went up -- so a server hearing a ring learns only that its peer did something. Guessing which something, from its own expectations, would put the schedule back in charge of the meaning. So `attend` hears, reads the region its peer writes, and lets what stands there decide: an ask addressed here it answers on the memory it owns, an answer it reports as an answer, and anything else it refuses by name. **Who spoke first is a fact of the shared memory, never of the bell.**
+
+The run states that claim in a form a reader can check. One verb carries a client-first conversation and a server-first one over the same wiring, and the two outcomes differ only because the bytes differed -- three attending steps, two of them answering an ask. `serial_two_clients.bron` never changes; only the order of who writes first does, since each side already writes memory it owns and reads memory its peer owns.
+
+What makes an unprompted ask trustworthy is the wall the declaration already stands. A client planting an ask in the server's own receive region is refused `WriteDenied` before a bell rings, so the region a message arrives on already names who wrote it, ahead of the first byte read. The bell says something happened; the grant says who could have made it happen; the bytes say what it was.
+
+Witness: [`tools/caravan_unprompted_witness.rish`](../tools/caravan_unprompted_witness.rish), GREEN on metal, both RED paths proven before the green was trusted. Making `attend` look only for an answer -- classifying by expectation rather than by what stands -- turned the unprompted ask into `bytes differed` and stopped the client-first conversation dead. Dropping the heard-count check let the server attend a peer that had never rung, which is the `Unheard` wall stated in reverse.
+
+One seam is named rather than assumed: this ring's `answer seen` report lives beside the shared outcome vocabulary in `carry.rye` rather than inside it, since `restart.rye` proves a partition over exactly the codes that vocabulary names today. A supervisor that ever runs both rings widens that partition deliberately.
 
 ## Held
 
