@@ -1,0 +1,40 @@
+# caravan_roster_witness.rish -- Caravan roster witness.
+#
+# Proves the supervisor obeys the declaration a witness checks: the capability
+# table derived from the document on disk, conserving every grant, agreeing
+# with the map over the whole declared cross product, and refusing by name a
+# whole declaration wider than the table seats.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_roster_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/roster"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/roster.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan roster build failed"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan roster selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan roster selftest not GREEN"
+assert test.out contains "the supervisor obeys the declaration" else "caravan roster selftest did not close the loop"
+assert test.out contains "nothing invented, nothing dropped" else "caravan roster selftest did not prove conservation"
+assert test.out contains "each in its own words" else "caravan roster selftest did not prove the shared refusal"
+assert test.out contains "never half-seated" else "caravan roster selftest did not prove the roster bound"
+
+# The worked example seats whole and enforces exactly what it declares.
+let worked = run ["sh" "-c" "${bin} caravan/systems/serial_stack.bron 2>&1"]
+assert worked.ok else "the worked example did not seat a roster"
+assert worked.out contains "dependents 3 -- capabilities 6 -- declared grants 6" else "the worked example did not conserve its grants"
+assert worked.out contains "enforces exactly what the document permits" else "the worked example roster did not agree with its map"
+
+# A whole declaration wider than the table refuses by the supervisor's own name.
+let wide = run ["sh" "-c" "${bin} caravan/systems/wide_roster.bron 2>&1"]
+assert wide.out contains "TooManyDomains" else "the wide declaration was not refused by name"
+
+# The grammar still refuses rwx before a roster is ever derived.
+let refused = run ["sh" "-c" "${bin} caravan/systems/write_execute.bron 2>&1"]
+assert refused.out contains "BadPermission" else "the rwx document reached the roster"
+
+say "GREEN: Caravan roster witness passed."
