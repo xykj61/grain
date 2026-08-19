@@ -1,0 +1,475 @@
+//! image/line_span.rye -- read a DIRECTED line named by TWO anchor taps (from anchor A toward anchor B) as an ALONG-SEGMENT position: for
+//! every object, is its GROUP center's foot BEFORE the A end, ON the finite span A..B, or BEYOND the B end. This is the BOUNDED twin of
+//! image/line_order.rye -- every line read so far (partition, order, distance, band) treats the two anchors as an INFINITE line, yet a
+//! keeper draws a FINITE stroke. `line_span` clamps line_order's unbounded projection to the segment's own two integer thresholds, 0 and the
+//! squared length, so the same exact dot that ranked the objects now tells the stroke's inside from its off-the-ends. NO float, NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/line_order.rye ranks objects by the DOT `(B - A) . (C - A)` of the doubled group centers, the
+//! position PARALLEL to the line, and that projection runs from minus-infinity to plus-infinity along the whole INFINITE line. This rung
+//! reads the SAME dot against the segment's two ends: the A end sits at projection 0 (there C = A), the B end at projection
+//! `len2 = (B - A) . (B - A)`, so an object's foot lands BEFORE A when its projection is negative, ON the span when it lies in the closed
+//! band `[0, len2]`, and BEYOND B when it exceeds `len2`. `span_of` reads one object's class; `on_segment` the convenience bool;
+//! `before_segment` / `on_segment_objects` / `beyond_segment` the three ascending sets; `span_counts` the three sizes at once; `is_in` a
+//! bounded membership over a returned set. It composes over the same public primitives line_order projects from -- a reading over readings,
+//! no plane of its own.
+//!
+//! The DECISIVE crux -- THE STROKE IS BOUNDED WHERE THE ORDER IS UNBOUNDED. line_order ranks every object on the infinite line, so an object
+//! can hold an ordinary rank yet fall OFF the finite stroke the keeper actually drew. Three facts on metal say it:
+//!
+//!   THE OFF-THE-ENDS OBJECTS RANK LIKE ANY OTHER. Over a horizontal segment A -> B, object X (left of A) reads line_order rank 0, the
+//!   FRONTMOST, and object Y (right of B) reads the BACKMOST -- the infinite line includes them at the ends of its order. Yet line_span
+//!   classes X `before_a` and Y `beyond_b`: BOTH outside the drawn stroke. The `on_span` set is exactly the CONTIGUOUS MIDDLE of line_order's
+//!   sequence, from the A anchor's rank to the B anchor's rank inclusive -- the stroke is a window cut out of the unbounded order.
+//!
+//!   THE SPAN IS ORTHOGONAL TO THE SIDE AND THE OFF-LINE DISTANCE. X sits exactly ON the infinite line (line_partition reads it `on`,
+//!   line_distance reads it 0) yet OUTSIDE the segment (`before_a`) -- on the line, off the stroke. Object N sits ABOVE the line
+//!   (line_partition reads it `left`, its off-line distance nonzero) yet INSIDE the segment (`on_span`) -- off the line, on the stroke. The
+//!   along-segment read cares only about the PARALLEL coordinate, blind to the perpendicular one the side and the distance read.
+//!
+//!   REVERSAL SWAPS THE ENDS AND FIXES THE MIDDLE. Reversing the anchors to B -> A reflects every projection through the segment:
+//!   `proj' = len2 - proj`, so `before_a` and `beyond_b` TRADE PLACES (X, once before the A end, is now beyond the new B end) while `on_span`
+//!   is INVARIANT -- the same objects, because a segment is one set of points read from either end. Where line_partition's reversal swaps the
+//!   two SIDES and line_order's reversal flips the WHOLE order, the segment's middle class stands perfectly still.
+//!
+//! Compose not braid. This rung OWNS only the along-segment classification -- the two integer thresholds `0` and `len2` and the three-way
+//! split they induce. image/line_order.rye owns the along-line projection (`project_label`) the selftest cross-checks every object against;
+//! image/line_partition.rye owns the cross-product side arbiter (`object_side`) the orthogonality crux reads; image/line_distance.rye owns
+//! the off-line magnitude (`distance_of`) the same crux reads; image/click_order.rye owns `click_group_id` (the anchor-distinctness guard);
+//! image/click_collinear.rye owns `click_group_center_doubled` and `CenterD` (the anchor centers whose squared delta is `len2`);
+//! image/overlap_clusters.rye and image/cluster_facts.rye own the object-to-group map and its union frame. No projection re-invented past
+//! the small exact kernel every line rung re-derives, no side re-judged -- every fact cross-checked through the primitive that proved it.
+//!
+//! Everything is bounded before a byte: the classification walk runs `components` times, itself bounded by image/label.rye's
+//! `label_max_pixels`; the projection and the squared length run in i64 so the doubled-coordinate products never overflow. A directed line
+//! needs two distinct points, so two anchor taps sharing a group refuse `SameGroup` by name; a tap on background refuses `EmptyClick`; a
+//! point off the map refuses `PointOutOfBounds`; a query naming a label past the object count refuses `BadTarget`, each having read nothing.
+//! No network, no key, no funds -- the "which things did my stroke actually reach, and which sit off its ends" a surface answers the day a
+//! keeper drags a finite line through the scene and asks it to hold only what the drawn length covers.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/line_span.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const hit_test = @import("hit_test.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const cluster_facts = @import("cluster_facts.rye");
+const click_order = @import("click_order.rye");
+const click_collinear = @import("click_collinear.rye");
+const line_order = @import("line_order.rye");
+const line_partition = @import("line_partition.rye");
+const line_distance = @import("line_distance.rye");
+
+pub const line_span_version = "20260819.090352";
+
+pub const LineSpanError = error{
+    BadTarget,
+};
+
+/// Where an object's foot falls along the FINITE stroke A..B -- BEFORE the A end, ON the closed span, or BEYOND the B end.
+pub const SpanClass = enum {
+    before_a,
+    on_span,
+    beyond_b,
+};
+
+/// The size of each along-segment class -- BEFORE, ON, BEYOND. The three always sum to the scene's component count, since every object's
+/// foot lands in exactly one class of the directed segment.
+pub const SpanCounts = struct {
+    before: u32 = 0,
+    on: u32 = 0,
+    beyond: u32 = 0,
+
+    /// The total objects accounted for -- the invariant sum a caller can cross-check against the component count.
+    pub fn total(self: *const SpanCounts) u32 {
+        return self.before + self.on + self.beyond;
+    }
+};
+
+/// The two anchor centers that name the directed line, held as doubled coordinates in i64 so the projection and squared length never
+/// overflow -- exactly the line image/line_order.rye projects along.
+const LineD = struct {
+    ax2: i64,
+    ay2: i64,
+    bx2: i64,
+    by2: i64,
+};
+
+/// Resolve the directed line from two anchor taps -- refuses `EmptyClick` on a miss and `PointOutOfBounds` off the map through the group id
+/// read, then `SameGroup` when the two anchors land in one group (a segment needs two distinct ends). Returns the two group centers as
+/// doubled coordinates, exactly the centers image/line_order.rye projects from.
+fn resolve_line(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !LineD {
+    // invariant: the clustering and the map describe the same scene.
+    assert(clustering.components == map.count);
+    // invariant: the graph and the manifest describe that same scene.
+    assert(graph.components == manifest.components);
+
+    const ga = try click_order.click_group_id(clustering, map, ax, ay);
+    const gb = try click_order.click_group_id(clustering, map, bx, by);
+    // invariant: each anchor resolved to a real dense group id.
+    assert(ga >= 1);
+    assert(gb >= 1);
+    if (ga == gb) return error.SameGroup;
+
+    const ca = try click_collinear.click_group_center_doubled(garden, graph, manifest, map, ax, ay);
+    const cb = try click_collinear.click_group_center_doubled(garden, graph, manifest, map, bx, by);
+    return LineD{ .ax2 = @as(i64, ca.cx2), .ay2 = @as(i64, ca.cy2), .bx2 = @as(i64, cb.cx2), .by2 = @as(i64, cb.cy2) };
+}
+
+/// The doubled center of the GROUP object `lbl` belongs to -- the object-to-group map (`cluster_of`) followed by the group's union frame
+/// (`cluster_bbox`), whose doubled midpoint is the exact group center. Every member of a multi-object group reads the SAME center.
+fn label_group_center(clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, lbl: u32) !click_collinear.CenterD {
+    // invariant: a real object label, never background.
+    assert(lbl >= 1);
+    const cid = try overlap_clusters.cluster_of(clustering, lbl);
+    const box = try cluster_facts.cluster_bbox(clustering, graph, cid);
+    // invariant: the frame is well-formed on both axes -- a real box to center.
+    assert(box.max_x >= box.min_x);
+    assert(box.max_y >= box.min_y);
+    return click_collinear.CenterD{ .cx2 = box.min_x + box.max_x, .cy2 = box.min_y + box.max_y };
+}
+
+/// The along-line PROJECTION of a group center: the dot product `(B - A) . (C - A)` over the doubled centers -- the exact key
+/// image/line_order.rye ranks by, re-derived here as the small exact kernel every line rung owns. Larger is farther toward B.
+fn projection_of(line: LineD, center: click_collinear.CenterD) i64 {
+    const abx: i64 = line.bx2 - line.ax2;
+    const aby: i64 = line.by2 - line.ay2;
+    const acx: i64 = @as(i64, center.cx2) - line.ax2;
+    const acy: i64 = @as(i64, center.cy2) - line.ay2;
+    return abx * acx + aby * acy;
+}
+
+/// The squared length of the directed segment in DOUBLED coordinates -- `(B - A) . (B - A)`, the projection of the B end itself. This is the
+/// upper threshold of the closed span `[0, len2]`; the A end sits at the lower threshold 0.
+fn segment_len2(line: LineD) i64 {
+    const abx: i64 = line.bx2 - line.ax2;
+    const aby: i64 = line.by2 - line.ay2;
+    const len2: i64 = abx * abx + aby * aby;
+    // invariant: a squared length is never negative.
+    assert(len2 >= 0);
+    return len2;
+}
+
+/// Classify a projection against the segment's two integer thresholds -- BEFORE the A end below 0, ON the closed span `[0, len2]`, BEYOND the
+/// B end above `len2`. The boundary is CLOSED at both ends: the anchors themselves (projection 0 and `len2`) read `on_span`. Pure and exact.
+fn classify(proj: i64, len2: i64) SpanClass {
+    // invariant: the span's upper threshold is a real squared length, never negative.
+    assert(len2 >= 0);
+    if (proj < 0) return .before_a;
+    if (proj > len2) return .beyond_b;
+    return .on_span;
+}
+
+/// Guard that a query label names a real object -- refuses `BadTarget` for background or a label past the object count, having read nothing.
+fn check_target(manifest: scene_manifest.Manifest, lbl: u32) !void {
+    if (lbl < 1 or lbl > manifest.components) return error.BadTarget;
+}
+
+/// Which along-segment class object `lbl`'s GROUP foot falls in under the directed segment A..B -- `before_a`, `on_span`, or `beyond_b`.
+/// Reads the object's group center, so every member of a connected group reads the SAME class. Refuses `BadTarget` for a label past the
+/// object count, and `SameGroup` / `EmptyClick` / `PointOutOfBounds` through the line resolution.
+pub fn span_of(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, lbl: u32) !SpanClass {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+
+    try check_target(manifest, lbl);
+    const line = try resolve_line(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const center = try label_group_center(clustering, graph, lbl);
+    return classify(projection_of(line, center), segment_len2(line));
+}
+
+/// TRUE when object `lbl`'s group foot falls ON the closed span A..B -- the convenience over `span_of == .on_span`. Refuses `BadTarget`,
+/// `SameGroup`, `EmptyClick`, `PointOutOfBounds`.
+pub fn on_segment(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, lbl: u32) !bool {
+    return (try span_of(garden, clustering, graph, manifest, map, ax, ay, bx, by, lbl)) == .on_span;
+}
+
+/// Collect the ascending SET of object labels whose group foot falls in the given `want` class of the directed segment. One resolve, then a
+/// single pass over the dense labels 1..components, so the result is strictly ascending and duplicate-free. The caller owns the slice.
+fn collect_class(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32, want: SpanClass) ![]u32 {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+    // invariant: the classification scan is bounded by the component count, itself under image/label.rye's pixel ceiling.
+    assert(manifest.components <= label.label_max_pixels);
+
+    const line = try resolve_line(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const len2 = segment_len2(line);
+    const scratch = try garden.alloc(u32, @as(usize, manifest.components));
+    var found: u32 = 0;
+    var lbl: u32 = 1;
+    while (lbl <= manifest.components) : (lbl += 1) {
+        const center = try label_group_center(clustering, graph, lbl);
+        if (classify(projection_of(line, center), len2) == want) {
+            scratch[@as(usize, found)] = lbl;
+            found += 1;
+        }
+    }
+    // invariant: no more objects can land in one class than the scene holds.
+    assert(found <= manifest.components);
+
+    const out = try garden.alloc(u32, @as(usize, found));
+    var k: usize = 0;
+    while (k < out.len) : (k += 1) out[k] = scratch[k];
+    // invariant: the result is strictly ascending -- the dense label order carried through the filter.
+    var v: usize = 1;
+    while (v < out.len) : (v += 1) assert(out[v] > out[v - 1]);
+    return out;
+}
+
+/// The ascending SET of object labels whose group foot falls BEFORE the A end of the directed segment A..B. Refuses `SameGroup`,
+/// `EmptyClick`, `PointOutOfBounds` through the line resolution.
+pub fn before_segment(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) ![]u32 {
+    return collect_class(garden, clustering, graph, manifest, map, ax, ay, bx, by, .before_a);
+}
+
+/// The ascending SET of object labels whose group foot falls ON the closed span A..B -- the CONTIGUOUS MIDDLE of image/line_order.rye's
+/// sequence, from the A anchor's rank to the B anchor's rank inclusive. The two anchor groups are always members. Refuses `SameGroup`,
+/// `EmptyClick`, `PointOutOfBounds`.
+pub fn on_segment_objects(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) ![]u32 {
+    return collect_class(garden, clustering, graph, manifest, map, ax, ay, bx, by, .on_span);
+}
+
+/// The ascending SET of object labels whose group foot falls BEYOND the B end of the directed segment A..B. Refuses `SameGroup`,
+/// `EmptyClick`, `PointOutOfBounds`.
+pub fn beyond_segment(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) ![]u32 {
+    return collect_class(garden, clustering, graph, manifest, map, ax, ay, bx, by, .beyond_b);
+}
+
+/// The three class SIZES at once -- BEFORE, ON, BEYOND -- summing to the component count. One resolve, one pass over the dense labels,
+/// classifying each by its group foot. Refuses `SameGroup`, `EmptyClick`, `PointOutOfBounds` through the line resolution.
+pub fn span_counts(garden: std.mem.Allocator, clustering: overlap_clusters.Clustering, graph: scene_graph.SceneGraph, manifest: scene_manifest.Manifest, map: *const label.LabelMap, ax: u32, ay: u32, bx: u32, by: u32) !SpanCounts {
+    // invariant: the clustering, the graph, the manifest, and the map describe the same scene.
+    assert(clustering.components == graph.components);
+    assert(manifest.components == map.count);
+
+    const line = try resolve_line(garden, clustering, graph, manifest, map, ax, ay, bx, by);
+    const len2 = segment_len2(line);
+    var counts = SpanCounts{};
+    var lbl: u32 = 1;
+    while (lbl <= manifest.components) : (lbl += 1) {
+        const center = try label_group_center(clustering, graph, lbl);
+        switch (classify(projection_of(line, center), len2)) {
+            .before_a => counts.before += 1,
+            .on_span => counts.on += 1,
+            .beyond_b => counts.beyond += 1,
+        }
+    }
+    // invariant: the three classes partition the scene -- every object's foot lands in exactly one.
+    assert(counts.total() == manifest.components);
+    return counts;
+}
+
+/// TRUE when `want` appears in an ascending span set -- a bounded membership read over the sorted result.
+pub fn is_in(set: []const u32, want: u32) bool {
+    // invariant: a real query names a foreground label, never background.
+    assert(want >= 1);
+    var i: usize = 0;
+    while (i < set.len) : (i += 1) {
+        if (set[i] == want) return true;
+    }
+    return false;
+}
+
+// --- selftest: the DECISIVE bounded-vs-unbounded crux (line_order ranks the off-the-ends objects like any other, yet line_span classes
+//     them off the finite stroke; on_span is the contiguous middle of the order); the span is orthogonal to side and off-line distance (on
+//     the line yet off the stroke; off the line yet on the stroke); reversal swaps the ends and fixes the middle; refusals by name;
+//     determinism -- every projection cross-checked against line_order.project_label -------------------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y). A 2x2 block's inclusive box is (x,y)-(x+1,y+1), so its
+/// doubled center is (2x+1, 2y+1) -- exact integers the selftest predicts by hand.
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- THE SCENE on a 24x12 canvas: six 2x2 singletons around a HORIZONTAL segment A -> B. A center-doubled (11,13), B center-doubled
+    //     (31,13), so the segment points +x with squared length len2 = (31-11)^2 = 400 and the two ends sit at projections 0 and 400. X is
+    //     LEFT of A (projection -160, BEFORE the stroke) yet exactly ON the infinite line; Y is RIGHT of B (projection 560, BEYOND the
+    //     stroke) yet exactly ON the infinite line; M is between the ends ON the line (projection 160); N is between the ends yet ABOVE the
+    //     line (projection 160, off the line). Raster order gives dense labels N=1, X=2, A=3, M=4, B=5, Y=6 -----------------------------------
+    var scene = try make_canvas(garden, 24, 12, 0);
+    set_block(&scene, 9, 2, 2, 2); // N: box (9,2)-(10,3),   center-doubled (19,5)  -- ABOVE the line, foot ON the span
+    set_block(&scene, 1, 6, 2, 2); // X: box (1,6)-(2,7),    center-doubled (3,13)  -- ON the infinite line, foot BEFORE the A end
+    set_block(&scene, 5, 6, 2, 2); // A: box (5,6)-(6,7),    center-doubled (11,13) -- anchor, the A end (projection 0)
+    set_block(&scene, 9, 6, 2, 2); // M: box (9,6)-(10,7),   center-doubled (19,13) -- ON the infinite line, foot ON the span
+    set_block(&scene, 15, 6, 2, 2); // B: box (15,6)-(16,7),  center-doubled (31,13) -- anchor, the B end (projection len2 = 400)
+    set_block(&scene, 19, 6, 2, 2); // Y: box (19,6)-(20,7),  center-doubled (39,13) -- ON the infinite line, foot BEYOND the B end
+
+    const map = try label.label_components(garden, &scene);
+    if (map.count != 6) return error.SceneNotSixComponents;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    if (clustering.clusters != 6) return error.NotSixClusters;
+
+    // dense labels: N=1, X=2, A=3, M=4, B=5, Y=6
+    const n_lbl: u32 = 1;
+    const x_lbl: u32 = 2;
+    const a_lbl: u32 = 3;
+    const m_lbl: u32 = 4;
+    const b_lbl: u32 = 5;
+    const y_lbl: u32 = 6;
+
+    // confirm the raster order landed the labels the scene predicts by their box corners
+    const n_entry = try scene_manifest.object_of(manifest, n_lbl);
+    if (n_entry.min_x != 9 or n_entry.min_y != 2) return error.NNotAtExpectedBox;
+    const x_entry = try scene_manifest.object_of(manifest, x_lbl);
+    if (x_entry.min_x != 1 or x_entry.min_y != 6) return error.XNotAtExpectedBox;
+    const y_entry = try scene_manifest.object_of(manifest, y_lbl);
+    if (y_entry.min_x != 19 or y_entry.min_y != 6) return error.YNotAtExpectedBox;
+
+    // the two anchor taps that name the HORIZONTAL directed segment A -> B (both taps land inside their own blocks)
+    const ax: u32 = 5;
+    const ay: u32 = 6;
+    const bx: u32 = 15;
+    const by: u32 = 6;
+
+    // --- THE THREE CLASSES -- X before the A end, {N, A, M, B} on the closed span, Y beyond the B end ------------------------------------
+    if (try span_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, x_lbl) != .before_a) return error.XNotBeforeA;
+    if (try span_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, a_lbl) != .on_span) return error.ANotOnSpan;
+    if (try span_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, m_lbl) != .on_span) return error.MNotOnSpan;
+    if (try span_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, b_lbl) != .on_span) return error.BNotOnSpan;
+    if (try span_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, y_lbl) != .beyond_b) return error.YNotBeyondB;
+
+    const counts = try span_counts(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    if (counts.before != 1 or counts.on != 4 or counts.beyond != 1) return error.SpanCountsWrong;
+    if (counts.total() != 6) return error.SpanCountsDoNotSum;
+
+    const before_set = try before_segment(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    const on_set = try on_segment_objects(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    const beyond_set = try beyond_segment(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    if (before_set.len != 1 or before_set[0] != x_lbl) return error.BeforeSetWrong;
+    if (beyond_set.len != 1 or beyond_set[0] != y_lbl) return error.BeyondSetWrong;
+    // the on_span set is exactly {N, A, M, B} ascending -- labels 1, 3, 4, 5
+    if (on_set.len != 4 or on_set[0] != n_lbl or on_set[1] != a_lbl or on_set[2] != m_lbl or on_set[3] != b_lbl) return error.OnSetWrong;
+    if (try on_segment(garden, clustering, graph, manifest, &map, ax, ay, bx, by, m_lbl) != true) return error.MNotOnSegmentBool;
+    if (try on_segment(garden, clustering, graph, manifest, &map, ax, ay, bx, by, x_lbl) != false) return error.XWronglyOnSegmentBool;
+    if (!is_in(on_set, a_lbl) or is_in(on_set, x_lbl)) return error.IsInWrong;
+
+    // --- COMPOSE NOT BRAID -- every projection matches line_order.project_label, and the segment thresholds are 0 (the A end) and len2 =
+    //     400 (the B end): X at -160 (< 0), A at 0, N and M at 160, B at 400 (= len2), Y at 560 (> 400) --------------------------------------
+    if (try line_order.project_label(garden, clustering, graph, manifest, &map, ax, ay, bx, by, x_lbl) != -160) return error.XProjNotMinus160;
+    if (try line_order.project_label(garden, clustering, graph, manifest, &map, ax, ay, bx, by, a_lbl) != 0) return error.AProjNotZero;
+    if (try line_order.project_label(garden, clustering, graph, manifest, &map, ax, ay, bx, by, m_lbl) != 160) return error.MProjNot160;
+    if (try line_order.project_label(garden, clustering, graph, manifest, &map, ax, ay, bx, by, b_lbl) != 400) return error.BProjNot400;
+    if (try line_order.project_label(garden, clustering, graph, manifest, &map, ax, ay, bx, by, y_lbl) != 560) return error.YProjNot560;
+
+    // --- THE OFF-THE-ENDS OBJECTS RANK LIKE ANY OTHER -- line_order ranks X frontmost (rank 0) and Y backmost (rank 5) on the infinite
+    //     line, yet line_span classes both OFF the finite stroke. The on_span set is the CONTIGUOUS MIDDLE of the order between the anchors
+    if (try line_order.rank_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, x_lbl) != 0) return error.XNotOrderFront;
+    if (try line_order.rank_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, y_lbl) != 5) return error.YNotOrderBack;
+    // the along-line order is X, A, N, M, B, Y (X at -160, A at 0, N and M tie at 160 with N before M by label, B at 400, Y at 560)
+    const order_h = try line_order.line_order(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    if (order_h[0] != x_lbl or order_h[1] != a_lbl or order_h[2] != n_lbl or order_h[3] != m_lbl or order_h[4] != b_lbl or order_h[5] != y_lbl) return error.OrderWrong;
+    // on_span is exactly the slice from the A anchor's rank (1) to the B anchor's rank (4) inclusive -- {A, N, M, B}, the middle window
+    const a_rank = try line_order.rank_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, a_lbl);
+    const b_rank = try line_order.rank_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, b_lbl);
+    if (a_rank != 1 or b_rank != 4) return error.AnchorRanksWrong;
+    var r: usize = @as(usize, a_rank);
+    while (r <= @as(usize, b_rank)) : (r += 1) {
+        if (!is_in(on_set, order_h[r])) return error.OnSpanNotContiguousMiddle;
+    }
+
+    // --- THE SPAN IS ORTHOGONAL TO THE SIDE AND THE OFF-LINE DISTANCE -- X is exactly ON the infinite line (line_partition `on`,
+    //     line_distance 0) yet BEFORE the stroke; N is ABOVE the line (line_partition `left`, off-line distance nonzero) yet ON the stroke --
+    if (try line_partition.object_side(garden, clustering, graph, manifest, &map, ax, ay, bx, by, x_lbl) != .on) return error.XNotOnLine;
+    if (try line_distance.distance_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, x_lbl) != 0) return error.XDistanceNotZero;
+    if (try line_partition.object_side(garden, clustering, graph, manifest, &map, ax, ay, bx, by, n_lbl) != .left) return error.NNotLeft;
+    if (try line_distance.distance_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, n_lbl) == 0) return error.NDistanceWronglyZero;
+    // X: on the line yet off the stroke; N: off the line yet on the stroke -- the two reads are independent
+    if (try span_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, x_lbl) != .before_a) return error.XOrthogonalWrong;
+    if (try span_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, n_lbl) != .on_span) return error.NOrthogonalWrong;
+
+    // --- REVERSAL SWAPS THE ENDS AND FIXES THE MIDDLE -- reading the SAME segment B -> A reflects every projection (proj' = len2 - proj), so
+    //     X (before the A end) reads BEYOND the new B end and Y (beyond the B end) reads BEFORE the new A end, while on_span is INVARIANT ----
+    if (try span_of(garden, clustering, graph, manifest, &map, bx, by, ax, ay, x_lbl) != .beyond_b) return error.XNotBeyondReversed;
+    if (try span_of(garden, clustering, graph, manifest, &map, bx, by, ax, ay, y_lbl) != .before_a) return error.YNotBeforeReversed;
+    const on_set_rev = try on_segment_objects(garden, clustering, graph, manifest, &map, bx, by, ax, ay);
+    if (on_set_rev.len != on_set.len) return error.ReversedOnSpanSizeChanged;
+    var s: usize = 0;
+    while (s < on_set.len) : (s += 1) {
+        if (on_set_rev[s] != on_set[s]) return error.ReversedOnSpanChanged;
+    }
+    // the reversed counts swap before and beyond, hold on
+    const counts_rev = try span_counts(garden, clustering, graph, manifest, &map, bx, by, ax, ay);
+    if (counts_rev.before != counts.beyond or counts_rev.beyond != counts.before or counts_rev.on != counts.on) return error.ReversedCountsWrong;
+
+    // --- REFUSALS -- two anchors sharing a group refuse SameGroup; a background tap refuses EmptyClick; a point off the map refuses
+    //     PointOutOfBounds; a query label past the object count refuses BadTarget, each having read nothing ------------------------------
+    if (try hit_test.object_label_at(&map, 5, 6) != try hit_test.object_label_at(&map, 6, 7)) return error.APixelsNotSameObject;
+    if (span_counts(garden, clustering, graph, manifest, &map, 5, 6, 6, 7)) |_| return error.SameGroupNotRefused else |err| {
+        if (err != error.SameGroup) return error.WrongSameGroupError;
+    }
+    if (try hit_test.object_label_at(&map, 0, 0) != 0) return error.BackgroundNotEmpty;
+    if (span_counts(garden, clustering, graph, manifest, &map, 0, 0, bx, by)) |_| return error.MissNotRefused else |err| {
+        if (err != error.EmptyClick) return error.WrongMissError;
+    }
+    if (span_counts(garden, clustering, graph, manifest, &map, ax, ay, 24, 0)) |_| return error.OffMapNotRefused else |err| {
+        if (err != error.PointOutOfBounds) return error.WrongOffMapError;
+    }
+    if (span_of(garden, clustering, graph, manifest, &map, ax, ay, bx, by, 7)) |_| return error.BadTargetNotRefused else |err| {
+        if (err != error.BadTarget) return error.WrongBadTargetError;
+    }
+
+    // --- DETERMINISM -- the same directed segment reads the same span twice -----------------------------------------------------------
+    const c1 = try span_counts(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    const c2 = try span_counts(garden, clustering, graph, manifest, &map, ax, ay, bx, by);
+    if (c1.before != c2.before or c1.on != c2.on or c1.beyond != c2.beyond) return error.SpanNotDeterministic;
+
+    print("GREEN image-line-span: read a DIRECTED line named by TWO anchor taps (from A toward B) as an ALONG-SEGMENT position -- for every object, is its GROUP foot BEFORE the A end, ON the finite span A..B, or BEYOND the B end. This is the BOUNDED twin of line_order: every line read so far treats the anchors as an INFINITE line, yet a keeper draws a FINITE stroke, so line_span clamps line_order's projection to the segment's two integer thresholds 0 <= proj <= len2 (the A end at projection 0, the B end at len2 = 400), NO float and NO tolerance. The DECISIVE crux is THE STROKE IS BOUNDED WHERE THE ORDER IS UNBOUNDED. Over a 24x12 scene of six singletons around a horizontal segment A -> B, X sits left of A and Y right of B: line_order ranks X FRONTMOST (rank 0) and Y BACKMOST (rank 5) on the infinite line, yet line_span classes X before_a and Y beyond_b -- BOTH off the drawn stroke -- and the on_span set {{A, N, M, B}} is exactly the CONTIGUOUS MIDDLE of the order X, A, N, M, B, Y from the A anchor's rank to the B anchor's rank inclusive. THE SPAN IS ORTHOGONAL TO THE SIDE AND THE OFF-LINE DISTANCE -- X is exactly ON the infinite line (line_partition on, line_distance 0) yet BEFORE the stroke, while N is ABOVE the line (line_partition left, off-line distance nonzero) yet ON the stroke: on the line off the stroke, off the line on the stroke, the two reads independent. REVERSAL SWAPS THE ENDS AND FIXES THE MIDDLE -- reading the same segment B -> A reflects every projection (proj' = len2 - proj), so before_a and beyond_b TRADE PLACES while on_span is INVARIANT, where line_partition's reversal swaps the two sides and line_order's flips the whole order. span_counts sums to the component count; is_in reads membership; two anchors sharing a group refuse SameGroup (a segment needs two ends); a background tap refuses EmptyClick; a point off the map refuses PointOutOfBounds; a label past the object count refuses BadTarget having read nothing; the same segment reads the same span twice. Compose not braid over image/line_order.rye (the projection every object is cross-checked against), image/line_partition.rye (the side arbiter), image/line_distance.rye (the off-line magnitude), and image/click_collinear.rye (the anchor centers whose squared delta is len2)\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: line_span selftest\n", .{});
+    return 1;
+}
