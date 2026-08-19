@@ -1,0 +1,401 @@
+//! image/cluster_minimum_spanning_tree.rye -- the SKELETON that holds a layout together: the MINIMUM SPANNING TREE of the cluster-distance
+//! graph, naming the actual BRIDGE EDGES (which cluster pair bridges which), not merely the bottleneck value. `build_mst` grows a minimum
+//! spanning tree by Prim over image/cluster_graph.rye's precomputed cluster matrix; `mst_weight` sums its bridge gaps, `mst_bottleneck` reads
+//! its largest edge, `edge_count` names its size, `is_bridge` asks whether a given cluster pair is one of the skeleton's edges -- exact
+//! integers, NO float, NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/cluster_graph.rye joins the cluster-pair read over every cluster pair into one matrix;
+//! image/cluster_graph_profile.rye reads the whole edge-count CURVE as a distribution over thresholds; image/cluster_connectivity.rye reads
+//! WHEN the layout becomes one connected region as reach grows -- the connectivity THRESHOLD, the smallest reach spanning every cluster. That
+//! threshold is a single number: the MST bottleneck, the largest edge of a minimum spanning tree. This rung reads the tree itself -- the exact
+//! set of edges that skeleton is made of -- so a surface can DRAW the connecting lines, not only know at what reach the lines close. A layout
+//! names it the day it must render "these scattered regions belong together, and here are the bridges that hold them."
+//!
+//! The DECISIVE crux -- the connectivity threshold gave one number; the MST names the actual bridge EDGES, and the two agree at exactly one
+//! point:
+//!
+//!   THE MST IS THE SKELETON, ITS BOTTLENECK THE CONNECTIVITY THRESHOLD. Over the three-cluster scene (distances 2, 3, 10) the minimum spanning
+//!   tree picks edges 1-2 (gap 2) and 1-3 (gap 3) and never edge 2-3 (gap 10): a STAR on the hub cluster 1, exactly the star image/cluster_graph
+//!   .rye named. Its bottleneck (the largest edge, 3) EQUALS the connectivity threshold image/cluster_connectivity.rye reads, yet the tree also
+//!   names WHICH two edges close the layout -- 1-2 and 1-3 -- where the threshold named only the value 3. The tree's total weight 5 is far below
+//!   the sum of all three pairwise gaps (15): the diameter edge 2-3 of gap 10 is never spent, because the hub bridges the far pair for less.
+//!
+//!   THE TREE DROPS THE REDUNDANT CYCLE EDGE -- FEWER EDGES THAN THE THRESHOLDED GRAPH. Over a four-cluster scene -- a tight triangle of three
+//!   clusters all mutually 3 apart, plus a far outlier 9 away -- the thresholded graph at reach 3 holds THREE edges (the whole triangle, a
+//!   cycle), yet the MST holds exactly n-1 = 3 edges over FOUR clusters: two triangle edges (1-2 and 1-3, gap 3 each) plus the one bridge to the
+//!   outlier (1-4, gap 9). The third triangle edge 2-3 is DROPPED though its gap (3) is well within the tree's bottleneck (9) and it sits in the
+//!   thresholded graph -- a spanning tree carries no cycle, so `is_bridge(2, 3)` reads FALSE for an edge the connectivity read would have counted.
+//!   The MST bottleneck (9) still equals the connectivity threshold: the skeleton and the threshold meet at the largest edge, and part ways on
+//!   every other.
+//!
+//! Compose not braid. This rung OWNS only the spanning-tree reads -- Prim's growth over the matrix, the weight sum, the bottleneck, the bridge
+//! test. No cluster distance recomputed (image/cluster_graph.rye owns the precomputed matrix through `graph_distance`), no connectivity
+//! threshold recomputed (image/cluster_connectivity.rye owns the bottleneck sweep, cross-checked here, never re-derived). A reading over a
+//! reading over a reading over a reading over a reading over a reading over a reading.
+//!
+//! Everything is bounded before a byte: the cluster count can never exceed the object count, itself capped at `scene_graph_max_objects`, so the
+//! tree holds at most that many minus one edges, Prim's key arrays are exactly that many slots, and each of the n-1 growth rounds scans the
+//! matrix once. A lone-cluster layout is already one whole -- its spanning tree is empty, its weight and bottleneck zero, matching the
+//! connectivity threshold. A zero or past-the-count cluster id refuses `BadClusterId`, a self pair refuses `SameCluster`. No network, no key, no
+//! funds -- the skeleton a surface draws, on our own geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/cluster_minimum_spanning_tree.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const cluster_graph = @import("cluster_graph.rye");
+const cluster_connectivity = @import("cluster_connectivity.rye");
+
+pub const cluster_minimum_spanning_tree_version = "20260819.015953";
+
+pub const MstError = error{
+    BadClusterId,
+    SameCluster,
+};
+
+/// One BRIDGE EDGE of the skeleton -- the unordered cluster pair `(a, b)` with `a < b` and the true inter-cluster gap `weight` that connects
+/// them. A surface draws a line between the two clusters of this edge.
+pub const MstEdge = struct {
+    a: u32,
+    b: u32,
+    weight: u32,
+};
+
+/// The MINIMUM SPANNING TREE of a cluster graph -- exactly `clusters - 1` bridge edges for a graph of `clusters` clusters (zero for a lone
+/// cluster), the smallest-total-weight set of edges that connects the whole layout into one component.
+pub const MstTree = struct {
+    clusters: u32,
+    edges: []MstEdge,
+};
+
+/// Grow the MINIMUM SPANNING TREE by Prim over the precomputed cluster matrix -- start from cluster 1, and repeatedly attach the not-yet-in-tree
+/// cluster nearest to the tree (ties broken by the lowest cluster id, so the tree is deterministic regardless of read order), recording the edge
+/// that attached it. The cluster graph is complete (every pair has a stored distance), so the tree always spans. A lone-cluster graph yields an
+/// empty tree.
+pub fn build_mst(allocator: std.mem.Allocator, cg: cluster_graph.ClusterGraph) !MstTree {
+    // invariant: the matrix holds exactly one cell per ordered cluster pair.
+    assert(cg.dist.len == @as(usize, cg.clusters) * @as(usize, cg.clusters));
+    // invariant: a real cluster graph holds at least one cluster.
+    assert(cg.clusters >= 1);
+
+    const n: u32 = cg.clusters;
+    if (n < 2) return MstTree{ .clusters = n, .edges = try allocator.alloc(MstEdge, 0) };
+
+    const edges = try allocator.alloc(MstEdge, n - 1);
+    const in_tree = try allocator.alloc(bool, n);
+    const key = try allocator.alloc(u32, n); // the smallest gap from slot i to any cluster already in the tree
+    const from = try allocator.alloc(u32, n); // the 1-based cluster id in the tree that gives slot i its key (zero for the start)
+
+    const infinity: u32 = std.math.maxInt(u32);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        in_tree[i] = false;
+        key[i] = infinity;
+        from[i] = 0;
+    }
+    key[0] = 0; // grow from cluster 1
+
+    var edge_idx: u32 = 0;
+    var added: u32 = 0;
+    while (added < n) : (added += 1) {
+        // pick the not-yet-in-tree slot with the smallest key, ties to the lowest slot index for determinism.
+        var best: u32 = n; // n is the "none found yet" sentinel
+        var best_key: u32 = infinity;
+        var s: u32 = 0;
+        while (s < n) : (s += 1) {
+            if (in_tree[s]) continue;
+            if (best == n or key[s] < best_key) {
+                best = s;
+                best_key = key[s];
+            }
+        }
+        // invariant: while any cluster stands outside the tree, one is always found -- the graph is complete.
+        assert(best < n);
+        in_tree[best] = true;
+
+        if (from[best] != 0) {
+            // the start slot has no attaching edge; every other slot records the pair that brought it in, normalized to a < b.
+            const u = from[best];
+            const v = best + 1;
+            const lo = if (u < v) u else v;
+            const hi = if (u < v) v else u;
+            // invariant: an edge joins two distinct clusters, low id first.
+            assert(lo < hi);
+            edges[edge_idx] = MstEdge{ .a = lo, .b = hi, .weight = best_key };
+            edge_idx += 1;
+        }
+
+        // relax every remaining cluster against the newly added one.
+        var j: u32 = 0;
+        while (j < n) : (j += 1) {
+            if (in_tree[j]) continue;
+            const d = try cluster_graph.graph_distance(cg, best + 1, j + 1);
+            if (d < key[j]) {
+                key[j] = d;
+                from[j] = best + 1;
+            }
+        }
+    }
+
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges.
+    assert(edge_idx == n - 1);
+    return MstTree{ .clusters = n, .edges = edges };
+}
+
+/// HOW MANY bridge edges the skeleton holds -- exactly `clusters - 1` for a graph of one or more clusters (zero for a lone cluster).
+pub fn edge_count(tree: MstTree) u32 {
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges (an empty tree for a lone cluster).
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+    return @intCast(tree.edges.len);
+}
+
+/// The TOTAL WEIGHT of the skeleton -- the sum of every bridge edge's gap, the smallest total any spanning tree of this layout can have. A lone
+/// cluster reads zero.
+pub fn mst_weight(tree: MstTree) u32 {
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges.
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+    var total: u32 = 0;
+    var i: u32 = 0;
+    while (i < tree.edges.len) : (i += 1) {
+        total += tree.edges[i].weight;
+    }
+    return total;
+}
+
+/// The BOTTLENECK of the skeleton -- its largest bridge edge, which equals the connectivity threshold (the smallest reach spanning every
+/// cluster). A lone cluster is already one whole, so its bottleneck is zero.
+pub fn mst_bottleneck(tree: MstTree) u32 {
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges.
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+    var most: u32 = 0;
+    var i: u32 = 0;
+    while (i < tree.edges.len) : (i += 1) {
+        if (tree.edges[i].weight > most) most = tree.edges[i].weight;
+    }
+    return most;
+}
+
+/// TRUE when the unordered cluster pair `(a, b)` is one of the skeleton's bridge edges -- the test a surface asks to know whether to draw a line
+/// between two regions. A pair well within the layout's reach can still read FALSE: a spanning tree carries no cycle, so a redundant edge is
+/// dropped. Refuses `BadClusterId` for a zero or past-the-count id and `SameCluster` for a self pair.
+pub fn is_bridge(tree: MstTree, a: u32, b: u32) !bool {
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges.
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+    // invariant: a real cluster graph holds at least one cluster.
+    assert(tree.clusters >= 1);
+    if (a == 0 or a > tree.clusters) return error.BadClusterId;
+    if (b == 0 or b > tree.clusters) return error.BadClusterId;
+    if (a == b) return error.SameCluster;
+    const lo = if (a < b) a else b;
+    const hi = if (a < b) b else a;
+    var i: u32 = 0;
+    while (i < tree.edges.len) : (i += 1) {
+        if (tree.edges[i].a == lo and tree.edges[i].b == hi) return true;
+    }
+    return false;
+}
+
+// --- selftest: the connectivity threshold gave one number; the MST names the actual bridge EDGES. Scene ONE is cluster_connectivity's own
+//     three-cluster scene (distances 2, 3, 10): the MST is a STAR on the hub cluster 1, edges 1-2 and 1-3, never the diameter edge 2-3, its
+//     bottleneck (3) equal to the connectivity threshold. Scene TWO is the four-cluster scene (a triangle mutually 3 apart plus a far outlier
+//     9 away): the MST drops the redundant third triangle edge, holding n-1 = 3 edges where the thresholded graph at reach 3 holds a whole
+//     triangle, its bottleneck (9) equal to the connectivity threshold ---------------------------------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a corner bracket-L: a vertical arm down column `x` from `y0` to `y1`, and a horizontal arm along row `yr` from `x0` to `x1`.
+fn set_corner_l(img: *qoi.Pixmap, x: u32, y0: u32, y1: u32, yr: u32, x0: u32, x1: u32) void {
+    // invariant: the arms run in the positive direction and stay inside the buffer.
+    assert(y1 >= y0);
+    assert(x1 >= x0);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) set_dot(img, x, yy);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) set_dot(img, xx, yr);
+}
+
+/// Paint a 1-pixel-thick RING (a rectangle outline) with corners `(x0, y0)` and `(x1, y1)` -- a holed object, its interior background.
+fn set_ring(img: *qoi.Pixmap, x0: u32, y0: u32, x1: u32, y1: u32) void {
+    // invariant: the ring spans at least a 3x3 box so it encloses a real interior hole, and stays inside the buffer.
+    assert(x1 >= x0 + 2);
+    assert(y1 >= y0 + 2);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) {
+        set_dot(img, xx, y0);
+        set_dot(img, xx, y1);
+    }
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) {
+        set_dot(img, x0, yy);
+        set_dot(img, x1, yy);
+    }
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// Build the cluster graph of a scene, checking the object and cluster counts along the way -- a local helper so every scene reads the same.
+fn graph_of(garden: std.mem.Allocator, img: *qoi.Pixmap, want_objects: u32, want_clusters: u32) !cluster_graph.ClusterGraph {
+    // invariant: the caller names how many objects and clusters the scene must hold, so a mislaid pixel fails loud.
+    assert(want_objects >= 1);
+    assert(want_clusters >= 1);
+    const map = try label.label_components(garden, img);
+    if (map.count != want_objects) return error.SceneObjectCountWrong;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    if (overlap_clusters.cluster_count(clustering) != want_clusters) return error.SceneClusterCountWrong;
+    return cluster_graph.build_cluster_graph(garden, clustering, graph);
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- SCENE ONE: the three-cluster scene -- corner-L A and ring B into cluster 1, lone block C as cluster 2, far block D as cluster 3;
+    //     cluster distances grade 2, 3, 10 over the three pairs, cluster 1 the hub between clusters 2 and 3 --------------------------------
+    var scene = try make_canvas(garden, 15, 15, 0);
+    set_corner_l(&scene, 1, 1, 6, 1, 1, 6); // A: box (1,1)-(6,6)
+    set_block(&scene, 8, 1, 2, 2); // C: box (8,1)-(9,2)
+    set_ring(&scene, 4, 4, 9, 9); // B: box (4,4)-(9,9), overlaps A's corner -> cluster 1
+    set_block(&scene, 12, 12, 2, 2); // D: box (12,12)-(13,13)
+    const cg = try graph_of(garden, &scene, 4, 3);
+
+    const tree = try build_mst(garden, cg);
+
+    // --- THE MST IS THE SKELETON -- exactly n-1 = 2 edges over three clusters, a STAR on the hub cluster 1 (edges 1-2 and 1-3), never the
+    //     diameter edge 2-3 of gap 10 -----------------------------------------------------------------------------------------------------
+    if (edge_count(tree) != 2) return error.SceneOneEdgeCountNotTwo; // n-1 for three clusters
+    if (try is_bridge(tree, 1, 2) != true) return error.SceneOneMissingEdgeOneTwo; // the gap-2 bridge
+    if (try is_bridge(tree, 1, 3) != true) return error.SceneOneMissingEdgeOneThree; // the gap-3 bridge
+    if (try is_bridge(tree, 2, 3) != false) return error.SceneOneHasDiameterEdge; // the diameter edge 2-3 is never spent
+
+    // --- ITS BOTTLENECK EQUALS THE CONNECTIVITY THRESHOLD, YET THE TREE ALSO NAMES WHICH EDGES CLOSE THE LAYOUT ------------------------------
+    if (mst_bottleneck(tree) != 3) return error.SceneOneBottleneckNotThree;
+    if (mst_bottleneck(tree) != try cluster_connectivity.connectivity_threshold(garden, cg)) return error.SceneOneBottleneckNotThreshold;
+
+    // --- THE DIAMETER IS NEVER SPENT -- the tree's weight (2 + 3 = 5) is far below the sum of all three pairwise gaps (2 + 3 + 10 = 15) -----
+    if (mst_weight(tree) != 5) return error.SceneOneWeightNotFive;
+    // the whole-graph pairwise sum is 15; the tree spends a third of it, the hub bridging the far pair for less than the direct edge of 10
+    if (mst_weight(tree) >= 15) return error.SceneOneWeightNotBelowPairwiseSum;
+
+    // --- SCENE TWO: THE TREE DROPS THE REDUNDANT CYCLE EDGE -- a tight triangle (clusters 1, 2, 3 all mutually 3 apart) plus a far outlier
+    //     (cluster 4, 9 away). The thresholded graph at reach 3 holds THREE edges (the whole triangle, a cycle), yet the MST over four
+    //     clusters holds exactly n-1 = 3 edges: two triangle edges plus the one bridge to the outlier, the third triangle edge dropped ------
+    var quad = try make_canvas(garden, 15, 15, 0);
+    set_block(&quad, 2, 2, 2, 2); // A -> cluster 1
+    set_block(&quad, 6, 2, 2, 2); // C -> cluster 2 (same top row, right of A)
+    set_block(&quad, 2, 6, 2, 2); // B -> cluster 3 (below A)
+    set_block(&quad, 12, 12, 2, 2); // D -> cluster 4 (far outlier)
+    const cg2 = try graph_of(garden, &quad, 4, 4);
+
+    const tree2 = try build_mst(garden, cg2);
+
+    // the thresholded graph at reach 3 already holds the whole triangle -- three edges, a cycle
+    if (try cluster_graph.within_edges(cg2, 3) != 3) return error.SceneTwoTriangleNotThreeEdges;
+
+    // the MST over four clusters holds exactly n-1 = 3 edges, a tree -- fewer than a cycle-carrying graph would keep
+    if (edge_count(tree2) != 3) return error.SceneTwoEdgeCountNotThree;
+
+    // --- THE REDUNDANT CYCLE EDGE IS DROPPED -- two of the triangle's three edges are kept, the third (2-3) dropped though its gap (3) is well
+    //     within the tree's bottleneck (9) and it sits in the thresholded graph: a spanning tree carries no cycle ----------------------------
+    if (try is_bridge(tree2, 1, 2) != true) return error.SceneTwoMissingEdgeOneTwo; // a kept triangle edge
+    if (try is_bridge(tree2, 1, 3) != true) return error.SceneTwoMissingEdgeOneThree; // a kept triangle edge
+    if (try is_bridge(tree2, 1, 4) != true) return error.SceneTwoMissingBridgeToOutlier; // the single bridge to the outlier
+    if (try is_bridge(tree2, 2, 3) != false) return error.SceneTwoKeptCycleEdge; // the redundant third triangle edge, dropped
+    // the dropped edge's gap (3) is within the tree's bottleneck (9) and within reach 3 -- yet the tree still refuses it, because it is a cycle
+    if (try cluster_graph.graph_distance(cg2, 2, 3) > mst_bottleneck(tree2)) return error.SceneTwoDroppedEdgeNotWithinBottleneck;
+
+    // --- ITS BOTTLENECK STILL EQUALS THE CONNECTIVITY THRESHOLD -- the skeleton and the threshold meet at the largest edge (9), the outlier's
+    //     bridge, and part ways on every other edge ----------------------------------------------------------------------------------------
+    if (mst_bottleneck(tree2) != 9) return error.SceneTwoBottleneckNotNine;
+    if (mst_bottleneck(tree2) != try cluster_connectivity.connectivity_threshold(garden, cg2)) return error.SceneTwoBottleneckNotThreshold;
+    // the tree's weight is the two triangle edges plus the outlier bridge (3 + 3 + 9 = 15)
+    if (mst_weight(tree2) != 15) return error.SceneTwoWeightNotFifteen;
+
+    // --- A LONE-CLUSTER LAYOUT IS ALREADY ONE WHOLE -- an empty spanning tree, zero weight and zero bottleneck, matching the connectivity
+    //     threshold of zero -----------------------------------------------------------------------------------------------------------------
+    var lone_img = try make_canvas(garden, 6, 6, 0);
+    set_block(&lone_img, 1, 1, 2, 2); // one object, one cluster
+    const lone_cg = try graph_of(garden, &lone_img, 1, 1);
+    const lone_tree = try build_mst(garden, lone_cg);
+    if (edge_count(lone_tree) != 0) return error.LoneTreeNotEmpty;
+    if (mst_weight(lone_tree) != 0) return error.LoneWeightNotZero;
+    if (mst_bottleneck(lone_tree) != 0) return error.LoneBottleneckNotZero;
+    if (mst_bottleneck(lone_tree) != try cluster_connectivity.connectivity_threshold(garden, lone_cg)) return error.LoneBottleneckNotThreshold;
+
+    // --- REFUSALS -- a zero or past-the-count cluster id refuses BadClusterId, a self pair refuses SameCluster --------------------------------
+    if (is_bridge(tree, 0, 1)) |_| return error.ZeroBridgeNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongZeroBridgeError;
+    }
+    if (is_bridge(tree, 1, 4)) |_| return error.PastBridgeNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongPastBridgeError;
+    }
+    if (is_bridge(tree, 2, 2)) |_| return error.SelfBridgeNotRefused else |err| {
+        if (err != error.SameCluster) return error.WrongSelfBridgeError;
+    }
+
+    // --- DETERMINISM -- the same graph reads the same tree twice ------------------------------------------------------------------------------
+    const tree_again = try build_mst(garden, cg);
+    if (edge_count(tree_again) != edge_count(tree)) return error.TreeSizeNotDeterministic;
+    if (mst_weight(tree_again) != mst_weight(tree)) return error.TreeWeightNotDeterministic;
+    if (mst_bottleneck(tree_again) != mst_bottleneck(tree)) return error.TreeBottleneckNotDeterministic;
+
+    print("GREEN image-cluster-minimum-spanning-tree: the SKELETON that holds a layout together -- the MINIMUM SPANNING TREE of the cluster-distance graph, naming the actual BRIDGE EDGES (which cluster pair bridges which), not merely the bottleneck value; build_mst grows the tree by Prim over cluster_graph's precomputed matrix, mst_weight sums its bridge gaps, mst_bottleneck reads its largest edge, edge_count names its size, is_bridge asks whether a cluster pair is one of the skeleton's edges, exact integers, NO float and NO tolerance -- the DECISIVE crux, the connectivity threshold gave one number, the MST names the actual bridge EDGES. THE MST IS THE SKELETON, ITS BOTTLENECK THE CONNECTIVITY THRESHOLD -- over the three-cluster scene (distances 2, 3, 10) the tree picks edges 1-2 (gap 2) and 1-3 (gap 3) and never the diameter edge 2-3 (gap 10), a STAR on the hub cluster 1, its bottleneck (3) equal to the connectivity threshold cluster_connectivity reads, yet the tree also names WHICH two edges close the layout where the threshold named only the value; its total weight 5 is far below the sum of all three pairwise gaps (15), the diameter edge never spent because the hub bridges the far pair for less. THE TREE DROPS THE REDUNDANT CYCLE EDGE, FEWER EDGES THAN THE THRESHOLDED GRAPH -- over a four-cluster scene (a tight triangle mutually 3 apart plus a far outlier 9 away) the thresholded graph at reach 3 holds three edges, the whole triangle, a cycle, yet the MST over four clusters holds exactly n-1 = 3 edges (two triangle edges plus the one bridge to the outlier), the third triangle edge 2-3 dropped though its gap 3 is within the tree's bottleneck 9 and sits in the thresholded graph, because a spanning tree carries no cycle, so is_bridge(2,3) reads FALSE for an edge the connectivity read would have counted; the bottleneck (9) still equals the connectivity threshold, the skeleton and the threshold meeting at the largest edge and parting on every other. A lone-cluster layout is already one whole (an empty tree, zero weight and bottleneck, matching the threshold); a zero or past-the-count id refuses BadClusterId, a self pair refuses SameCluster; the same graph reads the same tree twice. Compose not braid over image/cluster_graph.rye (the precomputed cluster matrix through graph_distance) and image/cluster_connectivity.rye (the connectivity threshold, cross-checked never re-derived) -- a reading over a reading over a reading over a reading over a reading over a reading over a reading\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: cluster_minimum_spanning_tree selftest\n", .{});
+    return 1;
+}
