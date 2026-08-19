@@ -1,0 +1,414 @@
+//! image/cluster_tree_centroid.rye -- the BALANCE POINT of the skeleton: the CENTROID of the cluster minimum spanning tree, the cluster whose
+//! removal leaves the SMALLEST largest-piece (measured in cluster COUNT, not reach), and how unbalanced that best split is. `centroid_max_subtree`
+//! reads the size of the largest component left when a cluster is pulled out; `centroid_balance` reads the smallest such largest-piece over every
+//! cluster; `tree_centroid` names the cluster that achieves it (lowest id on a tie); `is_centroid` asks whether a cluster is a balance point --
+//! exact integers, NO float, NO tolerance.
+//!
+//! Season G (Open Media Primitives) -- image/cluster_tree_radius.rye reads the CENTER of the skeleton, the cluster of least ECCENTRICITY, the one
+//! nearest to all the others by REACH (the weight of the longest bridge-path from it). The center answers "which cluster hangs the whole connected
+//! region from the shortest total span?" This rung reads a DIFFERENT balance point off the SAME tree: the CENTROID, the cluster whose removal
+//! splits the tree into the most even pieces by COUNT. A surface names the centroid the day it must pick the cluster that halves a connected group
+//! for a fold, a partition, or a two-column layout -- not the one nearest by distance, but the one that leaves no lopsided remainder.
+//!
+//! The DECISIVE crux -- the center weighs REACH and the centroid weighs BALANCE, so on a lopsided tree they are DIFFERENT clusters, yet on a
+//! balanced tree they COINCIDE:
+//!
+//!   ON A BROOM THEY PART -- THE CENTER STAYS IN THE HANDLE, THE CENTROID MOVES TO THE BRISTLES. A broom is a handle (a chain of clusters) with a
+//!   bushel of leaves massed at one end. The center sits by REACH near the geometric middle of the whole span -- a handle cluster, since the
+//!   longest bridge-path runs handle-end to a bristle and the middle of that path is up the handle. The centroid sits by BALANCE at the bristle
+//!   end -- removing the cluster the bristles hang from drops each bristle into its own tiny piece and leaves only the handle as one modest
+//!   remainder, the most even split any cluster offers. So `tree_center` and `tree_centroid` name TWO DIFFERENT clusters, and each is the OTHER's
+//!   non-answer: `is_center` reads TRUE for the handle cluster and FALSE for the bristle hub, `is_centroid` the exact reverse.
+//!
+//!   ON A STAR OR A PATH THEY MEET. Remove the hub of a star and every leaf falls into a singleton -- the most even split there is, so the hub is
+//!   the centroid; and the hub reaches every leaf across one bridge, the least reach, so the hub is also the center. A symmetric path is balanced
+//!   the same way from its middle: the middle cluster both halves the count and minimizes the reach. Only when mass and reach pull in different
+//!   directions -- a handle long enough to move the center off the bushel the centroid holds -- do the two part.
+//!
+//! Compose not braid. This rung OWNS only the removal-split reads -- the largest component left when a cluster is pulled from the tree, the argmin
+//! of that over every cluster, the centroid test. No spanning tree recomputed (image/cluster_minimum_spanning_tree.rye owns `build_mst` and the
+//! tree's edges), no eccentricity or center recomputed (image/cluster_tree_radius.rye owns `tree_center` and `is_center`, cross-checked here to
+//! prove the divergence and never re-derived), no cluster distance recomputed (image/cluster_graph.rye owns the matrix below). A reading over a
+//! reading over a reading over a reading over a reading over a reading over a reading.
+//!
+//! Everything is bounded before a byte: the cluster count can never exceed the object count, itself capped at `scene_graph_max_objects`, so the
+//! removal walk visits each cluster at most once over the tree's n-1 edges, and the centroid scan runs one removal per cluster -- the scratch
+//! `visited` and `queue` buffers hold exactly one slot per cluster. A lone-cluster layout is already one whole -- pulling out its only cluster
+//! leaves nothing, so its balance is zero and it is its own centroid. A zero or past-the-count cluster id refuses `BadClusterId`. No network, no
+//! key, no funds -- the fold-point a surface picks for a connected group, on our own geometry.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/cluster_tree_centroid.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const label = @import("label.rye");
+const qoi = @import("qoi.rye");
+const scene_manifest = @import("scene_manifest.rye");
+const scene_graph = @import("scene_graph.rye");
+const overlap_clusters = @import("overlap_clusters.rye");
+const cluster_graph = @import("cluster_graph.rye");
+const cluster_mst = @import("cluster_minimum_spanning_tree.rye");
+const cluster_tree_radius = @import("cluster_tree_radius.rye");
+
+pub const cluster_tree_centroid_version = "20260819.030919";
+
+pub const CentroidError = error{
+    BadClusterId,
+};
+
+/// The size, in cluster COUNT, of the LARGEST component left when cluster `removed` is pulled out of the spanning tree -- walk the tree's edges,
+/// treating `removed` as absent, and count each surviving component, keeping the largest. A low value means pulling this cluster splits the tree
+/// evenly; a high value means one lopsided remainder survives. Pulling the only cluster of a lone-cluster layout leaves nothing, so it reads zero.
+/// `removed` is a 1-based cluster id; the caller passes it validated.
+fn max_subtree_on_removal(allocator: std.mem.Allocator, tree: cluster_mst.MstTree, removed: u32) !u32 {
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges (empty for a lone cluster).
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+    // invariant: the removed cluster is a real 1-based id.
+    assert(removed >= 1);
+    assert(removed <= tree.clusters);
+
+    const n: u32 = tree.clusters;
+    if (n < 2) return 0; // pulling the lone cluster leaves nothing behind
+
+    const visited = try allocator.alloc(bool, n);
+    const queue = try allocator.alloc(u32, n);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) visited[i] = false;
+    // mark the removed cluster as already visited -- it separates the components and is never counted nor walked through.
+    visited[removed - 1] = true;
+
+    var most: u32 = 0;
+    var start: u32 = 1;
+    while (start <= n) : (start += 1) {
+        if (visited[start - 1]) continue;
+        // breadth-first over this surviving component, counting its clusters.
+        var size: u32 = 0;
+        var head: u32 = 0;
+        var tail: u32 = 0;
+        queue[tail] = start;
+        tail += 1;
+        visited[start - 1] = true;
+        while (head < tail) {
+            const node = queue[head]; // a 1-based cluster id
+            head += 1;
+            size += 1;
+            var e: u32 = 0;
+            while (e < tree.edges.len) : (e += 1) {
+                const edge = tree.edges[e];
+                var other: u32 = 0;
+                if (edge.a == node) {
+                    other = edge.b;
+                } else if (edge.b == node) {
+                    other = edge.a;
+                } else {
+                    continue;
+                }
+                if (!visited[other - 1]) {
+                    visited[other - 1] = true;
+                    // invariant: the queue never holds more than the cluster count -- each cluster is enqueued at most once.
+                    assert(tail < n);
+                    queue[tail] = other;
+                    tail += 1;
+                }
+            }
+        }
+        // invariant: every surviving component holds at least the cluster it started from.
+        assert(size >= 1);
+        if (size > most) most = size;
+    }
+    // invariant: with the removed cluster gone, the remaining pieces total n-1 clusters, so the largest is at least one and at most n-1.
+    assert(most >= 1);
+    assert(most <= n - 1);
+    return most;
+}
+
+/// The size of the largest component left when cluster `c` is pulled out -- the public read of one cluster's split. A low value marks a balance
+/// point, a high value a lopsided pull. A lone-cluster layout reads zero. Refuses `BadClusterId` for a zero or past-the-count id.
+pub fn centroid_max_subtree(allocator: std.mem.Allocator, tree: cluster_mst.MstTree, c: u32) !u32 {
+    // invariant: a real tree holds at least one cluster.
+    assert(tree.clusters >= 1);
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges.
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+    if (c == 0 or c > tree.clusters) return error.BadClusterId;
+    return max_subtree_on_removal(allocator, tree, c);
+}
+
+/// The BALANCE of the tree -- the SMALLEST largest-piece over every cluster, the most even split any single removal can make. A perfectly balanced
+/// removal approaches half the clusters; a lopsided tree cannot fall below its longest remaining arm. A lone-cluster layout reads zero.
+pub fn centroid_balance(allocator: std.mem.Allocator, tree: cluster_mst.MstTree) !u32 {
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges.
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+    // invariant: a real tree holds at least one cluster.
+    assert(tree.clusters >= 1);
+
+    const n: u32 = tree.clusters;
+    if (n < 2) return 0;
+
+    var best: u32 = std.math.maxInt(u32);
+    var c: u32 = 1;
+    while (c <= n) : (c += 1) {
+        const m = try max_subtree_on_removal(allocator, tree, c);
+        if (m < best) best = m;
+    }
+    // invariant: some cluster set the minimum, so the balance is a real component size, not the sentinel.
+    assert(best != std.math.maxInt(u32));
+    // invariant: the most even split still leaves at least one non-empty piece and never more than n-1 clusters.
+    assert(best >= 1);
+    assert(best <= n - 1);
+    return best;
+}
+
+/// The CENTROID of the tree -- the cluster whose largest-piece-on-removal equals the balance, the lowest id chosen on a tie for determinism. A
+/// lone-cluster layout is its own centroid, so a single-cluster tree reads cluster 1.
+pub fn tree_centroid(allocator: std.mem.Allocator, tree: cluster_mst.MstTree) !u32 {
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges.
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+    // invariant: a real tree holds at least one cluster.
+    assert(tree.clusters >= 1);
+
+    const n: u32 = tree.clusters;
+    if (n < 2) return 1;
+
+    var best_val: u32 = std.math.maxInt(u32);
+    var best_c: u32 = 1;
+    var c: u32 = 1;
+    while (c <= n) : (c += 1) {
+        const m = try max_subtree_on_removal(allocator, tree, c);
+        // strictly-less keeps the first cluster reaching the minimum in ascending id order -- the lowest id, deterministic.
+        if (m < best_val) {
+            best_val = m;
+            best_c = c;
+        }
+    }
+    // invariant: the centroid is a real 1-based cluster id.
+    assert(best_c >= 1);
+    assert(best_c <= n);
+    return best_c;
+}
+
+/// TRUE when cluster `c` is a CENTROID -- its largest-piece-on-removal equals the balance. A tree has one or two centroids, and every one reads
+/// TRUE. A lone-cluster layout is its own centroid. Refuses `BadClusterId` for a zero or past-the-count id.
+pub fn is_centroid(allocator: std.mem.Allocator, tree: cluster_mst.MstTree, c: u32) !bool {
+    // invariant: a real tree holds at least one cluster.
+    assert(tree.clusters >= 1);
+    // invariant: a spanning tree over n clusters holds exactly n-1 edges.
+    assert(tree.edges.len == @as(usize, tree.clusters) - @as(usize, @intFromBool(tree.clusters >= 1)));
+
+    const n: u32 = tree.clusters;
+    if (c == 0 or c > n) return error.BadClusterId;
+    if (n < 2) return true; // the lone cluster is the centroid of a one-cluster layout
+
+    const m = try max_subtree_on_removal(allocator, tree, c);
+    const balance = try centroid_balance(allocator, tree);
+    return m == balance;
+}
+
+// --- selftest: the center weighs REACH and the centroid weighs BALANCE. Scene ONE is a BROOM -- a handle chain (v1-v2-v3) into a wide bar (v4)
+//     with three bristles massed at the bar; the MST is that broom, and tree_center (a handle cluster) and tree_centroid (the bar) name TWO
+//     DIFFERENT clusters. Scene TWO is the three-cluster STAR (they coincide at the hub). Scene THREE is the symmetric PATH (they coincide at the
+//     middle). Then a lone cluster, refusals, determinism ----------------------------------------------------------------------------------------
+
+/// Mint a one-color RGBA canvas -- a local, bounded builder so this rung leans on no higher module.
+fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: u8) !qoi.Pixmap {
+    // invariant: a canvas has real extent on both axes.
+    assert(w >= 1);
+    assert(h >= 1);
+    const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: the canvas stays within the image module's named pixel ceiling.
+    assert(total <= qoi.qoi_max_pixels);
+    const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
+    var i: usize = 0;
+    while (i < pixels.len) : (i += 4) {
+        pixels[i] = fill;
+        pixels[i + 1] = fill;
+        pixels[i + 2] = fill;
+        pixels[i + 3] = 255;
+    }
+    return qoi.Pixmap{ .width = w, .height = h, .channels = 4, .colorspace = 0, .pixels = pixels };
+}
+
+/// Set one foreground pixel at (x, y).
+fn set_dot(img: *qoi.Pixmap, x: u32, y: u32) void {
+    // invariant: the write stays inside the buffer on both axes.
+    assert(x < img.width);
+    assert(y < img.height);
+    const di = (@as(usize, y) * @as(usize, img.width) + @as(usize, x)) * 4;
+    img.pixels[di] = 255;
+    img.pixels[di + 1] = 255;
+    img.pixels[di + 2] = 255;
+    img.pixels[di + 3] = 255;
+}
+
+/// Paint a corner bracket-L: a vertical arm down column `x` from `y0` to `y1`, and a horizontal arm along row `yr` from `x0` to `x1`.
+fn set_corner_l(img: *qoi.Pixmap, x: u32, y0: u32, y1: u32, yr: u32, x0: u32, x1: u32) void {
+    // invariant: the arms run in the positive direction and stay inside the buffer.
+    assert(y1 >= y0);
+    assert(x1 >= x0);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) set_dot(img, x, yy);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) set_dot(img, xx, yr);
+}
+
+/// Paint a 1-pixel-thick RING (a rectangle outline) with corners `(x0, y0)` and `(x1, y1)` -- a holed object, its interior background.
+fn set_ring(img: *qoi.Pixmap, x0: u32, y0: u32, x1: u32, y1: u32) void {
+    // invariant: the ring spans at least a 3x3 box so it encloses a real interior hole, and stays inside the buffer.
+    assert(x1 >= x0 + 2);
+    assert(y1 >= y0 + 2);
+    assert(x1 < img.width);
+    assert(y1 < img.height);
+    var xx: u32 = x0;
+    while (xx <= x1) : (xx += 1) {
+        set_dot(img, xx, y0);
+        set_dot(img, xx, y1);
+    }
+    var yy: u32 = y0;
+    while (yy <= y1) : (yy += 1) {
+        set_dot(img, x0, yy);
+        set_dot(img, x1, yy);
+    }
+}
+
+/// Paint a solid `bw` x `bh` foreground block with its top-left corner at (x, y).
+fn set_block(img: *qoi.Pixmap, x: u32, y: u32, bw: u32, bh: u32) void {
+    // invariant: the block stays inside the buffer on both axes.
+    assert(x + bw <= img.width);
+    assert(y + bh <= img.height);
+    var yy: u32 = y;
+    while (yy < y + bh) : (yy += 1) {
+        var xx: u32 = x;
+        while (xx < x + bw) : (xx += 1) set_dot(img, xx, yy);
+    }
+}
+
+/// Build the cluster tree of a scene, checking the object and cluster counts along the way -- a local helper so every scene reads the same.
+fn tree_of(garden: std.mem.Allocator, img: *qoi.Pixmap, want_objects: u32, want_clusters: u32) !cluster_mst.MstTree {
+    // invariant: the caller names how many objects and clusters the scene must hold, so a mislaid pixel fails loud.
+    assert(want_objects >= 1);
+    assert(want_clusters >= 1);
+    const map = try label.label_components(garden, img);
+    if (map.count != want_objects) return error.SceneObjectCountWrong;
+    const manifest = try scene_manifest.build_manifest(garden, &map);
+    const graph = try scene_graph.build_scene_graph(garden, manifest, &map);
+    const clustering = try overlap_clusters.overlap_clusters(garden, graph);
+    if (overlap_clusters.cluster_count(clustering) != want_clusters) return error.SceneClusterCountWrong;
+    const cg = try cluster_graph.build_cluster_graph(garden, clustering, graph);
+    return cluster_mst.build_mst(garden, cg);
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // --- SCENE ONE: THE BROOM on a 28x20 canvas. Seven singleton blocks (disjoint boxes -> seven clusters, ids in raster order). The three
+    //     bristles sit on the top row (12-13); the handle and the wide bar sit on the lower row (15-16), so raster labels are b1=1, b2=2, b3=3,
+    //     v1=4, v2=5, v3=6, bar=7. Handle gaps are 3 (v1-v2, v2-v3, v3-bar); bristle gaps to the bar are 2 -- so the MST is the broom:
+    //         4-5 (3), 5-6 (3), 6-7 (3)   [the handle chain into the bar]
+    //         7-1 (2), 7-2 (2), 7-3 (2)   [the three bristles hung on the bar cluster 7]
+    //     The center by REACH is cluster 6 (v3, up the handle); the centroid by BALANCE is cluster 7 (the bar the bristles mass on) ------------
+    var broom = try make_canvas(garden, 28, 20, 0);
+    set_block(&broom, 1, 15, 2, 2); // v1  -> cluster 4  (handle end),      box cols 1-2
+    set_block(&broom, 5, 15, 2, 2); // v2  -> cluster 5,                    box cols 5-6   (gap 3 to v1)
+    set_block(&broom, 9, 15, 2, 2); // v3  -> cluster 6,                    box cols 9-10  (gap 3 to v2)
+    set_block(&broom, 13, 15, 13, 2); // bar (v4) -> cluster 7,             box cols 13-25 (gap 3 from v3)
+    set_block(&broom, 15, 12, 2, 2); // b1  -> cluster 1  (bristle),        box cols 15-16 (gap 2 above the bar)
+    set_block(&broom, 19, 12, 2, 2); // b2  -> cluster 2  (bristle),        box cols 19-20 (gap 2 above the bar)
+    set_block(&broom, 23, 12, 2, 2); // b3  -> cluster 3  (bristle),        box cols 23-24 (gap 2 above the bar)
+    const bt = try tree_of(garden, &broom, 7, 7);
+
+    // --- CONFIRM THE BROOM SKELETON -- the handle chain into the bar, the three bristles hung on the bar cluster 7 ----------------------------
+    if (cluster_mst.edge_count(bt) != 6) return error.BroomEdgeCountNotSix; // n-1 for seven clusters
+    if (try cluster_mst.is_bridge(bt, 4, 5) != true) return error.BroomMissingHandleV1V2;
+    if (try cluster_mst.is_bridge(bt, 5, 6) != true) return error.BroomMissingHandleV2V3;
+    if (try cluster_mst.is_bridge(bt, 6, 7) != true) return error.BroomMissingHandleV3Bar;
+    if (try cluster_mst.is_bridge(bt, 7, 1) != true) return error.BroomMissingBristleOne;
+    if (try cluster_mst.is_bridge(bt, 7, 2) != true) return error.BroomMissingBristleTwo;
+    if (try cluster_mst.is_bridge(bt, 7, 3) != true) return error.BroomMissingBristleThree;
+    // the bristles never hang off each other, and the handle never leaps to a bristle -- a true broom, not a caterpillar
+    if (try cluster_mst.is_bridge(bt, 1, 2) != false) return error.BroomBristlesChained;
+    if (try cluster_mst.is_bridge(bt, 6, 1) != false) return error.BroomHandleToBristle;
+
+    // --- THE CENTROID IS THE BAR (cluster 7) -- pulling the bar drops each bristle into its own singleton and leaves the handle {4,5,6} as one
+    //     modest remainder, the most even split any cluster offers: largest piece 3, the balance ---------------------------------------------
+    if (try centroid_max_subtree(garden, bt, 7) != 3) return error.BroomBarSubtreeNotThree; // bristles fall to singletons, handle stays 3
+    if (try centroid_balance(garden, bt) != 3) return error.BroomBalanceNotThree;
+    if (try tree_centroid(garden, bt) != 7) return error.BroomCentroidNotBar;
+    if (try is_centroid(garden, bt, 7) != true) return error.BroomBarNotCentroid;
+
+    // --- THE CENTER IS UP THE HANDLE (cluster 6) -- and it is NOT the centroid; pulling v3 leaves the far handle-end {4,5} against the whole
+    //     bushel {7,1,2,3}, a lopsided 4, worse than the bar's 3 ------------------------------------------------------------------------------
+    if (try cluster_tree_radius.tree_center(garden, bt) != 6) return error.BroomCenterNotHandle;
+    if (try centroid_max_subtree(garden, bt, 6) != 4) return error.BroomHandleSubtreeNotFour; // {4,5} vs {7,1,2,3} -> largest 4
+    if (try is_centroid(garden, bt, 6) != false) return error.BroomCenterIsCentroid; // the center is NOT a balance point here
+
+    // --- THEY NAME TWO DIFFERENT CLUSTERS, EACH THE OTHER'S NON-ANSWER -- the whole crux in one line -------------------------------------------
+    if (try tree_centroid(garden, bt) == try cluster_tree_radius.tree_center(garden, bt)) return error.BroomCenterEqualsCentroid;
+    if (try cluster_tree_radius.is_center(garden, bt, 7) != false) return error.BroomBarIsCenter; // the bar is the centroid, never the center
+    if (try is_centroid(garden, bt, 6) != false) return error.BroomHandleIsCentroid; // the handle is the center, never the centroid
+
+    // --- SCENE TWO: THE THREE-CLUSTER STAR -- corner-L A and ring B into cluster 1 (the hub), lone block C cluster 2, far block D cluster 3; the
+    //     MST is a star on the hub cluster 1 (the same scene image/cluster_tree_radius.rye proves has center cluster 1). Center and centroid
+    //     COINCIDE at the hub: pulling it drops both leaves to singletons (balance 1), and the hub reaches each leaf across one bridge ---------
+    var star = try make_canvas(garden, 15, 15, 0);
+    set_corner_l(&star, 1, 1, 6, 1, 1, 6); // A: box (1,1)-(6,6)
+    set_block(&star, 8, 1, 2, 2); // C: box (8,1)-(9,2) -> cluster 2
+    set_ring(&star, 4, 4, 9, 9); // B: ring box (4,4)-(9,9), overlaps A's corner -> cluster 1 (the hub)
+    set_block(&star, 12, 12, 2, 2); // D: box (12,12)-(13,13) -> cluster 3
+    const st = try tree_of(garden, &star, 4, 3);
+    // the hub is BOTH the center and the centroid -- reach and balance agree on a star
+    if (try cluster_tree_radius.tree_center(garden, st) != 1) return error.StarCenterNotHub;
+    if (try tree_centroid(garden, st) != 1) return error.StarCentroidNotHub;
+    if (try centroid_balance(garden, st) != 1) return error.StarBalanceNotOne; // pulling the hub leaves two singletons
+    if (try is_centroid(garden, st, 1) != true) return error.StarHubNotCentroid;
+    if (try is_centroid(garden, st, 2) != false) return error.StarLeafIsCentroid; // pulling a leaf leaves the other two, a lopsided 2
+
+    // --- SCENE THREE: THE SYMMETRIC PATH -- three blocks in a row, boxes disjoint, MST a chain 1-2-3, edges both gap 3. Center and centroid
+    //     COINCIDE at the MIDDLE cluster 2: pulling it leaves two singletons (balance 1), and it reaches each end across one edge --------------
+    var row = try make_canvas(garden, 12, 4, 0);
+    set_block(&row, 1, 1, 2, 2); // block 1: box (1,1)-(2,2) -> cluster 1 (leftmost)
+    set_block(&row, 5, 1, 2, 2); // block 2: box (5,1)-(6,2) -> cluster 2 (middle)
+    set_block(&row, 9, 1, 2, 2); // block 3: box (9,1)-(10,2) -> cluster 3 (rightmost)
+    const rt = try tree_of(garden, &row, 3, 3);
+    if (try cluster_tree_radius.tree_center(garden, rt) != 2) return error.PathCenterNotMiddle;
+    if (try tree_centroid(garden, rt) != 2) return error.PathCentroidNotMiddle; // the middle both halves the count and minimizes the reach
+    if (try centroid_balance(garden, rt) != 1) return error.PathBalanceNotOne;
+    if (try centroid_max_subtree(garden, rt, 1) != 2) return error.PathEndSubtreeNotTwo; // pulling an end leaves the other two as one piece
+    if (try is_centroid(garden, rt, 2) != true) return error.PathMiddleNotCentroid;
+    if (try is_centroid(garden, rt, 1) != false) return error.PathEndIsCentroid;
+
+    // --- A LONE-CLUSTER LAYOUT IS ALREADY ONE WHOLE -- zero balance, its own centroid ---------------------------------------------------------
+    var lone_img = try make_canvas(garden, 6, 6, 0);
+    set_block(&lone_img, 1, 1, 2, 2); // one object, one cluster
+    const lone_tree = try tree_of(garden, &lone_img, 1, 1);
+    if (try centroid_balance(garden, lone_tree) != 0) return error.LoneBalanceNotZero;
+    if (try centroid_max_subtree(garden, lone_tree, 1) != 0) return error.LoneSubtreeNotZero;
+    if (try tree_centroid(garden, lone_tree) != 1) return error.LoneCentroidNotOne;
+    if (try is_centroid(garden, lone_tree, 1) != true) return error.LoneClusterNotCentroid;
+
+    // --- REFUSALS -- a zero or past-the-count cluster id refuses BadClusterId in both the subtree read and the centroid test ------------------
+    if (centroid_max_subtree(garden, bt, 0)) |_| return error.ZeroSubtreeNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongZeroSubtreeError;
+    }
+    if (is_centroid(garden, bt, 8)) |_| return error.PastCentroidNotRefused else |err| {
+        if (err != error.BadClusterId) return error.WrongPastCentroidError;
+    }
+
+    // --- DETERMINISM -- the same tree reads the same centroid and balance twice --------------------------------------------------------------
+    const c1 = try tree_centroid(garden, bt);
+    const c2 = try tree_centroid(garden, bt);
+    if (c1 != c2) return error.CentroidNotDeterministic;
+    if (try centroid_balance(garden, bt) != try centroid_balance(garden, bt)) return error.BalanceNotDeterministic;
+
+    print("GREEN image-cluster-tree-centroid: the BALANCE POINT of the skeleton -- the CENTROID of the cluster minimum spanning tree, the cluster whose removal leaves the SMALLEST largest-piece measured in cluster COUNT, with centroid_max_subtree the largest component left when a cluster is pulled out, centroid_balance the smallest such largest-piece over every cluster, tree_centroid the cluster that achieves it (lowest id on a tie), is_centroid the centroid test, exact integers, NO float and NO tolerance -- the DECISIVE crux, the center weighs REACH and the centroid weighs BALANCE, so on a lopsided tree they part yet on a balanced tree they coincide. ON A BROOM THEY PART -- over a handle chain (v1-v2-v3, clusters 4-5-6) into a wide bar (cluster 7) with three bristles (clusters 1,2,3) massed on the bar, the MST is that broom (handle edges gap 3, bristle edges gap 2); the centroid is the BAR cluster 7 -- pulling it drops each bristle into its own singleton and leaves the handle {{4,5,6}} as one modest remainder, the largest piece 3, the most even split any cluster offers -- while the center by REACH is a HANDLE cluster 6 up the chain, and pulling cluster 6 leaves a lopsided 4, so tree_center (6) and tree_centroid (7) name TWO DIFFERENT clusters, each the other's non-answer (is_center TRUE for the handle and FALSE for the bar, is_centroid the exact reverse). ON A STAR OR A PATH THEY MEET -- over the three-cluster star the hub is both center and centroid (pulling it drops both leaves to singletons, balance 1, and it reaches each across one bridge), and over the symmetric path the middle cluster 2 is both (it halves the count and minimizes the reach) -- only when mass and reach pull different ways do the two part. A lone-cluster layout is already one whole (zero balance, its own centroid); a zero or past-the-count id refuses BadClusterId; the same tree reads the same centroid twice. Compose not braid over image/cluster_minimum_spanning_tree.rye (build_mst and the edges), image/cluster_tree_radius.rye (tree_center and is_center, cross-checked to prove the divergence, never re-derived), and image/cluster_graph.rye (the matrix below) -- a reading over a reading over a reading over a reading over a reading over a reading over a reading\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("usage: cluster_tree_centroid selftest\n", .{});
+    return 1;
+}

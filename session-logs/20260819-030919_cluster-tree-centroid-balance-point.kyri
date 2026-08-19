@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260819.030919
+editor Claude Code
+model claude-fable-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title cluster_tree_centroid -- the BALANCE POINT of the cluster MST, distinct from the CENTER
+prompt autonomous loop -- pick up the running thread, take the next agent-doable lap Lindy-first crux-first, optimizing the harmony-of-styles balance compass
+think Read KYRI and RADIANT_STYLE to be Kyri in Radiant Style from the first token; read crux/REMEMBER, the top session-log rows, and crux/REDS.
+think Standfast: every living REDS row is Closed, Released, or the custody-gated errata #75 -- no agent-closable red blocks new work, so the constructive queue is open.
+think The running thread is the Season G open-media scene-read family; the last green edge was selection_cluster_facts.rye, 194 image modules standing. The cluster-tree sub-family has read MST, connectivity, diameter, radius, diameter_path.
+think Crux-first next rung: the tree CENTROID -- a genuinely distinct invariant from the CENTER. The center weighs REACH (min weighted eccentricity, cluster_tree_radius); the centroid weighs BALANCE (min largest-subtree by cluster count). They part on a lopsided tree and coincide on a balanced one.
+think A clean center-vs-centroid divergence needs a BROOM: a handle chain plus a bushel of bristles at one end. Designed 7 singleton blocks so the MST is exactly that broom -- handle gaps 3, bristle-to-bar gaps 2, all cross gaps larger and tie-free, so Prim yields the unique intended tree. Center lands at handle cluster 6, centroid at the bar cluster 7.
+think Modeled the module on cluster_tree_radius: same imports plus cluster_tree_radius itself, to cross-check tree_center and prove the divergence rather than re-derive it. max_subtree_on_removal walks the tree edges treating the removed cluster as absent, counting each surviving component (bounded n per removal, n removals).
+obs GREEN on the first full metal run -- center 6 != centroid 7 held, the star and the symmetric path both coincided at their hub/middle, lone cluster its own centroid, BadClusterId refusals, determinism. One print-string fix before green: the {4,5,6} braces in the GREEN prose doubled for the format string (a print-string fix, not a code red), the same class REDS #75-era selection_cluster_facts hit.
+obs Version const read straight from the live clock 030919, no future stamp (REDS #75). TAME bans clean, width-check exit 0, plain 7-bit ASCII, living-card ASCII GREEN. Witness native `contains`, never printf|grep (REDS #85/#76).
+obs Council rota lap deep-read the one-clock naming law (item 23) -- one clock, one order, no renumbering; the version const and the hyphen-stamp filename both keep it, later is larger.
+loom witness=cluster_tree_centroid_witness selftest=green checks=5 image_modules=195
+file image/cluster_tree_centroid.rye the centroid module -- centroid_max_subtree, centroid_balance, tree_centroid, is_centroid, over the broom/star/path scenes
+file tools/cluster_tree_centroid_witness.rish the witness proving the balance-point crux on metal, native contains
+file image/README.md docs-sync -- names the cluster tree centroid after the cluster diameter path
+file crux/REMEMBER.md live edge + Git nib repointed single-stranded, selection_cluster_facts folded to a prior-nib comment, 195 image modules
+recommend keep-going the cluster-tree family stands broad and green; the next agent-doable rung is a leaf/internal read over the MST bridge edges (diameter poles are leaves, the center internal), an object-count-in-region summary, or a codec read -- the Microkernel study rung and a real-photo top-hat still wait on a fetch/license gate

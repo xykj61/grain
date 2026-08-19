@@ -1,0 +1,41 @@
+# tools/cluster_tree_centroid_witness.rish -- the balance point of a cluster skeleton, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/cluster_tree_radius.rye reads the CENTER of the skeleton, the cluster of least ECCENTRICITY, nearest
+# to all others by REACH. This rung reads a DIFFERENT balance point off the SAME tree: the CENTROID, the cluster whose removal splits the tree into
+# the most even pieces by COUNT. centroid_max_subtree reads the largest component left when a cluster is pulled out, centroid_balance the smallest
+# such largest-piece over every cluster, tree_centroid the cluster that achieves it (lowest id on a tie), is_centroid the centroid test. Exact
+# integers, NO float, NO tolerance.
+#
+# The crux this witness proves on metal: the center weighs REACH and the centroid weighs BALANCE, so on a lopsided tree they part yet on a balanced
+# tree they coincide. ON A BROOM THEY PART -- over a handle chain (clusters 4-5-6) into a wide bar (cluster 7) with three bristles massed on the bar,
+# the centroid is the bar (pulling it leaves each bristle a singleton and the handle a modest remainder, balance 3) while the center is a handle
+# cluster 6, so tree_center (6) and tree_centroid (7) name TWO DIFFERENT clusters, each the other's non-answer. ON A STAR OR A PATH THEY MEET -- the
+# hub of the three-cluster star and the middle of the symmetric path are both center and centroid. A lone-cluster layout is its own centroid.
+# Determinism. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cluster_tree_centroid_witness.rish
+
+say "cluster_tree_centroid: Language EN -- Season G the balance point of a cluster skeleton; centroid_max_subtree reads the largest component left when a cluster is pulled out, centroid_balance the smallest such largest-piece over every cluster, tree_centroid the cluster that achieves it, is_centroid the centroid test; NO float, NO tolerance."
+say "cluster_tree_centroid: Style Radiant -- compose not braid: this rung owns only the removal-split reads (the largest component left when a cluster is pulled, the argmin over every cluster, the centroid test); cluster_minimum_spanning_tree owns build_mst and the edges, cluster_tree_radius owns tree_center and is_center cross-checked here to prove the divergence never re-derived, cluster_graph owns the matrix a level below. A reading over a reading over a reading over a reading over a reading over a reading over a reading."
+say "cluster_tree_centroid: Lens TAME -- the cluster count can never exceed the object ceiling, so the removal walk visits each cluster at most once over the n-1 edges and the centroid scan runs one removal per cluster; a zero or past-the-count cluster id refuses BadClusterId, a lone-cluster layout is its own centroid; all-or-nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/cluster_tree_centroid"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/cluster_tree_centroid.rye -femit-bin=${bin}"]
+assert build.ok else "cluster_tree_centroid: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "cluster_tree_centroid: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "cluster_tree_centroid: ${out}"
+
+assert selftest.out contains "GREEN image-cluster-tree-centroid" else "cluster_tree_centroid: selftest did not print the GREEN line"
+assert selftest.out contains "ON A BROOM THEY PART" else "cluster_tree_centroid: the broom-they-part case did not print"
+assert selftest.out contains "tree_center (6) and tree_centroid (7) name TWO DIFFERENT clusters" else "cluster_tree_centroid: the two-different-clusters fact did not print"
+assert selftest.out contains "ON A STAR OR A PATH THEY MEET" else "cluster_tree_centroid: the star-or-path-they-meet case did not print"
+assert selftest.out contains "the hub is both center and centroid" else "cluster_tree_centroid: the star coincidence fact did not print"
+
+say "cluster_tree_centroid: GREEN on metal -- the fold-point a surface picks for a connected group, the cluster that halves it by count rather than by reach, the balance point of the minimum spanning tree; on a broom the centroid moves to the bristles while the center stays in the handle, on a star or a path the two meet, exact integers with NO float and NO tolerance."
