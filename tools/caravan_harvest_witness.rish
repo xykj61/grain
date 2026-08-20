@@ -80,9 +80,19 @@ assert test.out contains "the ordered lap stands idle -- by age 2, by readiness 
 assert test.out contains "the head waits on a domain" else "the ordered lap did not name what it waits on"
 assert test.out contains "6 asks come home under both, at a peak of 3 in flight" else "the ordered lap did not come home at the full table"
 
-# The stagger lap: the head waits on a slot, so readiness converts it whole.
-assert test.out contains "the stagger lap stands idle -- by age 1, by readiness 0" else "readiness did not convert the waiting a lingering eldest held"
+# The stagger lap: the head waits on a slot, so readiness converts it.
+#
+# The load-bearing number is the SECOND one -- turns that stood idle beside a
+# dependent already exited whose going would have let the head in. Age stands
+# at least one such turn every run, and readiness stands none, by construction
+# rather than by luck: `choose_slot` prefers the ready slot that opens the
+# door. The raw idle counts on the line above are machine-dependent and are
+# read here without being asserted, which is what closed REDS %95 -- the
+# earlier exact-zero assertion over the raw count went RED on 2 of 12 cold
+# runs while nothing in the tree changed.
+assert test.out contains "the stagger lap stands idle -- by age 1" else "the linger did not hold the eldest reading idle"
 assert test.out contains "the head waits on a slot" else "the stagger lap did not name what it waits on"
+assert test.out contains "idle beside a ready slot that would have opened the door -- by age 1, by readiness 0" else "readiness stood idle where a ready slot would have opened the door"
 # The count here is at least one and occasionally two: alike siblings finish
 # in roughly spawn order, yet ordinary jitter sometimes lets one finish ahead
 # of its eldest even where nothing lingers. The module holds the load-bearing
