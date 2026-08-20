@@ -1,0 +1,10 @@
+//! Fixture rung -- the middle of the harness-form corpus. It folds into the rung
+//! directly beneath it through the shared harness, which is the form a rung
+//! writes once the rung below publishes no stub of its own.
+
+const lower_rung = @import("lower.rye");
+const ladder_checks = @import("ladder_checks.rye");
+
+pub fn check_first() u8 {
+    return ladder_checks.check_first(lower_rung);
+}

@@ -22,7 +22,7 @@
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `201e106235` (the ladder's chained bodies lift; carry 3,324 to 2,762, 91 rungs GREEN cold.)
+**Git nib:** `b1236b664c` (fold C -- the harness answers for a rung that says nothing; 612 stubs leave, carry 2,762 to 47, 91 rungs GREEN cold.)
 
 
 **Prior living edges -- condensed `20260818.225452` (cairn `d2368cb9db`).** The whole roundness quest's per-nib comment wall once stacked here -- roundness_universal, roundness, hit_test, scene_manifest, euler_scene, euler_number, and every earlier shape descriptor back through regions, some three dozen former live edges as `<!-- prior nib -->` comments. Each is a real commit recoverable by `git log --oneline`, and each rung carries its own dated log in `session-logs/` plus a durable entry in `image/README.md`. Folded to this pointer so the operator card stays the live card of what is next, never a second copy of the log index. Earlier open-media condenses: `20260818.101851` and `20260817.172514` (cairns). Walk-back: `git show d2368cb9db:crux/REMEMBER.md` reads the full verbose stack.

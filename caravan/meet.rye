@@ -7423,13 +7423,6 @@ pub fn check_delivery() u8 {
     return owing_rung.check_delivery();
 }
 
-/// The generalization test: a run that weighs a plan losing nothing reads as
-/// the rung below.
-pub fn check_unlost(sys: *const system.System) u8 {
-    // The harness owns this body; it runs here against this rung's own
-    // helpers, its own report, and its own wire.
-    return ladder_checks.check_unlost(@This(), sys);
-}
 
 /// The reading the reader answers with, in their own hand.
 ///
@@ -8119,20 +8112,6 @@ pub fn check_tidings() u8 {
     return owing_rung.check_tidings();
 }
 
-/// The two answers the wire itself carries, proven as bytes in a reader's own
-/// box rather than only as folds.
-///
-/// The lap below proves the `stood` answer end to end, since the word its reader
-/// objected to is the very word the plan finally settled -- which is the answer
-/// this arc most often owes a person, and the one it is least comfortable to
-/// send. The other answer is proven here, on the same wire and in the same shape
-/// -- written to a reader of its own, read back out of their box, and never
-/// touching the box the lap depends on.
-pub fn check_tidings_wire(io: std.Io) u8 {
-    // The harness owns this body; it runs here against this rung's own
-    // helpers, its own report, and its own wire.
-    return ladder_checks.check_tidings_wire(@This(), io);
-}
 
 /// Weighs this rung's own folds, before any dependent runs.
 ///
@@ -8145,19 +8124,6 @@ pub fn check_appeal() u8 {
     return owing_rung.check_appeal();
 }
 
-/// The two pleas the wire itself carries, proven as bytes in a reader's own box
-/// rather than only as folds.
-///
-/// The lap below proves the `presses` plea end to end, since a reader who
-/// objected and was told their word stood is the person this rung most owes a
-/// hearing. The other plea is proven here, on the same wire and in the same
-/// shape -- written by a reader of this fold's own, read back out of their box,
-/// and cleared again, never touching the box the lap depends on.
-pub fn check_appeal_wire(io: std.Io) u8 {
-    // The harness owns this body; it runs here against this rung's own
-    // helpers, its own report, and its own wire.
-    return ladder_checks.check_appeal_wire(@This(), io);
-}
 
 /// Weighs this rung's own folds, before any dependent runs.
 ///
@@ -8188,18 +8154,6 @@ pub fn check_endure_measure() u8 {
     return owing_rung.check_endure_measure();
 }
 
-/// The standing note the wire itself carries, proven as a byte outside any run.
-///
-/// The lap below proves the note end to end under a real plan. This proves the
-/// one property no single run can show from inside itself: the byte survives a
-/// provisioning. It is written, a provisioning runs over it, and it is read back
-/// unchanged -- which is the whole difference between a record and a run's own
-/// leavings.
-pub fn check_endure_wire(io: std.Io, sys: *const system.System) u8 {
-    // The harness owns this body; it runs here against this rung's own
-    // helpers, its own report, and its own wire.
-    return ladder_checks.check_endure_wire(@This(), io, sys);
-}
 
 /// Weighs this rung's own folds, before any dependent runs.
 ///
@@ -8230,18 +8184,6 @@ pub fn check_heed_measure() u8 {
     return owing_rung.check_heed_measure();
 }
 
-/// The regard note the wire itself carries, proven as a byte outside any run.
-///
-/// The lap below proves the note end to end under a real plan. This proves the
-/// one property that separates a regard from the position it answers: the
-/// position survives a provisioning and the regard does not, because a quarrel
-/// belongs to the person holding it while a word about that quarrel belongs to
-/// the run that said it.
-pub fn check_heed_wire(io: std.Io, sys: *const system.System) u8 {
-    // The harness owns this body; it runs here against this rung's own
-    // helpers, its own report, and its own wire.
-    return ladder_checks.check_heed_wire(@This(), io, sys);
-}
 
 /// The relenting folds, weighed before any dependent runs.
 ///
@@ -8271,18 +8213,6 @@ pub fn check_relent_measure() u8 {
     return owing_rung.check_relent_measure();
 }
 
-/// The standing note across two provisionings, proven as a byte outside any run.
-///
-/// The lap below proves the withdrawal end to end under a real plan. This proves
-/// the property that makes the withdrawal worth having: the note survives a
-/// provisioning while it stands, **and stays down once it is taken down**. A
-/// quarrel that came back with the morning would be no closer to over than one
-/// no run ever answered.
-pub fn check_relent_wire(io: std.Io, sys: *const system.System) u8 {
-    // The harness owns this body; it runs here against this rung's own
-    // helpers, its own report, and its own wire.
-    return ladder_checks.check_relent_wire(@This(), io, sys);
-}
 
 /// The dwelling folds, weighed before any dependent runs.
 ///
@@ -8312,19 +8242,6 @@ pub fn check_dwell_measure() u8 {
     return owing_rung.check_dwell_measure();
 }
 
-/// The age note across two provisionings, proven as a byte outside any run.
-///
-/// The lap below proves the dating end to end under a real plan. This proves the
-/// two properties that make an age worth writing: it survives a provisioning
-/// beside the position it counts, since an age reset every morning would call
-/// the oldest quarrel on the wire brand new -- **and it falls with that
-/// position**, since a count of runs stood through is a fact about one quarrel
-/// and has nothing to say once that quarrel is over.
-pub fn check_dwell_wire(io: std.Io, sys: *const system.System) u8 {
-    // The harness owns this body; it runs here against this rung's own
-    // helpers, its own report, and its own wire.
-    return ladder_checks.check_dwell_wire(@This(), io, sys);
-}
 
 /// Weighs this rung's own folds, before any dependent runs.
 ///
@@ -8334,21 +8251,21 @@ pub fn check_dwell_wire(io: std.Io, sys: *const system.System) u8 {
 pub fn check_swell() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return owing_rung.check_swell();
+    return ladder_checks.check_swell(owing_rung);
 }
 
 /// The four refusals this rung earns, each read straight.
 pub fn check_swell_refusals() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return owing_rung.check_swell_refusals();
+    return ladder_checks.check_swell_refusals(owing_rung);
 }
 
 /// The number this rung moves, weighed as a fold before any run moves it.
 pub fn check_swell_measure() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return owing_rung.check_swell_measure();
+    return ladder_checks.check_swell_measure(owing_rung);
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
@@ -8359,21 +8276,21 @@ pub fn check_swell_measure() u8 {
 pub fn check_refer() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return owing_rung.check_refer();
+    return ladder_checks.check_refer(owing_rung);
 }
 
 /// Weighs the five refusals this rung earns, each by name.
 pub fn check_refer_refusals() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return owing_rung.check_refer_refusals();
+    return ladder_checks.check_refer_refusals(owing_rung);
 }
 
 /// Weighs the number this rung moves, as a pure fold.
 pub fn check_refer_measure() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return owing_rung.check_refer_measure();
+    return ladder_checks.check_refer_measure(owing_rung);
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
@@ -8384,21 +8301,21 @@ pub fn check_refer_measure() u8 {
 pub fn check_deem() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return owing_rung.check_deem();
+    return ladder_checks.check_deem(owing_rung);
 }
 
 /// Weighs the five refusals this rung earns, each by name.
 pub fn check_deem_refusals() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return owing_rung.check_deem_refusals();
+    return ladder_checks.check_deem_refusals(owing_rung);
 }
 
 /// Weighs the number this rung moves, as a pure fold.
 pub fn check_deem_measure() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return owing_rung.check_deem_measure();
+    return ladder_checks.check_deem_measure(owing_rung);
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
@@ -8409,14 +8326,14 @@ pub fn check_deem_measure() u8 {
 pub fn check_avow() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return owing_rung.check_avow();
+    return ladder_checks.check_avow(owing_rung);
 }
 
 /// Weighs the five refusals this rung earns, each by name.
 pub fn check_avow_refusals() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return owing_rung.check_avow_refusals();
+    return ladder_checks.check_avow_refusals(owing_rung);
 }
 
 /// Weighs the number this rung moves, as a pure fold.
@@ -8451,19 +8368,6 @@ pub fn check_owe_measure() u8 {
     return owing_rung.check_owe_measure();
 }
 
-/// Weighs this rung's own arithmetic, as a pure fold, before any run is spent.
-pub fn check_meet() u8 {
-    // The harness owns this body; it runs here against this rung's own
-    // helpers, its own report, and its own wire.
-    return ladder_checks.check_meet(@This());
-}
-
-/// Weighs every refusal this rung earns, in the order the run reaches them.
-pub fn check_meet_refusals() u8 {
-    // The harness owns this body; it runs here against this rung's own
-    // helpers, its own report, and its own wire.
-    return ladder_checks.check_meet_refusals(@This());
-}
 
 /// Weighs the number this rung moves, as a pure fold.
 pub fn check_meet_measure() u8 {
@@ -8557,78 +8461,6 @@ pub fn check_meet_wire(io: std.Io, sys: *const system.System) u8 {
     return 0;
 }
 
-/// The standing note across a provisioning, proven as a byte outside any run.
-///
-/// The lap below proves the heralding end to end under a real plan. This proves
-/// the two properties that make a published standing trustworthy: it survives a
-/// provisioning beside the position it speaks for, since a herald cleared every
-/// morning would quiet the oldest quarrel on the wire -- **and it falls with
-/// that position**, since a byte left behind beside the outcome would go on
-/// shouting for a quarrel its own holder let go.
-pub fn check_swell_wire(io: std.Io, sys: *const system.System) u8 {
-    // The harness owns this body; it runs here against this rung's own
-    // helpers, its own report, and its own wire.
-    return ladder_checks.check_swell_wire(@This(), io, sys);
-}
-
-/// The case on a third hand's desk, proven as bytes outside any run.
-///
-/// The lap below proves the referring end to end under a real plan. This proves
-/// the property that makes a referral worth making: **a case, once carried,
-/// belongs to the desk it landed on.** It survives a provisioning, as every
-/// record of a quarrel does -- and it survives the withdrawal of the quarrel
-/// itself, which nothing else in this arc does. A supervisor that could take a
-/// case back off a third hand's desk the moment the argument ended its own way
-/// would have referred nothing at all; it would have shown somebody a document
-/// and then closed their hand around it.
-pub fn check_refer_wire(io: std.Io, sys: *const system.System) u8 {
-    // The harness owns this body; it runs here against this rung's own
-    // helpers, its own report, and its own wire.
-    return ladder_checks.check_refer_wire(@This(), io, sys);
-}
-
-/// The finding across a provisioning, proven as bytes outside any run.
-///
-/// The lap below proves the reading end to end under a real plan. This proves
-/// the two properties that make a third hand's answer worth reading: **a finding
-/// belongs to the hand that wrote it**, so a provisioning of this plan leaves it
-/// exactly where that hand left it -- and **the plan's own published copy is the
-/// plan's**, so clearing the copy an operator reads never reaches onto somebody
-/// else's desk to take back what they said.
-pub fn check_deem_wire(io: std.Io, sys: *const system.System) u8 {
-    // The harness owns this body; it runs here against this rung's own
-    // helpers, its own report, and its own wire.
-    return ladder_checks.check_deem_wire(@This(), io, sys);
-}
-
-/// The plan's own word across a provisioning, proven as bytes outside any run.
-///
-/// The lap below proves the avowing end to end under a real plan. This proves
-/// the two properties that make a plan's word worth reading: **an avowal is the
-/// plan's own**, so a provisioning leaves it exactly where the run that spoke it
-/// left it -- and **it falls with the finding it answers**, since a word left
-/// standing beside a verdict no longer published would have the plan answering
-/// an argument nobody is making.
-pub fn check_avow_wire(io: std.Io, sys: *const system.System) u8 {
-    // The harness owns this body; it runs here against this rung's own
-    // helpers, its own report, and its own wire.
-    return ladder_checks.check_avow_wire(@This(), io, sys);
-}
-
-/// The standing debt across a provisioning, proven as bytes outside any run.
-///
-/// The lap below proves the booking end to end under a real plan. This proves
-/// the one property that makes a debt worth booking at all: **it outlives the
-/// run that made it**, and a provisioning leaves it exactly where that run left
-/// it -- since a debt swept every morning would let a plan concede at bedtime
-/// and wake up owing nothing. **And it falls with the concession it carries**,
-/// because a debt standing beside a word the plan no longer holds would have a
-/// later run meeting an admission nobody is making.
-pub fn check_owe_wire(io: std.Io, sys: *const system.System) u8 {
-    // The harness owns this body; it runs here against this rung's own
-    // helpers, its own report, and its own wire.
-    return ladder_checks.check_owe_wire(@This(), io, sys);
-}
 
 /// The reading lap: one plan run twice over a quarrel already carried out to a
 /// hand that is neither party, with that hand's own answer sitting in their box
@@ -8966,7 +8798,7 @@ fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8
     if (delivering != 0) return delivering;
     const hearing = check_hearing();
     if (hearing != 0) return hearing;
-    const unlost = check_unlost(&sys);
+    const unlost = ladder_checks.check_unlost(@This(), &sys);
     if (unlost != 0) return unlost;
     const disputing = check_dispute();
     if (disputing != 0) return disputing;
@@ -8978,39 +8810,39 @@ fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8
     if (reposing != 0) return reposing;
     const tiding = check_tidings();
     if (tiding != 0) return tiding;
-    const wired = check_tidings_wire(io);
+    const wired = ladder_checks.check_tidings_wire(@This(), io);
     if (wired != 0) return wired;
     const appealing = check_appeal();
     if (appealing != 0) return appealing;
-    const pleaded = check_appeal_wire(io);
+    const pleaded = ladder_checks.check_appeal_wire(@This(), io);
     if (pleaded != 0) return pleaded;
     const enduring = check_endure();
     if (enduring != 0) return enduring;
-    const survived = check_endure_wire(io, &sys);
+    const survived = ladder_checks.check_endure_wire(@This(), io, &sys);
     if (survived != 0) return survived;
     const heeding = check_heed();
     if (heeding != 0) return heeding;
-    const regarded = check_heed_wire(io, &sys);
+    const regarded = ladder_checks.check_heed_wire(@This(), io, &sys);
     if (regarded != 0) return regarded;
     const relenting = check_relent();
     if (relenting != 0) return relenting;
-    const released = check_relent_wire(io, &sys);
+    const released = ladder_checks.check_relent_wire(@This(), io, &sys);
     if (released != 0) return released;
     const dwelling = check_dwell();
     if (dwelling != 0) return dwelling;
-    const aged = check_dwell_wire(io, &sys);
+    const aged = ladder_checks.check_dwell_wire(@This(), io, &sys);
     if (aged != 0) return aged;
     const referring = check_swell();
     if (referring != 0) return referring;
-    const published = check_swell_wire(io, &sys);
+    const published = ladder_checks.check_swell_wire(@This(), io, &sys);
     if (published != 0) return published;
-    const carried = check_refer_wire(io, &sys);
+    const carried = ladder_checks.check_refer_wire(@This(), io, &sys);
     if (carried != 0) return carried;
-    const answered = check_deem_wire(io, &sys);
+    const answered = ladder_checks.check_deem_wire(@This(), io, &sys);
     if (answered != 0) return answered;
-    const spoken = check_avow_wire(io, &sys);
+    const spoken = ladder_checks.check_avow_wire(@This(), io, &sys);
     if (spoken != 0) return spoken;
-    const meeting = check_meet();
+    const meeting = ladder_checks.check_meet(@This());
     if (meeting != 0) return meeting;
     const receipted = check_meet_wire(io, &sys);
     if (receipted != 0) return receipted;

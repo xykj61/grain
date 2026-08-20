@@ -3540,13 +3540,6 @@ pub fn check_delivery() u8 {
     return couriering_rung.check_delivery();
 }
 
-/// The generalization test: a run that weighs a plan losing nothing reads as
-/// the rung below.
-pub fn check_unlost(sys: *const system.System) u8 {
-    // The harness owns this body; it runs here against this rung's own
-    // helpers, its own report, and its own wire.
-    return ladder_checks.check_unlost(@This(), sys);
-}
 
 /// The reading the reader answers with, in their own hand.
 ///
@@ -3986,7 +3979,7 @@ fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8
     if (delivering != 0) return delivering;
     const hearing = check_hearing();
     if (hearing != 0) return hearing;
-    const unlost = check_unlost(&sys);
+    const unlost = ladder_checks.check_unlost(@This(), &sys);
     if (unlost != 0) return unlost;
     const runs = check_hearing_runs(allocator, io, self_path, &sys);
     if (runs != 0) return runs;

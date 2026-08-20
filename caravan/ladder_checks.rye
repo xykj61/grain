@@ -41,6 +41,33 @@ const cohort = @import("cohort.rye");
 const system = @import("system.rye");
 const unhand = @import("unhand.rye");
 
+const harness = @This();
+
+/// Reaches a chained link the way the ladder means it -- the rung's own body
+/// when that rung wrote one, and this harness's body when it wrote none.
+///
+/// A rung publishes a link only to *change* it, so silence means "run the body
+/// the harness already holds." That lets a rung pay five lines for a check it
+/// altered and nothing at all for a check it merely climbs to. The test is
+/// `comptime`, so the untaken branch is never analyzed and a name this harness
+/// does not hold can only be reached for by a rung that declares it.
+fn link(comptime rung: type, comptime name: []const u8) u8 {
+    // invariant: a link always names a check, never some other decl
+    comptime assert(std.mem.startsWith(u8, name, "check_"));
+    if (comptime @hasDecl(rung, name)) return @field(rung, name)();
+    return @field(harness, name)(rung);
+}
+
+/// The same reach for a link that measures a wire, which needs the rung's own
+/// notes to read from and the declaration they were provisioned under.
+fn link_wire(comptime rung: type, comptime name: []const u8, io: std.Io, sys: *const system.System) u8 {
+    // invariant: a link always names a check, never some other decl
+    comptime assert(std.mem.startsWith(u8, name, "check_"));
+    if (comptime @hasDecl(rung, name)) return @field(rung, name)(io, sys);
+    return @field(harness, name)(rung, io, sys);
+}
+
+
 
 pub fn check_allay(comptime rung: type) u8 {
     const told = rung.knows_bytes(rung.anew_bytes(rung.inherited_matter));
@@ -97,7 +124,7 @@ pub fn check_allay(comptime rung: type) u8 {
         print("  RED: a run that told nobody left a reply unread anyway\n", .{});
         return 1;
     }
-    return rung.check_allay_refusals();
+    return link(rung, "check_allay_refusals");
 }
 
 
@@ -124,7 +151,7 @@ pub fn check_allay_measure(comptime rung: type) u8 {
     print("  {s}\n", .{rung.rest_words(.allays)});
     print("  {s}\n", .{rung.rest_words(.stands)});
     print("  a reply carries five bytes: the telling they were carried, and what they make of it\n", .{});
-    return rung.check_forbear();
+    return link(rung, "check_forbear");
 }
 
 
@@ -178,7 +205,7 @@ pub fn check_allay_refusals(comptime rung: type) u8 {
         print("  RED: an honest reading refused as {s}\n", .{@errorName(why)});
         return 1;
     }
-    return rung.check_allay_measure();
+    return link(rung, "check_allay_measure");
 }
 
 
@@ -258,7 +285,7 @@ pub fn check_allay_wire(comptime rung: type, io: std.Io, sys: *const system.Syst
     }
     rung.clear_rests(io, rung.standing_address);
     print("  a reader's reply survives a provisioning, and the plan's copy falls with the telling it answers\n", .{});
-    return rung.check_forbear_wire(io, sys);
+    return link_wire(rung, "check_forbear_wire", io, sys);
 }
 
 
@@ -333,7 +360,7 @@ pub fn check_apprise(comptime rung: type) u8 {
         print("  RED: a box holding nothing read back as a finding delivered\n", .{});
         return 1;
     }
-    return rung.check_apprise_refusals();
+    return link(rung, "check_apprise_refusals");
 }
 
 
@@ -358,7 +385,7 @@ pub fn check_apprise_measure(comptime rung: type) u8 {
     print("  the delivery this rung keeps: {s}\n", .{rung.apprise_words(.apprises)});
     print("  what a withholding plan leaves its reader: {s}\n", .{rung.apprise_words(.withheld)});
     print("  a delivery carries the finding whole: the meeting reported on, and what the look came to\n", .{});
-    return rung.check_suffice();
+    return link(rung, "check_suffice");
 }
 
 
@@ -419,7 +446,7 @@ pub fn check_apprise_refusals(comptime rung: type) u8 {
         print("  RED: a delivery inside its own count refused with {s}\n", .{@errorName(why)});
         return 1;
     }
-    return rung.check_apprise_measure();
+    return link(rung, "check_apprise_measure");
 }
 
 
@@ -475,7 +502,7 @@ pub fn check_apprise_wire(comptime rung: type, io: std.Io, sys: *const system.Sy
     rung.clear_met(io);
     rung.clear_redress(io);
     print("  a delivery survives a provisioning, and leaves the note it copies where it stands\n", .{});
-    return rung.check_suffice_wire(io, sys);
+    return link_wire(rung, "check_suffice_wire", io, sys);
 }
 
 
@@ -555,7 +582,7 @@ pub fn check_avow(comptime rung: type) u8 {
         print("  RED: a note holding nothing read back as a published avowal\n", .{});
         return 1;
     }
-    return rung.check_avow_refusals();
+    return link(rung, "check_avow_refusals");
 }
 
 
@@ -614,7 +641,7 @@ pub fn check_avow_refusals(comptime rung: type) u8 {
         print("  RED: an avowing inside its own count refused with {s}\n", .{@errorName(why)});
         return 1;
     }
-    return rung.check_avow_measure();
+    return link(rung, "check_avow_measure");
 }
 
 
@@ -670,7 +697,7 @@ pub fn check_avow_wire(comptime rung: type, io: std.Io, sys: *const system.Syste
         return 1;
     }
     print("  a word survives a provisioning, and falls with the finding it answers\n", .{});
-    return rung.check_owe_wire(io, sys);
+    return link_wire(rung, "check_owe_wire", io, sys);
 }
 
 
@@ -722,7 +749,7 @@ pub fn check_beckon(comptime rung: type) u8 {
         print("  RED: the other half of the count did not close\n", .{});
         return 1;
     }
-    return rung.check_beckon_refusals();
+    return link(rung, "check_beckon_refusals");
 }
 
 
@@ -777,7 +804,7 @@ pub fn check_beckon_refusals(comptime rung: type) u8 {
         print("  RED: an honest beckoning refused as {s}\n", .{@errorName(why)});
         return 1;
     }
-    return rung.check_beckon_measure();
+    return link(rung, "check_beckon_measure");
 }
 
 
@@ -854,7 +881,7 @@ pub fn check_deem(comptime rung: type) u8 {
         print("  RED: a note holding nothing read back as a published finding\n", .{});
         return 1;
     }
-    return rung.check_deem_refusals();
+    return link(rung, "check_deem_refusals");
 }
 
 
@@ -881,7 +908,7 @@ pub fn check_deem_measure(comptime rung: type) u8 {
     print("  a finding carries four bytes: the case it answers, and the word on it\n", .{});
     print("  finding for the reader reads as {s}\n", .{rung.finding_words(.upholds)});
     print("  finding for the plan reads as {s}\n", .{rung.finding_words(.overrules)});
-    return rung.check_avow();
+    return link(rung, "check_avow");
 }
 
 
@@ -940,7 +967,7 @@ pub fn check_deem_refusals(comptime rung: type) u8 {
         print("  RED: a reading inside its own count refused with {s}\n", .{@errorName(why)});
         return 1;
     }
-    return rung.check_deem_measure();
+    return link(rung, "check_deem_measure");
 }
 
 
@@ -1059,7 +1086,7 @@ pub fn check_desist(comptime rung: type) u8 {
         print("  RED: the other half of the count did not close\n", .{});
         return 1;
     }
-    return rung.check_desist_refusals();
+    return link(rung, "check_desist_refusals");
 }
 
 
@@ -1084,7 +1111,7 @@ pub fn check_desist_measure(comptime rung: type) u8 {
     print("  the bounding this rung keeps: {s}\n", .{rung.desist_words(.bounds)});
     print("  what a relaying plan tells an operator: {s}\n", .{rung.desist_words(.relays)});
     print("  a wall carries seven bytes: the mark it bounds, echoed whole, and this run's own byte last\n", .{});
-    return rung.check_beckon();
+    return link(rung, "check_beckon");
 }
 
 
@@ -1139,7 +1166,7 @@ pub fn check_desist_refusals(comptime rung: type) u8 {
         print("  RED: an honest bounding refused as {s}\n", .{@errorName(why)});
         return 1;
     }
-    return rung.check_desist_measure();
+    return link(rung, "check_desist_measure");
 }
 
 
@@ -1203,7 +1230,7 @@ pub fn check_desist_wire(comptime rung: type, io: std.Io, sys: *const system.Sys
     }
     rung.clear_mind(io);
     print("  a wall survives a provisioning, and lands before the relay it stays comes down\n", .{});
-    return rung.check_beckon_wire(io, sys);
+    return link_wire(rung, "check_beckon_wire", io, sys);
 }
 
 
@@ -1362,7 +1389,7 @@ pub fn check_forbear(comptime rung: type) u8 {
         print("  RED: a run reading no standing word left one open anyway\n", .{});
         return 1;
     }
-    return rung.check_forbear_refusals();
+    return link(rung, "check_forbear_refusals");
 }
 
 
@@ -1387,7 +1414,7 @@ pub fn check_forbear_measure(comptime rung: type) u8 {
     print("  the forbearance this rung keeps: {s}\n", .{rung.forbear_words(.forbears)});
     print("  what an opening plan hands the next run: {s}\n", .{rung.forbear_words(.opens)});
     print("  a forbearance carries five bytes: the reply it holds back on, echoed back whole\n", .{});
-    return rung.check_mind();
+    return link(rung, "check_mind");
 }
 
 
@@ -1441,7 +1468,7 @@ pub fn check_forbear_refusals(comptime rung: type) u8 {
         print("  RED: an honest forbearance refused as {s}\n", .{@errorName(why)});
         return 1;
     }
-    return rung.check_forbear_measure();
+    return link(rung, "check_forbear_measure");
 }
 
 
@@ -1510,7 +1537,7 @@ pub fn check_forbear_wire(comptime rung: type, io: std.Io, sys: *const system.Sy
     }
     rung.clear_rests(io, rung.standing_address);
     print("  a forbearance survives a provisioning, and comes down only on the word of the run that inherits it\n", .{});
-    return rung.check_mind_wire(io, sys);
+    return link_wire(rung, "check_mind_wire", io, sys);
 }
 
 
@@ -1631,7 +1658,7 @@ pub fn check_meet(comptime rung: type) u8 {
         print("  RED: a debt still on the wire read back as one taken down\n", .{});
         return 1;
     }
-    return rung.check_meet_refusals();
+    return link(rung, "check_meet_refusals");
 }
 
 
@@ -1656,7 +1683,7 @@ pub fn check_meet_measure(comptime rung: type) u8 {
     print("  the meeting this rung keeps: {s}\n", .{rung.meet_words(.meets)});
     print("  what a bare plan leaves an operator: {s}\n", .{rung.meet_words(.defers)});
     print("  a receipt carries two bytes: the debt met, echoed back exactly as it stood\n", .{});
-    return rung.check_redress();
+    return link(rung, "check_redress");
 }
 
 
@@ -1718,7 +1745,7 @@ pub fn check_meet_refusals(comptime rung: type) u8 {
         print("  RED: a meeting inside its own count refused with {s}\n", .{@errorName(why)});
         return 1;
     }
-    return rung.check_meet_measure();
+    return link(rung, "check_meet_measure");
 }
 
 
@@ -1778,7 +1805,7 @@ pub fn check_meet_wire(comptime rung: type, io: std.Io, sys: *const system.Syste
         return 1;
     }
     print("  a receipt survives a provisioning, and the debt it answers stays down\n", .{});
-    return rung.check_redress_wire(io, sys);
+    return link_wire(rung, "check_redress_wire", io, sys);
 }
 
 
@@ -1835,7 +1862,7 @@ pub fn check_mind(comptime rung: type) u8 {
         print("  RED: a run opening holding nothing began a matter all the same\n", .{});
         return 1;
     }
-    return rung.check_mind_refusals();
+    return link(rung, "check_mind_refusals");
 }
 
 
@@ -1860,7 +1887,7 @@ pub fn check_mind_measure(comptime rung: type) u8 {
     print("  the minding this rung keeps: {s}\n", .{rung.mind_words(.minds)});
     print("  what a beginning plan tells an operator: {s}\n", .{rung.mind_words(.begins)});
     print("  a mark carries six bytes: the forbearance it was handed, echoed whole, and this run's own byte last\n", .{});
-    return rung.check_desist();
+    return link(rung, "check_desist");
 }
 
 
@@ -1914,7 +1941,7 @@ pub fn check_mind_refusals(comptime rung: type) u8 {
         print("  RED: an honest minding was refused as {s}\n", .{@errorName(why)});
         return 1;
     }
-    return rung.check_mind_measure();
+    return link(rung, "check_mind_measure");
 }
 
 
@@ -1995,7 +2022,7 @@ pub fn check_mind_wire(comptime rung: type, io: std.Io, sys: *const system.Syste
     }
     rung.clear_rests(io, rung.standing_address);
     print("  a mark survives a provisioning, and lands before the impasse it names comes down\n", .{});
-    return rung.check_desist_wire(io, sys);
+    return link_wire(rung, "check_desist_wire", io, sys);
 }
 
 
@@ -2096,7 +2123,7 @@ pub fn check_recount(comptime rung: type) u8 {
         print("  RED: a run that looked at nothing kept a telling back anyway\n", .{});
         return 1;
     }
-    return rung.check_recount_refusals();
+    return link(rung, "check_recount_refusals");
 }
 
 
@@ -2121,7 +2148,7 @@ pub fn check_recount_measure(comptime rung: type) u8 {
     print("  the telling this rung keeps: {s}\n", .{rung.recount_words(.tells)});
     print("  what a withholding plan never owes: {s}\n", .{rung.recount_words(.withholds)});
     print("  a telling carries four bytes: the matter looked at again, echoed back whole\n", .{});
-    return rung.check_allay();
+    return link(rung, "check_allay");
 }
 
 
@@ -2175,7 +2202,7 @@ pub fn check_recount_refusals(comptime rung: type) u8 {
         print("  RED: an honest telling refused as {s}\n", .{@errorName(why)});
         return 1;
     }
-    return rung.check_recount_measure();
+    return link(rung, "check_recount_measure");
 }
 
 
@@ -2231,7 +2258,7 @@ pub fn check_recount_wire(comptime rung: type, io: std.Io, sys: *const system.Sy
         return 1;
     }
     print("  a telling survives a provisioning, and falls with the second look it copies\n", .{});
-    return rung.check_allay_wire(io, sys);
+    return link_wire(rung, "check_allay_wire", io, sys);
 }
 
 
@@ -2320,7 +2347,7 @@ pub fn check_redress(comptime rung: type) u8 {
         print("  RED: a run that published no outcome at all said what its look found\n", .{});
         return 1;
     }
-    return rung.check_redress_refusals();
+    return link(rung, "check_redress_refusals");
 }
 
 
@@ -2347,7 +2374,7 @@ pub fn check_redress_measure(comptime rung: type) u8 {
     print("  a redress carries three bytes: the meeting reported on, and what the look came to\n", .{});
     print("  the stronger of the two upshots: {s}\n", .{rung.upshot_words(.righted)});
     print("  the honest other: {s}\n", .{rung.upshot_words(.sound)});
-    return rung.check_apprise();
+    return link(rung, "check_apprise");
 }
 
 
@@ -2409,7 +2436,7 @@ pub fn check_redress_refusals(comptime rung: type) u8 {
         print("  RED: a finding inside its own count refused with {s}\n", .{@errorName(why)});
         return 1;
     }
-    return rung.check_redress_measure();
+    return link(rung, "check_redress_measure");
 }
 
 
@@ -2469,7 +2496,7 @@ pub fn check_redress_wire(comptime rung: type, io: std.Io, sys: *const system.Sy
         return 1;
     }
     print("  a finding survives a provisioning, and falls with the meeting it reports on\n", .{});
-    return rung.check_apprise_wire(io, sys);
+    return link_wire(rung, "check_apprise_wire", io, sys);
 }
 
 
@@ -2520,7 +2547,7 @@ pub fn check_refer(comptime rung: type) u8 {
         print("  RED: a desk holding nothing read back as one holding the case\n", .{});
         return 1;
     }
-    return rung.check_refer_refusals();
+    return link(rung, "check_refer_refusals");
 }
 
 
@@ -2548,7 +2575,7 @@ pub fn check_refer_measure(comptime rung: type) u8 {
     print("  five refusals stand by name: early, unaddressed, party, miscounted, misrecorded\n", .{});
     print("  the referring this rung keeps: {s}\n", .{rung.refer_words(.referred)});
     print("  a case carries three facts: the plan's word, the standing, and the age\n", .{});
-    return rung.check_deem();
+    return link(rung, "check_deem");
 }
 
 
@@ -2607,7 +2634,7 @@ pub fn check_refer_refusals(comptime rung: type) u8 {
         print("  RED: a referral inside its own count refused with {s}\n", .{@errorName(why)});
         return 1;
     }
-    return rung.check_refer_measure();
+    return link(rung, "check_refer_measure");
 }
 
 
@@ -2743,7 +2770,7 @@ pub fn check_reopen(comptime rung: type) u8 {
         print("  RED: a run nobody called short left a word closed anyway\n", .{});
         return 1;
     }
-    return rung.check_reopen_refusals();
+    return link(rung, "check_reopen_refusals");
 }
 
 
@@ -2768,7 +2795,7 @@ pub fn check_reopen_measure(comptime rung: type) u8 {
     print("  the reading this rung keeps: {s}\n", .{rung.reopen_words(.takes_up)});
     print("  what a closing plan never owes: {s}\n", .{rung.reopen_words(.closes)});
     print("  a reopening note carries four bytes: the reader's own word, echoed back whole\n", .{});
-    return rung.check_reweigh();
+    return link(rung, "check_reweigh");
 }
 
 
@@ -2822,7 +2849,7 @@ pub fn check_reopen_refusals(comptime rung: type) u8 {
         print("  RED: an honest reopening refused as {s}\n", .{@errorName(why)});
         return 1;
     }
-    return rung.check_reopen_measure();
+    return link(rung, "check_reopen_measure");
 }
 
 
@@ -2871,7 +2898,7 @@ pub fn check_reopen_wire(comptime rung: type, io: std.Io, sys: *const system.Sys
     }
     rung.clear_apprise(io, rung.standing_address);
     print("  a reopened matter survives a provisioning, and falls with the word that opened it\n", .{});
-    return rung.check_reweigh_wire(io, sys);
+    return link_wire(rung, "check_reweigh_wire", io, sys);
 }
 
 
@@ -2919,7 +2946,7 @@ pub fn check_reweigh(comptime rung: type) u8 {
         print("  RED: a run inheriting nothing passed a matter over anyway\n", .{});
         return 1;
     }
-    return rung.check_reweigh_refusals();
+    return link(rung, "check_reweigh_refusals");
 }
 
 
@@ -2944,7 +2971,7 @@ pub fn check_reweigh_measure(comptime rung: type) u8 {
     print("  the reading this rung keeps: {s}\n", .{rung.reweigh_words(.looks)});
     print("  what a passing plan never owes: {s}\n", .{rung.reweigh_words(.passes)});
     print("  a second look's receipt carries four bytes: the reopened matter, echoed back whole\n", .{});
-    return rung.check_recount();
+    return link(rung, "check_recount");
 }
 
 
@@ -2998,7 +3025,7 @@ pub fn check_reweigh_refusals(comptime rung: type) u8 {
         print("  RED: an honest second look refused as {s}\n", .{@errorName(why)});
         return 1;
     }
-    return rung.check_reweigh_measure();
+    return link(rung, "check_reweigh_measure");
 }
 
 
@@ -3042,7 +3069,7 @@ pub fn check_reweigh_wire(comptime rung: type, io: std.Io, sys: *const system.Sy
         return 1;
     }
     print("  a second look survives a provisioning, and the matter it answers stays down\n", .{});
-    return rung.check_recount_wire(io, sys);
+    return link_wire(rung, "check_recount_wire", io, sys);
 }
 
 
@@ -3100,7 +3127,7 @@ pub fn check_suffice(comptime rung: type) u8 {
         print("  RED: a note holding nothing read back as a reader asked\n", .{});
         return 1;
     }
-    return rung.check_suffice_refusals();
+    return link(rung, "check_suffice_refusals");
 }
 
 
@@ -3127,7 +3154,7 @@ pub fn check_suffice_measure(comptime rung: type) u8 {
     print("  {s}\n", .{rung.worth_words(.wanting)});
     print("  {s}\n", .{rung.worth_words(.settles)});
     print("  a reader's word carries four bytes: the answer they were carried, and what they make of it\n", .{});
-    return rung.check_reopen();
+    return link(rung, "check_reopen");
 }
 
 
@@ -3187,7 +3214,7 @@ pub fn check_suffice_refusals(comptime rung: type) u8 {
         print("  RED: a weighing inside its own count refused with {s}\n", .{@errorName(why)});
         return 1;
     }
-    return rung.check_suffice_measure();
+    return link(rung, "check_suffice_measure");
 }
 
 
@@ -3254,7 +3281,7 @@ pub fn check_suffice_wire(comptime rung: type, io: std.Io, sys: *const system.Sy
     }
     rung.clear_suits(io, rung.standing_address);
     print("  a reader's word survives a provisioning, and the plan's copy falls with the answer it weighs\n", .{});
-    return rung.check_reopen_wire(io, sys);
+    return link_wire(rung, "check_reopen_wire", io, sys);
 }
 
 
@@ -3326,7 +3353,7 @@ pub fn check_swell(comptime rung: type) u8 {
         print("  RED: a note that does not exist held for a quiet standing\n", .{});
         return 1;
     }
-    return rung.check_swell_refusals();
+    return link(rung, "check_swell_refusals");
 }
 
 
@@ -3357,7 +3384,7 @@ pub fn check_swell_measure(comptime rung: type) u8 {
     print("  a plan publishes whether a long-standing quarrel reads where the outcome is read\n", .{});
     print("  loud reads as {s}\n", .{rung.volume_words(.loud)});
     print("  quiet reads as {s}\n", .{rung.volume_words(.quiet)});
-    return rung.check_refer();
+    return link(rung, "check_refer");
 }
 
 
@@ -3410,7 +3437,7 @@ pub fn check_swell_refusals(comptime rung: type) u8 {
         print("  RED: a heralding inside its own count refused with {s}\n", .{@errorName(why)});
         return 1;
     }
-    return rung.check_swell_measure();
+    return link(rung, "check_swell_measure");
 }
 
 

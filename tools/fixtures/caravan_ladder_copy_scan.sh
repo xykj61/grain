@@ -33,20 +33,26 @@
 # alike across every rung holding them and went to the harness whole; two stayed
 # home, since a chain's last link ends in `return 0` in the rung topping the ladder
 # and climbs in every rung above, so it is one body per rung rather than a copy.
-# The carry fell to 2,762, and what remains is very largely the five-line stub each
-# lifted check costs each rung -- irreducible while a rung names its own checks.
+# The carry fell to 2,762, and what remained was very largely the five-line stub each
+# lifted check cost each rung.
+#
+# The 20260820.182533 fold ended that too. A stub stood only because a chained body
+# re-entered the rung BY NAME, and a name a rung never published was a compile error.
+# The harness reaches each link through `link` now, which runs the rung's own body
+# when it wrote one and its own body when the rung said nothing -- so a rung publishes
+# a check only to change it. 612 stubs left the ladder and the carry fell to 47.
 #
 # Measurement beats memory: a count carried forward drifts (REDS %93), and a
 # count that cannot see what it measures is a guess wearing a measurement's
 # clothes (REDS %97). Both failure shapes are refused by name below.
 #
 # CARAVAN_LADDER_COPY_CEILING (default 4000): how many carried lines the ladder
-# may hold. What remains carried is the three-line call each rung keeps where a
-# hundred lines of copy stood, so a new rung adds roughly four lines per lifted
-# check it climbs to, plus whatever its own new checks carry until they are
-# lifted in turn -- call it five hundred a rung until the next rung measures it.
-# 4,000 is about two rungs of headroom above the standing of 2,762, close
-# enough that the number still means something on the lap it moves.
+# may hold. Since fold C a rung carries no stub at all for a check it merely
+# climbs to, so a new rung adds only whatever its own new checks carry until they
+# are lifted in turn. 47 lines stand against the ceiling today, which leaves it
+# far from the thing that refuses first -- the wall that bites now is fold C's
+# own, held in the witness above this scan: zero forwarding stubs, and it stays
+# zero.
 #
 # CARAVAN_LADDER_DIR (default caravan): the directory of rung modules, so the
 # PASS and FAIL fixtures can prove both paths without touching the tree.
