@@ -674,6 +674,113 @@ pub fn check_avow_wire(comptime rung: type, io: std.Io, sys: *const system.Syste
 }
 
 
+pub fn check_beckon(comptime rung: type) u8 {
+    const held = rung.holds_bytes(rung.rests_bytes(rung.knows_bytes(rung.anew_bytes(rung.inherited_matter)), .stands));
+    const mark = rung.minds_bytes(held);
+    const wall = rung.walls_bytes(mark);
+    const call = rung.calls_bytes(wall);
+    if (!rung.calls_carries(call, wall)) {
+        print("  RED: a call did not name the wall it was built from\n", .{});
+        return 1;
+    }
+    if (rung.calls_rest(call) != .stands) {
+        print("  RED: a call lost the reader's own word four tiers down\n", .{});
+        return 1;
+    }
+    if (call[rung.max_calls_bytes - 1] != rung.called_byte) {
+        print("  RED: a call did not say what it is in its own last byte\n", .{});
+        return 1;
+    }
+    // A call built from some other wall names some other matter, and reading it
+    // as this one's would report a person reached about a boundary nobody stood.
+    const elder = rung.holds_bytes(rung.rests_bytes(rung.knows_bytes(rung.anew_bytes(rung.inherited_matter)), .allays));
+    if (rung.calls_carries(rung.calls_bytes(rung.walls_bytes(rung.minds_bytes(elder))), wall)) {
+        print("  RED: a call about some other wall read as this one's\n", .{});
+        return 1;
+    }
+    if (rung.calls_carries(null, wall)) {
+        print("  RED: a plan that called nobody read as one that had\n", .{});
+        return 1;
+    }
+    if (rung.calls_rest(null) != null) {
+        print("  RED: an absent call answered with a word\n", .{});
+        return 1;
+    }
+    if (!rung.beckon_holds(call, call) or rung.beckon_holds(null, call)) {
+        print("  RED: a call read back out of a reader's box did not answer for itself\n", .{});
+        return 1;
+    }
+    if (rung.beckoned_in(1, .beckons) != 1 or rung.beckoned_in(1, .keeps) != 0) {
+        print("  RED: a beckoning was counted as a keeping, or the other way about\n", .{});
+        return 1;
+    }
+    if (rung.beckoned_in(0, .beckons) != 0) {
+        print("  RED: a run that stood no wall was counted as calling a person\n", .{});
+        return 1;
+    }
+    if (rung.drawered_in(1, .keeps) != 1 or rung.drawered_in(1, .beckons) != 0) {
+        print("  RED: the other half of the count did not close\n", .{});
+        return 1;
+    }
+    return rung.check_beckon_refusals();
+}
+
+
+pub fn check_beckon_refusals(comptime rung: type) u8 {
+    if (rung.beckon_refusal(1, 1, 0, false, true, true)) |why| {
+        if (why != error.BeckonUnwalled) {
+            print("  RED: a call from a run that stood no wall refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a call from a run that stood no wall was allowed\n", .{});
+        return 1;
+    }
+    if (rung.beckon_refusal(1, 1, 0, true, false, true)) |why| {
+        if (why != error.BeckonUnaddressed) {
+            print("  RED: a call to a reader who left no address refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a call to a reader who left no address was allowed\n", .{});
+        return 1;
+    }
+    if (rung.beckon_refusal(1, 1, 0, true, true, false)) |why| {
+        if (why != error.BeckonMismatched) {
+            print("  RED: a call naming some other wall refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a call naming some other wall was allowed\n", .{});
+        return 1;
+    }
+    if (rung.beckon_refusal(1, 1, 1, true, true, true)) |why| {
+        if (why != error.BeckonMiscounted) {
+            print("  RED: a wall both carried and kept refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a wall both carried and kept was allowed\n", .{});
+        return 1;
+    }
+    if (rung.beckon_refusal(1, 0, 0, true, true, true)) |why| {
+        if (why != error.BeckonMiscounted) {
+            print("  RED: a wall neither carried nor kept refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a wall neither carried nor kept was allowed\n", .{});
+        return 1;
+    }
+    // And the honest pass: a wall stood once, carried once, counted once.
+    if (rung.beckon_refusal(1, 1, 0, true, true, true)) |why| {
+        print("  RED: an honest beckoning refused as {s}\n", .{@errorName(why)});
+        return 1;
+    }
+    return rung.check_beckon_measure();
+}
+
+
 pub fn check_deem(comptime rung: type) u8 {
     // The count, which every later number closes on.
     if (rung.answered_in(1, .answered) != 1) {
@@ -892,6 +999,214 @@ pub fn check_deem_wire(comptime rung: type, io: std.Io, sys: *const system.Syste
 }
 
 
+pub fn check_desist(comptime rung: type) u8 {
+    const held = rung.holds_bytes(rung.rests_bytes(rung.knows_bytes(rung.anew_bytes(rung.inherited_matter)), .stands));
+    const mark = rung.minds_bytes(held);
+    const wall = rung.walls_bytes(mark);
+    if (!rung.walls_carries(wall, mark)) {
+        print("  RED: a wall did not bound the mark it was built from\n", .{});
+        return 1;
+    }
+    if (rung.walls_rest(wall) != .stands) {
+        print("  RED: a wall lost the reader's own word three tiers down\n", .{});
+        return 1;
+    }
+    if (wall[rung.max_walls_bytes - 1] != rung.walled_byte) {
+        print("  RED: a wall did not say what it was\n", .{});
+        return 1;
+    }
+    // A wall built from some other mark bounds some other matter, and reading
+    // it as this one's would report a boundary nobody stood here.
+    const elder = rung.holds_bytes(rung.rests_bytes(rung.knows_bytes(rung.anew_bytes(rung.inherited_matter)), .allays));
+    if (rung.walls_carries(rung.walls_bytes(rung.minds_bytes(elder)), mark)) {
+        print("  RED: a wall about another matter read as this one's\n", .{});
+        return 1;
+    }
+    if (rung.walls_carries(null, mark)) {
+        print("  RED: a plan that stood no wall read as one that had\n", .{});
+        return 1;
+    }
+    if (rung.walls_rest(null) != null) {
+        print("  RED: an absent wall answered with a word\n", .{});
+        return 1;
+    }
+    // The evidence a bounding run weighs: two runs naming one matter.
+    if (!rung.came_round_twice(mark, mark)) {
+        print("  RED: a matter two runs named read as one carried once\n", .{});
+        return 1;
+    }
+    if (rung.came_round_twice(rung.minds_bytes(elder), mark)) {
+        print("  RED: a mark about another matter counted as this one's second round\n", .{});
+        return 1;
+    }
+    if (rung.came_round_twice(null, mark)) {
+        print("  RED: a matter on its first round read as one carried twice\n", .{});
+        return 1;
+    }
+    if (!rung.desist_holds(wall, wall) or rung.desist_holds(rung.walls_bytes(rung.minds_bytes(elder)), wall) or rung.desist_holds(null, wall)) {
+        print("  RED: a wall read back out of the notes did not answer for itself\n", .{});
+        return 1;
+    }
+    if (rung.walled_in(1, .bounds) != 1 or rung.walled_in(1, .relays) != 0) {
+        print("  RED: a bounding was counted as a relaying, or the other way about\n", .{});
+        return 1;
+    }
+    if (rung.walled_in(0, .bounds) != 0) {
+        print("  RED: a matter on its first round was counted as walled\n", .{});
+        return 1;
+    }
+    if (rung.relayed_in(1, .relays) != 1 or rung.relayed_in(1, .bounds) != 0) {
+        print("  RED: the other half of the count did not close\n", .{});
+        return 1;
+    }
+    return rung.check_desist_refusals();
+}
+
+
+pub fn check_desist_measure(comptime rung: type) u8 {
+    if (rung.unbounded_relays(1, .relays) != 1) {
+        print("  RED: a twice-carried impasse relayed again went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.unbounded_relays(1, .bounds) != 0) {
+        print("  RED: a bounded matter still counted as one relayed again\n", .{});
+        return 1;
+    }
+    // A matter on its first round is owed the next run's look, so it costs the
+    // count nothing -- the harm this rung names is the second relay and every
+    // relay after it.
+    if (rung.unbounded_relays(0, .relays) != 0) {
+        print("  RED: a first-round matter was charged an unbounded relay\n", .{});
+        return 1;
+    }
+
+    print("  five refusals stand by name: unnamed, fresh, mismatched, miscounted, misrecorded\n", .{});
+    print("  the bounding this rung keeps: {s}\n", .{rung.desist_words(.bounds)});
+    print("  what a relaying plan tells an operator: {s}\n", .{rung.desist_words(.relays)});
+    print("  a wall carries seven bytes: the mark it bounds, echoed whole, and this run's own byte last\n", .{});
+    return rung.check_beckon();
+}
+
+
+pub fn check_desist_refusals(comptime rung: type) u8 {
+    if (rung.desist_refusal(1, 1, 0, false, true, true)) |why| {
+        if (why != error.DesistUnnamed) {
+            print("  RED: a wall from a run that named nothing refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a wall from a run that named nothing was allowed\n", .{});
+        return 1;
+    }
+    if (rung.desist_refusal(1, 1, 0, true, false, true)) |why| {
+        if (why != error.DesistFresh) {
+            print("  RED: a wall around a first-round matter refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a wall around a first-round matter was allowed\n", .{});
+        return 1;
+    }
+    if (rung.desist_refusal(1, 1, 0, true, true, false)) |why| {
+        if (why != error.DesistMismatched) {
+            print("  RED: a wall around a matter the reader never refused refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a wall around a matter the reader never refused was allowed\n", .{});
+        return 1;
+    }
+    if (rung.desist_refusal(1, 1, 1, true, true, true)) |why| {
+        if (why != error.DesistMiscounted) {
+            print("  RED: a matter both walled and relayed refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a matter both walled and relayed was allowed\n", .{});
+        return 1;
+    }
+    if (rung.desist_refusal(1, 0, 0, true, true, true)) |why| {
+        if (why != error.DesistMiscounted) {
+            print("  RED: a matter neither walled nor relayed refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a matter neither walled nor relayed was allowed\n", .{});
+        return 1;
+    }
+    // And the honest pass: a matter named twice, walled once, counted once.
+    if (rung.desist_refusal(1, 1, 0, true, true, true)) |why| {
+        print("  RED: an honest bounding refused as {s}\n", .{@errorName(why)});
+        return 1;
+    }
+    return rung.check_desist_measure();
+}
+
+
+pub fn check_desist_wire(comptime rung: type, io: std.Io, sys: *const system.System) u8 {
+    rung.clear_desist(io);
+    rung.clear_forbear(io);
+    rung.clear_mind(io);
+    if (rung.wall_standing(io) != null) {
+        print("  RED: a wall stood where none had been built\n", .{});
+        return 1;
+    }
+    const held = rung.holds_bytes(rung.rests_bytes(rung.knows_bytes(rung.anew_bytes(rung.inherited_matter)), .stands));
+    const mark = rung.minds_bytes(held);
+    // The run before today, standing in for itself: it named this matter and
+    // handed it on, exactly as the rung below leaves a wire.
+    rung.mind_note(io, held) catch |err| {
+        print("  RED: an elder mark could not be seated: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.forbear_note(io, rung.rests_bytes(rung.knows_bytes(rung.anew_bytes(rung.inherited_matter)), .stands)) catch |err| {
+        print("  RED: an inherited impasse could not be seated: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.wall_note(io, mark) catch |err| {
+        print("  RED: a wall could not be stood: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // The wall lands first, and the relay is stayed only after it stands.
+    if (rung.hold_standing(io) == null) {
+        print("  RED: a relay was stayed before the wall that bounds it stood\n", .{});
+        return 1;
+    }
+    const provisioned = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(provisioned == sys.graph.domain_count);
+    const survived = rung.wall_standing(io) orelse {
+        print("  RED: a provisioning cleared the wall an operator reads\n", .{});
+        return 1;
+    };
+    if (!rung.walls_carries(survived, mark)) {
+        print("  RED: a wall carried past a provisioning stopped bounding its matter\n", .{});
+        return 1;
+    }
+    if (rung.walls_rest(survived) != .stands) {
+        print("  RED: a wall carried past a provisioning forgot the word it was built on\n", .{});
+        return 1;
+    }
+    // And only then is the relay stayed, which is the close rather than the act.
+    rung.clear_forbear(io);
+    if (rung.wall_standing(io) == null) {
+        print("  RED: a wall fell with the relay it was only staying\n", .{});
+        return 1;
+    }
+    rung.clear_desist(io);
+    if (rung.wall_standing(io) != null) {
+        print("  RED: a wall outlived the taking down of its own note\n", .{});
+        return 1;
+    }
+    rung.clear_mind(io);
+    print("  a wall survives a provisioning, and lands before the relay it stays comes down\n", .{});
+    return rung.check_beckon_wire(io, sys);
+}
+
+
 pub fn check_dwell_wire(comptime rung: type, io: std.Io, sys: *const system.System) u8 {
     _ = rung.provision_notes(io, sys) catch |err| {
         print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
@@ -1051,10 +1366,6 @@ pub fn check_forbear(comptime rung: type) u8 {
 }
 
 
-/// The number the forbearing rung moves, weighed as a fold before any run moves it.
-///
-/// The inventing rung keeps its own copy, since its chain ends here; every rung
-/// above it shares this body and carries the chain on into its own minding.
 pub fn check_forbear_measure(comptime rung: type) u8 {
     if (rung.unhanded_matters(1, .opens) != 1) {
         print("  RED: a matter left standing with nothing handed on went uncounted\n", .{});
@@ -1134,8 +1445,6 @@ pub fn check_forbear_refusals(comptime rung: type) u8 {
 }
 
 
-/// The forbearing rung's answers as bytes in a reader's own box, measured on the
-/// wire of whichever rung handed itself in.
 pub fn check_forbear_wire(comptime rung: type, io: std.Io, sys: *const system.System) u8 {
     rung.clear_forbear(io);
     rung.clear_rests(io, rung.standing_address);
@@ -1473,12 +1782,6 @@ pub fn check_meet_wire(comptime rung: type, io: std.Io, sys: *const system.Syste
 }
 
 
-/// Weighs the five refusals the minding rung earns, each by name.
-/// Weighs the minding rung's own folds, before any dependent runs.
-///
-/// The happy zone of this rung: every question about what impasse a run opened
-/// holding, and the honesty of the count, answered as a pure fold -- no process
-/// anywhere.
 pub fn check_mind(comptime rung: type) u8 {
     const told = rung.knows_bytes(rung.anew_bytes(rung.inherited_matter));
     const refused = rung.rests_bytes(told, .stands);
@@ -1536,6 +1839,31 @@ pub fn check_mind(comptime rung: type) u8 {
 }
 
 
+pub fn check_mind_measure(comptime rung: type) u8 {
+    if (rung.unminded_impasses(1, .begins) != 1) {
+        print("  RED: an impasse inherited in silence went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.unminded_impasses(1, .minds) != 0) {
+        print("  RED: an impasse named still counted as one inherited in silence\n", .{});
+        return 1;
+    }
+    // A run the last one handed nothing has no impasse to name, so it costs the
+    // count nothing -- the harm this rung names is the forbearance actually
+    // inherited and the operator never told of it.
+    if (rung.unminded_impasses(0, .begins) != 0) {
+        print("  RED: a run handed no impasse was charged an unnamed one\n", .{});
+        return 1;
+    }
+
+    print("  five refusals stand by name: uninherited, rested, mismatched, miscounted, misrecorded\n", .{});
+    print("  the minding this rung keeps: {s}\n", .{rung.mind_words(.minds)});
+    print("  what a beginning plan tells an operator: {s}\n", .{rung.mind_words(.begins)});
+    print("  a mark carries six bytes: the forbearance it was handed, echoed whole, and this run's own byte last\n", .{});
+    return rung.check_desist();
+}
+
+
 pub fn check_mind_refusals(comptime rung: type) u8 {
     if (rung.mind_refusal(1, 1, 0, false, true, true)) |why| {
         if (why != error.MindUninherited) {
@@ -1587,6 +1915,87 @@ pub fn check_mind_refusals(comptime rung: type) u8 {
         return 1;
     }
     return rung.check_mind_measure();
+}
+
+
+pub fn check_mind_wire(comptime rung: type, io: std.Io, sys: *const system.System) u8 {
+    rung.clear_mind(io);
+    rung.clear_forbear(io);
+    rung.clear_rests(io, rung.standing_address);
+    rung.clear_recount(io, rung.standing_address);
+    rung.clear_reweigh(io);
+    rung.reweigh_note(io, rung.inherited_matter) catch |err| {
+        print("  RED: a second look could not be receipted at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const receipt = rung.anew_standing(io) orelse {
+        print("  RED: a seated receipt could not be read back at all\n", .{});
+        return 1;
+    };
+    const told = rung.knows_bytes(receipt);
+    rung.recount_note(io, rung.standing_address, told) catch |err| {
+        print("  RED: a telling could not be carried at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // The run before this one, standing in: a reader refused a second time, and
+    // that run handed the impasse forward rather than letting it die.
+    const refused = rung.rests_bytes(told, .stands);
+    rung.rest_as_reader(io, rung.standing_address, refused) catch |err| {
+        print("  RED: a reader could not reply in their own hand: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.forbear_note(io, refused) catch |err| {
+        print("  RED: an impasse could not be handed on at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const handed = rung.hold_standing(io) orelse {
+        print("  RED: a seated forbearance could not be read back at all\n", .{});
+        return 1;
+    };
+    rung.mind_note(io, handed) catch |err| {
+        print("  RED: an inherited impasse could not be named at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // The order that makes the naming safe, read on the wire: the mark stands
+    // while the forbearance it names still stands, so nothing is ever gone
+    // before it is recorded.
+    if (rung.hold_standing(io) == null) {
+        print("  RED: a forbearance came down before the mark that names it landed\n", .{});
+        return 1;
+    }
+    const provisioned = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(provisioned == sys.graph.domain_count);
+    const survived = rung.mind_published(io) orelse {
+        print("  RED: a provisioning cleared the mark an operator reads\n", .{});
+        return 1;
+    };
+    if (!rung.minds_carries(survived, handed)) {
+        print("  RED: a mark carried past a provisioning stopped naming its impasse\n", .{});
+        return 1;
+    }
+    if (rung.minds_rest(survived) != .stands) {
+        print("  RED: a mark carried past a provisioning forgot the word it was handed\n", .{});
+        return 1;
+    }
+    // And only then does the inheritance come down, which is the close rather
+    // than the act.
+    rung.clear_forbear(io);
+    if (rung.mind_published(io) == null) {
+        print("  RED: a mark fell with the forbearance it was only reporting on\n", .{});
+        return 1;
+    }
+    rung.clear_mind(io);
+    if (rung.mind_published(io) != null) {
+        print("  RED: a mark outlived the taking down of its own note\n", .{});
+        return 1;
+    }
+    rung.clear_rests(io, rung.standing_address);
+    print("  a mark survives a provisioning, and lands before the impasse it names comes down\n", .{});
+    return rung.check_desist_wire(io, sys);
 }
 
 

@@ -12751,278 +12751,44 @@ pub fn check_mind_refusals() u8 {
 
 /// Weighs the number this rung moves, as a pure fold.
 pub fn check_mind_measure() u8 {
-    if (unminded_impasses(1, .begins) != 1) {
-        print("  RED: an impasse inherited in silence went uncounted\n", .{});
-        return 1;
-    }
-    if (unminded_impasses(1, .minds) != 0) {
-        print("  RED: an impasse named still counted as one inherited in silence\n", .{});
-        return 1;
-    }
-    // A run the last one handed nothing has no impasse to name, so it costs the
-    // count nothing -- the harm this rung names is the forbearance actually
-    // inherited and the operator never told of it.
-    if (unminded_impasses(0, .begins) != 0) {
-        print("  RED: a run handed no impasse was charged an unnamed one\n", .{});
-        return 1;
-    }
-
-    print("  five refusals stand by name: uninherited, rested, mismatched, miscounted, misrecorded\n", .{});
-    print("  the minding this rung keeps: {s}\n", .{mind_words(.minds)});
-    print("  what a beginning plan tells an operator: {s}\n", .{mind_words(.begins)});
-    print("  a mark carries six bytes: the forbearance it was handed, echoed whole, and this run's own byte last\n", .{});
-    return check_desist();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_mind_measure(@This());
 }
 
 /// Weighs the bounding this rung adds, as a pure fold.
 pub fn check_desist() u8 {
-    const held = holds_bytes(rests_bytes(knows_bytes(anew_bytes(inherited_matter)), .stands));
-    const mark = minds_bytes(held);
-    const wall = walls_bytes(mark);
-    if (!walls_carries(wall, mark)) {
-        print("  RED: a wall did not bound the mark it was built from\n", .{});
-        return 1;
-    }
-    if (walls_rest(wall) != .stands) {
-        print("  RED: a wall lost the reader's own word three tiers down\n", .{});
-        return 1;
-    }
-    if (wall[max_walls_bytes - 1] != walled_byte) {
-        print("  RED: a wall did not say what it was\n", .{});
-        return 1;
-    }
-    // A wall built from some other mark bounds some other matter, and reading
-    // it as this one's would report a boundary nobody stood here.
-    const elder = holds_bytes(rests_bytes(knows_bytes(anew_bytes(inherited_matter)), .allays));
-    if (walls_carries(walls_bytes(minds_bytes(elder)), mark)) {
-        print("  RED: a wall about another matter read as this one's\n", .{});
-        return 1;
-    }
-    if (walls_carries(null, mark)) {
-        print("  RED: a plan that stood no wall read as one that had\n", .{});
-        return 1;
-    }
-    if (walls_rest(null) != null) {
-        print("  RED: an absent wall answered with a word\n", .{});
-        return 1;
-    }
-    // The evidence a bounding run weighs: two runs naming one matter.
-    if (!came_round_twice(mark, mark)) {
-        print("  RED: a matter two runs named read as one carried once\n", .{});
-        return 1;
-    }
-    if (came_round_twice(minds_bytes(elder), mark)) {
-        print("  RED: a mark about another matter counted as this one's second round\n", .{});
-        return 1;
-    }
-    if (came_round_twice(null, mark)) {
-        print("  RED: a matter on its first round read as one carried twice\n", .{});
-        return 1;
-    }
-    if (!desist_holds(wall, wall) or desist_holds(walls_bytes(minds_bytes(elder)), wall) or desist_holds(null, wall)) {
-        print("  RED: a wall read back out of the notes did not answer for itself\n", .{});
-        return 1;
-    }
-    if (walled_in(1, .bounds) != 1 or walled_in(1, .relays) != 0) {
-        print("  RED: a bounding was counted as a relaying, or the other way about\n", .{});
-        return 1;
-    }
-    if (walled_in(0, .bounds) != 0) {
-        print("  RED: a matter on its first round was counted as walled\n", .{});
-        return 1;
-    }
-    if (relayed_in(1, .relays) != 1 or relayed_in(1, .bounds) != 0) {
-        print("  RED: the other half of the count did not close\n", .{});
-        return 1;
-    }
-    return check_desist_refusals();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_desist(@This());
 }
 
 /// Weighs every refusal this rung earns, as a pure fold.
 pub fn check_desist_refusals() u8 {
-    if (desist_refusal(1, 1, 0, false, true, true)) |why| {
-        if (why != error.DesistUnnamed) {
-            print("  RED: a wall from a run that named nothing refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a wall from a run that named nothing was allowed\n", .{});
-        return 1;
-    }
-    if (desist_refusal(1, 1, 0, true, false, true)) |why| {
-        if (why != error.DesistFresh) {
-            print("  RED: a wall around a first-round matter refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a wall around a first-round matter was allowed\n", .{});
-        return 1;
-    }
-    if (desist_refusal(1, 1, 0, true, true, false)) |why| {
-        if (why != error.DesistMismatched) {
-            print("  RED: a wall around a matter the reader never refused refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a wall around a matter the reader never refused was allowed\n", .{});
-        return 1;
-    }
-    if (desist_refusal(1, 1, 1, true, true, true)) |why| {
-        if (why != error.DesistMiscounted) {
-            print("  RED: a matter both walled and relayed refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a matter both walled and relayed was allowed\n", .{});
-        return 1;
-    }
-    if (desist_refusal(1, 0, 0, true, true, true)) |why| {
-        if (why != error.DesistMiscounted) {
-            print("  RED: a matter neither walled nor relayed refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a matter neither walled nor relayed was allowed\n", .{});
-        return 1;
-    }
-    // And the honest pass: a matter named twice, walled once, counted once.
-    if (desist_refusal(1, 1, 0, true, true, true)) |why| {
-        print("  RED: an honest bounding refused as {s}\n", .{@errorName(why)});
-        return 1;
-    }
-    return check_desist_measure();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_desist_refusals(@This());
 }
 
 /// Weighs the number this rung moves, as a pure fold.
 pub fn check_desist_measure() u8 {
-    if (unbounded_relays(1, .relays) != 1) {
-        print("  RED: a twice-carried impasse relayed again went uncounted\n", .{});
-        return 1;
-    }
-    if (unbounded_relays(1, .bounds) != 0) {
-        print("  RED: a bounded matter still counted as one relayed again\n", .{});
-        return 1;
-    }
-    // A matter on its first round is owed the next run's look, so it costs the
-    // count nothing -- the harm this rung names is the second relay and every
-    // relay after it.
-    if (unbounded_relays(0, .relays) != 0) {
-        print("  RED: a first-round matter was charged an unbounded relay\n", .{});
-        return 1;
-    }
-
-    print("  five refusals stand by name: unnamed, fresh, mismatched, miscounted, misrecorded\n", .{});
-    print("  the bounding this rung keeps: {s}\n", .{desist_words(.bounds)});
-    print("  what a relaying plan tells an operator: {s}\n", .{desist_words(.relays)});
-    print("  a wall carries seven bytes: the mark it bounds, echoed whole, and this run's own byte last\n", .{});
-    return check_beckon();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_desist_measure(@This());
 }
 
 /// Weighs the beckoning this rung adds, as a pure fold.
 pub fn check_beckon() u8 {
-    const held = holds_bytes(rests_bytes(knows_bytes(anew_bytes(inherited_matter)), .stands));
-    const mark = minds_bytes(held);
-    const wall = walls_bytes(mark);
-    const call = calls_bytes(wall);
-    if (!calls_carries(call, wall)) {
-        print("  RED: a call did not name the wall it was built from\n", .{});
-        return 1;
-    }
-    if (calls_rest(call) != .stands) {
-        print("  RED: a call lost the reader's own word four tiers down\n", .{});
-        return 1;
-    }
-    if (call[max_calls_bytes - 1] != called_byte) {
-        print("  RED: a call did not say what it is in its own last byte\n", .{});
-        return 1;
-    }
-    // A call built from some other wall names some other matter, and reading it
-    // as this one's would report a person reached about a boundary nobody stood.
-    const elder = holds_bytes(rests_bytes(knows_bytes(anew_bytes(inherited_matter)), .allays));
-    if (calls_carries(calls_bytes(walls_bytes(minds_bytes(elder))), wall)) {
-        print("  RED: a call about some other wall read as this one's\n", .{});
-        return 1;
-    }
-    if (calls_carries(null, wall)) {
-        print("  RED: a plan that called nobody read as one that had\n", .{});
-        return 1;
-    }
-    if (calls_rest(null) != null) {
-        print("  RED: an absent call answered with a word\n", .{});
-        return 1;
-    }
-    if (!beckon_holds(call, call) or beckon_holds(null, call)) {
-        print("  RED: a call read back out of a reader's box did not answer for itself\n", .{});
-        return 1;
-    }
-    if (beckoned_in(1, .beckons) != 1 or beckoned_in(1, .keeps) != 0) {
-        print("  RED: a beckoning was counted as a keeping, or the other way about\n", .{});
-        return 1;
-    }
-    if (beckoned_in(0, .beckons) != 0) {
-        print("  RED: a run that stood no wall was counted as calling a person\n", .{});
-        return 1;
-    }
-    if (drawered_in(1, .keeps) != 1 or drawered_in(1, .beckons) != 0) {
-        print("  RED: the other half of the count did not close\n", .{});
-        return 1;
-    }
-    return check_beckon_refusals();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_beckon(@This());
 }
 
 /// Weighs every refusal this rung earns, as a pure fold.
 pub fn check_beckon_refusals() u8 {
-    if (beckon_refusal(1, 1, 0, false, true, true)) |why| {
-        if (why != error.BeckonUnwalled) {
-            print("  RED: a call from a run that stood no wall refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a call from a run that stood no wall was allowed\n", .{});
-        return 1;
-    }
-    if (beckon_refusal(1, 1, 0, true, false, true)) |why| {
-        if (why != error.BeckonUnaddressed) {
-            print("  RED: a call to a reader who left no address refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a call to a reader who left no address was allowed\n", .{});
-        return 1;
-    }
-    if (beckon_refusal(1, 1, 0, true, true, false)) |why| {
-        if (why != error.BeckonMismatched) {
-            print("  RED: a call naming some other wall refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a call naming some other wall was allowed\n", .{});
-        return 1;
-    }
-    if (beckon_refusal(1, 1, 1, true, true, true)) |why| {
-        if (why != error.BeckonMiscounted) {
-            print("  RED: a wall both carried and kept refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a wall both carried and kept was allowed\n", .{});
-        return 1;
-    }
-    if (beckon_refusal(1, 0, 0, true, true, true)) |why| {
-        if (why != error.BeckonMiscounted) {
-            print("  RED: a wall neither carried nor kept refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a wall neither carried nor kept was allowed\n", .{});
-        return 1;
-    }
-    // And the honest pass: a wall stood once, carried once, counted once.
-    if (beckon_refusal(1, 1, 0, true, true, true)) |why| {
-        print("  RED: an honest beckoning refused as {s}\n", .{@errorName(why)});
-        return 1;
-    }
-    return check_beckon_measure();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_beckon_refusals(@This());
 }
 
 /// Weighs the number this rung moves, as a pure fold.
@@ -13059,66 +12825,9 @@ pub fn check_beckon_measure() u8 {
 /// relay is stayed, so a run falling between the two hands the matter on rather
 /// than dropping the question into silence.
 pub fn check_desist_wire(io: std.Io, sys: *const system.System) u8 {
-    clear_desist(io);
-    clear_forbear(io);
-    clear_mind(io);
-    if (wall_standing(io) != null) {
-        print("  RED: a wall stood where none had been built\n", .{});
-        return 1;
-    }
-    const held = holds_bytes(rests_bytes(knows_bytes(anew_bytes(inherited_matter)), .stands));
-    const mark = minds_bytes(held);
-    // The run before today, standing in for itself: it named this matter and
-    // handed it on, exactly as the rung below leaves a wire.
-    mind_note(io, held) catch |err| {
-        print("  RED: an elder mark could not be seated: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    forbear_note(io, rests_bytes(knows_bytes(anew_bytes(inherited_matter)), .stands)) catch |err| {
-        print("  RED: an inherited impasse could not be seated: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    wall_note(io, mark) catch |err| {
-        print("  RED: a wall could not be stood: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // The wall lands first, and the relay is stayed only after it stands.
-    if (hold_standing(io) == null) {
-        print("  RED: a relay was stayed before the wall that bounds it stood\n", .{});
-        return 1;
-    }
-    const provisioned = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(provisioned == sys.graph.domain_count);
-    const survived = wall_standing(io) orelse {
-        print("  RED: a provisioning cleared the wall an operator reads\n", .{});
-        return 1;
-    };
-    if (!walls_carries(survived, mark)) {
-        print("  RED: a wall carried past a provisioning stopped bounding its matter\n", .{});
-        return 1;
-    }
-    if (walls_rest(survived) != .stands) {
-        print("  RED: a wall carried past a provisioning forgot the word it was built on\n", .{});
-        return 1;
-    }
-    // And only then is the relay stayed, which is the close rather than the act.
-    clear_forbear(io);
-    if (wall_standing(io) == null) {
-        print("  RED: a wall fell with the relay it was only staying\n", .{});
-        return 1;
-    }
-    clear_desist(io);
-    if (wall_standing(io) != null) {
-        print("  RED: a wall outlived the taking down of its own note\n", .{});
-        return 1;
-    }
-    clear_mind(io);
-    print("  a wall survives a provisioning, and lands before the relay it stays comes down\n", .{});
-    return check_beckon_wire(io, sys);
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_desist_wire(@This(), io, sys);
 }
 
 /// A call across a provisioning, proven outside any run.
@@ -13425,83 +13134,9 @@ pub fn check_forbear_wire(io: std.Io, sys: *const system.System) u8 {
 /// forbearance it names comes down, and a run falling between the two leaves an
 /// impasse standing for the next hand rather than one quietly gone.
 pub fn check_mind_wire(io: std.Io, sys: *const system.System) u8 {
-    clear_mind(io);
-    clear_forbear(io);
-    clear_rests(io, standing_address);
-    clear_recount(io, standing_address);
-    clear_reweigh(io);
-    reweigh_note(io, inherited_matter) catch |err| {
-        print("  RED: a second look could not be receipted at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const receipt = anew_standing(io) orelse {
-        print("  RED: a seated receipt could not be read back at all\n", .{});
-        return 1;
-    };
-    const told = knows_bytes(receipt);
-    recount_note(io, standing_address, told) catch |err| {
-        print("  RED: a telling could not be carried at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // The run before this one, standing in: a reader refused a second time, and
-    // that run handed the impasse forward rather than letting it die.
-    const refused = rests_bytes(told, .stands);
-    rest_as_reader(io, standing_address, refused) catch |err| {
-        print("  RED: a reader could not reply in their own hand: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    forbear_note(io, refused) catch |err| {
-        print("  RED: an impasse could not be handed on at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const handed = hold_standing(io) orelse {
-        print("  RED: a seated forbearance could not be read back at all\n", .{});
-        return 1;
-    };
-    mind_note(io, handed) catch |err| {
-        print("  RED: an inherited impasse could not be named at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // The order that makes the naming safe, read on the wire: the mark stands
-    // while the forbearance it names still stands, so nothing is ever gone
-    // before it is recorded.
-    if (hold_standing(io) == null) {
-        print("  RED: a forbearance came down before the mark that names it landed\n", .{});
-        return 1;
-    }
-    const provisioned = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(provisioned == sys.graph.domain_count);
-    const survived = mind_published(io) orelse {
-        print("  RED: a provisioning cleared the mark an operator reads\n", .{});
-        return 1;
-    };
-    if (!minds_carries(survived, handed)) {
-        print("  RED: a mark carried past a provisioning stopped naming its impasse\n", .{});
-        return 1;
-    }
-    if (minds_rest(survived) != .stands) {
-        print("  RED: a mark carried past a provisioning forgot the word it was handed\n", .{});
-        return 1;
-    }
-    // And only then does the inheritance come down, which is the close rather
-    // than the act.
-    clear_forbear(io);
-    if (mind_published(io) == null) {
-        print("  RED: a mark fell with the forbearance it was only reporting on\n", .{});
-        return 1;
-    }
-    clear_mind(io);
-    if (mind_published(io) != null) {
-        print("  RED: a mark outlived the taking down of its own note\n", .{});
-        return 1;
-    }
-    clear_rests(io, standing_address);
-    print("  a mark survives a provisioning, and lands before the impasse it names comes down\n", .{});
-    return check_desist_wire(io, sys);
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_mind_wire(@This(), io, sys);
 }
 
 /// The reader's reply across a provisioning, proven outside any run.

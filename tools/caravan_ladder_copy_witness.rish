@@ -27,8 +27,15 @@
 # carried it to 3,324: a new rung re-enters four chained check bodies of the rung below, which is the fold's named
 # residue rather than a regression.
 #
+# The lap after that answered the residue by name. Eight of those chained bodies stood byte-identical across every rung
+# holding them, so all eight lifted into the harness: the mind chain's measure and wire, the whole desist chain, and
+# the beckon rung's check and refusals. Two stayed home honestly -- a chain's last link ends in `return 0` in the rung
+# that tops the ladder and climbs in every rung above it, so `check_beckon_measure` and `check_beckon_wire` are not yet
+# two copies of one body and cost the carry nothing. The carry fell 3,324 to 2,762, and a new rung now costs stubs
+# rather than bodies.
+#
 # So this witness changed jobs with the scan beneath it. It began proving a ratchet was measurable; it now proves a wall
-# holds, at 4,000 against a standing of 3,324 -- about one rung of headroom at the carry's own rate.
+# holds, at 4,000 against a standing of 2,762 -- about two rungs of headroom at the carry's own rate.
 #
 # Six claims, each proven on metal:
 #   1. The living ladder counts clean under a named ceiling.
@@ -75,7 +82,7 @@ say "caravan-ladder-copy: fold A -- ${trim folds.out} checks run in the rung tha
 # and never falls; a drop means the bodies came back, whatever the prose says.
 let harnessed = run ["sh" "-c" "grep -h 'return ladder_checks[.]check_' caravan/*.rye | wc -l | tr -d ' '"]
 assert harnessed.ok else "caravan-ladder-copy: could not count the harnessed checks -- ${harnessed.err}"
-assert (trim harnessed.out) == "592" else "caravan-ladder-copy: want 592 checks run in the harness, read ${trim harnessed.out}"
+assert (trim harnessed.out) == "612" else "caravan-ladder-copy: want 612 checks run in the harness, read ${trim harnessed.out}"
 say "caravan-ladder-copy: fold B -- ${trim harnessed.out} checks run in the harness against the rung that called them"
 
 # The C claim -- no rung reaches past its neighbor. The two folds above say how many checks run somewhere other than
