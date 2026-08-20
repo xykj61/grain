@@ -1,0 +1,39 @@
+# tools/install_hooks.rish -- point this clone's git at the tree's own tracked hooks.
+#
+# Git hooks live in .git/hooks, which is never tracked, so a hook shipped that way would exist
+# on exactly one machine and silently not exist everywhere else. Setting core.hooksPath to a
+# tracked directory fixes that in one line: the hooks travel with the tree, and every clone
+# arms them with this one command.
+#
+# What it arms today: tools/hooks/commit-msg, the wall behind the two commit-message rules a
+# GitHub renderer can quietly break -- our own record numbers wearing '%' rather than '#', and
+# no bare mention. Rules: .claude/rules/git-signing.md.
+#
+# The setting is per-clone and per-machine on purpose; it is not something a repository can
+# turn on for someone else, which is the same reason a fresh clone must run this once.
+#
+# Purely local: no key, no signature, no network, no funds, no device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/install_hooks.rish
+
+say "install-hooks: Language EN -- arm this clone with the tree's own tracked git hooks."
+say "install-hooks: Style Radiant -- one setting, named plainly, so a hook shipped in the tree is a hook that actually runs."
+say "install-hooks: Lens TAME -- the hook is asserted present and executable before it is armed, and the setting is read back after. Purely local -- no key, no network, no funds, no device."
+
+let hook = "tools/hooks/commit-msg"
+
+let present = run ["sh" "-c" "test -f ${hook}"]
+assert present.ok else "install-hooks: ${hook} is missing -- nothing to arm"
+
+let runnable = run ["sh" "-c" "test -x ${hook}"]
+assert runnable.ok else "install-hooks: ${hook} is not executable -- git would skip it silently"
+
+let armed = run ["git" "config" "core.hooksPath" "tools/hooks"]
+assert armed.ok else "install-hooks: could not set core.hooksPath -- ${armed.err}"
+
+let readback = run ["git" "config" "--get" "core.hooksPath"]
+assert readback.ok else "install-hooks: core.hooksPath did not read back -- ${readback.err}"
+assert (trim readback.out) == "tools/hooks" else "install-hooks: core.hooksPath reads ${readback.out} rather than tools/hooks"
+
+say "GREEN: install-hooks -- core.hooksPath now names tools/hooks; the commit-msg wall is armed on this clone."

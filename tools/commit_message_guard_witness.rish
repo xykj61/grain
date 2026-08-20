@@ -1,0 +1,57 @@
+# tools/commit_message_guard_witness.rish -- the commit-message wall stands, and answers on both sides.
+#
+# Two commit-message rules in .claude/rules/git-signing.md were habits rather than walls, and a
+# renderer can break a habit quietly. GitHub linkifies `#<number>` into the issue or pull request
+# of that number, and `@word` into the user or org of that name -- backticks and good intentions
+# stop neither. The cost was measured before this guard existed: 230 of our own citations across
+# 249 commit messages had been rendering as links to unrelated equinox pull requests, cleared by
+# the debride of `20260820.005542`.
+#
+# The guard is tools/hooks/commit-msg, armed by pointing core.hooksPath at the tree's own tracked
+# hook directory (tools/install_hooks.rish), so the wall travels with the tree rather than living
+# on one machine's untracked .git/hooks.
+#
+# This witness proves three things, and the second is the one a careless guard fails:
+#   1. The refusals refuse -- our numbering with a hash, and a bare mention, each caught.
+#   2. The welcomes welcome -- `PR #76`, `issue #12`, Urbit's own `Resolves #34.` that
+#      .claude/rules/commit-messages.md endorses, an email's `@`, git's own comment lines, and a
+#      verbose diff below the scissors. A wall that refuses everything is as useless as none.
+#   3. The wall is actually armed on this clone, and the refusal teaches the fix rather than
+#      merely saying no.
+#
+# Kin: tools/fixtures/commit_message_guard_scan.sh (the cases), tools/hooks/commit-msg (the wall),
+# tools/install_hooks.rish (arming it), .claude/rules/git-signing.md (both rules).
+#
+# This authors no commit -- it feeds planted messages to the shipped hook and compares.
+# Purely local: no key, no signature, no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/commit_message_guard_witness.rish
+
+say "commit-guard: Language EN -- the commit-message wall stands, and answers on both sides."
+say "commit-guard: Style Radiant -- a guard is worth what its welcomes are worth; the cases that must pass are checked as hard as the cases that must fail."
+say "commit-guard: Lens TAME -- the shipped hook is fed planted messages, never a copy, so this can never pass by measuring something the tree does not run. Purely local -- no key, no network, no funds, no device."
+
+let scan = run ["sh" "tools/fixtures/commit_message_guard_scan.sh"]
+assert scan.ok else "commit-guard: the guard scan failed to run -- ${scan.err}"
+say scan.out
+
+assert scan.out contains "GUARD_HOOK_PRESENT 1" else "commit-guard: tools/hooks/commit-msg is missing or not executable -- git would skip it in silence"
+
+# Every planted case answered the way the rules say it should.
+assert scan.out contains "GUARD_FAIL 0" else "commit-guard: a planted case answered the wrong way -- read the GUARD_CASE_BAD line above for which"
+assert scan.out contains "GUARD_PASS 18" else "commit-guard: the case roster changed size -- 18 cases are expected, so add the new one here when you add it there"
+
+# A refusal that does not name the fix costs the author a trip to the rules.
+assert scan.out contains "GUARD_TEACHES 1" else "commit-guard: the refusal does not name the percent form and the rule it comes from"
+
+# A guard must never eat the work it refuses.
+assert scan.out contains "GUARD_MESSAGE_KEPT 1" else "commit-guard: the hook altered the message file it refused -- a refusal must leave the author's words untouched"
+
+# The wall must be standing here, not merely shippable. A fresh clone lands RED with a one-line fix.
+assert scan.out contains "GUARD_ARMED 1" else "commit-guard: this clone is not armed -- run `rishi/bin/rishi run tools/install_hooks.rish` to point core.hooksPath at tools/hooks"
+
+assert scan.out contains "GUARD_OK" else "commit-guard: the scan reported GUARD_BAD -- read the line above"
+assert ((scan.out contains "GUARD_BAD") == false) else "commit-guard: GUARD_BAD present"
+
+say "GREEN: commit-guard -- 18 planted cases answered right, the refusal teaches its own fix, the message survives it, and the wall is armed on this clone."

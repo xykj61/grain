@@ -1,0 +1,79 @@
+#!/bin/sh
+# commit-msg -- the wall behind two commit-message rules that were only ever habits.
+#
+# GitHub's commit-message renderer linkifies two shapes, and neither backticks nor good
+# intentions stop it:
+#
+#   1. `#<number>` becomes a link to the issue or pull request of that number. This tree
+#      numbers its own records the same way -- REDS rows, gates, errata, open questions,
+#      studies -- and `xykj61/grain` carries pull requests into the eighties, so 230 of our
+#      own citations across 249 commit messages had been rendering as links to unrelated
+#      equinox work before the debride of `20260820.005542` cleared them.
+#   2. `@word` becomes a link to the user or org of that name. Zig builtins are the live
+#      risk -- `@memcpy` matched a real account on this repo.
+#
+# Both rules live in `.claude/rules/git-signing.md`. A rule a renderer can quietly break is
+# worth a wall, so this hook refuses the commit rather than trusting the author to remember.
+#
+# What it welcomes, because there the reference is true:
+#   - `PR #76`, `issue #12`, and Urbit's own `Resolves #N.` / `Fixes` / `Closes` / `Refs`
+#     forms, which `.claude/rules/commit-messages.md` explicitly endorses.
+#   - Any `@` inside an email address or URL -- `<noreply@anthropic.com>` is not a mention,
+#     and GitHub does not treat it as one.
+#
+# There is no bypass. `--no-verify` is already forbidden by `git-signing.md`, and a wall with
+# a door beside it is a habit again. If a genuine new form needs welcoming, widen ALLOW_WORDS
+# here and say why in the same commit.
+#
+# Installed by `tools/install_hooks.rish` (which sets `core.hooksPath` to this directory).
+# Proven by `tools/commit_message_guard_witness.rish` over
+# `tools/fixtures/commit_message_guard_scan.sh`.
+set -eu
+
+MSG_FILE=$1
+test -n "$MSG_FILE" || { echo "commit-msg: no message file given"; exit 2; }
+
+# The words after which a hash-number is telling the truth.
+ALLOW_WORDS='[Pp][Rr]|[Ii]ssues?|[Rr]esolves|[Ff]ixe[sd]|[Cc]lose[sd]|[Rr]efs?|[Ss]ee|[Pp]ull [Rr]equest|[Pp]ull'
+
+# Read the message as the author wrote it: drop git's own comment lines, and stop at the
+# verbose-diff scissors so a diff's own text is never mistaken for the author's prose.
+body=$(sed -e '/^# *-\{1,\} *>8 *-\{1,\}/,$d' -e '/^#/d' "$MSG_FILE")
+
+fail=0
+
+# --- 1. our own numbering must wear the percent sigil ------------------------------
+# Blank out every hash-number that a welcoming word introduces, then look for survivors.
+survivors=$(printf '%s\n' "$body" | sed -E "s/($ALLOW_WORDS) +#[0-9]+/&ALLOWED/g; s/($ALLOW_WORDS) +#[0-9]+ALLOWED/ALLOWED/g")
+if printf '%s\n' "$survivors" | grep -qE '#[0-9]+'; then
+  fail=1
+  echo "commit-msg: REFUSED -- a bare '#<number>' in a commit message becomes a link to an"
+  echo "            issue or pull request of that number on GitHub."
+  echo
+  printf '%s\n' "$survivors" | grep -nE '#[0-9]+' | sed 's/^/              /'
+  echo
+  echo "            Our own record numbers wear '%': REDS %89, gate %1, errata %75, OQ %4."
+  echo "            A genuine reference keeps its hash: PR #76, issue #12, Resolves #34."
+  echo "            Rule: .claude/rules/git-signing.md"
+fi
+
+# --- 2. no bare mention ------------------------------------------------------------
+# A mention starts at a word boundary; an '@' inside an email or URL never does.
+if printf '%s\n' "$body" | grep -qE '(^|[^A-Za-z0-9._%+-])@[A-Za-z][A-Za-z0-9_-]*'; then
+  fail=1
+  echo "commit-msg: REFUSED -- a bare '@name' in a commit message becomes a link to the user"
+  echo "            or org of that name, backticks and all."
+  echo
+  printf '%s\n' "$body" | grep -nE '(^|[^A-Za-z0-9._%+-])@[A-Za-z][A-Za-z0-9_-]*' | sed 's/^/              /'
+  echo
+  echo "            Name the builtin without its '@': \"the memcpy builtin\", \"import sites\"."
+  echo "            In file content the '@' is correct and stays; only messages linkify."
+  echo "            Rule: .claude/rules/git-signing.md"
+fi
+
+if test "$fail" -ne 0; then
+  echo
+  echo "commit-msg: the message is unchanged on disk -- edit it and commit again."
+  exit 1
+fi
+exit 0
