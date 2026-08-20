@@ -2900,13 +2900,6 @@ pub fn check_recantation() u8 {
     return 0;
 }
 
-/// The generalization test: a run that weighs a plan losing nothing reads as
-/// the rung below.
-pub fn check_unlost(sys: *const system.System) u8 {
-    // The harness owns this body; it runs here against this rung's own
-    // helpers, its own report, and its own wire.
-    return ladder_checks.check_unlost(@This(), sys);
-}
 
 /// Runs one queue whole under one review, against a judgment already on the
 /// wire, and says whether it survived.
@@ -3189,7 +3182,7 @@ fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8
     if (bearing != 0) return bearing;
     const recanting = check_recantation();
     if (recanting != 0) return recanting;
-    const unlost = check_unlost(&sys);
+    const unlost = ladder_checks.check_unlost(@This(), &sys);
     if (unlost != 0) return unlost;
     const runs = check_recanting_runs(allocator, io, self_path, &sys);
     if (runs != 0) return runs;

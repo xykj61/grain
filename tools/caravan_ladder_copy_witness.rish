@@ -37,17 +37,21 @@
 # So this witness changed jobs with the scan beneath it. It began proving a ratchet was measurable; it now proves a wall
 # holds, at 4,000 against a standing of 2,762 -- about two rungs of headroom at the carry's own rate.
 #
-# Six claims, each proven on metal:
+# Seven claims, each proven on metal:
 #   1. The living ladder counts clean under a named ceiling.
-#   2. The A fold is real, counted off the ladder rather than believed: 679 checks run in the rung that owns them.
-#   3. The B fold is real on the same terms: 492 checks run in the harness against the rung that called them.
-#   4. The counting itself is right, proven on a two-module corpus whose one carried check and six carried lines are
+#   2. The A fold is real, counted off the ladder rather than believed: 757 checks run in the rung that owns them,
+#      counted in either form a rung may name that rung -- directly, or by handing it to the shared harness.
+#   3. The B fold is real on the same terms: 69 check bodies stand in the harness, each run against the rung that
+#      handed itself in.
+#   4. The C fold is real, and it is a wall rather than a ratchet: zero rungs carry a stub that only forwards itself
+#      to the harness, since the harness now answers for a rung that says nothing.
+#   5. The counting itself is right, proven on a two-module corpus whose one carried check and six carried lines are
 #      countable by hand.
-#   5. The fold walks down one rung at a time: every folding rung names one rung below, and no rung below is named
-#      twice -- proven on the living ladder and on a three-rung corpus small enough to read.
-#   6. Every RED path refuses by name -- a corpus with no modules, a corpus whose modules hold no checks at all (the
+#   6. The fold walks down one rung at a time: every folding rung names one rung below, and no rung below is named
+#      twice -- proven on the living ladder and on three-rung corpora small enough to read, in both fold forms.
+#   7. Every RED path refuses by name -- a corpus with no modules, a corpus whose modules hold no checks at all (the
 #      REDS %97 shape: a count that cannot see what it measures), a corpus grown past its ceiling, and a rung reaching
-#      past its neighbor.
+#      past its neighbor in either form.
 #
 # Brief: active-designing/20260820-131713_caravan-ladder-shared-harness.md
 # No network, no key, no funds.
@@ -67,25 +71,39 @@ assert living.out contains "copied_lines=" else "caravan-ladder-copy: want the c
 
 say "caravan-ladder-copy: living ladder -- ${living.out}"
 
-# The fold itself, read off the ladder rather than claimed. A folded check is one line that calls the rung below, so the
-# fold is countable: 757 of them stand -- the 523 the fold landed, plus the 39 each that the allay, forbear, mind,
-# desist, beckon, and answer rungs folded as they were written.
-# A tree that lost them would be carrying the bodies again, whatever the prose said. The number climbs with each new rung
-# and never falls, so a drop is a regression this wall names on the lap it happens.
-let folds = run ["sh" "-c" "grep -h 'return [a-z_]*_rung[.]check_' caravan/*.rye | wc -l | tr -d ' '"]
+# The fold itself, read off the ladder rather than claimed. A folded check is one line that runs the check in the rung
+# below, so the fold is countable: 757 of them stand -- the 523 the fold landed, plus the 39 each that the allay,
+# forbear, mind, desist, beckon, and answer rungs folded as they were written.
+# A rung names the rung below in either of two forms, and the count reads both: the elder form calls the check on that
+# rung directly, and the harness form hands that rung to the shared body, which is what a rung writes once the rung
+# below publishes no stub of its own. Counting one form alone would read a move between them as a loss.
+# A tree that lost these would be carrying the bodies again, whatever the prose said. The number climbs with each new
+# rung and never falls, so a drop is a regression this wall names on the lap it happens.
+let folds = run ["sh" "-c" "grep -hE 'return ([a-z_]+_rung[.]check_|ladder_checks[.]check_[a-z0-9_]+[(][a-z_]+_rung)' caravan/*.rye | wc -l | tr -d ' '"]
 assert folds.ok else "caravan-ladder-copy: could not count the folded checks -- ${folds.err}"
 assert (trim folds.out) == "757" else "caravan-ladder-copy: want 757 checks run in the rung below, read ${trim folds.out}"
 say "caravan-ladder-copy: fold A -- ${trim folds.out} checks run in the rung that owns them rather than carried"
 
-# The B fold, read the same way. A harness call names `ladder_checks` and hands the rung itself in, so the one body runs
-# against this rung's own report and this rung's own wire. Like the A count above, this number climbs with each new rung
-# and never falls; a drop means the bodies came back, whatever the prose says.
-let harnessed = run ["sh" "-c" "grep -h 'return ladder_checks[.]check_' caravan/*.rye | wc -l | tr -d ' '"]
-assert harnessed.ok else "caravan-ladder-copy: could not count the harnessed checks -- ${harnessed.err}"
-assert (trim harnessed.out) == "612" else "caravan-ladder-copy: want 612 checks run in the harness, read ${trim harnessed.out}"
-say "caravan-ladder-copy: fold B -- ${trim harnessed.out} checks run in the harness against the rung that called them"
+# The B fold, read at its own home. A lifted body lives in `ladder_checks.rye` and takes the rung as a comptime
+# parameter, so the one body runs against whichever rung handed itself in -- that rung's own report, its own wire. The
+# bodies are what B folded, so the bodies are what B is counted by. This number climbs as bodies lift and never falls.
+let harnessed = run ["sh" "-c" "grep -c '^pub fn check_' caravan/ladder_checks.rye | tr -d ' '"]
+assert harnessed.ok else "caravan-ladder-copy: could not count the harnessed bodies -- ${harnessed.err}"
+assert (trim harnessed.out) == "69" else "caravan-ladder-copy: want 69 bodies standing in the harness, read ${trim harnessed.out}"
+say "caravan-ladder-copy: fold B -- ${trim harnessed.out} check bodies stand in the harness, each run against the rung that called it"
 
-# The C claim -- no rung reaches past its neighbor. The two folds above say how many checks run somewhere other than
+# The C fold -- silence is an answer. Until the 20260820.182533 fold, a rung published a five-line stub for every
+# lifted check it merely climbed to, because the harness re-entered the rung by name and a name it could not find was
+# a compile error. Now the harness reaches each chained link through `link`, which runs the rung's own body when that
+# rung wrote one and its own body when the rung said nothing -- so a rung publishes a check only to CHANGE it. Those
+# stubs were the whole remaining carry, byte-identical across rungs by construction, and 612 of them left the ladder.
+# Stated as a wall: no rung carries a stub that only forwards itself to the harness. Zero, and it stays zero.
+let stubs = run ["sh" "-c" "grep -h 'return ladder_checks[.]check_[a-z0-9_]*(@This()' caravan/*.rye | wc -l | tr -d ' '"]
+assert stubs.ok else "caravan-ladder-copy: could not count the forwarding stubs -- ${stubs.err}"
+assert (trim stubs.out) == "0" else "caravan-ladder-copy: want no rung forwarding a stub to the harness, read ${trim stubs.out}"
+say "caravan-ladder-copy: fold C -- ${trim stubs.out} forwarding stubs stand; a rung publishes a check only to change it"
+
+# The one-step rule -- no rung reaches past its neighbor. The two folds above say how many checks run somewhere other than
 # where they are written; this one says the fold walks DOWN ONE RUNG AT A TIME. A rung that reaches two rungs down skips
 # its neighbor, and then both rungs hold the same five-line stub byte for byte -- which is a copy the meter counts and a
 # chain a reader cannot follow. `desist.rye` was born as a copy of `mind.rye` and inherited its delegations whole, so
@@ -94,7 +112,7 @@ say "caravan-ladder-copy: fold B -- ${trim harnessed.out} checks run in the harn
 let reach = run ["sh" "tools/fixtures/caravan_ladder_reach_scan.sh"]
 assert reach.ok else "caravan-ladder-copy: the living ladder must walk down one rung at a time -- ${reach.out}"
 assert reach.out contains "LADDER_REACH_OK" else "caravan-ladder-copy: want every folding rung naming one rung below"
-say "caravan-ladder-copy: fold C -- ${trim reach.out}"
+say "caravan-ladder-copy: one-step rule -- ${trim reach.out}"
 
 # The reach rule proven on a corpus small enough to read: three rungs, each folding into the one beneath it.
 let reach_pass = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_reach_corpus sh tools/fixtures/caravan_ladder_reach_scan.sh"]
@@ -106,6 +124,18 @@ assert reach_pass.out contains "LADDER_REACH_MODULES 3 folding=2" else "caravan-
 let reach_skip = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_reach_skip_corpus sh tools/fixtures/caravan_ladder_reach_scan.sh"]
 assert (reach_skip.ok == false) else "caravan-ladder-copy: a rung reaching past its neighbor must refuse"
 assert reach_skip.out contains "reason=shared_target" else "caravan-ladder-copy: want the skipped neighbor refused by name"
+
+# The same rule proven in the harness form, which is what a rung writes once the rung below publishes no stub. A guard
+# that reads only the elder form would see no fold at all in these three rungs and pass a ladder that had drifted --
+# the REDS %97 shape, a count that cannot see what it measures. So both shapes are proven, welcome and refusal alike.
+let reach_harness = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_reach_harness_corpus sh tools/fixtures/caravan_ladder_reach_scan.sh"]
+assert reach_harness.ok else "caravan-ladder-copy: the harness-form walking corpus must pass -- ${reach_harness.out}"
+assert reach_harness.out contains "LADDER_REACH_MODULES 3 folding=2" else "caravan-ladder-copy: want the harness form read as a fold"
+
+# RED path five -- the planted drift, written in the harness form.
+let reach_harness_skip = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_reach_harness_skip_corpus sh tools/fixtures/caravan_ladder_reach_scan.sh"]
+assert (reach_harness_skip.ok == false) else "caravan-ladder-copy: a harness-form rung reaching past its neighbor must refuse"
+assert reach_harness_skip.out contains "reason=shared_target" else "caravan-ladder-copy: want the harness-form skip refused by name"
 
 # The counting proven by hand. The corpus holds two rungs: the lower carries two distinct checks, the
 # upper carries one of them forward byte for byte and adds one of its own. So four checks stand, three
@@ -137,4 +167,4 @@ let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_c
 assert (ceiling.ok == false) else "caravan-ladder-copy: a ladder past its ceiling must refuse"
 assert ceiling.out contains "reason=past_ceiling" else "caravan-ladder-copy: want the ceiling breach refused by name"
 
-say "GREEN: caravan-ladder-copy -- the folded ladder stands counted under a named ceiling, all three folds are read out of the ladder rather than claimed, the counting is proven by hand on a two-rung corpus, the fold walks down one rung at a time, and all four RED paths refuse by name."
+say "GREEN: caravan-ladder-copy -- the folded ladder stands counted under a named ceiling, all three folds are read out of the ladder rather than claimed, the counting is proven by hand on a two-rung corpus, the fold walks down one rung at a time in either form a rung may write it, and all six RED paths refuse by name."
