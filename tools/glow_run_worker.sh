@@ -116,21 +116,60 @@ gate-xfer-tag|gate-barket-xfer-tag)
 esac
 
 mkdir -p glow/bin glow/.cache
+
+# One builder at a time, and no half-written artifact ever left standing.
+#
+# Every invocation rebuilds glow/bin/glow_run and writes glow/.cache, so two
+# witnesses running at once -- a sweep beside a hand-run gate -- interleave on
+# the same bytes: one truncates what the other is about to execute, and the
+# gate that loses the race reports RED about its own logic while nothing is
+# wrong with it. Three false REDs in a single round were bought exactly this
+# way, and a killed build left a truncated glow_run that a later, entirely
+# clean run then trusted.
+#
+# Two guards close it, in TAME's own order of safety before speed:
+#   1. Builds serialize behind one lock, waited on with a named bound rather
+#      than forever, so a deadlock reports itself instead of hanging.
+#   2. Every binary is emitted to a private path and moved into place with
+#      rename, which is atomic -- so an interrupted build leaves the previous
+#      good binary standing rather than a plausible-looking ruin.
+BUILD_LOCK=glow/.cache/.build.lock
+BUILD_LOCK_WAIT=${GLOW_BUILD_LOCK_WAIT:-1800}
+exec 9>"$BUILD_LOCK"
+flock -w "$BUILD_LOCK_WAIT" 9 || {
+  echo "FAIL: glow build lock not acquired within ${BUILD_LOCK_WAIT}s"
+  exit 3
+}
+
+# Temporaries carry this run's pid so a concurrent run never adopts them, and
+# the trap clears them on every exit path including a kill.
+TMP_TAG="building.$$"
+cleanup_tmp() { rm -f "glow/bin/glow_run.$TMP_TAG" "$BIN.$TMP_TAG"; }
+trap cleanup_tmp EXIT INT TERM
+
+# build_atomic <source.rye> <final-bin> -- emit beside the target, then rename.
+build_atomic() {
+  _src=$1
+  _dst=$2
+  env RYE_ZIG="$ZIG" rye/bin/rye build "$_src" -femit-bin="$_dst.$TMP_TAG"
+  mv -f "$_dst.$TMP_TAG" "$_dst"
+}
+
 # STOA344 · O3: same-dir alias so plants import the vane inside the module path (one source, compiler-followed).
 ln -sf ../../tally/gardens.rye glow/.cache/tally_gardens.rye
 ln -sfn ../../caravan glow/.cache/caravan
-env RYE_ZIG="$ZIG" rye/bin/rye build glow/glow_run.rye -femit-bin=glow/bin/glow_run
+build_atomic glow/glow_run.rye glow/bin/glow_run
 
 if [ "$NARGS" -gt 0 ]; then
   RYE=$(glow/bin/glow_run --sample-argv "$GLOW")
   test -n "$RYE"
-  env RYE_ZIG="$ZIG" rye/bin/rye build "$RYE" -femit-bin="$BIN"
+  build_atomic "$RYE" "$BIN"
   "$BIN" "$@"
   echo "EXIT:$?"
 else
   RYE=$(glow/bin/glow_run "$GLOW")
   test -n "$RYE"
-  env RYE_ZIG="$ZIG" rye/bin/rye build "$RYE" -femit-bin="$BIN"
+  build_atomic "$RYE" "$BIN"
   "$BIN"
   echo "EXIT:$?"
 fi
