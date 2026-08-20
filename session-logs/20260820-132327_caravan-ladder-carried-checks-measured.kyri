@@ -1,0 +1,32 @@
+format session-log-v1
+stamp 20260820.132327
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Caravan ladder -- the carried checks become a measured number under a named ceiling
+prompt Autonomous loop -- Standfast on reds, then the next agent-doable lap Lindy-first crux-first, council rota doc by lap index, send each finished increment as its own signed round.
+think Standfast first. Every living row in crux/REDS.md reads CLOSED -- 81, 83 prevention, 84, 96, 97 -- so the line is not stopped and constructive work may open.
+think The running thread from the newest three logs is the Caravan arc at 82 rungs, and the reopen log closed on two things: the next rung (what a run inheriting a reopened matter does with it) and a ratchet surfaced as a recollection -- each rung growing about 500 lines because it carries a full copy of every check below it.
+think Council rota by lap index: 1417 session logs on disk, 1417 mod 27 = 13, which is foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md. It reads as though written for this exact ratchet -- the whole art is turning a multiplication into an addition, and the ladder is eighty-two rungs times seventy-odd checks written out longhand.
+think Lindy-first crux-first says the ratchet outranks the next rung. Every future rung costs 500 more lines until it is answered, so it gates the rest, and the last lap explicitly left the fold as a design call rather than an autonomous rewrite of 82 modules. The agent-doable move is therefore to make the call decidable rather than to make it.
+think Measurement beats memory (REDS %93). Checked the hypothesis cheaply first: check_heed, check_relent, check_dwell, check_abide, and check_lapse hash byte-identical across suffice, apprise, and reopen. Byte-identical means the fold is mechanical wherever the bodies match, which is what makes a recommendation possible at all.
+think Built the meter as a fixture scan plus a Rishi witness, matching the tree's own shape. The scan extracts every check body by the file's own formatting, hashes it, and counts every body past the first as carried. Living ladder: 88 modules, 914 checks, 277 distinct, 637 copies, 46,014 carried lines against 258,525 total.
+think The REDS %97 lesson shaped the refusals. A count that cannot see what it measures is a guess wearing a measurement's clothes, so a corpus with no modules and a corpus whose modules hold no checks each refuse by name rather than answering zero. The ceiling refuses too, which makes it a gate rather than a printed number.
+think Proved the counting itself rather than trusting it: a two-rung corpus where the upper module carries one of the lower's checks forward verbatim. Four checks, three distinct, one copy, six carried lines -- countable by eye in the fixture, so the witness proves the counter rather than taking a second opinion from it.
+think Registered the witness in caravan_suite_witness.rish, since its filename matches the suite's own bijection glob and an unregistered file would have broken the roster. A guard the choir never pulls drifts from the thing it guards -- the %81, %87, %91, %97 family.
+obs The three RED paths were proven on metal before any GREEN claim: an empty corpus refused reason=no_modules, a corpus holding one check-free module refused reason=no_checks, and the living ladder held at a ceiling of 100 refused reason=past_ceiling.
+obs The prototype measurement read 46,651 carried lines and the seated tool reads 46,014. The difference is the prototype hashing files rather than stdin and counting a trailing line the extractor does not emit. The tool's number is the one that stands, because it is the one anybody can re-run.
+obs Distinct bodies (277) outnumber distinct check names (201), so some checks do evolve as they climb. That nuance matters to the fold: the mechanical share is the byte-identical majority, and the variants want a reader's hand.
+obs The recommendation is A -- make the checks pub and call them -- rather than the shared-harness module, because it needs no new contract and its correctness is already established by the measurement. Recommending is as far as this lap goes; the touch across 82 modules is Keaton's word.
+loom witness=caravan_ladder_copy modules=88 checks=914 distinct=277 copies=637 copied_lines=46014 ladder_lines=258525 scan_wall_s=11
+loom witness=caravan_suite registered=83 verdict=green
+file tools/fixtures/caravan_ladder_copy_scan.sh the meter -- extracts every check body, hashes it, counts the carried lines, refuses three ways by name
+file tools/caravan_ladder_copy_witness.rish proves the living ladder under its ceiling, the counting by hand on a corpus, and all three refusals on metal
+file tools/fixtures/caravan_ladder_copy_corpus/lower.rye the corpus lower rung -- two distinct checks
+file tools/fixtures/caravan_ladder_copy_corpus/upper.rye the corpus upper rung -- one check carried forward verbatim, one of its own
+file tools/caravan_suite_witness.rish registers the meter so the choir pulls it, keeping the bijection whole at 83
+file active-designing/20260820-131713_caravan-ladder-shared-harness.md the design call with its measurement -- three shapes, one recommendation, nothing cut
+file caravan/README.md the durable module-side record of the meter and the open call
+file crux/REMEMBER.md live edge moved from the surfaced ratchet to the measured number and the open design door
+recommend check-in (Keaton) the ratchet is now a number and a recommendation rather than a recollection, and the fold it points at -- making 637 carried check bodies pub and calling them across 82 modules -- is exactly the touch the last lap declined to take autonomously, so it wants Keaton's word. Meanwhile the arc's own next rung stands unblocked and agent-doable: what a run that inherits a reopened matter actually does with it, since nothing yet asks a later run to look again at what a reader called short, exactly as nothing asked one to meet an inherited debt until the meet rung. Either door opens on the next lap; the meter holds the line at 60,000 carried lines either way.
