@@ -1360,7 +1360,7 @@ fn standing_dependent(phase: Phase) cohort.Running {
 /// every question answered as a pure fold -- no process anywhere. The fifth
 /// refusal, `EntrustUnheard`, belongs to the run rather than the fold, since
 /// only a dependent can answer.
-fn check_lines(sys: *const system.System) u8 {
+pub fn check_lines(sys: *const system.System) u8 {
     const standing_phase = written_queue[0];
     const handed = standing_phase.task;
     const reserve = standing_phase.reserve;
@@ -1481,7 +1481,7 @@ fn check_lines(sys: *const system.System) u8 {
 /// ceiling read as the ceiling, and a run that heard no handback read as the
 /// line handed. Here a run that has entrusted nothing answers
 /// `unhand.admissible_held` exactly, pair for pair.
-fn check_unentrusted(sys: *const system.System) u8 {
+pub fn check_unentrusted(sys: *const system.System) u8 {
     const clients = [_]Task{
         written_queue[0].task,
         written_queue[1].task,
@@ -1550,7 +1550,7 @@ fn run_one(
 
 /// The entrust lap: one plan run twice, once with a dependent of its own for
 /// every phase and once with work handed to the dependent already standing.
-fn check_room_runs(
+pub fn check_room_runs(
     allocator: std.mem.Allocator,
     io: std.Io,
     self_path: []const u8,

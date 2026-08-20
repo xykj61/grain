@@ -631,7 +631,7 @@ fn run_one(
 }
 
 /// The ordered lap: the head waits on a domain, so readiness converts none.
-fn check_ordered(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_ordered(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, declaration_path, &buf) orelse return 1;
 
@@ -671,7 +671,7 @@ fn check_ordered(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8
 }
 
 /// The stagger lap: the head waits on a slot, so readiness converts it whole.
-fn check_stagger(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_stagger(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, declaration_path, &buf) orelse return 1;
 

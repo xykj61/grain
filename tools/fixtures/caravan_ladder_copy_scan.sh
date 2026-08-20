@@ -1,32 +1,39 @@
 #!/bin/sh
-# caravan_ladder_copy_scan.sh -- how many lines of the Caravan ladder are a
+# caravan_ladder_copy_scan.sh -- how many lines of the Caravan ladder are still a
 # byte-identical copy of a check that already stands in a rung below it.
 #
-# Every rung of the Caravan arc imports the implementation of the rung beneath
-# it and then carries a fresh copy of that rung's self-test. The imports are
-# real reuse; the checks are not. A rung's `fn check_heed()` is the same bytes
-# in `suffice.rye`, `apprise.rye`, and `reopen.rye`, because the check functions
-# are private and a later rung has no way to call them.
+# Every rung of the Caravan arc imports the implementation of the rung beneath it.
+# For eighty-odd rungs it also carried a fresh copy of that rung's self-test,
+# because a check function was private and a later rung had no way to call the one
+# below it. Measured rather than recalled, that reached 779 copied bodies over
+# 54,612 lines, growing about 4,383 lines a rung.
 #
-# That is honest accumulated self-test rather than duplicated logic, and the
-# suite already sings every rung. It is also a real, compounding cost: about
-# 500 lines a rung, and the ladder is 82 rungs deep. The growth was surfaced as
-# a recollection in a session log (`20260820.130722`); this scan makes it a
-# number anybody can re-run, so the design call rests on measurement.
+# On Keaton's word the ladder folded (the 20260820.131713 design call, option A):
+# every check is public now, and a rung whose check is byte-for-byte the rung
+# below's runs it there. 523 bodies fold that way and the carry falls to 12,035.
+#
+# What stays carried is named rather than rounded away. A check that reaches the
+# wire is never run in the rung below -- the bodies match, yet each rung keeps its
+# notes in its own directory, so the rung below would provision its own wire and
+# leave this rung's cold. Nor is a check run below when its tail chains into a
+# check this rung invented, since the rung below has never heard of it. Both
+# residues want the shared harness (option B), which is a refactor now that A ran.
 #
 # Measurement beats memory: a count carried forward drifts (REDS %93), and a
 # count that cannot see what it measures is a guess wearing a measurement's
 # clothes (REDS %97). Both failure shapes are refused by name below.
 #
-# CARAVAN_LADDER_COPY_CEILING (default 60000): the named headroom. The arc may
-# keep climbing while the answer is designed; past this line the growth stops
-# being a ratchet and becomes a red that must be decided rather than carried.
+# CARAVAN_LADDER_COPY_CEILING (default 22000): how many carried lines the ladder
+# may hold -- about six rungs of headroom above the folded standing of 12,035, at
+# the residue's own measured rate of 1,637 lines a rung. Close enough to the
+# standing that the number means something again, where 60,000 over a folded
+# ladder would mean nothing for years.
 #
 # CARAVAN_LADDER_DIR (default caravan): the directory of rung modules, so the
 # PASS and FAIL fixtures can prove both paths without touching the tree.
 set -eu
 
-CEILING=${CARAVAN_LADDER_COPY_CEILING:-60000}
+CEILING=${CARAVAN_LADDER_COPY_CEILING:-22000}
 DIR=${CARAVAN_LADDER_DIR:-caravan}
 
 work=$(mktemp -d)
@@ -37,10 +44,13 @@ for f in "$DIR"/*.rye; do
   test -f "$f" || continue
   modules=$((modules + 1))
   mod=$(basename "$f" .rye)
-  # A check body opens on `fn check_<name>(` at column zero and closes on the
-  # first bare `}` at column zero -- the file's own formatting, not a guess.
+  # A check body opens on `fn check_<name>(` or `pub fn check_<name>(` at column
+  # zero -- public since the fold -- and closes on the first bare `}` there.
   awk -v dir="$work" -v mod="$mod" '
-    /^fn check_[a-z0-9_]*\(/ { name = $2; sub(/\(.*/, "", name); inb = 1; body = ""; n = 0 }
+    /^(pub )?fn check_[a-z0-9_]*\(/ {
+      name = ($1 == "pub") ? $3 : $2
+      sub(/\(.*/, "", name); inb = 1; body = ""; n = 0
+    }
     inb { body = body $0 "\n"; n++ }
     inb && /^}$/ {
       out = dir "/" mod "@" name

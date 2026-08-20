@@ -2524,51 +2524,10 @@ fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
 
 /// The mend below, read straight, so this rung's own fold stands on a repair
 /// that still refuses everything it always refused.
-fn check_mending() u8 {
-    // The act itself: a plan the wire calls short, one arc lost, one phase
-    // seated to carry it.
-    if (mend_refusal(.short, 1, 1)) |why| {
-        print("  RED: a settled mend refused: {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The record, the plan, and the reach, exactly as the rung below weighs them.
-    if (mend_refusal(null, 1, 1)) |why| {
-        if (why != error.MendUnread) {
-            print("  RED: an unread mend refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a mend that read no verdict was allowed to repair\n", .{});
-        return 1;
-    }
-    if (mend_refusal(.carried, 0, 0)) |why| {
-        if (why != error.MendWhole) {
-            print("  RED: a whole plan refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a plan already carried was mended\n", .{});
-        return 1;
-    }
-    if (mend_refusal(.short, 1, 2)) |why| {
-        if (why != error.MendOvereach) {
-            print("  RED: an overreaching mend refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a mend seated more phases than the plan ever lost\n", .{});
-        return 1;
-    }
-
-    // What is left standing, and the verdict that follows the work.
-    if (unserved_after(2, 1) != 1 or settled_verdict(1) != .short or settled_verdict(0) != .carried) {
-        print("  RED: the repair below stopped counting what still stands\n", .{});
-        return 1;
-    }
-
-    print("  a repair still refuses by name: unread, whole, overreaching\n", .{});
-    return 0;
+pub fn check_mending() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return bearing_rung.check_mending();
 }
 
 /// The bearing and its three standing refusals, read straight, before any
@@ -2579,7 +2538,7 @@ fn check_mending() u8 {
 /// fold -- no process anywhere. The fourth refusal, `BearOverrepaired`, belongs
 /// to the run rather than the fold, since only the wire can answer what a plan
 /// published about its own obedience.
-fn check_bearing() u8 {
+pub fn check_bearing() u8 {
     // The act itself: a plan the wire calls short, two arcs lost, one borne and
     // one repaired.
     if (bear_refusal(.short, 2, 1, 1)) |why| {
@@ -2707,7 +2666,7 @@ fn check_bearing() u8 {
 /// of the input, and no process appears anywhere. The fourth refusal,
 /// `AppraiseUnweighed`, belongs to the run rather than the fold, since only the
 /// wire can answer what a run published about its own judgment.
-fn check_appraisal() u8 {
+pub fn check_appraisal() u8 {
     // The evidence, read from the record this lap actually wrote: turn 4
     // follows turn 1, so phase 1 has a follower and phase 3 has none.
     var closed: [max_queue_len]unhand.Phase = undefined;
@@ -2839,7 +2798,7 @@ fn check_appraisal() u8 {
 
 /// The generalization test: a run that weighs a plan losing nothing reads as
 /// the rung below.
-fn check_unlost(sys: *const system.System) u8 {
+pub fn check_unlost(sys: *const system.System) u8 {
     const clients = [_]Task{
         written_queue[0].task,
         written_queue[1].task,
@@ -3065,7 +3024,7 @@ fn judge_appraising_runs(repairing: *Report, weighing: *Report) u8 {
 
 /// The appraising lap: one plan run twice, once repairing every unmarked loss
 /// and once weighing them by what came home after.
-fn check_appraising_runs(
+pub fn check_appraising_runs(
     allocator: std.mem.Allocator,
     io: std.Io,
     self_path: []const u8,

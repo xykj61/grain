@@ -841,7 +841,7 @@ fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
 ///
 /// The happy zone of this rung: every question is a pure fold over a plan --
 /// answered instantly, with no dependent started and no store touched.
-fn check_correction() u8 {
+pub fn check_correction() u8 {
     const plan = written_queue[0..];
     const none: [max_queue_len]bool = @splat(false);
     const gone = none[0..plan.len];
@@ -922,7 +922,7 @@ fn check_correction() u8 {
 /// A withdrawal followed by an arrival reaches the same set of phases and
 /// carries the correction to the tail, so every place from the slot onward
 /// holds a different phase than the plan its author wrote.
-fn check_slot() u8 {
+pub fn check_slot() u8 {
     const plan = written_queue[0..];
     const none: [max_queue_len]bool = @splat(false);
     const where = depart(plan, none[0..plan.len], none[0..plan.len], corrected_turn, 0);
@@ -981,7 +981,7 @@ fn check_slot() u8 {
 /// the plan its author wrote, and a plan relieved of its own arrival was
 /// that plan again. Here a plan correcting a phase to itself is the plan,
 /// place for place.
-fn check_inverse() u8 {
+pub fn check_inverse() u8 {
     const plan = written_queue[0..];
     const none: [max_queue_len]bool = @splat(false);
     const where = depart(plan, none[0..plan.len], none[0..plan.len], corrected_turn, 0);
@@ -1047,7 +1047,7 @@ fn run_corrected(
 
 /// The correction lap: one plan run twice, handed whole and rewritten as it
 /// runs.
-fn check_order(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_order(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, declaration_path, &buf) orelse return 1;
 

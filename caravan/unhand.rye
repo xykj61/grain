@@ -809,7 +809,7 @@ fn standing_dependent(phase: Phase) cohort.Running {
 /// The happy zone of this rung: one declaration, one standing dependent, and
 /// every question answered as a pure fold -- no dependent started and no store
 /// touched.
-fn check_rooms(sys: *const system.System) u8 {
+pub fn check_rooms(sys: *const system.System) u8 {
     const opening = written_queue[0];
     const reader = written_queue[1];
     var live_store: [max_in_flight]cohort.Running = undefined;
@@ -896,7 +896,7 @@ fn check_rooms(sys: *const system.System) u8 {
 /// arrival at a time was the plan its author wrote, and an understudy of
 /// waiting work was that work's correction. Here the narrower room, handed a
 /// line as wide as its own ceiling, answers the wider room exactly.
-fn check_widest(io: std.Io) u8 {
+pub fn check_widest(io: std.Io) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, narrow_declaration_path, &buf) orelse return 1;
 
@@ -980,7 +980,7 @@ fn run_one(
 
 /// The unhand lap: one plan run twice, once by the ceiling and once by the
 /// lines the dependents hold.
-fn check_room_runs(
+pub fn check_room_runs(
     allocator: std.mem.Allocator,
     io: std.Io,
     self_path: []const u8,

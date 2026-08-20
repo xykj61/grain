@@ -177,7 +177,7 @@ fn load_refused(io: std.Io, path: []const u8, want: anyerror) bool {
 }
 
 /// Reads the worked example off disk and checks every claim the file makes.
-fn check_serial_stack(io: std.Io) u8 {
+pub fn check_serial_stack(io: std.Io) u8 {
     var buf: [read_buffer_bytes]u8 = undefined;
     const parsed = load(io, serial_stack_path, &buf) catch |err| {
         print("  RED: {s} refused: {s}\n", .{ serial_stack_path, @errorName(err) });
@@ -204,7 +204,7 @@ fn check_serial_stack(io: std.Io) u8 {
 
 /// Checks that a document falling short whole says so by name, rather than
 /// passing because every line of it was legal.
-fn check_unheld_region(io: std.Io) u8 {
+pub fn check_unheld_region(io: std.Io) u8 {
     var buf: [read_buffer_bytes]u8 = undefined;
     const parsed = load(io, unheld_region_path, &buf) catch |err| {
         print("  RED: {s} refused: {s}\n", .{ unheld_region_path, @errorName(err) });
@@ -221,7 +221,7 @@ fn check_unheld_region(io: std.Io) u8 {
 
 /// Checks the three refusals an operator meets most: a grammar the document
 /// broke, a file that is absent, and a file larger than the bound.
-fn check_refusals(io: std.Io) void {
+pub fn check_refusals(io: std.Io) void {
     // invariant: the grammar refuses `rwx` at the line that asks for it
     assert(load_refused(io, write_execute_path, error.BadPermission));
     print("  W xor X held at the grammar -- rwx refused in the file itself\n", .{});

@@ -1495,7 +1495,7 @@ fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
 /// and the count answered as a pure fold -- no process anywhere. The fourth
 /// refusal, `ReclaimInherited`, belongs to the run rather than the fold, since
 /// only a successor can answer for what it found on the wire.
-fn check_reclamation() u8 {
+pub fn check_reclamation() u8 {
     // The act itself: a departed dependent conferred one arc, its conferral
     // still standing, taken back whole.
     if (reclaim_refusal(1, false, false)) |why| {
@@ -1552,7 +1552,7 @@ fn check_reclamation() u8 {
 
 /// The generalization test: a run that reclaims nothing reads as the rung
 /// below.
-fn check_unreclaimed(sys: *const system.System) u8 {
+pub fn check_unreclaimed(sys: *const system.System) u8 {
     const clients = [_]Task{
         written_queue[0].task,
         written_queue[1].task,
@@ -1621,7 +1621,7 @@ fn run_one(
 
 /// The reclaim lap: one plan run twice, once leaving each conferral standing
 /// on the wire and once taking it back the moment its holder is gone.
-fn check_take_runs(
+pub fn check_take_runs(
     allocator: std.mem.Allocator,
     io: std.Io,
     self_path: []const u8,

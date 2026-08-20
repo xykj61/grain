@@ -630,7 +630,7 @@ fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
 /// The happy zone of this rung: a table is built by hand, phases are marked
 /// started, and every question is a pure fold over the record -- answered
 /// instantly, with no dependent started and no store touched.
-fn check_enlistment() u8 {
+pub fn check_enlistment() u8 {
     var table: Table = .{};
     var i: u32 = 0;
     while (i < written_queue.len - 3) : (i += 1) table.record[i] = written_queue[i];
@@ -733,7 +733,7 @@ fn run_growing(
 }
 
 /// The enlistment lap: one plan run twice, handed whole and handed as it runs.
-fn check_order(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_order(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, declaration_path, &buf) orelse return 1;
 
