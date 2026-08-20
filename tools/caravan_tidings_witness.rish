@@ -1,0 +1,235 @@
+# caravan_tidings_witness.rish -- Caravan tidings witness.
+#
+# `repose.rye` taught a mark to carry the standing of the objection it quotes:
+# one byte appended to the escort, so an operator opening the objection reads
+# whether anybody is still behind it. That finding is exactly right, and it lands
+# exactly where every other finding of this arc lands -- at the place a word is
+# read.
+#
+#   THE READER WHO RAISED A QUARREL IS TOLD HOW IT CAME OUT.
+#
+# WHAT THIS RUNG PROVES, MEASURED:
+#
+#   * THE NUMBER THE TWO PLANS DISAGREE ON IS OBJECTIONS WEIGHED WHOSE RAISER WAS
+#     NEVER TOLD HOW IT CAME OUT. The rung below weighs what a finding reached at
+#     the mark. This weighs what the whole arc ever reached at the person it began
+#     with -- a quarrel decided in its raiser's absence. It falls from 1 to 0.
+#   * NOTHING HAS EVER GONE BACK TO THE PERSON WHO RAISED THE QUARREL, below this
+#     rung. The record, the escort, the term, and the mark are each written where
+#     an operator reads; the silent run publishes every one of them and leaves
+#     `caravan/.readers/desk.outof` absent from the wire entirely.
+#   * A TIDING IS WRITTEN WHERE THE READER IS, in the box they already know. One
+#     byte into `caravan/.readers/desk.outof`, beside the letter this arc already
+#     carried them and the question it already asked them.
+#   * A TIDING REPORTS, AND NEVER ARGUES. It grades no objection and names no
+#     winner. It reads the word the reader stood against and the word the plan
+#     settled, and says whether they are the same.
+#   * THE ANSWER THE LAP SENDS IS THE UNCOMFORTABLE ONE, AND IT IS THE TRUE ONE.
+#     This reader objected to `carried`, and `carried` is what the plan finally
+#     settled -- so the box reads `t`, the word stood. A rung that only ever told
+#     people good news would be worth nothing to them.
+#   * BOTH ANSWERS RIDE THE WIRE, not only the fold. The `moved` answer is
+#     written to a reader of its own, read back out of their box, and cleared
+#     again, never touching the box the lap depends on.
+#   * SILENCE BELONGS TO THE PERSON WHO IS SILENT, unchanged two tiers out. The
+#     reader's own `caravan/.readers/desk.still` is seated by the selftest harness
+#     standing in for the reader by name, never by any run.
+#   * THE PRICE IS ONE BYTE IN A BOX THE ARC HAD ALREADY WRITTEN TO. Both runs
+#     take up 6 phases, absorb 3 into standing dependents, lose 3 arcs, take the
+#     same judgment back, re-seat the same 3 phases, spend the same 6 dependents,
+#     post and carry the same correction, read the same answer, record the same
+#     disagreement, escort the same published word, ask the same reader whether
+#     they still object, read the same silence, stand the same mark, and settle
+#     the plan `carried`.
+#   * A PLAN PUBLISHES WHETHER IT WRITES BACK AT ALL. The word is plan-level
+#     beside the mark, since it instructs about who a record reaches rather than
+#     about one arc.
+#   * FOUR REFUSALS THIS RUNG EARNS, EACH ABOUT THE WRITING BACK RATHER THAN THE
+#     QUARREL IT REPORTS ON. `TidingsEarly` is the moment. `TidingsUnweighed` is
+#     the hard half -- a run that tells somebody how a quarrel came out where
+#     nothing ever came of it has invented a season's work on their behalf.
+#     `TidingsMiscounted` is the honesty of the count. `TidingsMisread` is the
+#     record -- an answer that disagrees with the two words the wire carries.
+#   * A PLAN THAT LOSES NOTHING READS AS THE RUNG BELOW, all 16 pairs -- this
+#     arc's standing generalization test.
+#
+# Five RED paths were proven on metal before this witness claimed GREEN. Publish
+# the other answer and the run refuses `TidingsMisread`. Count one raiser twice
+# and it refuses `TidingsMiscounted`. Speak for a quarrel nobody raised and it
+# refuses `TidingsEarly`. Report an outcome nobody reached and it refuses
+# `TidingsUnweighed`. Disarm every guard at once -- the letter never sent, the
+# read-back skipped, the fold, and the harness read that catches them -- and the
+# selftest calls itself GREEN while `caravan/.readers/desk.outof` is absent from
+# the raiser's box entirely, beside a `desk.told`, a `desk.again`, and a
+# `desk.still` that all arrived. Seeing that once is what makes the writing back
+# a check rather than decoration.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep over
+# interpolated output -- REDS %76 / %85, the apostrophe loom.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_tidings_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/tidings"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/tidings.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan tidings build failed -- ${build.err}"
+
+# The reader this witness runs is built here rather than borrowed (REDS %92).
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/read"]
+assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
+
+# The board declaration the rungs below opened, unchanged.
+let published = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_three_clients_board.bron 2>&1"]
+assert published.ok else "the board declaration could not be read"
+assert published.out contains "domains 4 -- channels 3 -- regions 11 -- grants 22" else "the board declaration changed shape"
+assert published.out contains "verdict: whole" else "the board declaration did not read whole"
+
+# A fresh start for the stores, the doorbells, this plan's notes, and the
+# reader's own box. The box goes with them, so the lap begins with a reader who
+# has neither been told anything, nor said anything, nor been asked anything by a
+# run this witness never watched.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels caravan/.tidings caravan/.readers"]
+assert clean.ok else "the region stores, doorbells, notes, and reader boxes could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan tidings selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan tidings selftest not GREEN"
+assert test.out contains "a run tells the reader who raised a quarrel how it came out" else "the tidings finding did not close"
+
+# The tidings and its three standing refusals, read straight, before any
+# dependent runs. The fourth, `TidingsMisread`, is answered in the same fold,
+# since whether an answer quotes its own two words is a question those two words
+# can settle between themselves.
+assert test.out contains "a plan publishes whether it writes back to the reader who objected" else "the tidings fold was not weighed"
+assert test.out contains "three refusals stand by name: early, unweighed, miscounted" else "the three tidings refusals did not stand"
+assert test.out contains "the word you objected to reads differently now" else "a moved word did not read as one"
+
+# Both answers ride the wire, written to a reader of the fold's own and read back
+# out of their box -- never touching the box the lap depends on.
+assert test.out contains "both answers ride the wire" else "the other answer was never proven on the wire"
+
+# The standing below it, unchanged and still weighed.
+assert test.out contains "a plan publishes whether its marks carry the standing of their objection" else "the standing below stopped being weighed"
+assert test.out contains "an objection at repose, which nobody renewed" else "an objection nobody renewed did not read as one"
+
+# The term, the escort, the record, the hearing, the delivery, the amendment, the
+# recantation, the bearing, and the mend below, unchanged and still weighed.
+assert test.out contains "a plan publishes how long the objection beside its word may stand" else "the term below stopped being weighed"
+assert test.out contains "a plan publishes whether its word is read beside the reading against it" else "the escort below stopped being weighed"
+assert test.out contains "a plan publishes whether its record may hold a disagreement" else "the record below stopped being weighed"
+assert test.out contains "a plan publishes whether it hears what its reader answers" else "the hearing below stopped being weighed"
+assert test.out contains "a plan publishes whether its own corrections travel" else "the delivery below stopped being weighed"
+assert test.out contains "a plan publishes whether its own corrections are addressed" else "the amendment below stopped being weighed"
+assert test.out contains "a plan publishes whether its own judgments answer to a later run" else "the recantation below stopped being weighed"
+assert test.out contains "a plan names what it expects of a phase, and what it would accept of a loss" else "the bearing below stopped being weighed"
+assert test.out contains "a repair still refuses by name: unread, whole, overreaching" else "the mend below stopped being weighed"
+
+# The generalization test: a plan that loses nothing reads as the rung below.
+assert test.out contains "a plan that loses nothing reads as the line handed, all 16 pairs" else "an unlost plan did not read as the line handed"
+
+# The tidings lap: one plan run twice over a quarrel it decides either way, once
+# leaving the person who raised it to find out for themselves and once writing
+# the outcome into their own box. Every number stands still -- the work, the
+# dependents, the correction, the journey, the record, the escort, the asking,
+# the silence, the mark, the settlement -- and only the writing back moves.
+assert test.out contains "phases: 6 silent, 6 returned" else "the two plans ran different records"
+assert test.out contains "dependents: 6 silent, 6 returned" else "writing back cost work it should not have"
+assert test.out contains "phases absorbed into a standing dependent: 3 silent, 3 returned" else "the two plans absorbed different phases"
+assert test.out contains "abandoned reach, conferred and never served: 3 silent, 3 returned" else "the two plans lost different work"
+assert test.out contains "phases re-seated to carry what was lost: 3 silent, 3 returned" else "the two plans repaired different work"
+assert test.out contains "standing judgments taken back on this run's own evidence: 1 silent, 1 returned" else "the recanting rung stopped moving under both plans"
+assert test.out contains "readings corrected where they were read: 1 silent, 1 returned" else "the amending rung stopped moving under both plans"
+assert test.out contains "corrections carried to the place their reader was reached: 1 silent, 1 returned" else "the couriering rung stopped moving under both plans"
+assert test.out contains "disagreements written into the record: 1 silent, 1 returned" else "the disputing rung stopped moving under both plans"
+assert test.out contains "published words standing beside the reading against them: 1 silent, 1 returned" else "the abiding rung stopped moving under both plans"
+assert test.out contains "standing objections put back to the reader who raised them: 1 silent, 1 returned" else "the lapsing rung stopped asking under both plans"
+assert test.out contains "objections nobody renewed, let go rather than resolved: 1 silent, 1 returned" else "the two plans read different silences"
+assert test.out contains "marks carrying the standing of the objection they quote: 1 silent, 1 returned" else "the standing below stopped moving under both plans"
+assert test.out contains "raisers told how their own quarrel came out: 0 silent, 1 returned" else "the tidings did not part the two plans"
+assert test.out contains "raisers left exactly as the rung below leaves them: 1 silent, 0 returned" else "the other half of the count did not close"
+assert test.out contains "objections weighed whose raiser was never told how it came out: 1 against 0" else "the two plans reached the same person"
+assert test.out contains "work still standing when the supervisor exits: 0 silent, 0 returned" else "the two plans left different work standing"
+assert test.out contains "the plan, as an operator finally reads it: carried out whole silent, carried out whole returned" else "the two plans settled the plan differently"
+assert test.out contains "breaks a named turn: 0 silent, 0 returned" else "the returning run broke an order its author named"
+
+# The other answer the same question admits, proven on the same wire rather than
+# only as a fold.
+assert test.out contains "a reader who raises their objection again has the mark say so" else "a renewing reader was never proven on the wire"
+
+# What an operator reads is what the wire carries, and what a reader is asked is
+# what their own box carries. Every note is read here, outside the run that wrote
+# it, exactly as each would be read by the person it was written for.
+let settled = run ["sh" "-c" "cat caravan/.tidings/plan.settled"]
+assert settled.ok else "the plan published no settlement an operator could read"
+assert settled.out contains "c" else "the wire did not carry the carried settlement the repair earned"
+
+# The mark itself, carrying both the reading its reader holds and the standing of
+# that objection. The wire's final word is the renewing run's, since that run
+# comes last of the three -- so the standing reads `h` beside an untouched `s`.
+let beside = run ["sh" "-c" "cat caravan/.tidings/plan.beside"]
+assert beside.ok else "a run withdrew the mark its reader earned"
+assert beside.out contains "sh" else "the mark did not name the reading its reader holds and the standing they hold it in"
+
+# The term below it, published exactly as the rung below publishes it.
+let term = run ["sh" "-c" "cat caravan/.tidings/plan.term"]
+assert term.ok else "no term was ever published an operator could read"
+assert term.out contains "r" else "a reader who raised their objection again had it let go"
+
+# The question the rung below asks, in the reader's own box, naming both readings
+# of the quarrel exactly as the record names them.
+let question = run ["sh" "-c" "cat caravan/.readers/desk.again"]
+assert question.ok else "a standing run let an objection go without ever asking"
+assert question.out contains "cs" else "the question named a quarrel its reader never raised"
+
+# The record the standing weighs, kept exactly as the rungs below write it.
+let quarrel = run ["sh" "-c" "cat caravan/.tidings/plan.dispute"]
+assert quarrel.ok else "an open record kept no disagreement at all"
+assert quarrel.out contains "cs" else "the record did not name the plan's reading and its reader's"
+
+let correction = run ["sh" "-c" "cat caravan/.tidings/plan.amend"]
+assert correction.ok else "the plan published no correction an operator could read"
+assert correction.out contains "bc" else "the wire did not name the two readings the correction stands between"
+
+let address = run ["sh" "-c" "cat caravan/.tidings/plan.at"]
+assert address.ok else "the plan kept no address for the reader who took its word"
+assert address.out contains "desk" else "the wire did not name the place its reader was reached"
+
+# The reader's own box, outside this plan's wire entirely -- the letter the plan
+# carried, the hand they answered with, and the second hand they raised.
+let box = run ["sh" "-c" "cat caravan/.readers/desk.told"]
+assert box.ok else "the reader's own box was never written to"
+assert box.out contains "bc" else "the reader's box did not carry the correction in the words they read"
+
+let hand = run ["sh" "-c" "cat caravan/.readers/desk.said"]
+assert hand.ok else "the reader answered nothing at all"
+assert hand.out contains "s" else "the reader's own hand did not name the reading they hold"
+
+# The one note this rung adds, in the one place the person who objected would
+# ever look. This reader objected to `carried`, and `carried` is what the plan
+# finally settled -- so the answer they are owed is `t`, the word stood.
+let outof = run ["sh" "-c" "cat caravan/.readers/desk.outof"]
+assert outof.ok else "the raiser of the quarrel was never told how it came out"
+assert outof.out contains "t" else "a word that never moved was reported to its raiser as one that did"
+
+let still = run ["sh" "-c" "cat caravan/.readers/desk.still"]
+assert still.ok else "the reader raised nothing again"
+assert still.out contains "s" else "the second hand did not raise the objection the record holds"
+
+let recant_note = run ["sh" "-c" "cat caravan/.tidings/plan.recant"]
+assert recant_note.ok else "the plan published no recantation an operator could read"
+assert recant_note.out contains ".r...." else "the wire did not name the one judgment this run took back"
+
+let lost_note = run ["sh" "-c" "cat caravan/.tidings/plan.lost"]
+assert lost_note.ok else "the plan published no loss an operator could read"
+assert lost_note.out contains ".x.x.x" else "the wire did not name the three phases the plan lost"
+
+# The dependents measure the loss in their own hands, exactly as the rungs below
+# left them, and the follower that once spoke for the judgment falls with it.
+assert test.out contains "falls as its author declared, holding 1 conferred arcs it never served" else "a falling dependent did not fall holding its conferral"
+assert test.out contains "client_b: read 3 arcs of its own, 0 inherited at its first breath, 1 conferred, 0 returned, 1 still reachable at home" else "the dependent a conferral was made to did not read it as its own"
+assert test.out contains "client_c: bytes differed" else "the follower that once spoke for the judgment came home after all"
+
+say "GREEN: Caravan tidings witness passed."
