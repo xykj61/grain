@@ -1,14 +1,14 @@
-# Cairns — the walk-back markers before every debride
+# Cairns -- the walk-back markers before every debride
 
 **Language:** EN
-**Status:** Living ledger — append-only
+**Status:** Living ledger -- append-only
 **Voice:** Kyri
-**Rule:** [`../.claude/rules/cairn.md`](../.claude/rules/cairn.md) · [`../.cursor/rules/cairn.mdc`](../.cursor/rules/cairn.mdc)
+**Rule:** [`../.claude/rules/cairn.md`](../.claude/rules/cairn.md) - [`../.cursor/rules/cairn.mdc`](../.cursor/rules/cairn.mdc)
 **Kin:** **debride** removes; a **cairn** marks the way back before it does.
 
 ---
 
-A **cairn** is a stacked-stone trail marker. In this tree it is one row recorded **before a seated debride sweeps a living card** — the git nib and the live stamp at that moment, plus one honest line naming what stood there. Where **remember** reprints the *current* card, a cairn pins the *departing* one, so a good idea folded into an old REMEMBER, THREADS, or work-in-progress file is never truly lost — it waits at a named commit, one `git show` away.
+A **cairn** is a stacked-stone trail marker. In this tree it is one row recorded **before a seated debride sweeps a living card** -- the git nib and the live stamp at that moment, plus one honest line naming what stood there. Where **remember** reprints the *current* card, a cairn pins the *departing* one, so a good idea folded into an old REMEMBER, THREADS, or work-in-progress file is never truly lost -- it waits at a named commit, one `git show` away.
 
 **How to walk back to a cairn:**
 
@@ -18,11 +18,20 @@ git show <nib>:work-in-progress/THREADS.md
 git log --oneline <nib>                          # browse the tree as it stood
 ```
 
-The nib is the HEAD **before** the debride's own commit — so the old files live at that commit and every commit before it.
+The nib is the HEAD **before** the debride's own commit -- so the old files live at that commit and every commit before it.
 
 ---
 
 ## The ledger (newest first)
+
+### `20260820.024612` -- the reclaim rung's live edge folds into the card's condensed pointer
+
+**Walk-back nib:** `05311de906` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- the *prior live edge* bullet for the **reclaim** rung, folded into the pointer line the `20260820.014755` cairn opened, so the card carries two live edges and one open red rather than a fifth copy of the arc's chronicle.
+
+**What waits there, worth recalling:** the inline account of a conferral leaving with the dependent it was made to -- inherited reach at a successor's first breath falling from 1 to 0, the generation that made the count exact, and the rung finding its own first error by measuring. Every word of it also lives in `session-logs/20260820-014755_caravan-reclaim-a-conferral-leaves-with-its-holder.kyri` and in the **Reclaim** section of `caravan/README.md`; the card kept a second copy, and that is what the fold removes. Read the departing card with `git show 05311de906:crux/REMEMBER.md`.
+
 
 ### `20260820.014755` -- the operator card condenses its Microkernel-arc live edges to one pointer
 
@@ -171,7 +180,7 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 ### `20260817.231456` -- waymark-elder debride: dead marks + 76 dead-mark logs purged (deep debride, force-pushed)
 
 **Walk-back nib:** `d87f9d76b1` -- the last commit that still carried the elder waymark tissue whole, held **LOCALLY only** at the safety tag `pre-elder-debride-d87f9d76b1` until git GC. After the deep debride it is **no longer on the remotes** (origin + xykj61 force-pushed to the rewritten history).
-**Swept:** the dead tissue of five superseded waymarks and the retired module name, from the living tree (rules, LEXICON, REMEMBER, `waymark_derive.rish`, SHRED_PREP, the eight-season doc, the Cursor twin) and from **76 dead-mark session logs** (their dedicated logs and transitional records), which were **removed rather than rewritten** and then purged from **all git history** (path removal across every commit + full re-sign, force-push). The living ladders **DREY · FORA · WADE · LOWE** and the module **Dimeroll** carry only their standing names.
+**Swept:** the dead tissue of five superseded waymarks and the retired module name, from the living tree (rules, LEXICON, REMEMBER, `waymark_derive.rish`, SHRED_PREP, the eight-season doc, the Cursor twin) and from **76 dead-mark session logs** (their dedicated logs and transitional records), which were **removed rather than rewritten** and then purged from **all git history** (path removal across every commit + full re-sign, force-push). The living ladders **DREY - FORA - WADE - LOWE** and the module **Dimeroll** carry only their standing names.
 **What waits there, worth recalling:** at nib `d87f9d76b1` (local safety tag only) the tree still labels every site with the superseded marks and holds all 76 dead-mark logs whole -- `git show d87f9d76b1:.claude/rules/waymark-ladders.md`, `git log --oneline d87f9d76b1`. **No canonical waymark fact was lost:** every mark ever drawn is sealed and re-derivable in [`waymark-registry.bron`](waymark-registry.bron) (witness `tools/waymark_registry_witness.rish` GREEN), which is exactly why the superseded marks were harmless before this cut. Counsel dated testimony, the REDS ledger, and the earlier CAIRNS walk-back rows were **kept** -- decision record, reds record, recovery markers. Recovery: `git reset --hard pre-elder-debride-d87f9d76b1` locally **before GC**, or re-clone from a machine that still holds the old history.
 
 ### `20260817.215539` -- urbit lineage DROPPED: private history re-rooted at Grain's first commit (deep debride EXECUTED, force-pushed)
@@ -205,33 +214,33 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 **Swept:** the `work-in-progress/` directory renamed to `crux/` via `git mv`, so the living pins (REMEMBER, REDS, CAIRNS, SHRED_PREP, ROADMAP, TASKS) now sort high alphabetically as Keaton seated. A back-compat symlink `work-in-progress -> crux` is committed so the 2,000+ dated session logs and counsel that cite `work-in-progress/...` still resolve unchanged -- accrete-never-break without rewriting one dated artifact. Only the loop paths (the seed and `tools/launch-claude-season.rish`) and the living rules that name the ledgers were repointed to `crux/`; the dated-bearing ledgers kept their historical `work-in-progress` wording and resolve through the symlink.
 **What waits there, worth recalling:** at nib `947c592333` and every commit before it, the tree still holds a real `work-in-progress/` directory -- every path in dated logs is literal there, not a symlink. A future full repoint of living references (dropping the symlink) would be its own ratchet round.
 
-### `20260815.175524` — Decision-wave breach queue: Bron→Kyri and work-in-progress→crux (prep, no cut yet)
+### `20260815.175524` -- Decision-wave breach queue: Bron->Kyri and work-in-progress->crux (prep, no cut yet)
 
 **Walk-back nib:** `9e3c2dccfa`
-**Swept:** *nothing yet* — planted **ahead** of two newly approved breaches so each keeps its walk-back before it cuts: **Bron → Kyri** (unify the notation entirely under Kyri — `.kyri` takes the responsibility of `.bron`; Kyri is voice · notation · *compressed receipts* · preferred Grain variant, named in gratitude after Kyrie Irving) and **`work-in-progress/` → `crux/`** (a higher-sorting priority folder — `crux/REMEMBER.md`, etc.; 902 files reference `work-in-progress/`, every one repointed in the rename round). Each executes as its own signed loop round; the dated `.bron` logs' deep rename stays a separate circled step under the one-clock law.
-**What waits there, worth recalling:** the whole tree under the elder folder name `work-in-progress/` and the elder notation name `.bron` — every REMEMBER/CAIRNS/TASKS path, every `.bron` session log, and the pre-rename reference graph. Walk back with `git show 9e3c2dccfa:work-in-progress/REMEMBER.md` or `git log --oneline 9e3c2dccfa`. Decisions + flags: [`../active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md`](../active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md).
+**Swept:** *nothing yet* -- planted **ahead** of two newly approved breaches so each keeps its walk-back before it cuts: **Bron -> Kyri** (unify the notation entirely under Kyri -- `.kyri` takes the responsibility of `.bron`; Kyri is voice - notation - *compressed receipts* - preferred Grain variant, named in gratitude after Kyrie Irving) and **`work-in-progress/` -> `crux/`** (a higher-sorting priority folder -- `crux/REMEMBER.md`, etc.; 902 files reference `work-in-progress/`, every one repointed in the rename round). Each executes as its own signed loop round; the dated `.bron` logs' deep rename stays a separate circled step under the one-clock law.
+**What waits there, worth recalling:** the whole tree under the elder folder name `work-in-progress/` and the elder notation name `.bron` -- every REMEMBER/CAIRNS/TASKS path, every `.bron` session log, and the pre-rename reference graph. Walk back with `git show 9e3c2dccfa:work-in-progress/REMEMBER.md` or `git log --oneline 9e3c2dccfa`. Decisions + flags: [`../active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md`](../active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md).
 
-### `20260813.020035` — Double-seat expansion breach queue (prep, no cut yet)
+### `20260813.020035` -- Double-seat expansion breach queue (prep, no cut yet)
 
 **Walk-back nib:** `0a074d5059`
-**Swept:** *nothing yet* — this cairn is planted **ahead** of a queue of four approved breaches so each has its walk-back before it cuts: the module rename to **Dimeroll** (bought `dimeroll.com`), **`.myc` → `.kres`** (Kresfa, supersedes `.myc` + Sui Move), **council sky → constel sky** (bought `constel.net`), and the **deep debride + seed force-push** (*initial public seed*, again — depersonalized, `twilight/` kept). The last rewrites history and loses its own walk-back, so this nib is where the whole pre-breach tree lives.
+**Swept:** *nothing yet* -- this cairn is planted **ahead** of a queue of four approved breaches so each has its walk-back before it cuts: the module rename to **Dimeroll** (bought `dimeroll.com`), **`.myc` -> `.kres`** (Kresfa, supersedes `.myc` + Sui Move), **council sky -> constel sky** (bought `constel.net`), and the **deep debride + seed force-push** (*initial public seed*, again -- depersonalized, `twilight/` kept). The last rewrites history and loses its own walk-back, so this nib is where the whole pre-breach tree lives.
 **What waits there, worth recalling:** every module, doc, and notation under its superseded name -- the pre-rename module dir, `.myc` contracts, "council sky" prose -- plus the whole signed commit history before any rewrite. Walk back with `git show 0a074d5059:<path>` or `git log --oneline 0a074d5059`. Queue + gate flags: [`../active-designing/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/20260813-020035_double-seat-expansion-six-seasons.md).
 
-### `20260810.160511` — Expanding-prompts archive-fold (Option B, safe subset)
+### `20260810.160511` -- Expanding-prompts archive-fold (Option B, safe subset)
 
 **Walk-back nib:** `663b778b38`
-**Swept:** moved the **67 zero-inbound-reference** spent recursion-prompts and fusion-batons from `expanding-prompts/` (top level) into `expanding-prompts/archive/`. This is an **accrete-safe move, not a debride** — every byte stays in the tree and in git history; nothing is deleted. Only files with zero external citations moved, so no dated testimony's links break and no dated file is edited. The 169 still-referenced spent files stay in place (their citations are load-bearing history).
-**What waits there, worth recalling:** the moved files are per-round recursion-prompts and closed-arc fusion-batons — spent working prompts, superseded by their rounds' landed work and session logs. Walk back with `git show 663b778b38:expanding-prompts/<name>` or read them at the new `archive/` path.
+**Swept:** moved the **67 zero-inbound-reference** spent recursion-prompts and fusion-batons from `expanding-prompts/` (top level) into `expanding-prompts/archive/`. This is an **accrete-safe move, not a debride** -- every byte stays in the tree and in git history; nothing is deleted. Only files with zero external citations moved, so no dated testimony's links break and no dated file is edited. The 169 still-referenced spent files stay in place (their citations are load-bearing history).
+**What waits there, worth recalling:** the moved files are per-round recursion-prompts and closed-arc fusion-batons -- spent working prompts, superseded by their rounds' landed work and session logs. Walk back with `git show 663b778b38:expanding-prompts/<name>` or read them at the new `archive/` path.
 
-### `20260809.024851` — The Compass Season living-card debride
+### `20260809.024851` -- The Compass Season living-card debride
 
 **Walk-back nib:** `bc90f7fdb0`
-**Swept:** `work-in-progress/REMEMBER.md` (471 → ~75 lines), `THREADS.md`, `TASKS.md`, `ROADMAP.md` — all rewritten from the elder Equinox-season e-number ladder to the four-equinox Compass Season.
-**What waits there, worth recalling:** the full e-number GREEN ladder (e7–e302), the Amphora CLI log (e140–e177), the twelve RESTED nested seasons with their pointers (Equinox · Fascia · Voice · Nona · Kiln · Surface · Generator · MUR · Inner Scope · Constellation · Keeh), the guide 0–2 walk detail, and the old Open-Doors GREEN table. Every green also stands in the code and in the dated counsel; this cairn is the fast path to the *shape* of the old cards.
+**Swept:** `work-in-progress/REMEMBER.md` (471 -> ~75 lines), `THREADS.md`, `TASKS.md`, `ROADMAP.md` -- all rewritten from the elder Equinox-season e-number ladder to the four-equinox Compass Season.
+**What waits there, worth recalling:** the full e-number GREEN ladder (e7-e302), the Amphora CLI log (e140-e177), the twelve RESTED nested seasons with their pointers (Equinox - Fascia - Voice - Nona - Kiln - Surface - Generator - MUR - Inner Scope - Constellation - Keeh), the guide 0-2 walk detail, and the old Open-Doors GREEN table. Every green also stands in the code and in the dated counsel; this cairn is the fast path to the *shape* of the old cards.
 
 ### The Haunted Mound deep debride (recorded after the fact)
 
-**Walk-back nib:** *not preserved on the branch* — this deep debride rewrote all 37,264 commits with `git-filter-repo` and force-pushed, so no pre-debride commit is reachable. **This is the lesson that seated the cairn pattern:** a deep debride that rewrites history must drop a cairn *first*, or the walk-back is gone. The tribute content itself was intentionally removed at Keaton's word; what a future cairn would have preserved is the surrounding season's card state, now readable only from local reflog if it survived (`git reflog` · dangling commits), not from the shared remotes.
+**Walk-back nib:** *not preserved on the branch* -- this deep debride rewrote all 37,264 commits with `git-filter-repo` and force-pushed, so no pre-debride commit is reachable. **This is the lesson that seated the cairn pattern:** a deep debride that rewrites history must drop a cairn *first*, or the walk-back is gone. The tribute content itself was intentionally removed at Keaton's word; what a future cairn would have preserved is the surrounding season's card state, now readable only from local reflog if it survived (`git reflog` - dangling commits), not from the shared remotes.
 
 ---
 
