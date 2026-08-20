@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20260820.011116
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The commit-message wall -- two rules stop being habits
+prompt Build the guard
+think Where a hook lives decides whether it exists. A hook dropped in .git/hooks is untracked, so it would run on exactly one machine and be silently absent everywhere else -- which is the same failure the percent rule was already suffering, a rule that holds only where someone remembers it. Pointing core.hooksPath at a tracked tools/hooks directory makes the wall travel with the tree, and reduces arming a fresh clone to one command.
+think The hard half of this guard is not what it refuses, it is what it must let through. A wall that refuses every hash-number would break the tree's own endorsed forms: commit-messages.md explicitly adopts Urbit's Resolves N line, and PR and issue references are true where they appear. So the allow list is a named set of introducing words, and everything else is refused -- which is the honest way round, since a new true form should have to justify itself once rather than every reference having to prove itself forever.
+think The mention half had a trap worth finding before shipping rather than after. Every commit in this tree can carry a Co-Authored-By trailer, and an email address is full of at-signs. GitHub does not linkify one because a mention starts at a word boundary and an address never does, so the pattern matches only at start-of-line or after a character that cannot be part of an address. Tested it against a trailer and a URL, both welcomed.
+think Two more traps came from how git actually hands over the message. The file still holds git's own comment lines, and with a verbose commit it holds the entire diff below a scissors line -- so a diff containing an array index would have refused a perfectly innocent commit. The hook drops comment lines and truncates at the scissors before it reads a word, and both are planted cases in the scan rather than claims in a comment.
+think Made the scan feed the shipped hook rather than a copy of it. A copied guard drifts from the guard, and then the witness reports on a fixture nobody runs -- the exact shape of the trouble the caravan arc was in this morning, where 36 rungs borrowed a binary a sibling built. Eighteen planted cases, ten of them welcomes.
+think Chose to enforce arming rather than merely report it. A witness that says the hook would work if armed is reporting on a possibility; the question worth answering is whether the wall is standing here. So a fresh clone lands RED, and the RED names the one command that fixes it. Proved that path first -- ran the witness before arming, watched it refuse with the install line in its own message, then armed and watched it come home.
+think Closed the loop on metal rather than in the scan alone: staged the round and tried to commit a subject carrying both a hash-number and a mention. The hook refused, named both faults, printed the line each sat on, and left the work staged and the message on disk untouched. That is the only proof that mattered, since everything before it was the hook talking to a test harness.
+obs The refusal message renders its own facts because of REDS %89. Watching the witness say "run rishi/bin/rishi run tools/install_hooks.rish" rather than a placeholder is the third round in a row that fix has paid for itself, and it is the same lesson this guard enforces one level up: a reference that points at the wrong thing and a message that names nothing are one failure in two costumes.
+obs The guard is a wall with no door, and that is deliberate rather than severe. git-signing.md already forbids --no-verify, so a bypass flag would only reintroduce the habit it replaces. If a genuine new form needs welcoming, the allow list grows by one word in the same commit that needs it, which leaves a record of why.
+obs Enforcing the armed check means a fresh clone is RED until someone runs one command, and that is the right trade rather than an oversight. A green that means "shippable" teaches nothing; a red that names its own fix is a working instruction.
+loom guard planted_cases=18 refusals=8 welcomes=10 pass=18 fail=0 teaches=1 message_kept=1
+loom guard red_path_proven=unarmed_clone live_commit_refused=1 faults_named=2
+file tools/hooks/commit-msg the wall -- our numbering must wear percent, no bare mention, and every true reference welcomed
+file tools/install_hooks.rish one command to arm a clone, pointing core.hooksPath at the tree's own tracked hooks
+file tools/fixtures/commit_message_guard_scan.sh eighteen planted cases against the shipped hook, welcomes checked as hard as refusals
+file tools/commit_message_guard_witness.rish the standing proof, RED on an unarmed clone with the fix named in the refusal
+file tools/glow_tend_era_suite.rish the guard registered as the seventh voice, so it is never unheard
+file .claude/rules/git-signing.md the rule now names the wall that enforces it, and says plainly there is no bypass
+file .cursor/rules/git-signing.mdc the canonical Cursor twin, seated in the same act
+recommend check-in (Claude) the wall stands and is proven both ways. Two doors stay open from the rounds before: REDS %90 waits on nixos/rebuild-outer.sh from outside the jail, and REDS %91 wants a design pass to name the Two Rooms room for eleven documents. The one this round raises is narrower -- the same argument that made a commit-message wall worth building applies to the seed projection, where publish-seed.sh writes a commit message no hook currently reads.
