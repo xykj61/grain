@@ -100,6 +100,7 @@ const recanting_rung = @import("recant.rye");
 const appraising_rung = @import("appraise.rye");
 const mending_rung = @import("mend.rye");
 const tally_parse_int = @import("parse_int.rye");
+const ladder_checks = @import("ladder_checks.rye");
 
 const Dir = std.Io.Dir;
 
@@ -3417,7 +3418,7 @@ fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
 /// **The price is nothing but the walk.** Both runs spend the same six
 /// dependents, repair the same three arcs, post the same correction, and settle
 /// the same word. What parts them is whether it went anywhere.
-const written_queue = [_]Phase{
+pub const written_queue = [_]Phase{
     .{ .turn = 0, .step = 0, .follows = 0, .follows_turns = 0, .reserve = .{ .effects = "r", .item = .{ .domain = "client_b", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.carried_ok } }, .task = .{ .effects = "r,w,w", .item = .{ .domain = "client_b", .verb = .stand, .hops = "board,ask_b,taken_b", .peers = "serial_virt,client_b", .count = 0, .expect = carry.Outcome.bytes_differed } } },
     .{ .turn = 1, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_b", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
     .{ .turn = 2, .step = 0, .follows = 0, .follows_turns = 0, .reserve = .{ .effects = "r", .item = .{ .domain = "client_a", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.carried_ok } }, .task = .{ .effects = "r,w,w", .item = .{ .domain = "client_a", .verb = .stand, .hops = "board,ask_a,taken_a", .peers = "serial_virt,client_a", .count = 0, .expect = carry.Outcome.bytes_differed } } },
@@ -3542,52 +3543,9 @@ pub fn check_delivery() u8 {
 /// The generalization test: a run that weighs a plan losing nothing reads as
 /// the rung below.
 pub fn check_unlost(sys: *const system.System) u8 {
-    const clients = [_]Task{
-        written_queue[0].task,
-        written_queue[1].task,
-        written_queue[3].task,
-        written_queue[4].task,
-    };
-    var agreed: u32 = 0;
-    var a: u32 = 0;
-    while (a < clients.len) : (a += 1) {
-        var live_store: [max_in_flight]cohort.Running = undefined;
-        live_store[0] = .{
-            .proc = undefined,
-            .domain = clients[a].item.domain,
-            .verb = clients[a].item.verb,
-            .count = clients[a].item.count,
-            .expect = clients[a].item.expect,
-        };
-        var handed_store: [max_in_flight]Task = undefined;
-        handed_store[0] = clients[a];
-        const reserve_store = [_]?Task{null};
-        const taken_store = [_]u32{0};
-        var b: u32 = 0;
-        while (b < clients.len) : (b += 1) {
-            const here = admissible_in(
-                sys, live_store[0..1], handed_store[0..1], reserve_store[0..1], taken_store[0..1], clients[b],
-            ) catch {
-                print("  RED: an appraising run could not weigh its own door\n", .{});
-                return 1;
-            };
-            const there = unhand.admissible_held(sys, live_store[0..1], handed_store[0..1], clients[b]);
-            if (here != there) {
-                print("  RED: the two readings disagreed about {s} beside {s}\n", .{
-                    clients[b].item.domain, clients[a].item.domain,
-                });
-                return 1;
-            }
-            agreed += 1;
-        }
-        // invariant: every newcomer was weighed against this dependent, none skipped
-        assert(b == clients.len);
-    }
-    // invariant: every line stood as the running dependent once, none skipped
-    assert(a == clients.len);
-
-    print("  a plan that loses nothing reads as the line handed, all {d} pairs\n", .{agreed});
-    return 0;
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_unlost(@This(), sys);
 }
 
 /// The reading the reader answers with, in their own hand.
