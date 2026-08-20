@@ -1300,6 +1300,24 @@ The numbers state the claim: **five refusals stand by name -- unfound, unaddress
 
 The numbers state the claim: **five refusals stand by name -- untold, silent, mismatched, miscounted, misrecorded; a plan that loses nothing reads as the line handed, all 16 pairs; every rung below moves exactly as it moved, and only the asking parts the two plans.** Witness: `tools/caravan_suffice_witness.rish`.
 
+### reopen -- a reader who says the answer falls short opens the matter again
+
+`suffice.rye` above finally asks. The reader who was told what the look found says whether it settles the thing, in their own hand, and the plan publishes that word where the settlement is read -- so an answer stops being the plan's own last word about itself. **And then nothing whatever follows from what they said.** A plan may hear an objection, carry it outside the argument, take the finding on the record, concede, book the debt, meet it, put the work right, tell the person who raised the quarrel, read that person's verdict, publish it honestly -- and go on answering exactly the same way forever. A supervisor may learn every run that its answer settled nothing, and owe nothing for it. **The measurement is words a reader wrote calling an answer short that opened nothing**, and it falls 1 to 0.
+
+**A hand outside the plan opens a matter the plan had closed.** Every rung of this arc reaches outward to be *told* something -- a quarrel, a standing, a third hand's finding, a reader's verdict -- and the plan has always decided by itself what to do about it. Here what it is told costs it a look it never chose to take. That is the whole rung, and it is the first of its kind in the arc.
+
+**A reader who says the answer settles the matter leaves nothing to take up.** Booking a matter open there would punish a plan for asking and teach every supervisor never to ask at all, which would undo the rung below in a single lap. So satisfaction costs nothing, dissatisfaction costs exactly one more look, and `ReopenSettled` refuses by name.
+
+**The note is addressed forward, and its every byte came from outside.** It is the second note in the whole arc written for a run that has not started -- `owe.rye` wrote the first -- and the two are the honest pair this arc has been walking toward: a debt books what the plan itself conceded, while a reopening books what its reader says is still wanting. A plan may keep its own word, concede nothing, owe nothing, and still be reopened by the person it answered.
+
+**A note must name the word it reopens.** A note left over from an earlier lap may be reopening an older answer entirely, and reading that as today's would tell an operator this run acted on a verdict it never read. So the note carries four bytes: the reader's own word, echoed back whole. `ReopenMismatched` is the rung itself.
+
+**Booking is not answering.** The note says the matter is owed another look and never decides what that look finds. The settlement, the quarrel, its age, its standing, the case on the desk, the finding, the plan's own word, the concession, the meeting, the redress, the delivery, and the reader's own verdict each come out of a reopening run exactly as they went in -- and both runs settle `carried out whole`, because a reader's dissatisfaction is a fact an operator is owed rather than a verdict on the work.
+
+**A reopened matter survives a provisioning, and falls with the word that opened it.** A matter swept every morning would let a plan answer a `wanting` word and open the next run owing nothing at all; a matter standing on a verdict this wire has forgotten would send a run looking again at an answer nobody ever called short.
+
+The numbers state the claim: **five refusals stand by name -- unweighed, settled, mismatched, miscounted, misrecorded; a plan that loses nothing reads as the line handed, all 16 pairs; every rung below moves exactly as it moved, and only the taking up parts the two plans.** Witness: `tools/caravan_reopen_witness.rish`.
+
 
 ## Held
 
