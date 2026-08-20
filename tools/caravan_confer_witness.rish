@@ -1,0 +1,117 @@
+# caravan_confer_witness.rish -- Caravan confer witness.
+#
+# `entrust.rye` let a supervisor hand a running dependent more work, and it named
+# its own limit plainly rather than letting it pass: the dependent was spawned
+# holding capability words for its whole reserve, so what grew when the run
+# entrusted an arc was the run's PERMISSION, never the dependent's REACH.
+#
+#   THE REACH ITSELF TRAVELS, AND A DEPENDENT HOLDS ONLY WHAT THE DOOR HAS
+#   WEIGHED.
+#
+# A dependent is spawned narrowed to exactly the line it was handed -- the same
+# narrowing `unhand.rye` and `taper.rye` always made -- and the capability
+# word for each entrusted arc travels to it over a channel, where it grafts
+# the word into its own slot before it reads.
+#
+# WHAT THIS RUNG PROVES, MEASURED:
+#
+#   * THE NUMBER THE TWO ROOMS DISAGREE ON IS DARK REACH -- arcs a running
+#     dependent could physically touch that the door has not yet weighed. Handing
+#     every word at the spawn leaves it at 1; conferring drives it to 0, with
+#     the same 3 dependents carrying the same work home either way. This rung
+#     buys no speed and no room; it buys the isolation claim itself.
+#   * THE DEPENDENT'S OWN HANDS MEASURE IT. Before grafting each conferred word
+#     the dependent asks for the arc it names. Handed at the spawn it answers
+#     "1 reachable before the word arrived"; conferred it answers 0, because
+#     `serve.reach_by_name` genuinely refuses a region its capability list
+#     does not name.
+#   * A CONFERRED WORD IS DERIVED, NEVER AUTHORED. The run reads the domain's
+#     ceiling out of the table `roster.from_system` derives from the
+#     declaration, masks it to the letter the reserve declares, renders it in
+#     the same `region:perm` grammar the spawn speaks, and reads its own
+#     rendering back before publishing it.
+#   * THE WORDS LAND BEFORE THE COUNT THAT MAKES THEM LIVE, so a dependent
+#     reading between the two sees fewer words than are written rather than a
+#     count naming a word that has not arrived.
+#   * FIVE REFUSALS THIS RUNG EARNS, AND EVERY ONE IS ABOUT THE WORD RATHER
+#     THAN THE LINE. `ConferUngranted` is the region: a ceiling names what a
+#     domain may ever reach, so a reserve arc the document never granted it
+#     has no word to send. `ConferOverreaching` is the letter: a reserve
+#     declaring a write over a region granted read-only would confer a right
+#     the ceiling withholds. `ConferGarbled` is the wire: three permission
+#     words carry the whole grammar, so a right outside it refuses rather
+#     than quietly rendering as something narrower. `ConferOverfull` is the
+#     room in the dependent's own hands: one slot holds a bounded number of
+#     capabilities, and a graft past that bound is refused before it is sent.
+#     `ConferUnheld` is the answer: a run that conferred reach nobody grafted
+#     would believe a dependent able to touch what it never took in hand.
+#   * THE DOOR ITSELF NEEDS NOTHING NEW. `entrust.admissible_in` weighs a
+#     widened line the same way whether the dependent came to hold its arcs at
+#     the spawn or over a channel; everything this rung changes stands on the
+#     dependent's side.
+#   * A RUN THAT CONFERS NOTHING READS AS THE RUNG BELOW, all 9 pairs --
+#     this arc's standing generalization test.
+#
+# All six RED paths were proven on metal before this witness claimed GREEN.
+# Drop the region refusal and a word travels for a region the document never
+# granted. Drop the letter refusal and a word carries a write the ceiling
+# withholds. Drop the wire round-trip and a right outside the grammar renders
+# anyway as something narrower. Widen the room bound and a word travels to a
+# dependent with no room to hold it. Publish a count of nothing and the run
+# refuses the whole record with `ConferUnheld` rather than believing reach
+# grafted that never was. Let the dependent skip the graft and it answers
+# `NotGranted` on the conferred arc under `on_grant` while carrying fine
+# under `at_spawn` -- which is the whole rung, read from the dependent's side.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep
+# over interpolated output -- REDS #76 / #85, the apostrophe loom.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_confer_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/confer"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/confer.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan confer build failed"
+
+# The board declaration the rungs below opened, unchanged.
+let published = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_three_clients_board.bron 2>&1"]
+assert published.ok else "the board declaration could not be read"
+assert published.out contains "domains 4 -- channels 3 -- regions 11 -- grants 22" else "the board declaration changed shape"
+assert published.out contains "verdict: whole" else "the board declaration did not read whole"
+
+# A fresh provisioning each run, so every index starts at zero, every bell
+# starts silent, and no dependent hears reach conferred by an earlier run.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels caravan/.confers"]
+assert clean.ok else "the region stores, doorbells, and conferring notes could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan confer selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan confer selftest not GREEN"
+assert test.out contains "the reach itself travels, and a dependent holds only what the door has weighed" else "the confer finding did not close"
+
+# The word and its four standing refusals, read straight, before any dependent
+# runs. The fifth, `ConferUnheld`, belongs to the run rather than the fold.
+assert test.out contains "a conferred word is derived from the ceiling and read back before it travels" else "the derived word was not weighed"
+assert test.out contains "four refusals stand by name: ungranted, overreaching, garbled, overfull" else "the four standing refusals did not stand"
+assert test.out contains "the reach this rung reads: the word arrives when the door grants it" else "the conferring reach was not named"
+
+# The generalization test: a run that confers nothing reads as the rung below.
+assert test.out contains "a run that confers nothing reads as the line handed, all 9 pairs" else "an unconferred run did not read as the line handed"
+
+# The confer lap: one plan run twice, once with every word handed at the
+# spawn and once with each word arriving as the door grants it.
+assert test.out contains "phases: 4 with every word at the spawn, 4 with the word on the grant" else "the two reaches ran different records"
+assert test.out contains "dependents: 3 with every word at the spawn, 3 with the word on the grant" else "the two reaches spent different dependents"
+assert test.out contains "carried home as handed: 1 with every word at the spawn, 1 with the word on the grant" else "a dependent did not come home as it was handed"
+assert test.out contains "reach conferred: 1 with every word at the spawn, 1 with the word on the grant" else "the run did not confer what it reported"
+assert test.out contains "dark reach held at the spawn: 1 against 0" else "conferring closed no dark reach at all"
+assert test.out contains "breaks a named turn: 0 with every word at the spawn, 0 with the word on the grant" else "the conferring reach broke an order its author named"
+
+# The dependent measures the finding in its own hands, under both reaches.
+assert test.out contains "read 3 arcs of its own, 1 conferred, 1 reachable before the word arrived" else "a dependent handed every word at the spawn reported no dark reach"
+assert test.out contains "read 3 arcs of its own, 1 conferred, 0 reachable before the word arrived" else "a dependent conferred its reach could still touch the arc early"
+
+say "GREEN: Caravan confer witness passed."
