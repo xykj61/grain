@@ -1,0 +1,35 @@
+format session-log-v1
+stamp 20260820.181727
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Caravan ladder -- the chained check bodies lift, and a rung costs stubs rather than bodies
+prompt Take the next agent-doable lap Lindy-first crux-first, Standfast on reds first, one council-rota doc deep-read, send the finished increment.
+think Standfast came first. Every row in crux/REDS.md reads CLOSED -- %81, %83, %84, %96, %97, %98 -- so no red books the allocation and the constructive queue is open.
+think The running thread named the crux exactly. The newest log's recommend refused another rung: the carry meter stood at 3,324 of a 4,000 ceiling, about 676 lines, less than one rung, and the ceiling refuses rather than advises. Lift the chained check bodies first.
+think Measurement before the move. Re-running the scan's own extraction by hand named the ten candidate bodies and their sizes -- the mind chain's measure and wire, the whole desist chain, the whole beckon chain -- and confirmed 3,324 was very largely five-line stubs plus these ten.
+think Every free symbol in all ten bodies already stands public on the rung. A masked-identifier pass over each body, checked against the 699 public symbols of answer.rye, returned an empty unknown set ten times -- so the lift needed no privacy breach, only a rung. prefix.
+think A first cut lifted all ten and was wrong, and the tree said so before any witness ran. A chain's last link is the one place a rung differs from the rung above: it ends in return 0 in the rung that tops the ladder and climbs everywhere above. Lifting beckon's terminal pair would have made beckon.rye call check_answer, which beckon cannot see.
+think Backed out whole and re-measured per body across every holder. Eight agree byte for byte across all their holders and lift; two are one body per rung rather than two copies of one, and cost the carry nothing today.
+obs The measurement is lines the ladder carries as a copy of a check standing below it, and it falls 3,324 to 2,762. Fold B climbs 592 to 612 -- the eight bodies now running in the harness -- and fold A holds at exactly 757, which is the honest signal that lifting a body moves where it runs and never how many folds stand.
+obs Two bodies stayed home for a reason worth naming rather than rounding away. check_beckon_measure and check_beckon_wire differ between their two holders in exactly their last line, so they are not yet copies at all. They become liftable the moment a rung is born above answer -- the same doorway every chained body already walked through.
+obs The first cut was the lap's real teacher. A body that looks byte-identical by name can differ by one line, and the difference is precisely the chain's reach upward. Compared hashes per holder rather than trusting the aggregate tally, and the shape came out exact: terminal link differs, every link below it agrees.
+obs The remaining carry is the stub, and it is now the next crux honestly. What stands at 2,762 is very largely the five-line call each lifted check costs each rung, byte-identical by design since @This() resolves per rung. Counted rather than rounded: a rung born above answer copies 58 stubs at five lines each plus the chained bodies that agree -- roughly 490 carried lines against the 655 the answer rung cost, with about 200 handed back the lap its own chain lifts. Bringing it lower means changing what a stub is, rather than lifting one more body.
+obs Docs moved in the same commit rather than a later sweep. The meter witness's pin, its header prose, the scan's header, and the README's harness paragraph each named a standing of 3,324 that stopped being true the moment the bodies lifted.
+obs The rota doc read this lap was the single-stranded brief, and it named the move before the move was made: parts that stand free, composed side by side rather than braided. A check body that runs against whichever rung hands itself in is exactly that -- one thing, standing free of the thirty rungs that call it.
+loom witness=caravan_ladder_copy carry_lines=2762 prior=3324 fold_a=757 fold_b=612 folding_rungs=34 modules=97 checks=1703 ceiling=4000 headroom=1238
+loom witness=caravan_suite rungs=91 cold_tree=true wall_s=299 result=GREEN
+loom witness=caravan_mind result=GREEN
+loom witness=caravan_desist result=GREEN
+loom witness=caravan_beckon result=GREEN
+loom witness=caravan_answer result=GREEN
+loom witness=tame_style_check result=GREEN witness=width_check result=GREEN witness=living_docs_lint result=GREEN
+file caravan/ladder_checks.rye eight chained bodies lifted whole, each taking the rung as a comptime parameter and reaching every helper through it -- 69 checks now stand in the harness
+file caravan/desist.rye four bodies become five-line stubs; its own terminal measure and wire stay home, since desist tops the chain they close
+file caravan/beckon.rye eight bodies become stubs; its terminal measure and wire stay home for the same reason
+file caravan/answer.rye eight bodies become stubs, so the newest rung carries calls rather than copies
+file tools/caravan_ladder_copy_witness.rish fold-B pin repointed 592 to 612 and the header's standing repointed to 2,762 -- a pin that lags is a claim wearing a measurement's clothes
+file tools/fixtures/caravan_ladder_copy_scan.sh header records the lift, the two bodies that stayed home, and why the remainder is the stub
+file caravan/README.md the harness paragraph names the new standing, the reason two bodies stayed, and the stub as the next crux
+recommend keep-going the ceiling opens from less than one rung of headroom to about two, and a new rung now costs stubs rather than bodies. The next constructive door is the arc's own: a correspondence that has reached a person and heard them answer can now be closed, or the stub itself can be reshaped -- the only move left that lowers the carry further.
