@@ -1,0 +1,33 @@
+format session-log-v1
+stamp 20260820.180447
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Caravan answer -- the person a plan called finally gets heard
+prompt Recur the loop: pick up the running thread Lindy-first crux-first, close open reds first, take the next agent-doable lap, sweep the prose Radiant, and send each finished increment as its own signed round.
+think Read Kyri and Radiant Style first, then the operator card, the 1024-round itinerary, and the top three log rows. The baton was plain: beckon.rye had carried a wall out to a person, and its recommend named the next constructive rung as what that person can hand back.
+think Standfast before new work. Walked crux/REDS.md end to end -- REDS %98 closed last lap, every prior row closed, nothing agent-closable standing. The line was clear to open constructive work.
+think Council rota, lap index 91 of 27 -- item 10, foundations/20260703-182612_sameness-is-the-macro.md. It read as a direct commentary on this very arc: the rungs compress by being publicly similar, and a copied stub is a line paid by every reader to come.
+think Designed the rung before writing it. A reader called to a boundary has exactly two honest answers -- let the wall stand, or take the matter up themselves outside a plan that has stopped carrying it -- and neither asks the plan for another lap, so the wall below survives either. That is why Hand carries two words and no more.
+think Grew answer.rye from beckon.rye the way every rung of this arc is grown, then repointed its folds one step down to beckoning_rung so the reach guard stays satisfied, wrapped one more Report tier, and added the rung's own API, wire, refusals, checks, and telling.
+think Two name collisions surfaced at the compiler, both caught before any claim: Answer and opened_in were already taken by rungs below. Renamed this rung's own to Opening, hearing_in, and shutting_in rather than shadowing an elder -- and repaired two over-broad seds that had renamed an inherited function by accident. Measurement over memory: the compiler named both, and grep proved the repair.
+obs The measurement is answers a reader wrote back that the plan never opened, and it falls 1 to 0. Both runs stand the same wall, both carry the same call to the same person, and both settle carried out whole; only whether the plan ever opens the reply parts them. Every rung below now stands exactly still, the beckoning included, which is the honest shape for a rung that reads rather than acts.
+obs The reader's own word is the one thing this plan may never write. hands_written reads it; seat_hands seats it in the harness's own half, standing in for the person; and no run touches either. A plan that could compose the reply it reads would be answering its own call, and the code says so structurally rather than by convention.
+obs Five refusals of this rung's own, each proven by name on metal: AnswerUncalled, AnswerSilent, AnswerMismatched, AnswerMiscounted, AnswerMisrecorded. AnswerSilent is the one worth naming twice -- an empty box is an honest ending, and counting one as a reply would tell an operator a person had spoken.
+obs The planted control earns its place, and was proven to discriminate rather than assumed. The witness takes the record down and makes the very read that closed the claim again; it fails on metal with the note gone, and a separate probe run against the restored file confirmed the read passes when the record stands -- so the control tests the wire rather than passing by accident.
+obs Every byte of the record save one came from outside the plan. The record copied the answer, the answer copied the call, the call copied the wall, the wall copied the mark, the mark copied the forbearance, and the forbearance copied the reader's own five-byte refusal. Ten bytes an operator reads carry five tiers of a correspondence and a person's own word at the end of it.
+obs One limit named rather than rounded away, and it is now the next crux rather than a warning. The carry climbs 2,669 to 3,324 against a ceiling of 4,000 -- about 676 lines, less than one rung -- because each new rung re-enters the four chained check bodies of the rung below, which neither fold has reached. Lifting those bodies into ladder_checks.rye comes before the next rung, since the ceiling refuses rather than advises. The README and the meter both say so now.
+obs The rota doc named the shape of that crux exactly. Sameness is the macro: the rungs compress by being publicly similar, and the fold is that sameness collected into one body every rung re-enters. A copied stub is a line removed by nothing at all -- paid again by every rung above.
+loom witness=caravan_answer result=GREEN measurement=unopened_answers before=1 after=0 refusals=5 rung_lines=14591 witness_lines=245
+loom witness=caravan_ladder_copy carry_lines=3324 prior=2669 fold_a=757 fold_b=592 folding_rungs=34 modules=97 checks=1695 ceiling=4000 headroom=676
+loom witness=caravan_suite rungs=91 cold_tree=true wall_s=305 result=GREEN
+file caravan/answer.rye the rung -- a plan opens the word its reader handed back about the wall it carried them
+file tools/caravan_answer_witness.rish the witness -- the measurement, the five refusals, the reader's own hand read from outside the run, and a planted control proven to discriminate
+file tools/caravan_suite_witness.rish the choir registers the new rung; roster whole at 91
+file tools/caravan_ladder_copy_witness.rish fold A and fold B repinned to measurement, the standing corrected to 3,324, and the headroom named
+file tools/fixtures/caravan_ladder_copy_scan.sh header standing repointed to 3,324 and one rung of headroom
+file caravan/README.md the durable page for the rung, in the arc's own voice, and the meter's next crux stated as an order rather than an option
+file crux/CAIRNS.md walk-back nib 9e892811ce recorded before the card condense
+file crux/REMEMBER.md the beckon live edge folded to a pointer, Now refilled with this round; git nib refreshed
+recommend keep-going the arc has heard the person it reached, which is where a correspondence honestly ends: a matter comes round twice, meets a wall, reaches a person, and that person's own word lands where an operator reads it. The next lap is not another rung -- the meter refuses one. Lift the four chained check bodies (check_<rung>, its refusals, its measure, and its wire) into ladder_checks.rye so a new rung costs stubs rather than bodies, and the ceiling opens for whatever the arc wants to say next.

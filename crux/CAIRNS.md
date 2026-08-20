@@ -24,6 +24,15 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260820.180429` -- the beckon live edge folds as the answer rung seats
+
+**Walk-back nib:** `9e892811ce` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read when the arc had reached a person and not yet heard one back stands at this nib and every commit before it.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **beckon** rung, folded into the condensed-pointer line beneath it so the card leads with the round that just landed rather than carrying a second copy of the log index. Roughly one screenful falls away; every word stands at the nib above.
+
+**What waits there, worth recalling:** the inline account of the **beckon** rung as it was written -- the wall carried out of the drawer only the plan opens and into the box its reader already reads, the eight bytes of the call with every byte save one copied from outside the plan, the ordering that puts the wall before the summons so a run falling between the two leaves a boundary standing and uncarried, and the reach guard seated the lap before holding on its first run over 96 modules. The numbers it named -- 90 rungs GREEN in 239s, carry 2,202 climbing to 2,669 -- live on in `session-logs/` and `caravan/README.md`.
+
+
 ### `20260820.171127` -- the mind, desist, and harness live edges fold as the ladder's reach rule seats
 
 **Walk-back nib:** `ae3bc5bee3` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The ladder as it stood before the reach rule -- `desist.rye` folding two rungs down into `forbear.rye`, and the four bodies it copied from `mind.rye` -- stands at this nib and every commit before it.

@@ -1458,6 +1458,33 @@ The numbers state the claim: **five refusals stand by name -- unnamed, fresh, mi
 The numbers state the claim: **five refusals stand by name -- unwalled, unaddressed, mismatched, miscounted, misrecorded; a plan that loses nothing reads as the line handed, all 16 pairs; every rung below moves exactly as it moved, the bounding included, and only the beckoning parts the two plans.** Both runs stand the same wall (**1 keeping, 1 beckoning**) and both stay the relay (**0 keeping, 0 beckoning**), since a bounded matter is handed to nobody under either plan. A planted control proved the read that closes the claim: the call was taken down from the reader's box and the very same read made again, and it failed on metal with the note gone. Witness: `tools/caravan_beckon_witness.rish`.
 
 
+## Answer -- the person who was called says what they will do
+
+`beckon.rye` carried the wall out to a person. `answer.rye` opens what they wrote back.
+
+**A reader called to a boundary has exactly one way to reply: write a word into the box they were written to.** So the reply lands there, and the plan -- whose part was done the moment the call went out -- never opens it. The arc reaches a person and then stops listening, which is a correspondence held with oneself in a room where somebody else is speaking.
+
+**The measurement is answers a reader wrote back that the plan never opened**, and it falls **1 to 0**.
+
+**The reader's own word lives in the reader's own hand.** Nine bytes stand in `caravan/.readers/desk.hands` -- the call echoed whole, that person's own byte last -- seated by the harness on their behalf, since no run of this plan may ever write it. A plan that could compose the reply it reads would be answering its own call.
+
+**Opening is reading, and reading is a record.** A run that hears writes ten bytes into `caravan/.minds/plan.answer` -- the answer echoed whole, this run's own byte last -- then reads that note back before it believes a word of it.
+
+**Every byte of the record save one came from outside the plan.** The answer copied the call, the call copied the wall, the wall copied the mark, the mark copied the forbearance, and the forbearance copied the reader's own first refusal. An operator reading ten bytes reads five tiers of a correspondence and a person's own word at the end of it.
+
+**A run opens an answer only to a call it actually carried.** A word found in a box a run never wrote to answers some other run entirely. `AnswerUncalled` refuses by name.
+
+**A reader who wrote nothing back is silent, never answered.** An empty box is an honest ending, and counting one as a reply would tell an operator a person had spoken. `AnswerSilent` refuses by name.
+
+**The answer names the call it replies to.** A box may still hold a word about a boundary from a run before today, and reading that as this one's would report a person answering a wall nobody stood here. `AnswerMismatched` is the rung itself.
+
+**The call goes out before the answer is opened.** The summons lands first and the reading after, so a run falling between the two leaves a person called and unread rather than a record of a reply to a call never carried.
+
+**Opening is not settling, and never answering back.** Everything beneath -- the settlement through the mark, the wall, and the call itself -- comes out of an opening run exactly as it went in, and the reader's own answer stays exactly where they wrote it. Both runs settle `carried out whole`.
+
+The numbers state the claim: **five refusals stand by name -- uncalled, silent, mismatched, miscounted, misrecorded; a plan that loses nothing reads as the line handed, all 16 pairs; every rung below moves exactly as it moved, the beckoning included, and only the opening parts the two plans.** Both runs carry the same call to the same person (**1 leaving, 1 hearing**) and both leave no wall unheralded (**0 against 0**). A planted control proved the read that closes the claim: the record was taken down from the plan's own notes and the very same read made again, and it failed on metal with the note gone. Witness: `tools/caravan_answer_witness.rish`.
+
+
 ## The ladder's carried checks -- the fold, and the meter that keeps it
 
 Every rung above imports the implementation of the rung beneath it. For eighty-odd rungs it also carried a fresh copy of that rung's self-test, because a check function was private and a later rung had no way to *call* the one below it -- only to carry its bytes forward.
@@ -1475,9 +1502,9 @@ What stayed carried after A was **256 bodies over 12,035 lines**, growing about 
 
 Nothing observable changed. Every rung of the grievance arc from `appraise` to `recount` was built twice -- folded and pristine -- and run against the same wire: **28 rungs, the same output lines, every one of them** -- only the order in which three concurrent dependents print interleaves, run to run, in the pristine build exactly as in the folded one. Every check that ran before still runs, in the same order, printing the same words. The choir sings every rung GREEN from a cold tree.
 
-`tools/caravan_ladder_copy_witness.rish` changed jobs with the fold, and changed size with it. It holds the standing under a named ceiling of **4,000** carried lines -- **2,574** stand there now across **95 modules and 1,487 checks** -- and it counts both folds off the ladder rather than believing the prose: **679** checks run in the rung that owns them, and **484** run in the harness against the rung that called them. It proves its counting by hand on a two-rung corpus, and refuses by name on three paths: a corpus with no modules, a corpus whose modules hold no checks at all, and a corpus grown past its ceiling. It sings with the choir, so it can never become a guard nobody runs.
+`tools/caravan_ladder_copy_witness.rish` changed jobs with the fold, and changed size with it. It holds the standing under a named ceiling of **4,000** carried lines -- **3,324** stand there now across **97 modules and 1,695 checks** -- and it counts both folds off the ladder rather than believing the prose: **757** checks run in the rung that owns them, and **592** run in the harness against the rung that called them. It proves its counting by hand on a two-rung corpus, and refuses by name on three paths: a corpus with no modules, a corpus whose modules hold no checks at all, and a corpus grown past its ceiling. It sings with the choir, so it can never become a guard nobody runs.
 
-**The meter still names the next crux, and the number says which.** `desist` carried **622** lines -- the bodies it inherited from `mind` that neither fold has reached yet -- so the carry stands at 2,574 against 4,000, about **two rungs of headroom**. The move that ends this remainder is the same one that ended the last: lift those bodies into `ladder_checks.rye` too, which folds them for every rung above at once rather than one rung at a time. That is its own round, and the arc keeps climbing either way.
+**The meter names the next crux, and the number now says it plainly.** Each new rung re-enters the four chained check bodies of the rung below -- the rung's own check, its refusals, its measure, and its wire -- which neither fold has reached, so the carry climbed 2,202 to 2,669 with `beckon` and 2,669 to **3,324** with `answer`. Against a ceiling of 4,000 that leaves about **676 lines**, which is less than one rung. The move that ends this remainder is the same one that ended the last two: lift the chained bodies into `ladder_checks.rye`, which folds them for every rung above at once rather than one rung at a time. **That round comes before the next rung**, since the ceiling refuses rather than warns.
 
 
 ## Held
