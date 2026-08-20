@@ -24,6 +24,15 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260820.194003` -- the abate live edge folds as the conclude rung seats
+
+**Walk-back nib:** `286e33b7dd` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read when a reader's release could move a wall and their acceptance could move nothing stands at this nib and every commit before it.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **abate** rung, folded into the condensed-pointer line beneath it so the card leads with the round that just landed rather than carrying a second copy of the log index. Roughly one screenful falls away; every word stands at the nib above.
+
+**What waits there, worth recalling:** the inline account of the **abate** rung as it was written -- the wall taken down on the word of the reader who released it, the eleven bytes of the abatement with every byte save one copied from outside the plan, the ordering that lands the record before the wall falls, and `AbateUnreleased` named as new in kind for guarding a person's word against a plan eager to mean more by it than they did. The numbers it named -- 92 rungs GREEN in 251s, the carry unmoved at 47 across 98 modules, fold A climbing 757 to 796 -- live on in `session-logs/` and `caravan/README.md`.
+
+
 ### `20260820.180429` -- the beckon live edge folds as the answer rung seats
 
 **Walk-back nib:** `9e892811ce` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read when the arc had reached a person and not yet heard one back stands at this nib and every commit before it.

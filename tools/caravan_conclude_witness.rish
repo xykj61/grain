@@ -1,0 +1,171 @@
+# caravan_conclude_witness.rish -- Caravan conclude witness.
+#
+# `abate.rye` opened the last door: a reader who takes the matter up releases
+# the plan from its own wall, and the wall comes down on their word. So one of
+# the two words a person may hand back finally moves the plan.
+#
+#   A PLAN WRITES DOWN THAT ITS READER ENDED THE CORRESPONDENCE, RATHER THAN
+#   HANDING THE RUN AFTER IT A SILENCE NO LATER READER CAN TELL FROM A MATTER
+#   NOBODY EVER RAISED.
+#
+# The rung proves:
+#
+#   * THE NUMBER THE TWO PLANS DISAGREE ON IS CORRESPONDENCES A READER ENDED
+#     THAT NO LATER RUN COULD TELL FROM ONE MERELY STOPPED. Both runs stand the
+#     same wall, call the same person to it, and open the same acceptance. What
+#     parts them is whether the plan keeps it. It falls 1 to 0.
+#   * THE PAIR RUNS THE READER'S OTHER WORD. The rung below ran this same plan
+#     on `takes_up`, where a wall comes down. This lap seats `accepts` -- so the
+#     acceptance branch, which the ladder had never carried end to end, runs
+#     here for the first time, and the abating below correctly moves nothing.
+#   * A CORRESPONDENCE CLOSES ONLY ON THE WORD OF THE READER WHO ENDED IT. A
+#     reader who takes the matter up carried it onward rather than ending it.
+#     `ConcludeUnended` refuses by name -- the consent guard of this tier,
+#     mirror to `AbateUnreleased` below it.
+#   * EVERY BYTE OF THE CLOSURE SAVE ONE CAME FROM OUTSIDE THE PLAN. The record
+#     is copied whole into `caravan/.minds/plan.close` and this run's own byte
+#     written last; the record copied the answer, the answer copied the call,
+#     the call copied the wall, the wall copied the mark, and the mark copied
+#     the reader's own first refusal -- six tiers in eleven bytes.
+#   * A RUN CONCLUDES ONLY ON AN ANSWER IT ACTUALLY OPENED. `ConcludeUnopened`
+#     refuses by name.
+#   * THE CLOSURE NAMES THE CALL IT ENDS. `ConcludeMismatched` is the rung
+#     itself, refused by name.
+#   * THE CLOSURE IS ADDRESSED FORWARD, AND STANDS. Like the forbearance five
+#     tiers down, it does not fall with the records beneath it -- a note written
+#     for a run that has not started earns nothing by being swept with the lap
+#     that wrote it.
+#   * CONCLUDING IS NOT SETTLING. Every record beneath -- the settlement, the
+#     quarrel, its age, its standing, the finding, the plan's own word, the
+#     concession, the meeting, the redress, the delivery, the second look, the
+#     telling, the reader's reply, the mark, the wall, the call, and the
+#     reader's own answer -- comes out of a concluding run exactly as it went
+#     in. Both runs settle `carried out whole`.
+#   * A CLOSURE SURVIVES A PROVISIONING, AND OUTLIVES THE RECORD IT QUOTES.
+#     Proven as its own fold, outside any run.
+#
+# Run: rishi/bin/rishi run tools/caravan_conclude_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/conclude"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/conclude.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan conclude build failed -- ${build.err}"
+
+# The reader this witness runs is built here rather than borrowed (REDS %92).
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/read"]
+assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
+
+# The board declaration the rungs below opened, unchanged.
+let published = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_three_clients_board.bron 2>&1"]
+assert published.ok else "the board declaration could not be read"
+assert published.out contains "domains 4 -- channels 3 -- regions 11 -- grants 22" else "the board declaration changed shape"
+assert published.out contains "verdict: whole" else "the board declaration did not read whole"
+
+# A fresh start for the stores, the doorbells, this plan's notes, and the boxes
+# outside it. Every quarrel, every finding, every debt, every mark, and every
+# word this witness reads was seated by the lap itself, standing in for the runs
+# and the correspondents that met this argument before today.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels caravan/.minds caravan/.readers"]
+assert clean.ok else "the region stores, doorbells, notes, and outside boxes could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan conclude selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan conclude selftest not GREEN"
+assert test.out contains "a plan writes down that its reader ended the correspondence" else "the conclude finding did not close"
+
+# The concluding and its five refusals, read straight, before any dependent runs.
+assert test.out contains "five refusals stand by name: unopened, unended, mismatched, miscounted, misrecorded" else "the five conclude refusals did not stand"
+assert test.out contains "the concluding this rung keeps: the plan writes the correspondence closed, where the run after it will look" else "a concluding plan did not read as one"
+assert test.out contains "what a leaving plan tells an operator: the plan reads its reader's acceptance and hands the next run nothing at all" else "a leaving plan did not read as one"
+assert test.out contains "a closure carries eleven bytes: the record it ends on, echoed whole" else "a closure did not name what it carries"
+assert test.out contains "a closure survives a provisioning, and outlives the record it quotes" else "a closure was never proven past a provisioning"
+
+# The abating below it, unchanged and still proven on its own fold.
+assert test.out contains "an abatement survives a provisioning, and the wall it took down stays down across another" else "the abating below stopped being proven"
+
+# THE MEASUREMENT. The two plans meet the same reader's acceptance, and only one
+# of them keeps it where the next run will look.
+assert test.out contains "correspondences a reader ended that no later run could tell from one merely stopped: 1 against 0" else "the number this rung moves did not fall 1 to 0"
+assert test.out contains "opened answers this run wrote a closure for: 0 leaving, 1 concluding" else "the concluding run did not close the one correspondence it opened"
+assert test.out contains "opened answers this run handed on with nothing written: 1 leaving, 0 concluding" else "the other half of the count did not close"
+
+# The abating below reads honestly on this branch: a reader who lets the wall
+# stand releases nothing, so neither plan takes a wall down and neither is
+# charged for holding one. This is the AbateUnreleased guard read from its
+# welcoming side, in the live path rather than only in the fold.
+assert test.out contains "walls a plan kept standing after their reader took the matter up: 0 against 0" else "a plan was charged a wall held against a reader who released none"
+assert test.out contains "opened releases this run took its own wall down on: 0 leaving, 0 concluding" else "a run abated a wall on a word that released nothing"
+
+# Every rung beneath, standing exactly still. Concluding writes one note and
+# rewrites nothing else.
+assert test.out contains "the plan, as an operator finally reads it: carried out whole leaving, carried out whole concluding" else "a concluding run rewrote what the work came to"
+assert test.out contains "work still standing when the supervisor exits: 0 leaving, 0 concluding" else "a concluding run left work standing"
+assert test.out contains "breaks a named turn: 0 leaving, 0 concluding" else "a concluding run broke a named turn"
+assert test.out contains "carried calls this run opened its reader's own answer to: 1 leaving, 1 concluding" else "the opening below moved under a concluding run"
+assert test.out contains "answers a reader wrote back that the plan never opened: 0 against 0" else "a concluding run left its reader's answer unopened"
+
+# THE CLOSURE ITSELF, read off the wire rather than out of the run's own words.
+# Eleven bytes: the record echoed whole, and this run's own byte last.
+let closure = run ["sh" "-c" "cat caravan/.minds/plan.close"]
+assert closure.ok else "a concluding run wrote no closure at all"
+assert closure.out contains "osrwsmwbyoc" else "the closure did not carry the record this run opened, with its own byte last"
+
+# The record it quotes, standing exactly where the opening below left it.
+let recorded = run ["sh" "-c" "cat caravan/.minds/plan.answer"]
+assert recorded.ok else "a concluding run took down the record it was only quoting"
+assert recorded.out contains "osrwsmwbyo" else "the record changed under a concluding run"
+
+# The reader's own answer, still in the reader's own box. A plan reads a
+# person's word rather than taking it.
+let handed = run ["sh" "-c" "cat caravan/.readers/desk.hands"]
+assert handed.ok else "the reader this lap runs stopped holding their own answer"
+assert handed.out contains "osrwsmwby" else "a concluding run rewrote the answer it was only asked to read"
+
+# The wall, still standing. A reader who lets the boundary stand released
+# nothing, so nothing came down -- and the correspondence closed all the same.
+let wall = run ["sh" "-c" "test -e caravan/.minds/plan.wall && echo standing || echo gone"]
+assert wall.ok else "the wall could not be read"
+assert wall.out contains "standing" else "a concluding run took down a wall its reader never released"
+
+# And no abatement was written, since none was released.
+let abatement = run ["sh" "-c" "test -e caravan/.minds/plan.abate && echo written || echo none"]
+assert abatement.ok else "the abatement could not be read"
+assert abatement.out contains "none" else "a run abated a wall on a word that released nothing"
+
+# The call, still in the reader's box: a closure ends a correspondence rather
+# than taking down the summons that opened it.
+let called = run ["sh" "-c" "cat caravan/.readers/desk.walls"]
+assert called.ok else "a concluding run took down the call its reader answered"
+assert called.out contains "osrwsmwb" else "the call changed under a concluding run"
+
+# The settlement beneath everything, untouched.
+let settled = run ["sh" "-c" "cat caravan/.minds/plan.settled"]
+assert settled.ok else "a concluding run left no settlement at all"
+assert settled.out contains "c" else "a concluding run rewrote what the work came to"
+
+# The planted control. A witness that only reads the run's own words would print
+# GREEN over a closure that was never written, so the note is taken down and the
+# very read that closed the claim is made again -- it must fail, on metal, with
+# the note gone. Then the wire is restored to exactly what the run left.
+let plant = run ["sh" "-c" "cp caravan/.minds/plan.close caravan/.minds/plan.close.kept && rm caravan/.minds/plan.close"]
+assert plant.ok else "the planted control could not take the closure down"
+
+let control = run ["sh" "-c" "cat caravan/.minds/plan.close 2>/dev/null"]
+assert control.ok == false else "a closure that does not exist was read all the same"
+
+let restore = run ["sh" "-c" "mv caravan/.minds/plan.close.kept caravan/.minds/plan.close"]
+assert restore.ok else "the wire could not be restored after the planted control"
+
+let restored = run ["sh" "-c" "cat caravan/.minds/plan.close"]
+assert restored.ok else "the closure did not come back after the planted control"
+assert restored.out contains "osrwsmwbyoc" else "the restored closure did not carry the ending this reader made"
+
+# The dependents measure the loss in their own hands, exactly as the rungs below
+# left them, and the follower that once spoke for the judgment falls with it.
+assert test.out contains "falls as its author declared, holding 1 conferred arcs it never served" else "a falling dependent did not fall holding its conferral"
+assert test.out contains "client_b: read 3 arcs of its own, 0 inherited at its first breath, 1 conferred, 0 returned, 1 still reachable at home" else "the dependent a conferral was made to did not read it as its own"
+assert test.out contains "client_c: bytes differed" else "the follower that once spoke for the judgment came home after all"
+
+say "GREEN: Caravan conclude witness passed."
