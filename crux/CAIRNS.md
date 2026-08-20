@@ -24,6 +24,15 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260820.085311` -- the heed and endure live edges fold as the relent rung seats
+
+**Walk-back nib:** `16ba986cc8` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **heed** rung and the pointer bullet beneath it, folded into one condensed line naming heed, endure, and the appeal-tidings-repose-lapse-abide rungs below them, so the card leads with the record this lap seated rather than carrying a second copy of the log index.
+
+**What waits there, worth recalling:** the inline account of a plan run under a quarrel it inherited -- the settlement published word for word as it would read had nobody objected, the regard read before the record is taken up and published only at the end, this run's own reader accepting on purpose so nothing it heard itself could account for the word it published, and the wire ending `c` - `p` - `a` - `u`. Its per-rung detail rests whole in `caravan/README.md`, `caravan/heed.rye`, and the dated log `20260820-082858`.
+
+
 ### `20260820.060302` -- the hear live edge folds as the dispute rung seats
 
 **Walk-back nib:** `581ade420e` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
