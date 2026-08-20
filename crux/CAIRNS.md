@@ -24,6 +24,12 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260819.205940` -- REMEMBER's enlist chronicle folded to a pointer as the withdraw rung lands
+
+**Walk-back nib:** `9b8a62fd39` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.
+**Swept:** the **Live edge** bullet's whole inline account of `caravan/enlist.rye` -- the reading carrying over whole so a mid-run door needs no new refusal but a memory, the same newcomer refused by name against a record of 6 and welcomed over the 4 still waiting, the 16 tests against 256, the newcomer taking the tail so nothing already granted moves, and the honest 1 pass handed whole against 0 joined while running. Roughly one long paragraph folded into the prior-edges pointer.
+**What waits there, worth recalling:** at nib `9b8a62fd39` the departing card holds the full prose for why a run must never forget what it spent -- a supervisor keeping only remaining work runs a phase twice behind its own follower with `out_of_precede` reading zero -- which is the exact argument the withdraw rung's shy reading now mirrors from the other side.
+
 ### `20260819.204716` -- REMEMBER's arrive chronicle folded to a pointer as the enlist rung lands
 
 **Walk-back nib:** `45ae32e474` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.

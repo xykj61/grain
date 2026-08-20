@@ -1,0 +1,1065 @@
+//! Caravan withdraw -- a phase still waiting may leave a run, and the same
+//! three facts an arrival owed the plan are what make its leaving safe.
+//!
+//! `enlist.rye` carried a newcomer into a supervisor with dependents already
+//! in flight, and named its own limit plainly: a run may take work while it
+//! runs, and nothing may yet leave one. A phase queued by mistake, or made
+//! pointless by a dependent that already came home, had no door out at all --
+//! only a run carried to its end doing work nobody wanted, or a run torn
+//! down and seated again from the top.
+//!
+//! **A withdrawal owes the plan the same three facts an arrival owed it,
+//! read backwards, and that is the finding.** An arrival asks whether
+//! anybody placed waits on its turn, whether its step is the next one that
+//! turn has open, and whether a turn already standing agrees with it about
+//! what it follows. A withdrawal asks the mirror of each: whether the phase
+//! still waits, whether its step is the last one its turn holds, and whether
+//! any phase in the record names its turn. One walk answers all three,
+//! against the same record `enlist.rye` proved a run must keep whole.
+//!
+//! **The three facts are exactly what make a departure invisible downstream,
+//! and that is why they are the right three.** A phase that still waits has
+//! handed out no slot, no line, and no grant. A phase that is the last step
+//! its turn holds has no sibling whose fence would fall open early. A phase
+//! whose turn nobody names has no follower a supervisor could release by
+//! mistake. Meet all three and every reading downstream -- `elder_waits`,
+//! `sibling_waits`, `may_pass` -- answers exactly what it would have
+//! answered had the phase never been written.
+//!
+//! **What a run must never do is release a follower whose predecessor never
+//! ran.** A supervisor that asks only the plainest question -- does this
+//! phase still wait -- lets turn 4 leave while turn 5 names it, and turn 5
+//! then starts with `elder_waits` reading zero, satisfied by a turn that
+//! never came home. Nothing reports it, which is what makes it worth
+//! measuring: this module weighs the same phase under both readings and
+//! shows the difference rather than asserting it.
+//!
+//! **A departure moves nothing.** In a run the record keeps its shape and
+//! its length; the phase is marked gone where it stands, so every dependent
+//! already started keeps the slot, the line, and the grants it was handed --
+//! `enlist.rye`'s rule for a newcomer, read from the other side. On a plan
+//! not yet running, a withdrawal closes the gap it leaves and every phase
+//! that remains keeps the order its author wrote.
+//!
+//! **A withdrawal costs one walk of the record.** The departing phase is
+//! weighed against each phase ever handed to the run exactly once, so the
+//! whole cost is `max_withdraw_tests` against `max_seating_tests` to seat
+//! the plan again -- the record's length against the queue's square, and
+//! exactly what an arrival and an enlistment each cost.
+//!
+//! **The limit is named plainly.** A withdrawal reaches only work still
+//! waiting: a dependent already running is never recalled, and a phase already
+//! home is never unrun. Whether a run may *replace* a phase -- withdraw one
+//! and enlist another in one act, so a plan may be corrected rather than
+//! only grown and pruned -- belongs to the vision room until a witness binds
+//! it.
+//!
+//! Usage:
+//!   withdraw selftest                  Run the readings against each other
+//!   withdraw                           Same as selftest
+//!   withdraw dependent <domain> <plan> ... Run as a supervised dependent (internal)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const capabilities = @import("capabilities.rye");
+const roster = @import("roster.rye");
+const read = @import("read.rye");
+const boot = @import("boot.rye");
+const exercise = @import("exercise.rye");
+const carry = @import("carry.rye");
+const notify = @import("notify.rye");
+const roundtrip = @import("roundtrip.rye");
+const cycle = @import("cycle.rye");
+const gap = @import("gap.rye");
+const cohort = @import("cohort.rye");
+const intent = @import("intent.rye");
+const mask = @import("mask.rye");
+const precede = @import("precede.rye");
+const arrive = @import("arrive.rye");
+const enlist = @import("enlist.rye");
+
+const caravan_withdraw_version = "20260819.205940";
+
+// =========================================================================
+// Bounds, carried from the rung below
+// =========================================================================
+
+/// The declaration this rung exercises, unchanged.
+pub const declaration_path = enlist.declaration_path;
+
+/// How many dependents one supervisor holds at once.
+pub const max_in_flight: u32 = enlist.max_in_flight;
+
+/// How many items one ordered queue carries.
+pub const max_queue_len: u32 = enlist.max_queue_len;
+
+/// How many still-waiting items past the head one turn may weigh.
+pub const max_lookahead: u32 = enlist.max_lookahead;
+
+/// A dependent's fixed argv, unchanged from the rungs below.
+pub const fixed_argv_words: u32 = enlist.fixed_argv_words;
+
+/// How many turns one queue may cut its work into.
+pub const max_turns: u32 = enlist.max_turns;
+
+/// How many pair tests one seating may ever spend.
+pub const max_seating_tests: u32 = enlist.max_seating_tests;
+
+/// How many tests one arrival at the door may ever spend.
+pub const max_arrival_tests: u32 = enlist.max_arrival_tests;
+
+/// How many tests one mid-run enlistment may ever spend.
+pub const max_enlist_tests: u32 = enlist.max_enlist_tests;
+
+/// How many tests one withdrawal may ever spend.
+///
+/// A withdrawal weighs the departing phase against the whole record exactly
+/// once, gathering all three of its questions in that single walk, so
+/// leaving costs precisely what joining costs. Stated here rather than left
+/// for a reader to work out.
+pub const max_withdraw_tests: u32 = max_enlist_tests;
+
+/// How many phases one run may ever let go while it is under way.
+///
+/// A run can never release more work than it was handed, so the schedule is
+/// bounded by the same number that bounds the record it prunes.
+pub const max_withdrawals: u32 = max_queue_len;
+
+comptime {
+    // invariant: leaving costs exactly what joining a run under way costs
+    assert(max_withdraw_tests == max_enlist_tests);
+    // invariant: leaving costs exactly what arriving at the door costs
+    assert(max_withdraw_tests == max_arrival_tests);
+    // invariant: a withdrawal costs strictly less than seating the plan again
+    assert(max_withdraw_tests < max_seating_tests);
+    // invariant: a schedule never releases more work than one queue may hold
+    assert(max_withdrawals <= max_queue_len);
+}
+
+/// Renders one outcome code as the words an operator reads.
+pub fn outcome_name(code: u8) []const u8 {
+    return enlist.outcome_name(code);
+}
+
+/// Why a queue may not take, or may not release, the work handed to it.
+///
+/// Three names of this rung's own, because a departure fails in three ways
+/// an operator must tell apart: the phase was never in the record, it had
+/// already left the waiting work, or the plan would not survive losing it.
+pub const RunError = enlist.RunError || error{
+    WithdrawalMissing,
+    WithdrawalStarted,
+    WithdrawalUnseated,
+};
+
+/// One queued item and the letters it declares, carried from `intent.rye`.
+pub const Task = enlist.Task;
+
+/// One phase, its turn, its step, and the two masks it carries, unchanged.
+pub const Phase = enlist.Phase;
+
+/// How deeply a reading looks at the queue's own authorship, unchanged.
+pub const Reading = enlist.Reading;
+
+/// Renders one reading as the words an operator reads.
+pub fn reading_words(r: Reading) []const u8 {
+    return enlist.reading_words(r);
+}
+
+/// What one run did, reported whole, unchanged from the rung below.
+pub const Report = enlist.Report;
+
+/// One newcomer and the moment the run offers it, unchanged.
+pub const Enlistment = enlist.Enlistment;
+
+/// The single bit that stands for one turn of a plan.
+pub fn turn_bit(turn: u32) u32 {
+    return enlist.turn_bit(turn);
+}
+
+/// Answers whether a newcomer may take the tail of a plan already seated.
+pub fn arrival_admits(plan: []const Phase, newcomer: Phase) bool {
+    return enlist.arrival_admits(plan, newcomer);
+}
+
+/// Answers whether the plan's written sequence keeps every name it carries.
+pub fn plan_is_seated(plan: []const Phase) bool {
+    return enlist.plan_is_seated(plan);
+}
+
+/// Answers whether two plans hold the same phases in the same places.
+pub fn plans_match(a: []const Phase, b: []const Phase) bool {
+    return enlist.plans_match(a, b);
+}
+
+/// Answers whether two phases must keep the order the queue wrote them in.
+pub fn items_contend(sys: *const system.System, a: Phase, b: Phase, reading: Reading) bool {
+    return enlist.items_contend(sys, a, b, reading);
+}
+
+/// Answers whether the head may enter beside the dependents running now.
+pub fn admissible(
+    sys: *const system.System,
+    live: []const cohort.Running,
+    head: Phase,
+    reading: Reading,
+) bool {
+    return enlist.admissible(sys, live, head, reading);
+}
+
+// =========================================================================
+// The departure -- one walk, and the mirror of the arrival's three facts
+// =========================================================================
+
+/// What one walk of a record learned about a phase asked to leave it.
+///
+/// Three questions share a walk because each of them is a fact about the
+/// same phases: whether this phase stands here at all and still waits, how
+/// far its own turn reaches, and whether anybody named that turn.
+pub const Departing = struct {
+    /// Where the phase stands, when it stands at all.
+    at: u32 = 0,
+    /// Some phase still present carries this turn and this step.
+    found: bool = false,
+    /// That phase has yet to be started.
+    waiting: bool = false,
+    /// The highest step of the departing turn still present in the record.
+    reach: u32 = 0,
+    /// Some other phase still present names the departing turn.
+    named: bool = false,
+};
+
+/// Reads a record once and answers what a phase's departure would cost it.
+///
+/// The scan reads the masks the author declared rather than their closing,
+/// for the reason `arrive.rye` gives: a turn reaches this turn transitively
+/// only through some turn that names it outright, and any such turn either
+/// stands in this record -- where the scan sees its own declaration -- or
+/// stands outside it, where it holds nothing.
+pub fn depart(
+    plan: []const Phase,
+    gone: []const bool,
+    taken: []const bool,
+    turn: u32,
+    step: u32,
+) Departing {
+    // invariant: a departure always names a turn inside the bound
+    assert(turn < max_turns);
+    // invariant: a scan stays inside the queue one supervisor may hold
+    assert(plan.len <= max_queue_len);
+    // invariant: every phase in the record says whether it has left
+    assert(gone.len == plan.len);
+    // invariant: every phase in the record says whether it has started
+    assert(taken.len == plan.len);
+    var out: Departing = .{};
+    var i: u32 = 0;
+    while (i < plan.len) : (i += 1) {
+        if (gone[i]) continue;
+        if (plan[i].turn == turn) {
+            if (plan[i].step > out.reach) out.reach = plan[i].step;
+            if (plan[i].step == step and !out.found) {
+                out.found = true;
+                out.at = i;
+                out.waiting = !taken[i];
+            }
+            continue;
+        }
+        if ((plan[i].follows_turns & turn_bit(turn)) != 0) out.named = true;
+    }
+    // invariant: the walk read the whole record, weighing every phase in it
+    assert(i == plan.len);
+    // invariant: a departure never stands outside the record it was read in
+    assert(!out.found or out.at < plan.len);
+    return out;
+}
+
+/// Answers why a phase may not leave a record, or that it may.
+///
+/// Three facts, and only three -- each the mirror of a fact an arrival owed
+/// the same plan. The phase still waits, so it has handed out no slot, no
+/// line, and no grant. Its step is the last one its turn holds, so no
+/// sibling's fence falls open early. And no phase in the record names its
+/// turn, so no follower is released by a predecessor that never ran.
+pub fn withdrawal_refusal(
+    plan: []const Phase,
+    gone: []const bool,
+    taken: []const bool,
+    turn: u32,
+    step: u32,
+) ?RunError {
+    // invariant: a record always carries work before anything leaves it
+    assert(plan.len >= 1);
+    // invariant: a withdrawal stays inside the queue one supervisor may hold
+    assert(plan.len <= max_queue_len);
+    const where = depart(plan, gone, taken, turn, step);
+    if (!where.found) return error.WithdrawalMissing;
+    if (!where.waiting) return error.WithdrawalStarted;
+    if (step != where.reach) return error.WithdrawalUnseated;
+    if (where.named) return error.WithdrawalUnseated;
+    return null;
+}
+
+/// Answers whether a phase may leave a record at all.
+pub fn withdrawal_admits(
+    plan: []const Phase,
+    gone: []const bool,
+    taken: []const bool,
+    turn: u32,
+    step: u32,
+) bool {
+    return withdrawal_refusal(plan, gone, taken, turn, step) == null;
+}
+
+/// Writes a plan with one phase gone from it, or refuses.
+///
+/// The gap closes and nothing else moves: every phase that remains keeps the
+/// name, the turn, the step, and the masks it was written with, in the order
+/// its author wrote them. A plan grown by an arrival and then relieved of
+/// that same phase is the plan the arrival was handed, phase for phase --
+/// which is what makes a withdrawal the arrival's inverse rather than a
+/// second reading of the same plan.
+pub fn withdraw(plan: []const Phase, turn: u32, step: u32, out: []Phase) bool {
+    // invariant: a withdrawal always has room for the plan it prunes
+    assert(out.len + 1 == plan.len);
+    // invariant: a withdrawal stays inside the queue one supervisor may hold
+    assert(plan.len <= max_queue_len);
+    const none: [max_queue_len]bool = @splat(false);
+    if (!withdrawal_admits(plan, none[0..plan.len], none[0..plan.len], turn, step)) return false;
+    var kept: u32 = 0;
+    var i: u32 = 0;
+    while (i < plan.len) : (i += 1) {
+        if (plan[i].turn == turn and plan[i].step == step) continue;
+        out[kept] = plan[i];
+        kept += 1;
+    }
+    // invariant: the walk read the whole plan, weighing every phase in it
+    assert(i == plan.len);
+    // invariant: exactly the one phase asked for left the plan
+    assert(kept == out.len);
+    return true;
+}
+
+// =========================================================================
+// The supervisor -- one record that may grow and shrink while it runs
+// =========================================================================
+
+/// One dependent already reaped, held until the whole record has drained.
+const Finished = struct {
+    domain: []const u8,
+    verb: cycle.Verb,
+    count: u32,
+    expect: u8,
+    code: u8,
+};
+
+/// Folds one reaped outcome into the report, or names the mismatch.
+fn judge_outcome(done: Finished, report_out: *Report) RunError!void {
+    // invariant: a judged dependent always names its domain
+    assert(done.domain.len >= 1);
+    // invariant: the report never counts more successes than dependents reaped
+    assert(report_out.inner.run.succeeded <= report_out.inner.run.reaped);
+    if (done.code != done.expect) {
+        print("    {s}: expected {s}, heard {s}\n", .{
+            done.domain, outcome_name(done.expect), outcome_name(done.code),
+        });
+        return error.OutcomeMismatch;
+    }
+    if (done.code == carry.Outcome.carried_ok) {
+        report_out.inner.run.succeeded += 1;
+        if (done.verb == .home) report_out.inner.run.homed += done.count;
+    }
+}
+
+/// The queue's own bookkeeping for one run, over a record that may shrink.
+///
+/// `gone` is what makes this table different from the one below it: a phase
+/// released while the run is under way keeps its place in the record and
+/// stops being work, so every index already handed out stays exactly where
+/// it was. `taken` and `gone` are kept apart on purpose -- one names work
+/// that ran, the other names work that never will, and only the first is
+/// ever judged at the end.
+const Table = struct {
+    live: [max_in_flight]cohort.Running = undefined,
+    in_flight: u32 = 0,
+    done: [max_queue_len]Finished = undefined,
+    finished: u32 = 0,
+    taken: [max_queue_len]bool = @splat(false),
+    gone: [max_queue_len]bool = @splat(false),
+    record: [max_queue_len]Phase = undefined,
+    held: u32 = 0,
+    released: u32 = 0,
+    head: u32 = 0,
+    left: u32 = 0,
+};
+
+/// The record as it stands right now.
+fn standing(table: *const Table) []const Phase {
+    // invariant: a record never outgrows the queue one supervisor may hold
+    assert(table.held <= max_queue_len);
+    return table.record[0..table.held];
+}
+
+/// Answers whether one phase of the record is still work waiting to run.
+fn waits(table: *const Table, at: u32) bool {
+    // invariant: a reading always names a phase inside the record
+    assert(at < table.held);
+    return !table.taken[at] and !table.gone[at];
+}
+
+/// Moves the head past every item already started or already released.
+fn advance_head(table: *Table) void {
+    // invariant: a head never walks past the record it reads
+    assert(table.head <= table.held);
+    while (table.head < table.held and !waits(table, table.head)) table.head += 1;
+}
+
+/// Answers whether a phase of a turn this pick's turn names still waits.
+fn elder_waits(table: *const Table, pick: u32) bool {
+    // invariant: a pick always names a phase inside the record
+    assert(pick < table.held);
+    const wanted = table.record[pick].follows_turns;
+    if (wanted == 0) return false;
+    var i: u32 = 0;
+    while (i < table.held) : (i += 1) {
+        if (i == pick) continue;
+        if (!waits(table, i)) continue;
+        if ((wanted & turn_bit(table.record[i].turn)) != 0) return true;
+    }
+    // invariant: the walk read the whole record, weighing every phase in it
+    assert(i == table.held);
+    return false;
+}
+
+/// Answers whether a sibling of this pick's own turn still waits behind it.
+fn sibling_waits(table: *const Table, pick: u32, sibling_mask: u32) bool {
+    // invariant: a pick always names a phase inside the record
+    assert(pick < table.held);
+    var i: u32 = 0;
+    while (i < pick) : (i += 1) {
+        if (!waits(table, i)) continue;
+        if (table.record[i].turn != table.record[pick].turn) continue;
+        if ((sibling_mask & mask.step_bit(table.record[i].step)) != 0) return true;
+    }
+    // invariant: the walk reached the pick, weighing every phase before it
+    assert(i == pick);
+    return false;
+}
+
+/// Answers whether a phase may be admitted ahead of the record's head.
+fn may_pass(
+    sys: *const system.System,
+    table: *const Table,
+    candidate: u32,
+    reading: Reading,
+) bool {
+    // invariant: a pass always reaches forward, never at the head itself
+    assert(candidate > table.head);
+    // invariant: a candidate always stands inside the record
+    assert(candidate < table.held);
+    var i: u32 = table.head;
+    while (i < candidate) : (i += 1) {
+        if (!waits(table, i)) continue;
+        if (items_contend(sys, table.record[i], table.record[candidate], reading)) return false;
+    }
+    // invariant: the walk reached the candidate, weighing every phase before it
+    assert(i == candidate);
+    return true;
+}
+
+/// Chooses one phase from behind a blocked head, or answers that none may go.
+fn choose_pass(
+    sys: *const system.System,
+    table: *const Table,
+    reading: Reading,
+) ?u32 {
+    // invariant: a pass is only ever sought while the head stands blocked
+    assert(table.head < table.held);
+    var looked: u32 = 0;
+    var i: u32 = table.head + 1;
+    while (i < table.held and looked < max_lookahead) : (i += 1) {
+        if (!waits(table, i)) continue;
+        looked += 1;
+        if (!admissible(sys, table.live[0..table.in_flight], table.record[i], reading)) continue;
+        if (!may_pass(sys, table, i, reading)) continue;
+        return i;
+    }
+    // invariant: the look stayed inside the bound it was given
+    assert(looked <= max_lookahead);
+    return null;
+}
+
+/// Starts one phase, handing the line it declared and nothing more.
+fn start_one(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    caps: *const capabilities.CapabilityTable,
+    phase: Phase,
+    wake: gap.Wake,
+) (RunError || cohort.RunError || boot.BootError)!cohort.Running {
+    // invariant: a start always names the domain it starts
+    assert(phase.task.item.domain.len >= 1);
+    const narrowed = intent.narrow(caps, phase.task) orelse return error.UnknownDomain;
+    const slot = narrowed.find_dependent(phase.task.item.domain) orelse return error.UnknownDomain;
+    // invariant: a narrowed line stays inside what the document grants
+    assert(boot.line_within(sys, slot));
+    return cohort.spawn_one_within(
+        allocator, io, self_path, sys, &narrowed, phase.task.item, wake, &.{},
+    );
+}
+
+/// Admits as much of the record as the table, the isolation, and the reading
+/// allow, and answers how many dependents it started.
+fn fill_table(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    caps: *const capabilities.CapabilityTable,
+    wake: gap.Wake,
+    reading: Reading,
+    table: *Table,
+    report_out: *Report,
+) (RunError || cohort.RunError || boot.BootError)!u32 {
+    var admitted: u32 = 0;
+    while (table.in_flight < max_in_flight and table.left > 0) {
+        advance_head(table);
+        // invariant: work still waiting always leaves a head to weigh
+        assert(table.head < table.held);
+
+        var pick: u32 = table.head;
+        if (!admissible(sys, table.live[0..table.in_flight], table.record[table.head], reading)) {
+            pick = choose_pass(sys, table, reading) orelse break;
+            report_out.inner.run.passes += 1;
+            const reach = pick - table.head;
+            if (reach > report_out.inner.run.pass_reach) report_out.inner.run.pass_reach = reach;
+        }
+        const chosen = table.record[pick];
+        if (sibling_waits(table, pick, mask.prefix_mask(chosen.step))) {
+            report_out.inner.out_of_turn += 1;
+        }
+        if (sibling_waits(table, pick, mask.prefix_mask(mask.fence_after(chosen.follows)))) {
+            report_out.inner.out_of_fence += 1;
+        }
+        if (sibling_waits(table, pick, chosen.follows)) report_out.inner.out_of_mask += 1;
+        if (elder_waits(table, pick)) report_out.out_of_precede += 1;
+
+        table.live[table.in_flight] = try start_one(
+            allocator, io, self_path, sys, caps, chosen, wake,
+        );
+        table.in_flight += 1;
+        table.taken[pick] = true;
+        table.left -= 1;
+        admitted += 1;
+        report_out.inner.run.admitted += 1;
+    }
+    // invariant: a fill never overruns the table it fills
+    assert(table.in_flight <= max_in_flight);
+    // invariant: a preceded reading never runs a phase past a turn its turn named
+    assert(reading != .preceded or report_out.out_of_precede == 0);
+    return admitted;
+}
+
+/// Waits on the eldest dependent, records what it answered, and closes the table
+/// over the slot it leaves.
+fn reap_oldest(io: std.Io, table: *Table, report_out: *Report) cohort.RunError!void {
+    // invariant: a reaping always has a dependent to wait on
+    assert(table.in_flight >= 1);
+    // invariant: a reaping never overruns the record it is kept in
+    assert(table.finished < max_queue_len);
+    const code = try cohort.reap_one(io, &table.live[0]);
+    table.done[table.finished] = .{
+        .domain = table.live[0].domain,
+        .verb = table.live[0].verb,
+        .count = table.live[0].count,
+        .expect = table.live[0].expect,
+        .code = code,
+    };
+    table.finished += 1;
+    table.in_flight -= 1;
+    report_out.inner.run.reaped += 1;
+    report_out.inner.run.turns += 1;
+
+    var s: u32 = 0;
+    while (s < table.in_flight) : (s += 1) table.live[s] = table.live[s + 1];
+    // invariant: the table closed over the reaped dependent, none lost
+    assert(s == table.in_flight);
+}
+
+// =========================================================================
+// The withdrawal -- one act the record's own memory makes safe
+// =========================================================================
+
+/// One phase asked to leave, and the moment the run releases it.
+///
+/// `after` counts dependents reaped, so a schedule reads as plainly as the run
+/// it describes: this phase leaves once that many dependents have come home.
+/// A phase is named by its turn and its step, the way its author wrote it,
+/// rather than by an index the record might have moved.
+pub const Withdrawal = struct {
+    after: u32,
+    turn: u32,
+    step: u32,
+};
+
+/// Releases one waiting phase from a running record, or names why it stays.
+///
+/// One walk and no more, over the whole record rather than the work still
+/// waiting -- the same record `enlist.rye` proved a run must keep, read for
+/// the opposite act. Nothing already placed moves, so the slots, lines, and
+/// grants of every dependent in flight stand exactly as they were handed out.
+fn withdraw_one(table: *Table, turn: u32, step: u32) RunError!void {
+    // invariant: a run always carries work before anything leaves it
+    assert(table.held >= 1);
+    const gone = table.gone[0..table.held];
+    const taken = table.taken[0..table.held];
+    if (withdrawal_refusal(standing(table), gone, taken, turn, step)) |why| return why;
+    const where = depart(standing(table), gone, taken, turn, step);
+    // invariant: an admitted departure always found the phase it releases
+    assert(where.found);
+    // invariant: a released phase was work still waiting a moment ago
+    assert(waits(table, where.at));
+    table.gone[where.at] = true;
+    table.released += 1;
+    table.left -= 1;
+    // invariant: the record kept its length, so no index handed out moved
+    assert(table.held <= max_queue_len);
+    // invariant: work still waiting never outruns the record that holds it
+    assert(table.left <= table.held);
+}
+
+/// Runs a record that may grow and shrink while it runs, taking each
+/// newcomer and releasing each departure at the moment its schedule names.
+///
+/// The supervisor is the one every rung in this arc keeps -- fill the table,
+/// reap the eldest, judge at the end -- with exactly two acts added after
+/// each reaping: every newcomer whose moment has come is weighed against the
+/// record as it now stands, and every departure whose moment has come is
+/// weighed against that same record. A refusal arrives before the next dependent
+/// starts and leaves the run it interrupted exactly as it found it.
+pub fn run_with_changes(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    base: []const Phase,
+    schedule: []const Enlistment,
+    departures: []const Withdrawal,
+    wake: gap.Wake,
+    reading: Reading,
+    report_out: *Report,
+) (roster.RosterError || exercise.ProvisionError || notify.BellError || RunError || cohort.RunError || boot.BootError)!void {
+    // invariant: a run always knows what program to spawn
+    assert(self_path.len >= 1);
+    // invariant: a run always reports into a fresh report
+    assert(report_out.inner.run.admitted == 0);
+    if (base.len == 0) return error.EmptyQueue;
+    if (base.len + schedule.len > max_queue_len) return error.QueueFull;
+    if (schedule.len > enlist.max_enlistments) return error.QueueFull;
+    if (departures.len > max_withdrawals) return error.QueueFull;
+    if (!precede.plan_is_ordered(base)) return error.OrderStalled;
+    if (!plan_is_seated(base)) return error.PlanUnseated;
+
+    var table: Table = .{};
+    precede.close(base, table.record[0..base.len]);
+    table.held = @intCast(base.len);
+    table.left = table.held;
+    // invariant: a closed record closes to itself, so the door's work is done
+    assert(precede.plan_is_closed(standing(&table)));
+
+    const provisioned = try exercise.provision(io, sys);
+    // invariant: every declared region has a backing store before any dependent runs
+    assert(provisioned == sys.map.region_count);
+    report_out.inner.run.bells = try roundtrip.provision_directed(io, sys);
+    const caps = try roster.from_system(sys);
+    // invariant: the derived table enforces exactly what the document permits
+    assert(roster.agrees(sys, &caps));
+    report_out.inner.run.queued = table.held;
+
+    var offered: u32 = 0;
+    var released: u32 = 0;
+    while (table.left > 0 or table.in_flight > 0) {
+        const admitted_now = try fill_table(
+            allocator, io, self_path, sys, &caps, wake, reading, &table, report_out,
+        );
+        if (table.in_flight > report_out.inner.run.peak_in_flight) {
+            report_out.inner.run.peak_in_flight = table.in_flight;
+        }
+
+        if (table.left > 0) {
+            const free = max_in_flight - table.in_flight;
+            report_out.inner.run.slots_unspent += free;
+            if (admitted_now == 0 and free > 0) report_out.inner.run.idle_turns += 1;
+        }
+
+        // With an empty table nothing conflicts, so a stall here would mean
+        // the record named a domain the document does not.
+        if (table.in_flight == 0) return error.OrderStalled;
+        try reap_oldest(io, &table, report_out);
+
+        while (offered < schedule.len and schedule[offered].after <= report_out.inner.run.reaped) {
+            try enlist_one(&table, schedule[offered].phase);
+            report_out.inner.run.queued += 1;
+            offered += 1;
+        }
+        while (released < departures.len and departures[released].after <= report_out.inner.run.reaped) {
+            try withdraw_one(&table, departures[released].turn, departures[released].step);
+            released += 1;
+        }
+    }
+    // invariant: every newcomer the schedule named was offered, none skipped
+    assert(offered == schedule.len);
+    // invariant: every departure the schedule named was released, none skipped
+    assert(released == departures.len);
+    // invariant: the whole record was admitted or released, and every dependent reaped
+    assert(table.left == 0);
+    assert(table.in_flight == 0);
+    assert(report_out.inner.run.reaped == report_out.inner.run.admitted);
+    assert(table.finished + table.released == table.held);
+
+    var j: u32 = 0;
+    while (j < table.finished) : (j += 1) try judge_outcome(table.done[j], report_out);
+    // invariant: every reaped dependent was judged, none skipped
+    assert(j == table.finished);
+}
+
+/// Takes one newcomer into a running record, or names why it may not join.
+///
+/// Carried whole from `enlist.rye`, reading the record as this rung keeps
+/// it: a newcomer lands at the tail, and every phase already placed -- run,
+/// waiting, or released -- keeps exactly where it stands.
+fn enlist_one(table: *Table, newcomer: Phase) RunError!void {
+    // invariant: a run always carries work before anything joins it
+    assert(table.held >= 1);
+    if (table.held == max_queue_len) return error.QueueFull;
+    if (!arrival_admits(standing(table), newcomer)) return error.ArrivalUnseated;
+    table.record[table.held] = newcomer;
+    table.taken[table.held] = false;
+    table.gone[table.held] = false;
+    table.held += 1;
+    table.left += 1;
+    // invariant: the record grew by exactly the one phase offered
+    assert(table.held <= max_queue_len);
+    // invariant: work still waiting never outruns the record that holds it
+    assert(table.left <= table.held);
+}
+
+// =========================================================================
+// The lap -- one plan, handed whole and handed while it shrinks
+// =========================================================================
+
+/// The lap every rung in this arc runs, written in the order its names imply.
+///
+/// One busy domain makes the room: `client_a` opens with a place and three
+/// more turns of the same domain queue behind it, so the head stands blocked
+/// and a pass is the only way forward. Turn 4 has `client_b` place into
+/// `ask_b` and names turn 3; turn 5 has `client_c` peek the published `menu`
+/// and names turn 4 alone; turn 6 names nothing at all.
+const written_queue = [_]Phase{
+    .{ .turn = 0, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "w", .item = .{ .domain = "client_a", .verb = .place, .hops = "ask_a", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok } } },
+    .{ .turn = 1, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_a", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 2, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_a", .verb = .peek, .hops = "back_a", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 3, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_a", .verb = .peek, .hops = "taken_a", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 4, .step = 0, .follows = 0, .follows_turns = 8, .task = .{ .effects = "w", .item = .{ .domain = "client_b", .verb = .place, .hops = "ask_b", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok } } },
+    .{ .turn = 5, .step = 0, .follows = 0, .follows_turns = 16, .task = .{ .effects = "r", .item = .{ .domain = "client_c", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 6, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_b", .verb = .peek, .hops = "back_b", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+};
+
+/// The tail of that lap, released one phase at a time while the run is under
+/// way rather than pruned before the door.
+///
+/// Turns 1 and 2 leave once the opening dependent has come home, with dependents
+/// still in flight and their slots already granted -- which is the whole
+/// point of the rung. Both are `client_a` peeks queued behind the busy head,
+/// so neither can have started while turn 0 held that domain; nobody names
+/// either turn; and each is the only step its turn holds. The plan survives
+/// losing them, and the metal is what says so: an earlier draft of this
+/// schedule reached for turns 5 and 6, which the passes had already started,
+/// and the run refused with `WithdrawalStarted` rather than pretending.
+const late_departures = [_]Withdrawal{
+    .{ .after = 1, .turn = 2, .step = 0 },
+    .{ .after = 1, .turn = 1, .step = 0 },
+};
+
+/// The phase a shy run would release, and the follower it would strand.
+///
+/// Turn 4 is named by turn 5, which follows it. Against the whole record the
+/// answer is plain: releasing turn 4 would leave turn 5 waiting on a turn
+/// that never comes home, so the departure is refused by name. A supervisor
+/// asking only whether turn 4 still waits would let it go, and turn 5 would
+/// then start with `elder_waits` reading zero -- satisfied by a predecessor
+/// that never ran, with nothing anywhere to report it.
+const named_turn: u32 = 4;
+
+/// The follower that shy reading would release.
+const following_turn: u32 = 5;
+
+// =========================================================================
+// Self-test
+// =========================================================================
+
+/// Loads one declaration, or names why it could not be read.
+fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
+    const parsed = read.load(io, path, buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ path, @errorName(err) });
+        return null;
+    };
+    if (parsed.verify() != .whole) {
+        print("  RED: {s} did not read whole\n", .{path});
+        return null;
+    }
+    return parsed;
+}
+
+/// The withdrawal read straight, before any supervisor spends it.
+///
+/// The happy zone of this rung: a table is built by hand, phases are marked
+/// started, and every question is a pure fold over the record -- answered
+/// instantly, with no dependent started and no store touched.
+fn check_withdrawal() u8 {
+    var table: Table = .{};
+    var i: u32 = 0;
+    while (i < written_queue.len) : (i += 1) table.record[i] = written_queue[i];
+    table.held = i;
+    table.left = table.held;
+    // invariant: the hand-built record holds every phase it was given
+    assert(table.held == written_queue.len);
+
+    // A phase nobody names, standing last in its own turn, leaves a running
+    // record exactly as it would leave a plan, and the record keeps its
+    // length so no index handed out ever moves.
+    withdraw_one(&table, 6, 0) catch {
+        print("  RED: a phase nobody waits on was refused its leave\n", .{});
+        return 1;
+    };
+    if (table.held != written_queue.len) {
+        print("  RED: a departure moved the record, leaving {d} places\n", .{table.held});
+        return 1;
+    }
+
+    // The three refusals, each named for the fact it protects.
+    const named = withdraw_one(&table, named_turn, 0);
+    if (named) |_| {
+        print("  RED: a turn its follower names was released anyway\n", .{});
+        return 1;
+    } else |err| {
+        if (err != error.WithdrawalUnseated) {
+            print("  RED: the record refused for the wrong reason: {s}\n", .{@errorName(err)});
+            return 1;
+        }
+    }
+    const absent = withdraw_one(&table, 6, 0);
+    if (absent) |_| {
+        print("  RED: a phase already released left the record a second time\n", .{});
+        return 1;
+    } else |err| {
+        if (err != error.WithdrawalMissing) {
+            print("  RED: a released phase refused for the wrong reason: {s}\n", .{@errorName(err)});
+            return 1;
+        }
+    }
+    table.taken[0] = true;
+    table.left -= 1;
+    const started = withdraw_one(&table, 0, 0);
+    if (started) |_| {
+        print("  RED: a phase already started was recalled\n", .{});
+        return 1;
+    } else |err| {
+        if (err != error.WithdrawalStarted) {
+            print("  RED: a started phase refused for the wrong reason: {s}\n", .{@errorName(err)});
+            return 1;
+        }
+    }
+
+    // What the shy reading costs, measured rather than asserted: release the
+    // named turn on the one question a supervisor would think to ask, and
+    // its follower's own wait reads satisfied by a turn that never ran.
+    var shy: Table = .{};
+    var k: u32 = 0;
+    while (k < written_queue.len) : (k += 1) shy.record[k] = written_queue[k];
+    shy.held = k;
+    shy.left = shy.held;
+    const at_named = index_of(&shy, named_turn) orelse {
+        print("  RED: the record lost the turn this reading weighs\n", .{});
+        return 1;
+    };
+    const at_follower = index_of(&shy, following_turn) orelse {
+        print("  RED: the record lost the follower this reading weighs\n", .{});
+        return 1;
+    };
+    if (!elder_waits(&shy, at_follower)) {
+        print("  RED: the follower never waited on the turn it names\n", .{});
+        return 1;
+    }
+    shy.gone[at_named] = true;
+    shy.left -= 1;
+    if (elder_waits(&shy, at_follower)) {
+        print("  RED: the shy reading kept the wait, so nothing was shown\n", .{});
+        return 1;
+    }
+
+    print("  a turn its follower names is refused its leave against a record of {d}\n", .{
+        table.held,
+    });
+    print("  the shy reading lets it go, and turn {d} then waits on nobody\n", .{following_turn});
+    print("  a withdrawal costs at most {d} tests, against {d} to seat the plan again\n", .{
+        max_withdraw_tests, max_seating_tests,
+    });
+    return 0;
+}
+
+/// Answers where one turn's only step stands in a record.
+fn index_of(table: *const Table, turn: u32) ?u32 {
+    var i: u32 = 0;
+    while (i < table.held) : (i += 1) {
+        if (table.record[i].turn == turn) return i;
+    }
+    // invariant: the walk read the whole record, weighing every phase in it
+    assert(i == table.held);
+    return null;
+}
+
+/// The inverse test: an arrival relieved of its own phase is the plan it
+/// was handed, phase for phase.
+///
+/// This arc's standing generalization test, one tier further out. An empty
+/// turn mask was the sibling mask, a full sibling mask was the fence, a
+/// seated plan arranged to itself, and a plan grown one arrival at a time
+/// was the plan its author wrote. Here a plan grown by an arrival and then
+/// relieved of that arrival is the plan again, exactly.
+fn check_inverse() u8 {
+    var grown: [max_queue_len]Phase = undefined;
+    var pruned: [max_queue_len]Phase = undefined;
+    const base = written_queue[0..6];
+    if (!arrive.arrive(base, written_queue[6], grown[0 .. base.len + 1])) {
+        print("  RED: a newcomer nobody waits on was refused the tail\n", .{});
+        return 1;
+    }
+    if (!withdraw(grown[0 .. base.len + 1], 6, 0, pruned[0..base.len])) {
+        print("  RED: the plan refused to let go of the phase it just took\n", .{});
+        return 1;
+    }
+    if (!plans_match(pruned[0..base.len], base)) {
+        print("  RED: a plan relieved of its arrival is not the plan it was\n", .{});
+        return 1;
+    }
+    if (!plan_is_seated(pruned[0..base.len])) {
+        print("  RED: a pruned plan no longer seats itself\n", .{});
+        return 1;
+    }
+    print("  a plan relieved of its own arrival is that plan, all {d} phases\n", .{base.len});
+    return 0;
+}
+
+/// Runs one queue whole and answers its report.
+fn run_one(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Phase,
+    reading: Reading,
+    report_out: *Report,
+) bool {
+    run_with_changes(
+        allocator, io, self_path, sys, plan, &.{}, &.{}, .when_moved, reading, report_out,
+    ) catch |err| {
+        print("  RED: a queue did not survive its run: {s}\n", .{@errorName(err)});
+        return false;
+    };
+    return true;
+}
+
+/// Runs one queue that shrinks while it runs and answers its report.
+fn run_shrinking(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    base: []const Phase,
+    departures: []const Withdrawal,
+    reading: Reading,
+    report_out: *Report,
+) bool {
+    run_with_changes(
+        allocator, io, self_path, sys, base, &.{}, departures, .when_moved, reading, report_out,
+    ) catch |err| {
+        print("  RED: a shrinking queue did not survive its run: {s}\n", .{@errorName(err)});
+        return false;
+    };
+    return true;
+}
+
+/// The withdrawal lap: one plan run twice, handed whole and pruned as it runs.
+fn check_order(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const sys = load_one(io, declaration_path, &buf) orelse return 1;
+
+    var whole: Report = .{};
+    if (!run_one(allocator, io, self_path, &sys, &written_queue, .preceded, &whole)) return 1;
+    var shrinking: Report = .{};
+    if (!run_shrinking(
+        allocator, io, self_path, &sys, &written_queue, &late_departures, .preceded, &shrinking,
+    )) return 1;
+
+    print("  breaks a named turn: {d} handed whole, {d} pruned while running\n", .{
+        whole.out_of_precede, shrinking.out_of_precede,
+    });
+    print("  dependents: {d} handed whole, {d} pruned while running\n", .{
+        whole.inner.run.reaped, shrinking.inner.run.reaped,
+    });
+    print("  {d} phases left a run already under way\n", .{late_departures.len});
+
+    if (shrinking.out_of_precede != 0) {
+        print("  RED: the shrinking run broke {d} turn orders its author named\n", .{
+            shrinking.out_of_precede,
+        });
+        return 1;
+    }
+    const expected = whole.inner.run.reaped - late_departures.len;
+    if (shrinking.inner.run.reaped != expected) {
+        print("  RED: the shrinking queue reaped {d} dependents against {d} expected\n", .{
+            shrinking.inner.run.reaped, expected,
+        });
+        return 1;
+    }
+    // invariant: a run reaps exactly the dependents it admitted, never more
+    assert(shrinking.inner.run.reaped == shrinking.inner.run.admitted);
+    // invariant: releasing work never runs work the whole hand did not
+    assert(shrinking.inner.run.succeeded <= whole.inner.run.succeeded);
+
+    return 0;
+}
+
+fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    print("Caravan withdraw {s} -- self-test\n", .{caravan_withdraw_version});
+    const reading = check_withdrawal();
+    if (reading != 0) return reading;
+    const inverse = check_inverse();
+    if (inverse != 0) return inverse;
+    const order = check_order(allocator, io, self_path);
+    if (order != 0) return order;
+    print("  GREEN: a phase still waiting may leave a run, on the mirror of the three facts an arrival owed\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
+        return cohort.run_dependent(io, args);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(allocator, io, self_path);
+    }
+    if (args.len >= 2) return 1;
+    return run_self_test(allocator, io, self_path);
+}
