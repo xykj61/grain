@@ -1,7 +1,7 @@
 # Caravan -- Process Supervision
 
 **Language:** EN
-**Last updated:** `20260819.232716` (the whole ladder molts to **dependent** -- the word the arc had already earned)
+**Last updated:** `20260820.032400` (the mend rung -- a plan reported short is run again for exactly what it lost)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable -- process supervision ladder
 
@@ -70,6 +70,10 @@ Every ring here composes over the one before it. A later ring imports an earlier
 | entrust | [`entrust.rye`](entrust.rye) | a line may also grow, and growing is the harder half -- a reserve handed forward one number the run publishes and the dependent answers, so work for a domain already standing is carried by the dependent already there, with the direction, the supply, the reach, the room, and the answer each refused by name |
 | confer | [`confer.rye`](confer.rye) | the reach itself travels, rather than riding along from the spawn -- the capability word derived from the ceiling, read back before it leaves, and grafted by the dependent into its own slot, so dark reach falls to zero with the region, the letter, the wire, the room, and the answer each refused by name |
 | revoke | [`revoke.rye`](revoke.rye) | reach returns the moment its work is carried, rather than resting in a dependent's hands for the whole of its life -- one shrinking number over the wire, a slot the dependent rebuilds around it, and an answer earned by the dependent's own probe, so stale reach falls to zero with the direction, the supply, the work still standing, and the answer each refused by name |
+| reclaim | [`reclaim.rye`](reclaim.rye) | a conferral leaves with the dependent it was made to -- the notes swept clean at the reaping, so inherited reach at a successor's first breath falls to zero |
+| abandon | [`abandon.rye`](abandon.rye) | a conferral whose holder fell served nobody, and the run says so -- the loss written into the departed domain's notes after the reclamation sweeps them, and read back before the report believes it |
+| reckon | [`reckon.rye`](reckon.rye) | a plan that lost an arc is reported short -- completion a verdict the run earns rather than a shape its record fell into, standing on the wire where an operator reads it |
+| mend | [`mend.rye`](mend.rye) | a plan reported short is run again for exactly what it lost -- the repair seated from a loss note on the wire rather than from memory, bounded by the loss, at a price of exactly one more dependent |
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
@@ -786,6 +790,25 @@ The numbers state the claim: **three refusals stand as a pure fold and a fourth 
 
 The numbers state the claim: **three refusals stand as a pure fold and a fourth in the run; a plan that loses nothing reads as the line handed, all 9 pairs; and one plan of 4 phases run twice spends 3 dependents either way, carries 1 home either way, confers 1 arc and reclaims 1 conferral either way, absorbs 1 phase either way, and loses 1 arc either way -- while the completion it claims and never served falls from 1 to 0.** Every number stands still including the loss itself, which is what makes this a finding about the report rather than about the work. All five RED paths were proven on metal first -- let the fold forget the moment and a plan is judged while a dependent still stands; let it forget the work and a plan that absorbed nothing is reckoned all the same; let it forget the honesty of the count and a plan loses more arcs than it ever absorbed; withhold the verdict from the wire and the run refuses its own record with `ReckonOverclaimed` rather than trusting a judgment it never read back; and derive the verdict as if nothing were lost, so a reckoning run would report its plan carried out. `caravan/reckon.rye` + `tools/caravan_reckon_witness.rish`, over the board declaration the rungs below opened.
 
+
+
+## Mend -- a plan reported short is run again for exactly what it lost
+
+`reckon.rye` taught a run to weigh its own plan and say `short` when an arc it absorbed bought nothing. The verdict goes to the wire, an operator reads it after the supervisor exits, and the run returns. Nobody acts on it.
+
+**A supervisor that reads its own short verdict and does nothing has learned the truth and changed nothing by learning it.** The plan is still short, and now it is short on the record. Every rung of this arc so far has made a supervisor more honest; this is the first that makes one more useful.
+
+**The measurement is work still standing when the supervisor exits.** The five counts before it weigh reach a dependent held or a claim a supervisor made; this weighs an arc of a plan that nobody carried. It differs from overclaimed completion in the way that matters most: an overclaim is a sentence a supervisor should not have written, and is repaired by saying less. Unserved work is repaired only by doing more.
+
+**A mend seats from the record, never from memory.** The verdict says *that* a plan fell short; a repair needs to know *where*, and the answer lives in a table that is gone the moment the run returns. So the run writes a **loss note** beside the verdict -- one glyph per phase, `x` where an absorbed arc was never served, `.` everywhere else -- and the mend reads its own run's published verdict back before it decides anything. One glyph per phase rather than a packed mask, because the reader here is a person first: `.x..` says which phase of four the plan lost, at a glance, straight off the wire.
+
+**The repair is bounded by the loss.** It seats exactly the phases the wire names, each freed of the arrangement it was written for. The dependent those phases were conferred into is gone, so the work stands on its own line now, and the order a phase named was an order among siblings that have already been taken up. What the document always permitted is still permitted -- only the dependent the work was arranged through had fallen.
+
+**The price is named rather than hidden.** A repair costs exactly the dependents its lost phases call for -- one here, never two -- and the lap asserts that cost rather than reporting it quietly beside the finding.
+
+**The rung earns four refusals, and each is about the mend rather than the plan it repairs.** `MendUnread` is the record: a mend that read no verdict at all, or read a short verdict naming no phase, is acting on memory rather than on what its run published. `MendWhole` is the plan: a plan the wire calls carried has nothing here to repair, and a mend that ran anyway would re-do work already served. `MendOvereach` is the reach: a repair may never seat more phases than the plan lost, since a repair that could grow into a re-run is no longer a repair. `MendUnserved` is the answer -- the hard half -- since a run that published `carried` with an arc still standing would report a repair nobody made.
+
+The numbers state the claim: **three refusals stand as a pure fold and a fourth in the run; a plan that loses nothing reads as the line handed, all 9 pairs; and one plan of 4 phases run twice confers 1 arc, reclaims 1 conferral, absorbs 1 phase, loses 1 arc, and reports the plan short when it first weighs it -- either way -- while the work left standing when the supervisor exits falls from 1 to 0, at a price of exactly one more dependent, 3 against 4.** Six RED paths were proven on metal first -- withhold the loss note and the plan reports short while naming no phase it lost; let the mend seat from its own memory rather than the wire and it refuses `MendUnread`; disarm the whole-plan refusal and a carried plan falls through to a mend that can seat nothing; let the repair seat every phase rather than the lost ones and `unserved_after` refuses to compute a number from a repair that carried more than the plan ever lost; count the loss as untouched while publishing `carried` and the run refuses `MendUnserved`; withhold the settled verdict from the wire and the run refuses the same way, rather than trusting a judgment it never read back. `caravan/mend.rye` + `tools/caravan_mend_witness.rish`, over the board declaration the rungs below opened.
 
 ## Held
 
