@@ -77,6 +77,10 @@ Every ring here composes over the one before it. A later ring imports an earlier
 | bear | [`bear.rye`](bear.rye) | a plan may name the loss it would rather carry than repair -- the bearing declared beside the outcome its author already expects, written on the wire glyph by glyph, and a third settlement word for a plan as whole as it was ever asked to be |
 | appraise | [`appraise.rye`](appraise.rye) | a loss its author left unmarked is weighed by what came home after it -- the standard published at the plan, the evidence the plan's own downstream, and no evidence read as repair |
 | recant | [`recant.rye`](recant.rye) | a judgment a run's own evidence disproves is taken back on the wire and repaired -- the appraisal the one note a run never clears, and every standing judgment upheld or recanted |
+| amend | [`amend.rye`](amend.rye) | a settlement an operator already read is corrected where they read it -- the elder reading and the word that supersedes it written as one pair, and a reading this run still stands behind confirmed and left alone |
+| courier | [`courier.rye`](courier.rye) | a correction is carried to the reader who never comes back -- the address seated on the wire beside the reading, the letter written into the reader's own box outside this plan's wire, and the box read back before anybody is believed reached |
+| hear | [`hear.rye`](hear.rye) | a correction is finished when its reader answers, and the plan reads that answer in their own hand -- the reader's box facing two ways, and an answer bound to the reading it answers |
+| dispute | [`dispute.rye`](dispute.rye) | a reader who answers something other than agreement is recorded rather than set aside -- both readings written into the record, the plan's and its reader's, and neither one resolving the other |
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
@@ -930,6 +934,25 @@ The numbers state the claim: **three refusals stand as a pure fold and a fourth 
 **The rung earns four refusals, each about the answer rather than the correction that earned it.** `HearEarly` is the moment. `HearUnanswered` is the supply. `HearMiscounted` is the honesty of the count. `HearMisheard` is the answer -- the hard half -- since a report claiming agreement from a hand that named a different reading is worse than the silence below it.
 
 The numbers state the claim: **three refusals stand as a pure fold and a fourth in the run; a plan that loses nothing reads as the line handed, all 16 pairs; and one plan of 6 phases run twice absorbs 3 into standing dependents, loses 3 arcs, takes the same judgment back, re-seats the same 3 phases, posts the same correction, carries it to the same reader, spends the same 6 dependents, and settles `carried` either way -- while answers read in the reader's own hand rise 0 to 1 and corrections answered into silence fall 1 to 0. The price is one read of a file the run already knew the name of.** Five RED paths proven first, one a planted control that reports a reader agreeing to a word they never wrote. Module `caravan/hear.rye`, witness `tools/caravan_hear_witness.rish`, and the choir sings 62 rungs in one voice.
+
+## Dispute -- a reader who answers something other than agreement is recorded
+
+**`hear.rye` taught a run to read what its reader answered back** -- the letter carried into the reader's own box, the reader's own hand read out of the box beside it, and an answer bound to the reading it answers, so a hand naming any other reading never counts as agreement. That binding is exactly right, and it is where the listening stops.
+
+**A reader who disagrees is heard and then dropped.** Below this rung a hand naming a different reading earns `HearMisheard` and nothing else: honest about what it refuses, and entirely silent about what that reader actually meant. The person answered in their own word, the plan declined to call it agreement, and the record kept no trace that anybody ever disagreed.
+
+**The measurement is answers set aside without a record.** The rung below weighs a correction against the hand that answered it. This one weighs the record against the answers that hand gave and the plan threw away -- a reader who wrote back plainly, in a word the plan could not accept, into a record that now reads as though the correspondence had closed.
+
+**A dispute names both readings, and resolves neither.** The wire carries two bytes in `caravan/.disputes/plan.dispute`: the reading this run stands behind, and the reading its reader holds. A run writes the pair and stops there, since a supervisor that settled the disagreement in its own favor would be recording a quarrel and calling it a verdict.
+
+**A plan publishes whether its record may hold a disagreement.** A record written `standing = .open` keeps an answer this run cannot accept in both voices. `standing = .settled` is where the rung below leaves it -- the answer is set aside, counted nowhere, and the record reads as one voice.
+
+**A dispute is bounded by the answer that earned it.** Only a hand this run actually read may be disputed, and every answered hand is agreed or disputed -- never both and never neither. A run recording a disagreement with a reader who never wrote is quarrelling with itself.
+
+**The rung earns four refusals, each about the record rather than the answer that earned it.** `DisputeEarly` is the moment. `DisputeUnheard` is the supply. `DisputeMiscounted` is the honesty of the count. `DisputeUnfounded` is the record -- a pair naming one reading twice is agreement wearing a quarrel's clothes, and a record built on it would manufacture a disagreement nobody ever had.
+
+The numbers state the claim: **three refusals stand as a pure fold and the fourth beside them; a plan that loses nothing reads as the line handed, all 16 pairs; and one plan of 6 phases run twice absorbs 3 into standing dependents, loses 3 arcs, takes the same judgment back, re-seats the same 3 phases, posts the same correction, carries it to the same reader, reads the same answer, spends the same 6 dependents, and settles `carried` either way -- while disagreements written into the record rise 0 to 1 and answers set aside without a record fall 1 to 0. The price is two bytes written into a note the run already knew the name of.** Five RED paths proven first, one a planted control that writes `cc` into the record -- a reader who agreed, written down as disputing themselves. Module `caravan/dispute.rye`, witness `tools/caravan_dispute_witness.rish`, and the choir sings 63 rungs in one voice.
+
 
 ## Held
 
