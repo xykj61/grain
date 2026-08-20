@@ -1,0 +1,3412 @@
+//! Caravan recant -- a judgment a run's own evidence disproves is taken back on
+//! the wire and repaired, rather than carried forward because it was written
+//! down first.
+//!
+//! `appraise.rye` taught a plan to publish the standard by which its silences
+//! are read, and a run to weigh an unmarked loss by what came home after it.
+//! That judgment goes to the wire, and it stays there: a judgment outlives the
+//! run that made it, which is exactly what makes it a record. Yet the evidence
+//! under it belongs to one run alone. A later run of the same plan meets that
+//! standing judgment with evidence of its own, and nothing below this rung ever
+//! asks the two to agree.
+//!
+//! **The measurement is arcs spared on a judgment this run's own evidence
+//! disproves.** The rung below weighs judgment: work a run did that its author
+//! never spoke to and that nobody needed. This one weighs the **honesty of a
+//! judgment over time** -- work a run declined to do on the word of a run that
+//! is over, while its own record says that word no longer holds. A plan comes
+//! out settled under the elder reading, and it settles `borne` -- which tells an
+//! operator there is nothing left to do, while an arc of the plan stands unserved.
+//!
+//! **A plan publishes whether its own judgments may be weighed again.** A record
+//! written `review = .revisit` says: a standing appraisal answers to the evidence
+//! of every run that meets it. `review = .stand` is where the rung below leaves
+//! it -- a judgment once published stands, and a run that meets it adds its own
+//! rather than weighing it. The word sits at the plan beside the standard,
+//! since it is an instruction about how a record's own history should be read.
+//!
+//! **The standing appraisal is the one note a run does not clear.** Every other
+//! note a plan carries is provisioned back to nothing at the head of a run, so
+//! no supervisor reads the last run's word as its own. The appraisal is left
+//! exactly where it was, because a judgment that vanished with its run was never
+//! a record -- and because this rung's whole subject is what a run does with a
+//! judgment it did not make.
+//!
+//! **A recantation is bounded by the judgment it takes back.** Only an arc a
+//! standing appraisal named may be recanted, and every standing judgment this
+//! run can weigh is upheld or recanted -- never both and never neither. A run
+//! that recanted an arc nobody spared would be inventing a reversal, which is
+//! the same overreach as repairing work the wire never named.
+//!
+//! **The recantation stands on the wire beside the appraisal it reverses.** One
+//! glyph per phase, `r` where a standing judgment was taken back, so `.r....`
+//! names which phase of six this run refused to spare on an older run's word --
+//! written while the run still holds the evidence, and read back before the
+//! repair seats a single phase on its strength.
+//!
+//! **The rung earns four refusals, and each is about the reversal rather than
+//! the repair it opens.** `RecantEarly` is the moment: a standing judgment
+//! weighed again before this run published what *it* lost is judging from
+//! memory. `RecantUnappraised` is the supply: a recantation reaching an arc no
+//! appraisal ever spared has taken back a judgment nobody made. `RecantMiscounted`
+//! is the honesty of the count: every standing judgment is upheld or recanted,
+//! and never two of those and never none. `RecantUnspoken` is the answer -- the
+//! hard half -- since a run that recanted an arc and then declined to repair it,
+//! or that published a settlement the wire's own recantation does not support,
+//! would report a reversal it never carried out.
+//!
+//! **A plan the wire holds no judgment about reads as the rung below.** With no
+//! standing appraisal to meet, the reversal is refused before it weighs
+//! anything, each line stands at the width it was handed, and the door answers
+//! `unhand.admissible_held` pair for pair -- this arc's standing generalization
+//! test, one tier further out.
+//!
+//! Usage:
+//!   recant            Run the self-test (default)
+//!   recant selftest   Same as default
+//!   recant dependent ...  Run as one supervised dependent (spawned by the run)
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const capabilities = @import("capabilities.rye");
+const roster = @import("roster.rye");
+const read = @import("read.rye");
+const boot = @import("boot.rye");
+const exercise = @import("exercise.rye");
+const carry = @import("carry.rye");
+const notify = @import("notify.rye");
+const roundtrip = @import("roundtrip.rye");
+const cycle = @import("cycle.rye");
+const regions = @import("regions.rye");
+const queue_store = @import("queue.rye");
+const serve = @import("serve.rye");
+const gap = @import("gap.rye");
+const cohort = @import("cohort.rye");
+const intent = @import("intent.rye");
+const mask = @import("mask.rye");
+const precede = @import("precede.rye");
+const overtake = @import("overtake.rye");
+const unhand = @import("unhand.rye");
+const entrust = @import("entrust.rye");
+const confer = @import("confer.rye");
+const revoke_rung = @import("revoke.rye");
+const reclaim_rung = @import("reclaim.rye");
+const abandon_rung = @import("abandon.rye");
+const bearing_rung = @import("bear.rye");
+const appraising_rung = @import("appraise.rye");
+const mending_rung = @import("mend.rye");
+const tally_parse_int = @import("parse_int.rye");
+
+const Dir = std.Io.Dir;
+
+const caravan_recant_version = "20260820.042716";
+
+// =========================================================================
+// The bounds -- carried whole from the rung below, with the reclaiming's own
+// =========================================================================
+
+/// The declaration this rung runs over, unchanged.
+pub const declaration_path = appraising_rung.declaration_path;
+
+/// How many dependents one supervisor holds at once.
+pub const max_in_flight: u32 = appraising_rung.max_in_flight;
+
+/// How many phases one record may hold.
+pub const max_queue_len: u32 = appraising_rung.max_queue_len;
+
+/// How far past a blocked head a run may look for a phase that may pass.
+pub const max_lookahead: u32 = appraising_rung.max_lookahead;
+
+/// How many words a dependent receives before its capability words begin.
+pub const fixed_argv_words: u32 = appraising_rung.fixed_argv_words;
+
+/// How many turns one plan may name.
+pub const max_turns: u32 = appraising_rung.max_turns;
+
+/// Where the reckoning notes live, kept apart from every other rung's.
+pub const note_dir = "caravan/.recants";
+
+/// The longest note path this rung ever writes.
+pub const max_note_path_len: u32 = appraising_rung.max_note_path_len;
+
+/// The longest capability word this wire carries, from the spawn's own bound.
+pub const max_word_bytes: u32 = appraising_rung.max_word_bytes;
+
+/// The longest word list one dependent is ever handed, one word per line.
+pub const max_words_bytes: u32 = appraising_rung.max_words_bytes;
+
+/// How long a look rests before looking again.
+pub const note_rest_ms: u32 = appraising_rung.note_rest_ms;
+
+/// How many times a supervisor looks for a dependent's answer before refusing.
+pub const max_confirm_looks: u32 = appraising_rung.max_confirm_looks;
+
+/// How many times a dependent looks for more reach before it comes home.
+pub const max_patience_looks: u32 = appraising_rung.max_patience_looks;
+
+/// How many times a dependent looks for a pruning before it comes home.
+pub const max_prune_looks: u32 = appraising_rung.max_prune_looks;
+
+comptime {
+    // invariant: a run always has a slot to remember a live dependent's line by
+    assert(max_in_flight >= 1);
+    // invariant: an abandoned word list still fits the wire that carries it
+    assert(max_words_bytes >= max_word_bytes + 1);
+    // invariant: a note path leaves room for the directory and a name
+    assert(max_note_path_len > note_dir.len + regions.max_name_len);
+    // invariant: this rung's notes never collide with the appraising notes
+    assert(!std.mem.eql(u8, note_dir, appraising_rung.note_dir));
+    // invariant: this rung's notes never collide with the reclaiming notes
+    assert(!std.mem.eql(u8, note_dir, reclaim_rung.note_dir));
+    // invariant: this rung's notes never collide with the revoking notes
+    assert(!std.mem.eql(u8, note_dir, revoke_rung.note_dir));
+    // invariant: this rung's notes never collide with the conferring notes
+    assert(!std.mem.eql(u8, note_dir, confer.note_dir));
+    // invariant: a dependent always has room to look for the reach it is owed
+    assert(max_patience_looks >= 1);
+}
+
+// =========================================================================
+// The shapes -- carried whole from the rung below
+// =========================================================================
+
+/// Renders one outcome code as the words an operator reads.
+pub fn outcome_name(code: u8) []const u8 {
+    return appraising_rung.outcome_name(code);
+}
+
+/// Why a queue may not take, correct, understudy, unhand, taper, entrust,
+/// confer, revoke, reclaim, answer for its work, claim it is done, repair it,
+/// carry the loss its author asked it to bear, weigh the loss its author left
+/// unmarked, or take back a judgment its own evidence disproves.
+///
+/// Four names of this rung's own, and each is about the reversal rather than
+/// the repair it opens: the moment a standing judgment is weighed again, the
+/// supply it may reach, the honesty of the count, and the reversal it publishes
+/// once the repair is over.
+pub const RunError = appraising_rung.RunError || error{
+    RecantEarly,
+    RecantUnappraised,
+    RecantMiscounted,
+    RecantUnspoken,
+};
+
+/// One queued item and the letters it declares, carried from `intent.rye`.
+pub const Task = appraising_rung.Task;
+
+/// How deeply a reading looks at the queue's own authorship, unchanged.
+pub const Reading = appraising_rung.Reading;
+
+/// One phase, its turn, its step, its masks, the reserve it may be entrusted,
+/// and the bearing its author may write beside it.
+///
+/// This rung adds no word here either, and for the same reason the rung below
+/// added none: what it weighs is a judgment made about a phase rather than
+/// anything the phase's author wrote. Whether a record's own judgments answer
+/// to a later run's evidence is a statement about the whole record, so it lives
+/// at the plan beside the standard.
+pub const Phase = struct {
+    turn: u32 = 0,
+    step: u32 = 0,
+    follows: u32 = 0,
+    follows_turns: u32 = 0,
+    reserve: ?Task = null,
+    bear: bool = false,
+    task: Task,
+};
+
+/// The phase as the rung below reads it, bearing and all, since the rung below
+/// already knows that word and this one adds none.
+pub fn below(phase: Phase) appraising_rung.Phase {
+    // invariant: a phase always names the domain its author wrote
+    assert(phase.task.item.domain.len >= 1);
+    return .{
+        .turn = phase.turn,
+        .step = phase.step,
+        .follows = phase.follows,
+        .follows_turns = phase.follows_turns,
+        .reserve = phase.reserve,
+        .bear = phase.bear,
+        .task = phase.task,
+    };
+}
+
+/// The phase as the rungs below read it, without the reserve they never had.
+pub fn plain(phase: Phase) unhand.Phase {
+    return appraising_rung.plain(below(phase));
+}
+
+/// When a dependent comes to hold the arcs of its reserve, from the rung below.
+pub const Reach = appraising_rung.Reach;
+
+/// What becomes of a conferred word while its holder still stands.
+pub const Keep = appraising_rung.Keep;
+
+/// One bounded word list, exactly as the conferring wire renders it.
+pub const Words = appraising_rung.Words;
+
+/// What a run says its plan came to, carried whole from the rung below.
+pub const Verdict = appraising_rung.Verdict;
+
+/// Renders one verdict as the words an operator reads.
+pub fn verdict_words(v: Verdict) []const u8 {
+    return appraising_rung.verdict_words(v);
+}
+
+/// The one byte a verdict rides as, so an operator's note is a single glyph.
+pub fn verdict_byte(v: Verdict) u8 {
+    return appraising_rung.verdict_byte(v);
+}
+
+/// Reads one verdict back from the byte it rode as, or nothing at all.
+pub fn verdict_of_byte(byte: u8) ?Verdict {
+    return appraising_rung.verdict_of_byte(byte);
+}
+
+/// Answers why one reckoning may not be taken, or that it may.
+pub fn reckon_refusal(absorbed: u32, in_flight: u32, lost: u32) ?RunError {
+    return appraising_rung.reckon_refusal(absorbed, in_flight, lost);
+}
+
+/// Counts the completion a run claimed that its own work does not support.
+pub fn overclaimed_completion(lost: u32, verdict: Verdict) u32 {
+    return appraising_rung.overclaimed_completion(lost, verdict);
+}
+
+/// How a run decides whether its plan was carried out, from the rung below.
+///
+/// This rung settles that question rather than reopening it: every run here
+/// reckons, because a mend that repaired a plan under the assuming reading
+/// would be repairing a loss it had already declared did not matter.
+pub const Ledger = appraising_rung.Ledger;
+
+/// Renders one ledger as the words an operator reads.
+pub fn ledger_words(l: Ledger) []const u8 {
+    return appraising_rung.ledger_words(l);
+}
+
+/// Answers what a plan came to, under one ledger.
+pub fn verdict_in(lost: u32, ledger: Ledger) Verdict {
+    return appraising_rung.verdict_in(lost, ledger);
+}
+
+/// What one run did, reported whole, with the reversal it made added.
+///
+/// `spared_disproved` is the number this rung moves: arcs a run declined to
+/// repair on the word of a standing appraisal, while its own record says that
+/// word no longer holds. `recanted` is what it took back instead, published on
+/// the wire and repaired.
+pub const Report = struct {
+    inner: appraising_rung.Report = .{},
+    recanted: u32 = 0,
+    spared_disproved: u32 = 0,
+};
+
+/// The appraising rung's own tally, which this one wraps.
+///
+/// Every rung of this arc wraps the report of the rung below it, so one named
+/// reach per tier keeps the supervisor readable and keeps a miscount from
+/// hiding inside a chain of `inner`.
+fn appraising_of(report_out: *Report) *appraising_rung.Report {
+    return &report_out.inner;
+}
+
+/// The bearing rung's tally, one tier further down.
+fn bearing_of(report_out: *Report) *bearing_rung.Report {
+    return &report_out.inner.inner;
+}
+
+/// The mending rung's tally, two tiers further down.
+fn below_of(report_out: *Report) *mending_rung.Report {
+    return &report_out.inner.inner.inner;
+}
+
+/// The abandoning rung's tally, five tiers further down.
+fn abandoning_of(report_out: *Report) *abandon_rung.Report {
+    return &report_out.inner.inner.inner.inner.inner;
+}
+
+/// The run's own tally, reached without spelling the whole nesting each time.
+fn run_of(report_out: *Report) *overtake.Report {
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.run;
+}
+
+/// The sibling-order counters, reached the same way.
+fn masked_of(report_out: *Report) *mask.Report {
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+}
+
+/// The turn-order counters, reached the same way.
+fn preceded_of(report_out: *Report) *precede.Report {
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+}
+
+/// The single bit that stands for one turn of a plan.
+pub fn turn_bit(turn: u32) u32 {
+    return appraising_rung.turn_bit(turn);
+}
+
+/// Answers whether the plan's written sequence keeps every name it carries.
+pub fn plan_is_seated(plan: []const unhand.Phase) bool {
+    return appraising_rung.plan_is_seated(plan);
+}
+
+/// Answers whether two phases must keep the order the queue wrote them in.
+pub fn items_contend(sys: *const system.System, a: unhand.Phase, b: unhand.Phase, reading: Reading) bool {
+    return appraising_rung.items_contend(sys, a, b, reading);
+}
+
+/// Counts the arcs one line names.
+pub fn hop_count(task: Task) u32 {
+    return appraising_rung.hop_count(task);
+}
+
+/// Counts the arcs a reserve offers, or zero where a phase named none.
+pub fn reserve_depth(reserve: ?Task) u32 {
+    return appraising_rung.reserve_depth(reserve);
+}
+
+// =========================================================================
+// The reclamation -- carried whole from the rung below, since this rung
+// always reclaims and asks a different question about the same act
+// =========================================================================
+
+/// What becomes of a conferral when its holder is reaped, from the rung below.
+pub const Take = appraising_rung.Take;
+
+/// Renders one take as the words an operator reads.
+pub fn take_words(t: Take) []const u8 {
+    return appraising_rung.take_words(t);
+}
+
+/// Answers why one conferral may not be reclaimed, or that it may.
+pub fn reclaim_refusal(conferred: u32, in_flight: bool, already: bool) ?RunError {
+    return appraising_rung.reclaim_refusal(conferred, in_flight, already);
+}
+
+/// Counts the reach a successor finds waiting at its first breath.
+pub fn inherited_reach(conferred: u32, take: Take) u32 {
+    return appraising_rung.inherited_reach(conferred, take);
+}
+
+// =========================================================================
+// The abandonment -- carried whole from the rung below, since this rung
+// always answers for lost work and asks what the plan is worth afterwards
+// =========================================================================
+
+/// Whether a run answers for the work a fallen holder's conferral never
+/// served, from the rung below. This rung always answers.
+pub const Answer = appraising_rung.Answer;
+
+/// Answers why one abandonment may not be recorded, or that it may.
+pub fn abandon_refusal(granted: u32, in_flight: bool, came_home: bool) ?RunError {
+    return appraising_rung.abandon_refusal(granted, in_flight, came_home);
+}
+
+/// Counts the reach a run conferred that nobody ever served.
+pub fn abandoned_reach(granted: u32, came_home: bool, answer: Answer) u32 {
+    return appraising_rung.abandoned_reach(granted, came_home, answer);
+}
+
+// =========================================================================
+// The mend -- carried whole from the rung below, since this rung repairs the
+// same way and asks a different question about which arcs to repair at all
+// =========================================================================
+
+/// Answers why one mend may not be attempted, or that it may.
+pub fn mend_refusal(published: ?Verdict, lost: u32, seating: u32) ?RunError {
+    return appraising_rung.mend_refusal(published, lost, seating);
+}
+
+/// Counts the work still standing when the supervisor exits.
+pub fn unserved_after(lost: u32, served_again: u32) u32 {
+    return appraising_rung.unserved_after(lost, served_again);
+}
+
+/// Answers what the plan came to once the mend has had its turn, from below.
+pub fn settled_verdict(unserved: u32) Verdict {
+    return appraising_rung.settled_verdict(unserved);
+}
+
+/// Reads one phase back as the work it names, freed of the plan it belonged to.
+///
+/// The rung below sheds the arrangement and keeps the work. This one keeps the
+/// bearing too, since a phase that asked to be borne asks it every time it is
+/// written down -- a repair that quietly dropped the word would be free to
+/// re-run the arc on its next pass.
+pub fn reseated(phase: Phase, at: u32) Phase {
+    // invariant: a re-seated phase always keeps the domain its author named
+    assert(phase.task.item.domain.len >= 1);
+    // invariant: a re-seat never numbers a turn past the plan's own bound
+    assert(at < max_turns);
+    const beneath = appraising_rung.reseated(below(phase), at);
+    return .{
+        .turn = beneath.turn,
+        .step = beneath.step,
+        .follows = beneath.follows,
+        .follows_turns = beneath.follows_turns,
+        .reserve = beneath.reserve,
+        .bear = phase.bear,
+        .task = beneath.task,
+    };
+}
+
+// =========================================================================
+// The bearing -- carried whole from the rung below, since a marked loss is
+// answered there and this rung only ever weighs the unmarked ones
+// =========================================================================
+
+/// How a run answers the losses its own plan asked it to bear.
+pub const Bearing = appraising_rung.Bearing;
+
+/// Renders one bearing as the words an operator reads.
+pub fn bearing_words(b: Bearing) []const u8 {
+    return appraising_rung.bearing_words(b);
+}
+
+/// What an operator finally reads about a plan, once the repair is over.
+///
+/// Three words still, and the third widens rather than splits: a plan whole
+/// but for a loss it chose to carry reads `borne` whether its author named
+/// that loss outright or published the standard by which it was weighed. The
+/// author chose it either way -- once by naming the arc, once by naming the
+/// rule -- and the wire keeps the two apart glyph by glyph. The word an
+/// operator acts on stays one word, because the action is one action: there is
+/// nothing left here to do.
+pub const Settlement = appraising_rung.Settlement;
+
+/// Renders one settlement as the words an operator reads.
+pub fn settlement_words(s: Settlement) []const u8 {
+    return appraising_rung.settlement_words(s);
+}
+
+/// The one byte a settlement rides as, so an operator's note is a single glyph.
+pub fn settlement_byte(s: Settlement) u8 {
+    return appraising_rung.settlement_byte(s);
+}
+
+/// Reads one settlement back from the byte it rode as, or nothing at all.
+pub fn settlement_of_byte(byte: u8) ?Settlement {
+    return appraising_rung.settlement_of_byte(byte);
+}
+
+/// Answers why one bearing may not be weighed, or that it may.
+pub fn bear_refusal(published: ?Verdict, lost: u32, borne: u32, repairing: u32) ?RunError {
+    return appraising_rung.bear_refusal(published, lost, borne, repairing);
+}
+
+/// Counts the arcs a run re-ran after its author asked it to bear them.
+pub fn overrepaired(borne_mask: u32, seated_mask: u32) u32 {
+    return appraising_rung.overrepaired(borne_mask, seated_mask);
+}
+
+/// Answers what an operator finally reads, once the repair has had its turn.
+pub fn settlement_of(unserved: u32, bore: u32) Settlement {
+    return appraising_rung.settlement_of(unserved, bore);
+}
+
+// =========================================================================
+// The appraisal -- carried whole from the rung below, since this rung weighs
+// a judgment the standard already made rather than making a new one
+// =========================================================================
+
+/// The standard by which a plan asks its own silences to be read, from below.
+pub const Standard = appraising_rung.Standard;
+
+/// Renders one standard as the words an operator reads.
+pub fn standard_words(s: Standard) []const u8 {
+    return appraising_rung.standard_words(s);
+}
+
+/// Which phases of a closed record follow this one, one bit each.
+pub fn followers_of(record: []const unhand.Phase, at: u32) u32 {
+    return appraising_rung.followers_of(record, at);
+}
+
+/// Which of a plan's unmarked losses this run's own evidence says it got past.
+///
+/// The fold the rung below built, and the whole of what this rung weighs a
+/// standing judgment against. It is pure, so a later run folds it over its own
+/// record and gets an answer about *this* run rather than about the one that
+/// published the appraisal now on the wire.
+pub fn appraised_in(record: []const unhand.Phase, lost_mask: u32, bear_mask: u32) u32 {
+    return appraising_rung.appraised_in(record, lost_mask, bear_mask);
+}
+
+/// Answers why one appraisal may not be made, or that it may.
+pub fn appraise_refusal(
+    published: ?Verdict,
+    lost: u32,
+    marked: u32,
+    weighed: u32,
+    repairing: u32,
+) ?RunError {
+    return appraising_rung.appraise_refusal(published, lost, marked, weighed, repairing);
+}
+
+/// Refuses a standard that reached a loss its author had already marked.
+pub fn marked_reach(bear_mask: u32, weighed_mask: u32) ?RunError {
+    return appraising_rung.marked_reach(bear_mask, weighed_mask);
+}
+
+/// Counts the arcs a run re-ran for work its own plan had already got past.
+pub fn repaired_spent(weighed_mask: u32, seated_mask: u32) u32 {
+    return appraising_rung.repaired_spent(weighed_mask, seated_mask);
+}
+
+// =========================================================================
+// The recantation -- how a run answers a judgment it did not make
+// =========================================================================
+
+/// Whether a plan's own published judgments answer to a later run's evidence.
+///
+/// `stand` is where the rung below leaves it: an appraisal once published
+/// stands, and a run that meets it adds its own reading to it rather than
+/// weighing it. `revisit` is this rung: every standing judgment is folded again
+/// over the record of the run that meets it, and one this run's evidence
+/// disproves is taken back on the wire and repaired.
+///
+/// The word sits at the plan beside the standard, and for the same reason: it
+/// instructs about the record's own history rather than about any one phase,
+/// and one word an author writes once is a word an author can mean.
+pub const Review = enum { stand, revisit };
+
+/// Renders one review as the words an operator reads.
+pub fn review_words(r: Review) []const u8 {
+    return switch (r) {
+        .stand => "a judgment once published stands, whatever a later run learns",
+        .revisit => "a judgment answers to the evidence of every run that meets it",
+    };
+}
+
+/// Which standing judgments this run's own evidence no longer supports.
+///
+/// The fold at the heart of this rung, and it is a pure one: the judgment
+/// standing on the wire, the judgment this run's record supports, and the loss
+/// this run actually took are the whole of its input. A standing judgment is
+/// recanted when this run lost the same arc and its own evidence declines to
+/// weigh it spent.
+///
+/// A standing judgment about an arc this run did not lose is left alone rather
+/// than recanted. Such a judgment has nothing to answer for here: the run it
+/// spoke about is over, and this run served the work it spared, so there is no
+/// disagreement to resolve and no arc to repair.
+pub fn recanted_in(standing_mask: u32, evidenced_mask: u32, lost_mask: u32) u32 {
+    // invariant: a standing judgment never names a phase outside the record's bits
+    assert(standing_mask >> @intCast(max_queue_len) == 0);
+    // invariant: this run's evidence never names a phase outside those bits
+    assert(evidenced_mask >> @intCast(max_queue_len) == 0);
+    // invariant: a loss never names a phase outside the record's own bits
+    assert(lost_mask >> @intCast(max_queue_len) == 0);
+    const taken_back = standing_mask & lost_mask & ~evidenced_mask;
+    // invariant: a recantation never reaches past the judgment it takes back
+    assert((taken_back & ~standing_mask) == 0);
+    return taken_back;
+}
+
+/// Which standing judgments this run's own evidence stands behind.
+///
+/// The other half of the same count, named rather than inferred, so the honesty
+/// of the count can be stated as an equality an operator reads straight: every
+/// standing judgment this run can weigh is upheld or recanted.
+pub fn upheld_in(standing_mask: u32, evidenced_mask: u32, lost_mask: u32) u32 {
+    // invariant: a standing judgment never names a phase outside the record's bits
+    assert(standing_mask >> @intCast(max_queue_len) == 0);
+    // invariant: a loss never names a phase outside the record's own bits
+    assert(lost_mask >> @intCast(max_queue_len) == 0);
+    const still_held = standing_mask & lost_mask & evidenced_mask;
+    // invariant: an upheld judgment never reaches past the judgment it keeps
+    assert((still_held & ~standing_mask) == 0);
+    return still_held;
+}
+
+/// Answers why one recantation may not be made, or that it may.
+///
+/// Every refusal this rung earns before a single phase is re-seated. `published`
+/// is the verdict this run read back from the wire, `judged` is how many of
+/// the judgments already on the wire speak about a loss this run took, `upheld`
+/// is how many of those this run's own evidence keeps, and `taken_back` is how
+/// many it reverses.
+///
+/// The order is the rung below's order one tier out. A recantation asks whether
+/// the run has published anything to weigh before it asks what the wire already
+/// said, because a supervisor that weighs a standing judgment against a run it
+/// never published is judging a run it remembers.
+pub fn recant_refusal(
+    published: ?Verdict,
+    judged: u32,
+    upheld: u32,
+    taken_back: u32,
+) ?RunError {
+    // invariant: a recantation never weighs more judgment than one record holds
+    assert(judged <= max_queue_len);
+    // invariant: a recantation never takes back more than one record may hold
+    assert(taken_back <= max_queue_len);
+    _ = published orelse return error.RecantEarly;
+    if (judged == 0) return error.RecantUnappraised;
+    if (upheld + taken_back > judged) return error.RecantMiscounted;
+    // Every standing judgment this run can weigh is upheld or recanted -- never
+    // both and never neither. A count that does not close is a supervisor about
+    // to act on half a record's history.
+    if (upheld + taken_back != judged) return error.RecantMiscounted;
+    return null;
+}
+
+/// Refuses a recantation that reached an arc no appraisal ever spared.
+///
+/// The supply this rung is bounded by, stated as its own refusal so it can be
+/// read straight rather than inferred from a count. Taking back a judgment
+/// nobody made invents a reversal, which is the same overreach as repairing
+/// work the wire never named.
+pub fn unappraised_reach(standing_mask: u32, taken_back_mask: u32) ?RunError {
+    // invariant: a standing judgment never names a phase outside the record's bits
+    assert(standing_mask >> @intCast(max_queue_len) == 0);
+    // invariant: a recantation never names a phase outside the record's own bits
+    assert(taken_back_mask >> @intCast(max_queue_len) == 0);
+    if ((taken_back_mask & ~standing_mask) != 0) return error.RecantUnappraised;
+    return null;
+}
+
+/// Counts the arcs a run spared on a judgment its own evidence disproves.
+///
+/// The ninth of the family, and the first that weighs a **record against
+/// itself**. The count before it names work a run did that nobody needed; this
+/// names work a run declined to do on the word of a run that is over, while its
+/// own record says that word no longer holds. A plan spared this way settles
+/// `borne` -- which tells an operator there is nothing left to do -- so nothing
+/// below this rung could see the arc it left standing.
+///
+/// The measurement reaches only the arcs a *judgment* spared. A loss its author
+/// marked was never judged at all, so there is nothing about it to disprove, and
+/// an author's own word stays outside every rule about their silences.
+pub fn spared_disproved(spared_mask: u32, evidenced_mask: u32) u32 {
+    // invariant: a sparing never names a phase outside the record's own bits
+    assert(spared_mask >> @intCast(max_queue_len) == 0);
+    // invariant: this run's evidence never names a phase outside those bits
+    assert(evidenced_mask >> @intCast(max_queue_len) == 0);
+    return @popCount(spared_mask & ~evidenced_mask);
+}
+
+// =========================================================================
+// The door -- unchanged, since this rung moves a conferral rather than a line
+// =========================================================================
+
+/// Answers whether the head may enter, over the lines the run remembers.
+///
+/// The door is `revoke.admissible_in` exactly: a widened line is weighed the
+/// same way whether a departed dependent's conferral stands or leaves with it.
+/// What this rung changes stands entirely on the wire between the two.
+pub fn admissible_in(
+    sys: *const system.System,
+    live: []const cohort.Running,
+    handed: []const Task,
+    reserves: []const ?Task,
+    taken: []const u32,
+    head: Task,
+) RunError!bool {
+    return appraising_rung.admissible_in(sys, live, handed, reserves, taken, head);
+}
+
+// =========================================================================
+// The notes -- what a run publishes, and the answers it reads back
+// =========================================================================
+
+/// Why a conferral could not be published, read, confirmed, or reclaimed.
+pub const NoteError = appraising_rung.NoteError;
+
+/// Writes the path of one dependent's note.
+fn note_path(buf: *[max_note_path_len]u8, domain: []const u8, suffix: []const u8) NoteError![]const u8 {
+    // invariant: a note always names the dependent it belongs to
+    assert(domain.len >= 1);
+    // invariant: a note always carries one of the suffixes
+    assert(suffix.len >= 1);
+    const total = note_dir.len + 1 + domain.len + suffix.len;
+    if (total > max_note_path_len) return error.NotePathTooLong;
+    var w: u32 = 0;
+    for (note_dir) |c| {
+        buf[w] = c;
+        w += 1;
+    }
+    buf[w] = '/';
+    w += 1;
+    for (domain) |c| {
+        buf[w] = c;
+        w += 1;
+    }
+    for (suffix) |c| {
+        buf[w] = c;
+        w += 1;
+    }
+    // invariant: the path written is exactly the length computed for it
+    assert(w == total);
+    return buf[0..w];
+}
+
+/// Writes bytes into a note, creating it fresh.
+fn seat_note(io: std.Io, domain: []const u8, suffix: []const u8, bytes: []const u8) NoteError!void {
+    // invariant: a note always names the dependent it belongs to
+    assert(domain.len >= 1);
+    // invariant: a note always carries one of the suffixes
+    assert(suffix.len >= 1);
+    var path_buf: [max_note_path_len]u8 = undefined;
+    const path = try note_path(&path_buf, domain, suffix);
+    // invariant: a written path always carries the directory it lives in
+    assert(path.len > note_dir.len);
+    const file = Dir.cwd().createFile(io, path, .{ .truncate = true }) catch
+        return error.NoteUnavailable;
+    defer file.close(io);
+    if (bytes.len == 0) return;
+    file.writePositionalAll(io, bytes, 0) catch return error.NoteUnavailable;
+}
+
+/// Reads the one byte a counting note carries.
+fn read_count(io: std.Io, domain: []const u8, suffix: []const u8) NoteError!u8 {
+    // invariant: a note always names the dependent it belongs to
+    assert(domain.len >= 1);
+    // invariant: a note always carries one of the suffixes
+    assert(suffix.len >= 1);
+    var path_buf: [max_note_path_len]u8 = undefined;
+    const path = try note_path(&path_buf, domain, suffix);
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch
+        return error.NoteUnavailable;
+    defer file.close(io);
+    var seen = [_]u8{0};
+    _ = file.readPositionalAll(io, &seen, 0) catch return error.NoteUnavailable;
+    return seen[0];
+}
+
+/// Reads the word list a dependent's domain has been handed so far.
+fn read_words(io: std.Io, domain: []const u8, out: *Words) NoteError!void {
+    // invariant: a word list always names the dependent that listens
+    assert(domain.len >= 1);
+    // invariant: a word list is always read into a list that starts empty
+    assert(out.len == 0);
+    var path_buf: [max_note_path_len]u8 = undefined;
+    const path = try note_path(&path_buf, domain, ".words");
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch
+        return error.NoteUnavailable;
+    defer file.close(io);
+    const got = file.readPositionalAll(io, &out.bytes, 0) catch return error.NoteUnavailable;
+    // invariant: a word list read never outgrows the wire that carries it
+    assert(got <= max_words_bytes);
+    out.len = @intCast(got);
+}
+
+/// Provisions one set of notes per declared domain, all standing at nothing.
+///
+/// Every run starts with no reach conferred, none revoked, and no conferral
+/// standing anywhere, so a word a dependent finds at its first breath was left
+/// by this run's own supervisor rather than by the last.
+pub fn provision_notes(io: std.Io, sys: *const system.System) NoteError!u32 {
+    // invariant: the domain roster stays within its bound
+    assert(sys.graph.domain_count >= 1);
+    // invariant: a run always provisions into a declaration that read whole
+    assert(sys.map.region_count >= 1);
+    Dir.cwd().createDirPath(io, note_dir) catch return error.NoteUnavailable;
+    var i: u32 = 0;
+    while (i < sys.graph.domain_count) : (i += 1) {
+        const name = sys.graph.domains[i].name_slice();
+        try seat_note(io, name, ".given", &[_]u8{0});
+        try seat_note(io, name, ".held", &[_]u8{0});
+        try seat_note(io, name, ".offered", &[_]u8{0});
+        try seat_note(io, name, ".words", "");
+        try seat_note(io, name, ".pruning", &[_]u8{0});
+        try seat_note(io, name, ".kept", &[_]u8{0});
+        try seat_note(io, name, ".pruned", &[_]u8{0});
+        try seat_note(io, name, ".inherited", &[_]u8{0});
+        try seat_note(io, name, ".epoch", &[_]u8{0});
+        try seat_note(io, name, ".for", &[_]u8{0});
+        try seat_note(io, name, ".falls", &[_]u8{0});
+        try seat_note(io, name, ".abandoned", &[_]u8{0});
+    }
+    // The plan's own verdict is cleared with them, so no run ever reads the
+    // last run's judgment of a plan this one has not finished. Its bearing and
+    // its settlement clear beside it, for exactly the same reason: a repair
+    // that read the last run's bearing would spare an arc this plan never
+    // asked it to spare.
+    try seat_note(io, plan_name, ".verdict", &[_]u8{0});
+    try seat_note(io, plan_name, ".bearing", "");
+    try seat_note(io, plan_name, ".settled", &[_]u8{0});
+    // The recantation clears with them, since a reversal belongs to the run
+    // that made it and answers for that run's own evidence alone.
+    //
+    // **The appraisal stays.** It is the one note a run leaves exactly where it
+    // found it, because a judgment that vanished with its run was never a
+    // record -- and because what a run does with a judgment it did not make is
+    // the whole subject of this rung.
+    try seat_note(io, plan_name, ".recant", "");
+    // invariant: a fresh provisioning leaves no verdict standing to be read
+    assert(verdict_published(io) == null);
+    // invariant: a fresh provisioning leaves no settlement standing to be read
+    assert(settlement_published(io) == null);
+    // invariant: every declared domain got its notes, none invented
+    assert(i == sys.graph.domain_count);
+    return i;
+}
+
+/// Tells one dependent how much reach may yet arrive for it.
+pub fn offer(io: std.Io, domain: []const u8, depth: u32) NoteError!void {
+    // invariant: an offer always names the dependent it is made to
+    assert(domain.len >= 1);
+    // invariant: an offer never promises more than one line may name
+    assert(depth <= cycle.max_hops);
+    try seat_note(io, domain, ".offered", &[_]u8{@intCast(depth)});
+}
+
+/// Reads how much reach this dependent was told may yet arrive.
+pub fn offered(io: std.Io, domain: []const u8) NoteError!u32 {
+    // invariant: an offer is always read by the dependent it names
+    assert(domain.len >= 1);
+    const seen = try read_count(io, domain, ".offered");
+    // invariant: an offer stays inside what one line may name
+    assert(seen <= cycle.max_hops);
+    return seen;
+}
+
+/// Tells one dependent whether a pruning will come for it at all.
+pub fn promise_pruning(io: std.Io, domain: []const u8, keep: Keep) NoteError!void {
+    // invariant: a promise always names the dependent it is made to
+    assert(domain.len >= 1);
+    const byte: u8 = switch (keep) {
+        .held_on => 0,
+        .pruned => 1,
+    };
+    // invariant: a promise is always one of the two the keep may carry
+    assert(byte <= 1);
+    try seat_note(io, domain, ".pruning", &[_]u8{byte});
+}
+
+/// Reads whether a pruning was promised to this dependent.
+pub fn pruning_promised(io: std.Io, domain: []const u8) bool {
+    // invariant: a promise is always read by the dependent it names
+    assert(domain.len >= 1);
+    const seen = read_count(io, domain, ".pruning") catch return false;
+    return seen != 0;
+}
+
+/// Tells this dependent how its author declared it would end.
+///
+/// A plan already names the outcome it expects of every phase, and until now
+/// only the supervisor read that word. The dependent needs it too, since the
+/// window this rung studies opens inside the dependent's own life -- after it
+/// grafts a conferral and before it carries the work. So the declaration rides
+/// the same wire as the pruning promise, written before the spawn.
+pub fn promise_falling(io: std.Io, domain: []const u8, falling: bool) NoteError!void {
+    // invariant: a declaration always names the dependent it is made to
+    assert(domain.len >= 1);
+    const byte: u8 = if (falling) 1 else 0;
+    // invariant: a declaration is always one of the two ways a dependent ends
+    assert(byte <= 1);
+    try seat_note(io, domain, ".falls", &[_]u8{byte});
+}
+
+/// Answers whether this dependent's author declared that it falls.
+pub fn falling_promised(io: std.Io, domain: []const u8) bool {
+    // invariant: a declaration is always read by the dependent it names
+    assert(domain.len >= 1);
+    const seen = read_count(io, domain, ".falls") catch return false;
+    return seen != 0;
+}
+
+/// Publishes one conferral: the generation it is meant for, the words
+/// themselves, then the count that makes them live.
+///
+/// The generation is what lets a dependent tell a word meant for it from a
+/// word left standing by the dependent before it. It is a **measurement**
+/// rather than a guard: a careless successor may graft a foreign word all the
+/// same, which is exactly why the conferral is reclaimed rather than merely
+/// labelled.
+pub fn confer_words(io: std.Io, domain: []const u8, words: *const Words, depth: u32) NoteError!void {
+    // invariant: a conferral always names the dependent it is handed to
+    assert(domain.len >= 1);
+    // invariant: a conferral never hands more than one line may name
+    assert(depth <= cycle.max_hops);
+    const generation = read_count(io, domain, ".epoch") catch 0;
+    try seat_note(io, domain, ".for", &[_]u8{generation});
+    try seat_note(io, domain, ".words", words.slice());
+    try seat_note(io, domain, ".given", &[_]u8{@intCast(depth)});
+}
+
+/// Opens one generation of a domain, and answers which it is.
+///
+/// A domain outlives every dependent that stands in it, so each start counts
+/// one further. The number is seated before the spawn, so a dependent always
+/// finds its own generation waiting for it.
+pub fn open_generation(io: std.Io, domain: []const u8) NoteError!u32 {
+    // invariant: a generation always names the domain it opens in
+    assert(domain.len >= 1);
+    const standing_now = read_count(io, domain, ".epoch") catch 0;
+    // invariant: a run never opens more generations than one byte may name
+    assert(standing_now < 255);
+    const opened: u8 = standing_now + 1;
+    try seat_note(io, domain, ".epoch", &[_]u8{opened});
+    return opened;
+}
+
+/// Tells the run this dependent has grafted the reach it was conferred.
+pub fn holds(io: std.Io, domain: []const u8, depth: u32) NoteError!void {
+    // invariant: an answer always names the dependent that gives it
+    assert(domain.len >= 1);
+    // invariant: a dependent never grafts more than one line may name
+    assert(depth <= cycle.max_hops);
+    try seat_note(io, domain, ".held", &[_]u8{@intCast(depth)});
+}
+
+/// Waits, bounded, until this conferral has been grafted.
+pub fn confirm(io: std.Io, domain: []const u8, depth: u32) bool {
+    // invariant: a confirmation always names the dependent it waits on
+    assert(domain.len >= 1);
+    // invariant: a confirmation always waits on reach actually handed over
+    assert(depth >= 1);
+    var looks: u32 = 0;
+    while (looks < max_confirm_looks) : (looks += 1) {
+        const answered = read_count(io, domain, ".held") catch return false;
+        if (answered >= depth) return true;
+        std.Io.sleep(io, std.Io.Duration.fromMilliseconds(note_rest_ms), .awake) catch {};
+    }
+    // invariant: the confirmation stayed inside the bound it was given
+    assert(looks == max_confirm_looks);
+    return false;
+}
+
+/// Publishes one revocation: how many conferred words remain live.
+pub fn revoke(io: std.Io, domain: []const u8, keep: u32) NoteError!void {
+    // invariant: a revocation always names the dependent it is asked of
+    assert(domain.len >= 1);
+    // invariant: a revocation never leaves more than one line may name
+    assert(keep <= cycle.max_hops);
+    try seat_note(io, domain, ".kept", &[_]u8{@intCast(keep)});
+}
+
+/// Reads how many conferred words this dependent may still hold.
+pub fn kept(io: std.Io, domain: []const u8) NoteError!u32 {
+    // invariant: a keeping is always read by the dependent that listens
+    assert(domain.len >= 1);
+    const seen = try read_count(io, domain, ".kept");
+    // invariant: a keeping stays inside what one line may name
+    assert(seen <= cycle.max_hops);
+    return seen;
+}
+
+/// Tells the run this dependent has pruned the reach it returned.
+pub fn pruned(io: std.Io, domain: []const u8, count: u32) NoteError!void {
+    // invariant: an answer always names the dependent that gives it
+    assert(domain.len >= 1);
+    // invariant: a dependent never prunes more than one line may name
+    assert(count <= cycle.max_hops);
+    try seat_note(io, domain, ".pruned", &[_]u8{@intCast(count)});
+}
+
+/// Waits, bounded, until this revocation has been pruned.
+pub fn confirm_pruned(io: std.Io, domain: []const u8, count: u32) bool {
+    // invariant: a confirmation always names the dependent it waits on
+    assert(domain.len >= 1);
+    // invariant: a confirmation always waits on reach actually taken back
+    assert(count >= 1);
+    var looks: u32 = 0;
+    while (looks < max_confirm_looks) : (looks += 1) {
+        const answered = read_count(io, domain, ".pruned") catch return false;
+        if (answered >= count) return true;
+        std.Io.sleep(io, std.Io.Duration.fromMilliseconds(note_rest_ms), .awake) catch {};
+    }
+    // invariant: the confirmation stayed inside the bound it was given
+    assert(looks == max_confirm_looks);
+    return false;
+}
+
+/// Tells the run how much reach this dependent found standing at its first breath.
+pub fn inherited(io: std.Io, domain: []const u8, count: u32) NoteError!void {
+    // invariant: an answer always names the dependent that gives it
+    assert(domain.len >= 1);
+    // invariant: a dependent never inherits more than one line may name
+    assert(count <= cycle.max_hops);
+    try seat_note(io, domain, ".inherited", &[_]u8{@intCast(count)});
+}
+
+/// Reads how much reach this dependent found standing at its first breath.
+pub fn inherited_by(io: std.Io, domain: []const u8) u32 {
+    // invariant: an answer is always read about the dependent that gave it
+    assert(domain.len >= 1);
+    const seen = read_count(io, domain, ".inherited") catch return 0;
+    // invariant: an inheritance stays inside what one line may name
+    assert(seen <= cycle.max_hops);
+    return seen;
+}
+
+/// Takes one conferral back whole, so nothing of it stands for a successor.
+///
+/// The words, the count that makes them live, and every answer given about
+/// them return together. A count left standing would let a successor graft a
+/// word; an answer of *held* left standing would let a supervisor believe a
+/// successor grafted a word it never saw.
+pub fn reclaim_notes(io: std.Io, domain: []const u8) NoteError!void {
+    // invariant: a reclamation always names the domain it takes back from
+    assert(domain.len >= 1);
+    try seat_note(io, domain, ".words", "");
+    try seat_note(io, domain, ".given", &[_]u8{0});
+    try seat_note(io, domain, ".for", &[_]u8{0});
+    try seat_note(io, domain, ".held", &[_]u8{0});
+    try seat_note(io, domain, ".kept", &[_]u8{0});
+    try seat_note(io, domain, ".pruned", &[_]u8{0});
+}
+
+/// Records on the wire how much reach this domain's departed holder never served.
+///
+/// Written after the reclamation has swept the domain clean, so the count
+/// survives the very act that erases every other trace of the conferral. A
+/// number kept only in memory would make the abandonment the supervisor's
+/// claim; a number on the wire is a fact an operator reads after the run.
+pub fn abandon_note(io: std.Io, domain: []const u8, count: u32) NoteError!void {
+    // invariant: an abandonment always names the domain it was granted to
+    assert(domain.len >= 1);
+    // invariant: an abandonment never records more than one line may name
+    assert(count <= cycle.max_hops);
+    try seat_note(io, domain, ".abandoned", &[_]u8{@intCast(count)});
+}
+
+/// Reads how much reach this domain's departed holder never served.
+pub fn abandoned_by(io: std.Io, domain: []const u8) u32 {
+    // invariant: an abandonment is always read about the domain it names
+    assert(domain.len >= 1);
+    const left = read_count(io, domain, ".abandoned") catch return 0;
+    // invariant: an abandonment stays inside what one line may name
+    assert(left <= cycle.max_hops);
+    return left;
+}
+
+/// The name a plan's own verdict is published under.
+///
+/// Every other note on this wire belongs to one dependent; this one belongs to
+/// the run itself, so it carries a name no declared domain may take.
+pub const plan_name = "plan";
+
+/// Publishes what the plan came to, where an operator reads it after the run.
+///
+/// The verdict is written once the last dependent has been reaped and every
+/// abandonment already answered for, so the word rests on the whole of the
+/// work rather than on the part of it that had happened when the run last
+/// looked.
+pub fn verdict_note(io: std.Io, verdict: Verdict) NoteError!void {
+    try seat_note(io, plan_name, ".verdict", &[_]u8{verdict_byte(verdict)});
+}
+
+/// Reads a plan's published verdict back, or nothing where none was published.
+pub fn verdict_published(io: std.Io) ?Verdict {
+    const byte = read_count(io, plan_name, ".verdict") catch return null;
+    return verdict_of_byte(byte);
+}
+
+/// Publishes which phases of the plan an arc was lost on.
+///
+/// The verdict says *that* a plan fell short; this says *where*. It is written
+/// as one glyph per phase of the record -- `x` for a phase whose absorbed arc
+/// nobody served, `.` for every other -- so an operator reads the shape of the
+/// loss straight off the wire, and a mend derives its second record from the
+/// record rather than from a supervisor's memory of it.
+///
+/// One glyph per phase rather than a packed mask, because the reader here is a
+/// person first. The bound is the record's own: a plan never holds more phases
+/// than `max_queue_len`, so this note never grows past it.
+pub fn lost_note(io: std.Io, held: u32, lost_mask: u32) NoteError!void {
+    // invariant: a loss note never names more phases than one record may hold
+    assert(held <= max_queue_len);
+    var glyphs: [max_queue_len]u8 = @splat('.');
+    var at: u32 = 0;
+    while (at < held) : (at += 1) {
+        if ((lost_mask & phase_bit(at)) != 0) glyphs[at] = 'x';
+    }
+    // invariant: every phase of the record was written, none skipped
+    assert(at == held);
+    try seat_note(io, plan_name, ".lost", glyphs[0..held]);
+}
+
+/// Reads the published loss back as the mask a mend seats from.
+///
+/// A mend that reads nothing here has nothing to repair, and says so with a
+/// zero rather than by guessing -- the refusal that follows is `MendUnread`
+/// when even the verdict is absent, and `MendOvereach` if a caller were ever
+/// to propose seating work the wire never named.
+pub fn lost_published(io: std.Io, held: u32) u32 {
+    // invariant: a reading never names more phases than one record may hold
+    assert(held <= max_queue_len);
+    var path_buf: [max_note_path_len]u8 = undefined;
+    const path = note_path(&path_buf, plan_name, ".lost") catch return 0;
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return 0;
+    defer file.close(io);
+    var glyphs: [max_queue_len]u8 = @splat('.');
+    const got = file.readPositionalAll(io, &glyphs, 0) catch return 0;
+    // invariant: a loss note never outgrows the record it describes
+    assert(got <= max_queue_len);
+    var found: u32 = 0;
+    var at: u32 = 0;
+    while (at < held and at < got) : (at += 1) {
+        if (glyphs[at] == 'x') found |= phase_bit(at);
+    }
+    // invariant: the walk never read a phase outside the record
+    assert(at <= held);
+    return found;
+}
+
+/// The single bit that stands for one phase of a record.
+pub fn phase_bit(at: u32) u32 {
+    // invariant: a record always fits inside the bits one word carries
+    assert(max_queue_len <= 32);
+    // invariant: a bit always names a phase inside the record's own bound
+    assert(at < max_queue_len);
+    const one: u32 = 1;
+    return one << @intCast(at);
+}
+
+/// Publishes which of a plan's losses its author asked it to bear.
+///
+/// The loss note says where a plan fell short; this says which of those places
+/// its author would rather leave standing. It is written in the same shape and
+/// read the same way -- one glyph per phase, `b` where an arc was lost and its
+/// author marked it borne -- so an operator reads the two notes side by side
+/// and a repair seats from the record rather than from a supervisor's memory
+/// of what the plan wanted.
+pub fn bearing_note(io: std.Io, held: u32, borne_mask: u32) NoteError!void {
+    // invariant: a bearing note never names more phases than one record holds
+    assert(held <= max_queue_len);
+    var glyphs: [max_queue_len]u8 = @splat('.');
+    var at: u32 = 0;
+    while (at < held) : (at += 1) {
+        if ((borne_mask & phase_bit(at)) != 0) glyphs[at] = 'b';
+    }
+    // invariant: every phase of the record was written, none skipped
+    assert(at == held);
+    try seat_note(io, plan_name, ".bearing", glyphs[0..held]);
+}
+
+/// Reads the published bearing back as the mask a repair spares.
+///
+/// A run that reads nothing here bears nothing, and says so with a zero rather
+/// than by guessing -- which leaves the repair exactly where the rung below
+/// left it, running every arc the plan lost.
+pub fn bearing_published(io: std.Io, held: u32) u32 {
+    // invariant: a reading never names more phases than one record may hold
+    assert(held <= max_queue_len);
+    var path_buf: [max_note_path_len]u8 = undefined;
+    const path = note_path(&path_buf, plan_name, ".bearing") catch return 0;
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return 0;
+    defer file.close(io);
+    var glyphs: [max_queue_len]u8 = @splat('.');
+    const got = file.readPositionalAll(io, &glyphs, 0) catch return 0;
+    // invariant: a bearing note never outgrows the record it describes
+    assert(got <= max_queue_len);
+    var found: u32 = 0;
+    var at: u32 = 0;
+    while (at < held and at < got) : (at += 1) {
+        if (glyphs[at] == 'b') found |= phase_bit(at);
+    }
+    // invariant: the walk never read a phase outside the record
+    assert(at <= held);
+    return found;
+}
+
+/// Publishes which of a plan's unmarked losses this run weighed as spent.
+///
+/// The bearing note above names what an author asked to carry; this names what
+/// the run judged the plan had got past. One glyph per phase, `w` where an
+/// unmarked loss was weighed spent, written while the run still holds the
+/// evidence and read back before the repair seats anything -- since a
+/// supervisor that appraised from memory would be applying a standard it
+/// believes in rather than the one its plan published.
+pub fn appraisal_note(io: std.Io, held: u32, weighed_mask: u32) NoteError!void {
+    // invariant: an appraisal note never names more phases than one record holds
+    assert(held <= max_queue_len);
+    var glyphs: [max_queue_len]u8 = @splat('.');
+    var at: u32 = 0;
+    while (at < held) : (at += 1) {
+        if ((weighed_mask & phase_bit(at)) != 0) glyphs[at] = 'w';
+    }
+    // invariant: every phase of the record was written, none skipped
+    assert(at == held);
+    try seat_note(io, plan_name, ".appraisal", glyphs[0..held]);
+}
+
+/// Reads back which phases this run weighed as spent, straight off the wire.
+pub fn appraisal_published(io: std.Io, held: u32) u32 {
+    // invariant: a reading never names more phases than one record may hold
+    assert(held <= max_queue_len);
+    var path_buf: [max_note_path_len]u8 = undefined;
+    const path = note_path(&path_buf, plan_name, ".appraisal") catch return 0;
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return 0;
+    defer file.close(io);
+    var glyphs: [max_queue_len]u8 = @splat('.');
+    const got = file.readPositionalAll(io, &glyphs, 0) catch return 0;
+    // invariant: an appraisal note never outgrows the record it describes
+    assert(got <= max_queue_len);
+    var found: u32 = 0;
+    var at: u32 = 0;
+    while (at < held and at < got) : (at += 1) {
+        if (glyphs[at] == 'w') found |= phase_bit(at);
+    }
+    // invariant: the walk never read a phase outside the record
+    assert(at <= held);
+    return found;
+}
+
+/// Seats a judgment on the wire as the record a run before this one left.
+///
+/// The appraisal is the one note a run does not clear, so a standing judgment
+/// arrives the only way it ever could: written, and waiting. This names that
+/// act plainly for a caller that means to stand a record up mid-history, and it
+/// makes the directory first, since a judgment may be waiting before any run of
+/// this plan has provisioned a thing.
+pub fn seat_standing_appraisal(io: std.Io, held: u32, weighed_mask: u32) NoteError!void {
+    // invariant: a seated judgment never names more phases than one record holds
+    assert(held <= max_queue_len);
+    Dir.cwd().createDirPath(io, note_dir) catch return error.NoteUnavailable;
+    try appraisal_note(io, held, weighed_mask);
+}
+
+/// Publishes which standing judgments this run took back.
+///
+/// The appraisal note above names what a run judged the plan had got past; this
+/// names which of those judgments a later run's own evidence declines to keep.
+/// One glyph per phase, `r` where a standing judgment was recanted, written
+/// while the run still holds the record that disproves it and read back before
+/// the repair seats a single phase on its strength.
+pub fn recant_note(io: std.Io, held: u32, taken_back_mask: u32) NoteError!void {
+    // invariant: a recant note never names more phases than one record holds
+    assert(held <= max_queue_len);
+    var glyphs: [max_queue_len]u8 = @splat('.');
+    var at: u32 = 0;
+    while (at < held) : (at += 1) {
+        if ((taken_back_mask & phase_bit(at)) != 0) glyphs[at] = 'r';
+    }
+    // invariant: every phase of the record was written, none skipped
+    assert(at == held);
+    try seat_note(io, plan_name, ".recant", glyphs[0..held]);
+}
+
+/// Reads back which standing judgments this run took back, straight off the wire.
+pub fn recant_published(io: std.Io, held: u32) u32 {
+    // invariant: a reading never names more phases than one record may hold
+    assert(held <= max_queue_len);
+    var path_buf: [max_note_path_len]u8 = undefined;
+    const path = note_path(&path_buf, plan_name, ".recant") catch return 0;
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return 0;
+    defer file.close(io);
+    var glyphs: [max_queue_len]u8 = @splat('.');
+    const got = file.readPositionalAll(io, &glyphs, 0) catch return 0;
+    // invariant: a recant note never outgrows the record it describes
+    assert(got <= max_queue_len);
+    var found: u32 = 0;
+    var at: u32 = 0;
+    while (at < held and at < got) : (at += 1) {
+        if (glyphs[at] == 'r') found |= phase_bit(at);
+    }
+    // invariant: the walk never read a phase outside the record
+    assert(at <= held);
+    return found;
+}
+
+/// Publishes the word an operator finally reads about this plan.
+///
+/// The verdict note below says whether work is still standing. This says what
+/// that standing work means -- carried out, short, or whole but for a loss the
+/// plan itself asked to carry. Written after the repair has had its turn, and
+/// read back before the report believes it.
+pub fn settlement_note(io: std.Io, settlement: Settlement) NoteError!void {
+    try seat_note(io, plan_name, ".settled", &[_]u8{settlement_byte(settlement)});
+}
+
+/// Reads a plan's published settlement back, or nothing where none was written.
+pub fn settlement_published(io: std.Io) ?Settlement {
+    const byte = read_count(io, plan_name, ".settled") catch return null;
+    return settlement_of_byte(byte);
+}
+
+// =========================================================================
+// The supervisor -- a record that answers for the work its conferrals never
+// bought
+// =========================================================================
+
+/// One dependent already reaped, held until the whole record has drained.
+const Finished = struct {
+    domain: []const u8,
+    verb: cycle.Verb,
+    count: u32,
+    expect: u8,
+    code: u8,
+};
+
+/// Folds one reaped outcome into the report, or names the mismatch.
+fn judge_outcome(done: Finished, report_out: *Report) RunError!void {
+    // invariant: a judged dependent always names its domain
+    assert(done.domain.len >= 1);
+    // invariant: the report never counts more successes than dependents reaped
+    assert(run_of(report_out).succeeded <= run_of(report_out).reaped);
+    if (done.code != done.expect) {
+        print("    {s}: expected {s}, heard {s}\n", .{
+            done.domain, outcome_name(done.expect), outcome_name(done.code),
+        });
+        return error.OutcomeMismatch;
+    }
+    if (done.code == carry.Outcome.carried_ok) {
+        run_of(report_out).succeeded += 1;
+        if (done.verb == .home) run_of(report_out).homed += done.count;
+    }
+}
+
+/// The queue's own bookkeeping for one run, over dependents whose conferrals
+/// may leave with them.
+const Table = struct {
+    live: [max_in_flight]cohort.Running = undefined,
+    lines: [max_in_flight]Task = undefined,
+    reserves: [max_in_flight]?Task = @splat(null),
+    taken: [max_in_flight]u32 = @splat(0),
+    served: [max_in_flight]u32 = @splat(0),
+    granted: [max_in_flight]u32 = @splat(0),
+    absorbed_mask: [max_in_flight]u32 = @splat(0),
+    in_flight: u32 = 0,
+    done: [max_queue_len]Finished = undefined,
+    finished: u32 = 0,
+    started: [max_queue_len]bool = @splat(false),
+    record: [max_queue_len]unhand.Phase = undefined,
+    reserve_of: [max_queue_len]?Task = @splat(null),
+    held: u32 = 0,
+    head: u32 = 0,
+    left: u32 = 0,
+    lost_mask: u32 = 0,
+    bear_mask: u32 = 0,
+};
+
+/// The record as it stands right now.
+fn standing(table: *const Table) []const unhand.Phase {
+    // invariant: a record never outgrows the queue one supervisor may hold
+    assert(table.held <= max_queue_len);
+    return table.record[0..table.held];
+}
+
+/// Answers whether one phase of the record is still work waiting to run.
+fn waits(table: *const Table, at: u32) bool {
+    // invariant: a reading always names a phase inside the record
+    assert(at < table.held);
+    return !table.started[at];
+}
+
+/// Moves the head past every item already started.
+fn advance_head(table: *Table) void {
+    // invariant: a head never walks past the record it reads
+    assert(table.head <= table.held);
+    while (table.head < table.held and !waits(table, table.head)) table.head += 1;
+}
+
+/// Answers whether a phase of a turn this pick's turn names still waits.
+fn elder_waits(table: *const Table, pick: u32) bool {
+    // invariant: a pick always names a phase inside the record
+    assert(pick < table.held);
+    const wanted = table.record[pick].follows_turns;
+    if (wanted == 0) return false;
+    var i: u32 = 0;
+    while (i < table.held) : (i += 1) {
+        if (i == pick) continue;
+        if (!waits(table, i)) continue;
+        if ((wanted & turn_bit(table.record[i].turn)) != 0) return true;
+    }
+    // invariant: the walk read the whole record, weighing every phase in it
+    assert(i == table.held);
+    return false;
+}
+
+/// Answers whether a sibling of this pick's own turn still waits behind it.
+fn sibling_waits(table: *const Table, pick: u32, sibling_mask: u32) bool {
+    // invariant: a pick always names a phase inside the record
+    assert(pick < table.held);
+    var i: u32 = 0;
+    while (i < pick) : (i += 1) {
+        if (!waits(table, i)) continue;
+        if (table.record[i].turn != table.record[pick].turn) continue;
+        if ((sibling_mask & mask.step_bit(table.record[i].step)) != 0) return true;
+    }
+    // invariant: the walk reached the pick, weighing every phase before it
+    assert(i == pick);
+    return false;
+}
+
+/// Answers whether the door admits this phase over the lines remembered.
+fn door_admits(sys: *const system.System, table: *const Table, at: u32) RunError!bool {
+    // invariant: a candidate always stands inside the record
+    assert(at < table.held);
+    // invariant: a run never remembers more lines than it may hold
+    assert(table.in_flight <= max_in_flight);
+    return admissible_in(
+        sys,
+        table.live[0..table.in_flight],
+        table.lines[0..table.in_flight],
+        table.reserves[0..table.in_flight],
+        table.taken[0..table.in_flight],
+        table.record[at].task,
+    );
+}
+
+/// Answers whether a phase may be admitted ahead of the record's head.
+fn may_pass(
+    sys: *const system.System,
+    table: *const Table,
+    candidate: u32,
+    reading: Reading,
+) bool {
+    // invariant: a pass always reaches forward, never at the head itself
+    assert(candidate > table.head);
+    // invariant: a candidate always stands inside the record
+    assert(candidate < table.held);
+    var i: u32 = table.head;
+    while (i < candidate) : (i += 1) {
+        if (!waits(table, i)) continue;
+        if (items_contend(sys, table.record[i], table.record[candidate], reading)) return false;
+    }
+    // invariant: the walk reached the candidate, weighing every phase before it
+    assert(i == candidate);
+    return true;
+}
+
+/// Chooses one phase from behind a blocked head, or answers that none may go.
+fn choose_pass(
+    sys: *const system.System,
+    table: *const Table,
+    reading: Reading,
+) RunError!?u32 {
+    // invariant: a pass is only ever sought while the head stands blocked
+    assert(table.head < table.held);
+    // invariant: a pass never looks past the record it reads
+    assert(table.head < max_queue_len);
+    var looked: u32 = 0;
+    var i: u32 = table.head + 1;
+    while (i < table.held and looked < max_lookahead) : (i += 1) {
+        if (!waits(table, i)) continue;
+        looked += 1;
+        if (!try door_admits(sys, table, i)) continue;
+        if (!may_pass(sys, table, i, reading)) continue;
+        return i;
+    }
+    // invariant: the look stayed inside the bound it was given
+    assert(looked <= max_lookahead);
+    return null;
+}
+
+/// Answers which standing dependent could carry this phase, if any could.
+fn confer_slot(table: *const Table, at: u32) ?u32 {
+    // invariant: a candidate always stands inside the record
+    assert(at < table.held);
+    // invariant: a run never remembers more lines than it may hold
+    assert(table.in_flight <= max_in_flight);
+    const wanted = table.record[at].task;
+    var i: u32 = 0;
+    while (i < table.in_flight) : (i += 1) {
+        if (!std.mem.eql(u8, table.live[i].domain, wanted.item.domain)) continue;
+        const held = table.reserves[i] orelse continue;
+        const depth = hop_count(wanted);
+        if (table.taken[i] + depth > reserve_depth(held)) continue;
+        var matched: u32 = 0;
+        var wanted_arcs = std.mem.splitScalar(u8, wanted.item.hops, ',');
+        var fits = true;
+        while (wanted_arcs.next()) |hop| {
+            // invariant: the walk stays inside the hops one item may name
+            assert(matched < cycle.max_hops);
+            const at_reserve = table.taken[i] + matched;
+            const on_offer = confer.reserve_arc_at(held, at_reserve) orelse {
+                fits = false;
+                break;
+            };
+            if (!std.mem.eql(u8, on_offer, hop)) fits = false;
+            if (intent.declares_write(held, at_reserve) != intent.declares_write(wanted, matched)) {
+                fits = false;
+            }
+            if (!fits) break;
+            matched += 1;
+        }
+        if (!fits) continue;
+        // invariant: every arc the phase names was weighed against the reserve
+        assert(matched == depth);
+        return i;
+    }
+    // invariant: the walk read every dependent standing, none skipped
+    assert(i == table.in_flight);
+    return null;
+}
+
+/// Takes back the reach one standing dependent no longer needs, from the rung
+/// below -- kept whole here, since a reclamation is what happens after it.
+fn revoke_one(
+    io: std.Io,
+    table: *Table,
+    slot: u32,
+    keep: u32,
+    report_out: *Report,
+) (RunError || NoteError)!void {
+    // invariant: a revocation always names a dependent the run is holding
+    assert(slot < table.in_flight);
+    // invariant: a revocation never leaves more than one line may name
+    assert(keep <= cycle.max_hops);
+    if (revoke_rung.revoke_refusal(table.taken[slot], table.served[slot], keep)) |why| return why;
+    const returning = table.taken[slot] - keep;
+    // invariant: a revocation that reaches this point always returns reach
+    assert(returning >= 1);
+    try revoke(io, table.live[slot].domain, keep);
+    if (!confirm_pruned(io, table.live[slot].domain, returning)) return error.RevokeUnpruned;
+    table.taken[slot] = keep;
+    table.served[slot] = keep;
+    abandoning_of(report_out).inner.inner.revoked += returning;
+}
+
+/// Takes one departed dependent's conferral back whole, so a successor of its
+/// domain opens its eyes on a bare wire.
+///
+/// The rung below reaches into a standing dependent's hands; this one reaches
+/// into the wire the two of them spoke over, once the dependent that listened
+/// is gone. `slot` names the reaped dependent, whose row still stands in the
+/// table until the reaping closes over it.
+fn reclaim_one(
+    io: std.Io,
+    table: *Table,
+    slot: u32,
+    report_out: *Report,
+) (RunError || NoteError)!void {
+    // invariant: a reclamation always names a row the table still holds
+    assert(slot < max_in_flight);
+    // invariant: a reclamation never takes back more than one line may name
+    assert(table.granted[slot] <= cycle.max_hops);
+    const domain = table.live[slot].domain;
+    const already = (read_count(io, domain, ".given") catch 0) == 0;
+    if (reclaim_refusal(table.granted[slot], false, already)) |why| return why;
+    try reclaim_notes(io, domain);
+    abandoning_of(report_out).inner.reclaimed += table.granted[slot];
+}
+
+/// Hands one phase, and the reach it needs, to a dependent already standing --
+/// then takes that reach back once the dependent answers that the work is done.
+fn confer_one(
+    io: std.Io,
+    sys: *const system.System,
+    caps: *const capabilities.CapabilityTable,
+    table: *Table,
+    slot: u32,
+    at: u32,
+    keeping: Keep,
+    report_out: *Report,
+) (RunError || NoteError)!void {
+    // invariant: a conferral always names a dependent the run is holding
+    assert(slot < table.in_flight);
+    // invariant: a conferral always names a phase inside the record
+    assert(at < table.held);
+    const grown = table.taken[slot] + hop_count(table.record[at].task);
+    var line: entrust.Line = .{};
+    if (entrust.entrust_refusal(
+        sys,
+        table.lines[0..table.in_flight],
+        table.reserves[0..table.in_flight],
+        slot,
+        table.taken[slot],
+        grown,
+        &line,
+    )) |why| return why;
+
+    var words: Words = .{};
+    try confer.write_words(
+        caps,
+        table.reserves[slot],
+        grown,
+        hop_count(table.lines[slot]),
+        &words,
+    );
+    try confer_words(io, table.live[slot].domain, &words, grown);
+    if (!confirm(io, table.live[slot].domain, grown)) return error.ConferUnheld;
+    table.granted[slot] += grown - table.taken[slot];
+    table.taken[slot] = grown;
+    // The dependent answers `.held` only after it has read every arc it grafted,
+    // so the work this reach served is carried by the time the run reads it.
+    table.served[slot] = grown;
+    abandoning_of(report_out).inner.inner.inner.conferred += 1;
+    abandoning_of(report_out).inner.inner.inner.inner.entrusted += 1;
+    abandoning_of(report_out).inner.inner.inner.inner.absorbed += 1;
+    // Which phase this conferral carried, remembered against the slot that
+    // took it up. A reclamation later sweeps the dependent's notes clean and
+    // the report keeps only a count, so without this the run knows an arc was
+    // lost and never which one -- and a mend that cannot name the phase can
+    // only re-run the plan whole, which is the thing `MendOvereach` refuses.
+    table.absorbed_mask[slot] |= phase_bit(at);
+
+    if (keeping == .pruned) try revoke_one(io, table, slot, 0, report_out);
+}
+
+/// Starts one phase, handing the capability words this reach calls for and
+/// promising the pruning this keep calls for.
+fn start_one(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    caps: *const capabilities.CapabilityTable,
+    phase: unhand.Phase,
+    reserve: ?Task,
+    keeping: Keep,
+    wake: gap.Wake,
+    report_out: *Report,
+) (RunError || NoteError || cohort.RunError || boot.BootError)!cohort.Running {
+    // invariant: a start always names the domain it starts
+    assert(phase.task.item.domain.len >= 1);
+    // invariant: a start always hands a line that names arcs
+    assert(phase.task.item.hops.len >= 1);
+    var line: entrust.Line = .{};
+    const widest = entrust.entrusted_task(phase.task, reserve, reserve_depth(reserve), &line) orelse
+        return error.EntrustExhausted;
+    if (!entrust.entrust_granted(sys, widest)) return error.EntrustUngranted;
+    const narrowed = intent.narrow(caps, phase.task) orelse return error.UnknownDomain;
+    const slot = narrowed.find_dependent(phase.task.item.domain) orelse return error.UnknownDomain;
+    // invariant: a narrowed line stays inside what the document grants
+    assert(boot.line_within(sys, slot));
+    const generation = try open_generation(io, phase.task.item.domain);
+    // invariant: every dependent stands in a generation of its own
+    assert(generation >= 1);
+    try offer(io, phase.task.item.domain, reserve_depth(reserve));
+    try promise_pruning(io, phase.task.item.domain, keeping);
+    try promise_falling(io, phase.task.item.domain, phase.task.item.expect != carry.Outcome.carried_ok);
+    abandoning_of(report_out).inner.inner.stale_at_home += revoke_rung.stale_reach(reserve_depth(reserve), keeping);
+    return cohort.spawn_one_within(
+        allocator, io, self_path, sys, &narrowed, phase.task.item, wake, &.{},
+    );
+}
+
+/// Admits as much of the record as the table and the reading allow, and
+/// answers how many phases it took up.
+fn fill_table(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    caps: *const capabilities.CapabilityTable,
+    wake: gap.Wake,
+    reading: Reading,
+    keeping: Keep,
+    table: *Table,
+    report_out: *Report,
+) (RunError || NoteError || cohort.RunError || boot.BootError)!u32 {
+    // invariant: a fill always reads a record the run has seated
+    assert(table.held >= 1);
+    // invariant: a run never remembers more lines than it may hold
+    assert(table.in_flight <= max_in_flight);
+    var took_up: u32 = 0;
+    while (table.left > 0) {
+        advance_head(table);
+        // invariant: work still waiting always leaves a head to weigh
+        assert(table.head < table.held);
+
+        if (confer_slot(table, table.head)) |slot| {
+            try confer_one(io, sys, caps, table, slot, table.head, keeping, report_out);
+            table.started[table.head] = true;
+            table.left -= 1;
+            took_up += 1;
+            continue;
+        }
+
+        if (table.in_flight >= max_in_flight) break;
+
+        var pick: u32 = table.head;
+        if (!try door_admits(sys, table, table.head)) {
+            pick = try choose_pass(sys, table, reading) orelse break;
+            run_of(report_out).passes += 1;
+            const gained = pick - table.head;
+            if (gained > run_of(report_out).pass_reach) run_of(report_out).pass_reach = gained;
+        }
+        const chosen = table.record[pick];
+        if (sibling_waits(table, pick, mask.prefix_mask(chosen.step))) {
+            masked_of(report_out).out_of_turn += 1;
+        }
+        if (sibling_waits(table, pick, mask.prefix_mask(mask.fence_after(chosen.follows)))) {
+            masked_of(report_out).out_of_fence += 1;
+        }
+        if (sibling_waits(table, pick, chosen.follows)) masked_of(report_out).out_of_mask += 1;
+        if (elder_waits(table, pick)) preceded_of(report_out).out_of_precede += 1;
+
+        table.live[table.in_flight] = try start_one(
+            allocator, io, self_path, sys, caps, chosen, table.reserve_of[pick], keeping, wake, report_out,
+        );
+        table.lines[table.in_flight] = chosen.task;
+        table.reserves[table.in_flight] = table.reserve_of[pick];
+        table.taken[table.in_flight] = 0;
+        table.served[table.in_flight] = 0;
+        table.granted[table.in_flight] = 0;
+        table.in_flight += 1;
+        table.started[pick] = true;
+        table.left -= 1;
+        took_up += 1;
+        run_of(report_out).admitted += 1;
+    }
+    // invariant: a fill never overruns the table it fills
+    assert(table.in_flight <= max_in_flight);
+    // invariant: a preceded reading never runs a phase past a turn its turn named
+    assert(reading != .preceded or preceded_of(report_out).out_of_precede == 0);
+    return took_up;
+}
+
+/// Records one departed dependent's abandoned reach, and reads the answer back.
+///
+/// The reclamation above has already swept this domain clean, so the count is
+/// written after it rather than before -- otherwise the very act that closes
+/// the conferral would erase the only evidence of what it cost. The answer is
+/// read back from the wire before the report believes it.
+fn abandon_one(
+    io: std.Io,
+    table: *Table,
+    slot: u32,
+    came_home: bool,
+    report_out: *Report,
+) (RunError || NoteError)!void {
+    // invariant: an abandonment always names a row the table still holds
+    assert(slot < max_in_flight);
+    // invariant: an abandonment never records more than one line may name
+    assert(table.granted[slot] <= cycle.max_hops);
+    const domain = table.live[slot].domain;
+    if (abandon_refusal(table.granted[slot], false, came_home)) |why| return why;
+    const left = abandoned_reach(table.granted[slot], came_home, .answered);
+    // invariant: an abandonment that reaches this point always names lost work
+    assert(left >= 1);
+    try abandon_note(io, domain, left);
+    if (abandoned_by(io, domain) != left) return error.AbandonUncounted;
+    abandoning_of(report_out).abandoned += left;
+    // The phases this dependent took up and never served, gathered into the
+    // plan's own loss while the slot that held them is still standing. After
+    // the table closes over this row the mask moves with the shuffle, and once
+    // the reaping is done it is gone -- so the plan learns where it fell short
+    // at the one moment the answer is still in reach.
+    table.lost_mask |= table.absorbed_mask[slot];
+}
+
+/// Waits on the eldest dependent, takes back what it was conferred, answers for
+/// the work that conferral never bought, and closes the table over its slot.
+fn reap_oldest(
+    io: std.Io,
+    table: *Table,
+    answer: Answer,
+    report_out: *Report,
+) (RunError || NoteError || cohort.RunError)!void {
+    // invariant: a reaping always has a dependent to wait on
+    assert(table.in_flight >= 1);
+    // invariant: a reaping never overruns the record it is kept in
+    assert(table.finished < max_queue_len);
+    const code = try cohort.reap_one(io, &table.live[0]);
+    const found = inherited_by(io, table.live[0].domain);
+    abandoning_of(report_out).inner.inherited_at_home += found;
+    if (found != 0) return error.ReclaimInherited;
+    const came_home = code == carry.Outcome.carried_ok;
+    if (table.granted[0] >= 1) try reclaim_one(io, table, 0, report_out);
+    if (answer == .answered and table.granted[0] >= 1 and !came_home) {
+        try abandon_one(io, table, 0, came_home, report_out);
+    }
+    table.done[table.finished] = .{
+        .domain = table.live[0].domain,
+        .verb = table.live[0].verb,
+        .count = table.live[0].count,
+        .expect = table.live[0].expect,
+        .code = code,
+    };
+    table.finished += 1;
+    table.in_flight -= 1;
+    run_of(report_out).reaped += 1;
+    run_of(report_out).turns += 1;
+
+    var s: u32 = 0;
+    while (s < table.in_flight) : (s += 1) {
+        table.live[s] = table.live[s + 1];
+        table.lines[s] = table.lines[s + 1];
+        table.reserves[s] = table.reserves[s + 1];
+        table.taken[s] = table.taken[s + 1];
+        table.served[s] = table.served[s + 1];
+        table.granted[s] = table.granted[s + 1];
+        table.absorbed_mask[s] = table.absorbed_mask[s + 1];
+    }
+    // invariant: the table closed over the reaped dependent, none lost
+    assert(s == table.in_flight);
+}
+
+/// Seats everything a run stands on, and answers with the table it enforces.
+///
+/// One region store per declared region, one doorbell per declared channel,
+/// one set of notes per declared domain, and the capability table derived from
+/// the document itself -- all before a single dependent is spawned, so no
+/// dependent ever finds a conferral, a bell, or a store left by an earlier run.
+fn seat_the_ground(
+    io: std.Io,
+    sys: *const system.System,
+    report_out: *Report,
+) (roster.RosterError || exercise.ProvisionError || notify.BellError || NoteError)!capabilities.CapabilityTable {
+    // invariant: a run always seats a declaration that names regions
+    assert(sys.map.region_count >= 1);
+    // invariant: a run always seats a declaration that names domains
+    assert(sys.graph.domain_count >= 1);
+    const provisioned = try exercise.provision(io, sys);
+    // invariant: every declared region has a backing store before any dependent runs
+    assert(provisioned == sys.map.region_count);
+    run_of(report_out).bells = try roundtrip.provision_directed(io, sys);
+    const noted = try provision_notes(io, sys);
+    // invariant: every declared domain has its notes before any conferral
+    assert(noted == sys.graph.domain_count);
+    const caps = try roster.from_system(sys);
+    // invariant: the derived table enforces exactly what the document permits
+    assert(roster.agrees(sys, &caps));
+    return caps;
+}
+
+/// Reads a written plan into the table's own record, closed and seated.
+///
+/// The plan is flattened to the shape the rungs below read, weighed for order
+/// and for the names it keeps, closed over its own turns, and its reserves
+/// carried across -- all before a single dependent is spawned, so the record a
+/// run enforces is the record its author wrote.
+fn seat_the_record(base: []const Phase, table: *Table) RunError!void {
+    // invariant: a record always seats a plan that names phases
+    assert(base.len >= 1);
+    // invariant: a record is always seated into a table that holds nothing yet
+    assert(table.held == 0);
+    var plainly: [max_queue_len]unhand.Phase = undefined;
+    var p: u32 = 0;
+    while (p < base.len) : (p += 1) plainly[p] = plain(base[p]);
+    // invariant: every phase was read plainly, none skipped
+    assert(p == base.len);
+    const flat = plainly[0..base.len];
+    if (!precede.plan_is_ordered(flat)) return error.OrderStalled;
+    if (!plan_is_seated(flat)) return error.PlanUnseated;
+
+    precede.close(flat, table.record[0..base.len]);
+    table.held = @intCast(base.len);
+    table.left = table.held;
+    var r: u32 = 0;
+    while (r < base.len) : (r += 1) {
+        table.reserve_of[r] = base[r].reserve;
+        // The bearing is read once, here, from the record its author wrote --
+        // so every later question about which losses to carry is answered from
+        // the plan rather than from anything the run learns along the way.
+        if (base[r].bear) table.bear_mask |= phase_bit(r);
+    }
+    // invariant: every phase carried its reserve into the record, none lost
+    assert(r == base.len);
+    // invariant: a closed record closes to itself, so the door's work is done
+    assert(precede.plan_is_closed(standing(table)));
+}
+
+/// Runs a record on the reclaiming take, answering for abandoned work as the
+/// chosen answer says.
+///
+/// The supervisor every rung of this arc keeps -- fill the table, reap the
+/// eldest, judge at the end -- with the reclaiming act folded into the reaping
+/// one, as the rung below folded it, and the answering act folded in behind
+/// that, so a conferral both leaves with its holder and says what its holder
+/// left undone.
+pub fn run_in_recant(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    base: []const Phase,
+    wake: gap.Wake,
+    reading: Reading,
+    keeping: Keep,
+    bearing: Bearing,
+    standard: Standard,
+    review: Review,
+    report_out: *Report,
+) (roster.RosterError || exercise.ProvisionError || notify.BellError || NoteError || RunError || cohort.RunError || boot.BootError)!void {
+    // invariant: a run always knows what program to spawn
+    assert(self_path.len >= 1);
+    // invariant: a run always reports into a fresh report
+    assert(run_of(report_out).admitted == 0);
+    if (base.len == 0) return error.EmptyQueue;
+    if (base.len > max_queue_len) return error.QueueFull;
+
+    var table: Table = .{};
+    try seat_the_record(base, &table);
+
+    const caps = try seat_the_ground(io, sys, report_out);
+    run_of(report_out).queued = table.held;
+
+    while (table.left > 0 or table.in_flight > 0) {
+        const took_up = try fill_table(
+            allocator, io, self_path, sys, &caps, wake, reading, keeping, &table, report_out,
+        );
+        if (table.in_flight > run_of(report_out).peak_in_flight) {
+            run_of(report_out).peak_in_flight = table.in_flight;
+        }
+
+        if (table.left > 0) {
+            const free = max_in_flight - table.in_flight;
+            run_of(report_out).slots_unspent += free;
+            if (took_up == 0 and free > 0) run_of(report_out).idle_turns += 1;
+        }
+
+        // With an empty table nothing conflicts, so a stall here would mean
+        // the record named a domain the document does not.
+        if (table.in_flight == 0) return error.OrderStalled;
+
+        try reap_oldest(io, &table, .answered, report_out);
+    }
+    // invariant: the whole record was taken up, and every dependent reaped
+    assert(table.left == 0);
+    assert(table.in_flight == 0);
+    assert(run_of(report_out).reaped == run_of(report_out).admitted);
+    // invariant: every phase either started a dependent or was conferred to one
+    assert(table.finished + abandoning_of(report_out).inner.inner.inner.inner.absorbed == table.held);
+
+    var j: u32 = 0;
+    while (j < table.finished) : (j += 1) try judge_outcome(table.done[j], report_out);
+    // invariant: every reaped dependent was judged, none skipped
+    assert(j == table.finished);
+
+    // The reckoning stands exactly as the rung below wrote it, and always on
+    // the reckoning ledger: a mend that repaired a plan under the assuming
+    // reading would be repairing a loss it had already declared did not count.
+    // What this rung adds to it is the recantation, weighed against the
+    // judgment already standing on the wire before this run touches it.
+    try reckon_the_plan(io, &table, .reckoned, review, report_out);
+
+    // Every run here mends, since the question this rung asks opens inside the
+    // repair rather than before it: what separates the two readings is which
+    // of the plan's losses the repair is allowed to touch.
+    try mend_the_plan(
+        allocator, io, self_path, sys, &caps, base, wake, keeping, bearing, standard, review, &table, report_out,
+    );
+}
+
+/// Runs the arcs a plan lost that nobody spared, and answers for what is left
+/// standing after.
+///
+/// The mend reads its own run's verdict back from the wire before it decides
+/// anything, because a supervisor that repairs from memory is repairing a plan
+/// it believes in rather than the one it published. A plan the wire calls
+/// `carried` is refused outright -- there is nothing here to repair, and a
+/// mend that ran anyway would re-do work already served.
+///
+/// **What this rung adds is the recantation, read from the same wire.** The
+/// appraisal note names which losses a judgment spared -- and under `.stand`
+/// that judgment may be older than this run, since the note is the one a run
+/// never clears. The recant note names which of those judgments this run's own
+/// record disproves. Under `.stand` the mend spares every appraised loss,
+/// exactly as the rung below does. Under `.revisit` the recanted ones come back
+/// into the repair, and the settlement moves with them -- from `borne`, which
+/// tells an operator there is nothing left to do, to `carried`, which is true.
+fn mend_the_plan(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    caps: *const capabilities.CapabilityTable,
+    base: []const Phase,
+    wake: gap.Wake,
+    keeping: Keep,
+    bearing: Bearing,
+    standard: Standard,
+    review: Review,
+    table: *Table,
+    report_out: *Report,
+) (RunError || NoteError || cohort.RunError || boot.BootError)!void {
+    // invariant: a mend always reads a record the run has drained
+    assert(table.left == 0);
+    // invariant: a mend always reads a plan the run actually held
+    assert(base.len == table.held);
+    const lost = abandoning_of(report_out).abandoned;
+    if (lost == 0) {
+        // invariant: a plan that lost nothing leaves nothing standing
+        assert(below_of(report_out).unserved == 0);
+        below_of(report_out).settled = .carried;
+        bearing_of(report_out).settlement = .carried;
+        return;
+    }
+
+    // The wire before the memory: what this run published about itself, read
+    // back the way an operator would read it.
+    const published = verdict_published(io);
+    const named = lost_published(io, table.held);
+    const marked = if (bearing == .borne) bearing_published(io, table.held) & named else 0;
+    // The judgment, read from the wire the run wrote it to rather than folded
+    // again here. A standard applied twice is a standard nobody published.
+    const judged = if (standard == .weighed) appraisal_published(io, table.held) & named else 0;
+    if (marked_reach(marked, judged)) |why| return why;
+    // The reversal, read from the same wire and never folded again here. Under
+    // `.stand` the run published none, so this is zero and every appraised loss
+    // is spared exactly as the rung below spares it.
+    const taken_back = if (review == .revisit) recant_published(io, table.held) & named else 0;
+    // A judgment is kept or taken back, never both -- the honesty of the count,
+    // read straight off the two notes rather than inferred from either.
+    if ((judged & taken_back) != 0) return error.RecantMiscounted;
+    const on_the_wire = judged | taken_back;
+    if (on_the_wire != 0) {
+        if (recant_refusal(
+            published,
+            @popCount(on_the_wire),
+            @popCount(judged),
+            @popCount(taken_back),
+        )) |why| return why;
+    }
+    const spared = marked | judged;
+    var seating: u32 = 0;
+    var bore: u32 = 0;
+    var weighed: u32 = 0;
+    var at: u32 = 0;
+    while (at < table.held) : (at += 1) {
+        if ((named & phase_bit(at)) == 0) continue;
+        if ((judged & phase_bit(at)) != 0) {
+            weighed += 1;
+            bore += 1;
+            continue;
+        }
+        if ((marked & phase_bit(at)) != 0) {
+            bore += 1;
+            continue;
+        }
+        seating += 1;
+    }
+    // invariant: the walk weighed every phase of the record, none skipped
+    assert(at == table.held);
+    // invariant: a run never weighs more loss than it carried in all
+    assert(weighed <= bore);
+    if (appraise_refusal(published, lost, bore - weighed, weighed, seating)) |why| return why;
+    if (bear_refusal(published, lost, bore, seating)) |why| return why;
+    if (seating >= 1) {
+        if (mend_refusal(published, lost, seating)) |why| return why;
+    }
+    bearing_of(report_out).bore = bore;
+    appraising_of(report_out).weighed = weighed;
+
+    var again: [max_queue_len]Phase = undefined;
+    var wrote: u32 = 0;
+    var seated_mask: u32 = 0;
+    at = 0;
+    while (at < table.held) : (at += 1) {
+        if ((named & phase_bit(at)) == 0) continue;
+        if ((spared & phase_bit(at)) != 0) continue;
+        again[wrote] = reseated(base[at], wrote);
+        seated_mask |= phase_bit(at);
+        wrote += 1;
+    }
+    // The obedience this rung measures, taken before the repair runs rather
+    // than inferred from it afterwards: arcs the plan asked to bear that the
+    // repair is about to run anyway. The measurement weighs what the *plan*
+    // asked, so the elder reading is counted rather than refused -- and the
+    // refusal weighs what this run's own bearing *published*, so a repair that
+    // reaches past the wire it read is stopped by name before it spawns, and
+    // before any invariant beneath it has to catch a supervisor in the act.
+    bearing_of(report_out).overrepaired = overrepaired(table.bear_mask & named, seated_mask);
+    if (overrepaired(marked, seated_mask) >= 1) return error.BearOverrepaired;
+    // This rung's own name for the same overreach, one tier out: a repair that
+    // seats a phase its run's own appraisal spared has reached past the wire it
+    // read, and it is stopped here -- before it spawns, and before any invariant
+    // beneath it has to catch a supervisor in the act.
+    if (repaired_spent(judged, seated_mask) >= 1) return error.AppraiseUnweighed;
+    // The judgment this rung measures, taken the same way and at the same
+    // moment: arcs the run's own evidence said the plan had got past, that the
+    // repair is about to run anyway. The measurement weighs what the *run
+    // learned*, so the elder reading is counted rather than refused, while the
+    // refusal above weighs what this run's own appraisal published.
+    appraising_of(report_out).repaired_spent = repaired_spent(
+        appraised_in(standing(table), named, table.bear_mask),
+        seated_mask,
+    );
+    // The answer of this rung, taken at the same moment and in the same shape:
+    // a recanted arc that the repair then declines to run has published a
+    // reversal it never carried out, and it is stopped here -- before it spawns,
+    // and before an operator reads a settlement the wire does not support.
+    if (@popCount(taken_back & ~seated_mask) >= 1) return error.RecantUnspoken;
+    report_out.recanted = @popCount(taken_back);
+    // The measurement this rung moves, weighed against what the *run learned*
+    // rather than what any wire said, so the elder reading is counted rather
+    // than refused: arcs a judgment spared while this run's own evidence
+    // declines to weigh them spent. A marked loss stays outside it, since no
+    // judgment was ever made about an arc its author named.
+    report_out.spared_disproved = spared_disproved(
+        judged,
+        appraised_in(standing(table), named, table.bear_mask),
+    );
+    // invariant: the mend seated exactly the phases the wire left it
+    assert(wrote == seating);
+
+    if (wrote == 0) {
+        // Every loss this plan took is loss its author asked to carry, so the
+        // repair has nothing to run and the settlement says the plan is as
+        // whole as it was ever asked to be.
+        try settle_the_plan(io, lost, 0, report_out);
+        return;
+    }
+
+    var second: Table = .{};
+    try seat_the_record(again[0..wrote], &second);
+    below_of(report_out).reseated += wrote;
+
+    while (second.left > 0 or second.in_flight > 0) {
+        const took_up = try fill_table(
+            allocator, io, self_path, sys, caps, wake, .preceded, keeping, &second, report_out,
+        );
+        if (second.in_flight > run_of(report_out).peak_in_flight) {
+            run_of(report_out).peak_in_flight = second.in_flight;
+        }
+        if (second.left > 0) {
+            const free = max_in_flight - second.in_flight;
+            run_of(report_out).slots_unspent += free;
+            if (took_up == 0 and free > 0) run_of(report_out).idle_turns += 1;
+        }
+        if (second.in_flight == 0) return error.OrderStalled;
+        try reap_oldest(io, &second, .answered, report_out);
+    }
+    // invariant: the repair was taken up whole, and every dependent reaped
+    assert(second.left == 0);
+    assert(second.in_flight == 0);
+
+    var j: u32 = 0;
+    while (j < second.finished) : (j += 1) try judge_outcome(second.done[j], report_out);
+    // invariant: every dependent of the repair was judged, none skipped
+    assert(j == second.finished);
+    // invariant: a repair never loses an arc of its own, since it confers none
+    assert(second.lost_mask == 0);
+
+    // What the repair carried is what it seated, since every phase of it was
+    // judged against the outcome its own author declared and none was
+    // conferred away. So the work still standing is the loss minus the repair.
+    try settle_the_plan(io, lost, wrote, report_out);
+}
+
+/// Publishes what the plan came to and what that means, and reads both back.
+///
+/// The verdict below answers whether work is still standing; the settlement
+/// answers what an operator should do about it. Both go to the wire and both
+/// are read back before the report believes either, since a supervisor that
+/// trusts its own memory of what it published has published nothing.
+fn settle_the_plan(
+    io: std.Io,
+    lost: u32,
+    served_again: u32,
+    report_out: *Report,
+) (RunError || NoteError)!void {
+    // invariant: a settling always weighs a plan that actually lost an arc
+    assert(lost >= 1);
+    // invariant: a repair never carries more arcs than the plan lost
+    assert(served_again <= lost);
+    below_of(report_out).unserved = unserved_after(lost, served_again);
+    const settled = settled_verdict(below_of(report_out).unserved);
+    try verdict_note(io, settled);
+    const said = verdict_published(io) orelse return error.MendUnserved;
+    if (said != settled) return error.MendUnserved;
+    if (said == .carried and below_of(report_out).unserved >= 1) return error.MendUnserved;
+    below_of(report_out).settled = said;
+
+    const settlement = settlement_of(below_of(report_out).unserved, bearing_of(report_out).bore);
+    try settlement_note(io, settlement);
+    const read_back = settlement_published(io) orelse return error.BearOverrepaired;
+    if (read_back != settlement) return error.BearOverrepaired;
+    // The answer, and the hard half of this rung: a run that re-ran an arc its
+    // author asked it to bear has disobeyed the plan it serves, and a run that
+    // called such a plan borne would report an obedience it never practiced.
+    if (read_back == .borne and bearing_of(report_out).overrepaired >= 1) return error.BearOverrepaired;
+    // The answer of this rung, weighed the same way one tier out: a run that
+    // carried a loss no note of its own names has judged in private, and a run
+    // that called such a plan borne would report a judgment it never made in
+    // the open.
+    if (appraising_of(report_out).weighed >= 1 and appraisal_published(io, max_queue_len) == 0) {
+        return error.AppraiseUnweighed;
+    }
+    // The answer of this rung, weighed the same way one tier out: a run that
+    // took a judgment back and published no recantation reversed it in private,
+    // and a settlement read on that silence would tell an operator a story the
+    // wire cannot support.
+    if (report_out.recanted >= 1 and recant_published(io, max_queue_len) == 0) {
+        return error.RecantUnspoken;
+    }
+    // A plan whose judgment this run disproved and left standing all the same
+    // reads `borne`, which says there is nothing left to do while an arc of the
+    // plan stands unserved. Under `.revisit` that never happens, and this names
+    // it rather than trusting that it cannot.
+    if (read_back == .carried and report_out.spared_disproved >= 1) return error.RecantUnspoken;
+    bearing_of(report_out).settlement = read_back;
+}
+
+/// Weighs what the plan came to, publishes the verdict and the loss, and reads
+/// the verdict back.
+///
+/// The reckoning waits until the last dependent has been reaped and every
+/// abandonment already answered for, since a verdict taken any earlier would
+/// judge work that may yet be carried. A plan that absorbed no phase into a
+/// standing dependent is carried by the shape of its own record, and this rung
+/// leaves it exactly there rather than inventing a judgment it cannot make.
+///
+/// What this rung adds to the one below is the **recantation beside the
+/// appraisal**. The judgment already on the wire is read here, before anything
+/// this run learned is written over it, and weighed against the judgment this
+/// run's own record supports. Whichever way the plan asks its history to be
+/// read, that reading is published while the run still holds the evidence for
+/// it, and read back before the repair spares or seats a single phase.
+fn reckon_the_plan(
+    io: std.Io,
+    table: *const Table,
+    ledger: Ledger,
+    review: Review,
+    report_out: *Report,
+) (RunError || NoteError)!void {
+    // invariant: a reckoning always reads a record the run has drained
+    assert(table.left == 0);
+    const absorbed = abandoning_of(report_out).inner.inner.inner.inner.absorbed;
+    const lost = abandoning_of(report_out).abandoned;
+    try lost_note(io, table.held, table.lost_mask);
+    // The bearing rides beside the loss, written from the plan the run seated
+    // rather than from anything it learned along the way: a phase asked to be
+    // borne asked it before the run began.
+    try bearing_note(io, table.held, table.lost_mask & table.bear_mask);
+    // The appraisal rides beside both, and unlike either it is written from
+    // what the run learned: which of the losses its author left unmarked this
+    // run's own downstream says the plan got past. Written here, while the run
+    // still holds the record that proves it, and read back before the repair
+    // spares a single phase on its word.
+    // The judgment already standing on the wire, read before this run writes a
+    // word over it. It may have been left by a run that is over, since the
+    // appraisal is the one note a run never clears.
+    const held_before = appraisal_published(io, table.held);
+    // What this run's own record supports, folded fresh from the evidence it
+    // still holds.
+    const evidenced = appraised_in(standing(table), table.lost_mask, table.bear_mask);
+    // The reversal, and the whole of what this rung adds: which standing
+    // judgments this run lost the same arc for and declines to weigh spent.
+    // Under `.stand` a run publishes none, since it never weighs what it found.
+    const taken_back = if (review == .revisit)
+        recanted_in(held_before, evidenced, table.lost_mask)
+    else
+        0;
+    // The supply, refused by name while the judgment it must answer to is still
+    // in hand: a recantation may reach only an arc some appraisal spared.
+    if (unappraised_reach(held_before, taken_back)) |why| return why;
+    try recant_note(io, table.held, taken_back);
+    // The appraisal rides beside both. Under `.revisit` it is exactly what this
+    // run's evidence supports, so a recanted judgment leaves the wire in the
+    // same breath it is taken back. Under `.stand` this run's reading joins the
+    // one it found rather than weighing it -- which is where the rung below
+    // leaves a record, and why a plan the wire holds no judgment about reads
+    // there exactly.
+    try appraisal_note(io, table.held, switch (review) {
+        .stand => held_before | evidenced,
+        .revisit => evidenced,
+    });
+    if (absorbed == 0) {
+        // invariant: a plan that absorbed nothing can have lost nothing
+        assert(lost == 0);
+        // invariant: a plan that lost nothing names no phase in its loss
+        assert(table.lost_mask == 0);
+        below_of(report_out).inner.verdict = .carried;
+        below_of(report_out).settled = .carried;
+        bearing_of(report_out).settlement = .carried;
+        try verdict_note(io, .carried);
+        try settlement_note(io, .carried);
+        return;
+    }
+    if (reckon_refusal(absorbed, table.in_flight, lost)) |why| return why;
+
+    const verdict = verdict_in(lost, ledger);
+    try verdict_note(io, verdict);
+    const said = verdict_published(io) orelse return error.ReckonOverclaimed;
+    if (said != verdict) return error.ReckonOverclaimed;
+    if (ledger == .reckoned and said == .carried and lost >= 1) return error.ReckonOverclaimed;
+    below_of(report_out).inner.verdict = said;
+    below_of(report_out).inner.overclaimed += overclaimed_completion(lost, said);
+    // Where the run stands before any repair: the loss, entire. A mend moves
+    // this number and nothing else moves it.
+    below_of(report_out).unserved = lost;
+    below_of(report_out).settled = said;
+}
+
+// =========================================================================
+// The dependent -- a walk that reads the wire before it trusts its own hands
+// =========================================================================
+
+/// Reads the capability words a dependent was handed at its spawn into its slot.
+fn slot_from_argv(args: []const [:0]const u8, domain: []const u8, cap_count: u32) ?capabilities.DependentSlot {
+    // invariant: a dependent always knows which domain it is
+    assert(domain.len >= 1);
+    // invariant: the count stays within what one dependent may hold
+    assert(cap_count <= capabilities.max_caps_per_dependent);
+    var slot = capabilities.DependentSlot.init(domain);
+    var i: u32 = 0;
+    while (i < cap_count) : (i += 1) {
+        const cap = boot.read_cap_word(args[fixed_argv_words + i]) orelse return null;
+        slot.grant(cap) catch return null;
+    }
+    // invariant: the dependent holds exactly the capability words it was handed
+    assert(slot.cap_count == cap_count);
+    return slot;
+}
+
+/// Answers whether this dependent already holds a capability over one region.
+fn already_holds(slot: *const capabilities.DependentSlot, region_name: []const u8) bool {
+    // invariant: a holding is always asked about a named region
+    assert(region_name.len >= 1);
+    // invariant: a holding never reads past what one dependent may hold
+    assert(slot.cap_count <= capabilities.max_caps_per_dependent);
+    var i: u32 = 0;
+    while (i < slot.cap_count) : (i += 1) {
+        if (std.mem.eql(u8, slot.caps[i].name_slice(), region_name)) return true;
+    }
+    // invariant: the walk read every capability the dependent holds, none skipped
+    assert(i == slot.cap_count);
+    return false;
+}
+
+/// Names the word at one depth of a list, or answers that the list is shorter.
+fn word_at(words: *const Words, index: u32) ?[]const u8 {
+    // invariant: a word is only ever sought inside what one dependent may hold
+    assert(index < capabilities.max_caps_per_dependent);
+    var seen: u32 = 0;
+    var lines = std.mem.splitScalar(u8, words.slice(), '\n');
+    while (lines.next()) |one| {
+        if (one.len == 0) continue;
+        if (seen == index) return one;
+        seen += 1;
+    }
+    return null;
+}
+
+/// Rebuilds a dependent's own hands as the line it was spawned with, plus the
+/// leading `keep` conferred words.
+fn prune_to(
+    base: *const capabilities.DependentSlot,
+    words: *const Words,
+    keep: u32,
+) ?capabilities.DependentSlot {
+    // invariant: a pruning never keeps more than one dependent may hold
+    assert(keep <= capabilities.max_caps_per_dependent);
+    // invariant: a pruning always rebuilds from hands that hold their own line
+    assert(base.cap_count <= capabilities.max_caps_per_dependent);
+    var rebuilt = base.*;
+    var i: u32 = 0;
+    while (i < keep) : (i += 1) {
+        const word = word_at(words, i) orelse return null;
+        const cap = boot.read_cap_word(word) orelse return null;
+        if (already_holds(&rebuilt, cap.name_slice())) continue;
+        rebuilt.grant(cap) catch return null;
+    }
+    // invariant: every kept word was read back into the dependent's hands
+    assert(i == keep);
+    // invariant: a rebuilt slot never holds less than the line it was spawned with
+    assert(rebuilt.cap_count >= base.cap_count);
+    return rebuilt;
+}
+
+/// Counts the conferred arcs this dependent can touch, over one range.
+fn reachable_between(
+    io: std.Io,
+    slot: *capabilities.DependentSlot,
+    words: *const Words,
+    from: u32,
+    to: u32,
+) u32 {
+    // invariant: a probe always reads a range that runs forward
+    assert(from <= to);
+    // invariant: a probe never reaches past what one dependent may hold
+    assert(to <= capabilities.max_caps_per_dependent);
+    var reachable: u32 = 0;
+    var i: u32 = from;
+    while (i < to) : (i += 1) {
+        const word = word_at(words, i) orelse break;
+        const cap = boot.read_cap_word(word) orelse break;
+        if (queue_store.read_index(io, slot, cap.name_slice())) |_| {
+            reachable += 1;
+        } else |_| {}
+    }
+    // invariant: no arc counts as reachable that was never in the range
+    assert(reachable <= to - from);
+    return reachable;
+}
+
+/// Counts the reach standing on the wire at this dependent's first breath.
+///
+/// The finding of this rung, made by the party that would be lying if it were
+/// wrong -- and made without touching the hands the dependent actually works
+/// with. The words standing for this domain are grafted into a *copy* of those
+/// hands, and each arc is asked for.
+///
+/// **A conferral names the generation it was made to, and that is what makes
+/// the count exact.** A supervisor may publish a word for this very dependent
+/// between the spawn and this first breath, so *something standing here* is no
+/// evidence at all. A word addressed to an **earlier** generation of this
+/// domain is evidence, and it is the whole of what inherited reach means.
+fn inherited_at_first_breath(
+    io: std.Io,
+    base: *const capabilities.DependentSlot,
+    domain: []const u8,
+) u32 {
+    // invariant: a first breath always names the dependent drawing it
+    assert(domain.len >= 1);
+    // invariant: a first breath reads hands that hold their own line
+    assert(base.cap_count <= capabilities.max_caps_per_dependent);
+    const found: u32 = read_count(io, domain, ".given") catch return 0;
+    if (found == 0) return 0;
+    const mine: u32 = read_count(io, domain, ".epoch") catch return 0;
+    const meant_for: u32 = read_count(io, domain, ".for") catch return 0;
+    // invariant: a conferral is never addressed past the generation standing now
+    assert(meant_for <= mine);
+    if (meant_for == mine) return 0;
+    // invariant: a conferral never stands wider than one line may name
+    assert(found <= cycle.max_hops);
+    var words: Words = .{};
+    read_words(io, domain, &words) catch return 0;
+    var probe = base.*;
+    var i: u32 = 0;
+    while (i < found) : (i += 1) {
+        const word = word_at(&words, i) orelse break;
+        const cap = boot.read_cap_word(word) orelse break;
+        if (already_holds(&probe, cap.name_slice())) continue;
+        probe.grant(cap) catch break;
+    }
+    return reachable_between(io, &probe, &words, 0, found);
+}
+
+/// One dependent's own line, read arc by arc against the count it was handed.
+///
+/// Answers `null` when every arc stood as the plan said it would, and an
+/// outcome code naming the first arc that did not.
+fn read_own_line(
+    io: std.Io,
+    slot: *capabilities.DependentSlot,
+    task: cycle.Task,
+) ?u8 {
+    // invariant: a standing dependent always reads at least one arc
+    assert(task.hops.count >= 1);
+    // invariant: a line never names more arcs than one plan may carry
+    assert(task.hops.count <= cycle.max_hops);
+    var i: u32 = 0;
+    while (i < task.hops.count) : (i += 1) {
+        const stood = queue_store.read_index(io, slot, task.hops.name_at(i)) catch |err|
+            return serve.reach_code(err);
+        if (stood != task.count) return carry.Outcome.bytes_differed;
+    }
+    // invariant: every arc this dependent was handed was read, none skipped
+    assert(i == task.hops.count);
+    return null;
+}
+
+/// Grafts every conferred word as it arrives, reads each arc, and answers for
+/// what it holds.
+///
+/// Answers the count grafted, or an outcome code where a word or an arc did
+/// not stand. The dependent answers `.held` only after reading every arc it
+/// grafted, which is what lets the supervisor read that answer as work served.
+fn graft_promised_reach(
+    io: std.Io,
+    slot: *capabilities.DependentSlot,
+    domain: []const u8,
+    task: cycle.Task,
+    promised: u32,
+    granted: *Words,
+    carried_out: *u32,
+) ?u8 {
+    // invariant: a graft always names the dependent doing it
+    assert(domain.len >= 1);
+    // invariant: a promise never names more reach than one line may hold
+    assert(promised <= cycle.max_hops);
+    var carried: u32 = 0;
+    var looks: u32 = 0;
+    while (carried < promised and looks < max_patience_looks) : (looks += 1) {
+        const given: u32 = read_count(io, domain, ".given") catch break;
+        if (given <= carried) {
+            std.Io.sleep(io, std.Io.Duration.fromMilliseconds(note_rest_ms), .awake) catch {};
+            continue;
+        }
+        granted.len = 0;
+        read_words(io, domain, granted) catch return carry.Outcome.malformed;
+        while (carried < given and carried < promised) : (carried += 1) {
+            const word = word_at(granted, carried) orelse return carry.Outcome.malformed;
+            const cap = boot.read_cap_word(word) orelse return carry.Outcome.malformed;
+            const name = cap.name_slice();
+            if (!already_holds(slot, name)) {
+                slot.grant(cap) catch return carry.Outcome.malformed;
+            }
+            const stood = queue_store.read_index(io, slot, name) catch |err|
+                return serve.reach_code(err);
+            if (stood != task.count) return carry.Outcome.bytes_differed;
+        }
+        holds(io, domain, carried) catch return carry.Outcome.malformed;
+    }
+    // invariant: the waiting stayed inside the bound it was given
+    assert(looks <= max_patience_looks);
+    // invariant: a dependent never grafts more reach than it was promised
+    assert(carried <= promised);
+    carried_out.* = carried;
+    return null;
+}
+
+/// Returns the reach a promised pruning asks back, and answers how much.
+///
+/// A dependent told a pruning is coming waits for the number that names it,
+/// rebuilds its own hands down to that number, and answers. A `null` says the
+/// words on the wire could not be read back into hands at all.
+fn return_promised_reach(
+    io: std.Io,
+    base: *const capabilities.DependentSlot,
+    slot: *capabilities.DependentSlot,
+    domain: []const u8,
+    granted: *const Words,
+    carried: u32,
+) ?u32 {
+    // invariant: a return always names the dependent making it
+    assert(domain.len >= 1);
+    // invariant: a return never gives back more than one dependent may hold
+    assert(carried <= capabilities.max_caps_per_dependent);
+    if (carried == 0 or !pruning_promised(io, domain)) return 0;
+    var gave_back: u32 = 0;
+    var prunes: u32 = 0;
+    while (prunes < max_prune_looks) : (prunes += 1) {
+        const remaining = kept(io, domain) catch break;
+        if (remaining >= carried) {
+            std.Io.sleep(io, std.Io.Duration.fromMilliseconds(note_rest_ms), .awake) catch {};
+            continue;
+        }
+        slot.* = prune_to(base, granted, remaining) orelse return null;
+        if (reachable_between(io, slot, granted, remaining, carried) != 0) break;
+        gave_back = carried - remaining;
+        pruned(io, domain, gave_back) catch return null;
+        break;
+    }
+    // invariant: the waiting stayed inside the bound it was given
+    assert(prunes <= max_prune_looks);
+    // invariant: a dependent never returns more reach than it grafted
+    assert(gave_back <= carried);
+    return gave_back;
+}
+
+/// Reads the arcs this dependent was handed, then every arc it is conferred, and
+/// returns the reach the run asks back before it comes home.
+fn stand_taking_and_returning_reach(
+    io: std.Io,
+    base: *const capabilities.DependentSlot,
+    slot: *capabilities.DependentSlot,
+    domain: []const u8,
+    task: cycle.Task,
+    found: u32,
+) u8 {
+    // invariant: a standing dependent always knows which domain it is
+    assert(domain.len >= 1);
+    // invariant: a standing dependent always reads at least one arc
+    assert(task.hops.count >= 1);
+    if (read_own_line(io, slot, task)) |code| return code;
+
+    const promised = offered(io, domain) catch 0;
+    // invariant: a promise never names more reach than one line may hold
+    assert(promised <= cycle.max_hops);
+
+    var granted: Words = .{};
+    var carried: u32 = 0;
+    if (graft_promised_reach(io, slot, domain, task, promised, &granted, &carried)) |code| return code;
+
+    // The return, when a pruning was promised: the reach comes back and the
+    // dependent answers how much of it it gave up.
+    const gave_back = return_promised_reach(io, base, slot, domain, &granted, carried) orelse
+        return carry.Outcome.malformed;
+
+    const reachable = reachable_between(io, slot, &granted, 0, carried);
+    print("    {s}: read {d} arcs of its own, {d} inherited at its first breath, {d} conferred, {d} returned, {d} still reachable at home\n", .{
+        domain, task.hops.count, found, carried, gave_back, reachable,
+    });
+
+    // A plan declares how each dependent ends, and this rung honors that
+    // declaration here -- after the conferral is grafted and answered for, and
+    // before the work it was granted for is carried. That window is the whole
+    // subject of the rung: a dependent that falls holding conferred reach.
+    if (falling_promised(io, domain)) {
+        print("    {s}: falls as its author declared, holding {d} conferred arcs it never served\n", .{
+            domain, carried,
+        });
+        return carry.Outcome.bytes_differed;
+    }
+    return carry.Outcome.carried_ok;
+}
+
+/// Runs as one supervised dependent, reading the wire before it trusts it.
+fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
+    // invariant: a dependent always receives its marker, domain, plan, and count
+    assert(args.len >= fixed_argv_words);
+    // invariant: a dependent always knows which domain it is
+    assert(args[2].len >= 1);
+    const domain = args[2];
+    const task = cycle.read_plan(args[3]) orelse return cohort.run_dependent(io, args);
+    if (task.verb != .stand) return cohort.run_dependent(io, args);
+
+    const cap_count = tally_parse_int.parse_int(u32, args[6], .{}) catch {
+        print("    {s}: refused an unreadable capability count\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    if (cap_count > capabilities.max_caps_per_dependent) {
+        print("    {s}: more capabilities than one dependent holds\n", .{domain});
+        return carry.Outcome.malformed;
+    }
+    if (fixed_argv_words + cap_count > args.len) {
+        print("    {s}: a capability count past the words it was handed\n", .{domain});
+        return carry.Outcome.malformed;
+    }
+    var slot = slot_from_argv(args, domain, cap_count) orelse {
+        print("    {s}: refused a malformed capability word\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    const base = slot;
+    const found = inherited_at_first_breath(io, &base, domain);
+    inherited(io, domain, found) catch {
+        print("    {s}: could not answer for what it found on the wire\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    const code = stand_taking_and_returning_reach(io, &base, &slot, domain, task, found);
+    print("    {s}: {s}\n", .{ domain, outcome_name(code) });
+    return code;
+}
+
+// =========================================================================
+// The lap -- one plan run twice against a judgment already on the wire, once
+// letting it stand and once weighing it again
+// =========================================================================
+
+/// The lap this rung runs, and the judgment nobody made this time is the whole
+/// of it.
+///
+/// Three clients stand over three arcs and carry a reserve of one, and the
+/// phase behind each asks that same client to peek exactly the reserved arc --
+/// so the run confers `menu` to a dependent already standing, three times.
+/// Every author declares that their dependent falls, so each grafts the word,
+/// answers for it, and falls holding it: three conferrals, three arcs nobody
+/// served. None is marked, so the bearing has nothing to say about any of them.
+///
+/// The wire meets this plan already carrying a judgment: `client_b`'s lost peek
+/// was weighed spent by a run that is over, and the appraisal is the one note a
+/// run never clears. This run's own evidence says otherwise. `client_c` peeks
+/// the menu in a turn that names turn 1 among the turns it waits behind -- so it
+/// is the phase that would speak for `client_b`'s loss -- and this time
+/// `client_c` falls holding its conferral, taking that testimony down with it.
+///
+/// So the standing judgment has nothing left under it. Letting it stand spares
+/// `client_b`'s arc on the word of a run whose evidence is gone, repairs the
+/// other two, and settles the plan `borne` -- there is nothing left to do, an
+/// operator reads, while an arc of the plan stands unserved. Weighing it again
+/// takes the judgment back on the wire, repairs all three, and settles the plan
+/// `carried`, which is true. The price is exactly one more dependent.
+const written_queue = [_]Phase{
+    .{ .turn = 0, .step = 0, .follows = 0, .follows_turns = 0, .reserve = .{ .effects = "r", .item = .{ .domain = "client_b", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.carried_ok } }, .task = .{ .effects = "r,w,w", .item = .{ .domain = "client_b", .verb = .stand, .hops = "board,ask_b,taken_b", .peers = "serial_virt,client_b", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 1, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_b", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 2, .step = 0, .follows = 0, .follows_turns = 0, .reserve = .{ .effects = "r", .item = .{ .domain = "client_a", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.carried_ok } }, .task = .{ .effects = "r,w,w", .item = .{ .domain = "client_a", .verb = .stand, .hops = "board,ask_a,taken_a", .peers = "serial_virt,client_a", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 3, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_a", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 4, .step = 0, .follows = 0, .follows_turns = 0, .reserve = .{ .effects = "r", .item = .{ .domain = "client_c", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.carried_ok } }, .task = .{ .effects = "r,w,w", .item = .{ .domain = "client_c", .verb = .stand, .hops = "board,ask_c,taken_c", .peers = "serial_virt,client_c", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 5, .step = 0, .follows = 0, .follows_turns = 2, .task = .{ .effects = "r", .item = .{ .domain = "client_c", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+};
+
+/// The judgment the wire already carries when this lap begins.
+///
+/// `client_b`'s lost peek, weighed spent by a run that is over. It is seated as
+/// the record it is rather than produced by a first run of this plan, because
+/// what a run does with a judgment it did not make is the whole subject here --
+/// and because a judgment arrives on the wire exactly this way whether the run
+/// that wrote it finished a minute ago or a season ago.
+const standing_judgment: u32 = 1 << 1;
+
+// =========================================================================
+// Self-test
+// =========================================================================
+
+/// Loads one declaration, or names why it could not be read.
+fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
+    const parsed = read.load(io, path, buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ path, @errorName(err) });
+        return null;
+    };
+    if (parsed.verify() != .whole) {
+        print("  RED: {s} did not read whole\n", .{path});
+        return null;
+    }
+    return parsed;
+}
+
+/// The mend below, read straight, so this rung's own fold stands on a repair
+/// that still refuses everything it always refused.
+fn check_mending() u8 {
+    // The act itself: a plan the wire calls short, one arc lost, one phase
+    // seated to carry it.
+    if (mend_refusal(.short, 1, 1)) |why| {
+        print("  RED: a settled mend refused: {s}\n", .{@errorName(why)});
+        return 1;
+    }
+
+    // The record, the plan, and the reach, exactly as the rung below weighs them.
+    if (mend_refusal(null, 1, 1)) |why| {
+        if (why != error.MendUnread) {
+            print("  RED: an unread mend refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a mend that read no verdict was allowed to repair\n", .{});
+        return 1;
+    }
+    if (mend_refusal(.carried, 0, 0)) |why| {
+        if (why != error.MendWhole) {
+            print("  RED: a whole plan refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a plan already carried was mended\n", .{});
+        return 1;
+    }
+    if (mend_refusal(.short, 1, 2)) |why| {
+        if (why != error.MendOvereach) {
+            print("  RED: an overreaching mend refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a mend seated more phases than the plan ever lost\n", .{});
+        return 1;
+    }
+
+    // What is left standing, and the verdict that follows the work.
+    if (unserved_after(2, 1) != 1 or settled_verdict(1) != .short or settled_verdict(0) != .carried) {
+        print("  RED: the repair below stopped counting what still stands\n", .{});
+        return 1;
+    }
+
+    print("  a repair still refuses by name: unread, whole, overreaching\n", .{});
+    return 0;
+}
+
+/// The bearing and its three standing refusals, read straight, before any
+/// dependent runs.
+///
+/// The happy zone of this rung: every question about the moment a bearing is
+/// weighed, the work it weighs, and the honesty of its count answered as a pure
+/// fold -- no process anywhere. The fourth refusal, `BearOverrepaired`, belongs
+/// to the run rather than the fold, since only the wire can answer what a plan
+/// published about its own obedience.
+fn check_bearing() u8 {
+    // The act itself: a plan the wire calls short, two arcs lost, one borne and
+    // one repaired.
+    if (bear_refusal(.short, 2, 1, 1)) |why| {
+        print("  RED: a settled bearing refused: {s}\n", .{@errorName(why)});
+        return 1;
+    }
+
+    // The moment: a bearing weighed before the run published what it lost is
+    // obeying a plan it remembers rather than the one it wrote down.
+    if (bear_refusal(null, 2, 1, 1)) |why| {
+        if (why != error.BearEarly) {
+            print("  RED: an early bearing refused for the wrong reason: {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a bearing was weighed before the run published anything\n", .{});
+        return 1;
+    }
+
+    // The work: a plan that lost nothing has nothing here to bear.
+    if (bear_refusal(.carried, 0, 0, 0)) |why| {
+        if (why != error.BearWhole) {
+            print("  RED: a whole plan's bearing refused for the wrong reason: {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a plan that lost nothing bore a loss all the same\n", .{});
+        return 1;
+    }
+
+    // The honesty of the count, from both sides: a plan cannot bear more arcs
+    // than it lost, and every lost arc is either borne or repaired.
+    if (bear_refusal(.short, 1, 2, 0)) |why| {
+        if (why != error.BearMiscounted) {
+            print("  RED: an overborne plan refused for the wrong reason: {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a plan bore more arcs than it ever lost\n", .{});
+        return 1;
+    }
+    if (bear_refusal(.short, 2, 1, 0)) |why| {
+        if (why != error.BearMiscounted) {
+            print("  RED: an unaccounted loss refused for the wrong reason: {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a loss was neither borne nor repaired, and nobody minded\n", .{});
+        return 1;
+    }
+
+    // The number this rung moves, as a fold: an arc the plan asked to bear and
+    // the repair seated anyway.
+    if (overrepaired(phase_bit(3), phase_bit(3)) != 1) {
+        print("  RED: a borne arc re-run counted as obedience\n", .{});
+        return 1;
+    }
+    if (overrepaired(phase_bit(3), phase_bit(1)) != 0) {
+        print("  RED: a repair of a repairable arc counted as overreach\n", .{});
+        return 1;
+    }
+    if (overrepaired(0, phase_bit(1) | phase_bit(3)) != 0) {
+        print("  RED: a plan that asked nothing was disobeyed all the same\n", .{});
+        return 1;
+    }
+
+    // The settlement, and the third word two were never honest enough to carry.
+    if (settlement_of(0, 0) != .carried) {
+        print("  RED: a plan with nothing standing was not read as carried out\n", .{});
+        return 1;
+    }
+    if (settlement_of(1, 1) != .borne) {
+        print("  RED: a plan whose whole loss was borne was read as short\n", .{});
+        return 1;
+    }
+    if (settlement_of(2, 1) != .short) {
+        print("  RED: a plan still holding work nobody bore was read as borne\n", .{});
+        return 1;
+    }
+    if (settlement_of(1, 0) != .short) {
+        print("  RED: a loss nobody asked to bear was borne anyway\n", .{});
+        return 1;
+    }
+
+    // The settlement survives the round trip through the byte it rides as.
+    if (settlement_of_byte(settlement_byte(.borne)) != .borne or
+        settlement_of_byte(settlement_byte(.carried)) != .carried or
+        settlement_of_byte(settlement_byte(.short)) != .short)
+    {
+        print("  RED: a settlement did not survive the wire it rides\n", .{});
+        return 1;
+    }
+    if (settlement_of_byte(0) != null) {
+        print("  RED: a cleared note read as a settlement\n", .{});
+        return 1;
+    }
+
+    // A re-seated phase carries its bearing forward, since a phase that asked
+    // to be borne asks it every time it is written down. This rung's own lap
+    // marks nothing, so the marked phase is written here rather than borrowed.
+    var marked = written_queue[3];
+    marked.bear = true;
+    const again = reseated(marked, 0);
+    if (!again.bear) {
+        print("  RED: a re-seated phase forgot the bearing its author wrote\n", .{});
+        return 1;
+    }
+    if (again.reserve != null or again.follows != 0 or again.follows_turns != 0) {
+        print("  RED: a re-seated phase kept an arrangement its siblings no longer stand in\n", .{});
+        return 1;
+    }
+
+    print("  a plan names what it expects of a phase, and what it would accept of a loss\n", .{});
+    print("  three refusals stand by name: early, whole, miscounted\n", .{});
+    print("  the bearing this rung keeps: {s}\n", .{bearing_words(.borne)});
+    return 0;
+}
+
+/// The recantation and its three standing refusals, read straight, before any
+/// dependent runs.
+///
+/// The happy zone of this rung: every question about the moment a standing
+/// judgment is weighed again, the supply it may reach, and the honesty of its
+/// count answered as a pure fold -- the closed record, the loss, the judgment on
+/// the wire, and the judgment this run supports are the whole of the input, and
+/// no process appears anywhere. The fourth refusal, `RecantUnspoken`, belongs to
+/// the run rather than the fold, since only the wire can answer what a run
+/// published about its own reversal.
+fn check_recantation() u8 {
+    // The evidence, read from the record this lap actually wrote: turn 5
+    // follows turn 1, so phase 1 has a follower and phase 3 has none.
+    var closed: [max_queue_len]unhand.Phase = undefined;
+    var flat: [max_queue_len]unhand.Phase = undefined;
+    var p: u32 = 0;
+    while (p < written_queue.len) : (p += 1) flat[p] = plain(written_queue[p]);
+    // invariant: every phase of the lap was read plainly, none skipped
+    assert(p == written_queue.len);
+    precede.close(flat[0..written_queue.len], closed[0..written_queue.len]);
+    const record = closed[0..written_queue.len];
+
+    if (followers_of(record, 1) != phase_bit(5)) {
+        print("  RED: the phase a later turn waits behind found no follower\n", .{});
+        return 1;
+    }
+    if (followers_of(record, 3) != 0) {
+        print("  RED: a phase nothing waits behind found a follower all the same\n", .{});
+        return 1;
+    }
+
+    // The evidence the standing judgment was made on, and the evidence this run
+    // has instead. With only the first two arcs lost, phase 1's follower stands
+    // and the judgment holds; with all three lost, that follower is gone and
+    // nothing supports the judgment any longer.
+    const two_lost = phase_bit(1) | phase_bit(3);
+    const all_lost = two_lost | phase_bit(5);
+    if (appraised_in(record, two_lost, 0) != phase_bit(1)) {
+        print("  RED: the judgment the wire carries was never supportable\n", .{});
+        return 1;
+    }
+    if (appraised_in(record, all_lost, 0) != 0) {
+        print("  RED: a judgment stood on a follower that fell with the arc\n", .{});
+        return 1;
+    }
+
+    // The fold at the heart of this rung: a standing judgment this run's own
+    // record no longer supports is taken back, and one it still supports is kept.
+    if (recanted_in(standing_judgment, 0, all_lost) != phase_bit(1)) {
+        print("  RED: a judgment nothing supports was carried forward all the same\n", .{});
+        return 1;
+    }
+    if (recanted_in(standing_judgment, phase_bit(1), all_lost) != 0) {
+        print("  RED: a judgment this run's own evidence keeps was taken back\n", .{});
+        return 1;
+    }
+    // A judgment about an arc this run did not lose is left alone: the run it
+    // spoke about is over, this run served the work, and there is nothing to
+    // resolve and nothing to repair.
+    if (recanted_in(standing_judgment, 0, phase_bit(3)) != 0) {
+        print("  RED: a judgment about work this run served was reversed anyway\n", .{});
+        return 1;
+    }
+    // The other half of the same count, so the equality can be read straight.
+    if (upheld_in(standing_judgment, phase_bit(1), all_lost) != phase_bit(1)) {
+        print("  RED: a judgment this run's evidence supports counted as neither\n", .{});
+        return 1;
+    }
+    if (upheld_in(standing_judgment, 0, all_lost) != 0) {
+        print("  RED: an unsupported judgment counted as upheld\n", .{});
+        return 1;
+    }
+
+    // The act itself: a plan the wire calls short, one judgment standing, none
+    // upheld and one taken back.
+    if (recant_refusal(.short, 1, 0, 1)) |why| {
+        print("  RED: a settled recantation refused: {s}\n", .{@errorName(why)});
+        return 1;
+    }
+
+    // The moment: a judgment weighed again before the run published what it lost
+    // is judging a run it remembers rather than the one it wrote down.
+    if (recant_refusal(null, 1, 0, 1)) |why| {
+        if (why != error.RecantEarly) {
+            print("  RED: an early recantation refused for the wrong reason: {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a judgment was weighed again before the run published anything\n", .{});
+        return 1;
+    }
+
+    // The supply: a wire carrying no judgment has nothing here to take back.
+    if (recant_refusal(.short, 0, 0, 0)) |why| {
+        if (why != error.RecantUnappraised) {
+            print("  RED: an unjudged plan refused for the wrong reason: {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run took back a judgment nobody had ever made\n", .{});
+        return 1;
+    }
+
+    // The honesty of the count, from both sides: a run cannot answer for more
+    // judgments than stand, and every standing judgment is upheld or recanted.
+    if (recant_refusal(.short, 1, 1, 1)) |why| {
+        if (why != error.RecantMiscounted) {
+            print("  RED: an overanswered judgment refused for the wrong reason: {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run answered for more judgments than the wire ever held\n", .{});
+        return 1;
+    }
+    if (recant_refusal(.short, 2, 1, 0)) |why| {
+        if (why != error.RecantMiscounted) {
+            print("  RED: an unanswered judgment refused for the wrong reason: {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a standing judgment was neither upheld nor recanted, and nobody minded\n", .{});
+        return 1;
+    }
+
+    // The supply, stated as its own refusal so it can be read straight.
+    if (unappraised_reach(standing_judgment, phase_bit(3))) |why| {
+        if (why != error.RecantUnappraised) {
+            print("  RED: a recantation reaching an unjudged phase refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run took back a judgment that was never made about that arc\n", .{});
+        return 1;
+    }
+    if (unappraised_reach(standing_judgment, standing_judgment)) |why| {
+        print("  RED: a recantation inside its own judgment refused with {s}\n", .{@errorName(why)});
+        return 1;
+    }
+
+    // The number this rung moves, as a fold: an arc spared on a judgment this
+    // run's own evidence declines to support.
+    if (spared_disproved(standing_judgment, 0) != 1) {
+        print("  RED: an arc spared past its own evidence counted as nothing\n", .{});
+        return 1;
+    }
+    if (spared_disproved(standing_judgment, standing_judgment) != 0) {
+        print("  RED: an arc spared on evidence that still stands counted as waste\n", .{});
+        return 1;
+    }
+    if (spared_disproved(0, 0) != 0) {
+        print("  RED: a run that spared nothing disproved a judgment all the same\n", .{});
+        return 1;
+    }
+
+    print("  a plan publishes whether its own judgments answer to a later run\n", .{});
+    print("  three refusals stand by name: early, unappraised, miscounted\n", .{});
+    print("  the review this rung keeps: {s}\n", .{review_words(.revisit)});
+    return 0;
+}
+
+/// The generalization test: a run that weighs a plan losing nothing reads as
+/// the rung below.
+fn check_unlost(sys: *const system.System) u8 {
+    const clients = [_]Task{
+        written_queue[0].task,
+        written_queue[1].task,
+        written_queue[3].task,
+        written_queue[4].task,
+    };
+    var agreed: u32 = 0;
+    var a: u32 = 0;
+    while (a < clients.len) : (a += 1) {
+        var live_store: [max_in_flight]cohort.Running = undefined;
+        live_store[0] = .{
+            .proc = undefined,
+            .domain = clients[a].item.domain,
+            .verb = clients[a].item.verb,
+            .count = clients[a].item.count,
+            .expect = clients[a].item.expect,
+        };
+        var handed_store: [max_in_flight]Task = undefined;
+        handed_store[0] = clients[a];
+        const reserve_store = [_]?Task{null};
+        const taken_store = [_]u32{0};
+        var b: u32 = 0;
+        while (b < clients.len) : (b += 1) {
+            const here = admissible_in(
+                sys, live_store[0..1], handed_store[0..1], reserve_store[0..1], taken_store[0..1], clients[b],
+            ) catch {
+                print("  RED: an appraising run could not weigh its own door\n", .{});
+                return 1;
+            };
+            const there = unhand.admissible_held(sys, live_store[0..1], handed_store[0..1], clients[b]);
+            if (here != there) {
+                print("  RED: the two readings disagreed about {s} beside {s}\n", .{
+                    clients[b].item.domain, clients[a].item.domain,
+                });
+                return 1;
+            }
+            agreed += 1;
+        }
+        // invariant: every newcomer was weighed against this dependent, none skipped
+        assert(b == clients.len);
+    }
+    // invariant: every line stood as the running dependent once, none skipped
+    assert(a == clients.len);
+
+    print("  a plan that loses nothing reads as the line handed, all {d} pairs\n", .{agreed});
+    return 0;
+}
+
+/// Runs one queue whole under one review, against a judgment already on the
+/// wire, and says whether it survived.
+///
+/// The standing judgment is seated before the run rather than after, since the
+/// appraisal is the one note a run does not clear and a run must find it exactly
+/// where a run before it would have left it.
+fn run_one(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Phase,
+    review: Review,
+    report_out: *Report,
+) bool {
+    seat_standing_appraisal(io, @intCast(plan.len), standing_judgment) catch |err| {
+        print("  RED: a judgment could not be seated on the wire: {s}\n", .{@errorName(err)});
+        return false;
+    };
+    run_in_recant(
+        allocator, io, self_path, sys, plan, .when_moved, .preceded, .held_on, .borne, .weighed, review, report_out,
+    ) catch |err| {
+        print("  RED: a queue did not survive its run: {s}\n", .{@errorName(err)});
+        return false;
+    };
+    return true;
+}
+
+/// Tells what the two reviews did, side by side, in an operator's own words.
+fn tell_recanting_runs(unweighed: *Report, revisiting: *Report) void {
+    // invariant: a telling always reads two runs that were actually run
+    assert(run_of(unweighed).queued >= 1);
+    // invariant: a telling never reports more dependents than a repair may add
+    assert(run_of(revisiting).reaped <= run_of(revisiting).queued + max_queue_len);
+    print("  phases: {d} standing, {d} revisiting\n", .{
+        run_of(unweighed).queued, run_of(revisiting).queued,
+    });
+    print("  dependents: {d} standing, {d} revisiting\n", .{
+        run_of(unweighed).reaped, run_of(revisiting).reaped,
+    });
+    print("  phases absorbed into a standing dependent: {d} standing, {d} revisiting\n", .{
+        abandoning_of(unweighed).inner.inner.inner.inner.absorbed,
+        abandoning_of(revisiting).inner.inner.inner.inner.absorbed,
+    });
+    print("  abandoned reach, conferred and never served: {d} standing, {d} revisiting\n", .{
+        abandoning_of(unweighed).abandoned, abandoning_of(revisiting).abandoned,
+    });
+    print("  the plan, as the run first reports it: {s} standing, {s} revisiting\n", .{
+        verdict_words(below_of(unweighed).inner.verdict), verdict_words(below_of(revisiting).inner.verdict),
+    });
+    print("  phases re-seated to carry what was lost: {d} standing, {d} revisiting\n", .{
+        below_of(unweighed).reseated, below_of(revisiting).reseated,
+    });
+    print("  losses spared on a judgment already on the wire: {d} standing, {d} revisiting\n", .{
+        appraising_of(unweighed).weighed, appraising_of(revisiting).weighed,
+    });
+    print("  standing judgments taken back on this run's own evidence: {d} standing, {d} revisiting\n", .{
+        unweighed.recanted, revisiting.recanted,
+    });
+    print("  arcs spared on a judgment this run's evidence disproves: {d} against {d}\n", .{
+        unweighed.spared_disproved, revisiting.spared_disproved,
+    });
+    print("  arcs re-run against the plan's own word: {d} standing, {d} revisiting\n", .{
+        bearing_of(unweighed).overrepaired, bearing_of(revisiting).overrepaired,
+    });
+    print("  work still standing when the supervisor exits: {d} standing, {d} revisiting\n", .{
+        below_of(unweighed).unserved, below_of(revisiting).unserved,
+    });
+    print("  the plan, as an operator finally reads it: {s} standing, {s} revisiting\n", .{
+        settlement_words(bearing_of(unweighed).settlement), settlement_words(bearing_of(revisiting).settlement),
+    });
+    print("  breaks a named turn: {d} standing, {d} revisiting\n", .{
+        preceded_of(unweighed).out_of_precede, preceded_of(revisiting).out_of_precede,
+    });
+}
+
+/// Weighs the two reviews against each other and names the first disagreement.
+///
+/// The shape of the finding is one number moving and the price of moving it
+/// named honestly beside it. Both runs take up the same record, confer the same
+/// arcs, lose the same arcs, mark nothing, meet the same judgment on the wire,
+/// and report the plan short when they first weigh it. What differs is whether
+/// that judgment answers to this run's evidence -- and the one dependent the
+/// revisiting run spends to serve the arc the elder reading left standing.
+fn judge_recanting_runs(unweighed: *Report, revisiting: *Report) u8 {
+    // invariant: a judging always reads two runs that were actually run
+    assert(run_of(unweighed).queued >= 1);
+    // invariant: a judging never counts a repair the plan never lost
+    assert(below_of(revisiting).reseated <= max_queue_len);
+    if (run_of(revisiting).queued != run_of(unweighed).queued) {
+        print("  RED: the two reviews ran {d} phases against {d}\n", .{
+            run_of(revisiting).queued, run_of(unweighed).queued,
+        });
+        return 1;
+    }
+    if (abandoning_of(revisiting).abandoned != abandoning_of(unweighed).abandoned) {
+        print("  RED: the two reviews lost {d} arcs against {d}\n", .{
+            abandoning_of(revisiting).abandoned, abandoning_of(unweighed).abandoned,
+        });
+        return 1;
+    }
+    if (abandoning_of(revisiting).abandoned < 3) {
+        print("  RED: the lap lost {d} arcs, and this rung needs three to part them\n", .{
+            abandoning_of(revisiting).abandoned,
+        });
+        return 1;
+    }
+    if (below_of(unweighed).inner.verdict != .short or below_of(revisiting).inner.verdict != .short) {
+        print("  RED: a plan that lost an arc was first weighed as carried out\n", .{});
+        return 1;
+    }
+    // The authority holds on both sides, since this lap marks nothing at all:
+    // whatever either run carried, it carried on a judgment's word.
+    if (bearing_of(unweighed).bore != appraising_of(unweighed).weighed or
+        bearing_of(revisiting).bore != appraising_of(revisiting).weighed)
+    {
+        print("  RED: a run carried a loss its author never marked and no judgment named\n", .{});
+        return 1;
+    }
+    if (appraising_of(unweighed).weighed != 1) {
+        print("  RED: a run letting the judgment stand spared {d} arcs rather than the one\n", .{
+            appraising_of(unweighed).weighed,
+        });
+        return 1;
+    }
+    if (appraising_of(revisiting).weighed != 0) {
+        print("  RED: a revisiting run still spared {d} arcs on a judgment it took back\n", .{
+            appraising_of(revisiting).weighed,
+        });
+        return 1;
+    }
+    if (unweighed.recanted != 0) {
+        print("  RED: a run letting the judgment stand took back {d} all the same\n", .{
+            unweighed.recanted,
+        });
+        return 1;
+    }
+    if (revisiting.recanted != 1) {
+        print("  RED: a revisiting run took back {d} judgments rather than the one\n", .{
+            revisiting.recanted,
+        });
+        return 1;
+    }
+    // The number this rung moves.
+    if (unweighed.spared_disproved != 1) {
+        print("  RED: an arc spared past its own evidence counted as {d}\n", .{
+            unweighed.spared_disproved,
+        });
+        return 1;
+    }
+    if (revisiting.spared_disproved != 0) {
+        print("  RED: a revisiting run still spared {d} arcs its evidence disproves\n", .{
+            revisiting.spared_disproved,
+        });
+        return 1;
+    }
+    if (bearing_of(unweighed).overrepaired != 0 or bearing_of(revisiting).overrepaired != 0) {
+        print("  RED: a lap that marked nothing disobeyed its author all the same\n", .{});
+        return 1;
+    }
+    if (below_of(unweighed).unserved != 1) {
+        print("  RED: a run sparing one arc left {d} standing rather than the one\n", .{
+            below_of(unweighed).unserved,
+        });
+        return 1;
+    }
+    if (below_of(revisiting).unserved != 0) {
+        print("  RED: a run that repaired every disproved loss left {d} arcs standing\n", .{
+            below_of(revisiting).unserved,
+        });
+        return 1;
+    }
+    if (bearing_of(unweighed).settlement != .borne) {
+        print("  RED: a plan spared on a stale judgment settled {s}\n", .{
+            settlement_words(bearing_of(unweighed).settlement),
+        });
+        return 1;
+    }
+    if (bearing_of(revisiting).settlement != .carried) {
+        print("  RED: a plan whose every lost arc was served settled {s}\n", .{
+            settlement_words(bearing_of(revisiting).settlement),
+        });
+        return 1;
+    }
+    // The price of taking a judgment back, named rather than hidden: exactly one
+    // more dependent, spent on the arc the elder reading left standing.
+    if (run_of(revisiting).reaped != run_of(unweighed).reaped + 1) {
+        print("  RED: serving a disproved loss cost {d} dependents against {d}\n", .{
+            run_of(revisiting).reaped, run_of(unweighed).reaped,
+        });
+        return 1;
+    }
+    if (preceded_of(revisiting).out_of_precede != 0) {
+        print("  RED: the revisiting run broke {d} turn orders its author named\n", .{
+            preceded_of(revisiting).out_of_precede,
+        });
+        return 1;
+    }
+    return 0;
+}
+
+/// The recanting lap: one plan run twice against a judgment already on the wire,
+/// once letting it stand and once weighing it again.
+fn check_recanting_runs(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+) u8 {
+    var standing_run: Report = .{};
+    if (!run_one(allocator, io, self_path, sys, &written_queue, .stand, &standing_run)) return 1;
+    // What an operator reads is what the wire carries, read here outside the
+    // run that wrote it.
+    const standing_said = settlement_published(io) orelse {
+        print("  RED: a run published no settlement at all\n", .{});
+        return 1;
+    };
+    if (standing_said != .borne) {
+        print("  RED: the wire read {s} where a stale judgment was left standing\n", .{
+            settlement_words(standing_said),
+        });
+        return 1;
+    }
+    // The judgment survived the run that met it, which is what makes it a
+    // record and what lets the next run answer to it.
+    if (appraisal_published(io, run_of(&standing_run).queued) != standing_judgment) {
+        print("  RED: a judgment let stand did not survive the run that met it\n", .{});
+        return 1;
+    }
+    if (recant_published(io, run_of(&standing_run).queued) != 0) {
+        print("  RED: a run that took nothing back published a reversal anyway\n", .{});
+        return 1;
+    }
+
+    var revisiting: Report = .{};
+    if (!run_one(allocator, io, self_path, sys, &written_queue, .revisit, &revisiting)) return 1;
+    const revisiting_said = settlement_published(io) orelse {
+        print("  RED: a revisiting run published no settlement at all\n", .{});
+        return 1;
+    };
+    if (revisiting_said != .carried) {
+        print("  RED: the wire read {s} where every lost arc was served\n", .{
+            settlement_words(revisiting_said),
+        });
+        return 1;
+    }
+    // The reversal stands on the wire beside the judgment it took back, and the
+    // judgment itself leaves in the same breath.
+    if (recant_published(io, run_of(&revisiting).queued) != standing_judgment) {
+        print("  RED: the wire named the wrong phase as the judgment this run took back\n", .{});
+        return 1;
+    }
+    if (appraisal_published(io, run_of(&revisiting).queued) != 0) {
+        print("  RED: a judgment taken back was left standing on the wire\n", .{});
+        return 1;
+    }
+
+    tell_recanting_runs(&standing_run, &revisiting);
+    const judged = judge_recanting_runs(&standing_run, &revisiting);
+    if (judged != 0) return judged;
+
+    // invariant: a run reaps exactly the dependents it admitted, never more
+    assert(run_of(&revisiting).reaped == run_of(&revisiting).admitted);
+    // invariant: a run never takes back more judgments than the plan lost arcs
+    assert(revisiting.recanted <= abandoning_of(&revisiting).abandoned);
+    // invariant: a revisiting run spares nothing its own evidence disproves
+    assert(revisiting.spared_disproved == 0);
+    return 0;
+}
+
+fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    print("Caravan recant {s} -- self-test\n", .{caravan_recant_version});
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const sys = load_one(io, declaration_path, &buf) orelse return 1;
+
+    const mending = check_mending();
+    if (mending != 0) return mending;
+    const bearing = check_bearing();
+    if (bearing != 0) return bearing;
+    const recanting = check_recantation();
+    if (recanting != 0) return recanting;
+    const unlost = check_unlost(&sys);
+    if (unlost != 0) return unlost;
+    const runs = check_recanting_runs(allocator, io, self_path, &sys);
+    if (runs != 0) return runs;
+    print("  GREEN: a judgment a run's own evidence disproves is taken back and repaired\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
+        return run_dependent(io, args);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(allocator, io, self_path);
+    }
+    if (args.len >= 2) return 1;
+    return run_self_test(allocator, io, self_path);
+}

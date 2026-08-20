@@ -24,6 +24,14 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260820.044313` -- the appraise and bear live edges fold as the recant rung seats
+
+**Walk-back nib:** `c17b4bbcd6` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- the *prior live edge* bullets for the **appraise** and **bear** rungs, folded into the pointer line the `20260820.014755` cairn opened, so the card leads with the recantation and carries one account of this arc rather than three.
+
+**What waits there, worth recalling:** the inline account of a plan naming the loss it would rather carry than repair -- `bear = true` beside the outcome an author already declares, the settlement gaining its third word because two were no longer honest -- and beside it the account of a loss its author left unmarked being weighed by what came home after it, the standard published at the plan and the evidence produced only by the run. Both rungs stand whole in `caravan/bear.rye` and `caravan/appraise.rye`, their witnesses, their session logs, and the Caravan README.
+
 ### `20260820.041842` -- the mend live edge folds as the appraise rung seats
 
 **Walk-back nib:** `43cb80dd7e` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
