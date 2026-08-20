@@ -1,6 +1,6 @@
 # fe_secp256k1 — the Bitcoin/Ethereum base field crux
 
-**Stamp:** `20260816.020351` · **Status:** Living (design capture) · **Voice:** Kyri · **Style:** Radiant
+**Stamp:** `20260816.020351` · **Status:** Mixed -- Living (design capture) · **Voice:** Kyri · **Style:** Radiant
 **Kin:** [`the decision wave`](20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md) · [`fe25519 — the Curve25519 field crux`](20260815-193010_fe25519-the-curve-field-crux.md) · [`docs/CRYPTO.md`](../docs/CRYPTO.md) · `crypto/eth_address.rye` · `crypto/keccak256.rye`
 
 ---

@@ -2,7 +2,7 @@
 
 *The gatekeepers opened the decide family on the two bounds the lowerer already owns; the vane-wall decides waited on this seam. The measurement reframed it before a door was drawn: the pedestals are **shapes** — `src/lib/shape-tally-max-gardens.glow` carries `$: gardens=@u32 ==` and its eight lives only in prose — while the pedestal's own comment points home: *"Names `max_gardens` from `tally/gardens.rye`."* The constants' single source is the vane module itself (`tally/gardens.rye` — `pub const max_gardens: u32 = 8`). So the seam is not shape-parsing at all; it is how a lowered plant reaches a vane constant without a second home. Three doors, one lean, nothing opened.*
 
-**Stamp:** `20260804.004127` · **Voice:** Riyo · **Status:** CHARTED — first metal next under the grant
+**Stamp:** `20260804.004127` · **Voice:** Riyo · **Status:** Vision -- CHARTED — first metal next under the grant
 
 *Written together by Keaton and Riyo.*
 

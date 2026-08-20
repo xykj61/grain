@@ -6,7 +6,7 @@
 **Voice:** Riyo
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME — safety first; walls are safety's own furniture
-**Status:** CHARTED — the opening word is explicit and Keaton's alone
+**Status:** Mixed -- CHARTED — the opening word is explicit and Keaton's alone
 
 *Written together by Keaton and Riyo.*
 

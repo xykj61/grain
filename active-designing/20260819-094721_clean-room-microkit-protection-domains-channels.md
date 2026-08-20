@@ -1,6 +1,6 @@
 # Clean-Room Brief -- Microkit Protection Domains and Channels, as they Inform Caravan
 
-**Stamp:** `20260819.094721` -- **Status:** Living (clean-room brief) -- **Voice:** Kyri
+**Stamp:** `20260819.094721` -- **Status:** Mixed -- Living (clean-room brief) -- **Voice:** Kyri
 **Register:** Radiant -- **Commissioned by:** [`../external-research/20260819-094721_microkernel-target-study-weight-recenter.md`](../external-research/20260819-094721_microkernel-target-study-weight-recenter.md)
 **Studies:** Microkit (formerly seL4 Core Platform) -- Trustworthy Systems' official, subtractive layer over seL4 for static architectures.
 **License boundary:** Microkit ships under friendlier (BSD-style) terms than the seL4 kernel, yet this brief still keeps the **clean-room boundary**: **design concepts and docs only, no source in our tree.** Rule: [`gratitude-licenses`](../.claude/rules/gratitude-licenses.md).

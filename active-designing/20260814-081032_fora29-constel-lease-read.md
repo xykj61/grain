@@ -1,7 +1,7 @@
 # FORA29 — Constel `lease`: a lease read, safe under a bounded clock
 
 **Stamp:** `20260814.081032` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design capture for a self-approved round · waymark **FORA** · rung **FORA29**
+**Status:** Vision -- Design capture for a self-approved round · waymark **FORA** · rung **FORA29**
 **Kin:** [`../constel/read.rye`](../constel/read.rye) (FORA20 — the read-index) · [`../constel/tenure.rye`](../constel/tenure.rye) (FORA24 — CheckQuorum backing) · [`../constel/README.md`](../constel/README.md)
 
 ---

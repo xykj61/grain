@@ -1,6 +1,6 @@
 # EIP-191 personal_sign — reading the signer of a login message, end to end
 
-**Stamp:** `20260816.042627` · **Status:** Living · **Voice:** Kyri · **Style:** Radiant
+**Stamp:** `20260816.042627` · **Status:** Mixed -- Living · **Voice:** Kyri · **Style:** Radiant
 **Kin:** [`the Rye-first crypto wave`](20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md) · [`secp256k1 ecrecover`](20260816-040220_secp256k1-ecrecover.md) · `crypto/eth_personal_sign.rye` · `crypto/eth_address.rye` · `crypto/keccak256.rye`
 
 ## The claim

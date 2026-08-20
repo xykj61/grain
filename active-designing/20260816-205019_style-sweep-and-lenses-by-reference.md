@@ -2,7 +2,7 @@
 
 *Our own method, named for the tree: two moves that make an autonomous loop carry the house voice and the disciplines it most often forgets. The design-research behind it -- the craft principle, the prior art -- lives in the companion external-research note; this file names only what we do.*
 
-**Stamp:** `20260816.205019` - **Voice:** Kyri - **Style:** Radiant - **Status:** Living
+**Stamp:** `20260816.205019` - **Voice:** Kyri - **Style:** Radiant - **Status:** Mixed -- Living
 **Kin:** [`../recursion-prompts/seed/autonomous-loop.seed.md`](../recursion-prompts/seed/autonomous-loop.seed.md) (where the technique lives) - [`../external-research/20260816-205019_the-style-sweep-before-send.md`](../external-research/20260816-205019_the-style-sweep-before-send.md) (the craft study) - [`../recursion-prompts/README.md`](../recursion-prompts/README.md) (the cellar) - [`../.claude/rules/radiant-style.md`](../.claude/rules/radiant-style.md) - [`../.claude/rules/twilight-style.md`](../.claude/rules/twilight-style.md)
 
 ---

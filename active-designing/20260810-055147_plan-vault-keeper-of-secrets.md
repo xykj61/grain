@@ -1,7 +1,7 @@
 # Vault — the keeper of secrets, custody first
 
 **Language:** EN
-**Status:** Design brief — no code, no keys, no witness yet
+**Status:** Mixed -- Design brief — no code, no keys, no witness yet
 **Voice:** Riyo
 **Equinox:** JARL (Identity & Network) · a keeper beside Kumara
 **Molt-supersedes:** the elder Urbit **Jael** (the vane that kept a ship's secrets and PKI)

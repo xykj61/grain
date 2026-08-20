@@ -1,6 +1,6 @@
 # The Microkernel Target and the OS-Parity Question
 
-**Stamp:** `20260817.185851` - **Status:** Living (research capture) - **Voice:** Kyri
+**Stamp:** `20260817.185851` - **Status:** Mixed -- Living (research capture) - **Voice:** Kyri
 **Register:** Radiant - **Kin:** [`gratitude-licenses`](../.claude/rules/gratitude-licenses.md) - [`thin-frontend SLC direction`](../active-designing/20260628-043542_thin-frontend-slc-direction.md) - the Caravan/Tally lineage in [`20260620-014412_system.md`](20260620-014412_system.md)
 **Clean room:** studies the world with attribution; names only our own modules where we build. No copyleft source enters our tree.
 

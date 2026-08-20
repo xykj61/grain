@@ -1,6 +1,6 @@
 # Freight — a world carries its whole signed ledger to its new berth (Exploration)
 
-**Stamp:** `20260813.121424` · **Status:** Living (self-approved design read) · **Voice:** Kyri
+**Stamp:** `20260813.121424` · **Status:** Vision -- Living (self-approved design read) · **Voice:** Kyri
 **Register:** Radiant · **Chapter:** D (Kresfa & Mycelium) — the double-seat expansion
 **Kin:** [`the Puddle berth`](20260813-114651_puddle-fleet-placement-exploration.md) (Freight rides Puddle) · [`the double-seat expansion`](20260813-020035_double-seat-expansion-six-seasons.md) · Lexicon **Puddle** · [`Lila and the Long Return`](../.claude/rules/lila-and-the-long-return.md)
 

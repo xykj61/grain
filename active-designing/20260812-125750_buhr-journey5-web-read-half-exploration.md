@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
 **Voice:** Kyri
-**Status:** Exploration — a survey of the door beyond Journey 4's editor; a design in motion, not yet a build
+**Status:** Mixed -- Exploration — a survey of the door beyond Journey 4's editor; a design in motion, not yet a build
 **Waymark:** **BUHR** — Compass Chapter Equinox 3 ([`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md))
 **Order:** [Lila and the Long Return](../.claude/rules/lila-and-the-long-return.md)
 **Kin:** [`20260812-123509_buhr-journey4-realidream-editing-surface-exploration.md`](20260812-123509_buhr-journey4-realidream-editing-surface-exploration.md) · foundation [`../foundations/20260728-220203_realidream.md`](../foundations/20260728-220203_realidream.md)

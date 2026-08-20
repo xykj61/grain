@@ -6,7 +6,7 @@
 **Voice:** Riyo
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME — safety first, performance second, joy third · happy-zone shape
-**Status:** DESIGN — PROPOSED · no socket opens in anger and no key moves without Keaton's word
+**Status:** Vision -- DESIGN — PROPOSED · no socket opens in anger and no key moves without Keaton's word
 **Study behind it:** `../external-research/20260802-161500_ssh-mosh-ipv6-secure-transport.md`
 
 *Written together by Keaton and Riyo.*

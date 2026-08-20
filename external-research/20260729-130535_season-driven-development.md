@@ -3,7 +3,7 @@
 **Language:** EN  
 **Stamp:** `20260729.130535`  
 **Voice:** Quin  
-**Status:** Understanding — recommends no purchase · no treasury action · no licensed professional course  
+**Status:** Mixed -- Understanding — recommends no purchase · no treasury action · no licensed professional course  
 **Kind:** external-research · pattern study beside Grain’s nested seasons  
 **Companion house law:** [`../foundations/20260729-130535_season-driven-development.md`](../foundations/20260729-130535_season-driven-development.md)
 

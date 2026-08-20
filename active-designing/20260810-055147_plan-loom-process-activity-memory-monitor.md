@@ -1,7 +1,7 @@
 # Loom — a Scribe-and-Tally monitor for process, activity, and memory
 
 **Language:** EN
-**Status:** Active-designing — a design brief, no code yet
+**Status:** Mixed -- Active-designing — a design brief, no code yet
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Riyo
 **Kin:** [`../caravan/README.md`](../caravan/README.md) · [`../scribe/README.md`](../scribe/README.md) · [`../tally/README.md`](../tally/README.md)
