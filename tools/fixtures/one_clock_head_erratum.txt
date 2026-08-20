@@ -1,0 +1,11 @@
+# Stamps written ahead of the live clock before duty 5 stood (REDS %96).
+# Accrete-never-break: the logs keep these names, this list records the fault,
+# and tools/fixtures/one_clock_head_scan.sh catches the next one on the lap it
+# enters. Format: one YYYYMMDD.HHMMSS per data line; # comments ignored.
+#
+# Both were written on 20260820 while the host clock read earlier than the
+# stamp claimed -- the drift grew lap over lap (0s, then ~10m, then ~28m),
+# which is the signature of a stamp estimated from the previous lap rather
+# than read from the clock.
+20260820.024612
+20260820.031500
