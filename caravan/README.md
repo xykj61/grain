@@ -82,6 +82,7 @@ Every ring here composes over the one before it. A later ring imports an earlier
 | hear | [`hear.rye`](hear.rye) | a correction is finished when its reader answers, and the plan reads that answer in their own hand -- the reader's box facing two ways, and an answer bound to the reading it answers |
 | dispute | [`dispute.rye`](dispute.rye) | a reader who answers something other than agreement is recorded rather than set aside -- both readings written into the record, the plan's and its reader's, and neither one resolving the other |
 | abide | [`abide.rye`](abide.rye) | the word an operator reads stands beside the reading held against it -- one byte quoting the reader's own objection, written where the settlement is read rather than where the record is kept |
+| lapse | [`lapse.rye`](lapse.rye) | an objection is put back to the reader who raised it, and answered or let go -- the question written into that reader's own box, the answer published in one byte beside the word it bounds |
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
@@ -972,6 +973,25 @@ The numbers state the claim: **three refusals stand as a pure fold and the fourt
 **The rung earns four refusals, each about the mark rather than the word it stands beside.** `AbideEarly` is the moment. `AbideUnrecorded` is the supply. `AbideMiscounted` is the honesty of the count. `AbideMisquoted` is the record -- an escort carries one person's word to whoever reads another, so a mark naming any other reading puts a sentence in that person's mouth.
 
 The numbers state the claim: **three refusals stand as a pure fold and the fourth beside them; a plan that loses nothing reads as the line handed, all 16 pairs; and one plan of 6 phases run twice absorbs 3 into standing dependents, loses 3 arcs, takes the same judgment back, re-seats the same 3 phases, posts and carries the same correction, reads the same answer, records the same disagreement, spends the same 6 dependents, and settles `carried` either way -- while published words standing beside the reading against them rise 0 to 1 and words an operator reads with no sign of the objection fall 1 to 0. The price is one byte written into a note the run already knew the name of.** Five RED paths proven first, one a planted control where the mark quotes the plan's own reading -- the plan recorded as its own objector, with the selftest still calling itself GREEN. Module `caravan/abide.rye`, witness `tools/caravan_abide_witness.rish`, and the choir sings 64 rungs in one voice.
+
+
+### lapse -- an objection is put back to its reader, and answered or let go
+
+**`abide.rye` taught a run to stand its published word beside the reading held against it** -- the disagreement quoted in one byte where the settlement is read, the plan's own word untouched beside it, and an operator who finds the objection in the same reach that finds the outcome. That escort is exactly right, and it never says for how long.
+
+**A mark says somebody objects, and never says for how long.** An objection recorded once escorts every future read of that word. Nothing asks whether the person who raised it still holds it, and nothing ever will, so a plan carries a live quarrel long after there is anybody left to have it -- and every operator who reads that word is answering to a mind that may have changed a season ago, or gone silent for good.
+
+**The measurement is objections published with no term on them at all.** The rung below weighs a record against the place a person reads. This one weighs the record against the life of the person who wrote it -- an objection standing on every future reader, which nobody has been asked to renew and nobody may let go.
+
+**A term asks, and never decides.** The act is one question written into the reader's own `caravan/.readers/desk.again`, naming both readings of the quarrel exactly as the record names them, and then one byte published in `caravan/.lapsings/plan.term`: `r` for an objection its reader raised again, `l` for one nobody renewed.
+
+**A term reports, and never withdraws.** The escort stays exactly as it was written, because a run that erased the mark because its reader went quiet would be winning the quarrel by outlasting them.
+
+**Silence belongs to the person who is silent.** No run of this plan ever writes its reader's renewal, exactly as no run writes their first answer. The supervisor's whole part is to ask plainly, read what it finds, and report honestly when it finds nothing.
+
+**The rung earns four refusals, each about the term rather than the objection it bounds.** `LapseEarly` is the moment. `LapseUnasked` is the hard half -- a lapse published without the question ever leaving the building is silence nobody listened for, since nobody went quiet where nobody was addressed. `LapseMiscounted` is the honesty of the count. `LapseMisrenewed` is the record -- a second hand naming any other reading raises a different quarrel entirely.
+
+The numbers state the claim: **three refusals stand as a pure fold and the fourth beside them; a plan that loses nothing reads as the line handed, all 16 pairs; and one plan of 6 phases run twice absorbs 3 into standing dependents, loses 3 arcs, takes the same judgment back, re-seats the same 3 phases, posts and carries the same correction, reads the same answer, records the same disagreement, escorts the same published word, spends the same 6 dependents, and settles `carried` either way -- while standing objections put back to the reader who raised them rise 0 to 1 and objections published with no term on them at all fall 1 to 0. The price is one question written into a box the run already knew the name of, and one byte beside the word it bounds.** Both answers the question admits are proven on the wire rather than only as folds: a third run over a reader who raises their objection again publishes `renewed`. Five RED paths proven first, one a planted control where every guard is disarmed at once and the run publishes an objection let go by a reader who was never addressed -- `desk.again` never written, the question fabricated from the plan's own record, and the selftest still calling itself GREEN. Module `caravan/lapse.rye`, witness `tools/caravan_lapse_witness.rish`, and the choir sings 65 rungs in one voice.
 
 
 ## Held
