@@ -24,6 +24,15 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260820.111618` -- the avow live edge folds as the owe rung seats
+
+**Walk-back nib:** `8178a12701` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **avow** rung and the pointer bullet beneath it, folded into one condensed line naming avow, deem, refer, swell, dwell, relent, heed, and endure, so the card leads with the rung that just landed rather than carrying a second copy of the log index.
+
+**What waits there, worth recalling:** the inline account of a plan being made to answer the finding it published -- a run writing this note and that being the whole rung, since every record the arc reaches outward for is written by a hand the plan does not own precisely so it can never grade the objection against it; `AvowMismatched` refusing a word about some older verdict, because a plan that answered this argument before may still hold its position on a younger one; an avowal carrying two bytes with the finding echoed back exactly; answering proven not to be yielding, with concede and dissent both honest on the wire; and the probe that taught the rung its own shape, where the first cut read the finding before consulting the refusal ladder and an unheard run refused `AvowUnfound` where the ladder promised `AvowUnheard`. Every word of it also rests in `caravan/README.md` and its own dated log `20260820-105456`; the cairn is the cheaper walk-back.
+
+
 ### `20260820.105456` -- the deem live edge folds as the avow rung seats
 
 **Walk-back nib:** `42f333eb6c` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
