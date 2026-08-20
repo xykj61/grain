@@ -24,6 +24,12 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260819.201448` -- REMEMBER's mask chronicle folded to a pointer as the precede rung lands
+
+**Walk-back nib:** `9d652c6823` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.
+**Swept:** the **Live edge** bullet's whole inline account of `caravan/mask.rye` -- the honest shape being a set and the fear that a set is a graph, a whole turn fitting inside one `u32` so the plan closes once at the door, a full mask read as the fence and the link exactly, the observation that a turn cut inside one domain could never show the difference, the finding that the run never needs the closing at all, and the masked lap's numbers named measure by measure -- folded into the standing **Prior live edges** pointer beside its elder rungs.
+**What waits there, worth recalling:** at nib `9d652c6823` the departing card holds the full prose for why a bound already named for other reasons turned a graph into one machine word, and why the closing earns its single pass by making the *pairwise* reading honest rather than by changing any admission. Both survive in `caravan/mask.rye`'s own doc comment, the caravan README's Mask section, and the dated log `20260819-200013_caravan-mask-a-turn-closes-once.kyri`; the card keeps the pointer so Now holds the live front alone.
+
 ### `20260819.200013` -- REMEMBER's fence chronicle folded to a pointer as the mask rung lands
 
 **Walk-back nib:** `a72f696bb6` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.
