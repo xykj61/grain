@@ -1,0 +1,31 @@
+format session-log-v1
+stamp 20260819.200013
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Caravan mask -- a phase names the siblings it follows, and a turn closes them once
+prompt continue the autonomous loop Lindy-first crux-first, Standfast on reds, take the next agent-doable lap and send it
+
+think Standfast first. The living REDS rows are 80, 83, 84, 85, and every one carries a closure note on metal -- 80's booked count guard closed as 81 with crypto_count_guard_witness GREEN, 83's booked ASCII guard landed as living_card_ascii_witness, 84 closed 20260819.145920, 85 reopened and closed 20260819.134229 with the witness_claim_check loom over 1,663 runnable scripts. No agent-closable red stands open, so the constructive queue is clear.
+think The running thread is the Microkernel Target, Equinox 1 -- Caravan, thirty-two green-witnessed Rye rings. The newest log's recommend named the crux exactly: a fence orders a phase against a contiguous run of its own turn, so a phase independent of step 0 yet dependent on step 1 must name both or neither, and the open question was whether that hole is worth a second number.
+think A window is the obvious second number and it is the wrong one. Transitive closure is what makes a prefix free to read, and a window loses it: if step 2 follows [1,2) and step 1 follows [0,1), the direct window test says step 2 is free of step 0 while the truth says otherwise. The hole costs the closure property, which is the whole reason the prefix was cheap.
+think The shape that keeps both is a set held in one word. max_queue_len is sixteen, so a whole turn fits in a u32, and the closure is a single forward pass at the door rather than a walk per admission. Every admission stays one bit test -- the same constant the prefix had -- and the hole finally becomes writable.
+think A prefix survives the closing exactly, because filling a mask in only ever adds bits below its highest. That makes the fenced reading stable under the close and leaves the whole difference between the readings equal to the holes the prefix had to swallow -- checked over every phase of the lap.
+think The first lap read GREEN straight and RED on the run: masked and fenced were identical. The reason is real and worth keeping -- the elder laps cut a turn inside one domain, and two phases of one domain never stand at one instant, so isolation already serialized them and no reading of authorship could loosen it. Authorship earns its keep only on a turn that spans domains.
+think Rebuilt the lap as a cut turn across three domains, with client_a busy behind the head so it is the domain still waiting when step 3 becomes free. Step 3 names step 2 alone and skips step 1; the mask admits it while the fence, which must reach step 2 through step 1, holds it.
+think Skipping the closure changed no admission, which first read as a missing RED and turned out to be a finding. Every bit the closing adds is reachable through a sibling the phase named directly, so a phase can only be passed while a direct namer of its own still waits -- the queue's discipline carries transitivity by induction. Seated that as a checked invariant over the lap rather than a claim in prose, and the closing keeps its keep as what makes the pairwise reading honest.
+
+obs A set was the shape the arc feared and the bound was the answer -- sixteen phases fit in one word, so the graph everyone avoids is one u32 and the closure is a single pass at the door. The fear was of an unbounded walk, and the bound had already been named for other reasons.
+obs The masked lap stands strictly between the act reading and the fence in slots unspent (4 - 5 - 6 - 6), and lawfully breaks the implied prefix once where the fence breaks it zero times -- lawfully because the author wrote the hole down.
+obs The one-domain observation is a genuine limit on every elder lap in this arc: phases.rye and fence.rye could not have measured their own difference on a same-domain turn. Their findings stand -- their laps happened to make the order room moot.
+obs Both RED paths proven on metal before GREEN. Dropping the mask from items_contend reds the straight read; hiding it from the choosing alone fires the fill_table invariant at mask.rye:578, so that assert is load-bearing.
+
+loom witness=caravan_mask_witness readings=4 children=7 passes_by_act=3 passes_masked=3 passes_fenced=2 passes_linked=1 slots_unspent_by_act=4 slots_unspent_masked=5 slots_unspent_fenced=6 slots_unspent_linked=6 out_of_turn_by_act=2 out_of_turn_masked=2 out_of_turn_fenced=1 out_of_mask_by_act=1 out_of_mask_masked=0 out_of_fence_masked=1 out_of_fence_fenced=0
+
+file caravan/mask.rye the thirty-third ring -- a phase names the siblings it follows as one u32, closed once at the door, every admission one bit test
+file tools/caravan_mask_witness.rish the witness on metal, GREEN over serial_three_clients_menu.bron, both RED paths named
+file caravan/README.md the module roster row and the Mask section, carrying the numbers and the one-domain finding
+file crux/REMEMBER.md the live edge moved to this rung, the fence folded into the condensed pointer
+
+recommend keep-going the honest next crux is what the mask still cannot say across turns -- every reading in this arc orders phases inside one turn and reads strangers by their regions alone, so a turn that must follow another turn has no word for it, and the question becomes whether a turn may name a turn without the queue growing the graph a phase was spared, which wants a lap measuring how a cross-turn order behaves under the same one-word bound
