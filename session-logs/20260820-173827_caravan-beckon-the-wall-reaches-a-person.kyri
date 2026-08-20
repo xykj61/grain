@@ -1,0 +1,31 @@
+format session-log-v1
+stamp 20260820.173827
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Caravan beckon -- the wall reaches the person who can act on it
+prompt Autonomous loop -- be Kyri in Radiant Style, Standfast on reds first, take the next agent-doable lap Lindy-first crux-first, deep-read one council-rota doc, condense REMEMBER when a set completes, and send each finished increment as its own signed round.
+think Standfast first. Every living row in crux/REDS.md reads CLOSED -- %96, %97, %98, and the %84 closure note -- so the line is clear and constructive work may begin. Nothing agent-closable stands open.
+think Council rota, lap 536 of the d27 cycle: context/specs/20260627-102012_one-clock-naming-law.md, read whole. Its rule of thumb governed this lap without my reaching for it: one axis per level -- the folder says what kind of thing this is, the stamp says when. The same discipline runs down the ladder, where one rung says what act it adds and the rung below says everything that came before.
+think The running thread names its own next door. The desist rung's recommend pointed past the meter: what an operator does with a wall once it stands, which is where the arc leaves the plan and reaches a person. The meter's crux was answered last lap, so the constructive door is the one that was waiting.
+think The harm, read plainly: every note of this arc lands under the plan's own notes, where an operator learns of it by coming to look. So a correspondence can exhaust itself honestly, exactly, and privately -- the loop ends, the record is precise, and the one person who could take the matter up outside the plan is never told it stopped.
+think The name came from the Comlink tendency rather than an alphabet: clear, fun, safe. Beckon says exactly what the rung does -- the plan cannot go on alone, so it calls a person to the boundary. Grepped free across every .rye and the Lexicon before seating it.
+think The rung composes rather than invents its wire. The reader box the apprise rung opened is already the place this reader reads; a call lands there as caravan/.readers/desk.walls, six-character suffix like every other word carried to that box, so a reader who has heard from this plan four times hears from it a fifth in the place they already look.
+think Ordering is the invariant worth stating: the wall stands before the call goes out. The boundary lands first and the summons after, so a run falling between the two leaves a wall standing and uncarried -- exactly the state the rung below always left -- rather than calling a person to a boundary that does not exist.
+obs The measurement is walls a plan stood and told nobody about, and it falls 1 to 0. Both measured runs now bound the same twice-carried matter, so the bounding below stands still at 1 keeping against 1 beckoning and the relaying at 0 against 0; only whether a person is ever called parts them. That standing-still is the honest signal that this rung adds an act rather than reaching down and changing one.
+obs Every byte of the call save one came from outside the plan. The wall copied the mark, the mark copied the forbearance, the forbearance copied the reader's own five-byte refusal -- so the word a person finds in their own box is the word they wrote themselves, carried four tiers with no supervisor's hand on it.
+obs Five refusals of this rung's own, each proven by name on metal: BeckonUnwalled, BeckonUnaddressed, BeckonMismatched, BeckonMiscounted, BeckonMisrecorded. Beside them a planted control took the call down from the reader's box and made the very read that closed the claim again -- it failed with the note gone, then the wire was restored.
+obs The reach guard held on the first run. beckon.rye folds into desist.rye and nothing else, so the ladder still walks down one rung at a time; the guard REDS %98 seated last lap answered GREEN over 96 modules without a hand on it.
+obs One limit named rather than rounded away. The carry climbs 2,202 to 2,669 because a new rung re-enters four chained check bodies of the rung below -- check_desist, its refusals, its measure, and its wire -- which is the fold's named residue rather than a regression. Fold A climbs 679 to 718 and fold B 492 to 542, the honest shape of a rung that folds thirty-nine checks and lifts none. Both meter headers and the scan's header were repointed in the same commit rather than left claiming a standing two rungs stale.
+loom witness=caravan_beckon result=GREEN measurement=unheralded_walls before=1 after=0 refusals=5
+loom witness=caravan_ladder_copy carry_lines=2669 prior=2202 fold_a=718 fold_b=542 folding_rungs=33 modules=96 checks=1591 ceiling=4000
+loom witness=caravan_suite rungs=90 cold_tree=true wall_s=239 result=GREEN
+file caravan/beckon.rye the rung -- a plan carries the wall it stood out to the person who can act on it
+file tools/caravan_beckon_witness.rish the witness -- the measurement, the five refusals, the wire read from outside the run, and a planted control
+file tools/caravan_suite_witness.rish the choir registers the new rung; roster whole at 90
+file tools/caravan_ladder_copy_witness.rish fold A and fold B repinned to measurement, header standing repointed
+file tools/fixtures/caravan_ladder_copy_scan.sh header standing repointed to 2,669
+file caravan/README.md the durable page for the rung, in the arc's own voice
+file crux/REMEMBER.md live edge moved to this rung; git nib refreshed
+recommend keep-going the arc has reached a person, which is the door the desist rung pointed at. The next constructive rung is what that person can hand back -- a reader who is called to a wall may answer it, and nothing yet reads an answer to a boundary. The meter names the nearer bound honestly: 2,669 lines of 4,000, about three rungs of headroom, with the chain residue the only part still growing.

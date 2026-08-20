@@ -1433,6 +1433,31 @@ The numbers state the claim: **five refusals stand by name -- uninherited, reste
 The numbers state the claim: **five refusals stand by name -- unnamed, fresh, mismatched, miscounted, misrecorded; a plan that loses nothing reads as the line handed, all 16 pairs; every rung below moves exactly as it moved, the minding included, and only the bounding parts the two plans.** The forbearing two tiers down is where the wall is felt: standing matters handed to the run after it read **1 relaying, 0 bounding**, with matters left unhanded still 0 against 0, since a bounded matter is counted as walled rather than dropped. A planted control proved the read that closes the claim: the wall was taken down and the very same read made again, and it failed on metal with the note gone. Witness: `tools/caravan_desist_witness.rish`.
 
 
+## Beckon -- the wall reaches the person who can act on it
+
+`desist.rye` stood a boundary where a correspondence used to run. `beckon.rye` carries it out.
+
+**A wall that ends a correspondence is written where the plan keeps its records.** Every note of this arc lands under the plan's own notes, and an operator learns of any of them by coming to look. So a matter can be bounded honestly, exactly, and privately: the loop ends, the record is precise, and the one person who could take the matter up outside the plan is never told it stopped. A wall an operator never opens bounds the matter exactly as well as no wall at all, for everyone save the plan that stood it.
+
+**The measurement is walls a plan stood and told nobody about**, and it falls **1 to 0**.
+
+**Beckoning is carrying, and carrying is a record.** A run that beckons writes eight bytes -- the wall echoed whole, this run's own byte last -- into `caravan/.readers/desk.walls`, the box that reader already reads, beside every other word this arc has carried them. Then it opens that box again and reads the call back, because a supervisor that believed its own telling could report a person reached whose box was never opened.
+
+**Every byte of the call save one came from outside the plan.** The wall copied the mark, the mark copied the forbearance, and the forbearance copied the reader's own five-byte refusal -- so the word a person finds in their own box is the word they wrote themselves, carried four tiers without a supervisor's hand on it.
+
+**A run calls a person only to a wall it has already stood.** A call from a run that bounded nothing would summon a reader to a correspondence still running. `BeckonUnwalled` refuses by name.
+
+**A call lands where a person actually is.** A reader who left no address has no box to open, and a call written into the air reaches nobody while reporting that somebody was reached. `BeckonUnaddressed` refuses by name.
+
+**The call names the wall it carries.** A reader's box may still hold a call left by a run before today, and reading that as this one's would report a person reached about a boundary nobody stood here. `BeckonMismatched` is the rung itself.
+
+**The wall stands before the call goes out.** The boundary lands first and the summons after, so a run falling between the two leaves a wall standing and uncarried -- exactly the state the rung below always left -- rather than calling a person to a boundary that does not exist.
+
+**Beckoning is not settling.** The settlement, the quarrel, its age, its standing, the case on the desk, the finding, the plan's own word, the concession, the meeting, the redress, the delivery, the reader's first verdict, the second look, the telling, the reader's reply, the mark, and the wall itself each come out of a beckoning run exactly as they went in -- and both runs settle `carried out whole`.
+
+The numbers state the claim: **five refusals stand by name -- unwalled, unaddressed, mismatched, miscounted, misrecorded; a plan that loses nothing reads as the line handed, all 16 pairs; every rung below moves exactly as it moved, the bounding included, and only the beckoning parts the two plans.** Both runs stand the same wall (**1 keeping, 1 beckoning**) and both stay the relay (**0 keeping, 0 beckoning**), since a bounded matter is handed to nobody under either plan. A planted control proved the read that closes the claim: the call was taken down from the reader's box and the very same read made again, and it failed on metal with the note gone. Witness: `tools/caravan_beckon_witness.rish`.
+
+
 ## The ladder's carried checks -- the fold, and the meter that keeps it
 
 Every rung above imports the implementation of the rung beneath it. For eighty-odd rungs it also carried a fresh copy of that rung's self-test, because a check function was private and a later rung had no way to *call* the one below it -- only to carry its bytes forward.
