@@ -2925,23 +2925,57 @@ fn do_exit(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []const u8)
 fn do_assert(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []const u8) !void {
     var condition = arg;
     var message: ?[]const u8 = null;
+    var message_quoted = false;
     if (find_word_op(arg, " else ")) |idx| {
         condition = std.mem.trim(u8, arg[0..@intCast(idx)], " \t");
         const tail = std.mem.trim(u8, arg[@intCast(idx + 6)..], " \t");
-        message = if (tail.len >= 2 and tail[0] == '"' and tail[tail.len - 1] == '"')
-            tail[1 .. tail.len - 1]
-        else
-            tail;
+        message_quoted = tail.len >= 2 and tail[0] == '"' and tail[tail.len - 1] == '"';
+        message = if (message_quoted) tail[1 .. tail.len - 1] else tail;
     }
+    // invariant: a quoted message is the text between the quotes, never the quotes themselves.
+    assert(!message_quoted or message != null);
     const value = try eval_expr(allocator, io, env, condition);
     const holds = switch (value) {
         .boolean => |b| b,
         else => return error.AssertNeedsCondition,
     };
     if (!holds) {
-        print("rishi: assertion failed — {s}\n", .{message orelse condition});
+        print("rishi: assertion failed — {s}\n", .{try assert_message(allocator, io, env, message, message_quoted, condition)});
         return error.AssertionFailed;
     }
+    // invariant: reaching here means the gate held, so nothing was reported.
+    assert(holds);
+}
+
+/// Render the reason an assertion gives, weaving in any `${...}` holes it carries.
+///
+/// A RED that says `${build.err}` names nothing, and this tree writes that shape 1,632
+/// times across 731 witnesses -- every one of them was reporting a placeholder rather
+/// than the fact it was written to carry. `say` had always interpolated; the assert
+/// message alone printed its literal text, so the failures that most needed explaining
+/// were the ones explaining least.
+///
+/// Only a **quoted** message interpolates, matching every other string in the language.
+/// A message that fails to render falls back to its own raw text rather than replacing
+/// the failure with a second one: the assertion is the news, and a reason that cannot be
+/// composed must never swallow it.
+fn assert_message(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    env: *Env,
+    message: ?[]const u8,
+    quoted: bool,
+    condition: []const u8,
+) EvalError![]const u8 {
+    const text = message orelse condition;
+    // invariant: an unquoted reason is shown exactly as written, as it always was.
+    if (!quoted) return text;
+    if (std.mem.indexOf(u8, text, "${") == null) return text;
+    const rendered = interpolate(allocator, io, env, text) catch return text;
+    return switch (rendered) {
+        .string => |s| s,
+        else => text,
+    };
 }
 
 /// Find a word-operator like ` else ` or ` contains ` outside any quoted string,

@@ -42,6 +42,13 @@ let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/r
 
 assert build.ok else "caravan stall build failed"
 
+# The reader this witness runs is built here rather than borrowed (REDS #92).
+# Thirty-six rungs ran caravan/bin/read without building it, so the whole arc was
+# green only on a tree some earlier run had left warm. A witness owns what it runs.
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/read"]
+assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
+
+
 # The declaration stands unchanged. A stalled consumer needs no new wiring:
 # the answer direction of each channel is already granted, so the regions
 # that carried asks toward the server carry answers back.

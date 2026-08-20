@@ -62,6 +62,13 @@ let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/r
 
 assert build.ok else "caravan precede build failed"
 
+# The reader this witness runs is built here rather than borrowed (REDS #92).
+# Thirty-six rungs ran caravan/bin/read without building it, so the whole arc was
+# green only on a tree some earlier run had left warm. A witness owns what it runs.
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/read"]
+assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
+
+
 # Nothing new is declared: a turn's names ride beside the phase, where
 # authorship belongs, rather than in the document, where a ceiling belongs.
 let published = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_three_clients_menu.bron 2>&1"]
