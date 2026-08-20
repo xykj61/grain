@@ -10316,7 +10316,7 @@ fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
 pub fn check_mending() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_mending();
+    return minding_rung.check_mending();
 }
 
 /// The bearing and its three standing refusals, read straight, before any
@@ -10330,7 +10330,7 @@ pub fn check_mending() u8 {
 pub fn check_bearing() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_bearing();
+    return minding_rung.check_bearing();
 }
 
 /// The recantation and its three standing refusals, read straight, before any
@@ -10346,7 +10346,7 @@ pub fn check_bearing() u8 {
 pub fn check_recantation() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_recantation();
+    return minding_rung.check_recantation();
 }
 
 /// The amendment and its three standing refusals, read straight, before any
@@ -10361,7 +10361,7 @@ pub fn check_recantation() u8 {
 pub fn check_amendment() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_amendment();
+    return minding_rung.check_amendment();
 }
 
 /// The delivery and its three standing refusals, read straight, before any
@@ -10375,7 +10375,7 @@ pub fn check_amendment() u8 {
 pub fn check_delivery() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_delivery();
+    return minding_rung.check_delivery();
 }
 
 /// The generalization test: a run that weighs a plan losing nothing reads as
@@ -10462,7 +10462,7 @@ const elder_mark: [max_minds_bytes]u8 = minds_bytes(inherited_impasse);
 pub fn check_hearing() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_hearing();
+    return minding_rung.check_hearing();
 }
 
 /// The record and its three standing refusals, read straight, before any
@@ -10476,7 +10476,7 @@ pub fn check_hearing() u8 {
 pub fn check_dispute() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_dispute();
+    return minding_rung.check_dispute();
 }
 
 /// The escort and its four refusals, read straight, before any dependent runs.
@@ -10488,7 +10488,7 @@ pub fn check_dispute() u8 {
 pub fn check_abide() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_abide();
+    return minding_rung.check_abide();
 }
 
 /// The term and its four refusals, read straight, before any dependent runs.
@@ -10500,14 +10500,14 @@ pub fn check_abide() u8 {
 pub fn check_lapse() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_lapse();
+    return minding_rung.check_lapse();
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
 pub fn check_standing() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_standing();
+    return minding_rung.check_standing();
 }
 
 /// Runs one queue whole under one relenting, against a judgment, a reading, an
@@ -11475,7 +11475,7 @@ fn judge_desist_runs(bare_run: *Report, under_run: *Report) u8 {
 pub fn check_tidings() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_tidings();
+    return minding_rung.check_tidings();
 }
 
 /// The two answers the wire itself carries, proven as bytes in a reader's own
@@ -11501,7 +11501,7 @@ pub fn check_tidings_wire(io: std.Io) u8 {
 pub fn check_appeal() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_appeal();
+    return minding_rung.check_appeal();
 }
 
 /// The two pleas the wire itself carries, proven as bytes in a reader's own box
@@ -11526,7 +11526,7 @@ pub fn check_appeal_wire(io: std.Io) u8 {
 pub fn check_endure() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_endure();
+    return minding_rung.check_endure();
 }
 
 /// Weighs the refusals this rung earns, and the number it moves.
@@ -11537,14 +11537,14 @@ pub fn check_endure() u8 {
 pub fn check_endure_refusals() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_endure_refusals();
+    return minding_rung.check_endure_refusals();
 }
 
 /// Weighs the number this rung moves, as a fold, before any process runs.
 pub fn check_endure_measure() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_endure_measure();
+    return minding_rung.check_endure_measure();
 }
 
 /// The standing note the wire itself carries, proven as a byte outside any run.
@@ -11568,7 +11568,7 @@ pub fn check_endure_wire(io: std.Io, sys: *const system.System) u8 {
 pub fn check_heed() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_heed();
+    return minding_rung.check_heed();
 }
 
 /// Weighs the refusals this rung earns, and the number it moves.
@@ -11579,14 +11579,14 @@ pub fn check_heed() u8 {
 pub fn check_heed_refusals() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_heed_refusals();
+    return minding_rung.check_heed_refusals();
 }
 
 /// Weighs the number this rung moves, as a fold, before any process runs.
 pub fn check_heed_measure() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_heed_measure();
+    return minding_rung.check_heed_measure();
 }
 
 /// The regard note the wire itself carries, proven as a byte outside any run.
@@ -11610,7 +11610,7 @@ pub fn check_heed_wire(io: std.Io, sys: *const system.System) u8 {
 pub fn check_relent() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_relent();
+    return minding_rung.check_relent();
 }
 
 /// The refusals this rung earns, each weighed by name.
@@ -11620,14 +11620,14 @@ pub fn check_relent() u8 {
 pub fn check_relent_refusals() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_relent_refusals();
+    return minding_rung.check_relent_refusals();
 }
 
 /// The number this rung moves, weighed as a fold.
 pub fn check_relent_measure() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_relent_measure();
+    return minding_rung.check_relent_measure();
 }
 
 /// The standing note across two provisionings, proven as a byte outside any run.
@@ -11651,7 +11651,7 @@ pub fn check_relent_wire(io: std.Io, sys: *const system.System) u8 {
 pub fn check_dwell() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_dwell();
+    return minding_rung.check_dwell();
 }
 
 /// The refusals this rung earns, each weighed by name.
@@ -11661,14 +11661,14 @@ pub fn check_dwell() u8 {
 pub fn check_dwell_refusals() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_dwell_refusals();
+    return minding_rung.check_dwell_refusals();
 }
 
 /// The number this rung moves, weighed as a fold.
 pub fn check_dwell_measure() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_dwell_measure();
+    return minding_rung.check_dwell_measure();
 }
 
 /// The age note across two provisionings, proven as a byte outside any run.
@@ -11693,21 +11693,21 @@ pub fn check_dwell_wire(io: std.Io, sys: *const system.System) u8 {
 pub fn check_swell() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_swell();
+    return minding_rung.check_swell();
 }
 
 /// The four refusals this rung earns, each read straight.
 pub fn check_swell_refusals() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_swell_refusals();
+    return minding_rung.check_swell_refusals();
 }
 
 /// The number this rung moves, weighed as a fold before any run moves it.
 pub fn check_swell_measure() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_swell_measure();
+    return minding_rung.check_swell_measure();
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
@@ -11718,21 +11718,21 @@ pub fn check_swell_measure() u8 {
 pub fn check_refer() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_refer();
+    return minding_rung.check_refer();
 }
 
 /// Weighs the five refusals this rung earns, each by name.
 pub fn check_refer_refusals() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_refer_refusals();
+    return minding_rung.check_refer_refusals();
 }
 
 /// Weighs the number this rung moves, as a pure fold.
 pub fn check_refer_measure() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_refer_measure();
+    return minding_rung.check_refer_measure();
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
@@ -11743,21 +11743,21 @@ pub fn check_refer_measure() u8 {
 pub fn check_deem() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_deem();
+    return minding_rung.check_deem();
 }
 
 /// Weighs the five refusals this rung earns, each by name.
 pub fn check_deem_refusals() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_deem_refusals();
+    return minding_rung.check_deem_refusals();
 }
 
 /// Weighs the number this rung moves, as a pure fold.
 pub fn check_deem_measure() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_deem_measure();
+    return minding_rung.check_deem_measure();
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
@@ -11768,21 +11768,21 @@ pub fn check_deem_measure() u8 {
 pub fn check_avow() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_avow();
+    return minding_rung.check_avow();
 }
 
 /// Weighs the five refusals this rung earns, each by name.
 pub fn check_avow_refusals() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_avow_refusals();
+    return minding_rung.check_avow_refusals();
 }
 
 /// Weighs the number this rung moves, as a pure fold.
 pub fn check_avow_measure() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_avow_measure();
+    return minding_rung.check_avow_measure();
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
@@ -11793,21 +11793,21 @@ pub fn check_avow_measure() u8 {
 pub fn check_owe() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_owe();
+    return minding_rung.check_owe();
 }
 
 /// Weighs every refusal this rung earns, in the order the run reaches them.
 pub fn check_owe_refusals() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_owe_refusals();
+    return minding_rung.check_owe_refusals();
 }
 
 /// Weighs the number this rung moves, as a pure fold.
 pub fn check_owe_measure() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return forbearing_rung.check_owe_measure();
+    return minding_rung.check_owe_measure();
 }
 
 /// Weighs this rung's own arithmetic, as a pure fold, before any run is spent.
@@ -11998,27 +11998,9 @@ pub fn check_forbear_refusals() u8 {
 
 /// Weighs the number this rung moves, as a pure fold.
 pub fn check_forbear_measure() u8 {
-    if (unhanded_matters(1, .opens) != 1) {
-        print("  RED: a matter left standing with nothing handed on went uncounted\n", .{});
-        return 1;
-    }
-    if (unhanded_matters(1, .forbears) != 0) {
-        print("  RED: a matter handed on still counted as one left standing\n", .{});
-        return 1;
-    }
-    // A run whose reader put the matter to rest has no impasse to hand on, so
-    // it costs the count nothing -- the harm this rung names is the refusal
-    // actually read and the next run left to meet it from nothing.
-    if (unhanded_matters(0, .opens) != 0) {
-        print("  RED: a run whose matter came to rest was charged an unhanded one\n", .{});
-        return 1;
-    }
-
-    print("  five refusals stand by name: unread, allayed, mismatched, miscounted, misrecorded\n", .{});
-    print("  the forbearance this rung keeps: {s}\n", .{forbear_words(.forbears)});
-    print("  what an opening plan hands the next run: {s}\n", .{forbear_words(.opens)});
-    print("  a forbearance carries five bytes: the reply it holds back on, echoed back whole\n", .{});
-    return check_mind();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_forbear_measure(@This());
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
@@ -12027,113 +12009,16 @@ pub fn check_forbear_measure() u8 {
 /// is named, what a mark carries, and the honesty of the count answered as a
 /// pure fold -- no process anywhere.
 pub fn check_mind() u8 {
-    const told = knows_bytes(anew_bytes(inherited_matter));
-    const refused = rests_bytes(told, .stands);
-    const held = holds_bytes(refused);
-    const mark = minds_bytes(held);
-    if (!minds_carries(mark, held)) {
-        print("  RED: a mark refused the very forbearance it was written from\n", .{});
-        return 1;
-    }
-    if (minds_rest(mark) != .stands) {
-        print("  RED: a mark carried a word other than the refusal it was handed\n", .{});
-        return 1;
-    }
-    if (mark[max_minds_bytes - 1] != minded_byte) {
-        print("  RED: a mark did not say it was one\n", .{});
-        return 1;
-    }
-    // The whole point of the rung, as a fold: a mark left over from an earlier
-    // lap names an older impasse, and reading that as today's would tell an
-    // operator the plan opened holding a matter nobody handed it this morning.
-    const elder = knows_bytes(anew_bytes(again_bytes(suits_bytes(found_bytes(redress_bytes(met_bytes([_]u8{ 'd', 's' }), .righted)), .wanting))));
-    if (minds_carries(minds_bytes(holds_bytes(rests_bytes(elder, .stands))), held)) {
-        print("  RED: a mark about an older impasse was read as today's\n", .{});
-        return 1;
-    }
-    if (minds_carries(null, held)) {
-        print("  RED: an outcome naming nothing was read as naming an impasse\n", .{});
-        return 1;
-    }
-    if (minds_rest(null) != null) {
-        print("  RED: an outcome naming nothing carried a word all the same\n", .{});
-        return 1;
-    }
-    if (!mind_holds(mark, mark) or mind_holds(minds_bytes(holds_bytes(rests_bytes(told, .allays))), mark) or mind_holds(null, mark)) {
-        print("  RED: a run believed a mark other than the one it published\n", .{});
-        return 1;
-    }
-    if (minded_in(1, .minds) != 1 or minded_in(1, .begins) != 0) {
-        print("  RED: a minding was counted as though nothing were named\n", .{});
-        return 1;
-    }
-    if (minded_in(0, .minds) != 0) {
-        print("  RED: a run opening holding nothing named an impasse anyway\n", .{});
-        return 1;
-    }
-    if (begun_in(1, .begins) != 1 or begun_in(1, .minds) != 0) {
-        print("  RED: the other half of the count did not close as a fold\n", .{});
-        return 1;
-    }
-    if (begun_in(0, .begins) != 0) {
-        print("  RED: a run opening holding nothing began a matter all the same\n", .{});
-        return 1;
-    }
-    return check_mind_refusals();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_mind(@This());
 }
 
 /// Weighs the refusals this rung earns, each by name, as a pure fold.
 pub fn check_mind_refusals() u8 {
-    if (mind_refusal(1, 1, 0, false, true, true)) |why| {
-        if (why != error.MindUninherited) {
-            print("  RED: a mark with no forbearance behind it refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run named an impasse nobody handed it\n", .{});
-        return 1;
-    }
-    if (mind_refusal(1, 1, 0, true, false, true)) |why| {
-        if (why != error.MindRested) {
-            print("  RED: a settled matter named as an impasse refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run carried a closed argument forward as an impasse\n", .{});
-        return 1;
-    }
-    if (mind_refusal(1, 1, 0, true, true, false)) |why| {
-        if (why != error.MindMismatched) {
-            print("  RED: a mark about another matter refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run named an impasse other than the one it opened holding\n", .{});
-        return 1;
-    }
-    if (mind_refusal(1, 1, 1, true, true, true)) |why| {
-        if (why != error.MindMiscounted) {
-            print("  RED: an impasse counted twice refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: an impasse both named and begun closed its count\n", .{});
-        return 1;
-    }
-    if (mind_refusal(1, 0, 0, true, true, true)) |why| {
-        if (why != error.MindMiscounted) {
-            print("  RED: an impasse counted neither way refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: an impasse neither named nor begun closed its count\n", .{});
-        return 1;
-    }
-    if (mind_refusal(1, 1, 0, true, true, true)) |why| {
-        print("  RED: an honest minding was refused as {s}\n", .{@errorName(why)});
-        return 1;
-    }
-    return check_mind_measure();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_mind_refusals(@This());
 }
 
 /// Weighs the number this rung moves, as a pure fold.
@@ -12385,71 +12270,9 @@ pub fn check_desist_wire(io: std.Io, sys: *const system.System) u8 {
 /// note beneath it, only the run that inherits it takes this one down --
 /// so the fold proves the standing rather than the falling.
 pub fn check_forbear_wire(io: std.Io, sys: *const system.System) u8 {
-    clear_forbear(io);
-    clear_rests(io, standing_address);
-    clear_recount(io, standing_address);
-    clear_reweigh(io);
-    reweigh_note(io, inherited_matter) catch |err| {
-        print("  RED: a second look could not be receipted at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const receipt = anew_standing(io) orelse {
-        print("  RED: a seated receipt could not be read back at all\n", .{});
-        return 1;
-    };
-    const told = knows_bytes(receipt);
-    recount_note(io, standing_address, told) catch |err| {
-        print("  RED: a reader could not be told at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // The reader's own hand, written by the reader rather than by any run --
-    // and this time the word is a refusal, which is what earns a forbearance.
-    const refused = rests_bytes(told, .stands);
-    rest_as_reader(io, standing_address, refused) catch |err| {
-        print("  RED: a reader could not reply in their own hand: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    forbear_note(io, refused) catch |err| {
-        print("  RED: a forbearance could not be handed on at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const provisioned = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(provisioned == sys.graph.domain_count);
-    const survived = hold_standing(io) orelse {
-        print("  RED: a provisioning cleared the forbearance a run handed on\n", .{});
-        return 1;
-    };
-    if (!holds_carries(survived, refused)) {
-        print("  RED: a forbearance carried past a provisioning stopped naming its matter\n", .{});
-        return 1;
-    }
-    if (holds_rest(survived) != .stands) {
-        print("  RED: a forbearance carried past a provisioning stopped naming its refusal\n", .{});
-        return 1;
-    }
-    if (rest_written(io, standing_address) == null) {
-        print("  RED: handing an impasse on took the reply it holds back on out of its reader's box\n", .{});
-        return 1;
-    }
-    // And it comes down only on the word of the run that inherits it, never on
-    // a provisioning and never on the falling of the telling beneath it.
-    clear_recount(io, standing_address);
-    if (hold_standing(io) == null) {
-        print("  RED: a forbearance fell with the telling its reader refused\n", .{});
-        return 1;
-    }
-    clear_forbear(io);
-    if (hold_standing(io) != null) {
-        print("  RED: a forbearance stood after the run inheriting it took it down\n", .{});
-        return 1;
-    }
-    clear_rests(io, standing_address);
-    print("  a forbearance survives a provisioning, and comes down only on the word of the run that inherits it\n", .{});
-    return check_mind_wire(io, sys);
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_forbear_wire(@This(), io, sys);
 }
 
 /// A minding across a provisioning, proven outside any run.

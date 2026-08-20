@@ -24,6 +24,15 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260820.171127` -- the mind, desist, and harness live edges fold as the ladder's reach rule seats
+
+**Walk-back nib:** `ae3bc5bee3` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The ladder as it stood before the reach rule -- `desist.rye` folding two rungs down into `forbear.rye`, and the four bodies it copied from `mind.rye` -- stands at this nib and every commit before it.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- the *live edge* bullets for the **forbear**, **desist**, and **ladder-harness** rungs, plus the wall of eight prior condensed-edge lines beneath them, all folded into one condensed pointer, so the card leads with the round that just landed rather than carrying a second copy of the log index. Roughly nine screenfuls fall away; every word stands at the nib above.
+
+**What waits there, worth recalling:** the inline accounts of the whole correspondence arc as it was written lap by lap -- the **forbear** rung handing a standing matter to a run that has not started, the third note in the arc and the only one that does not fall with the record beneath it; the **mind** rung making the run that inherits an impasse say so where the outcome is read, six bytes into `plan.mind` with every byte but the last copied from outside the plan; the **desist** rung standing a wall before the relay is stayed, so a run falling between the two hands the matter on rather than dropping a question into silence; and the **ladder harness** landing on Keaton's word as option B -- 57 bodies lifting across 30 rungs and the carry falling from 17,997 lines to 1,952. Also the clock erratum (REDS %96, %97), the Two Rooms register sweep across 514 pages (REDS %93, %94), the pier naming its own zone (REDS %90), and the reclaim, mend, heed, owe, and recount rungs, each with the number it moved named inline.
+
+
 ### `20260820.155932` -- the allay and forbear live edges fold as the mind rung seats
 
 **Walk-back nib:** `09bef9a2e7` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.

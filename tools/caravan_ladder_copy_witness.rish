@@ -19,17 +19,26 @@
 # chained check re-enters the rung rather than ending in the rung below. Both residues fall to it: 57 bodies lift across
 # 30 rungs, and the carry falls to 1,952, a ninth of what stood before it.
 #
-# So this witness changed jobs with the scan beneath it. It began proving a ratchet was measurable; it now proves a wall
-# holds, at 4,000 against a standing of 1,952 -- about four rungs of headroom at the carry's own shrunken rate.
+# Two rungs later the meter named its own next crux, and reading which bodies made up the number answered it: 85 of the
+# 89 duplicated bodies were identical five-line stubs, and two rungs only write the same stub when they name the same
+# rung below. `desist.rye`, born as a copy of `mind.rye`, had inherited its delegations whole and folded two rungs down
+# into `forbear.rye`, skipping its own neighbor (REDS %98). Repointed one step down, with its four remaining copied
+# bodies lifted, the carry fell to 2,202 -- and the one-step rule became a guard rather than a habit.
 #
-# Five claims, each proven on metal:
+# So this witness changed jobs with the scan beneath it. It began proving a ratchet was measurable; it now proves a wall
+# holds, at 4,000 against a standing of 2,202 -- about three rungs of headroom at the carry's own shrunken rate.
+#
+# Six claims, each proven on metal:
 #   1. The living ladder counts clean under a named ceiling.
-#   2. The A fold is real, counted off the ladder rather than believed: 640 checks run in the rung that owns them.
-#   3. The B fold is real on the same terms: 438 checks run in the harness against the rung that called them.
+#   2. The A fold is real, counted off the ladder rather than believed: 679 checks run in the rung that owns them.
+#   3. The B fold is real on the same terms: 492 checks run in the harness against the rung that called them.
 #   4. The counting itself is right, proven on a two-module corpus whose one carried check and six carried lines are
 #      countable by hand.
-#   5. Every RED path refuses by name -- a corpus with no modules, a corpus whose modules hold no checks at all (the
-#      REDS %97 shape: a count that cannot see what it measures), and a corpus grown past its ceiling.
+#   5. The fold walks down one rung at a time: every folding rung names one rung below, and no rung below is named
+#      twice -- proven on the living ladder and on a three-rung corpus small enough to read.
+#   6. Every RED path refuses by name -- a corpus with no modules, a corpus whose modules hold no checks at all (the
+#      REDS %97 shape: a count that cannot see what it measures), a corpus grown past its ceiling, and a rung reaching
+#      past its neighbor.
 #
 # Brief: active-designing/20260820-131713_caravan-ladder-shared-harness.md
 # No network, no key, no funds.
@@ -64,8 +73,30 @@ say "caravan-ladder-copy: fold A -- ${trim folds.out} checks run in the rung tha
 # and never falls; a drop means the bodies came back, whatever the prose says.
 let harnessed = run ["sh" "-c" "grep -h 'return ladder_checks[.]check_' caravan/*.rye | wc -l | tr -d ' '"]
 assert harnessed.ok else "caravan-ladder-copy: could not count the harnessed checks -- ${harnessed.err}"
-assert (trim harnessed.out) == "484" else "caravan-ladder-copy: want 484 checks run in the harness, read ${trim harnessed.out}"
+assert (trim harnessed.out) == "492" else "caravan-ladder-copy: want 492 checks run in the harness, read ${trim harnessed.out}"
 say "caravan-ladder-copy: fold B -- ${trim harnessed.out} checks run in the harness against the rung that called them"
+
+# The C claim -- no rung reaches past its neighbor. The two folds above say how many checks run somewhere other than
+# where they are written; this one says the fold walks DOWN ONE RUNG AT A TIME. A rung that reaches two rungs down skips
+# its neighbor, and then both rungs hold the same five-line stub byte for byte -- which is a copy the meter counts and a
+# chain a reader cannot follow. `desist.rye` was born as a copy of `mind.rye` and inherited its delegations whole, so
+# both folded into `forbear.rye` and 195 lines rode the ladder for it. Stated as a rule a machine checks, the drift can
+# never re-enter unseen: a rung folds into at most one rung, and no rung is folded into by two.
+let reach = run ["sh" "tools/fixtures/caravan_ladder_reach_scan.sh"]
+assert reach.ok else "caravan-ladder-copy: the living ladder must walk down one rung at a time -- ${reach.out}"
+assert reach.out contains "LADDER_REACH_OK" else "caravan-ladder-copy: want every folding rung naming one rung below"
+say "caravan-ladder-copy: fold C -- ${trim reach.out}"
+
+# The reach rule proven on a corpus small enough to read: three rungs, each folding into the one beneath it.
+let reach_pass = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_reach_corpus sh tools/fixtures/caravan_ladder_reach_scan.sh"]
+assert reach_pass.ok else "caravan-ladder-copy: the walking corpus must pass -- ${reach_pass.out}"
+assert reach_pass.out contains "LADDER_REACH_MODULES 3 folding=2" else "caravan-ladder-copy: want three rungs, two of them folding"
+
+# RED path four -- the planted drift. The top rung of this corpus reaches past its neighbor into the bottom rung, which
+# is exactly the shape this round took off the living ladder. A guard that never refuses is a habit; this one refuses.
+let reach_skip = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_reach_skip_corpus sh tools/fixtures/caravan_ladder_reach_scan.sh"]
+assert (reach_skip.ok == false) else "caravan-ladder-copy: a rung reaching past its neighbor must refuse"
+assert reach_skip.out contains "reason=shared_target" else "caravan-ladder-copy: want the skipped neighbor refused by name"
 
 # The counting proven by hand. The corpus holds two rungs: the lower carries two distinct checks, the
 # upper carries one of them forward byte for byte and adds one of its own. So four checks stand, three
@@ -97,4 +128,4 @@ let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_c
 assert (ceiling.ok == false) else "caravan-ladder-copy: a ladder past its ceiling must refuse"
 assert ceiling.out contains "reason=past_ceiling" else "caravan-ladder-copy: want the ceiling breach refused by name"
 
-say "GREEN: caravan-ladder-copy -- the folded ladder stands counted under a named ceiling, both folds are read out of the ladder rather than claimed, the counting is proven by hand on a two-rung corpus, and all three RED paths refuse by name."
+say "GREEN: caravan-ladder-copy -- the folded ladder stands counted under a named ceiling, all three folds are read out of the ladder rather than claimed, the counting is proven by hand on a two-rung corpus, the fold walks down one rung at a time, and all four RED paths refuse by name."

@@ -11674,27 +11674,9 @@ pub fn check_forbear_refusals() u8 {
 
 /// Weighs the number this rung moves, as a pure fold.
 pub fn check_forbear_measure() u8 {
-    if (unhanded_matters(1, .opens) != 1) {
-        print("  RED: a matter left standing with nothing handed on went uncounted\n", .{});
-        return 1;
-    }
-    if (unhanded_matters(1, .forbears) != 0) {
-        print("  RED: a matter handed on still counted as one left standing\n", .{});
-        return 1;
-    }
-    // A run whose reader put the matter to rest has no impasse to hand on, so
-    // it costs the count nothing -- the harm this rung names is the refusal
-    // actually read and the next run left to meet it from nothing.
-    if (unhanded_matters(0, .opens) != 0) {
-        print("  RED: a run whose matter came to rest was charged an unhanded one\n", .{});
-        return 1;
-    }
-
-    print("  five refusals stand by name: unread, allayed, mismatched, miscounted, misrecorded\n", .{});
-    print("  the forbearance this rung keeps: {s}\n", .{forbear_words(.forbears)});
-    print("  what an opening plan hands the next run: {s}\n", .{forbear_words(.opens)});
-    print("  a forbearance carries five bytes: the reply it holds back on, echoed back whole\n", .{});
-    return check_mind();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_forbear_measure(@This());
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
@@ -11703,113 +11685,16 @@ pub fn check_forbear_measure() u8 {
 /// is named, what a mark carries, and the honesty of the count answered as a
 /// pure fold -- no process anywhere.
 pub fn check_mind() u8 {
-    const told = knows_bytes(anew_bytes(inherited_matter));
-    const refused = rests_bytes(told, .stands);
-    const held = holds_bytes(refused);
-    const mark = minds_bytes(held);
-    if (!minds_carries(mark, held)) {
-        print("  RED: a mark refused the very forbearance it was written from\n", .{});
-        return 1;
-    }
-    if (minds_rest(mark) != .stands) {
-        print("  RED: a mark carried a word other than the refusal it was handed\n", .{});
-        return 1;
-    }
-    if (mark[max_minds_bytes - 1] != minded_byte) {
-        print("  RED: a mark did not say it was one\n", .{});
-        return 1;
-    }
-    // The whole point of the rung, as a fold: a mark left over from an earlier
-    // lap names an older impasse, and reading that as today's would tell an
-    // operator the plan opened holding a matter nobody handed it this morning.
-    const elder = knows_bytes(anew_bytes(again_bytes(suits_bytes(found_bytes(redress_bytes(met_bytes([_]u8{ 'd', 's' }), .righted)), .wanting))));
-    if (minds_carries(minds_bytes(holds_bytes(rests_bytes(elder, .stands))), held)) {
-        print("  RED: a mark about an older impasse was read as today's\n", .{});
-        return 1;
-    }
-    if (minds_carries(null, held)) {
-        print("  RED: an outcome naming nothing was read as naming an impasse\n", .{});
-        return 1;
-    }
-    if (minds_rest(null) != null) {
-        print("  RED: an outcome naming nothing carried a word all the same\n", .{});
-        return 1;
-    }
-    if (!mind_holds(mark, mark) or mind_holds(minds_bytes(holds_bytes(rests_bytes(told, .allays))), mark) or mind_holds(null, mark)) {
-        print("  RED: a run believed a mark other than the one it published\n", .{});
-        return 1;
-    }
-    if (minded_in(1, .minds) != 1 or minded_in(1, .begins) != 0) {
-        print("  RED: a minding was counted as though nothing were named\n", .{});
-        return 1;
-    }
-    if (minded_in(0, .minds) != 0) {
-        print("  RED: a run opening holding nothing named an impasse anyway\n", .{});
-        return 1;
-    }
-    if (begun_in(1, .begins) != 1 or begun_in(1, .minds) != 0) {
-        print("  RED: the other half of the count did not close as a fold\n", .{});
-        return 1;
-    }
-    if (begun_in(0, .begins) != 0) {
-        print("  RED: a run opening holding nothing began a matter all the same\n", .{});
-        return 1;
-    }
-    return check_mind_refusals();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_mind(@This());
 }
 
 /// Weighs the refusals this rung earns, each by name, as a pure fold.
 pub fn check_mind_refusals() u8 {
-    if (mind_refusal(1, 1, 0, false, true, true)) |why| {
-        if (why != error.MindUninherited) {
-            print("  RED: a mark with no forbearance behind it refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run named an impasse nobody handed it\n", .{});
-        return 1;
-    }
-    if (mind_refusal(1, 1, 0, true, false, true)) |why| {
-        if (why != error.MindRested) {
-            print("  RED: a settled matter named as an impasse refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run carried a closed argument forward as an impasse\n", .{});
-        return 1;
-    }
-    if (mind_refusal(1, 1, 0, true, true, false)) |why| {
-        if (why != error.MindMismatched) {
-            print("  RED: a mark about another matter refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run named an impasse other than the one it opened holding\n", .{});
-        return 1;
-    }
-    if (mind_refusal(1, 1, 1, true, true, true)) |why| {
-        if (why != error.MindMiscounted) {
-            print("  RED: an impasse counted twice refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: an impasse both named and begun closed its count\n", .{});
-        return 1;
-    }
-    if (mind_refusal(1, 0, 0, true, true, true)) |why| {
-        if (why != error.MindMiscounted) {
-            print("  RED: an impasse counted neither way refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: an impasse neither named nor begun closed its count\n", .{});
-        return 1;
-    }
-    if (mind_refusal(1, 1, 0, true, true, true)) |why| {
-        print("  RED: an honest minding was refused as {s}\n", .{@errorName(why)});
-        return 1;
-    }
-    return check_mind_measure();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_mind_refusals(@This());
 }
 
 /// Weighs the number this rung moves, as a pure fold.
@@ -11846,71 +11731,9 @@ pub fn check_mind_measure() u8 {
 /// note beneath it, only the run that inherits it takes this one down --
 /// so the fold proves the standing rather than the falling.
 pub fn check_forbear_wire(io: std.Io, sys: *const system.System) u8 {
-    clear_forbear(io);
-    clear_rests(io, standing_address);
-    clear_recount(io, standing_address);
-    clear_reweigh(io);
-    reweigh_note(io, inherited_matter) catch |err| {
-        print("  RED: a second look could not be receipted at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const receipt = anew_standing(io) orelse {
-        print("  RED: a seated receipt could not be read back at all\n", .{});
-        return 1;
-    };
-    const told = knows_bytes(receipt);
-    recount_note(io, standing_address, told) catch |err| {
-        print("  RED: a reader could not be told at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // The reader's own hand, written by the reader rather than by any run --
-    // and this time the word is a refusal, which is what earns a forbearance.
-    const refused = rests_bytes(told, .stands);
-    rest_as_reader(io, standing_address, refused) catch |err| {
-        print("  RED: a reader could not reply in their own hand: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    forbear_note(io, refused) catch |err| {
-        print("  RED: a forbearance could not be handed on at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const provisioned = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(provisioned == sys.graph.domain_count);
-    const survived = hold_standing(io) orelse {
-        print("  RED: a provisioning cleared the forbearance a run handed on\n", .{});
-        return 1;
-    };
-    if (!holds_carries(survived, refused)) {
-        print("  RED: a forbearance carried past a provisioning stopped naming its matter\n", .{});
-        return 1;
-    }
-    if (holds_rest(survived) != .stands) {
-        print("  RED: a forbearance carried past a provisioning stopped naming its refusal\n", .{});
-        return 1;
-    }
-    if (rest_written(io, standing_address) == null) {
-        print("  RED: handing an impasse on took the reply it holds back on out of its reader's box\n", .{});
-        return 1;
-    }
-    // And it comes down only on the word of the run that inherits it, never on
-    // a provisioning and never on the falling of the telling beneath it.
-    clear_recount(io, standing_address);
-    if (hold_standing(io) == null) {
-        print("  RED: a forbearance fell with the telling its reader refused\n", .{});
-        return 1;
-    }
-    clear_forbear(io);
-    if (hold_standing(io) != null) {
-        print("  RED: a forbearance stood after the run inheriting it took it down\n", .{});
-        return 1;
-    }
-    clear_rests(io, standing_address);
-    print("  a forbearance survives a provisioning, and comes down only on the word of the run that inherits it\n", .{});
-    return check_mind_wire(io, sys);
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_forbear_wire(@This(), io, sys);
 }
 
 /// A minding across a provisioning, proven outside any run.

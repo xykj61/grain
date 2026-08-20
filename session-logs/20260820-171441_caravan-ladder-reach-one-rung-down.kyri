@@ -1,0 +1,35 @@
+format session-log-v1
+stamp 20260820.171441
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Caravan ladder reach -- a rung folds into the rung directly below it, and a guard says so
+prompt Autonomous loop -- Standfast on reds, then the next agent-doable lap Lindy-first crux-first, council rota doc by lap index, condense REMEMBER when a set completes, and send each finished increment as its own signed round.
+think Standfast first. Walked crux/REDS.md and every archived range: rows 88-95 all closed on metal per the archive header, %96 and %97 closed in the living pin, %81 %84 %90 %95 closed by name. No agent-closable red stood open, so constructive work was free to begin.
+think Council rota, lap 535 of the d27 cycle: context/SILO_TECHNIQUE.md, read whole. An idea is truly ours only when we can rebuild it from our own materials -- which is exactly the test this lap applied to a number rather than a source. The meter handed over a total; reading the parts until the shape was ours is what found the drift.
+think The newest log named its own next crux in a number: 622 lines a rung, carry 2,574 of 4,000, about two rungs of headroom, and the lift that answers it is the move that already worked once. Lindy-first crux-first agreed -- the harness is the durable thing on this ladder, and the carry is the meter that says whether it is holding.
+think Rather than trusting the total, read which bodies made it. 89 duplicated bodies between mind and desist: four real bodies at 197 lines, and 85 identical five-line stubs. That decomposition is the whole lap. Two rungs only write the same stub when they name the same rung below.
+think Measured every rung's fold target. Thirty-two rungs fold; thirty-one name a distinct rung below. One collision: desist and mind both fold into forbearing_rung. desist.rye was born as a copy of mind.rye -- which is what makes the parity of every rung beneath it readable -- and it inherited mind's delegations whole, reaching two rungs down and skipping its own neighbor.
+think Three moves, in order. Repointed desist's 39 folds to minding_rung, one step down, after asserting all 39 stand pub on mind.rye. Lifted the four remaining copied bodies -- check_mind, check_mind_refusals, check_forbear_measure, check_forbear_wire -- into caravan/ladder_checks.rye, following the precedent check_allay_measure already set: the inventing rung keeps its own body where its chain ends, every rung above it shares the harness body whose tail re-enters the rung.
+think Then the prevention, which is the part that outlives the fix. The one-step rule was true everywhere and written nowhere a machine could read it, so it became tools/fixtures/caravan_ladder_reach_scan.sh -- a rung folds into at most one rung, and no rung is folded into by two -- and a sixth claim on the copy meter.
+obs The fix is worth less than the rule it taught. A rung born as a copy of the rung beneath it inherits that rung's reach, not its own; nothing in the tree said so, and the cost showed up as a number in a different guard entirely. Booked REDS %98 with the closure, since a drift that shipped is a red whatever else it teaches.
+obs The strongest proof available was the tree itself. Beyond a three-rung PASS corpus and a planted skip corpus, the guard ran against the living ladder as it stood this morning and named the real drift by name -- forbearing_rung is folded into by more than one rung: desist mind. A guard proven on the very fault it was written for cannot be a habit wearing a check's clothes.
+obs Fold A held at 679 exactly through the repoint, which is the honest signal that nothing was lost: repointing changes which rung a fold names, never how many folds stand. Fold B climbed 484 to 492 -- the eight new stubs, four each in mind and desist -- and the carry fell 372 lines net.
+obs Docs moved in the same commit rather than a later sweep. The README's harness paragraph now states the one-step rule and cites the scan; both the meter witness's header and the scan's header carried a standing of 1,952 that had not been true for two rungs, so each names 2,202 now. A doc describing behavior the code no longer has is a stale claim wearing documentation's clothes.
+obs One limit named rather than rounded away: the remaining 2,202 lines are mostly irreducible. A lifted check costs each rung five lines of stub, byte-identical across rungs by design since @This() resolves per rung, and the meter counts every one past the first as carried. The carry can fall further only by lifting bodies that have not been lifted -- never to zero.
+loom witness=caravan_ladder_copy carry_lines=2202 prior=2574 fold_a=679 fold_b=492 folding_rungs=32 modules=95 checks=1491
+loom witness=caravan_suite rungs=89 cold_tree=true result=GREEN
+file caravan/desist.rye 39 folds repointed from forbearing_rung to minding_rung, one step down, and four copied bodies replaced by harness stubs
+file caravan/mind.rye the same four bodies replaced by harness stubs, so one body now serves both rungs
+file caravan/ladder_checks.rye the four lifted bodies, each taking the rung as a comptime parameter and re-entering it at the tail
+file tools/fixtures/caravan_ladder_reach_scan.sh the new guard -- a rung folds into at most one rung, and no rung is folded into by two
+file tools/fixtures/caravan_ladder_reach_corpus/ three rungs, each folding into the one beneath it, small enough to read
+file tools/fixtures/caravan_ladder_reach_skip_corpus/ the planted drift -- a top rung reaching past its neighbor, refused as reason=shared_target
+file tools/caravan_ladder_copy_witness.rish fold C claim, the fourth RED path, and the standing corrected to 2,202
+file tools/fixtures/caravan_ladder_copy_scan.sh header synced to the carry it now measures
+file caravan/README.md the one-step rule stated where the harness is introduced, citing the scan that holds it
+file crux/REDS.md REDS %98 booked and closed -- root, three fixes, and the guard proven on the living fault
+file crux/CAIRNS.md walk-back nib ae3bc5bee3 recorded before the card condense
+file crux/REMEMBER.md the correspondence arc folded to one pointer, Now refilled with this round; 47,618 bytes to 32,484
+recommend keep-going the ladder's shape is guarded now as well as measured, and the meter names the next crux the same way it named this one: 2,202 lines standing, most of them the irreducible five-line stub a lifted check costs each rung. The nearer constructive door is where the desist rung's own recommend pointed before the meter interrupted -- what an operator does with a wall once it stands, which is where the arc leaves the plan and reaches a person.
