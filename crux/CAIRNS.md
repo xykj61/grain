@@ -24,6 +24,12 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260819.211527` -- REMEMBER's withdraw chronicle folded to a pointer as the replace rung lands
+
+**Walk-back nib:** `0ef89d84a7` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.
+**Swept:** the **Live edge** bullet's whole inline account of `caravan/withdraw.rye` -- the three facts an arrival owed the plan read backwards, why exactly those three make a departure invisible downstream to `elder_waits`, `sibling_waits`, and `may_pass`, the shy reading that lets turn 4 go while turn 5 names it so turn 5 waits on nobody with nothing anywhere to report it, the departure that moves nothing, the 2 phases that left a run under way against 5 children of 7 handed whole, and the metal correcting the schedule itself with `WithdrawalStarted`. Roughly one long paragraph folded into the prior-edges pointer.
+**What waits there, worth recalling:** at nib `0ef89d84a7` the departing card holds the full prose for why a run must never release a follower whose predecessor never ran -- the failure nothing reports, which is why the rung measured both readings against each other rather than asserting the difference. That argument is the direct ancestor of this rung's finding that the residue is a *lawful* plan, and therefore that a half-finished correction is exactly the state no supervisor can recognize. Both survive in `caravan/withdraw.rye`, `caravan/README.md`, and the `20260819.205940` session log.
+
 ### `20260819.205940` -- REMEMBER's enlist chronicle folded to a pointer as the withdraw rung lands
 
 **Walk-back nib:** `9b8a62fd39` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.
