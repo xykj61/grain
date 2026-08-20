@@ -24,6 +24,15 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260820.105456` -- the deem live edge folds as the avow rung seats
+
+**Walk-back nib:** `42f333eb6c` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **deem** rung and the pointer bullet beneath it, folded into one condensed line naming deem, refer, swell, dwell, relent, heed, and endure, so the card leads with the rung that just landed rather than carrying a second copy of the log index.
+
+**What waits there, worth recalling:** the inline account of the hand a case went to being read back and its finding published -- the finding read off the wire and never written by a run, since a supervisor able to author the word against it has graded its own objection; `DeemMismatched` refusing a verdict about some older argument, because a desk that has heard this argument before may still hold the answer to a younger quarrel; a finding carrying four bytes with the case echoed back exactly, so a verdict is answerable to a particular argument rather than to whatever quarrel a plan happens to hold; and a finding belonging to the hand that wrote it across a provisioning and across the plan clearing its own copy. Every word of it also rests in `caravan/README.md` and its own dated log `20260820-102945`; the cairn is the cheaper walk-back.
+
+
 ### `20260820.102945` -- the refer live edge folds as the deem rung seats
 
 **Walk-back nib:** `4c4d3c150e` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
