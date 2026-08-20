@@ -24,6 +24,12 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260819.213726` -- REMEMBER's replace chronicle folded to a pointer as the understudy rung lands
+
+**Walk-back nib:** `6be544fa1e` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.
+**Swept:** the **Live edge** bullet's whole inline account of `caravan/replace.rye` -- the correction refused by every reading that weighs a newcomer against a record still holding the phase it replaces, the residue as the record both triples want, the danger in a residue that seats itself, the 0 places moved against 5 moved by the sequence, the 32 tests against 256, `ReplacementUnseated` earned by name, and the 1 phase corrected in a run already under way. Roughly one long paragraph folded into the prior-edges pointer.
+**What waits there, worth recalling:** at nib `6be544fa1e` the departing card holds the full prose for why the gap between a withdrawal and its enlistment is dangerous precisely because it is lawful -- a record that answers every question a supervisor knows how to ask while holding neither shape. That argument is the direct ancestor of this rung's finding, which is its mirror image: a record may hold *two* shapes of one phase safely for exactly the reason the residue was unsafe holding none, since what a child was handed travels with the child and never with the record. Both survive in `caravan/replace.rye`, `caravan/README.md`, and the `20260819.211527` session log.
+
 ### `20260819.211527` -- REMEMBER's withdraw chronicle folded to a pointer as the replace rung lands
 
 **Walk-back nib:** `0ef89d84a7` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.
