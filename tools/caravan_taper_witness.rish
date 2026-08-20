@@ -73,6 +73,13 @@ let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/r
 
 assert build.ok else "caravan taper build failed"
 
+# The reader this witness runs is built here rather than borrowed (REDS #92).
+# Thirty-six rungs ran caravan/bin/read without building it, so the whole arc was
+# green only on a tree some earlier run had left warm. A witness owns what it runs.
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/read"]
+assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
+
+
 # The board declaration the rung below opened, unchanged: a region one
 # client writes and its siblings read, with no channel joining any of them.
 let published = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_three_clients_board.bron 2>&1"]

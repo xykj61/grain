@@ -55,6 +55,13 @@ let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/r
 
 assert build.ok else "caravan decline build failed"
 
+# The reader this witness runs is built here rather than borrowed (REDS #92).
+# Thirty-six rungs ran caravan/bin/read without building it, so the whole arc was
+# green only on a tree some earlier run had left warm. A witness owns what it runs.
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/read"]
+assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
+
+
 # The shape under test is the ring already proven, unchanged. The question
 # here is about a domain that stays gone rather than about a shape.
 let decl = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_cycle.bron 2>&1"]

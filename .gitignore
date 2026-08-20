@@ -167,6 +167,13 @@
 /glow/bin/
 /glow/.cache/
 *.rye.zig
+# Rye build residue: `rye build` also emits <name>.zig beside each module it
+# compiles, and the `*.rye.zig` line above catches only the bridge files. Twenty-six
+# of these sat untracked in caravan/ after one witness sweep, one `git add -A` away
+# from the tree. Authored code here is Rye; the few genuine Zig files are named back.
+*.zig
+!rye/lib/*.zig
+!tools/fixtures/**/*.zig
 .zig-cache/
 zig-cache/
 

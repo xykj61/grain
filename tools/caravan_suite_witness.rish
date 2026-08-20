@@ -29,34 +29,49 @@ say "caravan-suite: Language EN -- the Caravan choir: one run that hears every p
 say "caravan-suite: Style Radiant -- a rung is proven when a witness says so, and an arc is proven when nothing in it is unheard. The roster is checked before it is sung, so the count this witness prints is measured rather than remembered."
 say "caravan-suite: Lens TAME -- every tools/caravan_*_witness.rish on disk is asserted registered here, every registration is asserted to exist on disk, and then each is asserted GREEN. RED names exactly which rung broke the bijection or the run. Purely local -- no key, no network, no funds, no device."
 
-let mk = run ["sh" "-c" "mkdir -p caravan/bin"]
-assert mk.ok else "caravan-suite: could not make caravan/bin -- ${mk.err}"
+# The choir sings from a cold tree, always (REDS #92). Thirty-six rungs ran
+# caravan/bin/read without building it, so this suite had never once proven itself
+# on a clean checkout -- it passed on whatever an earlier run had left warm, and the
+# day the directory was cleared it named a rung RED that was perfectly sound. Clearing
+# the built binaries before every run makes cold-start self-sufficiency a fact this
+# witness checks rather than a property nobody was measuring.
+let mk = run ["sh" "-c" "rm -rf caravan/bin && mkdir -p caravan/bin"]
+assert mk.ok else "caravan-suite: could not make a cold caravan/bin -- ${mk.err}"
+
+# The roster lists this choir keeps are private to one run (REDS #88). Two suites in flight at
+# once -- a hand beside a sweep -- shared one pair of files and read each other's half-written
+# rosters, so the bijection could refuse a roster that was whole. One pid makes them this run's.
+let pid_r = run ["sh" "-c" "echo $$"]
+assert pid_r.ok else "caravan-suite: could not read this run's own pid -- ${pid_r.err}"
+let run_id = trim pid_r.out
+let disk_list = "caravan/bin/.cs_disk.${run_id}.txt"
+let reg_list = "caravan/bin/.cs_reg.${run_id}.txt"
 
 let witnesses = [ "tools/caravan_arrange_witness.rish" "tools/caravan_arrive_witness.rish" "tools/caravan_boot_witness.rish" "tools/caravan_c4_exit_meanings_eq_witness.rish" "tools/caravan_caps_a1_gate_bound_witness.rish" "tools/caravan_carry_witness.rish" "tools/caravan_channels_witness.rish" "tools/caravan_dependents_a1_gate_bound_witness.rish" "tools/caravan_cohort_witness.rish" "tools/caravan_commute_witness.rish" "tools/caravan_concurrent_witness.rish" "tools/caravan_confer_witness.rish" "tools/caravan_cycle_witness.rish" "tools/caravan_decline_witness.rish" "tools/caravan_enlist_witness.rish" "tools/caravan_entrust_witness.rish" "tools/caravan_exercise_witness.rish" "tools/caravan_fanin_witness.rish" "tools/caravan_fence_witness.rish" "tools/caravan_gap_witness.rish" "tools/caravan_glow_tend_limb1_witness.rish" "tools/caravan_glow_tend_limb2_witness.rish" "tools/caravan_glow_tend_limb3_witness.rish" "tools/caravan_glow_tend_limb4_witness.rish" "tools/caravan_harvest_witness.rish" "tools/caravan_inflight_witness.rish" "tools/caravan_intent_witness.rish" "tools/caravan_mask_witness.rish" "tools/caravan_notify_witness.rish" "tools/caravan_overtake_witness.rish" "tools/caravan_phases_witness.rish" "tools/caravan_precede_witness.rish" "tools/caravan_queue_witness.rish" "tools/caravan_read_witness.rish" "tools/caravan_rederive_witness.rish" "tools/caravan_regions_witness.rish" "tools/caravan_relay_witness.rish" "tools/caravan_replace_witness.rish" "tools/caravan_restart_witness.rish" "tools/caravan_revoke_witness.rish" "tools/caravan_rolling_witness.rish" "tools/caravan_roster_witness.rish" "tools/caravan_roundtrip_witness.rish" "tools/caravan_serve_witness.rish" "tools/caravan_stall_witness.rish" "tools/caravan_standby_witness.rish" "tools/caravan_system_witness.rish" "tools/caravan_taper_witness.rish" "tools/caravan_understudy_witness.rish" "tools/caravan_unhand_witness.rish" "tools/caravan_unprompted_witness.rish" "tools/caravan_withdraw_witness.rish" ]
 
 # The per-rung witnesses on disk, one bare name per line, sorted, excluding this suite itself.
-let list_disk = run ["sh" "-c" "find tools -maxdepth 1 -name 'caravan_*_witness.rish' -type f | sed 's:.*/::; s:.rish$::' | grep -v '^caravan_suite_witness$' | sort > caravan/bin/.cs_disk.txt"]
+let list_disk = run ["sh" "-c" "find tools -maxdepth 1 -name 'caravan_*_witness.rish' -type f | sed 's:.*/::; s:.rish$::' | grep -v '^caravan_suite_witness$' | sort > ${disk_list}"]
 assert list_disk.ok else "caravan-suite: could not list the per-rung witnesses on disk -- ${list_disk.err}"
 
 # The names this suite registers, one per line, sorted, excluding this suite itself.
-let list_reg = run ["sh" "-c" "grep -oE 'caravan_[a-z0-9_]+_witness' tools/caravan_suite_witness.rish | grep -v '^caravan_suite_witness$' | sort -u > caravan/bin/.cs_reg.txt"]
+let list_reg = run ["sh" "-c" "grep -oE 'caravan_[a-z0-9_]+_witness' tools/caravan_suite_witness.rish | grep -v '^caravan_suite_witness$' | sort -u > ${reg_list}"]
 assert list_reg.ok else "caravan-suite: could not read this suite's own registrations -- ${list_reg.err}"
 
 # Bijection A: every per-rung witness on disk is registered here, so no rung ever runs unheard.
-let unheard = run ["sh" "-c" "grep -Fxv -f caravan/bin/.cs_reg.txt caravan/bin/.cs_disk.txt || true"]
+let unheard = run ["sh" "-c" "grep -Fxv -f ${reg_list} ${disk_list} || true"]
 assert unheard.ok else "caravan-suite: bijection scan A failed -- ${unheard.err}"
 assert (trim unheard.out) == "" else "caravan-suite: a Caravan witness on disk is not registered in this choir -- ${unheard.out}"
 
 # Bijection B: every registration here exists on disk, so no roster line ever points at nothing.
-let phantom = run ["sh" "-c" "grep -Fxv -f caravan/bin/.cs_disk.txt caravan/bin/.cs_reg.txt || true"]
+let phantom = run ["sh" "-c" "grep -Fxv -f ${disk_list} ${reg_list} || true"]
 assert phantom.ok else "caravan-suite: bijection scan B failed -- ${phantom.err}"
 assert (trim phantom.out) == "" else "caravan-suite: this choir registers a witness with no file on disk -- ${phantom.out}"
 
-let disk_c = run ["sh" "-c" "wc -l < caravan/bin/.cs_disk.txt | tr -d ' \n'"]
+let disk_c = run ["sh" "-c" "wc -l < ${disk_list} | tr -d ' \n'"]
 assert disk_c.ok else "caravan-suite: could not count the witnesses on disk -- ${disk_c.err}"
 let n_disk = trim disk_c.out
 
-let reg_c = run ["sh" "-c" "wc -l < caravan/bin/.cs_reg.txt | tr -d ' \n'"]
+let reg_c = run ["sh" "-c" "wc -l < ${reg_list} | tr -d ' \n'"]
 assert reg_c.ok else "caravan-suite: could not count this suite's registrations -- ${reg_c.err}"
 let n_reg = trim reg_c.out
 
