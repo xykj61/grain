@@ -29,6 +29,13 @@
 # carried it to 3,324 in chained check bodies. The one-step
 # rule is a guard of its own now: tools/fixtures/caravan_ladder_reach_scan.sh.
 #
+# The lap after that lifted the chained bodies themselves. Eight stood byte-for-byte
+# alike across every rung holding them and went to the harness whole; two stayed
+# home, since a chain's last link ends in `return 0` in the rung topping the ladder
+# and climbs in every rung above, so it is one body per rung rather than a copy.
+# The carry fell to 2,762, and what remains is very largely the five-line stub each
+# lifted check costs each rung -- irreducible while a rung names its own checks.
+#
 # Measurement beats memory: a count carried forward drifts (REDS %93), and a
 # count that cannot see what it measures is a guess wearing a measurement's
 # clothes (REDS %97). Both failure shapes are refused by name below.
@@ -38,7 +45,7 @@
 # hundred lines of copy stood, so a new rung adds roughly four lines per lifted
 # check it climbs to, plus whatever its own new checks carry until they are
 # lifted in turn -- call it five hundred a rung until the next rung measures it.
-# 4,000 is about one rung of headroom above the standing of 3,324, close
+# 4,000 is about two rungs of headroom above the standing of 2,762, close
 # enough that the number still means something on the lap it moves.
 #
 # CARAVAN_LADDER_DIR (default caravan): the directory of rung modules, so the
