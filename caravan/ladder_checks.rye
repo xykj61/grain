@@ -3567,3 +3567,217 @@ pub fn check_unlost(comptime rung: type, sys: *const system.System) u8 {
     print("  a plan that loses nothing reads as the line handed, all {d} pairs\n", .{agreed});
     return 0;
 }
+
+/// Weighs the number this rung moves, as a pure fold.
+pub fn check_beckon_measure(comptime rung: type) u8 {
+    if (rung.unheralded_walls(1, .keeps) != 1) {
+        print("  RED: a wall stood and told to nobody went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.unheralded_walls(1, .beckons) != 0) {
+        print("  RED: a wall carried to a person still counted as one told to nobody\n", .{});
+        return 1;
+    }
+    // A run that stood no wall has no boundary to carry, so it costs the count
+    // nothing -- the harm this rung names is the wall actually stood and the
+    // person never called to it.
+    if (rung.unheralded_walls(0, .keeps) != 0) {
+        print("  RED: a run that bounded nothing was charged an unheralded wall\n", .{});
+        return 1;
+    }
+
+    print("  five refusals stand by name: unwalled, unaddressed, mismatched, miscounted, misrecorded\n", .{});
+    print("  the beckoning this rung keeps: {s}\n", .{rung.beckon_words(.beckons)});
+    print("  what a keeping plan tells an operator: {s}\n", .{rung.beckon_words(.keeps)});
+    print("  a call carries eight bytes: the wall it names, echoed whole, and this run's own byte last\n", .{});
+    return link(rung, "check_answer");
+}
+
+
+/// A call across a provisioning, proven outside any run.
+///
+/// The lap below proves the beckoning end to end under a real plan. This proves
+/// the two properties that make a call worth carrying: it survives a
+/// provisioning, since a summons swept every morning would leave the person who
+/// can act on the matter exactly as uncalled as before -- **and the call lands
+/// in a box outside this plan's wire**, so taking down every note the plan keeps
+/// leaves the reader holding what they were told.
+pub fn check_beckon_wire(comptime rung: type, io: std.Io, sys: *const system.System) u8 {
+    rung.clear_calls(io, rung.standing_address);
+    rung.clear_desist(io);
+    rung.clear_mind(io);
+    if (rung.called_of(io, rung.standing_address) != null) {
+        print("  RED: a call stood in a box nobody had written to\n", .{});
+        return 1;
+    }
+    const held = rung.holds_bytes(rung.rests_bytes(rung.knows_bytes(rung.anew_bytes(rung.inherited_matter)), .stands));
+    const mark = rung.minds_bytes(held);
+    const wall = rung.walls_bytes(mark);
+    // The run before today, standing in for itself: it stood this wall among
+    // the plan's own notes, exactly as the rung below leaves a wire.
+    rung.wall_note(io, mark) catch |err| {
+        print("  RED: a wall could not be stood: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.call_reader(io, rung.standing_address, wall) catch |err| {
+        print("  RED: a call could not be carried: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const provisioned = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(provisioned == sys.graph.domain_count);
+    const survived = rung.called_of(io, rung.standing_address) orelse {
+        print("  RED: a provisioning cleared the call a person reads\n", .{});
+        return 1;
+    };
+    if (!rung.calls_carries(survived, wall)) {
+        print("  RED: a call carried past a provisioning stopped naming its wall\n", .{});
+        return 1;
+    }
+    if (rung.calls_rest(survived) != .stands) {
+        print("  RED: a call carried past a provisioning forgot the word it was built on\n", .{});
+        return 1;
+    }
+    // And the call outlives the plan's own drawer, which is the whole point of
+    // writing it where the reader is rather than where the record is kept.
+    rung.clear_desist(io);
+    if (rung.called_of(io, rung.standing_address) == null) {
+        print("  RED: a call fell with the wall it was only carrying\n", .{});
+        return 1;
+    }
+    rung.clear_calls(io, rung.standing_address);
+    if (rung.called_of(io, rung.standing_address) != null) {
+        print("  RED: a call outlived the taking down of the reader's own note\n", .{});
+        return 1;
+    }
+    rung.clear_mind(io);
+    print("  a call survives a provisioning, and outlives the drawer the wall it names was kept in\n", .{});
+    return link_wire(rung, "check_answer_wire", io, sys);
+}
+
+/// Weighs the opening this rung adds, as a pure fold.
+pub fn check_answer(comptime rung: type) u8 {
+    const held = rung.holds_bytes(rung.rests_bytes(rung.knows_bytes(rung.anew_bytes(rung.inherited_matter)), .stands));
+    const mark = rung.minds_bytes(held);
+    const wall = rung.walls_bytes(mark);
+    const call = rung.calls_bytes(wall);
+    const hand = rung.hands_bytes(call, .accepts);
+    if (!rung.hands_answers(hand, call)) {
+        print("  RED: an answer did not reply to the call it was built from\n", .{});
+        return 1;
+    }
+    if (rung.hands_hand(hand) != .accepts) {
+        print("  RED: an answer lost the reader's own word about the wall\n", .{});
+        return 1;
+    }
+    // An answer built on some other call replies to some other matter, and
+    // reading it as this one's would report a person answering a boundary
+    // nobody stood here.
+    const elder = rung.holds_bytes(rung.rests_bytes(rung.knows_bytes(rung.anew_bytes(rung.inherited_matter)), .allays));
+    const elder_call = rung.calls_bytes(rung.walls_bytes(rung.minds_bytes(elder)));
+    if (rung.hands_answers(rung.hands_bytes(elder_call, .accepts), call)) {
+        print("  RED: an answer to some other call read as this one's\n", .{});
+        return 1;
+    }
+    if (rung.hands_answers(null, call)) {
+        print("  RED: a reader who wrote nothing read as one who had answered\n", .{});
+        return 1;
+    }
+    if (rung.hands_hand(null) != null) {
+        print("  RED: an absent answer carried a word all the same\n", .{});
+        return 1;
+    }
+    const record = rung.answers_bytes(hand);
+    if (!rung.answers_carries(record, hand)) {
+        print("  RED: a record did not carry the answer it was built from\n", .{});
+        return 1;
+    }
+    if (rung.answers_hand(record) != .accepts) {
+        print("  RED: a record lost the reader's own word five tiers down\n", .{});
+        return 1;
+    }
+    if (record[rung.max_answers_bytes - 1] != rung.opened_byte) {
+        print("  RED: a record did not say what it is in its own last byte\n", .{});
+        return 1;
+    }
+    if (rung.answers_carries(rung.answers_bytes(rung.hands_bytes(call, .takes_up)), hand)) {
+        print("  RED: a record of some other word read as this one's\n", .{});
+        return 1;
+    }
+    if (!rung.answer_holds(record, record) or rung.answer_holds(null, record)) {
+        print("  RED: a record read back out of the plan's notes did not answer for itself\n", .{});
+        return 1;
+    }
+    if (rung.hearing_in(1, .hears) != 1 or rung.hearing_in(1, .leaves) != 0) {
+        print("  RED: a hearing was counted as a leaving, or the other way about\n", .{});
+        return 1;
+    }
+    if (rung.hearing_in(0, .hears) != 0) {
+        print("  RED: a run that carried no call was counted as hearing a person\n", .{});
+        return 1;
+    }
+    if (rung.shutting_in(1, .leaves) != 1 or rung.shutting_in(1, .hears) != 0) {
+        print("  RED: the other half of the count did not close\n", .{});
+        return 1;
+    }
+    return link(rung, "check_answer_refusals");
+}
+
+/// Weighs every refusal this rung earns, as a pure fold.
+pub fn check_answer_refusals(comptime rung: type) u8 {
+    if (rung.answer_refusal(1, 1, 0, false, true, true)) |why| {
+        if (why != error.AnswerUncalled) {
+            print("  RED: an opening by a run that carried no call refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: an opening by a run that carried no call was allowed\n", .{});
+        return 1;
+    }
+    if (rung.answer_refusal(1, 1, 0, true, false, true)) |why| {
+        if (why != error.AnswerSilent) {
+            print("  RED: an opening of a box holding nothing refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: an opening of a box holding nothing was allowed\n", .{});
+        return 1;
+    }
+    if (rung.answer_refusal(1, 1, 0, true, true, false)) |why| {
+        if (why != error.AnswerMismatched) {
+            print("  RED: an answer to some other call refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: an answer to some other call was allowed\n", .{});
+        return 1;
+    }
+    if (rung.answer_refusal(1, 1, 1, true, true, true)) |why| {
+        if (why != error.AnswerMiscounted) {
+            print("  RED: a call both opened and left refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a call both opened and left was allowed\n", .{});
+        return 1;
+    }
+    if (rung.answer_refusal(1, 0, 0, true, true, true)) |why| {
+        if (why != error.AnswerMiscounted) {
+            print("  RED: a call neither opened nor left refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a call neither opened nor left was allowed\n", .{});
+        return 1;
+    }
+    // And the honest pass: a call carried once, opened once, counted once.
+    if (rung.answer_refusal(1, 1, 0, true, true, true)) |why| {
+        print("  RED: an honest opening refused as {s}\n", .{@errorName(why)});
+        return 1;
+    }
+    return link(rung, "check_answer_measure");
+}
+
