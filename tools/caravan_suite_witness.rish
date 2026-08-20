@@ -15,7 +15,7 @@
 # Kin: tools/crypto_suite_witness.rish (the elder choir this is shaped after), tools/crypto_count_guard_witness.rish (the
 # bijection guard REDS %80 booked, folded here into one file), caravan/README.md (the rung-by-rung record).
 #
-# Caravan's helper modules and dependent-program fixtures -- bounded, capabilities, chain, parse_int, seed, service, tally_copy,
+# Caravan's helper modules and dependent-program fixtures -- bounded, capabilities, chain, ladder_checks, parse_int, seed, service, tally_copy,
 # twin, and the supervisor_* and *_test programs a witness spawns -- carry no witness of their own on purpose: they are proven
 # through the rungs that compose them, rather than in isolation. So the bijection here binds witnesses to the roster, never
 # modules to witnesses; that honest asymmetry is why this guard counts what it counts.

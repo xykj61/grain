@@ -5,7 +5,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Kyri
 **Lens:** TAME -- safety first, performance second, the joy of the craft third
-**Status:** Landed -- **A ran** on Keaton's word `20260820.142246`; see the addendum at the foot. The body below stands exactly as it was written, before the word came.
+**Status:** Landed -- **A ran** on Keaton's word `20260820.142246`, and **B ran** on his word `20260820.162747`; see the two addenda at the foot. The body below stands exactly as it was written, before either word came.
 **Witness:** [`../tools/caravan_ladder_copy_witness.rish`](../tools/caravan_ladder_copy_witness.rish) over [`../tools/fixtures/caravan_ladder_copy_scan.sh`](../tools/fixtures/caravan_ladder_copy_scan.sh) -- GREEN on metal `20260820.131713`
 
 ---
@@ -81,3 +81,57 @@ Both residues are precisely what **B** would take: a harness that runs a rung's 
 **The meter changed jobs.** It began as a ratchet meter over a number nobody was watching; it is now the wall that keeps the fold folded. The ceiling stands at **22,000** against a standing of 12,035 -- about six rungs of headroom at the residue's measured rate, close enough that the number means something, where 60,000 over a folded ladder would have meant nothing for years. The witness also counts the 523 folded checks off the ladder itself, so a tree that quietly carried the bodies again would go RED whatever the prose said.
 
 Session log: [`../session-logs/20260820-143646_caravan-ladder-fold.kyri`](../session-logs/20260820-143646_caravan-ladder-fold.kyri).
+
+---
+
+## Addendum -- B ran (`20260820.162747`)
+
+Keaton's word came at the ladder-copy checkpoint, and it opened **B**. The
+harness is [`../caravan/ladder_checks.rye`](../caravan/ladder_checks.rye), and
+its whole contract is one word: **`rung`**. A lifted check takes the rung as a
+comptime parameter and reaches every helper through it, so one body runs against
+whichever rung handed itself in -- that rung's own report, its own helpers, its
+own wire. A rung passes `@This()` and keeps a three-line call where a hundred
+lines of copy stood.
+
+**Both residues fell.** The wire residue falls because the harness never opens a
+store of its own: it calls `rung.seat_note(...)`, so the note lands in the
+directory of the rung that called, and the cold-start discipline REDS %92 stays
+satisfied by construction rather than by care. The chain residue falls because
+every check a lifted body calls re-enters the rung -- `rung.check_reopen_refusals()`,
+never a harness-local jump -- so a rung whose variant of a chained check differs
+from the lifted one keeps its own, and a rung that folded that link to the rung
+below keeps that. The chain is a list of re-entries rather than a tail that ends
+somewhere else, which is exactly what the A addendum said B would need.
+
+**What the fold moved.** 57 bodies lift across 30 rungs; 438 harness calls stand.
+The carry falls from **17,997 lines to 1,952** -- a ninth of what it was, and what
+remains is the calls themselves rather than any check's body. The ladder falls
+from 292,417 lines to 276,843, with the harness holding 2,916 of them. Six helper
+names became public in the rungs that carry them -- `inherited_debt`,
+`inherited_matter`, `seat_note`, `standing_address`, `standing_forum`,
+`written_queue` -- 74 declarations in all, the same small act A performed on the
+checks themselves.
+
+**What did not change.** Nothing observable. All 30 touched rungs were built
+twice -- pristine and folded -- and run from a cold tree against the same board
+declaration: **every rung printed the same lines, all thirty**. The only motion
+is where three concurrent dependents interleave, and that was proven to be the
+run rather than the fold by running the *pristine* build twice and watching the
+same lines trade places. The choir sings every rung GREEN.
+
+**A limit named rather than rounded away.** Each harness body is the pre-fold
+body verbatim, with `rung.` written before the symbols it reaches through. That
+is deliberate: it is what makes the parity claim a measurement rather than a
+reading. So the lifted bodies carry no new contract asserts this lap -- the TAME
+SLC touch that adds them belongs to a round that can prove them one at a time,
+rather than to the round whose whole evidence is that nothing changed.
+
+**The meter moved with the carry.** The ceiling falls from 22,000 to **4,000**
+against a standing of 1,952 -- about four rungs of headroom, close enough that
+the number still means something on the lap it moves. The witness now counts both
+folds off the ladder itself: 640 checks running in the rung that owns them, and
+438 running in the harness against the rung that called them. A tree that quietly
+carried the bodies again would go RED whatever the prose said.
+
+Session log: [`../session-logs/20260820-162747_caravan-ladder-harness.kyri`](../session-logs/20260820-162747_caravan-ladder-harness.kyri).

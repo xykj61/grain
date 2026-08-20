@@ -1,0 +1,33 @@
+format session-log-v1
+stamp 20260820.162747
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Caravan ladder harness -- option B ran, and a check now lives where it was written once
+prompt Taking inspiration from our outer and inner recursion loops, approve your recommendation with my word here -- the check in (checkpoint) at the ladder-copy ceiling, whose parked door was option B.
+think Read the word as opening exactly what the checkpoint named: option B, the shared harness, measured and parked in the 20260820.131713 design call. The next constructive rung stays unopened this lap by the same word, since the meter said the headroom it would spend was nearly gone.
+think Measured before designing. The scan read 17,997 carried lines against a ceiling of 22,000 -- under two rungs of headroom, and the A fold's own two limits named the cause: a check that reaches the wire and a check whose tail chains into a check this rung invented both stay home.
+think Read the residue rather than recalling it. Hashing every check body by name gave 58 duplicated groups over 16,901 lines, in four signature shapes only -- (), (io), (sys), and (io, sys) -- with std.Io and system.System the sole parameter types. That uniformity is what made a single harness contract possible at all.
+think Named the contract as one word. A lifted check takes `comptime rung: type` and reaches every helper through it; a rung passes `@This()`. The harness holds no state, opens no store, and knows no rung by name -- so the wire residue falls by construction, since `rung.seat_note(...)` writes into the directory of whichever rung called.
+think The chain residue wanted a second decision, and the first cut got it wrong. Letting a lifted body call another lifted body directly in the harness broke the moment a rung carried a different variant of the chained check -- reopen has no check_recount at all, yet the harness would have sent it there. Every check call re-enters the rung instead: `rung.check_reopen_refusals()`, never a harness-local jump.
+think That is the inner loop, and it is what the A addendum asked for in other words. The chain is a list of re-entries rather than a tail that ends somewhere else, so a rung whose variant differs keeps its own and a rung that folded that link to the rung below keeps that. Harness and rung call each other, and the recursion bottoms out on a number read off a plan that actually ran.
+think Two mechanical faults surfaced and were fixed before any claim: a masker that read an apostrophe inside a comment as a char literal and left a NUL in the generated source (the compiler named it), and lifted calls that carried arguments needing the rung threaded first (the compiler named that too).
+think Six helper names had to become public in the rungs that carry them -- inherited_debt, inherited_matter, seat_note, standing_address, standing_forum, written_queue, 74 declarations -- the same small act the A fold performed on the checks themselves.
+obs Parity is the proof, and it is a measurement rather than a reading. All 30 touched rungs were built twice, pristine and folded, and run from a cold tree against the same board declaration: every rung printed the same lines. The only motion is where three concurrent dependents interleave, and running the pristine build twice showed the same lines trading places -- so the interleave is the run, not the fold.
+obs Each harness body is the pre-fold body verbatim, with `rung.` written before the symbols it reaches through. That is deliberate: it is exactly what makes the parity claim measurable. So the lifted bodies carry no new contract asserts this lap, and that limit is named here rather than rounded away -- the TAME SLC touch that adds them wants a round that can prove them one at a time.
+obs The meter changed size with the carry it watches. Ceiling 22,000 -> 4,000 against a standing of 1,952, about four rungs of headroom, and the witness now counts both folds off the ladder itself -- 640 checks running in the rung that owns them, 438 running in the harness against the rung that called them. A tree that quietly carried the bodies again goes RED whatever the prose says.
+obs What stays carried is the three-line call itself, and nothing else. 1,952 lines across 382 call bodies is the floor this shape can reach; the next real reduction would be a rung that names its checks as data rather than as functions, which is a different design call and not this one.
+loom witness=caravan_ladder_copy modules=94 checks=1391 distinct=1009 copies=382 copied_lines=1952 ceiling=4000 fold_a=640 fold_b=438
+loom fold=caravan_ladder_harness before_copied_lines=17997 after_copied_lines=1952 groups_lifted=57 rungs_touched=30 harness_lines=2916 ladder_before=292417 ladder_after=276843 lines_removed=15574
+loom witness=caravan_suite rungs=88 verdict=green cold_start=true
+loom parity=caravan_ladder_harness rungs=30 same_lines=30 exact_order=2 interleave_only=28 cold_start=true
+file caravan/ladder_checks.rye the harness a rung hands itself to -- 57 lifted checks, one contract, no state and no store of its own
+file caravan/*.rye 30 rungs keep a three-line call where a hundred lines of copy stood; six helper names published so the harness can reach them
+file tools/fixtures/caravan_ladder_copy_scan.sh the carry it measures fell to 1,952, and the ceiling with it, to 4,000
+file tools/caravan_ladder_copy_witness.rish five claims now -- the standing, both folds counted off the ladder, the counting by hand, three refusals by name
+file tools/caravan_suite_witness.rish the harness named among the helper modules proven through the rungs that compose them
+file active-designing/20260820-131713_caravan-ladder-shared-harness.md Status Landed for B too, with an addendum naming what moved, what did not, and the one limit kept
+file caravan/README.md the durable module-side record of where a rung's checks now live
+file crux/REMEMBER.md the gate that read binding is answered; the live edge moves to the harness
+recommend keep-going the inner loop is answered as far as this shape can answer it -- a check lives where it was written once, runs against whichever rung hands itself in, and the carry that was two rungs from its ceiling now sits at a ninth of it with four rungs of room. The outer loop is where the word left it: the next constructive rung is the one the checkpoint parked, what a run does when the impasse it names is one it has named twice, where the arc stops being a correspondence and becomes a boundary. It is mechanical, the policy is written, and the headroom is honestly there now.

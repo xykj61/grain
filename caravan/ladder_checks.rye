@@ -1,0 +1,2916 @@
+//! Caravan ladder checks -- the harness a rung hands itself to.
+//!
+//! Every rung of the Caravan arc imports the rung beneath it and proves one new
+//! thing about a supervised run. For eighty-odd rungs each rung also carried a
+//! fresh copy of every check beneath it, because a private function cannot be
+//! called from above. The `20260820.131713` design call measured that carry, and
+//! its option A folded most of it: a check is public now, and a rung whose check
+//! is byte-for-byte the rung below's runs it there rather than keeping a copy.
+//!
+//! Two residues stayed home, and both had one cause. A check that reaches the
+//! wire cannot run in the rung below, since each rung keeps its notes in its own
+//! directory and the rung below would provision its own and leave this one cold.
+//! Nor can a check run below when the helpers it names are ones each rung writes
+//! over its own report -- the body would weigh the wrong plan.
+//!
+//! **This is option B, and it answers both at once.** A check lifted here takes
+//! the rung as a comptime parameter and reaches every helper through it, so one
+//! body runs against whichever rung handed itself in: that rung's own report,
+//! its own helpers, its own wire. Where a hundred lines of copy stood, the rung
+//! keeps a three-line call.
+//!
+//! **The contract is one word: `rung`.** A rung passes `@This()` and promises
+//! that every symbol a lifted check names stands public on it. Nothing here
+//! holds state, opens a store, or knows any rung by name -- so a rung is free to
+//! measure the wire wherever it keeps it.
+//!
+//! **The loop turns twice.** Outward, a rung's self-test walks its checks in
+//! order, each check the ladder ever proved standing in the one it climbs to.
+//! Inward, a lifted check reaches back into the rung it was handed and runs that
+//! rung's own measure. Harness and rung call each other, and the recursion
+//! bottoms out where every check in this arc does -- on a number read off a plan
+//! that actually ran.
+//!
+//! Brief: `../active-designing/20260820-131713_caravan-ladder-shared-harness.md`
+//! Meter: `../tools/caravan_ladder_copy_witness.rish`
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const cohort = @import("cohort.rye");
+const system = @import("system.rye");
+const unhand = @import("unhand.rye");
+
+
+pub fn check_allay(comptime rung: type) u8 {
+    const told = rung.knows_bytes(rung.anew_bytes(rung.inherited_matter));
+    const reply = rung.rests_bytes(told, .allays);
+    if (!rung.rests_answers(reply, told)) {
+        print("  RED: a reply refused the very telling it was written from\n", .{});
+        return 1;
+    }
+    if (rung.rests_rest(reply) != .allays) {
+        print("  RED: a reader's own word came back as some other answer\n", .{});
+        return 1;
+    }
+    if (rung.rests_rest(rung.rests_bytes(told, .stands)) != .stands) {
+        print("  RED: a reader saying the matter stands was read as content\n", .{});
+        return 1;
+    }
+    // The whole point of the rung, as a fold: a reply left over from an earlier
+    // lap answers an older telling, and reading it as today's would publish a
+    // verdict about a second look nobody made this morning.
+    const elder = rung.knows_bytes(rung.anew_bytes(rung.again_bytes(rung.suits_bytes(rung.found_bytes(rung.redress_bytes(rung.met_bytes([_]u8{ 'd', 's' }), .righted)), .wanting))));
+    if (rung.rests_answers(rung.rests_bytes(elder, .allays), told)) {
+        print("  RED: a reply about an older telling was read as today's\n", .{});
+        return 1;
+    }
+    if (rung.rests_answers(null, told)) {
+        print("  RED: an empty box read as a reader who answered\n", .{});
+        return 1;
+    }
+    if (rung.rests_rest(null) != null) {
+        print("  RED: a silence was read as a word\n", .{});
+        return 1;
+    }
+    if (rung.rest_of_byte('x') != null) {
+        print("  RED: a byte this rung does not know was read as an answer\n", .{});
+        return 1;
+    }
+    if (!rung.allay_holds(.allays, .allays) or rung.allay_holds(.stands, .allays) or rung.allay_holds(null, .allays)) {
+        print("  RED: the record half of this rung did not hold\n", .{});
+        return 1;
+    }
+    if (rung.read_back_in(1, .reads) != 1 or rung.read_back_in(1, .unread) != 0) {
+        print("  RED: a telling was read back under the wrong reading\n", .{});
+        return 1;
+    }
+    if (rung.read_back_in(0, .reads) != 0) {
+        print("  RED: a run that told nobody read a reply anyway\n", .{});
+        return 1;
+    }
+    if (rung.unread_in(1, .unread) != 1 or rung.unread_in(1, .reads) != 0) {
+        print("  RED: the other half of the count did not close\n", .{});
+        return 1;
+    }
+    if (rung.unread_in(0, .unread) != 0) {
+        print("  RED: a run that told nobody left a reply unread anyway\n", .{});
+        return 1;
+    }
+    return rung.check_allay_refusals();
+}
+
+
+pub fn check_allay_measure(comptime rung: type) u8 {
+    if (rung.unheard_replies(1, .unread) != 1) {
+        print("  RED: a reply nobody opened went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.unheard_replies(1, .reads) != 0) {
+        print("  RED: a reply read back still counted as one nobody opened\n", .{});
+        return 1;
+    }
+    // A run that told nobody anything is owed no reply, so it costs the count
+    // nothing -- the harm this rung names is the telling actually carried and
+    // the answer to it left unopened.
+    if (rung.unheard_replies(0, .unread) != 0) {
+        print("  RED: a run that told nobody was charged an unheard reply\n", .{});
+        return 1;
+    }
+
+    print("  five refusals stand by name: untold, silent, mismatched, miscounted, misrecorded\n", .{});
+    print("  the reading this rung keeps: {s}\n", .{rung.allay_words(.reads)});
+    print("  what an unreading plan never learns: {s}\n", .{rung.allay_words(.unread)});
+    print("  {s}\n", .{rung.rest_words(.allays)});
+    print("  {s}\n", .{rung.rest_words(.stands)});
+    print("  a reply carries five bytes: the telling they were carried, and what they make of it\n", .{});
+    return rung.check_forbear();
+}
+
+
+pub fn check_allay_refusals(comptime rung: type) u8 {
+    if (rung.allay_refusal(1, 1, 0, false, true, true)) |why| {
+        if (why != error.AllayUntold) {
+            print("  RED: a run that told nobody refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run that told nobody read a reply all the same\n", .{});
+        return 1;
+    }
+    if (rung.allay_refusal(1, 1, 0, true, false, true)) |why| {
+        if (why != error.AllaySilent) {
+            print("  RED: a reader who wrote nothing refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a silence was published as a reader's word\n", .{});
+        return 1;
+    }
+    if (rung.allay_refusal(1, 1, 0, true, true, false)) |why| {
+        if (why != error.AllayMismatched) {
+            print("  RED: a reply about some other telling refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a reply about some other telling was published as today's\n", .{});
+        return 1;
+    }
+    if (rung.allay_refusal(1, 1, 1, true, true, true)) |why| {
+        if (why != error.AllayMiscounted) {
+            print("  RED: a telling both read and unread refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a telling counted twice passed the count\n", .{});
+        return 1;
+    }
+    if (rung.allay_refusal(1, 0, 0, true, true, true)) |why| {
+        if (why != error.AllayMiscounted) {
+            print("  RED: a telling counted neither way refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a telling counted neither way passed the count\n", .{});
+        return 1;
+    }
+    if (rung.allay_refusal(1, 1, 0, true, true, true)) |why| {
+        print("  RED: an honest reading refused as {s}\n", .{@errorName(why)});
+        return 1;
+    }
+    return rung.check_allay_measure();
+}
+
+
+pub fn check_allay_wire(comptime rung: type, io: std.Io, sys: *const system.System) u8 {
+    rung.clear_rests(io, rung.standing_address);
+    rung.clear_allay(io);
+    rung.clear_recount(io, rung.standing_address);
+    rung.clear_reweigh(io);
+    rung.reweigh_note(io, rung.inherited_matter) catch |err| {
+        print("  RED: a second look could not be receipted at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const receipt = rung.anew_standing(io) orelse {
+        print("  RED: a seated receipt could not be read back at all\n", .{});
+        return 1;
+    };
+    rung.recount_note(io, rung.standing_address, receipt) catch |err| {
+        print("  RED: a telling could not be carried at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const told = rung.recounted_to(io, rung.standing_address) orelse {
+        print("  RED: a carried telling could not be read back at all\n", .{});
+        return 1;
+    };
+    // The reader's own hand, written by the reader rather than by any run.
+    rung.rest_as_reader(io, rung.standing_address, rung.rests_bytes(told, .allays)) catch |err| {
+        print("  RED: a reader could not reply in their own hand: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.allay_note(io, .allays) catch |err| {
+        print("  RED: a reader's word could not be published at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const provisioned = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(provisioned == sys.graph.domain_count);
+    const survived = rung.rest_written(io, rung.standing_address) orelse {
+        print("  RED: a provisioning cleared the reply a reader wrote\n", .{});
+        return 1;
+    };
+    if (!rung.rests_answers(survived, told)) {
+        print("  RED: a reply carried past a provisioning stopped naming its telling\n", .{});
+        return 1;
+    }
+    if (!rung.allay_holds(rung.rest_published(io), .allays)) {
+        print("  RED: a published word carried past a provisioning stopped naming its answer\n", .{});
+        return 1;
+    }
+    if (rung.recounted_to(io, rung.standing_address) == null) {
+        print("  RED: reading a reader's reply took down the telling it answers\n", .{});
+        return 1;
+    }
+    // The plan's copy falls with the telling it answers, proven on the wire the
+    // plan leaves when the telling beneath it comes down.
+    rung.clear_recount(io, rung.standing_address);
+    rung.clear_allay(io);
+    if (rung.rest_published(io) != null) {
+        print("  RED: a published word outlived the telling it answered\n", .{});
+        return 1;
+    }
+    if (rung.rest_written(io, rung.standing_address) == null) {
+        print("  RED: a plan reached into its reader's box to take their word back\n", .{});
+        return 1;
+    }
+    const again = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned again: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(again == sys.graph.domain_count);
+    if (rung.rest_published(io) != null) {
+        print("  RED: a published word came back with the next provisioning\n", .{});
+        return 1;
+    }
+    rung.clear_rests(io, rung.standing_address);
+    print("  a reader's reply survives a provisioning, and the plan's copy falls with the telling it answers\n", .{});
+    return rung.check_forbear_wire(io, sys);
+}
+
+
+pub fn check_appeal_wire(comptime rung: type, io: std.Io) u8 {
+    const shelf = "shelf";
+    rung.clear_press(io, shelf);
+    rung.press_as_reader(io, shelf, .accepts) catch |err| {
+        print("  RED: a reader could not reply at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const read_back = rung.pressed_by(io, shelf) orelse {
+        print("  RED: a reader's own box carried no reply back\n", .{});
+        return 1;
+    };
+    if (read_back != .accepts) {
+        print("  RED: an accepted outcome was read back as {s}\n", .{rung.plea_words(read_back)});
+        return 1;
+    }
+    rung.clear_press(io, shelf);
+    if (rung.pressed_by(io, shelf) != null) {
+        print("  RED: a cleared box still replied\n", .{});
+        return 1;
+    }
+    print("  both pleas ride the wire: {s}\n", .{rung.plea_words(.accepts)});
+    return 0;
+}
+
+
+pub fn check_apprise(comptime rung: type) u8 {
+    if (rung.apprised_in(1, .withheld) != 0) {
+        print("  RED: a withholding run carried a finding to somebody after all\n", .{});
+        return 1;
+    }
+    if (rung.apprised_in(1, .apprises) != 1) {
+        print("  RED: an apprising run carried {d} findings out\n", .{rung.apprised_in(1, .apprises)});
+        return 1;
+    }
+    if (rung.apprised_in(0, .apprises) != 0) {
+        print("  RED: a run that reached no finding carried one out anyway\n", .{});
+        return 1;
+    }
+    if (rung.unsent_in(1, .withheld) != 1 or rung.unsent_in(1, .apprises) != 0) {
+        print("  RED: the other half of the count did not close on one finding\n", .{});
+        return 1;
+    }
+
+    // The delivery's own three bytes, read back against the finding they carry.
+    const met = rung.met_bytes(rung.debt_bytes(.overrules, .short));
+    const finding = rung.redress_bytes(met, .righted);
+    const delivered = rung.found_bytes(finding);
+    if (!rung.found_answers(delivered, finding)) {
+        print("  RED: a delivery did not read back as the finding it carries\n", .{});
+        return 1;
+    }
+    if (rung.found_answers(delivered, rung.redress_bytes(met, .sound))) {
+        print("  RED: a work put right read back in its reader's box as one found sound\n", .{});
+        return 1;
+    }
+    if (rung.found_answers(null, finding)) {
+        print("  RED: an unopened box read back as a reader who had been told\n", .{});
+        return 1;
+    }
+    if (!rung.apprise_holds(delivered, finding)) {
+        print("  RED: a carried finding did not read back as the finding it was\n", .{});
+        return 1;
+    }
+    if (rung.apprise_holds(rung.found_bytes(rung.redress_bytes(met, .sound)), finding)) {
+        print("  RED: a reader told one answer read back as told another\n", .{});
+        return 1;
+    }
+    if (rung.apprise_holds(null, finding)) {
+        print("  RED: a box holding nothing read back as a finding delivered\n", .{});
+        return 1;
+    }
+    return rung.check_apprise_refusals();
+}
+
+
+pub fn check_apprise_measure(comptime rung: type) u8 {
+    if (rung.unheard_findings(1, .withheld) != 1) {
+        print("  RED: a finding its raiser never heard went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.unheard_findings(1, .apprises) != 0) {
+        print("  RED: a finding carried to its reader still counted as one never told\n", .{});
+        return 1;
+    }
+    // A run that reached no finding has nothing to carry, so it costs the count
+    // nothing -- the harm this rung names is the answer reached, written down,
+    // and never once carried to the person who won it.
+    if (rung.unheard_findings(0, .withheld) != 0) {
+        print("  RED: a run that reached no finding was charged an untold raiser\n", .{});
+        return 1;
+    }
+
+    print("  five refusals stand by name: unfound, unaddressed, mismatched, miscounted, misrecorded\n", .{});
+    print("  the delivery this rung keeps: {s}\n", .{rung.apprise_words(.apprises)});
+    print("  what a withholding plan leaves its reader: {s}\n", .{rung.apprise_words(.withheld)});
+    print("  a delivery carries the finding whole: the meeting reported on, and what the look came to\n", .{});
+    return rung.check_suffice();
+}
+
+
+pub fn check_apprise_refusals(comptime rung: type) u8 {
+    // A run whose wire carries no finding has nothing to carry to anybody.
+    if (rung.apprise_refusal(1, 1, 0, false, true, true)) |why| {
+        if (why != error.AppriseUnfound) {
+            print("  RED: a delivery with no finding behind it refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a plan that reached no finding was credited with telling somebody\n", .{});
+        return 1;
+    }
+    // A finding reaches a person or it reaches nobody: a plan that never wrote
+    // down where its reader was has no box to carry anything to.
+    if (rung.apprise_refusal(1, 1, 0, true, false, true)) |why| {
+        if (why != error.AppriseUnaddressed) {
+            print("  RED: a delivery with nowhere to go refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run carried a finding to a reader it could not name\n", .{});
+        return 1;
+    }
+    // The rung itself: a raiser told some other look's answer, about an argument
+    // that was never theirs.
+    if (rung.apprise_refusal(1, 1, 0, true, true, false)) |why| {
+        if (why != error.AppriseMismatched) {
+            print("  RED: a delivery of another finding refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run reached one finding and carried out another\n", .{});
+        return 1;
+    }
+    // The honesty of the count: every finding reached is carried or withheld --
+    // never both and never neither.
+    if (rung.apprise_refusal(1, 1, 1, true, true, true)) |why| {
+        if (why != error.AppriseMiscounted) {
+            print("  RED: a finding counted twice refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a finding carried and kept at once went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.apprise_refusal(1, 0, 0, true, true, true)) |why| {
+        if (why != error.AppriseMiscounted) {
+            print("  RED: a finding counted nowhere refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a finding neither carried nor kept went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.apprise_refusal(1, 1, 0, true, true, true)) |why| {
+        print("  RED: a delivery inside its own count refused with {s}\n", .{@errorName(why)});
+        return 1;
+    }
+    return rung.check_apprise_measure();
+}
+
+
+pub fn check_apprise_wire(comptime rung: type, io: std.Io, sys: *const system.System) u8 {
+    rung.clear_apprise(io, rung.standing_address);
+    rung.clear_met(io);
+    rung.clear_redress(io);
+    rung.met_note(io, rung.inherited_debt) catch |err| {
+        print("  RED: a receipt could not be seated at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const receipt = rung.meeting_written(io) orelse {
+        print("  RED: a seated receipt could not be read back at all\n", .{});
+        return 1;
+    };
+    rung.redress_note(io, receipt, .righted) catch |err| {
+        print("  RED: a finding could not be written at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const finding = rung.redress_written(io) orelse {
+        print("  RED: a seated finding could not be read back at all\n", .{});
+        return 1;
+    };
+    rung.apprise_note(io, rung.standing_address, rung.found_bytes(finding)) catch |err| {
+        print("  RED: a finding could not be carried to its reader at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const provisioned = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(provisioned == sys.graph.domain_count);
+    const delivered = rung.apprised_of(io, rung.standing_address) orelse {
+        print("  RED: a provisioning emptied the box a finding was carried to\n", .{});
+        return 1;
+    };
+    if (!rung.apprise_holds(delivered, rung.found_bytes(finding))) {
+        print("  RED: a delivery carried past a provisioning stopped naming its finding\n", .{});
+        return 1;
+    }
+    if (rung.redress_written(io) == null) {
+        print("  RED: carrying a finding out moved it out of the plan's own notes\n", .{});
+        return 1;
+    }
+    // The delivery comes down when the reader's box is cleared, so a lap always
+    // opens on a reader who has been told nothing yet.
+    rung.clear_apprise(io, rung.standing_address);
+    if (rung.apprised_of(io, rung.standing_address) != null) {
+        print("  RED: a cleared box still held the finding it was carried\n", .{});
+        return 1;
+    }
+    rung.clear_met(io);
+    rung.clear_redress(io);
+    print("  a delivery survives a provisioning, and leaves the note it copies where it stands\n", .{});
+    return rung.check_suffice_wire(io, sys);
+}
+
+
+pub fn check_avow(comptime rung: type) u8 {
+    // The count, which every later number closes on.
+    if (rung.said_in(1, .concedes) != 1) {
+        print("  RED: an avowing run left the finding it read unanswered\n", .{});
+        return 1;
+    }
+    if (rung.said_in(1, .dissents) != 1) {
+        print("  RED: a plan keeping its own word said nothing at all\n", .{});
+        return 1;
+    }
+    if (rung.said_in(1, .mute) != 0) {
+        print("  RED: a mute run answered a finding all the same\n", .{});
+        return 1;
+    }
+    if (rung.said_in(0, .concedes) != 0) {
+        print("  RED: a run that read no finding answered one anyway\n", .{});
+        return 1;
+    }
+    if (rung.withheld_in(1, .mute) != 1) {
+        print("  RED: a finding left unanswered counted as one answered\n", .{});
+        return 1;
+    }
+    if (rung.withheld_in(1, .concedes) != 0) {
+        print("  RED: an answered finding still counted as one withheld\n", .{});
+        return 1;
+    }
+
+    // The one comparison this rung exists to make, in both directions. A plan
+    // that answered this argument before may still hold its word on an older
+    // verdict, and filing that beside today's finding tells an operator the plan
+    // spoke to something it never spoke to.
+    const word = rung.avowal_bytes(.upholds, .concedes);
+    if (!rung.avowal_answers(word, .upholds)) {
+        print("  RED: an avowal did not read back as an answer to its own finding\n", .{});
+        return 1;
+    }
+    if (rung.avowal_answers(word, .overrules)) {
+        print("  RED: a word about another verdict answered this one\n", .{});
+        return 1;
+    }
+    if (rung.avowal_answers(null, .upholds)) {
+        print("  RED: a plan holding nothing read back as one that had spoken\n", .{});
+        return 1;
+    }
+
+    // The plan's own word, read out of the avowal rather than assumed of it.
+    if (rung.stance_in(word) != .concedes) {
+        print("  RED: a plan taking the finding read back as some other word\n", .{});
+        return 1;
+    }
+    if (rung.stance_in(rung.avowal_bytes(.upholds, .dissents)) != .dissents) {
+        print("  RED: a plan keeping its word read back as some other word\n", .{});
+        return 1;
+    }
+    if (rung.stance_in(null) != null) {
+        print("  RED: a plan that said nothing was read as having said something\n", .{});
+        return 1;
+    }
+    if (rung.stance_byte(.mute) != null) {
+        print("  RED: silence was published as a word of its own\n", .{});
+        return 1;
+    }
+
+    // The record half, in both directions.
+    if (!rung.avow_holds(word, word)) {
+        print("  RED: a published avowal did not read back as the word it was\n", .{});
+        return 1;
+    }
+    if (rung.avow_holds(rung.avowal_bytes(.upholds, .dissents), word)) {
+        print("  RED: a plan published one word and read back another\n", .{});
+        return 1;
+    }
+    if (rung.avow_holds(null, word)) {
+        print("  RED: a note holding nothing read back as a published avowal\n", .{});
+        return 1;
+    }
+    return rung.check_avow_refusals();
+}
+
+
+pub fn check_avow_refusals(comptime rung: type) u8 {
+    if (rung.avow_refusal(0, 1, 0, true, true)) |why| {
+        if (why != error.AvowUnheard) {
+            print("  RED: an unheard avowing refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run answered a finding it never read\n", .{});
+        return 1;
+    }
+    if (rung.avow_refusal(1, 1, 0, false, false)) |why| {
+        if (why != error.AvowUnfound) {
+            print("  RED: an avowing over an unpublished finding refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run answered a verdict its own wire never carried\n", .{});
+        return 1;
+    }
+    // The rung itself, refused by name: a word about some other verdict
+    // published beside this finding tells an operator the plan answered
+    // something it never answered.
+    if (rung.avow_refusal(1, 1, 0, true, false)) |why| {
+        if (why != error.AvowMismatched) {
+            print("  RED: a word about another finding refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run filed an older verdict's answer beside today's finding\n", .{});
+        return 1;
+    }
+    // The honesty of the count: every finding read is answered or left
+    // unanswered -- never both and never neither.
+    if (rung.avow_refusal(1, 1, 1, true, true)) |why| {
+        if (why != error.AvowMiscounted) {
+            print("  RED: a finding counted twice refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a finding answered and withheld at once went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.avow_refusal(1, 0, 0, true, true)) |why| {
+        if (why != error.AvowMiscounted) {
+            print("  RED: a finding counted nowhere refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a finding neither answered nor withheld went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.avow_refusal(1, 1, 0, true, true)) |why| {
+        print("  RED: an avowing inside its own count refused with {s}\n", .{@errorName(why)});
+        return 1;
+    }
+    return rung.check_avow_measure();
+}
+
+
+pub fn check_avow_wire(comptime rung: type, io: std.Io, sys: *const system.System) u8 {
+    _ = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.clear_deem(io);
+    rung.clear_avow(io);
+    rung.deem_note(io, .upholds) catch |err| {
+        print("  RED: a finding could not be published at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.avow_note(io, .upholds, .concedes) catch |err| {
+        print("  RED: a plan could not answer at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const provisioned = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(provisioned == sys.graph.domain_count);
+    const survived = rung.avow_written(io) orelse {
+        print("  RED: a provisioning cleared the word it was told to leave\n", .{});
+        return 1;
+    };
+    if (!rung.avowal_answers(survived, .upholds)) {
+        print("  RED: a word carried past a provisioning stopped naming its finding\n", .{});
+        return 1;
+    }
+    if (rung.stance_in(survived) != .concedes) {
+        print("  RED: a word carried past a provisioning read back as another\n", .{});
+        return 1;
+    }
+    // The word falls with the finding, proven on the wire the plan leaves when
+    // it takes its own published verdict down.
+    rung.clear_deem(io);
+    rung.clear_avow(io);
+    if (rung.avow_written(io) != null) {
+        print("  RED: a word outlived the finding it was answering\n", .{});
+        return 1;
+    }
+    const again = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned again: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(again == sys.graph.domain_count);
+    if (rung.avow_written(io) != null) {
+        print("  RED: a word came back with the next provisioning\n", .{});
+        return 1;
+    }
+    print("  a word survives a provisioning, and falls with the finding it answers\n", .{});
+    return rung.check_owe_wire(io, sys);
+}
+
+
+pub fn check_deem(comptime rung: type) u8 {
+    // The count, which every later number closes on.
+    if (rung.answered_in(1, .answered) != 1) {
+        print("  RED: a reading run left its one carried case unanswered\n", .{});
+        return 1;
+    }
+    if (rung.answered_in(1, .unread) != 0) {
+        print("  RED: an unread run published a finding all the same\n", .{});
+        return 1;
+    }
+    if (rung.answered_in(0, .answered) != 0) {
+        print("  RED: a run that carried no case out read an answer anyway\n", .{});
+        return 1;
+    }
+    if (rung.awaiting_in(1, .unread) != 1) {
+        print("  RED: a case left waiting counted as one answered\n", .{});
+        return 1;
+    }
+    if (rung.awaiting_in(1, .answered) != 0) {
+        print("  RED: an answered case still counted as one waiting\n", .{});
+        return 1;
+    }
+
+    // The one comparison this rung exists to make, in both directions. A desk
+    // that has heard this argument before may still hold the answer to an older
+    // case, and filing that beside today's outcome quotes a hand outside the
+    // argument saying something they never said about this work.
+    const case = rung.referral_bytes(.carried, .loud, 4);
+    const answer = rung.finding_bytes(case, .upholds);
+    if (!rung.finding_answers(answer, case)) {
+        print("  RED: a finding did not read back as an answer to its own case\n", .{});
+        return 1;
+    }
+    if (rung.finding_answers(answer, rung.referral_bytes(.short, .loud, 4))) {
+        print("  RED: a finding about another settlement answered this one\n", .{});
+        return 1;
+    }
+    if (rung.finding_answers(answer, rung.referral_bytes(.carried, .loud, 3))) {
+        print("  RED: a finding about a younger quarrel answered this one\n", .{});
+        return 1;
+    }
+    if (rung.finding_answers(null, case)) {
+        print("  RED: a desk holding nothing read back as one that had answered\n", .{});
+        return 1;
+    }
+
+    // The verdict half, read out of the finding rather than supplied by a run.
+    if (rung.finding_in(answer) != .upholds) {
+        print("  RED: a finding for the reader read back as some other word\n", .{});
+        return 1;
+    }
+    if (rung.finding_in(rung.finding_bytes(case, .overrules)) != .overrules) {
+        print("  RED: a finding for the plan read back as some other word\n", .{});
+        return 1;
+    }
+    if (rung.finding_in(null) != null) {
+        print("  RED: a desk that said nothing was read as having said something\n", .{});
+        return 1;
+    }
+
+    // The record half, in both directions.
+    if (!rung.deem_holds(.upholds, .upholds)) {
+        print("  RED: a published finding did not read back as the finding it was\n", .{});
+        return 1;
+    }
+    if (rung.deem_holds(.overrules, .upholds)) {
+        print("  RED: a plan published one verdict and read back another\n", .{});
+        return 1;
+    }
+    if (rung.deem_holds(null, .upholds)) {
+        print("  RED: a note holding nothing read back as a published finding\n", .{});
+        return 1;
+    }
+    return rung.check_deem_refusals();
+}
+
+
+pub fn check_deem_measure(comptime rung: type) u8 {
+    if (rung.unanswered_referrals(1, .unread) != 1) {
+        print("  RED: a case nobody was ever heard back on went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.unanswered_referrals(1, .answered) != 0) {
+        print("  RED: an answered case still counted as one nobody replied to\n", .{});
+        return 1;
+    }
+    // A run that carried nothing out is owed an answer by nobody, so it costs
+    // the count nothing -- the harm this rung names is the case that travelled
+    // and was never heard from again.
+    if (rung.unanswered_referrals(0, .unread) != 0) {
+        print("  RED: a run that referred nothing was owed a third hand's word\n", .{});
+        return 1;
+    }
+
+    print("  five refusals stand by name: unreferred, silent, mismatched, miscounted, misrecorded\n", .{});
+    print("  the reading this rung keeps: {s}\n", .{rung.deem_words(.answered)});
+    print("  what a bare plan leaves an operator: {s}\n", .{rung.deem_words(.unread)});
+    print("  a finding carries four bytes: the case it answers, and the word on it\n", .{});
+    print("  finding for the reader reads as {s}\n", .{rung.finding_words(.upholds)});
+    print("  finding for the plan reads as {s}\n", .{rung.finding_words(.overrules)});
+    return rung.check_avow();
+}
+
+
+pub fn check_deem_refusals(comptime rung: type) u8 {
+    if (rung.deem_refusal(0, 1, 0, true, true)) |why| {
+        if (why != error.DeemUnreferred) {
+            print("  RED: an unreferred reading refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run took an answer to a case it never carried out\n", .{});
+        return 1;
+    }
+    if (rung.deem_refusal(1, 1, 0, false, false)) |why| {
+        if (why != error.DeemSilent) {
+            print("  RED: a reading of an empty desk refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run published a finding nobody had written\n", .{});
+        return 1;
+    }
+    // The rung itself, refused by name: a finding about some other argument
+    // published beside this outcome puts a third hand's name on a word they
+    // never said about this work.
+    if (rung.deem_refusal(1, 1, 0, true, false)) |why| {
+        if (why != error.DeemMismatched) {
+            print("  RED: a finding about another case refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run filed an older argument's answer beside today's word\n", .{});
+        return 1;
+    }
+    // The honesty of the count: every case carried out is answered or left
+    // waiting -- never both and never neither.
+    if (rung.deem_refusal(1, 1, 1, true, true)) |why| {
+        if (why != error.DeemMiscounted) {
+            print("  RED: a case counted twice refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a case answered and waiting at once went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.deem_refusal(1, 0, 0, true, true)) |why| {
+        if (why != error.DeemMiscounted) {
+            print("  RED: a case counted nowhere refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a case neither answered nor waiting went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.deem_refusal(1, 1, 0, true, true)) |why| {
+        print("  RED: a reading inside its own count refused with {s}\n", .{@errorName(why)});
+        return 1;
+    }
+    return rung.check_deem_measure();
+}
+
+
+pub fn check_deem_wire(comptime rung: type, io: std.Io, sys: *const system.System) u8 {
+    _ = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.clear_finding(io, rung.standing_forum);
+    rung.clear_deem(io);
+    const case = rung.referral_bytes(.carried, .loud, rung.long_standing_runs + 1);
+    const answer = rung.finding_bytes(case, .upholds);
+    rung.answer_as_forum(io, rung.standing_forum, answer) catch |err| {
+        print("  RED: a third hand could not answer at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.deem_note(io, .upholds) catch |err| {
+        print("  RED: a finding could not be published at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const provisioned = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(provisioned == sys.graph.domain_count);
+    if (!rung.finding_answers(rung.finding_written(io, rung.standing_forum), case)) {
+        print("  RED: a provisioning swept a finding off a desk it never owned\n", .{});
+        return 1;
+    }
+    // The finding outlives the quarrel exactly as the case it answers does,
+    // which is what a word from outside the argument is for.
+    rung.release_standing(io);
+    if (rung.finding_in(rung.finding_written(io, rung.standing_forum)) != .upholds) {
+        print("  RED: a withdrawal reached onto a third hand's desk and took their word back\n", .{});
+        return 1;
+    }
+    // And the plan's own copy is the plan's: taking it down leaves the hand that
+    // wrote it holding their answer still.
+    rung.clear_deem(io);
+    if (rung.deem_published(io) != null) {
+        print("  RED: a plan that took down its own copy still published a finding\n", .{});
+        return 1;
+    }
+    if (rung.finding_in(rung.finding_written(io, rung.standing_forum)) != .upholds) {
+        print("  RED: a plan clearing its own note reached onto a third hand's desk\n", .{});
+        return 1;
+    }
+    rung.clear_finding(io, rung.standing_forum);
+    if (rung.finding_written(io, rung.standing_forum) != null) {
+        print("  RED: a desk cleared by its own hand still held a finding\n", .{});
+        return 1;
+    }
+    print("  a finding survives a provisioning, and belongs to the hand that wrote it\n", .{});
+    return 0;
+}
+
+
+pub fn check_dwell_wire(comptime rung: type, io: std.Io, sys: *const system.System) u8 {
+    _ = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.clear_standing(io);
+    rung.standing_note(io, .presses) catch |err| {
+        print("  RED: a position could not be carried at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.dwell_note(io, 1) catch |err| {
+        print("  RED: an age could not be written at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const provisioned = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(provisioned == sys.graph.domain_count);
+    const survived = rung.dwell_published(io) orelse {
+        print("  RED: a provisioning cleared the age it was told to leave\n", .{});
+        return 1;
+    };
+    if (survived != 1) {
+        print("  RED: an age carried past a provisioning read back as {d}\n", .{survived});
+        return 1;
+    }
+    // A second season of standing, written the way a run writes it: read the
+    // wire, climb by the run just stood, write, read back.
+    const climbed = rung.stood_longer(survived);
+    rung.dwell_note(io, climbed) catch |err| {
+        print("  RED: a second season could not be written: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    if (!rung.dwell_holds(rung.dwell_published(io), 2)) {
+        print("  RED: a quarrel that stood two runs did not read as two\n", .{});
+        return 1;
+    }
+    // The age falls with the quarrel, proven on the wire the withdrawal leaves.
+    rung.release_standing(io);
+    if (rung.dwell_published(io) != null) {
+        print("  RED: an age outlived the quarrel it was counting\n", .{});
+        return 1;
+    }
+    const again = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned again: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(again == sys.graph.domain_count);
+    if (rung.dwell_published(io) != null) {
+        print("  RED: an age came back with the next provisioning\n", .{});
+        return 1;
+    }
+    print("  an age survives a provisioning, and falls with the quarrel it counts\n", .{});
+    return 0;
+}
+
+
+pub fn check_endure_wire(comptime rung: type, io: std.Io, sys: *const system.System) u8 {
+    // The notes are seated once first, so this fold writes into a plan that
+    // exists rather than into a directory no run has opened yet.
+    _ = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.clear_standing(io);
+    if (rung.position_standing(io) != null) {
+        print("  RED: a cleared plan still carried a quarrel\n", .{});
+        return 1;
+    }
+    rung.standing_note(io, .presses) catch |err| {
+        print("  RED: a position could not be carried at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const provisioned = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(provisioned == sys.graph.domain_count);
+    // The whole point of the rung, read straight: every other note this
+    // provisioning touched now stands at nothing, and this one stands where its
+    // holder left it.
+    if (rung.appeal_published(io) != null) {
+        print("  RED: a provisioning left the last run's plea standing\n", .{});
+        return 1;
+    }
+    const survived = rung.position_standing(io) orelse {
+        print("  RED: a provisioning cleared the position it was told to leave\n", .{});
+        return 1;
+    };
+    if (survived != .presses) {
+        print("  RED: a carried position read back as {s}\n", .{rung.plea_words(survived)});
+        return 1;
+    }
+    rung.clear_standing(io);
+    if (rung.position_standing(io) != null) {
+        print("  RED: a cleared position still stood\n", .{});
+        return 1;
+    }
+    print("  a pressed quarrel survives a provisioning: {s}\n", .{rung.plea_words(.presses)});
+    return 0;
+}
+
+
+pub fn check_forbear(comptime rung: type) u8 {
+    const told = rung.knows_bytes(rung.anew_bytes(rung.inherited_matter));
+    const refused = rung.rests_bytes(told, .stands);
+    const held = rung.holds_bytes(refused);
+    if (!rung.holds_carries(held, refused)) {
+        print("  RED: a forbearance refused the very reply it was written from\n", .{});
+        return 1;
+    }
+    if (rung.holds_rest(held) != .stands) {
+        print("  RED: a forbearance carried a word other than the refusal that earned it\n", .{});
+        return 1;
+    }
+    // The whole point of the rung, as a fold: a forbearance left over from an
+    // earlier lap holds back on an older matter, and handing it on as today's
+    // would spare the next run a question nobody refused this morning.
+    const elder = rung.knows_bytes(rung.anew_bytes(rung.again_bytes(rung.suits_bytes(rung.found_bytes(rung.redress_bytes(rung.met_bytes([_]u8{ 'd', 's' }), .righted)), .wanting))));
+    if (rung.holds_carries(rung.holds_bytes(rung.rests_bytes(elder, .stands)), refused)) {
+        print("  RED: a forbearance about an older matter was read as today's\n", .{});
+        return 1;
+    }
+    if (rung.holds_carries(null, refused)) {
+        print("  RED: an empty note read as a run that handed something on\n", .{});
+        return 1;
+    }
+    if (rung.holds_rest(null) != null) {
+        print("  RED: a note that was never written was read as a forbearance\n", .{});
+        return 1;
+    }
+    if (!rung.forbear_holds(held, held) or rung.forbear_holds(rung.holds_bytes(rung.rests_bytes(told, .allays)), held) or rung.forbear_holds(null, held)) {
+        print("  RED: the record half of this rung did not hold\n", .{});
+        return 1;
+    }
+    if (rung.forborne_in(1, .forbears) != 1 or rung.forborne_in(1, .opens) != 0) {
+        print("  RED: a standing matter was handed on under the wrong word\n", .{});
+        return 1;
+    }
+    if (rung.forborne_in(0, .forbears) != 0) {
+        print("  RED: a run reading no standing word handed one on anyway\n", .{});
+        return 1;
+    }
+    if (rung.opened_in(1, .opens) != 1 or rung.opened_in(1, .forbears) != 0) {
+        print("  RED: the other half of the count did not close\n", .{});
+        return 1;
+    }
+    if (rung.opened_in(0, .opens) != 0) {
+        print("  RED: a run reading no standing word left one open anyway\n", .{});
+        return 1;
+    }
+    return rung.check_forbear_refusals();
+}
+
+
+pub fn check_forbear_refusals(comptime rung: type) u8 {
+    if (rung.forbear_refusal(1, 1, 0, false, true, true)) |why| {
+        if (why != error.ForbearUnread) {
+            print("  RED: a run that opened no reply refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run that opened no reply handed an impasse on all the same\n", .{});
+        return 1;
+    }
+    if (rung.forbear_refusal(1, 1, 0, true, false, true)) |why| {
+        if (why != error.ForbearAllayed) {
+            print("  RED: a matter its reader put to rest refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a question already settled was handed on as an impasse\n", .{});
+        return 1;
+    }
+    if (rung.forbear_refusal(1, 1, 0, true, true, false)) |why| {
+        if (why != error.ForbearMismatched) {
+            print("  RED: a forbearance about some other matter refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a forbearance about some other matter was handed on as today's\n", .{});
+        return 1;
+    }
+    if (rung.forbear_refusal(1, 1, 1, true, true, true)) |why| {
+        if (why != error.ForbearMiscounted) {
+            print("  RED: a matter both handed on and left open refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a matter counted twice passed the count\n", .{});
+        return 1;
+    }
+    if (rung.forbear_refusal(1, 0, 0, true, true, true)) |why| {
+        if (why != error.ForbearMiscounted) {
+            print("  RED: a matter counted neither way refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a matter counted neither way passed the count\n", .{});
+        return 1;
+    }
+    if (rung.forbear_refusal(1, 1, 0, true, true, true)) |why| {
+        print("  RED: an honest forbearance refused as {s}\n", .{@errorName(why)});
+        return 1;
+    }
+    return rung.check_forbear_measure();
+}
+
+
+pub fn check_heed_wire(comptime rung: type, io: std.Io, sys: *const system.System) u8 {
+    _ = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.clear_standing(io);
+    if (rung.regard_published(io) != null) {
+        print("  RED: a fresh plan already stood under a quarrel\n", .{});
+        return 1;
+    }
+    rung.standing_note(io, .presses) catch |err| {
+        print("  RED: a position could not be carried at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.regard_note(io, .under) catch |err| {
+        print("  RED: a regard could not be published at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const written = rung.regard_published(io) orelse {
+        print("  RED: a published regard could not be read back\n", .{});
+        return 1;
+    };
+    if (written != .under) {
+        print("  RED: a published regard read back as {s}\n", .{rung.regard_words(written)});
+        return 1;
+    }
+    const provisioned = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(provisioned == sys.graph.domain_count);
+    // The whole seam of this rung, read straight: the quarrel outlives the
+    // provisioning and the word about it does not.
+    if (rung.regard_published(io) != null) {
+        print("  RED: a provisioning left the last run's regard standing\n", .{});
+        return 1;
+    }
+    const survived = rung.position_standing(io) orelse {
+        print("  RED: a provisioning cleared the position it was told to leave\n", .{});
+        return 1;
+    };
+    if (survived != .presses) {
+        print("  RED: a carried position read back as {s}\n", .{rung.plea_words(survived)});
+        return 1;
+    }
+    rung.clear_standing(io);
+    print("  a quarrel survives a provisioning and the word about it does not\n", .{});
+    return 0;
+}
+
+
+pub fn check_meet(comptime rung: type) u8 {
+    if (rung.met_in(1, .defers) != 0) {
+        print("  RED: a deferring run met a debt it never looked at\n", .{});
+        return 1;
+    }
+    if (rung.met_in(1, .meets) != 1) {
+        print("  RED: a meeting run met {d} inherited debts\n", .{rung.met_in(1, .meets)});
+        return 1;
+    }
+    if (rung.met_in(0, .meets) != 0) {
+        print("  RED: a run inheriting nothing met a debt anyway\n", .{});
+        return 1;
+    }
+    if (rung.deferred_in(1, .defers) != 1 or rung.deferred_in(1, .meets) != 0) {
+        print("  RED: the other half of the count did not close on one debt\n", .{});
+        return 1;
+    }
+
+    // The receipt's own two bytes, read back out of the debt they answer.
+    const owed = rung.debt_bytes(.overrules, .short);
+    const receipt = rung.met_bytes(owed);
+    if (!rung.met_answers(receipt, owed)) {
+        print("  RED: a receipt did not read back as one for its own debt\n", .{});
+        return 1;
+    }
+    if (rung.met_answers(receipt, rung.debt_bytes(.upholds, .carried))) {
+        print("  RED: a receipt for one admission read back as one for another\n", .{});
+        return 1;
+    }
+    if (rung.met_answers(null, owed)) {
+        print("  RED: a wire holding nothing read back as a debt met\n", .{});
+        return 1;
+    }
+    // The finding a debt was taken over, read out of the receipt rather than
+    // assumed of it, since a receipt that could not name its own finding would
+    // tell a later run only that something had been answered.
+    if (rung.met_over(receipt) != .overrules) {
+        print("  RED: a receipt named some finding other than the one owed\n", .{});
+        return 1;
+    }
+    if (rung.met_over(null) != null) {
+        print("  RED: a wire holding nothing named a finding all the same\n", .{});
+        return 1;
+    }
+    if (!rung.met_holds(receipt, receipt)) {
+        print("  RED: a written receipt did not read back as the receipt it was\n", .{});
+        return 1;
+    }
+    if (rung.met_holds(rung.met_bytes(rung.debt_bytes(.upholds, .carried)), receipt)) {
+        print("  RED: a receipt for another admission read back as this one\n", .{});
+        return 1;
+    }
+    if (rung.met_holds(null, receipt)) {
+        print("  RED: a note holding nothing read back as a debt met\n", .{});
+        return 1;
+    }
+    // And the act the receipt records: the debt is down, or it is not.
+    if (!rung.debt_settled(null)) {
+        print("  RED: a wire holding no debt read back as one still standing\n", .{});
+        return 1;
+    }
+    if (rung.debt_settled(owed)) {
+        print("  RED: a debt still on the wire read back as one taken down\n", .{});
+        return 1;
+    }
+    return rung.check_meet_refusals();
+}
+
+
+pub fn check_meet_measure(comptime rung: type) u8 {
+    if (rung.unmet_debts(1, .defers) != 1) {
+        print("  RED: an admission nobody looked at went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.unmet_debts(1, .meets) != 0) {
+        print("  RED: a debt met still counted as one nobody looked at\n", .{});
+        return 1;
+    }
+    // A run that inherited nothing owes the work no look, so it costs the count
+    // nothing -- the harm this rung names is the admission a plan opened
+    // holding and then read straight past.
+    if (rung.unmet_debts(0, .defers) != 0) {
+        print("  RED: a run inheriting nothing was charged an unmet debt\n", .{});
+        return 1;
+    }
+
+    print("  five refusals stand by name: unowed, unsettled, mismatched, miscounted, misrecorded\n", .{});
+    print("  the meeting this rung keeps: {s}\n", .{rung.meet_words(.meets)});
+    print("  what a bare plan leaves an operator: {s}\n", .{rung.meet_words(.defers)});
+    print("  a receipt carries two bytes: the debt met, echoed back exactly as it stood\n", .{});
+    return rung.check_redress();
+}
+
+
+pub fn check_meet_refusals(comptime rung: type) u8 {
+    // A run that inherited nothing has no admission to answer, and recording
+    // one there would close a question no run ever opened.
+    if (rung.meet_refusal(1, 1, 0, false, true, true)) |why| {
+        if (why != error.MeetUnowed) {
+            print("  RED: a meeting over an empty wire refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a plan inheriting nothing was credited with meeting a debt\n", .{});
+        return 1;
+    }
+    // Meeting is a claim about the work this run did, so a run with no outcome
+    // of its own on the wire has met nothing, however willing it was.
+    if (rung.meet_refusal(1, 1, 0, true, false, true)) |why| {
+        if (why != error.MeetUnsettled) {
+            print("  RED: a meeting before any outcome refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a plan that had settled nothing was credited with meeting a debt\n", .{});
+        return 1;
+    }
+    // The rung itself: a receipt filed against some other admission, closing a
+    // question nobody ever looked at.
+    if (rung.meet_refusal(1, 1, 0, true, true, false)) |why| {
+        if (why != error.MeetMismatched) {
+            print("  RED: a receipt for another admission refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run met one admission and closed the question on another\n", .{});
+        return 1;
+    }
+    // The honesty of the count: every debt inherited is met or left deferred --
+    // never both and never neither.
+    if (rung.meet_refusal(1, 1, 1, true, true, true)) |why| {
+        if (why != error.MeetMiscounted) {
+            print("  RED: a debt counted twice refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a debt met and deferred at once went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.meet_refusal(1, 0, 0, true, true, true)) |why| {
+        if (why != error.MeetMiscounted) {
+            print("  RED: a debt counted nowhere refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a debt neither met nor deferred went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.meet_refusal(1, 1, 0, true, true, true)) |why| {
+        print("  RED: a meeting inside its own count refused with {s}\n", .{@errorName(why)});
+        return 1;
+    }
+    return rung.check_meet_measure();
+}
+
+
+pub fn check_meet_wire(comptime rung: type, io: std.Io, sys: *const system.System) u8 {
+    rung.clear_owe(io);
+    rung.clear_met(io);
+    rung.seat_note(io, rung.plan_name, ".owe", &rung.inherited_debt) catch |err| {
+        print("  RED: an earlier run's debt could not be seated at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const seated = rung.debt_standing(io) orelse {
+        print("  RED: a seated debt could not be read back at all\n", .{});
+        return 1;
+    };
+    rung.met_note(io, seated) catch |err| {
+        print("  RED: a receipt could not be written at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.clear_owe(io);
+    if (!rung.debt_settled(rung.debt_standing(io))) {
+        print("  RED: a met debt went on standing on the wire\n", .{});
+        return 1;
+    }
+    const provisioned = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(provisioned == sys.graph.domain_count);
+    const survived = rung.meeting_written(io) orelse {
+        print("  RED: a provisioning cleared the receipt for a debt already met\n", .{});
+        return 1;
+    };
+    if (!rung.met_answers(survived, rung.inherited_debt)) {
+        print("  RED: a receipt carried past a provisioning stopped naming its debt\n", .{});
+        return 1;
+    }
+    if (!rung.debt_settled(rung.debt_standing(io))) {
+        print("  RED: a provisioning brought back a debt already met\n", .{});
+        return 1;
+    }
+    // The receipt falls with the debt it answers, proven on the wire the plan
+    // leaves when the whole argument beneath it comes down.
+    rung.clear_met(io);
+    if (rung.meeting_written(io) != null) {
+        print("  RED: a receipt outlived the debt it was answering\n", .{});
+        return 1;
+    }
+    const again = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned again: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(again == sys.graph.domain_count);
+    if (rung.meeting_written(io) != null) {
+        print("  RED: a receipt came back with the next provisioning\n", .{});
+        return 1;
+    }
+    print("  a receipt survives a provisioning, and the debt it answers stays down\n", .{});
+    return rung.check_redress_wire(io, sys);
+}
+
+
+pub fn check_owe_wire(comptime rung: type, io: std.Io, sys: *const system.System) u8 {
+    rung.clear_deem(io);
+    rung.clear_avow(io);
+    rung.clear_owe(io);
+    rung.deem_note(io, .upholds) catch |err| {
+        print("  RED: a finding could not be published at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.avow_note(io, .upholds, .concedes) catch |err| {
+        print("  RED: a plan could not concede at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.owe_note(io, .upholds, .carried) catch |err| {
+        print("  RED: a debt could not be booked at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const provisioned = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(provisioned == sys.graph.domain_count);
+    const survived = rung.debt_standing(io) orelse {
+        print("  RED: a provisioning cleared the debt a run booked to outlive it\n", .{});
+        return 1;
+    };
+    if (!rung.debt_answers(survived, .upholds)) {
+        print("  RED: a debt carried past a provisioning stopped naming its concession\n", .{});
+        return 1;
+    }
+    if (rung.debt_under(survived) != .carried) {
+        print("  RED: a debt carried past a provisioning forgot the outcome it was taken under\n", .{});
+        return 1;
+    }
+    // The debt falls with the concession, proven on the wire the plan leaves
+    // when it takes its own word and the finding beneath it down.
+    rung.clear_deem(io);
+    rung.clear_avow(io);
+    rung.clear_owe(io);
+    if (rung.debt_standing(io) != null) {
+        print("  RED: a debt outlived the concession it was carrying\n", .{});
+        return 1;
+    }
+    const again = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned again: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(again == sys.graph.domain_count);
+    if (rung.debt_standing(io) != null) {
+        print("  RED: a debt came back with the next provisioning\n", .{});
+        return 1;
+    }
+    print("  a debt survives a provisioning, and falls with the concession it carries\n", .{});
+    return 0;
+}
+
+
+pub fn check_recount(comptime rung: type) u8 {
+    const receipt = rung.anew_bytes(rung.inherited_matter);
+    const carried = rung.knows_bytes(receipt);
+    if (!rung.knows_answers(carried, receipt)) {
+        print("  RED: a telling refused the very receipt it was written from\n", .{});
+        return 1;
+    }
+    // The whole point of the rung, as a fold: a telling left over from an
+    // earlier lap names an older matter, and reading it as today's would tell a
+    // reader their newest reopening had been answered by a run before today.
+    const elder = rung.anew_bytes(rung.again_bytes(rung.suits_bytes(rung.found_bytes(rung.redress_bytes(rung.met_bytes([_]u8{ 'd', 's' }), .righted)), .wanting)));
+    if (rung.knows_answers(rung.knows_bytes(elder), receipt)) {
+        print("  RED: a telling about an older matter was read as today's\n", .{});
+        return 1;
+    }
+    if (rung.knows_answers(null, receipt)) {
+        print("  RED: an empty box read as a reader told\n", .{});
+        return 1;
+    }
+    if (!rung.recount_holds(carried, carried) or rung.recount_holds(rung.knows_bytes(elder), carried)) {
+        print("  RED: the record half of this rung did not hold\n", .{});
+        return 1;
+    }
+    if (rung.recounted_in(1, .tells) != 1 or rung.recounted_in(1, .withholds) != 0) {
+        print("  RED: a second look was told of under the wrong reading\n", .{});
+        return 1;
+    }
+    if (rung.recounted_in(0, .tells) != 0) {
+        print("  RED: a run that looked at nothing told somebody anyway\n", .{});
+        return 1;
+    }
+    if (rung.unsent_looks_in(1, .withholds) != 1 or rung.unsent_looks_in(1, .tells) != 0) {
+        print("  RED: the other half of the count did not close\n", .{});
+        return 1;
+    }
+    if (rung.unsent_looks_in(0, .withholds) != 0) {
+        print("  RED: a run that looked at nothing kept a telling back anyway\n", .{});
+        return 1;
+    }
+    return rung.check_recount_refusals();
+}
+
+
+pub fn check_recount_measure(comptime rung: type) u8 {
+    if (rung.untold_looks(1, .withholds) != 1) {
+        print("  RED: a second look nobody heard of went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.untold_looks(1, .tells) != 0) {
+        print("  RED: a look carried home still counted as one nobody heard of\n", .{});
+        return 1;
+    }
+    // A run that looked at nothing owes nobody an account of it, so it costs the
+    // count nothing -- the harm this rung names is the look actually made and
+    // filed where only this plan ever reads.
+    if (rung.untold_looks(0, .withholds) != 0) {
+        print("  RED: a run that looked at nothing was charged an untold look\n", .{});
+        return 1;
+    }
+
+    print("  five refusals stand by name: unlooked, unaddressed, mismatched, miscounted, misrecorded\n", .{});
+    print("  the telling this rung keeps: {s}\n", .{rung.recount_words(.tells)});
+    print("  what a withholding plan never owes: {s}\n", .{rung.recount_words(.withholds)});
+    print("  a telling carries four bytes: the matter looked at again, echoed back whole\n", .{});
+    return rung.check_allay();
+}
+
+
+pub fn check_recount_refusals(comptime rung: type) u8 {
+    if (rung.recount_refusal(1, 1, 0, false, true, true)) |why| {
+        if (why != error.RecountUnlooked) {
+            print("  RED: a run that looked at nothing refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run that looked at nothing told somebody anyway\n", .{});
+        return 1;
+    }
+    if (rung.recount_refusal(1, 1, 0, true, false, true)) |why| {
+        if (why != error.RecountUnaddressed) {
+            print("  RED: a telling with nowhere to go refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a telling bound nowhere set out all the same\n", .{});
+        return 1;
+    }
+    if (rung.recount_refusal(1, 1, 0, true, true, false)) |why| {
+        if (why != error.RecountMismatched) {
+            print("  RED: a telling about some other matter refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a telling about some other matter was carried as today's\n", .{});
+        return 1;
+    }
+    if (rung.recount_refusal(1, 1, 1, true, true, true)) |why| {
+        if (why != error.RecountMiscounted) {
+            print("  RED: a look both told of and kept refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a look counted twice passed the count\n", .{});
+        return 1;
+    }
+    if (rung.recount_refusal(1, 0, 0, true, true, true)) |why| {
+        if (why != error.RecountMiscounted) {
+            print("  RED: a look counted neither way refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a look counted neither way passed the count\n", .{});
+        return 1;
+    }
+    if (rung.recount_refusal(1, 1, 0, true, true, true)) |why| {
+        print("  RED: an honest telling refused as {s}\n", .{@errorName(why)});
+        return 1;
+    }
+    return rung.check_recount_measure();
+}
+
+
+pub fn check_recount_wire(comptime rung: type, io: std.Io, sys: *const system.System) u8 {
+    rung.clear_recount(io, rung.standing_address);
+    rung.clear_reweigh(io);
+    rung.reweigh_note(io, rung.inherited_matter) catch |err| {
+        print("  RED: a second look could not be receipted at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const receipt = rung.anew_standing(io) orelse {
+        print("  RED: a seated receipt could not be read back at all\n", .{});
+        return 1;
+    };
+    rung.recount_note(io, rung.standing_address, receipt) catch |err| {
+        print("  RED: a telling could not be carried at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const provisioned = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(provisioned == sys.graph.domain_count);
+    const survived = rung.recounted_to(io, rung.standing_address) orelse {
+        print("  RED: a provisioning cleared the telling a reader was carried\n", .{});
+        return 1;
+    };
+    if (!rung.knows_answers(survived, receipt)) {
+        print("  RED: a telling carried past a provisioning stopped naming its look\n", .{});
+        return 1;
+    }
+    if (rung.anew_standing(io) == null) {
+        print("  RED: a provisioning swept the receipt a telling copies\n", .{});
+        return 1;
+    }
+    // The telling falls with the receipt it copies, proven on the wire the plan
+    // leaves when the second look beneath it comes down.
+    rung.clear_reweigh(io);
+    rung.clear_recount(io, rung.standing_address);
+    if (rung.recounted_to(io, rung.standing_address) != null) {
+        print("  RED: a telling outlived the second look it was copying\n", .{});
+        return 1;
+    }
+    const again = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned again: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(again == sys.graph.domain_count);
+    if (rung.recounted_to(io, rung.standing_address) != null) {
+        print("  RED: a telling came back with the next provisioning\n", .{});
+        return 1;
+    }
+    print("  a telling survives a provisioning, and falls with the second look it copies\n", .{});
+    return rung.check_allay_wire(io, sys);
+}
+
+
+pub fn check_redress(comptime rung: type) u8 {
+    if (rung.redressed_in(1, .hollow) != 0) {
+        print("  RED: a hollow run said what a look found after all\n", .{});
+        return 1;
+    }
+    if (rung.redressed_in(1, .redresses) != 1) {
+        print("  RED: a redressing run spoke for {d} meetings\n", .{rung.redressed_in(1, .redresses)});
+        return 1;
+    }
+    if (rung.redressed_in(0, .redresses) != 0) {
+        print("  RED: a run that met nothing reported on a look anyway\n", .{});
+        return 1;
+    }
+    if (rung.closed_bare_in(1, .hollow) != 1 or rung.closed_bare_in(1, .redresses) != 0) {
+        print("  RED: the other half of the count did not close on one meeting\n", .{});
+        return 1;
+    }
+
+    // The two upshots, each surviving the byte it rides as.
+    if (rung.upshot_of_byte(rung.upshot_byte(.sound)) != .sound) {
+        print("  RED: a work found sound did not survive the byte it rides as\n", .{});
+        return 1;
+    }
+    if (rung.upshot_of_byte(rung.upshot_byte(.righted)) != .righted) {
+        print("  RED: a work put right did not survive the byte it rides as\n", .{});
+        return 1;
+    }
+    if (rung.upshot_of_byte('x') != null) {
+        print("  RED: a byte naming no upshot at all read as one\n", .{});
+        return 1;
+    }
+
+    // The redress's own three bytes, read back out of the meeting they report on.
+    const met = rung.met_bytes(rung.debt_bytes(.overrules, .short));
+    const spoken = rung.redress_bytes(met, .righted);
+    if (!rung.redress_answers(spoken, met)) {
+        print("  RED: a finding did not read back as one about its own meeting\n", .{});
+        return 1;
+    }
+    if (rung.redress_answers(spoken, rung.met_bytes(rung.debt_bytes(.upholds, .carried)))) {
+        print("  RED: a finding about one meeting read back as one about another\n", .{});
+        return 1;
+    }
+    if (rung.redress_answers(null, met)) {
+        print("  RED: a wire holding nothing read back as a meeting reported on\n", .{});
+        return 1;
+    }
+    if (rung.redress_upshot(spoken) != .righted) {
+        print("  RED: a finding named some upshot other than the one reached\n", .{});
+        return 1;
+    }
+    if (rung.redress_upshot(null) != null) {
+        print("  RED: a wire holding nothing named an upshot all the same\n", .{});
+        return 1;
+    }
+    if (!rung.redress_holds(spoken, spoken)) {
+        print("  RED: a written finding did not read back as the finding it was\n", .{});
+        return 1;
+    }
+    if (rung.redress_holds(rung.redress_bytes(met, .sound), spoken)) {
+        print("  RED: a work found sound read back as a work put right\n", .{});
+        return 1;
+    }
+    if (rung.redress_holds(null, spoken)) {
+        print("  RED: a note holding nothing read back as a meeting reported on\n", .{});
+        return 1;
+    }
+
+    // The stronger claim and its burden, weighed as a fold of its own.
+    if (!rung.upshot_earned(.righted, .carried)) {
+        print("  RED: a run that carried its plan out could not say it put the work right\n", .{});
+        return 1;
+    }
+    if (rung.upshot_earned(.righted, .short)) {
+        print("  RED: a run reporting itself short claimed it had put the work right\n", .{});
+        return 1;
+    }
+    if (!rung.upshot_earned(.sound, .short)) {
+        print("  RED: a run reporting itself short could not say the work stands sound\n", .{});
+        return 1;
+    }
+    if (rung.upshot_earned(.sound, null) or rung.upshot_earned(.righted, null)) {
+        print("  RED: a run that published no outcome at all said what its look found\n", .{});
+        return 1;
+    }
+    return rung.check_redress_refusals();
+}
+
+
+pub fn check_redress_measure(comptime rung: type) u8 {
+    if (rung.hollow_meetings(1, .hollow) != 1) {
+        print("  RED: a meeting that said nothing went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.hollow_meetings(1, .redresses) != 0) {
+        print("  RED: a meeting spoken for still counted as one closed in silence\n", .{});
+        return 1;
+    }
+    // A run that met nothing has no look to report on, so it costs the count
+    // nothing -- the harm this rung names is the admission taken up, closed, and
+    // never once reported on.
+    if (rung.hollow_meetings(0, .hollow) != 0) {
+        print("  RED: a run that met nothing was charged a hollow meeting\n", .{});
+        return 1;
+    }
+
+    print("  five refusals stand by name: unmet, unrighted, mismatched, miscounted, misrecorded\n", .{});
+    print("  the finding this rung keeps: {s}\n", .{rung.redress_words(.redresses)});
+    print("  what a bare plan leaves an operator: {s}\n", .{rung.redress_words(.hollow)});
+    print("  a redress carries three bytes: the meeting reported on, and what the look came to\n", .{});
+    print("  the stronger of the two upshots: {s}\n", .{rung.upshot_words(.righted)});
+    print("  the honest other: {s}\n", .{rung.upshot_words(.sound)});
+    return rung.check_apprise();
+}
+
+
+pub fn check_redress_refusals(comptime rung: type) u8 {
+    // A run that met nothing has no look to report on, and a finding filed there
+    // would answer a question this plan never asked.
+    if (rung.redress_refusal(1, 1, 0, false, true, true)) |why| {
+        if (why != error.RedressUnmet) {
+            print("  RED: a finding over an unmet debt refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a plan that met nothing was credited with saying what it found\n", .{});
+        return 1;
+    }
+    // The stronger of the two claims bears its own burden: a run that came up
+    // short has put nothing right this lap, however sincerely it looked.
+    if (rung.redress_refusal(1, 1, 0, true, false, true)) |why| {
+        if (why != error.RedressUnrighted) {
+            print("  RED: an unearned claim refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run that carried nothing out claimed it had put the work right\n", .{});
+        return 1;
+    }
+    // The rung itself: a finding filed against some other meeting, answering a
+    // question this look never asked.
+    if (rung.redress_refusal(1, 1, 0, true, true, false)) |why| {
+        if (why != error.RedressMismatched) {
+            print("  RED: a finding about another meeting refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run reported on one meeting and answered for another\n", .{});
+        return 1;
+    }
+    // The honesty of the count: every debt met is redressed or left bare --
+    // never both and never neither.
+    if (rung.redress_refusal(1, 1, 1, true, true, true)) |why| {
+        if (why != error.RedressMiscounted) {
+            print("  RED: a meeting counted twice refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a meeting spoken for and left silent at once went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.redress_refusal(1, 0, 0, true, true, true)) |why| {
+        if (why != error.RedressMiscounted) {
+            print("  RED: a meeting counted nowhere refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a meeting neither spoken for nor left bare went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.redress_refusal(1, 1, 0, true, true, true)) |why| {
+        print("  RED: a finding inside its own count refused with {s}\n", .{@errorName(why)});
+        return 1;
+    }
+    return rung.check_redress_measure();
+}
+
+
+pub fn check_redress_wire(comptime rung: type, io: std.Io, sys: *const system.System) u8 {
+    rung.clear_met(io);
+    rung.clear_redress(io);
+    rung.met_note(io, rung.inherited_debt) catch |err| {
+        print("  RED: a receipt could not be seated at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const receipt = rung.meeting_written(io) orelse {
+        print("  RED: a seated receipt could not be read back at all\n", .{});
+        return 1;
+    };
+    rung.redress_note(io, receipt, .righted) catch |err| {
+        print("  RED: a finding could not be written at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const provisioned = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(provisioned == sys.graph.domain_count);
+    const survived = rung.redress_written(io) orelse {
+        print("  RED: a provisioning cleared the finding for a meeting already made\n", .{});
+        return 1;
+    };
+    if (!rung.redress_answers(survived, receipt)) {
+        print("  RED: a finding carried past a provisioning stopped naming its meeting\n", .{});
+        return 1;
+    }
+    if (rung.redress_upshot(survived) != .righted) {
+        print("  RED: a finding carried past a provisioning forgot what the look came to\n", .{});
+        return 1;
+    }
+    if (rung.meeting_written(io) == null) {
+        print("  RED: a provisioning swept the receipt a finding reports on\n", .{});
+        return 1;
+    }
+    // The finding falls with the meeting it reports on, proven on the wire the
+    // plan leaves when the whole argument beneath it comes down.
+    rung.clear_met(io);
+    rung.clear_redress(io);
+    if (rung.redress_written(io) != null) {
+        print("  RED: a finding outlived the meeting it was reporting on\n", .{});
+        return 1;
+    }
+    const again = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned again: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(again == sys.graph.domain_count);
+    if (rung.redress_written(io) != null) {
+        print("  RED: a finding came back with the next provisioning\n", .{});
+        return 1;
+    }
+    print("  a finding survives a provisioning, and falls with the meeting it reports on\n", .{});
+    return rung.check_apprise_wire(io, sys);
+}
+
+
+pub fn check_refer(comptime rung: type) u8 {
+    // The count, which every later number closes on.
+    if (rung.referred_in(1, .referred) != 1) {
+        print("  RED: a referring run kept its one long-standing quarrel inside\n", .{});
+        return 1;
+    }
+    if (rung.referred_in(1, .unheard) != 0) {
+        print("  RED: an unheard run carried a case out all the same\n", .{});
+        return 1;
+    }
+    if (rung.referred_in(0, .referred) != 0) {
+        print("  RED: a run with nothing standing long carried a case out\n", .{});
+        return 1;
+    }
+    if (rung.unreferred_in(1, .unheard) != 1) {
+        print("  RED: a quarrel kept inside the argument counted as carried out\n", .{});
+        return 1;
+    }
+    if (rung.unreferred_in(1, .referred) != 0) {
+        print("  RED: a referred quarrel still counted as kept inside\n", .{});
+        return 1;
+    }
+
+    // The one comparison this rung exists to make, in both directions.
+    if (!rung.is_party("desk", "desk")) {
+        print("  RED: a forum naming the reader themself read as a third hand\n", .{});
+        return 1;
+    }
+    if (rung.is_party("bench", "desk")) {
+        print("  RED: a hand outside the argument read as a party to it\n", .{});
+        return 1;
+    }
+
+    // The record half, in all three directions.
+    const case = rung.referral_bytes(.carried, .loud, 4);
+    if (!rung.refer_holds(case, case)) {
+        print("  RED: a case did not read back as the case it was\n", .{});
+        return 1;
+    }
+    if (rung.refer_holds(rung.referral_bytes(.short, .loud, 4), case)) {
+        print("  RED: a case naming another settlement read back as this one\n", .{});
+        return 1;
+    }
+    if (rung.refer_holds(null, case)) {
+        print("  RED: a desk holding nothing read back as one holding the case\n", .{});
+        return 1;
+    }
+    return rung.check_refer_refusals();
+}
+
+
+pub fn check_refer_measure(comptime rung: type) u8 {
+    if (rung.unheard_outside(1, rung.long_standing_runs, .unheard) != 1) {
+        print("  RED: a long-standing quarrel nobody outside saw went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.unheard_outside(1, rung.long_standing_runs, .referred) != 0) {
+        print("  RED: a referred quarrel still counted as unheard outside\n", .{});
+        return 1;
+    }
+    // A quarrel raised this morning is fairly left with the people having it,
+    // so it costs the count nothing -- the harm this rung names is the old
+    // position no third hand ever sees.
+    if (rung.unheard_outside(1, 0, .unheard) != 0) {
+        print("  RED: a quarrel of no age at all counted as unheard outside\n", .{});
+        return 1;
+    }
+    if (rung.unheard_outside(0, rung.max_dwell_runs, .unheard) != 0) {
+        print("  RED: a run with nothing standing owed a third hand a case\n", .{});
+        return 1;
+    }
+
+    print("  five refusals stand by name: early, unaddressed, party, miscounted, misrecorded\n", .{});
+    print("  the referring this rung keeps: {s}\n", .{rung.refer_words(.referred)});
+    print("  a case carries three facts: the plan's word, the standing, and the age\n", .{});
+    return rung.check_deem();
+}
+
+
+pub fn check_refer_refusals(comptime rung: type) u8 {
+    if (rung.refer_refusal(0, 1, 0, true, false)) |why| {
+        if (why != error.ReferEarly) {
+            print("  RED: an early referral refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run referred a quarrel nobody holds\n", .{});
+        return 1;
+    }
+    if (rung.refer_refusal(1, 1, 0, false, false)) |why| {
+        if (why != error.ReferUnaddressed) {
+            print("  RED: an unaddressed referral refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run carried a case to a forum nobody named\n", .{});
+        return 1;
+    }
+    // The rung itself, refused by name: a forum naming somebody already in the
+    // argument has heard nothing, and a case landing there wears the look of a
+    // hearing while being none.
+    if (rung.refer_refusal(1, 1, 0, true, true)) |why| {
+        if (why != error.ReferParty) {
+            print("  RED: a referral to a party refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run referred a quarrel to somebody already holding it\n", .{});
+        return 1;
+    }
+    // The honesty of the count: every long-standing position is referred or
+    // kept inside the argument -- never both and never neither.
+    if (rung.refer_refusal(1, 1, 1, true, false)) |why| {
+        if (why != error.ReferMiscounted) {
+            print("  RED: a quarrel counted twice refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a quarrel referred and kept at once went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.refer_refusal(1, 0, 0, true, false)) |why| {
+        if (why != error.ReferMiscounted) {
+            print("  RED: a quarrel counted nowhere refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a quarrel neither referred nor kept went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.refer_refusal(1, 1, 0, true, false)) |why| {
+        print("  RED: a referral inside its own count refused with {s}\n", .{@errorName(why)});
+        return 1;
+    }
+    return rung.check_refer_measure();
+}
+
+
+pub fn check_refer_wire(comptime rung: type, io: std.Io, sys: *const system.System) u8 {
+    _ = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.clear_standing(io);
+    rung.clear_case(io, rung.standing_forum);
+    rung.standing_note(io, .presses) catch |err| {
+        print("  RED: a position could not be carried at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const case = rung.referral_bytes(.carried, .loud, rung.long_standing_runs + 1);
+    rung.refer_note(io, rung.standing_forum, case) catch |err| {
+        print("  RED: a case could not be carried at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const provisioned = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(provisioned == sys.graph.domain_count);
+    if (!rung.refer_holds(rung.case_delivered(io, rung.standing_forum), case)) {
+        print("  RED: a provisioning swept a case off a desk it never owned\n", .{});
+        return 1;
+    }
+    // The case outlives the quarrel, which is the whole difference between a
+    // record kept by a party and a record handed to somebody who is not one.
+    rung.release_standing(io);
+    if (!rung.refer_holds(rung.case_delivered(io, rung.standing_forum), case)) {
+        print("  RED: a withdrawal reached onto a third hand's desk and took the case back\n", .{});
+        return 1;
+    }
+    rung.clear_case(io, rung.standing_forum);
+    if (rung.case_delivered(io, rung.standing_forum) != null) {
+        print("  RED: a desk cleared by its own hand still held the case\n", .{});
+        return 1;
+    }
+    print("  a case survives a provisioning, and outlives the quarrel it was built from\n", .{});
+    return 0;
+}
+
+
+pub fn check_relent_wire(comptime rung: type, io: std.Io, sys: *const system.System) u8 {
+    _ = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.clear_standing(io);
+    rung.standing_note(io, .presses) catch |err| {
+        print("  RED: a position could not be carried at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const provisioned = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(provisioned == sys.graph.domain_count);
+    const survived = rung.position_standing(io) orelse {
+        print("  RED: a provisioning cleared the position it was told to leave\n", .{});
+        return 1;
+    };
+    if (survived != .presses) {
+        print("  RED: a carried position read back as {s}\n", .{rung.plea_words(survived)});
+        return 1;
+    }
+    rung.release_standing(io);
+    if (!rung.note_cleared(rung.position_standing(io))) {
+        print("  RED: a withdrawn quarrel was still standing where it was taken down\n", .{});
+        return 1;
+    }
+    const again = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned again: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(again == sys.graph.domain_count);
+    if (!rung.note_cleared(rung.position_standing(io))) {
+        print("  RED: a withdrawn quarrel came back with the next provisioning\n", .{});
+        return 1;
+    }
+    print("  a quarrel survives a provisioning, and its withdrawal survives one too\n", .{});
+    return 0;
+}
+
+
+pub fn check_reopen(comptime rung: type) u8 {
+    const word = rung.suits_bytes(rung.found_bytes(rung.redress_bytes(rung.met_bytes([_]u8{ 'd', 'c' }), .righted)), .wanting);
+    const booked = rung.again_bytes(word);
+    if (!rung.again_carries(booked, word)) {
+        print("  RED: a note refused the very word it was written from\n", .{});
+        return 1;
+    }
+    // The whole point of the rung, as a fold: a note left over from an earlier
+    // lap reopens an older answer, and reading it as today's would tell an
+    // operator this run acted on a verdict it never read.
+    const elder = rung.suits_bytes(rung.found_bytes(rung.redress_bytes(rung.met_bytes([_]u8{ 'd', 's' }), .righted)), .wanting);
+    if (rung.again_carries(rung.again_bytes(elder), word)) {
+        print("  RED: a note about an older answer was read as today's\n", .{});
+        return 1;
+    }
+    // Two honest words, and only one of them opens anything.
+    const settled = rung.suits_bytes(rung.found_bytes(rung.redress_bytes(rung.met_bytes([_]u8{ 'd', 'c' }), .righted)), .settles);
+    if (rung.again_carries(rung.again_bytes(settled), word)) {
+        print("  RED: a satisfied reader's word was read as a short one\n", .{});
+        return 1;
+    }
+    if (rung.again_carries(null, word)) {
+        print("  RED: a matter with no note at all read as taken up\n", .{});
+        return 1;
+    }
+    if (!rung.reopen_holds(booked, word) or rung.reopen_holds(rung.again_bytes(elder), word)) {
+        print("  RED: the record half of this rung did not hold\n", .{});
+        return 1;
+    }
+    if (rung.taken_up_in(1, .takes_up) != 1 or rung.taken_up_in(1, .closes) != 0) {
+        print("  RED: a short word was taken up under the wrong reading\n", .{});
+        return 1;
+    }
+    if (rung.taken_up_in(0, .takes_up) != 0) {
+        print("  RED: a run nobody called short took a matter up anyway\n", .{});
+        return 1;
+    }
+    if (rung.left_closed_in(1, .closes) != 1 or rung.left_closed_in(1, .takes_up) != 0) {
+        print("  RED: the other half of the count did not close\n", .{});
+        return 1;
+    }
+    if (rung.left_closed_in(0, .closes) != 0) {
+        print("  RED: a run nobody called short left a word closed anyway\n", .{});
+        return 1;
+    }
+    return rung.check_reopen_refusals();
+}
+
+
+pub fn check_reopen_measure(comptime rung: type) u8 {
+    if (rung.unheeded_words(1, .closes) != 1) {
+        print("  RED: a short word that opened nothing went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.unheeded_words(1, .takes_up) != 0) {
+        print("  RED: a short word taken up still counted as one that opened nothing\n", .{});
+        return 1;
+    }
+    // A reader who says the answer settles the matter has asked for nothing, so
+    // it costs the count nothing -- the harm this rung names is the word calling
+    // an answer short and costing the plan not one further look.
+    if (rung.unheeded_words(0, .closes) != 0) {
+        print("  RED: a satisfied reader was charged an unheeded word\n", .{});
+        return 1;
+    }
+
+    print("  five refusals stand by name: unweighed, settled, mismatched, miscounted, misrecorded\n", .{});
+    print("  the reading this rung keeps: {s}\n", .{rung.reopen_words(.takes_up)});
+    print("  what a closing plan never owes: {s}\n", .{rung.reopen_words(.closes)});
+    print("  a reopening note carries four bytes: the reader's own word, echoed back whole\n", .{});
+    return rung.check_reweigh();
+}
+
+
+pub fn check_reopen_refusals(comptime rung: type) u8 {
+    if (rung.reopen_refusal(1, 1, 0, false, true, true)) |why| {
+        if (why != error.ReopenUnweighed) {
+            print("  RED: a run that asked nobody refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run that asked nobody took a matter up anyway\n", .{});
+        return 1;
+    }
+    if (rung.reopen_refusal(1, 1, 0, true, false, true)) |why| {
+        if (why != error.ReopenSettled) {
+            print("  RED: a satisfied reader's word refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a satisfied reader's word opened a matter anyway\n", .{});
+        return 1;
+    }
+    if (rung.reopen_refusal(1, 1, 0, true, true, false)) |why| {
+        if (why != error.ReopenMismatched) {
+            print("  RED: a note about some other word refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a note about some other word was taken as today's\n", .{});
+        return 1;
+    }
+    if (rung.reopen_refusal(1, 1, 1, true, true, true)) |why| {
+        if (why != error.ReopenMiscounted) {
+            print("  RED: a word both taken up and left closed refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a word counted twice passed the count\n", .{});
+        return 1;
+    }
+    if (rung.reopen_refusal(1, 0, 0, true, true, true)) |why| {
+        if (why != error.ReopenMiscounted) {
+            print("  RED: a word neither taken up nor left closed refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a word counted neither way passed the count\n", .{});
+        return 1;
+    }
+    if (rung.reopen_refusal(1, 1, 0, true, true, true)) |why| {
+        print("  RED: an honest reopening refused as {s}\n", .{@errorName(why)});
+        return 1;
+    }
+    return rung.check_reopen_measure();
+}
+
+
+pub fn check_reopen_wire(comptime rung: type, io: std.Io, sys: *const system.System) u8 {
+    rung.clear_suits(io, rung.standing_address);
+    rung.clear_reopen(io);
+    rung.clear_apprise(io, rung.standing_address);
+    const carried = rung.found_bytes(rung.redress_bytes(rung.met_bytes(rung.inherited_debt), .righted));
+    rung.apprise_note(io, rung.standing_address, carried) catch |err| {
+        print("  RED: a finding could not be carried to its reader at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.weigh_as_reader(io, rung.standing_address, rung.suits_bytes(carried, .wanting)) catch |err| {
+        print("  RED: a reader could not weigh the answer at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const said = rung.worth_written(io, rung.standing_address) orelse {
+        print("  RED: a reader's own short word could not be read back at all\n", .{});
+        return 1;
+    };
+    rung.reopen_note(io, said) catch |err| {
+        print("  RED: a matter could not be taken up again at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const provisioned = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(provisioned == sys.graph.domain_count);
+    if (!rung.reopen_holds(rung.again_standing(io), said)) {
+        print("  RED: a matter carried past a provisioning stopped naming its word\n", .{});
+        return 1;
+    }
+    if (rung.worth_written(io, rung.standing_address) == null) {
+        print("  RED: taking a matter up again reached into its reader's box\n", .{});
+        return 1;
+    }
+    // The note comes down with the word it carries, so a later run never inherits
+    // a matter opened by a verdict this wire has forgotten.
+    rung.clear_suits(io, rung.standing_address);
+    rung.clear_reopen(io);
+    if (rung.again_standing(io) != null) {
+        print("  RED: a reopened matter outlived the word that opened it\n", .{});
+        return 1;
+    }
+    rung.clear_apprise(io, rung.standing_address);
+    print("  a reopened matter survives a provisioning, and falls with the word that opened it\n", .{});
+    return rung.check_reweigh_wire(io, sys);
+}
+
+
+pub fn check_reweigh(comptime rung: type) u8 {
+    const opened = rung.inherited_matter;
+    const receipt = rung.anew_bytes(opened);
+    if (!rung.anew_answers(receipt, opened)) {
+        print("  RED: a receipt refused the very matter it was written from\n", .{});
+        return 1;
+    }
+    // The whole point of the rung, as a fold: a receipt left over from an earlier
+    // lap answers an older matter, and reading it as today's would tell an
+    // operator this run looked again at a question nobody reopened.
+    const elder = rung.again_bytes(rung.suits_bytes(rung.found_bytes(rung.redress_bytes(rung.met_bytes([_]u8{ 'd', 's' }), .righted)), .wanting));
+    if (rung.anew_answers(rung.anew_bytes(elder), opened)) {
+        print("  RED: a receipt about an older matter was read as today's\n", .{});
+        return 1;
+    }
+    if (rung.anew_answers(null, opened)) {
+        print("  RED: a matter with no receipt at all read as looked at again\n", .{});
+        return 1;
+    }
+    if (!rung.reweigh_holds(receipt, receipt) or rung.reweigh_holds(rung.anew_bytes(elder), receipt)) {
+        print("  RED: the record half of this rung did not hold\n", .{});
+        return 1;
+    }
+    // The taking down is the act, and the receipt is only its record.
+    if (!rung.matter_closed(null) or rung.matter_closed(opened)) {
+        print("  RED: a matter still standing read as taken down\n", .{});
+        return 1;
+    }
+    if (rung.looked_in(1, .looks) != 1 or rung.looked_in(1, .passes) != 0) {
+        print("  RED: a reopened matter was looked at under the wrong reading\n", .{});
+        return 1;
+    }
+    if (rung.looked_in(0, .looks) != 0) {
+        print("  RED: a run inheriting nothing looked again anyway\n", .{});
+        return 1;
+    }
+    if (rung.passed_in(1, .passes) != 1 or rung.passed_in(1, .looks) != 0) {
+        print("  RED: the other half of the count did not close\n", .{});
+        return 1;
+    }
+    if (rung.passed_in(0, .passes) != 0) {
+        print("  RED: a run inheriting nothing passed a matter over anyway\n", .{});
+        return 1;
+    }
+    return rung.check_reweigh_refusals();
+}
+
+
+pub fn check_reweigh_measure(comptime rung: type) u8 {
+    if (rung.unlooked_matters(1, .passes) != 1) {
+        print("  RED: a reopened matter nobody looked at went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.unlooked_matters(1, .looks) != 0) {
+        print("  RED: a matter looked at again still counted as one nobody looked at\n", .{});
+        return 1;
+    }
+    // A plan nobody reopened owes no second look to anybody, so it costs the
+    // count nothing -- the harm this rung names is the matter standing open in a
+    // plan's own notes and costing the run that finds it not one further look.
+    if (rung.unlooked_matters(0, .passes) != 0) {
+        print("  RED: a plan nobody reopened was charged an unlooked-at matter\n", .{});
+        return 1;
+    }
+
+    print("  five refusals stand by name: unopened, unsettled, mismatched, miscounted, misrecorded\n", .{});
+    print("  the reading this rung keeps: {s}\n", .{rung.reweigh_words(.looks)});
+    print("  what a passing plan never owes: {s}\n", .{rung.reweigh_words(.passes)});
+    print("  a second look's receipt carries four bytes: the reopened matter, echoed back whole\n", .{});
+    return rung.check_recount();
+}
+
+
+pub fn check_reweigh_refusals(comptime rung: type) u8 {
+    if (rung.reweigh_refusal(1, 1, 0, false, true, true)) |why| {
+        if (why != error.ReweighUnopened) {
+            print("  RED: a run inheriting nothing refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run inheriting nothing looked again anyway\n", .{});
+        return 1;
+    }
+    if (rung.reweigh_refusal(1, 1, 0, true, false, true)) |why| {
+        if (why != error.ReweighUnsettled) {
+            print("  RED: a run that finished nothing refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run that finished nothing filed a second look anyway\n", .{});
+        return 1;
+    }
+    if (rung.reweigh_refusal(1, 1, 0, true, true, false)) |why| {
+        if (why != error.ReweighMismatched) {
+            print("  RED: a receipt about some other matter refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a receipt about some other matter was taken as today's\n", .{});
+        return 1;
+    }
+    if (rung.reweigh_refusal(1, 1, 1, true, true, true)) |why| {
+        if (why != error.ReweighMiscounted) {
+            print("  RED: a matter both looked at and passed over refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a matter counted twice passed the count\n", .{});
+        return 1;
+    }
+    if (rung.reweigh_refusal(1, 0, 0, true, true, true)) |why| {
+        if (why != error.ReweighMiscounted) {
+            print("  RED: a matter neither looked at nor passed over refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a matter counted neither way passed the count\n", .{});
+        return 1;
+    }
+    if (rung.reweigh_refusal(1, 1, 0, true, true, true)) |why| {
+        print("  RED: an honest second look refused as {s}\n", .{@errorName(why)});
+        return 1;
+    }
+    return rung.check_reweigh_measure();
+}
+
+
+pub fn check_reweigh_wire(comptime rung: type, io: std.Io, sys: *const system.System) u8 {
+    rung.clear_reweigh(io);
+    rung.clear_reopen(io);
+    rung.reopen_note(io, rung.inherited_matter) catch |err| {
+        print("  RED: a matter could not be seated as reopened at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const opened = rung.again_standing(io) orelse {
+        print("  RED: a reopened matter could not be read back at all\n", .{});
+        return 1;
+    };
+    rung.reweigh_note(io, opened) catch |err| {
+        print("  RED: a second look could not be receipted at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.clear_reopen(io);
+    if (!rung.matter_closed(rung.again_standing(io))) {
+        print("  RED: a matter answered by a receipt stayed standing\n", .{});
+        return 1;
+    }
+    const provisioned = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(provisioned == sys.graph.domain_count);
+    if (!rung.reweigh_holds(rung.anew_standing(io), rung.anew_bytes(opened))) {
+        print("  RED: a receipt carried past a provisioning stopped naming its matter\n", .{});
+        return 1;
+    }
+    if (!rung.matter_closed(rung.again_standing(io))) {
+        print("  RED: a matter taken down came back with a provisioning\n", .{});
+        return 1;
+    }
+    rung.clear_reweigh(io);
+    if (rung.anew_standing(io) != null) {
+        print("  RED: a second look's receipt outlived the matter it answered\n", .{});
+        return 1;
+    }
+    print("  a second look survives a provisioning, and the matter it answers stays down\n", .{});
+    return rung.check_recount_wire(io, sys);
+}
+
+
+pub fn check_suffice(comptime rung: type) u8 {
+    if (rung.weighed_in(1, .unasked) != 0) {
+        print("  RED: an unasking run read somebody's word after all\n", .{});
+        return 1;
+    }
+    if (rung.weighed_in(1, .asks) != 1) {
+        print("  RED: an asking run weighed {d} answers\n", .{rung.weighed_in(1, .asks)});
+        return 1;
+    }
+    if (rung.weighed_in(0, .asks) != 0) {
+        print("  RED: a run that told nobody weighed an answer anyway\n", .{});
+        return 1;
+    }
+    if (rung.unasked_in(1, .unasked) != 1 or rung.unasked_in(1, .asks) != 0) {
+        print("  RED: the other half of the count did not close on one answer\n", .{});
+        return 1;
+    }
+
+    // The reader's own four bytes, read back against the answer they weigh.
+    const met = rung.met_bytes(rung.debt_bytes(.overrules, .short));
+    const carried = rung.found_bytes(rung.redress_bytes(met, .righted));
+    const said = rung.suits_bytes(carried, .wanting);
+    if (!rung.suits_answers(said, carried)) {
+        print("  RED: a reader's word did not read back as weighing the answer it names\n", .{});
+        return 1;
+    }
+    if (rung.suits_answers(said, rung.found_bytes(rung.redress_bytes(met, .sound)))) {
+        print("  RED: a word about one answer read back as a word about another\n", .{});
+        return 1;
+    }
+    if (rung.suits_answers(null, carried)) {
+        print("  RED: an empty box read back as a reader who had spoken\n", .{});
+        return 1;
+    }
+    if (rung.suits_worth(said) != .wanting) {
+        print("  RED: a reader saying the answer falls short read back as saying otherwise\n", .{});
+        return 1;
+    }
+    if (rung.suits_worth(rung.suits_bytes(carried, .settles)) != .settles) {
+        print("  RED: a reader saying the answer settles the matter read back as saying otherwise\n", .{});
+        return 1;
+    }
+    if (rung.suits_worth(null) != null) {
+        print("  RED: a box holding nothing read back as a verdict\n", .{});
+        return 1;
+    }
+    if (!rung.suffice_holds(.wanting, .wanting) or rung.suffice_holds(.settles, .wanting)) {
+        print("  RED: a published word did not read back as the word it was\n", .{});
+        return 1;
+    }
+    if (rung.suffice_holds(null, .wanting)) {
+        print("  RED: a note holding nothing read back as a reader asked\n", .{});
+        return 1;
+    }
+    return rung.check_suffice_refusals();
+}
+
+
+pub fn check_suffice_measure(comptime rung: type) u8 {
+    if (rung.unmeasured_answers(1, .unasked) != 1) {
+        print("  RED: an answer nobody was asked about went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.unmeasured_answers(1, .asks) != 0) {
+        print("  RED: an answer its reader weighed still counted as one never asked about\n", .{});
+        return 1;
+    }
+    // A run that told nobody has asked nobody, so it costs the count nothing --
+    // the harm this rung names is the answer carried home and never once
+    // followed by a question.
+    if (rung.unmeasured_answers(0, .unasked) != 0) {
+        print("  RED: a run that told nobody was charged an unmeasured answer\n", .{});
+        return 1;
+    }
+
+    print("  five refusals stand by name: untold, silent, mismatched, miscounted, misrecorded\n", .{});
+    print("  the reading this rung keeps: {s}\n", .{rung.suffice_words(.asks)});
+    print("  what an unasking plan never learns: {s}\n", .{rung.suffice_words(.unasked)});
+    print("  {s}\n", .{rung.worth_words(.wanting)});
+    print("  {s}\n", .{rung.worth_words(.settles)});
+    print("  a reader's word carries four bytes: the answer they were carried, and what they make of it\n", .{});
+    return rung.check_reopen();
+}
+
+
+pub fn check_suffice_refusals(comptime rung: type) u8 {
+    // A run that carried nothing to anybody has asked nobody anything.
+    if (rung.suffice_refusal(1, 1, 0, false, true, true)) |why| {
+        if (why != error.SufficeUntold) {
+            print("  RED: a weighing with no delivery behind it refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a plan that told nobody was credited with reading their word\n", .{});
+        return 1;
+    }
+    // The hard half: silence is no consent here, exactly as it was not when a
+    // quarrel was withdrawn.
+    if (rung.suffice_refusal(1, 1, 0, true, false, true)) |why| {
+        if (why != error.SufficeSilent) {
+            print("  RED: a weighing over an empty box refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a reader who said nothing was read as having answered\n", .{});
+        return 1;
+    }
+    // The rung itself: a verdict about some other look, read as today's word.
+    if (rung.suffice_refusal(1, 1, 0, true, true, false)) |why| {
+        if (why != error.SufficeMismatched) {
+            print("  RED: a word about another answer refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run carried one answer and read a word about another\n", .{});
+        return 1;
+    }
+    // The honesty of the count: every answer carried is weighed or left unasked
+    // -- never both and never neither.
+    if (rung.suffice_refusal(1, 1, 1, true, true, true)) |why| {
+        if (why != error.SufficeMiscounted) {
+            print("  RED: an answer counted twice refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: an answer weighed and left unasked at once went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.suffice_refusal(1, 0, 0, true, true, true)) |why| {
+        if (why != error.SufficeMiscounted) {
+            print("  RED: an answer counted nowhere refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: an answer neither weighed nor left unasked went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.suffice_refusal(1, 1, 0, true, true, true)) |why| {
+        print("  RED: a weighing inside its own count refused with {s}\n", .{@errorName(why)});
+        return 1;
+    }
+    return rung.check_suffice_measure();
+}
+
+
+pub fn check_suffice_wire(comptime rung: type, io: std.Io, sys: *const system.System) u8 {
+    rung.clear_suits(io, rung.standing_address);
+    rung.clear_suffice(io);
+    rung.clear_apprise(io, rung.standing_address);
+    const carried = rung.found_bytes(rung.redress_bytes(rung.met_bytes(rung.inherited_debt), .righted));
+    rung.apprise_note(io, rung.standing_address, carried) catch |err| {
+        print("  RED: a finding could not be carried to its reader at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.weigh_as_reader(io, rung.standing_address, rung.suits_bytes(carried, .wanting)) catch |err| {
+        print("  RED: a reader could not weigh the answer at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const said = rung.worth_written(io, rung.standing_address) orelse {
+        print("  RED: a reader's own word could not be read back at all\n", .{});
+        return 1;
+    };
+    if (!rung.suits_answers(said, carried)) {
+        print("  RED: a reader's word stopped naming the answer it weighs\n", .{});
+        return 1;
+    }
+    const worth = rung.suits_worth(said) orelse {
+        print("  RED: a reader's word carried no verdict at all\n", .{});
+        return 1;
+    };
+    rung.suffice_note(io, worth) catch |err| {
+        print("  RED: a reader's word could not be published at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const provisioned = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(provisioned == sys.graph.domain_count);
+    if (!rung.suits_answers(rung.worth_written(io, rung.standing_address), carried)) {
+        print("  RED: a provisioning emptied the box a reader wrote their word in\n", .{});
+        return 1;
+    }
+    if (!rung.suffice_holds(rung.worth_published(io), .wanting)) {
+        print("  RED: a published word carried past a provisioning stopped naming its verdict\n", .{});
+        return 1;
+    }
+    if (rung.apprised_of(io, rung.standing_address) == null) {
+        print("  RED: reading a reader's word took down the answer it weighs\n", .{});
+        return 1;
+    }
+    // The plan's copy comes down with the answer it weighed, so a later run never
+    // reads a satisfaction about a delivery this wire has forgotten.
+    rung.clear_apprise(io, rung.standing_address);
+    rung.clear_suffice(io);
+    if (rung.worth_published(io) != null) {
+        print("  RED: a published word outlived the answer it was weighing\n", .{});
+        return 1;
+    }
+    // And the reader keeps their own word where they wrote it, which no run of
+    // this plan ever reaches for.
+    if (rung.worth_written(io, rung.standing_address) == null) {
+        print("  RED: a plan taking down its own copy reached into its reader's box\n", .{});
+        return 1;
+    }
+    rung.clear_suits(io, rung.standing_address);
+    print("  a reader's word survives a provisioning, and the plan's copy falls with the answer it weighs\n", .{});
+    return rung.check_reopen_wire(io, sys);
+}
+
+
+pub fn check_swell(comptime rung: type) u8 {
+    // The reading itself, weighed against a bound no run may move. The
+    // threshold is inclusive, since a position that has stood the named number
+    // of runs has already outlasted them.
+    if (rung.stands_loud(rung.long_standing_runs) != .loud) {
+        print("  RED: a quarrel at the bound read quiet\n", .{});
+        return 1;
+    }
+    if (rung.stands_loud(rung.long_standing_runs - 1) != .quiet) {
+        print("  RED: a quarrel one run short of the bound read loud\n", .{});
+        return 1;
+    }
+    if (rung.stands_loud(0) != .quiet) {
+        print("  RED: a quarrel of no age at all read loud\n", .{});
+        return 1;
+    }
+    if (rung.stands_loud(rung.max_dwell_runs) != .loud) {
+        print("  RED: the oldest quarrel one note may carry read quiet\n", .{});
+        return 1;
+    }
+    // The byte an operator reads, and the reading it comes back as. A note
+    // carrying anything else is no reading at all rather than a quiet one.
+    if (rung.volume_of_byte(rung.volume_byte(.loud)) != .loud) {
+        print("  RED: a loud standing did not survive its own byte\n", .{});
+        return 1;
+    }
+    if (rung.volume_of_byte(rung.volume_byte(.quiet)) != .quiet) {
+        print("  RED: a quiet standing did not survive its own byte\n", .{});
+        return 1;
+    }
+    if (rung.volume_of_byte('z') != null) {
+        print("  RED: a byte no herald ever wrote read back as a standing\n", .{});
+        return 1;
+    }
+    // The count, which every later number closes on.
+    if (rung.heralded_in(1, .heralded) != 1) {
+        print("  RED: a heralding run left its one standing position unpublished\n", .{});
+        return 1;
+    }
+    if (rung.heralded_in(1, .hushed) != 0) {
+        print("  RED: a hushed run published a standing all the same\n", .{});
+        return 1;
+    }
+    if (rung.heralded_in(0, .heralded) != 0) {
+        print("  RED: a run holding no quarrel published a standing for one\n", .{});
+        return 1;
+    }
+    if (rung.unpublished_in(1, .hushed) != 1) {
+        print("  RED: a hushed run counted its unpublished position as nothing\n", .{});
+        return 1;
+    }
+    if (rung.unpublished_in(1, .heralded) != 0) {
+        print("  RED: a heralding run still counted a position unpublished\n", .{});
+        return 1;
+    }
+    // The record half, answered by the byte itself.
+    if (!rung.swell_holds(.loud, .loud)) {
+        print("  RED: a note carrying the standing just written did not hold\n", .{});
+        return 1;
+    }
+    if (rung.swell_holds(.quiet, .loud)) {
+        print("  RED: a note reading quiet held for a loud standing\n", .{});
+        return 1;
+    }
+    if (rung.swell_holds(null, .quiet)) {
+        print("  RED: a note that does not exist held for a quiet standing\n", .{});
+        return 1;
+    }
+    return rung.check_swell_refusals();
+}
+
+
+pub fn check_swell_measure(comptime rung: type) u8 {
+    if (rung.standing_unheralded(1, rung.long_standing_runs, .hushed) != 1) {
+        print("  RED: a long-standing quarrel nobody published went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.standing_unheralded(1, rung.long_standing_runs, .heralded) != 0) {
+        print("  RED: a published quarrel still counted as unheralded\n", .{});
+        return 1;
+    }
+    // A quarrel raised this morning is fairly read at its own volume, so it
+    // costs the count nothing -- the harm this rung names is the old position
+    // reading no louder than a fresh one.
+    if (rung.standing_unheralded(1, 0, .hushed) != 0) {
+        print("  RED: a quarrel of no age at all counted as unheralded\n", .{});
+        return 1;
+    }
+    if (rung.standing_unheralded(0, rung.max_dwell_runs, .hushed) != 0) {
+        print("  RED: a run with nothing standing left a standing unpublished\n", .{});
+        return 1;
+    }
+
+    print("  a quarrel counts as long-standing at {d} runs, and no run may move that bound\n", .{
+        rung.long_standing_runs,
+    });
+    print("  a plan publishes whether a long-standing quarrel reads where the outcome is read\n", .{});
+    print("  loud reads as {s}\n", .{rung.volume_words(.loud)});
+    print("  quiet reads as {s}\n", .{rung.volume_words(.quiet)});
+    return rung.check_refer();
+}
+
+
+pub fn check_swell_refusals(comptime rung: type) u8 {
+    // The moment: a run publishing a standing where nothing stands tells an
+    // operator how loudly a quarrel that is over reads.
+    if (rung.swell_refusal(0, 1, 0, true)) |why| {
+        if (why != error.SwellEarly) {
+            print("  RED: an early heralding refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run heralded a quarrel nobody holds\n", .{});
+        return 1;
+    }
+    // The hard half: a standing read off an age no run ever wrote is a guess
+    // wearing a measurement's clothes, and it would read loudest of all.
+    if (rung.swell_refusal(1, 1, 0, false)) |why| {
+        if (why != error.SwellUndated) {
+            print("  RED: an undated heralding refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run published a standing for a quarrel it never dated\n", .{});
+        return 1;
+    }
+    // The honesty of the count: every position still standing is heralded or
+    // left unpublished, never both and never neither.
+    if (rung.swell_refusal(1, 1, 1, true)) |why| {
+        if (why != error.SwellMiscounted) {
+            print("  RED: a doubled count refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: one position counted as both published and unpublished stood\n", .{});
+        return 1;
+    }
+    if (rung.swell_refusal(1, 0, 0, true)) |why| {
+        if (why != error.SwellMiscounted) {
+            print("  RED: an empty count refused with {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a standing position counted as neither published nor unpublished stood\n", .{});
+        return 1;
+    }
+    // And the honest reading passes, which is the half a refusal-only test
+    // never proves.
+    if (rung.swell_refusal(1, 1, 0, true)) |why| {
+        print("  RED: a heralding inside its own count refused with {s}\n", .{@errorName(why)});
+        return 1;
+    }
+    return rung.check_swell_measure();
+}
+
+
+pub fn check_swell_wire(comptime rung: type, io: std.Io, sys: *const system.System) u8 {
+    _ = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.clear_standing(io);
+    rung.clear_swell(io);
+    rung.standing_note(io, .presses) catch |err| {
+        print("  RED: a position could not be carried at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.swell_note(io, .loud) catch |err| {
+        print("  RED: a standing could not be published at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const provisioned = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(provisioned == sys.graph.domain_count);
+    const survived = rung.swell_published(io) orelse {
+        print("  RED: a provisioning cleared the standing it was told to leave\n", .{});
+        return 1;
+    };
+    if (survived != .loud) {
+        print("  RED: a standing carried past a provisioning read back as {s}\n", .{
+            rung.volume_words(survived),
+        });
+        return 1;
+    }
+    // The standing falls with the quarrel, proven on the wire the withdrawal
+    // leaves.
+    rung.release_standing(io);
+    if (rung.swell_published(io) != null) {
+        print("  RED: a standing outlived the quarrel it was speaking for\n", .{});
+        return 1;
+    }
+    const again = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned again: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(again == sys.graph.domain_count);
+    if (rung.swell_published(io) != null) {
+        print("  RED: a standing came back with the next provisioning\n", .{});
+        return 1;
+    }
+    print("  a standing survives a provisioning, and falls with the quarrel it speaks for\n", .{});
+    return 0;
+}
+
+
+pub fn check_tidings_wire(comptime rung: type, io: std.Io) u8 {
+    const shelf = "shelf";
+    rung.clear_tidings(io, shelf);
+    rung.tell_outcome(io, shelf, .moved) catch |err| {
+        print("  RED: a reader could not be told at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const read_back = rung.told_of(io, shelf) orelse {
+        print("  RED: a reader's own box carried nothing back\n", .{});
+        return 1;
+    };
+    if (read_back != .moved) {
+        print("  RED: a word that moved was read back as {s}\n", .{rung.result_words(read_back)});
+        return 1;
+    }
+    rung.clear_tidings(io, shelf);
+    if (rung.told_of(io, shelf) != null) {
+        print("  RED: a cleared box still answered\n", .{});
+        return 1;
+    }
+    print("  both answers ride the wire: {s}\n", .{rung.result_words(.moved)});
+    return 0;
+}
+
+
+pub fn check_unlost(comptime rung: type, sys: *const system.System) u8 {
+    const clients = [_]rung.Task{
+        rung.written_queue[0].task,
+        rung.written_queue[1].task,
+        rung.written_queue[3].task,
+        rung.written_queue[4].task,
+    };
+    var agreed: u32 = 0;
+    var a: u32 = 0;
+    while (a < clients.len) : (a += 1) {
+        var live_store: [rung.max_in_flight]cohort.Running = undefined;
+        live_store[0] = .{
+            .proc = undefined,
+            .domain = clients[a].item.domain,
+            .verb = clients[a].item.verb,
+            .count = clients[a].item.count,
+            .expect = clients[a].item.expect,
+        };
+        var handed_store: [rung.max_in_flight]rung.Task = undefined;
+        handed_store[0] = clients[a];
+        const reserve_store = [_]?rung.Task{null};
+        const taken_store = [_]u32{0};
+        var b: u32 = 0;
+        while (b < clients.len) : (b += 1) {
+            const here = rung.admissible_in(
+                sys, live_store[0..1], handed_store[0..1], reserve_store[0..1], taken_store[0..1], clients[b],
+            ) catch {
+                print("  RED: an appraising run could not weigh its own door\n", .{});
+                return 1;
+            };
+            const there = unhand.admissible_held(sys, live_store[0..1], handed_store[0..1], clients[b]);
+            if (here != there) {
+                print("  RED: the two readings disagreed about {s} beside {s}\n", .{
+                    clients[b].item.domain, clients[a].item.domain,
+                });
+                return 1;
+            }
+            agreed += 1;
+        }
+        // invariant: every newcomer was weighed against this dependent, none skipped
+        assert(b == clients.len);
+    }
+    // invariant: every line stood as the running dependent once, none skipped
+    assert(a == clients.len);
+
+    print("  a plan that loses nothing reads as the line handed, all {d} pairs\n", .{agreed});
+    return 0;
+}

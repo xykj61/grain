@@ -123,6 +123,7 @@ const recanting_rung = @import("recant.rye");
 const appraising_rung = @import("appraise.rye");
 const mending_rung = @import("mend.rye");
 const tally_parse_int = @import("parse_int.rye");
+const ladder_checks = @import("ladder_checks.rye");
 
 const Dir = std.Io.Dir;
 
@@ -3696,7 +3697,7 @@ fn note_path(buf: *[max_note_path_len]u8, domain: []const u8, suffix: []const u8
 }
 
 /// Writes bytes into a note, creating it fresh.
-fn seat_note(io: std.Io, domain: []const u8, suffix: []const u8, bytes: []const u8) NoteError!void {
+pub fn seat_note(io: std.Io, domain: []const u8, suffix: []const u8, bytes: []const u8) NoteError!void {
     // invariant: a note always names the dependent it belongs to
     assert(domain.len >= 1);
     // invariant: a note always carries one of the suffixes
@@ -9462,7 +9463,7 @@ fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
 /// the same three arcs, post and carry the same correction, read the same
 /// answer, record the same disagreement, and settle the same word. What parts
 /// them is whether anybody reading that word ever learns of it.
-const written_queue = [_]Phase{
+pub const written_queue = [_]Phase{
     .{ .turn = 0, .step = 0, .follows = 0, .follows_turns = 0, .reserve = .{ .effects = "r", .item = .{ .domain = "client_b", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.carried_ok } }, .task = .{ .effects = "r,w,w", .item = .{ .domain = "client_b", .verb = .stand, .hops = "board,ask_b,taken_b", .peers = "serial_virt,client_b", .count = 0, .expect = carry.Outcome.bytes_differed } } },
     .{ .turn = 1, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_b", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
     .{ .turn = 2, .step = 0, .follows = 0, .follows_turns = 0, .reserve = .{ .effects = "r", .item = .{ .domain = "client_a", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.carried_ok } }, .task = .{ .effects = "r,w,w", .item = .{ .domain = "client_a", .verb = .stand, .hops = "board,ask_a,taken_a", .peers = "serial_virt,client_a", .count = 0, .expect = carry.Outcome.bytes_differed } } },
@@ -9498,14 +9499,14 @@ const standing_reading: Settlement = .borne;
 /// whether the person who left it read a minute ago or a season ago. `desk`
 /// names a place outside this plan's own wire, which is the entire distance
 /// this rung exists to close.
-const standing_address = "desk";
+pub const standing_address = "desk";
 
 /// Where the hand that is neither party sits, in this lap's own wire.
 ///
 /// A second address, and deliberately a different one: the whole rung is the
 /// distance between this name and the one above it. An operator seats it before
 /// any quarrel exists, and no run of this plan ever writes it.
-const standing_forum = "bench";
+pub const standing_forum = "bench";
 
 /// The word this lap's plan comes to every run, named so a third hand may
 /// honestly answer the case before the run that carries it exists.
@@ -9598,52 +9599,9 @@ pub fn check_delivery() u8 {
 /// The generalization test: a run that weighs a plan losing nothing reads as
 /// the rung below.
 pub fn check_unlost(sys: *const system.System) u8 {
-    const clients = [_]Task{
-        written_queue[0].task,
-        written_queue[1].task,
-        written_queue[3].task,
-        written_queue[4].task,
-    };
-    var agreed: u32 = 0;
-    var a: u32 = 0;
-    while (a < clients.len) : (a += 1) {
-        var live_store: [max_in_flight]cohort.Running = undefined;
-        live_store[0] = .{
-            .proc = undefined,
-            .domain = clients[a].item.domain,
-            .verb = clients[a].item.verb,
-            .count = clients[a].item.count,
-            .expect = clients[a].item.expect,
-        };
-        var handed_store: [max_in_flight]Task = undefined;
-        handed_store[0] = clients[a];
-        const reserve_store = [_]?Task{null};
-        const taken_store = [_]u32{0};
-        var b: u32 = 0;
-        while (b < clients.len) : (b += 1) {
-            const here = admissible_in(
-                sys, live_store[0..1], handed_store[0..1], reserve_store[0..1], taken_store[0..1], clients[b],
-            ) catch {
-                print("  RED: an appraising run could not weigh its own door\n", .{});
-                return 1;
-            };
-            const there = unhand.admissible_held(sys, live_store[0..1], handed_store[0..1], clients[b]);
-            if (here != there) {
-                print("  RED: the two readings disagreed about {s} beside {s}\n", .{
-                    clients[b].item.domain, clients[a].item.domain,
-                });
-                return 1;
-            }
-            agreed += 1;
-        }
-        // invariant: every newcomer was weighed against this dependent, none skipped
-        assert(b == clients.len);
-    }
-    // invariant: every line stood as the running dependent once, none skipped
-    assert(a == clients.len);
-
-    print("  a plan that loses nothing reads as the line handed, all {d} pairs\n", .{agreed});
-    return 0;
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_unlost(@This(), sys);
 }
 
 /// The reading the reader answers with, in their own hand.
@@ -9673,7 +9631,7 @@ const standing_hand: Settlement = .short;
 /// reason the reading and the address are seated: an inheritance arrives in a
 /// plan's notes from a run that has already ended, and **no run of this plan
 /// ever writes its own**.
-const inherited_debt: [max_debt_bytes]u8 = .{ finding_byte(.overrules), settlement_byte(.short) };
+pub const inherited_debt: [max_debt_bytes]u8 = .{ finding_byte(.overrules), settlement_byte(.short) };
 
 /// The matter a run before today reopened, standing in this plan's notes.
 ///
@@ -9687,7 +9645,7 @@ const inherited_debt: [max_debt_bytes]u8 = .{ finding_byte(.overrules), settleme
 /// reason the debt above is seated: an inheritance arrives in a plan's notes
 /// from a run that has already ended, and **no run of this plan ever writes its
 /// own**.
-const inherited_matter: [max_again_bytes]u8 = again_bytes(
+pub const inherited_matter: [max_again_bytes]u8 = again_bytes(
     suits_bytes(found_bytes(redress_bytes(met_bytes(inherited_debt), .righted)), .wanting),
 );
 
@@ -10667,27 +10625,9 @@ pub fn check_tidings() u8 {
 /// -- written to a reader of its own, read back out of their box, and never
 /// touching the box the lap depends on.
 pub fn check_tidings_wire(io: std.Io) u8 {
-    const shelf = "shelf";
-    clear_tidings(io, shelf);
-    tell_outcome(io, shelf, .moved) catch |err| {
-        print("  RED: a reader could not be told at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const read_back = told_of(io, shelf) orelse {
-        print("  RED: a reader's own box carried nothing back\n", .{});
-        return 1;
-    };
-    if (read_back != .moved) {
-        print("  RED: a word that moved was read back as {s}\n", .{result_words(read_back)});
-        return 1;
-    }
-    clear_tidings(io, shelf);
-    if (told_of(io, shelf) != null) {
-        print("  RED: a cleared box still answered\n", .{});
-        return 1;
-    }
-    print("  both answers ride the wire: {s}\n", .{result_words(.moved)});
-    return 0;
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_tidings_wire(@This(), io);
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
@@ -10710,27 +10650,9 @@ pub fn check_appeal() u8 {
 /// shape -- written by a reader of this fold's own, read back out of their box,
 /// and cleared again, never touching the box the lap depends on.
 pub fn check_appeal_wire(io: std.Io) u8 {
-    const shelf = "shelf";
-    clear_press(io, shelf);
-    press_as_reader(io, shelf, .accepts) catch |err| {
-        print("  RED: a reader could not reply at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const read_back = pressed_by(io, shelf) orelse {
-        print("  RED: a reader's own box carried no reply back\n", .{});
-        return 1;
-    };
-    if (read_back != .accepts) {
-        print("  RED: an accepted outcome was read back as {s}\n", .{plea_words(read_back)});
-        return 1;
-    }
-    clear_press(io, shelf);
-    if (pressed_by(io, shelf) != null) {
-        print("  RED: a cleared box still replied\n", .{});
-        return 1;
-    }
-    print("  both pleas ride the wire: {s}\n", .{plea_words(.accepts)});
-    return 0;
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_appeal_wire(@This(), io);
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
@@ -10770,49 +10692,9 @@ pub fn check_endure_measure() u8 {
 /// unchanged -- which is the whole difference between a record and a run's own
 /// leavings.
 pub fn check_endure_wire(io: std.Io, sys: *const system.System) u8 {
-    // The notes are seated once first, so this fold writes into a plan that
-    // exists rather than into a directory no run has opened yet.
-    _ = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    clear_standing(io);
-    if (position_standing(io) != null) {
-        print("  RED: a cleared plan still carried a quarrel\n", .{});
-        return 1;
-    }
-    standing_note(io, .presses) catch |err| {
-        print("  RED: a position could not be carried at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const provisioned = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(provisioned == sys.graph.domain_count);
-    // The whole point of the rung, read straight: every other note this
-    // provisioning touched now stands at nothing, and this one stands where its
-    // holder left it.
-    if (appeal_published(io) != null) {
-        print("  RED: a provisioning left the last run's plea standing\n", .{});
-        return 1;
-    }
-    const survived = position_standing(io) orelse {
-        print("  RED: a provisioning cleared the position it was told to leave\n", .{});
-        return 1;
-    };
-    if (survived != .presses) {
-        print("  RED: a carried position read back as {s}\n", .{plea_words(survived)});
-        return 1;
-    }
-    clear_standing(io);
-    if (position_standing(io) != null) {
-        print("  RED: a cleared position still stood\n", .{});
-        return 1;
-    }
-    print("  a pressed quarrel survives a provisioning: {s}\n", .{plea_words(.presses)});
-    return 0;
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_endure_wire(@This(), io, sys);
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
@@ -10852,54 +10734,9 @@ pub fn check_heed_measure() u8 {
 /// belongs to the person holding it while a word about that quarrel belongs to
 /// the run that said it.
 pub fn check_heed_wire(io: std.Io, sys: *const system.System) u8 {
-    _ = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    clear_standing(io);
-    if (regard_published(io) != null) {
-        print("  RED: a fresh plan already stood under a quarrel\n", .{});
-        return 1;
-    }
-    standing_note(io, .presses) catch |err| {
-        print("  RED: a position could not be carried at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    regard_note(io, .under) catch |err| {
-        print("  RED: a regard could not be published at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const written = regard_published(io) orelse {
-        print("  RED: a published regard could not be read back\n", .{});
-        return 1;
-    };
-    if (written != .under) {
-        print("  RED: a published regard read back as {s}\n", .{regard_words(written)});
-        return 1;
-    }
-    const provisioned = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(provisioned == sys.graph.domain_count);
-    // The whole seam of this rung, read straight: the quarrel outlives the
-    // provisioning and the word about it does not.
-    if (regard_published(io) != null) {
-        print("  RED: a provisioning left the last run's regard standing\n", .{});
-        return 1;
-    }
-    const survived = position_standing(io) orelse {
-        print("  RED: a provisioning cleared the position it was told to leave\n", .{});
-        return 1;
-    };
-    if (survived != .presses) {
-        print("  RED: a carried position read back as {s}\n", .{plea_words(survived)});
-        return 1;
-    }
-    clear_standing(io);
-    print("  a quarrel survives a provisioning and the word about it does not\n", .{});
-    return 0;
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_heed_wire(@This(), io, sys);
 }
 
 /// The relenting folds, weighed before any dependent runs.
@@ -10938,46 +10775,9 @@ pub fn check_relent_measure() u8 {
 /// quarrel that came back with the morning would be no closer to over than one
 /// no run ever answered.
 pub fn check_relent_wire(io: std.Io, sys: *const system.System) u8 {
-    _ = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    clear_standing(io);
-    standing_note(io, .presses) catch |err| {
-        print("  RED: a position could not be carried at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const provisioned = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(provisioned == sys.graph.domain_count);
-    const survived = position_standing(io) orelse {
-        print("  RED: a provisioning cleared the position it was told to leave\n", .{});
-        return 1;
-    };
-    if (survived != .presses) {
-        print("  RED: a carried position read back as {s}\n", .{plea_words(survived)});
-        return 1;
-    }
-    release_standing(io);
-    if (!note_cleared(position_standing(io))) {
-        print("  RED: a withdrawn quarrel was still standing where it was taken down\n", .{});
-        return 1;
-    }
-    const again = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned again: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(again == sys.graph.domain_count);
-    if (!note_cleared(position_standing(io))) {
-        print("  RED: a withdrawn quarrel came back with the next provisioning\n", .{});
-        return 1;
-    }
-    print("  a quarrel survives a provisioning, and its withdrawal survives one too\n", .{});
-    return 0;
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_relent_wire(@This(), io, sys);
 }
 
 /// The dwelling folds, weighed before any dependent runs.
@@ -11017,62 +10817,9 @@ pub fn check_dwell_measure() u8 {
 /// position**, since a count of runs stood through is a fact about one quarrel
 /// and has nothing to say once that quarrel is over.
 pub fn check_dwell_wire(io: std.Io, sys: *const system.System) u8 {
-    _ = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    clear_standing(io);
-    standing_note(io, .presses) catch |err| {
-        print("  RED: a position could not be carried at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    dwell_note(io, 1) catch |err| {
-        print("  RED: an age could not be written at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const provisioned = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(provisioned == sys.graph.domain_count);
-    const survived = dwell_published(io) orelse {
-        print("  RED: a provisioning cleared the age it was told to leave\n", .{});
-        return 1;
-    };
-    if (survived != 1) {
-        print("  RED: an age carried past a provisioning read back as {d}\n", .{survived});
-        return 1;
-    }
-    // A second season of standing, written the way a run writes it: read the
-    // wire, climb by the run just stood, write, read back.
-    const climbed = stood_longer(survived);
-    dwell_note(io, climbed) catch |err| {
-        print("  RED: a second season could not be written: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    if (!dwell_holds(dwell_published(io), 2)) {
-        print("  RED: a quarrel that stood two runs did not read as two\n", .{});
-        return 1;
-    }
-    // The age falls with the quarrel, proven on the wire the withdrawal leaves.
-    release_standing(io);
-    if (dwell_published(io) != null) {
-        print("  RED: an age outlived the quarrel it was counting\n", .{});
-        return 1;
-    }
-    const again = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned again: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(again == sys.graph.domain_count);
-    if (dwell_published(io) != null) {
-        print("  RED: an age came back with the next provisioning\n", .{});
-        return 1;
-    }
-    print("  an age survives a provisioning, and falls with the quarrel it counts\n", .{});
-    return 0;
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_dwell_wire(@This(), io, sys);
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
@@ -11202,1107 +10949,163 @@ pub fn check_owe_measure() u8 {
 
 /// Weighs this rung's own arithmetic, as a pure fold, before any run is spent.
 pub fn check_meet() u8 {
-    if (met_in(1, .defers) != 0) {
-        print("  RED: a deferring run met a debt it never looked at\n", .{});
-        return 1;
-    }
-    if (met_in(1, .meets) != 1) {
-        print("  RED: a meeting run met {d} inherited debts\n", .{met_in(1, .meets)});
-        return 1;
-    }
-    if (met_in(0, .meets) != 0) {
-        print("  RED: a run inheriting nothing met a debt anyway\n", .{});
-        return 1;
-    }
-    if (deferred_in(1, .defers) != 1 or deferred_in(1, .meets) != 0) {
-        print("  RED: the other half of the count did not close on one debt\n", .{});
-        return 1;
-    }
-
-    // The receipt's own two bytes, read back out of the debt they answer.
-    const owed = debt_bytes(.overrules, .short);
-    const receipt = met_bytes(owed);
-    if (!met_answers(receipt, owed)) {
-        print("  RED: a receipt did not read back as one for its own debt\n", .{});
-        return 1;
-    }
-    if (met_answers(receipt, debt_bytes(.upholds, .carried))) {
-        print("  RED: a receipt for one admission read back as one for another\n", .{});
-        return 1;
-    }
-    if (met_answers(null, owed)) {
-        print("  RED: a wire holding nothing read back as a debt met\n", .{});
-        return 1;
-    }
-    // The finding a debt was taken over, read out of the receipt rather than
-    // assumed of it, since a receipt that could not name its own finding would
-    // tell a later run only that something had been answered.
-    if (met_over(receipt) != .overrules) {
-        print("  RED: a receipt named some finding other than the one owed\n", .{});
-        return 1;
-    }
-    if (met_over(null) != null) {
-        print("  RED: a wire holding nothing named a finding all the same\n", .{});
-        return 1;
-    }
-    if (!met_holds(receipt, receipt)) {
-        print("  RED: a written receipt did not read back as the receipt it was\n", .{});
-        return 1;
-    }
-    if (met_holds(met_bytes(debt_bytes(.upholds, .carried)), receipt)) {
-        print("  RED: a receipt for another admission read back as this one\n", .{});
-        return 1;
-    }
-    if (met_holds(null, receipt)) {
-        print("  RED: a note holding nothing read back as a debt met\n", .{});
-        return 1;
-    }
-    // And the act the receipt records: the debt is down, or it is not.
-    if (!debt_settled(null)) {
-        print("  RED: a wire holding no debt read back as one still standing\n", .{});
-        return 1;
-    }
-    if (debt_settled(owed)) {
-        print("  RED: a debt still on the wire read back as one taken down\n", .{});
-        return 1;
-    }
-    return check_meet_refusals();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_meet(@This());
 }
 
 /// Weighs every refusal this rung earns, in the order the run reaches them.
 pub fn check_meet_refusals() u8 {
-    // A run that inherited nothing has no admission to answer, and recording
-    // one there would close a question no run ever opened.
-    if (meet_refusal(1, 1, 0, false, true, true)) |why| {
-        if (why != error.MeetUnowed) {
-            print("  RED: a meeting over an empty wire refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a plan inheriting nothing was credited with meeting a debt\n", .{});
-        return 1;
-    }
-    // Meeting is a claim about the work this run did, so a run with no outcome
-    // of its own on the wire has met nothing, however willing it was.
-    if (meet_refusal(1, 1, 0, true, false, true)) |why| {
-        if (why != error.MeetUnsettled) {
-            print("  RED: a meeting before any outcome refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a plan that had settled nothing was credited with meeting a debt\n", .{});
-        return 1;
-    }
-    // The rung itself: a receipt filed against some other admission, closing a
-    // question nobody ever looked at.
-    if (meet_refusal(1, 1, 0, true, true, false)) |why| {
-        if (why != error.MeetMismatched) {
-            print("  RED: a receipt for another admission refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run met one admission and closed the question on another\n", .{});
-        return 1;
-    }
-    // The honesty of the count: every debt inherited is met or left deferred --
-    // never both and never neither.
-    if (meet_refusal(1, 1, 1, true, true, true)) |why| {
-        if (why != error.MeetMiscounted) {
-            print("  RED: a debt counted twice refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a debt met and deferred at once went uncounted\n", .{});
-        return 1;
-    }
-    if (meet_refusal(1, 0, 0, true, true, true)) |why| {
-        if (why != error.MeetMiscounted) {
-            print("  RED: a debt counted nowhere refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a debt neither met nor deferred went uncounted\n", .{});
-        return 1;
-    }
-    if (meet_refusal(1, 1, 0, true, true, true)) |why| {
-        print("  RED: a meeting inside its own count refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-    return check_meet_measure();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_meet_refusals(@This());
 }
 
 /// Weighs the number this rung moves, as a pure fold.
 pub fn check_meet_measure() u8 {
-    if (unmet_debts(1, .defers) != 1) {
-        print("  RED: an admission nobody looked at went uncounted\n", .{});
-        return 1;
-    }
-    if (unmet_debts(1, .meets) != 0) {
-        print("  RED: a debt met still counted as one nobody looked at\n", .{});
-        return 1;
-    }
-    // A run that inherited nothing owes the work no look, so it costs the count
-    // nothing -- the harm this rung names is the admission a plan opened
-    // holding and then read straight past.
-    if (unmet_debts(0, .defers) != 0) {
-        print("  RED: a run inheriting nothing was charged an unmet debt\n", .{});
-        return 1;
-    }
-
-    print("  five refusals stand by name: unowed, unsettled, mismatched, miscounted, misrecorded\n", .{});
-    print("  the meeting this rung keeps: {s}\n", .{meet_words(.meets)});
-    print("  what a bare plan leaves an operator: {s}\n", .{meet_words(.defers)});
-    print("  a receipt carries two bytes: the debt met, echoed back exactly as it stood\n", .{});
-    return check_redress();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_meet_measure(@This());
 }
 
 /// Weighs this rung's own arithmetic, as a pure fold, before any run is spent.
 pub fn check_redress() u8 {
-    if (redressed_in(1, .hollow) != 0) {
-        print("  RED: a hollow run said what a look found after all\n", .{});
-        return 1;
-    }
-    if (redressed_in(1, .redresses) != 1) {
-        print("  RED: a redressing run spoke for {d} meetings\n", .{redressed_in(1, .redresses)});
-        return 1;
-    }
-    if (redressed_in(0, .redresses) != 0) {
-        print("  RED: a run that met nothing reported on a look anyway\n", .{});
-        return 1;
-    }
-    if (closed_bare_in(1, .hollow) != 1 or closed_bare_in(1, .redresses) != 0) {
-        print("  RED: the other half of the count did not close on one meeting\n", .{});
-        return 1;
-    }
-
-    // The two upshots, each surviving the byte it rides as.
-    if (upshot_of_byte(upshot_byte(.sound)) != .sound) {
-        print("  RED: a work found sound did not survive the byte it rides as\n", .{});
-        return 1;
-    }
-    if (upshot_of_byte(upshot_byte(.righted)) != .righted) {
-        print("  RED: a work put right did not survive the byte it rides as\n", .{});
-        return 1;
-    }
-    if (upshot_of_byte('x') != null) {
-        print("  RED: a byte naming no upshot at all read as one\n", .{});
-        return 1;
-    }
-
-    // The redress's own three bytes, read back out of the meeting they report on.
-    const met = met_bytes(debt_bytes(.overrules, .short));
-    const spoken = redress_bytes(met, .righted);
-    if (!redress_answers(spoken, met)) {
-        print("  RED: a finding did not read back as one about its own meeting\n", .{});
-        return 1;
-    }
-    if (redress_answers(spoken, met_bytes(debt_bytes(.upholds, .carried)))) {
-        print("  RED: a finding about one meeting read back as one about another\n", .{});
-        return 1;
-    }
-    if (redress_answers(null, met)) {
-        print("  RED: a wire holding nothing read back as a meeting reported on\n", .{});
-        return 1;
-    }
-    if (redress_upshot(spoken) != .righted) {
-        print("  RED: a finding named some upshot other than the one reached\n", .{});
-        return 1;
-    }
-    if (redress_upshot(null) != null) {
-        print("  RED: a wire holding nothing named an upshot all the same\n", .{});
-        return 1;
-    }
-    if (!redress_holds(spoken, spoken)) {
-        print("  RED: a written finding did not read back as the finding it was\n", .{});
-        return 1;
-    }
-    if (redress_holds(redress_bytes(met, .sound), spoken)) {
-        print("  RED: a work found sound read back as a work put right\n", .{});
-        return 1;
-    }
-    if (redress_holds(null, spoken)) {
-        print("  RED: a note holding nothing read back as a meeting reported on\n", .{});
-        return 1;
-    }
-
-    // The stronger claim and its burden, weighed as a fold of its own.
-    if (!upshot_earned(.righted, .carried)) {
-        print("  RED: a run that carried its plan out could not say it put the work right\n", .{});
-        return 1;
-    }
-    if (upshot_earned(.righted, .short)) {
-        print("  RED: a run reporting itself short claimed it had put the work right\n", .{});
-        return 1;
-    }
-    if (!upshot_earned(.sound, .short)) {
-        print("  RED: a run reporting itself short could not say the work stands sound\n", .{});
-        return 1;
-    }
-    if (upshot_earned(.sound, null) or upshot_earned(.righted, null)) {
-        print("  RED: a run that published no outcome at all said what its look found\n", .{});
-        return 1;
-    }
-    return check_redress_refusals();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_redress(@This());
 }
 
 /// Weighs every refusal this rung earns, in the order the run reaches them.
 pub fn check_redress_refusals() u8 {
-    // A run that met nothing has no look to report on, and a finding filed there
-    // would answer a question this plan never asked.
-    if (redress_refusal(1, 1, 0, false, true, true)) |why| {
-        if (why != error.RedressUnmet) {
-            print("  RED: a finding over an unmet debt refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a plan that met nothing was credited with saying what it found\n", .{});
-        return 1;
-    }
-    // The stronger of the two claims bears its own burden: a run that came up
-    // short has put nothing right this lap, however sincerely it looked.
-    if (redress_refusal(1, 1, 0, true, false, true)) |why| {
-        if (why != error.RedressUnrighted) {
-            print("  RED: an unearned claim refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run that carried nothing out claimed it had put the work right\n", .{});
-        return 1;
-    }
-    // The rung itself: a finding filed against some other meeting, answering a
-    // question this look never asked.
-    if (redress_refusal(1, 1, 0, true, true, false)) |why| {
-        if (why != error.RedressMismatched) {
-            print("  RED: a finding about another meeting refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run reported on one meeting and answered for another\n", .{});
-        return 1;
-    }
-    // The honesty of the count: every debt met is redressed or left bare --
-    // never both and never neither.
-    if (redress_refusal(1, 1, 1, true, true, true)) |why| {
-        if (why != error.RedressMiscounted) {
-            print("  RED: a meeting counted twice refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a meeting spoken for and left silent at once went uncounted\n", .{});
-        return 1;
-    }
-    if (redress_refusal(1, 0, 0, true, true, true)) |why| {
-        if (why != error.RedressMiscounted) {
-            print("  RED: a meeting counted nowhere refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a meeting neither spoken for nor left bare went uncounted\n", .{});
-        return 1;
-    }
-    if (redress_refusal(1, 1, 0, true, true, true)) |why| {
-        print("  RED: a finding inside its own count refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-    return check_redress_measure();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_redress_refusals(@This());
 }
 
 /// Weighs the number this rung moves, as a pure fold.
 pub fn check_redress_measure() u8 {
-    if (hollow_meetings(1, .hollow) != 1) {
-        print("  RED: a meeting that said nothing went uncounted\n", .{});
-        return 1;
-    }
-    if (hollow_meetings(1, .redresses) != 0) {
-        print("  RED: a meeting spoken for still counted as one closed in silence\n", .{});
-        return 1;
-    }
-    // A run that met nothing has no look to report on, so it costs the count
-    // nothing -- the harm this rung names is the admission taken up, closed, and
-    // never once reported on.
-    if (hollow_meetings(0, .hollow) != 0) {
-        print("  RED: a run that met nothing was charged a hollow meeting\n", .{});
-        return 1;
-    }
-
-    print("  five refusals stand by name: unmet, unrighted, mismatched, miscounted, misrecorded\n", .{});
-    print("  the finding this rung keeps: {s}\n", .{redress_words(.redresses)});
-    print("  what a bare plan leaves an operator: {s}\n", .{redress_words(.hollow)});
-    print("  a redress carries three bytes: the meeting reported on, and what the look came to\n", .{});
-    print("  the stronger of the two upshots: {s}\n", .{upshot_words(.righted)});
-    print("  the honest other: {s}\n", .{upshot_words(.sound)});
-    return check_apprise();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_redress_measure(@This());
 }
 
 /// Weighs the delivery this rung makes, as a pure fold.
 pub fn check_apprise() u8 {
-    if (apprised_in(1, .withheld) != 0) {
-        print("  RED: a withholding run carried a finding to somebody after all\n", .{});
-        return 1;
-    }
-    if (apprised_in(1, .apprises) != 1) {
-        print("  RED: an apprising run carried {d} findings out\n", .{apprised_in(1, .apprises)});
-        return 1;
-    }
-    if (apprised_in(0, .apprises) != 0) {
-        print("  RED: a run that reached no finding carried one out anyway\n", .{});
-        return 1;
-    }
-    if (unsent_in(1, .withheld) != 1 or unsent_in(1, .apprises) != 0) {
-        print("  RED: the other half of the count did not close on one finding\n", .{});
-        return 1;
-    }
-
-    // The delivery's own three bytes, read back against the finding they carry.
-    const met = met_bytes(debt_bytes(.overrules, .short));
-    const finding = redress_bytes(met, .righted);
-    const delivered = found_bytes(finding);
-    if (!found_answers(delivered, finding)) {
-        print("  RED: a delivery did not read back as the finding it carries\n", .{});
-        return 1;
-    }
-    if (found_answers(delivered, redress_bytes(met, .sound))) {
-        print("  RED: a work put right read back in its reader's box as one found sound\n", .{});
-        return 1;
-    }
-    if (found_answers(null, finding)) {
-        print("  RED: an unopened box read back as a reader who had been told\n", .{});
-        return 1;
-    }
-    if (!apprise_holds(delivered, finding)) {
-        print("  RED: a carried finding did not read back as the finding it was\n", .{});
-        return 1;
-    }
-    if (apprise_holds(found_bytes(redress_bytes(met, .sound)), finding)) {
-        print("  RED: a reader told one answer read back as told another\n", .{});
-        return 1;
-    }
-    if (apprise_holds(null, finding)) {
-        print("  RED: a box holding nothing read back as a finding delivered\n", .{});
-        return 1;
-    }
-    return check_apprise_refusals();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_apprise(@This());
 }
 
 /// Weighs every refusal this rung earns, in the order the run reaches them.
 pub fn check_apprise_refusals() u8 {
-    // A run whose wire carries no finding has nothing to carry to anybody.
-    if (apprise_refusal(1, 1, 0, false, true, true)) |why| {
-        if (why != error.AppriseUnfound) {
-            print("  RED: a delivery with no finding behind it refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a plan that reached no finding was credited with telling somebody\n", .{});
-        return 1;
-    }
-    // A finding reaches a person or it reaches nobody: a plan that never wrote
-    // down where its reader was has no box to carry anything to.
-    if (apprise_refusal(1, 1, 0, true, false, true)) |why| {
-        if (why != error.AppriseUnaddressed) {
-            print("  RED: a delivery with nowhere to go refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run carried a finding to a reader it could not name\n", .{});
-        return 1;
-    }
-    // The rung itself: a raiser told some other look's answer, about an argument
-    // that was never theirs.
-    if (apprise_refusal(1, 1, 0, true, true, false)) |why| {
-        if (why != error.AppriseMismatched) {
-            print("  RED: a delivery of another finding refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run reached one finding and carried out another\n", .{});
-        return 1;
-    }
-    // The honesty of the count: every finding reached is carried or withheld --
-    // never both and never neither.
-    if (apprise_refusal(1, 1, 1, true, true, true)) |why| {
-        if (why != error.AppriseMiscounted) {
-            print("  RED: a finding counted twice refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a finding carried and kept at once went uncounted\n", .{});
-        return 1;
-    }
-    if (apprise_refusal(1, 0, 0, true, true, true)) |why| {
-        if (why != error.AppriseMiscounted) {
-            print("  RED: a finding counted nowhere refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a finding neither carried nor kept went uncounted\n", .{});
-        return 1;
-    }
-    if (apprise_refusal(1, 1, 0, true, true, true)) |why| {
-        print("  RED: a delivery inside its own count refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-    return check_apprise_measure();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_apprise_refusals(@This());
 }
 
 /// Weighs the number this rung moves, as a pure fold.
 pub fn check_apprise_measure() u8 {
-    if (unheard_findings(1, .withheld) != 1) {
-        print("  RED: a finding its raiser never heard went uncounted\n", .{});
-        return 1;
-    }
-    if (unheard_findings(1, .apprises) != 0) {
-        print("  RED: a finding carried to its reader still counted as one never told\n", .{});
-        return 1;
-    }
-    // A run that reached no finding has nothing to carry, so it costs the count
-    // nothing -- the harm this rung names is the answer reached, written down,
-    // and never once carried to the person who won it.
-    if (unheard_findings(0, .withheld) != 0) {
-        print("  RED: a run that reached no finding was charged an untold raiser\n", .{});
-        return 1;
-    }
-
-    print("  five refusals stand by name: unfound, unaddressed, mismatched, miscounted, misrecorded\n", .{});
-    print("  the delivery this rung keeps: {s}\n", .{apprise_words(.apprises)});
-    print("  what a withholding plan leaves its reader: {s}\n", .{apprise_words(.withheld)});
-    print("  a delivery carries the finding whole: the meeting reported on, and what the look came to\n", .{});
-    return check_suffice();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_apprise_measure(@This());
 }
 
 /// Weighs the reading this rung makes, as a pure fold.
 pub fn check_suffice() u8 {
-    if (weighed_in(1, .unasked) != 0) {
-        print("  RED: an unasking run read somebody's word after all\n", .{});
-        return 1;
-    }
-    if (weighed_in(1, .asks) != 1) {
-        print("  RED: an asking run weighed {d} answers\n", .{weighed_in(1, .asks)});
-        return 1;
-    }
-    if (weighed_in(0, .asks) != 0) {
-        print("  RED: a run that told nobody weighed an answer anyway\n", .{});
-        return 1;
-    }
-    if (unasked_in(1, .unasked) != 1 or unasked_in(1, .asks) != 0) {
-        print("  RED: the other half of the count did not close on one answer\n", .{});
-        return 1;
-    }
-
-    // The reader's own four bytes, read back against the answer they weigh.
-    const met = met_bytes(debt_bytes(.overrules, .short));
-    const carried = found_bytes(redress_bytes(met, .righted));
-    const said = suits_bytes(carried, .wanting);
-    if (!suits_answers(said, carried)) {
-        print("  RED: a reader's word did not read back as weighing the answer it names\n", .{});
-        return 1;
-    }
-    if (suits_answers(said, found_bytes(redress_bytes(met, .sound)))) {
-        print("  RED: a word about one answer read back as a word about another\n", .{});
-        return 1;
-    }
-    if (suits_answers(null, carried)) {
-        print("  RED: an empty box read back as a reader who had spoken\n", .{});
-        return 1;
-    }
-    if (suits_worth(said) != .wanting) {
-        print("  RED: a reader saying the answer falls short read back as saying otherwise\n", .{});
-        return 1;
-    }
-    if (suits_worth(suits_bytes(carried, .settles)) != .settles) {
-        print("  RED: a reader saying the answer settles the matter read back as saying otherwise\n", .{});
-        return 1;
-    }
-    if (suits_worth(null) != null) {
-        print("  RED: a box holding nothing read back as a verdict\n", .{});
-        return 1;
-    }
-    if (!suffice_holds(.wanting, .wanting) or suffice_holds(.settles, .wanting)) {
-        print("  RED: a published word did not read back as the word it was\n", .{});
-        return 1;
-    }
-    if (suffice_holds(null, .wanting)) {
-        print("  RED: a note holding nothing read back as a reader asked\n", .{});
-        return 1;
-    }
-    return check_suffice_refusals();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_suffice(@This());
 }
 
 /// Weighs every refusal this rung earns, in the order the run reaches them.
 pub fn check_suffice_refusals() u8 {
-    // A run that carried nothing to anybody has asked nobody anything.
-    if (suffice_refusal(1, 1, 0, false, true, true)) |why| {
-        if (why != error.SufficeUntold) {
-            print("  RED: a weighing with no delivery behind it refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a plan that told nobody was credited with reading their word\n", .{});
-        return 1;
-    }
-    // The hard half: silence is no consent here, exactly as it was not when a
-    // quarrel was withdrawn.
-    if (suffice_refusal(1, 1, 0, true, false, true)) |why| {
-        if (why != error.SufficeSilent) {
-            print("  RED: a weighing over an empty box refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a reader who said nothing was read as having answered\n", .{});
-        return 1;
-    }
-    // The rung itself: a verdict about some other look, read as today's word.
-    if (suffice_refusal(1, 1, 0, true, true, false)) |why| {
-        if (why != error.SufficeMismatched) {
-            print("  RED: a word about another answer refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run carried one answer and read a word about another\n", .{});
-        return 1;
-    }
-    // The honesty of the count: every answer carried is weighed or left unasked
-    // -- never both and never neither.
-    if (suffice_refusal(1, 1, 1, true, true, true)) |why| {
-        if (why != error.SufficeMiscounted) {
-            print("  RED: an answer counted twice refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: an answer weighed and left unasked at once went uncounted\n", .{});
-        return 1;
-    }
-    if (suffice_refusal(1, 0, 0, true, true, true)) |why| {
-        if (why != error.SufficeMiscounted) {
-            print("  RED: an answer counted nowhere refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: an answer neither weighed nor left unasked went uncounted\n", .{});
-        return 1;
-    }
-    if (suffice_refusal(1, 1, 0, true, true, true)) |why| {
-        print("  RED: a weighing inside its own count refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-    return check_suffice_measure();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_suffice_refusals(@This());
 }
 
 /// Weighs the number this rung moves, as a pure fold.
 pub fn check_suffice_measure() u8 {
-    if (unmeasured_answers(1, .unasked) != 1) {
-        print("  RED: an answer nobody was asked about went uncounted\n", .{});
-        return 1;
-    }
-    if (unmeasured_answers(1, .asks) != 0) {
-        print("  RED: an answer its reader weighed still counted as one never asked about\n", .{});
-        return 1;
-    }
-    // A run that told nobody has asked nobody, so it costs the count nothing --
-    // the harm this rung names is the answer carried home and never once
-    // followed by a question.
-    if (unmeasured_answers(0, .unasked) != 0) {
-        print("  RED: a run that told nobody was charged an unmeasured answer\n", .{});
-        return 1;
-    }
-
-    print("  five refusals stand by name: untold, silent, mismatched, miscounted, misrecorded\n", .{});
-    print("  the reading this rung keeps: {s}\n", .{suffice_words(.asks)});
-    print("  what an unasking plan never learns: {s}\n", .{suffice_words(.unasked)});
-    print("  {s}\n", .{worth_words(.wanting)});
-    print("  {s}\n", .{worth_words(.settles)});
-    print("  a reader's word carries four bytes: the answer they were carried, and what they make of it\n", .{});
-    return check_reopen();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_suffice_measure(@This());
 }
 
 /// Weighs the reading this rung makes, as a pure fold.
 pub fn check_reopen() u8 {
-    const word = suits_bytes(found_bytes(redress_bytes(met_bytes([_]u8{ 'd', 'c' }), .righted)), .wanting);
-    const booked = again_bytes(word);
-    if (!again_carries(booked, word)) {
-        print("  RED: a note refused the very word it was written from\n", .{});
-        return 1;
-    }
-    // The whole point of the rung, as a fold: a note left over from an earlier
-    // lap reopens an older answer, and reading it as today's would tell an
-    // operator this run acted on a verdict it never read.
-    const elder = suits_bytes(found_bytes(redress_bytes(met_bytes([_]u8{ 'd', 's' }), .righted)), .wanting);
-    if (again_carries(again_bytes(elder), word)) {
-        print("  RED: a note about an older answer was read as today's\n", .{});
-        return 1;
-    }
-    // Two honest words, and only one of them opens anything.
-    const settled = suits_bytes(found_bytes(redress_bytes(met_bytes([_]u8{ 'd', 'c' }), .righted)), .settles);
-    if (again_carries(again_bytes(settled), word)) {
-        print("  RED: a satisfied reader's word was read as a short one\n", .{});
-        return 1;
-    }
-    if (again_carries(null, word)) {
-        print("  RED: a matter with no note at all read as taken up\n", .{});
-        return 1;
-    }
-    if (!reopen_holds(booked, word) or reopen_holds(again_bytes(elder), word)) {
-        print("  RED: the record half of this rung did not hold\n", .{});
-        return 1;
-    }
-    if (taken_up_in(1, .takes_up) != 1 or taken_up_in(1, .closes) != 0) {
-        print("  RED: a short word was taken up under the wrong reading\n", .{});
-        return 1;
-    }
-    if (taken_up_in(0, .takes_up) != 0) {
-        print("  RED: a run nobody called short took a matter up anyway\n", .{});
-        return 1;
-    }
-    if (left_closed_in(1, .closes) != 1 or left_closed_in(1, .takes_up) != 0) {
-        print("  RED: the other half of the count did not close\n", .{});
-        return 1;
-    }
-    if (left_closed_in(0, .closes) != 0) {
-        print("  RED: a run nobody called short left a word closed anyway\n", .{});
-        return 1;
-    }
-    return check_reopen_refusals();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_reopen(@This());
 }
 
 /// Weighs the refusals this rung earns, each by name, as a pure fold.
 pub fn check_reopen_refusals() u8 {
-    if (reopen_refusal(1, 1, 0, false, true, true)) |why| {
-        if (why != error.ReopenUnweighed) {
-            print("  RED: a run that asked nobody refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run that asked nobody took a matter up anyway\n", .{});
-        return 1;
-    }
-    if (reopen_refusal(1, 1, 0, true, false, true)) |why| {
-        if (why != error.ReopenSettled) {
-            print("  RED: a satisfied reader's word refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a satisfied reader's word opened a matter anyway\n", .{});
-        return 1;
-    }
-    if (reopen_refusal(1, 1, 0, true, true, false)) |why| {
-        if (why != error.ReopenMismatched) {
-            print("  RED: a note about some other word refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a note about some other word was taken as today's\n", .{});
-        return 1;
-    }
-    if (reopen_refusal(1, 1, 1, true, true, true)) |why| {
-        if (why != error.ReopenMiscounted) {
-            print("  RED: a word both taken up and left closed refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a word counted twice passed the count\n", .{});
-        return 1;
-    }
-    if (reopen_refusal(1, 0, 0, true, true, true)) |why| {
-        if (why != error.ReopenMiscounted) {
-            print("  RED: a word neither taken up nor left closed refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a word counted neither way passed the count\n", .{});
-        return 1;
-    }
-    if (reopen_refusal(1, 1, 0, true, true, true)) |why| {
-        print("  RED: an honest reopening refused as {s}\n", .{@errorName(why)});
-        return 1;
-    }
-    return check_reopen_measure();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_reopen_refusals(@This());
 }
 
 /// Weighs the number this rung moves, as a pure fold.
 pub fn check_reopen_measure() u8 {
-    if (unheeded_words(1, .closes) != 1) {
-        print("  RED: a short word that opened nothing went uncounted\n", .{});
-        return 1;
-    }
-    if (unheeded_words(1, .takes_up) != 0) {
-        print("  RED: a short word taken up still counted as one that opened nothing\n", .{});
-        return 1;
-    }
-    // A reader who says the answer settles the matter has asked for nothing, so
-    // it costs the count nothing -- the harm this rung names is the word calling
-    // an answer short and costing the plan not one further look.
-    if (unheeded_words(0, .closes) != 0) {
-        print("  RED: a satisfied reader was charged an unheeded word\n", .{});
-        return 1;
-    }
-
-    print("  five refusals stand by name: unweighed, settled, mismatched, miscounted, misrecorded\n", .{});
-    print("  the reading this rung keeps: {s}\n", .{reopen_words(.takes_up)});
-    print("  what a closing plan never owes: {s}\n", .{reopen_words(.closes)});
-    print("  a reopening note carries four bytes: the reader's own word, echoed back whole\n", .{});
-    return check_reweigh();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_reopen_measure(@This());
 }
 
 /// Weighs the reading this rung makes, as a pure fold.
 pub fn check_reweigh() u8 {
-    const opened = inherited_matter;
-    const receipt = anew_bytes(opened);
-    if (!anew_answers(receipt, opened)) {
-        print("  RED: a receipt refused the very matter it was written from\n", .{});
-        return 1;
-    }
-    // The whole point of the rung, as a fold: a receipt left over from an earlier
-    // lap answers an older matter, and reading it as today's would tell an
-    // operator this run looked again at a question nobody reopened.
-    const elder = again_bytes(suits_bytes(found_bytes(redress_bytes(met_bytes([_]u8{ 'd', 's' }), .righted)), .wanting));
-    if (anew_answers(anew_bytes(elder), opened)) {
-        print("  RED: a receipt about an older matter was read as today's\n", .{});
-        return 1;
-    }
-    if (anew_answers(null, opened)) {
-        print("  RED: a matter with no receipt at all read as looked at again\n", .{});
-        return 1;
-    }
-    if (!reweigh_holds(receipt, receipt) or reweigh_holds(anew_bytes(elder), receipt)) {
-        print("  RED: the record half of this rung did not hold\n", .{});
-        return 1;
-    }
-    // The taking down is the act, and the receipt is only its record.
-    if (!matter_closed(null) or matter_closed(opened)) {
-        print("  RED: a matter still standing read as taken down\n", .{});
-        return 1;
-    }
-    if (looked_in(1, .looks) != 1 or looked_in(1, .passes) != 0) {
-        print("  RED: a reopened matter was looked at under the wrong reading\n", .{});
-        return 1;
-    }
-    if (looked_in(0, .looks) != 0) {
-        print("  RED: a run inheriting nothing looked again anyway\n", .{});
-        return 1;
-    }
-    if (passed_in(1, .passes) != 1 or passed_in(1, .looks) != 0) {
-        print("  RED: the other half of the count did not close\n", .{});
-        return 1;
-    }
-    if (passed_in(0, .passes) != 0) {
-        print("  RED: a run inheriting nothing passed a matter over anyway\n", .{});
-        return 1;
-    }
-    return check_reweigh_refusals();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_reweigh(@This());
 }
 
 /// Weighs the refusals this rung earns, each by name, as a pure fold.
 pub fn check_reweigh_refusals() u8 {
-    if (reweigh_refusal(1, 1, 0, false, true, true)) |why| {
-        if (why != error.ReweighUnopened) {
-            print("  RED: a run inheriting nothing refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run inheriting nothing looked again anyway\n", .{});
-        return 1;
-    }
-    if (reweigh_refusal(1, 1, 0, true, false, true)) |why| {
-        if (why != error.ReweighUnsettled) {
-            print("  RED: a run that finished nothing refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run that finished nothing filed a second look anyway\n", .{});
-        return 1;
-    }
-    if (reweigh_refusal(1, 1, 0, true, true, false)) |why| {
-        if (why != error.ReweighMismatched) {
-            print("  RED: a receipt about some other matter refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a receipt about some other matter was taken as today's\n", .{});
-        return 1;
-    }
-    if (reweigh_refusal(1, 1, 1, true, true, true)) |why| {
-        if (why != error.ReweighMiscounted) {
-            print("  RED: a matter both looked at and passed over refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a matter counted twice passed the count\n", .{});
-        return 1;
-    }
-    if (reweigh_refusal(1, 0, 0, true, true, true)) |why| {
-        if (why != error.ReweighMiscounted) {
-            print("  RED: a matter neither looked at nor passed over refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a matter counted neither way passed the count\n", .{});
-        return 1;
-    }
-    if (reweigh_refusal(1, 1, 0, true, true, true)) |why| {
-        print("  RED: an honest second look refused as {s}\n", .{@errorName(why)});
-        return 1;
-    }
-    return check_reweigh_measure();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_reweigh_refusals(@This());
 }
 
 /// Weighs the number this rung moves, as a pure fold.
 pub fn check_reweigh_measure() u8 {
-    if (unlooked_matters(1, .passes) != 1) {
-        print("  RED: a reopened matter nobody looked at went uncounted\n", .{});
-        return 1;
-    }
-    if (unlooked_matters(1, .looks) != 0) {
-        print("  RED: a matter looked at again still counted as one nobody looked at\n", .{});
-        return 1;
-    }
-    // A plan nobody reopened owes no second look to anybody, so it costs the
-    // count nothing -- the harm this rung names is the matter standing open in a
-    // plan's own notes and costing the run that finds it not one further look.
-    if (unlooked_matters(0, .passes) != 0) {
-        print("  RED: a plan nobody reopened was charged an unlooked-at matter\n", .{});
-        return 1;
-    }
-
-    print("  five refusals stand by name: unopened, unsettled, mismatched, miscounted, misrecorded\n", .{});
-    print("  the reading this rung keeps: {s}\n", .{reweigh_words(.looks)});
-    print("  what a passing plan never owes: {s}\n", .{reweigh_words(.passes)});
-    print("  a second look's receipt carries four bytes: the reopened matter, echoed back whole\n", .{});
-    return check_recount();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_reweigh_measure(@This());
 }
 
 /// Weighs the telling this rung makes, as a pure fold.
 pub fn check_recount() u8 {
-    const receipt = anew_bytes(inherited_matter);
-    const carried = knows_bytes(receipt);
-    if (!knows_answers(carried, receipt)) {
-        print("  RED: a telling refused the very receipt it was written from\n", .{});
-        return 1;
-    }
-    // The whole point of the rung, as a fold: a telling left over from an
-    // earlier lap names an older matter, and reading it as today's would tell a
-    // reader their newest reopening had been answered by a run before today.
-    const elder = anew_bytes(again_bytes(suits_bytes(found_bytes(redress_bytes(met_bytes([_]u8{ 'd', 's' }), .righted)), .wanting)));
-    if (knows_answers(knows_bytes(elder), receipt)) {
-        print("  RED: a telling about an older matter was read as today's\n", .{});
-        return 1;
-    }
-    if (knows_answers(null, receipt)) {
-        print("  RED: an empty box read as a reader told\n", .{});
-        return 1;
-    }
-    if (!recount_holds(carried, carried) or recount_holds(knows_bytes(elder), carried)) {
-        print("  RED: the record half of this rung did not hold\n", .{});
-        return 1;
-    }
-    if (recounted_in(1, .tells) != 1 or recounted_in(1, .withholds) != 0) {
-        print("  RED: a second look was told of under the wrong reading\n", .{});
-        return 1;
-    }
-    if (recounted_in(0, .tells) != 0) {
-        print("  RED: a run that looked at nothing told somebody anyway\n", .{});
-        return 1;
-    }
-    if (unsent_looks_in(1, .withholds) != 1 or unsent_looks_in(1, .tells) != 0) {
-        print("  RED: the other half of the count did not close\n", .{});
-        return 1;
-    }
-    if (unsent_looks_in(0, .withholds) != 0) {
-        print("  RED: a run that looked at nothing kept a telling back anyway\n", .{});
-        return 1;
-    }
-    return check_recount_refusals();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_recount(@This());
 }
 
 /// Weighs the refusals this rung earns, each by name, as a pure fold.
 pub fn check_recount_refusals() u8 {
-    if (recount_refusal(1, 1, 0, false, true, true)) |why| {
-        if (why != error.RecountUnlooked) {
-            print("  RED: a run that looked at nothing refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run that looked at nothing told somebody anyway\n", .{});
-        return 1;
-    }
-    if (recount_refusal(1, 1, 0, true, false, true)) |why| {
-        if (why != error.RecountUnaddressed) {
-            print("  RED: a telling with nowhere to go refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a telling bound nowhere set out all the same\n", .{});
-        return 1;
-    }
-    if (recount_refusal(1, 1, 0, true, true, false)) |why| {
-        if (why != error.RecountMismatched) {
-            print("  RED: a telling about some other matter refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a telling about some other matter was carried as today's\n", .{});
-        return 1;
-    }
-    if (recount_refusal(1, 1, 1, true, true, true)) |why| {
-        if (why != error.RecountMiscounted) {
-            print("  RED: a look both told of and kept refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a look counted twice passed the count\n", .{});
-        return 1;
-    }
-    if (recount_refusal(1, 0, 0, true, true, true)) |why| {
-        if (why != error.RecountMiscounted) {
-            print("  RED: a look counted neither way refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a look counted neither way passed the count\n", .{});
-        return 1;
-    }
-    if (recount_refusal(1, 1, 0, true, true, true)) |why| {
-        print("  RED: an honest telling refused as {s}\n", .{@errorName(why)});
-        return 1;
-    }
-    return check_recount_measure();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_recount_refusals(@This());
 }
 
 /// Weighs the number this rung moves, as a pure fold.
 pub fn check_recount_measure() u8 {
-    if (untold_looks(1, .withholds) != 1) {
-        print("  RED: a second look nobody heard of went uncounted\n", .{});
-        return 1;
-    }
-    if (untold_looks(1, .tells) != 0) {
-        print("  RED: a look carried home still counted as one nobody heard of\n", .{});
-        return 1;
-    }
-    // A run that looked at nothing owes nobody an account of it, so it costs the
-    // count nothing -- the harm this rung names is the look actually made and
-    // filed where only this plan ever reads.
-    if (untold_looks(0, .withholds) != 0) {
-        print("  RED: a run that looked at nothing was charged an untold look\n", .{});
-        return 1;
-    }
-
-    print("  five refusals stand by name: unlooked, unaddressed, mismatched, miscounted, misrecorded\n", .{});
-    print("  the telling this rung keeps: {s}\n", .{recount_words(.tells)});
-    print("  what a withholding plan never owes: {s}\n", .{recount_words(.withholds)});
-    print("  a telling carries four bytes: the matter looked at again, echoed back whole\n", .{});
-    return check_allay();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_recount_measure(@This());
 }
 
 /// Weighs this rung's own reading, as a pure fold.
 pub fn check_allay() u8 {
-    const told = knows_bytes(anew_bytes(inherited_matter));
-    const reply = rests_bytes(told, .allays);
-    if (!rests_answers(reply, told)) {
-        print("  RED: a reply refused the very telling it was written from\n", .{});
-        return 1;
-    }
-    if (rests_rest(reply) != .allays) {
-        print("  RED: a reader's own word came back as some other answer\n", .{});
-        return 1;
-    }
-    if (rests_rest(rests_bytes(told, .stands)) != .stands) {
-        print("  RED: a reader saying the matter stands was read as content\n", .{});
-        return 1;
-    }
-    // The whole point of the rung, as a fold: a reply left over from an earlier
-    // lap answers an older telling, and reading it as today's would publish a
-    // verdict about a second look nobody made this morning.
-    const elder = knows_bytes(anew_bytes(again_bytes(suits_bytes(found_bytes(redress_bytes(met_bytes([_]u8{ 'd', 's' }), .righted)), .wanting))));
-    if (rests_answers(rests_bytes(elder, .allays), told)) {
-        print("  RED: a reply about an older telling was read as today's\n", .{});
-        return 1;
-    }
-    if (rests_answers(null, told)) {
-        print("  RED: an empty box read as a reader who answered\n", .{});
-        return 1;
-    }
-    if (rests_rest(null) != null) {
-        print("  RED: a silence was read as a word\n", .{});
-        return 1;
-    }
-    if (rest_of_byte('x') != null) {
-        print("  RED: a byte this rung does not know was read as an answer\n", .{});
-        return 1;
-    }
-    if (!allay_holds(.allays, .allays) or allay_holds(.stands, .allays) or allay_holds(null, .allays)) {
-        print("  RED: the record half of this rung did not hold\n", .{});
-        return 1;
-    }
-    if (read_back_in(1, .reads) != 1 or read_back_in(1, .unread) != 0) {
-        print("  RED: a telling was read back under the wrong reading\n", .{});
-        return 1;
-    }
-    if (read_back_in(0, .reads) != 0) {
-        print("  RED: a run that told nobody read a reply anyway\n", .{});
-        return 1;
-    }
-    if (unread_in(1, .unread) != 1 or unread_in(1, .reads) != 0) {
-        print("  RED: the other half of the count did not close\n", .{});
-        return 1;
-    }
-    if (unread_in(0, .unread) != 0) {
-        print("  RED: a run that told nobody left a reply unread anyway\n", .{});
-        return 1;
-    }
-    return check_allay_refusals();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_allay(@This());
 }
 
 /// Weighs the refusals this rung earns, each by name, as a pure fold.
 pub fn check_allay_refusals() u8 {
-    if (allay_refusal(1, 1, 0, false, true, true)) |why| {
-        if (why != error.AllayUntold) {
-            print("  RED: a run that told nobody refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run that told nobody read a reply all the same\n", .{});
-        return 1;
-    }
-    if (allay_refusal(1, 1, 0, true, false, true)) |why| {
-        if (why != error.AllaySilent) {
-            print("  RED: a reader who wrote nothing refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a silence was published as a reader's word\n", .{});
-        return 1;
-    }
-    if (allay_refusal(1, 1, 0, true, true, false)) |why| {
-        if (why != error.AllayMismatched) {
-            print("  RED: a reply about some other telling refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a reply about some other telling was published as today's\n", .{});
-        return 1;
-    }
-    if (allay_refusal(1, 1, 1, true, true, true)) |why| {
-        if (why != error.AllayMiscounted) {
-            print("  RED: a telling both read and unread refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a telling counted twice passed the count\n", .{});
-        return 1;
-    }
-    if (allay_refusal(1, 0, 0, true, true, true)) |why| {
-        if (why != error.AllayMiscounted) {
-            print("  RED: a telling counted neither way refused as {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a telling counted neither way passed the count\n", .{});
-        return 1;
-    }
-    if (allay_refusal(1, 1, 0, true, true, true)) |why| {
-        print("  RED: an honest reading refused as {s}\n", .{@errorName(why)});
-        return 1;
-    }
-    return check_allay_measure();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_allay_refusals(@This());
 }
 
 /// Weighs the number this rung moves, as a pure fold.
@@ -12430,62 +11233,9 @@ pub fn check_allay_wire(io: std.Io, sys: *const system.System) u8 {
 /// a meeting that no longer happened would tell a later run what some look found
 /// that this plan's own wire has forgotten.
 pub fn check_redress_wire(io: std.Io, sys: *const system.System) u8 {
-    clear_met(io);
-    clear_redress(io);
-    met_note(io, inherited_debt) catch |err| {
-        print("  RED: a receipt could not be seated at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const receipt = meeting_written(io) orelse {
-        print("  RED: a seated receipt could not be read back at all\n", .{});
-        return 1;
-    };
-    redress_note(io, receipt, .righted) catch |err| {
-        print("  RED: a finding could not be written at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const provisioned = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(provisioned == sys.graph.domain_count);
-    const survived = redress_written(io) orelse {
-        print("  RED: a provisioning cleared the finding for a meeting already made\n", .{});
-        return 1;
-    };
-    if (!redress_answers(survived, receipt)) {
-        print("  RED: a finding carried past a provisioning stopped naming its meeting\n", .{});
-        return 1;
-    }
-    if (redress_upshot(survived) != .righted) {
-        print("  RED: a finding carried past a provisioning forgot what the look came to\n", .{});
-        return 1;
-    }
-    if (meeting_written(io) == null) {
-        print("  RED: a provisioning swept the receipt a finding reports on\n", .{});
-        return 1;
-    }
-    // The finding falls with the meeting it reports on, proven on the wire the
-    // plan leaves when the whole argument beneath it comes down.
-    clear_met(io);
-    clear_redress(io);
-    if (redress_written(io) != null) {
-        print("  RED: a finding outlived the meeting it was reporting on\n", .{});
-        return 1;
-    }
-    const again = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned again: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(again == sys.graph.domain_count);
-    if (redress_written(io) != null) {
-        print("  RED: a finding came back with the next provisioning\n", .{});
-        return 1;
-    }
-    print("  a finding survives a provisioning, and falls with the meeting it reports on\n", .{});
-    return check_apprise_wire(io, sys);
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_redress_wire(@This(), io, sys);
 }
 
 /// The delivered finding across a provisioning, proven outside any run.
@@ -12498,58 +11248,9 @@ pub fn check_redress_wire(io: std.Io, sys: *const system.System) u8 {
 /// with a reader who has heard nothing rather than with yesterday's answer
 /// standing in for today's.
 pub fn check_apprise_wire(io: std.Io, sys: *const system.System) u8 {
-    clear_apprise(io, standing_address);
-    clear_met(io);
-    clear_redress(io);
-    met_note(io, inherited_debt) catch |err| {
-        print("  RED: a receipt could not be seated at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const receipt = meeting_written(io) orelse {
-        print("  RED: a seated receipt could not be read back at all\n", .{});
-        return 1;
-    };
-    redress_note(io, receipt, .righted) catch |err| {
-        print("  RED: a finding could not be written at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const finding = redress_written(io) orelse {
-        print("  RED: a seated finding could not be read back at all\n", .{});
-        return 1;
-    };
-    apprise_note(io, standing_address, found_bytes(finding)) catch |err| {
-        print("  RED: a finding could not be carried to its reader at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const provisioned = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(provisioned == sys.graph.domain_count);
-    const delivered = apprised_of(io, standing_address) orelse {
-        print("  RED: a provisioning emptied the box a finding was carried to\n", .{});
-        return 1;
-    };
-    if (!apprise_holds(delivered, found_bytes(finding))) {
-        print("  RED: a delivery carried past a provisioning stopped naming its finding\n", .{});
-        return 1;
-    }
-    if (redress_written(io) == null) {
-        print("  RED: carrying a finding out moved it out of the plan's own notes\n", .{});
-        return 1;
-    }
-    // The delivery comes down when the reader's box is cleared, so a lap always
-    // opens on a reader who has been told nothing yet.
-    clear_apprise(io, standing_address);
-    if (apprised_of(io, standing_address) != null) {
-        print("  RED: a cleared box still held the finding it was carried\n", .{});
-        return 1;
-    }
-    clear_met(io);
-    clear_redress(io);
-    print("  a delivery survives a provisioning, and leaves the note it copies where it stands\n", .{});
-    return check_suffice_wire(io, sys);
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_apprise_wire(@This(), io, sys);
 }
 
 /// The reader's word and the plan's copy of it, proven outside any run.
@@ -12562,69 +11263,9 @@ pub fn check_apprise_wire(io: std.Io, sys: *const system.System) u8 {
 /// satisfaction standing beside a delivery this plan's own wire has forgotten
 /// would report a reader content about nothing at all.
 pub fn check_suffice_wire(io: std.Io, sys: *const system.System) u8 {
-    clear_suits(io, standing_address);
-    clear_suffice(io);
-    clear_apprise(io, standing_address);
-    const carried = found_bytes(redress_bytes(met_bytes(inherited_debt), .righted));
-    apprise_note(io, standing_address, carried) catch |err| {
-        print("  RED: a finding could not be carried to its reader at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    weigh_as_reader(io, standing_address, suits_bytes(carried, .wanting)) catch |err| {
-        print("  RED: a reader could not weigh the answer at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const said = worth_written(io, standing_address) orelse {
-        print("  RED: a reader's own word could not be read back at all\n", .{});
-        return 1;
-    };
-    if (!suits_answers(said, carried)) {
-        print("  RED: a reader's word stopped naming the answer it weighs\n", .{});
-        return 1;
-    }
-    const worth = suits_worth(said) orelse {
-        print("  RED: a reader's word carried no verdict at all\n", .{});
-        return 1;
-    };
-    suffice_note(io, worth) catch |err| {
-        print("  RED: a reader's word could not be published at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const provisioned = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(provisioned == sys.graph.domain_count);
-    if (!suits_answers(worth_written(io, standing_address), carried)) {
-        print("  RED: a provisioning emptied the box a reader wrote their word in\n", .{});
-        return 1;
-    }
-    if (!suffice_holds(worth_published(io), .wanting)) {
-        print("  RED: a published word carried past a provisioning stopped naming its verdict\n", .{});
-        return 1;
-    }
-    if (apprised_of(io, standing_address) == null) {
-        print("  RED: reading a reader's word took down the answer it weighs\n", .{});
-        return 1;
-    }
-    // The plan's copy comes down with the answer it weighed, so a later run never
-    // reads a satisfaction about a delivery this wire has forgotten.
-    clear_apprise(io, standing_address);
-    clear_suffice(io);
-    if (worth_published(io) != null) {
-        print("  RED: a published word outlived the answer it was weighing\n", .{});
-        return 1;
-    }
-    // And the reader keeps their own word where they wrote it, which no run of
-    // this plan ever reaches for.
-    if (worth_written(io, standing_address) == null) {
-        print("  RED: a plan taking down its own copy reached into its reader's box\n", .{});
-        return 1;
-    }
-    clear_suits(io, standing_address);
-    print("  a reader's word survives a provisioning, and the plan's copy falls with the answer it weighs\n", .{});
-    return check_reopen_wire(io, sys);
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_suffice_wire(@This(), io, sys);
 }
 
 /// The reopening note across a provisioning, proven outside any run.
@@ -12638,51 +11279,9 @@ pub fn check_suffice_wire(io: std.Io, sys: *const system.System) u8 {
 /// forgotten would send a run looking again at an answer nobody ever called
 /// short.
 pub fn check_reopen_wire(io: std.Io, sys: *const system.System) u8 {
-    clear_suits(io, standing_address);
-    clear_reopen(io);
-    clear_apprise(io, standing_address);
-    const carried = found_bytes(redress_bytes(met_bytes(inherited_debt), .righted));
-    apprise_note(io, standing_address, carried) catch |err| {
-        print("  RED: a finding could not be carried to its reader at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    weigh_as_reader(io, standing_address, suits_bytes(carried, .wanting)) catch |err| {
-        print("  RED: a reader could not weigh the answer at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const said = worth_written(io, standing_address) orelse {
-        print("  RED: a reader's own short word could not be read back at all\n", .{});
-        return 1;
-    };
-    reopen_note(io, said) catch |err| {
-        print("  RED: a matter could not be taken up again at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const provisioned = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(provisioned == sys.graph.domain_count);
-    if (!reopen_holds(again_standing(io), said)) {
-        print("  RED: a matter carried past a provisioning stopped naming its word\n", .{});
-        return 1;
-    }
-    if (worth_written(io, standing_address) == null) {
-        print("  RED: taking a matter up again reached into its reader's box\n", .{});
-        return 1;
-    }
-    // The note comes down with the word it carries, so a later run never inherits
-    // a matter opened by a verdict this wire has forgotten.
-    clear_suits(io, standing_address);
-    clear_reopen(io);
-    if (again_standing(io) != null) {
-        print("  RED: a reopened matter outlived the word that opened it\n", .{});
-        return 1;
-    }
-    clear_apprise(io, standing_address);
-    print("  a reopened matter survives a provisioning, and falls with the word that opened it\n", .{});
-    return check_reweigh_wire(io, sys);
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_reopen_wire(@This(), io, sys);
 }
 
 /// The second look's receipt across a provisioning, proven outside any run.
@@ -12694,46 +11293,9 @@ pub fn check_reopen_wire(io: std.Io, sys: *const system.System) u8 {
 /// answers stays down**, since a reopening left standing beside its own receipt
 /// would have every run after this one look at it forever.
 pub fn check_reweigh_wire(io: std.Io, sys: *const system.System) u8 {
-    clear_reweigh(io);
-    clear_reopen(io);
-    reopen_note(io, inherited_matter) catch |err| {
-        print("  RED: a matter could not be seated as reopened at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const opened = again_standing(io) orelse {
-        print("  RED: a reopened matter could not be read back at all\n", .{});
-        return 1;
-    };
-    reweigh_note(io, opened) catch |err| {
-        print("  RED: a second look could not be receipted at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    clear_reopen(io);
-    if (!matter_closed(again_standing(io))) {
-        print("  RED: a matter answered by a receipt stayed standing\n", .{});
-        return 1;
-    }
-    const provisioned = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(provisioned == sys.graph.domain_count);
-    if (!reweigh_holds(anew_standing(io), anew_bytes(opened))) {
-        print("  RED: a receipt carried past a provisioning stopped naming its matter\n", .{});
-        return 1;
-    }
-    if (!matter_closed(again_standing(io))) {
-        print("  RED: a matter taken down came back with a provisioning\n", .{});
-        return 1;
-    }
-    clear_reweigh(io);
-    if (anew_standing(io) != null) {
-        print("  RED: a second look's receipt outlived the matter it answered\n", .{});
-        return 1;
-    }
-    print("  a second look survives a provisioning, and the matter it answers stays down\n", .{});
-    return check_recount_wire(io, sys);
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_reweigh_wire(@This(), io, sys);
 }
 
 /// The telling across a provisioning, proven outside any run.
@@ -12745,58 +11307,9 @@ pub fn check_reweigh_wire(io: std.Io, sys: *const system.System) u8 {
 /// copies**, since a telling standing beside a second look this plan's own wire
 /// has forgotten would answer a question nobody can find.
 pub fn check_recount_wire(io: std.Io, sys: *const system.System) u8 {
-    clear_recount(io, standing_address);
-    clear_reweigh(io);
-    reweigh_note(io, inherited_matter) catch |err| {
-        print("  RED: a second look could not be receipted at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const receipt = anew_standing(io) orelse {
-        print("  RED: a seated receipt could not be read back at all\n", .{});
-        return 1;
-    };
-    recount_note(io, standing_address, receipt) catch |err| {
-        print("  RED: a telling could not be carried at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const provisioned = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(provisioned == sys.graph.domain_count);
-    const survived = recounted_to(io, standing_address) orelse {
-        print("  RED: a provisioning cleared the telling a reader was carried\n", .{});
-        return 1;
-    };
-    if (!knows_answers(survived, receipt)) {
-        print("  RED: a telling carried past a provisioning stopped naming its look\n", .{});
-        return 1;
-    }
-    if (anew_standing(io) == null) {
-        print("  RED: a provisioning swept the receipt a telling copies\n", .{});
-        return 1;
-    }
-    // The telling falls with the receipt it copies, proven on the wire the plan
-    // leaves when the second look beneath it comes down.
-    clear_reweigh(io);
-    clear_recount(io, standing_address);
-    if (recounted_to(io, standing_address) != null) {
-        print("  RED: a telling outlived the second look it was copying\n", .{});
-        return 1;
-    }
-    const again = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned again: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(again == sys.graph.domain_count);
-    if (recounted_to(io, standing_address) != null) {
-        print("  RED: a telling came back with the next provisioning\n", .{});
-        return 1;
-    }
-    print("  a telling survives a provisioning, and falls with the second look it copies\n", .{});
-    return check_allay_wire(io, sys);
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_recount_wire(@This(), io, sys);
 }
 
 /// The receipt and the debt across a provisioning, proven outside any run.
@@ -12808,62 +11321,9 @@ pub fn check_recount_wire(io: std.Io, sys: *const system.System) u8 {
 /// the debt it answers is truly down**, since a receipt written beside a debt
 /// still standing would close a question the wire says is still open.
 pub fn check_meet_wire(io: std.Io, sys: *const system.System) u8 {
-    clear_owe(io);
-    clear_met(io);
-    seat_note(io, plan_name, ".owe", &inherited_debt) catch |err| {
-        print("  RED: an earlier run's debt could not be seated at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const seated = debt_standing(io) orelse {
-        print("  RED: a seated debt could not be read back at all\n", .{});
-        return 1;
-    };
-    met_note(io, seated) catch |err| {
-        print("  RED: a receipt could not be written at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    clear_owe(io);
-    if (!debt_settled(debt_standing(io))) {
-        print("  RED: a met debt went on standing on the wire\n", .{});
-        return 1;
-    }
-    const provisioned = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(provisioned == sys.graph.domain_count);
-    const survived = meeting_written(io) orelse {
-        print("  RED: a provisioning cleared the receipt for a debt already met\n", .{});
-        return 1;
-    };
-    if (!met_answers(survived, inherited_debt)) {
-        print("  RED: a receipt carried past a provisioning stopped naming its debt\n", .{});
-        return 1;
-    }
-    if (!debt_settled(debt_standing(io))) {
-        print("  RED: a provisioning brought back a debt already met\n", .{});
-        return 1;
-    }
-    // The receipt falls with the debt it answers, proven on the wire the plan
-    // leaves when the whole argument beneath it comes down.
-    clear_met(io);
-    if (meeting_written(io) != null) {
-        print("  RED: a receipt outlived the debt it was answering\n", .{});
-        return 1;
-    }
-    const again = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned again: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(again == sys.graph.domain_count);
-    if (meeting_written(io) != null) {
-        print("  RED: a receipt came back with the next provisioning\n", .{});
-        return 1;
-    }
-    print("  a receipt survives a provisioning, and the debt it answers stays down\n", .{});
-    return check_redress_wire(io, sys);
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_meet_wire(@This(), io, sys);
 }
 
 /// The standing note across a provisioning, proven as a byte outside any run.
@@ -12875,55 +11335,9 @@ pub fn check_meet_wire(io: std.Io, sys: *const system.System) u8 {
 /// that position**, since a byte left behind beside the outcome would go on
 /// shouting for a quarrel its own holder let go.
 pub fn check_swell_wire(io: std.Io, sys: *const system.System) u8 {
-    _ = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    clear_standing(io);
-    clear_swell(io);
-    standing_note(io, .presses) catch |err| {
-        print("  RED: a position could not be carried at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    swell_note(io, .loud) catch |err| {
-        print("  RED: a standing could not be published at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const provisioned = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(provisioned == sys.graph.domain_count);
-    const survived = swell_published(io) orelse {
-        print("  RED: a provisioning cleared the standing it was told to leave\n", .{});
-        return 1;
-    };
-    if (survived != .loud) {
-        print("  RED: a standing carried past a provisioning read back as {s}\n", .{
-            volume_words(survived),
-        });
-        return 1;
-    }
-    // The standing falls with the quarrel, proven on the wire the withdrawal
-    // leaves.
-    release_standing(io);
-    if (swell_published(io) != null) {
-        print("  RED: a standing outlived the quarrel it was speaking for\n", .{});
-        return 1;
-    }
-    const again = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned again: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(again == sys.graph.domain_count);
-    if (swell_published(io) != null) {
-        print("  RED: a standing came back with the next provisioning\n", .{});
-        return 1;
-    }
-    print("  a standing survives a provisioning, and falls with the quarrel it speaks for\n", .{});
-    return 0;
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_swell_wire(@This(), io, sys);
 }
 
 /// The case on a third hand's desk, proven as bytes outside any run.
@@ -12937,45 +11351,9 @@ pub fn check_swell_wire(io: std.Io, sys: *const system.System) u8 {
 /// would have referred nothing at all; it would have shown somebody a document
 /// and then closed their hand around it.
 pub fn check_refer_wire(io: std.Io, sys: *const system.System) u8 {
-    _ = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    clear_standing(io);
-    clear_case(io, standing_forum);
-    standing_note(io, .presses) catch |err| {
-        print("  RED: a position could not be carried at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const case = referral_bytes(.carried, .loud, long_standing_runs + 1);
-    refer_note(io, standing_forum, case) catch |err| {
-        print("  RED: a case could not be carried at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const provisioned = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(provisioned == sys.graph.domain_count);
-    if (!refer_holds(case_delivered(io, standing_forum), case)) {
-        print("  RED: a provisioning swept a case off a desk it never owned\n", .{});
-        return 1;
-    }
-    // The case outlives the quarrel, which is the whole difference between a
-    // record kept by a party and a record handed to somebody who is not one.
-    release_standing(io);
-    if (!refer_holds(case_delivered(io, standing_forum), case)) {
-        print("  RED: a withdrawal reached onto a third hand's desk and took the case back\n", .{});
-        return 1;
-    }
-    clear_case(io, standing_forum);
-    if (case_delivered(io, standing_forum) != null) {
-        print("  RED: a desk cleared by its own hand still held the case\n", .{});
-        return 1;
-    }
-    print("  a case survives a provisioning, and outlives the quarrel it was built from\n", .{});
-    return 0;
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_refer_wire(@This(), io, sys);
 }
 
 /// The finding across a provisioning, proven as bytes outside any run.
@@ -12987,57 +11365,9 @@ pub fn check_refer_wire(io: std.Io, sys: *const system.System) u8 {
 /// plan's**, so clearing the copy an operator reads never reaches onto somebody
 /// else's desk to take back what they said.
 pub fn check_deem_wire(io: std.Io, sys: *const system.System) u8 {
-    _ = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    clear_finding(io, standing_forum);
-    clear_deem(io);
-    const case = referral_bytes(.carried, .loud, long_standing_runs + 1);
-    const answer = finding_bytes(case, .upholds);
-    answer_as_forum(io, standing_forum, answer) catch |err| {
-        print("  RED: a third hand could not answer at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    deem_note(io, .upholds) catch |err| {
-        print("  RED: a finding could not be published at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const provisioned = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(provisioned == sys.graph.domain_count);
-    if (!finding_answers(finding_written(io, standing_forum), case)) {
-        print("  RED: a provisioning swept a finding off a desk it never owned\n", .{});
-        return 1;
-    }
-    // The finding outlives the quarrel exactly as the case it answers does,
-    // which is what a word from outside the argument is for.
-    release_standing(io);
-    if (finding_in(finding_written(io, standing_forum)) != .upholds) {
-        print("  RED: a withdrawal reached onto a third hand's desk and took their word back\n", .{});
-        return 1;
-    }
-    // And the plan's own copy is the plan's: taking it down leaves the hand that
-    // wrote it holding their answer still.
-    clear_deem(io);
-    if (deem_published(io) != null) {
-        print("  RED: a plan that took down its own copy still published a finding\n", .{});
-        return 1;
-    }
-    if (finding_in(finding_written(io, standing_forum)) != .upholds) {
-        print("  RED: a plan clearing its own note reached onto a third hand's desk\n", .{});
-        return 1;
-    }
-    clear_finding(io, standing_forum);
-    if (finding_written(io, standing_forum) != null) {
-        print("  RED: a desk cleared by its own hand still held a finding\n", .{});
-        return 1;
-    }
-    print("  a finding survives a provisioning, and belongs to the hand that wrote it\n", .{});
-    return 0;
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_deem_wire(@This(), io, sys);
 }
 
 /// The plan's own word across a provisioning, proven as bytes outside any run.
@@ -13049,58 +11379,9 @@ pub fn check_deem_wire(io: std.Io, sys: *const system.System) u8 {
 /// standing beside a verdict no longer published would have the plan answering
 /// an argument nobody is making.
 pub fn check_avow_wire(io: std.Io, sys: *const system.System) u8 {
-    _ = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    clear_deem(io);
-    clear_avow(io);
-    deem_note(io, .upholds) catch |err| {
-        print("  RED: a finding could not be published at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    avow_note(io, .upholds, .concedes) catch |err| {
-        print("  RED: a plan could not answer at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const provisioned = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(provisioned == sys.graph.domain_count);
-    const survived = avow_written(io) orelse {
-        print("  RED: a provisioning cleared the word it was told to leave\n", .{});
-        return 1;
-    };
-    if (!avowal_answers(survived, .upholds)) {
-        print("  RED: a word carried past a provisioning stopped naming its finding\n", .{});
-        return 1;
-    }
-    if (stance_in(survived) != .concedes) {
-        print("  RED: a word carried past a provisioning read back as another\n", .{});
-        return 1;
-    }
-    // The word falls with the finding, proven on the wire the plan leaves when
-    // it takes its own published verdict down.
-    clear_deem(io);
-    clear_avow(io);
-    if (avow_written(io) != null) {
-        print("  RED: a word outlived the finding it was answering\n", .{});
-        return 1;
-    }
-    const again = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned again: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(again == sys.graph.domain_count);
-    if (avow_written(io) != null) {
-        print("  RED: a word came back with the next provisioning\n", .{});
-        return 1;
-    }
-    print("  a word survives a provisioning, and falls with the finding it answers\n", .{});
-    return check_owe_wire(io, sys);
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_avow_wire(@This(), io, sys);
 }
 
 /// The standing debt across a provisioning, proven as bytes outside any run.
@@ -13113,60 +11394,9 @@ pub fn check_avow_wire(io: std.Io, sys: *const system.System) u8 {
 /// because a debt standing beside a word the plan no longer holds would have a
 /// later run meeting an admission nobody is making.
 pub fn check_owe_wire(io: std.Io, sys: *const system.System) u8 {
-    clear_deem(io);
-    clear_avow(io);
-    clear_owe(io);
-    deem_note(io, .upholds) catch |err| {
-        print("  RED: a finding could not be published at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    avow_note(io, .upholds, .concedes) catch |err| {
-        print("  RED: a plan could not concede at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    owe_note(io, .upholds, .carried) catch |err| {
-        print("  RED: a debt could not be booked at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const provisioned = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(provisioned == sys.graph.domain_count);
-    const survived = debt_standing(io) orelse {
-        print("  RED: a provisioning cleared the debt a run booked to outlive it\n", .{});
-        return 1;
-    };
-    if (!debt_answers(survived, .upholds)) {
-        print("  RED: a debt carried past a provisioning stopped naming its concession\n", .{});
-        return 1;
-    }
-    if (debt_under(survived) != .carried) {
-        print("  RED: a debt carried past a provisioning forgot the outcome it was taken under\n", .{});
-        return 1;
-    }
-    // The debt falls with the concession, proven on the wire the plan leaves
-    // when it takes its own word and the finding beneath it down.
-    clear_deem(io);
-    clear_avow(io);
-    clear_owe(io);
-    if (debt_standing(io) != null) {
-        print("  RED: a debt outlived the concession it was carrying\n", .{});
-        return 1;
-    }
-    const again = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned again: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(again == sys.graph.domain_count);
-    if (debt_standing(io) != null) {
-        print("  RED: a debt came back with the next provisioning\n", .{});
-        return 1;
-    }
-    print("  a debt survives a provisioning, and falls with the concession it carries\n", .{});
-    return 0;
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_owe_wire(@This(), io, sys);
 }
 
 /// The reading lap: one plan run twice over a quarrel already carried out to a
