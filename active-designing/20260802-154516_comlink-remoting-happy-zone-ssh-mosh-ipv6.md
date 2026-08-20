@@ -3,7 +3,7 @@
 *Room two. Our modules only. Outside trees stay in gratitude and external-research.*
 
 **Stamp:** `20260802.154516` · **Voice:** Riyo · **Lens:** TAME  
-**Status:** Siloed design — R1 WHOLE (`20260802.162917` · pier pedestal wins · rival withdrawn); R2–R4 still gated (frame seam)  
+**Status:** Mixed -- Siloed design — R1 WHOLE (`20260802.162917` · pier pedestal wins · rival withdrawn); R2–R4 still gated (frame seam)  
 **Research doorway:** [`../external-research/20260802-154516_openssh-mosh-ipv6-beside-comlink.md`](../external-research/20260802-154516_openssh-mosh-ipv6-beside-comlink.md)  
 **Ground:** [`../comlink/README.md`](../comlink/README.md) · [`20260705-225412_comlink-device-wire.md`](20260705-225412_comlink-device-wire.md) · Glow Tend a1 suite GREEN  
 **Hard lines:** no keys in tree · VPS SEA · geode GATED · Mosh GPL stays out of product

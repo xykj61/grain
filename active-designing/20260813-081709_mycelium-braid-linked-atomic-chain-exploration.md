@@ -1,7 +1,7 @@
 # Mycelium Braid — the linked chain that commits whole or not at all
 
 **Stamp:** `20260813.081709` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design read — opens Mycelium's next journey (the Braid arc, r1–r4)
+**Status:** Vision -- Self-approved design read — opens Mycelium's next journey (the Braid arc, r1–r4)
 **Kin:** [`../mycelium/purse.rye`](../mycelium/purse.rye) · [`../mycelium/pledge.rye`](../mycelium/pledge.rye) · [`../mycelium/cord.rye`](../mycelium/cord.rye) · [`../mycelium/fold.rye`](../mycelium/fold.rye) · the closed arc [`20260813-075049_mycelium-pledge-two-phase-transfer-exploration.md`](20260813-075049_mycelium-pledge-two-phase-transfer-exploration.md)
 
 ---

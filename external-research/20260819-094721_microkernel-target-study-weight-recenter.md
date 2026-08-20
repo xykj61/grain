@@ -1,6 +1,6 @@
 # Microkernel Target -- Study-Weight Recenter
 
-**Stamp:** `20260819.094721` -- **Status:** Living (research capture) -- **Voice:** Kyri
+**Stamp:** `20260819.094721` -- **Status:** Mixed -- Living (research capture) -- **Voice:** Kyri
 **Register:** Radiant -- **Clean room:** studies the world with attribution; names only our own modules where we build. No copyleft source enters our tree.
 **Double-seats beside:**
 - [`../active-designing/20260816-205859_double-seat-expansion-eight-seasons.md`](../active-designing/20260816-205859_double-seat-expansion-eight-seasons.md) -- the eight-season itinerary and its Lindy-priority Microkernel Target arc.

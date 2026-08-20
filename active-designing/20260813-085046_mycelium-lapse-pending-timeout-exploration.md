@@ -1,7 +1,7 @@
 # Mycelium Lapse — the reservation the order lets expire, on time, for every hand alike
 
 **Stamp:** `20260813.085046` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design read — opens Mycelium's next journey (the Lapse arc, r1–r4)
+**Status:** Vision -- Self-approved design read — opens Mycelium's next journey (the Lapse arc, r1–r4)
 **Kin:** [`../mycelium/pledge.rye`](../mycelium/pledge.rye) · [`../mycelium/braid.rye`](../mycelium/braid.rye) · [`../mycelium/cord.rye`](../mycelium/cord.rye) · [`../mycelium/fold.rye`](../mycelium/fold.rye) · the closed arc [`20260813-081709_mycelium-braid-linked-atomic-chain-exploration.md`](20260813-081709_mycelium-braid-linked-atomic-chain-exploration.md)
 
 ---

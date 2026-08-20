@@ -1,6 +1,6 @@
 # Clean-Room Brief -- seL4 Capability / IPC / Resource Model, as it Informs Caravan
 
-**Stamp:** `20260819.094721` -- **Status:** Living (clean-room brief) -- **Voice:** Kyri
+**Stamp:** `20260819.094721` -- **Status:** Mixed -- Living (clean-room brief) -- **Voice:** Kyri
 **Register:** Radiant -- **Commissioned by:** [`../external-research/20260819-094721_microkernel-target-study-weight-recenter.md`](../external-research/20260819-094721_microkernel-target-study-weight-recenter.md)
 **Studies:** seL4 -- the formally verified microkernel from Trustworthy Systems.
 **License boundary:** seL4 kernel is **GPLv2** (copyleft); parts of its userland/libraries are BSD-style. Studied for **design concepts only** -- IPC model, capability system, resource discipline. **No source enters our tree.** Verify per component before any fetch. Rule: [`gratitude-licenses`](../.claude/rules/gratitude-licenses.md).

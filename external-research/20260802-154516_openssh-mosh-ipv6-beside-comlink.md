@@ -3,7 +3,7 @@
 *Room one. Outside ideas held whole. Nothing here is a product face until a silo doorway names our modules only.*
 
 **Stamp:** `20260802.154516` · **Voice:** Riyo · **Lens:** TAME  
-**Status:** Exploration — gratitude clones held unmodified; silo lives in active-designing  
+**Status:** Research for understanding -- Exploration — gratitude clones held unmodified; silo lives in active-designing  
 **Gratitude (unmodified):** [`../gratitude/openssh-portable/`](../gratitude/openssh-portable/) · [`../gratitude/mosh/`](../gratitude/mosh/)  
 **VPS ops companion:** [`20260801-132929_nixos-vps-clean-energy-mosh-cursor.md`](20260801-132929_nixos-vps-clean-energy-mosh-cursor.md)  
 **Comlink ground:** [`20260702-014112_comlink-beyond-dns-and-sockets.md`](20260702-014112_comlink-beyond-dns-and-sockets.md) · [`../comlink/README.md`](../comlink/README.md)

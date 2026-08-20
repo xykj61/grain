@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260810.154352` (2026-08-10 EDT)
 **Voice:** Kyri · **Style:** Radiant
-**Status:** Survey (a looking pass — names sites and gaps, opens no cut) · seated on Keaton's word
+**Status:** Mixed -- Survey (a looking pass — names sites and gaps, opens no cut) · seated on Keaton's word
 **Kin:** `.claude/rules/molt.md` · `.claude/rules/debride.md` · `.claude/rules/cairn.md` · `ORGANIZING.md`
 
 ---
@@ -41,7 +41,7 @@ And these are **dated artifacts** — the one-clock law and accrete-never-break 
 
 The favorites are **present and current** throughout: `baton` (228 files), `Brix` (201), `Mantra` (84), `Tally` (73), `Caravan` (70), `Aurora` (67), `Comlink` (58), `Amphora` (47), `Pond` (44), `Skate` (39), `Tablecloth` (31), `Brushstroke` (26), `Kyri` (13). The vocabulary is well-seeded and up to date.
 
-The only "stale" names are **retired** ones inside dated files — Kiln (12), Amber (23), Pool (16), Anvil (5), veganreyklah (23), "Rye OS" (16), "voice Riyo" (7). These are **not drift to fix**: each recorded the name that was live at its stamp. Per accrete-never-break and the one-clock law, dated testimony keeps its words and is never rewritten.
+The only "stale" names are **retired** ones inside dated files — Oven (12), Amber (23), Pool (16), Anvil (5), veganreyklah (23), "Rye OS" (16), "voice Riyo" (7). These are **not drift to fix**: each recorded the name that was live at its stamp. Per accrete-never-break and the one-clock law, dated testimony keeps its words and is never rewritten.
 
 ## Recommendation
 

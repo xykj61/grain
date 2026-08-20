@@ -2,7 +2,7 @@
 
 *A durable capture of a single wide-ranging session: a red found and fixed, a philosophy named, a rule seated, a directory renamed, and a stack of decisions and scheduled work recorded so none is lost. Written as a Tablecloth write -- content addressed by what it says, not who said it -- for any Acme Corporation employee who needs the whole map in one page. Voice: Kyri - Style: Radiant - ASCII only.*
 
-**Stamp:** `20260816.221015` - **Status:** Living design-research capture
+**Stamp:** `20260816.221015` - **Status:** Mixed -- Living design-research capture
 **Kin:** [`../foundations/20260816-214652_standfast-the-stopped-line.md`](../foundations/20260816-214652_standfast-the-stopped-line.md) - [`../.claude/rules/ascii-first.md`](../.claude/rules/ascii-first.md) - [`../crux/REDS.md`](../crux/REDS.md) (row 83) - [`../crux/CAIRNS.md`](../crux/CAIRNS.md) - [`../active-designing/yonder/20260816-205421_double-seat-horizon-ledger.md`](../active-designing/yonder/20260816-205421_double-seat-horizon-ledger.md)
 
 ---

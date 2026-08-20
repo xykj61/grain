@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Stamp:** `20260811.170901`
-**Status:** Design contract — the third of the Acme DX design season's four deliverables ([`../expanding-prompts/20260811-145659_acme-dx-design-season.md`](../expanding-prompts/20260811-145659_acme-dx-design-season.md)). Distilled from the interface the standing modules already keep; enforced today by checkers named below.
+**Status:** Mixed -- Design contract — the third of the Acme DX design season's four deliverables ([`../expanding-prompts/20260811-145659_acme-dx-design-season.md`](../expanding-prompts/20260811-145659_acme-dx-design-season.md)). Distilled from the interface the standing modules already keep; enforced today by checkers named below.
 **Voice:** Kyri · **Style:** Radiant · **Audience:** an Acme Corporation employee on day two, building a module of their own
 **Begins where Equinox 2 ends:** the newcomer has built one module by copying a reference ([`20260811-163927_acme-dx-first-hour-witness-contract.md`](20260811-163927_acme-dx-first-hour-witness-contract.md)); now they learn the interface every Grain module keeps, so their own module composes with the tree.
 

@@ -2,7 +2,7 @@
 
 *A design-research study, with gratitude, of the elder command-line world we want to reimplement in our own bounded, asserted way: Urbit's Dill terminal vane and its Talk chat app, the ncurses tradition beneath them, and the modern terminal libraries (Ghostty and its libghostty). It names our own terminal module (Dexter) and the chat app (Scooter), and captures the wider decision wave this session raised. Voice: Kyri - Style: Radiant - ASCII only. Clean-room: concepts honored, no code copied.*
 
-**Stamp:** `20260816.222322` - **Status:** Living design-research
+**Stamp:** `20260816.222322` - **Status:** Research for understanding -- Living design-research
 **Gratitude:** [`../gratitude/Urbit.md`](../gratitude/Urbit.md) (Dill, Talk, Gall) - Ghostty and libghostty (Mitchell Hashimoto) - the ncurses tradition (Free Software Foundation)
 **Kin:** [`../context/specs/20260709-225343_thin-view-dexter-exception.md`](../context/specs/20260709-225343_thin-view-dexter-exception.md) (Dexter, the drawn-terminal frame) - [`../active-designing/20260816-205859_double-seat-expansion-eight-seasons.md`](../active-designing/20260816-205859_double-seat-expansion-eight-seasons.md) (the itinerary) - [`../foundations/20260810-011514_pond-the-application-module.md`](../foundations/20260810-011514_pond-the-application-module.md) (Pond, where these apps run)
 

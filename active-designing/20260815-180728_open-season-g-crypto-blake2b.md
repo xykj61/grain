@@ -1,6 +1,6 @@
 # Open Chapter G (Cryptography) — the first primitive: BLAKE2b in Rye
 
-**Stamp:** `20260815.180728` · **Status:** Living (design read, self-approved) · **Voice:** Kyri · **Style:** Radiant
+**Stamp:** `20260815.180728` · **Status:** Mixed -- Living (design read, self-approved) · **Voice:** Kyri · **Style:** Radiant
 **Chapter:** the Six-Chapter double-seat · **Chapter G — Cryptography** (Rye-native, Monocypher-parity, audit-ready)
 **Kin:** [`the decision wave`](20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md) — Chapter G seat · [`gratitude-licenses`](../.claude/rules/gratitude-licenses.md) — Monocypher is CC0/BSD-dual, the parity target, never a copied line
 

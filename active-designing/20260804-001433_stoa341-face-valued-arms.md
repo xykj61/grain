@@ -2,7 +2,7 @@
 
 *Counsel cut this as STOA340 on tip `158f302355`. The pier already seated STOA340 as the Tally pair-bound wall — first landing keeps the name. Face-valued arms land here as STOA341: then/else may select a face, so min and max are one desk each.*
 
-**Stamp:** `20260804.001433` · **Voice:** Riyo · **Status:** GREEN
+**Stamp:** `20260804.001433` · **Voice:** Riyo · **Status:** Mixed -- GREEN
 **Counsel seat:** `counsel/20260803-191415_e279-compass-set-stoa340-green.md` · compass `active-designing/20260803-191415_the-vane-rune-compass.md`
 **Grant:** Keaton — hardest solvable Glow Tend · vanes as targets · Mycelium/MUR/custody gated
 

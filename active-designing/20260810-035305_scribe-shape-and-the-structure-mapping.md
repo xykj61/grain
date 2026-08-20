@@ -4,7 +4,7 @@
 **Stamp:** `20260810.035305`
 **Voice:** Riyo
 **Style:** Radiant · counsel — answering a batch of design questions; recommendations for a maintainer's word, not yet seated as law
-**Status:** Design counsel. Keaton asked five questions mid-build; this note rules on each with a recommendation, seats nothing irreversibly, and holds the two structural ones for his word.
+**Status:** Mixed -- Design counsel. Keaton asked five questions mid-build; this note rules on each with a recommendation, seats nothing irreversibly, and holds the two structural ones for his word.
 
 ---
 

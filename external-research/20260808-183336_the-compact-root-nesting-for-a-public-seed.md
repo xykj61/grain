@@ -4,7 +4,7 @@
 **Last updated:** `20260808.183336`
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Riyo
-**Status:** **Proposal** — a *designed, unbegun breach* per [`../context/BREACH.md`](../context/BREACH.md), and the companion to [`20260808-045124_two-grains-template-breach-and-code-distillation-plan.md`](20260808-045124_two-grains-template-breach-and-code-distillation-plan.md). Nothing here moves a file until the maintainer speaks the word.
+**Status:** Mixed -- **Proposal** — a *designed, unbegun breach* per [`../context/BREACH.md`](../context/BREACH.md), and the companion to [`20260808-045124_two-grains-template-breach-and-code-distillation-plan.md`](20260808-045124_two-grains-template-breach-and-code-distillation-plan.md). Nothing here moves a file until the maintainer speaks the word.
 
 ---
 

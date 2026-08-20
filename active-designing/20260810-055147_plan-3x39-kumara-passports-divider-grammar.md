@@ -2,6 +2,7 @@
 
 **Language:** EN
 **Stamp:** `20260810.060041` (2026-08-10 06:00 EDT)
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Voice:** Riyo
 **Style:** Radiant · a design brief — no code, one witnessed lap named
 **Equinox:** JARL (Identity & Network) · a settlement door past names

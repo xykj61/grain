@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260810.211704` (2026-08-10 EDT)
 **Voice:** Kyri (Qkri register) · **Style:** Radiant
-**Status:** Design assessment · **horizon, not now** — answers a paused design question, builds nothing
+**Status:** Vision -- Design assessment · **horizon, not now** — answers a paused design question, builds nothing
 **Kin:** Caravan (supervision) · Tally (bounded allocation) · Basin (bounded circular buffer) · Loom (reds-first)
 
 ---

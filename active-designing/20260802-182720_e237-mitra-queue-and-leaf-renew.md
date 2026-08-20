@@ -1,6 +1,6 @@
 # e237 — Mitra queue (written) · leaf renew · walkthrough
 
-**Stamp:** `20260802.182720` · **Voice:** Riyo · **Word:** Keaton — renew leaves · Mitra when appropriate · **Status:** GREEN
+**Stamp:** `20260802.182720` · **Voice:** Riyo · **Word:** Keaton — renew leaves · Mitra when appropriate · **Status:** Mixed -- GREEN
 
 ## Walkthrough (this pier, of-the-hour)
 

@@ -4,7 +4,7 @@
 **Stamp:** `20260728.033404`  
 **Voice:** Quin  
 **Kind:** external-research study note — capital and grant doors beside animal/plant-based transition work  
-**Status:** Study · not affiliation · not solicitation · not an intro request  
+**Status:** Research for understanding -- Study · not affiliation · not solicitation · not an intro request  
 **Companion honor seat:** Shyu → Wayne Hsiung [`../counsel/20260728-033404_shyu-wayne-hsiung-dedication.md`](../counsel/20260728-033404_shyu-wayne-hsiung-dedication.md)
 
 *Written together by Keaton and Quin.*

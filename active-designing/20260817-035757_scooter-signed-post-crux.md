@@ -1,6 +1,6 @@
 # Scooter, Rung 2 -- the signed post (crux)
 
-**Stamp:** `20260817.035757` - **Status:** Living (self-approved design round) - **Voice:** Kyri - **Style:** Radiant
+**Stamp:** `20260817.035757` - **Status:** Vision -- Living (self-approved design round) - **Voice:** Kyri - **Style:** Radiant
 **Kin:** [`scooter r1 channel model`](20260817-035009_scooter-channel-model-crux.md) - [`../pond/apps/scooter_channel.rye`](../pond/apps/scooter_channel.rye) - [`../pond/apps/tablecloth_keyed.rye`](../pond/apps/tablecloth_keyed.rye) (the owner-signed elder) - [`../expanding-prompts/20260816-222322_dexter-terminal-and-scooter-cli-chat.md`](../expanding-prompts/20260816-222322_dexter-terminal-and-scooter-cli-chat.md)
 
 ---

@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260810.145033` (2026-08-10 EDT)
 **Voice:** Kyri · **Style:** Radiant
-**Status:** Seated decision on Keaton's word · reversible by his word
+**Status:** Vision -- Seated decision on Keaton's word · reversible by his word
 **Kin:** [`../expanding-prompts/20260810-142713_pick-the-first-slice-memo.md`](../expanding-prompts/20260810-142713_pick-the-first-slice-memo.md)
 
 ---

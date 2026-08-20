@@ -1,6 +1,6 @@
 # Rye-First, Crypto Parity, and the Decision Wave
 
-**Stamp:** `20260815.175524` · **Status:** Living · **Voice:** Kyri · **Style:** Radiant (Twilight where earned)
+**Stamp:** `20260815.175524` · **Status:** Mixed -- Living · **Voice:** Kyri · **Style:** Radiant (Twilight where earned)
 **Kin:** [`the 1024-round itinerary`](20260812-171050_the-1024-round-itinerary.md) · [`the six-season double-seat`](20260813-020035_double-seat-expansion-six-seasons.md) · `work-in-progress/REMEMBER.md` · `work-in-progress/CAIRNS.md`
 
 This document loads a wave of direction whole, loses nothing, and flags every

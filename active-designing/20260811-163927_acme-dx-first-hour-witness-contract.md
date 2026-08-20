@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Stamp:** `20260811.163927`
-**Status:** Design contract — the second of the Acme DX design season's four deliverables ([`../expanding-prompts/20260811-145659_acme-dx-design-season.md`](../expanding-prompts/20260811-145659_acme-dx-design-season.md)). The reference module and its witness below were built and run GREEN in a scratch tree `20260811.163927`; the development season types them into the repository.
+**Status:** Mixed -- Design contract — the second of the Acme DX design season's four deliverables ([`../expanding-prompts/20260811-145659_acme-dx-design-season.md`](../expanding-prompts/20260811-145659_acme-dx-design-season.md)). The reference module and its witness below were built and run GREEN in a scratch tree `20260811.163927`; the development season types them into the repository.
 **Voice:** Kyri · **Style:** Radiant · **Audience:** an Acme Corporation employee an hour into Grain
 **Begins where Equinox 1 ends:** the newcomer already has GREEN from an existing witness ([`20260811-150221_acme-dx-onboarding-path-contract.md`](20260811-150221_acme-dx-onboarding-path-contract.md)); now they build a tiny module of their **own** and witness it.
 
