@@ -1,0 +1,10 @@
+//! Fixture rung -- the planted drift. This top rung reaches PAST its neighbor
+//! and folds straight into the bottom rung, exactly as `desist.rye` once folded
+//! into `forbear.rye` across `mind.rye`. Now two rungs name one rung below, and
+//! both carry the same stub byte for byte. The scan must refuse it by name.
+
+const lower_rung = @import("lower.rye");
+
+pub fn check_first() u8 {
+    return lower_rung.check_first();
+}
