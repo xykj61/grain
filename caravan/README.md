@@ -1,7 +1,7 @@
 # Caravan -- Process Supervision
 
 **Language:** EN
-**Last updated:** `20260820.032400` (the mend rung -- a plan reported short is run again for exactly what it lost)
+**Last updated:** `20260820.185013` (the abate rung -- the reader's word takes the wall down)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable -- process supervision ladder
 
@@ -1485,6 +1485,31 @@ The numbers state the claim: **five refusals stand by name -- unwalled, unaddres
 The numbers state the claim: **five refusals stand by name -- uncalled, silent, mismatched, miscounted, misrecorded; a plan that loses nothing reads as the line handed, all 16 pairs; every rung below moves exactly as it moved, the beckoning included, and only the opening parts the two plans.** Both runs carry the same call to the same person (**1 leaving, 1 hearing**) and both leave no wall unheralded (**0 against 0**). A planted control proved the read that closes the claim: the record was taken down from the plan's own notes and the very same read made again, and it failed on metal with the note gone. Witness: `tools/caravan_answer_witness.rish`.
 
 
+## Abate -- the reader's word takes the wall down
+
+`answer.rye` heard what the person said. `abate.rye` does something about it.
+
+**A reader who answers `takes_up` has said the matter leaves with them, and the plan's own boundary answers to nobody.** The wall stands in the notes run after run, outliving the correspondence it ended and the release that ended it. Every rung of this arc has carried a person's word further -- into the record, out to their box, back into the outcome -- and not one of them has ever let that word *move* the plan. A correspondence where the other party's word has no force is a correspondence in name only.
+
+**The measurement is walls a plan kept standing after their reader took the matter up**, and it falls **1 to 0**.
+
+**Abating is taking down, and taking down is a record.** A run that abates writes eleven bytes into `caravan/.minds/plan.abate` -- the recorded answer echoed whole, this run's own byte last -- reads that note back before it believes a word of it, and only then lets the wall fall, reading once more to be sure it did.
+
+**Every byte of the abatement save one came from outside the plan.** The record copied the answer, the answer copied the call, the call copied the wall, the wall copied the mark, and the mark copied the reader's own five-byte refusal -- so an operator reading eleven bytes reads six tiers of a correspondence and the release that closed it.
+
+**A run abates only a wall whose answer it actually opened.** A plan that heard nobody holds no word to act on. `AbateUnopened` refuses by name.
+
+**A wall comes down only on the word of the reader who was called to it.** A reader who lets the boundary stand has asked for nothing, and taking it down on their acceptance would read a release into a word that granted none. `AbateUnreleased` refuses by name -- the one refusal in this arc that guards a person's word against a plan eager to mean more by it than they did.
+
+**The abatement names the wall it takes down.** A plan may still be standing a boundary about some other matter, and reading this reader's release as covering it would take down a wall nobody released. `AbateMismatched` is the rung itself.
+
+**The record lands before the wall falls.** A run stopping between the two leaves a wall standing beside a record of why it should not -- exactly the state the rung below always left -- rather than a boundary gone with nothing on the wire naming who released it.
+
+**Abating is not settling.** The settlement, the quarrel, its age, its standing, the case on the desk, the finding, the plan's own word, the concession, the meeting, the redress, the delivery, the reader's first verdict, the second look, the telling, the reader's reply, the mark, the call, and the reader's own answer each come out of an abating run exactly as they went in -- and both runs settle `carried out whole`.
+
+The numbers state the claim: **five refusals stand by name -- unopened, unreleased, mismatched, miscounted, misrecorded; a plan that loses nothing reads as the line handed, all 16 pairs; every rung below moves exactly as it moved, the opening included, and only the abating parts the two plans.** Both runs open the same release (**1 holding, 1 abating**) and both leave no answer unopened (**0 against 0**). A planted control proved the read that closes the claim: the abatement was taken down from the plan's own notes and the very same read made again, and it failed on metal with the note gone. Witness: `tools/caravan_abate_witness.rish`.
+
+
 ## The ladder's carried checks -- the fold, and the meter that keeps it
 
 Every rung above imports the implementation of the rung beneath it. For eighty-odd rungs it also carried a fresh copy of that rung's self-test, because a check function was private and a later rung had no way to *call* the one below it -- only to carry its bytes forward.
@@ -1502,17 +1527,17 @@ What stayed carried after A was **256 bodies over 12,035 lines**, growing about 
 
 Nothing observable changed. Every rung of the grievance arc from `appraise` to `recount` was built twice -- folded and pristine -- and run against the same wire: **28 rungs, the same output lines, every one of them** -- only the order in which three concurrent dependents print interleaves, run to run, in the pristine build exactly as in the folded one. Every check that ran before still runs, in the same order, printing the same words. The choir sings every rung GREEN from a cold tree.
 
-`tools/caravan_ladder_copy_witness.rish` changed jobs with the fold, and changed size with it. It holds the standing under a named ceiling of **4,000** carried lines -- **47** stand there now across **97 modules and 1,091 checks** -- and it counts all three folds off the ladder rather than believing the prose: **757** checks run in the rung that owns them, counted in either form a rung may name that rung; **69** check bodies stand in the harness, each running against whichever rung handed itself in; and **0** rungs carry a forwarding stub. It proves its counting by hand on a two-rung corpus, and refuses by name on three paths: a corpus with no modules, a corpus whose modules hold no checks at all, and a corpus grown past its ceiling. It sings with the choir, so it can never become a guard nobody runs.
+`tools/caravan_ladder_copy_witness.rish` changed jobs with the fold, and changed size with it. It holds the standing under a named ceiling of **4,000** carried lines -- **47** stand there now across **98 modules and 1,137 checks** -- and it counts all three folds off the ladder rather than believing the prose: **796** checks run in the rung that owns them, counted in either form a rung may name that rung; **73** check bodies stand in the harness, each running against whichever rung handed itself in; and **0** rungs carry a forwarding stub. It proves its counting by hand on a two-rung corpus, and refuses by name on three paths: a corpus with no modules, a corpus whose modules hold no checks at all, and a corpus grown past its ceiling. It sings with the choir, so it can never become a guard nobody runs.
 
 **The chained bodies are lifted, and the meter says by how much.** Each new rung used to re-enter the four chained check bodies of the rung below -- the rung's own check, its refusals, its measure, and its wire -- which neither fold had reached, so the carry climbed 2,202 to 2,669 with `beckon` and 2,669 to 3,324 with `answer`. Reading which bodies made up that number found eight of them standing byte for byte alike across every rung that held them, and all eight lifted whole: the `mind` chain's measure and wire, the entire `desist` chain, and the `beckon` rung's check and its refusals. **The carry fell 3,324 to 2,762**, fold B climbed 592 to 612, and fold A held at exactly 757 -- the honest signal that lifting a body moves where it runs and never how many folds stand.
 
-**Two bodies stayed home, for a reason worth naming.** A chain's last link is the one place a rung differs from the rung above it: it ends in `return 0` in the rung that tops the ladder and climbs into the next rung's own check everywhere above. So `check_beckon_measure` and `check_beckon_wire` are one body per rung rather than two copies of one, and they cost the carry nothing today. They become liftable the moment a rung is born above `answer` -- which is the shape every chained body passed through on its way here.
+**Two bodies stayed home, and the next rung lifted them.** A chain's last link is the one place a rung differs from the rung above it: it ends in `return 0` in the rung that tops the ladder and climbs into the next rung's own check everywhere above. So `check_beckon_measure` and `check_beckon_wire` were one body per rung rather than two copies of one -- until `abate.rye` was born above `answer.rye` and made them agree, at which point they lifted whole beside `check_answer` and its refusals. `check_answer_measure` and `check_answer_wire` now hold that terminal seat in their place, and they will lift in their turn. Every chained body passes through this shape on its way into the harness.
 
 **Then the stub itself changed, and the carry fell to almost nothing.** What stood at 2,762 was very largely the five-line call each lifted check cost each rung, byte-identical across rungs by design since `@This()` resolves per rung. Those stubs existed for one reason: a chained body re-entered the rung *by name*, and a name the rung never published was a compile error, so silence had no way of being heard. Fold C ([`../active-designing/20260820-182533_caravan-ladder-the-harness-answers-for-silence.md`](../active-designing/20260820-182533_caravan-ladder-the-harness-answers-for-silence.md)) gives silence a meaning: the harness reaches every chained link through `link`, which runs the rung's own body when `@hasDecl` finds one and its own body when it does not. **612 stubs left the ladder in one pass, and the carry fell 2,762 to 47** -- a single copied body across 97 modules and 1,091 checks.
 
 Nothing observable moved, and the shape of the change is why. A rung that keeps a body is dispatched to that body, exactly as before; a rung that publishes nothing reaches the same harness body one call earlier. The test is `comptime`, so the two are the same machine code and a name the harness does not hold can only be reached for by a rung that declares it -- which is how the terminal links of a chain keep their own bodies. All 33 touched rungs were built and run from a cold tree, and the choir sang all 91 GREEN.
 
-**A rung now costs the ladder its own new checks and nothing else.** The ceiling of 4,000 stops being the thing that refuses first, and the meter's job shifts from watching a carry climb to holding a wall at zero: no rung carries a stub that only forwards itself to the harness.
+**A rung now costs the ladder its own new checks and nothing else**, and `abate.rye` proved it by being born: a whole new rung landed and the carry stood exactly where it was, at **47** lines. The ceiling of 4,000 stops being the thing that refuses first, and the meter's job shifts from watching a carry climb to holding a wall at zero: no rung carries a stub that only forwards itself to the harness.
 
 
 ## Held
