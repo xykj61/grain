@@ -20,7 +20,7 @@
 //! recovered name is still law-safe (the quarantine holds on the real bytes).
 //!
 //! Additive — composes rung three over public API (it re-runs GREEN). Demo keeper seeds only, reads no
-//! network, moves no dollar (the fold is a supply model, not a payment rail — gate #3 untouched; a ledger
+//! network, moves no dollar (the fold is a supply model, not a payment rail — gate %3 untouched; a ledger
 //! served over the wire reaches the serve gate — Keaton's hand).
 //!
 //!   rye build pond/apps/constel_net_ledger_true.rye -femit-bin=pond/bin/constel-net-ledger-true

@@ -1,4 +1,4 @@
-# tools/fixtures/witness_claim_check_control/fragile_control.rish -- the planted RED control (REDS #85).
+# tools/fixtures/witness_claim_check_control/fragile_control.rish -- the planted RED control (REDS %85).
 #
 # This file is deliberately WRONG, and it is the only place in the tree allowed to be. It carries the
 # exact fragile shape the claim-check guard bans: captured program output interpolated into a shell

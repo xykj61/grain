@@ -142,7 +142,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     if (!std.mem.eql(u8, group_of(try color.parse_hex("#ffa500")), group_orange)) return error.OrangeWrong;
     if (!std.mem.eql(u8, group_of(try color.parse_hex("#8000ff")), group_purple)) return error.PurpleWrong;
 
-    // 4. Tone overrides hue at both lightness edges: a very dark red #200000 (lightness ~6) reads black, and a very
+    // 4. Tone overrides hue at both lightness edges: a very dark red %200000 (lightness ~6) reads black, and a very
     // light red #ffe0e0 (lightness ~94) reads white -- the family follows the eye, which sees no color there.
     if (!std.mem.eql(u8, group_of(try color.parse_hex("#200000")), group_black)) return error.DarkNotBlack;
     if (!std.mem.eql(u8, group_of(try color.parse_hex("#ffe0e0")), group_white)) return error.LightNotWhite;

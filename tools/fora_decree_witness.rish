@@ -19,7 +19,7 @@
 
 say "fora-decree: Language EN — FORA11 decides a value where FORA10 decided identity: because a member accepts one value per round and any two strict-majority quorums intersect, at most one value can ever commit for a decree, so a replicated ledger never forks."
 say "fora-decree: Style Radiant — an election named who may propose; the decree names what the sky holds; one value, committed once, or honestly nothing at all."
-say "fora-decree: Lens TAME — accept refuses any value other than the one proposed (WrongValue) and any second cast (DoubleAccept); commit asserts a strict majority backs the committed value; the round interleaves respond+hear so the leader's mailbox holds one reply at a time (never ChannelFull); siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+say "fora-decree: Lens TAME — accept refuses any value other than the one proposed (WrongValue) and any second cast (DoubleAccept); commit asserts a strict majority backs the committed value; the round interleaves respond+hear so the leader's mailbox holds one reply at a time (never ChannelFull); siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/decree"

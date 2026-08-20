@@ -173,7 +173,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (ink_count(atlas.glyphs[k].coverage) == 0) return error.AccentedCapitalBlank;
     }
 
-    // Compression is reported as a fact, not asserted -- the round-trip is the proof (the REDS #82 lesson).
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof (the REDS %82 lesson).
     const raw_coverage = glyph_count * cell_area;
     print("GREEN image-font5x7-upper: {d} accented capitals U+00C0..U+00DC (non-contiguous) at {d}x{d} round-trip byte-identical; codepoints strictly ascending and unique (the two corpora disjoint: 8+13), every glyph inked, a base 'A' and an undrawn A-ring both absent; encoded {d} bytes, raw {d}\n", .{
         glyph_count, cell_w, cell_h, res.len, raw_coverage,

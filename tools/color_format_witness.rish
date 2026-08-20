@@ -31,7 +31,7 @@ assert selftest.ok else "color-format: selftest exited non-zero -- ${selftest.ou
 let out = trim selftest.out
 say "color-format: ${out}"
 
-# Honour the loom REDS #76 named: check every claim with Rishi's native `contains`, never a shell grep over interpolated
+# Honour the loom REDS %76 named: check every claim with Rishi's native `contains`, never a shell grep over interpolated
 # output, so punctuation in the selftest prose can never break a check.
 assert out contains "GREEN image-color-format" else "color-format: selftest did not print the GREEN color-format line"
 assert out contains "an opaque color writes rgb()" else "color-format: an opaque color did not write the rgb() form"

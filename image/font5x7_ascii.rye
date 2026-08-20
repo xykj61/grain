@@ -187,7 +187,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     assert(blanks == 1);
 
     // Compression is reported as a fact, not asserted -- a full font of dense line art need not shrink, and the
-    // round-trip is the proof either way (the REDS #82 lesson: never assert a direction the data does not hold).
+    // round-trip is the proof either way (the REDS %82 lesson: never assert a direction the data does not hold).
     const raw_coverage = glyph_count * cell_area;
     print("GREEN image-font5x7-ascii: {d} glyphs ' '..'~' at {d}x{d} round-trip byte-identical; band contiguous 32..126, no gap/dup; space uniquely blank, all others inked; encoded {d} bytes, raw {d}\n", .{
         glyph_count, cell_w, cell_h, res.len, raw_coverage,

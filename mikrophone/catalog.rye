@@ -14,7 +14,7 @@
 //! deframes verify-before-trust FIRST, computes the content address over the PROVEN payload, and either recognizes an
 //! address it already holds (returning it unchanged, spending no bound) or appends within a fixed entry count and byte
 //! budget that refuse `CatalogFull` by name before a byte passes either bound. `fetch` returns the recording for an
-//! address or `null`. No disk, no network, no key signs, no funds (custody gate #2 — real hardware, a real desk, a real
+//! address or `null`. No disk, no network, no key signs, no funds (custody gate %2 — real hardware, a real desk, a real
 //! disk — untouched); the content address is an integrity identity the desk recomputes, not a signature.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/catalog.rye selftest

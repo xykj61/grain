@@ -18,7 +18,7 @@
 
 say "fora-commit: Language EN — FORA18 states Raft's Figure 8 safety rule: a leader commits an old-term entry only by committing a current-term entry above it, never by raw replica count — 'replicated on a majority' is not enough for an entry an earlier leader wrote."
 say "fora-commit: Style Radiant — no ledger calls a thing settled before it truly is; the one rule that tells the difference stays small enough to hold in a single reading."
-say "fora-commit: Lens TAME — MatchView and the commit rule are bounded to the roster and the entry cap; safe_commit_len is term-aware, naive_commit_len is kept only as the visible counter-example; the danger case spends FORA17 repair to show the fork the safe rule prevents; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+say "fora-commit: Lens TAME — MatchView and the commit rule are bounded to the roster and the entry cap; safe_commit_len is term-aware, naive_commit_len is kept only as the visible counter-example; the danger case spends FORA17 repair to show the fork the safe rule prevents; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/commit"

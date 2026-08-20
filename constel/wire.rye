@@ -8,8 +8,8 @@
 //! Stands on: constel/handshake.rye (FORA2) — the three values; constel/name.rye (FORA0) — the naming law at the border.
 //!
 //! Purely LOCAL — a bounded in-memory frame on the bench, siloed to constel/, run from inside the jailed pier. No network,
-//! no Comlink transport, no keys, no funds, no real address ever formed (custody gate #2 — real hardware / any real wire —
-//! and gate #4 — real Kumara, real network — both untouched). The frame layout: magic(4 "CNST") · version(1) · kind(1) ·
+//! no Comlink transport, no keys, no funds, no real address ever formed (custody gate %2 — real hardware / any real wire —
+//! and gate %4 — real Kumara, real network — both untouched). The frame layout: magic(4 "CNST") · version(1) · kind(1) ·
 //! payload_len(u32 LE) · digest(32 Sha256 over payload) · payload. Deframing is verify-before-trust and TWO independent
 //! gates: the Sha256 proves the payload WHOLE (no byte flipped), and the naming law re-run at the border proves it LAWFUL
 //! (no vowel-bearing, real-@p-shaped name smuggled in). A payload passes only when both hold — so a real address can never

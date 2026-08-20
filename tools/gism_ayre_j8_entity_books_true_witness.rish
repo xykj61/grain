@@ -8,7 +8,7 @@
 # reports three auditor facts (entry count, amount total, cash net); this witness measures the same
 # file independently with tools/fixtures/entity_journal_truth.awk and asserts field for field — two
 # tools, one answer. A malformed journal refuses (UnknownAccount). Composes rung one's Entity and
-# dimeroll_core; facts only; demo entities only (gate #3 untouched).
+# dimeroll_core; facts only; demo entities only (gate %3 untouched).
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/gism_ayre_j8_entity_books_true_witness.rish

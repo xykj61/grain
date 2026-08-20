@@ -27,8 +27,8 @@
 //! (FORA12) — the append-only order both piers replicate; constel/switchboard.rye (FORA6) — the medium the real-sky scenario uses.
 //!
 //! Purely LOCAL — a bounded in-memory operation between two CompactLog values on one bench, siloed to constel/, run from inside
-//! the jailed pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate #2 — real hardware / any
-//! real wire — and gate #4 — real Kumara — both untouched). The socket rung stays the maintainer's hand.
+//! the jailed pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate %2 — real hardware / any
+//! real wire — and gate %4 — real Kumara — both untouched). The socket rung stays the maintainer's hand.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/catchup.rye selftest
 

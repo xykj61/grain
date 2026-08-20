@@ -18,7 +18,7 @@
 //! signature falls, because the promise was to the old fact, not the new one. It composes rung
 //! one's certificate parse (`fairtrade_cert`) over the Kumara signing the settlement already
 //! witnessed (`kumara.rye`, the same layout commerce_trade_signed signs trades with) — inventing no
-//! new signing and no new join. Demo keeper seeds only; no real key, no funds, no custody (gate #3
+//! new signing and no new join. Demo keeper seeds only; no real key, no funds, no custody (gate %3
 //! untouched).
 //!
 //!   rye build pond/apps/fairtrade_cert_signed.rye -femit-bin=pond/bin/fairtrade-cert-signed

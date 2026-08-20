@@ -11,8 +11,8 @@
 //! (FORA4) — the handshake the switchboard carries.
 //!
 //! Purely LOCAL — a bounded set of per-pier byte queues on one bench, siloed to constel/, run from inside the jailed pier. No
-//! socket, no network, no keys, no funds, no real address ever formed (custody gate #2 — real hardware / any real wire — and
-//! gate #4 — real Kumara, real network — both untouched). The switchboard only ROUTES; it never re-checks a frame, so the two
+//! socket, no network, no keys, no funds, no real address ever formed (custody gate %2 — real hardware / any real wire — and
+//! gate %4 — real Kumara, real network — both untouched). The switchboard only ROUTES; it never re-checks a frame, so the two
 //! FORA3 trust gates (Sha256 integrity + the naming-law border at wire.deframe_*) stay the only trust boundary. The real
 //! Comlink socket is this same switchboard with each mailbox backed by a kernel file descriptor — a later, GATED round.
 //!

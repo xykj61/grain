@@ -19,7 +19,7 @@
 //! a match-NONE (any-of-nothing is false) — a keeper who has typed nothing under OR has named no way to match. And OR
 //! is always a SUPERSET of AND over the same clauses: every part the conjunction keeps, the disjunction keeps too.
 //!
-//! A price clause COMPARES a recorded cent count; nothing is moved (custody gate #3 untouched). No network, no key,
+//! A price clause COMPARES a recorded cent count; nothing is moved (custody gate %3 untouched). No network, no key,
 //! no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/part_or.rye selftest

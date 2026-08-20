@@ -14,7 +14,7 @@
 //! work stands — needs forget-ONE too. `forget` refuses `NotHeld` before a byte moves (a miss is a miss, never a guess),
 //! then closes the packed store over the removed span with a plain bounded loop (never a bare memcpy) and zeroes the
 //! region the tail vacated, asserting no residue by a full scan. No disk, no network, no key signs, no funds (custody
-//! gate #2 — real hardware, a real desk, a real disk — untouched).
+//! gate %2 — real hardware, a real desk, a real disk — untouched).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/forget.rye selftest
 

@@ -20,7 +20,7 @@
 //! Stands on: constel/quorum.rye (FORA9) — majority_of, the symmetric special case; constel/roster.rye (FORA1) — max_piers.
 //!
 //! Purely LOCAL — bounded size arithmetic and a bounded subset enumeration on one bench, siloed to constel/, run from inside the
-//! jailed pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched).
+//! jailed pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/flexquorum.rye selftest
 

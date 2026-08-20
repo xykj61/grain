@@ -10,7 +10,7 @@
 # badge is refused HudOverlaysOverlap by name), the HUD touches only the badge and the bar, the scrubber keeps its
 # empty->full monotone fill under composition, the timecode keeps its tick-per-second badge under composition, and the
 # whole reel round-trips byte for byte through BOTH open codecs; the delta/keyframe mix is REPORTED, never claimed a
-# compression win (REDS #82). No network, no key, no funds.
+# compression win (REDS %82). No network, no key, no funds.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/player_hud_witness.rish

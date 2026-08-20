@@ -10,8 +10,8 @@
 //! frame a pier announces.
 //!
 //! Purely LOCAL — a bounded loop over the switchboard's mailboxes on one bench, siloed to constel/, run from inside the jailed
-//! pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate #2 — real hardware / any real
-//! wire — and gate #4 — real Kumara, real network — both untouched). A broadcast is MANY honest deliveries, never a shortcut
+//! pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate %2 — real hardware / any real
+//! wire — and gate %4 — real Kumara, real network — both untouched). A broadcast is MANY honest deliveries, never a shortcut
 //! around the border: each recipient still runs wire.deframe_* on its own copy, so the two FORA3 trust gates (Sha256 + the
 //! naming-law border) run per recipient. This is the primitive every gossip and flood protocol stands on.
 //!

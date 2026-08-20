@@ -11,7 +11,7 @@
 //! verify-before-keep promise across many: `deposit` deframes first and appends the proven payload ONLY on a clean
 //! deframe, refusing `ArchiveFull` before a write would pass either bound; any wire error propagates by name and the
 //! archive is left exactly as it was, so a bad frame neither lands nor disturbs a prior entry. `clear` forgets the whole
-//! store. No disk, no network, no key signs, no funds (custody gate #2 — real hardware, a real desk, a real disk —
+//! store. No disk, no network, no key signs, no funds (custody gate %2 — real hardware, a real desk, a real disk —
 //! untouched); verifying the frame's Sha256 stays an integrity check the receiver recomputes, not a signature.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/archive.rye selftest

@@ -35,7 +35,7 @@
 # on reap order.
 #
 # Checks read the selftest output natively (`contains`), never a shell grep
-# over interpolated output -- REDS #76 / #85, the apostrophe loom. Wall-clock
+# over interpolated output -- REDS %76 / %85, the apostrophe loom. Wall-clock
 # milliseconds vary run to run, so the witness reads that the run reported
 # them and holds its claims to the counters that are the document's own. The
 # same care governs the two counters that ordinary scheduling jitter can move
@@ -52,7 +52,7 @@ let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/r
 
 assert build.ok else "caravan harvest build failed"
 
-# The reader this witness runs is built here rather than borrowed (REDS #92).
+# The reader this witness runs is built here rather than borrowed (REDS %92).
 # Thirty-six rungs ran caravan/bin/read without building it, so the whole arc was
 # green only on a tree some earlier run had left warm. A witness owns what it runs.
 let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/read"]

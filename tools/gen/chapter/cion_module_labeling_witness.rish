@@ -135,7 +135,7 @@
 # placeholder (the biting shape shown without a real digit), and the boundary grep now matches
 # 'lap [0-9]' (still counts the fixture's real "lap <N>" testimony, which correctly keeps its
 # ordinal) — the witness re-runs GREEN, its teaching intact. Added to the scan list as the 79th
-# guarded surface. REDS #74 CLOSED the same round: vols_guardlist_extract.sh now keeps .rish and
+# guarded surface. REDS %74 CLOSED the same round: vols_guardlist_extract.sh now keeps .rish and
 # .glow (was rye|md|brix only), so the extracted guardlist is a faithful projection of the guard
 # and coverage reads all 79 of 79 prose-gap paths guarded. And the guard now scans ITSELF:
 # re-running the live census surfaced this witness's own before→after changelog as the one

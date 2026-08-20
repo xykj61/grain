@@ -17,7 +17,7 @@
 //!
 //! It composes rung two (`fairtrade_cert_signed`) and TACT-J4r1 (`commerce_trade`) over public API,
 //! inventing no new signing, join, or booking. Facts only: it records the *facts* of a certified
-//! trade and holds nothing — settling a trade reaches custody gate #3 (moving funds / a payment
+//! trade and holds nothing — settling a trade reaches custody gate %3 (moving funds / a payment
 //! rail) and waits on licensed counsel. Demo keeper seeds and party numbers only.
 //!
 //!   rye build pond/apps/fairtrade_cert_trade.rye -femit-bin=pond/bin/fairtrade-cert-trade

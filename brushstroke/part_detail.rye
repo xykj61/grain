@@ -18,7 +18,7 @@
 //! page and the shelf paint one product by one law.
 //!
 //! The page holds no state and no funds — a price is a `u64` count of the smallest honest unit, FORMATTED for reading,
-//! never a balance the tree can move (custody gate #3 untouched). No network, no key, no funds.
+//! never a balance the tree can move (custody gate %3 untouched). No network, no key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/part_detail.rye selftest
 

@@ -17,7 +17,7 @@
 
 say "fora-depart: Language EN — FORA28 closes the remove-a-member lifecycle: a voter leaves the sky through reconfig's joint consensus (FORA13), and when the leaving pier is the leader it steps down after the switch commits (FORA24 CheckQuorum) — the symmetric twin of FORA26's add side."
 say "fora-depart: Style Radiant — a pier may leave the sky whole, and the leader that removes itself steps down as gracefully as it once rose; the circle it leaves and the circle that remains must both agree, so no member is ever dropped over its own head."
-say "fora-depart: Lens TAME — depart refuses NotAVoter and (via config_of) EmptyConfig, then composes reconfig.config_of / JointConfig / JointBallot / require_joint over public APIs only; leader_relinquishes makes the Raft §4.2.2 self-removal edge checkable; the joint ballot's two-majority rule carries the FORA9 intersection lemma across the switch unchanged; bounded to roster.max_piers; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+say "fora-depart: Lens TAME — depart refuses NotAVoter and (via config_of) EmptyConfig, then composes reconfig.config_of / JointConfig / JointBallot / require_joint over public APIs only; leader_relinquishes makes the Raft §4.2.2 self-removal edge checkable; the joint ballot's two-majority rule carries the FORA9 intersection lemma across the switch unchanged; bounded to roster.max_piers; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/depart"

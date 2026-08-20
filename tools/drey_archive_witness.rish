@@ -14,7 +14,7 @@
 
 say "drey-archive: Language EN — DREY6 grows the Mikrophone receiving hand from one inbox slot to a bounded archive that keeps a sequence of proven recordings in arrival order."
 say "drey-archive: Style Radiant — a desk that keeps many recordings owes each one the same proof it owed the first: kept only once whole, bounded so it can never overrun, forgotten whole when the keeper is done."
-say "drey-archive: Lens TAME — deposit deframes verify-before-trust FIRST and appends only on a clean deframe within both bounds; every refusal is by name (DigestMismatch, ArchiveFull); the byte sum is checked in u64 so it cannot wrap; the copy is a plain bounded loop; no disk, no network, no key, no funds (custody gate #2 untouched)."
+say "drey-archive: Lens TAME — deposit deframes verify-before-trust FIRST and appends only on a clean deframe within both bounds; every refusal is by name (DigestMismatch, ArchiveFull); the byte sum is checked in u64 so it cannot wrap; the copy is a plain bounded loop; no disk, no network, no key, no funds (custody gate %2 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mikrophone/bin/archive"

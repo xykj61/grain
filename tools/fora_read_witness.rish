@@ -17,7 +17,7 @@
 
 say "fora-read: Language EN — FORA20 completes the linearizable service: exactly-once writes (FORA19) and now linearizable reads WITHOUT a log append (Raft §8, the read-index). A deposed leader answers for nothing; a current leader answers a value reflecting every write committed before the read."
 say "fora-read: Style Radiant — every read a keeper takes is true as of the moment they asked, and a leader the sky has left behind answers for nothing at all."
-say "fora-read: Lens TAME — leadership_confirmed spends FORA16's term-majority lemma; the read-index is FORA18's safe_commit_len; the read folds FORA19's committed prefix and appends nothing; NotLeader and ReadIndexPastLog refuse by name changing nothing; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real client, no real address ever formed (custody gate #2 and gate #4 untouched)."
+say "fora-read: Lens TAME — leadership_confirmed spends FORA16's term-majority lemma; the read-index is FORA18's safe_commit_len; the read folds FORA19's committed prefix and appends nothing; NotLeader and ReadIndexPastLog refuse by name changing nothing; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real client, no real address ever formed (custody gate %2 and gate %4 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/read"

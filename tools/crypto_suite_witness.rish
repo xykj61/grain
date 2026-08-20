@@ -29,7 +29,7 @@ let witnesses = [ "tools/crypto_sha512_witness.rish" "tools/crypto_blake2b_witne
 
 for-each witnesses as w do assert (run ["rishi/bin/rishi" "run" w]).ok else "crypto-suite: a per-file witness went RED — ${w}"
 
-# The count-guard loom (REDS #80): assert the choir registers exactly the crypto/*.rye files on disk — a file and its proof can never
+# The count-guard loom (REDS %80): assert the choir registers exactly the crypto/*.rye files on disk — a file and its proof can never
 # disagree without this going RED, and the computed count it prints is the source of truth for the spelled numbers in the front-door docs.
 assert (run ["rishi/bin/rishi" "run" "tools/crypto_count_guard_witness.rish"]).ok else "crypto-suite: the count guard went RED — a crypto/*.rye file and its suite registration disagree"
 

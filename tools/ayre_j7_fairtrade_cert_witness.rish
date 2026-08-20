@@ -8,7 +8,7 @@
 # record holds every required criterion (in declared order), refusing the whole
 # certification (Unsatisfied) on the first criterion the record lacks — never a certified
 # gap. A wrong header, a bad tag, an empty certificate, and two names on one line each
-# refuse (BadCertificate). Facts only; no funds move, no key is held (custody gate #3
+# refuse (BadCertificate). Facts only; no funds move, no key is held (custody gate %3
 # untouched); demo attestations only.
 #
 # Run from the repository root:

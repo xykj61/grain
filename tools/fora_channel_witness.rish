@@ -16,7 +16,7 @@
 
 say "fora-channel: Language EN — FORA5 stands a bounded byte queue between two piers, the loopback that models the Comlink seam without a socket; its one new concern is reading exactly one whole frame out of a continuous stream — the last purely-local rung before the real transport."
 say "fora-channel: Style Radiant — the channel's only job is delimiting, cutting one whole frame out of the stream; a half-arrived frame waits in peace, and the FORA3 gates keep the only trust."
-say "fora-channel: Lens TAME — a fixed-buffer FIFO with a read cursor, every fault failing closed without moving the cursor (NeedMoreBytes · BadFrame · ChannelFull); siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+say "fora-channel: Lens TAME — a fixed-buffer FIFO with a read cursor, every fault failing closed without moving the cursor (NeedMoreBytes · BadFrame · ChannelFull); siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/channel"

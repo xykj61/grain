@@ -18,7 +18,7 @@
 //! compound draws a real empty page, paging loses nothing). A malformed clause surfaces the parser's own named refusal
 //! rather than a wrong shelf.
 //!
-//! A price clause COMPARES a recorded cent count; nothing is moved (custody gate #3 untouched). No network, no key,
+//! A price clause COMPARES a recorded cent count; nothing is moved (custody gate %3 untouched). No network, no key,
 //! no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/part_and_search.rye selftest

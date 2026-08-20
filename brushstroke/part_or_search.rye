@@ -19,7 +19,7 @@
 //! is a match-NONE drawing a real empty page — the De Morgan dual, carried faithfully rather than softened. A malformed
 //! clause surfaces the parser's own named refusal rather than a wrong shelf.
 //!
-//! A price clause COMPARES a recorded cent count; nothing is moved (custody gate #3 untouched). No network, no key,
+//! A price clause COMPARES a recorded cent count; nothing is moved (custody gate %3 untouched). No network, no key,
 //! no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/part_or_search.rye selftest

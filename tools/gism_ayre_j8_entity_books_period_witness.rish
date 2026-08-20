@@ -8,7 +8,7 @@
 # reconstructed trial balance sums to zero, its balance sheet balances). An unknown field
 # (UnknownField, never dropped), a missing account net (MissingField), a wrong header (BadFormat),
 # and unbalanced nets (Unbalanced) each refuse. Composes rung one's fold and dimeroll_core; reads
-# no network (serve transport = Comlink-served gate). Facts only; demo entities only (gate #3
+# no network (serve transport = Comlink-served gate). Facts only; demo entities only (gate %3
 # untouched).
 #
 # Run from the repository root:

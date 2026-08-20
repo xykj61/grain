@@ -22,7 +22,7 @@
 //! constel/roster.rye (FORA1) — max_piers, the membership bound.
 //!
 //! Purely LOCAL — bounded membership masks and index scalars on one bench, siloed to constel/, run from inside the jailed pier. No
-//! socket, no network, no keys, no funds, no real address ever formed (custody gate #2 — real hardware / any real wire — and gate
+//! socket, no network, no keys, no funds, no real address ever formed (custody gate %2 — real hardware / any real wire — and gate
 //! #4 — real Kumara — both untouched).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/depart.rye selftest

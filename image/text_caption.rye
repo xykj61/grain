@@ -15,7 +15,7 @@
 //! outside it at least one consecutive pair differs. The composited reel then round-trips byte for byte through BOTH
 //! open codecs, and the delta/keyframe mix is REPORTED, never claimed a compression win -- on a full pan the adaptive
 //! encoder legitimately keyframes where a delta of the whole moving background would cost more than a fresh frame
-//! (REDS #82). Pure composition over public APIs (solid, a local gradient + crop, paint_text_panel, both codecs); no new
+//! (REDS %82). Pure composition over public APIs (solid, a local gradient + crop, paint_text_panel, both codecs); no new
 //! storage, codec, palette, glyph, or font. No network, no key, no funds -- the caption a surface pins over live video,
 //! on our own open geometry.
 //!
@@ -247,7 +247,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     }
 
     // The delta/keyframe mix is a REPORTED measurement -- on a full pan the adaptive encoder legitimately keyframes
-    // where a whole-background delta would cost more than a fresh frame, so the count is shown, never asserted (REDS #82).
+    // where a whole-background delta would cost more than a fresh frame, so the count is shown, never asserted (REDS %82).
     const keyframes: u32 = frame_count - gfd_res.delta_frames;
     print("GREEN image-text-caption: '{s}' pinned as a STATIC lower-third over {d} frames of {d}x{d} moving video; caption byte-identical across every frame while the background moved (max background change {d} px outside the panel); round-trip byte-identical through BOTH codecs; gfd1 adaptive mix {d} deltas + {d} keyframes ({d} bytes vs gfv1 {d}); gfv1 stream refused by gfd1 decoder as BadMagic\n", .{
         caption_text, frame_count, caption_frame_w, caption_frame_h, max_bg_diff, gfd_res.delta_frames, keyframes, gfd_res.len, gfv_res.len,

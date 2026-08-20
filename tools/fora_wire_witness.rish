@@ -17,7 +17,7 @@
 
 say "fora-wire: Language EN — FORA3 carries FORA2's three proven handshake values (Greeting · Ack · Session) across a self-describing local frame, deframed verify-before-trust, exactly as DREY1 proved the Mikrophone's committed payload before any real wire."
 say "fora-wire: Style Radiant — one frame layout, a single source of truth (magic · version · kind · length · Sha256 · payload); every corruption refuses by name before a value is formed."
-say "fora-wire: Lens TAME — deframing is two independent gates, the Sha256 proving the payload whole and the naming law proving it lawful; siloed to constel/, run from inside the jailed pier; no network, no transport, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+say "fora-wire: Lens TAME — deframing is two independent gates, the Sha256 proving the payload whole and the naming law proving it lawful; siloed to constel/, run from inside the jailed pier; no network, no transport, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/wire"

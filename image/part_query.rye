@@ -15,7 +15,7 @@
 //! faithful mouth for the filter that already exists.
 //!
 //! A price token is read as a FACT to compare — parsed to a `u64` count of cents and ceiling-checked exactly as
-//! `add_part` checks a stored price; never a balance the tree can move (custody gate #3 untouched). No network, no
+//! `add_part` checks a stored price; never a balance the tree can move (custody gate %3 untouched). No network, no
 //! key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/part_query.rye selftest

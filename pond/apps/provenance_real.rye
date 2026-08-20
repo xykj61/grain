@@ -20,14 +20,14 @@
 //!
 //! The real bytes surface one Yield red (#73): a real front-door document
 //! (`SECURITY.md`, 2689 B) refuses `ContentTooLarge` — it does not fit one 512-byte
-//! resin. Unlike red #72's block bound, the fix is not a one-line raise:
+//! resin. Unlike red %72's block bound, the fix is not a one-line raise:
 //! `max_resin_bytes` cannot rise past `max_beads × max_bead_bytes` without breaking
 //! beading's invariant that a bead-index is itself a valid resin. So this round books
 //! the red and names the chunking horizon (large artifacts across ordered resins, its
 //! own later rung), and proves the refusal on metal here.
 //!
 //! Additive by construction: it composes tablecloth_keyed's public API over demo
-//! keeper seeds only; no real key, no custody (gate #4 untouched). The demo selftest
+//! keeper seeds only; no real key, no custody (gate %4 untouched). The demo selftest
 //! over doc_planet/doc_star stays its own GREEN binary.
 //!
 //!   rye build pond/apps/provenance_real.rye -femit-bin=pond/bin/provenance-real
@@ -52,7 +52,7 @@ const provenance_real_version = "20260812.185056";
 const real_doc = @embedFile("corpora/waymark_green.md");
 
 // A real front-door document that will NOT fit one resin — bound at compile time to
-// prove Yield red #73 on metal (a real document exceeds the 512-byte artifact bound).
+// prove Yield red %73 on metal (a real document exceeds the 512-byte artifact bound).
 const big_doc = @embedFile("corpora/security.md");
 
 const sig_len: u32 = 64;
@@ -196,7 +196,7 @@ fn unwelcome_content_mismatch() !void {
     print("provenance_real: content-mismatched signature refused (BadSignature)\n", .{});
 }
 
-/// Yield red #73, proven on metal: a real front-door document does not fit one resin.
+/// Yield red %73, proven on metal: a real front-door document does not fit one resin.
 /// The signature is valid (the owner really signed these real bytes); the store
 /// refuses `ContentTooLarge` because 2689 bytes exceed the 512-byte resin bound.
 fn red_real_document_too_large() !void {
@@ -212,7 +212,7 @@ fn red_real_document_too_large() !void {
         // invariant: a document past one resin refuses ContentTooLarge, valid signature and all
         assert(err == error.ContentTooLarge);
     }
-    print("provenance_real: red #73 — real doc {d} B > {d} B resin refuses ContentTooLarge (chunking horizon)\n", .{ big_doc.len, tablecloth.max_content_bytes });
+    print("provenance_real: red %73 — real doc {d} B > {d} B resin refuses ContentTooLarge (chunking horizon)\n", .{ big_doc.len, tablecloth.max_content_bytes });
 }
 
 pub fn main(init: std.process.Init) !u8 {

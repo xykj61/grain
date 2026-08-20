@@ -18,7 +18,7 @@
 //! bounded scratch refuses `LineTooLong` — each before any catalog work. The stripped rest still surfaces the faceted
 //! parser's own named refusal for a malformed clause.
 //!
-//! A price is echoed, compared, and reordered by; nothing is moved (custody gate #3 untouched). No network, no key, no
+//! A price is echoed, compared, and reordered by; nothing is moved (custody gate %3 untouched). No network, no key, no
 //! funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/part_facets_sort_query.rye selftest
