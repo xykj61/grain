@@ -13,8 +13,8 @@
 //! not prove.
 //!
 //! Composed over the spine (r1), the real identity (r2), and the real customs (r3). Demo keeper
-//! seeds only; the maintainer's own Kumara instance stays custody gate #4. It reads no network —
-//! provisioning a real Pond host stays custody gate #2; this rung proves the arc, not the host.
+//! seeds only; the maintainer's own Kumara instance stays custody gate %4. It reads no network —
+//! provisioning a real Pond host stays custody gate %2; this rung proves the arc, not the host.
 //!
 //!   rye build pond/apps/ship_pilot_ready.rye -femit-bin=pond/bin/ship-pilot-ready
 //!   pond/bin/ship-pilot-ready selftest

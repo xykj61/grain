@@ -1,6 +1,6 @@
 # tools/glow_build_concurrency_witness.rish -- two witnesses may build at once, and neither ruins the other.
 #
-# REDS #88. Every tools/glow_run_worker.sh invocation rebuilt glow/bin/glow_run and wrote glow/.cache, so a
+# REDS %88. Every tools/glow_run_worker.sh invocation rebuilt glow/bin/glow_run and wrote glow/.cache, so a
 # sweep running beside a hand-run gate wrote the same bytes from two processes at once. The lane that lost
 # executed a half-written binary and reported RED about its own logic while nothing was wrong with it, and a
 # build killed midway left a truncated glow_run standing for the next entirely clean run to trust. Three false
@@ -45,4 +45,4 @@ assert scan.out contains "CONC_LEFTOVER_TEMPS 0" else "glow-build-concurrency: a
 assert scan.out contains "CONC_OK" else "glow-build-concurrency: the scan reported CONC_BAD -- read the line above for which half gave way"
 assert ((scan.out contains "CONC_BAD") == false) else "glow-build-concurrency: CONC_BAD present"
 
-say "GREEN: glow-build-concurrency -- six lanes at once; the unguarded twin falls, the guarded worker answers on every lane and leaves nothing half-built (REDS #88 prevention on metal)."
+say "GREEN: glow-build-concurrency -- six lanes at once; the unguarded twin falls, the guarded worker answers on every lane and leaves nothing half-built (REDS %88 prevention on metal)."

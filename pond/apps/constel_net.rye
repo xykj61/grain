@@ -14,7 +14,7 @@
 //! names can escape. A forged bind and a non-galaxy number each refuse.
 //!
 //! Demo keeper seeds only — no real key, no network, no custody. Generating the maintainer's own
-//! Kumara instance stays custody gate #4; a constel served over the wire reaches the serve gate.
+//! Kumara instance stays custody gate %4; a constel served over the wire reaches the serve gate.
 //!
 //!   rye build pond/apps/constel_net.rye -femit-bin=pond/bin/constel-net
 //!   pond/bin/constel-net selftest

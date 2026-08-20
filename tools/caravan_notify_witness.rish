@@ -8,7 +8,7 @@
 # the share stays unread.
 #
 # Checks read the selftest output natively (`contains`), never a shell grep
-# over interpolated output -- REDS #76 / #85, the apostrophe loom.
+# over interpolated output -- REDS %76 / %85, the apostrophe loom.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/caravan_notify_witness.rish

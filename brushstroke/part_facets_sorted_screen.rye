@@ -20,7 +20,7 @@
 //! names no order because there is nothing to order. A malformed clause surfaces the parser's named refusal before any
 //! sort work.
 //!
-//! A price is echoed, compared, and reordered by; nothing is moved (custody gate #3 untouched). No network, no key, no
+//! A price is echoed, compared, and reordered by; nothing is moved (custody gate %3 untouched). No network, no key, no
 //! funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/part_facets_sorted_screen.rye selftest

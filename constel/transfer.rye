@@ -23,8 +23,8 @@
 //! is brought current; constel/quorum.rye (FORA9) — the majority threshold; constel/roster.rye (FORA1) — the bound.
 //!
 //! Purely LOCAL — bounded in-memory logs, a target id, and a term on one bench, siloed to constel/, run from inside the jailed
-//! pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate #2 — real hardware / any real wire —
-//! and gate #4 — real Kumara — both untouched). A served TimeoutNow reaches the Comlink-served gate; the socket rung stays the
+//! pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate %2 — real hardware / any real wire —
+//! and gate %4 — real Kumara — both untouched). A served TimeoutNow reaches the Comlink-served gate; the socket rung stays the
 //! maintainer's hand.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/transfer.rye selftest

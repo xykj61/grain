@@ -12,7 +12,7 @@
 //!
 //! This rung stays purely LOCAL — `reconcile` moves bytes between two in-memory catalogs over the two proven loops.
 //! Running it between two real desks over a real network reaches the Comlink-served custody gate (Season 1, Journey 2)
-//! and waits for the maintainer's word. No disk, no network, no key signs, no funds (custody gate #2 untouched); the
+//! and waits for the maintainer's word. No disk, no network, no key signs, no funds (custody gate %2 untouched); the
 //! content address stays an integrity identity the far hand recomputes, not a signature.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/reconcile.rye selftest

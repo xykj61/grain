@@ -14,7 +14,7 @@
 //! never the committed payload — so a keeper redacts, then commits the trimmed capture, and only the trimmed capture can
 //! carry. A redaction while unpowered refuses `NotPowered`, a zero-length redaction refuses `NothingToRedact`, and a span
 //! past the working length refuses `SpanOutOfRange` before a byte moves. No disk, no network, no key signs, no funds
-//! (custody gate #2 — real hardware — untouched). The copy is a plain bounded loop, never a bare memcpy.
+//! (custody gate %2 — real hardware — untouched). The copy is a plain bounded loop, never a bare memcpy.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/redact.rye selftest
 

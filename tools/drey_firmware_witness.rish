@@ -15,7 +15,7 @@
 
 say "drey-firmware: Language EN — DREY3 composes the three Mikrophone rungs into one loop: a recorded, committed run carries out to the verify-before-trust wire."
 say "drey-firmware: Style Radiant — three promises kept one at a time become one promise kept whole: nothing crosses the wire that a keeper did not press record for, mean to keep, and choose to carry."
-say "drey-firmware: Lens TAME — the loop invents nothing; it delegates to session.commit, session.power_down, and wire.frame over the recorder the keeper holds; the wire reads the committed carry, never the live working buffer; every corruption refuses by name (NothingToCarry, DigestMismatch); no disk, no network, no key, no funds (custody gate #2 untouched)."
+say "drey-firmware: Lens TAME — the loop invents nothing; it delegates to session.commit, session.power_down, and wire.frame over the recorder the keeper holds; the wire reads the committed carry, never the live working buffer; every corruption refuses by name (NothingToCarry, DigestMismatch); no disk, no network, no key, no funds (custody gate %2 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mikrophone/bin/firmware"

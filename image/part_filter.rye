@@ -15,7 +15,7 @@
 //! reaches the sub-catalog exactly once in held order, and no failing part appears. A match-all query reproduces the
 //! catalog byte-for-byte; a match-none query yields a real empty catalog (zero parts, zero pages), not an error.
 //!
-//! Price is read as a FACT — compared, never moved (custody gate #3 untouched). No network, no key, no funds.
+//! Price is read as a FACT — compared, never moved (custody gate %3 untouched). No network, no key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/part_filter.rye selftest
 

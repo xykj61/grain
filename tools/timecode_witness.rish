@@ -11,7 +11,7 @@
 # to pixels (an independently painted expected-text badge matches the reel byte for byte). The readout ticks with playback
 # (byte-steady within a second, changing at each boundary), touches only the badge rectangle, and the whole reel
 # round-trips byte for byte through BOTH open codecs; the delta/keyframe mix is REPORTED, never claimed a compression win
-# (REDS #82). No network, no key, no funds.
+# (REDS %82). No network, no key, no funds.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/timecode_witness.rish

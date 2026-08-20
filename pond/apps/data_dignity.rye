@@ -27,7 +27,7 @@
 //! heir's acceptance each to a settled Kumara identity, mirroring `skate_group_signed`). Facts only,
 //! custody-first: it records the facts of a sealed will and a succession and holds nothing, opens no
 //! network, moves no funds, and generates no real identity or seed (the maintainer's own succession over a
-//! real Kumara instance is the maintainer's hand — gate #4-adjacent). Demo keeper and heir points (plain
+//! real Kumara instance is the maintainer's hand — gate %4-adjacent). Demo keeper and heir points (plain
 //! indices) only.
 //!
 //!   rye build pond/apps/data_dignity.rye -femit-bin=pond/bin/data-dignity

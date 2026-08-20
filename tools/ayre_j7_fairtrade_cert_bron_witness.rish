@@ -9,7 +9,7 @@
 # bundle yields the identical Certified. A tampered traveled signature refuses offline
 # (BadAttestation); an unknown field, a wrong header, a malformed line, and bad hex each refuse.
 # Composes rungs one and two; reads no network (the serve transport is the Comlink-served gate,
-# Keaton's hand). Facts only; demo keeper seeds only (custody gate #3 untouched).
+# Keaton's hand). Facts only; demo keeper seeds only (custody gate %3 untouched).
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/ayre_j7_fairtrade_cert_bron_witness.rish

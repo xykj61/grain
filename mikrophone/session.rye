@@ -16,7 +16,7 @@
 //! into it, and `power_down` leaves it untouched, so a committed payload is exactly what survives the power. A capture
 //! while unpowered refuses `NotPowered`, a capture past the bound refuses `BufferFull`, an empty commit refuses
 //! `NothingToCommit`, and a redundant commit over an unchanged buffer refuses `AlreadyCommitted` — one deliberate act,
-//! not an accidental double. No disk, no network, no key, no funds (custody gate #2 — real hardware — untouched).
+//! not an accidental double. No disk, no network, no key, no funds (custody gate %2 — real hardware — untouched).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/session.rye selftest
 

@@ -16,7 +16,7 @@
 
 say "fora-transfer: Language EN — FORA23 gives Constel a planned leadership handoff (Raft §3.10): the leader brings a chosen successor fully current, then sends TimeoutNow so it campaigns at once — a handoff authorized only to a caught-up target, so the successor holds the sky's whole settled history."
 say "fora-transfer: Style Radiant — a leader that must step aside chooses the hand that already holds everything it held, so nothing settled is ever lost across the change."
-say "fora-transfer: Lens TAME — is_caught_up is an exact head match guarded by at_least_as_current (FORA21); timeout_now refuses TargetNotCaughtUp and TargetOutOfRoster by name and bumps the term by exactly one; the win is proven over vote.poll; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+say "fora-transfer: Lens TAME — is_caught_up is an exact head match guarded by at_least_as_current (FORA21); timeout_now refuses TargetNotCaughtUp and TargetOutOfRoster by name and bumps the term by exactly one; the win is proven over vote.poll; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/transfer"

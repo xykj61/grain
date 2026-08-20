@@ -15,7 +15,7 @@
 
 say "fora-admit: Language EN — FORA26 closes the add-a-member lifecycle: a non-voting learner (FORA25) is promoted into the voting set only once caught up, and the switch is carried by reconfig's joint consensus (FORA13) — safe end to end, never an empty voter and never without the no-fork joint switch."
 say "fora-admit: Style Radiant — a member earns its voice by first learning the sky's whole story, and the sky welcomes it only when both the circle it leaves and the circle it joins agree — so a hand is added without ever risking a fork."
-say "fora-admit: Lens TAME — admit gates on learner.require_caught_up (NotCaughtUp) and refuses AlreadyVoter, then composes reconfig.config_of / JointConfig / JointBallot / require_joint over public APIs only; the joint ballot's two-majority rule carries the FORA9 intersection lemma across the switch unchanged; bounded to roster.max_piers; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+say "fora-admit: Lens TAME — admit gates on learner.require_caught_up (NotCaughtUp) and refuses AlreadyVoter, then composes reconfig.config_of / JointConfig / JointBallot / require_joint over public APIs only; the joint ballot's two-majority rule carries the FORA9 intersection lemma across the switch unchanged; bounded to roster.max_piers; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/admit"

@@ -17,7 +17,7 @@
 
 say "drey-wire: Language EN — DREY1 carries DREY0's committed payload across the single wire: a self-describing frame proven whole before the far side yields a byte."
 say "drey-wire: Style Radiant — the forgetting promise reaches the wire; frame reads carry(), so what a keeper never committed never crosses, and what crosses is proven whole first."
-say "drey-wire: Lens TAME — one bounded fixed frame buffer (header + max_samples), no heap; the payload copy is a plain bounded loop, never a bare memcpy; deframe checks magic, version, declared length against the bound, truncation, and a Sha256 digest all before returning the payload; no disk, no network, no key, no funds (custody gate #2 untouched)."
+say "drey-wire: Lens TAME — one bounded fixed frame buffer (header + max_samples), no heap; the payload copy is a plain bounded loop, never a bare memcpy; deframe checks magic, version, declared length against the bound, truncation, and a Sha256 digest all before returning the payload; no disk, no network, no key, no funds (custody gate %2 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mikrophone/bin/wire"

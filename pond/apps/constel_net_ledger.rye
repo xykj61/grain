@@ -18,7 +18,7 @@
 //!     other signer `NotSovereign` before the log. So the settlement identity gates the Mycelium supply.
 //!
 //! Demo keeper seeds only — no real key, no funds, no network, no custody. The Mycelium fold is a supply
-//! model, not a payment rail (custody gate #3 untouched); the maintainer's own Kumara instance stays gate
+//! model, not a payment rail (custody gate %3 untouched); the maintainer's own Kumara instance stays gate
 //! #4; a ledger served over the wire reaches the serve gate.
 //!
 //!   rye build pond/apps/constel_net_ledger.rye -femit-bin=pond/bin/constel-net-ledger

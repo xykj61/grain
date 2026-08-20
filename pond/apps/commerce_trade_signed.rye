@@ -15,7 +15,7 @@
 //! It composes rung one's `record_trade` over the Kumara signing the settlement already witnessed
 //! (`kumara.rye`, the same layout `tablecloth_keyed` signs publications with) — inventing no new
 //! signing and no new booking. Demo keeper seeds only; no real key, no funds, no custody. Settling
-//! a booked trade reaches custody gate #3 (moving funds / a payment rail) and waits on counsel.
+//! a booked trade reaches custody gate %3 (moving funds / a payment rail) and waits on counsel.
 //!
 //!   rye build pond/apps/commerce_trade_signed.rye -femit-bin=pond/bin/commerce-trade-signed
 //!   pond/bin/commerce-trade-signed selftest

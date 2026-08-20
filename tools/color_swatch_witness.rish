@@ -30,7 +30,7 @@ assert selftest.ok else "color-swatch: selftest exited non-zero -- ${selftest.ou
 let out = trim selftest.out
 say "color-swatch: ${out}"
 
-# Honour the loom REDS #76 named: check every claim with Rishi's native `contains`, never a shell grep over interpolated
+# Honour the loom REDS %76 named: check every claim with Rishi's native `contains`, never a shell grep over interpolated
 # output, so an apostrophe in the selftest prose can never break a check the way it broke the elder color_scale witness.
 assert out contains "GREEN image-color-swatch" else "color-swatch: selftest did not print the GREEN colour-swatch line"
 assert out contains "each ink is color.readable_ink of its own fill" else "color-swatch: an ink was not exactly the readable pick of its own fill"

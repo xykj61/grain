@@ -8,7 +8,7 @@
 # The crux this witness proves is that the elapsed fill is a monotone, data-driven function of the frame index: the count
 # of elapsed pixels is non-decreasing frame to frame and strictly grows from empty (frame zero) to full (the last frame),
 # a scrubbed frame differs from the background only within the scrubber rectangle, and the whole reel round-trips byte for
-# byte through BOTH open codecs; the delta/keyframe mix is REPORTED, never claimed a compression win (REDS #82). No
+# byte through BOTH open codecs; the delta/keyframe mix is REPORTED, never claimed a compression win (REDS %82). No
 # network, no key, no funds -- integer arithmetic maps progress to a pixel width, so no float ever enters.
 #
 # Run from the repository root:

@@ -1,5 +1,5 @@
 # tools/crypto_count_guard_witness.rish — the count-guard loom for the Season G crypto library. The lantern the reds-first law names:
-# a crypto file-count claim drifted from memory twice (REDS #77, then #80 across three living docs at once), so a lantern that fires
+# a crypto file-count claim drifted from memory twice (REDS %77, then #80 across three living docs at once), so a lantern that fires
 # twice becomes a loom. This witness computes the count rather than trusting a typed word, and asserts the measures agree: every
 # per-file witness the suite registers has its crypto/<name>.rye, every crypto/<name>.rye is registered in the suite, and the two
 # counts match. A file and its proof can never disagree again without this going RED.
@@ -14,7 +14,7 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/crypto_count_guard_witness.rish
 
-say "crypto-count-guard: Language EN — the count-guard loom: the number of crypto/*.rye files and the number the suite registers must be one number, computed here rather than typed into prose. Booked by REDS #80 after a file-count claim drifted from memory twice."
+say "crypto-count-guard: Language EN — the count-guard loom: the number of crypto/*.rye files and the number the suite registers must be one number, computed here rather than typed into prose. Booked by REDS %80 after a file-count claim drifted from memory twice."
 say "crypto-count-guard: Style Radiant — one measure, two ways: files on disk and registrations in the choir. When they agree, the library's own front-door count is whatever this witness prints — a source of truth for the spelled numbers in crypto/README.md and docs/CRYPTO.md, so no doc need ever guess again."
 say "crypto-count-guard: Lens TAME — every crypto/<name>.rye is asserted registered in the suite, and every per-file witness the suite registers (excluding the suite itself and this guard) is asserted to carry its .rye — a bijection, not a bare tally — then the two counts are asserted equal. RED names exactly which name broke the bijection. Purely local — no key, no network, no funds, no device."
 

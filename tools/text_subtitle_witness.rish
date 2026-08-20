@@ -9,7 +9,7 @@
 # no-subtitle background as ground truth: a GAP frame equals the background byte for byte, a SHOWN frame differs from the
 # background only within the panel rectangle, within one cue's span the panel is byte-steady from frame to frame, and two
 # different cues render different panels. The whole subtitled reel then round-trips byte for byte through BOTH open
-# codecs; the delta/keyframe mix is REPORTED, never claimed a compression win (REDS #82). No network, no key, no funds.
+# codecs; the delta/keyframe mix is REPORTED, never claimed a compression win (REDS %82). No network, no key, no funds.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/text_subtitle_witness.rish

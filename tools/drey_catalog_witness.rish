@@ -16,7 +16,7 @@
 
 say "drey-catalog: Language EN — DREY7 grows the Mikrophone desk from DREY6's arrival-order log to a content-addressed catalog that keys each recording by the Sha256 of its payload — the tree's own Tablecloth spine, brought to the desk."
 say "drey-catalog: Style Radiant — a desk that knows each recording by what it is keeps it once, hands it back whole to the keeper who asks by name, and never guesses on a miss."
-say "drey-catalog: Lens TAME — deposit deframes verify-before-trust FIRST and computes the address over the PROVEN payload; an address already held spends no bound (idempotent); every refusal is by name (DigestMismatch, CatalogFull); the byte sum is checked in u64 so it cannot wrap; the copy is a plain bounded loop; no disk, no network, no key, no funds (custody gate #2 untouched)."
+say "drey-catalog: Lens TAME — deposit deframes verify-before-trust FIRST and computes the address over the PROVEN payload; an address already held spends no bound (idempotent); every refusal is by name (DigestMismatch, CatalogFull); the byte sum is checked in u64 so it cannot wrap; the copy is a plain bounded loop; no disk, no network, no key, no funds (custody gate %2 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mikrophone/bin/catalog"

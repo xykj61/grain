@@ -11,7 +11,7 @@
 
 The Mikrophone is the Grainphone/Mantrapod hybrid meant to hold in a hand — a field recorder, a civic microphone, a voice terminal — and its founding promise is one line above the venture pitch: ***What forgets, protects.*** A keeper's capture lives in working memory while the power is on and dissolves when the device is set down; nothing waits in the dark to be mined, and what a keeper wishes to carry out, they keep on purpose, committing it deliberately across a single wire.
 
-That promise is not a slogan to paint on a box — it is a **firmware invariant**, and this journey proves it pure in Rye on the bench, long before a board exists, so every surface built on it inherits a session that leaks nothing it was never told to keep. No disk, no network, no key signs, no funds — real hardware (buying a board, a real record button, a real cable) stays **custody gate #2**; serving a recording over a real transport stays the **Comlink-served gate** (Season 1, Journey 2). Everything below is agent-doable, local, and witnessed on metal.
+That promise is not a slogan to paint on a box — it is a **firmware invariant**, and this journey proves it pure in Rye on the bench, long before a board exists, so every surface built on it inherits a session that leaks nothing it was never told to keep. No disk, no network, no key signs, no funds — real hardware (buying a board, a real record button, a real cable) stays **custody gate %2**; serving a recording over a real transport stays the **Comlink-served gate** (Season 1, Journey 2). Everything below is agent-doable, local, and witnessed on metal.
 
 **Prove the whole journey in one command:**
 

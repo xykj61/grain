@@ -7,7 +7,7 @@
 # agreed price: the seller debits cash and credits revenue, the buyer debits expense and credits
 # cash, each book conserving on its own and the pair conserving across the cash line (seller inflow
 # == buyer outflow == price). A non-positive price, a self-trade, and an overlong item name each
-# refuse. It records the facts only — it holds and moves nothing (custody gate #3 stays the gate).
+# refuse. It records the facts only — it holds and moves nothing (custody gate %3 stays the gate).
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/tact_commerce_trade_witness.rish

@@ -115,7 +115,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     if (!eq(widest, "light magenta")) return error.WidestWrong;
     if (widest.len != describe_max) return error.WidestLenWrong;
 
-    // 5. Rule 2: a black family reads its tone-word alone -- a very dark red #200000 (family black) reads "black",
+    // 5. Rule 2: a black family reads its tone-word alone -- a very dark red %200000 (family black) reads "black",
     // never "dark black"; a very light red #ffe0e0 (family white) reads "white", never "light white".
     if (!eq(try describe(try color.parse_hex("#200000"), &buf), "black")) return error.BlackWrong;
     if (!eq(try describe(try color.parse_hex("#ffe0e0"), &buf), "white")) return error.WhiteWrong;

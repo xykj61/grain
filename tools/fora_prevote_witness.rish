@@ -16,7 +16,7 @@
 
 say "fora-prevote: Language EN — FORA22 closes the liveness cost of monotonic terms (Raft §9.6): a candidate must win a practice election, in which no node changes its term, before it may bump its real term — so a partitioned pier's ballooned term can never force a healthy leader to step down."
 say "fora-prevote: Style Radiant — a sky that is well is left well, and a pier long gone rejoins without asking the whole sky to begin again."
-say "fora-prevote: Lens TAME — pre_grants requires leader-silence AND at_least_as_current (FORA21); pre_vote_passes and maybe_start_election are bounded to the roster and never bump the real term on a failed pre-vote; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+say "fora-prevote: Lens TAME — pre_grants requires leader-silence AND at_least_as_current (FORA21); pre_vote_passes and maybe_start_election are bounded to the roster and never bump the real term on a failed pre-vote; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/prevote"

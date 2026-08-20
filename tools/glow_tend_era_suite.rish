@@ -76,6 +76,6 @@ say "era 5/6 GREEN — the shell's ceilings decide, and the elders still match."
 say "era 6/6: the build floor itself — two witnesses at once, and neither ruins the other..."
 let conc = run ["rishi/bin/rishi" "run" "tools/glow_build_concurrency_witness.rish"]
 assert conc.ok else "era: build concurrency RED — ${conc.err}"
-say "era 6/6 GREEN — the lock and the atomic install hold under six lanes (REDS #88)."
+say "era 6/6 GREEN — the lock and the atomic install hold under six lanes (REDS %88)."
 
 say "GREEN: era pure lap — a1 · Rishi walls · R1 socketless legs · the build floor, provable on any host."

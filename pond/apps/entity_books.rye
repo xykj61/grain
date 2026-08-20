@@ -19,7 +19,7 @@
 //! It composes `dimeroll_core`'s own `post_entry` / `fold_journal` / `fold_balance_sheet` over
 //! public API, inventing no new value model. Boundary (custody-first): it records the *facts* of an
 //! entity's books and holds nothing — actually paying a person or moving a fund's assets reaches
-//! custody gate #3 (a payment rail) and waits on licensed counsel. Demo entities only.
+//! custody gate %3 (a payment rail) and waits on licensed counsel. Demo entities only.
 //!
 //!   rye build pond/apps/entity_books.rye -femit-bin=pond/bin/entity-books
 //!   pond/bin/entity-books selftest

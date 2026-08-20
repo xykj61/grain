@@ -21,8 +21,8 @@
 //! (FORA1) — max_piers, the bound the log inherits.
 //!
 //! Purely LOCAL — a bounded in-memory Machine and a Command array on one bench, siloed to constel/, run from inside the jailed
-//! pier. No socket, no network, no keys, no funds, no real client, no real address ever formed (custody gate #2 — real hardware /
-//! any real wire — and gate #4 — real Kumara — both untouched). A served machine reaches the Comlink-served gate; the socket rung
+//! pier. No socket, no network, no keys, no funds, no real client, no real address ever formed (custody gate %2 — real hardware /
+//! any real wire — and gate %4 — real Kumara — both untouched). A served machine reaches the Comlink-served gate; the socket rung
 //! stays the maintainer's hand.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/apply.rye selftest

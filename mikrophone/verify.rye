@@ -11,7 +11,7 @@
 //! rule a deposit and a later verify must share, so integrity is checked by exactly the rule it was keyed by.
 //!
 //! This rung stays purely LOCAL and read-only — `verify` reads the catalog's own store and index, mutating nothing, over
-//! public APIs. No disk, no network, no key signs, no funds (custody gate #2 untouched); the content address stays an
+//! public APIs. No disk, no network, no key signs, no funds (custody gate %2 untouched); the content address stays an
 //! integrity identity, not a signature — verify proves the bytes are unchanged, never who wrote them.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/verify.rye selftest

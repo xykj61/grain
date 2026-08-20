@@ -18,7 +18,7 @@
 
 say "fora-apply: Language EN — FORA19 answers what an agreed log DOES: it drives a replicated state machine, and each client request runs exactly once. Consensus makes the log agreed; it does not make a request run once — that is a separate, provable property (Raft §8), and this rung proves it."
 say "fora-apply: Style Radiant — an agreed log is not yet a service; the one rule that makes a retry harmless — remember the highest seq per client and its answer — stays small enough to hold in a single reading."
-say "fora-apply: Lens TAME — the Machine's session table is bounded to max_clients and the register to max_register; apply_through folds only FORA18's committed prefix so an uncommitted tail never touches the state; an unknown client, a register overflow, and an over-long commit each refuse by name; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real client, no real address ever formed (custody gate #2 and gate #4 untouched)."
+say "fora-apply: Lens TAME — the Machine's session table is bounded to max_clients and the register to max_register; apply_through folds only FORA18's committed prefix so an uncommitted tail never touches the state; an unknown client, a register overflow, and an over-long commit each refuse by name; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real client, no real address ever formed (custody gate %2 and gate %4 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/apply"

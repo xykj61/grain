@@ -7,7 +7,7 @@
 # signature to verify against the attester's known keeper key. A forged signature, a criterion
 # relabeled after signing, and an attester the keyring does not know each refuse — so a steward
 # cannot certify a criterion no party vouched for. Mirrors commerce_trade_signed's signing; composes
-# rung one's certificate parse. Facts only; no funds move, no real key is held (custody gate #3
+# rung one's certificate parse. Facts only; no funds move, no real key is held (custody gate %3
 # untouched); demo keeper seeds only.
 #
 # Run from the repository root:

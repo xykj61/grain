@@ -10,7 +10,8 @@ When a red is found: name it, record it in the ledger with all three fields
 the journey to reds before opening new work.** Cascade across journey, equinox,
 and season boundaries, naming each crossing in the waymark.
 
-- A **red** is something wrong. It books the allocation.
+- A **red** is something wrong. It books the allocation. Cite a row as **`REDS %89`** -- the percent sigil, never `#`,
+  which GitHub's commit renderer would turn into a link to an unrelated pull request (`git-signing.md`).
 - A **ratchet** is something not yet uniform. It turns on touch and books nothing.
 - A fix is closed by a **witness on metal**, never by a claim.
 - Any **breach** the fixes want is designed, named, and **waits for Keaton's word**.

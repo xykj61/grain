@@ -3,7 +3,7 @@
 # bound_mode: enforce = must be <= living_pin_max_bytes (fail hard)
 #             advisory = over-bound reported; emptied is loss, over-bound is tidy debt
 # No backtick characters. Presence tested with git ls-files.
-# Paths repointed work-in-progress -> crux (the git mv rename, REDS #84); headers matched
+# Paths repointed work-in-progress -> crux (the git mv rename, REDS %84); headers matched
 # to the pins as they read now (REMEMBER and REDS swept ASCII-first to '--'; SEAT_MAP rested).
 crux/REMEMBER.md	1000	Living pin -- operator	advisory
 crux/ROADMAP.md	200	The Roadmap	enforce

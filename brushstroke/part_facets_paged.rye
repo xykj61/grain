@@ -18,7 +18,7 @@
 //! keeper reads is exactly the page of parts drawn beneath it — a keeper reading `page 2 of 2` sees the second page's
 //! own parts. A zero-result line carries no page tail (there is no page), so the header never claims `page 1 of 0`.
 //!
-//! A price clause is echoed and compared, never moved (custody gate #3 untouched). No network, no key, no funds.
+//! A price clause is echoed and compared, never moved (custody gate %3 untouched). No network, no key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/part_facets_paged.rye selftest
 

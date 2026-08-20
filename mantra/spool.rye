@@ -1,11 +1,11 @@
-//! mantra/spool.rye — GISM red #73: large artifacts across ordered resins.
+//! mantra/spool.rye — GISM red %73: large artifacts across ordered resins.
 //!
 //! Season 2, Yield: every module stands on real bytes. Beading (mantra/beading.rye)
 //! carries a whole up to one 512-byte resin — a bead-index must itself be a valid
 //! resin, so `max_resin_bytes` is structurally capped and cannot rise. A real
 //! front-door document (SECURITY.md, 2689 B; context/TWO_ROOMS.md, 6079 B) exceeds it,
 //! and Tablecloth's owner-signed catalog refused it `ContentTooLarge` the moment
-//! provenance met a real file (red #73). The honest fix is not a bound-bump but a
+//! provenance met a real file (red %73). The honest fix is not a bound-bump but a
 //! storage layer above beading: a large artifact wound across ordered resins.
 //!
 //! A spool winds ordered lengths of thread into one body. Here it is an ordered
@@ -219,7 +219,7 @@ fn fill(buf: []u8, byte: u8) void {
 }
 
 /// A real document winds across ordered resins and unwinds byte-for-byte — the very
-/// refusal red #73 booked now runs GREEN.
+/// refusal red %73 booked now runs GREEN.
 fn welcome_real(store: *beading.BeadStore, content: []const u8, out: []u8, label: []const u8) !SpoolReport {
     var sp: Spool = .empty();
     const rep = try spool_content(store, content, &sp);
@@ -362,7 +362,7 @@ fn run_spool_selftest() !u8 {
     print("spool: tampered bead, tampered resin index, truncated spool refused whole GREEN\n", .{});
     print("spool: an artifact past {d} B refused ContentTooLarge (the honest ceiling)\n", .{max_content_bytes});
     print("spool: version {s}\n", .{spool_version});
-    print("GREEN: GISM red #73 spool; a large artifact winds across ordered resins and recalls the same bytes.\n", .{});
+    print("GREEN: GISM red %73 spool; a large artifact winds across ordered resins and recalls the same bytes.\n", .{});
     return 0;
 }
 

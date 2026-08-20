@@ -18,7 +18,7 @@
 //! clause surfaces the parser's named refusal before any sort; an offset past the sorted result refuses `BadOffset`
 //! exactly as `part_window` does.
 //!
-//! A price clause COMPARES a recorded cent count and the sort REORDERS by it; nothing is moved (custody gate #3
+//! A price clause COMPARES a recorded cent count and the sort REORDERS by it; nothing is moved (custody gate %3
 //! untouched). No network, no key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/part_facets_sort.rye selftest

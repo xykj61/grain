@@ -10,7 +10,7 @@
 //!
 //! This rung stays the HAVE side only — purely descriptive, purely local, read-only. Describing holdings crosses no
 //! gate; SERVING the payloads a far hand wants reaches the Comlink-served custody gate (Season 1, Journey 2) and waits
-//! for the maintainer's word. No disk, no network, no key signs, no funds (custody gate #2 untouched); the Sha256 over
+//! for the maintainer's word. No disk, no network, no key signs, no funds (custody gate %2 untouched); the Sha256 over
 //! the record region is an integrity check the reader recomputes, not a signature.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/manifest.rye selftest

@@ -17,7 +17,7 @@
 
 say "fora-gossip: Language EN — FORA7 adds broadcast over the FORA6 switchboard: fan a single frame out to the whole constellation at once, every other member's mailbox receiving its own whole copy, the announcer never its own echo — the primitive every gossip and flood protocol stands on."
 say "fora-gossip: Style Radiant — one voice reaches the whole sky at once; a broadcast is many honest deliveries, and the border keeps its watch over every copy."
-say "fora-gossip: Lens TAME — a bounded loop over the switchboard's mailboxes, a stranger's announce refusing NoSuchPier before any mailbox is touched; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+say "fora-gossip: Lens TAME — a bounded loop over the switchboard's mailboxes, a stranger's announce refusing NoSuchPier before any mailbox is touched; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/gossip"

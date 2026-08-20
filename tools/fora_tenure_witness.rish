@@ -16,7 +16,7 @@
 
 say "fora-tenure: Language EN — FORA24 adds CheckQuorum (Raft §6.2/§9.6): a leader counts who answers its heartbeats each window and steps down when its backing falls below a majority, so a minority-partition leader relinquishes on its own rather than lingering."
 say "fora-tenure: Style Radiant — a leader holds its title only while the sky still answers, and lets go the moment it cannot reach the majority that granted it."
-say "fora-tenure: Lens TAME — backing counts the leader plus each answering peer, bounded to the roster; still_commands and should_step_down are exact inverses about the majority threshold (FORA9); siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+say "fora-tenure: Lens TAME — backing counts the leader plus each answering peer, bounded to the roster; still_commands and should_step_down are exact inverses about the majority threshold (FORA9); siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/tenure"

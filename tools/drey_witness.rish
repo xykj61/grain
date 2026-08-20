@@ -15,7 +15,7 @@
 
 say "drey: Language EN — the whole Mikrophone firmware journey (DREY0–DREY13), each rung's witness run in order and asserted GREEN in one command."
 say "drey: Style Radiant — a device that forgets on purpose, proven whole: a capture held only while powered, kept only on a deliberate commit, redacted where a keeper strikes it, carried only when committed, and received only once proven — no byte crossing that a keeper did not need, none kept that cannot be proven."
-say "drey: Lens TAME — every rung is pure Rye on the bench, bounded, invariant-asserted, refusing by name; no disk, no network, no key, no funds. Serving over a real transport stays the Comlink-served gate; real hardware stays custody gate #2."
+say "drey: Lens TAME — every rung is pure Rye on the bench, bounded, invariant-asserted, refusing by name; no disk, no network, no key, no funds. Serving over a real transport stays the Comlink-served gate; real hardware stays custody gate %2."
 
 let session = run ["rishi/bin/rishi" "run" "tools/drey_session_witness.rish"]
 assert session.ok else "drey: DREY0 session witness failed"

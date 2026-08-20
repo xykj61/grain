@@ -1,6 +1,6 @@
-# tools/gism_spool_keyed_witness.rish — GISM red #73 payoff: owner-signed large artifact.
+# tools/gism_spool_keyed_witness.rish — GISM red %73 payoff: owner-signed large artifact.
 #
-# Season 2, Yield. The spool closed red #73; spool_cloth named a large artifact; this
+# Season 2, Yield. The spool closed red %73; spool_cloth named a large artifact; this
 # rung is the payoff — provenance on a large real document. pond/apps/spool_keyed.rye is
 # tablecloth_keyed's sibling for large artifacts: a settled Kumara identity presents its
 # Deed and signs the exact whole content, so only that identity may publish a real
@@ -54,4 +54,4 @@ let keyed_selftest = run ["sh" "-c" "${keyed_bin} selftest 2>&1"]
 assert keyed_selftest.ok else "gism-red73-owned: tablecloth_keyed selftest regressed"
 assert keyed_selftest.out contains "GREEN" else "gism-red73-owned: tablecloth_keyed did not speak GREEN"
 
-say "GREEN: GISM red #73 payoff — a large real document is owner-signed and fetched whole; spool_cloth and tablecloth_keyed stay GREEN."
+say "GREEN: GISM red %73 payoff — a large real document is owner-signed and fetched whole; spool_cloth and tablecloth_keyed stay GREEN."

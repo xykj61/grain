@@ -10,7 +10,7 @@
 # summing to zero); and segregation — an entry added to one entity's journal never changes the
 # other's fold. A self-transfer (SameEntity), a non-positive amount (BadAmount, no journal touched),
 # and a full journal (JournalFull) each refuse. Composes dimeroll_core over public API. Facts only;
-# no funds move, no key is held (custody gate #3 untouched); demo entities only.
+# no funds move, no key is held (custody gate %3 untouched); demo entities only.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/gism_ayre_j8_entity_books_witness.rish

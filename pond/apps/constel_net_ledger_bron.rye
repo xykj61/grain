@@ -24,8 +24,8 @@
 //! a missing net line `MissingNet`, a missing sovereign line `MissingSovereign`, a malformed line
 //! `BadLine`, a bad integer `BadInt`, a bad hex field `BadHex`, an unsafe name `UnsafeName`, a roster
 //! past its bound `TooManyFacts`. Additive — composes rungs one and two over public API; both re-run
-//! GREEN. Demo keeper seeds only — no real key, no funds, no network, no custody (gate #3 payment rail
-//! and gate #4 the maintainer's Kumara untouched; a ledger served over the wire reaches the serve gate).
+//! GREEN. Demo keeper seeds only — no real key, no funds, no network, no custody (gate %3 payment rail
+//! and gate %4 the maintainer's Kumara untouched; a ledger served over the wire reaches the serve gate).
 //!
 //!   rye build pond/apps/constel_net_ledger_bron.rye -femit-bin=pond/bin/constel-net-ledger-bron
 //!   pond/bin/constel-net-ledger-bron selftest

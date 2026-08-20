@@ -217,7 +217,7 @@ sits in exactly one posture toward a secret:
 Every witness runs over **TEST** keys and the RFC's public vectors — no real
 identity key, no network, no funds, no real device. Signing a record, or agreeing
 a session, with the maintainer's **own** identity key stays a **custody gate**
-(gate #3/#4): the agent builds and proves the mathematics; the key stays Keaton's
+(gate %3/%4): the agent builds and proves the mathematics; the key stays Keaton's
 hand. `ed25519_sign.rye`'s `derive_public(seed)` and `sign(seed, msg)` take a
 caller-supplied seed — a test seed is not the maintainer's identity key.
 

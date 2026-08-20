@@ -20,7 +20,7 @@
 //!   * the timecode keeps its own invariant under composition -- the badge is byte-steady within a whole second and
 //!     changes at each second boundary, exactly as it proves alone.
 //! The whole HUD reel then round-trips byte for byte through BOTH open codecs, and the delta/keyframe mix is REPORTED,
-//! never claimed a compression win (REDS #82). Pure composition over public APIs (the background verbs, paint_scrubber,
+//! never claimed a compression win (REDS %82). Pure composition over public APIs (the background verbs, paint_scrubber,
 //! paint_timecode, both codecs); no new storage, codec, palette, glyph, or font. No network, no key, no funds -- the
 //! player overlay a surface draws under live video, on our own open geometry.
 //!
@@ -309,7 +309,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     }
 
     // The delta/keyframe mix is a REPORTED measurement -- the moving block, the growing fill, and the ticking clock make
-    // some frames delta cheaply and some not, so the count is shown, never asserted exact (REDS #82).
+    // some frames delta cheaply and some not, so the count is shown, never asserted exact (REDS %82).
     const keyframes: u32 = frame_count - gfd_res.delta_frames;
     print("GREEN image-player-hud: scrubber + timecode composed over {d} frames of {d}x{d} moving video; the two overlays disjoint (a bar clashing the badge refused HudOverlaysOverlap), the HUD touching only the badge and the bar; scrubber fill grows {d}->{d} px empty->full, timecode {d} ticks + {d} steady pairs -- each overlay keeps its own invariant under composition; round-trip byte-identical through BOTH codecs; gfd1 adaptive mix {d} deltas + {d} keyframes ({d} bytes vs gfv1 {d}); gfv1 stream refused by gfd1 decoder as BadMagic\n", .{
         frame_count, hud_frame_w, hud_frame_h, 0, inner_w * inner_h, ticks, steadies, gfd_res.delta_frames, keyframes, gfd_res.len, gfv_res.len,

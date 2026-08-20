@@ -19,7 +19,7 @@
 
 say "fora-snapshot: Language EN — FORA14 compacts FORA12's log: a deterministic, order-sensitive fold folds the committed prefix into a snapshot and reclaims the room, so a bounded log serves an unbounded history and — because two piers folding the same committed prefix reach the same snapshot — never forks across the compaction."
 say "fora-snapshot: Style Radiant — a log that could hold only sixty-four decisions now folds its settled history into a single summary and keeps writing; the one-value-per-index law and the missing vowel carry the no-fork guarantee straight through the fold."
-say "fora-snapshot: Lens TAME — the tail is bounded (TailFull at max_tail) and append-only; compact does bounded work and preserves the effective length and state; a failed decree leaves the log unchanged; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+say "fora-snapshot: Lens TAME — the tail is bounded (TailFull at max_tail) and append-only; compact does bounded work and preserves the effective length and state; a failed decree leaves the log unchanged; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/snapshot"

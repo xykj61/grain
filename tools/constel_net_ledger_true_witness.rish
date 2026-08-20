@@ -10,7 +10,7 @@
 # tools/fixtures/constel_net_ledger_truth.awk reads the same file independently; the witness asserts the
 # app's triple equals awk's — two tools, one answer (3 50 1). The fixture is genuinely reproducible (the
 # generator re-emits identical bytes) and the record is a genuine, law-safe ledger. Demo keeper seeds only
-# — no key, no funds, no network, no custody (gate #3 and gate #4 untouched).
+# — no key, no funds, no network, no custody (gate %3 and gate %4 untouched).
 #
 # Law:   active-designing/20260813-022222_constel-test-network-naming-law.md
 # Scope: active-designing/20260813-030005_constel-devnet-ledger-exploration.md

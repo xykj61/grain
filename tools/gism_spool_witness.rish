@@ -1,6 +1,6 @@
-# tools/gism_spool_witness.rish — GISM red #73: the spool (chunking storage).
+# tools/gism_spool_witness.rish — GISM red %73: the spool (chunking storage).
 #
-# Season 2, Yield: every module stands on real bytes. GISM Journey 6 booked red #73 —
+# Season 2, Yield: every module stands on real bytes. GISM Journey 6 booked red %73 —
 # a real front-door document (SECURITY.md 2689 B; context/TWO_ROOMS.md 6079 B) refuses
 # ContentTooLarge because it does not fit one 512-byte resin, and the fix is not a
 # bound-bump (max_resin_bytes is structurally capped) but a storage layer above beading.
@@ -51,4 +51,4 @@ let beading_selftest = run ["sh" "-c" "${beading_bin} selftest 2>&1"]
 assert beading_selftest.ok else "gism-red73: beading selftest regressed"
 assert beading_selftest.out contains "GREEN" else "gism-red73: beading did not speak GREEN"
 
-say "GREEN: GISM red #73 — the spool winds large real documents across ordered resins and recalls the same bytes; beading stays GREEN."
+say "GREEN: GISM red %73 — the spool winds large real documents across ordered resins and recalls the same bytes; beading stays GREEN."

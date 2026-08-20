@@ -32,7 +32,7 @@ assert selftest.ok else "color-readable: selftest exited non-zero -- ${selftest.
 let out = trim selftest.out
 say "color-readable: ${out}"
 
-# Honour the loom REDS #76 named: check every claim with Rishi's native `contains`, never a shell grep over interpolated
+# Honour the loom REDS %76 named: check every claim with Rishi's native `contains`, never a shell grep over interpolated
 # output, so punctuation in the selftest prose can never break a check.
 assert out contains "GREEN image-color-readable" else "color-readable: selftest did not print the GREEN color-readable line"
 assert out contains "returns unchanged" else "color-readable: an already-legible color was not kept"

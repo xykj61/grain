@@ -19,8 +19,8 @@
 //! (FORA9) — the majority threshold; constel/roster.rye (FORA1) — the bound.
 //!
 //! Purely LOCAL — a bounded pre-vote count and per-peer leader-contact flags on one bench, siloed to constel/, run from inside the
-//! jailed pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate #2 — real hardware / any real
-//! wire — and gate #4 — real Kumara — both untouched). A served pre-vote reaches the Comlink-served gate; the socket rung stays
+//! jailed pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate %2 — real hardware / any real
+//! wire — and gate %4 — real Kumara — both untouched). A served pre-vote reaches the Comlink-served gate; the socket rung stays
 //! the maintainer's hand.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/prevote.rye selftest

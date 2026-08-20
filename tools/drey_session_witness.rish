@@ -19,7 +19,7 @@
 
 say "drey-session: Language EN — DREY0 opens Season A's Mikrophone firmware journey: a session buffer that holds a capture only while powered, persists nothing except on a deliberate commit, and provably dissolves on power-down."
 say "drey-session: Style Radiant — the device's founding promise ('What forgets, protects') proven pure in Rye before any metal, so every surface built on it inherits a session that leaks nothing it was never told to keep."
-say "drey-session: Lens TAME — two bounded fixed buffers, no heap outliving the power; every verb asserts positive invariants; NotPowered, BufferFull, NothingToCommit, AlreadyCommitted each refuse by name before a byte moves; power_down zeroes the working buffer whole; no disk, no network, no key, no funds (custody gate #2 untouched)."
+say "drey-session: Lens TAME — two bounded fixed buffers, no heap outliving the power; every verb asserts positive invariants; NotPowered, BufferFull, NothingToCommit, AlreadyCommitted each refuse by name before a byte moves; power_down zeroes the working buffer whole; no disk, no network, no key, no funds (custody gate %2 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mikrophone/bin/session"

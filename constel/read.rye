@@ -25,7 +25,7 @@
 //!
 //! Purely LOCAL — a bounded in-memory Machine, a committed Command array, and a TermTable on one bench, siloed to constel/, run
 //! from inside the jailed pier. No socket, no network, no keys, no funds, no real client, no real address ever formed (custody
-//! gate #2 — real hardware / any real wire — and gate #4 — real Kumara — both untouched). A served read reaches the Comlink-served
+//! gate %2 — real hardware / any real wire — and gate %4 — real Kumara — both untouched). A served read reaches the Comlink-served
 //! gate; the socket rung stays the maintainer's hand.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run constel/read.rye selftest

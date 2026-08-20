@@ -22,7 +22,7 @@
 
 say "fora-reconfig: Language EN — FORA13 lets the constellation add and lose piers without a fork: a transition commits only with a strict majority in BOTH the old and new membership, so no two disjoint groups can ever each decide a conflicting value across the switch."
 say "fora-reconfig: Style Radiant — a sky that can never change its stars is a painting, not a constellation; joint consensus lets Constel reconfigure with the same no-fork promise the fixed log already keeps."
-say "fora-reconfig: Lens TAME — the decision is bounded (majority in each config, refusing NoJointMajority below either), every config non-empty by construction (EmptyConfig), a pier votes once (DoubleVote) and only if it participates (NotInEitherConfig); the round interleaves respond and hear so a full transition never risks ChannelFull; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+say "fora-reconfig: Lens TAME — the decision is bounded (majority in each config, refusing NoJointMajority below either), every config non-empty by construction (EmptyConfig), a pier votes once (DoubleVote) and only if it participates (NotInEitherConfig); the round interleaves respond and hear so a full transition never risks ChannelFull; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/reconfig"

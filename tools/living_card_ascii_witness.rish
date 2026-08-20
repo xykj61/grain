@@ -1,6 +1,6 @@
-# tools/living_card_ascii_witness.rish -- the operator card stays plain 7-bit ASCII (REDS #83).
+# tools/living_card_ascii_witness.rish -- the operator card stays plain 7-bit ASCII (REDS %83).
 #
-# The prevention REDS #83 booked, now on metal. crux/REMEMBER.md triple-encoded itself into
+# The prevention REDS %83 booked, now on metal. crux/REMEMBER.md triple-encoded itself into
 # 2,797 runs of capital-A-tilde mojibake before a reader caught it (a tool read the UTF-8 card
 # as Latin-1 and rewrote it, each later edit re-encoding the mangled bytes another layer). The
 # fix was a byte-exact repair; the guard is how it never happens unseen again -- it catches the
@@ -32,4 +32,4 @@ let red = run ["sh" "tools/fixtures/living_card_ascii_scan.sh" "prove-red"]
 assert (red.ok == false) else "living-card-ascii: prove-red must refuse"
 assert red.out contains "RED_living_card_non_ascii_caught" else "living-card-ascii: prove-red want the mojibake control caught"
 
-say "GREEN: living-card-ascii -- operator card pure ASCII, REDS pure ASCII, legacy pins ratcheted, mojibake control caught (REDS #83 prevention on metal)."
+say "GREEN: living-card-ascii -- operator card pure ASCII, REDS pure ASCII, legacy pins ratcheted, mojibake control caught (REDS %83 prevention on metal)."

@@ -16,7 +16,7 @@
 //! It composes rung one's `transfer` over the Kumara signing the settlement already witnessed
 //! (`kumara.rye`, the same layout `commerce_trade_signed` signs trades with) — inventing no new
 //! signing and no new booking. Demo steward seeds only; no real key, no funds, no custody. Actually
-//! moving a fund's assets reaches custody gate #3 (a payment rail) and waits on licensed counsel.
+//! moving a fund's assets reaches custody gate %3 (a payment rail) and waits on licensed counsel.
 //!
 //!   rye build pond/apps/entity_books_signed.rye -femit-bin=pond/bin/entity-books-signed
 //!   pond/bin/entity-books-signed selftest

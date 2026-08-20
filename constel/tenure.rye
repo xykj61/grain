@@ -21,7 +21,7 @@
 //! constel/roster.rye (FORA1) — max_piers, the bound the heartbeat poll runs within.
 //!
 //! Purely LOCAL — bounded per-peer ack flags and a count on one bench, siloed to constel/, run from inside the jailed pier. No
-//! socket, no network, no keys, no funds, no real address ever formed (custody gate #2 — real hardware / any real wire — and gate
+//! socket, no network, no keys, no funds, no real address ever formed (custody gate %2 — real hardware / any real wire — and gate
 //! #4 — real Kumara — both untouched). A served heartbeat reaches the Comlink-served gate; the socket rung stays the maintainer's
 //! hand.
 //!

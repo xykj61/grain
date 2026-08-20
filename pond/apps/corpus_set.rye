@@ -14,7 +14,7 @@
 //! bound (whole-document bytes · block count · block text · heading count) is stressed
 //! most by whichever member is extreme on that axis; the set is proven by proving its
 //! extreme. The set's largest single block measures ~1312 B — past the 512-byte bound
-//! the demo literals were tuned to fit, and inside the 2048-byte bound Yield red #72
+//! the demo literals were tuned to fit, and inside the 2048-byte bound Yield red %72
 //! raised in rung one — so this set genuinely exercises the raised bound, not a toy.
 //!
 //! No Yield red surfaced this round: every real member fits every raised bound with
@@ -66,7 +66,7 @@ const set = [_]Doc{
 // The corpus set never exceeds this — a bounded body, far inside a reader's budget.
 const max_set: u32 = 8;
 
-// The old block-text bound the demo literals were tuned to fit, before Yield red #72
+// The old block-text bound the demo literals were tuned to fit, before Yield red %72
 // raised it in rung one. Named only to prove the set's extreme exceeds it (a real
 // body, not a toy) — never a live limit.
 const old_max_block_text: u32 = 512;

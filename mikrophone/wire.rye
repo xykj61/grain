@@ -12,7 +12,7 @@
 //! wire carries only what a deliberate commit kept. Deframing is verify-before-trust, the same discipline the Open Image
 //! artifact and the constellation Deed already keep: every check — magic, version, declared length against the bound,
 //! truncation, and a Sha256 digest over the payload — runs BEFORE the payload slice is returned. No disk, no network, no
-//! key signs, no funds move (custody gate #2 — real hardware and any real wire — untouched). The Sha256 digest is an
+//! key signs, no funds move (custody gate %2 — real hardware and any real wire — untouched). The Sha256 digest is an
 //! integrity check the far side recomputes itself, not a signature; a signed carry is a later, gated rung.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/wire.rye selftest

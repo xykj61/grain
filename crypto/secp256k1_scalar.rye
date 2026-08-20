@@ -25,7 +25,7 @@
 //! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity. A scalar is an integer, not a secret and not a
 //! signature: this file holds no key, signs nothing, and calls no std.crypto in the primitive. In ECDSA VERIFICATION every value here — r, s, z,
 //! and the inverse — is PUBLIC, so the variable-time reduction and exponentiation leak no secret, the same posture the point ladder carries; a
-//! constant-time scalar field for secret scalars (ECDSA signing, gate #3/#4) stays the Season's named horizon. Parity is proven at selftest
+//! constant-time scalar field for secret scalars (ECDSA signing, gate %3/%4) stays the Season's named horizon. Parity is proven at selftest
 //! against algebraic known-answers anyone can check (0 reduces to 0, n reduces to 0, a·1 = a, a·a⁻¹ = 1), and against Zig's own
 //! std.crypto.ecc.Secp256k1.scalar — reduce64, mul, Scalar.invert, rejectNonCanonical — byte-for-byte and verdict-for-verdict across a spread.
 //!

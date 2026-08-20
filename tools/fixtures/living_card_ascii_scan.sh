@@ -1,8 +1,8 @@
 #!/bin/sh
-# Living-card ASCII guard (REDS #83) -- the operator card stays plain 7-bit ASCII.
+# Living-card ASCII guard (REDS %83) -- the operator card stays plain 7-bit ASCII.
 #
 # The operator card corrupted itself once: crux/REMEMBER.md silently triple-encoded
-# into 2,797 runs of capital-A-tilde mojibake before anyone caught it (REDS #83),
+# into 2,797 runs of capital-A-tilde mojibake before anyone caught it (REDS %83),
 # because a tool read the UTF-8 file as Latin-1 and rewrote it, and each later edit
 # re-encoded the mangled bytes another layer. This guard catches the NEXT mojibake on
 # the lap it enters, not months later -- measurement beats memory.

@@ -16,7 +16,7 @@
 
 say "fora-switchboard: Language EN — FORA6 stands a switchboard, one mailbox per fake pier, the first rung that lets three or more piers meet through one shared medium; its one new concern is routing a frame to the right pier by name — the whole local constellation, proven pure before any socket."
 say "fora-switchboard: Style Radiant — the switchboard is the only thing two piers share; each still holds only its own view and reads only its own mail, and the FORA3 gates keep the only trust."
-say "fora-switchboard: Lens TAME — a bounded array of fixed-buffer mailboxes, every fault failing closed by name (NoSuchPier · NeedMoreBytes · ChannelFull); siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+say "fora-switchboard: Lens TAME — a bounded array of fixed-buffer mailboxes, every fault failing closed by name (NoSuchPier · NeedMoreBytes · ChannelFull); siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/switchboard"

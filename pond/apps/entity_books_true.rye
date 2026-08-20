@@ -16,7 +16,7 @@
 //! In-app the fold's own conservation and balance hold (the accounting identity on real bytes).
 //!
 //! It composes rung one's `Entity` and `dimeroll_core`'s parse and fold over public API, inventing
-//! no new value model. Facts only; reads no network; demo custody untouched (gate #3).
+//! no new value model. Facts only; reads no network; demo custody untouched (gate %3).
 //!
 //!   rye build pond/apps/entity_books_true.rye -femit-bin=pond/bin/entity-books-true
 //!   pond/bin/entity-books-true measure   # prints "<entries> <amount_sum> <cash_net>" for the awk cross-check

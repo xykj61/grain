@@ -18,7 +18,7 @@
 
 say "fora-elect: Language EN — FORA10 spends FORA9's intersection property: because any two strict-majority quorums of a constellation must share a pier and a pier votes exactly once, at most one candidate can ever reach a majority, so a leader — once elected — is unique."
 say "fora-elect: Style Radiant — a decision that names a leader, or honestly names no one; a split elects no one, a minority never leads, and a lone pier never mistakes itself for the sky."
-say "fora-elect: Lens TAME — elect asserts no second candidate also reaches the majority (the safety made checkable per ballot); the round interleaves respond+hear so the caller's mailbox holds one reply at a time (never ChannelFull); siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+say "fora-elect: Lens TAME — elect asserts no second candidate also reaches the majority (the safety made checkable per ballot); the round interleaves respond+hear so the caller's mailbox holds one reply at a time (never ChannelFull); siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/elect"

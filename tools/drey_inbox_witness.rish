@@ -14,7 +14,7 @@
 
 say "drey-inbox: Language EN — DREY4 gives the Mikrophone's receiving hand its discipline: a carried frame is kept only once it is proven whole."
 say "drey-inbox: Style Radiant — a carry has two hands; the device sends only what was kept on purpose, and the desk keeps only what it has proven whole."
-say "drey-inbox: Lens TAME — accept deframes before it writes a byte; any wire error propagates by name and leaves the inbox exactly as it was (a bad frame neither lands nor erases); clear zeroes the buffer whole; no disk, no network, no key, no funds (custody gate #2 untouched)."
+say "drey-inbox: Lens TAME — accept deframes before it writes a byte; any wire error propagates by name and leaves the inbox exactly as it was (a bad frame neither lands nor erases); clear zeroes the buffer whole; no disk, no network, no key, no funds (custody gate %2 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mikrophone/bin/inbox"

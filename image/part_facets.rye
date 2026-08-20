@@ -19,7 +19,7 @@
 //! hand-built empty group is a match-NONE, the OR identity), and DISTRIBUTION ((a|b) AND c equals (a AND c) union
 //! (b AND c) — a free check against HUNK78 run twice).
 //!
-//! A price clause COMPARES a recorded cent count; nothing is moved (custody gate #3 untouched). No network, no key,
+//! A price clause COMPARES a recorded cent count; nothing is moved (custody gate %3 untouched). No network, no key,
 //! no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/part_facets.rye selftest

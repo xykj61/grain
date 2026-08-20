@@ -10,7 +10,7 @@
 //! pause, a stop. This rung proves that control discipline pure: four states (idle · recording · paused · stopped) and a
 //! small set of transitions, with the single invariant that `feed` reaches `session.capture` ONLY in the recording
 //! state. The forgetting promise deepens — a paused or stopped recorder accepts nothing, and only what landed during a
-//! live recording can ever be committed and carried. No disk, no network, no key signs, no funds (custody gate #2 —
+//! live recording can ever be committed and carried. No disk, no network, no key signs, no funds (custody gate %2 —
 //! real hardware, a real record button — untouched).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/recorder.rye selftest

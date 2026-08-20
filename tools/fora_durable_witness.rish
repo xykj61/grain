@@ -15,7 +15,7 @@
 
 say "fora-durable: Language EN — FORA30 closes the durability blind spot every earlier rung left open: Raft's Figure 2 requires currentTerm, votedFor, and log[] on STABLE STORAGE before a pier answers an RPC, because election safety rests on a pier never voting twice in one term."
 say "fora-durable: Style Radiant — a pier remembers its one vote through the dark of a power cycle; a torn image restores no half-truth; the sky that slept wakes up exactly itself."
-say "fora-durable: Lens TAME — record_vote refuses StaleTerm/AlreadyVoted over public APIs; save/load are bounded to max_image_bytes; load is verify-before-trust (magic, version, log_len<=max_entries, Sha256) refusing CorruptImage/ImageTooBig at the first fault; the store is a plain in-memory byte buffer, no real fd; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+say "fora-durable: Lens TAME — record_vote refuses StaleTerm/AlreadyVoted over public APIs; save/load are bounded to max_image_bytes; load is verify-before-trust (magic, version, log_len<=max_entries, Sha256) refusing CorruptImage/ImageTooBig at the first fault; the store is a plain in-memory byte buffer, no real fd; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/durable"

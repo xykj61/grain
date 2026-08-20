@@ -21,7 +21,7 @@
 //! Stands on: constel/repair.rye (FORA17) — the TermedLog it persists; constel/roster.rye (FORA1) — max_piers, the slot bound.
 //!
 //! Purely LOCAL — the "stable storage" is a plain in-memory byte buffer on the bench: no real file descriptor, no fsync, no socket,
-//! no network, no keys, no funds, no real address ever formed (custody gate #2 — real hardware / any real wire — and gate #4 — real
+//! no network, no keys, no funds, no real address ever formed (custody gate %2 — real hardware / any real wire — and gate %4 — real
 //! Kumara — both untouched). The rung that backs this buffer with a real kernel fd is the same socket gate that stops for the
 //! maintainer's word.
 //!
@@ -318,7 +318,7 @@ fn run_selftest() !u8 {
         "can raise a second leader in one term; a new term clears the vote across the restart, a stale term still refused; the " ++
         "committed log survives whole and in order; a flipped digest, a wild log_len, a short buffer, a bad magic each fail closed " ++
         "(CorruptImage / ImageTooBig); term never regresses; bounded to a full max_entries log within max_image_bytes — purely " ++
-        "local, no real fd, no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 " ++
+        "local, no real fd, no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 " ++
         "untouched)\n", .{});
     return 0;
 }

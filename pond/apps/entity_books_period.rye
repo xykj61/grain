@@ -17,7 +17,7 @@
 //!
 //! It composes rung one's `Entity` fold and `dimeroll_core`'s `fold_balance_sheet` over public API,
 //! inventing no new value model. It reads no network — the serve transport is the Comlink-served gate
-//! (Keaton's hand). Demo entities only; facts only (custody gate #3 untouched).
+//! (Keaton's hand). Demo entities only; facts only (custody gate %3 untouched).
 //!
 //!   rye build pond/apps/entity_books_period.rye -femit-bin=pond/bin/entity-books-period
 //!   pond/bin/entity-books-period selftest

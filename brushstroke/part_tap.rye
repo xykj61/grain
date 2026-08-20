@@ -17,7 +17,7 @@
 //!
 //! The returned `PartRef` borrows the caller's long-lived catalog, never the local sub-catalog whose sheet is shared but
 //! whose storage is a stack frame — so a detail page reads a live handle. No network, no key, no funds; a price is a
-//! fact COMPARED, never moved (custody gate #3 untouched).
+//! fact COMPARED, never moved (custody gate %3 untouched).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/part_tap.rye selftest
 

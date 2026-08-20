@@ -1,8 +1,8 @@
-//! pond/apps/spool_keyed.rye — GISM red #73 follow: the owner-signed large-artifact store.
+//! pond/apps/spool_keyed.rye — GISM red %73 follow: the owner-signed large-artifact store.
 //!
-//! Season 2, Yield. The spool (mantra/spool.rye) closed red #73 by winding a large
+//! Season 2, Yield. The spool (mantra/spool.rye) closed red %73 by winding a large
 //! artifact across ordered resins; spool_cloth (pond/apps/spool_cloth.rye) bound a human
-//! name to a whole spool. This rung is the true payoff red #73 was reaching for:
+//! name to a whole spool. This rung is the true payoff red %73 was reaching for:
 //! **provenance on a large real document**. It is tablecloth_keyed's sibling for large
 //! artifacts — a name does not merely pin a large document's bytes; a settled Kumara
 //! **identity** vouches for which bytes, and only that identity may publish under the
@@ -17,7 +17,7 @@
 //! all, and a tampered large artifact refuses before a single resin is wound. It invents
 //! no signing and no storage: it composes tablecloth_keyed's public signing/verify
 //! helpers (`sign_publication`, `digest_of`, `verify_receipt`) over spool_cloth's naming
-//! layer over the spool. Demo keeper seeds only; no real key, no custody (gate #4
+//! layer over the spool. Demo keeper seeds only; no real key, no custody (gate %4
 //! untouched).
 //!
 //!   rye build pond/apps/spool_keyed.rye -femit-bin=pond/bin/spool-keyed
@@ -268,7 +268,7 @@ fn run_spool_keyed_selftest() !u8 {
     print("spool_keyed: SECURITY.md ({d} B) and TWO_ROOMS.md ({d} B) wound across resins, owner-signed, fetched byte-for-byte, resolving to planet and star.\n", .{ np, ns });
     print("spool_keyed: every refusal holds — a non-owner (no resin wound), a forged signature, a content-mismatched signature, and a tampered bead after an honest publish.\n", .{});
     print("spool_keyed: version {s}\n", .{spool_keyed_version});
-    print("GREEN: a large real document is owner-signed — provenance on a document too large for one resin, the payoff red #73 was reaching for.\n", .{});
+    print("GREEN: a large real document is owner-signed — provenance on a document too large for one resin, the payoff red %73 was reaching for.\n", .{});
     return 0;
 }
 

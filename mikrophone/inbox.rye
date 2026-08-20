@@ -12,7 +12,7 @@
 //! and copies the payload into a bounded inbox ONLY on a clean deframe — any wire error propagates by name and the inbox
 //! is left exactly as it was, so a bad frame neither lands nor erases a prior keep. `clear` forgets whole, zeroing the
 //! buffer, so nothing once kept can be recovered — the forgetting promise on the Desk side. No disk, no network, no key
-//! signs, no funds (custody gate #2 — real hardware, a real desk, a real cable — untouched). Verifying the frame's
+//! signs, no funds (custody gate %2 — real hardware, a real desk, a real cable — untouched). Verifying the frame's
 //! Sha256 stays an integrity check the receiver recomputes, not a signature; an authenticated sender is a later rung.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/inbox.rye selftest

@@ -1,6 +1,6 @@
-# tools/gism_spool_cloth_witness.rish — GISM red #73 follow: naming over the spool.
+# tools/gism_spool_cloth_witness.rish — GISM red %73 follow: naming over the spool.
 #
-# Season 2, Yield. mantra/spool.rye closed red #73 by winding a large artifact across
+# Season 2, Yield. mantra/spool.rye closed red %73 by winding a large artifact across
 # ordered resins; this rung is its naming layer — Tablecloth's sibling for large
 # artifacts. pond/apps/spool_cloth.rye binds a human name to a whole spool, so a real
 # front-door document too large for one resin is stored under a name and fetched back
@@ -47,4 +47,4 @@ let spool_selftest = run ["sh" "-c" "${spool_bin} selftest 2>&1"]
 assert spool_selftest.ok else "gism-red73-name: spool selftest regressed"
 assert spool_selftest.out contains "GREEN" else "gism-red73-name: spool did not speak GREEN"
 
-say "GREEN: GISM red #73 naming — a large real document gets a name over ordered resins; the spool stays GREEN."
+say "GREEN: GISM red %73 naming — a large real document gets a name over ordered resins; the spool stays GREEN."

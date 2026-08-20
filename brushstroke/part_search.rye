@@ -15,7 +15,7 @@
 //! malformed line surfaces the parser's own named refusal rather than drawing the wrong shelf.
 //!
 //! A price is drawn as a FACT formatted for reading and matched by a query that COMPARES a recorded cent count;
-//! nothing is moved (custody gate #3 untouched). No network, no key, no funds.
+//! nothing is moved (custody gate %3 untouched). No network, no key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/part_search.rye selftest
 

@@ -23,7 +23,7 @@
 //!
 //! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device. This rung DOES hold a secret scalar and DOES sign — but only
 //! over TEST seeds a selftest generates or the caller supplies; a test seed is not the maintainer's identity key. Signing with the maintainer's own
-//! identity key stays its own separate, GATED round (gate #3/#4): this file never reads a real key, never touches the network, and the design's own
+//! identity key stays its own separate, GATED round (gate %3/%4): this file never reads a real key, never touches the network, and the design's own
 //! word is that "the library is engineering" while "signing with the maintainer's own identity key stays the custody gate." The secret scalar makes
 //! the whole path timing-sensitive: this rung is authored for correctness and PARITY first — a constant-time signing path (constant-time ladder,
 //! reduction, and multiply-add over secret data) is the Season's named timing-safety HORIZON, wanting measurement rather than a claim, exactly the

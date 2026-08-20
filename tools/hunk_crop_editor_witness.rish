@@ -27,7 +27,7 @@ let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "hunk-crop-editor: selftest exited non-zero — ${selftest.out}"
 
 # The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
-# single-quoted string, so an apostrophe or brace in the GREEN line can never break a check (the loom for REDS #76).
+# single-quoted string, so an apostrophe or brace in the GREEN line can never break a check (the loom for REDS %76).
 let out = trim selftest.out
 say "hunk-crop-editor: ${out}"
 

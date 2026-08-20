@@ -12,7 +12,7 @@
 //! This rung stays purely LOCAL — `serve` yields the frame bytes; it moves them over no transport. Producing a frame
 //! from a held recording crosses no gate; serving those bytes over a real network to a real far hand reaches the
 //! Comlink-served custody gate (Season 1, Journey 2) and waits for the maintainer's word. No disk, no network, no key
-//! signs, no funds (custody gate #2 untouched); the content address stays an integrity identity, not a signature.
+//! signs, no funds (custody gate %2 untouched); the content address stays an integrity identity, not a signature.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/serve.rye selftest
 

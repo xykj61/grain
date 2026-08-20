@@ -9,8 +9,8 @@
 //! Stands on: constel/handshake.rye (FORA2) — the three steps; constel/wire.rye (FORA3) — the frame the steps cross on.
 //!
 //! Purely LOCAL — a bounded exchange over in-memory frame buffers on one bench, siloed to constel/, run from inside the
-//! jailed pier. No socket, no network, no Comlink transport, no keys, no funds, no real address ever formed (custody gate #2
-//! — real hardware / any real wire — and gate #4 — real Kumara, real network — both untouched). The naming law's border in
+//! jailed pier. No socket, no network, no Comlink transport, no keys, no funds, no real address ever formed (custody gate %2
+//! — real hardware / any real wire — and gate %4 — real Kumara, real network — both untouched). The naming law's border in
 //! wire.rye guards every crossing, so a vowel-bearing (real-@p-shaped) party cannot enter the exchange even over the wire.
 //! The byte queue between two truly separate piers, and the real socket, stay their own later rounds (FORA5, FORA6); this
 //! hands them a conversation whose logic is already proven.

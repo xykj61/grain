@@ -113,7 +113,7 @@ The eventual "shedding" of the elder descriptor would be a **deep git-history de
 
 ### Shed complete — old-waymark session logs (waymark debride `20260818`)
 
-**Executed (`20260818`, Keaton's word — "do it all").** The waymark debride carried the dead elder marks out of the living tree, the dated session logs, and all git history (deep debride, custody gate #1). The ~80 old-waymark dated logs were removed rather than rewritten; the living ladders (DREY · FORA · WADE · LOWE) and the module **Dimeroll** carry only their standing names. Canonical naming truth is sealed and self-verifying in [`waymark-registry.bron`](waymark-registry.bron), so no waymark fact was lost. The REDS ledger and `crux/CAIRNS.md` walk-back rows stayed live — the reds record and recovery markers are not shed.
+**Executed (`20260818`, Keaton's word — "do it all").** The waymark debride carried the dead elder marks out of the living tree, the dated session logs, and all git history (deep debride, custody gate %1). The ~80 old-waymark dated logs were removed rather than rewritten; the living ladders (DREY · FORA · WADE · LOWE) and the module **Dimeroll** carry only their standing names. Canonical naming truth is sealed and self-verifying in [`waymark-registry.bron`](waymark-registry.bron), so no waymark fact was lost. The REDS ledger and `crux/CAIRNS.md` walk-back rows stayed live — the reds record and recovery markers are not shed.
 
 ### Pending molt — Bron → Kyri (by molt, not rewrite · opens after JARL)
 

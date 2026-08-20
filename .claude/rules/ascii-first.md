@@ -1,8 +1,8 @@
 # ASCII-First -- plain ASCII for documents and commits
 
-**Seated:** `20260816.214652` on Keaton's word - **Status:** Living - **Kin:** [`reds-first`](reds-first.md) - [`standfast`](../foundations/20260816-214652_standfast-the-stopped-line.md) - REDS #83
+**Seated:** `20260816.214652` on Keaton's word - **Status:** Living - **Kin:** [`reds-first`](reds-first.md) - [`standfast`](../foundations/20260816-214652_standfast-the-stopped-line.md) - REDS %83
 
-Write every new document, code comment, and commit message in **plain 7-bit ASCII**. A non-ASCII character no reader needs is a corruption waiting to compound -- REMEMBER.md silently triple-encoded itself into 2,797 runs of unreadable mojibake bytes (the classic capital-A-tilde garble) before anyone caught it (REDS #83), because a tool read the UTF-8 file as Latin-1 and rewrote it. ASCII-first is how that never happens again.
+Write every new document, code comment, and commit message in **plain 7-bit ASCII**. A non-ASCII character no reader needs is a corruption waiting to compound -- REMEMBER.md silently triple-encoded itself into 2,797 runs of unreadable mojibake bytes (the classic capital-A-tilde garble) before anyone caught it (REDS %83), because a tool read the UTF-8 file as Latin-1 and rewrote it. ASCII-first is how that never happens again.
 
 ## The substitutions
 
@@ -28,7 +28,7 @@ A specific, **explicitly-named set of work rounds** may use non-ASCII when it is
 
 ## Prevention, not just cure
 
-A living-card non-ASCII witness stands (REDS #83): `tools/living_card_ascii_witness.rish` over `tools/fixtures/living_card_ascii_scan.sh` greps the operator card and the REDS ledger for bytes above 0x7F and fails hard if any appear (the ENFORCE roster), while the pins still holding legacy dated non-ASCII are reported as an advisory ratchet to sweep down on touch rather than force-rewritten. A planted mojibake control proves the RED path on metal. Measurement beats memory -- the guard catches the next mojibake on the lap it enters, not months later.
+A living-card non-ASCII witness stands (REDS %83): `tools/living_card_ascii_witness.rish` over `tools/fixtures/living_card_ascii_scan.sh` greps the operator card and the REDS ledger for bytes above 0x7F and fails hard if any appear (the ENFORCE roster), while the pins still holding legacy dated non-ASCII are reported as an advisory ratchet to sweep down on touch rather than force-rewritten. A planted mojibake control proves the RED path on metal. Measurement beats memory -- the guard catches the next mojibake on the lap it enters, not months later.
 
 ## Why the rule exists
 

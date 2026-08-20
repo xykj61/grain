@@ -8,7 +8,7 @@
 # of the cooperative's own attesters (SellerNotCertified) and the certificate being satisfied against
 # the signed record (rung two's Unsatisfied / UnknownAttester / BadAttestation) — only then does the
 # trade book fairly on both sides (each book nets to zero, the pair conserves across cash). Composes
-# rung two and TACT-J4r1 over public API; facts only, custody gate #3 untouched; demo seeds only.
+# rung two and TACT-J4r1 over public API; facts only, custody gate %3 untouched; demo seeds only.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/ayre_j7_fairtrade_cert_trade_witness.rish

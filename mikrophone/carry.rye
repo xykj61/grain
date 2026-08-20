@@ -13,7 +13,7 @@
 //! is invented — the join composes `firmware.carry_frame` and `inbox.accept` over their public APIs, and adds one
 //! invariant of its own: a successful carry leaves the desk holding the device's committed bytes and nothing else. The
 //! single wire is still a byte slice handed function to function; no disk, no network, no key signs, no funds (custody
-//! gate #2 — real hardware, a real cable, a real desk — untouched). The Sha256 digest stays an integrity check the
+//! gate %2 — real hardware, a real cable, a real desk — untouched). The Sha256 digest stays an integrity check the
 //! receiving hand recomputes, not a signature.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/carry.rye selftest

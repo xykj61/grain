@@ -17,7 +17,7 @@
 //!   * within one cue's span the panel rectangle is byte-identical from frame to frame (the card is steady while it is
 //!     up), while two different cues render DIFFERENT panels (the text really changed).
 //! The whole subtitled reel then round-trips byte for byte through BOTH open codecs, and the delta/keyframe mix is
-//! REPORTED, never claimed a compression win (REDS #82). Pure composition over public APIs (the background verbs,
+//! REPORTED, never claimed a compression win (REDS %82). Pure composition over public APIs (the background verbs,
 //! paint_text_panel, both codecs); no new storage, codec, palette, glyph, or font. No network, no key, no funds -- the
 //! subtitle track a surface plays over live video, on our own open geometry.
 //!
@@ -337,7 +337,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     }
 
     // The delta/keyframe mix is a REPORTED measurement -- the moving block and the appearing/vanishing cards make some
-    // frames delta cheaply and some not, so the count is shown, never asserted exact (REDS #82).
+    // frames delta cheaply and some not, so the count is shown, never asserted exact (REDS %82).
     const keyframes: u32 = frame_count - gfd_res.delta_frames;
     print("GREEN image-text-subtitle: {d} cues shown over {d} frames of {d}x{d} moving video; each cue byte-steady across its span and distinct from the next, {d} shown + {d} gap frames (a gap frame equals the plain background byte for byte, a shown frame differs only within the panel); round-trip byte-identical through BOTH codecs; gfd1 adaptive mix {d} deltas + {d} keyframes ({d} bytes vs gfv1 {d}); gfv1 stream refused by gfd1 decoder as BadMagic\n", .{
         track.len, frame_count, subtitle_frame_w, subtitle_frame_h, shown_frames, gap_frames, gfd_res.delta_frames, keyframes, gfd_res.len, gfv_res.len,

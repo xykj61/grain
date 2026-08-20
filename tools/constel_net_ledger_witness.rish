@@ -8,7 +8,7 @@
 # else — and it can never run under a name that could be real. The quarantine wraps the ledger (an
 # unsafe name opens no genesis, so no ledger), and sovereignty is structural (a fact enters only when
 # its signer's key equals the genesis galaxy Deed's keeper). Demo keeper seeds only — no real key, no
-# funds, no network, no custody (gate #3 payment rail and gate #4 the maintainer's Kumara untouched).
+# funds, no network, no custody (gate %3 payment rail and gate %4 the maintainer's Kumara untouched).
 #
 # Scope: active-designing/20260813-030005_constel-devnet-ledger-exploration.md
 #

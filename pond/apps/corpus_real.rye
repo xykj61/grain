@@ -64,7 +64,7 @@ fn welcome_real_parse() !void {
         const len: u32 = @intCast(blocks[i].text_slice().len);
         if (len > largest) largest = len;
     }
-    // invariant: the largest real block exceeds the old bound — red #72 was real
+    // invariant: the largest real block exceeds the old bound — red %72 was real
     assert(largest > old_max_block_text);
     // invariant: and fits the raised bound — the fix admits it with headroom
     assert(largest <= sc.max_block_text);

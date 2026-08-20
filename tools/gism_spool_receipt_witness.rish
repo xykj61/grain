@@ -1,6 +1,6 @@
-# tools/gism_spool_receipt_witness.rish — GISM red #73 finish: large-artifact portable receipt.
+# tools/gism_spool_receipt_witness.rish — GISM red %73 finish: large-artifact portable receipt.
 #
-# Season 2, Yield. The spool arc closed red #73 and stood on chunking (spool), naming
+# Season 2, Yield. The spool arc closed red %73 and stood on chunking (spool), naming
 # (spool_cloth), and owner-signed (spool_keyed). This is the arc's finishing rung:
 # pond/apps/spool_receipt.rye carries a large owner-signed document's signed word *out of
 # the spool* as a portable receipt — the large-artifact sibling of TACT-J2's
@@ -67,4 +67,4 @@ let bron_selftest = run ["sh" "-c" "${bron_bin} selftest 2>&1"]
 assert bron_selftest.ok else "gism-red73-receipt: publish_receipt_bron selftest regressed"
 assert bron_selftest.out contains "GREEN" else "gism-red73-receipt: publish_receipt_bron did not speak GREEN"
 
-say "GREEN: GISM red #73 finish — a large owner-signed document's receipt travels as Bron and returns whole, matching bytes reassembled from the resins; spool_keyed, publish_receipt, publish_receipt_bron stay GREEN."
+say "GREEN: GISM red %73 finish — a large owner-signed document's receipt travels as Bron and returns whole, matching bytes reassembled from the resins; spool_keyed, publish_receipt, publish_receipt_bron stay GREEN."

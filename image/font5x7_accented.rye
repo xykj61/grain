@@ -175,7 +175,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (ink_count(atlas.glyphs[k].coverage) == 0) return error.AccentedGlyphBlank;
     }
 
-    // Compression is reported as a fact, not asserted -- the round-trip is the proof (the REDS #82 lesson).
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof (the REDS %82 lesson).
     const raw_coverage = glyph_count * cell_area;
     print("GREEN image-font5x7-accented: {d} accented Latin letters U+00DF..U+00FC (non-contiguous) at {d}x{d} round-trip byte-identical; codepoints strictly ascending and unique (the four corpora disjoint: 8+5+5+3), every glyph inked, a base 'a' and an undrawn a-tilde both absent; encoded {d} bytes, raw {d}\n", .{
         glyph_count, cell_w, cell_h, res.len, raw_coverage,

@@ -6,7 +6,7 @@
 # that name it runs the real settlement protocol from a genuine genesis. The name carries the safety,
 # not a flag — an @p-shaped name refuses UnsafeName before any genesis opens, so no fake net is ever
 # born un-quarantined. A forged bind and a non-galaxy number each refuse, so the fake net is the
-# genuine protocol. Demo keeper seeds only — no real key, no network, no custody (gate #4 untouched).
+# genuine protocol. Demo keeper seeds only — no real key, no network, no custody (gate %4 untouched).
 #
 # Law:   active-designing/20260813-022222_constel-test-network-naming-law.md
 # Scope: active-designing/20260813-022908_constel-devnet-harness-exploration.md

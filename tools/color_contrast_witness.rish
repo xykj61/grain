@@ -34,7 +34,7 @@ assert selftest.ok else "color-contrast: selftest exited non-zero -- ${selftest.
 let out = trim selftest.out
 say "color-contrast: ${out}"
 
-# Honour the loom REDS #76 named: check every claim with Rishi's native `contains`, never a shell grep over interpolated
+# Honour the loom REDS %76 named: check every claim with Rishi's native `contains`, never a shell grep over interpolated
 # output, so an apostrophe in the selftest prose (here "swatch's ink") can never break a check.
 assert out contains "GREEN image-color-contrast" else "color-contrast: selftest did not print the GREEN colour-contrast line"
 assert out contains "agreeing byte-for-byte with color.contrast_ratio_x100" else "color-contrast: a reading did not agree with color's own measurement"

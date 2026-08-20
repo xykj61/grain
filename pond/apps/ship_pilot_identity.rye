@@ -9,7 +9,7 @@
 //!
 //! It generates only a *demo* keeper from example seeds (plainly not a real pilot's key, so no
 //! identity is invented and no key is held). Generating the maintainer's own Kumara instance
-//! from a real seed stays custody gate #4 — the maintainer's hand alone. This rung reads no
+//! from a real seed stays custody gate %4 — the maintainer's hand alone. This rung reads no
 //! network and holds no key beyond an in-process demo seed.
 //!
 //!   rye build pond/apps/ship_pilot_identity.rye -femit-bin=pond/bin/ship-pilot-identity

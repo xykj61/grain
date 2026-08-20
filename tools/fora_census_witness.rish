@@ -16,7 +16,7 @@
 
 say "fora-census: Language EN — FORA8 closes the gossip round: announce fans a ping to all, each member replies its own greeting as a present token, and take_census interleaves respond+hear to tally who is present and, by slot, who is silent — the liveness primitive every consensus stands on."
 say "fora-census: Style Radiant — every present voice is counted and every silent one is known; a reply proves the ear that heard, and the border keeps its watch even over an answer."
-say "fora-census: Lens TAME — a fixed [max_piers]bool tally indexed by roster slot, the round interleaved so the caller's inbox holds one reply at a time (never ChannelFull); siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+say "fora-census: Lens TAME — a fixed [max_piers]bool tally indexed by roster slot, the round interleaved so the caller's inbox holds one reply at a time (never ChannelFull); siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/census"

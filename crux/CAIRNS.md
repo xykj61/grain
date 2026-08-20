@@ -24,6 +24,15 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260820.005542` -- our own record numbers molt from `#` to `%`, and the commit messages are rewritten behind them
+
+**Walk-back nib:** `f98a3e0bb0` -- **local only.** This is a *deep* debride of **commit messages**: `caravan:`-era and every other message carrying `REDS #N`, `gate #N`, `errata #N`, `OQ #N`, `study #N`, or `red #N` is rewritten and force-pushed to `origin` and `xykj61`, so this nib is unreachable on both remotes after the send. It survives on this pier alone, on `pre-percent-debride-20260820`.
+
+**Swept:** the `#` sigil on **our own** numbering, in commit messages across the whole history -- **230 references** that fell on real pull requests `#1`-`#82` in `xykj61/grain` and therefore rendered as live links to unrelated equinox work, spread over **249 commit messages**. `PR #N` keeps its hash everywhere, because there the reference is true. **File blobs are deliberately not rewritten**: GitHub's own documentation is explicit that autolinks are never created in repository files, so historical file content was never a broken link and stays as written -- the rewrite spends itself only where the harm actually was.
+
+**What waits there, worth recalling:** nothing but the elder sigil. The rows, the reasoning, and every three-field lesson read identically before and after; only `#` became `%`. If a future reader wants to see how the ledger cited itself before the renderer forced the question, the messages at this nib are the record.
+
+
 ### `20260819.232254` -- Caravan's whole `child` vocabulary molted to `dependent`, and the history rewritten behind it
 
 **Walk-back nib:** `5f6ec40c39` -- **local only.** This is a *deep* debride: the caravan blobs and the `caravan:` commit subjects are rewritten across the whole history and force-pushed to `origin` and `xykj61`, so this nib is **unreachable on both remotes** after the send. It survives on this pier alone, on the branch `pre-dependent-debride-20260819`. Anyone wanting the departing vocabulary reads it there, or not at all.
