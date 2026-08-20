@@ -1368,6 +1368,24 @@ The numbers state the claim: **five refusals stand by name -- unlooked, unaddres
 
 The numbers state the claim: **five refusals stand by name -- untold, silent, mismatched, miscounted, misrecorded; a plan that loses nothing reads as the line handed, all 16 pairs; every rung below moves exactly as it moved, and only the reading parts the two plans.** Witness: `tools/caravan_allay_witness.rish`.
 
+### forbear -- a matter its reader says still stands leaves the run that heard it
+
+`allay.rye` above reads the reply. The plan finally opens the word its reader wrote about the second look, so an outcome can say whether the matter came to rest or stands exactly where it stood. **And a matter that stands dies with the run that read it.** The word is read, the settlement is published, the run reports `carried out whole`, and nothing anywhere tells the run that comes next that this reader has now refused twice. So the correspondence closes one full turn and begins the same turn again from nothing: the next run reopens a matter already reopened, looks again at a look already taken, and carries home an answer this reader has already called insufficient. **The measurement is matters a run left standing with nothing handed on**, and it falls 1 to 0.
+
+**Forbearing is holding back, and holding back is a record.** A run that forbears decides nothing, overturns no second look, and answers nobody again. It declines to open the same question a third time from nothing, and writes what it declined into `plan.hold` -- five bytes, the reader's own refusal copied whole -- where the run after it reads its own inheritance. This is the third note in the arc addressed to a run that has not started, joining `.again` and `.debt`, and the first whose whole content came from a person outside the plan.
+
+**A run forbears only on a word it actually read.** A forbearance booked without a reply would hand on an impasse this run never heard, and the run after it would open holding a refusal nobody made. `ForbearUnread` refuses by name.
+
+**A matter its reader says rests is left alone.** Handing on an impasse over a question already settled would have every later run inherit an argument that ended -- the exact harm this rung exists to prevent, wearing the prevention's own clothes. `ForbearAllayed` refuses by name.
+
+**The forbearance names the matter it holds back on.** A run may still find a forbearance left by a run before today, and reading that as this run's would spare the next run a question nobody refused this morning. `ForbearMismatched` is the rung itself.
+
+**Holding back is not settling.** The settlement, the quarrel, its age, its standing, the case on the desk, the finding, the plan's own word, the concession, the meeting, the redress, the delivery, the reader's first verdict, the second look, the telling, and the reader's reply each come out of a forbearing run exactly as they went in -- and both runs settle `carried out whole`.
+
+**A forbearance survives a provisioning, and comes down only on the word of the run that inherits it.** Alone among the notes of this arc it does not fall with the record beneath it: the telling its reader refused may come down while the impasse stands, since the whole point is that the next run finds it. One swept every morning would leave that run opening exactly the question this rung exists to spare it.
+
+The numbers state the claim: **five refusals stand by name -- unread, allayed, mismatched, miscounted, misrecorded; a plan that loses nothing reads as the line handed, all 16 pairs; every rung below moves exactly as it moved, and only the forbearing parts the two plans.** Witness: `tools/caravan_forbear_witness.rish`.
+
 
 ## The ladder's carried checks -- the fold, and the meter that keeps it
 
@@ -1386,7 +1404,7 @@ What stays carried is **256 bodies over 12,035 lines**, growing about 1,637 a ru
 
 Nothing observable changed. Every rung of the grievance arc from `appraise` to `recount` was built twice -- folded and pristine -- and run against the same wire: **28 rungs, the same output lines, every one of them** -- only the order in which three concurrent dependents print interleaves, run to run, in the pristine build exactly as in the folded one. Every check that ran before still runs, in the same order, printing the same words. The choir sings every rung GREEN from a cold tree.
 
-`tools/caravan_ladder_copy_witness.rish` changed jobs with the fold. It holds the standing under a named ceiling of **22,000** carried lines -- about six rungs of headroom, close enough that the number means something again -- counts the folded checks off the ladder rather than believing the prose -- 562 of them now, the 523 the fold landed plus the 39 `allay` folded as it was written, proves its counting by hand on a two-rung corpus, and refuses by name on three paths: a corpus with no modules, a corpus whose modules hold no checks at all, and a corpus grown past its ceiling. It sings with the choir, so it can never become a guard nobody runs.
+`tools/caravan_ladder_copy_witness.rish` changed jobs with the fold. It holds the standing under a named ceiling of **22,000** carried lines -- **15,811** stand there now, about four rungs of headroom, close enough that the number means something -- counts the folded checks off the ladder rather than believing the prose -- 601 of them now, the 523 the fold landed plus the 39 that `allay` and the 39 that `forbear` each folded as they were written, proves its counting by hand on a two-rung corpus, and refuses by name on three paths: a corpus with no modules, a corpus whose modules hold no checks at all, and a corpus grown past its ceiling. It sings with the choir, so it can never become a guard nobody runs.
 
 
 ## Held
