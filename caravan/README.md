@@ -1282,6 +1282,25 @@ The numbers state the claim: **five refusals stand by name -- unmet, unrighted, 
 The numbers state the claim: **five refusals stand by name -- unfound, unaddressed, mismatched, miscounted, misrecorded; a plan that loses nothing reads as the line handed, all 16 pairs; a plan inheriting nothing meets nothing and so carries nothing; every rung below moves exactly as it moved, and only the telling parts the two plans.** Witness: `tools/caravan_apprise_witness.rish`.
 
 
+### suffice -- the reader who was told says whether it settles the thing
+
+`apprise.rye` above carries the finding home. The answer a plan reached goes byte for byte into the box the reader who won it already knows, so a finding stops being private. **And then the arc asks that reader nothing.** A plan may hear an objection, carry it to a hand outside the argument, take the finding on the record, concede, book the debt, meet it, put the work right, and tell the person who raised the quarrel that it did -- and never once learn whether that answer settled the thing or left them exactly as unhappy as before. The whole arc runs to its end on the plan's own account of itself. **The measurement is answers a plan carried whose worth it never learned**, and it falls 1 to 0.
+
+**The word is read off the wire, and never written by a run.** A supervisor able to author its reader's satisfaction has graded its own answer, which is the whole thing this arc has spent thirty rungs preventing. So the word stands in that reader's own `.suits`, in their own hand, and `SufficeSilent` refuses by name where the box holds nothing -- since silence is no consent here, exactly as it was not when a quarrel was withdrawn.
+
+**A word must name the answer it weighs.** A reader may still be holding their verdict on an earlier look at an earlier admission, and taking that as today's word would credit this run with a satisfaction nobody expressed about it. So the word carries four bytes: the three carried to them echoed back exactly, and one more saying what they make of it. `SufficeMismatched` is the rung itself.
+
+**Two honest words, and the plan may not prefer either.** `settles` is the reader saying the answer closes the matter; `wanting` is the reader saying it falls short. This rung asks for neither -- what it ends is nobody ever being asked. The reader of the measured lap says `wanting`, on purpose, and the plan still reads `carried out whole`: a reader's dissatisfaction is a fact an operator is owed rather than a verdict on the work.
+
+**The reader keeps their own word exactly where they wrote it.** A weighing carries a verdict inward rather than moving one, so both stand together: the word in the reader's hand, and the plan's copy in `plan.worth` where an operator opens it. The plan's copy falls with the answer it weighs, so a later run never reads a satisfaction about a delivery this wire has forgotten.
+
+**Weighing is not re-deciding anything.** The word says what the reader makes of the answer; it never reaches back into the settlement, the quarrel, its age, its standing, the case on the desk, the third hand's word, the plan's own answer, the concession, the meeting, the finding, or the delivery itself. Each comes out of a weighing run exactly as it went in.
+
+**The reader's own word is sitting in their box under both runs.** The unasking plan is not blocked from learning; it simply never looks. That is what makes the silence a cost rather than an impossibility.
+
+The numbers state the claim: **five refusals stand by name -- untold, silent, mismatched, miscounted, misrecorded; a plan that loses nothing reads as the line handed, all 16 pairs; every rung below moves exactly as it moved, and only the asking parts the two plans.** Witness: `tools/caravan_suffice_witness.rish`.
+
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.
