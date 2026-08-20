@@ -308,3 +308,4 @@ __pycache__/
 # separate file; never track them (and /etc/nixos is symlinked here anyway).
 nixos/*.bak-*
 /caravan/.redresses/
+/caravan/.apprises/
