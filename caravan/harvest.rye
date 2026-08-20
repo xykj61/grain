@@ -29,8 +29,24 @@
 //!   * Where the head waits on a **slot**, readiness converts the whole of
 //!     it. Give one dependent a deliberate linger and the eldest-first reading
 //!     blocks on it while a sibling that has already exited holds a slot
-//!     the head could use; reaping by readiness admits the head at once and
-//!     stands idle zero turns.
+//!     the head could use; reaping by readiness admits the head at once.
+//!
+//! **Readiness reaps the slot the head is waiting on, and that is what makes
+//! the finding a guarantee rather than a habit.** Among the dependents already
+//! exited, the one worth reaping is the one whose going lets the head enter --
+//! asked of `rolling.admissible` itself rather than guessed from domains.
+//! Reaping any other ready sibling empties a slot the head still cannot use,
+//! which converts nothing.
+//!
+//! **The number this rung asserts is the idle turn that had a key in the
+//! lock** -- a turn that stood idle beside a dependent already exited whose
+//! going would have opened the door. Eldest-first stands at least one such
+//! turn on the stagger lap; readiness stands none, by construction. The raw
+//! idle counts are reported honestly and asserted nowhere, because a turn
+//! that stands idle while the dependent the head waits on is still working is
+//! ordinary rather than a fault, and whether that happens is the scheduler's
+//! choice rather than this module's. Asserting the raw count as an exact zero
+//! is what made this rung green by a coin flip through REDS %95.
 //!
 //! **The linger is deliberate and named.** Dependents of one document doing
 //! alike work finish in roughly the order they were spawned, which is
@@ -162,6 +178,7 @@ pub const Report = struct {
     /// conflicting with a domain still in the table. Neither reading of the
     /// reaping removes this; it belongs to the document's own order.
     idle_by_order: u32 = 0,
+    idle_key_ready: u32 = 0,
     /// Turns the supervisor reaped a dependent that was not the eldest.
     out_of_order: u32 = 0,
     /// Turns the eldest was still running while a younger sibling had
@@ -324,10 +341,55 @@ fn fill_table(
 ///
 /// One turn counts at most one held turn, however many sweeps it takes, so
 /// the number reads as turns rather than as the rest between them.
+/// Answers whether some dependent already exited would, by going, let the
+/// head enter.
+///
+/// The sweep here is the same non-blocking look `choose_slot` takes, so this
+/// reads the ground rather than a memory of it.
+fn key_stands_ready(sys: *const system.System, table: *Table, head: Item) bool {
+    var i: u32 = 0;
+    while (i < table.in_flight) : (i += 1) {
+        if (!sweep_one(&table.live[i], &table.held[i])) continue;
+        if (unblocks_head(sys, table, i, head)) return true;
+    }
+    // invariant: the look read every dependent the table holds, none skipped
+    assert(i == table.in_flight);
+    return false;
+}
+
+/// Answers whether reaping this slot would let the head enter.
+///
+/// The question is put to the door itself rather than to a guess about
+/// domains: build the table as it would stand with this slot gone, and ask
+/// `rolling.admissible` the same way `fill_table` asks it.
+fn unblocks_head(
+    sys: *const system.System,
+    table: *const Table,
+    at: u32,
+    head: ?Item,
+) bool {
+    // invariant: a reading always names a slot the table is holding
+    assert(at < table.in_flight);
+    const wanted = head orelse return false;
+    var rest: [max_in_flight]cohort.Running = undefined;
+    var kept: u32 = 0;
+    var i: u32 = 0;
+    while (i < table.in_flight) : (i += 1) {
+        if (i == at) continue;
+        rest[kept] = table.live[i];
+        kept += 1;
+    }
+    // invariant: exactly the one slot was left out, and none other
+    assert(kept == table.in_flight - 1);
+    return rolling.admissible(sys, rest[0..kept], wanted.step);
+}
+
 fn choose_slot(
     io: std.Io,
+    sys: *const system.System,
     table: *Table,
     reaping: Reaping,
+    head: ?Item,
     report_out: *Report,
 ) RunError!u32 {
     // invariant: a turn always has a dependent to choose among
@@ -350,7 +412,23 @@ fn choose_slot(
         if (reaping == .eldest) {
             if (eldest_ready) return 0;
         } else if (ready) |slot| {
-            return slot;
+            // Among the dependents standing ready, the one whose going lets
+            // the head enter is the one worth reaping. Reaping any other
+            // ready sibling empties a slot the head still cannot use, which
+            // converts nothing and leaves the turn idle -- the whole gain
+            // this reading exists for. Falls back to the first ready slot
+            // where no reaping would open the door.
+            var pick: u32 = slot;
+            var j: u32 = 0;
+            while (j < table.in_flight) : (j += 1) {
+                if (table.held[j].exited == null) continue;
+                if (!unblocks_head(sys, table, j, head)) continue;
+                pick = j;
+                break;
+            }
+            // invariant: a chosen slot always stands inside the table
+            assert(pick < table.in_flight);
+            return pick;
         }
         std.Io.sleep(io, std.Io.Duration.fromMilliseconds(poll_rest_ms), .awake) catch {};
     }
@@ -443,12 +521,21 @@ pub fn run_queue(
         // which no reading of the reaping removes.
         if (open.next < plan.len and open.in_flight < max_in_flight and admitted_now == 0) {
             report_out.idle_by_order += 1;
+            // An idle turn is ordinary while the dependent the head waits on
+            // is still working -- there is simply nothing to convert. An idle
+            // turn standing beside a dependent already exited whose going
+            // would let the head in is the waiting this reading exists to
+            // remove, so that one is counted apart and asserted to zero.
+            if (key_stands_ready(sys, &open, plan[open.next])) {
+                report_out.idle_key_ready += 1;
+            }
         }
 
         // With an empty table the head conflicts with nothing, so a stall
         // here would mean the queue named a domain the document does not.
         if (open.in_flight == 0) return error.OrderStalled;
-        const at = try choose_slot(io, &open, reaping, report_out);
+        const next_head: ?Item = if (open.next < plan.len) plan[open.next] else null;
+        const at = try choose_slot(io, sys, &open, reaping, next_head, report_out);
         try reap_slot(io, &open, at, report_out);
     }
     const ended = std.Io.Timestamp.now(io, .awake);
@@ -597,9 +684,13 @@ fn check_stagger(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8
         print("  RED: the eldest reading stood no turn idle on a lap built to hold one\n", .{});
         return 1;
     }
-    if (by_readiness.idle_by_order != 0) {
-        print("  RED: readiness stood {d} turns idle where a ready slot was waiting\n", .{
-            by_readiness.idle_by_order,
+    if (by_age.idle_key_ready == 0) {
+        print("  RED: the eldest reading never stood idle beside a ready slot it could have taken\n", .{});
+        return 1;
+    }
+    if (by_readiness.idle_key_ready != 0) {
+        print("  RED: readiness stood {d} turns idle where a ready slot would have opened the door\n", .{
+            by_readiness.idle_key_ready,
         });
         return 1;
     }
@@ -625,6 +716,9 @@ fn check_stagger(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8
     assert(by_age.succeeded == stagger_queue.len);
     print("  the stagger lap stands idle -- by age {d}, by readiness {d} -- the head waits on a slot\n", .{
         by_age.idle_by_order, by_readiness.idle_by_order,
+    });
+    print("  idle beside a ready slot that would have opened the door -- by age {d}, by readiness {d}\n", .{
+        by_age.idle_key_ready, by_readiness.idle_key_ready,
     });
     print("  the eldest outlived a reaped sibling on {d} turns by age; readiness took {d} dependents out of order\n", .{
         by_age.eldest_held, by_readiness.out_of_order,
