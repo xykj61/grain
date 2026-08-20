@@ -1,0 +1,8 @@
+//! Fixture rung -- the top of the corpus. It folds into the middle rung, one
+//! step down, so the chain walks a rung at a time and no rung is named twice.
+
+const middle_rung = @import("middle.rye");
+
+pub fn check_first() u8 {
+    return middle_rung.check_first();
+}

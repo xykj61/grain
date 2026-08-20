@@ -1,0 +1,8 @@
+//! Fixture rung -- the middle of the corpus. It folds into the rung directly
+//! beneath it, which is the whole discipline this scan states.
+
+const lower_rung = @import("lower.rye");
+
+pub fn check_first() u8 {
+    return lower_rung.check_first();
+}

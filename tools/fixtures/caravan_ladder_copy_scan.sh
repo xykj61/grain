@@ -21,6 +21,13 @@
 # a chain re-enters the rung at every link rather than ending in the rung below.
 # 57 bodies lift, and the carry falls to 1,952 -- a ninth of what stood before it.
 #
+# Two rungs later, reading which bodies made up the number found a rung reaching
+# past its neighbor: `desist.rye`, born as a copy of `mind.rye`, folded two rungs
+# down into `forbear.rye`, so both rungs wrote the same stub byte for byte and
+# 195 lines rode the ladder for it (REDS %98). Repointed one step down, with its
+# four remaining copied bodies lifted, the carry stands at 2,202. The one-step
+# rule is a guard of its own now: tools/fixtures/caravan_ladder_reach_scan.sh.
+#
 # Measurement beats memory: a count carried forward drifts (REDS %93), and a
 # count that cannot see what it measures is a guess wearing a measurement's
 # clothes (REDS %97). Both failure shapes are refused by name below.
@@ -30,8 +37,8 @@
 # hundred lines of copy stood, so a new rung adds roughly four lines per lifted
 # check it climbs to, plus whatever its own new checks carry until they are
 # lifted in turn -- call it five hundred a rung until the next rung measures it.
-# 4,000 is about four rungs of headroom above the standing of 1,952, close enough
-# that the number still means something on the lap it moves.
+# 4,000 is about three rungs of headroom above the standing of 2,202, close
+# enough that the number still means something on the lap it moves.
 #
 # CARAVAN_LADDER_DIR (default caravan): the directory of rung modules, so the
 # PASS and FAIL fixtures can prove both paths without touching the tree.

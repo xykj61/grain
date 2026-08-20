@@ -1051,6 +1051,35 @@ pub fn check_forbear(comptime rung: type) u8 {
 }
 
 
+/// The number the forbearing rung moves, weighed as a fold before any run moves it.
+///
+/// The inventing rung keeps its own copy, since its chain ends here; every rung
+/// above it shares this body and carries the chain on into its own minding.
+pub fn check_forbear_measure(comptime rung: type) u8 {
+    if (rung.unhanded_matters(1, .opens) != 1) {
+        print("  RED: a matter left standing with nothing handed on went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.unhanded_matters(1, .forbears) != 0) {
+        print("  RED: a matter handed on still counted as one left standing\n", .{});
+        return 1;
+    }
+    // A run whose reader put the matter to rest has no impasse to hand on, so
+    // it costs the count nothing -- the harm this rung names is the refusal
+    // actually read and the next run left to meet it from nothing.
+    if (rung.unhanded_matters(0, .opens) != 0) {
+        print("  RED: a run whose matter came to rest was charged an unhanded one\n", .{});
+        return 1;
+    }
+
+    print("  five refusals stand by name: unread, allayed, mismatched, miscounted, misrecorded\n", .{});
+    print("  the forbearance this rung keeps: {s}\n", .{rung.forbear_words(.forbears)});
+    print("  what an opening plan hands the next run: {s}\n", .{rung.forbear_words(.opens)});
+    print("  a forbearance carries five bytes: the reply it holds back on, echoed back whole\n", .{});
+    return rung.check_mind();
+}
+
+
 pub fn check_forbear_refusals(comptime rung: type) u8 {
     if (rung.forbear_refusal(1, 1, 0, false, true, true)) |why| {
         if (why != error.ForbearUnread) {
@@ -1102,6 +1131,77 @@ pub fn check_forbear_refusals(comptime rung: type) u8 {
         return 1;
     }
     return rung.check_forbear_measure();
+}
+
+
+/// The forbearing rung's answers as bytes in a reader's own box, measured on the
+/// wire of whichever rung handed itself in.
+pub fn check_forbear_wire(comptime rung: type, io: std.Io, sys: *const system.System) u8 {
+    rung.clear_forbear(io);
+    rung.clear_rests(io, rung.standing_address);
+    rung.clear_recount(io, rung.standing_address);
+    rung.clear_reweigh(io);
+    rung.reweigh_note(io, rung.inherited_matter) catch |err| {
+        print("  RED: a second look could not be receipted at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const receipt = rung.anew_standing(io) orelse {
+        print("  RED: a seated receipt could not be read back at all\n", .{});
+        return 1;
+    };
+    const told = rung.knows_bytes(receipt);
+    rung.recount_note(io, rung.standing_address, told) catch |err| {
+        print("  RED: a reader could not be told at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // The reader's own hand, written by the reader rather than by any run --
+    // and this time the word is a refusal, which is what earns a forbearance.
+    const refused = rung.rests_bytes(told, .stands);
+    rung.rest_as_reader(io, rung.standing_address, refused) catch |err| {
+        print("  RED: a reader could not reply in their own hand: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.forbear_note(io, refused) catch |err| {
+        print("  RED: a forbearance could not be handed on at all: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const provisioned = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(provisioned == sys.graph.domain_count);
+    const survived = rung.hold_standing(io) orelse {
+        print("  RED: a provisioning cleared the forbearance a run handed on\n", .{});
+        return 1;
+    };
+    if (!rung.holds_carries(survived, refused)) {
+        print("  RED: a forbearance carried past a provisioning stopped naming its matter\n", .{});
+        return 1;
+    }
+    if (rung.holds_rest(survived) != .stands) {
+        print("  RED: a forbearance carried past a provisioning stopped naming its refusal\n", .{});
+        return 1;
+    }
+    if (rung.rest_written(io, rung.standing_address) == null) {
+        print("  RED: handing an impasse on took the reply it holds back on out of its reader's box\n", .{});
+        return 1;
+    }
+    // And it comes down only on the word of the run that inherits it, never on
+    // a provisioning and never on the falling of the telling beneath it.
+    rung.clear_recount(io, rung.standing_address);
+    if (rung.hold_standing(io) == null) {
+        print("  RED: a forbearance fell with the telling its reader refused\n", .{});
+        return 1;
+    }
+    rung.clear_forbear(io);
+    if (rung.hold_standing(io) != null) {
+        print("  RED: a forbearance stood after the run inheriting it took it down\n", .{});
+        return 1;
+    }
+    rung.clear_rests(io, rung.standing_address);
+    print("  a forbearance survives a provisioning, and comes down only on the word of the run that inherits it\n", .{});
+    return rung.check_mind_wire(io, sys);
 }
 
 
@@ -1370,6 +1470,123 @@ pub fn check_meet_wire(comptime rung: type, io: std.Io, sys: *const system.Syste
     }
     print("  a receipt survives a provisioning, and the debt it answers stays down\n", .{});
     return rung.check_redress_wire(io, sys);
+}
+
+
+/// Weighs the five refusals the minding rung earns, each by name.
+/// Weighs the minding rung's own folds, before any dependent runs.
+///
+/// The happy zone of this rung: every question about what impasse a run opened
+/// holding, and the honesty of the count, answered as a pure fold -- no process
+/// anywhere.
+pub fn check_mind(comptime rung: type) u8 {
+    const told = rung.knows_bytes(rung.anew_bytes(rung.inherited_matter));
+    const refused = rung.rests_bytes(told, .stands);
+    const held = rung.holds_bytes(refused);
+    const mark = rung.minds_bytes(held);
+    if (!rung.minds_carries(mark, held)) {
+        print("  RED: a mark refused the very forbearance it was written from\n", .{});
+        return 1;
+    }
+    if (rung.minds_rest(mark) != .stands) {
+        print("  RED: a mark carried a word other than the refusal it was handed\n", .{});
+        return 1;
+    }
+    if (mark[rung.max_minds_bytes - 1] != rung.minded_byte) {
+        print("  RED: a mark did not say it was one\n", .{});
+        return 1;
+    }
+    // The whole point of the rung, as a fold: a mark left over from an earlier
+    // lap names an older impasse, and reading that as today's would tell an
+    // operator the plan opened holding a matter nobody handed it this morning.
+    const elder = rung.knows_bytes(rung.anew_bytes(rung.again_bytes(rung.suits_bytes(rung.found_bytes(rung.redress_bytes(rung.met_bytes([_]u8{ 'd', 's' }), .righted)), .wanting))));
+    if (rung.minds_carries(rung.minds_bytes(rung.holds_bytes(rung.rests_bytes(elder, .stands))), held)) {
+        print("  RED: a mark about an older impasse was read as today's\n", .{});
+        return 1;
+    }
+    if (rung.minds_carries(null, held)) {
+        print("  RED: an outcome naming nothing was read as naming an impasse\n", .{});
+        return 1;
+    }
+    if (rung.minds_rest(null) != null) {
+        print("  RED: an outcome naming nothing carried a word all the same\n", .{});
+        return 1;
+    }
+    if (!rung.mind_holds(mark, mark) or rung.mind_holds(rung.minds_bytes(rung.holds_bytes(rung.rests_bytes(told, .allays))), mark) or rung.mind_holds(null, mark)) {
+        print("  RED: a run believed a mark other than the one it published\n", .{});
+        return 1;
+    }
+    if (rung.minded_in(1, .minds) != 1 or rung.minded_in(1, .begins) != 0) {
+        print("  RED: a minding was counted as though nothing were named\n", .{});
+        return 1;
+    }
+    if (rung.minded_in(0, .minds) != 0) {
+        print("  RED: a run opening holding nothing named an impasse anyway\n", .{});
+        return 1;
+    }
+    if (rung.begun_in(1, .begins) != 1 or rung.begun_in(1, .minds) != 0) {
+        print("  RED: the other half of the count did not close as a fold\n", .{});
+        return 1;
+    }
+    if (rung.begun_in(0, .begins) != 0) {
+        print("  RED: a run opening holding nothing began a matter all the same\n", .{});
+        return 1;
+    }
+    return rung.check_mind_refusals();
+}
+
+
+pub fn check_mind_refusals(comptime rung: type) u8 {
+    if (rung.mind_refusal(1, 1, 0, false, true, true)) |why| {
+        if (why != error.MindUninherited) {
+            print("  RED: a mark with no forbearance behind it refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run named an impasse nobody handed it\n", .{});
+        return 1;
+    }
+    if (rung.mind_refusal(1, 1, 0, true, false, true)) |why| {
+        if (why != error.MindRested) {
+            print("  RED: a settled matter named as an impasse refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run carried a closed argument forward as an impasse\n", .{});
+        return 1;
+    }
+    if (rung.mind_refusal(1, 1, 0, true, true, false)) |why| {
+        if (why != error.MindMismatched) {
+            print("  RED: a mark about another matter refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run named an impasse other than the one it opened holding\n", .{});
+        return 1;
+    }
+    if (rung.mind_refusal(1, 1, 1, true, true, true)) |why| {
+        if (why != error.MindMiscounted) {
+            print("  RED: an impasse counted twice refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: an impasse both named and begun closed its count\n", .{});
+        return 1;
+    }
+    if (rung.mind_refusal(1, 0, 0, true, true, true)) |why| {
+        if (why != error.MindMiscounted) {
+            print("  RED: an impasse counted neither way refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: an impasse neither named nor begun closed its count\n", .{});
+        return 1;
+    }
+    if (rung.mind_refusal(1, 1, 0, true, true, true)) |why| {
+        print("  RED: an honest minding was refused as {s}\n", .{@errorName(why)});
+        return 1;
+    }
+    return rung.check_mind_measure();
 }
 
 
