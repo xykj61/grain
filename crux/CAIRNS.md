@@ -24,6 +24,15 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260820.094007` -- the dwell live edge folds as the swell rung seats
+
+**Walk-back nib:** `d4f6140b85` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **dwell** rung and the pointer bullet beneath it, folded into one condensed line naming dwell, relent, heed, and the endure-appeal-tidings-repose-lapse-abide rungs below them, so the card leads with the rung that just landed rather than carrying a second copy of the log index.
+
+**What waits there, worth recalling:** the inline account of a standing quarrel finally saying how long it has stood -- the age surviving a provisioning beside the standing note and falling with the quarrel, an age that only ever climbs and holds at the bound of one byte rather than wrapping, the dating as the last act of the run mirroring the relenting's first, and the four refusals `DwellEarly`, `DwellForgotten`, `DwellMiscounted`, `DwellMisrecorded` each named to what it protects. Every word of it also rests in `caravan/README.md` and its own dated log; the cairn is the cheaper walk-back.
+
+
 ### `20260820.085311` -- the heed and endure live edges fold as the relent rung seats
 
 **Walk-back nib:** `16ba986cc8` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
