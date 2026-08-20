@@ -1318,6 +1318,22 @@ The numbers state the claim: **five refusals stand by name -- untold, silent, mi
 
 The numbers state the claim: **five refusals stand by name -- unweighed, settled, mismatched, miscounted, misrecorded; a plan that loses nothing reads as the line handed, all 16 pairs; every rung below moves exactly as it moved, and only the taking up parts the two plans.** Witness: `tools/caravan_reopen_witness.rish`.
 
+### reweigh -- a run that inherits a reopened matter takes the look again
+
+`reopen.rye` above books the matter open. A reader who says the answer falls short opens it again, in a note addressed to the run that has not started yet -- so a plan's own reader may finally cost it a look. **And then that run opens, reads past the note, and settles whole.** The matter stands reopened forever and asks nothing of anybody: permanent and ignorable at once, which is the most comfortable thing an open question can be. This is the shape `owe.rye` wore before `meet.rye` answered it, one tier further out -- there the plan's own concession went unmet, here its reader's own reopening goes unlooked-at. **The measurement is reopened matters a plan inherited that the run never looked at again**, and it falls 1 to 0.
+
+**A run earns the second look by finishing its own.** A supervisor that has published no outcome has nothing to weigh the reopened matter against, and calling that a second look would file a fresh answer over a question this run never actually re-asked. `ReweighUnsettled` refuses by name.
+
+**The receipt names the matter it looked at.** A plan may be carrying an older second look from a run before today, and leaving that standing beside a freshly reopened matter would tell a later run a question had been answered which nobody ever reopened -- worse than no receipt at all, since it closes the matter rather than leaving it open. `ReweighMismatched` is the rung itself.
+
+**The taking down is the act, and the receipt is only its record.** A second look written beside a matter still standing open would have every run after this one inherit a reopening already answered, and answer it forever. So the receipt lands first and `plan.again` comes down after, and a run that falls between the two acts leaves a question open rather than one quietly gone.
+
+**Looking again is not deciding again.** The receipt says the matter was taken up a second time and never rewrites what the first look found. The settlement, the quarrel, its age, its standing, the case on the desk, the finding, the plan's own word, the concession, the meeting, the redress, the delivery, and the reader's own verdict each come out of a reweighing run exactly as they went in -- and both runs settle `carried out whole`.
+
+**A second look survives a provisioning, and the matter it answers stays down.** A receipt swept every morning would have a later run reopen a matter this plan has already answered; a matter left standing beside its own receipt would have every run after this one look at it forever.
+
+The numbers state the claim: **five refusals stand by name -- unopened, unsettled, mismatched, miscounted, misrecorded; a plan that loses nothing reads as the line handed, all 16 pairs; every rung below moves exactly as it moved, and only the second look parts the two plans.** Witness: `tools/caravan_reweigh_witness.rish`.
+
 
 ## The ladder's carried checks -- a meter, not a rung
 

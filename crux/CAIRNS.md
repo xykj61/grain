@@ -24,6 +24,15 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260820.134309` -- the reopen and ladder-copy live edges fold as the reweigh rung seats
+
+**Walk-back nib:** `c95d3dedca` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- the *live edge* bullets for the **reopen** rung and for the **ladder-copy meter**, folded into one condensed line, so the card leads with the rung that just landed rather than carrying a second copy of the log index.
+
+**What waits there, worth recalling:** the inline account of a reader who says an answer falls short opening the matter again -- what the plan is told costing it a look it never chose to take, the first rung of its kind in the arc; `ReopenSettled` refusing to book a matter open against a satisfied reader, since doing so would punish a plan for asking and teach every supervisor never to ask at all; the note being the second in the arc addressed forward and the first whose every byte came from outside; and, beside it, the ladder-copy meter's measured numbers -- 88 rung modules, 914 check functions, 277 distinct bodies, 637 byte-identical copies over 46,014 lines, held under a named ceiling of 60,000. Every word of both also rests in `caravan/README.md`, `active-designing/20260820-131713_caravan-ladder-shared-harness.md`, and their own dated logs `20260820-130722` and `20260820-132327`; the cairn is the cheaper walk-back.
+
+
 ### `20260820.113447` -- the owe live edge folds as the meet rung seats
 
 **Walk-back nib:** `fcd1d65024` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
