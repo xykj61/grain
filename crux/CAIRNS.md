@@ -24,6 +24,13 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260819.221729` -- REMEMBER's unhand chronicle folded to a pointer as the taper rung lands
+
+**Walk-back nib:** `96e537f929` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.
+**Swept:** the **Live edge** bullet's whole inline account of `caravan/unhand.rye` -- why a line handed over is a fact about the child a run may weigh as one, `intent.rye`'s own banner naming the channel and the bell as the two reasons the room stayed at the ceiling, the supervisor's new memory of one line per live child shifted on every reaping, `UnhandUnheld` about memory and `UnhandWidened` about reach, the 48 tests at the door against 36, the 7 children and 1 carried home either way with 2 at once against 3 and 8 slots unspent against 1, the widest line reading as the ceiling across all 9 pairs, and the four RED paths each named. Roughly one long paragraph folded into the prior-edges pointer.
+**What waits there, worth recalling:** the authored declaration that rung needed and the reasoning behind it -- `serial_three_clients_board.bron`, a board one client writes and its siblings read with no channel joining any of them, written because every elder declaration pairs a written shared region with a channel and the channel refusal dominates there. The departing card also carries the honest note that the narrower room costs *more* to read, which the taper rung inherits and extends.
+
+
 ### `20260819.215403` -- REMEMBER's understudy chronicle folded to a pointer as the unhand rung lands
 
 **Walk-back nib:** `dafef2f30c` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.
