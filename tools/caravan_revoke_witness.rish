@@ -1,0 +1,124 @@
+# caravan_revoke_witness.rish -- Caravan revoke witness.
+#
+# `confer.rye` moved the reach itself, and closed the gap at the front of a
+# dependent's life: a dependent is spawned narrowed to exactly the line it was
+# handed, and each capability word arrives over a channel when the door
+# grants it. It left the mirror gap open at the back -- a conferred word,
+# once grafted, stayed in the dependent's hands until the dependent exited.
+#
+#   REACH RETURNS THE MOMENT ITS WORK IS CARRIED, AND A DEPENDENT HOLDS NO MORE
+#   THAN IT NEEDS.
+#
+# A supervisor publishes one number -- how many conferred words a dependent may
+# still hold -- and the dependent rebuilds its own slot down to that count, then
+# asks for each returned arc to prove the deletion is physical rather than
+# promised.
+#
+# WHAT THIS RUNG PROVES, MEASURED:
+#
+#   * THE NUMBER THE TWO ROOMS DISAGREE ON IS STALE REACH -- arcs a dependent can
+#     still touch after the work that reach served is already carried. It is
+#     the exact mirror of the dark reach the rung below closed. Holding every
+#     conferred word leaves it at 1; revoking drives it to 0, with the same 3
+#     dependents carrying the same work home either way. This rung buys no
+#     speed and no room; it buys the other half of the isolation claim.
+#   * THE DEPENDENT'S OWN HANDS MEASURE IT. Before coming home the dependent asks for
+#     each arc it was ever conferred. Holding the word it answers "1 still
+#     reachable at home"; returning it it answers 0, because
+#     `serve.reach_by_name` genuinely refuses a region a capability list does
+#     not name.
+#   * THE ANSWER IS EARNED BY A MEASUREMENT, NEVER AN INTENTION. A dependent
+#     claims it pruned only once the arcs it returned genuinely refuse it; a
+#     rebuild that left any of them reachable publishes nothing, and the run
+#     refuses the whole record rather than believing a deletion that never
+#     was.
+#   * A PRUNING IS A REBUILD RATHER THAN A REMOVAL, which is why it is total:
+#     the line a dependent was spawned holding is never at risk, and the conferred
+#     words come back one at a time in exactly the order they were granted.
+#   * FOUR REFUSALS THIS RUNG EARNS, AND EACH IS ABOUT THE RETURN OF A WORD
+#     RATHER THAN ITS ARRIVAL. `RevokeReversed` is the direction: a revocation
+#     only ever shrinks, so a number naming more reach than the dependent was
+#     conferred refuses rather than quietly growing it. `RevokeUngiven` is the
+#     supply: a dependent conferred nothing has no reach to return.
+#     `RevokeInflight` is the work still standing -- the hard half of this
+#     rung -- since a word whose arc is still being served may not be taken
+#     back, however tidy the pruning would be. `RevokeUnpruned` is the answer:
+#     a run that revoked reach nobody pruned would believe a dependent unable to
+#     touch what it still holds.
+#   * THE DISCIPLINE IS THE RUNG BELOW READ BACKWARDS. There, a run widened
+#     the line it remembers only once the dependent answered that it held; here,
+#     a run narrows what it believes a dependent can touch only once the dependent
+#     answers that it pruned. Both sides refuse to believe a change to a
+#     dependent's hands until the dependent's own hands report it.
+#   * THE DOOR ITSELF NEEDS NOTHING NEW. `confer.admissible_in` weighs a
+#     widened line the same way whether the dependent keeps its conferred arcs or
+#     returns them; everything this rung changes stands on the dependent's side.
+#   * A RUN THAT REVOKES NOTHING READS AS THE RUNG BELOW, all 9 pairs --
+#     this arc's standing generalization test.
+#
+# All five RED paths were proven on metal before this witness claimed GREEN.
+# Drop the direction refusal and a revocation grows a dependent's reach instead
+# of shrinking it. Drop the supply refusal and a run takes back reach that
+# was never conferred. Drop the in-flight refusal and a word is pruned while
+# the work it served still stands. Withhold the dependent's answer and the run
+# refuses with `RevokeUnpruned` rather than believing reach returned that
+# never was. Let the dependent hear the revocation and keep every word anyway,
+# and it publishes nothing rather than a false answer -- so the run refuses
+# with `RevokeUnpruned` again, which is the whole rung read from the dependent's
+# side.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep
+# over interpolated output -- REDS #76 / #85, the apostrophe loom.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_revoke_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/revoke"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/revoke.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan revoke build failed"
+
+# The board declaration the rungs below opened, unchanged.
+let published = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_three_clients_board.bron 2>&1"]
+assert published.ok else "the board declaration could not be read"
+assert published.out contains "domains 4 -- channels 3 -- regions 11 -- grants 22" else "the board declaration changed shape"
+assert published.out contains "verdict: whole" else "the board declaration did not read whole"
+
+# A fresh provisioning each run, so every index starts at zero, every bell
+# starts silent, and no dependent hears reach conferred or revoked by an earlier
+# run.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels caravan/.revokes"]
+assert clean.ok else "the region stores, doorbells, and revoking notes could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan revoke selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan revoke selftest not GREEN"
+assert test.out contains "reach returns the moment its work is carried, and a dependent holds no more than it needs" else "the revoke finding did not close"
+
+# The revocation and its three standing refusals, read straight, before any
+# dependent runs. The fourth, `RevokeUnpruned`, belongs to the run rather than the
+# fold, since only a dependent can answer that it pruned.
+assert test.out contains "a revocation only ever shrinks, and never past work still standing" else "the revocation fold was not weighed"
+assert test.out contains "three refusals stand by name: reversed, ungiven, inflight" else "the three standing refusals did not stand"
+assert test.out contains "the keep this rung reads: the word returns the moment its work is carried" else "the revoking keep was not named"
+
+# The generalization test: a run that revokes nothing reads as the rung below.
+assert test.out contains "a run that revokes nothing reads as the line handed, all 9 pairs" else "an unrevoked run did not read as the line handed"
+
+# The revoke lap: one plan run twice, once holding every conferred word to
+# the end and once returning it the moment its work is carried.
+assert test.out contains "phases: 4 holding the word, 4 returning it" else "the two keeps ran different records"
+assert test.out contains "dependents: 3 holding the word, 3 returning it" else "the two keeps spent different dependents"
+assert test.out contains "carried home as handed: 1 holding the word, 1 returning it" else "a dependent did not come home as it was handed"
+assert test.out contains "reach conferred: 1 holding the word, 1 returning it" else "the two keeps conferred different reach"
+assert test.out contains "reach revoked: 0 holding the word, 1 returning it" else "the run did not revoke what it reported"
+assert test.out contains "stale reach at home: 1 against 0" else "revoking closed no stale reach at all"
+assert test.out contains "breaks a named turn: 0 holding the word, 0 returning it" else "the revoking keep broke an order its author named"
+
+# The dependent measures the finding in its own hands, under both keeps.
+assert test.out contains "read 3 arcs of its own, 1 conferred, 0 returned, 1 still reachable at home" else "a dependent holding its conferred word reported no stale reach"
+assert test.out contains "read 3 arcs of its own, 1 conferred, 1 returned, 0 still reachable at home" else "a dependent that returned its reach could still touch the arc at home"
+
+say "GREEN: Caravan revoke witness passed."
