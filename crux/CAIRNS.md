@@ -24,6 +24,15 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260820.155932` -- the allay and forbear live edges fold as the mind rung seats
+
+**Walk-back nib:** `09bef9a2e7` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- the *live edge* bullets for the **allay** and **forbear** rungs, folded into the condensed pointer line beneath them, so the card leads with the rung that just landed rather than carrying a second copy of the log index.
+
+**What waits there, worth recalling:** the inline account of the **allay** rung -- the reader's own five-byte reply opened where its writer left it, in `caravan/.readers/desk.rests`, and published as one byte in `plan.rest` where the settlement is read; `AllaySilent` holding that a box saying nothing is a silence and never consent. And the inline account of the **forbear** rung -- the third note in the arc addressed to a run that has not started, the only one that does not fall with the record beneath it, since the whole point is that the next run finds it; `ForbearAllayed` refusing to hand on a question already settled, which would be the prevention wearing the harm's clothes. Both rest whole in `caravan/README.md` and their own dated logs, `20260820-150912` and `20260820-153200`.
+
+
 ### `20260820.143646` -- the recount live edge folds as the ladder-copy fold lands
 
 **Walk-back nib:** `b8427b4d1b` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The pre-fold Caravan ladder in full -- all 289,303 lines, every carried check body -- stands at this nib and every commit before it.
