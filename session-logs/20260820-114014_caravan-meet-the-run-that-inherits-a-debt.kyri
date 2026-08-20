@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20260820.114014
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Caravan meet -- the run that inherits a debt is made to meet it
+prompt Keaton asked for the next agent-doable lap, Lindy-first crux-first, on the running thread the last log's recommend named -- reds first, one council-rota doc deep-read, and a send at the end.
+think Standfast first. Every row in crux/REDS.md reads CLOSED, %96 and %97 both released on metal this morning, so the corrective queue is empty and the constructive one opens honestly.
+think The running thread came off the newest log's recommend rather than off the card. The owe rung had just landed, and its recommend named the next crux exactly: a plan may open every morning holding a debt it booked in good faith and settle carried out whole without ever once meeting it. The debt was made permanent one rung down; nothing yet made it ask anything.
+think Council rota, lap index 520 mod 27 = 7 -- foundations/20260813-142420_mycelium-the-consensus-protocol.md, deep-read. Its one law is the same law this arc keeps at a smaller scale: the record is decided once and read by everyone the same way, never arbitrated by whoever happens to hold the pen. It also carried a stale citation to work-in-progress/REMEMBER.md, repointed to crux/ in this same commit under the docs-sync ratchet.
+think The name came from the Comlink tendency -- clear, fun, safe. `meet` is the plainest word for what the rung does, collides with nothing seated, and reads as warmly on the ten-thousandth day as on the first.
+think The design crux is an ordering one, and it is the reason this rung is worth a lap. Every other rung of the arc acts at the close of a run and the order among them is a matter of what reads well. Here it is a safety property: the debt standing on the wire is the debt this run inherited right up until the moment this run books its own, so meeting must run ahead of booking or a plan would meet today's concession and call yesterday's answered.
+think The receipt is written before the debt comes down, deliberately. A run that falls between the two acts then leaves a question still open rather than an admission quietly gone -- the safe side of an interrupted pair.
+think The measured pair leaves owe at `.free` for both runs, so the only debt on the wire is the inherited one and the comparison isolates this rung alone. The inherited debt is seated over a finding that went for the plan under an outcome already reporting itself short -- two bytes neither measured run would ever book of its own -- so a receipt naming them can only be a receipt for the inheritance.
+obs Five refusals earned, in the order the run reaches them: MeetUnowed asks whether anything stood, MeetUnsettled whether this run has earned a word about it, MeetMismatched whether the record is about the debt that stood, MeetMiscounted whether the count closes, MeetMisrecorded the record read back both ways -- the receipt found where a later run finds it, and the debt itself finally down.
+obs Six RED paths proven on metal before GREEN was claimed, one a planted control: with the write skipped, the taking down skipped, both read-backs dropped, and the harness's own two reads removed, the selftest printed GREEN while caravan/.meets/plan.met did not exist at all and the inherited debt was still standing. That is the false green the reading back exists to prevent.
+obs The card was condensed rather than grown -- the owe live edge and the pointer beneath it folded into one line, cairn recorded first at nib fcd1d65024, so REMEMBER stays the live card of what is next.
+loom witness=caravan_meet_witness verdict=GREEN rungs_in_choir=78 red_paths_on_metal=6 refusals=5 receipt_bytes=2
+loom measured=meet_two_runs phases=6 dependents=6 met=0_to_1 deferred=1_to_0 unmet=1_to_0 every_other_number=unchanged
+file caravan/meet.rye the rung -- Meet, meet_words, met_bytes, met_answers, met_over, met_in, deferred_in, meet_refusal, met_holds, debt_settled, unmet_debts, the note IO, and meet_the_debt ahead of book_the_debt
+file tools/caravan_meet_witness.rish the witness on metal -- the selftest read natively, every note read outside the run that wrote it
+file tools/caravan_suite_witness.rish the choir registers the new rung; roster bijection GREEN at 78
+file caravan/README.md the durable per-rung prose, so the module explains itself past this log
+file crux/REMEMBER.md the live edge refreshed and the owe edge condensed to a pointer
+file crux/CAIRNS.md the walk-back for the condensed card, recorded before the cut
+file foundations/20260813-142420_mycelium-the-consensus-protocol.md the rota read's own docs-sync ratchet -- work-in-progress/REMEMBER.md repointed to crux/
+recommend keep-going the arc now corrects a record, carries the correction, hears the answer, records the disagreement, escorts the word, bounds the objection, stands its standing, tells the raiser, reads their reply, carries a live quarrel past the run that heard it, makes the inheriting run answer for it, lets its holder close it, dates it, reads that age aloud, puts a long-standing one before a third hand, reads back what that hand made of it, makes the plan answer that finding on the record, carries the plan's own concession forward, and now makes the run that inherits it meet it -- so the question above is what meeting is worth: a receipt says an admission was finally looked at and says nothing whatever about what the look found, which means a plan may meet every debt it ever books, change not one thing about the work, and read as perfectly answerable forever.
