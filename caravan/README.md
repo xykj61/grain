@@ -911,6 +911,26 @@ The numbers state the claim: **three refusals stand as a pure fold and a fourth 
 
 The numbers state the claim: **three refusals stand as a pure fold and a fourth in the run; a plan that loses nothing reads as the line handed, all 16 pairs; and one plan of 6 phases run twice absorbs 3 phases into standing dependents, loses 3 arcs, takes the same judgment back, re-seats the same 3 phases, posts the same correction, spends the same 6 dependents, and settles `carried` either way -- while corrections carried to the place their reader was reached rise 0 to 1 and corrections left waiting for a reader who never returns fall 1 to 0.** The price is nothing but the walk. Module [`courier.rye`](courier.rye) - witness [`../tools/caravan_courier_witness.rish`](../tools/caravan_courier_witness.rish), registered in the choir that sings all 61 rungs GREEN in one voice.
 
+## Hear -- a correction is finished when its reader answers
+
+**`courier.rye` taught a run to carry its correction to the place its reader was actually reached** -- the address seated on the wire beside the reading, the letter written into the reader's own box, and the box read back before the report believes anybody was reached. The letter leaves, and that is exactly as far as it goes.
+
+**A letter that left proves a journey, never a reading.** Nothing below this rung asks whether anybody opened the box. A reader who wrote back the same afternoon and a reader who never looked read precisely alike from the plan's side -- which leaves the one question a correction exists to answer, *does this person now hold the word we stand behind?*, standing entirely unasked.
+
+**The measurement is corrections whose reader answered into silence.** The rung below weighs an answer against the distance it travelled. This one weighs it against the **hand that answered it**: a reader wrote back, in their own word, into a plan that never listened.
+
+**A reader's box faces two ways, and a run may only reach one of them.** The plan writes `caravan/.readers/desk.told`, the letter it carried; the reader writes `caravan/.readers/desk.said`, the reading they now hold. A run reads the second and never writes it, since an acknowledgement a supervisor can write for its reader acknowledges nothing at all -- it is the plan agreeing with the plan. The selftest harness that stands a reader up on the wire names itself as that reader plainly, exactly as it stands up a reading and an address.
+
+**A plan publishes whether it hears.** A record written `receipt = .asked` says: a correction this run carries stays open until the reader's own hand answers it. `receipt = .unasked` is where the rung below leaves it -- the letter is delivered and the plan calls itself finished. The word sits at the plan beside the dispatch, since it instructs about whether a record listens rather than about any one phase.
+
+**An answer is bound to the reading it answers** -- the consensus season's own law, one tier out. A hand naming the reading the letter carries is an agreement; a hand naming any other reading is a different sentence, and a run that counted it as agreement would be reading consent into a stranger's letter.
+
+**A hearing is bounded by the correction that earned it.** Only a letter this run actually carried may be heard, and every carried letter is heard or unheard -- never both and never neither. A run listening for the reply to a letter nobody sent is hearing its own hope.
+
+**The rung earns four refusals, each about the answer rather than the correction that earned it.** `HearEarly` is the moment. `HearUnanswered` is the supply. `HearMiscounted` is the honesty of the count. `HearMisheard` is the answer -- the hard half -- since a report claiming agreement from a hand that named a different reading is worse than the silence below it.
+
+The numbers state the claim: **three refusals stand as a pure fold and a fourth in the run; a plan that loses nothing reads as the line handed, all 16 pairs; and one plan of 6 phases run twice absorbs 3 into standing dependents, loses 3 arcs, takes the same judgment back, re-seats the same 3 phases, posts the same correction, carries it to the same reader, spends the same 6 dependents, and settles `carried` either way -- while answers read in the reader's own hand rise 0 to 1 and corrections answered into silence fall 1 to 0. The price is one read of a file the run already knew the name of.** Five RED paths proven first, one a planted control that reports a reader agreeing to a word they never wrote. Module `caravan/hear.rye`, witness `tools/caravan_hear_witness.rish`, and the choir sings 62 rungs in one voice.
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.
