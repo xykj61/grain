@@ -24,6 +24,15 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260820.014755` -- the operator card condenses its Microkernel-arc live edges to one pointer
+
+**Walk-back nib:** `684f5ade97` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- eight *prior live edge* bullets folded to a single pointer line. Roughly 9 KB of prose leaves the living card.
+
+**What waits there, worth recalling:** the full inline record of the commit-message wall (both repositories, 18 planted cases), the percent-sigil molt and its 230 mis-rendered references, the five-reds round (%88 build contention, %89 the assert message that never interpolated, %92 the choir green only on a warm tree), the Caravan `child` -> `dependent` deep debride across 3,090 re-signed commits, and the per-rung prose for the confer, revoke, taper, and unhand rungs. Every one of these also lives in its own dated `session-logs/*.kyri`, in `caravan/README.md`, and in `crux/REDS.md`; the card kept a second copy, and that is what the fold removes. Read the whole departing card with `git show 684f5ade97:crux/REMEMBER.md`.
+
+
 ### `20260820.005542` -- our own record numbers molt from `#` to `%`, and the commit messages are rewritten behind them
 
 **Walk-back nib:** `f98a3e0bb0` -- **local only.** This is a *deep* debride of **commit messages**: `caravan:`-era and every other message carrying `REDS #N`, `gate #N`, `errata #N`, `OQ #N`, `study #N`, or `red #N` is rewritten and force-pushed to `origin` and `xykj61`, so this nib is unreachable on both remotes after the send. It survives on this pier alone, on `pre-percent-debride-20260820`.
