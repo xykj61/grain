@@ -1,0 +1,1128 @@
+//! Caravan replace -- a run may correct a phase in one act, and both triples
+//! are weighed against the record that holds neither.
+//!
+//! `withdraw.rye` gave a waiting phase a door out and named its own limit
+//! plainly: a run may now grow and prune, so a plan can be corrected only by
+//! doing both in sequence. A correction is the commonest change of all --
+//! this phase is the right phase in the wrong shape, fix it -- and it was
+//! the one change the arc could not make.
+//!
+//! **A correction that keeps a phase's turn and its step is refused by every
+//! reading that weighs the newcomer against a record still holding the phase
+//! it replaces, and that is the finding.** The plainest correction there is
+//! -- same turn, same step, different work -- asks a plan for a step its own
+//! turn has already spent. `arrival_admits` counts one step standing and the
+//! newcomer offers step zero, so the door closes on the very change it was
+//! built to make. Weigh the same newcomer against the **residue** -- the
+//! record holding neither the departing phase nor the newcomer -- and the
+//! step it offers is the step that turn has open. Both triples want that one
+//! record, and neither leg can find it alone.
+//!
+//! **A replacement keeps the slot, and a sequence cannot.** An arrival lands
+//! at the tail, so correcting a phase in the middle of a plan by withdrawing
+//! it and enlisting another carries the correction to the end and lets every
+//! phase the author wrote after it stand ahead of it. Measured rather than
+//! asserted: correcting the third of seven phases moves **no phase at all**
+//! in one act, against **five** places moved by the sequence that reaches
+//! the same set.
+//!
+//! **The residue is a lawful plan, which is exactly what makes the gap
+//! dangerous.** Between a withdrawal and its enlistment the record seats
+//! itself, orders itself, and answers every reading a supervisor knows how
+//! to ask -- so nothing in the machinery can tell a half-finished correction
+//! from a finished plan, and a run in that gap will admit from behind the
+//! empty slot a dependent the correction would have held. One act closes the gap
+//! by never opening it.
+//!
+//! **A replacement moves nothing, in the strongest form this arc has
+//! reached.** A withdrawal keeps the record's length and leaves a hole; an
+//! enlistment keeps every index and grows the tail. A correction does
+//! neither: the record's length never changes and no index is ever added, so
+//! every dependent already started keeps the slot, the line, and the grants it
+//! was handed, and the plan an operator reads is the plan its author wrote
+//! with one phase now saying something else.
+//!
+//! **A correction earns one refusal of its own**, since a newcomer can be
+//! lawful at the tail and unlawful in the slot. A phase may name only turns
+//! below its own, so a high turn dropped into an early place names a turn
+//! that stands after it, and the plan stops seating itself while the arrival
+//! leg sees nothing wrong. `ReplacementUnseated` is that fact, named where
+//! an operator meets it.
+//!
+//! **A correction costs two walks of the record**, one for each triple:
+//! `max_replace_tests` against `max_seating_tests` to seat the plan again --
+//! twice what an arrival, an enlistment, or a withdrawal each spend, and
+//! still the record's length against the queue's square.
+//!
+//! **The limit is named plainly.** A correction reaches only work still
+//! waiting, exactly as a withdrawal does: a dependent already running is never
+//! recalled and a phase already home is never rewritten. Whether a run may
+//! correct a phase a dependent is *running* -- letting the work in flight finish
+//! under the shape it started with while the record already reads the new
+//! one -- belongs to the vision room until a witness binds it.
+//!
+//! Usage:
+//!   replace selftest                  Run the readings against each other
+//!   replace                           Same as selftest
+//!   replace dependent <domain> <plan> ... Run as a supervised dependent (internal)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const capabilities = @import("capabilities.rye");
+const roster = @import("roster.rye");
+const read = @import("read.rye");
+const boot = @import("boot.rye");
+const exercise = @import("exercise.rye");
+const carry = @import("carry.rye");
+const notify = @import("notify.rye");
+const roundtrip = @import("roundtrip.rye");
+const cycle = @import("cycle.rye");
+const gap = @import("gap.rye");
+const cohort = @import("cohort.rye");
+const intent = @import("intent.rye");
+const mask = @import("mask.rye");
+const precede = @import("precede.rye");
+const arrive = @import("arrive.rye");
+const enlist = @import("enlist.rye");
+const withdraw_rung = @import("withdraw.rye");
+
+const caravan_replace_version = "20260819.211527";
+
+// =========================================================================
+// The bounds -- carried whole, and the one this rung adds
+// =========================================================================
+
+/// The declaration every rung of this arc runs against, unchanged.
+pub const declaration_path = withdraw_rung.declaration_path;
+
+/// How many dependents one supervisor may hold at once, unchanged.
+pub const max_in_flight: u32 = withdraw_rung.max_in_flight;
+
+/// How many phases one queue may ever hold, unchanged.
+pub const max_queue_len: u32 = withdraw_rung.max_queue_len;
+
+/// How far a blocked head may look for a phase that can pass, unchanged.
+pub const max_lookahead: u32 = withdraw_rung.max_lookahead;
+
+/// How many words a supervised dependent's own argv always carries, unchanged.
+pub const fixed_argv_words: u32 = withdraw_rung.fixed_argv_words;
+
+/// How many turns one plan may ever name, unchanged.
+pub const max_turns: u32 = withdraw_rung.max_turns;
+
+/// How many tests seating a whole plan may ever spend, unchanged.
+pub const max_seating_tests: u32 = withdraw_rung.max_seating_tests;
+
+/// How many tests one arrival at the door may ever spend, unchanged.
+pub const max_arrival_tests: u32 = withdraw_rung.max_arrival_tests;
+
+/// How many tests one departure from a running record may spend, unchanged.
+pub const max_withdraw_tests: u32 = withdraw_rung.max_withdraw_tests;
+
+/// How many tests one correction may ever spend.
+///
+/// A correction weighs two triples, and each triple is one walk of the
+/// record: the departure against the record as it stands, the arrival
+/// against the residue that departure leaves. Stated here rather than left
+/// for a reader to work out, and twice what any single act costs.
+pub const max_replace_tests: u32 = max_withdraw_tests + max_arrival_tests;
+
+/// How many phases one run may ever correct while it is under way.
+///
+/// A run can never correct more work than it was handed, so the schedule is
+/// bounded by the same number that bounds the record it rewrites.
+pub const max_replacements: u32 = max_queue_len;
+
+comptime {
+    // invariant: a correction costs exactly one departure and one arrival
+    assert(max_replace_tests == max_withdraw_tests + max_arrival_tests);
+    // invariant: a correction costs strictly more than either act alone
+    assert(max_replace_tests > max_withdraw_tests);
+    // invariant: a correction costs strictly less than seating the plan again
+    assert(max_replace_tests < max_seating_tests);
+    // invariant: a schedule never corrects more work than one queue may hold
+    assert(max_replacements <= max_queue_len);
+    // invariant: a correction always has a residue to weigh a newcomer in
+    assert(max_queue_len >= 2);
+}
+
+// =========================================================================
+// The shapes -- carried whole from the rung below
+// =========================================================================
+
+/// Renders one outcome code as the words an operator reads.
+pub fn outcome_name(code: u8) []const u8 {
+    return withdraw_rung.outcome_name(code);
+}
+
+/// Why a queue may not take, release, or correct the work handed to it.
+///
+/// One name of this rung's own, because a correction fails in a way neither
+/// leg names: a newcomer lawful at the tail of the residue can still be
+/// unlawful in the slot it is asked to fill.
+pub const RunError = withdraw_rung.RunError || error{ReplacementUnseated};
+
+/// One queued item and the letters it declares, carried from `intent.rye`.
+pub const Task = withdraw_rung.Task;
+
+/// One phase, its turn, its step, and the two masks it carries, unchanged.
+pub const Phase = withdraw_rung.Phase;
+
+/// How deeply a reading looks at the queue's own authorship, unchanged.
+pub const Reading = withdraw_rung.Reading;
+
+/// Renders one reading as the words an operator reads.
+pub fn reading_words(r: Reading) []const u8 {
+    return withdraw_rung.reading_words(r);
+}
+
+/// What one run did, reported whole, unchanged from the rung below.
+pub const Report = withdraw_rung.Report;
+
+/// What one walk of a record learned about a phase asked to leave it.
+pub const Departing = withdraw_rung.Departing;
+
+/// The single bit that stands for one turn of a plan.
+pub fn turn_bit(turn: u32) u32 {
+    return withdraw_rung.turn_bit(turn);
+}
+
+/// Answers whether a newcomer may take the tail of a plan already seated.
+pub fn arrival_admits(plan: []const Phase, newcomer: Phase) bool {
+    return withdraw_rung.arrival_admits(plan, newcomer);
+}
+
+/// Answers whether the plan's written sequence keeps every name it carries.
+pub fn plan_is_seated(plan: []const Phase) bool {
+    return withdraw_rung.plan_is_seated(plan);
+}
+
+/// Answers whether two plans hold the same phases in the same places.
+pub fn plans_match(a: []const Phase, b: []const Phase) bool {
+    return withdraw_rung.plans_match(a, b);
+}
+
+/// Answers whether two phases must keep the order the queue wrote them in.
+pub fn items_contend(sys: *const system.System, a: Phase, b: Phase, reading: Reading) bool {
+    return withdraw_rung.items_contend(sys, a, b, reading);
+}
+
+/// Answers whether the head may enter beside the dependents running now.
+pub fn admissible(
+    sys: *const system.System,
+    live: []const cohort.Running,
+    head: Phase,
+    reading: Reading,
+) bool {
+    return withdraw_rung.admissible(sys, live, head, reading);
+}
+
+/// Reads a record once and answers what a phase's departure would cost it.
+pub fn depart(
+    plan: []const Phase,
+    gone: []const bool,
+    taken: []const bool,
+    turn: u32,
+    step: u32,
+) Departing {
+    return withdraw_rung.depart(plan, gone, taken, turn, step);
+}
+
+/// Answers why a phase may not leave a record, or that it may.
+pub fn withdrawal_refusal(
+    plan: []const Phase,
+    gone: []const bool,
+    taken: []const bool,
+    turn: u32,
+    step: u32,
+) ?withdraw_rung.RunError {
+    return withdraw_rung.withdrawal_refusal(plan, gone, taken, turn, step);
+}
+
+// =========================================================================
+// The correction -- two triples, and the one record they share
+// =========================================================================
+
+/// Writes the record a correction weighs its newcomer against.
+///
+/// The residue holds neither the departing phase nor the newcomer, and it is
+/// the only record in which both triples read true: the departure asks what
+/// leaving costs the record it stands in, and the arrival asks what joining
+/// costs the record that departure leaves. A plan still holding the phase
+/// under correction would answer the arrival with a step already spent.
+pub fn residue(plan: []const Phase, at: u32, out: []Phase) void {
+    // invariant: a residue always has room for the record it holds
+    assert(out.len + 1 == plan.len);
+    // invariant: a residue always leaves work behind for a newcomer to join
+    assert(plan.len >= 2);
+    // invariant: a residue always drops a phase the record actually holds
+    assert(at < plan.len);
+    var kept: u32 = 0;
+    var i: u32 = 0;
+    while (i < plan.len) : (i += 1) {
+        if (i == at) continue;
+        out[kept] = plan[i];
+        kept += 1;
+    }
+    // invariant: the walk read the whole record, weighing every phase in it
+    assert(i == plan.len);
+    // invariant: exactly the one phase under correction stood aside
+    assert(kept == out.len);
+}
+
+/// Answers why a phase may not be corrected in place, or that it may.
+///
+/// Two triples against one record. The departure owes its three facts to the
+/// record as it stands: the phase still waits, its step is the last one its
+/// turn holds, and no phase in the record names its turn. The arrival owes
+/// its three to the residue: nobody waits on the newcomer's turn, its step
+/// is the next that turn has open, and a turn already standing agrees about
+/// what it follows. The slot answers the third question neither leg asks --
+/// whether the plan still seats itself with the newcomer where the departing
+/// phase stood.
+pub fn replacement_refusal(
+    plan: []const Phase,
+    gone: []const bool,
+    taken: []const bool,
+    turn: u32,
+    step: u32,
+    newcomer: Phase,
+) ?RunError {
+    // invariant: a correction always leaves work behind the phase it rewrites
+    assert(plan.len >= 2);
+    // invariant: a correction stays inside the queue one supervisor may hold
+    assert(plan.len <= max_queue_len);
+    // invariant: every phase in the record says whether it has left
+    assert(gone.len == plan.len);
+    // invariant: every phase in the record says whether it has started
+    assert(taken.len == plan.len);
+    if (withdrawal_refusal(plan, gone, taken, turn, step)) |why| return why;
+
+    const where = depart(plan, gone, taken, turn, step);
+    // invariant: an admitted departure always found the phase it releases
+    assert(where.found);
+
+    var rest_store: [max_queue_len]Phase = undefined;
+    const rest = rest_store[0 .. plan.len - 1];
+    residue(plan, where.at, rest);
+    if (!arrival_admits(rest, newcomer)) return error.ArrivalUnseated;
+
+    var seated_store: [max_queue_len]Phase = undefined;
+    const seated = seated_store[0..plan.len];
+    var i: u32 = 0;
+    while (i < plan.len) : (i += 1) seated[i] = plan[i];
+    // invariant: the whole record was carried over before the one rewrite
+    assert(i == plan.len);
+    seated[where.at] = newcomer;
+    if (!plan_is_seated(seated)) return error.ReplacementUnseated;
+    return null;
+}
+
+/// Answers whether a phase may be corrected in place at all.
+pub fn replacement_admits(
+    plan: []const Phase,
+    gone: []const bool,
+    taken: []const bool,
+    turn: u32,
+    step: u32,
+    newcomer: Phase,
+) bool {
+    return replacement_refusal(plan, gone, taken, turn, step, newcomer) == null;
+}
+
+/// Writes a plan with one phase saying something else, or refuses.
+///
+/// The record keeps its length and every other phase keeps its place, so a
+/// correction moves nothing at all -- the strongest form of this arc's rule,
+/// since a withdrawal leaves a hole and an arrival grows a tail while a
+/// correction does neither. A phase replaced by itself is the plan it was.
+pub fn replace(plan: []const Phase, turn: u32, step: u32, newcomer: Phase, out: []Phase) bool {
+    // invariant: a correction always has room for the plan it rewrites
+    assert(out.len == plan.len);
+    // invariant: a correction always leaves work behind the phase it rewrites
+    assert(plan.len >= 2);
+    // invariant: a correction stays inside the queue one supervisor may hold
+    assert(plan.len <= max_queue_len);
+    const none: [max_queue_len]bool = @splat(false);
+    const gone = none[0..plan.len];
+    const taken = none[0..plan.len];
+    if (!replacement_admits(plan, gone, taken, turn, step, newcomer)) return false;
+    const where = depart(plan, gone, taken, turn, step);
+    // invariant: an admitted correction always found the phase it rewrites
+    assert(where.found);
+    var i: u32 = 0;
+    while (i < plan.len) : (i += 1) out[i] = plan[i];
+    // invariant: the whole plan was carried over, none dropped
+    assert(i == plan.len);
+    out[where.at] = newcomer;
+    // invariant: a correction never changes how much work a plan carries
+    assert(out.len == plan.len);
+    return true;
+}
+
+/// Answers how many places two plans of one length hold differently.
+///
+/// The measure this rung reports rather than asserts: a correction in one
+/// act moves nothing, and the sequence that reaches the same set of phases
+/// moves every place from the slot to the tail.
+pub fn places_moved(a: []const Phase, b: []const Phase) u32 {
+    // invariant: two plans are only compared place for place at one length
+    assert(a.len == b.len);
+    // invariant: a comparison stays inside the queue one supervisor may hold
+    assert(a.len <= max_queue_len);
+    var moved: u32 = 0;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) {
+        if (a[i].turn != b[i].turn or a[i].step != b[i].step) moved += 1;
+    }
+    // invariant: the walk read both plans whole, weighing every place
+    assert(i == a.len);
+    // invariant: no more places moved than the plans hold
+    assert(moved <= a.len);
+    return moved;
+}
+
+// =========================================================================
+// The supervisor -- one record that may grow, shrink, and be corrected
+// =========================================================================
+
+/// One dependent already reaped, held until the whole record has drained.
+const Finished = struct {
+    domain: []const u8,
+    verb: cycle.Verb,
+    count: u32,
+    expect: u8,
+    code: u8,
+};
+
+/// Folds one reaped outcome into the report, or names the mismatch.
+fn judge_outcome(done: Finished, report_out: *Report) RunError!void {
+    // invariant: a judged dependent always names its domain
+    assert(done.domain.len >= 1);
+    // invariant: the report never counts more successes than dependents reaped
+    assert(report_out.inner.run.succeeded <= report_out.inner.run.reaped);
+    if (done.code != done.expect) {
+        print("    {s}: expected {s}, heard {s}\n", .{
+            done.domain, outcome_name(done.expect), outcome_name(done.code),
+        });
+        return error.OutcomeMismatch;
+    }
+    if (done.code == carry.Outcome.carried_ok) {
+        report_out.inner.run.succeeded += 1;
+        if (done.verb == .home) report_out.inner.run.homed += done.count;
+    }
+}
+
+/// The queue's own bookkeeping for one run, over a record that may be
+/// rewritten in place.
+///
+/// `corrected` is what this table adds: a phase rewritten while the run is
+/// under way keeps its index, its slot, and its place in the written order,
+/// so the record never changes length at all. `taken` and `gone` stay
+/// exactly as the rung below kept them, since a correction changes neither.
+const Table = struct {
+    live: [max_in_flight]cohort.Running = undefined,
+    in_flight: u32 = 0,
+    done: [max_queue_len]Finished = undefined,
+    finished: u32 = 0,
+    taken: [max_queue_len]bool = @splat(false),
+    gone: [max_queue_len]bool = @splat(false),
+    record: [max_queue_len]Phase = undefined,
+    held: u32 = 0,
+    corrected: u32 = 0,
+    head: u32 = 0,
+    left: u32 = 0,
+};
+
+/// The record as it stands right now.
+fn standing(table: *const Table) []const Phase {
+    // invariant: a record never outgrows the queue one supervisor may hold
+    assert(table.held <= max_queue_len);
+    return table.record[0..table.held];
+}
+
+/// Answers whether one phase of the record is still work waiting to run.
+fn waits(table: *const Table, at: u32) bool {
+    // invariant: a reading always names a phase inside the record
+    assert(at < table.held);
+    return !table.taken[at] and !table.gone[at];
+}
+
+/// Moves the head past every item already started or already released.
+fn advance_head(table: *Table) void {
+    // invariant: a head never walks past the record it reads
+    assert(table.head <= table.held);
+    while (table.head < table.held and !waits(table, table.head)) table.head += 1;
+}
+
+/// Answers whether a phase of a turn this pick's turn names still waits.
+fn elder_waits(table: *const Table, pick: u32) bool {
+    // invariant: a pick always names a phase inside the record
+    assert(pick < table.held);
+    const wanted = table.record[pick].follows_turns;
+    if (wanted == 0) return false;
+    var i: u32 = 0;
+    while (i < table.held) : (i += 1) {
+        if (i == pick) continue;
+        if (!waits(table, i)) continue;
+        if ((wanted & turn_bit(table.record[i].turn)) != 0) return true;
+    }
+    // invariant: the walk read the whole record, weighing every phase in it
+    assert(i == table.held);
+    return false;
+}
+
+/// Answers whether a sibling of this pick's own turn still waits behind it.
+fn sibling_waits(table: *const Table, pick: u32, sibling_mask: u32) bool {
+    // invariant: a pick always names a phase inside the record
+    assert(pick < table.held);
+    var i: u32 = 0;
+    while (i < pick) : (i += 1) {
+        if (!waits(table, i)) continue;
+        if (table.record[i].turn != table.record[pick].turn) continue;
+        if ((sibling_mask & mask.step_bit(table.record[i].step)) != 0) return true;
+    }
+    // invariant: the walk reached the pick, weighing every phase before it
+    assert(i == pick);
+    return false;
+}
+
+/// Answers whether a phase may be admitted ahead of the record's head.
+fn may_pass(
+    sys: *const system.System,
+    table: *const Table,
+    candidate: u32,
+    reading: Reading,
+) bool {
+    // invariant: a pass always reaches forward, never at the head itself
+    assert(candidate > table.head);
+    // invariant: a candidate always stands inside the record
+    assert(candidate < table.held);
+    var i: u32 = table.head;
+    while (i < candidate) : (i += 1) {
+        if (!waits(table, i)) continue;
+        if (items_contend(sys, table.record[i], table.record[candidate], reading)) return false;
+    }
+    // invariant: the walk reached the candidate, weighing every phase before it
+    assert(i == candidate);
+    return true;
+}
+
+/// Chooses one phase from behind a blocked head, or answers that none may go.
+fn choose_pass(
+    sys: *const system.System,
+    table: *const Table,
+    reading: Reading,
+) ?u32 {
+    // invariant: a pass is only ever sought while the head stands blocked
+    assert(table.head < table.held);
+    var looked: u32 = 0;
+    var i: u32 = table.head + 1;
+    while (i < table.held and looked < max_lookahead) : (i += 1) {
+        if (!waits(table, i)) continue;
+        looked += 1;
+        if (!admissible(sys, table.live[0..table.in_flight], table.record[i], reading)) continue;
+        if (!may_pass(sys, table, i, reading)) continue;
+        return i;
+    }
+    // invariant: the look stayed inside the bound it was given
+    assert(looked <= max_lookahead);
+    return null;
+}
+
+/// Starts one phase, handing the line it declared and nothing more.
+fn start_one(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    caps: *const capabilities.CapabilityTable,
+    phase: Phase,
+    wake: gap.Wake,
+) (RunError || cohort.RunError || boot.BootError)!cohort.Running {
+    // invariant: a start always names the domain it starts
+    assert(phase.task.item.domain.len >= 1);
+    const narrowed = intent.narrow(caps, phase.task) orelse return error.UnknownDomain;
+    const slot = narrowed.find_dependent(phase.task.item.domain) orelse return error.UnknownDomain;
+    // invariant: a narrowed line stays inside what the document grants
+    assert(boot.line_within(sys, slot));
+    return cohort.spawn_one_within(
+        allocator, io, self_path, sys, &narrowed, phase.task.item, wake, &.{},
+    );
+}
+
+/// Admits as much of the record as the table, the isolation, and the reading
+/// allow, and answers how many dependents it started.
+fn fill_table(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    caps: *const capabilities.CapabilityTable,
+    wake: gap.Wake,
+    reading: Reading,
+    table: *Table,
+    report_out: *Report,
+) (RunError || cohort.RunError || boot.BootError)!u32 {
+    var admitted: u32 = 0;
+    while (table.in_flight < max_in_flight and table.left > 0) {
+        advance_head(table);
+        // invariant: work still waiting always leaves a head to weigh
+        assert(table.head < table.held);
+
+        var pick: u32 = table.head;
+        if (!admissible(sys, table.live[0..table.in_flight], table.record[table.head], reading)) {
+            pick = choose_pass(sys, table, reading) orelse break;
+            report_out.inner.run.passes += 1;
+            const reach = pick - table.head;
+            if (reach > report_out.inner.run.pass_reach) report_out.inner.run.pass_reach = reach;
+        }
+        const chosen = table.record[pick];
+        if (sibling_waits(table, pick, mask.prefix_mask(chosen.step))) {
+            report_out.inner.out_of_turn += 1;
+        }
+        if (sibling_waits(table, pick, mask.prefix_mask(mask.fence_after(chosen.follows)))) {
+            report_out.inner.out_of_fence += 1;
+        }
+        if (sibling_waits(table, pick, chosen.follows)) report_out.inner.out_of_mask += 1;
+        if (elder_waits(table, pick)) report_out.out_of_precede += 1;
+
+        table.live[table.in_flight] = try start_one(
+            allocator, io, self_path, sys, caps, chosen, wake,
+        );
+        table.in_flight += 1;
+        table.taken[pick] = true;
+        table.left -= 1;
+        admitted += 1;
+        report_out.inner.run.admitted += 1;
+    }
+    // invariant: a fill never overruns the table it fills
+    assert(table.in_flight <= max_in_flight);
+    // invariant: a preceded reading never runs a phase past a turn its turn named
+    assert(reading != .preceded or report_out.out_of_precede == 0);
+    return admitted;
+}
+
+/// Waits on the eldest dependent, records what it answered, and closes the table
+/// over the slot it leaves.
+fn reap_oldest(io: std.Io, table: *Table, report_out: *Report) cohort.RunError!void {
+    // invariant: a reaping always has a dependent to wait on
+    assert(table.in_flight >= 1);
+    // invariant: a reaping never overruns the record it is kept in
+    assert(table.finished < max_queue_len);
+    const code = try cohort.reap_one(io, &table.live[0]);
+    table.done[table.finished] = .{
+        .domain = table.live[0].domain,
+        .verb = table.live[0].verb,
+        .count = table.live[0].count,
+        .expect = table.live[0].expect,
+        .code = code,
+    };
+    table.finished += 1;
+    table.in_flight -= 1;
+    report_out.inner.run.reaped += 1;
+    report_out.inner.run.turns += 1;
+
+    var s: u32 = 0;
+    while (s < table.in_flight) : (s += 1) table.live[s] = table.live[s + 1];
+    // invariant: the table closed over the reaped dependent, none lost
+    assert(s == table.in_flight);
+}
+
+/// One phase asked to say something else, and the moment the run rewrites it.
+///
+/// `after` counts dependents reaped, so a schedule reads as plainly as the run
+/// it describes: this phase is corrected once that many dependents have come
+/// home. The departing phase is named by its turn and its step, the way its
+/// author wrote it, rather than by an index the record might have moved.
+pub const Replacement = struct {
+    after: u32,
+    turn: u32,
+    step: u32,
+    phase: Phase,
+};
+
+/// Rewrites one waiting phase of a running record, or names why it stands.
+///
+/// Two walks and no more, and the record's length never moves. The residue
+/// is built once and both triples read it: the departure against the record
+/// as it stands, the arrival against the record that departure would leave.
+/// Nothing already placed moves, so the slots, lines, and grants of every
+/// dependent in flight stand exactly as they were handed out.
+fn replace_one(table: *Table, turn: u32, step: u32, newcomer: Phase) RunError!void {
+    // invariant: a run always carries work before anything is corrected
+    assert(table.held >= 2);
+    const gone = table.gone[0..table.held];
+    const taken = table.taken[0..table.held];
+    if (replacement_refusal(standing(table), gone, taken, turn, step, newcomer)) |why| return why;
+    const where = depart(standing(table), gone, taken, turn, step);
+    // invariant: an admitted correction always found the phase it rewrites
+    assert(where.found);
+    // invariant: a corrected phase was work still waiting a moment ago
+    assert(waits(table, where.at));
+    const before = table.held;
+    table.record[where.at] = newcomer;
+    table.corrected += 1;
+    // invariant: a correction never changes how much work a record carries
+    assert(table.held == before);
+    // invariant: work still waiting never outruns the record that holds it
+    assert(table.left <= table.held);
+}
+
+/// Runs a record that may be corrected while it runs, rewriting each phase
+/// at the moment its schedule names.
+///
+/// The supervisor is the one every rung in this arc keeps -- fill the table,
+/// reap the eldest, judge at the end -- with exactly one act added after
+/// each reaping: every correction whose moment has come is weighed against
+/// the record as it now stands. A refusal arrives before the next dependent
+/// starts and leaves the run it interrupted exactly as it found it.
+pub fn run_with_corrections(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    base: []const Phase,
+    corrections: []const Replacement,
+    wake: gap.Wake,
+    reading: Reading,
+    report_out: *Report,
+) (roster.RosterError || exercise.ProvisionError || notify.BellError || RunError || cohort.RunError || boot.BootError)!void {
+    // invariant: a run always knows what program to spawn
+    assert(self_path.len >= 1);
+    // invariant: a run always reports into a fresh report
+    assert(report_out.inner.run.admitted == 0);
+    if (base.len == 0) return error.EmptyQueue;
+    if (base.len > max_queue_len) return error.QueueFull;
+    if (corrections.len > max_replacements) return error.QueueFull;
+    if (!precede.plan_is_ordered(base)) return error.OrderStalled;
+    if (!plan_is_seated(base)) return error.PlanUnseated;
+
+    var table: Table = .{};
+    precede.close(base, table.record[0..base.len]);
+    table.held = @intCast(base.len);
+    table.left = table.held;
+    // invariant: a closed record closes to itself, so the door's work is done
+    assert(precede.plan_is_closed(standing(&table)));
+
+    const provisioned = try exercise.provision(io, sys);
+    // invariant: every declared region has a backing store before any dependent runs
+    assert(provisioned == sys.map.region_count);
+    report_out.inner.run.bells = try roundtrip.provision_directed(io, sys);
+    const caps = try roster.from_system(sys);
+    // invariant: the derived table enforces exactly what the document permits
+    assert(roster.agrees(sys, &caps));
+    report_out.inner.run.queued = table.held;
+
+    var rewritten: u32 = 0;
+    while (table.left > 0 or table.in_flight > 0) {
+        const admitted_now = try fill_table(
+            allocator, io, self_path, sys, &caps, wake, reading, &table, report_out,
+        );
+        if (table.in_flight > report_out.inner.run.peak_in_flight) {
+            report_out.inner.run.peak_in_flight = table.in_flight;
+        }
+
+        if (table.left > 0) {
+            const free = max_in_flight - table.in_flight;
+            report_out.inner.run.slots_unspent += free;
+            if (admitted_now == 0 and free > 0) report_out.inner.run.idle_turns += 1;
+        }
+
+        // With an empty table nothing conflicts, so a stall here would mean
+        // the record named a domain the document does not.
+        if (table.in_flight == 0) return error.OrderStalled;
+        try reap_oldest(io, &table, report_out);
+
+        while (rewritten < corrections.len and
+            corrections[rewritten].after <= report_out.inner.run.reaped)
+        {
+            try replace_one(
+                &table,
+                corrections[rewritten].turn,
+                corrections[rewritten].step,
+                corrections[rewritten].phase,
+            );
+            rewritten += 1;
+        }
+    }
+    // invariant: every correction the schedule named was made, none skipped
+    assert(rewritten == corrections.len);
+    // invariant: the whole record was admitted, and every dependent reaped
+    assert(table.left == 0);
+    assert(table.in_flight == 0);
+    assert(report_out.inner.run.reaped == report_out.inner.run.admitted);
+    // invariant: a corrected record still reaps exactly the work it held
+    assert(table.finished == table.held);
+    // invariant: a run never corrects more phases than its schedule named
+    assert(table.corrected == corrections.len);
+
+    var j: u32 = 0;
+    while (j < table.finished) : (j += 1) try judge_outcome(table.done[j], report_out);
+    // invariant: every reaped dependent was judged, none skipped
+    assert(j == table.finished);
+}
+
+// =========================================================================
+// The lap -- one plan, handed whole and handed while it is corrected
+// =========================================================================
+
+/// The lap every rung in this arc runs, written in the order its names imply.
+///
+/// One busy domain makes the room: `client_a` opens with a place and three
+/// more turns of the same domain queue behind it, so the head stands blocked
+/// and a pass is the only way forward. Turn 4 has `client_b` place into
+/// `ask_b` and names turn 3; turn 5 has `client_c` peek the published `menu`
+/// and names turn 4 alone; turn 6 names nothing at all.
+const written_queue = [_]Phase{
+    .{ .turn = 0, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "w", .item = .{ .domain = "client_a", .verb = .place, .hops = "ask_a", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok } } },
+    .{ .turn = 1, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_a", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 2, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_a", .verb = .peek, .hops = "back_a", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 3, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_a", .verb = .peek, .hops = "taken_a", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 4, .step = 0, .follows = 0, .follows_turns = 8, .task = .{ .effects = "w", .item = .{ .domain = "client_b", .verb = .place, .hops = "ask_b", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok } } },
+    .{ .turn = 5, .step = 0, .follows = 0, .follows_turns = 16, .task = .{ .effects = "r", .item = .{ .domain = "client_c", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 6, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_b", .verb = .peek, .hops = "back_b", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+};
+
+/// Which phase of that lap the corrections rewrite.
+///
+/// Turn 2 is a `client_a` peek queued behind the busy head, so it cannot
+/// have started while turn 0 holds that domain; nobody names it; and it is
+/// the only step its turn holds. The plan survives its correction, and the
+/// third place of seven is far enough from the tail that a sequence reaching
+/// the same set of phases moves visibly more than one act does.
+const corrected_turn: u32 = 2;
+
+/// The same seat, saying something else -- the commonest correction there is.
+///
+/// Same turn, same step, different work: this is exactly the change a plan
+/// still holding the phase under correction refuses, since it counts one
+/// step of turn 2 already standing and the newcomer offers step zero.
+const same_seat = Phase{ .turn = 2, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_a", .verb = .peek, .hops = "taken_a", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } };
+
+/// A newcomer lawful at the tail of the residue and unlawful in the slot.
+///
+/// A phase may name only turns below its own, so turn 7 following turn 6 is
+/// sound wherever it stands late enough. Dropped into the third place it
+/// names a turn standing four places after it, and the plan stops seating
+/// itself -- which no reading of the newcomer alone could ever have told.
+const late_turn = Phase{ .turn = 7, .step = 0, .follows = 0, .follows_turns = 64, .task = .{ .effects = "r", .item = .{ .domain = "client_b", .verb = .peek, .hops = "back_b", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } };
+
+/// The tail of that lap, corrected while the run is under way.
+///
+/// Turn 2 is rewritten once the opening dependent has come home, with dependents
+/// still in flight and their slots already granted -- which is the whole
+/// point of the rung. The record's length never changes, so the run reaps
+/// exactly what the whole hand reaped and simply does different work.
+const late_corrections = [_]Replacement{
+    .{ .after = 1, .turn = 2, .step = 0, .phase = same_seat },
+};
+
+// =========================================================================
+// Self-test
+// =========================================================================
+
+/// Loads one declaration, or names why it could not be read.
+fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
+    const parsed = read.load(io, path, buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ path, @errorName(err) });
+        return null;
+    };
+    if (parsed.verify() != .whole) {
+        print("  RED: {s} did not read whole\n", .{path});
+        return null;
+    }
+    return parsed;
+}
+
+/// The correction read straight, before any supervisor spends it.
+///
+/// The happy zone of this rung: every question is a pure fold over a plan --
+/// answered instantly, with no dependent started and no store touched.
+fn check_correction() u8 {
+    const plan = written_queue[0..];
+    const none: [max_queue_len]bool = @splat(false);
+    const gone = none[0..plan.len];
+    const taken = none[0..plan.len];
+
+    // The finding, measured: the commonest correction there is, refused by a
+    // record still holding the phase it replaces and admitted by the residue.
+    if (arrival_admits(plan, same_seat)) {
+        print("  RED: a record still holding the phase took its replacement\n", .{});
+        return 1;
+    }
+    const where = depart(plan, gone, taken, corrected_turn, 0);
+    if (!where.found) {
+        print("  RED: the plan lost the phase this reading corrects\n", .{});
+        return 1;
+    }
+    var rest_store: [max_queue_len]Phase = undefined;
+    const rest = rest_store[0 .. plan.len - 1];
+    residue(plan, where.at, rest);
+    if (!arrival_admits(rest, same_seat)) {
+        print("  RED: the residue refused the correction it was built for\n", .{});
+        return 1;
+    }
+    if (!replacement_admits(plan, gone, taken, corrected_turn, 0, same_seat)) {
+        print("  RED: a phase nobody waits on was refused its correction\n", .{});
+        return 1;
+    }
+
+    // The refusal this rung earns: lawful at the tail, unlawful in the slot.
+    if (!arrival_admits(rest, late_turn)) {
+        print("  RED: the residue refused a newcomer at its own tail\n", .{});
+        return 1;
+    }
+    const slotted = replacement_refusal(plan, gone, taken, corrected_turn, 0, late_turn);
+    if (slotted) |err| {
+        if (err != error.ReplacementUnseated) {
+            print("  RED: the slot refused for the wrong reason: {s}\n", .{@errorName(err)});
+            return 1;
+        }
+    } else {
+        print("  RED: a phase naming a turn behind it was seated anyway\n", .{});
+        return 1;
+    }
+
+    // The departure's own three refusals still carry through by name.
+    const absent = replacement_refusal(plan, gone, taken, 9, 0, same_seat);
+    if (absent) |err| {
+        if (err != error.WithdrawalMissing) {
+            print("  RED: a phase never written refused for the wrong reason: {s}\n", .{@errorName(err)});
+            return 1;
+        }
+    } else {
+        print("  RED: a phase never written was corrected anyway\n", .{});
+        return 1;
+    }
+    var started: [max_queue_len]bool = @splat(false);
+    started[where.at] = true;
+    const running = replacement_refusal(plan, gone, started[0..plan.len], corrected_turn, 0, same_seat);
+    if (running) |err| {
+        if (err != error.WithdrawalStarted) {
+            print("  RED: a started phase refused for the wrong reason: {s}\n", .{@errorName(err)});
+            return 1;
+        }
+    } else {
+        print("  RED: a phase already started was rewritten under its dependent\n", .{});
+        return 1;
+    }
+
+    print("  a record still holding the phase refuses its own correction, and the residue takes it\n", .{});
+    print("  a correction costs at most {d} tests, against {d} to seat the plan again\n", .{
+        max_replace_tests, max_seating_tests,
+    });
+    return 0;
+}
+
+/// What the sequence costs, measured rather than asserted.
+///
+/// A withdrawal followed by an arrival reaches the same set of phases and
+/// carries the correction to the tail, so every place from the slot onward
+/// holds a different phase than the plan its author wrote.
+fn check_slot() u8 {
+    const plan = written_queue[0..];
+    const none: [max_queue_len]bool = @splat(false);
+    const where = depart(plan, none[0..plan.len], none[0..plan.len], corrected_turn, 0);
+    if (!where.found) {
+        print("  RED: the plan lost the phase this reading corrects\n", .{});
+        return 1;
+    }
+    var corrected: [max_queue_len]Phase = undefined;
+    if (!replace(plan, corrected_turn, 0, same_seat, corrected[0..plan.len])) {
+        print("  RED: a phase nobody waits on was refused its correction\n", .{});
+        return 1;
+    }
+    if (!std.mem.eql(u8, corrected[where.at].task.item.hops, same_seat.task.item.hops)) {
+        print("  RED: the correction did not stand in the slot it was given\n", .{});
+        return 1;
+    }
+
+    var pruned: [max_queue_len]Phase = undefined;
+    if (!withdraw_rung.withdraw(plan, corrected_turn, 0, pruned[0 .. plan.len - 1])) {
+        print("  RED: the plan refused to let go of the phase under correction\n", .{});
+        return 1;
+    }
+    if (!plan_is_seated(pruned[0 .. plan.len - 1])) {
+        print("  RED: the residue of a correction does not seat itself\n", .{});
+        return 1;
+    }
+    var sequenced: [max_queue_len]Phase = undefined;
+    if (!arrive.arrive(pruned[0 .. plan.len - 1], same_seat, sequenced[0..plan.len])) {
+        print("  RED: the residue refused the newcomer at its own tail\n", .{});
+        return 1;
+    }
+
+    const moved = places_moved(corrected[0..plan.len], plan);
+    const moved_by_sequence = places_moved(sequenced[0..plan.len], plan);
+    if (moved != 0) {
+        print("  RED: a correction moved {d} places of the plan\n", .{moved});
+        return 1;
+    }
+    if (moved_by_sequence <= moved) {
+        print("  RED: the sequence moved {d} places, so nothing was shown\n", .{moved_by_sequence});
+        return 1;
+    }
+
+    print("  a correction moves {d} places of a plan of {d}, against {d} moved by the sequence\n", .{
+        moved, plan.len, moved_by_sequence,
+    });
+    print("  the residue between a withdrawal and its arrival seats itself, so nothing can tell it apart\n", .{});
+    return 0;
+}
+
+/// The inverse test: a phase replaced by itself is the plan it was.
+///
+/// This arc's standing generalization test, one tier further out. An empty
+/// turn mask was the sibling mask, a full sibling mask was the fence, a
+/// seated plan arranged to itself, a plan grown one arrival at a time was
+/// the plan its author wrote, and a plan relieved of its own arrival was
+/// that plan again. Here a plan correcting a phase to itself is the plan,
+/// place for place.
+fn check_inverse() u8 {
+    const plan = written_queue[0..];
+    const none: [max_queue_len]bool = @splat(false);
+    const where = depart(plan, none[0..plan.len], none[0..plan.len], corrected_turn, 0);
+    if (!where.found) {
+        print("  RED: the plan lost the phase this reading corrects\n", .{});
+        return 1;
+    }
+    var same: [max_queue_len]Phase = undefined;
+    if (!replace(plan, corrected_turn, 0, plan[where.at], same[0..plan.len])) {
+        print("  RED: a plan refused to correct a phase to itself\n", .{});
+        return 1;
+    }
+    if (!plans_match(same[0..plan.len], plan)) {
+        print("  RED: a plan corrected to itself is not the plan it was\n", .{});
+        return 1;
+    }
+    if (!plan_is_seated(same[0..plan.len])) {
+        print("  RED: a corrected plan no longer seats itself\n", .{});
+        return 1;
+    }
+    print("  a plan correcting a phase to itself is that plan, all {d} phases\n", .{plan.len});
+    return 0;
+}
+
+/// Runs one queue whole and answers whether it survived.
+fn run_one(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Phase,
+    reading: Reading,
+    report_out: *Report,
+) bool {
+    run_with_corrections(
+        allocator, io, self_path, sys, plan, &.{}, .when_moved, reading, report_out,
+    ) catch |err| {
+        print("  RED: a queue did not survive its run: {s}\n", .{@errorName(err)});
+        return false;
+    };
+    return true;
+}
+
+/// Runs one queue corrected while it runs and answers whether it survived.
+fn run_corrected(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    base: []const Phase,
+    corrections: []const Replacement,
+    reading: Reading,
+    report_out: *Report,
+) bool {
+    run_with_corrections(
+        allocator, io, self_path, sys, base, corrections, .when_moved, reading, report_out,
+    ) catch |err| {
+        print("  RED: a corrected queue did not survive its run: {s}\n", .{@errorName(err)});
+        return false;
+    };
+    return true;
+}
+
+/// The correction lap: one plan run twice, handed whole and rewritten as it
+/// runs.
+fn check_order(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const sys = load_one(io, declaration_path, &buf) orelse return 1;
+
+    var whole: Report = .{};
+    if (!run_one(allocator, io, self_path, &sys, &written_queue, .preceded, &whole)) return 1;
+    var corrected: Report = .{};
+    if (!run_corrected(
+        allocator, io, self_path, &sys, &written_queue, &late_corrections, .preceded, &corrected,
+    )) return 1;
+
+    print("  breaks a named turn: {d} handed whole, {d} corrected while running\n", .{
+        whole.out_of_precede, corrected.out_of_precede,
+    });
+    print("  dependents: {d} handed whole, {d} corrected while running\n", .{
+        whole.inner.run.reaped, corrected.inner.run.reaped,
+    });
+    print("  record: {d} places handed whole, {d} places corrected while running\n", .{
+        whole.inner.run.queued, corrected.inner.run.queued,
+    });
+    print("  {d} phases were corrected in a run already under way\n", .{late_corrections.len});
+
+    if (corrected.out_of_precede != 0) {
+        print("  RED: the corrected run broke {d} turn orders its author named\n", .{
+            corrected.out_of_precede,
+        });
+        return 1;
+    }
+    if (corrected.inner.run.reaped != whole.inner.run.reaped) {
+        print("  RED: the corrected queue reaped {d} dependents against {d} expected\n", .{
+            corrected.inner.run.reaped, whole.inner.run.reaped,
+        });
+        return 1;
+    }
+    if (corrected.inner.run.queued != whole.inner.run.queued) {
+        print("  RED: a correction changed the record from {d} places to {d}\n", .{
+            whole.inner.run.queued, corrected.inner.run.queued,
+        });
+        return 1;
+    }
+    // invariant: a run reaps exactly the dependents it admitted, never more
+    assert(corrected.inner.run.reaped == corrected.inner.run.admitted);
+    // invariant: correcting work never runs more work than the whole hand did
+    assert(corrected.inner.run.succeeded <= whole.inner.run.succeeded);
+
+    return 0;
+}
+
+fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    print("Caravan replace {s} -- self-test\n", .{caravan_replace_version});
+    const reading = check_correction();
+    if (reading != 0) return reading;
+    const slot = check_slot();
+    if (slot != 0) return slot;
+    const inverse = check_inverse();
+    if (inverse != 0) return inverse;
+    const order = check_order(allocator, io, self_path);
+    if (order != 0) return order;
+    print("  GREEN: a run may correct a phase in one act, and both triples read the record that holds neither\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
+        return cohort.run_dependent(io, args);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(allocator, io, self_path);
+    }
+    if (args.len >= 2) return 1;
+    return run_self_test(allocator, io, self_path);
+}
