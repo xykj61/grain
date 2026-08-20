@@ -1334,6 +1334,22 @@ The numbers state the claim: **five refusals stand by name -- unweighed, settled
 
 The numbers state the claim: **five refusals stand by name -- unopened, unsettled, mismatched, miscounted, misrecorded; a plan that loses nothing reads as the line handed, all 16 pairs; every rung below moves exactly as it moved, and only the second look parts the two plans.** Witness: `tools/caravan_reweigh_witness.rish`.
 
+### recount -- the reader who reopened a matter is told what the second look came to
+
+`reweigh.rye` above makes the second look. A run that inherits a reopened matter takes it up again, receipts it, and takes the matter down -- all inside the plan's own notes, in a place only a later run of this plan ever opens. **And the reader who reopened it is never told.** They said the answer fell short, they got the look they asked for, and their own box stays exactly as empty as it was. This is the shape `deem.rye` wore before `tidings.rye` answered it, one tier further out -- there a raiser never heard how their quarrel came out, here a reader never hears what their reopening bought. **The measurement is second looks a run made whose reader was never told**, and it falls 1 to 0.
+
+**The telling lands where the reader is, not where the record is.** Every note of the second look so far lives under the plan's own note directory, where a reader must come looking; this one lands in that reader's own box as `<address>.knows`, so the outward reach is visible on the wire as a record leaving the place records are kept.
+
+**A run tells only what it actually looked at.** A telling written by a run that made no second look would announce an answer to a question nobody re-asked, and a reader reading it would close a matter still open on the wire. `RecountUnlooked` refuses by name.
+
+**The telling names the matter it is about.** A reader may already hold a telling from a run before today, and leaving that standing beside a fresh second look would tell them their newest reopening had been answered by an older run's work -- worse than an empty box, since a box that says nothing at least says nothing false. `RecountMismatched` is the rung itself.
+
+**Telling is not deciding.** The telling copies the receipt and rewrites nothing. The settlement, the quarrel, its age, its standing, the case on the desk, the finding, the plan's own word, the concession, the meeting, the redress, the delivery, the reader's own verdict, and the second look itself each come out of a telling run exactly as they went in -- and both runs settle `carried out whole`.
+
+**A telling survives a provisioning, and falls with the receipt it copies.** One swept every morning would leave a reader who was told opening an empty box tomorrow; one standing beside a second look this plan's own wire has forgotten would answer a question nobody can find.
+
+The numbers state the claim: **five refusals stand by name -- unlooked, unaddressed, mismatched, miscounted, misrecorded; a plan that loses nothing reads as the line handed, all 16 pairs; every rung below moves exactly as it moved, and only the telling parts the two plans.** Witness: `tools/caravan_recount_witness.rish`.
+
 
 ## The ladder's carried checks -- a meter, not a rung
 

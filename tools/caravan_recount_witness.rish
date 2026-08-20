@@ -1,0 +1,362 @@
+# caravan_recount_witness.rish -- Caravan recount witness.
+#
+# `reweigh.rye` opened the last door: a run that inherits a reopened matter takes
+# the look again, receipts it, and takes the matter down -- all inside the plan's
+# own notes, where only a later run of this plan ever reads.
+#
+#   THE READER WHO REOPENED A MATTER IS TOLD WHAT THE SECOND LOOK CAME TO.
+#
+# WHAT THIS RUNG PROVES, MEASURED:
+#
+#   * THE NUMBER THE TWO PLANS DISAGREE ON IS SECOND LOOKS A RUN MADE WHOSE
+#     READER WAS NEVER TOLD. Both runs open holding the same matter an earlier
+#     run reopened, both take the look again, both receipt it, and both take the
+#     matter down. What parts them is whether the person who asked for that look
+#     ever hears what it came to. It falls from 1 to 0.
+#   * THIS IS THE SHAPE `deem` WORE BEFORE `tidings` ANSWERED IT, ONE TIER
+#     FURTHER OUT. There a raiser never heard how their quarrel came out; here a
+#     reader never hears what their reopening bought. They asked for a second
+#     look, they got one, and nothing came back.
+#   * THE TELLING LANDS WHERE THE READER IS, NOT WHERE THE RECORD IS. Every note
+#     of the second look so far lives under the plan's own note directory; this
+#     one lands in that reader's own box, so the outward reach is visible on the
+#     wire as a record leaving the place records are kept.
+#   * A RUN TELLS ONLY WHAT IT ACTUALLY LOOKED AT. A telling written by a run
+#     that made no second look would announce an answer to a question nobody
+#     re-asked. `RecountUnlooked` refuses by name on metal.
+#   * THE TELLING NAMES THE MATTER IT IS ABOUT. A reader already holding a
+#     telling from a run before today would read their newest reopening as
+#     answered by an older run's work -- worse than an empty box, since a box
+#     that says nothing at least says nothing false. `RecountMismatched` is the
+#     rung itself, refused by name on metal.
+#   * TELLING IS NOT DECIDING. The telling copies the receipt and rewrites
+#     nothing: the settlement, the quarrel, its age, its standing, the case on
+#     the desk, the finding, the plan's own word, the concession, the meeting,
+#     the redress, the delivery, the reader's own verdict, and the second look
+#     itself each come out of a telling run exactly as they went in -- and both
+#     runs settle `carried out whole`.
+#   * A TELLING SURVIVES A PROVISIONING, AND FALLS WITH THE RECEIPT IT COPIES.
+#     One swept every morning would leave a reader who was told opening an empty
+#     box tomorrow; one standing beside a second look this plan's own wire has
+#     forgotten would answer a question nobody can find.
+#
+# Every note below is read outside the run that wrote it, exactly as the person
+# it was written for would read it.
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/recount"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/recount.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan recount build failed -- ${build.err}"
+
+# The reader this witness runs is built here rather than borrowed (REDS %92).
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/read"]
+assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
+
+# The board declaration the rungs below opened, unchanged.
+let published = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_three_clients_board.bron 2>&1"]
+assert published.ok else "the board declaration could not be read"
+assert published.out contains "domains 4 -- channels 3 -- regions 11 -- grants 22" else "the board declaration changed shape"
+assert published.out contains "verdict: whole" else "the board declaration did not read whole"
+
+# A fresh start for the stores, the doorbells, this plan's notes, and the boxes
+# outside it. Every quarrel, every finding, every debt, and every word this
+# witness reads was seated by the lap itself, standing in for the runs and the
+# correspondents that met this argument before today.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels caravan/.recounts caravan/.readers"]
+assert clean.ok else "the region stores, doorbells, notes, and outside boxes could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan recount selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan recount selftest not GREEN"
+assert test.out contains "the reader who reopened a matter is told what the second look came to" else "the recount finding did not close"
+
+# The second look and its five refusals, read straight, before any dependent runs.
+assert test.out contains "five refusals stand by name: unlooked, unaddressed, mismatched, miscounted, misrecorded" else "the five recount refusals did not stand"
+assert test.out contains "the plan looks again at the matter, and carries what it found to the reader who asked" else "a telling plan did not read as one"
+assert test.out contains "the plan looks again at the matter, and leaves its reader to come find out" else "a withholding plan did not read as one"
+assert test.out contains "a telling carries four bytes: the matter looked at again, echoed back whole" else "a telling did not name what it carries"
+assert test.out contains "a telling survives a provisioning, and falls with the second look it copies" else "a telling was never proven past a provisioning"
+
+assert test.out contains "five refusals stand by name: unopened, unsettled, mismatched, miscounted, misrecorded" else "the five reweigh refusals did not stand"
+assert test.out contains "the plan looks again at the matter its reader reopened, and takes it down" else "a looking plan did not read as one"
+assert test.out contains "the plan opens holding a reopened matter, and closes still holding it" else "a passing plan did not read as one"
+assert test.out contains "a second look's receipt carries four bytes: the reopened matter, echoed back whole" else "a second look's receipt did not name what it carries"
+
+# The property that makes a second look worth writing, proven as its own fold:
+# the receipt outlives the run that made it, and the matter it answers stays down.
+assert test.out contains "a second look survives a provisioning, and the matter it answers stays down" else "a second look was never proven past a provisioning"
+
+# The taking up below it, unchanged and still weighed.
+assert test.out contains "five refusals stand by name: unweighed, settled, mismatched, miscounted, misrecorded" else "the five reopen refusals did not stand"
+assert test.out contains "the plan reads that its answer falls short, and takes the matter up again" else "a taking-up plan did not read as one"
+assert test.out contains "the plan reads that its answer falls short, and takes nothing up again" else "a closing plan did not read as one"
+assert test.out contains "a reopening note carries four bytes: the reader's own word, echoed back whole" else "a reopening note did not name what it carries"
+
+# The property that makes a reopened matter worth inheriting, proven as its own
+# fold: it outlives the run that booked it, and falls with the word that opened it.
+assert test.out contains "a reopened matter survives a provisioning, and falls with the word that opened it" else "a reopened matter was never proven past a provisioning"
+
+# The weighing and its five refusals, read straight, before any dependent runs.
+assert test.out contains "five refusals stand by name: untold, silent, mismatched, miscounted, misrecorded" else "the five suffice refusals did not stand"
+assert test.out contains "the plan tells the reader who won the admission, and reads what they make of it" else "an asking plan did not read as one"
+assert test.out contains "the plan tells the reader who won the admission, and never asks what they make of it" else "an unasking plan did not read as one"
+assert test.out contains "the reader who was told says the answer settles the matter" else "the settling word did not read as one"
+assert test.out contains "the reader who was told says the answer falls short" else "the wanting word did not read as one"
+assert test.out contains "a reader's word carries four bytes: the answer they were carried, and what they make of it" else "a reader's word did not name what it carries"
+
+# The property that makes a read word worth reading, proven as its own fold: it
+# outlives the run that read it, and the plan's copy falls with what it weighs.
+assert test.out contains "a reader's word survives a provisioning, and the plan's copy falls with the answer it weighs" else "a reader's word was never proven past a provisioning"
+
+# The apprising below it, unchanged and still weighed.
+assert test.out contains "five refusals stand by name: unfound, unaddressed, mismatched, miscounted, misrecorded" else "the five apprise refusals did not stand"
+assert test.out contains "the plan says what its look found, and carries it to the reader who won it" else "an apprising plan did not read as one"
+assert test.out contains "a delivery carries the finding whole: the meeting reported on, and what the look came to" else "a delivery did not name what it carries"
+assert test.out contains "a delivery survives a provisioning, and leaves the note it copies where it stands" else "a delivery was never proven past a provisioning"
+
+# The redress below it, unchanged and still weighed.
+assert test.out contains "five refusals stand by name: unmet, unrighted, mismatched, miscounted, misrecorded" else "the five redress refusals did not stand"
+assert test.out contains "a redress carries three bytes: the meeting reported on, and what the look came to" else "a redress did not name what it carries"
+assert test.out contains "a finding survives a provisioning, and falls with the meeting it reports on" else "a finding was never proven past a provisioning"
+
+# The meeting below it, unchanged and still weighed.
+assert test.out contains "five refusals stand by name: unowed, unsettled, mismatched, miscounted, misrecorded" else "the five meet refusals did not stand"
+assert test.out contains "a receipt survives a provisioning, and the debt it answers stays down" else "a receipt was never proven past a provisioning"
+assert test.out contains "a plan inheriting nothing meets nothing, and writes no receipt" else "a plan holding no debt was credited with meeting one"
+
+# The owing below it, unchanged and still weighed.
+assert test.out contains "five refusals stand by name: unsaid, unconceded, mismatched, miscounted, misrecorded" else "the five owe refusals did not stand"
+assert test.out contains "a debt survives a provisioning, and falls with the concession it carries" else "a debt was never proven past a provisioning"
+assert test.out contains "a plan keeping its own word owes the work nothing, and books nothing" else "a dissenting plan was made to owe the work a look"
+assert test.out contains "a plan that says nothing concedes nothing, and books nothing" else "a silent plan left a debt standing anyway"
+
+# The avowing below it, unchanged and still weighed.
+assert test.out contains "five refusals stand by name: unheard, unfound, mismatched, miscounted, misrecorded" else "the five avow refusals did not stand"
+assert test.out contains "a word survives a provisioning, and falls with the finding it answers" else "a word was never proven past a provisioning"
+
+# The three endings the rungs below reach by publishing nothing, each on the wire.
+assert test.out contains "a run owed no word from anybody publishes none" else "a plan that carried no case out answered a finding"
+assert test.out contains "a plan nobody ever pressed a quarrel against is answered by nobody" else "a plan nobody pressed was answered all the same"
+assert test.out contains "a desk that has said nothing yet leaves the case honestly waiting" else "a silent desk did not leave the case waiting"
+
+# The reading, the referring, and every rung beneath them, unchanged.
+assert test.out contains "the hand the case went to is read back, and its finding published" else "the reading below stopped being weighed"
+assert test.out contains "a long-standing quarrel is put before a hand that is neither party" else "the referring below stopped being weighed"
+assert test.out contains "a plan publishes whether a long-standing quarrel reads where the outcome is read" else "the swelling below stopped being weighed"
+assert test.out contains "an age climbs by the run just stood and never shortens" else "the dwelling below stopped being weighed"
+assert test.out contains "a quarrel comes down on its holder's word and on nobody else's" else "the relenting below stopped being weighed"
+assert test.out contains "a plan publishes whether it reads under the quarrel it inherited" else "the heeding below stopped being weighed"
+assert test.out contains "a plan publishes whether a pressed quarrel outlives the run that heard it" else "the endurance below stopped being weighed"
+assert test.out contains "a plan publishes whether it reads what its reader says back" else "the appeal below stopped being weighed"
+assert test.out contains "a plan publishes whether it writes back to the reader who objected" else "the tidings below stopped being weighed"
+assert test.out contains "a plan publishes whether its marks carry the standing of their objection" else "the standing below stopped being weighed"
+assert test.out contains "a plan publishes whether its word is read beside the reading against it" else "the escort below stopped being weighed"
+assert test.out contains "a plan publishes whether its record may hold a disagreement" else "the record below stopped being weighed"
+assert test.out contains "a plan publishes whether it hears what its reader answers" else "the hearing below stopped being weighed"
+assert test.out contains "a plan publishes whether its own corrections travel" else "the delivery below stopped being weighed"
+assert test.out contains "a plan publishes whether its own corrections are addressed" else "the amendment below stopped being weighed"
+assert test.out contains "a plan publishes whether its own judgments answer to a later run" else "the recantation below stopped being weighed"
+assert test.out contains "a repair still refuses by name: unread, whole, overreaching" else "the mend below stopped being weighed"
+
+# The generalization test the whole arc keeps.
+assert test.out contains "a plan that loses nothing reads as the line handed, all 16 pairs" else "an unlost plan did not read as the line handed"
+
+# The weighing lap: one plan run twice over an answer it carried home to the
+# reader who won it, with that reader's own word already sitting in their box
+# both times. Every number stands still -- the work, the dependents, the
+# correction, the record, the escort, the asking, the mark, the telling, the
+# position carried forward, the age, the standing, the case, the finding, the
+# plan's own answer, the concession, the meeting, the upshot, the delivery, the
+# settlement -- and only the weighing moves.
+assert test.out contains "phases: 6 withholding, 6 telling" else "the two plans ran different records"
+assert test.out contains "dependents: 6 withholding, 6 telling" else "asking a reader cost work it should not have"
+assert test.out contains "phases absorbed into a standing dependent: 3 withholding, 3 telling" else "the two plans absorbed different phases"
+assert test.out contains "abandoned reach, conferred and never served: 3 withholding, 3 telling" else "the two plans lost different work"
+assert test.out contains "phases re-seated to carry what was lost: 3 withholding, 3 telling" else "the two plans repaired different work"
+assert test.out contains "standing judgments taken back on this run's own evidence: 1 withholding, 1 telling" else "the recanting rung stopped moving under both plans"
+assert test.out contains "readings corrected where they were read: 1 withholding, 1 telling" else "the amending rung stopped moving under both plans"
+assert test.out contains "corrections carried to the place their reader was reached: 1 withholding, 1 telling" else "the couriering rung stopped moving under both plans"
+assert test.out contains "disagreements written into the record: 1 withholding, 1 telling" else "the disputing rung stopped moving under both plans"
+assert test.out contains "published words standing beside the reading against them: 1 withholding, 1 telling" else "the abiding rung stopped moving under both plans"
+assert test.out contains "standing objections put back to the reader who raised them: 1 withholding, 1 telling" else "the lapsing rung stopped asking under both plans"
+assert test.out contains "marks carrying the standing of the objection they quote: 1 withholding, 1 telling" else "the standing below stopped moving under both plans"
+assert test.out contains "raisers told how their own quarrel came out: 1 withholding, 1 telling" else "the tidings below stopped moving under both plans"
+assert test.out contains "readers whose reply to the answer was read back: 1 withholding, 1 telling" else "the appeal below stopped moving under both plans"
+assert test.out contains "positions carried past the run that heard them: 1 withholding, 1 telling" else "a run whose reader still presses dropped their position"
+assert test.out contains "inherited positions weighed into the run's own word: 1 withholding, 1 telling" else "the regard stopped standing under a live quarrel"
+assert test.out contains "standing positions left exactly where they were found: 1 withholding, 1 telling" else "the relenting below stopped leaving the position standing"
+assert test.out contains "standing positions this run said the age of: 1 withholding, 1 telling" else "the dwelling below stopped dating under both plans"
+assert test.out contains "standing quarrels published where the outcome is read: 1 withholding, 1 telling" else "the swelling below stopped moving under both plans"
+assert test.out contains "long-standing quarrels carried to a hand that is neither party: 1 withholding, 1 telling" else "the referring below stopped moving under both plans"
+assert test.out contains "carried cases whose answer was read and published: 1 withholding, 1 telling" else "the reading below stopped moving under both plans"
+assert test.out contains "published findings the plan answered on the record: 1 withholding, 1 telling" else "the avowing below stopped moving under both plans"
+assert test.out contains "concessions left owing nothing to any run after: 1 withholding, 1 telling" else "asking a reader changed what today's word owed"
+assert test.out contains "inherited debts this run met and took down: 1 withholding, 1 telling" else "the meeting below stopped moving under both plans"
+assert test.out contains "debts a plan inherited that the run never met: 0 against 0" else "a measured run left the admission it opened holding unmet"
+assert test.out contains "meetings this run said the upshot of: 1 withholding, 1 telling" else "the redress below stopped moving under both plans"
+assert test.out contains "debts a plan met whose meeting never said what it found: 0 against 0" else "a measured run left its meeting hollow"
+
+# The apprise below, unchanged and still weighed: both runs now carry the finding
+# home, so the telling itself parts nothing.
+assert test.out contains "findings this run carried to the reader who won them: 1 withholding, 1 telling" else "the apprising below stopped moving under both plans"
+assert test.out contains "findings this run kept inside its own notes: 0 withholding, 0 telling" else "a measured run kept its finding to itself"
+assert test.out contains "findings a plan reached whose raiser was never told: 0 against 0" else "a measured run left its raiser in the dark"
+
+# The weighing below, unchanged and still weighed: both runs now open their
+# reader's box and read the same short word, so the asking itself parts nothing.
+assert test.out contains "answers this run read its reader's own word on: 1 withholding, 1 telling" else "the weighing below stopped moving under both plans"
+assert test.out contains "answers this run carried with nobody asked about them: 0 withholding, 0 telling" else "a measured run left its reader unasked"
+assert test.out contains "answers a plan carried whose worth it never learned: 0 against 0" else "a measured run never learned what its reader thought"
+
+# The taking up below, unchanged and still weighed: both runs read their reader's
+# short word, publish it, and book nothing new of their own, so the reopening
+# itself parts nothing.
+assert test.out contains "matters this run took up again on its reader's word: 0 withholding, 0 telling" else "a measured run booked a reopening of its own"
+assert test.out contains "short words this run read and left closed: 1 withholding, 1 telling" else "the reopening below stopped closing its count"
+assert test.out contains "words calling an answer short that opened nothing: 1 withholding, 1 telling" else "the two plans owed their reader differently"
+
+# The looking below, unchanged and still weighed: both runs now inherit the same
+# matter, take the same second look, and take it down, so the looking itself
+# parts nothing.
+assert test.out contains "reopened matters this run looked at again and took down: 1 withholding, 1 telling" else "the looking below stopped moving under both plans"
+assert test.out contains "reopened matters left standing for the run after: 0 withholding, 0 telling" else "the looking below stopped closing its count"
+assert test.out contains "reopened matters a plan inherited that the run never looked at: 0 against 0" else "a measured run left its inherited matter unlooked-at"
+
+# The three numbers this rung moves. Both runs make the same second look; only
+# whether the reader who asked for it ever hears parts them.
+assert test.out contains "second looks this run carried home to the reader who asked: 0 withholding, 1 telling" else "the telling did not part the two plans"
+assert test.out contains "second looks this run kept inside its own notes: 1 withholding, 0 telling" else "the other half of the count did not close"
+assert test.out contains "second looks a run made whose reader was never told: 1 against 0" else "the two plans owed their reader the same"
+assert test.out contains "work still standing when the supervisor exits: 0 withholding, 0 telling" else "the two plans left different work standing"
+assert test.out contains "the plan, as an operator finally reads it: carried out whole withholding, carried out whole telling" else "a reader's dissatisfaction decided what the work came to"
+assert test.out contains "breaks a named turn: 0 withholding, 0 telling" else "the asking run broke an order its author named"
+
+# What an operator reads is what the wire carries. Every note is read here,
+# outside the run that wrote it, exactly as each would be read by the person it
+# was written for.
+let settled = run ["sh" "-c" "cat caravan/.recounts/plan.settled"]
+assert settled.ok else "the plan published no settlement an operator could read"
+assert settled.out contains "c" else "the wire did not carry the carried settlement the repair earned"
+
+# The act this rung is the whole point of, read where an operator opens it: the
+# reader's own verdict on the answer they were carried, carried home to the place
+# the settlement is read. One byte, and it says the answer falls short.
+let learned = run ["sh" "-c" "cat caravan/.recounts/plan.worth"]
+assert learned.ok else "the plan never learned what its reader made of the answer"
+assert learned.out contains "w" else "a reader saying the answer falls short was published as something else"
+
+# And the reader's own hand, in their own box, outside this plan's wire entirely
+# -- the four bytes the plan may read and may never write.
+let reader_word = run ["sh" "-c" "cat caravan/.readers/desk.suits"]
+assert reader_word.ok else "the reader kept no word of their own about the answer"
+assert reader_word.out contains "osrw" else "the reader's word did not name the answer it weighs, and what they make of it"
+
+# The delivery it weighs, still standing in the reader's box: a weighing reads an
+# answer rather than spending one.
+let carried_home = run ["sh" "-c" "cat caravan/.readers/desk.found"]
+assert carried_home.ok else "an asking run took down the answer its reader had weighed"
+assert carried_home.out contains "osr" else "the reader was carried something other than the finding the plan reached"
+
+# The plan's own finding, still standing exactly where the redress left it.
+let finding_note = run ["sh" "-c" "cat caravan/.recounts/plan.redress"]
+assert finding_note.ok else "a weighing run carried its own finding out of its own notes"
+assert finding_note.out contains "osr" else "the finding did not name the meeting it reports on, and what the look came to"
+
+# The act this rung is the whole point of, read where a later run will find it:
+# the matter its reader reopened, looked at a second time and receipted -- four
+# bytes, the reopened matter echoed back whole.
+let receipted = run ["sh" "-c" "cat caravan/.recounts/plan.anew"]
+assert receipted.ok else "a looking run left no receipt of its second look"
+assert receipted.out contains "osrw" else "the receipt did not name the matter it answered"
+
+# The act this rung is the whole point of, read where the reader opens it: the
+# second look carried out of the plan's own notes and into the box of the person
+# who asked for it -- four bytes, the matter echoed back whole.
+let told = run ["sh" "-c" "cat caravan/.readers/desk.knows"]
+assert told.ok else "a telling run left its reader with nothing after all"
+assert told.out contains "osrw" else "the telling did not name the second look it reports"
+
+# And the matter itself is down, since the taking down is the act and the receipt
+# is only its record. A reopening left standing beside its own receipt would have
+# every run after this one look at it forever.
+let matter = run ["sh" "-c" "test -e caravan/.recounts/plan.again && echo standing || echo down"]
+assert matter.ok else "the reopening note could not be weighed"
+assert matter.out contains "down" else "a looking run wrote a receipt and left the matter standing"
+
+# And the reader keeps their own word exactly where they wrote it -- a second look
+# answers a verdict rather than moving one.
+let still_theirs = run ["sh" "-c" "cat caravan/.readers/desk.suits"]
+assert still_theirs.ok else "a looking run reached into its reader's box"
+assert still_theirs.out contains "osrw" else "a looking run rewrote the word it was only asked to act on"
+
+# The receipt below it, and the debt it answers, still down.
+let receipt = run ["sh" "-c" "cat caravan/.recounts/plan.met"]
+assert receipt.ok else "a weighing run wrote over the receipt beneath it"
+assert receipt.out contains "os" else "the receipt did not name the debt this run opened holding"
+
+let owed = run ["sh" "-c" "test -e caravan/.recounts/plan.owe && echo standing || echo down"]
+assert owed.ok else "the debt note could not be weighed"
+assert owed.out contains "down" else "a meeting run wrote a receipt and left the debt standing"
+
+# The word below it, untouched.
+let avowal = run ["sh" "-c" "cat caravan/.recounts/plan.avow"]
+assert avowal.ok else "the plan published no word of its own an operator could read"
+assert avowal.out contains "ua" else "a weighing run rewrote the word it was only asked to leave alone"
+
+# The finding below it, untouched.
+let finding = run ["sh" "-c" "cat caravan/.recounts/plan.deem"]
+assert finding.ok else "the plan published no finding an operator could read"
+assert finding.out contains "u" else "a weighing run rewrote the finding beneath it"
+
+# The hand that wrote it still holds their own word, in their own box.
+let answer = run ["sh" "-c" "cat caravan/.readers/bench.deem"]
+assert answer.ok else "the hand outside the argument kept no answer of their own"
+assert answer.out contains "cl" else "a weighing run reached onto a third hand's desk"
+
+let case = run ["sh" "-c" "cat caravan/.readers/bench.case"]
+assert case.ok else "no third hand was ever handed the case"
+assert case.out contains "cl" else "a weighing run rewrote the case it had already carried out"
+
+# And the reader who raised the quarrel wrote no finding, which is the arc.
+let unspoken = run ["sh" "-c" "test -e caravan/.readers/desk.deem && echo present || echo absent"]
+assert unspoken.ok else "the reader box could not be weighed"
+assert unspoken.out contains "absent" else "a party to the argument wrote the finding on it"
+
+# The standing, the age, and the quarrel itself, each untouched.
+let standing = run ["sh" "-c" "cat caravan/.recounts/plan.swell"]
+assert standing.ok else "the standing note could not be read at all"
+assert standing.out contains "l" else "a quarrel four runs old did not read as long-standing"
+
+let age = run ["sh" "-c" "od -An -tu1 caravan/.recounts/plan.dwell | tr -d ' '"]
+assert age.ok else "the age note could not be read at all"
+assert age.out contains "4" else "a weighing run rewrote the age it was only asked to read"
+
+let quarrel_note = run ["sh" "-c" "cat caravan/.recounts/plan.standing"]
+assert quarrel_note.ok else "a weighing run took down the position it never weighed"
+assert quarrel_note.out contains "p" else "the position standing over the plan changed under a weighing run"
+
+let regard = run ["sh" "-c" "cat caravan/.recounts/plan.regard"]
+assert regard.ok else "the regard note could not be read at all"
+assert regard.out contains "u" else "an answered quarrel stopped standing over the plan's own word"
+
+let press = run ["sh" "-c" "cat caravan/.readers/desk.press"]
+assert press.ok else "the reader replied nothing at all"
+assert press.out contains "p" else "the holder of this lap's quarrel did not read as still pressing"
+
+let address = run ["sh" "-c" "cat caravan/.recounts/plan.at"]
+assert address.ok else "the plan kept no address for the reader who took its word"
+assert address.out contains "desk" else "the wire did not name the place its reader was reached"
+
+let outof = run ["sh" "-c" "cat caravan/.readers/desk.outof"]
+assert outof.ok else "the raiser of the quarrel was never told how it came out"
+assert outof.out contains "t" else "a word that never moved was reported to its raiser as one that did"
+
+# The dependents measure the loss in their own hands, exactly as the rungs below
+# left them, and the follower that once spoke for the judgment falls with it.
+assert test.out contains "falls as its author declared, holding 1 conferred arcs it never served" else "a falling dependent did not fall holding its conferral"
+assert test.out contains "client_b: read 3 arcs of its own, 0 inherited at its first breath, 1 conferred, 0 returned, 1 still reachable at home" else "the dependent a conferral was made to did not read it as its own"
+assert test.out contains "client_c: bytes differed" else "the follower that once spoke for the judgment came home after all"
+
+say "GREEN: Caravan recount witness passed."

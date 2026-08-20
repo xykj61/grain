@@ -24,6 +24,15 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260820.135055` -- the reweigh live edge folds as the recount rung seats
+
+**Walk-back nib:** `c29c698d34` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **reweigh** rung, folded into the condensed pointer line beneath it, so the card leads with the rung that just landed rather than carrying a second copy of the log index.
+
+**What waits there, worth recalling:** the inline account of a run that inherits a reopened matter taking the look again -- the reopening having been permanent and ignorable at once, which is the most comfortable thing an open question can be; `ReweighUnsettled` refusing a second look to a run that has published no outcome of its own, since a supervisor with nothing to weigh the matter against would be filing a fresh answer over a question it never re-asked; the receipt naming the matter it looked at, because an older second look left standing beside a fresh matter closes a question nobody opened; the taking down being the act and the receipt only its record, so `plan.anew` lands first and `plan.again` comes down after; and looking again proven not to be deciding again, both runs settling `carried out whole`. Every word of it also rests in `caravan/README.md` and its own dated log `20260820-134309`; the cairn is the cheaper walk-back.
+
+
 ### `20260820.134309` -- the reopen and ladder-copy live edges fold as the reweigh rung seats
 
 **Walk-back nib:** `c95d3dedca` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
