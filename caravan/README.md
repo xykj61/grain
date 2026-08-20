@@ -766,6 +766,8 @@ The numbers state the claim: **three refusals stand as a pure fold and a fourth 
 **The lap earned an honest RED of its own before it was green.** The falling dependent was written second, the door refused it beside a standing sibling that contends over `board`, and the run passed its conferring phase ahead as a dependent of its own -- so the holder fell holding nothing, and the guard said so plainly. The plan was reordered rather than the guard softened. `caravan/abandon.rye` + `tools/caravan_abandon_witness.rish`, over the board declaration the rungs below opened.
 
 
+**A later round sharpened the harvest rung beneath this one (REDS %95).** Reaping by readiness had asserted an exact zero over a raw idle count the scheduler gets a vote in, and it went RED on 2 of 12 cold runs with nothing in the tree changing. The root was in the module: readiness reaped the lowest-indexed ready dependent, so a sibling the head did not want could be reaped instead, emptying a slot the head still could not use. `choose_slot` now prefers the ready slot whose going lets the head enter, asked of `rolling.admissible` itself, and the rung asserts the number it can guarantee -- a turn idle beside a dependent already exited whose going would have opened the door, which is 1 for eldest-first and 0 for readiness by construction.
+
 ## Reckon -- a plan that lost an arc is reported short
 
 `confer.rye` closed the gap at the front of a dependent's life, `revoke.rye` the gap at the back of a standing one, `reclaim.rye` the gap after its holder is gone, and `abandon.rye` counted what a fallen holder's conferral never bought. Four rungs about one dependent at a time. None of them asks what the plan itself amounts to.
