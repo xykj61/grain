@@ -1,0 +1,32 @@
+format session-log-v1
+stamp 20260820.165556
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Caravan desist -- a plan stops relaying an impasse that has come round twice
+prompt Keaton set the loop running: read Kyri and Radiant first, then REMEMBER, the itineraries, and the newest logs; close any agent-closable red; take the next agent-doable lap Lindy-first crux-first; deep-read one council-rota doc; sweep the prose Radiant; send each finished increment to origin and xykj61; stop at the custody gates.
+think Standfast first. Walked crux/REDS.md end to end -- rows 96 and 97 both read CLOSED, every prose note above them closed, and no living row stands open. The line is clear, so constructive work may begin.
+think The running thread is the Caravan correspondence arc. The newest log's recommend named the next constructive rung plainly: what a run does when the impasse it names is one it has named twice, which is where the arc stops being a correspondence and becomes a boundary.
+think Council rota, lap 534 of the d27 cycle: ORGANIZING.md, read whole. It is the filing guide, and it is what kept this lap's new files in their right homes -- the rung beside its siblings in caravan/, the witness in tools/, the record here.
+think Named the rung before writing it. `stall` was the first candidate and lost on collision -- the module already uses the word for a run stalling short of home, and tools/caravan_stall_witness.rish stands. `deadlock` lost to the concurrency reading it would drag in. `desist` is a plain verb like every rung of this arc, collides with nothing in the tree, and says exactly what the run does.
+think The harm, stated before the code. `mind` makes a run name the impasse it opened holding -- and then it forbears once more, so the next run inherits the same refusal and does the same faithful thing with it. Every run honest, every note landing, the matter never moving. An operator reading any single outcome sees a plan doing everything right.
+think The evidence problem was the whole design. A run can only tell a second round from a first by the mark the run before it left, and this run's own minding writes over that mark. So the elder mark is read at the top of `close_the_quarrel`, before `mind_the_impasse` runs, and handed to the bounding as an argument. The harness seats it, standing in for the run that made it -- a supervisor writing its own evidence would be a plan bounding its own correspondence.
+think Ordering the act and its close, the same way every rung of this arc orders them. The wall lands first and the relay is stayed after, so a run that falls between the two hands the matter on exactly as the rung below always did rather than dropping a question into silence.
+think Kept the count honest at the seam. A walled matter is neither forborne nor unhanded -- it is bounded, a third answer, so `hold_the_matter` returns early on a standing wall with both of the rung below's numbers asserted at zero. Without that, the wall would have read as a regression in the rung it completes.
+obs The measurement moves and nothing else does. Both runs inherit the same impasse, both find the elder mark, both name the matter; the two plans part on whether a third run is asked to carry it. Impasses a plan carried round twice and relayed anyway falls 1 to 0, while the minding reads 1 against 1 and every rung beneath stands exactly still.
+obs Five refusals by name, proven as folds on metal in the binary's own run -- unnamed, fresh, mismatched, miscounted, misrecorded -- plus the honest pass beside them, so the fold proves what it admits as hard as what it refuses. `DesistFresh` is the one worth naming twice: bounding a matter on its first round would end an exchange on its opening word, which is this rung's own harm wearing the prevention's clothes.
+obs The planted control earns its place. The witness takes the wall down and makes the very read that closed the claim again; it fails on metal with the note gone, and the wire is restored to exactly what the run left. A probe run separately proved the read discriminates rather than passing by accident.
+obs The ladder meter grew as the shape predicts and the number names the next crux. `desist` carried 622 lines -- the bodies it inherited from `mind` that neither fold has reached -- so the carry stands at 2,574 against a ceiling of 4,000, about two rungs of headroom. Lifting those bodies into `ladder_checks.rye` folds them for every rung above at once; that is its own round.
+obs The README's ladder section still claimed option B was waiting on Keaton's word after option B had run. Fixed in this same commit under the docs-sync rule rather than left for a later sweep -- a doc describing behavior the code no longer has is a stale claim wearing documentation's clothes.
+obs One limit named rather than rounded away: `desist.rye` begins as a copy of `mind.rye`, which is what makes the parity of every rung beneath it readable, and it is also why the carry grew. The two facts are the same fact.
+loom witness=caravan_desist_witness result=GREEN rung_lines=13535 witness_lines=201 unbounded_relays=1->0
+loom witness=caravan_ladder_copy modules=95 checks=1487 distinct=1016 copies=471 copied_lines=2574 ceiling=4000 fold_a=679 fold_b=484 rung_growth_lines=622
+loom witness=caravan_suite rungs=89 verdict=green wall_s=229 cold_start=true
+file caravan/desist.rye the rung -- the bounding, its five refusals, the wall on the wire, and the relay stayed behind it
+file tools/caravan_desist_witness.rish the witness -- the lap read off the wire, the planted control, and every rung beneath still weighed
+file tools/caravan_suite_witness.rish registers the new rung in the choir, so the guard is one nobody can forget to pull
+file tools/caravan_ladder_copy_witness.rish the meter's fold counts re-pinned to what the ladder now carries
+file caravan/README.md the desist section, and the ladder section brought back in sync with the B fold that already ran
+file crux/REMEMBER.md live edge and git nib, in the work commit
+recommend keep-going the arc has its boundary now -- a matter comes round twice, gets named twice, and then meets a wall rather than a third lap. The next constructive rung is what an operator does with a wall once it stands, which is where the arc leaves the plan and reaches a person. Yet the meter names a nearer crux: 622 lines a rung against 1,426 of headroom, and the lift that answers it is the move that already worked once.
