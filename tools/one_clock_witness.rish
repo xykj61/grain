@@ -10,6 +10,10 @@
 #   3. zone — host zone equals America/New_York by NAME (not offset)
 #   4. provenance — new stamps not more than ONE_CLOCK_PROVENANCE_TOLERANCE_SECONDS
 #      ahead of the live host clock (duty 3 checks the host; duty 4 checks the stamp)
+#   5. head -- the newest LIVING stamp is at or behind the live clock, within
+#      ONE_CLOCK_HEAD_TOLERANCE_SECONDS. Duty 4 weighs only artifacts new
+#      against origin/main, so a lap that merges is never weighed again; duty 5
+#      weighs the head itself, every run, forever (REDS %96)
 #
 # Mode: tools/fixtures/one_clock_mode.txt — blocking (seated 20260724.204741).
 #
@@ -58,5 +62,33 @@ let prov = run ["sh" "-c" "ONE_CLOCK_PROVENANCE_BASE=origin/main sh tools/fixtur
 say prov.out
 assert prov.ok else "one_clock provenance scan failed on branch artifacts"
 
-say "one-clock: mode ${mode} · shape · mono · zone · provenance"
-say "GREEN: one_clock_witness — shape · monotonicity · zone · provenance · mode ${mode}"
+
+# Duty 5 -- the living head never stands ahead of the clock (REDS %96)
+#
+# Duty 4's base is `origin/main`, so it weighs a dated artifact for exactly as
+# long as that artifact stays unmerged. Every lap that lands and merges retires
+# its own stamps from that diff, which is why a head written 22 minutes into the
+# future stood here through a GREEN run. This duty asks the one question that
+# closes the gap, and it asks it of the head itself, on every run.
+let head_pass_stamp = run ["sh" "-c" "TZ=America/New_York date +%Y%m%d.%H%M%S"]
+assert head_pass_stamp.ok else "host clock read failed for the head PASS fixture"
+let head_pass_dot = trim head_pass_stamp.out
+let head_pass = run ["sh" "-c" "ONE_CLOCK_HEAD_STAMPS='${head_pass_dot}' sh tools/fixtures/one_clock_head_scan.sh"]
+say head_pass.out
+assert head_pass.ok else "head PASS fixture failed -- a stamp read from the live clock must pass"
+assert head_pass.out contains "HEAD_OK" else "head PASS fixture must emit HEAD_OK"
+
+let head_ahead = run ["sh" "-c" "TZ=America/New_York date -d '+4 hours' +%Y%m%d.%H%M%S"]
+assert head_ahead.ok else "could not compute a four-hours-ahead head stamp"
+let head_ahead_dot = trim head_ahead.out
+let head_fail = run ["sh" "-c" "ONE_CLOCK_HEAD_STAMPS='${head_ahead_dot}' sh tools/fixtures/one_clock_head_scan.sh"]
+assert head_fail.ok == false else "head FAIL fixture passed -- a stamp ahead of the clock must fail"
+assert head_fail.out contains "HEAD_BAD" else "head FAIL fixture must emit HEAD_BAD"
+
+let head = run ["sh" "tools/fixtures/one_clock_head_scan.sh"]
+say head.out
+assert head.ok else "the living head stands ahead of the live clock -- a stamp was written rather than read"
+assert head.out contains "HEAD_OK" else "one-clock head duty named no HEAD_OK"
+assert ((head.out contains "HEAD_BAD") == false) else "one-clock HEAD_BAD present"
+say "one-clock: mode ${mode} - shape - mono - zone - provenance - head"
+say "GREEN: one_clock_witness -- shape - monotonicity - zone - provenance - head - mode ${mode}"

@@ -24,6 +24,14 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260820.030732` -- the reckon and harvest live edges fold as the clock red closes
+
+**Walk-back nib:** `cf23958a35` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **reckon** rung and the **REDS %95** closure bullet, folded into the pointer line the `20260820.014755` cairn opened, so the card leads with what is next rather than carrying a fourth copy of the arc's chronicle.
+
+**What waits there, worth recalling:** the inline account of completion becoming a verdict a run earns -- `carried` against `short`, the plan-level note written to the wire after the last dependent is reaped and read back before the report believes it, the four refusals named, and the measurement where every number stands still while the completion claimed and never served falls from 1 to 0. Beside it, the harvest rung's own repair: readiness reaping the lowest-indexed ready dependent rather than the one whose going lets the head enter, and the honest second cause that made `idle_key_ready` the number the module can guarantee. Every word of both lives in `session-logs/20260820-024612_caravan-reckon-a-plan-that-lost-an-arc-is-short.kyri`, `session-logs/20260820-031500_harvest-reaps-the-slot-the-head-waits-on.kyri`, the **Reckon** and **Harvest** rows of `caravan/README.md`, and `crux/REDS.md`; the card kept a second copy, and that is what the fold removes. Read the departing card with `git show cf23958a35:crux/REMEMBER.md`.
+
 ### `20260820.024612` -- the reclaim rung's live edge folds into the card's condensed pointer
 
 **Walk-back nib:** `05311de906` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.

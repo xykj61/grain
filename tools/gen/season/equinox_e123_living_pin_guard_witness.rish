@@ -21,4 +21,18 @@ let red = run ["sh" "tools/fixtures/equinox_e123_living_pin_guard_scan.sh" "prov
 assert (red.ok == false) else "e123-living-pin-guard: prove-red must refuse"
 assert red.out contains "RED_living_pin_emptied_caught" else "e123-living-pin-guard: prove-red want emptied caught"
 
-say "GREEN: e123-living-pin-guard — pins guarded · emptied caught · shred RED"
+
+# The ledger's own shape (REDS %97) -- a scan nobody ran, reading a 96-row
+# ledger as empty because it could only see the elder table shape. The pin
+# guard already weighs this file's bytes; it weighs its rows here too, so the
+# reds ledger and the pin that holds it are guarded by one hand.
+let ledger = run ["sh" "tools/fixtures/reds_ledger_scan.sh"]
+say ledger.out
+assert ledger.ok else "e123-living-pin-guard: reds ledger scan must exit 0"
+assert ledger.out contains "verdict=ok" else "e123-living-pin-guard: want reds ledger verdict ok"
+assert ((ledger.out contains "no_rows") == false) else "e123-living-pin-guard: the ledger read as empty"
+
+let ledger_red = run ["sh" "tools/fixtures/reds_ledger_scan.sh" "prove-red"]
+assert (ledger_red.ok == false) else "e123-living-pin-guard: reds ledger prove-red must refuse"
+assert ledger_red.out contains "RED_reds_ledger_thin_rows_caught" else "e123-living-pin-guard: prove-red want thin rows caught"
+say "GREEN: e123-living-pin-guard -- pins guarded - emptied caught - reds ledger read - shred RED"
