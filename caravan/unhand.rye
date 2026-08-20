@@ -1,0 +1,1079 @@
+//! Caravan unhand -- a dependent is weighed by the line it holds, never by the
+//! ceiling its domain was granted.
+//!
+//! `understudy.rye` let a record carry two shapes of one phase at once and
+//! proved why it is safe: a dependent carries its own domain, its verb, its
+//! count, its grants, and the outcome it owes from the moment it is spawned.
+//! The record may say something else in that slot and the work in flight
+//! never feels it.
+//!
+//! **That proof has one more consequence, and the arc had not spent it.**
+//! Every rung of this arc asks the isolation room the same question the
+//! document answers: may this newcomer stand beside the domains running
+//! now? And `intent.rye` says plainly why it left that question at the
+//! ceiling -- a channel joins two domains at every instant, and a bell may
+//! ring at any moment of a hop. Both reasons are true of the channel. The
+//! third refusal, the one about shared memory, was left at the ceiling for
+//! no reason at all: a domain granted `rw` over a region blocks every reader
+//! of that region for as long as any of its dependents runs, even while the
+//! dependent in flight holds no capability to that region whatsoever.
+//!
+//! **A line handed over is a fact about the dependent, so a run may weigh it as
+//! one.** `intent.narrow` gives each dependent capabilities for the arcs it
+//! names this turn and nothing else, and drops the write bit wherever the
+//! item declared a read. The dependent cannot reach past that line -- the line
+//! *is* what it holds. So the run may unhand the ceiling's claim over a
+//! running dependent and weigh newcomers against the far smaller thing the dependent
+//! actually carries.
+//!
+//! **What a run must never do is weigh a dependent it does not remember.** The
+//! ceiling reading needs only a domain name, which every live dependent already
+//! carries. The held reading needs the whole line, and a line the table
+//! forgot would let a newcomer in over a dependent nobody weighed. So the
+//! supervisor holds one line per live dependent, shifted when the eldest is
+//! reaped, exactly as it holds the slot each dependent came from.
+//!
+//! **The rung earns two refusals, one about memory and one about reach.**
+//! `UnhandUnheld` is the memory: a run may weigh by held lines only while it
+//! remembers a line for every dependent standing, since a forgotten dependent is an
+//! unweighed one. `UnhandWidened` is the reach: a remembered line may name
+//! only what the document already grants that domain, since a line claiming
+//! a write nobody granted would admit a newcomer the ceiling rightly blocks.
+//!
+//! **The narrower room costs more to read, and that is the honest trade.**
+//! The ceiling answers from the region roster, at most `max_ceiling_tests`;
+//! the held line answers from the arcs each side names, at most
+//! `max_unhand_tests`. A run pays a few more tests at the door and buys room
+//! for work that never touches.
+//!
+//! **A line as wide as its own ceiling reads exactly as the ceiling does.**
+//! The arc's standing generalization test, one tier further out: hand a
+//! dependent every region its domain may reach, declaring a write wherever the
+//! document grants one, and the held reading answers `intent.admissible`
+//! refusal for refusal.
+//!
+//! **The channel joint stays exactly where it stands.** A channel is a joint
+//! at every instant of both sides, and a line narrowed to this turn's arcs
+//! says nothing about it. This rung narrows the memory room alone and leaves
+//! the doorbell room honest.
+//!
+//! Usage:
+//!   unhand selftest                  Run the two rooms against each other
+//!   unhand                           Same as selftest
+//!   unhand dependent <domain> <plan> ... Run as a supervised dependent (internal)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const capabilities = @import("capabilities.rye");
+const roster = @import("roster.rye");
+const read = @import("read.rye");
+const boot = @import("boot.rye");
+const exercise = @import("exercise.rye");
+const carry = @import("carry.rye");
+const notify = @import("notify.rye");
+const roundtrip = @import("roundtrip.rye");
+const cycle = @import("cycle.rye");
+const regions = @import("regions.rye");
+const gap = @import("gap.rye");
+const cohort = @import("cohort.rye");
+const commute = @import("commute.rye");
+const intent = @import("intent.rye");
+const mask = @import("mask.rye");
+const precede = @import("precede.rye");
+const understudy_rung = @import("understudy.rye");
+
+const caravan_unhand_version = "20260819.215134";
+
+// =========================================================================
+// The bounds -- carried whole, and the two this rung adds
+// =========================================================================
+
+/// The declaration this rung runs against.
+///
+/// Its own, and the first new one this arc has needed in many rungs: the
+/// menu declaration publishes a region nobody but the virtualiser writes,
+/// which the grant reading already handles perfectly. Here `client_a` writes
+/// a board its siblings read, with no channel joining any of them -- the one
+/// shape where the ceiling and the line handed over genuinely disagree.
+pub const declaration_path = "caravan/systems/serial_three_clients_board.bron";
+
+/// How many dependents one supervisor may hold at once, unchanged.
+pub const max_in_flight: u32 = understudy_rung.max_in_flight;
+
+/// How many phases one queue may ever hold, unchanged.
+pub const max_queue_len: u32 = understudy_rung.max_queue_len;
+
+/// How far a blocked head may look for a phase that can pass, unchanged.
+pub const max_lookahead: u32 = understudy_rung.max_lookahead;
+
+/// How many words a supervised dependent's own argv always carries, unchanged.
+pub const fixed_argv_words: u32 = understudy_rung.fixed_argv_words;
+
+/// How many turns one plan may ever name, unchanged.
+pub const max_turns: u32 = understudy_rung.max_turns;
+
+/// How many tests seating a whole plan may ever spend, unchanged.
+pub const max_seating_tests: u32 = understudy_rung.max_seating_tests;
+
+/// How many tests the isolation room spends when the ceiling answers it.
+///
+/// One walk of the declared region roster per dependent standing, which is what
+/// `commute.pair_contends` costs and what every rung of this arc has paid at
+/// the door since the grants were first read.
+pub const max_ceiling_tests: u32 = max_in_flight * regions.max_regions;
+
+/// How many tests the isolation room spends when the held line answers it.
+///
+/// One pair of arc walks per dependent standing: each hop the newcomer names
+/// weighed against each hop the dependent holds. The narrower room reads more
+/// and admits more, and both halves of that trade are printed rather than
+/// asserted.
+pub const max_unhand_tests: u32 = max_in_flight * cycle.max_hops * cycle.max_hops;
+
+/// How many regions one widest line may ever name.
+///
+/// A line is written in the same arc grammar every item uses, so the widest
+/// line a domain can be handed still fits inside one turn's hops.
+pub const max_widest_hops: u32 = cycle.max_hops;
+
+comptime {
+    // invariant: the held reading buys its room by reading more, and says so
+    assert(max_unhand_tests > max_ceiling_tests);
+    // invariant: a widest line stays inside the hops one item may name
+    assert(max_widest_hops <= cycle.max_hops);
+    // invariant: a run always has a slot to remember a live dependent's line by
+    assert(max_in_flight >= 1);
+    // invariant: the region roster a ceiling walks is bounded and non-empty
+    assert(regions.max_regions >= 1);
+}
+
+// =========================================================================
+// The shapes -- carried whole from the rung below
+// =========================================================================
+
+/// Renders one outcome code as the words an operator reads.
+pub fn outcome_name(code: u8) []const u8 {
+    return understudy_rung.outcome_name(code);
+}
+
+/// Why a queue may not take, release, correct, understudy, or unhand its work.
+///
+/// Two names of this rung's own, one about memory and one about reach. A run
+/// may weigh by held lines only while it remembers every dependent standing, and
+/// a remembered line may never claim more than the document grants.
+pub const RunError = understudy_rung.RunError || error{ UnhandUnheld, UnhandWidened };
+
+/// One queued item and the letters it declares, carried from `intent.rye`.
+pub const Task = understudy_rung.Task;
+
+/// One phase, its turn, its step, and the two masks it carries, unchanged.
+pub const Phase = understudy_rung.Phase;
+
+/// How deeply a reading looks at the queue's own authorship, unchanged.
+pub const Reading = understudy_rung.Reading;
+
+/// Renders one reading as the words an operator reads.
+pub fn reading_words(r: Reading) []const u8 {
+    return understudy_rung.reading_words(r);
+}
+
+/// What one run did, reported whole, unchanged from the rung below.
+pub const Report = understudy_rung.Report;
+
+/// The single bit that stands for one turn of a plan.
+pub fn turn_bit(turn: u32) u32 {
+    return understudy_rung.turn_bit(turn);
+}
+
+/// Answers whether the plan's written sequence keeps every name it carries.
+pub fn plan_is_seated(plan: []const Phase) bool {
+    return understudy_rung.plan_is_seated(plan);
+}
+
+/// Answers whether two phases must keep the order the queue wrote them in.
+pub fn items_contend(sys: *const system.System, a: Phase, b: Phase, reading: Reading) bool {
+    return understudy_rung.items_contend(sys, a, b, reading);
+}
+
+// =========================================================================
+// The two rooms -- which answer the door weighs
+// =========================================================================
+
+/// Which reading answers the isolation room at the door.
+///
+/// `by_ceiling` is where every rung of this arc has left it: a newcomer is
+/// weighed against the whole grant of each running domain. `by_held` is this
+/// rung: a newcomer is weighed against the line each running dependent was
+/// actually handed.
+pub const Room = enum { by_ceiling, by_held };
+
+/// Renders one room as the words an operator reads.
+pub fn room_words(r: Room) []const u8 {
+    return switch (r) {
+        .by_ceiling => "the whole grant of every running domain",
+        .by_held => "the line each running dependent was handed",
+    };
+}
+
+/// Answers whether a line names only what the document already grants.
+///
+/// Read access for every arc the line names, and a granted write wherever
+/// the line declares one. A line reaching past its own ceiling would admit a
+/// newcomer the document rightly blocks, which is the one way a narrower
+/// room could ever be less safe than the wider one.
+pub fn held_within(sys: *const system.System, task: Task) bool {
+    // invariant: a line always names at least one arc to work
+    assert(task.item.hops.len >= 1);
+    // invariant: a line always names the domain that holds it
+    assert(task.item.domain.len >= 1);
+    var index: u32 = 0;
+    var arcs = std.mem.splitScalar(u8, task.item.hops, ',');
+    while (arcs.next()) |hop| {
+        // invariant: the walk stays inside the hops one item may name
+        assert(index < cycle.max_hops);
+        if (!sys.map.may_read(hop, task.item.domain)) return false;
+        if (intent.declares_write(task, index) and !commute.writes(sys, task.item.domain, hop)) {
+            return false;
+        }
+        index += 1;
+    }
+    // invariant: every arc the line names was weighed, none skipped
+    assert(index >= 1);
+    return true;
+}
+
+/// Answers why a run may not weigh its door by the lines it remembers.
+///
+/// Two doors. The memory: one line per dependent standing, in the same order, so
+/// no dependent goes unweighed. The reach: every remembered line inside its own
+/// domain's ceiling, so the narrower room can never admit what the wider one
+/// refuses for a reason the document actually holds.
+pub fn holding_refusal(
+    sys: *const system.System,
+    live: []const cohort.Running,
+    held: []const Task,
+) ?RunError {
+    // invariant: a run never holds more dependents than one supervisor may
+    assert(live.len <= max_in_flight);
+    if (held.len != live.len) return error.UnhandUnheld;
+    var i: u32 = 0;
+    while (i < live.len) : (i += 1) {
+        if (!std.mem.eql(u8, held[i].item.domain, live[i].domain)) return error.UnhandUnheld;
+        if (!held_within(sys, held[i])) return error.UnhandWidened;
+    }
+    // invariant: every dependent standing was weighed against its line, none skipped
+    assert(i == live.len);
+    return null;
+}
+
+/// Answers whether a run's memory of its dependents is sound enough to weigh by.
+pub fn holding_admits(
+    sys: *const system.System,
+    live: []const cohort.Running,
+    held: []const Task,
+) bool {
+    return holding_refusal(sys, live, held) == null;
+}
+
+/// Answers whether the head may enter beside the lines the dependents hold.
+///
+/// The same three refusals `commute.admissible` makes, with exactly one of
+/// them narrowed. A domain still runs one dependent at a time, and a channel
+/// still joins two domains at every instant of both. What changes is the
+/// memory question: the newcomer is weighed against the arcs each dependent
+/// actually holds rather than against everything its domain may ever reach.
+pub fn admissible_held(
+    sys: *const system.System,
+    live: []const cohort.Running,
+    held: []const Task,
+    head: Task,
+) bool {
+    // invariant: a queued item always names a domain
+    assert(head.item.domain.len >= 1);
+    // invariant: a held reading always carries a line for every dependent standing
+    assert(held.len == live.len);
+    const d = sys.graph.find_domain(head.item.domain) orelse return false;
+    var i: u32 = 0;
+    while (i < live.len) : (i += 1) {
+        const running = sys.graph.find_domain(live[i].domain) orelse return false;
+        if (running == d) return false;
+        if (sys.graph.find_channel(d, running) != null) return false;
+        if (intent.items_contend(sys, held[i], head, .by_intent)) return false;
+    }
+    // invariant: every dependent standing was weighed against the head, none skipped
+    assert(i == live.len);
+    return true;
+}
+
+/// Answers whether the head may enter, by whichever room the run reads.
+pub fn admissible_in(
+    sys: *const system.System,
+    live: []const cohort.Running,
+    held: []const Task,
+    head: Task,
+    room: Room,
+) bool {
+    // invariant: a queued item always names a domain
+    assert(head.item.domain.len >= 1);
+    if (room == .by_ceiling) return intent.admissible(sys, live, head.item, .by_intent);
+    return admissible_held(sys, live, held, head);
+}
+
+// =========================================================================
+// The widest line -- a ceiling written in the grammar of a line
+// =========================================================================
+
+/// One line written out, held for as long as the reading that uses it.
+///
+/// A line is text in the arc grammar every item speaks, so the widest line a
+/// domain could ever be handed is written into these buffers rather than
+/// named by hand -- derived rather than chosen, as this arc derives every
+/// number it reports.
+pub const Widest = struct {
+    hops: [regions.max_name_len * max_widest_hops + max_widest_hops]u8 = @splat(0),
+    hops_len: u32 = 0,
+    effects: [2 * max_widest_hops]u8 = @splat(0),
+    effects_len: u32 = 0,
+
+    /// The arcs this line names, as one item's `hops` field.
+    pub fn hops_slice(self: *const Widest) []const u8 {
+        return self.hops[0..self.hops_len];
+    }
+
+    /// The letters this line declares, as one item's `effects` field.
+    pub fn effects_slice(self: *const Widest) []const u8 {
+        return self.effects[0..self.effects_len];
+    }
+};
+
+/// Writes the widest line one domain could ever be handed, or answers false.
+///
+/// Every region the domain may read, in the roster's own order, each
+/// declaring a write wherever the document grants one. A domain reaching
+/// more regions than one turn's hops may name has no widest *line* at all --
+/// which is a true fact about the grammar rather than a failure, so it is
+/// answered rather than asserted.
+pub fn widest_line(sys: *const system.System, domain: []const u8, out: *Widest) bool {
+    // invariant: a widest line always names the domain it is written for
+    assert(domain.len >= 1);
+    out.hops_len = 0;
+    out.effects_len = 0;
+    var named: u32 = 0;
+    var i: u32 = 0;
+    while (i < sys.map.region_count) : (i += 1) {
+        // invariant: the walk stays inside the declared region roster
+        assert(i < regions.max_regions);
+        const region = sys.map.regions[i].slot.name_slice();
+        if (!sys.map.may_read(region, domain)) continue;
+        if (named == max_widest_hops) return false;
+        if (named > 0) {
+            out.hops[out.hops_len] = ',';
+            out.hops_len += 1;
+            out.effects[out.effects_len] = ',';
+            out.effects_len += 1;
+        }
+        var b: u32 = 0;
+        while (b < region.len) : (b += 1) {
+            out.hops[out.hops_len] = region[b];
+            out.hops_len += 1;
+        }
+        // invariant: the whole region name was written, none of it dropped
+        assert(b == region.len);
+        out.effects[out.effects_len] = if (commute.writes(sys, domain, region)) 'w' else 'r';
+        out.effects_len += 1;
+        named += 1;
+    }
+    // invariant: the walk read the whole roster, weighing every region in it
+    assert(i == sys.map.region_count);
+    // invariant: a written line stays inside the hops one item may name
+    assert(named <= max_widest_hops);
+    return named >= 1;
+}
+
+// =========================================================================
+// The supervisor -- a record that remembers what each dependent holds
+// =========================================================================
+
+/// One dependent already reaped, held until the whole record has drained.
+const Finished = struct {
+    domain: []const u8,
+    verb: cycle.Verb,
+    count: u32,
+    expect: u8,
+    code: u8,
+};
+
+/// Folds one reaped outcome into the report, or names the mismatch.
+fn judge_outcome(done: Finished, report_out: *Report) RunError!void {
+    // invariant: a judged dependent always names its domain
+    assert(done.domain.len >= 1);
+    // invariant: the report never counts more successes than dependents reaped
+    assert(report_out.inner.run.succeeded <= report_out.inner.run.reaped);
+    if (done.code != done.expect) {
+        print("    {s}: expected {s}, heard {s}\n", .{
+            done.domain, outcome_name(done.expect), outcome_name(done.code),
+        });
+        return error.OutcomeMismatch;
+    }
+    if (done.code == carry.Outcome.carried_ok) {
+        report_out.inner.run.succeeded += 1;
+        if (done.verb == .home) report_out.inner.run.homed += done.count;
+    }
+}
+
+/// The queue's own bookkeeping for one run, over a record whose dependents are
+/// remembered by the lines they hold.
+///
+/// `lines` is what this rung adds: the line each live dependent was handed, in
+/// the same order as `live` and shifted with it. Without it the door has
+/// only a domain name to weigh, and a domain name is a ceiling.
+const Table = struct {
+    live: [max_in_flight]cohort.Running = undefined,
+    lines: [max_in_flight]Task = undefined,
+    in_flight: u32 = 0,
+    done: [max_queue_len]Finished = undefined,
+    finished: u32 = 0,
+    taken: [max_queue_len]bool = @splat(false),
+    record: [max_queue_len]Phase = undefined,
+    held: u32 = 0,
+    head: u32 = 0,
+    left: u32 = 0,
+};
+
+/// The record as it stands right now.
+fn standing(table: *const Table) []const Phase {
+    // invariant: a record never outgrows the queue one supervisor may hold
+    assert(table.held <= max_queue_len);
+    return table.record[0..table.held];
+}
+
+/// Answers whether one phase of the record is still work waiting to run.
+fn waits(table: *const Table, at: u32) bool {
+    // invariant: a reading always names a phase inside the record
+    assert(at < table.held);
+    return !table.taken[at];
+}
+
+/// Moves the head past every item already started.
+fn advance_head(table: *Table) void {
+    // invariant: a head never walks past the record it reads
+    assert(table.head <= table.held);
+    while (table.head < table.held and !waits(table, table.head)) table.head += 1;
+}
+
+/// Answers whether a phase of a turn this pick's turn names still waits.
+fn elder_waits(table: *const Table, pick: u32) bool {
+    // invariant: a pick always names a phase inside the record
+    assert(pick < table.held);
+    const wanted = table.record[pick].follows_turns;
+    if (wanted == 0) return false;
+    var i: u32 = 0;
+    while (i < table.held) : (i += 1) {
+        if (i == pick) continue;
+        if (!waits(table, i)) continue;
+        if ((wanted & turn_bit(table.record[i].turn)) != 0) return true;
+    }
+    // invariant: the walk read the whole record, weighing every phase in it
+    assert(i == table.held);
+    return false;
+}
+
+/// Answers whether a sibling of this pick's own turn still waits behind it.
+fn sibling_waits(table: *const Table, pick: u32, sibling_mask: u32) bool {
+    // invariant: a pick always names a phase inside the record
+    assert(pick < table.held);
+    var i: u32 = 0;
+    while (i < pick) : (i += 1) {
+        if (!waits(table, i)) continue;
+        if (table.record[i].turn != table.record[pick].turn) continue;
+        if ((sibling_mask & mask.step_bit(table.record[i].step)) != 0) return true;
+    }
+    // invariant: the walk reached the pick, weighing every phase before it
+    assert(i == pick);
+    return false;
+}
+
+/// Answers whether the door admits this phase, under the room the run reads.
+fn door_admits(
+    sys: *const system.System,
+    table: *const Table,
+    at: u32,
+    room: Room,
+) bool {
+    // invariant: a candidate always stands inside the record
+    assert(at < table.held);
+    return admissible_in(
+        sys,
+        table.live[0..table.in_flight],
+        table.lines[0..table.in_flight],
+        table.record[at].task,
+        room,
+    );
+}
+
+/// Answers whether a phase may be admitted ahead of the record's head.
+fn may_pass(
+    sys: *const system.System,
+    table: *const Table,
+    candidate: u32,
+    reading: Reading,
+) bool {
+    // invariant: a pass always reaches forward, never at the head itself
+    assert(candidate > table.head);
+    // invariant: a candidate always stands inside the record
+    assert(candidate < table.held);
+    var i: u32 = table.head;
+    while (i < candidate) : (i += 1) {
+        if (!waits(table, i)) continue;
+        if (items_contend(sys, table.record[i], table.record[candidate], reading)) return false;
+    }
+    // invariant: the walk reached the candidate, weighing every phase before it
+    assert(i == candidate);
+    return true;
+}
+
+/// Chooses one phase from behind a blocked head, or answers that none may go.
+fn choose_pass(
+    sys: *const system.System,
+    table: *const Table,
+    reading: Reading,
+    room: Room,
+) ?u32 {
+    // invariant: a pass is only ever sought while the head stands blocked
+    assert(table.head < table.held);
+    var looked: u32 = 0;
+    var i: u32 = table.head + 1;
+    while (i < table.held and looked < max_lookahead) : (i += 1) {
+        if (!waits(table, i)) continue;
+        looked += 1;
+        if (!door_admits(sys, table, i, room)) continue;
+        if (!may_pass(sys, table, i, reading)) continue;
+        return i;
+    }
+    // invariant: the look stayed inside the bound it was given
+    assert(looked <= max_lookahead);
+    return null;
+}
+
+/// Starts one phase, handing the line it declared and nothing more.
+///
+/// The narrowed line the dependent receives here is exactly what the table
+/// remembers, which is why the held reading is a fact rather than a hope.
+fn start_one(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    caps: *const capabilities.CapabilityTable,
+    phase: Phase,
+    wake: gap.Wake,
+) (RunError || cohort.RunError || boot.BootError)!cohort.Running {
+    // invariant: a start always names the domain it starts
+    assert(phase.task.item.domain.len >= 1);
+    const narrowed = intent.narrow(caps, phase.task) orelse return error.UnknownDomain;
+    const slot = narrowed.find_dependent(phase.task.item.domain) orelse return error.UnknownDomain;
+    // invariant: a narrowed line stays inside what the document grants
+    assert(boot.line_within(sys, slot));
+    return cohort.spawn_one_within(
+        allocator, io, self_path, sys, &narrowed, phase.task.item, wake, &.{},
+    );
+}
+
+/// Admits as much of the record as the table, the room, and the reading
+/// allow, and answers how many dependents it started.
+fn fill_table(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    caps: *const capabilities.CapabilityTable,
+    wake: gap.Wake,
+    reading: Reading,
+    room: Room,
+    table: *Table,
+    report_out: *Report,
+) (RunError || cohort.RunError || boot.BootError)!u32 {
+    var admitted: u32 = 0;
+    while (table.in_flight < max_in_flight and table.left > 0) {
+        advance_head(table);
+        // invariant: work still waiting always leaves a head to weigh
+        assert(table.head < table.held);
+        // invariant: a run only ever weighs a door it remembers every dependent at
+        assert(holding_admits(sys, table.live[0..table.in_flight], table.lines[0..table.in_flight]));
+
+        var pick: u32 = table.head;
+        if (!door_admits(sys, table, table.head, room)) {
+            pick = choose_pass(sys, table, reading, room) orelse break;
+            report_out.inner.run.passes += 1;
+            const reach = pick - table.head;
+            if (reach > report_out.inner.run.pass_reach) report_out.inner.run.pass_reach = reach;
+        }
+        const chosen = table.record[pick];
+        if (sibling_waits(table, pick, mask.prefix_mask(chosen.step))) {
+            report_out.inner.out_of_turn += 1;
+        }
+        if (sibling_waits(table, pick, mask.prefix_mask(mask.fence_after(chosen.follows)))) {
+            report_out.inner.out_of_fence += 1;
+        }
+        if (sibling_waits(table, pick, chosen.follows)) report_out.inner.out_of_mask += 1;
+        if (elder_waits(table, pick)) report_out.out_of_precede += 1;
+
+        table.live[table.in_flight] = try start_one(
+            allocator, io, self_path, sys, caps, chosen, wake,
+        );
+        table.lines[table.in_flight] = chosen.task;
+        table.in_flight += 1;
+        table.taken[pick] = true;
+        table.left -= 1;
+        admitted += 1;
+        report_out.inner.run.admitted += 1;
+    }
+    // invariant: a fill never overruns the table it fills
+    assert(table.in_flight <= max_in_flight);
+    // invariant: a preceded reading never runs a phase past a turn its turn named
+    assert(reading != .preceded or report_out.out_of_precede == 0);
+    return admitted;
+}
+
+/// Waits on the eldest dependent, records what it answered, and closes the table
+/// over the slot it leaves.
+///
+/// `lines` closes with `live`, so the run's memory of what each dependent holds
+/// stays true across every reaping rather than drifting one slot at a time.
+fn reap_oldest(io: std.Io, table: *Table, report_out: *Report) cohort.RunError!void {
+    // invariant: a reaping always has a dependent to wait on
+    assert(table.in_flight >= 1);
+    // invariant: a reaping never overruns the record it is kept in
+    assert(table.finished < max_queue_len);
+    const code = try cohort.reap_one(io, &table.live[0]);
+    table.done[table.finished] = .{
+        .domain = table.live[0].domain,
+        .verb = table.live[0].verb,
+        .count = table.live[0].count,
+        .expect = table.live[0].expect,
+        .code = code,
+    };
+    table.finished += 1;
+    table.in_flight -= 1;
+    report_out.inner.run.reaped += 1;
+    report_out.inner.run.turns += 1;
+
+    var s: u32 = 0;
+    while (s < table.in_flight) : (s += 1) {
+        table.live[s] = table.live[s + 1];
+        table.lines[s] = table.lines[s + 1];
+    }
+    // invariant: the table closed over the reaped dependent, none lost
+    assert(s == table.in_flight);
+}
+
+/// Runs a record with the isolation room answered by the chosen reading.
+///
+/// The supervisor every rung of this arc keeps -- fill the table, reap the
+/// eldest, judge at the end -- with the door's memory question answered one
+/// of two ways, so both rooms stand over one program and one lap.
+pub fn run_in_room(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    base: []const Phase,
+    wake: gap.Wake,
+    reading: Reading,
+    room: Room,
+    report_out: *Report,
+) (roster.RosterError || exercise.ProvisionError || notify.BellError || RunError || cohort.RunError || boot.BootError)!void {
+    // invariant: a run always knows what program to spawn
+    assert(self_path.len >= 1);
+    // invariant: a run always reports into a fresh report
+    assert(report_out.inner.run.admitted == 0);
+    if (base.len == 0) return error.EmptyQueue;
+    if (base.len > max_queue_len) return error.QueueFull;
+    if (!precede.plan_is_ordered(base)) return error.OrderStalled;
+    if (!plan_is_seated(base)) return error.PlanUnseated;
+
+    var table: Table = .{};
+    precede.close(base, table.record[0..base.len]);
+    table.held = @intCast(base.len);
+    table.left = table.held;
+    // invariant: a closed record closes to itself, so the door's work is done
+    assert(precede.plan_is_closed(standing(&table)));
+
+    const provisioned = try exercise.provision(io, sys);
+    // invariant: every declared region has a backing store before any dependent runs
+    assert(provisioned == sys.map.region_count);
+    report_out.inner.run.bells = try roundtrip.provision_directed(io, sys);
+    const caps = try roster.from_system(sys);
+    // invariant: the derived table enforces exactly what the document permits
+    assert(roster.agrees(sys, &caps));
+    report_out.inner.run.queued = table.held;
+
+    while (table.left > 0 or table.in_flight > 0) {
+        const admitted_now = try fill_table(
+            allocator, io, self_path, sys, &caps, wake, reading, room, &table, report_out,
+        );
+        if (table.in_flight > report_out.inner.run.peak_in_flight) {
+            report_out.inner.run.peak_in_flight = table.in_flight;
+        }
+
+        if (table.left > 0) {
+            const free = max_in_flight - table.in_flight;
+            report_out.inner.run.slots_unspent += free;
+            if (admitted_now == 0 and free > 0) report_out.inner.run.idle_turns += 1;
+        }
+
+        // With an empty table nothing conflicts, so a stall here would mean
+        // the record named a domain the document does not.
+        if (table.in_flight == 0) return error.OrderStalled;
+
+        try reap_oldest(io, &table, report_out);
+    }
+    // invariant: the whole record was admitted, and every dependent reaped
+    assert(table.left == 0);
+    assert(table.in_flight == 0);
+    assert(report_out.inner.run.reaped == report_out.inner.run.admitted);
+    // invariant: a room narrows the door and never the work the record holds
+    assert(table.finished == table.held);
+
+    var j: u32 = 0;
+    while (j < table.finished) : (j += 1) try judge_outcome(table.done[j], report_out);
+    // invariant: every reaped dependent was judged, none skipped
+    assert(j == table.finished);
+}
+
+// =========================================================================
+// The lap -- one plan, run once by the ceiling and once by the lines held
+// =========================================================================
+
+/// The lap this rung runs, written so the two rooms genuinely disagree.
+///
+/// `client_a` opens by placing into its own `ask_a`, and every other phase
+/// belongs to `client_b` or `client_c` reading the shared `board` or their
+/// own arcs. The ceiling answers that `client_a` conflicts with both
+/// siblings at every instant, since it may write the board they read. The
+/// line `client_a` actually holds names `ask_a` alone, and touches neither.
+const written_queue = [_]Phase{
+    .{ .turn = 0, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "w", .item = .{ .domain = "client_a", .verb = .place, .hops = "ask_a", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok } } },
+    .{ .turn = 1, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_b", .verb = .peek, .hops = "board", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 2, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_c", .verb = .peek, .hops = "board", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 3, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_a", .verb = .peek, .hops = "back_a", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 4, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_b", .verb = .peek, .hops = "back_b", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 5, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_c", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 6, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_b", .verb = .peek, .hops = "board", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+};
+
+/// The declaration whose clients each reach exactly one line's worth of arcs.
+///
+/// The generalization test needs a widest line to exist at all, and a
+/// widest line is only writable where a domain reaches no more regions than
+/// one turn's hops may name. The board declaration gives every client five,
+/// so the elder three-client shape carries this test instead -- named here
+/// rather than left for a reader to wonder about.
+const narrow_declaration_path = "caravan/systems/serial_three_clients.bron";
+
+// =========================================================================
+// Self-test
+// =========================================================================
+
+/// Loads one declaration, or names why it could not be read.
+fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
+    const parsed = read.load(io, path, buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ path, @errorName(err) });
+        return null;
+    };
+    if (parsed.verify() != .whole) {
+        print("  RED: {s} did not read whole\n", .{path});
+        return null;
+    }
+    return parsed;
+}
+
+/// Builds one live dependent standing for a phase, without spawning anything.
+///
+/// The door reads a running dependent's domain and nothing else, so the pure
+/// room may weigh a whole table of them with no process anywhere.
+fn standing_dependent(phase: Phase) cohort.Running {
+    return .{
+        .proc = undefined,
+        .domain = phase.task.item.domain,
+        .verb = phase.task.item.verb,
+        .count = phase.task.item.count,
+        .expect = phase.task.item.expect,
+    };
+}
+
+/// The two rooms read straight, before any supervisor spends them.
+///
+/// The happy zone of this rung: one declaration, one standing dependent, and
+/// every question answered as a pure fold -- no dependent started and no store
+/// touched.
+fn check_rooms(sys: *const system.System) u8 {
+    const opening = written_queue[0];
+    const reader = written_queue[1];
+    var live_store: [max_in_flight]cohort.Running = undefined;
+    live_store[0] = standing_dependent(opening);
+    const live = live_store[0..1];
+    var held_store: [max_in_flight]Task = undefined;
+    held_store[0] = opening.task;
+    const held = held_store[0..1];
+
+    // The door every rung of this arc has kept: the ceiling refuses a reader
+    // of a region the running domain may write, whatever it is doing.
+    if (intent.admissible(sys, live, reader.task.item, .by_intent)) {
+        print("  RED: the ceiling admitted a reader of a board the running domain may write\n", .{});
+        return 1;
+    }
+
+    // The finding: the same newcomer, welcomed once the run weighs the line
+    // the dependent actually holds.
+    if (!admissible_held(sys, live, held, reader.task)) {
+        print("  RED: a newcomer was refused over a line that never touches it\n", .{});
+        return 1;
+    }
+
+    // The channel joint stands exactly where it stood.
+    const joined = Task{ .effects = "r", .item = .{ .domain = "serial_virt", .verb = .peek, .hops = "back_a", .peers = "client_a", .count = 0, .expect = carry.Outcome.bytes_differed } };
+    if (admissible_held(sys, live, held, joined)) {
+        print("  RED: a domain joined by a channel was admitted beside its peer\n", .{});
+        return 1;
+    }
+
+    // A domain still runs one dependent at a time.
+    const sibling = written_queue[3];
+    if (admissible_held(sys, live, held, sibling.task)) {
+        print("  RED: a domain was admitted twice at once\n", .{});
+        return 1;
+    }
+
+    // The refusal about memory: a run that forgot a dependent weighs nothing.
+    const forgotten = holding_refusal(sys, live, held_store[0..0]);
+    if (forgotten) |why| {
+        if (why != error.UnhandUnheld) {
+            print("  RED: a forgotten dependent refused for the wrong reason: {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a run weighed its door with a dependent it does not remember\n", .{});
+        return 1;
+    }
+
+    // The refusal about reach: a line may never claim past its own ceiling.
+    var wide_store: [max_in_flight]Task = undefined;
+    wide_store[0] = .{ .effects = "w", .item = .{ .domain = "client_b", .verb = .place, .hops = "board", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok } };
+    var wide_live: [max_in_flight]cohort.Running = undefined;
+    wide_live[0] = standing_dependent(reader);
+    const widened = holding_refusal(sys, wide_live[0..1], wide_store[0..1]);
+    if (widened) |why| {
+        if (why != error.UnhandWidened) {
+            print("  RED: a widened line refused for the wrong reason: {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a line claiming a write the document never granted was weighed anyway\n", .{});
+        return 1;
+    }
+
+    // A run that remembers every dependent, each inside its own ceiling, weighs.
+    if (!holding_admits(sys, live, held)) {
+        print("  RED: a sound memory of one running dependent was refused\n", .{});
+        return 1;
+    }
+
+    print("  the ceiling refuses what the line handed over never touches\n", .{});
+    print("  the isolation room costs at most {d} tests by the held line, against {d} by the ceiling\n", .{
+        max_unhand_tests, max_ceiling_tests,
+    });
+    print("  the channel joint stands unchanged: {s}\n", .{room_words(.by_held)});
+    return 0;
+}
+
+/// The generalization test: a widest line reads exactly as the ceiling does.
+///
+/// This arc's standing habit, one tier further out. An empty turn mask was
+/// the sibling mask, a seated plan arranged to itself, a plan grown one
+/// arrival at a time was the plan its author wrote, and an understudy of
+/// waiting work was that work's correction. Here the narrower room, handed a
+/// line as wide as its own ceiling, answers the wider room exactly.
+fn check_widest(io: std.Io) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const sys = load_one(io, narrow_declaration_path, &buf) orelse return 1;
+
+    const clients = [_][]const u8{ "client_a", "client_b", "client_c" };
+    var lines: [clients.len]Widest = @splat(.{});
+    var tasks: [clients.len]Task = undefined;
+    var c: u32 = 0;
+    while (c < clients.len) : (c += 1) {
+        if (!widest_line(&sys, clients[c], &lines[c])) {
+            print("  RED: {s} reaches more regions than one line may name\n", .{clients[c]});
+            return 1;
+        }
+        tasks[c] = .{
+            .effects = lines[c].effects_slice(),
+            .item = .{
+                .domain = clients[c],
+                .verb = .peek,
+                .hops = lines[c].hops_slice(),
+                .peers = "serial_virt",
+                .count = 0,
+                .expect = carry.Outcome.bytes_differed,
+            },
+        };
+    }
+    // invariant: every client was handed a widest line, none skipped
+    assert(c == clients.len);
+
+    var agreed: u32 = 0;
+    var a: u32 = 0;
+    while (a < clients.len) : (a += 1) {
+        var live_store: [max_in_flight]cohort.Running = undefined;
+        live_store[0] = .{
+            .proc = undefined,
+            .domain = clients[a],
+            .verb = .peek,
+            .count = 0,
+            .expect = carry.Outcome.bytes_differed,
+        };
+        var held_store: [max_in_flight]Task = undefined;
+        held_store[0] = tasks[a];
+        var b: u32 = 0;
+        while (b < clients.len) : (b += 1) {
+            const here = admissible_held(&sys, live_store[0..1], held_store[0..1], tasks[b]);
+            const there = intent.admissible(&sys, live_store[0..1], tasks[b].item, .by_intent);
+            if (here != there) {
+                print("  RED: the two rooms disagreed about {s} beside {s}\n", .{
+                    clients[b], clients[a],
+                });
+                return 1;
+            }
+            agreed += 1;
+        }
+        // invariant: every newcomer was weighed against this dependent, none skipped
+        assert(b == clients.len);
+    }
+    // invariant: every client stood as the running dependent once, none skipped
+    assert(a == clients.len);
+
+    print("  a line as wide as its own ceiling reads as the ceiling, all {d} pairs\n", .{agreed});
+    return 0;
+}
+
+/// Runs one queue whole in one room and answers whether it survived.
+fn run_one(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Phase,
+    room: Room,
+    report_out: *Report,
+) bool {
+    run_in_room(
+        allocator, io, self_path, sys, plan, .when_moved, .preceded, room, report_out,
+    ) catch |err| {
+        print("  RED: a queue did not survive its run: {s}\n", .{@errorName(err)});
+        return false;
+    };
+    return true;
+}
+
+/// The unhand lap: one plan run twice, once by the ceiling and once by the
+/// lines the dependents hold.
+fn check_room_runs(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+) u8 {
+    var ceiling: Report = .{};
+    if (!run_one(allocator, io, self_path, sys, &written_queue, .by_ceiling, &ceiling)) return 1;
+    var lines: Report = .{};
+    if (!run_one(allocator, io, self_path, sys, &written_queue, .by_held, &lines)) return 1;
+
+    print("  dependents: {d} by the ceiling, {d} by the line each dependent holds\n", .{
+        ceiling.inner.run.reaped, lines.inner.run.reaped,
+    });
+    print("  came home as handed: {d} by the ceiling, {d} by the line each dependent holds\n", .{
+        ceiling.inner.run.succeeded, lines.inner.run.succeeded,
+    });
+    print("  at once: {d} by the ceiling, {d} by the line each dependent holds\n", .{
+        ceiling.inner.run.peak_in_flight, lines.inner.run.peak_in_flight,
+    });
+    print("  slots left unspent: {d} by the ceiling, {d} by the line each dependent holds\n", .{
+        ceiling.inner.run.slots_unspent, lines.inner.run.slots_unspent,
+    });
+    print("  breaks a named turn: {d} by the ceiling, {d} by the line each dependent holds\n", .{
+        ceiling.out_of_precede, lines.out_of_precede,
+    });
+
+    if (lines.inner.run.reaped != ceiling.inner.run.reaped) {
+        print("  RED: the narrower room reaped {d} dependents against {d}\n", .{
+            lines.inner.run.reaped, ceiling.inner.run.reaped,
+        });
+        return 1;
+    }
+    if (lines.inner.run.succeeded != ceiling.inner.run.succeeded) {
+        print("  RED: a dependent judged {d} against {d} once the room narrowed\n", .{
+            lines.inner.run.succeeded, ceiling.inner.run.succeeded,
+        });
+        return 1;
+    }
+    if (lines.inner.run.peak_in_flight <= ceiling.inner.run.peak_in_flight) {
+        print("  RED: the narrower room bought no room at all: {d} against {d}\n", .{
+            lines.inner.run.peak_in_flight, ceiling.inner.run.peak_in_flight,
+        });
+        return 1;
+    }
+    if (lines.inner.run.slots_unspent >= ceiling.inner.run.slots_unspent) {
+        print("  RED: the narrower room left {d} slots unspent against {d}\n", .{
+            lines.inner.run.slots_unspent, ceiling.inner.run.slots_unspent,
+        });
+        return 1;
+    }
+    if (lines.out_of_precede != 0) {
+        print("  RED: the narrower room broke {d} turn orders its author named\n", .{
+            lines.out_of_precede,
+        });
+        return 1;
+    }
+    // invariant: a run reaps exactly the dependents it admitted, never more
+    assert(lines.inner.run.reaped == lines.inner.run.admitted);
+    // invariant: a narrower door never runs more work than the record holds
+    assert(lines.inner.run.reaped == lines.inner.run.queued);
+
+    return 0;
+}
+
+fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    print("Caravan unhand {s} -- self-test\n", .{caravan_unhand_version});
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const sys = load_one(io, declaration_path, &buf) orelse return 1;
+
+    const rooms = check_rooms(&sys);
+    if (rooms != 0) return rooms;
+    const widest = check_widest(io);
+    if (widest != 0) return widest;
+    const runs = check_room_runs(allocator, io, self_path, &sys);
+    if (runs != 0) return runs;
+    print("  GREEN: a dependent is weighed by the line it holds, never by the ceiling its domain was granted\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
+        return cohort.run_dependent(io, args);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(allocator, io, self_path);
+    }
+    if (args.len >= 2) return 1;
+    return run_self_test(allocator, io, self_path);
+}
